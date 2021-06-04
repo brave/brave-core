@@ -27,8 +27,8 @@ typedef NS_OPTIONS(NSUInteger, BraveSyncUserSelectableTypes) {
 
 OBJC_EXPORT
 @interface BraveSyncProfileService : NSObject
-@property(class, readonly, getter=sharedBraveProfileSyncService)
-    BraveSyncProfileService* shared;
+@property(class, readonly, getter = sharedBraveProfileSyncService)
+    BraveSyncProfileService* shared;  // NOLINT
 
 /// Sync Profile Properties
 @property(nonatomic, readonly) bool isSyncRequested;
@@ -41,8 +41,8 @@ OBJC_EXPORT
 /// Used for opting in/out on iOS side
 @property(nonatomic, assign, readonly)
     BraveSyncUserSelectableTypes activeSelectableTypes;
-@property(nonatomic, assign, getter=getUserSelectedTypes)
-    BraveSyncUserSelectableTypes userSelectedTypes;
+@property(nonatomic, assign, getter = getUserSelectedTypes)
+    BraveSyncUserSelectableTypes userSelectedTypes;  // NOLINT
 @end
 
 NS_ASSUME_NONNULL_END
