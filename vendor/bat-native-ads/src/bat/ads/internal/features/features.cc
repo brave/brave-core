@@ -12,6 +12,7 @@
 #include "bat/ads/internal/features/purchase_intent/purchase_intent_features.h"
 #include "bat/ads/internal/features/text_classification/text_classification_features.h"
 #include "bat/ads/internal/features/user_activity/user_activity_features.h"
+#include "bat/ads/internal/frequency_capping/frequency_capping_features.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
@@ -62,6 +63,9 @@ void Log() {
 
   BLOG(1, "User activity feature is "
               << (user_activity::IsEnabled() ? "enabled" : "disabled"));
+
+  BLOG(1, "Frequency capping feature is "
+              << (frequency_capping::IsEnabled() ? "enabled" : "disabled"));
 }
 
 }  // namespace features

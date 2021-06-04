@@ -7,6 +7,8 @@
 
 #include <vector>
 
+#include "base/test/scoped_feature_list.h"
+#include "bat/ads/internal/frequency_capping/frequency_capping_features.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_unittest_util.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -88,6 +90,39 @@ TEST_F(BatAdsConversionFrequencyCapTest, DoNotAllowAdIfAlreadyConverted) {
 
   // Assert
   EXPECT_TRUE(should_exclude);
+}
+
+TEST_F(BatAdsConversionFrequencyCapTest,
+       AllowAdIfAlreadyConvertedAndFrequencyCapDisabled) {
+  // Arrange
+  base::FieldTrialParams kParameters;
+  kParameters["should_exclude_ad_if_converted"] = "false";
+  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  enabled_features.push_back(
+      {features::frequency_capping::kFeature, kParameters});
+
+  const std::vector<base::Feature> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+
+  CreativeAdInfo ad;
+  ad.creative_set_id = kCreativeSetIds.at(0);
+
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
+                                               ConfirmationType::kConversion);
+
+  ad_events.push_back(ad_event);
+
+  // Act
+  ConversionFrequencyCap frequency_cap(ad_events);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+
+  // Assert
+  EXPECT_FALSE(should_exclude);
 }
 
 TEST_F(BatAdsConversionFrequencyCapTest, AllowAdIfNotAlreadyConverted) {
