@@ -24,6 +24,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.chromium.base.CommandLine;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
@@ -75,8 +76,8 @@ public class P3aOnboardingActivity extends AppCompatActivity {
                     }
                 });
         ImageView p3aOnboardingImg = findViewById(R.id.p3a_onboarding_img);
-        // Same as above
-        if (BraveConfig.P3A_ANDROID_BROWSERTEST)
+        // Remove the condition when https://github.com/brave/brave-browser/issues/16244 is resolved
+        if (!CommandLine.isInitialized())
             p3aOnboardingImg.setImageResource(R.drawable.ic_brave_logo);
         else
             p3aOnboardingImg.setImageResource(isFirstInstall
