@@ -7,12 +7,12 @@
 #include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
 #include "ios/chrome/browser/sync/device_info_sync_service_factory.h"
 
-#define BRAVE_BUILD_SERVICE_INSTANCE_FOR             \
-  std::make_unique<syncer::BraveProfileSyncService>( \
-      std::move(init_params),                        \
+#define BRAVE_BUILD_SERVICE_INSTANCE_FOR                         \
+  std::make_unique<syncer::BraveProfileSyncService>(             \
+      std::move(init_params),                                    \
       std::make_unique<syncer::BraveProfileSyncServiceDelegate>( \
           DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state)));
 
-#include "../../../../../../ios/chrome/browser/sync/profile_sync_service_factory.cc"
+#include "../../../../../../ios/chrome/browser/sync/sync_service_factory.cc"
 
 #undef BRAVE_BUILD_SERVICE_INSTANCE_FOR
