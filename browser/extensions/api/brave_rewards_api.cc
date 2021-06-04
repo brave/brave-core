@@ -1112,11 +1112,7 @@ void BraveRewardsGetAdsAccountStatementFunction::OnGetAdsAccountStatement(
     Respond(OneArgument(base::Value(success)));
   } else {
     base::Value statement(base::Value::Type::DICTIONARY);
-    statement.SetDoubleKey("estimatedPendingRewards",
-                           estimated_pending_rewards);
-    const std::string next_payment_date_as_string =
-        base::NumberToString(next_payment_date);
-    statement.SetStringKey("nextPaymentDate", next_payment_date_as_string);
+    statement.SetDoubleKey("nextPaymentDate", next_payment_date * 1000);
     statement.SetIntKey("adsReceivedThisMonth", ads_received_this_month);
     statement.SetDoubleKey("earningsThisMonth", earnings_this_month);
     statement.SetDoubleKey("earningsLastMonth", earnings_last_month);

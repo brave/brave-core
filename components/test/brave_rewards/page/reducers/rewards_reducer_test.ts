@@ -103,7 +103,7 @@ describe('rewards reducer', () => {
           adsUIEnabled: false,
           adsIsSupported: false,
           adsEstimatedPendingRewards: 0,
-          adsNextPaymentDate: '',
+          adsNextPaymentDate: 0,
           adsReceivedThisMonth: 0
         }
 
@@ -118,7 +118,7 @@ describe('rewards reducer', () => {
           adsUIEnabled: true,
           adsIsSupported: true,
           adsEstimatedPendingRewards: 0,
-          adsNextPaymentDate: '',
+          adsNextPaymentDate: 0,
           adsReceivedThisMonth: 0
         }
 
@@ -154,9 +154,10 @@ describe('rewards reducer', () => {
           shouldAllowAdsSubdivisionTargeting: true,
           adsUIEnabled: true,
           adsIsSupported: true,
-          adsEstimatedPendingRewards: 0,
-          adsNextPaymentDate: '',
-          adsReceivedThisMonth: 0
+          adsNextPaymentDate: 0,
+          adsReceivedThisMonth: 0,
+          adsEarningsThisMonth: 0,
+          adsEarningsLastMonth: 0
         }
 
         const assertion = reducers({
@@ -191,7 +192,7 @@ describe('rewards reducer', () => {
         adsUIEnabled: false,
         adsIsSupported: false,
         adsEstimatedPendingRewards: 0,
-        adsNextPaymentDate: '',
+        adsNextPaymentDate: 0,
         adsReceivedThisMonth: 0
       }
 
