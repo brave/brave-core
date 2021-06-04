@@ -26,7 +26,7 @@
 #include "components/sync_device_info/local_device_info_provider.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/sync/device_info_sync_service_factory.h"
-#include "ios/chrome/browser/sync/profile_sync_service_factory.h"
+#include "ios/chrome/browser/sync/sync_service_factory.h"
 #include "ios/chrome/browser/sync/sync_setup_service.h"
 #include "ios/chrome/browser/sync/sync_setup_service_factory.h"
 #include "ios/web/public/thread/web_thread.h"
@@ -84,8 +84,7 @@ bool BraveSyncWorker::SetSyncEnabled(bool enabled) {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* setup_service =
       SyncSetupServiceFactory::GetForBrowserState(browser_state_);
-  auto* sync_service =
-      ProfileSyncServiceFactory::GetForBrowserState(browser_state_);
+  auto* sync_service = SyncServiceFactory::GetForBrowserState(browser_state_);
 
   if (!setup_service || !sync_service) {
     return false;
@@ -238,7 +237,7 @@ void BraveSyncWorker::DeleteDevice(const std::string& device_guid) {
 syncer::BraveProfileSyncService* BraveSyncWorker::GetSyncService() const {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   return static_cast<syncer::BraveProfileSyncService*>(
-      ProfileSyncServiceFactory::GetForBrowserState(browser_state_));
+      SyncServiceFactory::GetForBrowserState(browser_state_));
 }
 
 void BraveSyncWorker::SetEncryptionPassphrase(syncer::SyncService* service) {
@@ -324,8 +323,7 @@ bool BraveSyncWorker::IsSyncEnabled() {
 
 bool BraveSyncWorker::IsSyncFeatureActive() {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  auto* sync_service =
-      ProfileSyncServiceFactory::GetForBrowserState(browser_state_);
+  auto* sync_service = SyncServiceFactory::GetForBrowserState(browser_state_);
 
   if (!sync_service) {
     return false;
