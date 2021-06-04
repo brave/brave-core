@@ -69,6 +69,13 @@ RegisterPolymerTemplateModifications({
           label="${I18nBehavior.i18n('mruCyclingSettingLabel')}">
         </settings-toggle-button>
       `)
+      zoomLevel.parentNode.insertAdjacentHTML('afterend', `
+      <settings-toggle-button
+        class="hr"
+        pref="{{prefs.brave.speedreader.enabled}}"
+        label="${I18nBehavior.i18n('speedreaderSettingLabel')}">
+      </settings-toggle-button>
+    `)
     }
     // Super referral themes prefs
     const pages = templateContent.getElementById('pages')

@@ -270,6 +270,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_BRAVE_MRU_CYCLING_LABEL" desc="The label to activate MRU cycling with Ctrl-tab">
         Cycle through the most recently used tabs with Ctrl-Tab
       </message>
+      <message name="IDS_SETTINGS_SPEEDREADER_LABEL" desc="The label to activate Speedreader">
+        Automatically distill readable pages with Speedreader
+      </message>
       <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR" desc="The label for settings switch controlling the showing of autocomplete in address bar">
         Show autocomplete in address bar
       </message>

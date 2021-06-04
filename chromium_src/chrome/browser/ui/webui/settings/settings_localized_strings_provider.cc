@@ -103,6 +103,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_DISABLED_DESC},
 #endif
     {"mruCyclingSettingLabel", IDS_SETTINGS_BRAVE_MRU_CYCLING_LABEL},
+    {"speedreaderSettingLabel", IDS_SETTINGS_SPEEDREADER_LABEL},
     {"braveShieldsTitle", IDS_SETTINGS_BRAVE_SHIELDS_TITLE},
     {"braveShieldsDefaultsSectionTitle",
      IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE},
