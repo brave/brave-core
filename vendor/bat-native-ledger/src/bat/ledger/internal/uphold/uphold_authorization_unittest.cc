@@ -123,7 +123,7 @@ INSTANTIATE_TEST_SUITE_P(
       true,
       R"({ "payment_id": "", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
       {},
-      { type::Result::LEDGER_ERROR, 0.0 }
+      { type::Result::LEDGER_ERROR, {} }
     },
     // "balance_server_error"
     ParamType{

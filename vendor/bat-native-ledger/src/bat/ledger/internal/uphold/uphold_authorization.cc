@@ -261,7 +261,7 @@ void UpholdAuthorization::GetAnonFunds(
 
   if (wallet->payment_id.empty()) {
     BLOG(0, "Payment ID is empty!");
-    callback(type::Result::LEDGER_ERROR, type::Balance::New());
+    callback(type::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
