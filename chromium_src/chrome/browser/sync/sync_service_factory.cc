@@ -13,6 +13,6 @@
       std::make_unique<syncer::BraveProfileSyncServiceDelegate>( \
           DeviceInfoSyncServiceFactory::GetForProfile(profile)));
 
-#include "../../../../../chrome/browser/sync/profile_sync_service_factory.cc"
+#include "../../../../../chrome/browser/sync/sync_service_factory.cc"
 
 #undef BRAVE_BUILD_SERVICE_INSTANCE_FOR
