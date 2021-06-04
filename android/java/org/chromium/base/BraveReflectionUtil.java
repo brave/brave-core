@@ -44,8 +44,6 @@ public class BraveReflectionUtil {
                 assert (false);
             } catch (InvocationTargetException e) {
                 Log.e(TAG, "Method invocation error e: " + e);
-                Log.e(TAG, "Method invocation error e.getMessage: " + e.getMessage());
-                Log.e(TAG, "Method invocation error  e.getCause(): " + e.getCause());
                 assert (false);
             }
         } catch (NoSuchMethodException e) {
