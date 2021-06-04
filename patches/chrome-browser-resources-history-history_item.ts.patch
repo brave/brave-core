@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/history/history_item.ts b/chrome/browser/resources/history/history_item.ts
+index bcec056bb5aa6e48c8edb540a1c9177753a135d6..1748c3f1cca60a1d9d0c9202f2da5235a0c94c43 100644
+--- a/chrome/browser/resources/history/history_item.ts
++++ b/chrome/browser/resources/history/history_item.ts
+@@ -9,6 +9,7 @@ import 'chrome://resources/cr_elements/cr_icons_css.m.js';
+ import 'chrome://resources/cr_elements/shared_vars_css.m.js';
+ import 'chrome://resources/js/icon.m.js';
+ import 'chrome://resources/polymer/v3_0/iron-icon/iron-icon.js';
++import 'chrome://brave-resources/page_specific/history/brave_history_item.m.js'
+ 
+ import {CrCheckboxElement} from 'chrome://resources/cr_elements/cr_checkbox/cr_checkbox.m.js';
+ import {CrIconButtonElement} from 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.m.js';
