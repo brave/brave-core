@@ -88,9 +88,6 @@
   <if expr="chromeos">
     </if>
 
-  <message name="IDS_SETTINGS_EDIT_PERSON" desc="Title of the edit profile subpage. This is a subpage to edit the name and icon of a Brave Profile.">
-    Edit profile
-  </message>
   <if expr="not chromeos">
     </if>
 
