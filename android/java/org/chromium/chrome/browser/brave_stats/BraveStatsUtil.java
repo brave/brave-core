@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.brave_stats;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -44,8 +45,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import android.content.ContentResolver;
 
 public class BraveStatsUtil {
     public static final short MILLISECONDS_PER_ITEM = 50;
@@ -167,12 +166,11 @@ public class BraveStatsUtil {
         shareStatsAction(view);
     }
 
-
     public static void shareStatsAction(View view) {
         try {
             Context context = ContextUtils.getApplicationContext();
             Bitmap bmp = convertToBitmap(view);
-            
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 shareStatsFile = MediaStore.Images.Media.insertImage(
                         context.getContentResolver(), bmp, "tempimage", null);
@@ -194,8 +192,9 @@ public class BraveStatsUtil {
             Intent shareIntent = Intent.createChooser(sendIntent, " ");
             shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            if (BraveActivity.getBraveActivity() != null){
-                BraveActivity.getBraveActivity().startActivityForResult(shareIntent, SHARE_STATS_REQUEST_CODE);
+            if (BraveActivity.getBraveActivity() != null) {
+                BraveActivity.getBraveActivity().startActivityForResult(
+                        shareIntent, SHARE_STATS_REQUEST_CODE);
             }
         } catch (Exception e) {
             e.printStackTrace();
