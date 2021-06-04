@@ -1012,7 +1012,7 @@ if (!is_android) {
 
   jinja_template("brave_browser_tests_manifest") {
     testonly = true
-    input = "//chrome/test/android/browsertests_apk/AndroidManifest.xml.jinja2"
+    input = "//brave/android/browsertests_apk/AndroidManifest.xml.jinja2"
     output =
         "${target_gen_dir}/brave_browser_tests_manifest/AndroidManifest.xml"
   }
