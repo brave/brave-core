@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/history/history_toolbar.ts b/chrome/browser/resources/history/history_toolbar.ts
+index 498b0e97dafda77d2c0ed2a89911b7bdf2d97592..3766cae26bbddb08ec678de3dda2024638198b94 100644
+--- a/chrome/browser/resources/history/history_toolbar.ts
++++ b/chrome/browser/resources/history/history_toolbar.ts
+@@ -8,6 +8,7 @@ import './strings.m.js';
+ import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.js';
+ import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar_search_field.js';
+ 
++import 'chrome://brave-resources/br_elements/br_toolbar/br_toolbar.m.js'
+ import {CrToolbarElement} from 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.js';
+ import {CrToolbarSearchFieldElement} from 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar_search_field.js';
+ import {loadTimeData} from 'chrome://resources/js/load_time_data.m.js';
