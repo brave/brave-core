@@ -8,6 +8,7 @@ import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/permissions/android/java_sources.gni")
 import("//brave/components/safetynet/java_sources.gni")
 import("//components/feed/features.gni")
@@ -268,6 +269,25 @@ if (enable_brave_sync) {
     "../../brave/android/java/org/chromium/chrome/browser/BraveSyncWorker.java",
     "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSyncScreensPreference.java",
     "../../brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",
+  ]
+}
+
+if (brave_wallet_enabled) {
+  brave_java_sources += [
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/AddAccountOnboardingDialog.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletNativeWorker.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/CryptoWalletActivity.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/SwapBottomSheetDialogFragment.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/RecoveryPhraseAdapter.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/WalletCoinAdapter.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/WalletNavigationFragmentPageAdapter.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/CardsFragment.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/CryptoChildFragment.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/CryptoFragment.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/RewardsFragment.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/ItemOffsetDecoration.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/NavigationItem.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/SmoothLineChartEquallySpaced.java",
   ]
 }
 

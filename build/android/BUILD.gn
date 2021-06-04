@@ -174,7 +174,6 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/BraveRelaunchUtils.java",
     "//brave/android/java/org/chromium/chrome/browser/BraveRewardsNativeWorker.java",
     "//brave/android/java/org/chromium/chrome/browser/app/BraveActivity.java",
-    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletNativeWorker.java",
     "//brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationPlatformBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationSettingsBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/ntp_background_images/NTPBackgroundImagesBridge.java",
@@ -184,6 +183,10 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
     "//brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceNativeWorker.java",
   ]
+
+  if (brave_wallet_enabled) {
+    sources += [ "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletNativeWorker.java" ]
+  }
 
   if (enable_brave_sync) {
     sources += [
