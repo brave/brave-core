@@ -13,9 +13,11 @@
 #include <vector>
 
 #include "base/callback.h"
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list_threadsafe.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_events_observer.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 #include "url/gurl.h"
 
 namespace network {
@@ -42,6 +44,21 @@ class EthJsonRpcController {
   using GetBallanceCallback =
       base::OnceCallback<void(bool status, const std::string& balance)>;
   void GetBalance(const std::string& address, GetBallanceCallback callback);
+
+  using GetTxCountCallback =
+      base::OnceCallback<void(bool status, uint256_t result)>;
+  void GetTransactionCount(const std::string& address,
+                           GetTxCountCallback callback);
+
+  using GetTxReceiptCallback =
+      base::OnceCallback<void(bool status, TransactionReceipt result)>;
+  void GetTransactionReceipt(const std::string& tx_hash,
+                             GetTxReceiptCallback callback);
+
+  using SendRawTxCallback =
+      base::OnceCallback<void(bool status, const std::string& tx_hash)>;
+  void SendRawTransaction(const std::string& signed_tx,
+                          SendRawTxCallback callback);
 
   using GetERC20TokenBalanceCallback =
       base::OnceCallback<void(bool status, const std::string& balance)>;
@@ -81,6 +98,19 @@ class EthJsonRpcController {
                     const int status,
                     const std::string& body,
                     const std::map<std::string, std::string>& headers);
+  void OnGetTransactionCount(GetTxCountCallback callback,
+                             const int status,
+                             const std::string& body,
+                             const std::map<std::string, std::string>& headers);
+  void OnGetTransactionReceipt(
+      GetTxReceiptCallback callback,
+      const int status,
+      const std::string& body,
+      const std::map<std::string, std::string>& headers);
+  void OnSendRawTransaction(SendRawTxCallback callback,
+                            const int status,
+                            const std::string& body,
+                            const std::map<std::string, std::string>& headers);
   void OnGetERC20TokenBalance(
       GetERC20TokenBalanceCallback callback,
       const int status,
@@ -99,6 +129,8 @@ class EthJsonRpcController {
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   scoped_refptr<base::ObserverListThreadSafe<BraveWalletProviderEventsObserver>>
       observers_;
+
+  base::WeakPtrFactory<EthJsonRpcController> weak_ptr_factory_;
 };
 
 }  // namespace brave_wallet

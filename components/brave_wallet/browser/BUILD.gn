@@ -17,6 +17,8 @@ source_set("browser") {
     "brave_wallet_provider_impl.h",
     "brave_wallet_service.cc",
     "brave_wallet_service.h",
+    "brave_wallet_types.cc",
+    "brave_wallet_types.h",
     "brave_wallet_utils.cc",
     "brave_wallet_utils.h",
     "eth_address.cc",

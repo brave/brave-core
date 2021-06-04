@@ -69,7 +69,8 @@ EthJsonRpcController::EthJsonRpcController(
     : network_(network),
       url_loader_factory_(url_loader_factory),
       observers_(new base::ObserverListThreadSafe<
-                 BraveWalletProviderEventsObserver>()) {
+                 BraveWalletProviderEventsObserver>()),
+      weak_ptr_factory_(this) {
   SetNetwork(network);
 }
 
@@ -109,7 +110,8 @@ void EthJsonRpcController::Request(const std::string& json_payload,
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
       base::BindOnce(&EthJsonRpcController::OnURLLoaderComplete,
-                     base::Unretained(this), iter, std::move(callback)));
+                     weak_ptr_factory_.GetWeakPtr(), iter,
+                     std::move(callback)));
 }
 
 void EthJsonRpcController::OnURLLoaderComplete(
@@ -193,7 +195,7 @@ void EthJsonRpcController::GetBalance(
     EthJsonRpcController::GetBallanceCallback callback) {
   auto internal_callback =
       base::BindOnce(&EthJsonRpcController::OnGetBalance,
-                     base::Unretained(this), std::move(callback));
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   return Request(eth_getBalance(address, "latest"),
                  std::move(internal_callback), true);
 }
@@ -216,13 +218,95 @@ void EthJsonRpcController::OnGetBalance(
   std::move(callback).Run(true, balance);
 }
 
+void EthJsonRpcController::GetTransactionCount(const std::string& address,
+                                               GetTxCountCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnGetTransactionCount,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  return Request(eth_getTransactionCount(address, "latest"),
+                 std::move(internal_callback), true);
+}
+
+void EthJsonRpcController::OnGetTransactionCount(
+    GetTxCountCallback callback,
+    const int status,
+    const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, 0);
+    return;
+  }
+  uint256_t count;
+  if (!ParseEthGetTransactionCount(body, &count)) {
+    std::move(callback).Run(false, 0);
+    return;
+  }
+
+  std::move(callback).Run(true, count);
+}
+
+void EthJsonRpcController::GetTransactionReceipt(
+    const std::string& tx_hash,
+    GetTxReceiptCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnGetTransactionReceipt,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  return Request(eth_getTransactionReceipt(tx_hash),
+                 std::move(internal_callback), true);
+}
+
+void EthJsonRpcController::OnGetTransactionReceipt(
+    GetTxReceiptCallback callback,
+    const int status,
+    const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  TransactionReceipt receipt;
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, receipt);
+    return;
+  }
+  if (!ParseEthGetTransactionReceipt(body, &receipt)) {
+    std::move(callback).Run(false, receipt);
+    return;
+  }
+
+  std::move(callback).Run(true, receipt);
+}
+
+void EthJsonRpcController::SendRawTransaction(const std::string& signed_tx,
+                                              SendRawTxCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnSendRawTransaction,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  return Request(eth_sendRawTransaction(signed_tx),
+                 std::move(internal_callback), true);
+}
+
+void EthJsonRpcController::OnSendRawTransaction(
+    SendRawTxCallback callback,
+    const int status,
+    const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+  std::string tx_hash;
+  if (!ParseEthSendRawTransaction(body, &tx_hash)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::move(callback).Run(true, tx_hash);
+}
+
 bool EthJsonRpcController::GetERC20TokenBalance(
     const std::string& contract,
     const std::string& address,
     EthJsonRpcController::GetBallanceCallback callback) {
   auto internal_callback =
       base::BindOnce(&EthJsonRpcController::OnGetERC20TokenBalance,
-                     base::Unretained(this), std::move(callback));
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   std::string data;
   if (!erc20::BalanceOf(address, &data)) {
     return false;
@@ -256,7 +340,7 @@ bool EthJsonRpcController::UnstoppableDomainsProxyReaderGetMany(
     UnstoppableDomainsProxyReaderGetManyCallback callback) {
   auto internal_callback = base::BindOnce(
       &EthJsonRpcController::OnUnstoppableDomainsProxyReaderGetMany,
-      base::Unretained(this), std::move(callback));
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   std::string data;
   if (!unstoppable_domains::GetMany(keys, domain, &data)) {
     return false;
