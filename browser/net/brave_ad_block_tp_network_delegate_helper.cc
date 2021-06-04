@@ -258,20 +258,24 @@ bool ProxySettingsAllowUncloaking(content::BrowserContext* browser_context) {
 
   if (availability ==
       net::ProxyConfigService::ConfigAvailability::CONFIG_VALID) {
+    LOG(ERROR) << "CONFIG_VALID";
     // PROXY_LIST corresponds to SingleProxy mode.
     if (config.value().proxy_rules().type ==
         net::ProxyConfig::ProxyRules::Type::PROXY_LIST) {
+      LOG(ERROR) << "PROXY_LIST";
       can_uncloak = false;
     }
   } else if (availability ==
              net::ProxyConfigService::ConfigAvailability::CONFIG_PENDING) {
     // Fallback to not CNAME uncloaking if the proxy configuration cannot be
     // determined.
+    LOG(ERROR) << "CONFIG_PENDING";
     can_uncloak = false;
   }
 
   config_tracker->DetachFromPrefService();
 
+  LOG(ERROR) << can_uncloak;
   return can_uncloak;
 }
 
@@ -293,6 +297,8 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
           brave_shields::features::kBraveAdblockCnameUncloaking) &&
       ctx->browser_context && !ctx->browser_context->IsTor() &&
       ProxySettingsAllowUncloaking(ctx->browser_context);
+
+  LOG(ERROR) << "should_check_uncloaked: " << should_check_uncloaked;
 
   task_runner->PostTaskAndReplyWithResult(
       FROM_HERE,
