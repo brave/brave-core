@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/downloads/toolbar.ts b/chrome/browser/resources/downloads/toolbar.ts
+index b20d9feb6042b210e9f1ce6c0dfec15f3fdc09dd..96bb079cd353ffe6d010881bbfe9d5616d4fd47e 100644
+--- a/chrome/browser/resources/downloads/toolbar.ts
++++ b/chrome/browser/resources/downloads/toolbar.ts
+@@ -16,6 +16,7 @@ import {CrActionMenuElement} from 'chrome://resources/cr_elements/cr_action_menu
+ import {CrIconButtonElement} from 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.m.js';
+ import {getToastManager} from 'chrome://resources/cr_elements/cr_toast/cr_toast_manager.m.js';
+ import {CrToolbarElement} from 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.js';
++import 'chrome://brave-resources/br_elements/br_toolbar/br_toolbar.m.js';
+ import {assert} from 'chrome://resources/js/assert.m.js';
+ import {loadTimeData} from 'chrome://resources/js/load_time_data.m.js';
+ import {html, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
