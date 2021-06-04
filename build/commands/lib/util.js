@@ -193,7 +193,7 @@ const util = {
   },
 
   calculateFileChecksum: (filename) => {
-    // adapted from https://github.com/roryrjb/md5-file
+    // adapted from https://github.com/kodie/md5-file
     const BUFFER_SIZE = 8192
     const fd = fs.openSync(filename, 'r')
     const buffer = Buffer.alloc(BUFFER_SIZE)
