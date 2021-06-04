@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "base/auto_reset.h"
-#include "base/stl_util.h"
+#include "base/containers/contains.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/permissions/permission_lifetime_pref_names.h"
 #include "components/content_settings/core/browser/content_settings_registry.h"
