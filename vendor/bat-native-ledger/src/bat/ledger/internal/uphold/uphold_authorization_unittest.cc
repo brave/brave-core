@@ -78,7 +78,7 @@ std::string NameSuffixGenerator(const TestParamInfo<Get::ParamType>& info) {
     return "brave_wallet_payment_id_is_empty";
   }
   
-  if (balance_server_response.status_code == net::HttpStatusCode::HTTP_SERVICE_UNAVAILABLE) {
+  if (balance_server_response.status_code != net::HttpStatusCode::HTTP_OK) {
     return "balance_server_error";
   }
   
