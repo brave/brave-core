@@ -48,6 +48,7 @@
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
 #include "brave/components/brave_ads/browser/notification_helper.h"
+#include "brave/components/brave_ads/browser/service_sandbox_type.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/common/switches.h"
