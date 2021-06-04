@@ -29,7 +29,7 @@
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/browser/sync/device_info_sync_service_factory.h"
-#include "ios/chrome/browser/sync/profile_sync_service_factory.h"
+#include "ios/chrome/browser/sync/sync_service_factory.h"
 #include "ios/chrome/browser/sync/sync_setup_service.h"
 #include "ios/chrome/browser/sync/sync_setup_service_factory.h"
 
@@ -217,9 +217,8 @@
 }
 
 - (id)createSyncServiceObserver:(void (^)())onSyncServiceStateChanged {
-  auto* service =
-      ProfileSyncServiceFactory::GetAsProfileSyncServiceForBrowserState(
-          _chromeBrowserState);
+  auto* service = SyncServiceFactory::GetAsProfileSyncServiceForBrowserState(
+      _chromeBrowserState);
   return [[BraveSyncServiceObserver alloc]
       initWithProfileSyncService:service
                         callback:onSyncServiceStateChanged];
