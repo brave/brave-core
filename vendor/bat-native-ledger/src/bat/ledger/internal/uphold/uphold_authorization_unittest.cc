@@ -29,7 +29,6 @@ namespace get {
 using Result = std::pair<type::Result, base::Optional<double>>;
 using ParamType =
   std::tuple<
-    bool,              // contributions disabled for BAP migration
     bool,              // fetch old balance enabled
     std::string,       // Brave wallet
     type::UrlResponse, // balance server response
@@ -57,14 +56,9 @@ class Get : public TestWithParam<ParamType> {
 };
 
 std::string NameSuffixGenerator(const TestParamInfo<Get::ParamType>& info) {
-  const bool contributions_disabled_for_BAP_migration = std::get<0>(info.param);
-  const bool fetch_old_balance_enabled = std::get<1>(info.param);
-  const std::string& brave_wallet = std::get<2>(info.param);
-  const type::UrlResponse& balance_server_response = std::get<3>(info.param);
-
-  if (contributions_disabled_for_BAP_migration) {
-    return "contributions_disabled_for_BAP_migration";
-  }
+  const bool fetch_old_balance_enabled = std::get<0>(info.param);
+  const std::string& brave_wallet = std::get<1>(info.param);
+  const type::UrlResponse& balance_server_response = std::get<2>(info.param);
 
   if (!fetch_old_balance_enabled) {
     return "fetch_old_balance_disabled";
@@ -93,17 +87,8 @@ INSTANTIATE_TEST_SUITE_P(
   UpholdAuthorizationTest,
   Get,
   Values(
-    // "contributions_disabled_for_BAP_migration"
-    ParamType{
-      true,
-      {},
-      {},
-      {},
-      { type::Result::LEDGER_OK, 0.0 }
-    },
     // "fetch_old_balance_disabled"
     ParamType{
-      false,
       false,
       {},
       {},
@@ -111,7 +96,6 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // "brave_wallet_is_not_created"
     ParamType{
-      false,
       true,
       {},
       {},
@@ -119,7 +103,6 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // "brave_wallet_payment_id_is_empty"
     ParamType{
-      false,
       true,
       R"({ "payment_id": "", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
       {},
@@ -127,7 +110,6 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // "balance_server_error"
     ParamType{
-      false,
       true,
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
       type::UrlResponse{ {}, {}, net::HttpStatusCode::HTTP_SERVICE_UNAVAILABLE, {}, {} },
@@ -135,7 +117,6 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // "invalid_body_in_balance_server_response"
     ParamType{
-      false,
       true,
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
       type::UrlResponse{ {}, {}, net::HttpStatusCode::HTTP_OK, {}, {} },
@@ -143,7 +124,6 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // "happy_path"
     ParamType{
-      false,
       true,
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
       type::UrlResponse{ {}, {}, net::HttpStatusCode::HTTP_OK, R"({ "total": 5.0, "spendable": 0.0, "confirmed": 5.0, "unconfirmed": 0.0 })", {} },
@@ -155,18 +135,10 @@ INSTANTIATE_TEST_SUITE_P(
 
 TEST_P(Get, AnonFunds) {
   const auto& params = GetParam();
-  const bool contributions_disabled_for_BAP_migration = std::get<0>(params);
-  const bool fetch_old_balance_enabled = std::get<1>(params);
-  const std::string& brave_wallet = std::get<2>(params);
-  const type::UrlResponse& balance_server_response = std::get<3>(params);
-  const auto& expected = std::get<4>(params);
-
-  ON_CALL(
-    *mock_ledger_client_,
-    GetBooleanOption(option::kContributionsDisabledForBAPMigration)
-  ).WillByDefault(
-    testing::Return(contributions_disabled_for_BAP_migration)
-  );
+  const bool fetch_old_balance_enabled = std::get<0>(params);
+  const std::string& brave_wallet = std::get<1>(params);
+  const type::UrlResponse& balance_server_response = std::get<2>(params);
+  const auto& expected = std::get<3>(params);
 
   ON_CALL(
     *mock_ledger_client_,

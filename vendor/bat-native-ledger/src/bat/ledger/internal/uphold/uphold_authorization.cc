@@ -237,13 +237,6 @@ void UpholdAuthorization::OnCardCreate(
 
 void UpholdAuthorization::GetAnonFunds(
     endpoint::promotion::GetWalletBalanceCallback callback) const {
-  if (ledger_->ledger_client()->GetBooleanOption(
-      option::kContributionsDisabledForBAPMigration)) {
-    BLOG(1, "Fetch balance disabled for BAP migration.");
-    callback(type::Result::LEDGER_OK, type::Balance::New());
-    return;
-  }
-
   // if we don't have user funds in anon card anymore
   // we can skip balance server ping
   if (!ledger_->state()->GetFetchOldBalanceEnabled()) {
@@ -272,7 +265,7 @@ void UpholdAuthorization::OnGetAnonFunds(
     const type::Result result,
     type::BalancePtr balance,
     ledger::ExternalWalletAuthorizationCallback callback) const {
-  if (result != type::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK || !balance) {
     BLOG(0, "Couldn't get anonymous funds!");
     callback(type::Result::LEDGER_ERROR, {});
     return;
