@@ -11,7 +11,7 @@
 namespace ads {
 namespace settings {
 
-uint64_t GetAdsPerHour();
+int64_t GetAdsPerHour();
 
 }  // namespace settings
 }  // namespace ads

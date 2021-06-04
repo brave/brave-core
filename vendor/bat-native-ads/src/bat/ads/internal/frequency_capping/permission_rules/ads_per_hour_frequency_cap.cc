@@ -44,6 +44,9 @@ bool AdsPerHourFrequencyCap::DoesRespectCap(
   const uint64_t time_constraint = base::Time::kSecondsPerHour;
 
   const uint64_t cap = settings::GetAdsPerHour();
+  if (cap == 0) {
+    return false;
+  }
 
   return DoesHistoryRespectCapForRollingTimeConstraint(history, time_constraint,
                                                        cap);

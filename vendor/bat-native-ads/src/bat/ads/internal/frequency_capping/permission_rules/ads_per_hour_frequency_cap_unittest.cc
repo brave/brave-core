@@ -36,9 +36,9 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest, AlwaysAllowAdOnAndroid) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
-  const uint64_t ads_per_hour = 5;
+  const int64_t ads_per_hour = 5;
 
-  AdsClientHelper::Get()->SetUint64Pref(prefs::kAdsPerHour, ads_per_hour);
+  AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, ads_per_hour);
 
   RecordAdEvents(AdType::kAdNotification, ConfirmationType::kViewed,
                  ads_per_hour);
@@ -55,9 +55,8 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest, AlwaysAllowAdOnIOS) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
 
-  const uint64_t ads_per_hour = 5;
-
-  AdsClientHelper::Get()->SetUint64Pref(prefs::kAdsPerHour, ads_per_hour);
+  const int64_t ads_per_hour = 5;
+  AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, ads_per_hour);
 
   RecordAdEvents(AdType::kAdNotification, ConfirmationType::kViewed,
                  ads_per_hour);
@@ -72,9 +71,9 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest, AlwaysAllowAdOnIOS) {
 
 TEST_F(BatAdsAdsPerHourFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
-  const uint64_t ads_per_hour = 5;
+  const int64_t ads_per_hour = 5;
 
-  AdsClientHelper::Get()->SetUint64Pref(prefs::kAdsPerHour, ads_per_hour);
+  AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, ads_per_hour);
 
   RecordAdEvents(AdType::kAdNotification, ConfirmationType::kViewed,
                  ads_per_hour - 1);
@@ -89,9 +88,9 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
 
 TEST_F(BatAdsAdsPerHourFrequencyCapTest, AllowAdIfDoesNotExceedCapAfter1Hour) {
   // Arrange
-  const uint64_t ads_per_hour = 5;
+  const int64_t ads_per_hour = 5;
 
-  AdsClientHelper::Get()->SetUint64Pref(prefs::kAdsPerHour, ads_per_hour);
+  AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, ads_per_hour);
 
   RecordAdEvents(AdType::kAdNotification, ConfirmationType::kViewed,
                  ads_per_hour);
@@ -108,9 +107,9 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest, AllowAdIfDoesNotExceedCapAfter1Hour) {
 
 TEST_F(BatAdsAdsPerHourFrequencyCapTest, DoNotAllowAdIfExceedsCapWithin1Hour) {
   // Arrange
-  const uint64_t ads_per_hour = 5;
+  const int64_t ads_per_hour = 5;
 
-  AdsClientHelper::Get()->SetUint64Pref(prefs::kAdsPerHour, ads_per_hour);
+  AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, ads_per_hour);
 
   RecordAdEvents(AdType::kAdNotification, ConfirmationType::kViewed,
                  ads_per_hour);

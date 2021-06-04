@@ -74,7 +74,6 @@ void AdServing::ServeAtRegularIntervals() {
   }
 
   const base::Time next_interval = MaybeServeAfter(delay);
-
   BLOG(1, "Maybe serve ad notification " << FriendlyDateAndTime(next_interval));
 }
 
@@ -108,7 +107,30 @@ void AdServing::MaybeServe() {
   });
 }
 
+void AdServing::OnAdsPerHourChanged() {
+  const int64_t ads_per_hour = settings::GetAdsPerHour();
+  BLOG(1, "Maximum ads per hour changed to " << ads_per_hour);
+
+  if (!PlatformHelper::GetInstance()->IsMobile()) {
+    return;
+  }
+
+  MaybeServeNextAd();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
+
+void AdServing::MaybeServeNextAd() {
+  const int64_t ads_per_hour = settings::GetAdsPerHour();
+  if (ads_per_hour == 0) {
+    return;
+  }
+
+  const int64_t seconds = base::Time::kSecondsPerHour / ads_per_hour;
+  const base::TimeDelta delay = base::TimeDelta::FromSeconds(seconds);
+  const base::Time next_interval = MaybeServeAfter(delay);
+  BLOG(1, "Maybe serve ad notification " << FriendlyDateAndTime(next_interval));
+}
 
 bool AdServing::NextIntervalHasElapsed() {
   const base::Time now = base::Time::Now();
@@ -123,6 +145,11 @@ bool AdServing::NextIntervalHasElapsed() {
 }
 
 base::Time AdServing::MaybeServeAfter(const base::TimeDelta delay) {
+  StopServing();
+
+  const base::Time next_interval = base::Time::Now() + delay;
+  Client::Get()->SetNextAdServingInterval(next_interval);
+
   return timer_.Start(
       delay, base::BindOnce(&AdServing::MaybeServe, base::Unretained(this)));
 }
@@ -320,10 +347,6 @@ void AdServing::FailedToDeliverAd() {
   }
 
   const base::TimeDelta delay = base::TimeDelta::FromMinutes(2);
-
-  const base::Time next_interval = base::Time::Now() + delay;
-  Client::Get()->SetNextAdServingInterval(next_interval);
-
   MaybeServeAfter(delay);
 }
 
@@ -332,16 +355,7 @@ void AdServing::DeliveredAd() {
     return;
   }
 
-  const int64_t seconds =
-      base::Time::kSecondsPerHour / settings::GetAdsPerHour();
-
-  const base::TimeDelta delay = base::TimeDelta::FromSeconds(seconds);
-
-  const base::Time next_interval = base::Time::Now() + delay;
-
-  Client::Get()->SetNextAdServingInterval(next_interval);
-
-  MaybeServeAfter(delay);
+  MaybeServeNextAd();
 }
 
 void AdServing::RecordAdOpportunityForSegments(const SegmentList& segments) {

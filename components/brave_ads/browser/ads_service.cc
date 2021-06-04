@@ -47,7 +47,7 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterBooleanPref(ads::prefs::kShouldAllowConversionTracking,
                                 true);
 
-  registry->RegisterUint64Pref(ads::prefs::kAdsPerHour, 0);
+  registry->RegisterInt64Pref(ads::prefs::kAdsPerHour, -1);
 
   registry->RegisterIntegerPref(ads::prefs::kIdleTimeThreshold, 15);
 
