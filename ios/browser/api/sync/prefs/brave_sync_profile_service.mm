@@ -78,7 +78,7 @@ BraveSyncUserSelectableTypes options_from_user_types(
 @end
 
 @implementation BraveSyncProfileService
-+ (instancetype)sharedBraveProfileSyncService {
++ (instancetype)sharedSyncService {
   static BraveSyncProfileService* instance = nil;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
@@ -141,7 +141,7 @@ BraveSyncUserSelectableTypes options_from_user_types(
   return brave_ios::options_from_user_types(user_types);
 }
 
-- (BraveSyncUserSelectableTypes)getUserSelectedTypes {
+- (BraveSyncUserSelectableTypes)userSelectedTypes {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   syncer::UserSelectableTypeSet types =
       sync_service_->GetUserSettings()->GetSelectedTypes();

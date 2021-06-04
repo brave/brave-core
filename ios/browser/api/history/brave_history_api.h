@@ -42,8 +42,9 @@ NS_SWIFT_NAME(BraveHistoryAPI)
 OBJC_EXPORT
 @interface BraveHistoryAPI : NSObject
 
-@property(class, readonly, getter = sharedHistoryAPI)
-    BraveHistoryAPI* shared;  // NOLINT
+@property(class, readonly)
+    BraveHistoryAPI* sharedHistoryAPI NS_SWIFT_NAME(shared);
+
 @property(nonatomic, readonly) bool isLoaded;
 
 - (id<HistoryServiceListener>)addObserver:(id<HistoryServiceObserver>)observer;
