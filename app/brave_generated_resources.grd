@@ -1142,6 +1142,25 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         </message>
       </if>
 
+      <!-- Speedreader -->
+      <if expr="enable_speedreader">
+        <message name="IDS_SPEEDREADER_ASK_ENABLE" desc="Label prompting user to enable Speedreader">
+          Do you want to turn on Speedreader?
+        </message>
+        <message name="IDS_SPEEDREADER_ENABLE_BUTTON" desc="Button to enable Speedreader">
+          Turn on Speedreader
+        </message>
+        <message name="IDS_SPEEDREADER_EXPLANATION" desc="Label to explain how Speedreader is different from other reader modes">
+          Articles automatically load in reader mode, saving you time.
+        </message>
+        <message name="IDS_SPEEDREADER_DISABLE_THIS_SITE" desc="Label to enable or disable speedreader per site">
+          Turn on/off reader mode just for this website. To turn off Speedreader for your entire browser profile, visit
+        </message>
+        <message name="IDS_PAGE_IS_DISTILLED" desc="Speedreader is enabled on this page">
+          in Speedreader
+        </message>
+      </if>
+
       <!-- P3A -->
       <message name="IDS_BRAVE_CONFIRM_P3A_INFO_BAR" desc="Text that shows on the info bar where user acknowledges the P3A message">
         Brave uses completely private product analytics to estimate the overall usage of certain features

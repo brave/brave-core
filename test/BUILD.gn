@@ -791,7 +791,10 @@ if (!is_android) {
     }
 
     if (enable_speedreader) {
-      sources += [ "//brave/browser/speedreader/speedreader_browsertest.cc" ]
+      sources += [
+        "//brave/browser/speedreader/speedreader_browsertest.cc",
+        "//brave/browser/ui/speedreader/speedreader_bubble_browsertest.cc",
+      ]
       deps += [ "//brave/components/speedreader" ]
     }
 

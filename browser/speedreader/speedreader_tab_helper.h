@@ -16,6 +16,8 @@ class WebContents;
 
 namespace speedreader {
 
+class SpeedreaderBubbleView;
+
 // Determines if speedreader should be active for a given top-level navigation.
 class SpeedreaderTabHelper
     : public content::WebContentsObserver,
@@ -23,10 +25,26 @@ class SpeedreaderTabHelper
  public:
   ~SpeedreaderTabHelper() override;
 
+  static SpeedreaderTabHelper* Get(content::WebContents* web_contents);
+
   SpeedreaderTabHelper(const SpeedreaderTabHelper&) = delete;
   SpeedreaderTabHelper& operator=(SpeedreaderTabHelper&) = delete;
 
   bool IsActiveForMainFrame() const { return active_; }
+
+  bool IsSpeedreaderEnabled() const;
+
+  // returns nullptr if no bubble currently shown
+  SpeedreaderBubbleView* speedreader_bubble_view() const;
+
+  // Displays speedreader information
+  void ShowBubble();
+
+  // Hides speedreader information
+  void HideBubble();
+
+  // Handler for when the bubble is dismissed.
+  void OnBubbleClosed();
 
  private:
   friend class content::WebContentsUserData<SpeedreaderTabHelper>;
@@ -40,7 +58,8 @@ class SpeedreaderTabHelper
   void DidRedirectNavigation(
       content::NavigationHandle* navigation_handle) override;
 
-  bool active_ = false;
+  bool active_ = false;  // speedreader active for this tab
+  SpeedreaderBubbleView* speedreader_bubble_ = nullptr;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

@@ -7,29 +7,47 @@
 
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
+#include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_test_whitelist.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "content/public/browser/navigation_handle.h"
 
 namespace speedreader {
 
-SpeedreaderTabHelper::~SpeedreaderTabHelper() = default;
+// static
+SpeedreaderTabHelper* SpeedreaderTabHelper::Get(
+    content::WebContents* web_contents) {
+  SpeedreaderTabHelper::CreateForWebContents(web_contents);
+  SpeedreaderTabHelper* tab_helper =
+      SpeedreaderTabHelper::FromWebContents(web_contents);
+  return tab_helper;
+}
+
+SpeedreaderTabHelper::~SpeedreaderTabHelper() {
+  HideBubble();
+}
 
 SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents) {}
+
+bool SpeedreaderTabHelper::IsSpeedreaderEnabled() const {
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  DCHECK(profile);
+  return SpeedreaderServiceFactory::GetForProfile(profile)->IsEnabled();
+}
 
 void SpeedreaderTabHelper::UpdateActiveState(
     content::NavigationHandle* handle) {
   DCHECK(handle);
   DCHECK(handle->IsInMainFrame());
 
-  Profile* profile =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
-  DCHECK(profile);
-  const bool enabled =
-      SpeedreaderServiceFactory::GetForProfile(profile)->IsEnabled();
+  const bool enabled = IsSpeedreaderEnabled();
 
   if (!enabled) {
     active_ = false;
@@ -61,6 +79,32 @@ void SpeedreaderTabHelper::DidRedirectNavigation(
     content::NavigationHandle* navigation_handle) {
   if (navigation_handle->IsInMainFrame()) {
     UpdateActiveState(navigation_handle);
+  }
+}
+
+SpeedreaderBubbleView* SpeedreaderTabHelper::speedreader_bubble_view() const {
+  return speedreader_bubble_;
+}
+
+void SpeedreaderTabHelper::OnBubbleClosed() {
+  speedreader_bubble_ = nullptr;
+}
+
+// Displays speedreader information
+void SpeedreaderTabHelper::ShowBubble() {
+  auto* contents = web_contents();
+  Browser* browser = chrome::FindBrowserWithWebContents(contents);
+  DCHECK(browser);
+  speedreader_bubble_ =
+      static_cast<BraveBrowserWindow*>(browser->window())
+          ->ShowSpeedreaderBubble(this, IsSpeedreaderEnabled());
+}
+
+// Hides speedreader information
+void SpeedreaderTabHelper::HideBubble() {
+  if (speedreader_bubble_) {
+    speedreader_bubble_->Hide();
+    speedreader_bubble_ = nullptr;
   }
 }
 
