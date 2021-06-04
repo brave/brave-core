@@ -235,6 +235,46 @@ void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
   }
 }
 
+// If only particular types of network traffic are being proxied, or if no
+// proxy is configured, it should be safe to continue making unproxied DNS
+// queries. However, in SingleProxy mode all types of network traffic should go
+// through the proxy, so additional DNS queries should be avoided.
+bool ProxySettingsAllowUncloaking(content::BrowserContext* browser_context) {
+  DCHECK(browser_context);
+
+  bool can_uncloak = true;
+
+  Profile* profile = Profile::FromBrowserContext(browser_context);
+
+  std::unique_ptr<PrefProxyConfigTracker> config_tracker =
+      ProxyServiceFactory::CreatePrefProxyConfigTrackerOfProfile(
+          profile->GetPrefs(), nullptr);
+  std::unique_ptr<net::ProxyConfigService> proxy_config_service =
+      ProxyServiceFactory::CreateProxyConfigService(config_tracker.get());
+
+  net::ProxyConfigWithAnnotation config;
+  net::ProxyConfigService::ConfigAvailability availability =
+      proxy_config_service->GetLatestProxyConfig(&config);
+
+  if (availability ==
+      net::ProxyConfigService::ConfigAvailability::CONFIG_VALID) {
+    // PROXY_LIST corresponds to SingleProxy mode.
+    if (config.value().proxy_rules().type ==
+        net::ProxyConfig::ProxyRules::Type::PROXY_LIST) {
+      can_uncloak = false;
+    }
+  } else if (availability ==
+             net::ProxyConfigService::ConfigAvailability::CONFIG_PENDING) {
+    // Fallback to not CNAME uncloaking if the proxy configuration cannot be
+    // determined.
+    can_uncloak = false;
+  }
+
+  config_tracker->DetachFromPrefService();
+
+  return can_uncloak;
+}
+
 void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
                                  std::shared_ptr<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -247,45 +287,12 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
 
   // DoH or standard DNS queries won't be routed through Tor, so we need to
   // skip it.
+  // Also, skip CNAME uncloaking if there is currently a configured proxy.
   bool should_check_uncloaked =
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveAdblockCnameUncloaking) &&
-      ctx->browser_context && !ctx->browser_context->IsTor();
-
-  // Also, skip CNAME uncloaking if there is currently a configured proxy.
-  if (ctx->browser_context) {
-    Profile* profile = Profile::FromBrowserContext(ctx->browser_context);
-
-    std::unique_ptr<PrefProxyConfigTracker> config_tracker =
-        ProxyServiceFactory::CreatePrefProxyConfigTrackerOfProfile(
-            profile->GetPrefs(), nullptr);
-    std::unique_ptr<net::ProxyConfigService> proxy_config_service =
-        ProxyServiceFactory::CreateProxyConfigService(config_tracker.get());
-
-    net::ProxyConfigWithAnnotation config;
-    net::ProxyConfigService::ConfigAvailability availability =
-        proxy_config_service->GetLatestProxyConfig(&config);
-
-    if (availability ==
-        net::ProxyConfigService::ConfigAvailability::CONFIG_VALID) {
-      // If only particular types of network traffic are being proxied, or if no
-      // proxy is configured, it should be safe to continue making unproxied DNS
-      // queries. However, in SingleProxy mode all types of network traffic
-      // should go through the proxy, so additional DNS queries should be
-      // avoided.
-      if (config.value().proxy_rules().type ==
-          net::ProxyConfig::ProxyRules::Type::PROXY_LIST) {
-        should_check_uncloaked = false;
-      }
-    } else if (availability ==
-               net::ProxyConfigService::ConfigAvailability::CONFIG_PENDING) {
-      // Fallback to not CNAME uncloaking if the proxy configuration cannot be
-      // determined.
-      should_check_uncloaked = false;
-    }
-
-    config_tracker->DetachFromPrefService();
-  }
+      ctx->browser_context && !ctx->browser_context->IsTor() &&
+      ProxySettingsAllowUncloaking(ctx->browser_context);
 
   task_runner->PostTaskAndReplyWithResult(
       FROM_HERE,
