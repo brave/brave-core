@@ -22,20 +22,22 @@ using ::testing::Values;
 
 namespace ledger {
 namespace uphold {
+namespace tests {
 namespace anon_funds {
+namespace get {
 
-using GetResult = std::pair<type::Result, base::Optional<double>>;
-using GetParamType =
+using Result = std::pair<type::Result, base::Optional<double>>;
+using ParamType =
   std::tuple<
     bool,              // contributions disabled for BAP migration
     bool,              // fetch old balance enabled
     std::string,       // Brave wallet
     type::UrlResponse, // balance server response
-    GetResult          // expected result
+    Result             // expected result
   >
 ;
 
-class Get : public TestWithParam<GetParamType> {
+class Get : public TestWithParam<ParamType> {
  private:
   base::test::TaskEnvironment scoped_task_environment_;
 
@@ -54,7 +56,7 @@ class Get : public TestWithParam<GetParamType> {
   {}
 };
 
-std::string GetNameSuffixGenerator(const TestParamInfo<Get::ParamType>& info) {
+std::string NameSuffixGenerator(const TestParamInfo<Get::ParamType>& info) {
   const bool contributions_disabled_for_BAP_migration = std::get<0>(info.param);
   const bool fetch_old_balance_enabled = std::get<1>(info.param);
   const std::string& brave_wallet = std::get<2>(info.param);
@@ -92,7 +94,7 @@ INSTANTIATE_TEST_SUITE_P(
   Get,
   Values(
     // "contributions_disabled_for_BAP_migration"
-    GetParamType{
+    ParamType{
       true,
       {},
       {},
@@ -100,7 +102,7 @@ INSTANTIATE_TEST_SUITE_P(
       { type::Result::LEDGER_OK, 0.0 }
     },
     // "fetch_old_balance_disabled"
-    GetParamType{
+    ParamType{
       false,
       false,
       {},
@@ -108,7 +110,7 @@ INSTANTIATE_TEST_SUITE_P(
       { type::Result::LEDGER_OK, 0.0 }
     },
     // "brave_wallet_is_not_created"
-    GetParamType{
+    ParamType{
       false,
       true,
       {},
@@ -116,7 +118,7 @@ INSTANTIATE_TEST_SUITE_P(
       { type::Result::LEDGER_OK, 0.0 }
     },
     // "brave_wallet_payment_id_is_empty"
-    GetParamType{
+    ParamType{
       false,
       true,
       R"({ "payment_id": "", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
@@ -124,7 +126,7 @@ INSTANTIATE_TEST_SUITE_P(
       { type::Result::LEDGER_ERROR, 0.0 }
     },
     // "balance_server_error"
-    GetParamType{
+    ParamType{
       false,
       true,
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
@@ -132,7 +134,7 @@ INSTANTIATE_TEST_SUITE_P(
       { type::Result::LEDGER_ERROR, {} }
     },
     // "invalid_body_in_balance_server_response"
-    GetParamType{
+    ParamType{
       false,
       true,
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
@@ -140,7 +142,7 @@ INSTANTIATE_TEST_SUITE_P(
       { type::Result::LEDGER_ERROR, 0.0 }
     },
     // "happy_path"
-    GetParamType{
+    ParamType{
       false,
       true,
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
@@ -148,7 +150,7 @@ INSTANTIATE_TEST_SUITE_P(
       { type::Result::LEDGER_OK, 5.0 }
     }
   ),
-  GetNameSuffixGenerator
+  NameSuffixGenerator
 );
 
 TEST_P(Get, AnonFunds) {
@@ -213,6 +215,147 @@ TEST_P(Get, AnonFunds) {
   );
 }
 
-}  // anon_funds
+}  // namespace get
+
+namespace transfer {
+
+using Result = type::Result;
+using ParamType =
+  std::tuple<
+    std::string,       // Uphold wallet
+    type::UrlResponse, // rewards web services response
+    Result             // expected result
+  >
+;
+
+class Transfer : public TestWithParam<ParamType> {
+ private:
+  base::test::TaskEnvironment scoped_task_environment_;
+
+ protected:
+  std::unique_ptr<MockLedgerClient> mock_ledger_client_;
+  std::unique_ptr<MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<UpholdAuthorization> authorization_;
+
+ public:
+  Transfer()
+    : mock_ledger_client_{ std::make_unique<MockLedgerClient>() }
+    , mock_ledger_impl_{ std::make_unique<MockLedgerImpl>(mock_ledger_client_.get()) }
+    , authorization_{ std::make_unique<UpholdAuthorization>(mock_ledger_impl_.get()) }
+  {}
+};
+
+std::string NameSuffixGenerator(const TestParamInfo<Transfer::ParamType>& info) {
+  const std::string& uphold_wallet = std::get<0>(info.param);
+  const type::UrlResponse& rewards_web_services_response = std::get<1>(info.param);
+
+  if (uphold_wallet.empty()) {
+    return "uphold_wallet_is_null";
+  }
+
+  if (rewards_web_services_response.status_code == net::HttpStatusCode::HTTP_NOT_FOUND) {
+    return "404";
+  }
+
+  if (rewards_web_services_response.status_code == net::HttpStatusCode::HTTP_CONFLICT) {
+    return "wallet_device_limit_reached";
+  }
+
+  if (rewards_web_services_response.status_code != net::HttpStatusCode::HTTP_OK) {
+    return "rewards_web_services_error";
+  }
+
+  return "happy_path";
+}
+
+const std::string uphold_wallet{ R"(
+{
+    "account_url": "https://wallet-sandbox.uphold.com/dashboard",
+    "add_url": "",
+    "address": "962df5b1-bb72-4619-a349-c8087941b795",
+    "fees": {},
+    "login_url": "https://wallet-sandbox.uphold.com/authorize/9a4b665ca983d912fec5c7395b34859a94418cc8?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=025C120562C517028DECD63780FD4B8D48791C4ED8E3747FB2F27445EBFFCFCA",
+    "one_time_string": "004603F48D8636C3E96EE049C326976EE432809841EA1E11E305EC5F7C96A1B7",
+    "status": 2,
+    "token": "0047c2fd8f023e067354dbdb5639ee67acf77150",
+    "user_name": "",
+    "verify_url": "https://wallet-sandbox.uphold.com/authorize/9a4b665ca983d912fec5c7395b34859a94418cc8?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=025C120562C517028DECD63780FD4B8D48791C4ED8E3747FB2F27445EBFFCFCA",
+    "withdraw_url": ""
+}
+)" };
+
+INSTANTIATE_TEST_SUITE_P(
+  UpholdAuthorizationTest,
+  Transfer,
+  Values(
+    // "uphold_wallet_is_null"
+    ParamType{
+      "",
+      type::UrlResponse{},
+      type::Result::LEDGER_ERROR
+    },
+    // "404"
+    ParamType{
+      uphold_wallet,
+      type::UrlResponse{ {}, {}, net::HttpStatusCode::HTTP_NOT_FOUND, {}, {} },
+      type::Result::NOT_FOUND
+    },
+    // "wallet_device_limit_reached"
+    ParamType{
+      uphold_wallet,
+      type::UrlResponse{ {}, {}, net::HttpStatusCode::HTTP_CONFLICT, {}, {} },
+      type::Result::ALREADY_EXISTS
+    },
+    // "rewards_web_services_error"
+    ParamType{
+      uphold_wallet,
+      type::UrlResponse{ {}, {}, net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR, {}, {} },
+      type::Result::LEDGER_ERROR
+    },
+    // "happy_path"
+    ParamType{
+      uphold_wallet,
+      type::UrlResponse{ {}, {}, net::HttpStatusCode::HTTP_OK, {}, {} },
+      type::Result::LEDGER_OK
+    }
+  ),
+  NameSuffixGenerator
+);
+
+TEST_P(Transfer, AnonFunds) {
+  const auto& params = GetParam();
+  const std::string& uphold_wallet = std::get<0>(params);
+  const type::UrlResponse& rewards_web_services_response = std::get<1>(params);
+  const auto& expected_result = std::get<2>(params);
+
+  ON_CALL(
+    *mock_ledger_client_,
+    GetEncryptedStringState(state::kWalletUphold)
+  ).WillByDefault(
+    testing::Return(uphold_wallet)
+  );
+  
+  ON_CALL(
+    *mock_ledger_client_,
+    LoadURL(_, _)
+  ).WillByDefault(
+    Invoke(
+      [&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+        callback(rewards_web_services_response);
+      }
+    )
+  );
+
+  authorization_->TransferAnonFunds(
+    0.0,
+    [&](const type::Result result) {
+      EXPECT_TRUE(result == expected_result);
+    }
+  );
+}
+
+}  // namespace transfer
+}  // namespace anon_funds
+}  // namespace tests
 }  // namespace uphold
 }  // namespace ledger
