@@ -48,7 +48,7 @@
 
 #if !defined(OS_ANDROID)
 #include "brave/browser/infobars/sync_v2_migrate_infobar_delegate.h"
-#include "chrome/browser/sync/profile_sync_service_factory.h"
+#include "chrome/browser/sync/sync_service_factory.h"
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_user_settings.h"
 #endif
@@ -114,10 +114,9 @@ void BraveBrowserMainParts::PostBrowserStart() {
       if (infobar_manager) {
         BraveConfirmP3AInfoBarDelegate::Create(
             infobar_manager, g_browser_process->local_state());
-        auto* sync_service =
-            ProfileSyncServiceFactory::IsSyncAllowed(profile())
-                ? ProfileSyncServiceFactory::GetForProfile(profile())
-                : nullptr;
+        auto* sync_service = SyncServiceFactory::IsSyncAllowed(profile())
+                                 ? SyncServiceFactory::GetForProfile(profile())
+                                 : nullptr;
         const bool is_v2_user =
             sync_service &&
             sync_service->GetUserSettings()->IsFirstSetupComplete();
