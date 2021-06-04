@@ -46,6 +46,14 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_stats/BraveStatsBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_stats/BraveStatsUtil.java",
+  "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/BraveLayoutManagerChrome.java",
+  "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/StackLayout.java",
+  "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/StackLayoutBase.java",
+  "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/stack/OverlappingStack.java",
+  "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/stack/Stack.java",
+  "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/stack/StackAnimation.java",
+  "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/stack/StackTab.java",
+  "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/stack/StackViewAnimation.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/HeightWrappingViewPager.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/NonSwipeableViewPager.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/VerticalViewPager.java",
@@ -232,7 +240,7 @@ if (brave_rewards_enabled || enable_brave_referrals) {
 }
 
 if (enable_brave_referrals) {
-  brave_java_sources += [ "../../brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java", ]
+  brave_java_sources += [ "../../brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java" ]
 }
 
 if (brave_ads_enabled) {
@@ -269,5 +277,3 @@ brave_java_base_module_sources = [
 
 brave_java_base_module_deps =
     [ "//third_party/androidx:androidx_core_core_java" ]
-
-brave_android_features_tab_ui_java_sources = [ "//brave/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator.java" ]
