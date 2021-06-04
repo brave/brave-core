@@ -63,8 +63,8 @@ public class BraveWalletNativeWorker {
             mNativeBraveWalletNativeWorker);
     }
 
-    public void UnlockWallet(String password) {
-        BraveWalletNativeWorkerJni.get().unlockWallet(
+    public boolean UnlockWallet(String password) {
+        return BraveWalletNativeWorkerJni.get().unlockWallet(
             mNativeBraveWalletNativeWorker, password);
     }
 
