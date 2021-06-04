@@ -19,7 +19,7 @@
 
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
-#include "chrome/browser/sync/profile_sync_service_factory.h"
+#include "chrome/browser/sync/sync_service_factory.h"
 
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
@@ -104,9 +104,9 @@ BraveSyncDevicesAndroid::GetSyncDeviceListJson(JNIEnv* env) {
 // TODO(AlexeyBarabash): duplicate with BraveSyncWorker?
 syncer::BraveProfileSyncService* BraveSyncDevicesAndroid::GetSyncService()
     const {
-  return ProfileSyncServiceFactory::IsSyncAllowed(profile_)
+  return SyncServiceFactory::IsSyncAllowed(profile_)
              ? static_cast<syncer::BraveProfileSyncService*>(
-                   ProfileSyncServiceFactory::GetForProfile(profile_))
+                   SyncServiceFactory::GetForProfile(profile_))
              : nullptr;
 }
 
