@@ -30,14 +30,14 @@ const char kCastNoDestinationFoundURL[] =
     "https://support.brave.com/";
 
 const char kChooserBluetoothOverviewURL[] =
-    "https://support.brave.com/";
+    "https://github.com/brave/brave-browser/wiki/Web-API-Permissions";
 
-const char kChooserHidOverviewUrl[] = "https://support.brave.com/";
+const char kChooserHidOverviewUrl[] = "https://github.com/brave/brave-browser/wiki/Web-API-Permissions";
 
-const char kChooserSerialOverviewUrl[] = "https://support.brave.com/";
+const char kChooserSerialOverviewUrl[] = "https://github.com/brave/brave-browser/wiki/Web-API-Permissions";
 
 const char kChooserUsbOverviewURL[] =
-    "https://support.brave.com/";
+    "https://github.com/brave/brave-browser/wiki/Web-API-Permissions";
 
 const char kChromeBetaForumURL[] =
     "https://community.brave.com/c/beta-builds";
