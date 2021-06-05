@@ -6,8 +6,9 @@ import {
   IconBackground,
   PageIcon,
   InputColumn,
-  Input
+  Description
 } from './style'
+import { PasswordInput } from '../../../shared'
 import { NavButton } from '../../../extension'
 import locale from '../../../../constants/locale'
 
@@ -16,18 +17,19 @@ export interface Props {
   onPasswordChanged: (value: string) => void
   onConfirmPasswordChanged: (value: string) => void
   disabled: boolean
+  hasPasswordError: boolean
+  hasConfirmPasswordError: boolean
 }
 
 function OnboardingCreatePassword (props: Props) {
-  const { onSubmit, onPasswordChanged, onConfirmPasswordChanged, disabled } = props
-
-  const inputPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onPasswordChanged(event.target.value)
-  }
-
-  const confirmPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onConfirmPasswordChanged(event.target.value)
-  }
+  const {
+    onSubmit,
+    onPasswordChanged,
+    onConfirmPasswordChanged,
+    disabled,
+    hasConfirmPasswordError,
+    hasPasswordError
+  } = props
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && !disabled) {
@@ -41,9 +43,22 @@ function OnboardingCreatePassword (props: Props) {
         <PageIcon />
       </IconBackground>
       <Title>{locale.createPasswordTitle}</Title>
+      <Description>{locale.createPasswordDescription}</Description>
       <InputColumn>
-        <Input type='password' placeholder={locale.createPasswordInput} onChange={inputPassword} />
-        <Input type='password' placeholder={locale.createPasswordInput2} onChange={confirmPassword} onKeyDown={handleKeyDown} />
+        <PasswordInput
+          placeholder={locale.createPasswordInput}
+          onChange={onPasswordChanged}
+          error={locale.createPasswordError}
+          hasError={hasPasswordError}
+          autoFocus={true}
+        />
+        <PasswordInput
+          placeholder={locale.createPasswordInput2}
+          onChange={onConfirmPasswordChanged}
+          onKeyDown={handleKeyDown}
+          error={locale.createPasswordError2}
+          hasError={hasConfirmPasswordError}
+        />
       </InputColumn>
       <NavButton buttonType='primary' text={locale.buttonContinue} onSubmit={onSubmit} disabled={disabled} />
     </StyledWrapper>

@@ -106,7 +106,7 @@ export const _Onboarding = () => {
   return (
     <WalletPageLayout>
       <WalletSubViewLayout>
-        <Onboarding recoveryPhrase={recoveryPhrase} onSubmit={complete} onPasswordProvided={passwordProvided} />
+        <Onboarding recoveryPhrase={recoveryPhrase} onSubmit={complete} onPasswordProvided={passwordProvided} hasRestoreError={false} onRestore={complete} />
       </WalletSubViewLayout>
     </WalletPageLayout>
   )

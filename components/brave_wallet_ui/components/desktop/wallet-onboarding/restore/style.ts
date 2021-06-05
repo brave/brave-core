@@ -1,23 +1,21 @@
 import styled from 'styled-components'
-import LockIcon from '../../../../assets/svg-icons/graphic-lock-icon.svg'
 
 export const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
   width: 100%;
-  padding-top: 32px;
+  padding-top: 50px;
 `
 
 export const Title = styled.span`
   font-family: Poppins;
   font-size: 20px;
   font-weight: 600;
-  line-height: 30px;
   color: ${(p) => p.theme.color.text01};
   letter-spacing: 0.02em;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 `
 
 export const Description = styled.span`
@@ -25,42 +23,48 @@ export const Description = styled.span`
   align-items: center;
   font-family: Poppins;
   font-size: 14px;
-  line-height: 20px;
   font-weight: 300;
   color: ${(p) => p.theme.color.text02};
-  max-width: 380px;
+  max-width: 520px;
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 25px;
 `
 
-export const IconBackground = styled.div`
+export const FormText = styled.span`
+  font-family: Poppins;
+  font-size: 15px;
+  font-weight: 600;
+  color: ${(p) => p.theme.color.text01};
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+`
+
+export const FormWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 550px;
+`
+
+export const ErrorText = styled.span`
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 18px;
+  color: ${(p) => p.theme.color.errorText};
+  margin-bottom: 10px;
+`
+
+export const CheckboxRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  width: 162px;
-  height: 162px;
-  border-radius: 100%;
-  background-color: ${(p) => p.theme.color.background01};
-  margin-bottom: 24px;
+  flex-direction: row;
+  margin-bottom: 50px;
 `
 
-export const PageIcon = styled.div`
-  width: 103px;
-  height: 88px;
-  background: url(${LockIcon});
-`
-
-export const InputColumn = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 250px;
-  margin-bottom: 28px;
-`
-
-export const Input = styled.input`
+export const RecoveryPhraseInput = styled.input`
   width: 100%;
   outline: none;
   background-image: none;
@@ -73,10 +77,9 @@ export const Input = styled.input`
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  padding: 10px 10px 10px 10px;
+  padding: 10px;
+  margin-bottom: 10px;
   color: ${(p) => p.theme.color.text01};
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
   ::placeholder {
     font-family: Poppins;
     font-style: normal;
@@ -86,15 +89,23 @@ export const Input = styled.input`
     font-weight: normal;
   }
   :focus {
-      outline: none;
+    outline: none;
   }
   ::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
   }
   ::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
   }
-  margin-bottom: 10px;
+`
+
+export const InputColumn = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 250px;
+  margin-bottom: 28px;
 `
