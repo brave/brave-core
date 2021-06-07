@@ -169,10 +169,9 @@ void Wallet::ClaimFunds(ledger::ResultCallback callback) {
         callback(type::Result::CONTINUE);
         return;
       }
-    
+
       callback(type::Result::LEDGER_OK);
-    }
-  );
+    });
 }
 
 void Wallet::GetAnonWalletStatus(ledger::ResultCallback callback) {

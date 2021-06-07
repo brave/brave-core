@@ -232,7 +232,8 @@ void UpholdAuthorization::OnCardCreate(
     callback(type::Result::LEDGER_OK, args);
   }
 
-  GetAnonFunds(std::bind(&UpholdAuthorization::OnGetAnonFunds, this, _1, _2, callback));
+  GetAnonFunds(
+      std::bind(&UpholdAuthorization::OnGetAnonFunds, this, _1, _2, callback));
 }
 
 void UpholdAuthorization::GetAnonFunds(
@@ -271,11 +272,13 @@ void UpholdAuthorization::OnGetAnonFunds(
     return;
   }
 
-  if (balance->user_funds == 0.0) { // TODO: floating-point comparison
+  if (balance->user_funds == 0.0) {  // == floating-point comparison!
     ledger_->state()->SetFetchOldBalanceEnabled(false);
   }
 
-  TransferAnonFunds(balance->user_funds, std::bind(&UpholdAuthorization::OnTransferAnonFunds, this, _1, callback));
+  TransferAnonFunds(
+      balance->user_funds,
+      std::bind(&UpholdAuthorization::OnTransferAnonFunds, this, _1, callback));
 }
 
 void UpholdAuthorization::TransferAnonFunds(
@@ -299,7 +302,8 @@ void UpholdAuthorization::OnTransferAnonFunds(
   }
 
   if (result == type::Result::ALREADY_EXISTS) {
-    ledger_->ledger_client()->ShowNotification("wallet_device_limit_reached", {}, [](type::Result) {});
+    ledger_->ledger_client()->ShowNotification("wallet_device_limit_reached",
+                                               {}, [](type::Result) {});
 
     std::string event_text = "uphold";
     if (auto wallet_ptr = uphold::GetWallet(ledger_))
