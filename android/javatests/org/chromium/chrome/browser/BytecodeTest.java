@@ -284,7 +284,7 @@ public class BytecodeTest {
                 TabModelSelector.class, ToolbarManager.class, View.class, AppMenuDelegate.class,
                 OneshotSupplier.class, ObservableSupplier.class,
                 WebFeedSnackbarController.FeedLauncher.class, ModalDialogManager.class,
-                SnackbarManager.class, WebFeedBridge.class));
+                SnackbarManager.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/tabmodel/ChromeTabCreator",
                 "org/chromium/chrome/browser/tabmodel/BraveTabCreator", Activity.class,
                 WindowAndroid.class, StartupTabPreloader.class, Supplier.class, boolean.class,
