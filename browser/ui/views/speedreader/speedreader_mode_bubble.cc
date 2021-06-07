@@ -25,6 +25,7 @@
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/common/referrer.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/events/event.h"
 #include "ui/views/controls/button/md_text_button.h"
@@ -33,7 +34,6 @@
 #include "ui/views/controls/link.h"
 #include "ui/views/controls/styled_label.h"
 #include "ui/views/layout/box_layout.h"
-#include "ui/views/metadata/metadata_impl_macros.h"
 #include "ui/views/view.h"
 
 namespace {
