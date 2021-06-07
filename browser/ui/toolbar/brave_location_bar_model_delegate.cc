@@ -9,6 +9,7 @@
 #include "brave/common/url_constants.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "extensions/buildflags/buildflags.h"
+#include "extensions/common/constants.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/common/extensions/extension_constants.h"
@@ -28,6 +29,12 @@ void BraveLocationBarModelDelegate::FormattedStringFromURL(const GURL& url,
         0,
         base::UTF8ToUTF16("chrome://"),
         base::UTF8ToUTF16("brave://"));
+  } else if (url.SchemeIs(extensions::kExtensionScheme)) {
+      base::ReplaceFirstSubstringAfterOffset(
+        new_formatted_url,
+        0,
+        base::UTF8ToUTF16(extensions::kExtensionScheme),
+        base::UTF8ToUTF16("extension"));
   }
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
