@@ -5,24 +5,21 @@ import {
   Title,
   IconBackground,
   PageIcon,
-  InputColumn,
-  Input
-} from '../wallet-onboarding/create-password/style'
+  InputColumn
+} from './style'
+import { PasswordInput } from '../../shared'
 import { NavButton } from '../../extension'
 import locale from '../../../constants/locale'
 
 export interface Props {
   onSubmit: () => void
   onPasswordChanged: (value: string) => void
+  hasPasswordError: boolean
   disabled: boolean
 }
 
 function LockScreen (props: Props) {
-  const { onSubmit, onPasswordChanged, disabled } = props
-
-  const inputPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onPasswordChanged(event.target.value)
-  }
+  const { onSubmit, onPasswordChanged, disabled, hasPasswordError } = props
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && !disabled) {
@@ -37,11 +34,12 @@ function LockScreen (props: Props) {
       </IconBackground>
       <Title>{locale.lockScreenTitle}</Title>
       <InputColumn>
-        <Input
-          type='password'
+        <PasswordInput
           placeholder={locale.createPasswordInput}
-          onChange={inputPassword}
+          onChange={onPasswordChanged}
           onKeyDown={handleKeyDown}
+          error={locale.lockScreenError}
+          hasError={hasPasswordError}
           autoFocus={true}
         />
       </InputColumn>
