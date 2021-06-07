@@ -14,6 +14,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "extensions/buildflags/buildflags.h"
+#include "extensions/common/constants.h"
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
@@ -31,6 +32,9 @@ void BraveLocationBarModelDelegate::FormattedStringFromURL(
   if (url.SchemeIs("chrome")) {
     base::ReplaceFirstSubstringAfterOffset(new_formatted_url, 0, u"chrome://",
                                            u"brave://");
+  } else if (url.SchemeIs(extensions::kExtensionScheme)) {
+    base::ReplaceFirstSubstringAfterOffset(new_formatted_url, 0, u"chrome-extension",
+                                           u"extension");
   }
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
