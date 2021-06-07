@@ -75,7 +75,7 @@ void BraveIncognitoMenuView::BuildMenu() {
           GetProfileMenuCloseButtonTextId(browser()->profile())),
       base::BindRepeating(&BraveIncognitoMenuView::OnExitButtonClicked,
                           base::Unretained(this)),
-      kCloseAllIcon);
+      vector_icons::kCloseIcon);
 }
 
 void BraveIncognitoMenuView::AddTorButton() {
