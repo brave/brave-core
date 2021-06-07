@@ -240,8 +240,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     offline_pages::kPrefetchingOfflinePagesFeature.name,
     signin::kMobileIdentityConsistency.name,
     translate::kTranslate.name,
-#else
-    kEnableProfilePickerOnStartupFeature.name,
 #endif
   };
 
