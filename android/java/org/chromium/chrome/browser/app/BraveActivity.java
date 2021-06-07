@@ -164,10 +164,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         public static final int CLEAR_HISTORY = 0;
         public static final int CLEAR_COOKIES_AND_SITE_DATA = 1;
         public static final int CLEAR_CACHE = 2;
-        public static final int CLEAR_PASSWORDS = 3;
-        public static final int CLEAR_FORM_DATA = 4;
-        public static final int CLEAR_SITE_SETTINGS = 5;
-        public static final int NUM_ENTRIES = 6;
     }
 
     public BraveActivity() {
@@ -221,9 +217,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
 
         if (isClearBrowsingDataOnExit()) {
             List<Integer> dataTypes = Arrays.asList(DialogOption.CLEAR_HISTORY,
-                    DialogOption.CLEAR_COOKIES_AND_SITE_DATA, DialogOption.CLEAR_CACHE,
-                    DialogOption.CLEAR_PASSWORDS, DialogOption.CLEAR_FORM_DATA,
-                    DialogOption.CLEAR_SITE_SETTINGS);
+                    DialogOption.CLEAR_COOKIES_AND_SITE_DATA, DialogOption.CLEAR_CACHE);
 
             int[] dataTypesArray = CollectionUtil.integerListToIntArray(new ArrayList<>(dataTypes));
 

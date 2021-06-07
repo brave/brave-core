@@ -157,10 +157,8 @@ void JNI_BravePrefServiceBridge_SetCosmeticFilteringControlType(JNIEnv* env,
       // aggressive
       brave_shields::SetCosmeticFilteringControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
-          ControlType::BLOCK, GURL(), g_browser_process->local_state());
-      brave_shields::SetAdControlType(
-          HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
-          ControlType::ALLOW, GURL(), g_browser_process->local_state());
+          ControlType::BLOCK_THIRD_PARTY, GURL(),
+          g_browser_process->local_state());
       break;
     case 1:
       // standard
@@ -202,20 +200,19 @@ JNI_BravePrefServiceBridge_GetCosmeticFilteringControlType(JNIEnv* env) {
       HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
       GURL());
 
-  if (control_type_ad == ControlType::ALLOW) {
-    if (cosmetic_type == ControlType::ALLOW) {
-      // return allow
+  if (cosmetic_type == ControlType::BLOCK_THIRD_PARTY) {
+    return base::android::ConvertUTF8ToJavaString(
+        env,
+        brave_shields::ControlTypeToString(ControlType::BLOCK_THIRD_PARTY));
+  } else {
+    if (control_type_ad == ControlType::BLOCK) {
+      return base::android::ConvertUTF8ToJavaString(
+          env, brave_shields::ControlTypeToString(ControlType::BLOCK));
+    } else {
       return base::android::ConvertUTF8ToJavaString(
           env, brave_shields::ControlTypeToString(ControlType::ALLOW));
-    } else {
-      // return aggressive
-      return base::android::ConvertUTF8ToJavaString(
-          env, brave_shields::ControlTypeToString(ControlType::AGGRESSIVE));
     }
   }
-  // return standard
-  return base::android::ConvertUTF8ToJavaString(
-      env, brave_shields::ControlTypeToString(ControlType::BLOCK));
 }
 
 void JNI_BravePrefServiceBridge_SetCookiesBlockType(
