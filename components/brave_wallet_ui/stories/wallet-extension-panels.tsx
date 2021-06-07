@@ -113,6 +113,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   ])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
   const [walletConnected, setWalletConnected] = React.useState<boolean>(true)
+  const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
   const toggleConnected = () => {
     setWalletConnected(!walletConnected)
   }
@@ -154,17 +155,27 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   }
 
   const unlockWallet = () => {
-    setWalletLocked(false)
+    if (inputValue !== 'password') {
+      setHasPasswordError(true)
+    } else {
+      setWalletLocked(false)
+    }
   }
 
   const handlePasswordChanged = (value: string) => {
+    setHasPasswordError(false)
     setInputValue(value)
   }
 
   return (
     <StyledExtensionWrapper>
       {walletLocked ? (
-        <LockPanel onSubmit={unlockWallet} disabled={inputValue === ''} onPasswordChanged={handlePasswordChanged} />
+        <LockPanel
+          hasPasswordError={hasPasswordError}
+          onSubmit={unlockWallet}
+          disabled={inputValue === ''}
+          onPasswordChanged={handlePasswordChanged}
+        />
       ) : (
         <>
           {selectedPanel === 'main' ? (

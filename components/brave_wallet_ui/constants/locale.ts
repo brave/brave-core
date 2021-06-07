@@ -117,6 +117,7 @@ const locale = {
   // Lock Screen
   lockScreenTitle: 'Enter password to unlock wallet',
   lockScreenButton: 'Unlock',
+  lockScreenError: 'Incorrect password',
 
   // Wallet More Popup
   walletPopupSettings: 'Settings',

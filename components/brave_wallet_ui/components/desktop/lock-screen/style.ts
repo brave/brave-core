@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import LockIcon from '../../../../assets/svg-icons/graphic-lock-icon.svg'
+import LockIcon from '../../../assets/svg-icons/graphic-lock-icon.svg'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -18,19 +18,6 @@ export const Title = styled.span`
   color: ${(p) => p.theme.color.text01};
   letter-spacing: 0.02em;
   margin-bottom: 10px;
-`
-
-export const Description = styled.span`
-  display: flex;
-  align-items: center;
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 300;
-  color: ${(p) => p.theme.color.text02};
-  max-width: 380px;
-  text-align: center;
-  margin-bottom: 24px;
 `
 
 export const IconBackground = styled.div`
