@@ -20,13 +20,13 @@ namespace {
 
 // https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-formatmessage
 void PrintSystemError(DWORD error) {
-  DWORD c_buf_size = 512;
-  TCHAR lpsz_error_string[512];
+  constexpr DWORD kBufSize = 512;
+  TCHAR lpsz_error_string[kBufSize];
 
   DWORD buf_len =
       FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
                     NULL, error, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                    lpsz_error_string, c_buf_size, NULL);
+                    lpsz_error_string, kBufSize, NULL);
   if (buf_len) {
     LOG(ERROR) << lpsz_error_string;
   }
@@ -40,8 +40,8 @@ DWORD SetCredentials(LPCTSTR entry_name, LPCTSTR username, LPCTSTR password) {
   credentials.dwSize = sizeof(RASCREDENTIALS);
   credentials.dwMask = RASCM_UserName | RASCM_Password;
 
-  wcscpy_s(credentials.szUserName, 256, username);
-  wcscpy_s(credentials.szPassword, 256, password);
+  wcscpy_s(credentials.szUserName, UNLEN + 1, username);
+  wcscpy_s(credentials.szPassword, PWLEN + 1, password);
 
   DWORD dw_ret =
       RasSetCredentials(DEFAULT_PHONE_BOOK, entry_name, &credentials, FALSE);
@@ -59,11 +59,11 @@ namespace internal {
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasgeterrorstringa
 void PrintRasError(DWORD error) {
-  DWORD c_buf_size = 512;
-  TCHAR lpsz_error_string[512];
+  constexpr DWORD kBufSize = 512;
+  TCHAR lpsz_error_string[kBufSize];
 
   if (error > RASBASE && error < RASBASEEND) {
-    if (RasGetErrorString(error, lpsz_error_string, c_buf_size) ==
+    if (RasGetErrorString(error, lpsz_error_string, kBufSize) ==
         ERROR_SUCCESS) {
       LOG(ERROR) << lpsz_error_string;
       return;
@@ -74,21 +74,36 @@ void PrintRasError(DWORD error) {
 }
 
 std::wstring GetPhonebookPath() {
-  wchar_t app_data_path[1025] = {0};
+  TCHAR* app_data_path = NULL;
   std::wstring phone_book_path;
 
   // https://docs.microsoft.com/en-us/windows/win32/api/processenv/nf-processenv-expandenvironmentstringsa
-  DWORD dw_ret =
-      ExpandEnvironmentStrings(TEXT("%APPDATA%"), app_data_path, 1024);
-  if (dw_ret == 0) {
-    LOG(ERROR) << "failed to get APPDATA path";
+  // Caculate required buf size first.
+  const DWORD dw_buf_size =
+      ExpandEnvironmentStrings(TEXT("%APPDATA%"), app_data_path, 0);
+  if (dw_buf_size == 0) {
+    LOG(ERROR) << "failed to use ExpandEnvironmentStrings";
     PrintRasError(GetLastError());
     return phone_book_path;
   }
 
+  // Allocate required buf.
+  app_data_path = reinterpret_cast<TCHAR*>(
+      HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dw_buf_size + 1));
+  if (app_data_path == NULL) {
+    LOG(ERROR) << "HeapAlloc failed!";
+    return app_data_path;
+  }
+
+  ExpandEnvironmentStrings(TEXT("%APPDATA%"), app_data_path, dw_buf_size);
+
   phone_book_path = base::StringPrintf(
       L"%ls\\Microsoft\\Network\\Connections\\Pbk\\rasphone.pbk",
       app_data_path);
+
+  // Deallocate memory for the connection buffer
+  HeapFree(GetProcessHeap(), 0, app_data_path);
+  app_data_path = NULL;
 
   return phone_book_path;
 }
@@ -106,8 +121,8 @@ bool DisconnectEntry(LPCTSTR entry_name) {
 
   if (dw_ret == ERROR_BUFFER_TOO_SMALL) {
     // Allocate the memory needed for the array of RAS structure(s).
-    lp_ras_conn =
-        (LPRASCONN)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dw_cb);
+    lp_ras_conn = reinterpret_cast<LPRASCONN>(
+        HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dw_cb));
     if (lp_ras_conn == NULL) {
       LOG(ERROR) << "HeapAlloc failed!";
       return false;
@@ -154,15 +169,15 @@ bool ConnectEntry(LPCTSTR entry_name) {
   LPRASDIALPARAMS lp_ras_dial_params = NULL;
   DWORD cb = sizeof(RASDIALPARAMS);
 
-  lp_ras_dial_params =
-      (LPRASDIALPARAMS)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, cb);
+  lp_ras_dial_params = reinterpret_cast<LPRASDIALPARAMS>(
+      HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, cb));
   if (lp_ras_dial_params == NULL) {
     LOG(ERROR) << "HeapAlloc failed!";
     return false;
   }
   lp_ras_dial_params->dwSize = sizeof(RASDIALPARAMS);
-  wcscpy_s(lp_ras_dial_params->szEntryName, 256, entry_name);
-  wcscpy_s(lp_ras_dial_params->szDomain, 15, L"*");
+  wcscpy_s(lp_ras_dial_params->szEntryName, RAS_MaxEntryName + 1, entry_name);
+  wcscpy_s(lp_ras_dial_params->szDomain, DNLEN + 1, L"*");
   // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasgetcredentialsw
   RASCREDENTIALS credentials;
 
@@ -176,8 +191,8 @@ bool ConnectEntry(LPCTSTR entry_name) {
     PrintRasError(dw_ret);
     return false;
   }
-  wcscpy_s(lp_ras_dial_params->szUserName, 256, credentials.szUserName);
-  wcscpy_s(lp_ras_dial_params->szPassword, 256, credentials.szPassword);
+  wcscpy_s(lp_ras_dial_params->szUserName, UNLEN + 1, credentials.szUserName);
+  wcscpy_s(lp_ras_dial_params->szPassword, PWLEN + 1, credentials.szPassword);
 
   DVLOG(2) << "Connecting to " << entry_name;
   HRASCONN h_ras_conn = NULL;
@@ -217,11 +232,12 @@ bool CreateEntry(LPCTSTR entry_name,
   entry.dwfOptions = RASEO_RemoteDefaultGateway | RASEO_RequireEAP |
                      RASEO_PreviewUserPw | RASEO_PreviewDomain |
                      RASEO_ShowDialingProgress;
-  wcscpy_s(entry.szLocalPhoneNumber, 128, hostname);
+  wcscpy_s(entry.szLocalPhoneNumber, RAS_MaxPhoneNumber + 1, hostname);
   entry.dwfNetProtocols = RASNP_Ip | RASNP_Ipv6;
   entry.dwFramingProtocol = RASFP_Ppp;
-  wcscpy_s(entry.szDeviceType, 16, RASDT_Vpn);
-  wcscpy_s(entry.szDeviceName, 128, TEXT("WAN Miniport (IKEv2)"));
+  wcscpy_s(entry.szDeviceType, RAS_MaxDeviceType + 1, RASDT_Vpn);
+  wcscpy_s(entry.szDeviceName, RAS_MaxDeviceName + 1,
+           TEXT("WAN Miniport (IKEv2)"));
   entry.dwType = RASET_Vpn;
   entry.dwEncryptionType = ET_Optional;
   entry.dwVpnStrategy = VS_Ikev2Only;
