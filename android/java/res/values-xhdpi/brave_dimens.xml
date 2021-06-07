@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2021 The Brave Authors. All rights reserved.
+     Use of this source code is governed by a BSD-style license that can be
+     found in the LICENSE file. -->
+
+<resources>
+    <!-- TabSwitcher -->
+    <dimen name="tabswitcher_border_frame_padding_left">5.5dp</dimen>
+    <dimen name="tabswitcher_border_frame_padding_top">49.5dp</dimen>
+</resources>

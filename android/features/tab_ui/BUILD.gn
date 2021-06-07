@@ -1,0 +1,26 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+import("//chrome/android/features/tab_ui/tab_management_java_sources.gni")
+
+android_library("java") {
+  sources = [
+    "java/src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator.java",
+    "java/src/org/chromium/chrome/browser/tasks/tab_management/BraveTabUiFeatureUtilities.java",
+  ]
+  deps = [
+    "//base:base_java",
+    "//chrome/android:chrome_java",
+    "//chrome/android/features/tab_ui:java",
+    "//chrome/browser/flags:java",
+    "//chrome/browser/preferences:java",
+    "//chrome/browser/ui/android/theme:java",
+    "//components/browser_ui/widget/android:java",
+    "//ui/android:ui_no_recycler_view_java",
+  ]
+
+  resources_package = "org.chromium.chrome.browser.tasks.tab_management"
+}

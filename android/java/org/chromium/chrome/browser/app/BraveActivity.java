@@ -58,6 +58,10 @@ import org.chromium.chrome.browser.SetDefaultBrowserActivity;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.compositor.layouts.Layout;
+import org.chromium.chrome.browser.compositor.layouts.LayoutManagerChrome;
+import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
+import org.chromium.chrome.browser.compositor.layouts.phone.StackLayout;
 import org.chromium.chrome.browser.dependency_injection.ChromeActivityComponent;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
@@ -884,6 +888,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
 
         editor.putLong(BravePreferenceKeys.BRAVE_MILLISECONDS_NAME, milliSeconds);
         editor.apply();
+    }
+
+    public void hideOverview(LayoutManagerChrome layoutManager) {
+        Layout activeLayout = layoutManager.getActiveLayout();
+        if (activeLayout instanceof StackLayout) {
+            ((StackLayout) activeLayout).commitOutstandingModelState(LayoutManagerImpl.time());
+        }
     }
 
     @NativeMethods
