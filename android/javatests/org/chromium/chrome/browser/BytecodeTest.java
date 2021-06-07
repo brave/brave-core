@@ -466,8 +466,8 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone",
                         "mShouldShowNewTabVariation"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/app/ChromeActivity", "mTabModelProfileSupplier"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/app/ChromeActivity",
+                "mBrowserControlsManagerSupplier"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
                         "mBottomControlsHeight"));
