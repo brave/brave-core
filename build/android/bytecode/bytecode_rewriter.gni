@@ -1,6 +1,7 @@
 import("//build/config/python.gni")
 
 brave_bytecode_jars = [
+  "obj/brave/android/features/tab_ui/java.javac.jar",
   "obj/brave/android/java/org/chromium/chrome/browser/search_engines/settings/java.javac.jar",
   "obj/chrome/android/base_module_java.javac.jar",
   "obj/chrome/android/chrome_java.javac.jar",
