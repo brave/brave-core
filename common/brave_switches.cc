@@ -46,4 +46,7 @@ const char kComponentUpdateIntervalInSec[] = "component-update-interval-in-sec";
 
 // Disables DOH using a runtime flag mainly for network audit
 const char kDisableDnsOverHttps[] = "disable-doh";
+
+// Override update feed url. Only valid on macOS.
+const char kUpdateFeedURL[] = "update-feed-url";
 }  // namespace switches

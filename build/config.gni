@@ -115,14 +115,6 @@ if (is_win) {
     base_sparkle_update_url =
         "https://updates.bravesoftware.com/sparkle/Brave-Browser"
   }
-  _update_channel = brave_channel
-  if (_update_channel == "") {
-    _update_channel = "stable"
-  }
-  if (target_cpu == "arm64") {
-    _update_channel += "-arm64"
-  }
-  brave_feed_url = "$base_sparkle_update_url/$_update_channel/appcast.xml"
 }
 
 brave_platform = "darwin"

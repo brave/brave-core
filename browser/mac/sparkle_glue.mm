@@ -8,20 +8,33 @@
 #include <sys/mount.h>
 #include <sys/stat.h>
 
+#include "base/command_line.h"
 #include "base/mac/bundle_locations.h"
 #include "base/mac/foundation_util.h"
 #import "base/mac/scoped_nsautorelease_pool.h"
 #import "base/mac/scoped_nsobject.h"
 #include "base/memory/ref_counted.h"
 #include "base/strings/sys_string_conversions.h"
+#include "base/system/sys_info.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #import "brave/browser/mac/su_updater.h"
 #include "brave/browser/update_util.h"
+#include "brave/common/brave_channel_info.h"
+#include "brave/common/brave_switches.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_constants.h"
 
 namespace {
+
+std::string GetUpdateChannel() {
+  std::string channel_name = brave::GetChannelName();
+  if (channel_name == "release")
+    channel_name = "stable";
+  return base::SysInfo::OperatingSystemArchitecture() == "x86_64"
+             ? channel_name
+             : channel_name + "-arm64";
+}
 
 NSString* GetVersionFromAppcastItem(id item) {
   return [item performSelector:@selector(displayVersionString)];
@@ -91,10 +104,8 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
   BOOL updateSuccessfullyInstalled_;
 
   NSString* appPath_;
-  NSString* url_;
   NSString* new_version_;
 
-  std::string channel_;
   // The most recent kAutoupdateStatusNotification notification posted.
   base::scoped_nsobject<NSNotification> recentNotification_;
 }
@@ -131,14 +142,13 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
 
 - (void)dealloc {
   [appPath_ release];
-  [url_ release];
   [new_version_ release];
 
   [super dealloc];
 }
 
 - (BOOL)loadSparkleFramework {
-  if (!appPath_ || !url_)
+  if (!appPath_)
     return NO;
 
   if ([self isOnReadOnlyFilesystem])
@@ -270,29 +280,13 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
 
 - (void)loadParameters {
   NSBundle* appBundle = base::mac::OuterBundle();
-  NSDictionary* infoDictionary = [self infoDictionary];
-
   NSString* appPath = [appBundle bundlePath];
-  NSString* url = base::mac::ObjCCast<NSString>(
-      [infoDictionary objectForKey:@"SUFeedURL"]);
-
-  if (!appPath || !url) {
+  if (!appPath) {
     // If parameters required for sparkle are missing, don't use it.
     return;
   }
 
-  channel_ = chrome::GetChannelName(chrome::WithExtendedStable(false));
   appPath_ = [appPath retain];
-  url_ = [url retain];
-}
-
-- (NSDictionary*)infoDictionary {
-  // Use base::mac::OuterBundle() to get the Chrome app's own bundle identifier
-  // and path, not the framework's.  For auto-update, the application is
-  // what's significant here: it's used to locate the outermost part of the
-  // application for the existence checker and other operations that need to
-  // see the entire application bundle.
-  return [base::mac::OuterBundle() infoDictionary];
 }
 
 - (AutoupdateStatus)recentStatus {
@@ -481,6 +475,18 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
   [self updateStatus:status
              version:nil
                error:[error localizedDescription]];
+}
+
+- (NSString*)feedURLStringForUpdater:(id)__unused updater {
+  auto* command = base::CommandLine::ForCurrentProcess();
+  if (command->HasSwitch(switches::kUpdateFeedURL)) {
+    return base::SysUTF8ToNSString(
+        command->GetSwitchValueASCII(switches::kUpdateFeedURL));
+  }
+
+  return [NSString stringWithFormat:@"https://updates.bravesoftware.com/"
+                                    @"sparkle/Brave-Browser/%s/appcast.xml",
+                                    GetUpdateChannel().c_str()];
 }
 @end
 
