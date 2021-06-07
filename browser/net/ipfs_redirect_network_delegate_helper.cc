@@ -8,6 +8,7 @@
 #include <string>
 
 #include "brave/components/ipfs/ipfs_utils.h"
+#include "chrome/common/channel_info.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
@@ -61,7 +62,8 @@ int OnHeadersReceived_IPFSRedirectWork(
   }
 
   std::string ipfs_path;
-  if (ctx->ipfs_auto_fallback && response_headers &&
+  bool api_gateway = IsAPIGateway(ctx->request_url, chrome::GetChannel());
+  if (ctx->ipfs_auto_fallback && !api_gateway && response_headers &&
       response_headers->GetNormalizedHeader("x-ipfs-path", &ipfs_path) &&
       // Make sure we don't infinite redirect
       !ctx->request_url.DomainIs(ctx->ipfs_gateway_url.host())) {

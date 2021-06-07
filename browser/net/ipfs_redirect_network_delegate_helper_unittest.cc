@@ -193,6 +193,15 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, HeadersIPFSWorkNoRedirect) {
   EXPECT_FALSE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
                                                            &location));
   EXPECT_TRUE(allowed_unsafe_redirect_url.is_empty());
+
+  request_info->request_url = GetAPIServer(chrome::GetChannel());
+  request_info->ipfs_auto_fallback = true;
+
+  rc = ipfs::OnHeadersReceived_IPFSRedirectWork(
+      orig_response_headers.get(), &overwrite_response_headers,
+      &allowed_unsafe_redirect_url, brave::ResponseCallback(), request_info);
+  EXPECT_EQ(rc, net::OK);
+  EXPECT_TRUE(allowed_unsafe_redirect_url.is_empty());
 }
 
 }  // namespace ipfs
