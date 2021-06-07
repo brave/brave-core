@@ -55,6 +55,7 @@ import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.SetDefaultBrowserActivity;
+import org.chromium.chrome.browser.app.flags.BraveCachedFlags;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
@@ -276,6 +277,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     }
 
     @Override
+    public void onStartWithNative() {
+        super.onStartWithNative();
+
+        BraveCachedFlags.getInstance().cacheP3AFlags();
+    }
+
+    @Override
     protected void initializeStartupMetrics() {
         super.initializeStartupMetrics();
 
@@ -371,7 +379,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
 
         if (!PackageUtils.isFirstInstall(this)
                 && !OnboardingPrefManager.getInstance().isP3AEnabledForExistingUsers()) {
-            BravePrefServiceBridge.getInstance().setP3AEnabled(true);
+            SharedPreferencesManager.getInstance().writeBoolean(BravePreferenceKeys.BRAVE_P3A_ENABLED, true);
             OnboardingPrefManager.getInstance().setP3AEnabledForExistingUsers(true);
         }
 

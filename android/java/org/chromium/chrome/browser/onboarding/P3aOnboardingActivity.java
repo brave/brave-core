@@ -27,13 +27,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.chromium.base.CommandLine;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
+import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.util.PackageUtils;
 
 public class P3aOnboardingActivity extends AppCompatActivity {
@@ -51,14 +52,8 @@ public class P3aOnboardingActivity extends AppCompatActivity {
         CheckBox p3aOnboardingCheckbox = findViewById(R.id.p3a_onboarding_checkbox);
         boolean isP3aEnabled = true;
         try {
-            // This is a hack for an unsolved JNI problem on android browsertests
-            // It cannot be caught by Java because it is a native crash
-            // Probably have something to do with library haven't finished loading at the time
-            // this activity is initializing
-            if (BraveConfig.P3A_ANDROID_BROWSERTEST)
-                isP3aEnabled = false;
-            else
-                isP3aEnabled = BravePrefServiceBridge.getInstance().getP3AEnabled();
+            isP3aEnabled = SharedPreferencesManager.getInstance().readBoolean(
+                    BravePreferenceKeys.BRAVE_P3A_ENABLED, false);
         } catch (Exception e) {
             Log.e("P3aOnboarding", e.getMessage());
         }
@@ -68,7 +63,7 @@ public class P3aOnboardingActivity extends AppCompatActivity {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         try {
-                            BravePrefServiceBridge.getInstance().setP3AEnabled(isChecked);
+                            SharedPreferencesManager.getInstance().writeBoolean(BravePreferenceKeys.BRAVE_P3A_ENABLED, isChecked);
                             BravePrefServiceBridge.getInstance().setP3ANoticeAcknowledged(true);
                         } catch (Exception e) {
                             Log.e("P3aOnboarding", e.getMessage());

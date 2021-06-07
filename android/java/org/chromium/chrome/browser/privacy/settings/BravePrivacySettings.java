@@ -18,7 +18,9 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.Pref;
+import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.privacy.settings.PrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -274,7 +276,7 @@ public class BravePrivacySettings extends PrivacySettings {
             sharedPreferencesEditor.putBoolean(PREF_CLOSE_TABS_ON_EXIT, (boolean) newValue);
             sharedPreferencesEditor.apply();
         } else if (PREF_SEND_P3A.equals(key)) {
-            BravePrefServiceBridge.getInstance().setP3AEnabled((boolean) newValue);
+            SharedPreferencesManager.getInstance().writeBoolean(BravePreferenceKeys.BRAVE_P3A_ENABLED, (boolean) newValue);
         } else if (PREF_SEARCH_SUGGESTIONS.equals(key)) {
             mPrefServiceBridge.setBoolean(Pref.SEARCH_SUGGEST_ENABLED, (boolean) newValue);
         } else if (PREF_AUTOCOMPLETE_TOP_SITES.equals(key)) {
@@ -400,7 +402,7 @@ public class BravePrivacySettings extends PrivacySettings {
                 getActivity().getResources().getString(R.string.send_p3a_analytics_summary));
 
         if (BraveConfig.P3A_ENABLED) {
-            mSendP3A.setChecked(BravePrefServiceBridge.getInstance().getP3AEnabled());
+            mSendP3A.setChecked(SharedPreferencesManager.getInstance().readBoolean(BravePreferenceKeys.BRAVE_P3A_ENABLED, false));
         } else {
             getPreferenceScreen().removePreference(mSendP3A);
         }
