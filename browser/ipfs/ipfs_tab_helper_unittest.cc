@@ -55,4 +55,31 @@ TEST_F(IpfsTabHelperUnitTest, CanResolveURLTest) {
   ASSERT_TRUE(helper->CanResolveURL(GURL("https://bafyb.ipfs.dweb.link/")));
 }
 
+TEST_F(IpfsTabHelperUnitTest, URLResolvingTest) {
+  std::unique_ptr<content::WebContents> web_contents(
+      content::WebContentsTester::CreateTestWebContents(profile(), nullptr));
+  ASSERT_TRUE(
+      ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents.get()));
+  ipfs::IPFSTabHelper* helper =
+      ipfs::IPFSTabHelper::FromWebContents(web_contents.get());
+  ASSERT_TRUE(helper);
+
+  GURL test_url("ipns://brantly.eth/page?query#ref");
+  helper->SetPageURLForTesting(test_url);
+  helper->IPFSLinkResolved(GURL("ipns://brantly.eth/"));
+  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), test_url.spec());
+
+  test_url = GURL("ipns://brantly.eth/");
+  helper->SetPageURLForTesting(test_url);
+  helper->IPFSLinkResolved(GURL("ipns://brantly.eth/"));
+  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), test_url.spec());
+
+  test_url = GURL("https://ipfs.io/ipfs/bafy/wiki/empty.html?query#ref");
+  helper->SetPageURLForTesting(test_url);
+  helper->IPFSLinkResolved(GURL("ipfs://bafy"));
+
+  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(),
+            "ipfs://bafy/wiki/empty.html?query#ref");
+}
+
 }  // namespace ipfs
