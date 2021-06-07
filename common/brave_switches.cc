@@ -46,4 +46,7 @@ const char kComponentUpdateIntervalInSec[] = "component-update-interval-in-sec";
 
 // Disables DOH using a runtime flag mainly for network audit
 const char kDisableDnsOverHttps[] = "disable-doh";
+
+// Starts Brave in Tor mode.
+const char kTor[] = "tor";
 }  // namespace switches
