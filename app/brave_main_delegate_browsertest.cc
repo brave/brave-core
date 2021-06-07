@@ -73,7 +73,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &autofill::features::kAutofillServerCommunication,
     &blink::features::kFledgeInterestGroupAPI,
     &blink::features::kFledgeInterestGroups,
-    &blink::features::kHandwritingRecognitionWebPlatformApi,
     &blink::features::kHandwritingRecognitionWebPlatformApiFinch,
     &blink::features::kInterestCohortAPIOriginTrial,
     &blink::features::kInterestCohortFeaturePolicy,
