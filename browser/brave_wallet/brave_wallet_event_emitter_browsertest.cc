@@ -31,11 +31,27 @@ const char kEmbeddedTestServerDirectory[] = "brave-wallet";
 std::string CheckForEventScript(const std::string& event_var) {
   return base::StringPrintf(R"(function waitForEvent() {
              if (%s) {
-              window.domAutomationController.send(true);
+               window.domAutomationController.send(true);
              } else {
-              setTimeout(waitForEvent, 100);
+               if (window.ethereum) {
+                 if (!set_events_listeners) {
+                   set_events_listeners = true
+                   window.ethereum.on('connect', function(chainId) {
+                     received_connect_event = true
+                   });
+                   window.ethereum.on('chainChanged', function(chainId) {
+                     received_chain_changed_event = true
+                   });
+                 }
+                 if (window.ethereum.isConnected()) {
+                   received_connect_event = true
+                   received_chain_changed_event = true
+                 }
+               }
+               setTimeout(waitForEvent, 100);
              }
             }
+            var set_events_listeners = false;
             waitForEvent();)",
                             event_var.c_str());
 }
