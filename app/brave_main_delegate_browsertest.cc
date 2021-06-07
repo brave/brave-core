@@ -88,9 +88,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kWebOTP,
     &federated_learning::kFederatedLearningOfCohorts,
     &federated_learning::kFlocIdComputedEventLogging,
-#if !defined(OS_ANDROID)
-    &kEnableProfilePickerOnStartupFeature,
-#endif
     &media::kLiveCaption,
     &net::features::kFirstPartySets,
     &network::features::kTrustTokens,
