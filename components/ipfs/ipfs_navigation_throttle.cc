@@ -21,7 +21,6 @@
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/security_interstitial_tab_helper.h"
 #include "components/user_prefs/user_prefs.h"
-#include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -76,24 +75,23 @@ std::unique_ptr<IpfsNavigationThrottle>
 IpfsNavigationThrottle::MaybeCreateThrottleFor(
     content::NavigationHandle* navigation_handle,
     IpfsService* ipfs_service,
+    PrefService* pref_service,
     const std::string& locale) {
   if (!ipfs_service)
     return nullptr;
-  return std::make_unique<IpfsNavigationThrottle>(navigation_handle,
-                                                  ipfs_service, locale);
+  return std::make_unique<IpfsNavigationThrottle>(
+      navigation_handle, ipfs_service, pref_service, locale);
 }
 
 IpfsNavigationThrottle::IpfsNavigationThrottle(
     content::NavigationHandle* navigation_handle,
     IpfsService* ipfs_service,
+    PrefService* pref_service,
     const std::string& locale)
     : content::NavigationThrottle(navigation_handle),
       ipfs_service_(ipfs_service),
-      locale_(locale) {
-  content::BrowserContext* context =
-      navigation_handle->GetWebContents()->GetBrowserContext();
-  pref_service_ = user_prefs::UserPrefs::Get(context);
-}
+      pref_service_(pref_service),
+      locale_(locale) {}
 
 IpfsNavigationThrottle::~IpfsNavigationThrottle() = default;
 
@@ -227,8 +225,8 @@ void IpfsNavigationThrottle::LoadPublicGatewayURL() {
   if (!web_contents)
     return;
 
-  const GURL url = ToPublicGatewayURL(navigation_handle()->GetURL(),
-                                      web_contents->GetBrowserContext());
+  const GURL url =
+      ToPublicGatewayURL(navigation_handle()->GetURL(), pref_service_);
   if (url.is_empty())
     return;
 

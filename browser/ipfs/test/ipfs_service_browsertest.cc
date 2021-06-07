@@ -381,7 +381,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
       http_response->set_code(net::HTTP_TEMPORARY_REDIRECT);
       GURL new_location(ipfs::GetIPFSGatewayURL(
           "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC", "simple_content",
-          GetDefaultIPFSGateway(browser()->profile())));
+          GetDefaultIPFSGateway(browser()->profile()->GetPrefs())));
       http_response->AddCustomHeader("Location", new_location.spec());
     } else if (request_path ==
                "/ipfs/"
@@ -389,7 +389,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
       http_response->set_code(net::HTTP_TEMPORARY_REDIRECT);
       GURL new_location(ipfs::GetIPFSGatewayURL(
           "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC", "simple_content_2",
-          GetDefaultIPFSGateway(browser()->profile())));
+          GetDefaultIPFSGateway(browser()->profile()->GetPrefs())));
       http_response->AddCustomHeader("Location", new_location.spec());
     } else if (request_path ==
                "/ipfs/"
@@ -819,15 +819,15 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanLoadIFrameFromIPFS) {
       "}, 100);");
   ASSERT_TRUE(result.error.empty());
   // Make sure main frame URL didn't change
-  EXPECT_EQ(contents->GetURL(),
+  auto* prefs = browser()->profile()->GetPrefs();
+  EXPECT_EQ(
+      contents->GetLastCommittedURL(),
+      ipfs::GetIPFSGatewayURL("Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC",
+                              "simple_content", GetDefaultIPFSGateway(prefs)));
+  EXPECT_EQ(ChildFrameAt(contents->GetMainFrame(), 0)->GetLastCommittedURL(),
             ipfs::GetIPFSGatewayURL(
                 "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC",
-                "simple_content", GetDefaultIPFSGateway(browser()->profile())));
-  EXPECT_EQ(
-      ChildFrameAt(contents->GetMainFrame(), 0)->GetLastCommittedURL(),
-      ipfs::GetIPFSGatewayURL("Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC",
-                              "simple_content_2",
-                              GetDefaultIPFSGateway(browser()->profile())));
+                "simple_content_2", GetDefaultIPFSGateway(prefs)));
 }
 
 // Make sure an <img src="ipfs://..."> can load within another ipfs:// scheme

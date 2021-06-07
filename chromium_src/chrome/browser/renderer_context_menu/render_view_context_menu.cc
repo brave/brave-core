@@ -199,7 +199,7 @@ void BraveRenderViewContextMenu::AddSpellCheckServiceItem(
 
 #if BUILDFLAG(IPFS_ENABLED)
 bool BraveRenderViewContextMenu::IsIPFSCommandIdEnabled(int command) const {
-  if (!ipfs::IsIpfsMenuEnabled(browser_context_))
+  if (!ipfs::IsIpfsMenuEnabled(GetProfile()->GetPrefs()))
     return false;
   switch (command) {
     case IDC_CONTENT_CONTEXT_IMPORT_IPFS:
@@ -234,7 +234,7 @@ void BraveRenderViewContextMenu::SeIpfsIconAt(int index) {
 }
 
 void BraveRenderViewContextMenu::BuildIPFSMenu() {
-  if (!ipfs::IsIpfsMenuEnabled(browser_context_))
+  if (!ipfs::IsIpfsMenuEnabled(GetProfile()->GetPrefs()))
     return;
   int index =
       menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_INSPECTELEMENT);

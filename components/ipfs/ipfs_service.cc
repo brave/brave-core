@@ -36,6 +36,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/service_process_host.h"
 #include "content/public/browser/storage_partition.h"
+#include "extensions/buildflags/buildflags.h"
 #include "net/base/url_util.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
@@ -43,6 +44,10 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "extensions/browser/extension_registry.h"
+#endif
 
 namespace {
 
@@ -97,7 +102,14 @@ IpfsService::IpfsService(content::BrowserContext* context,
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-      ipfs_p3a(this, context),
+      ipfs_p3a(this,
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+               extensions::ExtensionRegistry::Get(context)
+#else
+               nullptr
+#endif
+                   ,
+               user_prefs::UserPrefs::Get(context)),
       weak_factory_(this) {
   DCHECK(!user_data_dir.empty());
   url_loader_factory_ =

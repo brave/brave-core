@@ -34,6 +34,7 @@
 #include "brave/browser/ui/views/location_bar/onion_location_view.h"
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
+#include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/ui/views/location_bar/ipfs_location_view.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
@@ -107,8 +108,9 @@ void BraveLocationBarView::Init() {
 bool BraveLocationBarView::ShouldShowIPFSLocationView() const {
 #if BUILDFLAG(IPFS_ENABLED)
   const GURL& url = GetLocationBarModel()->GetURL();
-  if (!ipfs::IsIPFSScheme(url) || !ipfs::IsIpfsEnabled(profile_) ||
-      !ipfs::IsLocalGatewayConfigured(profile_))
+  if (!ipfs::IpfsServiceFactory::IsIpfsEnabled(profile_) ||
+      !ipfs::IsIPFSScheme(url) ||
+      !ipfs::IsLocalGatewayConfigured(profile_->GetPrefs()))
     return false;
 
   return true;
