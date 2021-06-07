@@ -23,11 +23,10 @@ using std::placeholders::_3;
 namespace ledger {
 namespace uphold {
 
-UpholdAuthorization::UpholdAuthorization(LedgerImpl* ledger) :
-    ledger_(ledger),
-    promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)),
-    uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)) {
-}
+UpholdAuthorization::UpholdAuthorization(LedgerImpl* ledger)
+    : ledger_(ledger),
+      promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)),
+      uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)) {}
 
 UpholdAuthorization::~UpholdAuthorization() = default;
 

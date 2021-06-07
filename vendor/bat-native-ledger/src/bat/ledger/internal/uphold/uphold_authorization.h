@@ -26,9 +26,8 @@ class UpholdAuthorization {
 
   ~UpholdAuthorization();
 
-  void Authorize(
-      const base::flat_map<std::string, std::string>& args,
-      ledger::ExternalWalletAuthorizationCallback callback) const;
+  void Authorize(const base::flat_map<std::string, std::string>& args,
+                 ledger::ExternalWalletAuthorizationCallback callback) const;
 
   void GetAnonFunds(
       endpoint::promotion::GetWalletBalanceCallback callback) const;
@@ -38,20 +37,17 @@ class UpholdAuthorization {
       endpoint::promotion::PostClaimUpholdCallback callback) const;
 
  private:
-  void OnAuthorize(
-      const type::Result result,
-      const std::string& token,
-      ledger::ExternalWalletAuthorizationCallback callback) const;
+  void OnAuthorize(const type::Result result,
+                   const std::string& token,
+                   ledger::ExternalWalletAuthorizationCallback callback) const;
 
-  void OnGetUser(
-      const type::Result result,
-      const User& user,
-      ledger::ExternalWalletAuthorizationCallback callback) const;
+  void OnGetUser(const type::Result result,
+                 const User& user,
+                 ledger::ExternalWalletAuthorizationCallback callback) const;
 
-  void OnCardCreate(
-      const type::Result result,
-      const std::string& address,
-      ledger::ExternalWalletAuthorizationCallback callback) const;
+  void OnCardCreate(const type::Result result,
+                    const std::string& address,
+                    ledger::ExternalWalletAuthorizationCallback callback) const;
 
   void OnGetAnonFunds(
       const type::Result result,
