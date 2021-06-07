@@ -553,7 +553,7 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
         return dialogView.point(inside: point, with: nil) == false
     }
     
-    @objc func backgroundTapped(recognizer: AnyObject?) {
+    @objc func backgroundTapped(recognizer: UIGestureRecognizer?) {
         if overlayDismisses == false {
             return
         }
