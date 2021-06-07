@@ -17,7 +17,9 @@ class BraveWaybackMachineInfoBarThrobber;
 // on that area.
 class BraveWaybackMachineInfoBarButtonContainer : public views::View {
  public:
+  enum class ButtonID { BUTTON_ID_FETCH_URL, BUTTON_ID_DONT_ASK };
   explicit BraveWaybackMachineInfoBarButtonContainer(
+      ButtonID button_id,
       views::Button::PressedCallback callback);
   ~BraveWaybackMachineInfoBarButtonContainer() override;
 

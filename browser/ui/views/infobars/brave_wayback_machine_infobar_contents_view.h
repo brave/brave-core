@@ -22,6 +22,7 @@ class Label;
 
 class BraveWaybackMachineInfoBarButtonContainer;
 class GURL;
+class PrefService;
 
 // Includes all view controls except close button that managed by InfoBarView.
 class BraveWaybackMachineInfoBarContentsView
@@ -55,7 +56,8 @@ class BraveWaybackMachineInfoBarContentsView
   void LoadURL(const GURL& url);
   void HideInfobar();
 
-  void ButtonPressed();
+  void FetchURLButtonPressed();
+  void DontAskButtonPressed();
 
   // Used for labels theme changing all together.
   Labels labels_;
@@ -64,7 +66,9 @@ class BraveWaybackMachineInfoBarContentsView
   content::WebContents* contents_;
   WaybackMachineURLFetcher wayback_machine_url_fetcher_;
 
-  BraveWaybackMachineInfoBarButtonContainer* button_ = nullptr;
+  BraveWaybackMachineInfoBarButtonContainer* fetch_url_button = nullptr;
+  BraveWaybackMachineInfoBarButtonContainer* dont_ask_button = nullptr;
+  PrefService* pref_service_ = nullptr;
   views::ImageView* wayback_spot_graphic_ = nullptr;
   bool wayback_url_fetch_requested_ = false;
 };
