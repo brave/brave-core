@@ -86,7 +86,7 @@ class BraveStatsUpdaterBrowserTest : public PlatformBrowserTest {
     brave_stats::BraveStatsUpdater::SetStatsUpdatedCallbackForTesting(nullptr);
     brave_stats::BraveStatsUpdater::SetStatsThresholdCallbackForTesting(
         nullptr);
-    InProcessBrowserTest::TearDown();
+    PlatformBrowserTest::TearDown();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {

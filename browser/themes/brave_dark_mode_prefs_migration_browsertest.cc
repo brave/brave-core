@@ -7,17 +7,12 @@
 #include "brave/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/test/base/chrome_test_utils.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 
-#if defined(OS_ANDROID)
-#include "chrome/test/base/android/android_browser_test.h"
-#else
-#include "chrome/test/base/in_process_browser_test.h"
-#endif
-
-using DarkModePrefsMigrationTest = PlatformBrowserTest;
+using DarkModePrefsMigrationTest = InProcessBrowserTest;
 
 IN_PROC_BROWSER_TEST_F(DarkModePrefsMigrationTest, PrefMigrationTest) {
   g_browser_process->local_state()->ClearPref(kBraveDarkMode);
@@ -26,10 +21,10 @@ IN_PROC_BROWSER_TEST_F(DarkModePrefsMigrationTest, PrefMigrationTest) {
 
   const int dark_mode_type = 2;
   // Set profile prefs explicitly for migration test.
-  chrome_test_utils::GetProfile(this)->GetPrefs()->SetInteger(kBraveThemeType, dark_mode_type);
+  browser()->profile()->GetPrefs()->SetInteger(kBraveThemeType, dark_mode_type);
 
   // Migrate and check it's done properly with previous profile prefs value.
-  dark_mode::MigrateBraveDarkModePrefs(chrome_test_utils::GetProfile(this));
+  dark_mode::MigrateBraveDarkModePrefs(browser()->profile());
   EXPECT_FALSE(g_browser_process->local_state()->
       FindPreference(kBraveDarkMode)->IsDefaultValue());
   EXPECT_EQ(dark_mode_type,
