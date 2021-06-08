@@ -60,7 +60,6 @@ class SpeedreaderModeBubble : public SpeedreaderBubbleView,
   // views::View
   gfx::Size CalculatePreferredSize() const override;
 
-  void OnButtonPressed(const ui::Event& event);
   void OnLinkClicked(const ui::Event& event);
 
   SpeedreaderTabHelper* tab_helper_;  // weak.

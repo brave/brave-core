@@ -6,6 +6,11 @@
 #include "brave/components/speedreader/speedreader_util.h"
 
 #include "base/strings/string_util.h"
+#include "components/content_settings/core/browser/content_settings_utils.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings_pattern.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "url/gurl.h"
 
 namespace speedreader {
@@ -44,6 +49,34 @@ bool URLReadableHintExtractor::HasHints(const GURL& url) {
   }
 
   return false;
+}
+
+void SetSiteSpeedreadable(HostContentSettingsMap* map,
+                          const GURL& url,
+                          bool enable) {
+  DCHECK(!url.is_empty());  // Not supported. Disable Speedreader in settings.
+
+  // Rule covers all protocols and pages.
+  auto pattern = ContentSettingsPattern::FromString("*://" + url.host() + "/*");
+  if (!pattern.IsValid())
+    return;
+
+  ContentSetting setting =
+      enable ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW;
+  map->SetContentSettingCustomScope(pattern, ContentSettingsPattern::Wildcard(),
+                                    ContentSettingsType::BRAVE_SPEEDREADER,
+                                    setting);
+}
+
+bool IsEnabledForURL(HostContentSettingsMap* map, const GURL& url) {
+  ContentSetting setting = map->GetContentSetting(
+      url, GURL(), ContentSettingsType::BRAVE_SPEEDREADER);
+  // Since Brave specific content settings are registered with
+  // CONTENT_SETTINCG_BLOCK, the logic is reversed here. Sites that are
+  // "allowed" are actually blacklisted by the user.
+  // https://github.com/brave/brave-core/blob/1cb5818aa0b70666c6aeea5ea9c06cc4e712171a/chromium_src/components/content_settings/core/browser/content_settings_registry.cc#L37
+  const bool enabled = setting == CONTENT_SETTING_BLOCK;
+  return enabled;
 }
 
 }  // namespace speedreader

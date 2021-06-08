@@ -463,9 +463,14 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
   if (tab_helper && tab_helper->IsActiveForMainFrame() &&
       request.resource_type ==
           static_cast<int>(blink::mojom::ResourceType::kMainFrame)) {
-    result.push_back(std::make_unique<speedreader::SpeedReaderThrottle>(
-        g_brave_browser_process->speedreader_rewriter_service(),
-        base::ThreadTaskRunnerHandle::Get()));
+    std::unique_ptr<speedreader::SpeedReaderThrottle> throttle =
+        speedreader::SpeedReaderThrottle::MaybeCreateThrottleFor(
+            g_brave_browser_process->speedreader_rewriter_service(),
+            HostContentSettingsMapFactory::GetForProfile(
+                Profile::FromBrowserContext(browser_context)),
+            request.url, base::ThreadTaskRunnerHandle::Get());
+    if (throttle)
+      result.push_back(std::move(throttle));
   }
 #endif  // ENABLE_SPEEDREADER
   return result;

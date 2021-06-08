@@ -8,6 +8,8 @@
 #undef BRAVE_INIT
 
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/speedreader/constants.h"
+
 namespace content_settings {
 
 namespace {
@@ -27,6 +29,7 @@ const struct {
     {brave_shields::kBraveShields, ContentSettingsType::BRAVE_SHIELDS},
     {brave_shields::kReferrers, ContentSettingsType::BRAVE_REFERRERS},
     {brave_shields::kCookies, ContentSettingsType::BRAVE_COOKIES},
+    {speedreader::kSpeedreader, ContentSettingsType::BRAVE_SPEEDREADER},
 };
 
 }  // namespace

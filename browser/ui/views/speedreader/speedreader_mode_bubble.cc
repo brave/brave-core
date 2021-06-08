@@ -15,6 +15,7 @@
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/views/speedreader/speedreader_bubble_util.h"
 #include "brave/common/url_constants.h"
+#include "brave/components/speedreader/speedreader_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #include "chrome/grit/generated_resources.h"
@@ -81,6 +82,7 @@ bool SpeedreaderModeBubble::ShouldShowCloseButton() const {
 
 void SpeedreaderModeBubble::WindowClosing() {
   if (tab_helper_) {
+    tab_helper_->MaybeToggleSiteSpeedreadable(site_toggle_button_->GetIsOn());
     tab_helper_->OnBubbleClosed();
     tab_helper_ = nullptr;
   }
@@ -124,9 +126,8 @@ void SpeedreaderModeBubble::Init() {
   // float button right
   site_toggle_layout->set_main_axis_alignment(
       views::BoxLayout::MainAxisAlignment::kEnd);
-  auto site_toggle_button =
-      std::make_unique<views::ToggleButton>(base::BindRepeating(
-          &SpeedreaderModeBubble::OnButtonPressed, base::Unretained(this)));
+  auto site_toggle_button = std::make_unique<views::ToggleButton>();
+  site_toggle_button->SetIsOn(tab_helper_->GetSiteSpeedreadable());
   // TODO(keur): We shoud be able to remove these once brave overrides
   // views::ToggleButton globally with our own theme
   site_toggle_button->SetThumbOnColor(kColorButtonThumb);
@@ -142,12 +143,6 @@ void SpeedreaderModeBubble::Init() {
       base::BindRepeating(&SpeedreaderModeBubble::OnLinkClicked,
                           base::Unretained(this)));
   site_toggle_explanation_ = AddChildView(std::move(site_toggle_explanation));
-}
-
-void SpeedreaderModeBubble::OnButtonPressed(const ui::Event& event) {
-  // FIXME: Tie up this logic to the speedreader service. Disable just this
-  // domain.
-  NOTIMPLEMENTED();
 }
 
 void SpeedreaderModeBubble::OnLinkClicked(const ui::Event& event) {

@@ -16,6 +16,8 @@ source_set("speedreader") {
   ]
 
   sources = [
+    "constants.cc",
+    "constants.h",
     "features.cc",
     "features.h",
     "speedreader_component.cc",
@@ -41,6 +43,8 @@ source_set("speedreader") {
     "//brave/components/resources",
     "//brave/components/resources:static_resources_grit",
     "//brave/components/weekly_storage",
+    "//components/content_settings/core/browser",
+    "//components/content_settings/core/common",
     "//components/keyed_service/core:core",
     "//components/prefs:prefs",
     "//services/network/public/cpp",

@@ -12,6 +12,8 @@
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_test_whitelist.h"
+#include "brave/components/speedreader/speedreader_util.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -31,6 +33,27 @@ bool SpeedreaderTabHelper::IsSpeedreaderEnabled() const {
       Profile::FromBrowserContext(web_contents()->GetBrowserContext());
   DCHECK(profile);
   return SpeedreaderServiceFactory::GetForProfile(profile)->IsEnabled();
+}
+
+bool SpeedreaderTabHelper::GetSiteSpeedreadable() {
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  auto* content_rules = HostContentSettingsMapFactory::GetForProfile(profile);
+  return speedreader::IsEnabledForURL(content_rules,
+                                      web_contents()->GetLastCommittedURL());
+}
+
+void SpeedreaderTabHelper::MaybeToggleSiteSpeedreadable(bool on) {
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  auto* content_rules = HostContentSettingsMapFactory::GetForProfile(profile);
+  bool enabled = speedreader::IsEnabledForURL(
+      content_rules, web_contents()->GetLastCommittedURL());
+  if (enabled != on) {
+    speedreader::SetSiteSpeedreadable(
+        content_rules, web_contents()->GetLastCommittedURL(), on);
+    web_contents()->GetController().Reload(content::ReloadType::NORMAL, false);
+  }
 }
 
 void SpeedreaderTabHelper::UpdateActiveState(

@@ -9,11 +9,26 @@
 
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_url_loader.h"
+#include "brave/components/speedreader/speedreader_util.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace speedreader {
+
+// static
+std::unique_ptr<SpeedReaderThrottle>
+SpeedReaderThrottle::MaybeCreateThrottleFor(
+    SpeedreaderRewriterService* rewriter_service,
+    HostContentSettingsMap* content_settings,
+    const GURL& url,
+    scoped_refptr<base::SingleThreadTaskRunner> task_runner) {
+  if (!IsEnabledForURL(content_settings, url))
+    return nullptr;
+  return std::make_unique<SpeedReaderThrottle>(rewriter_service, task_runner);
+}
 
 SpeedReaderThrottle::SpeedReaderThrottle(
     SpeedreaderRewriterService* rewriter_service,
