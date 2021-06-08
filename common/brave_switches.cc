@@ -5,8 +5,6 @@
 
 #include "brave/common/brave_switches.h"
 
-#include "base/command_line.h"
-
 namespace switches {
 
 // Allows disabling the Brave extension.
@@ -38,8 +36,6 @@ const char kDisableMachineId[] = "disable-machine-id";
 // WARNING! Use ONLY if your hard drive is encrypted or if you know
 // what you are doing.
 const char kDisableEncryptionWin[] = "disable-encryption-win";
-
-const char kFastWidevineBundleUpdate[] = "fast-widevine-bundle-update";
 
 // Use custom update interval in sec
 const char kComponentUpdateIntervalInSec[] = "component-update-interval-in-sec";
