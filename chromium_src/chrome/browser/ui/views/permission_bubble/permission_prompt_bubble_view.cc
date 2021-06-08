@@ -137,11 +137,11 @@ class PermissionLifetimeCombobox : public views::Combobox,
   std::vector<permissions::PermissionLifetimeOption> lifetime_options_;
 };
 
-void AddPermissionLifetimeComboboxIfNeeded(
+views::View* AddPermissionLifetimeComboboxIfNeeded(
     views::BubbleDialogDelegateView* dialog_delegate_view,
     permissions::PermissionPrompt::Delegate* delegate) {
   if (!ShouldShowLifetimeOptions(delegate)) {
-    return;
+    return nullptr;
   }
 
   // Create a single line container for a label and a combobox.
@@ -166,7 +166,7 @@ void AddPermissionLifetimeComboboxIfNeeded(
       ->SetFlexForView(combobox, 1);
 
   // Add the container to the view.
-  dialog_delegate_view->AddChildView(std::move(container));
+  return dialog_delegate_view->AddChildView(std::move(container));
 }
 
 void AddFootnoteViewIfNeeded(
@@ -217,8 +217,16 @@ void AddFootnoteViewIfNeeded(
 
 #define BRAVE_PERMISSION_PROMPT_BUBBLE_VIEW                               \
   AddAdditionalWidevineViewControlsIfNeeded(this, delegate_->Requests()); \
-  AddPermissionLifetimeComboboxIfNeeded(this, delegate_);                 \
-  AddFootnoteViewIfNeeded(this, browser_);
+  auto* permission_lifetime_view =                                        \
+      AddPermissionLifetimeComboboxIfNeeded(this, delegate_);             \
+  AddFootnoteViewIfNeeded(this, browser_);                                \
+  if (permission_lifetime_view) {                                         \
+    set_fixed_width(                                                      \
+        std::max(GetPreferredSize().width(),                              \
+                 permission_lifetime_view->GetPreferredSize().width()) +  \
+        margins().width());                                               \
+    set_should_ignore_snapping(true);                                     \
+  }
 
 #include "../../../../../../../chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc"
 #undef BRAVE_PERMISSION_PROMPT_BUBBLE_VIEW
