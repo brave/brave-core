@@ -24,6 +24,7 @@
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/user_data/confirmation_dto_user_data_builder.h"
+#include "bat/ads/pref_names.h"
 
 namespace ads {
 
@@ -88,15 +89,18 @@ void Confirmations::ConfirmAd(const std::string& creative_instance_id,
                         << " ad for creative instance id "
                         << creative_instance_id);
 
-  if (ConfirmationsState::Get()->get_unblinded_tokens()->IsEmpty()) {
-    BLOG(1, "There are no unblinded tokens");
+  // TODO(Moritz Haller): Think about logic
+  // if (wallet.IsValid() &&
+  //       ConfirmationsState::Get()->get_unblinded_tokens()->IsEmpty()) {
+  //     BLOG(1, "There are no unblinded tokens");
 
-    BLOG(3, "Failed to confirm " << std::string(confirmation_type)
-                                 << " ad with creative instance id "
-                                 << creative_instance_id);
-
-    return;
-  }
+  //     BLOG(3, "Failed to confirm " << std::string(confirmation_type)
+  //         user_data.GetAsDictionary(&user_data_dictionary);
+  //         const ConfirmationInfo confirmation = CreateConfirmation(
+  //             creative_instance_id, confirmation_type, *user_data_dictionary);
+  //         redeem_unblinded_token_->Redeem(wallet, confirmation);
+  //       });
+  // }
 
   dto::user_data::Build(
       creative_instance_id, confirmation_type,
@@ -135,29 +139,34 @@ ConfirmationInfo Confirmations::CreateConfirmation(
   confirmation.creative_instance_id = creative_instance_id;
   confirmation.type = confirmation_type;
 
-  const privacy::UnblindedTokenInfo unblinded_token =
-      ConfirmationsState::Get()->get_unblinded_tokens()->GetToken();
-  confirmation.unblinded_token = unblinded_token;
+  if (!ConfirmationsState::Get()->get_unblinded_tokens()->IsEmpty() &&
+      AdsClientHelper::Get()->GetBooleanPref(prefs::kEnabled)) {
+    const privacy::UnblindedTokenInfo unblinded_token =
+        ConfirmationsState::Get()->get_unblinded_tokens()->GetToken();
+    confirmation.unblinded_token = unblinded_token;
 
-  const std::vector<Token> tokens = token_generator_->Generate(1);
-  confirmation.payment_token = tokens.front();
+    const std::vector<Token> tokens = token_generator_->Generate(1);
+    confirmation.payment_token = tokens.front();
 
-  const std::vector<BlindedToken> blinded_tokens = privacy::BlindTokens(tokens);
-  const BlindedToken blinded_token = blinded_tokens.front();
-  confirmation.blinded_payment_token = blinded_token;
+    const std::vector<BlindedToken> blinded_tokens =
+        privacy::BlindTokens(tokens);
+    const BlindedToken blinded_token = blinded_tokens.front();
+    confirmation.blinded_payment_token = blinded_token;
 
-  std::string json;
-  base::JSONWriter::Write(user_data, &json);
-  confirmation.user_data = json;
+    std::string json;
+    base::JSONWriter::Write(user_data, &json);
+    confirmation.user_data = json;
 
-  confirmation.timestamp = static_cast<int64_t>(base::Time::Now().ToDoubleT());
+    confirmation.timestamp =
+        static_cast<int64_t>(base::Time::Now().ToDoubleT());
 
-  const std::string payload = CreateConfirmationRequestDTO(confirmation);
-  confirmation.credential = CreateCredential(unblinded_token, payload);
+    const std::string payload = CreateConfirmationRequestDTO(confirmation);
+    confirmation.credential = CreateCredential(unblinded_token, payload);
 
-  ConfirmationsState::Get()->get_unblinded_tokens()->RemoveToken(
-      unblinded_token);
-  ConfirmationsState::Get()->Save();
+    ConfirmationsState::Get()->get_unblinded_tokens()->RemoveToken(
+        unblinded_token);
+    ConfirmationsState::Get()->Save();
+  }
 
   return confirmation;
 }

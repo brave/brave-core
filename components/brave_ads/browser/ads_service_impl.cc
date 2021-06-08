@@ -45,6 +45,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_ads/browser/features.h"
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
@@ -57,6 +58,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/rpill/common/rpill.h"
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
@@ -518,6 +520,15 @@ bool AdsServiceImpl::IsEnabled() const {
   return GetBooleanPref(ads::prefs::kEnabled);
 }
 
+bool AdsServiceImpl::ShouldStart() const {
+  // TODO(https://github.com/brave/brave-browser/issues/16280): Disable NTP
+  // background images switch does not disable NTP-SI setting
+  return GetBooleanPref(ads::prefs::kEnabled) ||
+      GetBooleanPref(ntp_background_images::prefs::
+          kNewTabPageShowSponsoredImagesBackgroundImage) ||
+      GetBooleanPref(kNewTabPageShowToday);
+}
+
 int64_t AdsServiceImpl::GetAdsPerHour() const {
   int64_t ads_per_hour = GetInt64Pref(ads::prefs::kAdsPerHour);
   if (ads_per_hour == -1) {
@@ -651,6 +662,14 @@ void AdsServiceImpl::Initialize() {
       base::BindRepeating(&AdsServiceImpl::OnPrefsChanged,
                           base::Unretained(this)));
 
+  profile_pref_change_registrar_.Add(
+    ntp_background_images::prefs::kNewTabPageShowSponsoredImagesBackgroundImage,
+      base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
+
+  profile_pref_change_registrar_.Add(
+      kNewTabPageShowToday,
+      base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
+
   MaybeStart(false);
 }
 
@@ -731,7 +750,7 @@ void AdsServiceImpl::MaybeStart(const bool should_restart) {
     return;
   }
 
-  if (!IsEnabled()) {
+  if (!ShouldStart()) {
     Stop();
     return;
   }
@@ -839,9 +858,9 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(const bool success) {
     return;
   }
 
-  g_brave_browser_process->resource_component()->AddObserver(this);
-
   BackgroundHelper::GetInstance()->AddObserver(this);
+
+  g_brave_browser_process->resource_component()->AddObserver(this);
 
   database_ = std::make_unique<ads::Database>(
       base_path_.AppendASCII("database.sqlite"));
@@ -852,9 +871,6 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(const bool success) {
       base::BindOnce(&AdsServiceImpl::OnCreate, AsWeakPtr()));
 
   OnWalletUpdated();
-
-  const std::string locale = GetLocale();
-  RegisterResourceComponentsForLocale(locale);
 
   MaybeShowMyFirstAdNotification();
 }
@@ -1094,6 +1110,10 @@ void AdsServiceImpl::NotificationTimedOut(const std::string& uuid) {
 
 void AdsServiceImpl::RegisterResourceComponentsForLocale(
     const std::string& locale) {
+  if (!IsEnabled()) {
+    return;
+  }
+
   g_brave_browser_process->resource_component()->RegisterComponentsForLocale(
       locale);
 }
@@ -1669,24 +1689,29 @@ bool AdsServiceImpl::PrefExists(const std::string& path) const {
 }
 
 void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
-  if (pref == ads::prefs::kEnabled) {
-    rewards_service_->OnAdsEnabled(IsEnabled());
+  if (pref == ads::prefs::kEnabled ||
+      pref == ntp_background_images::prefs::
+          kNewTabPageShowSponsoredImagesBackgroundImage ||
+      pref == kNewTabPageShowToday) {
+    if (pref == ads::prefs::kEnabled) {
+      rewards_service_->OnAdsEnabled(IsEnabled());
 
-    if (IsEnabled()) {
-      MaybeStart(false);
-    } else {
-      // Record "special value" to prevent sending this week's data to P2A
-      // server. Matches INT_MAX - 1 for |kSuspendedMetricValue| in
-      // |brave_p3a_service.cc|
-      SuspendP2AHistograms();
-      VLOG(1) << "P2A histograms suspended";
+      if (!IsEnabled()) {
+        // Record "special value" to prevent sending this week's data to P2A
+        // server. Matches INT_MAX - 1 for |kSuspendedMetricValue| in
+        // |brave_p3a_service.cc|
+        SuspendP2AHistograms();
+        VLOG(1) << "P2A histograms suspended";
+      } else {
+        const std::string locale = GetLocale();
+        RegisterResourceComponentsForLocale(locale);
+      }
 
-      Stop();
+      brave_rewards::p3a::UpdateAdsStateOnPreferenceChange(profile_->GetPrefs(),
+                                                           pref);
     }
 
-    // Record P3A.
-    brave_rewards::p3a::UpdateAdsStateOnPreferenceChange(profile_->GetPrefs(),
-                                                         pref);
+    MaybeStart(/* should_restart */ false);
   } else if (pref == ads::prefs::kIdleTimeThreshold) {
     StartCheckIdleStateTimer();
   } else if (pref == brave_rewards::prefs::kWalletBrave) {

@@ -62,7 +62,8 @@ void RedeemUnblindedToken::Redeem(const ConfirmationInfo& confirmation) {
 void RedeemUnblindedToken::CreateConfirmation(
     const ConfirmationInfo& confirmation) {
   BLOG(1, "CreateConfirmation");
-  BLOG(2, "POST /v1/confirmation/{confirmation_id}/{credential}");
+  // TODO(Moritz Haller): check logs for correct endpoint
+  BLOG(2, "POST /v2/confirmation/{confirmation_id}");
 
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
   UrlRequestPtr url_request = url_request_builder.Build();
@@ -89,6 +90,11 @@ void RedeemUnblindedToken::OnCreateConfirmation(
     // confirmations as we cannot guarantee if the confirmation was created or
     // not, i.e. after an internal server error 500
     BLOG(1, "Duplicate/bad confirmation");
+  }
+
+  if (url_response.status_code == 418) {  // I'm a teapot
+    BLOG(1, "Private confirmation");
+    return;
   }
 
   ConfirmationInfo new_confirmation = confirmation;

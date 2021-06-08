@@ -33,6 +33,8 @@ void Build(const std::string& creative_instance_id,
   const base::DictionaryValue build_channel_user_data = GetBuildChannel();
   user_data.MergeDictionary(&build_channel_user_data);
 
+  // TODO(Moritz Haller): add confirmation credential to DTO
+
   const base::DictionaryValue locale_user_data = GetLocale();
   user_data.MergeDictionary(&locale_user_data);
 
