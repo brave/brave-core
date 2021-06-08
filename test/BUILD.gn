@@ -17,7 +17,7 @@ import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
-import("//brave/components/speedreader/buildflags.gni")
+import("//brave/components/speedreader/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/test/testing.gni")
 import("//chrome/common/features.gni")
@@ -484,7 +484,11 @@ test("brave_unit_tests") {
       "//brave/components/speedreader/speedreader_util_unittest.cc",
     ]
 
-    deps += [ "//brave/components/speedreader" ]
+    deps += [
+      "//brave/components/speedreader",
+      "//brave/components/speedreader/buildflags",
+      "//brave/components/speedreader/common",
+    ]
   }
   if (ipfs_enabled) {
     deps += [ "//brave/browser/ipfs/test:unittests" ]
@@ -803,7 +807,10 @@ if (!is_android) {
         "//brave/browser/speedreader/speedreader_browsertest.cc",
         "//brave/browser/ui/speedreader/speedreader_bubble_browsertest.cc",
       ]
-      deps += [ "//brave/components/speedreader" ]
+      deps += [
+        "//brave/components/speedreader",
+        "//brave/components/speedreader/common",
+      ]
     }
 
     if (is_win || is_linux) {

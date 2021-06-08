@@ -8,7 +8,7 @@ import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
-import("//brave/components/speedreader/buildflags.gni")
+import("//brave/components/speedreader/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//chrome/common/features.gni")
@@ -539,7 +539,8 @@ source_set("ui") {
       ]
       deps += [
         "//brave/components/speedreader",
-        "//brave/components/speedreader:buildflags",
+        "//brave/components/speedreader/buildflags",
+        "//brave/components/speedreader/common",
       ]
     }
   }

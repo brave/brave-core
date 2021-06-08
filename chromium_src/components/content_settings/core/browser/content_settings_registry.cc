@@ -8,7 +8,7 @@
 #undef BRAVE_INIT
 
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "brave/components/speedreader/constants.h"
+#include "brave/components/speedreader/common/constants.h"
 
 namespace content_settings {
 

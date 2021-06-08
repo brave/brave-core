@@ -17,6 +17,7 @@ source_set("browser") {
       "//brave/common:pref_names",
       "//brave/components/brave_shields/common",
       "//brave/components/content_settings/core/common",
+      "//brave/components/speedreader/common",
 
       # see https://github.com/brave/brave-browser/issues/10624 above
       # "//components/content_settings/core/browser",

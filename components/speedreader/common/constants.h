@@ -3,10 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/components/speedreader/constants.h"
+#ifndef BRAVE_COMPONENTS_SPEEDREADER_COMMON_CONSTANTS_H_
+#define BRAVE_COMPONENTS_SPEEDREADER_COMMON_CONSTANTS_H_
 
 namespace speedreader {
-
-const char kSpeedreader[] = "braveSpeedreader";
-
+extern const char kSpeedreader[];
 }  // namespace speedreader
+
+#endif  // BRAVE_COMPONENTS_SPEEDREADER_COMMON_CONSTANTS_H_

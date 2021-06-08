@@ -16,7 +16,7 @@
 #include "brave/browser/ui/views/toolbar/speedreader_button.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "brave/components/speedreader/buildflags.h"
+#include "brave/components/speedreader/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/defaults.h"
@@ -32,8 +32,8 @@
 #include "ui/events/event.h"
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/components/speedreader/features.h"
-#include "brave/components/speedreader/speedreader_pref_names.h"
+#include "brave/components/speedreader/common/features.h"
+#include "brave/components/speedreader/common/speedreader_pref_names.h"
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)

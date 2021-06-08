@@ -15,7 +15,7 @@
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/speedreader/buildflags.h"
+#include "brave/components/speedreader/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "extensions/buildflags/buildflags.h"

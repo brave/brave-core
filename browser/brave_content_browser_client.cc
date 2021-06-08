@@ -45,7 +45,7 @@
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/speedreader/buildflags.h"
+#include "brave/components/speedreader/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"

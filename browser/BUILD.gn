@@ -1,5 +1,5 @@
 import("//brave/build/config.gni")
-import("//brave/components/speedreader/buildflags.gni")
+import("//brave/components/speedreader/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 import("//chrome/common/features.gni")
@@ -23,7 +23,7 @@ source_set("browser_process") {
     "//brave/components/brave_referrals/buildflags",
     "//brave/components/greaselion/browser/buildflags",
     "//brave/components/ipfs/buildflags",
-    "//brave/components/speedreader:buildflags",
+    "//brave/components/speedreader/buildflags",
     "//brave/components/tor/buildflags",
     "//chrome/browser:browser_process",
     "//extensions/buildflags",

@@ -1,5 +1,5 @@
 import("//brave/components/sidebar/buildflags/buildflags.gni")
-import("//brave/components/speedreader/buildflags.gni")
+import("//brave/components/speedreader/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//build/config/locales.gni")
 import("//tools/grit/grit_rule.gni")

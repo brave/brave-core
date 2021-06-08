@@ -21,7 +21,7 @@
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
-#include "brave/components/speedreader/buildflags.h"
+#include "brave/components/speedreader/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
@@ -40,7 +40,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/components/speedreader/features.h"
+#include "brave/components/speedreader/common/features.h"
 #endif
 
 using ntp_background_images::ViewCounterServiceFactory;
