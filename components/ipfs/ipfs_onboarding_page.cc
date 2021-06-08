@@ -21,8 +21,6 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/security_interstitial_controller_client.h"
-#include "components/user_prefs/user_prefs.h"
-#include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/isolated_world_ids.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -70,10 +68,9 @@ IPFSOnboardingPage::IPFSOnboardingPage(
 IPFSOnboardingPage::~IPFSOnboardingPage() = default;
 
 void IPFSOnboardingPage::UseLocalNode() {
-  auto* context = web_contents()->GetBrowserContext();
-  auto* prefs = user_prefs::UserPrefs::Get(context);
-  prefs->SetInteger(kIPFSResolveMethod,
-                    static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
+  controller()->GetPrefService()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
   start_time_ticks_ = base::TimeTicks::Now();
   if (!ipfs_service_->IsDaemonLaunched()) {
     ipfs_service_->LaunchDaemon(base::NullCallback());
@@ -84,8 +81,7 @@ void IPFSOnboardingPage::UseLocalNode() {
 }
 
 void IPFSOnboardingPage::UsePublicGateway() {
-  auto* prefs = user_prefs::UserPrefs::Get(web_contents()->GetBrowserContext());
-  prefs->SetInteger(
+  controller()->GetPrefService()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
   Proceed();
@@ -143,9 +139,7 @@ void IPFSOnboardingPage::GetConnectedPeers() {
 }
 
 bool IPFSOnboardingPage::IsLocalNodeMode() {
-  auto* context = web_contents()->GetBrowserContext();
-  auto* prefs = user_prefs::UserPrefs::Get(context);
-  return (prefs->GetInteger(kIPFSResolveMethod) ==
+  return (controller()->GetPrefService()->GetInteger(kIPFSResolveMethod) ==
           static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
 }
 

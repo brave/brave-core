@@ -17,6 +17,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/observer_list.h"
 #include "brave/components/ipfs/addresses_config.h"
+#include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/brave_ipfs_client_updater.h"
 #include "brave/components/ipfs/import/imported_data.h"
 #include "brave/components/ipfs/ipfs_constants.h"
@@ -32,10 +33,6 @@
 namespace base {
 class SequencedTaskRunner;
 }  // namespace base
-
-namespace content {
-class BrowserContext;
-}  // namespace content
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -55,7 +52,9 @@ class IpnsKeysManager;
 class IpfsService : public KeyedService,
                     public BraveIpfsClientUpdater::Observer {
  public:
-  IpfsService(content::BrowserContext* context,
+  IpfsService(PrefService* prefs,
+              scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+              BlobContextGetterFactoryPtr blob_context_getter_factory,
               ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
               const base::FilePath& user_data_dir,
               version_info::Channel channel);
@@ -187,11 +186,12 @@ class IpfsService : public KeyedService,
   mojo::Remote<ipfs::mojom::IpfsService> ipfs_service_;
 
   int64_t ipfs_pid_ = -1;
-  content::BrowserContext* context_;
   base::ObserverList<IpfsServiceObserver> observers_;
 
+  PrefService* prefs_ = nullptr;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   SimpleURLLoaderList url_loaders_;
+  BlobContextGetterFactoryPtr blob_context_getter_factory_;
 
   base::queue<LaunchDaemonCallback> pending_launch_callbacks_;
 
@@ -212,7 +212,7 @@ class IpfsService : public KeyedService,
   std::unordered_map<size_t, std::unique_ptr<IpfsImportWorkerBase>> importers_;
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   std::unique_ptr<IpnsKeysManager> ipns_keys_manager_;
-  IpfsP3A ipfs_p3a;
+  IpfsP3A ipfs_p3a_;
   base::WeakPtrFactory<IpfsService> weak_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(IpfsService);

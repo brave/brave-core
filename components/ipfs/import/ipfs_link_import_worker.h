@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 
+#include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/import/imported_data.h"
 #include "brave/components/ipfs/import/ipfs_import_worker_base.h"
 #include "url/gurl.h"
@@ -23,7 +24,8 @@ namespace ipfs {
 // Puts the blob to the base class for the upload using IPFS api
 class IpfsLinkImportWorker : public IpfsImportWorkerBase {
  public:
-  IpfsLinkImportWorker(content::BrowserContext* context,
+  IpfsLinkImportWorker(BlobContextGetterFactory* blob_context_getter_factory,
+                       network::mojom::URLLoaderFactory* url_loader_factory,
                        const GURL& endpoint,
                        ImportCompletedCallback callback,
                        const GURL& url);

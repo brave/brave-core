@@ -26,22 +26,15 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
-#include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/service_process_host.h"
-#include "content/public/browser/storage_partition.h"
 #include "net/base/mime_util.h"
 #include "net/base/url_util.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
 #include "net/http/http_status_code.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
-#include "storage/browser/blob/blob_data_builder.h"
-#include "storage/browser/blob/blob_data_handle.h"
-#include "storage/browser/blob/blob_impl.h"
-#include "storage/browser/blob/blob_storage_context.h"
 #include "third_party/blink/public/mojom/blob/serialized_blob.mojom.h"
 #include "url/gurl.h"
 
@@ -59,20 +52,19 @@ std::string TimeFormatDate(const base::Time& time) {
 
 namespace ipfs {
 
-IpfsImportWorkerBase::IpfsImportWorkerBase(content::BrowserContext* context,
-                                           const GURL& endpoint,
-                                           ImportCompletedCallback callback,
-                                           const std::string& key)
+IpfsImportWorkerBase::IpfsImportWorkerBase(
+    BlobContextGetterFactory* blob_context_getter_factory,
+    network::mojom::URLLoaderFactory* url_loader_factory,
+    const GURL& endpoint,
+    ImportCompletedCallback callback,
+    const std::string& key)
     : callback_(std::move(callback)),
+      blob_context_getter_factory_(blob_context_getter_factory),
+      url_loader_factory_(url_loader_factory),
       server_endpoint_(endpoint),
       key_to_publish_(key),
-      browser_context_(context),
       weak_factory_(this) {
-  DCHECK(context);
   DCHECK(endpoint.is_valid());
-  auto* storage = content::BrowserContext::GetDefaultStoragePartition(context);
-  if (storage)
-    url_loader_factory_ = storage->GetURLLoaderFactoryForBrowserProcess();
   data_.reset(new ipfs::ImportedData());
 }
 
@@ -86,8 +78,6 @@ void IpfsImportWorkerBase::ImportFile(const base::FilePath upload_file_path,
                                       const std::string& mime_type,
                                       const std::string& filename) {
   data_->filename = filename;
-  auto blob_storage_getter =
-      content::BrowserContext::GetBlobStorageContext(browser_context_);
 
   auto upload_callback = base::BindOnce(&IpfsImportWorkerBase::UploadData,
                                         weak_factory_.GetWeakPtr());
@@ -96,18 +86,15 @@ void IpfsImportWorkerBase::ImportFile(const base::FilePath upload_file_path,
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&ipfs::CalculateFileSize, upload_file_path),
       base::BindOnce(&CreateRequestForFile, upload_file_path,
-                     std::move(blob_storage_getter), mime_type, filename,
+                     blob_context_getter_factory_, mime_type, filename,
                      std::move(upload_callback)));
 }
 
 void IpfsImportWorkerBase::ImportFolder(const base::FilePath folder_path) {
-  auto blob_storage_context_getter =
-      content::BrowserContext::GetBlobStorageContext(browser_context_);
-
   auto upload_callback = base::BindOnce(&IpfsImportWorkerBase::UploadData,
                                         weak_factory_.GetWeakPtr());
   data_->filename = folder_path.BaseName().MaybeAsASCII();
-  CreateRequestForFolder(folder_path, std::move(blob_storage_context_getter),
+  CreateRequestForFolder(folder_path, blob_context_getter_factory_,
                          std::move(upload_callback));
 }
 
@@ -121,13 +108,10 @@ void IpfsImportWorkerBase::ImportText(const std::string& text,
   std::string filename = host;
   filename += "_";
   filename += std::to_string(key);
-  auto blob_storage_context_getter =
-      content::BrowserContext::GetBlobStorageContext(browser_context_);
-
   auto upload_callback = base::BindOnce(&IpfsImportWorkerBase::UploadData,
                                         weak_factory_.GetWeakPtr());
   data_->filename = filename;
-  CreateRequestForText(text, filename, std::move(blob_storage_context_getter),
+  CreateRequestForText(text, filename, blob_context_getter_factory_,
                        std::move(upload_callback));
 }
 
@@ -149,7 +133,7 @@ void IpfsImportWorkerBase::UploadData(
   url_loader_ = CreateURLLoader(url, "POST", std::move(request));
 
   url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_.get(),
+      url_loader_factory_,
       base::BindOnce(&IpfsImportWorkerBase::OnImportAddComplete,
                      weak_factory_.GetWeakPtr()));
 }
@@ -206,7 +190,7 @@ void IpfsImportWorkerBase::CreateBraveDirectory() {
 
   url_loader_ = CreateURLLoader(url, "POST");
   url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_.get(),
+      url_loader_factory_,
       base::BindOnce(&IpfsImportWorkerBase::OnImportDirectoryCreated,
                      base::Unretained(this), directory));
 }
@@ -238,7 +222,7 @@ void IpfsImportWorkerBase::CopyFilesToBraveDirectory() {
 
   url_loader_ = CreateURLLoader(url, "POST");
   url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_.get(),
+      url_loader_factory_,
       base::BindOnce(&IpfsImportWorkerBase::OnImportFilesMoved,
                      base::Unretained(this)));
 }
@@ -272,7 +256,7 @@ void IpfsImportWorkerBase::PublishContent() {
 
   url_loader_ = CreateURLLoader(url, "POST");
   url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_.get(),
+      url_loader_factory_,
       base::BindOnce(&IpfsImportWorkerBase::OnContentPublished,
                      base::Unretained(this)));
 }
@@ -303,8 +287,7 @@ void IpfsImportWorkerBase::NotifyImportCompleted(ipfs::ImportState state) {
     std::move(callback_).Run(*data_.get());
 }
 
-scoped_refptr<network::SharedURLLoaderFactory>
-IpfsImportWorkerBase::GetUrlLoaderFactory() {
+network::mojom::URLLoaderFactory* IpfsImportWorkerBase::GetUrlLoaderFactory() {
   return url_loader_factory_;
 }
 

@@ -16,17 +16,11 @@
 #include "base/containers/queue.h"
 #include "base/files/file_util.h"
 #include "base/memory/scoped_refptr.h"
+#include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/import/imported_data.h"
 #include "brave/components/ipfs/ipfs_network_utils.h"
 #include "components/version_info/channel.h"
-#include "content/public/browser/browser_context.h"
-#include "storage/browser/blob/blob_data_builder.h"
 #include "url/gurl.h"
-
-namespace content {
-class BrowserContext;
-class ChromeBlobStorageContext;
-}  // namespace content
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -50,7 +44,8 @@ namespace ipfs {
 //   5. Publishes objects under passed IPNS key(/api/v0/name/publish)
 class IpfsImportWorkerBase {
  public:
-  IpfsImportWorkerBase(content::BrowserContext* context,
+  IpfsImportWorkerBase(BlobContextGetterFactory* blob_context_getter_factory,
+                       network::mojom::URLLoaderFactory* url_loader_factory,
                        const GURL& endpoint,
                        ImportCompletedCallback callback,
                        const std::string& key = std::string());
@@ -67,7 +62,7 @@ class IpfsImportWorkerBase {
   void ImportFolder(const base::FilePath folder_path);
 
  protected:
-  scoped_refptr<network::SharedURLLoaderFactory> GetUrlLoaderFactory();
+  network::mojom::URLLoaderFactory* GetUrlLoaderFactory();
 
   virtual void NotifyImportCompleted(ipfs::ImportState state);
 
@@ -88,11 +83,11 @@ class IpfsImportWorkerBase {
   ImportCompletedCallback callback_;
   std::unique_ptr<ipfs::ImportedData> data_;
 
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  BlobContextGetterFactory* blob_context_getter_factory_ = nullptr;
+  network::mojom::URLLoaderFactory* url_loader_factory_;
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
   GURL server_endpoint_;
   std::string key_to_publish_;
-  content::BrowserContext* browser_context_ = nullptr;
   base::WeakPtrFactory<IpfsImportWorkerBase> weak_factory_;
 };
 
