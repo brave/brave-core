@@ -1,7 +1,5 @@
 import argparse
-import os
 import subprocess
-import shutil
 import sys
 
 def main():
@@ -9,7 +7,7 @@ def main():
     compile_model(args.model[0], args.output[0])
 
 def compile_model(model, output):
-    xcode = subprocess.check_output(['xcode-select', '-print-path']).decode("utf-8")
+    xcode = subprocess.check_output(['xcode-select', '-print-path']).decode('utf-8')
     subprocess.call(xcode.strip() + "/usr/bin/momc " + model + " " + output, shell=True)
 
 def parse_args():
