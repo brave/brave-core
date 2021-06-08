@@ -136,7 +136,7 @@
 }
 
 - (void)addHistory:(IOSHistoryNode*)history
-    pageTransition:(PageTransitionIOS)pageTransition {
+        isURLTyped:(BOOL)isURLTyped {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   DCHECK(history_service_->backend_loaded());
 
@@ -145,8 +145,8 @@
   args.time =
       base::Time::FromDoubleT([history.dateAdded timeIntervalSince1970]);
   args.redirects = history::RedirectList();
-  // Important! Only Typed Transtion is being synced in core side
-  args.transition = pageTransition == PageTransitionIOS_TYPED
+  // Important! Only Typed URL is being synced in core side
+  args.transition = isURLTyped
                         ? ui::PAGE_TRANSITION_TYPED
                         : ui::PAGE_TRANSITION_LINK;
   args.hidden = false;

@@ -11,11 +11,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSUInteger, PageTransitionIOS) {
-  PageTransitionIOS_LINK,
-  PageTransitionIOS_TYPED,
-};
-
 @protocol HistoryServiceObserver;
 @protocol HistoryServiceListener;
 
@@ -51,9 +46,9 @@ OBJC_EXPORT
 
 /// Add History Method which also allows to edit transition type
 /// @param history - History Object to be added
-/// @param pageTransition - History Object to be added
+/// @param isURLTyped - Bool determine If URL is typed and synced
 - (void)addHistory:(IOSHistoryNode*)history
-    pageTransition:(PageTransitionIOS)pageTransition;
+        isURLTyped:(BOOL)isURLTyped;
 
 /// Remove Specific History
 /// @param history - History Object to be removed from history
