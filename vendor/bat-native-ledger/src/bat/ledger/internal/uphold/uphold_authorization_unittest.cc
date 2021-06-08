@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -25,9 +25,8 @@ using ::testing::Values;
 
 namespace ledger {
 namespace uphold {
-namespace tests {
 
-using GetAnonFundsParamType =
+using GetAnonFundsTestParamType =
     std::tuple<bool,               // fetch old balance enabled
                std::string,        // Brave wallet
                type::UrlResponse,  // balance server response
@@ -35,7 +34,7 @@ using GetAnonFundsParamType =
                          base::Optional<double>>  // expected result
                >;
 
-class GetAnonFunds : public TestWithParam<GetAnonFundsParamType> {
+class GetAnonFundsTest : public TestWithParam<GetAnonFundsTestParamType> {
  private:
   base::test::TaskEnvironment scoped_task_environment_;
 
@@ -46,7 +45,7 @@ class GetAnonFunds : public TestWithParam<GetAnonFundsParamType> {
   std::unique_ptr<UpholdAuthorization> authorization_;
 
  public:
-  GetAnonFunds()
+  GetAnonFundsTest()
       : mock_ledger_client_{std::make_unique<MockLedgerClient>()},
         mock_ledger_impl_{
             std::make_unique<MockLedgerImpl>(mock_ledger_client_.get())},
@@ -57,50 +56,53 @@ class GetAnonFunds : public TestWithParam<GetAnonFundsParamType> {
 };
 
 std::string GetAnonFundsNameSuffixGenerator(
-    const TestParamInfo<GetAnonFunds::ParamType>& info) {
+    const TestParamInfo<GetAnonFundsTest::ParamType>& info) {
   const bool fetch_old_balance_enabled = std::get<0>(info.param);
   const std::string& brave_wallet = std::get<1>(info.param);
   const type::UrlResponse& balance_server_response = std::get<2>(info.param);
 
   if (!fetch_old_balance_enabled) {
-    return "fetch_old_balance_disabled";
+    return "FetchOldBalanceDisabled";
   }
 
   if (brave_wallet.empty()) {
-    return "brave_wallet_is_not_created";
+    return "BraveWalletIsNotCreated";
   }
 
   if (brave_wallet.find(R"("payment_id": "")") != std::string::npos) {
-    return "brave_wallet_payment_id_is_empty";
+    return "BraveWalletPaymentIdIsEmpty";
   }
 
   if (balance_server_response.status_code != net::HttpStatusCode::HTTP_OK) {
-    return "balance_server_error";
+    return "BalanceServerError";
   }
 
   if (balance_server_response.body.empty()) {
-    return "invalid_body_in_balance_server_response";
+    return "InvalidBodyInBalanceServerResponse";
   }
 
-  return "happy_path";
+  return "HappyPath";
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    UpholdAuthorizationTest,
-    GetAnonFunds,
+    UpholdAuthorization,
+    GetAnonFundsTest,
     Values(
         // "fetch_old_balance_disabled"
-        GetAnonFundsParamType{false, {}, {}, {type::Result::LEDGER_OK, 0.0}},
+        GetAnonFundsTestParamType{false,
+                                  {},
+                                  {},
+                                  {type::Result::LEDGER_OK, 0.0}},
         // "brave_wallet_is_not_created"
-        GetAnonFundsParamType{true, {}, {}, {type::Result::LEDGER_OK, 0.0}},
+        GetAnonFundsTestParamType{true, {}, {}, {type::Result::LEDGER_OK, 0.0}},
         // "brave_wallet_payment_id_is_empty"
-        GetAnonFundsParamType{
+        GetAnonFundsTestParamType{
             true,
             R"({ "payment_id": "", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
             {},
             {type::Result::LEDGER_ERROR, {}}},
         // "balance_server_error"
-        GetAnonFundsParamType{
+        GetAnonFundsTestParamType{
             true,
             R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
             type::UrlResponse{{},
@@ -110,13 +112,13 @@ INSTANTIATE_TEST_SUITE_P(
                               {}},
             {type::Result::LEDGER_ERROR, {}}},
         // "invalid_body_in_balance_server_response"
-        GetAnonFundsParamType{
+        GetAnonFundsTestParamType{
             true,
             R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
             type::UrlResponse{{}, {}, net::HttpStatusCode::HTTP_OK, {}, {}},
             {type::Result::LEDGER_ERROR, 0.0}},
         // "happy_path"
-        GetAnonFundsParamType{
+        GetAnonFundsTestParamType{
             true,
             R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
             type::UrlResponse{
@@ -128,7 +130,7 @@ INSTANTIATE_TEST_SUITE_P(
             {type::Result::LEDGER_OK, 5.0}}),
     GetAnonFundsNameSuffixGenerator);
 
-TEST_P(GetAnonFunds, ) {
+TEST_P(GetAnonFundsTest, AnonFundsFlow) {
   const auto& params = GetParam();
   const bool fetch_old_balance_enabled = std::get<0>(params);
   const std::string& brave_wallet = std::get<1>(params);
@@ -165,13 +167,13 @@ TEST_P(GetAnonFunds, ) {
       });
 }
 
-using LinkWalletParamType =
+using LinkWalletTestParamType =
     std::tuple<std::string,        // Uphold wallet
                type::UrlResponse,  // rewards web services response
                type::Result        // expected result
                >;
 
-class LinkWallet : public TestWithParam<LinkWalletParamType> {
+class LinkWalletTest : public TestWithParam<LinkWalletTestParamType> {
  private:
   base::test::TaskEnvironment scoped_task_environment_;
 
@@ -181,7 +183,7 @@ class LinkWallet : public TestWithParam<LinkWalletParamType> {
   std::unique_ptr<UpholdAuthorization> authorization_;
 
  public:
-  LinkWallet()
+  LinkWalletTest()
       : mock_ledger_client_{std::make_unique<MockLedgerClient>()},
         mock_ledger_impl_{
             std::make_unique<MockLedgerImpl>(mock_ledger_client_.get())},
@@ -190,13 +192,13 @@ class LinkWallet : public TestWithParam<LinkWalletParamType> {
 };
 
 std::string LinkWalletNameSuffixGenerator(
-    const TestParamInfo<LinkWallet::ParamType>& info) {
+    const TestParamInfo<LinkWalletTest::ParamType>& info) {
   const std::string& uphold_wallet = std::get<0>(info.param);
   const type::UrlResponse& rewards_web_services_response =
       std::get<1>(info.param);
 
   if (uphold_wallet.empty()) {
-    return "uphold_wallet_is_null";
+    return "UpholdWalletIsNull";
   }
 
   if (rewards_web_services_response.status_code ==
@@ -206,15 +208,15 @@ std::string LinkWalletNameSuffixGenerator(
 
   if (rewards_web_services_response.status_code ==
       net::HttpStatusCode::HTTP_CONFLICT) {
-    return "wallet_device_limit_reached";
+    return "WalletDeviceLimitReached";
   }
 
   if (rewards_web_services_response.status_code !=
       net::HttpStatusCode::HTTP_OK) {
-    return "rewards_web_services_error";
+    return "RewardsWebServicesError";
   }
 
-  return "happy_path";
+  return "HappyPath";
 }
 
 const char uphold_wallet[]{R"(
@@ -234,14 +236,14 @@ const char uphold_wallet[]{R"(
 )"};
 
 INSTANTIATE_TEST_SUITE_P(
-    UpholdAuthorizationTest,
-    LinkWallet,
+    UpholdAuthorization,
+    LinkWalletTest,
     Values(
         // "uphold_wallet_is_null"
-        LinkWalletParamType{"", type::UrlResponse{},
-                            type::Result::LEDGER_ERROR},
+        LinkWalletTestParamType{"", type::UrlResponse{},
+                                type::Result::LEDGER_ERROR},
         // "404"
-        LinkWalletParamType{
+        LinkWalletTestParamType{
             uphold_wallet,
             type::UrlResponse{{},
                               {},
@@ -250,7 +252,7 @@ INSTANTIATE_TEST_SUITE_P(
                               {}},
             type::Result::NOT_FOUND},
         // "wallet_device_limit_reached"
-        LinkWalletParamType{
+        LinkWalletTestParamType{
             uphold_wallet,
             type::UrlResponse{{},
                               {},
@@ -259,7 +261,7 @@ INSTANTIATE_TEST_SUITE_P(
                               {}},
             type::Result::ALREADY_EXISTS},
         // "rewards_web_services_error"
-        LinkWalletParamType{
+        LinkWalletTestParamType{
             uphold_wallet,
             type::UrlResponse{{},
                               {},
@@ -268,13 +270,13 @@ INSTANTIATE_TEST_SUITE_P(
                               {}},
             type::Result::LEDGER_ERROR},
         // "happy_path"
-        LinkWalletParamType{
+        LinkWalletTestParamType{
             uphold_wallet,
             type::UrlResponse{{}, {}, net::HttpStatusCode::HTTP_OK, {}, {}},
             type::Result::LEDGER_OK}),
     LinkWalletNameSuffixGenerator);
 
-TEST_P(LinkWallet, ) {
+TEST_P(LinkWalletTest, LinkWalletFlow) {
   const auto& params = GetParam();
   const std::string& uphold_wallet = std::get<0>(params);
   const type::UrlResponse& rewards_web_services_response = std::get<1>(params);
@@ -294,6 +296,5 @@ TEST_P(LinkWallet, ) {
   });
 }
 
-}  // namespace tests
 }  // namespace uphold
 }  // namespace ledger

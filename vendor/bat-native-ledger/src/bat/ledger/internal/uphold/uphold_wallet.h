@@ -33,7 +33,7 @@ class UpholdWallet {
                     ledger::ResultCallback callback);
 
   void OnTransferTokens(const type::Result result,
-                        std::string drain_id,
+                        const std::string& drain_id,
                         ledger::ResultCallback callback);
 
   type::WalletStatus GetNewStatus(const type::WalletStatus old_status,

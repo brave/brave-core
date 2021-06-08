@@ -33,7 +33,6 @@ const char kPromotionLastFetchStamp[] =
     "brave.rewards.promotion_last_fetch_stamp";
 const char kPromotionCorruptedMigrated[] =
     "brave.rewards.promotion_corrupted_migrated2";
-const char kAnonTransferChecked[] =  "brave.rewards.anon_transfer_checked";
 const char kVersion[] =  "brave.rewards.version";
 const char kMinVisitTime[] =  "brave.rewards.ac.min_visit_time";
 const char kMinVisits[] =  "brave.rewards.ac.min_visits";

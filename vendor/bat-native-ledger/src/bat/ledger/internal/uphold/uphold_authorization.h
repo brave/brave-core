@@ -29,13 +29,13 @@ class UpholdAuthorization {
   void Authorize(const base::flat_map<std::string, std::string>& args,
                  ledger::ExternalWalletAuthorizationCallback callback) const;
 
+ private:
   void GetAnonFunds(
       endpoint::promotion::GetWalletBalanceCallback callback) const;
 
   void LinkWallet(const double user_funds,
                   endpoint::promotion::PostClaimUpholdCallback callback) const;
 
- private:
   void OnAuthorize(const type::Result result,
                    const std::string& token,
                    ledger::ExternalWalletAuthorizationCallback callback) const;
@@ -59,6 +59,9 @@ class UpholdAuthorization {
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
   std::unique_ptr<endpoint::UpholdServer> uphold_server_;
+
+  FRIEND_TEST_ALL_PREFIXES(GetAnonFundsTest, AnonFundsFlow);
+  FRIEND_TEST_ALL_PREFIXES(LinkWalletTest, LinkWalletFlow);
 };
 
 }  // namespace uphold
