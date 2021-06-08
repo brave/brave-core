@@ -57,8 +57,6 @@ class BraveShieldsWebContentsObserver
                               content::RenderFrameHost* new_host) override;
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
-  void DidFinishNavigation(
-      content::NavigationHandle* navigation_handle) override;
 
   // brave_shields::mojom::BraveShieldsHost.
   void OnJavaScriptBlocked(const std::u16string& details) override;
