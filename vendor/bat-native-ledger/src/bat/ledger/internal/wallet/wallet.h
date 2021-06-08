@@ -47,8 +47,6 @@ class Wallet {
       const std::string& wallet_type,
       ledger::ResultCallback callback);
 
-  void ClaimFunds(ledger::ResultCallback callback);
-
   void GetAnonWalletStatus(ledger::ResultCallback callback);
 
   void DisconnectAllWallets(ledger::ResultCallback callback);

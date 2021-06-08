@@ -275,12 +275,12 @@ void UpholdAuthorization::OnGetAnonFunds(
     ledger_->state()->SetFetchOldBalanceEnabled(false);
   }
 
-  TransferAnonFunds(
+  LinkWallet(
       balance->user_funds,
-      std::bind(&UpholdAuthorization::OnTransferAnonFunds, this, _1, callback));
+      std::bind(&UpholdAuthorization::OnLinkWallet, this, _1, callback));
 }
 
-void UpholdAuthorization::TransferAnonFunds(
+void UpholdAuthorization::LinkWallet(
     const double user_funds,
     ledger::endpoint::promotion::PostClaimUpholdCallback callback) const {
   if (!uphold::GetWallet(ledger_)) {
@@ -292,7 +292,7 @@ void UpholdAuthorization::TransferAnonFunds(
   promotion_server_->post_claim_uphold()->Request(user_funds, callback);
 }
 
-void UpholdAuthorization::OnTransferAnonFunds(
+void UpholdAuthorization::OnLinkWallet(
     const type::Result result,
     ledger::ExternalWalletAuthorizationCallback callback) const {
   if (result == type::Result::LEDGER_OK) {

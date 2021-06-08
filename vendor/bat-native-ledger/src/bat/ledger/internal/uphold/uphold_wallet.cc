@@ -107,7 +107,8 @@ void UpholdWallet::OnGenerate(
   }
 
   if (user.verified) {
-    ledger_->wallet()->ClaimFunds(callback);
+    ledger_->promotion()->TransferTokens(
+        std::bind(&UpholdWallet::OnTransferTokens, this, _1, _2, callback));
     return;
   }
 
@@ -130,7 +131,21 @@ void UpholdWallet::OnCreateCard(
   ledger_->uphold()->SetWallet(wallet_ptr->Clone());
 
   if (wallet_ptr->status == type::WalletStatus::VERIFIED) {
-    ledger_->wallet()->ClaimFunds(callback);
+    ledger_->promotion()->TransferTokens(
+        std::bind(&UpholdWallet::OnTransferTokens, this, _1, _2, callback));
+    return;
+  }
+
+  callback(type::Result::LEDGER_OK);
+}
+
+void UpholdWallet::OnTransferTokens(
+    const type::Result result,
+    std::string drain_id,
+    ledger::ResultCallback callback) {
+  if (result != type::Result::LEDGER_OK) {
+    BLOG(0, "Claiming tokens failed");
+    callback(type::Result::CONTINUE);
     return;
   }
 

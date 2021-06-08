@@ -160,20 +160,6 @@ void Wallet::DisconnectWallet(
   callback(type::Result::LEDGER_OK);
 }
 
-void Wallet::ClaimFunds(ledger::ResultCallback callback) {
-  // tokens claim
-  ledger_->promotion()->TransferTokens(
-      [callback](const type::Result result, std::string drain_id) {
-        if (result != type::Result::LEDGER_OK) {
-          BLOG(0, "Claiming tokens failed");
-          callback(type::Result::CONTINUE);
-          return;
-        }
-
-        callback(type::Result::LEDGER_OK);
-      });
-}
-
 void Wallet::GetAnonWalletStatus(ledger::ResultCallback callback) {
   const auto wallet = GetWallet();
   if (!wallet) {

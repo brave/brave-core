@@ -32,7 +32,7 @@ class UpholdAuthorization {
   void GetAnonFunds(
       endpoint::promotion::GetWalletBalanceCallback callback) const;
 
-  void TransferAnonFunds(
+  void LinkWallet(
       const double user_funds,
       endpoint::promotion::PostClaimUpholdCallback callback) const;
 
@@ -54,7 +54,7 @@ class UpholdAuthorization {
       type::BalancePtr balance,
       ledger::ExternalWalletAuthorizationCallback callback) const;
 
-  void OnTransferAnonFunds(
+  void OnLinkWallet(
       const type::Result result,
       ledger::ExternalWalletAuthorizationCallback callback) const;
 
