@@ -4,8 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/api/history/brave_history_api.h"
-#include "brave/ios/browser/api/history/brave_history_observer.h"
-#include "brave/ios/browser/api/history/history_service_listener_ios.h"
 
 #include "base/bind.h"
 #include "base/compiler_specific.h"
@@ -15,27 +13,23 @@
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
-
+#include "net/base/mac/url_conversions.h"
+#include "ui/base/page_transition_types.h"
+#include "url/gurl.h"
 #include "components/browsing_data/core/browsing_data_utils.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/keyed_service/core/service_access_type.h"
-
+#include "ios/web/public/thread/web_task_traits.h"
+#include "ios/web/public/thread/web_thread.h"
 #include "ios/chrome/browser/application_context.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
-#include "ios/chrome/browser/browsing_data/browsing_data_remove_mask.h"
-#include "ios/chrome/browser/browsing_data/browsing_data_remover.h"
-#include "ios/chrome/browser/browsing_data/browsing_data_remover_factory.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/history/web_history_service_factory.h"
 
-#include "ios/web/public/thread/web_task_traits.h"
-#include "ios/web/public/thread/web_thread.h"
-
-#include "net/base/mac/url_conversions.h"
-#include "ui/base/page_transition_types.h"
-#include "url/gurl.h"
+#include "brave/ios/browser/api/history/brave_history_observer.h"
+#include "brave/ios/browser/api/history/history_service_listener_ios.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."

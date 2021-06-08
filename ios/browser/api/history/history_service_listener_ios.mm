@@ -4,18 +4,17 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/api/history/history_service_listener_ios.h"
-#include "brave/ios/browser/api/history/brave_history_api.h"
-#include "brave/ios/browser/api/history/brave_history_observer.h"
 
 #include "base/check.h"
 #include "base/compiler_specific.h"
 #include "base/strings/sys_string_conversions.h"
-
+#include "net/base/mac/url_conversions.h"
+#include "url/gurl.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_service_observer.h"
 
-#import "net/base/mac/url_conversions.h"
-#import "url/gurl.h"
+#include "brave/ios/browser/api/history/brave_history_api.h"
+#include "brave/ios/browser/api/history/brave_history_observer.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
