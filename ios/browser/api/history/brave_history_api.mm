@@ -200,13 +200,12 @@
   history_service_->DeleteLocalAndRemoteHistoryBetween(
       web_history_service_, base::Time::Min(), base::Time::Max(),
       base::BindOnce(
-          [](BraveHistoryAPI* weakSelf,
-             std::function<void()> completion) {
+          ^(std::function<void()> completion) {
               if (!weakSelf) 
                 return;
             completion();
           },
-          weakSelf, completion),
+          completion),
       &tracker_);
 }
 
@@ -236,15 +235,17 @@
   history_service_->QueryHistory(
       queryString, options,
       base::BindOnce(
-          [](BraveHistoryAPI* weakSelf,
-             std::function<void(NSArray<IOSHistoryNode*>*)> completion,
+          ^(std::function<void(NSArray<IOSHistoryNode*>*)> completion,
              history::QueryResults results) {
-              if (!weakSelf) 
+              BraveHistoryAPI* historyAPI = weakSelf;
+              if (!historyAPI) {
+                completion(@[]);
                 return;
-            __strong BraveHistoryAPI* self = weakSelf;
-            completion([self onHistoryResults:std::move(results)]);
+              }
+
+              completion([historyAPI onHistoryResults:std::move(results)]);
           },
-          weakSelf, completion),
+          completion),
       &tracker_);
 }
 

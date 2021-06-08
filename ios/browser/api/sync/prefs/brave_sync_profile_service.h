@@ -32,16 +32,10 @@ OBJC_EXPORT
     BraveSyncProfileService* sharedSyncService NS_SWIFT_NAME(shared);
 
 /// Sync Profile Properties
-@property(nonatomic, readonly) bool isSyncRequested;
-@property(nonatomic, readonly) bool isSyncAllowedByPlatform;
 @property(nonatomic, readonly) bool isSyncFeatureActive;
-@property(nonatomic, readonly) bool isSyncEngineInitialized;
-@property(nonatomic, readonly) bool isTransportStateActive;
 
-/// Active Selectable Types for the Sync User
+/// Selectable Types for the Sync User
 /// Used for opting in/out on iOS side
-@property(nonatomic, assign, readonly)
-    BraveSyncUserSelectableTypes activeSelectableTypes;
 @property(nonatomic, assign) BraveSyncUserSelectableTypes userSelectedTypes;
 @end
 

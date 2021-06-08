@@ -100,31 +100,9 @@ BraveSyncUserSelectableTypes options_from_user_types(
   return self;
 }
 
-- (bool)isSyncRequested {
-  DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  return sync_service_->GetUserSettings()->IsSyncRequested();
-}
-
-- (bool)isSyncAllowedByPlatform {
-  DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  return !sync_service_->HasDisableReason(
-      syncer::SyncService::DISABLE_REASON_PLATFORM_OVERRIDE);
-}
-
 - (bool)isSyncFeatureActive {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   return sync_service_->IsSyncFeatureActive();
-}
-
-- (bool)isSyncEngineInitialized {
-  DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  return sync_service_->IsEngineInitialized();
-}
-
-- (bool)isTransportStateActive {
-  DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  return sync_service_->GetTransportState() ==
-         syncer::SyncService::TransportState::ACTIVE;
 }
 
 - (BraveSyncUserSelectableTypes)activeSelectableTypes {
@@ -157,13 +135,4 @@ BraveSyncUserSelectableTypes options_from_user_types(
                                                      selected_types);
 }
 
-- (syncer::ModelTypeSet)userTypesToModelTypes:
-    (const syncer::UserSelectableTypeSet&)types {
-  DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  syncer::ModelTypeSet model_types;
-  for (syncer::UserSelectableType type : types) {
-    model_types.Put(syncer::UserSelectableTypeToCanonicalModelType(type));
-  }
-  return model_types;
-}
 @end
