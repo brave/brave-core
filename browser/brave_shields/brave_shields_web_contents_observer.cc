@@ -5,13 +5,10 @@
 
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 
-#include <map>
 #include <memory>
 #include <string>
 #include <utility>
-#include <vector>
 
-#include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
@@ -48,7 +45,6 @@ using extensions::Event;
 using extensions::EventRouter;
 #endif
 
-using content::Referrer;
 using content::RenderFrameHost;
 using content::WebContents;
 
@@ -84,8 +80,6 @@ void UpdateContentSettingsToRendererFrames(content::WebContents* web_contents) {
 
 namespace brave_shields {
 
-base::NoDestructor<std::map<int, GURL>> frame_tree_node_id_to_tab_url_;
-
 BraveShieldsWebContentsObserver::~BraveShieldsWebContentsObserver() {
   brave_shields_remotes_.clear();
 }
@@ -104,14 +98,10 @@ void BraveShieldsWebContentsObserver::RenderFrameCreated(RenderFrameHost* rfh) {
   WebContents* web_contents = WebContents::FromRenderFrameHost(rfh);
   if (web_contents) {
     UpdateContentSettingsToRendererFrames(web_contents);
-
-    (*frame_tree_node_id_to_tab_url_)[rfh->GetFrameTreeNodeId()] =
-        web_contents->GetURL();
   }
 }
 
 void BraveShieldsWebContentsObserver::RenderFrameDeleted(RenderFrameHost* rfh) {
-  (*frame_tree_node_id_to_tab_url_).erase(rfh->GetFrameTreeNodeId());
   brave_shields_remotes_.erase(rfh);
 }
 
@@ -124,31 +114,6 @@ void BraveShieldsWebContentsObserver::RenderFrameHostChanged(
   if (new_host) {
     RenderFrameCreated(new_host);
   }
-}
-
-void BraveShieldsWebContentsObserver::DidFinishNavigation(
-    content::NavigationHandle* navigation_handle) {
-  RenderFrameHost* main_frame = web_contents()->GetMainFrame();
-  if (!web_contents() || !main_frame) {
-    return;
-  }
-  int tree_node_id = main_frame->GetFrameTreeNodeId();
-
-  (*frame_tree_node_id_to_tab_url_)[tree_node_id] = web_contents()->GetURL();
-}
-
-// static
-GURL BraveShieldsWebContentsObserver::GetTabURLFromRenderFrameInfo(
-    int render_frame_tree_node_id) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  if (render_frame_tree_node_id != RenderFrameHost::kNoFrameTreeNodeId) {
-    auto iter =
-        (*frame_tree_node_id_to_tab_url_).find(render_frame_tree_node_id);
-    if (iter != (*frame_tree_node_id_to_tab_url_).end()) {
-      return iter->second;
-    }
-  }
-  return GURL();
 }
 
 bool BraveShieldsWebContentsObserver::IsBlockedSubresource(

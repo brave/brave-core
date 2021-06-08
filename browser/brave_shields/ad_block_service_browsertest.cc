@@ -505,6 +505,41 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrame) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
 }
 
+// Checks nothing is blocked if shields are off.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrameShieldsOff) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  GURL url = embedded_test_server()->GetURL("a.com", "/iframe_blocking.html");
+
+  brave_shields::SetBraveShieldsEnabled(content_settings(), false, url);
+
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  EXPECT_EQ(true, EvalJs(contents->GetAllFrames()[1],
+                         "setExpectations(0, 0, 1, 0);"
+                         "xhr('adbanner.js?1')"));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  // Check also an explicit request for a script since it is a common real-world
+  // scenario.
+  EXPECT_EQ(true, EvalJs(contents->GetAllFrames()[1],
+                         R"(
+                           new Promise(function (resolve, reject) {
+                             var s = document.createElement('script');
+                             s.onload = () => resolve(true);
+                             s.onerror = reject;
+                             s.src = 'adbanner.js?2';
+                             document.head.appendChild(s);
+                           })
+                         )"));
+  content::RunAllTasksUntilIdle();
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  brave_shields::ResetBraveShieldsEnabled(content_settings(), url);
+}
+
 // Requests made by a service worker should be blocked as well.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ServiceWorkerRequest) {
   UpdateAdBlockInstanceWithRules("adbanner.js");
