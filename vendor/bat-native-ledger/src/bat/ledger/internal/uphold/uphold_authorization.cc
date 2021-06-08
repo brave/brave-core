@@ -100,11 +100,8 @@ void UpholdAuthorization::Authorize(
     return;
   }
 
-  auto url_callback = std::bind(&UpholdAuthorization::OnAuthorize,
-      this,
-      _1,
-      _2,
-      callback);
+  auto url_callback =
+      std::bind(&UpholdAuthorization::OnAuthorize, this, _1, _2, callback);
 
   uphold_server_->post_oauth()->Request(code, url_callback);
 }
@@ -155,11 +152,8 @@ void UpholdAuthorization::OnAuthorize(
 
   ledger_->uphold()->SetWallet(wallet_ptr->Clone());
 
-  auto user_callback = std::bind(&UpholdAuthorization::OnGetUser,
-      this,
-      _1,
-      _2,
-      callback);
+  auto user_callback =
+      std::bind(&UpholdAuthorization::OnGetUser, this, _1, _2, callback);
   ledger_->uphold()->GetUser(user_callback);
 }
 
@@ -177,17 +171,13 @@ void UpholdAuthorization::OnGetUser(
   }
 
   if (user.status == UserStatus::OK) {
-    wallet_ptr->status = user.verified
-        ? type::WalletStatus::VERIFIED
-        : type::WalletStatus::CONNECTED;
+    wallet_ptr->status = user.verified ? type::WalletStatus::VERIFIED
+                                       : type::WalletStatus::CONNECTED;
     ledger_->uphold()->SetWallet(wallet_ptr->Clone());
 
     if (wallet_ptr->address.empty()) {
-      auto new_callback = std::bind(&UpholdAuthorization::OnCardCreate,
-          this,
-          _1,
-          _2,
-          callback);
+      auto new_callback =
+          std::bind(&UpholdAuthorization::OnCardCreate, this, _1, _2, callback);
       ledger_->uphold()->CreateCard(new_callback);
       return;
     }
@@ -275,9 +265,8 @@ void UpholdAuthorization::OnGetAnonFunds(
     ledger_->state()->SetFetchOldBalanceEnabled(false);
   }
 
-  LinkWallet(
-      balance->user_funds,
-      std::bind(&UpholdAuthorization::OnLinkWallet, this, _1, callback));
+  LinkWallet(balance->user_funds,
+             std::bind(&UpholdAuthorization::OnLinkWallet, this, _1, callback));
 }
 
 void UpholdAuthorization::LinkWallet(

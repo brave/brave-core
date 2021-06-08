@@ -139,10 +139,9 @@ void UpholdWallet::OnCreateCard(
   callback(type::Result::LEDGER_OK);
 }
 
-void UpholdWallet::OnTransferTokens(
-    const type::Result result,
-    std::string drain_id,
-    ledger::ResultCallback callback) {
+void UpholdWallet::OnTransferTokens(const type::Result result,
+                                    std::string drain_id,
+                                    ledger::ResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Claiming tokens failed");
     callback(type::Result::CONTINUE);

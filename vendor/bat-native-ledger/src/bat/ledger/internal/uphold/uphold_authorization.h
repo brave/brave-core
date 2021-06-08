@@ -32,9 +32,8 @@ class UpholdAuthorization {
   void GetAnonFunds(
       endpoint::promotion::GetWalletBalanceCallback callback) const;
 
-  void LinkWallet(
-      const double user_funds,
-      endpoint::promotion::PostClaimUpholdCallback callback) const;
+  void LinkWallet(const double user_funds,
+                  endpoint::promotion::PostClaimUpholdCallback callback) const;
 
  private:
   void OnAuthorize(const type::Result result,
@@ -54,9 +53,8 @@ class UpholdAuthorization {
       type::BalancePtr balance,
       ledger::ExternalWalletAuthorizationCallback callback) const;
 
-  void OnLinkWallet(
-      const type::Result result,
-      ledger::ExternalWalletAuthorizationCallback callback) const;
+  void OnLinkWallet(const type::Result result,
+                    ledger::ExternalWalletAuthorizationCallback callback) const;
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;

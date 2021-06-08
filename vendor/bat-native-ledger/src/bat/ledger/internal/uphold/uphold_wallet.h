@@ -24,24 +24,20 @@ class UpholdWallet {
   void Generate(ledger::ResultCallback callback);
 
  private:
-  void OnGenerate(
-      const type::Result result,
-      const User& user,
-      ledger::ResultCallback callback);
+  void OnGenerate(const type::Result result,
+                  const User& user,
+                  ledger::ResultCallback callback);
 
-  void OnCreateCard(
-      const type::Result result,
-      const std::string& address,
-      ledger::ResultCallback callback);
+  void OnCreateCard(const type::Result result,
+                    const std::string& address,
+                    ledger::ResultCallback callback);
 
-  void OnTransferTokens(
-      const type::Result result,
-      std::string drain_id,
-      ledger::ResultCallback callback);
+  void OnTransferTokens(const type::Result result,
+                        std::string drain_id,
+                        ledger::ResultCallback callback);
 
-  type::WalletStatus GetNewStatus(
-      const type::WalletStatus old_status,
-      const User& user);
+  type::WalletStatus GetNewStatus(const type::WalletStatus old_status,
+                                  const User& user);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

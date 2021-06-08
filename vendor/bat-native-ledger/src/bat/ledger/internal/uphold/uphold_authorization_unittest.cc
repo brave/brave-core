@@ -90,17 +90,9 @@ INSTANTIATE_TEST_SUITE_P(
     GetAnonFunds,
     Values(
         // "fetch_old_balance_disabled"
-        GetAnonFundsParamType{
-            false,
-            {},
-            {},
-            {type::Result::LEDGER_OK, 0.0}},
+        GetAnonFundsParamType{false, {}, {}, {type::Result::LEDGER_OK, 0.0}},
         // "brave_wallet_is_not_created"
-        GetAnonFundsParamType{
-            true,
-            {},
-            {},
-            {type::Result::LEDGER_OK, 0.0}},
+        GetAnonFundsParamType{true, {}, {}, {type::Result::LEDGER_OK, 0.0}},
         // "brave_wallet_payment_id_is_empty"
         GetAnonFundsParamType{
             true,
@@ -121,21 +113,18 @@ INSTANTIATE_TEST_SUITE_P(
         GetAnonFundsParamType{
             true,
             R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
-            type::UrlResponse{{},
-                              {},
-                              net::HttpStatusCode::HTTP_OK,
-                              {},
-                              {}},
+            type::UrlResponse{{}, {}, net::HttpStatusCode::HTTP_OK, {}, {}},
             {type::Result::LEDGER_ERROR, 0.0}},
         // "happy_path"
         GetAnonFundsParamType{
             true,
             R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
-            type::UrlResponse{{},
-                              {},
-                              net::HttpStatusCode::HTTP_OK,
-                              R"({ "total": 5.0, "spendable": 0.0, "confirmed": 5.0, "unconfirmed": 0.0 })",
-                              {}},
+            type::UrlResponse{
+                {},
+                {},
+                net::HttpStatusCode::HTTP_OK,
+                R"({ "total": 5.0, "spendable": 0.0, "confirmed": 5.0, "unconfirmed": 0.0 })",
+                {}},
             {type::Result::LEDGER_OK, 5.0}}),
     GetAnonFundsNameSuffixGenerator);
 
@@ -249,10 +238,8 @@ INSTANTIATE_TEST_SUITE_P(
     LinkWallet,
     Values(
         // "uphold_wallet_is_null"
-        LinkWalletParamType{
-            "",
-            type::UrlResponse{},
-            type::Result::LEDGER_ERROR},
+        LinkWalletParamType{"", type::UrlResponse{},
+                            type::Result::LEDGER_ERROR},
         // "404"
         LinkWalletParamType{
             uphold_wallet,
@@ -283,11 +270,7 @@ INSTANTIATE_TEST_SUITE_P(
         // "happy_path"
         LinkWalletParamType{
             uphold_wallet,
-            type::UrlResponse{{},
-                              {},
-                              net::HttpStatusCode::HTTP_OK,
-                              {},
-                              {}},
+            type::UrlResponse{{}, {}, net::HttpStatusCode::HTTP_OK, {}, {}},
             type::Result::LEDGER_OK}),
     LinkWalletNameSuffixGenerator);
 
