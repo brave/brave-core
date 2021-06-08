@@ -1,11 +1,11 @@
 patches/ @brave/patch-reviewers
-chromium_src/ @brave/patch-reviewers
+chromium_src/ @brave/chromium-src-reviewers
 script/build-bisect.py @bsclifton
 script/uplift.py @bsclifton
 vendor/brave-ios/ @kylehickinson
 /README.md @bsclifton
 Jenkinsfile @mihaiplesa
-DEPS @bridiver
+DEPS @brave/deps-reviewers
 
 # Rewards
 browser/brave_rewards/ @brave/rewards-client
