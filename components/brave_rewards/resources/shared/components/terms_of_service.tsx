@@ -10,10 +10,8 @@ import { NewTabLink } from './new_tab_link'
 
 import * as style from './terms_of_service.style'
 
-export const termsOfServiceURL =
-  'https://basicattentiontoken.org/user-terms-of-service'
-
-export const privacyPolicyURL = 'https://brave.com/privacy/#rewards'
+const termsOfServiceURL = 'https://basicattentiontoken.org/user-terms-of-service'
+const privacyPolicyURL = 'https://brave.com/privacy/#rewards'
 
 export function TermsOfService () {
   const { getString } = React.useContext(LocaleContext)
