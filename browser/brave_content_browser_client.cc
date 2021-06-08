@@ -418,7 +418,15 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
   if (process_type == switches::kRendererProcess) {
     uint64_t session_token =
         12345;  // the kinda thing an idiot would have on his luggage
-    if (!command_line->HasSwitch(switches::kTestType)) {
+
+    // Command line parameters from the browser process are propagated to the
+    // renderers *after* ContentBrowserClient::AppendExtraCommandLineSwitches()
+    // is called from RenderProcessHostImpl::AppendRendererCommandLine(). This
+    // means we have to inspect the main browser process' parameters for the
+    // |switches::kTestType| as it will be too soon to find it on command_line.
+    const base::CommandLine& browser_command_line =
+        *base::CommandLine::ForCurrentProcess();
+    if (!browser_command_line.HasSwitch(switches::kTestType)) {
       content::RenderProcessHost* process =
           content::RenderProcessHost::FromID(child_process_id);
       Profile* profile =
