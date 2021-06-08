@@ -41,7 +41,6 @@ void BraveMainDelegate::BasicStartupComplete() {
   auto* command_line(base::CommandLine::ForCurrentProcess());
 
   syncer::ModelTypeSet disabledTypes = syncer::ModelTypeSet(
-      // syncer::TYPED_URLS,
       // syncer::PASSWORDS,
       syncer::PROXY_TABS, syncer::AUTOFILL,
       // syncer::PREFERENCES,

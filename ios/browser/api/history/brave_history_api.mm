@@ -202,9 +202,18 @@
   DCHECK(history_service_->backend_loaded());
 
   // Deletes entire History and from all synced devices
+  __weak BraveHistoryAPI* weakSelf = self;
   history_service_->DeleteLocalAndRemoteHistoryBetween(
       web_history_service_, base::Time::Min(), base::Time::Max(),
-      base::BindOnce(completion), &tracker_);
+      base::BindOnce(
+          [](BraveHistoryAPI* weakSelf,
+             std::function<void()> completion) {
+              if (!weakSelf) 
+                return;
+            completion();
+          },
+          weakSelf, completion),
+      &tracker_);
 }
 
 - (void)searchWithQuery:(NSString*)query
@@ -236,6 +245,8 @@
           [](BraveHistoryAPI* weakSelf,
              std::function<void(NSArray<IOSHistoryNode*>*)> completion,
              history::QueryResults results) {
+              if (!weakSelf) 
+                return;
             __strong BraveHistoryAPI* self = weakSelf;
             completion([self onHistoryResults:std::move(results)]);
           },
