@@ -11,9 +11,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSUInteger, BraveHistoryTransitionType) {
-  BraveHistoryTransitionType_LINK,
-  BraveHistoryTransitionType_TYPED,
+typedef NS_ENUM(NSUInteger, PageTransitionIOS) {
+  PageTransitionIOS_LINK,
+  PageTransitionIOS_TYPED,
 };
 
 @protocol HistoryServiceObserver;
@@ -50,15 +50,11 @@ OBJC_EXPORT
 - (id<HistoryServiceListener>)addObserver:(id<HistoryServiceObserver>)observer;
 - (void)removeObserver:(id<HistoryServiceListener>)observer;
 
-/// Default Add History Method which also syncs typed URLS
-/// @param history - History Object to be added
-- (void)addHistory:(IOSHistoryNode*)history;
-
 /// Add History Method which also allows to edit transition type
 /// @param history - History Object to be added
 /// @param pageTransition - History Object to be added
 - (void)addHistory:(IOSHistoryNode*)history
-    pageTransition:(BraveHistoryTransitionType)pageTransition;
+    pageTransition:(PageTransitionIOS)pageTransition;
 
 /// Remove Specific History
 /// @param history - History Object to be removed from history

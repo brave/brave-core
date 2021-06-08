@@ -33,6 +33,7 @@
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/history/web_history_service_factory.h"
 #include "ios/chrome/browser/sync/profile_sync_service_factory.h"
+
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
 
@@ -110,7 +111,7 @@
   std::unique_ptr<history::BrowsingHistoryService> browsing_history_service_;
   // History Service for adding and querying
   history::HistoryService* history_service_;
-  // WebhistoryService for remove and elete operations
+  // WebhistoryService is used for delete operations
   history::WebHistoryService* web_history_service_;
   // Tracker for history requests.
   base::CancelableTaskTracker tracker_;
@@ -181,14 +182,8 @@
   return history_service_->BackendLoaded();
 }
 
-- (void)addHistory:(IOSHistoryNode*)history {
-  // Default Add History method with Typed Transition Type
-  // Add History is only called when a tyoped_url is added on iOS side
-  [self addHistory:history pageTransition:BraveHistoryTransitionType_TYPED];
-}
-
 - (void)addHistory:(IOSHistoryNode*)history
-    pageTransition:(BraveHistoryTransitionType)pageTransition {
+    pageTransition:(PageTransitionIOS)pageTransition {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   DCHECK(history_service_->backend_loaded());
 
@@ -198,7 +193,7 @@
       base::Time::FromDoubleT([history.dateAdded timeIntervalSince1970]);
   args.redirects = history::RedirectList();
   // Important! Only Typed Transtion is being synced in core side
-  args.transition = pageTransition == BraveHistoryTransitionType_TYPED
+  args.transition = pageTransition == PageTransitionIOS_TYPED
                         ? ui::PAGE_TRANSITION_TYPED
                         : ui::PAGE_TRANSITION_LINK;
   args.hidden = false;
