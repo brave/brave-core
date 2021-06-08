@@ -28,8 +28,7 @@ typedef NS_OPTIONS(NSUInteger, BraveSyncUserSelectableTypes) {
 OBJC_EXPORT
 @interface BraveSyncProfileService : NSObject
 
-@property(class, readonly)
-    BraveSyncProfileService* sharedSyncService NS_SWIFT_NAME(shared);
+- (instancetype)init NS_UNAVAILABLE;
 
 /// Sync Profile Properties
 @property(nonatomic, readonly) bool isSyncFeatureActive;

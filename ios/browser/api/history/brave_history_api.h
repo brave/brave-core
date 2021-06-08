@@ -42,13 +42,12 @@ NS_SWIFT_NAME(BraveHistoryAPI)
 OBJC_EXPORT
 @interface BraveHistoryAPI : NSObject
 
-@property(class, readonly)
-    BraveHistoryAPI* sharedHistoryAPI NS_SWIFT_NAME(shared);
-
 @property(nonatomic, readonly) bool isLoaded;
 
 - (id<HistoryServiceListener>)addObserver:(id<HistoryServiceObserver>)observer;
 - (void)removeObserver:(id<HistoryServiceListener>)observer;
+
+- (instancetype)init NS_UNAVAILABLE;
 
 /// Add History Method which also allows to edit transition type
 /// @param history - History Object to be added

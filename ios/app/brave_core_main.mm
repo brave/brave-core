@@ -19,12 +19,19 @@
 #include "ios/public/provider/chrome/browser/chrome_browser_provider.h"
 #include "ios/web/public/init/web_main.h"
 
+#include "brave/ios/browser/api/history/brave_history_api_private.h"
+#import "brave/ios/browser/api/sync/prefs/brave_sync_profile_service_private.h"
+
 @interface BraveCoreMain () {
   std::unique_ptr<BraveWebClient> _webClient;
   std::unique_ptr<BraveMainDelegate> _delegate;
   std::unique_ptr<web::WebMain> _webMain;
   ChromeBrowserState* _mainBrowserState;
 }
+
+@property(nullable, nonatomic, readwrite) BraveHistoryAPI* historyAPI;
+@property(nullable, nonatomic, readwrite) BraveSyncProfileService* syncProfileService;
+
 @end
 
 @implementation BraveCoreMain
@@ -104,6 +111,20 @@
 
 - (void)setUserAgent:(NSString*)userAgent {
   _webClient->SetUserAgent(base::SysNSStringToUTF8(userAgent));
+}
+
+- (nullable BraveHistoryAPI*)historyAPI {
+  if (!_historyAPI) {
+    _historyAPI = [[BraveHistoryAPI alloc] initWithBrowserState:_mainBrowserState];
+  }
+  return _historyAPI;
+}
+
+- (nullable BraveSyncProfileService*)syncProfileService {
+  if (!_syncProfileService) {
+    _syncProfileService = [[BraveSyncProfileService alloc] initWithBrowserState:_mainBrowserState];
+  }
+  return _syncProfileService;
 }
 
 @end

@@ -24,7 +24,6 @@
 #include "ios/web/public/thread/web_thread.h"
 #include "ios/chrome/browser/application_context.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/history/web_history_service_factory.h"
 
@@ -92,9 +91,6 @@
 #pragma mark - BraveHistoryAPI
 
 @interface BraveHistoryAPI () {
-  // Browser State Used to retreive History Driver - History Service and Web
-  // History Service
-  ChromeBrowserState* browser_state_;
   // History Service for adding and querying
   history::HistoryService* history_service_;
   // WebhistoryService for delete operations
@@ -108,38 +104,18 @@
 
 @implementation BraveHistoryAPI
 
-/// Shared Singleton Instance for History API
-+ (instancetype)sharedHistoryAPI {
-  static BraveHistoryAPI* instance = nil;
-  static dispatch_once_t onceToken;
-
-  dispatch_once(&onceToken, ^{
-    instance = [[BraveHistoryAPI alloc] init];
-  });
-
-  return instance;
-}
-
-/// Constructor which is setting up services
-/// like HistoryService / SyncService / BrowsingHistoryService /
-/// WebHistoryService
-- (instancetype)init {
+- (instancetype)initWithBrowserState:(ChromeBrowserState*)state {
   if ((self = [super init])) {
-    DCHECK_CURRENTLY_ON(web::WebThread::UI);
-    ios::ChromeBrowserStateManager* browserStateManager =
-        GetApplicationContext()->GetChromeBrowserStateManager();
-    browser_state_ = browserStateManager->GetLastUsedBrowserState();
     history_service_ = ios::HistoryServiceFactory::GetForBrowserState(
-        browser_state_, ServiceAccessType::EXPLICIT_ACCESS);
+        state, ServiceAccessType::EXPLICIT_ACCESS);
     web_history_service_ =
-        ios::WebHistoryServiceFactory::GetForBrowserState(browser_state_);
+        ios::WebHistoryServiceFactory::GetForBrowserState(state);
     DCHECK(history_service_);
   }
   return self;
 }
 
 - (void)dealloc {
-  browser_state_ = nil;
   history_service_ = nil;
   web_history_service_ = nil;
 }
