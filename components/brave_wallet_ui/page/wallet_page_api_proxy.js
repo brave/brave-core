@@ -7,23 +7,26 @@ import 'chrome://resources/mojo/mojo/public/js/mojo_bindings_lite.js'
 import 'chrome://resources/mojo/url/mojom/url.mojom-lite.js'
 import 'chrome://resources/mojo/brave/components/brave_wallet_ui/wallet_ui.mojom-lite.js'
 
-import {addSingletonGetter} from 'chrome://resources/js/cr.m.js'
+import { addSingletonGetter } from 'chrome://resources/js/cr.m.js'
 
 /** @interface */
 class WalletPageApiProxy {
   /**
    * @param {string} password
+   * @param {string} mnemonic
    */
-  createWallet(password) {}
+  createWallet (password) { }
 
-  getRecoveryWords(password) {}
+  restoreWallet (mnemonic, password) { }
 
-  notifyWalletBackupComplete() {}
+  getRecoveryWords (password) { }
+
+  notifyWalletBackupComplete () { }
 
   /** @return {!walletUi.mojom.PageCallbackRouter} */
-  getCallbackRouter() {}
+  getCallbackRouter () { }
 
-  getWalletHandler() {}
+  getWalletHandler () { }
 }
 
 /** @implements {WalletPageApiProxy} */
@@ -39,35 +42,40 @@ export default class WalletPageApiProxyImpl {
 
     const factory = walletUi.mojom.PageHandlerFactory.getRemote();
     factory.createPageHandler(
-        this.callbackRouter.$.bindNewPipeAndPassRemote(),
-        this.page_handler.$.bindNewPipeAndPassReceiver(),
-        this.wallet_handler.$.bindNewPipeAndPassReceiver());
+      this.callbackRouter.$.bindNewPipeAndPassRemote(),
+      this.page_handler.$.bindNewPipeAndPassReceiver(),
+      this.wallet_handler.$.bindNewPipeAndPassReceiver());
   }
 
   /** @override */
-  createWallet(password) {
+  createWallet (password) {
     return this.page_handler.createWallet(password);
   }
 
   /** @override */
-  getRecoveryWords(password) {
+  restoreWallet (mnemonic, password) {
+    return this.page_handler.restoreWallet(mnemonic, password);
+  }
+
+  /** @override */
+  getRecoveryWords (password) {
     return this.page_handler.getRecoveryWords();
   }
 
   /** @override */
-  notifyWalletBackupComplete() {
+  notifyWalletBackupComplete () {
     return this.wallet_handler.notifyWalletBackupComplete();
   }
 
   /** @override */
-  getCallbackRouter() {
+  getCallbackRouter () {
     return this.callbackRouter;
   }
 
   /** @override */
-  getWalletHandler() {
+  getWalletHandler () {
     return this.wallet_handler;
-  } 
+  }
 }
 
 addSingletonGetter(WalletPageApiProxyImpl);

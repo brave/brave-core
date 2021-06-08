@@ -17,6 +17,7 @@ export default class APIProxy {
   static getInstance: () => APIProxy
   getWalletHandler: () => WalletAPIHandler
   createWallet: (password: string) => Promise<CreateWalletReturnInfo>
+  restoreWallet: (mnemonic: string, password: string) => Promise<void>
   getRecoveryWords: () => Promise<GetRecoveryWordsReturnInfo>
   notifyWalletBackupComplete: () => Promise<void>
 }

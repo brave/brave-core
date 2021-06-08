@@ -7,7 +7,7 @@ import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletPageActions from '../actions/wallet_page_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
-import { CreateWalletPayloadType } from '../constants/action_types'
+import { CreateWalletPayloadType, RestoreWalletPayloadType } from '../constants/action_types'
 import { WalletAPIHandler } from '../../constants/types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
@@ -35,6 +35,13 @@ handler.on(WalletPageActions.createWallet.getType(), async (store, payload: Crea
   const apiProxy = await getAPIProxy()
   const result = await apiProxy.createWallet(payload.password)
   store.dispatch(WalletPageActions.walletCreated({ mnemonic: result.mnemonic }))
+})
+
+handler.on(WalletPageActions.restoreWallet.getType(), async (store, payload: RestoreWalletPayloadType) => {
+  const apiProxy = await getAPIProxy()
+  await apiProxy.restoreWallet(payload.mnemonic, payload.password)
+  await apiProxy.notifyWalletBackupComplete()
+  await refreshWalletInfo(store)
 })
 
 handler.on(WalletPageActions.showRecoveryPhrase.getType(), async (store, payload: boolean) => {
