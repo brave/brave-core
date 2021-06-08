@@ -62,7 +62,7 @@ int OnHeadersReceived_AdBlockCspWork(
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  if (!response_headers) {
+  if (!response_headers || !ctx->allow_brave_shields || ctx->allow_ads) {
     return net::OK;
   }
 
