@@ -31,8 +31,8 @@
 #if defined(OS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
 #else
-#include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/browser/profiles/profile_window.h"
+#include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #endif
 
@@ -159,9 +159,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
 
   ASSERT_TRUE(guest_profile->IsGuestSession());
 
-  EXPECT_EQ(
-      brave_rewards::RewardsServiceFactory::GetForProfile(guest_profile),
-      nullptr);
+  EXPECT_EQ(brave_rewards::RewardsServiceFactory::GetForProfile(guest_profile),
+            nullptr);
   EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(guest_profile),
             nullptr);
 #endif

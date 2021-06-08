@@ -52,22 +52,23 @@ using BraveLocalStatePrefsBrowserTest = PlatformBrowserTest;
 
 // Check download prompt preference is set to true by default.
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, DownloadPromptDefault) {
-  EXPECT_TRUE(
-      chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(prefs::kPromptForDownload));
+  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      prefs::kPromptForDownload));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kHTTPSEVerywhereControlType));
-  EXPECT_FALSE(
-      chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(kNoScriptControlType));
+  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      kNoScriptControlType));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kShieldsAdvancedViewEnabled));
-  EXPECT_TRUE(
-      chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(kShieldsStatsBadgeVisible));
-  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(kAdControlType));
-  EXPECT_TRUE(
-      chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(kGoogleLoginControlType));
+  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      kShieldsStatsBadgeVisible));
+  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      kAdControlType));
+  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      kGoogleLoginControlType));
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       brave_shields::prefs::kFBEmbedControlType));
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
@@ -75,45 +76,50 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       brave_shields::prefs::kLinkedInEmbedControlType));
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(kWebTorrentEnabled));
+  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      kWebTorrentEnabled));
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kBraveWaybackMachineEnabled));
 #endif
-  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(kHangoutsEnabled));
+  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      kHangoutsEnabled));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       brave_rewards::prefs::kHideButton));
 #if BUILDFLAG(IPFS_ENABLED)
-  EXPECT_EQ(chrome_test_utils::GetProfile(this)->GetPrefs()->GetInteger(kIPFSResolveMethod),
+  EXPECT_EQ(chrome_test_utils::GetProfile(this)->GetPrefs()->GetInteger(
+                kIPFSResolveMethod),
             static_cast<int>((ipfs::IPFSResolveMethodTypes::IPFS_ASK)));
-  EXPECT_TRUE(
-      chrome_test_utils::GetProfile(this)->GetPrefs()->GetFilePath(kIPFSBinaryPath).empty());
-  EXPECT_FALSE(
-      chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(kIPFSAutoRedirectGateway));
+  EXPECT_TRUE(chrome_test_utils::GetProfile(this)
+                  ->GetPrefs()
+                  ->GetFilePath(kIPFSBinaryPath)
+                  .empty());
+  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      kIPFSAutoRedirectGateway));
 #endif
-  EXPECT_FALSE(
-      chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(kIPFSCompanionEnabled));
+  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      kIPFSCompanionEnabled));
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kERCLoadCryptoWalletsOnStartup));
-  EXPECT_FALSE(
-      chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(kERCOptedIntoCryptoWallets));
+  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      kERCOptedIntoCryptoWallets));
 #endif
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  EXPECT_EQ(
-      chrome_test_utils::GetProfile(this)->GetPrefs()->GetInteger(kBraveWalletWeb3Provider),
-      static_cast<int>(brave_wallet::IsNativeWalletEnabled()
-                           ? brave_wallet::Web3ProviderTypes::BRAVE_WALLET
-                           : brave_wallet::Web3ProviderTypes::ASK));
-  EXPECT_TRUE(
-      chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(kShowWalletIconOnToolbar));
-  EXPECT_FALSE(
-      chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(kBraveWalletBackupComplete));
+  EXPECT_EQ(chrome_test_utils::GetProfile(this)->GetPrefs()->GetInteger(
+                kBraveWalletWeb3Provider),
+            static_cast<int>(brave_wallet::IsNativeWalletEnabled()
+                                 ? brave_wallet::Web3ProviderTypes::BRAVE_WALLET
+                                 : brave_wallet::Web3ProviderTypes::ASK));
+  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      kShowWalletIconOnToolbar));
+  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      kBraveWalletBackupComplete));
 #endif
-  EXPECT_FALSE(
-      chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(kMRUCyclingEnabled));
+  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      kMRUCyclingEnabled));
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
-  EXPECT_FALSE(
-      chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(kBraveGCMChannelStatus));
+  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      kBraveGCMChannelStatus));
 #endif
 }
 
@@ -141,8 +147,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       prefs::kNtpUseMostVisitedTiles));
 #endif
-  EXPECT_TRUE(
-      chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(prefs::kHideWebStoreIcon));
+  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      prefs::kHideWebStoreIcon));
 }
 
 #if !defined(OS_ANDROID)

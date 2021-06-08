@@ -40,8 +40,7 @@ void CreateBraveSyncV1MetaInfo(bookmarks::BookmarkModel* model) {
 
 }  // namespace
 
-class BraveBookmarkModelLoadedObserverBrowserTest
-    : public PlatformBrowserTest {
+class BraveBookmarkModelLoadedObserverBrowserTest : public PlatformBrowserTest {
  public:
   void SetUpOnMainThread() override {
     profile_ = chrome_test_utils::GetProfile(this);
