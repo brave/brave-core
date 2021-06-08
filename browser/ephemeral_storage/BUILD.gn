@@ -17,7 +17,9 @@ if (!is_android) {
   source_set("ephemeral_storage_tests") {
     testonly = true
     sources = [
+      "ephemeral_storage_1p_browsertest.cc",
       "ephemeral_storage_browsertest.cc",
+      "ephemeral_storage_browsertest.h",
       "ephemeral_storage_qa_browsertest.cc",
     ]
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
