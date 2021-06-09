@@ -22,7 +22,8 @@ class BraveWalletNativeWorker {
   void Destroy(JNIEnv* env,
                const base::android::JavaParamRef<jobject>& jcaller);
   base::android::ScopedJavaLocalRef<jstring> CreateWallet(
-      JNIEnv* env, const base::android::JavaParamRef<jstring>& password);
+      JNIEnv* env,
+      const base::android::JavaParamRef<jstring>& password);
   void LockWallet(JNIEnv* env);
   bool UnlockWallet(JNIEnv* env,
                     const base::android::JavaParamRef<jstring>& password);

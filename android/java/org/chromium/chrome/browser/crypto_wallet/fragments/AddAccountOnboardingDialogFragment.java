@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.crypto_wallet;
+package org.chromium.chrome.browser.crypto_wallet.fragments;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -16,13 +16,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import org.chromium.chrome.R;
 
-public class AddAccountOnboardingDialog extends DialogFragment implements View.OnClickListener {
+public class AddAccountOnboardingDialogFragment
+        extends DialogFragment implements View.OnClickListener {
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         setDialogParams();
     }

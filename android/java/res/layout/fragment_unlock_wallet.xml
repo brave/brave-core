@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright 2021 The Brave Authors. All rights reserved.
-     Use of this source code is governed by a BSD-style license that can be
-     found in the LICENSE file. -->
-     
-<LinearLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical"
     android:visibility="gone"
-    android:orientation="vertical">
+    android:gravity="center_vertical">
 
     <FrameLayout
         android:layout_width="162dp"
@@ -37,19 +32,19 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="24dp"
-        android:text="@string/secure_your_crypto"
+        android:text="@string/unlock_wallet_title"
         android:textColor="@color/wallet_text_color"
         android:textSize="18sp"/>
 
     <EditText
-        android:id="@+id/secure_crypto_password"
+        android:id="@+id/unlock_wallet_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/rounded_wallet_edittext"
-        android:hint="@string/enter_password"
+        android:hint="@string/password"
         android:importantForAutofill="no"
         android:inputType="textPassword"
         android:paddingEnd="18dp"
@@ -60,36 +55,15 @@
         android:textSize="14sp"
         android:textColor="@color/wallet_text_color"
         android:textColorHint="#868E96" />
-
-    <EditText
-        android:id="@+id/secure_crypto_retype_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/rounded_wallet_edittext"
-        android:hint="@string/retype_password"
-        android:importantForAutofill="no"
-        android:inputType="textPassword"
-        android:paddingEnd="18dp"
-        android:paddingStart="18dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:textCursorDrawable="@null"
-        android:textSize="14sp"
-        android:textColor="@color/wallet_text_color"
-        android:textColorHint="#868E96" />
-
 
     <Button
-        android:id="@+id/btn_secure_crypto_continue"
+        android:id="@+id/btn_unlock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:background="@drawable/crypto_wallet_blue_button"
-        android:text="@string/continue_text"
+        android:text="@string/unlock"
         android:textAllCaps="false"
         android:textSize="16sp"
         android:paddingTop="8dp"
@@ -99,5 +73,20 @@
         android:layout_marginBottom="8dp"
         android:textColor="@android:color/white"
         style="?android:attr/borderlessButtonStyle"/>
+
+    <TextView
+        android:id="@+id/btn_unlock_wallet_restore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:layout_gravity="center_horizontal"
+        android:clickable="true"
+        android:focusable="true"
+        android:textAllCaps="false"
+        android:layout_marginBottom="16dp"
+        android:text="@string/restore"
+        android:textSize="16sp"
+        android:textColor="@color/wallet_text_color"/>
 
 </LinearLayout>

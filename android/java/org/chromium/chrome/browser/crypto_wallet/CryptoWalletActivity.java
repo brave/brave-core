@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -20,27 +22,24 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletNavigationFragmentPageAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.CardsFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.CryptoFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.RewardsFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.SwapBottomSheetDialogFragment;
+import org.chromium.chrome.browser.crypto_wallet.listeners.OnFinishOnboarding;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CryptoWalletActivity extends AppCompatActivity {
-    private BottomNavigationView navigation;
+    private BottomNavigationView bottomNavigationView;
     private Toolbar toolbar;
     private WalletNavigationFragmentPageAdapter walletNavigationFragmentPageAdapter;
-    private ViewPager viewPager;
+    private ViewPager navigationViewPager;
 
     public static boolean isOnboardingDone;
-
-    public interface OnFinishOnboarding {
-        void onFinish();
-    }
 
     private final OnFinishOnboarding onFinishOnboarding = new OnFinishOnboarding() {
         @Override
@@ -55,6 +54,12 @@ public class CryptoWalletActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.wallet_search, menu);
         final MenuItem searchItem = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) searchItem.getActionView();
+        // EditText searchEditText =
+        // searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        // searchEditText.setTextColor(getResources().getColor(android.R.color.black));
+        // searchEditText.setHintTextColor(getResources().getColor(android.R.color.darker_gray));
+        // ImageView closeButtonImage = searchView.findViewById(R.id.search_close_btn);
+        // closeButtonImage.setImageResource(R.drawable.ic_baseline_close_24);
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return super.onCreateOptionsMenu(menu);
@@ -65,45 +70,36 @@ public class CryptoWalletActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crypto_wallet);
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(getResources().getColor(android.R.color.black));
+        toolbar.setTitleTextColor(getResources().getColor(android.R.color.black, null));
         toolbar.setOverflowIcon(
                 ContextCompat.getDrawable(this, R.drawable.ic_baseline_more_vert_24));
         setSupportActionBar(toolbar);
-        viewPager = findViewById(R.id.view_pager);
+        navigationViewPager = findViewById(R.id.navigation_view_pager);
         walletNavigationFragmentPageAdapter =
                 new WalletNavigationFragmentPageAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(walletNavigationFragmentPageAdapter);
-        viewPager.setOffscreenPageLimit(walletNavigationFragmentPageAdapter.getCount() - 1);
-        navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(item -> {
+        navigationViewPager.setAdapter(walletNavigationFragmentPageAdapter);
+        navigationViewPager.setOffscreenPageLimit(
+                walletNavigationFragmentPageAdapter.getCount() - 1);
+        bottomNavigationView = findViewById(R.id.navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.navigation_crypto) {
-                viewPager.setCurrentItem(0);
+                navigationViewPager.setCurrentItem(0);
                 initTitle(0);
                 return true;
             } else if (itemId == R.id.navigation_rewards) {
-                viewPager.setCurrentItem(1);
+                navigationViewPager.setCurrentItem(1);
                 initTitle(1);
+                return true;
+            } else if (itemId == R.id.navigation_cards) {
+                navigationViewPager.setCurrentItem(2);
+                initTitle(2);
                 return true;
             } else if (itemId == R.id.navigation_swap) {
                 SwapBottomSheetDialogFragment swapBottomSheetDialogFragment =
                         SwapBottomSheetDialogFragment.newInstance();
                 swapBottomSheetDialogFragment.show(
                         getSupportFragmentManager(), SwapBottomSheetDialogFragment.TAG_FRAGMENT);
-                return true;
-            } else if (itemId == R.id.navigation_cards) {
-                int position;
-                if (isOnboardingDone)
-                    position = 3;
-                else
-                    position = 2;
-                viewPager.setCurrentItem(position);
-                initTitle(position);
-                return true;
-            } else if (itemId == R.id.navigation_lock) {
-                viewPager.setCurrentItem(4);
-                initTitle(4);
-                BraveWalletNativeWorker.getInstance().LockWallet();
                 return true;
             }
             return false;
@@ -114,7 +110,7 @@ public class CryptoWalletActivity extends AppCompatActivity {
     private void setNavigationFragments() {
         List<NavigationItem> navigationItems = new ArrayList<>();
         int navigationMenu;
-        CryptoFragment cryptoFragment = (CryptoFragment) CryptoFragment.newInstance();
+        CryptoFragment cryptoFragment = CryptoFragment.newInstance();
         cryptoFragment.setOnLastPageClick(onFinishOnboarding);
         navigationItems.add(new NavigationItem(
                 getResources().getString(R.string.title_crypto), cryptoFragment));
@@ -124,18 +120,14 @@ public class CryptoWalletActivity extends AppCompatActivity {
                 getResources().getString(R.string.title_cards), CardsFragment.newInstance()));
         if (isOnboardingDone) {
             findViewById(R.id.swapActionButton).setVisibility(View.VISIBLE);
-            navigationItems.add(new NavigationItem(
-                    getResources().getString(R.string.title_cards), CardsFragment.newInstance()));
-            navigationItems.add(new NavigationItem(
-                    getResources().getString(R.string.title_lock), CardsFragment.newInstance()));
             navigationMenu = R.menu.navigation;
         } else {
             findViewById(R.id.swapActionButton).setVisibility(View.GONE);
             navigationMenu = R.menu.navigation_2;
         }
-        if (navigation != null) {
-            navigation.getMenu().clear();
-            navigation.inflateMenu(navigationMenu);
+        if (bottomNavigationView != null) {
+            bottomNavigationView.getMenu().clear();
+            bottomNavigationView.inflateMenu(navigationMenu);
         }
         if (walletNavigationFragmentPageAdapter != null) {
             walletNavigationFragmentPageAdapter.setNavigationItems(navigationItems);

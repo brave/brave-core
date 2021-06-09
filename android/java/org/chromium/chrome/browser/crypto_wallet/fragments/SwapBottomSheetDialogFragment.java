@@ -3,14 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.crypto_wallet;
+package org.chromium.chrome.browser.crypto_wallet.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -43,9 +45,10 @@ public class SwapBottomSheetDialogFragment extends BottomSheetDialogFragment {
     }
 
     @Override
-    public void setupDialog(Dialog dialog, int style) {
+    public void setupDialog(@NonNull Dialog dialog, int style) {
         super.setupDialog(dialog, style);
 
+        @SuppressLint("InflateParams")
         final View view =
                 LayoutInflater.from(getContext()).inflate(R.layout.swap_bottom_sheet, null);
         dialog.setContentView(view);

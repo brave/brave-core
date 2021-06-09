@@ -4,7 +4,6 @@
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
-
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
@@ -18,17 +17,12 @@
         android:title="@string/title_rewards" />
 
     <item
-        android:id="@+id/navigation_swap"
-        android:title="@null" />
-
-    <item
         android:id="@+id/navigation_cards"
         android:icon="@drawable/ic_credit_card"
         android:title="@string/title_cards" />
 
     <item
-        android:id="@+id/navigation_lock"
-        android:icon="@drawable/ic_lock_open"
-        android:title="@string/title_lock" />
+        android:id="@+id/navigation_swap"
+        android:title="@null"/>
 
 </menu>

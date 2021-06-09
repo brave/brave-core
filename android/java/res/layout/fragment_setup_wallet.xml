@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright 2021 The Brave Authors. All rights reserved.
-     Use of this source code is governed by a BSD-style license that can be
-     found in the LICENSE file. -->
-     
-<LinearLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <ImageView
@@ -59,5 +54,20 @@
         android:layout_marginBottom="8dp"
         android:textColor="@android:color/white"
         style="?android:attr/borderlessButtonStyle"/>
+
+    <TextView
+        android:id="@+id/btn_restore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:layout_gravity="center_horizontal"
+        android:clickable="true"
+        android:focusable="true"
+        android:textAllCaps="false"
+        android:layout_marginBottom="16dp"
+        android:text="@string/restore"
+        android:textSize="16sp"
+        android:textColor="@color/wallet_text_color"/>
 
 </LinearLayout>

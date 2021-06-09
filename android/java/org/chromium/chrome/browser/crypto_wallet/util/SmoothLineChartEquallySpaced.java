@@ -74,7 +74,6 @@ public class SmoothLineChartEquallySpaced extends View {
         invalidate();
     }
 
-    @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
 
@@ -100,8 +99,7 @@ public class SmoothLineChartEquallySpaced extends View {
         }
 
         // calculate smooth path
-        float lX = 0;
-        float lY = 0;
+        float lX = 0, lY = 0;
         mPath.moveTo(points.get(0).x, points.get(0).y);
         for (int i = 1; i < size; i++) {
             PointF p = points.get(i); // current point

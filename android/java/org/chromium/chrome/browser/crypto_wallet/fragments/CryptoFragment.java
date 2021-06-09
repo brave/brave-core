@@ -5,64 +5,63 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
-import android.content.DialogInterface;
-import android.hardware.biometrics.BiometricPrompt;
+import static org.chromium.chrome.browser.crypto_wallet.util.Utils.ONBOARDING_ACTION;
+import static org.chromium.chrome.browser.crypto_wallet.util.Utils.RESTORE_WALLET_ACTION;
+import static org.chromium.chrome.browser.crypto_wallet.util.Utils.UNLOCK_WALLET_ACTION;
+
 import android.os.Bundle;
-import android.os.CancellationSignal;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.AddAccountOnboardingDialog;
-import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
 import org.chromium.chrome.browser.crypto_wallet.CryptoWalletActivity;
-import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
-import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
+import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter;
+import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoWalletOnboardingPagerAdapter;
+import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.BackupWalletFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.RecoveryPhraseFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.RestoreWalletFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.SecurePasswordFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.SetupWalletFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.UnlockWalletFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.VerifyRecoveryPhraseFragment;
+import org.chromium.chrome.browser.crypto_wallet.listeners.OnFinishOnboarding;
+import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
+import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Executor;
 
 public class CryptoFragment extends Fragment {
-    private final List<String> titles =
-            new ArrayList<>(Arrays.asList("PORTFOLIO", "PRICES", "DEFI", "NFTS", "ACCOUNTS"));
-
-    private final List<String> recoveryPhrases =
-            new ArrayList<>(Arrays.asList("Tomato", "Green", "Velvet", "Span", "Celery", "Atoms",
-                    "Parent", "Stop", "Bowl", "Wishful", "Stone", "Exercise"));
-    private CryptoWalletActivity.OnFinishOnboarding onFinishOnboarding;
+    private OnFinishOnboarding onFinishOnboarding;
 
     private View rootView;
-    private View secureCryptoLayout;
-    private View backupWalletLayout;
 
-    public void setOnLastPageClick(CryptoWalletActivity.OnFinishOnboarding onFinishOnboarding) {
+    private View cryptoLayout;
+    private ViewPager cryptoWalletOnboardingViewPager;
+    private CryptoWalletOnboardingPagerAdapter cryptoWalletOnboardingPagerAdapter;
+
+    public void setOnLastPageClick(OnFinishOnboarding onFinishOnboarding) {
         this.onFinishOnboarding = onFinishOnboarding;
     }
 
-    public static Fragment newInstance() {
+    public static CryptoFragment newInstance() {
         return new CryptoFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -75,185 +74,83 @@ public class CryptoFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        cryptoLayout = view.findViewById(R.id.crypto_layout);
         if (CryptoWalletActivity.isOnboardingDone) {
             setCryptoLayout();
         } else {
-            setCryptoOnboardingLayout();
+            cryptoLayout.setVisibility(View.GONE);
+            cryptoWalletOnboardingViewPager =
+                    view.findViewById(R.id.crypto_wallet_onboarding_viewpager);
+            assert getActivity() != null;
+            cryptoWalletOnboardingPagerAdapter = new CryptoWalletOnboardingPagerAdapter(
+                    ((FragmentActivity) getActivity()).getSupportFragmentManager());
+            cryptoWalletOnboardingViewPager.setAdapter(cryptoWalletOnboardingPagerAdapter);
+            cryptoWalletOnboardingViewPager.setOffscreenPageLimit(
+                    cryptoWalletOnboardingPagerAdapter.getCount() - 1);
+
+            setNavigationFragments(ONBOARDING_ACTION);
+
+            ImageView onboardingBackButton = view.findViewById(R.id.onboarding_back_button);
+            onboardingBackButton.setOnClickListener(v -> {
+                if (cryptoWalletOnboardingViewPager != null) {
+                    cryptoWalletOnboardingViewPager.setCurrentItem(
+                            cryptoWalletOnboardingViewPager.getCurrentItem() - 1);
+                }
+            });
         }
     }
 
-    private void setCryptoOnboardingLayout() {
-        View crytpoLayout = rootView.findViewById(R.id.crypto_layout);
-        View crytpoOnboardingLayout = rootView.findViewById(R.id.crypto_onboarding_layout);
-        View setUpCryptoLayout = rootView.findViewById(R.id.setup_crypto_layout_id);
-        View recoveryPhraseLayout = rootView.findViewById(R.id.recovery_phrase_layout_id);
-
-        crytpoOnboardingLayout.setVisibility(View.VISIBLE);
-        crytpoLayout.setVisibility(View.GONE);
-
-        secureCryptoLayout = rootView.findViewById(R.id.secure_crypto_layout_id);
-        backupWalletLayout = rootView.findViewById(R.id.backup_wallet_layout_id);
-        Button backupWalletButton = rootView.findViewById(R.id.btn_backup_wallet_continue);
-        backupWalletButton.setOnClickListener(v -> {
-            backupWalletLayout.setVisibility(View.GONE);
-            recoveryPhraseLayout.setVisibility(View.VISIBLE);
-        });
-        CheckBox backupWalletCheckbox = rootView.findViewById(R.id.backup_wallet_checkbox);
-        backupWalletCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                backupWalletButton.setEnabled(true);
-                backupWalletButton.setAlpha(1.0f);
-            } else {
-                backupWalletButton.setEnabled(false);
-                backupWalletButton.setAlpha(0.5f);
-            }
-        });
-        TextView backupWalletSkipButton = rootView.findViewById(R.id.btn_backup_wallet_skip);
-        backupWalletSkipButton.setOnClickListener(onSkipClickListener);
-
-        Button recoveryPhraseButton = rootView.findViewById(R.id.btn_recovery_phrase_continue);
-        CheckBox recoveryPhraseCheckbox = rootView.findViewById(R.id.recovery_phrase_checkbox);
-        recoveryPhraseCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                recoveryPhraseButton.setEnabled(true);
-                recoveryPhraseButton.setAlpha(1.0f);
-            } else {
-                recoveryPhraseButton.setEnabled(false);
-                recoveryPhraseButton.setAlpha(0.5f);
-            }
-        });
-        TextView recoveryPhraseSkipButton = rootView.findViewById(R.id.btn_recovery_phrase_skip);
-        recoveryPhraseSkipButton.setOnClickListener(onSkipClickListener);
-
-        EditText passwordEdittext = rootView.findViewById(R.id.secure_crypto_password);
-        EditText retypePasswordEdittext = rootView.findViewById(R.id.secure_crypto_retype_password);
-
-        Button setupCryptoButton = rootView.findViewById(R.id.btn_setup_crypto);
-        setupCryptoButton.setOnClickListener(v -> {
-            setUpCryptoLayout.setVisibility(View.GONE);
-            secureCryptoLayout.setVisibility(View.VISIBLE);
-        });
-
-        Button secureCryptoButton = rootView.findViewById(R.id.btn_secure_crypto_continue);
-        secureCryptoButton.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(passwordEdittext.getText())
-                    || passwordEdittext.getText().toString().length() < 7) {
-                passwordEdittext.setError(getResources().getString(R.string.password_error));
-            } else if (TextUtils.isEmpty(retypePasswordEdittext.getText())
-                    || !passwordEdittext.getText().toString().equals(
-                            retypePasswordEdittext.getText().toString())) {
-                retypePasswordEdittext.setError(
-                        getResources().getString(R.string.retype_password_error));
-            } else {
-                showFingerprintDialog(authenticationCallback);
-            }
-        });
-
-        recoveryPhraseButton.setOnClickListener(v -> {
-            // TODO(sergz): do something with a mnemonic string that CreateWallet returns
-            BraveWalletNativeWorker.getInstance().CreateWallet(
-                passwordEdittext.getText().toString());
-            onFinishOnboarding.onFinish();
-            showAddAccountDialog();
-        });
-
-        setupRecoveryPhraseRecyclerView(rootView);
-    }
-
-    private void showAddAccountDialog() {
-        AddAccountOnboardingDialog addAccountOnboardingDialog = new AddAccountOnboardingDialog();
-        addAccountOnboardingDialog.setCancelable(false);
-        assert getActivity() != null;
-        addAccountOnboardingDialog.show(
-                ((FragmentActivity) getActivity()).getSupportFragmentManager(),
-                "AddAccountOnboardingDialog");
-    }
-
-    View.OnClickListener onSkipClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            onFinishOnboarding.onFinish();
-        }
-    };
-
-    private void showFingerprintDialog(
-            @NonNull final BiometricPrompt.AuthenticationCallback authenticationCallback) {
-        assert getActivity() != null;
-        Executor executor = ContextCompat.getMainExecutor(getActivity());
-        new BiometricPrompt.Builder(getActivity())
-                .setTitle(getResources().getString(R.string.enable_fingerprint_unlock))
-                .setDescription(getResources().getString(R.string.enable_fingerprint_text))
-                .setNegativeButton(getResources().getString(android.R.string.cancel), executor,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                secureCryptoLayout.setVisibility(View.GONE);
-                                backupWalletLayout.setVisibility(View.VISIBLE);
-                                authenticationCallback.onAuthenticationError(
-                                        BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED,
-                                        "User canceled the scanning process by pressing the negative button");
-                            }
-                        })
-                .build()
-                .authenticate(new CancellationSignal(), executor, authenticationCallback);
-    }
-
-    BiometricPrompt.AuthenticationCallback
-            authenticationCallback = new BiometricPrompt.AuthenticationCallback() {
-        @Override
-        public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
-            super.onAuthenticationSucceeded(result);
-            Toast.makeText(getActivity(), "Authentication succeeded!", Toast.LENGTH_SHORT).show();
-            secureCryptoLayout.setVisibility(View.GONE);
-            backupWalletLayout.setVisibility(View.VISIBLE);
+    private void setNavigationFragments(int type) {
+        List<NavigationItem> navigationItems = new ArrayList<>();
+        if (type == ONBOARDING_ACTION) {
+            SetupWalletFragment setupWalletFragment = new SetupWalletFragment();
+            setupWalletFragment.setOnNextPageListener(onNextPage);
+            navigationItems.add(new NavigationItem(
+                    getResources().getString(R.string.setup_crypto), setupWalletFragment));
+            SecurePasswordFragment securePasswordFragment = new SecurePasswordFragment();
+            securePasswordFragment.setOnNextPageListener(onNextPage);
+            navigationItems.add(new NavigationItem(
+                    getResources().getString(R.string.secure_your_crypto), securePasswordFragment));
+            BackupWalletFragment backupWalletFragment = new BackupWalletFragment();
+            backupWalletFragment.setOnNextPageListener(onNextPage);
+            navigationItems.add(new NavigationItem(
+                    getResources().getString(R.string.backup_your_wallet), backupWalletFragment));
+            RecoveryPhraseFragment recoveryPhraseFragment = new RecoveryPhraseFragment();
+            recoveryPhraseFragment.setOnNextPageListener(onNextPage);
+            navigationItems.add(
+                    new NavigationItem(getResources().getString(R.string.your_recovery_phrase),
+                            recoveryPhraseFragment));
+            VerifyRecoveryPhraseFragment verifyRecoveryPhraseFragment =
+                    new VerifyRecoveryPhraseFragment();
+            verifyRecoveryPhraseFragment.setOnNextPageListener(onNextPage);
+            navigationItems.add(
+                    new NavigationItem(getResources().getString(R.string.verify_recovery_phrase),
+                            verifyRecoveryPhraseFragment));
+        } else if (type == UNLOCK_WALLET_ACTION) {
+            UnlockWalletFragment unlockWalletFragment = new UnlockWalletFragment();
+            unlockWalletFragment.setOnNextPageListener(onNextPage);
+            navigationItems.add(new NavigationItem(
+                    getResources().getString(R.string.unlock_wallet_title), unlockWalletFragment));
+        } else if (type == RESTORE_WALLET_ACTION) {
+            RestoreWalletFragment restoreWalletFragment = new RestoreWalletFragment();
+            restoreWalletFragment.setOnNextPageListener(onNextPage);
+            navigationItems.add(
+                    new NavigationItem(getResources().getString(R.string.restore_crypto_account),
+                            restoreWalletFragment));
         }
 
-        @Override
-        public void onAuthenticationError(int errorCode, CharSequence errString) {
-            super.onAuthenticationError(errorCode, errString);
-            switch (errorCode) {
-                case BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED:
-                    Toast.makeText(getActivity(), errString, Toast.LENGTH_SHORT).show();
-                    break;
-                case BiometricPrompt.BIOMETRIC_ERROR_HW_NOT_PRESENT:
-                case BiometricPrompt.BIOMETRIC_ERROR_HW_UNAVAILABLE:
-                    Toast.makeText(getActivity(),
-                                 "Device doesn't have the supported fingerprint hardware.",
-                                 Toast.LENGTH_SHORT)
-                            .show();
-                    break;
-                case BiometricPrompt.BIOMETRIC_ERROR_NO_BIOMETRICS:
-                    Toast.makeText(getActivity(), "User did not register any fingerprints.",
-                                Toast.LENGTH_SHORT)
-                           .show();
-                    break;
-                default:
-                    Toast.makeText(getActivity(), "unrecoverable error", Toast.LENGTH_SHORT).show();
-            }
+        if (cryptoWalletOnboardingPagerAdapter != null) {
+            cryptoWalletOnboardingPagerAdapter.setNavigationItems(navigationItems);
+            cryptoWalletOnboardingPagerAdapter.notifyDataSetChanged();
         }
-    };
-
-    private void setupRecoveryPhraseRecyclerView(View view) {
-        RecyclerView recyclerView = view.findViewById(R.id.recovery_phrase_recyclerview);
-        assert getActivity() != null;
-        recyclerView.addItemDecoration(
-                new ItemOffsetDecoration(getActivity(), R.dimen.zero_margin));
-        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-        recyclerView.setLayoutManager(layoutManager);
-
-        RecoveryPhraseAdapter recoveryPhraseAdapter = new RecoveryPhraseAdapter();
-        recoveryPhraseAdapter.setRecoveryPhraseList(recoveryPhrases);
-        recyclerView.setAdapter(recoveryPhraseAdapter);
     }
 
     private void setCryptoLayout() {
-        View crytpoLayout = rootView.findViewById(R.id.crypto_layout);
-        View crytpoOnboardingLayout = rootView.findViewById(R.id.crypto_onboarding_layout);
-        crytpoOnboardingLayout.setVisibility(View.GONE);
-        crytpoLayout.setVisibility(View.VISIBLE);
+        View cryptoOnboardingLayout = rootView.findViewById(R.id.crypto_onboarding_layout);
+        cryptoOnboardingLayout.setVisibility(View.GONE);
+        cryptoLayout.setVisibility(View.VISIBLE);
 
-        ViewPager viewPager = rootView.findViewById(R.id.view_pager);
+        ViewPager viewPager = rootView.findViewById(R.id.navigation_view_pager);
         CryptoFragmentPageAdapter adapter =
                 new CryptoFragmentPageAdapter(getChildFragmentManager());
         viewPager.setAdapter(adapter);
@@ -262,32 +159,21 @@ public class CryptoFragment extends Fragment {
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    private class CryptoFragmentPageAdapter extends FragmentPagerAdapter {
-        public CryptoFragmentPageAdapter(FragmentManager fm) {
-            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        }
-
-        @NonNull
+    private final OnNextPage onNextPage = new OnNextPage() {
         @Override
-        public Fragment getItem(int position) {
-            return CryptoChildFragment.newInstance();
+        public void gotoNextPage(boolean finishOnboarding) {
+            if (finishOnboarding) {
+                onFinishOnboarding.onFinish();
+            } else {
+                if (cryptoWalletOnboardingViewPager != null)
+                    cryptoWalletOnboardingViewPager.setCurrentItem(
+                            cryptoWalletOnboardingViewPager.getCurrentItem() + 1);
+            }
         }
 
         @Override
-        public int getCount() {
-            return 5;
+        public void gotoRestorePage() {
+            setNavigationFragments(RESTORE_WALLET_ACTION);
         }
-
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return titles.get(position);
-        }
-    }
+    };
 }

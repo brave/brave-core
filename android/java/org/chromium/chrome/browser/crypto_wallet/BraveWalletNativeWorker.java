@@ -25,8 +25,7 @@ public class BraveWalletNativeWorker {
         return instance;
     }
 
-    private BraveWalletNativeWorker() {
-    }
+    private BraveWalletNativeWorker() {}
 
     private void Init() {
         if (mNativeBraveWalletNativeWorker == 0) {
@@ -41,8 +40,7 @@ public class BraveWalletNativeWorker {
 
     private void Destroy() {
         if (mNativeBraveWalletNativeWorker != 0) {
-            BraveWalletNativeWorkerJni.get().destroy(
-                mNativeBraveWalletNativeWorker, this);
+            BraveWalletNativeWorkerJni.get().destroy(mNativeBraveWalletNativeWorker, this);
             mNativeBraveWalletNativeWorker = 0;
         }
     }
@@ -55,24 +53,22 @@ public class BraveWalletNativeWorker {
 
     public String CreateWallet(String password) {
         return BraveWalletNativeWorkerJni.get().createWallet(
-            mNativeBraveWalletNativeWorker, password);
+                mNativeBraveWalletNativeWorker, password);
     }
 
     public void LockWallet() {
-        BraveWalletNativeWorkerJni.get().lockWallet(
-            mNativeBraveWalletNativeWorker);
+        BraveWalletNativeWorkerJni.get().lockWallet(mNativeBraveWalletNativeWorker);
     }
 
     public boolean UnlockWallet(String password) {
         return BraveWalletNativeWorkerJni.get().unlockWallet(
-            mNativeBraveWalletNativeWorker, password);
+                mNativeBraveWalletNativeWorker, password);
     }
 
     @NativeMethods
     interface Natives {
         void init(BraveWalletNativeWorker caller);
-        void destroy(long nativeBraveWalletNativeWorker,
-            BraveWalletNativeWorker caller);
+        void destroy(long nativeBraveWalletNativeWorker, BraveWalletNativeWorker caller);
         String createWallet(long nativeBraveWalletNativeWorker, String password);
         void lockWallet(long nativeBraveWalletNativeWorker);
         boolean unlockWallet(long nativeBraveWalletNativeWorker, String password);

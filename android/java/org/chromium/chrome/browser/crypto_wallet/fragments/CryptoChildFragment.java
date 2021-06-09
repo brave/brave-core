@@ -50,9 +50,9 @@ public class CryptoChildFragment extends Fragment {
     }
 
     private void setUpCoinList(View view) {
-        RecyclerView rvContacts = view.findViewById(R.id.rvCoins);
+        RecyclerView rvCoins = view.findViewById(R.id.rvCoins);
         WalletCoinAdapter walletCoinAdapter = new WalletCoinAdapter();
-        rvContacts.setAdapter(walletCoinAdapter);
-        rvContacts.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvCoins.setAdapter(walletCoinAdapter);
+        rvCoins.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 }

@@ -1828,6 +1828,17 @@ until they verify, or until 90 days have passed.
     <message name="IDS_MENU_BRAVE_WALLET">
       Brave Wallet
     </message>
+    <message name="IDS_RESTORE_CRYPTO_TEXT">Enter your recovery phrase to restore your Brave Wallet crypto account.</message>
+    <message name="IDS_RESTORE_CRYPTO_ACCOUNT">Restore Crypto Account</message>
+    <message name="IDS_SHOW_RECOVERY_PHRASE">Show recovery phrase</message>
+    <message name="IDS_ENTER_RECOVERY_PHRASE">Enter your recovery phrase</message>
+    <message name="IDS_VERIFY_RECOVERY_PHRASE">Verify recovery phrase</message>
+    <message name="IDS_VERIFY_RECOVERY_PHRASE_TEXT">Tap the words top put them next to each other in the correct order.</message>
+    <message name="IDS_VERIFY">Verify</message>
+    <message name="IDS_RESTORE">Restore</message>
+    <message name="IDS_UNLOCK">Unlock</message>
+    <message name="IDS_PASSWORD">Password</message>
+    <message name="IDS_UNLOCK_WALLET_TITLE">Enter your password to unlock</message>
     </messages>
   </release>
 </grit>

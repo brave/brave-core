@@ -30,10 +30,8 @@ namespace android {
 BraveWalletNativeWorker::BraveWalletNativeWorker(
     JNIEnv* env,
     const base::android::JavaRef<jobject>& obj)
-    : weak_java_brave_wallet_native_worker_(env, obj),
-      weak_factory_(this) {
-  Java_BraveWalletNativeWorker_setNativePtr(env,
-                                            obj,
+    : weak_java_brave_wallet_native_worker_(env, obj), weak_factory_(this) {
+  Java_BraveWalletNativeWorker_setNativePtr(env, obj,
                                             reinterpret_cast<intptr_t>(this));
 }
 
@@ -46,10 +44,10 @@ void BraveWalletNativeWorker::Destroy(
 }
 
 base::android::ScopedJavaLocalRef<jstring>
-    BraveWalletNativeWorker::CreateWallet(
-        JNIEnv* env, const base::android::JavaParamRef<jstring>& password) {
-  auto* keyring_controller =
-      GetBraveWalletService()->keyring_controller();
+BraveWalletNativeWorker::CreateWallet(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& password) {
+  auto* keyring_controller = GetBraveWalletService()->keyring_controller();
   auto* keyring = keyring_controller->CreateDefaultKeyring(
       base::android::ConvertJavaStringToUTF8(env, password));
   if (keyring) {
@@ -61,18 +59,18 @@ base::android::ScopedJavaLocalRef<jstring>
 }
 
 void BraveWalletNativeWorker::LockWallet(JNIEnv* env) {
-  auto* keyring_controller =
-      GetBraveWalletService()->keyring_controller();
+  auto* keyring_controller = GetBraveWalletService()->keyring_controller();
   keyring_controller->Lock();
 }
 
 bool BraveWalletNativeWorker::UnlockWallet(
-    JNIEnv* env, const base::android::JavaParamRef<jstring>& password) {
-  auto* keyring_controller =
-      GetBraveWalletService()->keyring_controller();
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& password) {
+  auto* keyring_controller = GetBraveWalletService()->keyring_controller();
 
   return keyring_controller->Unlock(
-      base::android::ConvertJavaStringToUTF8(env, password));;
+      base::android::ConvertJavaStringToUTF8(env, password));
+  ;
 }
 
 static void JNI_BraveWalletNativeWorker_Init(

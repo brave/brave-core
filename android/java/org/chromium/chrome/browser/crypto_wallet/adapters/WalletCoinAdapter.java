@@ -15,20 +15,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
 
-public class WalletCoinAdapter
-        extends RecyclerView.Adapter<WalletCoinAdapter.WalletCoinViewHolder> {
+public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.ViewHolder> {
     @Override
-    public @NonNull WalletCoinAdapter.WalletCoinViewHolder onCreateViewHolder(
+    public @NonNull WalletCoinAdapter.ViewHolder onCreateViewHolder(
             ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View walletCoinView = inflater.inflate(R.layout.wallet_coin_list_item, parent, false);
-        return new WalletCoinViewHolder(walletCoinView);
+        return new ViewHolder(walletCoinView);
     }
 
     @Override
-    public void onBindViewHolder(
-            @NonNull WalletCoinAdapter.WalletCoinViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull WalletCoinAdapter.ViewHolder holder, int position) {
         // TODO add holder view
     }
 
@@ -37,8 +35,8 @@ public class WalletCoinAdapter
         return 10;
     }
 
-    public static class WalletCoinViewHolder extends RecyclerView.ViewHolder {
-        public WalletCoinViewHolder(View itemView) {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public ViewHolder(View itemView) {
             super(itemView);
         }
     }
