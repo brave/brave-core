@@ -19,15 +19,6 @@
 
 namespace speedreader {
 
-// static
-SpeedreaderTabHelper* SpeedreaderTabHelper::Get(
-    content::WebContents* web_contents) {
-  SpeedreaderTabHelper::CreateForWebContents(web_contents);
-  SpeedreaderTabHelper* tab_helper =
-      SpeedreaderTabHelper::FromWebContents(web_contents);
-  return tab_helper;
-}
-
 SpeedreaderTabHelper::~SpeedreaderTabHelper() {
   HideBubble();
 }

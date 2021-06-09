@@ -25,8 +25,6 @@ class SpeedreaderTabHelper
  public:
   ~SpeedreaderTabHelper() override;
 
-  static SpeedreaderTabHelper* Get(content::WebContents* web_contents);
-
   SpeedreaderTabHelper(const SpeedreaderTabHelper&) = delete;
   SpeedreaderTabHelper& operator=(SpeedreaderTabHelper&) = delete;
 

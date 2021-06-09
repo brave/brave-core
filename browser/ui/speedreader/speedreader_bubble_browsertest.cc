@@ -23,11 +23,7 @@ class SpeedreaderBubbleBrowserTest : public DialogBrowserTest {
       delete;
 
   // DialogBrowserTest:
-  void ShowUi(const std::string& name) override {
-    auto* tab_helper =
-        speedreader::SpeedreaderTabHelper::Get(ActiveWebContents());
-    tab_helper->ShowBubble();
-  }
+  void ShowUi(const std::string& name) override { tab_helper()->ShowBubble(); }
 
  protected:
   bool NavigateToNewTab() {
@@ -37,6 +33,13 @@ class SpeedreaderBubbleBrowserTest : public DialogBrowserTest {
 
   content::WebContents* ActiveWebContents() const {
     return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+
+  speedreader::SpeedreaderTabHelper* tab_helper() {
+    speedreader::SpeedreaderTabHelper::CreateForWebContents(
+        ActiveWebContents());
+    return speedreader::SpeedreaderTabHelper::FromWebContents(
+        ActiveWebContents());
   }
 
   void ToggleSpeedreader() {
@@ -49,18 +52,14 @@ class SpeedreaderBubbleBrowserTest : public DialogBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(SpeedreaderBubbleBrowserTest,
                        InvokeUi_reader_mode_bubble_basic) {
-  auto* tab_helper =
-      speedreader::SpeedreaderTabHelper::Get(ActiveWebContents());
-  EXPECT_FALSE(tab_helper->IsSpeedreaderEnabled());
+  EXPECT_FALSE(tab_helper()->IsSpeedreaderEnabled());
   ShowAndVerifyUi();
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedreaderBubbleBrowserTest,
                        InvokeUi_speedreader_mode_bubble_basic) {
   ToggleSpeedreader();
-  auto* tab_helper =
-      speedreader::SpeedreaderTabHelper::Get(ActiveWebContents());
-  EXPECT_TRUE(tab_helper->IsSpeedreaderEnabled());
+  EXPECT_TRUE(tab_helper()->IsSpeedreaderEnabled());
   // We need to navigate somewhere so the host is non-empty. For tests the new
   // tab page is fine.
   NavigateToNewTab();
