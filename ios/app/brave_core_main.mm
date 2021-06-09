@@ -117,7 +117,7 @@
 - (nullable BraveHistoryAPI*)historyAPI {
   if (!_historyAPI) {
     _historyAPI =
-        [BraveHistoryAPI alloc] initWithBrowserState:_mainBrowserState];
+        [[BraveHistoryAPI alloc] initWithBrowserState:_mainBrowserState];
   }
   return _historyAPI;
 }
