@@ -252,6 +252,8 @@ TEST_F(KeyringControllerUnitTest, RestoreDefaultKeyring) {
             "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
 
   EXPECT_EQ(controller.RestoreDefaultKeyring(seed_phrase, ""), nullptr);
+
+  EXPECT_EQ(controller.RestoreDefaultKeyring("", "brave"), nullptr);
 }
 
 TEST_F(KeyringControllerUnitTest, UnlockResumesDefaultKeyring) {

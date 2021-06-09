@@ -200,6 +200,10 @@ std::string GenerateMnemonicForTest(const std::vector<uint8_t>& entropy) {
 std::unique_ptr<std::vector<uint8_t>> MnemonicToSeed(
     const std::string& mnemonic,
     const std::string& passphrase) {
+  if (bip39_mnemonic_validate(nullptr, mnemonic.c_str()) != WALLY_OK) {
+    LOG(ERROR) << __func__ << ": Invalid mnemonic: " << mnemonic;
+    return nullptr;
+  }
   std::unique_ptr<std::vector<uint8_t>> seed =
       std::make_unique<std::vector<uint8_t>>(64);
   const std::string salt = "mnemonic" + passphrase;

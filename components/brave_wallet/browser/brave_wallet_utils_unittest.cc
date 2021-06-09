@@ -285,6 +285,23 @@ TEST(BraveWalletUtilsUnitTest, Mnemonic) {
   }
 }
 
+TEST(BraveWalletUtilsUnitTest, MnemonicToSeed) {
+  EXPECT_NE(MnemonicToSeed("kingdom possible coast island six arrow fluid "
+                           "spell chunk loud glue street",
+                           ""),
+            nullptr);
+  EXPECT_EQ(MnemonicToSeed("lingdom possible coast island six arrow fluid "
+                           "spell chunk loud glue street",
+                           ""),
+            nullptr);
+  EXPECT_EQ(
+      MnemonicToSeed(
+          "kingdom possible coast island six arrow fluid spell chunk loud glue",
+          ""),
+      nullptr);
+  EXPECT_EQ(MnemonicToSeed("", ""), nullptr);
+}
+
 TEST(BraveWalletUtilsUnitTest, EncodeString) {
   std::string output;
   EXPECT_TRUE(EncodeString("one", &output));

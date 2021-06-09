@@ -199,6 +199,8 @@ bool KeyringController::CreateDefaultKeyringInternal(
 
   const std::unique_ptr<std::vector<uint8_t>> seed =
       MnemonicToSeed(mnemonic, "");
+  if (!seed)
+    return false;
   default_keyring_ = std::make_unique<HDKeyring>();
   default_keyring_->ConstructRootHDKey(*seed, "m/44'/60'/0'/0");
 
