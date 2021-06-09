@@ -41,7 +41,8 @@ handler.on(WalletActions.lockWallet.getType(), async (store) => {
 
 handler.on(WalletActions.unlockWallet.getType(), async (store, payload: UnlockWalletPayloadType) => {
   const walletHandler = await getWalletHandler()
-  await walletHandler.unlockWallet(payload.password)
+  const result = await walletHandler.unlockWallet(payload.password)
+  store.dispatch(WalletActions.hasIncorrectPassword(!result.isWalletUnlocked))
   await refreshWalletInfo(store)
 })
 

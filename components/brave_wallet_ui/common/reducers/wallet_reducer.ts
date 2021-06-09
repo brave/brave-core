@@ -15,6 +15,7 @@ const defaultState: WalletState = {
   isWalletLocked: true,
   favoriteApps: [],
   isWalletBackedUp: false,
+  hasIncorrectPassword: false,
   accounts: []
 }
 
@@ -39,6 +40,13 @@ reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadTy
     favoriteApps: payload.favoriteApps,
     accounts,
     isWalletBackedUp: payload.isWalletBackedUp
+  }
+})
+
+reducer.on(WalletActions.hasIncorrectPassword, (state: any, payload: boolean) => {
+  return {
+    ...state,
+    hasIncorrectPassword: payload
   }
 })
 
