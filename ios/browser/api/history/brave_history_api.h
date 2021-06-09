@@ -47,8 +47,7 @@ OBJC_EXPORT
 /// Add History Method which also allows to edit transition type
 /// @param history - History Object to be added
 /// @param isURLTyped - Bool determine If URL is typed and synced
-- (void)addHistory:(IOSHistoryNode*)history
-        isURLTyped:(BOOL)isURLTyped;
+- (void)addHistory:(IOSHistoryNode*)history isURLTyped:(BOOL)isURLTyped;
 
 /// Remove Specific History
 /// @param history - History Object to be removed from history

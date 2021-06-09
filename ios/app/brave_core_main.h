@@ -18,7 +18,8 @@ OBJC_EXPORT
 
 @property(nullable, nonatomic, readonly) BraveHistoryAPI* historyAPI;
 
-@property(nullable, nonatomic, readonly) BraveSyncProfileService* syncProfileService;
+@property(nullable, nonatomic, readonly)
+    BraveSyncProfileService* syncProfileService;
 
 - (instancetype)init;
 

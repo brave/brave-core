@@ -30,7 +30,8 @@
 }
 
 @property(nullable, nonatomic, readwrite) BraveHistoryAPI* historyAPI;
-@property(nullable, nonatomic, readwrite) BraveSyncProfileService* syncProfileService;
+@property(nullable, nonatomic, readwrite)
+    BraveSyncProfileService* syncProfileService;
 
 @end
 
@@ -115,14 +116,16 @@
 
 - (nullable BraveHistoryAPI*)historyAPI {
   if (!_historyAPI) {
-    _historyAPI = [[BraveHistoryAPI alloc] initWithBrowserState:_mainBrowserState];
+    _historyAPI =
+        [BraveHistoryAPI alloc] initWithBrowserState:_mainBrowserState];
   }
   return _historyAPI;
 }
 
 - (nullable BraveSyncProfileService*)syncProfileService {
   if (!_syncProfileService) {
-    _syncProfileService = [[BraveSyncProfileService alloc] initWithBrowserState:_mainBrowserState];
+    _syncProfileService = [[BraveSyncProfileService alloc]
+        initWithBrowserState:_mainBrowserState];
   }
   return _syncProfileService;
 }

@@ -8,10 +8,10 @@
 #include "base/check.h"
 #include "base/compiler_specific.h"
 #include "base/strings/sys_string_conversions.h"
-#include "net/base/mac/url_conversions.h"
-#include "url/gurl.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_service_observer.h"
+#include "net/base/mac/url_conversions.h"
+#include "url/gurl.h"
 
 #include "brave/ios/browser/api/history/brave_history_api.h"
 #include "brave/ios/browser/api/history/brave_history_observer.h"

@@ -13,19 +13,19 @@
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
-#include "net/base/mac/url_conversions.h"
-#include "ui/base/page_transition_types.h"
-#include "url/gurl.h"
 #include "components/browsing_data/core/browsing_data_utils.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/keyed_service/core/service_access_type.h"
-#include "ios/web/public/thread/web_task_traits.h"
-#include "ios/web/public/thread/web_thread.h"
 #include "ios/chrome/browser/application_context.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/history/web_history_service_factory.h"
+#include "ios/web/public/thread/web_task_traits.h"
+#include "ios/web/public/thread/web_thread.h"
+#include "net/base/mac/url_conversions.h"
+#include "ui/base/page_transition_types.h"
+#include "url/gurl.h"
 
 #include "brave/ios/browser/api/history/brave_history_observer.h"
 #include "brave/ios/browser/api/history/history_service_listener_ios.h"
@@ -135,8 +135,7 @@
   return history_service_->BackendLoaded();
 }
 
-- (void)addHistory:(IOSHistoryNode*)history
-        isURLTyped:(BOOL)isURLTyped {
+- (void)addHistory:(IOSHistoryNode*)history isURLTyped:(BOOL)isURLTyped {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   DCHECK(history_service_->backend_loaded());
 
@@ -146,9 +145,8 @@
       base::Time::FromDoubleT([history.dateAdded timeIntervalSince1970]);
   args.redirects = history::RedirectList();
   // Important! Only Typed URL is being synced in core side
-  args.transition = isURLTyped
-                        ? ui::PAGE_TRANSITION_TYPED
-                        : ui::PAGE_TRANSITION_LINK;
+  args.transition =
+      isURLTyped ? ui::PAGE_TRANSITION_TYPED : ui::PAGE_TRANSITION_LINK;
   args.hidden = false;
   args.visit_source = history::VisitSource::SOURCE_BROWSED;
   args.consider_for_ntp_most_visited = true;
@@ -177,8 +175,8 @@
       web_history_service_, base::Time::Min(), base::Time::Max(),
       base::BindOnce(
           ^(std::function<void()> completion) {
-              if (!weakSelf) 
-                return;
+            if (!weakSelf)
+              return;
             completion();
           },
           completion),
@@ -212,14 +210,14 @@
       queryString, options,
       base::BindOnce(
           ^(std::function<void(NSArray<IOSHistoryNode*>*)> completion,
-             history::QueryResults results) {
-              BraveHistoryAPI* historyAPI = weakSelf;
-              if (!historyAPI) {
-                completion(@[]);
-                return;
-              }
+            history::QueryResults results) {
+            BraveHistoryAPI* historyAPI = weakSelf;
+            if (!historyAPI) {
+              completion(@[]);
+              return;
+            }
 
-              completion([historyAPI onHistoryResults:std::move(results)]);
+            completion([historyAPI onHistoryResults:std::move(results)]);
           },
           completion),
       &tracker_);
