@@ -65,8 +65,8 @@ function Container (props: Props) {
   }
 
   // Need to wire up restore wallet
-  const restoreWallet = (phrase: string, password: string) => {
-    // Logic here to restore wallet and set password
+  const restoreWallet = (mnemonic: string, password: string) => {
+    props.walletPageActions.restoreWallet({ mnemonic, password })
   }
 
   const passwordProvided = (password: string) => {
