@@ -78,7 +78,7 @@ TEST_F(SpeedreaderThrottleTest, ToggleThrottle) {
   auto runner = content::GetUIThreadTaskRunner({});
   std::unique_ptr<SpeedReaderThrottle> throttle;
 
-  speedreader::SetSiteSpeedreadable(content_settings(), url(), false);
+  speedreader::SetEnabledForSite(content_settings(), url(), false);
   throttle = SpeedReaderThrottle::MaybeCreateThrottleFor(
       nullptr, content_settings(), url(), runner);
   EXPECT_EQ(throttle.get(), nullptr);
@@ -87,7 +87,7 @@ TEST_F(SpeedreaderThrottleTest, ToggleThrottle) {
       nullptr, content_settings(), GURL("kevin.com"), runner);
   EXPECT_NE(throttle.get(), nullptr);
 
-  speedreader::SetSiteSpeedreadable(content_settings(), url(), true);
+  speedreader::SetEnabledForSite(content_settings(), url(), true);
   throttle = SpeedReaderThrottle::MaybeCreateThrottleFor(
       nullptr, content_settings(), url(), runner);
   EXPECT_NE(throttle.get(), nullptr);
@@ -99,7 +99,7 @@ TEST_F(SpeedreaderThrottleTest, ThrottleNestedURL) {
 
   // Even though we call this function on SetSiteSpeedreadable, it should apply
   // to all of brave.com.
-  speedreader::SetSiteSpeedreadable(
+  speedreader::SetEnabledForSite(
       content_settings(), GURL("https://brave.com/some/nested/page"), false);
   throttle = SpeedReaderThrottle::MaybeCreateThrottleFor(
       nullptr, content_settings(), url(), runner);

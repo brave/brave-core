@@ -33,11 +33,11 @@ class SpeedreaderTabHelper
   bool IsSpeedreaderEnabled() const;
 
   // Returns |true| if the domain is speedreadable
-  bool GetSiteSpeedreadable();
+  bool IsEnabledForSite();
 
   // Allow or deny a site from being run through speedreader if |on| toggles
   // the setting. Triggers page reload on toggle.
-  void MaybeToggleSiteSpeedreadable(bool on);
+  void MaybeToggleEnabledForSite(bool on);
 
   // returns nullptr if no bubble currently shown
   SpeedreaderBubbleView* speedreader_bubble_view() const;

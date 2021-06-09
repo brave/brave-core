@@ -35,23 +35,23 @@ bool SpeedreaderTabHelper::IsSpeedreaderEnabled() const {
   return SpeedreaderServiceFactory::GetForProfile(profile)->IsEnabled();
 }
 
-bool SpeedreaderTabHelper::GetSiteSpeedreadable() {
+bool SpeedreaderTabHelper::IsEnabledForSite() {
   Profile* profile =
       Profile::FromBrowserContext(web_contents()->GetBrowserContext());
   auto* content_rules = HostContentSettingsMapFactory::GetForProfile(profile);
-  return speedreader::IsEnabledForURL(content_rules,
-                                      web_contents()->GetLastCommittedURL());
+  return speedreader::IsEnabledForSite(content_rules,
+                                       web_contents()->GetLastCommittedURL());
 }
 
-void SpeedreaderTabHelper::MaybeToggleSiteSpeedreadable(bool on) {
+void SpeedreaderTabHelper::MaybeToggleEnabledForSite(bool on) {
   Profile* profile =
       Profile::FromBrowserContext(web_contents()->GetBrowserContext());
   auto* content_rules = HostContentSettingsMapFactory::GetForProfile(profile);
-  bool enabled = speedreader::IsEnabledForURL(
+  bool enabled = speedreader::IsEnabledForSite(
       content_rules, web_contents()->GetLastCommittedURL());
   if (enabled != on) {
-    speedreader::SetSiteSpeedreadable(
-        content_rules, web_contents()->GetLastCommittedURL(), on);
+    speedreader::SetEnabledForSite(content_rules,
+                                   web_contents()->GetLastCommittedURL(), on);
     web_contents()->GetController().Reload(content::ReloadType::NORMAL, false);
   }
 }

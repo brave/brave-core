@@ -16,12 +16,12 @@ namespace speedreader {
 
 // Enable or disable Speedreader using a ContentSettingPattern derived from the
 // url.
-void SetSiteSpeedreadable(HostContentSettingsMap* map,
-                          const GURL& url,
-                          bool enable);
+void SetEnabledForSite(HostContentSettingsMap* map,
+                       const GURL& url,
+                       bool enable);
 
 // Checks content settings if Speedreader is disabled for the URL
-bool IsEnabledForURL(HostContentSettingsMap* map, const GURL& url);
+bool IsEnabledForSite(HostContentSettingsMap* map, const GURL& url);
 
 // Helper class for testing URLs against precompiled regexes. This is a
 // singleton so the cached regexes are created only once.

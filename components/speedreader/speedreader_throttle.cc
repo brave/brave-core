@@ -25,7 +25,7 @@ SpeedReaderThrottle::MaybeCreateThrottleFor(
     HostContentSettingsMap* content_settings,
     const GURL& url,
     scoped_refptr<base::SingleThreadTaskRunner> task_runner) {
-  if (!IsEnabledForURL(content_settings, url))
+  if (!IsEnabledForSite(content_settings, url))
     return nullptr;
   return std::make_unique<SpeedReaderThrottle>(rewriter_service, task_runner);
 }

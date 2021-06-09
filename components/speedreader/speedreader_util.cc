@@ -51,9 +51,9 @@ bool URLReadableHintExtractor::HasHints(const GURL& url) {
   return false;
 }
 
-void SetSiteSpeedreadable(HostContentSettingsMap* map,
-                          const GURL& url,
-                          bool enable) {
+void SetEnabledForSite(HostContentSettingsMap* map,
+                       const GURL& url,
+                       bool enable) {
   DCHECK(!url.is_empty());  // Not supported. Disable Speedreader in settings.
 
   // Rule covers all protocols and pages.
@@ -68,7 +68,7 @@ void SetSiteSpeedreadable(HostContentSettingsMap* map,
                                     setting);
 }
 
-bool IsEnabledForURL(HostContentSettingsMap* map, const GURL& url) {
+bool IsEnabledForSite(HostContentSettingsMap* map, const GURL& url) {
   ContentSetting setting = map->GetContentSetting(
       url, GURL(), ContentSettingsType::BRAVE_SPEEDREADER);
   // Since Brave specific content settings are registered with

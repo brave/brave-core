@@ -82,7 +82,7 @@ bool SpeedreaderModeBubble::ShouldShowCloseButton() const {
 
 void SpeedreaderModeBubble::WindowClosing() {
   if (tab_helper_) {
-    tab_helper_->MaybeToggleSiteSpeedreadable(site_toggle_button_->GetIsOn());
+    tab_helper_->MaybeToggleEnabledForSite(site_toggle_button_->GetIsOn());
     tab_helper_->OnBubbleClosed();
     tab_helper_ = nullptr;
   }
@@ -127,7 +127,7 @@ void SpeedreaderModeBubble::Init() {
   site_toggle_layout->set_main_axis_alignment(
       views::BoxLayout::MainAxisAlignment::kEnd);
   auto site_toggle_button = std::make_unique<views::ToggleButton>();
-  site_toggle_button->SetIsOn(tab_helper_->GetSiteSpeedreadable());
+  site_toggle_button->SetIsOn(tab_helper_->IsEnabledForSite());
   // TODO(keur): We shoud be able to remove these once brave overrides
   // views::ToggleButton globally with our own theme
   site_toggle_button->SetThumbOnColor(kColorButtonThumb);
