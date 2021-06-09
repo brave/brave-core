@@ -22,27 +22,12 @@ constexpr int kInsetOffsetsForThrobber = kThrobberDiameter;
 
 BraveWaybackMachineInfoBarButtonContainer::
     BraveWaybackMachineInfoBarButtonContainer(
-        ButtonID button_id,
         views::Button::PressedCallback callback) {
-  std::unique_ptr<views::MdTextButton> button;
-  switch (button_id) {
-    case ButtonID::BUTTON_ID_FETCH_URL: {
-      button = std::make_unique<views::MdTextButton>(
-          std::move(callback),
-          l10n_util::GetStringUTF16(
-              IDS_BRAVE_WAYBACK_MACHINE_CHECK_BUTTON_TEXT));
-      button->SetProminent(true);
-      break;
-    }
-    case ButtonID::BUTTON_ID_DONT_ASK: {
-      button = std::make_unique<views::MdTextButton>(
-          std::move(callback),
-          l10n_util::GetStringUTF16(
-              IDS_BRAVE_WAYBACK_MACHINE_DONT_ASK_AGAIN_TEXT));
-      break;
-    }
-  }
+  auto button = std::make_unique<views::MdTextButton>(
+      std::move(callback),
+      l10n_util::GetStringUTF16(IDS_BRAVE_WAYBACK_MACHINE_CHECK_BUTTON_TEXT));
   button_ = button.get();
+  button->SetProminent(true);
   button->SizeToPreferredSize();
   AddChildView(button.release());
 

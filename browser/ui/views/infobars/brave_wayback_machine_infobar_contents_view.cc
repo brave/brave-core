@@ -87,7 +87,7 @@ void BraveWaybackMachineInfoBarContentsView::OnWaybackURLFetched(
   DCHECK(wayback_url_fetch_requested_);
   wayback_url_fetch_requested_ = false;
 
-  fetch_url_button->StopThrobber();
+  fetch_url_button_->StopThrobber();
   Layout();
 
   if (latest_wayback_url.is_empty()) {
@@ -119,7 +119,7 @@ void BraveWaybackMachineInfoBarContentsView::FetchURLButtonPressed() {
   if (wayback_url_fetch_requested_)
     return;
   wayback_url_fetch_requested_ = true;
-  dont_ask_button->SetVisible(false);
+  dont_ask_button_->SetVisible(false);
   FetchWaybackURL();
 }
 
@@ -186,54 +186,54 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
                   0));
   AddChildView(label);
 
-  dont_ask_button = new BraveWaybackMachineInfoBarButtonContainer(
-      BraveWaybackMachineInfoBarButtonContainer::ButtonID::BUTTON_ID_DONT_ASK,
+  auto dont_ask_button = std::make_unique<views::MdTextButton>(
       base::BindRepeating(
           &BraveWaybackMachineInfoBarContentsView::DontAskButtonPressed,
-          base::Unretained(this)));
-  views_visible_before_checking_.push_back(dont_ask_button);
+          base::Unretained(this)),
+      l10n_util::GetStringUTF16(IDS_BRAVE_WAYBACK_MACHINE_DONT_ASK_AGAIN_TEXT));
+  dont_ask_button_ = dont_ask_button.get();
+  views_visible_before_checking_.push_back(dont_ask_button_);
 
-  fetch_url_button = new BraveWaybackMachineInfoBarButtonContainer(
-      BraveWaybackMachineInfoBarButtonContainer::ButtonID::BUTTON_ID_FETCH_URL,
-      base::BindRepeating(
+  fetch_url_button_ =
+      new BraveWaybackMachineInfoBarButtonContainer(base::BindRepeating(
           &BraveWaybackMachineInfoBarContentsView::FetchURLButtonPressed,
           base::Unretained(this)));
-  views_visible_before_checking_.push_back(fetch_url_button);
+  views_visible_before_checking_.push_back(fetch_url_button_);
 
   if (views::PlatformStyle::kIsOkButtonLeading) {
-    fetch_url_button->SetProperty(
+    fetch_url_button_->SetProperty(
         views::kMarginsKey,
         gfx::Insets(ChromeLayoutProvider::Get()->GetDistanceMetric(
                         DISTANCE_TOAST_CONTROL_VERTICAL),
                     ChromeLayoutProvider::Get()->GetDistanceMetric(
                         DISTANCE_RELATED_CONTROL_HORIZONTAL_SMALL)));
-    fetch_url_button->SizeToPreferredSize();
-    AddChildView(fetch_url_button);
+    fetch_url_button_->SizeToPreferredSize();
+    AddChildView(fetch_url_button_);
 
-    dont_ask_button->SetProperty(
+    dont_ask_button_->SetProperty(
         views::kMarginsKey,
         gfx::Insets(ChromeLayoutProvider::Get()->GetDistanceMetric(
                         DISTANCE_TOAST_CONTROL_VERTICAL),
                     0));
-    dont_ask_button->SizeToPreferredSize();
-    AddChildView(dont_ask_button);
+    dont_ask_button_->SizeToPreferredSize();
+    AddChildView(dont_ask_button.release());
   } else {
-    dont_ask_button->SetProperty(
+    dont_ask_button_->SetProperty(
         views::kMarginsKey,
         gfx::Insets(ChromeLayoutProvider::Get()->GetDistanceMetric(
                         DISTANCE_TOAST_CONTROL_VERTICAL),
                     ChromeLayoutProvider::Get()->GetDistanceMetric(
                         DISTANCE_RELATED_CONTROL_HORIZONTAL_SMALL)));
-    dont_ask_button->SizeToPreferredSize();
-    AddChildView(dont_ask_button);
+    dont_ask_button_->SizeToPreferredSize();
+    AddChildView(dont_ask_button.release());
 
-    fetch_url_button->SetProperty(
+    fetch_url_button_->SetProperty(
         views::kMarginsKey,
         gfx::Insets(ChromeLayoutProvider::Get()->GetDistanceMetric(
                         DISTANCE_TOAST_CONTROL_VERTICAL),
                     0));
-    fetch_url_button->SizeToPreferredSize();
-    AddChildView(fetch_url_button);
+    fetch_url_button_->SizeToPreferredSize();
+    AddChildView(fetch_url_button_);
   }
 
   UpdateChildrenVisibility(true);
@@ -265,7 +265,7 @@ SkColor BraveWaybackMachineInfoBarContentsView::GetColor(int id) const {
 }
 
 void BraveWaybackMachineInfoBarContentsView::FetchWaybackURL() {
-  fetch_url_button->StartThrobber();
+  fetch_url_button_->StartThrobber();
   wayback_machine_url_fetcher_.Fetch(contents_->GetVisibleURL());
   Layout();
 }
