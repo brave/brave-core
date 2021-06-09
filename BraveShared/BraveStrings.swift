@@ -1236,13 +1236,13 @@ extension Strings {
                               comment: "Footer Text for the Playlist Settings Option for Enable/Disable Add Toast")
         
         public static let playlistLongPressSettingsOptionTitle =
-            NSLocalizedString("playlist.playlistToastShowSettingsOptionTitle",
+            NSLocalizedString("playlist.playlistLongPressSettingsOptionTitle",
                               bundle: .braveShared,
                               value: "Enable Long Press",
                               comment: "Title for the Playlist Settings Option for long press gesture")
         
         public static let playlistLongPressSettingsOptionFooterText =
-            NSLocalizedString("playlist.playlistToastShowSettingsOptionFooterText",
+            NSLocalizedString("playlist.playlistLongPressSettingsOptionFooterText",
                               bundle: .braveShared,
                               value: "When enabled, you can long-press on most video/audio files to add them to your Playlist.",
                               comment: "Footer Text for the Playlist Settings Option for long press gesture")
