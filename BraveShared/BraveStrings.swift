@@ -90,6 +90,7 @@ extension Strings {
     public static let searchEngineFormatText = NSLocalizedString("SearchEngineFormatText", tableName: "BraveShared", bundle: Bundle.braveShared, value: "%@ search", comment: "Label for search engine buttons. The argument corresponds to the name of the search engine.")
     public static let searchSuggestionFromFormatText = NSLocalizedString("SearchSuggestionFromFormatText", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Search suggestions from %@", comment: "Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google")
     public static let searchesForSuggestionButtonAccessibilityText = NSLocalizedString("SearchesForSuggestionButtonAccessibilityText", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Searches for the suggestion", comment: "Accessibility hint describing the action performed when a search suggestion is clicked")
+    public static let searchSuggestionSectionTitleFormat = NSLocalizedString("SearchSuggestionSectionTitleFormat", tableName: "BraveShared", bundle: Bundle.braveShared, value: "%@ Search", comment: "Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search")
     public static let turnOnSearchSuggestions = NSLocalizedString("Turn on search suggestions?", bundle: Bundle.braveShared, comment: "Prompt shown before enabling provider search queries")
 }
 
@@ -187,8 +188,9 @@ extension Strings {
     public static let tabToolbarLockImageAccessibilityLabel = NSLocalizedString("TabToolbarLockImageAccessibilityLabel", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Secure connection", comment: "Accessibility label for the lock icon, which is only present if the connection is secure")
     public static let tabToolbarReaderViewButtonAccessibilityLabel = NSLocalizedString("TabToolbarReaderViewButtonAccessibilityLabel", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Reader View", comment: "Accessibility label for the Reader View button")
     public static let tabToolbarReaderViewButtonTitle = NSLocalizedString("TabToolbarReaderViewButtonTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Add to Reading List", comment: "Accessibility label for action adding current page to reading list.")
-    public static let findOnPageSectionHeader = NSLocalizedString("FindOnPageSectionHeader", tableName: "BraveShared", bundle: Bundle.braveShared, value: "On this page", comment: "Section header for find in page option")
-    public static let searchHistorySectionHeader = NSLocalizedString("SearchHistorySectionHeader", tableName: "BraveShared", bundle: Bundle.braveShared, value: "History and bookmarks", comment: "Section header for history and bookmarks option")
+    public static let searchSuggestionsSectionHeader = NSLocalizedString("SearchSuggestionsSectionHeader", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Search Suggestions", comment: "Section header for search suggestions option")
+    public static let findOnPageSectionHeader = NSLocalizedString("FindOnPageSectionHeader", tableName: "BraveShared", bundle: Bundle.braveShared, value: "On This Page", comment: "Section header for find in page option")
+    public static let searchHistorySectionHeader = NSLocalizedString("SearchHistorySectionHeader", tableName: "BraveShared", bundle: Bundle.braveShared, value: "History & Bookmarks", comment: "Section header for history and bookmarks option")
 }
 
 // MARK:-  TabPeekViewController.swift
@@ -288,6 +290,7 @@ extension Strings {
 extension Strings {
     public static let searchSettingNavTitle = NSLocalizedString("SearchSettingNavTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Search", comment: "Navigation title for search settings.")
     public static let searchSettingSuggestionCellTitle = NSLocalizedString("SearchSettingSuggestionCellTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Show Search Suggestions", comment: "Label for show search suggestions setting.")
+    public static let searchSettingRecentSearchesCellTitle = NSLocalizedString("SearchSettingRecentSearchesCellTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Show Recent Searches", comment: "Label for showing recent search setting.")
     public static let searchSettingAddCustomEngineCellTitle =
         NSLocalizedString("searchSettingAddCustomEngineCellTitle",
                           bundle: .braveShared,
@@ -2592,4 +2595,25 @@ extension Strings {
         public static let open = NSLocalizedString("BraveRewardsOpen", bundle: .braveShared, value: "Open", comment: "")
         public static let adNotificationTitle = NSLocalizedString("BraveRewardsAdNotificationTitle", bundle: .braveShared, value: "Brave Rewards", comment: "")
     }
+}
+
+// MARK: - Recent Searches
+extension Strings {
+    public static let recentSearchFavorites = NSLocalizedString("RecentSearchFavorites", bundle: .braveShared, value: "Favorites", comment: "Recent Search Favorites Section Title")
+    public static let recentSearchPasteAndGo = NSLocalizedString("RecentSearchPasteAndGo", bundle: .braveShared, value: "Paste & Go", comment: "Recent Search Paste & Go Button Title")
+    public static let recentSearchSectionTitle = NSLocalizedString("RecentSearchSectionTitle", bundle: .braveShared, value: "Recent Searches", comment: "Recent Search Section Title")
+    public static let recentSearchSectionDescription = NSLocalizedString("RecentSearchSectionDescription", bundle: .braveShared, value: "Recent Searches allow you to privately access past searches. Would you like to enable Recent Searches?", comment: "Recent Search Section Description")
+    public static let recentSearchClear = NSLocalizedString("RecentSearchClear", bundle: .braveShared, value: "Clear", comment: "Recent Search Clear Button")
+    public static let recentSearchShow = NSLocalizedString("RecentSearchShow", bundle: .braveShared, value: "Show", comment: "Recent Search Show Button")
+    public static let recentSearchHide = NSLocalizedString("RecentSearchHide", bundle: .braveShared, value: "Hide", comment: "Recent Search Hide Button")
+    public static let recentShowMore = NSLocalizedString("RecentSearchShowMore", bundle: .braveShared, value: "Show more", comment: "Recent Search Show More button")
+    public static let recentSearchScanned = NSLocalizedString("RecentSearchScanned", bundle: .braveShared, value: "Scanned", comment: "Recent Search Scanned text when a user scans a qr code")
+    public static let recentSearchQuickSearchOnWebsite = NSLocalizedString("RecentSearchQuickSearchOnWebsite", bundle: .braveShared, value: "on", comment: "Recent Search 'on' text when a user searches 'on' a website")
+    public static let recentSearchSuggestionsTitle = NSLocalizedString("RecentSearchSuggestionsTitle", bundle: .braveShared, value: "Search Suggestions", comment: "Recent Search suggestions title when prompting to turn on suggestions")
+    public static let recentSearchEnableSuggestions = NSLocalizedString("RecentSearchEnableSuggestions", bundle: .braveShared, value: "Enable", comment: "Recent Search button title to enable suggestions")
+    public static let recentSearchDisableSuggestions = NSLocalizedString("RecentSearchDisableSuggestions", bundle: .braveShared, value: "Disable", comment: "Recent Search button title to disable suggestions")
+    public static let recentSearchClearDataToggleOption = NSLocalizedString("RecentSearchClearDataToggleOption", bundle: .braveShared, value: "Recent Search Data", comment: "Recent Search setting title to clear recent searches")
+    public static let recentSearchScannerTitle = NSLocalizedString("RecentSearchScannerTitle", bundle: .braveShared, value: "Scan QR Code", comment: "Scanning a QRCode for searching")
+    public static let recentSearchScannerDescriptionTitle = NSLocalizedString("RecentSearchScannerDescriptionTitle", bundle: .braveShared, value: "Instructions", comment: "Scanning a QRCode for title")
+    public static let recentSearchScannerDescriptionBody = NSLocalizedString("RecentSearchScannerDescriptionBody", bundle: .braveShared, value: "To search by QRCode, align the QR in the center of the frame.", comment: "Scanning a QRCode for searching body")
 }
