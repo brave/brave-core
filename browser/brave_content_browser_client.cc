@@ -138,16 +138,18 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
-#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_impl.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #if !defined(OS_ANDROID)
+#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/components/brave_wallet_ui/wallet_ui.mojom.h"
+#else
+#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_android.h"
 #endif
 #endif
 
@@ -213,7 +215,12 @@ void MaybeBindBraveWalletProvider(
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_wallet::BraveWalletProviderImpl>(
           service->AsWeakPtr(),
+#if defined(OS_ANDROID)
+          std::make_unique<
+              brave_wallet::BraveWalletProviderDelegateImplAndroid>(
+#else
           std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
+#endif
               web_contents)),
       std::move(receiver));
 }

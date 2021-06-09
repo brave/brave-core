@@ -7,8 +7,6 @@ source_set("brave_wallet") {
   sources = [
     "brave_wallet_context_utils.cc",
     "brave_wallet_context_utils.h",
-    "brave_wallet_provider_delegate_impl.cc",
-    "brave_wallet_provider_delegate_impl.h",
     "brave_wallet_service_factory.cc",
     "brave_wallet_service_factory.h",
   ]
@@ -27,6 +25,29 @@ source_set("brave_wallet") {
       "//brave/browser/extensions",
       "//chrome/browser/extensions:extensions",
       "//extensions/browser",
+    ]
+  }
+}
+
+source_set("brave_wallet_delegate") {
+  sources = []
+  deps = [
+    "//brave/components/brave_wallet/browser",
+    "//content/public/browser",
+  ]
+  if (is_android) {
+    sources += [
+      "brave_wallet_provider_delegate_impl_android.cc",
+      "brave_wallet_provider_delegate_impl_android.h",
+    ]
+  } else {
+    sources += [
+      "brave_wallet_provider_delegate_impl.cc",
+      "brave_wallet_provider_delegate_impl.h",
+    ]
+    deps += [
+      "//brave/browser/ui",
+      "//chrome/browser/ui",
     ]
   }
 }
