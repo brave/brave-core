@@ -133,7 +133,10 @@ const locale = {
   restoreError: 'The recovery phrase entered is invalid.',
   restorePlaceholder: 'Paste recovery phrase from clipboard',
   restoreShowPhrase: 'Show recovery phrase',
-  restoreFormText: 'New Password'
+  restoreFormText: 'New Password',
+
+  // Tool Tips
+  toolTipCopyToClipboard: 'Copy to Clipboard'
 }
 
 export default locale

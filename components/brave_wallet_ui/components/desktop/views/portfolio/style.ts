@@ -33,7 +33,7 @@ export const BalanceText = styled.span`
   font-family: Poppins;
   font-size: 32px;
   font-weight: 600;
-  margin-bottom: 64px;
+  margin-bottom: 20px;
   color: ${(p) => p.theme.color.text01};
 `
 
@@ -61,8 +61,7 @@ export const InfoColumn = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  margin-left: 10px;
-  margin-top: 10px;
+  margin: 10px 0px 20px 10px;
 `
 
 export const AssetRow = styled.div`

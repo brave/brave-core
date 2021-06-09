@@ -18,7 +18,7 @@ import { recoveryPhrase } from './mock-data/user-accounts'
 export default {
   title: 'Wallet/Desktop',
   argTypes: {
-    onboarding: { control: { type: 'boolean', onboard: true } },
+    onboarding: { control: { type: 'boolean', onboard: false } },
     locked: { control: { type: 'boolean', lock: false } }
   }
 }
@@ -28,7 +28,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [view, setView] = React.useState<NavTypes>('crypto')
   const [needsOnboarding, setNeedsOnboarding] = React.useState<boolean>(onboarding)
   const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
-  const [needsBackup, setNeedsBackup] = React.useState<boolean>(true)
+  const [needsBackup, setNeedsBackup] = React.useState<boolean>(false)
   const [showBackup, setShowBackup] = React.useState<boolean>(false)
   const [inputValue, setInputValue] = React.useState<string>('')
   const [hasRestoreError, setHasRestoreError] = React.useState<boolean>(false)
@@ -142,7 +142,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
 }
 
 _DesktopWalletConcept.args = {
-  onboarding: true,
+  onboarding: false,
   locked: false
 }
 
