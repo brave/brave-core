@@ -157,10 +157,16 @@ void IPFSTabHelper::UpdateLocationBar() {
         web_contents(), content::INVALIDATE_TYPE_URL);
 }
 
+GURL IPFSTabHelper::GetCurrentPageURL() const {
+  if (current_page_url_for_testing_.is_valid())
+    return current_page_url_for_testing_;
+  return web_contents()->GetVisibleURL();
+}
+
 GURL IPFSTabHelper::GetIPFSResolvedURL() const {
   if (!ipfs_resolved_url_.is_valid())
     return GURL();
-  GURL current = web_contents()->GetURL();
+  GURL current = GetCurrentPageURL();
   GURL::Replacements replacements;
   replacements.SetQueryStr(current.query_piece());
   replacements.SetRefStr(current.ref_piece());
@@ -172,8 +178,9 @@ GURL IPFSTabHelper::GetIPFSResolvedURL() const {
   std::vector<std::string> parts = base::SplitString(
       current.path(), "/", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
   // If public gateway like https://ipfs.io/ipfs/{cid}/..
+  // or for IPNS like ipns://branty.eth/path/..
   // skip duplication for /{scheme}/{cid}/ and add the rest parts
-  if (parts.size() > 3 && parts[1] == resolved_scheme && parts[2] == cid) {
+  if (parts.size() > 3 && parts[2] == cid) {
     parts.erase(parts.begin() + 1, parts.begin() + 3);
     resolved_path = base::JoinString(parts, "/");
   }
