@@ -11,7 +11,6 @@
 #include "base/task/thread_pool.h"
 #include "base/task_runner_util.h"
 #include "brave/components/ipfs/ipfs_network_utils.h"
-#include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/mime_util.h"
 #include "net/http/http_request_headers.h"
@@ -29,13 +28,17 @@ const char kLinkMimeType[] = "text/html";
 
 namespace ipfs {
 
-IpfsLinkImportWorker::IpfsLinkImportWorker(content::BrowserContext* context,
-                                           const GURL& endpoint,
-                                           ImportCompletedCallback callback,
-                                           const GURL& url)
-    : IpfsImportWorkerBase(context, endpoint, std::move(callback)),
+IpfsLinkImportWorker::IpfsLinkImportWorker(
+    BlobContextGetterFactory* blob_context_getter_factory,
+    network::mojom::URLLoaderFactory* url_loader_factory,
+    const GURL& endpoint,
+    ImportCompletedCallback callback,
+    const GURL& url)
+    : IpfsImportWorkerBase(blob_context_getter_factory,
+                           url_loader_factory,
+                           endpoint,
+                           std::move(callback)),
       weak_factory_(this) {
-  DCHECK(context);
   DCHECK(endpoint.is_valid());
   DownloadLinkContent(url);
 }
@@ -53,7 +56,7 @@ void IpfsLinkImportWorker::DownloadLinkContent(const GURL& url) {
   DCHECK(!url_loader_);
   url_loader_ = CreateURLLoader(import_url_, "GET");
   url_loader_->DownloadToTempFile(
-      GetUrlLoaderFactory().get(),
+      GetUrlLoaderFactory(),
       base::BindOnce(&IpfsLinkImportWorker::OnImportDataAvailable,
                      base::Unretained(this)));
 }

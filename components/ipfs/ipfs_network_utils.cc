@@ -17,8 +17,8 @@
 #include "base/guid.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/ipfs_constants.h"
-#include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "net/base/mime_util.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -185,12 +185,12 @@ std::unique_ptr<network::SimpleURLLoader> CreateURLLoader(
 std::unique_ptr<network::ResourceRequest> CreateResourceRequest(
     BlobBuilderCallback blob_builder_callback,
     const std::string& content_type,
-    content::BrowserContext::BlobContextGetter storage_context_getter) {
+    BlobContextGetterFactory* blob_context_getter_factory) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
   std::unique_ptr<storage::BlobDataBuilder> blob_builder =
       std::move(blob_builder_callback).Run();
 
-  auto storage_context = std::move(storage_context_getter).Run();
+  auto storage_context = blob_context_getter_factory->RetrieveStorageContext();
   std::unique_ptr<storage::BlobDataHandle> blob_handle =
       storage_context->AddFinishedBlob(std::move(blob_builder));
 
@@ -240,12 +240,13 @@ int64_t CalculateFileSize(base::FilePath upload_file_path) {
   return file_size;
 }
 
-void CreateRequestForFile(const base::FilePath& upload_file_path,
-                          content::BrowserContext::BlobContextGetter storage,
-                          const std::string& mime_type,
-                          const std::string& filename,
-                          ResourceRequestGetter request_callback,
-                          size_t file_size) {
+void CreateRequestForFile(
+    const base::FilePath& upload_file_path,
+    ipfs::BlobContextGetterFactory* blob_context_getter_factory,
+    const std::string& mime_type,
+    const std::string& filename,
+    ResourceRequestGetter request_callback,
+    size_t file_size) {
   std::string mime_boundary = net::GenerateMimeMultipartBoundary();
   auto blob_builder_callback =
       base::BindOnce(&BuildBlobWithFile, upload_file_path, mime_type, filename,
@@ -257,7 +258,7 @@ void CreateRequestForFile(const base::FilePath& upload_file_path,
   base::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock(), content::BrowserThread::IO},
       base::BindOnce(&CreateResourceRequest, std::move(blob_builder_callback),
-                     content_type, std::move(storage)),
+                     content_type, blob_context_getter_factory),
       std::move(request_callback));
 }
 
@@ -279,7 +280,7 @@ std::vector<ImportFileInfo> EnumerateDirectoryFiles(base::FilePath dir_path) {
 
 void CreateRequestForFileList(
     ResourceRequestGetter request_callback,
-    content::BrowserContext::BlobContextGetter storage,
+    ipfs::BlobContextGetterFactory* blob_context_getter_factory,
     const base::FilePath& folder_path,
     std::vector<ImportFileInfo> files) {
   std::string mime_boundary = net::GenerateMimeMultipartBoundary();
@@ -294,23 +295,23 @@ void CreateRequestForFileList(
   base::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock(), content::BrowserThread::IO},
       base::BindOnce(&CreateResourceRequest, std::move(blob_builder_callback),
-                     content_type, std::move(storage)),
+                     content_type, blob_context_getter_factory),
       std::move(request_callback));
 }
 
 void CreateRequestForFolder(const base::FilePath& folder_path,
-                            content::BrowserContext::BlobContextGetter storage,
+                            ipfs::BlobContextGetterFactory* context_factory,
                             ResourceRequestGetter request_callback) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&EnumerateDirectoryFiles, folder_path),
       base::BindOnce(&CreateRequestForFileList, std::move(request_callback),
-                     std::move(storage), folder_path));
+                     context_factory, folder_path));
 }
 
 void CreateRequestForText(const std::string& text,
                           const std::string& filename,
-                          content::BrowserContext::BlobContextGetter storage,
+                          ipfs::BlobContextGetterFactory* context_factory,
                           ResourceRequestGetter request_callback) {
   std::string mime_boundary = net::GenerateMimeMultipartBoundary();
   auto blob_builder_callback =
@@ -323,7 +324,7 @@ void CreateRequestForText(const std::string& text,
   base::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock(), content::BrowserThread::IO},
       base::BindOnce(&CreateResourceRequest, std::move(blob_builder_callback),
-                     content_type, std::move(storage)),
+                     content_type, context_factory),
       std::move(request_callback));
 }
 

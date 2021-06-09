@@ -12,6 +12,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/common/brave_paths.h"
+#include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/brave_ipfs_client_updater.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/import/imported_data.h"
@@ -47,11 +48,19 @@ std::string GetFileNameForText(const std::string& text,
 
 class FakeIpfsService : public ipfs::IpfsService {
  public:
-  FakeIpfsService(content::BrowserContext* context,
-                  ipfs::BraveIpfsClientUpdater* updater,
-                  const base::FilePath& user_dir,
-                  version_info::Channel channel)
-      : ipfs::IpfsService(context, updater, user_dir, channel) {}
+  FakeIpfsService(
+      PrefService* prefs,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      ipfs::BlobContextGetterFactoryPtr blob_getter_factory,
+      ipfs::BraveIpfsClientUpdater* updater,
+      const base::FilePath& user_dir,
+      version_info::Channel channel)
+      : ipfs::IpfsService(prefs,
+                          url_loader_factory,
+                          std::move(blob_getter_factory),
+                          updater,
+                          user_dir,
+                          channel) {}
   ~FakeIpfsService() override {}
 
   void LaunchDaemon(LaunchDaemonCallback callback) override {
@@ -84,6 +93,10 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     ipfs_service_->SetAllowIpfsLaunchForTest(true);
     host_resolver()->AddRule("*", "127.0.0.1");
     InProcessBrowserTest::SetUpOnMainThread();
+    base::FilePath user_dir = base::FilePath(FILE_PATH_LITERAL("test"));
+    fake_service_ = std::make_unique<FakeIpfsService>(
+        browser()->profile()->GetPrefs(), nullptr, nullptr, nullptr, user_dir,
+        chrome::GetChannel());
   }
 
   void ResetTestServer(
@@ -582,7 +595,10 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     wait_for_request_->Run();
   }
 
+  FakeIpfsService* fake_ipfs_service() { return fake_service_.get(); }
+
  private:
+  std::unique_ptr<FakeIpfsService> fake_service_;
   std::unique_ptr<base::RunLoop> wait_for_request_;
   std::unique_ptr<net::EmbeddedTestServer> test_server_;
   IpfsService* ipfs_service_;
@@ -590,10 +606,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, StartSuccessAndLaunch) {
-  base::FilePath user_dir = base::FilePath(FILE_PATH_LITERAL("test"));
-  auto* context = browser()->profile();
-  std::unique_ptr<FakeIpfsService> fake_service(
-      new FakeIpfsService(context, nullptr, user_dir, chrome::GetChannel()));
+  auto* fake_service = fake_ipfs_service();
   fake_service->SetLaunchResult(true);
   base::MockOnceCallback<void(void)> callback_called;
   EXPECT_CALL(callback_called, Run()).Times(1);
@@ -1081,16 +1094,16 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportFileAndPinToIpfsSuccess) {
 
 IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, UpdaterRegistration) {
   base::FilePath user_dir = base::FilePath(FILE_PATH_LITERAL("test"));
-  auto* context = browser()->profile();
   BraveIpfsClientUpdater* updater =
       g_brave_browser_process->ipfs_client_updater();
+  auto* prefs = browser()->profile()->GetPrefs();
   {
-    std::unique_ptr<FakeIpfsService> fake_service(
-        new FakeIpfsService(context, updater, user_dir, chrome::GetChannel()));
+    std::unique_ptr<FakeIpfsService> fake_service(new FakeIpfsService(
+        prefs, nullptr, nullptr, updater, user_dir, chrome::GetChannel()));
   }
   {
-    std::unique_ptr<FakeIpfsService> fake_service(
-        new FakeIpfsService(context, updater, user_dir, chrome::GetChannel()));
+    std::unique_ptr<FakeIpfsService> fake_service(new FakeIpfsService(
+        prefs, nullptr, nullptr, updater, user_dir, chrome::GetChannel()));
 
     ASSERT_FALSE(fake_service->IsDaemonLaunched());
     ASSERT_FALSE(updater->IsRegistered());

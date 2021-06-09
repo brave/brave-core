@@ -9,10 +9,6 @@
 #include "base/timer/timer.h"
 #include "brave/components/ipfs/ipfs_service_observer.h"
 
-namespace extensions {
-class ExtensionRegistry;
-}
-
 class PrefService;
 
 namespace ipfs {
@@ -28,7 +24,6 @@ int GetDaemonUsageBucket(base::TimeDelta elapsed_time);
 class IpfsP3A : public IpfsServiceObserver {
  public:
   IpfsP3A(IpfsService* service,
-          extensions::ExtensionRegistry* registry,
           PrefService* pref_service);
   ~IpfsP3A() override;
   IpfsP3A(const IpfsP3A&) = delete;
@@ -47,7 +42,6 @@ class IpfsP3A : public IpfsServiceObserver {
   IpfsService* service_;
   base::TimeTicks daemon_start_time_;
   base::TimeDelta elapsed_time_;
-  extensions::ExtensionRegistry* registry_ = nullptr;
   PrefService* pref_service_ = nullptr;
 };
 
