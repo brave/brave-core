@@ -5,12 +5,13 @@
 import UIKit
 import Shared
 import BraveShared
+import BraveUI
 
 @objc protocol FavoriteCellDelegate {
     func editFavorite(_ favoriteCell: FavoriteCell)
 }
 
-class FavoriteCell: UICollectionViewCell {
+class FavoriteCell: UICollectionViewCell, CollectionViewReusable {
     static let imageAspectRatio: Float = 1.0
     static let placeholderImage = #imageLiteral(resourceName: "defaultTopSiteIcon")
     static let identifier = "FavoriteCell"

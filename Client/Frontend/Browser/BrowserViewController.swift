@@ -1931,11 +1931,19 @@ extension BrowserViewController: QRCodeViewControllerDelegate {
     func didScanQRCodeWithURL(_ url: URL) {
         openBlankNewTab(attemptLocationFieldFocus: false)
         finishEditingAndSubmit(url, isBookmark: false)
+        
+        if !url.isBookmarklet && !PrivateBrowsingManager.shared.isPrivateBrowsing {
+            RecentSearch.addItem(type: .qrCode, text: nil, websiteUrl: url.absoluteString)
+        }
     }
 
     func didScanQRCodeWithText(_ text: String) {
         openBlankNewTab(attemptLocationFieldFocus: false)
         submitSearchText(text)
+        
+        if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+            RecentSearch.addItem(type: .qrCode, text: text, websiteUrl: nil)
+        }
     }
 }
 
@@ -2105,6 +2113,11 @@ extension BrowserViewController: TabDelegate {
 }
 
 extension BrowserViewController: SearchViewControllerDelegate {
+    func searchViewController(_ searchViewController: SearchViewController, didSubmit query: String) {
+        topToolbar.leaveOverlayMode()
+        processAddressBar(text: query)
+    }
+    
     func searchViewController(_ searchViewController: SearchViewController, didSelectURL url: URL) {
         finishEditingAndSubmit(url, isBookmark: false)
     }

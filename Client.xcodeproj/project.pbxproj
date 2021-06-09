@@ -827,6 +827,11 @@
 		CA439A5925E6F29D00FE9150 /* VideoPlayerInfoBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA439A5825E6F29D00FE9150 /* VideoPlayerInfoBar.swift */; };
 		CA439A7625E8054A00FE9150 /* VideoPlayerControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA439A7525E8054A00FE9150 /* VideoPlayerControlsView.swift */; };
 		CA439A9025E80EE400FE9150 /* VideoPlayerTrackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA439A8F25E80EE400FE9150 /* VideoPlayerTrackbar.swift */; };
+		CAA10597266FE94700A0372D /* RecentSearchQRCodeScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA1058B266FE94700A0372D /* RecentSearchQRCodeScannerController.swift */; };
+		CAB127632639F37C00BBFC75 /* RecentSearches.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB127622639F37C00BBFC75 /* RecentSearches.swift */; };
+		CAB127652639FB7000BBFC75 /* RecentSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB127642639FB7000BBFC75 /* RecentSearchCell.swift */; };
+		CAC2CB402644488600BB8D36 /* RecentSearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC2CB3F2644488600BB8D36 /* RecentSearchHeaderView.swift */; };
+		CAC2CB4D2644496400BB8D36 /* RecentSearchClipboardHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC2CB4C2644496400BB8D36 /* RecentSearchClipboardHeaderView.swift */; };
 		CE7F11941F3CEEC800ABFC0B /* RemoteDevices.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F115E1F3CCEF900ABFC0B /* RemoteDevices.swift */; };
 		D018F93E1F44A71A0098F8CA /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D018F93D1F44A7190098F8CA /* Schema.swift */; };
 		D029A04920A62DB0001DB72F /* TemporaryDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D029A04820A62DB0001DB72F /* TemporaryDocument.swift */; };
@@ -2442,6 +2447,12 @@
 		CA439A5825E6F29D00FE9150 /* VideoPlayerInfoBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerInfoBar.swift; sourceTree = "<group>"; };
 		CA439A7525E8054A00FE9150 /* VideoPlayerControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerControlsView.swift; sourceTree = "<group>"; };
 		CA439A8F25E80EE400FE9150 /* VideoPlayerTrackbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerTrackbar.swift; sourceTree = "<group>"; };
+		CAA1058B266FE94700A0372D /* RecentSearchQRCodeScannerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentSearchQRCodeScannerController.swift; sourceTree = "<group>"; };
+		CAB127622639F37C00BBFC75 /* RecentSearches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearches.swift; sourceTree = "<group>"; };
+		CAB127642639FB7000BBFC75 /* RecentSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchCell.swift; sourceTree = "<group>"; };
+		CAC2CB2C2643333F00BB8D36 /* RevealServer.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = RevealServer.xcframework; path = RevealServer/RevealServer.xcframework; sourceTree = "<group>"; };
+		CAC2CB3F2644488600BB8D36 /* RecentSearchHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchHeaderView.swift; sourceTree = "<group>"; };
+		CAC2CB4C2644496400BB8D36 /* RecentSearchClipboardHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchClipboardHeaderView.swift; sourceTree = "<group>"; };
 		CE7F115E1F3CCEF900ABFC0B /* RemoteDevices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDevices.swift; sourceTree = "<group>"; };
 		D000661320472890009BA6F6 /* __firefox__.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = __firefox__.js; sourceTree = "<group>"; };
 		D018F93D1F44A7190098F8CA /* Schema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
@@ -3009,6 +3020,7 @@
 		0A583F752142BC9B0086B3E7 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				CAB127612639D02100BBFC75 /* Recent Search */,
 				3BE7275C1CCFE8B60099189F /* CustomSearchHandler.swift */,
 				D3FA77831A43B2CE0010CD32 /* OpenSearch.swift */,
 				D308E4E31A5306F500842685 /* SearchEngines.swift */,
@@ -4447,6 +4459,7 @@
 				0AD0B33125CC6106002EF4F4 /* LegacyBookmark.swift */,
 				5EC0028126051D14005DDE4A /* PlaylistItem.swift */,
 				5EC0029726052341005DDE4A /* PlaylistInfo.swift */,
+				CAB127622639F37C00BBFC75 /* RecentSearches.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -4723,6 +4736,17 @@
 				2F55443025913BAA000E4689 /* OpenSearch */,
 			);
 			path = BrowserViewController;
+			sourceTree = "<group>";
+		};
+		CAB127612639D02100BBFC75 /* Recent Search */ = {
+			isa = PBXGroup;
+			children = (
+				CAA1058B266FE94700A0372D /* RecentSearchQRCodeScannerController.swift */,
+				CAB127642639FB7000BBFC75 /* RecentSearchCell.swift */,
+				CAC2CB3F2644488600BB8D36 /* RecentSearchHeaderView.swift */,
+				CAC2CB4C2644496400BB8D36 /* RecentSearchClipboardHeaderView.swift */,
+			);
+			path = "Recent Search";
 			sourceTree = "<group>";
 		};
 		D03F8F11200EAB8C003C2224 /* AtDocumentStart */ = {
@@ -5154,6 +5178,7 @@
 		F84B21B51A090F8100AAB793 = {
 			isa = PBXGroup;
 			children = (
+				CAC2CB2C2643333F00BB8D36 /* RevealServer.xcframework */,
 				0A60A1882358AF9E00953CA8 /* Brave.xctestplan */,
 				0A66550D23E9EA540047EF2A /* Brave_iPad.xctestplan */,
 				0A24F7DE233E8EF2004D2F3A /* Config */,
@@ -6638,6 +6663,7 @@
 				5D1DC55920AE004600905E5A /* Favorite.swift in Sources */,
 				27B3DDD024AE83710006A7ED /* FeedSourceOverride.swift in Sources */,
 				5D1DC55B20AE004600905E5A /* Domain.swift in Sources */,
+				CAB127632639F37C00BBFC75 /* RecentSearches.swift in Sources */,
 				5EC0029826052341005DDE4A /* PlaylistInfo.swift in Sources */,
 				0AF0411B2267C61100EBF982 /* ManagedObjectExtensions.swift in Sources */,
 				0AD0B33225CC6106002EF4F4 /* LegacyBookmark.swift in Sources */,
@@ -6749,8 +6775,10 @@
 				7B3631EA1C244FEE00D12AF9 /* Theme.swift in Sources */,
 				0A1E843F2190A57F0042F782 /* SyncQRCodeView.swift in Sources */,
 				4422D56921BFFB7F00BF1855 /* prefilter.cc in Sources */,
+				CAB127652639FB7000BBFC75 /* RecentSearchCell.swift in Sources */,
 				5E5E6F1525BA8DD70035B6A0 /* PlaylistMediaInfo.swift in Sources */,
 				5E4845C222DE3DF800372022 /* WindowRenderHelperScript.swift in Sources */,
+				CAA10597266FE94700A0372D /* RecentSearchQRCodeScannerController.swift in Sources */,
 				27036F9825684F9F004EF6B6 /* AdsViewController.swift in Sources */,
 				27F94A3A21909A5900F4FADF /* SearchSuggestionsPromptView.swift in Sources */,
 				5E096174252B63A300F3AFBB /* BraveCoreMigrator.swift in Sources */,
@@ -6846,6 +6874,7 @@
 				278C700224F6F33E00A246C8 /* SiteReportedView.swift in Sources */,
 				EB2A63341F3B49A7004EF8B0 /* ContentBlockerHelper.swift in Sources */,
 				0A4BEFD1221E115B0005551A /* NetworkSessionMock.swift in Sources */,
+				CAC2CB4D2644496400BB8D36 /* RecentSearchClipboardHeaderView.swift in Sources */,
 				0A43293B21B1C8D10041625B /* FifoDict.swift in Sources */,
 				FA6B2AC21D41F02D00429414 /* Punycode.swift in Sources */,
 				0A8A6225257905E300B035F4 /* UniversalLinkManager.swift in Sources */,
@@ -7201,6 +7230,7 @@
 				4422D4F721BFFB7600BF1855 /* dbformat.cc in Sources */,
 				7B844E3D1BBDDB9D00E733A2 /* ChevronView.swift in Sources */,
 				44331DD222551AFE007E3E93 /* ToolbarButton.swift in Sources */,
+				CAC2CB402644488600BB8D36 /* RecentSearchHeaderView.swift in Sources */,
 				5E99D02B25E56C18003F30B4 /* HLSThumbnailGenerator.swift in Sources */,
 				0A39FE942486604D00290ABC /* GRDServerManager.m in Sources */,
 				4422D4BC21BFFB7600BF1855 /* testharness.cc in Sources */,

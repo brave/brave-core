@@ -143,6 +143,10 @@ extension Preferences {
         static let defaultEngineName = Option<String?>(key: "search.default.name", default: nil)
         /// The default selected search engine in private mode
         static let defaultPrivateEngineName = Option<String?>(key: "search.defaultprivate.name", default: nil)
+        /// Whether or not to show recent searches
+        static let shouldShowRecentSearches = Option<Bool>(key: "search.should-show-recent-searches", default: false)
+        /// Whether or not to show recent searches opt-in
+        static let shouldShowRecentSearchesOptIn = Option<Bool>(key: "search.should-show-recent-searches.opt-in", default: true)
     }
     final class Privacy {
         /// Forces all private tabs

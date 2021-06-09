@@ -77,7 +77,11 @@ class AutocompleteTextField: UITextField, UITextFieldDelegate {
         super.addTarget(self, action: #selector(AutocompleteTextField.textDidChange), for: .editingChanged)
         notifyTextChanged = debounce(0.1, action: {
             if self.isEditing {
-                self.autocompleteDelegate?.autocompleteTextField(self, didEnterText: self.normalizeString(self.text ?? ""))
+                var text = self.text
+                if text?.isEmpty == true && self.autocompleteTextLabel?.text?.isEmpty == false {
+                    text = self.autocompleteTextLabel?.text
+                }
+                self.autocompleteDelegate?.autocompleteTextField(self, didEnterText: self.normalizeString(text ?? ""))
             }
         })
     }
@@ -287,6 +291,7 @@ class AutocompleteTextField: UITextField, UITextFieldDelegate {
         if isSelectionActive {
             removeCompletion()
             forceResetCursor()
+            notifyTextChanged?()
         } else {
             super.deleteBackward()
         }

@@ -194,9 +194,10 @@ class PlayListCacheClearable: Clearable {
     }
     
     func clear() -> Success {
+        let result = Deferred<Maybe<Void>>()
         DispatchQueue.main.async {
             PlaylistManager.shared.deleteAllItems(cacheOnly: true)
-            
+
             // Backup in case there is folder corruption, so we delete the cache anyway
             if let playlistDirectory = PlaylistDownloadManager.playlistDirectory {
                 do {
@@ -205,8 +206,9 @@ class PlayListCacheClearable: Clearable {
                     log.error("Error Deleting Playlist directory: \(error)")
                 }
             }
+            result.fill(Maybe(success: Void()))
         }
-        return succeed()
+        return result
     }
 }
 
@@ -219,9 +221,10 @@ class PlayListDataClearable: Clearable {
     }
     
     func clear() -> Success {
+        let result = Deferred<Maybe<Void>>()
         DispatchQueue.main.async {
             PlaylistManager.shared.deleteAllItems(cacheOnly: false)
-            
+
             // Backup in case there is folder corruption, so we delete the cache anyway
             if let playlistDirectory = PlaylistDownloadManager.playlistDirectory {
                 do {
@@ -230,7 +233,26 @@ class PlayListDataClearable: Clearable {
                     log.error("Error Deleting Playlist directory: \(error)")
                 }
             }
+            result.fill(Maybe(success: Void()))
         }
-        return succeed()
+        return result
+    }
+}
+
+class RecentSearchClearable: Clearable {
+
+    init() { }
+
+    var label: String {
+        return Strings.recentSearchClearDataToggleOption
+    }
+    
+    func clear() -> Success {
+        let result = Deferred<Maybe<Void>>()
+        DispatchQueue.main.async {
+            RecentSearch.removeAll()
+            result.fill(Maybe(success: Void()))
+        }
+        return result
     }
 }

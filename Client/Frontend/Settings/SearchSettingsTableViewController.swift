@@ -34,6 +34,7 @@ class SearchSettingsTableViewController: UITableViewController {
         static let addCustomEngineRowIdentifier = "addCustomEngineRowIdentifier"
         static let searchEngineRowIdentifier = "searchEngineRowIdentifier"
         static let showSearchSuggestionsRowIdentifier = "showSearchSuggestionsRowIdentifier"
+        static let showRecentSearchesRowIdentifier = "showRecentSearchRowIdentifier"
         static let quickSearchEngineRowIdentifier = "quickSearchEngineRowIdentifier"
         static let customSearchEngineRowIdentifier = "customSearchEngineRowIdentifier"
     }
@@ -52,6 +53,7 @@ class SearchSettingsTableViewController: UITableViewController {
         case `private`
         case quick
         case suggestions
+        case recentSearches
     }
     
     private var searchEngines: SearchEngines
@@ -97,6 +99,7 @@ class SearchSettingsTableViewController: UITableViewController {
             $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.addCustomEngineRowIdentifier)
             $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.searchEngineRowIdentifier)
             $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.showSearchSuggestionsRowIdentifier)
+            $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.showRecentSearchesRowIdentifier)
             $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.quickSearchEngineRowIdentifier)
             $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.customSearchEngineRowIdentifier)
         }
@@ -204,9 +207,20 @@ class SearchSettingsTableViewController: UITableViewController {
                         $0.accessoryView = toggle
                         $0.selectionStyle = .none
                     }
-                default:
-                    // Should not happen.
-                    break
+            case CurrentEngineType.recentSearches.rawValue:
+                let toggle = UISwitch().then {
+                    $0.addTarget(self, action: #selector(didToggleRecentSearches), for: .valueChanged)
+                    $0.isOn = searchEngines.shouldShowRecentSearches
+                }
+                
+                cell = tableView.dequeueReusableCell(withIdentifier: Constants.showRecentSearchesRowIdentifier, for: indexPath).then {
+                    $0.textLabel?.text = Strings.searchSettingRecentSearchesCellTitle
+                    $0.accessoryView = toggle
+                    $0.selectionStyle = .none
+                }
+            default:
+                // Should not happen.
+                break
             }
         } else {
             // Add custom engine
@@ -309,6 +323,12 @@ extension SearchSettingsTableViewController {
         // Setting the value in settings dismisses any opt-in.
         searchEngines.shouldShowSearchSuggestions = toggle.isOn
         searchEngines.shouldShowSearchSuggestionsOptIn = false
+    }
+    
+    @objc func didToggleRecentSearches(_ toggle: UISwitch) {
+        // Setting the value in settings dismisses any opt-in.
+        searchEngines.shouldShowRecentSearches = toggle.isOn
+        searchEngines.shouldShowRecentSearchesOptIn = false
     }
 
     @objc func dismissAnimated() {
