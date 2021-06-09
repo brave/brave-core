@@ -21,11 +21,12 @@ base::Optional<std::string> GetCspDirectivesOnTaskRunner(
     std::shared_ptr<BraveRequestInfo> ctx,
     base::Optional<std::string> original_csp) {
   std::string source_host;
-  if (ctx->initiator_url.is_valid()) {
+  if (ctx->initiator_url.is_valid() && !ctx->initiator_url.host().empty()) {
     source_host = ctx->initiator_url.host();
   } else if (ctx->request_url.is_valid()) {
-    // Top-level document requests do not have a valid initiator URL, so we use
-    // the request URL as the initiator.
+    // Top-level document requests do not have a valid initiator URL, and
+    // requests from special schemes like file:// do not have host parts, so we
+    // use the request URL as the initiator.
     source_host = ctx->request_url.host();
   } else {
     return base::nullopt;
