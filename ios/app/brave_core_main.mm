@@ -29,9 +29,8 @@
   ChromeBrowserState* _mainBrowserState;
 }
 
-@property(nullable, nonatomic, readwrite) BraveHistoryAPI* historyAPI;
-@property(nullable, nonatomic, readwrite)
-    BraveSyncProfileService* syncProfileService;
+@property(nonatomic, readwrite) BraveHistoryAPI* historyAPI;
+@property(nonatomic, readwrite) BraveSyncProfileService* syncProfileService;
 
 @end
 
@@ -114,7 +113,7 @@
   _webClient->SetUserAgent(base::SysNSStringToUTF8(userAgent));
 }
 
-- (nullable BraveHistoryAPI*)historyAPI {
+- (BraveHistoryAPI*)historyAPI {
   if (!_historyAPI) {
     _historyAPI =
         [[BraveHistoryAPI alloc] initWithBrowserState:_mainBrowserState];
@@ -122,7 +121,7 @@
   return _historyAPI;
 }
 
-- (nullable BraveSyncProfileService*)syncProfileService {
+- (BraveSyncProfileService*)syncProfileService {
   if (!_syncProfileService) {
     _syncProfileService = [[BraveSyncProfileService alloc]
         initWithBrowserState:_mainBrowserState];

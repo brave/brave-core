@@ -20,8 +20,8 @@
 #error "This file requires ARC support."
 #endif
 
-namespace brave_ios {
-namespace {
+namespace brave {
+namespace ios {
 std::unordered_map<syncer::UserSelectableType, BraveSyncUserSelectableTypes>
     mapping = {
         {syncer::UserSelectableType::kBookmarks,
@@ -44,7 +44,6 @@ std::unordered_map<syncer::UserSelectableType, BraveSyncUserSelectableTypes>
         {syncer::UserSelectableType::kTabs, BraveSyncUserSelectableTypes_TABS},
         {syncer::UserSelectableType::kWifiConfigurations,
          BraveSyncUserSelectableTypes_WIFI_CONFIGURATIONS}};
-}  // namespace
 
 syncer::UserSelectableTypeSet user_types_from_options(
     BraveSyncUserSelectableTypes options) {
@@ -67,7 +66,8 @@ BraveSyncUserSelectableTypes options_from_user_types(
   }
   return results;
 }
-}  // namespace brave_ios
+}  // namespace ios
+}  // namespace brave
 
 @interface BraveSyncProfileService () {
   syncer::SyncService* sync_service_;
@@ -103,21 +103,21 @@ BraveSyncUserSelectableTypes options_from_user_types(
       user_types.Put(type);
     }
   }
-  return brave_ios::options_from_user_types(user_types);
+  return brave::ios::options_from_user_types(user_types);
 }
 
 - (BraveSyncUserSelectableTypes)userSelectedTypes {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   syncer::UserSelectableTypeSet types =
       sync_service_->GetUserSettings()->GetSelectedTypes();
-  return brave_ios::options_from_user_types(types);
+  return brave::ios::options_from_user_types(types);
 }
 
 - (void)setUserSelectedTypes:(BraveSyncUserSelectableTypes)options {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   bool sync_everything = false;
   syncer::UserSelectableTypeSet selected_types =
-      brave_ios::user_types_from_options(options);
+      brave::ios::user_types_from_options(options);
   sync_service_->GetUserSettings()->SetSelectedTypes(sync_everything,
                                                      selected_types);
 }
