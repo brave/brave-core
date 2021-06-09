@@ -21,6 +21,8 @@ source_set("app") {
     "//brave/common:pref_names",
     "//brave/components/brave_sync:constants",
     "//brave/ios/browser",
+    "//brave/ios/browser/api/sync/prefs",
+    "//brave/ios/browser/api/history",
     "//components/browser_sync",
     "//components/sync/driver",
     "//components/sync/base",
