@@ -234,7 +234,7 @@ ExtensionFunction::ResponseAction
 GeminiIsSupportedFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   bool is_supported = ntp_widget_utils::IsRegionSupported(
-      profile->GetPrefs(), ::gemini::supported_regions, true);
+      profile->GetPrefs(), *(::gemini::supported_regions), true);
   return RespondNow(OneArgument(base::Value(is_supported)));
 }
 

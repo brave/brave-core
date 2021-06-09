@@ -1,0 +1,88 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
+import("//brave/browser/extensions/api/sources.gni")
+import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//extensions/buildflags/buildflags.gni")
+
+brave_browser_extensions_sources = []
+brave_browser_extensions_deps = []
+
+if (enable_extensions) {
+  brave_browser_extensions_sources = [
+    "//brave/browser/extensions/brave_extension_management.cc",
+    "//brave/browser/extensions/brave_extension_management.h",
+    "//brave/browser/extensions/brave_extension_provider.cc",
+    "//brave/browser/extensions/brave_extension_provider.h",
+    "//brave/browser/extensions/brave_extension_service.cc",
+    "//brave/browser/extensions/brave_extension_service.h",
+    "//brave/browser/extensions/brave_extensions_browser_api_provider.cc",
+    "//brave/browser/extensions/brave_extensions_browser_api_provider.h",
+    "//brave/browser/extensions/brave_extensions_browser_client_impl.cc",
+    "//brave/browser/extensions/brave_extensions_browser_client_impl.h",
+    "//brave/browser/extensions/brave_theme_event_router.cc",
+    "//brave/browser/extensions/brave_theme_event_router.h",
+    "//brave/browser/extensions/updater/brave_update_client_config.cc",
+    "//brave/browser/extensions/updater/brave_update_client_config.h",
+  ]
+
+  brave_browser_extensions_deps = [
+    "//base",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/browser:browser_process",
+    "//brave/browser/ethereum_remote_client/buildflags:buildflags",
+    "//brave/browser/themes",
+    "//brave/browser/tor",
+    "//brave/common:pref_names",
+    "//brave/common/extensions/api",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/ipfs/buildflags:buildflags",
+    "//brave/components/tor/buildflags:buildflags",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/extensions",
+    "//chrome/browser/profiles:profile",
+    "//components/prefs",
+    "//components/update_client:network_impl",
+    "//content/public/browser",
+    "//extensions/browser",
+    "//ui/native_theme",
+  ]
+
+  if (enable_brave_webtorrent) {
+    brave_browser_extensions_sources += [
+      "//brave/browser/extensions/brave_webtorrent_navigation_throttle.cc",
+      "//brave/browser/extensions/brave_webtorrent_navigation_throttle.h",
+    ]
+
+    brave_browser_extensions_deps += [
+      "//brave/browser/extensions:component_loader",
+      "//brave/browser/net",
+      "//brave/browser/profiles:util",
+      "//brave/components/brave_webtorrent/browser",
+      "//url",
+    ]
+  }
+
+  if (enable_tor) {
+    brave_browser_extensions_deps += [
+      "//brave/components/tor",
+      "//brave/components/tor:pref_names",
+    ]
+  }
+
+  if (ethereum_remote_client_enabled) {
+    brave_browser_extensions_deps +=
+        [ "//brave/browser/ethereum_remote_client:constants" ]
+  }
+
+  if (ipfs_enabled) {
+    brave_browser_extensions_deps += [ "//brave/components/ipfs" ]
+  }
+
+  brave_browser_extensions_sources += brave_browser_extensions_api_sources
+  brave_browser_extensions_deps += brave_browser_extensions_api_deps
+}

@@ -22,7 +22,7 @@ source_set("brave_wallet") {
   ]
   if (enable_extensions) {
     deps += [
-      "//brave/browser/extensions",
+      "//brave/browser/extensions:component_loader",
       "//chrome/browser/extensions:extensions",
       "//extensions/browser",
     ]

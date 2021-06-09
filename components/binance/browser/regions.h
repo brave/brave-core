@@ -9,29 +9,13 @@
 #include <string>
 #include <vector>
 
+#include "base/no_destructor.h"
+
 namespace binance {
 
-const std::vector<std::string> unsupported_regions = {
-  "BY",
-  "BI",
-  "CF",
-  "CD",
-  "UA",
-  "CU",
-  "IR",
-  "JP",
-  "LB",
-  "LY",
-  "KP",
-  "RU",
-  "SO",
-  "SS",
-  "SD",
-  "SY",
-  "VE",
-  "YE",
-  "ZW"
-};
+const base::NoDestructor<std::vector<std::string>> unsupported_regions(
+    {"BY", "BI", "CF", "CD", "UA", "CU", "IR", "JP", "LB", "LY", "KP", "RU",
+     "SO", "SS", "SD", "SY", "VE", "YE", "ZW"});
 
 const std::vector<std::string> supported_locales = {
     "en", "au", "cn", "tw", "ar", "nl", "ph", "fr", "de", "id",

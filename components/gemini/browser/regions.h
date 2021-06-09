@@ -9,22 +9,21 @@
 #include <string>
 #include <vector>
 
+#include "base/no_destructor.h"
+
 namespace gemini {
 
-const std::vector<std::string> supported_regions = {
-  // Canada
-  "CA",
-  // Great Britain
-  "GB",
-  // United States
-  "US",
-  // EU Countries
-  "BE", "BG", "CZ", "DK", "EE",
-  "IE", "EL", "ES", "HR", "IT",
-  "CY", "LV", "LT", "LU", "HU",
-  "MT", "NL", "AT", "PL", "PT",
-  "RO", "SI", "SK", "FI", "SE"
-};
+const base::NoDestructor<std::vector<std::string>> supported_regions(
+    {// Canada
+     "CA",
+     // Great Britain
+     "GB",
+     // United States
+     "US",
+     // EU Countries
+     "BE", "BG", "CZ", "DK", "EE", "IE", "EL", "ES", "HR", "IT", "CY", "LV",
+     "LT", "LU", "HU", "MT", "NL", "AT", "PL", "PT", "RO", "SI", "SK", "FI",
+     "SE"});
 
 }  // namespace gemini
 

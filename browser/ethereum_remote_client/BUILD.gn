@@ -15,13 +15,9 @@ source_set("ethereum_remote_client") {
   include_dirs = [ "//brave/third_party/ethash/src/include" ]
 
   sources = [
-    "ethereum_remote_client_constants.cc",
-    "ethereum_remote_client_constants.h",
     "ethereum_remote_client_delegate.h",
     "ethereum_remote_client_service.cc",
     "ethereum_remote_client_service.h",
-    "pref_names.cc",
-    "pref_names.h",
   ]
 
   deps = [
@@ -42,6 +38,25 @@ source_set("ethereum_remote_client") {
   if (enable_extensions) {
     deps += [ "//extensions/browser" ]
   }
+
+  public_deps = [
+    ":constants",
+    ":pref_names",
+  ]
+}
+
+source_set("constants") {
+  sources = [
+    "ethereum_remote_client_constants.cc",
+    "ethereum_remote_client_constants.h",
+  ]
+}
+
+source_set("pref_names") {
+  sources = [
+    "pref_names.cc",
+    "pref_names.h",
+  ]
 }
 
 source_set("browser") {
@@ -53,7 +68,7 @@ source_set("browser") {
   ]
   deps = [
     "//brave/browser/ethereum_remote_client",
-    "//brave/browser/extensions",
+    "//brave/browser/extensions:component_loader",
     "//chrome/browser/extensions",
     "//chrome/browser/profiles",
     "//components/keyed_service/content",

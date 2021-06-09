@@ -9,10 +9,12 @@
 #include <string>
 #include <vector>
 
+#include "base/no_destructor.h"
+
 namespace ftx {
 
-const std::vector<std::string> unsupported_regions = {
-    "AF", "AG", "CI", "CU", "IQ", "IR", "LR", "KP", "SD", "SY", "ZW"};
+const base::NoDestructor<std::vector<std::string>> unsupported_regions(
+    {"AF", "AG", "CI", "CU", "IQ", "IR", "LR", "KP", "SD", "SY", "ZW"});
 
 }  // namespace ftx
 
