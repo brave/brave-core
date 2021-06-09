@@ -34,6 +34,7 @@ void ResetSync(syncer::BraveProfileSyncService* sync_service,
   // https://github.com/brave/brave-browser/issues/16066 .
   DCHECK(local_device_info);
   if (!local_device_info) {
+    std::move(on_reset_done).Run();
     return;
   }
 
