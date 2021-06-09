@@ -188,7 +188,38 @@ extension BrowserViewController: WKNavigationDelegate {
         let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
         
         // Check if custom user scripts must be added to the web view.
-        tabManager[webView]?.userScriptManager?.handleDomainUserScript(for: url)
+        let tab = tabManager[webView]
+        tab?.userScriptManager?.handleDomainUserScript(for: url)
+        
+        // Brave Search logic.
+        
+        if navigationAction.targetFrame?.isMainFrame == true,
+           BraveSearchManager.isValidURL(url) {
+            // We fetch cookies to determine if backup search was enabled on the website.
+            webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
+                tab?.braveSearchManager = BraveSearchManager(url: url, cookies: cookies)
+                if let braveSearchManager = tab?.braveSearchManager {
+                    braveSearchManager.fallbackQueryResultsPending = true
+                    braveSearchManager.shouldUseFallback { backupQuery in
+                        guard let query = backupQuery else {
+                            braveSearchManager.fallbackQueryResultsPending = false
+                            return
+                        }
+                        
+                        if query.found {
+                            braveSearchManager.fallbackQueryResultsPending = false
+                        } else {
+                            braveSearchManager.backupSearch(with: query) { completion in
+                                braveSearchManager.fallbackQueryResultsPending = false
+                                tab?.injectResults()
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            tab?.braveSearchManager = nil
+        }
         
         // This is the normal case, opening a http or https url, which we handle by loading them in this WKWebView. We
         // always allow this. Additionally, data URIs are also handled just like normal web pages.
@@ -369,7 +400,7 @@ extension BrowserViewController: WKNavigationDelegate {
             completionHandler(.useCredential, URLCredential(trust: trust))
             return
         }
-
+        
         guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic ||
               challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest ||
               challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM,
@@ -412,6 +443,22 @@ extension BrowserViewController: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         if let tab = tabManager[webView] {
+            
+            // Second attempt to inject results to the BraveSearch.
+            // This will be called if we got fallback results faster than
+            // the page navigation.
+            if let braveSearchManager = tab.braveSearchManager {
+                // Fallback results are ready before navigation finished,
+                // they must be injected here.
+                if !braveSearchManager.fallbackQueryResultsPending {
+                    tab.injectResults()
+                }
+            } else {
+                // If not applicable, null results must be injected regardless.
+                // The website waits on us until this is called with either results or null.
+                tab.injectResults()
+            }
+            
             navigateInTab(tab: tab, to: navigation)
             if let url = tab.url, tab.shouldClassifyLoadsForAds {
                 let faviconURL = URL(string: tab.displayFavicon?.url ?? "")
