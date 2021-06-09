@@ -293,7 +293,7 @@ bool CreateEntry(LPCTSTR entry_name,
 
   constexpr wchar_t kNumCustomPolicy[] = L"1";
   constexpr wchar_t kCustomIPSecPolicies[] =
-      L"020000000600000005000000080000000500000000000000";
+      L"030000000400000002000000050000000200000000000000";
   std::wstring phone_book_path = GetPhonebookPath();
   if (phone_book_path.empty())
     return false;
