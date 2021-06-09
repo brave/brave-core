@@ -8,6 +8,7 @@
 #include "base/stl_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
+#include "brave/common/url_constants.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
@@ -103,6 +104,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_DISABLED_DESC},
 #endif
     {"mruCyclingSettingLabel", IDS_SETTINGS_BRAVE_MRU_CYCLING_LABEL},
+    {"speedreaderSettingLabel", IDS_SETTINGS_SPEEDREADER_LABEL},
+    {"speedreaderSettingSubLabel", IDS_SETTINGS_SPEEDREADER_SUB_LABEL},
     {"braveShieldsTitle", IDS_SETTINGS_BRAVE_SHIELDS_TITLE},
     {"braveShieldsDefaultsSectionTitle",
      IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE},
@@ -301,6 +304,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                          base::ASCIIToUTF16(kGoogleLoginLearnMoreURL));
   html_source->AddString("ipfsDNSLinkLearnMoreURL",
                          base::UTF8ToUTF16(kDNSLinkLearnMoreURL));
+  html_source->AddString("speedreaderLearnMoreURL",
+                         base::UTF8ToUTF16(kSpeedreaderLearnMoreUrl));
   html_source->AddString(
       "getMoreExtensionsUrl",
       base::ASCIIToUTF16(
