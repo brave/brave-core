@@ -62,7 +62,7 @@ void SetEnabledForSite(HostContentSettingsMap* map,
     return;
 
   ContentSetting setting =
-      enable ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW;
+      enable ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK;
   map->SetContentSettingCustomScope(pattern, ContentSettingsPattern::Wildcard(),
                                     ContentSettingsType::BRAVE_SPEEDREADER,
                                     setting);
@@ -75,7 +75,8 @@ bool IsEnabledForSite(HostContentSettingsMap* map, const GURL& url) {
   // CONTENT_SETTINCG_BLOCK, the logic is reversed here. Sites that are
   // "allowed" are actually blacklisted by the user.
   // https://github.com/brave/brave-core/blob/1cb5818aa0b70666c6aeea5ea9c06cc4e712171a/chromium_src/components/content_settings/core/browser/content_settings_registry.cc#L37
-  const bool enabled = setting == CONTENT_SETTING_BLOCK;
+  const bool enabled =
+      setting == CONTENT_SETTING_ALLOW || setting == CONTENT_SETTING_DEFAULT;
   return enabled;
 }
 

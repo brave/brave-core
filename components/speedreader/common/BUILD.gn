@@ -2,8 +2,6 @@ import("//brave/components/speedreader/buildflags/buildflags.gni")
 
 source_set("common") {
   sources = [
-    "constants.cc",
-    "constants.h",
     "features.cc",
     "features.h",
     "speedreader_pref_names.h",
