@@ -42,7 +42,6 @@ export const ConnectWallet = () => {
       <WithThemeVariables>
         <ConnectWalletModal
           rewardsBalance={10}
-          defaultProvider={'uphold'}
           providers={providers}
           onContinue={actionLogger('onContinue')}
           onClose={actionLogger('onClose')}

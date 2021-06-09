@@ -3,15 +3,16 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 export const localeStrings = {
-  alreadyConnected: 'Already connected your wallet previously?',
   connectWalletChooseHeader: 'Choose a wallet service',
-  connectWalletChooseText: 'Choose a preferred wallet service. If you already have an account, you will be asked to log in to connect.',
-  connectWalletInfoHeader: 'Before you continue...',
-  connectWalletInfoNote: 'Brave Software Inc. does not process, store, or access any of the personal information when you establish an account with our custodial wallet partners.',
-  connectWalletInfoText: 'Receive rewards directly in your wallet hosted by a custodial wallet service, so you can store and manage your funds easily. $1Your photo ID is required for Rewards to be funded from Brave.$2',
-  connectWalletTermsLabel: 'I have read and agree to Brave’s $1Terms of Service$2 & $3Privacy Policy$4.',
+  connectWalletChooseText: 'Select a custodial wallet partner. If you already have an account, you will be asked to log in to connect.',
+  connectWalletChooseNote: 'Note: Your transactions will be visible to the selected wallet service once you authorize; for instance, they will be able to see the recipient and amount of your tips.',
+  connectWalletInfoHeader: 'Verifying is optional',
+  connectWalletInfoNote: 'Custodial wallet providers are required to verify the identity of anyone creating a wallet, including using a photo ID.',
+  connectWalletInfoBraveNote: '$1Brave Software Inc.$2 does not process, store, or access any of the personal information when you establish an account with our custodial wallet partners.',
+  connectWalletInfoText: 'However, your current wallet is limited. Verifying with a custodial wallet partner allows you to:',
+  connectWalletInfoListItem1: 'Freely withdraw and deposit funds',
+  connectWalletInfoListItem2: 'Receive your Rewards directly in your wallet',
   continue: 'Continue',
   continueToLogin: 'Continue to login',
-  minimumBalanceWarning: '$1 requires a minimum balance of $2 BAT to create an account. If you connected an account previously,',
-  reconnectWallet: 'Log in to reconnect'
+  minimumBalanceWarning: '$1 requires a minimum balance of $2 BAT to create an account. If you connected an account previously,'
 }

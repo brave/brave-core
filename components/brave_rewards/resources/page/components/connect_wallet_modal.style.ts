@@ -5,6 +5,7 @@
 import styled from 'styled-components'
 
 import warningCircleImage from '../../shared/assets/warning_circle.svg'
+import greenCheckIcon from '../assets/green_check.svg'
 
 export const root = styled.div`
   font-family: var(--brave-font-heading);
@@ -23,12 +24,12 @@ export const root = styled.div`
 `
 
 export const leftPanel = styled.div`
-  flex: 1 1 50%;
-  padding: 70px 35px 31px 80px;
+  flex: 0 1 448px;
+  padding: 70px 28px 31px 80px;
 `
 
 export const rightPanel = styled.div`
-  flex: 1 1 50%;
+  flex: 1 1 auto;
   padding: 32px 42px;
   background: var(--brave-palette-neutral000);
 `
@@ -41,56 +42,27 @@ export const panelHeader = styled.div`
 `
 
 export const panelText = styled.div`
-  font-size: 16px;
+  font-size: 14px;
   line-height: 24px;
   color: var(--brave-palette-neutral700);
   margin-top: 8px;
-
-  em {
-    font-style: normal;
-    color: #953088;
-  }
 `
 
 export const infoPanel = styled.div``
 
-export const acceptTerms = styled.div`
-  margin-top: 24px;
-  font-size: 14px;
-  line-height: 20px;
+export const infoListItem = styled.div`
   color: var(--brave-palette-neutral900);
-  display: flex;
-  align-items: flex-start;
+  font-weight: 600;
+  margin-top: 16px;
+  background: top 4px left no-repeat url("${greenCheckIcon}");
+  padding-left: 23px;
 `
 
-export const acceptTermsCheckbox = styled.div`
-  flex: 0 1 auto;
-
-  button {
-    background: var(--brave-palette-white);
-    border: 1px solid var(--brave-palette-grey500);
-    border-radius: 4px;
-    height: 22px;
-    width: 22px;
-    overflow: hidden;
-    padding: 0;
-    text-align: center;
-
-    .icon {
-      width: 18px;
-      height: auto;
-      margin-top: 1px;
-    }
-  }
-
-  &.needs-check button {
-    border-color: var(--brave-color-warn);
-  }
-`
-
-export const acceptTermsLabel = styled.div`
-  padding-left: 12px;
-  flex: 1 1 auto;
+export const infoNote = styled.div`
+  color: var(--brave-palette-neutral600);
+  font-size: 12px;
+  line-height: 18px;
+  margin-top: 16px;
 `
 
 export const continueButton = styled.div`
@@ -129,22 +101,10 @@ export const infoTerms = styled.div`
   font-size: 12px;
   line-height: 18px;
   color: var(--brave-palette-neutral600);
-  margin-top: 20px;
-`
+  margin-top: 38px;
 
-export const alreadyConnected = styled.div`
-  position: relative;
-  top: 0;
-  left: -20px;
-  margin-top: 54px;
-  text-align: center;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 22px;
-  color: var(--brave-palette-black);
-
-  .login {
-    font-weight: normal;
+  strong {
+    font-weight: 600;
   }
 `
 
@@ -156,7 +116,7 @@ export const connectGraphic = styled.div`
 `
 
 export const minimumBalanceWarning = styled.div`
-  margin-top: 48px;
+  margin-top: 16px;
   background: var(--brave-palette-neutral000);
   border-radius: 8px;
   padding: 16px 17px 26px 41px;
@@ -176,6 +136,17 @@ export const minimumBalanceWarning = styled.div`
 
 export const selectWalletLeftPanel = styled.div`
   margin-top: 30px;
+`
+
+export const selectWalletContent = styled.div`
+  min-height: 236px;
+`
+
+export const selectWalletNote = styled.div`
+  margin-top: 48px;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--brave-palette-neutral600);
 `
 
 export const providerButtons = styled.div`
