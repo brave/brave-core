@@ -695,6 +695,9 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   getCryptoContent () {
+    if (this.props.newTabData.hideAllWidgets) {
+      return null
+    }
     const {
       widgetStackOrder,
       togetherSupported,
@@ -770,9 +773,10 @@ class NewTabPage extends React.Component<Props, State> {
       cryptoDotComSupported,
       showFTX,
       ftxSupported,
-      binanceSupported
+      binanceSupported,
+      hideAllWidgets
     } = this.props.newTabData
-    return [
+    return hideAllWidgets || [
       showRewards,
       togetherSupported && showTogether,
       binanceSupported && showBinance,
@@ -780,40 +784,6 @@ class NewTabPage extends React.Component<Props, State> {
       cryptoDotComSupported && showCryptoDotCom,
       ftxSupported && showFTX
     ].every((widget: boolean) => !widget)
-  }
-
-  toggleAllCards = (show: boolean) => {
-    if (!show) {
-      this.props.actions.saveWidgetStackOrder()
-      this.props.saveSetAllStackWidgets(false)
-      return
-    }
-
-    const saveShowProps = {
-      'binance': this.props.saveShowBinance,
-      'cryptoDotCom': this.props.saveShowCryptoDotCom,
-      'gemini': this.props.saveShowGemini,
-      'rewards': this.props.saveShowRewards,
-      'together': this.props.saveShowTogether,
-      'ftx': this.props.saveShowFTX
-    }
-
-    const setAllTrue = (list: NewTab.StackWidget[]) => {
-      list.forEach((widget: NewTab.StackWidget) => {
-        if (widget in saveShowProps) {
-          saveShowProps[widget](true)
-        }
-      })
-    }
-
-    const { savedWidgetStackOrder, widgetStackOrder } = this.props.newTabData
-    // When turning back on, all widgets should be set to shown
-    // in the case that all widgets were hidden previously.
-    setAllTrue(
-      !savedWidgetStackOrder.length ?
-      widgetStackOrder :
-      savedWidgetStackOrder
-    )
   }
 
   renderCryptoContent () {
@@ -1258,7 +1228,7 @@ class NewTabPage extends React.Component<Props, State> {
           showFTX={newTabData.showFTX}
           todayPublishers={this.props.todayData.publishers}
           cardsHidden={this.allWidgetsHidden()}
-          toggleCards={this.toggleAllCards}
+          toggleCards={this.props.saveSetAllStackWidgets}
         />
         {
           showEditTopSite ?

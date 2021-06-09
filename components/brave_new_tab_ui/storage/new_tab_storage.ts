@@ -27,6 +27,7 @@ export const defaultState: NewTab.State = {
   showBitcoinDotCom: false,
   showCryptoDotCom: false,
   showFTX: false,
+  hideAllWidgets: false,
   brandedWallpaperOptIn: false,
   isBrandedWallpaperNotificationDismissed: true,
   isBraveTodayOptedIn: false,
@@ -75,7 +76,6 @@ export const defaultState: NewTab.State = {
   currentStackWidget: '',
   removedStackWidgets: [],
   // Order is ascending, with last entry being in the foreground
-  savedWidgetStackOrder: [],
   widgetStackOrder: ['ftx', 'cryptoDotCom', 'binance', 'gemini', 'rewards'],
   binanceState: {
     userTLD: 'com',
@@ -291,8 +291,7 @@ export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
       cryptoDotComState: data.cryptoDotComState,
       ftxState: data.ftxState,
       removedStackWidgets: data.removedStackWidgets,
-      widgetStackOrder: data.widgetStackOrder,
-      savedWidgetStackOrder: data.savedWidgetStackOrder
+      widgetStackOrder: data.widgetStackOrder
     }
     window.localStorage.setItem(keyName, JSON.stringify(dataToSave))
   }
