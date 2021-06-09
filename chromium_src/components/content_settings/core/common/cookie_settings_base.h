@@ -24,8 +24,8 @@ class ScopedEphemeralStorageAwareness {
 
 }  // namespace content_settings
 
-#define BRAVE_COOKIE_SETTINGS_BASE_H                                      \
-  bool ShouldUseEphemeralStorage(                                         \
+#define IsCookieSessionOnly                                               \
+  ShouldUseEphemeralStorage(                                              \
       const GURL& url, const GURL& site_for_cookies,                      \
       const absl::optional<url::Origin>& top_frame_origin) const;         \
   ScopedEphemeralStorageAwareness CreateScopedEphemeralStorageAwareness() \
@@ -46,10 +46,13 @@ class ScopedEphemeralStorageAwareness {
       const GURL& url, const GURL& site_for_cookies,                      \
       const absl::optional<url::Origin>& top_frame_origin) const;         \
                                                                           \
-  mutable bool ephemeral_storage_aware_ = false;
+  mutable bool ephemeral_storage_aware_ = false;                          \
+                                                                          \
+ public:                                                                  \
+  bool IsCookieSessionOnly
 
 #include "../../../../../../components/content_settings/core/common/cookie_settings_base.h"
 
-#undef BRAVE_COOKIE_SETTINGS_BASE_H
+#undef IsCookieSessionOnly
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_COMMON_COOKIE_SETTINGS_BASE_H_
