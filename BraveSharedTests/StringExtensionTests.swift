@@ -42,4 +42,12 @@ class StringExtensionTests: XCTestCase {
         let wordsWithPunctuation = "\"It's a wonderful life—isn't it…\""
         XCTAssertEqual(wordsWithPunctuation.words, ["It's", "a", "wonderful", "life", "isn't", "it"])
     }
+    
+    func testJavascriptEscapedString() {
+        let originalString = "function(){window.google={kEI:\'UZe4YMHZE8HBkwWpkIPoBg\',kEXPI:\'31\',kBL:\'ckvK\'};google.sn=\'web\';google.kHL=\'en\';}\u{2028}"
+        
+        let expectedString = "\"function(){window.google={kEI:\'UZe4YMHZE8HBkwWpkIPoBg\',kEXPI:\'31\',kBL:\'ckvK\'};google.sn=\'web\';google.kHL=\'en\';}\\\\u2028\""
+        
+        XCTAssertEqual(originalString.javaScriptEscapedString, expectedString)
+    }
 }

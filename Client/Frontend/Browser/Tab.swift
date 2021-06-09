@@ -182,6 +182,9 @@ class Tab: NSObject {
             }
         }
     }
+    
+    /// A helper property that handles native to Brave Search communication.
+    var braveSearchManager: BraveSearchManager?
 
     func createWebview() {
         if webView == nil {
@@ -675,6 +678,60 @@ class TabWebViewMenuHelper: UIView {
             tabWebView.evaluateSafeJavaScript(functionName: "getSelection().toString", sandboxed: false) { result, _ in
                 let selection = result as? String ?? ""
                 tabWebView.delegate?.tabWebView(tabWebView, didSelectFindInPageForSelection: selection)
+            }
+        }
+    }
+}
+
+// MARK: - Brave Search
+
+extension Tab {
+    /// Call the api on the Brave Search website and passes the fallback results to it.
+    /// Important: This method is also called when there is no fallback results
+    /// or when the fallback call should not happen at all.
+    /// The website expects the iOS device to always call this method(blocks on it).
+    func injectResults() {
+        
+        
+        
+        DispatchQueue.main.async {
+            // If the backup search results happen before the Brave Search loads
+            // The method we pass data to is undefined.
+            // For such case we do not call that method or remove the search backup manager.
+            // swiftlint:disable:next safe_javascript
+            self.webView?.evaluateJavaScript("window.onFetchedBackupResults === undefined") {
+                result, error in
+                
+                if let error = error {
+                    log.error("onFetchedBackupResults existence check error: \(error)")
+                }
+                
+                guard let methodUndefined = result as? Bool else {
+                    log.error("onFetchedBackupResults existence check, failed to unwrap bool result value")
+                    return
+                }
+                
+                if methodUndefined {
+                    log.info("Search Backup results are ready but the page has not been loaded yet")
+                    return
+                }
+                
+                var queryResult = "null"
+                
+                if let url = self.webView?.url,
+                   BraveSearchManager.isValidURL(url),
+                   let result = self.braveSearchManager?.fallbackQueryResult {
+                    queryResult = result
+                }
+                
+                self.webView?.evaluateSafeJavaScript(
+                    functionName: "window.onFetchedBackupResults",
+                    args: [queryResult],
+                    sandboxed: false,
+                    escapeArgs: false)
+                
+                // Cleanup
+                self.braveSearchManager = nil
             }
         }
     }
