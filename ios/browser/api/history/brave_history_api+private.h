@@ -13,13 +13,14 @@
 NS_ASSUME_NONNULL_BEGIN
 
 namespace history {
-  class HistoryService;
-  class WebHistoryService;
+class HistoryService;
+class WebHistoryService;
 }
 
 @interface BraveHistoryAPI (Private)  // NOLINT
-- (instancetype)initWithHistoryService:(history::HistoryService*)historyService 
-    webHistoryService:(history::WebHistoryService*)webHistoryService;
+- (instancetype)initWithHistoryService:(history::HistoryService*)historyService
+                     webHistoryService:
+                         (history::WebHistoryService*)webHistoryService;
 @end
 
 NS_ASSUME_NONNULL_END

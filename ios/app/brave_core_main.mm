@@ -11,6 +11,8 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/app/brave_main_delegate.h"
 #import "brave/ios/browser/brave_web_client.h"
+#include "components/history/core/browser/history_service.h"
+#include "components/keyed_service/core/service_access_type.h"
 #include "ios/chrome/app/startup/provider_registration.h"
 #import "ios/chrome/app/startup_tasks.h"
 #include "ios/chrome/browser/application_context.h"
@@ -21,8 +23,6 @@
 #include "ios/chrome/browser/sync/profile_sync_service_factory.h"
 #include "ios/public/provider/chrome/browser/chrome_browser_provider.h"
 #include "ios/web/public/init/web_main.h"
-#include "components/history/core/browser/history_service.h"
-#include "components/keyed_service/core/service_access_type.h"
 
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
 #import "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
@@ -120,23 +120,25 @@
 
 - (BraveHistoryAPI*)historyAPI {
   if (!_historyAPI) {
-    history::HistoryService* history_service_ = 
-        ios::HistoryServiceFactory::GetForBrowserState(_mainBrowserState, 
-            ServiceAccessType::EXPLICIT_ACCESS);
+    history::HistoryService* history_service_ =
+        ios::HistoryServiceFactory::GetForBrowserState(
+            _mainBrowserState, ServiceAccessType::EXPLICIT_ACCESS);
     history::WebHistoryService* web_history_service_ =
         ios::WebHistoryServiceFactory::GetForBrowserState(_mainBrowserState);
 
     _historyAPI =
-        [[BraveHistoryAPI alloc] initWithHistoryService:history_service_ webHistoryService: web_history_service_];
+        [[BraveHistoryAPI alloc] initWithHistoryService:history_service_
+                                      webHistoryService:web_history_service_];
   }
   return _historyAPI;
 }
 
 - (BraveSyncProfileServiceIOS*)syncProfileService {
   if (!_syncProfileService) {
-    syncer::SyncService* sync_service_ = ProfileSyncServiceFactory::GetForBrowserState(_mainBrowserState);
+    syncer::SyncService* sync_service_ =
+        ProfileSyncServiceFactory::GetForBrowserState(_mainBrowserState);
     _syncProfileService = [[BraveSyncProfileServiceIOS alloc]
-        initWithProfileSyncService: sync_service_];
+        initWithProfileSyncService:sync_service_];
   }
   return _syncProfileService;
 }

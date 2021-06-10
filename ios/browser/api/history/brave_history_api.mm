@@ -93,8 +93,9 @@
 
 @implementation BraveHistoryAPI
 
-- (instancetype)initWithHistoryService:(history::HistoryService*)historyService 
-    webHistoryService:(history::WebHistoryService*)webHistoryService {
+- (instancetype)initWithHistoryService:(history::HistoryService*)historyService
+                     webHistoryService:
+                         (history::WebHistoryService*)webHistoryService {
   if ((self = [super init])) {
     DCHECK_CURRENTLY_ON(web::WebThread::UI);
     history_service_ = historyService;
