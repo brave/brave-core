@@ -52,6 +52,7 @@ class BraveWalletJSHandler : public mojom::EventsListener {
   v8::Local<v8::Promise> Request(v8::Isolate* isolate,
                                  v8::Local<v8::Value> input);
   v8::Local<v8::Value> IsConnected();
+  v8::Local<v8::Promise> Enable();
 
   void OnRequest(v8::Global<v8::Promise::Resolver> promise_resolver,
                  v8::Isolate* isolate,
