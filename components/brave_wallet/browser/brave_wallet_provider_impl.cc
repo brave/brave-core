@@ -7,14 +7,18 @@
 
 #include <utility>
 
+#include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 
 namespace brave_wallet {
 
 BraveWalletProviderImpl::BraveWalletProviderImpl(
-    base::WeakPtr<BraveWalletService> wallet_service)
-    : wallet_service_(wallet_service), weak_factory_(this) {}
+    base::WeakPtr<BraveWalletService> wallet_service,
+    std::unique_ptr<BraveWalletProviderDelegate> delegate)
+    : delegate_(std::move(delegate)),
+      wallet_service_(wallet_service),
+      weak_factory_(this) {}
 
 BraveWalletProviderImpl::~BraveWalletProviderImpl() {
   if (!wallet_service_)
@@ -45,6 +49,13 @@ void BraveWalletProviderImpl::OnResponse(
   // Do we need to pass headers map to a renderer? We would need to convert
   // it to base::flat_map in that case
   std::move(callback).Run(http_code, response);
+}
+
+void BraveWalletProviderImpl::Enable() {
+  if (!delegate_)
+    return;
+
+  delegate_->ShowConnectToSiteUI();
 }
 
 void BraveWalletProviderImpl::GetChainId(GetChainIdCallback callback) {

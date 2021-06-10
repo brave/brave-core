@@ -151,6 +151,9 @@ void BraveWalletJSHandler::BindFunctionsToObject(
   BindFunctionToObject(isolate, javascript_object, "isConnected",
                        base::BindRepeating(&BraveWalletJSHandler::IsConnected,
                                            base::Unretained(this)));
+  BindFunctionToObject(isolate, javascript_object, "enable",
+                       base::BindRepeating(&BraveWalletJSHandler::Enable,
+                                           base::Unretained(this)));
 }
 
 template <typename Sig>
@@ -256,6 +259,22 @@ void BraveWalletJSHandler::OnRequest(
   } else {
     ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
   }
+}
+
+v8::Local<v8::Promise> BraveWalletJSHandler::Enable() {
+  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+  v8::MaybeLocal<v8::Promise::Resolver> resolver =
+      v8::Promise::Resolver::New(isolate->GetCurrentContext());
+  if (resolver.IsEmpty()) {
+    return v8::Local<v8::Promise>();
+  }
+
+  auto promise_resolver(
+      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
+  auto context_old(
+      v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
+  brave_wallet_provider_->Enable();
+  return resolver.ToLocalChecked()->GetPromise();
 }
 
 void BraveWalletJSHandler::ExecuteScript(const std::string script) {

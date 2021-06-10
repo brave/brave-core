@@ -12,6 +12,7 @@ source_set("browser") {
   sources = [
     "brave_wallet_constants.cc",
     "brave_wallet_constants.h",
+    "brave_wallet_provider_delegate.h",
     "brave_wallet_provider_events_observer.h",
     "brave_wallet_provider_impl.cc",
     "brave_wallet_provider_impl.h",
