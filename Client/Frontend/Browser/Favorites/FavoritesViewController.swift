@@ -35,7 +35,7 @@ private class FavoritesHeaderView: UICollectionReusableView {
 class FavoritesViewController: UIViewController {
     
     var action: (Favorite, BookmarksAction) -> Void
-    var recentSearchAction: (RecentSearch?) -> Void
+    var recentSearchAction: (RecentSearch?, Bool) -> Void
     
     private enum Section: Int, CaseIterable {
         case pasteboard = 0
@@ -49,7 +49,7 @@ class FavoritesViewController: UIViewController {
     }
     
     private let layout = UICollectionViewFlowLayout().then {
-        $0.sectionInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        $0.sectionInset = UIEdgeInsets(top: 12, left: 0, bottom: 22, right: 0)
         $0.minimumInteritemSpacing = 0
         $0.minimumLineSpacing = 8
     }
@@ -62,7 +62,7 @@ class FavoritesViewController: UIViewController {
     }
     private var hasPasteboardURL = false
     
-    init(tabType: TabType, action: @escaping (Favorite, BookmarksAction) -> Void, recentSearchAction: @escaping (RecentSearch?) -> Void) {
+    init(tabType: TabType, action: @escaping (Favorite, BookmarksAction) -> Void, recentSearchAction: @escaping (RecentSearch?, Bool) -> Void) {
         self.tabType = tabType
         self.action = action
         self.recentSearchAction = recentSearchAction
@@ -269,7 +269,7 @@ extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewD
             guard let searchItem = recentSearchesFRC.fetchedObjects?[safe: indexPath.item] else {
                 return
             }
-            recentSearchAction(searchItem)
+            recentSearchAction(searchItem, false)
         }
         
     }
@@ -359,6 +359,10 @@ extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewD
                 return cell
             }
             
+            cell.openButtonAction = { [unowned self] in
+                self.onOpenRecentSearch(recentSearch)
+            }
+            
             switch searchType {
             case .text:
                 cell.setTitle(recentSearch.text)
@@ -391,7 +395,6 @@ extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        let indexPath = IndexPath(item: 0, section: section)
         guard let section = availableSections[safe: section] else {
             assertionFailure("Invalid Section")
             return .zero
@@ -679,9 +682,13 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
 
 // Recent Searches
 extension FavoritesViewController {
+    func onOpenRecentSearch(_ recentSearch: RecentSearch) {
+        recentSearchAction(recentSearch, true)
+    }
+    
     @objc
     func onPasteboardAction() {
-        recentSearchAction(nil)
+        recentSearchAction(nil, false)
     }
     
     @objc
@@ -705,14 +712,24 @@ extension FavoritesViewController {
     func onRecentSearchHideOrClearPressed() {
         if Preferences.Search.shouldShowRecentSearches.value {
             // User cleared recent searches
-            RecentSearch.removeAll()
-            fetchRecentSearches()
-            collectionView.reloadData()
+            
+            // brave-ios/issues/3762
+            // No title, no message
+            let alert = UIAlertController(title: "", message: "", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: Strings.recentSearchClearAlertButton, style: .default, handler: { [weak self] _ in
+                guard let self = self else { return }
+                
+                RecentSearch.removeAll()
+                self.fetchRecentSearches()
+                self.collectionView.reloadData()
+            }))
+            
+            alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .destructive, handler: nil))
+            present(alert, animated: true, completion: nil)
         } else {
             // User doesn't want to see the recent searches option again
             Preferences.Search.shouldShowRecentSearchesOptIn.value = false
             collectionView.reloadData()
-            
         }
     }
 }

@@ -2616,4 +2616,5 @@ extension Strings {
     public static let recentSearchScannerTitle = NSLocalizedString("RecentSearchScannerTitle", bundle: .braveShared, value: "Scan QR Code", comment: "Scanning a QRCode for searching")
     public static let recentSearchScannerDescriptionTitle = NSLocalizedString("RecentSearchScannerDescriptionTitle", bundle: .braveShared, value: "Instructions", comment: "Scanning a QRCode for title")
     public static let recentSearchScannerDescriptionBody = NSLocalizedString("RecentSearchScannerDescriptionBody", bundle: .braveShared, value: "To search by QRCode, align the QR in the center of the frame.", comment: "Scanning a QRCode for searching body")
+    public static let recentSearchClearAlertButton = NSLocalizedString("RecentSearchClearAlertButton", bundle: .braveShared, value: "Clear Recent", comment: "The button title that shows when you clear all recent searches")
 }

@@ -90,7 +90,6 @@ class RecentSearchHeaderView: UICollectionReusableView {
             vStackView.addArrangedSubview(hStackView)
             
             [titleLabel, spacer, showButton, hideClearButton].forEach(hStackView.addArrangedSubview(_:))
-
             
             showButton.snp.makeConstraints {
                 $0.width.equalTo(hideClearButton)
@@ -162,7 +161,7 @@ class RecentSearchHeaderView: UICollectionReusableView {
         } else {
             showButton.do {
                 $0.setTitle(Strings.recentSearchShow, for: .normal)
-                $0.setTitleColor(.braveBackground, for: .normal)
+                $0.setTitleColor(.white, for: .normal)
                 $0.titleLabel?.font = .systemFont(ofSize: 12.0, weight: .semibold)
                 $0.layer.cornerCurve = .continuous
                 $0.layer.cornerRadius = DesignUX.buttonHeight / 2.0

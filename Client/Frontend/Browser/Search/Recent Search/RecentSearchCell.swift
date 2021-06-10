@@ -10,6 +10,7 @@ import BraveUI
 
 class RecentSearchCell: UICollectionViewCell, CollectionViewReusable {
     static let identifier = "RecentSearchCell"
+    var openButtonAction: (() -> Void)?
     
     private let stackView = UIStackView().then {
         $0.spacing = 20.0
@@ -21,15 +22,17 @@ class RecentSearchCell: UICollectionViewCell, CollectionViewReusable {
         $0.font = .systemFont(ofSize: 15.0)
     }
     
-    private let openButton = UIImageView().then {
-        $0.image = #imageLiteral(resourceName: "recent-search-arrow")
-        $0.contentMode = .scaleAspectFit
+    private let openButton = UIButton().then {
+        $0.setImage(#imageLiteral(resourceName: "recent-search-arrow"), for: .normal)
+        $0.imageView?.contentMode = .scaleAspectFit
         $0.setContentHuggingPriority(.required, for: .horizontal)
         $0.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        openButton.addTarget(self, action: #selector(onOpenButtonPressed(_:)), for: .touchUpInside)
         
         contentView.addSubview(stackView)
         stackView.addArrangedSubview(titleLabel)
@@ -50,5 +53,10 @@ class RecentSearchCell: UICollectionViewCell, CollectionViewReusable {
     
     func setAttributedTitle(_ title: NSAttributedString?) {
         titleLabel.attributedText = title
+    }
+    
+    @objc
+    private func onOpenButtonPressed(_ button: UIButton) {
+        openButtonAction?()
     }
 }
