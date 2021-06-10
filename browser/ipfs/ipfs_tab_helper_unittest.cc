@@ -93,7 +93,7 @@ TEST_F(IpfsTabHelperUnitTest, URLResolvingTest) {
   helper->SetPageURLForTesting(test_url);
   helper->IPFSLinkResolved(GURL("ipfs://bafy"));
 
-  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), "ipfs://bafy");
+  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), "ipfs://bafy/");
 }
 
 TEST_F(IpfsTabHelperUnitTest, GatewayResolving) {

@@ -82,7 +82,7 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSSchemeLocal) {
   EXPECT_EQ(rc, net::OK);
   EXPECT_EQ(brave_request_info->new_url_spec,
             "http://localhost:48080/ipfs/"
-            "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
+            "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/");
 }
 
 TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSScheme) {
@@ -97,7 +97,7 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSScheme) {
   EXPECT_EQ(rc, net::OK);
   EXPECT_EQ(
       brave_request_info->new_url_spec,
-      "https://dweb.link/ipfs/QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
+      "https://dweb.link/ipfs/QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/");
 }
 
 TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSSchemeLocal) {
@@ -113,7 +113,7 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSSchemeLocal) {
   EXPECT_EQ(rc, net::OK);
   EXPECT_EQ(brave_request_info->new_url_spec,
             "http://localhost:48080/ipns/"
-            "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
+            "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd/");
 }
 
 TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSScheme) {
@@ -128,7 +128,7 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSScheme) {
   EXPECT_EQ(rc, net::OK);
   EXPECT_EQ(
       brave_request_info->new_url_spec,
-      "https://dweb.link/ipns/QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
+      "https://dweb.link/ipns/QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd/");
 }
 
 TEST_F(IPFSRedirectNetworkDelegateHelperTest, HeadersIPFSWorkWithRedirect) {

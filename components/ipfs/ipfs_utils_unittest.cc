@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_ports.h"
 #include "brave/components/ipfs/pref_names.h"
@@ -21,6 +22,32 @@
 #include "net/base/url_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
+
+namespace {
+void ValidateReplacements(const std::string& scheme,
+                          const std::string& domain) {
+  GURL ipns_url(scheme + "://" + domain + "/path");
+  EXPECT_EQ(ipns_url.scheme(), scheme);
+  EXPECT_EQ(ipns_url.host(), domain);
+  EXPECT_EQ(ipns_url.path(), "/path");
+
+  GURL::Replacements replacements1;
+  replacements1.SetQueryStr("query");
+  replacements1.SetRefStr("ref");
+  replacements1.SetPathStr("replaced");
+  EXPECT_EQ(ipns_url.ReplaceComponents(replacements1),
+            scheme + "://" + domain + "/replaced?query#ref");
+
+  GURL::Replacements replacements3;
+  replacements3.SetHostStr("host");
+  EXPECT_EQ(ipns_url.ReplaceComponents(replacements3), scheme + "://host/path");
+
+  GURL::Replacements replacements4;
+  replacements4.SetSchemeStr("http");
+  EXPECT_EQ(ipns_url.ReplaceComponents(replacements4),
+            "http://" + base::ToLowerASCII(domain) + "/path");
+}
+}  // namespace
 
 class IpfsUtilsUnitTest : public testing::Test {
  public:
@@ -269,7 +296,7 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSScheme) {
   GURL new_url;
   ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, public_gateway(), false));
   EXPECT_EQ(new_url, GURL("https://dweb.link/ipfs/"
-                          "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
+                          "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/"));
 }
 
 TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPNSScheme) {
@@ -277,7 +304,7 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPNSScheme) {
   GURL new_url;
   ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, public_gateway(), false));
   EXPECT_EQ(new_url, GURL("https://dweb.link/ipns/"
-                          "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd"));
+                          "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd/"));
 }
 
 TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSSchemeLocal) {
@@ -285,7 +312,7 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSSchemeLocal) {
   GURL new_url;
   ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, local_gateway(), false));
   EXPECT_EQ(new_url, GURL("http://localhost:48080/ipfs/"
-                          "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
+                          "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/"));
 }
 
 TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPNSSchemeLocal) {
@@ -293,7 +320,7 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPNSSchemeLocal) {
   GURL new_url;
   ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, local_gateway(), false));
   EXPECT_EQ(new_url, GURL("http://localhost:48080/ipns/"
-                          "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd"));
+                          "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd/"));
 }
 
 TEST_F(IpfsUtilsUnitTest, RFC3986TranslateIPFSURIIPFSSchemeLocal) {
@@ -301,7 +328,7 @@ TEST_F(IpfsUtilsUnitTest, RFC3986TranslateIPFSURIIPFSSchemeLocal) {
   GURL new_url;
   ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, local_gateway(), false));
   EXPECT_EQ(new_url, GURL("http://localhost:48080/ipfs/"
-                          "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
+                          "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/"));
 }
 
 TEST_F(IpfsUtilsUnitTest, RFC3986TranslateIPFSURIIPFSSchemePublic) {
@@ -309,7 +336,7 @@ TEST_F(IpfsUtilsUnitTest, RFC3986TranslateIPFSURIIPFSSchemePublic) {
   GURL new_url;
   ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, public_gateway(), false));
   EXPECT_EQ(new_url, GURL("https://dweb.link/ipfs/"
-                          "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
+                          "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/"));
 }
 
 TEST_F(IpfsUtilsUnitTest, RFC3986TranslateIPFSURIIPNSSchemeLocal) {
@@ -317,7 +344,7 @@ TEST_F(IpfsUtilsUnitTest, RFC3986TranslateIPFSURIIPNSSchemeLocal) {
   GURL new_url;
   ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, local_gateway(), false));
   EXPECT_EQ(new_url, GURL("http://localhost:48080/ipns/"
-                          "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
+                          "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/"));
 }
 
 TEST_F(IpfsUtilsUnitTest, RFC3986TranslateIPFSURIIPNSSchemePublic) {
@@ -325,7 +352,7 @@ TEST_F(IpfsUtilsUnitTest, RFC3986TranslateIPFSURIIPNSSchemePublic) {
   GURL new_url;
   ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, public_gateway(), false));
   EXPECT_EQ(new_url, GURL("https://dweb.link/ipns/"
-                          "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
+                          "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/"));
 }
 
 TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSSchemeWithPath) {
@@ -624,7 +651,7 @@ TEST_F(IpfsUtilsUnitTest, ContentHashToIpfsTest) {
   ASSERT_TRUE(ipfs_url.is_valid());
   EXPECT_EQ(
       ipfs_url.spec(),
-      "ipfs://bafybeihqoo7bq7uoaybzpfwegks33vw2h5adyl4t7joz3pofkr6h7yhdxq");
+      "ipfs://bafybeihqoo7bq7uoaybzpfwegks33vw2h5adyl4t7joz3pofkr6h7yhdxq/");
 
   contenthash =
       "e50101701220f073be187e8e06039796c432a"
@@ -635,7 +662,7 @@ TEST_F(IpfsUtilsUnitTest, ContentHashToIpfsTest) {
   ASSERT_TRUE(ipfs_url.is_valid());
   EXPECT_EQ(
       ipfs_url.spec(),
-      "ipns://bafybeihqoo7bq7uoaybzpfwegks33vw2h5adyl4t7joz3pofkr6h7yhdxq");
+      "ipns://bafybeihqoo7bq7uoaybzpfwegks33vw2h5adyl4t7joz3pofkr6h7yhdxq/");
   contenthash =
       "0101701220f073be187e8e06039796c432a"
       "5bdd6da3f403c2f93fa5d9dbdc5547c7fe0e3bc";
@@ -656,4 +683,72 @@ TEST_F(IpfsUtilsUnitTest, IsAPIGatewayTest) {
   ASSERT_TRUE(ipfs::IsAPIGateway(GURL("https://localhost:" + port), channel));
   ASSERT_FALSE(ipfs::IsAPIGateway(GURL("https://brave.com"), channel));
   ASSERT_FALSE(ipfs::IsAPIGateway(GURL(), channel));
+}
+
+TEST_F(IpfsUtilsUnitTest, ParseIPFSUri) {
+  GURL url("ipfs://bafy/path");
+  EXPECT_EQ(url.scheme(), "ipfs");
+  EXPECT_EQ(url.host(), "bafy");
+  EXPECT_EQ(url.path(), "/path");
+
+  url = GURL("ipns://bafy/path");
+  EXPECT_EQ(url.scheme(), "ipns");
+  EXPECT_EQ(url.host(), "bafy");
+  EXPECT_EQ(url.path(), "/path");
+
+  url = GURL("ipns://bafy/");
+  EXPECT_EQ(url.scheme(), "ipns");
+  EXPECT_EQ(url.host(), "bafy");
+  EXPECT_EQ(url.path(), "/");
+
+  url = GURL("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/path");
+  EXPECT_EQ(url.scheme(), "ipfs");
+  EXPECT_EQ(url.host(), "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
+  EXPECT_EQ(url.path(), "/path");
+
+  url = GURL("ipns://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/path");
+  EXPECT_EQ(url.scheme(), "ipns");
+  EXPECT_EQ(url.host(), "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
+  EXPECT_EQ(url.path(), "/path");
+
+  url = GURL(
+      "ipns://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq");
+  EXPECT_EQ(url.scheme(), "ipns");
+  EXPECT_EQ(url.host(),
+            "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq");
+  EXPECT_EQ(url.path(), "/");
+
+  url = GURL("ipfs://AmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/path");
+  EXPECT_EQ(url.scheme(), "ipfs");
+  EXPECT_EQ(url.host(), "amfm2r8seh2girac4estjeraxeachrt8zssegawtplymog");
+  EXPECT_EQ(url.path(), "/path");
+
+  url = GURL("ipfs://qmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/path");
+  EXPECT_EQ(url.scheme(), "ipfs");
+  EXPECT_EQ(url.host(), "qmfm2r8seh2girac4estjeraxeachrt8zssegawtplymog");
+  EXPECT_EQ(url.path(), "/path");
+
+  url = GURL("ipfs://QMfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/path");
+  EXPECT_EQ(url.scheme(), "ipfs");
+  EXPECT_EQ(url.host(), "qmfm2r8seh2girac4estjeraxeachrt8zssegawtplymog");
+  EXPECT_EQ(url.path(), "/path");
+
+  url = GURL("ipns://brantly.eth:1111/path");
+  EXPECT_EQ(url.scheme(), "ipns");
+  EXPECT_EQ(url.host(), "brantly.eth");
+  EXPECT_EQ(url.port(), "1111");
+  EXPECT_EQ(url.path(), "/path");
+}
+
+TEST_F(IpfsUtilsUnitTest, IpfsUriReplacement) {
+  ValidateReplacements("ipns", "brantly.eth");
+  ValidateReplacements("ipfs", "brantly.eth");
+  ValidateReplacements("ipns",
+                       "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
+  ValidateReplacements("ipfs",
+                       "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
+  ValidateReplacements("ipns", "bafy");
+  ValidateReplacements("ipfs", "bafy");
+  ValidateReplacements("http", "brave.com");
+  ValidateReplacements("https", "brave.com");
 }

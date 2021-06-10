@@ -89,11 +89,11 @@ class IpfsOnboardingPageBrowserTest : public InProcessBrowserTest {
 
     gateway_url_ = GURL(
         "https://dweb.link/ipfs/"
-        "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
+        "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR/");
 
     local_node_url_ = GURL(
         "http://localhost:48080/ipfs/"
-        "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
+        "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR/");
 
     InProcessBrowserTest::SetUpOnMainThread();
   }
