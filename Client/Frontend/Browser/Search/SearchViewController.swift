@@ -50,8 +50,8 @@ class SearchViewController: SiteTableViewController, LoaderListener {
         case quickBar
         case searchSuggestionsOptIn
         case searchSuggestions
-        case bookmarksAndHistory
         case findInPage
+        case bookmarksAndHistory
     }
 
     // MARK: Properties
@@ -155,8 +155,8 @@ class SearchViewController: SiteTableViewController, LoaderListener {
         if !tabType.isPrivate && searchEngines?.shouldShowSearchSuggestions == true {
             sections.append(.searchSuggestions)
         }
-        sections.append(.bookmarksAndHistory)
         sections.append(.findInPage)
+        sections.append(.bookmarksAndHistory)
         return sections
     }
 
@@ -188,6 +188,7 @@ class SearchViewController: SiteTableViewController, LoaderListener {
             make.edges.equalTo(view)
         }
         
+        tableView.keyboardDismissMode = .interactive
         tableView.separatorStyle = .none
         tableView.addGestureRecognizer(suggestionLongPressGesture)
         tableView.register(SearchSuggestionPromptCell.self, forCellReuseIdentifier: SearchSuggestionPromptCell.identifier)

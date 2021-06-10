@@ -345,8 +345,17 @@ extension BrowserViewController: TopToolbarDelegate {
             let tabType = TabType.of(tabManager.selectedTab)
             let favoritesController = FavoritesViewController(tabType: tabType, action: { [weak self] bookmark, action in
                 self?.handleFavoriteAction(favorite: bookmark, action: action)
-            }, recentSearchAction: { [weak self] recentSearch in
+            }, recentSearchAction: { [weak self] recentSearch, shouldSubmitSearch in
                 guard let self = self else { return }
+                
+                let submitSearch = { [weak self] (text: String) in
+                    if let fixupURL = URIFixup.getURL(text) {
+                        self?.finishEditingAndSubmit(fixupURL, isBookmark: false)
+                        return
+                    }
+                    
+                    self?.submitSearchText(text)
+                }
                 
                 if let recentSearch = recentSearch,
                    let searchType = RecentSearchType(rawValue: recentSearch.searchType) {
@@ -355,25 +364,45 @@ extension BrowserViewController: TopToolbarDelegate {
                         if let text = recentSearch.text {
                             self.topToolbar.setLocation(text, search: false)
                             self.topToolbar(self.topToolbar, didEnterText: text)
+                            
+                            if shouldSubmitSearch {
+                                submitSearch(text)
+                            }
                         }
                     case .qrCode:
                         if let text = recentSearch.text {
                             self.topToolbar.setLocation(text, search: false)
                             self.topToolbar(self.topToolbar, didEnterText: text)
+                            
+                            if shouldSubmitSearch {
+                                submitSearch(text)
+                            }
                         } else if let websiteUrl = recentSearch.websiteUrl {
                             self.topToolbar.setLocation(websiteUrl, search: false)
                             self.topToolbar(self.topToolbar, didEnterText: websiteUrl)
+                            
+                            if shouldSubmitSearch {
+                                submitSearch(websiteUrl)
+                            }
                         }
                     case .website:
                         if let websiteUrl = recentSearch.websiteUrl {
                             self.topToolbar.setLocation(websiteUrl, search: false)
                             self.topToolbar(self.topToolbar, didEnterText: websiteUrl)
+                            
+                            if shouldSubmitSearch {
+                                submitSearch(websiteUrl)
+                            }
                         }
                     }
                 } else if UIPasteboard.general.hasStrings || UIPasteboard.general.hasURLs,
                           let searchQuery = UIPasteboard.general.string ?? UIPasteboard.general.url?.absoluteString {
                     self.topToolbar.setLocation(searchQuery, search: false)
                     self.topToolbar(self.topToolbar, didEnterText: searchQuery)
+                    
+                    if shouldSubmitSearch {
+                        submitSearch(searchQuery)
+                    }
                 }
             })
             self.favoritesController = favoritesController
