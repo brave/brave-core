@@ -30,18 +30,18 @@ class MenuModel;
 // - Remove the context menu from the button since we do not allow uninstall
 class BraveActionViewController : public ExtensionActionViewController {
  public:
-    static std::unique_ptr<BraveActionViewController> Create(
-        const extensions::ExtensionId& extension_id,
-        Browser* browser,
-        ExtensionsContainer* extensions_container);
+  static std::unique_ptr<BraveActionViewController> Create(
+      const extensions::ExtensionId& extension_id,
+      Browser* browser,
+      ExtensionsContainer* extensions_container);
 
-    bool IsEnabled(content::WebContents* web_contents) const override;
-    gfx::Image GetIcon(content::WebContents* web_contents,
-                       const gfx::Size& size) override;
-    ui::MenuModel* GetContextMenu() override;
-    bool ExecuteActionUI(std::string relative_path);
-    ToolbarActionViewController* GetExtensionViewController(
-        const std::string& extension_id);
+  bool IsEnabled(content::WebContents* web_contents) const override;
+  gfx::Image GetIcon(content::WebContents* web_contents,
+                     const gfx::Size& size) override;
+  ui::MenuModel* GetContextMenu() override;
+  bool ExecuteActionUI(std::string relative_path);
+  ToolbarActionViewController* GetExtensionViewController(
+      const std::string& extension_id);
 
  private:
   // New instances should be instantiated with Create().
