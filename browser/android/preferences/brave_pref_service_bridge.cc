@@ -157,8 +157,7 @@ void JNI_BravePrefServiceBridge_SetCosmeticFilteringControlType(JNIEnv* env,
       // aggressive
       brave_shields::SetCosmeticFilteringControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
-          ControlType::BLOCK_THIRD_PARTY, GURL(),
-          g_browser_process->local_state());
+          ControlType::BLOCK, GURL(), g_browser_process->local_state());
       break;
     case 1:
       // standard

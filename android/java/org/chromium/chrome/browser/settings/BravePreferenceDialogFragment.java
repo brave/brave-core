@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.settings;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +20,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceDialogFragmentCompat;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 
@@ -30,6 +32,8 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
     private Preference.OnPreferenceChangeListener onPreferenceChangeListener;
     private int newValue;
 
+    private static String currentPreference;
+
     public void setPreferenceDialogListener(Preference.OnPreferenceChangeListener listener) {
         this.onPreferenceChangeListener = listener;
     }
@@ -38,6 +42,7 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
         BravePreferenceDialogFragment fragment = new BravePreferenceDialogFragment();
         Bundle bundle = new Bundle(1);
         bundle.putString(PreferenceDialogFragmentCompat.ARG_KEY, preference.getKey());
+        currentPreference = preference.getKey();
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -51,6 +56,8 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
     @Override
     public void onDialogClosed(boolean positiveResult) {
         if (onPreferenceChangeListener != null) {
+            SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+            newValue = sharedPreferences.getInt(currentPreference, 1);
             onPreferenceChangeListener.onPreferenceChange(dialogPreference, newValue);
         }
     }
@@ -64,6 +71,10 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
                 @Override
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
                     newValue = checkedId;
+                    SharedPreferences.Editor sharedPreferencesEditor =
+                            ContextUtils.getAppSharedPreferences().edit();
+                    sharedPreferencesEditor.putInt(currentPreference, (int) newValue);
+                    sharedPreferencesEditor.apply();
                 }
             });
         }
