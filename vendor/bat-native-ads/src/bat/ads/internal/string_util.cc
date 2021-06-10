@@ -64,9 +64,4 @@ std::string StripNonAlphaNumericCharacters(const std::string& value) {
   return Strip(value, pattern);
 }
 
-bool IsLatinAlphaNumeric(const std::string& value) {
-  const std::string pattern = base::StringPrintf("^[a-zA-Z0-9]*$");
-  return RE2::FullMatch(value, pattern);
-}
-
 }  // namespace ads
