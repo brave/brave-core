@@ -22,7 +22,7 @@ source_set("unittests") {
     "//brave/browser",
     "//brave/browser/net:net",
     "//brave/browser/tor",
-    "//brave/components/decentralized_dns:decentralized_dns",
+    "//brave/components/decentralized_dns/buildflags",
     "//brave/components/ipfs",
     "//brave/components/tor/buildflags",
     "//chrome/common:channel_info",
@@ -33,6 +33,9 @@ source_set("unittests") {
     "//testing/gtest",
     "//url",
   ]
+  if (decentralized_dns_enabled) {
+    deps += [ "//brave/components/decentralized_dns:decentralized_dns" ]
+  }
 }  # source_set("unittests")
 
 source_set("browsertests") {
