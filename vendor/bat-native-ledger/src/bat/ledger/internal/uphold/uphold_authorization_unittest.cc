@@ -12,10 +12,9 @@
 #include "bat/ledger/internal/ledger_impl_mock.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/uphold/uphold_authorization.h"
-#include "bat/ledger/option_keys.h"
 #include "net/http/http_status_code.h"
 
-// npm run test -- brave_unit_tests --filter=UpholdAuthorizationTest*
+// npm run test -- brave_unit_tests --filter=UpholdAuthorization*
 
 using ::testing::_;
 using ::testing::Invoke;
