@@ -785,6 +785,9 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_BOOKMARK_BAR_ALWAYS_SHOW_MAC" desc="The Mac menu item for having bookmark bar always visible in the view menu.">
           Always Show Bookmarks
         </message>
+        <message name="IDS_HISTORY_INCOGNITO_DISCLAIMER_MAC" desc="The Mac menu item for the Private disclaimer text.">
+          History isn’t saved in Private
+        </message>
         </if> <if expr="is_posix and not is_macosx">
         </if>
 
