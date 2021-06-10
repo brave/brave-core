@@ -36,6 +36,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.VerifyRecoveryPhraseFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnFinishOnboarding;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 
 import java.util.ArrayList;
@@ -88,15 +89,39 @@ public class CryptoFragment extends Fragment {
             cryptoWalletOnboardingViewPager.setOffscreenPageLimit(
                     cryptoWalletOnboardingPagerAdapter.getCount() - 1);
 
-            setNavigationFragments(ONBOARDING_ACTION);
-
             ImageView onboardingBackButton = view.findViewById(R.id.onboarding_back_button);
+            onboardingBackButton.setVisibility(View.GONE);
             onboardingBackButton.setOnClickListener(v -> {
                 if (cryptoWalletOnboardingViewPager != null) {
-                    cryptoWalletOnboardingViewPager.setCurrentItem(
-                            cryptoWalletOnboardingViewPager.getCurrentItem() - 1);
+                    cryptoWalletOnboardingViewPager.setCurrentItem(cryptoWalletOnboardingViewPager.getCurrentItem() - 1);
                 }
             });
+
+            cryptoWalletOnboardingViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    if (position == 0 || position == 2) {
+                        onboardingBackButton.setVisibility(View.GONE);
+                    } else {
+                        onboardingBackButton.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+            // if (BraveWalletNativeWorker.getInstance().isWalletLocked()) {
+            //     setNavigationFragments(UNLOCK_WALLET_ACTION);
+            // } else {
+                setNavigationFragments(ONBOARDING_ACTION);
+            // }
         }
     }
 

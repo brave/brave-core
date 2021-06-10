@@ -24,9 +24,11 @@ class BraveWalletNativeWorker {
   base::android::ScopedJavaLocalRef<jstring> CreateWallet(
       JNIEnv* env,
       const base::android::JavaParamRef<jstring>& password);
+  bool IsWalletLocked(JNIEnv* env);
   void LockWallet(JNIEnv* env);
   bool UnlockWallet(JNIEnv* env,
                     const base::android::JavaParamRef<jstring>& password);
+  void ResetWallet(JNIEnv* env);
 
  private:
   JavaObjectWeakGlobalRef weak_java_brave_wallet_native_worker_;

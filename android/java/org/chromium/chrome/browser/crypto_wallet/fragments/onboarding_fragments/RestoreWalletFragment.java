@@ -56,14 +56,13 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
 
         Button secureCryptoButton = view.findViewById(R.id.btn_restore_wallet);
         secureCryptoButton.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(passwordEdittext.getText())
-                    || passwordEdittext.getText().toString().length() < 7) {
-                passwordEdittext.setError(getResources().getString(R.string.password_error));
-            } else if (TextUtils.isEmpty(retypePasswordEdittext.getText())
-                    || !passwordEdittext.getText().toString().equals(
-                            retypePasswordEdittext.getText().toString())) {
-                retypePasswordEdittext.setError(
-                        getResources().getString(R.string.retype_password_error));
+            String passwordInput = passwordEdittext.getText().toString().trim();
+            String retypePasswordInput = retypePasswordEdittext.getText().toString().trim();
+
+            if (passwordInput.isEmpty() || !Utils.PASSWORD_PATTERN.matcher(passwordInput).matches()) {
+                passwordEdittext.setError(getResources().getString(R.string.password_text));
+            } else if (retypePasswordInput.isEmpty() || !passwordInput.equals(retypePasswordInput)) {
+                retypePasswordEdittext.setError(getResources().getString(R.string.retype_password_error));
             } else {
                 // Restore button
             }

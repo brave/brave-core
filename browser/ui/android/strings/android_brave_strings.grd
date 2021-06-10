@@ -1817,7 +1817,7 @@ until they verify, or until 90 days have passed.
       Add Account
     </message>
     <message name="IDS_RECOVERY_PHRASE_ITEM_TEXT">
-      (<ph name="NUMBER">%1$s</ph>). <ph name="RECOVERY_PHRASE">%2$s</ph>
+      <ph name="NUMBER">%1$s</ph>. <ph name="RECOVERY_PHRASE">%2$s</ph>
     </message>
     <message name="IDS_ENABLE_FINGERPRINT_UNLOCK">
       Enable fingerprint unlock?
@@ -1839,6 +1839,7 @@ until they verify, or until 90 days have passed.
     <message name="IDS_UNLOCK">Unlock</message>
     <message name="IDS_PASSWORD">Password</message>
     <message name="IDS_UNLOCK_WALLET_TITLE">Enter your password to unlock</message>
+    <message name="IDS_PASSWORD_TEXT">Password must be at least 7 characters containg at least one number and a special character</message>
     </messages>
   </release>
 </grit>

@@ -89,6 +89,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/wallet_radio_button_selector"
                         android:gravity="center"
+                        android:padding="8dp"
                         android:textColor="@color/crypto_wallet_radiobutton_color_selector"
                         android:checked="true"
                         android:button="@null"

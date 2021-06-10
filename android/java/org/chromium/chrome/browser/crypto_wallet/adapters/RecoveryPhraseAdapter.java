@@ -43,7 +43,7 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
             holder.recoveryPhraseText.setText(
                     String.format(holder.recoveryPhraseText.getContext().getResources().getString(
                                           R.string.recovery_phrase_item_text),
-                            (recoveryPhrasePosition + 1), recoveryPhrase));
+                            (position + 1), recoveryPhrase));
             if (onRecoveryPhraseSelected != null) {
                 holder.itemView.setOnClickListener(v -> {
                     selectedRecoveryPhraseMap.put(position, recoveryPhrase);

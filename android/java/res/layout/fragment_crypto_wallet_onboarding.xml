@@ -1,24 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/crypto_wallet_onboarding_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:scrollbars="vertical"
+    android:fadeScrollbars="false"
+    android:fillViewport="true">
 
-    <org.chromium.chrome.browser.custom_layout.NonSwipeableViewPager
-        android:id="@+id/crypto_wallet_onboarding_viewpager"
+    <FrameLayout
+        android:id="@+id/crypto_wallet_onboarding_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <ImageView
-        android:id="@+id/onboarding_back_button"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_baseline_arrow_back_24"
-        android:padding="16dp"
-        android:layout_gravity="start|top"
-        app:tint="@android:color/black"
-        android:contentDescription="@null"/>
+        android:orientation="vertical">
 
-</FrameLayout>
+        <org.chromium.chrome.browser.custom_layout.NonSwipeableViewPager
+            android:id="@+id/crypto_wallet_onboarding_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <ImageView
+            android:id="@+id/onboarding_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_baseline_arrow_back_24"
+            android:padding="16dp"
+            android:layout_gravity="start|top"
+            app:tint="@android:color/black"
+            android:contentDescription="@null"/>
+
+    </FrameLayout>
+
+</androidx.core.widget.NestedScrollView>

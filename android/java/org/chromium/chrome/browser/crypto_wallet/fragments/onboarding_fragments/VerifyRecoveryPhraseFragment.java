@@ -24,12 +24,17 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.AddAccountOnboardingD
 import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
     private RecoveryPhraseAdapter recoveryPhraseAdapter;
     private RecyclerView phraseRecyclerView;
     private RecyclerView selectedPhraseRecyclerView;
     private RecoveryPhraseAdapter selectedRecoveryPhraseAdapter;
     private Button recoveryPhraseButton;
+    private List<String> recoveryPhrases;
 
     public interface OnRecoveryPhraseSelected {
         void onSelectedRecoveryPhrase();
@@ -38,6 +43,7 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        recoveryPhrases = new ArrayList<String>(Arrays.asList(Utils.recoveryPhrase.split(" ")));
     }
 
     @Override
@@ -71,7 +77,7 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
         phraseRecyclerView.setLayoutManager(layoutManager);
 
         recoveryPhraseAdapter = new RecoveryPhraseAdapter();
-        recoveryPhraseAdapter.setRecoveryPhraseMap(Utils.getRecoveryPhraseMap());
+        recoveryPhraseAdapter.setRecoveryPhraseMap(Utils.getRecoveryPhraseMap(recoveryPhrases));
         recoveryPhraseAdapter.setOnRecoveryPhraseSelectedListener(onRecoveryPhraseSelected);
         phraseRecyclerView.setAdapter(recoveryPhraseAdapter);
     }
@@ -117,7 +123,7 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
 
             if (recoveryPhraseAdapter != null
                     && recoveryPhraseAdapter.getSelectedRecoveryPhraseMap().size()
-                            == Utils.recoveryPhrases.size()) {
+                            == recoveryPhrases.size()) {
                 recoveryPhraseButton.setAlpha(1f);
                 recoveryPhraseButton.setEnabled(true);
             }

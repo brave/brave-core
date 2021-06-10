@@ -29,6 +29,8 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.RewardsFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.SwapBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnFinishOnboarding;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
+import org.chromium.base.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,6 +107,18 @@ public class CryptoWalletActivity extends AppCompatActivity {
             return false;
         });
         setNavigationFragments();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        BraveWalletNativeWorker.getInstance().lockWallet();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("NTP", "OnResume");
     }
 
     private void setNavigationFragments() {

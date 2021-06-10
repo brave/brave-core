@@ -19,6 +19,8 @@ import androidx.annotation.Nullable;
 
 import org.chromium.chrome.R;
 
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
+
 public class UnlockWalletFragment extends CryptoOnboardingFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,8 +42,14 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
         unlockButton.setOnClickListener(v -> {
             if (TextUtils.isEmpty(unlockWalletPassword.getText())) {
                 unlockWalletPassword.setError(getString(R.string.password_error));
+                return;
             }
-            onNextPage.gotoNextPage(true);
+
+            if (BraveWalletNativeWorker.getInstance().unlockWallet(unlockWalletPassword.getText().toString())) {
+                onNextPage.gotoNextPage(true);
+            } else {
+                unlockWalletPassword.setError(getString(R.string.password_error));
+            }
         });
 
         TextView unlockWalletRestoreButton = view.findViewById(R.id.btn_unlock_wallet_restore);

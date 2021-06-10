@@ -24,9 +24,14 @@ import androidx.core.content.ContextCompat;
 
 import org.chromium.chrome.R;
 
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
+
 import java.util.concurrent.Executor;
 
 public class SecurePasswordFragment extends CryptoOnboardingFragment {
+    private EditText passwordEdittext;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,30 +40,29 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_secure_password, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        EditText passwordEdittext = view.findViewById(R.id.secure_crypto_password);
+        passwordEdittext = view.findViewById(R.id.secure_crypto_password);
         EditText retypePasswordEdittext = view.findViewById(R.id.secure_crypto_retype_password);
 
         Button secureCryptoButton = view.findViewById(R.id.btn_secure_crypto_continue);
         secureCryptoButton.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(passwordEdittext.getText())
-                    || passwordEdittext.getText().toString().length() < 7) {
-                passwordEdittext.setError(getResources().getString(R.string.password_error));
-            } else if (TextUtils.isEmpty(retypePasswordEdittext.getText())
-                    || !passwordEdittext.getText().toString().equals(
-                            retypePasswordEdittext.getText().toString())) {
-                retypePasswordEdittext.setError(
-                        getResources().getString(R.string.retype_password_error));
+            String passwordInput = passwordEdittext.getText().toString().trim();
+            String retypePasswordInput = retypePasswordEdittext.getText().toString().trim();
+
+            if (passwordInput.isEmpty() || !Utils.PASSWORD_PATTERN.matcher(passwordInput).matches()) {
+                passwordEdittext.setError(getResources().getString(R.string.password_text));
+            } else if (retypePasswordInput.isEmpty() || !passwordInput.equals(retypePasswordInput)) {
+                retypePasswordEdittext.setError(getResources().getString(R.string.retype_password_error));
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     showFingerprintDialog(authenticationCallback);
                 } else {
+                    Utils.recoveryPhrase = BraveWalletNativeWorker.getInstance().createWallet(passwordInput).trim();
                     onNextPage.gotoNextPage(false);
                 }
             }
@@ -89,6 +93,7 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
         public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
             super.onAuthenticationSucceeded(result);
             // Go to next Page
+            Utils.recoveryPhrase = BraveWalletNativeWorker.getInstance().createWallet(passwordEdittext.getText().toString().trim()).trim();
             onNextPage.gotoNextPage(false);
         }
 

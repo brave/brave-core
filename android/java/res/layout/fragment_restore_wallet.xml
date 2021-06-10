@@ -1,141 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="24dp"
-        android:text="@string/restore_crypto_account"
-        android:textColor="@color/wallet_text_color"
-        android:textSize="18sp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginBottom="24dp"
-        android:text="@string/restore_crypto_text"
-        android:textColor="#686978"
-        android:textSize="14sp"/>
-
-    <EditText
-        android:id="@+id/recovery_phrase_text"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginEnd="48dp"
-        android:gravity="top"
-        android:layout_gravity="center_vertical"
-        android:background="@drawable/rounded_wallet_edittext"
-        android:hint="@string/enter_recovery_phrase"
-        android:importantForAutofill="no"
-        android:inputType="textPassword|textMultiLine"
-        android:paddingEnd="18dp"
-        android:paddingStart="18dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:textCursorDrawable="@null"
-        android:textSize="14sp"
-        android:textColor="@color/wallet_text_color"
-        android:textColorHint="#868E96" />
+    android:scrollbars="vertical"
+    android:fadeScrollbars="false"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginEnd="48dp"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal">
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
-        <CheckBox
-            android:id="@+id/restore_wallet_checkbox"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginEnd="16dp"
-            android:text="@string/show_recovery_phrase"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="24dp"
+            android:text="@string/restore_crypto_account"
+            android:textColor="@color/wallet_text_color"
+            android:textSize="18sp"/>
 
-        <ImageView
-            android:id="@+id/restore_wallet_copy_image"
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="24dp"
+            android:text="@string/restore_crypto_text"
+            android:textColor="#686978"
+            android:textSize="14sp"/>
+
+        <EditText
+            android:id="@+id/recovery_phrase_text"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            android:gravity="top"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/rounded_wallet_edittext"
+            android:hint="@string/enter_recovery_phrase"
+            android:importantForAutofill="no"
+            android:inputType="textPassword|textMultiLine"
+            android:paddingEnd="18dp"
+            android:paddingStart="18dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textCursorDrawable="@null"
+            android:textSize="14sp"
+            android:textColor="@color/wallet_text_color"
+            android:textColorHint="#868E96" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/restore_wallet_checkbox"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginEnd="16dp"
+                android:text="@string/show_recovery_phrase"/>
+
+            <ImageView
+                android:id="@+id/restore_wallet_copy_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                app:srcCompat="@drawable/ic_copy"
+                android:contentDescription="@null"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_gravity="center_horizontal"
+                android:clickable="true"
+                android:focusable="true"/>
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/restore_wallet_password"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_wallet_edittext"
+            android:hint="@string/password"
+            android:importantForAutofill="no"
+            android:inputType="textPassword"
+            android:paddingEnd="18dp"
+            android:paddingStart="18dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textCursorDrawable="@null"
+            android:textSize="14sp"
+            android:textColor="@color/wallet_text_color"
+            android:textColorHint="#868E96" />
+
+        <EditText
+            android:id="@+id/restore_wallet_retype_password"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/rounded_wallet_edittext"
+            android:hint="@string/retype_password"
+            android:importantForAutofill="no"
+            android:inputType="textPassword"
+            android:paddingEnd="18dp"
+            android:paddingStart="18dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textCursorDrawable="@null"
+            android:textSize="14sp"
+            android:textColor="@color/wallet_text_color"
+            android:textColorHint="#868E96" />
+
+
+        <Button
+            android:id="@+id/btn_restore_wallet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            app:srcCompat="@drawable/ic_copy"
-            android:contentDescription="@null"
-            android:background="?android:attr/selectableItemBackground"
             android:layout_gravity="center_horizontal"
-            android:clickable="true"
-            android:focusable="true"/>
+            android:gravity="center"
+            android:background="@drawable/crypto_wallet_blue_button"
+            android:text="@string/restore"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@android:color/white"
+            style="?android:attr/borderlessButtonStyle"/>
 
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/restore_wallet_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/rounded_wallet_edittext"
-        android:hint="@string/password"
-        android:importantForAutofill="no"
-        android:inputType="textPassword"
-        android:paddingEnd="18dp"
-        android:paddingStart="18dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:textCursorDrawable="@null"
-        android:textSize="14sp"
-        android:textColor="@color/wallet_text_color"
-        android:textColorHint="#868E96" />
-
-    <EditText
-        android:id="@+id/restore_wallet_retype_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/rounded_wallet_edittext"
-        android:hint="@string/retype_password"
-        android:importantForAutofill="no"
-        android:inputType="textPassword"
-        android:paddingEnd="18dp"
-        android:paddingStart="18dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:textCursorDrawable="@null"
-        android:textSize="14sp"
-        android:textColor="@color/wallet_text_color"
-        android:textColorHint="#868E96" />
-
-
-    <Button
-        android:id="@+id/btn_restore_wallet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:background="@drawable/crypto_wallet_blue_button"
-        android:text="@string/restore"
-        android:textAllCaps="false"
-        android:textSize="16sp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:textColor="@android:color/white"
-        style="?android:attr/borderlessButtonStyle"/>
-
-</LinearLayout>
+</androidx.core.widget.NestedScrollView>

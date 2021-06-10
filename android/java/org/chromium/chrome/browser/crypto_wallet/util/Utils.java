@@ -16,17 +16,29 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class Utils {
-    public static final List<String> recoveryPhrases =
-            new ArrayList<>(Arrays.asList("Tomato", "Green", "Velvet", "Span", "Celery", "Atoms",
-                    "Parent", "Stop", "Bowl", "Wishful", "Stone", "Exercise"));
+    public static final Pattern PASSWORD_PATTERN =
+            Pattern.compile("^" +
+                    "(?=.*[0-9])" +         //at least 1 digit
+                    "(?=.*[a-zA-Z])" +      //any letter
+                    "(?=.*[$&+,:;=?@#|'<>.^*()%!-])" +    //at least 1 special character
+                    "(?=\\S+$)" +           //no white spaces
+                    ".{7,}" +               //at least 7 characters
+                    "$");
+
+    // public static final List<String> recoveryPhrases =
+    //         new ArrayList<>(Arrays.asList("Tomato", "Green", "Velvet", "Span", "Celery", "Atoms",
+    //                 "Parent", "Stop", "Bowl", "Wishful", "Stone", "Exercise"));
+
+    public static String recoveryPhrase = "";
 
     public static int ONBOARDING_ACTION = 1;
     public static int UNLOCK_WALLET_ACTION = 2;
     public static int RESTORE_WALLET_ACTION = 3;
 
-    public static Map<Integer, String> getRecoveryPhraseMap() {
+    public static Map<Integer, String> getRecoveryPhraseMap(List<String> recoveryPhrases) {
         Map<Integer, String> recoveryPhraseMap = new HashMap<>();
         for (int i = 0; i < recoveryPhrases.size(); i++) {
             recoveryPhraseMap.put(i, recoveryPhrases.get(i));

@@ -25,11 +25,17 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
+
+    private List<String> recoveryPhrases;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        recoveryPhrases = new ArrayList<String>(Arrays.asList(Utils.recoveryPhrase.split(" ")));
     }
 
     @Override
@@ -74,21 +80,13 @@ public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
         recyclerView.setLayoutManager(layoutManager);
 
         RecoveryPhraseAdapter recoveryPhraseAdapter = new RecoveryPhraseAdapter();
-        recoveryPhraseAdapter.setRecoveryPhraseMap(getRecoveryPhraseMap());
+        recoveryPhraseAdapter.setRecoveryPhraseMap(Utils.getRecoveryPhraseMap(recoveryPhrases));
         recyclerView.setAdapter(recoveryPhraseAdapter);
-    }
-
-    private Map<Integer, String> getRecoveryPhraseMap() {
-        Map<Integer, String> recoveryPhraseMap = new HashMap<>();
-        for (int i = 0; i < Utils.recoveryPhrases.size(); i++) {
-            recoveryPhraseMap.put(i, Utils.recoveryPhrases.get(i));
-        }
-        return recoveryPhraseMap;
     }
 
     private String getRecoveryPhraseToCopy() {
         String recoveryPhrasesText = "";
-        for (String phrase : Utils.recoveryPhrases) {
+        for (String phrase : recoveryPhrases) {
             recoveryPhrasesText = recoveryPhrasesText.concat(phrase).concat(" ");
         }
         return recoveryPhrasesText.trim();

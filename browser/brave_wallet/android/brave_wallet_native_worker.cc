@@ -58,6 +58,11 @@ BraveWalletNativeWorker::CreateWallet(
       env, keyring_controller->GetMnemonicForDefaultKeyring());
 }
 
+bool BraveWalletNativeWorker::IsWalletLocked(JNIEnv* env) {
+  auto* keyring_controller = GetBraveWalletService()->keyring_controller();
+  return keyring_controller->IsLocked();
+}
+
 void BraveWalletNativeWorker::LockWallet(JNIEnv* env) {
   auto* keyring_controller = GetBraveWalletService()->keyring_controller();
   keyring_controller->Lock();
@@ -72,6 +77,18 @@ bool BraveWalletNativeWorker::UnlockWallet(
       base::android::ConvertJavaStringToUTF8(env, password));
   ;
 }
+
+void BraveWalletNativeWorker::ResetWallet(JNIEnv* env) {
+  auto* keyring_controller = GetBraveWalletService()->keyring_controller();
+  keyring_controller->Reset();
+}
+
+// void BraveWalletNativeWorker::GetRecoveryWords(GetRecoveryWordsCallback callback) {
+//   auto* keyring_controller =
+//       GetBraveWalletService()->keyring_controller();
+//   keyring_controller->GetMnemonicForDefaultKeyring();
+//   std::move(callback).Run(keyring_controller->GetMnemonicForDefaultKeyring());
+// }
 
 static void JNI_BraveWalletNativeWorker_Init(
     JNIEnv* env,

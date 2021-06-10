@@ -1,73 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:scrollbars="vertical"
+    android:fadeScrollbars="false"
+    android:fillViewport="true">
 
-    <ImageView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@null"
-        app:srcCompat="@drawable/ic_graphic_brave_wallet_welcome"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginBottom="32dp"/>
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/defi_secure_storage"
-        android:textColor="@color/wallet_text_color"
-        android:textSize="18sp"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            app:srcCompat="@drawable/ic_graphic_brave_wallet_welcome"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="32dp"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginBottom="120dp"
-        android:text="@string/defi_secure_storage_text"
-        android:textColor="#686978"
-        android:textSize="16sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/defi_secure_storage"
+            android:textColor="@color/wallet_text_color"
+            android:textSize="18sp"/>
 
-    <Button
-        android:id="@+id/btn_setup_crypto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:background="@drawable/crypto_wallet_blue_button"
-        android:text="@string/setup_crypto"
-        android:textAllCaps="false"
-        android:textSize="16sp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:textColor="@android:color/white"
-        style="?android:attr/borderlessButtonStyle"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="120dp"
+            android:text="@string/defi_secure_storage_text"
+            android:textColor="#686978"
+            android:textSize="16sp"/>
 
-    <TextView
-        android:id="@+id/btn_restore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:layout_gravity="center_horizontal"
-        android:clickable="true"
-        android:focusable="true"
-        android:textAllCaps="false"
-        android:layout_marginBottom="16dp"
-        android:text="@string/restore"
-        android:textSize="16sp"
-        android:textColor="@color/wallet_text_color"/>
+        <Button
+            android:id="@+id/btn_setup_crypto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:background="@drawable/crypto_wallet_blue_button"
+            android:text="@string/setup_crypto"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@android:color/white"
+            style="?android:attr/borderlessButtonStyle"/>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/btn_restore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_gravity="center_horizontal"
+            android:clickable="true"
+            android:focusable="true"
+            android:textAllCaps="false"
+            android:layout_marginBottom="16dp"
+            android:text="@string/restore"
+            android:textSize="16sp"
+            android:textColor="@color/wallet_text_color"/>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
