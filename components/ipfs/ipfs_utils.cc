@@ -5,6 +5,7 @@
 
 #include "brave/components/ipfs/ipfs_utils.h"
 
+#include <string>
 #include <vector>
 
 #include "base/feature_list.h"
@@ -18,7 +19,6 @@
 #include "brave/components/ipfs/pref_names.h"
 #include "components/base32/base32.h"
 #include "components/prefs/pref_service.h"
-#include "extensions/common/url_pattern.h"
 #include "net/base/url_util.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
@@ -119,12 +119,9 @@ bool IsIpfsDisabledByPolicy(PrefService* prefs) {
 }
 
 bool HasIPFSPath(const GURL& gurl) {
-  static std::vector<URLPattern> url_patterns(
-      {URLPattern(URLPattern::SCHEME_ALL, "*://*/ipfs/*"),
-       URLPattern(URLPattern::SCHEME_ALL, "*://*/ipns/*")});
-  return std::any_of(
-      url_patterns.begin(), url_patterns.end(),
-      [&gurl](URLPattern pattern) { return pattern.MatchesURL(gurl); });
+  const auto& path = gurl.path();
+  return gurl.is_valid() && ((path.find("/ipfs/") != std::string::npos) ||
+                             (path.find("/ipns/") != std::string::npos));
 }
 
 bool IsDefaultGatewayURL(const GURL& url, PrefService* prefs) {

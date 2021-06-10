@@ -182,6 +182,7 @@ std::string IpfsService::GetStorageSize() {
 }
 
 void IpfsService::LaunchIfNotRunning(const base::FilePath& executable_path) {
+#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
   if (ipfs_service_.is_bound())
     return;
 
@@ -204,6 +205,7 @@ void IpfsService::LaunchIfNotRunning(const base::FilePath& executable_path) {
   ipfs_service_->Launch(
       std::move(config),
       base::BindOnce(&IpfsService::OnIpfsLaunched, base::Unretained(this)));
+#endif
 }
 
 void IpfsService::RestartDaemon() {
