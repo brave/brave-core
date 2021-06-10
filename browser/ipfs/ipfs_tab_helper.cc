@@ -222,9 +222,14 @@ void IPFSTabHelper::UpdateDnsLinkButtonState() {
     }
     return;
   }
-
-  GURL current = web_contents()->GetURL();
-  if (ipfs_resolved_url_.is_valid() && resolver_->host() != current.host()) {
+  if (!ipfs_resolved_url_.is_valid())
+    return;
+  GURL current = GetCurrentPageURL();
+  if (resolver_->host() != current.host()) {
+    ipfs_resolved_url_ = GURL();
+    UpdateLocationBar();
+  }
+  if (!CanResolveURL(current)) {
     ipfs_resolved_url_ = GURL();
     UpdateLocationBar();
   }
@@ -235,21 +240,24 @@ bool IPFSTabHelper::CanResolveURL(const GURL& url) const {
          !IsAPIGateway(url.GetOrigin(), chrome::GetChannel());
 }
 
-void IPFSTabHelper::MaybeShowDNSLinkButton(content::NavigationHandle* handle) {
+void IPFSTabHelper::MaybeShowDNSLinkButton(
+    const net::HttpResponseHeaders* headers) {
   UpdateDnsLinkButtonState();
-  if (!IsDNSLinkCheckEnabled() || !handle->GetResponseHeaders())
+  if (!IsDNSLinkCheckEnabled() || !headers)
     return;
-  if (ipfs_resolved_url_.is_valid() && !CanResolveURL(web_contents()->GetURL()))
+  if (ipfs_resolved_url_.is_valid())
     return;
 
-  int response_code = handle->GetResponseHeaders()->response_code();
+  if (!CanResolveURL(GetCurrentPageURL()))
+    return;
+
+  int response_code = headers->response_code();
   if (response_code >= net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR &&
       response_code <= net::HttpStatusCode::HTTP_VERSION_NOT_SUPPORTED) {
     ResolveIPFSLink();
-  } else if (handle->GetResponseHeaders()->HasHeader(kIfpsPathHeader)) {
+  } else if (headers->HasHeader(kIfpsPathHeader)) {
     std::string ipfs_path_value;
-    if (!handle->GetResponseHeaders()->GetNormalizedHeader(kIfpsPathHeader,
-                                                           &ipfs_path_value))
+    if (!headers->GetNormalizedHeader(kIfpsPathHeader, &ipfs_path_value))
       return;
     GURL resolved_url = ParseURLFromHeader(ipfs_path_value);
     if (resolved_url.is_valid())
@@ -281,7 +289,7 @@ void IPFSTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
       handle->GetResponseHeaders()->HasHeader(kIfpsPathHeader)) {
     MaybeSetupIpfsProtocolHandlers(handle->GetURL());
   }
-  MaybeShowDNSLinkButton(handle);
+  MaybeShowDNSLinkButton(handle->GetResponseHeaders());
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(IPFSTabHelper)

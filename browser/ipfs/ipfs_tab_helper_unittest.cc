@@ -6,6 +6,7 @@
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 
 #include "brave/components/ipfs/ipfs_utils.h"
+#include "brave/components/ipfs/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -15,6 +16,7 @@
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_browser_context.h"
 #include "content/public/test/web_contents_tester.h"
+#include "net/http/http_response_headers.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ipfs {
@@ -28,22 +30,33 @@ class IpfsTabHelperUnitTest : public testing::Test {
   void SetUp() override {
     ASSERT_TRUE(profile_manager_.SetUp());
     profile_ = profile_manager_.CreateTestingProfile("TestProfile");
+    web_contents_ =
+        content::WebContentsTester::CreateTestWebContents(profile(), nullptr);
+    ASSERT_TRUE(web_contents_.get());
+    ASSERT_TRUE(
+        ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents_.get()));
+    profile_->GetPrefs()->SetInteger(
+        kIPFSResolveMethod,
+        static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
   }
+
   TestingProfile* profile() { return profile_; }
+
+  ipfs::IPFSTabHelper* ipfs_tab_helper() {
+    return ipfs::IPFSTabHelper::FromWebContents(web_contents_.get());
+  }
+
+  content::WebContents* web_contents() { return web_contents_.get(); }
 
  private:
   content::BrowserTaskEnvironment task_environment_;
   TestingProfileManager profile_manager_;
   TestingProfile* profile_;
+  std::unique_ptr<content::WebContents> web_contents_;
 };
 
 TEST_F(IpfsTabHelperUnitTest, CanResolveURLTest) {
-  std::unique_ptr<content::WebContents> web_contents(
-      content::WebContentsTester::CreateTestWebContents(profile(), nullptr));
-  ASSERT_TRUE(
-      ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents.get()));
-  ipfs::IPFSTabHelper* helper =
-      ipfs::IPFSTabHelper::FromWebContents(web_contents.get());
+  auto* helper = ipfs_tab_helper();
   ASSERT_TRUE(helper);
   ASSERT_FALSE(helper->CanResolveURL(GURL("ipfs://balblabal")));
   ASSERT_FALSE(helper->CanResolveURL(GURL("file://aa")));
@@ -56,12 +69,7 @@ TEST_F(IpfsTabHelperUnitTest, CanResolveURLTest) {
 }
 
 TEST_F(IpfsTabHelperUnitTest, URLResolvingTest) {
-  std::unique_ptr<content::WebContents> web_contents(
-      content::WebContentsTester::CreateTestWebContents(profile(), nullptr));
-  ASSERT_TRUE(
-      ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents.get()));
-  ipfs::IPFSTabHelper* helper =
-      ipfs::IPFSTabHelper::FromWebContents(web_contents.get());
+  auto* helper = ipfs_tab_helper();
   ASSERT_TRUE(helper);
 
   GURL test_url("ipns://brantly.eth/page?query#ref");
@@ -80,6 +88,40 @@ TEST_F(IpfsTabHelperUnitTest, URLResolvingTest) {
 
   EXPECT_EQ(helper->GetIPFSResolvedURL().spec(),
             "ipfs://bafy/wiki/empty.html?query#ref");
+}
+
+TEST_F(IpfsTabHelperUnitTest, GatewayResolving) {
+  auto* helper = ipfs_tab_helper();
+  ASSERT_TRUE(helper);
+
+  GURL api_server = GetAPIServer(chrome::GetChannel());
+  helper->SetPageURLForTesting(api_server);
+  helper->IPFSLinkResolved(GURL());
+  ASSERT_FALSE(helper->GetIPFSResolvedURL().is_valid());
+
+  scoped_refptr<net::HttpResponseHeaders> response_headers(
+      base::MakeRefCounted<net::HttpResponseHeaders>("HTTP/1.1 " +
+                                                     std::to_string(200)));
+
+  response_headers->AddHeader("x-ipfs-path", "/ipfs/bafy");
+  helper->MaybeShowDNSLinkButton(response_headers.get());
+  ASSERT_FALSE(helper->ipfs_resolved_url_.is_valid());
+
+  GURL test_url("ipns://brantly.eth/");
+  helper->SetPageURLForTesting(api_server);
+  helper->IPFSLinkResolved(test_url);
+  helper->MaybeShowDNSLinkButton(response_headers.get());
+  ASSERT_FALSE(helper->ipfs_resolved_url_.is_valid());
+
+  helper->SetPageURLForTesting(api_server);
+  helper->IPFSLinkResolved(test_url);
+  helper->UpdateDnsLinkButtonState();
+  ASSERT_FALSE(helper->ipfs_resolved_url_.is_valid());
+
+  helper->SetPageURLForTesting(api_server);
+  helper->IPFSLinkResolved(GURL());
+  helper->MaybeShowDNSLinkButton(response_headers.get());
+  ASSERT_FALSE(helper->ipfs_resolved_url_.is_valid());
 }
 
 }  // namespace ipfs
