@@ -17,7 +17,7 @@ namespace resource {
 
 namespace {
 const char kResourceId[] = "nnqccijfhvzwyrxpxwjrpmynaiazctqb";
-const char kVersionId = 1;
+const int kVersionId = 1;
 }  // namespace
 
 Conversions::Conversions() = default;
