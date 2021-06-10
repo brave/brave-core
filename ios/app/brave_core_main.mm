@@ -25,7 +25,7 @@
 #include "components/keyed_service/core/service_access_type.h"
 
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
-#import "brave/ios/browser/api/sync/prefs/brave_sync_profile_service+private.h"
+#import "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
 
 @interface BraveCoreMain () {
   std::unique_ptr<BraveWebClient> _webClient;
@@ -35,7 +35,7 @@
 }
 
 @property(nonatomic, readwrite) BraveHistoryAPI* historyAPI;
-@property(nonatomic, readwrite) BraveSyncProfileService* syncProfileService;
+@property(nonatomic, readwrite) BraveSyncProfileServiceIOS* syncProfileService;
 
 @end
 
@@ -132,10 +132,10 @@
   return _historyAPI;
 }
 
-- (BraveSyncProfileService*)syncProfileService {
+- (BraveSyncProfileServiceIOS*)syncProfileService {
   if (!_syncProfileService) {
     syncer::SyncService* sync_service_ = ProfileSyncServiceFactory::GetForBrowserState(_mainBrowserState);
-    _syncProfileService = [[BraveSyncProfileService alloc]
+    _syncProfileService = [[BraveSyncProfileServiceIOS alloc]
         initWithProfileSyncService: sync_service_];
   }
   return _syncProfileService;

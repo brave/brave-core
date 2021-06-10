@@ -26,7 +26,7 @@ typedef NS_OPTIONS(NSUInteger, BraveSyncUserSelectableTypes) {
 };
 
 OBJC_EXPORT
-@interface BraveSyncProfileService : NSObject
+@interface BraveSyncProfileServiceIOS : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
 

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#import "brave/ios/browser/api/sync/prefs/brave_sync_profile_service.h"
+#import "brave/ios/browser/api/sync/driver/brave_sync_profile_service.h"
 
 #include <unordered_map>
 
@@ -69,14 +69,14 @@ BraveSyncUserSelectableTypes options_from_user_types(
 }  // namespace ios
 }  // namespace brave
 
-@interface BraveSyncProfileService () {
+@interface BraveSyncProfileServiceIOS () {
   syncer::SyncService* sync_service_;
   std::unordered_map<syncer::UserSelectableType, BraveSyncUserSelectableTypes>
       type_mapping;
 }
 @end
 
-@implementation BraveSyncProfileService
+@implementation BraveSyncProfileServiceIOS
 
 - (instancetype)initWithProfileSyncService:(syncer::SyncService*)syncService {
   if ((self = [super init])) {
@@ -85,15 +85,6 @@ BraveSyncUserSelectableTypes options_from_user_types(
   }
   return self;
 }
-
-// - (instancetype)initWithBrowserState:(ChromeBrowserState*)state {
-//   if ((self = [super init])) {
-//     DCHECK_CURRENTLY_ON(web::WebThread::UI);
-//     sync_service_ = ProfileSyncServiceFactory::GetForBrowserState(state);
-//     DCHECK(sync_service_);
-//   }
-//   return self;
-// }
 
 - (bool)isSyncFeatureActive {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);

@@ -22,7 +22,7 @@ source_set("app") {
     "//brave/components/brave_sync:constants",
     "//brave/ios/browser",
     "//brave/ios/browser/api/history",
-    "//brave/ios/browser/api/sync/prefs",
+    "//brave/ios/browser/api/sync/driver",
     "//components/browser_sync",
     "//components/sync/base",
     "//components/sync/driver",

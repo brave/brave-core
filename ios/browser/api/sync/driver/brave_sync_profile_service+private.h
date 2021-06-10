@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "brave/ios/browser/api/sync/prefs/brave_sync_profile_service.h"
+#import "brave/ios/browser/api/sync/driver/brave_sync_profile_service.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,7 +16,7 @@ namespace syncer {
   class SyncService;
 }
 
-@interface BraveSyncProfileService (Private)  // NOLINT
+@interface BraveSyncProfileServiceIOS (Private)  // NOLINT
 - (instancetype)initWithProfileSyncService:(syncer::SyncService*)syncService;
 @end
 

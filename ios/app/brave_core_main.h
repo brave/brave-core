@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class BraveHistoryAPI;
-@class BraveSyncProfileService;
+@class BraveSyncProfileServiceIOS;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,7 +19,7 @@ OBJC_EXPORT
 @property(nullable, nonatomic, readonly) BraveHistoryAPI* historyAPI;
 
 @property(nullable, nonatomic, readonly)
-    BraveSyncProfileService* syncProfileService;
+    BraveSyncProfileServiceIOS* syncProfileService;
 
 - (instancetype)init;
 

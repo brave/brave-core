@@ -17,7 +17,7 @@ source_set("sync") {
   ]
 
   deps = [
-    "prefs",
+    "driver",
     "//base",
     "//brave/components/brave_sync",
     "//brave/components/brave_sync:crypto",
