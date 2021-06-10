@@ -24,6 +24,7 @@ source_set("app") {
     "//brave/ios/browser/api/history",
     "//brave/ios/browser/api/sync/driver",
     "//components/browser_sync",
+    "//components/history/core/browser", 
     "//components/sync/base",
     "//components/sync/driver",
     "//components/keyed_service/core",
