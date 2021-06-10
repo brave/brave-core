@@ -32,9 +32,11 @@ const char kCastNoDestinationFoundURL[] =
 const char kChooserBluetoothOverviewURL[] =
     "https://github.com/brave/brave-browser/wiki/Web-API-Permissions";
 
-const char kChooserHidOverviewUrl[] = "https://github.com/brave/brave-browser/wiki/Web-API-Permissions";
+const char kChooserHidOverviewUrl[] =
+    "https://github.com/brave/brave-browser/wiki/Web-API-Permissions";
 
-const char kChooserSerialOverviewUrl[] = "https://github.com/brave/brave-browser/wiki/Web-API-Permissions";
+const char kChooserSerialOverviewUrl[] =
+    "https://github.com/brave/brave-browser/wiki/Web-API-Permissions";
 
 const char kChooserUsbOverviewURL[] =
     "https://github.com/brave/brave-browser/wiki/Web-API-Permissions";
