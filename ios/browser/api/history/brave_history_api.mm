@@ -73,7 +73,7 @@
 }
 
 - (NSDate*)dateAdded {
-  return [NSDate dateWithTimeIntervalSince1970:date_added_.ToDoubleT()];
+  return date_added_.ToNSDate();
 }
 @end
 
@@ -219,8 +219,7 @@
     IOSHistoryNode* historyNode = [[IOSHistoryNode alloc]
         initWithURL:net::NSURLWithGURL(result.url())
               title:base::SysUTF16ToNSString(result.title())
-          dateAdded:[NSDate dateWithTimeIntervalSince1970:result.last_visit()
-                                                              .ToDoubleT()]];
+          dateAdded:result.last_visit().ToNSDate()];
     [historyNodes addObject:historyNode];
   }
 

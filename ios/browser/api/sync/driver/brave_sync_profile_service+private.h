@@ -16,7 +16,7 @@ namespace syncer {
 class SyncService;
 }
 
-@interface BraveSyncProfileServiceIOS (Private)  // NOLINT
+@interface BraveSyncProfileServiceIOS (Private)
 - (instancetype)initWithProfileSyncService:(syncer::SyncService*)syncService;
 @end
 

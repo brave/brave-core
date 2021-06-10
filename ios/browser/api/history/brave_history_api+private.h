@@ -17,7 +17,7 @@ class HistoryService;
 class WebHistoryService;
 }
 
-@interface BraveHistoryAPI (Private)  // NOLINT
+@interface BraveHistoryAPI (Private)
 - (instancetype)initWithHistoryService:(history::HistoryService*)historyService
                      webHistoryService:
                          (history::WebHistoryService*)webHistoryService;

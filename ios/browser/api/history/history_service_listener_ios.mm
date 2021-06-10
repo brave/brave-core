@@ -65,8 +65,7 @@ void HistoryServiceListenerIOS::OnURLVisited(
   IOSHistoryNode* historyNode = [[IOSHistoryNode alloc]
       initWithURL:net::NSURLWithGURL(row.url())
             title:base::SysUTF16ToNSString(row.title())
-        dateAdded:[NSDate
-                      dateWithTimeIntervalSince1970:visit_time.ToDoubleT()]];
+        dateAdded:visit_time.ToNSDate()];
 
   if ([observer_ respondsToSelector:@selector(historyNodeVisited:)]) {
     [observer_ historyNodeVisited:historyNode];
@@ -81,8 +80,7 @@ void HistoryServiceListenerIOS::OnURLsModified(
     IOSHistoryNode* node = [[IOSHistoryNode alloc]
         initWithURL:net::NSURLWithGURL(row.url())
               title:base::SysUTF16ToNSString(row.title())
-          dateAdded:[NSDate dateWithTimeIntervalSince1970:row.last_visit()
-                                                              .ToDoubleT()]];
+          dateAdded:row.last_visit().ToNSDate()];
     [nodes addObject:node];
   }
 
@@ -104,8 +102,7 @@ void HistoryServiceListenerIOS::OnURLsDeleted(
       IOSHistoryNode* node = [[IOSHistoryNode alloc]
           initWithURL:net::NSURLWithGURL(row.url())
                 title:base::SysUTF16ToNSString(row.title())
-            dateAdded:[NSDate dateWithTimeIntervalSince1970:row.last_visit()
-                                                                .ToDoubleT()]];
+            dateAdded:row.last_visit().ToNSDate()];
       [nodes addObject:node];
     }
   }
