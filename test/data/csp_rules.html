@@ -20,7 +20,7 @@
 
     const thirdPartyScriptPromise = new Promise(resolve => {
         const thirdPartyScript = document.createElement('script');
-        thirdPartyScript.src = 'https://thirdparty.com/adbanner.js';
+        thirdPartyScript.src = '/cross-site/thirdparty.com/adbanner.js';
         thirdPartyScript.onload = (r) => {
             window.loadedThirdPartyScript = true;
             resolve();
