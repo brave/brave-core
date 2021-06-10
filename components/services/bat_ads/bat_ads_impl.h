@@ -95,6 +95,14 @@ class BatAdsImpl :
       const std::string& creative_instance_id,
       const ads::PromotedContentAdEventType event_type) override;
 
+  void GetInlineContentAd(const std::string& dimensions,
+                          GetInlineContentAdCallback callback) override;
+
+  void OnInlineContentAdEvent(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const ads::InlineContentAdEventType event_type) override;
+
   void RemoveAllHistory(
       RemoveAllHistoryCallback callback) override;
 
@@ -172,6 +180,12 @@ class BatAdsImpl :
   static void OnShutdown(
       CallbackHolder<ShutdownCallback>* holder,
       const int32_t result);
+
+  static void OnGetInlineContentAd(
+      CallbackHolder<GetInlineContentAdCallback>* holder,
+      const bool success,
+      const std::string& dimensions,
+      const ads::InlineContentAdInfo& ad);
 
   static void OnRemoveAllHistory(
       CallbackHolder<RemoveAllHistoryCallback>* holder,

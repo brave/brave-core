@@ -198,6 +198,39 @@ Result CatalogState::FromJson(const std::string& json,
           }
 
           creative_set_info.creative_ad_notifications.push_back(creative_info);
+        } else if (code == "inline_content_all_v1") {
+          CatalogCreativeInlineContentAdInfo creative_info;
+
+          creative_info.creative_instance_id = creative_instance_id;
+
+          // Type
+          creative_info.type.code = code;
+          creative_info.type.name = type["name"].GetString();
+          creative_info.type.platform = type["platform"].GetString();
+          creative_info.type.version = type["version"].GetUint64();
+
+          // Payload
+          auto payload = creative["payload"].GetObject();
+          creative_info.payload.title = payload["title"].GetString();
+          creative_info.payload.description =
+              payload["description"].GetString();
+          creative_info.payload.image_url = payload["imageUrl"].GetString();
+          if (!GURL(creative_info.payload.image_url).is_valid()) {
+            BLOG(1, "Invalid image URL for creative instance id "
+                        << creative_instance_id);
+            continue;
+          }
+          creative_info.payload.dimensions = payload["dimensions"].GetString();
+          creative_info.payload.cta_text = payload["ctaText"].GetString();
+          creative_info.payload.target_url = payload["targetUrl"].GetString();
+          if (!GURL(creative_info.payload.target_url).is_valid()) {
+            BLOG(1, "Invalid target URL for creative instance id "
+                        << creative_instance_id);
+            continue;
+          }
+
+          creative_set_info.creative_inline_content_ads.push_back(
+              creative_info);
         } else if (code == "new_tab_page_all_v1") {
           CatalogCreativeNewTabPageAdInfo creative_info;
 

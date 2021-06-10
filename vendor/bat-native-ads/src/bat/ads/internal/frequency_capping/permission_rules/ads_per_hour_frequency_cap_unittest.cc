@@ -40,7 +40,7 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest, AlwaysAllowAdOnAndroid) {
 
   AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, ads_per_hour);
 
-  RecordAdEvents(AdType::kAdNotification, ConfirmationType::kViewed,
+  RecordAdEvents(AdType::kAdNotification, ConfirmationType::kServed,
                  ads_per_hour);
 
   // Act
@@ -58,7 +58,7 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest, AlwaysAllowAdOnIOS) {
   const int64_t ads_per_hour = 5;
   AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, ads_per_hour);
 
-  RecordAdEvents(AdType::kAdNotification, ConfirmationType::kViewed,
+  RecordAdEvents(AdType::kAdNotification, ConfirmationType::kServed,
                  ads_per_hour);
 
   // Act
@@ -75,7 +75,7 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
 
   AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, ads_per_hour);
 
-  RecordAdEvents(AdType::kAdNotification, ConfirmationType::kViewed,
+  RecordAdEvents(AdType::kAdNotification, ConfirmationType::kServed,
                  ads_per_hour - 1);
 
   // Act
@@ -92,7 +92,7 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest, AllowAdIfDoesNotExceedCapAfter1Hour) {
 
   AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, ads_per_hour);
 
-  RecordAdEvents(AdType::kAdNotification, ConfirmationType::kViewed,
+  RecordAdEvents(AdType::kAdNotification, ConfirmationType::kServed,
                  ads_per_hour);
 
   FastForwardClockBy(base::TimeDelta::FromHours(1));
@@ -111,7 +111,7 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest, DoNotAllowAdIfExceedsCapWithin1Hour) {
 
   AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, ads_per_hour);
 
-  RecordAdEvents(AdType::kAdNotification, ConfirmationType::kViewed,
+  RecordAdEvents(AdType::kAdNotification, ConfirmationType::kServed,
                  ads_per_hour);
 
   FastForwardClockBy(base::TimeDelta::FromMinutes(59));

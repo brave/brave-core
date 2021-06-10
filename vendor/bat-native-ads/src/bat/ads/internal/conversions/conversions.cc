@@ -73,6 +73,7 @@ bool DoesConfirmationTypeMatchConversionType(
     }
 
     case ConfirmationType::kUndefined:
+    case ConfirmationType::kServed:
     case ConfirmationType::kDismissed:
     case ConfirmationType::kTransferred:
     case ConfirmationType::kFlagged:
@@ -503,14 +504,14 @@ void Conversions::StartTimer(
 }
 
 void Conversions::NotifyConversion(
-    const ConversionQueueItemInfo& conversion_queue_item) {
+    const ConversionQueueItemInfo& conversion_queue_item) const {
   for (ConversionsObserver& observer : observers_) {
     observer.OnConversion(conversion_queue_item);
   }
 }
 
 void Conversions::NotifyConversionFailed(
-    const ConversionQueueItemInfo& conversion_queue_item) {
+    const ConversionQueueItemInfo& conversion_queue_item) const {
   for (ConversionsObserver& observer : observers_) {
     observer.OnConversionFailed(conversion_queue_item);
   }

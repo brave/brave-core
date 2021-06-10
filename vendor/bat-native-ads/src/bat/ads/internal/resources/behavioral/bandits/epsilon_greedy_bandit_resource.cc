@@ -9,7 +9,8 @@
 
 #include "bat/ads/internal/ad_targeting/ad_targeting_segment_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
+#include "bat/ads/internal/catalog/catalog.h"
+#include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/pref_names.h"
 
@@ -35,35 +36,22 @@ bool EpsilonGreedyBandit::IsInitialized() const {
   return is_initialized_;
 }
 
-void EpsilonGreedyBandit::LoadFromDatabase() {
-  database::table::CreativeAdNotifications database_table;
-  database_table.GetAll([=](const Result result, const SegmentList& segments,
-                            const CreativeAdNotificationList& ads) {
-    if (result != SUCCESS) {
-      BLOG(2, "Failed to load epsilon greedy bandit segments");
+void EpsilonGreedyBandit::LoadFromCatalog(const Catalog& catalog) {
+  const SegmentList segments = GetSegments(catalog);
 
-      is_initialized_ = false;
+  const SegmentList parent_segments = GetParentSegments(segments);
 
-      AdsClientHelper::Get()->SetStringPref(
-          prefs::kEpsilonGreedyBanditEligibleSegments, "");
+  const std::string json = SerializeSegments(parent_segments);
 
-      return;
-    }
+  AdsClientHelper::Get()->SetStringPref(
+      prefs::kEpsilonGreedyBanditEligibleSegments, json);
 
-    const SegmentList parent_segments = GetParentSegments(segments);
+  BLOG(2, "Successfully loaded epsilon greedy bandit segments:");
+  for (const auto& segment : parent_segments) {
+    BLOG(2, "  " << segment);
+  }
 
-    const std::string json = SerializeSegments(parent_segments);
-
-    AdsClientHelper::Get()->SetStringPref(
-        prefs::kEpsilonGreedyBanditEligibleSegments, json);
-
-    BLOG(2, "Successfully loaded epsilon greedy bandit segments:");
-    for (const auto& segment : parent_segments) {
-      BLOG(2, "  " << segment);
-    }
-
-    is_initialized_ = true;
-  });
+  is_initialized_ = true;
 }
 
 SegmentList EpsilonGreedyBandit::get() const {

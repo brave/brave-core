@@ -117,44 +117,44 @@ void Account::ProcessUnclearedTransactions() {
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
 }
 
-void Account::NotifyWalletChanged(const WalletInfo& wallet) {
+void Account::NotifyWalletChanged(const WalletInfo& wallet) const {
   for (AccountObserver& observer : observers_) {
     observer.OnWalletChanged(wallet);
   }
 }
 
-void Account::NotifyWalletRestored(const WalletInfo& wallet) {
+void Account::NotifyWalletRestored(const WalletInfo& wallet) const {
   for (AccountObserver& observer : observers_) {
     observer.OnWalletRestored(wallet);
   }
 }
 
-void Account::NotifyWalletInvalid() {
+void Account::NotifyWalletInvalid() const {
   for (AccountObserver& observer : observers_) {
     observer.OnWalletInvalid();
   }
 }
 
 void Account::NotifyCatalogIssuersChanged(
-    const CatalogIssuersInfo& catalog_issuers) {
+    const CatalogIssuersInfo& catalog_issuers) const {
   for (AccountObserver& observer : observers_) {
     observer.OnCatalogIssuersChanged(catalog_issuers);
   }
 }
 
-void Account::NotifyAdRewardsChanged() {
+void Account::NotifyAdRewardsChanged() const {
   for (AccountObserver& observer : observers_) {
     observer.OnAdRewardsChanged();
   }
 }
 
-void Account::NotifyTransactionsChanged() {
+void Account::NotifyTransactionsChanged() const {
   for (AccountObserver& observer : observers_) {
     observer.OnTransactionsChanged();
   }
 }
 
-void Account::NotifyUnclearedTransactionsProcessed() {
+void Account::NotifyUnclearedTransactionsProcessed() const {
   for (AccountObserver& observer : observers_) {
     observer.OnUnclearedTransactionsProcessed();
   }

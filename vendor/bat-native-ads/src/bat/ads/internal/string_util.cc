@@ -5,9 +5,6 @@
 
 #include "bat/ads/internal/string_util.h"
 
-#include <iomanip>
-#include <sstream>
-
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"

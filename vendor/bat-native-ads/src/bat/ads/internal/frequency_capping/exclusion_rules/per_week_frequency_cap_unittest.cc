@@ -65,7 +65,7 @@ TEST_F(BatAdsPerWeekFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kServed);
 
   ad_events.push_back(ad_event);
 
@@ -86,7 +86,7 @@ TEST_F(BatAdsPerWeekFrequencyCapTest, AllowAdIfDoesNotExceedCapAfter1Week) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kServed);
 
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
@@ -110,7 +110,7 @@ TEST_F(BatAdsPerWeekFrequencyCapTest, DoNotAllowAdIfExceedsCapWithin1Week) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kServed);
 
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
@@ -134,7 +134,7 @@ TEST_F(BatAdsPerWeekFrequencyCapTest, DoNotAllowAdIfExceedsCap) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kServed);
 
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);

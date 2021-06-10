@@ -44,8 +44,8 @@ class AdServer {
 
   void FetchAfterDelay();
 
-  void NotifyCatalogUpdated(const Catalog& catalog);
-  void NotifyCatalogFailed();
+  void NotifyCatalogUpdated(const Catalog& catalog) const;
+  void NotifyCatalogFailed() const;
 };
 
 }  // namespace ads

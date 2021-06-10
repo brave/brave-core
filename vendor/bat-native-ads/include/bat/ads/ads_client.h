@@ -69,6 +69,12 @@ class ADS_EXPORT AdsClient {
       const std::string& ad_type,
       const std::string& confirmation_type) const = 0;
 
+  // Get |max_count| browsing history results for past |days_ago| days from
+  // |HistoryService| and return as list of strings
+  virtual void GetBrowsingHistory(const int max_count,
+                                  const int days_ago,
+                                  GetBrowsingHistoryCallback callback) = 0;
+
   // Fetch and return data. Loading should be performed asynchronously, so that
   // the app remains responsive and should handle incoming data or errors as
   // they arrive. The callback takes 1 argument - |URLResponse| should contain
@@ -92,12 +98,6 @@ class ADS_EXPORT AdsClient {
   virtual void LoadAdsResource(const std::string& name,
                                const int version,
                                LoadCallback callback) = 0;
-
-  // Get |max_count| browsing history results for past |days_ago| days from
-  // |HistoryService| and return as list of strings
-  virtual void GetBrowsingHistory(const int max_count,
-                                  const int days_ago,
-                                  GetBrowsingHistoryCallback callback) = 0;
 
   // Should return the resource for given |id|
   virtual std::string LoadResourceForId(const std::string& id) = 0;

@@ -9,11 +9,11 @@ namespace ads {
 namespace database {
 
 int32_t version() {
-  return 14;
+  return 15;
 }
 
 int32_t compatible_version() {
-  return 14;
+  return 15;
 }
 
 }  // namespace database

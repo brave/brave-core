@@ -86,6 +86,8 @@ interface BatAds {
   OnAdNotificationEvent(string uuid, ads.mojom.BraveAdsAdNotificationEventType event_type);
   OnNewTabPageAdEvent(string uuid, string creative_instance_id, ads.mojom.BraveAdsNewTabPageAdEventType event_type);
   OnPromotedContentAdEvent(string uuid, string creative_instance_id, ads.mojom.BraveAdsPromotedContentAdEventType event_type);
+  GetInlineContentAd(string size) => (bool success, string dimensions, string ad);
+  OnInlineContentAdEvent(string uuid, string creative_instance_id, ads.mojom.BraveAdsInlineContentAdEventType event_type);
   RemoveAllHistory() => (int32 result);
   OnWalletUpdated(string payment_id, string seed);
   ReconcileAdRewards();

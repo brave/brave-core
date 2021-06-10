@@ -65,9 +65,10 @@ AdEventList PerWeekFrequencyCap::FilterAdEvents(
   const auto iter = std::remove_if(
       filtered_ad_events.begin(), filtered_ad_events.end(),
       [&ad](const AdEventInfo& ad_event) {
-        return ad_event.type != AdType::kAdNotification ||
+        return (ad_event.type != AdType::kAdNotification &&
+                ad_event.type != AdType::kInlineContentAd) ||
                ad_event.creative_set_id != ad.creative_set_id ||
-               ad_event.confirmation_type != ConfirmationType::kViewed;
+               ad_event.confirmation_type != ConfirmationType::kServed;
       });
 
   filtered_ad_events.erase(iter, filtered_ad_events.end());

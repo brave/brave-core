@@ -16,12 +16,13 @@
 namespace ads {
 
 namespace {
+
 bool HasVisitedSiteOnAntiTargetingList(
-    const BrowsingHistoryList history_sites,
+    const BrowsingHistoryList browsing_history,
     const resource::AntiTargetingList anti_targeting_sites) {
   auto result = std::find_first_of(
       anti_targeting_sites.begin(), anti_targeting_sites.end(),
-      history_sites.begin(), history_sites.end(), SameDomainOrHost);
+      browsing_history.begin(), browsing_history.end(), SameDomainOrHost);
 
   if (result != anti_targeting_sites.end()) {
     return true;
@@ -33,17 +34,17 @@ bool HasVisitedSiteOnAntiTargetingList(
 }  // namespace
 
 AntiTargetingFrequencyCap::AntiTargetingFrequencyCap(
-    resource::AntiTargeting* anti_targeting,
-    const BrowsingHistoryList& history)
-    : anti_targeting_(anti_targeting), history_(history) {}
+    resource::AntiTargeting* anti_targeting_resource,
+    const BrowsingHistoryList& browsing_history)
+    : anti_targeting_resource_(anti_targeting_resource),
+      browsing_history_(browsing_history) {}
 
 AntiTargetingFrequencyCap::~AntiTargetingFrequencyCap() = default;
 
 bool AntiTargetingFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   if (!DoesRespectCap(ad)) {
     last_message_ = base::StringPrintf(
-        "creativeSetId %s excluded as user has "
-        "previously visited an anti-targeting site",
+        "creativeSetId %s excluded as previously visited an anti-targeted site",
         ad.creative_set_id.c_str());
 
     return true;
@@ -57,18 +58,18 @@ std::string AntiTargetingFrequencyCap::get_last_message() const {
 }
 
 bool AntiTargetingFrequencyCap::DoesRespectCap(const CreativeAdInfo& ad) const {
-  if (history_.empty()) {
+  if (browsing_history_.empty()) {
     return true;
   }
 
-  resource::AntiTargetingInfo anti_targeting = anti_targeting_->get();
+  resource::AntiTargetingInfo anti_targeting = anti_targeting_resource_->get();
   const auto iter = anti_targeting.sites.find(ad.creative_set_id);
   if (iter == anti_targeting.sites.end()) {
     // Always respect if creative set has no anti-targeting sites
     return true;
   }
 
-  return !HasVisitedSiteOnAntiTargetingList(history_, iter->second);
+  return !HasVisitedSiteOnAntiTargetingList(browsing_history_, iter->second);
 }
 
 }  // namespace ads

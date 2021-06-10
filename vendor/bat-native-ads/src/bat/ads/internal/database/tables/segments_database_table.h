@@ -38,8 +38,8 @@ class Segments : public Table {
   std::string BuildInsertOrUpdateQuery(DBCommand* command,
                                        const CreativeAdList& creative_ads);
 
-  void CreateTableV14(DBTransaction* transaction);
-  void MigrateToV14(DBTransaction* transaction);
+  void CreateTableV15(DBTransaction* transaction);
+  void MigrateToV15(DBTransaction* transaction);
 };
 
 }  // namespace table

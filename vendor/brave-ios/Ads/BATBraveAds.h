@@ -6,26 +6,9 @@
 #import <UserNotifications/UserNotifications.h>
 #import "ads.mojom.objc.h"
 
-typedef NS_ENUM(NSInteger, BATAdNotificationEventType) {
-  BATAdNotificationEventTypeViewed,       // = ads::AdNotificationEventType::kViewed
-  BATAdNotificationEventTypeClicked,      // = ads::AdNotificationEventType::kClicked
-  BATAdNotificationEventTypeDismissed,    // = ads::AdNotificationEventType::kDismissed
-  BATAdNotificationEventTypeTimedOut      // = ads::AdNotificationEventType::kTimedOut
-} NS_SWIFT_NAME(AdNotificationEventType);
-
-typedef NS_ENUM(NSInteger, BATNewTabPageAdEventType) {
-  BATNewTabPageAdEventTypeViewed,         // = ads::NewTabPageAdEventType::kViewed
-  BATNewTabPageAdEventTypeClicked         // = ads::NewTabPageAdEventType::kClicked
-} NS_SWIFT_NAME(NewTabPageAdEventType);
-
-typedef NS_ENUM(NSInteger, BATPromotedContentAdEventType) {
-  BATPromotedContentAdEventTypeViewed,    // = ads::PromotedContentAdEventType::kViewed
-  BATPromotedContentAdEventTypeClicked    // = ads::PromotedContentAdEventType::kClicked
-} NS_SWIFT_NAME(PromotedContentAdEventType);
-
 NS_ASSUME_NONNULL_BEGIN
 
-@class BATAdNotification, BATBraveAds, BATBraveLedger;
+@class BATAdNotification, BATBraveAds, BATBraveLedger, BATInlineContentAd;
 
 OBJC_EXPORT
 NS_SWIFT_NAME(BraveAdsNotificationHandler)
@@ -103,8 +86,6 @@ NS_SWIFT_NAME(BraveAds)
 /// Remove all cached history (should be called when the user clears their browser history)
 - (void)removeAllHistory:(void (^)(BOOL))completion;
 
-#pragma mark - Confirmations
-
 #pragma mark - Notificiations
 
 - (nullable BATAdNotification *)adsNotificationForIdentifier:(NSString *)identifier;
@@ -140,18 +121,32 @@ NS_SWIFT_NAME(BraveAds)
 - (void)reportTabClosedWithTabId:(NSInteger)tabId NS_SWIFT_NAME(reportTabClosed(tabId:));
 
 /// Report that an ad notification event type was triggered for a given id
-- (void)reportAdNotificationEvent:(NSString *)uuid
-                        eventType:(BATAdNotificationEventType)eventType;
+- (void)reportAdNotificationEvent:(NSString*)uuid
+                        eventType:(BATBraveAdsAdNotificationEventType)eventType;
+
+/// Get inline content ad for the given dimensions
+- (void)inlineContentAdsWithDimensions:(NSString*)dimensions
+                            completion:(void (^)(BOOL success,
+                                                 NSString* dimensions,
+                                                 BATInlineContentAd*))completion
+    NS_SWIFT_NAME(inlineContentAds(dimensions:completion:));
+
+/// Report that an inline content ad event type was triggered for a given id
+- (void)reportInlineContentAdEvent:(NSString*)uuid
+                creativeInstanceId:(NSString*)creativeInstanceId
+                         eventType:
+                             (BATBraveAdsInlineContentAdEventType)eventType;
 
 /// Report that a new tab page ad event type was triggered for a given id
-- (void)reportNewTabPageAdEvent:(NSString *)wallpaperId
-             creativeInstanceId:(NSString *)creativeInstanceId
-                      eventType:(BATNewTabPageAdEventType)eventType;
+- (void)reportNewTabPageAdEvent:(NSString*)wallpaperId
+             creativeInstanceId:(NSString*)creativeInstanceId
+                      eventType:(BATBraveAdsNewTabPageAdEventType)eventType;
 
 /// Report that a promoted content ad event type was triggered for a given id
-- (void)reportPromotedContentAdEvent:(NSString *)uuid
-                  creativeInstanceId:(NSString *)creativeInstanceId
-                           eventType:(BATPromotedContentAdEventType)eventType;
+- (void)reportPromotedContentAdEvent:(NSString*)uuid
+                  creativeInstanceId:(NSString*)creativeInstanceId
+                           eventType:
+                               (BATBraveAdsPromotedContentAdEventType)eventType;
 
 /// Reconcile ad rewards with server
 - (void)reconcileAdRewards;

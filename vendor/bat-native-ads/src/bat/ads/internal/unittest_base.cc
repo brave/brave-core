@@ -46,8 +46,12 @@ void UnitTestBase::InitializeAds() {
       << "|InitializeAds| should only be called if "
          "|SetUpForTesting| was initialized for integration testing";
 
-  ads_->Initialize(
-      [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
+  ads_->Initialize([=](const Result result) {
+    ASSERT_EQ(Result::SUCCESS, result);
+
+    ads_->OnWalletUpdated("c387c2d8-a26d-4451-83e4-5c0c6fd942be",
+                          "5BEKM1Y7xcRSg/1q8in/+Lki2weFZQB+UMYZlRw8ql8=");
+  });
 
   task_environment_.RunUntilIdle();
 }
@@ -144,6 +148,8 @@ void UnitTestBase::Initialize() {
   MockRecordAdEvent(ads_client_mock_);
   MockGetAdEvents(ads_client_mock_);
 
+  MockGetBrowsingHistory(ads_client_mock_);
+
   MockLoad(ads_client_mock_);
   MockLoadAdsResource(ads_client_mock_);
   MockLoadResourceForId(ads_client_mock_);
@@ -157,10 +163,6 @@ void UnitTestBase::Initialize() {
 
   if (integration_test_) {
     ads_ = std::make_unique<AdsImpl>(ads_client_mock_.get());
-
-    ads_->OnWalletUpdated("c387c2d8-a26d-4451-83e4-5c0c6fd942be",
-                          "5BEKM1Y7xcRSg/1q8in/+Lki2weFZQB+UMYZlRw8ql8=");
-
     return;
   }
 

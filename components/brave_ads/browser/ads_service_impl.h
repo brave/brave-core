@@ -141,6 +141,14 @@ class AdsServiceImpl : public AdsService,
       const std::string& creative_instance_id,
       const ads::PromotedContentAdEventType event_type) override;
 
+  void GetInlineContentAd(const std::string& dimensions,
+                          OnGetInlineContentAdCallback callback) override;
+
+  void OnInlineContentAdEvent(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const ads::InlineContentAdEventType event_type) override;
+
   void ReconcileAdRewards() override;
 
   void GetAdsHistory(const uint64_t from_timestamp,
@@ -242,6 +250,11 @@ class AdsServiceImpl : public AdsService,
 
   void OnGetBraveWallet(ledger::type::BraveWalletPtr wallet);
 
+  void OnGetInlineContentAd(OnGetInlineContentAdCallback callback,
+                            const bool success,
+                            const std::string& dimensions,
+                            const std::string& json);
+
   void OnGetAdsHistory(OnGetAdsHistoryCallback callback,
                        const std::string& json);
 
@@ -312,6 +325,8 @@ class AdsServiceImpl : public AdsService,
   bool StopNotificationTimeoutTimer(const std::string& uuid);
 
   bool connected();
+
+  bool ShouldStart() const;
 
   // AdsClient implementation
   bool IsNetworkConnectionAvailable() const override;

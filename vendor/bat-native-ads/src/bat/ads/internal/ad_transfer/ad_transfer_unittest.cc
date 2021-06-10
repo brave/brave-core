@@ -51,7 +51,7 @@ class BatAdsAdTransferTest : public AdTransferObserver, public UnitTestBase {
 TEST_F(BatAdsAdTransferTest, DoNotTransferAdIfUrlIsMissingHTTPOrHTTPSScheme) {
   // Arrange
   const AdInfo ad = GetAdForType(AdType::kPromotedContentAd);
-  ad_transfer_->set_last_clicked_ad(ad);
+  ad_transfer_->SetLastClickedAd(ad);
 
   TabManager::Get()->OnUpdated(1, "https://brave.com", /* is_visible */ true,
                                /* is_incognito */ false);
@@ -68,7 +68,7 @@ TEST_F(BatAdsAdTransferTest,
        DoNotTransferAdIfTheUrlDoesNotMatchTheLastClickedAd) {
   // Arrange
   const AdInfo ad = GetAdForType(AdType::kNewTabPageAd);
-  ad_transfer_->set_last_clicked_ad(ad);
+  ad_transfer_->SetLastClickedAd(ad);
 
   TabManager::Get()->OnUpdated(1, "https://foobar.com", /* is_visible */ true,
                                /* is_incognito */ false);
@@ -84,7 +84,7 @@ TEST_F(BatAdsAdTransferTest,
 TEST_F(BatAdsAdTransferTest, DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
   // Arrange
   const AdInfo ad = GetAdForType(AdType::kAdNotification);
-  ad_transfer_->set_last_clicked_ad(ad);
+  ad_transfer_->SetLastClickedAd(ad);
 
   TabManager::Get()->OnUpdated(1, "https://brave.com", /* is_visible */ true,
                                /* is_incognito */ false);
@@ -102,7 +102,7 @@ TEST_F(BatAdsAdTransferTest, DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
 TEST_F(BatAdsAdTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
   // Arrange
   const AdInfo ad = GetAdForType(AdType::kPromotedContentAd);
-  ad_transfer_->set_last_clicked_ad(ad);
+  ad_transfer_->SetLastClickedAd(ad);
 
   TabManager::Get()->OnUpdated(1, "https://foobar.com", /* is_visible */ true,
                                /* is_incognito */ false);
@@ -127,7 +127,7 @@ TEST_F(BatAdsAdTransferTest,
        TransferAdIfTheTabIsVisibleAndTheUrlIsTheSameAsTheDomainOrHost) {
   // Arrange
   const AdInfo ad = GetAdForType(AdType::kNewTabPageAd);
-  ad_transfer_->set_last_clicked_ad(ad);
+  ad_transfer_->SetLastClickedAd(ad);
 
   TabManager::Get()->OnUpdated(1, "https://brave.com", /* is_visible */ true,
                                /* is_incognito */ false);
@@ -143,7 +143,7 @@ TEST_F(BatAdsAdTransferTest,
 TEST_F(BatAdsAdTransferTest, FailToTransferAdIfNotVisible) {
   // Arrange
   const AdInfo ad = GetAdForType(AdType::kAdNotification);
-  ad_transfer_->set_last_clicked_ad(ad);
+  ad_transfer_->SetLastClickedAd(ad);
 
   TabManager::Get()->OnUpdated(1, "https://brave.com", /* is_visible */ false,
                                /* is_incognito */ false);
@@ -159,8 +159,8 @@ TEST_F(BatAdsAdTransferTest, FailToTransferAdIfNotVisible) {
 TEST_F(BatAdsAdTransferTest,
        FailToTransferAdIfTheTabUrlIsNotTheSameAsTheDomainOrHost) {
   // Arrange
-  const AdInfo ad = GetAdForType(AdType::kNewTabPageAd);
-  ad_transfer_->set_last_clicked_ad(ad);
+  const AdInfo ad = GetAdForType(AdType::kInlineContentAd);
+  ad_transfer_->SetLastClickedAd(ad);
 
   TabManager::Get()->OnUpdated(1, "https://brave.com", /* is_visible */ true,
                                /* is_incognito */ false);

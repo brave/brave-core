@@ -17,6 +17,9 @@ struct PromotedContentAdInfo;
 
 class PromotedContentAdObserver : public base::CheckedObserver {
  public:
+  // Invoked when a promoted content ad is served
+  virtual void OnPromotedContentAdServed(const PromotedContentAdInfo& ad) {}
+
   // Invoked when a promoted content ad is viewed
   virtual void OnPromotedContentAdViewed(const PromotedContentAdInfo& ad) {}
 
