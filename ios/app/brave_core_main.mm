@@ -9,9 +9,9 @@
 
 #include "base/compiler_specific.h"
 #include "base/strings/sys_string_conversions.h"
+#include "brave/ios/app/brave_main_delegate.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
-#include "brave/ios/app/brave_main_delegate.h"
 #include "brave/ios/browser/brave_web_client.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
