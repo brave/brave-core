@@ -251,6 +251,10 @@ void AdBlockServiceTest::WaitForBraveExtensionShieldsDataReady() {
   ASSERT_TRUE(extension_listener.WaitUntilSatisfied());
 }
 
+void AdBlockServiceTest::ShieldsDown(const GURL& url) {
+  brave_shields::SetBraveShieldsEnabled(content_settings(), false, url);
+}
+
 // Load a page with an ad image, and make sure it is blocked.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByDefaultBlocker) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
@@ -798,12 +802,12 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRule) {
       browser()->tab_strip_model()->GetActiveWebContents();
 
   auto res = EvalJs(contents, "await window.allLoaded");
-  ASSERT_EQ(true, EvalJs(contents, "!!window.loadedNonceScript"));
-  ASSERT_EQ(true, EvalJs(contents, "!!window.loadedEvalScript"));
-  ASSERT_EQ(true, EvalJs(contents, "!!window.loadedSamePartyScript"));
-  ASSERT_EQ(false, EvalJs(contents, "!!window.loadedThirdPartyScript"));
-  ASSERT_EQ(false, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
-  ASSERT_EQ(true, EvalJs(contents, "!!window.loadedDataImage"));
+  EXPECT_EQ(true, EvalJs(contents, "!!window.loadedNonceScript"));
+  EXPECT_EQ(true, EvalJs(contents, "!!window.loadedEvalScript"));
+  EXPECT_EQ(true, EvalJs(contents, "!!window.loadedSamePartyScript"));
+  EXPECT_EQ(false, EvalJs(contents, "!!window.loadedThirdPartyScript"));
+  EXPECT_EQ(false, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
+  EXPECT_EQ(true, EvalJs(contents, "!!window.loadedDataImage"));
 
   // Violations of injected CSP directives do not increment the Shields counter
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
@@ -831,14 +835,40 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleMerging) {
       browser()->tab_strip_model()->GetActiveWebContents();
 
   auto res = EvalJs(contents, "await window.allLoaded");
-  ASSERT_EQ(true, EvalJs(contents, "!!window.loadedNonceScript"));
-  ASSERT_EQ(true, EvalJs(contents, "!!window.loadedEvalScript"));
-  ASSERT_EQ(false, EvalJs(contents, "!!window.loadedSamePartyScript"));
-  ASSERT_EQ(false, EvalJs(contents, "!!window.loadedThirdPartyScript"));
-  ASSERT_EQ(false, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
-  ASSERT_EQ(false, EvalJs(contents, "!!window.loadedDataImage"));
+  EXPECT_EQ(true, EvalJs(contents, "!!window.loadedNonceScript"));
+  EXPECT_EQ(true, EvalJs(contents, "!!window.loadedEvalScript"));
+  EXPECT_EQ(false, EvalJs(contents, "!!window.loadedSamePartyScript"));
+  EXPECT_EQ(false, EvalJs(contents, "!!window.loadedThirdPartyScript"));
+  EXPECT_EQ(false, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
+  EXPECT_EQ(false, EvalJs(contents, "!!window.loadedDataImage"));
 
   // Violations of injected CSP directives do not increment the Shields counter
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+}
+
+// Verify that scripts violating a Content Security Policy from a `$csp` rule
+// are not loaded.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleShieldsDown) {
+  UpdateAdBlockInstanceWithRules(
+      "||example.com^$csp=script-src 'nonce-abcdef' 'unsafe-eval' 'self'");
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  const GURL url =
+      embedded_test_server()->GetURL("example.com", "/csp_rules.html");
+  ShieldsDown(url);
+
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  auto res = EvalJs(contents, "await window.allLoaded");
+  EXPECT_EQ(true, EvalJs(contents, "!!window.loadedNonceScript"));
+  EXPECT_EQ(true, EvalJs(contents, "!!window.loadedEvalScript"));
+  EXPECT_EQ(true, EvalJs(contents, "!!window.loadedSamePartyScript"));
+  EXPECT_EQ(true, EvalJs(contents, "!!window.loadedThirdPartyScript"));
+  EXPECT_EQ(true, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
+  EXPECT_EQ(true, EvalJs(contents, "!!window.loadedDataImage"));
+
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
