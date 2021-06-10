@@ -12,11 +12,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-class ChromeBrowserState;
+namespace syncer {
+  class SyncService;
+}
 
-OBJC_EXPORT
 @interface BraveSyncProfileService (Private)  // NOLINT
-- (instancetype)initWithBrowserState:(ChromeBrowserState*)state;
+- (instancetype)initWithProfileSyncService:(syncer::SyncService*)syncService;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -30,7 +30,8 @@ OBJC_EXPORT
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Sync Profile Properties
+// Whether all conditions are satisfied for Sync to start
+// Does not imply that Sync is actually running
 @property(nonatomic, readonly) bool isSyncFeatureActive;
 
 /// Selectable Types for the Sync User

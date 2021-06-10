@@ -16,11 +16,16 @@
 #include "ios/chrome/browser/application_context.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
+#include "ios/chrome/browser/history/history_service_factory.h"
+#include "ios/chrome/browser/history/web_history_service_factory.h"
+#include "ios/chrome/browser/sync/profile_sync_service_factory.h"
 #include "ios/public/provider/chrome/browser/chrome_browser_provider.h"
 #include "ios/web/public/init/web_main.h"
+#include "components/history/core/browser/history_service.h"
+#include "components/keyed_service/core/service_access_type.h"
 
-#include "brave/ios/browser/api/history/brave_history_api_private.h"
-#import "brave/ios/browser/api/sync/prefs/brave_sync_profile_service_private.h"
+#include "brave/ios/browser/api/history/brave_history_api+private.h"
+#import "brave/ios/browser/api/sync/prefs/brave_sync_profile_service+private.h"
 
 @interface BraveCoreMain () {
   std::unique_ptr<BraveWebClient> _webClient;
@@ -115,18 +120,24 @@
 
 - (BraveHistoryAPI*)historyAPI {
   if (!_historyAPI) {
+    history::HistoryService* history_service_ = 
+        ios::HistoryServiceFactory::GetForBrowserState(_mainBrowserState, 
+            ServiceAccessType::EXPLICIT_ACCESS);
+    history::WebHistoryService* web_history_service_ =
+        ios::WebHistoryServiceFactory::GetForBrowserState(_mainBrowserState);
+
     _historyAPI =
-        [[BraveHistoryAPI alloc] initWithBrowserState:_mainBrowserState];
+        [[BraveHistoryAPI alloc] initWithHistoryService:history_service_ webHistoryService: web_history_service_];
   }
   return _historyAPI;
 }
 
 - (BraveSyncProfileService*)syncProfileService {
   if (!_syncProfileService) {
+    syncer::SyncService* sync_service_ = ProfileSyncServiceFactory::GetForBrowserState(_mainBrowserState);
     _syncProfileService = [[BraveSyncProfileService alloc]
-        initWithBrowserState:_mainBrowserState];
+        initWithProfileSyncService: sync_service_];
   }
   return _syncProfileService;
 }
-
 @end

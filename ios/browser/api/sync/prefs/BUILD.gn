@@ -12,7 +12,7 @@ source_set("prefs") {
   sources = [
     "brave_sync_profile_service.h",
     "brave_sync_profile_service.mm",
-    "brave_sync_profile_service_private.h",
+    "brave_sync_profile_service+private.h",
   ]
 
   deps = [

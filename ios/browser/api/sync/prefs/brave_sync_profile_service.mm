@@ -78,14 +78,22 @@ BraveSyncUserSelectableTypes options_from_user_types(
 
 @implementation BraveSyncProfileService
 
-- (instancetype)initWithBrowserState:(ChromeBrowserState*)state {
+- (instancetype)initWithProfileSyncService:(syncer::SyncService*)syncService {
   if ((self = [super init])) {
     DCHECK_CURRENTLY_ON(web::WebThread::UI);
-    sync_service_ = ProfileSyncServiceFactory::GetForBrowserState(state);
-    DCHECK(sync_service_);
+    sync_service_ = syncService;
   }
   return self;
 }
+
+// - (instancetype)initWithBrowserState:(ChromeBrowserState*)state {
+//   if ((self = [super init])) {
+//     DCHECK_CURRENTLY_ON(web::WebThread::UI);
+//     sync_service_ = ProfileSyncServiceFactory::GetForBrowserState(state);
+//     DCHECK(sync_service_);
+//   }
+//   return self;
+// }
 
 - (bool)isSyncFeatureActive {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);

@@ -104,13 +104,12 @@
 
 @implementation BraveHistoryAPI
 
-- (instancetype)initWithBrowserState:(ChromeBrowserState*)state {
+- (instancetype)initWithHistoryService:(history::HistoryService*)historyService 
+    webHistoryService:(history::WebHistoryService*)webHistoryService {
   if ((self = [super init])) {
-    history_service_ = ios::HistoryServiceFactory::GetForBrowserState(
-        state, ServiceAccessType::EXPLICIT_ACCESS);
-    web_history_service_ =
-        ios::WebHistoryServiceFactory::GetForBrowserState(state);
-    DCHECK(history_service_);
+    DCHECK_CURRENTLY_ON(web::WebThread::UI);
+    history_service_ = historyService;
+    web_history_service_ = webHistoryService;
   }
   return self;
 }

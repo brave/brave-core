@@ -12,11 +12,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-class ChromeBrowserState;
+namespace history {
+  class HistoryService;
+  class WebHistoryService;
+}
 
-OBJC_EXPORT
 @interface BraveHistoryAPI (Private)  // NOLINT
-- (instancetype)initWithBrowserState:(ChromeBrowserState*)state;
+- (instancetype)initWithHistoryService:(history::HistoryService*)historyService 
+    webHistoryService:(history::WebHistoryService*)webHistoryService;
 @end
 
 NS_ASSUME_NONNULL_END
