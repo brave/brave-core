@@ -37,7 +37,7 @@ NS_SWIFT_NAME(BraveHistoryAPI)
 OBJC_EXPORT
 @interface BraveHistoryAPI : NSObject
 
-@property(nonatomic, readonly) bool isLoaded;
+@property(nonatomic, readonly) bool isBackendLoaded;
 
 - (id<HistoryServiceListener>)addObserver:(id<HistoryServiceObserver>)observer;
 - (void)removeObserver:(id<HistoryServiceListener>)observer;

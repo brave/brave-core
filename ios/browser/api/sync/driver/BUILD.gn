@@ -26,8 +26,5 @@ source_set("driver") {
     "//ios/web/public/thread",
   ]
 
-  frameworks = [
-    "Foundation.framework",
-    "UIKit.framework",
-  ]
+  frameworks = [ "Foundation.framework" ]
 }

@@ -25,6 +25,7 @@ class HistoryServiceListenerIOS : public history::HistoryServiceObserver {
   ~HistoryServiceListenerIOS() override;
 
  private:
+  // HistoryServiceListener implementation.
   void OnHistoryServiceLoaded(history::HistoryService* service) override;
   void HistoryServiceBeingDeleted(history::HistoryService* service) override;
   void OnURLVisited(history::HistoryService* service,
@@ -38,7 +39,7 @@ class HistoryServiceListenerIOS : public history::HistoryServiceObserver {
                      const history::DeletionInfo& deletion_info) override;
 
   id<HistoryServiceObserver> observer_;
-  history::HistoryService* service_;
+  history::HistoryService* service_;  // NOT OWNED
 };
 
 }  // namespace ios

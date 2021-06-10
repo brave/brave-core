@@ -80,7 +80,7 @@
 }
 
 - (void)setDateAdded:(NSDate*)dateAdded {
-  date_added_ = base::Time::FromDoubleT([dateAdded timeIntervalSince1970]);
+  date_added_ = base::Time::FromNSDate(dateAdded);
 }
 
 - (NSDate*)dateAdded {
@@ -128,7 +128,7 @@
   [observer destroy];
 }
 
-- (bool)isLoaded {
+- (bool)isBackendLoaded {
   // Triggers backend to load if it hasn't already, and then returns whether
   // it's finished loading.
   return history_service_->BackendLoaded();
