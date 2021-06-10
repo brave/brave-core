@@ -96,6 +96,10 @@ public class BravePrivacySettings extends PrivacySettings {
 
     };
 
+    private final int STRICT = 0;
+    private final int STANDARD = 1;
+    private final int ALLOW = 2;
+
     private final PrefService mPrefServiceBridge = UserPrefs.get(Profile.getLastUsedRegularProfile());
     private final ChromeManagedPreferenceDelegate mManagedPreferenceDelegate =
             createManagedPreferenceDelegate();
@@ -344,44 +348,43 @@ public class BravePrivacySettings extends PrivacySettings {
             mBlockScriptsPref.setChecked(false);
         }
 
-
-        if (blockAdTrackersPref == 0) {
+        if (blockAdTrackersPref == STRICT) {
             mAdsTrakersBlockPref.setCheckedIndex(0);
             mAdsTrakersBlockPref.setSummary(
                     getActivity().getResources().getString(R.string.block_trackers_ads_option_1));
-        } else if (blockAdTrackersPref == 1) {
+        } else if (blockAdTrackersPref == STANDARD) {
             mAdsTrakersBlockPref.setCheckedIndex(1);
             mAdsTrakersBlockPref.setSummary(
                     getActivity().getResources().getString(R.string.block_trackers_ads_option_2));
-        } else if (blockAdTrackersPref == 2) {
+        } else if (blockAdTrackersPref == ALLOW) {
             mAdsTrakersBlockPref.setCheckedIndex(2);
             mAdsTrakersBlockPref.setSummary(
                     getActivity().getResources().getString(R.string.block_trackers_ads_option_3));
         }
 
-        if (cookiesBlockPref == 0) {
+        if (cookiesBlockPref == STRICT) {
             mBlockCrosssiteCookies.setCheckedIndex(0);
             mBlockCrosssiteCookies.setSummary(
                     getActivity().getResources().getString(R.string.block_cookies_option_1));
-        } else if (cookiesBlockPref == 1) {
+        } else if (cookiesBlockPref == STANDARD) {
             mBlockCrosssiteCookies.setCheckedIndex(1);
             mBlockCrosssiteCookies.setSummary(
                     getActivity().getResources().getString(R.string.block_cross_site_cookies));
-        } else if (cookiesBlockPref == 2) {
+        } else if (cookiesBlockPref == ALLOW) {
             mBlockCrosssiteCookies.setCheckedIndex(2);
             mBlockCrosssiteCookies.setSummary(
                     getActivity().getResources().getString(R.string.block_cookies_option_3));
         }
 
-        if (fingerprintingPref == 0) {
+        if (fingerprintingPref == STRICT) {
             mFingerprintingProtectionPref.setCheckedIndex(0);
             mFingerprintingProtectionPref.setSummary(
                     getActivity().getResources().getString(R.string.block_fingerprinting_option_1));
-        } else if (fingerprintingPref == 1) {
+        } else if (fingerprintingPref == STANDARD) {
             mFingerprintingProtectionPref.setCheckedIndex(1);
             mFingerprintingProtectionPref.setSummary(
                     getActivity().getResources().getString(R.string.block_fingerprinting_option_2));
-        } else if (fingerprintingPref == 2) {
+        } else if (fingerprintingPref == ALLOW) {
             mFingerprintingProtectionPref.setCheckedIndex(2);
             mFingerprintingProtectionPref.setSummary(
                     getActivity().getResources().getString(R.string.block_fingerprinting_option_3));
