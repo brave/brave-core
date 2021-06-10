@@ -46,7 +46,6 @@ function Container (props: Props) {
   const [selectedAccounts, setSelectedAccounts] = React.useState<WalletAccountType[]>([])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
   const [walletConnected, setWalletConnected] = React.useState<boolean>(true)
-  const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
   const toggleConnected = () => {
     setWalletConnected(!walletConnected)
   }
@@ -83,14 +82,15 @@ function Container (props: Props) {
       props.walletPanelActions.cancelConnectToSite()
     }
   }
-  // Need to wire up incorrect password logic
   const unlockWallet = () => {
-    // Logic here to setHassPasswordError if password was incorrect
     props.walletActions.unlockWallet({ password: inputValue })
+    setInputValue('')
   }
   const handlePasswordChanged = (value: string) => {
-    setHasPasswordError(false)
     setInputValue(value)
+    if (props.wallet.hasIncorrectPassword) {
+      props.walletActions.hasIncorrectPassword(false)
+    }
   }
   const onRestore = () => {
     props.walletPanelActions.restoreWallet()
@@ -137,7 +137,7 @@ function Container (props: Props) {
     return (
       <StyledExtensionWrapper>
         <LockPanel
-          hasPasswordError={hasPasswordError}
+          hasPasswordError={props.wallet.hasIncorrectPassword}
           onSubmit={unlockWallet}
           disabled={inputValue === ''}
           onPasswordChanged={handlePasswordChanged}

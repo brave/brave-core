@@ -122,6 +122,7 @@ export interface WalletState {
   isWalletLocked: boolean
   favoriteApps: AppObjectType[]
   isWalletBackedUp: boolean
+  hasIncorrectPassword: boolean
   accounts: WalletAccountType[]
 }
 
@@ -157,10 +158,14 @@ export interface WalletInfo {
   accounts: string[]
 }
 
+export interface UnlockWalletReturnInfo {
+  isWalletUnlocked: boolean
+}
+
 export interface WalletAPIHandler {
   getWalletInfo: () => Promise<WalletInfo>
   lockWallet: () => Promise<void>
-  unlockWallet: (password: string) => Promise<void>
+  unlockWallet: (password: string) => Promise<UnlockWalletReturnInfo>
   addFavoriteApp: (appItem: AppObjectType) => Promise<void>
   removeFavoriteApp: (appItem: AppObjectType) => Promise<void>
 }
