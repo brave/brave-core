@@ -65,8 +65,10 @@ struct MenuItemButton: View {
 class MenuViewController: UINavigationController, UIPopoverPresentationControllerDelegate {
     
     private var menuNavigationDelegate: MenuNavigationControllerDelegate?
+    private let initialHeight: CGFloat
     
-    init<MenuContent: View>(@ViewBuilder content: (MenuViewController) -> MenuContent) {
+    init<MenuContent: View>(initialHeight: CGFloat, @ViewBuilder content: (MenuViewController) -> MenuContent) {
+        self.initialHeight = initialHeight
         super.init(nibName: nil, bundle: nil)
         viewControllers = [MenuHostingController(content: content(self))]
         menuNavigationDelegate = MenuNavigationControllerDelegate(panModal: self)
@@ -199,7 +201,7 @@ extension MenuViewController: PanModalPresentable {
         .maxHeight
     }
     var shortFormHeight: PanModalHeight {
-        isPresentingInnerMenu ? .maxHeight : .contentHeight(370)
+        isPresentingInnerMenu ? .maxHeight : .contentHeight(initialHeight)
     }
     var allowsExtendedPanScrolling: Bool {
         true

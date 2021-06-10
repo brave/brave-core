@@ -516,7 +516,8 @@ extension BrowserViewController: ToolbarDelegate {
         if let url = selectedTabURL, let tab = tabManager.selectedTab {
             activities = shareActivities(for: url, tab: tab, sourceView: view, sourceRect: self.view.convert(self.topToolbar.menuButton.frame, from: self.topToolbar.menuButton.superview), arrowDirection: .up)
         }
-        let menuController = MenuViewController(content: { menuController in
+        let initialHeight: CGFloat = selectedTabURL != nil ? 470 : 370
+        let menuController = MenuViewController(initialHeight: initialHeight, content: { menuController in
             VStack(spacing: 6) {
                 featuresMenuSection(menuController)
                 Divider()
