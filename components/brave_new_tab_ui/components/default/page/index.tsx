@@ -276,17 +276,6 @@ export const FooterContent = styled('div')`
   }
 `
 
-export const VisitableBackground = styled('a')`
-  z-index: -1;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: block;
-  cursor: pointer;
-`
-
 function getPageBackground (p: HasImageProps) {
   // Page background is duplicated since a backdrop-filter's
   // ancestor which has blur must also have background.

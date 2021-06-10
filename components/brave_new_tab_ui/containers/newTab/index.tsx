@@ -1153,13 +1153,6 @@ class NewTabPage extends React.Component<Props, State> {
             <BraveTodayHint />
           </Page.GridItemNavigationBraveToday>
           }
-          {isShowingBrandedWallpaper && newTabData.brandedWallpaperData &&
-          newTabData.brandedWallpaperData.logo &&
-          <Page.VisitableBackground
-            href={newTabData.brandedWallpaperData.logo.destinationUrl}
-            onClick={this.onClickLogo}
-          />
-          }
         </Page.Page>
         { newTabData.showToday &&
         <BraveToday
