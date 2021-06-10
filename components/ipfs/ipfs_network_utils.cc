@@ -18,27 +18,21 @@
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "net/base/mime_util.h"
+#include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+
+#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
 #include "storage/browser/blob/blob_data_builder.h"
 #include "storage/browser/blob/blob_impl.h"
 #include "storage/browser/blob/blob_storage_context.h"
 #include "third_party/blink/public/mojom/blob/serialized_blob.mojom.h"
+#endif
 
 namespace {
-
-struct ImportFileInfo {
-  ImportFileInfo(base::FilePath full_path,
-                 base::FileEnumerator::FileInfo information) {
-    path = full_path;
-    info = information;
-  }
-  base::FilePath path;
-  base::FileEnumerator::FileInfo info;
-};
-
 net::NetworkTrafficAnnotationTag GetIpfsNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("ipfs_service", R"(
           semantics {
@@ -61,6 +55,17 @@ net::NetworkTrafficAnnotationTag GetIpfsNetworkTrafficAnnotationTag() {
           }
         )");
 }
+
+#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+struct ImportFileInfo {
+  ImportFileInfo(base::FilePath full_path,
+                 base::FileEnumerator::FileInfo information) {
+    path = full_path;
+    info = information;
+  }
+  base::FilePath path;
+  base::FileEnumerator::FileInfo info;
+};
 
 bool GetRelativePathComponent(const base::FilePath& parent,
                               const base::FilePath& child,
@@ -159,6 +164,7 @@ std::unique_ptr<storage::BlobDataBuilder> BuildBlobWithFolder(
 
   return blob_builder;
 }
+#endif
 
 }  // namespace
 
@@ -182,6 +188,7 @@ std::unique_ptr<network::SimpleURLLoader> CreateURLLoader(
   return url_loader;
 }
 
+#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
 std::unique_ptr<network::ResourceRequest> CreateResourceRequest(
     BlobBuilderCallback blob_builder_callback,
     const std::string& content_type,
@@ -327,5 +334,5 @@ void CreateRequestForText(const std::string& text,
                      content_type, context_factory),
       std::move(request_callback));
 }
-
+#endif
 }  // namespace ipfs
