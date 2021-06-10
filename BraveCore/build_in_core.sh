@@ -88,13 +88,13 @@ bc_framework_args=""
 mc_framework_args=""
 
 if [ "$build_simulator" = 1 ]; then
-  npm run build -- $release_flag --target_os=ios
+  npm run build -- $release_flag --target_os=ios --auto_gn_gen
   bc_framework_args="-framework $sim_dir/BraveRewards.framework -debug-symbols $(pwd)/$sim_dir/BraveRewards.dSYM" 
   mc_framework_args="-framework $sim_dir/MaterialComponents.framework"
 fi
 
 if [ "$build_device" = 1 ]; then
-  npm run build -- $release_flag --target_os=ios --target_arch=arm64
+  npm run build -- $release_flag --target_os=ios --target_arch=arm64 --auto_gn_gen
   bc_framework_args="$bc_framework_args -framework $device_dir/BraveRewards.framework -debug-symbols $(pwd)/$device_dir/BraveRewards.dSYM" 
   mc_framework_args="$mc_framework_args -framework $device_dir/MaterialComponents.framework"
 fi
