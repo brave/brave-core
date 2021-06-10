@@ -18,6 +18,7 @@ std::unique_ptr<base::Value> FormProviderResponse(ProviderErrors code,
                                                   const std::string& message);
 std::unique_ptr<base::Value> FormProviderResponse(
     const std::string& controller_response,
+    const bool send_async,
     bool* reject);
 std::string FormProviderErrorResponse(const std::string& controller_response);
 
