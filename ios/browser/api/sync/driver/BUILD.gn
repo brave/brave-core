@@ -20,9 +20,6 @@ source_set("driver") {
     "//components/sync/base",
     "//components/sync/driver",
     "//components/sync_device_info",
-    "//ios/chrome/browser",
-    "//ios/chrome/browser/browser_state",
-    "//ios/chrome/browser/sync",
     "//ios/web/public/thread",
   ]
 
