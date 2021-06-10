@@ -11,7 +11,8 @@ import { WalletCreatedPayloadType, RecoveryWordsAvailablePayloadType } from '../
 
 const defaultState: PageState = {
   hasInitialized: false,
-  showRecoveryPhrase: false
+  showRecoveryPhrase: false,
+  invalidMnemonic: false
 }
 
 const reducer = createReducer<PageState>({}, defaultState)
@@ -49,6 +50,13 @@ reducer.on(Actions.showRecoveryPhrase, (state: PageState, payload: boolean) => {
   return {
     ...state,
     showRecoveryPhrase: payload
+  }
+})
+
+reducer.on(Actions.hasMnemonicError, (state: PageState, payload: boolean) => {
+  return {
+    ...state,
+    invalidMnemonic: payload
   }
 })
 

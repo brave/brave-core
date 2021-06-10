@@ -39,7 +39,11 @@ handler.on(WalletPageActions.createWallet.getType(), async (store, payload: Crea
 
 handler.on(WalletPageActions.restoreWallet.getType(), async (store, payload: RestoreWalletPayloadType) => {
   const apiProxy = await getAPIProxy()
-  await apiProxy.restoreWallet(payload.mnemonic, payload.password)
+  const result = await apiProxy.restoreWallet(payload.mnemonic, payload.password)
+  if (!result.isValidMnemonic) {
+    store.dispatch(WalletPageActions.hasMnemonicError(!result.isValidMnemonic))
+    return
+  }
   await apiProxy.notifyWalletBackupComplete()
   await refreshWalletInfo(store)
 })

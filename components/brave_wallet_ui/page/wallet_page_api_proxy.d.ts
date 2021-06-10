@@ -13,11 +13,15 @@ export interface GetRecoveryWordsReturnInfo {
   mnemonic: string
 }
 
+export interface RestoreWalletReturnInfo {
+  isValidMnemonic: boolean
+}
+
 export default class APIProxy {
   static getInstance: () => APIProxy
   getWalletHandler: () => WalletAPIHandler
   createWallet: (password: string) => Promise<CreateWalletReturnInfo>
-  restoreWallet: (mnemonic: string, password: string) => Promise<void>
+  restoreWallet: (mnemonic: string, password: string) => Promise<RestoreWalletReturnInfo>
   getRecoveryWords: () => Promise<GetRecoveryWordsReturnInfo>
   notifyWalletBackupComplete: () => Promise<void>
 }

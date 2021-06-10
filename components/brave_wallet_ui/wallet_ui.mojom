@@ -33,7 +33,7 @@ interface PanelHandler {
 interface PageHandler {
   // Create a wallet via the Keyring controller
   CreateWallet(string password) => (string mnemonic);
-  RestoreWallet(string mnemonic, string password);
+  RestoreWallet(string mnemonic, string password) => (bool isValidMnemonic);
   GetRecoveryWords() => (string mnemonic);
 };
 

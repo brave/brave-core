@@ -42,6 +42,7 @@ type Props = {
 }
 
 function Container (props: Props) {
+  const { invalidMnemonic } = props.page
   const [view, setView] = React.useState<NavTypes>('crypto')
   const [inputValue, setInputValue] = React.useState<string>('')
 
@@ -94,6 +95,14 @@ function Container (props: Props) {
     }
   }
 
+  const restorError = React.useMemo(() => {
+    if (invalidMnemonic) {
+      setTimeout(function () { props.walletPageActions.hasMnemonicError(false) }, 5000)
+      return true
+    }
+    return false
+  }, [invalidMnemonic])
+
   const recoveryPhrase = (props.page.mnemonic || '').split(' ')
   if (!props.wallet.isWalletCreated) {
     return (
@@ -103,6 +112,7 @@ function Container (props: Props) {
           onPasswordProvided={passwordProvided}
           onSubmit={completeWalletSetup}
           onRestore={restoreWallet}
+          hasRestoreError={restorError}
         />
       </WalletPageLayout>
     )
