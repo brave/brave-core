@@ -33,7 +33,5 @@ source_set("brave_wayback_machine") {
   # brave_wayback_machine_infobar_contents_view.cc.
   # However, this buildflags.h sometimes not generated when
   # brave_wayback_machine_infobar_contents_view.cc is compiled.
-  deps += [
-    "//chrome/common:buildflags",
-  ]
+  deps += [ "//chrome/common:buildflags" ]
 }

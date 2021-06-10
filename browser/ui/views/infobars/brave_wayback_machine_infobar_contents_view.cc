@@ -186,54 +186,40 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
                   0));
   AddChildView(label);
 
-  auto dont_ask_button = std::make_unique<views::MdTextButton>(
+  dont_ask_button_ = AddChildView(std::make_unique<views::MdTextButton>(
       base::BindRepeating(
           &BraveWaybackMachineInfoBarContentsView::DontAskButtonPressed,
           base::Unretained(this)),
-      l10n_util::GetStringUTF16(IDS_BRAVE_WAYBACK_MACHINE_DONT_ASK_AGAIN_TEXT));
-  dont_ask_button_ = dont_ask_button.get();
+      l10n_util::GetStringUTF16(
+          IDS_BRAVE_WAYBACK_MACHINE_DONT_ASK_AGAIN_TEXT)));
   views_visible_before_checking_.push_back(dont_ask_button_);
 
   fetch_url_button_ =
-      new BraveWaybackMachineInfoBarButtonContainer(base::BindRepeating(
-          &BraveWaybackMachineInfoBarContentsView::FetchURLButtonPressed,
-          base::Unretained(this)));
+      AddChildView(std::make_unique<BraveWaybackMachineInfoBarButtonContainer>(
+          base::BindRepeating(
+              &BraveWaybackMachineInfoBarContentsView::FetchURLButtonPressed,
+              base::Unretained(this))));
   views_visible_before_checking_.push_back(fetch_url_button_);
 
+  const gfx::Insets first_button_margin(
+      ChromeLayoutProvider::Get()->GetDistanceMetric(
+          DISTANCE_TOAST_CONTROL_VERTICAL),
+      ChromeLayoutProvider::Get()->GetDistanceMetric(
+          DISTANCE_RELATED_CONTROL_HORIZONTAL_SMALL));
+
+  const gfx::Insets second_button_margin(
+      ChromeLayoutProvider::Get()->GetDistanceMetric(
+          DISTANCE_TOAST_CONTROL_VERTICAL),
+      0);
+
   if (views::PlatformStyle::kIsOkButtonLeading) {
-    fetch_url_button_->SetProperty(
-        views::kMarginsKey,
-        gfx::Insets(ChromeLayoutProvider::Get()->GetDistanceMetric(
-                        DISTANCE_TOAST_CONTROL_VERTICAL),
-                    ChromeLayoutProvider::Get()->GetDistanceMetric(
-                        DISTANCE_RELATED_CONTROL_HORIZONTAL_SMALL)));
-    fetch_url_button_->SizeToPreferredSize();
-    AddChildView(fetch_url_button_);
-
-    dont_ask_button_->SetProperty(
-        views::kMarginsKey,
-        gfx::Insets(ChromeLayoutProvider::Get()->GetDistanceMetric(
-                        DISTANCE_TOAST_CONTROL_VERTICAL),
-                    0));
-    dont_ask_button_->SizeToPreferredSize();
-    AddChildView(dont_ask_button.release());
+    // Move |dont_ask_button_| at the end.
+    ReorderChildView(dont_ask_button_, -1);
+    fetch_url_button_->SetProperty(views::kMarginsKey, first_button_margin);
+    dont_ask_button_->SetProperty(views::kMarginsKey, second_button_margin);
   } else {
-    dont_ask_button_->SetProperty(
-        views::kMarginsKey,
-        gfx::Insets(ChromeLayoutProvider::Get()->GetDistanceMetric(
-                        DISTANCE_TOAST_CONTROL_VERTICAL),
-                    ChromeLayoutProvider::Get()->GetDistanceMetric(
-                        DISTANCE_RELATED_CONTROL_HORIZONTAL_SMALL)));
-    dont_ask_button_->SizeToPreferredSize();
-    AddChildView(dont_ask_button.release());
-
-    fetch_url_button_->SetProperty(
-        views::kMarginsKey,
-        gfx::Insets(ChromeLayoutProvider::Get()->GetDistanceMetric(
-                        DISTANCE_TOAST_CONTROL_VERTICAL),
-                    0));
-    fetch_url_button_->SizeToPreferredSize();
-    AddChildView(fetch_url_button_);
+    dont_ask_button_->SetProperty(views::kMarginsKey, first_button_margin);
+    fetch_url_button_->SetProperty(views::kMarginsKey, second_button_margin);
   }
 
   UpdateChildrenVisibility(true);
