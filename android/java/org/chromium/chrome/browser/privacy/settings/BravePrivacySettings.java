@@ -142,6 +142,9 @@ public class BravePrivacySettings extends PrivacySettings {
         mUstoppableDomains = (Preference) findPreference(PREF_UNSTOPPABLE_DOMAINS);
         mUstoppableDomains.setOnPreferenceChangeListener(this);
 
+        mIpfsGatewayPref = (ChromeSwitchPreference) findPreference(PREF_IPFS_GATEWAY);
+        mIpfsGatewayPref.setOnPreferenceChangeListener(this);
+
         mBlockCrosssiteCookies =
                 (BraveDialogPreference) findPreference(PREF_BLOCK_CROSS_SITE_COOKIES);
         mBlockCrosssiteCookies.setOnPreferenceChangeListener(this);
