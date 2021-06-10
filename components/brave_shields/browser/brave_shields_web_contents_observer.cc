@@ -5,11 +5,9 @@
 
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 
-#include <map>
 #include <memory>
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/pref_names.h"
@@ -47,7 +45,6 @@ using extensions::Event;
 using extensions::EventRouter;
 #endif
 
-using content::Referrer;
 using content::RenderFrameHost;
 using content::WebContents;
 
@@ -84,11 +81,6 @@ void UpdateContentSettingsToRendererFrames(content::WebContents* web_contents) {
 
 namespace brave_shields {
 
-base::Lock BraveShieldsWebContentsObserver::frame_data_map_lock_;
-
-std::map<int, GURL>
-    BraveShieldsWebContentsObserver::frame_tree_node_id_to_tab_url_;
-
 BraveShieldsWebContentsObserver::~BraveShieldsWebContentsObserver() {
 }
 
@@ -107,17 +99,7 @@ void BraveShieldsWebContentsObserver::RenderFrameCreated(
   WebContents* web_contents = WebContents::FromRenderFrameHost(rfh);
   if (web_contents) {
     UpdateContentSettingsToRendererFrames(web_contents);
-
-    base::AutoLock lock(frame_data_map_lock_);
-    frame_tree_node_id_to_tab_url_[rfh->GetFrameTreeNodeId()] =
-        web_contents->GetURL();
   }
-}
-
-void BraveShieldsWebContentsObserver::RenderFrameDeleted(
-    RenderFrameHost* rfh) {
-  base::AutoLock lock(frame_data_map_lock_);
-  frame_tree_node_id_to_tab_url_.erase(rfh->GetFrameTreeNodeId());
 }
 
 void BraveShieldsWebContentsObserver::RenderFrameHostChanged(
@@ -128,31 +110,6 @@ void BraveShieldsWebContentsObserver::RenderFrameHostChanged(
   if (new_host) {
     RenderFrameCreated(new_host);
   }
-}
-
-void BraveShieldsWebContentsObserver::DidFinishNavigation(
-    content::NavigationHandle* navigation_handle) {
-  RenderFrameHost* main_frame = web_contents()->GetMainFrame();
-  if (!web_contents() || !main_frame) {
-    return;
-  }
-  int tree_node_id = main_frame->GetFrameTreeNodeId();
-
-  base::AutoLock lock(frame_data_map_lock_);
-  frame_tree_node_id_to_tab_url_[tree_node_id] = web_contents()->GetURL();
-}
-
-// static
-GURL BraveShieldsWebContentsObserver::GetTabURLFromRenderFrameInfo(
-    int render_frame_tree_node_id) {
-  base::AutoLock lock(frame_data_map_lock_);
-  if (-1 != render_frame_tree_node_id) {
-    auto iter = frame_tree_node_id_to_tab_url_.find(render_frame_tree_node_id);
-    if (iter != frame_tree_node_id_to_tab_url_.end()) {
-      return iter->second;
-    }
-  }
-  return GURL();
 }
 
 bool BraveShieldsWebContentsObserver::IsBlockedSubresource(

@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/macros.h"
-#include "base/synchronization/lock.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -47,12 +46,9 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
  protected:
   // content::WebContentsObserver overrides.
   void RenderFrameCreated(content::RenderFrameHost* host) override;
-  void RenderFrameDeleted(content::RenderFrameHost* render_frame_host) override;
   void RenderFrameHostChanged(content::RenderFrameHost* old_host,
                               content::RenderFrameHost* new_host) override;
   void ReadyToCommitNavigation(
-      content::NavigationHandle* navigation_handle) override;
-  void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 
   // Invoked if an IPC message is coming from a specific RenderFrameHost.
@@ -64,12 +60,6 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
   void OnFingerprintingBlockedWithDetail(
       content::RenderFrameHost* render_frame_host,
       const std::u16string& details);
-
-  // TODO(iefremov): Refactor this away or at least put into base::NoDestructor.
-  // Protects global maps below from being concurrently written on the UI thread
-  // and read on the IO thread.
-  static base::Lock frame_data_map_lock_;
-  static std::map<int, GURL> frame_tree_node_id_to_tab_url_;
 
  private:
   friend class content::WebContentsUserData<BraveShieldsWebContentsObserver>;
