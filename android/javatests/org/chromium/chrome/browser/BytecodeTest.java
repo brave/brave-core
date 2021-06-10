@@ -229,6 +229,9 @@ public class BytecodeTest {
                         "updateNewTabButtonVisibility", false, null));
         Assert.assertTrue(
                 methodExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone",
+                        "getToolbarColorForCurrentState", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone",
                         "shouldShowIncognitoToggle", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/download/MimeUtils",
                 "canAutoOpenMimeType", false, null));
@@ -466,6 +469,8 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone",
                         "mShouldShowNewTabVariation"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone", "mIsIncognito"));
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/app/ChromeActivity",
                 "mBrowserControlsManagerSupplier"));
         Assert.assertTrue(

@@ -144,8 +144,10 @@
     *** mToggleTabStackButton;
     *** mMenuButton;
     *** mShouldShowNewTabVariation;
+    *** mIsIncognito;
     *** updateNewTabButtonVisibility(...);
     *** shouldShowIncognitoToggle(...);
+    *** getToolbarColorForCurrentState(...);
 }
 
 -keep class org.chromium.chrome.browser.download.MimeUtils {
