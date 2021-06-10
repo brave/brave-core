@@ -295,6 +295,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   toggleShowFTX = () => {
+    this.props.actions.ftx.disconnect()
     this.props.saveShowFTX(!this.props.newTabData.showFTX)
   }
 
