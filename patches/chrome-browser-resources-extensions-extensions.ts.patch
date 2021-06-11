@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/resources/extensions/extensions.js b/chrome/browser/resources/extensions/extensions.js
+diff --git a/chrome/browser/resources/extensions/extensions.ts b/chrome/browser/resources/extensions/extensions.ts
 index 5836804c9e488bb23869d05881bd55cd7ccd9f52..928974d8d5dc367276527ae521b26fc3bb7cb226 100644
---- a/chrome/browser/resources/extensions/extensions.js
-+++ b/chrome/browser/resources/extensions/extensions.js
+--- a/chrome/browser/resources/extensions/extensions.ts
++++ b/chrome/browser/resources/extensions/extensions.ts
 @@ -2,6 +2,7 @@
  // Use of this source code is governed by a BSD-style license that can be
  // found in the LICENSE file.
