@@ -12,6 +12,9 @@
 #include "base/strings/sys_string_conversions.h"
 #include "base/guid.h"
 #include "base/bind.h"
+#include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
+#include "base/sequenced_task_runner.h"
 
 #include "components/browsing_data/core/browsing_data_utils.h"
 #include "components/history/core/browser/browsing_history_service.h"
@@ -30,6 +33,7 @@
 #include "ios/chrome/browser/history/web_history_service_factory.h"
 #include "ios/chrome/browser/sync/profile_sync_service_factory.h"
 #include "ios/web/public/thread/web_thread.h"
+#include "ios/web/public/thread/web_task_traits.h"
 
 #include "net/base/mac/url_conversions.h"
 #include "url/gurl.h"
@@ -226,27 +230,43 @@
 
 - (void)searchWithQuery:(NSString*)query maxCount:(NSUInteger)maxCount
                                        completion:(void(^)(NSArray<IOSHistoryNode*>* historyResults))completion {
-  DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  DCHECK(history_service_->backend_loaded());
+  __weak BraveHistoryAPI* weak_history_api = self;
 
-  // Check Query is empty for Fetching all history
-  // The entered query can be nil or empty String
-  BOOL fetchAllHistory = !query || [query length] > 0;
-  std::u16string queryString =
-        fetchAllHistory ? std::u16string() : base::SysNSStringToUTF16(query);
+  auto search_with_query =
+      ^(NSString* query, NSUInteger maxCount,
+        void(^completion)(NSArray<IOSHistoryNode*>* historyResults)) {
 
-  // Creating fetch options for querying history
-  history::QueryOptions options;
-  options.duplicate_policy =
-      fetchAllHistory ? history::QueryOptions::REMOVE_DUPLICATES_PER_DAY
-                      : history::QueryOptions::REMOVE_ALL_DUPLICATES;
-  options.max_count = fetchAllHistory ? 0 : static_cast<int>(maxCount);
-  options.matching_algorithm =
-      query_parser::MatchingAlgorithm::ALWAYS_PREFIX_SEARCH;
+        BraveHistoryAPI* history_api = weak_history_api;
+        if (!history_api) {
+          completion(@[]);
+          return;
+        }
 
-  _query_completion = completion;
+        DCHECK(history_api->history_service_->backend_loaded());
 
-  browsing_history_service_->QueryHistory(queryString, options);
+        // Check Query is empty for Fetching all history
+        // The entered query can be nil or empty String
+        BOOL fetchAllHistory = !query || [query length] == 0;
+        std::u16string queryString =
+              fetchAllHistory ? std::u16string() : base::SysNSStringToUTF16(query);
+
+        // Creating fetch options for querying history
+        history::QueryOptions options;
+        options.duplicate_policy =
+            fetchAllHistory ? history::QueryOptions::REMOVE_DUPLICATES_PER_DAY
+                            : history::QueryOptions::REMOVE_ALL_DUPLICATES;
+        options.max_count = fetchAllHistory ? 0 : static_cast<int>(maxCount);
+        options.matching_algorithm =
+            query_parser::MatchingAlgorithm::ALWAYS_PREFIX_SEARCH;
+
+        history_api->_query_completion = completion;
+
+        history_api->browsing_history_service_->QueryHistory(queryString, options);
+      };
+
+  base::PostTask(
+      FROM_HERE, {web::WebThread::UI},
+      base::BindOnce(search_with_query, query, maxCount, completion));
 }
 
 #pragma mark - BraveHistoryDriverDelegate
