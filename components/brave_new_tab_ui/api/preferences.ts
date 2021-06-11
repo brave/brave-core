@@ -76,12 +76,8 @@ export function saveIsBraveTodayOptedIn (value: boolean): void {
   sendSavePref('isBraveTodayOptedIn', value)
 }
 
-export function saveSetAllStackWidgets (value: boolean): void {
-  sendSavePref('showRewards', value)
-  sendSavePref('showTogether', value)
-  sendSavePref('showBinance', value)
-  sendSavePref('showGemini', value)
-  sendSavePref('showCryptoDotCom', value)
+export function saveSetAllStackWidgets (visible: boolean): void {
+  sendSavePref('hideAllWidgets', !visible)
 }
 
 export function addChangeListener (listener: PreferencesUpdatedHandler): void {
