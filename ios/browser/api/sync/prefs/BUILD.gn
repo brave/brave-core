@@ -6,23 +6,17 @@
 import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
-source_set("sync") {
+source_set("prefs") {
   configs += [ "//build/config/compiler:enable_arc" ]
 
   sources = [
-    "brave_sync_api.h",
-    "brave_sync_api.mm",
-    "brave_sync_worker.cc",
-    "brave_sync_worker.h",
+    "brave_sync_profile_service.h",
+    "brave_sync_profile_service.mm",
   ]
 
   deps = [
-    "prefs",
     "//base",
-    "//brave/components/brave_sync",
-    "//brave/components/brave_sync:crypto",
-    "//brave/components/brave_sync:prefs",
-    "//brave/components/brave_sync:profile_sync_service_helper",
+    "//components/sync/base",
     "//components/sync/driver",
     "//components/sync_device_info",
     "//ios/chrome/browser",
@@ -33,6 +27,6 @@ source_set("sync") {
 
   frameworks = [
     "Foundation.framework",
-    "UIKit.framework",
+    "UIKit.framework"
   ]
 }

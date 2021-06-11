@@ -6,33 +6,33 @@
 import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
-source_set("sync") {
+source_set("history") {
   configs += [ "//build/config/compiler:enable_arc" ]
 
   sources = [
-    "brave_sync_api.h",
-    "brave_sync_api.mm",
-    "brave_sync_worker.cc",
-    "brave_sync_worker.h",
+    "brave_browsing_history_driver.h",
+    "brave_browsing_history_driver.mm",
+    "brave_history_api.h",
+    "brave_history_api.mm",
+    "brave_history_observer.h",
+    "brave_history_observer.mm",
   ]
 
   deps = [
-    "prefs",
     "//base",
-    "//brave/components/brave_sync",
-    "//brave/components/brave_sync:crypto",
-    "//brave/components/brave_sync:prefs",
-    "//brave/components/brave_sync:profile_sync_service_helper",
+    "//components/history/core/browser",
+    "//components/keyed_service/core",
+    "//components/browsing_data/core",
     "//components/sync/driver",
-    "//components/sync_device_info",
-    "//ios/chrome/browser",
     "//ios/chrome/browser/browser_state",
+    "//ios/chrome/browser/browsing_data",
+    "//ios/chrome/browser/history",
     "//ios/chrome/browser/sync",
-    "//ios/web/public/thread",
+    "//ios/chrome/browser",
+    "//net",
+    "//ui/base",
+    "//url",
   ]
 
-  frameworks = [
-    "Foundation.framework",
-    "UIKit.framework",
-  ]
+  frameworks = [ "Foundation.framework" ]
 }

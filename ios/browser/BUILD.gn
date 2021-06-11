@@ -20,6 +20,7 @@ source_set("browser") {
     "api/bookmarks",
     "api/bookmarks/importer",
     "api/bookmarks/exporter",
+    "api/history",
     "api/sync",
     "metrics",
     "//base",
