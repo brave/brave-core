@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/strings/string_util.h"
-#include "base/test/scoped_feature_list.h"
 #include "chrome/browser/ui/test/test_browser_dialog.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h"
@@ -56,7 +55,6 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest {
   ~TabHoverCardBubbleViewBrowserTest() override = default;
 
   void SetUp() override {
-    scoped_feature_list_.InitAndEnableFeature(features::kTabHoverCards);
     DialogBrowserTest::SetUp();
   }
 
@@ -100,7 +98,6 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest {
  private:
   std::unique_ptr<base::AutoReset<gfx::Animation::RichAnimationRenderMode>>
       animation_mode_reset_;
-  base::test::ScopedFeatureList scoped_feature_list_;
 
   DISALLOW_COPY_AND_ASSIGN(TabHoverCardBubbleViewBrowserTest);
 };
