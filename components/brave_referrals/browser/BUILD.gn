@@ -6,9 +6,7 @@ if (is_android) {
 source_set("browser") {
   # Remove when https://github.com/brave/brave-browser/issues/10646 is resolved
   check_includes = false
-  public_deps = [
-    "//brave/components/brave_referrals/buildflags",
-  ]
+  public_deps = [ "//brave/components/brave_referrals/buildflags" ]
 
   if (enable_brave_referrals) {
     sources = [
@@ -45,8 +43,6 @@ source_set("browser") {
 
 if (is_android) {
   generate_jni("jni_headers") {
-    sources = [
-      "//brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java",
-    ]
+    sources = [ "//brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java" ]
   }
 }

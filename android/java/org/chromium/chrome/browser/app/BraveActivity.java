@@ -731,6 +731,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
             if (! TextUtils.isEmpty(open_url)) {
                 openNewOrSelectExistingTab(open_url);
             }
+        } else if (resultCode == RESULT_OK
+                && requestCode == BraveStatsUtil.SHARE_STATS_REQUEST_CODE) {
+            BraveStatsUtil.removeShareStatsFile();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
