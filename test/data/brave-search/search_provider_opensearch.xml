@@ -1,0 +1,6 @@
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+<ShortName>Brave</ShortName>
+<Description>Brave Search: private, independent, open</Description>
+<InputEncoding>UTF-8</InputEncoding>
+<Url type="text/html" method="get" template="https://search.brave.com/search?q={searchTerms}"/>
+</OpenSearchDescription>

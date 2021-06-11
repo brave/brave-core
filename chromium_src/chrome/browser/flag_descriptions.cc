@@ -73,6 +73,12 @@ const char kNativeBraveWalletName[] = "Enable experimental Brave native wallet";
 const char kNativeBraveWalletDescription[] =
     "Experimental native cryptocurrency wallet support without the use of "
     "extensions";
+const char kBraveSearchDefaultAPIName[] =
+    "Enable Brave Search website default search provider API";
+const char kBraveSearchDefaultAPIDescription[] =
+    "Enable javascript API only on "
+    "Brave Search websites which will allow the user to make the search engine "
+    "their default search provider.";
 const char kBraveDecentralizedDnsName[] = "Enable decentralized DNS";
 const char kBraveDecentralizedDnsDescription[] =
     "Enable decentralized DNS support, such as Unstoppable Domains and "
