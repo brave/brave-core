@@ -116,7 +116,7 @@ public class BraveAdsNotificationDialog {
                                     mAdsDialog = null;
                                     BraveAdsNativeHelper.nativeOnCloseAdNotification(
                                             Profile.getLastUsedRegularProfile(), mNotificationId,
-                                            false);
+                                            true);
                                     mNotificationId = null;
                                 } else if (deltaYDp <= MAX_DISTANCE_FOR_TAP
                                         && deltaYDp >= (-1 * MAX_DISTANCE_FOR_TAP)) {
@@ -170,9 +170,9 @@ public class BraveAdsNotificationDialog {
         try {
             if (mNotificationId != null && mNotificationId.equals(notificationId) && mAdsDialog != null) {
                 mAdsDialog.dismiss();
+                mAdsDialog = null;
                 BraveAdsNativeHelper.nativeOnCloseAdNotification(
                         Profile.getLastUsedRegularProfile(), mNotificationId, false);
-                mAdsDialog = null;
             }
         } catch (IllegalArgumentException e) {
             mAdsDialog = null;
