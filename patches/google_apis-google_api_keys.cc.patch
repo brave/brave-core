@@ -1,8 +1,8 @@
 diff --git a/google_apis/google_api_keys.cc b/google_apis/google_api_keys.cc
-index 28774f16e21f0e2871a78d2027c24e4a9b950de0..5a9f318d334ab1b1c9e22d9fb1bf892dfa714fdf 100644
+index da3fb4f261991fcd72d35305d1625f81f3ed3694..690bce99d74b95d3a325ac03f201766069e9b837 100644
 --- a/google_apis/google_api_keys.cc
 +++ b/google_apis/google_api_keys.cc
-@@ -209,6 +209,7 @@ class APIKeyCache {
+@@ -218,6 +218,7 @@ class APIKeyCache {
  #if defined(OS_IOS) || defined(OS_FUCHSIA)
    void set_api_key(const std::string& api_key) { api_key_ = api_key; }
  #endif

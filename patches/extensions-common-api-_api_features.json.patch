@@ -1,5 +1,5 @@
 diff --git a/extensions/common/api/_api_features.json b/extensions/common/api/_api_features.json
-index aa91cd576cfc84f52627415df211706c8d1bf2cc..6901e97add104edcb33d879459776278aae8d245 100644
+index 725c27e6ada9a8f6cf2338921f5f33b51179ee1c..363817f8d6c9aa1cc8894a57b50a55286fac0f0a 100644
 --- a/extensions/common/api/_api_features.json
 +++ b/extensions/common/api/_api_features.json
 @@ -526,6 +526,7 @@
