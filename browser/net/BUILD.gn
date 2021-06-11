@@ -63,6 +63,7 @@ source_set("net") {
     "//brave/extensions:common",
     "//components/content_settings/core/browser",
     "//components/prefs",
+    "//components/proxy_config",
     "//components/user_prefs",
     "//content/public/browser",
     "//content/public/common",
