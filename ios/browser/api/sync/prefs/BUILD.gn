@@ -27,6 +27,6 @@ source_set("prefs") {
 
   frameworks = [
     "Foundation.framework",
-    "UIKit.framework"
+    "UIKit.framework",
   ]
 }

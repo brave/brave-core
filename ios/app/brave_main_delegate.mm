@@ -41,13 +41,11 @@ void BraveMainDelegate::BasicStartupComplete() {
   auto* command_line(base::CommandLine::ForCurrentProcess());
 
   syncer::ModelTypeSet disabledTypes = syncer::ModelTypeSet(
-    // syncer::TYPED_URLS,
-    // syncer::PASSWORDS,
-    syncer::PROXY_TABS,
-    syncer::AUTOFILL,
-    // syncer::PREFERENCES,
-    syncer::READING_LIST,
-    syncer::USER_CONSENTS);
+      // syncer::TYPED_URLS,
+      // syncer::PASSWORDS,
+      syncer::PROXY_TABS, syncer::AUTOFILL,
+      // syncer::PREFERENCES,
+      syncer::READING_LIST, syncer::USER_CONSENTS);
 
   command_line->RemoveSwitch(switches::kDisableSyncTypes);
   command_line->AppendSwitchASCII(switches::kDisableSyncTypes, syncer::ModelTypeSetToString(disabledTypes));

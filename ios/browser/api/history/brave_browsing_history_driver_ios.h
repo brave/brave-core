@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_IOS_BROWSER_API_HISTORY_BRAVE_BROWSING_HISTORY_DRIVER_H_
-#define BRAVE_IOS_BROWSER_API_HISTORY_BRAVE_BROWSING_HISTORY_DRIVER_H_
+#ifndef BRAVE_IOS_BROWSER_API_HISTORY_BRAVE_BROWSING_HISTORY_DRIVER_IOS_H_
+#define BRAVE_IOS_BROWSER_API_HISTORY_BRAVE_BROWSING_HISTORY_DRIVER_IOS_H_
 
 #import <Foundation/Foundation.h>
 #include <vector>
@@ -32,11 +32,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param queryResultsInfo - Detailed Query Results
 /// @param continuationClosure - Pagination lambda
 /// If called, will continue fetching results where last left off.
-- (void)historyQueryWasCompletedWithResults:
-    (const std::vector<history::BrowsingHistoryService::HistoryEntry>&)results
-                   queryResultsInfo:(const history::BrowsingHistoryService::
-                                         QueryResultsInfo&)queryResultsInfo
-                continuationClosure:(base::OnceClosure)continuationClosure;
+- (void)
+    historyQueryWasCompletedWithResults:
+        (const std::vector<history::BrowsingHistoryService::HistoryEntry>&)
+            results
+                       queryResultsInfo:(const history::BrowsingHistoryService::
+                                             QueryResultsInfo&)queryResultsInfo
+                    continuationClosure:(base::OnceClosure)continuationClosure;
 
 /// Tells the consumer that history entries
 /// have been deleted from a different client
@@ -47,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 class BraveBrowsingHistoryDriverIOS : public history::BrowsingHistoryDriver {
  public:
   BraveBrowsingHistoryDriverIOS(ChromeBrowserState* browser_state,
-                             id<BraveHistoryDriverDelegate> delegate);
+                                id<BraveHistoryDriverDelegate> delegate);
   ~BraveBrowsingHistoryDriverIOS() override;
 
  private:
@@ -75,9 +77,8 @@ class BraveBrowsingHistoryDriverIOS : public history::BrowsingHistoryDriver {
   // The current browser state.
   ChromeBrowserState* browser_state_;
   __weak id<BraveHistoryDriverDelegate> delegate_;
-
 };
 
 NS_ASSUME_NONNULL_END
 
-#endif  // BRAVE_IOS_BROWSER_API_HISTORY_BRAVE_BROWSING_HISTORY_DRIVER_H_
+#endif  // BRAVE_IOS_BROWSER_API_HISTORY_BRAVE_BROWSING_HISTORY_DRIVER_IOS_H_

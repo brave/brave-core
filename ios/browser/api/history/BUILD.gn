@@ -20,15 +20,15 @@ source_set("history") {
 
   deps = [
     "//base",
+    "//components/browsing_data/core",
     "//components/history/core/browser",
     "//components/keyed_service/core",
-    "//components/browsing_data/core",
     "//components/sync/driver",
+    "//ios/chrome/browser",
     "//ios/chrome/browser/browser_state",
     "//ios/chrome/browser/browsing_data",
     "//ios/chrome/browser/history",
     "//ios/chrome/browser/sync",
-    "//ios/chrome/browser",
     "//ios/web/public/thread",
     "//net",
     "//ui/base",

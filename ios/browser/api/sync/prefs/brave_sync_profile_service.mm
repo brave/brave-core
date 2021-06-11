@@ -23,22 +23,32 @@
 
 namespace brave_ios {
 namespace {
-std::unordered_map<syncer::UserSelectableType, BraveSyncUserSelectableTypes> mapping = {
-  {syncer::UserSelectableType::kBookmarks, BraveSyncUserSelectableTypes_BOOKMARKS},
-  {syncer::UserSelectableType::kPreferences, BraveSyncUserSelectableTypes_PREFERENCES},
-  {syncer::UserSelectableType::kPasswords, BraveSyncUserSelectableTypes_PASSWORDS},
-  {syncer::UserSelectableType::kAutofill, BraveSyncUserSelectableTypes_AUTOFILL},
-  {syncer::UserSelectableType::kThemes, BraveSyncUserSelectableTypes_THEMES},
-  {syncer::UserSelectableType::kHistory, BraveSyncUserSelectableTypes_HISTORY},
-  {syncer::UserSelectableType::kExtensions, BraveSyncUserSelectableTypes_EXTENSIONS},
-  {syncer::UserSelectableType::kApps, BraveSyncUserSelectableTypes_APPS},
-  {syncer::UserSelectableType::kReadingList, BraveSyncUserSelectableTypes_READING_LIST},
-  {syncer::UserSelectableType::kTabs, BraveSyncUserSelectableTypes_TABS},
-  {syncer::UserSelectableType::kWifiConfigurations, BraveSyncUserSelectableTypes_WIFI_CONFIGURATIONS}
-};
-} // namespace
+std::unordered_map<syncer::UserSelectableType, BraveSyncUserSelectableTypes>
+    mapping = {
+        {syncer::UserSelectableType::kBookmarks,
+         BraveSyncUserSelectableTypes_BOOKMARKS},
+        {syncer::UserSelectableType::kPreferences,
+         BraveSyncUserSelectableTypes_PREFERENCES},
+        {syncer::UserSelectableType::kPasswords,
+         BraveSyncUserSelectableTypes_PASSWORDS},
+        {syncer::UserSelectableType::kAutofill,
+         BraveSyncUserSelectableTypes_AUTOFILL},
+        {syncer::UserSelectableType::kThemes,
+         BraveSyncUserSelectableTypes_THEMES},
+        {syncer::UserSelectableType::kHistory,
+         BraveSyncUserSelectableTypes_HISTORY},
+        {syncer::UserSelectableType::kExtensions,
+         BraveSyncUserSelectableTypes_EXTENSIONS},
+        {syncer::UserSelectableType::kApps, BraveSyncUserSelectableTypes_APPS},
+        {syncer::UserSelectableType::kReadingList,
+         BraveSyncUserSelectableTypes_READING_LIST},
+        {syncer::UserSelectableType::kTabs, BraveSyncUserSelectableTypes_TABS},
+        {syncer::UserSelectableType::kWifiConfigurations,
+         BraveSyncUserSelectableTypes_WIFI_CONFIGURATIONS}};
+}  // namespace
 
-syncer::UserSelectableTypeSet user_types_from_options(BraveSyncUserSelectableTypes options) {
+syncer::UserSelectableTypeSet user_types_from_options(
+    BraveSyncUserSelectableTypes options) {
   syncer::UserSelectableTypeSet results;
   for (auto it = mapping.begin(); it != mapping.end(); ++it) {
     if (options & it->second) {
@@ -48,7 +58,8 @@ syncer::UserSelectableTypeSet user_types_from_options(BraveSyncUserSelectableTyp
   return results;
 }
 
-BraveSyncUserSelectableTypes options_from_user_types(const syncer::UserSelectableTypeSet& types) {
+BraveSyncUserSelectableTypes options_from_user_types(
+    const syncer::UserSelectableTypeSet& types) {
   BraveSyncUserSelectableTypes results = BraveSyncUserSelectableTypes_NONE;
   for (auto it = mapping.begin(); it != mapping.end(); ++it) {
     if (types.Has(it->first)) {
@@ -57,11 +68,12 @@ BraveSyncUserSelectableTypes options_from_user_types(const syncer::UserSelectabl
   }
   return results;
 }
-} // namespace brave_ios
+}  // namespace brave_ios
 
-@interface BraveSyncProfileService() {
+@interface BraveSyncProfileService () {
   syncer::SyncService* sync_service_;
-  std::unordered_map<syncer::UserSelectableType, BraveSyncUserSelectableTypes> type_mapping;
+  std::unordered_map<syncer::UserSelectableType, BraveSyncUserSelectableTypes>
+      type_mapping;
 }
 @end
 
@@ -82,8 +94,7 @@ BraveSyncUserSelectableTypes options_from_user_types(const syncer::UserSelectabl
         GetApplicationContext()->GetChromeBrowserStateManager();
     ChromeBrowserState* browserState =
         browserStateManager->GetLastUsedBrowserState();
-    sync_service_ =
-        ProfileSyncServiceFactory::GetForBrowserState(browserState);
+    sync_service_ = ProfileSyncServiceFactory::GetForBrowserState(browserState);
     DCHECK(sync_service_);
   }
   return self;
@@ -113,17 +124,17 @@ BraveSyncUserSelectableTypes options_from_user_types(const syncer::UserSelectabl
 - (bool)isTransportStateActive {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   return sync_service_->GetTransportState() ==
-      syncer::SyncService::TransportState::ACTIVE;
+         syncer::SyncService::TransportState::ACTIVE;
 }
 
 - (BraveSyncUserSelectableTypes)activeSelectableTypes {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  syncer::ModelTypeSet active_types =
-      sync_service_->GetActiveDataTypes();
-  
+  syncer::ModelTypeSet active_types = sync_service_->GetActiveDataTypes();
+
   syncer::UserSelectableTypeSet user_types;
   for (syncer::UserSelectableType type : syncer::UserSelectableTypeSet::All()) {
-    if (active_types.Has(syncer::UserSelectableTypeToCanonicalModelType(type))) {
+    if (active_types.Has(
+            syncer::UserSelectableTypeToCanonicalModelType(type))) {
       user_types.Put(type);
     }
   }
@@ -141,11 +152,13 @@ BraveSyncUserSelectableTypes options_from_user_types(const syncer::UserSelectabl
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   bool sync_everything = false;
   syncer::UserSelectableTypeSet selected_types =
-          brave_ios::user_types_from_options(options);
-  sync_service_->GetUserSettings()->SetSelectedTypes(sync_everything, selected_types);
+      brave_ios::user_types_from_options(options);
+  sync_service_->GetUserSettings()->SetSelectedTypes(sync_everything,
+                                                     selected_types);
 }
 
-- (syncer::ModelTypeSet)userTypesToModelTypes:(const syncer::UserSelectableTypeSet&)types {
+- (syncer::ModelTypeSet)userTypesToModelTypes:
+    (const syncer::UserSelectableTypeSet&)types {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   syncer::ModelTypeSet model_types;
   for (syncer::UserSelectableType type : types) {

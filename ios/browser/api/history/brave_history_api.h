@@ -34,7 +34,7 @@ OBJC_EXPORT
 /// @param title - Title used for the URL
 /// @param dateAdded - Date History Object is created
 - (instancetype)initWithURL:(NSURL*)url
-                      title:(nullable NSString* )title
+                      title:(nullable NSString*)title
                   dateAdded:(nullable NSDate*)dateAdded;
 @end
 
@@ -64,7 +64,7 @@ OBJC_EXPORT
 
 /// Remove All History
 /// @param completion - Block that notifies removing is finished
-- (void)removeAllWithCompletion:(void(^)())completion;
+- (void)removeAllWithCompletion:(void (^)())completion;
 
 /// Query Function providing history items array in completion block
 /// @param query - Search Query (Empty Query returns all History)

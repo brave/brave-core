@@ -37,4 +37,3 @@ FOUNDATION_EXPORT const unsigned char BraveRewardsVersionString[];
 // History
 #import <BraveRewards/brave_history_api.h>
 #import <BraveRewards/brave_history_observer.h>
-

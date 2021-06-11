@@ -77,14 +77,16 @@ bool BraveBrowsingHistoryDriverIOS::ShouldHideWebHistoryUrl(const GURL& url) {
   return !ios::CanAddURLToHistory(url);
 }
 
-history::WebHistoryService* BraveBrowsingHistoryDriverIOS::GetWebHistoryService() {
+history::WebHistoryService*
+BraveBrowsingHistoryDriverIOS::GetWebHistoryService() {
   return ios::WebHistoryServiceFactory::GetForBrowserState(browser_state_);
 }
 
-void BraveBrowsingHistoryDriverIOS::ShouldShowNoticeAboutOtherFormsOfBrowsingHistory(
-    const syncer::SyncService* sync_service,
-    history::WebHistoryService* history_service,
-    base::OnceCallback<void(bool)> callback) {
+void BraveBrowsingHistoryDriverIOS::
+    ShouldShowNoticeAboutOtherFormsOfBrowsingHistory(
+        const syncer::SyncService* sync_service,
+        history::WebHistoryService* history_service,
+        base::OnceCallback<void(bool)> callback) {
   browsing_data::ShouldShowNoticeAboutOtherFormsOfBrowsingHistory(
       sync_service, history_service, std::move(callback));
 }
