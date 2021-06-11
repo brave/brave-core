@@ -307,6 +307,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kNewTabPageShowBinance, true);
   registry->RegisterBooleanPref(kNewTabPageShowTogether, false);
   registry->RegisterBooleanPref(kNewTabPageShowGemini, true);
+  registry->RegisterBooleanPref(kNewTabPageHideAllWidgets, false);
+
   registry->RegisterIntegerPref(
       kNewTabPageShowsOptions,
       static_cast<int>(NewTabPageShowsOptions::kDashboard));

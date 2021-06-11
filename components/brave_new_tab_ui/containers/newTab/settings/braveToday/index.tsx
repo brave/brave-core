@@ -41,6 +41,10 @@ export default function BraveTodayPrefs (props: Props) {
     }
   }, [props.onClearPrefs])
 
+  const shouldShowSources = !!(props.showToday &&
+    props.publishers &&
+    Object.keys(props.publishers).length !== 0)
+
   return (
     <Styled.Section>
       {!category && (
@@ -53,7 +57,7 @@ export default function BraveTodayPrefs (props: Props) {
           />
         </SettingsRow>
       )}
-      {props.showToday && props.publishers && Object.keys(props.publishers).length &&
+      {shouldShowSources &&
       <Sources category={category} setCategory={setCategory} {...props} />
       }
       {!category && (

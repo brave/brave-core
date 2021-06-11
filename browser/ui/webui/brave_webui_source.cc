@@ -403,6 +403,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "ftxConversionAmountAvailable", IDS_FTX_CONVERSION_AMOUNT_AVAILABLE },
         { "ftxSummaryBlurLabel", IDS_FTX_SUMMARY_BLUR_LABEL },
         { "ftxSummaryRevealLabel", IDS_FTX_SUMMARY_REVEAL_LABEL },
+        { "ftxSummaryNoBalance", IDS_FTX_SUMMARY_NO_BALANCE},
 #endif
       }
     }, {
