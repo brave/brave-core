@@ -1,0 +1,28 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+source_set("common") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+
+  cflags = [
+    "-DBRAVE_CORE",
+  ]
+
+  sources = [
+    "brave_certificate_enums.h",
+  ]
+
+  deps = [
+    "//third_party/boringssl",
+  ]
+
+  frameworks = [
+    "Foundation.framework",
+    "Security.framework",
+  ]
+}
