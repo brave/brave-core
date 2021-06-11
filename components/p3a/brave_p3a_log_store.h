@@ -13,6 +13,7 @@
 #include "base/strings/string_piece.h"
 #include "base/time/time.h"
 #include "components/metrics/log_store.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
 class PrefRegistrySimple;
@@ -56,6 +57,7 @@ class BraveP3ALogStore : public metrics::LogStore {
   std::string staged_log_type() const;
   const std::string& staged_log_hash() const override;
   const std::string& staged_log_signature() const override;
+  absl::optional<uint64_t> staged_log_user_id() const override;
   void StageNextLog() override;
   void DiscardStagedLog() override;
   void MarkStagedLogAsSent() override;
