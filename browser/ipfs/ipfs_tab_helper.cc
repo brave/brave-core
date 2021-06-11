@@ -222,14 +222,9 @@ void IPFSTabHelper::UpdateDnsLinkButtonState() {
     }
     return;
   }
-  if (!ipfs_resolved_url_.is_valid())
-    return;
   GURL current = GetCurrentPageURL();
-  if (resolver_->host() != current.host()) {
-    ipfs_resolved_url_ = GURL();
-    UpdateLocationBar();
-  }
-  if (!CanResolveURL(current)) {
+  if (!ipfs_resolved_url_.is_valid() || (resolver_->host() != current.host()) ||
+      !CanResolveURL(current)) {
     ipfs_resolved_url_ = GURL();
     UpdateLocationBar();
   }
@@ -243,12 +238,8 @@ bool IPFSTabHelper::CanResolveURL(const GURL& url) const {
 void IPFSTabHelper::MaybeShowDNSLinkButton(
     const net::HttpResponseHeaders* headers) {
   UpdateDnsLinkButtonState();
-  if (!IsDNSLinkCheckEnabled() || !headers)
-    return;
-  if (ipfs_resolved_url_.is_valid())
-    return;
-
-  if (!CanResolveURL(GetCurrentPageURL()))
+  if (!IsDNSLinkCheckEnabled() || !headers || ipfs_resolved_url_.is_valid() ||
+      !CanResolveURL(GetCurrentPageURL()))
     return;
 
   int response_code = headers->response_code();
