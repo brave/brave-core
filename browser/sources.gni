@@ -109,6 +109,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_referrals/buildflags",
   "//brave/components/brave_rewards/browser/buildflags",
   "//brave/components/brave_search/browser",
+  "//brave/components/brave_search/common",
   "//brave/components/brave_search/common:mojom",
   "//brave/components/brave_sync/buildflags:buildflags",
   "//brave/components/brave_wallet/common/buildflags",

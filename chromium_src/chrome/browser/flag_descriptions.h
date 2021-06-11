@@ -41,6 +41,8 @@ extern const char kBraveRewardsBitflyerName[];
 extern const char kBraveRewardsBitflyerDescription[];
 extern const char kNativeBraveWalletName[];
 extern const char kNativeBraveWalletDescription[];
+extern const char kBraveSearchDefaultAPIName[];
+extern const char kBraveSearchDefaultAPIDescription[];
 extern const char kBraveDecentralizedDnsName[];
 extern const char kBraveDecentralizedDnsDescription[];
 extern const char kBraveSuperReferralName[];

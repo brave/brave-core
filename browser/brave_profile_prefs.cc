@@ -17,6 +17,8 @@
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_search/browser/brave_search_default_host.h"
+#include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -313,6 +315,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kLoadCryptoWalletsOnStartup, false);
   registry->RegisterBooleanPref(kOptedIntoCryptoWallets, false);
 #endif
+
+  // Brave Search
+  if (brave_search::IsDefaultAPIEnabled()) {
+    brave_search::BraveSearchDefaultHost::RegisterProfilePrefs(registry);
+  }
 
   // Binance widget
 #if BUILDFLAG(BINANCE_ENABLED)

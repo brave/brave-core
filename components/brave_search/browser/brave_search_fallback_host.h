@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SEARCH_BROWSER_BRAVE_SEARCH_HOST_H_
-#define BRAVE_COMPONENTS_BRAVE_SEARCH_BROWSER_BRAVE_SEARCH_HOST_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SEARCH_BROWSER_BRAVE_SEARCH_FALLBACK_HOST_H_
+#define BRAVE_COMPONENTS_BRAVE_SEARCH_BROWSER_BRAVE_SEARCH_FALLBACK_HOST_H_
 
 #include <list>
 #include <map>
@@ -12,7 +12,7 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_search/common/brave_search.mojom.h"
+#include "brave/components/brave_search/common/brave_search_fallback.mojom.h"
 #include "url/gurl.h"
 
 namespace network {
@@ -22,13 +22,14 @@ class SimpleURLLoader;
 
 namespace brave_search {
 
-class BraveSearchHost final : public brave_search::mojom::BraveSearchFallback {
+class BraveSearchFallbackHost final
+    : public brave_search::mojom::BraveSearchFallback {
  public:
-  BraveSearchHost(const BraveSearchHost&) = delete;
-  BraveSearchHost& operator=(const BraveSearchHost&) = delete;
-  explicit BraveSearchHost(
+  BraveSearchFallbackHost(const BraveSearchFallbackHost&) = delete;
+  BraveSearchFallbackHost& operator=(const BraveSearchFallbackHost&) = delete;
+  explicit BraveSearchFallbackHost(
       scoped_refptr<network::SharedURLLoaderFactory> factory);
-  ~BraveSearchHost() override;
+  ~BraveSearchFallbackHost() override;
 
   void FetchBackupResults(const std::string& query_string,
                           const std::string& lang,
@@ -53,14 +54,15 @@ class BraveSearchHost final : public brave_search::mojom::BraveSearchFallback {
                               const std::string&,
                               const std::map<std::string, std::string>&)>;
 
-  void OnURLLoaderComplete(SimpleURLLoaderList::iterator iter,
-                           BraveSearchHost::FetchBackupResultsCallback callback,
-                           const std::unique_ptr<std::string> response_body);
+  void OnURLLoaderComplete(
+      SimpleURLLoaderList::iterator iter,
+      BraveSearchFallbackHost::FetchBackupResultsCallback callback,
+      const std::unique_ptr<std::string> response_body);
   SimpleURLLoaderList url_loaders_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  base::WeakPtrFactory<BraveSearchHost> weak_factory_;
+  base::WeakPtrFactory<BraveSearchFallbackHost> weak_factory_;
 };
 
 }  // namespace brave_search
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SEARCH_BROWSER_BRAVE_SEARCH_HOST_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SEARCH_BROWSER_BRAVE_SEARCH_FALLBACK_HOST_H_
