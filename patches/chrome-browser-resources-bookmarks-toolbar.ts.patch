@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/bookmarks/toolbar.ts b/chrome/browser/resources/bookmarks/toolbar.ts
+index 86e6f729a495721a931b1fc12c4ff5d3e2efad5f..945b6d653c17d073b4fe755c7bdb8d9a34f5f9f1 100644
+--- a/chrome/browser/resources/bookmarks/toolbar.ts
++++ b/chrome/browser/resources/bookmarks/toolbar.ts
+@@ -10,6 +10,7 @@ import './strings.m.js';
+ import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.js';
+ import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar_search_field.js';
+ 
++import 'chrome://brave-resources/br_elements/br_toolbar/br_toolbar.m.js';
+ import {CrToolbarElement} from 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.js';
+ import {CrToolbarSearchFieldElement} from 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar_search_field.js';
+ import {assert} from 'chrome://resources/js/assert.m.js';
