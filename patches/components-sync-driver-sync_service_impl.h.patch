@@ -1,0 +1,12 @@
+diff --git a/components/sync/driver/sync_service_impl.h b/components/sync/driver/sync_service_impl.h
+index 8595f8ffb3a1ce1a5529aea209058f846c935d0d..a1d6b2ffd9ea44d45475efeab2f9bef990cca5a2 100644
+--- a/components/sync/driver/sync_service_impl.h
++++ b/components/sync/driver/sync_service_impl.h
+@@ -254,6 +254,7 @@ class SyncServiceImpl : public SyncService,
+ 
+   SyncClient* GetSyncClientForTest();
+ 
++  BRAVE_PROFILE_SYNC_SERVICE_H_
+  private:
+   // Passed as an argument to StopImpl to control whether or not the sync
+   // engine should clear its data when it shuts down. See StopImpl for more

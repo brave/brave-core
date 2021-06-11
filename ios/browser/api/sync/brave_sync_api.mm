@@ -18,8 +18,8 @@
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/sync_device_info/brave_device_info.h"
 #include "brave/ios/browser/api/sync/brave_sync_worker.h"
-#include "components/sync/driver/profile_sync_service.h"
 #include "components/sync/driver/sync_service.h"
+#include "components/sync/driver/sync_service_impl.h"
 #include "components/sync/driver/sync_service_observer.h"
 #include "components/sync_device_info/device_info.h"
 #include "components/sync_device_info/device_info_sync_service.h"
@@ -62,7 +62,7 @@
 @implementation BraveSyncServiceObserver
 
 - (instancetype)
-    initWithProfileSyncService:(syncer::ProfileSyncService*)profileSyncService
+    initWithProfileSyncService:(syncer::SyncServiceImpl*)profileSyncService
                       callback:(void (^)())onSyncServiceStateChanged {
   if ((self = [super init])) {
     _service_tracker = std::make_unique<BraveSyncServiceTracker>(
