@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/resources/bookmarks/command_manager.ts b/chrome/browser/resources/bookmarks/command_manager.ts
+index ae44167687cf66b50407355ab9383ece92c7f96f..deff4066b138b5a1b43d16920be1f0616ffd4d55 100644
+--- a/chrome/browser/resources/bookmarks/command_manager.ts
++++ b/chrome/browser/resources/bookmarks/command_manager.ts
+@@ -438,7 +438,7 @@ export class BookmarksCommandManagerElement extends
+         chrome.bookmarks.export();
+         break;
+       case Command.HELP_CENTER:
+-        window.open('https://support.google.com/chrome/?p=bookmarks');
++        window.open('https://community.brave.com');
+         break;
+       default:
+         assert(false);
