@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/BUILD.gn b/chrome/browser/ui/android/toolbar/BUILD.gn
-index 133f5c5c4b00c8610b110f5e575a794311ab8720..db35cded0d81624a5adc2b7499520f21fcefd0e7 100644
+index dee5afb4a336f1df86748123dc4fdbdb6480c5fc..3fa48c5d44663cbf0b60d210abff7d5ead42446e 100644
 --- a/chrome/browser/ui/android/toolbar/BUILD.gn
 +++ b/chrome/browser/ui/android/toolbar/BUILD.gn
 @@ -66,6 +66,7 @@ android_library("java") {
@@ -7,6 +7,6 @@ index 133f5c5c4b00c8610b110f5e575a794311ab8720..db35cded0d81624a5adc2b7499520f21
      "java/src/org/chromium/chrome/browser/toolbar/top/ViewShiftingActionBarDelegate.java",
    ]
 +  sources += brave_browser_ui_android_toolbar_sources
- 
+
    deps = [
      ":java_resources",

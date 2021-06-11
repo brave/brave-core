@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/extensions/item_list.js b/chrome/browser/resources/extensions/item_list.js
-index 7e990d486b94c9ffb1c2c08f55c0e14245e70370..d17f521761d5df71f9d671999a142825c48f94a8 100644
+index 5d6a46444e43d229c34654d87e3eb1ee7d4238e4..016a8d930714eca663a03e2d2d1f18fe9c1168c6 100644
 --- a/chrome/browser/resources/extensions/item_list.js
 +++ b/chrome/browser/resources/extensions/item_list.js
-@@ -13,6 +13,7 @@ import {IronA11yAnnouncer} from 'chrome://resources/polymer/v3_0/iron-a11y-annou
+@@ -14,6 +14,7 @@ import {IronA11yAnnouncer} from 'chrome://resources/polymer/v3_0/iron-a11y-annou
  import {html, mixinBehaviors, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
  
  import {ItemDelegate} from './item.js';
