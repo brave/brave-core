@@ -5,7 +5,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.onboarding;
+package org.chromium.chrome.browser.firstrun;
 
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -32,12 +32,16 @@ import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
+import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.util.PackageUtils;
 
-public class P3aOnboardingActivity extends AppCompatActivity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+public class P3aOnboardingActivity extends FirstRunActivityBase {
+    private boolean mNativeInitialized;
+    private FirstRunFlowSequencer mFirstRunFlowSequencer;
+    private Button mBtnContinue;
+
+    private void initializeViews() {
         setContentView(R.layout.activity_p3a_onboarding);
 
         boolean isFirstInstall = PackageUtils.isFirstInstall(this);
@@ -73,8 +77,8 @@ public class P3aOnboardingActivity extends AppCompatActivity {
                                         ? R.drawable.ic_spot_graphic_dark
                                         : R.drawable.ic_spot_graphic));
         TextView p3aOnboardingText = findViewById(R.id.p3a_onboarding_text);
-        Button btnContinue = findViewById(R.id.btn_continue);
-        btnContinue.setOnClickListener(new View.OnClickListener() {
+        mBtnContinue = findViewById(R.id.btn_continue);
+        mBtnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (PackageUtils.isFirstInstall(P3aOnboardingActivity.this)
@@ -84,7 +88,7 @@ public class P3aOnboardingActivity extends AppCompatActivity {
                 }
                 OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
                 OnboardingPrefManager.getInstance().setShowDefaultBrowserModalAfterP3A(true);
-                finish();
+                accept();
             }
         });
 
@@ -125,5 +129,49 @@ public class P3aOnboardingActivity extends AppCompatActivity {
     }
 
     @Override
+    public void finishNativeInitialization() {
+        super.finishNativeInitialization();
+        assert !mNativeInitialized;
+
+        mNativeInitialized = true;
+    }
+
+    @Override
     public void onBackPressed() {}
+
+    @Override
+    protected void triggerLayoutInflation() {
+        mFirstRunFlowSequencer = new FirstRunFlowSequencer(this) {
+            @Override
+            public void onFlowIsKnown(Bundle freProperties) {
+                initializeViews();
+            }
+        };
+        mFirstRunFlowSequencer.start();
+        onInitialLayoutInflationComplete();
+    }
+
+    public void completeOnboardingExperience() {
+        FirstRunStatus.setFirstRunFlowComplete(true);
+        exitOnboarding();
+    }
+
+    private void exitOnboarding() {
+        finish();
+        sendFirstRunCompletePendingIntent();
+    }
+
+    private void accept() {
+        if (!mNativeInitialized) {
+            // Disable the "accept" button to indicate that "something is happening".
+            mBtnContinue.setEnabled(false);
+            return;
+        }
+
+        // Do not use existing function because it contains consent to Google crash report upload
+        SharedPreferencesManager.getInstance().writeBoolean(
+                ChromePreferenceKeys.FIRST_RUN_CACHED_TOS_ACCEPTED, true);
+        FirstRunUtils.setEulaAccepted();
+        completeOnboardingExperience();
+    }
 }

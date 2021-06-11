@@ -19,6 +19,7 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveCommandLineInitUtilClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveEditUrlSuggestionProcessorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveFeedSurfaceCoordinatorClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveFreIntentCreatorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveHomepageManagerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveIncognitoToggleTabLayoutClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveLaunchIntentDispatcherClassAdapter.java",
