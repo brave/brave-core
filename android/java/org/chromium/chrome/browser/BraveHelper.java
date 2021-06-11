@@ -21,8 +21,8 @@ public class BraveHelper {
     public BraveHelper() {}
 
     public static void DisableFREDRP() {
-        CommandLine.getInstance().appendSwitch(ChromeSwitches.DISABLE_FIRST_RUN_EXPERIENCE);
-        FirstRunStatus.setFirstRunFlowComplete(true);
+//         CommandLine.getInstance().appendSwitch(ChromeSwitches.DISABLE_FIRST_RUN_EXPERIENCE);
+//         FirstRunStatus.setFirstRunFlowComplete(true);
 
         // Disables data reduction promo dialog
         ContextUtils.getAppSharedPreferences()

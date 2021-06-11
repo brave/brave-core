@@ -38,7 +38,7 @@
     android:screenOrientation="sensorPortrait"/>
 
 <activity
-    android:name="org.chromium.chrome.browser.onboarding.P3aOnboardingActivity"
+    android:name="org.chromium.chrome.browser.firstrun.P3aOnboardingActivity"
     android:theme="@style/Theme.Chromium.Activity.Fullscreen"
     android:screenOrientation="sensorPortrait"/>
 

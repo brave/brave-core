@@ -73,7 +73,6 @@ import org.chromium.chrome.browser.notifications.retention.RetentionNotification
 import org.chromium.chrome.browser.ntp.NewTabPage;
 import org.chromium.chrome.browser.onboarding.OnboardingActivity;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-import org.chromium.chrome.browser.onboarding.P3aOnboardingActivity;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
@@ -373,13 +372,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                 && !OnboardingPrefManager.getInstance().isP3AEnabledForExistingUsers()) {
             BravePrefServiceBridge.getInstance().setP3AEnabled(true);
             OnboardingPrefManager.getInstance().setP3AEnabledForExistingUsers(true);
-        }
-
-        if (BraveConfig.P3A_ENABLED
-                && !OnboardingPrefManager.getInstance().isP3aOnboardingShown()) {
-            Intent p3aOnboardingIntent = new Intent(this, P3aOnboardingActivity.class);
-            p3aOnboardingIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(p3aOnboardingIntent);
         }
 
         if (!OnboardingPrefManager.getInstance().isOneTimeNotificationStarted()
