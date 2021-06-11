@@ -14,6 +14,8 @@
 #include "chrome/browser/sync/profile_sync_service_android.h"
 #include "components/sync_device_info/device_info_tracker.h"
 
+class Profile;
+
 namespace syncer {
 class BraveProfileSyncService;
 }
