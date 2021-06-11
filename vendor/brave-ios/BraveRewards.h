@@ -27,9 +27,14 @@ FOUNDATION_EXPORT const unsigned char BraveRewardsVersionString[];
 
 // Sync
 #import <BraveRewards/brave_sync_api.h>
+#import <BraveRewards/brave_sync_profile_service.h>
 
 // Bookmarks
 #import <BraveRewards/brave_bookmarks_api.h>
 #import <BraveRewards/brave_bookmarks_observer.h>
 #import <BraveRewards/brave_bookmarks_importer.h>
 #import <BraveRewards/brave_bookmarks_exporter.h>
+
+// History
+#import <BraveRewards/brave_history_api.h>
+#import <BraveRewards/brave_history_observer.h>

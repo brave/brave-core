@@ -12,11 +12,12 @@ source_set("sync") {
   sources = [
     "brave_sync_api.h",
     "brave_sync_api.mm",
+    "brave_sync_worker.cc",
     "brave_sync_worker.h",
-    "brave_sync_worker.cc"
   ]
 
   deps = [
+    "driver",
     "//base",
     "//brave/components/brave_sync",
     "//brave/components/brave_sync:crypto",
@@ -32,6 +33,6 @@ source_set("sync") {
 
   frameworks = [
     "Foundation.framework",
-    "UIKit.framework"
+    "UIKit.framework",
   ]
 }
