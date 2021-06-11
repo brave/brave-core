@@ -135,16 +135,16 @@ base::Time GetTimeStampFromDictionary(const base::DictionaryValue* dictionary,
 content_settings::SessionModel GetSessionModelFromDictionary(
     const base::DictionaryValue* dictionary,
     const char* key) {
-  int model_int = 0;
-  dictionary->GetIntegerWithoutPathExpansion(key, &model_int);
-  if ((model_int >
-       static_cast<int>(content_settings::SessionModel::kMaxValue)) ||
-      (model_int < 0)) {
+  absl::optional<int> model_int = dictionary->FindIntKey(key);
+  if (model_int.has_value() &&
+      ((model_int >
+        static_cast<int>(content_settings::SessionModel::kMaxValue)) ||
+       (model_int < 0))) {
     model_int = 0;
   }
 
   content_settings::SessionModel session_model =
-      static_cast<content_settings::SessionModel>(model_int);
+      static_cast<content_settings::SessionModel>(model_int.value());
   return session_model;
 }
 
