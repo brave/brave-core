@@ -43,6 +43,7 @@
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/embedder_support/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
+#include "components/ntp_tiles/pref_names.h"
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
@@ -108,7 +109,6 @@
 
 #if defined(OS_ANDROID)
 #include "components/feed/core/shared_prefs/pref_names.h"
-#include "components/ntp_tiles/pref_names.h"
 #include "components/translate/core/browser/translate_pref_names.h"
 #endif
 
@@ -399,7 +399,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if !defined(OS_ANDROID)
   // Turn on most visited mode on NTP by default.
   // We can turn customization mode on when we have add-shortcut feature.
-  registry->SetDefaultPrefValue(prefs::kNtpUseMostVisitedTiles,
+  registry->SetDefaultPrefValue(ntp_tiles::prefs::kNtpUseMostVisitedTiles,
                                 base::Value(true));
   RegisterDefaultBraveBrowserPromptPrefs(registry);
 #endif
