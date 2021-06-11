@@ -62,7 +62,7 @@ void HistoryServiceListenerIOS::OnURLVisited(
     const history::URLRow& row,
     const history::RedirectList& redirects,
     base::Time visit_time) {
-  IOSHistoryNode* historyNode = 
+  IOSHistoryNode* historyNode =
       [[IOSHistoryNode alloc] initWithURL:net::NSURLWithGURL(row.url())
                                     title:base::SysUTF16ToNSString(row.title())
                                 dateAdded:visit_time.ToNSDate()];
