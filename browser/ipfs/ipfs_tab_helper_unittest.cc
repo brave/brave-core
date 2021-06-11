@@ -80,6 +80,12 @@ TEST_F(IpfsTabHelperUnitTest, URLResolvingTest) {
 
   EXPECT_EQ(helper->GetIPFSResolvedURL().spec(),
             "ipfs://bafy/wiki/empty.html?query#ref");
+
+  test_url = GURL("https://ipfs.io/ipfs/bafy");
+  helper->SetPageURLForTesting(test_url);
+  helper->IPFSLinkResolved(GURL("ipfs://bafy"));
+
+  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), "ipfs://bafy");
 }
 
 }  // namespace ipfs

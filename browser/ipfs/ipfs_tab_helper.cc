@@ -180,7 +180,7 @@ GURL IPFSTabHelper::GetIPFSResolvedURL() const {
   // If public gateway like https://ipfs.io/ipfs/{cid}/..
   // or for IPNS like ipns://branty.eth/path/..
   // skip duplication for /{scheme}/{cid}/ and add the rest parts
-  if (parts.size() > 3 && parts[2] == cid) {
+  if (parts.size() >= 3 && parts[2] == cid) {
     parts.erase(parts.begin() + 1, parts.begin() + 3);
     resolved_path = base::JoinString(parts, "/");
   }
