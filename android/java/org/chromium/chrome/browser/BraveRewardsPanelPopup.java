@@ -938,22 +938,23 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
     public void ShowWebSiteView() {
         tvBrBatWallet.setText(String.format(Locale.getDefault(), "%.3f", 0.0));
-        String usdText = String.format(this.root.getResources().getString(R.string.brave_ui_usd), "0.00");
-        ((TextView)this.root.findViewById(R.id.br_usd_wallet)).setText(usdText);
+        String usdText =
+                String.format(this.root.getResources().getString(R.string.brave_ui_usd), "0.00");
+        ((TextView) this.root.findViewById(R.id.br_usd_wallet)).setText(usdText);
         CreateUpdateBalanceTask();
-        ScrollView sv_new = (ScrollView)this.root.findViewById(R.id.sv_no_website);
+        ScrollView sv_new = (ScrollView) this.root.findViewById(R.id.sv_no_website);
         sv_new.setVisibility(View.VISIBLE);
         ShowRewardsSummary();
-        ((LinearLayout)this.root.findViewById(R.id.website_summary)).setVisibility(View.VISIBLE);
+        ((LinearLayout) this.root.findViewById(R.id.website_summary)).setVisibility(View.VISIBLE);
         EnableWalletDetails(true);
         Tab currentActiveTab = BraveRewardsHelper.currentActiveChromeTabbedActivityTab();
         if (currentActiveTab != null && !currentActiveTab.isIncognito()) {
-            String url = currentActiveTab.getUrlString();
+            String url = currentActiveTab.getUrl().getSpec();
             if (URLUtil.isValidUrl(url)) {
                 mBraveRewardsNativeWorker.GetPublisherInfo(currentActiveTab.getId(), url);
                 mPublisherFetcher = new Timer();
                 mPublisherFetcher.schedule(new PublisherFetchTimer(currentActiveTab.getId(), url),
-                                           PUBLISHER_INFO_FETCH_RETRY, PUBLISHER_INFO_FETCH_RETRY);
+                        PUBLISHER_INFO_FETCH_RETRY, PUBLISHER_INFO_FETCH_RETRY);
             } else {
                 btRewardsSummary.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 btRewardsSummary.setClickable(false);
@@ -1421,7 +1422,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         }
     }
 
-
     @Override
     public void OnPublisherInfo(int tabId) {
         publisherExist = true;
@@ -1433,14 +1433,14 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
         String publisherFavIconURL = mBraveRewardsNativeWorker.GetPublisherFavIconURL(currentTabId);
         Tab currentActiveTab = BraveRewardsHelper.currentActiveChromeTabbedActivityTab();
-        String url = currentActiveTab.getUrlString();
+        String url = currentActiveTab.getUrl().getSpec();
         final String favicon_url = (publisherFavIconURL.isEmpty()) ? url : publisherFavIconURL;
 
         mIconFetcher.retrieveLargeIcon(favicon_url, this);
 
-        GridLayout gl = (GridLayout)this.root.findViewById(R.id.website_summary_grid);
+        GridLayout gl = (GridLayout) this.root.findViewById(R.id.website_summary_grid);
         gl.setVisibility(View.VISIBLE);
-        LinearLayout ll = (LinearLayout)this.root.findViewById(R.id.br_central_layout);
+        LinearLayout ll = (LinearLayout) this.root.findViewById(R.id.br_central_layout);
         ll.setBackgroundColor(Color.WHITE);
 
         String pubName = thisObject.mBraveRewardsNativeWorker.GetPublisherName(currentTabId);
@@ -1452,22 +1452,25 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             pubSuffix = thisObject.root.getResources().getString(R.string.brave_ui_on_twitch);
         }
         pubName = "<b>" + pubName + "</b> " + pubSuffix;
-        TextView tv = (TextView)thisObject.root.findViewById(R.id.publisher_name);
+        TextView tv = (TextView) thisObject.root.findViewById(R.id.publisher_name);
         tv.setText(Html.fromHtml(pubName));
-        tv = (TextView)thisObject.root.findViewById(R.id.publisher_attention);
-        String percent = Integer.toString(thisObject.mBraveRewardsNativeWorker.GetPublisherPercent(currentTabId)) + "%";
+        tv = (TextView) thisObject.root.findViewById(R.id.publisher_attention);
+        String percent = Integer.toString(thisObject.mBraveRewardsNativeWorker.GetPublisherPercent(
+                                 currentTabId))
+                + "%";
         tv.setText(percent);
         if (btAutoContribute != null) {
             btAutoContribute.setOnCheckedChangeListener(null);
-            btAutoContribute.setChecked(!thisObject.mBraveRewardsNativeWorker.GetPublisherExcluded(currentTabId));
+            btAutoContribute.setChecked(
+                    !thisObject.mBraveRewardsNativeWorker.GetPublisherExcluded(currentTabId));
             btAutoContribute.setOnCheckedChangeListener(autoContributeSwitchListener);
         }
 
         UpdatePublisherStatus(
-            thisObject.mBraveRewardsNativeWorker.GetPublisherStatus(currentTabId));
+                thisObject.mBraveRewardsNativeWorker.GetPublisherStatus(currentTabId));
 
-        tv = (TextView)root.findViewById(R.id.br_no_activities_yet);
-        gl = (GridLayout)thisObject.root.findViewById(R.id.br_activities);
+        tv = (TextView) root.findViewById(R.id.br_no_activities_yet);
+        gl = (GridLayout) thisObject.root.findViewById(R.id.br_activities);
         if (tv != null && gl != null) {
             tv.setVisibility(View.GONE);
             gl.setVisibility(View.GONE);

@@ -157,7 +157,7 @@ public class BraveRewardsNativeWorker {
             public void run() {
                 Tab tab = BraveRewardsHelper.currentActiveChromeTabbedActivityTab();
                 if (tab != null && !tab.isIncognito()) {
-                    OnNotifyFrontTabUrlChanged(tab.getId(), tab.getUrlString());
+                    OnNotifyFrontTabUrlChanged(tab.getId(), tab.getUrl().getSpec());
                 }
             }
         });

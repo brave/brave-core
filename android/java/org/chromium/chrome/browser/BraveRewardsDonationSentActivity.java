@@ -45,13 +45,15 @@ public class BraveRewardsDonationSentActivity extends Activity implements BraveR
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.brave_rewards_donation_sent);
-        currentTabId_ = IntentUtils.safeGetIntExtra(getIntent(), BraveRewardsSiteBannerActivity.TAB_ID_EXTRA, -1);
+        currentTabId_ = IntentUtils.safeGetIntExtra(
+                getIntent(), BraveRewardsSiteBannerActivity.TAB_ID_EXTRA, -1);
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         mBraveRewardsNativeWorker.AddObserver(this);
 
-        String publisherFavIconURL = mBraveRewardsNativeWorker.GetPublisherFavIconURL(currentTabId_);
+        String publisherFavIconURL =
+                mBraveRewardsNativeWorker.GetPublisherFavIconURL(currentTabId_);
         Tab currentActiveTab = BraveRewardsHelper.currentActiveChromeTabbedActivityTab();
-        String url = currentActiveTab.getUrlString();
+        String url = currentActiveTab.getUrl().getSpec();
         String favicon_url = (publisherFavIconURL.isEmpty()) ? url : publisherFavIconURL;
         mIconFetcher = new org.chromium.chrome.browser.BraveRewardsHelper(currentActiveTab);
         mIconFetcher.retrieveLargeIcon(favicon_url, this);
