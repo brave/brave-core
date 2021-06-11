@@ -37,7 +37,6 @@
 #include "base/time/time.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ledger/global_constants.h"
-#include "bat/ledger/ledger_database.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
@@ -322,7 +321,6 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       ledger_state_path_(profile_->GetPath().Append(kLedger_state)),
       publisher_state_path_(profile_->GetPath().Append(kPublisher_state)),
-      publisher_info_db_path_(profile->GetPath().Append(kPublisher_info_db)),
       publisher_list_path_(profile->GetPath().Append(kPublishers_list)),
       diagnostic_log_(
           new DiagnosticLog(profile_->GetPath().Append(kDiagnosticLogPath),
@@ -335,15 +333,16 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
                               std::make_unique<BraveRewardsSource>(profile_));
   ready_ = std::make_unique<base::OneShotEvent>();
 
+  ledger::CreateLedgerDatabaseOnTaskRunner(
+      profile->GetPath().Append(kPublisher_info_db),
+      ledger_database_.BindNewPipeAndPassReceiver(), file_task_runner_);
+
   if (base::FeatureList::IsEnabled(features::kVerboseLoggingFeature))
     persist_log_level_ = kDiagnosticLogMaxVerboseLevel;
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (ledger_database_) {
-    file_task_runner_->DeleteSoon(FROM_HERE, ledger_database_.release());
-  }
   StopNotificationTimers();
 }
 
@@ -450,9 +449,6 @@ void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
     BLOG(1, "Ledger process is already running");
     return;
   }
-
-  ledger_database_.reset(
-      ledger::LedgerDatabase::CreateInstance(publisher_info_db_path_));
 
   BLOG(1, "Starting ledger process");
 
@@ -1417,10 +1413,18 @@ void RewardsServiceImpl::OnDiagnosticLogDeletedForCompleteReset(
     SuccessCallback callback,
     bool success) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  ledger_database_->DeleteFile(
+      base::BindOnce(&RewardsServiceImpl::OnDatabaseDeletedForCompleteReset,
+                     base::Unretained(this), std::move(callback)));
+}
+
+void RewardsServiceImpl::OnDatabaseDeletedForCompleteReset(
+    SuccessCallback callback,
+    bool success) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   const std::vector<base::FilePath> paths = {
     ledger_state_path_,
     publisher_state_path_,
-    publisher_info_db_path_,
     publisher_list_path_,
   };
   base::PostTaskAndReplyWithResult(
@@ -1446,9 +1450,7 @@ void RewardsServiceImpl::Reset() {
   bat_ledger_client_receiver_.reset();
   bat_ledger_service_.reset();
   ready_ = std::make_unique<base::OneShotEvent>();
-  bool success =
-      file_task_runner_->DeleteSoon(FROM_HERE, ledger_database_.release());
-  BLOG_IF(1, !success, "Database was not released");
+
   BLOG(1, "Successfully reset rewards service");
 }
 
@@ -3109,29 +3111,13 @@ void RewardsServiceImpl::ReconcileStampReset() {
   }
 }
 
-ledger::type::DBCommandResponsePtr RunDBTransactionOnFileTaskRunner(
-    ledger::type::DBTransactionPtr transaction,
-    ledger::LedgerDatabase* database) {
-  auto response = ledger::type::DBCommandResponse::New();
-  if (!database) {
-    response->status = ledger::type::DBCommandResponse::Status::RESPONSE_ERROR;
-  } else {
-    database->RunTransaction(std::move(transaction), response.get());
-  }
-
-  return response;
-}
-
 void RewardsServiceImpl::RunDBTransaction(
     ledger::type::DBTransactionPtr transaction,
     ledger::client::RunDBTransactionCallback callback) {
-  DCHECK(ledger_database_);
-  base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&RunDBTransactionOnFileTaskRunner, std::move(transaction),
-                     ledger_database_.get()),
-      base::BindOnce(&RewardsServiceImpl::OnRunDBTransaction, AsWeakPtr(),
-                     std::move(callback)));
+  ledger_database_->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&RewardsServiceImpl::OnRunDBTransaction,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void RewardsServiceImpl::OnRunDBTransaction(

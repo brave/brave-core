@@ -64,6 +64,7 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "//brave/vendor/bat-native-ads",
     "//brave/vendor/bat-native-ledger",
     "//components/os_crypt",
+    "//mojo/public/cpp/bindings",
     "//net:net",
     "//sql",
     "//url",

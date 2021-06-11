@@ -7,10 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CORE_TEST_LEDGER_CLIENT_H_
 
 #include <list>
-#include <map>
-#include <memory>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
@@ -160,17 +157,19 @@ class TestLedgerClient : public LedgerClient {
   using LogCallback = base::RepeatingCallback<void(const std::string&)>;
   void SetLogCallbackForTesting(LogCallback callback);
 
-  LedgerDatabaseImpl* database() { return ledger_database_.get(); }
+  LedgerDatabaseImpl* database() { return &ledger_database_; }
 
  private:
   void LoadURLAfterDelay(mojom::UrlRequestPtr request,
                          client::LoadURLCallback callback);
 
+  void RunDBTransactionAfterDelay(mojom::DBTransactionPtr transaction,
+                                  client::RunDBTransactionCallback callback);
+
   void RunDBTransactionCompleted(client::RunDBTransactionCallback callback,
                                  mojom::DBCommandResponsePtr response);
 
-  scoped_refptr<base::SequencedTaskRunner> task_runner_;
-  std::unique_ptr<LedgerDatabaseImpl> ledger_database_;
+  LedgerDatabaseImpl ledger_database_;
   base::Value state_store_;
   base::Value encrypted_state_store_;
   base::Value option_store_;

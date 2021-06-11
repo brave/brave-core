@@ -4,6 +4,17 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 module ledger.mojom;
 
+// Provides access the the Rewards SQLite database.
+interface LedgerDatabase {
+
+  // Runs a sequence of database commands in a transaction.
+  RunDBTransaction(DBTransaction transaction) => (DBCommandResponse response);
+
+  // Deletes the database file and associated temporary files.
+  DeleteFile() => (bool success);
+
+};
+
 union DBValue {
   int32 int_value;
   int64 int64_value;

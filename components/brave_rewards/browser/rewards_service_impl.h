@@ -24,6 +24,7 @@
 #include "base/values.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_client.h"
+#include "bat/ledger/ledger_database.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
@@ -49,7 +50,6 @@ class SequencedTaskRunner;
 
 namespace ledger {
 class Ledger;
-class LedgerDatabase;
 struct LedgerMediaPublisherInfo;
 }  // namespace ledger
 
@@ -381,6 +381,9 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnDiagnosticLogDeletedForCompleteReset(SuccessCallback callback,
                                               bool success);
+
+  void OnDatabaseDeletedForCompleteReset(SuccessCallback callback,
+                                         bool success);
 
   void Reset();
 
@@ -766,11 +769,10 @@ class RewardsServiceImpl : public RewardsService,
 
   const base::FilePath ledger_state_path_;
   const base::FilePath publisher_state_path_;
-  const base::FilePath publisher_info_db_path_;
   const base::FilePath publisher_list_path_;
 
   std::unique_ptr<DiagnosticLog> diagnostic_log_;
-  std::unique_ptr<ledger::LedgerDatabase> ledger_database_;
+  mojo::Remote<ledger::mojom::LedgerDatabase> ledger_database_;
   std::unique_ptr<RewardsNotificationServiceImpl> notification_service_;
   base::ObserverList<RewardsServicePrivateObserver> private_observers_;
   std::unique_ptr<RewardsServiceObserver> extension_observer_;

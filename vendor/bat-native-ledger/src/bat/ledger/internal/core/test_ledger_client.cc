@@ -18,19 +18,6 @@
 
 namespace ledger {
 
-namespace {
-
-mojom::DBCommandResponsePtr RunDBTransactionInTask(
-    mojom::DBTransactionPtr transaction,
-    LedgerDatabase* database) {
-  DCHECK(database);
-  auto response = mojom::DBCommandResponse::New();
-  database->RunTransaction(std::move(transaction), response.get());
-  return response;
-}
-
-}  // namespace
-
 base::FilePath GetTestDataPath() {
   base::FilePath path;
   base::PathService::Get(base::DIR_SOURCE_ROOT, &path);
@@ -50,17 +37,14 @@ TestNetworkResult::TestNetworkResult(const std::string& url,
 TestNetworkResult::~TestNetworkResult() = default;
 
 TestLedgerClient::TestLedgerClient()
-    : task_runner_(base::SequencedTaskRunnerHandle::Get()),
-      ledger_database_(new LedgerDatabaseImpl(base::FilePath())),
+    : ledger_database_(base::FilePath()),
       state_store_(base::Value::Type::DICTIONARY),
       encrypted_state_store_(base::Value::Type::DICTIONARY),
       option_store_(base::Value::Type::DICTIONARY) {
-  CHECK(ledger_database_->GetInternalDatabaseForTesting()->OpenInMemory());
+  CHECK(ledger_database_.GetInternalDatabaseForTesting()->OpenInMemory());
 }
 
-TestLedgerClient::~TestLedgerClient() {
-  task_runner_->DeleteSoon(FROM_HERE, ledger_database_.release());
-}
+TestLedgerClient::~TestLedgerClient() = default;
 
 void TestLedgerClient::OnReconcileComplete(
     const mojom::Result result,
@@ -249,12 +233,10 @@ void TestLedgerClient::ReconcileStampReset() {}
 void TestLedgerClient::RunDBTransaction(
     mojom::DBTransactionPtr transaction,
     client::RunDBTransactionCallback callback) {
-  task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(RunDBTransactionInTask, std::move(transaction),
-                     ledger_database_.get()),
-      base::BindOnce(&TestLedgerClient::RunDBTransactionCompleted,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+  base::SequencedTaskRunnerHandle::Get()->PostTask(
+      FROM_HERE, base::BindOnce(&TestLedgerClient::RunDBTransactionAfterDelay,
+                                weak_factory_.GetWeakPtr(),
+                                std::move(transaction), std::move(callback)));
 }
 
 void TestLedgerClient::GetCreateScript(
@@ -317,6 +299,15 @@ void TestLedgerClient::LoadURLAfterDelay(mojom::UrlRequestPtr request,
   response.url = request->url;
   response.status_code = net::HTTP_BAD_REQUEST;
   callback(response);
+}
+
+void TestLedgerClient::RunDBTransactionAfterDelay(
+    mojom::DBTransactionPtr transaction,
+    client::RunDBTransactionCallback callback) {
+  ledger_database_.RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&TestLedgerClient::RunDBTransactionCompleted,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void TestLedgerClient::RunDBTransactionCompleted(

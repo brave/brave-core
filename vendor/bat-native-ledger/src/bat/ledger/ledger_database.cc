@@ -4,12 +4,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ledger/ledger_database.h"
+
 #include "bat/ledger/internal/ledger_database_impl.h"
 
 namespace ledger {
 
-LedgerDatabase* LedgerDatabase::CreateInstance(const base::FilePath& path) {
-  return new LedgerDatabaseImpl(path);
+void CreateLedgerDatabaseOnTaskRunner(
+    const base::FilePath& file_path,
+    mojo::PendingReceiver<mojom::LedgerDatabase> receiver,
+    scoped_refptr<base::SequencedTaskRunner> task_runner) {
+  LedgerDatabaseImpl::CreateOnTaskRunner(file_path, std::move(receiver),
+                                         task_runner);
 }
 
 }  // namespace ledger

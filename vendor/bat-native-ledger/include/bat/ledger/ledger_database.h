@@ -3,31 +3,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_LEDGER_LEDGER_DATABASE_H_
-#define BAT_LEDGER_LEDGER_DATABASE_H_
-
-#include <string>
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_INCLUDE_BAT_LEDGER_LEDGER_DATABASE_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_INCLUDE_BAT_LEDGER_LEDGER_DATABASE_H_
 
 #include "base/files/file_path.h"
-#include "bat/ledger/ledger_client.h"
+#include "base/sequenced_task_runner.h"
+#include "bat/ledger/export.h"
+#include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_database.mojom.h"
 
 namespace ledger {
 
-class LEDGER_EXPORT LedgerDatabase {
- public:
-  LedgerDatabase() = default;
-  virtual ~LedgerDatabase() = default;
-
-  LedgerDatabase(const LedgerDatabase&) = delete;
-  LedgerDatabase& operator=(const LedgerDatabase&) = delete;
-
-  static LedgerDatabase* CreateInstance(const base::FilePath& path);
-
-  virtual void RunTransaction(
-      type::DBTransactionPtr transaction,
-      type::DBCommandResponse* command_response) = 0;
-};
+// Creates a "self-owned" instance of |mojom::LedgerDatabase| on the specified
+// task runner. The task runner must allow blocking IO calls.
+LEDGER_EXPORT void CreateLedgerDatabaseOnTaskRunner(
+    const base::FilePath& file_path,
+    mojo::PendingReceiver<mojom::LedgerDatabase> receiver,
+    scoped_refptr<base::SequencedTaskRunner> task_runner);
 
 }  // namespace ledger
 
-#endif  // BAT_LEDGER_LEDGER_DATABASE_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_INCLUDE_BAT_LEDGER_LEDGER_DATABASE_H_

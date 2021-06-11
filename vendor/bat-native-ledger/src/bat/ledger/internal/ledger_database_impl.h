@@ -6,19 +6,23 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEDGER_DATABASE_IMPL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEDGER_DATABASE_IMPL_H_
 
-#include <memory>
-
 #include "base/memory/memory_pressure_listener.h"
 #include "base/sequence_checker.h"
 #include "bat/ledger/ledger_database.h"
 #include "sql/database.h"
-#include "sql/init_status.h"
 #include "sql/meta_table.h"
 
 namespace ledger {
 
-class LedgerDatabaseImpl : public LedgerDatabase {
+class LedgerDatabaseImpl : public mojom::LedgerDatabase {
  public:
+  // Creates an instance of |LedgerDatabaseImpl| on the specified task runner
+  // that will process messages from the provided mojo receiver.
+  static void CreateOnTaskRunner(
+      const base::FilePath& file_path,
+      mojo::PendingReceiver<mojom::LedgerDatabase> receiver,
+      scoped_refptr<base::SequencedTaskRunner> task_runner);
+
   explicit LedgerDatabaseImpl(const base::FilePath& path);
 
   LedgerDatabaseImpl(const LedgerDatabaseImpl&) = delete;
@@ -26,12 +30,19 @@ class LedgerDatabaseImpl : public LedgerDatabase {
 
   ~LedgerDatabaseImpl() override;
 
-  void RunTransaction(mojom::DBTransactionPtr transaction,
-                      mojom::DBCommandResponse* command_response) override;
+  void RunDBTransaction(mojom::DBTransactionPtr transaction,
+                        RunDBTransactionCallback callback) override;
+
+  void DeleteFile(DeleteFileCallback callback) override;
 
   sql::Database* GetInternalDatabaseForTesting() { return &db_; }
 
  private:
+  void CloseDatabase();
+
+  void RunTransactionInternal(mojom::DBTransactionPtr transaction,
+                              mojom::DBCommandResponse* command_response);
+
   mojom::DBCommandResponse::Status Initialize(
       int32_t version,
       int32_t compatible_version,
@@ -55,8 +66,7 @@ class LedgerDatabaseImpl : public LedgerDatabase {
   sql::Database db_;
   sql::MetaTable meta_table_;
   bool initialized_ = false;
-
-  std::unique_ptr<base::MemoryPressureListener> memory_pressure_listener_;
+  base::MemoryPressureListener memory_pressure_listener_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 };

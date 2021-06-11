@@ -5,17 +5,28 @@
 
 #include "bat/ledger/internal/ledger_database_impl.h"
 
+#include <memory>
 #include <utility>
 #include <vector>
 
-#include "base/bind.h"
+#include "base/files/file_util.h"
 #include "bat/ledger/internal/logging/logging.h"
+#include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
 namespace ledger {
 
 namespace {
+
+void CreateDatabaseForReceiver(
+    const base::FilePath& file_path,
+    mojo::PendingReceiver<mojom::LedgerDatabase> receiver,
+    scoped_refptr<base::SequencedTaskRunner> task_runner) {
+  mojo::MakeSelfOwnedReceiver(std::make_unique<LedgerDatabaseImpl>(file_path),
+                              std::move(receiver), task_runner);
+}
 
 void HandleBinding(sql::Statement* statement,
                    const mojom::DBCommandBinding& binding) {
@@ -101,13 +112,46 @@ mojom::DBRecordPtr CreateRecord(
 }  // namespace
 
 LedgerDatabaseImpl::LedgerDatabaseImpl(const base::FilePath& path)
-    : db_path_(path) {
+    : db_path_(path),
+      memory_pressure_listener_(
+          FROM_HERE,
+          base::BindRepeating(&LedgerDatabaseImpl::OnMemoryPressure,
+                              base::Unretained(this))) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
 LedgerDatabaseImpl::~LedgerDatabaseImpl() = default;
 
-void LedgerDatabaseImpl::RunTransaction(
+void LedgerDatabaseImpl::CreateOnTaskRunner(
+    const base::FilePath& file_path,
+    mojo::PendingReceiver<mojom::LedgerDatabase> receiver,
+    scoped_refptr<base::SequencedTaskRunner> task_runner) {
+  task_runner->PostTask(FROM_HERE,
+                        base::BindOnce(CreateDatabaseForReceiver, file_path,
+                                       std::move(receiver), task_runner));
+}
+
+void LedgerDatabaseImpl::RunDBTransaction(mojom::DBTransactionPtr transaction,
+                                          RunDBTransactionCallback callback) {
+  auto response = mojom::DBCommandResponse::New();
+  RunTransactionInternal(std::move(transaction), response.get());
+  std::move(callback).Run(std::move(response));
+}
+
+void LedgerDatabaseImpl::DeleteFile(DeleteFileCallback callback) {
+  CloseDatabase();
+  bool success = base::DeleteFile(db_path_) &&
+                 base::DeleteFile(db_path_.AppendASCII("-journal"));
+  std::move(callback).Run(success);
+}
+
+void LedgerDatabaseImpl::CloseDatabase() {
+  db_.Close();
+  meta_table_.Reset();
+  initialized_ = false;
+}
+
+void LedgerDatabaseImpl::RunTransactionInternal(
     mojom::DBTransactionPtr transaction,
     mojom::DBCommandResponse* command_response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -125,8 +169,7 @@ void LedgerDatabaseImpl::RunTransaction(
   // Close command must always be sent as single command in transaction
   if (transaction->commands.size() == 1 &&
       transaction->commands[0]->type == mojom::DBCommand::Type::CLOSE) {
-    db_.Close();
-    initialized_ = false;
+    CloseDatabase();
     command_response->status = mojom::DBCommandResponse::Status::RESPONSE_OK;
     return;
   }
@@ -228,9 +271,6 @@ mojom::DBCommandResponse::Status LedgerDatabaseImpl::Initialize(
     }
 
     initialized_ = true;
-    memory_pressure_listener_.reset(new base::MemoryPressureListener(
-        FROM_HERE, base::BindRepeating(&LedgerDatabaseImpl::OnMemoryPressure,
-                                       base::Unretained(this))));
   } else {
     table_version = meta_table_.GetVersionNumber();
   }

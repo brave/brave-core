@@ -2,4 +2,5 @@ include_rules = [
   "+bat/ledger",
   "-bat/ledger/internal",
   "+components/os_crypt",
+  "+mojo/public/cpp/bindings",
 ]

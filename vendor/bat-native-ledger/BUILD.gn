@@ -531,6 +531,7 @@ source_set("ledger") {
     "//brave/components/brave_private_cdn",
     "//brave/components/challenge_bypass_ristretto",
     "//crypto",
+    "//mojo/public/cpp/bindings",
     "//net:net",
     "//sql:sql",
     "//third_party/boringssl",
