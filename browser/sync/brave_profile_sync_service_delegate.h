@@ -10,7 +10,6 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
-#include "components/sync/driver/profile_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
 
 class Profile;

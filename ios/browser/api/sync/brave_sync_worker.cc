@@ -17,8 +17,8 @@
 #include "brave/components/brave_sync/profile_sync_service_helper.h"
 #include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
 #include "brave/components/sync_device_info/brave_device_info.h"
-#include "components/sync/driver/profile_sync_service.h"
 #include "components/sync/driver/sync_service.h"
+#include "components/sync/driver/sync_service_impl.h"
 #include "components/sync/driver/sync_service_observer.h"
 #include "components/sync_device_info/device_info.h"
 #include "components/sync_device_info/device_info_sync_service.h"
@@ -54,7 +54,7 @@ void BraveSyncDeviceTracker::OnDeviceInfoChange() {
 }
 
 BraveSyncServiceTracker::BraveSyncServiceTracker(
-    syncer::ProfileSyncService* profile_sync_service,
+    syncer::SyncServiceImpl* profile_sync_service,
     std::function<void()> on_state_changed_callback)
     : on_state_changed_callback_(on_state_changed_callback) {
   DCHECK(profile_sync_service);

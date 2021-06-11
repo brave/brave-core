@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_PROFILE_SYNC_SERVICE_H_
-#define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_PROFILE_SYNC_SERVICE_H_
+#ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_SYNC_SERVICE_IMPL_H_
+#define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_SYNC_SERVICE_IMPL_H_
 
 #define BRAVE_PROFILE_SYNC_SERVICE_H_ \
  private:                             \
@@ -19,10 +19,10 @@
 #include "components/sync/engine/sync_engine.h"
 #define Initialize virtual Initialize
 
-#include "../../../../../components/sync/driver/profile_sync_service.h"
+#include "../../../../../components/sync/driver/sync_service_impl.h"
 
 #undef Initialize
 
 #undef BRAVE_PROFILE_SYNC_SERVICE_H_
 
-#endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_PROFILE_SYNC_SERVICE_H_
+#endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_SYNC_SERVICE_IMPL_H_

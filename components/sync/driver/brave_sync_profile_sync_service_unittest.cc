@@ -56,7 +56,7 @@ class BraveProfileSyncServiceTest : public testing::Test {
   ~BraveProfileSyncServiceTest() override { sync_service_->Shutdown(); }
 
   void CreateSyncService(
-      ProfileSyncService::StartBehavior start_behavior,
+      SyncServiceImpl::StartBehavior start_behavior,
       ModelTypeSet registered_types = ModelTypeSet(BOOKMARKS)) {
     DataTypeController::TypeVector controllers;
     for (ModelType type : registered_types) {
@@ -99,7 +99,7 @@ class BraveProfileSyncServiceTest : public testing::Test {
 TEST_F(BraveProfileSyncServiceTest, ValidPassphrase) {
   OSCryptMocker::SetUp();
 
-  CreateSyncService(ProfileSyncService::MANUAL_START);
+  CreateSyncService(SyncServiceImpl::MANUAL_START);
 
   brave_sync_service()->Initialize();
   EXPECT_FALSE(engine());
@@ -115,7 +115,7 @@ TEST_F(BraveProfileSyncServiceTest, ValidPassphrase) {
 TEST_F(BraveProfileSyncServiceTest, InvalidPassphrase) {
   OSCryptMocker::SetUp();
 
-  CreateSyncService(ProfileSyncService::MANUAL_START);
+  CreateSyncService(SyncServiceImpl::MANUAL_START);
 
   brave_sync_service()->Initialize();
   EXPECT_FALSE(engine());
@@ -132,7 +132,7 @@ TEST_F(BraveProfileSyncServiceTest, InvalidPassphrase) {
 TEST_F(BraveProfileSyncServiceTest, ValidPassphraseLeadingTrailingWhitespace) {
   OSCryptMocker::SetUp();
 
-  CreateSyncService(ProfileSyncService::MANUAL_START);
+  CreateSyncService(SyncServiceImpl::MANUAL_START);
 
   brave_sync_service()->Initialize();
   EXPECT_FALSE(engine());
