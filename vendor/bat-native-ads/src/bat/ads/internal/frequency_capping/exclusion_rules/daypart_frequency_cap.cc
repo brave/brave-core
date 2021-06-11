@@ -37,8 +37,7 @@ DaypartFrequencyCap::~DaypartFrequencyCap() = default;
 bool DaypartFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   if (!DoesRespectCap(ad)) {
     last_message_ = base::StringPrintf(
-        "creativeSetId %s excluded as not "
-        "within a scheduled time slot",
+        "creativeSetId %s excluded as not within a scheduled time slot",
         ad.creative_set_id.c_str());
 
     return true;

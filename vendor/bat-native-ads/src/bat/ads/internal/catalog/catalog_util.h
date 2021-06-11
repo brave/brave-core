@@ -7,12 +7,17 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_UTIL_H_
 
 #include "base/time/time.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_segment.h"
 
 namespace ads {
+
+class Catalog;
 
 bool DoesCatalogExist();
 
 bool HasCatalogExpired();
+
+SegmentList GetSegments(const Catalog& catalog);
 
 }  // namespace ads
 

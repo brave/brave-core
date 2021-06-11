@@ -31,8 +31,8 @@ bool ConversionFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
 
   if (!ShouldAllow(ad)) {
     last_message_ = base::StringPrintf(
-        "creativeSetId %s excluded due to ad "
-        " conversion tracking being disabled",
+        "creativeSetId %s excluded due to ad conversion tracking being "
+        "disabled",
         ad.creative_set_id.c_str());
 
     return true;
@@ -42,8 +42,7 @@ bool ConversionFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
 
   if (!DoesRespectCap(filtered_ad_events)) {
     last_message_ = base::StringPrintf(
-        "creativeSetId %s has exceeded the "
-        "frequency capping for conversions",
+        "creativeSetId %s has exceeded the frequency capping for conversions",
         ad.creative_set_id.c_str());
 
     return true;
@@ -81,7 +80,8 @@ AdEventList ConversionFrequencyCap::FilterAdEvents(
   const auto iter = std::remove_if(
       filtered_ad_events.begin(), filtered_ad_events.end(),
       [&ad](const AdEventInfo& ad_event) {
-        return ad_event.type != AdType::kAdNotification ||
+        return (ad_event.type != AdType::kAdNotification &&
+                ad_event.type != AdType::kInlineContentAd) ||
                ad_event.creative_set_id != ad.creative_set_id ||
                ad_event.confirmation_type != ConfirmationType::kConversion;
       });

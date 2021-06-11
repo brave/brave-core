@@ -29,6 +29,8 @@ void RecordAdEvents(const AdType& type,
 void RecordAdEvent(const AdType& type,
                    const ConfirmationType& confirmation_type);
 
+void ResetFrequencyCaps(const AdType& type);
+
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FREQUENCY_CAPPING_FREQUENCY_CAPPING_UNITTEST_UTIL_H_

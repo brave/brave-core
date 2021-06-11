@@ -18,7 +18,7 @@ NewTabPageAdsPerHourFrequencyCap::~NewTabPageAdsPerHourFrequencyCap() = default;
 
 bool NewTabPageAdsPerHourFrequencyCap::ShouldAllow() {
   const std::deque<uint64_t> history =
-      GetAdEvents(AdType::kNewTabPageAd, ConfirmationType::kViewed);
+      GetAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
     last_message_ = "You have exceeded the allowed new tab page ads per hour";

@@ -20,7 +20,7 @@ PromotedContentAdsPerDayFrequencyCap::~PromotedContentAdsPerDayFrequencyCap() =
 
 bool PromotedContentAdsPerDayFrequencyCap::ShouldAllow() {
   const std::deque<uint64_t> history =
-      GetAdEvents(AdType::kPromotedContentAd, ConfirmationType::kViewed);
+      GetAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
     last_message_ =

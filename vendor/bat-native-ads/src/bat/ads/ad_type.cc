@@ -17,6 +17,7 @@ const char kUndefinedType[] = "";
 const char kAdNotificationType[] = "ad_notification";
 const char kNewTabPageAdType[] = "new_tab_page_ad";
 const char kPromotedContentAdType[] = "promoted_content_ad";
+const char kInlineContentAdType[] = "inline_content_ad";
 
 }  // namespace
 
@@ -29,6 +30,8 @@ AdType::AdType(const std::string& value) {
     value_ = kNewTabPageAd;
   } else if (value == kPromotedContentAdType) {
     value_ = kPromotedContentAd;
+  } else if (value == kInlineContentAdType) {
+    value_ = kInlineContentAd;
   } else {
     NOTREACHED();
   }
@@ -54,6 +57,10 @@ AdType::operator std::string() const {
 
     case kPromotedContentAd: {
       return kPromotedContentAdType;
+    }
+
+    case kInlineContentAd: {
+      return kInlineContentAdType;
     }
   }
 }

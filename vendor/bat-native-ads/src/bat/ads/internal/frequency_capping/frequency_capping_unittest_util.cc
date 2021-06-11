@@ -11,6 +11,9 @@
 #include "base/guid.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/client/client.h"
+#include "bat/ads/internal/database/tables/ad_events_database_table_unittest_util.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace ads {
 
@@ -70,6 +73,15 @@ void RecordAdEvents(const AdType& type,
 void RecordAdEvent(const AdType& type,
                    const ConfirmationType& confirmation_type) {
   RecordAdEvents(type, confirmation_type, 1);
+}
+
+void ResetFrequencyCaps(const AdType& type) {
+  Client::Get()->ResetAllSeenAdsForType(type);
+
+  Client::Get()->ResetAllSeenAdvertisersForType(type);
+
+  database::table::ad_events::Reset(
+      [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
 }
 
 }  // namespace ads

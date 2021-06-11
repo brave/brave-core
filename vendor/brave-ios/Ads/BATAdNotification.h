@@ -6,18 +6,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSInteger, BATAdsConfirmationType) {
-  BATAdsConfirmationTypeUndefined,  // = ads::ConfirmationType::kUndefined
-  BATAdsConfirmationTypeClicked,    // = ads::ConfirmationType::kClicked
-  BATAdsConfirmationTypeDismissed,  // = ads::ConfirmationType::kDismissed
-  BATAdsConfirmationTypeViewed,     // = ads::ConfirmationType::kViewed
-  BATAdsConfirmationTypeLanded,     // = ads::ConfirmationType::kLanded
-  BATAdsConfirmationTypeFlagged,    // = ads::ConfirmationType::kFlagged
-  BATAdsConfirmationTypeUpvoted,    // = ads::ConfirmationType::kUpvoted
-  BATAdsConfirmationTypeDownvoted,  // = ads::ConfirmationType::kDownvoted
-  BATAdsConfirmationTypeConversion  // = ads::ConfirmationType::kConversion
-} NS_SWIFT_NAME(ConfirmationType);
-
 OBJC_EXPORT
 NS_SWIFT_NAME(AdsNotification)
 @interface BATAdNotification : NSObject

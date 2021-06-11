@@ -3,15 +3,15 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/ios/app/headers.gni")
 import("//build/config/ios/rules.gni")
 import("//build/config/python.gni")
-import("//brave/ios/app/headers.gni")
 
 config("internal_config") {
   visibility = [
     ":*",
-    "//brave/test:*",
     "tests:*",
+    "//brave/test:*",
   ]
 
   cflags = [
@@ -43,9 +43,7 @@ group("brave-ios") {
 
 group("brave_ios_tests") {
   testonly = true
-  public_deps = [
-    "tests:brave_rewards_ios_tests"
-  ]
+  public_deps = [ "tests:brave_rewards_ios_tests" ]
 }
 
 ios_framework_bundle("brave_rewards_ios_framework") {
@@ -58,20 +56,36 @@ ios_framework_bundle("brave_rewards_ios_framework") {
   configs += [ "//build/config/compiler:enable_arc" ]
 
   deps = [
+    ":ads_mojo_gen_wrappers",
+    ":coredata",
+    ":ledger_mojo_gen_wrappers",
+    ":resources",
     "//brave/ios/app",
-    "//brave/vendor/bat-native-ledger",
     "//brave/vendor/bat-native-ads",
+    "//brave/vendor/bat-native-ledger",
+    "//components/os_crypt",
     "//net:net",
     "//sql",
     "//url",
-    "//components/os_crypt",
-    ":resources",
-    ":coredata",
-    ":ledger_mojo_gen_wrappers",
-    ":ads_mojo_gen_wrappers",
   ]
 
   sources = [
+    "$target_gen_dir/ads.mojom.objc+private.h",
+    "$target_gen_dir/ads.mojom.objc.h",
+    "$target_gen_dir/ads.mojom.objc.mm",
+    "$target_gen_dir/ledger.mojom.objc+private.h",
+    "$target_gen_dir/ledger.mojom.objc.h",
+    "$target_gen_dir/ledger.mojom.objc.mm",
+    "Ads/BATAdNotification.h",
+    "Ads/BATAdNotification.mm",
+    "Ads/BATBraveAds+Private.h",
+    "Ads/BATBraveAds.h",
+    "Ads/BATBraveAds.mm",
+    "Ads/BATInlineContentAd.h",
+    "Ads/BATInlineContentAd.mm",
+    "Ads/Generated/NativeAdsClient.h",
+    "Ads/Generated/NativeAdsClient.mm",
+    "Ads/Generated/NativeAdsClientBridge.h",
     "BATBraveRewards.h",
     "BATBraveRewards.mm",
     "Ledger/BATBraveLedger.h",
@@ -82,13 +96,44 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "Ledger/Data/BATLedgerDatabase.mm",
     "Ledger/Data/DataController.h",
     "Ledger/Data/DataController.mm",
-    "Ledger/Generated/NativeLedgerClientBridge.h",
+    "Ledger/Data/Model/ActivityInfo.h",
+    "Ledger/Data/Model/ActivityInfo.m",
+    "Ledger/Data/Model/ContributionInfo.h",
+    "Ledger/Data/Model/ContributionInfo.m",
+    "Ledger/Data/Model/ContributionPublisher.h",
+    "Ledger/Data/Model/ContributionPublisher.m",
+    "Ledger/Data/Model/ContributionQueue.h",
+    "Ledger/Data/Model/ContributionQueue.m",
+    "Ledger/Data/Model/CoreDataModels.h",
+    "Ledger/Data/Model/MediaPublisherInfo.h",
+    "Ledger/Data/Model/MediaPublisherInfo.m",
+    "Ledger/Data/Model/PendingContribution.h",
+    "Ledger/Data/Model/PendingContribution.m",
+    "Ledger/Data/Model/Promotion.h",
+    "Ledger/Data/Model/Promotion.m",
+    "Ledger/Data/Model/PromotionCredentials.h",
+    "Ledger/Data/Model/PromotionCredentials.m",
+    "Ledger/Data/Model/PublisherInfo.h",
+    "Ledger/Data/Model/PublisherInfo.m",
+    "Ledger/Data/Model/RecurringDonation.h",
+    "Ledger/Data/Model/RecurringDonation.m",
+    "Ledger/Data/Model/ServerPublisherAmount.h",
+    "Ledger/Data/Model/ServerPublisherAmount.m",
+    "Ledger/Data/Model/ServerPublisherBanner.h",
+    "Ledger/Data/Model/ServerPublisherBanner.m",
+    "Ledger/Data/Model/ServerPublisherInfo.h",
+    "Ledger/Data/Model/ServerPublisherInfo.m",
+    "Ledger/Data/Model/ServerPublisherLink.h",
+    "Ledger/Data/Model/ServerPublisherLink.m",
+    "Ledger/Data/Model/UnblindedToken.h",
+    "Ledger/Data/Model/UnblindedToken.m",
     "Ledger/Generated/NativeLedgerClient.h",
     "Ledger/Generated/NativeLedgerClient.mm",
-    "Ledger/Models/BATRewardsNotification.h",
-    "Ledger/Models/BATRewardsNotification.m",
+    "Ledger/Generated/NativeLedgerClientBridge.h",
     "Ledger/Models/BATPromotionSolution.h",
     "Ledger/Models/BATPromotionSolution.mm",
+    "Ledger/Models/BATRewardsNotification.h",
+    "Ledger/Models/BATRewardsNotification.m",
     "Shared/BATCommonOperations.h",
     "Shared/BATCommonOperations.mm",
     "Shared/NSURL+Extensions.h",
@@ -96,51 +141,6 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "Shared/RewardsLogging.h",
     "Shared/RewardsLogging.mm",
     "objc-gen/CppTransformations.h",
-    "Ads/BATAdNotification.h",
-    "Ads/BATAdNotification.mm",
-    "Ads/BATBraveAds.h",
-    "Ads/BATBraveAds+Private.h",
-    "Ads/BATBraveAds.mm",
-    "Ads/Generated/NativeAdsClientBridge.h",
-    "Ads/Generated/NativeAdsClient.h",
-    "Ads/Generated/NativeAdsClient.mm",
-    "Ledger/Data/Model/CoreDataModels.h",
-    "Ledger/Data/Model/ActivityInfo.h",
-    "Ledger/Data/Model/ActivityInfo.m",
-    "Ledger/Data/Model/ContributionInfo.h",
-    "Ledger/Data/Model/ContributionInfo.m",
-    "Ledger/Data/Model/MediaPublisherInfo.h",
-    "Ledger/Data/Model/MediaPublisherInfo.m",
-    "Ledger/Data/Model/PendingContribution.h",
-    "Ledger/Data/Model/PendingContribution.m",
-    "Ledger/Data/Model/PublisherInfo.h",
-    "Ledger/Data/Model/PublisherInfo.m",
-    "Ledger/Data/Model/RecurringDonation.h",
-    "Ledger/Data/Model/RecurringDonation.m",
-    "Ledger/Data/Model/ServerPublisherInfo.h",
-    "Ledger/Data/Model/ServerPublisherInfo.m",
-    "Ledger/Data/Model/ServerPublisherAmount.h",
-    "Ledger/Data/Model/ServerPublisherAmount.m",
-    "Ledger/Data/Model/ServerPublisherBanner.h",
-    "Ledger/Data/Model/ServerPublisherBanner.m",
-    "Ledger/Data/Model/ServerPublisherLink.h",
-    "Ledger/Data/Model/ServerPublisherLink.m",
-    "Ledger/Data/Model/ContributionQueue.h",
-    "Ledger/Data/Model/ContributionQueue.m",
-    "Ledger/Data/Model/ContributionPublisher.h",
-    "Ledger/Data/Model/ContributionPublisher.m",
-    "Ledger/Data/Model/Promotion.h",
-    "Ledger/Data/Model/Promotion.m",
-    "Ledger/Data/Model/PromotionCredentials.h",
-    "Ledger/Data/Model/PromotionCredentials.m",
-    "Ledger/Data/Model/UnblindedToken.h",
-    "Ledger/Data/Model/UnblindedToken.m",
-    "$target_gen_dir/ledger.mojom.objc.h",
-    "$target_gen_dir/ledger.mojom.objc+private.h",
-    "$target_gen_dir/ledger.mojom.objc.mm",
-    "$target_gen_dir/ads.mojom.objc.h",
-    "$target_gen_dir/ads.mojom.objc+private.h",
-    "$target_gen_dir/ads.mojom.objc.mm",
   ]
 
   public_headers = [
@@ -153,6 +153,7 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "Ledger/Models/BATPromotionSolution.h",
     "Ads/BATBraveAds.h",
     "Ads/BATAdNotification.h",
+    "Ads/BATInlineContentAd.h",
     "$target_gen_dir/ledger.mojom.objc.h",
     "$target_gen_dir/ads.mojom.objc.h",
   ]
@@ -166,7 +167,7 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "CoreData.framework",
     "SystemConfiguration.framework",
     "Network.framework",
-    "CoreImage.framework"
+    "CoreImage.framework",
   ]
 }
 
@@ -174,11 +175,9 @@ bundle_data("resources") {
   ads_dir = "//brave/vendor/bat-native-ads"
   sources = [
     "$ads_dir/data/resources/catalog-schema.json",
-    "Ledger/Data/migrate.sql"
+    "Ledger/Data/migrate.sql",
   ]
-  outputs = [
-    "{{bundle_resources_dir}}/{{source_file_part}}",
-  ]
+  outputs = [ "{{bundle_resources_dir}}/{{source_file_part}}" ]
 }
 
 bundle_data("coredata") {
@@ -187,21 +186,15 @@ bundle_data("coredata") {
     "$root_gen_dir/Model.momd/VersionInfo.plist",
   ]
 
-  outputs = [
-    "{{bundle_resources_dir}}/Model.momd/{{source_file_part}}",
-  ]
+  outputs = [ "{{bundle_resources_dir}}/Model.momd/{{source_file_part}}" ]
 
-  public_deps = [
-    ":compile_coredata"
-  ]
+  public_deps = [ ":compile_coredata" ]
 }
 
 action("compile_coredata") {
   script = "scripts/compile-model.py"
 
-  inputs = [
-    "Ledger/Data/Model.xcdatamodeld",
-  ]
+  inputs = [ "Ledger/Data/Model.xcdatamodeld" ]
 
   outputs = [
     "$root_gen_dir/Model.momd/Model.mom",
@@ -219,8 +212,10 @@ action("compile_coredata") {
 
 python2_action("ledger_mojo_gen_wrappers") {
   script = "scripts/mojo/gen_model_wrappers.py"
-  mojom_module = rebase_path("$root_gen_dir/brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom-module")
-  mojom_idl = rebase_path("//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom")
+  mojom_module = rebase_path(
+          "$root_gen_dir/brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom-module")
+  mojom_idl = rebase_path(
+          "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom")
   inputs = [
     mojom_module,
     mojom_idl,
@@ -246,15 +241,15 @@ python2_action("ledger_mojo_gen_wrappers") {
     "--mojom-file=$mojom_idl",
     "--output-dir=$output_dir",
   ]
-  deps = [
-    "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces:interfaces__parser"
-  ]
+  deps = [ "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces:interfaces__parser" ]
 }
 
 python2_action("ads_mojo_gen_wrappers") {
   script = "scripts/mojo/gen_model_wrappers.py"
-  mojom_module = rebase_path("$root_gen_dir/brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom-module")
-  mojom_idl = rebase_path("//brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom")
+  mojom_module = rebase_path(
+          "$root_gen_dir/brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom-module")
+  mojom_idl = rebase_path(
+          "//brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom")
   inputs = [
     mojom_module,
     mojom_idl,
@@ -280,7 +275,5 @@ python2_action("ads_mojo_gen_wrappers") {
     "--mojom-file=$mojom_idl",
     "--output-dir=$output_dir",
   ]
-  deps = [
-    "//brave/vendor/bat-native-ads/include/bat/ads/public/interfaces:interfaces__parser"
-  ]
+  deps = [ "//brave/vendor/bat-native-ads/include/bat/ads/public/interfaces:interfaces__parser" ]
 }

@@ -252,7 +252,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
       });
 }
 
-TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest, GetForCategories) {
+TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest, GetForSegments) {
   // Arrange
 
   CreativeNewTabPageAdList creative_new_tab_page_ads;
@@ -415,7 +415,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
 }
 
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
-       GetCreativeNewTabPageAdsForEmptyCategories) {
+       GetCreativeNewTabPageAdsForEmptySegments) {
   // Arrange
   CreativeNewTabPageAdList creative_new_tab_page_ads;
 
@@ -509,7 +509,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
 }
 
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
-       GetCreativeNewTabPageAdsFromMultipleCategories) {
+       GetCreativeNewTabPageAdsFromMultipleSegments) {
   // Arrange
   CreativeNewTabPageAdList creative_new_tab_page_ads;
 
@@ -674,7 +674,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
 }
 
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
-       GetCreativeNewTabPageAdsMatchingCaseInsensitiveCategories) {
+       GetCreativeNewTabPageAdsMatchingCaseInsensitiveSegments) {
   // Arrange
   CreativeNewTabPageAdList creative_new_tab_page_ads;
 

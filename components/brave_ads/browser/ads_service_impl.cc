@@ -45,6 +45,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_ads/browser/features.h"
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
@@ -57,6 +58,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/rpill/common/rpill.h"
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
@@ -518,6 +520,13 @@ bool AdsServiceImpl::IsEnabled() const {
   return GetBooleanPref(ads::prefs::kEnabled);
 }
 
+bool AdsServiceImpl::ShouldStart() const {
+  return GetBooleanPref(ads::prefs::kEnabled) ||
+         GetBooleanPref(ntp_background_images::prefs::
+                            kNewTabPageShowSponsoredImagesBackgroundImage) ||
+         GetBooleanPref(kNewTabPageShowToday);
+}
+
 int64_t AdsServiceImpl::GetAdsPerHour() const {
   int64_t ads_per_hour = GetInt64Pref(ads::prefs::kAdsPerHour);
   if (ads_per_hour == -1) {
@@ -651,6 +660,15 @@ void AdsServiceImpl::Initialize() {
       base::BindRepeating(&AdsServiceImpl::OnPrefsChanged,
                           base::Unretained(this)));
 
+  profile_pref_change_registrar_.Add(
+      ntp_background_images::prefs::
+          kNewTabPageShowSponsoredImagesBackgroundImage,
+      base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
+
+  profile_pref_change_registrar_.Add(
+      kNewTabPageShowToday,
+      base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
+
   MaybeStart(false);
 }
 
@@ -731,7 +749,7 @@ void AdsServiceImpl::MaybeStart(const bool should_restart) {
     return;
   }
 
-  if (!IsEnabled()) {
+  if (!ShouldStart()) {
     Stop();
     return;
   }
@@ -741,6 +759,9 @@ void AdsServiceImpl::MaybeStart(const bool should_restart) {
     Shutdown();
   }
 
+  if (connected()) {
+    return;
+  }
   if (!StartService()) {
     VLOG(0) << "Failed to start ads service";
     return;
@@ -839,9 +860,9 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(const bool success) {
     return;
   }
 
-  g_brave_browser_process->resource_component()->AddObserver(this);
-
   BackgroundHelper::GetInstance()->AddObserver(this);
+
+  g_brave_browser_process->resource_component()->AddObserver(this);
 
   database_ = std::make_unique<ads::Database>(
       base_path_.AppendASCII("database.sqlite"));
@@ -852,9 +873,6 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(const bool success) {
       base::BindOnce(&AdsServiceImpl::OnCreate, AsWeakPtr()));
 
   OnWalletUpdated();
-
-  const std::string locale = GetLocale();
-  RegisterResourceComponentsForLocale(locale);
 
   MaybeShowMyFirstAdNotification();
 }
@@ -1047,6 +1065,28 @@ void AdsServiceImpl::OnPromotedContentAdEvent(
   bat_ads_->OnPromotedContentAdEvent(uuid, creative_instance_id, event_type);
 }
 
+void AdsServiceImpl::GetInlineContentAd(const std::string& dimensions,
+                                        OnGetInlineContentAdCallback callback) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_->GetInlineContentAd(
+      dimensions, base::BindOnce(&AdsServiceImpl::OnGetInlineContentAd,
+                                 AsWeakPtr(), std::move(callback)));
+}
+
+void AdsServiceImpl::OnInlineContentAdEvent(
+    const std::string& uuid,
+    const std::string& creative_instance_id,
+    const ads::InlineContentAdEventType event_type) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_->OnInlineContentAdEvent(uuid, creative_instance_id, event_type);
+}
+
 void AdsServiceImpl::RetryOpeningNewTabWithAd(const std::string& uuid) {
   VLOG(1) << "Retry opening new tab for ad with uuid " << uuid;
   retry_opening_new_tab_for_ad_with_uuid_ = uuid;
@@ -1094,6 +1134,10 @@ void AdsServiceImpl::NotificationTimedOut(const std::string& uuid) {
 
 void AdsServiceImpl::RegisterResourceComponentsForLocale(
     const std::string& locale) {
+  if (!IsEnabled()) {
+    return;
+  }
+
   g_brave_browser_process->resource_component()->RegisterComponentsForLocale(
       locale);
 }
@@ -1151,6 +1195,34 @@ void AdsServiceImpl::OnURLRequestComplete(
   url_response.headers = headers;
 
   callback(url_response);
+}
+
+void AdsServiceImpl::OnGetInlineContentAd(OnGetInlineContentAdCallback callback,
+                                          const bool success,
+                                          const std::string& dimensions,
+                                          const std::string& json) {
+  base::DictionaryValue dictionary;
+
+  if (success) {
+    ads::InlineContentAdInfo ad;
+    ad.FromJson(json);
+
+    dictionary.SetKey("uuid", base::Value(ad.uuid));
+    dictionary.SetKey("creativeInstanceId",
+                      base::Value(ad.creative_instance_id));
+    dictionary.SetKey("creativeSetId", base::Value(ad.creative_set_id));
+    dictionary.SetKey("campaignId", base::Value(ad.campaign_id));
+    dictionary.SetKey("advertiserId", base::Value(ad.advertiser_id));
+    dictionary.SetKey("segment", base::Value(ad.segment));
+    dictionary.SetKey("title", base::Value(ad.title));
+    dictionary.SetKey("description", base::Value(ad.description));
+    dictionary.SetKey("imageUrl", base::Value(ad.image_url));
+    dictionary.SetKey("dimensions", base::Value(ad.dimensions));
+    dictionary.SetKey("ctaText", base::Value(ad.cta_text));
+    dictionary.SetKey("targetUrl", base::Value(ad.target_url));
+  }
+
+  std::move(callback).Run(success, dimensions, dictionary);
 }
 
 void AdsServiceImpl::OnGetAdsHistory(OnGetAdsHistoryCallback callback,
@@ -1669,24 +1741,26 @@ bool AdsServiceImpl::PrefExists(const std::string& path) const {
 }
 
 void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
-  if (pref == ads::prefs::kEnabled) {
-    rewards_service_->OnAdsEnabled(IsEnabled());
+  if (pref == ads::prefs::kEnabled ||
+      pref == ntp_background_images::prefs::
+                  kNewTabPageShowSponsoredImagesBackgroundImage ||
+      pref == kNewTabPageShowToday) {
+    if (pref == ads::prefs::kEnabled) {
+      rewards_service_->OnAdsEnabled(IsEnabled());
 
-    if (IsEnabled()) {
-      MaybeStart(false);
-    } else {
-      // Record "special value" to prevent sending this week's data to P2A
-      // server. Matches INT_MAX - 1 for |kSuspendedMetricValue| in
-      // |brave_p3a_service.cc|
-      SuspendP2AHistograms();
-      VLOG(1) << "P2A histograms suspended";
+      if (!IsEnabled()) {
+        SuspendP2AHistograms();
+        VLOG(1) << "P2A histograms suspended";
+      } else {
+        const std::string locale = GetLocale();
+        RegisterResourceComponentsForLocale(locale);
+      }
 
-      Stop();
+      brave_rewards::p3a::UpdateAdsStateOnPreferenceChange(profile_->GetPrefs(),
+                                                           pref);
     }
 
-    // Record P3A.
-    brave_rewards::p3a::UpdateAdsStateOnPreferenceChange(profile_->GetPrefs(),
-                                                         pref);
+    MaybeStart(/* should_restart */ false);
   } else if (pref == ads::prefs::kIdleTimeThreshold) {
     StartCheckIdleStateTimer();
   } else if (pref == brave_rewards::prefs::kWalletBrave) {

@@ -11,6 +11,9 @@
 #include "bat/ads/internal/ad_targeting/ad_targeting_segment.h"
 
 namespace ads {
+
+class Catalog;
+
 namespace resource {
 
 class EpsilonGreedyBandit : public Resource<SegmentList> {
@@ -21,7 +24,7 @@ class EpsilonGreedyBandit : public Resource<SegmentList> {
 
   bool IsInitialized() const override;
 
-  void LoadFromDatabase();
+  void LoadFromCatalog(const Catalog& catalog);
 
   SegmentList get() const override;
 
