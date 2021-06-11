@@ -293,6 +293,7 @@ are declared in tools/grit/grit_rule.gni.
       <!-- Web app intent picker strings -->
       <if expr="is_win or is_macosx or is_linux">
         <part file="protocol_handler_intent_picker_strings.grdp" />
+        <part file="url_handler_intent_picker_strings.grdp" />
       </if>
 
       <!-- Brave-OS-specific strings -->
@@ -4225,6 +4226,19 @@ are declared in tools/grit/grit_rule.gni.
         The folder you selected contains sensitive files. Are you sure you want to grant "<ph name="APP_NAME">$1<ex>Text</ex></ph>" permanent write access to this folder?
       </message>
 
+      <!-- Direct Sockets connection dialog -->
+      <if expr="not is_android">
+        <message name="IDS_DIRECT_SOCKETS_CONNECTION_BUBBLE_TITLE_LABEL" desc="Name shown in the direct sockets connection dialog's title">
+          Connection Dialog
+        </message>
+        <message name="IDS_DIRECT_SOCKETS_CONNECTION_BUBBLE_ADDRESS_LABEL" desc="The remote host name that direct sockets will connect to">
+          Address
+        </message>
+        <message name="IDS_DIRECT_SOCKETS_CONNECTION_BUBBLE_PORT_LABEL" desc="The remote port number that direct sockets will connect to">
+          Port
+        </message>
+      </if>
+
       <!-- Extensions strings, which are not used by chrome://extensions. -->
       <if expr="enable_extensions">
         <message name="IDS_EXTENSIONS_LOAD_ERROR_ALERT_HEADING" desc="The title of the section that describes an extension load error.">
@@ -5014,8 +5028,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
 
       <!-- Experimental Lacros Infobar-->
-      <message name="IDS_EXPERIMENTAL_LACROS_WARNING_MESSAGE" desc="Message shown when user launches Lacros, an experimental feature, for the first time.">
-        Lacros is an experimental Browser. Please report issues with: Help &gt; "Report an issue...".
+      <message name="IDS_EXPERIMENTAL_LACROS_WARNING_MESSAGE" desc="Message shown when user launches Lacros, an experimental feature.">
+        Experimental browser! May lose data or compromise privacy or security. Please report issues with: Help &gt; "Report an issue...".
       </message>
 
       <message name="IDS_EXPERIMENTAL_LACROS_WARNING_MESSAGE_PRIMARY" desc="Addendum which is sometimes added to the initial warning message.">
@@ -5752,6 +5766,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_TOOLTIP_EXTENSIONS_BUTTON" desc="The tooltip for the extensions button">
         Extensions
+      </message>
+      <message name="IDS_TOOLTIP_SIDE_PANEL_SHOW" desc="The tooltip for the side panel button, when closed">
+        Show side panel
+      </message>
+      <message name="IDS_TOOLTIP_SIDE_PANEL_HIDE" desc="The tooltip for the side panel button, when open">
+        Hide side panel
       </message>
       <if expr="is_macosx">
         <message name="IDS_TOOLTIP_CLOSE_TAB" desc="The tooltip for the close tab button">
@@ -7424,8 +7444,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SHARING_REMOTE_COPY_NOTIFICATION_DESCRIPTION" desc="Second line of text displayed in a Remote Copy notification.">
         Press <ph name="MODIFIER_KEY_DESCRIPTION">$1<ex>Ctrl+V</ex></ph> to paste
       </message>
-      <message name="IDS_OMNIBOX_TOOLTIP_SMS_REMOTE_FETCHER" translateable="false" desc="The label of item for sms remote fetcher in the omnibox for showing device name when one device is available.">
-        Tap the notification on <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph> to verify your phone number
+      <message name="IDS_OMNIBOX_TOOLTIP_SMS_REMOTE_FETCHER" translateable="false" desc="The label of item for sms remote fetcher in the omnibox for showing confirmation of an interaction on the remote device.">
+        Brave has sent the verification code to the website upon your approval on <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
       </message>
       <if expr="not use_titlecase">
         <message name="IDS_CONTENT_CONTEXT_SHARING_CLICK_TO_CALL_MULTIPLE_DEVICES" desc="The label of item for click to call in context menu when multiple devices are available.">
@@ -10384,6 +10404,18 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_FILE_SYSTEM_ACCESS_ORIGIN_SCOPED_READ_PERMISSION_DIRECTORY_TEXT" desc="Text of dialog asking user if they intended to share a particular directory">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to view files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph> until you close all tabs for this site
+    </message>
+    <message name="IDS_FILE_SYSTEM_ACCESS_WRITE_PERMISSION_FILE_TEXT" desc="Text of the dialog for confirming origin scoped write access to files using the File System Access API">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to edit <ph name="FILENAME">$2<ex>README.md</ex></ph>
+    </message>
+    <message name="IDS_FILE_SYSTEM_ACCESS_WRITE_PERMISSION_DIRECTORY_TEXT" desc="Text of the dialog for confirming origin scoped write access to a directory using the File System Access API">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to edit files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph>
+    </message>
+    <message name="IDS_FILE_SYSTEM_ACCESS_READ_PERMISSION_FILE_TEXT" desc="Text of dialog for confirming read access to files using the File System Access API">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to view <ph name="FILENAME">$2<ex>README.md</ex></ph>
+    </message>
+    <message name="IDS_FILE_SYSTEM_ACCESS_READ_PERMISSION_DIRECTORY_TEXT" desc="Text of dialog asking user if they intended to share a particular directory">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to view files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph>
     </message>
     <message name="IDS_FILE_SYSTEM_ACCESS_EDIT_FILE_PERMISSION_TITLE" desc="Title of dialog asking user to confirm giving read and write access to a file using the File System Access API">
       Let site edit <ph name="FILE_NAME">$1<ex>README.md</ex></ph>?
