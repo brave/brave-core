@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/startup/startup_browser_creator_impl.cc b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
-index d813c2a698c7dd6f0ca2155b2a9c68e40c3844a3..0a64e6e8e615591e70e1044e64634a00bfd6debd 100644
+index eb05e1b9fe54aba80bcd4d8cc52e11349bc5d9c3..5cd403df73226e60248a2ab7960d0246426905a9 100644
 --- a/chrome/browser/ui/startup/startup_browser_creator_impl.cc
 +++ b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
 @@ -375,6 +375,7 @@ void StartupBrowserCreatorImpl::DetermineURLsAndLaunch(
