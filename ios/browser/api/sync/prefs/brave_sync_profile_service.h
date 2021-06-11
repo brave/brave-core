@@ -31,11 +31,11 @@ OBJC_EXPORT
     BraveSyncProfileService* shared;
 
 /// Sync Profile Properties
-@property(nonatomic, assign, readonly) bool isSyncRequested;
-@property(nonatomic, assign, readonly) bool isSyncAllowedByPlatform;
-@property(nonatomic, assign, readonly) bool isSyncFeatureActive;
-@property(nonatomic, assign, readonly) bool isSyncEngineInitialized;
-@property(nonatomic, assign, readonly) bool isTransportStateActive;
+@property(nonatomic, readonly) bool isSyncRequested;
+@property(nonatomic, readonly) bool isSyncAllowedByPlatform;
+@property(nonatomic, readonly) bool isSyncFeatureActive;
+@property(nonatomic, readonly) bool isSyncEngineInitialized;
+@property(nonatomic, readonly) bool isTransportStateActive;
 
 /// Active Selectable Types for the Sync User
 /// Used for opting in/out on iOS side

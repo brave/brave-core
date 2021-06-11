@@ -44,11 +44,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-class BraveBrowsingHistoryDriver : public history::BrowsingHistoryDriver {
+class BraveBrowsingHistoryDriverIOS : public history::BrowsingHistoryDriver {
  public:
-  BraveBrowsingHistoryDriver(ChromeBrowserState* browser_state,
+  BraveBrowsingHistoryDriverIOS(ChromeBrowserState* browser_state,
                              id<BraveHistoryDriverDelegate> delegate);
-  ~BraveBrowsingHistoryDriver() override;
+  ~BraveBrowsingHistoryDriverIOS() override;
 
  private:
   // history::BrowsingHistoryDriver Implementation.
@@ -73,7 +73,7 @@ class BraveBrowsingHistoryDriver : public history::BrowsingHistoryDriver {
       base::OnceCallback<void(bool)> callback) override;
 
   // The current browser state.
-  ChromeBrowserState* browser_state_;  // weak
+  ChromeBrowserState* browser_state_;
   __weak id<BraveHistoryDriverDelegate> delegate_;
 
 };

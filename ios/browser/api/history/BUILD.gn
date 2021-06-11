@@ -10,8 +10,8 @@ source_set("history") {
   configs += [ "//build/config/compiler:enable_arc" ]
 
   sources = [
-    "brave_browsing_history_driver.h",
-    "brave_browsing_history_driver.mm",
+    "brave_browsing_history_driver_ios.h",
+    "brave_browsing_history_driver_ios.mm",
     "brave_history_api.h",
     "brave_history_api.mm",
     "brave_history_observer.h",

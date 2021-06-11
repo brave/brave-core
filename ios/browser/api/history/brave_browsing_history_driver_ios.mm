@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/ios/browser/api/history/brave_browsing_history_driver.h"
+#include "brave/ios/browser/api/history/brave_browsing_history_driver_ios.h"
 #include <utility>
 
 #include "base/check.h"
@@ -21,22 +21,22 @@
 
 using history::BrowsingHistoryService;
 
-#pragma mark - BraveBrowsingHistoryDriver
+#pragma mark - BraveBrowsingHistoryDriverIOS
 
-BraveBrowsingHistoryDriver::BraveBrowsingHistoryDriver(
+BraveBrowsingHistoryDriverIOS::BraveBrowsingHistoryDriverIOS(
     ChromeBrowserState* browser_state,
     id<BraveHistoryDriverDelegate> delegate)
     : browser_state_(browser_state), delegate_(delegate) {
   DCHECK(browser_state_);
 }
 
-BraveBrowsingHistoryDriver::~BraveBrowsingHistoryDriver() {
+BraveBrowsingHistoryDriverIOS::~BraveBrowsingHistoryDriverIOS() {
   delegate_ = nil;
 }
 
 #pragma mark - Private methods
 
-void BraveBrowsingHistoryDriver::OnQueryComplete(
+void BraveBrowsingHistoryDriverIOS::OnQueryComplete(
     const std::vector<BrowsingHistoryService::HistoryEntry>& results,
     const BrowsingHistoryService::QueryResultsInfo& query_results_info,
     base::OnceClosure continuation_closure) {
@@ -46,42 +46,42 @@ void BraveBrowsingHistoryDriver::OnQueryComplete(
                       continuationClosure:std::move(continuation_closure)];
 }
 
-void BraveBrowsingHistoryDriver::OnRemoveVisitsComplete() {
+void BraveBrowsingHistoryDriverIOS::OnRemoveVisitsComplete() {
   // Ignored.
 }
 
-void BraveBrowsingHistoryDriver::OnRemoveVisitsFailed() {
+void BraveBrowsingHistoryDriverIOS::OnRemoveVisitsFailed() {
   // Ignored.
 }
 
-void BraveBrowsingHistoryDriver::OnRemoveVisits(
+void BraveBrowsingHistoryDriverIOS::OnRemoveVisits(
     const std::vector<history::ExpireHistoryArgs>& expire_list) {
   // Ignored.
 }
 
-void BraveBrowsingHistoryDriver::HistoryDeleted() {
+void BraveBrowsingHistoryDriverIOS::HistoryDeleted() {
   [delegate_ historyWasDeleted];
 }
 
-void BraveBrowsingHistoryDriver::HasOtherFormsOfBrowsingHistory(
+void BraveBrowsingHistoryDriverIOS::HasOtherFormsOfBrowsingHistory(
     bool has_other_forms,
     bool has_synced_results) {
   // Ignored.
 }
 
-bool BraveBrowsingHistoryDriver::AllowHistoryDeletions() {
+bool BraveBrowsingHistoryDriverIOS::AllowHistoryDeletions() {
   return true;
 }
 
-bool BraveBrowsingHistoryDriver::ShouldHideWebHistoryUrl(const GURL& url) {
+bool BraveBrowsingHistoryDriverIOS::ShouldHideWebHistoryUrl(const GURL& url) {
   return !ios::CanAddURLToHistory(url);
 }
 
-history::WebHistoryService* BraveBrowsingHistoryDriver::GetWebHistoryService() {
+history::WebHistoryService* BraveBrowsingHistoryDriverIOS::GetWebHistoryService() {
   return ios::WebHistoryServiceFactory::GetForBrowserState(browser_state_);
 }
 
-void BraveBrowsingHistoryDriver::ShouldShowNoticeAboutOtherFormsOfBrowsingHistory(
+void BraveBrowsingHistoryDriverIOS::ShouldShowNoticeAboutOtherFormsOfBrowsingHistory(
     const syncer::SyncService* sync_service,
     history::WebHistoryService* history_service,
     base::OnceCallback<void(bool)> callback) {

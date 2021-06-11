@@ -24,7 +24,7 @@ OBJC_EXPORT
 
 /// Observing when user visits an URL.
 /// @param historyNode - History object which has been visited
-- (void)historyNodeVisited:(IOSHistoryNode* _Nonnull)historyNode;
+- (void)historyNodeVisited:(IOSHistoryNode*)historyNode;
 
 /// Observing when a URL is added or modified
 /// @param historyNodeList - History object list which has been modified

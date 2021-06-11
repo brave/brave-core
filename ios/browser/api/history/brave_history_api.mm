@@ -5,7 +5,7 @@
 
 #include "brave/ios/browser/api/history/brave_history_api.h"
 #include "brave/ios/browser/api/history/brave_history_observer.h"
-#include "brave/ios/browser/api/history/brave_browsing_history_driver.h"
+#include "brave/ios/browser/api/history/brave_browsing_history_driver_ios.h"
 
 #include "base/compiler_specific.h"
 #include "base/containers/adapters.h"
@@ -103,7 +103,7 @@
   // Browser State Used to retreive History Driver - History Service and Web History Service
   ChromeBrowserState* browser_state_;
   // History Browsing Service Driver
-  std::unique_ptr<BraveBrowsingHistoryDriver> browsing_history_driver_;
+  std::unique_ptr<BraveBrowsingHistoryDriverIOS> browsing_history_driver_;
   // History Browsing Service
   std::unique_ptr<history::BrowsingHistoryService> browsing_history_service_;
   // History Service for adding and querying
@@ -139,7 +139,7 @@
         GetApplicationContext()->GetChromeBrowserStateManager();
     browser_state_ =
         browserStateManager->GetLastUsedBrowserState();
-    browsing_history_driver_ = std::make_unique<BraveBrowsingHistoryDriver>(
+    browsing_history_driver_ = std::make_unique<BraveBrowsingHistoryDriverIOS>(
         browser_state_,
         self);
     history_service_ = ios::HistoryServiceFactory::GetForBrowserState(
@@ -222,9 +222,7 @@
   history_service_->DeleteLocalAndRemoteHistoryBetween(web_history_service_,
                                                       base::Time::Min(),
                                                       base::Time::Max(),
-                                                      base::BindOnce([](std::function<void()> completion){
-                                                        completion();
-                                                      }, completion),
+                                                      base::BindOnce(completion),
                                                       &tracker_);
 }
 

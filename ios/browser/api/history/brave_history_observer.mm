@@ -31,11 +31,11 @@
 
 namespace brave {
 namespace ios {
-class HistoryServiceListener : public history::HistoryServiceObserver {
+class HistoryServiceListenerIOS : public history::HistoryServiceObserver {
  public:
-  explicit HistoryServiceListener(id<HistoryServiceObserver> observer,
+  explicit HistoryServiceListenerIOS(id<HistoryServiceObserver> observer,
                                   history::HistoryService* service);
-  ~HistoryServiceListener() override;
+  ~HistoryServiceListenerIOS() override;
 
  private:
   void OnHistoryServiceLoaded(history::HistoryService* service) override;
@@ -50,12 +50,12 @@ class HistoryServiceListener : public history::HistoryServiceObserver {
   void OnURLsDeleted(history::HistoryService* history_service,
                              const history::DeletionInfo& deletion_info) override;
                                            
-  __strong id<HistoryServiceObserver> observer_;
-  history::HistoryService* service_;  // weak
+  id<HistoryServiceObserver> observer_;
+  history::HistoryService* service_;
 };
 
 
-HistoryServiceListener::HistoryServiceListener(id<HistoryServiceObserver> observer,
+HistoryServiceListenerIOS::HistoryServiceListenerIOS(id<HistoryServiceObserver> observer,
                                                history::HistoryService* service)
     : observer_(observer), service_(service) {
   DCHECK(observer_);
@@ -63,24 +63,24 @@ HistoryServiceListener::HistoryServiceListener(id<HistoryServiceObserver> observ
   service_->AddObserver(this);
 }
 
-HistoryServiceListener::~HistoryServiceListener() {
+HistoryServiceListenerIOS::~HistoryServiceListenerIOS() {
   DCHECK(service_);
   service_->RemoveObserver(this);
 }
 
-void HistoryServiceListener::OnHistoryServiceLoaded(history::HistoryService* service) {
+void HistoryServiceListenerIOS::OnHistoryServiceLoaded(history::HistoryService* service) {
   if ([observer_ respondsToSelector:@selector(historyServiceLoaded)]) {
     [observer_ historyServiceLoaded];
   }
 }
 
-void HistoryServiceListener::HistoryServiceBeingDeleted(history::HistoryService* service) {
+void HistoryServiceListenerIOS::HistoryServiceBeingDeleted(history::HistoryService* service) {
   if ([observer_ respondsToSelector:@selector(historyServiceBeingDeleted)]) {
     [observer_ historyServiceBeingDeleted];
   }
 }
 
-void HistoryServiceListener::OnURLVisited(history::HistoryService* service,
+void HistoryServiceListenerIOS::OnURLVisited(history::HistoryService* service,
                                           ui::PageTransition transition,
                                           const history::URLRow& row,
                                           const history::RedirectList& redirects,
@@ -95,7 +95,7 @@ void HistoryServiceListener::OnURLVisited(history::HistoryService* service,
   }
 }
 
-void HistoryServiceListener::OnURLsModified(history::HistoryService* history_service,
+void HistoryServiceListenerIOS::OnURLsModified(history::HistoryService* history_service,
                                             const history::URLRows& changed_urls) {
   NSMutableArray<IOSHistoryNode*>* nodes = [[NSMutableArray alloc] init];
   for (const history::URLRow& row : changed_urls) {
@@ -111,7 +111,7 @@ void HistoryServiceListener::OnURLsModified(history::HistoryService* history_ser
   }
 }
 
-void HistoryServiceListener::OnURLsDeleted(history::HistoryService* history_service,
+void HistoryServiceListenerIOS::OnURLsDeleted(history::HistoryService* history_service,
                                            const history::DeletionInfo& deletion_info) {
   bool isAllHistory = false;
   NSMutableArray<IOSHistoryNode*>* nodes = [[NSMutableArray alloc] init];
@@ -138,7 +138,7 @@ void HistoryServiceListener::OnURLsDeleted(history::HistoryService* history_serv
 } //namespace brave
 
 @interface HistoryServiceListenerImpl () {
-  std::unique_ptr<brave::ios::HistoryServiceListener> observer_;
+  std::unique_ptr<brave::ios::HistoryServiceListenerIOS> observer_;
   history::HistoryService* history_service_;
 }
 @end
@@ -147,7 +147,7 @@ void HistoryServiceListener::OnURLsDeleted(history::HistoryService* history_serv
 - (instancetype)init:(id<HistoryServiceObserver>)observer
        historyService:(void*)service {
   if ((self = [super init])) {
-    observer_ = std::make_unique<brave::ios::HistoryServiceListener>(
+    observer_ = std::make_unique<brave::ios::HistoryServiceListenerIOS>(
         observer, static_cast<history::HistoryService*>(service));
 
     history_service_ = static_cast<history::HistoryService*>(service);

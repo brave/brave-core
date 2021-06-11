@@ -34,8 +34,8 @@ OBJC_EXPORT
 /// @param title - Title used for the URL
 /// @param dateAdded - Date History Object is created
 - (instancetype)initWithURL:(NSURL*)url
-                      title:(NSString* _Nullable)title
-                  dateAdded:(NSDate* _Nullable)dateAdded;
+                      title:(nullable NSString* )title
+                  dateAdded:(nullable NSDate*)dateAdded;
 @end
 
 NS_SWIFT_NAME(BraveHistoryAPI)
