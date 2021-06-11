@@ -130,7 +130,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
 
         String publisherFavIconURL = mBraveRewardsNativeWorker.GetPublisherFavIconURL(currentTabId_);
         Tab currentActiveTab = BraveRewardsHelper.currentActiveChromeTabbedActivityTab();
-        String url = currentActiveTab.getUrlString();
+        String url = currentActiveTab.getUrl().getSpec();
         String favicon_url = (publisherFavIconURL.isEmpty()) ? url : publisherFavIconURL;
         mIconFetcher = new BraveRewardsHelper(currentActiveTab);
         mIconFetcher.retrieveLargeIcon(favicon_url, this);
