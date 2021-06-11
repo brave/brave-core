@@ -19,7 +19,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
-#include "base/scoped_observer.h"
+#include "base/scoped_observation.h"
 #include "base/values.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "extensions/buildflags/buildflags.h"
@@ -113,8 +113,8 @@ class EthereumRemoteClientService
   std::unique_ptr<EthereumRemoteClientDelegate>
       ethereum_remote_client_delegate_;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  ScopedObserver<extensions::ExtensionRegistry,
-                 extensions::ExtensionRegistryObserver>
+  base::ScopedObservation<extensions::ExtensionRegistry,
+                          extensions::ExtensionRegistryObserver>
       extension_registry_observer_{this};
 #endif
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;

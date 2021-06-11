@@ -42,7 +42,7 @@ SidebarItemAddedFeedbackBubble::SidebarItemAddedFeedbackBubble(
   SetButtons(ui::DIALOG_BUTTON_NONE);
 
   AddChildViews();
-  observed_.Add(items_contents_view);
+  observed_.Observe(items_contents_view);
 }
 
 SidebarItemAddedFeedbackBubble::~SidebarItemAddedFeedbackBubble() = default;

@@ -42,8 +42,8 @@
 namespace extensions {
 
 BraveExtensionManagement::BraveExtensionManagement(Profile* profile)
-    : ExtensionManagement(profile), extension_registry_observer_(this) {
-  extension_registry_observer_.Add(
+    : ExtensionManagement(profile) {
+  extension_registry_observer_.Observe(
       ExtensionRegistry::Get(static_cast<content::BrowserContext*>(profile)));
   providers_.push_back(std::make_unique<BraveExtensionProvider>());
   local_state_pref_change_registrar_.Init(g_browser_process->local_state());

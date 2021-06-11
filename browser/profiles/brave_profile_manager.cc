@@ -173,7 +173,7 @@ void BraveProfileManager::MigrateProfileNames() {
 void BraveProfileManager::OnProfileAdded(Profile* profile) {
   // Observe new profiles for creation of OTR profiles so that we can add our
   // shared resources to them.
-  observed_profiles_.Add(profile);
+  observed_profiles_.AddObservation(profile);
   AddBraveSharedResourcesDataSourceToProfile(profile);
 }
 
@@ -184,7 +184,7 @@ void BraveProfileManager::OnOffTheRecordProfileCreated(
 
 void BraveProfileManager::OnProfileWillBeDestroyed(Profile* profile) {
   if (!profile->IsOffTheRecord()) {
-    observed_profiles_.Remove(profile);
+    observed_profiles_.RemoveObservation(profile);
   }
 }
 

@@ -10,7 +10,7 @@
 #include <string>
 
 #include "base/android/jni_weak_ref.h"
-#include "base/scoped_observer.h"
+#include "base/scoped_multi_source_observation.h"
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_observer.h"
 
@@ -69,7 +69,8 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
 
   std::string passphrase_;
 
-  ScopedObserver<syncer::SyncService, syncer::SyncServiceObserver>
+  base::ScopedMultiSourceObservation<syncer::SyncService,
+                                     syncer::SyncServiceObserver>
       sync_service_observer_{this};
   base::WeakPtrFactory<BraveSyncWorker> weak_ptr_factory_{this};
 

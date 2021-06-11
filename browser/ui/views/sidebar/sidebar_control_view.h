@@ -9,7 +9,7 @@
 #include <memory>
 #include <string>
 
-#include "base/scoped_observer.h"
+#include "base/scoped_observation.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
 #include "ui/base/models/simple_menu_model.h"
@@ -83,7 +83,8 @@ class SidebarControlView : public views::View,
   SidebarButtonView* sidebar_settings_view_ = nullptr;
   std::unique_ptr<ui::SimpleMenuModel> context_menu_model_;
   std::unique_ptr<views::MenuRunner> context_menu_runner_;
-  ScopedObserver<sidebar::SidebarModel, sidebar::SidebarModel::Observer>
+  base::ScopedObservation<sidebar::SidebarModel,
+                          sidebar::SidebarModel::Observer>
       sidebar_model_observed_{this};
 };
 

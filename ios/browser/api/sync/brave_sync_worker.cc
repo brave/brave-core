@@ -41,11 +41,11 @@ BraveSyncDeviceTracker::BraveSyncDeviceTracker(
     std::function<void()> on_device_info_changed_callback)
     : on_device_info_changed_callback_(on_device_info_changed_callback) {
   DCHECK(device_info_tracker);
-  device_info_tracker_observer_.Add(device_info_tracker);
+  device_info_tracker_observer_.Observe(device_info_tracker);
 }
 
 BraveSyncDeviceTracker::~BraveSyncDeviceTracker() {
-  // Observer will be removed by ScopedObserver
+  // Observer will be removed by ScopedObservation
 }
 
 void BraveSyncDeviceTracker::OnDeviceInfoChange() {
@@ -59,11 +59,11 @@ BraveSyncServiceTracker::BraveSyncServiceTracker(
     std::function<void()> on_state_changed_callback)
     : on_state_changed_callback_(on_state_changed_callback) {
   DCHECK(profile_sync_service);
-  sync_service_observer_.Add(profile_sync_service);
+  sync_service_observer_.Observe(profile_sync_service);
 }
 
 BraveSyncServiceTracker::~BraveSyncServiceTracker() {
-  // Observer will be removed by ScopedObserver
+  // Observer will be removed by ScopedObservation
 }
 
 void BraveSyncServiceTracker::OnStateChanged(syncer::SyncService* sync) {
@@ -78,7 +78,7 @@ BraveSyncWorker::BraveSyncWorker(ChromeBrowserState* browser_state)
 }
 
 BraveSyncWorker::~BraveSyncWorker() {
-  // Observer will be removed by ScopedObserver
+  // Observer will be removed by ScopedObservation
 }
 
 bool BraveSyncWorker::SetSyncEnabled(bool enabled) {
@@ -92,8 +92,8 @@ bool BraveSyncWorker::SetSyncEnabled(bool enabled) {
     return false;
   }
 
-  if (!sync_service_observer_.IsObserving(sync_service)) {
-    sync_service_observer_.Add(sync_service);
+  if (!sync_service_observer_.IsObserving()) {
+    sync_service_observer_.Observe(sync_service);
   }
 
   setup_service->SetSyncEnabled(enabled);
@@ -297,17 +297,17 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
 }
 
 void BraveSyncWorker::OnSyncShutdown(syncer::SyncService* service) {
-  if (sync_service_observer_.IsObserving(service)) {
-    sync_service_observer_.Remove(service);
+  if (sync_service_observer_.IsObserving()) {
+    DCHECK(sync_service_observer_.IsObservingSource(service));
+    sync_service_observer_.Reset();
   }
 }
 
 void BraveSyncWorker::OnResetDone() {
   syncer::SyncService* sync_service = GetSyncService();
-  if (sync_service) {
-    if (sync_service_observer_.IsObserving(sync_service)) {
-      sync_service_observer_.Remove(sync_service);
-    }
+  if (sync_service && sync_service_observer_.IsObserving()) {
+    DCHECK(sync_service_observer_.IsObservingSource(sync_service));
+    sync_service_observer_.Reset();
   }
 }
 

@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
-#include "base/scoped_observer.h"
+#include "base/scoped_observation.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #include "brave/browser/infobars/crypto_wallets_infobar_delegate.h"
 #include "brave/common/brave_paths.h"
@@ -35,9 +35,7 @@ namespace extensions {
 class BraveWalletAPIBrowserTest : public InProcessBrowserTest,
     public InfoBarManager::Observer {
  public:
-  BraveWalletAPIBrowserTest() : infobar_observer_(this),
-      infobar_added_(false) {
-  }
+  BraveWalletAPIBrowserTest() : infobar_added_(false) {}
 
   void WaitForBraveExtensionAdded() {
     // Brave extension must be loaded, otherwise dapp detection events
@@ -105,11 +103,13 @@ class BraveWalletAPIBrowserTest : public InProcessBrowserTest,
   }
 
   void AddInfoBarObserver(InfoBarService* infobar_service) {
-    infobar_observer_.Add(infobar_service);
+    DCHECK(!infobar_observer_.IsObserving());
+    infobar_observer_.Observe(infobar_service);
   }
 
   void RemoveInfoBarObserver(InfoBarService* infobar_service) {
-    infobar_observer_.Remove(infobar_service);
+    DCHECK(infobar_observer_.IsObservingSource(infobar_service));
+    infobar_observer_.Reset();
   }
 
   content::WebContents* active_contents() {
@@ -160,8 +160,8 @@ class BraveWalletAPIBrowserTest : public InProcessBrowserTest,
 
  private:
   scoped_refptr<const extensions::Extension> extension_;
-  ScopedObserver<InfoBarManager, InfoBarManager::Observer>
-      infobar_observer_;
+  base::ScopedObservation<InfoBarManager, InfoBarManager::Observer>
+      infobar_observer_{this};
   bool infobar_added_;
   std::unique_ptr<base::RunLoop> infobar_added_run_loop_;
 

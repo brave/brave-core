@@ -9,6 +9,8 @@
 #include <memory>
 #include <set>
 
+#include "base/scoped_multi_source_observation.h"
+#include "base/scoped_observation.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/views/animation/bounds_animator.h"
@@ -102,9 +104,11 @@ class SidebarItemsScrollView : public views::View,
   std::unique_ptr<SidebarItemDragContext> drag_context_;
   std::unique_ptr<views::BoundsAnimator> scroll_animator_for_new_item_;
   std::unique_ptr<views::BoundsAnimator> scroll_animator_for_smooth_;
-  ScopedObserver<sidebar::SidebarModel, sidebar::SidebarModel::Observer>
+  base::ScopedObservation<sidebar::SidebarModel,
+                          sidebar::SidebarModel::Observer>
       model_observed_{this};
-  ScopedObserver<views::BoundsAnimator, views::BoundsAnimatorObserver>
+  base::ScopedMultiSourceObservation<views::BoundsAnimator,
+                                     views::BoundsAnimatorObserver>
       bounds_animator_observed_{this};
 };
 

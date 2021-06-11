@@ -12,7 +12,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/optional.h"
-#include "base/scoped_observer.h"
+#include "base/scoped_observation.h"
 #include "brave/browser/ui/sidebar/sidebar_model_data.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "components/history/core/browser/history_service.h"
@@ -134,9 +134,9 @@ class SidebarModel : public SidebarService::Observer,
   std::unique_ptr<base::CancelableTaskTracker> task_tracker_;
   base::ObserverList<Observer> observers_;
   std::vector<std::unique_ptr<SidebarModelData>> data_;
-  ScopedObserver<SidebarService, SidebarService::Observer> sidebar_observed_{
-      this};
-  ScopedObserver<history::HistoryService, HistoryServiceObserver>
+  base::ScopedObservation<SidebarService, SidebarService::Observer>
+      sidebar_observed_{this};
+  base::ScopedObservation<history::HistoryService, HistoryServiceObserver>
       history_observed_{this};
   base::WeakPtrFactory<SidebarModel> weak_ptr_factory_{this};
 };

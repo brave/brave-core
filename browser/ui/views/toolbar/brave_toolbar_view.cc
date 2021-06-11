@@ -112,7 +112,7 @@ bool IsAvatarButtonHideable(Profile* profile) {
 }  // namespace
 
 BraveToolbarView::BraveToolbarView(Browser* browser, BrowserView* browser_view)
-    : ToolbarView(browser, browser_view), profile_observer_(this) {}
+    : ToolbarView(browser, browser_view) {}
 
 BraveToolbarView::~BraveToolbarView() {}
 
@@ -129,7 +129,7 @@ void BraveToolbarView::Init() {
 
   // Track changes in profile count
   if (IsAvatarButtonHideable(profile)) {
-    profile_observer_.Add(
+    profile_observer_.Observe(
         &g_browser_process->profile_manager()->GetProfileAttributesStorage());
   }
   // track changes in bookmarks enabled setting

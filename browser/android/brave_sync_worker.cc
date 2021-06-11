@@ -130,8 +130,8 @@ void BraveSyncWorker::RequestSync(JNIEnv* env) {
   syncer::SyncService* service =
       ProfileSyncServiceFactory::GetForProfile(profile_);
 
-  if (service && !sync_service_observer_.IsObserving(service)) {
-    sync_service_observer_.Add(service);
+  if (service && !sync_service_observer_.IsObservingSource(service)) {
+    sync_service_observer_.AddObservation(service);
   }
 
   // Mark Sync as requested by the user. It might already be requested, but
@@ -212,8 +212,8 @@ void BraveSyncWorker::SetSyncV2MigrateNoticeDismissed(
 void BraveSyncWorker::OnResetDone() {
   syncer::SyncService* sync_service = GetSyncService();
   if (sync_service) {
-    if (sync_service_observer_.IsObserving(sync_service)) {
-      sync_service_observer_.Remove(sync_service);
+    if (sync_service_observer_.IsObservingSource(sync_service)) {
+      sync_service_observer_.RemoveObservation(sync_service);
     }
   }
 }

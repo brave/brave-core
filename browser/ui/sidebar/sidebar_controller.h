@@ -9,7 +9,7 @@
 #include <memory>
 #include <string>
 
-#include "base/scoped_observer.h"
+#include "base/scoped_observation.h"
 #include "brave/components/sidebar/sidebar_service.h"
 
 class BraveBrowser;
@@ -63,7 +63,7 @@ class SidebarController : public SidebarService::Observer {
   Sidebar* sidebar_ = nullptr;
 
   std::unique_ptr<SidebarModel> sidebar_model_;
-  ScopedObserver<SidebarService, SidebarService::Observer>
+  base::ScopedObservation<SidebarService, SidebarService::Observer>
       sidebar_service_observed_{this};
 };
 

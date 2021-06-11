@@ -66,10 +66,10 @@ void SidebarModel::Init(history::HistoryService* history_service) {
   for (const auto& item : GetAllSidebarItems())
     AddItem(item, -1, false);
 
-  sidebar_observed_.Add(GetSidebarService(profile_));
+  sidebar_observed_.Observe(GetSidebarService(profile_));
   // Can be null in test.
   if (history_service)
-    history_observed_.Add(history_service);
+    history_observed_.Observe(history_service);
 }
 
 void SidebarModel::AddObserver(Observer* observer) {

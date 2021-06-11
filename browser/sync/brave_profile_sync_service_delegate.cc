@@ -28,7 +28,7 @@ BraveProfileSyncServiceDelegate::BraveProfileSyncServiceDelegate(
   device_info_tracker_ = device_info_sync_service_->GetDeviceInfoTracker();
   DCHECK(device_info_tracker_);
 
-  device_info_observer_.Add(device_info_tracker_);
+  device_info_observer_.Observe(device_info_tracker_);
 }
 
 BraveProfileSyncServiceDelegate::~BraveProfileSyncServiceDelegate() {}
@@ -66,14 +66,12 @@ void BraveProfileSyncServiceDelegate::OnSelfDeviceInfoDeleted() {
 }
 
 void BraveProfileSyncServiceDelegate::SuspendDeviceObserverForOwnReset() {
-  if (device_info_observer_.IsObserving(device_info_tracker_)) {
-    device_info_observer_.Remove(device_info_tracker_);
-  }
+  device_info_observer_.Reset();
 }
 
 void BraveProfileSyncServiceDelegate::ResumeDeviceObserver() {
-  if (!device_info_observer_.IsObserving(device_info_tracker_)) {
-    device_info_observer_.Add(device_info_tracker_);
+  if (!device_info_observer_.IsObserving()) {
+    device_info_observer_.Observe(device_info_tracker_);
   }
 }
 

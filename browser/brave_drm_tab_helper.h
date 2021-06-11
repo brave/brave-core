@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/scoped_observer.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_drm/brave_drm.mojom.h"
 #include "components/component_updater/component_updater_service.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -54,8 +54,9 @@ class BraveDrmTabHelper final
   // True if we are notified that a page requested widevine availability.
   bool is_widevine_requested_ = false;
 
-  ScopedObserver<component_updater::ComponentUpdateService,
-                 component_updater::ComponentUpdateService::Observer> observer_;
+  base::ScopedObservation<component_updater::ComponentUpdateService,
+                          component_updater::ComponentUpdateService::Observer>
+      observer_{this};
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_DRM_TAB_HELPER_H_

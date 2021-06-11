@@ -116,9 +116,6 @@ BraveActionsContainer::BraveActionsContainer(Browser* browser, Profile* profile)
       extension_action_manager_(
           extensions::ExtensionActionManager::Get(profile)),
       brave_action_api_(extensions::BraveActionAPI::Get(browser)),
-      extension_registry_observer_(this),
-      extension_action_observer_(this),
-      brave_action_observer_(this),
       empty_extensions_container_(new EmptyExtensionsContainer),
       rewards_service_(
           brave_rewards::RewardsServiceFactory::GetForProfile(profile)),
@@ -392,9 +389,9 @@ void BraveActionsContainer::OnRewardsStubButtonClicked() {
 
 void BraveActionsContainer::OnExtensionSystemReady() {
   // observe changes in extension system
-  extension_registry_observer_.Add(extension_registry_);
-  extension_action_observer_.Add(extension_action_api_);
-  brave_action_observer_.Add(brave_action_api_);
+  extension_registry_observer_.Observe(extension_registry_);
+  extension_action_observer_.Observe(extension_action_api_);
+  brave_action_observer_.Observe(brave_action_api_);
   // Check if extensions already loaded
   AddAction(brave_extension_id);
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
