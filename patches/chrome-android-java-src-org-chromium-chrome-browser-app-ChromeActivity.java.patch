@@ -1,9 +1,9 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-index 309f76ef09b431b1101b98e55e9c20582bcf681b..10ed45dddc2521cb3b24290e5291564abc53cb64 100644
+index 508ad952d21afc1f3654e3a502739d97c1f6b778..204bb14737812c388282892d48c45c7dac47cec8 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-@@ -368,7 +368,7 @@ public abstract class ChromeActivity<C extends ChromeActivityComponent>
-             new ArrayList<>();
+@@ -375,7 +375,7 @@ public abstract class ChromeActivity<C extends ChromeActivityComponent>
+     private ShareRegistrationCoordinator mShareRegistrationCoordinator;
  
      protected ChromeActivity() {
 -        mIntentHandler = new IntentHandler(this, createIntentHandlerDelegate());
