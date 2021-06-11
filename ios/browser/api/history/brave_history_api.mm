@@ -182,7 +182,7 @@
   [self addHistory: history pageTransition: BraveHistoryTransitionType_TYPED];
 }
 
-- (void)addHistory:(IOSHistoryNode*)history pageTransition:(NSUInteger)pageTransition {
+- (void)addHistory:(IOSHistoryNode*)history pageTransition:(BraveHistoryTransitionType)pageTransition {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   DCHECK(history_service_->backend_loaded());
 
@@ -270,7 +270,7 @@
       [historyNodes addObject:historyNode];
     }
 
-    _query_completion([historyNodes copy]);
+    _query_completion(historyNodes);
     _query_completion = nullptr;
   } else {
     // Pagination

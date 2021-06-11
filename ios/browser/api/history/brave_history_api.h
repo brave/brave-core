@@ -56,7 +56,7 @@ OBJC_EXPORT
 /// @param history - History Object to be added
 /// @param pageTransition - History Object to be added
 - (void)addHistory:(IOSHistoryNode*)history
-    pageTransition:(NSUInteger)pageTransition;
+    pageTransition:(BraveHistoryTransitionType)pageTransition;
 
 /// Remove Specific History
 /// @param history - History Object to be removed from history
