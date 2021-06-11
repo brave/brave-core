@@ -16,7 +16,7 @@
 #include "bat/ads/internal/security/conversions/verifiable_conversion_envelope_info.h"
 #include "bat/ads/internal/security/crypto_util.h"
 #include "bat/ads/internal/security/key_pair_info.h"
-#include "bat/ads/internal/string_util.h"
+#include "third_party/re2/src/re2/re2.h"
 #include "tweetnacl.h"  // NOLINT
 
 namespace ads {
@@ -31,6 +31,10 @@ const size_t kVacCipherTextLength = 32;
 const size_t kVacMessageMaxLength = 30;
 const size_t kVacMessageMinLength = 1;
 
+bool IsConversionIdValid(const std::string& conversion_id) {
+  return RE2::FullMatch(conversion_id, "^[a-zA-Z0-9/-]*$");
+}
+
 }  // namespace
 
 base::Optional<VerifiableConversionEnvelopeInfo> EnvelopeSeal(
@@ -43,7 +47,7 @@ base::Optional<VerifiableConversionEnvelopeInfo> EnvelopeSeal(
     return base::nullopt;
   }
 
-  if (!IsLatinAlphaNumeric(message)) {
+  if (!IsConversionIdValid(message)) {
     return base::nullopt;
   }
 
