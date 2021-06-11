@@ -5,7 +5,6 @@
 
 import("//brave/ios/app/headers.gni")
 import("//build/config/ios/rules.gni")
-import("//build/config/python.gni")
 
 config("internal_config") {
   visibility = [
@@ -210,7 +209,7 @@ action("compile_coredata") {
   ]
 }
 
-python2_action("ledger_mojo_gen_wrappers") {
+action("ledger_mojo_gen_wrappers") {
   script = "scripts/mojo/gen_model_wrappers.py"
   mojom_module = rebase_path(
           "$root_gen_dir/brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom-module")
@@ -244,7 +243,7 @@ python2_action("ledger_mojo_gen_wrappers") {
   deps = [ "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces:interfaces__parser" ]
 }
 
-python2_action("ads_mojo_gen_wrappers") {
+action("ads_mojo_gen_wrappers") {
   script = "scripts/mojo/gen_model_wrappers.py"
   mojom_module = rebase_path(
           "$root_gen_dir/brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom-module")
