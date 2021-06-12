@@ -39,7 +39,6 @@ source_set("ipfs") {
     "//brave/components/resources:static_resources",
     "//brave/components/resources:strings",
     "//brave/components/services/ipfs/public/mojom",
-    "//brave/extensions:common",
     "//components/base32",
     "//components/component_updater:component_updater",
     "//components/infobars/core",
@@ -75,6 +74,7 @@ source_set("ipfs") {
       "keys/ipns_keys_manager.h",
     ]
     deps += [
+      "//brave/extensions:common",
       "//components/security_interstitials/content:security_interstitial_page",
       "//content/public/browser",
       "//content/public/common",
