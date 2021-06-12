@@ -175,7 +175,7 @@
   },
   "oneTimeDonation": {
     "message": "ทิปครั้งเดียว",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "หมดอายุวันที่",

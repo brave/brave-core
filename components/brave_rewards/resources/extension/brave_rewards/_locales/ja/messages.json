@@ -175,7 +175,7 @@
   },
   "oneTimeDonation": {
     "message": "一度だけチップを送る",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "有効期限",

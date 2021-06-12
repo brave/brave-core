@@ -175,7 +175,7 @@
   },
   "oneTimeDonation": {
     "message": "Jednorazowe napiwki",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "wygasa dnia",

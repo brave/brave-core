@@ -175,7 +175,7 @@
   },
   "oneTimeDonation": {
     "message": "1- टाइम टिप्स",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "पर समय सीमा समाप्त\n",

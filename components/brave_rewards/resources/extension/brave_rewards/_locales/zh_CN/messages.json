@@ -175,7 +175,7 @@
   },
   "oneTimeDonation": {
     "message": "一次赏金",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "过期日期",

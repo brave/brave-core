@@ -175,7 +175,7 @@
   },
   "oneTimeDonation": {
     "message": "একবারের দান/পরামর্শ",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "মেয়াদোত্তীর্ণ হচ্ছে এততে",

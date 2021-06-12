@@ -175,7 +175,7 @@
   },
   "oneTimeDonation": {
     "message": "Tip Sekali Guna",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "tamat tempoh pada",

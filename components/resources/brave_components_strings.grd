@@ -594,15 +594,15 @@
       <message name="IDS_BRAVE_REWARDS_TIP_MONTHLY_CONTRIBUTION_SET" desc="">Monthly contribution has been set.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_NEXT_CONTRIBUTION_DATE" desc="">Next contribution date:</message>
       <message name="IDS_BRAVE_REWARDS_TIP_NOT_ENOUGH_TOKENS" desc="">Not enough tokens. Please <ph name="LINK_BEGIN">$1</ph>add funds<ph name="LINK_END">$2</ph>.</message>
-      <message name="IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP" desc="">One Time Tip</message>
-      <message name="IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP_AMOUNT" desc="">One time tip amount:</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP" desc="">One-Time Tip</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP_AMOUNT" desc="">One-time tip amount:</message>
       <message name="IDS_BRAVE_REWARDS_TIP_OPT_IN_REQUIRED" desc="">Hold on, you can’t tip yet</message>
       <message name="IDS_BRAVE_REWARDS_TIP_POST_HEADER" desc=""><ph name="USER">$1</ph>’s post</message>
       <message name="IDS_BRAVE_REWARDS_TIP_POST_HEADER_TWITTER" desc=""><ph name="USER">$1</ph>’s tweet</message>
       <message name="IDS_BRAVE_REWARDS_TIP_SORRY_TO_SEE_YOU_GO" desc="">Sorry to see you go…</message>
       <message name="IDS_BRAVE_REWARDS_TIP_SUPPORT_THIS_CREATOR" desc="">Support this creator</message>
       <message name="IDS_BRAVE_REWARDS_TIP_THANKS_FOR_THE_SUPPORT" desc="">Thanks for the support!</message>
-      <message name="IDS_BRAVE_REWARDS_TIP_TIP_HAS_BEEN_SET" desc="">Your one time tip has been sent.</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_TIP_HAS_BEEN_SET" desc="">Your one-time tip has been sent.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_TIP_POST_SUBTITLE" desc="">for their post</message>
       <message name="IDS_BRAVE_REWARDS_TIP_TWEET_ABOUT_SUPPORT" desc="">Tweet about your support</message>
 

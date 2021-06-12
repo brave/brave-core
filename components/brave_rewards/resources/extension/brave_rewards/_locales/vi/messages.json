@@ -175,7 +175,7 @@
   },
   "oneTimeDonation": {
     "message": "Tiền tip Một lần",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "hết hạn vào",

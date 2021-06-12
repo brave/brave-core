@@ -245,7 +245,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_11_ContributionInfo) {
       WHERE ci.contribution_id LIKE ?
   )sql";
 
-  // One time tip
+  // One-time tip
   sql::Statement tip_sql(GetDB()->GetUniqueStatement(query.c_str()));
   tip_sql.BindString(0, "id_1570614352_%");
 

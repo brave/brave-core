@@ -175,7 +175,7 @@
   },
   "oneTimeDonation": {
     "message": "Cadouri bănești o singură dată",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "expiră pe",
