@@ -60,7 +60,8 @@ void WalletPageHandler::GetRecoveryWords(GetRecoveryWordsCallback callback) {
 }
 
 void WalletPageHandler::RestoreWallet(const std::string& mnemonic,
-                                      const std::string& password) {
+                                      const std::string& password,
+                                      RestoreWalletCallback callback) {
   auto* browser_context = web_ui_->GetWebContents()->GetBrowserContext();
   auto* keyring_controller =
       GetBraveWalletService(browser_context)->keyring_controller();
@@ -68,6 +69,7 @@ void WalletPageHandler::RestoreWallet(const std::string& mnemonic,
   if (keyring) {
     keyring->AddAccounts();
   }
+  std::move(callback).Run(keyring);
 }
 
 void WalletPageHandler::OnVisibilityChanged(content::Visibility visibility) {

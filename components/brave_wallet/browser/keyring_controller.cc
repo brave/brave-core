@@ -74,6 +74,8 @@ HDKeyring* KeyringController::RestoreDefaultKeyring(
     return nullptr;
 
   if (!CreateDefaultKeyringInternal(mnemonic)) {
+    // When creation failed(ex. invalid mnemonic), clear the state
+    Reset();
     return nullptr;
   }
 
