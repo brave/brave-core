@@ -42,7 +42,21 @@ type Props = {
 }
 
 function Container (props: Props) {
-  const { invalidMnemonic } = props.page
+  // Wallet Props
+  const {
+    isWalletCreated,
+    isWalletLocked,
+    isWalletBackedUp,
+    hasIncorrectPassword
+  } = props.wallet
+
+  // Page Props
+  const {
+    showRecoveryPhrase,
+    invalidMnemonic,
+    mnemonic
+  } = props.page
+
   const [view, setView] = React.useState<NavTypes>('crypto')
   const [inputValue, setInputValue] = React.useState<string>('')
 
@@ -90,7 +104,7 @@ function Container (props: Props) {
 
   const handlePasswordChanged = (value: string) => {
     setInputValue(value)
-    if (props.wallet.hasIncorrectPassword) {
+    if (hasIncorrectPassword) {
       props.walletActions.hasIncorrectPassword(false)
     }
   }
@@ -103,10 +117,11 @@ function Container (props: Props) {
     return false
   }, [invalidMnemonic])
 
-  const recoveryPhrase = (props.page.mnemonic || '').split(' ')
-  if (!props.wallet.isWalletCreated) {
-    return (
-      <WalletPageLayout>
+  const recoveryPhrase = (mnemonic || '').split(' ')
+
+  const renderWallet = React.useMemo(() => {
+    if (!isWalletCreated) {
+      return (
         <Onboarding
           recoveryPhrase={recoveryPhrase}
           onPasswordProvided={passwordProvided}
@@ -114,9 +129,47 @@ function Container (props: Props) {
           onRestore={restoreWallet}
           hasRestoreError={restorError}
         />
-      </WalletPageLayout>
-    )
-  }
+      )
+    } else {
+      return (
+        <>
+          {isWalletLocked ? (
+            <LockScreen
+              onSubmit={unlockWallet}
+              disabled={inputValue === ''}
+              onPasswordChanged={handlePasswordChanged}
+              hasPasswordError={hasIncorrectPassword}
+            />
+          ) : (
+            <>
+              {showRecoveryPhrase ? (
+                <BackupWallet
+                  isOnboarding={false}
+                  onCancel={onHideBackup}
+                  onSubmit={onBackupWallet}
+                  recoveryPhrase={recoveryPhrase}
+                />
+              ) : (
+                <CryptoView
+                  onLockWallet={lockWallet}
+                  needsBackup={!isWalletBackedUp}
+                  onShowBackup={onShowBackup}
+                />
+              )}
+            </>
+          )}
+        </>
+      )
+    }
+  }, [
+    isWalletCreated,
+    isWalletLocked,
+    recoveryPhrase,
+    isWalletBackedUp,
+    inputValue,
+    hasIncorrectPassword,
+    showRecoveryPhrase
+  ])
 
   return (
     <WalletPageLayout>
@@ -127,33 +180,7 @@ function Container (props: Props) {
       />
       <WalletSubViewLayout>
         {view === 'crypto' ? (
-          <>
-            {props.wallet.isWalletLocked ? (
-              <LockScreen
-                onSubmit={unlockWallet}
-                disabled={inputValue === ''}
-                onPasswordChanged={handlePasswordChanged}
-                hasPasswordError={props.wallet.hasIncorrectPassword}
-              />
-            ) : (
-              <>
-                {props.page.showRecoveryPhrase ? (
-                  <BackupWallet
-                    isOnboarding={false}
-                    onCancel={onHideBackup}
-                    onSubmit={onBackupWallet}
-                    recoveryPhrase={recoveryPhrase}
-                  />
-                ) : (
-                  <CryptoView
-                    onLockWallet={lockWallet}
-                    needsBackup={!props.wallet.isWalletBackedUp}
-                    onShowBackup={onShowBackup}
-                  />
-                )}
-              </>
-            )}
-          </>
+          renderWallet
         ) : (
           <div style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <h2>{view} view</h2>
@@ -161,7 +188,9 @@ function Container (props: Props) {
         )}
       </WalletSubViewLayout>
       <WalletWidgetStandIn>
-        <BuySendSwap />
+        {isWalletCreated && !isWalletLocked &&
+          <BuySendSwap />
+        }
       </WalletWidgetStandIn>
     </WalletPageLayout>
   )
