@@ -9,19 +9,14 @@ import org.objectweb.asm.ClassVisitor;
 
 public class BraveFreIntentCreatorClassAdapter extends BraveClassVisitor {
     static String sFreIntentCreatorClassName =
-        "org/chromium/chrome/browser/firstrun/FreIntentCreator";
+            "org/chromium/chrome/browser/firstrun/FreIntentCreator";
 
     static String sBraveFreIntentCreatorClassName =
-        "org/chromium/chrome/browser/firstrun/BraveFreIntentCreator";
-
-    static String sMethodReadFileAsUtf8 = "createInternal";
+            "org/chromium/chrome/browser/firstrun/BraveFreIntentCreator";
 
     public BraveFreIntentCreatorClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        changeMethodOwner(sFreIntentCreatorClassName, sMethodReadFileAsUtf8,
-                            sBraveFreIntentCreatorClassName);
-        redirectConstructor(sFreIntentCreatorClassName,
-                            sBraveFreIntentCreatorClassName);
+        redirectConstructor(sFreIntentCreatorClassName, sBraveFreIntentCreatorClassName);
     }
 }

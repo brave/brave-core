@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.annotation.Nullable;
 
 import org.chromium.base.IntentUtils;
@@ -17,19 +18,16 @@ import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntent
 import org.chromium.chrome.browser.firstrun.P3aOnboardingActivity;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 
- /**
+/**
  * Brave extension of FreIntentCreator.
  */
 public class BraveFreIntentCreator extends FreIntentCreator {
     @Override
     protected Intent createInternal(Context caller, Intent fromIntent, boolean preferLightweightFre,
             @Nullable String associatedAppName) {
-        // Launch P3aOnboardingActivity directly which is the only on enabled
-//         if (BraveConfig.P3A_ENABLED
-//                 && !OnboardingPrefManager.getInstance().isP3aOnboardingShown()) {
+        // Launch P3aOnboardingActivity directly which is the only one enabled
         Intent p3aOnboardingIntent = new Intent(caller, P3aOnboardingActivity.class);
         p3aOnboardingIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         return p3aOnboardingIntent;
-//         }
     }
 }
