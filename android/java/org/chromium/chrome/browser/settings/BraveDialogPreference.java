@@ -10,7 +10,6 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
 import androidx.preference.DialogPreference;
-
 import org.chromium.chrome.R;
 
 public class BraveDialogPreference extends DialogPreference {
