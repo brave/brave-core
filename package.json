@@ -243,10 +243,10 @@
   "devDependencies": {
     "@babel/core": "7.13.8",
     "@dump247/storybook-state": "1.6.1",
-    "@storybook/addon-essentials": "6.1.21",
+    "@storybook/addon-essentials": "^6.2.9",
     "@storybook/addon-knobs": "6.1.21",
     "@storybook/addons": "6.1.21",
-    "@storybook/react": "6.1.21",
+    "@storybook/react": "^6.2.9",
     "@types/array-move": "2.0.0",
     "@types/bluebird": "3.5.33",
     "@types/chrome": "0.0.133",
@@ -269,7 +269,7 @@
     "brave-ui": "github:brave/brave-ui#03e29c6696cf99e01f8083884e508032767904f4",
     "chalk": "4.1.0",
     "commander": "2.20.3",
-    "css-loader": "2.1.1",
+    "css-loader": "^5.2.6",
     "csstype": "2.6.15",
     "deep-freeze-node": "1.1.3",
     "emptykit.css": "1.0.1",
@@ -304,7 +304,7 @@
     "typescript": "3.9.9",
     "typescript-plugin-styled-components": "1.4.4",
     "url-loader": "0.6.2",
-    "webpack": "4.46.0",
+    "webpack": "^5.38.1",
     "webpack-cli": "3.3.12"
   },
   "dependencies": {
