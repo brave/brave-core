@@ -11,7 +11,7 @@ source_set("panel_handler") {
   deps = [
     "//brave/browser/brave_wallet",
     "//brave/components/brave_wallet/browser",
-    "//brave/components/brave_wallet_ui:mojo_bindings",
+    "//brave/components/brave_wallet/common:mojom",
     "//chrome/browser/profiles:profile",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
