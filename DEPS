@@ -53,6 +53,12 @@ hooks = [
     'action': ['vpython3', 'script/download_rust_deps.py'],
   },
   {
+    'name': 'hermetic_xcode',
+    'pattern': '.',
+    'condition': 'checkout_mac',
+    'action': ['vpython3', 'script/hermetic_xcode.py'],
+  },
+  {
     'name': 'generate_licenses',
     'pattern': '.',
     'action': ['python', 'script/generate_licenses.py'],
