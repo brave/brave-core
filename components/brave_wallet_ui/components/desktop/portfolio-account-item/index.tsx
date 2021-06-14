@@ -1,6 +1,9 @@
 import * as React from 'react'
 import { reduceAddress } from '../../../utils/reduce-address'
+import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import { create } from 'ethereum-blockies'
+import { Tooltip } from '../../shared'
+import locale from '../../../constants/locale'
 
 // Styled Components
 import {
@@ -30,8 +33,8 @@ export interface Props {
 const PortfolioAccountItem = (props: Props) => {
   const { address, name, assetBalance, fiatBalance, assetTicker, action } = props
 
-  const copyAddress = () => {
-    alert('Will copy address to keyboard!')
+  const onCopyToClipboard = async () => {
+    await copyToClipboard(address)
   }
 
   const orb = React.useMemo(() => {
@@ -42,10 +45,12 @@ const PortfolioAccountItem = (props: Props) => {
     <StyledWrapper>
       <NameAndIcon>
         <AccountCircle orb={orb} />
-        <AccountAndAddress onClick={copyAddress}>
-          <AccountName>{name}</AccountName>
-          <AccountAddress>{reduceAddress(address)}</AccountAddress>
-        </AccountAndAddress>
+        <Tooltip text={locale.toolTipCopyToClipboard}>
+          <AccountAndAddress onClick={onCopyToClipboard}>
+            <AccountName>{name}</AccountName>
+            <AccountAddress>{reduceAddress(address)}</AccountAddress>
+          </AccountAndAddress>
+        </Tooltip>
       </NameAndIcon>
       <RightSide>
         <BalanceColumn>

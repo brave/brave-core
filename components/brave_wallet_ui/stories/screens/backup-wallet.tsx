@@ -6,6 +6,7 @@ import {
 } from '../../components/desktop'
 import { RecoveryObject } from '../../constants/types'
 import { BackButton } from '../../components/shared'
+import { copyToClipboard } from '../../utils/copy-to-clipboard'
 
 export interface Props {
   recoveryPhrase: string[]
@@ -84,12 +85,8 @@ function BackupWallet (props: Props) {
     }
   }
 
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(recoveryPhrase.join(' '))
-    } catch (e) {
-      console.log(`Could not copy address ${e.toString()}`)
-    }
+  const onCopyToClipboard = async () => {
+    await copyToClipboard(recoveryPhrase.join(' '))
   }
 
   const showBackButton = React.useMemo(() => {
@@ -122,7 +119,7 @@ function BackupWallet (props: Props) {
           isRecoveryTermsAccepted={backedUp}
           onSubmitTerms={checkedBox}
           recoverPhrase={recoveryPhrase}
-          onCopy={copyToClipboard}
+          onCopy={onCopyToClipboard}
         />
       }
       {backupStep === 2 &&

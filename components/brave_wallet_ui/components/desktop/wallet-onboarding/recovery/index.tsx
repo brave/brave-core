@@ -15,6 +15,7 @@ import {
   RecoveryBubbleText,
   RecoveryPhraseContainer
 } from './style'
+import { Tooltip } from '../../../shared'
 import { NavButton } from '../../../extension'
 import locale from '../../../../constants/locale'
 import { Checkbox } from 'brave-ui'
@@ -48,7 +49,9 @@ function OnboardingBackup (props: Props) {
           </RecoveryBubble>
         )}
       </RecoveryPhraseContainer>
-      <CopyButton onClick={onCopy}>{locale.buttonCopy}</CopyButton>
+      <Tooltip text={locale.toolTipCopyToClipboard}>
+        <CopyButton onClick={onCopy}>{locale.buttonCopy}</CopyButton>
+      </Tooltip>
       <TermsRow>
         <Checkbox value={{ backedUp: isRecoveryTermsAccepted }} onChange={onSubmitTerms}>
           <div data-key='backedUp'>{locale.recoveryTerms}</div>

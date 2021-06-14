@@ -5,6 +5,7 @@ import {
   ConnectedBottomNav,
   ConnectedHeader
 } from '../'
+import { Tooltip } from '../../shared'
 
 // Styled Components
 import {
@@ -27,8 +28,10 @@ import {
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
+import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import { WalletAccountType, PanelTypes } from '../../../constants/types'
 import { create, background } from 'ethereum-blockies'
+import locale from '../../../constants/locale'
 
 export interface Props {
   selectedAccount: WalletAccountType
@@ -42,6 +45,10 @@ const ConnectedPanel = (props: Props) => {
 
   const navigate = (path: PanelTypes) => () => {
     navAction(path)
+  }
+
+  const onCopyToClipboard = async () => {
+    await copyToClipboard(selectedAccount.address)
   }
 
   const bg = React.useMemo(() => {
@@ -70,7 +77,9 @@ const ConnectedPanel = (props: Props) => {
         <BalanceColumn>
           <AccountCircle orb={orb} />
           <AccountNameText>{selectedAccount.name}</AccountNameText>
-          <AccountAddressText>{reduceAddress(selectedAccount.address)}</AccountAddressText>
+          <Tooltip text={locale.toolTipCopyToClipboard}>
+            <AccountAddressText onClick={onCopyToClipboard}>{reduceAddress(selectedAccount.address)}</AccountAddressText>
+          </Tooltip>
         </BalanceColumn>
         <OvalButton onClick={navigate('swap')}><SwapIcon /></OvalButton>
         <BalanceColumn>
