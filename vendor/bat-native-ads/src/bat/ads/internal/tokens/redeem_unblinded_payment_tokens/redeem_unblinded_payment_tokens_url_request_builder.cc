@@ -12,6 +12,7 @@
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
 #include "bat/ads/internal/server/confirmations_server_util.h"
+#include "bat/ads/internal/server/via_header_util.h"
 #include "wrapper.hpp"
 
 namespace ads {
@@ -56,7 +57,15 @@ std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildUrl() const {
 
 std::vector<std::string>
 RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildHeaders() const {
-  return {"accept: application/json"};
+  std::vector<std::string> headers;
+
+  const std::string via_header = server::BuildViaHeader();
+  headers.push_back(via_header);
+
+  const std::string accept_header = "accept: application/json";
+  headers.push_back(accept_header);
+
+  return headers;
 }
 
 std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildBody(
