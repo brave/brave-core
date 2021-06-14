@@ -41,8 +41,6 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
-const unsigned int kRetriesCountOnNetworkChange = 1;
-
 std::string GetInfuraProjectID() {
   std::string project_id(BRAVE_INFURA_PROJECT_ID);
   std::unique_ptr<base::Environment> env(base::Environment::Create());
@@ -67,8 +65,8 @@ namespace brave_wallet {
 EthJsonRpcController::EthJsonRpcController(
     Network network,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : network_(network),
-      url_loader_factory_(url_loader_factory),
+    : api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
+      network_(network),
       observers_(new base::ObserverListThreadSafe<
                  BraveWalletProviderEventsObserver>()),
       weak_ptr_factory_(this) {
@@ -90,54 +88,9 @@ void EthJsonRpcController::RemoveObserver(
 void EthJsonRpcController::Request(const std::string& json_payload,
                                    URLRequestCallback callback,
                                    bool auto_retry_on_network_change) {
-  auto request = std::make_unique<network::ResourceRequest>();
-  request->url = network_url_;
-  request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
-                        net::LOAD_DO_NOT_SAVE_COOKIES;
-  request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  request->method = "POST";
-
-  auto url_loader = network::SimpleURLLoader::Create(
-      std::move(request), GetNetworkTrafficAnnotationTag());
-  if (!json_payload.empty()) {
-    url_loader->AttachStringForUpload(json_payload, "application/json");
-  }
-  url_loader->SetRetryOptions(
-      kRetriesCountOnNetworkChange,
-      auto_retry_on_network_change
-          ? network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE
-          : network::SimpleURLLoader::RetryMode::RETRY_NEVER);
-  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
-  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_.get(),
-      base::BindOnce(&EthJsonRpcController::OnURLLoaderComplete,
-                     weak_ptr_factory_.GetWeakPtr(), iter,
-                     std::move(callback)));
-}
-
-void EthJsonRpcController::OnURLLoaderComplete(
-    SimpleURLLoaderList::iterator iter,
-    URLRequestCallback callback,
-    const std::unique_ptr<std::string> response_body) {
-  auto* loader = iter->get();
-  auto response_code = -1;
-  std::map<std::string, std::string> headers;
-  if (loader->ResponseInfo()) {
-    auto headers_list = loader->ResponseInfo()->headers;
-    if (headers_list) {
-      response_code = headers_list->response_code();
-      size_t iter = 0;
-      std::string key;
-      std::string value;
-      while (headers_list->EnumerateHeaderLines(&iter, &key, &value)) {
-        key = base::ToLowerASCII(key);
-        headers[key] = value;
-      }
-    }
-  }
-  url_loaders_.erase(iter);
-  std::move(callback).Run(response_code, response_body ? *response_body : "",
-                          headers);
+  api_request_helper_.Request("POST", network_url_, json_payload,
+                              "application/json", auto_retry_on_network_change,
+                              std::move(callback));
 }
 
 Network EthJsonRpcController::GetNetwork() const {
