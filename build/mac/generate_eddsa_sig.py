@@ -23,14 +23,13 @@ def Main():
     args = parser.parse_args()
 
     # sign file with eddsa
-    file = open(args.output, 'w')
-    command = [args.sign_update_path, '-s', args.sign_key, args.target]
-    try:
-        subprocess.check_call(command, stdout=file)
-    except subprocess.CalledProcessError as e:
-        print(e.output)
-        raise e
-    file.close()
+    with open(args.output, 'w') as file:
+        command = [args.sign_update_path, '-s', args.sign_key, args.target]
+        try:
+            subprocess.check_call(command, stdout=file)
+        except subprocess.CalledProcessError as e:
+            print(e.output)
+            raise e
 
     return 0
 

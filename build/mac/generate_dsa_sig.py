@@ -23,14 +23,13 @@ def Main():
     args = parser.parse_args()
 
     # sign file with dsa
-    file = open(args.output, 'w')
-    command = [args.sign_update_path, args.target, args.sign_key_file]
-    try:
-        subprocess.check_call(command, stdout=file)
-    except subprocess.CalledProcessError as e:
-        print(e.output)
-        raise e
-    file.close()
+    with open(args.output, 'w') as file:
+        command = [args.sign_update_path, args.target, args.sign_key_file]
+        try:
+            subprocess.check_call(command, stdout=file)
+        except subprocess.CalledProcessError as e:
+            print(e.output)
+            raise e
 
     return 0
 
