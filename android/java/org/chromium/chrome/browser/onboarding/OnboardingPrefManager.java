@@ -71,7 +71,7 @@ public class OnboardingPrefManager {
     public static boolean isNotification;
 
     private static final String GOOGLE = "Google";
-    private static final String BRAVE = "Brave Search beta";
+    public static final String BRAVE = "Brave Search beta";
     public static final String DUCKDUCKGO = "DuckDuckGo";
     private static final String QWANT = "Qwant";
     private static final String BING = "Bing";
