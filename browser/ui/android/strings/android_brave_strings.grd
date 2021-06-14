@@ -503,8 +503,8 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Not yet verified
       </message>
       <message name="IDS_BRAVE_UI_NOT_VERIFIED_PUBLISHER_DESCRIPTION" desc="A message that appear when a particular publisher is not verified">
-        This creator has not yet signed up to receive contributions from Brave users.
-        Any tips you send will remain in your wallet until they verify.
+        This Brave Verified Creator has not yet configured their account to receive contributions from Brave Users.
+        Any tips you send will remain in your wallet until they complete this process.
       </message>
       <message name="IDS_BRAVE_UI_DONATE_NOW" desc="Send a tip button text">
         Send a tip...
