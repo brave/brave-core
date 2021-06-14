@@ -35,26 +35,53 @@ final public class RecentSearch: NSManagedObject, CRUD {
                                           sectionNameKeyPath: nil, cacheName: nil)
     }
     
-    public static func addItem(type: RecentSearchType, text: String?, websiteUrl: String?) {
-        DataController.perform(context: .new(inMemory: false), save: true) { context in
-            let item = RecentSearch(context: context)
-            item.searchType = type.rawValue
-            item.text = text
-            item.websiteUrl = websiteUrl
-            item.dateAdded = Date()
+    public func update(dateAdded: Date) {
+        if let context = self.managedObjectContext {
+            let objectId = self.objectID
+            DataController.perform(context: .existing(context), save: true) { context in
+                let recentSearch = context.object(with: objectId) as? RecentSearch
+                recentSearch?.dateAdded = dateAdded
+            }
+        } else {
+            let objectId = self.objectID
+            DataController.perform { context in
+                let recentSearch = context.object(with: objectId) as? RecentSearch
+                recentSearch?.dateAdded = dateAdded
+            }
         }
     }
     
-    public static func getItem(text: String) -> RecentSearch? {
-        return RecentSearch.first(where: NSPredicate(format: "text == %@", text))
+    public static func addItem(type: RecentSearchType, text: String?, websiteUrl: String?) {
+        if let recentSearch = getItem(text: text, websiteUrl: websiteUrl) {
+            recentSearch.update(dateAdded: Date())
+        } else {
+            DataController.perform(context: .new(inMemory: false), save: true) { context in
+                let item = RecentSearch(context: context)
+                item.searchType = type.rawValue
+                item.text = text
+                item.websiteUrl = websiteUrl
+                item.dateAdded = Date()
+            }
+        }
     }
     
-    public static func itemExists(text: String) -> Bool {
-        return getItem(text: text) != nil
+    public static func getItem(text: String?, websiteUrl: String?) -> RecentSearch? {
+        // A search engine search has both set
+        // Because it is a query text against a search engine url
+        if let text = text, let websiteUrl = websiteUrl {
+            return RecentSearch.first(where: NSPredicate(format: "text == %@ AND websiteUrl == %@", text, websiteUrl))
+        } else if let text = text {
+            // Just text
+            return RecentSearch.first(where: NSPredicate(format: "text == %@", text))
+        } else if let websiteUrl = websiteUrl {
+            // Just a website
+            return RecentSearch.first(where: NSPredicate(format: "websiteUrl == %@", websiteUrl))
+        }
+        return nil
     }
     
-    public static func removeItem(text: String) {
-        RecentSearch.deleteAll(predicate: NSPredicate(format: "text == %@", text), context: .new(inMemory: false), includesPropertyValues: false)
+    public static func removeItem(query: String) {
+        RecentSearch.deleteAll(predicate: NSPredicate(format: "text == %@ OR websiteUrl == %@", query, query), context: .new(inMemory: false), includesPropertyValues: false)
     }
     
     public static func removeAll() {

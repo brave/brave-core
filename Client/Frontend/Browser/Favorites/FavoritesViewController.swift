@@ -269,7 +269,7 @@ extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewD
             guard let searchItem = recentSearchesFRC.fetchedObjects?[safe: indexPath.item] else {
                 return
             }
-            recentSearchAction(searchItem, false)
+            recentSearchAction(searchItem, true)
         }
         
     }
@@ -683,12 +683,12 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
 // Recent Searches
 extension FavoritesViewController {
     func onOpenRecentSearch(_ recentSearch: RecentSearch) {
-        recentSearchAction(recentSearch, true)
+        recentSearchAction(recentSearch, false)
     }
     
     @objc
     func onPasteboardAction() {
-        recentSearchAction(nil, false)
+        recentSearchAction(nil, true)
     }
     
     @objc
@@ -715,7 +715,7 @@ extension FavoritesViewController {
             
             // brave-ios/issues/3762
             // No title, no message
-            let alert = UIAlertController(title: "", message: "", preferredStyle: .alert)
+            let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: Strings.recentSearchClearAlertButton, style: .default, handler: { [weak self] _ in
                 guard let self = self else { return }
                 
