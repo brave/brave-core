@@ -194,7 +194,6 @@ const PrepopulatedEngine brave_yandex =
                        "part={searchTerms}&v=3&sn=5&srv=brave_desktop",
                        PREPOPULATED_ENGINE_ID_YANDEX);
 
-
 const PrepopulatedEngine brave_search = {
     L"Brave Search beta",
     L":br",
@@ -220,7 +219,6 @@ const PrepopulatedEngine brave_search = {
     SEARCH_ENGINE_OTHER,
     PREPOPULATED_ENGINE_ID_BRAVE,
 };
-
 
 const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>&
 GetBraveEnginesMap() {

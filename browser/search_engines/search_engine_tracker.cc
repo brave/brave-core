@@ -36,7 +36,7 @@ void RecordSearchEngineP3A(const GURL& search_engine_url,
                        base::CompareCase::INSENSITIVE_ASCII)) {
       answer = SearchEngineP3A::kStartpage;
     } else if (base::EndsWith(search_engine_url.host(), "brave.com",
-                       base::CompareCase::INSENSITIVE_ASCII)) {
+                              base::CompareCase::INSENSITIVE_ASCII)) {
       answer = SearchEngineP3A::kBrave;
     }
   }
