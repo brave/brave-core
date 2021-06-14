@@ -18,6 +18,7 @@ public class BraveClassAdapter {
         chain = new BraveCommandLineInitUtilClassAdapter(chain);
         chain = new BraveEditUrlSuggestionProcessorClassAdapter(chain);
         chain = new BraveFeedSurfaceCoordinatorClassAdapter(chain);
+        chain = new BraveFreIntentCreatorClassAdapter(chain);
         chain = new BraveHomepageManagerClassAdapter(chain);
         chain = new BraveIncognitoToggleTabLayoutClassAdapter(chain);
         chain = new BraveLaunchIntentDispatcherClassAdapter(chain);
