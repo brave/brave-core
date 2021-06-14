@@ -5,30 +5,26 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import optparse
+import argparse
 import subprocess
 import sys
 
 
-def Main(argv):
-    parser = optparse.OptionParser('%prog [options]')
-    parser.add_option('--sign-update', dest='sign_update_path', action='store',
-        type='string', default=None, help='The path of sign_update binary')
-    parser.add_option('--sign-key-file', dest='sign_key_file', action='store',
-        type='string', default=None, help='The private key to sign patch file')
-    parser.add_option('--target', dest='target', action='store',
-        type='string', default=None, help='Target file path for signing.')
-    parser.add_option('--output', dest='output', action='store',
-        type='string', default=None, help='The path of dsa output.')
-    (options, args) = parser.parse_args(argv)
-
-    if len(args) > 0:
-        print(parser.get_usage(), file=sys.stderr)
-        return 1
+def Main():
+    parser = argparse.ArgumentParser(usage='%(prog)s [options]')
+    parser.add_argument('--sign-update', dest='sign_update_path', action='store',
+        help='The path of sign_update binary', required=True)
+    parser.add_argument('--sign-key-file', dest='sign_key_file', action='store',
+        help='The private key to sign patch file', required=True)
+    parser.add_argument('--target', dest='target', action='store',
+        help='Target file path for signing.', required=True)
+    parser.add_argument('--output', dest='output', action='store',
+        help='The path of dsa output.', required=True)
+    args = parser.parse_args()
 
     # sign file with dsa
-    file = open(options.output, 'w')
-    command = [options.sign_update_path, options.target, options.sign_key_file]
+    file = open(args.output, 'w')
+    command = [args.sign_update_path, args.target, args.sign_key_file]
     try:
         subprocess.check_call(command, stdout=file)
     except subprocess.CalledProcessError as e:
@@ -40,4 +36,4 @@ def Main(argv):
 
 
 if __name__ == '__main__':
-    sys.exit(Main(sys.argv[1:]))
+    sys.exit(Main())

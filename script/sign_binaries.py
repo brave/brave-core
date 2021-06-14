@@ -5,7 +5,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import optparse
+import argparse
 import os
 import subprocess
 import sys
@@ -55,25 +55,17 @@ def sign_binary(binary):
     run_cmd(cmd)
 
 
-def _ParseOptions():
-    parser = optparse.OptionParser()
-    parser.add_option(
-        '-b', '--build_dir',
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '-b', '--build_dir', required=True,
         help='Build directory. The paths in input_file are relative to this.')
+    args = parser.parse_args()
 
-    options, _ = parser.parse_args()
-    if not options.build_dir:
-        parser.error('You must provide a build dir.')
+    args.build_dir = os.path.normpath(args.build_dir)
 
-    options.build_dir = os.path.normpath(options.build_dir)
-
-    return options
-
-
-def main(options):
-    sign_binaries(options.build_dir, ('brave.exe', 'chrome.dll'))
+    sign_binaries(args.build_dir, ('brave.exe', 'chrome.dll'))
 
 
 if '__main__' == __name__:
-    options = _ParseOptions()
-    sys.exit(main(options))
+    sys.exit(main())

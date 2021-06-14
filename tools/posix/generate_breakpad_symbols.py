@@ -12,7 +12,7 @@ platforms is planned.
 """
 
 import errno
-import optparse
+import argparse
 import os
 import queue
 import re
@@ -230,40 +230,23 @@ def GenerateSymbols(options, binaries):
 
 
 def main():
-    parser = optparse.OptionParser()
-    parser.add_option('', '--build-dir', default='',
-                      help='The build output directory.')
-    parser.add_option('', '--symbols-dir', default='',
-                      help='The directory where to write the symbols file.')
-    parser.add_option('', '--libchromiumcontent-dir', default='',
-                      help='The directory where libchromiumcontent is downloaded.')
-    parser.add_option('', '--binary', default='',
-                      help='The path of the binary to generate symbols for.')
-    parser.add_option('', '--clear', default=False, action='store_true',
-                      help='Clear the symbols directory before writing new '
-                           'symbols.')
-    parser.add_option('-j', '--jobs', default=CONCURRENT_TASKS, action='store',
-                      type='int', help='Number of parallel tasks to run.')
-    parser.add_option('-v', '--verbose', action='store_true',
-                      help='Print verbose status output.')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--build-dir', required=True,
+                        help='The build output directory.')
+    parser.add_argument('--symbols-dir', required=True,
+                        help='The directory where to write the symbols file.')
+    parser.add_argument('--libchromiumcontent-dir', required=True,
+                        help='The directory where libchromiumcontent is downloaded.')
+    parser.add_argument('--binary', required=True,
+                        help='The path of the binary to generate symbols for.')
+    parser.add_argument('--clear', default=False, action='store_true',
+                        help='Clear the symbols directory before writing new symbols.')
+    parser.add_argument('-j', '--jobs', default=CONCURRENT_TASKS, action='store',
+                        type=int, help='Number of parallel tasks to run.')
+    parser.add_argument('-v', '--verbose', action='store_true',
+                        help='Print verbose status output.')
 
-    (options, _) = parser.parse_args()
-
-    if not options.symbols_dir:
-        print("Required option --symbols-dir missing.")
-        return 1
-
-    if not options.build_dir:
-        print("Required option --build-dir missing.")
-        return 1
-
-    if not options.libchromiumcontent_dir:
-        print("Required option --libchromiumcontent-dir missing.")
-        return 1
-
-    if not options.binary:
-        print("Required option --binary missing.")
-        return 1
+    options = parser.parse_args()
 
     if options.clear:
         try:
@@ -271,10 +254,8 @@ def main():
         except:
             pass
 
-    binary = []
-    if options.binary:
-        parser = gn_helpers.GNValueParser(options.binary)
-        binary = parser.ParseList()
+    parser = gn_helpers.GNValueParser(options.binary)
+    binary = parser.ParseList()
 
     # Build the transitive closure of all dependencies.
     binaries = set(binary)

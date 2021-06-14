@@ -9,7 +9,7 @@
 
 import errno
 import glob
-import optparse
+import argparse
 import os
 import queue
 import re
@@ -100,41 +100,35 @@ def GenerateSymbols(options, binaries):
 
 
 def main():
-    parser = optparse.OptionParser()
-    parser.add_option('', '--build-dir', default='',
-                      help='The build output directory.')
-    parser.add_option('', '--symbols-dir', default='',
-                      help='The directory where to write the symbols file.')
-    parser.add_option('', '--clear', default=False, action='store_true',
-                      help='Clear the symbols directory before writing new '
-                           'symbols.')
-    parser.add_option('-j', '--jobs', default=CONCURRENT_TASKS, action='store',
-                      type='int', help='Number of parallel tasks to run.')
-    parser.add_option('-v', '--verbose', action='store_true',
-                      help='Print verbose status output.')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('directories', nargs='+',
+                        help='Directories in which to look for pdbs.')
+    parser.add_argument('--build-dir', required=True,
+                        help='The build output directory.')
+    parser.add_argument('--symbols-dir', required=True,
+                        help='The directory where to write the symbols file.')
+    parser.add_argument('--clear', default=False, action='store_true',
+                        help='Clear the symbols directory before writing new '
+                            'symbols.')
+    parser.add_argument('-j', '--jobs', default=CONCURRENT_TASKS, action='store',
+                        type=int, help='Number of parallel tasks to run.')
+    parser.add_argument('-v', '--verbose', action='store_true',
+                        help='Print verbose status output.')
 
-    (options, directories) = parser.parse_args()
+    args = parser.parse_intermixed_args()
 
-    if not options.build_dir:
-        print("Required option --build-dir missing.")
-        return 1
-
-    if not options.symbols_dir:
-        print("Required option --symbols-dir missing.")
-        return 1
-
-    if options.clear:
+    if args.clear:
         try:
-            shutil.rmtree(options.symbols_dir)
+            shutil.rmtree(args.symbols_dir)
         except:
             pass
 
     pdbs = []
-    for directory in directories:
+    for directory in args.directories:
         pdbs += glob.glob(os.path.join(directory, '*.exe.pdb'))
         pdbs += glob.glob(os.path.join(directory, '*.dll.pdb'))
 
-    GenerateSymbols(options, pdbs)
+    GenerateSymbols(args, pdbs)
 
     return 0
 

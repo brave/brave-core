@@ -21,7 +21,7 @@
 # by the time the app target is done, the info.plist is correct.
 #
 
-import optparse
+import argparse
 import os
 import plistlib
 import re
@@ -59,60 +59,56 @@ def _OverrideVersionKey(plist, brave_version):
         plist['CFBundleVersion'] = str(adjusted_minor) + '.' + version_values[2]
 
 
-def Main(argv):
-    parser = optparse.OptionParser('%prog [options]')
-    parser.add_option('--plist', dest='plist_path', action='store',
-        type='string', default=None, help='The path of the plist to tweak.')
-    parser.add_option('--output', dest='plist_output', action='store',
-        type='string', default=None, help='If specified, the path to output ' + \
+def Main():
+    parser = argparse.ArgumentParser(usage='%(prog)s [options]')
+    parser.add_argument('--plist', dest='plist_path', action='store',
+        default=None, help='The path of the plist to tweak.')
+    parser.add_argument('--output', dest='plist_output', action='store',
+        default=None, help='If specified, the path to output ' + \
         'the tweaked plist, rather than overwriting the input.')
-    parser.add_option('--brave_channel', dest='brave_channel', action='store',
-        type='string', default=None, help='Channel (beta, dev, nightly)')
-    parser.add_option('--brave_product_dir_name', dest='brave_product_dir_name',
-        action='store', type='string', default=None,
+    parser.add_argument('--brave_channel', dest='brave_channel', action='store',
+        default=None, help='Channel (beta, dev, nightly)')
+    parser.add_argument('--brave_product_dir_name', dest='brave_product_dir_name',
+        action='store', default=None,
         help='Product directory name')
-    parser.add_option('--brave_eddsa_key', dest='brave_eddsa_key', action='store',
-        type='string', default=None, help='Public EdDSA key for update')
-    parser.add_option('--brave_version', dest='brave_version', action='store',
-        type='string', default=None, help='brave version string')
-    parser.add_option('--format', choices=('binary1', 'xml1', 'json'),
+    parser.add_argument('--brave_eddsa_key', dest='brave_eddsa_key', action='store',
+        default=None, help='Public EdDSA key for update')
+    parser.add_argument('--brave_version', dest='brave_version', action='store',
+        default=None, help='brave version string')
+    parser.add_argument('--format', choices=('binary1', 'xml1', 'json'),
         default='xml1', help='Format to use when writing property list '
             '(default: %(default)s)')
-    parser.add_option('--skip_signing', dest='skip_signing', action='store_true')
-    (options, args) = parser.parse_args(argv)
+    parser.add_argument('--skip_signing', dest='skip_signing', action='store_true')
+    args = parser.parse_args()
 
-    if len(args) > 0:
-        print(parser.get_usage(), file=sys.stderr)
-        return 1
-
-    if not options.plist_path:
+    if not args.plist_path:
         print('No --plist specified.', file=sys.stderr)
         return 1
 
     # Read the plist into its parsed format. Convert the file to 'xml1' as
     # plistlib only supports that format in Python 2.7.
     with tempfile.NamedTemporaryFile() as temp_info_plist:
-        retcode = _ConvertPlist(options.plist_path, temp_info_plist.name, 'xml1')
+        retcode = _ConvertPlist(args.plist_path, temp_info_plist.name, 'xml1')
         if retcode != 0:
             return retcode
         plist = plistlib.readPlist(temp_info_plist.name)
 
-    output_path = options.plist_path
-    if options.plist_output is not None:
-        output_path = options.plist_output
+    output_path = args.plist_path
+    if args.plist_output is not None:
+        output_path = args.plist_output
 
-    if options.skip_signing:
-        plist['KSChannelID'] = options.brave_channel
+    if args.skip_signing:
+        plist['KSChannelID'] = args.brave_channel
     elif 'KSChannelID' in plist:
         # 'KSChannelID' is set at _modify_plists() of modification.py.
         del plist['KSChannelID']
 
-    plist['CrProductDirName'] = options.brave_product_dir_name
+    plist['CrProductDirName'] = args.brave_product_dir_name
 
-    if options.brave_eddsa_key:
-        plist['SUPublicEDKey'] = options.brave_eddsa_key
+    if args.brave_eddsa_key:
+        plist['SUPublicEDKey'] = args.brave_eddsa_key
 
-    _OverrideVersionKey(plist, options.brave_version)
+    _OverrideVersionKey(plist, args.brave_version)
 
     # Explicitly disable profiling
     plist['SUEnableSystemProfiling'] = False
@@ -126,8 +122,8 @@ def Main(argv):
 
         # Convert Info.plist to the format requested by the --format flag. Any
         # format would work on Mac but iOS requires specific format.
-        return _ConvertPlist(temp_info_plist.name, output_path, options.format)
+        return _ConvertPlist(temp_info_plist.name, output_path, args.format)
 
 
 if __name__ == '__main__':
-    sys.exit(Main(sys.argv[1:]))
+    sys.exit(Main())
