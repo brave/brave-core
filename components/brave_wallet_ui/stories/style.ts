@@ -67,6 +67,6 @@ export const WalletWidgetStandIn = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 285px;
+  min-width: 180px;
   height: 500px;
 `
