@@ -91,7 +91,9 @@ void AdsTabHelper::RunIsolatedJavaScript(
 void AdsTabHelper::OnJavaScriptHtmlResult(base::Value value) {
   DCHECK(ads_service_ && ads_service_->IsEnabled());
 
-  DCHECK(value.is_string());
+  if (!value.is_string()) {
+    return;
+  }
   std::string html;
   value.GetAsString(&html);
 
@@ -101,7 +103,9 @@ void AdsTabHelper::OnJavaScriptHtmlResult(base::Value value) {
 void AdsTabHelper::OnJavaScriptTextResult(base::Value value) {
   DCHECK(ads_service_ && ads_service_->IsEnabled());
 
-  DCHECK(value.is_string());
+  if (!value.is_string()) {
+    return;
+  }
   std::string text;
   value.GetAsString(&text);
 
