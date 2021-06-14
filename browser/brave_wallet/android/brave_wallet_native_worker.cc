@@ -75,7 +75,6 @@ bool BraveWalletNativeWorker::UnlockWallet(
 
   return keyring_controller->Unlock(
       base::android::ConvertJavaStringToUTF8(env, password));
-  ;
 }
 
 void BraveWalletNativeWorker::ResetWallet(JNIEnv* env) {
