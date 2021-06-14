@@ -281,16 +281,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
 
       break
     }
-    case types.ON_VERIFY_ONBOARDING_DISPLAYED: {
-      let ui = state.ui
-
-      ui.verifyOnboardingDisplayed = true
-      state = {
-        ...state,
-        ui
-      }
-      break
-    }
     case types.PROCESS_REWARDS_PAGE_URL: {
       const path = action.payload.path
       const query = action.payload.query

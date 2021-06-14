@@ -110,9 +110,8 @@ export const infoTerms = styled.div`
 
 export const connectGraphic = styled.div`
   text-align: center;
-  margin-top: 110px;
-  margin-left: -40px;
-  margin-right: -40px;
+  margin: 86px auto 0;
+  width: 250px;
 `
 
 export const minimumBalanceWarning = styled.div`
