@@ -32,7 +32,8 @@ CARGO_INCLUDE_PATHS = [
 ignored_npm_advisories = [
     1693,   # moderate RxDoS vector, we don't use postcss, storybook not yet updated
     1700,   # high RxDoS vector, we don't use MDX in storybook
-    1747    # moderate RxDoS vector, not fixed in @storybook/react
+    1747,    # moderate RxDoS vector, not fixed in @storybook/react
+    1751     # moderate RxDoS vector, not fixed in @storybook/react
 ]
 
 
