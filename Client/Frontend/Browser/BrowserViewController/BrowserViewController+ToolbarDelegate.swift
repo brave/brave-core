@@ -166,6 +166,10 @@ extension BrowserViewController: TopToolbarDelegate {
         if let fixupURL = URIFixup.getURL(text) {
             // The user entered a URL, so use it.
             finishEditingAndSubmit(fixupURL, isBookmark: false)
+            
+            if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+                RecentSearch.addItem(type: .website, text: nil, websiteUrl: fixupURL.absoluteString)
+            }
             return
         }
 
@@ -359,6 +363,10 @@ extension BrowserViewController: TopToolbarDelegate {
                 
                 if let recentSearch = recentSearch,
                    let searchType = RecentSearchType(rawValue: recentSearch.searchType) {
+                    if shouldSubmitSearch {
+                        recentSearch.update(dateAdded: Date())
+                    }
+                    
                     switch searchType {
                     case .text:
                         if let text = recentSearch.text {
@@ -397,6 +405,7 @@ extension BrowserViewController: TopToolbarDelegate {
                     }
                 } else if UIPasteboard.general.hasStrings || UIPasteboard.general.hasURLs,
                           let searchQuery = UIPasteboard.general.string ?? UIPasteboard.general.url?.absoluteString {
+                    
                     self.topToolbar.setLocation(searchQuery, search: false)
                     self.topToolbar(self.topToolbar, didEnterText: searchQuery)
                     
