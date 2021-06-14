@@ -21,7 +21,9 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletNavigationFragmentPageAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.CardsFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.CryptoFragment;
@@ -29,8 +31,6 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.RewardsFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.SwapBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnFinishOnboarding;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
-import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
-import org.chromium.base.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +56,8 @@ public class CryptoWalletActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.wallet_search, menu);
         final MenuItem searchItem = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) searchItem.getActionView();
+        // TODO below code will get updated in follow up issue.
+
         // EditText searchEditText =
         // searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         // searchEditText.setTextColor(getResources().getColor(android.R.color.black));
@@ -113,12 +115,6 @@ public class CryptoWalletActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         BraveWalletNativeWorker.getInstance().lockWallet();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.e("NTP", "OnResume");
     }
 
     private void setNavigationFragments() {

@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 
 public class SwapBottomSheetDialogFragment extends BottomSheetDialogFragment {
@@ -40,7 +41,7 @@ public class SwapBottomSheetDialogFragment extends BottomSheetDialogFragment {
             transaction.add(this, tag);
             transaction.commitAllowingStateLoss();
         } catch (IllegalStateException e) {
-            //            Log.e("SwapBottomSheetDialogFragment", e.getMessage());
+            Log.e("SwapBottomSheetDialogFragment", e.getMessage());
         }
     }
 

@@ -83,13 +83,6 @@ void BraveWalletNativeWorker::ResetWallet(JNIEnv* env) {
   keyring_controller->Reset();
 }
 
-// void BraveWalletNativeWorker::GetRecoveryWords(GetRecoveryWordsCallback callback) {
-//   auto* keyring_controller =
-//       GetBraveWalletService()->keyring_controller();
-//   keyring_controller->GetMnemonicForDefaultKeyring();
-//   std::move(callback).Run(keyring_controller->GetMnemonicForDefaultKeyring());
-// }
-
 static void JNI_BraveWalletNativeWorker_Init(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jcaller) {

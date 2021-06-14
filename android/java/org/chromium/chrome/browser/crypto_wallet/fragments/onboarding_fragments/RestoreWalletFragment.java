@@ -59,10 +59,13 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
             String passwordInput = passwordEdittext.getText().toString().trim();
             String retypePasswordInput = retypePasswordEdittext.getText().toString().trim();
 
-            if (passwordInput.isEmpty() || !Utils.PASSWORD_PATTERN.matcher(passwordInput).matches()) {
+            if (passwordInput.isEmpty()
+                    || !Utils.PASSWORD_PATTERN.matcher(passwordInput).matches()) {
                 passwordEdittext.setError(getResources().getString(R.string.password_text));
-            } else if (retypePasswordInput.isEmpty() || !passwordInput.equals(retypePasswordInput)) {
-                retypePasswordEdittext.setError(getResources().getString(R.string.retype_password_error));
+            } else if (retypePasswordInput.isEmpty()
+                    || !passwordInput.equals(retypePasswordInput)) {
+                retypePasswordEdittext.setError(
+                        getResources().getString(R.string.retype_password_error));
             } else {
                 // Restore button
             }

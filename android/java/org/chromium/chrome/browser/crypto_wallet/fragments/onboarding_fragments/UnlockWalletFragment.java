@@ -18,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.chromium.chrome.R;
-
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
 
 public class UnlockWalletFragment extends CryptoOnboardingFragment {
@@ -45,7 +44,8 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
                 return;
             }
 
-            if (BraveWalletNativeWorker.getInstance().unlockWallet(unlockWalletPassword.getText().toString())) {
+            if (BraveWalletNativeWorker.getInstance().unlockWallet(
+                        unlockWalletPassword.getText().toString())) {
                 onNextPage.gotoNextPage(true);
             } else {
                 unlockWalletPassword.setError(getString(R.string.password_error));

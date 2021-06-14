@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.crypto_wallet;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
-import org.chromium.base.Log;
 
 @JNINamespace("chrome::android")
 public class BraveWalletNativeWorker {
@@ -58,7 +57,6 @@ public class BraveWalletNativeWorker {
     }
 
     public boolean isWalletLocked() {
-        Log.e("NTP", "isWalletLocked : "+BraveWalletNativeWorkerJni.get().isWalletLocked(mNativeBraveWalletNativeWorker));
         return BraveWalletNativeWorkerJni.get().isWalletLocked(mNativeBraveWalletNativeWorker);
     }
 

@@ -23,14 +23,13 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
-
     private List<String> recoveryPhrases;
     @Override
     public void onCreate(Bundle savedInstanceState) {

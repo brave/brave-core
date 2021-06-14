@@ -19,18 +19,13 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class Utils {
-    public static final Pattern PASSWORD_PATTERN =
-            Pattern.compile("^" +
-                    "(?=.*[0-9])" +         //at least 1 digit
-                    "(?=.*[a-zA-Z])" +      //any letter
-                    "(?=.*[$&+,:;=?@#|'<>.^*()%!-])" +    //at least 1 special character
-                    "(?=\\S+$)" +           //no white spaces
-                    ".{7,}" +               //at least 7 characters
-                    "$");
-
-    // public static final List<String> recoveryPhrases =
-    //         new ArrayList<>(Arrays.asList("Tomato", "Green", "Velvet", "Span", "Celery", "Atoms",
-    //                 "Parent", "Stop", "Bowl", "Wishful", "Stone", "Exercise"));
+    public static final Pattern PASSWORD_PATTERN = Pattern.compile("^"
+            + "(?=.*[0-9])" + // at least 1 digit
+            "(?=.*[a-zA-Z])" + // any letter
+            "(?=.*[$&+,:;=?@#|'<>.^*()%!-])" + // at least 1 special character
+            "(?=\\S+$)" + // no white spaces
+            ".{7,}" + // at least 7 characters
+            "$");
 
     public static String recoveryPhrase = "";
 

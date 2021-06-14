@@ -23,9 +23,8 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import org.chromium.chrome.R;
-
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.concurrent.Executor;
 
@@ -54,15 +53,20 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
             String passwordInput = passwordEdittext.getText().toString().trim();
             String retypePasswordInput = retypePasswordEdittext.getText().toString().trim();
 
-            if (passwordInput.isEmpty() || !Utils.PASSWORD_PATTERN.matcher(passwordInput).matches()) {
+            if (passwordInput.isEmpty()
+                    || !Utils.PASSWORD_PATTERN.matcher(passwordInput).matches()) {
                 passwordEdittext.setError(getResources().getString(R.string.password_text));
-            } else if (retypePasswordInput.isEmpty() || !passwordInput.equals(retypePasswordInput)) {
-                retypePasswordEdittext.setError(getResources().getString(R.string.retype_password_error));
+            } else if (retypePasswordInput.isEmpty()
+                    || !passwordInput.equals(retypePasswordInput)) {
+                retypePasswordEdittext.setError(
+                        getResources().getString(R.string.retype_password_error));
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     showFingerprintDialog(authenticationCallback);
                 } else {
-                    Utils.recoveryPhrase = BraveWalletNativeWorker.getInstance().createWallet(passwordInput).trim();
+                    Utils.recoveryPhrase = BraveWalletNativeWorker.getInstance()
+                                                   .createWallet(passwordInput)
+                                                   .trim();
                     onNextPage.gotoNextPage(false);
                 }
             }
@@ -93,7 +97,10 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
         public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
             super.onAuthenticationSucceeded(result);
             // Go to next Page
-            Utils.recoveryPhrase = BraveWalletNativeWorker.getInstance().createWallet(passwordEdittext.getText().toString().trim()).trim();
+            Utils.recoveryPhrase =
+                    BraveWalletNativeWorker.getInstance()
+                            .createWallet(passwordEdittext.getText().toString().trim())
+                            .trim();
             onNextPage.gotoNextPage(false);
         }
 
