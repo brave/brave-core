@@ -24,7 +24,7 @@ import threading
 sys.path.append(os.path.join(os.path.dirname(__file__),
                              os.pardir, os.pardir, os.pardir,
                              "build"))
-import gn_helpers
+import gn_helpers # pylint: disable=wrong-import-position
 
 CONCURRENT_TASKS=4
 
@@ -58,10 +58,9 @@ def GetDumpSymsBinary(build_dir=None):
 def FindBundlePart(full_path):
     if full_path.endswith(('.dylib', '.framework', '.app')):
         return os.path.basename(full_path)
-    elif full_path != '' and full_path != '/':
+    if full_path not in ('', '/'):
         return FindBundlePart(os.path.dirname(full_path))
-    else:
-        return ''
+    return ''
 
 
 def GetDSYMBundle(options, binary_path):
@@ -119,7 +118,7 @@ def GetSharedLibraryDependenciesLinux(binary):
 
     This implementation assumes that we're running on a Linux system."""
     ldd = GetCommandOutput(['ldd', binary])
-    lib_re = re.compile('\t.* => (.+) \(.*\)$')
+    lib_re = re.compile(r'\t.* => (.+) \(.*\)$')
     result = []
     for line in ldd.splitlines():
         m = lib_re.match(line)
@@ -137,11 +136,11 @@ def GetSharedLibraryDependenciesMac(binary, exe_path):
     rpaths = []
     for idx, line in enumerate(otool):
         if line.find('cmd LC_RPATH') != -1:
-            m = re.match(' *path (.*) \(offset .*\)$', otool[idx+2])
+            m = re.match(r' *path (.*) \(offset .*\)$', otool[idx+2])
             rpaths.append(m.group(1))
 
     otool = GetCommandOutput(['otool', '-L', binary]).splitlines()
-    lib_re = re.compile('\t(.*) \(compatibility .*\)$')
+    lib_re = re.compile(r'\t(.*) \(compatibility .*\)$')
     deps = []
     for line in otool:
         m = lib_re.match(line)
@@ -152,7 +151,7 @@ def GetSharedLibraryDependenciesMac(binary, exe_path):
     return deps
 
 
-def GetSharedLibraryDependencies(options, binary, exe_path):
+def GetSharedLibraryDependencies(binary, exe_path):
     """Return absolute paths to all shared library dependecies of the binary."""
     deps = []
     if sys.platform.startswith('linux'):
@@ -164,9 +163,8 @@ def GetSharedLibraryDependencies(options, binary, exe_path):
         sys.exit(1)
 
     result = []
-    build_dir = os.path.abspath(options.build_dir)
     for dep in deps:
-        if (os.access(dep, os.F_OK)):
+        if os.access(dep, os.F_OK):
             result.append(dep)
     return result
 
@@ -210,7 +208,7 @@ def GenerateSymbols(options, binaries):
                 f = open(os.path.join(output_path, symbol_file), 'w')
                 f.write(syms)
                 f.close()
-            except Exception as inst:
+            except Exception as inst: # pylint: disable=broad-except
                 if options.verbose:
                     with print_lock:
                         print(type(inst))
@@ -251,7 +249,7 @@ def main():
     if options.clear:
         try:
             shutil.rmtree(options.symbols_dir)
-        except:
+        except: # pylint: disable=bare-except
             pass
 
     parser = gn_helpers.GNValueParser(options.binary)
@@ -259,18 +257,18 @@ def main():
 
     # Build the transitive closure of all dependencies.
     binaries = set(binary)
-    queue = binary
+    q = binary
     exe_path = os.path.dirname(binary[0])
-    while queue:
-        deps = GetSharedLibraryDependencies(options, queue.pop(0), exe_path)
+    while q:
+        deps = GetSharedLibraryDependencies(q.pop(0), exe_path)
         new_deps = set(deps) - binaries
         binaries |= new_deps
-        queue.extend(list(new_deps))
+        q.extend(list(new_deps))
 
     GenerateSymbols(options, binaries)
 
     return 0
 
 
-if '__main__' == __name__:
+if __name__ == '__main__':
     sys.exit(main())

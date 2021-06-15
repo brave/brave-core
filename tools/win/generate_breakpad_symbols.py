@@ -17,7 +17,8 @@ import subprocess
 import sys
 import threading
 
-from datetime import datetime, timedelta
+from datetime import datetime
+from shutil import rmtree
 
 CONCURRENT_TASKS=1
 BRAVE_ROOT=os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
@@ -66,7 +67,7 @@ def GenerateSymbols(options, binaries):
             dump_syms = os.path.join(options.build_dir, 'dump_syms.exe')
             syms = GetCommandOutput([dump_syms, binary])
             module_line = re.match("MODULE [^ ]+ [^ ]+ ([0-9A-Fa-f]+) (.*)\r\n", syms)
-            if module_line == None:
+            if module_line is None:
                 with print_lock:
                     print("Failed to get symbols for {0}".format(binary))
                 q.task_done()
@@ -84,7 +85,8 @@ def GenerateSymbols(options, binaries):
                 with print_lock:
                     thread_end = datetime.utcnow()
                     elapsed = thread_end - thread_start
-                    print("Completed generating symbols for {}: elapsed time {} seconds".format(binary, elapsed.total_seconds()))
+                    print("Completed generating symbols for {}: elapsed time {} seconds".format(
+                        binary, elapsed.total_seconds()))
 
             q.task_done()
 
@@ -119,8 +121,8 @@ def main():
 
     if args.clear:
         try:
-            shutil.rmtree(args.symbols_dir)
-        except:
+            rmtree(args.symbols_dir)
+        except: # pylint: disable=bare-except
             pass
 
     pdbs = []
@@ -133,5 +135,5 @@ def main():
     return 0
 
 
-if '__main__' == __name__:
+if __name__ == '__main__':
     sys.exit(main())

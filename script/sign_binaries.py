@@ -15,10 +15,10 @@ signtool_args = (os.environ.get('SIGNTOOL_ARGS') or
                  'sign /t http://timestamp.digicert.com /sm '
                  '/fd sha256')
 
-assert (cert or signtool_args), 'One or both of the CERT or SIGNTOOL_ARGS '
+assert (cert or signtool_args), ('One or both of the CERT or SIGNTOOL_ARGS '
 'must be set. CERT by default is the name in the //CurrentUser/My windows '
 'certificate store. `SIGNTOOL_ARGS` can be used in combination `CERT` or '
-'by it self.'
+'by it self.')
 
 
 def get_sign_cmd(file):
@@ -28,7 +28,7 @@ def get_sign_cmd(file):
     cmd = 'signtool {}'.format(signtool_args)
     if cert:
         cmd = cmd + ' /n "' + cert + '"'
-    return (cmd + ' "' + file + '"')
+    return cmd + ' "' + file + '"'
 
 
 def run_cmd(cmd):
@@ -41,7 +41,7 @@ def run_cmd(cmd):
 
 def sign_binaries(base_dir, endswidth=('.exe', '.dll')):
     matches = []
-    for root, dirnames, filenames in os.walk(base_dir):
+    for root, _, filenames in os.walk(base_dir):
         for filename in filenames:
             if filename.endswith(endswidth):
                 matches.append(os.path.join(root, filename))
@@ -67,5 +67,5 @@ def main():
     sign_binaries(args.build_dir, ('brave.exe', 'chrome.dll'))
 
 
-if '__main__' == __name__:
+if __name__ == '__main__':
     sys.exit(main())
