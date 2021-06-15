@@ -27,8 +27,8 @@ brave_wallet::BraveWalletService* GetBraveWalletService(
 }  // namespace
 
 WalletHandler::WalletHandler(
-    mojo::PendingReceiver<wallet_ui::mojom::WalletHandler> receiver,
-    mojo::PendingRemote<wallet_ui::mojom::Page> page,
+    mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> receiver,
+    mojo::PendingRemote<brave_wallet::mojom::Page> page,
     content::WebUI* web_ui,
     ui::MojoWebUIController* webui_controller)
     : receiver_(this, std::move(receiver)),
@@ -47,12 +47,12 @@ void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
     accounts = default_keyring->GetAccounts();
   }
 
-  std::vector<wallet_ui::mojom::AppItemPtr> favorite_apps_copy(
+  std::vector<brave_wallet::mojom::AppItemPtr> favorite_apps_copy(
       favorite_apps.size());
   std::transform(
       favorite_apps.begin(), favorite_apps.end(), favorite_apps_copy.begin(),
-      [](const wallet_ui::mojom::AppItemPtr& favorite_app)
-          -> wallet_ui::mojom::AppItemPtr { return favorite_app.Clone(); });
+      [](const brave_wallet::mojom::AppItemPtr& favorite_app)
+          -> brave_wallet::mojom::AppItemPtr { return favorite_app.Clone(); });
   std::move(callback).Run(keyring_controller->IsDefaultKeyringCreated(),
                           keyring_controller->IsLocked(),
                           std::move(favorite_apps_copy),
@@ -76,14 +76,15 @@ void WalletHandler::UnlockWallet(const std::string& password,
 }
 
 void WalletHandler::AddFavoriteApp(
-    const wallet_ui::mojom::AppItemPtr app_item) {
+    const brave_wallet::mojom::AppItemPtr app_item) {
   favorite_apps.push_back(app_item->Clone());
 }
 
-void WalletHandler::RemoveFavoriteApp(wallet_ui::mojom::AppItemPtr app_item) {
+void WalletHandler::RemoveFavoriteApp(
+    brave_wallet::mojom::AppItemPtr app_item) {
   favorite_apps.erase(
       remove_if(favorite_apps.begin(), favorite_apps.end(),
-                [&app_item](const wallet_ui::mojom::AppItemPtr& it) -> bool {
+                [&app_item](const brave_wallet::mojom::AppItemPtr& it) -> bool {
                   return it->name == app_item->name;
                 }));
 }

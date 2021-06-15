@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_wallet_ui/wallet_ui.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -20,12 +20,12 @@ namespace content {
 class WebUI;
 }
 
-class WalletPanelHandler : public wallet_ui::mojom::PanelHandler,
+class WalletPanelHandler : public brave_wallet::mojom::PanelHandler,
                            public content::WebContentsObserver {
  public:
   WalletPanelHandler(
-      mojo::PendingReceiver<wallet_ui::mojom::PanelHandler> receiver,
-      mojo::PendingRemote<wallet_ui::mojom::Page> page,
+      mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> receiver,
+      mojo::PendingRemote<brave_wallet::mojom::Page> page,
       content::WebUI* web_ui,
       ui::MojoBubbleWebUIController* webui_controller);
 
@@ -36,14 +36,14 @@ class WalletPanelHandler : public wallet_ui::mojom::PanelHandler,
   // content::WebContentsObserver:
   void OnVisibilityChanged(content::Visibility visibility) override;
 
-  // wallet_ui::mojom::PanelHandler:
+  // brave_wallet::mojom::PanelHandler:
   void ShowUI() override;
   void CloseUI() override;
 
  private:
   bool webui_hidden_ = false;
-  mojo::Receiver<wallet_ui::mojom::PanelHandler> receiver_;
-  mojo::Remote<wallet_ui::mojom::Page> page_;
+  mojo::Receiver<brave_wallet::mojom::PanelHandler> receiver_;
+  mojo::Remote<brave_wallet::mojom::Page> page_;
   content::WebUI* const web_ui_;
   ui::MojoBubbleWebUIController* const webui_controller_;
 };

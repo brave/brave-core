@@ -1,5 +1,9 @@
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
+import("//tools/grit/preprocess_if_expr.gni")
+
+preprocess_folder = "preprocessed"
+preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
 
 source_set("common") {
   public_deps = [ "buildflags" ]
@@ -8,8 +12,8 @@ source_set("common") {
     "features.h",
   ]
   deps = [
-    "//base",
     ":common_constants",
+    "//base",
   ]
 }
 
@@ -19,6 +23,14 @@ source_set("common_constants") {
     "web3_provider_constants.h",
   ]
   deps = [ ":mojom" ]
+}
+
+preprocess_if_expr("preprocess_mojo") {
+  deps = [ "//brave/components/brave_wallet/common:mojom_js" ]
+  in_folder = "$target_gen_dir"
+  out_folder = "$target_gen_dir/$preprocess_folder"
+  out_manifest = "$target_gen_dir/$preprocess_mojo_manifest"
+  in_files = [ "brave_wallet.mojom-lite.js" ]
 }
 
 mojom("mojom") {
