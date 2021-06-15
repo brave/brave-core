@@ -371,7 +371,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Linked content
       </message>
       <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS_SELECTED_TEXT" desc="The name of the IPFS context menu item to import selected text using IPFS">
-        Import Selected text to IPFS
+        Import Selected Text to IPFS
       </message>
       <message name="IDS_IMPORT_USING_IPNS_KEYS_TITLE" desc="The name of the IPFS import menu item to publish content using IPNS keys">
         Publish with IPNS key
