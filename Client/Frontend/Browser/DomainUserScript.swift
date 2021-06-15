@@ -13,6 +13,7 @@ private let log = Logger.browserLogger
 enum DomainUserScript: CaseIterable {
     case youtube
     case archive
+    case braveSearch
     
     static func get(for domain: String) -> Self? {
         var found: DomainUserScript?
@@ -33,7 +34,7 @@ enum DomainUserScript: CaseIterable {
         switch self {
         case .youtube:
             return .AdblockAndTp
-        case .archive:
+        case .archive, .braveSearch:
             return nil
         }
     }
@@ -44,6 +45,8 @@ enum DomainUserScript: CaseIterable {
             return .init(arrayLiteral: "youtube.com")
         case .archive:
             return .init(arrayLiteral: "archive.is", "archive.today", "archive.vn", "archive.fo")
+        case .braveSearch:
+            return .init(arrayLiteral: "brave.com")
         }
     }
     
@@ -53,14 +56,16 @@ enum DomainUserScript: CaseIterable {
             return "YoutubeAdblock"
         case .archive:
             return "ArchiveIsCompat"
+        case .braveSearch:
+            return "BraveSearchHelper"
         }
     }
     
     var script: WKUserScript? {
+        guard let source = sourceFile else { return nil }
+        
         switch self {
         case .youtube:
-            guard let source = sourceFile else { return nil }
-            
             // Verify that the application itself is making a call to the JS script instead of other scripts on the page.
             // This variable will be unique amongst scripts loaded in the page.
             // When the script is called, the token is provided in order to access the script variable.
@@ -76,8 +81,19 @@ enum DomainUserScript: CaseIterable {
             
             return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
         case .archive:
-            guard let source = sourceFile else { return nil }
             return WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+        case .braveSearch:
+            var alteredSource = source
+            
+            let securityToken = UserScriptManager.securityToken.uuidString
+                .replacingOccurrences(of: "-", with: "", options: .literal)
+            alteredSource = alteredSource
+                .replacingOccurrences(of: "$<brave-search-helper>",
+                                      with: "BSH\(UserScriptManager.messageHandlerTokenString)",
+                                      options: .literal)
+                .replacingOccurrences(of: "$<security_token>", with: securityToken)
+                
+            return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
         }
     }
     

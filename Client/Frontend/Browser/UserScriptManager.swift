@@ -233,7 +233,7 @@ class UserScriptManager {
         alteredSource = alteredSource.replacingOccurrences(of: "$<handler>", with: "ResourceDownloadManager\(messageHandlerTokenString)", options: .literal)
         
         return WKUserScript(source: alteredSource, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
-    }() 
+    }()
     
     private let WindowRenderHelperScript: WKUserScript? = {
         guard let path = Bundle.main.path(forResource: "WindowRenderHelper", ofType: "js"), let source = try? String(contentsOfFile: path) else {

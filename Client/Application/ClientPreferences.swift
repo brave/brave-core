@@ -147,6 +147,9 @@ extension Preferences {
         static let shouldShowRecentSearches = Option<Bool>(key: "search.should-show-recent-searches", default: false)
         /// Whether or not to show recent searches opt-in
         static let shouldShowRecentSearchesOptIn = Option<Bool>(key: "search.should-show-recent-searches.opt-in", default: true)
+        /// How many times Brave Search websites has asked the user to check whether Brave Search can be set as a default
+        static let braveSearchDefaultBrowserPromptCount =
+            Option<Int>(key: "search.brave-search-default-website-prompt", default: 0)
     }
     final class Privacy {
         /// Forces all private tabs
