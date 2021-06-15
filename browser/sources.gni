@@ -108,6 +108,7 @@ brave_chrome_browser_deps = [
   "//brave/common:switches",
   "//brave/components/binance/browser/buildflags",
   "//brave/components/brave_ads/browser/buildflags",
+  "//brave/components/brave_federated_learning",
   "//brave/components/brave_referrals/buildflags",
   "//brave/components/brave_rewards/browser/buildflags",
   "//brave/components/brave_search/browser",

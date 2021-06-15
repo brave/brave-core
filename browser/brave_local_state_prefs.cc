@@ -10,6 +10,7 @@
 #include "brave/browser/metrics/metrics_reporting_util.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_federated_learning/brave_federated_learning_service.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
@@ -61,6 +62,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   ntp_background_images::NTPBackgroundImagesService::RegisterLocalStatePrefs(
       registry);
   ntp_background_images::ViewCounterService::RegisterLocalStatePrefs(registry);
+  brave::BraveFederatedLearningService::RegisterLocalStatePrefs(registry);
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   RegisterPrefsForBraveReferralsService(registry);
 #endif
