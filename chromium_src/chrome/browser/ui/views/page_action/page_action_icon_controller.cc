@@ -5,8 +5,8 @@
 
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/browser/ui/views/location_bar/brave_star_view.h"
-#include "brave/browser/ui/views/translate/brave_translate_icon_view.h"
 #include "brave/browser/ui/views/speedreader/speedreader_icon_view.h"
+#include "brave/browser/ui/views/translate/brave_translate_icon_view.h"
 #include "chrome/browser/ui/page_action/page_action_icon_type.h"
 
 namespace {
