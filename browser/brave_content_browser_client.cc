@@ -242,9 +242,9 @@ void BindBraveSearchFallbackHost(
   content::BrowserContext* context = render_process_host->GetBrowserContext();
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_search::BraveSearchFallbackHost>(
-         context->GetDefaultStoragePartition()
-             ->GetURLLoaderFactoryForBrowserProcess()),
-         std::move(receiver));
+          context->GetDefaultStoragePartition()
+              ->GetURLLoaderFactoryForBrowserProcess()),
+      std::move(receiver));
 }
 
 void BindBraveSearchDefaultHost(
