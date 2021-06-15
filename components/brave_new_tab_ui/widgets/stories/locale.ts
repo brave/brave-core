@@ -25,5 +25,6 @@ provideStrings({
   ftxConversionBalanceNeeded: 'You need a balance in at least one currency in order to perform a conversion.',
   ftxConversionAmountAvailable: 'Available $1 $2',
   ftxSummaryBlurLabel: 'Hide your balances from display',
-  ftxSummaryRevealLabel: 'Reveal your balances on screen'
+  ftxSummaryRevealLabel: 'Reveal your balances on screen',
+  ftxSummaryNoBalance: 'You do not have any balances in your account. Visit FTX to purchase some.'
 })
