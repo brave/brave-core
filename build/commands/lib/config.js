@@ -158,7 +158,7 @@ Config.prototype.isComponentBuild = function () {
 }
 
 Config.prototype.isDebug = function () {
-  return this.buildConfig === 'Debug' || this.buildConfig === 'brave_browser_tests'
+  return this.buildConfig === 'Debug'
 }
 
 Config.prototype.enableCDMHostVerification = function () {
