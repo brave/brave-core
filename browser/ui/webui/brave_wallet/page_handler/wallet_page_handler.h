@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_wallet_ui/wallet_ui.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -20,12 +20,12 @@ namespace content {
 class WebUI;
 }
 
-class WalletPageHandler : public wallet_ui::mojom::PageHandler,
+class WalletPageHandler : public brave_wallet::mojom::PageHandler,
                           public content::WebContentsObserver {
  public:
   WalletPageHandler(
-      mojo::PendingReceiver<wallet_ui::mojom::PageHandler> receiver,
-      mojo::PendingRemote<wallet_ui::mojom::Page> page,
+      mojo::PendingReceiver<brave_wallet::mojom::PageHandler> receiver,
+      mojo::PendingRemote<brave_wallet::mojom::Page> page,
       content::WebUI* web_ui,
       ui::MojoWebUIController* webui_controller);
 
@@ -36,7 +36,7 @@ class WalletPageHandler : public wallet_ui::mojom::PageHandler,
   // content::WebContentsObserver:
   void OnVisibilityChanged(content::Visibility visibility) override;
 
-  // wallet_ui::mojom::PageHandler:
+  // brave_wallet::mojom::PageHandler:
   void CreateWallet(const std::string& password, CreateWalletCallback) override;
   void RestoreWallet(const std::string& mnemonic,
                      const std::string& password,
@@ -45,8 +45,8 @@ class WalletPageHandler : public wallet_ui::mojom::PageHandler,
 
  private:
   bool webui_hidden_ = false;
-  mojo::Receiver<wallet_ui::mojom::PageHandler> receiver_;
-  mojo::Remote<wallet_ui::mojom::Page> page_;
+  mojo::Receiver<brave_wallet::mojom::PageHandler> receiver_;
+  mojo::Remote<brave_wallet::mojom::Page> page_;
   content::WebUI* const web_ui_;
 };
 

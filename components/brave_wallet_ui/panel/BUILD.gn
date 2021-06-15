@@ -19,8 +19,8 @@ transpile_web_ui("brave_wallet_panel_ui") {
   deps = [
     ":preprocess_panel",
     ":wallet_panel_api_proxy",
-    "//brave/components/brave_wallet_ui:mojo_bindings_js",
-    "//brave/components/brave_wallet_ui:preprocess_mojo",
+    "//brave/components/brave_wallet/common:mojom_js",
+    "//brave/components/brave_wallet/common:preprocess_mojo",
   ]
 }
 
@@ -39,7 +39,7 @@ preprocess_if_expr("preprocess_panel") {
 
 js_library("wallet_panel_api_proxy") {
   deps = [
-    "//brave/components/brave_wallet_ui:mojo_bindings_js_library_for_compile",
+    "//brave/components/brave_wallet/common:mojom_js_library_for_compile",
     "//ui/webui/resources/js:cr.m",
     "//url/mojom:url_mojom_gurl_js_library_for_compile",
   ]

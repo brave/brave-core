@@ -34,7 +34,6 @@ std::string CheckForEventScript(const std::string& event_var) {
                console.log('!!!send true')
                window.domAutomationController.send(true);
              } else {
-               console.log('!!!window.ethereum == ' + window.ethereum)
                if (window.ethereum) {
                  if (!set_events_listeners) {
                    console.log('!!!set events')
@@ -48,7 +47,6 @@ std::string CheckForEventScript(const std::string& event_var) {
                    });
                    console.log('!!!set chainChanged')
                  }
-                 console.log('!!!before isConnected')
                  if (window.ethereum.isConnected()) {
                    console.log('!!!isConnected')
                    received_connect_event = true

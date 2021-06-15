@@ -50,15 +50,15 @@ WalletPageUI::~WalletPageUI() = default;
 WEB_UI_CONTROLLER_TYPE_IMPL(WalletPageUI)
 
 void WalletPageUI::BindInterface(
-    mojo::PendingReceiver<wallet_ui::mojom::PageHandlerFactory> receiver) {
+    mojo::PendingReceiver<brave_wallet::mojom::PageHandlerFactory> receiver) {
   page_factory_receiver_.reset();
   page_factory_receiver_.Bind(std::move(receiver));
 }
 
 void WalletPageUI::CreatePageHandler(
-    mojo::PendingRemote<wallet_ui::mojom::Page> page,
-    mojo::PendingReceiver<wallet_ui::mojom::PageHandler> page_receiver,
-    mojo::PendingReceiver<wallet_ui::mojom::WalletHandler> wallet_receiver) {
+    mojo::PendingRemote<brave_wallet::mojom::Page> page,
+    mojo::PendingReceiver<brave_wallet::mojom::PageHandler> page_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver) {
   DCHECK(page);
   page_handler_ = std::make_unique<WalletPageHandler>(
       std::move(page_receiver), std::move(page), web_ui(), this);

@@ -8,8 +8,8 @@
 #include <utility>
 
 WalletPanelHandler::WalletPanelHandler(
-    mojo::PendingReceiver<wallet_ui::mojom::PanelHandler> receiver,
-    mojo::PendingRemote<wallet_ui::mojom::Page> page,
+    mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> receiver,
+    mojo::PendingRemote<brave_wallet::mojom::Page> page,
     content::WebUI* web_ui,
     ui::MojoBubbleWebUIController* webui_controller)
     : receiver_(this, std::move(receiver)),

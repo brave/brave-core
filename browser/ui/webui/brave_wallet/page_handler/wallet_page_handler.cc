@@ -27,8 +27,8 @@ brave_wallet::BraveWalletService* GetBraveWalletService(
 }  // namespace
 
 WalletPageHandler::WalletPageHandler(
-    mojo::PendingReceiver<wallet_ui::mojom::PageHandler> receiver,
-    mojo::PendingRemote<wallet_ui::mojom::Page> page,
+    mojo::PendingReceiver<brave_wallet::mojom::PageHandler> receiver,
+    mojo::PendingRemote<brave_wallet::mojom::Page> page,
     content::WebUI* web_ui,
     ui::MojoWebUIController* webui_controller)
     : receiver_(this, std::move(receiver)),
