@@ -134,7 +134,7 @@
 "OBPrivacyConsentClipboardPermission" = "Brave'in panomda eşleşen bir başvuru kodu olup olmadığını denetlemesine izin ver";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Brave'i sizi yönlendiren desteklemek için indirmiş olabilirsiniz. Sizi yönlendiren kişiyi algılamak için Brave, panonuzda bir kerelik eşleşen başvuru kodu denetimi gerçekleştirir. Bu kontrol yalnızca kodla sınırlıdır ve başka hiçbir kişisel veri iletilmeyecektir.  Eğer vazgeçerseniz, sizi yönlendiren kişi Brave'den ödül almaz.";
+"OBPrivacyConsentDetail" = "Brave'i sizi yönlendiren kişiyi desteklemek için indirmiş olabilirsiniz. Sizi yönlendiren kişiyi algılamak için Brave, panonuzda bir kerelik eşleşen başvuru kodu denetimi gerçekleştirir. Bu kontrol yalnızca kodla sınırlıdır ve başka hiçbir kişisel veri iletilmeyecektir.  Eğer vazgeçerseniz, sizi yönlendiren kişi Brave'den ödül almaz.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Bu denetime izin verme";
@@ -256,6 +256,12 @@
 /* When a video or audio is live and has no duration */
 "playlist.playlistLiveMediaStream" = "Canlı Yayın";
 
+/* Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionFooterText" = "Etkinleştirildiğinde, çoğu video/ses dosyasının üzerine uzun basarak Oynatma Listenize ekleyebilirsiniz.";
+
+/* Title for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionTitle" = "Uzun Basmayı Etkinleştir";
+
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistMediaAndOfflineDataToggleOption" = "Oynatma Listesi Medya ve Çevrimdışı Veriler";
 
@@ -295,12 +301,10 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Kayıttan Yürütmeyi en son kaldığım yerden başlat";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
-   Footer Text for the Playlist Settings Option for long press gesture */
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionFooterText" = "Etkinleştirildiğinde, çoğu medya web sitesinde otomatik olarak bir çubuk gösterilir ve bu video/ses dosyalarını Oynatma Listenize eklemeyi kolaylaştırır.";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast
-   Title for the Playlist Settings Option for long press gesture */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionTitle" = "\"Brave Oynatma Listesine Ekle\" yi göster";
 
 /* Description for Playlist setting */
@@ -353,6 +357,60 @@
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Kalkanlar Menüsünü Kapat";
+
+/* Recent Search Clear Button */
+"RecentSearchClear" = "Temizle";
+
+/* The button title that shows when you clear all recent searches */
+"RecentSearchClearAlertButton" = "Son Aramaları Temizle";
+
+/* Recent Search setting title to clear recent searches */
+"RecentSearchClearDataToggleOption" = "Son Arama Verileri";
+
+/* Recent Search button title to disable suggestions */
+"RecentSearchDisableSuggestions" = "Devre Dışı Bırak";
+
+/* Recent Search button title to enable suggestions */
+"RecentSearchEnableSuggestions" = "Etkinleştir";
+
+/* Recent Search Favorites Section Title */
+"RecentSearchFavorites" = "Sık Kullanılanlar";
+
+/* Recent Search Hide Button */
+"RecentSearchHide" = "Gizle";
+
+/* Recent Search Paste & Go Button Title */
+"RecentSearchPasteAndGo" = "Yapıştır ve Git";
+
+/* Recent Search 'on' text when a user searches 'on' a website */
+"RecentSearchQuickSearchOnWebsite" = "üzerinde";
+
+/* Recent Search Scanned text when a user scans a qr code */
+"RecentSearchScanned" = "Tarananlar";
+
+/* Scanning a QRCode for searching body */
+"RecentSearchScannerDescriptionBody" = "QR Koduyla arama yapmak için QR'ı çerçevenin ortasına hizalayın.";
+
+/* Scanning a QRCode for title */
+"RecentSearchScannerDescriptionTitle" = "Talimatlar";
+
+/* Scanning a QRCode for searching */
+"RecentSearchScannerTitle" = "QR Kodunu Tara";
+
+/* Recent Search Section Description */
+"RecentSearchSectionDescription" = "Son Aramalar, geçmiş aramalara özel olarak erişmenize izin verir. Son Aramalar'ı etkinleştirmek istiyor musunuz?";
+
+/* Recent Search Section Title */
+"RecentSearchSectionTitle" = "Son Aramalar";
+
+/* Recent Search Show Button */
+"RecentSearchShow" = "Göster";
+
+/* Recent Search Show More button */
+"RecentSearchShowMore" = "Daha fazla göster";
+
+/* Recent Search suggestions title when prompting to turn on suggestions */
+"RecentSearchSuggestionsTitle" = "Arama Önerileri";
 
 /* No comment provided by engineer. */
 "ReportABrokenSite" = "Bozuk bir siteyi bildirin";
@@ -814,13 +872,13 @@
 "today.addSourceNoFeedsFoundMessage" = "Üzgünüz, bu özet akışı adresinin içeriği yok.";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "Brave'e Bugün Kaynak Ekle";
+"today.addSourceShareTitle" = "Brave News'e Kaynak Ekle";
 
 /* No comment provided by engineer. */
 "today.allSources" = "Tüm Kaynaklar";
 
 /* The name of the feature */
-"today.braveToday" = "Brave Bugün";
+"today.braveToday" = "Brave News";
 
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "Yeni İçerik Mevcut";
@@ -835,7 +893,7 @@
 "today.disableAll" = "Tümünü Devre Dışı Bırak";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disabledAlertBody" = "Brave Bugün, %@'den içerik göstermeyi durduracak";
+"today.disabledAlertBody" = "Brave News, %@ kaynağından içerik göstermeyi durduracak";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "Devre Dışı";
@@ -856,7 +914,7 @@
 "today.enablePublisherContent" = "% öğesinden içeriği etkinleştir @";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "Brave Bugün bazı sorunlar yaşıyor. Yeniden deneyin.";
+"today.errorGeneralBody" = "Brave News bazı sorunlar yaşıyor. Yeniden deneyin.";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Hop...";
@@ -868,19 +926,19 @@
 "today.insecureSourcesHeader" = "Güvensiz Kaynaklar - Riski göze alıyorsanız ekleyin";
 
 /* No comment provided by engineer. */
-"today.introCardBody" = "Brave Today, cihazınızda eşleşen tamamen özel ve anonimleştirilmiş reklamlarla reklam desteklidir.";
+"today.introCardBody" = "Brave News, cihazınızda eşleşen tamamen özel ve anonimleştirilmiş reklamlarla desteklenmektedir.";
 
 /* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
 "today.introCardNew" = "Yeni";
 
 /* No comment provided by engineer. */
-"today.introCardNewTextBody" = "Brave Bugün'ü 5 adede kadar RSS akışıyla özelleştirin ve gün boyunca en sevdiğiniz yayıncılardan yeni içerikler alın.";
+"today.introCardNewTextBody" = "Özel CDN'mizle sunulan yüzlerce lider içerik kaynağını kullanarak akışınızı özelleştirin ve favori yayıncılarınızdan RSS akışları ekleyerek sizin için ideal bir akış oluşturun. ";
 
 /* No comment provided by engineer. */
 "today.introCardTitle" = "Bugünün en iyi hikayeleri tamamen özel bir akışta, sadece sizin için.";
 
 /* No comment provided by engineer. */
-"today.isEnabledToggleLabel" = "Brave Bugün'ü Göster";
+"today.isEnabledToggleLabel" = "Brave News'i Göster";
 
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Verileriniz hakkında daha fazla bilgi edinin";
@@ -903,15 +961,6 @@
 /* No comment provided by engineer. */
 "today.resetSourceSettingsButtonTitle" = "Kaynak Ayarlarını Varsayılana Sıfırla";
 
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertMessage" = "Brave Bugün'ün reklam destekli ücretsiz sürümünde 5 RSS akışı bulunur. Akış seçimlerinizi Kaynaklar listesinden özelleştirebilirsiniz.";
-
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertTitle" = "Besleme sınırı aşıldı";
-
-/* %d will be a number (i.e. 4) */
-"today.rssFeedLimitRemainingFooter" = "Şu anda Kaynaklar listenizde %d RSS akışı var. Brave Bugün'ün reklam destekli ücretsiz sürümünde 5 RSS akışı bulunur. Sınırsız besleme ve OPML aktarım desteği yakında gelecek. Akış seçimlerinizi Kaynaklar listesinden özelleştirebilirsiniz.";
-
 /* An action title where the user is executing a search based on inputted text */
 "today.searchButtonTitle" = "Ara";
 
@@ -928,7 +977,7 @@
 "today.sourceSearchPlaceholder" = "Ara";
 
 /* No comment provided by engineer. */
-"today.turnOnBraveToday" = "Brave Bugün'ü açın";
+"today.turnOnBraveToday" = "Brave News'i aç";
 
 /* The header above a list of the users RSS feed sources */
 "today.yourSources" = "Kaynaklarınız";

@@ -256,6 +256,12 @@
 /* When a video or audio is live and has no duration */
 "playlist.playlistLiveMediaStream" = "直播流媒体";
 
+/* Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionFooterText" = "启用后，您可以长按大部分视频/音频文件，将其添加到您的播放列表。";
+
+/* Title for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionTitle" = "启用长按";
+
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistMediaAndOfflineDataToggleOption" = "Playlist 媒体和离线数据";
 
@@ -295,12 +301,10 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "从我上次停止播放的位置开始播放 ";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
-   Footer Text for the Playlist Settings Option for long press gesture */
-"playlist.playlistToastShowSettingsOptionFooterText" = "启用后，大部分多媒体网站上均会自动显示一条栏，以供轻松将视频/音频文件添加至播放列表。";
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
+"playlist.playlistToastShowSettingsOptionFooterText" = "启用后，大部分多媒体网站上均会自动显示一个工具栏，用于轻松将视频/音频文件添加至播放列表。";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast
-   Title for the Playlist Settings Option for long press gesture */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionTitle" = "显示“添加至 Brave 播放列表”";
 
 /* Description for Playlist setting */
@@ -353,6 +357,60 @@
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "关闭 Shields 菜单";
+
+/* Recent Search Clear Button */
+"RecentSearchClear" = "清除";
+
+/* The button title that shows when you clear all recent searches */
+"RecentSearchClearAlertButton" = "清除最近项";
+
+/* Recent Search setting title to clear recent searches */
+"RecentSearchClearDataToggleOption" = "最近搜索数据";
+
+/* Recent Search button title to disable suggestions */
+"RecentSearchDisableSuggestions" = "禁用";
+
+/* Recent Search button title to enable suggestions */
+"RecentSearchEnableSuggestions" = "启用";
+
+/* Recent Search Favorites Section Title */
+"RecentSearchFavorites" = "收藏夹";
+
+/* Recent Search Hide Button */
+"RecentSearchHide" = "隐藏";
+
+/* Recent Search Paste & Go Button Title */
+"RecentSearchPasteAndGo" = "粘贴并跳转";
+
+/* Recent Search 'on' text when a user searches 'on' a website */
+"RecentSearchQuickSearchOnWebsite" = "在";
+
+/* Recent Search Scanned text when a user scans a qr code */
+"RecentSearchScanned" = "已扫描";
+
+/* Scanning a QRCode for searching body */
+"RecentSearchScannerDescriptionBody" = "要按二维码搜索，请将二维码对准框的中部";
+
+/* Scanning a QRCode for title */
+"RecentSearchScannerDescriptionTitle" = "说明";
+
+/* Scanning a QRCode for searching */
+"RecentSearchScannerTitle" = "扫描二维码";
+
+/* Recent Search Section Description */
+"RecentSearchSectionDescription" = "“最近的搜索”允许您私密访问过去的搜索内容。是否要禁用“最近的搜索”";
+
+/* Recent Search Section Title */
+"RecentSearchSectionTitle" = "最近的搜索";
+
+/* Recent Search Show Button */
+"RecentSearchShow" = "显示";
+
+/* Recent Search Show More button */
+"RecentSearchShowMore" = "显示更多";
+
+/* Recent Search suggestions title when prompting to turn on suggestions */
+"RecentSearchSuggestionsTitle" = "搜索建议";
 
 /* No comment provided by engineer. */
 "ReportABrokenSite" = "报告损坏的网站";
@@ -814,13 +872,13 @@
 "today.addSourceNoFeedsFoundMessage" = "抱歉，该提要地址没有任何内容。";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "将源添加到 Brave Today";
+"today.addSourceShareTitle" = "将源添加到 Brave News";
 
 /* No comment provided by engineer. */
 "today.allSources" = "所有来源";
 
 /* The name of the feature */
-"today.braveToday" = "今日 Brave";
+"today.braveToday" = "Brave News";
 
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "新内容可供查阅";
@@ -835,7 +893,7 @@
 "today.disableAll" = "全部禁用";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disabledAlertBody" = "今日 Brave 将不再显示来自 %@ 的内容";
+"today.disabledAlertBody" = "Brave News 将不再显示来自 %@ 的内容";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "已阻止";
@@ -856,7 +914,7 @@
 "today.enablePublisherContent" = "允许来自 %@ 的内容";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "今日 Brave 出现问题。请重试。";
+"today.errorGeneralBody" = "Brave News 出现问题。请重试。";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "哎呀...";
@@ -868,19 +926,19 @@
 "today.insecureSourcesHeader" = "不安全源 - 如果添加，风险自负";
 
 /* No comment provided by engineer. */
-"today.introCardBody" = "Brave Today 受您的设备上匹配的私人和匿名广告支持。";
+"today.introCardBody" = "Brave News 受您的设备上匹配的私人和匿名广告支持。";
 
 /* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
 "today.introCardNew" = "新增";
 
 /* No comment provided by engineer. */
-"today.introCardNewTextBody" = "最多可用 5 个 RSS 提要来自定义 Brave Today，并全天候从您喜爱的发布商那里获取新内容。";
+"today.introCardNewTextBody" = "使用我们的私有 CDN 交付的数百个主要内容源来定制您的订阅源，添加您最喜欢的出版商的 RSS 订阅源，制作您专属的订阅。";
 
 /* No comment provided by engineer. */
 "today.introCardTitle" = "今日热门故事，专属于您的私人提要。";
 
 /* No comment provided by engineer. */
-"today.isEnabledToggleLabel" = "显示今日 Brave";
+"today.isEnabledToggleLabel" = "显示 Show Brave News";
 
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "详细了解您的数据";
@@ -903,15 +961,6 @@
 /* No comment provided by engineer. */
 "today.resetSourceSettingsButtonTitle" = "将来源设置重置为默认";
 
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertMessage" = "免费的、广告支持版的 Brave Today 包含 5 个 RSS 提要。您可以从“源”列表中自定义提要选项。";
-
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertTitle" = "提要限量已超过";
-
-/* %d will be a number (i.e. 4) */
-"today.rssFeedLimitRemainingFooter" = "目前在您的“来源”列表中有 %d 个 RSS 提要。免费的、广告支持版的 Brave Today 含有 5 个 RSS 提要。即将推出对无限量提要和 OPML 导入的支持。您可以从“源”列表中自定义提要选项。";
-
 /* An action title where the user is executing a search based on inputted text */
 "today.searchButtonTitle" = "搜索";
 
@@ -928,7 +977,7 @@
 "today.sourceSearchPlaceholder" = "搜索";
 
 /* No comment provided by engineer. */
-"today.turnOnBraveToday" = "立即开启 Brave";
+"today.turnOnBraveToday" = "开启 Brave News";
 
 /* The header above a list of the users RSS feed sources */
 "today.yourSources" = "您的 RSS 提要源";

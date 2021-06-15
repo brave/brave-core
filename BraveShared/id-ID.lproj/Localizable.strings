@@ -256,6 +256,12 @@
 /* When a video or audio is live and has no duration */
 "playlist.playlistLiveMediaStream" = "Siaran Aliran Langsung";
 
+/* Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionFooterText" = "Jika telah diaktifkan, Anda dapat menekan terus pada kebanyakan berkas video/audio untuk menambahkan mereka ke Daftar Putar Anda.";
+
+/* Title for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionTitle" = "Mengaktifkan Tekan Terus";
+
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistMediaAndOfflineDataToggleOption" = "Data Media & Data Luring Daftar Putar";
 
@@ -295,12 +301,10 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Mulai Putar Ulang dari saat saya terakhir memutarnya";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
-   Footer Text for the Playlist Settings Option for long press gesture */
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionFooterText" = "Saat diaktifkan, sebuah bilah akan secara otomatis muncul di sebagian besar situs web media, sehingga menambahkan berkas video/audio ke Daftar Putar Anda menjadi lebih mudah.";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast
-   Title for the Playlist Settings Option for long press gesture */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionTitle" = "Tampilkan \"Tambahkan ke Daftar Putar Brave\"";
 
 /* Description for Playlist setting */
@@ -353,6 +357,60 @@
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Tutup Menu Perisai";
+
+/* Recent Search Clear Button */
+"RecentSearchClear" = "Hapus";
+
+/* The button title that shows when you clear all recent searches */
+"RecentSearchClearAlertButton" = "Hapus Pencarian Terkini";
+
+/* Recent Search setting title to clear recent searches */
+"RecentSearchClearDataToggleOption" = "Data Pencarian Terkini";
+
+/* Recent Search button title to disable suggestions */
+"RecentSearchDisableSuggestions" = "Non-Aktifkan";
+
+/* Recent Search button title to enable suggestions */
+"RecentSearchEnableSuggestions" = "Aktifkan";
+
+/* Recent Search Favorites Section Title */
+"RecentSearchFavorites" = "Favorit";
+
+/* Recent Search Hide Button */
+"RecentSearchHide" = "Sembunyikan";
+
+/* Recent Search Paste & Go Button Title */
+"RecentSearchPasteAndGo" = "Tempelkan & Buka";
+
+/* Recent Search 'on' text when a user searches 'on' a website */
+"RecentSearchQuickSearchOnWebsite" = "di";
+
+/* Recent Search Scanned text when a user scans a qr code */
+"RecentSearchScanned" = "Terpindai";
+
+/* Scanning a QRCode for searching body */
+"RecentSearchScannerDescriptionBody" = "Untuk melakukan pencarian dengan menggunakan QRCode, arahkan QR di bagian tengah bingkai.";
+
+/* Scanning a QRCode for title */
+"RecentSearchScannerDescriptionTitle" = "Instruksi";
+
+/* Scanning a QRCode for searching */
+"RecentSearchScannerTitle" = "Pindai Kode QR";
+
+/* Recent Search Section Description */
+"RecentSearchSectionDescription" = "Pencarian Terkini memungkinkan Anda untuk mengakses pencarian terdahulu secara tertutup. Apakah Anda ingin mengaktifkan Pencarian Terkini?";
+
+/* Recent Search Section Title */
+"RecentSearchSectionTitle" = "Pencarian Terkini";
+
+/* Recent Search Show Button */
+"RecentSearchShow" = "Tampilkan";
+
+/* Recent Search Show More button */
+"RecentSearchShowMore" = "Tampilkan lebih banyak";
+
+/* Recent Search suggestions title when prompting to turn on suggestions */
+"RecentSearchSuggestionsTitle" = "Saran Pencarian";
 
 /* No comment provided by engineer. */
 "ReportABrokenSite" = "Laporkan situs rusak";
@@ -814,13 +872,13 @@
 "today.addSourceNoFeedsFoundMessage" = "Maaf, alamat umpan tersebut tidak memiliki konten.";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "Tambahkan Sumber kepada Brave Today";
+"today.addSourceShareTitle" = "Tambahkan Sumber ke Berita Brave";
 
 /* No comment provided by engineer. */
 "today.allSources" = "Semua Sumber";
 
 /* The name of the feature */
-"today.braveToday" = "Brave Hari Ini";
+"today.braveToday" = "Brave News";
 
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "Konten Baru Telah Tersedia";
@@ -835,7 +893,7 @@
 "today.disableAll" = "Nonaktifkan Semua";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disabledAlertBody" = "Brave Hari Ini akan berhenti menampilkan konten dari %@";
+"today.disabledAlertBody" = "Berita Brave akan berhenti menampilkan konten dari %@";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "Dinonaktifkan";
@@ -856,7 +914,7 @@
 "today.enablePublisherContent" = "Aktifkan konten dari %@";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "Brave Hari Ini mengalami sejumlah masalah. Cobalah lagi.";
+"today.errorGeneralBody" = "Berita Brave mengalami beberapa masalah. Coba lagi.";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Aduh...";
@@ -868,19 +926,19 @@
 "today.insecureSourcesHeader" = "Sumber Tidak Aman - Risiko Tanggung Sendiri";
 
 /* No comment provided by engineer. */
-"today.introCardBody" = "Brave Today didukung oleh iklan yang sepenuhnya privat dan anonim dan disesuaikan dengan perangkat Anda. ";
+"today.introCardBody" = "Berita Brave didukung iklan yang sepenuhnya tertutup dan anonim yang dicocokkan pada perangkat Anda.";
 
 /* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
 "today.introCardNew" = "Baru";
 
 /* No comment provided by engineer. */
-"today.introCardNewTextBody" = "Ubahsuaikan Brave Today hingga 5 umpan RSS dan dapatkan konten baru dari penerbit favorit Anda sepanjang hari.";
+"today.introCardNewTextBody" = "Sesuaikan umpan Anda dengan menggunakan ratusan sumber konten unggulan yang dikirimkan melalui CDN tertutup, dan menambahkan umpan RSS dari penerbit favorit Anda untuk membuat umpan yang bekerja untuk Anda.";
 
 /* No comment provided by engineer. */
 "today.introCardTitle" = "Berita teratas hari ini melalui umpan yang sepenuhnya privat, hanya untuk Anda. ";
 
 /* No comment provided by engineer. */
-"today.isEnabledToggleLabel" = "Tunjukkan Brave Hari Ini";
+"today.isEnabledToggleLabel" = "Tampilkan Berita Brave";
 
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Pelajari lebih lanjut tentang data Anda";
@@ -903,15 +961,6 @@
 /* No comment provided by engineer. */
 "today.resetSourceSettingsButtonTitle" = "Atur Ulang Pengaturan Sumber ke Pengaturan Bawaan";
 
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertMessage" = "Brave Today versi gratis masih menampilkan iklan dan berisi 5 umpan RSS. Anda dapat mengubahsuaikan pilihan umpan dari daftar Sumber. ";
-
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertTitle" = "Batas umpan terlampaui";
-
-/* %d will be a number (i.e. 4) */
-"today.rssFeedLimitRemainingFooter" = "Anda saat ini memiliki %d umpan RSS di daftar Sumber. Brave Today versi gratis berisi 5 umpan RSS. Dukungan untuk umpan tak terbatas dan impor OPML akan menyusul segera. Anda dapat mengubahsuaikan pilihan umpan dari daftar Sumber. ";
-
 /* An action title where the user is executing a search based on inputted text */
 "today.searchButtonTitle" = "Cari";
 
@@ -928,7 +977,7 @@
 "today.sourceSearchPlaceholder" = "Pencarian";
 
 /* No comment provided by engineer. */
-"today.turnOnBraveToday" = "Aktifkan Brave Today";
+"today.turnOnBraveToday" = "Aktifkan Berita Brave";
 
 /* The header above a list of the users RSS feed sources */
 "today.yourSources" = "Sumber Anda";

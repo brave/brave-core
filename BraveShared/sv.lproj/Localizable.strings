@@ -256,6 +256,12 @@
 /* When a video or audio is live and has no duration */
 "playlist.playlistLiveMediaStream" = "Livestream";
 
+/* Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionFooterText" = "När funktionen är aktiverad kan du trycka länge på de flesta video-/ljudfiler för att lägga till dem i din spellista.";
+
+/* Title for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionTitle" = "Aktivera långt tryck";
+
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistMediaAndOfflineDataToggleOption" = "Spellistmedia och offline-data";
 
@@ -295,12 +301,10 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Starta uppspelningen där jag senast slutade";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
-   Footer Text for the Playlist Settings Option for long press gesture */
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionFooterText" = "När funktionen är aktiverad visas ett fält automatiskt på de flesta mediewebbplatser, vilket gör det enklare att lägga till dessa video-/ljudfiler i Playlist.";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast
-   Title for the Playlist Settings Option for long press gesture */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionTitle" = "Visa \"Lägg till i Brave Playlist\"";
 
 /* Description for Playlist setting */
@@ -353,6 +357,60 @@
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Stäng sköldmenyn";
+
+/* Recent Search Clear Button */
+"RecentSearchClear" = "Rensa";
+
+/* The button title that shows when you clear all recent searches */
+"RecentSearchClearAlertButton" = "Rensa senaste";
+
+/* Recent Search setting title to clear recent searches */
+"RecentSearchClearDataToggleOption" = "Senaste sökdata";
+
+/* Recent Search button title to disable suggestions */
+"RecentSearchDisableSuggestions" = "Inaktivera";
+
+/* Recent Search button title to enable suggestions */
+"RecentSearchEnableSuggestions" = "Aktivera";
+
+/* Recent Search Favorites Section Title */
+"RecentSearchFavorites" = "Favoriter";
+
+/* Recent Search Hide Button */
+"RecentSearchHide" = "Dölj";
+
+/* Recent Search Paste & Go Button Title */
+"RecentSearchPasteAndGo" = "Klistra in och öppna";
+
+/* Recent Search 'on' text when a user searches 'on' a website */
+"RecentSearchQuickSearchOnWebsite" = "på";
+
+/* Recent Search Scanned text when a user scans a qr code */
+"RecentSearchScanned" = "Skannade";
+
+/* Scanning a QRCode for searching body */
+"RecentSearchScannerDescriptionBody" = "Om du vill söka med en QR-kod ska du placera QR-koden inom ramen.";
+
+/* Scanning a QRCode for title */
+"RecentSearchScannerDescriptionTitle" = "Instruktioner";
+
+/* Scanning a QRCode for searching */
+"RecentSearchScannerTitle" = "Skanna QR-kod";
+
+/* Recent Search Section Description */
+"RecentSearchSectionDescription" = "Med de senaste sökningarna kan du privat komma åt tidigare sökningar. Vill du aktivera Senaste sökningar?";
+
+/* Recent Search Section Title */
+"RecentSearchSectionTitle" = "Senaste sökningar";
+
+/* Recent Search Show Button */
+"RecentSearchShow" = "Visa";
+
+/* Recent Search Show More button */
+"RecentSearchShowMore" = "Visa mer";
+
+/* Recent Search suggestions title when prompting to turn on suggestions */
+"RecentSearchSuggestionsTitle" = "Sökförslag";
 
 /* No comment provided by engineer. */
 "ReportABrokenSite" = "Rapportera en bruten webbplats";
@@ -814,13 +872,13 @@
 "today.addSourceNoFeedsFoundMessage" = "Tyvärr har den flödesadressen inget innehåll.";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "Lägg till källa till Brave Today";
+"today.addSourceShareTitle" = "Lägg till källa till Brave News";
 
 /* No comment provided by engineer. */
 "today.allSources" = "Alla källor";
 
 /* The name of the feature */
-"today.braveToday" = "Brave Today";
+"today.braveToday" = "Brave News";
 
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "Nytt innehåll tillgängligt";
@@ -835,7 +893,7 @@
 "today.disableAll" = "Inaktivera alla";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disabledAlertBody" = "Brave Today kommer att sluta visa innehåll från %@";
+"today.disabledAlertBody" = "Brave News kommer att sluta visa innehåll från %@";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "Inaktiverad";
@@ -856,7 +914,7 @@
 "today.enablePublisherContent" = "Aktivera innehåll från %@";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "Brave Today har vissa problem. Försök igen.";
+"today.errorGeneralBody" = "Brave News har vissa problem. Försök igen.";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Hoppsan ...";
@@ -868,19 +926,19 @@
 "today.insecureSourcesHeader" = "Osäkra källor - Lägg till på egen risk";
 
 /* No comment provided by engineer. */
-"today.introCardBody" = "Brave Today stöds av annonsörer med helt privata och anonymiserade annonser som är matchade på din enhet.";
+"today.introCardBody" = "Brave News stöds av annonsörer med helt privata och anonymiserade annonser som är matchade på din enhet.";
 
 /* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
 "today.introCardNew" = "Nytt";
 
 /* No comment provided by engineer. */
-"today.introCardNewTextBody" = "Anpassa Brave Today med upp till 5 RSS flöden och få nytt innehåll från dina favoritpublicerare under hela dagen.";
+"today.introCardNewTextBody" = "Anpassa ditt flöde med hundratals ledande innehållskällor som levereras via vår privata CDN och lägg till RSS-flöden från dina favoritutgivare för att skapa ett flöde som passar just dig.";
 
 /* No comment provided by engineer. */
 "today.introCardTitle" = "Dagens topphistorier i ett helt privat flöde, endast för dig.";
 
 /* No comment provided by engineer. */
-"today.isEnabledToggleLabel" = "Visa Brave Today";
+"today.isEnabledToggleLabel" = "Visa Brave News";
 
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Läs mer om dina data";
@@ -903,15 +961,6 @@
 /* No comment provided by engineer. */
 "today.resetSourceSettingsButtonTitle" = "Återställ källor till standardinställningen";
 
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertMessage" = "Den gratis annonsstödda versionen av Brave Today innehåller 5 RSS flöden. Du kan anpassa dina flödesval från källlistan.";
-
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertTitle" = "Flödesbegränsningen har överskridits";
-
-/* %d will be a number (i.e. 4) */
-"today.rssFeedLimitRemainingFooter" = "Du har för närvarande %d RSS flöden i din källlista. Den gratis annonsstödda versionen av Brave Today innehåller 5 RSS flöden. Stöd för obegränsade flöden och OPML import kommer snart. Du kan anpassa dina flödesval från källlistan.";
-
 /* An action title where the user is executing a search based on inputted text */
 "today.searchButtonTitle" = "Sök";
 
@@ -928,7 +977,7 @@
 "today.sourceSearchPlaceholder" = "Sök";
 
 /* No comment provided by engineer. */
-"today.turnOnBraveToday" = "Starta Brave Today";
+"today.turnOnBraveToday" = "Aktivera Brave News";
 
 /* The header above a list of the users RSS feed sources */
 "today.yourSources" = "Dina källor";

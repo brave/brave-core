@@ -515,7 +515,7 @@
 "FindInPagePreviousResultButtonAccessibilityLabel" = "上一個頁面搜尋結果";
 
 /* Section header for find in page option */
-"FindOnPageSectionHeader" = "在此頁面";
+"FindOnPageSectionHeader" = "在此頁面上";
 
 /* individual blocking statistic title */
 "FingerprintingMethods" = "指紋識別法";
@@ -917,7 +917,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "搜尋建議內容";
 
 /* Section header for history and bookmarks option */
-"SearchHistorySectionHeader" = "歷史記錄及書籤";
+"SearchHistorySectionHeader" = "歷史記錄與書籤";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "清除搜尋";
@@ -934,6 +934,9 @@
 /* Navigation title for search settings. */
 "SearchSettingNavTitle" = "搜尋";
 
+/* Label for showing recent search setting. */
+"SearchSettingRecentSearchesCellTitle" = "顯示最近的搜尋";
+
 /* Label for search settings button. */
 "SearchSettingsButtonTitle" = "搜尋設定";
 
@@ -942,6 +945,12 @@
 
 /* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
 "SearchSuggestionFromFormatText" = "%@ 提供的搜尋建議";
+
+/* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
+"SearchSuggestionSectionTitleFormat" = "%@ 搜尋";
+
+/* Section header for search suggestions option */
+"SearchSuggestionsSectionHeader" = "搜尋建議";
 
 /* Settings security section title */
 "Security" = "安全";

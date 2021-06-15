@@ -917,7 +917,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Sucht nach diesem Vorschlag";
 
 /* Section header for history and bookmarks option */
-"SearchHistorySectionHeader" = "Chronik und Lesezeichen";
+"SearchHistorySectionHeader" = "Verlauf und Lesezeichen";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Suche löschen";
@@ -934,6 +934,9 @@
 /* Navigation title for search settings. */
 "SearchSettingNavTitle" = "Suchen";
 
+/* Label for showing recent search setting. */
+"SearchSettingRecentSearchesCellTitle" = "Letzte Suchanfragen anzeigen";
+
 /* Label for search settings button. */
 "SearchSettingsButtonTitle" = "Sucheinstellungen";
 
@@ -942,6 +945,12 @@
 
 /* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
 "SearchSuggestionFromFormatText" = "Suchvorschläge von %@";
+
+/* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
+"SearchSuggestionSectionTitleFormat" = "%@-Suche";
+
+/* Section header for search suggestions option */
+"SearchSuggestionsSectionHeader" = "Suchvorschläge";
 
 /* Settings security section title */
 "Security" = "Sicherheit";

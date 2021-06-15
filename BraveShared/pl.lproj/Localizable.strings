@@ -256,6 +256,12 @@
 /* When a video or audio is live and has no duration */
 "playlist.playlistLiveMediaStream" = "Transmisja na żywo";
 
+/* Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionFooterText" = "Po włączeniu tej opcji możesz przytrzymać większość plików audio/wideo i dodać je do swojej listy odtwarzania. ";
+
+/* Title for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionTitle" = "Włącz opcję przytrzymywania";
+
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistMediaAndOfflineDataToggleOption" = "Lista odtwarzania mediów i dane offline";
 
@@ -295,12 +301,10 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Rozpocznij odtwarzanie od miejsca, w którym ostatnio je przerwałem";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
-   Footer Text for the Playlist Settings Option for long press gesture */
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionFooterText" = "Po włączeniu tej funkcji pasek będzie automatycznie wyświetlany na większości stron internetowych z multimediami, ułatwiając dodawanie tych plików wideo/audio do Listy odtwarzania.";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast
-   Title for the Playlist Settings Option for long press gesture */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionTitle" = "Pokaż \"Dodaj do listy odtwarzania w Brave\"";
 
 /* Description for Playlist setting */
@@ -353,6 +357,60 @@
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Zamknij menu Shields";
+
+/* Recent Search Clear Button */
+"RecentSearchClear" = "Wyczyść";
+
+/* The button title that shows when you clear all recent searches */
+"RecentSearchClearAlertButton" = "Wyczyść ostatnie";
+
+/* Recent Search setting title to clear recent searches */
+"RecentSearchClearDataToggleOption" = "Ostatnie wyszukiwania";
+
+/* Recent Search button title to disable suggestions */
+"RecentSearchDisableSuggestions" = "Wyłącz";
+
+/* Recent Search button title to enable suggestions */
+"RecentSearchEnableSuggestions" = "Włącz";
+
+/* Recent Search Favorites Section Title */
+"RecentSearchFavorites" = "Ulubione";
+
+/* Recent Search Hide Button */
+"RecentSearchHide" = "Ukryj";
+
+/* Recent Search Paste & Go Button Title */
+"RecentSearchPasteAndGo" = "Wklej i otwórz";
+
+/* Recent Search 'on' text when a user searches 'on' a website */
+"RecentSearchQuickSearchOnWebsite" = "na";
+
+/* Recent Search Scanned text when a user scans a qr code */
+"RecentSearchScanned" = "Przeskanowano";
+
+/* Scanning a QRCode for searching body */
+"RecentSearchScannerDescriptionBody" = "Aby wyszukać za pomocą kodu kod QR, wyrównaj QR wewnątrz ramki";
+
+/* Scanning a QRCode for title */
+"RecentSearchScannerDescriptionTitle" = "Instrukcje";
+
+/* Scanning a QRCode for searching */
+"RecentSearchScannerTitle" = "Skanuj kod QR";
+
+/* Recent Search Section Description */
+"RecentSearchSectionDescription" = "W sekcji Ostatnie wyszukiwania możesz uzyskać dostęp do poprzednich wyszukiwań. Czy chcesz włączyć Ostatnie wyszukiwania?";
+
+/* Recent Search Section Title */
+"RecentSearchSectionTitle" = "Ostatnie wyszukiwania";
+
+/* Recent Search Show Button */
+"RecentSearchShow" = "Pokaż";
+
+/* Recent Search Show More button */
+"RecentSearchShowMore" = "Pokaż więcej";
+
+/* Recent Search suggestions title when prompting to turn on suggestions */
+"RecentSearchSuggestionsTitle" = "Sugestie wyszukiwania";
 
 /* No comment provided by engineer. */
 "ReportABrokenSite" = "Zgłoś nieprawidłową stronę";
@@ -814,13 +872,13 @@
 "today.addSourceNoFeedsFoundMessage" = "Przykro nam, adres tego kanału nie ma zawartości.";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "Dodaj źródło do Brave Today";
+"today.addSourceShareTitle" = "Dodaj źródło do Brave News";
 
 /* No comment provided by engineer. */
 "today.allSources" = "Wszystkie źródła";
 
 /* The name of the feature */
-"today.braveToday" = "Brave Today";
+"today.braveToday" = "Brave News";
 
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "Dostępne są nowe treści";
@@ -835,7 +893,7 @@
 "today.disableAll" = "Wyłącz wszystko";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disabledAlertBody" = "Brave Today przestanie pokazywać treści z %@";
+"today.disabledAlertBody" = "Brave News przestanie pokazywać treści z %@";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "Wyłączono";
@@ -856,7 +914,7 @@
 "today.enablePublisherContent" = "Włącz treści z %@";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "Brave Today doświadcza pewnych problemów. Spróbuj ponownie.";
+"today.errorGeneralBody" = "Brave News doświadcza pewnych problemów. Spróbuj ponownie.";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Ups…";
@@ -868,19 +926,19 @@
 "today.insecureSourcesHeader" = "Niepewne źródła – dodajesz na własną odpowiedzialność";
 
 /* No comment provided by engineer. */
-"today.introCardBody" = "Brave Today wspierają w pełni prywatne i anonimizowane reklamy dopasowane na Twoim urządzeniu.";
+"today.introCardBody" = "Brave News wspierają w pełni prywatne i anonimizowane reklamy dopasowane na Twoim urządzeniu.";
 
 /* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
 "today.introCardNew" = "Nowość";
 
 /* No comment provided by engineer. */
-"today.introCardNewTextBody" = "Dostosuj Brave Today dzięki 5 kanałom RSS i otrzymuj w ciągu dnia nowe treści od Twoich ulubionych wydawców.";
+"today.introCardNewTextBody" = "Personalizuj swój feed za pośrednictwem setek wiodących źródeł treści dostarczanych w ramach naszej prywatnej sieci CDN oraz dodawaj treści RSS od swoich ulubionych twórców, aby stworzyć tablicę dopasowaną do swoich potrzeb.";
 
 /* No comment provided by engineer. */
 "today.introCardTitle" = "Najlepsze historie danego dnia w zupełnie prywatnym kanale, wyłącznie dla Ciebie.";
 
 /* No comment provided by engineer. */
-"today.isEnabledToggleLabel" = "Wyświetl Brave Today";
+"today.isEnabledToggleLabel" = "Pokaż Brave News";
 
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Dowiedz się więcej o swoich danych";
@@ -903,15 +961,6 @@
 /* No comment provided by engineer. */
 "today.resetSourceSettingsButtonTitle" = "Przywróć domyślne ustawienia źródła";
 
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertMessage" = "Darmowa, wspierana reklamami wersja Brave Today zawiera 5 kanałów RSS. Możesz dostosować wybór kanałów w liście źródeł.";
-
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertTitle" = "Przekroczono limit kanałów";
-
-/* %d will be a number (i.e. 4) */
-"today.rssFeedLimitRemainingFooter" = "%d – tyle masz obecnie kanałów RSS w liście źródeł. Darmowa, wspierana reklamami wersja Brave Today zawiera 5 kanałów RSS. Obsługa nieograniczonej liczby kanałów i import OPML będą dostępne już niedługo. Możesz dostosować wybór kanałów w liście źródeł.";
-
 /* An action title where the user is executing a search based on inputted text */
 "today.searchButtonTitle" = "Szukaj";
 
@@ -928,7 +977,7 @@
 "today.sourceSearchPlaceholder" = "Szukaj";
 
 /* No comment provided by engineer. */
-"today.turnOnBraveToday" = "Włącz Brave Today";
+"today.turnOnBraveToday" = "Włącz Brave News";
 
 /* The header above a list of the users RSS feed sources */
 "today.yourSources" = "Twoje źródła";
