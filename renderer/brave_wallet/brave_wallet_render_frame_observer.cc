@@ -13,9 +13,7 @@ namespace brave_wallet {
 BraveWalletRenderFrameObserver::BraveWalletRenderFrameObserver(
     content::RenderFrame* render_frame,
     brave::mojom::DynamicParams dynamic_params)
-    : RenderFrameObserver(render_frame), dynamic_params_(dynamic_params) {
-  native_javascript_handle_.reset(new BraveWalletJSHandler(render_frame));
-}
+    : RenderFrameObserver(render_frame), dynamic_params_(dynamic_params) {}
 
 BraveWalletRenderFrameObserver::~BraveWalletRenderFrameObserver() {}
 
@@ -33,6 +31,12 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
   if (url_.is_empty() || !url_.is_valid() || url_.spec() == "about:blank")
     url_ = url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin())
                .GetURL();
+
+  if (!native_javascript_handle_) {
+    native_javascript_handle_.reset(new BraveWalletJSHandler(render_frame()));
+  } else {
+    native_javascript_handle_->ResetRemote(render_frame());
+  }
 
   if (!dynamic_params_.brave_use_native_wallet || !native_javascript_handle_ ||
       !url_.SchemeIsHTTPOrHTTPS())

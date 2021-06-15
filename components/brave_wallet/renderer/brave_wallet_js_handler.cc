@@ -95,6 +95,7 @@ BraveWalletJSHandler::BraveWalletJSHandler(content::RenderFrame* render_frame)
     *g_provider_script =
         LoadDataResource(IDR_BRAVE_WALLET_SCRIPT_BRAVE_WALLET_SCRIPT_BUNDLE_JS);
   }
+  EnsureConnected();
 }
 
 BraveWalletJSHandler::~BraveWalletJSHandler() = default;
@@ -107,6 +108,13 @@ bool BraveWalletJSHandler::EnsureConnected() {
   }
 
   return brave_wallet_provider_.is_bound();
+}
+
+void BraveWalletJSHandler::ResetRemote(content::RenderFrame* render_frame) {
+  render_frame_ = render_frame;
+  brave_wallet_provider_.reset();
+  receiver_.reset();
+  EnsureConnected();
 }
 
 void BraveWalletJSHandler::AddJavaScriptObjectToFrame(
