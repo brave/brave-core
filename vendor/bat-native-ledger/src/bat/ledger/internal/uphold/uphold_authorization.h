@@ -11,7 +11,6 @@
 
 #include "base/containers/flat_map.h"
 #include "bat/ledger/internal/endpoint/uphold/uphold_server.h"
-#include "bat/ledger/internal/uphold/uphold_user.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
@@ -33,16 +32,6 @@ class UpholdAuthorization {
   void OnAuthorize(
       const type::Result result,
       const std::string& token,
-      ledger::ExternalWalletAuthorizationCallback callback);
-
-  void OnGetUser(
-      const type::Result result,
-      const User& user,
-      ledger::ExternalWalletAuthorizationCallback callback);
-
-  void OnCardCreate(
-      const type::Result result,
-      const std::string& address,
       ledger::ExternalWalletAuthorizationCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
