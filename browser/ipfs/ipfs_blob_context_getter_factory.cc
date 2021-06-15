@@ -26,7 +26,7 @@ IpfsBlobContextGetterFactory::~IpfsBlobContextGetterFactory() {}
 base::WeakPtr<storage::BlobStorageContext>
 IpfsBlobContextGetterFactory::RetrieveStorageContext() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
-  return std::move(getter_callback_).Run();
+  return getter_callback_.Run();
 }
 
 }  // namespace ipfs
