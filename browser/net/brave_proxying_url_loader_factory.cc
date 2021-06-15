@@ -610,7 +610,15 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnRequestError(
     const network::URLLoaderCompletionStatus& status) {
   if (!request_completed_) {
-    target_client_->OnComplete(status);
+    // Make a non-const copy of status so that |should_collapse_initiator| can
+    // be modified
+    network::URLLoaderCompletionStatus collapse_status(status);
+
+    if (ctx_->blocked_by == brave::kAdBlocked) {
+      collapse_status.should_collapse_initiator = true;
+    }
+
+    target_client_->OnComplete(collapse_status);
   }
 
   // Deletes |this|.
