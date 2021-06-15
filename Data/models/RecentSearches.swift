@@ -52,6 +52,17 @@ final public class RecentSearch: NSManagedObject, CRUD {
     }
     
     public static func addItem(type: RecentSearchType, text: String?, websiteUrl: String?) {
+        let isNullOrEmpty = { (string: String?) in
+            return (string ?? "").trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty
+        }
+        
+        // If both are empty, do NOT add it to Recent Searches
+        // It's better to check here since a RecentSearch can be added from multiple places
+        // and can contain either field.
+        if isNullOrEmpty(text) && isNullOrEmpty(websiteUrl) {
+            return
+        }
+        
         if let recentSearch = getItem(text: text, websiteUrl: websiteUrl) {
             recentSearch.update(dateAdded: Date())
         } else {

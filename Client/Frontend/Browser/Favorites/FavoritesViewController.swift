@@ -386,6 +386,8 @@ extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewD
                     title.append(NSAttributedString(string: website,
                                                     attributes: [.font: UIFont.systemFont(ofSize: 15.0)]))
                     cell.setAttributedTitle(title)
+                } else if let websiteUrl = recentSearch.websiteUrl {
+                    cell.setTitle(websiteUrl)
                 } else {
                     cell.setTitle(recentSearch.text)
                 }
