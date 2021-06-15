@@ -294,6 +294,10 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   toggleShowCryptoDotCom = () => {
+    // Disconnect when widget gets hidden.
+    if (this.props.newTabData.showCryptoDotCom) {
+      this.disconnectCryptoDotCom()
+    }
     this.props.saveShowCryptoDotCom(!this.props.newTabData.showCryptoDotCom)
   }
 
