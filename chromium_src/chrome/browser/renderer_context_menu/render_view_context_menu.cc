@@ -321,6 +321,8 @@ void BraveRenderViewContextMenu::InitMenu() {
 #endif
 
   // Only show the translate item when go-translate is enabled.
+  // This removes menu item, but keeps the duplicated separator. The duplicated
+  // separator is removed in |BraveRenderViewContextMenuViews::Show|
 #if !BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   index = menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_TRANSLATE);
   if (index != -1)

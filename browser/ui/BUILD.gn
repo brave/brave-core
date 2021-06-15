@@ -161,6 +161,13 @@ source_set("ui") {
       "views/toolbar/bookmark_button.h",
     ]
 
+    if (use_aura) {
+      sources += [
+        "views/renderer_context_menu/brave_render_view_context_menu_views.cc",
+        "views/renderer_context_menu/brave_render_view_context_menu_views.h",
+      ]
+    }
+
     if (enable_sparkle) {
       sources += [
         "views/update_recommended_message_box_mac.h",
