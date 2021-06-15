@@ -38,3 +38,8 @@ FOUNDATION_EXPORT const unsigned char BraveRewardsVersionString[];
 // History
 #import <BraveRewards/brave_history_api.h>
 #import <BraveRewards/brave_history_observer.h>
+
+// Wallet
+#import <BraveRewards/eth_json_rpc_controller.h>
+#import <BraveRewards/hd_keyring.h>
+#import <BraveRewards/keyring_controller.h>

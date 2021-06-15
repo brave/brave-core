@@ -1,0 +1,40 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+assert(brave_wallet_enabled)
+
+source_set("wallet") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+
+  sources = [
+    "brave_wallet_service_factory.h",
+    "brave_wallet_service_factory.mm",
+    "eth_json_rpc_controller.h",
+    "eth_json_rpc_controller.mm",
+    "hd_keyring.h",
+    "hd_keyring.mm",
+    "hd_keyring_private.h",
+    "keyring_controller.h",
+    "keyring_controller.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_wallet/browser",
+    "//components/keyed_service/ios:ios",
+    "//ios/chrome/browser",
+    "//ios/chrome/browser/browser_state",
+    "//services/network/public/cpp",
+  ]
+
+  frameworks = [
+    "Foundation.framework",
+    "UIKit.framework",
+  ]
+}
