@@ -3,11 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#import "brave/ios/browser/api/wallet/brave_wallet_service_factory.h"
-
-#if !defined(__has_feature) || !__has_feature(objc_arc)
-#error "This file requires ARC support."
-#endif
+#include "brave/ios/browser/api/wallet/brave_wallet_service_factory.h"
 
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -44,11 +40,6 @@ BraveWalletServiceFactory::BuildServiceInstanceFor(
           browser_state->GetPrefs(),
           browser_state->GetSharedURLLoaderFactory()));
   return wallet_service;
-}
-
-web::BrowserState* BraveWalletServiceFactory::GetBrowserStateToUse(
-    web::BrowserState* context) const {
-  return ChromeBrowserState::FromBrowserState(context);
 }
 
 bool BraveWalletServiceFactory::ServiceIsNULLWhileTesting() const {

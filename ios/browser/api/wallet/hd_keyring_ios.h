@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_IOS_BROWSER_API_WALLET_HD_KEYRING_H_
-#define BRAVE_IOS_BROWSER_API_WALLET_HD_KEYRING_H_
+#ifndef BRAVE_IOS_BROWSER_API_WALLET_HD_KEYRING_IOS_H_
+#define BRAVE_IOS_BROWSER_API_WALLET_HD_KEYRING_IOS_H_
 
 #import <Foundation/Foundation.h>
 
@@ -18,7 +18,8 @@ typedef NS_ENUM(NSInteger, HDKeyringType) {
 };
 
 OBJC_EXPORT
-@interface HDKeyring : NSObject
+NS_SWIFT_NAME(HDKeyring)
+@interface HDKeyringIOS : NSObject
 
 @property(nonatomic, readonly) HDKeyringType type;
 @property(nonatomic, readonly) bool isEmpty;
@@ -43,4 +44,4 @@ OBJC_EXPORT
 
 NS_ASSUME_NONNULL_END
 
-#endif  // BRAVE_IOS_BROWSER_API_WALLET_HD_KEYRING_H_
+#endif  // BRAVE_IOS_BROWSER_API_WALLET_HD_KEYRING_IOS_H_

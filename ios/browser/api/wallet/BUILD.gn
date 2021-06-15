@@ -13,28 +13,26 @@ source_set("wallet") {
   configs += [ "//build/config/compiler:enable_arc" ]
 
   sources = [
+    "brave_wallet_api+private.h",
+    "brave_wallet_api.h",
+    "brave_wallet_api.mm",
+    "brave_wallet_service_factory.cc",
     "brave_wallet_service_factory.h",
-    "brave_wallet_service_factory.mm",
-    "eth_json_rpc_controller.h",
-    "eth_json_rpc_controller.mm",
-    "hd_keyring.h",
-    "hd_keyring.mm",
-    "hd_keyring_private.h",
-    "keyring_controller.h",
-    "keyring_controller.mm",
+    "hd_keyring_ios+private.h",
+    "hd_keyring_ios.h",
+    "hd_keyring_ios.mm",
+    "keyring_controller_ios+private.h",
+    "keyring_controller_ios.h",
+    "keyring_controller_ios.mm",
   ]
 
   deps = [
     "//base",
     "//brave/components/brave_wallet/browser",
     "//components/keyed_service/ios:ios",
-    "//ios/chrome/browser",
     "//ios/chrome/browser/browser_state",
     "//services/network/public/cpp",
   ]
 
-  frameworks = [
-    "Foundation.framework",
-    "UIKit.framework",
-  ]
+  frameworks = [ "Foundation.framework" ]
 }

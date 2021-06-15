@@ -3,24 +3,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#import "brave/ios/browser/api/wallet/hd_keyring.h"
+#import "brave/ios/browser/api/wallet/hd_keyring_ios.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
 #endif
 
-#import "brave/ios/browser/api/wallet/brave_wallet_service_factory.h"
-
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 
-@interface HDKeyring () {
+@interface HDKeyringIOS () {
   brave_wallet::HDKeyring* _keyring;  // NOT OWNED
 }
 @end
 
-@implementation HDKeyring
+@implementation HDKeyringIOS
 
 - (instancetype)initWithKeyring:(brave_wallet::HDKeyring*)keyring {
   if ((self = [super init])) {
@@ -30,7 +28,7 @@
 }
 
 - (HDKeyringType)type {
-  return static_cast<HDKeyringType>(_keyring->type());
+  return HDKeyringTypeForBraveWalletHDKeyringType(_keyring->type());
 }
 
 - (bool)isEmpty {
@@ -55,7 +53,7 @@
 
 - (NSData*)signedMessageForAddress:(NSString*)address message:(NSData*)message {
   std::vector<uint8_t> bridgedMessage;
-  uint8_t* msg = (uint8_t*)(message.bytes);
+  const uint8_t* msg = static_cast<const uint8_t*>(message.bytes);
   bridgedMessage.assign(msg, msg + message.length);
   const auto signedMessage =
       _keyring->SignMessage(base::SysNSStringToUTF8(address), bridgedMessage);
@@ -75,6 +73,22 @@
 - (NSString*)addressAtIndex:(NSUInteger)index {
   auto address = _keyring->GetAddress(static_cast<size_t>(index));
   return base::SysUTF8ToNSString(address);
+}
+
+#pragma mark - Util
+
+static HDKeyringType HDKeyringTypeForBraveWalletHDKeyringType(
+    brave_wallet::HDKeyring::Type type) {
+  switch (type) {
+    case brave_wallet::HDKeyring::Type::kDefault:
+      return HDKeyringTypeDefault;
+    case brave_wallet::HDKeyring::Type::kLedger:
+      return HDKeyringTypeLedger;
+    case brave_wallet::HDKeyring::Type::kTrezor:
+      return HDKeyringTypeTrezor;
+    case brave_wallet::HDKeyring::Type::kBitcoin:
+      return HDKeyringTypeBitcoin;
+  }
 }
 
 @end
