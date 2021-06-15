@@ -22,7 +22,7 @@ class ThreadSafeBrowserInterfaceBrokerProxy;
 
 namespace brave_search {
 
-class BraveSearchJSHandler;
+class BraveSearchFallbackJSHandler;
 
 class BraveSearchServiceWorkerHolder : public content::WorkerThread::Observer {
  public:
@@ -51,9 +51,10 @@ class BraveSearchServiceWorkerHolder : public content::WorkerThread::Observer {
   // WorkerThread::Observer:
   void WillStopCurrentWorkerThread() override;
 
-  // Implement thread safety by storing each BraveSearchJSHandler in TLS. The
-  // vector is called from worker threads.
-  base::ThreadLocalPointer<std::vector<std::unique_ptr<BraveSearchJSHandler>>>
+  // Implement thread safety by storing each BraveSearchFallbackJSHandler
+  // in TLS. The vector is called from worker threads.
+  base::ThreadLocalPointer<
+      std::vector<std::unique_ptr<BraveSearchFallbackJSHandler>>>
       js_handlers_tls_;
   blink::ThreadSafeBrowserInterfaceBrokerProxy* broker_;  // not owned
 };
