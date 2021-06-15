@@ -19,12 +19,19 @@ def Main():
     parser.add_argument('--target', dest='target', action='store',
         help='Target file path for signing.', required=True)
     parser.add_argument('--output', dest='output', action='store',
-        help='The path of dsa output.', required=True)
+        help='The path of the output.', required=True)
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--dsa", action="store_true", help='Use DSA')
+    group.add_argument("--eddsa", action="store_true", help='Use EdDSA')
     args = parser.parse_args()
 
-    # sign file with dsa
+    # sign file with the specified algorithm
     with open(args.output, 'w') as file:
-        command = [args.sign_update_path, args.target, args.sign_key_file]
+        if args.dsa:
+            command = [args.sign_update_path, args.target, args.sign_key_file]
+        else:
+            # EdDSA
+            command = [args.sign_update_path, '-s', args.sign_key, args.target]
         try:
             subprocess.check_call(command, stdout=file)
         except subprocess.CalledProcessError as e:
