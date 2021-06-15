@@ -14,6 +14,7 @@
 #include "base/task/post_task.h"
 #include "brave/browser/net/brave_request_handler.h"
 #include "brave/components/brave_shields/browser/adblock_stub_response.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -614,7 +615,9 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnRequestError(
     // be modified
     network::URLLoaderCompletionStatus collapse_status(status);
 
-    if (ctx_->blocked_by == brave::kAdBlocked) {
+    if (base::FeatureList::IsEnabled(
+            ::brave_shields::features::kBraveAdblockCollapseBlockedElements) &&
+        ctx_->blocked_by == brave::kAdBlocked) {
       collapse_status.should_collapse_initiator = true;
     }
 

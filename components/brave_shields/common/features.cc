@@ -15,6 +15,8 @@ namespace features {
 // substituted for any canonical name found.
 const base::Feature kBraveAdblockCnameUncloaking{
     "BraveAdblockCnameUncloaking", base::FEATURE_ENABLED_BY_DEFAULT};
+const base::Feature kBraveAdblockCollapseBlockedElements{
+    "BraveAdblockCollapseBlockedElements", base::FEATURE_ENABLED_BY_DEFAULT};
 const base::Feature kBraveAdblockCosmeticFiltering{
     "BraveAdblockCosmeticFiltering",
     base::FEATURE_ENABLED_BY_DEFAULT};
