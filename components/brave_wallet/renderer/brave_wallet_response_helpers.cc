@@ -24,6 +24,7 @@ std::unique_ptr<base::Value> FormProviderResponse(ProviderErrors code,
 
 std::unique_ptr<base::Value> FormProviderResponse(
     const std::string& controller_response,
+    const bool send_async,
     bool* reject) {
   DCHECK(reject);
   base::JSONReader::ValueWithError value_with_error =
@@ -46,6 +47,10 @@ std::unique_ptr<base::Value> FormProviderResponse(
     return base::Value::ToUniquePtrValue(error->Clone());
   }
   *reject = false;
+
+  if (send_async) {
+    return base::Value::ToUniquePtrValue(response->Clone());
+  }
 
   // We have a result
   const base::Value* result = response->FindKey("result");

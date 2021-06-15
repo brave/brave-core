@@ -12,6 +12,7 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/renderer/render_frame.h"
+#include "gin/arguments.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "v8/include/v8.h"
@@ -55,12 +56,16 @@ class BraveWalletJSHandler : public mojom::EventsListener {
                                  v8::Local<v8::Value> input);
   v8::Local<v8::Value> IsConnected();
   v8::Local<v8::Promise> Enable();
+  void SendAsync(gin::Arguments* args);
 
   void OnRequest(v8::Global<v8::Promise::Resolver> promise_resolver,
                  v8::Isolate* isolate,
                  v8::Global<v8::Context> context_old,
                  const int http_code,
                  const std::string& response);
+  void OnSendAsync(std::unique_ptr<v8::Global<v8::Function>> callback,
+                   const int http_code,
+                   const std::string& response);
 
   content::RenderFrame* render_frame_;
   mojo::Remote<mojom::BraveWalletProvider> brave_wallet_provider_;
