@@ -255,42 +255,13 @@ GURL GetAPIServer(version_info::Channel channel) {
   return AppendLocalPort(GetAPIPort(channel));
 }
 
-bool ParseCIDAndPathFromIPFSUrl(const GURL& url,
-                                std::string* cid,
-                                std::string* path) {
-  if (!url.SchemeIs(kIPFSScheme) && !url.SchemeIs(kIPNSScheme)) {
-    return false;
-  }
-  if (!url.host().empty())
-    return false;
-  DCHECK(cid);
-  DCHECK(path);
-  // ipfs: or ipfs://
-  size_t offset = (url.path().substr(0, 2) == "//") ? 2 : 0;
-  // In the case of a URL like ipfs://[cid]/wiki/Vincent_van_Gogh.html
-  // host is empty and path is //wiki/Vincent_van_Gogh.html
-  std::string local_cid(url.path().substr(offset));
-  // If we have a path after the CID, get at the real resource path
-  size_t pos = local_cid.find("/");
-  if (pos != std::string::npos && pos != 0) {
-    // path would be /wiki/Vincent_van_Gogh.html
-    *path = local_cid.substr(pos, local_cid.length() - pos);
-
-    // cid would be [cid]
-    *cid = local_cid.substr(0, pos);
-    return true;
-  }
-  *cid = local_cid;
-  return true;
-}
 
 bool TranslateIPFSURI(const GURL& url,
                       GURL* new_url,
                       const GURL& gateway_url,
                       bool use_subdomain) {
-  std::string cid, path;
-  if (!ParseCIDAndPathFromIPFSUrl(url, &cid, &path))
-    return false;
+  std::string cid = url.host();
+  std::string path = url.path();
   bool ipfs_scheme = url.scheme() == kIPFSScheme;
   bool ipns_scheme = url.scheme() == kIPNSScheme;
   if ((ipfs_scheme && std::all_of(cid.begin(), cid.end(),

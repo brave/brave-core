@@ -390,7 +390,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
       http_response->set_code(net::HTTP_OK);
     } else if (request_path ==
                "/ipfs/"
-               "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC") {
+               "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/") {
       http_response->set_code(net::HTTP_TEMPORARY_REDIRECT);
       GURL new_location(ipfs::GetIPFSGatewayURL(
           "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC", "simple_content",

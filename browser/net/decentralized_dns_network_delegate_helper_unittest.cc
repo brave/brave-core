@@ -161,7 +161,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
 
   OnBeforeURLRequest_DecentralizedDnsRedirectWork(
       ResponseCallback(), brave_request_info, true, result);
-  EXPECT_EQ("ipfs://QmWrdNJWMbvRxxzLhojVKaBDswS4KNVM7LvjsN7QbDrvka",
+  EXPECT_EQ("ipfs://QmWrdNJWMbvRxxzLhojVKaBDswS4KNVM7LvjsN7QbDrvka/",
             brave_request_info->new_url_spec);
 
   // Has legacy IPFS URI & fallback URL
@@ -198,7 +198,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
       "68747470733a2f2f66616c6c6261636b322e746573742e636f6d000000000000";
   OnBeforeURLRequest_DecentralizedDnsRedirectWork(
       ResponseCallback(), brave_request_info, true, result);
-  EXPECT_EQ("ipfs://QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+  EXPECT_EQ("ipfs://QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR/",
             brave_request_info->new_url_spec);
 
   // Has both fallback URL
@@ -298,7 +298,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
                                      true, hash);
   EXPECT_EQ(
       brave_request_info->new_url_spec,
-      "ipns://bafybeihqoo7bq7uoaybzpfwegks33vw2h5adyl4t7joz3pofkr6h7yhdxq");
+      "ipns://bafybeihqoo7bq7uoaybzpfwegks33vw2h5adyl4t7joz3pofkr6h7yhdxq/");
 }
 
 }  // namespace decentralized_dns
