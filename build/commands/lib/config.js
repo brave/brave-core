@@ -260,7 +260,7 @@ Config.prototype.buildArgs = function () {
 
   if (process.platform === 'darwin') {
     args.use_system_xcode = false
-    args.mac_sdk_official_version = 11.3
+    args.mac_sdk_official_version = "11.3"
   }
 
   if (this.shouldSign()) {
