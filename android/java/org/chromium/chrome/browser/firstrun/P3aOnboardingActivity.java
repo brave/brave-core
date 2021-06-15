@@ -38,7 +38,9 @@ import org.chromium.chrome.browser.util.PackageUtils;
 
 public class P3aOnboardingActivity extends FirstRunActivityBase {
     private boolean mNativeInitialized;
+    private boolean mIsP3aEnabled;
     private FirstRunFlowSequencer mFirstRunFlowSequencer;
+    private CheckBox mP3aOnboardingCheckbox;
     private Button mBtnContinue;
 
     private void initializeViews() {
@@ -50,26 +52,9 @@ public class P3aOnboardingActivity extends FirstRunActivityBase {
         p3aOnboardingTitle.setText(isFirstInstall
                         ? getResources().getString(R.string.p3a_onboarding_title_text_1)
                         : getResources().getString(R.string.p3a_onboarding_title_text_2));
-        CheckBox p3aOnboardingCheckbox = findViewById(R.id.p3a_onboarding_checkbox);
-        boolean isP3aEnabled = true;
-        try {
-            isP3aEnabled = BravePrefServiceBridge.getInstance().getP3AEnabled();
-        } catch (Exception e) {
-            Log.e("P3aOnboarding", e.getMessage());
-        }
-        p3aOnboardingCheckbox.setChecked(isP3aEnabled);
-        p3aOnboardingCheckbox.setOnCheckedChangeListener(
-                new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        try {
-                            BravePrefServiceBridge.getInstance().setP3AEnabled(isChecked);
-                            BravePrefServiceBridge.getInstance().setP3ANoticeAcknowledged(true);
-                        } catch (Exception e) {
-                            Log.e("P3aOnboarding", e.getMessage());
-                        }
-                    }
-                });
+        mIsP3aEnabled = true;
+        mP3aOnboardingCheckbox = findViewById(R.id.p3a_onboarding_checkbox);
+        mP3aOnboardingCheckbox.setChecked(mIsP3aEnabled);
         ImageView p3aOnboardingImg = findViewById(R.id.p3a_onboarding_img);
         p3aOnboardingImg.setImageResource(isFirstInstall
                         ? R.drawable.ic_brave_logo
@@ -134,6 +119,25 @@ public class P3aOnboardingActivity extends FirstRunActivityBase {
         assert !mNativeInitialized;
 
         mNativeInitialized = true;
+
+        try {
+            mIsP3aEnabled = BravePrefServiceBridge.getInstance().getP3AEnabled();
+        } catch (Exception e) {
+            Log.e("P3aOnboarding", e.getMessage());
+        }
+        mP3aOnboardingCheckbox.setChecked(mIsP3aEnabled);
+        mP3aOnboardingCheckbox.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        try {
+                            BravePrefServiceBridge.getInstance().setP3AEnabled(isChecked);
+                            BravePrefServiceBridge.getInstance().setP3ANoticeAcknowledged(true);
+                        } catch (Exception e) {
+                            Log.e("P3aOnboarding", e.getMessage());
+                        }
+                    }
+                });
     }
 
     @Override
