@@ -60,7 +60,7 @@ void AdTransfer::MaybeTransferAd(const int32_t tab_id, const std::string& url) {
   TransferAd(tab_id, url);
 }
 
-void AdTransfer::SetLastClickedAd(const AdInfo& ad) {
+void AdTransfer::set_last_clicked_ad(const AdInfo& ad) {
   last_clicked_ad_ = ad;
 }
 
@@ -141,13 +141,13 @@ void AdTransfer::OnTransferAd(const int32_t tab_id, const std::string& url) {
   NotifyAdTransfer(ad);
 }
 
-void AdTransfer::NotifyAdTransfer(const AdInfo& ad) const {
+void AdTransfer::NotifyAdTransfer(const AdInfo& ad) {
   for (AdTransferObserver& observer : observers_) {
     observer.OnAdTransfer(ad);
   }
 }
 
-void AdTransfer::NotifyAdTransferFailed(const AdInfo& ad) const {
+void AdTransfer::NotifyAdTransferFailed(const AdInfo& ad) {
   for (AdTransferObserver& observer : observers_) {
     observer.OnAdTransferFailed(ad);
   }

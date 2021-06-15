@@ -168,13 +168,13 @@ void AdServer::FetchAfterDelay() {
   BLOG(1, "Fetch catalog " << FriendlyDateAndTime(time));
 }
 
-void AdServer::NotifyCatalogUpdated(const Catalog& catalog) const {
+void AdServer::NotifyCatalogUpdated(const Catalog& catalog) {
   for (AdServerObserver& observer : observers_) {
     observer.OnCatalogUpdated(catalog);
   }
 }
 
-void AdServer::NotifyCatalogFailed() const {
+void AdServer::NotifyCatalogFailed() {
   for (AdServerObserver& observer : observers_) {
     observer.OnCatalogFailed();
   }

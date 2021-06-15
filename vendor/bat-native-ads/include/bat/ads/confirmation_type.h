@@ -19,7 +19,6 @@ class ConfirmationType {
     kClicked,
     kDismissed,
     kViewed,
-    kServed,
     kTransferred,
     kFlagged,
     kUpvoted,

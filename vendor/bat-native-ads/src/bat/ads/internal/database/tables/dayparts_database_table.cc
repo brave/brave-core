@@ -62,8 +62,8 @@ void Dayparts::Migrate(DBTransaction* transaction, const int to_version) {
   DCHECK(transaction);
 
   switch (to_version) {
-    case 15: {
-      MigrateToV15(transaction);
+    case 14: {
+      MigrateToV14(transaction);
       break;
     }
 
@@ -111,7 +111,7 @@ std::string Dayparts::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(4, count).c_str());
 }
 
-void Dayparts::CreateTableV15(DBTransaction* transaction) {
+void Dayparts::CreateTableV14(DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
@@ -132,12 +132,12 @@ void Dayparts::CreateTableV15(DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
-void Dayparts::MigrateToV15(DBTransaction* transaction) {
+void Dayparts::MigrateToV14(DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV15(transaction);
+  CreateTableV14(transaction);
 }
 
 }  // namespace table

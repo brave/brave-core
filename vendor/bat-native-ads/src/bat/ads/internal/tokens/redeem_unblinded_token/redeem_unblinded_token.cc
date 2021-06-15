@@ -91,14 +91,6 @@ void RedeemUnblindedToken::OnCreateConfirmation(
     BLOG(1, "Duplicate/bad confirmation");
   }
 
-  if (url_response.status_code == 418) {  // I'm a teapot
-    if (delegate_) {
-      delegate_->OnDidSendConfirmation(confirmation);
-    }
-
-    return;
-  }
-
   ConfirmationInfo new_confirmation = confirmation;
   new_confirmation.created = true;
 
@@ -149,12 +141,6 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   if (url_response.status_code == net::HTTP_BAD_REQUEST) {
     BLOG(1, "Credential is invalid");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ false);
-    return;
-  }
-
-  if (url_response.status_code == net::HTTP_ACCEPTED) {
-    BLOG(1, "Payment token is not ready");
-    OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true);
     return;
   }
 

@@ -36,7 +36,7 @@ TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
   AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, 5);
 
-  RecordAdEvent(AdType::kAdNotification, ConfirmationType::kServed);
+  RecordAdEvent(AdType::kAdNotification, ConfirmationType::kViewed);
 
   FastForwardClockBy(base::TimeDelta::FromMinutes(12));
 
@@ -52,7 +52,7 @@ TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest, DoNotAllowAdIfExceedsCap) {
   // Arrange
   AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, 5);
 
-  RecordAdEvent(AdType::kAdNotification, ConfirmationType::kServed);
+  RecordAdEvent(AdType::kAdNotification, ConfirmationType::kViewed);
 
   FastForwardClockBy(base::TimeDelta::FromMinutes(11));
 

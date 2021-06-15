@@ -63,10 +63,9 @@ AdEventList PerDayFrequencyCap::FilterAdEvents(const AdEventList& ad_events,
   const auto iter = std::remove_if(
       filtered_ad_events.begin(), filtered_ad_events.end(),
       [&ad](const AdEventInfo& ad_event) {
-        return (ad_event.type != AdType::kAdNotification &&
-                ad_event.type != AdType::kInlineContentAd) ||
+        return ad_event.type != AdType::kAdNotification ||
                ad_event.creative_set_id != ad.creative_set_id ||
-               ad_event.confirmation_type != ConfirmationType::kServed;
+               ad_event.confirmation_type != ConfirmationType::kViewed;
       });
 
   filtered_ad_events.erase(iter, filtered_ad_events.end());

@@ -5,9 +5,9 @@
 
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
 
-#include <string>
+#include <memory>
 
-#include "bat/ads/internal/catalog/catalog.h"
+#include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 
@@ -16,55 +16,74 @@
 namespace ads {
 namespace resource {
 
-namespace {
-const char kCatalog[] = "catalog.json";
-}  // namespace
-
 class BatAdsEpsilonGreedyBanditResourceTest : public UnitTestBase {
  protected:
-  BatAdsEpsilonGreedyBanditResourceTest() = default;
+  BatAdsEpsilonGreedyBanditResourceTest()
+      : database_table_(
+            std::make_unique<database::table::CreativeAdNotifications>()) {}
 
   ~BatAdsEpsilonGreedyBanditResourceTest() override = default;
+
+  void Save(const CreativeAdNotificationList& creative_ad_notifications) {
+    database_table_->Save(creative_ad_notifications, [](const Result result) {
+      ASSERT_EQ(Result::SUCCESS, result);
+    });
+  }
+
+  std::unique_ptr<database::table::CreativeAdNotifications> database_table_;
 };
 
-TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
-       SuccessfullyInitializeWithValidCatalog) {
+TEST_F(BatAdsEpsilonGreedyBanditResourceTest, LoadFromDatabase) {
   // Arrange
-  const base::Optional<std::string> opt_value =
-      ReadFileFromTestPathToString(kCatalog);
-  ASSERT_TRUE(opt_value.has_value());
+  CreativeAdNotificationList creative_ad_notifications;
 
-  const std::string json = opt_value.value();
+  CreativeDaypartInfo daypart_info;
+  CreativeAdNotificationInfo info;
+  info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+  info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
+  info.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
+  info.start_at_timestamp = DistantPastAsTimestamp();
+  info.end_at_timestamp = DistantFutureAsTimestamp();
+  info.daily_cap = 1;
+  info.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
+  info.priority = 2;
+  info.per_day = 3;
+  info.per_week = 4;
+  info.per_month = 5;
+  info.total_max = 6;
+  info.segment = "Technology & Computing-Software";
+  info.dayparts.push_back(daypart_info);
+  info.geo_targets = {"US"};
+  info.target_url = "https://brave.com";
+  info.title = "Test Ad Title";
+  info.body = "Test Ad Body";
+  info.ptr = 1.0;
+  creative_ad_notifications.push_back(info);
 
-  Catalog catalog;
-  ASSERT_TRUE(catalog.FromJson(json));
+  Save(creative_ad_notifications);
 
   // Act
   resource::EpsilonGreedyBandit resource;
-  resource.LoadFromCatalog(catalog);
+  resource.LoadFromDatabase();
 
   // Assert
   const bool is_initialized = resource.IsInitialized();
   EXPECT_TRUE(is_initialized);
 }
 
-TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
-       SuccessfullyInitializeWithInvalidCatalog) {
+TEST_F(BatAdsEpsilonGreedyBanditResourceTest, LoadFromEmptyDatabase) {
   // Arrange
-  Catalog catalog;
-  ASSERT_FALSE(catalog.FromJson("INVALID_CATALOG"));
 
   // Act
   resource::EpsilonGreedyBandit resource;
-  resource.LoadFromCatalog(catalog);
+  resource.LoadFromDatabase();
 
   // Assert
   const bool is_initialized = resource.IsInitialized();
   EXPECT_TRUE(is_initialized);
 }
 
-TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
-       FailToInitializeIfCatalogIsNotLoaded) {
+TEST_F(BatAdsEpsilonGreedyBanditResourceTest, DoNotLoadFromDatabase) {
   // Arrange
 
   // Act

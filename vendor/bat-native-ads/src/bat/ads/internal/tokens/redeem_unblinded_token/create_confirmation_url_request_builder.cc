@@ -10,7 +10,6 @@
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
-#include "bat/ads/internal/account/ad_rewards/ad_rewards_util.h"
 #include "bat/ads/internal/locale/country_code_util.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/platform/platform_helper.h"
@@ -47,16 +46,9 @@ UrlRequestPtr CreateConfirmationUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 std::string CreateConfirmationUrlRequestBuilder::BuildUrl() const {
-  std::string url = base::StringPrintf("%s/v1/confirmation/%s",
-                                       confirmations::server::GetHost().c_str(),
-                                       confirmation_.id.c_str());
-
-  if (!confirmation_.credential.empty()) {
-    url += "/";
-    url += confirmation_.credential;
-  }
-
-  return url;
+  return base::StringPrintf(
+      "%s/v1/confirmation/%s/%s", confirmations::server::GetHost().c_str(),
+      confirmation_.id.c_str(), confirmation_.credential.c_str());
 }
 
 std::vector<std::string> CreateConfirmationUrlRequestBuilder::BuildHeaders()

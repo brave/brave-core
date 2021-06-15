@@ -66,11 +66,10 @@ class Conversions {
   void ProcessQueue();
 
   void StartTimer(const ConversionQueueItemInfo& queue_item);
+  void NotifyConversion(const ConversionQueueItemInfo& conversion_queue_item);
 
-  void NotifyConversion(
-      const ConversionQueueItemInfo& conversion_queue_item) const;
   void NotifyConversionFailed(
-      const ConversionQueueItemInfo& conversion_queue_item) const;
+      const ConversionQueueItemInfo& conversion_queue_item);
 };
 
 }  // namespace ads

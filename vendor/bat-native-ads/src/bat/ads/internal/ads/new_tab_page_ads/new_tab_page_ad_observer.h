@@ -17,9 +17,6 @@ struct NewTabPageAdInfo;
 
 class NewTabPageAdObserver : public base::CheckedObserver {
  public:
-  // Invoked when a new tab page ad is served
-  virtual void OnNewTabPageAdServed(const NewTabPageAdInfo& ad) {}
-
   // Invoked when a new tab page ad is viewed
   virtual void OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) {}
 

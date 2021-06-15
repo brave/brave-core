@@ -20,7 +20,7 @@ PromotedContentAdsPerHourFrequencyCap::
 
 bool PromotedContentAdsPerHourFrequencyCap::ShouldAllow() {
   const std::deque<uint64_t> history =
-      GetAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed);
+      GetAdEvents(AdType::kPromotedContentAd, ConfirmationType::kViewed);
 
   if (!DoesRespectCap(history)) {
     last_message_ =

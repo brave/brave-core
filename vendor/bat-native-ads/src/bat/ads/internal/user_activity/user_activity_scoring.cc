@@ -6,6 +6,7 @@
 #include "bat/ads/internal/user_activity/user_activity_scoring.h"
 
 #include <algorithm>
+#include <iostream>
 #include <string>
 #include <vector>
 

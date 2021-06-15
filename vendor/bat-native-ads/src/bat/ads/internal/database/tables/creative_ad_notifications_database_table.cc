@@ -12,7 +12,6 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/container_util.h"
 #include "bat/ads/internal/database/database_statement_util.h"
 #include "bat/ads/internal/database/database_table_util.h"
@@ -58,7 +57,7 @@ void CreativeAdNotifications::Save(
   for (const auto& batch : batches) {
     InsertOrUpdate(transaction.get(), batch);
 
-    CreativeAdList creative_ads(batch.begin(), batch.end());
+    std::vector<CreativeAdInfo> creative_ads(batch.begin(), batch.end());
     campaigns_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
     segments_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
     creative_ads_database_table_->InsertOrUpdate(transaction.get(),
@@ -273,8 +272,8 @@ void CreativeAdNotifications::Migrate(DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 15: {
-      MigrateToV15(transaction);
+    case 14: {
+      MigrateToV14(transaction);
       break;
     }
 
@@ -425,7 +424,7 @@ CreativeAdNotificationInfo CreativeAdNotifications::GetFromRecord(
   return creative_ad_notification;
 }
 
-void CreativeAdNotifications::CreateTableV15(DBTransaction* transaction) {
+void CreativeAdNotifications::CreateTableV14(DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
@@ -445,12 +444,12 @@ void CreativeAdNotifications::CreateTableV15(DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
-void CreativeAdNotifications::MigrateToV15(DBTransaction* transaction) {
+void CreativeAdNotifications::MigrateToV14(DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV15(transaction);
+  CreateTableV14(transaction);
 }
 
 }  // namespace table

@@ -327,7 +327,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
 }
 
 TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
-       GetCreativeAdNotificationsForEmptySegments) {
+       GetCreativeAdNotificationsForEmptyCategories) {
   // Arrange
   CreativeAdNotificationList creative_ad_notifications;
 
@@ -423,7 +423,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
 }
 
 TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
-       GetCreativeAdNotificationsFromMultipleSegments) {
+       GetCreativeAdNotificationsFromMultipleCategories) {
   // Arrange
   CreativeAdNotificationList creative_ad_notifications;
 
@@ -590,7 +590,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
 }
 
 TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
-       GetCreativeAdNotificationsMatchingCaseInsensitiveSegments) {
+       GetCreativeAdNotificationsMatchingCaseInsensitiveCategories) {
   // Arrange
   CreativeAdNotificationList creative_ad_notifications;
 

@@ -8,7 +8,6 @@
 #import "BATBraveAds+Private.h"
 #import "BATBraveAds.h"
 #import "BATBraveLedger.h"
-#import "BATInlineContentAd.h"
 
 #import "bat/ads/ad_event_history.h"
 #import "bat/ads/ads.h"
@@ -85,11 +84,6 @@ ads::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
 
 @interface BATAdNotification ()
 - (instancetype)initWithNotificationInfo:(const ads::AdNotificationInfo&)info;
-@end
-
-@interface BATInlineContentAd ()
-- (instancetype)initWithInlineContentAdInfo:
-    (const ads::InlineContentAdInfo&)info;
 @end
 
 @interface BATBraveAds () <NativeAdsClientBridge> {
@@ -589,8 +583,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 }
 
 - (void)reportAdNotificationEvent:(NSString*)uuid
-                        eventType:
-                            (BATBraveAdsAdNotificationEventType)eventType {
+                        eventType:(BATAdNotificationEventType)eventType {
   if (![self isAdsServiceRunning]) {
     return;
   }
@@ -600,7 +593,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 - (void)reportNewTabPageAdEvent:(NSString*)wallpaperId
              creativeInstanceId:(NSString*)creativeInstanceId
-                      eventType:(BATBraveAdsNewTabPageAdEventType)eventType {
+                      eventType:(BATNewTabPageAdEventType)eventType {
   if (![self isAdsServiceRunning]) {
     return;
   }
@@ -609,40 +602,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
                            static_cast<ads::NewTabPageAdEventType>(eventType));
 }
 
-- (void)inlineContentAdsWithDimensions:(NSString*)dimensions
-                            completion:
-                                (void (^)(BOOL success,
-                                          NSString* dimensions,
-                                          BATInlineContentAd* ad))completion {
-  if (![self isAdsServiceRunning]) {
-    return;
-  }
-  ads->GetInlineContentAd(dimensions.UTF8String, ^(
-                              const bool success, const std::string& dimensions,
-                              const ads::InlineContentAdInfo& ad) {
-    const auto inline_content_ad =
-        [[BATInlineContentAd alloc] initWithInlineContentAdInfo:ad];
-    completion(success, [NSString stringWithUTF8String:dimensions.c_str()],
-               inline_content_ad);
-  });
-}
-
-- (void)reportInlineContentAdEvent:(NSString*)uuid
-                creativeInstanceId:(NSString*)creativeInstanceId
-                         eventType:
-                             (BATBraveAdsInlineContentAdEventType)eventType {
-  if (![self isAdsServiceRunning]) {
-    return;
-  }
-  ads->OnInlineContentAdEvent(
-      uuid.UTF8String, creativeInstanceId.UTF8String,
-      static_cast<ads::mojom::BraveAdsInlineContentAdEventType>(eventType));
-}
-
 - (void)reportPromotedContentAdEvent:(NSString*)uuid
                   creativeInstanceId:(NSString*)creativeInstanceId
-                           eventType:(BATBraveAdsPromotedContentAdEventType)
-                                         eventType {
+                           eventType:(BATPromotedContentAdEventType)eventType {
   if (![self isAdsServiceRunning]) {
     return;
   }

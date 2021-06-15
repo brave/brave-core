@@ -12,13 +12,7 @@ namespace ads {
 
 class AdType {
  public:
-  enum Value {
-    kUndefined,
-    kAdNotification,
-    kNewTabPageAd,
-    kPromotedContentAd,
-    kInlineContentAd
-  };
+  enum Value { kUndefined, kAdNotification, kNewTabPageAd, kPromotedContentAd };
 
   AdType() = default;
 

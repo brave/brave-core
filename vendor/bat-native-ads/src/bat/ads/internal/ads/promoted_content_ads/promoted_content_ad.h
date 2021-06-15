@@ -32,6 +32,9 @@ class PromotedContentAd : public PromotedContentAdObserver {
  private:
   base::ObserverList<PromotedContentAdObserver> observers_;
 
+  bool ShouldFireEvent(const PromotedContentAdInfo& ad,
+                       const AdEventList& ad_events);
+
   void FireEvent(const PromotedContentAdInfo& ad,
                  const std::string& uuid,
                  const std::string& creative_instance_id,
@@ -39,16 +42,15 @@ class PromotedContentAd : public PromotedContentAdObserver {
 
   void NotifyPromotedContentAdEvent(
       const PromotedContentAdInfo& ad,
-      const PromotedContentAdEventType event_type) const;
+      const PromotedContentAdEventType event_type);
 
-  void NotifyPromotedContentAdServed(const PromotedContentAdInfo& ad) const;
-  void NotifyPromotedContentAdViewed(const PromotedContentAdInfo& ad) const;
-  void NotifyPromotedContentAdClicked(const PromotedContentAdInfo& ad) const;
+  void NotifyPromotedContentAdViewed(const PromotedContentAdInfo& ad);
+  void NotifyPromotedContentAdClicked(const PromotedContentAdInfo& ad);
 
   void NotifyPromotedContentAdEventFailed(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const PromotedContentAdEventType event_type) const;
+      const PromotedContentAdEventType event_type);
 };
 
 }  // namespace ads

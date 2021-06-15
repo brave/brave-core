@@ -23,33 +23,29 @@ enum BraveAdsAdType {
   kUndefined = 0,
   kAdNotification,
   kNewTabPageAd,
-  kPromotedContentAd,
-  kInlineContentAd
+  kPromotedContentAd
 };
 
+// If ad notification event types are added to the 7-day ads history you should
+// update |kMaximumEntries| in |ads_history.h|
 enum BraveAdsAdNotificationEventType {
-  kServed = 0,
-  kViewed,
+  kViewed = 0,
   kClicked,
   kDismissed,
   kTimedOut
 };
 
+// If new tab page ad event types are added to the 7-day ads history you should
+// update |kMaximumEntries| in |ads_history.h|
 enum BraveAdsNewTabPageAdEventType {
-  kServed = 0,
-  kViewed,
+  kViewed = 0,
   kClicked
 };
 
+// If promoted content ad event types are added to the 7-day ads history you
+// should update |kMaximumEntries| in |ads_history.h|
 enum BraveAdsPromotedContentAdEventType {
-  kServed = 0,
-  kViewed,
-  kClicked
-};
-
-enum BraveAdsInlineContentAdEventType {
-  kServed = 0,
-  kViewed,
+  kViewed = 0,
   kClicked
 };
 

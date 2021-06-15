@@ -97,7 +97,6 @@ void EpsilonGreedyBandit::Process(const BanditFeedbackInfo& feedback) {
       break;
     }
 
-    case AdNotificationEventType::kServed:
     case AdNotificationEventType::kViewed: {
       NOTREACHED();
       break;

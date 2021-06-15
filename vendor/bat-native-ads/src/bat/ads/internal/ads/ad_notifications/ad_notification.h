@@ -30,19 +30,17 @@ class AdNotification : public AdNotificationObserver {
  private:
   base::ObserverList<AdNotificationObserver> observers_;
 
-  void NotifyAdNotificationEvent(
-      const AdNotificationInfo& ad,
-      const AdNotificationEventType event_type) const;
+  void NotifyAdNotificationEvent(const AdNotificationInfo& ad,
+                                 const AdNotificationEventType event_type);
 
-  void NotifyAdNotificationServed(const AdNotificationInfo& ad) const;
-  void NotifyAdNotificationViewed(const AdNotificationInfo& ad) const;
-  void NotifyAdNotificationClicked(const AdNotificationInfo& ad) const;
-  void NotifyAdNotificationDismissed(const AdNotificationInfo& ad) const;
-  void NotifyAdNotificationTimedOut(const AdNotificationInfo& ad) const;
+  void NotifyAdNotificationViewed(const AdNotificationInfo& ad);
+  void NotifyAdNotificationClicked(const AdNotificationInfo& ad);
+  void NotifyAdNotificationDismissed(const AdNotificationInfo& ad);
+  void NotifyAdNotificationTimedOut(const AdNotificationInfo& ad);
 
   void NotifyAdNotificationEventFailed(
       const std::string& uuid,
-      const AdNotificationEventType event_type) const;
+      const AdNotificationEventType event_type);
 };
 
 }  // namespace ads

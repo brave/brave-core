@@ -24,10 +24,6 @@ class RedeemUnblindedTokenDelegateMock : public RedeemUnblindedTokenDelegate {
       const RedeemUnblindedTokenDelegateMock&) = delete;
 
   MOCK_METHOD(void,
-              OnDidSendConfirmation,
-              (const ConfirmationInfo& confirmation));
-
-  MOCK_METHOD(void,
               OnDidRedeemUnblindedToken,
               (const ConfirmationInfo& confirmation,
                const privacy::UnblindedTokenInfo& unblinded_payment_token));

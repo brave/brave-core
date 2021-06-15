@@ -22,7 +22,6 @@ source_set("browser") {
     "//brave/components/brave_ads/common",
     "//brave/components/brave_rewards/common",
     "//brave/components/l10n/browser",
-    "//brave/components/ntp_background_images/common",
     "//brave/components/rpill/common",
     "//chrome/common:buildflags",
 
