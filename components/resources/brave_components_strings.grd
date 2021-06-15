@@ -301,7 +301,7 @@
 
       <if expr="enable_sidebar">
         <message name="IDS_SIDEBAR_BRAVE_TOGETHER_ITEM_TITLE" desc="Title for brave together item in sidebar">
-          Brave Together
+          Brave Talk
         </message>
         <message name="IDS_SIDEBAR_WALLET_ITEM_TITLE" desc="Title for crypto wallet item in sidebar">
           Crypto Wallets
