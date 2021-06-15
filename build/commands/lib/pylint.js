@@ -20,10 +20,18 @@ const deleteFile = (path) => {
   }
 }
 
-const ensureDepotToolsInPath = (options) => {
+const getDepotToolsPath = () => {
   const depotToolsPath = path.resolve(__dirname, '../../../vendor/depot_tools')
   if (!fs.existsSync(depotToolsPath)) {
     console.warn('Depot Tools path [' + depotToolsPath + '] doesn\'t exist')
+    return ''
+  }
+  return depotToolsPath
+}
+
+const ensureDepotToolsInPath = (options) => {
+  const depotToolsPath = getDepotToolsPath()
+  if (!depotToolsPath) {
     return
   }
   let newPath = options.env.path
@@ -33,7 +41,6 @@ const ensureDepotToolsInPath = (options) => {
   }
   newPath = newPath.split(path.delimiter)
   if (!newPath.includes(depotToolsPath)) {
-    console.info('Prepending [' + depotToolsPath + '] to the path')
     newPath.unshift(depotToolsPath)
   }
   options.env.path = newPath.join(path.delimiter)
@@ -44,6 +51,22 @@ const getDefaultOptions = () => {
   options.cwd = path.resolve(__dirname, '../../..')
   ensureDepotToolsInPath(options)
   return options
+}
+
+const parsePylintVersion = (file, deleteAfter = true) => {
+  let data
+  try {
+    data = fs.readFileSync(file, 'utf8');
+  } catch(err) {
+    console.error('Unable to read file: ' + file + 'error: ', err);
+    process.exit(1)
+  }
+  if (deleteAfter) {
+    deleteFile(file)
+  }
+  console.log(data)
+  const python = 'Python '
+  return data.substr(data.indexOf(python) + python.length, 1)
 }
 
 const getPylintInfo = () => {
@@ -63,23 +86,33 @@ const getPylintInfo = () => {
   const pylintVersionFile = 'pylint-version.txt'
   deleteFile(pylintVersionFile)
   util.run('pylint', ['--version', '>' + pylintVersionFile], cmd_options)
-  let data
-  try {
-    data = fs.readFileSync(pylintVersionFile, 'utf8');
-  } catch(err) {
-    console.error('Unable to read file: ' + pylintVersionFile + 'error: ', err);
-    process.exit(1)
-  }
-  deleteFile(pylintVersionFile)
-  console.log(data)
-  const python = 'Python '
-  return data.substr(data.indexOf(python) + python.length, 1)
+  return parsePylintVersion(pylintVersionFile)
 }
 
 const runPylint = (args, continueOnFail = true) => {
   let cmd_options = getDefaultOptions()
   cmd_options.continueOnFail = continueOnFail
   const prog = util.run('pylint', args, cmd_options)
+  return (prog.status === 0)
+}
+
+const installPylint3 = () => {
+  let cmd_options = getDefaultOptions()
+  cmd_options.continueOnFail = false
+  const prog = util.runProcess(process.platform !== 'win32' ? 'which' : 'where',
+    ['python3'], cmd_options)
+  if (prog.status !== 0) {
+    console.error('python3 could not be found in path')
+    process.exit(1)
+  }
+  util.run('python3', ['-m', 'pip', 'install', 'pylint'], cmd_options)
+  util.run('python3', ['-m', 'pylint', '--version'], cmd_options)
+}
+
+const runPylint3 = (args, continueOnFail = true) => {
+  let cmd_options = getDefaultOptions()
+  cmd_options.continueOnFail = continueOnFail
+  const prog = util.run('python3', ['-m', 'pylint'].concat(args), cmd_options)
   return (prog.status === 0)
 }
 
@@ -103,6 +136,18 @@ const createEmptyReportFile = (path) => {
     console.error('Unable to write to file: ' + path + ' error: ', err)
     process.exit(1)
   }
+}
+
+const isPython3Script = (path) => {
+  // Expecting python3 scripts to have #!/usr/bin/env python3 header
+  let data
+  try {
+    data = fs.readFileSync(path, 'utf8');
+  } catch(err) {
+    console.error('Unable to read file: ' + path + 'error: ', err);
+    process.exit(1)
+  }
+  return (data.split('\n', 2)[0].indexOf('python3') !== -1)
 }
 
 const getAllFiles = (check_folders) => {
@@ -140,49 +185,30 @@ const getDescription = (base, check_folders) => {
   return description
 }
 
-const pylint = (options = {}) => {
-  const check_folders = ['build', 'components', 'installer', 'script', 'tools']
-  const report_file = 'pylint-report.txt'
-
-  const description = getDescription(options.base, check_folders)
-
-  // Print out which pylint is going to be used and its version
-  const python_version = getPylintInfo()
-
-  // Get changed or all python files
-  const paths = getChangedFiles(options.base, check_folders)
-  if (!paths.length) {
-    console.log('No ' + description)
-    if (options.report) {
-      createEmptyReportFile(report_file)
+const filterScriptsByVersion = (paths) => {
+  let py2_scripts = []
+  let py3_scripts = []
+  for (const path of paths) {
+    if (isPython3Script(path)) {
+      py3_scripts.push(path)
+    } else {
+      py2_scripts.push(path)
     }
-    return
   }
+  return { py2_scripts, py3_scripts }
+}
 
-  // Prepare pylint args
-  const rcfile = python_version === '2' ? '.pylint2rc' : '.pylintrc' 
-  let args = ['-j0', '-rn', '--rcfile=' + rcfile]
-  if (options.report) {
-    args.push('-fparseable')
-  }
-
+const runPylintLoop = (options, args, paths, report_file, func = runPylint) => {
   // On Windows, command line limit is 8192 chars, so may have to make multiple
-  // calls to pylint. If that happens we will be adding to the same report file,
-  // so make sure the file is clean. Leave some slack for initial args and
-  // report file redirect
+  // calls to pylint. Leave some slack for initial args and redirect to report
   const maxCmdLineLength = 8000
-  if (options.report) {
-    deleteFile(report_file)
-  } 
-
-  console.log('Checking for ' + description)
 
   // Convenience funcion
   const doPylint = (loop_args) => {
     if (options.report) {
       loop_args.push('>>' + report_file)
     }
-    return runPylint(loop_args)
+    return func(loop_args)
   }
 
   let result = true
@@ -201,6 +227,66 @@ const pylint = (options = {}) => {
 
   if (currentLen > 0) {
     result &= doPylint(loop_args) 
+  }
+
+  return result
+}
+
+const pylint = (options = {}) => {
+  const check_folders = ['build', 'components', 'installer', 'script', 'tools']
+  const report_file = 'pylint-report.txt'
+
+  const description = getDescription(options.base, check_folders)
+
+  // Get changed or all python files
+  const paths = getChangedFiles(options.base, check_folders)
+  if (!paths.length) {
+    console.log('No ' + description)
+    if (options.report) {
+      createEmptyReportFile(report_file)
+    }
+    return
+  }
+
+  // Print out which pylint is going to be used and its version
+  const version_info = getPylintInfo()
+  // If the above determined that python on the system is python3 then we can
+  // run the same pylint on all changed files together. If, however, the system
+  // defaults to python2, then we need to split out python3 scripts and use
+  // python3 with its own pylint to check them.
+  const is_python2_system = (version_info === '2')
+  let filtered_paths = {}
+  if (is_python2_system) {
+    filtered_paths = filterScriptsByVersion(paths)
+    if (filtered_paths.py3_scripts.length) {
+      installPylint3()
+    }
+  } else {
+    filtered_paths.py3_scripts = paths
+  }
+
+  // Prepare pylint args
+  let args = ['-j0', '-rn']
+  if (options.report) {
+    args.push('-fparseable')
+    // Clean previous report as we will be appending to it
+    deleteFile(report_file)
+  }
+
+  console.log('Checking for ' + description)
+
+  let result = true
+  if (filtered_paths.py2_scripts.length) {
+    let py2_args = [...args]
+    py2_args.push('--rcfile=.pylint2rc')
+    result &= runPylintLoop(options, py2_args, filtered_paths.py2_scripts, report_file)
+  }
+
+  if (filtered_paths.py3_scripts.length) {
+    let py3_args = [...args]
+    py3_args.push('--rcfile=.pylintrc')
+    result &= runPylintLoop(options, py3_args, filtered_paths.py3_scripts,
+      report_file, is_python2_system ? runPylint3 : runPylint)
   }
 
   // When the report option is present we don't want to exit with an error so

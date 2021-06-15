@@ -75,6 +75,8 @@ const Portfolio = (props: Props) => {
   const [selectedTimeline, setSelectedTimeline] = React.useState<ChartTimelineType>('24HRS')
   const [priceData, setPriceData] = React.useState<PriceDataObjectType[]>(PriceHistoryMockData.slice(15, 20))
   const [selectedAsset, setSelectedAsset] = React.useState<AssetOptionType>()
+  const [hoverBalance, setHoverBalance] = React.useState<string>()
+  const [hoverPrice, setHoverPrice] = React.useState<string>()
 
   // This will change once we hit a real api for pricing
   const timeline = (path: ChartTimelineType) => {
@@ -233,6 +235,22 @@ const Portfolio = (props: Props) => {
     toggleNav()
   }
 
+  const onUpdateBalance = (value: number | undefined) => {
+    if (!selectedAsset) {
+      if (value) {
+        setHoverBalance(formatePrices(value))
+      } else {
+        setHoverBalance(undefined)
+      }
+    } else {
+      if (value) {
+        setHoverPrice(formatePrices(value))
+      } else {
+        setHoverPrice(undefined)
+      }
+    }
+  }
+
   return (
     <StyledWrapper>
       <TopRow>
@@ -248,7 +266,9 @@ const Portfolio = (props: Props) => {
         />
       </TopRow>
       {!selectedAsset ? (
-        <BalanceText>${scrapedFullPortfolioBalance()}</BalanceText>
+        <>
+          <BalanceText>${hoverBalance ? hoverBalance : scrapedFullPortfolioBalance()}</BalanceText>
+        </>
       ) : (
         <InfoColumn>
           <AssetRow>
@@ -257,7 +277,7 @@ const Portfolio = (props: Props) => {
           </AssetRow>
           <DetailText>{selectedAsset.name} {locale.price} ({selectedAsset.symbol})</DetailText>
           <PriceRow>
-            <PriceText>${priceApi(selectedAsset).usd}</PriceText>
+            <PriceText>${hoverPrice ? hoverPrice : priceApi(selectedAsset).usd}</PriceText>
             <PercentBubble isDown={priceApi(selectedAsset).change24Hour < 0}>
               <ArrowIcon isDown={priceApi(selectedAsset).change24Hour < 0} />
               <PercentText>{priceApi(selectedAsset).change24Hour}%</PercentText>
@@ -266,7 +286,12 @@ const Portfolio = (props: Props) => {
           <DetailText>{priceApi(selectedAsset).btc} BTC</DetailText>
         </InfoColumn>
       )}
-      <LineChart priceData={priceData} />
+      <LineChart
+        isDown={selectedAsset ? priceApi(selectedAsset).change24Hour < 0 : false}
+        isAsset={!!selectedAsset}
+        priceData={priceData}
+        onUpdateBalance={onUpdateBalance}
+      />
       {selectedAsset &&
         <>
           <DividerText>{locale.accounts}</DividerText>

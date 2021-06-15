@@ -4,8 +4,13 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { createAction } from 'redux-act'
-import { CreateWalletPayloadType, WalletCreatedPayloadType } from '../constants/action_types'
+import { CreateWalletPayloadType, WalletCreatedPayloadType, RecoveryWordsAvailablePayloadType, RestoreWalletPayloadType } from '../constants/action_types'
 
 export const createWallet = createAction<CreateWalletPayloadType>('createWallet')
+export const restoreWallet = createAction<RestoreWalletPayloadType>('restoreWallet')
 export const walletCreated = createAction<WalletCreatedPayloadType>('walletCreated')
-export const walletSetupComplete = createAction('waletSetupComplete')
+export const walletSetupComplete = createAction('walletSetupComplete')
+export const showRecoveryPhrase = createAction<boolean>('showRecoveryPhrase')
+export const recoveryWordsAvailable = createAction<RecoveryWordsAvailablePayloadType>('recoveryWordsAvailable')
+export const walletBackupComplete = createAction('walletBackupComplete')
+export const hasMnemonicError = createAction<boolean>('hasMnemonicError')

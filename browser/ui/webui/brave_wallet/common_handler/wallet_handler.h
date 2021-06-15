@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_COMMON_HANDLER_WALLET_HANDLER_H_
 
 #include <string>
+#include <vector>
 
 #include "brave/components/brave_wallet_ui/wallet_ui.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -35,8 +36,13 @@ class WalletHandler : public wallet_ui::mojom::WalletHandler {
   void GetWalletInfo(GetWalletInfoCallback) override;
   void LockWallet() override;
   void UnlockWallet(const std::string& password, UnlockWalletCallback) override;
+  void AddFavoriteApp(wallet_ui::mojom::AppItemPtr app_item) override;
+  void RemoveFavoriteApp(wallet_ui::mojom::AppItemPtr app_item) override;
+  void NotifyWalletBackupComplete() override;
 
  private:
+  // TODO(bbondy): This needs to be persisted in prefs
+  std::vector<wallet_ui::mojom::AppItemPtr> favorite_apps;
   mojo::Receiver<wallet_ui::mojom::WalletHandler> receiver_;
   mojo::Remote<wallet_ui::mojom::Page> page_;
   content::WebUI* const web_ui_;

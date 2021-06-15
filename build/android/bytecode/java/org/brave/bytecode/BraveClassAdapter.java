@@ -18,9 +18,11 @@ public class BraveClassAdapter {
         chain = new BraveCommandLineInitUtilClassAdapter(chain);
         chain = new BraveEditUrlSuggestionProcessorClassAdapter(chain);
         chain = new BraveFeedSurfaceCoordinatorClassAdapter(chain);
+        chain = new BraveFreIntentCreatorClassAdapter(chain);
         chain = new BraveHomepageManagerClassAdapter(chain);
         chain = new BraveIncognitoToggleTabLayoutClassAdapter(chain);
         chain = new BraveLaunchIntentDispatcherClassAdapter(chain);
+        chain = new BraveLayoutManagerChromeClassAdapter(chain);
         chain = new BraveMainPreferenceBaseClassAdapter(chain);
         chain = new BraveManageSyncSettingsClassAdapter(chain);
         chain = new BraveMimeUtilsClassAdapter(chain);
@@ -38,6 +40,7 @@ public class BraveClassAdapter {
         chain = new BraveTabGroupUiCoordinatorClassAdapter(chain);
         chain = new BraveTabSwitcherModeTTCoordinatorPhoneClassAdapter(chain);
         chain = new BraveTabSwitcherModeTTPhoneClassAdapter(chain);
+        chain = new BraveTabUiFeatureUtilitiesClassAdapter(chain);
         chain = new BraveTileViewClassAdapter(chain);
         chain = new BraveToolbarLayoutClassAdapter(chain);
         chain = new BraveToolbarManagerClassAdapter(chain);

@@ -187,8 +187,12 @@ class Generator(generator.Generator):
     return name
 
   def _ObjCEnumFormatter(self, str):
-    """ uppercased & snake case to upper camel case """
-    return ''.join(map(lambda p: p.capitalize(), str.split('_')))
+    """ Formats uppercased, k-prefixed & snake case to upper camel case """
+    name = str
+    if len(str) >= 2 and str[0] == "k" and str[1].isupper():
+      # k-prefixed is already cased correctly
+      return str[1:]
+    return ''.join(map(lambda p: p.capitalize(), name.split('_')))
 
   def _IsObjCNumberKind(self, kind):
     return kind in _kind_to_nsnumber_getter

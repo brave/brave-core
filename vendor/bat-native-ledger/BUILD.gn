@@ -311,6 +311,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/endpoint/private_cdn/private_cdn_server.h",
     "src/bat/ledger/internal/endpoint/private_cdn/private_cdn_util.cc",
     "src/bat/ledger/internal/endpoint/private_cdn/private_cdn_util.h",
+    "src/bat/ledger/internal/endpoint/promotion/delete_claim/delete_claim.cc",
+    "src/bat/ledger/internal/endpoint/promotion/delete_claim/delete_claim.h",
     "src/bat/ledger/internal/endpoint/promotion/get_available/get_available.cc",
     "src/bat/ledger/internal/endpoint/promotion/get_available/get_available.h",
     "src/bat/ledger/internal/endpoint/promotion/get_captcha/get_captcha.cc",

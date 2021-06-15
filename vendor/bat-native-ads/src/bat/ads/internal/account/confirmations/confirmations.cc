@@ -14,6 +14,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/internal/account/ad_rewards/ad_rewards_util.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
 #include "bat/ads/internal/logging.h"
@@ -88,16 +89,6 @@ void Confirmations::ConfirmAd(const std::string& creative_instance_id,
                         << " ad for creative instance id "
                         << creative_instance_id);
 
-  if (ConfirmationsState::Get()->get_unblinded_tokens()->IsEmpty()) {
-    BLOG(1, "There are no unblinded tokens");
-
-    BLOG(3, "Failed to confirm " << std::string(confirmation_type)
-                                 << " ad with creative instance id "
-                                 << creative_instance_id);
-
-    return;
-  }
-
   dto::user_data::Build(
       creative_instance_id, confirmation_type,
       [=](const base::Value& user_data) {
@@ -135,29 +126,34 @@ ConfirmationInfo Confirmations::CreateConfirmation(
   confirmation.creative_instance_id = creative_instance_id;
   confirmation.type = confirmation_type;
 
-  const privacy::UnblindedTokenInfo unblinded_token =
-      ConfirmationsState::Get()->get_unblinded_tokens()->GetToken();
-  confirmation.unblinded_token = unblinded_token;
+  if (ShouldRewardUser() &&
+      !ConfirmationsState::Get()->get_unblinded_tokens()->IsEmpty()) {
+    const privacy::UnblindedTokenInfo unblinded_token =
+        ConfirmationsState::Get()->get_unblinded_tokens()->GetToken();
+    confirmation.unblinded_token = unblinded_token;
 
-  const std::vector<Token> tokens = token_generator_->Generate(1);
-  confirmation.payment_token = tokens.front();
+    const std::vector<Token> tokens = token_generator_->Generate(1);
+    confirmation.payment_token = tokens.front();
 
-  const std::vector<BlindedToken> blinded_tokens = privacy::BlindTokens(tokens);
-  const BlindedToken blinded_token = blinded_tokens.front();
-  confirmation.blinded_payment_token = blinded_token;
+    const std::vector<BlindedToken> blinded_tokens =
+        privacy::BlindTokens(tokens);
+    const BlindedToken blinded_token = blinded_tokens.front();
+    confirmation.blinded_payment_token = blinded_token;
 
-  std::string json;
-  base::JSONWriter::Write(user_data, &json);
-  confirmation.user_data = json;
+    std::string json;
+    base::JSONWriter::Write(user_data, &json);
+    confirmation.user_data = json;
 
-  confirmation.timestamp = static_cast<int64_t>(base::Time::Now().ToDoubleT());
+    confirmation.timestamp =
+        static_cast<int64_t>(base::Time::Now().ToDoubleT());
 
-  const std::string payload = CreateConfirmationRequestDTO(confirmation);
-  confirmation.credential = CreateCredential(unblinded_token, payload);
+    const std::string payload = CreateConfirmationRequestDTO(confirmation);
+    confirmation.credential = CreateCredential(unblinded_token, payload);
 
-  ConfirmationsState::Get()->get_unblinded_tokens()->RemoveToken(
-      unblinded_token);
-  ConfirmationsState::Get()->Save();
+    ConfirmationsState::Get()->get_unblinded_tokens()->RemoveToken(
+        unblinded_token);
+    ConfirmationsState::Get()->Save();
+  }
 
   return confirmation;
 }
@@ -232,6 +228,14 @@ void Confirmations::Retry() {
   RetryAfterDelay();
 }
 
+void Confirmations::OnDidSendConfirmation(
+    const ConfirmationInfo& confirmation) {
+  BLOG(1, "Successfully sent confirmation with id "
+              << confirmation.id << ", creative instance id "
+              << confirmation.creative_instance_id << " and "
+              << std::string(confirmation.type));
+}
+
 void Confirmations::OnDidRedeemUnblindedToken(
     const ConfirmationInfo& confirmation,
     const privacy::UnblindedTokenInfo& unblinded_payment_token) {
@@ -292,15 +296,16 @@ void Confirmations::OnFailedToRedeemUnblindedToken(
   NotifyConfirmAdFailed(confirmation);
 }
 
-void Confirmations::NotifyConfirmAd(const double estimated_redemption_value,
-                                    const ConfirmationInfo& confirmation) {
+void Confirmations::NotifyConfirmAd(
+    const double estimated_redemption_value,
+    const ConfirmationInfo& confirmation) const {
   for (ConfirmationsObserver& observer : observers_) {
     observer.OnConfirmAd(estimated_redemption_value, confirmation);
   }
 }
 
 void Confirmations::NotifyConfirmAdFailed(
-    const ConfirmationInfo& confirmation) {
+    const ConfirmationInfo& confirmation) const {
   for (ConfirmationsObserver& observer : observers_) {
     observer.OnConfirmAdFailed(confirmation);
   }

@@ -101,6 +101,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
                            : brave_wallet::Web3ProviderTypes::ASK));
   EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(kShowWalletIconOnToolbar));
+  EXPECT_FALSE(
+      browser()->profile()->GetPrefs()->GetBoolean(kBraveWalletBackupComplete));
 #endif
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kMRUCyclingEnabled));

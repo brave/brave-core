@@ -18,17 +18,19 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
-class BraveWalletService;
-
 namespace brave_wallet {
+
+class BraveWalletService;
+class BraveWalletProviderDelegate;
 
 class BraveWalletProviderImpl final : public mojom::BraveWalletProvider,
                                       public BraveWalletProviderEventsObserver {
  public:
   BraveWalletProviderImpl(const BraveWalletProviderImpl&) = delete;
   BraveWalletProviderImpl& operator=(const BraveWalletProviderImpl&) = delete;
-  explicit BraveWalletProviderImpl(
-      base::WeakPtr<BraveWalletService> wallet_service);
+  BraveWalletProviderImpl(
+      base::WeakPtr<BraveWalletService> wallet_service,
+      std::unique_ptr<BraveWalletProviderDelegate> delegate);
   ~BraveWalletProviderImpl() override;
 
   void Request(const std::string& json_payload,
@@ -37,6 +39,7 @@ class BraveWalletProviderImpl final : public mojom::BraveWalletProvider,
                   const int http_code,
                   const std::string& response,
                   const std::map<std::string, std::string>& headers);
+  void Enable() override;
   void GetChainId(GetChainIdCallback callback) override;
   void Init(
       mojo::PendingRemote<mojom::EventsListener> events_listener) override;
@@ -44,6 +47,7 @@ class BraveWalletProviderImpl final : public mojom::BraveWalletProvider,
   void ChainChangedEvent(const std::string& chain_id) override;
 
  private:
+  std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   mojo::Remote<mojom::EventsListener> events_listener_;
   base::WeakPtr<BraveWalletService> wallet_service_;
 

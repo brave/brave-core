@@ -17,7 +17,9 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/observer_list.h"
 #include "brave/components/ipfs/addresses_config.h"
+#include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/brave_ipfs_client_updater.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ipfs/import/imported_data.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_p3a.h"
@@ -33,10 +35,6 @@ namespace base {
 class SequencedTaskRunner;
 }  // namespace base
 
-namespace content {
-class BrowserContext;
-}  // namespace content
-
 namespace network {
 class SharedURLLoaderFactory;
 class SimpleURLLoader;
@@ -49,13 +47,16 @@ namespace ipfs {
 class BraveIpfsClientUpdater;
 class IpfsServiceDelegate;
 class IpfsServiceObserver;
+#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
 class IpfsImportWorkerBase;
 class IpnsKeysManager;
-
+#endif
 class IpfsService : public KeyedService,
                     public BraveIpfsClientUpdater::Observer {
  public:
-  IpfsService(content::BrowserContext* context,
+  IpfsService(PrefService* prefs,
+              scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+              BlobContextGetterFactoryPtr blob_context_getter_factory,
               ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
               const base::FilePath& user_data_dir,
               version_info::Channel channel);
@@ -85,7 +86,7 @@ class IpfsService : public KeyedService,
   void RemoveObserver(IpfsServiceObserver* observer);
 
   bool IsDaemonLaunched() const;
-  static void RegisterPrefs(PrefRegistrySimple* registry);
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
   bool IsIPFSExecutableAvailable() const;
   void RegisterIpfsClientUpdater();
   IPFSResolveMethodTypes GetIPFSResolveMethodType() const;
@@ -97,6 +98,10 @@ class IpfsService : public KeyedService,
   void Shutdown() override;
 
   void RestartDaemon();
+
+  virtual void PreWarmShareableLink(const GURL& url);
+
+#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
   virtual void ImportFileToIpfs(const base::FilePath& path,
                                 const std::string& key,
                                 ipfs::ImportCompletedCallback callback);
@@ -109,11 +114,10 @@ class IpfsService : public KeyedService,
   virtual void ImportTextToIpfs(const std::string& text,
                                 const std::string& host,
                                 ImportCompletedCallback callback);
-  virtual void PreWarmShareableLink(const GURL& url);
-
   void OnImportFinished(ipfs::ImportCompletedCallback callback,
                         size_t key,
                         const ipfs::ImportedData& data);
+#endif
   void GetConnectedPeers(GetConnectedPeersCallback callback,
                          int retries = kPeersDefaultRetries);
   void GetAddressesConfig(GetAddressesConfigCallback callback);
@@ -137,9 +141,9 @@ class IpfsService : public KeyedService,
   void SetPreWarmCalbackForTesting(base::OnceClosure callback) {
     prewarm_callback_for_testing_ = std::move(callback);
   }
-
+#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
   IpnsKeysManager* GetIpnsKeysManager() { return ipns_keys_manager_.get(); }
-
+#endif
  protected:
   void OnConfigLoaded(GetConfigCallback, const std::pair<bool, std::string>&);
 
@@ -187,11 +191,12 @@ class IpfsService : public KeyedService,
   mojo::Remote<ipfs::mojom::IpfsService> ipfs_service_;
 
   int64_t ipfs_pid_ = -1;
-  content::BrowserContext* context_;
   base::ObserverList<IpfsServiceObserver> observers_;
 
+  PrefService* prefs_ = nullptr;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   SimpleURLLoaderList url_loaders_;
+  BlobContextGetterFactoryPtr blob_context_getter_factory_;
 
   base::queue<LaunchDaemonCallback> pending_launch_callbacks_;
 
@@ -209,10 +214,12 @@ class IpfsService : public KeyedService,
   base::FilePath user_data_dir_;
   BraveIpfsClientUpdater* ipfs_client_updater_;
   version_info::Channel channel_;
+#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
   std::unordered_map<size_t, std::unique_ptr<IpfsImportWorkerBase>> importers_;
-  scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   std::unique_ptr<IpnsKeysManager> ipns_keys_manager_;
-  IpfsP3A ipfs_p3a;
+#endif
+  scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
+  IpfsP3A ipfs_p3a_;
   base::WeakPtrFactory<IpfsService> weak_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(IpfsService);

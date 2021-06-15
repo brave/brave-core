@@ -11,6 +11,7 @@ import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
+import("//brave/components/speedreader/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//components/gcm_driver/config.gni")
@@ -55,6 +56,7 @@ source_set("extensions") {
     ":resources",
     "//base",
     "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/component_updater",
     "//brave/browser/profiles",
     "//brave/browser/webcompat_reporter",
     "//brave/common",
@@ -69,6 +71,7 @@ source_set("extensions") {
     "//brave/components/decentralized_dns/buildflags",
     "//brave/components/ipfs/buildflags",
     "//brave/components/sidebar/buildflags",
+    "//brave/components/speedreader",
     "//brave/components/tor/buildflags",
     "//chrome/browser/extensions",
     "//chrome/common",

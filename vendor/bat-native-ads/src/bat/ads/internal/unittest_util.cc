@@ -383,7 +383,7 @@ void MockClearPref(const std::unique_ptr<AdsClientMock>& mock) {
 void MockDefaultPrefs(const std::unique_ptr<AdsClientMock>& mock) {
   mock->SetBooleanPref(prefs::kEnabled, true);
 
-  mock->SetUint64Pref(prefs::kAdsPerHour, 0);
+  mock->SetInt64Pref(prefs::kAdsPerHour, -1);
 
   mock->SetIntegerPref(prefs::kIdleTimeThreshold, 15);
 
@@ -591,6 +591,21 @@ void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock) {
 
             return iter->second;
           }));
+}
+
+void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, GetBrowsingHistory(_, _, _))
+      .WillByDefault(Invoke([](const int max_count, const int days_ago,
+                               GetBrowsingHistoryCallback callback) {
+        std::vector<std::string> history;
+        for (int i = 0; i < max_count; i++) {
+          const std::string entry =
+              base::StringPrintf("https://www.brave.com/%d", i);
+          history.push_back(entry);
+        }
+
+        callback(history);
+      }));
 }
 
 void MockSave(const std::unique_ptr<AdsClientMock>& mock) {

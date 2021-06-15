@@ -91,7 +91,7 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSScheme) {
   brave_request_info->browser_context = profile();
   brave_request_info->ipfs_gateway_url = GetPublicGateway();
   brave_request_info->initiator_url = ipfs::GetIPFSGatewayURL(
-      initiator_cid, "", ipfs::GetDefaultIPFSGateway(profile()));
+      initiator_cid, "", ipfs::GetDefaultIPFSGateway(profile()->GetPrefs()));
   int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(brave::ResponseCallback(),
                                                      brave_request_info);
   EXPECT_EQ(rc, net::OK);
@@ -122,7 +122,7 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSScheme) {
   brave_request_info->browser_context = profile();
   brave_request_info->ipfs_gateway_url = GetPublicGateway();
   brave_request_info->initiator_url = ipfs::GetIPFSGatewayURL(
-      initiator_cid, "", ipfs::GetDefaultIPFSGateway(profile()));
+      initiator_cid, "", ipfs::GetDefaultIPFSGateway(profile()->GetPrefs()));
   int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(brave::ResponseCallback(),
                                                      brave_request_info);
   EXPECT_EQ(rc, net::OK);
@@ -139,7 +139,7 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, HeadersIPFSWorkWithRedirect) {
   request_info->browser_context = profile();
   request_info->ipfs_gateway_url = GetPublicGateway();
   request_info->initiator_url = ipfs::GetIPFSGatewayURL(
-      initiator_cid, "", ipfs::GetDefaultIPFSGateway(profile()));
+      initiator_cid, "", ipfs::GetDefaultIPFSGateway(profile()->GetPrefs()));
   request_info->resource_type = blink::mojom::ResourceType::kImage;
   request_info->ipfs_auto_fallback = true;
 
@@ -172,7 +172,7 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, HeadersIPFSWorkNoRedirect) {
   request_info->browser_context = profile();
   request_info->ipfs_gateway_url = GetPublicGateway();
   request_info->initiator_url = ipfs::GetIPFSGatewayURL(
-      initiator_cid, "", ipfs::GetDefaultIPFSGateway(profile()));
+      initiator_cid, "", ipfs::GetDefaultIPFSGateway(profile()->GetPrefs()));
   request_info->resource_type = blink::mojom::ResourceType::kImage;
   request_info->ipfs_auto_fallback = false;
 
@@ -192,6 +192,15 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, HeadersIPFSWorkNoRedirect) {
   std::string location;
   EXPECT_FALSE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
                                                            &location));
+  EXPECT_TRUE(allowed_unsafe_redirect_url.is_empty());
+
+  request_info->request_url = GetAPIServer(chrome::GetChannel());
+  request_info->ipfs_auto_fallback = true;
+
+  rc = ipfs::OnHeadersReceived_IPFSRedirectWork(
+      orig_response_headers.get(), &overwrite_response_headers,
+      &allowed_unsafe_redirect_url, brave::ResponseCallback(), request_info);
+  EXPECT_EQ(rc, net::OK);
   EXPECT_TRUE(allowed_unsafe_redirect_url.is_empty());
 }
 

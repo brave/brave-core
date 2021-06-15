@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { DesktopComponentWrapper, DesktopComponentWrapperRow, WalletWidgetStandIn } from './style'
-import { SideNav, TopTabNav, ChartControlBar, WalletPageLayout } from '../components/desktop'
+import { SideNav, TopTabNav, ChartControlBar, WalletPageLayout, WalletSubViewLayout } from '../components/desktop'
 import { NavTypes, TopTabNavTypes, ChartTimelineType } from '../constants/types'
 import { NavOptions } from '../options/side-nav-options'
 import { TopNavOptions } from '../options/top-nav-options'
@@ -105,7 +105,9 @@ export const _Onboarding = () => {
 
   return (
     <WalletPageLayout>
-      <Onboarding recoveryPhrase={recoveryPhrase} onSubmit={complete} onPasswordProvided={passwordProvided} />
+      <WalletSubViewLayout>
+        <Onboarding recoveryPhrase={recoveryPhrase} onSubmit={complete} onPasswordProvided={passwordProvided} hasRestoreError={false} onRestore={complete} />
+      </WalletSubViewLayout>
     </WalletPageLayout>
   )
 }

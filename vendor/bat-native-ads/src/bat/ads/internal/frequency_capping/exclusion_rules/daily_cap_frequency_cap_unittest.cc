@@ -55,7 +55,7 @@ TEST_F(BatAdsDailyCapFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kServed);
 
   ad_events.push_back(ad_event);
 
@@ -77,15 +77,15 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event_1 =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kServed);
   ad_events.push_back(ad_event_1);
 
   const AdEventInfo ad_event_2 =
-      GenerateAdEvent(AdType::kNewTabPageAd, ad, ConfirmationType::kViewed);
+      GenerateAdEvent(AdType::kNewTabPageAd, ad, ConfirmationType::kServed);
   ad_events.push_back(ad_event_2);
 
   const AdEventInfo ad_event_3 = GenerateAdEvent(AdType::kPromotedContentAd, ad,
-                                                 ConfirmationType::kViewed);
+                                                 ConfirmationType::kServed);
   ad_events.push_back(ad_event_3);
 
   // Act
@@ -109,7 +109,7 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad_2, ConfirmationType::kViewed);
+      GenerateAdEvent(AdType::kAdNotification, ad_2, ConfirmationType::kServed);
 
   ad_events.push_back(ad_event);
 
@@ -130,7 +130,7 @@ TEST_F(BatAdsDailyCapFrequencyCapTest, AllowAdIfDoesNotExceedCapWithin1Day) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kServed);
 
   ad_events.push_back(ad_event);
 
@@ -153,7 +153,7 @@ TEST_F(BatAdsDailyCapFrequencyCapTest, AllowAdIfDoesNotExceedCapAfter1Day) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kServed);
 
   ad_events.push_back(ad_event);
 
@@ -176,7 +176,7 @@ TEST_F(BatAdsDailyCapFrequencyCapTest, DoNotAllowAdIfExceedsCap) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kServed);
 
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);

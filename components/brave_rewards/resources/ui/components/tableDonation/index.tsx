@@ -48,7 +48,6 @@ export interface Props {
   allItems?: boolean
   onShowAll?: () => void
   headerColor?: boolean
-  onlyAnonWallet?: boolean
 }
 
 export default class TableDonation extends React.PureComponent<Props, {}> {
@@ -90,8 +89,6 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
       return
     }
 
-    const { onlyAnonWallet } = this.props
-
     return rows.map((row: DetailRow): Row => {
       return {
         content: [
@@ -111,7 +108,6 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
           {
             content: (
               <Tokens
-                onlyAnonWallet={onlyAnonWallet}
                 value={row.contribute.tokens}
                 converted={row.contribute.converted}
                 size={'small'}
@@ -129,7 +125,7 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
   }
 
   get headers (): Cell[] {
-    const { headerColor, onlyAnonWallet } = this.props
+    const { headerColor } = this.props
 
     let customStyle = {}
 
@@ -152,7 +148,7 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
         customStyle
       },
       {
-        content: getLocale(onlyAnonWallet ? 'points' : 'tokens'),
+        content: getLocale('tokens'),
         customStyle: Object.assign({
           'text-align': 'right',
           'padding-right': '7px'

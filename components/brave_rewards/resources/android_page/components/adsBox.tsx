@@ -12,14 +12,24 @@ import { List, NextContribution, Tokens } from '../../ui/components'
 import { Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
 import AdsOnboarding from './adsOnboarding'
 import {
+  StyledArrivingSoon,
   StyledListContent,
   StyledTotalContent
 } from './style'
+
+import { MoneyBagIcon } from '../../shared/components/icons/money_bag'
+import { formatMessage } from '../../shared/lib/locale_context'
+import { getDaysUntilRewardsPayment } from '../../shared/lib/pending_rewards'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
+
+const nextPaymentDateFormatter = new Intl.DateTimeFormat(undefined, {
+  month: 'short',
+  day: 'numeric'
+})
 
 interface Props extends Rewards.ComponentProps {
 }
@@ -136,7 +146,7 @@ class AdsBox extends React.Component<Props, {}> {
               value={adsPerHour.toString()}
               onChange={this.onAdsSettingChange.bind(this, 'adsPerHour')}
             >
-              {['1', '2', '3', '4', '5'].map((num: string) => {
+              {['0', '1', '2', '3', '4', '5', '10'].map((num: string) => {
                 return (
                   <div key={`num-per-hour-${num}`} data-value={num}>
                     {getLocale(`adsPerHour${num}`)}
@@ -179,23 +189,25 @@ class AdsBox extends React.Component<Props, {}> {
     let adsEnabled = false
     let adsUIEnabled = false
     let adsIsSupported = false
-    let estimatedPendingRewards = 0
-    let nextPaymentDate = ''
+    let nextPaymentDate = 0
     let adsReceivedThisMonth = 0
+    let earningsThisMonth = 0
+    let earningsLastMonth = 0
+
     const {
       adsData,
       safetyNetFailed,
       parameters
     } = this.props.rewardsData
-    const { onlyAnonWallet } = this.props.rewardsData.ui
 
     if (adsData) {
       adsEnabled = adsData.adsEnabled
       adsUIEnabled = adsData.adsUIEnabled
       adsIsSupported = adsData.adsIsSupported
-      estimatedPendingRewards = adsData.adsEstimatedPendingRewards || 0
       nextPaymentDate = adsData.adsNextPaymentDate
       adsReceivedThisMonth = adsData.adsReceivedThisMonth || 0
+      earningsThisMonth = adsData.adsEarningsThisMonth || 0
+      earningsLastMonth = adsData.adsEarningsLastMonth || 0
     }
 
     // disabled / alert state
@@ -222,7 +234,8 @@ class AdsBox extends React.Component<Props, {}> {
       boxPropsExtra.extraDescriptionChild = <AdsOnboarding />
     }
 
-    const tokenString = getLocale(onlyAnonWallet ? 'points' : 'tokens')
+    const tokenString = getLocale('tokens')
+    const estimatedPendingDays = getDaysUntilRewardsPayment(nextPaymentDate)
 
     return (
       <BoxMobile
@@ -232,26 +245,38 @@ class AdsBox extends React.Component<Props, {}> {
         settingsChild={this.adsSettings(adsEnabled)}
         {...boxPropsExtra}
       >
+        {
+          earningsLastMonth > 0 && estimatedPendingDays &&
+            <StyledArrivingSoon>
+              <MoneyBagIcon />
+              {
+                formatMessage(getLocale('pendingRewardsMessage'), [
+                  <span className='amount' key='amount'>
+                    +{earningsLastMonth} BAT
+                  </span>,
+                  estimatedPendingDays
+                ])
+              }
+            </StyledArrivingSoon>
+        }
         <List title={<StyledListContent>{getLocale('adsCurrentEarnings')}</StyledListContent>}>
           <StyledTotalContent>
             <Tokens
-              onlyAnonWallet={onlyAnonWallet}
-              value={estimatedPendingRewards.toFixed(3)}
-              converted={utils.convertBalance(estimatedPendingRewards, parameters.rate)}
+              value={earningsThisMonth.toFixed(3)}
+              converted={utils.convertBalance(earningsThisMonth, parameters.rate)}
             />
           </StyledTotalContent>
         </List>
         <List title={<StyledListContent>{getLocale('adsPaymentDate')}</StyledListContent>}>
           <StyledListContent>
             <NextContribution>
-              {nextPaymentDate}
+              {nextPaymentDateFormatter.format(new Date(nextPaymentDate))}
             </NextContribution>
           </StyledListContent>
         </List>
         <List title={<StyledListContent>{getLocale('adsNotificationsReceived')}</StyledListContent>}>
           <StyledListContent>
             <Tokens
-              onlyAnonWallet={onlyAnonWallet}
               value={adsReceivedThisMonth.toString()}
               hideText={true}
             />

@@ -131,8 +131,9 @@ OBJC_EXPORT
 - (void)removeBookmark:(IOSBookmarkNode*)bookmark;
 - (void)removeAll;
 
-- (NSArray<IOSBookmarkNode*>*)searchWithQuery:(NSString*)query
-                                     maxCount:(NSUInteger)maxCount;
+- (void)searchWithQuery:(NSString*)query
+               maxCount:(NSUInteger)maxCount
+             completion:(void (^)(NSArray<IOSBookmarkNode*>*))completion;
 
 - (void)undo;
 @end

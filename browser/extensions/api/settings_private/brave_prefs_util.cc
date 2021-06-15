@@ -17,6 +17,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
+#include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/extensions/api/settings_private/prefs_util.h"
 #include "chrome/common/extensions/api/settings_private.h"
@@ -47,6 +48,10 @@
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
 #include "brave/components/sidebar/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/speedreader_pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -123,6 +128,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 #if BUILDFLAG(ENABLE_SIDEBAR)
   (*s_brave_allowlist)[sidebar::kSidebarShowOption] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
+#endif
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  (*s_brave_allowlist)[speedreader::kSpeedreaderPrefEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
   // new tab prefs
   (*s_brave_allowlist)[kNewTabPageShowSponsoredImagesBackgroundImage] =

@@ -23,6 +23,13 @@ const char kFieldTrialParameterMaximumAdNotificationsPerDay[] =
     "maximum_ad_notifications_per_day";
 const int kDefaultMaximumAdNotificationsPerDay = 40;
 
+const char kFieldTrialParameterMaximumInlineContentAdsPerHour[] =
+    "maximum_inline_content_ads_per_hour";
+const int kDefaultMaximumInlineContentAdsPerHour = 4;
+const char kFieldTrialParameterMaximumInlineContentAdsPerDay[] =
+    "maximum_inline_content_ads_per_day";
+const int kDefaultMaximumInlineContentAdsPerDay = 20;
+
 const char kFieldTrialParameterMaximumNewTabPageAdsPerHour[] =
     "maximum_new_tab_page_ads_per_hour";
 const int kDefaultMaximumNewTabPageAdsPerHour = 4;
@@ -36,6 +43,13 @@ const int kDefaultMaximumPromotedContentAdsPerHour = 4;
 const char kFieldTrialParameterMaximumPromotedContentAdsPerDay[] =
     "maximum_promoted_content_ads_per_day";
 const int kDefaultMaximumPromotedContentAdsPerDay = 20;
+
+const char kFieldTrialParameterBrowsingHistoryMaxCount[] =
+    "browsing_history_max_count";
+const int kDefaultBrowsingHistoryMaxCount = 5000;
+const char kFieldTrialParameterBrowsingHistoryDaysAgo[] =
+    "browsing_history_days_ago";
+const int kDefaultBrowsingHistoryDaysAgo = 180;
 
 }  // namespace
 
@@ -55,6 +69,18 @@ int GetMaximumAdNotificationsPerDay() {
   return GetFieldTrialParamByFeatureAsInt(
       kAdServing, kFieldTrialParameterMaximumAdNotificationsPerDay,
       kDefaultMaximumAdNotificationsPerDay);
+}
+
+int GetMaximumInlineContentAdsPerHour() {
+  return GetFieldTrialParamByFeatureAsInt(
+      kAdServing, kFieldTrialParameterMaximumInlineContentAdsPerHour,
+      kDefaultMaximumInlineContentAdsPerHour);
+}
+
+int GetMaximumInlineContentAdsPerDay() {
+  return GetFieldTrialParamByFeatureAsInt(
+      kAdServing, kFieldTrialParameterMaximumInlineContentAdsPerDay,
+      kDefaultMaximumInlineContentAdsPerDay);
 }
 
 int GetMaximumNewTabPageAdsPerHour() {
@@ -79,6 +105,18 @@ int GetMaximumPromotedContentAdsPerDay() {
   return GetFieldTrialParamByFeatureAsInt(
       kAdServing, kFieldTrialParameterMaximumPromotedContentAdsPerDay,
       kDefaultMaximumPromotedContentAdsPerDay);
+}
+
+int GetBrowsingHistoryMaxCount() {
+  return GetFieldTrialParamByFeatureAsInt(
+      kAdServing, kFieldTrialParameterBrowsingHistoryMaxCount,
+      kDefaultBrowsingHistoryMaxCount);
+}
+
+int GetBrowsingHistoryDaysAgo() {
+  return GetFieldTrialParamByFeatureAsInt(
+      kAdServing, kFieldTrialParameterBrowsingHistoryDaysAgo,
+      kDefaultBrowsingHistoryDaysAgo);
 }
 
 }  // namespace features

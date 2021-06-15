@@ -18,7 +18,6 @@ export interface Props {
   isNegative?: boolean
   size?: Size
   color?: Type
-  onlyAnonWallet?: boolean
 }
 
 export default class Tokens extends React.PureComponent<Props, {}> {
@@ -30,8 +29,8 @@ export default class Tokens extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, converted, value, hideText, isNegative, size, color, currency, onlyAnonWallet } = this.props
-    const batFormatString = onlyAnonWallet ? getLocale('bap') : getLocale('bat')
+    const { id, converted, value, hideText, isNegative, size, color, currency } = this.props
+    const batFormatString = getLocale('bat')
 
     return (
       <StyledWrapper id={id} size={size} color={color}>
@@ -41,7 +40,7 @@ export default class Tokens extends React.PureComponent<Props, {}> {
           </StyledTokenValue>
           {
             !hideText
-            ? <StyledTokenCurrency isAnon={onlyAnonWallet}>
+            ? <StyledTokenCurrency>
                 {batFormatString}
               </StyledTokenCurrency>
             : null

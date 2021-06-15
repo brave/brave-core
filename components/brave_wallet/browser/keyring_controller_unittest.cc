@@ -252,6 +252,14 @@ TEST_F(KeyringControllerUnitTest, RestoreDefaultKeyring) {
             "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
 
   EXPECT_EQ(controller.RestoreDefaultKeyring(seed_phrase, ""), nullptr);
+  {
+    // Invalid mnemonic should have clear state
+    EXPECT_EQ(controller.RestoreDefaultKeyring("", "brave"), nullptr);
+
+    EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletPasswordEncryptorSalt));
+    EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletPasswordEncryptorNonce));
+    EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletEncryptedMnemonic));
+  }
 }
 
 TEST_F(KeyringControllerUnitTest, UnlockResumesDefaultKeyring) {

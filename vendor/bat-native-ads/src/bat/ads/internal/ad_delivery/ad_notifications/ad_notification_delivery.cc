@@ -5,18 +5,24 @@
 
 #include "bat/ads/internal/ad_delivery/ad_notifications/ad_notification_delivery.h"
 
-#include <vector>
-
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/client/client.h"
-#include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/p2a/p2a.h"
-#include "bat/ads/internal/p2a/p2a_util.h"
+#include "bat/ads/internal/p2a/p2a_ad_impressions/p2a_ad_impression.h"
 
 namespace ads {
 namespace ad_notifications {
+
+namespace {
+
+void DeliverAd(const AdNotificationInfo& ad) {
+  AdNotifications::Get()->PushBack(ad);
+
+  AdsClientHelper::Get()->ShowNotification(ad);
+}
+
+}  // namespace
 
 AdDelivery::AdDelivery() = default;
 
@@ -27,28 +33,13 @@ bool AdDelivery::MaybeDeliverAd(const AdNotificationInfo& ad) {
     return false;
   }
 
-  Client::Get()->UpdateSeenAdNotification(ad.creative_instance_id);
+  Client::Get()->UpdateSeenAd(ad);
 
-  RecordAdImpressionForSegment(ad.segment);
+  p2a::RecordAdImpression(ad);
 
-  ShowNotification(ad);
+  DeliverAd(ad);
 
   return true;
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-void AdDelivery::ShowNotification(const AdNotificationInfo& ad) {
-  AdNotifications::Get()->PushBack(ad);
-
-  AdsClientHelper::Get()->ShowNotification(ad);
-}
-
-void AdDelivery::RecordAdImpressionForSegment(const std::string& segment) {
-  const std::vector<std::string> question_list =
-      p2a::CreateAdImpressionQuestionList(segment);
-
-  p2a::RecordEvent("ad_impression", question_list);
 }
 
 }  // namespace ad_notifications

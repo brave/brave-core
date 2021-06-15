@@ -15,6 +15,7 @@ specific_include_rules = {
     "+brave/browser/brave_ads/notifications/ad_notification_platform_bridge.h",
     "+brave/browser/profiles/profile_util.h",
     "+brave/common/brave_channel_info.h",
+    "+brave/common/pref_names.h",
     "+brave/browser/brave_rewards/rewards_service_factory.h",
     "+brave/browser/brave_browser_process.h",
     "+brave/browser/notifications/brave_notification_platform_bridge_helper_android.h",

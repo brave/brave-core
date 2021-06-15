@@ -113,7 +113,6 @@ export interface HostState {
   adsPerHour?: number
   autoContributeAmount?: number
   currentMonthlyTip?: number
-  onlyAnonWallet?: boolean
   showOnboarding?: boolean
   tipProcessed?: boolean
   tipAmount?: number

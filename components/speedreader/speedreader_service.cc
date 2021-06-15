@@ -79,7 +79,7 @@ SpeedreaderService::SpeedreaderService(PrefService* prefs) : prefs_(prefs) {}
 SpeedreaderService::~SpeedreaderService() {}
 
 // static
-void SpeedreaderService::RegisterPrefs(PrefRegistrySimple* registry) {
+void SpeedreaderService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kSpeedreaderPrefEnabled, false);
   registry->RegisterBooleanPref(kSpeedreaderPrefEverEnabled, false);
   registry->RegisterListPref(kSpeedreaderPrefToggleCount);

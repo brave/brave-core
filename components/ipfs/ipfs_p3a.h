@@ -9,10 +9,6 @@
 #include "base/timer/timer.h"
 #include "brave/components/ipfs/ipfs_service_observer.h"
 
-namespace content {
-class BrowserContext;
-}
-
 class PrefService;
 
 namespace ipfs {
@@ -27,7 +23,8 @@ int GetDaemonUsageBucket(base::TimeDelta elapsed_time);
 // Maintains a timer to report in the amount of up time.
 class IpfsP3A : public IpfsServiceObserver {
  public:
-  IpfsP3A(IpfsService* service, content::BrowserContext* contex);
+  IpfsP3A(IpfsService* service,
+          PrefService* pref_service);
   ~IpfsP3A() override;
   IpfsP3A(const IpfsP3A&) = delete;
   IpfsP3A& operator=(IpfsP3A&) = delete;
@@ -45,7 +42,7 @@ class IpfsP3A : public IpfsServiceObserver {
   IpfsService* service_;
   base::TimeTicks daemon_start_time_;
   base::TimeDelta elapsed_time_;
-  content::BrowserContext* context_;
+  PrefService* pref_service_ = nullptr;
 };
 
 }  // namespace ipfs

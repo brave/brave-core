@@ -89,8 +89,8 @@ class AdsServiceImpl : public AdsService,
 
   void SetAllowConversionTracking(const bool should_allow) override;
 
-  uint64_t GetAdsPerHour() const override;
-  void SetAdsPerHour(const uint64_t ads_per_hour) override;
+  int64_t GetAdsPerHour() const override;
+  void SetAdsPerHour(const int64_t ads_per_hour) override;
 
   bool ShouldAllowAdsSubdivisionTargeting() const override;
   std::string GetAdsSubdivisionTargetingCode() const override;
@@ -106,6 +106,8 @@ class AdsServiceImpl : public AdsService,
   void OnClickAdNotification(const std::string& notification_id) override;
 
   void ChangeLocale(const std::string& locale) override;
+
+  void OnPrefChanged(const std::string& path);
 
   void OnHtmlLoaded(const SessionID& tab_id,
                     const std::vector<GURL>& redirect_chain,
@@ -138,6 +140,14 @@ class AdsServiceImpl : public AdsService,
       const std::string& uuid,
       const std::string& creative_instance_id,
       const ads::PromotedContentAdEventType event_type) override;
+
+  void GetInlineContentAd(const std::string& dimensions,
+                          OnGetInlineContentAdCallback callback) override;
+
+  void OnInlineContentAdEvent(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const ads::InlineContentAdEventType event_type) override;
 
   void ReconcileAdRewards() override;
 
@@ -240,6 +250,11 @@ class AdsServiceImpl : public AdsService,
 
   void OnGetBraveWallet(ledger::type::BraveWalletPtr wallet);
 
+  void OnGetInlineContentAd(OnGetInlineContentAdCallback callback,
+                            const bool success,
+                            const std::string& dimensions,
+                            const std::string& json);
+
   void OnGetAdsHistory(OnGetAdsHistoryCallback callback,
                        const std::string& json);
 
@@ -310,6 +325,8 @@ class AdsServiceImpl : public AdsService,
   bool StopNotificationTimeoutTimer(const std::string& uuid);
 
   bool connected();
+
+  bool ShouldStart() const;
 
   // AdsClient implementation
   bool IsNetworkConnectionAvailable() const override;
@@ -405,8 +422,6 @@ class AdsServiceImpl : public AdsService,
   // BackgroundHelper::Observer implementation
   void OnBackground() override;
   void OnForeground() override;
-
-  ///////////////////////////////////////////////////////////////////////////////
 
   Profile* profile_;  // NOT OWNED
 

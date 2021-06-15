@@ -21,6 +21,7 @@ export const NavOutline = styled.div`
   border-radius: 12px;
   margin-bottom: 15px;
   overflow: hidden;
+  max-width: 300px;
 `
 
 export const NavDivider = styled.div`

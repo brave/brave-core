@@ -5,8 +5,12 @@
 
 import { createAction } from 'redux-act'
 import { InitializedPayloadType, UnlockWalletPayloadType } from '../constants/action_types'
+import { AppObjectType } from '../../constants/types'
 
 export const initialize = createAction('initialize')
 export const initialized = createAction<InitializedPayloadType>('initialized')
 export const lockWallet = createAction('lockWallet')
 export const unlockWallet = createAction<UnlockWalletPayloadType>('unlockWallet')
+export const addFavoriteApp = createAction<AppObjectType>('addFavoriteApp')
+export const removeFavoriteApp = createAction<AppObjectType>('removeFavoriteApp')
+export const hasIncorrectPassword = createAction<boolean>('hasIncorrectPassword')

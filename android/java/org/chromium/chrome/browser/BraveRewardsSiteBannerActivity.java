@@ -58,7 +58,6 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
     private BraveRewardsHelper mIconFetcher;
     private boolean mTippingInProgress; //flag preventing multiple tipping processes
 
-    private boolean isAnonWallet;
     private LinearLayout sendDonationLayout;
 
     @Override
@@ -68,7 +67,6 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.brave_rewards_site_banner);
 
-        isAnonWallet = BraveRewardsHelper.isAnonWallet();
         sendDonationLayout = findViewById(R.id.send_donation_button);
 
         //change weight of the footer in landscape mode
@@ -245,7 +243,8 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         View not_enough_funds_btn = findViewById(R.id.not_enough_funds_button);
         not_enough_funds_btn.setOnClickListener (add_funds_clicker);
 
-        String part1 = String.format(getResources().getString(R.string.brave_ui_not_enough_tokens), isAnonWallet ? getResources().getString(R.string.point) : getResources().getString(R.string.token));
+        String part1 = String.format(getResources().getString(R.string.brave_ui_not_enough_tokens),
+                getResources().getString(R.string.token));
         String part2 = getResources().getString(R.string.brave_ui_please);
         String part3 = getResources().getString(R.string.brave_ui_add_funds);
 

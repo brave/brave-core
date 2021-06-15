@@ -85,7 +85,6 @@ class TipMessageHandler : public WebUIMessageHandler,
   void GetAdsPerHour(const base::ListValue* args);
   void SetAdsPerHour(const base::ListValue* args);
   void TweetTip(const base::ListValue* args);
-  void GetOnlyAnonWallet(const base::ListValue* args);
   void GetExternalWallet(const base::ListValue* args);
   void FetchBalance(const base::ListValue* args);
 
@@ -207,12 +206,6 @@ void TipMessageHandler::RegisterMessages() {
       base::BindRepeating(
           &TipMessageHandler::GetExternalWallet,
           base::Unretained(this)));
-
-  web_ui()->RegisterMessageCallback(
-      "getOnlyAnonWallet",
-      base::BindRepeating(
-          &TipMessageHandler::GetOnlyAnonWallet,
-          base::Unretained(this)));
 }
 
 void TipMessageHandler::OnRecurringTipRemoved(
@@ -280,14 +273,6 @@ void TipMessageHandler::DialogReady(const base::ListValue* args) {
   if (rewards_service_ && rewards_service_->IsInitialized()) {
     FireWebUIListener("rewardsInitialized");
   }
-}
-
-void TipMessageHandler::GetOnlyAnonWallet(const base::ListValue* args) {
-  if (!rewards_service_) {
-    return;
-  }
-  const bool only_anon = rewards_service_->OnlyAnonWallet();
-  FireWebUIListener("onlyAnonWalletUpdated", base::Value(only_anon));
 }
 
 void TipMessageHandler::GetPublisherBanner(const base::ListValue* args) {

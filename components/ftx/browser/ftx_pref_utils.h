@@ -10,7 +10,7 @@ class PrefRegistrySimple;
 
 namespace ftx {
 
-void RegisterPrefs(PrefRegistrySimple* registry);
+void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
 }  // namespace ftx
 

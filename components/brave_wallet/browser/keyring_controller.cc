@@ -74,6 +74,8 @@ HDKeyring* KeyringController::RestoreDefaultKeyring(
     return nullptr;
 
   if (!CreateDefaultKeyringInternal(mnemonic)) {
+    // When creation failed(ex. invalid mnemonic), clear the state
+    Reset();
     return nullptr;
   }
 
@@ -199,6 +201,8 @@ bool KeyringController::CreateDefaultKeyringInternal(
 
   const std::unique_ptr<std::vector<uint8_t>> seed =
       MnemonicToSeed(mnemonic, "");
+  if (!seed)
+    return false;
   default_keyring_ = std::make_unique<HDKeyring>();
   default_keyring_->ConstructRootHDKey(*seed, "m/44'/60'/0'/0");
 

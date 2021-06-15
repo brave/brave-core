@@ -104,7 +104,3 @@ export const StyledAllReserved = styled('button')<StyleProps>`
   color: ${palette.blue400};
   cursor: pointer;
 `
-
-export const StyledBatPoints = styled('span')<{}>`
-  font-weight: 600;
-`

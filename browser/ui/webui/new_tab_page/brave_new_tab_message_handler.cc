@@ -112,6 +112,9 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
   pref_data.SetBoolean("isBraveTodayOptedIn",
                        prefs->GetBoolean(kBraveTodayOptedIn));
   pref_data.SetBoolean(
+      "hideAllWidgets",
+      prefs->GetBoolean(kNewTabPageHideAllWidgets));
+  pref_data.SetBoolean(
       "showBinance",
       prefs->GetBoolean(kNewTabPageShowBinance));
   pref_data.SetBoolean(
@@ -381,6 +384,10 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       kNewTabPageShowGemini,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kNewTabPageHideAllWidgets,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
   pref_change_registrar_.Add(
       kCryptoDotComNewTabPageShowCryptoDotCom,
@@ -501,6 +508,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageShowRewards;
   } else if (settingsKeyInput == "isBrandedWallpaperNotificationDismissed") {
     settingsKey = kBrandedWallpaperNotificationDismissed;
+  } else if (settingsKeyInput == "hideAllWidgets") {
+    settingsKey = kNewTabPageHideAllWidgets;
   } else if (settingsKeyInput == "showBinance") {
     settingsKey = kNewTabPageShowBinance;
   } else if (settingsKeyInput == "showTogether") {

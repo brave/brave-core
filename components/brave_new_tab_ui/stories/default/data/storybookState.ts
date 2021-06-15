@@ -81,6 +81,7 @@ export const getNewTabData = (state: NewTab.State = defaultState): NewTab.State 
   ftxSupported: boolean('FTX supported?', true),
   showFTX: boolean('Show FTX?', true),
   showBinance: boolean('Show Binance?', true),
+  hideAllWidgets: boolean('Hide all widgets?', false),
   isBraveTodayOptedIn: boolean('Brave Today opted-in?', false),
   textDirection: select('Text direction', { ltr: 'ltr', rtl: 'rtl' } , 'ltr'),
   stats: {

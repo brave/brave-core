@@ -24,6 +24,7 @@ import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.app.BraveActivity;
 
 public class BraveRewardsUserWalletActivity extends AppCompatActivity {
+    public static final String DISCONNECT_WALLET_URL = "chrome://rewards/#disconnect-wallet";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,12 +112,16 @@ public class BraveRewardsUserWalletActivity extends AppCompatActivity {
     private void SetDisconnectBtnClickHandler() {
         Button btnDisconnect = (Button)findViewById(
                 R.id.user_wallet_disconnect);
+        SetBtnOpenUrlClickHandler(btnDisconnect, DISCONNECT_WALLET_URL);
+        /*
+        -- Use this code when android transitions to native code for Brave Rewards UI --
         btnDisconnect.setOnClickListener((View v) -> {
             BraveRewardsNativeWorker.getInstance().DisconnectWallet();
             Intent intent = new Intent();
             setResult(RESULT_OK, intent);
             finish();
         });
+        */
     }
 
     @Override

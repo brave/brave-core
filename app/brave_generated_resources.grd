@@ -270,6 +270,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_BRAVE_MRU_CYCLING_LABEL" desc="The label to activate MRU cycling with Ctrl-tab">
         Cycle through the most recently used tabs with Ctrl-Tab
       </message>
+      <message name="IDS_SETTINGS_SPEEDREADER_LABEL" desc="The label to activate Speedreader">
+        Speedreader
+      </message>
+      <message name="IDS_SETTINGS_SPEEDREADER_SUB_LABEL" desc="The sub-label describing Speedreader">
+        Articles automatically load in reader mode, saving you time
+      </message>
       <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR" desc="The label for settings switch controlling the showing of autocomplete in address bar">
         Show autocomplete in address bar
       </message>
@@ -805,9 +811,6 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_IPFS_PEERS_LINK_TITLE_DESC" desc="The ipfs peers page link description on IPFS settings page">
         Set up ipfs peers description
       </message>
-      <message name="IDS_SETTINGS_IPFS_PEERS_LIST_TITLE" desc="The title for peers list on IPFS settings page">
-        The peers list
-      </message>
       <message name="IDS_SETTINGS_IPFS_DELETE_PEER_CONFIRMATION" desc="Confirmation text for deleting a peer from IPFS peers manager page">
         Do you really want to delete <ph name="KEY_NAME">$1<ex>MyCustomPeerId</ex></ph>?
       </message>
@@ -1145,6 +1148,25 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         </message>
       </if>
 
+      <!-- Speedreader -->
+      <if expr="enable_speedreader">
+        <message name="IDS_SPEEDREADER_ASK_ENABLE" desc="Label prompting user to enable Speedreader">
+          Do you want to turn on Speedreader?
+        </message>
+        <message name="IDS_SPEEDREADER_ENABLE_BUTTON" desc="Button to enable Speedreader">
+          Turn on Speedreader
+        </message>
+        <message name="IDS_SPEEDREADER_EXPLANATION" desc="Label to explain how Speedreader is different from other reader modes">
+          Articles automatically load in reader mode, saving you time.
+        </message>
+        <message name="IDS_SPEEDREADER_DISABLE_THIS_SITE" desc="Label to enable or disable speedreader per site">
+          Turn on/off reader mode just for this website. To turn off Speedreader for your entire browser profile, visit
+        </message>
+        <message name="IDS_PAGE_IS_DISTILLED" desc="Speedreader is enabled on this page">
+          in Speedreader
+        </message>
+      </if>
+
       <!-- P3A -->
       <message name="IDS_BRAVE_CONFIRM_P3A_INFO_BAR" desc="Text that shows on the info bar where user acknowledges the P3A message">
         Brave uses completely private product analytics to estimate the overall usage of certain features
@@ -1202,6 +1224,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <message name="IDS_BRAVE_WAYBACK_MACHINE_CHECK_BUTTON_TEXT" desc="The label for check button on wayback infobar">
         Check for saved version
+      </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_DONT_ASK_AGAIN_TEXT" desc="Text to show for the don't ask again button.">
+        Don't ask me again
       </message>
       <!-- Brave's copyright statement -->
       <message name="IDS_BRAVE_VERSION_UI_LICENSE" desc="The label below the copyright message, containing the URLs.">

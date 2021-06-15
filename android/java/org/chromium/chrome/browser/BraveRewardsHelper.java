@@ -496,8 +496,4 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
             return Html.fromHtml(string);
         }
     }
-
-    public static boolean isAnonWallet() {
-      return BraveRewardsNativeWorker.getInstance().IsAnonWallet();
-    }
 }

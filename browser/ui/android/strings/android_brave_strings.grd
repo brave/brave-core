@@ -202,6 +202,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_MENU_EXIT" desc="Menu item for exit browser. [CHAR-LIMIT=27]">
         Exit
       </message>
+      <message name="IDS_IPFS_GATEWAY_TITLE" desc="Title for IPFS setting.">
+        IPFS Gateway
+      </message>
+      <message name="IDS_IPFS_GATEWAY_SUMMARY" desc="Summary for IPFS gateway setting.">
+        Allows for navigation to IPFS resources through an IPFS Gateway
+      </message>
       <message name="IDS_UNSTOPPABLE_DOMAINS_TITLE" desc="Title for Unstoppable Domains settings.">
         Unstoppable Domains
       </message>
@@ -497,8 +503,8 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Not yet verified
       </message>
       <message name="IDS_BRAVE_UI_NOT_VERIFIED_PUBLISHER_DESCRIPTION" desc="A message that appear when a particular publisher is not verified">
-        This creator has not yet signed up to receive contributions from Brave users.
-        Any tips you send will remain in your wallet until they verify.
+        This Brave Verified Creator has not yet configured their account to receive contributions from Brave Users.
+        Any tips you send will remain in your wallet until they complete this process.
       </message>
       <message name="IDS_BRAVE_UI_DONATE_NOW" desc="Send a tip button text">
         Send a tip...
@@ -829,17 +835,8 @@ until they verify, or until 90 days have passed.
        <message name="IDS_BRAVE_UI_YOUR_BALANCE" desc="Your balance title">
         Your balance
       </message>
-       <message name="IDS_BRAVE_UI_POINT_GRANT_CLAIMED" desc="A message about points being claimed">
-        Point Grants Claimed
-      </message>
-      <message name="IDS_BRAVE_UI_NEW_POINT_GRANT" desc="A notification about free point grant">
-        Free Point Grant
-      </message>
       <message name="IDS_TOKEN" desc="Text for token">
         token
-      </message>
-      <message name="IDS_POINT" desc="Text for point">
-        point
       </message>
       <message name="IDS_PREFS_NEW_TAB_PAGE" desc="Title of New Tab Page settings.">
         New Tab Page

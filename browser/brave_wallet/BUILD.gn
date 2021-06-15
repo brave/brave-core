@@ -15,14 +15,39 @@ source_set("brave_wallet") {
     "//brave/components/brave_wallet/common",
     "//chrome/browser/profiles:profiles",
     "//components/keyed_service/content:content",
+    "//components/user_prefs",
     "//content/public/browser",
     "//extensions/buildflags",
+    "//services/network/public/cpp",
   ]
   if (enable_extensions) {
     deps += [
       "//brave/browser/extensions",
       "//chrome/browser/extensions:extensions",
       "//extensions/browser",
+    ]
+  }
+}
+
+source_set("brave_wallet_delegate") {
+  sources = []
+  deps = [
+    "//brave/components/brave_wallet/browser",
+    "//content/public/browser",
+  ]
+  if (is_android) {
+    sources += [
+      "brave_wallet_provider_delegate_impl_android.cc",
+      "brave_wallet_provider_delegate_impl_android.h",
+    ]
+  } else {
+    sources += [
+      "brave_wallet_provider_delegate_impl.cc",
+      "brave_wallet_provider_delegate_impl.h",
+    ]
+    deps += [
+      "//brave/browser/ui",
+      "//chrome/browser/ui",
     ]
   }
 }

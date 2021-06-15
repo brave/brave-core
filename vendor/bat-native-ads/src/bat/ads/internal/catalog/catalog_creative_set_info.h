@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "bat/ads/internal/catalog/catalog_creative_ad_notification_info.h"
+#include "bat/ads/internal/catalog/catalog_creative_inline_content_ad_info.h"
 #include "bat/ads/internal/catalog/catalog_creative_new_tab_page_ad_info.h"
 #include "bat/ads/internal/catalog/catalog_creative_promoted_content_ad_info.h"
 #include "bat/ads/internal/catalog/catalog_os_info.h"
@@ -35,6 +36,7 @@ struct CatalogCreativeSetInfo {
   CatalogSegmentList segments;
   CatalogOsList oses;
   CatalogCreativeAdNotificationList creative_ad_notifications;
+  CatalogCreativeInlineContentAdList creative_inline_content_ads;
   CatalogCreativeNewTabPageAdList creative_new_tab_page_ads;
   CatalogCreativePromotedContentAdList creative_promoted_content_ads;
   ConversionList conversions;

@@ -22,8 +22,8 @@ struct CreativeAdInfo;
 
 class AntiTargetingFrequencyCap : public ExclusionRule<CreativeAdInfo> {
  public:
-  AntiTargetingFrequencyCap(resource::AntiTargeting* anti_targeting,
-                            const BrowsingHistoryList& history);
+  AntiTargetingFrequencyCap(resource::AntiTargeting* anti_targeting_resource,
+                            const BrowsingHistoryList& browsing_history);
 
   ~AntiTargetingFrequencyCap() override;
 
@@ -36,9 +36,9 @@ class AntiTargetingFrequencyCap : public ExclusionRule<CreativeAdInfo> {
   std::string get_last_message() const override;
 
  private:
-  resource::AntiTargeting* anti_targeting_;  // NOT OWNED
+  resource::AntiTargeting* anti_targeting_resource_;  // NOT OWNED
 
-  BrowsingHistoryList history_;
+  BrowsingHistoryList browsing_history_;
 
   std::string last_message_;
 

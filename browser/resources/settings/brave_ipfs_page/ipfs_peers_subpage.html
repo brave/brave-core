@@ -35,6 +35,9 @@
     padding-inline-end: var(--cr-section-padding);
     padding-inline-start: var(--cr-section-indent-padding);
   }
+  #add-peer-button {
+    margin-bottom: 5px;
+  }
 </style>
 
 <div id="peers-section" class="flex-container">
@@ -54,11 +57,8 @@
   <div class="flex">
     <div class="settings-row">
       <div class="flex cr-padded-text">
-          $i18n{ipfsPeersListTitle}
-          <div class="secondary error-text" id="peers-error" hidden="[[!peersError_]]">
-          </div>
       </div>
-      <cr-button on-click="onAddPeerTap_" >
+      <cr-button on-click="onAddPeerTap_" id="add-peer-button">
         $i18n{add}
       </cr-button>
     </div>

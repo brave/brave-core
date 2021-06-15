@@ -150,6 +150,14 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists("org/chromium/components/permissions/BravePermissionDialogModel"));
         Assert.assertTrue(classExists("org/chromium/components/permissions/PermissionDialogModel"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/compositor/layouts/LayoutManagerChromePhone"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/compositor/layouts/BraveLayoutManagerChrome"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/tasks/tab_management/TabUiFeatureUtilities"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiFeatureUtilities"));
     }
 
     @Test
@@ -221,6 +229,18 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
                 "createAdapterIfNecessary", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/tasks/tab_management/TabUiFeatureUtilities",
+                "isGridTabSwitcherEnabled", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/tasks/tab_management/TabUiFeatureUtilities",
+                "isTabGroupsAndroidEnabled", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiFeatureUtilities",
+                "isGridTabSwitcherEnabled", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiFeatureUtilities",
+                "isTabGroupsAndroidEnabled", false, null));
     }
 
     @Test
@@ -444,6 +464,9 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout"));
         Assert.assertTrue(checkSuperName("org/chromium/chrome/browser/toolbar/top/ToolbarPhone",
                 "org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout"));
+        Assert.assertTrue(checkSuperName(
+                "org/chromium/chrome/browser/compositor/layouts/LayoutManagerChromePhone",
+                "org/chromium/chrome/browser/compositor/layouts/BraveLayoutManagerChrome"));
     }
 
     private boolean classExists(String className) {

@@ -16,12 +16,13 @@ import { Checkbox } from 'brave-ui'
 export interface Props {
   onSubmit: () => void
   isBackupTermsAccepted: boolean
+  isOnboarding: boolean
   onSubmitTerms: (key: string, selected: boolean) => void
-  onSkipBackup: () => void
+  onCancel: () => void
 }
 
 function OnboardingRecovery (props: Props) {
-  const { onSubmit, isBackupTermsAccepted, onSubmitTerms, onSkipBackup } = props
+  const { onSubmit, isBackupTermsAccepted, isOnboarding, onSubmitTerms, onCancel } = props
 
   return (
     <StyledWrapper>
@@ -36,7 +37,7 @@ function OnboardingRecovery (props: Props) {
         </Checkbox>
       </TermsRow>
       <NavButton disabled={!isBackupTermsAccepted} buttonType='primary' text={locale.buttonContinue} onSubmit={onSubmit} />
-      <SkipButton onClick={onSkipBackup}>Skip</SkipButton>
+      <SkipButton onClick={onCancel}>{isOnboarding ? locale.backupButtonSkip : locale.backupButtonCancel}</SkipButton>
     </StyledWrapper>
   )
 }

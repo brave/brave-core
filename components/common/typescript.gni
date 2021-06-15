@@ -1,14 +1,14 @@
 import("//tools/grit/grit_rule.gni")
 
-# Make sure webpack re-builds when...
+# JS / TS imports via `require` or `import` will be added to a list and
+# provided to GN so it knows which projects to re-build when you modify a file
+# that is used by your build.
+# This variable contains additional files that will cause a re-build of all
+# WebUI projects if they are modified:
 brave_common_web_compile_inputs = [
-  # common includes change
-  rebase_path("classSet.ts"),
-  rebase_path("debounce.ts"),
-  rebase_path("locale.ts"),
-  rebase_path("BraveCoreThemeProvider.tsx"),
-
-  # common definitions change
+  # Global Definitions
+  # Only add actual globally-available type definitions to this directory,
+  # see ../definitions/README.md.
   rebase_path("../definitions/adBlock.d.ts"),
   rebase_path("../definitions/ipfs.d.ts"),
   rebase_path("../definitions/webcompatReporter.d.ts"),
@@ -26,14 +26,19 @@ brave_common_web_compile_inputs = [
   rebase_path("../definitions/webtorrent.d.ts"),
   rebase_path("../definitions/welcome.d.ts"),
 
-  # webpack config changes
+  # webpack config changes warrant a re-build of all webpack builds
   rebase_path("../webpack/webpack.config.js"),
   rebase_path("../webpack/webpack-plugin-depfile.js"),
 
-  # typescript config changes
+  # typescript config changes warrant a re-build of all typescript builds
   "//brave/tsconfig.json",
 
-  # brave-ui changes on its own (perhaps a manual local link)
+  # modifying npm dependencies warrants a re-build of all webpack
+  # and typescript builds
+  "//brave/package.json",
+
+  # brave-ui changes (perhaps a manual local link which wouldn't affect
+  # //brave/package.json)
   "//brave/node_modules/brave-ui/package.json",
 ]
 

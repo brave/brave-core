@@ -4,20 +4,14 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 brave_browser_component_updater_sources = [
-  "//brave/browser/component_updater/brave_component_installer.cc",
-  "//brave/browser/component_updater/brave_component_installer.h",
   "//brave/browser/component_updater/brave_component_updater_configurator.cc",
   "//brave/browser/component_updater/brave_component_updater_configurator.h",
-  "//brave/browser/component_updater/brave_component_updater_delegate.cc",
-  "//brave/browser/component_updater/brave_component_updater_delegate.h",
 ]
 
 brave_browser_component_updater_deps = [
   "//base",
   "//brave/common:switches",
-  "//brave/components/brave_component_updater/browser",
   "//chrome/browser:browser_process",
-  "//chrome/common:constants",
   "//components/component_updater",
   "//components/crx_file",
   "//components/prefs",
@@ -28,6 +22,5 @@ brave_browser_component_updater_deps = [
   "//components/update_client:patch_impl",
   "//components/update_client:unzip_impl",
   "//content/public/browser",
-  "//crypto",
   "//services/network/public/cpp",
 ]

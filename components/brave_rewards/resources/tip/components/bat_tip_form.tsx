@@ -12,7 +12,6 @@ import { CustomAmountInput } from './custom_amount_input'
 import { CustomTipAmount } from './custom_tip_amount'
 import { ExchangeAmount } from './exchange_amount'
 import { TipAmountSelector, TipAmountOption } from './tip_amount_selector'
-import { BatString } from './bat_string'
 import { TermsOfService } from '../../shared/components/terms_of_service'
 import { NewTabLink } from '../../shared/components/new_tab_link'
 import { FormSubmitButton } from './form_submit_button'
@@ -27,12 +26,8 @@ const minimumTip = 0.25
 const maximumTip = 100
 const tipAmountStep = 0.25
 
-function getInsufficientFundsMessage (locale: Locale, onlyAnon: boolean) {
+function getInsufficientFundsMessage (locale: Locale) {
   const { getString } = locale
-
-  if (onlyAnon) {
-    return <>{getString('notEnoughPoints')}</>
-  }
 
   return (
     <>
@@ -66,8 +61,6 @@ export function BatTipForm (props: Props) {
 
   const [rewardsParameters, setRewardsParameters] = React.useState(
     host.state.rewardsParameters)
-  const [onlyAnon, setOnlyAnon] = React.useState(
-    Boolean(host.state.onlyAnonWallet))
 
   const [tipAmount, setTipAmount] = React.useState(props.defaultTipAmount)
   const [showCustomInput, setShowCustomInput] = React.useState(false)
@@ -76,7 +69,6 @@ export function BatTipForm (props: Props) {
   React.useEffect(() => {
     return host.addListener((state) => {
       setRewardsParameters(state.rewardsParameters)
-      setOnlyAnon(Boolean(state.onlyAnonWallet))
     })
   }, [host])
 
@@ -138,7 +130,7 @@ export function BatTipForm (props: Props) {
                     : 'customMonthlyTipText')
                 }
                 amount={tipAmount}
-                currency={<BatString />}
+                currency={'BAT'}
                 exchangeAmount={
                   <ExchangeAmount
                     amount={tipAmount}
@@ -177,13 +169,13 @@ export function BatTipForm (props: Props) {
               {
                 formatMessage(getString('minimumTipAmount'), [
                   minimumTip.toFixed(2),
-                  <BatString key='currency' />
+                  'BAT'
                 ])
               }
             </style.minimumAmount>
           : props.tipKind === 'one-time' && tipAmount > props.userBalance ?
             <style.notEnoughFunds>
-              <SadFaceIcon /> {getInsufficientFundsMessage(locale, onlyAnon)}
+              <SadFaceIcon /> {getInsufficientFundsMessage(locale)}
             </style.notEnoughFunds>
           : showCustomInput ?
             <FormSubmitButton onClick={onSubmitCustomTip}>

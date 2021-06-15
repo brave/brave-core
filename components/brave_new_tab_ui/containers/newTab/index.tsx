@@ -26,7 +26,6 @@ import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo
 import { brandedWallpaperLogoClicked } from '../../api/brandedWallpaper'
 import BraveTodayHint from '../../components/default/braveToday/hint'
 import BraveToday from '../../components/default/braveToday'
-import BAPDeprecationModal from '../../components/default/rewards/bapDeprecationModal'
 import { addNewTopSite, editTopSite } from '../../api/topSites'
 
 // Helpers
@@ -71,7 +70,6 @@ interface Props {
 }
 
 interface State {
-  onlyAnonWallet: boolean
   showSettingsMenu: boolean
   showEditTopSite: boolean
   targetTopSiteForEditing?: NewTab.Site
@@ -109,7 +107,6 @@ function GetShouldShowBrandedWallpaperNotification (props: Props) {
 
 class NewTabPage extends React.Component<Props, State> {
   state: State = {
-    onlyAnonWallet: false,
     showSettingsMenu: false,
     showEditTopSite: false,
     backgroundHasLoaded: false,
@@ -298,6 +295,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   toggleShowFTX = () => {
+    this.props.actions.ftx.disconnect()
     this.props.saveShowFTX(!this.props.newTabData.showFTX)
   }
 
@@ -698,6 +696,9 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   getCryptoContent () {
+    if (this.props.newTabData.hideAllWidgets) {
+      return null
+    }
     const {
       widgetStackOrder,
       togetherSupported,
@@ -773,9 +774,10 @@ class NewTabPage extends React.Component<Props, State> {
       cryptoDotComSupported,
       showFTX,
       ftxSupported,
-      binanceSupported
+      binanceSupported,
+      hideAllWidgets
     } = this.props.newTabData
-    return [
+    return hideAllWidgets || [
       showRewards,
       togetherSupported && showTogether,
       binanceSupported && showBinance,
@@ -783,40 +785,6 @@ class NewTabPage extends React.Component<Props, State> {
       cryptoDotComSupported && showCryptoDotCom,
       ftxSupported && showFTX
     ].every((widget: boolean) => !widget)
-  }
-
-  toggleAllCards = (show: boolean) => {
-    if (!show) {
-      this.props.actions.saveWidgetStackOrder()
-      this.props.saveSetAllStackWidgets(false)
-      return
-    }
-
-    const saveShowProps = {
-      'binance': this.props.saveShowBinance,
-      'cryptoDotCom': this.props.saveShowCryptoDotCom,
-      'gemini': this.props.saveShowGemini,
-      'rewards': this.props.saveShowRewards,
-      'together': this.props.saveShowTogether,
-      'ftx': this.props.saveShowFTX
-    }
-
-    const setAllTrue = (list: NewTab.StackWidget[]) => {
-      list.forEach((widget: NewTab.StackWidget) => {
-        if (widget in saveShowProps) {
-          saveShowProps[widget](true)
-        }
-      })
-    }
-
-    const { savedWidgetStackOrder, widgetStackOrder } = this.props.newTabData
-    // When turning back on, all widgets should be set to shown
-    // in the case that all widgets were hidden previously.
-    setAllTrue(
-      !savedWidgetStackOrder.length ?
-      widgetStackOrder :
-      savedWidgetStackOrder
-    )
   }
 
   renderCryptoContent () {
@@ -1186,13 +1154,6 @@ class NewTabPage extends React.Component<Props, State> {
             <BraveTodayHint />
           </Page.GridItemNavigationBraveToday>
           }
-          {isShowingBrandedWallpaper && newTabData.brandedWallpaperData &&
-          newTabData.brandedWallpaperData.logo &&
-          <Page.VisitableBackground
-            href={newTabData.brandedWallpaperData.logo.destinationUrl}
-            onClick={this.onClickLogo}
-          />
-          }
         </Page.Page>
         { newTabData.showToday &&
         <BraveToday
@@ -1261,7 +1222,7 @@ class NewTabPage extends React.Component<Props, State> {
           showFTX={newTabData.showFTX}
           todayPublishers={this.props.todayData.publishers}
           cardsHidden={this.allWidgetsHidden()}
-          toggleCards={this.toggleAllCards}
+          toggleCards={this.props.saveSetAllStackWidgets}
         />
         {
           showEditTopSite ?
@@ -1272,7 +1233,6 @@ class NewTabPage extends React.Component<Props, State> {
               onSave={this.saveNewTopSite}
             /> : null
         }
-        <BAPDeprecationModal rewardsState={this.props.newTabData.rewardsState} />
       </Page.App>
     )
   }

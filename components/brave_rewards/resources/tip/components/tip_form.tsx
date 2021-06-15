@@ -77,8 +77,6 @@ export function TipForm () {
     host.state.autoContributeAmount || 0)
   const [adsPerHour, setAdsPerHour] = React.useState(
     host.state.adsPerHour || 0)
-  const [onlyAnonWallet, setOnlyAnonWallet] = React.useState(
-    Boolean(host.state.onlyAnonWallet))
   const [walletInfo, setWalletInfo] = React.useState(
     host.state.externalWalletInfo)
 
@@ -102,7 +100,6 @@ export function TipForm () {
       setCurrentMonthlyTip(state.currentMonthlyTip || 0)
       setAutoContributeAmount(state.autoContributeAmount || 0)
       setAdsPerHour(state.adsPerHour || 0)
-      setOnlyAnonWallet(Boolean(state.onlyAnonWallet))
       setWalletInfo(state.externalWalletInfo)
     })
   }, [host])
@@ -135,7 +132,6 @@ export function TipForm () {
       <style.tour>
         <RewardsTour
           firstTimeSetup={!showOnboarding}
-          onlyAnonWallet={onlyAnonWallet}
           adsPerHour={adsPerHour}
           externalWalletProvider={externalWalletType}
           autoContributeAmount={autoContributeAmount}

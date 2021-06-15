@@ -3,7 +3,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+
 import {
+  StyledAlertClose,
+  StyledAlertWrapper,
   StyledWrapper,
   StyledHeader,
   StyledTitle,
@@ -12,27 +15,51 @@ import {
   StyledBalanceCurrency,
   StyledBalanceConverted
 } from './style'
+
+import Alert, { Type as AlertType } from '../alert'
+
 import { getLocale } from 'brave-ui/helpers'
+
+import { CloseCircleOIcon } from 'brave-ui/components/icons'
 
 export interface Props {
   id?: string
   balance: string
   converted?: string
-  onlyAnonWallet?: boolean
+  alert?: AlertWallet | null
+  wallet?: Rewards.ExternalWallet
   onClick: () => void
 }
 
-export default class WalletInfoHeader extends React.PureComponent<Props, {}> {
+export interface AlertWallet {
+  node: React.ReactNode
+  type: AlertType
+  onAlertClose?: () => void
+}
 
+export default class WalletInfoHeader extends React.PureComponent<Props, {}> {
   render () {
-    const { id, balance, converted, onlyAnonWallet, onClick } = this.props
-    const batFormatString = onlyAnonWallet ? getLocale('batPoints') : getLocale('bat')
+    const { id, balance, converted, alert, onClick } = this.props
+    const batFormatString = getLocale('bat')
 
     return (
       <StyledWrapper
         id={id}
         onClick={onClick}
       >
+      {
+        alert && alert.node ?
+        <StyledAlertWrapper>
+          {
+            alert.onAlertClose ?
+            <StyledAlertClose onClick={alert.onAlertClose}>
+              <CloseCircleOIcon />
+            </StyledAlertClose> : null
+          }
+          <Alert type={alert.type} bg={true}>
+            {alert.node}
+        </Alert>
+        </StyledAlertWrapper> :
         <StyledHeader>
           <StyledTitle>{getLocale('yourWallet')}</StyledTitle>
             <StyledBalance>
@@ -46,6 +73,7 @@ export default class WalletInfoHeader extends React.PureComponent<Props, {}> {
               }
             </StyledBalance>
         </StyledHeader>
+      }
       </StyledWrapper>
     )
   }

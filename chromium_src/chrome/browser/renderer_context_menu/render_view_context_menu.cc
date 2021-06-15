@@ -13,6 +13,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
+#include "chrome/common/channel_info.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
 #include "ui/base/models/menu_separator_types.h"
@@ -198,7 +199,7 @@ void BraveRenderViewContextMenu::AddSpellCheckServiceItem(
 
 #if BUILDFLAG(IPFS_ENABLED)
 bool BraveRenderViewContextMenu::IsIPFSCommandIdEnabled(int command) const {
-  if (!ipfs::IsIpfsMenuEnabled(browser_context_))
+  if (!ipfs::IsIpfsMenuEnabled(GetProfile()->GetPrefs()))
     return false;
   switch (command) {
     case IDC_CONTENT_CONTEXT_IMPORT_IPFS:
@@ -233,7 +234,7 @@ void BraveRenderViewContextMenu::SeIpfsIconAt(int index) {
 }
 
 void BraveRenderViewContextMenu::BuildIPFSMenu() {
-  if (!ipfs::IsIpfsMenuEnabled(browser_context_))
+  if (!ipfs::IsIpfsMenuEnabled(GetProfile()->GetPrefs()))
     return;
   int index =
       menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_INSPECTELEMENT);
@@ -251,7 +252,9 @@ void BraveRenderViewContextMenu::BuildIPFSMenu() {
     return;
   }
 
-  if (source_web_contents_->GetURL().SchemeIsHTTPOrHTTPS()) {
+  auto page_url = source_web_contents_->GetURL();
+  if (page_url.SchemeIsHTTPOrHTTPS() &&
+      !ipfs::IsAPIGateway(page_url.GetOrigin(), chrome::GetChannel())) {
     ipfs_submenu_model_.AddItemWithStringId(
         IDC_CONTENT_CONTEXT_IMPORT_IPFS_PAGE,
         IDS_CONTENT_CONTEXT_IMPORT_IPFS_PAGE);

@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
 
-#include <map>
 #include <string>
 #include <vector>
 
@@ -25,6 +24,7 @@ struct AdsHistoryInfo;
 }
 
 namespace base {
+class DictionaryValue;
 class ListValue;
 }
 
@@ -49,6 +49,9 @@ using OnToggleSaveAdCallback =
     base::OnceCallback<void(const std::string&, bool)>;
 using OnToggleFlagAdCallback =
     base::OnceCallback<void(const std::string&, bool)>;
+
+using OnGetInlineContentAdCallback = base::OnceCallback<
+    void(const bool, const std::string&, const base::DictionaryValue&)>;
 
 using GetAccountStatementCallback = base::OnceCallback<void(const bool,
                                                             const double,
@@ -76,8 +79,8 @@ class AdsService : public KeyedService {
 
   virtual void SetAllowConversionTracking(const bool should_allow) = 0;
 
-  virtual uint64_t GetAdsPerHour() const = 0;
-  virtual void SetAdsPerHour(const uint64_t ads_per_hour) = 0;
+  virtual int64_t GetAdsPerHour() const = 0;
+  virtual void SetAdsPerHour(const int64_t ads_per_hour) = 0;
 
   virtual bool ShouldAllowAdsSubdivisionTargeting() const = 0;
   virtual std::string GetAdsSubdivisionTargetingCode() const = 0;
@@ -125,6 +128,14 @@ class AdsService : public KeyedService {
       const std::string& uuid,
       const std::string& creative_instance_id,
       const ads::mojom::BraveAdsPromotedContentAdEventType event_type) = 0;
+
+  virtual void GetInlineContentAd(const std::string& dimensions,
+                                  OnGetInlineContentAdCallback callback) = 0;
+
+  virtual void OnInlineContentAdEvent(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const ads::mojom::BraveAdsInlineContentAdEventType event_type) = 0;
 
   virtual void ReconcileAdRewards() = 0;
 

@@ -250,7 +250,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "togetherPromptAction", IDS_BRAVE_TOGETHER_PROMPT_ACTION },
 
         // Rewards widget
-        { "rewardsWidgetBap", IDS_BRAVE_UI_BAP_REWARDS_TEXT },
         { "rewardsWidgetBat", IDS_BRAVE_UI_BAT_REWARDS_TEXT },
         { "rewardsWidgetBraveRewards", IDS_BRAVE_UI_BRAVE_REWARDS },
         { "rewardsWidgetTurnOnAds", IDS_BRAVE_UI_TURN_ON_ADS },
@@ -273,10 +272,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "editCardsTitle", IDS_EDIT_CARDS_TITLE },
         { "tosAndPp", IDS_REWARDS_WIDGET_TOS_AND_PP},     // NOLINT
         { "rewardsWidgetStartUsing", IDS_REWARDS_WIDGET_START_USING},     // NOLINT
-        // Rewards BAP Deprecation Alert
-        { "bapDeprecationAlertText", IDS_REWARDS_BAP_DEPRECATION_ALERT_TEXT },
-        { "bapDeprecationHeader", IDS_REWARDS_BAP_DEPRECATION_HEADER },
-        { "bapDeprecationOK", IDS_REWARDS_BAP_DEPRECATION_OK },
+        { "pendingRewardsMessage", IDS_BRAVE_REWARDS_PENDING_REWARDS_MESSAGE },
         // Together Widget
         { "togetherWidgetTitle", IDS_TOGETHER_WIDGET_TITLE },
         { "togetherWidgetWelcomeTitle", IDS_TOGETHER_WIDGET_WELCOME_TITLE },
@@ -407,6 +403,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "ftxConversionAmountAvailable", IDS_FTX_CONVERSION_AMOUNT_AVAILABLE },
         { "ftxSummaryBlurLabel", IDS_FTX_SUMMARY_BLUR_LABEL },
         { "ftxSummaryRevealLabel", IDS_FTX_SUMMARY_REVEAL_LABEL },
+        { "ftxSummaryNoBalance", IDS_FTX_SUMMARY_NO_BALANCE},
 #endif
       }
     }, {
@@ -465,11 +462,13 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "adsPagesViewed",  IDS_BRAVE_REWARDS_LOCAL_ADS_PAGES_VIEWED },
         { "adsOtherSettings",  IDS_BRAVE_REWARDS_LOCAL_ADS_OTHER_SETTINGS },
         { "adsPerHour",  IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR },
+        { "adsPerHour0",  IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_0 },
         { "adsPerHour1",  IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_1 },
         { "adsPerHour2",  IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_2 },
         { "adsPerHour3",  IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_3 },
         { "adsPerHour4",  IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_4 },
         { "adsPerHour5",  IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_5 },
+        { "adsPerHour10",  IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_10 },
         { "adsSubdivisionTargetingTitle",  IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_TITLE },  // NOLINT
         { "adsSubdivisionTargetingDescription",  IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DESCRIPTION },  // NOLINT
         { "adsSubdivisionTargetingLearn",  IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_LEARN },  // NOLINT
@@ -483,9 +482,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "qrBoxButton",  IDS_BRAVE_REWARDS_LOCAL_QR_BOX_BUTTON },
 
         { "bat", IDS_BRAVE_UI_BAT_REWARDS_TEXT },
-        { "bap", IDS_BRAVE_UI_BAP_REWARDS_TEXT },
-        { "batPoints", IDS_BRAVE_UI_BAT_POINTS_TEXT },
-        { "batPointsMessage", IDS_BRAVE_UI_POINTS_MESSAGE },
         { "contributionTitle",  IDS_BRAVE_REWARDS_LOCAL_CONTR_TITLE },
         { "contributionDesc",  IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC },
         { "contributionMonthly",  IDS_BRAVE_REWARDS_LOCAL_CONTR_MONTHLY },
@@ -508,6 +504,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "contributionUpTo",  IDS_BRAVE_REWARDS_LOCAL_CONTR_UP_TO },
 
         { "deviceOffline", IDS_BRAVE_REWARDS_LOCAL_DEVICE_OFFLINE },
+        { "disconnectWalletFailed",  IDS_BRAVE_REWARDS_LOCAL_SERVER_DISCONNECT_FAILED },         // NOLINT
         { "donationTitle",  IDS_BRAVE_REWARDS_LOCAL_DONAT_TITLE },
         { "donationDesc",  IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC },
         { "donationTotalDonations",  IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_DONATIONS },            // NOLINT
@@ -640,7 +637,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "grantFinishTitleUGP", IDS_BRAVE_UI_GRANT_FINISH_TITLE_UGP },
         { "grantFinishTokenAds", IDS_BRAVE_UI_GRANT_FINISH_TOKEN_ADS },
         { "grantFinishTokenUGP", IDS_BRAVE_UI_GRANT_FINISH_TOKEN_UGP },
-        { "grantFinishPointUGP", IDS_BRAVE_UI_GRANT_FINISH_POINT_UGP },
         { "grants", IDS_BRAVE_UI_GRANTS },
         { "greetingsVerified", IDS_BRAVE_UI_GREETINGS_VERIFIED },
         { "import", IDS_BRAVE_UI_IMPORT },
@@ -725,6 +721,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "optOutTooltip", IDS_BRAVE_UI_ADS_OPT_OUT_TOOLTIP },
         { "payment", IDS_BRAVE_UI_PAYMENT },
         { "paymentNotMade", IDS_BRAVE_UI_PAYMENT_NOT_MADE },
+        { "pendingRewardsMessage", IDS_BRAVE_REWARDS_PENDING_REWARDS_MESSAGE },
         { "pendingContributions", IDS_BRAVE_UI_PENDING_CONTRIBUTIONS },
         { "pendingContributionEmpty", IDS_BRAVE_UI_PENDING_CONTRIBUTION_EMPTY },
         { "pendingContributionRemoveAll", IDS_BRAVE_UI_PENDING_CONTRIBUTION_REMOVE_ALL },        // NOLINT
@@ -740,8 +737,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "pinnedSitesFour", IDS_BRAVE_UI_PAYMENT_PINNED_SITES_FOUR },
         { "pleaseNote", IDS_BRAVE_UI_PLEASE_NOTE },
         { "point", IDS_BRAVE_UI_POINT },
-        { "pointGrantClaimed", IDS_BRAVE_UI_POINT_GRANT_CLAIMED },
-        { "points", IDS_BRAVE_UI_POINTS },
         { "print", IDS_BRAVE_UI_PRINT },
         { "processingRequest", IDS_BRAVE_UI_PROCESSING_REQUEST },
         { "processingRequestButton", IDS_BRAVE_UI_PROCESSING_REQUEST_BUTTON },
@@ -782,13 +777,11 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "rewardsOffText2", IDS_BRAVE_UI_REWARDS_OFF_TEXT2 },
         { "rewardsOffText3", IDS_BRAVE_UI_REWARDS_OFF_TEXT3 },
         { "rewardsOffText4", IDS_BRAVE_UI_REWARDS_OFF_TEXT4 },
-        { "rewardsPanelEmptyTextPoints", IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT_POINTS },         // NOLINT
         { "rewardsPanelEmptyText1", IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT1 },
         { "rewardsPanelEmptyText2", IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT2 },
         { "rewardsPanelEmptyText3", IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT3 },
         { "rewardsPanelEmptyText4", IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT4 },
         { "rewardsPanelEmptyText5", IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT5 },
-        { "rewardsPanelEmptyText6", IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT6 },
         { "rewardsPanelOffText1", IDS_BRAVE_UI_REWARDS_PANEL_OFF_TEXT1 },
         { "rewardsPanelOffText2", IDS_BRAVE_UI_REWARDS_PANEL_OFF_TEXT2 },
         { "rewardsPanelText1", IDS_BRAVE_UI_REWARDS_PANEL_TEXT1 },
@@ -825,7 +818,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "token", IDS_BRAVE_UI_TOKEN },
         { "tokens", IDS_BRAVE_UI_TOKENS },
         { "tokenGrants", IDS_BRAVE_UI_TOKEN_GRANTS },
-        { "pointGrants", IDS_BRAVE_UI_POINT_GRANTS },
         { "qrCodeLoading", IDS_BRAVE_UI_QR_CODE_LOADING },
         { "total", IDS_BRAVE_UI_TOTAL },
         { "transactions", IDS_BRAVE_UI_TRANSACTIONS },
@@ -845,17 +837,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "walletGoToProvider", IDS_BRAVE_UI_WALLET_GO_TO_PROVIDER },
         { "walletGoToVerifyPage", IDS_BRAVE_UI_WALLET_GO_TO_VERIFY_PAGE },
         { "walletDisconnect", IDS_BRAVE_UI_WALLET_DISCONNECT },
-        { "walletVerificationButton", IDS_BRAVE_UI_WALLET_VERIFICATION_BUTTON },
-        { "walletVerificationFooter", IDS_BRAVE_UI_WALLET_VERIFICATION_FOOTER },
-        { "walletVerificationID", IDS_BRAVE_UI_WALLET_VERIFICATION_ID },
-        { "walletVerificationList1", IDS_BRAVE_UI_WALLET_VERIFICATION_LIST1 },
-        { "walletVerificationList2", IDS_BRAVE_UI_WALLET_VERIFICATION_LIST2 },
-        { "walletVerificationList3", IDS_BRAVE_UI_WALLET_VERIFICATION_LIST3 },
-        { "walletVerificationListHeader", IDS_BRAVE_UI_WALLET_VERIFICATION_HEADER },  // NOLINT
-        { "walletVerificationNote1", IDS_BRAVE_UI_WALLET_VERIFICATION_NOTE1 },
-        { "walletVerificationNote2", IDS_BRAVE_UI_WALLET_VERIFICATION_NOTE2 },
-        { "walletVerificationNote3", IDS_BRAVE_UI_WALLET_VERIFICATION_NOTE3 },
-        { "walletVerificationTitle1", IDS_BRAVE_UI_WALLET_VERIFICATION_TITLE1 },
         { "walletConnected", IDS_BRAVE_UI_WALLET_CONNECTED },
         { "walletPending", IDS_BRAVE_UI_WALLET_PENDING },
         { "walletVerified", IDS_BRAVE_UI_WALLET_VERIFIED },
@@ -872,7 +853,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "welcomeHeaderOne", IDS_BRAVE_UI_WELCOME_HEADER_ONE},
         { "welcomeHeaderTwo", IDS_BRAVE_UI_WELCOME_HEADER_TWO},
         { "whyBraveRewards", IDS_BRAVE_UI_WHY_BRAVE_REWARDS },
-        { "yourBalance", IDS_BRAVE_UI_YOUR_BALANCE },
         { "yourWallet", IDS_BRAVE_UI_YOUR_WALLET },
 
         { "and", IDS_BRAVE_UI_AND },
@@ -897,6 +877,18 @@ void CustomizeWebUIHTMLSource(const std::string &name,
 
         { "upholdPromoEquitiesTitle",IDS_BRAVE_UI_UPHOLD_PROMO_EQUITIES_TITLE },                 // NOLINT
         { "upholdPromoEquitiesInfo", IDS_BRAVE_UI_UPHOLD_PROMO_EQUITIES_INFO },
+        { "connectWalletChooseHeader", IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_HEADER },  // NOLINT
+        { "connectWalletChooseNote", IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_NOTE },  // NOLINT
+        { "connectWalletChooseText", IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_TEXT },  // NOLINT
+        { "connectWalletInfoHeader", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_HEADER },  // NOLINT
+        { "connectWalletInfoNote", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_NOTE },
+        { "connectWalletInfoBraveNote", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_BRAVE_NOTE },  // NOLINT
+        { "connectWalletInfoText", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_TEXT },
+        { "connectWalletInfoListItem1", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_LIST_ITEM_1 },  // NOLINT
+        { "connectWalletInfoListItem2", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_LIST_ITEM_2 },  // NOLINT
+        { "continue", IDS_BRAVE_REWARDS_CONTINUE },
+        { "continueToLogin", IDS_BRAVE_REWARDS_CONTINUE_TO_LOGIN },
+        { "minimumBalanceWarning", IDS_BRAVE_REWARDS_MINIMUM_BALANCE_WARNING },
       }
     }, {
       std::string("adblock"), {
@@ -941,9 +933,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
     }, {
 #endif
       std::string("tip"), {
-        { "bap", IDS_BRAVE_UI_BAP_REWARDS_TEXT },
-        { "bapFunds", IDS_BRAVE_REWARDS_TIP_BAP_FUNDS },
-        { "bat", IDS_BRAVE_UI_BAT_TEXT },
         { "batFunds", IDS_BRAVE_REWARDS_TIP_BAT_FUNDS },
         { "cancel", IDS_BRAVE_REWARDS_TIP_CANCEL },
         { "cancelConfirmationText", IDS_BRAVE_REWARDS_TIP_CANCEL_CONFIRMATION_TEXT },  // NOLINT
@@ -969,7 +958,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "monthlyContributionSet", IDS_BRAVE_REWARDS_TIP_MONTHLY_CONTRIBUTION_SET },  // NOLINT
         { "monthlyText", IDS_BRAVE_UI_MONTHLY_TEXT },
         { "nextContributionDate", IDS_BRAVE_REWARDS_TIP_NEXT_CONTRIBUTION_DATE },  // NOLINT
-        { "notEnoughPoints", IDS_BRAVE_REWARDS_TIP_NOT_ENOUGH_POINTS },
         { "notEnoughTokens", IDS_BRAVE_REWARDS_TIP_NOT_ENOUGH_TOKENS },
         { "on", IDS_BRAVE_UI_ON },
         { "onboardingMaybeLater", IDS_BRAVE_REWARDS_ONBOARDING_MAYBE_LATER },
@@ -1014,7 +1002,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "oneTimeTip", IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP },
         { "oneTimeTipAmount", IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP_AMOUNT },
         { "optInRequired", IDS_BRAVE_REWARDS_TIP_OPT_IN_REQUIRED },
-        { "points", IDS_BRAVE_UI_POINTS },
         { "postHeader", IDS_BRAVE_REWARDS_TIP_POST_HEADER },
         { "postHeaderTwitter", IDS_BRAVE_REWARDS_TIP_POST_HEADER_TWITTER },
         { "rewardsBannerText1", IDS_BRAVE_UI_REWARDS_BANNER_TEXT1 },

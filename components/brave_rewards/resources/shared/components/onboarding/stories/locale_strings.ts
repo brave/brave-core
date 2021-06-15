@@ -1,7 +1,4 @@
 export const localeStrings = {
-  bat: 'BAT',
-  bap: 'BAP',
-
   onboardingBraveRewards: 'Brave Rewards',
   onboardingDetailLinks: '$1Take a quick tour$2 or $3learn more$4 for details.',
   onboardingEarnHeader: 'Earn Tokens & Give Back',

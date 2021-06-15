@@ -28,7 +28,7 @@ import * as rewardsActions from '../actions/rewards_actions'
 import Promotion from './promotion'
 import { getLocale } from '../../../../common/locale'
 import { getActivePromos, getPromo, PromoType, Promo } from '../promos'
-import { upholdMinimumBalance } from '../../shared/lib/uphold'
+import { getMinimumBalance } from './connect_wallet_modal'
 
 interface Props extends Rewards.ComponentProps {
 }
@@ -185,7 +185,7 @@ class SettingsPage extends React.Component<Props, State> {
   }
 
   getPromotionsClaims = () => {
-    const { promotions, ui } = this.props.rewardsData
+    const { promotions } = this.props.rewardsData
 
     if (!promotions || promotions.length === 0) {
       return null
@@ -200,7 +200,7 @@ class SettingsPage extends React.Component<Props, State> {
 
           return (
             <div key={`promotion-${index}`}>
-              <Promotion promotion={promotion} onlyAnonWallet={ui.onlyAnonWallet} />
+              <Promotion promotion={promotion} />
             </div>
           )
         })}
@@ -256,7 +256,7 @@ class SettingsPage extends React.Component<Props, State> {
         <ModalRedirect
           id={'redirect-modal-bat-limit'}
           titleText={getLocale('redirectModalBatLimitTitle')}
-          errorText={text.replace('$1', String(upholdMinimumBalance))}
+          errorText={text.replace('$1', String(getMinimumBalance(walletType)))}
           buttonText={getLocale('redirectModalClose')}
           walletType={walletType}
           onClick={this.actions.hideRedirectModal}
@@ -350,8 +350,7 @@ class SettingsPage extends React.Component<Props, State> {
       adsData,
       contributionMonthly,
       externalWallet,
-      parameters,
-      ui
+      parameters
     } = this.props.rewardsData
 
     const externalWalletType = externalWallet ? externalWallet.type : ''
@@ -384,7 +383,6 @@ class SettingsPage extends React.Component<Props, State> {
       <RewardsTourModal
         layout='wide'
         firstTimeSetup={this.state.firstTimeSetup}
-        onlyAnonWallet={ui.onlyAnonWallet}
         adsPerHour={adsData.adsPerHour}
         autoContributeAmount={contributionMonthly}
         autoContributeAmountOptions={autoContributeChoices}

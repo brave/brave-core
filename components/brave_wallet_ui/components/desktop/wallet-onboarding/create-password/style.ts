@@ -17,7 +17,20 @@ export const Title = styled.span`
   line-height: 30px;
   color: ${(p) => p.theme.color.text01};
   letter-spacing: 0.02em;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
+`
+
+export const Description = styled.span`
+  display: flex;
+  align-items: center;
+  font-family: Poppins;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 300;
+  color: ${(p) => p.theme.color.text02};
+  max-width: 380px;
+  text-align: center;
+  margin-bottom: 24px;
 `
 
 export const IconBackground = styled.div`
@@ -45,43 +58,4 @@ export const InputColumn = styled.div`
   flex-direction: column;
   width: 250px;
   margin-bottom: 28px;
-`
-
-export const Input = styled.input`
-  width: 100%;
-  outline: none;
-  background-image: none;
-  background-color: ${(p) => p.theme.color.background02};
-  box-shadow: none;
-  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
-  border-radius: 4px;
-  font-family: Poppins;
-  font-style: normal;
-  font-size: 13px;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  padding: 10px 10px 10px 10px;
-  color: ${(p) => p.theme.color.text01};
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  ::placeholder {
-    font-family: Poppins;
-    font-style: normal;
-    font-size: 12px;
-    letter-spacing: 0.01em;
-    color: ${(p) => p.theme.color.text03};
-    font-weight: normal;
-  }
-  :focus {
-      outline: none;
-  }
-  ::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-  }
-  ::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-  }
-  margin-bottom: 10px;
 `

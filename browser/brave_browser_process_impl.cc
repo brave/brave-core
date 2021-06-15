@@ -106,8 +106,6 @@ void InitSystemRequestHandlerCallback() {
 
 }  // namespace
 
-BraveBrowserProcess* g_brave_browser_process = nullptr;
-
 using content::BrowserThread;
 
 BraveBrowserProcessImpl::~BraveBrowserProcessImpl() {}

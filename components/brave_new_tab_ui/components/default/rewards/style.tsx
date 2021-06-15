@@ -282,3 +282,13 @@ export const StyledTOS = styled(TOSAndPP as React.ComponentType<TOSProps>)`
 export const StyleCenter = styled('div')<{}>`
   text-align: center;
 `
+
+export const ArrivingSoon = styled.div`
+  background: ${p => p.theme.palette.white};
+  border-radius: 6px;
+  padding: 0 10px;
+  color: ${p => p.theme.palette.neutral900};
+  font-size: 14px;
+  line-height: 22px;
+  margin-bottom: 8px;
+`

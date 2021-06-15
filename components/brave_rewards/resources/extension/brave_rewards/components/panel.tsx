@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { WalletAddIcon, BatColorIcon } from 'brave-ui/components/icons'
 import { WalletWrapper, WalletSummary, WalletSummarySlider, WalletPanel } from '../../../ui/components'
 import { Provider } from '../../../ui/components/profile'
-import { NotificationType, WalletState } from '../../../ui/components/walletWrapper'
+import { NotificationType } from '../../../ui/components/walletWrapper'
 import { RewardsNotificationType } from '../constants/rewards_panel_types'
 import { Type as AlertType } from '../../../ui/components/alert'
 import { RewardsOptInModal, RewardsTourModal } from '../../../shared/components/onboarding'
@@ -16,15 +16,13 @@ import { RewardsOptInModal, RewardsTourModal } from '../../../shared/components/
 // Utils
 import * as rewardsPanelActions from '../actions/rewards_panel_actions'
 import * as utils from '../utils'
-import { upholdMinimumBalance } from '../../../shared/lib/uphold'
 
 import * as style from './panel.style'
 
 import { getMessage } from '../background/api/locale_api'
 
 interface Props extends RewardsExtension.ComponentProps {
-  tabId: number,
-  onlyAnonWallet: boolean
+  tabId: number
 }
 
 interface State {
@@ -359,7 +357,6 @@ export class Panel extends React.Component<Props, State> {
 
   getNotification = () => {
     const { notifications, currentNotification } = this.props.rewardsPanelData
-    const { onlyAnonWallet } = this.props
 
     if (
       currentNotification === undefined ||
@@ -392,7 +389,7 @@ export class Panel extends React.Component<Props, State> {
         // 16 - error while tipping
 
         if (result === '0') {
-          const currency = onlyAnonWallet ? getMessage('bap') : getMessage('bat')
+          const currency = getMessage('bat')
           const contributionAmount = utils.handleContributionAmount(notification.args[3])
           text = getMessage('contributeNotificationSuccess', [contributionAmount, currency])
         } else if (result === '15') {
@@ -596,7 +593,9 @@ export class Panel extends React.Component<Props, State> {
   }
 
   onDisconnectClick = () => {
-    chrome.braveRewards.disconnectWallet()
+    chrome.tabs.create({
+      url: 'chrome://rewards#disconnect-wallet'
+    })
   }
 
   shouldShowConnectedMessage = () => {
@@ -643,14 +642,12 @@ export class Panel extends React.Component<Props, State> {
   getActions = () => {
     let actions = []
 
-    if (!this.props.onlyAnonWallet) {
-      actions.push({
-        name: getMessage('addFunds'),
-        action: this.onAddFunds,
-        icon: <WalletAddIcon />,
-        externalWallet: true
-      })
-    }
+    actions.push({
+      name: getMessage('addFunds'),
+      action: this.onAddFunds,
+      icon: <WalletAddIcon />,
+      externalWallet: true
+    })
 
     return actions.concat([{
       name:  getMessage('rewardsSettings'),
@@ -660,7 +657,7 @@ export class Panel extends React.Component<Props, State> {
     }])
   }
 
-  getCurrentPromotion = (onlyAnonWallet: boolean) => {
+  getCurrentPromotion = () => {
     const { promotions } = this.props.rewardsPanelData
 
     if (!promotions) {
@@ -675,20 +672,7 @@ export class Panel extends React.Component<Props, State> {
       return undefined
     }
 
-    return utils.getPromotion(currentPromotion[0], onlyAnonWallet)
-  }
-
-  showLoginMessage = () => {
-    const { balance, externalWallet } = this.props.rewardsPanelData
-    const walletStatus = utils.getWalletStatus(externalWallet)
-    const walletType = externalWallet ? externalWallet.type : ''
-
-    return (
-      (!walletStatus || walletStatus === 'unverified') &&
-      walletType === 'uphold' &&
-      balance &&
-      balance.total < upholdMinimumBalance
-    )
+    return utils.getPromotion(currentPromotion[0])
   }
 
   showOnboarding () {
@@ -737,7 +721,6 @@ export class Panel extends React.Component<Props, State> {
         <style.rewardsTourSpacer>
           <RewardsTourModal
             firstTimeSetup={this.state.firstTimeSetup}
-            onlyAnonWallet={this.props.onlyAnonWallet}
             adsPerHour={adsPerHour}
             autoContributeAmount={autoContributeAmount}
             autoContributeAmountOptions={autoContributeChoices}
@@ -796,7 +779,6 @@ export class Panel extends React.Component<Props, State> {
     const notificationClick = this.getNotificationClickEvent(notificationType, notificationId)
     const defaultContribution = this.getContribution(publisher)
     const checkmark = publisher && utils.isPublisherConnectedOrVerified(publisher.status)
-    const { onlyAnonWallet } = this.props
 
     const pendingTotal = parseFloat(
       (pendingContributionTotal || 0).toFixed(3))
@@ -809,14 +791,10 @@ export class Panel extends React.Component<Props, State> {
       }
     }
 
-    let currentPromotion = this.getCurrentPromotion(onlyAnonWallet)
+    let currentPromotion = this.getCurrentPromotion()
 
-    let walletStatus: WalletState | undefined = undefined
-    let onVerifyClick = undefined
-    if (!this.props.onlyAnonWallet) {
-      walletStatus = utils.getWalletStatus(externalWallet)
-      onVerifyClick = utils.handleExternalWalletLink.bind(this, balance, externalWallet)
-    }
+    const walletStatus = utils.getWalletStatus(externalWallet)
+    const onVerifyClick = utils.handleExternalWalletLink.bind(this, balance, externalWallet)
 
     return (
       <WalletWrapper
@@ -841,8 +819,6 @@ export class Panel extends React.Component<Props, State> {
         onDisconnectClick={this.onDisconnectClick}
         goToExternalWallet={this.goToExternalWallet}
         greetings={utils.getGreetings(externalWallet)}
-        onlyAnonWallet={this.props.onlyAnonWallet}
-        showLoginMessage={this.showLoginMessage()}
         {...notification}
       >
         <WalletSummarySlider
@@ -872,14 +848,12 @@ export class Panel extends React.Component<Props, State> {
               publisherRefreshed={this.state.publisherRefreshed}
               setMonthlyAction={this.showTipSiteDetail.bind(this, 'set-monthly')}
               cancelMonthlyAction={this.showTipSiteDetail.bind(this, 'clear-monthly')}
-              onlyAnonWallet={onlyAnonWallet}
             />
             : null
           }
           <WalletSummary
             compact={true}
             reservedAmount={pendingTotal}
-            onlyAnonWallet={this.props.onlyAnonWallet}
             reservedMoreLink={'https://brave.com/faq/#unclaimed-funds'}
             {...this.getWalletSummary()}
           />

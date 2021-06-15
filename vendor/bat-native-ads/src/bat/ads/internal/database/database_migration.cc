@@ -17,6 +17,7 @@
 #include "bat/ads/internal/database/tables/conversions_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ads_database_table.h"
+#include "bat/ads/internal/database/tables/creative_inline_content_ads_database_table.h"
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
 #include "bat/ads/internal/database/tables/creative_promoted_content_ads_database_table.h"
 #include "bat/ads/internal/database/tables/dayparts_database_table.h"
@@ -78,6 +79,9 @@ void Migration::ToVersion(DBTransaction* transaction, const int to_version) {
 
   table::CreativeAdNotifications creative_ad_notifications_database_table;
   creative_ad_notifications_database_table.Migrate(transaction, to_version);
+
+  table::CreativeInlineContentAds creative_inline_content_ads_database_table;
+  creative_inline_content_ads_database_table.Migrate(transaction, to_version);
 
   table::CreativeNewTabPageAds creative_new_tab_page_ads_database_table;
   creative_new_tab_page_ads_database_table.Migrate(transaction, to_version);

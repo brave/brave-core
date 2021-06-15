@@ -6,7 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CLIENT_CLIENT_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CLIENT_CLIENT_H_
 
-#include <cstdint>
 #include <deque>
 #include <map>
 #include <memory>
@@ -29,6 +28,7 @@ namespace ads {
 
 struct AdContentInfo;
 struct AdHistoryInfo;
+struct AdInfo;
 struct CategoryContentInfo;
 
 class Client {
@@ -75,13 +75,15 @@ class Client {
                     const std::string& creative_set_id,
                     const bool flagged);
 
-  void UpdateSeenAdNotification(const std::string& creative_instance_id);
-  const std::map<std::string, uint64_t>& GetSeenAdNotifications();
-  void ResetSeenAdNotifications(const CreativeAdNotificationList& ads);
-
-  void UpdateSeenAdvertiser(const std::string& advertiser_id);
-  const std::map<std::string, uint64_t>& GetSeenAdvertisers();
-  void ResetSeenAdvertisers(const CreativeAdNotificationList& ads);
+  void UpdateSeenAd(const AdInfo& ad);
+  const std::map<std::string, bool>& GetSeenAdsForType(const AdType& type);
+  void ResetSeenAdsForType(const CreativeAdList& ads, const AdType& type);
+  void ResetAllSeenAdsForType(const AdType& type);
+  const std::map<std::string, bool>& GetSeenAdvertisersForType(
+      const AdType& type);
+  void ResetSeenAdvertisersForType(const CreativeAdList& ads,
+                                   const AdType& type);
+  void ResetAllSeenAdvertisersForType(const AdType& type);
 
   void SetNextAdServingInterval(const base::Time& next_check_serve_ad_date);
   base::Time GetNextAdServingInterval();

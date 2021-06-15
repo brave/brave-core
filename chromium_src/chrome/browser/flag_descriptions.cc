@@ -69,14 +69,16 @@ const char kBraveRewardsVerboseLoggingDescription[] =
     "information such as browsing history and credentials such as passwords "
     "and access tokens depending on your activity. Please do not share it "
     "unless asked to by Brave staff.";
-const char kBraveRewardsBitflyerName[] = "Enable bitFlyer for Brave Rewards";
-const char kBraveRewardsBitflyerDescription[] =
-    "Enables support for bitFlyer as an external wallet provider for Brave "
-    "Rewards users in Japan";
 const char kNativeBraveWalletName[] = "Enable experimental Brave native wallet";
 const char kNativeBraveWalletDescription[] =
     "Experimental native cryptocurrency wallet support without the use of "
     "extensions";
+const char kBraveSearchDefaultAPIName[] =
+    "Enable Brave Search website default search provider API";
+const char kBraveSearchDefaultAPIDescription[] =
+    "Enable javascript API only on "
+    "Brave Search websites which will allow the user to make the search engine "
+    "their default search provider.";
 const char kBraveDecentralizedDnsName[] = "Enable decentralized DNS";
 const char kBraveDecentralizedDnsDescription[] =
     "Enable decentralized DNS support, such as Unstoppable Domains and "

@@ -18,8 +18,10 @@
 
 namespace {
 
-BraveWalletService* GetBraveWalletService(content::BrowserContext* context) {
-  return BraveWalletServiceFactory::GetInstance()->GetForContext(context);
+brave_wallet::BraveWalletService* GetBraveWalletService(
+    content::BrowserContext* context) {
+  return brave_wallet::BraveWalletServiceFactory::GetInstance()->GetForContext(
+      context);
 }
 
 }  // namespace
@@ -47,6 +49,27 @@ void WalletPageHandler::CreateWallet(const std::string& password,
     keyring->AddAccounts();
   }
   std::move(callback).Run(keyring_controller->GetMnemonicForDefaultKeyring());
+}
+
+void WalletPageHandler::GetRecoveryWords(GetRecoveryWordsCallback callback) {
+  auto* browser_context = web_ui_->GetWebContents()->GetBrowserContext();
+  auto* keyring_controller =
+      GetBraveWalletService(browser_context)->keyring_controller();
+  keyring_controller->GetMnemonicForDefaultKeyring();
+  std::move(callback).Run(keyring_controller->GetMnemonicForDefaultKeyring());
+}
+
+void WalletPageHandler::RestoreWallet(const std::string& mnemonic,
+                                      const std::string& password,
+                                      RestoreWalletCallback callback) {
+  auto* browser_context = web_ui_->GetWebContents()->GetBrowserContext();
+  auto* keyring_controller =
+      GetBraveWalletService(browser_context)->keyring_controller();
+  auto* keyring = keyring_controller->RestoreDefaultKeyring(mnemonic, password);
+  if (keyring) {
+    keyring->AddAccounts();
+  }
+  std::move(callback).Run(keyring);
 }
 
 void WalletPageHandler::OnVisibilityChanged(content::Visibility visibility) {

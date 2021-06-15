@@ -103,8 +103,8 @@ class IpfsNavigationThrottleUnitTest : public testing::Test {
     content::MockNavigationHandle test_handle(web_contents());
     test_handle.set_url(GetIPFSURL());
     std::unique_ptr<IpfsNavigationThrottle> throttle =
-        IpfsNavigationThrottle::MaybeCreateThrottleFor(&test_handle, service,
-                                                       locale());
+        IpfsNavigationThrottle::MaybeCreateThrottleFor(
+            &test_handle, service, profile_->GetPrefs(), locale());
     throttle->set_resume_callback_for_testing(resume_callback);
     EXPECT_EQ(NavigationThrottle::DEFER, throttle->WillStartRequest().action())
         << GetIPFSURL();
@@ -280,7 +280,7 @@ TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilIpfsProcessLaunched) {
   content::MockNavigationHandle test_handle(web_contents());
   test_handle.set_url(GetIPFSURL());
   auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(
-      &test_handle, service, locale());
+      &test_handle, service, profile()->GetPrefs(), locale());
   ASSERT_TRUE(throttle != nullptr);
   bool was_navigation_resumed = false;
   throttle->set_resume_callback_for_testing(
@@ -322,7 +322,7 @@ TEST_F(IpfsNavigationThrottleUnitTest, ProceedForGatewayNodeMode) {
   content::MockNavigationHandle test_handle(web_contents());
   test_handle.set_url(GetIPFSURL());
   auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(
-      &test_handle, ipfs_service(profile()), locale());
+      &test_handle, ipfs_service(profile()), profile()->GetPrefs(), locale());
   ASSERT_TRUE(throttle != nullptr);
   EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
       << GetIPFSURL();
@@ -341,7 +341,7 @@ TEST_F(IpfsNavigationThrottleUnitTest, ProceedForAskNodeMode) {
   content::MockNavigationHandle test_handle(web_contents());
   test_handle.set_url(GetIPFSURL());
   auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(
-      &test_handle, ipfs_service(profile()), locale());
+      &test_handle, ipfs_service(profile()), profile()->GetPrefs(), locale());
   ASSERT_TRUE(throttle != nullptr);
   EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
       << GetIPFSURL();
@@ -360,7 +360,7 @@ TEST_F(IpfsNavigationThrottleUnitTest, ProceedForNonLocalGatewayURL) {
   content::MockNavigationHandle test_handle(web_contents());
   test_handle.set_url(GetPublicGatewayURL());
   auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(
-      &test_handle, ipfs_service(profile()), locale());
+      &test_handle, ipfs_service(profile()), profile()->GetPrefs(), locale());
   ASSERT_TRUE(throttle != nullptr);
   EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
       << GetPublicGatewayURL();
@@ -373,7 +373,7 @@ TEST_F(IpfsNavigationThrottleUnitTest, ProceedForNonLocalGatewayURL) {
 TEST_F(IpfsNavigationThrottleUnitTest, Instantiation) {
   content::MockNavigationHandle test_handle(web_contents());
   auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(
-      &test_handle, ipfs_service(profile()), locale());
+      &test_handle, ipfs_service(profile()), profile()->GetPrefs(), locale());
   EXPECT_TRUE(throttle != nullptr);
 
   // Disable in OTR profile.
@@ -382,7 +382,7 @@ TEST_F(IpfsNavigationThrottleUnitTest, Instantiation) {
   content::MockNavigationHandle otr_test_handle(otr_web_contents.get());
   auto throttle_in_otr = IpfsNavigationThrottle::MaybeCreateThrottleFor(
       &otr_test_handle, ipfs_service(profile()->GetPrimaryOTRProfile()),
-      locale());
+      profile()->GetPrefs(), locale());
   EXPECT_EQ(throttle_in_otr, nullptr);
 
   // Disable in guest sessions.
@@ -391,7 +391,8 @@ TEST_F(IpfsNavigationThrottleUnitTest, Instantiation) {
       guest_profile.get(), nullptr);
   content::MockNavigationHandle guest_test_handle(guest_web_contents.get());
   auto throttle_in_guest = IpfsNavigationThrottle::MaybeCreateThrottleFor(
-      &guest_test_handle, ipfs_service(guest_profile.get()), locale());
+      &guest_test_handle, ipfs_service(guest_profile.get()),
+      profile()->GetPrefs(), locale());
   EXPECT_EQ(throttle_in_guest, nullptr);
 }
 
@@ -407,7 +408,8 @@ TEST_F(IpfsNavigationThrottleUnitTest, NotInstantiatedInTor) {
       content::WebContentsTester::CreateTestWebContents(tor_profile, nullptr);
   content::MockNavigationHandle tor_test_handle(tor_web_contents.get());
   auto throttle_in_tor = IpfsNavigationThrottle::MaybeCreateThrottleFor(
-      &tor_test_handle, ipfs_service(tor_profile), locale());
+      &tor_test_handle, ipfs_service(tor_profile), profile()->GetPrefs(),
+      locale());
   EXPECT_EQ(throttle_in_tor, nullptr);
 }
 #endif

@@ -1,3 +1,8 @@
+/vendor/*
+!/vendor/bat-native-ledger
+!/vendor/bat-native-ads
+!/vendor/brave-ios
+!/vendor/CPPLINT.cfg
 .DS_Store
 .tags*
 /.idea/
@@ -8,11 +13,6 @@
 /components/third_party/local_data/LICENSE
 /dist/
 /out/
-/vendor/*
-!/vendor/bat-native-ledger
-!/vendor/bat-native-ads
-!/vendor/brave-ios
-!/vendor/CPPLINT.cfg
 node_modules/
 patches/**/*.patchinfo
 /third_party/ethash/src

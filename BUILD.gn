@@ -1,6 +1,7 @@
 import("//brave/build/cargo.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
 import("//build/config/zip.gni")
 import("//build/util/process_version.gni")
@@ -450,7 +451,6 @@ if (is_mac) {
     args = [
       "--brave_channel=" + brave_channel,
       "--brave_product_dir_name=" + brave_product_dir_name,
-      "--brave_feed_url=" + brave_feed_url,
       "--brave_version=" + brave_version,
       "--brave_eddsa_key=" + sparkle_eddsa_public_key,
     ]
@@ -491,5 +491,11 @@ action("audit_deps") {
   }
   if (audit_dev_deps) {
     args += [ "--audit_dev_deps" ]
+  }
+}
+
+group("tools") {
+  if (enable_brave_vpn) {
+    deps = [ "//brave/components/brave_vpn:vpntool" ]
   }
 }

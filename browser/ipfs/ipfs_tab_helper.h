@@ -48,13 +48,23 @@ class IPFSTabHelper : public content::WebContentsObserver,
     return static_cast<IpfsImportController*>(this);
   }
 
+  void SetPageURLForTesting(const GURL& url) {
+    current_page_url_for_testing_ = url;
+  }
+
  private:
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, CanResolveURLTest);
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, URLResolvingTest);
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, GatewayResolving);
+
   friend class content::WebContentsUserData<IPFSTabHelper>;
   explicit IPFSTabHelper(content::WebContents* web_contents);
 
+  GURL GetCurrentPageURL() const;
+  bool CanResolveURL(const GURL& url) const;
   bool IsDNSLinkCheckEnabled() const;
   void IPFSLinkResolved(const GURL& ipfs);
-  void MaybeShowDNSLinkButton(content::NavigationHandle* handle);
+  void MaybeShowDNSLinkButton(const net::HttpResponseHeaders* headers);
   void UpdateDnsLinkButtonState();
 
   void MaybeSetupIpfsProtocolHandlers(const GURL& url);
@@ -71,6 +81,7 @@ class IPFSTabHelper : public content::WebContentsObserver,
   PrefService* pref_service_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
   GURL ipfs_resolved_url_;
+  GURL current_page_url_for_testing_;
   std::unique_ptr<IPFSHostResolver> resolver_;
   base::WeakPtrFactory<IPFSTabHelper> weak_ptr_factory_{this};
   WEB_CONTENTS_USER_DATA_KEY_DECL();

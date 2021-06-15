@@ -90,6 +90,8 @@ const locale = {
   backupIntroTitle: 'Backup your wallet now!',
   backupIntroDescription: 'In the next step you will see 12 words that allows you to recover your crypto wallet.',
   backupIntroTerms: 'I understand that if I lose my recovery words, I will not be able to access my crypto wallet.',
+  backupButtonSkip: 'Skip',
+  backupButtonCancel: 'Cancel',
 
   // Recovery Phrase Backup
   recoveryTitle: 'Your recovery phrase',
@@ -105,17 +107,36 @@ const locale = {
   verifyError: 'Phrases did not match, please try again.',
 
   // Create Password
-  createPasswordTitle: 'Secure your crypto with a password',
+  createPasswordTitle: 'Secure Brave Wallet with a password',
+  createPasswordDescription: 'Password must be at least 7 characters containg at least one number and a special character',
   createPasswordInput: 'Password',
   createPasswordInput2: 'Re-Type Password',
+  createPasswordError: 'Password must be 7 or more characters',
+  createPasswordError2: 'Re-typed password does not match',
 
   // Lock Screen
   lockScreenTitle: 'Enter password to unlock wallet',
   lockScreenButton: 'Unlock',
+  lockScreenError: 'Incorrect password',
 
   // Wallet More Popup
   walletPopupSettings: 'Settings',
-  walletPopupLock: 'Lock Crypto Wallet'
+  walletPopupLock: 'Lock Crypto Wallet',
+  walletPopupBackup: 'Backup Wallet',
+
+  // Backup Warning
+  backupWarningText: 'Backup your wallet now to protect your crypto portfolio from loss of access.',
+
+  // Restore Screen
+  restoreTite: 'Restore Crypto Account',
+  restoreDescription: 'Enter your recovery phrase to restore your Brave Wallet crypto account.',
+  restoreError: 'The recovery phrase entered is invalid.',
+  restorePlaceholder: 'Paste recovery phrase from clipboard',
+  restoreShowPhrase: 'Show recovery phrase',
+  restoreFormText: 'New Password',
+
+  // Tool Tips
+  toolTipCopyToClipboard: 'Copy to Clipboard'
 }
 
 export default locale

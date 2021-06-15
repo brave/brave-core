@@ -7,6 +7,15 @@ export type CreateWalletPayloadType = {
   password: string
 }
 
+export type RestoreWalletPayloadType = {
+  mnemonic: string,
+  password: string
+}
+
 export type WalletCreatedPayloadType = {
+  mnemonic: string
+}
+
+export type RecoveryWordsAvailablePayloadType = {
   mnemonic: string
 }

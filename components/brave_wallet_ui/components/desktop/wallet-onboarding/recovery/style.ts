@@ -50,7 +50,6 @@ export const CopyButton = styled.button`
   line-height: 20px;
   color: ${(p) => p.theme.color.interactive07};
   margin-top: 16px;
-  margin-bottom: 26px;
 `
 
 export const TermsRow = styled.div`
@@ -58,6 +57,7 @@ export const TermsRow = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: row;
+  margin-top: 26px;
   margin-bottom: 30px;
 `
 

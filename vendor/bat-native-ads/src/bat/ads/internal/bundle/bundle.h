@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_BUNDLE_H_
 
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
+#include "bat/ads/internal/bundle/creative_inline_content_ad_info.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
 #include "bat/ads/internal/bundle/creative_promoted_content_ad_info.h"
 #include "bat/ads/internal/conversions/conversion_info.h"
@@ -38,6 +39,10 @@ class Bundle {
   void DeleteCreativeAdNotifications();
   void SaveCreativeAdNotifications(
       const CreativeAdNotificationList& creative_ad_notifications);
+
+  void DeleteCreativeInlineContentAds();
+  void SaveCreativeInlineContentAds(
+      const CreativeInlineContentAdList& creative_inline_content_ads);
 
   void DeleteCreativeNewTabPageAds();
   void SaveCreativeNewTabPageAds(

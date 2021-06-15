@@ -8,6 +8,7 @@
 #import "BATBraveAds+Private.h"
 #import "BATBraveAds.h"
 #import "BATBraveLedger.h"
+#import "BATInlineContentAd.h"
 
 #import "bat/ads/ad_event_history.h"
 #import "bat/ads/ads.h"
@@ -84,6 +85,11 @@ ads::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
 
 @interface BATAdNotification ()
 - (instancetype)initWithNotificationInfo:(const ads::AdNotificationInfo&)info;
+@end
+
+@interface BATInlineContentAd ()
+- (instancetype)initWithInlineContentAdInfo:
+    (const ads::InlineContentAdInfo&)info;
 @end
 
 @interface BATBraveAds () <NativeAdsClientBridge> {
@@ -331,7 +337,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 - (void)setEnabled:(BOOL)enabled {
   self.prefs[kAdsEnabledPrefKey] = @(enabled);
-  [self savePrefs];
+  [self savePref:kAdsEnabledPrefKey];
 
   if (enabled) {
     [self initializeIfAdsEnabled];
@@ -348,7 +354,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 - (void)setNumberOfAllowableAdsPerHour:(NSInteger)numberOfAllowableAdsPerHour {
   self.prefs[kNumberOfAdsPerHourKey] = @(numberOfAllowableAdsPerHour);
-  [self savePrefs];
+  [self savePref:kNumberOfAdsPerHourKey];
 }
 
 - (BOOL)shouldAllowSubdivisionTargeting {
@@ -358,7 +364,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 - (void)setAllowSubdivisionTargeting:(BOOL)allowAdsSubdivisionTargeting {
   self.prefs[kShouldAllowAdsSubdivisionTargetingPrefKey] =
       @(allowAdsSubdivisionTargeting);
-  [self savePrefs];
+  [self savePref:kShouldAllowAdsSubdivisionTargetingPrefKey];
 }
 
 - (NSString*)subdivisionTargetingCode {
@@ -366,21 +372,8 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 }
 
 - (void)setSubdivisionTargetingCode:(NSString*)subdivisionTargetingCode {
-  const NSString* lastSubdivisionTargetingCode =
-      [self subdivisionTargetingCode];
-
   self.prefs[kAdsSubdivisionTargetingCodePrefKey] = subdivisionTargetingCode;
-  [self savePrefs];
-
-  if (lastSubdivisionTargetingCode == subdivisionTargetingCode) {
-    return;
-  }
-
-  if (![self isAdsServiceRunning]) {
-    return;
-  }
-
-  ads->OnAdsSubdivisionTargetingCodeHasChanged();
+  [self savePref:kAdsSubdivisionTargetingCodePrefKey];
 }
 
 - (NSString*)autoDetectedSubdivisionTargetingCode {
@@ -392,6 +385,14 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
     (NSString*)autoDetectedSubdivisionTargetingCode {
   self.prefs[kAutoDetectedAdsSubdivisionTargetingCodePrefKey] =
       autoDetectedSubdivisionTargetingCode;
+  [self savePref:kAutoDetectedAdsSubdivisionTargetingCodePrefKey];
+}
+
+- (void)savePref:(NSString*)name {
+  if ([self isAdsServiceRunning]) {
+    ads->OnPrefChanged(name.UTF8String);
+  }
+
   [self savePrefs];
 }
 
@@ -588,7 +589,8 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 }
 
 - (void)reportAdNotificationEvent:(NSString*)uuid
-                        eventType:(BATAdNotificationEventType)eventType {
+                        eventType:
+                            (BATBraveAdsAdNotificationEventType)eventType {
   if (![self isAdsServiceRunning]) {
     return;
   }
@@ -598,7 +600,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 - (void)reportNewTabPageAdEvent:(NSString*)wallpaperId
              creativeInstanceId:(NSString*)creativeInstanceId
-                      eventType:(BATNewTabPageAdEventType)eventType {
+                      eventType:(BATBraveAdsNewTabPageAdEventType)eventType {
   if (![self isAdsServiceRunning]) {
     return;
   }
@@ -607,9 +609,40 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
                            static_cast<ads::NewTabPageAdEventType>(eventType));
 }
 
+- (void)inlineContentAdsWithDimensions:(NSString*)dimensions
+                            completion:
+                                (void (^)(BOOL success,
+                                          NSString* dimensions,
+                                          BATInlineContentAd* ad))completion {
+  if (![self isAdsServiceRunning]) {
+    return;
+  }
+  ads->GetInlineContentAd(dimensions.UTF8String, ^(
+                              const bool success, const std::string& dimensions,
+                              const ads::InlineContentAdInfo& ad) {
+    const auto inline_content_ad =
+        [[BATInlineContentAd alloc] initWithInlineContentAdInfo:ad];
+    completion(success, [NSString stringWithUTF8String:dimensions.c_str()],
+               inline_content_ad);
+  });
+}
+
+- (void)reportInlineContentAdEvent:(NSString*)uuid
+                creativeInstanceId:(NSString*)creativeInstanceId
+                         eventType:
+                             (BATBraveAdsInlineContentAdEventType)eventType {
+  if (![self isAdsServiceRunning]) {
+    return;
+  }
+  ads->OnInlineContentAdEvent(
+      uuid.UTF8String, creativeInstanceId.UTF8String,
+      static_cast<ads::mojom::BraveAdsInlineContentAdEventType>(eventType));
+}
+
 - (void)reportPromotedContentAdEvent:(NSString*)uuid
                   creativeInstanceId:(NSString*)creativeInstanceId
-                           eventType:(BATPromotedContentAdEventType)eventType {
+                           eventType:(BATBraveAdsPromotedContentAdEventType)
+                                         eventType {
   if (![self isAdsServiceRunning]) {
     return;
   }
@@ -741,7 +774,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 - (void)setAdsResourceMetadata:(NSDictionary*)adsResourceMetadata {
   self.prefs[kAdsResourceMetadataPrefKey] = adsResourceMetadata;
-  [self savePrefs];
+  [self savePref:kAdsResourceMetadataPrefKey];
 }
 
 - (BOOL)registerAdsResourcesForLanguageCode:(NSString*)languageCode {
@@ -1264,7 +1297,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 - (void)setBooleanPref:(const std::string&)path value:(const bool)value {
   const auto key = [NSString stringWithUTF8String:path.c_str()];
   self.prefs[key] = @(value);
-  [self savePrefs];
+  [self savePref:key];
 }
 
 - (bool)getBooleanPref:(const std::string&)path {
@@ -1278,7 +1311,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 - (void)setIntegerPref:(const std::string&)path value:(const int)value {
   const auto key = [NSString stringWithUTF8String:path.c_str()];
   self.prefs[key] = @(value);
-  [self savePrefs];
+  [self savePref:key];
 }
 
 - (int)getIntegerPref:(const std::string&)path {
@@ -1289,7 +1322,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 - (void)setDoublePref:(const std::string&)path value:(const double)value {
   const auto key = [NSString stringWithUTF8String:path.c_str()];
   self.prefs[key] = @(value);
-  [self savePrefs];
+  [self savePref:key];
 }
 
 - (double)getDoublePref:(const std::string&)path {
@@ -1300,7 +1333,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 - (void)setStringPref:(const std::string&)path value:(const std::string&)value {
   const auto key = [NSString stringWithUTF8String:path.c_str()];
   self.prefs[key] = [NSString stringWithUTF8String:value.c_str()];
-  [self savePrefs];
+  [self savePref:key];
 }
 
 - (std::string)getStringPref:(const std::string&)path {
@@ -1315,7 +1348,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 - (void)setInt64Pref:(const std::string&)path value:(const int64_t)value {
   const auto key = [NSString stringWithUTF8String:path.c_str()];
   self.prefs[key] = @(value);
-  [self savePrefs];
+  [self savePref:key];
 }
 
 - (int64_t)getInt64Pref:(const std::string&)path {
@@ -1326,7 +1359,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 - (void)setUint64Pref:(const std::string&)path value:(const uint64_t)value {
   const auto key = [NSString stringWithUTF8String:path.c_str()];
   self.prefs[key] = @(value);
-  [self savePrefs];
+  [self savePref:key];
 }
 
 - (uint64_t)getUint64Pref:(const std::string&)path {
@@ -1337,7 +1370,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 - (void)clearPref:(const std::string&)path {
   const auto key = [NSString stringWithUTF8String:path.c_str()];
   [self.prefs removeObjectForKey:key];
-  [self savePrefs];
+  [self savePref:key];
 }
 
 #pragma mark - Ads Resources Paths

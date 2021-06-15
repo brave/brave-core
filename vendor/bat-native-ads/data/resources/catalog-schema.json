@@ -127,13 +127,13 @@
                             "required": [
                                 "creativeSetId",
                                 "perDay",
-                                "perWeek",
-                                "perMonth",
                                 "totalMax",
                                 "segments",
                                 "creatives",
                                 "oses",
                                 "channels",
+                                "perMonth",
+                                "perWeek",
                                 "value"
                             ],
                             "properties": {
@@ -143,13 +143,13 @@
                                 "perDay": {
                                     "type": "number"
                                 },
-                                "perWeek": {
+                                "totalMax": {
                                     "type": "number"
                                 },
                                 "perMonth": {
                                     "type": "number"
                                 },
-                                "totalMax": {
+                                "perWeek": {
                                     "type": "number"
                                 },
                                 "splitTestGroup": {
@@ -380,6 +380,29 @@
                                                                 "type": "boolean"
                                                             },
                                                             "contentType": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "additionalProperties": false
+                                                    },
+                                                    {
+                                                        "properties": {
+                                                            "title": {
+                                                                "type": "string"
+                                                            },
+                                                            "description": {
+                                                                "type": "string"
+                                                            },
+                                                            "imageUrl": {
+                                                                "type": "string"
+                                                            },
+                                                            "dimensions": {
+                                                                "type": "string"
+                                                            },
+                                                            "targetUrl": {
+                                                                "type": "string"
+                                                            },
+                                                            "ctaText": {
                                                                 "type": "string"
                                                             }
                                                         },

@@ -1,5 +1,5 @@
 {
-  "version": 7,
+  "version": 8,
   "issuers": [
     {
       "name": "confirmation",
@@ -83,6 +83,23 @@
                 "ogImages": false,
                 "contentType": "Content Type 1",
                 "description": "Test Promoted Content Ad Campaign 1"
+              }
+            },
+            {
+              "creativeInstanceId": "30db5f7b-dba3-48a3-b299-c9bd9c67da65",
+              "type": {
+                "code": "inline_content_all_v1",
+                "name": "inline_content",
+                "platform": "all",
+                "version": 1
+              },
+              "payload": {
+                "title": "Inline Content 1",
+                "description": "Test Inline Content Ad Campaign 1",
+                "imageUrl": "https://www.brave.com/1/image.png",
+                "dimensions": "200x100",
+                "ctaText": "Call to Action Text 1",
+                "targetUrl": "https://brave.com/1/inline_content_ad"
               }
             }
           ],

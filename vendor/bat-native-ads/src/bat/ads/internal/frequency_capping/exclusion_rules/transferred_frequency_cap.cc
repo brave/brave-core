@@ -11,8 +11,8 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "bat/ads/internal/frequency_capping/frequency_capping_features.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
-#include "bat/ads/internal/logging.h"
 
 namespace ads {
 
@@ -47,8 +47,9 @@ bool TransferredFrequencyCap::DoesRespectCap(const AdEventList& ad_events) {
   const std::deque<uint64_t> history =
       GetTimestampHistoryForAdEvents(ad_events);
 
-  const uint64_t time_constraint =
-      2 * (base::Time::kSecondsPerHour * base::Time::kHoursPerDay);
+  const int64_t time_constraint =
+      features::frequency_capping::ExcludeAdIfTransferredWithinTimeWindow()
+          .InSeconds();
 
   return DoesHistoryRespectCapForRollingTimeConstraint(
       history, time_constraint, kTransferredFrequencyCap);
@@ -62,7 +63,8 @@ AdEventList TransferredFrequencyCap::FilterAdEvents(
   const auto iter = std::remove_if(
       filtered_ad_events.begin(), filtered_ad_events.end(),
       [&ad](const AdEventInfo& ad_event) {
-        return ad_event.type != AdType::kAdNotification ||
+        return (ad_event.type != AdType::kAdNotification &&
+                ad_event.type != AdType::kInlineContentAd) ||
                ad_event.campaign_id != ad.campaign_id ||
                ad_event.confirmation_type != ConfirmationType::kTransferred;
       });

@@ -107,13 +107,6 @@ void Promotion::Initialize() {
 }
 
 void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
-  if (ledger_->ledger_client()->GetBooleanOption(
-          option::kContributionsDisabledForBAPMigration)) {
-    BLOG(1, "Fetch promotions disabled for BAP migration");
-    callback(type::Result::LEDGER_OK, {});
-    return;
-  }
-
   // If we fetched promotions recently, fulfill this request from the
   // database instead of querying the server again
   if (!ledger::is_testing) {

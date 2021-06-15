@@ -21,6 +21,13 @@ export const convertBalance = (tokens: number, rate: number): string => {
   return converted.toFixed(2)
 }
 
+export const getWalletProviderName = (wallet?: Rewards.ExternalWallet) => {
+  switch (wallet ? wallet.type : '') {
+    case 'uphold' : return 'Uphold'
+    default: return ''
+  }
+}
+
 export const formatConverted = (converted: string, currency: string = 'USD'): string | null => {
   return `${converted} ${currency}`
 }

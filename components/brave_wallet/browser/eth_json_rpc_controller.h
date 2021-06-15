@@ -13,16 +13,15 @@
 #include <vector>
 
 #include "base/callback.h"
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list_threadsafe.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_events_observer.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 #include "url/gurl.h"
 
-namespace content {
-class BrowserContext;
-}  // namespace content
-
 namespace network {
+class SharedURLLoaderFactory;
 class SimpleURLLoader;
 }  // namespace network
 
@@ -30,7 +29,9 @@ namespace brave_wallet {
 
 class EthJsonRpcController {
  public:
-  EthJsonRpcController(content::BrowserContext* context, Network network);
+  EthJsonRpcController(
+      Network network,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~EthJsonRpcController();
 
   using URLRequestCallback =
@@ -44,6 +45,21 @@ class EthJsonRpcController {
       base::OnceCallback<void(bool status, const std::string& balance)>;
   void GetBalance(const std::string& address, GetBallanceCallback callback);
 
+  using GetTxCountCallback =
+      base::OnceCallback<void(bool status, uint256_t result)>;
+  void GetTransactionCount(const std::string& address,
+                           GetTxCountCallback callback);
+
+  using GetTxReceiptCallback =
+      base::OnceCallback<void(bool status, TransactionReceipt result)>;
+  void GetTransactionReceipt(const std::string& tx_hash,
+                             GetTxReceiptCallback callback);
+
+  using SendRawTxCallback =
+      base::OnceCallback<void(bool status, const std::string& tx_hash)>;
+  void SendRawTransaction(const std::string& signed_tx,
+                          SendRawTxCallback callback);
+
   using GetERC20TokenBalanceCallback =
       base::OnceCallback<void(bool status, const std::string& balance)>;
   bool GetERC20TokenBalance(const std::string& conract_address,
@@ -54,6 +70,12 @@ class EthJsonRpcController {
   using UnstoppableDomainsProxyReaderGetManyCallback =
       base::OnceCallback<void(bool status, const std::string& result)>;
   bool UnstoppableDomainsProxyReaderGetMany(
+      const std::string& contract_address,
+      const std::string& domain,
+      const std::vector<std::string>& keys,
+      UnstoppableDomainsProxyReaderGetManyCallback callback);
+
+  bool EnsProxyReaderResolveAddress(
       const std::string& contract_address,
       const std::string& domain,
       const std::vector<std::string>& keys,
@@ -82,6 +104,19 @@ class EthJsonRpcController {
                     const int status,
                     const std::string& body,
                     const std::map<std::string, std::string>& headers);
+  void OnGetTransactionCount(GetTxCountCallback callback,
+                             const int status,
+                             const std::string& body,
+                             const std::map<std::string, std::string>& headers);
+  void OnGetTransactionReceipt(
+      GetTxReceiptCallback callback,
+      const int status,
+      const std::string& body,
+      const std::map<std::string, std::string>& headers);
+  void OnSendRawTransaction(SendRawTxCallback callback,
+                            const int status,
+                            const std::string& body,
+                            const std::map<std::string, std::string>& headers);
   void OnGetERC20TokenBalance(
       GetERC20TokenBalanceCallback callback,
       const int status,
@@ -94,12 +129,20 @@ class EthJsonRpcController {
       const std::string& body,
       const std::map<std::string, std::string>& headers);
 
-  content::BrowserContext* context_;
+  void OnEnsProxyReaderResolveAddress(
+      UnstoppableDomainsProxyReaderGetManyCallback callback,
+      int status,
+      const std::string& body,
+      const std::map<std::string, std::string>& headers);
+
   GURL network_url_;
   SimpleURLLoaderList url_loaders_;
   Network network_;
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   scoped_refptr<base::ObserverListThreadSafe<BraveWalletProviderEventsObserver>>
       observers_;
+
+  base::WeakPtrFactory<EthJsonRpcController> weak_ptr_factory_;
 };
 
 }  // namespace brave_wallet

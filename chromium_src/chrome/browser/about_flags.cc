@@ -183,11 +183,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveRewardsVerboseLoggingName,                    \
      flag_descriptions::kBraveRewardsVerboseLoggingDescription,             \
      kOsDesktop | kOsAndroid,                                               \
-     FEATURE_VALUE_TYPE(brave_rewards::features::kVerboseLoggingFeature)},  \
-    {"brave-rewards-bitflyer",                                              \
-     flag_descriptions::kBraveRewardsBitflyerName,                          \
-     flag_descriptions::kBraveRewardsBitflyerDescription, kOsDesktop,       \
-     FEATURE_VALUE_TYPE(brave_rewards::features::kBitflyerFeature)},
+     FEATURE_VALUE_TYPE(brave_rewards::features::kVerboseLoggingFeature)},
 
 
 #define SetFeatureEntryEnabled SetFeatureEntryEnabled_ChromiumImpl

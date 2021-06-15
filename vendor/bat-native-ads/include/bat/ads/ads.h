@@ -7,7 +7,6 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_H_
 
 #include <cstdint>
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -17,6 +16,7 @@
 #include "bat/ads/ads_history_info.h"
 #include "bat/ads/category_content_info.h"
 #include "bat/ads/export.h"
+#include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/mojom.h"
 #include "bat/ads/promoted_content_ad_info.h"
 #include "bat/ads/result.h"
@@ -28,6 +28,9 @@ using InitializeCallback = std::function<void(const Result)>;
 using ShutdownCallback = std::function<void(const Result)>;
 
 using RemoveAllHistoryCallback = std::function<void(const Result)>;
+
+using GetInlineContentAdCallback = std::function<
+    void(const bool, const std::string&, const InlineContentAdInfo&)>;
 
 using GetAccountStatementCallback =
     std::function<void(const bool, const StatementInfo&)>;
@@ -81,8 +84,8 @@ class ADS_EXPORT Ads {
   // <ISO-639-1>-<ISO-3166-1> or <ISO-639-1>_<ISO-3166-1> format
   virtual void ChangeLocale(const std::string& locale) = 0;
 
-  // Should be called when the ads subdivision targeting code has changed
-  virtual void OnAdsSubdivisionTargetingCodeHasChanged() = 0;
+  // Should be called when a pref changes. |path| contains the pref path
+  virtual void OnPrefChanged(const std::string& path) = 0;
 
   // Should be called when a page has loaded and the content is available for
   // analysis. |redirect_chain| contains the chain of redirects, including
@@ -171,6 +174,17 @@ class ADS_EXPORT Ads {
       const std::string& uuid,
       const std::string& creative_instance_id,
       const PromotedContentAdEventType event_type) = 0;
+
+  // Should be called to get an eligible inline content ad for the specified
+  // size
+  virtual void GetInlineContentAd(const std::string& dimensions,
+                                  GetInlineContentAdCallback callback) = 0;
+
+  // Should be called when a user views or clicks an inline content ad
+  virtual void OnInlineContentAdEvent(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const InlineContentAdEventType event_type) = 0;
 
   // Should be called to remove all cached history. The callback takes one
   // argument - |Result| should be set to |SUCCESS| if successful otherwise

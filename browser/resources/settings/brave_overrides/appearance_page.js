@@ -69,6 +69,18 @@ RegisterPolymerTemplateModifications({
           label="${I18nBehavior.i18n('mruCyclingSettingLabel')}">
         </settings-toggle-button>
       `)
+      const isSpeedreaderEnabled = loadTimeData.getBoolean('isSpeedreaderFeatureEnabled')
+      if (isSpeedreaderEnabled) {
+        zoomLevel.parentNode.insertAdjacentHTML('afterend', `
+          <settings-toggle-button
+            class="hr"
+            pref="{{prefs.brave.speedreader.enabled}}"
+            label="${I18nBehavior.i18n('speedreaderSettingLabel')}"
+            sub-label="${I18nBehavior.i18n('speedreaderSettingSubLabel')}"
+            learn-more-url="${I18nBehavior.i18n('speedreaderLearnMoreURL')}">
+          </settings-toggle-button>
+      `)
+      }
     }
     // Super referral themes prefs
     const pages = templateContent.getElementById('pages')

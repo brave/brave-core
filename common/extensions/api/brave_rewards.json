@@ -1115,23 +1115,6 @@
         "parameters": []
       },
       {
-        "name": "onlyAnonWallet",
-        "type": "function",
-        "description": "Get information if we should only allow anonymous wallet",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "only",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "name": "getAdsAccountStatement",
         "type": "function",
         "description": "Get ads account statement",
@@ -1149,11 +1132,8 @@
                 "type": "object",
                 "optional": true,
                 "properties": {
-                  "estimatedPendingRewards": {
-                    "type": "number"
-                  },
                   "nextPaymentDate": {
-                    "type": "string"
+                    "type": "number"
                   },
                   "adsReceivedThisMonth": {
                     "type": "integer"

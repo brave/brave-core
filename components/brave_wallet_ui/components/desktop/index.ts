@@ -12,13 +12,15 @@ import PortfolioTransactionItem from './portfolio-transaction-item'
 import AddButton from './add-button'
 import LockScreen from './lock-screen'
 import WalletMorePopup from './wallet-more-popup'
+import BackupWarningBanner from './backup-warning-banner'
 import { CryptoView, PortfolioView } from './views'
 import {
   OnboardingWelcome,
   OnboardingBackup,
   OnboardingRecovery,
   OnboardingVerify,
-  OnboardingCreatePassword
+  OnboardingCreatePassword,
+  OnboardingRestore
 } from './wallet-onboarding'
 
 export {
@@ -42,5 +44,7 @@ export {
   OnboardingVerify,
   OnboardingCreatePassword,
   LockScreen,
-  WalletMorePopup
+  WalletMorePopup,
+  BackupWarningBanner,
+  OnboardingRestore
 }

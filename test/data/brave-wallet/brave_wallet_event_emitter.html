@@ -4,17 +4,6 @@
   var received_connect_event = false
   var received_chain_changed_event = false
   console.log('page loaded!')
-  if (window.ethereum) {
-    window.ethereum.on('connect', function(chainId) {
-        received_connect_event = true
-    });
-    if (window.ethereum.isConnected()) {
-      received_connect_event = true
-    }
-    window.ethereum.on('chainChanged', function(chainId) {
-        received_chain_changed_event = true
-    });
-  }
 </script></head>
 <body></body>
 </html>

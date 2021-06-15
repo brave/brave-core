@@ -154,7 +154,7 @@ window.cr.define('brave_rewards', function () {
     }
   }
 
-  function statement (data: {adsEstimatedPendingRewards: number, adsNextPaymentDate: string, adsReceivedThisMonth: number}) {
+  function statement (data: any) {
     getActions().onStatement(data)
   }
 
@@ -218,11 +218,9 @@ window.cr.define('brave_rewards', function () {
     if (properties.result === 0) {
       getActions().getExternalWallet()
       getActions().getBalance()
+      return
     }
-  }
-
-  function onlyAnonWallet (only: boolean) {
-    getActions().onOnlyAnonWallet(only)
+    getActions().disconnectWalletError()
   }
 
   function unblindedTokensReady () {
@@ -301,7 +299,6 @@ window.cr.define('brave_rewards', function () {
     externalWallet,
     processRewardsPageUrl,
     disconnectWallet,
-    onlyAnonWallet,
     unblindedTokensReady,
     monthlyReport,
     reconcileStampReset,

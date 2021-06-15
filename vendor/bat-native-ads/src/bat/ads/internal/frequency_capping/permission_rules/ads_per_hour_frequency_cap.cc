@@ -25,7 +25,7 @@ bool AdsPerHourFrequencyCap::ShouldAllow() {
   }
 
   const std::deque<uint64_t> history =
-      GetAdEvents(AdType::kAdNotification, ConfirmationType::kViewed);
+      GetAdEvents(AdType::kAdNotification, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
     last_message_ = "You have exceeded the allowed ads per hour";
@@ -44,6 +44,9 @@ bool AdsPerHourFrequencyCap::DoesRespectCap(
   const uint64_t time_constraint = base::Time::kSecondsPerHour;
 
   const uint64_t cap = settings::GetAdsPerHour();
+  if (cap == 0) {
+    return false;
+  }
 
   return DoesHistoryRespectCapForRollingTimeConstraint(history, time_constraint,
                                                        cap);

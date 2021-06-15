@@ -13,10 +13,10 @@ namespace ads {
 namespace p2a {
 
 void RecordEvent(const std::string& name,
-                 const std::vector<std::string>& items) {
+                 const std::vector<std::string>& questions) {
   base::Value list(base::Value::Type::LIST);
-  for (const auto& item : items) {
-    list.Append(item);
+  for (const auto& question : questions) {
+    list.Append(question);
   }
 
   std::string json;

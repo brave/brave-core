@@ -9,15 +9,28 @@
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_window.h"
 
+namespace content {
+class WebContents;
+}  // namespace content
+
 namespace sidebar {
 class Sidebar;
 }  // namespace sidebar
+
+namespace speedreader {
+class SpeedreaderBubbleView;
+class SpeedreaderTabHelper;
+}  // namespace speedreader
 
 class BraveBrowserWindow : public BrowserWindow {
  public:
   ~BraveBrowserWindow() override {}
 
   virtual void StartTabCycling() = 0;
+
+  virtual speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
+      speedreader::SpeedreaderTabHelper* tab_helper,
+      bool is_enabled) = 0;
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
   virtual sidebar::Sidebar* InitSidebar() = 0;

@@ -1,37 +1,34 @@
 import * as React from 'react'
 import {
-  WalletSubViewLayout,
   OnboardingWelcome,
-  OnboardingBackup,
-  OnboardingRecovery,
-  OnboardingVerify,
-  OnboardingCreatePassword
+  OnboardingCreatePassword,
+  OnboardingRestore
 } from '../../components/desktop'
-import { RecoveryObject } from '../../constants/types'
 import { BackButton } from '../../components/shared'
+import BackupWallet from './backup-wallet'
 
 export interface Props {
   recoveryPhrase: string[]
   onPasswordProvided: (password: string) => void
+  onRestore: (phrase: string, password: string) => void
+  hasRestoreError?: boolean
   onSubmit: (recoveryVerified: boolean) => void
 }
 
 function Onboarding (props: Props) {
-  const { recoveryPhrase, onPasswordProvided, onSubmit } = props
+  const { recoveryPhrase, onPasswordProvided, onSubmit, onRestore, hasRestoreError } = props
   const [onboardingStep, setOnboardingStep] = React.useState<number>(0)
-  const [backupTerms, setBackupTerms] = React.useState<boolean>(false)
-  const [backedUp, setBackedUp] = React.useState<boolean>(false)
-  const [sortedPhrase, setSortedPhrase] = React.useState<RecoveryObject[]>([])
-  const [verifyError, setVerifyError] = React.useState<boolean>(false)
   const [password, setPassword] = React.useState<string>('')
   const [confirmedPassword, setConfirmedPassword] = React.useState<string>('')
+  const [restorePhrase, setRestorePhrase] = React.useState<string>('')
+  const [isRestoring, setIsRestoring] = React.useState<boolean>(false)
 
-  const onRestore = () => {
-    alert('Start Restore Process')
+  const onShowRestore = () => {
+    setIsRestoring(true)
   }
 
   const nextStep = () => {
-    if (onboardingStep === 4) {
+    if (onboardingStep === 2) {
       onSubmit(true)
       return
     }
@@ -43,64 +40,20 @@ function Onboarding (props: Props) {
   }
 
   const onBack = () => {
+    if (isRestoring) {
+      setIsRestoring(false)
+      setRestorePhrase('')
+      return
+    }
     setOnboardingStep(onboardingStep - 1)
+  }
+
+  const onSubmitRestore = () => {
+    onRestore(restorePhrase, password)
   }
 
   const onSkipBackup = () => {
     onSubmit(false)
-  }
-
-  const checkedBox = (key: string, selected: boolean) => {
-    if (key === 'backupTerms') {
-      setBackupTerms(selected)
-    }
-    if (key === 'backedUp') {
-      setBackedUp(selected)
-    }
-  }
-
-  const selectWord = (word: RecoveryObject) => {
-    const newList = [...sortedPhrase, word]
-    setSortedPhrase(newList)
-    setVerifyError(false)
-  }
-
-  const unSelectWord = (word: RecoveryObject) => {
-    const newList = sortedPhrase.filter((key) => key !== word)
-    setSortedPhrase(newList)
-  }
-
-  const shuffledPhrase = React.useMemo(() => {
-    const array = recoveryPhrase.slice().sort()
-    for (let i = array.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1))
-      let temp = array[i]
-      array[i] = array[j]
-      array[j] = temp
-    }
-    return array.map((str, index) => ({ value: str, id: index + 1 }))
-  }, [recoveryPhrase])
-
-  const showError = () => {
-    setVerifyError(true)
-    setTimeout(function () { setVerifyError(false) }, 3000)
-  }
-
-  const checkPhrase = () => {
-    if (sortedPhrase.length === recoveryPhrase.length && sortedPhrase.every((v, i) => v.value === recoveryPhrase[i])) {
-      nextStep()
-    } else {
-      setSortedPhrase([])
-      showError()
-    }
-  }
-
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(recoveryPhrase.join(' '))
-    } catch (e) {
-      console.log(`Could not copy address ${e.toString()}`)
-    }
   }
 
   const handlePasswordChanged = (value: string) => {
@@ -111,61 +64,101 @@ function Onboarding (props: Props) {
     setConfirmedPassword(value)
   }
 
-  const passwordsMatch = React.useMemo(() => {
-    if (password === '' || confirmedPassword === '') {
+  const handleRecoveryPhraseChanged = (value: string) => {
+    const removeBegginingWhiteSpace = value.trimStart()
+    const removedDoubleSpaces = removeBegginingWhiteSpace.replace(/ +(?= )/g, '')
+    const removedSpecialCharacters = removedDoubleSpaces.replace(/[^a-zA-Z ]/g, '')
+    if (restorePhrase.split(' ').length === 12) {
+      setRestorePhrase(removedSpecialCharacters.trimEnd())
+    } else {
+      setRestorePhrase(removedSpecialCharacters)
+    }
+  }
+
+  const isValidRecoveryPhrase = React.useMemo(() => {
+    const phrase = restorePhrase.split(' ')
+    if (phrase.length === 12 && phrase[11] !== '') {
+      return false
+    } else {
+      return true
+    }
+  }, [restorePhrase])
+
+  const showBackButton = React.useMemo(() => {
+    if (onboardingStep === 1 || isRestoring) {
       return true
     } else {
-      return password !== confirmedPassword
+      return false
     }
-  }, [password, confirmedPassword])
+  }, [onboardingStep, isRestoring])
+
+  const checkPassword = React.useMemo(() => {
+    const strongPassword = new RegExp('^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{7,})')
+    if (password === '') {
+      return false
+    } else {
+      if (!strongPassword.test(password)) {
+        return true
+      }
+      return false
+    }
+  }, [password])
+
+  const checkConfirmedPassword = React.useMemo(() => {
+    if (confirmedPassword === '') {
+      return false
+    } else {
+      return confirmedPassword !== password
+    }
+  }, [confirmedPassword, password])
 
   return (
-    <WalletSubViewLayout>
-      {onboardingStep !== 0 &&
+    <>
+      {showBackButton &&
         <BackButton onSubmit={onBack} />
       }
-      {onboardingStep === 0 &&
-        <OnboardingWelcome
-          onRestore={onRestore}
-          onSetup={nextStep}
-        />
-      }
-      {onboardingStep === 1 &&
-        <OnboardingCreatePassword
-          onSubmit={nextStep}
+      {isRestoring ? (
+        <OnboardingRestore
+          onSubmit={onSubmitRestore}
+          disabled={isValidRecoveryPhrase || checkConfirmedPassword || checkPassword || password === '' || confirmedPassword === ''}
+          onRecoveryPhraseChanged={handleRecoveryPhraseChanged}
           onPasswordChanged={handlePasswordChanged}
           onConfirmPasswordChanged={handleConfirmPasswordChanged}
-          disabled={passwordsMatch}
+          recoveryPhrase={restorePhrase}
+          hasRestoreError={hasRestoreError}
+          hasPasswordError={checkPassword}
+          hasConfirmPasswordError={checkConfirmedPassword}
         />
-      }
-      {onboardingStep === 2 &&
-        <OnboardingBackup
-          onSubmit={nextStep}
-          onSubmitTerms={checkedBox}
-          onSkipBackup={onSkipBackup}
-          isBackupTermsAccepted={backupTerms}
-        />
-      }
-      {onboardingStep === 3 &&
-        <OnboardingRecovery
-          onSubmit={nextStep}
-          isRecoveryTermsAccepted={backedUp}
-          onSubmitTerms={checkedBox}
-          recoverPhrase={recoveryPhrase}
-          onCopy={copyToClipboard}
-        />
-      }
-      {onboardingStep === 4 &&
-        <OnboardingVerify
-          onSubmit={checkPhrase}
-          recoveryPhrase={shuffledPhrase}
-          sortedPhrase={sortedPhrase}
-          selectWord={selectWord}
-          unSelectWord={unSelectWord}
-          hasVerifyError={verifyError}
-        />
-      }
-    </WalletSubViewLayout>
+      ) : (
+        <>
+          {onboardingStep === 0 &&
+            <OnboardingWelcome
+              onRestore={onShowRestore}
+              onSetup={nextStep}
+            />
+          }
+          {onboardingStep === 1 &&
+            <OnboardingCreatePassword
+              onSubmit={nextStep}
+              onPasswordChanged={handlePasswordChanged}
+              onConfirmPasswordChanged={handleConfirmPasswordChanged}
+              disabled={checkConfirmedPassword || checkPassword || password === '' || confirmedPassword === ''}
+              hasPasswordError={checkPassword}
+              hasConfirmPasswordError={checkConfirmedPassword}
+            />
+          }
+          {onboardingStep === 2 &&
+            <BackupWallet
+              isOnboarding={true}
+              onCancel={onSkipBackup}
+              onSubmit={nextStep}
+              onBack={onBack}
+              recoveryPhrase={recoveryPhrase}
+            />
+          }
+        </>
+      )}
+    </>
   )
 }
 

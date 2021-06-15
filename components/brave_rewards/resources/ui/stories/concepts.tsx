@@ -252,7 +252,6 @@ storiesOf('Rewards/Concepts/Desktop', module)
           onVerifyClick={onVerifyClick}
           onDisconnectClick={onDisconnectClick}
           greetings={text('Greetings', 'Hello, Brave!')}
-          onlyAnonWallet={boolean('Anon Wallet Only', false)}
         >
           <WalletSummarySlider
             id={'panel-slider'}
@@ -288,7 +287,6 @@ storiesOf('Rewards/Concepts/Desktop', module)
                 donation: object('Donation', { tokens: '2.0', converted: '0.25' }),
                 tips: object('Tips', { tokens: '19.0', converted: '5.25' })
               }}
-              onlyAnonWallet={boolean('Anon Wallet Only', false)}
             />
           </WalletSummarySlider>
         </WalletWrapper>

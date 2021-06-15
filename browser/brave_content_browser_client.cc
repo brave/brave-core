@@ -23,12 +23,17 @@
 #include "brave/browser/net/brave_proxying_web_socket.h"
 #include "brave/browser/profiles/brave_renderer_updater.h"
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
-#include "brave/components/brave_search/browser/brave_search_host.h"
-#include "brave/components/brave_search/common/brave_search.mojom.h"
+#include "brave/components/brave_search/browser/brave_search_default_host.h"
+#include "brave/components/brave_search/browser/brave_search_default_host_private.h"
+#include "brave/components/brave_search/browser/brave_search_fallback_host.h"
+#include "brave/components/brave_search/common/brave_search_default.mojom.h"
+#include "brave/components/brave_search/common/brave_search_fallback.mojom.h"
+#include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/domain_block_navigation_throttle.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -49,6 +54,7 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/common/url_constants.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -71,8 +77,10 @@
 #include "net/cookies/site_for_cookies.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
+#include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "ui/base/l10n/l10n_util.h"
 
+using blink::web_pref::WebPreferences;
 using brave_shields::BraveShieldsWebContentsObserver;
 using brave_shields::ControlType;
 using brave_shields::GetBraveShieldsEnabled;
@@ -98,6 +106,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_navigation_throttle.h"
+#include "components/user_prefs/user_prefs.h"
 #endif
 
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
@@ -141,9 +150,12 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #if !defined(OS_ANDROID)
+#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/components/brave_wallet_ui/wallet_ui.mojom.h"
+#else
+#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_android.h"
 #endif
 #endif
 
@@ -200,17 +212,27 @@ void MaybeBindBraveWalletProvider(
   if (!brave_wallet::IsAllowedForContext(context))
     return;
 
-  BraveWalletService* service =
-      BraveWalletServiceFactory::GetInstance()->GetForContext(context);
+  brave_wallet::BraveWalletService* service =
+      brave_wallet::BraveWalletServiceFactory::GetInstance()->GetForContext(
+          context);
 
+  content::WebContents* web_contents =
+      content::WebContents::FromRenderFrameHost(frame_host);
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_wallet::BraveWalletProviderImpl>(
-          service->AsWeakPtr()),
+          service->AsWeakPtr(),
+#if defined(OS_ANDROID)
+          std::make_unique<
+              brave_wallet::BraveWalletProviderDelegateImplAndroid>(
+#else
+          std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
+#endif
+              web_contents)),
       std::move(receiver));
 }
 #endif
 
-void BindBraveSearchHost(
+void BindBraveSearchFallbackHost(
     int process_id,
     mojo::PendingReceiver<brave_search::mojom::BraveSearchFallback> receiver) {
   content::RenderProcessHost* render_process_host =
@@ -220,11 +242,33 @@ void BindBraveSearchHost(
 
   content::BrowserContext* context = render_process_host->GetBrowserContext();
   mojo::MakeSelfOwnedReceiver(
-      std::make_unique<brave_search::BraveSearchHost>(
+      std::make_unique<brave_search::BraveSearchFallbackHost>(
           content::BrowserContext::GetDefaultStoragePartition(context)
               ->GetURLLoaderFactoryForBrowserProcess()),
       std::move(receiver));
 }
+
+void BindBraveSearchDefaultHost(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<brave_search::mojom::BraveSearchDefault> receiver) {
+  auto* context = frame_host->GetBrowserContext();
+  auto* profile = Profile::FromBrowserContext(context);
+  if (brave::IsRegularProfile(profile)) {
+    auto* template_url_service =
+        TemplateURLServiceFactory::GetForProfile(profile);
+    const std::string host = frame_host->GetLastCommittedURL().host();
+    mojo::MakeSelfOwnedReceiver(
+        std::make_unique<brave_search::BraveSearchDefaultHost>(
+            host, template_url_service, profile->GetPrefs()),
+        std::move(receiver));
+  } else {
+    // Dummy API which always returns false for private contexts.
+    mojo::MakeSelfOwnedReceiver(
+        std::make_unique<brave_search::BraveSearchDefaultHostPrivate>(),
+        std::move(receiver));
+  }
+}
+
 }  // namespace
 
 BraveContentBrowserClient::BraveContentBrowserClient()
@@ -283,9 +327,9 @@ void BraveContentBrowserClient::ExposeInterfacesToRenderer(
     content::RenderProcessHost* render_process_host) {
   ChromeContentBrowserClient::ExposeInterfacesToRenderer(
       registry, associated_registry, render_process_host);
-  registry->AddInterface(
-      base::BindRepeating(&BindBraveSearchHost, render_process_host->GetID()),
-      content::GetUIThreadTaskRunner({}));
+  registry->AddInterface(base::BindRepeating(&BindBraveSearchFallbackHost,
+                                             render_process_host->GetID()),
+                         content::GetUIThreadTaskRunner({}));
 }
 
 void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
@@ -295,7 +339,10 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       render_frame_host, map);
   map->Add<cosmetic_filters::mojom::CosmeticFiltersResources>(
       base::BindRepeating(&BindCosmeticFiltersResources));
-
+  if (brave_search::IsDefaultAPIEnabled()) {
+    map->Add<brave_search::mojom::BraveSearchDefault>(
+        base::BindRepeating(&BindBraveSearchDefaultHost));
+  }
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   if (brave_wallet::IsNativeWalletEnabled()) {
     map->Add<brave_wallet::mojom::BraveWalletProvider>(
@@ -608,6 +655,7 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   std::unique_ptr<content::NavigationThrottle> ipfs_navigation_throttle =
       ipfs::IpfsNavigationThrottle::MaybeCreateThrottleFor(
           handle, ipfs::IpfsServiceFactory::GetForContext(context),
+          user_prefs::UserPrefs::Get(context),
           g_browser_process->GetApplicationLocale());
   if (ipfs_navigation_throttle)
     throttles.push_back(std::move(ipfs_navigation_throttle));
@@ -634,4 +682,24 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
     throttles.push_back(std::move(domain_block_navigation_throttle));
 
   return throttles;
+}
+
+bool BraveContentBrowserClient::OverrideWebPreferencesAfterNavigation(
+    WebContents* web_contents,
+    WebPreferences* prefs) {
+  bool changed =
+      ChromeContentBrowserClient::OverrideWebPreferencesAfterNavigation(
+          web_contents, prefs);
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
+      HostContentSettingsMapFactory::GetForProfile(profile),
+      web_contents->GetLastCommittedURL());
+  // https://github.com/brave/brave-browser/issues/15265
+  // Always use color scheme Light if fingerprinting mode strict
+  if (fingerprinting_type == ControlType::BLOCK) {
+    prefs->preferred_color_scheme = blink::mojom::PreferredColorScheme::kLight;
+    changed = true;
+  }
+  return changed;
 }

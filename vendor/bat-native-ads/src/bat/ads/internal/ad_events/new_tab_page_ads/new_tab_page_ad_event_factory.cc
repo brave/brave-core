@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_factory.h"
 
 #include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_clicked.h"
+#include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_served.h"
 #include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_viewed.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 
@@ -15,6 +16,10 @@ namespace new_tab_page_ads {
 std::unique_ptr<AdEvent<NewTabPageAdInfo>> AdEventFactory::Build(
     const NewTabPageAdEventType event_type) {
   switch (event_type) {
+    case NewTabPageAdEventType::kServed: {
+      return std::make_unique<AdEventServed>();
+    }
+
     case NewTabPageAdEventType::kViewed: {
       return std::make_unique<AdEventViewed>();
     }

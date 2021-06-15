@@ -14,9 +14,11 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/url_constants.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/external_protocol/external_protocol_handler.h"
 #include "chrome/common/channel_info.h"
 #include "components/prefs/pref_service.h"
@@ -29,13 +31,16 @@
 #include "content/public/common/url_constants.h"
 #include "url/gurl.h"
 
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
+#include "brave/components/decentralized_dns/utils.h"
+#endif
+
 namespace {
 
 constexpr char kIpfsLocalhost[] = ".ipfs.localhost";
 constexpr char kIpnsLocalhost[] = ".ipns.localhost";
 
-bool IsIPFSLocalGateway(content::BrowserContext* browser_context) {
-  auto* prefs = user_prefs::UserPrefs::Get(browser_context);
+bool IsIPFSLocalGateway(PrefService* prefs) {
   auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
       prefs->GetInteger(kIPFSResolveMethod));
   return resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_LOCAL;
@@ -60,10 +65,11 @@ bool HandleIPFSURLRewrite(
     *url = url->ReplaceComponents(host_replacements);
     return true;
   }
-  if (!IsIpfsResolveMethodDisabled(browser_context) &&
+  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context);
+  if (!IsIpfsResolveMethodDisabled(prefs) &&
       // When it's not the local gateway we don't want to show a ipfs:// URL.
       // We instead will translate the URL later.
-      IsIPFSLocalGateway(browser_context) &&
+      IsIPFSLocalGateway(prefs) &&
       (url->SchemeIs(kIPFSScheme) || url->SchemeIs(kIPNSScheme))) {
     return TranslateIPFSURI(
         *url, url, GetDefaultIPFSLocalGateway(chrome::GetChannel()), false);
@@ -72,13 +78,24 @@ bool HandleIPFSURLRewrite(
   if (url->DomainIs(kLocalhostIP)) {
     GURL::Replacements replacements;
     replacements.SetHostStr(kLocalhostDomain);
-    if (IsDefaultGatewayURL(url->ReplaceComponents(replacements),
-                            browser_context)) {
+    if (IsDefaultGatewayURL(url->ReplaceComponents(replacements), prefs)) {
       *url = url->ReplaceComponents(replacements);
       return true;
     }
   }
 
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
+  bool resolve_ens = decentralized_dns::IsENSTLD(*url) &&
+                     decentralized_dns::IsENSResolveMethodEthereum(
+                         g_browser_process->local_state());
+  bool resolve_ud =
+      decentralized_dns::IsUnstoppableDomainsTLD(*url) &&
+      decentralized_dns::IsUnstoppableDomainsResolveMethodEthereum(
+          g_browser_process->local_state());
+  if ((resolve_ens || resolve_ud) && IsLocalGatewayConfigured(prefs)) {
+    return true;
+  }
+#endif
   return false;
 }
 
@@ -100,8 +117,8 @@ bool HandleIPFSURLReverseRewrite(
   if (!ipfs::IsValidCID(url->host().substr(0, cid_end)))
     return false;
 
-  GURL configured_gateway =
-      GetConfiguredBaseGateway(browser_context, chrome::GetChannel());
+  GURL configured_gateway = GetConfiguredBaseGateway(
+      user_prefs::UserPrefs::Get(browser_context), chrome::GetChannel());
   if (configured_gateway.port() != url->port())
     return false;
   GURL::Replacements scheme_replacements;

@@ -5,8 +5,6 @@
 
 #include "brave/common/brave_switches.h"
 
-#include "base/command_line.h"
-
 namespace switches {
 
 // Allows disabling the Brave extension.
@@ -39,11 +37,12 @@ const char kDisableMachineId[] = "disable-machine-id";
 // what you are doing.
 const char kDisableEncryptionWin[] = "disable-encryption-win";
 
-const char kFastWidevineBundleUpdate[] = "fast-widevine-bundle-update";
-
 // Use custom update interval in sec
 const char kComponentUpdateIntervalInSec[] = "component-update-interval-in-sec";
 
 // Disables DOH using a runtime flag mainly for network audit
 const char kDisableDnsOverHttps[] = "disable-doh";
+
+// Override update feed url. Only valid on macOS.
+const char kUpdateFeedURL[] = "update-feed-url";
 }  // namespace switches

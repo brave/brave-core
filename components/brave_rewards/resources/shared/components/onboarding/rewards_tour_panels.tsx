@@ -117,8 +117,7 @@ export function getVerifyWalletPanel (
   locale: Locale,
   props: RewardsTourProps
 ): TourPanel | null {
-  if (!props.firstTimeSetup || props.onlyAnonWallet ||
-      !props.onVerifyWalletClick) {
+  if (!props.firstTimeSetup || !props.onVerifyWalletClick) {
     return null
   }
 

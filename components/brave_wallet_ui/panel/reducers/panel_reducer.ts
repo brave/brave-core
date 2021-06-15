@@ -6,15 +6,32 @@
 
 import { createReducer } from 'redux-act'
 import { PanelState } from '../../constants/types'
+import * as PanelActions from '../actions/wallet_panel_actions'
 
 const defaultState: PanelState = {
   // TODO(bbondy): isConnected, connectedSiteOrigin, and accounts is just test
   // data to start with until the keyring controller is ready.
   isConnected: false,
   hasInitialized: false,
-  connectedSiteOrigin: 'https://app.uniswap.org'
+  connectedSiteOrigin: 'https://app.uniswap.org',
+  selectedPanel: 'main',
+  panelTitle: ''
 }
 
 const reducer = createReducer<PanelState>({}, defaultState)
+
+reducer.on(PanelActions.navigateTo, (state: any, selectedPanel: string) => {
+  let panelTitle = selectedPanel
+  if (selectedPanel === 'networks') {
+    // TODO(bbondy): This should be hooked up a localization label
+    panelTitle = 'Select Network'
+  }
+
+  return {
+    ...state,
+    selectedPanel,
+    panelTitle
+  }
+})
 
 export default reducer

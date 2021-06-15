@@ -26,6 +26,12 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('brave_rewards.getAutoContributeProperties')
       break
     }
+    case types.DISCONNECT_WALLET_ERROR: {
+      state = { ...state }
+      let ui = state.ui
+      ui.disconnectWalletError = true
+      break
+    }
     case types.ON_AUTO_CONTRIBUTE_PROPERTIES: {
       state = { ...state }
       let properties = action.payload.properties
@@ -241,9 +247,10 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
 
       const data = action.payload.data
-      state.adsData.adsEstimatedPendingRewards = data.adsEstimatedPendingRewards
       state.adsData.adsNextPaymentDate = data.adsNextPaymentDate
       state.adsData.adsReceivedThisMonth = data.adsReceivedThisMonth
+      state.adsData.adsEarningsThisMonth = data.adsEarningsThisMonth
+      state.adsData.adsEarningsLastMonth = data.adsEarningsLastMonth
       break
     }
     case types.ON_INLINE_TIP_SETTINGS_CHANGE: {
@@ -272,16 +279,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         inlineTip
       }
 
-      break
-    }
-    case types.ON_VERIFY_ONBOARDING_DISPLAYED: {
-      let ui = state.ui
-
-      ui.verifyOnboardingDisplayed = true
-      state = {
-        ...state,
-        ui
-      }
       break
     }
     case types.PROCESS_REWARDS_PAGE_URL: {
@@ -368,21 +365,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     }
     case types.DISCONNECT_WALLET: {
       chrome.send('brave_rewards.disconnectWallet')
-      break
-    }
-    case types.ONLY_ANON_WALLET: {
-      chrome.send('brave_rewards.onlyAnonWallet')
-      break
-    }
-    case types.ON_ONLY_ANON_WALLET: {
-      const ui = state.ui
-
-      ui.onlyAnonWallet = !!action.payload.only
-
-      state = {
-        ...state,
-        ui
-      }
       break
     }
     case types.DISMISS_PROMO_PROMPT: {

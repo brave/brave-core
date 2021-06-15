@@ -23,3 +23,4 @@ const char kCryptoWalletsLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/360034535452";
 const char kPermissionPromptLearnMoreUrl[] =
     "https://github.com/brave/brave-browser/wiki/Web-API-Permissions";
+const char kSpeedreaderLearnMoreUrl[] = "https://brave.com/speed-reader/";

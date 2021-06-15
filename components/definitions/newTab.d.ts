@@ -89,7 +89,6 @@ declare namespace NewTab {
     currentStackWidget: StackWidget
     removedStackWidgets: StackWidget[]
     widgetStackOrder: StackWidget[]
-    savedWidgetStackOrder: StackWidget[]
     binanceState: BinanceWidgetState
     geminiState: GeminiWidgetState
     cryptoDotComState: CryptoDotComWidgetState
@@ -105,6 +104,11 @@ declare namespace NewTab {
     clockFormat: string
     showTopSites: boolean
     showRewards: boolean
+    showTogether: boolean
+    showBinance: boolean
+    showGemini: boolean
+    showCryptoDotCom: boolean
+    hideAllWidgets: boolean
     isBraveTodayOptedIn: boolean
     isBrandedWallpaperNotificationDismissed: boolean
   }
@@ -125,11 +129,7 @@ declare namespace NewTab {
     showBackgroundImage: boolean
     customLinksEnabled: boolean
     customLinksNum: number
-    showTogether: boolean
-    showBinance: boolean
-    showGemini: boolean
     showBitcoinDotCom: boolean
-    showCryptoDotCom: boolean,
     showFTX: boolean,
     stats: Stats,
     brandedWallpaperData?: BrandedWallpaper
@@ -143,7 +143,6 @@ declare namespace NewTab {
     enabledAds: boolean
     promotions: Promotion[]
     parameters: RewardsParameters
-    onlyAnonWallet: boolean
     totalContribution: number
   }
 
@@ -253,8 +252,7 @@ declare namespace NewTab {
   }
 
   export interface AdsAccountStatement {
-    estimatedPendingRewards: number
-    nextPaymentDate: string
+    nextPaymentDate: number
     adsReceivedThisMonth: number
     earningsThisMonth: number
     earningsLastMonth: number

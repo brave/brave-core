@@ -14,6 +14,8 @@ import App from './components/app'
 require('../../../../ui/webui/resources/fonts/muli.css')
 require('../../../../ui/webui/resources/fonts/poppins.css')
 
+import { WithThemeVariables } from '../shared/components/with_theme_variables'
+
 // Utils
 import store from './store'
 import { ThemeProvider } from 'styled-components'
@@ -33,7 +35,9 @@ window.cr.define('brave_rewards', function () {
     render(
       <Provider store={store}>
         <ThemeProvider theme={Theme}>
-          <App />
+          <WithThemeVariables>
+            <App />
+          </WithThemeVariables>
         </ThemeProvider>
       </Provider>,
       document.getElementById('root'))
@@ -103,8 +107,21 @@ window.cr.define('brave_rewards', function () {
     }
   }
 
-  function statement (data: {adsEstimatedPendingRewards: number, adsNextPaymentDate: string, adsReceivedThisMonth: number}) {
+  function statement (data: any) {
     getActions().onStatement(data)
+  }
+
+  function disconnectWallet (properties: {result: number}) {
+    if (properties.result === 0) {
+      getActions().getExternalWallet()
+      getActions().getBalance()
+      return
+    }
+    getActions().disconnectWalletError()
+  }
+
+  function externalWallet (properties: {result: number, wallet: Rewards.ExternalWallet}) {
+    getActions().onExternalWallet(properties.result, properties.wallet)
   }
 
   function statementChanged () {
@@ -150,10 +167,6 @@ window.cr.define('brave_rewards', function () {
     }
   }
 
-  function onlyAnonWallet (only: boolean) {
-    getActions().onOnlyAnonWallet(only)
-  }
-
   function unblindedTokensReady () {
     getActions().getBalance()
   }
@@ -163,6 +176,8 @@ window.cr.define('brave_rewards', function () {
   }
 
   return {
+    disconnectWallet,
+    externalWallet,
     initialize,
     rewardsParameters,
     promotions,
@@ -186,7 +201,6 @@ window.cr.define('brave_rewards', function () {
     excludedSiteChanged,
     balance,
     reconcileComplete,
-    onlyAnonWallet,
     unblindedTokensReady,
     initialized
   }

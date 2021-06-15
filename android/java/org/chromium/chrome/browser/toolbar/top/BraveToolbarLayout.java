@@ -129,10 +129,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                    BraveRewardsNativeWorker.PublisherObserver {
     public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
     private static final String JAPAN_COUNTRY_CODE = "JP";
-
     private static final long MB_10 = 10000000;
     private static final long MINUTES_10 = 10 * 60 * 1000;
-
     private static final int URL_FOCUS_TOOLBAR_BUTTONS_TRANSLATION_X_DP = 10;
 
     private DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
@@ -459,12 +457,22 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
 
     private void chooseStatsShareTier(Tab tab, int trackersPlusAdsBlocked) {
         String countryCode = Locale.getDefault().getCountry();
+
         // the tooltip for stats sharing is shown only for Japan
         if (!countryCode.equals(JAPAN_COUNTRY_CODE)) {
             return;
         }
-        int totalBlocked = Integer.parseInt(BraveStatsUtil.getAdsTrackersBlocked().first);
 
+        // double check if the shields button is shown to prevent situations like showing the
+        // tooltip on new tabs
+        if ((mBraveShieldsButton == null && !mBraveShieldsButton.isShown())
+                || UrlUtilities.isNTPUrl(
+                        BraveActivity.getBraveActivity().getActivityTab().getUrlString())) {
+            return;
+        }
+
+        int totalBlocked =
+                Math.round(Float.parseFloat(BraveStatsUtil.getAdsTrackersBlocked().first.trim()));
         // show after BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF (20) blocked stuff above the TIER
         // threshold
         if (!BraveShieldsUtils.hasShieldsTooltipShown(

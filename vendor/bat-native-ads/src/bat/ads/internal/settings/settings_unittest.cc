@@ -38,7 +38,7 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasChangedDefaultSetting) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  AdsClientHelper::Get()->SetUint64Pref(prefs::kAdsPerHour, 3);
+  AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, 3);
 
   // Act
   const uint64_t ads_per_hour = settings::GetAdsPerHour();
@@ -75,7 +75,7 @@ TEST_F(BatAdsSettingsTest, ClampMinAdsPerHour) {
   // Arrange
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kParameters;
-  kParameters["default_ad_notifications_per_hour"] = "0";
+  kParameters["default_ad_notifications_per_hour"] = "-1";
   enabled_features.push_back({features::kAdServing, kParameters});
 
   const std::vector<base::Feature> disabled_features;
@@ -88,7 +88,7 @@ TEST_F(BatAdsSettingsTest, ClampMinAdsPerHour) {
   const uint64_t ads_per_hour = settings::GetAdsPerHour();
 
   // Assert
-  const uint64_t expected_ads_per_hour = 1;
+  const uint64_t expected_ads_per_hour = 0;
 
   EXPECT_EQ(expected_ads_per_hour, ads_per_hour);
 }
@@ -97,7 +97,7 @@ TEST_F(BatAdsSettingsTest, ClampMaxAdsPerHour) {
   // Arrange
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kParameters;
-  kParameters["default_ad_notifications_per_hour"] = "6";
+  kParameters["default_ad_notifications_per_hour"] = "11";
   enabled_features.push_back({features::kAdServing, kParameters});
 
   const std::vector<base::Feature> disabled_features;
@@ -110,7 +110,7 @@ TEST_F(BatAdsSettingsTest, ClampMaxAdsPerHour) {
   const uint64_t ads_per_hour = settings::GetAdsPerHour();
 
   // Assert
-  const uint64_t expected_ads_per_hour = 5;
+  const uint64_t expected_ads_per_hour = 10;
 
   EXPECT_EQ(expected_ads_per_hour, ads_per_hour);
 }

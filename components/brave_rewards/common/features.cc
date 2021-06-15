@@ -10,9 +10,6 @@
 namespace brave_rewards {
 namespace features {
 
-const base::Feature kBitflyerFeature{"BraveRewardsBitflyer",
-                                     base::FEATURE_ENABLED_BY_DEFAULT};
-
 const base::Feature kVerboseLoggingFeature{"BraveRewardsVerboseLogging",
                                            base::FEATURE_DISABLED_BY_DEFAULT};
 

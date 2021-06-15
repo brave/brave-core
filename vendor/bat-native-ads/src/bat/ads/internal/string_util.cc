@@ -5,9 +5,6 @@
 
 #include "bat/ads/internal/string_util.h"
 
-#include <iomanip>
-#include <sstream>
-
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
@@ -62,11 +59,6 @@ std::string StripNonAlphaNumericCharacters(const std::string& value) {
       escaped_characters.c_str());
 
   return Strip(value, pattern);
-}
-
-bool IsLatinAlphaNumeric(const std::string& value) {
-  const std::string pattern = base::StringPrintf("^[a-zA-Z0-9]*$");
-  return RE2::FullMatch(value, pattern);
 }
 
 }  // namespace ads

@@ -18,6 +18,15 @@ class ContentsLayoutManager;
 class SidebarContainerView;
 #endif
 
+namespace speedreader {
+class SpeedreaderBubbleView;
+class SpeedreaderTabHelper;
+}  // namespace speedreader
+
+namespace content {
+class WebContents;
+}  // namespace content
+
 class WalletButton;
 
 class BraveBrowserView : public BrowserView {
@@ -34,6 +43,9 @@ class BraveBrowserView : public BrowserView {
       const std::string& target_language,
       translate::TranslateErrors::Type error_type,
       bool is_user_gesture) override;
+  speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
+      speedreader::SpeedreaderTabHelper* tab_helper,
+      bool is_enabled) override;
   void CreateWalletBubble();
   void CloseWalletBubble();
   WalletButton* GetWalletButton();

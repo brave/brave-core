@@ -78,7 +78,6 @@ static const auto kOneDay = base::Time::kHoursPerDay * base::Time::kSecondsPerHo
 /// Ledger Prefs, keys will be defined in `bat/ledger/option_keys.h`
 const std::map<std::string, bool> kBoolOptions = {
     {ledger::option::kClaimUGP, true},
-    {ledger::option::kContributionsDisabledForBAPMigration, false},
     {ledger::option::kIsBitflyerRegion, false}};
 const std::map<std::string, int> kIntegerOptions = {};
 const std::map<std::string, double> kDoubleOptions = {};
@@ -198,7 +197,7 @@ ledger::type::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
 
     ledgerClient = new NativeLedgerClient(self);
     ledger = ledger::Ledger::CreateInstance(ledgerClient);
-    
+
     // Add notifications for standard app foreground/background
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -249,9 +248,9 @@ ledger::type::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
       [self getRewardsParameters:nil];
       [self fetchBalance:nil];
       [self fetchUpholdWallet:nil];
-      
+
       [self readNotificationsFromDisk];
-      
+
       [self.ads initializeIfAdsEnabled];
     } else {
       BLOG(0, @"Ledger Initialization Failed with error: %d", result);
@@ -1703,11 +1702,11 @@ BATLedgerBridge(BOOL,
 
 - (void)loadURL:(ledger::type::UrlRequestPtr)request callback:(ledger::client::LoadURLCallback)callback
 {
-  std::map<ledger::type::UrlMethod, std::string> methodMap {
-    {ledger::type::UrlMethod::GET, "GET"},
-    {ledger::type::UrlMethod::POST, "POST"},
-    {ledger::type::UrlMethod::PUT, "PUT"}
-  };
+  std::map<ledger::type::UrlMethod, std::string> methodMap{
+      {ledger::type::UrlMethod::GET, "GET"},
+      {ledger::type::UrlMethod::POST, "POST"},
+      {ledger::type::UrlMethod::PUT, "PUT"},
+      {ledger::type::UrlMethod::DEL, "DELETE"}};
 
   if (!request) {
     request = ledger::type::UrlRequest::New();

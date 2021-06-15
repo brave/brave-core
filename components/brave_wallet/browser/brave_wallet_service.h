@@ -12,29 +12,42 @@
 #include "base/memory/weak_ptr.h"
 #include "components/keyed_service/core/keyed_service.h"
 
-namespace content {
-class BrowserContext;
-}  // namespace content
+class PrefService;
+class PrefRegistrySimple;
+
+namespace network {
+class SharedURLLoaderFactory;
+}  // namespace network
 
 namespace brave_wallet {
+
 class KeyringController;
 class EthJsonRpcController;
-}  // namespace brave_wallet
 
 class BraveWalletService : public KeyedService,
                            public base::SupportsWeakPtr<BraveWalletService> {
  public:
-  explicit BraveWalletService(content::BrowserContext* context);
+  explicit BraveWalletService(
+      PrefService* prefs,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~BraveWalletService() override;
+
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
   brave_wallet::EthJsonRpcController* rpc_controller() const;
   brave_wallet::KeyringController* keyring_controller() const;
 
+  bool IsWalletBackedUp() const;
+  void NotifyWalletBackupComplete();
+
  private:
-  content::BrowserContext* context_;
+  PrefService* prefs_;
   std::unique_ptr<brave_wallet::EthJsonRpcController> rpc_controller_;
   std::unique_ptr<brave_wallet::KeyringController> keyring_controller_;
+
   DISALLOW_COPY_AND_ASSIGN(BraveWalletService);
 };
+
+}  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_SERVICE_H_

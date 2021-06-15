@@ -119,6 +119,8 @@ void MockRecordAdEvent(const std::unique_ptr<AdsClientMock>& mock);
 
 void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock);
 
+void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock);
+
 void MockSave(const std::unique_ptr<AdsClientMock>& mock);
 
 void MockLoad(const std::unique_ptr<AdsClientMock>& mock);

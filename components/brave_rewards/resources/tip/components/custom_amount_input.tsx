@@ -6,7 +6,6 @@ import * as React from 'react'
 
 import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
 import { getExchangeCurrency } from './exchange_amount'
-import { BatString } from './bat_string'
 import { ExchangeIcon } from './icons/exchange_icon'
 import { CaretIcon } from '../../shared/components/icons/caret_icon'
 
@@ -117,14 +116,13 @@ export function CustomAmountInput (props: Props) {
               data-test-id='custom-amount-input'
             />
             <span className='currency'>
-              {inputMode === 'bat' ? <BatString /> : getExchangeCurrency()}
+              {inputMode === 'bat' ? 'BAT' : getExchangeCurrency()}
             </span>
           </style.amountBox>
           {
             inputMode === 'bat' &&
               <style.example>
-                {formatMessage(getString('exampleTipAmount'), ['12.75'])}&nbsp;
-                <BatString />
+                {formatMessage(getString('exampleTipAmount'), ['12.75'])} BAT
               </style.example>
           }
         </style.amountSection>
@@ -136,7 +134,7 @@ export function CustomAmountInput (props: Props) {
         <style.exhangeBox>
           <span>{amountFormat.format(dependentAmount)}</span>
           <span className='currency'>
-            {inputMode === 'exchange' ? <BatString /> : getExchangeCurrency()}
+            {inputMode === 'exchange' ? 'BAT' : getExchangeCurrency()}
           </span>
         </style.exhangeBox>
       </style.form>

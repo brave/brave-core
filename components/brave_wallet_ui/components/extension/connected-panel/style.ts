@@ -28,6 +28,7 @@ export const CenterColumn = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 12px 0px 28px;
+  max-width: 300px;
 `
 
 export const AccountCircle = styled.div<Partial<StyleProps>>`
@@ -48,13 +49,17 @@ export const AccountNameText = styled.span`
   color: ${(p) => p.theme.palette.white};
 `
 
-export const AccountAddressText = styled.span`
+export const AccountAddressText = styled.button`
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.palette.white};
   font-weight: 300;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
 `
 
 export const BalanceColumn = styled.div`

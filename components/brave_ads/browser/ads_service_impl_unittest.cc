@@ -178,8 +178,6 @@ class MockRewardsService : public RewardsService {
 
   MOCK_METHOD0(DisconnectWallet, void());
 
-  MOCK_CONST_METHOD0(OnlyAnonWallet, bool());
-
   MOCK_METHOD1(AddPrivateObserver,
                void(RewardsServicePrivateObserver* observer));
   MOCK_METHOD1(RemovePrivateObserver,

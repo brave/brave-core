@@ -66,6 +66,7 @@ declare namespace Rewards {
     tipsList: Publisher[]
     tipsLoad: boolean
     ui: {
+      disconnectWalletError: boolean
       emptyWallet: boolean
       modalBackup: boolean
       modalRedirect: 'show' | 'hide' | 'error' | 'notAllowed' | 'batLimit'
@@ -76,7 +77,6 @@ declare namespace Rewards {
       walletRecoveryStatus: number | null
       walletServerProblem: boolean
       verifyOnboardingDisplayed?: boolean
-      onlyAnonWallet?: boolean
     }
   }
 
@@ -224,9 +224,10 @@ declare namespace Rewards {
     shouldAllowAdsSubdivisionTargeting: boolean
     adsUIEnabled: boolean
     adsIsSupported: boolean
-    adsEstimatedPendingRewards: number
-    adsNextPaymentDate: string
+    adsNextPaymentDate: number
     adsReceivedThisMonth: number
+    adsEarningsThisMonth: number
+    adsEarningsLastMonth: number
   }
 
   export enum RewardsType {

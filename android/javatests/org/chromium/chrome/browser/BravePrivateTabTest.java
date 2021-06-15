@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.ChromeActivity;
+import org.chromium.chrome.browser.firstrun.FirstRunStatus;
 import org.chromium.chrome.browser.ntp.BraveDuckDuckGoOfferView;
 import org.chromium.chrome.browser.ntp.IncognitoNewTabPage;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
@@ -39,7 +40,7 @@ public class BravePrivateTabTest {
         // Disable key checker to avoid asserts on Brave keys in debug
         SharedPreferencesManager.getInstance().disableKeyCheckerForTesting();
         OnboardingPrefManager.getInstance().setOnboardingShown(false);
-        OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
+        FirstRunStatus.setFirstRunFlowComplete(true);
         mActivityTestRule.startMainActivityOnBlankPage();
     }
 

@@ -52,12 +52,13 @@ std::deque<AdHistoryInfo> AdsHistoryConfirmationFilter::Apply(
 bool AdsHistoryConfirmationFilter::ShouldFilterAction(
     const ConfirmationType& confirmation_type) const {
   switch (confirmation_type.value()) {
-    case ConfirmationType::kClicked:
     case ConfirmationType::kViewed:
+    case ConfirmationType::kClicked:
     case ConfirmationType::kDismissed: {
       return false;
     }
 
+    case ConfirmationType::kServed:
     case ConfirmationType::kTransferred:
     case ConfirmationType::kFlagged:
     case ConfirmationType::kUpvoted:

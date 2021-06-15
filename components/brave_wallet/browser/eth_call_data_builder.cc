@@ -53,4 +53,15 @@ bool GetMany(const std::vector<std::string>& keys,
 
 }  // namespace unstoppable_domains
 
+namespace ens {
+
+bool GetContentHashAddress(const std::string& domain, std::string* data) {
+  const std::string function_hash = GetFunctionHash("contenthash(bytes32)");
+  std::string tokenID = Namehash(domain);
+  std::vector<std::string> hex_strings = {function_hash, tokenID};
+  return ConcatHexStrings(hex_strings, data);
+}
+
+}  // namespace ens
+
 }  // namespace brave_wallet

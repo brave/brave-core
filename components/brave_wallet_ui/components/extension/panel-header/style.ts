@@ -19,6 +19,7 @@ export const HeaderWrapper = styled.div`
   justify-content: center;
   border-bottom: ${(p) => `1px solid ${p.theme.color.divider01}`};
   padding: 0px 12px;
+  max-width: 300px;
 `
 
 export const TopRow = styled.div`

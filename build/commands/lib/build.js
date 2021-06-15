@@ -3,11 +3,27 @@ const util = require('../lib/util')
 const path = require('path')
 const fs = require('fs-extra')
 
+const isOverrideNewer = (original, override) => {
+  return (fs.statSync(override).mtimeMs - fs.statSync(original).mtimeMs > 0)
+}
+
 const updateFileUTimesIfOverrideIsNewer = (original, override) => {
-  if (fs.statSync(override).mtimeMs - fs.statSync(original).mtimeMs > 0) {
+  if (isOverrideNewer(original, override)) {
     const date = new Date()
     fs.utimesSync(original, date, date)
     console.log(original + ' is touched.')
+  }
+}
+
+const deleteFileIfOverrideIsNewer = (original, override) => {
+  if (fs.existsSync(original) && isOverrideNewer(original, override)) {
+    try {
+      fs.unlinkSync(original)
+      console.log(original + ' has been deleted.')
+    } catch(err) {
+      console.error('Unable to delete file: ' + original + ' error: ', err)
+      process.exit(1)
+    }
   }
 }
 
@@ -21,7 +37,7 @@ const getAdditionalGenLocation = () => {
   } else if ((process.platform === 'darwin' || process.platform === 'linux') && config.targetArch === 'arm64') {
     return 'clang_x64_v8_arm64'
   }
-  return undefined
+  return ''
 }
 
 const touchOverriddenFiles = () => {
@@ -47,24 +63,18 @@ const touchOverriddenFiles = () => {
   const chromiumSrcDirLen = chromiumSrcDir.length
   sourceFiles.forEach(chromiumSrcFile => {
     const relativeChromiumSrcFile = chromiumSrcFile.slice(chromiumSrcDirLen)
-    var overriddenFile = path.join(config.srcDir, relativeChromiumSrcFile)
-    // If the original file doesn't exist, assume that it's in the gen dir.
-    const tryOverrideGen = !fs.existsSync(overriddenFile)
-    if (tryOverrideGen) {
-      overriddenFile = path.join(config.outputDir, 'gen', relativeChromiumSrcFile)
-    }
-
+    let overriddenFile = path.join(config.srcDir, relativeChromiumSrcFile)
     if (fs.existsSync(overriddenFile)) {
       // If overriddenFile is older than file in chromium_src, touch it to trigger rebuild.
       updateFileUTimesIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
-      // If the original file is in gen dir, then also check for secondary gen dir.
-      if (tryOverrideGen && !!additionalGen) {
+    } else {
+      // If the original file doesn't exist, assume that it's in the gen dir.
+      overriddenFile = path.join(config.outputDir, 'gen', relativeChromiumSrcFile)
+      deleteFileIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
+      // Also check the secondary gen dir, if exists
+      if (!!additionalGen) {
         overriddenFile = path.join(config.outputDir, additionalGen, 'gen', relativeChromiumSrcFile)
-        // Since gen file exists, expecting secondary gen file to exist too.
-        if (!fs.existsSync(overriddenFile)) {
-          throw 'Expected to find [' + overriddenFile + ']. Check if the name of the gen parent directory has changed.'
-        }
-        updateFileUTimesIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
+        deleteFileIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
       }
     }
   })
