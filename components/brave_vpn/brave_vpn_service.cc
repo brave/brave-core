@@ -3,12 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/browser/vpn_service.h"
+#include "brave/components/brave_vpn/brave_vpn_service.h"
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "content/public/browser/browser_context.h"
-#include "content/public/browser/storage_partition.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
@@ -23,9 +21,9 @@ const char kCreateSubscriberCredential[] =
 const char kVerifyPurchaseToken[] = "api/v1.1/verify-purchase-token";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
-  return net::DefineNetworkTrafficAnnotation("vpn_service", R"(
+  return net::DefineNetworkTrafficAnnotation("brave_vpn_service", R"(
       semantics {
-        sender: "VPN Service"
+        sender: "Brave VPN Service"
         description:
           "This service is used to communicate with Guardian VPN apis"
           "on behalf of the user interacting with the Brave VPN."
@@ -60,16 +58,13 @@ std::string GetSubscriberCredentialFromJson(const std::string& json) {
 
 }  // namespace
 
-VpnService::VpnService(content::BrowserContext* context)
-    : context_(context),
-      url_loader_factory_(
-          content::BrowserContext::GetDefaultStoragePartition(context_)
-              ->GetURLLoaderFactoryForBrowserProcess()),
+BraveVpnService::BraveVpnService(scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : url_loader_factory_(url_loader_factory),
       weak_factory_(this) {}
 
-VpnService::~VpnService() {}
+BraveVpnService::~BraveVpnService() {}
 
-bool VpnService::OAuthRequest(const GURL& url,
+bool BraveVpnService::OAuthRequest(const GURL& url,
                               const std::string& method,
                               const std::string& post_data,
                               bool set_app_ident,
@@ -87,18 +82,14 @@ bool VpnService::OAuthRequest(const GURL& url,
   }
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
 
-  auto* default_storage_partition =
-      content::BrowserContext::GetDefaultStoragePartition(context_);
-  auto* url_loader_factory =
-      default_storage_partition->GetURLLoaderFactoryForBrowserProcess().get();
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory,
-      base::BindOnce(&VpnService::OnURLLoaderComplete, base::Unretained(this),
+      url_loader_factory_.get(),
+      base::BindOnce(&BraveVpnService::OnURLLoaderComplete, base::Unretained(this),
                      std::move(iter), std::move(callback)));
   return true;
 }
 
-void VpnService::OnURLLoaderComplete(
+void BraveVpnService::OnURLLoaderComplete(
     SimpleURLLoaderList::iterator iter,
     URLRequestCallback callback,
     const std::unique_ptr<std::string> response_body) {
@@ -125,15 +116,15 @@ void VpnService::OnURLLoaderComplete(
                           headers);
 }
 
-void VpnService::GetAllServerRegions(ResponseCallback callback) {
+void BraveVpnService::GetAllServerRegions(ResponseCallback callback) {
   auto internal_callback =
-      base::BindOnce(&VpnService::OnGetAllServerRegions, base::Unretained(this),
+      base::BindOnce(&BraveVpnService::OnGetAllServerRegions, base::Unretained(this),
                      std::move(callback));
   GURL base_url = GetURLWithPath(kVpnHost, kAllServerRegions);
   OAuthRequest(base_url, "GET", "", false, std::move(internal_callback));
 }
 
-void VpnService::OnGetAllServerRegions(
+void BraveVpnService::OnGetAllServerRegions(
     ResponseCallback callback,
     const int status,
     const std::string& body,
@@ -147,15 +138,15 @@ void VpnService::OnGetAllServerRegions(
   std::move(callback).Run(json_response, success);
 }
 
-void VpnService::GetTimezonesForRegions(ResponseCallback callback) {
+void BraveVpnService::GetTimezonesForRegions(ResponseCallback callback) {
   auto internal_callback =
-      base::BindOnce(&VpnService::OnGetTimezonesForRegions,
+      base::BindOnce(&BraveVpnService::OnGetTimezonesForRegions,
                      base::Unretained(this), std::move(callback));
   GURL base_url = GetURLWithPath(kVpnHost, kTimezonesForRegions);
   OAuthRequest(base_url, "GET", "", false, std::move(internal_callback));
 }
 
-void VpnService::OnGetTimezonesForRegions(
+void BraveVpnService::OnGetTimezonesForRegions(
     ResponseCallback callback,
     const int status,
     const std::string& body,
@@ -169,10 +160,10 @@ void VpnService::OnGetTimezonesForRegions(
   std::move(callback).Run(json_response, success);
 }
 
-void VpnService::GetHostnamesForRegion(ResponseCallback callback,
+void BraveVpnService::GetHostnamesForRegion(ResponseCallback callback,
                                        const std::string& region) {
   auto internal_callback =
-      base::BindOnce(&VpnService::OnGetHostnamesForRegion,
+      base::BindOnce(&BraveVpnService::OnGetHostnamesForRegion,
                      base::Unretained(this), std::move(callback));
   GURL base_url = GetURLWithPath(kVpnHost, kHostnameForRegion);
   base::Value dict(base::Value::Type::DICTIONARY);
@@ -182,7 +173,7 @@ void VpnService::GetHostnamesForRegion(ResponseCallback callback,
                std::move(internal_callback));
 }
 
-void VpnService::OnGetHostnamesForRegion(
+void BraveVpnService::OnGetHostnamesForRegion(
     ResponseCallback callback,
     const int status,
     const std::string& body,
@@ -196,13 +187,13 @@ void VpnService::OnGetHostnamesForRegion(
   std::move(callback).Run(json_response, success);
 }
 
-void VpnService::GetSubscriberCredential(ResponseCallback callback,
+void BraveVpnService::GetSubscriberCredential(ResponseCallback callback,
                                          const std::string& product_type,
                                          const std::string& product_id,
                                          const std::string& validation_method,
                                          const std::string& purchase_token) {
   auto internal_callback =
-      base::BindOnce(&VpnService::OnGetSubscriberCredential,
+      base::BindOnce(&BraveVpnService::OnGetSubscriberCredential,
                      base::Unretained(this), std::move(callback));
   GURL base_url = GetURLWithPath(kVpnHost, kCreateSubscriberCredential);
   base::Value dict(base::Value::Type::DICTIONARY);
@@ -215,7 +206,7 @@ void VpnService::GetSubscriberCredential(ResponseCallback callback,
                std::move(internal_callback));
 }
 
-void VpnService::OnGetSubscriberCredential(
+void BraveVpnService::OnGetSubscriberCredential(
     ResponseCallback callback,
     const int status,
     const std::string& body,
@@ -229,12 +220,12 @@ void VpnService::OnGetSubscriberCredential(
   std::move(callback).Run(subscriber_credential, success);
 }
 
-void VpnService::VerifyPurchaseToken(ResponseCallback callback,
+void BraveVpnService::VerifyPurchaseToken(ResponseCallback callback,
                                      const std::string& purchase_token,
                                      const std::string& product_id,
                                      const std::string& product_type) {
   auto internal_callback =
-      base::BindOnce(&VpnService::OnVerifyPurchaseToken, base::Unretained(this),
+      base::BindOnce(&BraveVpnService::OnVerifyPurchaseToken, base::Unretained(this),
                      std::move(callback));
   GURL base_url = GetURLWithPath(kVpnHost, kVerifyPurchaseToken);
   base::Value dict(base::Value::Type::DICTIONARY);
@@ -246,7 +237,7 @@ void VpnService::VerifyPurchaseToken(ResponseCallback callback,
                std::move(internal_callback));
 }
 
-void VpnService::OnVerifyPurchaseToken(
+void BraveVpnService::OnVerifyPurchaseToken(
     ResponseCallback callback,
     const int status,
     const std::string& body,

@@ -1,3 +1,0 @@
-declare_args() {
-  vpn_enabled = is_android
-}

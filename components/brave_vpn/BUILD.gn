@@ -9,11 +9,18 @@ static_library("brave_vpn") {
     "brave_vpn_connection_info.h",
     "brave_vpn_connection_manager.cc",
     "brave_vpn_connection_manager.h",
+    "brave_vpn_service.cc",
+    "brave_vpn_service.h",
   ]
 
   deps = [
     ":brave_vpn_internal",
     "//base",
+    "//components/keyed_service/core",
+    "//content/public/browser",
+    "//net",
+    "//services/network/public/cpp",
+    "//url",
   ]
 
   libs = []

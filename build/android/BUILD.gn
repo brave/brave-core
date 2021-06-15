@@ -181,7 +181,7 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",
     "//brave/android/java/org/chromium/chrome/browser/settings/developer/BraveQAPreferences.java",
     "//brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
-    "//brave/android/java/org/chromium/chrome/browser/vpn/VpnNativeWorker.java",
+    "//brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnNativeWorker.java",
     "//brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceNativeWorker.java",
   ]
 

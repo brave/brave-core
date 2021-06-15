@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_VPN_ANDROID_VPN_NATIVE_WORKER_H_
-#define BRAVE_BROWSER_BRAVE_VPN_ANDROID_VPN_NATIVE_WORKER_H_
+#ifndef BRAVE_BROWSER_BRAVE_VPN_ANDROID_BRAVE_VPN_NATIVE_WORKER_H_
+#define BRAVE_BROWSER_BRAVE_VPN_ANDROID_BRAVE_VPN_NATIVE_WORKER_H_
 
 #include <jni.h>
 #include <string>
@@ -12,14 +12,17 @@
 #include "base/android/jni_weak_ref.h"
 #include "base/memory/weak_ptr.h"
 
-class VpnService;
+class BraveVpnService;
 
 namespace chrome {
 namespace android {
-class VpnNativeWorker {
+class BraveVpnNativeWorker {
  public:
-  VpnNativeWorker(JNIEnv* env, const base::android::JavaRef<jobject>& obj);
-  ~VpnNativeWorker();
+  BraveVpnNativeWorker(JNIEnv* env, const base::android::JavaRef<jobject>& obj);
+  ~BraveVpnNativeWorker();
+
+  BraveVpnNativeWorker(const BraveVpnNativeWorker&) = delete;
+  BraveVpnNativeWorker& operator=(const BraveVpnNativeWorker&) = delete;
 
   void Destroy(JNIEnv* env,
                const base::android::JavaParamRef<jobject>& jcaller);
@@ -65,11 +68,11 @@ class VpnNativeWorker {
   void OnVerifyPurchaseToken(const std::string& json_response, bool success);
 
  private:
-  JavaObjectWeakGlobalRef weak_java_vpn_native_worker_;
-  VpnService* vpn_service_;
-  base::WeakPtrFactory<VpnNativeWorker> weak_factory_;
+  JavaObjectWeakGlobalRef weak_java_brave_vpn_native_worker_;
+  BraveVpnService* brave_vpn_service_;
+  base::WeakPtrFactory<BraveVpnNativeWorker> weak_factory_;
 };
 }  // namespace android
 }  // namespace chrome
 
-#endif  // BRAVE_BROWSER_BRAVE_VPN_ANDROID_VPN_NATIVE_WORKER_H_
+#endif  // BRAVE_BROWSER_BRAVE_VPN_ANDROID_BRAVE_VPN_NATIVE_WORKER_H_

@@ -1,7 +1,0 @@
-import("//brave/components/brave_vpn/browser/buildflags/buildflags.gni")
-import("//build/buildflag_header.gni")
-
-buildflag_header("buildflags") {
-  header = "buildflags.h"
-  flags = [ "VPN_ENABLED=$vpn_enabled" ]
-}

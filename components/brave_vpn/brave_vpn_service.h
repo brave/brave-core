@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_VPN_SERVICE_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_VPN_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_BRAVE_VPN_SERVICE_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_BRAVE_VPN_SERVICE_H_
 
 #include <list>
 #include <map>
@@ -30,10 +30,13 @@ class SimpleURLLoader;
 
 typedef std::string JsonResponse;
 
-class VpnService : public KeyedService {
+class BraveVpnService : public KeyedService {
  public:
-  explicit VpnService(content::BrowserContext* context);
-  ~VpnService() override;
+  explicit BraveVpnService(scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  ~BraveVpnService() override;
+
+  BraveVpnService(const BraveVpnService&) = delete;
+  BraveVpnService& operator=(const BraveVpnService&) = delete;
 
   using ResponseCallback =
       base::OnceCallback<void(const JsonResponse&, bool success)>;
@@ -100,13 +103,9 @@ class VpnService : public KeyedService {
                              const std::string& body,
                              const std::map<std::string, std::string>& headers);
 
-  content::BrowserContext* context_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   SimpleURLLoaderList url_loaders_;
-  base::WeakPtrFactory<VpnService> weak_factory_;
-  base::WeakPtrFactory<VpnService> vpn_weak_factory_{this};
-
-  DISALLOW_COPY_AND_ASSIGN(VpnService);
+  base::WeakPtrFactory<BraveVpnService> weak_factory_;
 };
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_VPN_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_BRAVE_VPN_SERVICE_H_
