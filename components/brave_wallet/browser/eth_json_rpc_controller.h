@@ -15,6 +15,7 @@
 #include "base/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list_threadsafe.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_events_observer.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
@@ -95,11 +96,6 @@ class EthJsonRpcController {
   static GURL GetBlockTrackerURLFromNetwork(Network network);
 
  private:
-  using SimpleURLLoaderList =
-      std::list<std::unique_ptr<network::SimpleURLLoader>>;
-  void OnURLLoaderComplete(SimpleURLLoaderList::iterator iter,
-                           URLRequestCallback callback,
-                           const std::unique_ptr<std::string> response_body);
   void OnGetBalance(GetBallanceCallback callback,
                     const int status,
                     const std::string& body,
@@ -135,10 +131,9 @@ class EthJsonRpcController {
       const std::string& body,
       const std::map<std::string, std::string>& headers);
 
+  api_request_helper::APIRequestHelper api_request_helper_;
   GURL network_url_;
-  SimpleURLLoaderList url_loaders_;
   Network network_;
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   scoped_refptr<base::ObserverListThreadSafe<BraveWalletProviderEventsObserver>>
       observers_;
 

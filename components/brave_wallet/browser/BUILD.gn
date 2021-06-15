@@ -52,6 +52,7 @@ source_set("browser") {
 
   deps = [
     "//base",
+    "//brave/components/api_request_helper",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/third_party/bitcoin-core",
