@@ -934,6 +934,9 @@
 /* Navigation title for search settings. */
 "SearchSettingNavTitle" = "Recherche";
 
+/* Label for showing recent search setting. */
+"SearchSettingRecentSearchesCellTitle" = "Afficher les recherches récentes";
+
 /* Label for search settings button. */
 "SearchSettingsButtonTitle" = "Réglages de la recherche";
 
@@ -942,6 +945,12 @@
 
 /* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
 "SearchSuggestionFromFormatText" = "Suggestions de recherche de %@";
+
+/* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
+"SearchSuggestionSectionTitleFormat" = "Recherche sur %@";
+
+/* Section header for search suggestions option */
+"SearchSuggestionsSectionHeader" = "Suggestions de recherche";
 
 /* Settings security section title */
 "Security" = "Sécurité";

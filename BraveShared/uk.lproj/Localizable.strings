@@ -256,6 +256,12 @@
 /* When a video or audio is live and has no duration */
 "playlist.playlistLiveMediaStream" = "Пряма трансляція";
 
+/* Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionFooterText" = "Якщо ввімкнено, ви можете додавати більшість відеофайлів та аудіофайлів до списку відтворення довгим натисненням.";
+
+/* Title for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionTitle" = "Увімкнути жест «Довге натиснення»";
+
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistMediaAndOfflineDataToggleOption" = "Медіафайли й офлайн-дані списків відтворення";
 
@@ -295,12 +301,10 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Почати відтворення з місця останньої зупинки";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
-   Footer Text for the Playlist Settings Option for long press gesture */
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionFooterText" = "Якщо ця функція ввімкнена, на більшості медіа-сайтів автоматично з’являється меню, яке полегшує додавання цих відео/аудіофайлів до списку відтворення.";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast
-   Title for the Playlist Settings Option for long press gesture */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionTitle" = "Показати «Додати у Brave Playlist»";
 
 /* Description for Playlist setting */
@@ -353,6 +357,60 @@
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Закрити меню Shields";
+
+/* Recent Search Clear Button */
+"RecentSearchClear" = "Видалити";
+
+/* The button title that shows when you clear all recent searches */
+"RecentSearchClearAlertButton" = "Видалити недавні запити";
+
+/* Recent Search setting title to clear recent searches */
+"RecentSearchClearDataToggleOption" = "Дані недавніх пошуків";
+
+/* Recent Search button title to disable suggestions */
+"RecentSearchDisableSuggestions" = "Вимкнути";
+
+/* Recent Search button title to enable suggestions */
+"RecentSearchEnableSuggestions" = "Увімкнути";
+
+/* Recent Search Favorites Section Title */
+"RecentSearchFavorites" = "Обране";
+
+/* Recent Search Hide Button */
+"RecentSearchHide" = "Приховати";
+
+/* Recent Search Paste & Go Button Title */
+"RecentSearchPasteAndGo" = "Вставити та перейти";
+
+/* Recent Search 'on' text when a user searches 'on' a website */
+"RecentSearchQuickSearchOnWebsite" = "у";
+
+/* Recent Search Scanned text when a user scans a qr code */
+"RecentSearchScanned" = "Відскановано";
+
+/* Scanning a QRCode for searching body */
+"RecentSearchScannerDescriptionBody" = "Щоб здійснити пошук за QR-кодом, вирівняйте його в центрі рамки.";
+
+/* Scanning a QRCode for title */
+"RecentSearchScannerDescriptionTitle" = "Інструкції";
+
+/* Scanning a QRCode for searching */
+"RecentSearchScannerTitle" = "Сканування QR-коду";
+
+/* Recent Search Section Description */
+"RecentSearchSectionDescription" = "Функція «Недавні пошукові запити» дозволяє отримати захищений доступ до історії пошуків. Увімкнути функцію?";
+
+/* Recent Search Section Title */
+"RecentSearchSectionTitle" = "Недавні пошукові запити";
+
+/* Recent Search Show Button */
+"RecentSearchShow" = "Показати";
+
+/* Recent Search Show More button */
+"RecentSearchShowMore" = "Показати більше";
+
+/* Recent Search suggestions title when prompting to turn on suggestions */
+"RecentSearchSuggestionsTitle" = "Пошукові підказки";
 
 /* No comment provided by engineer. */
 "ReportABrokenSite" = "Повідомити про помилки в роботі вебсайту";
@@ -814,13 +872,13 @@
 "today.addSourceNoFeedsFoundMessage" = "На жаль, за цією адресою стрічки немає вмісту.";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "Додати джерело до Brave Today";
+"today.addSourceShareTitle" = "Додати джерело до Brave News";
 
 /* No comment provided by engineer. */
 "today.allSources" = "Усі джерела";
 
 /* The name of the feature */
-"today.braveToday" = "Brave Today";
+"today.braveToday" = "Brave News";
 
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "З’явився новий контент";
@@ -835,7 +893,7 @@
 "today.disableAll" = "Вимкнути все";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disabledAlertBody" = "У Brave Today більше не відображатиметься контент від %@";
+"today.disabledAlertBody" = "У Brave News більше не відображатиметься контент від %@";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "Вимкнено";
@@ -856,7 +914,7 @@
 "today.enablePublisherContent" = "Увімкнути контент від %@";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "У Brave Today виникли проблема. Спробуйте ще раз.";
+"today.errorGeneralBody" = "У Brave News виникли проблеми. Спробуйте ще раз.";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Ой…";
@@ -868,19 +926,19 @@
 "today.insecureSourcesHeader" = "Небезпечні джерела — додавайте лише на власний розсуд";
 
 /* No comment provided by engineer. */
-"today.introCardBody" = "У Brave Today відображається повністю приватна та анонімна реклама, що відповідає вашому пристрою.";
+"today.introCardBody" = "У Brave News відображається повністю приватна та анонімна реклама, що відповідає вашому пристрою.";
 
 /* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
 "today.introCardNew" = "Новинка";
 
 /* No comment provided by engineer. */
-"today.introCardNewTextBody" = "Налаштуйте в Brave Today до 5 RSS-каналів, щоб переглядати новий вміст від улюблених авторів протягом дня.";
+"today.introCardNewTextBody" = "Персоналізуйте стрічку, додавши кілька з провідних джерел умісту з нашої приватної мережі CDN, або додавайте RSS-стрічки ваших улюблених видавців, щоб у стрічці відображався лише актуальний для вас уміст.";
 
 /* No comment provided by engineer. */
 "today.introCardTitle" = "Найпопулярніші історії за сьогодні в повністю приватній стрічці, яку підібрано лише для вас.";
 
 /* No comment provided by engineer. */
-"today.isEnabledToggleLabel" = "Показати Brave Today";
+"today.isEnabledToggleLabel" = "Показати Brave News";
 
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Докладніше про ваші дані";
@@ -903,15 +961,6 @@
 /* No comment provided by engineer. */
 "today.resetSourceSettingsButtonTitle" = "Скиньте налаштування джерел до значень за замовчуванням";
 
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertMessage" = "У безкоштовній версії Brave Today із рекламою можна налаштувати до 5 RSS-каналів. Канали можна вибрати зі списку «Джерела».";
-
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertTitle" = "Досягнуто обмеження на кількість стрічок";
-
-/* %d will be a number (i.e. 4) */
-"today.rssFeedLimitRemainingFooter" = "Наразі до вашого списку джерел додано таку кількість RSS-каналів: %d. У безкоштовній версії Brave Today із рекламою можна налаштувати до 5 RSS-каналів. Незабаром буде прибрано обмеження на кількість каналів і додано функцію імпорту OPML. Канали можна вибрати зі списку «Джерела».";
-
 /* An action title where the user is executing a search based on inputted text */
 "today.searchButtonTitle" = "Пошук";
 
@@ -928,7 +977,7 @@
 "today.sourceSearchPlaceholder" = "Пошук";
 
 /* No comment provided by engineer. */
-"today.turnOnBraveToday" = "Увімкнути Brave Today";
+"today.turnOnBraveToday" = "Увімкнути Brave News";
 
 /* The header above a list of the users RSS feed sources */
 "today.yourSources" = "Ваші джерела";

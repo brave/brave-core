@@ -256,6 +256,12 @@
 /* When a video or audio is live and has no duration */
 "playlist.playlistLiveMediaStream" = "Direktestrømming";
 
+/* Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionFooterText" = "Når dette er aktivert, kan du trykke og holde inne de fleste video-/lydfiler for å legge dem til i spillelisten din.";
+
+/* Title for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionTitle" = "Aktiver trykk og hold inne";
+
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistMediaAndOfflineDataToggleOption" = "Playlist-media og -data i frakoblet modus";
 
@@ -295,12 +301,10 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Start avspilling fra der jeg var";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
-   Footer Text for the Playlist Settings Option for long press gesture */
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionFooterText" = "Når dette aktiveres, vises en stolpe automatisk på de fleste medienettsteder, hvilket gjør det lettere å legge til video-/ lydfilene i spillelisten din.";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast
-   Title for the Playlist Settings Option for long press gesture */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionTitle" = "Vis «Legg til i Brave-spilleliste»";
 
 /* Description for Playlist setting */
@@ -353,6 +357,60 @@
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Lukk Skjold-menyen";
+
+/* Recent Search Clear Button */
+"RecentSearchClear" = "Fjern";
+
+/* The button title that shows when you clear all recent searches */
+"RecentSearchClearAlertButton" = "Fjern nylige";
+
+/* Recent Search setting title to clear recent searches */
+"RecentSearchClearDataToggleOption" = "Nylige søkedata";
+
+/* Recent Search button title to disable suggestions */
+"RecentSearchDisableSuggestions" = "Deaktiver";
+
+/* Recent Search button title to enable suggestions */
+"RecentSearchEnableSuggestions" = "Aktiver";
+
+/* Recent Search Favorites Section Title */
+"RecentSearchFavorites" = "Favoritter";
+
+/* Recent Search Hide Button */
+"RecentSearchHide" = "Skjul";
+
+/* Recent Search Paste & Go Button Title */
+"RecentSearchPasteAndGo" = "Lim inn og dra til";
+
+/* Recent Search 'on' text when a user searches 'on' a website */
+"RecentSearchQuickSearchOnWebsite" = "på";
+
+/* Recent Search Scanned text when a user scans a qr code */
+"RecentSearchScanned" = "Skannet";
+
+/* Scanning a QRCode for searching body */
+"RecentSearchScannerDescriptionBody" = "For å søke etter QR-kode, plasserer du QR midten i rammen.";
+
+/* Scanning a QRCode for title */
+"RecentSearchScannerDescriptionTitle" = "Instruksjoner";
+
+/* Scanning a QRCode for searching */
+"RecentSearchScannerTitle" = "Skann QR-kode";
+
+/* Recent Search Section Description */
+"RecentSearchSectionDescription" = "Nylige søk lar deg få privat tilgang til tidligere søk. Vil du aktivere nylige søk?";
+
+/* Recent Search Section Title */
+"RecentSearchSectionTitle" = "Nylige søk";
+
+/* Recent Search Show Button */
+"RecentSearchShow" = "Vis";
+
+/* Recent Search Show More button */
+"RecentSearchShowMore" = "Vis mer";
+
+/* Recent Search suggestions title when prompting to turn on suggestions */
+"RecentSearchSuggestionsTitle" = "Søkeforslag";
 
 /* No comment provided by engineer. */
 "ReportABrokenSite" = "Rapporter et ødelagt nettsted";
@@ -814,13 +872,13 @@
 "today.addSourceNoFeedsFoundMessage" = "Beklager, den feed-adressen er uten innhold.";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "Legg til kilde i Brave Today";
+"today.addSourceShareTitle" = "Legg til kilde i Brave News";
 
 /* No comment provided by engineer. */
 "today.allSources" = "Alle kilder";
 
 /* The name of the feature */
-"today.braveToday" = "Brave Today";
+"today.braveToday" = "Brave News";
 
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "Nytt innhold tilgjengelig";
@@ -835,7 +893,7 @@
 "today.disableAll" = "Deaktiver alle";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disabledAlertBody" = "Brave Today vil ikke lenger vise innhold fra %@";
+"today.disabledAlertBody" = "Brave News slutter å vise innhold fra %@";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "Deaktivert";
@@ -856,7 +914,7 @@
 "today.enablePublisherContent" = "Aktiver innhold fra %@";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "Brave Today opplever noen problemer. Prøv igjen.";
+"today.errorGeneralBody" = "Brave News opplever for øyeblikket problemer. Prøv igjen.";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Oops …";
@@ -868,19 +926,19 @@
 "today.insecureSourcesHeader" = "Usikre kilder – legg til på egen risiko";
 
 /* No comment provided by engineer. */
-"today.introCardBody" = "Brave Today er annonsestøttet med helt private og anonymiserte annonser matchet på enheten din.";
+"today.introCardBody" = "Brave News støttes av helt private og anonymiserte annonser som samsvarer med enheten din.";
 
 /* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
 "today.introCardNew" = "Ny";
 
 /* No comment provided by engineer. */
-"today.introCardNewTextBody" = "Tilpass Brave Today med opptil 5 RSS-feeder og få nytt innhold fra favorittutgiverne dine gjennom hele dagen.";
+"today.introCardNewTextBody" = "Tilpass feeden din ved hjelp av hundrevis av ledende innholdskilder levert gjennom vårt private CDN, og legg til RSS-feeder fra favorittutgiverne dine for å lage en feed som fungerer for deg.";
 
 /* No comment provided by engineer. */
 "today.introCardTitle" = "Dagens topphistorier i en helt privat feed, kun til deg.";
 
 /* No comment provided by engineer. */
-"today.isEnabledToggleLabel" = "Vis Brave Today";
+"today.isEnabledToggleLabel" = "Vis Brave News";
 
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Lær mer om dataene dine";
@@ -903,15 +961,6 @@
 /* No comment provided by engineer. */
 "today.resetSourceSettingsButtonTitle" = "Tilbakestill kildeinnstillinger til standard";
 
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertMessage" = "Den gratis annonsestøttede versjonen av Brave Today inkluderer 5 RSS-feeder. Du kan tilpasse feed-valgene dine fra kildelisten.";
-
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertTitle" = "Feed-grense overskredet";
-
-/* %d will be a number (i.e. 4) */
-"today.rssFeedLimitRemainingFooter" = "Du har for øyeblikket %d RSS-feeder i kildelisten din. Den gratis annonsestøttede versjonen av Brave Today inkluderer 5 RSS-feeder. Støtte av ubegrenset innmating og OPML-importering kommer snart. Du kan tilpasse feed-valgene dine fra kildelisten.";
-
 /* An action title where the user is executing a search based on inputted text */
 "today.searchButtonTitle" = "Søk";
 
@@ -928,7 +977,7 @@
 "today.sourceSearchPlaceholder" = "Søk";
 
 /* No comment provided by engineer. */
-"today.turnOnBraveToday" = "Slå på Brave-annonser";
+"today.turnOnBraveToday" = "Skru på Brave News";
 
 /* The header above a list of the users RSS feed sources */
 "today.yourSources" = "Alle kilder";

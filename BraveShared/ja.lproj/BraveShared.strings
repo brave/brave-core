@@ -515,7 +515,7 @@
 "FindInPagePreviousResultButtonAccessibilityLabel" = "前のページ内検索結果";
 
 /* Section header for find in page option */
-"FindOnPageSectionHeader" = "このページ内で";
+"FindOnPageSectionHeader" = "ページ内検索";
 
 /* individual blocking statistic title */
 "FingerprintingMethods" = "フィンガープリント";
@@ -934,6 +934,9 @@
 /* Navigation title for search settings. */
 "SearchSettingNavTitle" = "検索";
 
+/* Label for showing recent search setting. */
+"SearchSettingRecentSearchesCellTitle" = "最近の検索を表示";
+
 /* Label for search settings button. */
 "SearchSettingsButtonTitle" = "設定の検索";
 
@@ -942,6 +945,12 @@
 
 /* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
 "SearchSuggestionFromFormatText" = "%@ からの検索候補";
+
+/* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
+"SearchSuggestionSectionTitleFormat" = "%@で検索";
+
+/* Section header for search suggestions option */
+"SearchSuggestionsSectionHeader" = "検索候補";
 
 /* Settings security section title */
 "Security" = "セキュリティ";

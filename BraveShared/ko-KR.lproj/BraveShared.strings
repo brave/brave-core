@@ -934,6 +934,9 @@
 /* Navigation title for search settings. */
 "SearchSettingNavTitle" = "검색";
 
+/* Label for showing recent search setting. */
+"SearchSettingRecentSearchesCellTitle" = "최근 검색어 표시";
+
 /* Label for search settings button. */
 "SearchSettingsButtonTitle" = "검색 설정";
 
@@ -942,6 +945,12 @@
 
 /* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
 "SearchSuggestionFromFormatText" = "%@의 추천 검색어";
+
+/* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
+"SearchSuggestionSectionTitleFormat" = "%@ 검색";
+
+/* Section header for search suggestions option */
+"SearchSuggestionsSectionHeader" = "추천 검색어";
 
 /* Settings security section title */
 "Security" = "보안";

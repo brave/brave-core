@@ -256,6 +256,12 @@
 /* When a video or audio is live and has no duration */
 "playlist.playlistLiveMediaStream" = "Strim Langsung";
 
+/* Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionFooterText" = "Apabila didayakan, anda boleh tekan dengan lama pada kebanyakan fail video/audio untuk menambahkan fail tersebut pada Senarai Main anda.";
+
+/* Title for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionTitle" = "Dayakan Tekan Dengan Lama";
+
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistMediaAndOfflineDataToggleOption" = "Media Senarai Main & Data Luar Talian";
 
@@ -295,12 +301,10 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Mulakan Main Balik di tempat terakhir saya berhenti";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
-   Footer Text for the Playlist Settings Option for long press gesture */
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionFooterText" = "Apabila didayakan, bar akan muncul secara automatik di kebanyakan laman web media menjadikannya lebih mudah untuk menambah fail video/audio tersebut ke Senarai Main anda.";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast
-   Title for the Playlist Settings Option for long press gesture */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionTitle" = "Tunjukkan \"Tambah ke Senarai Main Brave\"";
 
 /* Description for Playlist setting */
@@ -353,6 +357,60 @@
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Tutup Menu Shields";
+
+/* Recent Search Clear Button */
+"RecentSearchClear" = "Kosongkan";
+
+/* The button title that shows when you clear all recent searches */
+"RecentSearchClearAlertButton" = "Kosongkan Carian Terkini";
+
+/* Recent Search setting title to clear recent searches */
+"RecentSearchClearDataToggleOption" = "Data Carian Terkini";
+
+/* Recent Search button title to disable suggestions */
+"RecentSearchDisableSuggestions" = "Nyahdayakan";
+
+/* Recent Search button title to enable suggestions */
+"RecentSearchEnableSuggestions" = "Dayakan";
+
+/* Recent Search Favorites Section Title */
+"RecentSearchFavorites" = "Kegemaran";
+
+/* Recent Search Hide Button */
+"RecentSearchHide" = "Sembunyikan";
+
+/* Recent Search Paste & Go Button Title */
+"RecentSearchPasteAndGo" = "Tampal & Pergi";
+
+/* Recent Search 'on' text when a user searches 'on' a website */
+"RecentSearchQuickSearchOnWebsite" = "pada";
+
+/* Recent Search Scanned text when a user scans a qr code */
+"RecentSearchScanned" = "Diimbas";
+
+/* Scanning a QRCode for searching body */
+"RecentSearchScannerDescriptionBody" = "Untuk mencari dengan menggunakan Kod QR, letakkan QR di tengah-tengah bingkai.";
+
+/* Scanning a QRCode for title */
+"RecentSearchScannerDescriptionTitle" = "Arahan";
+
+/* Scanning a QRCode for searching */
+"RecentSearchScannerTitle" = "Imbas Kod QR";
+
+/* Recent Search Section Description */
+"RecentSearchSectionDescription" = "Carian Terkini membenarkan anda mengakses carian masa lampau secara rahsia. Adakah anda ingin mendayakan Carian Terkini?";
+
+/* Recent Search Section Title */
+"RecentSearchSectionTitle" = "Carian Terkini";
+
+/* Recent Search Show Button */
+"RecentSearchShow" = "Tunjuk";
+
+/* Recent Search Show More button */
+"RecentSearchShowMore" = "Tunjukkan lagi";
+
+/* Recent Search suggestions title when prompting to turn on suggestions */
+"RecentSearchSuggestionsTitle" = "Cadangan Carian";
 
 /* No comment provided by engineer. */
 "ReportABrokenSite" = "Laporkan laman web yang rosak";
@@ -814,13 +872,13 @@
 "today.addSourceNoFeedsFoundMessage" = "Maaf, alamat suapan tersebut tidak mempunyai sebarang kandungan.";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "Tambah Sumber ke Brave Today";
+"today.addSourceShareTitle" = "Tambahkan Sumber Pada Brave News";
 
 /* No comment provided by engineer. */
 "today.allSources" = "Semua Sumber";
 
 /* The name of the feature */
-"today.braveToday" = "Brave Today";
+"today.braveToday" = "Brave News";
 
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "Kandungan Baharu Tersedia";
@@ -835,7 +893,7 @@
 "today.disableAll" = "Nyahaktifkan semua";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disabledAlertBody" = "Brave Today akan berhenti menunjukkan kandungan dari %@";
+"today.disabledAlertBody" = "Brave News akan berhenti menunjukkan kandungan daripada %@";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "Dinyahaktif";
@@ -856,7 +914,7 @@
 "today.enablePublisherContent" = "Dayakan kandungan dari %@";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "Berani Today sedang mengalami beberapa isu. Cuba lagi.";
+"today.errorGeneralBody" = "Brave News sedang mengalami beberapa isu. Cuba lagi.";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Alamak…";
@@ -868,19 +926,19 @@
 "today.insecureSourcesHeader" = "Sumber Tidak Selamat - Tambah atas risiko anda sendiri";
 
 /* No comment provided by engineer. */
-"today.introCardBody" = "Brave Today disokong iklan dengan iklan yang sepenuhnya peribadi dan tanpa nama yang dipadankan pada peranti anda.";
+"today.introCardBody" = "Brave News disokong iklan dengan iklan yang sepenuhnya peribadi dan tanpa nama yang dipadankan pada peranti anda.";
 
 /* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
 "today.introCardNew" = "Baharu";
 
 /* No comment provided by engineer. */
-"today.introCardNewTextBody" = "Sesuaikan Brave Today dengan 5 suapan RSS dan dapatkan kandungan baharu dari penerbit kegemaran anda sepanjang hari.";
+"today.introCardNewTextBody" = "Sesuaikan suapan anda menggunakan beratus-ratus sumber kandungan yang mendahului disampaikan melalui CDN peribadi kami dan tambah suapan RSS daripada penerbit kegemaran anda untuk mencipta suapan yang sesuai hanya untuk anda.";
 
 /* No comment provided by engineer. */
 "today.introCardTitle" = "Berita utama hari ini dalam suapan peribadi sepenuhnya, hanya untuk anda.";
 
 /* No comment provided by engineer. */
-"today.isEnabledToggleLabel" = "Tunjukkan Brave Today";
+"today.isEnabledToggleLabel" = "Tunjukkan Brave News";
 
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Ketahui lebih lanjut mengenai data anda";
@@ -903,15 +961,6 @@
 /* No comment provided by engineer. */
 "today.resetSourceSettingsButtonTitle" = "Tetapkan semula Tetapan Sumber ke Lalai";
 
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertMessage" = "Versi Brave Today yang disokong iklan percuma merangkumi 5 suapan RSS. Anda boleh menyesuaikan pilihan suapan anda dari senarai Sumber.";
-
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertTitle" = "Had suapan dilepasi";
-
-/* %d will be a number (i.e. 4) */
-"today.rssFeedLimitRemainingFooter" = "Pada masa ini anda mempunyai %d suapan RSS dalam senarai Sumber anda. Versi Brave Today yang disokong iklan percuma merangkumi 5 suapan RSS. Sokongan untuk suapan tanpa had dan import OPML akan datang tidak lama lagi. Anda boleh menyesuaikan pilihan suapan anda dari senarai Sumber.";
-
 /* An action title where the user is executing a search based on inputted text */
 "today.searchButtonTitle" = "Cari";
 
@@ -928,7 +977,7 @@
 "today.sourceSearchPlaceholder" = "Carian";
 
 /* No comment provided by engineer. */
-"today.turnOnBraveToday" = "Hidupkan Brave Today";
+"today.turnOnBraveToday" = "Hidupkan Brave News";
 
 /* The header above a list of the users RSS feed sources */
 "today.yourSources" = "Sumber Anda";

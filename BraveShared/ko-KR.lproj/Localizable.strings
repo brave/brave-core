@@ -256,6 +256,12 @@
 /* When a video or audio is live and has no duration */
 "playlist.playlistLiveMediaStream" = "라이브 스트림";
 
+/* Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionFooterText" = "이 설정이 활성화되어 있으면 대부분의 동영상/오디오 파일을 길게 눌러 재생목록에 추가할 수 있습니다.";
+
+/* Title for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionTitle" = "길게 누르기 활성화";
+
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistMediaAndOfflineDataToggleOption" = "재생목록 미디어 및 오프라인 데이터";
 
@@ -295,12 +301,10 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "종료한 위치에서 재생 시작";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
-   Footer Text for the Playlist Settings Option for long press gesture */
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionFooterText" = "활성화하면 창에 대부분의 미디어 웹사이트가 자동으로 표시되어 동영상/오디오를 재생목록으로 쉽게 추가할 수 있습니다.";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast
-   Title for the Playlist Settings Option for long press gesture */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionTitle" = "\"Brave Playlist에 추가\" 표시";
 
 /* Description for Playlist setting */
@@ -353,6 +357,60 @@
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Shields 메뉴 닫기";
+
+/* Recent Search Clear Button */
+"RecentSearchClear" = "지우기";
+
+/* The button title that shows when you clear all recent searches */
+"RecentSearchClearAlertButton" = "최근 기록 지우기";
+
+/* Recent Search setting title to clear recent searches */
+"RecentSearchClearDataToggleOption" = "최근 검색 데이터";
+
+/* Recent Search button title to disable suggestions */
+"RecentSearchDisableSuggestions" = "비활성화";
+
+/* Recent Search button title to enable suggestions */
+"RecentSearchEnableSuggestions" = "활성화";
+
+/* Recent Search Favorites Section Title */
+"RecentSearchFavorites" = "즐겨찾기";
+
+/* Recent Search Hide Button */
+"RecentSearchHide" = "숨기기";
+
+/* Recent Search Paste & Go Button Title */
+"RecentSearchPasteAndGo" = "붙여넣기 및 이동";
+
+/* Recent Search 'on' text when a user searches 'on' a website */
+"RecentSearchQuickSearchOnWebsite" = "위치";
+
+/* Recent Search Scanned text when a user scans a qr code */
+"RecentSearchScanned" = "스캔함";
+
+/* Scanning a QRCode for searching body */
+"RecentSearchScannerDescriptionBody" = "QR 코드로 검색하려면 QR 이미지를 프레임 중앙에 맞추세요.";
+
+/* Scanning a QRCode for title */
+"RecentSearchScannerDescriptionTitle" = "지침";
+
+/* Scanning a QRCode for searching */
+"RecentSearchScannerTitle" = "QR 코드 스캔";
+
+/* Recent Search Section Description */
+"RecentSearchSectionDescription" = "최근 검색어에서는 과거에 사용한 검색어를 비공개로 확인할 수 있습니다. 최근 검색어를 활성화하시겠습니까?";
+
+/* Recent Search Section Title */
+"RecentSearchSectionTitle" = "최근 검색어";
+
+/* Recent Search Show Button */
+"RecentSearchShow" = "표시";
+
+/* Recent Search Show More button */
+"RecentSearchShowMore" = "더보기";
+
+/* Recent Search suggestions title when prompting to turn on suggestions */
+"RecentSearchSuggestionsTitle" = "추천 검색어";
 
 /* No comment provided by engineer. */
 "ReportABrokenSite" = "깨진 사이트 신고";
@@ -814,13 +872,13 @@
 "today.addSourceNoFeedsFoundMessage" = "피드 주소에 아무런 내용도 없습니다.";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "Brave Today에 출처 추가";
+"today.addSourceShareTitle" = "Brave News에 출처 추가";
 
 /* No comment provided by engineer. */
 "today.allSources" = "모든 출처";
 
 /* The name of the feature */
-"today.braveToday" = "Brave Today";
+"today.braveToday" = "Brave News";
 
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "새 콘텐츠 사용 가능";
@@ -835,7 +893,7 @@
 "today.disableAll" = "모두 비활성화";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disabledAlertBody" = "Brave Today에 %@ 제공 콘텐츠를 표시하지 않음";
+"today.disabledAlertBody" = "Brave News에 %@ 제공 콘텐츠를 표시하지 않음";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "비활성화됨";
@@ -856,7 +914,7 @@
 "today.enablePublisherContent" = "%@ 제공 콘텐츠 활성화";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "Brave Today에 문제가 발생했습니다. 다시 시도하세요.";
+"today.errorGeneralBody" = "Brave News에 문제가 발생했습니다. 다시 시도하세요.";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "죄송합니다...";
@@ -868,19 +926,19 @@
 "today.insecureSourcesHeader" = "비보안 출처 - 위험을 감수하고 추가";
 
 /* No comment provided by engineer. */
-"today.introCardBody" = "Brave Today는 기기 기반 정보를 토대로 완전히 익명화된 비공개 광고의 지원으로 제공됩니다.";
+"today.introCardBody" = "Brave News는 기기 기반 정보를 토대로 완전히 익명화된 비공개 광고의 지원으로 제공됩니다.";
 
 /* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
 "today.introCardNew" = "신규";
 
 /* No comment provided by engineer. */
-"today.introCardNewTextBody" = "Brave Today는 최대 5개의 RSS 피드로 맞춤 설정하여 마음에 드는 게시자의 신규 콘텐츠를 하루 종일 받아볼 수 있습니다.";
+"today.introCardNewTextBody" = "비공개 CDN을 통해 제공되는 유수의 콘텐츠 출처 수백 개를 사용하여 피드를 맞춤 설정할 수 있고, 좋아하는 게시자의 RSS 피드를 추가하여 피드를 맞춤 설정할 수도 있습니다.";
 
 /* No comment provided by engineer. */
 "today.introCardTitle" = "오늘의 인기 스토리는 맞춤형 완전 비공개 피드입니다.";
 
 /* No comment provided by engineer. */
-"today.isEnabledToggleLabel" = "Brave Today 표시";
+"today.isEnabledToggleLabel" = "Brave News 표시";
 
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "사용자 데이터에 대해 자세히 알아보기";
@@ -903,15 +961,6 @@
 /* No comment provided by engineer. */
 "today.resetSourceSettingsButtonTitle" = "출처 설정을 기본값으로 초기화";
 
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertMessage" = "광고의 지원으로 제공되는 Brave Today 무료 버전에는 5개의 RSS 피드가 포함됩니다. 내 출처 목록에서 피드를 선택하여 맞춤 설정할 수 있습니다.";
-
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertTitle" = "피드 한도 초과";
-
-/* %d will be a number (i.e. 4) */
-"today.rssFeedLimitRemainingFooter" = "현재 출처 목록에서 %d개의 RSS 피드를 선택하셨습니다. 광고의 지원으로 제공되는 Brave Today 무료 버전에는 5개의 RSS 피드가 포함됩니다. 무제한 피드 및 OPML 가져오기는 곧 지원될 예정입니다. 내 출처 목록에서 피드를 선택하여 맞춤 설정할 수 있습니다.";
-
 /* An action title where the user is executing a search based on inputted text */
 "today.searchButtonTitle" = "검색";
 
@@ -928,7 +977,7 @@
 "today.sourceSearchPlaceholder" = "검색";
 
 /* No comment provided by engineer. */
-"today.turnOnBraveToday" = "Brave Today 켜기";
+"today.turnOnBraveToday" = "Brave News 켜기";
 
 /* The header above a list of the users RSS feed sources */
 "today.yourSources" = "내 출처";

@@ -256,6 +256,12 @@
 /* When a video or audio is live and has no duration */
 "playlist.playlistLiveMediaStream" = "ライブストリーミング動画";
 
+/* Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionFooterText" = "有効にすると、ほとんどの動画/音声ファイルを長押ししてPlaylistに追加することができるようになります。";
+
+/* Title for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionTitle" = "長押しを有効にする";
+
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistMediaAndOfflineDataToggleOption" = "Playlistメディアとオフラインデータ";
 
@@ -295,12 +301,10 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "前回の続きから再生";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
-   Footer Text for the Playlist Settings Option for long press gesture */
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionFooterText" = "オンにすると、多くの動画・音声メディアのウェブサイトで、動画や音声を簡単にPlaylistに追加するためのバーが自動で表示されます。";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast
-   Title for the Playlist Settings Option for long press gesture */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionTitle" = "「Brave Playlistに追加する」を表示する";
 
 /* Description for Playlist setting */
@@ -353,6 +357,60 @@
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Shieldメニューを閉じる";
+
+/* Recent Search Clear Button */
+"RecentSearchClear" = "消去する";
+
+/* The button title that shows when you clear all recent searches */
+"RecentSearchClearAlertButton" = "最近の検索を消去";
+
+/* Recent Search setting title to clear recent searches */
+"RecentSearchClearDataToggleOption" = "最近の検索データ";
+
+/* Recent Search button title to disable suggestions */
+"RecentSearchDisableSuggestions" = "無効にする";
+
+/* Recent Search button title to enable suggestions */
+"RecentSearchEnableSuggestions" = "有効にする";
+
+/* Recent Search Favorites Section Title */
+"RecentSearchFavorites" = "お気に入り";
+
+/* Recent Search Hide Button */
+"RecentSearchHide" = "隠す";
+
+/* Recent Search Paste & Go Button Title */
+"RecentSearchPasteAndGo" = "貼り付けて移動";
+
+/* Recent Search 'on' text when a user searches 'on' a website */
+"RecentSearchQuickSearchOnWebsite" = "on";
+
+/* Recent Search Scanned text when a user scans a qr code */
+"RecentSearchScanned" = "スキャンしました";
+
+/* Scanning a QRCode for searching body */
+"RecentSearchScannerDescriptionBody" = "QRコードで検索するには、フレームの中心にQRコードを合わせてください。";
+
+/* Scanning a QRCode for title */
+"RecentSearchScannerDescriptionTitle" = "使い方";
+
+/* Scanning a QRCode for searching */
+"RecentSearchScannerTitle" = "QRコードをスキャン";
+
+/* Recent Search Section Description */
+"RecentSearchSectionDescription" = "「最近の検索」機能により、あなたはプライバシーを守りながら過去の検索データを利用できます。最近の検索を有効にしますか？";
+
+/* Recent Search Section Title */
+"RecentSearchSectionTitle" = "最近の検索";
+
+/* Recent Search Show Button */
+"RecentSearchShow" = "表示する";
+
+/* Recent Search Show More button */
+"RecentSearchShowMore" = "もっと表示する";
+
+/* Recent Search suggestions title when prompting to turn on suggestions */
+"RecentSearchSuggestionsTitle" = "検索候補";
 
 /* No comment provided by engineer. */
 "ReportABrokenSite" = "サイト表示の問題を報告する";
@@ -814,13 +872,13 @@
 "today.addSourceNoFeedsFoundMessage" = "すみません、そのフィードアドレスにはコンテンツがありません。";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "Brave Todayにソースを追加する";
+"today.addSourceShareTitle" = "Brave Newsにソースを追加する";
 
 /* No comment provided by engineer. */
 "today.allSources" = "全てのソース";
 
 /* The name of the feature */
-"today.braveToday" = "Brave Today";
+"today.braveToday" = "Brave News";
 
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "利用可能な新しいコンテンツ";
@@ -835,7 +893,7 @@
 "today.disableAll" = "全て無効にする";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disabledAlertBody" = "Brave Today は %@ からのコンテンツの表示を無効にします";
+"today.disabledAlertBody" = "Brave Newsで %@ からのコンテンツは表示されなくなります";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "無効";
@@ -856,7 +914,7 @@
 "today.enablePublisherContent" = "次のコンテンツを有効にする: %@";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "Brave Todayに問題が発生しています。もう一度お試しください。";
+"today.errorGeneralBody" = "Brave Newsに問題が発生しています。もう一度お試しください。";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "うーん...";
@@ -868,19 +926,19 @@
 "today.insecureSourcesHeader" = "安全でないソースです - ユーザー自身の責任で追加してください";
 
 /* No comment provided by engineer. */
-"today.introCardBody" = "Brave Todayは広告に支えられています。完全にプライベートで個人を特定しない広告があなたのデバイス内で選択されます。";
+"today.introCardBody" = "Brave Newsは広告に支えられています。完全にプライバシーに配慮された個人を特定しない広告があなたのデバイス内で選択されます。";
 
 /* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
 "today.introCardNew" = "新機能";
 
 /* No comment provided by engineer. */
-"today.introCardNewTextBody" = "RSSフィードを最大5つ追加してBrave Todayをカスタマイズすれば、お気に入りのサイトから常に新しいコンテンツを受信することができます。";
+"today.introCardNewTextBody" = "我々のプライベートCDNから配信される数百の主要コンテンツ配信元を利用して自分のフィードをカスタマイズし、お気に入りのサイトのRSSフィードを追加して自分に合ったフィードを作成できます。";
 
 /* No comment provided by engineer. */
 "today.introCardTitle" = "Brave Todayは、読みたい記事が上がってくるプライベート・ニュースリーダー。";
 
 /* No comment provided by engineer. */
-"today.isEnabledToggleLabel" = "Brave Todayを表示";
+"today.isEnabledToggleLabel" = "Brave Newsを表示する";
 
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "あなたのデータについて詳しく";
@@ -903,15 +961,6 @@
 /* No comment provided by engineer. */
 "today.resetSourceSettingsButtonTitle" = "ソースの設定をデフォルトにリセット";
 
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertMessage" = "広告が表示される無料のBrave TodayはRSSフィードを5つまで追加できます。「ソースリスト」からあなたのフィードをカスタマイズすることができます。";
-
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertTitle" = "フィードの上限を超えました";
-
-/* %d will be a number (i.e. 4) */
-"today.rssFeedLimitRemainingFooter" = "あたたはすでに%dつのRSSフィードをソースリストに追加しました。広告が表示される無料のBrave TodayではRSSフィードは5つまで追加できます。無制限のフィード追加とOPMLのインポートは近い将来サポートされます。フィードはソースリストからカスタマイズ可能です。";
-
 /* An action title where the user is executing a search based on inputted text */
 "today.searchButtonTitle" = "検索";
 
@@ -928,7 +977,7 @@
 "today.sourceSearchPlaceholder" = "検索";
 
 /* No comment provided by engineer. */
-"today.turnOnBraveToday" = "Brave Todayをオンにする";
+"today.turnOnBraveToday" = "Brave Newsを使う";
 
 /* The header above a list of the users RSS feed sources */
 "today.yourSources" = "あなたのソース";

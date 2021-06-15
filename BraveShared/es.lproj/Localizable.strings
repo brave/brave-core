@@ -256,6 +256,12 @@
 /* When a video or audio is live and has no duration */
 "playlist.playlistLiveMediaStream" = "Transmisión en directo";
 
+/* Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionFooterText" = "Una vez que esté habilitada, podrás añadir la mayoría de archivos de vídeo/audio a tu lista de reproducción con solo pulsarlos durante unos segundos.";
+
+/* Title for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionTitle" = "Habilitar la pulsación sostenida";
+
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistMediaAndOfflineDataToggleOption" = "Datos sin conexión y contenido de la lista de reproducción";
 
@@ -295,12 +301,10 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Reanudar reproducción donde la detuve";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
-   Footer Text for the Playlist Settings Option for long press gesture */
-"playlist.playlistToastShowSettingsOptionFooterText" = "Si se habilita esta opción, aparecerá automáticamente una barra en la mayor parte de los sitios web de redes sociales, lo que hará que te resulte más fácil añadir esos archivos multimedia a tu lista de reproducción.";
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
+"playlist.playlistToastShowSettingsOptionFooterText" = "Si se habilita esta opción, aparecerá automáticamente una barra en la mayor parte de los sitios web de contenido multimedia, lo que hará que te resulte más fácil añadir esos archivos multimedia a tu lista de reproducción.";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast
-   Title for the Playlist Settings Option for long press gesture */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionTitle" = "Mostrar \"Añadir a Brave Playlist\"";
 
 /* Description for Playlist setting */
@@ -353,6 +357,60 @@
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Cerrar el menú de escudos";
+
+/* Recent Search Clear Button */
+"RecentSearchClear" = "Borrar";
+
+/* The button title that shows when you clear all recent searches */
+"RecentSearchClearAlertButton" = "Borrar recientes";
+
+/* Recent Search setting title to clear recent searches */
+"RecentSearchClearDataToggleOption" = "Datos de búsquedas recientes";
+
+/* Recent Search button title to disable suggestions */
+"RecentSearchDisableSuggestions" = "Deshabilitar";
+
+/* Recent Search button title to enable suggestions */
+"RecentSearchEnableSuggestions" = "Habilitar";
+
+/* Recent Search Favorites Section Title */
+"RecentSearchFavorites" = "Favoritos";
+
+/* Recent Search Hide Button */
+"RecentSearchHide" = "Ocultar";
+
+/* Recent Search Paste & Go Button Title */
+"RecentSearchPasteAndGo" = "Pegar e ir";
+
+/* Recent Search 'on' text when a user searches 'on' a website */
+"RecentSearchQuickSearchOnWebsite" = "en";
+
+/* Recent Search Scanned text when a user scans a qr code */
+"RecentSearchScanned" = "Escaneado";
+
+/* Scanning a QRCode for searching body */
+"RecentSearchScannerDescriptionBody" = "Para buscar por código QR, debes situar el código en el centro del marco.";
+
+/* Scanning a QRCode for title */
+"RecentSearchScannerDescriptionTitle" = "Instrucciones";
+
+/* Scanning a QRCode for searching */
+"RecentSearchScannerTitle" = "Escanear código QR";
+
+/* Recent Search Section Description */
+"RecentSearchSectionDescription" = "\"Búsquedas recientes\" te permite acceder de forma privada a las búsquedas anteriores. ¿Te gustaría habilitar esta función?";
+
+/* Recent Search Section Title */
+"RecentSearchSectionTitle" = "Búsquedas recientes";
+
+/* Recent Search Show Button */
+"RecentSearchShow" = "Mostrar";
+
+/* Recent Search Show More button */
+"RecentSearchShowMore" = "Mostrar más";
+
+/* Recent Search suggestions title when prompting to turn on suggestions */
+"RecentSearchSuggestionsTitle" = "Sugerencias de búsqueda";
 
 /* No comment provided by engineer. */
 "ReportABrokenSite" = "Informar de un sitio web dañado";
@@ -814,13 +872,13 @@
 "today.addSourceNoFeedsFoundMessage" = "Vaya, la dirección de ese canal no tiene contenido.";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "Añadir fuente a Brave Today";
+"today.addSourceShareTitle" = "Añadir fuente a Brave News";
 
 /* No comment provided by engineer. */
 "today.allSources" = "Todas las fuentes";
 
 /* The name of the feature */
-"today.braveToday" = "Brave Today";
+"today.braveToday" = "Brave News";
 
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "Nuevo contenido disponible";
@@ -835,7 +893,7 @@
 "today.disableAll" = "Deshabilitar todo";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disabledAlertBody" = "Brave Today impedirá que se muestre contenido de %@";
+"today.disabledAlertBody" = "Brave News impedirá que se muestre contenido de %@";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "Deshabilitado";
@@ -856,7 +914,7 @@
 "today.enablePublisherContent" = "Habilitar el contenido de %@";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "Brave Today están teniendo algunos problemas. Vuelve a intentarlo.";
+"today.errorGeneralBody" = "Brave News están teniendo algunos problemas. Vuelve a intentarlo.";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Vaya…";
@@ -868,19 +926,19 @@
 "today.insecureSourcesHeader" = "Fuentes no seguras; añádelas bajo tu propia responsabilidad";
 
 /* No comment provided by engineer. */
-"today.introCardBody" = "Brave Today contiene anuncios completamente privados, anonimizados y optimizados para tu dispositivo.";
+"today.introCardBody" = "Brave News contiene anuncios completamente privados, anonimizados y optimizados para tu dispositivo.";
 
 /* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
 "today.introCardNew" = "Novedad";
 
 /* No comment provided by engineer. */
-"today.introCardNewTextBody" = "Personaliza Brave Today con hasta 5 canales de RSS y recibe contenido nuevo de tus editores favoritos a lo largo del día.";
+"today.introCardNewTextBody" = "Personaliza tu canal con cientos de fuentes de contenido distribuidas a través de nuestra CDN privada y añade las RSS de tus editores favoritos para ver la información que a ti te interesa.";
 
 /* No comment provided by engineer. */
 "today.introCardTitle" = "Entérate de las tendencias del momento a través de un canal completamente privado y exclusivo para ti.";
 
 /* No comment provided by engineer. */
-"today.isEnabledToggleLabel" = "Mostrar Brave Today";
+"today.isEnabledToggleLabel" = "Mostrar Brave News";
 
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Más información sobre tus datos";
@@ -903,15 +961,6 @@
 /* No comment provided by engineer. */
 "today.resetSourceSettingsButtonTitle" = "Restablecer los ajustes de las fuentes a sus valores predeterminados";
 
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertMessage" = "La versión gratuita con anuncios de Brave Today incluye 5 canales de RSS. Puedes personalizar tu selección en la lista Fuentes.";
-
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertTitle" = "Se ha excedido el límite de canales";
-
-/* %d will be a number (i.e. 4) */
-"today.rssFeedLimitRemainingFooter" = "Ahora mismo tienes %d canales de RSS en la lista Fuentes. La versión gratuita con anuncios de Brave Today incluye 5 canales de RSS y admitirá próximamente canales ilimitados e importación de archivos OPML. Puedes personalizar tu selección en la lista Fuentes.";
-
 /* An action title where the user is executing a search based on inputted text */
 "today.searchButtonTitle" = "Buscar";
 
@@ -928,7 +977,7 @@
 "today.sourceSearchPlaceholder" = "Buscar";
 
 /* No comment provided by engineer. */
-"today.turnOnBraveToday" = "Activar Brave Today";
+"today.turnOnBraveToday" = "Activar Brave News";
 
 /* The header above a list of the users RSS feed sources */
 "today.yourSources" = "Tus fuentes";

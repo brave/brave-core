@@ -934,6 +934,9 @@
 /* Navigation title for search settings. */
 "SearchSettingNavTitle" = "Пошук";
 
+/* Label for showing recent search setting. */
+"SearchSettingRecentSearchesCellTitle" = "Показати недавні пошукові запити";
+
 /* Label for search settings button. */
 "SearchSettingsButtonTitle" = "Налаштування пошуку";
 
@@ -942,6 +945,12 @@
 
 /* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
 "SearchSuggestionFromFormatText" = "Пошукові підказки %@";
+
+/* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
+"SearchSuggestionSectionTitleFormat" = "Пошукова система %@";
+
+/* Section header for search suggestions option */
+"SearchSuggestionsSectionHeader" = "Пошукові підказки";
 
 /* Settings security section title */
 "Security" = "Безпека";

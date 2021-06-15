@@ -256,6 +256,12 @@
 /* When a video or audio is live and has no duration */
 "playlist.playlistLiveMediaStream" = "Прямая трансляция";
 
+/* Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionFooterText" = "Этот параметр позволяет добавлять в плейлисты большинство видео- и аудиофайлов с помощью долгого нажатия.";
+
+/* Title for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionTitle" = "Включить долгое нажатие";
+
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistMediaAndOfflineDataToggleOption" = "Контент плейлиста и офлайн-данные";
 
@@ -295,12 +301,10 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Начинать воспроизведение с того места, где вы остановились";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
-   Footer Text for the Playlist Settings Option for long press gesture */
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionFooterText" = "Если включить этот параметр, на большинстве сайтов с медиаконтентом будет показываться панель, с помощью которой можно легко добавлять аудио- и видеофайлы в свой плейлист.";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast
-   Title for the Playlist Settings Option for long press gesture */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionTitle" = "Показывать кнопку «Добавить в плейлист Brave»";
 
 /* Description for Playlist setting */
@@ -353,6 +357,60 @@
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Закрыть меню «Щиты»";
+
+/* Recent Search Clear Button */
+"RecentSearchClear" = "Удалить";
+
+/* The button title that shows when you clear all recent searches */
+"RecentSearchClearAlertButton" = "Удалить недавние";
+
+/* Recent Search setting title to clear recent searches */
+"RecentSearchClearDataToggleOption" = "Недавние поисковые запросы";
+
+/* Recent Search button title to disable suggestions */
+"RecentSearchDisableSuggestions" = "Отключить";
+
+/* Recent Search button title to enable suggestions */
+"RecentSearchEnableSuggestions" = "Включить";
+
+/* Recent Search Favorites Section Title */
+"RecentSearchFavorites" = "Избранное";
+
+/* Recent Search Hide Button */
+"RecentSearchHide" = "Скрыть";
+
+/* Recent Search Paste & Go Button Title */
+"RecentSearchPasteAndGo" = "Вставить и перейти";
+
+/* Recent Search 'on' text when a user searches 'on' a website */
+"RecentSearchQuickSearchOnWebsite" = "на сайте";
+
+/* Recent Search Scanned text when a user scans a qr code */
+"RecentSearchScanned" = "Отсканировано";
+
+/* Scanning a QRCode for searching body */
+"RecentSearchScannerDescriptionBody" = "Чтобы выполнить поиск, выровняйте QR-код по центру кадра.";
+
+/* Scanning a QRCode for title */
+"RecentSearchScannerDescriptionTitle" = "Инструкции";
+
+/* Scanning a QRCode for searching */
+"RecentSearchScannerTitle" = "Сканируйте QR-код";
+
+/* Recent Search Section Description */
+"RecentSearchSectionDescription" = "Вы получите доступ к истории поиска. Включить функцию «Недавние запросы»?";
+
+/* Recent Search Section Title */
+"RecentSearchSectionTitle" = "Недавние запросы";
+
+/* Recent Search Show Button */
+"RecentSearchShow" = "Показать";
+
+/* Recent Search Show More button */
+"RecentSearchShowMore" = "Показать еще";
+
+/* Recent Search suggestions title when prompting to turn on suggestions */
+"RecentSearchSuggestionsTitle" = "Подсказки при поиске";
 
 /* No comment provided by engineer. */
 "ReportABrokenSite" = "Пожаловаться на проблемы с сайтом";
@@ -814,13 +872,13 @@
 "today.addSourceNoFeedsFoundMessage" = "По адресу фида не найдено контента.";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "Добавить источник в Brave Today";
+"today.addSourceShareTitle" = "Добавить источник в Brave News";
 
 /* No comment provided by engineer. */
 "today.allSources" = "Все источники";
 
 /* The name of the feature */
-"today.braveToday" = "Brave Today";
+"today.braveToday" = "Brave News";
 
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "Есть новый контент";
@@ -835,7 +893,7 @@
 "today.disableAll" = "Отключить всё";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disabledAlertBody" = "Контент от автора «%@» больше не будет появляться в Brave Today.";
+"today.disabledAlertBody" = "Контент из источника «%@» больше не будет появляться в Brave News.";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "Отключено";
@@ -856,7 +914,7 @@
 "today.enablePublisherContent" = "%@: включить показ контента";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "У нас возникли неполадки. Повторите попытку позже.";
+"today.errorGeneralBody" = "Возникли неполадки. Повторите попытку позже.";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Ошибочка…";
@@ -868,19 +926,19 @@
 "today.insecureSourcesHeader" = "Небезопасные источники (добавьте на ваше усмотрение)";
 
 /* No comment provided by engineer. */
-"today.introCardBody" = "Brave Today содержит рекламу, не нарушающую конфиденциальность ваших данных. Она подбирается прямо на вашем устройстве.";
+"today.introCardBody" = "Реклама в Brave News подбирается прямо на вашем устройстве и не нарушает конфиденциальности ваших данных.";
 
 /* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
 "today.introCardNew" = "Новинка";
 
 /* No comment provided by engineer. */
-"today.introCardNewTextBody" = "Выберите в Brave Today до пяти RSS-фидов и получайте контент от любимых издателей. Новые материалы появляются в течение дня.";
+"today.introCardNewTextBody" = "Настройте новостную ленту в соответствии со своими интересами: добавляйте RSS-фиды любимых издателей и выбирайте материалы из сотен источников качественного контента в нашей частной СДК.";
 
 /* No comment provided by engineer. */
 "today.introCardTitle" = "Читайте и смотрите главные новости дня в полностью приватной ленте.";
 
 /* No comment provided by engineer. */
-"today.isEnabledToggleLabel" = "Показать Brave Today";
+"today.isEnabledToggleLabel" = "Показывать Brave News";
 
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Узнайте больше о ваших данных";
@@ -903,15 +961,6 @@
 /* No comment provided by engineer. */
 "today.resetSourceSettingsButtonTitle" = "Возврат к исходным настройкам источника";
 
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertMessage" = "В бесплатной версии Brave Today доступно до пяти RSS-фидов. Выберите их в списке источников.";
-
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertTitle" = "Лимит превышен";
-
-/* %d will be a number (i.e. 4) */
-"today.rssFeedLimitRemainingFooter" = "Вы выбрали несколько RSS-фидов (%d). В бесплатной версии Brave Today доступно до пяти RSS-фидов, которые можно добавить в список источников. Хорошая новость: скоро появится импорт файлов в формате OPML и возможность выбирать неограниченное число фидов.";
-
 /* An action title where the user is executing a search based on inputted text */
 "today.searchButtonTitle" = "Найти";
 
@@ -928,7 +977,7 @@
 "today.sourceSearchPlaceholder" = "Поиск";
 
 /* No comment provided by engineer. */
-"today.turnOnBraveToday" = "Включить Brave Today";
+"today.turnOnBraveToday" = "Включить Brave News";
 
 /* The header above a list of the users RSS feed sources */
 "today.yourSources" = "Ваши источники";

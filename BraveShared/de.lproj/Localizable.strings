@@ -256,6 +256,12 @@
 /* When a video or audio is live and has no duration */
 "playlist.playlistLiveMediaStream" = "Livestream";
 
+/* Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionFooterText" = "Ist diese Option aktiviert, können die meisten Video-/Audiodateien gedrückt gehalten werden, um sie zu Ihrer Wiedergabeliste hinzuzufügen.";
+
+/* Title for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionTitle" = "Gedrückt halten aktivieren";
+
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistMediaAndOfflineDataToggleOption" = "Wiedergabelistenmedien und Offlinedaten";
 
@@ -295,12 +301,10 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Wiedergabe vom letzten Punkt fortsetzen";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
-   Footer Text for the Playlist Settings Option for long press gesture */
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionFooterText" = "Ist diese Option aktiviert, wird auf den meisten Medien-Websites automatisch eine Leiste angezeigt, über die Sie Video-/Audiodateien leichter zu Ihrer Wiedergabeliste hinzufügen können.";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast
-   Title for the Playlist Settings Option for long press gesture */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
 "playlist.playlistToastShowSettingsOptionTitle" = "„Zur Brave-Wiedergabeliste hinzufügen“ anzeigen";
 
 /* Description for Playlist setting */
@@ -353,6 +357,60 @@
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Shields-Menü schließen";
+
+/* Recent Search Clear Button */
+"RecentSearchClear" = "Löschen";
+
+/* The button title that shows when you clear all recent searches */
+"RecentSearchClearAlertButton" = "Letzte löschen";
+
+/* Recent Search setting title to clear recent searches */
+"RecentSearchClearDataToggleOption" = "Letzte Suchdaten";
+
+/* Recent Search button title to disable suggestions */
+"RecentSearchDisableSuggestions" = "Deaktivieren";
+
+/* Recent Search button title to enable suggestions */
+"RecentSearchEnableSuggestions" = "Aktivieren";
+
+/* Recent Search Favorites Section Title */
+"RecentSearchFavorites" = "Favoriten";
+
+/* Recent Search Hide Button */
+"RecentSearchHide" = "Verbergen";
+
+/* Recent Search Paste & Go Button Title */
+"RecentSearchPasteAndGo" = "Einfügen und aufrufen";
+
+/* Recent Search 'on' text when a user searches 'on' a website */
+"RecentSearchQuickSearchOnWebsite" = "auf";
+
+/* Recent Search Scanned text when a user scans a qr code */
+"RecentSearchScanned" = "Gescannt";
+
+/* Scanning a QRCode for searching body */
+"RecentSearchScannerDescriptionBody" = "Um mit einem QR-Code zu suchen, richten Sie den Code in der Mitte des Rahmens aus.";
+
+/* Scanning a QRCode for title */
+"RecentSearchScannerDescriptionTitle" = "Anleitung";
+
+/* Scanning a QRCode for searching */
+"RecentSearchScannerTitle" = "QR-Code scannen";
+
+/* Recent Search Section Description */
+"RecentSearchSectionDescription" = "Mithilfe der letzten Suchanfragen können Sie privat auf frühere Suchanfragen zugreifen. Möchten Sie die letzten Suchanfragen aktivieren?";
+
+/* Recent Search Section Title */
+"RecentSearchSectionTitle" = "Letzte Suchanfragen";
+
+/* Recent Search Show Button */
+"RecentSearchShow" = "Anzeigen";
+
+/* Recent Search Show More button */
+"RecentSearchShowMore" = "Mehr anzeigen";
+
+/* Recent Search suggestions title when prompting to turn on suggestions */
+"RecentSearchSuggestionsTitle" = "Suchvorschläge";
 
 /* No comment provided by engineer. */
 "ReportABrokenSite" = "Eine defekte Website melden";
@@ -814,13 +872,13 @@
 "today.addSourceNoFeedsFoundMessage" = "Diese Feed-Adresse enthält leider keinen Inhalt.";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "Quelle zu Brave Today hinzufügen";
+"today.addSourceShareTitle" = "Quelle zu Brave News hinzufügen";
 
 /* No comment provided by engineer. */
 "today.allSources" = "Alle Quellen";
 
 /* The name of the feature */
-"today.braveToday" = "Brave Today";
+"today.braveToday" = "Brave News";
 
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "Neue Inhalte verfügbar";
@@ -835,7 +893,7 @@
 "today.disableAll" = "Alle deaktivieren";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disabledAlertBody" = "Brave Today wird keine Inhalte von %@ mehr anzeigen.";
+"today.disabledAlertBody" = "Brave News wird keine Inhalte von %@ mehr anzeigen.";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "Deaktiviert";
@@ -856,7 +914,7 @@
 "today.enablePublisherContent" = "Inhalte von %@ aktivieren";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "Es gibt Probleme mit Brave Today. Bitte versuchen Sie es erneut.";
+"today.errorGeneralBody" = "Es gibt Probleme mit Brave News. Bitte versuchen Sie es erneut.";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Hoppla …";
@@ -868,19 +926,19 @@
 "today.insecureSourcesHeader" = "Unsichere Quellen - Hinzufügen auf eigenes Risiko";
 
 /* No comment provided by engineer. */
-"today.introCardBody" = "Brave Today wird werbefinanziert mit vollständig privaten und anonymisierten Anzeigen, die auf Ihr Gerät abgestimmt werden.";
+"today.introCardBody" = "Brave News wird werbefinanziert mit vollständig privaten und anonymisierten Anzeigen, die auf Ihr Gerät abgestimmt werden.";
 
 /* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
 "today.introCardNew" = "Neu";
 
 /* No comment provided by engineer. */
-"today.introCardNewTextBody" = "Passen Sie Brave Today mit bis zu 5 RSS-Feeds an und erhalten Sie den ganzen Tag über neue Inhalte von Ihren Lieblings-Inhaltserstellern.";
+"today.introCardNewTextBody" = "Passen Sie Ihren Feed mit Hunderten führender Inhaltsquellen an, die über unser privates CDN bereitgestellt werden. Fügen Sie RSS-Feeds von Ihren Lieblingspublishern hinzu, um einen Feed nach Ihrem Geschmack zu erstellen.";
 
 /* No comment provided by engineer. */
 "today.introCardTitle" = "Nur für Sie: Die Top-Meldungen von heute in einem völlig privaten Feed.";
 
 /* No comment provided by engineer. */
-"today.isEnabledToggleLabel" = "Brave Today anzeigen";
+"today.isEnabledToggleLabel" = "Brave News anzeigen";
 
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Mehr über Ihre Daten erfahren";
@@ -903,15 +961,6 @@
 /* No comment provided by engineer. */
 "today.resetSourceSettingsButtonTitle" = "Quelleinstellungen auf Standard zurücksetzen";
 
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertMessage" = "Die kostenlose werbefinanzierte Version von Brave Today enthält 5 RSS-Feeds. Sie können Ihre Feed-Auswahl aus der Quellenliste anpassen.";
-
-/* No comment provided by engineer. */
-"today.rssFeedLimitExceededAlertTitle" = "Feed-Limit überschritten";
-
-/* %d will be a number (i.e. 4) */
-"today.rssFeedLimitRemainingFooter" = "Sie haben derzeit %d RSS-Feeds in Ihrer Quellenliste. Die kostenlose werbefinanzierte Version von Brave Today enthält 5 RSS-Feeds. Unterstützung für unbegrenzte Feeds und OPML-Import wird in Kürze verfügbar sein. Sie können Ihre Feed-Auswahl aus der Quellenliste anpassen.";
-
 /* An action title where the user is executing a search based on inputted text */
 "today.searchButtonTitle" = "Suchen";
 
@@ -928,7 +977,7 @@
 "today.sourceSearchPlaceholder" = "Suchen";
 
 /* No comment provided by engineer. */
-"today.turnOnBraveToday" = "Brave Today einschalten";
+"today.turnOnBraveToday" = "Brave News einschalten";
 
 /* The header above a list of the users RSS feed sources */
 "today.yourSources" = "Ihre Quellen";
