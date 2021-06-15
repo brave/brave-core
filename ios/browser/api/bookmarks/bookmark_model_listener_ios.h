@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#include <set>
+
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_observer.h"
 #include "components/bookmarks/browser/bookmark_model_observer.h"
 
@@ -25,7 +27,7 @@ class BookmarkModelListener : public bookmarks::BookmarkModelObserver {
   ~BookmarkModelListener() override;
 
  private:
-  //BookmarksModelListener implementation
+  // BookmarksModelListener implementation
   void BookmarkModelLoaded(bookmarks::BookmarkModel* model,
                            bool ids_reassigned) override;
   void BookmarkModelBeingDeleted(bookmarks::BookmarkModel* model) override;
@@ -59,4 +61,4 @@ class BookmarkModelListener : public bookmarks::BookmarkModelObserver {
 }  // namespace ios
 }  // namespace brave
 
-#endif /* BRAVE_IOS_BROWSER_API_BOOKMARKS_BOOKMARK_MODEL_LISTENER_IOS_H_ */
+#endif  // BRAVE_IOS_BROWSER_API_BOOKMARKS_BOOKMARK_MODEL_LISTENER_IOS_H_

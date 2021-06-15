@@ -66,10 +66,10 @@ void BookmarkModelListener::BookmarkNodeMoved(
 
     IOSBookmarkNode* ios_node = [[IOSBookmarkNode alloc] initWithNode:node
                                                                 model:model];
-    IOSBookmarkNode* ios_old_parent = [[IOSBookmarkNode alloc] initWithNode:old_parent
-                                                                      model:model];
-    IOSBookmarkNode* ios_new_parent = [[IOSBookmarkNode alloc] initWithNode:new_parent
-                                                                      model:model];
+    IOSBookmarkNode* ios_old_parent =
+        [[IOSBookmarkNode alloc] initWithNode:old_parent model:model];
+    IOSBookmarkNode* ios_new_parent =
+        [[IOSBookmarkNode alloc] initWithNode:new_parent model:model];
 
     [observer_ bookmarkNode:ios_node
             movedFromParent:ios_old_parent
@@ -94,7 +94,8 @@ void BookmarkModelListener::BookmarkNodeRemoved(
     size_t old_index,
     const bookmarks::BookmarkNode* node,
     const std::set<GURL>& removed_urls) {
-  IOSBookmarkNode* ios_node = [[IOSBookmarkNode alloc] initWithNode:node model:model];
+  IOSBookmarkNode* ios_node = [[IOSBookmarkNode alloc] initWithNode:node
+                                                              model:model];
   IOSBookmarkNode* ios_parent = [[IOSBookmarkNode alloc] initWithNode:parent
                                                                 model:model];
 
