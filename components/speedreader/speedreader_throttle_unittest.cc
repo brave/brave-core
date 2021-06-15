@@ -70,7 +70,7 @@ TEST_F(SpeedreaderThrottleTest, AllowThrottle) {
   auto runner = content::GetUIThreadTaskRunner({});
   std::unique_ptr<SpeedReaderThrottle> throttle =
       SpeedReaderThrottle::MaybeCreateThrottleFor(nullptr, content_settings(),
-                                                  url(), runner);
+                                                  url(), false, runner);
   EXPECT_NE(throttle.get(), nullptr);
 }
 
@@ -80,16 +80,33 @@ TEST_F(SpeedreaderThrottleTest, ToggleThrottle) {
 
   speedreader::SetEnabledForSite(content_settings(), url(), false);
   throttle = SpeedReaderThrottle::MaybeCreateThrottleFor(
-      nullptr, content_settings(), url(), runner);
+      nullptr, content_settings(), url(), true, runner);
   EXPECT_EQ(throttle.get(), nullptr);
   // no other domains are affected by the rule.
   throttle = SpeedReaderThrottle::MaybeCreateThrottleFor(
-      nullptr, content_settings(), GURL("kevin.com"), runner);
+      nullptr, content_settings(), GURL("kevin.com"), true, runner);
   EXPECT_NE(throttle.get(), nullptr);
 
   speedreader::SetEnabledForSite(content_settings(), url(), true);
   throttle = SpeedReaderThrottle::MaybeCreateThrottleFor(
-      nullptr, content_settings(), url(), runner);
+      nullptr, content_settings(), url(), true, runner);
+  EXPECT_NE(throttle.get(), nullptr);
+}
+
+TEST_F(SpeedreaderThrottleTest, ThrottleIgnoreDisabled) {
+  auto runner = content::GetUIThreadTaskRunner({});
+  std::unique_ptr<SpeedReaderThrottle> throttle;
+
+  speedreader::SetEnabledForSite(content_settings(), url(), false);
+
+  throttle = SpeedReaderThrottle::MaybeCreateThrottleFor(
+      nullptr, content_settings(), url(), true /* check_disabled_sites */,
+      runner);
+  EXPECT_EQ(throttle.get(), nullptr);
+
+  throttle = SpeedReaderThrottle::MaybeCreateThrottleFor(
+      nullptr, content_settings(), url(), false /* check_disabled_sites */,
+      runner);
   EXPECT_NE(throttle.get(), nullptr);
 }
 
@@ -102,7 +119,7 @@ TEST_F(SpeedreaderThrottleTest, ThrottleNestedURL) {
   speedreader::SetEnabledForSite(
       content_settings(), GURL("https://brave.com/some/nested/page"), false);
   throttle = SpeedReaderThrottle::MaybeCreateThrottleFor(
-      nullptr, content_settings(), url(), runner);
+      nullptr, content_settings(), url(), true, runner);
   EXPECT_EQ(throttle.get(), nullptr);
 }
 

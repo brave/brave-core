@@ -6,7 +6,7 @@
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/browser/ui/views/location_bar/brave_star_view.h"
 #include "brave/browser/ui/views/translate/brave_translate_icon_view.h"
-#include "brave/browser/ui/views/reader_mode/brave_reader_mode_icon_view.h"
+#include "brave/browser/ui/views/speedreader/speedreader_icon_view.h"
 #include "chrome/browser/ui/page_action/page_action_icon_type.h"
 
 namespace {
@@ -25,7 +25,7 @@ constexpr PageActionIconType kUndefinedPageActionIconType =
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
 #define TranslateIconView BraveTranslateIconView
 #endif
-#define ReaderModeIconView BraveReaderModeIconView
+#define ReaderModeIconView SpeedreaderIconView
 #define StarView BraveStarView
 #include "../../../../../../../chrome/browser/ui/views/page_action/page_action_icon_controller.cc"
 #undef StarView

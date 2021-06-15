@@ -30,6 +30,7 @@
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/components/speedreader/speedreader_service.h"
+using DistillState = speedreader::SpeedreaderTabHelper::DistillState;
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -92,6 +93,39 @@ void ToggleSpeedreader(Browser* browser) {
     WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
     if (contents) {
       contents->GetController().Reload(content::ReloadType::NORMAL, false);
+    }
+  }
+#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
+}
+
+void ShowSpeedreaderBubble(Browser* browser) {
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  speedreader::SpeedreaderService* service =
+      speedreader::SpeedreaderServiceFactory::GetForProfile(browser->profile());
+  if (service) {
+    WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
+    if (contents) {
+      auto* tab_helper =
+          speedreader::SpeedreaderTabHelper::FromWebContents(contents);
+      if (!tab_helper)
+        return;
+
+      const DistillState state = tab_helper->PageDistillState();
+      if (state == DistillState::kNone) {
+        // If this is called on an undistilled page, we single shot it.
+        tab_helper->SingleShotSpeedreader();
+
+        if (tab_helper->IsSpeedreaderEnabled())
+          return;
+      }
+
+      // If Speedreader is already enabled, don't show the bubble.
+      // fixme: we need to |or| with an "asked" counter
+      if (state == DistillState::kNone || state == DistillState::kReaderMode) {
+        if (tab_helper->IsSpeedreaderEnabled())
+          return;
+      }
+      tab_helper->ShowBubble();
     }
   }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)

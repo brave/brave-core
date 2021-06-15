@@ -141,8 +141,6 @@ source_set("ui") {
       "views/frame/brave_opaque_browser_frame_view.h",
       "views/frame/brave_window_frame_graphic.cc",
       "views/frame/brave_window_frame_graphic.h",
-      "views/reader_mode/brave_reader_mode_icon_view.cc",
-      "views/reader_mode/brave_reader_mode_icon_view.h",
       "views/rounded_separator.cc",
       "views/rounded_separator.h",
       "views/speedreader/reader_mode_bubble.cc",
@@ -151,6 +149,8 @@ source_set("ui") {
       "views/speedreader/speedreader_bubble_util.h",
       "views/speedreader/speedreader_mode_bubble.cc",
       "views/speedreader/speedreader_mode_bubble.h",
+      "views/speedreader/speedreader_icon_view.cc",
+      "views/speedreader/speedreader_icon_view.h",
       "views/tabs/brave_browser_tab_strip_controller.cc",
       "views/tabs/brave_browser_tab_strip_controller.h",
       "views/tabs/brave_tab_context_menu_contents.cc",
@@ -235,6 +235,7 @@ source_set("ui") {
     "//brave/browser/gcm_driver",
     "//brave/browser/profiles",
     "//brave/browser/tor",
+    "//components/dom_distiller/content/browser",
 
     # //chrome/browser/ui depends on //brave/browser/ui, add this target here
     # to pull in dependencies needed for the overwrite codes in chromium_src.

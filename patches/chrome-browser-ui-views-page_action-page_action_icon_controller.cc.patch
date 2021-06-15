@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/page_action/page_action_icon_controller.cc b/chrome/browser/ui/views/page_action/page_action_icon_controller.cc
+index 135bb8fba3abf0ee61d1e4a495c0df049d1618ce..a8eeb0e1f095c918656267679a417edc9218fa53 100644
+--- a/chrome/browser/ui/views/page_action/page_action_icon_controller.cc
++++ b/chrome/browser/ui/views/page_action/page_action_icon_controller.cc
+@@ -26,7 +26,6 @@
+ #include "chrome/browser/ui/views/page_action/zoom_view.h"
+ #include "chrome/browser/ui/views/passwords/manage_passwords_icon_views.h"
+ #include "chrome/browser/ui/views/qrcode_generator/qrcode_generator_icon_view.h"
+-#include "chrome/browser/ui/views/reader_mode/reader_mode_icon_view.h"
+ #include "chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_icon_view.h"
+ #include "chrome/browser/ui/views/sharing/sharing_dialog_view.h"
+ #include "chrome/browser/ui/views/sharing/sharing_icon_view.h"

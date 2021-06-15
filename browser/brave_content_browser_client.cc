@@ -128,6 +128,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
+using DistillState = speedreader::SpeedreaderTabHelper::DistillState;
 #endif
 
 #if BUILDFLAG(BINANCE_ENABLED)
@@ -306,8 +307,7 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
 void BraveContentBrowserClient::RenderProcessWillLaunch(
     content::RenderProcessHost* host) {
   Profile* profile = Profile::FromBrowserContext(host->GetBrowserContext());
-  BraveRendererUpdaterFactory::GetForProfile(profile)
-      ->InitializeRenderer(host);
+  BraveRendererUpdaterFactory::GetForProfile(profile)->InitializeRenderer(host);
 
   ChromeContentBrowserClient::RenderProcessWillLaunch(host);
 }
@@ -460,7 +460,8 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
   }
   auto* tab_helper =
       speedreader::SpeedreaderTabHelper::FromWebContents(contents);
-  if (tab_helper && tab_helper->IsActiveForMainFrame() &&
+  const auto state = tab_helper->PageDistillState();
+  if (tab_helper && state != DistillState::kNone &&
       request.resource_type ==
           static_cast<int>(blink::mojom::ResourceType::kMainFrame)) {
     std::unique_ptr<speedreader::SpeedReaderThrottle> throttle =
@@ -468,7 +469,8 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
             g_brave_browser_process->speedreader_rewriter_service(),
             HostContentSettingsMapFactory::GetForProfile(
                 Profile::FromBrowserContext(browser_context)),
-            request.url, base::ThreadTaskRunnerHandle::Get());
+            request.url, state == DistillState::kSpeedreaderMode,
+            base::ThreadTaskRunnerHandle::Get());
     if (throttle)
       result.push_back(std::move(throttle));
   }

@@ -32,6 +32,7 @@ class SpeedReaderThrottle : public blink::URLLoaderThrottle {
       SpeedreaderRewriterService* rewriter_service,
       HostContentSettingsMap* content_settings,
       const GURL& url,
+      bool check_disabled_sites,
       scoped_refptr<base::SingleThreadTaskRunner> task_runner);
 
   // |task_runner| is used to bind the right task runner for handling incoming

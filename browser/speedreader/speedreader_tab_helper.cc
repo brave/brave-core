@@ -36,6 +36,9 @@ bool SpeedreaderTabHelper::IsSpeedreaderEnabled() const {
 }
 
 bool SpeedreaderTabHelper::IsEnabledForSite() {
+  if (!IsSpeedreaderEnabled())
+    return false;
+
   Profile* profile =
       Profile::FromBrowserContext(web_contents()->GetBrowserContext());
   auto* content_rules = HostContentSettingsMapFactory::GetForProfile(profile);
@@ -44,6 +47,9 @@ bool SpeedreaderTabHelper::IsEnabledForSite() {
 }
 
 void SpeedreaderTabHelper::MaybeToggleEnabledForSite(bool on) {
+  if (!IsSpeedreaderEnabled())
+    return;
+
   Profile* profile =
       Profile::FromBrowserContext(web_contents()->GetBrowserContext());
   auto* content_rules = HostContentSettingsMapFactory::GetForProfile(profile);
@@ -56,15 +62,25 @@ void SpeedreaderTabHelper::MaybeToggleEnabledForSite(bool on) {
   }
 }
 
+void SpeedreaderTabHelper::SingleShotSpeedreader() {
+  single_shot_next_request_ = true;
+  auto* contents = web_contents();
+  if (contents)
+    contents->GetController().Reload(content::ReloadType::NORMAL, false);
+}
+
 void SpeedreaderTabHelper::UpdateActiveState(
     content::NavigationHandle* handle) {
   DCHECK(handle);
   DCHECK(handle->IsInMainFrame());
 
-  const bool enabled = IsSpeedreaderEnabled();
+  if (single_shot_next_request_) {
+    distill_state_ = DistillState::kReaderMode;
+    return;
+  }
 
-  if (!enabled) {
-    active_ = false;
+  if (!IsEnabledForSite()) {
+    distill_state_ = DistillState::kNone;
     return;
   }
 
@@ -75,11 +91,15 @@ void SpeedreaderTabHelper::UpdateActiveState(
     if (speedreader::IsWhitelistedForTest(handle->GetURL()) ||
         rewriter_service->IsWhitelisted(handle->GetURL())) {
       VLOG(2) << __func__ << " SpeedReader active for " << handle->GetURL();
-      active_ = true;
+      distill_state_ = DistillState::kSpeedreaderMode;
       return;
     }
   }
-  active_ = false;
+  distill_state_ = DistillState::kNone;
+}
+
+bool SpeedreaderTabHelper::IsActiveForMainFrame() const {
+  return distill_state_ != DistillState::kNone;
 }
 
 void SpeedreaderTabHelper::DidStartNavigation(
@@ -96,12 +116,23 @@ void SpeedreaderTabHelper::DidRedirectNavigation(
   }
 }
 
+void SpeedreaderTabHelper::DidStopLoading() {
+  // This will be called after the URLLoaders have already been created. If we
+  // are in single-shot mode, disable the Speedreader loader since that has
+  // completed.
+  single_shot_next_request_ = false;
+}
+
 SpeedreaderBubbleView* SpeedreaderTabHelper::speedreader_bubble_view() const {
   return speedreader_bubble_;
 }
 
 void SpeedreaderTabHelper::OnBubbleClosed() {
   speedreader_bubble_ = nullptr;
+  auto* contents = web_contents();
+  Browser* browser = chrome::FindBrowserWithWebContents(contents);
+  DCHECK(browser);
+  browser->window()->UpdatePageActionIcon(PageActionIconType::kReaderMode);
 }
 
 // Displays speedreader information
@@ -109,9 +140,10 @@ void SpeedreaderTabHelper::ShowBubble() {
   auto* contents = web_contents();
   Browser* browser = chrome::FindBrowserWithWebContents(contents);
   DCHECK(browser);
-  speedreader_bubble_ =
-      static_cast<BraveBrowserWindow*>(browser->window())
-          ->ShowSpeedreaderBubble(this, IsSpeedreaderEnabled());
+  const bool enabled = distill_state_ == DistillState::kSpeedreaderMode;
+  speedreader_bubble_ = static_cast<BraveBrowserWindow*>(browser->window())
+                            ->ShowSpeedreaderBubble(this, enabled);
+  browser->window()->UpdatePageActionIcon(PageActionIconType::kReaderMode);
 }
 
 // Hides speedreader information

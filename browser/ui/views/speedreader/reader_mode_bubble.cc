@@ -11,10 +11,13 @@
 
 #include "base/bind.h"
 #include "base/notreached.h"
+#include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/views/speedreader/speedreader_bubble_util.h"
 #include "brave/common/url_constants.h"
+#include "brave/components/speedreader/speedreader_service.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/strings/grit/components_strings.h"
@@ -128,9 +131,13 @@ void ReaderModeBubble::Init() {
 }
 
 void ReaderModeBubble::OnButtonPressed(const ui::Event& event) {
-  // FIXME: Tie up this logic to the speedreader service. Enable Speedreader
-  // globally.
-  NOTIMPLEMENTED();
+  auto* contents = tab_helper_->web_contents();
+  Profile* profile = Profile::FromBrowserContext(contents->GetBrowserContext());
+  auto* speedreader_service = SpeedreaderServiceFactory::GetForProfile(profile);
+  speedreader_service->ToggleSpeedreader();
+  tab_helper_->web_contents()->GetController().Reload(
+      content::ReloadType::NORMAL, false);
+  CloseBubble();
 }
 
 void ReaderModeBubble::OnLinkClicked(const ui::Event& event) {
