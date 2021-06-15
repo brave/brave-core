@@ -12,6 +12,7 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/renderer/render_frame.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "v8/include/v8.h"
 
@@ -28,6 +29,7 @@ class BraveWalletJSHandler : public mojom::EventsListener {
   void OnGetChainId(const std::string& chain_id);
   void DisconnectEvent(const std::string& message);
   void AccountsChangedEvent(const std::string& accounts);
+  void ResetRemote(content::RenderFrame* render_frame);
 
   void ChainChangedEvent(const std::string& chain_id) override;
 
