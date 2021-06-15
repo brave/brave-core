@@ -36,14 +36,6 @@ StateMigration::StateMigration(LedgerImpl* ledger)
 StateMigration::~StateMigration() = default;
 
 void StateMigration::Start(ledger::ResultCallback callback) {
-  const int current_version = ledger_->state()->GetVersion();
-  const bool fresh_install = current_version == 0;
-
-  if (fresh_install) {
-    FreshInstall(callback);
-    return;
-  }
-
   Migrate(callback);
 }
 
@@ -63,13 +55,19 @@ void StateMigration::FreshInstall(ledger::ResultCallback callback) {
 }
 
 void StateMigration::Migrate(ledger::ResultCallback callback) {
-  const int current_version = ledger_->state()->GetVersion();
-  const int new_version = current_version + 1;
+  int current_version = ledger_->state()->GetVersion();
+
+  if (current_version < 0) {
+    ledger_->state()->SetVersion(0);
+    current_version = 0;
+  }
 
   if (current_version == kCurrentVersionNumber) {
     callback(type::Result::LEDGER_OK);
     return;
   }
+
+  const int new_version = current_version + 1;
 
   auto migrate_callback = std::bind(&StateMigration::OnMigration,
       this,
@@ -78,11 +76,6 @@ void StateMigration::Migrate(ledger::ResultCallback callback) {
       callback);
 
   switch (new_version) {
-    case 0: {
-      ledger_->state()->SetVersion(new_version);
-      Migrate(callback);
-      return;
-    }
     case 1: {
       v1_->Migrate(migrate_callback);
       return;
@@ -137,8 +130,16 @@ void StateMigration::OnMigration(
   }
 
   BLOG(1, "State: Migrated to version " << version);
-
   ledger_->state()->SetVersion(version);
+
+  // If the user did not previously have a state version and the initial
+  // migration did not find any rewards data stored in JSON files, assume that
+  // this is a "fresh" Rewards profile and skip the remaining migrations.
+  if (version == 1 && !v1_->legacy_data_migrated()) {
+    FreshInstall(callback);
+    return;
+  }
+
   Migrate(callback);
 }
 

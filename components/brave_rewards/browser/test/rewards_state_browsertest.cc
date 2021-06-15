@@ -222,7 +222,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_2) {
-  profile_->GetPrefs()->SetInteger("brave.rewards.version", -1);
+  profile_->GetPrefs()->SetInteger("brave.rewards.version", 1);
   rewards_browsertest_util::StartProcess(rewards_service_);
   const std::string wallet = R"({"payment_id":"eea767c4-cd27-4411-afd4-78a9c6b54dbc","recovery_seed":"PgFfhazUJuf8dX+8ckTjrtK1KMLyrfXmKJFDiS1Ad3I="})";  // NOLINT
   EXPECT_EQ(
@@ -252,7 +252,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_2) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsEnabledACEnabled) {
-  profile_->GetPrefs()->SetInteger("brave.rewards.version", -1);
+  profile_->GetPrefs()->SetInteger("brave.rewards.version", 7);
   profile_->GetPrefs()->SetBoolean("brave.rewards.enabled", true);
   profile_->GetPrefs()->SetBoolean("brave.rewards.ac.enabled", true);
   rewards_browsertest_util::StartProcess(rewards_service_);
@@ -262,7 +262,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsEnabledACEnabled) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsEnabledACDisabled) {
-  profile_->GetPrefs()->SetInteger("brave.rewards.version", -1);
+  profile_->GetPrefs()->SetInteger("brave.rewards.version", 7);
   profile_->GetPrefs()->SetBoolean("brave.rewards.enabled", true);
   profile_->GetPrefs()->SetBoolean("brave.rewards.ac.enabled", false);
   rewards_browsertest_util::StartProcess(rewards_service_);
@@ -272,7 +272,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsEnabledACDisabled) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsDisabledACEnabled) {
-  profile_->GetPrefs()->SetInteger("brave.rewards.version", -1);
+  profile_->GetPrefs()->SetInteger("brave.rewards.version", 1);
   profile_->GetPrefs()->SetBoolean("brave.rewards.enabled", false);
   profile_->GetPrefs()->SetBoolean("brave.rewards.ac.enabled", true);
   rewards_browsertest_util::StartProcess(rewards_service_);
@@ -282,7 +282,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsDisabledACEnabled) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsDisabledACDisabled) {
-  profile_->GetPrefs()->SetInteger("brave.rewards.version", -1);
+  profile_->GetPrefs()->SetInteger("brave.rewards.version", 7);
   profile_->GetPrefs()->SetBoolean("brave.rewards.enabled", false);
   profile_->GetPrefs()->SetBoolean("brave.rewards.ac.enabled", false);
   rewards_browsertest_util::StartProcess(rewards_service_);
