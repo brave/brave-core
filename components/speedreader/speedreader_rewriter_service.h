@@ -55,7 +55,7 @@ class SpeedreaderRewriterService : public SpeedreaderComponent::Observer {
   void OnLoadStylesheet(std::string stylesheet);
 
   // Default backend is an Arc90 implementation.
-  RewriterType backend_ = RewriterType::RewriterHeuristics;
+  RewriterType backend_ = RewriterType::RewriterReadability;
 
   std::string content_stylesheet_;
   std::unique_ptr<speedreader::SpeedreaderComponent> component_;
