@@ -125,6 +125,7 @@ ConfirmationInfo Confirmations::CreateConfirmation(
   confirmation.id = base::GenerateGUID();
   confirmation.creative_instance_id = creative_instance_id;
   confirmation.type = confirmation_type;
+  confirmation.timestamp = static_cast<int64_t>(base::Time::Now().ToDoubleT());
 
   if (ShouldRewardUser() &&
       !ConfirmationsState::Get()->get_unblinded_tokens()->IsEmpty()) {
@@ -143,9 +144,6 @@ ConfirmationInfo Confirmations::CreateConfirmation(
     std::string json;
     base::JSONWriter::Write(user_data, &json);
     confirmation.user_data = json;
-
-    confirmation.timestamp =
-        static_cast<int64_t>(base::Time::Now().ToDoubleT());
 
     const std::string payload = CreateConfirmationRequestDTO(confirmation);
     confirmation.credential = CreateCredential(unblinded_token, payload);

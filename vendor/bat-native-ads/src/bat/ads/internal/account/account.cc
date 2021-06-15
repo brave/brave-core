@@ -6,6 +6,7 @@
 #include "bat/ads/internal/account/account.h"
 
 #include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
+#include "bat/ads/internal/account/ad_rewards/ad_rewards_util.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/account/confirmations/confirmations.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
@@ -95,17 +96,29 @@ StatementInfo Account::GetStatement(const int64_t from_timestamp,
 }
 
 void Account::Reconcile() {
+  if (!ShouldRewardUser()) {
+    return;
+  }
+
   const WalletInfo wallet = GetWallet();
   ad_rewards_->MaybeReconcile(wallet);
 }
 
 void Account::ProcessTransactions() {
+  if (!ShouldRewardUser()) {
+    return;
+  }
+
   confirmations_->RetryAfterDelay();
 
   ProcessUnclearedTransactions();
 }
 
 void Account::TopUpUnblindedTokens() {
+  if (!ShouldRewardUser()) {
+    return;
+  }
+
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
 }

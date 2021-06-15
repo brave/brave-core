@@ -275,18 +275,12 @@ void AdsImpl::OnTabClosed(const int32_t tab_id) {
 }
 
 void AdsImpl::OnWalletUpdated(const std::string& id, const std::string& seed) {
-  if (!ShouldRewardUser()) {
-    return;
-  }
-
   if (!account_->SetWallet(id, seed)) {
     BLOG(0, "Failed to set wallet");
     return;
   }
 
   BLOG(1, "Successfully set wallet");
-
-  account_->TopUpUnblindedTokens();
 
   MaybeServeAdNotificationsAtRegularIntervals();
 }
