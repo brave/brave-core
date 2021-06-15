@@ -12,7 +12,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
-#include "brave/ios/browser/api/bookmarks/brave_bookmarks_observer.h"
+#include "brave/ios/browser/api/bookmarks/bookmark_model_listener_ios.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_node.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
