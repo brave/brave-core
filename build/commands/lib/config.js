@@ -255,8 +255,11 @@ Config.prototype.buildArgs = function () {
     sparkle_dsa_private_key_file: this.sparkleDSAPrivateKeyFile,
     sparkle_eddsa_private_key: this.sparkleEdDSAPrivateKey,
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
-    use_system_xcode: process.platform === 'darwin',
     ...this.extraGnArgs,
+  }
+  
+  if (process.platform === 'darwin') {
+    args.use_system_xcode = false;
   }
 
   if (this.shouldSign()) {
@@ -401,7 +404,8 @@ Config.prototype.buildArgs = function () {
     args.ios_enable_credential_provider_extension = false
     args.ios_enable_widget_kit_extension = false
 
-    args.use_system_xcode = false
+    // TODO(yannic): Use hermetic Xcode for iOS builds.
+    args.use_system_xcode = true
 
     delete args.safebrowsing_api_endpoint
     delete args.updater_prod_endpoint
