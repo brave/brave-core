@@ -522,7 +522,7 @@ bool AdsServiceImpl::IsEnabled() const {
 
 bool AdsServiceImpl::ShouldStart() const {
   return GetBooleanPref(ads::prefs::kEnabled) ||
-         GetBooleanPref(kNewTabPageShowToday);
+         GetBooleanPref(kBraveTodayOptedIn);
 }
 
 int64_t AdsServiceImpl::GetAdsPerHour() const {
@@ -659,7 +659,7 @@ void AdsServiceImpl::Initialize() {
                           base::Unretained(this)));
 
   profile_pref_change_registrar_.Add(
-      kNewTabPageShowToday,
+      kBraveTodayOptedIn,
       base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
 
   MaybeStart(false);
@@ -1735,7 +1735,7 @@ bool AdsServiceImpl::PrefExists(const std::string& path) const {
 }
 
 void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
-  if (pref == ads::prefs::kEnabled || pref == kNewTabPageShowToday) {
+  if (pref == ads::prefs::kEnabled || pref == kBraveTodayOptedIn) {
     if (pref == ads::prefs::kEnabled) {
       rewards_service_->OnAdsEnabled(IsEnabled());
 
