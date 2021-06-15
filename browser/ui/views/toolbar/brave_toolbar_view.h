@@ -12,7 +12,6 @@
 #include "components/prefs/pref_member.h"
 
 class BookmarkButton;
-class SpeedreaderButton;
 class WalletButton;
 
 class BraveToolbarView : public ToolbarView,
@@ -22,7 +21,6 @@ class BraveToolbarView : public ToolbarView,
   ~BraveToolbarView() override;
 
   BookmarkButton* bookmark_button() const { return bookmark_; }
-  SpeedreaderButton* speedreader_button() const { return speedreader_; }
   WalletButton* wallet_button() const { return wallet_; }
   void Init() override;
   void Layout() override;
@@ -48,7 +46,6 @@ class BraveToolbarView : public ToolbarView,
   // Tracks the preference to determine whether bookmark editing is allowed.
   BooleanPrefMember edit_bookmarks_enabled_;
 
-  SpeedreaderButton* speedreader_ = nullptr;
   WalletButton* wallet_ = nullptr;
 
   BooleanPrefMember location_bar_is_wide_;

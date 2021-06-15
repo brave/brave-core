@@ -532,17 +532,5 @@ source_set("ui") {
     if (enable_brave_translate_extension) {
       deps += [ "//components/translate/core/browser" ]
     }
-
-    if (enable_speedreader) {
-      sources += [
-        "views/toolbar/speedreader_button.cc",
-        "views/toolbar/speedreader_button.h",
-      ]
-      deps += [
-        "//brave/components/speedreader",
-        "//brave/components/speedreader/buildflags",
-        "//brave/components/speedreader/common",
-      ]
-    }
   }
 }
