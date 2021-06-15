@@ -722,19 +722,11 @@ void AdsImpl::OnAdNotificationEventFailed(
 }
 
 void AdsImpl::OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) {
-  if (!ShouldRewardUser()) {
-    return;
-  }
-
   account_->Deposit(ad.creative_instance_id, ConfirmationType::kViewed);
 }
 
 void AdsImpl::OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) {
   ad_transfer_->SetLastClickedAd(ad);
-
-  if (!ShouldRewardUser()) {
-    return;
-  }
 
   account_->Deposit(ad.creative_instance_id, ConfirmationType::kClicked);
 }
