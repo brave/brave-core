@@ -130,6 +130,82 @@ describe('welcomeReducer', () => {
       }
       expect(result).toEqual(expected)
     })
+
+    describe('with the region', () => {
+      const mockState = {
+        searchProviders: [],
+        browserProfiles: []
+      }
+      let countryString: string = 'US'
+      let getStringMock = jest.fn(cb => countryString)
+      window.loadTimeData = {
+        getString: (fieldName: string) => {
+          switch (fieldName) {
+            case 'countryString': return countryString
+          }
+          return undefined
+        }
+      }
+      let spy: jest.SpyInstance
+
+      beforeAll(() => {
+        spy = jest.spyOn(window.loadTimeData, 'getString')
+      })
+      afterAll(() => {
+        spy.mockRestore()
+      })
+
+      it('should get the country string', () => {
+        const result = welcomeReducer(mockState, {
+          type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
+          payload: [{name: 'Google'}, {name: 'Brave Search beta'}]
+        })
+        expect(spy).toBeCalledWith('countryString')
+      })
+
+      describe('when user is in US/Canada', () => {
+        it('should NOT filter out the Brave engine', () => {
+          const result = welcomeReducer(mockState, {
+            type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
+            payload: [
+              {name: 'Google', canBeRemoved: true},
+              {name: 'Brave Search beta', canBeRemoved: false}
+            ]
+          })
+          expect(result.searchProviders.length).toEqual(2)
+        })
+      })
+
+      describe('when user is NOT in US/Canada', () => {
+        beforeEach(() => {
+          countryString = 'GB'
+        })
+        afterEach(() => {
+          countryString = 'US'
+        })
+        it('should filter out Brave', () => {
+          const result = welcomeReducer(mockState, {
+            type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
+            payload: [
+              {name: 'Google', canBeRemoved: false},
+              {name: 'Brave Search beta', canBeRemoved: true}
+            ]
+          })
+          expect(result.searchProviders.length).toEqual(1)
+        })
+
+        it('should leave Brave if its set as default', () => {
+          const result = welcomeReducer(mockState, {
+            type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
+            payload: [
+              {name: 'Google', canBeRemoved: true},
+              {name: 'Brave Search beta', canBeRemoved: false}
+            ]
+          })
+          expect(result.searchProviders.length).toEqual(2)
+        })
+      })
+    })
   })
 
   describe('IMPORT_BROWSER_PROFILES_SUCCESS', () => {
