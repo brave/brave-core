@@ -9,7 +9,7 @@
 #include "base/time/time.h"
 
 #define PermissionRequest PermissionRequest_ChromiumImpl
-#define IsDuplicateOf IsDuplicateOf_Unused
+#define IsDuplicateOf IsDuplicateOf_ChromiumImpl
 #include "../../../../components/permissions/permission_request.h"
 #undef IsDuplicateOf
 #undef PermissionRequest
@@ -25,7 +25,7 @@ class PermissionRequest : public PermissionRequest_ChromiumImpl {
   void SetLifetime(absl::optional<base::TimeDelta> lifetime);
   const absl::optional<base::TimeDelta>& GetLifetime() const;
 
-  // We disable upstream's IsDuplicateOf() via a define above and re-declare it
+  // We rename upstream's IsDuplicateOf() via a define above and re-declare it
   // here to workaround the fact that the PermissionRequest_ChromiumImpl rename
   // will affect this method's only parameter too, which will break subclasses.
   virtual bool IsDuplicateOf(PermissionRequest* other_request) const;
