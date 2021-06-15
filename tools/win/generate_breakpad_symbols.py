@@ -24,120 +24,120 @@ BRAVE_ROOT=os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(__fil
 
 
 def GetCommandOutput(command):
-  """Runs the command list, returning its output.
+    """Runs the command list, returning its output.
 
-  Prints the given command (which should be a list of one or more strings),
-  then runs it and returns its output (stdout) as a string.
+    Prints the given command (which should be a list of one or more strings),
+    then runs it and returns its output (stdout) as a string.
 
-  From chromium_utils.
-  """
-  devnull = open(os.devnull, 'w')
-  proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=devnull,
-                          bufsize=1)
-  output = proc.communicate()[0]
-  return output
+    From chromium_utils.
+    """
+    devnull = open(os.devnull, 'w')
+    proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=devnull,
+                            bufsize=1)
+    output = proc.communicate()[0]
+    return output
 
 
 def mkdir_p(path):
-  """Simulates mkdir -p."""
-  try:
-    os.makedirs(path)
-  except OSError as e:
-    if e.errno == errno.EEXIST and os.path.isdir(path):
-      pass
-    else: raise
+    """Simulates mkdir -p."""
+    try:
+        os.makedirs(path)
+    except OSError as e:
+        if e.errno == errno.EEXIST and os.path.isdir(path):
+            pass
+        else: raise
 
 
 def GenerateSymbols(options, binaries):
-  """Dumps the symbols of binary and places them in the given directory."""
+    """Dumps the symbols of binary and places them in the given directory."""
 
-  q = queue.Queue()
-  print_lock = threading.Lock()
+    q = queue.Queue()
+    print_lock = threading.Lock()
 
-  def _Worker():
-    while True:
-      binary = q.get()
+    def _Worker():
+        while True:
+            binary = q.get()
 
-      if options.verbose:
-        with print_lock:
-          print("Generating symbols for {0}".format(binary))
-          thread_start = datetime.utcnow()
+            if options.verbose:
+                with print_lock:
+                    print("Generating symbols for {0}".format(binary))
+                    thread_start = datetime.utcnow()
 
-      dump_syms = os.path.join(options.build_dir, 'dump_syms.exe')
-      syms = GetCommandOutput([dump_syms, binary])
-      module_line = re.match("MODULE [^ ]+ [^ ]+ ([0-9A-Fa-f]+) (.*)\r\n", syms)
-      if module_line == None:
-        with print_lock:
-          print("Failed to get symbols for {0}".format(binary))
-        q.task_done()
-        continue
+            dump_syms = os.path.join(options.build_dir, 'dump_syms.exe')
+            syms = GetCommandOutput([dump_syms, binary])
+            module_line = re.match("MODULE [^ ]+ [^ ]+ ([0-9A-Fa-f]+) (.*)\r\n", syms)
+            if module_line == None:
+                with print_lock:
+                    print("Failed to get symbols for {0}".format(binary))
+                q.task_done()
+                continue
 
-      output_path = os.path.join(options.symbols_dir, module_line.group(2),
-                                 module_line.group(1))
-      mkdir_p(output_path)
-      symbol_file = "%s.sym" % module_line.group(2)[:-4]  # strip .pdb
-      f = open(os.path.join(output_path, symbol_file), 'w')
-      f.write(syms)
-      f.close()
+            output_path = os.path.join(options.symbols_dir, module_line.group(2),
+                                       module_line.group(1))
+            mkdir_p(output_path)
+            symbol_file = "%s.sym" % module_line.group(2)[:-4]  # strip .pdb
+            f = open(os.path.join(output_path, symbol_file), 'w')
+            f.write(syms)
+            f.close()
 
-      if options.verbose:
-        with print_lock:
-          thread_end = datetime.utcnow()
-          elapsed = thread_end - thread_start
-          print("Completed generating symbols for {}: elapsed time {} seconds".format(binary, elapsed.total_seconds()))
+            if options.verbose:
+                with print_lock:
+                    thread_end = datetime.utcnow()
+                    elapsed = thread_end - thread_start
+                    print("Completed generating symbols for {}: elapsed time {} seconds".format(binary, elapsed.total_seconds()))
 
-      q.task_done()
+            q.task_done()
 
-  for binary in binaries:
-    q.put(binary)
+    for binary in binaries:
+        q.put(binary)
 
-  for _ in range(options.jobs):
-    t = threading.Thread(target=_Worker)
-    t.daemon = True
-    t.start()
+    for _ in range(options.jobs):
+        t = threading.Thread(target=_Worker)
+        t.daemon = True
+        t.start()
 
-  q.join()
+    q.join()
 
 
 def main():
-  parser = optparse.OptionParser()
-  parser.add_option('', '--build-dir', default='',
-                    help='The build output directory.')
-  parser.add_option('', '--symbols-dir', default='',
-                    help='The directory where to write the symbols file.')
-  parser.add_option('', '--clear', default=False, action='store_true',
-                    help='Clear the symbols directory before writing new '
-                         'symbols.')
-  parser.add_option('-j', '--jobs', default=CONCURRENT_TASKS, action='store',
-                    type='int', help='Number of parallel tasks to run.')
-  parser.add_option('-v', '--verbose', action='store_true',
-                    help='Print verbose status output.')
+    parser = optparse.OptionParser()
+    parser.add_option('', '--build-dir', default='',
+                      help='The build output directory.')
+    parser.add_option('', '--symbols-dir', default='',
+                      help='The directory where to write the symbols file.')
+    parser.add_option('', '--clear', default=False, action='store_true',
+                      help='Clear the symbols directory before writing new '
+                           'symbols.')
+    parser.add_option('-j', '--jobs', default=CONCURRENT_TASKS, action='store',
+                      type='int', help='Number of parallel tasks to run.')
+    parser.add_option('-v', '--verbose', action='store_true',
+                      help='Print verbose status output.')
 
-  (options, directories) = parser.parse_args()
+    (options, directories) = parser.parse_args()
 
-  if not options.build_dir:
-    print("Required option --build-dir missing.")
-    return 1
+    if not options.build_dir:
+        print("Required option --build-dir missing.")
+        return 1
 
-  if not options.symbols_dir:
-    print("Required option --symbols-dir missing.")
-    return 1
+    if not options.symbols_dir:
+        print("Required option --symbols-dir missing.")
+        return 1
 
-  if options.clear:
-    try:
-      shutil.rmtree(options.symbols_dir)
-    except:
-      pass
+    if options.clear:
+        try:
+            shutil.rmtree(options.symbols_dir)
+        except:
+            pass
 
-  pdbs = []
-  for directory in directories:
-    pdbs += glob.glob(os.path.join(directory, '*.exe.pdb'))
-    pdbs += glob.glob(os.path.join(directory, '*.dll.pdb'))
+    pdbs = []
+    for directory in directories:
+        pdbs += glob.glob(os.path.join(directory, '*.exe.pdb'))
+        pdbs += glob.glob(os.path.join(directory, '*.dll.pdb'))
 
-  GenerateSymbols(options, pdbs)
+    GenerateSymbols(options, pdbs)
 
-  return 0
+    return 0
 
 
 if '__main__' == __name__:
-  sys.exit(main())
+    sys.exit(main())
