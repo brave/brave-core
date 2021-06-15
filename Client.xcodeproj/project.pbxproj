@@ -162,6 +162,8 @@
 		0ADCD45B231973650078CC67 /* UserAgentBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADCD45A231973650078CC67 /* UserAgentBuilderTests.swift */; };
 		0ADCD45F2319799F0078CC67 /* RollingFileLoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61453BD1B750A1700C3F9D7 /* RollingFileLoggerTests.swift */; };
 		0AE16F8D251BEF8C00A688ED /* InitialSearchEnginesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE16F8C251BEF8C00A688ED /* InitialSearchEnginesTests.swift */; };
+		0AE50854261C63D70099C6A3 /* BraveSearchHelper.js in Resources */ = {isa = PBXBuildFile; fileRef = 0AE50853261C63D70099C6A3 /* BraveSearchHelper.js */; };
+		0AE5086A261C6F2E0099C6A3 /* BraveSearchHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE50869261C6F2E0099C6A3 /* BraveSearchHelper.swift */; };
 		0AE5C09922CAA01E00DFF3EE /* RewardsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE5C09822CAA01E00DFF3EE /* RewardsButton.swift */; };
 		0AE5C69124F0059D004CBC9B /* OnboardingPrivacyConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE5C69024F0059D004CBC9B /* OnboardingPrivacyConsentViewController.swift */; };
 		0AE5C69424F005F9004CBC9B /* OnboardingPrivacyConsentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE5C69324F005F9004CBC9B /* OnboardingPrivacyConsentView.swift */; };
@@ -1532,6 +1534,8 @@
 		0ADCD4512319640F0078CC67 /* UserAgentBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgentBuilder.swift; sourceTree = "<group>"; };
 		0ADCD45A231973650078CC67 /* UserAgentBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgentBuilderTests.swift; sourceTree = "<group>"; };
 		0AE16F8C251BEF8C00A688ED /* InitialSearchEnginesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialSearchEnginesTests.swift; sourceTree = "<group>"; };
+		0AE50853261C63D70099C6A3 /* BraveSearchHelper.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = BraveSearchHelper.js; sourceTree = "<group>"; };
+		0AE50869261C6F2E0099C6A3 /* BraveSearchHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveSearchHelper.swift; sourceTree = "<group>"; };
 		0AE5C09822CAA01E00DFF3EE /* RewardsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsButton.swift; sourceTree = "<group>"; };
 		0AE5C69024F0059D004CBC9B /* OnboardingPrivacyConsentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPrivacyConsentViewController.swift; sourceTree = "<group>"; };
 		0AE5C69324F005F9004CBC9B /* OnboardingPrivacyConsentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPrivacyConsentView.swift; sourceTree = "<group>"; };
@@ -4769,6 +4773,7 @@
 				D0FCF7E81FE44D8F004A7995 /* AllFrames */,
 				D0FCF7E91FE44DA2004A7995 /* MainFrame */,
 				595E0EDA21CAD97C00813D49 /* CookieControl.js */,
+				0AE50853261C63D70099C6A3 /* BraveSearchHelper.js */,
 				F930CDAB227000F200A23FE1 /* U2F.js */,
 				F99505FE22937E3900CC6543 /* U2F-low-level.js */,
 				5E3477E822D7771700B0D5F8 /* ResourceDownloader.js */,
@@ -4962,6 +4967,7 @@
 				0A8A6224257905E300B035F4 /* UniversalLinkManager.swift */,
 				4452CAEF255412800053EFE6 /* DefaultBrowserIntroCalloutViewController.swift */,
 				0A0A5ED025B1F080007B3E74 /* DefaultBrowserIntroManager.swift */,
+				0AE50869261C6F2E0099C6A3 /* BraveSearchHelper.swift */,
 			);
 			indentWidth = 4;
 			path = Browser;
@@ -6306,6 +6312,7 @@
 				0A5E04F923FEADA800E5A3E9 /* LaunchScreen.storyboard in Resources */,
 				0AB22A8A257EADA900126ADC /* corwin-prescott_olympic.jpg in Resources */,
 				0AB22A8F257EADA900126ADC /* su-san-lee.jpg in Resources */,
+				0AE50854261C63D70099C6A3 /* BraveSearchHelper.js in Resources */,
 				5DB474F1237F4CC9007B7652 /* ntp-data.json in Resources */,
 				595E0EDB21CAD97C00813D49 /* CookieControl.js in Resources */,
 				0A0D3D3C21A4BE6400BEE65B /* adblock-list.txt in Resources */,
@@ -7197,6 +7204,7 @@
 				0A4BEF5D221AF1910005551A /* AdblockResourceDownloader.swift in Sources */,
 				0BA1E02E1B046F1E007675AF /* ErrorPageHelper.swift in Sources */,
 				5EC2C07325BF988E005EA984 /* PlaylistCell.swift in Sources */,
+				0AE5086A261C6F2E0099C6A3 /* BraveSearchHelper.swift in Sources */,
 				D3A9949C1A3686BD008AD1AC /* BrowserViewController.swift in Sources */,
 				59A681BDFC95A19F05E07223 /* SearchViewController.swift in Sources */,
 				0A8C6993225BC7B100988715 /* ToolbarUrlActionsProtocol.swift in Sources */,

@@ -295,7 +295,7 @@ class SearchEngines {
 
         let se = InitialSearchEngines()
         let engines = isOnboarding ? se.onboardingEngines : se.engines
-        let engineNames = engines.map { $0.customId ?? $0.id.rawValue }
+        let engineNames = engines.map { ($0.customId ?? $0.id.rawValue).lowercased() }
         assert(!engineNames.isEmpty, "No search engines")
 
         return engineNames.map({ (name: $0, path: pluginDirectory.appendingPathComponent("\($0).xml").path) })

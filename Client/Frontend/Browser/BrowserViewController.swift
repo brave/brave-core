@@ -2045,6 +2045,8 @@ extension BrowserViewController: TabDelegate {
         tab.addContentScript(FingerprintingProtection(tab: tab), name: FingerprintingProtection.name(), sandboxed: false)
         
         tab.addContentScript(BraveGetUA(tab: tab), name: BraveGetUA.name(), sandboxed: false)
+        tab.addContentScript(BraveSearchHelper(tab: tab, profile: profile),
+                             name: BraveSearchHelper.name(), sandboxed: false)
 
         if YubiKitDeviceCapabilities.supportsMFIAccessoryKey {
             tab.addContentScript(U2FExtensions(tab: tab), name: U2FExtensions.name(), sandboxed: false)
