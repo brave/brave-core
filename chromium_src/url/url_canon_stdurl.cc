@@ -22,17 +22,18 @@ bool IpfsCIDv0(const url::URLComponentSource<CHAR>& source,
 namespace ipfs {
 template <typename CHAR>
 // Do not canonicalize CIDv0(Qm...) and copy it as is
+// https://docs.ipfs.io/concepts/content-addressing/#version-0-v0
 bool IpfsCIDv0(const url::URLComponentSource<CHAR>& source,
                const url::Parsed& parsed,
                url::CanonOutput* output,
                url::Parsed* new_parsed) {
-  if (parsed.host.len != 46 || (source.host[parsed.host.begin] != 'Q' ||
-                                source.host[parsed.host.begin + 1] != 'm'))
-    return false;
   if ((strncmp(&output->data()[new_parsed->scheme.begin], "ipfs",
                new_parsed->scheme.len) != 0) &&
       (strncmp(&output->data()[new_parsed->scheme.begin], "ipns",
                new_parsed->scheme.len) != 0))
+    return false;
+  if (parsed.host.len != 46 || (source.host[parsed.host.begin] != 'Q' ||
+                                source.host[parsed.host.begin + 1] != 'm'))
     return false;
   new_parsed->host.begin = output->length();
   for (int i = 0; i < parsed.host.len; i++)

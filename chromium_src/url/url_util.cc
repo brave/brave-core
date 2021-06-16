@@ -29,12 +29,14 @@ inline bool DoCompareSchemeComponent(const CHAR* spec,
   }                                                                           \
   ParsePathURL
 
+// clang-format off
 #define ReplacePathURL                                              \
   (DoCompareSchemeComponent(spec, parsed.scheme, kIPFSScheme) ||    \
-   DoCompareSchemeComponent(spec, parsed.scheme, kIPNSScheme))      \
+  DoCompareSchemeComponent(spec, parsed.scheme, kIPNSScheme))      \
       ? ReplaceStandardURL(spec, parsed, replacements, scheme_type, \
                            charset_converter, output, out_parsed)   \
       : ReplacePathURL
+// clang-format on
 
 #include "../../url/url_util.cc"
 #undef ReplacePathURL

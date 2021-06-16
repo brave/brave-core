@@ -24,6 +24,19 @@
 #include "url/gurl.h"
 
 namespace {
+void ValidateIpfsURL(const GURL& url_to_validate,
+                     const std::string& scheme,
+                     const std::string& host,
+                     const std::string& origin,
+                     int port,
+                     const std::string& path) {
+  EXPECT_EQ(url_to_validate.scheme(), scheme);
+  EXPECT_EQ(url_to_validate.host(), host);
+  EXPECT_EQ(url_to_validate.GetOrigin(), origin);
+  EXPECT_EQ(url_to_validate.EffectiveIntPort(), port);
+  EXPECT_EQ(url_to_validate.path(), path);
+}
+
 void ValidateReplacements(const std::string& scheme,
                           const std::string& domain) {
   GURL ipns_url(scheme + "://" + domain + "/path");
@@ -686,58 +699,59 @@ TEST_F(IpfsUtilsUnitTest, IsAPIGatewayTest) {
 }
 
 TEST_F(IpfsUtilsUnitTest, ParseIPFSUri) {
-  GURL url("ipfs://bafy/path");
-  EXPECT_EQ(url.scheme(), "ipfs");
-  EXPECT_EQ(url.host(), "bafy");
-  EXPECT_EQ(url.path(), "/path");
+  ValidateIpfsURL(GURL("ipfs://bafy/path"), "ipfs", "bafy", "ipfs://bafy/",
+                  url::PORT_UNSPECIFIED, "/path");
 
-  url = GURL("ipns://bafy/path");
-  EXPECT_EQ(url.scheme(), "ipns");
-  EXPECT_EQ(url.host(), "bafy");
-  EXPECT_EQ(url.path(), "/path");
+  ValidateIpfsURL(GURL("ipns://bafy/path"), "ipns", "bafy", "ipns://bafy/",
+                  url::PORT_UNSPECIFIED, "/path");
 
-  url = GURL("ipns://bafy/");
-  EXPECT_EQ(url.scheme(), "ipns");
-  EXPECT_EQ(url.host(), "bafy");
-  EXPECT_EQ(url.path(), "/");
+  ValidateIpfsURL(GURL("ipns://bafy"), "ipns", "bafy", "ipns://bafy/",
+                  url::PORT_UNSPECIFIED, "/");
 
-  url = GURL("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/path");
-  EXPECT_EQ(url.scheme(), "ipfs");
-  EXPECT_EQ(url.host(), "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
-  EXPECT_EQ(url.path(), "/path");
+  ValidateIpfsURL(
+      GURL("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/path"),
+      "ipfs", "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG",
+      "ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/",
+      url::PORT_UNSPECIFIED, "/path");
 
-  url = GURL("ipns://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/path");
-  EXPECT_EQ(url.scheme(), "ipns");
-  EXPECT_EQ(url.host(), "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
-  EXPECT_EQ(url.path(), "/path");
+  ValidateIpfsURL(
+      GURL("ipns://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/path"),
+      "ipns", "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG",
+      "ipns://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/",
+      url::PORT_UNSPECIFIED, "/path");
 
-  url = GURL(
-      "ipns://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq");
-  EXPECT_EQ(url.scheme(), "ipns");
-  EXPECT_EQ(url.host(),
-            "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq");
-  EXPECT_EQ(url.path(), "/");
+  ValidateIpfsURL(
+      GURL(
+          "ipns://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"),
+      "ipns", "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq",
+      "ipns://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/",
+      url::PORT_UNSPECIFIED, "/");
 
-  url = GURL("ipfs://AmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/path");
-  EXPECT_EQ(url.scheme(), "ipfs");
-  EXPECT_EQ(url.host(), "amfm2r8seh2girac4estjeraxeachrt8zssegawtplymog");
-  EXPECT_EQ(url.path(), "/path");
+  ValidateIpfsURL(GURL("ipns://AmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"),
+                  "ipns", "amfm2r8seh2girac4estjeraxeachrt8zssegawtplymog",
+                  "ipns://amfm2r8seh2girac4estjeraxeachrt8zssegawtplymog/",
+                  url::PORT_UNSPECIFIED, "/");
 
-  url = GURL("ipfs://qmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/path");
-  EXPECT_EQ(url.scheme(), "ipfs");
-  EXPECT_EQ(url.host(), "qmfm2r8seh2girac4estjeraxeachrt8zssegawtplymog");
-  EXPECT_EQ(url.path(), "/path");
+  ValidateIpfsURL(
+      GURL("ipfs://AmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/path"),
+      "ipfs", "amfm2r8seh2girac4estjeraxeachrt8zssegawtplymog",
+      "ipfs://amfm2r8seh2girac4estjeraxeachrt8zssegawtplymog/",
+      url::PORT_UNSPECIFIED, "/path");
 
-  url = GURL("ipfs://QMfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/path");
-  EXPECT_EQ(url.scheme(), "ipfs");
-  EXPECT_EQ(url.host(), "qmfm2r8seh2girac4estjeraxeachrt8zssegawtplymog");
-  EXPECT_EQ(url.path(), "/path");
+  ValidateIpfsURL(
+      GURL("ipfs://qmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/path"),
+      "ipfs", "qmfm2r8seh2girac4estjeraxeachrt8zssegawtplymog",
+      "ipfs://qmfm2r8seh2girac4estjeraxeachrt8zssegawtplymog/",
+      url::PORT_UNSPECIFIED, "/path");
 
-  url = GURL("ipns://brantly.eth:1111/path");
-  EXPECT_EQ(url.scheme(), "ipns");
-  EXPECT_EQ(url.host(), "brantly.eth");
-  EXPECT_EQ(url.port(), "1111");
-  EXPECT_EQ(url.path(), "/path");
+  ValidateIpfsURL(
+      GURL("ipfs://QMfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG/path"),
+      "ipfs", "qmfm2r8seh2girac4estjeraxeachrt8zssegawtplymog",
+      "ipfs://qmfm2r8seh2girac4estjeraxeachrt8zssegawtplymog/",
+      url::PORT_UNSPECIFIED, "/path");
+
+  ValidateIpfsURL(GURL("ipns://brantly.eth:1111/path"), "ipns", "brantly.eth",
+                  "ipns://brantly.eth/", 1111, "/path");
 }
 
 TEST_F(IpfsUtilsUnitTest, IpfsUriReplacement) {

@@ -1,0 +1,13 @@
+diff --git a/url/scheme_host_port.cc b/url/scheme_host_port.cc
+index 61239b1572b6066fbbf02cdfc14a2506c1112c91..abd73bc9b21e89021903c676cf79017c154f356e 100644
+--- a/url/scheme_host_port.cc
++++ b/url/scheme_host_port.cc
+@@ -115,7 +115,7 @@ bool IsValidInput(const base::StringPiece& scheme,
+         // the port data but the given |port| is non-zero.
+         return false;
+       }
+-
++      BRAVE_IPFS_CIDv0
+       // Don't do an expensive canonicalization if the host is already
+       // canonicalized.
+       DCHECK(policy == SchemeHostPort::CHECK_CANONICALIZATION ||
