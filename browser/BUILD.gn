@@ -1,5 +1,4 @@
 import("//brave/build/config.gni")
-import("//brave/components/speedreader/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 import("//chrome/common/features.gni")
