@@ -10,6 +10,10 @@ source_set("browser") {
   include_dirs = [ "//brave/third_party/ethash/src/include" ]
 
   sources = [
+    "asset_ratio_controller.cc",
+    "asset_ratio_controller.h",
+    "asset_ratio_response_parser.cc",
+    "asset_ratio_response_parser.h",
     "brave_wallet_constants.cc",
     "brave_wallet_constants.h",
     "brave_wallet_provider_delegate.h",
