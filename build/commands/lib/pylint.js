@@ -105,7 +105,11 @@ const installPylint3 = () => {
     console.error('python3 could not be found in path')
     process.exit(1)
   }
-  util.run('python3', ['-m', 'pip', 'install', 'pylint'], cmd_options)
+  // Windows is the only platform that uses python from depot_tools. On other
+  // platforms it's up to the user to install pylint in their python3 instance.
+  if (process.platform === 'win32') {
+    util.run('python3', ['-m', 'pip', 'install', 'pylint'], cmd_options)
+  }
   util.run('python3', ['-m', 'pylint', '--version'], cmd_options)
 }
 
