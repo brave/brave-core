@@ -124,6 +124,10 @@ void AdBlockRegionalServiceManager::ShouldStartRequest(
     bool* did_match_exception,
     bool* did_match_important,
     std::string* mock_data_url) {
+  if (!IsInitialized())
+    return;
+
+
   base::AutoLock lock(regional_services_lock_);
 
   for (const auto& regional_service : regional_services_) {

@@ -31,6 +31,7 @@ bool set_domain_resolver(C_DomainResolverCallback resolver);
  * Create a new `Engine`.
  */
 struct C_Engine *engine_create(const char *rules);
+struct C_Engine *engine_create_from_buffer(const char *data, size_t data_size);
 
 /**
  * Checks if a `url` matches for the specified `Engine` within the context.

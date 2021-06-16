@@ -30,6 +30,7 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/origin.h"
 
 #define DAT_FILE "rs-ABPFilterParserData.dat"
@@ -72,6 +73,9 @@ void AdBlockService::ShouldStartRequest(
     bool* did_match_exception,
     bool* did_match_important,
     std::string* mock_data_url) {
+  if (!IsInitialized())
+    return;
+
   if (aggressive_blocking ||
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveAdblockDefault1pBlocking) ||
@@ -148,7 +152,7 @@ absl::optional<base::Value> AdBlockService::UrlCosmeticResources(
                        /*force_hide=*/true);
   }
 
-  absl::Optional<base::Value> subscription_resources =
+  absl::optional<base::Value> subscription_resources =
       subscription_service_manager()->UrlCosmeticResources(url);
 
   if (subscription_resources && subscription_resources->is_dict()) {
@@ -181,11 +185,11 @@ absl::optional<base::Value> AdBlockService::HiddenClassIdSelectors(
     hide_selectors = std::move(regional_selectors);
   }
 
-  absl::Optional<base::Value> custom_selectors =
+  absl::optional<base::Value> custom_selectors =
       custom_filters_service()->HiddenClassIdSelectors(classes, ids,
                                                        exceptions);
 
-  absl::Optional<base::Value> subscription_selectors =
+  absl::optional<base::Value> subscription_selectors =
       subscription_service_manager()->HiddenClassIdSelectors(classes, ids,
                                                              exceptions);
 
@@ -242,17 +246,16 @@ AdBlockService::custom_filters_service() {
 
 brave_shields::AdBlockSubscriptionServiceManager*
 AdBlockService::subscription_service_manager() {
-  if (!subscription_service_manager_) {
-    subscription_service_manager_ =
-        brave_shields::AdBlockSubscriptionServiceManagerFactory(
-            component_delegate_);
-  }
   return subscription_service_manager_.get();
 }
 
 AdBlockService::AdBlockService(
-    brave_component_updater::BraveComponent::Delegate* delegate)
-    : AdBlockBaseService(delegate), component_delegate_(delegate) {}
+    brave_component_updater::BraveComponent::Delegate* delegate,
+    std::unique_ptr<AdBlockSubscriptionServiceManager>
+        subscription_service_manager)
+    : AdBlockBaseService(delegate),
+      component_delegate_(delegate),
+      subscription_service_manager_(std::move(subscription_service_manager)) {}
 
 AdBlockService::~AdBlockService() {}
 
@@ -315,14 +318,6 @@ void AdBlockService::SetComponentIdAndBase64PublicKeyForTest(
     const std::string& component_base64_public_key) {
   g_ad_block_component_id_ = component_id;
   g_ad_block_component_base64_public_key_ = component_base64_public_key;
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-// The Adblock service factory.
-std::unique_ptr<AdBlockService> AdBlockServiceFactory(
-    brave_component_updater::BraveComponent::Delegate* delegate) {
-  return std::make_unique<AdBlockService>(delegate);
 }
 
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {

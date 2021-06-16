@@ -118,6 +118,12 @@ bool AdBlockSubscriptionDownloadManager::IsAvailableForDownloads() const {
   return is_available_for_downloads_;
 }
 
+void AdBlockSubscriptionDownloadManager::Shutdown() {
+  is_available_for_downloads_ = false;
+  CancelAllPendingDownloads();
+  // notify
+}
+
 void AdBlockSubscriptionDownloadManager::OnDownloadServiceReady(
     const std::set<std::string>& pending_download_guids,
     const std::map<std::string, base::FilePath>& successful_downloads) {
@@ -173,7 +179,7 @@ void AdBlockSubscriptionDownloadManager::OnDownloadSucceeded(
   background_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&EnsureDirExists,
-                     DirForCustomSubscription(download_url)),
+                     subscription_manager_->GetSubscriptionPath(download_url)),
       base::BindOnce(&AdBlockSubscriptionDownloadManager::OnDirCreated,
                      ui_weak_ptr_factory_.GetWeakPtr(), std::move(data_handle),
                      download_url));
@@ -188,8 +194,9 @@ void AdBlockSubscriptionDownloadManager::OnDirCreated(
     return;
   }
 
-  base::FilePath list_path = DirForCustomSubscription(download_url)
-                                 .AppendASCII(kCustomSubscriptionListText);
+  base::FilePath list_path =
+      subscription_manager_->GetSubscriptionPath(download_url)
+          .AppendASCII(kCustomSubscriptionListText);
 
   auto context = std::make_unique<storage::BlobStorageContext>();
   mojo::Remote<storage::mojom::BlobStorageContext> remote_context;
@@ -212,7 +219,8 @@ void AdBlockSubscriptionDownloadManager::WriteResultCallback(
     subscription_manager_->OnListDownloadFailure(download_url);
   }
 
-  subscription_manager_->OnNewListDownloaded(download_url);
+  // this should send the data to subscription manager
+  subscription_manager_->OnListDownloaded(download_url);
 }
 
 }  // namespace brave_shields

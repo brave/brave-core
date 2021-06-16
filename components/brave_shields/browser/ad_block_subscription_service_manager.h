@@ -20,8 +20,6 @@
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_manager_observer.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
 
@@ -42,26 +40,24 @@ using brave_component_updater::BraveComponent;
 
 namespace brave_shields {
 
-using SubscriptionIdentifier = GURL;
-
 // The AdBlock subscription service manager, in charge of initializing and
 // managing AdBlock clients corresponding to custom filter list subscriptions.
-class AdBlockSubscriptionServiceManager : public ProfileManagerObserver {
+class AdBlockSubscriptionServiceManager {
  public:
   explicit AdBlockSubscriptionServiceManager(
-      BraveComponent::Delegate* delegate);
-  ~AdBlockSubscriptionServiceManager() override;
+      BraveComponent::Delegate* delegate,
+      AdBlockSubscriptionDownloadManager::DownloadManagerGetter getter,
+      const base::FilePath& user_data_dir);
+  ~AdBlockSubscriptionServiceManager();
 
-  // ProfileManagerObserver
-  void OnProfileAdded(Profile* profile) override;
+  base::FilePath GetSubscriptionPath(const SubscriptionIdentifier id) const;
 
   std::vector<FilterListSubscriptionInfo> GetSubscriptions() const;
   void EnableSubscription(const SubscriptionIdentifier& id, bool enabled);
   void DeleteSubscription(const SubscriptionIdentifier& id);
   void RefreshSubscription(const SubscriptionIdentifier& id, bool from_ui);
-  void CreateSubscription(const GURL list_url);
+  void CreateSubscription(const GURL& list_url);
 
-  bool IsInitialized() const;
   bool Start();
   void ShouldStartRequest(const GURL& url,
                           blink::mojom::ResourceType resource_type,
@@ -80,11 +76,11 @@ class AdBlockSubscriptionServiceManager : public ProfileManagerObserver {
       const std::vector<std::string>& exceptions);
 
   AdBlockSubscriptionDownloadManager* download_manager() {
-    return download_manager_.get();
+    return download_manager_;
   }
 
   void OnListDownloadFailure(const SubscriptionIdentifier& id);
-  void OnNewListDownloaded(const SubscriptionIdentifier& id);
+  void OnListDownloaded(const SubscriptionIdentifier& id);
 
   void AddObserver(AdBlockSubscriptionServiceManagerObserver* observer);
   void RemoveObserver(AdBlockSubscriptionServiceManagerObserver* observer);
@@ -92,29 +88,25 @@ class AdBlockSubscriptionServiceManager : public ProfileManagerObserver {
  private:
   friend class ::AdBlockServiceTest;
   bool Init();
-  void StartSubscriptionServices();
-  void InitializeDownloadManager(Profile* system_profile);
+  void LoadSubscriptionServices();
   void UpdateFilterListPrefs(const SubscriptionIdentifier& uuid,
                              const FilterListSubscriptionInfo& info);
   void ClearFilterListPrefs(const SubscriptionIdentifier& uuid);
+  void OnGetDownloadManager(
+      AdBlockSubscriptionDownloadManager* download_manager);
 
-  void InitializeSystemProfile();
-  void OnSystemProfileCreated(Profile* profile, Profile::CreateStatus status);
-
-  void OnNewListDownloadedOnTaskRunner(const SubscriptionIdentifier& id);
-  void OnListDownloadFailureOnTaskRunner(const SubscriptionIdentifier& id);
-
+  base::Optional<FilterListSubscriptionInfo> GetInfo(
+      const SubscriptionIdentifier& id) const;
+  void OnListLoaded(const SubscriptionIdentifier& id);
   void NotifyObserversOfServiceEvent();
 
   brave_component_updater::BraveComponent::Delegate* delegate_;  // NOT OWNED
-  bool initialized_;
+  base::FilePath subscription_path_;
+  AdBlockSubscriptionDownloadManager* download_manager_;         // NOT OWNED
+
   std::map<SubscriptionIdentifier, std::unique_ptr<AdBlockSubscriptionService>>
       subscription_services_;
-
-  std::unique_ptr<AdBlockSubscriptionDownloadManager> download_manager_;
-
   base::ObserverList<AdBlockSubscriptionServiceManagerObserver> observers_;
-
   base::WeakPtrFactory<AdBlockSubscriptionServiceManager> weak_ptr_factory_{
       this};
 
@@ -123,10 +115,6 @@ class AdBlockSubscriptionServiceManager : public ProfileManagerObserver {
   AdBlockSubscriptionServiceManager& operator=(
       const AdBlockSubscriptionServiceManager&) = delete;
 };
-
-// Creates the AdBlockSubscriptionServiceManager
-std::unique_ptr<AdBlockSubscriptionServiceManager>
-AdBlockSubscriptionServiceManagerFactory(BraveComponent::Delegate* delegate);
 
 }  // namespace brave_shields
 

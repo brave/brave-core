@@ -181,6 +181,7 @@ void AdblockDOMHandler::HandleSubmitNewSubscription(
   if (!list_url.is_valid()) {
     return;
   }
+
   g_brave_browser_process->ad_block_service()
       ->subscription_service_manager()
       ->CreateSubscription(list_url);
@@ -256,9 +257,12 @@ void AdblockDOMHandler::HandleViewSubscriptionSource(
     return;
   }
 
+  // TODO(bridiver) - the ui shouldn't have to figure this out
   const auto cached_list_path =
-      brave_shields::DirForCustomSubscription(list_url).AppendASCII(
-          brave_shields::kCustomSubscriptionListText);
+      g_brave_browser_process->ad_block_service()
+          ->subscription_service_manager()
+          ->GetSubscriptionPath(list_url)
+          .AppendASCII(brave_shields::kCustomSubscriptionListText);
 
   const GURL file_url = net::FilePathToFileURL(cached_list_path);
 

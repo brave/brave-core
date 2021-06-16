@@ -11,9 +11,10 @@
 #include <set>
 #include <string>
 
+#include "base/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "components/download/public/background_service/download_params.h"
-
+#include "components/keyed_service/core/keyed_service.h"
 #include "components/services/storage/public/mojom/blob_storage_context.mojom.h"
 
 namespace storage {
@@ -31,13 +32,17 @@ class AdBlockSubscriptionServiceManager;
 class AdBlockSubscriptionDownloadClient;
 
 // Manages the downloads of filter lists for custom subscriptions.
-class AdBlockSubscriptionDownloadManager {
+class AdBlockSubscriptionDownloadManager : public KeyedService {
  public:
+  using DownloadManagerGetter = base::OnceCallback<void(
+      base::OnceCallback <
+      void(AdBlockSubscriptionDownloadManager*)>)>;
+
   AdBlockSubscriptionDownloadManager(
       download::DownloadService* download_service,
       AdBlockSubscriptionServiceManager* subscription_manager,
       scoped_refptr<base::SequencedTaskRunner> background_task_runner);
-  virtual ~AdBlockSubscriptionDownloadManager();
+  ~AdBlockSubscriptionDownloadManager() override;
   AdBlockSubscriptionDownloadManager(
       const AdBlockSubscriptionDownloadManager&) = delete;
   AdBlockSubscriptionDownloadManager& operator=(
@@ -55,6 +60,9 @@ class AdBlockSubscriptionDownloadManager {
 
  private:
   friend class AdBlockSubscriptionDownloadClient;
+
+  // KeyedService implementation
+  void Shutdown() override;
 
   // Invoked when the Download Service is ready.
   //

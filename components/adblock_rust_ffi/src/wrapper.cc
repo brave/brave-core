@@ -44,6 +44,9 @@ Engine::Engine() : raw(engine_create("")) {}
 
 Engine::Engine(const std::string& rules) : raw(engine_create(rules.c_str())) {}
 
+Engine::Engine(const char* data, size_t data_size)
+    : raw(engine_create_from_buffer(data, data_size)) {}
+
 void Engine::matches(const std::string& url,
                      const std::string& host,
                      const std::string& tab_host,

@@ -43,8 +43,22 @@ pub unsafe extern "C" fn set_domain_resolver(resolver: DomainResolverCallback) -
 
 /// Create a new `Engine`.
 #[no_mangle]
+pub unsafe extern "C" fn engine_create_from_buffer(
+    data: *const c_char,
+    data_size: size_t
+) -> *mut Engine {
+    let data: &[u8] = std::slice::from_raw_parts(data as *const u8, data_size);
+    let rules = CStr::from_bytes_with_nul(data).map(|s| s.to_str().unwrap_or("")).unwrap_or("");
+    engine_create_from_str(rules)
+}
+
+#[no_mangle]
 pub unsafe extern "C" fn engine_create(rules: *const c_char) -> *mut Engine {
-    let rules = CStr::from_ptr(rules).to_str().unwrap();
+    let rules = CStr::from_ptr(rules).to_str().unwrap_or("");
+    engine_create_from_str(rules)
+}
+
+fn engine_create_from_str(rules: &str) -> *mut Engine {
     let mut filter_set = adblock::lists::FilterSet::new(false);
     filter_set.add_filter_list(&rules, adblock::lists::FilterFormat::Standard);
     let engine = Engine::from_filter_set(filter_set, true);

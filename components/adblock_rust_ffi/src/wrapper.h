@@ -67,7 +67,8 @@ class ADBLOCK_EXPORT FilterList {
 class ADBLOCK_EXPORT Engine {
  public:
   Engine();
-  explicit Engine(const std::string& rules);
+  Engine(const std::string& rules);
+  Engine(const char* data, size_t data_size);
   void matches(const std::string& url,
                const std::string& host,
                const std::string& tab_host,
