@@ -166,10 +166,6 @@ extension BrowserViewController: TopToolbarDelegate {
         if let fixupURL = URIFixup.getURL(text) {
             // The user entered a URL, so use it.
             finishEditingAndSubmit(fixupURL, isBookmark: false)
-            
-            if !PrivateBrowsingManager.shared.isPrivateBrowsing {
-                RecentSearch.addItem(type: .website, text: nil, websiteUrl: fixupURL.absoluteString)
-            }
             return
         }
 
