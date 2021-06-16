@@ -522,9 +522,7 @@ bool AdsServiceImpl::IsEnabled() const {
 
 bool AdsServiceImpl::ShouldStart() const {
   return GetBooleanPref(ads::prefs::kEnabled) ||
-         GetBooleanPref(ntp_background_images::prefs::
-                            kNewTabPageShowSponsoredImagesBackgroundImage) ||
-         GetBooleanPref(kNewTabPageShowToday);
+         GetBooleanPref(kBraveTodayOptedIn);
 }
 
 int64_t AdsServiceImpl::GetAdsPerHour() const {
@@ -661,12 +659,7 @@ void AdsServiceImpl::Initialize() {
                           base::Unretained(this)));
 
   profile_pref_change_registrar_.Add(
-      ntp_background_images::prefs::
-          kNewTabPageShowSponsoredImagesBackgroundImage,
-      base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
-
-  profile_pref_change_registrar_.Add(
-      kNewTabPageShowToday,
+      kBraveTodayOptedIn,
       base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
 
   MaybeStart(false);
@@ -762,6 +755,7 @@ void AdsServiceImpl::MaybeStart(const bool should_restart) {
   if (connected()) {
     return;
   }
+
   if (!StartService()) {
     VLOG(0) << "Failed to start ads service";
     return;
@@ -1741,10 +1735,7 @@ bool AdsServiceImpl::PrefExists(const std::string& path) const {
 }
 
 void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
-  if (pref == ads::prefs::kEnabled ||
-      pref == ntp_background_images::prefs::
-                  kNewTabPageShowSponsoredImagesBackgroundImage ||
-      pref == kNewTabPageShowToday) {
+  if (pref == ads::prefs::kEnabled || pref == kBraveTodayOptedIn) {
     if (pref == ads::prefs::kEnabled) {
       rewards_service_->OnAdsEnabled(IsEnabled());
 

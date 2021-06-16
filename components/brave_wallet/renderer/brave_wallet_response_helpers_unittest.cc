@@ -33,7 +33,8 @@ TEST(BraveWalletResponseHelpersTest, ErrorResponse) {
       "\"message\":\"The method eth_accountsq does not exist/is not "
       "available\"}}";
   bool reject = false;
-  std::unique_ptr<base::Value> result = FormProviderResponse(response, &reject);
+  std::unique_ptr<base::Value> result =
+      FormProviderResponse(response, false, &reject);
 
   ASSERT_TRUE(result != nullptr);
   ASSERT_TRUE(reject);
@@ -51,7 +52,8 @@ TEST(BraveWalletResponseHelpersTest, CorrectResultResponse) {
   std::string response =
       "{\"jsonrpc\":\"2.0\",\"id\":2025678280,\"result\":\"0xbb4323\"}";
   bool reject = false;
-  std::unique_ptr<base::Value> result = FormProviderResponse(response, &reject);
+  std::unique_ptr<base::Value> result =
+      FormProviderResponse(response, false, &reject);
 
   ASSERT_TRUE(result != nullptr);
   ASSERT_TRUE(result->is_string());

@@ -171,9 +171,6 @@ void IpfsService::OnExecutableReady(const base::FilePath& path) {
 
   prefs_->SetFilePath(kIPFSBinaryPath, path);
 
-  if (ipfs_client_updater_) {
-    ipfs_client_updater_->RemoveObserver(this);
-  }
   LaunchIfNotRunning(path);
 }
 
