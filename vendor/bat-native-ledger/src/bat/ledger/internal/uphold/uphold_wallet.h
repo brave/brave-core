@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "bat/ledger/internal/uphold/uphold_user.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
@@ -24,7 +25,7 @@ class UpholdWallet {
   void Generate(ledger::ResultCallback callback);
 
  private:
-  void OnGenerate(
+  void OnGetUser(
       const type::Result result,
       const User& user,
       ledger::ResultCallback callback);
@@ -33,10 +34,6 @@ class UpholdWallet {
       const type::Result result,
       const std::string& address,
       ledger::ResultCallback callback);
-
-  type::WalletStatus GetNewStatus(
-      const type::WalletStatus old_status,
-      const User& user);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

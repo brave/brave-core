@@ -126,23 +126,23 @@ type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
 
   switch (wallet->status) {
     case type::WalletStatus::VERIFIED: {
-      DCHECK(!wallet->address.empty());
       DCHECK(!wallet->token.empty());
+      DCHECK(!wallet->address.empty());
       wallet->add_url = GetAddUrl(wallet->address);
       wallet->withdraw_url = GetWithdrawUrl(wallet->address);
       break;
     }
     case type::WalletStatus::PENDING: {
-      DCHECK(wallet->address.empty());
       DCHECK(!wallet->token.empty());
+      DCHECK(wallet->address.empty());
       wallet->add_url = GetSecondStepVerify();
       wallet->withdraw_url = GetSecondStepVerify();
       break;
     }
     case type::WalletStatus::NOT_CONNECTED:
     case type::WalletStatus::DISCONNECTED_VERIFIED: {
-      DCHECK(wallet->address.empty());
       DCHECK(wallet->token.empty());
+      DCHECK(wallet->address.empty());
       wallet->add_url = {};
       wallet->withdraw_url = {};
       break;
@@ -166,19 +166,19 @@ std::string GenerateVerifyLink(type::ExternalWalletPtr wallet) {
 
   switch (wallet->status) {
     case type::WalletStatus::VERIFIED:
-      DCHECK(!wallet->address.empty());
       DCHECK(!wallet->token.empty());
+      DCHECK(!wallet->address.empty());
       break;
     case type::WalletStatus::PENDING: {
-      DCHECK(wallet->address.empty());
       DCHECK(!wallet->token.empty());
+      DCHECK(wallet->address.empty());
       url = GetSecondStepVerify();
       break;
     }
     case type::WalletStatus::NOT_CONNECTED:
     case type::WalletStatus::DISCONNECTED_VERIFIED: {
-      DCHECK(wallet->address.empty());
       DCHECK(wallet->token.empty());
+      DCHECK(wallet->address.empty());
       url = GetAuthorizeUrl(wallet->one_time_string, true);
       break;
     }
