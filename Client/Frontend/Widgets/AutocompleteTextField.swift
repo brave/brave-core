@@ -12,6 +12,7 @@ import BraveUI
 /// callers must use this instead.
 protocol AutocompleteTextFieldDelegate: AnyObject {
     func autocompleteTextField(_ autocompleteTextField: AutocompleteTextField, didEnterText text: String)
+    func autocompleteTextField(_ autocompleteTextField: AutocompleteTextField, didDeleteAutoSelectedText text: String)
     func autocompleteTextFieldShouldReturn(_ autocompleteTextField: AutocompleteTextField) -> Bool
     func autocompleteTextFieldShouldClear(_ autocompleteTextField: AutocompleteTextField) -> Bool
     func autocompleteTextFieldDidBeginEditing(_ autocompleteTextField: AutocompleteTextField)
@@ -42,6 +43,7 @@ class AutocompleteTextField: UITextField, UITextFieldDelegate {
     // the highlight is active and then the text field is updated accordingly
     // in touchesEnd() (eg. applyCompletion() is called or not)
     fileprivate var notifyTextChanged: (() -> Void)?
+    fileprivate var notifyTextDeleted: (() -> Void)?
     private var lastReplacement: String?
 
     var highlightColor = AutocompleteTextFieldUX.highlightColor
@@ -77,11 +79,17 @@ class AutocompleteTextField: UITextField, UITextFieldDelegate {
         super.addTarget(self, action: #selector(AutocompleteTextField.textDidChange), for: .editingChanged)
         notifyTextChanged = debounce(0.1, action: {
             if self.isEditing {
+                self.autocompleteDelegate?.autocompleteTextField(self, didEnterText: self.normalizeString(self.text ?? ""))
+            }
+        })
+        
+        notifyTextDeleted = debounce(0.1, action: {
+            if self.isEditing {
                 var text = self.text
                 if text?.isEmpty == true && self.autocompleteTextLabel?.text?.isEmpty == false {
                     text = self.autocompleteTextLabel?.text
                 }
-                self.autocompleteDelegate?.autocompleteTextField(self, didEnterText: self.normalizeString(text ?? ""))
+                self.autocompleteDelegate?.autocompleteTextField(self, didDeleteAutoSelectedText: self.normalizeString(text ?? ""))
             }
         })
     }
@@ -291,7 +299,7 @@ class AutocompleteTextField: UITextField, UITextFieldDelegate {
         if isSelectionActive {
             removeCompletion()
             forceResetCursor()
-            notifyTextChanged?()
+            notifyTextDeleted?()
         } else {
             super.deleteBackward()
         }
