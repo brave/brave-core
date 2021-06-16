@@ -286,7 +286,7 @@ extension BrowserViewController: TopToolbarDelegate {
             let qrCodeController = RecentSearchQRCodeScannerController { [weak self] string in
                 guard let self = self else { return }
                 
-                if let url = URL(string: string) {
+                if let url = URIFixup.getURL(string) {
                     self.didScanQRCodeWithURL(url)
                 } else {
                     self.didScanQRCodeWithText(string)

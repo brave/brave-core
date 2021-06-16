@@ -2614,8 +2614,8 @@ extension Strings {
     public static let recentSearchEnableSuggestions = NSLocalizedString("RecentSearchEnableSuggestions", bundle: .braveShared, value: "Enable", comment: "Recent Search button title to enable suggestions")
     public static let recentSearchDisableSuggestions = NSLocalizedString("RecentSearchDisableSuggestions", bundle: .braveShared, value: "Disable", comment: "Recent Search button title to disable suggestions")
     public static let recentSearchClearDataToggleOption = NSLocalizedString("RecentSearchClearDataToggleOption", bundle: .braveShared, value: "Recent Search Data", comment: "Recent Search setting title to clear recent searches")
-    public static let recentSearchScannerTitle = NSLocalizedString("RecentSearchScannerTitle", bundle: .braveShared, value: "Scan QR Code", comment: "Scanning a QRCode for searching")
-    public static let recentSearchScannerDescriptionTitle = NSLocalizedString("RecentSearchScannerDescriptionTitle", bundle: .braveShared, value: "Instructions", comment: "Scanning a QRCode for title")
-    public static let recentSearchScannerDescriptionBody = NSLocalizedString("RecentSearchScannerDescriptionBody", bundle: .braveShared, value: "To search by QRCode, align the QR in the center of the frame.", comment: "Scanning a QRCode for searching body")
+    public static let recentSearchScannerTitle = NSLocalizedString("RecentSearchScannerTitle", bundle: .braveShared, value: "Scan QR Code", comment: "Scanning a QR Code for searching")
+    public static let recentSearchScannerDescriptionTitle = NSLocalizedString("RecentSearchScannerDescriptionTitle", bundle: .braveShared, value: "Instructions", comment: "Scanning a QR Code for title")
+    public static let recentSearchScannerDescriptionBody = NSLocalizedString("RecentSearchScannerDescriptionBody", bundle: .braveShared, value: "To search by QR Code, align the QR Code in the center of the frame.", comment: "Scanning a QR Code for searching body")
     public static let recentSearchClearAlertButton = NSLocalizedString("RecentSearchClearAlertButton", bundle: .braveShared, value: "Clear Recent", comment: "The button title that shows when you clear all recent searches")
 }
