@@ -7,18 +7,17 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/network/public/cpp/simple_url_loader.h"
 
 namespace {
-const char kVpnHost[] = "housekeeping.sudosecuritygroup.com";
+constexpr char kVpnHost[] = "housekeeping.sudosecuritygroup.com";
 
-const char kAllServerRegions[] = "api/v1/servers/all-server-regions";
-const char kTimezonesForRegions[] = "api/v1.1/servers/timezones-for-regions";
-const char kHostnameForRegion[] = "api/v1/servers/hostnames-for-region";
-const char kCreateSubscriberCredential[] =
+constexpr char kAllServerRegions[] = "api/v1/servers/all-server-regions";
+constexpr char kTimezonesForRegions[] =
+    "api/v1.1/servers/timezones-for-regions";
+constexpr char kHostnameForRegion[] = "api/v1/servers/hostnames-for-region";
+constexpr char kCreateSubscriberCredential[] =
     "api/v1/subscriber-credential/create";
-const char kVerifyPurchaseToken[] = "api/v1.1/verify-purchase-token";
+constexpr char kVerifyPurchaseToken[] = "api/v1.1/verify-purchase-token";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("brave_vpn_service", R"(
@@ -31,7 +30,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
           "Triggered by user connecting the Brave VPN."
         data:
           "Servers, hosts and credentials for Brave VPN"
-        destination: Android
+        destination: WEBSITE
       }
     )");
 }
@@ -53,7 +52,8 @@ std::string GetSubscriberCredentialFromJson(const std::string& json) {
   base::Optional<base::Value>& records_v = value_with_error.value;
   const base::Value* subscriber_credential =
       records_v->FindKey("subscriber-credential");
-  return subscriber_credential->GetString();
+  return subscriber_credential == nullptr ? ""
+                                          : subscriber_credential->GetString();
 }
 
 }  // namespace
@@ -62,13 +62,13 @@ BraveVpnService::BraveVpnService(scoped_refptr<network::SharedURLLoaderFactory> 
     : url_loader_factory_(url_loader_factory),
       weak_factory_(this) {}
 
-BraveVpnService::~BraveVpnService() {}
+BraveVpnService::~BraveVpnService() = default;
 
-bool BraveVpnService::OAuthRequest(const GURL& url,
-                              const std::string& method,
-                              const std::string& post_data,
-                              bool set_app_ident,
-                              URLRequestCallback callback) {
+void BraveVpnService::OAuthRequest(const GURL& url,
+                                   const std::string& method,
+                                   const std::string& post_data,
+                                   bool set_app_ident,
+                                   URLRequestCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = url;
   request->method = method;
@@ -86,7 +86,6 @@ bool BraveVpnService::OAuthRequest(const GURL& url,
       url_loader_factory_.get(),
       base::BindOnce(&BraveVpnService::OnURLLoaderComplete, base::Unretained(this),
                      std::move(iter), std::move(callback)));
-  return true;
 }
 
 void BraveVpnService::OnURLLoaderComplete(
@@ -129,7 +128,7 @@ void BraveVpnService::OnGetAllServerRegions(
     const int status,
     const std::string& body,
     const std::map<std::string, std::string>& headers) {
-  JsonResponse json_response;
+  std::string json_response;
 
   bool success = status == 200;
   if (success) {
@@ -151,7 +150,7 @@ void BraveVpnService::OnGetTimezonesForRegions(
     const int status,
     const std::string& body,
     const std::map<std::string, std::string>& headers) {
-  JsonResponse json_response;
+  std::string json_response;
 
   bool success = status == 200;
   if (success) {
@@ -178,7 +177,7 @@ void BraveVpnService::OnGetHostnamesForRegion(
     const int status,
     const std::string& body,
     const std::map<std::string, std::string>& headers) {
-  JsonResponse json_response;
+  std::string json_response;
 
   bool success = status == 200;
   if (success) {
@@ -242,7 +241,7 @@ void BraveVpnService::OnVerifyPurchaseToken(
     const int status,
     const std::string& body,
     const std::map<std::string, std::string>& headers) {
-  JsonResponse json_response;
+  std::string json_response;
 
   bool success = status == 200;
   if (success) {

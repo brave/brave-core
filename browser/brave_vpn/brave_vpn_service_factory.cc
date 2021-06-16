@@ -28,7 +28,7 @@ BraveVpnServiceFactory::BraveVpnServiceFactory()
           "BraveVpnService",
           BrowserContextDependencyManager::GetInstance()) {}
 
-BraveVpnServiceFactory::~BraveVpnServiceFactory() {}
+BraveVpnServiceFactory::~BraveVpnServiceFactory() = default;
 
 KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

@@ -17,18 +17,14 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "services/network/public/cpp/simple_url_loader.h"
 #include "url/gurl.h"
-
-namespace content {
-class BrowserContext;
-}  // namespace content
 
 namespace network {
 class SharedURLLoaderFactory;
 class SimpleURLLoader;
 }  // namespace network
-
-typedef std::string JsonResponse;
 
 class BraveVpnService : public KeyedService {
  public:
@@ -39,7 +35,7 @@ class BraveVpnService : public KeyedService {
   BraveVpnService& operator=(const BraveVpnService&) = delete;
 
   using ResponseCallback =
-      base::OnceCallback<void(const JsonResponse&, bool success)>;
+      base::OnceCallback<void(const std::string&, bool success)>;
 
   void GetAllServerRegions(ResponseCallback callback);
   void GetTimezonesForRegions(ResponseCallback callback);
@@ -66,7 +62,7 @@ class BraveVpnService : public KeyedService {
                               const std::string&,
                               const std::map<std::string, std::string>&)>;
 
-  bool OAuthRequest(const GURL& url,
+  void OAuthRequest(const GURL& url,
                     const std::string& method,
                     const std::string& post_data,
                     bool set_app_ident,

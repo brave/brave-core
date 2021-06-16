@@ -51,7 +51,6 @@ void BraveVpnNativeWorker::OnGetAllServerRegions(
     const std::string& server_regions_json,
     bool success) {
   JNIEnv* env = base::android::AttachCurrentThread();
-  LOG(ERROR) << "NTP" << server_regions_json;
   Java_BraveVpnNativeWorker_onGetAllServerRegions(
       env, weak_java_brave_vpn_native_worker_.get(env),
       base::android::ConvertUTF8ToJavaString(env, server_regions_json),

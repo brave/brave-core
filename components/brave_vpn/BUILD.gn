@@ -17,7 +17,6 @@ static_library("brave_vpn") {
     ":brave_vpn_internal",
     "//base",
     "//components/keyed_service/core",
-    "//content/public/browser",
     "//net",
     "//services/network/public/cpp",
     "//url",
