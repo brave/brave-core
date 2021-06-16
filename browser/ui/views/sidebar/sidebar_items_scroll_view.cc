@@ -83,9 +83,9 @@ SidebarItemsScrollView::SidebarItemsScrollView(BraveBrowser* browser)
           std::make_unique<views::BoundsAnimator>(this)),
       scroll_animator_for_smooth_(
           std::make_unique<views::BoundsAnimator>(this)) {
-  model_observed_.Add(browser->sidebar_controller()->model());
-  bounds_animator_observed_.Add(scroll_animator_for_new_item_.get());
-  bounds_animator_observed_.Add(scroll_animator_for_smooth_.get());
+  model_observed_.Observe(browser->sidebar_controller()->model());
+  bounds_animator_observed_.AddObservation(scroll_animator_for_new_item_.get());
+  bounds_animator_observed_.AddObservation(scroll_animator_for_smooth_.get());
   contents_view_ =
       AddChildView(std::make_unique<SidebarItemsContentsView>(browser_, this));
   up_arrow_ = AddChildView(std::make_unique<SidebarItemsArrowView>());

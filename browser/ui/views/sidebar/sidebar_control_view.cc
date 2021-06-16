@@ -57,7 +57,7 @@ SidebarControlView::SidebarControlView(BraveBrowser* browser)
   UpdateItemAddButtonState();
   UpdateSettingsButtonState();
 
-  sidebar_model_observed_.Add(browser_->sidebar_controller()->model());
+  sidebar_model_observed_.Observe(browser_->sidebar_controller()->model());
 }
 
 void SidebarControlView::Layout() {

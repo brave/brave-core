@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_TRACKER_H_
 
 #include "base/memory/singleton.h"
-#include "base/scoped_observer.h"
+#include "base/scoped_observation.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_member.h"
@@ -65,8 +65,8 @@ class SearchEngineTracker : public KeyedService,
   // TemplateURLServiceObserver overrides:
   void OnTemplateURLServiceChanged() override;
 
-  ScopedObserver<TemplateURLService, TemplateURLServiceObserver> observer_{
-      this};
+  base::ScopedObservation<TemplateURLService, TemplateURLServiceObserver>
+      observer_{this};
 
   // Keeping this to check for changes in |OnTemplateURLServiceChanged|.
   GURL default_search_url_;

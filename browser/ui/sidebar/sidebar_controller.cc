@@ -31,7 +31,7 @@ SidebarService* GetSidebarService(Browser* browser) {
 
 SidebarController::SidebarController(BraveBrowser* browser, Profile* profile)
     : browser_(browser), sidebar_model_(new SidebarModel(profile)) {
-  sidebar_service_observed_.Add(GetSidebarService(browser_));
+  sidebar_service_observed_.Observe(GetSidebarService(browser_));
 }
 
 SidebarController::~SidebarController() = default;

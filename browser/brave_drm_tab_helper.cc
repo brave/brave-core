@@ -48,13 +48,11 @@ const char BraveDrmTabHelper::kWidevineComponentId[] =
     "oimompecagnajdejgnnjijobebaeigek";
 
 BraveDrmTabHelper::BraveDrmTabHelper(content::WebContents* contents)
-    : WebContentsObserver(contents),
-      receivers_(contents, this),
-      observer_(this) {
+    : WebContentsObserver(contents), receivers_(contents, this) {
   auto* updater = g_browser_process->component_updater();
   // We don't need to observe if widevine is already registered.
   if (!IsAlreadyRegistered(updater))
-    observer_.Add(updater);
+    observer_.Observe(updater);
 }
 
 BraveDrmTabHelper::~BraveDrmTabHelper() {}
@@ -105,7 +103,7 @@ void BraveDrmTabHelper::OnEvent(Events event, const std::string& id) {
       ReloadIfActive(web_contents());
 #endif
     // Stop observing component update event.
-    observer_.RemoveAll();
+    observer_.Reset();
   }
 }
 

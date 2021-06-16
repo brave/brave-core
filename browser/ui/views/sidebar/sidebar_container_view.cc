@@ -84,7 +84,7 @@ void SidebarContainerView::Init() {
   initialized_ = true;
 
   sidebar_model_ = browser_->sidebar_controller()->model();
-  observed_.Add(sidebar_model_);
+  observed_.Observe(sidebar_model_);
 
   AddChildViews();
   UpdateChildViewVisibility();

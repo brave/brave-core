@@ -6,6 +6,7 @@
 #include "base/containers/flat_map.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
+#include "base/scoped_observation.h"
 #include "base/task/post_task.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
@@ -41,8 +42,8 @@ class GreaselionDownloadServiceWaiter
  public:
   explicit GreaselionDownloadServiceWaiter(
       GreaselionDownloadService* download_service)
-      : download_service_(download_service), scoped_observer_(this) {
-    scoped_observer_.Add(download_service_);
+      : download_service_(download_service) {
+    scoped_observer_.Observe(download_service_);
   }
   ~GreaselionDownloadServiceWaiter() override = default;
 
@@ -56,8 +57,9 @@ class GreaselionDownloadServiceWaiter
 
   GreaselionDownloadService* const download_service_;
   base::RunLoop run_loop_;
-  ScopedObserver<GreaselionDownloadService, GreaselionDownloadService::Observer>
-      scoped_observer_;
+  base::ScopedObservation<GreaselionDownloadService,
+                          GreaselionDownloadService::Observer>
+      scoped_observer_{this};
 
   DISALLOW_COPY_AND_ASSIGN(GreaselionDownloadServiceWaiter);
 };
@@ -65,8 +67,8 @@ class GreaselionDownloadServiceWaiter
 class GreaselionServiceWaiter : public GreaselionService::Observer {
  public:
   explicit GreaselionServiceWaiter(GreaselionService* greaselion_service)
-      : greaselion_service_(greaselion_service), scoped_observer_(this) {
-    scoped_observer_.Add(greaselion_service_);
+      : greaselion_service_(greaselion_service) {
+    scoped_observer_.Observe(greaselion_service_);
   }
   ~GreaselionServiceWaiter() override = default;
 
@@ -85,8 +87,8 @@ class GreaselionServiceWaiter : public GreaselionService::Observer {
 
   GreaselionService* const greaselion_service_;
   base::RunLoop run_loop_;
-  ScopedObserver<GreaselionService, GreaselionService::Observer>
-      scoped_observer_;
+  base::ScopedObservation<GreaselionService, GreaselionService::Observer>
+      scoped_observer_{this};
 
   DISALLOW_COPY_AND_ASSIGN(GreaselionServiceWaiter);
 };

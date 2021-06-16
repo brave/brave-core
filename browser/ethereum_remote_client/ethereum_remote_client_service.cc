@@ -47,9 +47,6 @@ EthereumRemoteClientService::EthereumRemoteClientService(
     : context_(context),
       ethereum_remote_client_delegate_(
           std::move(ethereum_remote_client_delegate)),
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-      extension_registry_observer_(this),
-#endif
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})) {
@@ -63,7 +60,8 @@ EthereumRemoteClientService::EthereumRemoteClientService(
   // this point.
   RemoveUnusedWeb3ProviderContentScripts();
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  extension_registry_observer_.Add(extensions::ExtensionRegistry::Get(context));
+  extension_registry_observer_.Observe(
+      extensions::ExtensionRegistry::Get(context));
 #endif
 }
 

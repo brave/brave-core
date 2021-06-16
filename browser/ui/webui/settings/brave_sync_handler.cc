@@ -60,12 +60,14 @@ void BraveSyncHandler::RegisterMessages() {
 void BraveSyncHandler::OnJavascriptAllowed() {
   syncer::DeviceInfoTracker* tracker = GetDeviceInfoTracker();
   DCHECK(tracker);
-  if (tracker)
-    device_info_tracker_observer_.Add(tracker);
+  if (tracker) {
+    device_info_tracker_observer_.Reset();
+    device_info_tracker_observer_.Observe(tracker);
+  }
 }
 
 void BraveSyncHandler::OnJavascriptDisallowed() {
-  device_info_tracker_observer_.RemoveAll();
+  device_info_tracker_observer_.Reset();
 }
 
 void BraveSyncHandler::OnDeviceInfoChange() {
