@@ -9,6 +9,7 @@
 #error "This file requires ARC support."
 #endif
 
+#include "base/notreached.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
@@ -88,6 +89,8 @@ static HDKeyringType HDKeyringTypeForBraveWalletHDKeyringType(
       return HDKeyringTypeTrezor;
     case brave_wallet::HDKeyring::Type::kBitcoin:
       return HDKeyringTypeBitcoin;
+    default:
+      NOTREACHED();
   }
 }
 
