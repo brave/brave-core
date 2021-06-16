@@ -212,7 +212,7 @@
         Automatically redirect .onion sites
       </message>
       <message name="IDS_SETTINGS_AUTO_ONION_LOCATION_DESC" desc="Text fragment for onion site component">
-        Brave will open onion service of the website when available or .onion domain in Tor window
+        Brave will open onion service of the website when available or .onion domain in Tor window.
       </message>
       <if expr="is_linux">
         <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_INSTALL" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
