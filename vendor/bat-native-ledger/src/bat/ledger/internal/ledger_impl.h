@@ -8,8 +8,8 @@
 
 #include <stdint.h>
 
-#include <memory>
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -42,13 +42,9 @@ class BATLedgerContext;
 
 class LedgerImpl : public ledger::Ledger {
  public:
-  typedef std::map<uint32_t,
-      type::VisitData>::const_iterator visit_data_iter;
-
   explicit LedgerImpl(ledger::LedgerClient* client);
   ~LedgerImpl() override;
 
-  // Not copyable, not assignable
   LedgerImpl(const LedgerImpl&) = delete;
   LedgerImpl& operator=(const LedgerImpl&) = delete;
 
@@ -86,26 +82,8 @@ class LedgerImpl : public ledger::Ledger {
 
   bool IsShuttingDown() const;
 
- private:
-  void OnInitialized(
-      const type::Result result,
-      ledger::ResultCallback callback);
+  // Ledger Implementation
 
-  void StartServices();
-
-  void OnStateInitialized(
-      const type::Result result,
-      ledger::ResultCallback callback);
-
-  void InitializeDatabase(
-      const bool execute_create_script,
-      ledger::ResultCallback callback);
-
-  void OnDatabaseInitialized(
-      const type::Result result,
-      ledger::ResultCallback callback);
-
-  // ledger.h
   void Initialize(
       const bool execute_create_script,
       ledger::ResultCallback callback) override;
@@ -366,11 +344,32 @@ class LedgerImpl : public ledger::Ledger {
   void GetDrainStatus(const std::string& drain_id,
                       ledger::GetDrainCallback callback) override;
 
-  // end ledger.h
+ private:
+  enum class ReadyState {
+    kUninitialized,
+    kInitializing,
+    kReady,
+    kShuttingDown
+  };
+
+  void OnInitialized(const type::Result result,
+                     ledger::ResultCallback callback);
+
+  void StartServices();
+
+  void OnStateInitialized(const type::Result result,
+                          ledger::ResultCallback callback);
+
+  void InitializeDatabase(const bool execute_create_script,
+                          ledger::ResultCallback callback);
+
+  void OnDatabaseInitialized(const type::Result result,
+                             ledger::ResultCallback callback);
 
   void OnAllDone(const type::Result result, ledger::ResultCallback callback);
 
   ledger::LedgerClient* ledger_client_;
+
   std::unique_ptr<BATLedgerContext> context_;
   std::unique_ptr<promotion::Promotion> promotion_;
   std::unique_ptr<publisher::Publisher> publisher_;
@@ -385,15 +384,11 @@ class LedgerImpl : public ledger::Ledger {
   std::unique_ptr<recovery::Recovery> recovery_;
   std::unique_ptr<bitflyer::Bitflyer> bitflyer_;
   std::unique_ptr<uphold::Uphold> uphold_;
-  scoped_refptr<base::SequencedTaskRunner> task_runner_;
-  bool initialized_task_scheduler_;
-
-  bool initializing_;
-  bool shutting_down_ = false;
 
   std::map<uint32_t, type::VisitData> current_pages_;
-  uint64_t last_tab_active_time_;
-  uint32_t last_shown_tab_id_;
+  uint64_t last_tab_active_time_ = 0;
+  uint32_t last_shown_tab_id_ = -1;
+  ReadyState ready_state_ = ReadyState::kUninitialized;
 };
 
 }  // namespace ledger
