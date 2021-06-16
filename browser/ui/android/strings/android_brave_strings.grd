@@ -1702,6 +1702,144 @@ until they verify, or until 90 days have passed.
       <message name="IDS_CONTINUE_TO_LOGIN" desc="Uphold continue to login text">
         continue to login
       </message>
+      <message name="IDS_TITLE_CRYPTO">
+        Crypto
+      </message>
+    <message name="IDS_TITLE_REWARDS">
+      Rewards
+    </message>
+    <message name="IDS_TITLE_CARDS">
+      Cards
+    </message>
+    <message name="IDS_SEND">
+      Send
+    </message>
+    <message name="IDS_SEARCH_TITLE">
+      Search
+    </message>
+    <message name="IDS_MY">
+      My <ph name="TITLE">%1$s</ph>
+    </message>
+    <message name="IDS_SWAP">
+      Swap
+    </message>
+    <message name="IDS_TITLE_LOCK">
+      Lock
+    </message>
+    <message name="IDS_DEFI_SECURE_STORAGE">
+      DeFi &amp; Secure Crypto Storage
+    </message>
+    <message name="IDS_DEFI_SECURE_STORAGE_TEXT">
+      Hold crypto in your custody. Trade assets. View Prices and portfolio performance. Invest, Borrow, and lend with DeFi.
+    </message>
+    <message name="IDS_SETUP_CRYPTO">
+      Setup Crypto
+    </message>
+    <message name="IDS_BACKUP_YOUR_WALLET">
+      Backup your wallet now!
+    </message>
+    <message name="IDS_BACKUP_YOUR_WALLET_TEXT">
+      In the next step you will see 12 words that allows you to recover your crypto wallet.
+    </message>
+    <message name="IDS_CONTINUE_TEXT">
+      Continue
+    </message>
+    <message name="IDS_BACKUP_WALLET_CHECKBOX_TEXT">
+      I understand that if I lose my recovery words, I will not be able to access my crypto wallet.
+    </message>
+    <message name="IDS_YOUR_RECOVERY_PHRASE">
+      Your recovery phrase
+    </message>
+    <message name="IDS_YOUR_RECOVERY_PHRASE_TEXT">
+      Write down or copy these words in the right order and save them somewhere safe.
+    </message>
+    <message name="IDS_YOUR_RECOVERY_PHRASE_WARNING_TEXT">
+      WARNING: Never disclose your backup phrase. Anyone with this phrase can take your funds forever.
+    </message>
+    <message name="IDS_RECOVERY_PHRASE_CHECKBOX_TEXT">
+      I have backed up my phrase somewhere safe
+    </message>
+    <message name="IDS_COPY">
+      Copy
+    </message>
+    <message name="IDS_BUY_SWAP_TEXT">
+      Buy crypto with Apple Pay, credit or debit card.
+    </message>
+    <message name="IDS_SEND_SWAP_TEXT">
+      Send crypto or transfer from one account to another.
+    </message>
+    <message name="IDS_SWAP_TEXT">
+      Swap crypto assets with Brave DEX aggregator.
+    </message>
+    <message name="IDS_SECURE_YOUR_CRYPTO">
+      Secure your crypto with a password
+    </message>
+    <message name="IDS_ENTER_PASSWORD">
+      Enter Password
+    </message>
+    <message name="IDS_RETYPE_PASSWORD">
+      Re-enter password
+    </message>
+    <message name="IDS_PASSWORD_ERROR">
+      Password must be 7 or more characters
+    </message>
+    <message name="IDS_RETYPE_PASSWORD_ERROR">
+      Re-typed password did not match
+    </message>
+    <message name="IDS_LIVE">
+      Live
+    </message>
+    <message name="IDS_DAY_1">
+      1D
+    </message>
+    <message name="IDS_WEEK_1">
+      1W
+    </message>
+    <message name="IDS_MONTH_1">
+      1M
+    </message>
+    <message name="IDS_MONTH_3">
+      3M
+    </message>
+    <message name="IDS_YEAR_1">
+      1Y
+    </message>
+    <message name="IDS_ALL">
+      ALL
+    </message>
+    <message name="IDS_ALL_SET">
+      All set!
+    </message>
+    <message name="IDS_ADD_ACCOUNT_DIALOG_TEXT">
+      Buy, trade, or hold crypto. If you have an existing crypto account you may add it now.
+    </message>
+    <message name="IDS_ADD_ACCOUNT">
+      Add Account
+    </message>
+    <message name="IDS_RECOVERY_PHRASE_ITEM_TEXT">
+      <ph name="NUMBER">%1$s</ph>. <ph name="RECOVERY_PHRASE">%2$s</ph>
+    </message>
+    <message name="IDS_ENABLE_FINGERPRINT_UNLOCK">
+      Enable fingerprint unlock?
+    </message>
+    <message name="IDS_ENABLE_FINGERPRINT_TEXT">
+      Enable biometrics to quickly unlock your wallet without entering your password.
+    </message>
+    <message name="IDS_MENU_BRAVE_WALLET">
+      Brave Wallet
+    </message>
+    <message name="IDS_RESTORE_CRYPTO_TEXT">Enter your recovery phrase to restore your Brave Wallet crypto account.</message>
+    <message name="IDS_RESTORE_CRYPTO_ACCOUNT">Restore Crypto Account</message>
+    <message name="IDS_SHOW_RECOVERY_PHRASE">Show recovery phrase</message>
+    <message name="IDS_ENTER_RECOVERY_PHRASE">Enter your recovery phrase</message>
+    <message name="IDS_VERIFY_RECOVERY_PHRASE">Verify recovery phrase</message>
+    <message name="IDS_VERIFY_RECOVERY_PHRASE_TEXT">Tap the words top put them next to each other in the correct order.</message>
+    <message name="IDS_VERIFY">Verify</message>
+    <message name="IDS_RESTORE">Restore</message>
+    <message name="IDS_UNLOCK">Unlock</message>
+    <message name="IDS_PASSWORD">Password</message>
+    <message name="IDS_UNLOCK_WALLET_TITLE">Enter your password to unlock</message>
+    <message name="IDS_PASSWORD_TEXT">Password must be at least 7 characters containg at least one number and a special character</message>
     </messages>
   </release>
 </grit>

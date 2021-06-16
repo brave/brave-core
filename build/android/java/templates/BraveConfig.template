@@ -21,6 +21,12 @@ public class BraveConfig {
   public static final boolean SYNC_ENABLED = false;
 #endif
 
+#if defined(BRAVE_ANDROID_WALLET_ENABLED)
+  public static final boolean NATIVE_WALLET_ENABLED = BRAVE_ANDROID_WALLET_ENABLED;
+#else
+  public static final boolean NATIVE_WALLET_ENABLED = false;
+#endif
+
 #if defined(BRAVE_ANDROID_P3A_ENABLED)
 public static final boolean P3A_ENABLED = BRAVE_ANDROID_P3A_ENABLED;
 #else

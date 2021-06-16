@@ -184,6 +184,10 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceNativeWorker.java",
   ]
 
+  if (brave_wallet_enabled) {
+    sources += [ "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletNativeWorker.java" ]
+  }
+
   if (enable_brave_sync) {
     sources += [
       "//brave/android/java/org/chromium/chrome/browser/BraveSyncWorker.java",

@@ -7,6 +7,7 @@
 <resources>
     <item name="set_default_browser" type="id"/>
     <item name="brave_rewards_id" type="id"/>
+    <item name="brave_wallet_id" type="id"/>
     <item name="exit_id" type="id"/>
     <item name="help_id" type="id"/>
 

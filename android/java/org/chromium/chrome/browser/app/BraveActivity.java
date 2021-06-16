@@ -66,6 +66,7 @@ import org.chromium.chrome.browser.compositor.layouts.Layout;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerChrome;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.compositor.layouts.phone.StackLayout;
+import org.chromium.chrome.browser.crypto_wallet.CryptoWalletActivity;
 import org.chromium.chrome.browser.dependency_injection.ChromeActivityComponent;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.informers.BraveAndroidSyncDisabledInformer;
@@ -194,6 +195,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
             handleBraveSetDefaultBrowserDialog();
         } else if (id == R.id.brave_rewards_id) {
             openNewOrSelectExistingTab(REWARDS_SETTINGS_URL);
+        } else if (id == R.id.brave_wallet_id) {
+            openBraveWallet();
         } else {
             return false;
         }
@@ -409,6 +412,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                     calender.getTimeInMillis());
         }
         checkSetDefaultBrowserModal();
+    }
+
+    private void openBraveWallet() {
+        Intent cryptoWalletIntent = new Intent(this, CryptoWalletActivity.class);
+        cryptoWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(cryptoWalletIntent);
     }
 
     private void checkSetDefaultBrowserModal() {

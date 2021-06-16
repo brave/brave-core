@@ -18,6 +18,7 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
+import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.app.appmenu.AppMenuIconRowFooter;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
@@ -95,6 +96,15 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_rewards));
             }
         }
+        if (BraveConfig.NATIVE_WALLET_ENABLED
+                && ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET)) {
+            MenuItem braveWallet =
+                    menu.add(Menu.NONE, R.id.brave_wallet_id, 0, R.string.menu_brave_wallet);
+            if (shouldShowIconBeforeItem()) {
+                braveWallet.setIcon(
+                        AppCompatResources.getDrawable(mContext, R.drawable.ic_crypto_wallets));
+            }
+        }
         MenuItem exit = menu.add(Menu.NONE, R.id.exit_id, 0, R.string.menu_exit);
         if (shouldShowIconBeforeItem()) {
             exit.setIcon(AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_exit));
@@ -125,6 +135,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
         mMenu.removeItem(R.id.set_default_browser);
         mMenu.removeItem(R.id.brave_rewards_id);
+        mMenu.removeItem(R.id.brave_wallet_id);
         mMenu.removeItem(R.id.exit_id);
     }
 

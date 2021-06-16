@@ -4,7 +4,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/common/brave_features.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "third_party/blink/public/common/features.h"
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/components/brave_wallet/common/features.h"
+#endif
 
 namespace chrome {
 namespace android {
@@ -14,6 +19,9 @@ namespace {
 const base::Feature* kBraveFeaturesExposedToJava[] = {
     &features::kBraveRewards,
     &blink::features::kForceWebContentsDarkMode,
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+    &brave_wallet::features::kNativeBraveWalletFeature,
+#endif
 };
 
 const base::Feature* BraveFindFeatureExposedToJava(

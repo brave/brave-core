@@ -73,4 +73,6 @@
     <dimen name="tabswitcher_border_frame_transparent_top">3dp</dimen>
     <dimen name="tabswitcher_border_frame_transparent_side">2dp</dimen>
     <dimen name="open_new_tab_animation_y_translation">-20dp</dimen>
+
+    <dimen name="zero_margin"> 0dp </dimen>
 </resources>
