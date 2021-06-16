@@ -626,6 +626,10 @@ extension TopToolbarView: AutocompleteTextFieldDelegate {
         updateLocationBarRightView(showQrCodeButton: text.isEmpty)
     }
     
+    func autocompleteTextField(_ autocompleteTextField: AutocompleteTextField, didDeleteAutoSelectedText text: String) {
+        updateLocationBarRightView(showQrCodeButton: text.isEmpty)
+    }
+    
     func autocompleteTextFieldDidBeginEditing(_ autocompleteTextField: AutocompleteTextField) {
         autocompleteTextField.highlightAll()
         updateLocationBarRightView(showQrCodeButton: locationView.urlTextField.text?.isEmpty == true)
