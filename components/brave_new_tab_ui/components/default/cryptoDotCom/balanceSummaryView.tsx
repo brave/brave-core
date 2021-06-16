@@ -19,7 +19,6 @@ import { AssetViews } from './types'
 import {
   formattedNum,
   decimalizeCurrency,
-  renderIconAsset
 } from './utils'
 
 import {
@@ -27,6 +26,7 @@ import {
   HideIcon
 } from '../../default/exchangeWidget/shared-assets'
 
+import IconAsset from '../../../widgets/shared/iconAsset'
 import { getLocale } from '../../../../common/locale'
 
 interface Props {
@@ -82,7 +82,7 @@ export default function BalanceSummaryView ({
           return (
             <ListItem key={currency} isFlex={true} onClick={showDetailView.bind(this, currency)} $height={40}>
               <FlexItem $pl={5} $pr={5}>
-                {renderIconAsset(currency.toLowerCase())}
+                <IconAsset iconKey={currency.toLowerCase()} />
               </FlexItem>
               <FlexItem>
                 <Text>{currency}</Text>

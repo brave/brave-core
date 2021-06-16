@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 
-import { currencyNames } from './data'
 import {
   ActionButton,
   Box,
@@ -17,10 +16,11 @@ import {
 import {
   formattedNum,
   getPercentColor,
-  renderIconAsset,
   transformLosersGainers
 } from './utils'
 
+import IconAsset from '../../../widgets/shared/iconAsset'
+import { currencyNames } from '../../../widgets/shared/data'
 import { getLocale } from '../../../../common/locale'
 interface Props {
   optInBTCPrice: boolean
@@ -56,7 +56,7 @@ export default function PreOptInView ({
     <>
       <Box isFlex={true} $height={48}>
         <FlexItem $pr={5}>
-          {renderIconAsset(currency.toLowerCase())}
+          <IconAsset iconKey={currency.toLowerCase()} />
         </FlexItem>
         <FlexItem>
             <Text>{currency}</Text>

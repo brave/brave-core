@@ -5,12 +5,10 @@
 
 import * as React from 'react'
 
-import { currencyNames } from './data'
 import { AssetViews } from './types'
 import {
   formattedNum,
   getPercentColor,
-  renderIconAsset
 } from './utils'
 
 import {
@@ -22,6 +20,8 @@ import {
   Text
 } from './style'
 
+import IconAsset from '../../../widgets/shared/iconAsset'
+import { currencyNames } from '../../../widgets/shared/data'
 import { getLocale } from '../../../../common/locale'
 
 interface Props {
@@ -54,7 +54,7 @@ export default function TopMoversView ({
     return (
       <ListItem key={currency} isFlex={true} onClick={handleAssetClick.bind(this, currency, undefined, AssetViews.DETAILS)} $height={48}>
         <FlexItem $pl={5} $pr={5}>
-          {renderIconAsset(currency.toLowerCase())}
+          <IconAsset iconKey={currency.toLowerCase()} />
         </FlexItem>
         <FlexItem>
           <Text>{currency}</Text>

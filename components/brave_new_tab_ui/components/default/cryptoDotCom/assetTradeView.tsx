@@ -6,12 +6,12 @@
 import * as React from 'react'
 import { CaratLeftIcon } from 'brave-ui/components/icons'
 
-import { currencyNames } from './data'
 import {
   formattedNum,
   decimalizeCurrency,
-  renderIconAsset
 } from './utils'
+import { currencyNames } from '../../../widgets/shared/data'
+import IconAsset from '../../../widgets/shared/iconAsset'
 import { getLocale } from '../../../../common/locale'
 
 import {
@@ -302,7 +302,7 @@ export default function AssetTradeView ({
           </BackArrow>
         </FlexItem>
         <FlexItem $pr={5}>
-          {renderIconAsset(base.toLowerCase())}
+          <IconAsset iconKey={base.toLowerCase()} />
         </FlexItem>
         <FlexItem flex={1}>
           <Text>{base}</Text>

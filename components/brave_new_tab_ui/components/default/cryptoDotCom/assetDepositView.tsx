@@ -7,8 +7,6 @@ import * as React from 'react'
 
 import { CaratLeftIcon } from 'brave-ui/components/icons'
 
-import { currencyNames } from './data'
-
 import {
   ActionButton,
   BackArrow,
@@ -18,8 +16,9 @@ import {
   Text
 } from './style'
 
-import { renderIconAsset } from './utils'
 import QRIcon from './assets/icons/qr-code.png'
+import IconAsset from '../../../widgets/shared/iconAsset'
+import { currencyNames } from '../../../widgets/shared/data'
 import { getLocale } from '../../../../common/locale'
 
 async function copyToClipboard (address: string) {
@@ -67,7 +66,7 @@ export default function AssetDepositView ({
           </BackArrow>
         </FlexItem>
         <FlexItem $pr={5}>
-          {renderIconAsset(base.toLowerCase())}
+          <IconAsset iconKey={base.toLowerCase()} />
         </FlexItem>
         <FlexItem flex={1}>
           <Text>{base}</Text>

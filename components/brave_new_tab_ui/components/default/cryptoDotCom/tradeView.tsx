@@ -20,11 +20,11 @@ import {
 import {
   formattedNum,
   getPercentColor,
-  renderIconAsset,
   transformLosersGainers
 } from './utils'
 
 import { SearchIcon } from '../../default/exchangeWidget/shared-assets'
+import IconAsset from '../../../widgets/shared/iconAsset'
 import { getLocale } from '../../../../common/locale'
 
 interface Props {
@@ -73,7 +73,7 @@ export default function TradeView ({
     return (
       <ListItem key={pair.pair} isFlex={true} $height={48} onClick={handleAssetClick.bind(this, pair.base, pair.quote, AssetViews.TRADE)}>
         <FlexItem $pl={5} $pr={5}>
-          {renderIconAsset(pair.base.toLowerCase())}
+          <IconAsset iconKey={pair.base.toLowerCase()} />
         </FlexItem>
         <FlexItem>
           <Text>{pair.base}/{pair.quote}</Text>

@@ -6,7 +6,6 @@
 import * as React from 'react'
 import { CaratLeftIcon } from 'brave-ui/components/icons'
 
-import { currencyNames } from './data'
 import { AssetViews } from './types'
 import {
   ActionButton,
@@ -22,9 +21,10 @@ import {
 import {
   formattedNum,
   getPercentColor,
-  renderIconAsset,
   transformLosersGainers
 } from './utils'
+import IconAsset from '../../../widgets/shared/iconAsset'
+import { currencyNames } from '../../../widgets/shared/data'
 import { getLocale } from '../../../../common/locale'
 
 interface ChartConfig {
@@ -91,7 +91,7 @@ export default function AssetDetailView ({
           </BackArrow>
         </FlexItem>
         <FlexItem $pr={5}>
-          {renderIconAsset(currency.toLowerCase())}
+          <IconAsset iconKey={currency.toLowerCase()} />
         </FlexItem>
         <FlexItem flex={1}>
           <Text>{currency}</Text>
