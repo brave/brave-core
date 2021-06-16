@@ -403,9 +403,7 @@ class SearchViewController: SiteTableViewController, LoaderListener {
             return
         }
 
-        // If the user typed a URL and selected the search engine,
-        // do not save it as a recent search
-        if URIFixup.getURL(searchQuery) == nil, !PrivateBrowsingManager.shared.isPrivateBrowsing {
+        if !PrivateBrowsingManager.shared.isPrivateBrowsing {
             RecentSearch.addItem(type: .website, text: searchQuery, websiteUrl: url.absoluteString)
         }
         searchDelegate?.searchViewController(self, didSelectURL: url)
