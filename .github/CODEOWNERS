@@ -45,6 +45,7 @@ vendor/bat-native-ads/src/bat/ads/internal/security/**/*.mm @brave/ads-client @o
 
 # Network
 browser/net/ @iefremov
+chromium_src/net/tools/transport_security_state_generator/input_file_parsers.cc @brave/sec-team
 
 # Brave theme
 browser/themes @simonhong
