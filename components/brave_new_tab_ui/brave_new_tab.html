@@ -18,10 +18,14 @@
 <script src="/brave_new_tab.bundle.js"></script>
 <style>
   #root { height: 100%; }
+  
+  input[class|="StyledCheckbox"]:focus{ outline:0; }
+  
   body {
     --default-bg-color: white;
     background-color: var(--default-bg-color)
   }
+  
   @media (prefers-color-scheme: dark) {
     body {
       --default-bg-color: #333639;
