@@ -6,6 +6,7 @@
 #include "bat/ads/internal/frequency_capping/permission_rules/full_screen_mode_frequency_cap.h"
 
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/frequency_capping/frequency_capping_features.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 #include "bat/ads/internal/platform/platform_helper.h"
 
@@ -16,6 +17,10 @@ FullScreenModeFrequencyCap::FullScreenModeFrequencyCap() = default;
 FullScreenModeFrequencyCap::~FullScreenModeFrequencyCap() = default;
 
 bool FullScreenModeFrequencyCap::ShouldAllow() {
+  if (!features::frequency_capping::ShouldOnlyServeAdsInWindowedMode()) {
+    return true;
+  }
+
   if (!DoesRespectCap()) {
     last_message_ = "Full screen mode";
     return false;

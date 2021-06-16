@@ -10,6 +10,7 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "bat/ads/internal/frequency_capping/frequency_capping_features.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads {
@@ -24,6 +25,10 @@ ConversionFrequencyCap::ConversionFrequencyCap(const AdEventList& ad_events)
 ConversionFrequencyCap::~ConversionFrequencyCap() = default;
 
 bool ConversionFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
+  if (!features::frequency_capping::ShouldExcludeAdIfConverted()) {
+    return false;
+  }
+
   if (!ShouldAllow(ad)) {
     last_message_ = base::StringPrintf(
         "creativeSetId %s excluded due to ad "
