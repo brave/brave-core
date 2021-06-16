@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "bat/ledger/internal/uphold/uphold_card.h"
+#include "bat/ledger/internal/uphold/uphold_update_card.h"
 #include "bat/ledger/ledger.h"
 
 // PATCH https://api.uphold.com/v0/me/cards/{wallet_address}
