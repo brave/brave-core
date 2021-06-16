@@ -21,9 +21,11 @@
 // IsEphemeralCookieAccessAllowed declared & defined via a chromium_src override
 // for components/content_settings/core/common/cookie_settings_base.{h,cc}.
 #define IsCookieAccessAllowed IsEphemeralCookieAccessAllowed
+#define IsFullCookieAccessAllowed IsEphemeralCookieAccessAllowed
 
 #include "../../../../services/network/restricted_cookie_manager.cc"
 
+#undef IsFullCookieAccessAllowed
 #undef IsCookieAccessAllowed
 #undef IsCookieAccessible
 
