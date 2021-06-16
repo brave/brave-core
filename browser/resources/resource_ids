@@ -17,7 +17,7 @@
   },
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_welcome/brave_welcome.grd": {
-    "includes": [33240],
+    "includes": [33500],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/settings/brave_settings_resources.grd": {
     "META": {"sizes": {"includes": [100],}},
