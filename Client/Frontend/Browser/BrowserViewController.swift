@@ -1929,7 +1929,7 @@ extension BrowserViewController: ClipboardBarDisplayHandlerDelegate {
 
 extension BrowserViewController: QRCodeViewControllerDelegate {
     func didScanQRCodeWithURL(_ url: URL) {
-        openBlankNewTab(attemptLocationFieldFocus: false)
+        popToBVC()
         finishEditingAndSubmit(url, isBookmark: false)
         
         if !url.isBookmarklet && !PrivateBrowsingManager.shared.isPrivateBrowsing {
@@ -1938,7 +1938,7 @@ extension BrowserViewController: QRCodeViewControllerDelegate {
     }
 
     func didScanQRCodeWithText(_ text: String) {
-        openBlankNewTab(attemptLocationFieldFocus: false)
+        popToBVC()
         submitSearchText(text)
         
         if !PrivateBrowsingManager.shared.isPrivateBrowsing {
