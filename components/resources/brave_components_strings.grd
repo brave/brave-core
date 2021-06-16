@@ -300,8 +300,8 @@
       <message name="IDS_BRAVE_NEW_TAB_CARDS_DESC" desc="Toggle cards description">By turning off Cards, all cards currently visible will be hidden. However, you may still be notified of new cards.</message>
 
       <if expr="enable_sidebar">
-        <message name="IDS_SIDEBAR_BRAVE_TOGETHER_ITEM_TITLE" desc="Title for brave together item in sidebar">
-          Brave Together
+        <message name="IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE" desc="Title for brave together item in sidebar">
+          Brave Talk
         </message>
         <message name="IDS_SIDEBAR_WALLET_ITEM_TITLE" desc="Title for crypto wallet item in sidebar">
           Crypto Wallets
