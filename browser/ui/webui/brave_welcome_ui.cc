@@ -116,10 +116,10 @@ void WelcomeDOMHandler::HandleRecordP3A(const base::ListValue* args) {
 // Converts Chromium country ID to 2 digit country string
 // For more info see src/components/country_codes/country_codes.h
 std::string CountryIDToCountryString(int country_id) {
-  char chars[3] = {0};
-  chars[1] = country_id & 255;
-  chars[0] = (country_id >> 8) & 255;
-  return std::string(chars);
+  char chars[3] = {(country_id >> 8) & 0xFF, country_id & 0xFF, 0};
+  std::string country_string(chars);
+  DCHECK_EQ(country_string.size(), 2U);
+  return country_string;
 }
 
 }  // namespace
@@ -127,8 +127,7 @@ std::string CountryIDToCountryString(int country_id) {
 BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
     : WebUIController(web_ui) {
   content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
-      web_ui, name, kBraveWelcomeGenerated,
-      kBraveWelcomeGeneratedSize,
+      web_ui, name, kBraveWelcomeGenerated, kBraveWelcomeGeneratedSize,
       IDR_BRAVE_WELCOME_HTML,
       /*disable_trusted_types_csp=*/true);
 

@@ -136,8 +136,11 @@ describe('welcomeReducer', () => {
         searchProviders: [],
         browserProfiles: []
       }
+      const examplePayload = [
+        { name: 'Google', canBeRemoved: false },
+        { name: 'Brave Search beta', canBeRemoved: true }
+      ]
       let countryString: string = 'US'
-      let getStringMock = jest.fn(cb => countryString)
       window.loadTimeData = {
         getString: (fieldName: string) => {
           switch (fieldName) {
@@ -148,17 +151,17 @@ describe('welcomeReducer', () => {
       }
       let spy: jest.SpyInstance
 
-      beforeAll(() => {
+      beforeEach(() => {
         spy = jest.spyOn(window.loadTimeData, 'getString')
       })
-      afterAll(() => {
+      afterEach(() => {
         spy.mockRestore()
       })
 
       it('should get the country string', () => {
-        const result = welcomeReducer(mockState, {
+        welcomeReducer(mockState, {
           type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
-          payload: [{name: 'Google'}, {name: 'Brave Search beta'}]
+          payload: examplePayload
         })
         expect(spy).toBeCalledWith('countryString')
       })
@@ -167,10 +170,7 @@ describe('welcomeReducer', () => {
         it('should NOT filter out the Brave engine', () => {
           const result = welcomeReducer(mockState, {
             type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
-            payload: [
-              {name: 'Google', canBeRemoved: true},
-              {name: 'Brave Search beta', canBeRemoved: false}
-            ]
+            payload: examplePayload
           })
           expect(result.searchProviders.length).toEqual(2)
         })
@@ -186,10 +186,7 @@ describe('welcomeReducer', () => {
         it('should filter out Brave', () => {
           const result = welcomeReducer(mockState, {
             type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
-            payload: [
-              {name: 'Google', canBeRemoved: false},
-              {name: 'Brave Search beta', canBeRemoved: true}
-            ]
+            payload: examplePayload
           })
           expect(result.searchProviders.length).toEqual(1)
         })
@@ -198,8 +195,8 @@ describe('welcomeReducer', () => {
           const result = welcomeReducer(mockState, {
             type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
             payload: [
-              {name: 'Google', canBeRemoved: true},
-              {name: 'Brave Search beta', canBeRemoved: false}
+              { name: 'Google', canBeRemoved: true },
+              { name: 'Brave Search beta', canBeRemoved: false }
             ]
           })
           expect(result.searchProviders.length).toEqual(2)
