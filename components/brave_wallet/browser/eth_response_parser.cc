@@ -9,6 +9,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/logging.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 
 namespace {
@@ -137,10 +138,10 @@ bool ParseEthGetTransactionReceipt(const std::string& json,
   std::string status;
   if (!result_dict->GetString("status", &status))
     return false;
-  if (status == "0x01")
-    receipt->status = true;
-  else if (status == "0x00")
-    receipt->status = false;
+  uint32_t status_int = 0;
+  if (!base::HexStringToUInt(status, &status_int))
+    return false;
+  receipt->status = status_int == 1;
 
   return true;
 }
