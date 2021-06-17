@@ -928,7 +928,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "peerDetailsLink", IDS_IPFS_PEERS_DETAILS_LINK },
         { "installing", IDS_IPFS_INSTALLING },
         { "runGarbageCollectionTitle", IDS_IPFS_RUN_GC_BUTTON },
-        { "gcError", IDS_IPFS_GC_ERROR }
+        { "gcError", IDS_IPFS_GC_ERROR },
+        { "rotateIdentity", IDS_IPFS_ROTATE_IDENTITY_TITLE }
       }
     }, {
 #endif

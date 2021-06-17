@@ -297,6 +297,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"ipfsAddPeerDialogPlacehodler", IDS_SETTINGS_ADD_PEER_DIALOG_PLACEHOLDER},
     {"ipfsPeersNodeRestartText", IDS_SETTINGS_IPFS_PEER_NODE_RESTART},
     {"ipfsPeersNodeRestartButton", IDS_SETTINGS_IPFS_PEER_NODE_RESTART_BUTTON},
+    {"ipfsRotateButtonName", IDS_SETTINGS_IPFS_ROTATE_BUTTON},
+    {"ipfsRotateKeyDialogTitle", IDS_SETTINGS_IPFS_ROTATE_KEY_DIALOG_TITLE},
+    {"ipfsRotationLaunchError", IDS_SETTINGS_IPFS_ROTATION_LAUNCH_ERROR},
+    {"ipfsRotationStopError", IDS_SETTINGS_IPFS_ROTATION_STOP_ERROR},
   };
   html_source->AddLocalizedStrings(localized_strings);
   html_source->AddString("webRTCLearnMoreURL", kWebRTCLearnMoreURL);

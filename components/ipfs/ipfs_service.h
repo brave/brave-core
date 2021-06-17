@@ -73,8 +73,7 @@ class IpfsService : public KeyedService,
   using GarbageCollectionCallback =
       base::OnceCallback<void(bool, const std::string&)>;
 
-  using LaunchDaemonCallback = base::OnceCallback<void(bool)>;
-  using ShutdownDaemonCallback = base::OnceCallback<void(bool)>;
+  using BoolCallback = base::OnceCallback<void(bool)>;
   using GetConfigCallback = base::OnceCallback<void(bool, const std::string&)>;
 
   // Retry after some time If local node responded with error.
@@ -98,6 +97,7 @@ class IpfsService : public KeyedService,
   void Shutdown() override;
 
   void RestartDaemon();
+  void RotateKey(const std::string& oldkey, BoolCallback callback);
 
   virtual void PreWarmShareableLink(const GURL& url);
 
@@ -121,8 +121,8 @@ class IpfsService : public KeyedService,
   void GetConnectedPeers(GetConnectedPeersCallback callback,
                          int retries = kPeersDefaultRetries);
   void GetAddressesConfig(GetAddressesConfigCallback callback);
-  virtual void LaunchDaemon(LaunchDaemonCallback callback);
-  void ShutdownDaemon(ShutdownDaemonCallback callback);
+  virtual void LaunchDaemon(BoolCallback callback);
+  void ShutdownDaemon(BoolCallback callback);
   void StartDaemonAndLaunch(base::OnceCallback<void(void)> callback);
   void GetConfig(GetConfigCallback);
   void GetRepoStats(GetRepoStatsCallback callback);
@@ -198,7 +198,7 @@ class IpfsService : public KeyedService,
   SimpleURLLoaderList url_loaders_;
   BlobContextGetterFactoryPtr blob_context_getter_factory_;
 
-  base::queue<LaunchDaemonCallback> pending_launch_callbacks_;
+  base::queue<BoolCallback> pending_launch_callbacks_;
 
   bool allow_ipfs_launch_for_test_ = false;
   bool skip_get_connected_peers_callback_for_test_ = false;

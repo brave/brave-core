@@ -14,6 +14,7 @@
           !chrome.ipfs.removeIpfsPeer &&
           !chrome.ipfs.getIpnsKeysList &&
           !chrome.ipfs.addIpnsKey &&
+          !chrome.ipfs.rotateKey &&
           !chrome.ipfs.removeIpnsKey) {
         chrome.test.succeed();
       } else {

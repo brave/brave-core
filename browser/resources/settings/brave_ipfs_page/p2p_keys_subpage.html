@@ -4,6 +4,7 @@
 <link rel="import" href="chrome://resources/html/i18n_behavior.html">
 <link rel="import" href="chrome://resources/html/web_ui_listener_behavior.html">
 <link rel="import" href="add_p2p_key_dialog.js">
+<link rel="import" href="rotate_p2p_key_dialog.js">
 <script type="module" src="brave_ipfs_browser_proxy.js"></script>
 <script type="module" src="../settings_page/settings_section.js"></script>
 <script type="module" src="../settings_shared_css.js"></script>
@@ -26,6 +27,15 @@
   }
   .error-text {
     color: red;
+  }
+  #rotate-key-button {
+    margin-right: 5px;
+  }
+  #icon-button {
+    --cr-icon-image: url(chrome://resources/images/icon_delete_gray.svg);
+  }
+  #icon-button-self {
+    --cr-icon-image: url(chrome://resources/images/icon_refresh.svg);
   }
   #keys-section {
     display: block;
@@ -72,10 +82,9 @@
                 <div>{{item.name}}</div>
                 <div class="secondary">{{item.value}}</div>
               </div>
-              <cr-icon-button class="icon-delete-gray"
-                  on-click="onKeyDeleteTapped_"
-                  itemName=[[item.name]]
-                  hidden="[[isDefaultKey_(item.name)]]">
+              <cr-icon-button id="[[getIconForKey(item.name)]]"
+                  on-click="onKeyActionTapped_"
+                  itemName=[[item.name]]>
               </cr-icon-button>
             </div>
           </div>
@@ -87,6 +96,10 @@
 <template is="dom-if" if="[[showAddp2pKeyDialog_]]" restamp>
   <add-p2p-key-dialog keys="[[keys_]]" on-close="onAddKeyDialogClosed_">
   </add-p2p-key-dialog>
+</template>
+<template is="dom-if" if="[[showRotatep2pKeyDialog_]]" restamp>
+  <rotate-p2p-key-dialog keys="[[keys_]]" on-close="onRotateKeyDialogClosed_">
+  </rotate-p2p-key-dialog>
 </template>
 
 </template>

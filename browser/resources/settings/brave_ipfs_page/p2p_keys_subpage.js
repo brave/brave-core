@@ -54,6 +54,10 @@ Polymer({
     showAddp2pKeyDialog_: {
       type: Boolean,
       value: false,
+    },
+    showRotatep2pKeyDialog_: {
+      type: Boolean,
+      value: false,
     }
   },
 
@@ -125,8 +129,18 @@ Polymer({
     return name == 'self';
   },
 
+  getIconForKey: function(name) {
+    return name == 'self' ? 'icon-button-self' : 'icon-button'
+  },
+  
+
   onAddKeyTap_: function(item) {
     this.showAddp2pKeyDialog_ = true
+  },
+
+  onRotateKeyDialogClosed_: function() {
+    this.showRotatep2pKeyDialog_ = false
+    this.updateKeys();
   },
 
   updateKeys: function() {
@@ -144,15 +158,19 @@ Polymer({
     this.updateKeys();
   },
 
-  onKeyDeleteTapped_: function(event) {
-    let name_to_remove = event.model.item.name
-    var message = this.i18n('ipfsDeleteKeyConfirmation', name_to_remove)
+  onKeyActionTapped_: function(event) {
+    let name = event.model.item.name
+    if (name == 'self') {
+      this.showRotatep2pKeyDialog_ = true
+      return;
+    }
+    var message = this.i18n('ipfsDeleteKeyConfirmation', name)
     if (!window.confirm(message))
       return
-    this.browserProxy_.removeIpnsKey(name_to_remove).then(removed_name => {
+    this.browserProxy_.removeIpnsKey(name).then(removed_name => {
       if (!removed_name)
         return;
-      if (removed_name === name_to_remove) {
+      if (removed_name === name) {
         this.updateKeys()
         return;
       }

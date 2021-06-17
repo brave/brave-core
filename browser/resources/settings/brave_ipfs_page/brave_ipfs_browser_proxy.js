@@ -107,7 +107,16 @@ export class BraveIPFSBrowserProxyImpl {
       chrome.ipfs.getIpnsKeysList(resolve)
     })
   }
-
+  /** @override */
+  rotateKey (name) {
+    return new Promise(resolve => {
+      if (!chrome.ipfs) {
+        resolve(false)
+        return
+      }
+      chrome.ipfs.rotateKey(name, resolve)
+    })
+  }
   /** @override */
   addIpnsKey (name) {
     return new Promise(resolve => {

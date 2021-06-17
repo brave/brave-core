@@ -49,3 +49,7 @@ export const LearnMoreLink = {
 export const Error = {
   color: 'red'
 }
+
+export const LinkContainer = {
+  margin: '10px 0px'
+}

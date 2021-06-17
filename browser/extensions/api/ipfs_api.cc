@@ -236,6 +236,26 @@ void IpfsRemoveIpnsKeyFunction::OnKeyRemoved(::ipfs::IpnsKeysManager* manager,
   return Respond(OneArgument(base::Value(name)));
 }
 
+ExtensionFunction::ResponseAction IpfsRotateKeyFunction::Run() {
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context()))
+    return RespondNow(Error("IPFS not enabled"));
+  ::ipfs::IpfsService* ipfs_service = GetIpfsService(browser_context());
+  if (!ipfs_service) {
+    return RespondNow(Error("Could not obtain IPFS service"));
+  }
+  std::unique_ptr<ipfs::RotateKey::Params> params(
+      ipfs::RotateKey::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+  ipfs_service->RotateKey(params->name,
+                          base::BindOnce(&IpfsRotateKeyFunction::OnKeyRotated,
+                                         base::RetainedRef(this)));
+  return did_respond() ? AlreadyResponded() : RespondLater();
+}
+
+void IpfsRotateKeyFunction::OnKeyRotated(bool success) {
+  return Respond(OneArgument(base::Value(success)));
+}
+
 ExtensionFunction::ResponseAction IpfsAddIpnsKeyFunction::Run() {
   if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context()))
     return RespondNow(Error("IPFS not enabled"));
