@@ -148,7 +148,7 @@
   }
   return _syncProfileService;
 }
-    
+
 - (nullable BraveWalletAPI*)wallet {
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   if (!_wallet) {
