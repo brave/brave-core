@@ -42,7 +42,17 @@ const welcomeReducer: Reducer<Welcome.State | undefined> = (state: Welcome.State
       chrome.send('setDefaultSearchEngine', [modelIndex])
       break
     case types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS:
-      state = { ...state, searchProviders: payload }
+      // TODO(bsclifton): remove when ready for other regions
+      const showBraveSearch: boolean =
+          ['US', 'CA'].includes(window.loadTimeData.getString('countryString'))
+      // Only show Brave Search during onboarding for US/CA
+      const filteredSearchList = payload.filter((item: any) => {
+        return !(item.name && item.name.startsWith('Brave ') && item.canBeRemoved)
+      })
+      state = {
+        ...state,
+        searchProviders: showBraveSearch ? payload : filteredSearchList
+      }
       break
     case types.IMPORT_BROWSER_PROFILES_SUCCESS:
       state = { ...state, browserProfiles: payload }
