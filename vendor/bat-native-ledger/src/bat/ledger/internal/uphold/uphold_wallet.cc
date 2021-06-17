@@ -87,12 +87,8 @@ void UpholdWallet::OnGetUser(const type::Result result,
 
   uphold_wallet->user_name = user.name;
   if (user.status != UserStatus::OK || !user.verified) {
-    uphold_wallet->status = type::WalletStatus::PENDING;
-    uphold_wallet->address = {};
-    uphold_wallet = GenerateLinks(std::move(uphold_wallet));
-    if (!ledger_->uphold()->SetWallet(std::move(uphold_wallet))) {
-      BLOG(0, "Unable to set the Uphold wallet!");
-      return callback(type::Result::LEDGER_ERROR);
+    if (uphold_wallet->status == type::WalletStatus::VERIFIED) {
+      ledger_->uphold()->DisconnectWallet();
     }
 
     return callback(type::Result::LEDGER_OK);
