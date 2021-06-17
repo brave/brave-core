@@ -125,7 +125,6 @@ void UpholdWallet::OnCreateCard(const type::Result result,
   }
 
   if (result != type::Result::LEDGER_OK) {
-    BLOG(0, "Couldn't create the BAT card for the user!");
     return callback(result);
   }
 
