@@ -68,6 +68,13 @@ namespace brave {
 
 namespace {
 
+// NOTE TO READER: This header is for partners to determine the browser is
+// Brave without creating webcompat issues by creating a new user-agent.
+// All Brave users send the exact same header and so this cannot be used for
+// tracking individual users. See
+// https://github.com/brave/brave-browser/wiki/Custom-Headers for more
+// information. Custom headers are deprecated and new partners use the
+// navigator.brave.isBrave() JavaScript API.
 constexpr char kPartnerEaffName[] = "eaff";
 constexpr char kPartnerUpholdName[] = "uphold";
 constexpr char kPartnerGrammarlyName[] = "grammarly";
