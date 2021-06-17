@@ -50,6 +50,16 @@ std::string GetSubscriberCredentialFromJson(const std::string& json) {
       base::JSONReader::ReadAndReturnValueWithError(
           json, base::JSONParserOptions::JSON_PARSE_RFC);
   base::Optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return "";
+  }
+
+  const base::DictionaryValue* response_dict;
+  if (!records_v->GetAsDictionary(&response_dict)) {
+    return "";
+  }
+  
   const base::Value* subscriber_credential =
       records_v->FindKey("subscriber-credential");
   return subscriber_credential == nullptr ? ""
