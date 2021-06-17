@@ -85,6 +85,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.ArrayList;
+
 /**
  * Object responsible for handling the creation, showing, hiding of the BraveShields menu.
  */
@@ -486,8 +488,133 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         shieldsText.setText(mTitle.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)", ""));
 
         setUpSwitchLayouts();
-        setUpCookiesLayout();
-        setUpFingerprintingLayout();
+        // setUpCookiesLayout();
+        // setUpFingerprintingLayout();
+        //setUpCrossSiteTrackersLayout();
+
+
+
+        setupDetailsLayouts();
+
+    }
+
+    private void setupDetailsLayouts(){
+        ArrayList<String> detailsLayouts = new ArrayList<>();
+        detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS);
+        detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING);
+        detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES);
+
+        int layoutId = 0;
+        int mSecondaryLayoutId = 0;
+        int titleStringId = 0;
+        int subtitleStringId = 0;
+        int option1StringId = 0;
+        int option2StringId = 0;
+        int option3StringId = 0;
+        // final String shieldsValue = "";   
+
+        for (final String layout : detailsLayouts) {
+
+            switch (layout){
+                case BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS:
+                    layoutId = R.id.brave_shields_block_cross_trackers_layout_id;
+                    mSecondaryLayoutId = R.id.brave_shields_cross_site_trackers_layout_id;
+                    titleStringId = R.string.block_trackers_ads_title;
+                    subtitleStringId = R.string.block_trackers_ads_summary;
+                    option1StringId = R.string.block_trackers_ads_option_1;
+                    option2StringId = R.string.block_trackers_ads_option_2;
+                    option3StringId = R.string.block_trackers_ads_option_3;
+                break;
+                case BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING:
+                    layoutId = R.id.brave_shields_block_fingerprinting_layout_id;
+                    mSecondaryLayoutId = R.id.brave_shields_fingerprinting_layout_id;
+                    titleStringId = R.string.block_fingerprinting;
+                    subtitleStringId = R.string.block_fingerprinting_text;
+                    option1StringId = R.string.block_fingerprinting_option_1;
+                    option2StringId = R.string.block_fingerprinting_option_2;
+                    option3StringId = R.string.block_fingerprinting_option_3;
+                break;
+                case BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES:
+                    layoutId = R.id.brave_shields_block_cookies_layout_id;
+                    mSecondaryLayoutId = R.id.brave_shields_cookies_layout_id;
+                    titleStringId = R.string.block_cookies;
+                    subtitleStringId = R.string.block_cookies_text;
+                    option1StringId = R.string.block_cookies_option_1;
+                    option2StringId = R.string.block_cross_site_cookies;
+                    option3StringId = R.string.block_cookies_option_3;
+                break;
+            }
+
+
+            LinearLayout mBlockShieldsLayout = mPopupView.findViewById(layoutId);
+            TextView mBlockShieldsOptionTitle = mBlockShieldsLayout.findViewById(R.id.option_title);
+            mBlockShieldsOptionTitle.setText(titleStringId);
+            TextView mBlockShieldsOptionText = mBlockShieldsLayout.findViewById(R.id.option_text);
+            mBlockShieldsOptionText.setText(subtitleStringId);
+            RadioButton mBlockShieldsOption1 = mBlockShieldsLayout.findViewById(R.id.option1);
+            mBlockShieldsOption1.setText(option1StringId);
+            RadioButton mBlockShieldsOption2 = mBlockShieldsLayout.findViewById(R.id.option2);
+            mBlockShieldsOption2.setText(option2StringId);
+            RadioButton mBlockShieldsOption3 = mBlockShieldsLayout.findViewById(R.id.option3);
+            mBlockShieldsOption3.setText(option3StringId);
+            Button mBlockShieldsDoneButton = mBlockShieldsLayout.findViewById(R.id.done_button);
+            mBlockShieldsDoneButton.setOnClickListener(mDoneClickListener);
+            ImageView mBlockShieldsBackButton = mBlockShieldsLayout.findViewById(R.id.back_button);
+            mBlockShieldsBackButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mBlockShieldsLayout.setVisibility(View.GONE);
+                    mMainLayout.setVisibility(View.VISIBLE);
+                }
+            });
+
+            LinearLayout mShieldsLayout = mSecondaryLayout.findViewById(mSecondaryLayoutId);
+            mShieldsLayout.setBackground(null);
+            mShieldsLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mMainLayout.setVisibility(View.GONE);
+                    mBlockShieldsLayout.setVisibility(View.VISIBLE);
+                }
+            });
+            ImageView mBlockShieldsIcon = mShieldsLayout.findViewById(R.id.toggle_favicon);
+            mBlockShieldsIcon.setImageResource(R.drawable.ic_chevron_right);
+            mBlockShieldsIcon.setColorFilter(mContext.getResources().getColor(R.color.default_icon_color_tint_list));
+            TextView mBlockShieldsText = mShieldsLayout.findViewById(R.id.toggle_text);
+            mBlockShieldsText.setText(titleStringId);
+
+            // String shieldsValue = BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS;
+
+            String settingOption = BraveShieldsContentSettings.getShieldsValue(mProfile, mHost, layout);
+            if (settingOption.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
+                mBlockShieldsOption1.setChecked(true);
+            } else if (settingOption.equals(BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE)) {
+                mBlockShieldsOption2.setChecked(true);
+            } else if (settingOption.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
+                mBlockShieldsOption3.setChecked(true);
+            }
+
+            RadioGroup mBlockShieldsOptionGroup = mBlockShieldsLayout.findViewById(R.id.options_radio_group);
+            mBlockShieldsOptionGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
+                    boolean isChecked = checkedRadioButton.isChecked();
+                    if (isChecked) {
+                        if (checkedId == R.id.option1) {
+                            BraveShieldsContentSettings.setShieldsValue(mProfile, mHost, layout, BraveShieldsContentSettings.BLOCK_RESOURCE, false);
+                        } else if (checkedId == R.id.option2) {
+                            BraveShieldsContentSettings.setShieldsValue(mProfile, mHost, layout, BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE, false);
+                        } else if (checkedId == R.id.option3) {
+                            BraveShieldsContentSettings.setShieldsValue(mProfile, mHost, layout, BraveShieldsContentSettings.ALLOW_RESOURCE, false);
+                        }
+                        if (null != mMenuObserver) {
+                            mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
+                        }
+                    }
+                }
+            });
+        }
     }
 
     private void setUpSwitchLayouts() {
@@ -580,6 +707,80 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         });
     }
 
+    private void setUpCrossSiteTrackersLayout() {
+   
+
+        LinearLayout mBlockTrackersLayout = mPopupView.findViewById(R.id.brave_shields_block_cross_trackers_layout_id);
+        TextView mTrackersOptionTitle = mBlockTrackersLayout.findViewById(R.id.option_title);
+        mTrackersOptionTitle.setText(R.string.block_trackers_ads_title);
+        TextView mTrackersOptionText = mBlockTrackersLayout.findViewById(R.id.option_text);
+        mTrackersOptionText.setText(R.string.block_trackers_ads_summary);
+        RadioButton mTrackersOption1 = mBlockTrackersLayout.findViewById(R.id.option1);
+        mTrackersOption1.setText(R.string.block_trackers_ads_option_1);
+        RadioButton mTrackersOption2 = mBlockTrackersLayout.findViewById(R.id.option2);
+        mTrackersOption2.setText(R.string.block_trackers_ads_option_2);
+        RadioButton mTrackersOption3 = mBlockTrackersLayout.findViewById(R.id.option3);
+        mTrackersOption3.setText(R.string.block_trackers_ads_option_3);
+        Button mTrackersDoneButton = mBlockTrackersLayout.findViewById(R.id.done_button);
+        mTrackersDoneButton.setOnClickListener(mDoneClickListener);
+        ImageView mTrackersBackButton = mBlockTrackersLayout.findViewById(R.id.back_button);
+        mTrackersBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBlockTrackersLayout.setVisibility(View.GONE);
+                mMainLayout.setVisibility(View.VISIBLE);
+            }
+        });
+
+        LinearLayout mTrackersLayout = mSecondaryLayout.findViewById(R.id.brave_shields_cross_site_trackers_layout_id);
+        mTrackersLayout.setBackground(null);
+        mTrackersLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMainLayout.setVisibility(View.GONE);
+                mBlockTrackersLayout.setVisibility(View.VISIBLE);
+            }
+        });
+        ImageView mTrackersIcon = mTrackersLayout.findViewById(R.id.toggle_favicon);
+        mTrackersIcon.setImageResource(R.drawable.ic_chevron_right);
+        mTrackersIcon.setColorFilter(mContext.getResources().getColor(R.color.default_icon_color_tint_list));
+        TextView mTrackersText = mTrackersLayout.findViewById(R.id.toggle_text);
+        mTrackersText.setText(R.string.block_trackers_ads_title);
+
+        String settingOption = BraveShieldsContentSettings.getShieldsValue(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS);
+        Log.d("Test", "trackers settingOption:"+settingOption);
+        if (settingOption.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
+            mTrackersOption1.setChecked(true);
+        } else if (settingOption.equals(BraveShieldsContentSettings.DEFAULT)) {
+            mTrackersOption2.setChecked(true);
+        } else if (settingOption.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
+            mTrackersOption3.setChecked(true);
+        }
+
+        RadioGroup mTrackersOptionGroup = mBlockTrackersLayout.findViewById(R.id.options_radio_group);
+        mTrackersOptionGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
+                boolean isChecked = checkedRadioButton.isChecked();
+
+                if (isChecked) {
+                    if (checkedId == R.id.option1) {
+                        BraveShieldsContentSettings.setShieldsValue(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS, BraveShieldsContentSettings.BLOCK_RESOURCE, false);
+                    } else if (checkedId == R.id.option2) {
+                        BraveShieldsContentSettings.setShieldsValue(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS, BraveShieldsContentSettings.DEFAULT, false);
+                    } else if (checkedId == R.id.option3) {
+                        BraveShieldsContentSettings.setShieldsValue(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS, BraveShieldsContentSettings.ALLOW_RESOURCE, false);
+                    }
+                    if (null != mMenuObserver) {
+                        mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
+                    }
+                }
+            }
+        });
+
+    }
+
     private void setUpFingerprintingLayout() {
         LinearLayout mBlockFingerPrintingLayout = mPopupView.findViewById(R.id.brave_shields_block_fingerprinting_layout_id);
         TextView mFingerprintingOptionTitle = mBlockFingerPrintingLayout.findViewById(R.id.option_title);
@@ -619,6 +820,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         mFingerPrintingText.setText(R.string.block_fingerprinting);
 
         String settingOption = BraveShieldsContentSettings.getShieldsValue(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING);
+        Log.d("Test", "finger settingOption:"+settingOption);
         if (settingOption.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
             mFingerprintingOption1.setChecked(true);
         } else if (settingOption.equals(BraveShieldsContentSettings.DEFAULT)) {

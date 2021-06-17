@@ -144,6 +144,67 @@ void JNI_BraveShieldsContentSettings_SetCookieControlType(JNIEnv* env,
       g_browser_process->local_state());
 }
 
+void JNI_BraveShieldsContentSettings_SetCosmeticFilteringControlType(JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& type,
+    const base::android::JavaParamRef<jstring>& url,
+    const base::android::JavaParamRef<jobject>& j_profile) {
+  // switch (type) {
+  //   case 0:
+      // aggressive
+      brave_shields::SetCosmeticFilteringControlType(
+          HostContentSettingsMapFactory::GetForProfile(
+          ProfileAndroid::FromProfileAndroid(j_profile)),
+      brave_shields::ControlTypeFromString(
+          base::android::ConvertJavaStringToUTF8(env, type)),
+      GURL(base::android::ConvertJavaStringToUTF8(env, url)),
+          g_browser_process->local_state());
+    //   break;
+    // case 1:
+    //   // standard
+    //   brave_shields::SetCosmeticFilteringControlType(
+    //       HostContentSettingsMapFactory::GetForProfile(
+    //         ProfileAndroid::FromProfileAndroid(j_profile)),
+    //       ControlType::ALLOW, 
+    //       GURL(base::android::ConvertJavaStringToUTF8(env, url)),
+    //       g_browser_process->local_state());
+    //   brave_shields::SetAdControlType(
+    //       HostContentSettingsMapFactory::GetForProfile(
+    //         ProfileAndroid::FromProfileAndroid(j_profile)),
+    //       ControlType::BLOCK, 
+    //       GURL(base::android::ConvertJavaStringToUTF8(env, url)),
+    //       g_browser_process->local_state());
+    //   break;
+    // case 2:
+    //   // allow all
+    //   brave_shields::SetCosmeticFilteringControlType(
+    //       HostContentSettingsMapFactory::GetForProfile(
+    //         ProfileAndroid::FromProfileAndroid(j_profile)),
+    //       ControlType::ALLOW, 
+    //       GURL(base::android::ConvertJavaStringToUTF8(env, url)), 
+    //       g_browser_process->local_state());
+    //   brave_shields::SetAdControlType(
+    //       HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
+    //       ControlType::ALLOW, GURL(), g_browser_process->local_state());
+    //   break;
+    // default:
+    //   // standard
+    //   brave_shields::SetAdControlType(
+    //       HostContentSettingsMapFactory::GetForProfile(
+    //         ProfileAndroid::FromProfileAndroid(j_profile)),
+    //       ControlType::BLOCK, 
+    //       GURL(base::android::ConvertJavaStringToUTF8(env, url)), 
+    //       g_browser_process->local_state());
+    //   brave_shields::SetCosmeticFilteringControlType(
+    //       HostContentSettingsMapFactory::GetForProfile(
+    //         ProfileAndroid::FromProfileAndroid(j_profile)),
+    //       ControlType::ALLOW, 
+    //       GURL(base::android::ConvertJavaStringToUTF8(env, url)),
+    //       g_browser_process->local_state());
+    //   break;
+  // }
+}
+
+
 base::android::ScopedJavaLocalRef<jstring>
     JNI_BraveShieldsContentSettings_GetCookieControlType(JNIEnv* env,
     const base::android::JavaParamRef<jstring>& url,
