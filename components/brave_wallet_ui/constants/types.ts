@@ -159,6 +159,9 @@ export interface PageState {
   showRecoveryPhrase: boolean
   invalidMnemonic: boolean
   selectedTimeline: ChartTimelineType
+  selectedAsset: AssetOptionType | undefined
+  selectedAssetPrice: AssetPriceReturnInfo | undefined
+  selectedAssetPriceHistory: PriceDataObjectType[]
   mnemonic?: string
 }
 

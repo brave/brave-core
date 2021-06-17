@@ -5,7 +5,7 @@
 
 import { createAction } from 'redux-act'
 import { CreateWalletPayloadType, WalletCreatedPayloadType, RecoveryWordsAvailablePayloadType, RestoreWalletPayloadType } from '../constants/action_types'
-import { ChartTimelineType } from '../../constants/types'
+import { ChartTimelineType, AssetOptionType } from '../../constants/types'
 
 export const createWallet = createAction<CreateWalletPayloadType>('createWallet')
 export const restoreWallet = createAction<RestoreWalletPayloadType>('restoreWallet')
@@ -16,3 +16,4 @@ export const recoveryWordsAvailable = createAction<RecoveryWordsAvailablePayload
 export const walletBackupComplete = createAction('walletBackupComplete')
 export const hasMnemonicError = createAction<boolean>('hasMnemonicError')
 export const changeTimline = createAction<ChartTimelineType>('changeTimline')
+export const selectAsset = createAction<AssetOptionType>('selectAsset')

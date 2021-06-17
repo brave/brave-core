@@ -6,14 +6,17 @@
 
 import { createReducer } from 'redux-act'
 import * as Actions from '../actions/wallet_page_actions'
-import { PageState, ChartTimelineType } from '../../constants/types'
+import { PageState, ChartTimelineType, AssetOptionType } from '../../constants/types'
 import { WalletCreatedPayloadType, RecoveryWordsAvailablePayloadType } from '../constants/action_types'
 
 const defaultState: PageState = {
   hasInitialized: false,
   showRecoveryPhrase: false,
   invalidMnemonic: false,
-  selectedTimeline: '24HRS'
+  selectedTimeline: '24HRS',
+  selectedAsset: undefined,
+  selectedAssetPrice: undefined,
+  selectedAssetPriceHistory: []
 }
 
 const reducer = createReducer<PageState>({}, defaultState)
@@ -65,6 +68,16 @@ reducer.on(Actions.changeTimline, (state: PageState, payload: ChartTimelineType)
   return {
     ...state,
     selectedTimeline: payload
+  }
+})
+
+// Will need to add logic to here to fetch selected assets Price/History
+reducer.on(Actions.selectAsset, (state: PageState, payload: AssetOptionType) => {
+  return {
+    ...state,
+    selectedAsset: payload,
+    selectedAssetPrice: undefined,
+    selectedAssetPriceHistory: []
   }
 })
 

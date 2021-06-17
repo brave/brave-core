@@ -28,7 +28,8 @@ import {
   WalletState,
   PageState,
   WalletPageState,
-  ChartTimelineType
+  ChartTimelineType,
+  AssetOptionType
 } from '../constants/types'
 import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../components/buy-send-swap'
@@ -58,7 +59,10 @@ function Container (props: Props) {
     showRecoveryPhrase,
     invalidMnemonic,
     mnemonic,
-    selectedTimeline
+    selectedTimeline,
+    selectedAsset,
+    selectedAssetPrice,
+    selectedAssetPriceHistory
   } = props.page
 
   const [view, setView] = React.useState<NavTypes>('crypto')
@@ -142,8 +146,8 @@ function Container (props: Props) {
     return formatePrices(grandTotal)
   }, [accounts])
 
-  const onSelectAsset = () => {
-    // Logic to Select an Asset
+  const onSelectAsset = (asset: AssetOptionType) => {
+    props.walletPageActions.selectAsset(asset)
   }
 
   const renderWallet = React.useMemo(() => {
@@ -185,9 +189,9 @@ function Container (props: Props) {
                   onChangeTimeline={onChangeTimeline}
                   onSelectAsset={onSelectAsset}
                   portfolioBalance={portfolioBalance}
-                  selectedAsset={undefined}
-                  selectedAssetPrice={undefined}
-                  selectedAssetPriceHistory={[]}
+                  selectedAsset={selectedAsset}
+                  selectedAssetPrice={selectedAssetPrice}
+                  selectedAssetPriceHistory={selectedAssetPriceHistory}
                   selectedTimeline={selectedTimeline}
                   transactions={[]}
                   userAssetList={[]}
