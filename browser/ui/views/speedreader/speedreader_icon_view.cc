@@ -44,7 +44,12 @@ SpeedreaderIconView::SpeedreaderIconView(
   SetVisible(false);
 }
 
-SpeedreaderIconView::~SpeedreaderIconView() = default;
+SpeedreaderIconView::~SpeedreaderIconView() {
+  auto* contents = web_contents();
+  if (contents)
+    dom_distiller::RemoveObserver(contents, this);
+  DCHECK(!DistillabilityObserver::IsInObserverList());
+}
 
 void SpeedreaderIconView::UpdateImpl() {
   auto* contents = GetWebContents();
@@ -56,15 +61,15 @@ void SpeedreaderIconView::UpdateImpl() {
   if (GetHighlighted() && !IsBubbleShowing())
     AnimateInkDrop(views::InkDropState::HIDDEN, nullptr);
 
-  if (contents != web_contents_) {
-    if (web_contents_)
-      dom_distiller::RemoveObserver(web_contents_, this);
-    web_contents_ = contents;
-    dom_distiller::AddObserver(web_contents_, this);
+  auto* old_contents = web_contents();
+  if (contents != old_contents) {
+    if (old_contents)
+      dom_distiller::RemoveObserver(old_contents, this);
+    dom_distiller::AddObserver(contents, this);
   }
 
   auto* tab_helper =
-      speedreader::SpeedreaderTabHelper::FromWebContents(web_contents_);
+      speedreader::SpeedreaderTabHelper::FromWebContents(contents);
   if (!tab_helper) {
     SetVisible(false);
     return;
@@ -73,7 +78,7 @@ void SpeedreaderIconView::UpdateImpl() {
   const bool is_distilled = tab_helper->IsActiveForMainFrame();
 
   if (!is_distilled) {
-    auto result = dom_distiller::GetLatestResult(web_contents_);
+    auto result = dom_distiller::GetLatestResult(contents);
     if (result) {
       const bool visible = result->is_last && result->is_distillable;
       SetVisible(visible);
@@ -101,6 +106,8 @@ void SpeedreaderIconView::UpdateImpl() {
     SetVisible(true);
     label()->SetVisible(true);
   }
+
+  Observe(contents);
 }
 
 const gfx::VectorIcon& SpeedreaderIconView::GetVectorIcon() const {

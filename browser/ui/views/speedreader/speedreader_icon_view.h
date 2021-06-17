@@ -19,7 +19,8 @@ class PrefService;
 
 class SpeedreaderIconView : public PageActionIconView,
                             public IconLabelBubbleView::Delegate,
-                            public dom_distiller::DistillabilityObserver {
+                            public dom_distiller::DistillabilityObserver,
+                            public content::WebContentsObserver {
  public:
   METADATA_HEADER(SpeedreaderIconView);
   SpeedreaderIconView(CommandUpdater* command_updater,
@@ -47,7 +48,6 @@ class SpeedreaderIconView : public PageActionIconView,
   void OnResult(const dom_distiller::DistillabilityResult& result) override;
 
  private:
-  content::WebContents* web_contents_ = nullptr;
   IconLabelBubbleView::Delegate* icon_label_bubble_delegate_ = nullptr;
 };
 
