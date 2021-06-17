@@ -6,6 +6,7 @@
 import BraveShared
 import BraveUI
 import Shared
+import Data
 
 // MARK: - ProductNotification
 
@@ -130,6 +131,25 @@ extension BrowserViewController {
                 }
             }
         }
+        
+        // Step 5: Domain Specific Data Saved
+        // Data Saved Pop-Over only exist in JP locale
+        if Locale.current.regionCode == "JP" {
+            if !benchmarkNotificationPresented,
+               !Preferences.ProductNotificationBenchmarks.showingSpecificDataSavedEnabled.value {
+                guard let currentURL = selectedTab.url,
+                      DataSaved.get(with: currentURL.absoluteString) == nil,
+                      let domainFetchedSiteSavings = benchmarkBlockingDataSource?.fetchDomainFetchedSiteSavings(currentURL) else {
+                    return
+                }
+                
+                notifyDomainSpecificDataSaved(domainFetchedSiteSavings)
+                
+                DataSaved.insert(savedUrl: currentURL.absoluteString,
+                                 amount: domainFetchedSiteSavings)
+                return
+            }
+        }
     }
     
     private func notifyFirstTimeBlock() {
@@ -165,6 +185,20 @@ extension BrowserViewController {
             guard let self = self, action == .shareTheNewsTapped else { return }
 
             self.showShareScreen()
+        }
+
+        showBenchmarkNotificationPopover(controller: shareTrackersViewController)
+    }
+    
+    private func notifyDomainSpecificDataSaved(_ dataSaved: String) {
+        let shareTrackersViewController = ShareTrackersController(trackingType: .domainSpecificDataSaved(dataSaved: dataSaved))
+        dismiss(animated: true)
+
+        shareTrackersViewController.actionHandler = { [weak self] action in
+            guard let self = self, action == .dontShowAgainTapped else { return }
+
+            Preferences.ProductNotificationBenchmarks.showingSpecificDataSavedEnabled.value = true
+            self.dismiss(animated: true)
         }
 
         showBenchmarkNotificationPopover(controller: shareTrackersViewController)

@@ -153,6 +153,8 @@ class BrowserViewController: UIViewController {
     
     let vpnProductInfo = VPNProductInfo()
     
+    // Product Notification Related Properties
+    
     /// Boolean which is tracking If a product notification is presented
     /// in order to not to try to present another one over existing popover
     var benchmarkNotificationPresented = false
@@ -171,6 +173,10 @@ class BrowserViewController: UIViewController {
         
     /// Boolean Tracking NTP Education should be loaded after onboarding of user
     var shouldShowNTPEducation = false
+
+    /// Data Source object used to determine blocking stats
+    //let benchmarkBlockingDataSource = BlockingSummaryDataSource()
+    var benchmarkBlockingDataSource: BlockingSummaryDataSource?
 
     init(profile: Profile, tabManager: TabManager, crashedLastSession: Bool,
          safeBrowsingManager: SafeBrowsing? = SafeBrowsing()) {
@@ -228,6 +234,10 @@ class BrowserViewController: UIViewController {
             }
         }
         deviceCheckClient = DeviceCheckClient(environment: configuration.environment)
+        
+        if Locale.current.regionCode == "JP" {
+            benchmarkBlockingDataSource = BlockingSummaryDataSource()
+        }
         
         super.init(nibName: nil, bundle: nil)
         didInit()

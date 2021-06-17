@@ -1073,6 +1073,24 @@ extension Strings {
                               bundle: .braveShared,
                               value: "Every day I save data by browsing the web with Brave.",
                               comment: "Text used for social sharing together with Brave Shield values")
+                
+        public static let domainSpecificDataSavedTitle =
+            NSLocalizedString("socialSharing.domainSpecificDataSavedTitle",
+                              bundle: .braveShared,
+                              value: "Every day I save data by browsing the web with Brave.",
+                              comment: "Title used when in warning pop-over when domain specific data save appears ")
+        
+        public static let domainSpecificDataSavedSubtitle =
+            NSLocalizedString("shieldEducation.domainSpecificDataSavedSubtitle",
+                              bundle: .braveShared,
+                              value: "Average data saved\n%@ MB",
+                              comment: "Subtitle for  The parameter substituted for \"%@\" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB")
+        
+        public static let dontShowThisTitle =
+            NSLocalizedString("shieldEducation.dontShowThisTitle",
+                              bundle: .braveShared,
+                              value: "Don't show this again",
+                              comment: "Action title for button at domain specific data saved pop-up")
     }
 }
 

@@ -16,6 +16,7 @@ enum TrackingType: Equatable {
     case trackerAdWarning
     case videoAdBlock
     case trackerAdCountBlock(count: Int)
+    case domainSpecificDataSaved(dataSaved: String)
     
     var title: String {
         switch self {
@@ -27,6 +28,8 @@ enum TrackingType: Equatable {
                 return Strings.ShieldEducation.videoAdBlockTitle
             case .trackerAdCountBlock(let count):
                 return String(format: Strings.ShieldEducation.trackerAdCountBlockTitle, count)
+            case .domainSpecificDataSaved:
+                return Strings.ShieldEducation.domainSpecificDataSavedTitle
         }
     }
     
@@ -40,6 +43,8 @@ enum TrackingType: Equatable {
                 return Strings.ShieldEducation.videoAdBlockSubtitle
             case .trackerAdCountBlock:
                 return Strings.ShieldEducation.trackerAdCountBlockSubtitle
+            case .domainSpecificDataSaved(let dataSaved):
+                return String(format: Strings.ShieldEducation.domainSpecificDataSavedSubtitle, dataSaved)
         }
     }
 }
@@ -53,6 +58,7 @@ class ShareTrackersController: UIViewController, PopoverContentComponent {
     enum Action {
         case takeALookTapped
         case shareTheNewsTapped
+        case dontShowAgainTapped
     }
     
     // MARK: Properties
@@ -90,10 +96,12 @@ class ShareTrackersController: UIViewController, PopoverContentComponent {
             guard let self = self else { return }
             
             switch action {
-            case .didShareTheNewsTapped:
-                self.actionHandler?(.shareTheNewsTapped)
-            case .didTakeALookTapped:
-                self.actionHandler?(.takeALookTapped)
+                case .didShareTheNewsTapped:
+                    self.actionHandler?(.shareTheNewsTapped)
+                case .didTakeALookTapped:
+                    self.actionHandler?(.takeALookTapped)
+                case .didDontShowAgainTapped:
+                    self.actionHandler?(.dontShowAgainTapped)
             }
         }
         
@@ -138,6 +146,7 @@ private class ShareTrackersView: UIView {
     enum Action {
         case didShareTheNewsTapped
         case didTakeALookTapped
+        case didDontShowAgainTapped
     }
     
     // MARK: Properties
@@ -165,19 +174,21 @@ private class ShareTrackersView: UIView {
     }
     
     private lazy var actionButton: InsetButton = {
-        let actionButton = InsetButton()
-        actionButton.addTarget(self, action: #selector(tappedActionButton), for: .touchUpInside)
+        let actionButton = InsetButton().then {
+            $0.addTarget(self, action: #selector(tappedActionButton), for: .touchUpInside)
 
-        actionButton.contentEdgeInsets = UX.actionButtonInsets
-        actionButton.layer.cornerRadius = 20
-        actionButton.layer.cornerCurve = .continuous
-        actionButton.clipsToBounds = true
-        actionButton.layer.borderWidth = 1
-        actionButton.layer.borderColor = UIColor.white.cgColor
-        actionButton.titleLabel?.adjustsFontSizeToFitWidth = true
-        actionButton.titleLabel?.allowsDefaultTighteningForTruncation = true
-        actionButton.setTitleColor(.white, for: .normal)
-        actionButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+            $0.contentEdgeInsets = UX.actionButtonInsets
+            $0.layer.cornerRadius = 20
+            $0.layer.cornerCurve = .continuous
+            $0.clipsToBounds = true
+            $0.layer.borderWidth = 1
+            $0.layer.borderColor = UIColor.white.cgColor
+            $0.titleLabel?.adjustsFontSizeToFitWidth = true
+            $0.titleLabel?.allowsDefaultTighteningForTruncation = true
+            $0.setTitleColor(.white, for: .normal)
+            $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+        }
+
         return actionButton
     }()
     
@@ -225,7 +236,7 @@ private class ShareTrackersView: UIView {
         )
         
         switch trackingType {
-            case .trackerCountShare, .trackerAdWarning:
+            case .trackerCountShare, .trackerAdWarning, .domainSpecificDataSaved:
                 stackView.addArrangedSubview(actionButton)
             default:
                 return
@@ -235,9 +246,14 @@ private class ShareTrackersView: UIView {
     private func setContent() {
         titleLabel.attributedText = {
             let imageAttachment = NSTextAttachment().then {
-                $0.image = #imageLiteral(resourceName: "share-bubble-shield")
+                switch trackingType {
+                    case .domainSpecificDataSaved:
+                        $0.image = #imageLiteral(resourceName: "data-saved-domain")
+                    default:
+                        $0.image = #imageLiteral(resourceName: "share-bubble-shield")
+                }
             }
-            
+                        
             let string = NSMutableAttributedString(attachment: imageAttachment)
             
             string.append(NSMutableAttributedString(
@@ -255,6 +271,8 @@ private class ShareTrackersView: UIView {
             case .trackerCountShare:
                 actionButton.setTitle(Strings.ShieldEducation.shareTheNewsTitle, for: .normal)
                 actionButton.addTrailingImageIcon(image: #imageLiteral(resourceName: "shields-share"))
+            case .domainSpecificDataSaved:
+                actionButton.setTitle(Strings.ShieldEducation.dontShowThisTitle, for: .normal)
             default:
                 return
         }
@@ -267,6 +285,8 @@ private class ShareTrackersView: UIView {
                 actionHandler?(.didTakeALookTapped)
             case .trackerCountShare:
                 actionHandler?(.didShareTheNewsTapped)
+            case .domainSpecificDataSaved:
+                actionHandler?(.didDontShowAgainTapped)
             default:
                 return
         }
