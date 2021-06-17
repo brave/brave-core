@@ -472,8 +472,8 @@ class SearchViewController: SiteTableViewController, LoaderListener {
         case .searchSuggestionsOptIn: return nil
         case .searchSuggestions:
             if let defaultSearchEngine = searchEngines?.defaultEngine() {
-                if defaultSearchEngine.shortName.hasSuffix(Strings.searchSuggestionSectionTitleNoSearchFormat) ||
-                    defaultSearchEngine.shortName.hasSuffix("Search") {
+                if defaultSearchEngine.shortName.contains(Strings.searchSuggestionSectionTitleNoSearchFormat) ||
+                    defaultSearchEngine.shortName.lowercased().contains("search") {
                     return defaultSearchEngine.shortName
                 }
                 return String(format: Strings.searchSuggestionSectionTitleFormat, defaultSearchEngine.shortName)
