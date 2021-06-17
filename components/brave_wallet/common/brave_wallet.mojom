@@ -65,6 +65,7 @@ interface WalletHandler {
                       bool isWalletBackedUp, array<string> accounts);
   LockWallet();
   UnlockWallet(string password) => (bool isWalletUnlocked);
+  GetAssetPrice(string asset) => (string price);
   AddFavoriteApp(AppItem appItem);
   RemoveFavoriteApp(AppItem appItem);
   NotifyWalletBackupComplete();

@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
@@ -73,6 +74,20 @@ void WalletHandler::UnlockWallet(const std::string& password,
       GetBraveWalletService(profile)->keyring_controller();
   bool result = keyring_controller->Unlock(password);
   std::move(callback).Run(result);
+}
+
+void WalletHandler::GetAssetPrice(const std::string& asset,
+                                  GetAssetPriceCallback callback) {
+  auto* profile = Profile::FromWebUI(web_ui_);
+  auto* asset_ratio_controller =
+      GetBraveWalletService(profile)->asset_ratio_controller();
+  asset_ratio_controller->GetPrice(asset,
+      base::BindOnce(&WalletHandler::OnGetPrice,
+                     base::Unretained(this), std::move(callback)));
+}
+
+void WalletHandler::OnGetPrice(GetAssetPriceCallback callback, bool success, const std::string& price) {
+  std::move(callback).Run(price);
 }
 
 void WalletHandler::AddFavoriteApp(

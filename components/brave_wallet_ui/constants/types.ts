@@ -163,6 +163,10 @@ export interface UnlockWalletReturnInfo {
   isWalletUnlocked: boolean
 }
 
+export interface GetAssetPriceReturnInfo {
+  price: string
+}
+
 export interface RestoreWalletReturnInfo {
   isValidMnemonic: boolean
 }
@@ -171,6 +175,7 @@ export interface WalletAPIHandler {
   getWalletInfo: () => Promise<WalletInfo>
   lockWallet: () => Promise<void>
   unlockWallet: (password: string) => Promise<UnlockWalletReturnInfo>
+  getAssetPrice: (asset: string) => Promise<GetAssetPriceReturnInfo>
   addFavoriteApp: (appItem: AppObjectType) => Promise<void>
   removeFavoriteApp: (appItem: AppObjectType) => Promise<void>
   restoreWallet: (mnemonic: string, password: string) => Promise<RestoreWalletReturnInfo>
