@@ -258,6 +258,11 @@ Config.prototype.buildArgs = function () {
     ...this.extraGnArgs,
   }
 
+  if (process.platform === 'darwin') {
+    args.use_system_xcode = false
+    args.mac_sdk_official_version = "11.3"
+  }
+
   if (this.shouldSign()) {
     if (process.platform === 'darwin') {
       args.mac_signing_identifier = this.mac_signing_identifier
@@ -399,6 +404,8 @@ Config.prototype.buildArgs = function () {
     args.ios_enable_share_extension = false
     args.ios_enable_credential_provider_extension = false
     args.ios_enable_widget_kit_extension = false
+
+    args.use_system_xcode = true
 
     delete args.safebrowsing_api_endpoint
     delete args.updater_prod_endpoint
