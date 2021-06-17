@@ -63,11 +63,8 @@ public class SmoothLineChartEquallySpaced extends View {
 
         if (values != null && values.length > 0) {
             mMaxY = values[0];
-            // mMinY = values[0].y;
             for (float y : values) {
                 if (y > mMaxY) mMaxY = y;
-                /*if (y < mMinY)
-                        mMinY = y;*/
             }
         }
 
