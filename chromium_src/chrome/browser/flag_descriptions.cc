@@ -25,6 +25,11 @@ const char kBraveAdblockCnameUncloakingName[] = "Enable CNAME uncloaking";
 const char kBraveAdblockCnameUncloakingDescription[] =
     "Take DNS CNAME records into account when making network request blocking "
     "decisions.";
+const char kBraveAdblockCollapseBlockedElementsName[] =
+    "Collapse HTML elements with blocked source attributes";
+const char kBraveAdblockCollapseBlockedElementsDescription[] =
+    "Cause iframe and img elements to be collapsed if the URL of their src "
+    "attribute is blocked";
 const char kBraveAdblockCosmeticFilteringName[] = "Enable cosmetic filtering";
 const char kBraveAdblockCosmeticFilteringDescription[] =
     "Enable support for cosmetic filtering";

@@ -69,6 +69,7 @@ const char kRegionalAdBlockComponentTest64PublicKey[] =
     "LwIDAQAB";
 
 using brave_shields::features::kBraveAdblockCnameUncloaking;
+using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using content::BrowserThread;
 
@@ -1034,6 +1035,106 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TagPrefsControlTags) {
   AssertTagExists(brave_shields::kFacebookEmbeds, true);
   AssertTagExists(brave_shields::kTwitterEmbeds, true);
   AssertTagExists(brave_shields::kLinkedInEmbeds, false);
+}
+
+// Load a page with a blocked image, and make sure it is collapsed.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CollapseBlockedImage) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  EXPECT_EQ(true, EvalJs(contents,
+                         "setExpectations(0, 1, 0, 0);"
+                         "addImage('ad_banner.png')"));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+
+  // There is no way for JS to directly tell if an element has been collapsed,
+  // but the clientHeight property is zero for collapsed elements and nonzero
+  // otherwise.
+  EXPECT_EQ(true, EvalJs(contents,
+                         "let i = document.getElementsByClassName('adImage');"
+                         "i[0].clientHeight === 0"));
+}
+
+// Load a page with a blocked iframe, and make sure it is collapsed.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CollapseBlockedIframe) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  EXPECT_EQ(true, EvalJs(contents, "addFrame('ad_banner.png')"));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+
+  // There is no way for JS to directly tell if an element has been collapsed,
+  // but the clientHeight property is zero for collapsed elements and nonzero
+  // otherwise.
+  EXPECT_EQ(true, EvalJs(contents,
+                         "let i = document.getElementsByClassName('adFrame');"
+                         "i[0].clientHeight === 0"));
+}
+
+class CollapseBlockedElementsFlagDisabledTest : public AdBlockServiceTest {
+ public:
+  CollapseBlockedElementsFlagDisabledTest() {
+    feature_list_.InitAndDisableFeature(kBraveAdblockCollapseBlockedElements);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+// Load a page with a blocked image, and make sure it is not collapsed.
+IN_PROC_BROWSER_TEST_F(CollapseBlockedElementsFlagDisabledTest,
+                       DontCollapseBlockedImage) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  EXPECT_EQ(true, EvalJs(contents,
+                         "setExpectations(0, 1, 0, 0);"
+                         "addImage('ad_banner.png')"));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+
+  // There is no way for JS to directly tell if an element has been collapsed,
+  // but the clientHeight property is zero for collapsed elements and nonzero
+  // otherwise.
+  EXPECT_EQ(true, EvalJs(contents,
+                         "let i = document.getElementsByClassName('adImage');"
+                         "i[0].clientHeight !== 0"));
+}
+
+// Load a page with a blocked iframe, and make sure it is not collapsed.
+IN_PROC_BROWSER_TEST_F(CollapseBlockedElementsFlagDisabledTest,
+                       DontCollapseBlockedIframe) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  EXPECT_EQ(true, EvalJs(contents, "addFrame('ad_banner.png')"));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+
+  // There is no way for JS to directly tell if an element has been collapsed,
+  // but the clientHeight property is zero for collapsed elements and nonzero
+  // otherwise.
+  EXPECT_EQ(true, EvalJs(contents,
+                         "let i = document.getElementsByClassName('adFrame');"
+                         "i[0].clientHeight !== 0"));
 }
 
 // Load a page with a script which uses a redirect data URL.

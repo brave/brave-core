@@ -25,6 +25,7 @@
 #include "net/base/features.h"
 
 using brave_shields::features::kBraveAdblockCnameUncloaking;
+using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_shields::features::kBraveAdblockCosmeticFilteringNative;
 using brave_shields::features::kBraveAdblockCspRules;
@@ -135,6 +136,10 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveAdblockCnameUncloakingName,                   \
      flag_descriptions::kBraveAdblockCnameUncloakingDescription, kOsAll,    \
      FEATURE_VALUE_TYPE(kBraveAdblockCnameUncloaking)},                     \
+    {"brave-adblock-collapse-blocked-elements",                             \
+     flag_descriptions::kBraveAdblockCollapseBlockedElementsName,           \
+     flag_descriptions::kBraveAdblockCollapseBlockedElementsDescription,    \
+     kOsAll, FEATURE_VALUE_TYPE(kBraveAdblockCollapseBlockedElements)},     \
     {"brave-adblock-cosmetic-filtering",                                    \
      flag_descriptions::kBraveAdblockCosmeticFilteringName,                 \
      flag_descriptions::kBraveAdblockCosmeticFilteringDescription, kOsAll,  \
