@@ -6,10 +6,100 @@
 #include "brave/utility/brave_content_utility_client.h"
 
 #include <memory>
-#include <string>
 #include <utility>
 
-BraveContentUtilityClient::BraveContentUtilityClient()
-    : ChromeContentUtilityClient() {}
+#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
+#include "mojo/public/cpp/bindings/service_factory.h"
 
+#if !defined(OS_ANDROID)
+#include "brave/utility/importer/brave_profile_import_impl.h"
+#endif
+
+#if BUILDFLAG(IPFS_ENABLED)
+#include "brave/components/services/ipfs/ipfs_service_impl.h"
+#include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/components/services/tor/public/interfaces/tor.mojom.h"
+#include "brave/components/services/tor/tor_launcher_impl.h"
+#endif
+
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+#include "brave/components/services/bat_ledger/bat_ledger_service_impl.h"
+#include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
+#endif
+
+#if BUILDFLAG(BRAVE_ADS_ENABLED)
+#include "brave/components/services/bat_ads/bat_ads_service_impl.h"
+#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
+#endif
+
+namespace {
+
+#if !defined(OS_ANDROID)
+auto RunBraveProfileImporter(
+    mojo::PendingReceiver<brave::mojom::ProfileImport> receiver) {
+  return std::make_unique<BraveProfileImportImpl>(std::move(receiver));
+}
+#endif
+
+#if BUILDFLAG(IPFS_ENABLED)
+auto RunIpfsService(mojo::PendingReceiver<ipfs::mojom::IpfsService> receiver) {
+  return std::make_unique<ipfs::IpfsServiceImpl>(std::move(receiver));
+}
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+auto RunTorLauncher(mojo::PendingReceiver<tor::mojom::TorLauncher> receiver) {
+  return std::make_unique<tor::TorLauncherImpl>(std::move(receiver));
+}
+#endif
+
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+auto RunBatLedgerService(
+    mojo::PendingReceiver<bat_ledger::mojom::BatLedgerService> receiver) {
+  return std::make_unique<bat_ledger::BatLedgerServiceImpl>(
+      std::move(receiver));
+}
+#endif
+
+#if BUILDFLAG(BRAVE_ADS_ENABLED)
+auto RunBatAdsService(
+    mojo::PendingReceiver<bat_ads::mojom::BatAdsService> receiver) {
+  return std::make_unique<bat_ads::BatAdsServiceImpl>(std::move(receiver));
+}
+#endif
+
+}  // namespace
+
+BraveContentUtilityClient::BraveContentUtilityClient() = default;
 BraveContentUtilityClient::~BraveContentUtilityClient() = default;
+
+void BraveContentUtilityClient::RegisterMainThreadServices(
+    mojo::ServiceFactory& services) {
+#if !defined(OS_ANDROID)
+  services.Add(RunBraveProfileImporter);
+#endif
+
+#if BUILDFLAG(IPFS_ENABLED)
+  services.Add(RunIpfsService);
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+  services.Add(RunTorLauncher);
+#endif
+
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+  services.Add(RunBatLedgerService);
+#endif
+
+#if BUILDFLAG(BRAVE_ADS_ENABLED)
+  services.Add(RunBatAdsService);
+#endif
+
+  return ChromeContentUtilityClient::RegisterMainThreadServices(services);
+}
