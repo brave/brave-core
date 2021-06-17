@@ -47,7 +47,8 @@ function Container (props: Props) {
     isWalletCreated,
     isWalletLocked,
     isWalletBackedUp,
-    hasIncorrectPassword
+    hasIncorrectPassword,
+    accounts
   } = props.wallet
 
   // Page Props
@@ -119,6 +120,14 @@ function Container (props: Props) {
 
   const recoveryPhrase = (mnemonic || '').split(' ')
 
+  const onChangeTimeline = () => {
+    // Logic to change timline
+  }
+
+  const onSelectAsset = () => {
+    // Logic to Select an Asset
+  }
+
   const renderWallet = React.useMemo(() => {
     if (!isWalletCreated) {
       return (
@@ -154,6 +163,16 @@ function Container (props: Props) {
                   onLockWallet={lockWallet}
                   needsBackup={!isWalletBackedUp}
                   onShowBackup={onShowBackup}
+                  accounts={accounts}
+                  onChangeTimeline={onChangeTimeline}
+                  onSelectAsset={onSelectAsset}
+                  portfolioBalance='0'
+                  selectedAsset={undefined}
+                  selectedAssetPrice={undefined}
+                  selectedAssetPriceHistory={[]}
+                  selectedTimeline='24HRS'
+                  transactions={[]}
+                  userAssetList={[]}
                 />
               )}
             </>

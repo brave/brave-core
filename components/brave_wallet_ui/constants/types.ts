@@ -3,6 +3,7 @@ export interface WalletAccountType {
   name: string
   address: string
   balance: number
+  fiatBalance: string
   asset: string
 }
 
@@ -17,6 +18,19 @@ export interface AssetOptionType {
   name: string
   symbol: string
   icon: string
+}
+
+export interface UserAssetOptionType {
+  asset: AssetOptionType
+  assetBalance: number
+  fiatBalance: number
+}
+
+export interface UserWalletObject {
+  name: string
+  address: string
+  fiatBalance: string
+  assetBalance: number
 }
 
 export interface RPCAssetType {
@@ -75,6 +89,12 @@ export type ChartTimelineType =
   | '3Months'
   | '1Year'
   | 'AllTime'
+
+export interface AssetPriceReturnInfo {
+  usd: string
+  btc: number
+  change24Hour: number
+}
 
 export interface BuySendSwapObjectType {
   name: string
