@@ -221,7 +221,8 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled, DefaultAPIHiddenUnknownHost) {
   EXPECT_FALSE(has_api);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled, DefaultAPIFalseNoOpenSearch) {
+IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled,
+                       DISABLED_DefaultAPIFalseNoOpenSearch) {
   // Opensearch providers are only allowed in the root of a site,
   // See SearchEngineTabHelper::GenerateKeywordFromNavigationEntry.
   GURL url = https_server()->GetURL(kAllowedDomain, "/bravesearch.html");
