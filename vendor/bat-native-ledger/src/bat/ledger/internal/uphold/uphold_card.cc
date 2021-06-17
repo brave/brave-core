@@ -41,14 +41,14 @@ void UpholdCard::OnGetBATCardId(const type::Result result,
                                 const std::string& id,
                                 CreateCardCallback callback) const {
   if (result == type::Result::EXPIRED_TOKEN) {
-    BLOG(0, "Access token expired!");
-    ledger_->uphold()->DisconnectWallet();
     return callback(type::Result::EXPIRED_TOKEN, "");
   }
 
   if (result == type::Result::LEDGER_OK && !id.empty()) {
     return callback(type::Result::LEDGER_OK, id);
   }
+
+  BLOG(1, "Couldn't get BAT card ID!");
 
   CreateBATCard(
       std::bind(&UpholdCard::OnCreateBATCard, this, _1, _2, callback));
@@ -69,18 +69,17 @@ void UpholdCard::OnCreateBATCard(const type::Result result,
                                  const std::string& id,
                                  CreateCardCallback callback) const {
   if (result == type::Result::EXPIRED_TOKEN) {
-    BLOG(0, "Access token expired!");
-    ledger_->uphold()->DisconnectWallet();
     return callback(type::Result::EXPIRED_TOKEN, "");
   }
 
   if (result != type::Result::LEDGER_OK || id.empty()) {
-    BLOG(0, "Couldn't create the BAT card for the user!");
+    BLOG(0, "Couldn't create BAT card!");
     return callback(type::Result::LEDGER_ERROR, "");
   }
 
-  UpdateBATCardSettings(id, std::bind(&UpholdCard::OnUpdateBATCardSettings,
-                                      this, _1, id, callback));
+  UpdateBATCardSettings(
+      id,
+      std::bind(&UpholdCard::OnUpdateBATCardSettings, this, _1, id, callback));
 }
 
 void UpholdCard::UpdateBATCardSettings(
@@ -104,8 +103,6 @@ void UpholdCard::OnUpdateBATCardSettings(const type::Result result,
                                          const std::string& id,
                                          CreateCardCallback callback) const {
   if (result == type::Result::EXPIRED_TOKEN) {
-    BLOG(0, "Access token expired!");
-    ledger_->uphold()->DisconnectWallet();
     return callback(type::Result::EXPIRED_TOKEN, "");
   }
 
