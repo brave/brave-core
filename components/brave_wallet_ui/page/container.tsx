@@ -34,6 +34,7 @@ import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../components/buy-send-swap'
 import Onboarding from '../stories/screens/onboarding'
 import BackupWallet from '../stories/screens/backup-wallet'
+import { formatePrices } from '../utils/format-prices'
 
 type Props = {
   wallet: WalletState
@@ -122,11 +123,24 @@ function Container (props: Props) {
 
   const recoveryPhrase = (mnemonic || '').split(' ')
 
-  // Will need to add addition logic here and in the reducer
+  // Will need to add additional logic here and in the reducer
   // to fetch price history once the pricing api is read.
   const onChangeTimeline = (timeline: ChartTimelineType) => {
     props.walletPageActions.changeTimline(timeline)
   }
+
+  // Will need to add additional logic here to multiply
+  // the fullbalance by the current market price of "ETH" to start.
+  const portfolioBalance = React.useMemo(() => {
+    const balances = accounts.map((account) => {
+      return account.balance
+    })
+    const fullBalance = balances.reduce(function (a, b) {
+      return a + b
+    }, 0)
+    const grandTotal = fullBalance * 1
+    return formatePrices(grandTotal)
+  }, [accounts])
 
   const onSelectAsset = () => {
     // Logic to Select an Asset
@@ -170,7 +184,7 @@ function Container (props: Props) {
                   accounts={accounts}
                   onChangeTimeline={onChangeTimeline}
                   onSelectAsset={onSelectAsset}
-                  portfolioBalance='0'
+                  portfolioBalance={portfolioBalance}
                   selectedAsset={undefined}
                   selectedAssetPrice={undefined}
                   selectedAssetPriceHistory={[]}
