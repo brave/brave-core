@@ -1047,12 +1047,15 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CollapseBlockedImage) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_EQ(true, EvalJs(contents,
+  EXPECT_EQ(true, EvalJs(contents,
                          "setExpectations(0, 1, 0, 0);"
                          "addImage('ad_banner.png')"));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
-  ASSERT_EQ(true, EvalJs(contents,
+  // There is no way for JS to directly tell if an element has been collapsed,
+  // but the clientHeight property is zero for collapsed elements and nonzero
+  // otherwise.
+  EXPECT_EQ(true, EvalJs(contents,
                          "let i = document.getElementsByClassName('adImage');"
                          "i[0].clientHeight === 0"));
 }
@@ -1067,10 +1070,13 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CollapseBlockedIframe) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_EQ(true, EvalJs(contents, "addFrame('ad_banner.png')"));
+  EXPECT_EQ(true, EvalJs(contents, "addFrame('ad_banner.png')"));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
-  ASSERT_EQ(true, EvalJs(contents,
+  // There is no way for JS to directly tell if an element has been collapsed,
+  // but the clientHeight property is zero for collapsed elements and nonzero
+  // otherwise.
+  EXPECT_EQ(true, EvalJs(contents,
                          "let i = document.getElementsByClassName('adFrame');"
                          "i[0].clientHeight === 0"));
 }
@@ -1096,12 +1102,15 @@ IN_PROC_BROWSER_TEST_F(CollapseBlockedElementsFlagDisabledTest,
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_EQ(true, EvalJs(contents,
+  EXPECT_EQ(true, EvalJs(contents,
                          "setExpectations(0, 1, 0, 0);"
                          "addImage('ad_banner.png')"));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
-  ASSERT_EQ(true, EvalJs(contents,
+  // There is no way for JS to directly tell if an element has been collapsed,
+  // but the clientHeight property is zero for collapsed elements and nonzero
+  // otherwise.
+  EXPECT_EQ(true, EvalJs(contents,
                          "let i = document.getElementsByClassName('adImage');"
                          "i[0].clientHeight !== 0"));
 }
@@ -1117,10 +1126,13 @@ IN_PROC_BROWSER_TEST_F(CollapseBlockedElementsFlagDisabledTest,
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_EQ(true, EvalJs(contents, "addFrame('ad_banner.png')"));
+  EXPECT_EQ(true, EvalJs(contents, "addFrame('ad_banner.png')"));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
-  ASSERT_EQ(true, EvalJs(contents,
+  // There is no way for JS to directly tell if an element has been collapsed,
+  // but the clientHeight property is zero for collapsed elements and nonzero
+  // otherwise.
+  EXPECT_EQ(true, EvalJs(contents,
                          "let i = document.getElementsByClassName('adFrame');"
                          "i[0].clientHeight !== 0"));
 }
