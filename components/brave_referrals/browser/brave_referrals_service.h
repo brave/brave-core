@@ -73,7 +73,7 @@ class BraveReferralsService : public ProfileManagerObserver {
   void InitReferral();
   std::string BuildReferralInitPayload() const;
   std::string BuildReferralFinalizationCheckPayload() const;
-  void FetchReferralHeaders();
+  void SetReferralHeaders();
   void CheckForReferralFinalization();
   std::string FormatExtraHeaders(const base::Value* referral_headers,
                                  const GURL& url);
@@ -81,14 +81,6 @@ class BraveReferralsService : public ProfileManagerObserver {
   // Invoked from RepeatingTimer when finalization checks timer
   // fires.
   void OnFinalizationChecksTimerFired();
-
-  // Invoked from RepeatingTimer when referral headers timer fires.
-  void OnFetchReferralHeadersTimerFired();
-
-  // Invoked from SimpleURLLoader after download of referral headers
-  // is complete.
-  void OnReferralHeadersLoadComplete(
-      std::unique_ptr<std::string> response_body);
 
   // Invoked from SimpleURLLoader after referral init load
   // completes.
@@ -120,7 +112,6 @@ class BraveReferralsService : public ProfileManagerObserver {
   std::unique_ptr<network::SimpleURLLoader> referral_init_loader_;
   std::unique_ptr<network::SimpleURLLoader> referral_finalization_check_loader_;
   std::unique_ptr<base::OneShotTimer> initialization_timer_;
-  std::unique_ptr<base::RepeatingTimer> fetch_referral_headers_timer_;
   std::unique_ptr<base::RepeatingTimer> finalization_checks_timer_;
   ReferralInitializedCallback referral_initialized_callback_;
   PrefService* pref_service_;
