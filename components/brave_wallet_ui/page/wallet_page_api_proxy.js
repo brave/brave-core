@@ -23,7 +23,7 @@ class WalletPageApiProxy {
 
   notifyWalletBackupComplete () { }
 
-  /** @return {!walletUi.mojom.PageCallbackRouter} */
+  /** @return {!braveWallet.mojom.PageCallbackRouter} */
   getCallbackRouter () { }
 
   getWalletHandler () { }
@@ -32,15 +32,15 @@ class WalletPageApiProxy {
 /** @implements {WalletPageApiProxy} */
 export default class WalletPageApiProxyImpl {
   constructor() {
-    /** @type {!walletUi.mojom.PageCallbackRouter} */
-    this.callbackRouter = new walletUi.mojom.PageCallbackRouter();
+    /** @type {!braveWallet.mojom.PageCallbackRouter} */
+    this.callbackRouter = new braveWallet.mojom.PageCallbackRouter();
 
-    /** @type {!walletUi.mojom.PageHandlerRemote} */
-    this.page_handler = new walletUi.mojom.PageHandlerRemote();
-    /** @type {!walletUi.mojom.WalletHandlerRemote} */
-    this.wallet_handler = new walletUi.mojom.WalletHandlerRemote();
+    /** @type {!braveWallet.mojom.PageHandlerRemote} */
+    this.page_handler = new braveWallet.mojom.PageHandlerRemote();
+    /** @type {!braveWallet.mojom.WalletHandlerRemote} */
+    this.wallet_handler = new braveWallet.mojom.WalletHandlerRemote();
 
-    const factory = walletUi.mojom.PageHandlerFactory.getRemote();
+    const factory = braveWallet.mojom.PageHandlerFactory.getRemote();
     factory.createPageHandler(
       this.callbackRouter.$.bindNewPipeAndPassRemote(),
       this.page_handler.$.bindNewPipeAndPassReceiver(),
