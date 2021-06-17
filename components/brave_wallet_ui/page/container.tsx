@@ -27,7 +27,8 @@ import {
   NavTypes,
   WalletState,
   PageState,
-  WalletPageState
+  WalletPageState,
+  ChartTimelineType
 } from '../constants/types'
 import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../components/buy-send-swap'
@@ -55,7 +56,8 @@ function Container (props: Props) {
   const {
     showRecoveryPhrase,
     invalidMnemonic,
-    mnemonic
+    mnemonic,
+    selectedTimeline
   } = props.page
 
   const [view, setView] = React.useState<NavTypes>('crypto')
@@ -120,8 +122,10 @@ function Container (props: Props) {
 
   const recoveryPhrase = (mnemonic || '').split(' ')
 
-  const onChangeTimeline = () => {
-    // Logic to change timline
+  // Will need to add addition logic here and in the reducer
+  // to fetch price history once the pricing api is read.
+  const onChangeTimeline = (timeline: ChartTimelineType) => {
+    props.walletPageActions.changeTimline(timeline)
   }
 
   const onSelectAsset = () => {
@@ -170,7 +174,7 @@ function Container (props: Props) {
                   selectedAsset={undefined}
                   selectedAssetPrice={undefined}
                   selectedAssetPriceHistory={[]}
-                  selectedTimeline='24HRS'
+                  selectedTimeline={selectedTimeline}
                   transactions={[]}
                   userAssetList={[]}
                 />

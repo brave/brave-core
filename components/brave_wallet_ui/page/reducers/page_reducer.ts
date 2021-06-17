@@ -6,13 +6,14 @@
 
 import { createReducer } from 'redux-act'
 import * as Actions from '../actions/wallet_page_actions'
-import { PageState } from '../../constants/types'
+import { PageState, ChartTimelineType } from '../../constants/types'
 import { WalletCreatedPayloadType, RecoveryWordsAvailablePayloadType } from '../constants/action_types'
 
 const defaultState: PageState = {
   hasInitialized: false,
   showRecoveryPhrase: false,
-  invalidMnemonic: false
+  invalidMnemonic: false,
+  selectedTimeline: '24HRS'
 }
 
 const reducer = createReducer<PageState>({}, defaultState)
@@ -57,6 +58,13 @@ reducer.on(Actions.hasMnemonicError, (state: PageState, payload: boolean) => {
   return {
     ...state,
     invalidMnemonic: payload
+  }
+})
+
+reducer.on(Actions.changeTimline, (state: PageState, payload: ChartTimelineType) => {
+  return {
+    ...state,
+    selectedTimeline: payload
   }
 })
 

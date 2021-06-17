@@ -158,6 +158,7 @@ export interface PageState {
   hasInitialized: boolean
   showRecoveryPhrase: boolean
   invalidMnemonic: boolean
+  selectedTimeline: ChartTimelineType
   mnemonic?: string
 }
 
