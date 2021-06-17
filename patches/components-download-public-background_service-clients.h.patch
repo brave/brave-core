@@ -1,12 +1,12 @@
 diff --git a/components/download/public/background_service/clients.h b/components/download/public/background_service/clients.h
-index 6f0575113bade18b5daca40c227d293c2caddcef..49fdbe93214d90f8ff47741ea2cf5faa8dafbe27 100644
+index 6f0575113bade18b5daca40c227d293c2caddcef..47257161aae39751cbee18135303b5ab1472bbac 100644
 --- a/components/download/public/background_service/clients.h
 +++ b/components/download/public/background_service/clients.h
 @@ -45,6 +45,7 @@ enum class DownloadClient {
  
    // New clients should be added above here.
    BOUNDARY = 7,
-+  CUSTOM_LIST_SUBSCRIPTIONS = 256,
++  BRAVE_DOWNLOAD_CLIENT
  };
  
  using DownloadClientMap = std::map<DownloadClient, std::unique_ptr<Client>>;

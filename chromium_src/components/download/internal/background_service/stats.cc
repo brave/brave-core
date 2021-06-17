@@ -3,13 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#define LogServiceApiAction LogServiceApiAction_ChromiumImpl
-
+#define BRAVE_CLIENT_TO_HISTOGRAM_SUFFIX          \
+  case DownloadClient::CUSTOM_LIST_SUBSCRIPTIONS: \
+    return "CustomListSubscriptions";
 #include "../../../../../../components/download/internal/background_service/stats.cc"
-#undef LogServiceApiAction
-
-void LogServiceApiAction(DownloadClient client, ServiceApiAction action) {
-  if (client == DownloadClient::CUSTOM_LIST_SUBSCRIPTIONS)
-    return;
-  LogServiceApiAction_ChromiumImpl(client, action);
-}
