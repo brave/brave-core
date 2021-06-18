@@ -1,9 +1,10 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef CHROME_COMMON_CHROME_ICON_RESOURCES_WIN_H_
-#define CHROME_COMMON_CHROME_ICON_RESOURCES_WIN_H_
+#ifndef BRAVE_CHROMIUM_SRC_CHROME_COMMON_CHROME_ICON_RESOURCES_WIN_H_
+#define BRAVE_CHROMIUM_SRC_CHROME_COMMON_CHROME_ICON_RESOURCES_WIN_H_
 
 namespace icon_resources {
 
@@ -36,6 +37,12 @@ enum {
 
   // The Brave Beta application icon.
   kBetaApplicationIndex = 9,
+
+  // The various file type icon(ex, pdf).
+  kFileTypeIndex = 10,
+  kBetaFileTypeIndex = 11,
+  kDevFileTypeIndex = 12,
+  kSxSFileTypeIndex = 13,
 #else
   // The Brave Developer App Launcher icon.
   kAppLauncherIndex = 1,
@@ -47,4 +54,4 @@ enum {
 
 }  // namespace icon_resources
 
-#endif  // CHROME_COMMON_CHROME_ICON_RESOURCES_WIN_H_
+#endif  // BRAVE_CHROMIUM_SRC_CHROME_COMMON_CHROME_ICON_RESOURCES_WIN_H_
