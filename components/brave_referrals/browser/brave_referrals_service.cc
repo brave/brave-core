@@ -97,8 +97,6 @@ base::Value CreateReferralHeader(
     const char partner_name[],
     const std::vector<std::string>& partner_domains) {
   base::Value headers_dict(base::Value::Type::DICTIONARY);
-  base::Value cookie_names(base::Value::Type::LIST);
-  headers_dict.SetKey("cookieNames", std::move(cookie_names));
   base::Value domains(base::Value::Type::LIST);
   for (const auto& header : partner_domains)
     domains.Append(header);

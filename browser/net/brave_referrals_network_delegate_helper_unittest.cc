@@ -30,8 +30,6 @@ const char kTestReferralHeaders[] = R"(
          "X-Brave-Partner":"dowjones",
          "X-Invalid": "test"
       },
-      "cookieNames": [
-      ],
       "expiration":31536000000
     },
     {
@@ -45,8 +43,6 @@ const char kTestReferralHeaders[] = R"(
       "headers": {
          "X-Brave-Partner":"townsquare"
       },
-      "cookieNames":[
-      ],
       "expiration":31536000000
     }
   ])";
