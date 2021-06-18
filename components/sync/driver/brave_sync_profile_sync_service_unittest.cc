@@ -69,8 +69,8 @@ class BraveProfileSyncServiceTest : public testing::Test {
         .WillByDefault(Return(ByMove(std::move(controllers))));
 
     sync_service_ = std::make_unique<BraveProfileSyncService>(
-        sync_service_impl_bundle_.CreateBasicInitParams(
-            start_behavior, std::move(sync_client)),
+        sync_service_impl_bundle_.CreateBasicInitParams(start_behavior,
+                                                        std::move(sync_client)),
         std::make_unique<ProfileSyncServiceDelegateMock>());
   }
 
