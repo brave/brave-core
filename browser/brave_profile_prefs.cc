@@ -231,19 +231,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Hangouts
   registry->RegisterBooleanPref(kHangoutsEnabled, true);
 
-  // Media Router
-  registry->SetDefaultPrefValue(prefs::kEnableMediaRouter, base::Value(false));
-
-  // 1. We do not want to enable the MediaRouter pref directly, so
-  // using a proxy pref to handle Media Router setting
-  // 2. On upgrade users might have enabled Media Router and the pref should
-  // be set correctly, so we use feature switch to set the initial value
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  registry->RegisterBooleanPref(
-      kBraveEnabledMediaRouter,
-      FeatureSwitch::load_media_router_component_extension()->IsEnabled());
-#endif
-
   // Restore last profile on restart
   registry->SetDefaultPrefValue(
       prefs::kRestoreOnStartup,

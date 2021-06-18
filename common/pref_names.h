@@ -63,7 +63,6 @@ extern const char kBraveTodayWeeklySessionCount[];
 extern const char kBraveTodayWeeklyCardViewsCount[];
 extern const char kBraveTodayWeeklyCardVisitsCount[];
 extern const char kBraveTodayWeeklyDisplayAdViewedCount[];
-extern const char kBraveEnabledMediaRouter[];
 extern const char kAlwaysShowBookmarkBarOnNTP[];
 extern const char kAutocompleteEnabled[];
 extern const char kTopSiteSuggestionsEnabled[];
