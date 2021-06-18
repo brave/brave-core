@@ -3,8 +3,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
 group("prefs") {
-  deps = [
-    "//brave/components/brave_sync:prefs",
-  ]
+  deps = [ "//brave/components/brave_sync:prefs" ]
+  if (brave_wallet_enabled) {
+    deps += [ "//brave/components/brave_wallet/browser" ]
+  }
 }
