@@ -1,9 +1,9 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-index 508ad952d21afc1f3654e3a502739d97c1f6b778..204bb14737812c388282892d48c45c7dac47cec8 100644
+index 0108f1ffe1afecfa9e1ec6cd79c318396687390c..4b84ea1edd4ee5e2a91b0d87448d202d5d7f15bf 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-@@ -375,7 +375,7 @@ public abstract class ChromeActivity<C extends ChromeActivityComponent>
-     private ShareRegistrationCoordinator mShareRegistrationCoordinator;
+@@ -380,7 +380,7 @@ public abstract class ChromeActivity<C extends ChromeActivityComponent>
+     private boolean mLastPictureInPictureModeForTesting;
  
      protected ChromeActivity() {
 -        mIntentHandler = new IntentHandler(this, createIntentHandlerDelegate());

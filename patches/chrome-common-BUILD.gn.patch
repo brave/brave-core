@@ -10,7 +10,7 @@ index 195f082ff6d37c19e37d18170909126c0a8fc47b..4003c4e1ada82097969f7a78eaefc36e
  }
  
  source_set("ini_parser") {
-@@ -545,6 +546,7 @@ static_library("non_code_constants") {
+@@ -546,6 +548,7 @@ static_library("non_code_constants") {
      "//printing/buildflags",
      "//ui/base:buildflags",
    ]
