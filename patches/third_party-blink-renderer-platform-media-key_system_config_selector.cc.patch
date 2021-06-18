@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/platform/media/key_system_config_selector.cc b/third_party/blink/renderer/platform/media/key_system_config_selector.cc
+index 32cf756a08aaef366e8e70050746f39d729d40d3..b1563ecc155bbff8e03ae0b879c99bf91e1a5485 100644
+--- a/third_party/blink/renderer/platform/media/key_system_config_selector.cc
++++ b/third_party/blink/renderer/platform/media/key_system_config_selector.cc
+@@ -994,6 +994,7 @@ void KeySystemConfigSelector::SelectConfig(
+ 
+   key_systems_->UpdateIfNeeded();
+ 
++  KeySystems::GetInstance();
+   std::string key_system_ascii = key_system.Ascii();
+   if (!key_systems_->IsSupportedKeySystem(key_system_ascii)) {
+     std::move(cb).Run(Status::kUnsupportedKeySystem, nullptr, nullptr);
