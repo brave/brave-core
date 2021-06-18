@@ -271,12 +271,6 @@ CHAR_LIMIT guidelines:
       <message name="IDS_SIGN_IN_TO_CHROME" desc="Title for the button to sign in to Brave using one's Brave account. [CHAR_LIMIT=27]">
         Sign in to Brave
       </message>
-      <message name="IDS_PREFS_SYNC_AND_SERVICES" desc="Title for Settings section to manage data collection for Sync and Brave services. [CHAR_LIMIT=40]">
-        Sync and Brave services
-      </message>
-      <message name="IDS_PREFS_SYNC_AND_SERVICES_CONTENT_DESCRIPTION" desc="The accessibility text to read when the 'Sync and Brave services' Settings page is opened from the sign-in page. This text is attached to the 'Navigate Up' button shown at the top of the screen. The first two sentences describe the screen that is currently shown to the user, while 'Navigate up' is a description for the button this text is attached to. 'Navigate up' should match TC ID 6794660482873516081.">
-        You are currently customizing your Sync and Brave service settings. To finish turning on sync, tap the Confirm button near the bottom of the screen. Navigate up
-      </message>
       <message name="IDS_PREFS_MANAGE_SYNC_SETTINGS_CONTENT_DESCRIPTION" is_accessibility_with_no_ui="true" desc="The accessibility text to read when the 'Manage Sync Settings' page is opened from the sign-in page. This text is attached to the 'Navigate Up' button shown at the top of the screen. The first two sentences describe the screen that is currently shown to the user, while 'Navigate up' is a description for the button this text is attached to. 'Navigate up' should match TC ID 6794660482873516081.">
         You are currently customizing your Sync settings. To finish turning on sync, tap the Confirm button near the bottom of the screen. Navigate up
       </message>
@@ -286,9 +280,6 @@ CHAR_LIMIT guidelines:
       <message name="IDS_SIGNIN_PREF_SUMMARY" desc="Summary for the entry in Settings to sign in to Brave, explaining benefits of signing in.">
         Sync and personalize across devices
       </message>
-      <message name="IDS_SYNC_AND_SERVICES_SUMMARY_SYNC_ON" desc="Summary for 'Sync and Brave services' preference row when sync is enabled.">
-        Sync is on
-      </message>
       <message name="IDS_SIGN_IN_TO_CHROME_DISABLED_SUMMARY" desc="A descriptive line of text that appears under the 'Sign in to Brave' option, in Brave Settings on Android. The text explains why 'Sign in to Brave' is disabled. 'Administrator' refers to the IT administrator of the company/organization that owns the user’s device.">
         Disabled by the administrator of this device
       </message>
@@ -296,7 +287,7 @@ CHAR_LIMIT guidelines:
         Brave activity controls
       </message>
       <message name="IDS_SIGN_IN_GOOGLE_ACTIVITY_CONTROLS_SUMMARY" desc="Message of Brave activity controls preference in signed in accounts settings screen">
-        Control how your browsing history is used to personalize Search, ads, and more
+        Control how your browsing history is used to personalize Search and more
       </message>
       <message name="IDS_SIGN_IN_GOOGLE_ACTIVITY_CONTROLS_SUMMARY_CHILD_ACCOUNT" desc="Message of Brave activity controls preference in signed in accounts settings screen">
         Control how your browsing history is used to personalize Search and more
@@ -313,15 +304,6 @@ CHAR_LIMIT guidelines:
       </message>
       <message name="IDS_SYNC_CATEGORY_TITLE" desc="Title for the group of Sync-related entries in Settings. This group contains preferences for data tied to user's Brave sync chain.">
         Sync
-      </message>
-      <message name="IDS_SYNC_SWITCH_TITLE" desc="Title for the switch preference that enables sync. Displayed in 'Sync and Brave services' screen.">
-        Sync your Brave data
-      </message>
-      <message name="IDS_MANAGE_SYNC_TITLE" desc="Title for the preference row that opens the screen that allows configuring separate data types. Displayed in 'Sync and Brave services' screen.">
-        Manage sync
-      </message>
-      <message name="IDS_SERVICES_CATEGORY_TITLE" desc="Title for the group of preferences that control non-personalized Brave services. This group contains preferences for data that is not tied to user's Brave sync chain.">
-        Other Brave services
       </message>
       <message name="IDS_PREFS_GOOGLE_SERVICES" desc="Title for the group of preferences that control non-personalized Brave services. This group contains preferences for data that is not tied to user's Brave sync chain. [CHAR_LIMIT=40]">
         Brave services
@@ -1616,8 +1598,11 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SYNC_ANDROID_SYSTEM_SYNC_DISABLED" desc="Message to show when Android system-level sync flag is disabled">
         Android system sync disabled
       </message>
-      <message name="IDS_SYNC_IS_DISABLED" desc="Message to show when Brave sync is disabled">
-        Sync is off
+      <message name="IDS_SYNC_ON" desc="The text is displayed as a gray subtitle of a settings item titled 'Sync' and indicates that sync is on.">
+        On
+      </message>
+      <message name="IDS_SYNC_OFF" desc="The text is displayed as a gray subtitle of a settings item titled 'Sync' and indicates that sync is off.">
+        Off
       </message>
       <message name="IDS_SYNC_DATA_TYPES_OFF" desc="Message to show when all sync data types are off">
         No data selected to sync
@@ -2217,14 +2202,8 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_CONTEXTMENU_TRANSLATE_IMAGE_WITH_GOOGLE_LENS" desc="Context sensitive chip for deep linking into google lens for translate results. [CHAR_LIMIT=30]">
           Translate image with Brave Lens <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
-      <message name="IDS_CONTEXTMENU_SHOP_SIMILAR_PRODUCTS" desc="Context sensitive menu item for deep linking into google lens for shopping results. [CHAR_LIMIT=30]">
-        Shop similar products <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
-      </message>
       <message name="IDS_CONTEXTMENU_SHOP_IMAGE_WITH_GOOGLE_LENS" desc="Context sensitive menu item for deep linking into google lens for shopping results. [CHAR_LIMIT=30]">
         Shop image with Brave Lens <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
-      </message>
-      <message name="IDS_CONTEXTMENU_SEARCH_SIMILAR_PRODUCTS" desc="Context sensitive menu item for deep linking into google lens for shopping results. [CHAR_LIMIT=30]">
-        Search similar products <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
       <message name="IDS_CONTEXTMENU_SEARCH_WEB_FOR_IMAGE" desc="Context sensitive menu item for search-for-Image command in a new tab. [CHAR_LIMIT=30]">
         Search <ph name="SEARCH_ENGINE">%1$s<ex>Brave</ex></ph> for this image
@@ -2673,7 +2652,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Sync your passwords, history &amp; more on all devices
       </message>
       <message name="IDS_SIGNIN_SYNC_DESCRIPTION" desc="Description of Sync feature for the screen that asks users to sign-in and turn on Sync.">
-        Brave may use your history to personalize Search, ads, and other Brave services
+        Brave may use your history to personalize Search and other Brave services
       </message>
       <message name="IDS_SIGNIN_SYNC_DESCRIPTION_CHILD_ACCOUNT" desc="Description of Sync feature for the screen that asks users to sign-in and turn on Sync.">
         Brave may use your history to personalize Search and other Brave services
@@ -4111,6 +4090,18 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_SEND_TAB_TO_SELF_DEVICE_LAST_ACTIVE_TODAY" desc="String displayed in the device picker indicating the last time the device was synced to the user's account today.">
         Active today
       </message>
+      <message name="IDS_SEND_TAB_TO_SELF_DEVICE_TYPE_GENERIC" desc="String displayed in the toast message when the type of the selected device can't be determined.">
+        device
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_DEVICE_TYPE_PHONE" desc="String displayed in the toast message when the selected device is a phone.">
+        phone
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_DEVICE_TYPE_COMPUTER" desc="String displayed in the toast message when the selected device is a computer.">
+        computer
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_V2_TOAST" desc="Toast message shown after a device is selected from the device picker.">
+          Page sent. To see it, open Brave on your <ph name="device_type">%1$s<ex>phone</ex></ph>
+      </message>
 
       <!-- Sharing -->
       <message name="IDS_SHARING_SENDING_NOTIFICATION_TITLE" desc="Title text displayed in a sharing sending notification.">
@@ -4741,6 +4732,34 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_CSN_PROVIDER_LABEL" desc="Label that shows the source of a list of clickalbe URLs. This should have a new line character in the middle." translateable="false">
       Results from\n<ph name="PROVIDER">%1$s</ph>
+      </message>
+
+      <!-- WebID Account Selection strings -->
+      <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_SINGLE" desc="Header for Account Selection sheet where users only have a single account to select." translateable="false">
+        Create a <ph name="SITE_NAME">%1$s<ex>airbnb.com</ex></ph> account
+      </message>
+      <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE" desc="Header for Account Selection sheet where users can pick an account to select." translateable="false">
+        Create a <ph name="SITE_NAME">%1$s<ex>airbnb.com</ex></ph> account…
+      </message>
+      <message name="IDS_ACCOUNT_SELECTION_CONTENT_DESCRIPTION" desc="Accessibility string read when the Account Selection bottom sheet is opened. It describes the bottom sheet where a user can pick an account." translateable="false">
+        List of accounts to be selected.
+      </message>
+      <message name="IDS_ACCOUNT_SELECTION_SHEET_HALF_HEIGHT" desc="Accessibility string read when the Account Selection bottom sheet showing a list of the user's accounts is opened at half height. The sheet will occupy the bottom half the screen." translateable="false">
+        List of accounts to be selected opened at half height.
+      </message>
+      <message name="IDS_ACCOUNT_SELECTION_SHEET_FULL_HEIGHT" desc="Accessibility string read when the Account Selection bottom sheet showing a list of the user's accounts is opened at full height. The sheet will occupy the entire screen." translateable="false">
+        List of accounts to be selected opened at full height.
+      </message>
+      <message name="IDS_ACCOUNT_SELECTION_SHEET_CLOSED" desc="Accessibility string read when the Account Selection bottom sheet showing a list of the user's accounts is closed." translateable="false">
+        List of accounts to be selected is closed.
+      </message>
+
+      <!-- Content Creation strings -->
+      <message name="IDS_CONTENT_CREATION_NOTE_TITLE_FOR_SHARE" desc="The title of the share sheet when sharing a stylized note. The date will be formatted according to the current locale.">
+        Stylized highlight <ph name="CURRENT_DATE">%1$s<ex>2020-09-16</ex></ph>
+      </message>
+      <message name="IDS_CONTENT_CREATION_NOTE_FILENAME_PREFIX" desc="Prefix used to name files when saving a Note's image representation. Underscores need to be used in place of whitespaces to avoid breaking the file path. Random numbers will be appended to this suffix to guarantee uniqueness.">
+        chrome_stylized_highlight_
       </message>
     </messages>
   </release>
