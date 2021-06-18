@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/startup/startup_tab_provider.cc b/chrome/browser/ui/startup/startup_tab_provider.cc
-index d3b1e2ee6275761ae93a96f0d07bce085e30b897..65a73b5c8c2f4ed85ff6be0b882fe4509d937f22 100644
+index c9ac90ae77b58eec5bbd077606a2ddae21e1c17d..4433f4ee61b0e2d2d28d95bd09fbbab7af54b769 100644
 --- a/chrome/browser/ui/startup/startup_tab_provider.cc
 +++ b/chrome/browser/ui/startup/startup_tab_provider.cc
-@@ -145,6 +145,7 @@ StartupTabs StartupTabProviderImpl::GetExtensionCheckupTabs(
+@@ -147,6 +147,7 @@ StartupTabs StartupTabProviderImpl::GetExtensionCheckupTabs(
  bool StartupTabProviderImpl::CanShowWelcome(bool is_signin_allowed,
                                              bool is_supervised_user,
                                              bool is_force_signin_enabled) {
