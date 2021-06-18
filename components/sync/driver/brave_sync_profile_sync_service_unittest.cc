@@ -13,7 +13,7 @@
 #include "components/sync/driver/data_type_manager_impl.h"
 #include "components/sync/driver/fake_data_type_controller.h"
 #include "components/sync/driver/fake_sync_api_component_factory.h"
-#include "components/sync/driver/profile_sync_service_bundle.h"
+#include "components/sync/driver/sync_service_impl_bundle.h"
 #include "components/sync/test/engine/fake_sync_engine.h"
 #include "components/sync/test/engine/fake_sync_manager.h"
 #include "content/public/test/browser_task_environment.h"
@@ -45,12 +45,12 @@ class ProfileSyncServiceDelegateMock : public ProfileSyncServiceDelegate {
 class BraveProfileSyncServiceTest : public testing::Test {
  public:
   BraveProfileSyncServiceTest()
-      : brave_sync_prefs_(profile_sync_service_bundle_.pref_service()),
-        sync_prefs_(profile_sync_service_bundle_.pref_service()) {
-    profile_sync_service_bundle_.identity_test_env()
+      : brave_sync_prefs_(sync_service_impl_bundle_.pref_service()),
+        sync_prefs_(sync_service_impl_bundle_.pref_service()) {
+    sync_service_impl_bundle_.identity_test_env()
         ->SetAutomaticIssueOfAccessTokens(true);
     brave_sync::Prefs::RegisterProfilePrefs(
-        profile_sync_service_bundle_.pref_service()->registry());
+        sync_service_impl_bundle_.pref_service()->registry());
   }
 
   ~BraveProfileSyncServiceTest() override { sync_service_->Shutdown(); }
@@ -64,12 +64,12 @@ class BraveProfileSyncServiceTest : public testing::Test {
     }
 
     std::unique_ptr<SyncClientMock> sync_client =
-        profile_sync_service_bundle_.CreateSyncClientMock();
+        sync_service_impl_bundle_.CreateSyncClientMock();
     ON_CALL(*sync_client, CreateDataTypeControllers(_))
         .WillByDefault(Return(ByMove(std::move(controllers))));
 
     sync_service_ = std::make_unique<BraveProfileSyncService>(
-        profile_sync_service_bundle_.CreateBasicInitParams(
+        sync_service_impl_bundle_.CreateBasicInitParams(
             start_behavior, std::move(sync_client)),
         std::make_unique<ProfileSyncServiceDelegateMock>());
   }
@@ -81,7 +81,7 @@ class BraveProfileSyncServiceTest : public testing::Test {
   BraveProfileSyncService* brave_sync_service() { return sync_service_.get(); }
 
   FakeSyncApiComponentFactory* component_factory() {
-    return profile_sync_service_bundle_.component_factory();
+    return sync_service_impl_bundle_.component_factory();
   }
 
   FakeSyncEngine* engine() {
@@ -90,7 +90,7 @@ class BraveProfileSyncServiceTest : public testing::Test {
 
  private:
   content::BrowserTaskEnvironment task_environment_;
-  ProfileSyncServiceBundle profile_sync_service_bundle_;
+  SyncServiceImplBundle sync_service_impl_bundle_;
   brave_sync::Prefs brave_sync_prefs_;
   SyncPrefs sync_prefs_;
   std::unique_ptr<BraveProfileSyncService> sync_service_;
