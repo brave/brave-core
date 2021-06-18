@@ -5,6 +5,7 @@
 
 import 'chrome://resources/mojo/mojo/public/js/mojo_bindings_lite.js'
 import 'chrome://resources/mojo/url/mojom/url.mojom-lite.js'
+import 'chrome://resources/mojo/mojo/public/mojom/base/time.mojom-lite.js';
 import 'chrome://resources/mojo/brave/components/brave_wallet/common/brave_wallet.mojom-lite.js'
 
 import {addSingletonGetter} from 'chrome://resources/js/cr.m.js'

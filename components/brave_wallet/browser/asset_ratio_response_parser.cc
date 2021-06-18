@@ -56,8 +56,9 @@ bool ParseAssetPrice(const std::string& json, std::string* price) {
   return true;
 }
 
-bool ParseAssetPriceHistory(const std::string& json,
-                            std::vector<AssetTimePrice>* values) {
+bool ParseAssetPriceHistory(
+    const std::string& json,
+    std::vector<brave_wallet::mojom::AssetTimePricePtr>* values) {
   DCHECK(values);
 
   // {
@@ -108,7 +109,10 @@ bool ParseAssetPriceHistory(const std::string& json,
     }
 
     base::Time date = base::Time::FromJsTime(date_dbl);
-    values->push_back(AssetTimePrice(date, base::NumberToString(price)));
+    auto asset_time_price = brave_wallet::mojom::AssetTimePrice::New();
+    asset_time_price->date = date;
+    asset_time_price->price = base::NumberToString(price);
+    values->push_back(std::move(asset_time_price));
   }
 
   return true;

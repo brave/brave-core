@@ -7,6 +7,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -19,6 +20,8 @@
 #include "net/test/embedded_test_server/http_response.h"
 
 // npm run test -- brave_browser_tests --filter=AssetRatioControllerTest.*
+
+using brave_wallet::mojom::AssetTimePrice;
 
 namespace {
 
@@ -87,11 +90,9 @@ class AssetRatioControllerTest : public InProcessBrowserTest {
     ASSERT_EQ(expected_success_, success);
   }
 
-  std::vector<brave_wallet::AssetTimePrice> values;
-
-  void OnGetPriceHistory(
-      bool success,
-      const std::vector<brave_wallet::AssetTimePrice>& price_history_response) {
+  void OnGetPriceHistory(bool success,
+                         std::vector<brave_wallet::mojom::AssetTimePricePtr>
+                             price_history_response) {
     if (wait_for_request_) {
       wait_for_request_->Quit();
     }
@@ -111,13 +112,14 @@ class AssetRatioControllerTest : public InProcessBrowserTest {
   }
 
   void WaitForPriceHistoryResponse(
-      const std::vector<brave_wallet::AssetTimePrice>&
+      std::vector<brave_wallet::mojom::AssetTimePricePtr>
           expected_price_history_response,
       bool expected_success) {
     if (wait_for_request_) {
       return;
     }
-    expected_price_history_response_ = expected_price_history_response;
+    expected_price_history_response_ =
+        std::move(expected_price_history_response);
     expected_success_ = expected_success;
     wait_for_request_.reset(new base::RunLoop);
     wait_for_request_->Run();
@@ -144,7 +146,8 @@ class AssetRatioControllerTest : public InProcessBrowserTest {
 
   bool expected_success_;
   std::string expected_price_response_;
-  std::vector<brave_wallet::AssetTimePrice> expected_price_history_response_;
+  std::vector<brave_wallet::mojom::AssetTimePricePtr>
+      expected_price_history_response_;
 
   std::unique_ptr<base::RunLoop> wait_for_request_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
@@ -177,17 +180,20 @@ IN_PROC_BROWSER_TEST_F(AssetRatioControllerTest, GetPriceHistory) {
       base::BindOnce(&AssetRatioControllerTest::OnGetPriceHistory,
                      base::Unretained(this)));
 
-  std::vector<brave_wallet::AssetTimePrice> expected_price_history_response;
+  std::vector<brave_wallet::mojom::AssetTimePricePtr>
+      expected_price_history_response;
 
-  base::Time date = base::Time::FromJsTime(1622733088498);
-  expected_price_history_response.push_back(
-      brave_wallet::AssetTimePrice(date, "0.8201346624954003"));
+  auto asset_time_price = brave_wallet::mojom::AssetTimePrice::New();
+  asset_time_price->date = base::Time::FromJsTime(1622733088498);
+  asset_time_price->price = "0.8201346624954003";
+  expected_price_history_response.push_back(std::move(asset_time_price));
 
-  date = base::Time::FromJsTime(1622737203757);
-  expected_price_history_response.push_back(
-      brave_wallet::AssetTimePrice(date, "0.8096978545029869"));
+  asset_time_price = brave_wallet::mojom::AssetTimePrice::New();
+  asset_time_price->date = base::Time::FromJsTime(1622737203757);
+  asset_time_price->price = "0.8096978545029869";
+  expected_price_history_response.push_back(std::move(asset_time_price));
 
-  WaitForPriceHistoryResponse(expected_price_history_response, true);
+  WaitForPriceHistoryResponse(std::move(expected_price_history_response), true);
 }
 
 IN_PROC_BROWSER_TEST_F(AssetRatioControllerTest, GetPriceHistoryServerError) {
@@ -198,6 +204,8 @@ IN_PROC_BROWSER_TEST_F(AssetRatioControllerTest, GetPriceHistoryServerError) {
       base::Time::Now(),
       base::BindOnce(&AssetRatioControllerTest::OnGetPriceHistory,
                      base::Unretained(this)));
-  std::vector<brave_wallet::AssetTimePrice> expected_price_history_response;
-  WaitForPriceHistoryResponse(expected_price_history_response, false);
+  std::vector<brave_wallet::mojom::AssetTimePricePtr>
+      expected_price_history_response;
+  WaitForPriceHistoryResponse(std::move(expected_price_history_response),
+                              false);
 }

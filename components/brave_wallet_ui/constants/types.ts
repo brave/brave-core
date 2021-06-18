@@ -163,8 +163,23 @@ export interface UnlockWalletReturnInfo {
   isWalletUnlocked: boolean
 }
 
+export enum AssetPriceTimeframe {
+  Live = 0,
+  OneDay = 1,
+  OneWeek = 2,
+  OneMonth = 3,
+  ThreeMonths = 4,
+  OneYear = 5,
+  All = 6
+}
+
 export interface GetAssetPriceReturnInfo {
   price: string
+}
+
+export interface GetAssetPriceHistoryReturnInfo {
+  price: string,
+  date: string
 }
 
 export interface RestoreWalletReturnInfo {
@@ -176,6 +191,7 @@ export interface WalletAPIHandler {
   lockWallet: () => Promise<void>
   unlockWallet: (password: string) => Promise<UnlockWalletReturnInfo>
   getAssetPrice: (asset: string) => Promise<GetAssetPriceReturnInfo>
+  getAssetPriceHistory: (asset: string, timeframe: AssetPriceTimeframe) => Promise<GetAssetPriceHistoryReturnInfo>
   addFavoriteApp: (appItem: AppObjectType) => Promise<void>
   removeFavoriteApp: (appItem: AppObjectType) => Promise<void>
   restoreWallet: (mnemonic: string, password: string) => Promise<RestoreWalletReturnInfo>
@@ -184,4 +200,8 @@ export interface WalletAPIHandler {
 export interface RecoveryObject {
   value: string,
   id: number
+}
+
+export interface MojoTime {
+  internalValue: number
 }

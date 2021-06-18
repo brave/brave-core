@@ -5,10 +5,9 @@
 
 #include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
 
-#include <time.h>
-
 #include <utility>
 
+#include "base/i18n/time_formatting.h"
 #include "base/strings/stringprintf.h"
 #include "net/base/escape.h"
 #include "net/base/load_flags.h"
@@ -39,17 +38,13 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
-std::string DateToString(const base::Time time) {
-  time_t ts = time.ToTimeT();
-  tm timestamp;
-#ifdef OS_WIN
-  gmtime_s(&timestamp, &ts);
-#else
-  gmtime_r(&ts, &timestamp);
-#endif
-  char sz[2048];
-  strftime(sz, sizeof(sz), "%G", &timestamp);
-  return sz;
+std::string DateToString(const base::Time& time) {
+  base::Time::Exploded exploded_time;
+  time.UTCExplode(&exploded_time);
+  return base::StringPrintf("%04d-%02d-%02dT%02d:%02d:%02d", exploded_time.year,
+                            exploded_time.month, exploded_time.day_of_month,
+                            exploded_time.hour, exploded_time.minute,
+                            exploded_time.second);
 }
 
 }  // namespace
@@ -139,17 +134,17 @@ void AssetRatioController::OnGetPriceHistory(
     const int status,
     const std::string& body,
     const std::map<std::string, std::string>& headers) {
-  std::vector<AssetTimePrice> values;
+  std::vector<brave_wallet::mojom::AssetTimePricePtr> values;
   if (status < 200 || status > 299) {
-    std::move(callback).Run(false, values);
+    std::move(callback).Run(false, std::move(values));
     return;
   }
   if (!ParseAssetPriceHistory(body, &values)) {
-    std::move(callback).Run(false, values);
+    std::move(callback).Run(false, std::move(values));
     return;
   }
 
-  std::move(callback).Run(true, values);
+  std::move(callback).Run(true, std::move(values));
 }
 
 }  // namespace brave_wallet

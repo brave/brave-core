@@ -11,14 +11,14 @@
 #include <vector>
 
 #include "base/time/time.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
-using AssetTimePrice = std::pair<base::Time, std::string>;
-
 bool ParseAssetPrice(const std::string& json, std::string* price);
-bool ParseAssetPriceHistory(const std::string& json,
-                            std::vector<AssetTimePrice>* values);
+bool ParseAssetPriceHistory(
+    const std::string& json,
+    std::vector<brave_wallet::mojom::AssetTimePricePtr>* values);
 
 }  // namespace brave_wallet
 

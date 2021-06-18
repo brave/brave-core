@@ -38,12 +38,21 @@ class WalletHandler : public brave_wallet::mojom::WalletHandler {
   void LockWallet() override;
   void UnlockWallet(const std::string& password, UnlockWalletCallback) override;
   void GetAssetPrice(const std::string& asset, GetAssetPriceCallback) override;
+  void GetAssetPriceHistory(const std::string& asset,
+                            brave_wallet::mojom::AssetPriceTimeframe timeframe,
+                            GetAssetPriceHistoryCallback) override;
   void AddFavoriteApp(brave_wallet::mojom::AppItemPtr app_item) override;
   void RemoveFavoriteApp(brave_wallet::mojom::AppItemPtr app_item) override;
   void NotifyWalletBackupComplete() override;
 
  private:
-  void OnGetPrice(GetAssetPriceCallback callback, bool success, const std::string& price);
+  void OnGetPrice(GetAssetPriceCallback callback,
+                  bool success,
+                  const std::string& price);
+  void OnGetPriceHistory(
+      GetAssetPriceHistoryCallback callback,
+      bool success,
+      std::vector<brave_wallet::mojom::AssetTimePricePtr> values);
 
   // TODO(bbondy): This needs to be persisted in prefs
   std::vector<brave_wallet::mojom::AppItemPtr> favorite_apps;
