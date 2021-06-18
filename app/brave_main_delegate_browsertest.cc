@@ -4,13 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/domain_reliability/service_factory.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/profile_picker.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_switches.h"
-#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/chrome_test_utils.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
 #include "components/embedder_support/switches.h"
@@ -31,7 +27,15 @@
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
 
-using BraveMainDelegateBrowserTest = InProcessBrowserTest;
+#if defined(OS_ANDROID)
+#include "chrome/test/base/android/android_browser_test.h"
+#else
+#include "chrome/browser/ui/profile_picker.h"
+#include "chrome/browser/ui/ui_features.h"
+#include "chrome/test/base/in_process_browser_test.h"
+#endif
+
+using BraveMainDelegateBrowserTest = PlatformBrowserTest;
 
 const char kBraveOriginTrialsPublicKey[] =
     "bYUKPJoPnCxeNvu72j4EmPuK7tr1PAC7SHh8ld9Mw3E=,"
@@ -49,7 +53,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisableHyperlinkAuditing) {
   EXPECT_TRUE(
       base::CommandLine::ForCurrentProcess()->HasSwitch(switches::kNoPings));
   content::WebContents* contents =
-      browser()->tab_strip_model()->GetActiveWebContents();
+      chrome_test_utils::GetActiveWebContents(this);
   const blink::web_pref::WebPreferences prefs =
       contents->GetOrCreateWebPreferences();
   EXPECT_FALSE(prefs.hyperlink_auditing_enabled);
@@ -65,30 +69,32 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, OriginTrialsTest) {
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   const base::Feature* disabled_features[] = {
-      &autofill::features::kAutofillEnableAccountWalletStorage,
-      &autofill::features::kAutofillServerCommunication,
-      &blink::features::kFledgeInterestGroupAPI,
-      &blink::features::kFledgeInterestGroups,
-      &blink::features::kHandwritingRecognitionWebPlatformApi,
-      &blink::features::kHandwritingRecognitionWebPlatformApiFinch,
-      &blink::features::kInterestCohortAPIOriginTrial,
-      &blink::features::kInterestCohortFeaturePolicy,
-      &blink::features::kTextFragmentAnchor,
-      &features::kDirectSockets,
-      &features::kIdleDetection,
-      &features::kLangClientHintHeader,
-      &features::kNotificationTriggers,
-      &features::kSignedExchangePrefetchCacheForNavigations,
-      &features::kSignedExchangeSubresourcePrefetch,
-      &features::kSubresourceWebBundles,
-      &features::kWebOTP,
-      &federated_learning::kFederatedLearningOfCohorts,
-      &federated_learning::kFlocIdComputedEventLogging,
-      &kEnableProfilePickerOnStartupFeature,
-      &media::kLiveCaption,
-      &net::features::kFirstPartySets,
-      &network::features::kTrustTokens,
-      &network_time::kNetworkTimeServiceQuerying,
+    &autofill::features::kAutofillEnableAccountWalletStorage,
+    &autofill::features::kAutofillServerCommunication,
+    &blink::features::kFledgeInterestGroupAPI,
+    &blink::features::kFledgeInterestGroups,
+    &blink::features::kHandwritingRecognitionWebPlatformApi,
+    &blink::features::kHandwritingRecognitionWebPlatformApiFinch,
+    &blink::features::kInterestCohortAPIOriginTrial,
+    &blink::features::kInterestCohortFeaturePolicy,
+    &blink::features::kTextFragmentAnchor,
+    &features::kDirectSockets,
+    &features::kIdleDetection,
+    &features::kLangClientHintHeader,
+    &features::kNotificationTriggers,
+    &features::kSignedExchangePrefetchCacheForNavigations,
+    &features::kSignedExchangeSubresourcePrefetch,
+    &features::kSubresourceWebBundles,
+    &features::kWebOTP,
+    &federated_learning::kFederatedLearningOfCohorts,
+    &federated_learning::kFlocIdComputedEventLogging,
+#if !defined(OS_ANDROID)
+    &kEnableProfilePickerOnStartupFeature,
+#endif
+    &media::kLiveCaption,
+    &net::features::kFirstPartySets,
+    &network::features::kTrustTokens,
+    &network_time::kNetworkTimeServiceQuerying,
   };
 
   for (const auto* feature : disabled_features)
