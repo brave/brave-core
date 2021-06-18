@@ -8,6 +8,7 @@
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 
+#include "base/logging.h"
 #include "base/strings/string_util.h"
 #include "base/system/sys_info.h"
 #include "base/threading/thread_restrictions.h"
