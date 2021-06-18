@@ -116,6 +116,9 @@ void WelcomeDOMHandler::HandleRecordP3A(const base::ListValue* args) {
 // Converts Chromium country ID to 2 digit country string
 // For more info see src/components/country_codes/country_codes.h
 std::string CountryIDToCountryString(int country_id) {
+  if (country_id == country_codes::kCountryIDUnknown)
+    return std::string();
+
   char chars[3] = {(country_id >> 8) & 0xFF, country_id & 0xFF, 0};
   std::string country_string(chars);
   DCHECK_EQ(country_string.size(), 2U);
