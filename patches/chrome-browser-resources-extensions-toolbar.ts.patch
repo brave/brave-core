@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/resources/extensions/toolbar.js b/chrome/browser/resources/extensions/toolbar.js
-index 182a0927cb15c0c0575fe5dd43850b5b4674895f..bc01b71335b8bd50cc35fcc78302c446abf796b4 100644
---- a/chrome/browser/resources/extensions/toolbar.js
-+++ b/chrome/browser/resources/extensions/toolbar.js
+diff --git a/chrome/browser/resources/extensions/toolbar.ts b/chrome/browser/resources/extensions/toolbar.ts
+index f8dd45f2b4851cd4ec476e34d2d27acca25bb88d..537540599d03baa613c6228633fdabf3d4aaa33f 100644
+--- a/chrome/browser/resources/extensions/toolbar.ts
++++ b/chrome/browser/resources/extensions/toolbar.ts
 @@ -4,7 +4,7 @@
  
  import 'chrome://resources/cr_elements/cr_button/cr_button.m.js';
