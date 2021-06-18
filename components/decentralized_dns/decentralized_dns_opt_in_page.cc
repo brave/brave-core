@@ -65,7 +65,7 @@ void DecentralizedDnsOptInPage::CommandReceived(const std::string& command) {
 }
 
 void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
-    base::DictionaryValue* load_time_data) {
+    base::Value* load_time_data) {
   const std::vector<std::u16string> message_params = {
       u"<a "
       u"href='https://www.cloudflare.com/en-ca/"
@@ -79,39 +79,39 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
   };
 
   if (IsUnstoppableDomainsTLD(request_url_)) {
-    load_time_data->SetString(
+    load_time_data->SetStringKey(
         "tabTitle",
         l10n_util::GetStringUTF16(IDS_UNSTOPPABLE_DOMAINS_OPT_IN_TITLE));
-    load_time_data->SetString(
+    load_time_data->SetStringKey(
         "heading",
         l10n_util::GetStringUTF16(IDS_UNSTOPPABLE_DOMAINS_OPT_IN_HEADING));
 
-    load_time_data->SetString(
+    load_time_data->SetStringKey(
         "primaryParagraph",
         base::ReplaceStringPlaceholders(
             l10n_util::GetStringUTF16(
                 IDS_UNSTOPPABLE_DOMAINS_OPT_IN_PRIMARY_PARAGRAPH),
             message_params, nullptr));
   } else {
-    load_time_data->SetString("tabTitle",
-                              l10n_util::GetStringUTF16(IDS_ENS_OPT_IN_TITLE));
-    load_time_data->SetString(
+    load_time_data->SetStringKey(
+        "tabTitle", l10n_util::GetStringUTF16(IDS_ENS_OPT_IN_TITLE));
+    load_time_data->SetStringKey(
         "heading", l10n_util::GetStringUTF16(IDS_ENS_OPT_IN_HEADING));
-    load_time_data->SetString(
+    load_time_data->SetStringKey(
         "primaryParagraph",
         base::ReplaceStringPlaceholders(
             l10n_util::GetStringUTF16(IDS_ENS_OPT_IN_PRIMARY_PARAGRAPH),
             message_params, nullptr));
   }
 
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "primaryButtonText",
       l10n_util::GetStringUTF16(IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_BUTTON));
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "dontProceedButtonText",
       l10n_util::GetStringUTF16(
           IDS_DECENTRALIZED_DNS_OPT_IN_DONT_PROCEED_BUTTON));
-  load_time_data->SetString("finalParagraph", std::u16string());
+  load_time_data->SetStringKey("finalParagraph", std::u16string());
 }
 
 int DecentralizedDnsOptInPage::GetHTMLTemplateId() {
