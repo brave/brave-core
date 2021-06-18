@@ -241,6 +241,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         // Set proper active DSE whenever brave returns to foreground.
         // If active tab is private, set private DSE as an active DSE.
         BraveSearchEngineUtils.updateActiveDSE(tab.isIncognito());
+        BraveStatsUtil.removeShareStatsFile();
     }
 
     @Override
@@ -732,9 +733,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
             if (! TextUtils.isEmpty(open_url)) {
                 openNewOrSelectExistingTab(open_url);
             }
-        } else if (resultCode == RESULT_OK
-                && requestCode == BraveStatsUtil.SHARE_STATS_REQUEST_CODE) {
-            BraveStatsUtil.removeShareStatsFile();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

@@ -198,8 +198,7 @@ public class BraveStatsUtil {
             shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             if (BraveActivity.getBraveActivity() != null) {
-                BraveActivity.getBraveActivity().startActivityForResult(
-                        shareIntent, SHARE_STATS_REQUEST_CODE);
+                BraveActivity.getBraveActivity().startActivity(shareIntent);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -208,6 +207,7 @@ public class BraveStatsUtil {
 
     public static void removeShareStatsFile() {
         Context context = ContextUtils.getApplicationContext();
+
         if (shareStatsFile.startsWith("content://")) {
             ContentResolver contentResolver = context.getContentResolver();
             contentResolver.delete(Uri.parse(shareStatsFile), null, null);
