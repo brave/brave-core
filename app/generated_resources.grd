@@ -7339,6 +7339,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TOOLBAR_BUTTON_SEND_TAB_TO_SELF_BUTTON_LABEL" desc="The label for the button in the received tab dialog shown from the toolbar button.">
         Open in New Tab
       </message>
+      <message name="IDS_TOOLBAR_BUTTON_SEND_TAB_TO_SELF_BUTTON_A11Y_NAME" desc="The accessible name for the toolbar button shown when a tab is received.">
+        Shared Tab
+      </message>
       <if expr="not use_titlecase">
         <message name="IDS_CONTEXT_MENU_SEND_TAB_TO_SELF" desc="The label of item for share this tab to other devices in different context menus.">
           Send to your devices
@@ -7965,7 +7968,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Sync your bookmarks, passwords, history, and more on all your devices
       </message>
       <message name="IDS_SYNC_CONFIRMATION_SYNC_INFO_DESC" desc="Description in the information about sync on the sync confirmation dialog when Unity is enabled">
-        Brave may use your history to personalize Search, ads, and other Brave services
+        Brave may use your history to personalize Search and other Brave services
       </message>
       <message name="IDS_SYNC_CONFIRMATION_SETTINGS_INFO" desc="Information about customizing Sync settings in the sync confirmation dialog when Unity is enabled">
         You can always choose what to sync in settings.
@@ -8328,6 +8331,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_SYNC_ERROR_PASSWORDS_USER_MENU_TITLE" desc="Title of the sync/signin error header of desktop user menu.">
         Password sync isn't working
       </message>
+      <message name="IDS_SYNC_ERROR_PASSWORDS_USER_MENU_TITLE_SIGNED_IN_ONLY" desc="Title of the sync/signin error header of desktop user menu. Shown for users who are signed-in but not syncing.">
+        To continue saving passwords in your Brave sync chain, verify it’s you
+      </message>
       <message name="IDS_SYNC_ERROR_RECOVERABILITY_DEGRADED_FOR_EVERYTHING_USER_MENU_TITLE" desc="Title of a sync error header of desktop user menu that prompts the user to add recovery options.">
         Make sure you can always access your sync data
       </message>
@@ -8485,8 +8491,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Data is encrypted with your sync passphrase. This doesn't include payment methods and addresses from Brave Pay.
         </message>
         <message name="IDS_SYNC_FULL_ENCRYPTION_BODY_CUSTOM_WITH_DATE" desc="Text of the radio that when selected enables full encryption.">
-          Data was encrypted with your sync passphrase on
-          <ph name="TIME">$1<ex>Sept 1, 2012</ex></ph>. This doesn't include payment methods and addresses from Brave Pay.
+          Data was encrypted with your sync passphrase on <ph name="TIME">$1<ex>Sept 1, 2012</ex></ph>. This doesn't include payment methods and addresses from Brave Pay.
         </message>
       </if>
 
