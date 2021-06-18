@@ -199,14 +199,13 @@ JNI_BravePrefServiceBridge_GetCosmeticFilteringControlType(JNIEnv* env) {
       HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
       GURL());
 
-  if (cosmetic_type == ControlType::BLOCK_THIRD_PARTY) {
+  if (cosmetic_type == ControlType::BLOCK) {
     return base::android::ConvertUTF8ToJavaString(
-        env,
-        brave_shields::ControlTypeToString(ControlType::BLOCK_THIRD_PARTY));
+        env, brave_shields::ControlTypeToString(ControlType::BLOCK));
   } else {
     if (control_type_ad == ControlType::BLOCK) {
       return base::android::ConvertUTF8ToJavaString(
-          env, brave_shields::ControlTypeToString(ControlType::BLOCK));
+          env, brave_shields::ControlTypeToString(ControlType::DEFAULT));
     } else {
       return base::android::ConvertUTF8ToJavaString(
           env, brave_shields::ControlTypeToString(ControlType::ALLOW));

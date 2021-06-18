@@ -63,6 +63,9 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
             if (currentPreference.equals(BravePrivacySettings.PREF_FINGERPRINTING_PROTECTION)) {
                 onPreferenceChangeListener.onPreferenceChange(dialogPreference,
                         BravePrefServiceBridge.getInstance().getFingerprintingControlType());
+            } else if (currentPreference.equals(BravePrivacySettings.PREF_BLOCK_TRACKERS_ADS)) {
+                onPreferenceChangeListener.onPreferenceChange(dialogPreference,
+                        BravePrefServiceBridge.getInstance().getCosmeticFilteringControlType());
             } else {
                 onPreferenceChangeListener.onPreferenceChange(
                         dialogPreference, sharedPreferences.getInt(currentPreference, 1));
@@ -93,6 +96,10 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
                             BravePrefServiceBridge.getInstance().setFingerprintingControlType(
                                     BraveShieldsContentSettings.ALLOW_RESOURCE);
                         }
+                    } else if (currentPreference.equals(
+                                       BravePrivacySettings.PREF_BLOCK_TRACKERS_ADS)) {
+                        BravePrefServiceBridge.getInstance().setCosmeticFilteringControlType(
+                                (int) newValue);
                     } else {
                         sharedPreferencesEditor.putInt(currentPreference, (int) newValue);
                     }
