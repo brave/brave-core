@@ -355,7 +355,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 
 bool BraveContentBrowserClient::HandleExternalProtocol(
     const GURL& url,
-    content::WebContents::OnceGetter web_contents_getter,
+    content::WebContents::Getter web_contents_getter,
     int child_id,
     int frame_tree_node_id,
     content::NavigationUIData* navigation_data,
@@ -366,16 +366,15 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     mojo::PendingRemote<network::mojom::URLLoaderFactory>* out_factory) {
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   if (webtorrent::IsMagnetProtocol(url)) {
-    webtorrent::HandleMagnetProtocol(url, std::move(web_contents_getter),
-                                     page_transition, has_user_gesture,
-                                     initiating_origin);
+    webtorrent::HandleMagnetProtocol(url, web_contents_getter, page_transition,
+                                     has_user_gesture, initiating_origin);
     return true;
   }
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   if (brave_rewards::IsRewardsProtocol(url)) {
-    brave_rewards::HandleRewardsProtocol(url, std::move(web_contents_getter),
+    brave_rewards::HandleRewardsProtocol(url, web_contents_getter,
                                          page_transition, has_user_gesture);
     return true;
   }
@@ -383,34 +382,32 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
 
 #if BUILDFLAG(BINANCE_ENABLED)
   if (binance::IsBinanceProtocol(url)) {
-    binance::HandleBinanceProtocol(url, std::move(web_contents_getter),
-                                   page_transition, has_user_gesture,
-                                   initiating_origin);
+    binance::HandleBinanceProtocol(url, web_contents_getter, page_transition,
+                                   has_user_gesture, initiating_origin);
     return true;
   }
 #endif
 
 #if BUILDFLAG(GEMINI_ENABLED)
   if (gemini::IsGeminiProtocol(url)) {
-    gemini::HandleGeminiProtocol(url, std::move(web_contents_getter),
-                                 page_transition, has_user_gesture,
-                                 initiating_origin);
+    gemini::HandleGeminiProtocol(url, web_contents_getter, page_transition,
+                                 has_user_gesture, initiating_origin);
     return true;
   }
 #endif
 
 #if BUILDFLAG(ENABLE_FTX)
   if (ftx::IsFTXProtocol(url)) {
-    ftx::HandleFTXProtocol(url, std::move(web_contents_getter), page_transition,
+    ftx::HandleFTXProtocol(url, web_contents_getter, page_transition,
                            has_user_gesture, initiating_origin);
     return true;
   }
 #endif
 
   return ChromeContentBrowserClient::HandleExternalProtocol(
-      url, std::move(web_contents_getter), child_id, frame_tree_node_id,
-      navigation_data, is_main_frame, page_transition, has_user_gesture,
-      initiating_origin, out_factory);
+      url, web_contents_getter, child_id, frame_tree_node_id, navigation_data,
+      is_main_frame, page_transition, has_user_gesture, initiating_origin,
+      out_factory);
 }
 
 void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
