@@ -151,6 +151,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_OPEN_GUEST_PROFILE, open_guest_profile_enabled);
   UpdateCommandEnabled(IDC_TOGGLE_SPEEDREADER, true);
   UpdateCommandEnabled(IDC_SPEEDREADER_ICON_ONCLICK, true);
+  UpdateCommandEnabled(IDC_DISTILL_PAGE, false);
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
