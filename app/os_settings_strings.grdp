@@ -221,7 +221,7 @@
   </message>
   <message name="IDS_OS_SETTINGS_PROFILE_LABEL_V2" desc="Label underneath the profile's real name, listing the number of accounts">
     {COUNT, plural,
-     =1 {1 Brave sync chain added}
+     =1 {1 Brave sync chain}
      other {<ph name="EXTRA_ACCOUNTS">$2<ex>2</ex></ph> Brave sync chains}}
   </message>
   <message name="IDS_OS_SETTINGS_SYNC_PAGE_TITLE" desc="Settings sub-page title for sync.">
@@ -1170,6 +1170,15 @@ Press an assigned switch to remove assignment.
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_INTRO_BODY" desc="The message displayed on the first page of the Switch Access setup guide, instructing the user to confirm that their external switch is appropriately connected to the chromebook. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     To get started, please make sure your USB or Bluetooth switch is connected to your Bravebook. You can also use keyboard keys.
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_AUTO_SCAN_ENABLED_TITLE" desc="The title for the page of the Switch Access setup guide that informs the user that auto-scan has been enabled, meaning that the focused item will change periodically with no additional input. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Auto-scan enabled
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_AUTO_SCAN_ENABLED_EXPLANATION" desc="The message displayed in the Switch Access setup guide explaining how the auto-scan behavior works. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Auto-scan will automatically cycle through and focus on items on the screen. When an item is focused, press the "Select" key you just assigned to activate it.
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_AUTO_SCAN_ENABLED_DIRECTIONS" desc="The message displayed in the Switch Access setup guide after auto-scan has been enabled, informing them how to proceed. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Activate the Next button to continue the setup or the Previous button to change the "Select" switch assignment.
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CHOOSE_SWITCH_COUNT_TITLE" desc="The title for the page of the Switch Access setup guide where the user selects the number of switches they are going to use. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Do you want to assign additional switches?
@@ -2303,9 +2312,6 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_JOIN_TYPE" desc="Title for the network configuration dialog for a new network.">
     Join <ph name="TYPE">$1<ex>WiFi</ex></ph> network
   </message>
-  <message name="IDS_SETTINGS_INTERNET_MOBILE_SEARCH" desc="Settings &gt; Internet &gt; Message in Mobile section when searching for mobile networks.">
-    Searching for mobile networks
-  </message>
   <message name="IDS_SETTINGS_INTERNET_KNOWN_NETWORKS" desc="Name of the settings page which displays the list of known networks.">
     Known Networks
   </message>
@@ -2383,9 +2389,6 @@ Press an assigned switch to remove assignment.
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_ALWAYS_ON_VPN_SERVICE" desc="Settings &gt; Internet &gt; VPN: Label for the dropdown menu determining which VPN client will be automatically started on login.">
     VPN service
-  </message>
-  <message name="IDS_SETTINGS_INTERNET_NETWORK_AUTO_CONNECT" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox determining whether to automatically connect to the network.">
-    Automatically connect to this network
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_HIDDEN" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox to set a wi-fi network as hidden.">
     Hidden network
@@ -3274,7 +3277,7 @@ Press an assigned switch to remove assignment.
     Never
   </message>
   <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_SCHEDULE_SUNSET_TO_SUNRISE" desc="In Device Settings &gt; Displays, the label of the option to set the automatic schedule of the Night Light feature to turn on at sunset and off at sunrise.">
-    Sunset to Sunrise
+    Sunset to sunrise
   </message>
   <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_START_TIME" desc="In Device Settings &gt; Displays, the label of the start time bubble.">
     Start time
