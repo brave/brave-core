@@ -29,6 +29,7 @@ class BraveSearchDefaultJSHandler {
   ~BraveSearchDefaultJSHandler();
 
   void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
+  void ResetRemote(content::RenderFrame* render_frame);
 
  private:
   // Adds a function to the provided object.
