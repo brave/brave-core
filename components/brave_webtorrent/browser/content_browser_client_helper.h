@@ -82,11 +82,11 @@ static bool HandleTorrentURLRewrite(GURL* url,
 
 static void LoadOrLaunchMagnetURL(
     const GURL& url,
-    content::WebContents::OnceGetter web_contents_getter,
+    content::WebContents::Getter web_contents_getter,
     ui::PageTransition page_transition,
     bool has_user_gesture,
     const absl::optional<url::Origin>& initiating_origin) {
-  content::WebContents* web_contents = std::move(web_contents_getter).Run();
+  content::WebContents* web_contents = web_contents_getter.Run();
   if (!web_contents)
     return;
 
@@ -94,10 +94,9 @@ static void LoadOrLaunchMagnetURL(
     web_contents->GetController().LoadURL(url, content::Referrer(),
         page_transition, std::string());
   } else {
-    ExternalProtocolHandler::LaunchUrl(
-        url, web_contents->GetRenderViewHost()->GetProcess()->GetID(),
-        web_contents->GetRenderViewHost()->GetRoutingID(), page_transition,
-        has_user_gesture, initiating_origin);
+    ExternalProtocolHandler::LaunchUrl(url, web_contents_getter,
+                                       page_transition, has_user_gesture,
+                                       initiating_origin);
   }
 }
 
@@ -113,15 +112,15 @@ static bool HandleMagnetURLRewrite(GURL* url,
 
 static void HandleMagnetProtocol(
     const GURL& url,
-    content::WebContents::OnceGetter web_contents_getter,
+    content::WebContents::Getter web_contents_getter,
     ui::PageTransition page_transition,
     bool has_user_gesture,
     const absl::optional<url::Origin>& initiating_origin) {
   DCHECK(url.SchemeIs(kMagnetScheme));
-  base::PostTask(FROM_HERE, {content::BrowserThread::UI},
-                 base::BindOnce(&LoadOrLaunchMagnetURL, url,
-                                std::move(web_contents_getter), page_transition,
-                                has_user_gesture, initiating_origin));
+  base::PostTask(
+      FROM_HERE, {content::BrowserThread::UI},
+      base::BindOnce(&LoadOrLaunchMagnetURL, url, web_contents_getter,
+                     page_transition, has_user_gesture, initiating_origin));
 }
 
 static bool IsMagnetProtocol(const GURL& url) {
