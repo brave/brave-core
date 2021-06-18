@@ -634,7 +634,6 @@ if (!is_android) {
       "//brave/browser/ui/views/toolbar/brave_toolbar_view_browsertest.cc",
       "//brave/browser/ui/webui/brave_welcome_ui_browsertest.cc",
       "//brave/browser/ui/webui/new_tab_page/brave_new_tab_ui_browsertest.cc",
-      "//brave/chromium_src/chrome/browser/media/router/media_router_feature_browsertest.cc",
       "//brave/chromium_src/chrome/browser/safe_browsing/download_protection/check_client_download_request_base_browsertest.cc",
       "//brave/chromium_src/chrome/browser/ui/views/location_bar/location_bar_view_browsertest.cc",
       "//brave/chromium_src/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view_browsertest.cc",
