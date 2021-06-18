@@ -68,26 +68,6 @@ namespace brave {
 
 namespace {
 
-// NOTE TO READER: This header is for partners to determine the browser is
-// Brave without creating webcompat issues by creating a new user-agent.
-// All Brave users send the exact same header and so this cannot be used for
-// tracking individual users. See
-// https://github.com/brave/brave-browser/wiki/Custom-Headers for more
-// information. Custom headers are deprecated and new partners use the
-// navigator.brave.isBrave() JavaScript API.
-constexpr char kPartnerEaffName[] = "eaff";
-constexpr char kPartnerUpholdName[] = "uphold";
-constexpr char kPartnerGrammarlyName[] = "grammarly";
-
-const std::vector<std::string> kPartnerEaffDomains = {"eaff.com",
-                                                      "stg.eaff.com"};
-const std::vector<std::string> kPartnerUpholdDomains = {
-    "sandbox.uphold.com", "api-sandbox.uphold.com", "uphold.com",
-    "api.uphold.com"};
-const std::vector<std::string> kPartnerGrammarlyDomains = {
-    "www.grammarly.com", "grammarly.com", "static.grammarly.com",
-    "gnar.grammarly.com"};
-
 BraveReferralsService::ReferralInitializedCallback*
     g_testing_referral_initialized_callback = nullptr;
 
@@ -102,8 +82,8 @@ base::Value CreateReferralHeader(
     domains.Append(header);
   headers_dict.SetKey("domains", std::move(domains));
 
-  constexpr double referral_header_expiration = 31536000000.0;
-  headers_dict.SetDoubleKey("expiration", referral_header_expiration);
+  constexpr double expiration_ms = 31536000000.0;
+  headers_dict.SetDoubleKey("expiration", expiration_ms);
 
   base::Value headers_sub_dict(base::Value::Type::DICTIONARY);
   headers_sub_dict.SetStringKey(kBravePartnerHeader, partner_name);
@@ -157,6 +137,70 @@ std::string BuildReferralEndpoint(const std::string& path) {
 
 }  // namespace
 
+BraveReferralsHeaders::BraveReferralsHeaders() {
+  // NOTE TO READER: This header is for partners to determine the browser is
+  // Brave without creating webcompat issues by creating a new user-agent.
+  // All Brave users send the exact same header and so this cannot be used for
+  // tracking individual users. See
+  // https://github.com/brave/brave-browser/wiki/Custom-Headers for more
+  // information. Custom headers are deprecated and new partners use the
+  // navigator.brave.isBrave() JavaScript API.
+  constexpr char kPartnerEaffName[] = "eaff";
+  constexpr char kPartnerUpholdName[] = "uphold";
+  constexpr char kPartnerGrammarlyName[] = "grammarly";
+
+  referral_headers_.push_back(
+      CreateReferralHeader(kPartnerEaffName, {"eaff.com", "stg.eaff.com"}));
+  referral_headers_.push_back(CreateReferralHeader(
+      kPartnerUpholdName, {"sandbox.uphold.com", "api-sandbox.uphold.com",
+                           "uphold.com", "api.uphold.com"}));
+  referral_headers_.push_back(CreateReferralHeader(
+      kPartnerGrammarlyName, {"www.grammarly.com", "grammarly.com",
+                              "static.grammarly.com", "gnar.grammarly.com"}));
+}
+
+bool BraveReferralsHeaders::GetMatchingReferralHeaders(
+    const base::DictionaryValue** request_headers_dict,
+    const GURL& url) {
+  return GetMatchingReferralHeaders(referral_headers_, request_headers_dict,
+                                    url);
+}
+
+template <typename Iter>
+bool BraveReferralsHeaders::GetMatchingReferralHeaders(
+    const Iter& referral_headers_list,
+    const base::DictionaryValue** request_headers_dict,
+    const GURL& url) {
+  // If the domain for this request matches one of our target domains,
+  // set the associated custom headers.
+  for (const base::Value& headers_value : referral_headers_list) {
+    const base::Value* domains_list =
+        headers_value.FindKeyOfType("domains", base::Value::Type::LIST);
+    if (!domains_list) {
+      LOG(WARNING) << "Failed to retrieve 'domains' key from referral headers";
+      continue;
+    }
+    const base::Value* headers_dict =
+        headers_value.FindKeyOfType("headers", base::Value::Type::DICTIONARY);
+    if (!headers_dict) {
+      LOG(WARNING) << "Failed to retrieve 'headers' key from referral headers";
+      continue;
+    }
+    for (const auto& domain_value : domains_list->GetList()) {
+      URLPattern url_pattern(URLPattern::SCHEME_HTTPS |
+                             URLPattern::SCHEME_HTTP);
+      url_pattern.SetScheme("*");
+      url_pattern.SetHost(domain_value.GetString());
+      url_pattern.SetPath("/*");
+      url_pattern.SetMatchSubdomains(true);
+      if (!url_pattern.MatchesURL(url))
+        continue;
+      return headers_dict->GetAsDictionary(request_headers_dict);
+    }
+  }
+  return false;
+}
+
 BraveReferralsService::BraveReferralsService(PrefService* pref_service,
                                              const std::string& api_key,
                                              const std::string& platform)
@@ -201,9 +245,6 @@ void BraveReferralsService::Start() {
       this, &BraveReferralsService::OnFinalizationChecksTimerFired);
   DCHECK(finalization_checks_timer_->IsRunning());
 
-  // Fetch the referral headers on startup.
-  SetReferralHeaders();
-
   // Read the promo code from user-data-dir and initialize the referral,
   // retrying if necessary.
   bool has_initialized = pref_service_->GetBoolean(kReferralInitialization);
@@ -241,41 +282,6 @@ void BraveReferralsService::SetReferralInitializedCallbackForTesting(
 // static
 bool BraveReferralsService::IsDefaultReferralCode(const std::string& code) {
   return code == kDefaultPromoCode;
-}
-
-// static
-bool BraveReferralsService::GetMatchingReferralHeaders(
-    const base::ListValue& referral_headers_list,
-    const base::DictionaryValue** request_headers_dict,
-    const GURL& url) {
-  // If the domain for this request matches one of our target domains,
-  // set the associated custom headers.
-  for (const auto& headers_value : referral_headers_list) {
-    const base::Value* domains_list =
-        headers_value.FindKeyOfType("domains", base::Value::Type::LIST);
-    if (!domains_list) {
-      LOG(WARNING) << "Failed to retrieve 'domains' key from referral headers";
-      continue;
-    }
-    const base::Value* headers_dict =
-        headers_value.FindKeyOfType("headers", base::Value::Type::DICTIONARY);
-    if (!headers_dict) {
-      LOG(WARNING) << "Failed to retrieve 'headers' key from referral headers";
-      continue;
-    }
-    for (const auto& domain_value : domains_list->GetList()) {
-      URLPattern url_pattern(URLPattern::SCHEME_HTTPS |
-                             URLPattern::SCHEME_HTTP);
-      url_pattern.SetScheme("*");
-      url_pattern.SetHost(domain_value.GetString());
-      url_pattern.SetPath("/*");
-      url_pattern.SetMatchSubdomains(true);
-      if (!url_pattern.MatchesURL(url))
-        continue;
-      return headers_dict->GetAsDictionary(request_headers_dict);
-    }
-  }
-  return false;
 }
 
 void BraveReferralsService::OnFinalizationChecksTimerFired() {
@@ -561,16 +567,6 @@ std::string BraveReferralsService::BuildReferralFinalizationCheckPayload()
   return result;
 }
 
-void BraveReferralsService::SetReferralHeaders() {
-  base::Value headers(base::Value::Type::LIST);
-  headers.Append(CreateReferralHeader(kPartnerEaffName, kPartnerEaffDomains));
-  headers.Append(
-      CreateReferralHeader(kPartnerUpholdName, kPartnerUpholdDomains));
-  headers.Append(
-      CreateReferralHeader(kPartnerGrammarlyName, kPartnerGrammarlyDomains));
-  pref_service_->Set(kReferralHeaders, headers);
-}
-
 void BraveReferralsService::InitReferral() {
   net::NetworkTrafficAnnotationTag traffic_annotation =
       net::DefineNetworkTrafficAnnotation("brave_referral_initializer", R"(
@@ -698,8 +694,8 @@ std::string BraveReferralsService::FormatExtraHeaders(
     return std::string();
 
   const base::DictionaryValue* request_headers_dict = nullptr;
-  if (!GetMatchingReferralHeaders(*referral_headers_list, &request_headers_dict,
-                                  url))
+  if (!BraveReferralsHeaders::GetInstance()->GetMatchingReferralHeaders(
+          *referral_headers_list, &request_headers_dict, url))
     return std::string();
 
   std::string extra_headers;

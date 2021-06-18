@@ -8,10 +8,12 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/files/file_path.h"
 #include "base/macros.h"
 #include "base/memory/weak_ptr.h"
+#include "base/no_destructor.h"
 #include "base/sequenced_task_runner.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
@@ -33,7 +35,33 @@ class SimpleURLLoader;
 
 namespace brave {
 
-std::string GetAPIKey();
+class BraveReferralsHeaders {
+ public:
+  static BraveReferralsHeaders* GetInstance() {
+    static base::NoDestructor<BraveReferralsHeaders> instance;
+    return instance.get();
+  }
+
+  template <typename Iter>
+  bool GetMatchingReferralHeaders(
+      const Iter& referral_headers_list,
+      const base::DictionaryValue** request_headers_dict,
+      const GURL& url);
+
+  bool GetMatchingReferralHeaders(
+      const base::DictionaryValue** request_headers_dict,
+      const GURL& url);
+
+  BraveReferralsHeaders(const BraveReferralsHeaders&) = delete;
+  BraveReferralsHeaders& operator=(const BraveReferralsHeaders&) = delete;
+  ~BraveReferralsHeaders() = delete;
+
+ private:
+  friend class base::NoDestructor<BraveReferralsHeaders>;
+  BraveReferralsHeaders();
+
+  std::vector<base::Value> referral_headers_;
+};
 
 class BraveReferralsService : public ProfileManagerObserver {
  public:
@@ -53,11 +81,6 @@ class BraveReferralsService : public ProfileManagerObserver {
 
   static void SetPromoFilePathForTesting(const base::FilePath& path);
 
-  static bool GetMatchingReferralHeaders(
-      const base::ListValue& referral_headers_list,
-      const base::DictionaryValue** request_headers_dict,
-      const GURL& url);
-
   static bool IsDefaultReferralCode(const std::string& code);
 
  private:
@@ -73,7 +96,6 @@ class BraveReferralsService : public ProfileManagerObserver {
   void InitReferral();
   std::string BuildReferralInitPayload() const;
   std::string BuildReferralFinalizationCheckPayload() const;
-  void SetReferralHeaders();
   void CheckForReferralFinalization();
   std::string FormatExtraHeaders(const base::Value* referral_headers,
                                  const GURL& url);
@@ -108,7 +130,6 @@ class BraveReferralsService : public ProfileManagerObserver {
   bool initialized_;
   base::Time first_run_timestamp_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
-  std::unique_ptr<network::SimpleURLLoader> referral_headers_loader_;
   std::unique_ptr<network::SimpleURLLoader> referral_init_loader_;
   std::unique_ptr<network::SimpleURLLoader> referral_finalization_check_loader_;
   std::unique_ptr<base::OneShotTimer> initialization_timer_;
