@@ -59,7 +59,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_IPFS_GATEWAY = "ipfs_gateway";
     private static final String PREF_AD_BLOCK = "ad_block";
     private static final String PREF_BLOCK_SCRIPTS = "scripts_block";
-    private static final String PREF_FINGERPRINTING_PROTECTION = "fingerprinting_protection";
+    public static final String PREF_FINGERPRINTING_PROTECTION = "fingerprinting_protection";
     private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
     private static final String PREF_HTTPS_EVERYWHERE = "https_everywhere";
     private static final String PREF_SEND_P3A = "send_p3a_analytics";
@@ -231,13 +231,16 @@ public class BravePrivacySettings extends PrivacySettings {
         } else if (PREF_IPFS_GATEWAY.equals(key)) {
             BravePrefServiceBridge.getInstance().setIpfsGatewayEnabled((boolean) newValue);
         } else if (PREF_FINGERPRINTING_PROTECTION.equals(key)) {
-            if ((int) newValue == 0) {
+            if (newValue instanceof String
+                    && String.valueOf(newValue).equals(
+                            BraveShieldsContentSettings.BLOCK_RESOURCE)) {
                 BravePrefServiceBridge.getInstance().setFingerprintingControlType(
                         BraveShieldsContentSettings.BLOCK_RESOURCE);
                 mFingerprintingProtectionPref.setSummary(getActivity().getResources().getString(
                         R.string.block_fingerprinting_option_1));
                 mFingerprintingProtectionPref.setCheckedIndex(0);
-            } else if ((int) newValue == 1) {
+            } else if (newValue instanceof String
+                    && String.valueOf(newValue).equals(BraveShieldsContentSettings.DEFAULT)) {
                 BravePrefServiceBridge.getInstance().setFingerprintingControlType(
                         BraveShieldsContentSettings.DEFAULT);
                 mFingerprintingProtectionPref.setSummary(getActivity().getResources().getString(
@@ -339,7 +342,8 @@ public class BravePrivacySettings extends PrivacySettings {
 
         int blockAdTrackersPref = sharedPreferences.getInt(PREF_BLOCK_TRACKERS_ADS, 1);
         int cookiesBlockPref = sharedPreferences.getInt(PREF_BLOCK_CROSS_SITE_COOKIES, 1);
-        int fingerprintingPref = sharedPreferences.getInt(PREF_FINGERPRINTING_PROTECTION, 1);
+        String fingerprintingPref =
+                BravePrefServiceBridge.getInstance().getFingerprintingControlType();
 
         if (getNoScriptControlType.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
             mBlockScriptsPref.setChecked(true);
@@ -375,15 +379,15 @@ public class BravePrivacySettings extends PrivacySettings {
                     getActivity().getResources().getString(R.string.block_cookies_option_3));
         }
 
-        if (fingerprintingPref == STRICT) {
+        if (fingerprintingPref.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
             mFingerprintingProtectionPref.setCheckedIndex(0);
             mFingerprintingProtectionPref.setSummary(
                     getActivity().getResources().getString(R.string.block_fingerprinting_option_1));
-        } else if (fingerprintingPref == STANDARD) {
+        } else if (fingerprintingPref.equals(BraveShieldsContentSettings.DEFAULT)) {
             mFingerprintingProtectionPref.setCheckedIndex(1);
             mFingerprintingProtectionPref.setSummary(
                     getActivity().getResources().getString(R.string.block_fingerprinting_option_2));
-        } else if (fingerprintingPref == ALLOW) {
+        } else if (fingerprintingPref.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
             mFingerprintingProtectionPref.setCheckedIndex(2);
             mFingerprintingProtectionPref.setSummary(
                     getActivity().getResources().getString(R.string.block_fingerprinting_option_3));
