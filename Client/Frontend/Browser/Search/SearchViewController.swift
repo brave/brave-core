@@ -420,6 +420,9 @@ class SearchViewController: SiteTableViewController, LoaderListener {
         
         switch section {
         case .quickBar:
+            if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+                RecentSearch.addItem(type: .text, text: searchQuery, websiteUrl: nil)
+            }
             searchDelegate?.searchViewController(self, didSubmit: searchQuery)
         case .searchSuggestionsOptIn: return
         case .searchSuggestions:
@@ -433,6 +436,9 @@ class SearchViewController: SiteTableViewController, LoaderListener {
             }
 
             if let url = url {
+                if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+                    RecentSearch.addItem(type: .website, text: suggestion, websiteUrl: url.absoluteString)
+                }
                 searchDelegate?.searchViewController(self, didSelectURL: url)
             }
         case .bookmarksAndHistory:
