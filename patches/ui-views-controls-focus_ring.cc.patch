@@ -1,8 +1,16 @@
 diff --git a/ui/views/controls/focus_ring.cc b/ui/views/controls/focus_ring.cc
-index 699c15fe76528e557b08c1c0027a1a63a4791df0..a781de1543c3c0a893b723d82e95be4ef722c1fd 100644
+index c54adbeabbd7afd44f8b17b824972940357c7a0a..24c2bb77120b2fd425df8e04aa2fac7c1734273b 100644
 --- a/ui/views/controls/focus_ring.cc
 +++ b/ui/views/controls/focus_ring.cc
-@@ -180,6 +180,7 @@ void FocusRing::OnPaint(gfx::Canvas* canvas) {
+@@ -197,6 +197,7 @@ void FocusRing::OnPaint(gfx::Canvas* canvas) {
+     flags.setAntiAlias(true);
+     flags.setColor(GetNativeTheme()->GetSystemColor(
+         ui::NativeTheme::kColorId_FocusAuraColor));
++    BRAVE_FOCUS_RING_ON_PAINT_SET_COLOR_FOCUS_AURA
+     flags.setStyle(cc::PaintFlags::kFill_Style);
+ 
+     canvas->sk_canvas()->drawRRect(ring_rect, flags);
+@@ -205,6 +206,7 @@ void FocusRing::OnPaint(gfx::Canvas* canvas) {
    cc::PaintFlags paint;
    paint.setAntiAlias(true);
    paint.setColor(color_.value_or(GetColor(this, !invalid_)));
@@ -10,11 +18,3 @@ index 699c15fe76528e557b08c1c0027a1a63a4791df0..a781de1543c3c0a893b723d82e95be4e
    paint.setStyle(cc::PaintFlags::kStroke_Style);
    paint.setStrokeWidth(PlatformStyle::kFocusHaloThickness);
  
-@@ -201,6 +202,7 @@ void FocusRing::OnPaint(gfx::Canvas* canvas) {
-     flags.setAntiAlias(true);
-     flags.setColor(GetNativeTheme()->GetSystemColor(
-         ui::NativeTheme::kColorId_FocusAuraColor));
-+    BRAVE_FOCUS_RING_ON_PAINT_SET_COLOR_FOCUS_AURA
-     flags.setStyle(cc::PaintFlags::kFill_Style);
-     canvas->DrawPath(path, flags);
-   }
