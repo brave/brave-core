@@ -20,10 +20,7 @@ namespace brave_search {
 BraveSearchRenderFrameObserver::BraveSearchRenderFrameObserver(
     content::RenderFrame* render_frame,
     int32_t world_id)
-    : RenderFrameObserver(render_frame), world_id_(world_id) {
-  native_javascript_handle_.reset(
-      new BraveSearchDefaultJSHandler(render_frame));
-}
+    : RenderFrameObserver(render_frame), world_id_(world_id) {}
 
 BraveSearchRenderFrameObserver::~BraveSearchRenderFrameObserver() {}
 
@@ -36,8 +33,15 @@ void BraveSearchRenderFrameObserver::DidCreateScriptContext(
   GURL url =
       url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin()).GetURL();
 
-  if (!native_javascript_handle_ || !IsAllowedHost(url))
+  if (!IsAllowedHost(url))
     return;
+
+  if (!native_javascript_handle_) {
+    native_javascript_handle_.reset(
+        new BraveSearchDefaultJSHandler(render_frame()));
+  } else {
+    native_javascript_handle_->ResetRemote(render_frame());
+  }
 
   native_javascript_handle_->AddJavaScriptObjectToFrame(context);
 }
