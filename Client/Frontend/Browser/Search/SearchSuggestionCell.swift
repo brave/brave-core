@@ -21,6 +21,7 @@ class SuggestionCell: UITableViewCell {
     private let titleLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 15.0)
         $0.textColor = .bravePrimary
+        $0.lineBreakMode = .byTruncatingMiddle
     }
     
     private let openButton = UIButton().then {
