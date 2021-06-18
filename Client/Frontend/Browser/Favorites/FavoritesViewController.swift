@@ -297,7 +297,7 @@ extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewD
                     header.hideClearButton.removeTarget(self, action: nil, for: .touchUpInside)
                     
                     header.showButton.addTarget(self, action: #selector(onRecentSearchShowPressed), for: .touchUpInside)
-                    header.hideClearButton.addTarget(self, action: #selector(onRecentSearchHideOrClearPressed), for: .touchUpInside)
+                    header.hideClearButton.addTarget(self, action: #selector(onRecentSearchHideOrClearPressed(_:)), for: .touchUpInside)
                     
                     if Preferences.Search.shouldShowRecentSearches.value {
                         let totalCount = RecentSearch.totalCount()
@@ -711,7 +711,7 @@ extension FavoritesViewController {
     }
     
     @objc
-    func onRecentSearchHideOrClearPressed() {
+    func onRecentSearchHideOrClearPressed(_ button: UIButton) {
         if Preferences.Search.shouldShowRecentSearches.value {
             // User cleared recent searches
             
@@ -725,6 +725,9 @@ extension FavoritesViewController {
                 self.fetchRecentSearches()
                 self.collectionView.reloadData()
             }))
+            
+            alert.popoverPresentationController?.sourceView = button
+            alert.popoverPresentationController?.permittedArrowDirections = [.down, .up]
             
             alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .destructive, handler: nil))
             present(alert, animated: true, completion: nil)
