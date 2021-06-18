@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-index ff4b27194a5ec8113fb5885593b4113ad103c866..5323439759637c9ea0f2ffc718da447d7150067a 100644
+index 79aa3045baac3fd510603c56dc7b7004ce8e4879..47fa489bcdbe90baa7fe3bd4a65203aec8b26ecc 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 @@ -488,13 +488,13 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
@@ -18,7 +18,7 @@ index ff4b27194a5ec8113fb5885593b4113ad103c866..5323439759637c9ea0f2ffc718da447d
                  appMenuCoordinatorSupplier, mControlsVisibilityDelegate, mWindowAndroid,
                  (focus, type)
                          -> setUrlBarFocus(focus, type),
-@@ -935,7 +935,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
+@@ -929,7 +929,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
              boolean isTabToGtsAnimationEnabled, boolean isStartSurfaceEnabled,
              boolean isTabGroupsAndroidContinuationEnabled) {
          // clang-format off
