@@ -1,8 +1,8 @@
 diff --git a/components/page_info/BUILD.gn b/components/page_info/BUILD.gn
-index 1de931eaf7a402141f800e28e3d9ba3407878599..5c3db37ec280592a7cf459824c8ecd536c5f25bb 100644
+index 17371dc77e439256ec1adad5d993ab7e3778cdaa..a3aea553872c6eca70d9fa09618ccce97beb4b8c 100644
 --- a/components/page_info/BUILD.gn
 +++ b/components/page_info/BUILD.gn
-@@ -42,6 +42,7 @@ static_library("page_info") {
+@@ -43,6 +43,7 @@ static_library("page_info") {
      "//services/device/public/cpp:device_features",
      "//services/metrics/public/cpp:ukm_builders",
    ]

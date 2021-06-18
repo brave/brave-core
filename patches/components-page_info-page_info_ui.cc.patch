@@ -1,8 +1,8 @@
 diff --git a/components/page_info/page_info_ui.cc b/components/page_info/page_info_ui.cc
-index 96f6941c4b1b229d2511000421bd654fe25debc9..6e885627e1b9600a3b60d58502f22a25908444de 100644
+index 38ebccd57d3b915344eff4b061d1abb2f28e698a..92b60cc14895776e64eaea71e23a4bd295e80158 100644
 --- a/components/page_info/page_info_ui.cc
 +++ b/components/page_info/page_info_ui.cc
-@@ -622,6 +622,7 @@ const ui::ImageModel PageInfoUI::GetPermissionIcon(
+@@ -626,6 +626,7 @@ const ui::ImageModel PageInfoUI::GetPermissionIcon(
      const PageInfo::PermissionInfo& info) {
    const gfx::VectorIcon* icon = &gfx::kNoneIcon;
    switch (info.type) {
