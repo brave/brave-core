@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/resources/extensions/manager.js b/chrome/browser/resources/extensions/manager.js
-index 969b3e9335f9ea272a2060da9b9741211b8ce61b..9478bd84fc14e64b948b12dbc65894a2115ead51 100644
---- a/chrome/browser/resources/extensions/manager.js
-+++ b/chrome/browser/resources/extensions/manager.js
+diff --git a/chrome/browser/resources/extensions/manager.ts b/chrome/browser/resources/extensions/manager.ts
+index e107d64743637f1195e72a59bc65b2ec9d28fad3..e1bacadecdb8bb2ee3bad14db160fc85c016f3fd 100644
+--- a/chrome/browser/resources/extensions/manager.ts
++++ b/chrome/browser/resources/extensions/manager.ts
 @@ -5,7 +5,6 @@
  import 'chrome://resources/cr_elements/cr_drawer/cr_drawer.js';
  import 'chrome://resources/cr_elements/cr_lazy_render/cr_lazy_render.m.js';
