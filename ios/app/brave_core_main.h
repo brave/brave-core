@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class BraveBookmarksAPI;
 @class BraveHistoryAPI;
 @class BraveSyncProfileServiceIOS;
 
@@ -17,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
 @interface BraveCoreMain : NSObject
+
+@property(nullable, nonatomic, readonly) BraveBookmarksAPI* bookmarksAPI;
 
 @property(nullable, nonatomic, readonly) BraveHistoryAPI* historyAPI;
 

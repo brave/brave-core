@@ -12,7 +12,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
-#include "brave/ios/browser/api/bookmarks/brave_bookmarks_observer.h"
+#include "brave/ios/browser/api/bookmarks/bookmark_model_listener_ios.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_node.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
@@ -22,11 +22,9 @@
 #include "components/undo/undo_manager.h"
 #include "components/user_prefs/user_prefs.h"
 #include "ios/chrome/browser/application_context.h"
-#include "ios/chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/browser/ui/bookmarks/bookmark_utils_ios.h"
-#include "ios/chrome/browser/undo/bookmark_undo_service_factory.h"
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
 #import "net/base/mac/url_conversions.h"
@@ -466,26 +464,13 @@
 @end
 
 @implementation BraveBookmarksAPI
-+ (instancetype)sharedBookmarksAPI {
-  static BraveBookmarksAPI* instance = nil;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    instance = [[BraveBookmarksAPI alloc] init];
-  });
-  return instance;
-}
 
-- (instancetype)init {
+- (instancetype)initWithBookmarkModel:(bookmarks::BookmarkModel*)bookmarkModel
+                  bookmarkUndoService:
+                      (BookmarkUndoService*)bookmarkUndoService {
   if ((self = [super init])) {
-    DCHECK_CURRENTLY_ON(web::WebThread::UI);
-    ios::ChromeBrowserStateManager* browserStateManager =
-        GetApplicationContext()->GetChromeBrowserStateManager();
-    ChromeBrowserState* browserState =
-        browserStateManager->GetLastUsedBrowserState();
-    bookmark_model_ =
-        ios::BookmarkModelFactory::GetForBrowserState(browserState);
-    bookmark_undo_service_ =
-        ios::BookmarkUndoServiceFactory::GetForBrowserState(browserState);
+    bookmark_model_ = bookmarkModel;
+    bookmark_undo_service_ = bookmarkUndoService;
   }
   return self;
 }
