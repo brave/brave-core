@@ -80,6 +80,8 @@ import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
+import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rate.RateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
@@ -412,6 +414,25 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                     calender.getTimeInMillis());
         }
         checkSetDefaultBrowserModal();
+        checkFingerPrintingOnUpgrade();
+    }
+
+    private void checkFingerPrintingOnUpgrade() {
+        if (!PackageUtils.isFirstInstall(this)
+                && SharedPreferencesManager.getInstance().readInt(
+                           BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+                        == 0) {
+            SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+            boolean value = sharedPreferences.getBoolean(
+                    BravePrivacySettings.PREF_FINGERPRINTING_PROTECTION, true);
+            if (value) {
+                BravePrefServiceBridge.getInstance().setFingerprintingControlType(
+                        BraveShieldsContentSettings.DEFAULT);
+            } else {
+                BravePrefServiceBridge.getInstance().setFingerprintingControlType(
+                        BraveShieldsContentSettings.ALLOW_RESOURCE);
+            }
+        }
     }
 
     private void openBraveWallet() {
