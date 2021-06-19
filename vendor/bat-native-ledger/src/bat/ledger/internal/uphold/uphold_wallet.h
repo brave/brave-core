@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 #include "bat/ledger/internal/uphold/uphold_user.h"
 #include "bat/ledger/ledger.h"
 
@@ -22,20 +23,39 @@ class UpholdWallet {
 
   ~UpholdWallet();
 
-  void Generate(ledger::ResultCallback callback);
+  void Generate(ledger::ResultCallback callback) const;
 
  private:
-  void OnGetUser(
-      const type::Result result,
-      const User& user,
-      ledger::ResultCallback callback);
+  void OnGetUser(const type::Result result,
+                 const User& user,
+                 ledger::ResultCallback callback) const;
 
-  void OnCreateCard(
-      const type::Result result,
-      const std::string& address,
-      ledger::ResultCallback callback);
+  void OnCreateCard(const type::Result result,
+                    const std::string& address,
+                    ledger::ResultCallback callback) const;
+
+  void GetAnonFunds(
+      endpoint::promotion::GetWalletBalanceCallback callback) const;
+
+  void OnGetAnonFunds(const type::Result result,
+                      type::BalancePtr balance,
+                      const std::string& address,
+                      ledger::ResultCallback callback) const;
+
+  void LinkWallet(const double user_funds,
+                  const std::string& address,
+                  endpoint::promotion::PostClaimUpholdCallback callback) const;
+
+  void OnLinkWallet(const type::Result result,
+                    const std::string& address,
+                    ledger::ResultCallback callback) const;
+
+  void OnTransferTokens(const type::Result result,
+                        const std::string& drain_id,
+                        ledger::ResultCallback callback) const;
 
   LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };
 
 }  // namespace uphold

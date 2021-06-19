@@ -24,8 +24,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PostClaimUphold::PostClaimUphold(LedgerImpl* ledger):
-    ledger_(ledger) {
+PostClaimUphold::PostClaimUphold(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
 }
 
@@ -38,20 +37,14 @@ std::string PostClaimUphold::GetUrl() {
     return "";
   }
 
-  const std::string& path = base::StringPrintf(
-      "/v3/wallet/uphold/%s/claim",
-      wallet->payment_id.c_str());
+  const std::string& path = base::StringPrintf("/v3/wallet/uphold/%s/claim",
+                                               wallet->payment_id.c_str());
 
   return GetServerUrl(path);
 }
 
-std::string PostClaimUphold::GeneratePayload(const double user_funds) {
-  auto uphold_wallet = ledger_->uphold()->GetWallet();
-  if (!uphold_wallet) {
-    BLOG(0, "Wallet is null");
-    return "";
-  }
-
+std::string PostClaimUphold::GeneratePayload(const double user_funds,
+                                             const std::string& address) {
   const auto wallet = ledger_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
@@ -64,20 +57,17 @@ std::string PostClaimUphold::GeneratePayload(const double user_funds) {
 
   base::Value octets(base::Value::Type::DICTIONARY);
   octets.SetKey("denomination", std::move(denomination));
-  octets.SetStringKey("destination", uphold_wallet->address);
+  octets.SetStringKey("destination", address);
   std::string octets_json;
   base::JSONWriter::Write(octets, &octets_json);
 
-  const std::string header_digest =
-      util::Security::DigestValue(octets_json);
+  const std::string header_digest = util::Security::DigestValue(octets_json);
 
   std::vector<std::map<std::string, std::string>> headers;
   headers.push_back({{"digest", header_digest}});
 
-  const std::string header_signature = util::Security::Sign(
-      headers,
-      "primary",
-      wallet->recovery_seed);
+  const std::string header_signature =
+      util::Security::Sign(headers, "primary", wallet->recovery_seed);
 
   base::Value signed_reqeust(base::Value::Type::DICTIONARY);
   signed_reqeust.SetStringKey("octets", octets_json);
@@ -136,14 +126,12 @@ type::Result PostClaimUphold::CheckStatusCode(const int status_code) {
   return type::Result::LEDGER_OK;
 }
 
-void PostClaimUphold::Request(
-    const double user_funds,
-    PostClaimUpholdCallback callback) {
-  auto url_callback = std::bind(&PostClaimUphold::OnRequest,
-      this,
-      _1,
-      callback);
-  const std::string& payload = GeneratePayload(user_funds);
+void PostClaimUphold::Request(const double user_funds,
+                              const std::string& address,
+                              PostClaimUpholdCallback callback) {
+  auto url_callback =
+      std::bind(&PostClaimUphold::OnRequest, this, _1, address, callback);
+  const std::string& payload = GeneratePayload(user_funds, address);
 
   auto request = type::UrlRequest::New();
   request->url = GetUrl();
@@ -153,11 +141,11 @@ void PostClaimUphold::Request(
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void PostClaimUphold::OnRequest(
-    const type::UrlResponse& response,
-    PostClaimUpholdCallback callback) {
+void PostClaimUphold::OnRequest(const type::UrlResponse& response,
+                                const std::string& address,
+                                PostClaimUpholdCallback callback) {
   ledger::LogUrlResponse(__func__, response);
-  callback(CheckStatusCode(response.status_code));
+  callback(CheckStatusCode(response.status_code), address);
 }
 
 }  // namespace promotion

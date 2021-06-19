@@ -14,7 +14,6 @@
 #include "base/containers/flat_map.h"
 #include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 #include "bat/ledger/internal/wallet/wallet_balance.h"
-#include "bat/ledger/internal/wallet/wallet_claim.h"
 #include "bat/ledger/internal/wallet/wallet_create.h"
 #include "bat/ledger/internal/wallet/wallet_recover.h"
 #include "bat/ledger/ledger.h"
@@ -48,8 +47,6 @@ class Wallet {
       const std::string& wallet_type,
       ledger::ResultCallback callback);
 
-  void ClaimFunds(ledger::ResultCallback callback);
-
   void GetAnonWalletStatus(ledger::ResultCallback callback);
 
   void DisconnectAllWallets(ledger::ResultCallback callback);
@@ -71,7 +68,6 @@ class Wallet {
   std::unique_ptr<WalletCreate> create_;
   std::unique_ptr<WalletRecover> recover_;
   std::unique_ptr<WalletBalance> balance_;
-  std::unique_ptr<WalletClaim> claim_;
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };
 
