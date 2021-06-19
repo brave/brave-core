@@ -117,13 +117,20 @@ void UpholdAuthorization::OnAuthorize(
   DCHECK(uphold_wallet->token.empty());
   DCHECK(uphold_wallet->address.empty());
 
+  const auto from_status = uphold_wallet->status;
   uphold_wallet->status = type::WalletStatus::PENDING;
+  const auto to_status = uphold_wallet->status;
   uphold_wallet->token = token;
   uphold_wallet = GenerateLinks(std::move(uphold_wallet));
   if (!ledger_->uphold()->SetWallet(std::move(uphold_wallet))) {
     BLOG(0, "Unable to set the Uphold wallet!");
     return callback(type::Result::LEDGER_ERROR, {});
   }
+
+  ledger_->database()->SaveEventLog(
+      "uphold_wallet_status_change",
+      (std::ostringstream{} << from_status).str() + " ==> " +
+          (std::ostringstream{} << to_status).str() + " (UpholdAuthorization::OnAuthorize())");
 
   // After a login, we want to attempt to relink the user's payment ID to their
   // Uphold wallet address. Clear the flag that will cause relinking to be

@@ -29,6 +29,15 @@ void UpholdWallet::Generate(ledger::ResultCallback callback) const {
     uphold_wallet = type::ExternalWallet::New();
     uphold_wallet->type = constant::kWalletUphold;
     uphold_wallet->status = type::WalletStatus::NOT_CONNECTED;
+    if (!ledger_->uphold()->SetWallet(uphold_wallet->Clone())) {
+      BLOG(0, "Unable to set the Uphold wallet!");
+      return callback(type::Result::LEDGER_ERROR);
+    }
+
+    ledger_->database()->SaveEventLog(
+        "uphold_wallet_status_change",
+        "==> " + (std::ostringstream{} << uphold_wallet->status).str() +
+            " (UpholdWallet::Generate())");
   }
 
   if (uphold_wallet->one_time_string.empty()) {
@@ -237,16 +246,24 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
   }
 
   if (result != type::Result::LEDGER_OK) {
-    return callback(result); // used to be callback(type::Result::CONTINUE);
+    return callback(result);  // used to be callback(type::Result::CONTINUE);
   }
 
+  const auto from_status = uphold_wallet->status;
   uphold_wallet->status = type::WalletStatus::VERIFIED;
+  const auto to_status = uphold_wallet->status;
   uphold_wallet->address = address;
   uphold_wallet = GenerateLinks(std::move(uphold_wallet));
   if (!ledger_->uphold()->SetWallet(std::move(uphold_wallet))) {
     BLOG(0, "Unable to set the Uphold wallet!");
     return callback(type::Result::LEDGER_ERROR);
   }
+
+  ledger_->database()->SaveEventLog(
+      "uphold_wallet_status_change",
+      (std::ostringstream{} << from_status).str() + " ==> " +
+          (std::ostringstream{} << to_status).str() +
+          " (UpholdWallet::OnLinkWallet())");
 
   ledger_->promotion()->TransferTokens(
       std::bind(&UpholdWallet::OnTransferTokens, this, _1, _2, callback));
