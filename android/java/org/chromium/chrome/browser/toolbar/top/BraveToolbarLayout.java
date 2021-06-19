@@ -463,7 +463,16 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         if (!countryCode.equals(JAPAN_COUNTRY_CODE)) {
             return;
         }
-        int totalBlocked = Integer.parseInt(BraveStatsUtil.getAdsTrackersBlocked().first);
+        // double check if the shields button is shown to prevent situations like showing the
+        // tooltip on new tabs
+        if ((mBraveShieldsButton == null && !mBraveShieldsButton.isShown())
+                || UrlUtilities.isNTPUrl(
+                        BraveActivity.getBraveActivity().getActivityTab().getUrlString())) {
+            return;
+        }
+
+        int totalBlocked =
+                Math.round(Float.parseFloat(BraveStatsUtil.getAdsTrackersBlocked().first.trim()));
 
         // show after BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF (20) blocked stuff above the TIER
         // threshold
