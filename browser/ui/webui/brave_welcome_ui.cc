@@ -25,6 +25,7 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
 using content::WebUIMessageHandler;
@@ -112,15 +113,26 @@ void WelcomeDOMHandler::HandleRecordP3A(const base::ListValue* args) {
   RecordP3AHistogram(screen_number_, finished_);
 }
 
+// Converts Chromium country ID to 2 digit country string
+// For more info see src/components/country_codes/country_codes.h
+std::string CountryIDToCountryString(int country_id) {
+  if (country_id == country_codes::kCountryIDUnknown)
+    return std::string();
+
+  char chars[3] = {(country_id >> 8) & 0xFF, country_id & 0xFF, 0};
+  std::string country_string(chars);
+  DCHECK_EQ(country_string.size(), 2U);
+  return country_string;
+}
 
 }  // namespace
 
 BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
     : WebUIController(web_ui) {
-  CreateAndAddWebUIDataSource(web_ui, name, kBraveWelcomeGenerated,
-                              kBraveWelcomeGeneratedSize,
-                              IDR_BRAVE_WELCOME_HTML,
-                              /*disable_trusted_types_csp=*/true);
+  content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
+      web_ui, name, kBraveWelcomeGenerated, kBraveWelcomeGeneratedSize,
+      IDR_BRAVE_WELCOME_HTML,
+      /*disable_trusted_types_csp=*/true);
 
   web_ui->AddMessageHandler(std::make_unique<WelcomeDOMHandler>());
   web_ui->AddMessageHandler(
@@ -132,14 +144,15 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
       std::make_unique<settings::SearchEnginesHandler>(profile));
 
   // Open additional page in Japanese region
+  int country_id = country_codes::GetCountryIDFromPrefs(profile->GetPrefs());
   if (!profile->GetPrefs()->GetBoolean(prefs::kHasSeenWelcomePage)) {
-    int country_id = country_codes::GetCountryIDFromPrefs(profile->GetPrefs());
     if (country_id == country_codes::CountryStringToCountryID("JP")) {
       base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(
           FROM_HERE, base::BindOnce(&OpenJapanWelcomePage, profile),
           base::TimeDelta::FromSeconds(3));
     }
   }
+  source->AddString("countryString", CountryIDToCountryString(country_id));
 
   profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
 }
