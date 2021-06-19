@@ -1657,6 +1657,9 @@ until they verify, or until 90 days have passed.
       <message name="IDS_ECOSIA_DESC" desc="Onboarding SE text">
         Plants trees, based in Berlin
       </message>
+      <message name="IDS_BRAVE_DESC" desc="Onboarding SE text">
+        Private, independent, user-first
+      </message>
       <message name="IDS_ONBOARDING_SE_TEXT" desc="Onboarding SE title text">
         Some search engines protect your privacy better than others when you search the web.
       </message>

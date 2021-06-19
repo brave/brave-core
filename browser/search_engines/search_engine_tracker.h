@@ -29,7 +29,8 @@ enum class SearchEngineP3A {
   kQwant,
   kYandex,
   kEcosia,
-  kMaxValue = kEcosia,
+  kBrave,
+  kMaxValue = kBrave,
 };
 
 class SearchEngineTrackerFactory : public BrowserContextKeyedServiceFactory {
