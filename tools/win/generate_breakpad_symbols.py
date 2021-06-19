@@ -35,7 +35,7 @@ def GetCommandOutput(command):
     with open(os.devnull, 'w') as devnull:
         with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=devnull, bufsize=1) as proc:
             output = proc.communicate()[0]
-            return output
+            return output.decode('utf-8')
 
 
 def mkdir_p(path):
@@ -60,15 +60,15 @@ def GenerateSymbols(options, binaries):
 
             if options.verbose:
                 with print_lock:
-                    print("Generating symbols for {0}".format(binary))
+                    print("Generating symbols for {0}".format(binary), flush=True)
                     thread_start = datetime.utcnow()
 
             dump_syms = os.path.join(options.build_dir, 'dump_syms.exe')
             syms = GetCommandOutput([dump_syms, binary])
-            module_line = re.match("MODULE [^ ]+ [^ ]+ ([0-9A-Fa-f]+) (.*)\r\n", syms)
+            module_line = re.match(r"MODULE [^ ]+ [^ ]+ ([0-9A-Fa-f]+) (.*)\r\n", syms)
             if module_line is None:
                 with print_lock:
-                    print("Failed to get symbols for {0}".format(binary))
+                    print("Failed to get symbols for {0}".format(binary), flush=True)
                 q.task_done()
                 continue
 
@@ -84,7 +84,7 @@ def GenerateSymbols(options, binaries):
                     thread_end = datetime.utcnow()
                     elapsed = thread_end - thread_start
                     print("Completed generating symbols for {}: elapsed time {} seconds".format(
-                        binary, elapsed.total_seconds()))
+                        binary, elapsed.total_seconds()), flush=True)
 
             q.task_done()
 
