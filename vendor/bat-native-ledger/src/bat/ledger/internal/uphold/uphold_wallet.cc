@@ -29,12 +29,12 @@ void UpholdWallet::Generate(ledger::ResultCallback callback) const {
     uphold_wallet = type::ExternalWallet::New();
     uphold_wallet->type = constant::kWalletUphold;
     uphold_wallet->status = type::WalletStatus::NOT_CONNECTED;
-    uphold_wallet = GenerateLinks(std::move(uphold_wallet));
   }
 
   if (uphold_wallet->one_time_string.empty()) {
     uphold_wallet->one_time_string = util::GenerateRandomHexString();
   }
+  uphold_wallet = GenerateLinks(std::move(uphold_wallet));
 
   const auto status = uphold_wallet->status;
   if (!ledger_->uphold()->SetWallet(std::move(uphold_wallet))) {
@@ -243,7 +243,10 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
   uphold_wallet->status = type::WalletStatus::VERIFIED;
   uphold_wallet->address = address;
   uphold_wallet = GenerateLinks(std::move(uphold_wallet));
-  ledger_->uphold()->SetWallet(std::move(uphold_wallet));
+  if (!ledger_->uphold()->SetWallet(std::move(uphold_wallet))) {
+    BLOG(0, "Unable to set the Uphold wallet!");
+    return callback(type::Result::LEDGER_ERROR);
+  }
 
   ledger_->promotion()->TransferTokens(
       std::bind(&UpholdWallet::OnTransferTokens, this, _1, _2, callback));
