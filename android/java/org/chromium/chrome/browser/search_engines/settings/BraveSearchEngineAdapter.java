@@ -48,6 +48,15 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
                 TemplateUrlServiceFactory.get().getDefaultSearchEngineTemplateUrl();
         if (dseTemplateUrl != null) defaultSearchEngineName = dseTemplateUrl.getShortName();
 
+        // TODO(sergz): A check, do we need to fetch a default SE from native and avoid
+        // overwrite.
+        if (BraveSearchEnginePrefHelper.getInstance().getFetchSEFromNative()) {
+            // Set it for both normal and private tabs
+            setDSEPrefs(dseTemplateUrl, true);
+            setDSEPrefs(dseTemplateUrl, false);
+            BraveSearchEnginePrefHelper.getInstance().setFetchSEFromNative(false);
+        }
+
         return ContextUtils.getAppSharedPreferences().getString(
                 isPrivate ? PRIVATE_DSE_SHORTNAME : STANDARD_DSE_SHORTNAME,
                 defaultSearchEngineName);
