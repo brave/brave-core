@@ -1,3 +1,10 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/speedreader/buildflags/buildflags.gni")
+
 source_set("speedreader") {
   public_deps = [
     "rust/ffi",
@@ -38,4 +45,26 @@ source_set("speedreader") {
     "//ui/base",  # For ResourceBundle, consider getting rid of this ?
     "//url",
   ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  if (enable_speedreader) {
+    sources = [
+      "//brave/components/speedreader/rust/ffi/speedreader_unittest.cc",
+      "//brave/components/speedreader/speedreader_throttle_unittest.cc",
+      "//brave/components/speedreader/speedreader_util_unittest.cc",
+    ]
+
+    deps = [
+      "//base",
+      "//brave/components/speedreader",
+      "//brave/components/speedreader/common",
+      "//chrome/browser",
+      "//chrome/test:test_support",
+      "//content/public/browser",
+      "//content/test:test_support",
+      "//testing/gtest",
+    ]
+  }
 }
