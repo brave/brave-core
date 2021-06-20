@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -93,11 +93,10 @@ class PatchCard {
   explicit PatchCard(LedgerImpl* ledger);
   ~PatchCard();
 
-  void Request(
-      const std::string& token,
-      const std::string& address,
-      const ::ledger::uphold::UpdateCard& card,
-      PatchCardCallback callback);
+  void Request(const std::string& token,
+               const std::string& address,
+               const ::ledger::uphold::UpdateCard& card,
+               PatchCardCallback callback);
 
  private:
   std::string GetUrl(const std::string& address);
@@ -106,9 +105,7 @@ class PatchCard {
 
   type::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      PatchCardCallback callback);
+  void OnRequest(const type::UrlResponse& response, PatchCardCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

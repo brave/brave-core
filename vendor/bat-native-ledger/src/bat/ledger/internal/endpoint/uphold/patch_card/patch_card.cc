@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -19,8 +19,7 @@ namespace ledger {
 namespace endpoint {
 namespace uphold {
 
-PatchCard::PatchCard(LedgerImpl* ledger):
-    ledger_(ledger) {
+PatchCard::PatchCard(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
 }
 
@@ -64,15 +63,11 @@ type::Result PatchCard::CheckStatusCode(const int status_code) {
   return type::Result::LEDGER_OK;
 }
 
-void PatchCard::Request(
-    const std::string& token,
-    const std::string& address,
-    const ::ledger::uphold::UpdateCard& card,
-    PatchCardCallback callback) {
-  auto url_callback = std::bind(&PatchCard::OnRequest,
-      this,
-      _1,
-      callback);
+void PatchCard::Request(const std::string& token,
+                        const std::string& address,
+                        const ::ledger::uphold::UpdateCard& card,
+                        PatchCardCallback callback) {
+  auto url_callback = std::bind(&PatchCard::OnRequest, this, _1, callback);
 
   auto request = type::UrlRequest::New();
   request->url = GetUrl(address);
@@ -83,9 +78,8 @@ void PatchCard::Request(
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void PatchCard::OnRequest(
-    const type::UrlResponse& response,
-    PatchCardCallback callback) {
+void PatchCard::OnRequest(const type::UrlResponse& response,
+                          PatchCardCallback callback) {
   ledger::LogUrlResponse(__func__, response);
   callback(CheckStatusCode(response.status_code));
 }

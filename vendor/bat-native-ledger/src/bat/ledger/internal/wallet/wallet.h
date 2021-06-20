@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -30,9 +30,8 @@ class Wallet {
 
   void CreateWalletIfNecessary(ledger::ResultCallback callback);
 
-  void RecoverWallet(
-      const std::string& pass_phrase,
-      ledger::ResultCallback callback);
+  void RecoverWallet(const std::string& pass_phrase,
+                     ledger::ResultCallback callback);
 
   std::string GetWalletPassphrase(type::BraveWalletPtr wallet);
 
@@ -43,9 +42,8 @@ class Wallet {
       const base::flat_map<std::string, std::string>& args,
       ledger::ExternalWalletAuthorizationCallback callback);
 
-  void DisconnectWallet(
-      const std::string& wallet_type,
-      ledger::ResultCallback callback);
+  void DisconnectWallet(const std::string& wallet_type,
+                        ledger::ResultCallback callback);
 
   void GetAnonWalletStatus(ledger::ResultCallback callback);
 
@@ -59,10 +57,9 @@ class Wallet {
                        ledger::PostSuggestionsClaimCallback callback);
 
  private:
-  void AuthorizeWallet(
-      const std::string& wallet_type,
-      const base::flat_map<std::string, std::string>& args,
-      ledger::ExternalWalletAuthorizationCallback callback);
+  void AuthorizeWallet(const std::string& wallet_type,
+                       const base::flat_map<std::string, std::string>& args,
+                       ledger::ExternalWalletAuthorizationCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<WalletCreate> create_;

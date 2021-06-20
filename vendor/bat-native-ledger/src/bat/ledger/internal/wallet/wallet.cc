@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -27,13 +27,12 @@
 namespace ledger {
 namespace wallet {
 
-Wallet::Wallet(LedgerImpl* ledger) :
-    ledger_(ledger),
-    create_(std::make_unique<WalletCreate>(ledger)),
-    recover_(std::make_unique<WalletRecover>(ledger)),
-    balance_(std::make_unique<WalletBalance>(ledger)),
-    promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {
-}
+Wallet::Wallet(LedgerImpl* ledger)
+    : ledger_(ledger),
+      create_(std::make_unique<WalletCreate>(ledger)),
+      recover_(std::make_unique<WalletRecover>(ledger)),
+      balance_(std::make_unique<WalletBalance>(ledger)),
+      promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {}
 
 Wallet::~Wallet() = default;
 
@@ -53,11 +52,9 @@ std::string Wallet::GetWalletPassphrase(type::BraveWalletPtr wallet) {
   }
 
   char* words = nullptr;
-  const int result = bip39_mnemonic_from_bytes(
-      nullptr,
-      &wallet->recovery_seed.front(),
-      wallet->recovery_seed.size(),
-      &words);
+  const int result =
+      bip39_mnemonic_from_bytes(nullptr, &wallet->recovery_seed.front(),
+                                wallet->recovery_seed.size(), &words);
 
   if (result != 0) {
     BLOG(0, "Bip39 failed: " << result);
@@ -71,20 +68,16 @@ std::string Wallet::GetWalletPassphrase(type::BraveWalletPtr wallet) {
   return pass_phrase;
 }
 
-void Wallet::RecoverWallet(
-    const std::string& pass_phrase,
-    ledger::ResultCallback callback) {
-  recover_->Start(
-      pass_phrase,
-      [this, callback](const type::Result result) {
-        if (result == type::Result::LEDGER_OK) {
-          ledger_->database()->DeleteAllBalanceReports(
-              [](const type::Result _) {});
-          DisconnectAllWallets(callback);
-          return;
-        }
-        callback(result);
-      });
+void Wallet::RecoverWallet(const std::string& pass_phrase,
+                           ledger::ResultCallback callback) {
+  recover_->Start(pass_phrase, [this, callback](const type::Result result) {
+    if (result == type::Result::LEDGER_OK) {
+      ledger_->database()->DeleteAllBalanceReports([](const type::Result _) {});
+      DisconnectAllWallets(callback);
+      return;
+    }
+    callback(result);
+  });
 }
 
 void Wallet::FetchBalance(ledger::FetchBalanceCallback callback) {
@@ -96,15 +89,15 @@ void Wallet::ExternalWalletAuthorization(
     const base::flat_map<std::string, std::string>& args,
     ledger::ExternalWalletAuthorizationCallback callback) {
   ledger_->wallet()->CreateWalletIfNecessary(
-    [this, wallet_type, args, callback](const type::Result result) {
-      if (result != type::Result::WALLET_CREATED) {
-        BLOG(0, "Wallet couldn't be created");
-        callback(type::Result::LEDGER_ERROR, {});
-        return;
-      }
+      [this, wallet_type, args, callback](const type::Result result) {
+        if (result != type::Result::WALLET_CREATED) {
+          BLOG(0, "Wallet couldn't be created");
+          callback(type::Result::LEDGER_ERROR, {});
+          return;
+        }
 
-      AuthorizeWallet(wallet_type, args, callback);
-    });
+        AuthorizeWallet(wallet_type, args, callback);
+      });
 }
 
 void Wallet::AuthorizeWallet(
@@ -130,9 +123,8 @@ void Wallet::AuthorizeWallet(
   callback(type::Result::LEDGER_ERROR, {});
 }
 
-void Wallet::DisconnectWallet(
-      const std::string& wallet_type,
-      ledger::ResultCallback callback) {
+void Wallet::DisconnectWallet(const std::string& wallet_type,
+                              ledger::ResultCallback callback) {
   if (wallet_type == constant::kWalletUphold) {
     promotion_server_->delete_claim()->Request(
         constant::kWalletUphold, [this, callback](const type::Result result) {
@@ -280,8 +272,7 @@ bool Wallet::SetWallet(type::BraveWalletPtr wallet) {
   std::string json;
   base::JSONWriter::Write(new_wallet, &json);
   const bool success = ledger_->ledger_client()->SetEncryptedStringState(
-      state::kWalletBrave,
-      json);
+      state::kWalletBrave, json);
   ledger_->database()->SaveEventLog(state::kRecoverySeed, event_string);
   if (!wallet->payment_id.empty()) {
     ledger_->database()->SaveEventLog(state::kPaymentId, wallet->payment_id);

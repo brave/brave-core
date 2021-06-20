@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -43,6 +43,7 @@ using PostClaimUpholdCallback =
 class PostClaimUphold {
  public:
   explicit PostClaimUphold(LedgerImpl* ledger);
+
   ~PostClaimUphold();
 
   void Request(const double user_funds,
@@ -56,8 +57,6 @@ class PostClaimUphold {
                               const std::string& address);
 
   type::Result CheckStatusCode(const int status_code);
-
-  type::Result ParseBody(const std::string& body, std::string* payment_id);
 
   void OnRequest(const type::UrlResponse& response,
                  const std::string& address,
