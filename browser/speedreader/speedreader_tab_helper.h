@@ -56,7 +56,10 @@ class SpeedreaderTabHelper
   SpeedreaderBubbleView* speedreader_bubble_view() const;
 
   // Displays speedreader information
-  void ShowBubble();
+  void ShowSpeedreaderBubble();
+
+  // Displays reader mode information
+  void ShowReaderModeBubble();
 
   // Hides speedreader information
   void HideBubble();
@@ -67,6 +70,11 @@ class SpeedreaderTabHelper
  private:
   friend class content::WebContentsUserData<SpeedreaderTabHelper>;
   explicit SpeedreaderTabHelper(content::WebContents* web_contents);
+
+  // Called by ShowSpeedreaderBubble and ShowReaderModeBubble.
+  // |is_bubble_speedreader| will show a bubble for pages in Speedreader if set
+  // to true, otherwise pages in reader mode.
+  void ShowBubble(bool is_bubble_speedreader);
 
   void UpdateActiveState(content::NavigationHandle* handle);
 

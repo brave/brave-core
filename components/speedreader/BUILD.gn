@@ -1,5 +1,3 @@
-import("//brave/components/speedreader/buildflags/buildflags.gni")
-
 source_set("speedreader") {
   public_deps = [
     "rust/ffi",

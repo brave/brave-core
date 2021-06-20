@@ -110,22 +110,22 @@ void ShowSpeedreaderBubble(Browser* browser) {
       if (!tab_helper)
         return;
 
+      const bool speedreader_enabled = tab_helper->IsSpeedreaderEnabled();
       const DistillState state = tab_helper->PageDistillState();
       if (state == DistillState::kNone) {
         // If this is called on an undistilled page, we single shot it.
         tab_helper->SingleShotSpeedreader();
-
-        if (tab_helper->IsSpeedreaderEnabled())
-          return;
       }
 
-      // If Speedreader is already enabled, don't show the bubble.
-      // fixme: we need to |or| with an "asked" counter
-      if (state == DistillState::kNone || state == DistillState::kReaderMode) {
-        if (tab_helper->IsSpeedreaderEnabled())
-          return;
+      if (state == DistillState::kSpeedreaderMode) {
+        tab_helper->ShowSpeedreaderBubble();
+      } else {
+        if (speedreader_enabled && !tab_helper->IsEnabledForSite()) {
+          tab_helper->ShowSpeedreaderBubble();
+        } else {
+          tab_helper->ShowReaderModeBubble();
+        }
       }
-      tab_helper->ShowBubble();
     }
   }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)

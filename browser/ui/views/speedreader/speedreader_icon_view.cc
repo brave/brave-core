@@ -145,7 +145,6 @@ SkColor SpeedreaderIconView::GetIconLabelBubbleSurroundingForegroundColor()
 
 SkColor SpeedreaderIconView::GetIconLabelBubbleInkDropColor() const {
   return kReaderIconColor;
-  // return icon_label_bubble_delegate_->GetIconLabelBubbleBackgroundColor();
 }
 
 SkColor SpeedreaderIconView::GetIconLabelBubbleBackgroundColor() const {

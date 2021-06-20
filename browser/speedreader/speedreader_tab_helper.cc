@@ -135,14 +135,21 @@ void SpeedreaderTabHelper::OnBubbleClosed() {
   browser->window()->UpdatePageActionIcon(PageActionIconType::kReaderMode);
 }
 
-// Displays speedreader information
-void SpeedreaderTabHelper::ShowBubble() {
+void SpeedreaderTabHelper::ShowSpeedreaderBubble() {
+  ShowBubble(true);
+}
+
+void SpeedreaderTabHelper::ShowReaderModeBubble() {
+  ShowBubble(false);
+}
+
+void SpeedreaderTabHelper::ShowBubble(bool is_bubble_speedreader) {
   auto* contents = web_contents();
   Browser* browser = chrome::FindBrowserWithWebContents(contents);
   DCHECK(browser);
-  const bool enabled = distill_state_ == DistillState::kSpeedreaderMode;
-  speedreader_bubble_ = static_cast<BraveBrowserWindow*>(browser->window())
-                            ->ShowSpeedreaderBubble(this, enabled);
+  speedreader_bubble_ =
+      static_cast<BraveBrowserWindow*>(browser->window())
+          ->ShowSpeedreaderBubble(this, is_bubble_speedreader);
   browser->window()->UpdatePageActionIcon(PageActionIconType::kReaderMode);
 }
 
