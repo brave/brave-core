@@ -31,10 +31,6 @@ void UpholdAuthorization::Authorize(
     return callback(type::Result::LEDGER_ERROR, {});
   }
 
-  // We only use 4 states
-  // (NOT_CONNECTED, VERIFIED, DISCONNECTED_VERIFIED, PENDING)
-  // and we don't want to authorize with Uphold in
-  // VERIFIED and PENDING.
   DCHECK(uphold_wallet->status == type::WalletStatus::NOT_CONNECTED ||
          uphold_wallet->status == type::WalletStatus::DISCONNECTED_VERIFIED);
   DCHECK(uphold_wallet->token.empty());
@@ -101,11 +97,6 @@ void UpholdAuthorization::OnAuthorize(
     const type::Result result,
     const std::string& token,
     ledger::ExternalWalletAuthorizationCallback callback) {
-  if (result != type::Result::LEDGER_OK || token.empty()) {
-    BLOG(0, "Couldn't exchange code for the access token!");
-    return callback(type::Result::LEDGER_ERROR, {});
-  }
-
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "The Uphold wallet is null!");
@@ -116,6 +107,16 @@ void UpholdAuthorization::OnAuthorize(
          uphold_wallet->status == type::WalletStatus::DISCONNECTED_VERIFIED);
   DCHECK(uphold_wallet->token.empty());
   DCHECK(uphold_wallet->address.empty());
+
+  if (result != type::Result::LEDGER_OK) {
+    BLOG(0, "Couldn't exchange code for the access token!");
+    return callback(result, {});
+  }
+
+  if (token.empty()) {
+    BLOG(0, "Access token is empty!");
+    return callback(type::Result::LEDGER_ERROR, {});
+  }
 
   const auto from_status = uphold_wallet->status;
   uphold_wallet->status = type::WalletStatus::PENDING;
@@ -130,12 +131,8 @@ void UpholdAuthorization::OnAuthorize(
   ledger_->database()->SaveEventLog(
       "uphold_wallet_status_change",
       (std::ostringstream{} << from_status).str() + " ==> " +
-          (std::ostringstream{} << to_status).str() + " (UpholdAuthorization::OnAuthorize())");
-
-  // After a login, we want to attempt to relink the user's payment ID to their
-  // Uphold wallet address. Clear the flag that will cause relinking to be
-  // skipped.
-  ledger_->state()->SetAnonTransferChecked(false);
+          (std::ostringstream{} << to_status).str() +
+          " (UpholdAuthorization::OnAuthorize())");
 
   callback(type::Result::LEDGER_OK, {});
 }

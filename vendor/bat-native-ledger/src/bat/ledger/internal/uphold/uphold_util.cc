@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -32,22 +32,20 @@ std::string GetClientSecret() {
 }
 
 std::string GetUrl() {
-  return ledger::_environment == type::Environment::PRODUCTION
-      ? kUrlProduction
-      : kUrlStaging;
+  return ledger::_environment == type::Environment::PRODUCTION ? kUrlProduction
+                                                               : kUrlStaging;
 }
 
 std::string GetFeeAddress() {
   return ledger::_environment == type::Environment::PRODUCTION
-      ? kFeeAddressProduction
-      : kFeeAddressStaging;
+             ? kFeeAddressProduction
+             : kFeeAddressStaging;
 }
-
 
 std::string GetACAddress() {
   return ledger::_environment == type::Environment::PRODUCTION
-      ? kACAddressProduction
-      : kACAddressStaging;
+             ? kACAddressProduction
+             : kACAddressStaging;
 }
 
 std::string GetAuthorizeUrl(const std::string& state, const bool kyc_flow) {
@@ -69,10 +67,7 @@ std::string GetAuthorizeUrl(const std::string& state, const bool kyc_flow) {
       "transactions:transfer:others"
       "&intention=%s&"
       "state=%s",
-      url.c_str(),
-      id.c_str(),
-      intention.c_str(),
-      state.c_str());
+      url.c_str(), id.c_str(), intention.c_str(), state.c_str());
 }
 
 std::string GetAddUrl(const std::string& address) {
@@ -82,10 +77,8 @@ std::string GetAddUrl(const std::string& address) {
     return "";
   }
 
-  return base::StringPrintf(
-      "%s/dashboard/cards/%s/add",
-      url.c_str(),
-      address.c_str());
+  return base::StringPrintf("%s/dashboard/cards/%s/add", url.c_str(),
+                            address.c_str());
 }
 
 std::string GetWithdrawUrl(const std::string& address) {
@@ -95,28 +88,22 @@ std::string GetWithdrawUrl(const std::string& address) {
     return "";
   }
 
-  return base::StringPrintf(
-      "%s/dashboard/cards/%s/use",
-      url.c_str(),
-      address.c_str());
+  return base::StringPrintf("%s/dashboard/cards/%s/use", url.c_str(),
+                            address.c_str());
 }
 
 std::string GetSecondStepVerify() {
   const std::string url = GetUrl();
   const std::string id = GetClientId();
 
-  return base::StringPrintf(
-      "%s/signup/step2?application_id=%s&intention=kyc",
-      url.c_str(),
-      id.c_str());
+  return base::StringPrintf("%s/signup/step2?application_id=%s&intention=kyc",
+                            url.c_str(), id.c_str());
 }
 
 std::string GetAccountUrl() {
   const std::string url = GetUrl();
 
-  return base::StringPrintf(
-      "%s/dashboard",
-      url.c_str());
+  return base::StringPrintf("%s/dashboard", url.c_str());
 }
 
 type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
