@@ -10,10 +10,12 @@ source_set("bookmarks") {
   configs += [ "//build/config/compiler:enable_arc" ]
 
   sources = [
+    "bookmark_model_listener_ios.h",
+    "bookmark_model_listener_ios.mm",
+    "brave_bookmarks_api+private.h",
     "brave_bookmarks_api.h",
     "brave_bookmarks_api.mm",
     "brave_bookmarks_observer.h",
-    "brave_bookmarks_observer.mm",
   ]
 
   deps = [
@@ -33,7 +35,5 @@ source_set("bookmarks") {
     "//url",
   ]
 
-  frameworks = [
-    "Foundation.framework",
-  ]
+  frameworks = [ "Foundation.framework" ]
 }
