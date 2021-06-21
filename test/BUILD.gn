@@ -930,6 +930,7 @@ if (!is_android) {
     android_manifest_dep = ":brave_browser_tests_manifest"
 
     deps = [
+      ":test_support",
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/app/theme:brave_unscaled_resources_grit",
       "//brave/browser/brave_ads",
@@ -956,6 +957,7 @@ if (!is_android) {
       "//chrome/android:app_hooks_java",
       "//chrome/browser:browser_process",
       "//chrome/browser/flags:flags_android",
+      "//chrome/browser/lens:delegate_public_impl_java",
       "//chrome/browser/metrics:test_support",
       "//chrome/test:android_browsertests_assets",
       "//chrome/test:android_browsertests_java",
