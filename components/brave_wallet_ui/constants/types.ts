@@ -162,6 +162,7 @@ export interface PageState {
   selectedAsset: AssetOptionType | undefined
   selectedAssetPrice: AssetPriceReturnInfo | undefined
   selectedAssetPriceHistory: PriceDataObjectType[]
+  userAssets: string[]
   mnemonic?: string
 }
 

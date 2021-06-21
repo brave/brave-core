@@ -36,6 +36,7 @@ import BuySendSwap from '../components/buy-send-swap'
 import Onboarding from '../stories/screens/onboarding'
 import BackupWallet from '../stories/screens/backup-wallet'
 import { formatePrices } from '../utils/format-prices'
+import { AssetOptions } from '../options/asset-options'
 
 type Props = {
   wallet: WalletState
@@ -62,7 +63,8 @@ function Container (props: Props) {
     selectedTimeline,
     selectedAsset,
     selectedAssetPrice,
-    selectedAssetPriceHistory
+    selectedAssetPriceHistory,
+    userAssets
   } = props.page
 
   const [view, setView] = React.useState<NavTypes>('crypto')
@@ -133,22 +135,56 @@ function Container (props: Props) {
     props.walletPageActions.changeTimline(timeline)
   }
 
-  // Will need to add additional logic here to multiply
-  // the fullbalance by the current market price of "ETH" to start.
-  const portfolioBalance = React.useMemo(() => {
-    const balances = accounts.map((account) => {
+  // This will scrape all of the user's accounts and combine the asset balances for a single asset
+  const fullAssetBalance = (asset: AssetOptionType) => {
+    const newList = accounts.filter((account) => account.asset.includes(asset.symbol.toLowerCase()))
+    const amounts = newList.map((account) => {
       return account.balance
     })
-    const fullBalance = balances.reduce(function (a, b) {
+    const grandTotal = amounts.reduce(function (a, b) {
       return a + b
     }, 0)
-    const grandTotal = fullBalance * 1
-    return formatePrices(grandTotal)
-  }, [accounts])
+    return grandTotal
+  }
+
+  // This will scrape all of the user's accounts and combine the fiat value for a single asset
+  const fullAssetFiatBalance = (asset: AssetOptionType) => {
+    const newList = accounts.filter((account) => account.asset.includes(asset.symbol.toLowerCase()))
+    const amounts = newList.map((account) => {
+      return Number(account.fiatBalance)
+    })
+    const grandTotal = amounts.reduce(function (a, b) {
+      return a + b
+    }, 0)
+    return grandTotal
+  }
+
+  // This looks at the users asset list and returns the full balance for each asset
+  const userAssetList = React.useMemo(() => {
+    const newList = AssetOptions.filter((asset) => userAssets.includes(asset.id))
+    return newList.map((asset) => {
+      return {
+        asset: asset,
+        assetBalance: fullAssetBalance(asset),
+        fiatBalance: fullAssetFiatBalance(asset)
+      }
+    })
+  }, [userAssets, accounts])
 
   const onSelectAsset = (asset: AssetOptionType) => {
     props.walletPageActions.selectAsset(asset)
   }
+
+  // This will scrape all of the user's accounts and combine the fiat value for every asset
+  const fullPortfolioBalance = React.useMemo(() => {
+    const amountList = userAssetList.map((item) => {
+      return fullAssetFiatBalance(item.asset)
+    })
+    const grandTotal = amountList.reduce(function (a, b) {
+      return a + b
+    }, 0)
+    return formatePrices(grandTotal)
+  }, [userAssetList])
 
   const renderWallet = React.useMemo(() => {
     if (!isWalletCreated) {
@@ -188,13 +224,13 @@ function Container (props: Props) {
                   accounts={accounts}
                   onChangeTimeline={onChangeTimeline}
                   onSelectAsset={onSelectAsset}
-                  portfolioBalance={portfolioBalance}
+                  portfolioBalance={fullPortfolioBalance}
                   selectedAsset={selectedAsset}
                   selectedAssetPrice={selectedAssetPrice}
                   selectedAssetPriceHistory={selectedAssetPriceHistory}
                   selectedTimeline={selectedTimeline}
                   transactions={[]}
-                  userAssetList={[]}
+                  userAssetList={userAssetList}
                 />
               )}
             </>

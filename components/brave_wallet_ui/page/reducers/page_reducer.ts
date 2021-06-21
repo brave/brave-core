@@ -16,7 +16,8 @@ const defaultState: PageState = {
   selectedTimeline: '24HRS',
   selectedAsset: undefined,
   selectedAssetPrice: undefined,
-  selectedAssetPriceHistory: []
+  selectedAssetPriceHistory: [],
+  userAssets: ['1']
 }
 
 const reducer = createReducer<PageState>({}, defaultState)
