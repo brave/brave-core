@@ -1,0 +1,27 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+source_set("driver") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+
+  sources = [
+    "brave_sync_profile_service+private.h",
+    "brave_sync_profile_service.h",
+    "brave_sync_profile_service.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//components/sync/base",
+    "//components/sync/driver",
+    "//components/sync_device_info",
+    "//ios/web/public/thread",
+  ]
+
+  frameworks = [ "Foundation.framework" ]
+}

@@ -7,6 +7,8 @@ include_rules = [
   "+components/sync/driver",
   "+components/sync/base",
   "+components/browser_sync",
+  "+components/history/core/browser",
+  "+components/keyed_service/core",
   "+ios/public/provider/chrome/browser/chrome_browser_provider.h",
   "+ios/web/public/init/web_main.h",
 ]
