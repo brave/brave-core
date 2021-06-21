@@ -25,6 +25,7 @@ import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
+import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegateImpl {
@@ -89,7 +90,6 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
         // braveVpnDividerLine.setVisible(itemVisible);
         if (!itemVisible) return;
 
-        boolean isRequestBraveVpn = BraveActivity.isBraveVpnEnabled;
-        requestMenuCheck.setChecked(isRequestBraveVpn);
+        requestMenuCheck.setChecked(BraveVpnUtils.isVPNConnected(mContext));
     }
 }
