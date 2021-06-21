@@ -10,6 +10,7 @@
 
 namespace blink {
 
+class EphemeralStorageNamespaces;
 class ExceptionState;
 class LocalDOMWindow;
 class StorageArea;
@@ -35,6 +36,7 @@ class BraveDOMWindowStorage final
   StorageArea* ephemeralSessionStorage();
   StorageArea* ephemeralLocalStorage();
 
+  mutable Member<EphemeralStorageNamespaces> ephemeral_storage_namespaces_;
   mutable Member<StorageArea> ephemeral_session_storage_;
   mutable Member<StorageArea> ephemeral_local_storage_;
 };

@@ -181,15 +181,19 @@ StorageArea* BraveDOMWindowStorage::sessionStorage(
 }
 
 StorageArea* BraveDOMWindowStorage::ephemeralSessionStorage() {
-  if (ephemeral_session_storage_)
-    return ephemeral_session_storage_;
-
   LocalDOMWindow* window = GetSupplementable();
   Page* page = window->GetFrame()->GetDocument()->GetPage();
   EphemeralStorageNamespaces* namespaces =
       EphemeralStorageNamespaces::From(page, window);
   if (!namespaces)
     return nullptr;
+
+  if (ephemeral_session_storage_ &&
+      ephemeral_storage_namespaces_ == namespaces) {
+    return ephemeral_session_storage_;
+  }
+
+  ephemeral_storage_namespaces_ = namespaces;
 
   auto storage_area =
       namespaces->session_storage()->GetCachedArea(window->GetSecurityOrigin());
@@ -213,15 +217,18 @@ StorageArea* BraveDOMWindowStorage::localStorage(
 }
 
 StorageArea* BraveDOMWindowStorage::ephemeralLocalStorage() {
-  if (ephemeral_local_storage_)
-    return ephemeral_local_storage_;
-
   LocalDOMWindow* window = GetSupplementable();
   Page* page = window->GetFrame()->GetDocument()->GetPage();
   EphemeralStorageNamespaces* namespaces =
       EphemeralStorageNamespaces::From(page, window);
   if (!namespaces)
     return nullptr;
+
+  if (ephemeral_local_storage_ && ephemeral_storage_namespaces_ == namespaces) {
+    return ephemeral_local_storage_;
+  }
+
+  ephemeral_storage_namespaces_ = namespaces;
 
   auto storage_area =
       namespaces->local_storage()->GetCachedArea(window->GetSecurityOrigin());
@@ -237,6 +244,7 @@ StorageArea* BraveDOMWindowStorage::ephemeralLocalStorage() {
 }
 
 void BraveDOMWindowStorage::Trace(Visitor* visitor) const {
+  visitor->Trace(ephemeral_storage_namespaces_);
   visitor->Trace(ephemeral_session_storage_);
   visitor->Trace(ephemeral_local_storage_);
   Supplement<LocalDOMWindow>::Trace(visitor);
