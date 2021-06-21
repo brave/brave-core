@@ -3,7 +3,9 @@
 <translationbundle lang="pt-PT">
 <translation id="7307834434086582547">Ativar / Desativar Proteções Brave</translation>
 <translation id="3570081523466826008">Atualizar ligações para HTTPS</translation>
+<translation id="2278950434998763147">Abre alguns sites utilizando uma ligação HTTPS segura em vez de HTTP simples.</translation>
 <translation id="94154759592465111">Bloquear scripts</translation>
+<translation id="3518266709656143462">Bloqueia JavaScript (sites podem falhar)</translation>
 <translation id="5709627087332022422">Bloquear monitorizadores 'cross-site'</translation>
 <translation id="6052725679982758334">Bloqueio de Redes Sociais</translation>
 <translation id="7498695072878479744">Permitir botões de login do Google em sites de terceiros</translation>
@@ -11,9 +13,16 @@
 <translation id="5165042248369837294">Permitir tweets incorporados do Twitter</translation>
 <translation id="958971637207126733">Permitir publicações integradas LinkedIn</translation>
 <translation id="6302422639282249274">Gerir Recompensas Brave</translation>
+<translation id="8877432762827303535">Finalizar online</translation>
+<translation id="6583902294974160967">Suporte</translation>
+<translation id="1799030480311994998">Funcionalidades</translation>
+<translation id="5345505584130165588">Proteções Brave &amp; privacidade</translation>
+<translation id="4692623383562244444">Motores de pesquisa</translation>
 <translation id="1468415711258933398">Separador padrão</translation>
 <translation id="3377025655491224618">Separador privado</translation>
 <translation id="9148058034647219655">Sair</translation>
+<translation id="4022987104439075738">Gateway IPFS</translation>
+<translation id="2688519859165248360">Permite navegar recursos IPFS através de uma porta IPFS</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Resolver método</translation>
@@ -23,9 +32,11 @@
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Evita que o navegador utilize a impressão digital</translation>
 <translation id="7459000603787995422">Fechar separadores ao sair</translation>
+<translation id="4448697385961650078">Bloquear rastreadores &amp; anúncios</translation>
+<translation id="2448893613530489637">Impede o carregamento de rastreadores &amp; anúncios e sua apresentação nas páginas Web</translation>
 <translation id="1680858055899097121">Não manter separadores entre sessões de navegação</translation>
-<translation id="7142548388914389999">Envie automaticamente análises de produtos totalmente confidenciais à Brave</translation>
-<translation id="5469408008145872264">Esta informação anónima apenas permite que o Brave estime a utilização geral de certas funcionalidades.</translation>
+<translation id="7142548388914389999">Permitir análises de produtos que preservam a privacidade (P3A)</translation>
+<translation id="5469408008145872264">Esta informação completamente anónima permite que o Brave estime e melhore a utilização geral de certas funcionalidades.</translation>
 <translation id="7977176350719484850">Est. dados\npoupados</translation>
 <translation id="9008534313521214777">Estimativa Tempo\nEconomizado</translation>
 <translation id="6572660632052512096">Modo desktop</translation>
@@ -35,6 +46,9 @@
 <translation id="4479934682648362332">Preferir versão desktop dos sites</translation>
 <translation id="1842747674580016420">Reprodução de vídeos no Brave</translation>
 <translation id="5368992950177874750">Se ativado, os vídeos serão reproduzidos no Brave e não na aplicação de vídeo</translation>
+<translation id="181905442828471321">Proteção global predefinida do Brave</translation>
+<translation id="2675679258824361492">Outras configurações de privacidade</translation>
+<translation id="8026334261755873520">Limpar dados de navegação</translation>
 <translation id="5965081608816406060">Reprodução de vídeo em segundo plano</translation>
 <translation id="6332924730165919598">Fechar todos os separadores fecha o Brave</translation>
 <translation id="1580125697191336644">Experimental. Ativa a reprodução de áudio dos vídeos em segundo plano quando o separador não está ativo ou o ecrã do dispositivo está desligado. Tente passar para o modo desktop se esta funcionalidade não estiver a funcionar.</translation>
@@ -106,8 +120,8 @@
 <translation id="8428213095426709021">Definições</translation>
 <translation id="8772672608371898774">Publicador Verificado da Brave</translation>
 <translation id="1397683270551078781">Ainda não verificado</translation>
-<translation id="5727208111992260840">Este criador ainda não se inscreveu para receber contribuições de utilizadores do Brave.
-        Quaisquer gorjetas que enviar irão permanecer na sua carteira até que ele verifique.</translation>
+<translation id="880893465294676334">Este Criador Verificado Brave ainda não configurou a sua conta para receber contributos de Utilizadores Brave. 
+Quaisquer gorjetas que enviar irão permanecer na sua carteira até que o criador complete este processo.</translation>
 <translation id="8918760045046434238">Enviar uma gorjeta...</translation>
 <translation id="1978261665418056203">Ainda sem atividades este
 mês...</translation>
@@ -214,10 +228,7 @@ até que verifiquem, ou até terem passado 90 dias.</translation>
 <translation id="7541582550122501404">Contribuição pendente</translation>
 <translation id="8520059774736886747">Criador <ph name="PUBLISHER_NAME"/> recentemente verificado</translation>
 <translation id="7924320838799747606">O seu saldo</translation>
-<translation id="9212459913845238740">Atribuições de pontos reivindicadas</translation>
-<translation id="2132683977638223450">Atribuição de pontos gratuita</translation>
 <translation id="1486343603936278248">token</translation>
-<translation id="8713995420537272453">ponto</translation>
 <translation id="7781069478569868053">Novo separador</translation>
 <translation id="8522669544471808198">Mostrar imagens de fundo</translation>
 <translation id="3870475560794762985">Mostrar imagens patrocinadas</translation>
@@ -261,6 +272,8 @@ até que verifiquem, ou até terem passado 90 dias.</translation>
 <translation id="9132378787893584761">Partilhe o Brave com os seus amigos!</translation>
 <translation id="717952606991220586">Ups, algo está errado. Por favor, tente novamente mais tarde.</translation>
 <translation id="2524310205387880526">Classifique o Brave</translation>
+<translation id="987264212798334818">Geral</translation>
+<translation id="1116694919640316211">Acerca de</translation>
 <translation id="6680650203439190394">Taxa</translation>
 <translation id="2635089463885398597">Como classificaria a sua experiência com o Brave?</translation>
 <translation id="141901961143729572">Partilhe os seus pensamentos</translation>
@@ -275,15 +288,19 @@ até que verifiquem, ou até terem passado 90 dias.</translation>
 <translation id="1465733111003593696">Ganha tokens pela visualização desta imagem.</translation>
 <translation id="7877201489035217175">Saiba mais sobre imagens patrocinadas</translation>
 <translation id="828092975561478703">Pela visualização de cada imagem patrocinada, recebe 70% da receita em tokens. Com Brave Ads, estará sempre no controlo dos anúncios por si visualizados.</translation>
+<translation id="3624048886326677117">Bloquear rastreadores &amp; anúncios (Agressivo)</translation>
+<translation id="7151914815476509258">Bloquear rastreadores &amp; anúncios (Padrão)</translation>
+<translation id="7384778069178817075">Permitir todos os rastreadores &amp; anúncios</translation>
 <translation id="4941539331405513605">Bloquear cookies entre sites</translation>
 <translation id="3763681089644577874">Bloquear Cookies</translation>
 <translation id="614747795780742163">Impede que os sites armazenem informações sobre as suas visitas anteriores</translation>
 <translation id="6883611015375728278">Bloquear todas as cookies</translation>
 <translation id="5657156137487675418">Permitir todas as cookies</translation>
 <translation id="3895527457258986253">Bloquear Impressão Digital</translation>
+<translation id="7854108565842971747">Estas são as definições predefinidas das proteções para os novos sites. Alterá-las não irá afetar as definições existentes para o site.</translation>
 <translation id="184568144098869637">Evita que o navegador reconheça o seu dispositivo</translation>
 <translation id="7445306466605902444">Impressão digital bloqueada (estrita, pode abrir sites)</translation>
-<translation id="5582686930349810484">Impressão digital bloqueada(padrão)</translation>
+<translation id="5582686930349810484">Impressão digital bloqueada (padrão)</translation>
 <translation id="769702552748212954">Permitir todas as identificações</translation>
 <translation id="876424292214881779">Anúncios e outras coisas arrepiantes bloqueadas</translation>
 <translation id="6930134873084561197">Muitas vezes, os sites incluem cookies e scripts que procuram identificá-lo e ao seu dispositivo.  A sua pretensão consiste na descoberta de quem você é e o que faz em cada site pelo rastreamento da web.\n\nBrave bloqueia-os para que possa navegar sem ser seguido.</translation>
@@ -312,7 +329,6 @@ até que verifiquem, ou até terem passado 90 dias.</translation>
 <translation id="5617673581653540121">A sua ligação é agora encriptada.</translation>
 <translation id="4055107796760496928">Se disponível, o Brave atualiza-o automaticamente para uma ligação segura.</translation>
 <translation id="8869714780588464835">Partilhar as notícias</translation>
-<translation id="7888588008014907646">Poupo dados todos os dias ao usar o Brave.</translation>
 <translation id="5372054974373489308">1000 rastreadores e anúncios bloqueados.</translation>
 <translation id="2338952568654182692">5000 rastreadores e anúncios bloqueados.</translation>
 <translation id="5289711064670408815">10 000 rastreadores e anúncios bloqueados.</translation>
@@ -369,6 +385,8 @@ até que verifiquem, ou até terem passado 90 dias.</translation>
 <translation id="1390943217516275883">Permite ao Brave apresentar as suas estatísticas de privacidade</translation>
 <translation id="1763352720905582220">Envia um relatório de privacidade semanal</translation>
 <translation id="1811691435325545066">Limpar todos os dados dos relatórios de privacidade</translation>
+<translation id="5966003059662780423">Limpar dados ao sair</translation>
+<translation id="3980704343258720102">Limpa todos os dados de navegação</translation>
 <translation id="8089997572759938512">Redefine os seus relatórios de privacidade para zero</translation>
 <translation id="2718046830255553131">Os dados dos relatórios de privacidade foram apagados.</translation>
 <translation id="7559243474426790340">Atualizar Estado</translation>

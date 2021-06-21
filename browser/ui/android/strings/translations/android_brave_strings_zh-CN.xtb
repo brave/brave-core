@@ -3,7 +3,9 @@
 <translationbundle lang="zh-CN">
 <translation id="7307834434086582547">启用/关闭 Brave 屏蔽</translation>
 <translation id="3570081523466826008">升级连接为 HTTPS</translation>
+<translation id="2278950434998763147">使用安全的 HTTPS 连接而不是明文的 HTTP 打开一些站点。</translation>
 <translation id="94154759592465111">拦截脚本</translation>
+<translation id="3518266709656143462">拦截 Javascript (可能导致一些网站无法正常运作)</translation>
 <translation id="5709627087332022422">拦截跨站点跟踪器</translation>
 <translation id="6052725679982758334">社交媒体屏蔽</translation>
 <translation id="7498695072878479744">第三方网站上的 Google 登录按钮可用</translation>
@@ -11,9 +13,16 @@
 <translation id="5165042248369837294">允许 Twitter 嵌入推文</translation>
 <translation id="958971637207126733">允许 LinkedIn 嵌入帖子</translation>
 <translation id="6302422639282249274">管理 Brave 奖励</translation>
+<translation id="8877432762827303535">在线结算</translation>
+<translation id="6583902294974160967">支持</translation>
+<translation id="1799030480311994998">功能</translation>
+<translation id="5345505584130165588">Brave Shields 和隐私</translation>
+<translation id="4692623383562244444">搜索引擎</translation>
 <translation id="1468415711258933398">标准标签页</translation>
 <translation id="3377025655491224618">隐身标签页</translation>
 <translation id="9148058034647219655">退出</translation>
+<translation id="4022987104439075738">IPFS网关</translation>
+<translation id="2688519859165248360">允许通过 IPFS 网关导航到 IPFS 资源</translation>
 <translation id="7534079972563542000">不可阻挡的域名</translation>
 <translation id="6513892817556267573">以太坊名称服务</translation>
 <translation id="3894650624018948468">解析方法</translation>
@@ -23,9 +32,11 @@
 <translation id="1448289340149908413">以太坊</translation>
 <translation id="5787084571334399599">防止浏览器使用指纹识别</translation>
 <translation id="7459000603787995422">退出时关闭标签页</translation>
+<translation id="4448697385961650078">阻止跟踪器和广告</translation>
+<translation id="2448893613530489637">阻止跟踪器和广告加载显示在网页中</translation>
 <translation id="1680858055899097121">不要在浏览会话之间保留标签页</translation>
-<translation id="7142548388914389999">将完全的隐私产品分析信息自动发送给 Brave Software</translation>
-<translation id="5469408008145872264">该匿名信息仅使 Brave 能够估计某些功能的整体使用情况。</translation>
+<translation id="7142548388914389999">允许保留隐私的产品分析 (P3A)</translation>
+<translation id="5469408008145872264">这些完全匿名的信息可以帮助 Brave 评估某些功能的总体使用情况，并为您提供更好的服务。</translation>
 <translation id="7977176350719484850">预计\n节省的数据</translation>
 <translation id="9008534313521214777">预计节省的\n时间</translation>
 <translation id="6572660632052512096">桌面模式</translation>
@@ -35,6 +46,9 @@
 <translation id="4479934682648362332">优先访问桌面版网站</translation>
 <translation id="1842747674580016420">在 Brave 总进行视频播放</translation>
 <translation id="5368992950177874750">如果启用，视频会在 Brave 上而不是与其相应的应用上播放</translation>
+<translation id="181905442828471321">Brave Shields 全局默认值</translation>
+<translation id="2675679258824361492">其他隐私设置</translation>
+<translation id="8026334261755873520">清除浏览数据</translation>
 <translation id="5965081608816406060">后台视频播放</translation>
 <translation id="6332924730165919598">关闭所有标签页即会关闭 Brave</translation>
 <translation id="1580125697191336644">实验性的。当标签页未激活或设备屏幕关闭时，可在后台播放视频。如果此功能不起作用，请尝试切换到桌面模式。</translation>
@@ -108,8 +122,6 @@
 <translation id="8428213095426709021">设置</translation>
 <translation id="8772672608371898774">Brave 经验证的发布者</translation>
 <translation id="1397683270551078781">尚未验证</translation>
-<translation id="5727208111992260840">此创建者尚未注册接收来自 Brave 用户的捐款。
-        您发送的抽血金都将保留在您的钱包中，直到他们通过验证。</translation>
 <translation id="8918760045046434238">发送酬谢费...</translation>
 <translation id="1978261665418056203">本月尚无任何
 活动...</translation>
@@ -215,10 +227,7 @@
 <translation id="7541582550122501404">待处理的捐款</translation>
 <translation id="8520059774736886747">创建者 <ph name="PUBLISHER_NAME"/> 最近通过验证</translation>
 <translation id="7924320838799747606">您的余额</translation>
-<translation id="9212459913845238740">积分奖励已领取</translation>
-<translation id="2132683977638223450">免费积分奖励</translation>
 <translation id="1486343603936278248">代币</translation>
-<translation id="8713995420537272453">积分</translation>
 <translation id="7781069478569868053">新标签页</translation>
 <translation id="8522669544471808198">显示背景图片</translation>
 <translation id="3870475560794762985">显示赞助图片</translation>
@@ -261,6 +270,8 @@
 <translation id="9132378787893584761">与您的朋友分享 Brave！</translation>
 <translation id="717952606991220586">哎呀，有些不对劲。请稍后再试。</translation>
 <translation id="2524310205387880526">对 Brave 作出评价</translation>
+<translation id="987264212798334818">常规</translation>
+<translation id="1116694919640316211">关于</translation>
 <translation id="6680650203439190394">兑换率</translation>
 <translation id="2635089463885398597">您如何评价您的 Brave 体验？</translation>
 <translation id="141901961143729572">分享您的想法</translation>
@@ -275,15 +286,19 @@
 <translation id="1465733111003593696">您在为观看这张图片赚取代币。</translation>
 <translation id="7877201489035217175">了解有关赞助图片的更多信息</translation>
 <translation id="828092975561478703">对于您查看的每一个赞助图片，您将获得 70% 的代币收入。有了 Brave Ads，您总能掌控您看到的广告。</translation>
+<translation id="3624048886326677117">拦截跟踪器和广告 （激进）</translation>
+<translation id="7151914815476509258">拦截跟踪器和广告 （标准）</translation>
+<translation id="7384778069178817075">允许所有跟踪器和广告</translation>
 <translation id="4941539331405513605">阻止跨站点 cookie</translation>
 <translation id="3763681089644577874">阻止 Cookie</translation>
 <translation id="614747795780742163">阻止网站存储有关您以前访问的信息</translation>
 <translation id="6883611015375728278">拦截所有 cookies</translation>
 <translation id="5657156137487675418">允许所有 cookies</translation>
 <translation id="3895527457258986253">区块指纹识别</translation>
+<translation id="7854108565842971747">这些是新站点的默认 Shields 设置。更改这些设置不会影响现有针对单一站点的设置。</translation>
 <translation id="184568144098869637">阻止浏览器识别您的设备</translation>
-<translation id="7445306466605902444">指纹被屏蔽（严格，可能会破坏站点）</translation>
-<translation id="5582686930349810484">指纹被屏蔽（标准）</translation>
+<translation id="7445306466605902444">已拦截指纹识别（严格，可能破坏网站）</translation>
+<translation id="5582686930349810484">已拦截指纹识别（标准）</translation>
 <translation id="769702552748212954">允许所有指纹识别</translation>
 <translation id="876424292214881779">拦截了广告和其他令人毛骨悚然的东西</translation>
 <translation id="6930134873084561197">网站通常包括 cookie 和脚本，它们试图识别您和您的设备。它们想找出您是谁，然后在网上跟踪您在每个网站上做的事情。\n\nBrave 阻止这些事情，使得您可以在不被跟踪的情况下浏览。</translation>
@@ -312,7 +327,7 @@
 <translation id="5617673581653540121">您的连接现已加密。</translation>
 <translation id="4055107796760496928">如果可用，Brave 会自动将您升级到安全的连接。</translation>
 <translation id="8869714780588464835">分享新闻</translation>
-<translation id="7888588008014907646">我每天都通过用Brave上网节省数据</translation>
+<translation id="7427391215172269363">我每天都用 Brave 浏览网页，节省数据。</translation>
 <translation id="5372054974373489308">已拦截 1000 个跟踪器和广告！</translation>
 <translation id="2338952568654182692">已拦截 5000 个跟踪器和广告！</translation>
 <translation id="5289711064670408815">已拦截 10,000 个跟踪器和广告！</translation>
@@ -369,6 +384,8 @@
 <translation id="1390943217516275883">允许 Brave 展示你的隐私统计数据</translation>
 <translation id="1763352720905582220">发送每周的隐私报告</translation>
 <translation id="1811691435325545066">清除所有隐私报告数据</translation>
+<translation id="5966003059662780423">退出时清除数据</translation>
+<translation id="3980704343258720102">清除所有浏览数据</translation>
 <translation id="8089997572759938512">将您的隐私报告重置为零</translation>
 <translation id="2718046830255553131">隐私报告数据已清除。</translation>
 <translation id="7559243474426790340">刷新状态</translation>
@@ -490,7 +507,7 @@
 <translation id="5825943197137337319">仅限默认公共接口</translation>
 <translation id="1689062823386843231">禁用无代理的 UDP</translation>
 <translation id="3171931580569169744">启用标签组</translation>
-<translation id="5587305863196367357">验证钱包让您能够轻松管理资金，充值和提现</translation>
+<translation id="5587305863196367357">验证钱包让您能够轻松充值和提现</translation>
 <translation id="5760671211380791582">您的 BAT 不足。</translation>
 <translation id="6960458596933484861">您需要至少有 15 个 BAT 才能创建验证过的 Uphold 钱包。请稍后重试。</translation>
 <translation id="4389085954549744469">如果您已经有了验证过的 Uphold 账户，请<ph name="CONTINUE_TO_LOGIN"/>。</translation>

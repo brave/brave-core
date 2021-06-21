@@ -51,18 +51,6 @@
     "message": "Подробности",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "Вашият баланс",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "BAT точки",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "може да се използва в Brave награди, за да допринесе на любимите ви създатели на съдържание. ВАТ точки не могат да бъдат разменени за ВАТ.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "на",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -160,10 +148,6 @@
   "tokenGrantClaimed": {
     "message": "Изискани субсидии на жетони",
     "description": "Title for grant section in wallet summary"
-  },
-  "pointGrantClaimed": {
-    "message": "Изискани безвъзмездни средства",
-    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Приходи от реклами",
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Включете рекламите",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Безплатна субсидия жетон",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Безплатен Point Grant",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Спечелихте награда за реклама!",
@@ -591,17 +567,9 @@
     "message": "Жетон",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "точки",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Субсидии за жетони",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Безвъзмездни средства в точки ",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Здравейте, $name$!",
@@ -820,7 +788,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {
-    "message": "$link_begin$Learn more$link_end$ about how to link your Brave browser with your bitFlyer account.",
+    "message": "$link_begin$Научете повече$link_end$ за това как да свържете Вашия браузър Brave с Вашия профил в bitFlyer.",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -830,17 +798,5 @@
         "content": "$2"
       }
     }
-  },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards в Япония преминава към нова система!",
-    "description": "Header text for BAP deprecation warning message"
-  },
-  "bapDeprecationLearnMore": {
-    "message": "Научете повече",
-    "description": "Link to learn more about BAP deprecation"
-  },
-  "bapDeprecationPopupText": {
-    "message": "Моля, използвайте BAP до 13 март. След това BAP ще бъде прекратен.",
-    "description": "Text for BAP deprecation popup"
   }
 }
