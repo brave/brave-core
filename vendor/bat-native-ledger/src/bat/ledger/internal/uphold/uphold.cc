@@ -188,10 +188,9 @@ void Uphold::DisconnectWallet(const bool manual) {
   const auto to_status = wallet->status;
 
   ledger_->database()->SaveEventLog(
-      "uphold_wallet_status_change",
-      (std::ostringstream{} << from_status).str() + " ==> " +
-          (std::ostringstream{} << to_status).str() +
-          " (Uphold::DisconnectWallet(" + (manual ? "true" : "false") + "))");
+      log::kWalletStatusChange, (std::ostringstream{} << from_status).str() +
+                                    " ==> " +
+                                    (std::ostringstream{} << to_status).str());
 
   const bool shutting_down = ledger_->IsShuttingDown();
 

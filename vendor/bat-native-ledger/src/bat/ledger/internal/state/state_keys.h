@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -16,7 +16,6 @@ const char kUpholdAnonAddress[] = "uphold_anon_address";  // DEPRECATED
 const char kPromotionLastFetchStamp[] = "promotion_last_fetch_stamp";
 const char kPromotionCorruptedMigrated[] =
     "promotion_corrupted_migrated2";
-const char kAnonTransferChecked[] = "anon_transfer_checked";
 const char kVersion[] = "version";
 const char kMinVisitTime[] = "ac.min_visit_time";
 const char kMinVisits[] = "ac.min_visits";
