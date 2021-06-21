@@ -128,7 +128,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
-using DistillState = speedreader::SpeedreaderTabHelper::DistillState;
 #endif
 
 #if BUILDFLAG(BINANCE_ENABLED)
@@ -454,14 +453,17 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       request, browser_context, wc_getter, navigation_ui_data,
       frame_tree_node_id);
 #if BUILDFLAG(ENABLE_SPEEDREADER)
+  using DistillState = speedreader::SpeedreaderTabHelper::DistillState;
   content::WebContents* contents = wc_getter.Run();
   if (!contents) {
     return result;
   }
   auto* tab_helper =
       speedreader::SpeedreaderTabHelper::FromWebContents(contents);
+  if (!tab_helper)
+    return result;
   const auto state = tab_helper->PageDistillState();
-  if (tab_helper && state != DistillState::kNone &&
+  if (state != DistillState::kNone &&
       request.resource_type ==
           static_cast<int>(blink::mojom::ResourceType::kMainFrame)) {
     std::unique_ptr<speedreader::SpeedReaderThrottle> throttle =

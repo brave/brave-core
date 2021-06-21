@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "base/feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/common/pref_names.h"

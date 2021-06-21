@@ -11,6 +11,7 @@ import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
+import("//brave/components/speedreader/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//components/gcm_driver/config.gni")
@@ -70,7 +71,6 @@ source_set("extensions") {
     "//brave/components/decentralized_dns/buildflags",
     "//brave/components/ipfs/buildflags",
     "//brave/components/sidebar/buildflags",
-    "//brave/components/speedreader",
     "//brave/components/tor/buildflags",
     "//chrome/browser/extensions",
     "//chrome/common",
@@ -92,6 +92,10 @@ source_set("extensions") {
 
   if (enable_sidebar) {
     deps += [ "//brave/components/sidebar" ]
+  }
+
+  if (enable_speedreader) {
+    deps += [ "//brave/components/speedreader" ]
   }
 
   # It seems like this brave_wallet_api should be renamed to ethereum_remote_client_api.

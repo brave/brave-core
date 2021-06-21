@@ -24,8 +24,24 @@ class SpeedreaderTabHelper
       public content::WebContentsUserData<SpeedreaderTabHelper> {
  public:
   enum class DistillState {
+    // The web contents is not distilled by either
     kNone,
+    // kReaderMode is the manual reader mode state. It uses Speedreader to mimic
+    // how reader modes in other browsers behave. This state can be reached two
+    // ways:
+    //   (1) Speedreader is disabled. The Speedreader icon will pop up in the
+    //       address bar, and the user clicks it. It runs Speedreader is "Single
+    //       Shot Mode". The Speedreader throttle is created for the following
+    //       request, then deactivated.
+    //   (2) Speedreader is enabled, but the page was blacklisted by the user.
+    //       they are still able to come back and manually distill the page. It
+    //       uses the same mechanism as (1).
+    //
+    // The first time a user activates reader mode on a page, a bubble drops
+    // down asking them to enable the Speedreader feature for automatic
+    // distillation.
     kReaderMode,
+    // Speedreader is enabled and the page was automatically distilled.
     kSpeedreaderMode,
   };
   ~SpeedreaderTabHelper() override;

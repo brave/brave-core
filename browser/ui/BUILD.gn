@@ -126,7 +126,6 @@ source_set("ui") {
 
   if (toolkit_views) {
     sources += [
-      "speedreader/speedreader_bubble_view.h",
       "views/bookmarks/bookmark_bar_instructions_view.cc",
       "views/bookmarks/bookmark_bar_instructions_view.h",
       "views/brave_default_browser_dialog_view.cc",
@@ -143,14 +142,6 @@ source_set("ui") {
       "views/frame/brave_window_frame_graphic.h",
       "views/rounded_separator.cc",
       "views/rounded_separator.h",
-      "views/speedreader/reader_mode_bubble.cc",
-      "views/speedreader/reader_mode_bubble.h",
-      "views/speedreader/speedreader_bubble_util.cc",
-      "views/speedreader/speedreader_bubble_util.h",
-      "views/speedreader/speedreader_icon_view.cc",
-      "views/speedreader/speedreader_icon_view.h",
-      "views/speedreader/speedreader_mode_bubble.cc",
-      "views/speedreader/speedreader_mode_bubble.h",
       "views/tabs/brave_browser_tab_strip_controller.cc",
       "views/tabs/brave_browser_tab_strip_controller.h",
       "views/tabs/brave_tab_context_menu_contents.cc",
@@ -235,7 +226,6 @@ source_set("ui") {
     "//brave/browser/gcm_driver",
     "//brave/browser/profiles",
     "//brave/browser/tor",
-    "//components/dom_distiller/content/browser",
 
     # //chrome/browser/ui depends on //brave/browser/ui, add this target here
     # to pull in dependencies needed for the overwrite codes in chromium_src.
@@ -304,6 +294,26 @@ source_set("ui") {
     deps += [
       "//brave/components/ipfs",
       "//brave/components/ipfs_ui:generated_resources",
+    ]
+  }
+
+  if (enable_speedreader) {
+    deps += [
+      "//brave/components/speedreader",
+      "//brave/components/speedreader:buildflags",
+      "//components/dom_distiller/content/browser",
+    ]
+
+    sources += [
+      "speedreader/speedreader_bubble_view.h",
+      "views/speedreader/reader_mode_bubble.cc",
+      "views/speedreader/reader_mode_bubble.h",
+      "views/speedreader/speedreader_bubble_util.cc",
+      "views/speedreader/speedreader_bubble_util.h",
+      "views/speedreader/speedreader_icon_view.cc",
+      "views/speedreader/speedreader_icon_view.h",
+      "views/speedreader/speedreader_mode_bubble.cc",
+      "views/speedreader/speedreader_mode_bubble.h",
     ]
   }
 

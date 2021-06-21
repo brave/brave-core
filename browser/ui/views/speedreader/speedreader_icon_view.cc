@@ -1,4 +1,4 @@
-// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
@@ -19,7 +19,6 @@
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/dom_distiller/content/browser/distillable_page_utils.h"
-#include "components/dom_distiller/content/browser/uma_helper.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/theme_provider.h"
 #include "ui/views/animation/ink_drop_state.h"

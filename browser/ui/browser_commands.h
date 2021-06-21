@@ -14,10 +14,9 @@ void NewOffTheRecordWindowTor(Browser*);
 void NewTorConnectionForSite(Browser*);
 void AddNewProfile();
 void OpenGuestProfile();
-void ToggleSpeedreader(Browser* browser);
 void ShowWalletBubble(Browser* browser);
 void CloseWalletBubble(Browser* browser);
-void ShowSpeedreaderBubble(Browser* browser);
+void MaybeDistillAndShowSpeedreaderBubble(Browser* browser);
 
 }  // namespace brave
 
