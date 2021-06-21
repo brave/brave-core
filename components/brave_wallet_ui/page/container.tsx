@@ -52,7 +52,8 @@ function Container (props: Props) {
     isWalletLocked,
     isWalletBackedUp,
     hasIncorrectPassword,
-    accounts
+    accounts,
+    transactions
   } = props.wallet
 
   // Page Props
@@ -229,7 +230,7 @@ function Container (props: Props) {
                   selectedAssetPrice={selectedAssetPrice}
                   selectedAssetPriceHistory={selectedAssetPriceHistory}
                   selectedTimeline={selectedTimeline}
-                  transactions={[]}
+                  transactions={transactions}
                   userAssetList={userAssetList}
                 />
               )}

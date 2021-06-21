@@ -16,7 +16,8 @@ const defaultState: WalletState = {
   favoriteApps: [],
   isWalletBackedUp: false,
   hasIncorrectPassword: false,
-  accounts: []
+  accounts: [],
+  transactions: []
 }
 
 const reducer = createReducer<WalletState>({}, defaultState)

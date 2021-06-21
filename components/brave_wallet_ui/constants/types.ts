@@ -144,6 +144,7 @@ export interface WalletState {
   isWalletBackedUp: boolean
   hasIncorrectPassword: boolean
   accounts: WalletAccountType[]
+  transactions: RPCTransactionType[]
 }
 
 export interface PanelState {
