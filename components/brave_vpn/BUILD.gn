@@ -26,6 +26,18 @@ source_set("brave_vpn") {
 
     libs += [ "rasapi32.lib" ]
   }
+
+  if (is_mac) {
+    sources += [
+      "brave_vpn_connection_manager_mac.h",
+      "brave_vpn_connection_manager_mac.mm",
+      "guardian_helper.h",
+    ]
+
+    deps += [
+      "//brave/vendor/guardian-connect:guardian_connect_framework_bundle_data",
+    ]
+  }
 }
 
 source_set("brave_vpn_internal") {
@@ -54,6 +66,12 @@ executable("vpntool") {
   ]
 
   if (is_win) {
-    sources = [ "winvpntool.cc" ]
+    sources += [ "winvpntool.cc" ]
+  }
+
+  if (is_mac) {
+    sources += [ "macvpntool.mm" ]
+
+    frameworks = [ "Foundation.framework" ]
   }
 }

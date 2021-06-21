@@ -27,7 +27,7 @@ class BraveVPNConnectionManager {
     ~Observer() override = default;
   };
 
-  static BraveVPNConnectionManager* GetInstance();
+  static BraveVPNConnectionManager* GetInstance(bool for_tool = false);
 
   BraveVPNConnectionManager(const BraveVPNConnectionManager&) = delete;
   BraveVPNConnectionManager& operator=(const BraveVPNConnectionManager&) =

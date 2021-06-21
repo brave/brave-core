@@ -106,6 +106,11 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
             "URL": "https://github.com/brave/Sparkle",
             "License": "MIT",
         },
+        os.path.join('brave', 'vendor', 'guardian-connect'): {
+            "Name": "GuardianConnect",
+            "URL": "https://github.com/brave/GuardianConnect",
+            "License": "MIT",
+        },
     })
 
     # Don't recurse into these directories looking for third-party code.

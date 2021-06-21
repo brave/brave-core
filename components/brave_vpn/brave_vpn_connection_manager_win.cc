@@ -25,7 +25,8 @@ using brave_vpn::internal::RemoveEntry;
 namespace brave_vpn {
 
 // static
-BraveVPNConnectionManager* BraveVPNConnectionManager::GetInstance() {
+BraveVPNConnectionManager* BraveVPNConnectionManager::GetInstance(
+    bool for_tool) {
   static base::NoDestructor<BraveVPNConnectionManagerWin> s_manager;
   return s_manager.get();
 }

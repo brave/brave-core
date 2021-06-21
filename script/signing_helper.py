@@ -119,6 +119,12 @@ def AddBravePartsForSigning(parts, config):
             verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT)
         parts['sparkle-framework'].options = full_hardened_runtime_options
 
+        # Add GuardianConnect binaries
+        parts['guardian-connect-framework'] = CodeSignedProduct(
+            '{.framework_dir}/Frameworks/GuardianConnect.framework'.format(config),
+            'com.sudosecuritygroup.GuardianConnectMac',
+            verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT)
+        parts['guardian-connect-framework'].options = full_hardened_runtime_options
     # Overwrite to avoid TeamID mismatch with widevine dylib.
     parts['helper-app'].entitlements = 'helper-entitlements.plist'
     parts['helper-app'].options = (CodeSignOptions.RESTRICT
