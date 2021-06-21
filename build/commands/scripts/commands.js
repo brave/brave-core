@@ -102,7 +102,8 @@ program
   .option('--brave_safetynet_api_key <brave_safetynet_api_key>')
   .option('--is_asan', 'is asan enabled')
   .option('--use_goma', 'whether to use Goma for building')
-  .option('--auto_gn_gen', 'use gn gen only if required')
+  .option('--auto_gn_gen', 'use gn gen only if required (enabled by default, deprecated)')
+  .option('--force_gn_gen', 'always run gn gen')
   .arguments('[build_config]')
   .action(build)
 
@@ -145,7 +146,8 @@ program
   .option('--universal', 'build a universal binary distribution')
   .option('--is_asan', 'is asan enabled')
   .option('--use_goma', 'whether to use Goma for building')
-  .option('--auto_gn_gen', 'use gn gen only if required')
+  .option('--auto_gn_gen', 'use gn gen only if required (enabled by default, deprecated)')
+  .option('--force_gn_gen', 'always run gn gen')
   .arguments('[build_config]')
   .action(createDist)
 

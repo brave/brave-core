@@ -564,10 +564,10 @@ Config.prototype.update = function (options) {
     this.use_goma = false
   }
 
-  if (options.auto_gn_gen) {
-    this.auto_gn_gen = true;
+  if (options.force_gn_gen) {
+    this.force_gn_gen = true;
   } else {
-    this.auto_gn_gen = false;
+    this.force_gn_gen = false;
   }
 
   if (options.C) {

@@ -534,7 +534,7 @@ const util = {
     const buildArgsFile = path.join(config.outputDir, 'brave_build_args.txt')
     const buildNinjaFile = path.join(config.outputDir, 'build.ninja')
 
-    const shouldRunGnGen = !config.auto_gn_gen ||
+    const shouldRunGnGen = config.force_gn_gen ||
         !fs.existsSync(buildNinjaFile) || !fs.existsSync(buildArgsFile) ||
         fs.readFileSync(buildArgsFile) != buildArgsStr
 
