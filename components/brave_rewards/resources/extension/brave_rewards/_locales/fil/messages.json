@@ -51,6 +51,18 @@
     "message": "Mga Detalye",
     "description": "Title for grant section in wallet panel summary"
   },
+  "yourBalance": {
+    "message": "Ang Iyong Balanse",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "Mga Puntos sa BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "magagamit sa Brave Rewards para mag-ambag sa iyong mga paboritong content creator. Hindi maipapalit ang BAT Points para sa BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "naka-on",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -148,6 +160,10 @@
   "tokenGrantClaimed": {
     "message": "Mga Na-claim na Grant para sa Token",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Na-claim na ang Mga Grant para sa Puntos",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Mga kita mula sa Mga Ad",
@@ -407,6 +423,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "I-on ang Mga Ad",
     "description": "Prompt to turn on Ads via notification"
@@ -474,6 +494,10 @@
   "grantFinishTokenTitleUGP": {
     "message": "Libreng Grant para sa Token",
     "description": "Token title on success screen"
+  },
+  "grantFinishPointTitleUGP": {
+    "message": "Libreng Grant para sa Puntos",
+    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Nakakuha ka ng Ads Reward!",
@@ -567,9 +591,17 @@
     "message": "Token",
     "description": "BAT Token text"
   },
+  "points":  {
+    "message": "mga puntos",
+    "description": "BAT Points text"
+  },
   "tokenGrants":  {
     "message": "Mga Token Grant",
     "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Mga Grant para sa Puntos",
+    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Kumusta, $name$!",
@@ -798,5 +830,17 @@
         "content": "$2"
       }
     }
+  },
+  "bapDeprecationHeader": {
+    "message": "Lilipat sa bagong system ang Brave Rewards sa Japan!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Matuto pa",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Pakigamit ang iyong BAP bago ang ika-13 ng Marso. Pagkatapos noon, hindi na ipagpapatuloy ang BAP.",
+    "description": "Text for BAP deprecation popup"
   }
 }

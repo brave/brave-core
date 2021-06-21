@@ -51,6 +51,18 @@
     "message": "Detalii",
     "description": "Title for grant section in wallet panel summary"
   },
+  "yourBalance": {
+    "message": "Soldul dumneavoastră",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "Puncte BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "pot fi folosite la Recompense Brave pentru a contribui la creatorii de conținut preferați. Punctele BAT nu pot fi schimbate în BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "pornit",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -148,6 +160,10 @@
   "tokenGrantClaimed": {
     "message": "Granturi Token Revendicate",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Acordarea de puncte a fost revendicată",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Câștiguri din Reclame",
@@ -407,6 +423,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "Activare Ads",
     "description": "Prompt to turn on Ads via notification"
@@ -474,6 +494,10 @@
   "grantFinishTokenTitleUGP": {
     "message": "Grant Token Gratuit",
     "description": "Token title on success screen"
+  },
+  "grantFinishPointTitleUGP": {
+    "message": "Acordare punct gratuit",
+    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Ați câștigat o Recompensă Reclame!",
@@ -567,9 +591,17 @@
     "message": "Indicativ",
     "description": "BAT Token text"
   },
+  "points":  {
+    "message": "puncte",
+    "description": "BAT Points text"
+  },
   "tokenGrants":  {
     "message": "Donații în jetoane",
     "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Granturi de puncte",
+    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Bună ziua, $name$!",
@@ -798,5 +830,17 @@
         "content": "$2"
       }
     }
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave Rewards din Japonia trece la un sistem nou!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Află mai multe",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Folosiți BAP până pe 13 martie. După aceea, punctele BAP nu vor mai fi folosite.",
+    "description": "Text for BAP deprecation popup"
   }
 }

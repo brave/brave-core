@@ -51,6 +51,18 @@
     "message": "Részletek",
     "description": "Title for grant section in wallet panel summary"
   },
+  "yourBalance": {
+    "message": "Az ön egyenlege",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT-pontok",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "felhasználható a Brave Rewardsban a kedvenc tartalomkészítőinek küldött hozzájáruláshoz. A BAT-pontok nem cserélhetők be BAT-ra.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "bekapcsolva",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -148,6 +160,10 @@
   "tokenGrantClaimed": {
     "message": "Beváltott zseton adományok ",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Pontok begyűjtve",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Jövedelem hirdetésekből",
@@ -407,6 +423,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "Hirdetések bekapcsolása",
     "description": "Prompt to turn on Ads via notification"
@@ -474,6 +494,10 @@
   "grantFinishTokenTitleUGP": {
     "message": "Ingyenes zseton adomány",
     "description": "Token title on success screen"
+  },
+  "grantFinishPointTitleUGP": {
+    "message": "Ingyenes pontok",
+    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Hirdetési jutalmat kapott!",
@@ -567,9 +591,17 @@
     "message": "Token",
     "description": "BAT Token text"
   },
+  "points":  {
+    "message": "pontok",
+    "description": "BAT Points text"
+  },
   "tokenGrants":  {
     "message": "Tokenadományok",
     "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Pontjóváírások",
+    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Szia $name$!",
@@ -798,5 +830,17 @@
         "content": "$2"
       }
     }
+  },
+  "bapDeprecationHeader": {
+    "message": "A Brave Rewards Japánban egy új rendszerre vált!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Tudj meg többet",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Használd el BAP-dat március 13. előtt. Ezután a BAP meg fog szakadni.",
+    "description": "Text for BAP deprecation popup"
   }
 }

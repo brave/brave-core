@@ -865,4 +865,33 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="6973157709854838218">Non mostrare il tuo saldo</translation>
 <translation id="4548946945059463969">Mostra il tuo saldo sullo schermo</translation>
 <translation id="242959166945779492">Non hai alcun saldo sul tuo conto. Visita FTX per acquistarne un po'.</translation>
+<translation id="20281847067919078">Ricompense stimate in sospeso</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">Punti BAT</translation>
+<translation id="2563462925929938015">può essere usato nei Premi Brave per contribuire al tuo creatore di contenuti preferito. I punti BAT non possono essere scambiati per BAT.</translation>
+<translation id="8441289448876571409">Fondi BAP</translation>
+<translation id="4783907814409710132">I punti non sono sufficienti.</translation>
+<translation id="3610794092923555181">Purtroppo, non ci sono ancora punti.</translation>
+<translation id="2185598236335233939">Fai attenzione alle notifiche quando usi Brave. Il saldo di punti BAT aumenterà per ogni annuncio che vedi.</translation>
+<translation id="9212459913845238740">Donazioni di punti richieste</translation>
+<translation id="768850953428043522">punti</translation>
+<translation id="1193434225710679930">Donazioni di punti</translation>
+<translation id="8494748383523030337">Il tuo saldo</translation>
+<translation id="2132683977638223450">Donazione di punti</translation>
+<translation id="46988480989545156">Verifica il portafoglio</translation>
+<translation id="5796169459825124737">Il nostro servizio di portafoglio è fornito da <ph name="PROVIDER"/>.</translation>
+<translation id="6771734945114850124">Si prega di avere a disposizione un documento d'identità.</translation>
+<translation id="8697510149346635496">Preleva i BAT che guadagni visualizzando annunci che rispettano la privacy</translation>
+<translation id="1481480653609649134">Acquista BAT aggiuntivi con carta di credito e altre fonti</translation>
+<translation id="9096003370755878766">Preleva BAT che potresti aver aggiunto in precedenza al tuo portafoglio Ricompense di Brave</translation>
+<translation id="8558636200953226885">Ma se completi la verifica, puoi...</translation>
+<translation id="3354315693758743702">La verifica del tuo portafoglio è opzionale.</translation>
+<translation id="4872388810065331182">Sulla base ai servizi richiesti, <ph name="PROVIDER"/> potrebbe richiedere di verificare la tua identità.</translation>
+<translation id="6938217233488972952">Brave Software Inc. non elabora, memorizza o accede a nessuna delle informazioni personali fornite a <ph name="PROVIDER"/> quando crei un account presso di loro.</translation>
+<translation id="2415586822982819406">Nota: le tue transazioni saranno visibili a <ph name="PROVIDER"/> una volta autorizzato. Ad esempio, potrà vedere il destinatario e l'ammontare delle tue donazioni.</translation>
+<translation id="8587285254008006694">Per permettere questa transizione, le funzionalità di mance e contributi del
+        tuo browser saranno temporaneamente non disponibili dal 13 marzo e
+        il tuo saldo BAP sarà 0,0 finché non passerai al nuovo sistema
+        ad aprile. Quando passerai al nuovo sistema, inizierai con i nuovi token!</translation>
+<translation id="6232491755501685494">Brave Rewards in Giappone sta passando a un nuovo sistema!</translation>
 </translationbundle>

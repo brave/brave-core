@@ -51,6 +51,18 @@
     "message": "詳細",
     "description": "Title for grant section in wallet panel summary"
   },
+  "yourBalance": {
+    "message": "残高",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BATポイント",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "はBrave Rewardsにおいて、あなたの気に入ったコンテンツの制作者に寄付するために利用できます。BATポイントはBATに交換できません。",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": ":",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -148,6 +160,10 @@
   "tokenGrantClaimed": {
     "message": "取得済のポイント",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "獲得したポイント付与",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "広告閲覧報酬",
@@ -407,6 +423,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "広告をオンにする",
     "description": "Prompt to turn on Ads via notification"
@@ -474,6 +494,10 @@
   "grantFinishTokenTitleUGP": {
     "message": "無料のポイント",
     "description": "Token title on success screen"
+  },
+  "grantFinishPointTitleUGP": {
+    "message": "無料のポイント付与",
+    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "広告報酬を獲得しました! ",
@@ -567,9 +591,17 @@
     "message": "トークン",
     "description": "BAT Token text"
   },
+  "points":  {
+    "message": "ポイント",
+    "description": "BAT Points text"
+  },
   "tokenGrants":  {
     "message": "トークン付与の通知",
     "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "ポイント付与",
+    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "$name$!さん、こんにちは！",
@@ -798,5 +830,17 @@
         "content": "$2"
       }
     }
+  },
+  "bapDeprecationHeader": {
+    "message": "日本の「Brave Rewards」は新しいシステムに移行を予定しています！",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "詳しくはこちら",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "お持ちのBATポイント(BAP)は、3月13日までにご使用ください。BAPはそれ以降に廃止されます。",
+    "description": "Text for BAP deprecation popup"
   }
 }

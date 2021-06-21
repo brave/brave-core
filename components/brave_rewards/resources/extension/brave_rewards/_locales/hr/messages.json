@@ -51,6 +51,18 @@
     "message": "Pojedinosti",
     "description": "Title for grant section in wallet panel summary"
   },
+  "yourBalance": {
+    "message": "Vaš raspoloživi iznos",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "Bodovi BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "može se upotrebljavati u značajki Brave Rewards za doprinošenje vašim omiljenim stvarateljima sadržaja. Bodovi se BAT ne mogu zamijeniti za BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "uključeno",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -148,6 +160,10 @@
   "tokenGrantClaimed": {
     "message": "Zatražena odobrenja za token",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Zatražena odobrenja za bodove",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Zarada od oglasa",
@@ -407,6 +423,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "Uključi oglase",
     "description": "Prompt to turn on Ads via notification"
@@ -474,6 +494,10 @@
   "grantFinishTokenTitleUGP": {
     "message": "Besplatno odobrenje za token",
     "description": "Token title on success screen"
+  },
+  "grantFinishPointTitleUGP": {
+    "message": "Besplatno odobrenje za bodove",
+    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Osvojili ste nagrade za oglase!",
@@ -567,9 +591,17 @@
     "message": "Token",
     "description": "BAT Token text"
   },
+  "points":  {
+    "message": "bodovi",
+    "description": "BAT Points text"
+  },
   "tokenGrants":  {
     "message": "Dodjele tokena",
     "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Odobrenja za bodove",
+    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Pozdrav, $name$!",
@@ -798,5 +830,17 @@
         "content": "$2"
       }
     }
+  },
+  "bapDeprecationHeader": {
+    "message": "Značajka Brave Rewards u Japanu prelazi na novi sustav!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Saznajte više",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Iskoristite svoj BAP do 13. ožujka. Nakon toga BAP se više ne pruža.",
+    "description": "Text for BAP deprecation popup"
   }
 }

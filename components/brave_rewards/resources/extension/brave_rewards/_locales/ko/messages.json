@@ -51,6 +51,18 @@
     "message": "세부 정보",
     "description": "Title for grant section in wallet panel summary"
   },
+  "yourBalance": {
+    "message": "귀하의 잔액",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT 포인트",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "Brave 리워드에서 사용하여 가장 좋아하는 콘텐츠 제작자들에게 기부할 수 있습니다. BAT 포인트는 BAT로 환전될 수 없습니다.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "위에",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -148,6 +160,10 @@
   "tokenGrantClaimed": {
     "message": "토큰 승인 요청됨",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "포인트 적립 신청됨",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "광고 수입",
@@ -407,6 +423,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "광고 켜기",
     "description": "Prompt to turn on Ads via notification"
@@ -474,6 +494,10 @@
   "grantFinishTokenTitleUGP": {
     "message": "무료 토큰 승인",
     "description": "Token title on success screen"
+  },
+  "grantFinishPointTitleUGP": {
+    "message": "무료 포인트 적립",
+    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "광고 리워드를 획득하셨습니다!",
@@ -567,9 +591,17 @@
     "message": "토큰",
     "description": "BAT Token text"
   },
+  "points":  {
+    "message": "포인트",
+    "description": "BAT Points text"
+  },
   "tokenGrants":  {
     "message": "토큰 보조금",
     "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "포인트 보조금",
+    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "안녕하세요, $name$ 님!",
@@ -798,5 +830,17 @@
         "content": "$2"
       }
     }
+  },
+  "bapDeprecationHeader": {
+    "message": "일본의 Brave 리워드가 새로운 시스템으로 전환 중입니다!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "자세히 알아보기",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "3월 13일까지 BAP를 이용해 주세요. 그 이후부터 BAP는 단종됩니다.",
+    "description": "Text for BAP deprecation popup"
   }
 }

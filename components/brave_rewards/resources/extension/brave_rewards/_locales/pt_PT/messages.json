@@ -51,6 +51,18 @@
     "message": "Detalhes",
     "description": "Title for grant section in wallet panel summary"
   },
+  "yourBalance": {
+    "message": "O seu saldo",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "Pontos BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "pode ser usado no Brave Rewards para dar contribuições aos seus criadores de conteúdos favoritos. Não é possível trocar Pontos BAT por BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "ligar",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -148,6 +160,10 @@
   "tokenGrantClaimed": {
     "message": "Doações Token Reivindicadas",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Atribuições de pontos reivindicadas",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Ganhos de Anúncios",
@@ -407,6 +423,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "Ative os anúncios",
     "description": "Prompt to turn on Ads via notification"
@@ -474,6 +494,10 @@
   "grantFinishTokenTitleUGP": {
     "message": "Doação de Token Gratuita",
     "description": "Token title on success screen"
+  },
+  "grantFinishPointTitleUGP": {
+    "message": "Atribuição de pontos gratuita",
+    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Ganhou uma recompensa de anúncios!",
@@ -567,9 +591,17 @@
     "message": "Símbolo ",
     "description": "BAT Token text"
   },
+  "points":  {
+    "message": "pontos",
+    "description": "BAT Points text"
+  },
   "tokenGrants":  {
     "message": "Token de Ajudas",
     "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Subsídios Pontuais",
+    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Olá, $name$!",
@@ -798,5 +830,17 @@
         "content": "$2"
       }
     }
+  },
+  "bapDeprecationHeader": {
+    "message": "No Japão, a Brave Rewards está em processo de mudança para um novo sistema!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Saiba mais",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Por favor, use os seus BAPs antes do dia 13 de março. Após esse dia, os BAPs serão discontinuados. ",
+    "description": "Text for BAP deprecation popup"
   }
 }

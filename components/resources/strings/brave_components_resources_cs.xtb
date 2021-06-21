@@ -864,4 +864,34 @@
 <translation id="6973157709854838218">Skrýt vaše zůstatky ze zobrazení</translation>
 <translation id="4548946945059463969">Odhalit vaše zůstatky na obrazovce</translation>
 <translation id="242959166945779492">Na účtu nemáte žádný zůstatek. Navštivte FTX a proveďte nákup.</translation>
+<translation id="20281847067919078">Odhadované nevyřízené odměny</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">Body BAT</translation>
+<translation id="2563462925929938015">můžete v Brave Rewards použít pro zaslání příspěvku vašemu oblíbenému tvůrci obsahu. Body BAT nelze vyměnit za BAT.</translation>
+<translation id="8441289448876571409">Prostředky BAP</translation>
+<translation id="4783907814409710132">Nemáte dostatek bodů.</translation>
+<translation id="3610794092923555181">Bohužel zatím body nemáte.</translation>
+<translation id="2185598236335233939">Při používání Brave i nadále hledejte upozornění na reklamu. Zůstatek vašich bodů BAT vzroste s každou reklamou, kterou zhlédnete.</translation>
+<translation id="9212459913845238740">Nárokována udělení bodů</translation>
+<translation id="768850953428043522">bodů</translation>
+<translation id="1193434225710679930">Udělení bodů</translation>
+<translation id="8494748383523030337">Váš zůstatek</translation>
+<translation id="2132683977638223450">Udělení bodů zdarma</translation>
+<translation id="46988480989545156">Ověřit peněženku</translation>
+<translation id="5796169459825124737">Naši službu peněženky poskytuje služba <ph name="PROVIDER"/>.</translation>
+<translation id="6771734945114850124">Prosím, připravte si vaší vládou vydané identifikační číslo.</translation>
+<translation id="8697510149346635496">Vyberte si BAT, které vyděláte zobrazováním reklam dodržujících soukromí.</translation>
+<translation id="1481480653609649134">Další BAT nakoupíte prostřednictvím platebních karet a jiných zdrojů</translation>
+<translation id="9096003370755878766">Vyberte si BAT, které jste nedávno přidali do peněženky Odměny Brave</translation>
+<translation id="8558636200953226885">Pokud však provedete ověření, můžete...</translation>
+<translation id="3354315693758743702">Ověření vaší peněženky je nepovinné.</translation>
+<translation id="4872388810065331182"><ph name="PROVIDER"/> může v závislosti na požadovaných službách požadovat ověření vaší identity.</translation>
+<translation id="6938217233488972952">Společnost Brave Software Inc. nezpracovává, neukládá ani nepřistupuje k žádným osobním údajům, které poskytnete službě <ph name="PROVIDER"/>, když si v ní vytvoříte účet.</translation>
+<translation id="2415586822982819406">Poznámka: Po provedení autorizace budou vaše transakce viditelné pro službu <ph name="PROVIDER"/>; uvidí například příjemce a částku spropitného.</translation>
+<translation id="8587285254008006694">Součástí tohoto přechodu bude, že funkce příspěvků a odměn budou ve
+        vašem prohlížeči dočasně nedostupné (od 13. března) a
+        váš zůstatek BAP bude zobrazovat částku 0,0 až do té doby, než provedete v dubnu aktualizaci na nový
+        systém. Jakmile budete v novém systému, odstartujete s novými
+        tokeny!</translation>
+<translation id="6232491755501685494">Brave Rewards v Japonsku přechází na nový systém!</translation>
 </translationbundle>

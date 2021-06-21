@@ -334,4 +334,6 @@
 <translation id="2808630562319398131">Скинути дані Винагород Brave...</translation>
 <translation id="1224064034972923114">Допоможіть покращити Brave, автоматично надсилаючи звіти про помилки</translation>
 <translation id="3738833060602717053">Допоможіть покращити <ph name="PRODUCT_NAME"/>, автоматично надсилаючи звіти про помилки</translation>
+<translation id="81720820779436751">Якщо веб-сайт має onion-сервіс, Brave відкриватиме у вікні Tor його або домен .onion</translation>
+<translation id="4322612543319315652">Імпортувати обраний текст до IPFS</translation>
 </translationbundle>

@@ -51,6 +51,18 @@
     "message": "Tarkat tiedot",
     "description": "Title for grant section in wallet panel summary"
   },
+  "yourBalance": {
+    "message": "Saldosi",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT-pisteet",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "voidaan käyttää Brave-palkinnoissa antamaan kannatusmaksuja suosikkisisällöntuottajillesi. BAT-pisteitä ei voi vaihtaa BATiin.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "päällä",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -148,6 +160,10 @@
   "tokenGrantClaimed": {
     "message": "Lunastetut tunnuslahjoitukset",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Pistestipendit lunastettu",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Ansaitset mainoksilla",
@@ -407,6 +423,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "Ota Ads käyttöön",
     "description": "Prompt to turn on Ads via notification"
@@ -474,6 +494,10 @@
   "grantFinishTokenTitleUGP": {
     "message": "Ilmainen tunnuslahjoitus",
     "description": "Token title on success screen"
+  },
+  "grantFinishPointTitleUGP": {
+    "message": "Ilmaispistestipendi",
+    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Olet ansainnut mainospalkinnon!",
@@ -567,9 +591,17 @@
     "message": "Poletti",
     "description": "BAT Token text"
   },
+  "points":  {
+    "message": "pistettä",
+    "description": "BAT Points text"
+  },
   "tokenGrants":  {
     "message": "Token-tuet",
     "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Pistestipendit",
+    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Hei, $name$!",
@@ -798,5 +830,17 @@
         "content": "$2"
       }
     }
+  },
+  "bapDeprecationHeader": {
+    "message": "Japanin Brave Rewards ottaa käyttöön uuden järjestelmän!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Lisätietoja",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Käytä BAP:si ennen 13. maaliskuuta. Tämän jälkeen BAP ei ole enää käytössä.",
+    "description": "Text for BAP deprecation popup"
   }
 }

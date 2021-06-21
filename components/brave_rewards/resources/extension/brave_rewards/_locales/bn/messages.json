@@ -51,6 +51,18 @@
     "message": "বিস্তারিত বিবরণগুলি",
     "description": "Title for grant section in wallet panel summary"
   },
+  "yourBalance": {
+    "message": "আপনার ব্যালেন্স",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT পয়েন্টগুলি",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "আপনার পছন্দের বিষয়বস্তু প্রস্তুতকারকদের অবদান রাখতে Brave পুরস্কারগুলি ব্যবহার করা যাবে। BAT পয়েন্টগুলি BAT এ বিনিময় করা যাবে না।",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "চালু",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -148,6 +160,10 @@
   "tokenGrantClaimed": {
     "message": "মঞ্জুরি দেওয়া টোকেনের দাবি করা হয়েছে",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "অনুদানজনিত পয়েন্ট দাবি করা হয়েছে",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Brave বিজ্ঞাপন থেকে করা উপার্জন",
@@ -407,6 +423,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "বিজ্ঞাপনগুলি চালু করুন",
     "description": "Prompt to turn on Ads via notification"
@@ -474,6 +494,10 @@
   "grantFinishTokenTitleUGP": {
     "message": "মুক্ত টোকেন মঞ্জুরি",
     "description": "Token title on success screen"
+  },
+  "grantFinishPointTitleUGP": {
+    "message": "অনুদানজনিত পয়েন্ট বিনামূল্যে",
+    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "আপনি একটি বিজ্ঞাপনের পুরস্কার উপার্জন করেছেন!",
@@ -567,9 +591,17 @@
     "message": "টোকেন",
     "description": "BAT Token text"
   },
+  "points":  {
+    "message": "পয়েন্টসমূহ",
+    "description": "BAT Points text"
+  },
   "tokenGrants":  {
     "message": "টোকেন মঞ্জুরি",
     "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "পয়েন্ট অনুদান",
+    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "হ্যালো, $name$!",
@@ -798,5 +830,17 @@
         "content": "$2"
       }
     }
+  },
+  "bapDeprecationHeader": {
+    "message": "জাপানে Brave পুরষ্কারগুলি একটি নতুন সিস্টেমে স্যুইচ করছে!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "আরও জানুন",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "13 ই মার্চের মধ্যে আপনার BAP ব্যবহার করুন। এর পরে, BAP বন্ধ করা হবে।",
+    "description": "Text for BAP deprecation popup"
   }
 }

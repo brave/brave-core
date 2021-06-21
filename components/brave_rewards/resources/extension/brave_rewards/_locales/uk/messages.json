@@ -51,6 +51,18 @@
     "message": "Подробиці",
     "description": "Title for grant section in wallet panel summary"
   },
+  "yourBalance": {
+    "message": "Ваш баланс",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "Бали BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "можуть бути використані у Brave Rewards для підтримки ваших улюблених творців контенту. BAT Points не можуть бути обміняні на BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "увімкнути",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -148,6 +160,10 @@
   "tokenGrantClaimed": {
     "message": "Гранти з токенів запитано",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Запитано грантів у балах",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Заробітки від реклами",
@@ -407,6 +423,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "Увімкнути Рекламу",
     "description": "Prompt to turn on Ads via notification"
@@ -474,6 +494,10 @@
   "grantFinishTokenTitleUGP": {
     "message": "Безкоштовний грант з токенів",
     "description": "Token title on success screen"
+  },
+  "grantFinishPointTitleUGP": {
+    "message": "Грант безкоштовних балів",
+    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Ви заробили Ads Reward!",
@@ -567,9 +591,17 @@
     "message": "Токен",
     "description": "BAT Token text"
   },
+  "points":  {
+    "message": "бали",
+    "description": "BAT Points text"
+  },
   "tokenGrants":  {
     "message": "Гранти з токенів",
     "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Гранти у балах",
+    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Вітаємо, $name$!",
@@ -798,5 +830,17 @@
         "content": "$2"
       }
     }
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave Rewards у Японії переходять на нову систему!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Докладніше",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Будь ласка, використайте ваші BAP до 13 березня. Після того дія BAP завершиться. ",
+    "description": "Text for BAP deprecation popup"
   }
 }

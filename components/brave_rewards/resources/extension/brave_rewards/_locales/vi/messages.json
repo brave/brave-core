@@ -51,6 +51,18 @@
     "message": "Thông tin chi tiết",
     "description": "Title for grant section in wallet panel summary"
   },
+  "yourBalance": {
+    "message": "Số dư của bạn",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "Điểm BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "có thể sử dụng trong Brave Rewards để đóng góp cho người sáng tạo nội dung yêu thích của bạn. Điểm BAT không thể quy đổi sang BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "trên",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -148,6 +160,10 @@
   "tokenGrantClaimed": {
     "message": "Khoản thưởng Token Đã nhận",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Điểm Tặng Đã Nhận",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Tiền kiếm được từ Quảng cáo",
@@ -407,6 +423,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "Bật Ads",
     "description": "Prompt to turn on Ads via notification"
@@ -474,6 +494,10 @@
   "grantFinishTokenTitleUGP": {
     "message": "Khoản thưởng Token Miễn phí",
     "description": "Token title on success screen"
+  },
+  "grantFinishPointTitleUGP": {
+    "message": "Tặng Điểm Miễn phí",
+    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Bạn đã nhận được Điểm thưởng Quảng cáo!",
@@ -567,9 +591,17 @@
     "message": "Token",
     "description": "BAT Token text"
   },
+  "points":  {
+    "message": "điểm",
+    "description": "BAT Points text"
+  },
   "tokenGrants":  {
     "message": "Tặng Token",
     "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Điểm tài trợ",
+    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Xin chào, $name$!",
@@ -798,5 +830,17 @@
         "content": "$2"
       }
     }
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave Rewards ở Nhật Bản đang chuyển sang một hệ thống mới!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Tìm hiểu thêm",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Xin vui lòng sử dụng BAP của bạn trước ngày 13 tháng 3. Sau đó, BAP sẽ bị ngừng hoạt động.",
+    "description": "Text for BAP deprecation popup"
   }
 }

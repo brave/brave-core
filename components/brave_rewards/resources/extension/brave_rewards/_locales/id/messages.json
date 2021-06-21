@@ -51,6 +51,18 @@
     "message": "Rincian",
     "description": "Title for grant section in wallet panel summary"
   },
+  "yourBalance": {
+    "message": "Saldo Anda",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "Poin BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "dapat digunakan di Brave Rewards untuk memberi kontribusi kepada kreator konten favorit Anda. BAT Points tidak dapat ditukarkan dengan BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "di",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -148,6 +160,10 @@
   "tokenGrantClaimed": {
     "message": "Hibah Token Diklaim",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Hibah Poin Telah Diambil",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Pendapatan dari Iklan",
@@ -407,6 +423,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "Nyalakan Iklan",
     "description": "Prompt to turn on Ads via notification"
@@ -474,6 +494,10 @@
   "grantFinishTokenTitleUGP": {
     "message": "Hibah Token Gratis",
     "description": "Token title on success screen"
+  },
+  "grantFinishPointTitleUGP": {
+    "message": "Hibah Poin Gratis",
+    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Anda memperoleh Reward Iklan!",
@@ -567,9 +591,17 @@
     "message": "Token",
     "description": "BAT Token text"
   },
+  "points":  {
+    "message": "poin",
+    "description": "BAT Points text"
+  },
   "tokenGrants":  {
     "message": "Hibah Token",
     "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Hibah Poin",
+    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Halo, $name$!",
@@ -798,5 +830,17 @@
         "content": "$2"
       }
     }
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave Rewards di Jepang beralih ke sistem baru!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Pelajari lebih lanjut",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Harap gunakan BAP Anda sebelum 13 Maret. Setelah itu, BAP akan dihentikan.",
+    "description": "Text for BAP deprecation popup"
   }
 }

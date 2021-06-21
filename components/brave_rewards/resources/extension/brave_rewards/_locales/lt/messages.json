@@ -51,6 +51,18 @@
     "message": "Išsami informacija",
     "description": "Title for grant section in wallet panel summary"
   },
+  "yourBalance": {
+    "message": "Jūsų balansas",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT taškai",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "gali būti naudojami „Brave Rewards“ norint prisidėti prie savo mėgstamų turinio kūrėjų. BAT taškų negalima keisti į BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "įjungti",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -148,6 +160,10 @@
   "tokenGrantClaimed": {
     "message": "Atsiimtos žetonų išmokos",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Atsiimti suteikti taškai",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Uždarbis iš reklamos",
@@ -407,6 +423,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "Įjungti reklamas",
     "description": "Prompt to turn on Ads via notification"
@@ -474,6 +494,10 @@
   "grantFinishTokenTitleUGP": {
     "message": "Nemokamų žetonų išmoka",
     "description": "Token title on success screen"
+  },
+  "grantFinishPointTitleUGP": {
+    "message": "Nemokamas suteikti taškai",
+    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Jūs gavote atlygį už reklamą! ",
@@ -567,9 +591,17 @@
     "message": "Žetonas",
     "description": "BAT Token text"
   },
+  "points":  {
+    "message": "taškai",
+    "description": "BAT Points text"
+  },
   "tokenGrants":  {
     "message": "Atpažinimo ženklo suteikimas",
     "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Suteikti taškai",
+    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Sveiki, $name$!",
@@ -798,5 +830,17 @@
         "content": "$2"
       }
     }
+  },
+  "bapDeprecationHeader": {
+    "message": "„Brave Rewards“ Japonijoje pereina prie naujos sistemos!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Sužinokite daugiau",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Išnaudokite turimus BAP iki kovo 13 d. Po to BAP nustos galioti.",
+    "description": "Text for BAP deprecation popup"
   }
 }

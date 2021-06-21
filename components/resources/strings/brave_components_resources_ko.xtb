@@ -865,4 +865,33 @@
 <translation id="6973157709854838218">화면에서 잔액 숨김</translation>
 <translation id="4548946945059463969">화면에 잔액 표시</translation>
 <translation id="242959166945779492">계정 내에 잔액이 없습니다. FTX를 방문하여 구매하세요.</translation>
+<translation id="20281847067919078">보류 중인 예상 보상금</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">BAT 포인트</translation>
+<translation id="2563462925929938015">Brave 리워드에서 사용하여 가장 좋아하는 콘텐츠 제작자들에게 기부할 수 있습니다. BAT 포인트는 BAT로 환전될 수 없습니다.</translation>
+<translation id="8441289448876571409">BAP 펀드</translation>
+<translation id="4783907814409710132">포인트가 부족합니다.</translation>
+<translation id="3610794092923555181">안타깝지만, 아직 포인트가 없습니다.</translation>
+<translation id="2185598236335233939">Brave (브레이브)를 계속 사용할 때 광고 알림을 찾으십시오. 귀하의 BAT 포인트 잔액은 귀하가 보는 각 광고와 함께  증가할 것입니다.</translation>
+<translation id="9212459913845238740">포인트 보조금 청구됨</translation>
+<translation id="768850953428043522">포인트</translation>
+<translation id="1193434225710679930">포인트 보조금</translation>
+<translation id="8494748383523030337">귀하의 잔액</translation>
+<translation id="2132683977638223450">무료 포인트 보조금</translation>
+<translation id="46988480989545156">월렛 검증하기</translation>
+<translation id="5796169459825124737">당사의 월렛 서비스는 <ph name="PROVIDER"/>에 의해 제공됩니다.</translation>
+<translation id="6771734945114850124">정부에서 발급한 유효한 신분증을 준비해 주세요.</translation>
+<translation id="8697510149346635496">개인 정보를 존중하는 광고를 본 것으로 획득하는 BAT 중단</translation>
+<translation id="1481480653609649134">신용 카드 및 기타 자원으로 추가 BAT 구매</translation>
+<translation id="9096003370755878766">이전에 Brave Rewards 월렛에 추가했을 수 있는 BAT를 중단하세요</translation>
+<translation id="8558636200953226885">하지만 확인하시면, 귀하는...</translation>
+<translation id="3354315693758743702">귀하 월렛 확인은 선택 사항입니다.</translation>
+<translation id="4872388810065331182"><ph name="PROVIDER"/>에 의해 요청된 서비스에 따라 신원 확인이 요구될 수 있습니다.</translation>
+<translation id="6938217233488972952">Brave Software Inc.는 사용자가 계정을 생성할 때 <ph name="PROVIDER"/>에 제공하는 개인 정보를 처리, 저장 또는 액세스하지 않습니다.</translation>
+<translation id="2415586822982819406">주의: 한 번 승인하면 <ph name="PROVIDER"/> 측에서 귀하의 거래를 볼 수 있게 됩니다. 예를 들어, 수취인과 팁의 금액을 볼 수 있습니다.</translation>
+<translation id="8587285254008006694">이러한 전환의 일환으로 3월 13일부터 브라우저에서 팁 주기 및 기부 기능을
+        일시적으로 사용할 수 없으며, 4월에 새로운 시스템으로 업데이트될 때까지
+        BAP 잔액은 0.0으로 표시됩니다. 새로운 시스템에 접속하게 되면 새 토큰으로
+        시작할 수 있습니다!</translation>
+<translation id="6232491755501685494">일본의 Brave 리워드가 새로운 시스템으로 전환 중입니다!</translation>
 </translationbundle>

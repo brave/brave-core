@@ -51,6 +51,18 @@
     "message": "التفاصيل",
     "description": "Title for grant section in wallet panel summary"
   },
+  "yourBalance": {
+    "message": "رصيدك",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "نقاط BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "يمكن استخدام ذلك في مكافآت Brave لدعم منشئي المحتوى المفضل لديك. لا يمكن استبدال نقاط الرموز الأساسية للاهتمام بالرموز الأساسية للاهتمام.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "على",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -148,6 +160,10 @@
   "tokenGrantClaimed": {
     "message": "تم جمع المكافأة المالية التي منحت لك",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "تم تحصيل منحة النقاط",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "أرباح من الإعلانات",
@@ -407,6 +423,10 @@
     "message": "صيغة BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "تشغيل الإعلانات",
     "description": "Prompt to turn on Ads via notification"
@@ -474,6 +494,10 @@
   "grantFinishTokenTitleUGP": {
     "message": "الحصول على أموال مجانًا",
     "description": "Token title on success screen"
+  },
+  "grantFinishPointTitleUGP": {
+    "message": "منحة نقاط مجانية",
+    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "لقد ربحتَ مكافأة إعلانات!",
@@ -567,9 +591,17 @@
     "message": "عملة رمزية",
     "description": "BAT Token text"
   },
+  "points":  {
+    "message": "النقاط",
+    "description": "BAT Points text"
+  },
   "tokenGrants":  {
     "message": "منح العملة الرمزية",
     "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "منح النقاط",
+    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "مرحباً، $name$!",
@@ -798,5 +830,17 @@
         "content": "$2"
       }
     }
+  },
+  "bapDeprecationHeader": {
+    "message": "برنامج Brave Rewards في اليابان يتحول إلى نظام جديد!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "مزيد من المعلومات",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "يُرجى استخدام رصيدك من BAP بحلول 13 مارس. بعد ذلك، سيتم إيقاف BAP.",
+    "description": "Text for BAP deprecation popup"
   }
 }

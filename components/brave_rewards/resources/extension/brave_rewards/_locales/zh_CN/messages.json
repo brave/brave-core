@@ -51,6 +51,18 @@
     "message": "详细信息",
     "description": "Title for grant section in wallet panel summary"
   },
+  "yourBalance": {
+    "message": "您的余额",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT 积分",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "可用于 Brave Rewards ，捐款给您最喜欢的内容创建者。BAT 点数不能兑换为 BAT。",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "在",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -148,6 +160,10 @@
   "tokenGrantClaimed": {
     "message": "已领取代币补助",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "积分奖励已领取",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "从广告中赚取的收益",
@@ -407,6 +423,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "开启广告",
     "description": "Prompt to turn on Ads via notification"
@@ -474,6 +494,10 @@
   "grantFinishTokenTitleUGP": {
     "message": "免费代币补助",
     "description": "Token title on success screen"
+  },
+  "grantFinishPointTitleUGP": {
+    "message": "免费积分奖励",
+    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "您已经获得了 Ads Reward！",
@@ -567,9 +591,17 @@
     "message": "代币",
     "description": "BAT Token text"
   },
+  "points":  {
+    "message": "积分",
+    "description": "BAT Points text"
+  },
   "tokenGrants":  {
     "message": "代币发放",
     "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "积分奖励",
+    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "您好，$name$!",
@@ -798,5 +830,17 @@
         "content": "$2"
       }
     }
+  },
+  "bapDeprecationHeader": {
+    "message": "日本的 Brave Rewards 即将切换到新系统！",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "了解详情",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "请在 3 月 13 日之前使用您的 BAP。之后，BAP 将被终止。",
+    "description": "Text for BAP deprecation popup"
   }
 }

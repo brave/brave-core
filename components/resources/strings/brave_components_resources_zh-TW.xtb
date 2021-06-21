@@ -864,4 +864,34 @@
 <translation id="6973157709854838218">隱藏顯示餘額</translation>
 <translation id="4548946945059463969">在螢幕上顯示您的餘額</translation>
 <translation id="242959166945779492">您的帳戶中沒有任何餘額。請造訪 FTX 購買。</translation>
+<translation id="20281847067919078">預估擱置中的獎勵</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">BAT 點數</translation>
+<translation id="2563462925929938015">可用於 Brave 獎勵來捐助您最喜愛的內容創作者。BAT 點數不可兌換 BAT。</translation>
+<translation id="8441289448876571409">BAP 資金</translation>
+<translation id="4783907814409710132">點數不足。</translation>
+<translation id="3610794092923555181">不幸的是，還沒有點數。</translation>
+<translation id="2185598236335233939">在您持續使用 Brave 時尋找廣告通知。您的 BAT 點數餘額將隨著您觀難的每個廣告而增加。</translation>
+<translation id="9212459913845238740">點數經廢已領</translation>
+<translation id="768850953428043522">點數</translation>
+<translation id="1193434225710679930">點數經費</translation>
+<translation id="8494748383523030337">您的餘額</translation>
+<translation id="2132683977638223450">免費點數經費</translation>
+<translation id="46988480989545156">驗證錢包</translation>
+<translation id="5796169459825124737">我們的錢包服務是由<ph name="PROVIDER"/>提供。</translation>
+<translation id="6771734945114850124">請提供您的政府核發的身份證明文件。</translation>
+<translation id="8697510149346635496">提領您從瀏覽支援隱私廣告賺取的 BAT（注意力代幣）</translation>
+<translation id="1481480653609649134">以信用卡或其他來源購買其他 BAT（注意力代幣）</translation>
+<translation id="9096003370755878766">提領您可能先前新增至您的 Brave 獎勵電子錢包的 BAT (注意力代幣)</translation>
+<translation id="8558636200953226885">但如果您進行驗證，您可以……</translation>
+<translation id="3354315693758743702">驗證您的錢包是選擇性的。</translation>
+<translation id="4872388810065331182"><ph name="PROVIDER"/>可能會需要您依據要求之服務驗證身份。</translation>
+<translation id="6938217233488972952">Brave Software Inc. 不會處理、儲存或存取任何您在設定帳戶時提供給<ph name="PROVIDER"/>的個人資料。</translation>
+<translation id="2415586822982819406">注意：授權後<ph name="PROVIDER"/>將能看到您的交易；舉例來說，他們能看見收款方與您給的小費金額。</translation>
+<translation id="8587285254008006694">作為此轉換的一部分，從 3 月 13 日開始，您的
+        瀏覽器中的小費和貢獻功能，將暫時無法使用，並且
+        您的 BAP 餘額將顯示為 0.0，直到 4 月更新至新系統
+        為止。一旦您在新的系統上，就將開始使用新
+        代幣！</translation>
+<translation id="6232491755501685494">日本的 Brave Rewards 正在切換到新系統！</translation>
 </translationbundle>

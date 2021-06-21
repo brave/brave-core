@@ -51,6 +51,18 @@
     "message": "Detaylar",
     "description": "Title for grant section in wallet panel summary"
   },
+  "yourBalance": {
+    "message": "Bakiyeniz",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT Puanları",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "en sevdiğiniz içerik yaratıcılarına katkıda bulunmak için Brave Ödüller'de kullanılabilir. BAT Puanları, BAT almak için kullanılamaz.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "Açık",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -148,6 +160,10 @@
   "tokenGrantClaimed": {
     "message": "Token Bağışları Talep Edildi",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Puan Bağışları Talep Edildi",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Reklam Kazançları",
@@ -407,6 +423,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "Reklamları Etkinleştir",
     "description": "Prompt to turn on Ads via notification"
@@ -474,6 +494,10 @@
   "grantFinishTokenTitleUGP": {
     "message": "Ücretsiz Token Bağışı",
     "description": "Token title on success screen"
+  },
+  "grantFinishPointTitleUGP": {
+    "message": "Ücretsiz Puan Bağışı",
+    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Bir Reklam Ödülü kazandınız!",
@@ -567,9 +591,17 @@
     "message": "Token",
     "description": "BAT Token text"
   },
+  "points":  {
+    "message": "puanlar",
+    "description": "BAT Points text"
+  },
   "tokenGrants":  {
     "message": "Token Bağışları",
     "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Puan Bağışları",
+    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Merhaba, $name$!",
@@ -798,5 +830,17 @@
         "content": "$2"
       }
     }
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave Ödülleri Japonya'da yeni bir sisteme geçiyor!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Daha fazla bilgi edinin",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Lütfen BAPınızı 13 Marta kadar kullanın. Sonrasında BAP sonlandırılacak.",
+    "description": "Text for BAP deprecation popup"
   }
 }

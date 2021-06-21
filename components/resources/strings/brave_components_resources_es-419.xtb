@@ -864,4 +864,34 @@
 <translation id="6973157709854838218">Oculta tus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Muestra tus saldos en la pantalla</translation>
 <translation id="242959166945779492">No tienes ningún saldo en tu cuenta. Visita FTX para adquirir un poco.</translation>
+<translation id="20281847067919078">Recompensas pendientes estimadas</translation>
+<translation id="6160106411363856968">PBAT</translation>
+<translation id="1081826981536899387">Los puntos BAT</translation>
+<translation id="2563462925929938015">se pueden usar en Recompensas Brave para contribuir con los creadores de contenido que más te gustan. Los puntos BAT no pueden cambiarse por BAT.</translation>
+<translation id="8441289448876571409">Fondos BAP</translation>
+<translation id="4783907814409710132">No hay puntos suficientes.</translation>
+<translation id="3610794092923555181">Lamentablemente, aún no tienes puntos.</translation>
+<translation id="2185598236335233939">Busca notificaciones de anuncios sin salir de Brave. Tu saldo de puntos BAT aumentará con cada anuncio que veas.</translation>
+<translation id="9212459913845238740">Donaciones de puntos reclamadas</translation>
+<translation id="768850953428043522">puntos</translation>
+<translation id="1193434225710679930">Donaciones de puntos</translation>
+<translation id="8494748383523030337">Tu saldo</translation>
+<translation id="2132683977638223450">Donación gratuita de puntos</translation>
+<translation id="46988480989545156">Verificar billetera</translation>
+<translation id="5796169459825124737">Nuestro servicio de billetera lo facilita <ph name="PROVIDER"/>.</translation>
+<translation id="6771734945114850124">Ten a mano tu identificación emitida por el gobierno.</translation>
+<translation id="8697510149346635496">Retira BAT que ganes por mirar anuncios que respetan la privacidad.</translation>
+<translation id="1481480653609649134">Compra BAT adicional con tarjetas de crédito y otros medios.</translation>
+<translation id="9096003370755878766">Retira BAT que hayas agregado previamente a tu billetera de Recompensas Brave.</translation>
+<translation id="8558636200953226885">Si verificas tu cuenta, puedes…</translation>
+<translation id="3354315693758743702">Verificar la billetera es opcional.</translation>
+<translation id="4872388810065331182">Es posible que <ph name="PROVIDER"/> te pida que verifiques tu identidad en función de los servicios que solicites.</translation>
+<translation id="6938217233488972952">Brave Software Inc. no procesa, almacena ni accede a ningún dato personal que le facilitas a <ph name="PROVIDER"/> cuando abres una cuenta con ellos.</translation>
+<translation id="2415586822982819406">Nota: <ph name="PROVIDER"/> podrá acceder a tus transacciones una vez que lo autorices. Por ejemplo, podrá ver el destinatario y el importe de tus propinas.</translation>
+<translation id="8587285254008006694">Como parte de esta transición, las funciones de propinas y contribuciones de
+        tu navegador no estarán disponibles temporalmente a partir del 13 de marzo, y
+        tu saldo de BAP se mostrará en 0.0 hasta que hayas actualizado al nuevo sistema
+        en abril. Una vez que tengas el nuevo sistema, ¡comenzarás con nuevos
+        tokens!</translation>
+<translation id="6232491755501685494">¡Brave Rewards está cambiando a un nuevo sistema en Japón!</translation>
 </translationbundle>

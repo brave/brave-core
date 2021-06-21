@@ -51,6 +51,18 @@
     "message": "Detaljer",
     "description": "Title for grant section in wallet panel summary"
   },
+  "yourBalance": {
+    "message": "Saldoen din",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT-poeng",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "kan brukes i Brave-belønninger for å bidra til dine foretrukne innholdsskapere. BAT-poeng kan ikke veksles inn i BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "på",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -148,6 +160,10 @@
   "tokenGrantClaimed": {
     "message": "Tokenstipender gjort krav på",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Poengtildelinger gjort krav på",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Opptjente midler fra reklamer",
@@ -407,6 +423,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "Slå på Ads",
     "description": "Prompt to turn on Ads via notification"
@@ -474,6 +494,10 @@
   "grantFinishTokenTitleUGP": {
     "message": "Gratis tokenstipend",
     "description": "Token title on success screen"
+  },
+  "grantFinishPointTitleUGP": {
+    "message": "Gratis poengtildeling",
+    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Du har tjent en annonsebelønning!",
@@ -567,9 +591,17 @@
     "message": "Token ",
     "description": "BAT Token text"
   },
+  "points":  {
+    "message": "poeng",
+    "description": "BAT Points text"
+  },
   "tokenGrants":  {
     "message": "Tilskudd til polletter",
     "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Poengtildelinger",
+    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Hallo, $name$!",
@@ -798,5 +830,17 @@
         "content": "$2"
       }
     }
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave Rewards i Japan bytter nå til et nytt system!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Finn ut mer",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Vennligst bruk BAP-en din innen 13. mars. Etter det vil BAP bli avviklet.",
+    "description": "Text for BAP deprecation popup"
   }
 }

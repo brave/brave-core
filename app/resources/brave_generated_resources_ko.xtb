@@ -335,4 +335,6 @@
 <translation id="2808630562319398131">Brave 리워드 데이터 재설정...</translation>
 <translation id="1224064034972923114">자동으로 충돌 보고서를 보내 Brave 개선 지원</translation>
 <translation id="3738833060602717053">자동으로 충돌 보고서를 보내 <ph name="PRODUCT_NAME"/> 개선 지원</translation>
+<translation id="81720820779436751">Brave는 웹사이트의 onion 서비스가 사용 가능할 경우 해당 웹사이트나 .onion 도메인을 Tor 창에서 열 것입니다</translation>
+<translation id="4322612543319315652">선택한 텍스트를 IPFS로 가져오기</translation>
 </translationbundle>

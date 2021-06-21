@@ -51,6 +51,18 @@
     "message": "ವಿವರಗಳು",
     "description": "Title for grant section in wallet panel summary"
   },
+  "yourBalance": {
+    "message": "ನಿಮ್ಮ ಬ್ಯಾಲೆನ್ಸ್",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT ಪಾಯಿಂಟ್‌‌ಗಳು",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "ನಿಮ್ಮ ಮೆಚ್ಚಿನ ವಿಷಯ ರಚನೆಕಾರರಿಗೆ ಕೊಡುಗೆಯನ್ನು ನೀಡಲು Brave Rewards ನಲ್ಲಿ ಬಳಸಬಹುದು. BAT ಪಾಯಿಂಟ್‌ಗಳನ್ನು BAT ಗೆ ವಿನಿಮಯ ಮಾಡಲಾಗುವುದಿಲ್ಲ.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "ಆನ್",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -148,6 +160,10 @@
   "tokenGrantClaimed": {
     "message": "ಟೋಕನ್ ಅನುದಾನಗಳು ಕ್ಲೈಮ್ ಮಾಡಿರುವುದು",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "ಪಾಯಿಂಟ್ ಅನುದಾನಗಳು ಕ್ಲೈಮ್ ಮಾಡಿರುವುದು",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "ಜಾಹೀರಾತುಗಳಿಂದ ಸಂಪಾದನೆಗಳು",
@@ -407,6 +423,10 @@
     "message": "ಬಿಎಟಿ",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "ಜಾಹೀರಾತುಗಳನ್ನು ಆನ್ ಮಾಡಿ",
     "description": "Prompt to turn on Ads via notification"
@@ -474,6 +494,10 @@
   "grantFinishTokenTitleUGP": {
     "message": "ಉಚಿತ ಟೋಕನ್ ಅನುದಾನ",
     "description": "Token title on success screen"
+  },
+  "grantFinishPointTitleUGP": {
+    "message": "ಉಚಿತ ಟೋಕನ್ ಅನುದಾನ",
+    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "ನೀವು ಜಾಹೀರಾತುಗಳ ರಿವಾರ್ಡ್ ಅನ್ನು ಗಳಿಸಿದ್ದೀರಿ!",
@@ -567,9 +591,17 @@
     "message": "ಟೋಕನ್",
     "description": "BAT Token text"
   },
+  "points":  {
+    "message": "ಪಾಯಿಂಟ್‌ಗಳು",
+    "description": "BAT Points text"
+  },
   "tokenGrants":  {
     "message": "ಟೋಕನ್ ಅನುದಾನಗಳು",
     "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "ಟೋಕನ್ ಅನುದಾನಗಳು",
+    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "ಹಲೋ, $name$!",
@@ -798,5 +830,17 @@
         "content": "$2"
       }
     }
+  },
+  "bapDeprecationHeader": {
+    "message": "ಜಪಾನ್ ನಲ್ಲಿನ ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್ ಒಂದು ಹೊಸ ಸಿಸ್ಟಮ್ ಗೆ ಬದಲಾಗುತ್ತಿದೆ.",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "ಮಾರ್ಚ್ 13 ನೇ ತಾರೀಖಿನ ಒಳಗೆ  ದಯವಿಟ್ಟು ನಿಮ್ಮ ಬಿಎಪಿಯನ್ನು ಬಳಸಿ. ನಂತರ ನಿಮ್ಮ ಬಿಎಪಿ ಸ್ಥಗಿತಗೊಳ್ಳುತ್ತದೆ.",
+    "description": "Text for BAP deprecation popup"
   }
 }

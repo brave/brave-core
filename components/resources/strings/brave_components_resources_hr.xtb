@@ -864,4 +864,34 @@
 <translation id="6973157709854838218">Sakrij svoje raspoložive iznose sa zaslona</translation>
 <translation id="4548946945059463969">Otkrij svoje raspoložive iznose na ekranu</translation>
 <translation id="242959166945779492">Nemate raspoloživih iznosa na svom računu. Posjetite FTX da biste ih kupili.</translation>
+<translation id="20281847067919078">Procijenjene nagrade na čekanju</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">Bodovi BAT</translation>
+<translation id="2563462925929938015">može se upotrebljavati u stavci Nagrade Brave za doprinošenje vašim omiljenim stvarateljima sadržaja. Bodovi se BAT ne mogu zamijeniti za BAT.</translation>
+<translation id="8441289448876571409">Fondovi BAP</translation>
+<translation id="4783907814409710132">Nema dovoljno bodova.</translation>
+<translation id="3610794092923555181">Nažalost, još uvijek nema bodova.</translation>
+<translation id="2185598236335233939">Pregledajte obavijesti o reklamama dok se koristite preglednikom Brave. Raspoloživi se iznos bodova BAT povećava svakim pregledom reklame.</translation>
+<translation id="9212459913845238740">Zatražena odobrenja za bodove</translation>
+<translation id="768850953428043522">bodovi</translation>
+<translation id="1193434225710679930">Odobrenja za bodove</translation>
+<translation id="8494748383523030337">Vaš raspoloživi iznos</translation>
+<translation id="2132683977638223450">Besplatno odobrenje za bodove</translation>
+<translation id="46988480989545156">Provjeri novčanik</translation>
+<translation id="5796169459825124737">Našu uslugu novčanika pruža <ph name="PROVIDER"/>.</translation>
+<translation id="6771734945114850124">Pripremite identifikacijski dokument koji je izdalo vladino tijelo.</translation>
+<translation id="8697510149346635496">Provucite sredstva koja zaradite pregledavanjem oglasa o poštovanju privatnosti</translation>
+<translation id="1481480653609649134">Kupite dodatna sredstva kreditnim karticama ili drugim načinima</translation>
+<translation id="9096003370755878766">Povucite sredstva koja ste prethodno dodali u svoj novčanik Brave za nagrade</translation>
+<translation id="8558636200953226885">Ako provjerite, možete...</translation>
+<translation id="3354315693758743702">Provjera je vašeg novčanika neobavezna.</translation>
+<translation id="4872388810065331182"><ph name="PROVIDER"/> može zatražiti od vas da potvrdite svoj identitet na temelju zatraženih usluga.</translation>
+<translation id="6938217233488972952">Poduzeće Brave Software Inc. ne obrađuje, pohranjuje ili pristupa osobnim informacijama koje dajete <ph name="PROVIDER"/> kada otvarate račun.</translation>
+<translation id="2415586822982819406">Napomena: vaše transakcije može vidjeti <ph name="PROVIDER"/> nakon što vi to odobrite; na primjer, može vidjeti primatelja i iznos vaših napojnica.</translation>
+<translation id="8587285254008006694">Kao dijelom prijenosa značajke su davanje napojnice i doprinosa u
+        pregledniku privremeno nedostupne od 13. ožujka 
+        i vaše je raspoloživo stanje BAP 0.0 dok ne ažurirate na novi sustav 
+        u travnju. Jednom kada započnete upotrebljavati novi sustav, krećete uz uporabu novih
+        tokena!</translation>
+<translation id="6232491755501685494">Značajka Brave Rewards u Japanu prelazi na novi sustav!</translation>
 </translationbundle>

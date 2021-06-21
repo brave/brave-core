@@ -51,6 +51,18 @@
     "message": "Detalls",
     "description": "Title for grant section in wallet panel summary"
   },
+  "yourBalance": {
+    "message": "El vostre Saldo",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "Punts BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "es pot usar en les Recompenses de Brave per a ajudar els vostres creadors de continguts. Els BAT points no es poden bescanviar per BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "connectat",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -148,6 +160,10 @@
   "tokenGrantClaimed": {
     "message": "Donacions sol·licitades",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Punts de subvenció reclamats",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Guanys dels anuncis",
@@ -407,6 +423,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "i cant",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "Activeu els anuncis",
     "description": "Prompt to turn on Ads via notification"
@@ -474,6 +494,10 @@
   "grantFinishTokenTitleUGP": {
     "message": "Donació gratis",
     "description": "Token title on success screen"
+  },
+  "grantFinishPointTitleUGP": {
+    "message": "Punt de subvenció gratuït",
+    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Heu guanyat una recompensa publicitària!",
@@ -567,9 +591,17 @@
     "message": "Token",
     "description": "BAT Token text"
   },
+  "points":  {
+    "message": "punts",
+    "description": "BAT Points text"
+  },
   "tokenGrants":  {
     "message": "Fitxes de recompensa",
     "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Recompenses de punts",
+    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Hola,  $name$!",
@@ -798,5 +830,17 @@
         "content": "$2"
       }
     }
+  },
+  "bapDeprecationHeader": {
+    "message": "Els Premis Brave al Japó canvien a un sistema nou!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Més informació",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Sisplau, utilitza els teus BAP abans del 13 de març. Després d'això, els BAP desapareixeran.",
+    "description": "Text for BAP deprecation popup"
   }
 }
