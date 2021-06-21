@@ -1560,7 +1560,7 @@ class BrowserViewController: UIViewController {
                 // This let's the user spam the Cmd+T button without lots of responder changes.
                 guard freshTab == self.tabManager.selectedTab else { return }
                 if let text = searchText {
-                    self.topToolbar.setLocation(text, search: true)
+                    self.topToolbar.submitLocation(text)
                 }
             }
         }

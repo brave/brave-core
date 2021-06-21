@@ -8,11 +8,47 @@ import MobileCoreServices
 import BraveShared
 
 class ShareToBraveViewController: SLComposeServiceViewController {
+    private struct Scheme {
+            private enum SchemeType {
+                case url, query
+            }
+            
+            private let type: SchemeType
+            private let urlOrQuery: String
+            
+            init?(item: NSSecureCoding) {
+                if let text = item as? String {
+                    urlOrQuery = text
+                    type = .query
+                } else if let url = (item as? URL)?.absoluteString.firstURL?.absoluteString {
+                    urlOrQuery = url
+                    type = .url
+                } else {
+                    return nil
+                }
+            }
+            
+            var schemeUrl: URL? {
+                var components = URLComponents()
+                let queryItem: URLQueryItem
+                
+                components.scheme = "brave"
+            
+                switch type {
+                case .url:
+                    components.host = "open-url"
+                    queryItem = URLQueryItem(name: "url", value: urlOrQuery)
+                case .query:
+                    components.host = "search"
+                    queryItem = URLQueryItem(name: "q", value: urlOrQuery)
+                }
+                
+                components.queryItems = [queryItem]
+                return components.url
+            }
+        }
     
     // TODO: Separate scheme for debug builds, so it can be tested without need to uninstall production app.
-    private func urlScheme(for url: String) -> URL? {
-        return URL(string: "brave://open-url?url=\(url)")
-    }
     
     override func configurationItems() -> [Any]! {
         guard let inputItems = extensionContext?.inputItems as? [NSExtensionItem] else {
@@ -34,24 +70,12 @@ class ShareToBraveViewController: SLComposeServiceViewController {
         }
         
         provider.loadItem(of: provider.isUrl ? kUTTypeURL : kUTTypeText) { item, error in
-            var urlItem: URL?
-            
-            // We can get urls from other apps as a kUTTypeText type, for example from Apple's mail.app.
-            if let text = item as? String {
-                urlItem = text.firstURL
-            } else if let url = item as? URL {
-                urlItem = url.absoluteString.firstURL
-            } else {
+            guard let item = item, let schemeUrl = Scheme(item: item)?.schemeUrl else {
                 self.cancel()
                 return
-            }
-            
-            // Just open the app if we don't find a url. In the future we could
-            // use this entry point to search instead of open a given URL
-            let urlString = urlItem?.absoluteString ?? ""
-            if let braveUrl = urlString.addingPercentEncoding(withAllowedCharacters: .alphanumerics).flatMap(self.urlScheme) {
-                self.handleUrl(braveUrl)
-            }
+             }
+                        
+            self.handleUrl(schemeUrl)
         }
         
         return []

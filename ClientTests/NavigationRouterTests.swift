@@ -42,6 +42,14 @@ class NavigationRouterTests: XCTestCase {
         XCTAssertEqual(badNav, NavigationPath.url(webURL: URL(string: "blah"), isPrivate: false))
     }
     
+    func testSearchScheme() {
+        let query = "Foo Bar".addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
+        let appURL = "\(appScheme)://search?q="+query
+        let navItem = NavigationPath(url: URL(string: appURL)!)!
+        
+        XCTAssertEqual(navItem, NavigationPath.text("Foo Bar"))
+    }
+    
     func testDefaultNavigationPath() {
         let url = URL(string: "https://duckduckgo.com")!
         let appURL = URL(string: "\(self.appScheme)://open-url?url=\(url.absoluteString.escape()!)")!
