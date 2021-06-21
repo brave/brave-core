@@ -10,7 +10,7 @@
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "base/logging.h"
-#include "brave/components/speedreader/common/speedreader_switches.h"
+#include "brave/components/speedreader/speedreader_switches.h"
 #include "url/gurl.h"
 
 namespace speedreader {

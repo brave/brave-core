@@ -12,7 +12,7 @@
 #include "base/no_destructor.h"
 #include "base/strings/pattern.h"
 #include "base/strings/string_split.h"
-#include "brave/components/speedreader/common/speedreader_switches.h"
+#include "brave/components/speedreader/speedreader_switches.h"
 #include "url/gurl.h"
 
 namespace speedreader {

@@ -7,7 +7,7 @@
 
 #include "base/files/file_path.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "brave/components/speedreader/buildflags/buildflags.h"
+#include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"

@@ -3,21 +3,36 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/components/speedreader/buildflags/buildflags.gni")
+import("//brave/components/speedreader/buildflags.gni")
+import("//build/buildflag_header.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "ENABLE_SPEEDREADER=$enable_speedreader",
+    "ENABLE_SPEEDREADER_FEATURE=$enable_speedreader_feature",
+  ]
+}
 
 source_set("speedreader") {
   public_deps = [
+    ":buildflags",
     "rust/ffi",
-    "//brave/components/speedreader/buildflags",
   ]
 
   sources = [
+    "constants.cc",
+    "constants.h",
+    "features.cc",
+    "features.h",
     "speedreader_component.cc",
     "speedreader_component.h",
+    "speedreader_pref_names.h",
     "speedreader_rewriter_service.cc",
     "speedreader_rewriter_service.h",
     "speedreader_service.cc",
     "speedreader_service.h",
+    "speedreader_switches.h",
     "speedreader_test_whitelist.cc",
     "speedreader_test_whitelist.h",
     "speedreader_throttle.cc",
@@ -32,7 +47,6 @@ source_set("speedreader") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/resources",
     "//brave/components/resources:static_resources_grit",
-    "//brave/components/speedreader/common",
     "//brave/components/weekly_storage",
     "//components/content_settings/core/browser",
     "//components/content_settings/core/common",
@@ -59,7 +73,6 @@ source_set("unit_tests") {
     deps = [
       "//base",
       "//brave/components/speedreader",
-      "//brave/components/speedreader/common",
       "//chrome/browser",
       "//chrome/test:test_support",
       "//content/public/browser",

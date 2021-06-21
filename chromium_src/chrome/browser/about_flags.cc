@@ -17,7 +17,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
-#include "brave/components/speedreader/buildflags/buildflags.h"
+#include "brave/components/speedreader/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/permissions/features.h"
@@ -53,7 +53,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/components/speedreader/common/features.h"
+#include "brave/components/speedreader/features.h"
 
 #define SPEEDREADER_FEATURE_ENTRIES \
     {"brave-speedreader",                                               \

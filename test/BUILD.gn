@@ -17,7 +17,7 @@ import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
-import("//brave/components/speedreader/buildflags/buildflags.gni")
+import("//brave/components/speedreader/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/test/testing.gni")
 import("//chrome/common/features.gni")
@@ -795,10 +795,7 @@ if (!is_android) {
         "//brave/browser/speedreader/speedreader_browsertest.cc",
         "//brave/browser/ui/speedreader/speedreader_bubble_browsertest.cc",
       ]
-      deps += [
-        "//brave/components/speedreader",
-        "//brave/components/speedreader/common",
-      ]
+      deps += [ "//brave/components/speedreader" ]
     }
 
     if (is_win || is_linux) {

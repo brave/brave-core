@@ -12,7 +12,7 @@
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "brave/components/speedreader/buildflags/buildflags.h"
+#include "brave/components/speedreader/buildflags.h"
 #include "extensions/buildflags/buildflags.h"
 #include "ui/events/event_observer.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"

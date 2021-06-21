@@ -22,7 +22,7 @@ source_set("browser_process") {
     "//brave/components/brave_referrals/buildflags",
     "//brave/components/greaselion/browser/buildflags",
     "//brave/components/ipfs/buildflags",
-    "//brave/components/speedreader/buildflags",
+    "//brave/components/speedreader:buildflags",
     "//brave/components/tor/buildflags",
     "//chrome/browser:browser_process",
     "//extensions/buildflags",

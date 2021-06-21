@@ -49,7 +49,7 @@ source_set("tor") {
     deps += [
       "//brave/components/brave_referrals/buildflags",
       "//brave/components/greaselion/browser/buildflags",
-      "//brave/components/speedreader/buildflags",
+      "//brave/components/speedreader:buildflags",
     ]
   }
 }
