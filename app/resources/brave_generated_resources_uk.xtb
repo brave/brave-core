@@ -18,7 +18,7 @@
 <translation id="6241402707160226266">Приватне вікно з Tor</translation>
 <translation id="8762452230727230396">Tor приховує вашу IP адресу від сайтів, які ви відвідуєте.</translation>
 <translation id="1369311132025451972">Автоматично перенаправляти .цибулинний сайт</translation>
-<translation id="81720820779436751">Якщо веб-сайт має onion-сервіс, Brave відкриватиме у вікні Tor його або домен .onion</translation>
+<translation id="2843777623071353503">Якщо веб-сайт має onion-сервіс, Brave відкриватиме у вікні Tor його або домен .onion</translation>
 <translation id="8053096063396012732">Встановити Widevine</translation>
 <translation id="4840334696217618631">Перезапустіть браузер, щоб увімкнути Widevine</translation>
 <translation id="8410111618231938546">Google Widevineє частиною коду Digital Rights Management (DRM), яким ми у Brave Software не володіємо і не можемо перевіряти. Код Google Widevine завантажується з серверів Google, не з наших серверів. Він завантажується тільки якщо ви увімкнете таку опцію. Ми не заохочуємо використання DRM, але ми поважаємо вибір користувача і беремо до уваги те, що деякі з користувачів Brave захочуть використовувати сервіси, які його вимагають.
@@ -36,6 +36,8 @@
 <translation id="6123134130710658846">Сховати кнопку Brave Rewards</translation>
 <translation id="1811404036171336214">Завжди показувати закладки на сторінці нової вкладки</translation>
 <translation id="1643029991199044105">Переходьте між вкладками, які використовувались зовсім недавно за допомогою Ctrl-Tab</translation>
+<translation id="1013121820689882118">Speedreader</translation>
+<translation id="2025435450953474282">Статті автоматично завантажуються в режимі читання, заощаджуючи ваш час</translation>
 <translation id="5802665280774361839">Показати автозаповнення в адресному рядку</translation>
 <translation id="597020512043916976">Показувати найпопулярніші сайти в пропозиціях щодо автозаповнення</translation>
 <translation id="264150068416846820">Показувати запропоновані сайти Brave як варіанти автозаповнення</translation>
@@ -67,15 +69,16 @@
 <translation id="2715839724138372481">Обране відео</translation>
 <translation id="4227945450504703638">Обране аудіо</translation>
 <translation id="7895302206188277628">Пов’язаний вміст</translation>
-<translation id="4322612543319315652">Імпортувати обраний текст до IPFS</translation>
-<translation id="8883166554766780543">Імпорт і копіювання посилання на миттєвий знімок IPFS</translation>
 <translation id="3654831858282189202">Публікувати з ключами IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Імпортувати обраний текст до IPFS</translation>
+<translation id="6925604404524625582">Імпорт і копіювання посилання на миттєвий знімок IPFS</translation>
 <translation id="1434416574322382019">Нове Приватне вікно з Tor</translation>
 <translation id="4703780849509456860">Відкрити посилання у Приватному вікні з Tor</translation>
 <translation id="3488584642074079080">Відкрити посилання у Приватному вікні Brave з Tor</translation>
 <translation id="7475547933708221517">Поділитися файлом з локального сховища через IPFS</translation>
 <translation id="2286177249736199435">Поділитися папкою з локального сховища через IPFS</translation>
+<translation id="8883166554766780543">Імпорт і копіювання посилання на миттєвий знімок IPFS</translation>
 <translation id="784573715436258741">Поділитися файлом з локального сховища через IPFS</translation>
 <translation id="6313675821927505581">Нове приватне вікно з Tor</translation>
 <translation id="2638041073279639246">Відкрийте посилання у приватномі вікні з Tor</translation>
@@ -190,13 +193,20 @@
 <translation id="7611728475758612204">Доступні для публікації ключі</translation>
 <translation id="911363100236037920">Уведіть назву для цього нового ключа</translation>
 <translation id="6358469157239228181">Цю назву не можна використати</translation>
+<translation id="5761731140570209168">Додайте новий рядок підключення до вузлів</translation>
+<translation id="6476061084931271248">Перезапустіть вузол, щоб застосувати зміни</translation>
+<translation id="3754226427671882382">Перезапустити вузол</translation>
+<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
+<translation id="724513921936768901">Це ім’я неприпустиме</translation>
+<translation id="6758961763875471084">Змінити перелік вузлів</translation>
+<translation id="1534091531114892221">Налаштувати опис вузлів ipfs</translation>
 <translation id="8996633027318264334">Ви дійсно хочете видалити <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Вузол не запускається</translation>
 <translation id="616058968889448209">Помилка запуску служби IPFS. Більш детальна інформація доступна на <ph name="BEGIN_LINK"/>сторінці діагностики<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Не вдалося імпортувати ключ «<ph name="KEY_NAME"/>»</translation>
 <translation id="8275038454117074363">Імпортувати</translation>
 <translation id="3654980960391973513">Створити</translation>
-<translation id="5531501313997312487">Початковий вузол</translation>
+<translation id="5531501313997312487">Запустити вузол</translation>
 <translation id="9170907049676078643">Спосіб вирішення проблем з ресурсами IPFS</translation>
 <translation id="1327977588028644528">Шлюз</translation>
 <translation id="80225669816651290">Локальний вузол</translation>
@@ -285,9 +295,15 @@
 <translation id="7060352228894039151">При наведенні курсору</translation>
 <translation id="407173827865827707">Після натискання</translation>
 <translation id="7961015016161918242">Ніколи</translation>
+<translation id="8981254605840444865">Показати налаштування</translation>
 <translation id="59174027418879706">Увімкнено</translation>
 <translation id="8258999165172757081">Додано</translation>
 <translation id="6959315322491671328">Клацніть правою кнопкою, щоб вилучити</translation>
+<translation id="4651504163033753423">Увімкнути Speedreader?</translation>
+<translation id="9089090017461255038">Увімкнути Speedreader</translation>
+<translation id="312393675740711187">Статті автоматично завантажуються в режимі читання, заощаджуючи ваш час.</translation>
+<translation id="3234744217174488546">Увімкніть/вимкніть режим читання тільки для цього сайту. Щоб вимкнути Speedreader для всього профілю браузеру, відкрийте</translation>
+<translation id="7839742507462737706">у Speedreader</translation>
 <translation id="1872784258300710671">Brave використовує повністю конфіденційну аналітику продуктів для оцінки загального об'єму користування певними функціями</translation>
 <translation id="8712637175834984815">Виконано</translation>
 <translation id="4394049700291259645">Вимкнути</translation>

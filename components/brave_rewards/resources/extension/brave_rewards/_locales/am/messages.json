@@ -51,18 +51,6 @@
     "message": "ዝርዝሮች",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "ቀሪ ሂሳብዎ",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "የ BAT ነጥቦች",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "ለተወዳጅ ይዘት ፈጣሪዎችዎ አስተዋጽኦ ለማድረግ Brave Rewards ውስጥ ሊያገለግል ይችላል። የ BAT ነጥቦችን በ BAT መለወጥ አይቻልም።",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "በ",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -160,10 +148,6 @@
   "tokenGrantClaimed": {
     "message": "የቶክን ብድር ተጠይቋል",
     "description": "Title for grant section in wallet summary"
-  },
-  "pointGrantClaimed": {
-    "message": "የተጠየቁ የነጥብ ብድሮች",
-    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "እባክዎ ከማስተዋቅያ ያግኙ",
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "ማስታወቂያዎችን ያብሩ",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "ነፃ የቶክን ብድር",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "የነፃ ነጥብ ብድር",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "የማስታወቂያ ሽልማት አግኝተዋል!",
@@ -591,17 +567,9 @@
     "message": "ተለዋጭ ስም",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "ነጥቦች",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "የቶክን ፍቃዶች",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "የነጥብ ፈቃዶች",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "ሰላም፣ $name$",
@@ -830,17 +798,5 @@
         "content": "$2"
       }
     }
-  },
-  "bapDeprecationHeader": {
-    "message": "በጃፓን ውስጥ የሚገኙ Brave ወሮታዎች ወደ አዲስ ስርዓት እየተቀየሩ ነው!",
-    "description": "Header text for BAP deprecation warning message"
-  },
-  "bapDeprecationLearnMore": {
-    "message": "የበለጠ ለመረዳት",
-    "description": "Link to learn more about BAP deprecation"
-  },
-  "bapDeprecationPopupText": {
-    "message": "እባክዎን የራስዎ BAP እስከ ማርች 13 ድረስ ይጠቀሙ። ከዚያ በኋላ ፣ BAP ይቋረጣል።",
-    "description": "Text for BAP deprecation popup"
   }
 }

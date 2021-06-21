@@ -51,18 +51,6 @@
     "message": "Butiran",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "Baki Anda",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "Mata BAT",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "boleh digunakan dalam Ganjaran Brave untuk menyumbang kepada pencipta kandungan kegemaran anda. Mata BAT tidak boleh ditukar kepada BAT.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "pada",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -160,10 +148,6 @@
   "tokenGrantClaimed": {
     "message": "Pemberian Token Dituntut",
     "description": "Title for grant section in wallet summary"
-  },
-  "pointGrantClaimed": {
-    "message": "Pemberian Mata Telah Dituntut",
-    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Pendapatan daripada Iklan",
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Hidupkan Iklan",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Pemberian Token Percuma",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Pemberian Mata Percuma",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Anda telah memperoleh Ganjaran Iklan!",
@@ -591,17 +567,9 @@
     "message": "Token",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "mata",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Pemberian Token",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Geran Mata",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Helo, $name$!",
@@ -830,17 +798,5 @@
         "content": "$2"
       }
     }
-  },
-  "bapDeprecationHeader": {
-    "message": "Ganjaran Brave di Jepun beralih ke sistem baharu!",
-    "description": "Header text for BAP deprecation warning message"
-  },
-  "bapDeprecationLearnMore": {
-    "message": "Ketahui lebih lanjut",
-    "description": "Link to learn more about BAP deprecation"
-  },
-  "bapDeprecationPopupText": {
-    "message": "Sila gunakan BAP anda sebelum 13 Mac. BAP akan dihentikan selepas ini.",
-    "description": "Text for BAP deprecation popup"
   }
 }
