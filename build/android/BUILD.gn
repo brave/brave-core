@@ -184,6 +184,8 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceNativeWorker.java",
   ]
 
+  deps = [ "//brave/android/java/org/chromium/chrome/browser/search_engines/settings:jni_headers" ]
+
   if (enable_brave_sync) {
     sources += [
       "//brave/android/java/org/chromium/chrome/browser/BraveSyncWorker.java",

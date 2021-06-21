@@ -22,6 +22,12 @@ brave_browser_search_engines_sources = [
   "//brave/browser/search_engines/tor_window_search_engine_provider_service.h",
 ]
 
+if (is_android) {
+  brave_browser_search_engines_sources += [
+    "//brave/browser/search_engines/brave_search_engine_pref_helper_android.cc",
+  ]
+}
+
 brave_browser_search_engines_deps = [
   "//brave/browser/profiles:util",
   "//brave/common:pref_names",
