@@ -101,32 +101,8 @@ void WalletHandler::GetAssetPriceHistory(
   auto* profile = Profile::FromWebUI(web_ui_);
   auto* asset_ratio_controller =
       GetBraveWalletService(profile)->asset_ratio_controller();
-  base::Time from_time = base::Time::Now();
-  switch (timeframe) {
-    case brave_wallet::mojom::AssetPriceTimeframe::Live:
-      from_time -= base::TimeDelta::FromDays(365);
-      break;
-    case brave_wallet::mojom::AssetPriceTimeframe::OneDay:
-      from_time -= base::TimeDelta::FromDays(1);
-      break;
-    case brave_wallet::mojom::AssetPriceTimeframe::OneWeek:
-      from_time -= base::TimeDelta::FromDays(7);
-      break;
-    case brave_wallet::mojom::AssetPriceTimeframe::OneMonth:
-      from_time -= base::TimeDelta::FromDays(31);
-      break;
-    case brave_wallet::mojom::AssetPriceTimeframe::ThreeMonths:
-      from_time -= base::TimeDelta::FromDays(92);
-      break;
-    case brave_wallet::mojom::AssetPriceTimeframe::OneYear:
-      from_time -= base::TimeDelta::FromDays(365);
-      break;
-    case brave_wallet::mojom::AssetPriceTimeframe::All:
-      from_time -= base::TimeDelta::FromDays(365);
-      break;
-  }
   asset_ratio_controller->GetPriceHistory(
-      asset, from_time, base::Time::Now(),
+      asset, timeframe,
       base::BindOnce(&WalletHandler::OnGetPriceHistory,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }

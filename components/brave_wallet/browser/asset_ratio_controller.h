@@ -39,13 +39,12 @@ class AssetRatioController {
       std::vector<brave_wallet::mojom::AssetTimePricePtr> values)>;
   // The asset param is a string like: "basic-attention-token"
   void GetPriceHistory(const std::string& asset,
-                       base::Time from_time,
-                       base::Time to_time,
+                       brave_wallet::mojom::AssetPriceTimeframe timeframe,
                        GetPriceHistoryCallback callback);
   static GURL GetPriceURL(const std::string& asset);
-  static GURL GetPriceHistoryURL(const std::string& asset,
-                                 base::Time from_time,
-                                 base::Time to_time);
+  static GURL GetPriceHistoryURL(
+      const std::string& asset,
+      brave_wallet::mojom::AssetPriceTimeframe timeframe);
   static void SetBaseURLForTest(const GURL& base_url_for_test);
 
  private:

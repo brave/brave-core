@@ -61,10 +61,12 @@ bool ParseAssetPriceHistory(
     std::vector<brave_wallet::mojom::AssetTimePricePtr>* values) {
   DCHECK(values);
 
-  // {
-  //   "prices":[[1622733088498,0.8201346624954003],[1622737203757,0.8096978545029869]],
-  //   "market_caps":[[1622733088498,1223507820.383275],[1622737203757,1210972881.4928021]],
-  //   "total_volumes":[[1622733088498,163426828.00299588],[1622737203757,157618689.0971025]]
+  // {  "payload":
+  //   {
+  //     "prices":[[1622733088498,0.8201346624954003],[1622737203757,0.8096978545029869]],
+  //     "market_caps":[[1622733088498,1223507820.383275],[1622737203757,1210972881.4928021]],
+  //     "total_volumes":[[1622733088498,163426828.00299588],[1622737203757,157618689.0971025]]
+  //   }
   // }
 
   base::JSONReader::ValueWithError value_with_error =
@@ -81,10 +83,21 @@ bool ParseAssetPriceHistory(
     return false;
   }
 
-  auto* prices_list = response_dict->FindPath("prices");
+  auto* payload = response_dict->FindPath("payload");
+  if (!payload) {
+    return false;
+  }
+
+  const base::DictionaryValue* payload_dict;
+  if (!payload->GetAsDictionary(&payload_dict)) {
+    return false;
+  }
+
+  auto* prices_list = payload->FindPath("prices");
   if (!prices_list) {
     return false;
   }
+
   const base::ListValue* list_of_lists;
   if (!prices_list->GetAsList(&list_of_lists)) {
     return false;

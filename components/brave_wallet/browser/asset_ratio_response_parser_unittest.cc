@@ -35,10 +35,12 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrice) {
 TEST(AssetRatioResponseParserUnitTest, ParseAssetPriceHistory) {
   // https://ratios.bsg.bravesoftware.com/v2/history/coingecko/basic-attention-token/usd/2021-06-03T15%3A00%3A00.000Z/2021-06-03T18%3A00%3A00.000Z
   std::string json(R"(
-    {
-      "prices":[[1622733088498,0.8201346624954003],[1622737203757,0.8096978545029869]],
-      "market_caps":[[1622733088498,1223507820.383275],[1622737203757,1210972881.4928021]],
-      "total_volumes":[[1622733088498,163426828.00299588],[1622737203757,157618689.0971025]]
+    { 
+      "payload": {
+        "prices":[[1622733088498,0.8201346624954003],[1622737203757,0.8096978545029869]],
+        "market_caps":[[1622733088498,1223507820.383275],[1622737203757,1210972881.4928021]],
+        "total_volumes":[[1622733088498,163426828.00299588],[1622737203757,157618689.0971025]]
+      }
     } 
   )");
 

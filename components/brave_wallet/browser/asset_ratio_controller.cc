@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/i18n/time_formatting.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "net/base/escape.h"
@@ -37,15 +36,6 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
           "Not implemented."
       }
     )");
-}
-
-std::string DateToString(const base::Time& time) {
-  base::Time::Exploded exploded_time;
-  time.UTCExplode(&exploded_time);
-  return base::StringPrintf("%04d-%02d-%02dT%02d:%02d:%02d", exploded_time.year,
-                            exploded_time.month, exploded_time.day_of_month,
-                            exploded_time.hour, exploded_time.minute,
-                            exploded_time.second);
 }
 
 }  // namespace
@@ -79,15 +69,38 @@ GURL AssetRatioController::GetPriceURL(const std::string& asset) {
 }
 
 // static
-GURL AssetRatioController::GetPriceHistoryURL(const std::string& asset,
-                                              base::Time from_time,
-                                              base::Time to_time) {
-  std::string spec = base::StringPrintf(
-      "%sv2/history/coingecko/%s/usd/%s/%s",
-      base_url_for_test_.is_empty() ? kAssetRatioServer
-                                    : base_url_for_test_.spec().c_str(),
-      asset.c_str(), DateToString(from_time).c_str(),
-      DateToString(to_time).c_str());
+GURL AssetRatioController::GetPriceHistoryURL(
+    const std::string& asset,
+    brave_wallet::mojom::AssetPriceTimeframe timeframe) {
+  std::string timeframe_key;
+  switch (timeframe) {
+    case brave_wallet::mojom::AssetPriceTimeframe::Live:
+      timeframe_key = "live";
+      break;
+    case brave_wallet::mojom::AssetPriceTimeframe::OneDay:
+      timeframe_key = "1d";
+      break;
+    case brave_wallet::mojom::AssetPriceTimeframe::OneWeek:
+      timeframe_key = "1w";
+      break;
+    case brave_wallet::mojom::AssetPriceTimeframe::OneMonth:
+      timeframe_key = "1m";
+      break;
+    case brave_wallet::mojom::AssetPriceTimeframe::ThreeMonths:
+      timeframe_key = "3m";
+      break;
+    case brave_wallet::mojom::AssetPriceTimeframe::OneYear:
+      timeframe_key = "1y";
+      break;
+    case brave_wallet::mojom::AssetPriceTimeframe::All:
+      timeframe_key = "all";
+      break;
+  }
+  std::string spec = base::StringPrintf("%sv2/history/coingecko/%s/usd/%s",
+                                        base_url_for_test_.is_empty()
+                                            ? kAssetRatioServer
+                                            : base_url_for_test_.spec().c_str(),
+                                        asset.c_str(), timeframe_key.c_str());
   return GURL(spec);
 }
 
@@ -118,15 +131,14 @@ void AssetRatioController::OnGetPrice(
   std::move(callback).Run(true, price);
 }
 
-void AssetRatioController::GetPriceHistory(const std::string& asset,
-                                           base::Time from_time,
-                                           base::Time to_time,
-                                           GetPriceHistoryCallback callback) {
+void AssetRatioController::GetPriceHistory(
+    const std::string& asset,
+    brave_wallet::mojom::AssetPriceTimeframe timeframe,
+    GetPriceHistoryCallback callback) {
   auto internal_callback =
       base::BindOnce(&AssetRatioController::OnGetPriceHistory,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  api_request_helper_.Request("GET",
-                              GetPriceHistoryURL(asset, from_time, to_time), "",
+  api_request_helper_.Request("GET", GetPriceHistoryURL(asset, timeframe), "",
                               "", true, std::move(internal_callback));
 }
 

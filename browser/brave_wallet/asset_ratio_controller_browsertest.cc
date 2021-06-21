@@ -34,9 +34,11 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
   if (request.GetURL().spec().find("/v2/history") != std::string::npos) {
     http_response->set_content(R"(
     {
-      "prices":[[1622733088498,0.8201346624954003],[1622737203757,0.8096978545029869]],
-      "market_caps":[[1622733088498,1223507820.383275],[1622737203757,1210972881.4928021]],
-      "total_volumes":[[1622733088498,163426828.00299588],[1622737203757,157618689.0971025]]
+      "payload": {
+        "prices":[[1622733088498,0.8201346624954003],[1622737203757,0.8096978545029869]],
+        "market_caps":[[1622733088498,1223507820.383275],[1622737203757,1210972881.4928021]],
+        "total_volumes":[[1622733088498,163426828.00299588],[1622737203757,157618689.0971025]]
+      }
     })");
   } else {
     http_response->set_content(R"({"basic-attention-token":{"usd":0.694503}})");
@@ -175,8 +177,7 @@ IN_PROC_BROWSER_TEST_F(AssetRatioControllerTest, GetPriceHistory) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
   auto* controller = GetAssetRatioController();
   controller->GetPriceHistory(
-      "basic-attention-token", base::Time::Now() - base::TimeDelta::FromDays(7),
-      base::Time::Now(),
+      "basic-attention-token", brave_wallet::mojom::AssetPriceTimeframe::OneDay,
       base::BindOnce(&AssetRatioControllerTest::OnGetPriceHistory,
                      base::Unretained(this)));
 
@@ -200,8 +201,7 @@ IN_PROC_BROWSER_TEST_F(AssetRatioControllerTest, GetPriceHistoryServerError) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
   auto* controller = GetAssetRatioController();
   controller->GetPriceHistory(
-      "basic-attention-token", base::Time::Now() - base::TimeDelta::FromDays(7),
-      base::Time::Now(),
+      "basic-attention-token", brave_wallet::mojom::AssetPriceTimeframe::OneDay,
       base::BindOnce(&AssetRatioControllerTest::OnGetPriceHistory,
                      base::Unretained(this)));
   std::vector<brave_wallet::mojom::AssetTimePricePtr>
