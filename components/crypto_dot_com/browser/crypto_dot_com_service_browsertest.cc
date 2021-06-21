@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
-#include "base/scoped_observer.h"
 #include "brave/browser/crypto_dot_com/crypto_dot_com_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/crypto_dot_com/browser/crypto_dot_com_service.h"
