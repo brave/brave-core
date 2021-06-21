@@ -34,7 +34,8 @@ WalletHandler::WalletHandler(
     ui::MojoWebUIController* webui_controller)
     : receiver_(this, std::move(receiver)),
       page_(std::move(page)),
-      web_ui_(web_ui) {}
+      web_ui_(web_ui),
+      weak_ptr_factory_(this) {}
 
 WalletHandler::~WalletHandler() = default;
 
@@ -82,8 +83,9 @@ void WalletHandler::GetAssetPrice(const std::string& asset,
   auto* asset_ratio_controller =
       GetBraveWalletService(profile)->asset_ratio_controller();
   asset_ratio_controller->GetPrice(
-      asset, base::BindOnce(&WalletHandler::OnGetPrice, base::Unretained(this),
-                            std::move(callback)));
+      asset,
+      base::BindOnce(&WalletHandler::OnGetPrice, weak_ptr_factory_.GetWeakPtr(),
+                     std::move(callback)));
 }
 
 void WalletHandler::OnGetPrice(GetAssetPriceCallback callback,
@@ -125,8 +127,8 @@ void WalletHandler::GetAssetPriceHistory(
   }
   asset_ratio_controller->GetPriceHistory(
       asset, from_time, base::Time::Now(),
-      base::BindOnce(&WalletHandler::OnGetPriceHistory, base::Unretained(this),
-                     std::move(callback)));
+      base::BindOnce(&WalletHandler::OnGetPriceHistory,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void WalletHandler::OnGetPriceHistory(

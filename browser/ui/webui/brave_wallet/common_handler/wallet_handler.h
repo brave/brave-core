@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -59,6 +60,8 @@ class WalletHandler : public brave_wallet::mojom::WalletHandler {
   mojo::Receiver<brave_wallet::mojom::WalletHandler> receiver_;
   mojo::Remote<brave_wallet::mojom::Page> page_;
   content::WebUI* const web_ui_;
+
+  base::WeakPtrFactory<WalletHandler> weak_ptr_factory_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_COMMON_HANDLER_WALLET_HANDLER_H_
