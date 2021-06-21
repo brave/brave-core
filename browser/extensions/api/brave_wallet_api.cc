@@ -104,6 +104,17 @@ BraveWalletReadyFunction::Run() {
   return RespondNow(NoArguments());
 }
 
+ExtensionFunction::ResponseAction BraveWalletNotifyWalletUnlockFunction::Run() {
+  if (browser_context()->IsTor()) {
+    return RespondNow(Error("Not available in Tor context"));
+  }
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  ::brave_wallet::UpdateLastUnlockPref(profile->GetPrefs());
+
+  return RespondNow(NoArguments());
+}
+
 ExtensionFunction::ResponseAction
 BraveWalletLoadUIFunction::Run() {
   auto* service = GetEthereumRemoteClientService(browser_context());
