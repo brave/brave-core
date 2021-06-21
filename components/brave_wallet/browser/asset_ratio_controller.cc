@@ -9,6 +9,7 @@
 
 #include "base/i18n/time_formatting.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "net/base/escape.h"
 #include "net/base/load_flags.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -69,11 +70,11 @@ GURL AssetRatioController::GetPriceURL(const std::string& asset) {
   std::string passthrough = base::StringPrintf(
       "/api/v3/simple/price?ids=%s&vs_currencies=usd", asset.c_str());
   passthrough = net::EscapeQueryParamValue(passthrough, false);
-  std::string spec = base::StringPrintf(
-      "%sv2/coingecko/passthrough?path=%s",
-      base_url_for_test_.is_empty() ? "https://bat-ratios.herokuapp.com/"
-                                    : base_url_for_test_.spec().c_str(),
-      passthrough.c_str());
+  std::string spec = base::StringPrintf("%sv2/coingecko/passthrough?path=%s",
+                                        base_url_for_test_.is_empty()
+                                            ? kAssetRatioServer
+                                            : base_url_for_test_.spec().c_str(),
+                                        passthrough.c_str());
   return GURL(spec);
 }
 
@@ -83,7 +84,7 @@ GURL AssetRatioController::GetPriceHistoryURL(const std::string& asset,
                                               base::Time to_time) {
   std::string spec = base::StringPrintf(
       "%sv2/history/coingecko/%s/usd/%s/%s",
-      base_url_for_test_.is_empty() ? "https://bat-ratios.herokuapp.com/"
+      base_url_for_test_.is_empty() ? kAssetRatioServer
                                     : base_url_for_test_.spec().c_str(),
       asset.c_str(), DateToString(from_time).c_str(),
       DateToString(to_time).c_str());
