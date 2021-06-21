@@ -28,9 +28,6 @@
 		android:textColor="@color/shield_text_color" />
 
 	<include
-		android:id="@+id/brave_shields_block_trackers_id"
-		layout="@layout/brave_shields_switcher"/>
-	<include
 		android:id="@+id/brave_shields_upgrade_https_id"
 		layout="@layout/brave_shields_switcher"/>
 	<include

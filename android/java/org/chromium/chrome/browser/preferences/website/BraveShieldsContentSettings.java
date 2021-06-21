@@ -96,7 +96,8 @@ public class BraveShieldsContentSettings {
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
             BraveShieldsContentSettingsJni.get().setCookieControlType(settingOption, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_TRACKERS)) {
-            BraveShieldsContentSettingsJni.get().setCosmeticFilteringControlType(settingOption, host, profile);
+            BraveShieldsContentSettingsJni.get().setCosmeticFilteringControlType(
+                    settingOption, host, profile);
         }
     }
 
@@ -121,6 +122,9 @@ public class BraveShieldsContentSettings {
             settings = BraveShieldsContentSettingsJni.get().getFingerprintingControlType(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
             settings = BraveShieldsContentSettingsJni.get().getCookieControlType(host, profile);
+        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_TRACKERS)) {
+            settings = BraveShieldsContentSettingsJni.get().getCosmeticFilteringControlType(
+                    host, profile);
         }
         return settings;
     }
@@ -164,6 +168,6 @@ public class BraveShieldsContentSettings {
         String getNoScriptControlType(String url, Profile profile);
 
         void setCosmeticFilteringControlType(String type, String url, Profile profile);
-
+        String getCosmeticFilteringControlType(String url, Profile profile);
     }
 }
