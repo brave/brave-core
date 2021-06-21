@@ -335,4 +335,6 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="2808630562319398131">Taasta Brave Rewardsi andmed...</translation>
 <translation id="1224064034972923114">Aidake Brave'i paremaks muuta, saates krahhiaruandeid.</translation>
 <translation id="3738833060602717053">Aidake krahhiaruannete saatmisega <ph name="PRODUCT_NAME"/> paremaks teha</translation>
+<translation id="81720820779436751">Brave avab veebisaidi Onioni teenuse, kui see on saadaval, või domeeni .onion Toriga aknas</translation>
+<translation id="4322612543319315652">Impordi valitud tekst IPFS-i</translation>
 </translationbundle>

@@ -335,4 +335,6 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="2808630562319398131">Réinitialiser les données de Brave Rewards...</translation>
 <translation id="1224064034972923114">Contribuez à l'amélioration de Brave en envoyant automatiquement des rapports d'erreur</translation>
 <translation id="3738833060602717053">Contribuez à l'amélioration de <ph name="PRODUCT_NAME"/> en envoyant automatiquement des rapports d'erreur</translation>
+<translation id="81720820779436751">Brave ouvrira le service onion du site Web quand disponible, ou le domaine .onion dans une fenêtre Tor</translation>
+<translation id="4322612543319315652">Importer le texte sélectionné sur IPFS</translation>
 </translationbundle>
