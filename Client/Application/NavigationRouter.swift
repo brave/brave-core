@@ -60,6 +60,9 @@ enum NavigationPath: Equatable {
         } else if urlString.starts(with: "\(scheme)://open-text") {
             let text = components.valueForQuery("text")
             self = .text(text ?? "")
+        } else if urlString.starts(with: "\(scheme)://search") {
+            let text = components.valueForQuery("q")
+            self = .text(text ?? "")
         } else {
             return nil
         }

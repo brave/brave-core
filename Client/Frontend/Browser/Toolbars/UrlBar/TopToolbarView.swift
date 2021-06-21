@@ -421,6 +421,15 @@ class TopToolbarView: UIView, ToolbarProtocol {
         }
     }
     
+    func submitLocation(_ location: String?) {
+        locationTextField?.text = location
+        guard let text = location, !text.isEmpty else {
+            return
+        }
+        // Not notifying when empty agrees with AutocompleteTextField.textDidChange.
+        delegate?.topToolbar(self, didSubmitText: text)
+    }
+    
     func enterOverlayMode(_ locationText: String?, pasted: Bool, search: Bool) {
         createLocationTextField()
         
