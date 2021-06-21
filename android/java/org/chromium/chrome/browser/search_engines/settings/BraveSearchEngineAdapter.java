@@ -51,8 +51,7 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
         // TODO(sergz): A check, do we need to fetch a default SE from native and avoid
         // overwrite.
         if (BraveSearchEnginePrefHelper.getInstance().getFetchSEFromNative()) {
-            // Set it for both normal and private tabs
-            setDSEPrefs(dseTemplateUrl, true);
+            // Set it for normal tab only
             setDSEPrefs(dseTemplateUrl, false);
             BraveSearchEnginePrefHelper.getInstance().setFetchSEFromNative(false);
         }
