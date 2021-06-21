@@ -18,7 +18,7 @@
 <translation id="6241402707160226266">带 Tor 的私人窗户</translation>
 <translation id="8762452230727230396">Tor 对你访问的网站隐藏了你的 IP 地址。</translation>
 <translation id="1369311132025451972">自动重定向 .onion 网站</translation>
-<translation id="81720820779436751">如果可用，Brave 会在 Tor 窗口中打开网站的 onion 服务</translation>
+<translation id="2843777623071353503">如果可用，Brave 会在 Tor 窗口中打开网站的 onion 服务</translation>
 <translation id="8053096063396012732">安装 Widevine</translation>
 <translation id="4840334696217618631">重新启动浏览器以启用 Widevine</translation>
 <translation id="8410111618231938546">Google Widevine 是一款数字版权管理（DRM）代码，Brave Software 不拥有这些代码，也无法检查。 Google Widevine 代码是从 Google 服务器加载的，而不是从我们的服务器加载的。仅在启用此选项时才会加载它。我们不鼓励使用 DRM，但我们尊重用户选择并了解某些 Brave 用户希望使用需要它的服务。
@@ -37,6 +37,8 @@
 <translation id="6123134130710658846">隐藏 Brave 奖励按钮</translation>
 <translation id="1811404036171336214">总是显示新标签页上的书签</translation>
 <translation id="1643029991199044105">通过 Ctrl-Tab 循环浏览最近使用的标签页</translation>
+<translation id="1013121820689882118">Speedreader</translation>
+<translation id="2025435450953474282">文章自动以读者模式加载，节省您的时间</translation>
 <translation id="5802665280774361839">在地址栏中显示自动完成</translation>
 <translation id="597020512043916976">在自动完成建议中显示顶级网站</translation>
 <translation id="264150068416846820">在自动完成建议中显示 Brave 的建议站点</translation>
@@ -68,15 +70,16 @@
 <translation id="2715839724138372481">已选视频</translation>
 <translation id="4227945450504703638">已选音频</translation>
 <translation id="7895302206188277628">关联内容</translation>
-<translation id="4322612543319315652">将所选文本导入 IPFS</translation>
-<translation id="8883166554766780543">导入并复制链接到 IPFS 快照</translation>
 <translation id="3654831858282189202">使用 IPNS 密钥发布</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">将所选文本导入 IPFS</translation>
+<translation id="6925604404524625582">导入并将链接到 IPFS 快照</translation>
 <translation id="1434416574322382019">用 Tor 打开新的私人窗口</translation>
 <translation id="4703780849509456860">用 Tor 在私人窗口中打开链接</translation>
 <translation id="3488584642074079080">用 Tor 在 Brave 私人窗口中打开链接</translation>
 <translation id="7475547933708221517">使用 IPFS 共享本地文件</translation>
 <translation id="2286177249736199435">使用 IPFS 分享本地文件夹</translation>
+<translation id="8883166554766780543">导入并复制链接到 IPFS 快照</translation>
 <translation id="784573715436258741">使用 IPFS 共享本地文件</translation>
 <translation id="6313675821927505581">用 Tor 打开新的隐私窗口</translation>
 <translation id="2638041073279639246">用 Tor 在隐私窗口中打开</translation>
@@ -186,12 +189,19 @@
 <translation id="5927916530277631319">解决无法停止域这个问题的方法</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/> 关于DNS over HTTPS和以太坊的隐私考虑。</translation>
 <translation id="5248318250177143470">解决以太坊名称服务（ENS）相关问题的方法</translation>
-<translation id="7024553202001112871">设置你的 IPNS 密钥</translation>
+<translation id="7024553202001112871">设置 IPNS 密钥</translation>
 <translation id="951216659045543447">用对应的私钥对内容进行签名并发布到 IPNS</translation>
 <translation id="7611728475758612204">可用于发布的密钥</translation>
 <translation id="911363100236037920">输入新密钥的名称</translation>
 <translation id="6358469157239228181">不能使用此名称</translation>
-<translation id="8996633027318264334">你真想要删除 <ph name="KEY_NAME"/> 吗？</translation>
+<translation id="5761731140570209168">添加新的对等连接字符串</translation>
+<translation id="6476061084931271248">重启节点来应用更改</translation>
+<translation id="3754226427671882382">重启节点</translation>
+<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
+<translation id="724513921936768901">此名称无效</translation>
+<translation id="6758961763875471084">修改对等列表</translation>
+<translation id="1534091531114892221">设置 ipfs 对等描述</translation>
+<translation id="8996633027318264334">确定要删除 <ph name="KEY_NAME"/> 吗？</translation>
 <translation id="910215077892371264">节点未启动</translation>
 <translation id="616058968889448209">IPFS 服务启动错误，更多信息见 <ph name="BEGIN_LINK"/>诊断页<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' 密钥导入失败</translation>
@@ -286,9 +296,15 @@
 <translation id="7060352228894039151">鼠标悬停时</translation>
 <translation id="407173827865827707">点击时</translation>
 <translation id="7961015016161918242">一律不</translation>
+<translation id="8981254605840444865">显示设置</translation>
 <translation id="59174027418879706">已启用</translation>
 <translation id="8258999165172757081">已添加</translation>
 <translation id="6959315322491671328">右键单击以删除</translation>
+<translation id="4651504163033753423">是否开启 Speedreader？</translation>
+<translation id="9089090017461255038">开启 Speedreader</translation>
+<translation id="312393675740711187">自动以读者模式加载文章，节省您的时间</translation>
+<translation id="3234744217174488546">为这个网站打开/关闭读者模式。要为整个浏览器配置文件关闭 Speedreader，请访问</translation>
+<translation id="7839742507462737706">Speedreader 处于开启状态</translation>
 <translation id="1872784258300710671">Brave 使用完全隐私的产品分析来估计某些功能的整体使用情况</translation>
 <translation id="8712637175834984815">知道了</translation>
 <translation id="4394049700291259645">停用</translation>

@@ -51,18 +51,6 @@
     "message": "Detaily",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "Váš zostatok",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "Body BAT",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "dá sa použiť v odmenách Brave ako príspevok najobľúbenejším tvorcom obsahu. BAT body sa nedajú vymeniť za BAT.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "na",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -160,10 +148,6 @@
   "tokenGrantClaimed": {
     "message": "Kupónové granty nárokované",
     "description": "Title for grant section in wallet summary"
-  },
-  "pointGrantClaimed": {
-    "message": "Bodové granty boli nárokované",
-    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Zárobky z reklám",
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Zapnite reklamy",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Bezplatný grant kupónov",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Bezplatný bodový grant",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Získali ste odmenu za reklamu!",
@@ -591,17 +567,9 @@
     "message": "Token",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "body",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Udelenia tokenov",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Bodové granty",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Dobrý deň, $name$!",
@@ -830,17 +798,5 @@
         "content": "$2"
       }
     }
-  },
-  "bapDeprecationHeader": {
-    "message": "Brave odmeny prechádzajú v Japonsku na nový systém!",
-    "description": "Header text for BAP deprecation warning message"
-  },
-  "bapDeprecationLearnMore": {
-    "message": "Ďalšie informácie",
-    "description": "Link to learn more about BAP deprecation"
-  },
-  "bapDeprecationPopupText": {
-    "message": "Svoj BAP používajte do 13. marca. Potom bude ukončený.",
-    "description": "Text for BAP deprecation popup"
   }
 }

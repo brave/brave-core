@@ -51,18 +51,6 @@
     "message": "Maelezo",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "Salio lako",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "Pointi za BAT",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "inaweza kutumika katika Tuzo za Brave ili kuchangia katika watengenezaji maudhui uwapendao. Pointi za BAT haziwezi kubadilishwa kwa BAT.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "washa",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -160,10 +148,6 @@
   "tokenGrantClaimed": {
     "message": "Ruzuku za Kianzio Zilizoombwa",
     "description": "Title for grant section in wallet summary"
-  },
-  "pointGrantClaimed": {
-    "message": "Umechukua Pointi za Ruzuku",
-    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Mapato kutokana na Matangazo",
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Ruhusu Matangazo",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Ruzuku ya Bure ya Kianzio",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Ruzuku Isiyolipishwa",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Umepata Tuzo ya Matangazo",
@@ -591,17 +567,9 @@
     "message": "Kianzio",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "pointi",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Ruzuku za Kianzio",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Ruzuku za Pointi",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Hujambo, $name$!",
@@ -830,17 +798,5 @@
         "content": "$2"
       }
     }
-  },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards nchini Japan inabadilisha hadi mfumo mpya!",
-    "description": "Header text for BAP deprecation warning message"
-  },
-  "bapDeprecationLearnMore": {
-    "message": "Pata maelezo zaidi",
-    "description": "Link to learn more about BAP deprecation"
-  },
-  "bapDeprecationPopupText": {
-    "message": "Tafadhali tumia BAP yako kufikia tarehe 13 Machi. Baada ya hapo, BAP itaacha kutumika.",
-    "description": "Text for BAP deprecation popup"
   }
 }

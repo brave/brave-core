@@ -3,7 +3,9 @@
 <translationbundle lang="lt">
 <translation id="7307834434086582547">Aktyvinti / išjungti „Brave“ skydus</translation>
 <translation id="3570081523466826008">Pakeisti ryšius į HTTPS</translation>
+<translation id="2278950434998763147">Kai kurios svetainės atveriamos naudojant saugų HTTPS ryšį vietoj paprasto HTTP.</translation>
 <translation id="94154759592465111">Blokuoti scenarijus</translation>
+<translation id="3518266709656143462">Blokuoja „JavaScript“ (svetainės gali neveikti)</translation>
 <translation id="5709627087332022422">Blokuoti kelių svetainių sekiklius</translation>
 <translation id="6052725679982758334">Socialinės žiniasklaidos blokavimas</translation>
 <translation id="7498695072878479744">Trečiųjų šalių svetainėse leisti „Google“ prisijungimo mygtukus</translation>
@@ -11,9 +13,16 @@
 <translation id="5165042248369837294">Leisti rodyti įterptąsias „Twitter“ žinutes</translation>
 <translation id="958971637207126733">Leisti rodyti įterptuosius „LinkedIn“ įrašus</translation>
 <translation id="6302422639282249274">Tvarkyti „Brave Rewards“</translation>
+<translation id="8877432762827303535">Atsiskaitymas internetu</translation>
+<translation id="6583902294974160967">Palaikymas</translation>
+<translation id="1799030480311994998">Funkcijos</translation>
+<translation id="5345505584130165588">„Brave“ skydai ir privatumas</translation>
+<translation id="4692623383562244444">Paieškos sistemos</translation>
 <translation id="1468415711258933398">Standartinis skirtukas</translation>
 <translation id="3377025655491224618">Inkognito skirtukas</translation>
 <translation id="9148058034647219655">Išeiti</translation>
+<translation id="4022987104439075738">IPFS tinklų sietuvas</translation>
+<translation id="2688519859165248360">Leidžia į IPFS išteklius patekti per IPFS tinklų sietuvą</translation>
 <translation id="7534079972563542000">„Unstoppable Domains“</translation>
 <translation id="6513892817556267573">Eterio pavadinimų paslauga</translation>
 <translation id="3894650624018948468">Sprendimo būdas</translation>
@@ -23,9 +32,11 @@
 <translation id="1448289340149908413">Eteris</translation>
 <translation id="5787084571334399599">Naršyklei neleidžia naudoti kontrolinių kodų</translation>
 <translation id="7459000603787995422">Išeinant uždaryti skirtukus</translation>
+<translation id="4448697385961650078">Blokuoti sekiklius ir reklamas</translation>
+<translation id="2448893613530489637">Neleidžia įkelti ir tinklalapiuose rodyti sekiklių ir reklamų</translation>
 <translation id="1680858055899097121">Nepalikti skirtukų tarp naršymo seansų</translation>
-<translation id="7142548388914389999">Automatiškai siųskite visiškai privačią produktų analizę „Brave“</translation>
-<translation id="5469408008145872264">Ši anoniminė informacija leidžia „Brave“ įvertinti tik bendrą tam tikrų funkcijų naudojimą.</translation>
+<translation id="7142548388914389999">Leisti privatumo nepažeidžiančią produktų analizę (P3A)</translation>
+<translation id="5469408008145872264">Ši visiškai nuasmeninta informacija padeda „Brave“ įvertinti bendrą tam tikrų funkcijų naudojimą ir jas patobulinti.</translation>
 <translation id="7977176350719484850">Numatomi sutaupyti\nduomenys</translation>
 <translation id="9008534313521214777">Numatomas sutaupytas\nlaikas</translation>
 <translation id="6572660632052512096">Stalinio kompiuterio režimas</translation>
@@ -35,6 +46,9 @@
 <translation id="4479934682648362332">Pirmenybę teikti svetainių stalinio kompiuterio versijoms</translation>
 <translation id="1842747674580016420">Vaizdo įrašų atkūrimas naršyklėje „Brave“</translation>
 <translation id="5368992950177874750">Įjungus vaizdo įrašai bus leidžiami naršyklėje „Brave“, o ne per atitinkamą programą</translation>
+<translation id="181905442828471321">„Brave“ numatytieji visuotiniai skydai</translation>
+<translation id="2675679258824361492">Kitos privatumo nuostatos</translation>
+<translation id="8026334261755873520">Išvalyti naršymo duomenis</translation>
 <translation id="5965081608816406060">Vaizdo įrašo atkūrimas fone</translation>
 <translation id="6332924730165919598">Užveriant visus skirtukus užveriama „Brave“</translation>
 <translation id="1580125697191336644">Eksperimentinė funkcija. Įgalinamas garso leidimas iš fone leidžiamo vaizdo įrašo, kai skirtukas neaktyvus arba įrenginio ekranas išjungtas. Jei ši funkcija neveikia, pabandykite perjungti į stalinio kompiuterio režimą.</translation>
@@ -108,8 +122,6 @@
 <translation id="8428213095426709021">Nustatymai</translation>
 <translation id="8772672608371898774">„Brave“ patvirtintas leidėjas</translation>
 <translation id="1397683270551078781">Dar nepatvirtinta</translation>
-<translation id="5727208111992260840">Šis kūrėjas dar neužsiregistravo, kad gautų „Brave“ naudotojų aukas.
-Visi jūsų išsiųsti arbatpinigiai liks jūsų piniginėje, kol galiausiai jis patvirtins.</translation>
 <translation id="8918760045046434238">Siųsti arbatpinigių...</translation>
 <translation id="1978261665418056203">Šį mėnesį veiklos
 dar nebuvo...</translation>
@@ -217,10 +229,7 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="7541582550122501404">Laukiama indėlių</translation>
 <translation id="8520059774736886747">Kūrėjas <ph name="PUBLISHER_NAME"/> neseniai patvirtintas</translation>
 <translation id="7924320838799747606">Jūsų likutis</translation>
-<translation id="9212459913845238740">Atsiimti suteikti taškai</translation>
-<translation id="2132683977638223450">Nemokamas suteikti taškai</translation>
 <translation id="1486343603936278248">žetonas</translation>
-<translation id="8713995420537272453">taškas</translation>
 <translation id="7781069478569868053">Naujo skirtuko puslapis</translation>
 <translation id="8522669544471808198">Rodyti foninius vaizdus</translation>
 <translation id="3870475560794762985">Rodyti remiamus vaizdus</translation>
@@ -263,6 +272,8 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="9132378787893584761">Pasidalykite „Brave“ su draugais!</translation>
 <translation id="717952606991220586">Oi, kažkas negerai. Bandykite dar kartą vėliau.</translation>
 <translation id="2524310205387880526">Įvertinti „Brave“</translation>
+<translation id="987264212798334818">Bendra</translation>
+<translation id="1116694919640316211">Apie</translation>
 <translation id="6680650203439190394">Kursas</translation>
 <translation id="2635089463885398597">Kaip įvertintumėte savo patirtį naudojant „Brave“?</translation>
 <translation id="141901961143729572">Palikite atsiliepimą</translation>
@@ -277,12 +288,16 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="1465733111003593696">Už šio vaizdo peržiūrą uždirbate žetonų.</translation>
 <translation id="7877201489035217175">Sužinoti daugiau apie remiamus vaizdus</translation>
 <translation id="828092975561478703">Už kiekvieną savo peržiūrėtą remiamą vaizdą gaunate 70 % pajamų žetonais. Su „Brave Ads“ visada galite kontroliuoti savo matomas reklamas.</translation>
+<translation id="3624048886326677117">Blokuoti sekiklius ir reklamas (agresyvus)</translation>
+<translation id="7151914815476509258">Blokuoti sekiklius ir reklamas (standartinis)</translation>
+<translation id="7384778069178817075">Leisti visus sekiklius ir reklamas</translation>
 <translation id="4941539331405513605">Blokuoti kelių svetainių slapukus</translation>
 <translation id="3763681089644577874">Blokuoti slapukus</translation>
 <translation id="614747795780742163">Neleidžia svetainėms laikyti informacijos apie jūsų ankstesnius apsilankymus</translation>
 <translation id="6883611015375728278">Blokuoti visus slapukus</translation>
 <translation id="5657156137487675418">Leisti visus slapukus</translation>
 <translation id="3895527457258986253">Blokuoti kontrolinius kodus</translation>
+<translation id="7854108565842971747">Tai numatytosios skydo nuostatos naujoms svetainėms. Atlikus tokius pakeitimus nustatytos kitoms svetainėms nuostatos išliks tokios pačios.</translation>
 <translation id="184568144098869637">Neleidžia naršyklei atpažinti jūsų įrenginio</translation>
 <translation id="7445306466605902444">Kontrolinių kodų kūrimas blokuojamas (griežtai, gali neveikti svetainės)</translation>
 <translation id="5582686930349810484">Kontrolinių kodų kūrimas blokuojamas (standartiškai)</translation>
@@ -314,7 +329,6 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="5617673581653540121">Dabar jūsų ryšys šifruojamas.</translation>
 <translation id="4055107796760496928">Jei galima, „Brave“ automatiškai užmezga jums saugų ryšį.</translation>
 <translation id="8869714780588464835">Pasidalykite naujienomis</translation>
-<translation id="7888588008014907646">Naršau saityną su „Brave“ ir duomenis taupau kasdien.</translation>
 <translation id="5372054974373489308">Užblokuota 1 000 sekiklių ir reklamų!</translation>
 <translation id="2338952568654182692">Užblokuota 5 000 sekiklių ir reklamų!</translation>
 <translation id="5289711064670408815">Užblokuota 10 000 sekiklių ir reklamų!</translation>
@@ -371,6 +385,8 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="1390943217516275883">Suteikia „Brave“ galimybę rodyti jūsų privatumo statistiką</translation>
 <translation id="1763352720905582220">Siunčia savaitinę privatumo ataskaitą</translation>
 <translation id="1811691435325545066">Išvalyti visų privatumo ataskaitų duomenis</translation>
+<translation id="5966003059662780423">Išvalyti duomenis išeinant</translation>
+<translation id="3980704343258720102">Išvalomi visi naršymo duomenis</translation>
 <translation id="8089997572759938512">Nustato jūsų privatumo ataskaitas iki nulio</translation>
 <translation id="2718046830255553131">Privatumo ataskaitų duomenys išvalyti.</translation>
 <translation id="7559243474426790340">Atnaujinti būseną</translation>

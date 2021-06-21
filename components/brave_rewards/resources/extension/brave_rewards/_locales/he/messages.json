@@ -51,18 +51,6 @@
     "message": "פרטים",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "היתרה שלך",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "נקודות BAT",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "ניתן להשתמש בו ב-Brave Rewards כדי לתרום ליוצרי התוכן החביבים עליך. לא ניתן להמיר נקודות BAT ב-BAT.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "פעיל",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -160,10 +148,6 @@
   "tokenGrantClaimed": {
     "message": "מענקי אסימון נתבעו",
     "description": "Title for grant section in wallet summary"
-  },
-  "pointGrantClaimed": {
-    "message": "מענקי נקודות נתבעו",
-    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "צבירה מפרסומות",
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "הפעל פרסומות",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "מענק אסימון חינם ",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "מענק נקודות חינם",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "הרווחת תגמול פרסומות!",
@@ -591,17 +567,9 @@
     "message": "טוקן",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "נקודות",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "מענק אסימונים",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "מענקי נקודות",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "שלום, $name$!",
@@ -830,17 +798,5 @@
         "content": "$2"
       }
     }
-  },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards ביפן עובר למערכת חדשה!",
-    "description": "Header text for BAP deprecation warning message"
-  },
-  "bapDeprecationLearnMore": {
-    "message": "למידע נוסף",
-    "description": "Link to learn more about BAP deprecation"
-  },
-  "bapDeprecationPopupText": {
-    "message": "אנא השתמש/י ב-BAP שלך עד 13 במרץ. לאחר מכן ייפסק השימוש ב-BAP.",
-    "description": "Text for BAP deprecation popup"
   }
 }

@@ -1,6 +1,6 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "பிரேவ் வெகுமதிகள்",
     "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
@@ -50,18 +50,6 @@
   "details": {
     "message": "விவரங்கள்",
     "description": "Title for grant section in wallet panel summary"
-  },
-  "yourBalance": {
-    "message": "Your Balance",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "BAT Points",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "can be used in Brave Rewards to contribute to your favorite content creators. BAT Points cannot be exchanged for BAT.",
-    "description": "Text for BAT Point helper message"
   },
   "on": {
     "message": "on",
@@ -160,10 +148,6 @@
   "tokenGrantClaimed": {
     "message": "Token Grants Claimed",
     "description": "Title for grant section in wallet summary"
-  },
-  "pointGrantClaimed": {
-    "message": "Point Grants Claimed",
-    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Earnings from Ads",
@@ -388,11 +372,11 @@
     "description": "Text block for wallet disabled panel"
   },
   "enableRewards": {
-    "message": "Enable Brave Rewards",
+    "message": "பிரேவ் வெகுமதிகளை இயக்கு",
     "description": "Subtitle for wallet disabled panel"
   },
   "privacyPolicy": {
-    "message": "Privacy Policy",
+    "message": "தனியுரிமை கொள்கை",
     "description": "Privacy Policy"
   },
   "serviceText": {
@@ -422,10 +406,6 @@
   "bat": {
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
-  },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
     "message": "Turn on Ads",
@@ -495,10 +475,6 @@
     "message": "Free Token Grant",
     "description": "Token title on success screen"
   },
-  "grantFinishPointTitleUGP": {
-    "message": "Free Point Grant",
-    "description": "Point title on success screen"
-  },
   "grantFinishTitleAds": {
     "message": "You've earned an Ads Reward!",
     "description": "Cosmetic text upon captcha success for ads"
@@ -538,7 +514,7 @@
     }
   },
   "walletDisconnect":  {
-    "message": "Disconnect from Brave Rewards",
+    "message": "பிரேவ் வெகுமதிகளிலிருந்து இணைப்பை துண்டி",
     "description": "CTA to disconnect user wallet from rewards"
   },
   "walletVerified":  {
@@ -591,17 +567,9 @@
     "message": "Token",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "points",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Token Grants",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Point Grants",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Hello, $name$!",
@@ -682,7 +650,7 @@
     "description": ""
   },
   "onboardingStartUsingRewards": {
-    "message": "Start using Brave Rewards",
+    "message": "பிரேவ் வெகுமதிகளை பயன்படுத்த ஆரம்பி",
     "description": ""
   },
   "onboardingTakeTour": {
@@ -732,7 +700,7 @@
     "description": ""
   },
   "onboardingPanelWelcomeHeader": {
-    "message": "Welcome to Brave Rewards!",
+    "message": "பிரேவ் வெகுமதிகளைக்கு வருக!",
     "description": ""
   },
   "onboardingPanelWelcomeText": {
@@ -830,17 +798,5 @@
         "content": "$2"
       }
     }
-  },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards in Japan is switching to a new system!",
-    "description": "Header text for BAP deprecation warning message"
-  },
-  "bapDeprecationLearnMore": {
-    "message": "மேலும் அறிக",
-    "description": "Link to learn more about BAP deprecation"
-  },
-  "bapDeprecationPopupText": {
-    "message": "Please use your BAP by March 13th. After that, BAP will be discontinued.",
-    "description": "Text for BAP deprecation popup"
   }
 }

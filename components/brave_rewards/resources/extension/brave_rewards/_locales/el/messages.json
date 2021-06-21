@@ -51,18 +51,6 @@
     "message": "Λεπτομέρειες",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "Το Υπόλοιπό Σας",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "Πόντοι BAT",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "μπορεί να χρησιμοποιηθεί στις Ανταμοιβές Brave για συνεισφορά στους αγαπημένους σας δημιουργούς περιεχομένου. Οι Πόντοι BAT δεν μπορούν να ανταλλαγούν με BAT.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "ανοιχτό ",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -160,10 +148,6 @@
   "tokenGrantClaimed": {
     "message": "Το Κέρμα Επιχορηγήσεων Αποκτήθηκε",
     "description": "Title for grant section in wallet summary"
-  },
-  "pointGrantClaimed": {
-    "message": "Χορηγίες Πόντων που Διεκδικήθηκαν",
-    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Κέρδη από Διαφημίσεις",
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Ενεργοποιήστε τις Διαφημίσεις",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Δωρεάν Χορηγία Τόκεν",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Χορήγηση Δωρεάν Πόντου",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Κερδίσατε μια Ανταμοιβή Διαφημίσεων!",
@@ -591,17 +567,9 @@
     "message": "Διακριτικό",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "πόντοι",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Κέρμα Επιχορηγήσεων",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Πόντος Eπιχορηγήσεων",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Γεια σας, $name$!",
@@ -830,17 +798,5 @@
         "content": "$2"
       }
     }
-  },
-  "bapDeprecationHeader": {
-    "message": "Οι Ανταμοιβές Brave στην Ιαπωνία μεταβαίνουν σε ένα νέο σύστημα!",
-    "description": "Header text for BAP deprecation warning message"
-  },
-  "bapDeprecationLearnMore": {
-    "message": "Μάθετε περισσότερα",
-    "description": "Link to learn more about BAP deprecation"
-  },
-  "bapDeprecationPopupText": {
-    "message": "Παρακαλούμε χρησιμοποιήστε τα BAP σας έως τις 13 Μαρτίου. Μετά από αυτό, τα BAP θα διακοπούν.",
-    "description": "Text for BAP deprecation popup"
   }
 }
