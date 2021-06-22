@@ -38,6 +38,8 @@ source_set("browser") {
     "eth_response_parser.h",
     "eth_transaction.cc",
     "eth_transaction.h",
+    "eth_tx_controller.cc",
+    "eth_tx_controller.h",
     "eth_tx_state_manager.cc",
     "eth_tx_state_manager.h",
     "hd_key.cc",
