@@ -42,7 +42,15 @@ TEST(EthAddressUnitTest, FromPublicKey) {
 TEST(EthAddressUnitTest, FromHex) {
   EthAddress address =
       EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
+  EthAddress address2 =
+      EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
   EXPECT_EQ(address.ToHex(), "0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
+  EXPECT_EQ(address2.ToHex(), "0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
+  EXPECT_EQ(address, address2);
+  EthAddress address3 =
+      EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6b");
+  EXPECT_EQ(address3.ToHex(), "0x2f015c60e0be116b1f0cd534704db9c92118fb6b");
+  EXPECT_NE(address, address3);
 
   address = EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb");
   EXPECT_TRUE(address.IsEmpty());

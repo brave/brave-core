@@ -22,6 +22,14 @@ EthAddress::EthAddress() = default;
 EthAddress::EthAddress(const EthAddress& other) = default;
 EthAddress::~EthAddress() {}
 
+bool EthAddress::operator==(const EthAddress& other) const {
+  return std::equal(bytes_.begin(), bytes_.end(), other.bytes_.begin());
+}
+
+bool EthAddress::operator!=(const EthAddress& other) const {
+  return !std::equal(bytes_.begin(), bytes_.end(), other.bytes_.begin());
+}
+
 // static
 EthAddress EthAddress::FromPublicKey(const std::vector<uint8_t>& public_key) {
   if (public_key.size() != 64) {

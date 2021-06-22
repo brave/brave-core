@@ -10,9 +10,13 @@
 #include <string>
 #include <vector>
 
+#include "base/optional.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 
 class PrefService;
+namespace base {
+class Value;
+}  // namespace base
 
 namespace brave_wallet {
 
@@ -81,6 +85,10 @@ void SecureZeroData(void* data, size_t size);
 // because we call it both from the old extension and the new wallet when
 // it unlocks.
 void UpdateLastUnlockPref(PrefService* prefs);
+
+base::Value TransactionReceiptToValue(const TransactionReceipt& tx_receipt);
+base::Optional<TransactionReceipt> ValueToTransactionReceipt(
+    const base::Value& value);
 
 }  // namespace brave_wallet
 

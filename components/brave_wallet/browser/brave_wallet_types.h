@@ -17,6 +17,8 @@ struct TransactionReceipt {
   TransactionReceipt();
   ~TransactionReceipt();
   TransactionReceipt(const TransactionReceipt&);
+  bool operator==(const TransactionReceipt&) const;
+  bool operator!=(const TransactionReceipt&) const;
 
   std::string transaction_hash;
   uint256_t transaction_index;
