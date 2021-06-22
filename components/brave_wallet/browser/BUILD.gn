@@ -34,6 +34,8 @@ source_set("browser") {
     "eth_response_parser.h",
     "eth_transaction.cc",
     "eth_transaction.h",
+    "eth_tx_state_manager.cc",
+    "eth_tx_state_manager.h",
     "hd_key.cc",
     "hd_key.h",
     "hd_keyring.cc",
@@ -52,6 +54,7 @@ source_set("browser") {
 
   deps = [
     "//base",
+    "//base/util/values:values_util",
     "//brave/components/api_request_helper",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
