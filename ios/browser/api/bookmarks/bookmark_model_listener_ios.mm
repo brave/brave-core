@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/ios/browser/api/bookmarks/brave_bookmarks_observer.h"
+#include "brave/ios/browser/api/bookmarks/bookmark_model_listener_ios.h"
 
 #include <memory>
 
@@ -25,42 +25,6 @@
 
 namespace brave {
 namespace ios {
-class BookmarkModelListener : public bookmarks::BookmarkModelObserver {
- public:
-  explicit BookmarkModelListener(id<BookmarkModelObserver> observer,
-                                 bookmarks::BookmarkModel* model);
-  ~BookmarkModelListener() override;
-
- private:
-  void BookmarkModelLoaded(bookmarks::BookmarkModel* model,
-                           bool ids_reassigned) override;
-  void BookmarkModelBeingDeleted(bookmarks::BookmarkModel* model) override;
-  void BookmarkNodeMoved(bookmarks::BookmarkModel* model,
-                         const bookmarks::BookmarkNode* old_parent,
-                         size_t old_index,
-                         const bookmarks::BookmarkNode* new_parent,
-                         size_t new_index) override;
-  void BookmarkNodeAdded(bookmarks::BookmarkModel* model,
-                         const bookmarks::BookmarkNode* parent,
-                         size_t index) override;
-  void BookmarkNodeRemoved(bookmarks::BookmarkModel* model,
-                           const bookmarks::BookmarkNode* parent,
-                           size_t old_index,
-                           const bookmarks::BookmarkNode* node,
-                           const std::set<GURL>& removed_urls) override;
-  void BookmarkNodeChanged(bookmarks::BookmarkModel* model,
-                           const bookmarks::BookmarkNode* node) override;
-  void BookmarkNodeFaviconChanged(bookmarks::BookmarkModel* model,
-                                  const bookmarks::BookmarkNode* node) override;
-  void BookmarkNodeChildrenReordered(
-      bookmarks::BookmarkModel* model,
-      const bookmarks::BookmarkNode* node) override;
-  void BookmarkAllUserNodesRemoved(bookmarks::BookmarkModel* model,
-                                   const std::set<GURL>& removed_urls) override;
-
-  __strong id<BookmarkModelObserver> observer_;
-  bookmarks::BookmarkModel* model_;  // weak
-};
 
 BookmarkModelListener::BookmarkModelListener(id<BookmarkModelObserver> observer,
                                              bookmarks::BookmarkModel* model)
@@ -102,10 +66,10 @@ void BookmarkModelListener::BookmarkNodeMoved(
 
     IOSBookmarkNode* ios_node = [[IOSBookmarkNode alloc] initWithNode:node
                                                                 model:model];
-    IOSBookmarkNode* ios_old_parent = [[IOSBookmarkNode alloc] initWithNode:old_parent
-                                                                      model:model];
-    IOSBookmarkNode* ios_new_parent = [[IOSBookmarkNode alloc] initWithNode:new_parent
-                                                                      model:model];
+    IOSBookmarkNode* ios_old_parent =
+        [[IOSBookmarkNode alloc] initWithNode:old_parent model:model];
+    IOSBookmarkNode* ios_new_parent =
+        [[IOSBookmarkNode alloc] initWithNode:new_parent model:model];
 
     [observer_ bookmarkNode:ios_node
             movedFromParent:ios_old_parent
@@ -130,7 +94,8 @@ void BookmarkModelListener::BookmarkNodeRemoved(
     size_t old_index,
     const bookmarks::BookmarkNode* node,
     const std::set<GURL>& removed_urls) {
-  IOSBookmarkNode* ios_node = [[IOSBookmarkNode alloc] initWithNode:node model:model];
+  IOSBookmarkNode* ios_node = [[IOSBookmarkNode alloc] initWithNode:node
+                                                              model:model];
   IOSBookmarkNode* ios_parent = [[IOSBookmarkNode alloc] initWithNode:parent
                                                                 model:model];
 
