@@ -17,6 +17,7 @@ import org.chromium.chrome.browser.feed.BraveFeedSurfaceCoordinator;
 import org.chromium.chrome.browser.feed.shared.FeedFeatures;
 import org.chromium.chrome.browser.feed.shared.FeedSurfaceProvider;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
+import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
@@ -37,7 +38,7 @@ public class BraveNewTabPage extends NewTabPage {
             boolean isTablet, NewTabPageUma uma, boolean isInNightMode,
             NativePageHost nativePageHost, Tab tab, String url,
             BottomSheetController bottomSheetController,
-            ObservableSupplier<ShareDelegate> shareDelegateSupplier, WindowAndroid windowAndroid) {
+            Supplier<ShareDelegate> shareDelegateSupplier, WindowAndroid windowAndroid) {
         super(activity, browserControlsStateProvider, activityTabProvider, snackbarManager,
                 lifecycleDispatcher, tabModelSelector, isTablet, uma, isInNightMode, nativePageHost,
                 tab, url, bottomSheetController, shareDelegateSupplier, windowAndroid);
@@ -52,8 +53,8 @@ public class BraveNewTabPage extends NewTabPage {
     protected void initializeMainView(Activity activity, WindowAndroid windowAndroid,
             SnackbarManager snackbarManager, NewTabPageUma uma, boolean isInNightMode,
             BottomSheetController bottomSheetController,
-            ObservableSupplier<ShareDelegate> shareDelegateSupplier,
-            TabModelSelector tabModelSelector, String url) {
+            Supplier<ShareDelegate> shareDelegateSupplier, TabModelSelector tabModelSelector,
+            String url) {
         super.initializeMainView(activity, windowAndroid, snackbarManager, uma, isInNightMode,
                 bottomSheetController, shareDelegateSupplier, tabModelSelector, url);
         // Override surface provider
@@ -66,6 +67,8 @@ public class BraveNewTabPage extends NewTabPage {
                 mNewTabPageManager.getNavigationDelegate(), profile,
                 /* isPlaceholderShownInitially= */ false, bottomSheetController,
                 shareDelegateSupplier, /* externalScrollableContainerDelegate= */ null,
-                tabModelSelector, NewTabPageUtils.decodeOriginFromNtpUrl(url));
+                tabModelSelector, NewTabPageUtils.decodeOriginFromNtpUrl(url),
+                PrivacyPreferencesManagerImpl.getInstance(),
+                /* FeedLaunchReliabilityLoggingState */ null);
     }
 }
