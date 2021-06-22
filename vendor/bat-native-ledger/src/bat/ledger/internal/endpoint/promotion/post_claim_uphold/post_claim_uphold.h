@@ -48,19 +48,19 @@ class PostClaimUphold {
 
   void Request(const double user_funds,
                const std::string& address,
-               PostClaimUpholdCallback callback);
+               PostClaimUpholdCallback callback) const;
 
  private:
-  std::string GetUrl();
-
   std::string GeneratePayload(const double user_funds,
-                              const std::string& address);
+                              const std::string& address) const;
 
-  type::Result CheckStatusCode(const int status_code);
+  std::string GetUrl() const;
 
   void OnRequest(const type::UrlResponse& response,
                  const std::string& address,
-                 PostClaimUpholdCallback callback);
+                 PostClaimUpholdCallback callback) const;
+
+  type::Result CheckStatusCode(const int status_code) const;
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

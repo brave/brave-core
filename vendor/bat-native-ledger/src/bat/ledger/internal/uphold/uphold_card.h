@@ -52,7 +52,7 @@ class UpholdCard {
       endpoint::uphold::PatchCardCallback callback) const;
 
   void OnUpdateBATCardSettings(const type::Result result,
-                               const std::string& address,
+                               const std::string& id,
                                CreateCardCallback callback) const;
 
   LedgerImpl* ledger_;  // NOT OWNED
