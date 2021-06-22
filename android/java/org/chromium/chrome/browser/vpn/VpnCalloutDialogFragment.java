@@ -23,8 +23,8 @@ import androidx.fragment.app.DialogFragment;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
-import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
+import org.chromium.ui.base.DeviceFormFactor;
 
 public class VpnCalloutDialogFragment extends DialogFragment implements View.OnClickListener {
     @Override

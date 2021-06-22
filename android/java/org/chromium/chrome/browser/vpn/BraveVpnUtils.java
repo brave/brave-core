@@ -19,10 +19,12 @@ import org.chromium.chrome.browser.vpn.BraveVpnPlansActivity;
 
 public class BraveVpnUtils {
     public static boolean isVPNConnected(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+                NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(
+                        connectivityManager.getActiveNetwork());
                 return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN);
             } else {
                 NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();

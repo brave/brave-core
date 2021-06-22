@@ -20,7 +20,7 @@ import org.chromium.chrome.R;
 
 public class BraveVpnPlanPagerAdapter extends PagerAdapter {
     private final Context context;
-    public BraveVpnPlanPagerAdapter(Context context){
+    public BraveVpnPlanPagerAdapter(Context context) {
         this.context = context;
     }
 

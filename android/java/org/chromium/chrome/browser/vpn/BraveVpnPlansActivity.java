@@ -17,11 +17,12 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
-import org.chromium.chrome.R;
-import org.chromium.chrome.browser.vpn.BraveVpnPlanPagerAdapter;
-import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import com.google.android.material.tabs.TabLayout;
+
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.firstrun.FirstRunFlowSequencer;
+import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.chrome.browser.vpn.BraveVpnPlanPagerAdapter;
 
 public class BraveVpnPlansActivity extends AsyncInitializationActivity {
     private FirstRunFlowSequencer mFirstRunFlowSequencer;
@@ -38,14 +39,15 @@ public class BraveVpnPlansActivity extends AsyncInitializationActivity {
         actionBar.setTitle(getResources().getString(R.string.brave_vpn));
 
         ViewPager braveRewardsViewPager = findViewById(R.id.brave_rewards_view_pager);
-        
+
         BraveVpnPlanPagerAdapter braveVpnPlanPagerAdapter = new BraveVpnPlanPagerAdapter(this);
         braveRewardsViewPager.setAdapter(braveVpnPlanPagerAdapter);
         TabLayout braveRewardsTabLayout = findViewById(R.id.brave_rewards_tab_layout);
         braveRewardsTabLayout.setupWithViewPager(braveRewardsViewPager, true);
 
         TextView removedValueText = findViewById(R.id.removed_value_tv);
-        removedValueText.setPaintFlags(removedValueText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        removedValueText.setPaintFlags(
+                removedValueText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
     }
 
     @Override
