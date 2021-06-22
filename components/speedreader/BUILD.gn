@@ -21,8 +21,6 @@ source_set("speedreader") {
   ]
 
   sources = [
-    "constants.cc",
-    "constants.h",
     "features.cc",
     "features.h",
     "speedreader_component.cc",

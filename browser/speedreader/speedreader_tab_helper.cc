@@ -75,12 +75,12 @@ void SpeedreaderTabHelper::UpdateActiveState(
   DCHECK(handle->IsInMainFrame());
 
   if (single_shot_next_request_) {
-    distill_state_ = DistillState::kReaderMode;
+    SetNextRequestState(DistillState::kReaderMode);
     return;
   }
 
   if (!IsEnabledForSite()) {
-    distill_state_ = DistillState::kNone;
+    SetNextRequestState(DistillState::kNone);
     return;
   }
 
@@ -91,11 +91,16 @@ void SpeedreaderTabHelper::UpdateActiveState(
     if (speedreader::IsWhitelistedForTest(handle->GetURL()) ||
         rewriter_service->IsWhitelisted(handle->GetURL())) {
       VLOG(2) << __func__ << " SpeedReader active for " << handle->GetURL();
-      distill_state_ = DistillState::kSpeedreaderMode;
+      SetNextRequestState(DistillState::kSpeedreaderMode);
       return;
     }
   }
-  distill_state_ = DistillState::kNone;
+  SetNextRequestState(DistillState::kNone);
+}
+
+void SpeedreaderTabHelper::SetNextRequestState(DistillState state) {
+  distill_state_ = state;
+  single_shot_next_request_ = false;
 }
 
 bool SpeedreaderTabHelper::IsActiveForMainFrame() const {
@@ -114,13 +119,6 @@ void SpeedreaderTabHelper::DidRedirectNavigation(
   if (navigation_handle->IsInMainFrame()) {
     UpdateActiveState(navigation_handle);
   }
-}
-
-void SpeedreaderTabHelper::DidStopLoading() {
-  // This will be called after the URLLoaders have already been created. If we
-  // are in single-shot mode, disable the Speedreader loader since that has
-  // completed.
-  single_shot_next_request_ = false;
 }
 
 SpeedreaderBubbleView* SpeedreaderTabHelper::speedreader_bubble_view() const {

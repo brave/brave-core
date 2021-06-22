@@ -460,12 +460,10 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
   }
   auto* tab_helper =
       speedreader::SpeedreaderTabHelper::FromWebContents(contents);
-  if (!tab_helper)
-    return result;
-  const auto state = tab_helper->PageDistillState();
-  if (state != DistillState::kNone &&
+  if (tab_helper && tab_helper->IsActiveForMainFrame() &&
       request.resource_type ==
           static_cast<int>(blink::mojom::ResourceType::kMainFrame)) {
+    const auto state = tab_helper->PageDistillState();
     std::unique_ptr<speedreader::SpeedReaderThrottle> throttle =
         speedreader::SpeedReaderThrottle::MaybeCreateThrottleFor(
             g_brave_browser_process->speedreader_rewriter_service(),

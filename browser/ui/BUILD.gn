@@ -300,7 +300,6 @@ source_set("ui") {
   if (enable_speedreader) {
     deps += [
       "//brave/components/speedreader",
-      "//brave/components/speedreader:buildflags",
       "//components/dom_distiller/content/browser",
     ]
 

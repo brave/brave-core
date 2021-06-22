@@ -54,8 +54,8 @@ class SpeedreaderTabHelper
   // Returns |true| if Speedreader is turned on for all sites.
   bool IsSpeedreaderEnabled() const;
 
-  // Returns |true| if the domain is Speedreader is enabled and the domain was
-  // not blacklisted by the user.
+  // Returns |true| if the user has enabled Speedreader but the domain in the
+  // active web contents is blacklisted.
   bool IsEnabledForSite();
 
   DistillState PageDistillState() const { return distill_state_; }
@@ -93,13 +93,13 @@ class SpeedreaderTabHelper
   void ShowBubble(bool is_bubble_speedreader);
 
   void UpdateActiveState(content::NavigationHandle* handle);
+  void SetNextRequestState(DistillState state);
 
   // content::WebContentsObserver
   void DidStartNavigation(
       content::NavigationHandle* navigation_handle) override;
   void DidRedirectNavigation(
       content::NavigationHandle* navigation_handle) override;
-  void DidStopLoading() override;
 
   bool single_shot_next_request_ =
       false;  // run speedreader once on next page load
