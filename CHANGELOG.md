@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.27.1](https://github.com/brave/brave-ios/releases/tag/v1.27.1)
+
+- Added Brave Search beta to the list of available search engines. ([#3745](https://github.com/brave/brave-ios/issues/3745))
+- Added Search Overlay. ([#3554](https://github.com/brave/brave-ios/issues/3554))
+- Added QR code scanner to the URL bar. ([#3399](https://github.com/brave/brave-ios/issues/3675))
+- Added support for better Playlist video scrolling. ([#3675](https://github.com/brave/brave-ios/issues/3399))
+- Renamed Brave Today to Brave News. ([#3736](https://github.com/brave/brave-ios/issues/3736))
+- Updated User Agent to 14.6. ([#3647](https://github.com/brave/brave-ios/issues/3647))
+- Improved visibility of “Share with...” by increasing the height of the settings menu. ([#3763](https://github.com/brave/brave-ios/issues/3763))
+- Fixed reader mode unavailable when “Blocked Scripts” has been enabled. ([#3256](https://github.com/brave/brave-ios/issues/3256))
+- Fixed “Find in Page” not working when “Blocked Scripts” has been enabled. ([#2968](https://github.com/brave/brave-ios/issues/2968))
+- Fixed Playlist losing current video position when moving Brave to background. ([#3650](https://github.com/brave/brave-ios/issues/3650))
+
 ## [1.26](https://github.com/brave/brave-ios/releases/tag/v1.26)
 
 - Added support for Auto-Close Tabs. ([#1514](https://github.com/brave/brave-ios/issues/1514))
