@@ -86,6 +86,7 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/LaunchIntentDispatcher"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/NewTabPageLayout"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/NewTabPage"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/BraveNewTabPage"));
         Assert.assertTrue(classExists(
@@ -261,6 +262,16 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiFeatureUtilities",
                 "isTabGroupsAndroidEnabled", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator",
+                "isEnhancedProtectionPromoEnabled", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator",
+                "isReliabilityLoggingEnabled", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator",
+                        "isEnhancedProtectionPromoEnabled", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator",
+                        "isReliabilityLoggingEnabled", false, null));
     }
 
     @Test
@@ -348,7 +359,7 @@ public class BytecodeTest {
                 BrowserControlsStateProvider.class, Supplier.class, SnackbarManager.class,
                 ActivityLifecycleDispatcher.class, TabModelSelector.class, boolean.class,
                 NewTabPageUma.class, boolean.class, NativePageHost.class, Tab.class, String.class,
-                BottomSheetController.class, ObservableSupplier.class, WindowAndroid.class));
+                BottomSheetController.class, Supplier.class, WindowAndroid.class));
     }
 
     @Test
@@ -364,8 +375,6 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/ntp/NewTabPageLayout", "mSiteSectionView"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "mTileGroup"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/feed/FeedSurfaceCoordinator", "mActivity"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/feed/FeedSurfaceCoordinator", "mScrollViewForPolicy"));
         Assert.assertTrue(fieldExists(
