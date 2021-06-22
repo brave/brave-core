@@ -162,6 +162,7 @@ class TabManager: NSObject {
         let configuration = WKWebViewConfiguration()
         configuration.processPool = WKProcessPool()
         configuration.preferences.javaScriptCanOpenWindowsAutomatically = !Preferences.General.blockPopups.value
+        configuration.dataDetectorTypes = .all
         
 //        if !Preferences.General.mediaAutoPlays.value {
 //            configuration.mediaTypesRequiringUserActionForPlayback = .all
