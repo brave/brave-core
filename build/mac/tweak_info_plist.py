@@ -57,13 +57,6 @@ def _OverrideVersionKey(plist, brave_version):
     adjusted_minor = int(version_values[1]) + (100 * int(version_values[0]))
     plist['CFBundleVersion'] = str(adjusted_minor) + '.' + version_values[2]
 
-  # The "short" version is only used for display purposes. Chromium uses four
-  # numbers w.x.y.z while Brave uses only three. So override the entry with our
-  # value. This is in particular displayed in Brave's (/Sparkle's) update
-  # notification popup: "Version X is available. You have version Y."
-  plist['CFBundleShortVersionString'] = brave_version
-
-
 def Main(argv):
   parser = optparse.OptionParser('%prog [options]')
   parser.add_option('--plist', dest='plist_path', action='store',
