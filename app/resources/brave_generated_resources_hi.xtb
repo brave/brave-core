@@ -18,7 +18,7 @@
 <translation id="6241402707160226266">Tor के साथ प्राइवेट विंडो</translation>
 <translation id="8762452230727230396">Tor आपके आईपी एड्रेस को आपके द्वारा देखी जाने वाली साइटों से छुपाता है।</translation>
 <translation id="1369311132025451972">.onion साइटों पर अपने आप रीडायरेक्ट करें</translation>
-<translation id="81720820779436751">Brave उपलब्ध होने पर वेबसाइट की onion सेवा या टॉर विंडो में .onion खोलेगा</translation>
+<translation id="2843777623071353503">Brave उपलब्ध होने पर वेबसाइट की onion सेवा या टॉर विंडो में .onion खोलेगा</translation>
 <translation id="8053096063396012732">Widevine इनस्टॉल करें</translation>
 <translation id="4840334696217618631">Widevine को सक्रिय करने के लिए ब्राउज़र को पुनः आरम्भ करें</translation>
 <translation id="8410111618231938546">Google Widevine डिजिटल अधिकार प्रबंधन (DRM) कोड का हिस्सा है जिसका हम Brave Software न तो मालिकत्व रखते हैं और न ही जांच कर सकते हैं| Google Widevine के कोड Google के सर्वर से संचालित होते हैं, हमारे सर्वर से नहीं| ये तभी काम करते हैं जब आप इस विकल्प को चुनते हैं| हम DRM के प्रयोग को हतोत्साहित करते हैं, पर हम यूजर के चयन का सम्मान करते हैं और समझते हैं कि  कुछ Brave यूजर्स ऐसी सेवाओं जहाँ इसकी ज़रूरत है का प्रयोग करते हैं|
@@ -102,15 +102,15 @@ Binance
 <translation id="2715839724138372481">चुना गया वीडियो</translation>
 <translation id="4227945450504703638">चुना गया ऑडियो</translation>
 <translation id="7895302206188277628">लिंक किया गया कंटेंट</translation>
-<translation id="4322612543319315652">चुने गए टेक्स्ट IPFS में इम्पोर्ट करें</translation>
-<translation id="8883166554766780543">IPFS स्नैपशॉट के लिए लिंक इम्पोर्ट और कॉपी करें</translation>
 <translation id="3654831858282189202">IPNS की के साथ प्रकाशित करें</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">चुने गए टेक्स्ट IPFS में इम्पोर्ट करें</translation>
 <translation id="1434416574322382019">टोर के साथ नया गोपनीय विंडो</translation>
 <translation id="4703780849509456860">ब्रेव गोपनीय विंडो में टोर के साथ लिंक खोलें</translation>
 <translation id="3488584642074079080">ब्रेव गोपनीय विंडो में टोर के साथ लिंक खोलें</translation>
 <translation id="7475547933708221517">IPFS का इस्तेमाल करके लोकल फ़ाइल शेयर करें</translation>
 <translation id="2286177249736199435">IPFS का इस्तेमाल करके लोकल फ़ोल्डर शेयर करें</translation>
+<translation id="8883166554766780543">IPFS स्नैपशॉट के लिए लिंक इम्पोर्ट और कॉपी करें</translation>
 <translation id="784573715436258741">IPFS का इस्तेमाल करके लोकल फ़ाइल शेयर करें</translation>
 <translation id="6313675821927505581">Tor के साथ नई प्राइवेट विंडो</translation>
 <translation id="2638041073279639246">Tor के साथ प्राइवेट विंडो में लिंक खोलें</translation>
@@ -220,7 +220,6 @@ Binance
 <translation id="5927916530277631319">Unstoppable डोमेन को हल करने की विधि</translation>
 <translation id="8412057160793088103">HTTPS और Ethereum गोपनीयता विचारों पर DNS के बारे में <ph name="BEGIN_LINK"/>और जानें<ph name="END_LINK"/></translation>
 <translation id="5248318250177143470">Ethereum नाम सेवा (ENS) को हल करने की विधि</translation>
-<translation id="7024553202001112871">IPNS की सेट अप करें</translation>
 <translation id="951216659045543447">संबंधित निजी की द्वारा कंटेंट पर साइन करें और इसे IPNS पर प्रकाशित करें</translation>
 <translation id="7611728475758612204">प्रकाशन के लिए उपलब्ध की</translation>
 <translation id="911363100236037920">नई की के लिए नया नाम एंटर करें</translation>
@@ -231,7 +230,7 @@ Binance
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' की इम्पोर्ट नहीं हो पाया</translation>
 <translation id="8275038454117074363">आयात करें</translation>
 <translation id="3654980960391973513">जेनरेट करें</translation>
-<translation id="5531501313997312487">स्टार्ट नोड</translation>
+<translation id="5531501313997312487">नोड चालू करें</translation>
 <translation id="9170907049676078643">IPFS संसाधनों को सुलझाने की विधि</translation>
 <translation id="1327977588028644528">गेटवे</translation>
 <translation id="80225669816651290">लोकल नोड</translation>
@@ -353,4 +352,7 @@ Binance
 <translation id="2808630562319398131">Brave रिवॉर्ड डेटा रीसेट करें ...</translation>
 <translation id="1224064034972923114">अपने आप क्रैश रिपोर्ट भेजकर ब्रेव को सुधारने में मदद करें</translation>
 <translation id="3738833060602717053">अपने आप क्रैश रिपोर्ट्स भेजकर <ph name="PRODUCT_NAME"/> को बेहतर करने में मदद करें</translation>
+<translation id="81720820779436751">Brave उपलब्ध होने पर वेबसाइट की onion सेवा या टॉर विंडो में .onion खोलेगा</translation>
+<translation id="4322612543319315652">चुने गए टेक्स्ट IPFS में इम्पोर्ट करें</translation>
+<translation id="7024553202001112871">IPNS की सेट अप करें</translation>
 </translationbundle>

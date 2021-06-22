@@ -18,7 +18,7 @@
 <translation id="6241402707160226266">Tetingkap Privasi dengan Tor</translation>
 <translation id="8762452230727230396">Tor menyembunyikan alamat IP anda daripada tapak yang anda lawati.</translation>
 <translation id="1369311132025451972">Lencongan secara automatik ke laman .onion</translation>
-<translation id="81720820779436751">Brave akan membuka perkhidmatan onion laman web apabila tersedia atau domain .onion dalam tetingkap Tor</translation>
+<translation id="2843777623071353503">Brave akan membuka perkhidmatan onion laman web apabila tersedia atau domain .onion dalam tetingkap Tor</translation>
 <translation id="8053096063396012732">Pasang Widevine</translation>
 <translation id="4840334696217618631">Hidupkan semula penyemak imbas untuk mengaktifkan Widevine</translation>
 <translation id="8410111618231938546">Google Widevine ialah secebis kod Pengurusan Hak Digital (DRM) yang kami di Perisian Brave tidak memilikinya dan tidak boleh memeriksanya. The Kod Google Widevine dimuatkan dari pelayan Google, bukan dari pelayan kami. Ia dimuatkan hanya apabila anda mendayakan pilihan ini. Kami tidak menggalakkan anda untuk menggunakan DRM, namun kami menghormati pilihan pengguna dan mengakui bahawa sebahagian pengguna Brave ingin menggunakan perkhidmatan yang memerlukannya.
@@ -37,6 +37,8 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="6123134130710658846">Sembunyi butang Brave Rewards</translation>
 <translation id="1811404036171336214">Sentiasa memaparkan penanda pada halaman tab baru</translation>
 <translation id="1643029991199044105">Lawati semula tab yang terakhir digunakan dengan Ctrl-Tab</translation>
+<translation id="1013121820689882118">Pembaca laju</translation>
+<translation id="2025435450953474282">Artikel dimuatkan secara automatik dalam mod pembaca, menjimatkan masa anda</translation>
 <translation id="5802665280774361839">Tunjukkan autolengkap dalam bar alamat</translation>
 <translation id="597020512043916976">Paparkan laman-laman teratas dari segi cadangan autolengkap</translation>
 <translation id="264150068416846820">Tunjukkan laman-laman yang dicadangkan oleh Brave dalam cadangan autolengkap</translation>
@@ -68,15 +70,16 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="2715839724138372481">Video dipilih</translation>
 <translation id="4227945450504703638">Audio dipilih</translation>
 <translation id="7895302206188277628">Kandungan dipautkan</translation>
-<translation id="4322612543319315652">Import teks Dipilih ke IPFS</translation>
-<translation id="8883166554766780543">Import dan salin pautan ke petikan IPFS</translation>
 <translation id="3654831858282189202">Terbitkan dengan kunci IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Import teks Dipilih ke IPFS</translation>
+<translation id="6925604404524625582">Import dan Salin Pautan ke Petikan IPFS</translation>
 <translation id="1434416574322382019">Tetingkap Peribadi baru dengan Tor</translation>
 <translation id="4703780849509456860">Buka Pautan dalam Tetingkap Peribadi dengan Tor</translation>
 <translation id="3488584642074079080">Buka Pautan dalam Tetingkap Peribadi Brave dengan Tor</translation>
 <translation id="7475547933708221517">Kongsi Fail Setempat Menggunakan IPFS</translation>
 <translation id="2286177249736199435">Kongsi Folder Setempat Menggunakan IPFS</translation>
+<translation id="8883166554766780543">Import dan salin pautan ke petikan IPFS</translation>
 <translation id="784573715436258741">Kongsi fail setempat menggunakan IPFS</translation>
 <translation id="6313675821927505581">Tetingkap persendirian baharu dengan Tor</translation>
 <translation id="2638041073279639246">Buka pautan dalam tetingkap persendirian dengan Tor</translation>
@@ -186,11 +189,18 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="5927916530277631319">Kaedah untuk menyelesaikan Domain yang tidak dapat Dihentikan</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Ketahui Lebih Lanjut<ph name="END_LINK"/> tentang DNS berbanding pertimbangan privasi HTTPS dan Ethereum.</translation>
 <translation id="5248318250177143470">Kaedah untuk menyelesaikan Ethereum Name Service (ENS)</translation>
-<translation id="7024553202001112871">Sediakan kunci IPNS</translation>
+<translation id="7024553202001112871">Sediakan kunci IPNS anda</translation>
 <translation id="951216659045543447">Tandatangani kandungan dengan kunci peribadi yang berkaitan dan terbitkan ke IPNS</translation>
 <translation id="7611728475758612204">Kunci tersedia untuk penerbitan</translation>
 <translation id="911363100236037920">Masukkan nama untuk kunci baharu</translation>
 <translation id="6358469157239228181">Nama ini tidak boleh digunakan</translation>
+<translation id="5761731140570209168">Tambah rentetan sambungan rakan baharu</translation>
+<translation id="6476061084931271248">Mulakan semula nod untuk menggunakan perubahan</translation>
+<translation id="3754226427671882382">Mulakan semula nod</translation>
+<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
+<translation id="724513921936768901">Nama ini tidak sah</translation>
+<translation id="6758961763875471084">Ubah suai senarai rakan</translation>
+<translation id="1534091531114892221">Sediakan perihalan rakan ipfs</translation>
 <translation id="8996633027318264334">Adakah anda benar-benar mahu memadam <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Nod tidak dilancarkan</translation>
 <translation id="616058968889448209">Ralat pelancaran perkhidmatan IPFS, lebih banyak maklumat tersedia di <ph name="BEGIN_LINK"/>halaman diagnostik<ph name="END_LINK"/></translation>
@@ -286,9 +296,15 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="7060352228894039151">Pada tetikus di atas</translation>
 <translation id="407173827865827707">Apabila diklik</translation>
 <translation id="7961015016161918242">Tidak sama sekali</translation>
+<translation id="8981254605840444865">Tunjuk tetapan</translation>
 <translation id="59174027418879706">Didayakan</translation>
 <translation id="8258999165172757081">Ditambah</translation>
 <translation id="6959315322491671328">Klik kanan untuk membuang</translation>
+<translation id="4651504163033753423">Adakah anda mahu menghidupkan Pembaca laju?</translation>
+<translation id="9089090017461255038">Hidupkan Pembaca laju</translation>
+<translation id="312393675740711187">Artikel dimuatkan secara automatik dalam mod pembaca, menjimatkan masa anda.</translation>
+<translation id="3234744217174488546">Hidupkan/matikan mod pembaca hanya untuk laman web ini. Untuk mematikan Pembaca laju untuk keseluruhan profil pelayar anda, lawati</translation>
+<translation id="7839742507462737706">dalam Pembaca laju</translation>
 <translation id="1872784258300710671">Brave menggunakan analitik produk persendirian sepenuhnya untuk menganggarkan penggunaan keseluruhan ciri-ciri tertentu</translation>
 <translation id="8712637175834984815">Faham</translation>
 <translation id="4394049700291259645">Lumpuhkan</translation>
@@ -319,4 +335,6 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="2808630562319398131">Setkan semula data Ganjaran Brave...</translation>
 <translation id="1224064034972923114">Bantu menambah baik Brave dengan menghantar laporan kerosakan secara automatik</translation>
 <translation id="3738833060602717053">Bantu menambah baik <ph name="PRODUCT_NAME"/> dengan menghantar laporan kerosakan secara automatik</translation>
+<translation id="81720820779436751">Brave akan membuka perkhidmatan onion laman web apabila tersedia atau domain .onion dalam tetingkap Tor</translation>
+<translation id="4322612543319315652">Import teks Dipilih ke IPFS</translation>
 </translationbundle>

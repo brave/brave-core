@@ -51,18 +51,6 @@
     "message": "รายละเอียด",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "ยอดของคุณ",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "คะแนน BAT",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "สามารถใช้ใน Brave Rewards เพื่อส่งรายได้ให้แก่ผู้สร้างสรรค์เนื้อหาคนโปรดของคุณ แต้ม BAT ไม่สามารถแลกเปลี่ยนเป็น BAT ได้",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "เปิด",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -160,10 +148,6 @@
   "tokenGrantClaimed": {
     "message": "โทเค็นเงินบริจาคที่เบิกแล้ว",
     "description": "Title for grant section in wallet summary"
-  },
-  "pointGrantClaimed": {
-    "message": "ขอรับคะแนนที่แจกแล้ว",
-    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "ได้รายได้จากโฆษณา",
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "เปิดใช้งาน Ads",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "โทเค็นเงินบริจาคฟรี",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "แจกคะแนนฟรี",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "คุณได้รับรางวัลโฆษณา!",
@@ -591,17 +567,9 @@
     "message": "Token",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "คะแนน",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "จำนวนโทเคนที่ให้",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "คะแนนแจกฟรี",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "สวัสดี $name$!",
@@ -830,17 +798,5 @@
         "content": "$2"
       }
     }
-  },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards ในญี่ปุ่นกำลังเปลี่ยนไปใช้ระบบใหม่!",
-    "description": "Header text for BAP deprecation warning message"
-  },
-  "bapDeprecationLearnMore": {
-    "message": "ดูข้อมูลเพิ่มเติม",
-    "description": "Link to learn more about BAP deprecation"
-  },
-  "bapDeprecationPopupText": {
-    "message": "โปรดใช้ BAP ของคุณภายในวันที่ 13 มีนาคม หลังจากนั้น BAP จะถูกยกเลิก",
-    "description": "Text for BAP deprecation popup"
   }
 }

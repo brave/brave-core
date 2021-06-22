@@ -18,7 +18,7 @@
 <translation id="6241402707160226266">Privat vindu med Tor</translation>
 <translation id="8762452230727230396">Tor skjuler IP-adressen din for nettstedene du besøker.</translation>
 <translation id="1369311132025451972">Omdiriger .onion-nettsteder automatisk</translation>
-<translation id="81720820779436751">Brave vil åpne onion-service for nettstedet når det er tilgjengelig eller .onion-domenet i Tor-vinduet</translation>
+<translation id="2843777623071353503">Brave vil åpne onion-service for nettstedet når det er tilgjengelig eller .onion-domenet i Tor-vinduet</translation>
 <translation id="8053096063396012732">Installer Widevine</translation>
 <translation id="4840334696217618631">Start nettleseren på nytt for å aktivere Widevine</translation>
 <translation id="8410111618231938546">Google Widevine er en bit Digital Rettighetsstyring (DRM)-kode som vi hos Brave Software ikke eier, og ikke kan inspisere. Google Widevine-koden lastes fra Googles servere, ikke fra våre servere. Den lastes kun når du slår på dette alternativet. Vi fraråder bruk av DRM, men vi respekterer brukerens valg, og anerkjenner at noen Brave-brukere ønsker å bruke tjenester som krever det.
@@ -37,6 +37,8 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="6123134130710658846">Skjul "Brave rewards"-knapp</translation>
 <translation id="1811404036171336214">Vis alltid bokmerker på den nye fanesiden</translation>
 <translation id="1643029991199044105">Bla gjennom de sist brukte fanene med Ctrl-Tab</translation>
+<translation id="1013121820689882118">Hurtigleser</translation>
+<translation id="2025435450953474282">Artikler lastes automatisk inn i lesermodus, hvilket sparer deg tid</translation>
 <translation id="5802665280774361839">Vis autofullføring i adressefeltet</translation>
 <translation id="597020512043916976">Vis toppsider med autofullførte forslag</translation>
 <translation id="264150068416846820">Vis Brave-foreslåtte side med autofullførte forslag</translation>
@@ -68,15 +70,16 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="2715839724138372481">Valgt video</translation>
 <translation id="4227945450504703638">Valgt lydfil</translation>
 <translation id="7895302206188277628">Lenket innhold</translation>
-<translation id="4322612543319315652">Importer valgt tekst til IPFS</translation>
-<translation id="8883166554766780543">Importer og kopier kobling til IPFS-øyeblikksbilde</translation>
 <translation id="3654831858282189202">Publiser med IPNS-nøkkel</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Importer valgt tekst til IPFS</translation>
+<translation id="6925604404524625582">Importer og kopier lenke til IPFS-øyeblikksbilde</translation>
 <translation id="1434416574322382019">Nytt privatvindu med Tor</translation>
 <translation id="4703780849509456860">Åpne lenke i privatvindu med Tor</translation>
 <translation id="3488584642074079080">Åpne lenke i Brave-privatvindu med Tor</translation>
 <translation id="7475547933708221517">Del lokal fil ved hjelp av IPFS</translation>
 <translation id="2286177249736199435">Del lokal mappe ved å bruke IPFS</translation>
+<translation id="8883166554766780543">Importer og kopier kobling til IPFS-øyeblikksbilde</translation>
 <translation id="784573715436258741">Del lokal fil ved hjelp av IPFS</translation>
 <translation id="6313675821927505581">Nytt privat vindu med Tor</translation>
 <translation id="2638041073279639246">Åpne lenke i privat vindu med Tor</translation>
@@ -170,6 +173,13 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="7611728475758612204">Nøkler som er tilgjengelige for publisering</translation>
 <translation id="911363100236037920">Angi et navn for den nye nøkkelen</translation>
 <translation id="6358469157239228181">Dette navnet kan ikke brukes</translation>
+<translation id="5761731140570209168">Legg til ny peer-tilkoblingsstreng</translation>
+<translation id="6476061084931271248">Start noden på nytt for å aktivere endringene</translation>
+<translation id="3754226427671882382">Start noden på nytt</translation>
+<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
+<translation id="724513921936768901">Dette navnet er ugyldig</translation>
+<translation id="6758961763875471084">Endre listen over peers</translation>
+<translation id="1534091531114892221">Konfigurer beskrivelsen av ipfs-peers</translation>
 <translation id="8996633027318264334">Vil du virkelig slette <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Noden er ikke sendt ut</translation>
 <translation id="616058968889448209">Feil ved lansering av IPFS-tjeneste, mer informasjon er tilgjengelig på <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
@@ -265,9 +275,15 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="7060352228894039151">Når musemarkøren beveges over</translation>
 <translation id="407173827865827707">Ved klikk</translation>
 <translation id="7961015016161918242">Aldri</translation>
+<translation id="8981254605840444865">Vis innstillinger</translation>
 <translation id="59174027418879706">Aktivert</translation>
 <translation id="8258999165172757081">Lagt til</translation>
 <translation id="6959315322491671328">Høyreklikk for å fjerne</translation>
+<translation id="4651504163033753423">Vil du slå på Hurtigleser?</translation>
+<translation id="9089090017461255038">Slå på Speedreader</translation>
+<translation id="312393675740711187">Artikler lastes automatisk inn i lesermodus, hvilket sparer deg tid.</translation>
+<translation id="3234744217174488546">Slå på/av lesermodus kun for dette nettstedet. For å slå av Hurtigleser for hele nettleserprofilen, kan du besøke</translation>
+<translation id="7839742507462737706">i Hurtigleser</translation>
 <translation id="1872784258300710671">Brave bruker helt privat produktdiagnostikk til å beregne den totale bruken av visse funksjoner</translation>
 <translation id="8712637175834984815">Skjønner</translation>
 <translation id="4394049700291259645">Slå av</translation>
@@ -298,4 +314,6 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="2808630562319398131">Tilbakestill Brave Rewards-data …</translation>
 <translation id="1224064034972923114">Hjelp oss med å gjøre Brave bedre ved å sende inn rapporter om krasj automatisk</translation>
 <translation id="3738833060602717053">Hjelp til med å forbedre <ph name="PRODUCT_NAME"/> ved å sende rapporter om krasj automatisk</translation>
+<translation id="81720820779436751">Brave vil åpne onion-service for nettstedet når det er tilgjengelig eller .onion-domenet i Tor-vinduet</translation>
+<translation id="4322612543319315652">Importer valgt tekst til IPFS</translation>
 </translationbundle>

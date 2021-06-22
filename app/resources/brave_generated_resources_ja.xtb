@@ -18,7 +18,7 @@
 <translation id="6241402707160226266">Tor搭載のプライベートウィンドウ</translation>
 <translation id="8762452230727230396">Torは訪問サイトからあなたのIPアドレスを隠します。</translation>
 <translation id="1369311132025451972">.onionサイトに自動的にリダイレクトします</translation>
-<translation id="81720820779436751">Braveは、利用可能な場合はウェブサイトのオニオンサービスを開くか、またはTorウィンドウで.onionドメインを開きます</translation>
+<translation id="2843777623071353503">Braveは、利用可能な場合はウェブサイトのオニオンサービスを開くか、またはTorウィンドウで.onionドメインを開きます</translation>
 <translation id="8053096063396012732">Widevineをインストールする</translation>
 <translation id="4840334696217618631">Widevineを有効にするためにブラウザーを再起動する</translation>
 <translation id="8410111618231938546">Google WidevineはBrave Softwareが所有しておらず、検査できないデジタル著作権管理（DRM）コードの1つです。Google Widevineのコードは弊社のサーバーではなくGoogleのサーバーから割り当てられます。このコードはこのオプションを有効にしている際にのみ読み込まれます。弊社はDRMの使用は推奨しませんがユーザーの選択を尊重しており、一部のBraveユーザーがGoogle Widevineを要求するサービスの利用を望んでいることは承知しております。
@@ -37,6 +37,8 @@
 <translation id="6123134130710658846">Brave Rewardsボタンを非表示にする</translation>
 <translation id="1811404036171336214">常に新しいタブページにブックマークを表示</translation>
 <translation id="1643029991199044105">Ctrl-Tabを使用し、最近使用したタブを繰り替えす</translation>
+<translation id="1013121820689882118">Speedreader</translation>
+<translation id="2025435450953474282">記事が自動的にリーダーモードで読み込まれるため、時間を節約できます</translation>
 <translation id="5802665280774361839">アドレス入力時にオートコンプリートを表示</translation>
 <translation id="597020512043916976">トップサイトをオートコンプリートでリコメンド</translation>
 <translation id="264150068416846820">Braveの推奨サイトをオートコンプリートで表示</translation>
@@ -68,15 +70,16 @@
 <translation id="2715839724138372481">選択された動画</translation>
 <translation id="4227945450504703638">選択された音声</translation>
 <translation id="7895302206188277628">リンクされたコンテンツ</translation>
-<translation id="4322612543319315652">選択したテキストをIPFSにインポート</translation>
-<translation id="8883166554766780543">インポートしてリンクをIPFSスナップショットにコピー</translation>
 <translation id="3654831858282189202">IPNSキーで公開</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">選択したテキストをIPFSにインポート</translation>
+<translation id="6925604404524625582">インポートしてリンクをIPFSスナップショットにコピー</translation>
 <translation id="1434416574322382019">新しいプライベートウィンドウ+Tor</translation>
 <translation id="4703780849509456860">トーアのプライベートウィンドウでリンクを開く</translation>
 <translation id="3488584642074079080">Braveプライベートウィンドウ+Tor でリンクを開く</translation>
 <translation id="7475547933708221517">IPFSを使用してローカルファイルを共有</translation>
 <translation id="2286177249736199435">IPFSを使用してローカルフォルダを共有</translation>
+<translation id="8883166554766780543">インポートしてリンクをIPFSスナップショットにコピー</translation>
 <translation id="784573715436258741">IPFSを使用してローカルファイルを共有</translation>
 <translation id="6313675821927505581">Torで新しいプライベートウィンドウを開く</translation>
 <translation id="2638041073279639246">Torのプライベートウィンドウでリンクを開きます</translation>
@@ -192,6 +195,13 @@
 <translation id="7611728475758612204">公開用キーを利用可能</translation>
 <translation id="911363100236037920">新しいキーの名前を入力</translation>
 <translation id="6358469157239228181">この名前は使用できません</translation>
+<translation id="5761731140570209168">ピア接続文字列を新規追加</translation>
+<translation id="6476061084931271248">変更を適用するにはノードを再起動します</translation>
+<translation id="3754226427671882382">ノードを再起動</translation>
+<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
+<translation id="724513921936768901">この名前は無効です</translation>
+<translation id="6758961763875471084">ピアリストを修正</translation>
+<translation id="1534091531114892221">IPFSピアの説明を設定</translation>
 <translation id="8996633027318264334"><ph name="KEY_NAME"/>を削除しますか？</translation>
 <translation id="910215077892371264">ノードが起動されていません</translation>
 <translation id="616058968889448209">IPFSサービス起動エラー。詳細は<ph name="BEGIN_LINK"/>診断ページ<ph name="END_LINK"/>を参照</translation>
@@ -287,9 +297,15 @@
 <translation id="7060352228894039151">マウスオーバーで</translation>
 <translation id="407173827865827707">クリックされた場合のみ</translation>
 <translation id="7961015016161918242">使用しない</translation>
+<translation id="8981254605840444865">設定を表示</translation>
 <translation id="59174027418879706">有効</translation>
 <translation id="8258999165172757081">追加されました</translation>
 <translation id="6959315322491671328">右クリックして削除</translation>
+<translation id="4651504163033753423">Speedreaderをオンにしますか？</translation>
+<translation id="9089090017461255038">Speedreaderをオンにする</translation>
+<translation id="312393675740711187">記事が自動的にリーダーモードで読み込まれるため、時間を節約できます。</translation>
+<translation id="3234744217174488546">このウェブサイトでのみリーダーモードをオン/オフにします。ブラウザのプロファイル全体でSpeedreaderをオフにするには、次へ移動します:</translation>
+<translation id="7839742507462737706">: Speedreaderオン</translation>
 <translation id="1872784258300710671">Braveは完全に匿名の製品分析を使い、特定の機能が全体でどの程度使われているか予測します</translation>
 <translation id="8712637175834984815">閉じる</translation>
 <translation id="4394049700291259645">無効にする</translation>
@@ -320,4 +336,6 @@
 <translation id="2808630562319398131">Brave Rewardsデータをリセット...</translation>
 <translation id="1224064034972923114">クラッシュ報告を自動送信して、Braveの改善を支援してください</translation>
 <translation id="3738833060602717053">クラッシュ報告を自動送信して、<ph name="PRODUCT_NAME"/> Braveの改善を支援してください</translation>
+<translation id="81720820779436751">Braveは、利用可能な場合はウェブサイトのオニオンサービスを開くか、またはTorウィンドウで.onionドメインを開きます</translation>
+<translation id="4322612543319315652">選択したテキストをIPFSにインポート</translation>
 </translationbundle>

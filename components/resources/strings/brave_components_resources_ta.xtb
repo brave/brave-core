@@ -4,6 +4,7 @@
 <translation id="2079545284768500474">செயல்தவிர்</translation>
 <translation id="6040143037577758943">மூடு</translation>
 <translation id="7108338896283013870">மறை</translation>
+<translation id="8522669544471808198">பின்னணி படங்களை காட்டு</translation>
 <translation id="604124094241169006">தானியங்கு</translation>
 <translation id="5313967007315987356">தளத்தைச் சேர்</translation>
 <translation id="5052499409147950210">தளத்தைத் திருத்து</translation>
@@ -12,6 +13,8 @@
 <translation id="5327248766486351172">பெயர்</translation>
 <translation id="5317780077021120954">சேமி</translation>
 <translation id="7658239707568436148">ரத்து செய்</translation>
+<translation id="3870475560794762985">ஆதரவளிக்கப்பட்ட படங்களை காட்டு</translation>
+<translation id="3333887201479867589">பிரேவ் வெகுமதிகள்</translation>
 <translation id="385051799172605136">முந்தைய பக்கம்</translation>
 <translation id="780301667611848630">தேவையில்லை</translation>
 <translation id="8890516388109605451">மூலங்கள்</translation>
@@ -34,6 +37,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6965382102122355670">சரி</translation>
+<translation id="2359808026110333948">தொடர்க</translation>
 <translation id="6643016212128521049">அழி</translation>
 <translation id="583281660410589416">தெரியாதது</translation>
 <translation id="7375125077091615385">வகை:</translation>
@@ -47,12 +51,14 @@
 <translation id="7180611975245234373">புதுப்பி</translation>
 <translation id="4309915981827077375">பொதுவான தகவல்</translation>
 <translation id="8874184842967597500">இணைக்கப்படவில்லை</translation>
-<translation id="2359808026110333948">தொடர்க</translation>
+<translation id="2070991379950719711">பிரேவ் வெகுமதிகளை பயன்படுத்த ஆரம்பி</translation>
 <translation id="8281886186245836920">தவிர்</translation>
+<translation id="7930505144430343145">பிரேவ் வெகுமதிகளைக்கு வருக!</translation>
 <translation id="4918086044614829423">ஏற்கிறேன்</translation>
 <translation id="3587482841069643663">அனைத்தும்</translation>
 <translation id="2631006050119455616">சேமிக்கப்பட்டது</translation>
 <translation id="3819257035322786455">மறுபிரதி</translation>
+<translation id="8804164990146287819">தனியுரிமை கொள்கை</translation>
 <translation id="6896758677409633944">நகலெடு</translation>
 <translation id="3866249974567520381">விவரம்</translation>
 <translation id="4522570452068850558">விவரங்கள்</translation>
@@ -65,6 +71,7 @@
 <translation id="8428213095426709021">அமைப்புகள்</translation>
 <translation id="1963227389609234879">அனைத்தையும் அகற்று</translation>
 <translation id="923467487918828349">அனைத்தும் காண்பி</translation>
+<translation id="9200453331904391567">பிரேவ் வெகுமதிகளிலிருந்து இணைப்பை துண்டி</translation>
 <translation id="2356070529366658676">கேள்</translation>
 <translation id="2501278716633472235">திரும்பிச் செல்</translation>
 <translation id="2903493209154104877">முகவரிகள்</translation>
