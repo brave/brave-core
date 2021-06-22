@@ -158,4 +158,5 @@
     <color name="wallet_asset_graph_color">#12A378</color>
     
     <color name="vpn_callout_bg_color">#381E85</color>
+    <color name="brave_plan_bg">#27155E</color>
 </resources>

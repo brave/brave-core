@@ -8,11 +8,14 @@
 package org.chromium.chrome.browser.vpn;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.Ikev2VpnProfile;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
+
+import org.chromium.chrome.browser.vpn.BraveVpnPlansActivity;
 
 public class BraveVpnUtils {
     public static boolean isVPNConnected(Context context) {
@@ -39,5 +42,11 @@ public class BraveVpnUtils {
             return true;
         }
         return false;
+    }
+
+    public static void openBraveVpnPlansActivity(Context context) {
+        Intent braveVpnPlanIntent = new Intent(context, BraveVpnPlansActivity.class);
+        braveVpnPlanIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        context.startActivity(braveVpnPlanIntent);
     }
 }

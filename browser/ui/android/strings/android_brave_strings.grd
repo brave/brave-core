@@ -2000,6 +2000,45 @@ until they verify, or until 90 days have passed.
     <message name="IDS_VPN_MODAL_TEXT_4" desc="VPN modal text">
       24/7 support
     </message>
+    <message name="IDS_BLOCK_ADS" desc="Brave VPN plan text">
+      Block ads &amp; trackers on network 
+    </message>
+    <message name="IDS_ACROSS_ALL_APPS" desc="Brave VPN plan text">
+      Works across all apps 
+    </message>
+    <message name="IDS_KEEP_YOUR_IP_ADDRESS" desc="Brave VPN plan text">
+      Keep your IP address secret
+    </message>
+    <message name="IDS_TRIAL_TEXT" desc="Brave VPN plan text">
+      All plans include a free 7-day trial!
+    </message>
+    <message name="IDS_MONTHLY_SUBSCRIPTION" desc="Brave VPN plan text">
+      Monthly subscription
+    </message>
+    <message name="IDS_RENEWS_MONTHLY" desc="Brave VPN plan text">
+      Renews monthly
+    </message>
+    <message name="IDS_MONTHLY_SUBSCRIPTION_AMOUNT" desc="Brave VPN plan text">
+      &#36;9.99 / mo.
+    </message>
+    <message name="IDS_ONE_YEAR" desc="Brave VPN plan text">
+      One Year
+    </message>
+    <message name="IDS_RENEW_MONTHLY_SAVE" desc="Brave VPN plan text">
+      Renew annually save 16%
+    </message>
+    <message name="IDS_YEAR_SUBSCRIPTION_AMOUNT" desc="Brave VPN plan text">
+      &#36;99.99 / yr.
+    </message>
+    <message name="IDS_YEAR_SUBSCRIPTION_OLD_AMOUNT" desc="Brave VPN plan text">
+      &#36;119.88
+    </message>
+    <message name="IDS_BRAVE_VPN_RENEWAL_TEXT" desc="Brave VPN plan text">
+      Try free for 7 days. After 7 days, you will be charged the plan price. All subscriptions are auto-renewed but can be cancelled before renawal.
+    </message>
+    <message name="IDS_TRY_FOR_FREE" desc="Brave VPN plan text">
+      Try for FREE
+    </message>
     </messages>
   </release>
 </grit>

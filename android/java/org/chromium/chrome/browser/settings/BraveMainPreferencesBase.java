@@ -55,6 +55,8 @@ public class BraveMainPreferencesBase
     private static final String PREF_ABOUT_SECTION = "about_section";
 
     // prefs
+
+    private static final String PREF_BRAVE_VPN_CALLOUT = "pref_vpn_callout";
     private static final String PREF_STANDARD_SEARCH_ENGINE = "standard_search_engine";
     private static final String PREF_PRIVATE_SEARCH_ENGINE = "private_search_engine";
     private static final String PREF_BACKGROUND_VIDEO_PLAYBACK = "background_video_playback";
@@ -74,6 +76,7 @@ public class BraveMainPreferencesBase
     private static final String PREF_ABOUT_CHROME = "about_chrome";
     private static final String PREF_BACKGROUND_IMAGES = "backgroud_images";
     private static final String PREF_BRAVE_REWARDS = "brave_rewards";
+    private static final String PREF_BRAVE_VPN = "brave_vpn";
     private static final String PREF_HOMEPAGE = "homepage";
     private static final String PREF_USE_CUSTOM_TABS = "use_custom_tabs";
     private static final String PREF_LANGUAGES = "languages";
@@ -167,10 +170,13 @@ public class BraveMainPreferencesBase
     private void rearrangePreferenceOrders() {
         int firstSectionOrder = 0;
 
-        findPreference(PREF_FEATURES_SECTION).setOrder(firstSectionOrder);
+        findPreference(PREF_BRAVE_VPN_CALLOUT).setOrder(firstSectionOrder);
+
+        findPreference(PREF_FEATURES_SECTION).setOrder(++firstSectionOrder);
 
         findPreference(PREF_SHIELDS_AND_PRIVACY).setOrder(++firstSectionOrder);
         findPreference(PREF_BRAVE_REWARDS).setOrder(++firstSectionOrder);
+        findPreference(PREF_BRAVE_VPN).setOrder(++firstSectionOrder);
 
         int generalOrder = firstSectionOrder;
         findPreference(PREF_GENERAL_SECTION).setOrder(++generalOrder);
