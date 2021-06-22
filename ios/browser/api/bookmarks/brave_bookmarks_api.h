@@ -104,8 +104,7 @@ OBJC_EXPORT
 NS_SWIFT_NAME(BraveBookmarksAPI)
 OBJC_EXPORT
 @interface BraveBookmarksAPI : NSObject
-@property(class, readonly, getter = sharedBookmarksAPI)
-    BraveBookmarksAPI* shared;
+- (instancetype)init NS_UNAVAILABLE;
 @property(nonatomic, nullable, readonly) IOSBookmarkNode* rootNode;
 @property(nonatomic, nullable, readonly) IOSBookmarkNode* otherNode;
 @property(nonatomic, nullable, readonly) IOSBookmarkNode* mobileNode;
@@ -115,6 +114,8 @@ OBJC_EXPORT
 
 - (id<BookmarkModelListener>)addObserver:(id<BookmarkModelObserver>)observer;
 - (void)removeObserver:(id<BookmarkModelListener>)observer;
+
+- (instancetype)init NS_UNAVAILABLE;
 
 - (nullable IOSBookmarkNode*)createFolderWithTitle:(NSString*)title;
 - (nullable IOSBookmarkNode*)createFolderWithParent:(IOSBookmarkNode*)parent

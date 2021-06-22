@@ -10,6 +10,7 @@
 #include "base/compiler_specific.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/app/brave_main_delegate.h"
+#include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
 #include "brave/ios/browser/brave_web_client.h"
@@ -18,11 +19,13 @@
 #include "ios/chrome/app/startup/provider_registration.h"
 #include "ios/chrome/app/startup_tasks.h"
 #include "ios/chrome/browser/application_context.h"
+#include "ios/chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/history/web_history_service_factory.h"
 #include "ios/chrome/browser/sync/profile_sync_service_factory.h"
+#include "ios/chrome/browser/undo/bookmark_undo_service_factory.h"
 #include "ios/public/provider/chrome/browser/chrome_browser_provider.h"
 #include "ios/web/public/init/web_main.h"
 
@@ -33,6 +36,7 @@
   ChromeBrowserState* _mainBrowserState;
 }
 
+@property(nonatomic, readwrite) BraveBookmarksAPI* bookmarksAPI;
 @property(nonatomic, readwrite) BraveHistoryAPI* historyAPI;
 @property(nonatomic, readwrite) BraveSyncProfileServiceIOS* syncProfileService;
 
@@ -115,6 +119,20 @@
 
 - (void)setUserAgent:(NSString*)userAgent {
   _webClient->SetUserAgent(base::SysNSStringToUTF8(userAgent));
+}
+
+- (BraveBookmarksAPI*)bookmarksAPI {
+  if (!_bookmarksAPI) {
+    bookmarks::BookmarkModel* bookmark_model_ =
+        ios::BookmarkModelFactory::GetForBrowserState(_mainBrowserState);
+    BookmarkUndoService* bookmark_undo_service_ =
+        ios::BookmarkUndoServiceFactory::GetForBrowserState(_mainBrowserState);
+
+    _bookmarksAPI = [[BraveBookmarksAPI alloc]
+        initWithBookmarkModel:bookmark_model_
+          bookmarkUndoService:bookmark_undo_service_];
+  }
+  return _bookmarksAPI;
 }
 
 - (BraveHistoryAPI*)historyAPI {
