@@ -16,7 +16,7 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.infobar.InfoBarIdentifier;
-import org.chromium.chrome.browser.sync.ProfileSyncService;
+import org.chromium.chrome.browser.sync.SyncService;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.ui.messages.infobar.BraveSimpleConfirmInfoBarBuilder;
 import org.chromium.chrome.browser.ui.messages.infobar.SimpleConfirmInfoBarBuilder;
@@ -49,7 +49,7 @@ public class BraveAndroidSyncDisabledInformer {
             return;
         }
 
-        boolean brave_sync_is_enabled = ProfileSyncService.get().isFirstSetupComplete();
+        boolean brave_sync_is_enabled = SyncService.get().isFirstSetupComplete();
         boolean android_system_sync_disabled = !ContentResolver.getMasterSyncAutomatically();
 
         if (!brave_sync_is_enabled || !android_system_sync_disabled) {
