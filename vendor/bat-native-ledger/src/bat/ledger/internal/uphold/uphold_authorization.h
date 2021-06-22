@@ -25,12 +25,12 @@ class UpholdAuthorization {
   ~UpholdAuthorization();
 
   void Authorize(const base::flat_map<std::string, std::string>& args,
-                 ledger::ExternalWalletAuthorizationCallback callback);
+                 ledger::ExternalWalletAuthorizationCallback callback) const;
 
  private:
   void OnAuthorize(const type::Result result,
                    const std::string& token,
-                   ledger::ExternalWalletAuthorizationCallback callback);
+                   ledger::ExternalWalletAuthorizationCallback callback) const;
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::UpholdServer> uphold_server_;
