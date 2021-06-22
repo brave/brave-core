@@ -31,7 +31,7 @@ class UpholdWallet {
                  ledger::ResultCallback callback) const;
 
   void OnCreateCard(const type::Result result,
-                    const std::string& address,
+                    const std::string& id,
                     ledger::ResultCallback callback) const;
 
   void GetAnonFunds(
@@ -39,15 +39,15 @@ class UpholdWallet {
 
   void OnGetAnonFunds(const type::Result result,
                       type::BalancePtr balance,
-                      const std::string& address,
+                      const std::string& id,
                       ledger::ResultCallback callback) const;
 
   void LinkWallet(const double user_funds,
-                  const std::string& address,
+                  const std::string& id,
                   endpoint::promotion::PostClaimUpholdCallback callback) const;
 
   void OnLinkWallet(const type::Result result,
-                    const std::string& address,
+                    const std::string& id,
                     ledger::ResultCallback callback) const;
 
   void OnTransferTokens(const type::Result result,
