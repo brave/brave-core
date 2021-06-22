@@ -322,3 +322,19 @@
 -keep class org.chromium.chrome.browser.omnibox.status.BraveStatusMediator {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.feed.FeedSurfaceCoordinator {
+    *** mScrollViewForPolicy;
+    *** mNtpHeader;
+    *** mRootView;
+    *** isEnhancedProtectionPromoEnabled(...);
+    *** isReliabilityLoggingEnabled(...);
+}
+
+-keep class org.chromium.chrome.browser.feed.BraveFeedSurfaceCoordinator {
+    *** mScrollViewForPolicy;
+    *** mNtpHeader;
+    *** mRootView;
+    *** isEnhancedProtectionPromoEnabled(...);
+    *** isReliabilityLoggingEnabled(...);
+}
