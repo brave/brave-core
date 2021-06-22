@@ -33,4 +33,11 @@ public class BraveVpnUtils {
         Ikev2VpnProfile.Builder builder = new Ikev2VpnProfile.Builder("Server Url", "identity");
         return builder.setAuthUsernamePassword("username", "password", null).build();
     }
+
+    public static boolean isBraveVpnFeatureEnable() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return true;
+        }
+        return false;
+    }
 }

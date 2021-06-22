@@ -83,11 +83,9 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
         MenuItem requestMenuRow = menu.findItem(R.id.request_brave_vpn_row_menu_id);
         MenuItem requestMenuLabel = menu.findItem(R.id.request_brave_vpn_id);
         MenuItem requestMenuCheck = menu.findItem(R.id.request_brave_vpn_check_id);
-        // MenuItem braveVpnDividerLine = menu.findItem(R.id.divider_line_id);
 
-        boolean itemVisible = canShowRequestBraveVpn;
+        boolean itemVisible = BraveVpnUtils.isBraveVpnFeatureEnable();
         requestMenuRow.setVisible(itemVisible);
-        // braveVpnDividerLine.setVisible(itemVisible);
         if (!itemVisible) return;
 
         requestMenuCheck.setChecked(BraveVpnUtils.isVPNConnected(mContext));
