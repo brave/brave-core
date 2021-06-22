@@ -7,6 +7,7 @@
 
 namespace brave_wallet {
 
-const char kAssetRatioServer[] = "https://bat-ratios.herokuapp.com/";
+const char kAssetRatioBaseURL[] = "https://bat-ratios.herokuapp.com/";
+const char kSwapBaseURL[] = "https://api.0x.org/";
 
 }  // namespace brave_wallet

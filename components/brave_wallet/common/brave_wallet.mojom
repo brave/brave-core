@@ -74,6 +74,39 @@ struct AssetTimePrice {
   string price;
 };
 
+struct SwapParams {
+  string taker_address;
+  string sell_amount;
+  string buy_amount;
+  string buy_token;
+  string sell_token;
+  double buy_token_percentage_fee;
+  double slippage_percentage;
+  string fee_recipient;
+  string gas_price;
+};
+
+struct SwapResponse {
+  string price;
+  string guaranteed_price; // Unused for price quote response
+  string to;   // Unused for price quote response
+  string data; // Unused for price quote response
+  string value;
+  string gas;
+  string estimated_gas;
+  string gas_price;
+  string protocol_fee;
+  string minimum_protocol_fee;
+  string buy_token_address;
+  string sell_token_address;
+  string buy_amount;
+  string sell_amount;
+  string allowance_target;
+  string sell_token_to_eth_rate;
+  string buy_token_to_eth_rate;
+  // Note we could also expose "sources" later
+};
+
 // Browser-side handler for common panel / page things
 interface WalletHandler {
   GetWalletInfo() => (bool isWalletCreated, bool isWalletLocked,

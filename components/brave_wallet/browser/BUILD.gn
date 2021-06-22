@@ -60,6 +60,10 @@ source_set("browser") {
     "rlp_decode.h",
     "rlp_encode.cc",
     "rlp_encode.h",
+    "swap_controller.cc",
+    "swap_controller.h",
+    "swap_response_parser.cc",
+    "swap_response_parser.h",
   ]
 
   deps = [

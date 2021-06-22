@@ -62,7 +62,7 @@ GURL AssetRatioController::GetPriceURL(const std::string& asset) {
   passthrough = net::EscapeQueryParamValue(passthrough, false);
   std::string spec = base::StringPrintf("%sv2/coingecko/passthrough?path=%s",
                                         base_url_for_test_.is_empty()
-                                            ? kAssetRatioServer
+                                            ? kAssetRatioBaseURL
                                             : base_url_for_test_.spec().c_str(),
                                         passthrough.c_str());
   return GURL(spec);
@@ -98,7 +98,7 @@ GURL AssetRatioController::GetPriceHistoryURL(
   }
   std::string spec = base::StringPrintf("%sv2/history/coingecko/%s/usd/%s",
                                         base_url_for_test_.is_empty()
-                                            ? kAssetRatioServer
+                                            ? kAssetRatioBaseURL
                                             : base_url_for_test_.spec().c_str(),
                                         asset.c_str(), timeframe_key.c_str());
   return GURL(spec);

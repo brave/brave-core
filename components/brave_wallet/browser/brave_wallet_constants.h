@@ -26,7 +26,8 @@ enum class Network {
   kCustom,
 };
 
-extern const char kAssetRatioServer[];
+extern const char kAssetRatioBaseURL[];
+extern const char kSwapBaseURL[];
 
 }  // namespace brave_wallet
 
