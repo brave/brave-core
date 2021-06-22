@@ -7,11 +7,13 @@
 
 #include <string>
 
+#include "base/feature_list.h"
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/components/speedreader/features.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/themes/theme_properties.h"
@@ -51,6 +53,11 @@ SpeedreaderIconView::~SpeedreaderIconView() {
 }
 
 void SpeedreaderIconView::UpdateImpl() {
+  if (!base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
+    SetVisible(false);
+    return;
+  }
+
   auto* contents = GetWebContents();
   if (!contents || !contents->GetLastCommittedURL().SchemeIsHTTPOrHTTPS()) {
     SetVisible(false);

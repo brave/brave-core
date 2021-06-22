@@ -96,15 +96,17 @@ void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
 
       const bool speedreader_enabled = tab_helper->IsSpeedreaderEnabled();
       const DistillState state = tab_helper->PageDistillState();
-      if (state == DistillState::kNone) {
-        // If this is called on an undistilled page, we single shot it.
-        tab_helper->SingleShotSpeedreader();
-      }
 
       if (state == DistillState::kSpeedreaderMode) {
         tab_helper->ShowSpeedreaderBubble();
+      } else if (state == DistillState::kReaderMode) {
+        tab_helper->ShowReaderModeBubble();
       } else {
+        // If this is called on an undistilled page, we single shot it.
+        tab_helper->SingleShotSpeedreader();
         if (speedreader_enabled && !tab_helper->IsEnabledForSite()) {
+          // Speedreader is enabled. Allow the user to remove this site from the
+          // blacklist.
           tab_helper->ShowSpeedreaderBubble();
         } else {
           tab_helper->ShowReaderModeBubble();
