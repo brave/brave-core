@@ -13,5 +13,6 @@ extern const char kBraveWalletEncryptedMnemonic[];
 extern const char kBraveWalletDefaultKeyringAccountNum[];
 extern const char kShowWalletIconOnToolbar[];
 extern const char kBraveWalletBackupComplete[];
+extern const char kBraveWalletLastUnlockTime[];
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_

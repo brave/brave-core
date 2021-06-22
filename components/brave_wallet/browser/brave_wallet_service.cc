@@ -40,6 +40,7 @@ void BraveWalletService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kBraveWalletDefaultKeyringAccountNum, 0);
   registry->RegisterBooleanPref(kShowWalletIconOnToolbar, true);
   registry->RegisterBooleanPref(kBraveWalletBackupComplete, false);
+  registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
 }
 
 brave_wallet::EthJsonRpcController* BraveWalletService::rpc_controller() const {

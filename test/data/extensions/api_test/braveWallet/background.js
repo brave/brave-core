@@ -152,6 +152,7 @@ function testBasics() {
     function braveWalletExtensionHasAccess() {
       if (chrome.braveWallet &&
           chrome.braveWallet.shouldPromptForSetup &&
+          chrome.braveWallet.notifyWalletUnlock &&
           chrome.braveWallet.loadUI &&
           chrome.braveWallet.promptToEnableWallet) {
         chrome.test.succeed();

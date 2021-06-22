@@ -15,10 +15,12 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
+#include "base/time/time.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/third_party/ethash/src/include/ethash/keccak.h"
 #include "brave/vendor/bip39wally-core-native/include/wally_bip39.h"
+#include "components/prefs/pref_service.h"
 #include "crypto/random.h"
 #include "third_party/boringssl/src/include/openssl/evp.h"
 
@@ -373,6 +375,14 @@ void SecureZeroData(void* data, size_t size) {
   for (size_t i = 0; i < size; i++)
     d[i] = 0;
 #endif
+}
+
+// Updates preferences for when the wallet is unlocked.
+// This is done in a utils function instead of in the KeyringController
+// because we call it both from the old extension and the new wallet when
+// it unlocks.
+void UpdateLastUnlockPref(PrefService* prefs) {
+  prefs->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
 }
 
 }  // namespace brave_wallet

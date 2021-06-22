@@ -12,6 +12,8 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 
+class PrefService;
+
 namespace brave_wallet {
 
 bool IsNativeWalletEnabled();
@@ -73,6 +75,12 @@ std::string Namehash(const std::string& name);
 // for security reason, compiler optimizer can remove such call.
 // So we use our own function for this purpose.
 void SecureZeroData(void* data, size_t size);
+
+// Updates preferences for when the wallet is unlocked.
+// This is done in a utils function instead of in the KeyringController
+// because we call it both from the old extension and the new wallet when
+// it unlocks.
+void UpdateLastUnlockPref(PrefService* prefs);
 
 }  // namespace brave_wallet
 

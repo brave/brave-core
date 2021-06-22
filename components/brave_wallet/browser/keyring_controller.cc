@@ -130,6 +130,7 @@ bool KeyringController::Unlock(const std::string& password) {
     return false;
   }
 
+  UpdateLastUnlockPref(prefs_);
   return true;
 }
 
@@ -205,6 +206,7 @@ bool KeyringController::CreateDefaultKeyringInternal(
     return false;
   default_keyring_ = std::make_unique<HDKeyring>();
   default_keyring_->ConstructRootHDKey(*seed, "m/44'/60'/0'/0");
+  UpdateLastUnlockPref(prefs_);
 
   return true;
 }
