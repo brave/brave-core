@@ -3,7 +3,9 @@
 <translationbundle lang="ko">
 <translation id="7307834434086582547">Brave Shields 활성화/비활성화</translation>
 <translation id="3570081523466826008">연결을 HTTPS로 업그레이드</translation>
+<translation id="2278950434998763147">일부 웹사이트를 일반 HTTP 대신 보안 HTTPS를 사용하여 엽니다.</translation>
 <translation id="94154759592465111">스크립트 차단</translation>
+<translation id="3518266709656143462">자바스크립트 차단(사이트가 깨질 수 있음)</translation>
 <translation id="5709627087332022422">사이트 간 추적기 차단</translation>
 <translation id="6052725679982758334">소셜 미디어 차단</translation>
 <translation id="7498695072878479744">타사 사이트에서 Google 로그인 버튼 허용</translation>
@@ -11,9 +13,16 @@
 <translation id="5165042248369837294">Twitter 내장 트윗을 허용합니다</translation>
 <translation id="958971637207126733">LinkedIn 내장 포스트 허용</translation>
 <translation id="6302422639282249274">Brave Rewards 관리</translation>
+<translation id="8877432762827303535">온라인 결제</translation>
+<translation id="6583902294974160967">지원</translation>
+<translation id="1799030480311994998">기능</translation>
+<translation id="5345505584130165588">Brave Shields 및 프라이버시</translation>
+<translation id="4692623383562244444">검색 엔진</translation>
 <translation id="1468415711258933398">일반 탭</translation>
 <translation id="3377025655491224618">시크릿 탭</translation>
 <translation id="9148058034647219655">나가기</translation>
+<translation id="4022987104439075738">IPFS 게이트웨이</translation>
+<translation id="2688519859165248360">IPFS 게이트웨이를 통한 IPFS 리소스 탐색 허용</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">해결 방법</translation>
@@ -23,9 +32,11 @@
 <translation id="1448289340149908413">이더리움</translation>
 <translation id="5787084571334399599">브라우저의 지문 채취를 방지</translation>
 <translation id="7459000603787995422">나갈 때 탭 닫기</translation>
+<translation id="4448697385961650078">트래커 &amp; 광고 차단</translation>
+<translation id="2448893613530489637">웹페이지를 로드하여 표시할 때 트래커 및 광고 차단</translation>
 <translation id="1680858055899097121">브라우징 세션 간에 탭을 유지하지 마십시오</translation>
-<translation id="7142548388914389999">비밀이 완전히 보장되는 제품 애널리틱스를 자동으로 Brave에 전송합니다</translation>
-<translation id="5469408008145872264">이 익명 정보는 Brave가 특정 기능의 전체 사용량을 추정하는 데만 사용됩니다.</translation>
+<translation id="7142548388914389999">프라이버시 보호 제품 분석(P3A) 허용</translation>
+<translation id="5469408008145872264">이 완전히 자동화된 정보를 통해 Brave가 특정 기능의 총 사용량을 산정하고 맞춤 구성합니다.</translation>
 <translation id="7977176350719484850">절약 예상\n데이터량</translation>
 <translation id="9008534313521214777">시간\n절약됨</translation>
 <translation id="6572660632052512096">데스크톱 모드</translation>
@@ -35,6 +46,9 @@
 <translation id="4479934682648362332">데스크톱 버전 사이트 선호</translation>
 <translation id="1842747674580016420">Brave에서 비디오 녹화 재생</translation>
 <translation id="5368992950177874750">사용 시 동영상이 대응하는 앱 대신 Brave에서 재생됩니다</translation>
+<translation id="181905442828471321">Brave Shields 전역 기본값</translation>
+<translation id="2675679258824361492">기타 프라이버시 설정</translation>
+<translation id="8026334261755873520">인터넷 사용 기록 삭제</translation>
 <translation id="5965081608816406060">백그라운드 동영상 재생</translation>
 <translation id="6332924730165919598">모든 탭을 닫으면 Brave를 닫습니다</translation>
 <translation id="1580125697191336644">실험 기능. 탭이 활성화 상태가 아니거나 기기 화면이 꺼져 있을 때 백그라운드에서 동영상의 소리를 재생합니다. 이 기능이 작동하지 않으면 데스크톱 모드로 전환해 보세요.</translation>
@@ -108,8 +122,8 @@
 <translation id="8428213095426709021">설정</translation>
 <translation id="8772672608371898774">Brave가 인증한 출판자</translation>
 <translation id="1397683270551078781">아직 인증되지 않음</translation>
-<translation id="5727208111992260840">이 크리에이터는 아직 Brave 사용자로부터의 후원금 수령을 위한 등록을 하지 않았습니다.
-        보내시는 모든 팁은 크리에이터가 인증할 때까지 지갑에 남습니다.</translation>
+<translation id="880893465294676334">이 Brave Verified Creator는 아직 계정을 구성하지 않아 Brave 사용자로부터 기부금을 받을 수 없습니다.
+        이 프로세스가 완료되기 전에는 보내신 팁이 귀하의 지갑에 남아 있게 됩니다.</translation>
 <translation id="8918760045046434238">팁 보내기...</translation>
 <translation id="1978261665418056203">이번 달에는 아직 
 활동이 없음...</translation>
@@ -215,10 +229,7 @@
 <translation id="7541582550122501404">보류 중인 기부금</translation>
 <translation id="8520059774736886747">제작자 <ph name="PUBLISHER_NAME"/> 최근에 확인됨</translation>
 <translation id="7924320838799747606">내 잔액</translation>
-<translation id="9212459913845238740">포인트 적립 신청됨</translation>
-<translation id="2132683977638223450">무료 포인트 적립</translation>
 <translation id="1486343603936278248">토큰</translation>
-<translation id="8713995420537272453">포인트</translation>
 <translation id="7781069478569868053">새 탭 페이지</translation>
 <translation id="8522669544471808198">배경 이미지 표시</translation>
 <translation id="3870475560794762985">스폰서 이미지 표시</translation>
@@ -261,6 +272,8 @@
 <translation id="9132378787893584761">친구들과 Brave를 공유하세요!</translation>
 <translation id="717952606991220586">이런, 뭔가 잘못되었습니다. 나중에 다시 시도해 주세요.</translation>
 <translation id="2524310205387880526">Brave 평가</translation>
+<translation id="987264212798334818">일반</translation>
+<translation id="1116694919640316211">정보</translation>
 <translation id="6680650203439190394">요율</translation>
 <translation id="2635089463885398597">Brave에 대한 경험을 어떻게 평가하시겠습니까?</translation>
 <translation id="141901961143729572">생각을 공유하세요</translation>
@@ -275,15 +288,19 @@
 <translation id="1465733111003593696">이 이미지를 보기 위해 토큰을 획득하고 있습니다.</translation>
 <translation id="7877201489035217175">스폰서 이미지에 대해 자세히 알아보기</translation>
 <translation id="828092975561478703">스폰서 이미지를 볼 때마다 수익의 70%를 토큰으로 받습니다. Brave 광고를 통해 항상 표시되는 광고를 관리할 수 있습니다.</translation>
+<translation id="3624048886326677117">트래커 및 광고 차단(공격적)</translation>
+<translation id="7151914815476509258">트래커 및 광고 차단(표준)</translation>
+<translation id="7384778069178817075">모든 트래커 &amp; 광고 허용</translation>
 <translation id="4941539331405513605">교차 사이트 쿠키 차단</translation>
 <translation id="3763681089644577874">쿠키 차단</translation>
 <translation id="614747795780742163">웹사이트가 이전 방문에 대한 정보를 저장하지 못하도록 합니다</translation>
 <translation id="6883611015375728278">모든 쿠키 차단</translation>
 <translation id="5657156137487675418">모든 쿠키 허용</translation>
 <translation id="3895527457258986253">지문 차단</translation>
+<translation id="7854108565842971747">새 사이트에 적용되는 기본 Shields 설정이 있습니다. 설정을 변경해도 기존 사이트별 설정에는 영향을 주지 않습니다.</translation>
 <translation id="184568144098869637">브라우저가 귀하의 기기를 인식하지 못하도록 방지</translation>
-<translation id="7445306466605902444">지문 차단 (엄격, 사이트 장애 발생 가능)</translation>
-<translation id="5582686930349810484">지문 차단 (표준)</translation>
+<translation id="7445306466605902444">지문 차단됨 (엄격, 사이트가 작동하지 않을 수 있음)</translation>
+<translation id="5582686930349810484">지문 차단됨 (표준)</translation>
 <translation id="769702552748212954">모든 지문 인식 허용</translation>
 <translation id="876424292214881779">광고 및 기타 불쾌한 것 차단됨</translation>
 <translation id="6930134873084561197">사이트에는 종종 사용자와 사용자의 기기를 식별하는 쿠키 및 스크립트가 포함됩니다. 그들은 사용자가 누구인지 알아내고 모든 웹사이트에서 사용자가 하는 일을 웹을 통해 추적하기를 원합니다.\n\nBrave는 이러한 것들을 차단하여 사용자는 추적을 당하지 않고 탐색할 수 있습니다.</translation>
@@ -312,7 +329,6 @@
 <translation id="5617673581653540121">이제 연결이 암호화되었습니다.</translation>
 <translation id="4055107796760496928">가능한 경우, Brave에서 자동으로 안전한 연결로 업그레이드해줍니다.</translation>
 <translation id="8869714780588464835">뉴스 공유</translation>
-<translation id="7888588008014907646">매일 Brave로 웹 브라우징을 하여 데이터를 절약하고 있어요.</translation>
 <translation id="5372054974373489308">1,000개의 트래커 및 광고가 차단되었습니다!</translation>
 <translation id="2338952568654182692">5,000개의 트래커 및 광고가 차단되었습니다!</translation>
 <translation id="5289711064670408815">10,000개의 트래커 및 광고가 차단되었습니다!</translation>
@@ -358,17 +374,19 @@
 <translation id="7427567994475794038">개인정보 보고서를 켜서 지난 3시간 동안 얼마나 많은 추적기 및 광고가 차단되었는지 확인하십시오.</translation>
 <translation id="2053891538879944400">Brave 브라우저로 <ph name="DATA"/> <ph name="DATA_TEXT"/> 데이터를 절약하셨습니다.</translation>
 <translation id="8640064498452534195">절약한 데이터 양을 보려면 개인정보 보고서를 켜십시오.</translation>
-<translation id="2252497442547961651">Brave 브라우저는 배터리를 평균적으로 40% 적게 사용합니다.&#128267;</translation>
+<translation id="2252497442547961651">Brave 브라우저는 배터리를 평균적으로 40% 적게 사용합니다.🔋</translation>
 <translation id="1945330434665345785">지난주 Brave 브라우저로 <ph name="COUNT"/> 추적기 및 광고를 차단하셨습니다.</translation>
 <translation id="2883868922264431515">개인정보 존중 광고를 시청하여 토큰을 획득하고 즐겨찾는 웹사이트를 지원하십시오.</translation>
-<translation id="5678925890616256956">멋져요! Brave 브라우저로 250개의 트래커와 광고를 차단했습니다.&#128293;</translation>
-<translation id="9199047775708635708">멋져요! Brave 브라우저로 10MB를 절약했습니다.&#128267;</translation>
-<translation id="1880168210969863408">멋져요! Brave 브라우저로 로딩 시간 10분을 절약했습니다. &#128168; &#128168;</translation>
+<translation id="5678925890616256956">멋져요! Brave 브라우저로 250개의 트래커와 광고를 차단했습니다.🔥</translation>
+<translation id="9199047775708635708">멋져요! Brave 브라우저로 10MB를 절약했습니다.🔋</translation>
+<translation id="1880168210969863408">멋져요! Brave 브라우저로 로딩 시간 10분을 절약했습니다. 💨 💨</translation>
 <translation id="7408493389591475748">개인정보 보고를 보려면 검색 시작</translation>
 <translation id="9080777565335515917">비공개 및 보안 검색을 위한 기본 브라우저로 Brave를 설정하십시오.</translation>
 <translation id="1390943217516275883">Brave가 비공개 통계를 표시할 수 있도록 허용</translation>
 <translation id="1763352720905582220">매주 개인정보 보고서 전송</translation>
 <translation id="1811691435325545066">모든 개인정보 보고서 데이터 지우기</translation>
+<translation id="5966003059662780423">종료 시 데이터 지우기</translation>
+<translation id="3980704343258720102">모든 인터넷 사용 기록 지우기</translation>
 <translation id="8089997572759938512">개인정보 보고서를 0으로 재설정</translation>
 <translation id="2718046830255553131">개인정보 보고서 데이터가 삭제되었습니다.</translation>
 <translation id="7559243474426790340">상태 새로 고침</translation>
@@ -495,4 +513,10 @@
 <translation id="6960458596933484861">확인된 Uphold 지갑을 만들려면 최소 15BAT가 필요합니다. 다시 시도하세요.</translation>
 <translation id="4389085954549744469">이미 확인된 Uphold 계정이 있는 경우, <ph name="CONTINUE_TO_LOGIN"/>하세요.</translation>
 <translation id="6146966915297143881">로그인하여 계속</translation>
+<translation id="5727208111992260840">이 크리에이터는 아직 Brave 사용자로부터의 후원금 수령을 위한 등록을 하지 않았습니다.
+        보내시는 모든 팁은 크리에이터가 인증할 때까지 지갑에 남습니다.</translation>
+<translation id="9212459913845238740">포인트 적립 신청됨</translation>
+<translation id="2132683977638223450">무료 포인트 적립</translation>
+<translation id="8713995420537272453">포인트</translation>
+<translation id="7888588008014907646">매일 Brave로 웹 브라우징을 하여 데이터를 절약하고 있어요.</translation>
 </translationbundle>

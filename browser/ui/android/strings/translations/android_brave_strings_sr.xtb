@@ -3,7 +3,9 @@
 <translationbundle lang="sr">
 <translation id="7307834434086582547">Omogući/onemogući Brave štitove</translation>
 <translation id="3570081523466826008">Nadogradi veze u HTTPS</translation>
+<translation id="2278950434998763147">Otvara neke sajtove koristeći bezbednu HTTPS konekciju umesto HTTP.</translation>
 <translation id="94154759592465111">Blokirajte skripte</translation>
+<translation id="3518266709656143462">Blokira Javascript (može da pokvari sajtove)</translation>
 <translation id="5709627087332022422">Blokiraj višelokacijska praćenja</translation>
 <translation id="6052725679982758334">Blokiranje društvenih mreža</translation>
 <translation id="7498695072878479744">Dozvoli Google tastere za prijavljivanje na lokacijama treće strane</translation>
@@ -11,9 +13,16 @@
 <translation id="5165042248369837294">Dozvoli Twitter ugrađene tvitove</translation>
 <translation id="958971637207126733">Dozvolite ugrađene objave Linkedinu</translation>
 <translation id="6302422639282249274">Upravljajte Brave nagradama</translation>
+<translation id="8877432762827303535">Onlajn provera</translation>
+<translation id="6583902294974160967">Podrška</translation>
+<translation id="1799030480311994998">Karakteristike</translation>
+<translation id="5345505584130165588">Brave štiti &amp; privatnost</translation>
+<translation id="4692623383562244444">Pretraživači</translation>
 <translation id="1468415711258933398">Standardna kartica</translation>
 <translation id="3377025655491224618">Картице без архивирања</translation>
 <translation id="9148058034647219655">Изађи</translation>
+<translation id="4022987104439075738">IPFS mrežni prolaz</translation>
+<translation id="2688519859165248360">Dopušta navigaciju do IPFS resursa kroz IPFS mrežni prolaz</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Metoda rješavanja</translation>
@@ -23,9 +32,11 @@
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Sprečava da pregledač bude praćen</translation>
 <translation id="7459000603787995422">Zatvorite kartice pri izlazu</translation>
+<translation id="4448697385961650078">Blokiraj tragače &amp; oglase</translation>
+<translation id="2448893613530489637">Sprečava oglase &amp; tragača da se učitaju i pojavljuju na veb-sajtovima</translation>
 <translation id="1680858055899097121">Ne zadržavaj kartice između sesija pregledanja</translation>
-<translation id="7142548388914389999">Automatski pošalji potpuno privatnu analitiku proizvoda Brave-u</translation>
-<translation id="5469408008145872264">Ova anonimna informacija samo Brave-u dozvoljava da procenjuje ukupno korišćenje određenih karakteristika.</translation>
+<translation id="7142548388914389999">Dopušta analitiku proizvoda koji čuva privatnost (P3A)</translation>
+<translation id="5469408008145872264">Ova potpuno anonimna informacija pomaže Brave-u da procenjuje ukupno korišćenje određenih karakteristika i čini ih boljim za vas.</translation>
 <translation id="7977176350719484850">Procenjeni sačuvani podaci</translation>
 <translation id="9008534313521214777">Istočno standardno vreme\nsačuvano</translation>
 <translation id="6572660632052512096">Režim radne površine</translation>
@@ -35,6 +46,9 @@
 <translation id="4479934682648362332">Poželjna verzija sajtova za računare</translation>
 <translation id="1842747674580016420">Reprodukcija video zapisa u Brave-u</translation>
 <translation id="5368992950177874750">Ako je opcija omogućena, reprodukovanje video-zapisa će biti u Brave-u umesto u odgovarajućoj aplikaciji</translation>
+<translation id="181905442828471321">Brave štiti globalne podrazumevane vrednosti</translation>
+<translation id="2675679258824361492">Ostala podešavanja privatnosti</translation>
+<translation id="8026334261755873520">Обришите податке прегледања</translation>
 <translation id="5965081608816406060">Pozadinska reprodukcija video zapisa</translation>
 <translation id="6332924730165919598">Zatvaranje svih kartica zatvara Brave</translation>
 <translation id="1580125697191336644">Eksperimentalno. Omogućava reprodukciju zvuka iz video zapisa u pozadini kada kartica nije aktivna ili kada je ekran uređaja isključen. Pokušajte da pređete na režim radne površine ako ova funkcija ne radi.</translation>
@@ -108,8 +122,8 @@
 <translation id="8428213095426709021">Podešavanja</translation>
 <translation id="8772672608371898774">Objavljivač verifikovan od strane Brave-a</translation>
 <translation id="1397683270551078781">Još nije verifikovano</translation>
-<translation id="5727208111992260840">Ovaj kreator se još nije prijavio za primanje doprinosa od strane Brave korisnika.
-        Svi bakšiši koje pošaljete ostaće u vašem novčaniku sve dok oni ne budu verifikovani.</translation>
+<translation id="880893465294676334">Ovaj Brave Stvaralac Verifikacija nije još uvek konfigurisao njihove naloge da bi dobijali doprinose od Brave korisnika.
+        Svaki bakšiš koji pošaljete ostaće u vašem novčaniku dok ne završe ovaj proces.</translation>
 <translation id="8918760045046434238">Pošalji bakšiš...</translation>
 <translation id="1978261665418056203">Još nema aktivnosti ovog
 meseca...</translation>
@@ -215,10 +229,7 @@ meseca...</translation>
 <translation id="7541582550122501404">Doprinos na čekanju</translation>
 <translation id="8520059774736886747">Tvorac <ph name="PUBLISHER_NAME"/> nedavno verifikovan</translation>
 <translation id="7924320838799747606">Vaše stanje</translation>
-<translation id="9212459913845238740">Zahtevano je odobrenje poena</translation>
-<translation id="2132683977638223450">Dodeljeni besplatni poeni</translation>
 <translation id="1486343603936278248">žeton</translation>
-<translation id="8713995420537272453">tačka</translation>
 <translation id="7781069478569868053">Stranica nove kartice</translation>
 <translation id="8522669544471808198">Prikaži pozadinske slike</translation>
 <translation id="3870475560794762985">Pokaži sponzorisane slike</translation>
@@ -261,6 +272,8 @@ meseca...</translation>
 <translation id="9132378787893584761">Podelite Brave sa vašim prijateljima!</translation>
 <translation id="717952606991220586">Ups, nešto nije u redu. Molimo Vas pokušajte ponovo kasnije.</translation>
 <translation id="2524310205387880526">Ocenite Brave</translation>
+<translation id="987264212798334818">Опште</translation>
+<translation id="1116694919640316211">Основни подаци</translation>
 <translation id="6680650203439190394">Stopa</translation>
 <translation id="2635089463885398597">Kako biste ocenili svoje iskustvo sa Brave-om?</translation>
 <translation id="141901961143729572">Podelite svoja razmišljanja</translation>
@@ -275,15 +288,19 @@ meseca...</translation>
 <translation id="1465733111003593696">Zarađujete žetone za gledanje ove slike.</translation>
 <translation id="7877201489035217175">Saznajte više o sponzorisanim slikama</translation>
 <translation id="828092975561478703">Za svaku sponzorisanu sliku koju pregledate dobijate 70% prihoda u tokenima. Pomoću Brave Ads uvek imate kontrolu nad oglasima koje vidite.</translation>
+<translation id="3624048886326677117">Blokiranje oglasa &amp; tragača (agresivno)</translation>
+<translation id="7151914815476509258">Blokiranje oglasa &amp; tragača (standardno)</translation>
+<translation id="7384778069178817075">Dozvoliti sve tragače &amp; oglase</translation>
 <translation id="4941539331405513605">Blokirajte kolačiće na različitim veb stranicama</translation>
 <translation id="3763681089644577874">Blokirati kolačiće</translation>
 <translation id="614747795780742163">Sprečava veb stranice da pohranjuju informacije o vašim prethodnim posetama</translation>
 <translation id="6883611015375728278">Blokirati sve kolačiće</translation>
 <translation id="5657156137487675418">Dozvoli sve kolačiće</translation>
 <translation id="3895527457258986253">Blokiranje otisaka prstiju</translation>
+<translation id="7854108565842971747">Ovo su podrazumevana Shields podešavanja za nove sajtove. Menjanje ovoga neće uticati na vaša postojeća podešavanja po lokaciji.</translation>
 <translation id="184568144098869637">Sprečava pregledač da prepozna vaš uređaj</translation>
-<translation id="7445306466605902444">Otisak prsta je blokiran (strogo, može da pokvari sajtove)</translation>
-<translation id="5582686930349810484">Otisak prsta je blokiran (standardno)</translation>
+<translation id="7445306466605902444">Blokirano je beleženje posebnih obeležja (strogo, može da probija lokacije)</translation>
+<translation id="5582686930349810484">Blokirano je beleženje posebnih obeležja (standard)</translation>
 <translation id="769702552748212954">Dozvoli sva beleženja posebnih obeležja</translation>
 <translation id="876424292214881779">Oglasi i ostale jezive stvari su blokirane</translation>
 <translation id="6930134873084561197">Veb stranice često uključuju kolačiće i skripte koji pokušavaju da identifikuju vas i vaš uređaj. Oni žele da utvrde ko ste i da vas prate kroz veb praćenje onoga što radite na svakoj veb stranici.\n\nBrave to blokira tako da možete da pretražujete bez da budete praćeni.</translation>
@@ -312,7 +329,6 @@ meseca...</translation>
 <translation id="5617673581653540121">Sada je Vaša veza šifrovana.</translation>
 <translation id="4055107796760496928">Kada je dostupno, Brave Vam automatski pruža nadogradnju za sigurnu vezu.</translation>
 <translation id="8869714780588464835">Podeli vesti</translation>
-<translation id="7888588008014907646">Svaki dan smanjim broj podataka pregledavanjem mreže preglednikom Brave.</translation>
 <translation id="5372054974373489308">1000 tragača &amp; i oglasa blokirano!</translation>
 <translation id="2338952568654182692">5000 tragača &amp; i oglasa blokirano!</translation>
 <translation id="5289711064670408815">10 000 tragača &amp; i oglasa blokirano!</translation>
@@ -358,17 +374,19 @@ meseca...</translation>
 <translation id="7427567994475794038">Uključite Izveštaje o privatnosti da biste videli koliko je pratilaca &amp; reklama blokirano u poslednja 3 sata.</translation>
 <translation id="2053891538879944400">Sačuvali ste <ph name="DATA"/> <ph name="DATA_TEXT"/> podataka sa svojim pregledačem.</translation>
 <translation id="8640064498452534195">Uključite Izveštaje o privatnosti da biste videli koliko ste podataka sačuvali.</translation>
-<translation id="2252497442547961651">Brave pretraživač u proseku troši 40% manje baterije.&#128267;</translation>
+<translation id="2252497442547961651">Brave pretraživač u proseku troši 40% manje baterije.🔋</translation>
 <translation id="1945330434665345785">Blokirali ste <ph name="COUNT"/> pratioca &amp; reklama sa Brave pregledačem prošle nedelje.</translation>
 <translation id="2883868922264431515">Zaradite tokene gledajući reklame koji poštuju privatnost i podržite svoje omiljene veb lokacije.</translation>
-<translation id="5678925890616256956">Lep! Blokirali ste 250 praćenja &amp; oglasa uz pomoć Brave pregledača.&#128293;</translation>
-<translation id="9199047775708635708">Lepo! Uštedeli ste 10MB pomoću Brave pretraživača.&#128267;</translation>
-<translation id="1880168210969863408">Lepo! Uštedeli ste 10 minuta vremena učitavanja pomoću Brave pretraživača.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Lep! Blokirali ste 250 praćenja &amp; oglasa uz pomoć Brave pregledača.🔥</translation>
+<translation id="9199047775708635708">Lepo! Uštedeli ste 10MB pomoću Brave pretraživača.🔋</translation>
+<translation id="1880168210969863408">Lepo! Uštedeli ste 10 minuta vremena učitavanja pomoću Brave pretraživača.💨💨</translation>
 <translation id="7408493389591475748">Započnite pregledanje da biste videli izveštaje o privatnosti</translation>
 <translation id="9080777565335515917">Postavite Brave kao svoj podrazumevani pregledač za privatno i sigurno pregledanje.</translation>
 <translation id="1390943217516275883">Omogućuje da Brave prikazuje vašu statistiku privatnosti</translation>
 <translation id="1763352720905582220">Šalje nedeljni izveštaj o privatnosti</translation>
 <translation id="1811691435325545066">Obrišite sve podatke iz izvještaja o privatnosti</translation>
+<translation id="5966003059662780423">Brisanje podataka pri zatvaranju</translation>
+<translation id="3980704343258720102">Brisanje svih podataka pregledanja</translation>
 <translation id="8089997572759938512">Poništava izveštaje o privatnosti na nulu</translation>
 <translation id="2718046830255553131">Podaci iz izveštaja o privatnosti su obrisani.</translation>
 <translation id="7559243474426790340">Osveži status</translation>
@@ -490,9 +508,15 @@ meseca...</translation>
 <translation id="5825943197137337319">Samo interfejs sa podrazumevanom javnom vrednošću</translation>
 <translation id="1689062823386843231">Onemogućite neposrednički UDP</translation>
 <translation id="3171931580569169744">Omogući grupe kartica</translation>
-<translation id="5587305863196367357">Verifikovanje novčanika vam omogućava lakše upravljanje vašim sredstvima, dodavanjem &amp; povlačenja</translation>
+<translation id="5587305863196367357">Verifikovanje novčanika vam omogućava lakše upravljanje vašim sredstvima, dodavanjem i povlačenja</translation>
 <translation id="5760671211380791582">Nemate dovoljno BAT-a.</translation>
 <translation id="6960458596933484861">Treba vam najmanje 15 BAT-a da biste kreirali verifikovani Uphold novčanik. Molimo pokušajte ponovo kasnije.</translation>
 <translation id="4389085954549744469">Ako već imate verifikovani Uphold nalog, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">nastavite s prijavom</translation>
+<translation id="5727208111992260840">Ovaj kreator se još nije prijavio za primanje doprinosa od strane Brave korisnika.
+        Svi bakšiši koje pošaljete ostaće u vašem novčaniku sve dok oni ne budu verifikovani.</translation>
+<translation id="9212459913845238740">Zahtevano je odobrenje poena</translation>
+<translation id="2132683977638223450">Dodeljeni besplatni poeni</translation>
+<translation id="8713995420537272453">tačka</translation>
+<translation id="7888588008014907646">Svaki dan smanjim broj podataka pregledavanjem mreže preglednikom Brave.</translation>
 </translationbundle>

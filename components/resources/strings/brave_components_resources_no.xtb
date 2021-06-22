@@ -152,7 +152,7 @@
 <translation id="6769094341455418696">Tjen [[currency]] ved å se Brave-annonser. Annonser som presenteres er basert på interessene dine, som utledet av nettleseratferden din. Personlige data og nettleserloggen vil ikke forlate nettleseren din.</translation>
 <translation id="6112368337882254910">Auto-bidra</translation>
 <translation id="3742599705619405136">En automatisk måte å støtte utgivere og innholdsskapere på. Angi en månedlig betaling, og surf som normalt. De Brave-verifiserte nettstedene du besøker, mottar bidragene dine automatisk, basert på oppmerksomheten som måles av Brave.</translation>
-<translation id="20281847067919078">Estimert ventende belønninger</translation>
+<translation id="3325399124634342726">Nåværende inntekt denne måneden (anslått)</translation>
 <translation id="8593551638387217772">Neste betalingsdato</translation>
 <translation id="4428871418618312983">Annonser mottatt denne måneden</translation>
 <translation id="4229016885653790965">Beklager! Annonser er ikke tilgjengelig i regionen din ennå.</translation>
@@ -160,11 +160,13 @@
 <translation id="5421369907811917952">Andre innstillinger</translation>
 <translation id="654711254769318398">Annonsesider vist</translation>
 <translation id="2532127066761785857">Maks antall annonser vist</translation>
+<translation id="6177749339095882127">0 annonser i timen</translation>
 <translation id="5171071066587880677">1 annonse i timen</translation>
 <translation id="7885315050812316860">2 annonser i timen</translation>
 <translation id="2232753742630178222">3 annonser i timen</translation>
 <translation id="905529390827000221">4 annonser i timen</translation>
 <translation id="7694167481321619202">5 annonser i timen</translation>
+<translation id="3705420658531870884">10 annonser i timen</translation>
 <translation id="8446884382197647889">Les mer</translation>
 <translation id="6209514229703649203">Automatisk oppdaget som [[adsSubdivisionTarget]]</translation>
 <translation id="8010081455002666927">Gjenkjenn automatisk</translation>
@@ -172,10 +174,8 @@
 <translation id="4176463684765177261">Deaktivert</translation>
 <translation id="4434663852465709809">QR-kode for iOS belønner brukere som overfører BAT</translation>
 <translation id="2175927920773552910">QR-kode</translation>
+<translation id="8283001340969131076">Beklager, det oppsto en feil under frakobling av <ph name="PROVIDER"/>-kontoen din. Prøv igjen om en liten stund.</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="6160106411363856968">BAP</translation>
-<translation id="1081826981536899387">BAT-poeng</translation>
-<translation id="2563462925929938015">kan brukes i Brave-belønninger for å bidra til dine foretrukne innholdsskapere. BAT-poeng kan ikke veksles inn i BAT.</translation>
 <translation id="3390542282753297856">Enheten er frakoblet, vennligst prøv igjen senere.</translation>
 <translation id="4684554059837592728">Månedlig betaling</translation>
 <translation id="2846354907189538">Neste bidragsdato</translation>
@@ -240,6 +240,20 @@
 <translation id="2564425876266960486">Feil ved oppretting av BAT-kort for Brave-nettleseren</translation>
 <translation id="6473583070570450185">Du må ha en verifisert lommebok for å Logge inn</translation>
 <translation id="5949995321533425416">Du må ha minst <ph name="AMOUNT"/> BAT for å opprette en Uphold-lommebok. Om du allerede har en verifisert Uphold-lommebok, kan du fortsette med innloggingen.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> ankommer om <ph name="DAYS"/></translation>
+<translation id="4672975606583962967">Velg en lommeboktjeneste</translation>
+<translation id="1815503044492647974">Velg en lommebokpartner for en foresatt. Om du allerede har en konto, blir du bedt om å logge på for å koble deg til.</translation>
+<translation id="2205685774710519016">Merk: Transaksjonene dine forblir synlige for den valgte lommeboktjenesten når du autoriserer dette; for eksempel vil de kunne se mottakeren og hvor mye driks du har sendt.</translation>
+<translation id="2147158325758481862">Verifisering er valgfritt</translation>
+<translation id="8228649055483250005">Lommebokleverandører for en foresatt er pålagt å verifisere identiteten til alle som lager en lommebok, inkludert bruk av foto-ID.</translation>
+<translation id="2672513643520959619"><ph name="BOLD_BEGIN"/>Brave Software Inc.<ph name="BOLD_END"/> hverken behandler, lagrer eller får tilgang til noen av personopplysningene dine når du oppretter en konto hos partnerne våre innen lommebøker for foresatte.</translation>
+<translation id="448371102125124442">Den nåværende lommeboken din er imidlertid begrenset. Ved verifisering med en partner innen lommebøker for foresatte kan du:</translation>
+<translation id="9064931634458501855">Fritt ta ut og sette inn midler</translation>
+<translation id="1438426246237704604">Motta belønningene dine direkte i lommeboken</translation>
+<translation id="8304979233901023264">Jeg har lest og samtykker til Brave’ sine <ph name="TOS_LINK_BEGIN"/>bruksvilkår<ph name="TOS_LINK_END"/> og <ph name="PP_LINK_BEGIN"/>retningslinjene for personvern<ph name="PP_LINK_END"/>.</translation>
+<translation id="2359808026110333948">Fortsett</translation>
+<translation id="5112354605357157725">Fortsett til innlogging</translation>
+<translation id="1280764044837262633"><ph name="PROVIDER"/> krever en minimumssaldo på <ph name="AMOUNT"/> BAT for å opprette en konto. Om du har koblet til en konto tidligere,</translation>
 <translation id="7422678632904904341">Beløp:</translation>
 <translation id="5025866799968038247">Saldoinformasjon</translation>
 <translation id="6073289164268847023">Lommebok opprettet:</translation>
@@ -292,13 +306,11 @@
 <translation id="922103963921062336">Frakoblet (ikke verifisert)</translation>
 <translation id="6521149675246672063">Frakoblet (Verifisert)</translation>
 <translation id="3248185426436836442">Påventende</translation>
-<translation id="8441289448876571409">BAP-midler</translation>
 <translation id="5906820630265272615">BAT-midler</translation>
 <translation id="5814098892838785557">Er du sikker på at du vil slutte å støtte denne skaperen?</translation>
 <translation id="3922777918343537463">Kanseller månedlig bidrag</translation>
 <translation id="9087994290002662101">Endre beløp</translation>
 <translation id="1969724076378550685">Bekreft kansellering av månedlig</translation>
-<translation id="2359808026110333948">Fortsett</translation>
 <translation id="6238322297266927861">Bidragsbeløp:</translation>
 <translation id="1723857724166389190">Ditt månedlige bidrag til denne skaperen er kansellert.</translation>
 <translation id="534368327994110883">Du støtter denne skaperen</translation>
@@ -314,7 +326,6 @@
 <translation id="4492470488449820476">Minste tipsbeløp er <ph name="AMOUNT"/> <ph name="CURRENCY"/></translation>
 <translation id="4371618764691059036">Månedlig bidrag er angitt.</translation>
 <translation id="6356822617569064293">Neste bidragsdato:</translation>
-<translation id="4783907814409710132">Ikke nok poeng.</translation>
 <translation id="3593485149443019592">Ikke nok tokener. <ph name="LINK_BEGIN"/>add funds<ph name="LINK_END"/>.</translation>
 <translation id="4622723187300249546">Engangstips</translation>
 <translation id="5268142130226208198">Engangs tipsbeløp:</translation>
@@ -517,13 +528,11 @@
 <translation id="7147673045905733351">I dag ønsker Brave deg velkommen til det nye internettet.</translation>
 <translation id="1350763070659630336">Et hvor din tid er verdifull, dine personlige opplysninger holdes privat og du faktisk blir betalt for oppmerksomheten din.</translation>
 <translation id="880341991877949255">Med den gamle nettleseren din betalte du for å surfe på nett, med din verdifulle oppmerksomhet, hver gang du måtte se på reklame. Du brukte verdifull tid på å laste ned  annonseteknologi som overførte dine verdifulle private data til annonsører — uten ditt samtykke.</translation>
-<translation id="3610794092923555181">Dessverre ingen poeng ennå.</translation>
 <translation id="5830306739231399614">Desverre, ingen tokens enda.</translation>
 <translation id="7359258898775969374">3 måter å fylle lommeboken din på:</translation>
 <translation id="8087614920008846901">Du kan legge til penger.</translation>
 <translation id="996024295464837691">Du kan tjene polletter ved å se annonser.</translation>
 <translation id="8014425282125849700">Nå og da vil du få tilbud om tildeling av gratis tokens fra Brave. Pass på at du får med deg beskjeden!</translation>
-<translation id="2185598236335233939">Se etter annonsevarslinger etter hvert som du fortsetter å bruke Brave. BAT-poengsaldoen din øker for hver annonse du ser på.</translation>
 <translation id="1370034647041840967">Tjen tokens for din oppmerksomhet til annonser og bruk det til å støtte skapere som du setter pris på!</translation>
 <translation id="4919888432594361029">Sett inn, ta ut og administrer midler hos <ph name="PROVIDER"/>.</translation>
 <translation id="3092054349246483285">Brave-lommeboken din leveres av <ph name="PROVIDER"/>.</translation>
@@ -550,13 +559,10 @@
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
 <translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="6367285596431004439">Tokenstipend mottatt</translation>
-<translation id="9212459913845238740">Poengtildelinger gjort krav på</translation>
-<translation id="768850953428043522">poeng</translation>
 <translation id="3043542281656021374">Poeng</translation>
 <translation id="5015443703424816075">Token</translation>
 <translation id="1634828734222219955">Totalt</translation>
 <translation id="1726566769229204312">Tilskudd til polletter</translation>
-<translation id="1193434225710679930">Poengtildelinger</translation>
 <translation id="4395099108822007284">Laster inn bilde …</translation>
 <translation id="3535654229833214438">Transaksjoner</translation>
 <translation id="244362569344671266">Tjen tokener ved å se på private Brave-annonser og støtt innholdsprodusenter automatisk.</translation>
@@ -580,7 +586,6 @@
 <translation id="4083384190339959182">Vi har gitt Brave Payments en stor oppgradering.</translation>
 <translation id="5395851053710553429">Gjør deg klar til å oppleve et nytt internett.</translation>
 <translation id="63956545637156715">Hvorfor Brave-belønninger?</translation>
-<translation id="8494748383523030337">Saldoen din</translation>
 <translation id="3780605330121608425">Lommeboken din</translation>
 <translation id="6727483290601442544">Se detaljer</translation>
 <translation id="1988679729106502285">MERK:</translation>
@@ -603,24 +608,12 @@
 <translation id="39734939514946950">Belønningsbeløpet ditt</translation>
 <translation id="2151535059686617995">Det er din lykkedag!</translation>
 <translation id="6436689611575806470">Ditt [[currency]]-tilskudd er på vei.</translation>
-<translation id="2132683977638223450">Gratis poengtildeling</translation>
 <translation id="7512440811010447157">verifiser</translation>
 <translation id="8267327690882073581">Verifiser lommeboken</translation>
 <translation id="543510923939676996">Lommeboken er verifisert</translation>
 <translation id="2659764755126740206">Gå til <ph name="PROVIDER"/>-kontoen min</translation>
 <translation id="3699674790322420653">Fullfør lommebokverifiseringen</translation>
 <translation id="9200453331904391567">Koble fra Brave Rewards</translation>
-<translation id="46988480989545156">Verifiser lommeboken</translation>
-<translation id="5796169459825124737">Lommeboktjenesten vår leveres av <ph name="PROVIDER"/>.</translation>
-<translation id="6771734945114850124">Ha legitimasjon utstedt av offentlig myndighet tilgjengelig.</translation>
-<translation id="8697510149346635496">Ta ut BAT som du tjener på å se på annonser som respekterer personvernet</translation>
-<translation id="1481480653609649134">Kjøp flere BAT med kredittkort og andre betalingskilder</translation>
-<translation id="9096003370755878766">Ta ut BAT som du kan ha satt inn i Brave Rewards-lommeboken din tidligere</translation>
-<translation id="8558636200953226885">Men hvis du verifiserer, kan du …</translation>
-<translation id="3354315693758743702">Det er valgfritt å verifisere lommeboken.</translation>
-<translation id="4872388810065331182"><ph name="PROVIDER"/> kan kreve at du verifiserer identiteten din, basert på tjenestene du forespør.</translation>
-<translation id="6938217233488972952">Brave Software Inc. verken behandler, lagrer eller bruker noe av den personlige informasjonen du gir til <ph name="PROVIDER"/> når du oppretter konto hos dem.</translation>
-<translation id="2415586822982819406">Merk: Transaksjonene dine kommer til å være synlige for <ph name="PROVIDER"/> når du autoriserer dem. De kan for eksempel se mottakeren og beløpet du tipser.</translation>
 <translation id="7404779623219601861">Løs inn BAT i gavekort</translation>
 <translation id="6215565499749144110">Med TAP Network kan du løse inn BAT i gavekort fra populære merkenavn.</translation>
 <translation id="6915065518766963119">* Krever Uphold-verifisering.</translation>
@@ -641,8 +634,6 @@
 <translation id="6759185676704303656">Du får betalt for å se på dette bakgrunnsbildet.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Få mer informasjon<ph name="LINK_END"/> om sponsede bilder i Brave Rewards.</translation>
 <translation id="6113004497629356998">Skjul sponsede bilder</translation>
-<translation id="8587285254008006694">Som del av denne overgangen vil tips- og bidragsfunksjonene i nettleseren din være midlertidig utilgjengelige fra og med 13. mars, og BAP-saldoen din vil vise 0,0 inntil du har oppdatert til det nye systemet i april. Så snart du er på det nye systemet, vil du begynne med nye polletter!</translation>
-<translation id="6232491755501685494">Brave Rewards i Japan bytter nå til et nytt system!</translation>
 <translation id="3787061634640932557">Rediger kort</translation>
 <translation id="8511604585939286108">Ved å klikke på [[title]], samtykker du til <ph name="BEGIN_LINK1"/>bruksvilkårene<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>retningslinjene for personvern<ph name="END_LINK2"/>.</translation>
 <translation id="5977237145327845546">Start en privat videosamtale med dine venner og kolleger.</translation>
@@ -840,4 +831,31 @@
 <translation id="4390079506197726228">Tilgjengelig <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
 <translation id="6973157709854838218">Skjul saldoene dine fra visning</translation>
 <translation id="4548946945059463969">Avslør saldoene dine på skjermen</translation>
+<translation id="242959166945779492">Saldoen på kontoen din er tom. Besøk FTX for å endre dette.</translation>
+<translation id="20281847067919078">Estimert ventende belønninger</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">BAT-poeng</translation>
+<translation id="2563462925929938015">kan brukes i Brave-belønninger for å bidra til dine foretrukne innholdsskapere. BAT-poeng kan ikke veksles inn i BAT.</translation>
+<translation id="8441289448876571409">BAP-midler</translation>
+<translation id="4783907814409710132">Ikke nok poeng.</translation>
+<translation id="3610794092923555181">Dessverre ingen poeng ennå.</translation>
+<translation id="2185598236335233939">Se etter annonsevarslinger etter hvert som du fortsetter å bruke Brave. BAT-poengsaldoen din øker for hver annonse du ser på.</translation>
+<translation id="9212459913845238740">Poengtildelinger gjort krav på</translation>
+<translation id="768850953428043522">poeng</translation>
+<translation id="1193434225710679930">Poengtildelinger</translation>
+<translation id="8494748383523030337">Saldoen din</translation>
+<translation id="2132683977638223450">Gratis poengtildeling</translation>
+<translation id="46988480989545156">Verifiser lommeboken</translation>
+<translation id="5796169459825124737">Lommeboktjenesten vår leveres av <ph name="PROVIDER"/>.</translation>
+<translation id="6771734945114850124">Ha legitimasjon utstedt av offentlig myndighet tilgjengelig.</translation>
+<translation id="8697510149346635496">Ta ut BAT som du tjener på å se på annonser som respekterer personvernet</translation>
+<translation id="1481480653609649134">Kjøp flere BAT med kredittkort og andre betalingskilder</translation>
+<translation id="9096003370755878766">Ta ut BAT som du kan ha satt inn i Brave Rewards-lommeboken din tidligere</translation>
+<translation id="8558636200953226885">Men hvis du verifiserer, kan du …</translation>
+<translation id="3354315693758743702">Det er valgfritt å verifisere lommeboken.</translation>
+<translation id="4872388810065331182"><ph name="PROVIDER"/> kan kreve at du verifiserer identiteten din, basert på tjenestene du forespør.</translation>
+<translation id="6938217233488972952">Brave Software Inc. verken behandler, lagrer eller bruker noe av den personlige informasjonen du gir til <ph name="PROVIDER"/> når du oppretter konto hos dem.</translation>
+<translation id="2415586822982819406">Merk: Transaksjonene dine kommer til å være synlige for <ph name="PROVIDER"/> når du autoriserer dem. De kan for eksempel se mottakeren og beløpet du tipser.</translation>
+<translation id="8587285254008006694">Som del av denne overgangen vil tips- og bidragsfunksjonene i nettleseren din være midlertidig utilgjengelige fra og med 13. mars, og BAP-saldoen din vil vise 0,0 inntil du har oppdatert til det nye systemet i april. Så snart du er på det nye systemet, vil du begynne med nye polletter!</translation>
+<translation id="6232491755501685494">Brave Rewards i Japan bytter nå til et nytt system!</translation>
 </translationbundle>

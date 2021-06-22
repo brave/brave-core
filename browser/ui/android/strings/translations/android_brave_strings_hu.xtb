@@ -3,7 +3,9 @@
 <translationbundle lang="hu">
 <translation id="7307834434086582547">Brave Shields engedélyezése/ letiltása</translation>
 <translation id="3570081523466826008">Kapcsolat bővítése HTTPS-re</translation>
+<translation id="2278950434998763147">Bizonyos oldalakat biztonságos HTTPS-kapcsolat használatával nyit meg egyszerű HTTP helyett.</translation>
 <translation id="94154759592465111">Scriptek blokkolása</translation>
+<translation id="3518266709656143462">Blokkolja a Javascriptet (megzavarhatja az oldalak működését)</translation>
 <translation id="5709627087332022422">Webhelyközi nyomkövetők letiltása</translation>
 <translation id="6052725679982758334">Közösségi hálózatok tiltása</translation>
 <translation id="7498695072878479744">Google-bejelentkezési gombok engedélyezése külső webhelyeken</translation>
@@ -11,9 +13,16 @@
 <translation id="5165042248369837294">Twitteren beágyazott tweetek engedélyezése</translation>
 <translation id="958971637207126733">LinkedIn beágyazott posztok engedélyezése</translation>
 <translation id="6302422639282249274">Brave Rewards kezelése</translation>
+<translation id="8877432762827303535">Online fizetés</translation>
+<translation id="6583902294974160967">Támogatás</translation>
+<translation id="1799030480311994998">Funkciók</translation>
+<translation id="5345505584130165588">Brave pajzsok és adatvédelem</translation>
+<translation id="4692623383562244444">Keresőmotorok</translation>
 <translation id="1468415711258933398">Szabványos fül</translation>
 <translation id="3377025655491224618">Inkognitólap</translation>
 <translation id="9148058034647219655">Kilépés</translation>
+<translation id="4022987104439075738">IPFS-átjáró</translation>
+<translation id="2688519859165248360">Egy IPFS gatewayen keresztül lehetővé teszi az IPFS forrásokhoz való eljutást</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Megoldási módszer</translation>
@@ -23,9 +32,11 @@
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Megelőzi, hogy a böngésző ujjlenyomatot készítsen</translation>
 <translation id="7459000603787995422">Fülek bezárása kilépéskor</translation>
+<translation id="4448697385961650078">Követők és reklámok letiltása</translation>
+<translation id="2448893613530489637">Megakadályozza a nyomkövetők és hirdetések betöltését és megjelenítését a weboldalakon</translation>
 <translation id="1680858055899097121">Új böngészés kezdésekor ne maradjanak nyitva az előzőleg megnyitott fülek</translation>
-<translation id="7142548388914389999">Teljes mértékben anonim termékanalízis automatikus küldése a Brave-hez</translation>
-<translation id="5469408008145872264">Ez az anonimizált adat mindösszesen azt teszi lehetővé, hogy a Brave megbecsülhesse egyes funkciók összesített használatát.</translation>
+<translation id="7142548388914389999">Az adatvédelmet megőrző termékelemzés (P3A) engedélyezése</translation>
+<translation id="5469408008145872264">Ez a teljes mértékben anonimizált adat segít a Brave-nek megbecsülni bizonyos funkciók használatát, valamint fejleszteni a szolgáltatást.</translation>
 <translation id="7977176350719484850">Becs. adatok\nmentve</translation>
 <translation id="9008534313521214777">Becsült megtakarított\nidő</translation>
 <translation id="6572660632052512096">Asztali mód</translation>
@@ -35,6 +46,9 @@
 <translation id="4479934682648362332">Részesítse előnyben az oldalak asztali változatát</translation>
 <translation id="1842747674580016420">Videólejátszás a Brave-ben</translation>
 <translation id="5368992950177874750">Ha be van kapcsolva, akkor a videók a Brave-ben lesznek lejátszva, nem pedig egy külső alkalmazásban.</translation>
+<translation id="181905442828471321">Brave pajzsok globális alapbeállításai</translation>
+<translation id="2675679258824361492">Egyéb adatvédelmi beállítások</translation>
+<translation id="8026334261755873520">Böngészési adatok törlése</translation>
 <translation id="5965081608816406060">Videólejátszás a háttérben</translation>
 <translation id="6332924730165919598">Az összes fül lezárásával a Brave lezáródik</translation>
 <translation id="1580125697191336644">Kísérleti. Lehetővé teszi a videó hangjának lejátszását, amikor a fül nem aktív, vagy a képernyő ki van kapcsolva. Próbáljon asztali módra váltani, ha ez a funkció nem működik.</translation>
@@ -108,8 +122,8 @@
 <translation id="8428213095426709021">Beállítások</translation>
 <translation id="8772672608371898774">Ellenőrzött Brave tartalomszolgáltató</translation>
 <translation id="1397683270551078781">Még nem igazolt</translation>
-<translation id="5727208111992260840">Ez az alkotó még nincs bejelentkezve a Brave felhasználók hozzájárulásainak fogadására.
- Minden elküldött borravaló pénztárcájában marad, amíg elvégzik az ellenőrzést.</translation>
+<translation id="880893465294676334">Ez az ellenőrzött Brave alkotó még nem állította be fiókját a hozzájárulások fogadására a Brave felhasználóktól.
+         Minden küldött borravaló az Ön pénztárcájában marad, amíg elvégzik ezt a műveletet.</translation>
 <translation id="8918760045046434238">Küldjön egy borravalót...</translation>
 <translation id="1978261665418056203">Még nincs tevékenység ebben a 
 hónapban...</translation>
@@ -215,10 +229,7 @@ hónapban...</translation>
 <translation id="7541582550122501404">Függő hozzájárulás</translation>
 <translation id="8520059774736886747">A tartalomkészítő <ph name="PUBLISHER_NAME"/> nemrég igazolta magát</translation>
 <translation id="7924320838799747606">Egyenleg</translation>
-<translation id="9212459913845238740">Pontok begyűjtve</translation>
-<translation id="2132683977638223450">Ingyenes pontok</translation>
 <translation id="1486343603936278248">token</translation>
-<translation id="8713995420537272453">pont</translation>
 <translation id="7781069478569868053">Új lap</translation>
 <translation id="8522669544471808198">Háttérképek megjelenítése</translation>
 <translation id="3870475560794762985">Szponzorált képek megjelenítése</translation>
@@ -261,6 +272,8 @@ hónapban...</translation>
 <translation id="9132378787893584761">Oszd meg a Brave-et barátaiddal!</translation>
 <translation id="717952606991220586">Hoppá, valami hiba történt. Próbáld újra később.</translation>
 <translation id="2524310205387880526">Értékeld a Brave-et</translation>
+<translation id="987264212798334818">Általános</translation>
+<translation id="1116694919640316211">Névjegy</translation>
 <translation id="6680650203439190394">Árfolyam</translation>
 <translation id="2635089463885398597">Hogyan értékelnéd tapasztalataidat a Brave-vel?</translation>
 <translation id="141901961143729572">Oszd meg véleményedet</translation>
@@ -275,15 +288,19 @@ hónapban...</translation>
 <translation id="1465733111003593696">A kép megnézésével tokeneket szerzel.</translation>
 <translation id="7877201489035217175">Tudj meg többet a szponzorált képekről</translation>
 <translation id="828092975561478703">Minden megnézett szponzorált képért a bevétel 70%-át kapod tokenben. A Brave Ads-szel mindig te irányítod, hogy milyen reklámot nézel.</translation>
+<translation id="3624048886326677117">Nyomkövetők és hirdetések letiltása (agresszív)</translation>
+<translation id="7151914815476509258">Nyomkövetők és hirdetések letiltása (standard)</translation>
+<translation id="7384778069178817075">Összes követő és reklám engedélyezve</translation>
 <translation id="4941539331405513605">Webhelyközi sütik blokkolása</translation>
 <translation id="3763681089644577874">Sütik tiltása</translation>
 <translation id="614747795780742163">Nem engedi, hogy a weboldalak információkat tároljanak korábbi látogatásaidról</translation>
 <translation id="6883611015375728278">Összes süti blokkolása</translation>
 <translation id="5657156137487675418">Összes süti engedélyezése</translation>
 <translation id="3895527457258986253">Lenyomatkészítés blokkolása</translation>
+<translation id="7854108565842971747">Ezek az alapértelmezett Shields beállítások új oldalak esetén. Ezek módosítása nem lesz hatással a meglévő oldalankénti beállításokra.</translation>
 <translation id="184568144098869637">Nem engedi, hogy a böngésző felismerje készülékedet</translation>
-<translation id="7445306466605902444">Ujjlenyomat-vétel blokkolva (szigorú, néhány oldal összeomolhat)</translation>
-<translation id="5582686930349810484">Ujjlenyomat letiltva (alap)</translation>
+<translation id="7445306466605902444">Ujjlenyomat-felismerés letiltva (szigorú, a webhelyek összeomolhatnak)</translation>
+<translation id="5582686930349810484">Ujjlenyomat-felismerés letiltva (standard)</translation>
 <translation id="769702552748212954">Minden ujjlenyomat-beállítás engedélyezése</translation>
 <translation id="876424292214881779">Blokkoltuk a hirdetéseket és más bizarr dolgokat</translation>
 <translation id="6930134873084561197">A weboldalak gyakran olyan sütiket és parancsfájlokat tartalmaznak, amelyek azonosítani akarnak téged vagy a készülékedet. Megpróbálják kideríteni, hogy ki vagy, és követik webes tevékenységedet minden oldalon\n\nA Brave letiltja ezeket a dolgokat, így követés nélkül böngészhetsz.</translation>
@@ -312,7 +329,6 @@ hónapban...</translation>
 <translation id="5617673581653540121">A csatlakozásod titkosítva lett.</translation>
 <translation id="4055107796760496928">Ha lehetséges, a Brave automatikusan egy biztonságos kapcsolatra vált.</translation>
 <translation id="8869714780588464835">Oszd meg a hírt</translation>
-<translation id="7888588008014907646">Minden nap spórolok az adatforgalmon, amikor a Brave-vel böngészek az interneten.</translation>
 <translation id="5372054974373489308">1000 nyomkövetőt és hirdetést blokkoltunk!</translation>
 <translation id="2338952568654182692">5000 nyomkövetőt és hirdetést blokkoltunk!</translation>
 <translation id="5289711064670408815">10.000 nyomkövetőt és hirdetést blokkoltunk!</translation>
@@ -358,17 +374,19 @@ hónapban...</translation>
 <translation id="7427567994475794038">Kapcsold be az adatvédelmi jelentéseket, hogy lásd mennyi hirdetés és követő lett letiltva az elmúlt 3 órában.</translation>
 <translation id="2053891538879944400"><ph name="DATA"/> <ph name="DATA_TEXT"/> adatot spóroltál a Brave böngészővel.</translation>
 <translation id="8640064498452534195">Kapcsold be az adatvédelmi jelentéseket, hogy lásd mennyi adatot spóroltál.</translation>
-<translation id="2252497442547961651">A Brave böngésző átlagosan 40%-kal kevesebb akkumulátort használ.&#128267;</translation>
+<translation id="2252497442547961651">A Brave böngésző átlagosan 40%-kal kevesebb akkumulátort használ.🔋</translation>
 <translation id="1945330434665345785">Az elmúlt héten <ph name="COUNT"/> követőt és reklámot blokkoltál a Brave böngészővel.</translation>
 <translation id="2883868922264431515">Szerezz tokeneket magánéletet tiszteletben tartó reklámok nézésével, és támogasd kedvenc weboldalaidat.</translation>
-<translation id="5678925890616256956">Remek! Blokkolt 250 követőt &amp; hirdetést a Brave böngészővel.&#128293;</translation>
+<translation id="5678925890616256956">Remek! Blokkolt 250 követőt &amp; hirdetést a Brave böngészővel.🔥</translation>
 <translation id="9199047775708635708">Nagyszerű! Már 10MB-ot takarított meg a Brave böngészővel.</translation>
-<translation id="1880168210969863408">Nagyszerű! 10 perc töltési időt spórolt meg a Brave böngészővel.&#128168;&#128168;</translation>
+<translation id="1880168210969863408">Nagyszerű! 10 perc töltési időt spórolt meg a Brave böngészővel.💨💨</translation>
 <translation id="7408493389591475748">Az adatvédelmi jelentés megtekintéséhez kezdj el böngészni</translation>
 <translation id="9080777565335515917">Tedd a Brave-et alapértelmezett böngésződdé, hogy a böngészés privát és biztonságos legyen.</translation>
 <translation id="1390943217516275883">Engedélyezi, hogy a Brave megmutassa adatvédelmi statisztikáidat</translation>
 <translation id="1763352720905582220">Heti adatvédelmi jelentést küld</translation>
 <translation id="1811691435325545066">Törölj minden adatot az adatvédelmi jelentésekről.</translation>
+<translation id="5966003059662780423">Adatok törlése kilépéskor</translation>
+<translation id="3980704343258720102">Törli az összes böngészési adatot</translation>
 <translation id="8089997572759938512">Lenullázza az adatvédelmi jelentéseidet</translation>
 <translation id="2718046830255553131">Az adatvédelmi jelentések adatai törölve lettek.</translation>
 <translation id="7559243474426790340">Frissítési állapot</translation>
@@ -490,9 +508,15 @@ hónapban...</translation>
 <translation id="5825943197137337319">Kizárólag alapértelmezett publikus interfész</translation>
 <translation id="1689062823386843231">Proxy nélküli UDP letiltása</translation>
 <translation id="3171931580569169744">Lapcsoportok engedélyezése</translation>
-<translation id="5587305863196367357">A pénztárca ellenőrzésével hatékonyabban kezelheti alapjait, adhat hozzá vagy vehet le belőle.</translation>
+<translation id="5587305863196367357">A pénztárca ellenőrzésével egyszerűen kezelheti alapjait, adhat hozzá vagy vehet le belőle.</translation>
 <translation id="5760671211380791582">Nem rendelkezik elegendő BAT-tal.</translation>
 <translation id="6960458596933484861">Legalább 15 BAT-ra van szükség ellenőrzött Uphold pénztárca létrehozásához. Próbálja újra később.</translation>
 <translation id="4389085954549744469">Ha már van hitelesített Uphold-fiókja, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">lépjen tovább a bejelentkezéshez</translation>
+<translation id="5727208111992260840">Ez az alkotó még nincs bejelentkezve a Brave felhasználók hozzájárulásainak fogadására.
+ Minden elküldött borravaló pénztárcájában marad, amíg elvégzik az ellenőrzést.</translation>
+<translation id="9212459913845238740">Pontok begyűjtve</translation>
+<translation id="2132683977638223450">Ingyenes pontok</translation>
+<translation id="8713995420537272453">pont</translation>
+<translation id="7888588008014907646">Minden nap spórolok az adatforgalmon, amikor a Brave-vel böngészek az interneten.</translation>
 </translationbundle>

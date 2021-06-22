@@ -3,7 +3,9 @@
 <translationbundle lang="ja">
 <translation id="7307834434086582547">Brave Shieldsを有効/無効にします</translation>
 <translation id="3570081523466826008">接続をHTTPSにアップグレードする</translation>
+<translation id="2278950434998763147">HTTPではなく、安全なHTTPSを使用してサイトを開きます。</translation>
 <translation id="94154759592465111">スクリプトをブロックする</translation>
+<translation id="3518266709656143462">JavaScript をブロック（サイト破損の可能性あり）</translation>
 <translation id="5709627087332022422">クロスサイトのトラッカーをブロックする</translation>
 <translation id="6052725679982758334">ソーシャルメディアのブロック</translation>
 <translation id="7498695072878479744">第三者サイトのGoogleログインボタンを許可する</translation>
@@ -11,9 +13,16 @@
 <translation id="5165042248369837294">Twitterの埋め込みツイートを許可する</translation>
 <translation id="958971637207126733">LinkedInの埋め込みポストを許可する</translation>
 <translation id="6302422639282249274">Brave Rewardsの管理</translation>
+<translation id="8877432762827303535">オンラインチェックアウト</translation>
+<translation id="6583902294974160967">サポート</translation>
+<translation id="1799030480311994998">機能</translation>
+<translation id="5345505584130165588">Brave Shields &amp; プライバシー</translation>
+<translation id="4692623383562244444">検索エンジン</translation>
 <translation id="1468415711258933398">通常タブ</translation>
 <translation id="3377025655491224618">プライベートタブ</translation>
 <translation id="9148058034647219655">終了</translation>
+<translation id="4022987104439075738">IPFSゲートウェイ</translation>
+<translation id="2688519859165248360">IPFSゲートウェイを使用したIPFSリソースへのナビゲーションを許可</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6513892817556267573">イーサリアムネームサービス</translation>
 <translation id="3894650624018948468">解決方法</translation>
@@ -23,9 +32,11 @@
 <translation id="1448289340149908413">イーサリアム</translation>
 <translation id="5787084571334399599">フィンガープリントを防止します</translation>
 <translation id="7459000603787995422">終了時にタブを閉じる</translation>
+<translation id="4448697385961650078">トラッカーと広告をブロック</translation>
+<translation id="2448893613530489637">トラッカーや広告の読み込みやウェブページでの表示を防ぎます</translation>
 <translation id="1680858055899097121">セッション間でタブを保持しない</translation>
-<translation id="7142548388914389999">Braveに完全に匿名の製品分析データを自動的に送信する</translation>
-<translation id="5469408008145872264">この匿名の情報は、Braveの特定の機能が全体でどの程度使われるか、予測するためにのみ使われます。</translation>
+<translation id="7142548388914389999">プライバシーを保護したプロダクト分析 (P3A) を許可する</translation>
+<translation id="5469408008145872264">この完全に匿名の情報は、Braveで特定の機能の全体的な使用状況を予測し、ユーザーエクスペリエンスを向上するために役立ちます。</translation>
 <translation id="7977176350719484850">節約できた\n通信量 (推定)</translation>
 <translation id="9008534313521214777">節約できた\n時間(推定)</translation>
 <translation id="6572660632052512096">デスクトップモード</translation>
@@ -35,6 +46,9 @@
 <translation id="4479934682648362332">PCサイトを優先して表示</translation>
 <translation id="1842747674580016420">Braveで動画を再生</translation>
 <translation id="5368992950177874750">有効にすると動画は、対応するアプリではなくBraveで再生されます</translation>
+<translation id="181905442828471321">Brave Shields グローバルデフォルト</translation>
+<translation id="2675679258824361492">その他のプライバシー設定</translation>
+<translation id="8026334261755873520">閲覧履歴データの削除</translation>
 <translation id="5965081608816406060">バックグラウンドでの動画再生</translation>
 <translation id="6332924730165919598">すべてのタブが閉じられた際に、Braveも閉じる</translation>
 <translation id="1580125697191336644">試験的機能です。タブが非アクティブの際やデバイス画面がオフになっている際に、バックグラウンドから音声のみを再生します。正常に機能しない場合は、デスクトップモードへの切り替えをお試しください。</translation>
@@ -108,8 +122,8 @@
 <translation id="8428213095426709021">設定</translation>
 <translation id="8772672608371898774">Brave認証済みパブリッシャー</translation>
 <translation id="1397683270551078781">認証が完了していません</translation>
-<translation id="5727208111992260840">このクリエイターは、Braveユーザーからの応援を受け取る設定がまだ完了していません
-チップを送っても、クリエイターが設定を完了するまではあなたのウォレット残高は減りません。</translation>
+<translation id="880893465294676334">このBrave認定クリエーターは、Braveユーザーからの支援を受け取るためのアカウント設定を完了していません。
+          設定が完了するまで、チップは全て送ったユーザーのウォレット内に留まります。</translation>
 <translation id="8918760045046434238">チップを送る</translation>
 <translation id="1978261665418056203">今月はまだ
 アクティビティがありません…</translation>
@@ -215,10 +229,7 @@
 <translation id="7541582550122501404">保留中の支援</translation>
 <translation id="8520059774736886747">クリエイター<ph name="PUBLISHER_NAME"/>が最近設定を完了しました</translation>
 <translation id="7924320838799747606">残高</translation>
-<translation id="9212459913845238740">獲得したポイント付与</translation>
-<translation id="2132683977638223450">無料のポイント付与</translation>
 <translation id="1486343603936278248">トークン</translation>
-<translation id="8713995420537272453">ポイント</translation>
 <translation id="7781069478569868053">新しいタブページ</translation>
 <translation id="8522669544471808198">背景画像を表示</translation>
 <translation id="3870475560794762985">スポンサー付き画像を表示</translation>
@@ -261,6 +272,8 @@
 <translation id="9132378787893584761">友だちとBraveを共有しましょう！</translation>
 <translation id="717952606991220586">おや、問題が発生しました。後でもう一度試してみて下さい。</translation>
 <translation id="2524310205387880526">Braveを評価する</translation>
+<translation id="987264212798334818">全般</translation>
+<translation id="1116694919640316211">About</translation>
 <translation id="6680650203439190394">レート</translation>
 <translation id="2635089463885398597">Braveの体験をどう評価されますか？</translation>
 <translation id="141901961143729572">ご意見を聞かせてください</translation>
@@ -275,15 +288,19 @@
 <translation id="1465733111003593696">この画像を表示するためのトークンを獲得しています。</translation>
 <translation id="7877201489035217175">スポンサー画像の詳細について</translation>
 <translation id="828092975561478703">スポンサーの画像を見ると、毎回売上の70％をトークンで受け取ることができます。Brave Adsにより、閲覧する広告を常にコントロールできます。</translation>
+<translation id="3624048886326677117">トラッカーと広告をブロック（アグレッシブ）</translation>
+<translation id="7151914815476509258">トラッカーと広告をブロック（標準）</translation>
+<translation id="7384778069178817075">すべてのトラッカー &amp; 広告を許可</translation>
 <translation id="4941539331405513605">クロスサイトクッキーをブロック</translation>
 <translation id="3763681089644577874">クッキーをブロック</translation>
 <translation id="614747795780742163">以前の訪問に関する情報を、ウェブサイトが保存しないようにします</translation>
 <translation id="6883611015375728278">すべてのクッキーをブロック</translation>
 <translation id="5657156137487675418">すべてのクッキーを許可する</translation>
 <translation id="3895527457258986253">フィンガープリントをブロック</translation>
+<translation id="7854108565842971747">新しいサイトに対するShieldsのデフォルト設定です。この設定を変更しても、既存のサイト設定には影響しません。</translation>
 <translation id="184568144098869637">ブラウザがお使いのデバイスを認識しないようにする</translation>
-<translation id="7445306466605902444">フィンガープリントをブロック（強、サイト破損の可能性あり）</translation>
-<translation id="5582686930349810484">フィンガープリントをブロック（標準）</translation>
+<translation id="7445306466605902444">フィンガープリントがブロックされました（強、サイトの表示が崩れる可能性）</translation>
+<translation id="5582686930349810484">フィンガープリントをブロック済み（標準）</translation>
 <translation id="769702552748212954">すべてのフィンガープリントを許可する</translation>
 <translation id="876424292214881779">ブロック済の広告およびその他の不審な通信</translation>
 <translation id="6930134873084561197">多くの場合、ウェブサイトにはあなた(のデバイス)を識別するためにクッキーとスクリプトが含まれます。あなたが誰であるかを判別・追跡しあなたが他のサイトで何をしているかを知ろうとします。\n\nBraveはこれらをブロックし、あなたが追跡されることなくブラウザできるようにします。</translation>
@@ -312,7 +329,6 @@
 <translation id="5617673581653540121">これで、あなたの接続が暗号化されました。</translation>
 <translation id="4055107796760496928">可能な場合、Braveは自動的に安全な接続にアップブレード致します。</translation>
 <translation id="8869714780588464835">ニュースをシェア</translation>
-<translation id="7888588008014907646">毎日、Braveでウェブを閲覧することでデータの使用量を節約しています。</translation>
 <translation id="5372054974373489308">1,000件のトラッカーと広告がブロックされました！</translation>
 <translation id="2338952568654182692">5,000件のトラッカーと広告がブロックされました！</translation>
 <translation id="5289711064670408815">10,000件のトラッカーと広告がブロックされました！</translation>
@@ -358,17 +374,19 @@
 <translation id="7427567994475794038">プライバシーレポートをONにして、過去3時間にブロックされたトラッカー広告の数を確認しましょう。</translation>
 <translation id="2053891538879944400">Braveブラウザで <ph name="DATA"/> <ph name="DATA_TEXT"/> の通信量を節約しました。</translation>
 <translation id="8640064498452534195">プライバシーレポートをONにして、保存したデータ量を確認します。</translation>
-<translation id="2252497442547961651">Braveブラウザは他のブラウザと比べ、バッテリー使用量が平均40%少なくなっています。&#128267;</translation>
+<translation id="2252497442547961651">Braveブラウザは他のブラウザと比べ、バッテリー使用量が平均40%少なくなっています。🔋</translation>
 <translation id="1945330434665345785">先週、Braveブラウザで <ph name="COUNT"/>件のトラッカーと広告をブロックしました。</translation>
 <translation id="2883868922264431515">プライバシーを尊重する広告を表示してトークンを獲得し、お気に入りのウェブサイトをサポートしましょう。</translation>
-<translation id="5678925890616256956">いいですね！Braveブラウザを使って、250件のトラッカー&amp;広告をブロックしました。&#128293;</translation>
-<translation id="9199047775708635708">いいですね！Braveブラウザで10MBを節約しました。&#128267;</translation>
-<translation id="1880168210969863408">いいですね！Braveブラウザを使って、読み込み時間を10分節約しました。&#128168;&#128168;</translation>
+<translation id="5678925890616256956">いいですね！Braveブラウザを使って、250件のトラッカー&amp;広告をブロックしました。🔥</translation>
+<translation id="9199047775708635708">いいですね！Braveブラウザで10MBを節約しました。🔋</translation>
+<translation id="1880168210969863408">いいですね！Braveブラウザを使って、読み込み時間を10分節約しました。💨💨</translation>
 <translation id="7408493389591475748">ブラウジングを開始してプライバシーレポートを表示</translation>
 <translation id="9080777565335515917">プライベートで安全なブラウジングのため、Braveをデフォルトのブラウザとして設定します。</translation>
 <translation id="1390943217516275883">Braveにプライバシー統計の表示を許可</translation>
 <translation id="1763352720905582220">毎週のプライバシーレポートを送信</translation>
 <translation id="1811691435325545066">すべてのプライバシーレポートデータを消去</translation>
+<translation id="5966003059662780423">終了時にデータをクリア</translation>
+<translation id="3980704343258720102">すべての閲覧データを削除</translation>
 <translation id="8089997572759938512">プライバシーレポートをゼロにリセット</translation>
 <translation id="2718046830255553131">プライバシーレポートのデータが消去されました。</translation>
 <translation id="7559243474426790340">ステータスを更新する</translation>
@@ -491,9 +509,15 @@
 <translation id="5825943197137337319">デフォルトのパブリックインターフェイスのみ</translation>
 <translation id="1689062823386843231">非プロキシUDPを無効にする</translation>
 <translation id="3171931580569169744">タブグループを有効化</translation>
-<translation id="5587305863196367357">ウォレットを認証すると、資金の追加や引き出しをより簡単に管理できます</translation>
+<translation id="5587305863196367357">ウォレットを認証すると、資金の追加や引き出しを簡単に管理できます</translation>
 <translation id="5760671211380791582">BATが不足しています。</translation>
 <translation id="6960458596933484861">認証済みのUpholdウォレットを作成するには、15 BAT以上必要です。後ほどもう一度お試しください。</translation>
 <translation id="4389085954549744469">認証済みのUpholdアカウントをお持ちの場合は、<ph name="CONTINUE_TO_LOGIN"/>。</translation>
 <translation id="6146966915297143881">ログインに進みます</translation>
+<translation id="5727208111992260840">このクリエイターは、Braveユーザーからの応援を受け取る設定がまだ完了していません
+チップを送っても、クリエイターが設定を完了するまではあなたのウォレット残高は減りません。</translation>
+<translation id="9212459913845238740">獲得したポイント付与</translation>
+<translation id="2132683977638223450">無料のポイント付与</translation>
+<translation id="8713995420537272453">ポイント</translation>
+<translation id="7888588008014907646">毎日、Braveでウェブを閲覧することでデータの使用量を節約しています。</translation>
 </translationbundle>

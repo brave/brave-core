@@ -19,6 +19,7 @@
 <translation id="4479934682648362332">સાઇટોનું ડેસ્કટૉપ સંસ્કરણ પસંદ કરો</translation>
 <translation id="1842747674580016420">Braveમાં વિડીઓ પ્લેબૅક</translation>
 <translation id="5368992950177874750">જો સક્ષમ કરેલું હશે, તો વિડીઓ અનુરૂપ એપ્લિકેશનને બદલે Brave માં ચલાવવામાં આવશે</translation>
+<translation id="8026334261755873520">બ્રાઉઝિંગ ડેટા સાફ કરો</translation>
 <translation id="5965081608816406060">પૃષ્ઠભૂમિ વિડીયો પ્લેબૅક</translation>
 <translation id="6332924730165919598">તમામ ટૅબ્સ બંધ કરવાથી Brave બંધ થાય છે</translation>
 <translation id="1580125697191336644">પ્રાયોગિક. જ્યારે ટૅબ સક્રિય ન હોય અથવા ઉપકરણનું સ્ક્રીન બંધ હોય ત્યારે પૃષ્ઠભૂમિમાં વિડીઓમાંથી ઑડિઓ ચલાવવાનું સક્ષમ કરે છે. જો આ સુવિધા કાર્યરત ન હોય તો ડેસ્કટૉપ મોડ પર સ્વિચ કરવાનો પ્રયાસ કરો.</translation>
@@ -80,7 +81,6 @@
 <translation id="8428213095426709021">સેટિંગ્સ</translation>
 <translation id="8772672608371898774">Brave ચકાસાયેલ પ્રકાશક</translation>
 <translation id="1397683270551078781">હજુ સુધી ચકાસાયેલ નથી</translation>
-<translation id="5727208111992260840">આ નિર્માતાએ Brave ઉપયોગકર્તાઓ તરફથી યોગદાન પ્રાપ્ત કરવા માટે હજી સુધી સાઇન અપ કર્યું નથી. તમે મોકલેલી કોઈપણ ટીપ્સ તે ચકાસે ત્યાં સુધી તમારા  વૉલેટ રહેશે.</translation>
 <translation id="8918760045046434238">એક ટીપ મોકલો...</translation>
 <translation id="1978261665418056203">આ મહિનામાં હજી સુધી 
 કોઈ પ્રવૃત્તિઓ નથી...</translation>
@@ -164,6 +164,8 @@
 <translation id="8874184842967597500">કનેક્ટેડ નથી</translation>
 <translation id="3368922792935385530">કનેક્ટેડ</translation>
 <translation id="3248185426436836442">બાકી</translation>
+<translation id="987264212798334818">સામાન્ય</translation>
+<translation id="1116694919640316211">વિશે</translation>
 <translation id="6680650203439190394">રેટ કરો</translation>
 <translation id="7961015016161918242">ક્યારેય નહીં</translation>
 <translation id="5657156137487675418">બધી કૂકીઝને મંજૂરી આપો</translation>
@@ -176,4 +178,5 @@
 <translation id="1078265935778232285">Brave Browser માં સ્વાગત છે</translation>
 <translation id="3479552764303398839">હમણાં નહીં</translation>
 <translation id="8798099450830957504">ડિફૉલ્ટ</translation>
+<translation id="5727208111992260840">આ નિર્માતાએ Brave ઉપયોગકર્તાઓ તરફથી યોગદાન પ્રાપ્ત કરવા માટે હજી સુધી સાઇન અપ કર્યું નથી. તમે મોકલેલી કોઈપણ ટીપ્સ તે ચકાસે ત્યાં સુધી તમારા  વૉલેટ રહેશે.</translation>
 </translationbundle>

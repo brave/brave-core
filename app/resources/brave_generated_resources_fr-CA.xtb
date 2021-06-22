@@ -18,7 +18,7 @@
 <translation id="6241402707160226266">Fenêtre privée avec Tor</translation>
 <translation id="8762452230727230396">Tor masque votre adresse IP lorsque vous visitez des sites.</translation>
 <translation id="1369311132025451972">Rediriger automatiquement les sites .onion</translation>
-<translation id="81720820779436751">Brave ouvrira le service « oignon » du site Web lorsqu'il est disponible ou le domaine .onion dans la fenêtre Tor</translation>
+<translation id="2843777623071353503">Brave ouvrira le service « oignon » du site Web lorsqu'il est disponible ou le domaine .onion dans la fenêtre Tor</translation>
 <translation id="8053096063396012732">Installez Widevine</translation>
 <translation id="4840334696217618631">Redémarrer le navigateur pour activer Widevine</translation>
 <translation id="8410111618231938546">Google Widevine est un code de gestion des droits numériques (GDN) que Brave Software ne possède pas et ne peut inspecter. Le code Google Widevine est chargé à partir des serveurs Google et non de nos serveurs. Il n'est chargé que lorsque vous activez cette option. Nous décourageons l'utilisation de la GDN, mais nous respectons le choix de l'utilisateur et reconnaissons que certains utilisateurs de Brave aimeraient utiliser les services qui en ont besoin.
@@ -37,6 +37,8 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="6123134130710658846">Cacher le bouton « Récompenses de Brave »</translation>
 <translation id="1811404036171336214">Toujours afficher les signets sur le nouvel onglet</translation>
 <translation id="1643029991199044105">Faites défiler les onglets les plus récemment utilisés avec Ctrl-Tab</translation>
+<translation id="1013121820689882118">Speedreader</translation>
+<translation id="2025435450953474282">Les articles se chargent automatiquement en mode Lecteur, ce qui vous permet de gagner du temps.</translation>
 <translation id="5802665280774361839">Afficher la saisie semi-automatique dans la barre d'adresse</translation>
 <translation id="597020512043916976">Afficher les meilleurs sites dans les suggestions autocomplètes</translation>
 <translation id="264150068416846820">Afficher les sites suggérés par Brave dans les suggestions autocomplètes</translation>
@@ -68,15 +70,16 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="2715839724138372481">Vidéo sélectionnée</translation>
 <translation id="4227945450504703638">Contenu audio sélectionné</translation>
 <translation id="7895302206188277628">Contenu du lien</translation>
-<translation id="4322612543319315652">Importer le texte sélectionné sur IPFS</translation>
-<translation id="8883166554766780543">Importez et copiez le lien vers un instantané IPFS</translation>
 <translation id="3654831858282189202">Publier avec une clé IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Importer le texte sélectionné sur IPFS</translation>
+<translation id="6925604404524625582">Importer et copier le lien vers un instantané IPFS</translation>
 <translation id="1434416574322382019">Nouvelle fenêtre privée avec Tor</translation>
 <translation id="4703780849509456860">Ouvrir le lien dans une fenêtre privée avec Tor</translation>
 <translation id="3488584642074079080">Ouvrir le lien dans la fenêtre privée Brave avec Tor</translation>
 <translation id="7475547933708221517">Partager le fichier local via IPFS</translation>
 <translation id="2286177249736199435">Partager le dossier local via IPFS</translation>
+<translation id="8883166554766780543">Importez et copiez le lien vers un instantané IPFS</translation>
 <translation id="784573715436258741">Partager le fichier local via IPFS</translation>
 <translation id="6313675821927505581">Nouvelle fenêtre privée avec Tor</translation>
 <translation id="2638041073279639246">Ouvrir le lien dans une fenêtre privée avec Tor</translation>
@@ -191,13 +194,20 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="7611728475758612204">Clés disponibles pour la publication</translation>
 <translation id="911363100236037920">Saisir un nom pour la nouvelle clé</translation>
 <translation id="6358469157239228181">Ce nom ne peut pas être utilisé</translation>
+<translation id="5761731140570209168">Ajouter une chaîne de connexion à un pair</translation>
+<translation id="6476061084931271248">Redémarrer le nœud pour appliquer les modifications</translation>
+<translation id="3754226427671882382">Redémarrer le nœud</translation>
+<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
+<translation id="724513921936768901">Ce nom n'est pas valide</translation>
+<translation id="6758961763875471084">Modifier la liste des pairs</translation>
+<translation id="1534091531114892221">Configurer la description des pairs IPFS</translation>
 <translation id="8996633027318264334">Voulez-vous vraiment supprimer <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Le nœud n'est pas lancé</translation>
 <translation id="616058968889448209">Erreur de lancement du service IPFS. Pour obtenir des renseignements supplémentaires, consultez la <ph name="BEGIN_LINK"/>page de diagnostic<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' : échec d'importation de la clé</translation>
 <translation id="8275038454117074363">Importer</translation>
 <translation id="3654980960391973513">Générer</translation>
-<translation id="5531501313997312487">Nœud de départ</translation>
+<translation id="5531501313997312487">Démarrer le nœud</translation>
 <translation id="9170907049676078643">Méthode de résolution des ressources IPFS</translation>
 <translation id="1327977588028644528">Passerelle</translation>
 <translation id="80225669816651290">Nœud local</translation>
@@ -286,9 +296,15 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="7060352228894039151">Au survol de la souris</translation>
 <translation id="407173827865827707">Au clic</translation>
 <translation id="7961015016161918242">Jamais</translation>
+<translation id="8981254605840444865">Afficher les paramètres</translation>
 <translation id="59174027418879706">Activé</translation>
 <translation id="8258999165172757081">Ajouté</translation>
 <translation id="6959315322491671328">Cliquez sur le bouton droit de la souris pour supprimer</translation>
+<translation id="4651504163033753423">Souhaitez-vous activer Speedreader?</translation>
+<translation id="9089090017461255038">Activer Speedreader</translation>
+<translation id="312393675740711187">Les articles se chargent automatiquement en mode Lecteur, ce qui vous permet de gagner du temps.</translation>
+<translation id="3234744217174488546">Activez ou désactivez le mode Lecteur uniquement pour ce site Web. Pour désactiver Speedreader pour tout votre profil de navigation, accédez à</translation>
+<translation id="7839742507462737706">avec Speedreader</translation>
 <translation id="1872784258300710671">Brave utilise des analyses de produits entièrement privées pour estimer l'utilisation globale de certaines fonctionnalités</translation>
 <translation id="8712637175834984815">OK</translation>
 <translation id="4394049700291259645">Désactiver</translation>
@@ -319,4 +335,6 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="2808630562319398131">Reconfigurer les données de récompenses de Brave...</translation>
 <translation id="1224064034972923114">Aidez à améliorer Brave en envoyant automatiquement des rapports de plantage</translation>
 <translation id="3738833060602717053">Aidez à améliorer <ph name="PRODUCT_NAME"/> en envoyant automatiquement des rapports de plantage</translation>
+<translation id="81720820779436751">Brave ouvrira le service « oignon » du site Web lorsqu'il est disponible ou le domaine .onion dans la fenêtre Tor</translation>
+<translation id="4322612543319315652">Importer le texte sélectionné sur IPFS</translation>
 </translationbundle>
