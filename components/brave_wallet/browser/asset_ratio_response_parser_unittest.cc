@@ -48,8 +48,7 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPriceHistory) {
   ASSERT_TRUE(ParseAssetPriceHistory(json, &values));
   ASSERT_EQ(values.size(), 2UL);
   ASSERT_EQ(values[0]->price, "0.8201346624954003");
-  auto date =
-      base::UTF16ToUTF8(base::TimeFormatShortDate(values[0]->date));
+  auto date = base::UTF16ToUTF8(base::TimeFormatShortDate(values[0]->date));
   ASSERT_EQ(date, "Jun 3, 2021");
 
   ASSERT_EQ(values[1]->price, "0.8096978545029869");
