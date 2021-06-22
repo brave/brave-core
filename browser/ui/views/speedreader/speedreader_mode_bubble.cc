@@ -81,7 +81,6 @@ bool SpeedreaderModeBubble::ShouldShowCloseButton() const {
 
 void SpeedreaderModeBubble::WindowClosing() {
   if (tab_helper_) {
-    tab_helper_->MaybeToggleEnabledForSite(site_toggle_button_->GetIsOn());
     tab_helper_->OnBubbleClosed();
     tab_helper_ = nullptr;
   }
@@ -125,7 +124,9 @@ void SpeedreaderModeBubble::Init() {
   // float button right
   site_toggle_layout->set_main_axis_alignment(
       views::BoxLayout::MainAxisAlignment::kEnd);
-  auto site_toggle_button = std::make_unique<views::ToggleButton>();
+  auto site_toggle_button =
+      std::make_unique<views::ToggleButton>(base::BindRepeating(
+          &SpeedreaderModeBubble::OnButtonPressed, base::Unretained(this)));
   site_toggle_button->SetIsOn(tab_helper_->IsEnabledForSite());
   // TODO(keur): We shoud be able to remove these once brave overrides
   // views::ToggleButton globally with our own theme
@@ -142,6 +143,12 @@ void SpeedreaderModeBubble::Init() {
       base::BindRepeating(&SpeedreaderModeBubble::OnLinkClicked,
                           base::Unretained(this)));
   site_toggle_explanation_ = AddChildView(std::move(site_toggle_explanation));
+}
+
+void SpeedreaderModeBubble::OnButtonPressed(const ui::Event& event) {
+  const bool on = site_toggle_button_->GetIsOn();
+  tab_helper_->MaybeToggleEnabledForSite(on);
+  CloseBubble();
 }
 
 void SpeedreaderModeBubble::OnLinkClicked(const ui::Event& event) {
