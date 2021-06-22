@@ -11,7 +11,6 @@
 #include "base/android/jni_weak_ref.h"
 #include "base/scoped_observation.h"
 #include "base/values.h"
-#include "chrome/browser/sync/profile_sync_service_android.h"
 #include "components/sync_device_info/device_info_tracker.h"
 
 class Profile;
