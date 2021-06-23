@@ -31,8 +31,11 @@ void UpholdAuthorization::Authorize(
     return callback(type::Result::LEDGER_ERROR, {});
   }
 
-  DCHECK(uphold_wallet->status == type::WalletStatus::NOT_CONNECTED ||
-         uphold_wallet->status == type::WalletStatus::DISCONNECTED_VERIFIED);
+  if (uphold_wallet->status != type::WalletStatus::NOT_CONNECTED &&
+      uphold_wallet->status != type::WalletStatus::DISCONNECTED_VERIFIED) {
+    return callback(type::Result::LEDGER_OK, {});
+  }
+
   DCHECK(uphold_wallet->token.empty());
   DCHECK(uphold_wallet->address.empty());
 
@@ -103,8 +106,11 @@ void UpholdAuthorization::OnAuthorize(
     return callback(type::Result::LEDGER_ERROR, {});
   }
 
-  DCHECK(uphold_wallet->status == type::WalletStatus::NOT_CONNECTED ||
-         uphold_wallet->status == type::WalletStatus::DISCONNECTED_VERIFIED);
+  if (uphold_wallet->status != type::WalletStatus::NOT_CONNECTED &&
+      uphold_wallet->status != type::WalletStatus::DISCONNECTED_VERIFIED) {
+    return callback(type::Result::LEDGER_OK, {});
+  }
+
   DCHECK(uphold_wallet->token.empty());
   DCHECK(uphold_wallet->address.empty());
 

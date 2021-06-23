@@ -68,8 +68,11 @@ void UpholdWallet::OnGetUser(const type::Result result,
     return callback(type::Result::LEDGER_ERROR);
   }
 
-  DCHECK(uphold_wallet->status == type::WalletStatus::PENDING ||
-         uphold_wallet->status == type::WalletStatus::VERIFIED);
+  if (uphold_wallet->status != type::WalletStatus::PENDING &&
+      uphold_wallet->status != type::WalletStatus::VERIFIED) {
+    return callback(type::Result::LEDGER_OK);
+  }
+
   DCHECK(!uphold_wallet->token.empty());
   DCHECK(uphold_wallet->status == type::WalletStatus::PENDING
              ? uphold_wallet->address.empty()
@@ -128,7 +131,10 @@ void UpholdWallet::OnCreateCard(const type::Result result,
     return callback(type::Result::LEDGER_ERROR);
   }
 
-  DCHECK(uphold_wallet->status == type::WalletStatus::PENDING);
+  if (uphold_wallet->status != type::WalletStatus::PENDING) {
+    return callback(type::Result::LEDGER_OK);
+  }
+
   DCHECK(!uphold_wallet->token.empty());
   DCHECK(uphold_wallet->address.empty());
 
@@ -185,7 +191,10 @@ void UpholdWallet::OnGetAnonFunds(const type::Result result,
     return callback(type::Result::LEDGER_ERROR);
   }
 
-  DCHECK(uphold_wallet->status == type::WalletStatus::PENDING);
+  if (uphold_wallet->status != type::WalletStatus::PENDING) {
+    return callback(type::Result::LEDGER_OK);
+  }
+
   DCHECK(!uphold_wallet->token.empty());
   DCHECK(uphold_wallet->address.empty());
   DCHECK(!id.empty());
@@ -224,7 +233,10 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
     return callback(type::Result::LEDGER_ERROR);
   }
 
-  DCHECK(uphold_wallet->status == type::WalletStatus::PENDING);
+  if (uphold_wallet->status != type::WalletStatus::PENDING) {
+    return callback(type::Result::LEDGER_OK);
+  }
+
   DCHECK(!uphold_wallet->token.empty());
   DCHECK(uphold_wallet->address.empty());
   DCHECK(!id.empty());
@@ -279,7 +291,10 @@ void UpholdWallet::OnTransferTokens(const type::Result result,
     return callback(type::Result::LEDGER_ERROR);
   }
 
-  DCHECK(uphold_wallet->status == type::WalletStatus::VERIFIED);
+  if (uphold_wallet->status != type::WalletStatus::VERIFIED) {
+    return callback(type::Result::LEDGER_OK);
+  }
+
   DCHECK(!uphold_wallet->token.empty());
   DCHECK(!uphold_wallet->address.empty());
 
