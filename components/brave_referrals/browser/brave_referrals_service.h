@@ -97,8 +97,6 @@ class BraveReferralsService : public ProfileManagerObserver {
   std::string BuildReferralInitPayload() const;
   std::string BuildReferralFinalizationCheckPayload() const;
   void CheckForReferralFinalization();
-  std::string FormatExtraHeaders(const base::Value* referral_headers,
-                                 const GURL& url);
 
   // Invoked from RepeatingTimer when finalization checks timer
   // fires.

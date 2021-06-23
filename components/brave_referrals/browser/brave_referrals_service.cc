@@ -30,13 +30,11 @@
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/profiles/profile_manager.h"
-#include "chrome/browser/ui/scoped_tabbed_browser_displayer.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
-#include "content/public/browser/page_navigator.h"
 #include "content/public/common/referrer.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/load_flags.h"
@@ -342,24 +340,6 @@ void BraveReferralsService::OnReferralInitLoadComplete(
     initialization_timer_.reset();
   if (g_testing_referral_initialized_callback) {
     g_testing_referral_initialized_callback->Run(download_id->GetString());
-  }
-
-  const base::Value* offer_page_url = root.value->FindKey("offer_page_url");
-  if (offer_page_url) {
-    Profile* last_used_profile = ProfileManager::GetLastUsedProfile();
-    GURL gurl(offer_page_url->GetString());
-    content::OpenURLParams open_url_params(
-        gurl, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
-        ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
-    open_url_params.extra_headers = FormatExtraHeaders(headers, gurl);
-#if defined(OS_ANDROID)
-    ServiceTabLauncher::GetInstance()->LaunchTab(
-        last_used_profile, open_url_params,
-        base::BindOnce([](content::WebContents*) {}));
-#else
-    chrome::ScopedTabbedBrowserDisplayer browser_displayer(last_used_profile);
-    browser_displayer.browser()->OpenURL(open_url_params);
-#endif
   }
 
   task_runner_->PostTask(
@@ -681,32 +661,6 @@ void BraveReferralsService::CheckForReferralFinalization() {
           &BraveReferralsService::OnReferralFinalizationCheckLoadComplete,
           base::Unretained(this)),
       kMaxReferralServerResponseSizeBytes);
-}
-
-std::string BraveReferralsService::FormatExtraHeaders(
-    const base::Value* referral_headers,
-    const GURL& url) {
-  if (!referral_headers)
-    return std::string();
-
-  const base::ListValue* referral_headers_list = nullptr;
-  if (!referral_headers->GetAsList(&referral_headers_list))
-    return std::string();
-
-  const base::DictionaryValue* request_headers_dict = nullptr;
-  if (!BraveReferralsHeaders::GetInstance()->GetMatchingReferralHeaders(
-          *referral_headers_list, &request_headers_dict, url))
-    return std::string();
-
-  std::string extra_headers;
-  for (const auto& it : request_headers_dict->DictItems()) {
-    extra_headers += base::StringPrintf("%s: %s\r\n", it.first.c_str(),
-                                        it.second.GetString().c_str());
-  }
-  if (!extra_headers.empty())
-    extra_headers += "\r\n";
-
-  return extra_headers;
 }
 
 #if defined(OS_ANDROID)
