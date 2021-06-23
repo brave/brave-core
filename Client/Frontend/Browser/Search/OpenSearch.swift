@@ -244,7 +244,7 @@ class OpenSearchParser {
         self.pluginMode = pluginMode
     }
     
-    func parse(_ file: String, engineID: String, referenceURL: String = "") -> OpenSearchEngine? {
+    func parse(_ file: String, engineID: String, referenceURL: String?) -> OpenSearchEngine? {
         guard let data = try? Data(contentsOf: URL(fileURLWithPath: file)) else {
             print("Invalid search file")
             return nil

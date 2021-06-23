@@ -12,6 +12,21 @@ class InitialSearchEngines {
     enum SearchEngineID: String {
         case google, braveSearch, bing, duckduckgo, yandex, qwant, startpage, yahoo, ecosia
         
+        /// Open Search Reference  for default search Engines
+        var openSearchReference: String {
+            switch self {
+                case .google: return "google.com"
+                case .braveSearch: return "search.brave"
+                case .bing: return "bing.com"
+                case .duckduckgo: return "duckduckgo.com/opensearch"
+                case .yandex: return "yandex.com/search"
+                case .qwant: return "qwant.com/opensearch"
+                case .startpage: return "startpage.com/en/opensearch"
+                case .yahoo: return "search.yahoo.com/opensearch"
+                case .ecosia: return "ecosia.org/opensearch"
+            }
+        }
+        
         func excludedFromOnboarding(for locale: Locale) -> Bool {
             switch self {
             case .google, .bing, .duckduckgo, .yandex, .qwant, .startpage, .ecosia:
@@ -31,6 +46,11 @@ class InitialSearchEngines {
         /// Some search engines have regional variations which correspond to different xml files in `SearchPlugins` folder.
         /// If you provide this custom id, it will be used instead of `regular` id when accessing the open search xml file.
         var customId: String?
+        /// This is used to determine If a seach engine is added already
+        /// Added to espeically to prevent Default Search engines using Open Search Auto-Add
+        var reference: String? {
+            return id.openSearchReference
+        }
         
         // Only `id` mattera when comparing search engines.
         // This is to prevent adding more than 2 engines of the same type.

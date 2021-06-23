@@ -295,12 +295,12 @@ class SearchEngines {
 
         let se = InitialSearchEngines()
         let engines = isOnboarding ? se.onboardingEngines : se.engines
-        let engineNames = engines.map { ($0.customId ?? $0.id.rawValue).lowercased() }
-        assert(!engineNames.isEmpty, "No search engines")
+        let engineIdentifiers: [(id: String, reference: String?)] = engines.map { (id: ($0.customId ?? $0.id.rawValue).lowercased(), reference: $0.reference) }
+        assert(!engineIdentifiers.isEmpty, "No search engines")
 
-        return engineNames.map({ (name: $0, path: pluginDirectory.appendingPathComponent("\($0).xml").path) })
+        return engineIdentifiers.map({ (name: $0.id, path: pluginDirectory.appendingPathComponent("\($0.id).xml").path, reference: $0.reference) })
             .filter({ FileManager.default.fileExists(atPath: $0.path) })
-            .compactMap({ parser.parse($0.path, engineID: $0.name) })
+            .compactMap({ parser.parse($0.path, engineID: $0.name, referenceURL: $0.reference) })
     }
 
     /// Get all known search engines, possibly as ordered by the user.
