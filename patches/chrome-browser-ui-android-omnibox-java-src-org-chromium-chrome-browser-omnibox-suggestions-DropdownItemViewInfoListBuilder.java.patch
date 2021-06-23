@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder.java
+index 208580a0d53c8a578de68b0f25dd0f3ecf823e05..4f963f68b0d2ed8178fd399904d6db6ff49bde2f 100644
+--- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder.java
++++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder.java
+@@ -92,7 +92,7 @@ class DropdownItemViewInfoListBuilder {
+                 () -> mShareDelegateSupplier == null ? null : mShareDelegateSupplier.get();
+ 
+         mHeaderProcessor = new HeaderProcessor(context, host, delegate);
+-        registerSuggestionProcessor(new EditUrlSuggestionProcessor(
++        registerSuggestionProcessor(new new org.chromium.chrome.browser.omnibox.suggestions.editurl.BraveEditUrlSuggestionProcessor(
+                 context, host, delegate, iconBridgeSupplier, mActivityTabSupplier, shareSupplier));
+         registerSuggestionProcessor(
+                 new AnswerSuggestionProcessor(context, host, textProvider, imageFetcherSupplier));
