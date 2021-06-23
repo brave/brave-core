@@ -289,9 +289,6 @@ CHAR_LIMIT guidelines:
       <message name="IDS_SIGN_IN_GOOGLE_ACTIVITY_CONTROLS_SUMMARY" desc="Message of Brave activity controls preference in signed in accounts settings screen">
         Control how your browsing history is used to personalize Search and more
       </message>
-      <message name="IDS_SIGN_IN_GOOGLE_ACTIVITY_CONTROLS_SUMMARY_CHILD_ACCOUNT" desc="Message of Brave activity controls preference in signed in accounts settings screen">
-        Control how your browsing history is used to personalize Search and more
-      </message>
       <!-- Unified consent preferences -->
       <message name="IDS_SIGN_OUT_AND_TURN_OFF_SYNC" desc="The text for a preferences row that for signs out the user and turns off sync.">
         Sign out and turn off sync
@@ -917,8 +914,14 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_CLEAR_SEARCH_HISTORY_LINK" desc="Text informing the user that they can clear search history and other data using MyActivity.">
         To clear <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>search<ph name="END_LINK1">&lt;/link1&gt;</ph> or other forms of history, visit <ph name="BEGIN_LINK2">&lt;link2&gt;</ph>My Brave Activity<ph name="END_LINK2">&lt;/link2&gt;</ph>
       </message>
+      <message name="IDS_CLEAR_SEARCH_HISTORY_LINK_OTHER_FORMS" desc="Text informing the user that they can clear their Brave data using MyActivity when their Default Search Engine is not Brave.">
+        To clear other forms of history, visit <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>My Brave Activity<ph name="END_LINK1">&lt;/link1&gt;</ph>
+      </message>
       <message name="IDS_CLEAR_SEARCH_HISTORY_NON_GOOGLE_DSE" desc="Text informing the user about the way to clear their search history when their Default Search Engine is not Brave.">
         Your search engine is <ph name="dse">%1$s<ex>Bing</ex></ph>. If applicable, see their instructions to delete your search history.
+      </message>
+      <message name="IDS_CLEAR_SEARCH_HISTORY_NON_GOOGLE_DSE_UNKNOWN" desc="Text informing the user about the way to clear their search history when their Default Search Engine is not Brave and is also not prepopulated.">
+        See your search engine’s instructions for deleting your search history, if applicable
       </message>
       <message name="IDS_CLEAR_PASSWORDS_TITLE" desc="Title for Clear Passwords in Clear Browsing Data preference">
         Saved passwords
@@ -2654,9 +2657,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_SIGNIN_SYNC_DESCRIPTION" desc="Description of Sync feature for the screen that asks users to sign-in and turn on Sync.">
         Brave may use your history to personalize Search and other Brave services
       </message>
-      <message name="IDS_SIGNIN_SYNC_DESCRIPTION_CHILD_ACCOUNT" desc="Description of Sync feature for the screen that asks users to sign-in and turn on Sync.">
-        Brave may use your history to personalize Search and other Brave services
-      </message>
       <message name="IDS_SIGNIN_DETAILS_DESCRIPTION" desc="Message with a link to customize Sync settings. Shown on the screen that asks the user to turn on Sync.">
         You can always choose what to sync in <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>settings<ph name="END_LINK1">&lt;/LINK1&gt;</ph>.
       </message>
@@ -3561,6 +3561,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_OMNIBOX_CONFIRM_DELETE" desc="A message within a modal dialog that confirms the user wants to delete a suggestion from the list dropdown in the omnibox">
         Remove suggestion from history?
       </message>
+      <message name="IDS_OMNIBOX_CONFIRM_DELETE_FROM_CLIPBOARD" desc="A message within a modal dialog that confirms the user wants to delete a clipboard suggestion from the list dropdown in the omnibox." formatter_data="android_java">
+        Remove suggestion from clipboard?
+      </message>
       <message name="IDS_MOST_VISITED_TILES_HEADER" desc="A header above a row with most visited tiles carousel in the Omnibox suggestions dropdown">
         Frequently visited
       </message>
@@ -4048,6 +4051,17 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Brave now downloads files faster
       </message>
 
+      <!-- Quick Action Search Widget -->
+      <message name="IDS_QUICK_ACTION_SEARCH_WIDGET_SEARCH_BAR_HINT" desc="Hint text for to search box on the quick action search widget">
+        Search or type URL
+      </message>
+      <message name="IDS_ACCESSIBILITY_QUICK_ACTION_SEARCH_WIDGET_START_DINO_GAME" desc="Content description for the Dino button on the Quick Action Search Widget.">
+        Start Dino Game
+      </message>
+      <message name="IDS_ACCESSIBILITY_QUICK_ACTION_SEARCH_WIDGET_ICON" desc="Content description for the for the icon on the Quick Action Search Widget">
+        Quick Action Search Widget Icon
+      </message>
+
       <!-- Launcher Shortcuts -->
       <message name="IDS_DISABLED_INCOGNITO_LAUNCHER_SHORTCUT_MESSAGE" desc="Text for a toast displayed prompting the user to remove the disabled 'New Private tab' app shortcut and recreate it.">
         Remove and recreate this shortcut
@@ -4204,13 +4218,16 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
 
       <!-- Sms Fetcher -->
       <message name="IDS_SMS_FETCHER_NOTIFICATION_TITLE_UNKNOWN_DEVICE" translateable="false" desc="Title text shown when the browser has received an SMS on the user's behalf when the source device name is unknown.">
-        Allow Brave to submit code on your remote device?
+        Verify your phone number on other device
       </message>
       <message name="IDS_SMS_FETCHER_NOTIFICATION_TITLE" translateable="false" desc="Title text shown when the browser has received an SMS on the user's behalf.">
-        Allow Brave to submit code on your <ph name="OS">%1$s<ex>mac</ex></ph>?
+        Verify your phone number on <ph name="CLIENT_NAME">%1$s<ex>Zoe's Macbook</ex></ph>
       </message>
       <message name="IDS_SMS_FETCHER_NOTIFICATION_TEXT" translateable="false" desc="Content text shown when the browser has received an SMS on the user's behalf.">
-        Tap OK to submit <ph name="ONE_TIME_CODE">%1$s<ex>123</ex></ph> on <ph name="ORIGIN">%2$s<ex>example.com</ex></ph>
+        Let Brave submit <ph name="ONE_TIME_CODE">%1$s<ex>123</ex></ph> on <ph name="ORIGIN">%2$s<ex>example.com</ex></ph>
+      </message>
+      <message name="IDS_SMS_FETCHER_NOTIFICATION_TEXT_FOR_EMBEDDED_FRAME" translateable="false" desc="Content text shown when the browser has received an SMS on the user's behalf. User is on TOP_ORIGIN and they need to use service provided by EMBEDDED_ORIGIN. EMBEDDED_ORIGIN sends out an SMS to verify user identity.">
+        Tap OK to submit <ph name="ONE_TIME_CODE">%1$s<ex>123</ex></ph> on <ph name="EMBEDDED_ORIGIN">%3$s<ex>payment.com</ex></ph> to continue on <ph name="TOP_ORIGIN">%2$s<ex>shopping.com</ex></ph>
       </message>
 
       <!-- Interventions -->
@@ -4391,11 +4408,11 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <message name="IDS_CABLEV2_BLE_ENABLE_TITLE" desc="The title of a screen that'll appear on a phone when we need to enable Bluetooth on the device. This screen will appear for a couple of seconds to give context, then a prompt will appear to allow the user to confirm that they wish to enable Bluetooth. Bluetooth is a radio technology commonly found in phones.">
-        Switching on Bluetooth…
+        Turning on Bluetooth…
       </message>
 
       <message name="IDS_CABLEV2_BLE_ENABLE_BODY" desc="The subheading on a screen that'll appear on a phone when we need to enable Bluetooth on the device. This screen will appear for a couple of seconds to give context, then a prompt will appear to allow the user to confirm that they wish to enable Bluetooth. Bluetooth is a radio technology commonly found in phones. This subheading is informing the user that, if they opt to turn on Bluetooth for this operation, it'll automatically be switched off again afterwards.">
-        We'll switch it back off after we are done
+        Bluetooth will turn back off when you're done
       </message>
 
       <!-- QR Code -->
@@ -4458,6 +4475,14 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
 
       <message name="IDS_SHARING_LONG_SCREENSHOT_INSTRUCTIONS" desc="Text message instructing users how to extend a screenshot region in the long screenshot capture dialog.">
         Drag to take a long screenshot
+      </message>
+
+      <message name="IDS_SHARING_LONG_SCREENSHOT_MOVE_UP_BUTTON_DESCRIPTION" desc="Accessibility label for the button control to move the long screenshot selection window up.">
+        Move Up
+      </message>
+
+      <message name="IDS_SHARING_LONG_SCREENSHOT_MOVE_DOWN_BUTTON_DESCRIPTION" desc="Accessibility label for the button control to move the long screenshot selection window down.">
+        Move Down
       </message>
 
       <message name="IDS_SHARING_LONG_SCREENSHOT_REACHED_TOP" desc="Text shown in the toast notification when user reached the top of the available screenshot selection window, in the long screenshots feature.">
@@ -4741,6 +4766,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE" desc="Header for Account Selection sheet where users can pick an account to select." translateable="false">
         Create a <ph name="SITE_NAME">%1$s<ex>airbnb.com</ex></ph> account…
       </message>
+      <message name="IDS_ACCOUNT_SELECTION_CONTINUE" desc="Title of the button that continues filling with the only available set of credentials." translateable="false">
+        Sign up
+      </message>
       <message name="IDS_ACCOUNT_SELECTION_CONTENT_DESCRIPTION" desc="Accessibility string read when the Account Selection bottom sheet is opened. It describes the bottom sheet where a user can pick an account." translateable="false">
         List of accounts to be selected.
       </message>
@@ -4760,6 +4788,15 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_CONTENT_CREATION_NOTE_FILENAME_PREFIX" desc="Prefix used to name files when saving a Note's image representation. Underscores need to be used in place of whitespaces to avoid breaking the file path. Random numbers will be appended to this suffix to guarantee uniqueness.">
         chrome_stylized_highlight_
+      </message>
+      <message name="IDS_CONTENT_CREATION_NOTE_TEMPLATE_SELECTED" desc="Announcment string for accessibility when selected template changes.">
+        <ph name="TEMPLATE_TITLE">%1$s<ex>Classic</ex> template selected</ph>
+      </message>
+      <message name="IDS_CONTENT_CREATION_NOTE_DIALOG_DESCRIPTION" desc="Accessibility information for note template picking dialog.">
+        Select a template for your highlight
+      </message>
+      <message name="IDS_CONTENT_CREATION_NOTE_SHORTENED_MESSAGE" desc="Toast message displayed when highlighted text is too long and is cropped to fit in the note.">
+        Highlight was shortened
       </message>
     </messages>
   </release>
