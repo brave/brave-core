@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser.h b/chrome/browser/ui/browser.h
-index 682e706b4d73f862241d441de4314b65cb78253d..ea6610c9a8db8f379d26d80d4890639c90372abb 100644
+index ab9c5fb85f83b2ffb04bf21be631d38cfacd8835..f1d511caaa70b0b0ce6fc62f804c3f8f889e3da1 100644
 --- a/chrome/browser/ui/browser.h
 +++ b/chrome/browser/ui/browser.h
-@@ -703,6 +703,7 @@ class Browser : public TabStripModelObserver,
+@@ -709,6 +709,7 @@ class Browser : public TabStripModelObserver,
  
    StatusBubble* GetStatusBubbleForTesting();
  

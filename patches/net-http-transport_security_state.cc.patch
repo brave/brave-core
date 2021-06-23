@@ -1,8 +1,8 @@
 diff --git a/net/http/transport_security_state.cc b/net/http/transport_security_state.cc
-index 1a13b0e6883a4622380ccedf2ac6a02e4c2c842d..49e209cdcc8d394c84cd6ad5b2f130f67d4127b6 100644
+index 8488019ec5f071d474217fe796d8688bab48acd1..f453bc682a40e11424c96c1e170b9c79f632b088 100644
 --- a/net/http/transport_security_state.cc
 +++ b/net/http/transport_security_state.cc
-@@ -409,6 +409,7 @@ TransportSecurityState::TransportSecurityState(
+@@ -414,6 +414,7 @@ TransportSecurityState::TransportSecurityState(
  #if !BUILDFLAG(GOOGLE_CHROME_BRANDING) || defined(OS_ANDROID) || defined(OS_IOS)
    enable_static_pins_ = false;
    enable_static_expect_ct_ = false;

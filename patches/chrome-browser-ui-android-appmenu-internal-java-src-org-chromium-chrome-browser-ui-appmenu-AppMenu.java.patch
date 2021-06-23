@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java b/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java
-index 376435fd2937d24dbfa17cf6cd4cdaa4924f1791..eea23beefad3f5d2086013c670ca9b6147b78c7a 100644
+index 3c17fd69454b180afde488e8d99e509064a0d07b..ac44b488f28b3b2d94bc3de072750ee229932ec6 100644
 --- a/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java
 +++ b/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java
 @@ -220,6 +220,7 @@ class AppMenu implements OnItemClickListener, OnKeyListener, AppMenuClickHandler

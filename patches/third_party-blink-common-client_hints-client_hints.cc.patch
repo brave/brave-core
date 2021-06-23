@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/common/client_hints/client_hints.cc b/third_party/blink/common/client_hints/client_hints.cc
-index 4eefbeaef02891be61ed0c9cb607cde2839caf00..bfa3985493043c7943f3ab98c3ae9b56d09ba020 100644
+index 1610d6110cdf1acc3b6ca1b27d4f9621dd279ebe..1692dd4fcc83c4ec92f90c1b057e03df180e4cdf 100644
 --- a/third_party/blink/common/client_hints/client_hints.cc
 +++ b/third_party/blink/common/client_hints/client_hints.cc
-@@ -132,6 +132,7 @@ absl::optional<std::vector<network::mojom::WebClientHintsType>> FilterAcceptCH(
+@@ -133,6 +133,7 @@ absl::optional<std::vector<network::mojom::WebClientHintsType>> FilterAcceptCH(
  }
  
  bool IsClientHintSentByDefault(network::mojom::WebClientHintsType type) {
