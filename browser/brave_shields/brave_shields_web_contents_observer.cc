@@ -87,7 +87,9 @@ BraveShieldsWebContentsObserver::~BraveShieldsWebContentsObserver() {
 BraveShieldsWebContentsObserver::BraveShieldsWebContentsObserver(
     WebContents* web_contents)
     : WebContentsObserver(web_contents),
-      brave_shields_receivers_(web_contents, this) {}
+      brave_shields_receivers_(web_contents,
+                               this,
+                               content::WebContentsFrameReceiverSetPassKey()) {}
 
 void BraveShieldsWebContentsObserver::RenderFrameCreated(RenderFrameHost* rfh) {
   if (rfh && allowed_script_origins_.size()) {

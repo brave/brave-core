@@ -49,7 +49,10 @@ const char BraveDrmTabHelper::kWidevineComponentId[] =
     "oimompecagnajdejgnnjijobebaeigek";
 
 BraveDrmTabHelper::BraveDrmTabHelper(content::WebContents* contents)
-    : WebContentsObserver(contents), receivers_(contents, this) {
+    : WebContentsObserver(contents),
+      receivers_(contents,
+                 this,
+                 content::WebContentsFrameReceiverSetPassKey()) {
   auto* updater = g_browser_process->component_updater();
   // We don't need to observe if widevine is already registered.
   if (!IsAlreadyRegistered(updater))
