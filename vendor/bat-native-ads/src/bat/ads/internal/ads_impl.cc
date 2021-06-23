@@ -791,6 +791,10 @@ void AdsImpl::OnAdTransfer(const AdInfo& ad) {
 
 void AdsImpl::OnConversion(
     const ConversionQueueItemInfo& conversion_queue_item) {
+  if (!ShouldRewardUser()) {
+    return;
+  }
+
   account_->Deposit(conversion_queue_item.creative_instance_id,
                     ConfirmationType::kConversion);
 }
