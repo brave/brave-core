@@ -465,7 +465,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
 
         // double check if the shields button is shown to prevent situations like showing the
         // tooltip on new tabs
-        if ((mBraveShieldsButton == null && !mBraveShieldsButton.isShown())
+        if (mBraveShieldsButton == null || !mBraveShieldsButton.isShown()
+                || BraveActivity.getBraveActivity() == null
+                || BraveActivity.getBraveActivity().getActivityTab() == null
                 || UrlUtilities.isNTPUrl(
                         BraveActivity.getBraveActivity().getActivityTab().getUrlString())) {
             return;
