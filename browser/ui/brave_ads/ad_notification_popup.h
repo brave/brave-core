@@ -65,6 +65,9 @@ class AdNotificationPopup : public views::WidgetDelegateView,
   // User clicked the notification popup view for the given |notification_id|
   static void OnClick(const std::string& notification_id);
 
+  // Return the bounds for the given |notification_id|
+  static gfx::Rect GetBounds(const std::string& notification_id);
+
   // display::DisplayObserver:
   void OnDisplayRemoved(const display::Display& old_display) override;
   void OnDisplayMetricsChanged(const display::Display& display,

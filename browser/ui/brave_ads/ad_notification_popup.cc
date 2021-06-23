@@ -164,6 +164,17 @@ void AdNotificationPopup::OnClick(const std::string& notification_id) {
   popup->FadeOut();
 }
 
+// static
+gfx::Rect AdNotificationPopup::GetBounds(const std::string& notification_id) {
+  DCHECK(!notification_id.empty());
+
+  DCHECK(g_ad_notification_popups[notification_id]);
+  AdNotificationPopup* popup = g_ad_notification_popups[notification_id];
+  DCHECK(popup);
+
+  return popup->CalculateBounds();
+}
+
 void AdNotificationPopup::OnDisplayRemoved(
     const display::Display& old_display) {
   // Called when |old_display| has been removed
@@ -197,7 +208,7 @@ void AdNotificationPopup::OnWorkAreaChanged() {
 void AdNotificationPopup::OnPaintBackground(gfx::Canvas* canvas) {
   DCHECK(canvas);
 
-  gfx::RectF bounds(GetWidget()->GetLayer()->bounds());
+  gfx::Rect bounds(GetWidget()->GetLayer()->bounds());
   bounds.Inset(-GetShadowMargin());
 
   const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
@@ -391,7 +402,6 @@ void AdNotificationPopup::RecomputeAlignment() {
   gfx::Rect bounds = GetWidget()->GetWindowBoundsInScreen();
   const gfx::NativeView native_view = GetWidget()->GetNativeView();
   AdjustBoundsToFitWorkAreaForNativeView(&bounds, native_view);
-
   GetWidget()->SetBounds(bounds);
 }
 
