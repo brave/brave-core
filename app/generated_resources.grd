@@ -291,8 +291,10 @@ are declared in tools/grit/grit_rule.gni.
       <part file="profiles_strings.grdp" />
 
       <!-- Web app intent picker strings -->
-      <if expr="is_win or is_macosx or is_linux">
+      <if expr="not is_android">
         <part file="protocol_handler_intent_picker_strings.grdp" />
+      </if>
+      <if expr="is_win or is_macosx or is_linux">
         <part file="url_handler_intent_picker_strings.grdp" />
       </if>
 
@@ -323,6 +325,11 @@ are declared in tools/grit/grit_rule.gni.
       <!-- Welcome strings -->
       <if expr="not chromeos and not is_android">
         <part file="welcome_strings.grdp" />
+      </if>
+
+      <!-- What's New strings -->
+      <if expr="not is_android">
+        <part file="whats_new_strings.grdp" />
       </if>
 
       <!-- Printing specific strings -->
@@ -1338,6 +1345,9 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_CHROME_TIPS" desc="The text label of the Help menu item which takes the user to the Brave Tips page.">
         Tips for Brave
       </message>
+      <message name="IDS_CHROME_WHATS_NEW" desc="The text label of the Help menu item which takes the user to the Brave What's New page.">
+        What's New
+      </message>
       <if expr="not use_titlecase">
         <message name="IDS_IMPORT_SETTINGS_MENU_LABEL" desc="In sentence case: The app menu label to import bookmarks and settings.">
           Import bookmarks and settings...
@@ -1850,6 +1860,9 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_SCAN_DOWNLOAD" desc="Text shown to upload a file for deep scanning.">
         Send
+      </message>
+      <message name="IDS_REVIEW_DOWNLOAD" desc="Text shown when a download has triggered an enterprise warning or block, on the button to open the dialog containing the enterprise administrator's message explaining the violation.">
+        Review
       </message>
 
       <!-- Download Tab Items -->
@@ -5238,11 +5251,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_OMNIBOX_REMOVE_SUGGESTION_BUBBLE_DESCRIPTION" desc="The description of a bubble to delete an omnibox suggestion.">
         This page will also be removed from your history and <ph name="SEARCH_ENGINE">$1<ex>Brave</ex></ph> activity.
       </message>
-      <if expr="is_android">
-      <message name="IDS_OMNIBOX_CONFIRM_DELETE_FROM_CLIPBOARD" desc="A message within a modal dialog that confirms the user wants to delete a clipboard suggestion from the list dropdown in the omnibox." formatter_data="android_java">
-        Remove suggestion from clipboard?
-      </message>
-      </if>
       <if expr="use_titlecase">
         <message name="IDS_CONTEXT_MENU_SHOW_FULL_URLS" desc="In Title Case: The text label of the omnibox context menu option to show full URLs">
           Always Show Full URLs
@@ -5533,6 +5541,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_CUSTOMIZE_BUTTON_TEXT" desc="Text shown on the customize button of an NTP module.">
         Customize cards
       </message>
+      <message name="IDS_NTP_MODULES_STATEFUL_TASKS_VIEWED_AGO" desc="Text shown in a tag on a stateful task module item indicating when an item was viewed.">
+        Viewed <ph name="RELATIVE_TIME">$1<ex>5 days ago</ex></ph>
+      </message>
+      <message name="IDS_NTP_MODULES_STATEFUL_TASKS_VIEWED_TODAY" desc="Text shown in a tag on a stateful task module item indicating when an item was viewed.">
+        Viewed today
+      </message>
       <message name="IDS_NTP_MODULES_SHOPPING_TASKS_SENTENCE" desc="Name of the shopping tasks module in sentence case shown in various UIs.">
         Shopping suggestions
       </message>
@@ -5604,6 +5618,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_MODULES_SHOPPING_TASKS_INFO_CLOSE" desc="Text shown on close button of a task module.">
         Close
+      </message>
+      <message name="IDS_NTP_MODULES_SHOPPING_TASKS_RELATED" desc="Text shown in a tag on a shopping task module product indicating that it is related to a previous search.">
+        Related to your search
+      </message>
+      <message name="IDS_NTP_MODULES_RECIPE_TASKS_RECOMMENDED" desc="Text shown in a tag on a recipe task module recipe indicating that it is recommended.">
+        Recommended
       </message>
       <message name="IDS_NTP_MODULES_CART_HEADER_CHIP_NEW" desc="Text shown on the header chip of chrome cart module.">
         New
@@ -5725,6 +5745,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_READ_LATER_MENU_EMPTY_STATE_SUBHEADER" desc="Subheader for the read later menu when there are no unread or read entries.">
         To save a page for later, click the Bookmark icon
+      </message>
+      <message name="IDS_READ_LATER_ADD_CURRENT_TAB" desc="Label for button to add the current tab to Read later">
+        Add current tab
       </message>
 
       <!--Tooltip strings-->
@@ -6874,8 +6897,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TAB_SEARCH_OPEN_TABS" desc="The label on the tab search list section corresponding to open tabs.">
         Open Tabs
       </message>
+      <message name="IDS_TAB_SEARCH_RECENTLY_CLOSED" desc="The label on the tab search list section corresponding to recently closed entries.">
+        Recently Closed
+      </message>
       <message name="IDS_TAB_SEARCH_RECENTLY_CLOSED_TABS" desc="The label on the tab search list section corresponding to recently closed tabs.">
         Recently Closed Tabs
+      </message>
+      <message name="IDS_TAB_SEARCH_ONE_TAB" desc="Singular form of a message indicating the presence of a single tab.">
+        <ph name="NUM">$1<ex>1</ex></ph> Tab
+      </message>
+      <message name="IDS_TAB_SEARCH_TAB_COUNT" desc="Plural form of a message indicating the presence of a number of tabs greater than one.">
+        <ph name="NUM">$1<ex>2</ex></ph> Tabs
       </message>
 
       <!-- Strings for Window Titles in Menus -->
@@ -7342,6 +7374,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TOOLBAR_BUTTON_SEND_TAB_TO_SELF_BUTTON_A11Y_NAME" desc="The accessible name for the toolbar button shown when a tab is received.">
         Shared Tab
       </message>
+      <message name="IDS_TOOLBAR_BUTTON_SEND_TAB_TO_SELF_BUTTON_HINT_TEXT" desc="The hint text shown on received tab dialog shown from the toolbar button. Where 'THERE' is the device the user selected.">
+        Choose a device. Then, to see the page, open Brave there.
+      </message>
       <if expr="not use_titlecase">
         <message name="IDS_CONTEXT_MENU_SEND_TAB_TO_SELF" desc="The label of item for share this tab to other devices in different context menus.">
           Send to your devices
@@ -7363,6 +7398,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_LINK_MENU_SEND_TAB_TO_SELF_SINGLE_TARGET" desc="The label for the link context menu item for sharing this tab to the single other valid target device">
           Send Link to <ph name="DEVICE_NAME">$1<ex>Ted's Pixel2</ex></ph>
         </message>
+      </if>
+      <if expr="is_android">
+      <message name="IDS_SEND_TAB_TO_SELF_MESSAGE" desc="Text for a message indicating that the tab was shared from a syncing device.">
+        Page shared from <ph name="device_name">$1<ex>Tanya's Pixel 2</ex></ph>
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_MESSAGE_OPEN" desc="Label for the button to open a tab received from another device.">
+        Open
+      </message>
       </if>
 
       <!-- Share via QR code strings -->
@@ -7425,6 +7468,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SHARING_HUB_MEDIA_ROUTER_LABEL" desc="The text label for the media router button in the Sharing Hub dialog and app menu.">
         Cast...
       </message>
+      <message name="IDS_SHARING_HUB_SHARE_LABEL" desc="The Label for the Third Party Targets in the Sharing Hub dialog.">
+        Share link to
+      </message>
 
       <!-- Clipboard History Menu feature. -->
       <message name="IDS_CONTEXT_MENU_SHOW_CLIPBOARD_HISTORY_MENU" desc="Show the clipboard history menu.">
@@ -7446,9 +7492,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_SHARING_REMOTE_COPY_NOTIFICATION_DESCRIPTION" desc="Second line of text displayed in a Remote Copy notification.">
         Press <ph name="MODIFIER_KEY_DESCRIPTION">$1<ex>Ctrl+V</ex></ph> to paste
-      </message>
-      <message name="IDS_OMNIBOX_TOOLTIP_SMS_REMOTE_FETCHER" translateable="false" desc="The label of item for sms remote fetcher in the omnibox for showing confirmation of an interaction on the remote device.">
-        Brave has sent the verification code to the website upon your approval on <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
       </message>
       <if expr="not use_titlecase">
         <message name="IDS_CONTENT_CONTEXT_SHARING_CLICK_TO_CALL_MULTIPLE_DEVICES" desc="The label of item for click to call in context menu when multiple devices are available.">
@@ -8368,6 +8411,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_SYNC_NEEDS_KEYS_FOR_EVERYTHING_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sync error notification when the user needs to reauth to retrieve the sync encryption keys and resume sync.">
           To start sync, verify it's you
+        </message>
+        <message name="IDS_SYNC_RECOVERABILITY_DEGRADED_FOR_EVERYTHING_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sync error notification when the user needs to reauth to add recovery options, affecting all sync data.">
+          To make sure you can always access your sync data, verify it's you
+        </message>
+        <message name="IDS_SYNC_RECOVERABILITY_DEGRADED_FOR_PASSWORDS_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sync error notification when the user needs to reauth to add recovery options, affecting passwords only.">
+          To make sure you can always access your saved passwords, verify it's you
         </message>
       </if>
 
@@ -10848,6 +10897,17 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Close Private
     </message>
 
+    <!-- Private Clear Browsing Data dialog bubble. -->
+    <message name="IDS_INCOGNITO_CLEAR_BROWSING_DATA_DIALOG_PRIMARY_TEXT" desc="The primary text of the clear browsing data dialog which is shown in Private when users invokes a clear browsing data action in Private. The text describes how Private users can clear the browsing data by closing all Private windows.">
+      To clear data, close all Private windows
+    </message>
+    <message name="IDS_INCOGNITO_CLEAR_BROWSING_DATA_DIALOG_SECONDARY_TEXT" desc="The secondary text of the clear browsing data dialog which is shown in Private when users invokes a clear browsing data action in Private. The text describes how the clear browsing data action affects only the Private windows.">
+      This only affects Private windows
+    </message>
+    <message name="IDS_INCOGNITO_CLEAR_BROWSING_DATA_DIALOG_CLOSE_WINDOWS_BUTTON" desc="The text of the button offering to close all Private windows in the dialog.">
+      Close windows
+    </message>
+
    <!-- Guest Profile Menu bubble. -->
    <message name="IDS_GUEST_WINDOW_COUNT_MESSAGE" desc="The message showing the number of open guest windows. This is not used for zero windows.[ICU Syntax]">
       {0, plural,
@@ -10937,6 +10997,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_CUSTOM_MESSAGE" desc="Message shown around the custom message provided by the administrator when deep scanning returns a failure.">
       Your administrator says "<ph name="CUSTOM_MESSAGE">$1<ex>Please don't upload this type of data.</ex></ph>".
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_DOWNLOADS_CUSTOM_MESSAGE" desc="Message shown around the custom message provided by the administrator when deep scanning returns a failure on a downloaded file.">
+      <ph name="FILE_NAME">$1<ex>foo.txt</ex></ph> has sensitive or dangerous data. Your administrator says "<ph name="CUSTOM_MESSAGE">$2<ex>Please don't upload this type of data.</ex></ph>".
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_CUSTOM_MESSAGE_LEARN_MORE_LINK" desc="Text value of the link passed for the custom message set by the administrator when deep scanning returns a failure.">
       Learn more
@@ -11069,6 +11132,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
           =1 {Click to view the extension}
           other {Click to view these extensions}}
       </message>
+      <message name="IDS_ENTERPRISE_EXTENSION_REQUEST_JUSTIFICATION" desc="Text describing the extension request justificaion textfield.">
+        Justification for requesting this extension:
+      </message>
+      <message name="IDS_ENTERPRISE_EXTENSION_REQUEST_JUSTIFICATION_PLACEHOLDER" desc="Placeholder text which appears inside the extension request justification textfield.">
+        Enter justification...
+      </message>
     </if>
 
     <message name="IDS_NAME_WINDOW_PROMPT_TITLE" desc="Title of the prompt to choose a new name for a window.">
@@ -11114,6 +11183,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Enabled – <ph name="VARIATION_NAME">$1<ex>tabs shrink to pinned tab width</ex></ph>
     </message>
 
+    <!-- BraveLabs Side Panel-->
+    <message name="IDS_SIDE_PANEL_EXPERIMENT_NAME" desc="Name for Side Panel experiment">
+      Side Panel
+    </message>
+    <message name="IDS_SIDE_PANEL_EXPERIMENT_DESCRIPTION" desc="Description for Side Panel experiment">
+      Enables a browser-level side panel for a useful and persistent way to access your Reading List and Bookmarks.
+    </message>
     <!-- BraveLabs Read Later-->
     <message name="IDS_READ_LATER_EXPERIMENT_NAME" desc="Name for Read Later experiment">
       Reading List

@@ -539,6 +539,24 @@
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_EDIT_USER_DICT" desc="The label for the input method option to let the users edit their personal dictionary.">
     Edit dictionary entries
   </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_ZHUYIN_KEYBOARD_LAYOUT">
+    Physical keyboard layout
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_ZHUYIN_SELECT_KEYS">
+    Selection keys
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_ZHUYIN_PAGE_SIZE">
+    Number of candidates to display per page
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_KOREAN_LAYOUT">
+    Korean keyboard layout
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_KOREAN_SYLLABLE_INPUT">
+    Input a syllable at a time
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_KOREAN_SHOW_HANGUL_CANDIDATE">
+    Show candidates in Hangul mode
+  </message>
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_PINYIN_CHINESE_PUNCTUATION" desc="The label for the pinyin input method option for whether to output full-width or half-with punctuation.">
     Initial punctuation width is Full
   </message>
@@ -568,6 +586,15 @@
   </message>
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_KEYBOARD_US" desc="The label for the choice to use US keyboard.">
     US
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_ZHUYIN_LAYOUT_DEFAULT" desc="The label for the choice to use for Zhuyin keyboard.">
+    Default
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_ZHUYIN_LAYOUT_IBM" desc="The label for the choice to use for Zhuyin keyboard.">
+    IBM
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_ZHUYIN_LAYOUT_ETEN" desc="The label for the choice to use for Zhuyin keyboard.">
+    Eten
   </message>
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_KEYBOARD_DVORAK" desc="The label for the choice to use Dvorak keyboard.">
     Dvorak
@@ -728,6 +755,17 @@
     Celsius
   </message>
 
+  <!-- Dark Mode Page -->
+  <message name="IDS_OS_SETTINGS_DARK_MODE_TITLE" desc="Label for row in settings page that opens the dark mode settings page to schedule enabling and disabling dark mode time and modes.">
+    Dark theme
+  </message>
+  <message name="IDS_OS_SETTINGS_DARK_MODE_ON" desc="Label for the toggle row in dark mode settings page when it is enabled.">
+    On
+  </message>
+  <message name="IDS_OS_SETTINGS_DARK_MODE_OFF" desc="Label for the toggle row in dark mode settings page when it is disabled.">
+    Off
+  </message>
+
   <!-- Search and Assistant section. -->
   <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_LABEL" desc="Label in OS settings describing search engine behavior.">
     Preferred search engine
@@ -766,6 +804,18 @@
   </message>
   <message name="IDS_SETTINGS_QUICK_ANSWERS_ENABLE_DESCRIPTION" desc="Sub label for the Quick Answers toggle.">
     With a right-click or long press, show related info for your text selection
+  </message>
+  <message name="IDS_SETTINGS_QUICK_ANSWERS_DEFINITION_ENABLE" desc="Title for a toggle that controls the Quick Answers definiton feature.">
+    Definition
+  </message>
+  <message name="IDS_SETTINGS_QUICK_ANSWERS_TRANSLATION_ENABLE" desc="Title for a toggle that controls the Quick Answers translation feature.">
+    Translation
+  </message>
+  <message name="IDS_SETTINGS_QUICK_ANSWERS_TRANSLATION_ENABLE_DESCRIPTION" desc="Sub label for the Quick Answers translation toggle.">
+    Add your preferred website languages. The top language from the list will be used for translations.
+  </message>
+  <message name="IDS_SETTINGS_QUICK_ANSWERS_UNIT_CONVERSION_ENABLE" desc="Title for a toggle that controls the Quick Answers unit conversion feature.">
+    Unit Conversion
   </message>
 
   <!-- Files Page (OS settings) -->
@@ -1195,8 +1245,29 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CHOOSE_3_SWITCHES" desc="The label for the option to use three switches (with one already assigned), within the Switch Access setup guide. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Assign two more switches
   </message>
-  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CHOOSE_3_SWITCHES_DESCRIPTION" desc="The description for the option to use three switches (with one already assigned), within the Switch Access setup guide. It details that the switches will be 'next' and 'previous', and used for navigating the items onscreen. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) ton control the computer.">
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CHOOSE_3_SWITCHES_DESCRIPTION" desc="The description for the option to use three switches (with one already assigned), within the Switch Access setup guide. It details that the switches will be 'next' and 'previous', and used for navigating the items onscreen. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Assign them to "Next" and "Previous" to move between items on the page
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_AUTO_SCAN_SPEED_TITLE" desc="The title for the page of the Switch Access setup guide where the user sets the speed of auto-scan, which automatically advances the focus between elements at a fixed interval. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Auto-scan speed
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_AUTO_SCAN_SPEED_DESCRIPTION" desc="The description on the page of the Switch Access setup guide adjusting the auto-scan speed. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Choose how long the highlight should stay on each item
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CLOSING_TITLE" desc="The title for the final page of the Switch Access setup guide, which informs the user that setup is complete and provides some final information. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    You're all set!
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CLOSING_AUTO_SCAN_INSTRUCTIONS" desc="Instructions for how to close the Switch Access setup guide using Switch Access with auto-scan enabled. Switch Access is an alternative input method designed for users with limited mobility where the user has as little as one switch (for example, a button) to control the computer. Auto-scan is a feature of Switch Access where focus moves from one element to the next at a set interval automatically, so the user only has to select the element when it is highlighted.">
+    Press your switch when the focus is on the Done button to close the guide.
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CLOSING_INFO" desc="Final advice on changing the settings for Switch Access after the Switch Access setup guide has been closed. Switch Access is an alternative input method designed for users with limited mobility where the user has as little as one switch (for example, a button) to control the computer.">
+    You can always change additional settings or open the setup guide again from Switch Access settings.
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_AUTO_SCAN_SLOWER" desc="The label on the button which slows the speed of Switch Access' auto-scan, which automatically advances the focus between elements at a fixed interval. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Slower
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_AUTO_SCAN_FASTER" desc="The label on the button which increases the speed of Switch Access' auto-scan, which automatically advances the focus between elements at a fixed interval. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Faster
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_PAIR_BLUETOOTH" desc="A button in the Switch Access setup guide that takes the user to a page where they can pair a bluetooth switch device. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Pair Bluetooth switch
@@ -1206,6 +1277,12 @@ Press an assigned switch to remove assignment.
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_PREVIOUS" desc="A button in the Switch Access setup guide that takes the user to the previous step in the setup process.">
     Previous
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_START_OVER" desc="A button in the Switch Access setup guide to restart from the beginning, and reconfigure any/all of the settings. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Start over setup
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_DONE" desc="A button in the Switch Access setup guide to confirm that the user has finished configuring their settings and would like to close the dialog. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Done
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_ASSIGNED_ICON_LABEL" desc="A label for an icon indicating a switch is assigned to an action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Assigned
@@ -3229,6 +3306,9 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_LAUNCH_WITH_MIC_OPEN_DESCRIPTION" desc="Sub label for launch-with-microphone-open toggle.">
     Default to using voice instead of keyboard
   </message>
+  <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_SCREEN_CONTEXT_DESCRIPTION" desc="Sub label for context-enable toggle.">
+    To get responses that are more tailored to you, let Brave Assistant use info on your screen when you ask questions. Your Assistant may also use info about songs or videos that are playing.
+  </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_SETTINGS" desc="Title for a button that opens the Brave Assistant app settings.">
     Brave Assistant settings
   </message>
@@ -3605,6 +3685,9 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_APPS_LINK_TEXT" desc="The label for the button which links to the App Management page.">
     Manage your apps
   </message>
+  <message name="IDS_SETTINGS_APP_NOTIFICATIONS_LINK_TEXT" desc="The label for the settings row button in the App section of OS Settings which links to the App Notifications page.">
+    Notifications
+  </message>
   <message name="IDS_SETTINGS_ANDROID_APPS_TITLE" desc="The title of Google Play Store (Arc++ / Android Apps) section.">
     Google Play Store
   </message>
@@ -3759,20 +3842,17 @@ Press an assigned switch to remove assignment.
   </message>
 
   <!-- On Startup (OS settings) -->
-  <message name="IDS_OS_SETTINGS_ON_STARTUP" desc="Name of the settings page which displays On Startup preferences, with a radio group to configure the restore apps and pages options">
-    On Startup
+  <message name="IDS_OS_SETTINGS_ON_STARTUP_TITLE" desc="The title of the dropdown menu that allows the user to configure the restore apps and pages options on startup.">
+    Restore apps on startup
   </message>
-  <message name="IDS_OS_SETTINGS_ON_STARTUP_RADIO_GROUP_TITLE" desc="The title of the radio group that allows the user to configure the restore apps and pages options on startup.">
-    Restore apps and pages
+  <message name="IDS_OS_SETTINGS_ON_STARTUP_ALWAYS" desc="Label for the dropdown menu which enables the always restore apps and pages option on startup.">
+    Always restore
   </message>
-  <message name="IDS_OS_SETTINGS_ON_STARTUP_ALWAYS" desc="Label for the checkbox which enables the always restore apps and pages option on startup.">
-    Always
-  </message>
-  <message name="IDS_OS_SETTINGS_ON_STARTUP_ASK_EVERY_TIME" desc="Label for the checkbox which enables the ask every time option to show a notification on startup to give the user a choice for the restoration.">
+  <message name="IDS_OS_SETTINGS_ON_STARTUP_ASK_EVERY_TIME" desc="Label for the dropdown menu which enables the ask every time option to show a notification on startup to give the user a choice for the restoration.">
     Ask every time
   </message>
-  <message name="IDS_OS_SETTINGS_ON_STARTUP_DO_NOT_RESTORE" desc="Label for the checkbox which enables the do not restore option, which means not restore apps or pages on startup.">
-    Do not restore
+  <message name="IDS_OS_SETTINGS_ON_STARTUP_DO_NOT_RESTORE" desc="Label for the dropdown menu which enables the do not restore option, which means not restore apps or pages on startup.">
+    Never restore
   </message>
 </if>
 </grit-part>
