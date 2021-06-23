@@ -1,8 +1,8 @@
 diff --git a/ui/views/controls/focus_ring.cc b/ui/views/controls/focus_ring.cc
-index c54adbeabbd7afd44f8b17b824972940357c7a0a..24c2bb77120b2fd425df8e04aa2fac7c1734273b 100644
+index bc8136a77df0edbe40bb3b6c8bb12a07a22a1512..251428a95f9f797e0d464d0d18c0aee9e8617ab4 100644
 --- a/ui/views/controls/focus_ring.cc
 +++ b/ui/views/controls/focus_ring.cc
-@@ -197,6 +197,7 @@ void FocusRing::OnPaint(gfx::Canvas* canvas) {
+@@ -213,6 +213,7 @@ void FocusRing::OnPaint(gfx::Canvas* canvas) {
      flags.setAntiAlias(true);
      flags.setColor(GetNativeTheme()->GetSystemColor(
          ui::NativeTheme::kColorId_FocusAuraColor));
@@ -10,7 +10,7 @@ index c54adbeabbd7afd44f8b17b824972940357c7a0a..24c2bb77120b2fd425df8e04aa2fac7c
      flags.setStyle(cc::PaintFlags::kFill_Style);
  
      canvas->sk_canvas()->drawRRect(ring_rect, flags);
-@@ -205,6 +206,7 @@ void FocusRing::OnPaint(gfx::Canvas* canvas) {
+@@ -221,6 +222,7 @@ void FocusRing::OnPaint(gfx::Canvas* canvas) {
    cc::PaintFlags paint;
    paint.setAntiAlias(true);
    paint.setColor(color_.value_or(GetColor(this, !invalid_)));

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/startup/startup_browser_creator_impl.cc b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
-index 91dc7d09f1849b8677ea385b9edccbc92d832b8f..5eedfa53194443469a38be75d7ca5cf5128c3e80 100644
+index 5c5076b0e3d1cbdf944bbeef7c4b650c1416ae14..61a1f383c453f4b7c13332ea58524df63afdd164 100644
 --- a/chrome/browser/ui/startup/startup_browser_creator_impl.cc
 +++ b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
-@@ -376,6 +376,7 @@ void StartupBrowserCreatorImpl::DetermineURLsAndLaunch(
+@@ -371,6 +371,7 @@ void StartupBrowserCreatorImpl::DetermineURLsAndLaunch(
  #if !BUILDFLAG(IS_CHROMEOS_ASH)
    welcome_enabled =
        welcome::IsEnabled(profile_) && welcome::HasModulesToShow(profile_);

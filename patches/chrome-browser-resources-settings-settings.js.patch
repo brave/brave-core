@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/settings.js b/chrome/browser/resources/settings/settings.js
-index 58ae84de125800cf9c81d6aec2d7e77e4ef8a015..16f10da122c4d8944b604b3e24394fc08e301a42 100644
+index 53e96ad24f7e4aaf650b7dc5ff2ea86f5790ab8d..bbf2d3aa4f61ff577635270dd3838206fc854cb6 100644
 --- a/chrome/browser/resources/settings/settings.js
 +++ b/chrome/browser/resources/settings/settings.js
 @@ -2,6 +2,7 @@
@@ -9,4 +9,4 @@ index 58ae84de125800cf9c81d6aec2d7e77e4ef8a015..16f10da122c4d8944b604b3e24394fc0
 +import './brave_overrides/index.js';
  import './settings_ui/settings_ui.js';
  
- export {CrLinkRowElement} from 'chrome://resources/cr_elements/cr_link_row/cr_link_row.js';
+ export {CrDrawerElement} from 'chrome://resources/cr_elements/cr_drawer/cr_drawer.js';

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index c485c30a712325ffb56f53da7a4633534d95d758..c2a5fb5dafeb55a535211f78ffb7680dce445604 100644
+index c5089ddf516cd0576a6710267aa288938ffd6686..182c2672ee321bcb08c55fec1732d94e67d22812 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
 @@ -168,6 +168,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
@@ -10,7 +10,7 @@ index c485c30a712325ffb56f53da7a4633534d95d758..c2a5fb5dafeb55a535211f78ffb7680d
  
      if (!_is_monochrome) {
        product_config_java_packages = [ "org.chromium.chrome.browser" ]
-@@ -235,6 +236,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
+@@ -248,6 +249,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
        if (!defined(proguard_configs)) {
          proguard_configs = []
        }
