@@ -3,9 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/p3a/brave_histogram_rewrite.h"
+#include "brave/components/p3a/histograms_braveizer.h"
 
 #include "base/bind.h"
+#include "base/memory/ref_counted.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/metrics/statistics_recorder.h"
 
@@ -23,16 +24,40 @@ constexpr const char* kBravezationHistograms[] = {
     "Tabs.WindowCount",
 };
 
+}  // namespace
+
+//static
+scoped_refptr<brave::HistogramsBraveizer> HistogramsBraveizer::Create() {
+  auto histogram_braveizer = base::MakeRefCounted<brave::HistogramsBraveizer>();
+  histogram_braveizer->InitCallbacks();
+  return histogram_braveizer;
+}
+
+HistogramsBraveizer::HistogramsBraveizer() = default;
+
+HistogramsBraveizer::~HistogramsBraveizer() = default;
+
+void HistogramsBraveizer::InitCallbacks() {
+  for (const char* histogram_name : kBravezationHistograms) {
+    histogram_sample_callbacks_.push_back(
+        std::make_unique<
+            base::StatisticsRecorder::ScopedHistogramSampleObserver>(
+            histogram_name,
+            base::BindRepeating(&HistogramsBraveizer::DoHistogramBravetization,
+                                this)));
+  }
+}
+
 // TODO(iefremov): Replace a bunch of 'if's with something more elegant.
 // Records the given sample using the proper Brave way.
-void DoHistogramBravezation(const char* histogram_name,
-                            uint64_t name_hash,
-                            base::HistogramBase::Sample sample) {
+void HistogramsBraveizer::DoHistogramBravetization(
+    const char* histogram_name,
+    uint64_t name_hash,
+    base::HistogramBase::Sample sample) {
   DCHECK(histogram_name);
   if (strcmp("Bookmarks.Count.OnProfileLoad", histogram_name) == 0) {
     constexpr int kIntervals[] = {5, 20, 100, 500, 1000, 5000, 10000};
-    const int* it =
-        std::lower_bound(kIntervals, std::end(kIntervals), sample);
+    const int* it = std::lower_bound(kIntervals, std::end(kIntervals), sample);
     const int answer = it - kIntervals;
     UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.BookmarksCountOnProfileLoad.2",
                                answer, base::size(kIntervals));
@@ -52,8 +77,8 @@ void DoHistogramBravezation(const char* histogram_name,
       case 3:  // Other mode is default, merging to "Default".
         answer = 1;
         break;
-    default:
-      NOTREACHED();
+      default:
+        NOTREACHED();
     }
     UMA_HISTOGRAM_BOOLEAN("Brave.Core.IsDefault", answer);
   }
@@ -104,16 +129,6 @@ void DoHistogramBravezation(const char* histogram_name,
 
     UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.WindowCount.2", answer, 3);
     return;
-  }
-}
-
-}  // namespace
-
-void SetupHistogramsBraveization() {
-  for (const char* histogram_name : kBravezationHistograms) {
-    base::StatisticsRecorder::SetCallback(
-        histogram_name,
-        base::BindRepeating(&DoHistogramBravezation));
   }
 }
 

@@ -217,9 +217,11 @@ void BraveP3AService::RegisterPrefs(PrefRegistrySimple* registry,
 
 void BraveP3AService::InitCallbacks() {
   for (const char* histogram_name : kCollectedHistograms) {
-    base::StatisticsRecorder::SetCallback(
-        histogram_name,
-        base::BindRepeating(&BraveP3AService::OnHistogramChanged, this));
+    histogram_sample_callbacks_.push_back(
+        std::make_unique<
+            base::StatisticsRecorder::ScopedHistogramSampleObserver>(
+            histogram_name,
+            base::BindRepeating(&BraveP3AService::OnHistogramChanged, this)));
   }
 }
 
