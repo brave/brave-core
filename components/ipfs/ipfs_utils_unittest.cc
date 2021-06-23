@@ -751,7 +751,7 @@ TEST_F(IpfsUtilsUnitTest, ParseIPFSUri) {
       url::PORT_UNSPECIFIED, "/path");
 
   ValidateIpfsURL(GURL("ipns://brantly.eth:1111/path"), "ipns", "brantly.eth",
-                  "ipns://brantly.eth/", 1111, "/path");
+                  "ipns://brantly.eth/", url::PORT_UNSPECIFIED, "/path");
 }
 
 TEST_F(IpfsUtilsUnitTest, IpfsUriReplacement) {
