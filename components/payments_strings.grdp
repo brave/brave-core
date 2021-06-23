@@ -624,13 +624,24 @@
   </message>
 
   <!-- Secure Payment Confirmation strings -->
-  <if expr="not is_win">
+  <if expr="not is_win and not is_macosx">
+    <!-- Strings that don't refer to specific platform authenticator names -->
+    <message name="IDS_SECURE_PAYMENT_CONFIRMATION_VERIFY_PURCHASE" desc="The title string on a payment confirmation dialog that confirms the details of the payment that the user is about to verify. The user has the option to click 'Cancel' or 'Continue', and clicking 'Continue' will open the system interface to verify their identity, for example with their fingerprint.">
+        Verify your purchase
+    </message>
+    <message name="IDS_PAYMENT_CREDENTIAL_ENROLLMENT_DESCRIPTION" desc="Description on a dialog that asks for the user's permission to set up device authentication on a website to verify card payments.">
+        You can use your device to quickly verify it's you the next time you make a purchase with this payment method.
+    </message>
+  </if> <!-- not is_win and not is_macosx -->
+  <if expr="is_macosx">
     <message name="IDS_SECURE_PAYMENT_CONFIRMATION_VERIFY_PURCHASE" desc="The title string on a payment confirmation dialog that confirms the details of the payment that the user is about to verify. The user has the option to click 'Cancel' or 'Verify', and clicking 'Verify' will open the system interface to verify their identity with the Touch ID fingerprint sensor.">
         Use Touch ID to verify and complete your purchase?
     </message>
     <message name="IDS_PAYMENT_CREDENTIAL_ENROLLMENT_DESCRIPTION" desc="Description on a dialog that asks for the user's permission to set up Touch ID on a website to verify card payments.">
         You can use Touch ID to quickly verify it's you the next time you use this device to make a purchase with this payment method.
     </message>
+  </if> <!-- is_macosx -->
+  <if expr="not is_win">
     <message name="IDS_PAYMENT_CREDENTIAL_ENROLLMENT_ACCEPT_BUTTON_LABEL" desc="Accept button label on a dialog that asks for the user's permission to set up Touch ID on a website to verify card payments.">
         Use Touch ID
     </message>
@@ -664,4 +675,25 @@
   <message name="IDS_PAYMENT_CREDENTIAL_ENROLLMENT_CANCEL_BUTTON_LABEL" desc="Cancel button label on a dialog that asks for the user's permission to set up device-based sign-in (i.e., using their computer's biometric sensor or screen unlock/PIN) to verify card payments.">
     No thanks
   </message>
+  <!-- Accessibility strings -->
+  <if expr="is_android">
+    <message name="IDS_SECURE_PAYMENT_CONFIRMATION_ENROLLMENT_SHEET_DESCRIPTION" desc="Accessibility string read when the payment credential enrollment bottom sheet is opened. It describes where the users can set up device authentication to verify card payments.">
+      Secure payment credential enrollment sheet
+    </message>
+    <message name="IDS_SECURE_PAYMENT_CONFIRMATION_ENROLLMENT_SHEET_OPENED" desc="Accessibility string read when the payment credential enrollment bottom sheet is opened.">
+      Secure payment credential enrollment sheet is opened
+    </message>
+    <message name="IDS_SECURE_PAYMENT_CONFIRMATION_ENROLLMENT_SHEET_CLOSED" desc="Accessibility string read when the payment credential enrollment bottom sheet is closed.">
+      Secure payment credential enrollment sheet is closed
+    </message>
+    <message name="IDS_SECURE_PAYMENT_CONFIRMATION_AUTHENTICATION_SHEET_DESCRIPTION" desc="Accessibility string read when the payment credential authentication bottom sheet is opened. It describes where the users can verify their purchase.">
+      Secure payment credential authentication sheet
+    </message>
+    <message name="IDS_SECURE_PAYMENT_CONFIRMATION_AUTHENTICATION_SHEET_OPENED" desc="Accessibility string read when the payment credential authentication bottom sheet is opened.">
+      Secure payment credential authentication sheet is opened
+    </message>
+    <message name="IDS_SECURE_PAYMENT_CONFIRMATION_AUTHENTICATION_SHEET_CLOSED" desc="Accessibility string read when the payment credential authentication bottom sheet is closed.">
+      Secure payment credential authentication sheet is closed
+    </message>
+  </if>  <!-- is_android -->
 </grit-part>

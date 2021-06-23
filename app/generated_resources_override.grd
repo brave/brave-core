@@ -94,6 +94,8 @@ are declared in tools/grit/grit_rule.gni.
 
       <part file="profiles_strings_override.grdp" />
 
+      <if expr="not is_android">
+        </if>
       <if expr="is_win or is_macosx or is_linux">
         </if>
 
@@ -116,6 +118,9 @@ are declared in tools/grit/grit_rule.gni.
       </if>
 
       <if expr="not chromeos and not is_android">
+        </if>
+
+      <if expr="not is_android">
         </if>
 
       <if expr="enable_printing">
@@ -480,8 +485,6 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="is_android or enable_vr">
         </if>
-      <if expr="is_android">
-      </if>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
@@ -655,6 +658,8 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="use_titlecase">
         </if>
+      <if expr="is_android">
+      </if>
 
       <if expr="not use_titlecase">
         </if>
@@ -922,7 +927,13 @@ are declared in tools/grit/grit_rule.gni.
       Close Private
     </message>
 
-   <if expr="not is_android">
+    <message name="IDS_INCOGNITO_CLEAR_BROWSING_DATA_DIALOG_PRIMARY_TEXT" desc="The primary text of the clear browsing data dialog which is shown in Private when users invokes a clear browsing data action in Private. The text describes how Private users can clear the browsing data by closing all Private windows.">
+      To clear data, close all Private windows
+    </message>
+    <message name="IDS_INCOGNITO_CLEAR_BROWSING_DATA_DIALOG_SECONDARY_TEXT" desc="The secondary text of the clear browsing data dialog which is shown in Private when users invokes a clear browsing data action in Private. The text describes how the clear browsing data action affects only the Private windows.">
+      This only affects Private windows
+    </message>
+    <if expr="not is_android">
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
