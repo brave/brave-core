@@ -138,7 +138,7 @@ let locale: Record<string, string> = {
   off: 'off',
   ok: 'ok',
   on: 'on',
-  oneTime: 'One-time',
+  oneTime: 'One time',
   oneTimeDonation: 'One-time Tips',
   openAdsHistory: 'Show Ads History',
   openBalance: 'Opening Balance',

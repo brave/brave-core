@@ -175,7 +175,7 @@
   },
   "oneTimeDonation": {
     "message": "Contributions Ponctuelles",
-    "description": "Title for one-time tips section in wallet summary"
+    "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "expire le",

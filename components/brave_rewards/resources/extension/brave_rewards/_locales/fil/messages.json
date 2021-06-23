@@ -175,7 +175,7 @@
   },
   "oneTimeDonation": {
     "message": "Isang Beses na Pagbibigay ng Mga Tip",
-    "description": "Title for one-time tips section in wallet summary"
+    "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "mag-e-expire sa",
