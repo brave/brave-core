@@ -37,10 +37,9 @@ def GetCommandOutput(command):
 
     From chromium_utils.
     """
-    with open(os.devnull, 'w') as devnull:
-        with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=devnull, bufsize=1) as proc:
-            output = proc.communicate()[0]
-            return output.decode('utf-8')
+    with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL) as proc:
+        output = proc.communicate()[0]
+        return output.decode('utf-8')
 
 
 def GetDumpSymsBinary(build_dir=None):
