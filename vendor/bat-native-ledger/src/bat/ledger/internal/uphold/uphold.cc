@@ -110,8 +110,8 @@ void Uphold::FetchBalance(FetchBalanceCallback callback) {
     return;
   }
 
-  if (wallet->status == type::WalletStatus::CONNECTED) {
-    BLOG(1, "Wallet is connected");
+  if (wallet->status != type::WalletStatus::VERIFIED) {
+    BLOG(1, "Wallet is not verified");
     callback(type::Result::LEDGER_OK, 0.0);
     return;
   }
