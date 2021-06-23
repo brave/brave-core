@@ -537,7 +537,10 @@ extension FavoritesViewController: UICollectionViewDragDelegate, UICollectionVie
         case .pasteboard:
             break
         case .favorites:
-            let bookmark = favoritesFRC.object(at: indexPath)
+            // Fetch results controller indexpath is independent from our collection view.
+            // All results of it are stored in first section.
+            let adjustedIndexPath = IndexPath(row: indexPath.row, section: 0)
+            let bookmark = favoritesFRC.object(at: adjustedIndexPath)
             let itemProvider = NSItemProvider(object: "\(indexPath)" as NSString)
             let dragItem = UIDragItem(itemProvider: itemProvider)
             dragItem.previewProvider = { () -> UIDragPreview? in
