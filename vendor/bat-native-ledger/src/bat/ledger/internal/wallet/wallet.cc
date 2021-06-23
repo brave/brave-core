@@ -126,18 +126,38 @@ void Wallet::AuthorizeWallet(
 void Wallet::DisconnectWallet(const std::string& wallet_type,
                               ledger::ResultCallback callback) {
   if (wallet_type == constant::kWalletUphold) {
-    promotion_server_->delete_claim()->Request(
+    auto uphold_wallet = ledger_->uphold()->GetWallet();
+    if (!uphold_wallet) {
+      BLOG(0, "The Uphold wallet is null!");
+      return callback(type::Result::LEDGER_ERROR);
+    }
+
+    if (uphold_wallet->status != type::WalletStatus::PENDING &&
+        uphold_wallet->status != type::WalletStatus::VERIFIED) {
+      return callback(type::Result::LEDGER_OK);
+    }
+
+    DCHECK(!uphold_wallet->token.empty());
+    DCHECK(uphold_wallet->status == type::WalletStatus::PENDING
+               ? uphold_wallet->address.empty()
+               : !uphold_wallet->address.empty());
+
+    if (uphold_wallet->status == type::WalletStatus::PENDING) {
+      ledger_->uphold()->DisconnectWallet(true);
+      return callback(type::Result::LEDGER_OK);
+    }
+
+    return promotion_server_->delete_claim()->Request(
         constant::kWalletUphold, [this, callback](const type::Result result) {
           if (result != type::Result::LEDGER_OK) {
             BLOG(0, "Wallet unlinking failed");
-            callback(result);
-            return;
+            return callback(result);
           }
+
           ledger_->uphold()->DisconnectWallet(true);
           ledger_->state()->ResetWalletType();
           callback(type::Result::LEDGER_OK);
         });
-    return;
   }
 
   if (wallet_type == constant::kWalletBitflyer) {
