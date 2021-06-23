@@ -1,6 +1,5 @@
 include_rules = [
   "+../../../../services/network",
-  "+../../../../../../services/network",
   "+components/content_settings/core/common",
   "+services/network",
 ]
