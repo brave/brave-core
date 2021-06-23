@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index c9ff48cda4087e8471679fc771a52f9f40366a07..9a738f179b2b9244e0852a4aee7460120312cf88 100644
+index f1a4e18ad7588aea782297f0bbecd6092258488c..408439ad3f46a769c848f9179a446d1892843fd4 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -310,14 +310,14 @@ const FeatureEntry::Choice kTouchTextSelectionStrategyChoices[] = {
+@@ -311,14 +311,14 @@ const FeatureEntry::Choice kTouchTextSelectionStrategyChoices[] = {
  const FeatureEntry::Choice kTraceUploadURL[] = {
      {flags_ui::kGenericExperimentChoiceDisabled, "", ""},
      {flag_descriptions::kTraceUploadUrlChoiceOther, switches::kTraceUploadURL,
@@ -18,14 +18,14 @@ index c9ff48cda4087e8471679fc771a52f9f40366a07..9a738f179b2b9244e0852a4aee746012
      {flag_descriptions::kTraceUploadUrlChoiceTesting, switches::kTraceUploadURL,
 -     "https://performance-insights.appspot.com/upload?tags=flags,TestingTeam"}};
 +     "https://no-thanks.invalid"}};
-
- const FeatureEntry::Choice kPassiveListenersChoices[] = {
+ 
+ const FeatureEntry::Choice kLiteVideoDefaultDownlinkBandwidthKbps[] = {
      {flags_ui::kGenericExperimentChoiceDefault, "", ""},
-@@ -7202,6 +7202,7 @@ const FeatureEntry kFeatureEntries[] = {
+@@ -7296,6 +7296,7 @@ const FeatureEntry kFeatureEntries[] = {
      // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag
      // Histograms" in tools/metrics/histograms/README.md (run the
      // AboutFlagsHistogramTest unit test to verify this process).
 +    BRAVE_FEATURE_ENTRIES
  };
-
+ 
  class FlagsStateSingleton : public flags_ui::FlagsState::Delegate {
