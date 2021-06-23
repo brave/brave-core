@@ -12,7 +12,7 @@ class SearchTests: XCTestCase {
     func testParsing() {
         let parser = OpenSearchParser(pluginMode: true)
         let file = Bundle.main.path(forResource: "google", ofType: "xml", inDirectory: "SearchPlugins/")
-        let engine: OpenSearchEngine! = parser.parse(file!, engineID: "google")
+        let engine: OpenSearchEngine! = parser.parse(file!, engineID: "google", referenceURL: "google.com")
         XCTAssertEqual(engine.shortName, "Google")
 
         // Test regular search queries.
@@ -111,7 +111,7 @@ class SearchTests: XCTestCase {
     func testExtractingOfSearchTermsFromURL() {
         let parser = OpenSearchParser(pluginMode: true)
         var file = Bundle.main.path(forResource: "google", ofType: "xml", inDirectory: "SearchPlugins/")
-        let googleEngine: OpenSearchEngine! = parser.parse(file!, engineID: "google")
+        let googleEngine: OpenSearchEngine! = parser.parse(file!, engineID: "google", referenceURL: "google.com")
 
         // create URL
         let searchTerm = "Foo Bar"
@@ -128,7 +128,7 @@ class SearchTests: XCTestCase {
 
         // check that it matches given a different configuration
         file = Bundle.main.path(forResource: "duckduckgo", ofType: "xml", inDirectory: "SearchPlugins/")
-        let duckDuckGoEngine: OpenSearchEngine! = parser.parse(file!, engineID: "duckduckgo")
+        let duckDuckGoEngine: OpenSearchEngine! = parser.parse(file!, engineID: "duckduckgo", referenceURL: "duckduckgo.com/opensearch")
         XCTAssertEqual(searchTerm, duckDuckGoEngine.queryForSearchURL(duckDuckGoSearchURL))
 
         // check it doesn't match search URLs for different configurations
