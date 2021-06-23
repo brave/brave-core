@@ -16,6 +16,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/third_party/ethash/src/include/ethash/keccak.h"
@@ -383,6 +384,101 @@ void SecureZeroData(void* data, size_t size) {
 // it unlocks.
 void UpdateLastUnlockPref(PrefService* prefs) {
   prefs->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+}
+
+base::Value TransactionReceiptToValue(const TransactionReceipt& tx_receipt) {
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("transaction_hash", tx_receipt.transaction_hash);
+  dict.SetStringKey("transaction_index",
+                    Uint256ValueToHex(tx_receipt.transaction_index));
+  dict.SetStringKey("block_hash", tx_receipt.block_hash);
+  dict.SetStringKey("block_number", Uint256ValueToHex(tx_receipt.block_number));
+  dict.SetStringKey("from", tx_receipt.from);
+  dict.SetStringKey("to", tx_receipt.to);
+  dict.SetStringKey("cumulative_gas_used",
+                    Uint256ValueToHex(tx_receipt.cumulative_gas_used));
+  dict.SetStringKey("gas_used", Uint256ValueToHex(tx_receipt.gas_used));
+  dict.SetStringKey("contract_address", tx_receipt.contract_address);
+  // TODO(darkdh): logs
+  dict.SetStringKey("logs_bloom", tx_receipt.logs_bloom);
+  dict.SetBoolKey("status", tx_receipt.status);
+  return dict;
+}
+
+base::Optional<TransactionReceipt> ValueToTransactionReceipt(
+    const base::Value& value) {
+  TransactionReceipt tx_receipt;
+  const std::string* transaction_hash = value.FindStringKey("transaction_hash");
+  if (!transaction_hash)
+    return base::nullopt;
+  tx_receipt.transaction_hash = *transaction_hash;
+
+  const std::string* transaction_index =
+      value.FindStringKey("transaction_index");
+  if (!transaction_index)
+    return base::nullopt;
+  uint256_t transaction_index_uint;
+  if (!HexValueToUint256(*transaction_index, &transaction_index_uint))
+    return base::nullopt;
+  tx_receipt.transaction_index = transaction_index_uint;
+
+  const std::string* block_hash = value.FindStringKey("block_hash");
+  if (!block_hash)
+    return base::nullopt;
+  tx_receipt.block_hash = *block_hash;
+
+  const std::string* block_number = value.FindStringKey("block_number");
+  if (!block_number)
+    return base::nullopt;
+  uint256_t block_number_uint;
+  if (!HexValueToUint256(*block_number, &block_number_uint))
+    return base::nullopt;
+  tx_receipt.block_number = block_number_uint;
+
+  const std::string* from = value.FindStringKey("from");
+  if (!from)
+    return base::nullopt;
+  tx_receipt.from = *from;
+
+  const std::string* to = value.FindStringKey("to");
+  if (!to)
+    return base::nullopt;
+  tx_receipt.to = *to;
+
+  const std::string* cumulative_gas_used =
+      value.FindStringKey("cumulative_gas_used");
+  if (!cumulative_gas_used)
+    return base::nullopt;
+  uint256_t cumulative_gas_used_uint;
+  if (!HexValueToUint256(*cumulative_gas_used, &cumulative_gas_used_uint))
+    return base::nullopt;
+  tx_receipt.cumulative_gas_used = cumulative_gas_used_uint;
+
+  const std::string* gas_used = value.FindStringKey("gas_used");
+  if (!gas_used)
+    return base::nullopt;
+  uint256_t gas_used_uint;
+  if (!HexValueToUint256(*gas_used, &gas_used_uint))
+    return base::nullopt;
+  tx_receipt.gas_used = gas_used_uint;
+
+  const std::string* contract_address = value.FindStringKey("contract_address");
+  if (!contract_address)
+    return base::nullopt;
+  tx_receipt.contract_address = *contract_address;
+
+  // TODO(darkdh): logs
+  const std::string* logs_bloom = value.FindStringKey("logs_bloom");
+  if (!logs_bloom)
+    return base::nullopt;
+  tx_receipt.logs_bloom = *logs_bloom;
+
+  base::Optional<bool> status = value.FindBoolKey("status");
+  if (!status)
+    return base::nullopt;
+  tx_receipt.status = *status;
+
+  return tx_receipt;
 }
 
 }  // namespace brave_wallet

@@ -8,6 +8,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "brave/components/brave_wallet/browser/hd_key.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -146,6 +147,17 @@ TEST(EthTransactionUnitTest, GetSignedTransaction) {
   // 46948507304638947509940763649030358759909902576025900602547168820602576006531
   EXPECT_EQ(base::HexEncode(tx.s_),
             "67CBE9D8997F761AECB703304B3800CCF555C9F3DC64214B297FB1966A3B6D83");
+}
+
+TEST(EthTransactionUnitTest, TransactionAndValue) {
+  EthTransaction tx(
+      0x09, 0x4a817c800, 0x5208,
+      EthAddress::FromHex("0x3535353535353535353535353535353535353535"),
+      0x0de0b6b3a7640000, std::vector<uint8_t>());
+  base::Value tx_value = tx.ToValue();
+  auto tx_from_value = EthTransaction::FromValue(tx_value);
+  ASSERT_NE(tx_from_value, base::nullopt);
+  EXPECT_EQ(tx_from_value, tx);
 }
 
 }  // namespace brave_wallet
