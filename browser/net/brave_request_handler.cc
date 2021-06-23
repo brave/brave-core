@@ -28,8 +28,6 @@
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
-#include "components/prefs/pref_change_registrar.h"
-#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/common/url_constants.h"
@@ -70,8 +68,6 @@ static bool IsInternalScheme(std::shared_ptr<brave::BraveRequestInfo> ctx) {
 BraveRequestHandler::BraveRequestHandler() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   SetupCallbacks();
-  // Initialize the preference change registrar.
-  InitPrefChangeRegistrar();
 }
 
 BraveRequestHandler::~BraveRequestHandler() = default;
@@ -146,29 +142,6 @@ void BraveRequestHandler::SetupCallbacks() {
   }
 }
 
-void BraveRequestHandler::InitPrefChangeRegistrar() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-  PrefService* prefs = g_browser_process->local_state();
-  pref_change_registrar_.reset(new PrefChangeRegistrar());
-  pref_change_registrar_->Init(prefs);
-  pref_change_registrar_->Add(
-      kReferralHeaders,
-      base::BindRepeating(&BraveRequestHandler::OnReferralHeadersChanged,
-                          base::Unretained(this)));
-  // Retrieve current referral headers, if any.
-  OnReferralHeadersChanged();
-#endif
-}
-
-void BraveRequestHandler::OnReferralHeadersChanged() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  if (const base::ListValue* referral_headers =
-          g_browser_process->local_state()->GetList(kReferralHeaders)) {
-    referral_headers_list_.reset(referral_headers->DeepCopy());
-  }
-}
-
 bool BraveRequestHandler::IsRequestIdentifierValid(
     uint64_t request_identifier) {
   return base::Contains(callbacks_, request_identifier);
@@ -198,7 +171,6 @@ int BraveRequestHandler::OnBeforeStartTransaction(
   }
   ctx->event_type = brave::kOnBeforeStartTransaction;
   ctx->headers = headers;
-  ctx->referral_headers_list = referral_headers_list_.get();
   callbacks_[ctx->request_identifier] = std::move(callback);
   RunNextCallback(ctx);
   return net::ERR_IO_PENDING;
