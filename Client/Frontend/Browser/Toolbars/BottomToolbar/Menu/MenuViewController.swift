@@ -112,6 +112,19 @@ class MenuViewController: UINavigationController, UIPopoverPresentationControlle
         }
     }
     
+    func pushInnerMenu(_ viewController: UIViewController,
+                       expandToLongForm: Bool = true) {
+        super.pushViewController(viewController, animated: true)
+        if expandToLongForm {
+            panModalTransition(to: .longForm)
+        }
+    }
+    
+    @available(*, unavailable, message: "Use 'pushInnerMenu(_:expandToLongForm:)' instead")
+    override func pushViewController(_ viewController: UIViewController, animated: Bool) {
+        super.pushViewController(viewController, animated: animated)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationBar.isTranslucent = false
