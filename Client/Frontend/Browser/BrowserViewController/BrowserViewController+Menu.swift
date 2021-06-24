@@ -13,7 +13,7 @@ extension BrowserViewController {
         VStack(spacing: 0) {
             VPNMenuButton(vpnProductInfo: self.vpnProductInfo) { vc in
                 (self.presentedViewController as? MenuViewController)?
-                    .pushViewController(vc, animated: true)
+                    .pushInnerMenu(vc)
             }
         }
     }
@@ -28,11 +28,11 @@ extension BrowserViewController {
             MenuItemButton(icon: #imageLiteral(resourceName: "menu-history").template, title: Strings.historyMenuItem) {
                 let vc = HistoryViewController(isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
                 vc.toolbarUrlActionsDelegate = self
-                menuController.pushViewController(vc, animated: true)
+                menuController.pushInnerMenu(vc)
             }
             MenuItemButton(icon: #imageLiteral(resourceName: "menu-downloads").template, title: Strings.downloadsMenuItem) {
                 let vc = DownloadsPanel(profile: self.profile)
-                menuController.pushViewController(vc, animated: true)
+                menuController.pushInnerMenu(vc)
             }
             MenuItemButton(icon: #imageLiteral(resourceName: "playlist_menu").template, title: Strings.playlistMenuItem) {
                 let playlistController = (UIApplication.shared.delegate as? AppDelegate)?.playlistRestorationController ?? PlaylistViewController()
@@ -44,7 +44,7 @@ extension BrowserViewController {
             MenuItemButton(icon: #imageLiteral(resourceName: "menu-settings").template, title: Strings.settingsMenuItem) {
                 let vc = SettingsViewController(profile: self.profile, tabManager: self.tabManager, feedDataSource: self.feedDataSource, rewards: self.rewards, legacyWallet: self.legacyWallet)
                 vc.settingsDelegate = self
-                menuController.pushViewController(vc, animated: true)
+                menuController.pushInnerMenu(vc)
             }
         }
     }
