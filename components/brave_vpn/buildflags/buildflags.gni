@@ -4,5 +4,5 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 declare_args() {
-  enable_brave_vpn = is_win
+  enable_brave_vpn = is_win || is_mac
 }
