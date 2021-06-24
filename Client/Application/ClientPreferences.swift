@@ -41,10 +41,6 @@ extension Preferences {
 
 // MARK: - Other Preferences
 extension Preferences {
-    final class Popups {
-        /// Whether or not the user has seen the Browser Lock/PIN popup at least once
-        static let browserLock = Option<Bool>(key: "popups.browser-lock", default: false)
-    }
     final class AppState {
         /// A flag for determining if the app exited with user interaction in the previous session
         ///

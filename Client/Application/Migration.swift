@@ -191,9 +191,6 @@ fileprivate extension Preferences {
         migrate(key: "fingerprintprotection_on", to: Preferences.Shields.fingerprintingProtection)
         migrate(key: "braveAdblockUseRegional", to: Preferences.Shields.useRegionAdBlock)
         
-        // Popups
-        migrate(key: "popupForBrowserLock", to: Preferences.Popups.browserLock)
-        
         // BraveShared
         migrateBraveShared(keyPrefix: keyPrefix)
         

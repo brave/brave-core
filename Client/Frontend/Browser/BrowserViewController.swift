@@ -1864,17 +1864,8 @@ class BrowserViewController: UIViewController {
     }
     
     private func focusLocationField() {
-        if browserLockPopup != nil { return }
         topToolbar.tabLocationViewDidTapLocation(topToolbar.locationView)
     }
-    
-    // MARK: - Browser PIN Callout
-    
-    private var isBrowserLockEnabled: Bool {
-        return KeychainWrapper.sharedAppContainerKeychain.authenticationInfo() != nil
-    }
-    
-    private var browserLockPopup: AlertPopupView?
 }
 
 extension BrowserViewController: ClipboardBarDisplayHandlerDelegate {
