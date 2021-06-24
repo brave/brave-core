@@ -411,7 +411,10 @@ void BraveP3AService::OnHistogramChanged(const char* histogram_name,
                                          base::HistogramBase::Sample sample) {
   std::unique_ptr<base::HistogramSamples> samples =
       base::StatisticsRecorder::FindHistogram(histogram_name)->SnapshotDelta();
-  DCHECK(!samples->Iterator()->Done());
+
+  // Stop now if there's nothing to do.
+  if (samples->Iterator()->Done())
+    return;
 
   // Shortcut for the special values, see |kSuspendedMetricValue|
   // description for details.
