@@ -74,7 +74,6 @@ protocol NewTabPageDelegate: AnyObject {
     func focusURLBar()
     func navigateToInput(_ input: String, inNewTab: Bool, switchingToPrivateMode: Bool)
     func handleFavoriteAction(favorite: Favorite, action: BookmarksAction)
-    func tappedDuckDuckGoCallout()
     func brandedImageCalloutActioned(_ state: BrandedImageCalloutState)
     func tappedQRCodeButton(url: URL)
 }
@@ -124,9 +123,6 @@ class NewTabPageViewController: UIViewController {
             }),
             FavoritesOverflowSectionProvider(action: { [weak self] in
                 self?.delegate?.focusURLBar()
-            }),
-            DuckDuckGoCalloutSectionProvider(profile: profile, action: { [weak self] in
-                self?.delegate?.tappedDuckDuckGoCallout()
             })
         ]
       
@@ -647,12 +643,6 @@ class NewTabPageViewController: UIViewController {
         let controller = BraveNewsSettingsViewController(dataSource: feedDataSource)
         let container = UINavigationController(rootViewController: controller)
         present(container, animated: true)
-    }
-    
-    func updateDuckDuckGoVisibility() {
-        if let section = sections.firstIndex(where: { $0 is DuckDuckGoCalloutSectionProvider }) {
-            collectionView.reloadSections(IndexSet(integer: section))
-        }
     }
     
     private func tappedActiveBackgroundButton(_ sender: UIControl) {

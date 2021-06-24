@@ -42,11 +42,6 @@ extension Preferences {
 // MARK: - Other Preferences
 extension Preferences {
     final class Popups {
-        /// Whether or not the user has seen the DuckDuckGo popup at least once
-        ///
-        /// Defaults to false, meaning the user has not been given the choice yet
-        static let duckDuckGoPrivateSearch = Option<Bool>(key: "popups.ddg-private-search", default: false)
-        
         /// Whether or not the user has seen the Browser Lock/PIN popup at least once
         static let browserLock = Option<Bool>(key: "popups.browser-lock", default: false)
     }

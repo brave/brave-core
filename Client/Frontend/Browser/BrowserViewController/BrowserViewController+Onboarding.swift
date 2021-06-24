@@ -157,14 +157,6 @@ extension BrowserViewController: OnboardingControllerDelegate {
         dismissOnboarding(onboardingController)
     }
     
-    func presentDuckDuckGoCalloutIfNeeded() {
-        if PrivateBrowsingManager.shared.isPrivateBrowsing && self.presentedViewController == nil {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                self.presentDuckDuckGoCallout()
-            }
-        }
-    }
-    
     private func presentEducationNTPIfNeeded() {
         // NTP Education Load after onboarding screen
         if shouldShowNTPEducation,
@@ -181,7 +173,6 @@ extension BrowserViewController: OnboardingControllerDelegate {
             guard let self = self else { return }
             
             self.presentEducationNTPIfNeeded()
-            self.presentDuckDuckGoCalloutIfNeeded()
         }
     }
     

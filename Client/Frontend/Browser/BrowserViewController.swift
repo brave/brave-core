@@ -961,12 +961,6 @@ class BrowserViewController: UIViewController {
             show(toast: toast, afterWaiting: ButtonToastUX.toastDelay)
         }
         showQueuedAlertIfAvailable()
-        
-        if PrivateBrowsingManager.shared.isPrivateBrowsing {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                self.presentDuckDuckGoCallout()
-            }
-        }
     }
     
     private func presentVPNCallout() {
@@ -1870,7 +1864,7 @@ class BrowserViewController: UIViewController {
     }
     
     private func focusLocationField() {
-        if browserLockPopup != nil || duckDuckGoPopup != nil { return }
+        if browserLockPopup != nil { return }
         topToolbar.tabLocationViewDidTapLocation(topToolbar.locationView)
     }
     
@@ -1881,54 +1875,6 @@ class BrowserViewController: UIViewController {
     }
     
     private var browserLockPopup: AlertPopupView?
-    
-    // MARK: - DuckDuckGo Callout
-    
-    private var duckDuckGoPopup: AlertPopupView?
-    func presentDuckDuckGoCallout(force: Bool = false) {
-        if Preferences.DebugFlag.skipNTPCallouts == true { return }
-        
-        // Don't show when onboarding is showing
-        if let presentedViewController = self.presentedViewController, presentedViewController.isKind(of: OnboardingNavigationController.self) {
-            return
-        }
-        
-        // Don't show duplicate popups
-        if duckDuckGoPopup != nil { return }
-        
-        // Check to see if its been presented already
-        if !SearchEngines.shouldShowDuckDuckGoPromo || (Preferences.Popups.duckDuckGoPrivateSearch.value && !force) {
-            return
-        }
-
-        // Do not show ddg popup if user already chose it for private browsing.
-        if profile.searchEngines.defaultEngine(forType: .privateMode).shortName == OpenSearchEngine.EngineNames.duckDuckGo {
-            return
-        }
-        
-        topToolbar.leaveOverlayMode()
-        
-        let popup = AlertPopupView(imageView: UIImageView(image: #imageLiteral(resourceName: "duckduckgo")), title: Strings.DDGCalloutTitle, message: Strings.DDGCalloutMessage)
-        
-        popup.addButton(title: Strings.DDGCalloutNo) {
-            Preferences.Popups.duckDuckGoPrivateSearch.value = true
-            self.duckDuckGoPopup = nil
-            return .flyDown
-        }
-        popup.addButton(title: Strings.DDGCalloutEnable, type: .primary) { [weak self] in
-            guard let self = self else { return .flyUp }
-            self.duckDuckGoPopup = nil
-            
-            Preferences.Popups.duckDuckGoPrivateSearch.value = true
-            self.profile.searchEngines.updateDefaultEngine(OpenSearchEngine.EngineNames.duckDuckGo, forType: .privateMode)
-            
-            self.tabManager.selectedTab?.newTabPageViewController?.updateDuckDuckGoVisibility()
-            
-            return .flyUp
-        }
-        duckDuckGoPopup = popup
-        popup.showWithType(showType: .flyUp)
-    }
 }
 
 extension BrowserViewController: ClipboardBarDisplayHandlerDelegate {
@@ -1969,15 +1915,7 @@ extension BrowserViewController: SettingsDelegate {
     }
     
     func settingsDidFinish(_ settingsViewController: SettingsViewController) {
-        settingsViewController.dismiss(animated: true, completion: {
-            // iPad doesn't receive a viewDidAppear because it displays settings as a floating modal window instead
-            // of a fullscreen overlay.
-            if UIDevice.isIpad && PrivateBrowsingManager.shared.isPrivateBrowsing {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                    self.presentDuckDuckGoCallout()
-                }
-            }
-        })
+        settingsViewController.dismiss(animated: true)
     }
 }
 
@@ -2210,8 +2148,6 @@ extension BrowserViewController: TabManagerDelegate {
         if selected?.type != previous?.type {
             updateTabCountUsingTabManager(tabManager)
         }
-        
-        self.presentDuckDuckGoCalloutIfNeeded()
 
         removeAllBars()
         if let bars = selected?.bars {
@@ -2771,10 +2707,6 @@ extension BrowserViewController: NewTabPageDelegate {
     
     func focusURLBar() {
         focusLocationField()
-    }
-    
-    func tappedDuckDuckGoCallout() {
-        presentDuckDuckGoCallout(force: true)
     }
     
     func brandedImageCalloutActioned(_ state: BrandedImageCalloutState) {
