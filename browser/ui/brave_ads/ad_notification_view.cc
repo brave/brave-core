@@ -78,8 +78,8 @@ bool AdNotificationView::OnMouseDragged(const ui::MouseEvent& event) {
     return false;
   }
 
-  gfx::Rect bounds =
-      GetWidget()->GetContentsView()->GetBoundsInScreen() + movement;
+  const std::string id = ad_notification_.id();
+  gfx::Rect bounds = AdNotificationPopup::GetBounds(id) + movement;
   const gfx::NativeView native_view = GetWidget()->GetNativeView();
   AdjustBoundsToFitWorkAreaForNativeView(&bounds, native_view);
   GetWidget()->SetBounds(bounds);
@@ -101,6 +101,13 @@ void AdNotificationView::OnMouseReleased(const ui::MouseEvent& event) {
   AdNotificationPopup::OnClick(id);
 
   View::OnMouseReleased(event);
+}
+
+void AdNotificationView::OnDeviceScaleFactorChanged(
+    float old_device_scale_factor,
+    float new_device_scale_factor) {
+  GetWidget()->DeviceScaleFactorChanged(old_device_scale_factor,
+                                        new_device_scale_factor);
 }
 
 void AdNotificationView::OnThemeChanged() {
