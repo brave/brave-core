@@ -5,6 +5,7 @@
 
 module brave_wallet.mojom;
 
+import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
 
 interface EventsListener {
@@ -58,6 +59,21 @@ struct AppItem {
   string url;
 };
 
+enum AssetPriceTimeframe {
+  Live,
+  OneDay,
+  OneWeek,
+  OneMonth,
+  ThreeMonths,
+  OneYear,
+  All
+};
+
+struct AssetTimePrice {
+  mojo_base.mojom.Time date;
+  string price;
+};
+
 // Browser-side handler for common panel / page things
 interface WalletHandler {
   GetWalletInfo() => (bool isWalletCreated, bool isWalletLocked,
@@ -65,6 +81,8 @@ interface WalletHandler {
                       bool isWalletBackedUp, array<string> accounts);
   LockWallet();
   UnlockWallet(string password) => (bool isWalletUnlocked);
+  GetAssetPrice(string asset) => (string price);
+  GetAssetPriceHistory(string asset, AssetPriceTimeframe timeframe) => (array<AssetTimePrice> values);
   AddFavoriteApp(AppItem appItem);
   RemoveFavoriteApp(AppItem appItem);
   NotifyWalletBackupComplete();

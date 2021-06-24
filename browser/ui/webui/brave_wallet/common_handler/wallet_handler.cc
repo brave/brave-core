@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
@@ -33,7 +34,8 @@ WalletHandler::WalletHandler(
     ui::MojoWebUIController* webui_controller)
     : receiver_(this, std::move(receiver)),
       page_(std::move(page)),
-      web_ui_(web_ui) {}
+      web_ui_(web_ui),
+      weak_ptr_factory_(this) {}
 
 WalletHandler::~WalletHandler() = default;
 
@@ -73,6 +75,43 @@ void WalletHandler::UnlockWallet(const std::string& password,
       GetBraveWalletService(profile)->keyring_controller();
   bool result = keyring_controller->Unlock(password);
   std::move(callback).Run(result);
+}
+
+void WalletHandler::GetAssetPrice(const std::string& asset,
+                                  GetAssetPriceCallback callback) {
+  auto* profile = Profile::FromWebUI(web_ui_);
+  auto* asset_ratio_controller =
+      GetBraveWalletService(profile)->asset_ratio_controller();
+  asset_ratio_controller->GetPrice(
+      asset,
+      base::BindOnce(&WalletHandler::OnGetPrice, weak_ptr_factory_.GetWeakPtr(),
+                     std::move(callback)));
+}
+
+void WalletHandler::OnGetPrice(GetAssetPriceCallback callback,
+                               bool success,
+                               const std::string& price) {
+  std::move(callback).Run(price);
+}
+
+void WalletHandler::GetAssetPriceHistory(
+    const std::string& asset,
+    brave_wallet::mojom::AssetPriceTimeframe timeframe,
+    GetAssetPriceHistoryCallback callback) {
+  auto* profile = Profile::FromWebUI(web_ui_);
+  auto* asset_ratio_controller =
+      GetBraveWalletService(profile)->asset_ratio_controller();
+  asset_ratio_controller->GetPriceHistory(
+      asset, timeframe,
+      base::BindOnce(&WalletHandler::OnGetPriceHistory,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void WalletHandler::OnGetPriceHistory(
+    GetAssetPriceHistoryCallback callback,
+    bool success,
+    std::vector<brave_wallet::mojom::AssetTimePricePtr> values) {
+  std::move(callback).Run(std::move(values));
 }
 
 void WalletHandler::AddFavoriteApp(

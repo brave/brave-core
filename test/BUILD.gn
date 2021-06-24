@@ -699,6 +699,7 @@ if (!is_android) {
 
     if (brave_wallet_enabled) {
       sources += [
+        "//brave/browser/brave_wallet/asset_ratio_controller_browsertest.cc",
         "//brave/browser/brave_wallet/brave_wallet_event_emitter_browsertest.cc",
         "//brave/browser/brave_wallet/eth_json_rpc_controller_browsertest.cc",
         "//brave/browser/ui/views/toolbar/wallet_button_browsertest.cc",
@@ -724,6 +725,7 @@ if (!is_android) {
         "//brave/browser/infobars",
         "//brave/components/brave_wallet/browser",
         "//brave/components/brave_wallet/common",
+        "//brave/components/brave_wallet/common:mojom",
       ]
     }
 

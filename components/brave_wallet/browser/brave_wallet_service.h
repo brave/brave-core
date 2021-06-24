@@ -24,6 +24,7 @@ namespace brave_wallet {
 class EthJsonRpcController;
 class EthTxController;
 class KeyringController;
+class AssetRatioController;
 
 class BraveWalletService : public KeyedService,
                            public base::SupportsWeakPtr<BraveWalletService> {
@@ -38,6 +39,7 @@ class BraveWalletService : public KeyedService,
   brave_wallet::EthJsonRpcController* rpc_controller() const;
   brave_wallet::KeyringController* keyring_controller() const;
   brave_wallet::EthTxController* tx_controller() const;
+  brave_wallet::AssetRatioController* asset_ratio_controller() const;
 
   bool IsWalletBackedUp() const;
   void NotifyWalletBackupComplete();
@@ -47,6 +49,7 @@ class BraveWalletService : public KeyedService,
   std::unique_ptr<brave_wallet::EthJsonRpcController> rpc_controller_;
   std::unique_ptr<brave_wallet::KeyringController> keyring_controller_;
   std::unique_ptr<brave_wallet::EthTxController> tx_controller_;
+  std::unique_ptr<brave_wallet::AssetRatioController> asset_ratio_controller_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveWalletService);
 };
