@@ -90,6 +90,8 @@
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #endif
 
+#include "brave/components/brave_vpn/brave_vpn_connection_manager.h"
+
 using brave_component_updater::BraveComponent;
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 using ntp_background_images::NTPBackgroundImagesService;
@@ -157,6 +159,8 @@ void BraveBrowserProcessImpl::Init() {
 #endif
 
   InitSystemRequestHandlerCallback();
+
+  brave_vpn::BraveVPNConnectionManager::GetInstance();
 }
 
 brave_component_updater::BraveComponent::Delegate*
