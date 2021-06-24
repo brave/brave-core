@@ -272,6 +272,7 @@
 		276A790C244660B500AC9446 /* UICollectionViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276A790B244660B500AC9446 /* UICollectionViewExtensions.swift */; };
 		276A791024476FD200AC9446 /* StatsSectionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276A790F24476FD200AC9446 /* StatsSectionProvider.swift */; };
 		276E7A3C22F21DBE00939424 /* RewardsReporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276E7A3B22F21DBE00939424 /* RewardsReporting.swift */; };
+		277046C22684CD2A001CB097 /* PanModal in Frameworks */ = {isa = PBXBuildFile; productRef = 277046C12684CD2A001CB097 /* PanModal */; };
 		277223722469B4FB0059A7EB /* FaviconFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277223712469B4FB0059A7EB /* FaviconFetcher.swift */; };
 		277223762469E7290059A7EB /* LargeFaviconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277223752469E7290059A7EB /* LargeFaviconView.swift */; };
 		277568D425ACF91600C129AF /* SPMLibraries.h in Headers */ = {isa = PBXBuildFile; fileRef = 277568D225ACF91600C129AF /* SPMLibraries.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -364,7 +365,6 @@
 		27A586E1214C0DDD000CAE3C /* PreferencesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A586E0214C0DDD000CAE3C /* PreferencesTest.swift */; };
 		27AC169823834510004BE19C /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27AC169623834510004BE19C /* UserNotifications.framework */; };
 		27AC7CFA24C77EBC00441317 /* FeedActionAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AC7CF924C77EBC00441317 /* FeedActionAlertView.swift */; };
-		27AE35F625E470C000E795E5 /* PanModal in Frameworks */ = {isa = PBXBuildFile; productRef = 27AE35F525E470C000E795E5 /* PanModal */; };
 		27AE360D25E55AA200E795E5 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AE360C25E55AA200E795E5 /* MenuViewController.swift */; };
 		27B16C5924E1D72600E0CF2C /* NewTabPageFeedOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B16C5824E1D72600E0CF2C /* NewTabPageFeedOverlayView.swift */; };
 		27B3DDD024AE83710006A7ED /* FeedSourceOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B3DDCF24AE83710006A7ED /* FeedSourceOverride.swift */; };
@@ -2698,6 +2698,7 @@
 			files = (
 				277568F525ACF92400C129AF /* SwiftyJSON in Frameworks */,
 				277568F725ACF92400C129AF /* Lottie in Frameworks */,
+				277046C22684CD2A001CB097 /* PanModal in Frameworks */,
 				277568EB25ACF92400C129AF /* ZIPFoundation in Frameworks */,
 				27B68E5D25C88CA7002D0826 /* FeedKit in Frameworks */,
 				277568ED25ACF92400C129AF /* SnapKit in Frameworks */,
@@ -2705,7 +2706,6 @@
 				27756BEA25AD14B600C129AF /* GCDWebServers in Frameworks */,
 				277568F125ACF92400C129AF /* XCGLogger in Frameworks */,
 				27756B0F25AD08FA00C129AF /* SDWebImage in Frameworks */,
-				27AE35F625E470C000E795E5 /* PanModal in Frameworks */,
 				277568F925ACF92400C129AF /* SwiftKeychainWrapper in Frameworks */,
 				27F4798C25AF94B0004922E4 /* YubiKit in Frameworks */,
 				277568F325ACF92400C129AF /* Fuzi in Frameworks */,
@@ -5689,7 +5689,7 @@
 				27756BE925AD14B600C129AF /* GCDWebServers */,
 				27F4798B25AF94B0004922E4 /* YubiKit */,
 				27B68E5C25C88CA7002D0826 /* FeedKit */,
-				27AE35F525E470C000E795E5 /* PanModal */,
+				277046C12684CD2A001CB097 /* PanModal */,
 			);
 			productName = SPMLibraries;
 			productReference = 277568D025ACF91500C129AF /* SPMLibraries.framework */;
@@ -6100,7 +6100,7 @@
 				27756BE825AD14B600C129AF /* XCRemoteSwiftPackageReference "GCDWebServer" */,
 				27F4798A25AF94B0004922E4 /* XCRemoteSwiftPackageReference "yubikit-ios" */,
 				27B68E5B25C88CA7002D0826 /* XCRemoteSwiftPackageReference "FeedKit" */,
-				27AE35F425E470C000E795E5 /* XCRemoteSwiftPackageReference "PanModal" */,
+				277046C02684CD1E001CB097 /* XCRemoteSwiftPackageReference "PanModal" */,
 			);
 			productRefGroup = F84B21BF1A090F8100AAB793 /* Products */;
 			projectDirPath = "";
@@ -12404,6 +12404,14 @@
 				minimumVersion = 0.9.11;
 			};
 		};
+		277046C02684CD1E001CB097 /* XCRemoteSwiftPackageReference "PanModal" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/brave/PanModal";
+			requirement = {
+				kind = revision;
+				revision = e4c07f8e6c5df937051fabc47e1e92901e1d068b;
+			};
+		};
 		2775685325ACF6CB00C129AF /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -12468,14 +12476,6 @@
 				revision = 16bbfa795eef8c8c0715e49ab3ea75d816907661;
 			};
 		};
-		27AE35F425E470C000E795E5 /* XCRemoteSwiftPackageReference "PanModal" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/slackhq/PanModal";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.7;
-			};
-		};
 		27B68E5B25C88CA7002D0826 /* XCRemoteSwiftPackageReference "FeedKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/nmdias/FeedKit.git";
@@ -12495,6 +12495,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		277046C12684CD2A001CB097 /* PanModal */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 277046C02684CD1E001CB097 /* XCRemoteSwiftPackageReference "PanModal" */;
+			productName = PanModal;
+		};
 		277568EA25ACF92400C129AF /* ZIPFoundation */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 272736A224A686920096DCB9 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
@@ -12544,11 +12549,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 27756BE825AD14B600C129AF /* XCRemoteSwiftPackageReference "GCDWebServer" */;
 			productName = GCDWebServers;
-		};
-		27AE35F525E470C000E795E5 /* PanModal */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 27AE35F425E470C000E795E5 /* XCRemoteSwiftPackageReference "PanModal" */;
-			productName = PanModal;
 		};
 		27B68E5C25C88CA7002D0826 /* FeedKit */ = {
 			isa = XCSwiftPackageProductDependency;
