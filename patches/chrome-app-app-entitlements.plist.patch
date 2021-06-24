@@ -1,0 +1,14 @@
+diff --git a/chrome/app/app-entitlements.plist b/chrome/app/app-entitlements.plist
+index 52237541082378b48b15c334738bb1d353be555c..bba797d448d7f7edbdc45292aebcb30e3c1dac08 100644
+--- a/chrome/app/app-entitlements.plist
++++ b/chrome/app/app-entitlements.plist
+@@ -14,5 +14,9 @@
+ 	<true/>
+ 	<key>com.apple.security.personal-information.location</key>
+ 	<true/>
++	<key>com.apple.developer.networking.vpn.api</key>
++	<array>
++		<string>allow-vpn</string>
++	</array>
+ </dict>
+ </plist>
