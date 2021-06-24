@@ -27,6 +27,9 @@
 using brave_shields::ControlType;
 
 const char kEmbeddedTestServerDirectory[] = "dark_mode_block";
+const char kMatchDarkMode[] =
+    "window.domAutomationController.send(window.matchMedia('(prefers-color-"
+    "scheme: dark)').matches)";
 
 class BraveDarkModeFingerprintProtection : public InProcessBrowserTest {
  public:
@@ -142,4 +145,15 @@ IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtection, RegressionCheck) {
   NavigateToURLUntilLoadStop(dark_mode_url());
   ASSERT_TRUE(ui_test_utils::GetCurrentTabTitle(browser(), &tab_title));
   EXPECT_EQ(base::ASCIIToUTF16("light"), tab_title);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtection, SettingsPagesCheck) {
+  // On settings page should get dark mode with fingerprinting strict
+  test_theme_.SetDarkMode(true);
+  BlockFingerprinting();
+  NavigateToURLUntilLoadStop(GURL("brave://settings"));
+  bool result;
+  ASSERT_TRUE(content::ExecuteScriptAndExtractBool(contents(), kMatchDarkMode,
+                                                   &result));
+  EXPECT_TRUE(result);
 }
