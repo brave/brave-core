@@ -56,7 +56,7 @@ void UpholdTransfer::OnCreateTransaction(
     client::TransactionCallback callback) {
   if (result == type::Result::EXPIRED_TOKEN) {
     callback(type::Result::EXPIRED_TOKEN, "");
-    ledger_->uphold()->DisconnectWallet();
+    ledger_->uphold()->DisconnectWallet(notifications::kWalletDisconnected);
     return;
   }
 
@@ -103,7 +103,7 @@ void UpholdTransfer::OnCommitTransaction(
     client::TransactionCallback callback) {
   if (result == type::Result::EXPIRED_TOKEN) {
     callback(type::Result::EXPIRED_TOKEN, "");
-    ledger_->uphold()->DisconnectWallet();
+    ledger_->uphold()->DisconnectWallet(notifications::kWalletDisconnected);
     return;
   }
 
