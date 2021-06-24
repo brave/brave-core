@@ -39,11 +39,11 @@
       },
       {
         "package": "PanModal",
-        "repositoryURL": "https://github.com/slackhq/PanModal",
+        "repositoryURL": "https://github.com/brave/PanModal",
         "state": {
-          "branch": null,
-          "revision": "b012aecb6b67a8e46369227f893c12544846613f",
-          "version": "1.2.7"
+          "branch": "master",
+          "revision": "e4c07f8e6c5df937051fabc47e1e92901e1d068b",
+          "version": null
         }
       },
       {
