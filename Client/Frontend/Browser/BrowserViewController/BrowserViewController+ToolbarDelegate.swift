@@ -580,9 +580,9 @@ extension BrowserViewController: ToolbarDelegate {
     private func addTabAlertActions() -> [UIAlertAction] {
         var actions: [UIAlertAction] = []
         if !PrivateBrowsingManager.shared.isPrivateBrowsing {
-            let newPrivateTabAction = UIAlertAction(title: Strings.newPrivateTabTitle, style: .default, handler: { [unowned self] _ in
-                // BRAVE TODO: Add check for DuckDuckGo popup (and based on 1.6, whether the browser lock is enabled?)
-                // before focusing on the url bar
+            let newPrivateTabAction = UIAlertAction(title: Strings.newPrivateTabTitle,
+                                                    style: .default,
+                                                    handler: { [unowned self] _ in
                 self.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: true)
             })
             actions.append(newPrivateTabAction)

@@ -15,7 +15,7 @@ extension Preferences {
         
         static let skipOnboardingIntro = boolOrNil(for: "BRSkipOnboarding")
         static let skipEduPopups = boolOrNil(for: "BRSkipEduPopups")
-        /// Skips default browser, Brave VPN, DDG callouts.
+        /// Skips default browser, Brave VPN and other in-app callouts.
         static let skipNTPCallouts = boolOrNil(for: "BRSkipAppLaunchPopups")
         
         private static func boolOrNil(for key: String) -> Bool? {

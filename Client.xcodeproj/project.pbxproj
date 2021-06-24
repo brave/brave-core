@@ -406,7 +406,6 @@
 		27F94A3A21909A5900F4FADF /* SearchSuggestionsPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F94A3921909A5900F4FADF /* SearchSuggestionsPromptView.swift */; };
 		27FCA8E02447708300A8CA48 /* FavoritesSectionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FCA8DF2447708300A8CA48 /* FavoritesSectionProvider.swift */; };
 		27FCA8E3244770AB00A8CA48 /* FavoritesOverflowSectionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FCA8E2244770AB00A8CA48 /* FavoritesOverflowSectionProvider.swift */; };
-		27FCA8E72447BCFE00A8CA48 /* DuckDuckGoCalloutSectionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FCA8E62447BCFE00A8CA48 /* DuckDuckGoCalloutSectionProvider.swift */; };
 		27FD2CAB2146C31C00A5A779 /* RequestDesktopSiteActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FD2CA12146C31C00A5A779 /* RequestDesktopSiteActivity.swift */; };
 		27FD2CAC2146C31C00A5A779 /* FindInPageActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FD2CA92146C31C00A5A779 /* FindInPageActivity.swift */; };
 		27FD2CAD2146C31C00A5A779 /* AddToFavoritesActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FD2CAA2146C31C00A5A779 /* AddToFavoritesActivity.swift */; };
@@ -1872,7 +1871,6 @@
 		27F94A3921909A5900F4FADF /* SearchSuggestionsPromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsPromptView.swift; sourceTree = "<group>"; };
 		27FCA8DF2447708300A8CA48 /* FavoritesSectionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesSectionProvider.swift; sourceTree = "<group>"; };
 		27FCA8E2244770AB00A8CA48 /* FavoritesOverflowSectionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesOverflowSectionProvider.swift; sourceTree = "<group>"; };
-		27FCA8E62447BCFE00A8CA48 /* DuckDuckGoCalloutSectionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuckDuckGoCalloutSectionProvider.swift; sourceTree = "<group>"; };
 		27FD2CA12146C31C00A5A779 /* RequestDesktopSiteActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestDesktopSiteActivity.swift; sourceTree = "<group>"; };
 		27FD2CA92146C31C00A5A779 /* FindInPageActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindInPageActivity.swift; sourceTree = "<group>"; };
 		27FD2CAA2146C31C00A5A779 /* AddToFavoritesActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToFavoritesActivity.swift; sourceTree = "<group>"; };
@@ -3328,7 +3326,6 @@
 				276A790F24476FD200AC9446 /* StatsSectionProvider.swift */,
 				27FCA8DF2447708300A8CA48 /* FavoritesSectionProvider.swift */,
 				27FCA8E2244770AB00A8CA48 /* FavoritesOverflowSectionProvider.swift */,
-				27FCA8E62447BCFE00A8CA48 /* DuckDuckGoCalloutSectionProvider.swift */,
 				27A1ABF52485568700344503 /* FlexibleSpaceSectionProvider.swift */,
 				27A1ABF32485567900344503 /* BraveNewsSectionProvider.swift */,
 			);
@@ -6861,7 +6858,6 @@
 				4422D4D921BFFB7600BF1855 /* merger.cc in Sources */,
 				4422D4EF21BFFB7600BF1855 /* log_reader.cc in Sources */,
 				4422D4E621BFFB7600BF1855 /* two_level_iterator.cc in Sources */,
-				27FCA8E72447BCFE00A8CA48 /* DuckDuckGoCalloutSectionProvider.swift in Sources */,
 				D3B6923F1B9F9A58004B87A4 /* FindInPageHelper.swift in Sources */,
 				0A6E20492608D7E200575798 /* DebugFlag.swift in Sources */,
 				2F098F8B255F2D730084FB37 /* BrowserViewController+ReaderMode.swift in Sources */,

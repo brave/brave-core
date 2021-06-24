@@ -192,7 +192,6 @@ fileprivate extension Preferences {
         migrate(key: "braveAdblockUseRegional", to: Preferences.Shields.useRegionAdBlock)
         
         // Popups
-        migrate(key: "popupForDDG", to: Preferences.Popups.duckDuckGoPrivateSearch)
         migrate(key: "popupForBrowserLock", to: Preferences.Popups.browserLock)
         
         // BraveShared

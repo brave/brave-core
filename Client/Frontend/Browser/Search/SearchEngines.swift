@@ -83,14 +83,6 @@ class SearchEngines {
         return defaultEngine ?? orderedEngines[0]
     }
     
-    /// Whether or not we should show DuckDuckGo related promotions based on the users current region
-    static var shouldShowDuckDuckGoPromo: Bool {
-        // We want to show ddg promo in most cases so this guard returns true.
-        guard let region = Locale.current.regionCode else { return true }
-        
-        return !InitialSearchEngines.qwantDefaultRegions.contains(region)
-    }
-    
     /// Initialize default engine and set order of remaining search engines.
     /// Call this method only at initialization(app launch or onboarding).
     /// For updating search engines use `updateDefaultEngine()` method.
