@@ -536,6 +536,11 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
+    
+    override func accessibilityPerformEscape() -> Bool {
+        dismiss(animated: true)
+        return true
+    }
 }
 
 extension BookmarksViewController: BookmarksV2FetchResultsDelegate {
