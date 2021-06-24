@@ -513,7 +513,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         No activities yet this
 month...
       </message>
-      <message name="IDS_BRAVE_UI_ONE_TIME_DONATION" desc="A message about one time tips">
+      <message name="IDS_BRAVE_UI_ONE_TIME_DONATION" desc="A message about one-time tips">
         One-time Tips
       </message>
       <message name="IDS_BRAVE_UI_RECURRING_DONATION" desc="A message about monthly tips">
