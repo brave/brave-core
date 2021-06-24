@@ -17,6 +17,24 @@ using std::placeholders::_2;
 namespace ledger {
 namespace uphold {
 
+namespace {
+std::string GetNotificationForUserStatus(UserStatus status, bool verified) {
+  switch (status) {
+    case UserStatus::BLOCKED:
+      return notifications::kBlockedUser;
+    case UserStatus::OK:
+      return !verified ? notifications::kUnverifiedUser : std::string{};
+    case UserStatus::PENDING:
+      return notifications::kPendingUser;
+    case UserStatus::RESTRICTED:
+      return notifications::kRestrictedUser;
+    default:
+      DCHECK(status == UserStatus::EMPTY);
+      return {};
+  }
+}
+}  // namespace
+
 UpholdWallet::UpholdWallet(LedgerImpl* ledger)
     : ledger_{ledger},
       promotion_server_{std::make_unique<endpoint::PromotionServer>(ledger)} {}
@@ -80,7 +98,7 @@ void UpholdWallet::OnGetUser(const type::Result result,
 
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Access token expired!");
-    ledger_->uphold()->DisconnectWallet();
+    ledger_->uphold()->DisconnectWallet(notifications::kWalletDisconnected);
     // status == type::WalletStatus::NOT_CONNECTED ||
     // status == type::WalletStatus::DISCONNECTED_VERIFIED
     return callback(type::Result::EXPIRED_TOKEN);
@@ -93,9 +111,10 @@ void UpholdWallet::OnGetUser(const type::Result result,
 
   if (user.bat_not_allowed) {
     BLOG(0, "BAT is not allowed for the user!");
-    ledger_->uphold()->DisconnectWallet();
+    ledger_->uphold()->DisconnectWallet(notifications::kBATNotAllowedForUser);
     // status == type::WalletStatus::NOT_CONNECTED ||
     // status == type::WalletStatus::DISCONNECTED_VERIFIED
+
     return callback(type::Result::BAT_NOT_ALLOWED);
   }
 
@@ -106,8 +125,19 @@ void UpholdWallet::OnGetUser(const type::Result result,
   }
 
   if (user.status != UserStatus::OK || !user.verified) {
+    const auto notification =
+        GetNotificationForUserStatus(user.status, user.verified);
+
     if (uphold_wallet->status == type::WalletStatus::VERIFIED) {
-      ledger_->uphold()->DisconnectWallet();
+      ledger_->uphold()->DisconnectWallet(
+          !notification.empty() ? notification
+                                : notifications::kWalletDisconnected);
+      // status == type::WalletStatus::DISCONNECTED_VERIFIED
+    } else {
+      if (!notification.empty()) {
+        ledger_->ledger_client()->ShowNotification(notification, {},
+                                                   [](type::Result) {});
+      }
     }
 
     return callback(type::Result::LEDGER_OK);
@@ -140,7 +170,7 @@ void UpholdWallet::OnCreateCard(const type::Result result,
 
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Access token expired!");
-    ledger_->uphold()->DisconnectWallet();
+    ledger_->uphold()->DisconnectWallet(notifications::kWalletDisconnected);
     // status == type::WalletStatus::NOT_CONNECTED
     return callback(type::Result::EXPIRED_TOKEN);
   }
@@ -242,15 +272,13 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
   DCHECK(!id.empty());
 
   if (result == type::Result::ALREADY_EXISTS) {
-    ledger_->uphold()->DisconnectWallet();
+    ledger_->uphold()->DisconnectWallet(
+        notifications::kWalletDeviceLimitReached);
     // status == type::WalletStatus::NOT_CONNECTED
 
     ledger_->database()->SaveEventLog(
         log::kDeviceLimitReached,
         constant::kWalletUphold + std::string{"/"} + id.substr(0, 5));
-
-    ledger_->ledger_client()->ShowNotification("wallet_device_limit_reached",
-                                               {}, [](type::Result) {});
 
     return callback(type::Result::ALREADY_EXISTS);
   }

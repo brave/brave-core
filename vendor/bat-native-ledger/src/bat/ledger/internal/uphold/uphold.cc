@@ -128,7 +128,7 @@ void Uphold::OnFetchBalance(const type::Result result,
                             FetchBalanceCallback callback) {
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
-    DisconnectWallet();
+    DisconnectWallet(notifications::kWalletDisconnected);
     callback(type::Result::EXPIRED_TOKEN, 0.0);
     return;
   }
@@ -165,7 +165,7 @@ void Uphold::CreateCard(CreateCardCallback callback) {
   card_->CreateBATCardIfNecessary(callback);
 }
 
-void Uphold::DisconnectWallet(const bool manual) {
+void Uphold::DisconnectWallet(const std::string& notification) {
   auto wallet = GetWallet();
   if (!wallet) {
     return;
@@ -178,6 +178,8 @@ void Uphold::DisconnectWallet(const bool manual) {
         static_cast<std::string>(constant::kWalletUphold) + "/" +
             wallet->address.substr(0, 5));
   }
+
+  const bool manual = notification.empty();
 
   const auto from_status = wallet->status;
   wallet =
@@ -195,7 +197,7 @@ void Uphold::DisconnectWallet(const bool manual) {
   const bool shutting_down = ledger_->IsShuttingDown();
 
   if (!manual && !shutting_down) {
-    ledger_->ledger_client()->ShowNotification("wallet_disconnected", {},
+    ledger_->ledger_client()->ShowNotification(notification, {},
                                                [](type::Result _) {});
   }
 

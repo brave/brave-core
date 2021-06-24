@@ -143,7 +143,7 @@ void Wallet::DisconnectWallet(const std::string& wallet_type,
                : !uphold_wallet->address.empty());
 
     if (uphold_wallet->status == type::WalletStatus::PENDING) {
-      ledger_->uphold()->DisconnectWallet(true);
+      ledger_->uphold()->DisconnectWallet({});
       return callback(type::Result::LEDGER_OK);
     }
 
@@ -154,7 +154,7 @@ void Wallet::DisconnectWallet(const std::string& wallet_type,
             return callback(result);
           }
 
-          ledger_->uphold()->DisconnectWallet(true);
+          ledger_->uphold()->DisconnectWallet({});
           ledger_->state()->ResetWalletType();
           callback(type::Result::LEDGER_OK);
         });

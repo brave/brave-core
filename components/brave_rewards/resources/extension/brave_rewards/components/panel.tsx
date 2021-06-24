@@ -201,6 +201,41 @@ export class Panel extends React.Component<Props, State> {
     })
     this.actions.deleteNotification(id)
   }
+  
+  onUpholdBATNotAllowedForUser = (id: string) => {
+    chrome.tabs.create({
+      url: 'https://uphold.com/en/developer/api/documentation/#currencies'
+    })
+    this.actions.deleteNotification(id)
+  }
+  
+  onUpholdBlockedUser = (id: string) => {
+    chrome.tabs.create({
+      url: 'https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk'
+    })
+    this.actions.deleteNotification(id)
+  }
+  
+  onUpholdPendingUser = (id: string) => {
+    chrome.tabs.create({
+      url: 'https://support.uphold.com/hc/en-us/articles/206695986-How-do-I-sign-up-for-Uphold-Web-'
+    })
+    this.actions.deleteNotification(id)
+  }
+  
+  onUpholdRestrictedUser = (id: string) => {
+    chrome.tabs.create({
+      url: 'https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk'
+    })
+    this.actions.deleteNotification(id)
+  }
+  
+  onUpholdUnverifiedUser = (id: string) => {
+    chrome.tabs.create({
+      url: 'https://support.uphold.com/hc/en-us/articles/202766795-Here-s-how-to-verify-your-identity-it-s-easy'
+    })
+    this.actions.deleteNotification(id)
+  }
 
   onPromotionHide = (promotionId: string) => {
     this.actions.resetPromotion(promotionId)
@@ -347,6 +382,21 @@ export class Panel extends React.Component<Props, State> {
       case 'deviceLimitReached':
         clickEvent = this.onDeviceLimitReached.bind(this, id)
         break
+      case 'upholdBATNotAllowedForUser':
+        clickEvent = this.onUpholdBATNotAllowedForUser.bind(this, id)
+        break
+      case 'upholdBlockedUser':
+        clickEvent = this.onUpholdBlockedUser.bind(this, id)
+        break
+      case 'upholdPendingUser':
+        clickEvent = this.onUpholdPendingUser.bind(this, id)
+        break
+      case 'upholdRestrictedUser':
+        clickEvent = this.onUpholdRestrictedUser.bind(this, id)
+        break
+      case 'upholdUnverifiedUser':
+        clickEvent = this.onUpholdUnverifiedUser.bind(this, id)
+        break
       default:
         clickEvent = undefined
         break
@@ -473,6 +523,26 @@ export class Panel extends React.Component<Props, State> {
           case 'wallet_device_limit_reached':
             type = 'deviceLimitReached'
             text = getMessage('deviceLimitReachedNotification')
+            break
+          case 'uphold_bat_not_allowed_for_user':
+            type = 'upholdBATNotAllowedForUser'
+            text = getMessage('upholdBATNotAllowedForUserNotification')
+            break
+          case 'uphold_blocked_user':
+            type = 'upholdBlockedUser'
+            text = getMessage('upholdBlockedUserNotification')
+            break
+          case 'uphold_pending_user':
+            type = 'upholdPendingUser'
+            text = getMessage('upholdPendingUserNotification')
+            break
+          case 'uphold_restricted_user':
+            type = 'upholdRestrictedUser'
+            text = getMessage('upholdRestrictedUserNotification')
+            break
+          case 'uphold_unverified_user':
+            type = 'upholdUnverifiedUser'
+            text = getMessage('upholdUnverifiedUserNotification')
             break
           default:
             break
