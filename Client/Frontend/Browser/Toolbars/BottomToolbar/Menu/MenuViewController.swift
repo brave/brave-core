@@ -160,6 +160,11 @@ class MenuViewController: UINavigationController, UIPopoverPresentationControlle
     private var isPresentingInnerMenu: Bool {
         presentedViewController is InnerMenuNavigationController
     }
+    
+    override func accessibilityPerformEscape() -> Bool {
+        dismiss(animated: true)
+        return true
+    }
 }
 
 extension MenuViewController: PanModalPresentable {
@@ -198,10 +203,10 @@ extension MenuViewController: PanModalPresentable {
         return _scrollViewChild(in: topVC.view)
     }
     var longFormHeight: PanModalHeight {
-        .maxHeight
+        .maxHeightWithTopInset(32)
     }
     var shortFormHeight: PanModalHeight {
-        isPresentingInnerMenu ? .maxHeight : .contentHeight(initialHeight)
+        isPresentingInnerMenu ? .maxHeightWithTopInset(32) : .contentHeight(initialHeight)
     }
     var allowsExtendedPanScrolling: Bool {
         true
