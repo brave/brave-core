@@ -66,7 +66,34 @@ handler.on(WalletPageActions.walletBackupComplete.getType(), async (store) => {
 
 // TODO(bbondy): Remove - Example usage:
 // import { AssetPriceTimeframe } from '../../constants/types'
-// var price = await walletHandler.getAssetPrice('basic-attention-token')
+// var price = await walletHandler.getAssetPrice('bat')
 // var priceHistory = await walletHandler.getAssetPriceHistory('basic-attention-token', AssetPriceTimeframe.OneWeek)
+//
+// import { SwapParams } from '../../constants/types'
+// const walletHandler = await getWalletHandler()
+// var swap_response = await walletHandler.getPriceQuote({
+//   takerAddress: '',
+//   sellAmount: '',
+//   buyAmount: '1000000000000000000000',
+//   buyToken: 'ETH',
+//   sellToken: 'DAI',
+//   buyTokenPercentageFee: 0,
+//   slippagePercentage: 0,
+//   feeRecipient: '',
+//   gasPrice: ''
+// })
+// console.log('wallet price quote: ', swap_response)
+//  var swap_response2 = await walletHandler.getTransactionPayload({
+//   takerAddress: '',
+//   sellAmount: '',
+//   buyAmount: '1000000000000000000000',
+//   buyToken: 'ETH',
+//   sellToken: 'DAI',
+//   buyTokenPercentageFee: 0,
+//   slippagePercentage: 0,
+//   feeRecipient: '',
+//   gasPrice: ''
+// })
+// console.log(swap_response2)
 
 export default handler.middleware

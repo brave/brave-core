@@ -116,6 +116,8 @@ interface WalletHandler {
   UnlockWallet(string password) => (bool isWalletUnlocked);
   GetAssetPrice(string asset) => (string price);
   GetAssetPriceHistory(string asset, AssetPriceTimeframe timeframe) => (array<AssetTimePrice> values);
+  GetPriceQuote(SwapParams params) => (SwapResponse response);
+  GetTransactionPayload(SwapParams params) => (SwapResponse response);
   AddFavoriteApp(AppItem appItem);
   RemoveFavoriteApp(AppItem appItem);
   NotifyWalletBackupComplete();
