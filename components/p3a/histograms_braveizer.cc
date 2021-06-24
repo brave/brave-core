@@ -28,7 +28,7 @@ constexpr const char* kBravezationHistograms[] = {
 
 }  // namespace
 
-//static
+// static
 scoped_refptr<brave::HistogramsBraveizer> HistogramsBraveizer::Create() {
   auto histogram_braveizer = base::MakeRefCounted<brave::HistogramsBraveizer>();
   histogram_braveizer->InitCallbacks();
