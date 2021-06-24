@@ -15,6 +15,7 @@ namespace brave {
 namespace {
 
 // Please keep this list sorted and synced with |DoHistogramBravezation|.
+// clang-format off
 constexpr const char* kBravezationHistograms[] = {
     "Bookmarks.Count.OnProfileLoad",
     "DefaultBrowser.State",
@@ -23,6 +24,7 @@ constexpr const char* kBravezationHistograms[] = {
     "Tabs.TabCountPerLoad",
     "Tabs.WindowCount",
 };
+// clang-format on
 
 }  // namespace
 
