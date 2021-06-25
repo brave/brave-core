@@ -50,16 +50,6 @@ const getNPMConfig = (key) => {
   return NpmConfig[key.join('-').replace(/_/g, '-')] || packageConfig(key)
 }
 
-const getMacOSSDKVersion = () => {
-  const result = run('xcrun', ['--sdk', 'macosx', '--show-sdk-version'])
-  const version = parseFloat(result.stdout.toString())
-  if (!version) {
-    console.log('Unable to determine currently configured MacOS SDK version')
-    return ''
-  }
-  return String(version)
-};
-
 const parseExtraInputs = (inputs, accumulator, callback) => {
   for (let input of inputs) {
     let separatorIndex = input.indexOf(':')
@@ -266,14 +256,6 @@ Config.prototype.buildArgs = function () {
     sparkle_eddsa_private_key: this.sparkleEdDSAPrivateKey,
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
     ...this.extraGnArgs,
-  }
-
-  if (process.platform === 'darwin') {
-    const sdkVersion = getMacOSSDKVersion()
-    if (sdkVersion) {
-      args.use_system_xcode = false
-      args.mac_sdk_official_version = sdkVersion
-    }
   }
 
   if (this.shouldSign()) {
