@@ -37,7 +37,7 @@ class AssetRatioController {
   using GetPriceHistoryCallback = base::OnceCallback<void(
       bool status,
       std::vector<brave_wallet::mojom::AssetTimePricePtr> values)>;
-  // The asset param is a string like: "basic-attention-token"
+  // The asset param is a string like: "bat"
   void GetPriceHistory(const std::string& asset,
                        brave_wallet::mojom::AssetPriceTimeframe timeframe,
                        GetPriceHistoryCallback callback);
