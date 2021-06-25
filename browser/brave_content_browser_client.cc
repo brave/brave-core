@@ -691,12 +691,14 @@ bool BraveContentBrowserClient::OverrideWebPreferencesAfterNavigation(
           web_contents, prefs);
   Profile* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  const GURL url = web_contents->GetLastCommittedURL();
+  const bool shields_up = brave_shields::GetBraveShieldsEnabled(
+      HostContentSettingsMapFactory::GetForProfile(profile), url);
   auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile),
-      web_contents->GetLastCommittedURL());
+      HostContentSettingsMapFactory::GetForProfile(profile), url);
   // https://github.com/brave/brave-browser/issues/15265
   // Always use color scheme Light if fingerprinting mode strict
-  if (fingerprinting_type == ControlType::BLOCK) {
+  if (shields_up && fingerprinting_type == ControlType::BLOCK) {
     prefs->preferred_color_scheme = blink::mojom::PreferredColorScheme::kLight;
     changed = true;
   }
