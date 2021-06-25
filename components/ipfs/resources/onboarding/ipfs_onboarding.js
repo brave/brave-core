@@ -35,7 +35,7 @@ function setup() {
   }
 
   $('local-node-button').addEventListener('click', function() {
-    $('local-node-button').textContent = '$i18nRaw{installationText}'
+    $('local-node-button').textContent = '$i18n{installationText}'
     $('error-container').className = 'error-container-hidden'
     $('local-node-button').className = 'button'
     sendCommand(IPFSOnboardingCommandId.USE_LOCAL_NODE);
@@ -64,20 +64,20 @@ function showErrorMessage(text) {
 function handleCommand(code, text) {
   if (code == IPFSOnboardingResponse.LOCAL_NODE_ERROR) {
     showErrorMessage(text)
-    $('local-node-button').textContent = '$i18nRaw{retryText}'
+    $('local-node-button').textContent = '$i18n{retryText}'
   } else if (code == IPFSOnboardingResponse.THEME_CHANGED) {
     setTheme(text)
   } else if (code == IPFSOnboardingResponse.LOCAL_NODE_LAUNCHED) {
-    $('local-node-button').textContent = '$i18nRaw{watingPeersText}'
+    $('local-node-button').textContent = '$i18n{watingPeersText}'
   } else if (code == IPFSOnboardingResponse.NO_PEERS_AVAILABLE) {
     showErrorMessage(text)
   } else if (code == IPFSOnboardingResponse.NO_PEERS_LIMIT) {
     showErrorMessage('$i18nRaw{retryLimitPeersText}')
-    $('local-node-button').textContent = '$i18nRaw{tryAgainText}'
+    $('local-node-button').textContent = '$i18n{tryAgainText}'
     $('local-node-button').className = 'button button-retry'
   } else if (code == IPFSOnboardingResponse.INSTALLATION_ERROR) {
     showErrorMessage(text)
-    $('local-node-button').textContent = '$i18nRaw{tryAgainText}'
+    $('local-node-button').textContent = '$i18n{tryAgainText}'
     $('local-node-button').className = 'button button-retry'
   }
 }
