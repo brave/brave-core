@@ -1,7 +1,18 @@
 import * as React from 'react'
 
 import { StyledWrapper } from './style'
-import { TopTabNavTypes, AppObjectType, AppsListType } from '../../../../constants/types'
+import {
+  TopTabNavTypes,
+  AppObjectType,
+  AppsListType,
+  ChartTimelineType,
+  PriceDataObjectType,
+  AssetOptionType,
+  UserAssetOptionType,
+  RPCTransactionType,
+  AssetPriceReturnInfo,
+  WalletAccountType
+} from '../../../../constants/types'
 import { TopNavOptions } from '../../../../options/top-nav-options'
 import { TopTabNav, WalletMorePopup, BackupWarningBanner } from '../../'
 import { SearchBar, AppList } from '../../../shared'
@@ -13,11 +24,35 @@ import { PortfolioView } from '../'
 export interface Props {
   onLockWallet: () => void
   onShowBackup: () => void
+  onChangeTimeline: (path: ChartTimelineType) => void
+  onSelectAsset: (asset: AssetOptionType | undefined) => void
   needsBackup: boolean
+  accounts: WalletAccountType[]
+  selectedTimeline: ChartTimelineType
+  selectedAssetPriceHistory: PriceDataObjectType[]
+  selectedAssetPrice: AssetPriceReturnInfo | undefined
+  selectedAsset: AssetOptionType | undefined
+  portfolioBalance: string
+  transactions: (RPCTransactionType | undefined)[]
+  userAssetList: UserAssetOptionType[]
 }
 
 const CryptoView = (props: Props) => {
-  const { onLockWallet, onShowBackup, needsBackup } = props
+  const {
+    onLockWallet,
+    onShowBackup,
+    onChangeTimeline,
+    onSelectAsset,
+    userAssetList,
+    selectedTimeline,
+    selectedAssetPriceHistory,
+    needsBackup,
+    accounts,
+    selectedAsset,
+    portfolioBalance,
+    transactions,
+    selectedAssetPrice
+  } = props
   const [selectedTab, setSelectedTab] = React.useState<TopTabNavTypes>('portfolio')
   const [favoriteApps, setFavoriteApps] = React.useState<AppObjectType[]>([
     AppsList[0].appList[0]
@@ -106,7 +141,19 @@ const CryptoView = (props: Props) => {
         </>
       }
       {selectedTab === 'portfolio' &&
-        <PortfolioView toggleNav={toggleNav} />
+        <PortfolioView
+          toggleNav={toggleNav}
+          accounts={accounts}
+          onChangeTimeline={onChangeTimeline}
+          selectedAssetPriceHistory={selectedAssetPriceHistory}
+          selectedTimeline={selectedTimeline}
+          onSelectAsset={onSelectAsset}
+          selectedAsset={selectedAsset}
+          portfolioBalance={portfolioBalance}
+          transactions={transactions}
+          selectedAssetPrice={selectedAssetPrice}
+          userAssetList={userAssetList}
+        />
       }
       {selectedTab !== 'portfolio' && selectedTab !== 'defi' &&
         <h2>{selectedTab} view</h2>

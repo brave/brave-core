@@ -3,6 +3,7 @@ export interface WalletAccountType {
   name: string
   address: string
   balance: number
+  fiatBalance: string
   asset: string
 }
 
@@ -17,6 +18,19 @@ export interface AssetOptionType {
   name: string
   symbol: string
   icon: string
+}
+
+export interface UserAssetOptionType {
+  asset: AssetOptionType
+  assetBalance: number
+  fiatBalance: number
+}
+
+export interface UserWalletObject {
+  name: string
+  address: string
+  fiatBalance: string
+  assetBalance: number
 }
 
 export interface RPCAssetType {
@@ -76,6 +90,12 @@ export type ChartTimelineType =
   | '1Year'
   | 'AllTime'
 
+export interface AssetPriceReturnInfo {
+  usd: string
+  btc: number
+  change24Hour: number
+}
+
 export interface BuySendSwapObjectType {
   name: string
   id: BuySendSwapTypes
@@ -124,6 +144,7 @@ export interface WalletState {
   isWalletBackedUp: boolean
   hasIncorrectPassword: boolean
   accounts: WalletAccountType[]
+  transactions: RPCTransactionType[]
 }
 
 export interface PanelState {
@@ -138,6 +159,11 @@ export interface PageState {
   hasInitialized: boolean
   showRecoveryPhrase: boolean
   invalidMnemonic: boolean
+  selectedTimeline: ChartTimelineType
+  selectedAsset: AssetOptionType | undefined
+  selectedAssetPrice: AssetPriceReturnInfo | undefined
+  selectedAssetPriceHistory: PriceDataObjectType[]
+  userAssets: string[]
   mnemonic?: string
 }
 

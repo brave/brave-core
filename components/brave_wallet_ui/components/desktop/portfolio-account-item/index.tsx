@@ -25,7 +25,7 @@ export interface Props {
   action: () => void
   address: string
   fiatBalance: string
-  assetBalance: string
+  assetBalance: number
   assetTicker: string
   name: string
 }

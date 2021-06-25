@@ -16,7 +16,8 @@ const defaultState: WalletState = {
   favoriteApps: [],
   isWalletBackedUp: false,
   hasIncorrectPassword: false,
-  accounts: []
+  accounts: [],
+  transactions: []
 }
 
 const reducer = createReducer<WalletState>({}, defaultState)
@@ -28,6 +29,7 @@ reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadTy
       name: `Account ${idx + 1}`,
       address,
       balance: 0,
+      fiatBalance: '0',
       asset: 'eth'
     }
   })

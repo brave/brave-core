@@ -27,12 +27,16 @@ import {
   NavTypes,
   WalletState,
   PageState,
-  WalletPageState
+  WalletPageState,
+  ChartTimelineType,
+  AssetOptionType
 } from '../constants/types'
 import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../components/buy-send-swap'
 import Onboarding from '../stories/screens/onboarding'
 import BackupWallet from '../stories/screens/backup-wallet'
+import { formatePrices } from '../utils/format-prices'
+import { AssetOptions } from '../options/asset-options'
 
 type Props = {
   wallet: WalletState
@@ -47,14 +51,21 @@ function Container (props: Props) {
     isWalletCreated,
     isWalletLocked,
     isWalletBackedUp,
-    hasIncorrectPassword
+    hasIncorrectPassword,
+    accounts,
+    transactions
   } = props.wallet
 
   // Page Props
   const {
     showRecoveryPhrase,
     invalidMnemonic,
-    mnemonic
+    mnemonic,
+    selectedTimeline,
+    selectedAsset,
+    selectedAssetPrice,
+    selectedAssetPriceHistory,
+    userAssets
   } = props.page
 
   const [view, setView] = React.useState<NavTypes>('crypto')
@@ -119,6 +130,63 @@ function Container (props: Props) {
 
   const recoveryPhrase = (mnemonic || '').split(' ')
 
+  // Will need to add additional logic here and in the reducer
+  // to fetch price history once the pricing api is read.
+  const onChangeTimeline = (timeline: ChartTimelineType) => {
+    props.walletPageActions.changeTimline(timeline)
+  }
+
+  // This will scrape all of the user's accounts and combine the asset balances for a single asset
+  const fullAssetBalance = (asset: AssetOptionType) => {
+    const newList = accounts.filter((account) => account.asset.includes(asset.symbol.toLowerCase()))
+    const amounts = newList.map((account) => {
+      return account.balance
+    })
+    const grandTotal = amounts.reduce(function (a, b) {
+      return a + b
+    }, 0)
+    return grandTotal
+  }
+
+  // This will scrape all of the user's accounts and combine the fiat value for a single asset
+  const fullAssetFiatBalance = (asset: AssetOptionType) => {
+    const newList = accounts.filter((account) => account.asset.includes(asset.symbol.toLowerCase()))
+    const amounts = newList.map((account) => {
+      return Number(account.fiatBalance)
+    })
+    const grandTotal = amounts.reduce(function (a, b) {
+      return a + b
+    }, 0)
+    return grandTotal
+  }
+
+  // This looks at the users asset list and returns the full balance for each asset
+  const userAssetList = React.useMemo(() => {
+    const newList = AssetOptions.filter((asset) => userAssets.includes(asset.id))
+    return newList.map((asset) => {
+      return {
+        asset: asset,
+        assetBalance: fullAssetBalance(asset),
+        fiatBalance: fullAssetFiatBalance(asset)
+      }
+    })
+  }, [userAssets, accounts])
+
+  const onSelectAsset = (asset: AssetOptionType) => {
+    props.walletPageActions.selectAsset(asset)
+  }
+
+  // This will scrape all of the user's accounts and combine the fiat value for every asset
+  const fullPortfolioBalance = React.useMemo(() => {
+    const amountList = userAssetList.map((item) => {
+      return fullAssetFiatBalance(item.asset)
+    })
+    const grandTotal = amountList.reduce(function (a, b) {
+      return a + b
+    }, 0)
+    return formatePrices(grandTotal)
+  }, [userAssetList])
+
   const renderWallet = React.useMemo(() => {
     if (!isWalletCreated) {
       return (
@@ -154,6 +222,16 @@ function Container (props: Props) {
                   onLockWallet={lockWallet}
                   needsBackup={!isWalletBackedUp}
                   onShowBackup={onShowBackup}
+                  accounts={accounts}
+                  onChangeTimeline={onChangeTimeline}
+                  onSelectAsset={onSelectAsset}
+                  portfolioBalance={fullPortfolioBalance}
+                  selectedAsset={selectedAsset}
+                  selectedAssetPrice={selectedAssetPrice}
+                  selectedAssetPriceHistory={selectedAssetPriceHistory}
+                  selectedTimeline={selectedTimeline}
+                  transactions={transactions}
+                  userAssetList={userAssetList}
                 />
               )}
             </>
