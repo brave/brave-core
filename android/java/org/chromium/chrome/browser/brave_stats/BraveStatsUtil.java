@@ -276,7 +276,10 @@ public class BraveStatsUtil {
     }
 
     public static boolean hasWritePermission(Activity activity) {
-        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (activity == null) {
+            return false;
+        }
+        if (activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED) {
             return true;
         }
