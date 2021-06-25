@@ -41,7 +41,7 @@
         "package": "PanModal",
         "repositoryURL": "https://github.com/brave/PanModal",
         "state": {
-          "branch": "master",
+          "branch": null,
           "revision": "e4c07f8e6c5df937051fabc47e1e92901e1d068b",
           "version": null
         }
