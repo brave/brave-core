@@ -103,12 +103,11 @@ RegisterPolymerTemplateModifications({
     } else if (!isGuest) {
       console.error('[Brave Settings Overrides] Could not move autofill route to advanced route', r)
     }
-    // Privacy route is moved to advanced.
-    if (r.PRIVACY && r.ADVANCED) {
-      r.PRIVACY.parent = r.ADVANCED
-      r.CLEAR_BROWSER_DATA.parent = r.ADVANCED
+    // Safety check route is moved to advanced.
+    if (r.SAFETY_CHECK && r.ADVANCED) {
+      r.SAFETY_CHECK.parent = r.ADVANCED
     } else if (!isGuest) {
-      console.error('[Brave Settings Overrides] Could not move privacy route to advanced route', r)
+      console.error('[Brave Settings Overrides] Could not move safety check route to advanced route', r)
     }
     // Add 'Getting Started' section
     // Entire content is wrapped in another conditional template
@@ -236,15 +235,18 @@ RegisterPolymerTemplateModifications({
       sectionGetStarted.insertAdjacentElement('afterend', sectionAppearance)
       // Insert New Tab
       sectionAppearance.insertAdjacentElement('afterend', sectionNewTab)
-      // Insert sync
-      sectionNewTab.insertAdjacentElement('afterend', sectionSync)
       // Insert shields
-      sectionSync.insertAdjacentElement('afterend', sectionShields)
+      sectionNewTab.insertAdjacentElement('afterend', sectionShields)
       // Insert Social Blocking
       sectionShields.insertAdjacentElement('afterend', sectionSocialBlocking)
+      // Move privacy section to after social blocking
+      const sectionPrivacy = getSectionElement(actualTemplate.content, 'privacy')
+      sectionSocialBlocking.insertAdjacentElement('afterend', sectionPrivacy)
+      // Insert sync
+      sectionPrivacy.insertAdjacentElement('afterend', sectionSync)
       // Move search
       const sectionSearch = getSectionElement(actualTemplate.content, 'search')
-      sectionSocialBlocking.insertAdjacentElement('afterend', sectionSearch)
+      sectionSync.insertAdjacentElement('afterend', sectionSearch)
       // Insert extensions
       sectionSearch.insertAdjacentElement('afterend', sectionExtensions)
       // Insert Wallet
@@ -273,12 +275,12 @@ RegisterPolymerTemplateModifications({
       const sectionAutofill = getSectionElement(actualTemplate.content, 'autofill')
       const sectionLanguages = getSectionElement(advancedSubSectionsTemplate.content, 'languages')
       sectionLanguages.insertAdjacentElement('beforebegin', sectionAutofill)
-      // Move privacy to before autofill
-      const sectionPrivacy = getSectionElement(actualTemplate.content, 'privacy')
-      sectionAutofill.insertAdjacentElement('beforebegin', sectionPrivacy)
-      // Move help tips after downloads
+      // Move safety check after downloads
       const sectionDownloads = getSectionElement(advancedSubSectionsTemplate.content, 'downloads')
-      sectionDownloads.insertAdjacentElement('afterend', sectionHelpTips)
+      const sectionSafetyCheck = getSectionElement(actualTemplate.content, 'safetyCheck')
+      sectionDownloads.insertAdjacentElement('afterend', sectionSafetyCheck)
+      // Move help tips after safety check
+      sectionSafetyCheck.insertAdjacentElement('afterend', sectionHelpTips)
     }
   }
 })

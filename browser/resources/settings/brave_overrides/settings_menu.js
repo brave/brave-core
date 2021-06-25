@@ -175,21 +175,6 @@ RegisterPolymerTemplateModifications({
       'newTab'
     )
     appearanceBrowserEl.insertAdjacentElement('afterend', newTabEl)
-    // Add Sync and Help Tips item
-    const helpTipsEl = createMenuElement(
-      loadTimeData.getString('braveHelpTips'),
-      '/braveHelpTips',
-      'brave_settings:help',
-      'braveHelpTips',
-    )
-    const syncEl = createMenuElement(
-      loadTimeData.getString('braveSync'),
-      '/braveSync',
-      'brave_settings:sync',
-      'braveSync',
-    )
-    newTabEl.insertAdjacentElement('afterend', syncEl)
-    syncEl.insertAdjacentElement('afterend', helpTipsEl)
     // Add Shields item
     const shieldsEl = createMenuElement(
       loadTimeData.getString('braveShieldsTitle'),
@@ -197,7 +182,7 @@ RegisterPolymerTemplateModifications({
       'brave_settings:shields',
       'shields',
     )
-    helpTipsEl.insertAdjacentElement('afterend', shieldsEl)
+    newTabEl.insertAdjacentElement('afterend', shieldsEl)
     // Add Embed Blocking item
     const embedEl = createMenuElement(
       loadTimeData.getString('socialBlocking'),
@@ -206,9 +191,20 @@ RegisterPolymerTemplateModifications({
       'socialBlocking',
     )
     shieldsEl.insertAdjacentElement('afterend', embedEl)
+    // Add privacy
+    const privacyEl = getMenuElement(templateContent, '/privacy')
+    embedEl.insertAdjacentElement('afterend', privacyEl)
+    // Add Sync item
+    const syncEl = createMenuElement(
+      loadTimeData.getString('braveSync'),
+      '/braveSync',
+      'brave_settings:sync',
+      'braveSync',
+    )
+    privacyEl.insertAdjacentElement('afterend', syncEl)
     // Move search item
     const searchEl = getMenuElement(templateContent, '/search')
-    embedEl.insertAdjacentElement('afterend', searchEl)
+    syncEl.insertAdjacentElement('afterend', searchEl)
     // Add Extensions item
     const extensionEl = createMenuElement(
       loadTimeData.getString('braveDefaultExtensions'),
@@ -238,12 +234,18 @@ RegisterPolymerTemplateModifications({
     const autofillEl = getMenuElement(templateContent, '/autofill')
     const languagesEl = getMenuElement(templateContent, '/languages')
     languagesEl.insertAdjacentElement('beforebegin', autofillEl)
-    // Move privacy to advanced
-    const privacyEl = getMenuElement(templateContent, '/privacy')
-    autofillEl.insertAdjacentElement('beforebegin', privacyEl)
-    // Move helptips to advanced
+    // Move safety check after downloads
     const downloadsEl = getMenuElement(templateContent, '/downloads')
-    downloadsEl.insertAdjacentElement('afterend', helpTipsEl)
+    const safetyEl = getMenuElement(templateContent, '/safetyCheck')
+    downloadsEl.insertAdjacentElement('afterend', safetyEl)
+    // Move help tips after safety check
+    const helpTipsEl = createMenuElement(
+      loadTimeData.getString('braveHelpTips'),
+      '/braveHelpTips',
+      'brave_settings:help',
+      'braveHelpTips',
+    )
+    safetyEl.insertAdjacentElement('afterend', helpTipsEl)
     // Allow Accessibility to be removed :-(
     const a11yEl = getMenuElement(templateContent, '/accessibility')
     a11yEl.setAttribute('hidden', '[[!pageVisibility.a11y]')
