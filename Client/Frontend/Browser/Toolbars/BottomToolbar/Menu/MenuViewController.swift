@@ -225,6 +225,15 @@ extension MenuViewController: PanModalPresentable {
     var shortFormHeight: PanModalHeight {
         isPresentingInnerMenu ? .maxHeight : .contentHeight(initialHeight)
     }
+    
+    func shouldRespond(to panModalGestureRecognizer: UIPanGestureRecognizer) -> Bool {
+        // This enables reordering elements without colliding with PanModal gestures, see bug #3787.
+        if let tableView = panScrollable as? UITableView, tableView.isEditing {
+            return false
+        }
+        return true
+    }
+    
     var allowsExtendedPanScrolling: Bool {
         true
     }
