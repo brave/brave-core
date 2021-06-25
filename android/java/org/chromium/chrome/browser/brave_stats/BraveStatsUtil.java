@@ -276,19 +276,21 @@ public class BraveStatsUtil {
     }
 
     public static boolean hasWritePermission(Activity activity) {
-        if (activity == null) {
-            return false;
-        }
-        if (activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            activity.requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    SHARE_STATS_WRITE_EXTERNAL_STORAGE_PERM);
+            if (activity == null) {
+                return false;
+            }
+            if (activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                activity.requestPermissions(
+                        new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        SHARE_STATS_WRITE_EXTERNAL_STORAGE_PERM);
+                return false;
+            }
         }
-
-        return false;
+        return true;
     }
 
     public static void shareStats(int layout) {
