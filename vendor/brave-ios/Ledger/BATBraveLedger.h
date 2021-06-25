@@ -263,9 +263,6 @@ NS_SWIFT_NAME(BraveLedger)
      firstPartyURL:(nullable NSURL *)firstPartyURL
        referrerURL:(nullable NSURL *)referrerURL;
 
-/// Get an encoded URL that can be placed in another URL
-- (NSString *)encodedURI:(NSString *)uri;
-
 - (void)rewardsInternalInfo:(void (NS_NOESCAPE ^)(BATRewardsInternalsInfo * _Nullable info))completion;
 
 - (void)allContributions:(void (^)(NSArray<BATContributionInfo *> *contributions))completion;

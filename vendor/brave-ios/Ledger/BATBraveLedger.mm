@@ -1081,12 +1081,6 @@ BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries)
                                      referrer);
 }
 
-- (NSString *)encodedURI:(NSString *)uri
-{
-  const auto encoded = ledger->URIEncode(std::string(uri.UTF8String));
-  return [NSString stringWithUTF8String:encoded.c_str()];
-}
-
 - (void)rewardsInternalInfo:(void (NS_NOESCAPE ^)(BATRewardsInternalsInfo * _Nullable info))completion
 {
   ledger->GetRewardsInternalsInfo(^(ledger::type::RewardsInternalsInfoPtr info) {
