@@ -6,7 +6,7 @@ buildflag_header("buildflags") {
   flags = [ "BRAVE_P3A_ENABLED=$brave_p3a_enabled" ]
 }
 
-source_set("p3a") {
+static_library("p3a") {
   sources = [
     "brave_p2a_protocols.cc",
     "brave_p2a_protocols.h",

@@ -1,4 +1,4 @@
-source_set("browser") {
+static_library("browser") {
   sources = [
     "ad_block_base_service.cc",
     "ad_block_base_service.h",

@@ -5,7 +5,7 @@ import("//build/config/features.gni")
 
 assert(brave_wallet_enabled)
 
-source_set("browser") {
+static_library("browser") {
   configs += [ ":infura_config" ]
   include_dirs = [ "//brave/third_party/ethash/src/include" ]
 

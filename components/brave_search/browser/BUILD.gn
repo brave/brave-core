@@ -1,6 +1,6 @@
 import("//build/config/features.gni")
 
-source_set("browser") {
+static_library("browser") {
   sources = [
     "brave_search_default_host.cc",
     "brave_search_default_host.h",
