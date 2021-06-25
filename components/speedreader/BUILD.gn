@@ -58,24 +58,3 @@ source_set("speedreader") {
     "//url",
   ]
 }
-
-source_set("unit_tests") {
-  testonly = true
-  if (enable_speedreader) {
-    sources = [
-      "//brave/components/speedreader/rust/ffi/speedreader_unittest.cc",
-      "//brave/components/speedreader/speedreader_throttle_unittest.cc",
-      "//brave/components/speedreader/speedreader_util_unittest.cc",
-    ]
-
-    deps = [
-      "//base",
-      "//brave/components/speedreader",
-      "//chrome/browser",
-      "//chrome/test:test_support",
-      "//content/public/browser",
-      "//content/test:test_support",
-      "//testing/gtest",
-    ]
-  }
-}

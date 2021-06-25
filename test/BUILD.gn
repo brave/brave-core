@@ -190,7 +190,6 @@ test("brave_unit_tests") {
     "//brave/components/permissions:unit_tests",
     "//brave/components/services/ipfs/test:ipfs_service_unit_tests",
     "//brave/components/sidebar:unit_tests",
-    "//brave/components/speedreader:unit_tests",
     "//brave/components/tor:tor_unit_tests",
     "//brave/components/tor/buildflags",
     "//brave/components/weekly_storage",
@@ -478,6 +477,15 @@ test("brave_unit_tests") {
     ]
   }
 
+  if (enable_speedreader) {
+    sources += [
+      "//brave/components/speedreader/rust/ffi/speedreader_unittest.cc",
+      "//brave/components/speedreader/speedreader_throttle_unittest.cc",
+      "//brave/components/speedreader/speedreader_util_unittest.cc",
+    ]
+
+    deps += [ "//brave/components/speedreader" ]
+  }
   if (ipfs_enabled) {
     deps += [ "//brave/browser/ipfs/test:unittests" ]
   }
