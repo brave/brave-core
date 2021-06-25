@@ -215,11 +215,15 @@ extension MenuViewController: PanModalPresentable {
         topVC.view.layoutIfNeeded()
         return _scrollViewChild(in: topVC.view)
     }
+    var topOffset: CGFloat {
+        let topInset = view.window?.safeAreaInsets.top ?? 0
+        return topInset + 32
+    }
     var longFormHeight: PanModalHeight {
-        .maxHeightWithTopInset(32)
+        .maxHeight
     }
     var shortFormHeight: PanModalHeight {
-        isPresentingInnerMenu ? .maxHeightWithTopInset(32) : .contentHeight(initialHeight)
+        isPresentingInnerMenu ? .maxHeight : .contentHeight(initialHeight)
     }
     var allowsExtendedPanScrolling: Bool {
         true
