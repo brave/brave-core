@@ -2039,6 +2039,24 @@ until they verify, or until 90 days have passed.
     <message name="IDS_TRY_FOR_FREE" desc="Brave VPN plan text">
       Try for FREE
     </message>
+    <message name="IDS_INSTALL_VPN" desc="Brave VPN plan text">
+      Install VPN
+    </message>
+    <message name="IDS_INSTALL_VPN_PROFILE" desc="Brave VPN plan text">
+      Install VPN Profile
+    </message>
+    <message name="IDS_BRAVE_VPN_PROFILE_TITLE" desc="Brave VPN plan text">
+      Brave will now install a VPN profile.
+    </message>
+    <message name="IDS_BRAVE_VPN_PROFILE_TEXT" desc="Brave VPN plan text">
+      This profile allows the VPN to automatically connect and secure traffic across your device — in every app, all the time. This VPN connection will be encrypted and routed through Guardian's intelligent firewall to block ads and trackers.
+    </message>
+    <message name="IDS_CONTACT_SUPPORT_VPN" desc = "Brave VPN profile text">
+      Contact Technical Support
+    </message>
+    <message name="IDS_VPN_IS_ENABLED" desc="Brave VPN profile text">
+      VPN is now enabled
+    </message>
     </messages>
   </release>
 </grit>

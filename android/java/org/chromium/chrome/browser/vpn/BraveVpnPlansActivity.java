@@ -11,6 +11,8 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
@@ -23,6 +25,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.firstrun.FirstRunFlowSequencer;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnPlanPagerAdapter;
+import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 
 public class BraveVpnPlansActivity extends AsyncInitializationActivity {
     private FirstRunFlowSequencer mFirstRunFlowSequencer;
@@ -48,6 +51,24 @@ public class BraveVpnPlansActivity extends AsyncInitializationActivity {
         TextView removedValueText = findViewById(R.id.removed_value_tv);
         removedValueText.setPaintFlags(
                 removedValueText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+        LinearLayout monthlySelectorLayout = findViewById(R.id.monthly_selector_layout);
+        monthlySelectorLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BraveVpnUtils.openBraveVpnProfileActivity(BraveVpnPlansActivity.this);
+                finish();
+            }
+        });
+
+        LinearLayout yearlySelectorLayout = findViewById(R.id.yearly_selector_layout);
+        yearlySelectorLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BraveVpnUtils.openBraveVpnProfileActivity(BraveVpnPlansActivity.this);
+                finish();
+            }
+        });
     }
 
     @Override
