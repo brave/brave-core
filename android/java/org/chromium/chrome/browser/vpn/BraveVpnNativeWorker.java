@@ -7,7 +7,6 @@
 
 package org.chromium.chrome.browser.vpn;
 
-import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
@@ -122,12 +121,13 @@ public class BraveVpnNativeWorker {
 
     public void getSubscriberCredential(
             String productType, String productId, String validationMethod, String purchaseToken) {
-        nativeGetSubscriberCredential(
-                mNativeBraveVpnNativeWorker, productType, productId, validationMethod, purchaseToken);
+        nativeGetSubscriberCredential(mNativeBraveVpnNativeWorker, productType, productId,
+                validationMethod, purchaseToken);
     }
 
     public void verifyPurchaseToken(String purchaseToken, String productId, String productType) {
-        nativeVerifyPurchaseToken(mNativeBraveVpnNativeWorker, purchaseToken, productId, productType);
+        nativeVerifyPurchaseToken(
+                mNativeBraveVpnNativeWorker, purchaseToken, productId, productType);
     }
 
     private native void nativeInit();
@@ -137,6 +137,6 @@ public class BraveVpnNativeWorker {
     private native void nativeGetHostnamesForRegion(long nativeBraveVpnNativeWorker, String region);
     private native void nativeGetSubscriberCredential(long nativeBraveVpnNativeWorker,
             String productType, String productId, String validationMethod, String purchaseToken);
-    private native void nativeVerifyPurchaseToken(
-            long nativeBraveVpnNativeWorker, String purchaseToken, String productId, String productType);
+    private native void nativeVerifyPurchaseToken(long nativeBraveVpnNativeWorker,
+            String purchaseToken, String productId, String productType);
 }

@@ -20,12 +20,14 @@
 namespace chrome {
 namespace android {
 
-BraveVpnNativeWorker::BraveVpnNativeWorker(JNIEnv* env,
-                                 const base::android::JavaRef<jobject>& obj)
+BraveVpnNativeWorker::BraveVpnNativeWorker(
+    JNIEnv* env,
+    const base::android::JavaRef<jobject>& obj)
     : weak_java_brave_vpn_native_worker_(env, obj),
       brave_vpn_service_(nullptr),
       weak_factory_(this) {
-  Java_BraveVpnNativeWorker_setNativePtr(env, obj, reinterpret_cast<intptr_t>(this));
+  Java_BraveVpnNativeWorker_setNativePtr(env, obj,
+                                         reinterpret_cast<intptr_t>(this));
   brave_vpn_service_ = BraveVpnServiceFactory::GetForProfile(
       ProfileManager::GetActiveUserProfile()->GetOriginalProfile());
 }
@@ -42,8 +44,9 @@ void BraveVpnNativeWorker::GetAllServerRegions(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jcaller) {
   if (brave_vpn_service_) {
-    brave_vpn_service_->GetAllServerRegions(base::BindOnce(
-        &BraveVpnNativeWorker::OnGetAllServerRegions, weak_factory_.GetWeakPtr()));
+    brave_vpn_service_->GetAllServerRegions(
+        base::BindOnce(&BraveVpnNativeWorker::OnGetAllServerRegions,
+                       weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -63,7 +66,7 @@ void BraveVpnNativeWorker::GetTimezonesForRegions(
   if (brave_vpn_service_) {
     brave_vpn_service_->GetTimezonesForRegions(
         base::BindOnce(&BraveVpnNativeWorker::OnGetTimezonesForRegions,
-                   weak_factory_.GetWeakPtr()));
+                       weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -83,13 +86,14 @@ void BraveVpnNativeWorker::GetHostnamesForRegion(
   if (brave_vpn_service_) {
     brave_vpn_service_->GetHostnamesForRegion(
         base::BindOnce(&BraveVpnNativeWorker::OnGetHostnamesForRegion,
-                   weak_factory_.GetWeakPtr()),
+                       weak_factory_.GetWeakPtr()),
         base::android::ConvertJavaStringToUTF8(env, region));
   }
 }
 
-void BraveVpnNativeWorker::OnGetHostnamesForRegion(const std::string& hostnames_json,
-                                              bool success) {
+void BraveVpnNativeWorker::OnGetHostnamesForRegion(
+    const std::string& hostnames_json,
+    bool success) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveVpnNativeWorker_onGetHostnamesForRegion(
       env, weak_java_brave_vpn_native_worker_.get(env),
@@ -106,7 +110,7 @@ void BraveVpnNativeWorker::GetSubscriberCredential(
   if (brave_vpn_service_) {
     brave_vpn_service_->GetSubscriberCredential(
         base::BindOnce(&BraveVpnNativeWorker::OnGetSubscriberCredential,
-                   weak_factory_.GetWeakPtr()),
+                       weak_factory_.GetWeakPtr()),
         base::android::ConvertJavaStringToUTF8(env, product_type),
         base::android::ConvertJavaStringToUTF8(env, product_id),
         base::android::ConvertJavaStringToUTF8(env, validation_method),
@@ -133,15 +137,16 @@ void BraveVpnNativeWorker::VerifyPurchaseToken(
   if (brave_vpn_service_) {
     brave_vpn_service_->VerifyPurchaseToken(
         base::BindOnce(&BraveVpnNativeWorker::OnVerifyPurchaseToken,
-                   weak_factory_.GetWeakPtr()),
+                       weak_factory_.GetWeakPtr()),
         base::android::ConvertJavaStringToUTF8(env, purchase_token),
         base::android::ConvertJavaStringToUTF8(env, product_id),
         base::android::ConvertJavaStringToUTF8(env, product_type));
   }
 }
 
-void BraveVpnNativeWorker::OnVerifyPurchaseToken(const std::string& json_response,
-                                            bool success) {
+void BraveVpnNativeWorker::OnVerifyPurchaseToken(
+    const std::string& json_response,
+    bool success) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveVpnNativeWorker_onVerifyPurchaseToken(
       env, weak_java_brave_vpn_native_worker_.get(env),

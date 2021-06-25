@@ -101,6 +101,7 @@ import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.BraveReferrer;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceAccountBalance;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 import org.chromium.components.bookmarks.BookmarkId;
@@ -418,6 +419,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         }
         checkSetDefaultBrowserModal();
         checkFingerPrintingOnUpgrade();
+        BraveVpnNativeWorker.getInstance().getAllServerRegions();
     }
 
     private void checkFingerPrintingOnUpgrade() {

@@ -39,7 +39,8 @@ class APIRequestHelper {
                const std::string& payload,
                const std::string& payload_content_type,
                bool auto_retry_on_network_change,
-               ResultCallback callback);
+               ResultCallback callback,
+               const std::map<std::string, std::string>& headers = {});
 
  private:
   APIRequestHelper(const APIRequestHelper&) = delete;

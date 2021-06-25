@@ -16,9 +16,9 @@
 #include "base/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/network/public/cpp/simple_url_loader.h"
 #include "url/gurl.h"
 
 namespace network {
@@ -28,7 +28,8 @@ class SimpleURLLoader;
 
 class BraveVpnService : public KeyedService {
  public:
-  explicit BraveVpnService(scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  explicit BraveVpnService(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~BraveVpnService() override;
 
   BraveVpnService(const BraveVpnService&) = delete;
@@ -52,56 +53,27 @@ class BraveVpnService : public KeyedService {
                            const std::string& product_type);
 
  private:
-  static GURL oauth_endpoint_;
-  static GURL api_endpoint_;
-  using SimpleURLLoaderList =
-      std::list<std::unique_ptr<network::SimpleURLLoader>>;
-
-  using URLRequestCallback =
-      base::OnceCallback<void(const int,
-                              const std::string&,
-                              const std::map<std::string, std::string>&)>;
+  using URLRequestCallback = base::OnceCallback<
+      void(int, const std::string&, const std::map<std::string, std::string>&)>;
 
   void OAuthRequest(const GURL& url,
                     const std::string& method,
                     const std::string& post_data,
                     bool set_app_ident,
                     URLRequestCallback callback);
-  void OnURLLoaderComplete(SimpleURLLoaderList::iterator iter,
-                           URLRequestCallback callback,
-                           const std::unique_ptr<std::string> response_body);
 
-  void OnGetAllServerRegions(ResponseCallback callback,
-                             const int status,
-                             const std::string& body,
-                             const std::map<std::string, std::string>& headers);
-
-  void OnGetTimezonesForRegions(
-      ResponseCallback callback,
-      const int status,
-      const std::string& body,
-      const std::map<std::string, std::string>& headers);
-
-  void OnGetHostnamesForRegion(
-      ResponseCallback callback,
-      const int status,
-      const std::string& body,
-      const std::map<std::string, std::string>& headers);
+  void OnGetResponse(ResponseCallback callback,
+                     int status,
+                     const std::string& body,
+                     const std::map<std::string, std::string>& headers);
 
   void OnGetSubscriberCredential(
       ResponseCallback callback,
-      const int status,
+      int status,
       const std::string& body,
       const std::map<std::string, std::string>& headers);
 
-  void OnVerifyPurchaseToken(ResponseCallback callback,
-                             const int status,
-                             const std::string& body,
-                             const std::map<std::string, std::string>& headers);
-
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  SimpleURLLoaderList url_loaders_;
-  base::WeakPtrFactory<BraveVpnService> weak_factory_;
+  api_request_helper::APIRequestHelper api_request_helper_;
 };
 
 #endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_BRAVE_VPN_SERVICE_H_
