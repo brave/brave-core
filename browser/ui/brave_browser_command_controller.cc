@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "base/feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_pages.h"
@@ -17,6 +18,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
+#include "brave/components/speedreader/features.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -149,7 +151,11 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   }
   UpdateCommandEnabled(IDC_ADD_NEW_PROFILE, add_new_profile_enabled);
   UpdateCommandEnabled(IDC_OPEN_GUEST_PROFILE, open_guest_profile_enabled);
-  UpdateCommandEnabled(IDC_TOGGLE_SPEEDREADER, true);
+
+  if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
+    UpdateCommandEnabled(IDC_SPEEDREADER_ICON_ONCLICK, true);
+    UpdateCommandEnabled(IDC_DISTILL_PAGE, false);
+  }
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -245,8 +251,8 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_OPEN_GUEST_PROFILE:
       brave::OpenGuestProfile();
       break;
-    case IDC_TOGGLE_SPEEDREADER:
-      brave::ToggleSpeedreader(browser_);
+    case IDC_SPEEDREADER_ICON_ONCLICK:
+      brave::MaybeDistillAndShowSpeedreaderBubble(browser_);
       break;
     case IDC_SHOW_BRAVE_WALLET_PANEL:
       brave::ShowWalletBubble(browser_);

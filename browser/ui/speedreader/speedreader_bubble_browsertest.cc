@@ -23,7 +23,12 @@ class SpeedreaderBubbleBrowserTest : public DialogBrowserTest {
       delete;
 
   // DialogBrowserTest:
-  void ShowUi(const std::string& name) override { tab_helper()->ShowBubble(); }
+  void ShowUi(const std::string& name) override {
+    if (tab_helper()->IsSpeedreaderEnabled())
+      tab_helper()->ShowSpeedreaderBubble();
+    else
+      tab_helper()->ShowReaderModeBubble();
+  }
 
  protected:
   bool NavigateToNewTab() {

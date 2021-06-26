@@ -12,6 +12,8 @@
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_test_whitelist.h"
+#include "brave/components/speedreader/speedreader_util.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -33,15 +35,52 @@ bool SpeedreaderTabHelper::IsSpeedreaderEnabled() const {
   return SpeedreaderServiceFactory::GetForProfile(profile)->IsEnabled();
 }
 
+bool SpeedreaderTabHelper::IsEnabledForSite() {
+  if (!IsSpeedreaderEnabled())
+    return false;
+
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  auto* content_rules = HostContentSettingsMapFactory::GetForProfile(profile);
+  return speedreader::IsEnabledForSite(content_rules,
+                                       web_contents()->GetLastCommittedURL());
+}
+
+void SpeedreaderTabHelper::MaybeToggleEnabledForSite(bool on) {
+  if (!IsSpeedreaderEnabled())
+    return;
+
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  auto* content_rules = HostContentSettingsMapFactory::GetForProfile(profile);
+  bool enabled = speedreader::IsEnabledForSite(
+      content_rules, web_contents()->GetLastCommittedURL());
+  if (enabled != on) {
+    speedreader::SetEnabledForSite(content_rules,
+                                   web_contents()->GetLastCommittedURL(), on);
+    web_contents()->GetController().Reload(content::ReloadType::NORMAL, false);
+  }
+}
+
+void SpeedreaderTabHelper::SingleShotSpeedreader() {
+  single_shot_next_request_ = true;
+  auto* contents = web_contents();
+  if (contents)
+    contents->GetController().Reload(content::ReloadType::NORMAL, false);
+}
+
 void SpeedreaderTabHelper::UpdateActiveState(
     content::NavigationHandle* handle) {
   DCHECK(handle);
   DCHECK(handle->IsInMainFrame());
 
-  const bool enabled = IsSpeedreaderEnabled();
+  if (single_shot_next_request_) {
+    SetNextRequestState(DistillState::kReaderMode);
+    return;
+  }
 
-  if (!enabled) {
-    active_ = false;
+  if (!IsEnabledForSite()) {
+    SetNextRequestState(DistillState::kNone);
     return;
   }
 
@@ -52,11 +91,20 @@ void SpeedreaderTabHelper::UpdateActiveState(
     if (speedreader::IsWhitelistedForTest(handle->GetURL()) ||
         rewriter_service->IsWhitelisted(handle->GetURL())) {
       VLOG(2) << __func__ << " SpeedReader active for " << handle->GetURL();
-      active_ = true;
+      SetNextRequestState(DistillState::kSpeedreaderMode);
       return;
     }
   }
-  active_ = false;
+  SetNextRequestState(DistillState::kNone);
+}
+
+void SpeedreaderTabHelper::SetNextRequestState(DistillState state) {
+  distill_state_ = state;
+  single_shot_next_request_ = false;
+}
+
+bool SpeedreaderTabHelper::IsActiveForMainFrame() const {
+  return distill_state_ != DistillState::kNone;
 }
 
 void SpeedreaderTabHelper::DidStartNavigation(
@@ -79,16 +127,28 @@ SpeedreaderBubbleView* SpeedreaderTabHelper::speedreader_bubble_view() const {
 
 void SpeedreaderTabHelper::OnBubbleClosed() {
   speedreader_bubble_ = nullptr;
+  auto* contents = web_contents();
+  Browser* browser = chrome::FindBrowserWithWebContents(contents);
+  DCHECK(browser);
+  browser->window()->UpdatePageActionIcon(PageActionIconType::kReaderMode);
 }
 
-// Displays speedreader information
-void SpeedreaderTabHelper::ShowBubble() {
+void SpeedreaderTabHelper::ShowSpeedreaderBubble() {
+  ShowBubble(true);
+}
+
+void SpeedreaderTabHelper::ShowReaderModeBubble() {
+  ShowBubble(false);
+}
+
+void SpeedreaderTabHelper::ShowBubble(bool is_bubble_speedreader) {
   auto* contents = web_contents();
   Browser* browser = chrome::FindBrowserWithWebContents(contents);
   DCHECK(browser);
   speedreader_bubble_ =
       static_cast<BraveBrowserWindow*>(browser->window())
-          ->ShowSpeedreaderBubble(this, IsSpeedreaderEnabled());
+          ->ShowSpeedreaderBubble(this, is_bubble_speedreader);
+  browser->window()->UpdatePageActionIcon(PageActionIconType::kReaderMode);
 }
 
 // Hides speedreader information

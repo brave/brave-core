@@ -127,6 +127,7 @@ void SpeedreaderModeBubble::Init() {
   auto site_toggle_button =
       std::make_unique<views::ToggleButton>(base::BindRepeating(
           &SpeedreaderModeBubble::OnButtonPressed, base::Unretained(this)));
+  site_toggle_button->SetIsOn(tab_helper_->IsEnabledForSite());
   // TODO(keur): We shoud be able to remove these once brave overrides
   // views::ToggleButton globally with our own theme
   site_toggle_button->SetThumbOnColor(kColorButtonThumb);
@@ -145,9 +146,9 @@ void SpeedreaderModeBubble::Init() {
 }
 
 void SpeedreaderModeBubble::OnButtonPressed(const ui::Event& event) {
-  // FIXME: Tie up this logic to the speedreader service. Disable just this
-  // domain.
-  NOTIMPLEMENTED();
+  const bool on = site_toggle_button_->GetIsOn();
+  tab_helper_->MaybeToggleEnabledForSite(on);
+  CloseBubble();
 }
 
 void SpeedreaderModeBubble::OnLinkClicked(const ui::Event& event) {

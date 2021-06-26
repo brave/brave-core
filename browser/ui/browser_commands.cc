@@ -81,17 +81,53 @@ void OpenGuestProfile() {
   profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
 }
 
-void ToggleSpeedreader(Browser* browser) {
+void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
+  using DistillState = speedreader::SpeedreaderTabHelper::DistillState;
   speedreader::SpeedreaderService* service =
       speedreader::SpeedreaderServiceFactory::GetForProfile(browser->profile());
   if (service) {
-    // This will trigger a button update via a pref change subscribition.
-    service->ToggleSpeedreader();
-
     WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
     if (contents) {
-      contents->GetController().Reload(content::ReloadType::NORMAL, false);
+      auto* tab_helper =
+          speedreader::SpeedreaderTabHelper::FromWebContents(contents);
+      if (!tab_helper)
+        return;
+
+      const bool speedreader_enabled = tab_helper->IsSpeedreaderEnabled();
+      const DistillState state = tab_helper->PageDistillState();
+
+      if (state == DistillState::kSpeedreaderMode) {
+        // The page was distilled by Speedreader and the user clicked the icon.
+        // Show per-domain blacklists.
+        tab_helper->ShowSpeedreaderBubble();
+      } else if (state == DistillState::kReaderMode) {
+        // The page was distilled manually and the user clicked the icon.
+        // Three things can happen:
+        //   (1) Speedreader is not enabled, so show the bubble about enabling
+        //       the feature globally.
+        //   (2) Speedreader is enabled and the domain is blacklisted. Show the
+        //       Speedreader bubble to let the user remove from the list.
+        //   (3) Speedreader is enabled and the domain doesn't match the url
+        //       heuristic. Don't show any bubble.
+        if (speedreader_enabled) {
+          if (!tab_helper->IsEnabledForSite())
+            tab_helper->ShowSpeedreaderBubble();
+        } else {
+          tab_helper->ShowReaderModeBubble();
+        }
+      } else {
+        // The user clicked the reader mode icon to distill a page. If
+        // Speedreader is not enabled then automatically show the bubble
+        // prompting the user to turn on the feature.
+        //
+        // TODO(keur): Maybe register a pref to only automatically drop the
+        // reader mode bubble once. The user can always get to it manually
+        // later.
+        tab_helper->SingleShotSpeedreader();
+        if (!speedreader_enabled)
+          tab_helper->ShowReaderModeBubble();
+      }
     }
   }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)

@@ -23,20 +23,59 @@ class SpeedreaderTabHelper
     : public content::WebContentsObserver,
       public content::WebContentsUserData<SpeedreaderTabHelper> {
  public:
+  enum class DistillState {
+    // The web contents is not distilled by either
+    kNone,
+    // kReaderMode is the manual reader mode state. It uses Speedreader to mimic
+    // how reader modes in other browsers behave. This state can be reached two
+    // ways:
+    //   (1) Speedreader is disabled. The Speedreader icon will pop up in the
+    //       address bar, and the user clicks it. It runs Speedreader is "Single
+    //       Shot Mode". The Speedreader throttle is created for the following
+    //       request, then deactivated.
+    //   (2) Speedreader is enabled, but the page was blacklisted by the user.
+    //       they are still able to come back and manually distill the page. It
+    //       uses the same mechanism as (1).
+    //
+    // The first time a user activates reader mode on a page, a bubble drops
+    // down asking them to enable the Speedreader feature for automatic
+    // distillation.
+    kReaderMode,
+    // Speedreader is enabled and the page was automatically distilled.
+    kSpeedreaderMode,
+  };
   ~SpeedreaderTabHelper() override;
 
   SpeedreaderTabHelper(const SpeedreaderTabHelper&) = delete;
   SpeedreaderTabHelper& operator=(SpeedreaderTabHelper&) = delete;
 
-  bool IsActiveForMainFrame() const { return active_; }
+  bool IsActiveForMainFrame() const;
 
+  // Returns |true| if Speedreader is turned on for all sites.
   bool IsSpeedreaderEnabled() const;
+
+  // Returns |true| if the user has enabled Speedreader but the domain in the
+  // active web contents is blacklisted.
+  bool IsEnabledForSite();
+
+  DistillState PageDistillState() const { return distill_state_; }
+
+  // Allow or deny a site from being run through speedreader if |on| toggles
+  // the setting. Triggers page reload on toggle.
+  void MaybeToggleEnabledForSite(bool on);
+
+  // Reload the page and mark the next request to run through Speedreader,
+  // without turning it on. This mimics the standard reader mode.
+  void SingleShotSpeedreader();
 
   // returns nullptr if no bubble currently shown
   SpeedreaderBubbleView* speedreader_bubble_view() const;
 
   // Displays speedreader information
-  void ShowBubble();
+  void ShowSpeedreaderBubble();
+
+  // Displays reader mode information
+  void ShowReaderModeBubble();
 
   // Hides speedreader information
   void HideBubble();
@@ -48,7 +87,13 @@ class SpeedreaderTabHelper
   friend class content::WebContentsUserData<SpeedreaderTabHelper>;
   explicit SpeedreaderTabHelper(content::WebContents* web_contents);
 
+  // Called by ShowSpeedreaderBubble and ShowReaderModeBubble.
+  // |is_bubble_speedreader| will show a bubble for pages in Speedreader if set
+  // to true, otherwise pages in reader mode.
+  void ShowBubble(bool is_bubble_speedreader);
+
   void UpdateActiveState(content::NavigationHandle* handle);
+  void SetNextRequestState(DistillState state);
 
   // content::WebContentsObserver
   void DidStartNavigation(
@@ -56,7 +101,9 @@ class SpeedreaderTabHelper
   void DidRedirectNavigation(
       content::NavigationHandle* navigation_handle) override;
 
-  bool active_ = false;  // speedreader active for this tab
+  bool single_shot_next_request_ =
+      false;  // run speedreader once on next page load
+  DistillState distill_state_ = DistillState::kNone;
   SpeedreaderBubbleView* speedreader_bubble_ = nullptr;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();

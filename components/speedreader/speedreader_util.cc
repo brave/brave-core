@@ -6,6 +6,11 @@
 #include "brave/components/speedreader/speedreader_util.h"
 
 #include "base/strings/string_util.h"
+#include "components/content_settings/core/browser/content_settings_utils.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings_pattern.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "url/gurl.h"
 
 namespace speedreader {
@@ -44,6 +49,31 @@ bool URLReadableHintExtractor::HasHints(const GURL& url) {
   }
 
   return false;
+}
+
+void SetEnabledForSite(HostContentSettingsMap* map,
+                       const GURL& url,
+                       bool enable) {
+  DCHECK(!url.is_empty());  // Not supported. Disable Speedreader in settings.
+
+  // Rule covers all protocols and pages.
+  auto pattern = ContentSettingsPattern::FromString("*://" + url.host() + "/*");
+  if (!pattern.IsValid())
+    return;
+
+  ContentSetting setting =
+      enable ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK;
+  map->SetContentSettingCustomScope(pattern, ContentSettingsPattern::Wildcard(),
+                                    ContentSettingsType::BRAVE_SPEEDREADER,
+                                    setting);
+}
+
+bool IsEnabledForSite(HostContentSettingsMap* map, const GURL& url) {
+  ContentSetting setting = map->GetContentSetting(
+      url, GURL(), ContentSettingsType::BRAVE_SPEEDREADER);
+  const bool enabled =
+      setting == CONTENT_SETTING_ALLOW || setting == CONTENT_SETTING_DEFAULT;
+  return enabled;
 }
 
 }  // namespace speedreader
