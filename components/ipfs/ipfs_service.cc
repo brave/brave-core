@@ -42,6 +42,7 @@
 #include "url/gurl.h"
 
 #if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#include "base/threading/thread_restrictions.h"
 #include "brave/components/ipfs/import/ipfs_import_worker_base.h"
 #include "brave/components/ipfs/import/ipfs_link_import_worker.h"
 #include "brave/components/ipfs/keys/ipns_keys_manager.h"
@@ -56,16 +57,6 @@
 
 namespace {
 #if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
-bool WaitUntilExecutionFinished(base::Process process) {
-  bool exited = false;
-  int exit_code = 0;
-  exited = process.WaitForExitWithTimeout(base::TimeDelta::FromSeconds(10),
-                                          &exit_code);
-  if (!exited)
-    process.Terminate(0, true);
-  return exited && !exit_code;
-}
-
 // Works similarly to base::AutoReset but checks for access from the wrong
 // thread as well as ensuring that the previous value of the re-entrancy guard
 // variable was false.
@@ -292,13 +283,25 @@ void IpfsService::Shutdown() {
 }
 
 #if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+// static
+bool IpfsService::WaitUntilExecutionFinished(base::Process process) {
+  bool exited = false;
+  int exit_code = 0;
+  base::ScopedAllowBaseSyncPrimitives allow_wait_for_process;
+  exited = process.WaitForExitWithTimeout(base::TimeDelta::FromSeconds(10),
+                                          &exit_code);
+  if (!exited)
+    process.Terminate(0, true);
+  return exited && !exit_code;
+}
 void IpfsService::RotateKey(const std::string& oldkey, BoolCallback callback) {
-  if (IsDaemonLaunched()) {
+  auto executable_path = GetIpfsExecutablePath();
+  if (IsDaemonLaunched() || executable_path.empty()) {
     if (callback)
       std::move(callback).Run(false);
     return;
   }
-  base::CommandLine cmdline(GetIpfsExecutablePath());
+  base::CommandLine cmdline(executable_path);
   cmdline.AppendArg("key");
   cmdline.AppendArg("rotate");
   cmdline.AppendArg("--oldkey=" + oldkey);
@@ -326,9 +329,10 @@ void IpfsService::RotateKey(const std::string& oldkey, BoolCallback callback) {
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
-      {base::MayBlock(), base::WithBaseSyncPrimitives(),
-       base::TaskPriority::USER_BLOCKING},
-      base::BindOnce(&WaitUntilExecutionFinished, std::move(process)),
+      {base::MayBlock(), base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN,
+       base::TaskPriority::BEST_EFFORT},
+      base::BindOnce(&IpfsService::WaitUntilExecutionFinished,
+                     std::move(process)),
       std::move(callback));
 }
 

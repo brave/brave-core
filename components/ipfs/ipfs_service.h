@@ -32,6 +32,7 @@
 #include "url/gurl.h"
 
 namespace base {
+class Process;
 class SequencedTaskRunner;
 }  // namespace base
 
@@ -142,6 +143,7 @@ class IpfsService : public KeyedService,
     prewarm_callback_for_testing_ = std::move(callback);
   }
 #if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+  static bool WaitUntilExecutionFinished(base::Process process);
   IpnsKeysManager* GetIpnsKeysManager() { return ipns_keys_manager_.get(); }
 #endif
  protected:
