@@ -128,7 +128,7 @@ void Wallet::DisconnectWallet(const std::string& wallet_type,
   if (wallet_type == constant::kWalletUphold) {
     auto uphold_wallet = ledger_->uphold()->GetWallet();
     if (!uphold_wallet) {
-      BLOG(0, "The Uphold wallet is null!");
+      BLOG(0, "Uphold wallet is null!");
       return callback(type::Result::LEDGER_ERROR);
     }
 
@@ -274,7 +274,7 @@ type::BraveWalletPtr Wallet::GetWallet() {
 
 bool Wallet::SetWallet(type::BraveWalletPtr wallet) {
   if (!wallet) {
-    BLOG(0, "Brave wallet is null");
+    BLOG(0, "Rewards wallet is null!");
     return false;
   }
 

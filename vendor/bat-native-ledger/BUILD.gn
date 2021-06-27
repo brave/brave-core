@@ -544,8 +544,6 @@ source_set("ledger") {
     "src/bat/ledger/internal/uphold/uphold_card.h",
     "src/bat/ledger/internal/uphold/uphold_transfer.cc",
     "src/bat/ledger/internal/uphold/uphold_transfer.h",
-    "src/bat/ledger/internal/uphold/uphold_update_card.cc",
-    "src/bat/ledger/internal/uphold/uphold_update_card.h",
     "src/bat/ledger/internal/uphold/uphold_user.cc",
     "src/bat/ledger/internal/uphold/uphold_user.h",
     "src/bat/ledger/internal/uphold/uphold_util.cc",
