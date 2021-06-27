@@ -41,7 +41,7 @@ class PostClaimUpholdTest : public testing::Test {
   }
 };
 
-const std::string expected_address = "address";
+const std::string kExpectedAddress = "address";
 
 TEST_F(PostClaimUpholdTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
@@ -57,7 +57,7 @@ TEST_F(PostClaimUpholdTest, ServerOK) {
   claim_->Request(30.0, "address",
                   [](const type::Result result, const std::string& address) {
                     EXPECT_EQ(result, type::Result::LEDGER_OK);
-                    EXPECT_EQ(address, expected_address);
+                    EXPECT_EQ(address, kExpectedAddress);
                   });
 }
 
@@ -75,7 +75,7 @@ TEST_F(PostClaimUpholdTest, ServerError400) {
   claim_->Request(30.0, "address",
                   [](const type::Result result, const std::string& address) {
                     EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-                    EXPECT_EQ(address, expected_address);
+                    EXPECT_EQ(address, kExpectedAddress);
                   });
 }
 
@@ -93,7 +93,7 @@ TEST_F(PostClaimUpholdTest, ServerError403) {
   claim_->Request(30.0, "address",
                   [](const type::Result result, const std::string& address) {
                     EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-                    EXPECT_EQ(address, expected_address);
+                    EXPECT_EQ(address, kExpectedAddress);
                   });
 }
 
@@ -111,7 +111,7 @@ TEST_F(PostClaimUpholdTest, ServerError404) {
   claim_->Request(30.0, "address",
                   [](const type::Result result, const std::string& address) {
                     EXPECT_EQ(result, type::Result::NOT_FOUND);
-                    EXPECT_EQ(address, expected_address);
+                    EXPECT_EQ(address, kExpectedAddress);
                   });
 }
 
@@ -129,7 +129,7 @@ TEST_F(PostClaimUpholdTest, ServerError409) {
   claim_->Request(30.0, "address",
                   [](const type::Result result, const std::string& address) {
                     EXPECT_EQ(result, type::Result::ALREADY_EXISTS);
-                    EXPECT_EQ(address, expected_address);
+                    EXPECT_EQ(address, kExpectedAddress);
                   });
 }
 
@@ -147,7 +147,7 @@ TEST_F(PostClaimUpholdTest, ServerError500) {
   claim_->Request(30.0, "address",
                   [](const type::Result result, const std::string& address) {
                     EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-                    EXPECT_EQ(address, expected_address);
+                    EXPECT_EQ(address, kExpectedAddress);
                   });
 }
 
@@ -165,7 +165,7 @@ TEST_F(PostClaimUpholdTest, ServerErrorRandom) {
   claim_->Request(30.0, "address",
                   [](const type::Result result, const std::string& address) {
                     EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-                    EXPECT_EQ(address, expected_address);
+                    EXPECT_EQ(address, kExpectedAddress);
                   });
 }
 

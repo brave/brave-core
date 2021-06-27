@@ -103,14 +103,9 @@ TEST_F(PatchCardTest, ServerOK) {
             callback(response);
           }));
 
-  ::ledger::uphold::UpdateCard card;
-  card.label = "Brave Browser";
-  card.position = -1;
-  card.starred = true;
   card_->Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      card,
       [](const type::Result result) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
       });
@@ -129,14 +124,9 @@ TEST_F(PatchCardTest, ServerError401) {
             callback(response);
           }));
 
-  ::ledger::uphold::UpdateCard card;
-  card.label = "Brave Browser";
-  card.position = -1;
-  card.starred = true;
   card_->Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      card,
       [](const type::Result result) {
         EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
       });
@@ -155,14 +145,9 @@ TEST_F(PatchCardTest, ServerErrorRandom) {
             callback(response);
           }));
 
-  ::ledger::uphold::UpdateCard card;
-  card.label = "Brave Browser";
-  card.position = -1;
-  card.starred = true;
   card_->Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      card,
       [](const type::Result result) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
