@@ -24,7 +24,7 @@ if (!is_android) {
   }
 }
 
-source_set("unit_tests") {
+static_library("unit_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 

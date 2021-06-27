@@ -31,7 +31,7 @@ source_set("widevine") {
   ]
 }
 
-source_set("unittest") {
+static_library("unittest") {
   testonly = true
   if (enable_widevine && !is_android) {
     sources = [ "widevine_cdm_component_installer_unittest.cc" ]

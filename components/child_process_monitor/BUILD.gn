@@ -14,7 +14,7 @@ source_set("child_process_monitor") {
   deps = [ "//base" ]
 }
 
-source_set("unittests") {
+static_library("unittests") {
   testonly = true
   if (!is_android) {
     sources = [ "child_process_monitor_unittest.cc" ]

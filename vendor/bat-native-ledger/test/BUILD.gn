@@ -7,7 +7,7 @@ import("//brave/build/config.gni")
 import("//build/config/sanitizers/sanitizers.gni")
 import("//testing/test.gni")
 
-source_set("bat_native_ledger_tests") {
+static_library("bat_native_ledger_tests") {
   testonly = true
 
   sources = [
