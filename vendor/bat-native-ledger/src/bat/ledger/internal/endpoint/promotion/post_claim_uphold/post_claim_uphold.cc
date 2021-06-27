@@ -46,9 +46,9 @@ void PostClaimUphold::Request(const double user_funds,
 
 std::string PostClaimUphold::GeneratePayload(const double user_funds,
                                              const std::string& address) const {
-  const auto brave_wallet = ledger_->wallet()->GetWallet();
-  if (!brave_wallet) {
-    BLOG(0, "The Brave wallet is null!");
+  const auto rewards_wallet = ledger_->wallet()->GetWallet();
+  if (!rewards_wallet) {
+    BLOG(0, "Rewards wallet is null!");
     return "";
   }
 
@@ -68,7 +68,7 @@ std::string PostClaimUphold::GeneratePayload(const double user_funds,
   headers.push_back({{"digest", header_digest}});
 
   const std::string header_signature =
-      util::Security::Sign(headers, "primary", brave_wallet->recovery_seed);
+      util::Security::Sign(headers, "primary", rewards_wallet->recovery_seed);
 
   base::Value signed_reqeust(base::Value::Type::DICTIONARY);
   signed_reqeust.SetStringKey("octets", octets_json);
@@ -94,14 +94,14 @@ std::string PostClaimUphold::GeneratePayload(const double user_funds,
 }
 
 std::string PostClaimUphold::GetUrl() const {
-  const auto brave_wallet = ledger_->wallet()->GetWallet();
-  if (!brave_wallet) {
-    BLOG(0, "The Brave wallet is null!");
+  const auto rewards_wallet = ledger_->wallet()->GetWallet();
+  if (!rewards_wallet) {
+    BLOG(0, "Rewards wallet is null!");
     return "";
   }
 
   const std::string path = base::StringPrintf(
-      "/v3/wallet/uphold/%s/claim", brave_wallet->payment_id.c_str());
+      "/v3/wallet/uphold/%s/claim", rewards_wallet->payment_id.c_str());
 
   return GetServerUrl(path);
 }

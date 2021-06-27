@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "bat/ledger/internal/uphold/uphold_update_card.h"
 #include "bat/ledger/ledger.h"
 
 // PATCH https://api.uphold.com/v0/me/cards/{wallet_address}
@@ -95,13 +94,12 @@ class PatchCard {
 
   void Request(const std::string& token,
                const std::string& address,
-               const ::ledger::uphold::UpdateCard& card,
                PatchCardCallback callback);
 
  private:
   std::string GetUrl(const std::string& address);
 
-  std::string GeneratePayload(const ::ledger::uphold::UpdateCard& card);
+  std::string GeneratePayload();
 
   type::Result CheckStatusCode(const int status_code);
 

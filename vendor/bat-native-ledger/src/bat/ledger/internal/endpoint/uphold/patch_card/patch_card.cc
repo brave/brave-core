@@ -29,19 +29,12 @@ std::string PatchCard::GetUrl(const std::string& address) {
   return GetServerUrl("/v0/me/cards/" + address);
 }
 
-std::string PatchCard::GeneratePayload(
-    const ::ledger::uphold::UpdateCard& card) {
-  base::Value payload(base::Value::Type::DICTIONARY);
-
-  if (!card.label.empty()) {
-    payload.SetStringKey("label", card.label);
-  }
-
+std::string PatchCard::GeneratePayload() {
   base::Value settings(base::Value::Type::DICTIONARY);
-  if (card.position > -1) {
-    settings.SetIntKey("position", card.position);
-  }
-  settings.SetBoolKey("starred", card.starred);
+  settings.SetIntKey("position", 1);
+  settings.SetBoolKey("starred", true);
+
+  base::Value payload(base::Value::Type::DICTIONARY);
   payload.SetKey("settings", std::move(settings));
 
   std::string json;
@@ -65,13 +58,12 @@ type::Result PatchCard::CheckStatusCode(const int status_code) {
 
 void PatchCard::Request(const std::string& token,
                         const std::string& address,
-                        const ::ledger::uphold::UpdateCard& card,
                         PatchCardCallback callback) {
   auto url_callback = std::bind(&PatchCard::OnRequest, this, _1, callback);
 
   auto request = type::UrlRequest::New();
   request->url = GetUrl(address);
-  request->content = GeneratePayload(card);
+  request->content = GeneratePayload();
   request->headers = RequestAuthorization(token);
   request->content_type = "application/json; charset=utf-8";
   request->method = type::UrlMethod::PATCH;

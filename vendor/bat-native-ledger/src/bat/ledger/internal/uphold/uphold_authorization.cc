@@ -27,7 +27,7 @@ void UpholdAuthorization::Authorize(
     ledger::ExternalWalletAuthorizationCallback callback) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
-    BLOG(0, "The Uphold wallet is null!");
+    BLOG(0, "Uphold wallet is null!");
     return callback(type::Result::LEDGER_ERROR, {});
   }
 
@@ -102,7 +102,7 @@ void UpholdAuthorization::OnAuthorize(
     ledger::ExternalWalletAuthorizationCallback callback) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
-    BLOG(0, "The Uphold wallet is null!");
+    BLOG(0, "Uphold wallet is null!");
     return callback(type::Result::LEDGER_ERROR, {});
   }
 

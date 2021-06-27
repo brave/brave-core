@@ -82,7 +82,7 @@ void UpholdWallet::OnGetUser(const type::Result result,
                              ledger::ResultCallback callback) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
-    BLOG(0, "The Uphold wallet is null!");
+    BLOG(0, "Uphold wallet is null!");
     return callback(type::Result::LEDGER_ERROR);
   }
 
@@ -98,9 +98,8 @@ void UpholdWallet::OnGetUser(const type::Result result,
 
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Access token expired!");
+    // Entering NOT_CONNECTED or DISCONNECTED_VERIFIED.
     ledger_->uphold()->DisconnectWallet(notifications::kWalletDisconnected);
-    // status == type::WalletStatus::NOT_CONNECTED ||
-    // status == type::WalletStatus::DISCONNECTED_VERIFIED
     return callback(type::Result::EXPIRED_TOKEN);
   }
 
@@ -111,10 +110,8 @@ void UpholdWallet::OnGetUser(const type::Result result,
 
   if (user.bat_not_allowed) {
     BLOG(0, "BAT is not allowed for the user!");
+    // Entering NOT_CONNECTED or DISCONNECTED_VERIFIED.
     ledger_->uphold()->DisconnectWallet(notifications::kBATNotAllowedForUser);
-    // status == type::WalletStatus::NOT_CONNECTED ||
-    // status == type::WalletStatus::DISCONNECTED_VERIFIED
-
     return callback(type::Result::BAT_NOT_ALLOWED);
   }
 
@@ -129,10 +126,10 @@ void UpholdWallet::OnGetUser(const type::Result result,
         GetNotificationForUserStatus(user.status, user.verified);
 
     if (uphold_wallet->status == type::WalletStatus::VERIFIED) {
+      // Entering DISCONNECTED_VERIFIED.
       ledger_->uphold()->DisconnectWallet(
           !notification.empty() ? notification
                                 : notifications::kWalletDisconnected);
-      // status == type::WalletStatus::DISCONNECTED_VERIFIED
     } else {
       if (!notification.empty()) {
         ledger_->ledger_client()->ShowNotification(notification, {},
@@ -157,7 +154,7 @@ void UpholdWallet::OnCreateCard(const type::Result result,
                                 ledger::ResultCallback callback) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
-    BLOG(0, "The Uphold wallet is null!");
+    BLOG(0, "Uphold wallet is null!");
     return callback(type::Result::LEDGER_ERROR);
   }
 
@@ -170,8 +167,8 @@ void UpholdWallet::OnCreateCard(const type::Result result,
 
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Access token expired!");
+    // Entering NOT_CONNECTED.
     ledger_->uphold()->DisconnectWallet(notifications::kWalletDisconnected);
-    // status == type::WalletStatus::NOT_CONNECTED
     return callback(type::Result::EXPIRED_TOKEN);
   }
 
@@ -196,14 +193,14 @@ void UpholdWallet::GetAnonFunds(
     return callback(type::Result::LEDGER_OK, type::Balance::New());
   }
 
-  const auto brave_wallet = ledger_->wallet()->GetWallet();
-  if (!brave_wallet) {
-    BLOG(1, "The Brave wallet is null!");
+  const auto rewards_wallet = ledger_->wallet()->GetWallet();
+  if (!rewards_wallet) {
+    BLOG(1, "Rewards wallet is null!");
     ledger_->state()->SetFetchOldBalanceEnabled(false);
     return callback(type::Result::LEDGER_OK, type::Balance::New());
   }
 
-  if (brave_wallet->payment_id.empty()) {
+  if (rewards_wallet->payment_id.empty()) {
     BLOG(0, "Payment ID is empty!");
     return callback(type::Result::LEDGER_ERROR, nullptr);
   }
@@ -217,7 +214,7 @@ void UpholdWallet::OnGetAnonFunds(const type::Result result,
                                   ledger::ResultCallback callback) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
-    BLOG(0, "The Uphold wallet is null!");
+    BLOG(0, "Uphold wallet is null!");
     return callback(type::Result::LEDGER_ERROR);
   }
 
@@ -259,7 +256,7 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
                                 ledger::ResultCallback callback) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
-    BLOG(0, "The Uphold wallet is null!");
+    BLOG(0, "Uphold wallet is null!");
     return callback(type::Result::LEDGER_ERROR);
   }
 
@@ -272,9 +269,9 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
   DCHECK(!id.empty());
 
   if (result == type::Result::ALREADY_EXISTS) {
+    // Entering NOT_CONNECTED.
     ledger_->uphold()->DisconnectWallet(
         notifications::kWalletDeviceLimitReached);
-    // status == type::WalletStatus::NOT_CONNECTED
 
     ledger_->database()->SaveEventLog(
         log::kDeviceLimitReached,
@@ -315,7 +312,7 @@ void UpholdWallet::OnTransferTokens(const type::Result result,
                                     ledger::ResultCallback callback) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
-    BLOG(0, "The Uphold wallet is null!");
+    BLOG(0, "Uphold wallet is null!");
     return callback(type::Result::LEDGER_ERROR);
   }
 
