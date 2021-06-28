@@ -5,6 +5,8 @@
 
 #include "bat/ledger/internal/uphold/uphold_authorization.h"
 
+#include <utility>
+
 #include "bat/ledger/internal/common/random_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
@@ -32,7 +34,8 @@ void UpholdAuthorization::Authorize(
 
   if (uphold_wallet->status != type::WalletStatus::NOT_CONNECTED &&
       uphold_wallet->status != type::WalletStatus::DISCONNECTED_VERIFIED) {
-    BLOG(0, "Attempting to re-authorize in " << uphold_wallet->status << " status!");
+    BLOG(0, "Attempting to re-authorize in " << uphold_wallet->status
+                                             << " status!");
     return callback(type::Result::LEDGER_ERROR, {});
   }
 
