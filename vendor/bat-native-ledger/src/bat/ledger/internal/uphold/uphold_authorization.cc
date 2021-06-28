@@ -7,7 +7,6 @@
 
 #include "bat/ledger/internal/common/random_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 
 using std::placeholders::_1;
@@ -124,9 +123,8 @@ void UpholdAuthorization::OnAuthorize(
     return callback(type::Result::LEDGER_ERROR, {});
   }
 
-  const auto from_status = uphold_wallet->status;
-  uphold_wallet->status = type::WalletStatus::PENDING;
-  const auto to_status = uphold_wallet->status;
+  const auto from = uphold_wallet->status;
+  const auto to = uphold_wallet->status = type::WalletStatus::PENDING;
   uphold_wallet->token = token;
   uphold_wallet = GenerateLinks(std::move(uphold_wallet));
   if (!ledger_->uphold()->SetWallet(std::move(uphold_wallet))) {
@@ -134,10 +132,7 @@ void UpholdAuthorization::OnAuthorize(
     return callback(type::Result::LEDGER_ERROR, {});
   }
 
-  ledger_->database()->SaveEventLog(
-      log::kWalletStatusChange, (std::ostringstream{} << from_status).str() +
-                                    " ==> " +
-                                    (std::ostringstream{} << to_status).str());
+  LogWalletStatusChange(ledger_, from, to);
 
   callback(type::Result::LEDGER_OK, {});
 }

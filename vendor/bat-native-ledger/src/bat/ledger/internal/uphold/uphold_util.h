@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "absl/types/optional.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
@@ -25,7 +26,7 @@ const char kRestrictedUser[] = "uphold_restricted_user";
 const char kUnverifiedUser[] = "uphold_unverified_user";
 const char kWalletDeviceLimitReached[] = "wallet_device_limit_reached";
 const char kWalletDisconnected[] = "wallet_disconnected";
-}
+}  // namespace notifications
 
 const char kUrlStaging[] = "https://wallet-sandbox.uphold.com";
 const char kUrlProduction[] = "https://uphold.com";
@@ -59,6 +60,10 @@ type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet);
 std::string GenerateVerifyLink(type::ExternalWalletPtr wallet);
 
 type::ExternalWalletPtr ResetWallet(type::ExternalWalletPtr wallet);
+
+void LogWalletStatusChange(LedgerImpl* ledger,
+                           absl::optional<type::WalletStatus> from,
+                           type::WalletStatus to);
 
 }  // namespace uphold
 }  // namespace ledger

@@ -52,9 +52,7 @@ void UpholdWallet::Generate(ledger::ResultCallback callback) const {
       return callback(type::Result::LEDGER_ERROR);
     }
 
-    ledger_->database()->SaveEventLog(
-        log::kWalletStatusChange,
-        "==> " + (std::ostringstream{} << uphold_wallet->status).str());
+    LogWalletStatusChange(ledger_, {}, uphold_wallet->status);
   }
 
   if (uphold_wallet->one_time_string.empty()) {
@@ -284,9 +282,8 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
     return callback(result);  // used to be callback(type::Result::CONTINUE);
   }
 
-  const auto from_status = uphold_wallet->status;
-  uphold_wallet->status = type::WalletStatus::VERIFIED;
-  const auto to_status = uphold_wallet->status;
+  const auto from = uphold_wallet->status;
+  const auto to = uphold_wallet->status = type::WalletStatus::VERIFIED;
   uphold_wallet->address = id;
   uphold_wallet = GenerateLinks(std::move(uphold_wallet));
   if (!ledger_->uphold()->SetWallet(std::move(uphold_wallet))) {
@@ -294,10 +291,7 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
     return callback(type::Result::LEDGER_ERROR);
   }
 
-  ledger_->database()->SaveEventLog(
-      log::kWalletStatusChange, (std::ostringstream{} << from_status).str() +
-                                    " ==> " +
-                                    (std::ostringstream{} << to_status).str());
+  LogWalletStatusChange(ledger_, from, to);
 
   ledger_->database()->SaveEventLog(
       log::kWalletConnected,
