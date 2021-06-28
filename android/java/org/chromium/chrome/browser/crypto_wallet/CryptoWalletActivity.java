@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -31,11 +30,12 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.RewardsFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.SwapBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnFinishOnboarding;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
+import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CryptoWalletActivity extends AppCompatActivity {
+public class CryptoWalletActivity extends AsyncInitializationActivity {
     private BottomNavigationView bottomNavigationView;
     private Toolbar toolbar;
     private WalletNavigationFragmentPageAdapter walletNavigationFragmentPageAdapter;
@@ -70,8 +70,7 @@ public class CryptoWalletActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_crypto_wallet);
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.black, null));
@@ -112,9 +111,14 @@ public class CryptoWalletActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         BraveWalletNativeWorker.getInstance().lockWallet();
+    }
+
+    @Override
+    public boolean shouldStartGpuProcess() {
+        return true;
     }
 
     private void setNavigationFragments() {

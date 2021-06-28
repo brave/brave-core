@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
 import org.chromium.chrome.browser.ntp.widget.NTPWidgetAdapter;
 import org.chromium.chrome.browser.ntp.widget.NTPWidgetManager;
@@ -34,7 +34,7 @@ import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NTPWidgetStackActivity extends AppCompatActivity {
+public class NTPWidgetStackActivity extends AsyncInitializationActivity {
     private NTPWidgetAdapter.NTPWidgetListener ntpWidgetListener;
     private RecyclerView usedWidgetsRecyclerView;
     private RecyclerView availableWidgetsRecyclerView;
@@ -43,6 +43,7 @@ public class NTPWidgetStackActivity extends AppCompatActivity {
     private LinearLayout availableWidgetLayout;
     private CardView usedWidgetLayout;
     private boolean isFromSettings;
+    private boolean mNativeInitialized;
     public static final int USED_WIDGET = 0;
     public static final int AVAILABLE_WIDGET = 1;
     public static final String FROM_SETTINGS = "from_settings";
@@ -57,8 +58,7 @@ public class NTPWidgetStackActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_ntp_widget_stack);
 
         if (getIntent() != null) {
@@ -103,11 +103,25 @@ public class NTPWidgetStackActivity extends AppCompatActivity {
         availableWidgetsRecyclerView.setAdapter(availableNTPWidgetStackAdapter);
         availableNTPWidgetStackAdapter.setWidgetList(availableWidgetList);
         updateNTPWidgetStackLayout();
+
+        onInitialLayoutInflationComplete();
+    }
+
+    @Override
+    public void finishNativeInitialization() {
+        super.finishNativeInitialization();
+
+        mNativeInitialized = true;
     }
 
     @Override
     public void onBackPressed() {
         returnResult();
+    }
+
+    @Override
+    public boolean shouldStartGpuProcess() {
+        return true;
     }
 
     private NTPWidgetStackUpdateListener ntpWidgetStackUpdateListener =
@@ -152,7 +166,8 @@ public class NTPWidgetStackActivity extends AppCompatActivity {
             NTPWidgetManager.getInstance().setWidget(
                     availableNTPWidgetStackAdapter.getWidgetList().get(i), -1);
             if (availableNTPWidgetStackAdapter.getWidgetList().get(i).equals(
-                        NTPWidgetManager.PREF_BINANCE)) {
+                        NTPWidgetManager.PREF_BINANCE)
+                    && mNativeInitialized) {
                 BinanceNativeWorker.getInstance().revokeToken();
                 BinanceWidgetManager.getInstance().setBinanceAccountBalance("");
                 BinanceWidgetManager.getInstance().setUserAuthenticationForBinance(false);
