@@ -69,8 +69,8 @@ void AdsTabHelper::TabUpdated() {
     return;
   }
 
-  ads_service_->OnTabUpdated(tab_id_, web_contents()->GetURL(), is_active_,
-                             is_browser_active_);
+  ads_service_->OnTabUpdated(tab_id_, web_contents()->GetVisibleURL(),
+                             is_active_, is_browser_active_);
 }
 
 void AdsTabHelper::RunIsolatedJavaScript(
