@@ -137,6 +137,9 @@ class AdsService : public KeyedService {
       const std::string& creative_instance_id,
       const ads::mojom::BraveAdsInlineContentAdEventType event_type) = 0;
 
+  virtual void PurgeOrphanedAdEventsForType(
+      const ads::mojom::BraveAdsAdType ad_type) = 0;
+
   virtual void ReconcileAdRewards() = 0;
 
   virtual void GetAdsHistory(const uint64_t from_timestamp,

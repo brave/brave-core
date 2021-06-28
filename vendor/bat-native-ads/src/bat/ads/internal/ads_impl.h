@@ -25,7 +25,7 @@
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_info.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/result.h"
 
 namespace ads {
@@ -174,6 +174,9 @@ class AdsImpl : public Ads,
       const std::string& uuid,
       const std::string& creative_instance_id,
       const InlineContentAdEventType event_type) override;
+
+  void PurgeOrphanedAdEventsForType(
+      const mojom::BraveAdsAdType ad_type) override;
 
   void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
 

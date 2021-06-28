@@ -10,6 +10,7 @@
 #include <deque>
 #include <functional>
 
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/result.h"
 
 namespace ads {
@@ -28,6 +29,8 @@ void LogAdEvent(const AdInfo& ad,
 void LogAdEvent(const AdEventInfo& ad_event, AdEventCallback callback);
 
 void PurgeExpiredAdEvents(AdEventCallback callback);
+void PurgeOrphanedAdEvents(const mojom::BraveAdsAdType ad_type,
+                           AdEventCallback callback);
 
 void RebuildAdEventsFromDatabase();
 

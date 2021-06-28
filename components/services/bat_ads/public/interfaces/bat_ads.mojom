@@ -48,6 +48,7 @@ interface BatAdsClient {
   ShowNotification(string json);
   CloseNotification(string uuid);
   RecordAdEvent(string ad_type, string confirmation_type, uint64 timestamp);
+  ResetAdEvents();
   UrlRequest(ads.mojom.BraveAdsUrlRequest request) => (ads.mojom.BraveAdsUrlResponse response);
   Save(string name, string value) => (int32 result);
   Load(string name) => (int32 result, string value);
@@ -88,6 +89,7 @@ interface BatAds {
   OnPromotedContentAdEvent(string uuid, string creative_instance_id, ads.mojom.BraveAdsPromotedContentAdEventType event_type);
   GetInlineContentAd(string size) => (bool success, string dimensions, string ad);
   OnInlineContentAdEvent(string uuid, string creative_instance_id, ads.mojom.BraveAdsInlineContentAdEventType event_type);
+  PurgeOrphanedAdEventsForType(ads.mojom.BraveAdsAdType ad_type);
   RemoveAllHistory() => (int32 result);
   OnWalletUpdated(string payment_id, string seed);
   ReconcileAdRewards();

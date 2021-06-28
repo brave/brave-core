@@ -69,6 +69,9 @@ class ADS_EXPORT AdsClient {
       const std::string& ad_type,
       const std::string& confirmation_type) const = 0;
 
+  // Reset list of ad events
+  virtual void ResetAdEvents() const = 0;
+
   // Get |max_count| browsing history results for past |days_ago| days from
   // |HistoryService| and return as list of strings
   virtual void GetBrowsingHistory(const int max_count,

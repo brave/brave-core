@@ -30,6 +30,7 @@ class NativeAdsClient : public ads::AdsClient {
   std::vector<uint64_t> GetAdEvents(
       const std::string& ad_type,
       const std::string& confirmation_type) const override;
+  void ResetAdEvents() const override;
   void UrlRequest(ads::UrlRequestPtr url_request, ads::UrlRequestCallback callback) override;
   void Save(const std::string & name, const std::string & value, ads::ResultCallback callback) override;
   void Load(const std::string & name, ads::LoadCallback callback) override;

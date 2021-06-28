@@ -26,6 +26,8 @@ class FrequencyCappingHelper {
   std::vector<uint64_t> GetAdEvents(const std::string& ad_type,
                                     const std::string& confirmation_type) const;
 
+  void ResetAdEvents();
+
  private:
   friend struct base::DefaultSingletonTraits<FrequencyCappingHelper>;
 

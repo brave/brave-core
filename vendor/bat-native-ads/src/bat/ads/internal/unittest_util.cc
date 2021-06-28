@@ -593,6 +593,12 @@ void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock) {
           }));
 }
 
+void MockResetAdEvents(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, ResetAdEvents()).WillByDefault(Invoke([]() {
+    g_ad_events = {};
+  }));
+}
+
 void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, GetBrowsingHistory(_, _, _))
       .WillByDefault(Invoke([](const int max_count, const int days_ago,

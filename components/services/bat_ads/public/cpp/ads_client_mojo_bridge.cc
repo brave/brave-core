@@ -273,6 +273,10 @@ void AdsClientMojoBridge::RecordAdEvent(const std::string& ad_type,
   ads_client_->RecordAdEvent(ad_type, confirmation_type, timestamp);
 }
 
+void AdsClientMojoBridge::ResetAdEvents() {
+  ads_client_->ResetAdEvents();
+}
+
 // static
 void AdsClientMojoBridge::OnRunDBTransaction(
     CallbackHolder<RunDBTransactionCallback>* holder,

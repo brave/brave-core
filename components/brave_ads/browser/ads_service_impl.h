@@ -22,6 +22,7 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/database.h"
 #include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
@@ -148,6 +149,9 @@ class AdsServiceImpl : public AdsService,
       const std::string& uuid,
       const std::string& creative_instance_id,
       const ads::InlineContentAdEventType event_type) override;
+
+  void PurgeOrphanedAdEventsForType(
+      const ads::mojom::BraveAdsAdType ad_type) override;
 
   void ReconcileAdRewards() override;
 
@@ -350,6 +354,8 @@ class AdsServiceImpl : public AdsService,
   std::vector<uint64_t> GetAdEvents(
       const std::string& ad_type,
       const std::string& confirmation_type) const override;
+
+  void ResetAdEvents() const override;
 
   void UrlRequest(ads::UrlRequestPtr url_request,
                   ads::UrlRequestCallback callback) override;

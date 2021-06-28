@@ -147,6 +147,7 @@ void UnitTestBase::Initialize() {
 
   MockRecordAdEvent(ads_client_mock_);
   MockGetAdEvents(ads_client_mock_);
+  MockResetAdEvents(ads_client_mock_);
 
   MockGetBrowsingHistory(ads_client_mock_);
 

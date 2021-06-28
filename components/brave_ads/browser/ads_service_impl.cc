@@ -36,7 +36,6 @@
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_history_info.h"
-#include "bat/ads/mojom.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "bat/ads/statement_info.h"
@@ -1081,6 +1080,15 @@ void AdsServiceImpl::OnInlineContentAdEvent(
   bat_ads_->OnInlineContentAdEvent(uuid, creative_instance_id, event_type);
 }
 
+void AdsServiceImpl::PurgeOrphanedAdEventsForType(
+    const ads::mojom::BraveAdsAdType ad_type) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_->PurgeOrphanedAdEventsForType(ad_type);
+}
+
 void AdsServiceImpl::RetryOpeningNewTabWithAd(const std::string& uuid) {
   VLOG(1) << "Retry opening new tab for ad with uuid " << uuid;
   retry_opening_new_tab_for_ad_with_uuid_ = uuid;
@@ -1930,6 +1938,10 @@ std::vector<uint64_t> AdsServiceImpl::GetAdEvents(
     const std::string& confirmation_type) const {
   return FrequencyCappingHelper::GetInstance()->GetAdEvents(ad_type,
                                                             confirmation_type);
+}
+
+void AdsServiceImpl::ResetAdEvents() const {
+  return FrequencyCappingHelper::GetInstance()->ResetAdEvents();
 }
 
 void AdsServiceImpl::UrlRequest(ads::UrlRequestPtr url_request,

@@ -93,6 +93,7 @@ class AdsClientMojoBridge
   void RecordAdEvent(const std::string& ad_type,
                      const std::string& confirmation_type,
                      const uint64_t timestamp) override;
+  void ResetAdEvents() override;
 
   void RunDBTransaction(
       ads::DBTransactionPtr transaction,

@@ -13,10 +13,11 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "bat/ads/ads.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/statement_info.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
-#include "bat/ads/ads.h"
-#include "bat/ads/statement_info.h"
 
 namespace ads {
 class Ads;
@@ -102,6 +103,9 @@ class BatAdsImpl :
       const std::string& uuid,
       const std::string& creative_instance_id,
       const ads::InlineContentAdEventType event_type) override;
+
+  void PurgeOrphanedAdEventsForType(
+      const ads::mojom::BraveAdsAdType ad_type) override;
 
   void RemoveAllHistory(
       RemoveAllHistoryCallback callback) override;

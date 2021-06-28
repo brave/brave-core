@@ -351,6 +351,18 @@ void AdsImpl::OnInlineContentAdEvent(
   inline_content_ad_->FireEvent(uuid, creative_instance_id, event_type);
 }
 
+void AdsImpl::PurgeOrphanedAdEventsForType(
+    const mojom::BraveAdsAdType ad_type) {
+  PurgeOrphanedAdEvents(ad_type, [ad_type](const Result result) {
+    if (result != SUCCESS) {
+      BLOG(0, "Failed to purge orphaned ad events for " << ad_type);
+      return;
+    }
+
+    BLOG(1, "Successfully purged orphaned ad events for " << ad_type);
+  });
+}
+
 void AdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
   Client::Get()->RemoveAllHistory();
 

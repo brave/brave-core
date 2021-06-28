@@ -47,6 +47,7 @@ class BatAdsClientMojoBridge
   std::vector<uint64_t> GetAdEvents(
       const std::string& ad_type,
       const std::string& confirmation_type) const override;
+  void ResetAdEvents() const override;
 
   void UrlRequest(
       ads::UrlRequestPtr url_request,

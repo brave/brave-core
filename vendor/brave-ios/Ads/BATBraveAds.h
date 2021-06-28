@@ -148,6 +148,9 @@ NS_SWIFT_NAME(BraveAds)
                            eventType:
                                (BATBraveAdsPromotedContentAdEventType)eventType;
 
+/// Purge orphaned ad events for a given ad type
+- (void)purgeOrphanedAdEvents:(BATBraveAdsAdType)adType;
+
 /// Reconcile ad rewards with server
 - (void)reconcileAdRewards;
 

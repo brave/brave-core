@@ -57,6 +57,10 @@ std::vector<uint64_t> NativeAdsClient::GetAdEvents(
   return [bridge_ getAdEvents:ad_type confirmationType:confirmation_type];
 }
 
+void NativeAdsClient::ResetAdEvents() const {
+  [bridge_ resetAdEvents];
+}
+
 void NativeAdsClient::UrlRequest(ads::UrlRequestPtr url_request, ads::UrlRequestCallback callback) {
   [bridge_ UrlRequest:std::move(url_request) callback:callback];
 }
