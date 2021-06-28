@@ -63,12 +63,11 @@ const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, o
 
   braveArgs = braveArgs.concat(passthroughArgs)
 
-  // Build the tests
-  if (suite === 'brave_unit_tests' || suite === 'brave_browser_tests') {
-    util.run('ninja', ['-C', config.outputDir, "brave/test:" + suite], config.defaultOptions)
-  } else {
-    util.run('ninja', ['-C', config.outputDir, suite], config.defaultOptions)
-  }
+  config.buildTarget = suite
+  if (suite === 'brave_unit_tests' || suite === 'brave_browser_tests')
+    config.buildTarget = "brave/test:" + suite
+
+  util.buildTarget()
 
   if (config.targetOS === 'ios') {
     util.run(path.join(config.outputDir, "iossim"), [
