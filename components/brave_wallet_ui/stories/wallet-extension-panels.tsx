@@ -29,7 +29,8 @@ const accounts: WalletAccountType[] = [
     address: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
     balance: 0.31178,
     asset: 'eth',
-    fiatBalance: '0'
+    fiatBalance: '0',
+    accountType: 'Primary'
   },
   {
     id: '2',
@@ -37,7 +38,8 @@ const accounts: WalletAccountType[] = [
     address: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
     balance: 0.31178,
     asset: 'eth',
-    fiatBalance: '0'
+    fiatBalance: '0',
+    accountType: 'Primary'
   },
   {
     id: '3',
@@ -45,7 +47,8 @@ const accounts: WalletAccountType[] = [
     address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
     balance: 0.31178,
     asset: 'eth',
-    fiatBalance: '0'
+    fiatBalance: '0',
+    accountType: 'Primary'
   }
 ]
 

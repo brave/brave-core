@@ -40,13 +40,13 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [view, setView] = React.useState<NavTypes>('crypto')
   const [needsOnboarding, setNeedsOnboarding] = React.useState<boolean>(onboarding)
   const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
-  const [needsBackup, setNeedsBackup] = React.useState<boolean>(false)
+  const [needsBackup, setNeedsBackup] = React.useState<boolean>(true)
   const [showBackup, setShowBackup] = React.useState<boolean>(false)
   const [inputValue, setInputValue] = React.useState<string>('')
   const [hasRestoreError, setHasRestoreError] = React.useState<boolean>(false)
   const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
   const [selectedTimeline, setSelectedTimeline] = React.useState<ChartTimelineType>('24HRS')
-  const [selectedAssetPriceHistory, setSelectedAssetPriceHistory] = React.useState<PriceDataObjectType[]>([])
+  const [selectedAssetPriceHistory, setSelectedAssetPriceHistory] = React.useState<PriceDataObjectType[]>(PriceHistoryMockData.slice(15, 20))
   const [selectedAsset, setSelectedAsset] = React.useState<AssetOptionType>()
 
   // In the future these will be actual paths
@@ -144,7 +144,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   // This returns a list of accounts with a balance of the selected asset
   const accounts = React.useMemo(() => {
     const id = selectedAsset ? selectedAsset.id : ''
-    const list = mockRPCResponse.filter((account) => account.assets.map((assetID) => assetID.id).includes(id))
+    const list = selectedAsset ? mockRPCResponse.filter((account) => account.assets.map((assetID) => assetID.id).includes(id)) : mockRPCResponse
     const newList = list.map((wallet) => {
       const walletInfo = accountInfo(wallet)
       const id = walletInfo ? walletInfo.id : ''
@@ -155,10 +155,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
         address: wallet.address,
         balance: Number(singleAccountBalance(wallet)),
         fiatBalance: singleAccountFiatBalance(wallet),
-        asset: selectedAsset ? selectedAsset.symbol : ''
+        asset: selectedAsset ? selectedAsset.symbol : '',
+        accountType: 'Primary'
       }
     })
-    console.log(newList)
     return newList
   }, [selectedAsset, mockRPCResponse])
 
@@ -248,6 +248,18 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setSelectedAsset(asset)
   }
 
+  const onCreateAccount = (name: string) => {
+    alert(name)
+  }
+
+  const onImportAccount = (name: string, key: string) => {
+    alert(`Account Name: ${name}, Private Key: ${key}`)
+  }
+
+  const onConnectHardwareWallet = (hardware: 'Ledger' | 'Trezor') => {
+    alert(`Connecting to ${hardware} wallet`)
+  }
+
   return (
     <WalletPageLayout>
       <SideNav
@@ -300,6 +312,9 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                           transactions={transactions}
                           selectedAssetPrice={selectedAssetPrice}
                           userAssetList={userAssetList}
+                          onConnectHardwareWallet={onConnectHardwareWallet}
+                          onCreateAccount={onCreateAccount}
+                          onImportAccount={onImportAccount}
                         />
                       )}
                     </>

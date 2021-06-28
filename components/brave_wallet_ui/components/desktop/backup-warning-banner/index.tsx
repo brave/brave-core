@@ -4,20 +4,25 @@ import locale from '../../../constants/locale'
 import {
   StyledWrapper,
   WarningText,
-  DismissButton
+  BannerButton,
+  ButtonRow
 } from './style'
 
 export interface Props {
+  onBackup: () => void
   onDismiss: () => void
 }
 
 const BackupWarningBanner = (props: Props) => {
-  const { onDismiss } = props
+  const { onDismiss, onBackup } = props
 
   return (
     <StyledWrapper>
       <WarningText>{locale.backupWarningText}</WarningText>
-      <DismissButton onClick={onDismiss}>Dismiss</DismissButton>
+      <ButtonRow>
+        <BannerButton onClick={onBackup} buttonType='primary'>{locale.backupButton}</BannerButton>
+        <BannerButton onClick={onDismiss} buttonType='secondary'>{locale.dismissButton}</BannerButton>
+      </ButtonRow>
     </StyledWrapper>
   )
 }

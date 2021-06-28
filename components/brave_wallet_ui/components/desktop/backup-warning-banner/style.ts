@@ -1,5 +1,9 @@
 import styled from 'styled-components'
 
+interface StyleProps {
+  buttonType: 'primary' | 'secondary'
+}
+
 export const StyledWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -21,7 +25,14 @@ export const WarningText = styled.span`
   color: ${(p) => p.theme.color.text01};
 `
 
-export const DismissButton = styled.button`
+export const ButtonRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`
+
+export const BannerButton = styled.button<StyleProps>`
   display: flex;;
   cursor: pointer;
   outline: none;
@@ -32,7 +43,7 @@ export const DismissButton = styled.button`
   font-family: Poppins;
   font-size: 12px;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.buttonType === 'primary' ? p.theme.color.interactive05 : p.theme.color.text02};
   letter-spacing: 0.01em;
   margin-left: 20px;
 `

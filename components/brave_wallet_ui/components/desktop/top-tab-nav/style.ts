@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { MoreVertRIcon } from 'brave-ui/components/icons'
+import { LockIconD } from '../../../assets/svg-icons/nav-button-icons'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -16,7 +17,6 @@ export const MoreRow = styled.div`
   align-items: flex-end;
   justify-content: center;
   flex-direction: column;
-  cursor: pointer;
   outline: none;
   padding: 10px 0px 0px 0px;
   border: none;
@@ -31,7 +31,7 @@ export const Line = styled.div`
 `
 
 export const MoreButton = styled.button`
-  display: flex;;
+  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -45,9 +45,23 @@ export const MoreButton = styled.button`
   padding: 0px;
 `
 
+export const EmptyPadding = styled.div`
+  width: 20px;
+  height: 20px;
+  margin-bottom: 10px;
+`
+
 export const MoreIcon = styled(MoreVertRIcon)`
   width: 20px;
   transform: rotate(90deg);
   height: 20px;
   color: ${(p) => p.theme.color.interactive07};
+`
+
+export const LockIcon = styled.div`
+  width: 20px;
+  height: 20px;
+  background-color: ${(p) => p.theme.color.interactive07};
+  -webkit-mask-image: url(${LockIconD});
+  mask-image: url(${LockIconD});
 `

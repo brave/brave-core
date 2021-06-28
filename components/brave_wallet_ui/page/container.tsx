@@ -187,6 +187,18 @@ function Container (props: Props) {
     return formatePrices(grandTotal)
   }, [userAssetList])
 
+  const onCreateWallet = () => {
+    // Todo: Add logic to add/create a new wallet address
+  }
+
+  const onConnectHardwareWallet = () => {
+    // Todo: Add logic to connect a hardware wallet
+  }
+
+  const onImportAccount = () => {
+    // Todo: Add logic to import a secondary account
+  }
+
   const renderWallet = React.useMemo(() => {
     if (!isWalletCreated) {
       return (
@@ -232,6 +244,9 @@ function Container (props: Props) {
                   selectedTimeline={selectedTimeline}
                   transactions={transactions}
                   userAssetList={userAssetList}
+                  onConnectHardwareWallet={onConnectHardwareWallet}
+                  onCreateAccount={onCreateWallet}
+                  onImportAccount={onImportAccount}
                 />
               )}
             </>

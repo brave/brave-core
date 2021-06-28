@@ -54,6 +54,7 @@ export interface Props {
   toggleNav: () => void
   onChangeTimeline: (path: ChartTimelineType) => void
   onSelectAsset: (asset: AssetOptionType | undefined) => void
+  onClickAddAccount: () => void
   userAssetList: UserAssetOptionType[]
   accounts: WalletAccountType[]
   selectedTimeline: ChartTimelineType
@@ -70,6 +71,7 @@ const Portfolio = (props: Props) => {
     toggleNav,
     onChangeTimeline,
     onSelectAsset,
+    onClickAddAccount,
     selectedAssetPriceHistory,
     selectedAssetPrice,
     selectedTimeline,
@@ -104,10 +106,6 @@ const Portfolio = (props: Props) => {
 
   const addCoin = () => {
     alert('Will Show New Coins To Add!!')
-  }
-
-  const addAccount = () => {
-    alert('Will Show Add Account!!')
   }
 
   const moreDetails = () => {
@@ -200,7 +198,7 @@ const Portfolio = (props: Props) => {
           <ButtonRow>
             <AddButton
               buttonType='secondary'
-              onSubmit={addAccount}
+              onSubmit={onClickAddAccount}
               text={locale.addAccount}
             />
           </ButtonRow>
