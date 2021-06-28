@@ -67,7 +67,7 @@ handler.on(WalletPageActions.walletBackupComplete.getType(), async (store) => {
 // TODO(bbondy): Remove - Example usage:
 // import { AssetPriceTimeframe } from '../../constants/types'
 // var price = await walletHandler.getAssetPrice('bat')
-// var priceHistory = await walletHandler.getAssetPriceHistory('basic-attention-token', AssetPriceTimeframe.OneWeek)
+// var priceHistory = await walletHandler.getAssetPriceHistory('bat', AssetPriceTimeframe.OneWeek)
 //
 // import { SwapParams } from '../../constants/types'
 // const walletHandler = await getWalletHandler()
