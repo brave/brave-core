@@ -32,7 +32,8 @@ void UpholdAuthorization::Authorize(
 
   if (uphold_wallet->status != type::WalletStatus::NOT_CONNECTED &&
       uphold_wallet->status != type::WalletStatus::DISCONNECTED_VERIFIED) {
-    return callback(type::Result::LEDGER_OK, {});
+    BLOG(0, "Attempting to re-authorize in " << uphold_wallet->status << " status!");
+    return callback(type::Result::LEDGER_ERROR, {});
   }
 
   DCHECK(uphold_wallet->token.empty());
