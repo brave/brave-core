@@ -474,6 +474,7 @@ source_set("ledger") {
     "src/bat/ledger/internal/logging/logging.h",
     "src/bat/ledger/internal/logging/logging_util.cc",
     "src/bat/ledger/internal/logging/logging_util.h",
+    "src/bat/ledger/internal/notifications/notification_keys.h",
     "src/bat/ledger/internal/promotion/promotion.cc",
     "src/bat/ledger/internal/promotion/promotion.h",
     "src/bat/ledger/internal/promotion/promotion_transfer.cc",

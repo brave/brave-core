@@ -9,6 +9,7 @@
 #include "bat/ledger/internal/common/random_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
+#include "bat/ledger/internal/notifications/notification_keys.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 
 using std::placeholders::_1;
@@ -97,7 +98,8 @@ void UpholdWallet::OnGetUser(const type::Result result,
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Access token expired!");
     // Entering NOT_CONNECTED or DISCONNECTED_VERIFIED.
-    ledger_->uphold()->DisconnectWallet(notifications::kWalletDisconnected);
+    ledger_->uphold()->DisconnectWallet(
+        ledger::notifications::kWalletDisconnected);
     return callback(type::Result::EXPIRED_TOKEN);
   }
 
@@ -127,7 +129,7 @@ void UpholdWallet::OnGetUser(const type::Result result,
       // Entering DISCONNECTED_VERIFIED.
       ledger_->uphold()->DisconnectWallet(
           !notification.empty() ? notification
-                                : notifications::kWalletDisconnected);
+                                : ledger::notifications::kWalletDisconnected);
     } else {
       if (!notification.empty()) {
         ledger_->ledger_client()->ShowNotification(notification, {},
@@ -166,7 +168,8 @@ void UpholdWallet::OnCreateCard(const type::Result result,
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Access token expired!");
     // Entering NOT_CONNECTED.
-    ledger_->uphold()->DisconnectWallet(notifications::kWalletDisconnected);
+    ledger_->uphold()->DisconnectWallet(
+        ledger::notifications::kWalletDisconnected);
     return callback(type::Result::EXPIRED_TOKEN);
   }
 
@@ -269,7 +272,7 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
   if (result == type::Result::ALREADY_EXISTS) {
     // Entering NOT_CONNECTED.
     ledger_->uphold()->DisconnectWallet(
-        notifications::kWalletDeviceLimitReached);
+        ledger::notifications::kWalletDeviceLimitReached);
 
     ledger_->database()->SaveEventLog(
         log::kDeviceLimitReached,
