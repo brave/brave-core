@@ -16,7 +16,7 @@
 #include "brave/components/speedreader/features.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"
-#include "chrome/browser/themes/theme_properties.h"
+#include "chrome/browser/ui/omnibox/omnibox_theme.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 #include "chrome/grit/generated_resources.h"
@@ -94,7 +94,7 @@ void SpeedreaderIconView::UpdateImpl() {
         // Reset the icon color
         const ui::ThemeProvider* tp = GetThemeProvider();
         SkColor icon_color_default =
-            tp->GetColor(ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON);
+            GetOmniboxColor(tp, OmniboxPart::RESULTS_ICON);
         SetIconColor(icon_color_default);
       }
     }
