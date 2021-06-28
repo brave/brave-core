@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-
 #include "brave/common/url_constants.h"
 
 const char kChromeExtensionScheme[] = "chrome-extension";
@@ -23,4 +22,6 @@ const char kCryptoWalletsLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/360034535452";
 const char kPermissionPromptLearnMoreUrl[] =
     "https://github.com/brave/brave-browser/wiki/Web-API-Permissions";
-const char kSpeedreaderLearnMoreUrl[] = "https://brave.com/speed-reader/";
+const char kSpeedreaderLearnMoreUrl[] =
+    "https://support.brave.com/hc/en-us/articles/"
+    "360045031392-What-is-SpeedReader";
