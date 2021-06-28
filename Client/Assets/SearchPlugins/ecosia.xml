@@ -9,6 +9,7 @@
   <Url type="text/html" method="get" template="https://www.ecosia.org/search" >
   <Param name="q" value="{searchTerms}"/>
   <Param name="tt" value="d188c5da"/>
+  <Param name="addon" value="brave"/>
   </Url>
   <Url type="application/x-suggestions+json" template="https://ac.ecosia.org/autocomplete" >
    <Param name="q" value="{searchTerms}"/>
