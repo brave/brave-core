@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMMON_NETWORK_CONSTANTS_H_
 #define BRAVE_COMMON_NETWORK_CONSTANTS_H_
 
+extern const char kExtensionUpdaterDomain[];
+
 extern const char kBraveProxyPattern[];
 extern const char kBraveSoftwareProxyPattern[];
 
