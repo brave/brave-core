@@ -16,6 +16,7 @@ static_library("brave_vpn") {
   deps = [
     ":brave_vpn_internal",
     "//base",
+    "//brave/components/api_request_helper:api_request_helper",
     "//components/keyed_service/core",
     "//net",
     "//services/network/public/cpp",

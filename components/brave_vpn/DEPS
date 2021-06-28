@@ -4,4 +4,5 @@ include_rules = [
     "+components/keyed_service/core",
     "+net",
     "+url",
+    "+brave/components/api_request_helper",
 ]
