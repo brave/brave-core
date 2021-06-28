@@ -41,7 +41,7 @@ class PostClaimUpholdTest : public testing::Test {
   }
 };
 
-const std::string kExpectedAddress = "address";
+const char kExpectedAddress[] = "address";
 
 TEST_F(PostClaimUpholdTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))

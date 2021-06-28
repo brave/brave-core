@@ -5,6 +5,9 @@
 
 #include "bat/ledger/internal/uphold/uphold_wallet.h"
 
+#include <memory>
+#include <utility>
+
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/common/random_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -276,7 +279,7 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
 
     ledger_->database()->SaveEventLog(
         log::kDeviceLimitReached,
-        constant::kWalletUphold + std::string{"/"} + id.substr(0, 5));
+        constant::kWalletUphold + std::string("/") + id.substr(0, 5));
 
     return callback(type::Result::ALREADY_EXISTS);
   }
@@ -298,7 +301,7 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
 
   ledger_->database()->SaveEventLog(
       log::kWalletConnected,
-      constant::kWalletUphold + std::string{"/"} + id.substr(0, 5));
+      constant::kWalletUphold + std::string("/") + id.substr(0, 5));
 
   ledger_->promotion()->TransferTokens(
       std::bind(&UpholdWallet::OnTransferTokens, this, _1, _2, callback));

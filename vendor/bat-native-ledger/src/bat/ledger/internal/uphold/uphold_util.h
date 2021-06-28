@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "absl/types/optional.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
@@ -60,7 +59,7 @@ std::string GenerateVerifyLink(type::ExternalWalletPtr wallet);
 type::ExternalWalletPtr ResetWallet(type::ExternalWalletPtr wallet);
 
 void LogWalletStatusChange(LedgerImpl* ledger,
-                           absl::optional<type::WalletStatus> from,
+                           base::Optional<type::WalletStatus> from,
                            type::WalletStatus to);
 
 }  // namespace uphold

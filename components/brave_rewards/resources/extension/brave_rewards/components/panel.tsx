@@ -201,35 +201,35 @@ export class Panel extends React.Component<Props, State> {
     })
     this.actions.deleteNotification(id)
   }
-  
+
   onUpholdBATNotAllowedForUser = (id: string) => {
     chrome.tabs.create({
       url: 'https://support.uphold.com/hc/en-us/articles/360033020351-Brave-BAT-and-US-availability'
     })
     this.actions.deleteNotification(id)
   }
-  
+
   onUpholdBlockedUser = (id: string) => {
     chrome.tabs.create({
       url: 'https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk'
     })
     this.actions.deleteNotification(id)
   }
-  
+
   onUpholdPendingUser = (id: string) => {
     chrome.tabs.create({
       url: 'https://support.uphold.com/hc/en-us/articles/206695986-How-do-I-sign-up-for-Uphold-Web-'
     })
     this.actions.deleteNotification(id)
   }
-  
+
   onUpholdRestrictedUser = (id: string) => {
     chrome.tabs.create({
       url: 'https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk'
     })
     this.actions.deleteNotification(id)
   }
-  
+
   onUpholdUnverifiedUser = (id: string) => {
     chrome.tabs.create({
       url: 'https://support.uphold.com/hc/en-us/articles/202766795-Here-s-how-to-verify-your-identity-it-s-easy'
