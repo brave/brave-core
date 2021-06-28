@@ -50,16 +50,6 @@ const getNPMConfig = (key) => {
   return NpmConfig[key.join('-').replace(/_/g, '-')] || packageConfig(key)
 }
 
-const getMacOSSDKVersion = () => {
-  const result = run('xcrun', ['--sdk', 'macosx', '--show-sdk-version'])
-  const version = parseFloat(result.stdout.toString())
-  if (!version) {
-    console.log('Unable to determine currently configured MacOS SDK version')
-    return ''
-  }
-  return String(version)
-};
-
 const parseExtraInputs = (inputs, accumulator, callback) => {
   for (let input of inputs) {
     let separatorIndex = input.indexOf(':')
@@ -268,14 +258,6 @@ Config.prototype.buildArgs = function () {
     ...this.extraGnArgs,
   }
 
-  if (process.platform === 'darwin') {
-    const sdkVersion = getMacOSSDKVersion()
-    if (sdkVersion) {
-      args.use_system_xcode = false
-      args.mac_sdk_official_version = sdkVersion
-    }
-  }
-
   if (this.shouldSign()) {
     if (process.platform === 'darwin') {
       args.mac_signing_identifier = this.mac_signing_identifier
@@ -417,8 +399,6 @@ Config.prototype.buildArgs = function () {
     args.ios_enable_share_extension = false
     args.ios_enable_credential_provider_extension = false
     args.ios_enable_widget_kit_extension = false
-
-    args.use_system_xcode = true
 
     delete args.safebrowsing_api_endpoint
     delete args.updater_prod_endpoint
