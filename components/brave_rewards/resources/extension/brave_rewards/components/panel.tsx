@@ -204,7 +204,7 @@ export class Panel extends React.Component<Props, State> {
   
   onUpholdBATNotAllowedForUser = (id: string) => {
     chrome.tabs.create({
-      url: 'https://uphold.com/en/developer/api/documentation/#currencies'
+      url: 'https://support.uphold.com/hc/en-us/articles/360033020351-Brave-BAT-and-US-availability'
     })
     this.actions.deleteNotification(id)
   }
