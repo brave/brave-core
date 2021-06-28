@@ -14,6 +14,7 @@
 #include "bat/ledger/internal/endpoint/uphold/uphold_server.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
+#include "bat/ledger/internal/notifications/notification_keys.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/uphold/uphold_authorization.h"
@@ -128,7 +129,7 @@ void Uphold::OnFetchBalance(const type::Result result,
                             FetchBalanceCallback callback) {
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
-    DisconnectWallet(notifications::kWalletDisconnected);
+    DisconnectWallet(ledger::notifications::kWalletDisconnected);
     callback(type::Result::EXPIRED_TOKEN, 0.0);
     return;
   }

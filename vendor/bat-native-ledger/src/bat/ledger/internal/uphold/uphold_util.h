@@ -24,8 +24,6 @@ const char kBlockedUser[] = "uphold_blocked_user";
 const char kPendingUser[] = "uphold_pending_user";
 const char kRestrictedUser[] = "uphold_restricted_user";
 const char kUnverifiedUser[] = "uphold_unverified_user";
-const char kWalletDeviceLimitReached[] = "wallet_device_limit_reached";
-const char kWalletDisconnected[] = "wallet_disconnected";
 }  // namespace notifications
 
 const char kUrlStaging[] = "https://wallet-sandbox.uphold.com";
