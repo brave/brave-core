@@ -62,7 +62,7 @@ class SearchViewController: SiteTableViewController, LoaderListener {
     // Views for displaying the bottom scrollable search engine list. searchEngineScrollView is the
     // scrollable container; searchEngineScrollViewContent contains the actual set of search engine buttons.
     private let searchEngineScrollView = ButtonScrollView().then { scrollView in
-        scrollView.decelerationRate = UIScrollView.DecelerationRate.fast
+        scrollView.decelerationRate = .fast
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.clipsToBounds = false
@@ -241,11 +241,11 @@ class SearchViewController: SiteTableViewController, LoaderListener {
             make.center.equalTo(searchEngineScrollView).priority(.low)
             // Left-align the engines on iphones, center on ipad
             if UIScreen.main.traitCollection.horizontalSizeClass == .compact {
-                make.left.equalTo(searchEngineScrollView).priority(.required)
+                make.leading.equalTo(searchEngineScrollView).priority(.required)
             } else {
-                make.left.greaterThanOrEqualTo(searchEngineScrollView).priority(.required)
+                make.leading.greaterThanOrEqualTo(searchEngineScrollView).priority(.required)
             }
-            make.bottom.right.top.equalTo(searchEngineScrollView)
+            make.bottom.trailing.top.equalTo(searchEngineScrollView)
         }
     }
 
@@ -254,9 +254,9 @@ class SearchViewController: SiteTableViewController, LoaderListener {
         
         let keyboardHeight = KeyboardHelper.defaultHelper.currentState?.intersectionHeightForView(view) ?? 0
         searchEngineScrollView.snp.remakeConstraints { make in
-            make.left.right.equalTo(view)
+            make.leading.trailing.equalTo(view)
             make.bottom.equalTo(view).offset(-keyboardHeight)
-            make.height.equalTo(SearchViewControllerUX.engineButtonHeight)
+            
         }
     }
     
