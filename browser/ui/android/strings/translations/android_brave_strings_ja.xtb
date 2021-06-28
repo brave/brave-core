@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">トラッカーや広告の読み込みやウェブページでの表示を防ぎます</translation>
 <translation id="1680858055899097121">セッション間でタブを保持しない</translation>
 <translation id="7142548388914389999">プライバシーを保護したプロダクト分析 (P3A) を許可する</translation>
-<translation id="5469408008145872264">この完全に匿名の情報は、Braveで特定の機能の全体的な使用状況を予測し、ユーザーエクスペリエンスを向上するために役立ちます。</translation>
+<translation id="5469408008145872264">この完全に匿名化された情報は、Braveが特定の機能の全体的な使用状況を推定し、ユーザーエクスペリエンスを向上するために役立ちます。</translation>
 <translation id="7977176350719484850">節約できた\n通信量 (推定)</translation>
 <translation id="9008534313521214777">節約できた\n時間(推定)</translation>
 <translation id="6572660632052512096">デスクトップモード</translation>
@@ -154,7 +154,7 @@
 <translation id="7510166204621526816">Brave Rewardsサーバーが応答しません。可能な限り早く回復いたします。</translation>
 <translation id="683765328936486920">YouTubeで</translation>
 <translation id="8969049974285901797">Twitchで</translation>
-<translation id="3692362746128814480">あなたは、寄付を受け取るためにまだサインアップしていないクリエイターに対して<ph name="BAT_VALUE"/>BATを指定しました。あなたのブラウザーは、クリエイターたちが確認するまで、または90日が経過するまで寄付の実行を試み続けます。</translation>
+<translation id="3692362746128814480">あなたは、寄付を受け取るためにまだサインアップしていないクリエイターに対して<ph name="BAT_VALUE"/>BATを指定しました。あなたのブラウザーは、クリエイターたちが認証するまで、または90日が経過するまで寄付の実行を試み続けます。</translation>
 <translation id="3101693828171454453"><ph name="TOKEN"/>足りません</translation>
 <translation id="6940273954212603510">お願いします</translation>
 <translation id="1036277985068412734">資金を追加する</translation>
@@ -329,6 +329,7 @@
 <translation id="5617673581653540121">これで、あなたの接続が暗号化されました。</translation>
 <translation id="4055107796760496928">可能な場合、Braveは自動的に安全な接続にアップブレード致します。</translation>
 <translation id="8869714780588464835">ニュースをシェア</translation>
+<translation id="7427391215172269363">BraveでWebを閲覧して毎日データ通信量を節約しています。</translation>
 <translation id="5372054974373489308">1,000件のトラッカーと広告がブロックされました！</translation>
 <translation id="2338952568654182692">5,000件のトラッカーと広告がブロックされました！</translation>
 <translation id="5289711064670408815">10,000件のトラッカーと広告がブロックされました！</translation>
