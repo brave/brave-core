@@ -410,10 +410,6 @@ void RewardsServiceImpl::InitPrefChangeRegistrar() {
 }
 
 void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
-  if (profile_->GetPrefs()->GetInteger(prefs::kVersion) == -1) {
-    return;
-  }
-
   if (key == prefs::kAutoContributeEnabled) {
     if (profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled)) {
       StartLedgerProcessIfNecessary();
