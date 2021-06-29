@@ -26,6 +26,10 @@
 
 BravePrivacyHandler::BravePrivacyHandler() {
   local_state_change_registrar_.Init(g_browser_process->local_state());
+  local_state_change_registrar_.Add(
+      kStatsReportingEnabled,
+      base::BindRepeating(&BravePrivacyHandler::OnStatsUsagePingEnabledChanged,
+                          base::Unretained(this)));
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   local_state_change_registrar_.Add(
       brave::kP3AEnabled,
@@ -106,6 +110,15 @@ void BravePrivacyHandler::SetStatsUsagePingEnabled(
 void BravePrivacyHandler::GetStatsUsagePingEnabled(
     const base::ListValue* args) {
   GetLocalStateBooleanEnabled(kStatsReportingEnabled, args);
+}
+
+void BravePrivacyHandler::OnStatsUsagePingEnabledChanged() {
+  if (IsJavascriptAllowed()) {
+    PrefService* local_state = g_browser_process->local_state();
+    bool enabled = local_state->GetBoolean(kStatsReportingEnabled);
+
+    FireWebUIListener("stats-usage-ping-enabled-changed", base::Value(enabled));
+  }
 }
 
 #if BUILDFLAG(BRAVE_P3A_ENABLED)

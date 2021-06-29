@@ -50,6 +50,9 @@ Polymer({
     this.browserProxy_.getStatsUsagePingEnabled().then(enabled => {
       this.statsUsagePingEnabled_ = enabled;
     });
+    this.addWebUIListener('stats-usage-ping-enabled-changed', (enabled) => {
+      this.statsUsagePingEnabled_ = enabled;
+    })
     this.addWebUIListener('p3a-enabled-changed', (enabled) => {
       this.p3aEnabled_ = enabled
     })
