@@ -141,6 +141,9 @@ extension Preferences {
         /// How many times Brave Search websites has asked the user to check whether Brave Search can be set as a default
         static let braveSearchDefaultBrowserPromptCount =
             Option<Int>(key: "search.brave-search-default-website-prompt", default: 0)
+        /// Determines Yahoo Search Engine is migration is done
+        static let yahooEngineMigrationCompleted = Option<Bool>(key: "search-yahoo-engine-migration-completed", default: false)
+
     }
     final class Privacy {
         /// Forces all private tabs

@@ -346,6 +346,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             profile?.searchEngines.searchEngineSetup()
         }
         
+        // Migration of Yahoo Search Engines
+        if !Preferences.Search.yahooEngineMigrationCompleted.value {
+            profile?.searchEngines.migrateDefaultYahooSearchEngines()
+        }
+        
         if isFirstLaunch {
             Preferences.DAU.installationDate.value = Date()
             

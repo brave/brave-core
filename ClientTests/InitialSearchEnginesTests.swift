@@ -45,13 +45,6 @@ class InitialSearchEnginesTests: XCTestCase {
         }
     }
     
-    func testYahooRegions() {
-        for region in InitialSearchEngines.yahooEligibleRegions {
-            let localeSE = SE(locale: Locale(identifier: "en_\(region)"))
-            XCTAssertNil(localeSE.priorityEngine)
-        }
-    }
-    
     func testYandexRegions() throws {
         
         for region in InitialSearchEngines.yandexDefaultRegions {
@@ -72,8 +65,7 @@ class InitialSearchEnginesTests: XCTestCase {
                                           .duckduckgo,
                                           .qwant,
                                           .startpage,
-                                          .ecosia,
-                                          .yahoo])
+                                          .ecosia])
         
         let onboardingEngines = localeSE.onboardingEngines.map { $0.id }
         XCTAssertEqual(onboardingEngines, [.google,
@@ -99,8 +91,7 @@ class InitialSearchEnginesTests: XCTestCase {
                                           .bing,
                                           .duckduckgo,
                                           .qwant,
-                                          .startpage,
-                                          .yahoo])
+                                          .startpage])
         
         let onboardingEngines = localeSE.onboardingEngines.map { $0.id }
         XCTAssertEqual(onboardingEngines, [.google,
@@ -111,7 +102,6 @@ class InitialSearchEnginesTests: XCTestCase {
         
         XCTAssertEqual(localeSE.defaultSearchEngine, .google)
         XCTAssertNil(localeSE.priorityEngine)
-        XCTAssertNotNil(localeSE.engines.first(where: { $0.customId == "yahoo-jp" }))
     }
     
     func testEnGB() throws {
@@ -123,8 +113,7 @@ class InitialSearchEnginesTests: XCTestCase {
                                           .duckduckgo,
                                           .qwant,
                                           .startpage,
-                                          .ecosia,
-                                          .yahoo])
+                                          .ecosia])
         
         let onboardingEngines = localeSE.onboardingEngines.map { $0.id }
         XCTAssertEqual(onboardingEngines, [.google,
@@ -148,8 +137,7 @@ class InitialSearchEnginesTests: XCTestCase {
                                           .bing,
                                           .qwant,
                                           .startpage,
-                                          .ecosia,
-                                          .yahoo])
+                                          .ecosia])
         
         let onboardingEngines = localeSE.onboardingEngines.map { $0.id }
         XCTAssertEqual(onboardingEngines, [.duckduckgo,
@@ -173,8 +161,7 @@ class InitialSearchEnginesTests: XCTestCase {
                                           .bing,
                                           .duckduckgo,
                                           .startpage,
-                                          .ecosia,
-                                          .yahoo])
+                                          .ecosia])
         
         let onboardingEngines = localeSE.onboardingEngines.map { $0.id }
         XCTAssertEqual(onboardingEngines, [.qwant,
