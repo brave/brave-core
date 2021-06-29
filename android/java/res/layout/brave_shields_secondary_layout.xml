@@ -27,22 +27,23 @@
 		android:textStyle="bold"
 		android:textColor="@color/shield_text_color" />
 
-	<include 
-		android:id="@+id/brave_shields_block_trackers_id"
-		layout="@layout/brave_shields_switcher"/>
-	<include 
+	<include
 		android:id="@+id/brave_shields_upgrade_https_id"
 		layout="@layout/brave_shields_switcher"/>
-	<include 
+	<include
 		android:id="@+id/brave_shields_block_scripts_id"
 		layout="@layout/brave_shields_switcher"/>
 
-	<include 
+	<include
+		android:id="@+id/brave_shields_cross_site_trackers_layout_id"
+		layout="@layout/brave_shields_toggle_layout"/>
+	<include
 		android:id="@+id/brave_shields_cookies_layout_id"
 		layout="@layout/brave_shields_toggle_layout"/>
 
-	<include 
+	<include
 		android:id="@+id/brave_shields_fingerprinting_layout_id"
 		layout="@layout/brave_shields_toggle_layout"/>
+
 
 </LinearLayout>
