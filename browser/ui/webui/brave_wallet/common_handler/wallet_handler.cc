@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/swap_controller.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui.h"
 
@@ -112,6 +113,41 @@ void WalletHandler::OnGetPriceHistory(
     bool success,
     std::vector<brave_wallet::mojom::AssetTimePricePtr> values) {
   std::move(callback).Run(std::move(values));
+}
+
+void WalletHandler::GetPriceQuote(brave_wallet::mojom::SwapParamsPtr params,
+                                  GetPriceQuoteCallback callback) {
+  auto* profile = Profile::FromWebUI(web_ui_);
+  auto* swap_controller = GetBraveWalletService(profile)->swap_controller();
+  swap_controller->GetPriceQuote(
+      *params,
+      base::BindOnce(&WalletHandler::OnGetPriceQuote,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void WalletHandler::OnGetPriceQuote(
+    GetPriceQuoteCallback callback,
+    bool success,
+    brave_wallet::mojom::SwapResponsePtr response) {
+  std::move(callback).Run(std::move(response));
+}
+
+void WalletHandler::GetTransactionPayload(
+    brave_wallet::mojom::SwapParamsPtr params,
+    GetTransactionPayloadCallback callback) {
+  auto* profile = Profile::FromWebUI(web_ui_);
+  auto* swap_controller = GetBraveWalletService(profile)->swap_controller();
+  swap_controller->GetTransactionPayload(
+      *params,
+      base::BindOnce(&WalletHandler::OnGetTransactionPayload,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void WalletHandler::OnGetTransactionPayload(
+    GetTransactionPayloadCallback callback,
+    bool success,
+    brave_wallet::mojom::SwapResponsePtr response) {
+  std::move(callback).Run(std::move(response));
 }
 
 void WalletHandler::AddFavoriteApp(

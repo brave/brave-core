@@ -14,7 +14,11 @@ namespace brave_wallet {
 
 bool ParseAssetPrice(const std::string& json, std::string* price) {
   // Parses results like this:
-  // {"basic-attention-token":{"usd":0.694503}}
+  // {  "payload":
+  //   {
+  //     "basic-attention-token":{"usd":0.694503}
+  //   }
+  // }
   DCHECK(price);
 
   base::JSONReader::ValueWithError value_with_error =
@@ -26,16 +30,26 @@ bool ParseAssetPrice(const std::string& json, std::string* price) {
     return false;
   }
 
-  const base::DictionaryValue* result_dict;
-  if (!records_v->GetAsDictionary(&result_dict)) {
+  const base::DictionaryValue* response_dict;
+  if (!records_v->GetAsDictionary(&response_dict)) {
     return false;
   }
 
-  if (result_dict->DictSize() != 1) {
+  auto* payload = response_dict->FindPath("payload");
+  if (!payload) {
     return false;
   }
 
-  auto items = result_dict->DictItems();
+  const base::DictionaryValue* payload_dict;
+  if (!payload->GetAsDictionary(&payload_dict)) {
+    return false;
+  }
+
+  if (payload->DictSize() == 0) {
+    return false;
+  }
+
+  auto items = payload->DictItems();
   if (!items.begin()->second.is_dict()) {
     return false;
   }

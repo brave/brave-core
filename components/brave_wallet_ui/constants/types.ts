@@ -199,6 +199,38 @@ export enum AssetPriceTimeframe {
   All = 6
 }
 
+export interface SwapParams {
+  takerAddress: string
+  sellAmount: string
+  buyAmount: string
+  buyToken: string
+  sellToken: string
+  buyTokenPercentageFee: number
+  slippagePercentage: number
+  feeRecipient: string
+  gasPrice: string
+}
+
+export interface SwapResponse {
+  price: string
+  guaranteedPrice: string
+  to: string
+  data: string
+  value: string
+  gas: string
+  estimatedGas: string
+  gasPrice: string
+  protocolFee: string
+  minimumProtocolFee: string
+  buyTokenAddress: string
+  sellTokenAddress: string
+  buyAmount: string
+  sellAmount: string
+  allowanceTarget: string
+  sellTokenToEthRate: string
+  buyTokenToEthRate: string
+}
+
 export interface GetAssetPriceReturnInfo {
   price: string
 }
@@ -221,6 +253,8 @@ export interface WalletAPIHandler {
   addFavoriteApp: (appItem: AppObjectType) => Promise<void>
   removeFavoriteApp: (appItem: AppObjectType) => Promise<void>
   restoreWallet: (mnemonic: string, password: string) => Promise<RestoreWalletReturnInfo>
+  getPriceQuote: (swapParams: SwapParams) => Promise<SwapResponse>
+  getTransactionPayload: (swapParams: SwapParams) => Promise<SwapResponse>
 }
 
 export interface RecoveryObject {

@@ -12,6 +12,7 @@
 #include "brave/components/brave_wallet/browser/eth_tx_controller.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/swap_controller.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -30,6 +31,8 @@ BraveWalletService::BraveWalletService(
       base::AsWeakPtr(this), prefs);
   asset_ratio_controller_ =
       std::make_unique<brave_wallet::AssetRatioController>(url_loader_factory);
+  swap_controller_ =
+      std::make_unique<brave_wallet::SwapController>(url_loader_factory);
 }
 
 BraveWalletService::~BraveWalletService() {}
@@ -65,6 +68,10 @@ brave_wallet::EthTxController* BraveWalletService::tx_controller() const {
 brave_wallet::AssetRatioController* BraveWalletService::asset_ratio_controller()
     const {
   return asset_ratio_controller_.get();
+}
+
+brave_wallet::SwapController* BraveWalletService::swap_controller() const {
+  return swap_controller_.get();
 }
 
 bool BraveWalletService::IsWalletBackedUp() const {

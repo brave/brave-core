@@ -41,7 +41,8 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
       }
     })");
   } else {
-    http_response->set_content(R"({"basic-attention-token":{"usd":0.694503}})");
+    http_response->set_content(
+        R"({"payload":{"basic-attention-token":{"usd":0.694503}}})");
   }
   return std::move(http_response);
 }

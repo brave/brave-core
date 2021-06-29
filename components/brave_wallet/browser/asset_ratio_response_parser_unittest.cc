@@ -16,13 +16,19 @@
 namespace brave_wallet {
 
 TEST(AssetRatioResponseParserUnitTest, ParseAssetPrice) {
-  std::string json(R"({"basic-attention-token":{"usd":0.694503}})");
+  std::string json(
+      R"({"payload": {"basic-attention-token":{"usd":0.694503}}})");
   std::string price;
   ASSERT_TRUE(ParseAssetPrice(json, &price));
   ASSERT_EQ(price, "0.694503");
-
+  // 2 value responses happen now for the alias and the full name
+  // We always parse only the first.
+  json =
+      R"({"payload":{"basic-attention-token":{"usd":0.694504},"bat":{"usd":0.529011}}})";
+  ASSERT_TRUE(ParseAssetPrice(json, &price));
+  ASSERT_EQ(price, "0.694504");
   // Invalid input
-  json = R"({"basic-attention-token": 3})";
+  json = R"({"payload":{"basic-attention-token": 3}})";
   ASSERT_FALSE(ParseAssetPrice(json, &price));
   json = "3";
   ASSERT_FALSE(ParseAssetPrice(json, &price));
