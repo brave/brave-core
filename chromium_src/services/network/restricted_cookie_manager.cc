@@ -14,47 +14,40 @@
 #include "url/gurl.h"
 #include "url/origin.h"
 
-namespace {
-
-bool ShouldUseEphemeralStorage(
-    const GURL& url,
-    const url::Origin& top_frame_origin,
-    const net::SiteForCookies& site_for_cookies,
-    const network::CookieSettings* const cookie_settings) {
-  return cookie_settings->ShouldUseEphemeralStorage(
-      url, site_for_cookies.RepresentativeUrl(), top_frame_origin);
-}
-
-}  // namespace
-
-#define BRAVE_GETALLFORURL                                                  \
-  if (ShouldUseEphemeralStorage(url, top_frame_origin, site_for_cookies,    \
-                                cookie_settings_)) {                        \
-    static_cast<net::CookieMonster*>(cookie_store_)                         \
-        ->GetEphemeralCookieListWithOptionsAsync(                           \
-            url, top_frame_origin.GetURL(), net_options,                    \
-            base::BindOnce(                                                 \
-                &RestrictedCookieManager::CookieListToGetAllForUrlCallback, \
-                weak_ptr_factory_.GetWeakPtr(), url, site_for_cookies,      \
-                top_frame_origin, net_options, std::move(options),          \
-                std::move(callback)));                                      \
-    return;                                                                 \
-  }
-
-#define BRAVE_SETCANONICALCOOKIE                                               \
-  if (ShouldUseEphemeralStorage(url, top_frame_origin, site_for_cookies,       \
-                                cookie_settings_)) {                           \
-    static_cast<net::CookieMonster*>(cookie_store_)                            \
-        ->SetEphemeralCanonicalCookieAsync(                                    \
-            std::move(sanitized_cookie), origin_.GetURL(),                     \
-            top_frame_origin.GetURL(), options,                                \
-            base::BindOnce(&RestrictedCookieManager::SetCanonicalCookieResult, \
-                           weak_ptr_factory_.GetWeakPtr(), url,                \
-                           site_for_cookies, cookie_copy, options,             \
-                           std::move(callback)));                              \
-    return;                                                                    \
-  }
-
 #define IsCookieAccessAllowed IsEphemeralCookieAccessAllowed
 #include "../../../../services/network/restricted_cookie_manager.cc"
 #undef IsCookieAccessAllowed
+
+namespace network {
+
+net::CookieOptions RestrictedCookieManager::MakeOptionsForSet(
+    mojom::RestrictedCookieManagerRole role,
+    const GURL& url,
+    const net::SiteForCookies& site_for_cookies,
+    const net::IsolationInfo& isolation_info,
+    const CookieSettings* cookie_settings,
+    const net::CookieAccessDelegate* cookie_access_delegate) const {
+  net::CookieOptions cookie_options =
+      ::network::MakeOptionsForSet(role, url, site_for_cookies, isolation_info,
+                                   cookie_settings, cookie_access_delegate);
+  net::FillEphemeralStorageParams(url, site_for_cookies, BoundTopFrameOrigin(),
+                                  cookie_access_delegate, &cookie_options);
+  return cookie_options;
+}
+
+net::CookieOptions RestrictedCookieManager::MakeOptionsForGet(
+    mojom::RestrictedCookieManagerRole role,
+    const GURL& url,
+    const net::SiteForCookies& site_for_cookies,
+    const net::IsolationInfo& isolation_info,
+    const CookieSettings* cookie_settings,
+    const net::CookieAccessDelegate* cookie_access_delegate) const {
+  net::CookieOptions cookie_options =
+      ::network::MakeOptionsForGet(role, url, site_for_cookies, isolation_info,
+                                   cookie_settings, cookie_access_delegate);
+  net::FillEphemeralStorageParams(url, site_for_cookies, BoundTopFrameOrigin(),
+                                  cookie_access_delegate, &cookie_options);
+  return cookie_options;
+}
+
+}  // namespace network

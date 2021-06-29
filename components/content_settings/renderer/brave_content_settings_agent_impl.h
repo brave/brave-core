@@ -71,7 +71,6 @@ class BraveContentSettingsAgentImpl
   void DidCommitProvisionalLoad(ui::PageTransition transition) override;
 
   bool IsScriptTemporilyAllowed(const GURL& script_url);
-  bool AllowStorageAccessForMainFrameSync(StorageType storage_type);
 
   // brave_shields::mojom::BraveShields.
   void SetAllowScriptsFromOriginsOnce(

@@ -147,16 +147,25 @@ bool BraveContentSettingsAgentImpl::UseEphemeralStorageSync(
   if (!frame || IsFrameWithOpaqueOrigin(frame))
     return false;
 
+  auto frame_origin = url::Origin(frame->GetSecurityOrigin());
+  StoragePermissionsKey key(frame_origin, storage_type);
+  const auto permissions = cached_storage_permissions_.find(key);
+  if (permissions != cached_storage_permissions_.end())
+    return permissions->second;
+
   auto top_origin = url::Origin(frame->Top()->GetSecurityOrigin());
   if (net::registry_controlled_domains::SameDomainOrHost(
-          top_origin, url::Origin(frame->GetSecurityOrigin()),
+          top_origin, frame_origin,
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES))
     return false;
 
-  return  // block 3p
-      !ContentSettingsAgentImpl::AllowStorageAccessSync(storage_type) &&
-      // allow 1p
-      AllowStorageAccessForMainFrameSync(storage_type);
+  bool result = false;
+  GetContentSettingsManager().AllowEphemeralStorageAccess(
+      routing_id(), ConvertToMojoStorageType(storage_type), frame_origin,
+      frame->GetDocument().SiteForCookies().RepresentativeUrl(), top_origin,
+      &result);
+  cached_storage_permissions_[key] = result;
+  return result;
 }
 
 bool BraveContentSettingsAgentImpl::AllowStorageAccessSync(
@@ -167,32 +176,6 @@ bool BraveContentSettingsAgentImpl::AllowStorageAccessSync(
     return true;
 
   return false;
-}
-
-bool BraveContentSettingsAgentImpl::AllowStorageAccessForMainFrameSync(
-    StorageType storage_type) {
-  blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
-
-  if (IsFrameWithOpaqueOrigin(frame))
-    return false;
-
-  bool result = false;
-
-  StoragePermissionsKey key(url::Origin(frame->GetSecurityOrigin()),
-                            storage_type);
-  const auto permissions = cached_storage_permissions_.find(key);
-  if (permissions != cached_storage_permissions_.end())
-    return permissions->second;
-
-  // check for block all by looking at top domain only
-  GetContentSettingsManager().AllowStorageAccess(
-      routing_id(), ConvertToMojoStorageType(storage_type),
-      frame->GetDocument().TopFrameOrigin(),
-      url::Origin(frame->GetDocument().TopFrameOrigin()).GetURL(),
-      frame->GetDocument().TopFrameOrigin(), &result);
-  cached_storage_permissions_[key] = result;
-
-  return result;
 }
 
 bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
