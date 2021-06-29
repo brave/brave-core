@@ -556,34 +556,6 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->VerifyTip(amount, true, false, true);
 }
 
-IN_PROC_BROWSER_TEST_F(
-    RewardsContributionBrowserTest,
-    TipConnectedPublisherConnected) {
-  response_->SetVerifiedWallet(true);
-  rewards_browsertest_util::StartProcess(rewards_service_);
-  rewards_browsertest_util::CreateWallet(rewards_service_);
-  contribution_->SetUpUpholdWallet(
-      rewards_service_,
-      50.0,
-      ledger::type::WalletStatus::CONNECTED);
-  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
-
-  const double amount = 5.0;
-  contribution_->TipViaCode(
-      "bumpsmack.com",
-      amount,
-      ledger::type::PublisherStatus::CONNECTED,
-      0);
-
-  contribution_->IsBalanceCorrect();
-
-  // Make sure that tips table is empty
-  rewards_browsertest_util::WaitForElementToEqual(
-      contents(),
-      "#tips-table > div > div",
-      "Have you tipped your favorite content creator today?");
-}
-
 // https://github.com/brave/brave-browser/issues/12985
 IN_PROC_BROWSER_TEST_F(
     RewardsContributionBrowserTest,
