@@ -298,10 +298,7 @@ source_set("ui") {
   }
 
   if (enable_speedreader) {
-    deps += [
-      "//brave/components/speedreader",
-      "//components/dom_distiller/content/browser",
-    ]
+    deps += [ "//brave/components/speedreader" ]
 
     sources += [
       "speedreader/speedreader_bubble_view.h",

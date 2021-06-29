@@ -69,10 +69,9 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  speedreader::SpeedreaderTabHelper* tab_helper() {
-    auto* contents = browser()->tab_strip_model()->GetActiveWebContents();
-    speedreader::SpeedreaderTabHelper::CreateForWebContents(contents);
-    return speedreader::SpeedreaderTabHelper::FromWebContents(contents);
+  speedreader::SpeedreaderService* speedreader_service() {
+    return speedreader::SpeedreaderServiceFactory::GetForProfile(
+        browser()->profile());
   }
 
   void ToggleSpeedreader() {
@@ -121,6 +120,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, P3ATest) {
   ui_test_utils::NavigateToURL(browser(), url);
 
   // SpeedReader never enabled
+  DCHECK(!speedreader_service()->IsEnabled());
   tester.ExpectBucketCount(kSpeedreaderEnabledUMAHistogramName, 0, 1);
   tester.ExpectBucketCount(kSpeedreaderToggleUMAHistogramName, 0, 1);
 

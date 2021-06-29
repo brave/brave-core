@@ -79,19 +79,21 @@ void SpeedreaderTabHelper::UpdateActiveState(
     return;
   }
 
-  if (!IsEnabledForSite()) {
-    SetNextRequestState(DistillState::kNone);
-    return;
-  }
-
   // Work only with casual main frame navigations.
   if (handle->GetURL().SchemeIsHTTPOrHTTPS()) {
     auto* rewriter_service =
         g_brave_browser_process->speedreader_rewriter_service();
     if (speedreader::IsWhitelistedForTest(handle->GetURL()) ||
         rewriter_service->IsWhitelisted(handle->GetURL())) {
-      VLOG(2) << __func__ << " SpeedReader active for " << handle->GetURL();
-      SetNextRequestState(DistillState::kSpeedreaderMode);
+      VLOG(2) << __func__
+              << "URL passed speedreader heuristic: " << handle->GetURL();
+      if (!IsSpeedreaderEnabled()) {
+        SetNextRequestState(DistillState::kPageProbablyReadable);
+      } else if (!IsEnabledForSite()) {
+        SetNextRequestState(DistillState::kSpeedreaderOnDisabledPage);
+      } else {
+        SetNextRequestState(DistillState::kSpeedreaderMode);
+      }
       return;
     }
   }
@@ -101,10 +103,6 @@ void SpeedreaderTabHelper::UpdateActiveState(
 void SpeedreaderTabHelper::SetNextRequestState(DistillState state) {
   distill_state_ = state;
   single_shot_next_request_ = false;
-}
-
-bool SpeedreaderTabHelper::IsActiveForMainFrame() const {
-  return distill_state_ != DistillState::kNone;
 }
 
 void SpeedreaderTabHelper::DidStartNavigation(

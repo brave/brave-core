@@ -460,19 +460,21 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
   }
   auto* tab_helper =
       speedreader::SpeedreaderTabHelper::FromWebContents(contents);
-  if (tab_helper && tab_helper->IsActiveForMainFrame() &&
-      request.resource_type ==
-          static_cast<int>(blink::mojom::ResourceType::kMainFrame)) {
+  if (tab_helper) {
     const auto state = tab_helper->PageDistillState();
-    std::unique_ptr<speedreader::SpeedReaderThrottle> throttle =
-        speedreader::SpeedReaderThrottle::MaybeCreateThrottleFor(
-            g_brave_browser_process->speedreader_rewriter_service(),
-            HostContentSettingsMapFactory::GetForProfile(
-                Profile::FromBrowserContext(browser_context)),
-            request.url, state == DistillState::kSpeedreaderMode,
-            base::ThreadTaskRunnerHandle::Get());
-    if (throttle)
-      result.push_back(std::move(throttle));
+    if (speedreader::SpeedreaderTabHelper::PageStateIsDistilled(state) &&
+        request.resource_type ==
+            static_cast<int>(blink::mojom::ResourceType::kMainFrame)) {
+      std::unique_ptr<speedreader::SpeedReaderThrottle> throttle =
+          speedreader::SpeedReaderThrottle::MaybeCreateThrottleFor(
+              g_brave_browser_process->speedreader_rewriter_service(),
+              HostContentSettingsMapFactory::GetForProfile(
+                  Profile::FromBrowserContext(browser_context)),
+              request.url, state == DistillState::kSpeedreaderMode,
+              base::ThreadTaskRunnerHandle::Get());
+      if (throttle)
+        result.push_back(std::move(throttle));
+    }
   }
 #endif  // ENABLE_SPEEDREADER
   return result;

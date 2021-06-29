@@ -20,7 +20,6 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 #include "chrome/grit/generated_resources.h"
-#include "components/dom_distiller/content/browser/distillable_page_utils.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/theme_provider.h"
@@ -46,12 +45,7 @@ SpeedreaderIconView::SpeedreaderIconView(
   SetVisible(false);
 }
 
-SpeedreaderIconView::~SpeedreaderIconView() {
-  auto* contents = web_contents();
-  if (contents)
-    dom_distiller::RemoveObserver(contents, this);
-  DCHECK(!DistillabilityObserver::IsInObserverList());
-}
+SpeedreaderIconView::~SpeedreaderIconView() = default;
 
 void SpeedreaderIconView::UpdateImpl() {
   if (!base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
@@ -68,13 +62,6 @@ void SpeedreaderIconView::UpdateImpl() {
   if (ink_drop()->GetHighlighted() && !IsBubbleShowing())
     ink_drop()->AnimateToState(views::InkDropState::HIDDEN, nullptr);
 
-  auto* old_contents = web_contents();
-  if (contents != old_contents) {
-    if (old_contents)
-      dom_distiller::RemoveObserver(old_contents, this);
-    dom_distiller::AddObserver(contents, this);
-  }
-
   auto* tab_helper =
       speedreader::SpeedreaderTabHelper::FromWebContents(contents);
   if (!tab_helper) {
@@ -82,33 +69,39 @@ void SpeedreaderIconView::UpdateImpl() {
     return;
   }
 
-  const bool is_distilled = tab_helper->IsActiveForMainFrame();
+  const DistillState state = tab_helper->PageDistillState();
+  const bool is_distilled =
+      speedreader::SpeedreaderTabHelper::PageStateIsDistilled(state);
 
   if (!is_distilled) {
-    auto result = dom_distiller::GetLatestResult(contents);
-    if (result) {
-      const bool visible = result->is_last && result->is_distillable;
-      SetVisible(visible);
+    if (state == DistillState::kSpeedreaderOnDisabledPage) {
+      SetLabel(l10n_util::GetStringUTF16(IDS_ICON_SPEEDREADER_MODE_LABEL));
+      SetVisible(true);
+      label()->SetVisible(true);
+      UpdateLabelColors();
+    } else if (state == DistillState::kPageProbablyReadable) {
+      SetVisible(true);
       label()->SetVisible(false);
+    } else {
+      SetVisible(false);
+      label()->SetVisible(false);
+    }
 
-      if (GetVisible()) {
-        // Reset the icon color
-        const ui::ThemeProvider* tp = GetThemeProvider();
-        SkColor icon_color_default =
-            GetOmniboxColor(tp, OmniboxPart::RESULTS_ICON);
-        SetIconColor(icon_color_default);
-      }
+    if (GetVisible()) {
+      // Reset the icon color
+      const ui::ThemeProvider* tp = GetThemeProvider();
+      SkColor icon_color_default =
+          GetOmniboxColor(tp, OmniboxPart::RESULTS_ICON);
+      SetIconColor(icon_color_default);
     }
   }
 
   if (is_distilled) {
-    const DistillState state = tab_helper->PageDistillState();
-    DCHECK(state != DistillState::kNone);
-
     const int label_id = state == DistillState::kReaderMode
                              ? IDS_ICON_READER_MODE_LABEL
                              : IDS_ICON_SPEEDREADER_MODE_LABEL;
     SetLabel(l10n_util::GetStringUTF16(label_id));
+    UpdateLabelColors();
     SetIconColor(kReaderIconColor);
     SetVisible(true);
     label()->SetVisible(true);
@@ -143,24 +136,38 @@ views::BubbleDialogDelegate* SpeedreaderIconView::GetBubble() const {
       tab_helper->speedreader_bubble_view());
 }
 
+SkColor SpeedreaderIconView::GetLabelColorOr(SkColor fallback) const {
+  auto* web_contents = GetWebContents();
+  if (!web_contents)
+    return fallback;
+
+  auto* tab_helper =
+      speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);
+  if (!tab_helper)
+    return fallback;
+
+  const DistillState state = tab_helper->PageDistillState();
+  if (speedreader::SpeedreaderTabHelper::PageStateIsDistilled(state))
+    return kReaderIconColor;
+
+  return fallback;
+}
+
 SkColor SpeedreaderIconView::GetIconLabelBubbleSurroundingForegroundColor()
     const {
-  // We can always return this since the text will be set to invisible on
-  // non-readable pages.
-  return kReaderIconColor;
+  const auto fallback = icon_label_bubble_delegate_
+                            ->GetIconLabelBubbleSurroundingForegroundColor();
+  return GetLabelColorOr(fallback);
 }
 
 SkColor SpeedreaderIconView::GetIconLabelBubbleInkDropColor() const {
-  return kReaderIconColor;
+  const auto fallback =
+      icon_label_bubble_delegate_->GetIconLabelBubbleInkDropColor();
+  return GetLabelColorOr(fallback);
 }
 
 SkColor SpeedreaderIconView::GetIconLabelBubbleBackgroundColor() const {
   return icon_label_bubble_delegate_->GetIconLabelBubbleBackgroundColor();
-}
-
-void SpeedreaderIconView::OnResult(
-    const dom_distiller::DistillabilityResult& result) {
-  Update();
 }
 
 BEGIN_METADATA(SpeedreaderIconView, PageActionIconView)
