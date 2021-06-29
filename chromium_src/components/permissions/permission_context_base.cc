@@ -13,9 +13,10 @@
 
 namespace permissions {
 
-void PermissionContextBase::SetPermissionLifetimeManager(
-    PermissionLifetimeManager* lifetime_manager) {
-  permission_lifetime_manager_ = lifetime_manager;
+void PermissionContextBase::SetPermissionLifetimeManagerFactory(
+    const base::RepeatingCallback<
+        PermissionLifetimeManager*(content::BrowserContext*)>& factory) {
+  permission_lifetime_manager_factory_ = factory;
 }
 
 void PermissionContextBase::PermissionDecided(
@@ -25,14 +26,17 @@ void PermissionContextBase::PermissionDecided(
     BrowserPermissionCallback callback,
     ContentSetting content_setting,
     bool is_one_time) {
-  if (permission_lifetime_manager_) {
+  if (permission_lifetime_manager_factory_) {
     const auto request_it = pending_requests_.find(id.ToString());
     if (request_it != pending_requests_.end()) {
       const PermissionRequest* permission_request = request_it->second.get();
       DCHECK(permission_request);
-      permission_lifetime_manager_->PermissionDecided(
-          *permission_request, requesting_origin, embedding_origin,
-          content_setting, is_one_time);
+      if (auto* permission_lifetime_manager =
+              permission_lifetime_manager_factory_.Run(browser_context_)) {
+        permission_lifetime_manager->PermissionDecided(
+            *permission_request, requesting_origin, embedding_origin,
+            content_setting, is_one_time);
+      }
     }
   }
   PermissionContextBase_ChromiumImpl::PermissionDecided(
