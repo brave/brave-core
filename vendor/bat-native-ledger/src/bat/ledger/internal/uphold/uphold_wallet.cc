@@ -128,17 +128,10 @@ void UpholdWallet::OnGetUser(const type::Result result,
     const auto notification =
         GetNotificationForUserStatus(user.status, user.verified);
 
-    if (uphold_wallet->status == type::WalletStatus::VERIFIED) {
-      // Entering DISCONNECTED_VERIFIED.
-      ledger_->uphold()->DisconnectWallet(
-          !notification.empty() ? notification
-                                : ledger::notifications::kWalletDisconnected);
-    } else {
-      if (!notification.empty()) {
-        ledger_->ledger_client()->ShowNotification(notification, {},
-                                                   [](type::Result) {});
-      }
-    }
+    // Entering NOT_CONNECTED or DISCONNECTED_VERIFIED.
+    ledger_->uphold()->DisconnectWallet(
+        !notification.empty() ? notification
+                              : ledger::notifications::kWalletDisconnected);
 
     return callback(type::Result::LEDGER_OK);
   }
