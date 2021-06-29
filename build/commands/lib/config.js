@@ -258,6 +258,22 @@ Config.prototype.buildArgs = function () {
     ...this.extraGnArgs,
   }
 
+  if (process.platform === 'darwin') {
+    // TODO(petemill): Identify "brave corporate" developers via an env variable
+    // or .npmrc flag and download the SDK for them, always setting
+    // use_system_xcode = false unless specified otherwise via a flag.
+    // For now we're only doing this for `use_goma` which means when developers
+    // do not specify this flag, their build output will be invalidated and
+    // will likely have to do a full re-build.
+    if (this.use_goma) {
+      // SDK Version is consistent for all users so we can share distributed
+      // cache.
+      const sdkVersion = "11.1"
+      args.use_system_xcode = false
+      args.mac_sdk_official_version = sdkVersion
+    }
+  }
+
   if (this.shouldSign()) {
     if (process.platform === 'darwin') {
       args.mac_signing_identifier = this.mac_signing_identifier
