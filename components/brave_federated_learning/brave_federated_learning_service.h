@@ -21,7 +21,7 @@ class SharedURLLoaderFactory;
 
 namespace brave {
 
-class BraveOperationalProfiling;
+class BraveOperationalPatterns;
 
 class BraveFederatedLearningService final {
  public:
@@ -42,11 +42,11 @@ class BraveFederatedLearningService final {
   void OnPreferenceChanged(const std::string& key);
 
   bool IsP3AEnabled();
-  bool IsOperationalProfilingEnabled();
+  bool IsOperationalPatternsEnabled();
 
   PrefService* local_state_;
   PrefChangeRegistrar local_state_change_registrar_;
-  std::unique_ptr<BraveOperationalProfiling> operational_profiling_;
+  std::unique_ptr<BraveOperationalPatterns> operational_patterns_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 };
 

@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_federated_learning/brave_operational_profiling_features.h"
+#include "brave/components/brave_federated_learning/brave_operational_patterns_features.h"
 
 #include "base/metrics/field_trial_params.h"
 
-namespace operational_profiling {
+namespace operational_patterns {
 namespace features {
 
 namespace {
-const char kFeatureName[] = "FederatedLearningOperationalProfiling";
+const char kFeatureName[] = "FederatedLearningOperationalPatterns";
 
 const char kFieldTrialParameterCollectionSlotSizeInMinutes[] =
     "collection_slot_size_in_minutes";
@@ -27,32 +27,31 @@ const int kDefaultCollectionIDLifetimeInDays = 1;
 
 }  // namespace
 
-const base::Feature kUserOperationalProfiling{
-    kFeatureName, base::FEATURE_DISABLED_BY_DEFAULT};
+const base::Feature kUserOperationalPatterns{kFeatureName,
+                                             base::FEATURE_DISABLED_BY_DEFAULT};
 
-bool IsOperationalProfilingEnabled() {
-  return base::FeatureList::IsEnabled(kUserOperationalProfiling);
+bool IsOperationalPatternsEnabled() {
+  return base::FeatureList::IsEnabled(kUserOperationalPatterns);
 }
 
 int GetCollectionSlotSizeValue() {
   return GetFieldTrialParamByFeatureAsInt(
-      kUserOperationalProfiling,
-      kFieldTrialParameterCollectionSlotSizeInMinutes,
+      kUserOperationalPatterns, kFieldTrialParameterCollectionSlotSizeInMinutes,
       kDefaultCollectionSlotSizeInMinutes);
 }
 
 int GetSimulateLocalTrainingStepDurationValue() {
   return GetFieldTrialParamByFeatureAsInt(
-      kUserOperationalProfiling,
+      kUserOperationalPatterns,
       kFieldTrialParameterSimulateLocalTrainingStepDurationInMinutes,
       kDefaultSimulateLocalTrainingStepDurationInMinutes);
 }
 
 int GetCollectionIdLifetime() {
   return GetFieldTrialParamByFeatureAsInt(
-      kUserOperationalProfiling, kFieldTrialParameterCollectionIDLifetimeInDays,
+      kUserOperationalPatterns, kFieldTrialParameterCollectionIDLifetimeInDays,
       kDefaultCollectionIDLifetimeInDays);
 }
 
 }  // namespace features
-}  // namespace operational_profiling
+}  // namespace operational_patterns

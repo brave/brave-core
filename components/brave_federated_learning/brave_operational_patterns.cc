@@ -7,13 +7,13 @@
 #include <string>
 #include <utility>
 
-#include "brave/components/brave_federated_learning/brave_operational_profiling.h"
+#include "brave/components/brave_federated_learning/brave_operational_patterns.h"
 
 #include "base/json/json_writer.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "brave/components/brave_federated_learning/brave_operational_profiling_features.h"
+#include "brave/components/brave_federated_learning/brave_operational_patterns_features.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -33,12 +33,12 @@ constexpr char kCollectionIdExpirationPrefName[] =
     "brave.federated.collection_id_expiration";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
-  return net::DefineNetworkTrafficAnnotation("brave_operational_profiling", R"(
+  return net::DefineNetworkTrafficAnnotation("brave_operational_patterns", R"(
         semantics {
-          sender: "Operational Profiling Service"
+          sender: "Operational Patterns Service"
           description:
             "Report of anonymized engagement statistics. For more info see "
-            "https://github.com/brave/brave-browser/wiki/Anonymous-Operational-Profiles"
+            "https://github.com/brave/brave-browser/wiki/Operational-Patterns"
           trigger:
             "Reports are automatically generated on startup and at intervals "
             "while Brave is running."
@@ -58,21 +58,21 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 }  // anonymous namespace
 
-BraveOperationalProfiling::BraveOperationalProfiling(
+BraveOperationalPatterns::BraveOperationalPatterns(
     PrefService* pref_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : local_state_(pref_service), url_loader_factory_(url_loader_factory) {}
 
-BraveOperationalProfiling::~BraveOperationalProfiling() {}
+BraveOperationalPatterns::~BraveOperationalPatterns() {}
 
-void BraveOperationalProfiling::RegisterLocalStatePrefs(
+void BraveOperationalPatterns::RegisterLocalStatePrefs(
     PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kLastCheckedSlotPrefName, -1);
   registry->RegisterStringPref(kCollectionIdPrefName, {});
   registry->RegisterTimePref(kCollectionIdExpirationPrefName, base::Time());
 }
 
-void BraveOperationalProfiling::Start() {
+void BraveOperationalPatterns::Start() {
   DCHECK(!simulate_local_training_step_timer_);
   DCHECK(!collection_slot_periodic_timer_);
 
@@ -84,48 +84,48 @@ void BraveOperationalProfiling::Start() {
   simulate_local_training_step_timer_->Start(
       FROM_HERE,
       base::TimeDelta::FromSeconds(
-          operational_profiling::features::
+          operational_patterns::features::
               GetSimulateLocalTrainingStepDurationValue() *
           60),
-      this, &BraveOperationalProfiling::OnSimulateLocalTrainingStepTimerFired);
+      this, &BraveOperationalPatterns::OnSimulateLocalTrainingStepTimerFired);
 
   collection_slot_periodic_timer_ = std::make_unique<base::RepeatingTimer>();
   collection_slot_periodic_timer_->Start(
       FROM_HERE,
       base::TimeDelta::FromSeconds(
-          operational_profiling::features::GetCollectionSlotSizeValue() * 60 /
+          operational_patterns::features::GetCollectionSlotSizeValue() * 60 /
           2),
-      this, &BraveOperationalProfiling::OnCollectionSlotStartTimerFired);
+      this, &BraveOperationalPatterns::OnCollectionSlotStartTimerFired);
 }
 
-void BraveOperationalProfiling::Stop() {
+void BraveOperationalPatterns::Stop() {
   simulate_local_training_step_timer_.reset();
   collection_slot_periodic_timer_.reset();
 }
 
-void BraveOperationalProfiling::LoadPrefs() {
+void BraveOperationalPatterns::LoadPrefs() {
   last_checked_slot_ = local_state_->GetInteger(kLastCheckedSlotPrefName);
   collection_id_ = local_state_->GetString(kCollectionIdPrefName);
   collection_id_expiration_time_ =
       local_state_->GetTime(kCollectionIdExpirationPrefName);
 }
 
-void BraveOperationalProfiling::SavePrefs() {
+void BraveOperationalPatterns::SavePrefs() {
   local_state_->SetInteger(kLastCheckedSlotPrefName, last_checked_slot_);
   local_state_->SetString(kCollectionIdPrefName, collection_id_);
   local_state_->SetTime(kCollectionIdExpirationPrefName,
                         collection_id_expiration_time_);
 }
 
-void BraveOperationalProfiling::OnCollectionSlotStartTimerFired() {
+void BraveOperationalPatterns::OnCollectionSlotStartTimerFired() {
   simulate_local_training_step_timer_->Reset();
 }
 
-void BraveOperationalProfiling::OnSimulateLocalTrainingStepTimerFired() {
+void BraveOperationalPatterns::OnSimulateLocalTrainingStepTimerFired() {
   SendCollectionSlot();
 }
 
-void BraveOperationalProfiling::SendCollectionSlot() {
+void BraveOperationalPatterns::SendCollectionSlot() {
   current_collected_slot_ = GetCurrentCollectionSlot();
   if (current_collected_slot_ == last_checked_slot_) {
     return;
@@ -135,7 +135,7 @@ void BraveOperationalProfiling::SendCollectionSlot() {
 
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = GURL(federatedLearningUrl);
-  resource_request->headers.SetHeader("X-Brave-FL-Operational-Profile", "?1");
+  resource_request->headers.SetHeader("X-Brave-FL-Operational-Patterns", "?1");
 
   resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   resource_request->method = "POST";
@@ -146,11 +146,11 @@ void BraveOperationalProfiling::SendCollectionSlot() {
 
   url_loader_->DownloadHeadersOnly(
       url_loader_factory_.get(),
-      base::BindOnce(&BraveOperationalProfiling::OnUploadComplete,
+      base::BindOnce(&BraveOperationalPatterns::OnUploadComplete,
                      base::Unretained(this)));
 }
 
-void BraveOperationalProfiling::OnUploadComplete(
+void BraveOperationalPatterns::OnUploadComplete(
     scoped_refptr<net::HttpResponseHeaders> headers) {
   int response_code = -1;
   if (headers)
@@ -161,14 +161,14 @@ void BraveOperationalProfiling::OnUploadComplete(
   }
 }
 
-std::string BraveOperationalProfiling::BuildPayload() const {
+std::string BraveOperationalPatterns::BuildPayload() const {
   base::Value root(base::Value::Type::DICTIONARY);
 
   root.SetKey("collection_id", base::Value(collection_id_));
   root.SetKey("platform", base::Value(brave_stats::GetPlatformIdentifier()));
   root.SetKey("collection_slot", base::Value(current_collected_slot_));
   root.SetKey("wiki-link", base::Value("https://github.com/brave/brave-browser/"
-                                       "wiki/Anonymous-Operational-Profiles"));
+                                       "wiki/Operational-Patterns"));
 
   std::string result;
   base::JSONWriter::Write(root, &result);
@@ -176,15 +176,15 @@ std::string BraveOperationalProfiling::BuildPayload() const {
   return result;
 }
 
-int BraveOperationalProfiling::GetCurrentCollectionSlot() const {
+int BraveOperationalPatterns::GetCurrentCollectionSlot() const {
   base::Time::Exploded now;
   base::Time::Now().LocalExplode(&now);
 
   return ((now.day_of_month - 1) * 24 * 60 + now.hour * 60 + now.minute) /
-         operational_profiling::features::GetCollectionSlotSizeValue();
+         operational_patterns::features::GetCollectionSlotSizeValue();
 }
 
-void BraveOperationalProfiling::MaybeResetCollectionId() {
+void BraveOperationalPatterns::MaybeResetCollectionId() {
   const base::Time now = base::Time::Now();
   if (collection_id_.empty() || (!collection_id_expiration_time_.is_null() &&
                                  now > collection_id_expiration_time_)) {
@@ -192,7 +192,7 @@ void BraveOperationalProfiling::MaybeResetCollectionId() {
         base::ToUpperASCII(base::UnguessableToken::Create().ToString());
     collection_id_expiration_time_ =
         now + base::TimeDelta::FromSeconds(
-                  operational_profiling::features::GetCollectionIdLifetime() *
+                  operational_patterns::features::GetCollectionIdLifetime() *
                   24 * 60 * 60);
     SavePrefs();
   }

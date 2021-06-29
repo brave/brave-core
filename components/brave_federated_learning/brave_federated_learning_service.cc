@@ -7,8 +7,8 @@
 
 #include "brave/components/brave_federated_learning/brave_federated_learning_service.h"
 
-#include "brave/components/brave_federated_learning/brave_operational_profiling.h"
-#include "brave/components/brave_federated_learning/brave_operational_profiling_features.h"
+#include "brave/components/brave_federated_learning/brave_operational_patterns.h"
+#include "brave/components/brave_federated_learning/brave_operational_patterns_features.h"
 #include "brave/components/p3a/pref_names.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -26,17 +26,17 @@ BraveFederatedLearningService::~BraveFederatedLearningService() {}
 
 void BraveFederatedLearningService::RegisterLocalStatePrefs(
     PrefRegistrySimple* registry) {
-  BraveOperationalProfiling::RegisterLocalStatePrefs(registry);
+  BraveOperationalPatterns::RegisterLocalStatePrefs(registry);
 }
 
 void BraveFederatedLearningService::Start() {
-  operational_profiling_.reset(
-      new BraveOperationalProfiling(local_state_, url_loader_factory_));
+  operational_patterns_.reset(
+      new BraveOperationalPatterns(local_state_, url_loader_factory_));
 
   InitPrefChangeRegistrar();
 
-  if (IsP3AEnabled() && IsOperationalProfilingEnabled()) {
-    operational_profiling_->Start();
+  if (IsP3AEnabled() && IsOperationalPatternsEnabled()) {
+    operational_patterns_->Start();
   }
 }
 
@@ -50,15 +50,15 @@ void BraveFederatedLearningService::InitPrefChangeRegistrar() {
 
 void BraveFederatedLearningService::OnPreferenceChanged(
     const std::string& key) {
-  if (!IsP3AEnabled() || !IsOperationalProfilingEnabled()) {
-    operational_profiling_->Stop();
-  } else if (IsP3AEnabled() && IsOperationalProfilingEnabled()) {
-    operational_profiling_->Start();
+  if (!IsP3AEnabled() || !IsOperationalPatternsEnabled()) {
+    operational_patterns_->Stop();
+  } else if (IsP3AEnabled() && IsOperationalPatternsEnabled()) {
+    operational_patterns_->Start();
   }
 }
 
-bool BraveFederatedLearningService::IsOperationalProfilingEnabled() {
-  return operational_profiling::features::IsOperationalProfilingEnabled();
+bool BraveFederatedLearningService::IsOperationalPatternsEnabled() {
+  return operational_patterns::features::IsOperationalPatternsEnabled();
 }
 
 bool BraveFederatedLearningService::IsP3AEnabled() {
