@@ -17,9 +17,16 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
         static let duckDuckGo = "DuckDuckGo"
         static let qwant = "Qwant"
         static let brave = "Brave Search beta"
+        static let yahoo = "Yahoo"
+        static let yahooJP = "Yahoo! JAPAN"
     }
     
     static let defaultSearchClientName = "brave"
+    
+    // This Identifier is defined to distinguish migrated Open Search Engine
+    // It is used while filtering out Custom Engines for Private Mode
+    // All Custom SE's will be filtered out except the one with this identifier
+    static let migratedYahooEngineID = "yahoo-migrated"
     
     let shortName: String
     let referenceURL: String?
@@ -178,15 +185,8 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
             .replacingOccurrences(of: LocaleTermComponent, with: localeString, options: .literal, range: nil)
             .replacingOccurrences(of: RegionalClientComponent, with: regionalClientParam(locale),
                                   options: .literal, range: nil)
-        
-        let url = URL(string: urlString)
-        
-        // Yahoo uses many subdomains for queries, handling this special case here.
-        if engineID == "yahoo", let yahooRegionalUrl = url?.appendYahooRegionalSubdomain() {
-            return yahooRegionalUrl
-        }
-        
-        return url
+                
+        return URL(string: urlString)
     }
     
     private func regionalClientParam(_ locale: Locale) -> String {
@@ -199,33 +199,6 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
         }
         
         return OpenSearchEngine.defaultSearchClientName
-    }
-}
-
-private extension URL {
-    func appendYahooRegionalSubdomain(for locale: Locale = .current) -> URL? {
-        let se = InitialSearchEngines()
-        if se.priorityEngine != .yahoo { return nil }
-        
-        var region = locale.regionCode ?? "US"
-        
-        // Default search, no need to append the region code.
-        if region == "US" { return nil }
-        
-        // Handling non direct region translations.
-        if region == "MY" { region = "malaysia" }
-        if region == "GB" { region = "uk" }
-        
-        var components = URLComponents(url: self, resolvingAgainstBaseURL: false)
-        
-        guard let host = components?.host else { return nil }
-        
-        components?.host = "\(region.lowercased()).\(host)"
-        if components?.url == nil {
-            assertionFailure("Incorrect url parsing, failed to add subdomain for yahoo search")
-        }
-        
-        return components?.url
     }
 }
 

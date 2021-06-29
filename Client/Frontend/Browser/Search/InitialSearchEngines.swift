@@ -10,7 +10,7 @@ import Foundation
 class InitialSearchEngines {
     /// Type of search engine available to the user.
     enum SearchEngineID: String {
-        case google, braveSearch, bing, duckduckgo, yandex, qwant, startpage, yahoo, ecosia
+        case google, braveSearch, bing, duckduckgo, yandex, qwant, startpage, ecosia
         
         /// Open Search Reference  for default search Engines
         var openSearchReference: String {
@@ -22,20 +22,17 @@ class InitialSearchEngines {
                 case .yandex: return "yandex.com/search"
                 case .qwant: return "qwant.com/opensearch"
                 case .startpage: return "startpage.com/en/opensearch"
-                case .yahoo: return "search.yahoo.com/opensearch"
                 case .ecosia: return "ecosia.org/opensearch"
             }
         }
         
         func excludedFromOnboarding(for locale: Locale) -> Bool {
             switch self {
-            case .google, .bing, .duckduckgo, .yandex, .qwant, .startpage, .ecosia:
-                return false
-            case .yahoo:
-                return true
-            case .braveSearch:
-                guard let region = locale.regionCode else { return true }
-                return !InitialSearchEngines.braveSearchOnboardingRegions.contains(region)
+                case .google, .bing, .duckduckgo, .yandex, .qwant, .startpage, .ecosia:
+                    return false
+                case .braveSearch:
+                    guard let region = locale.regionCode else { return true }
+                    return !InitialSearchEngines.braveSearchOnboardingRegions.contains(region)
             }
         }
     }
@@ -82,9 +79,6 @@ class InitialSearchEngines {
     static let yandexDefaultRegions = ["AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "TZ"]
     static let ecosiaDefaultRegions = ["AT", "AU", "BE", "CA", "DK", "ES", "FI", "GR", "HU", "IT",
                                        "LU", "NO", "PT", "US", "GB", "FR", "DE", "NL", "CH", "SE", "IE"]
-    static let yahooEligibleRegions =
-        ["GB", "US", "AR", "AT", "AU", "BR", "CA", "CH", "CL", "CO", "DE", "DK", "ES", "FI", "FR", "HK",
-         "ID", "IE", "IN", "IT", "MX", "MY", "NL", "NO", "NZ", "PE", "PH", "SE", "SG", "TH", "TW", "VE", "VN"]
     
     /// Sets what should be the default search engine for given locale.
     /// If the engine does not exist in `engines` list, it is added to it.
@@ -125,10 +119,7 @@ class InitialSearchEngines {
         // Locale and region specific overrides can be modified here.
         // For conflicting rules priorities are as follows:
         // 1. Priority rules, put whatever rules you want there.
-        // 2. Region specific rules, this should apply to all rules within a given region,
-        //    language code should not matter.
-        // 3. Language code rules, region rules can be specified there too(ex. ru_RU)
-        languageOverrides()
+        // 2. Region specific rules, this should apply to all rules within a given region
         regionOverrides()
         priorityOverrides()
         
@@ -138,13 +129,6 @@ class InitialSearchEngines {
     }
     
     // MARK: - Locale overrides
-    
-    private func languageOverrides() {
-        guard let language = locale.languageCode else { return }
-        if language == "ja" {
-            replaceOrInsert(engineId: .yahoo, customId: "yahoo-jp")
-        }
-    }
     
     private func regionOverrides() {
         guard let region = locale.regionCode else { return }
@@ -163,10 +147,6 @@ class InitialSearchEngines {
         
         if Self.ecosiaDefaultRegions.contains(region) {
             replaceOrInsert(engineId: .ecosia, customId: nil)
-        }
-        
-        if Self.yahooEligibleRegions.contains(region) {
-            replaceOrInsert(engineId: .yahoo, customId: nil)
         }
     }
     

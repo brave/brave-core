@@ -50,7 +50,7 @@ extension BrowserViewController {
         openSearchEngine = referenceObject
         
         // Open Search guidelines requires Title to be same as Short Name but it is not enforced,
-        // thus in case of yahoo.com the title is 'Yahoo Search' and Shortname is 'Yahoo'
+        // thus in case of google.com the title is 'Google Search' and Shortname is 'Google'
         // We are checking referenceURL match to determine searchEngine is added or not
         // In addition we are also checking if there is another engine with same name
         
