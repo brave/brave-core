@@ -64,10 +64,8 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
       return net::OK;
     }
 
-    service->rpc_controller()->EnsProxyReaderResolveAddress(
+    service->rpc_controller()->EnsProxyReaderGetResolverAddress(
         kEnsRegistryContractAddress, ctx->request_url.host(),
-        std::vector<std::string>(std::begin(kRecordKeys),
-                                 std::end(kRecordKeys)),
         base::BindOnce(&OnBeforeURLRequest_EnsRedirectWork, next_callback,
                        ctx));
 
