@@ -27,9 +27,15 @@ window.cr.define('brave_adblock', function () {
     actions.getRegionalLists()
   }
 
+  function getListSubscriptions () {
+    const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
+    actions.getListSubscriptions()
+  }
+
   function initialize () {
     getCustomFilters()
     getRegionalLists()
+    getListSubscriptions()
     render(
       <Provider store={store}>
         <App />
@@ -48,10 +54,16 @@ window.cr.define('brave_adblock', function () {
     actions.onGetRegionalLists(regionalLists)
   }
 
+  function onGetListSubscriptions (listSubscriptions: AdBlock.SubscriptionInfo[]) {
+    const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
+    actions.onGetListSubscriptions(listSubscriptions)
+  }
+
   return {
     initialize,
     onGetCustomFilters,
-    onGetRegionalLists
+    onGetRegionalLists,
+    onGetListSubscriptions
   }
 })
 

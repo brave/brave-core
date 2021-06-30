@@ -1,5 +1,10 @@
-#ifndef ADBLOCK_RUST_FFI_H
-#define ADBLOCK_RUST_FFI_H
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_ADBLOCK_RUST_FFI_SRC_LIB_H_
+#define BRAVE_COMPONENTS_ADBLOCK_RUST_FFI_SRC_LIB_H_
 
 #include <stdarg.h>
 #include <stdbool.h>
@@ -12,14 +17,15 @@
 typedef struct C_Engine C_Engine;
 
 /**
- * An external callback that receives a hostname and two out-parameters for start and end
- * position. The callback should fill the start and end positions with the start and end indices
- * of the domain part of the hostname.
+ * An external callback that receives a hostname and two out-parameters for
+ * start and end position. The callback should fill the start and end positions
+ * with the start and end indices of the domain part of the hostname.
  */
 typedef void (*C_DomainResolverCallback)(const char*, uint32_t*, uint32_t*);
 
 /**
- * Passes a callback to the adblock library, allowing it to be used for domain resolution.
+ * Passes a callback to the adblock library, allowing it to be used for domain
+ * resolution.
  *
  * This is required to be able to use any adblocking functionality.
  *
@@ -30,96 +36,102 @@ bool set_domain_resolver(C_DomainResolverCallback resolver);
 /**
  * Create a new `Engine`.
  */
-struct C_Engine *engine_create(const char *rules);
+struct C_Engine* engine_create(const char* rules);
+struct C_Engine* engine_create_from_buffer(const char* data, size_t data_size);
 
 /**
  * Checks if a `url` matches for the specified `Engine` within the context.
  *
- * This API is designed for multi-engine use, so block results are used both as inputs and
- * outputs. They will be updated to reflect additional checking within this engine, rather than
- * being replaced with results just for this engine.
+ * This API is designed for multi-engine use, so block results are used both as
+ * inputs and outputs. They will be updated to reflect additional checking
+ * within this engine, rather than being replaced with results just for this
+ * engine.
  */
-void engine_match(struct C_Engine *engine,
-                  const char *url,
-                  const char *host,
-                  const char *tab_host,
+void engine_match(struct C_Engine* engine,
+                  const char* url,
+                  const char* host,
+                  const char* tab_host,
                   bool third_party,
-                  const char *resource_type,
-                  bool *did_match_rule,
-                  bool *did_match_exception,
-                  bool *did_match_important,
-                  char **redirect);
+                  const char* resource_type,
+                  bool* did_match_rule,
+                  bool* did_match_exception,
+                  bool* did_match_important,
+                  char** redirect);
 
 /**
- * Returns any CSP directives that should be added to a subdocument or document request's response
- * headers.
+ * Returns any CSP directives that should be added to a subdocument or document
+ * request's response headers.
  */
-char *engine_get_csp_directives(struct C_Engine *engine,
-                                const char *url,
-                                const char *host,
-                                const char *tab_host,
+char* engine_get_csp_directives(struct C_Engine* engine,
+                                const char* url,
+                                const char* host,
+                                const char* tab_host,
                                 bool third_party,
-                                const char *resource_type);
+                                const char* resource_type);
 
 /**
  * Adds a tag to the engine for consideration
  */
-void engine_add_tag(struct C_Engine *engine, const char *tag);
+void engine_add_tag(struct C_Engine* engine, const char* tag);
 
 /**
  * Checks if a tag exists in the engine
  */
-bool engine_tag_exists(struct C_Engine *engine, const char *tag);
+bool engine_tag_exists(struct C_Engine* engine, const char* tag);
 
 /**
  * Adds a resource to the engine by name
  */
-bool engine_add_resource(struct C_Engine *engine,
-                         const char *key,
-                         const char *content_type,
-                         const char *data);
+bool engine_add_resource(struct C_Engine* engine,
+                         const char* key,
+                         const char* content_type,
+                         const char* data);
 
 /**
  * Adds a list of `Resource`s from JSON format
  */
-void engine_add_resources(struct C_Engine *engine, const char *resources);
+void engine_add_resources(struct C_Engine* engine, const char* resources);
 
 /**
  * Removes a tag to the engine for consideration
  */
-void engine_remove_tag(struct C_Engine *engine, const char *tag);
+void engine_remove_tag(struct C_Engine* engine, const char* tag);
 
 /**
  * Deserializes a previously serialized data file list.
  */
-bool engine_deserialize(struct C_Engine *engine, const char *data, size_t data_size);
+bool engine_deserialize(struct C_Engine* engine,
+                        const char* data,
+                        size_t data_size);
 
 /**
  * Destroy a `Engine` once you are done with it.
  */
-void engine_destroy(struct C_Engine *engine);
+void engine_destroy(struct C_Engine* engine);
 
 /**
  * Destroy a `*c_char` once you are done with it.
  */
-void c_char_buffer_destroy(char *s);
+void c_char_buffer_destroy(char* s);
 
 /**
- * Returns a set of cosmetic filtering resources specific to the given url, in JSON format
+ * Returns a set of cosmetic filtering resources specific to the given url, in
+ * JSON format
  */
-char *engine_url_cosmetic_resources(struct C_Engine *engine, const char *url);
+char* engine_url_cosmetic_resources(struct C_Engine* engine, const char* url);
 
 /**
- * Returns a stylesheet containing all generic cosmetic rules that begin with any of the provided class and id selectors
+ * Returns a stylesheet containing all generic cosmetic rules that begin with
+ * any of the provided class and id selectors
  *
  * The leading '.' or '#' character should not be provided
  */
-char *engine_hidden_class_id_selectors(struct C_Engine *engine,
-                                       const char *const *classes,
+char* engine_hidden_class_id_selectors(struct C_Engine* engine,
+                                       const char* const* classes,
                                        size_t classes_size,
-                                       const char *const *ids,
+                                       const char* const* ids,
                                        size_t ids_size,
-                                       const char *const *exceptions,
+                                       const char* const* exceptions,
                                        size_t exceptions_size);
 
-#endif /* ADBLOCK_RUST_FFI_H */
+#endif /* BRAVE_COMPONENTS_ADBLOCK_RUST_FFI_SRC_LIB_H_ */

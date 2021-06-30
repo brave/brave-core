@@ -9,6 +9,7 @@
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -68,6 +69,7 @@ void AdBlockPrefService::OnPreferenceChanged(const std::string& pref_name) {
   ad_block_service_->EnableTag(tag, enabled);
   ad_block_service_->regional_service_manager()->EnableTag(tag, enabled);
   ad_block_service_->custom_filters_service()->EnableTag(tag, enabled);
+  ad_block_service_->subscription_service_manager()->EnableTag(tag, enabled);
 }
 
 }  // namespace brave_shields

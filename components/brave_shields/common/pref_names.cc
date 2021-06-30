@@ -12,6 +12,7 @@ const char kAdBlockCheckedDefaultRegion[] =
     "brave.ad_block.checked_default_region";
 const char kAdBlockCustomFilters[] = "brave.ad_block.custom_filters";
 const char kAdBlockRegionalFilters[] = "brave.ad_block.regional_filters";
+const char kAdBlockListSubscriptions[] = "brave.ad_block.list_subscriptions";
 const char kFBEmbedControlType[] = "brave.fb_embed_default";
 const char kTwitterEmbedControlType[] = "brave.twitter_embed_default";
 const char kLinkedInEmbedControlType[] = "brave.linkedin_embed_default";

@@ -6,10 +6,13 @@
 brave_browser_download_sources = [
   "//brave/browser/download/brave_download_item_model.cc",
   "//brave/browser/download/brave_download_item_model.h",
+  "//brave/browser/download/brave_download_service_factory.cc",
+  "//brave/browser/download/brave_download_service_factory.h",
 ]
 
 brave_browser_download_deps = [
   "//base",
+  "//brave/components/brave_shields/browser",
   "//components/download/public/common:public",
   "//components/strings:components_strings_grit",
   "//services/network/public/cpp",
