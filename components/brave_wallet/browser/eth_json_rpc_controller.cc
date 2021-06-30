@@ -324,8 +324,8 @@ void EthJsonRpcController::OnEnsProxyReaderGetResolverAddress(
     std::move(callback).Run(false, "");
     return;
   }
-  std::string contenthash = result.substr(offset, result.size());
-  EnsProxyReaderResolveAddress("0x" + contenthash, domain, std::move(callback));
+  std::string contenthash = "0x" + result.substr(offset);
+  EnsProxyReaderResolveAddress(contenthash, domain, std::move(callback));
 }
 
 bool EthJsonRpcController::EnsProxyReaderResolveAddress(

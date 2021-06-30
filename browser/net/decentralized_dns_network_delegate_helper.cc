@@ -46,12 +46,14 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
       return net::OK;
     }
 
-    service->rpc_controller()->UnstoppableDomainsProxyReaderGetMany(
-        kProxyReaderContractAddress, ctx->request_url.host(),
-        std::vector<std::string>(std::begin(kRecordKeys),
-                                 std::end(kRecordKeys)),
-        base::BindOnce(&OnBeforeURLRequest_DecentralizedDnsRedirectWork,
-                       next_callback, ctx));
+    if (!service->rpc_controller()->UnstoppableDomainsProxyReaderGetMany(
+            kProxyReaderContractAddress, ctx->request_url.host(),
+            std::vector<std::string>(std::begin(kRecordKeys),
+                                     std::end(kRecordKeys)),
+            base::BindOnce(&OnBeforeURLRequest_DecentralizedDnsRedirectWork,
+                           next_callback, ctx))) {
+      return net::OK;
+    }
 
     return net::ERR_IO_PENDING;
   }
@@ -64,10 +66,12 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
       return net::OK;
     }
 
-    service->rpc_controller()->EnsProxyReaderGetResolverAddress(
-        kEnsRegistryContractAddress, ctx->request_url.host(),
-        base::BindOnce(&OnBeforeURLRequest_EnsRedirectWork, next_callback,
-                       ctx));
+    if (!service->rpc_controller()->EnsProxyReaderGetResolverAddress(
+            kEnsRegistryContractAddress, ctx->request_url.host(),
+            base::BindOnce(&OnBeforeURLRequest_EnsRedirectWork, next_callback,
+                           ctx))) {
+      return net::OK;
+    }
 
     return net::ERR_IO_PENDING;
   }
