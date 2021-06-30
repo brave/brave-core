@@ -12,7 +12,7 @@ using std::placeholders::_1;
 
 namespace {
 
-const int kCurrentVersionNumber = 9;
+const int kCurrentVersionNumber = 10;
 
 }  // namespace
 
