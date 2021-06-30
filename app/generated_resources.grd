@@ -290,6 +290,11 @@ are declared in tools/grit/grit_rule.gni.
       <!-- Profiles specific strings -->
       <part file="profiles_strings.grdp" />
 
+      <!-- Web app intent picker strings -->
+      <if expr="is_win or is_macosx or is_linux">
+        <part file="protocol_handler_intent_picker_strings.grdp" />
+      </if>
+
       <!-- Brave-OS-specific strings -->
       <if expr="chromeos">
         <part file="chromeos_strings.grdp" />
@@ -574,7 +579,7 @@ are declared in tools/grit/grit_rule.gni.
             Open link in new &amp;window
           </message>
           <!-- Also update IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP in google_chrome_strings.grd and chromium_strings.grd. -->
-          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="The name of the open a link in private window command">
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="The name of the open a link in Private window command">
             Open link in &amp;private window
           </message>
           <message name="IDS_CONTENT_CONTEXT_OPENLINKINPROFILES" desc="The name of the open a link as a different user context menu">
@@ -803,7 +808,7 @@ are declared in tools/grit/grit_rule.gni.
             Open Link in New &amp;Window
           </message>
           <!-- Also update IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP in google_chrome_strings.grd and chromium_strings.grd. -->
-          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="In Title Case: The name of the open a link in private window command">
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="In Title Case: The name of the open a link in Private window command">
             Open Link in &amp;Private Window
           </message>
           <message name="IDS_CONTENT_CONTEXT_OPENLINKINPROFILES" desc="In Title Case: The name of the open a link as a different user context menu">
@@ -1038,8 +1043,8 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_NEW_WINDOW" desc="The text label of a menu item for opening a new window">
             &amp;New window
           </message>
-          <message name="IDS_NEW_INCOGNITO_WINDOW" desc="The text label of a menu item for opening a new private window">
-            New &amp;private window
+          <message name="IDS_NEW_INCOGNITO_WINDOW" desc="The text label of a menu item for opening a new Private window">
+            New &amp;Private window
           </message>
           <message name="IDS_PIN_TO_START_SCREEN" desc="The text label of the Pin to start screen menu item">
             Pin this page to Start screen...
@@ -1118,7 +1123,7 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_NEW_WINDOW" desc="In Title Case: The text label of a menu item for opening a new window">
             &amp;New Window
           </message>
-          <message name="IDS_NEW_INCOGNITO_WINDOW" desc="In Title Case: The text label of a menu item for opening a new private window">
+          <message name="IDS_NEW_INCOGNITO_WINDOW" desc="In Title Case: The text label of a menu item for opening a new Private window">
             New &amp;Private Window
           </message>
           <message name="IDS_PIN_TO_START_SCREEN" desc="In Title Case: The text label of the Pin to start screen menu item">
@@ -1194,12 +1199,6 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_VISIT_DESKTOP_OF_LRU_USER" desc="The text label of the menu item which allows the user to move a window from one users desktop to another.">
           Move window to <ph name="USER_NAME">$1<ex>User name</ex></ph> (<ph name="USER_EMAIL">$2<ex>john@google.com</ex></ph>)
         </message>
-        <message name="IDS_MOVE_TO_DESKS_MENU" desc="The text label of the Move to Desks submenu">
-          Move window to desk
-        </message>
-        <message name="IDS_ASSIGN_TO_ALL_DESKS" desc="The text label of the Assign to All Desks menu item">
-          All desks
-        </message>
       </if>
 
       <message name="IDS_ACCNAME_ZOOM_PLUS2" desc="The accessible description of the Make Text Larger menu item in the merged menu">
@@ -1233,6 +1232,9 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_TAKE_SCREENSHOT" desc="The text label of the Take Screenshot menu item">
           T&amp;ake screenshot
+        </message>
+        <message name="IDS_RESTORE_ALL_TABS" desc="The text label of the Restore All Tabs menu item.">
+          R&amp;estore all tabs
         </message>
         <message name="IDS_RESTORE_TAB" desc="The text label of the Restore Tab menu item">
           R&amp;eopen closed tab
@@ -1271,6 +1273,9 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_TAKE_SCREENSHOT" desc="The text label of the Take Screenshot menu item">
           T&amp;ake Screenshot
+        </message>
+        <message name="IDS_RESTORE_ALL_TABS" desc="In Title Case: The text label of the Restore All Tabs menu item.">
+          R&amp;estore All Tabs
         </message>
         <message name="IDS_RESTORE_TAB" desc="In Title Case: The text label of the Restore Tab menu item">
           R&amp;eopen Closed Tab
@@ -1690,6 +1695,9 @@ are declared in tools/grit/grit_rule.gni.
           Extensions, apps, and themes can harm your computer. Are you sure you want to continue?
         </message>
       </if>
+      <message name="IDS_PROMPT_DANGEROUS_DOWNLOAD_ACCOUNT_COMPROMISE" desc="Message shown to the user to validate the download when the download content is deteremined to be associated with account compromise by safebrowsing.">
+        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> could let attackers steal your personal information.
+      </message>
       <message name="IDS_PROMPT_UNCOMMON_DOWNLOAD_CONTENT" desc="Message shown to the user to validate the download when the download content is classified as uncommon by safebrowsing.">
         <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> is not commonly downloaded and may be dangerous.
       </message>
@@ -1753,6 +1761,9 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_BLOCK_REASON_DEEP_SCANNING" desc="Message shown on chrome://downloads when a download is being scanned">
         This file is being scanned.
       </message>
+      <message name="IDS_BLOCK_REASON_ACCOUNT_COMPROMISE" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is associated with account compromise.">
+        This file could let attackers steal your personal information.
+      </message>
       <message name="IDS_DEEP_SCANNED_SAFE_DESCRIPTION" desc="Message shown to the user on chrome://downloads page to explain this this download was deep scanned, and found to be safe.">
         Security checks are done
       </message>
@@ -1798,6 +1809,9 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_KEEP_UNCOMMON_DOWNLOAD_TITLE" desc="Title for the confirmation dialog asking whether the user really meant to keep an uncommon download">
         Keep file?
+      </message>
+      <message name="IDS_CONFIRM_DANGEROUS_DOWNLOAD_ACCOUNT_COMPROMISE_TITLE" desc="Title for the confirmation dialog asking whether the user really meant to keep an uncommon download">
+        This file is dangerous
       </message>
       <message name="IDS_PROMPT_CONFIRM_KEEP_DANGEROUS_DOWNLOAD" desc="Prompt text for the confirmation dialog asking whether the user really meant to keep a dangerous download">
         This file may be harmful for your computer.
@@ -2153,39 +2167,39 @@ are declared in tools/grit/grit_rule.gni.
       </if>
 
       <!-- Abandon in-progress downloads confirmation dialog -->
-      <message name="IDS_ABANDON_DOWNLOAD_DIALOG_TITLE" desc="Title of the dialog shown when the user closes the browser or the last private window while one or more downloads are in progress. If necessary, add '#' for plural cases. [ICU Syntax]">
+      <message name="IDS_ABANDON_DOWNLOAD_DIALOG_TITLE" desc="Title of the dialog shown when the user closes the browser or the last Private window while one or more downloads are in progress. If necessary, add '#' for plural cases. [ICU Syntax]">
         {NUM_DOWNLOAD, plural,
         =1 {Download is in progress} other {Downloads are in progress}}
       </message>
       <if expr="not use_titlecase">
-        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_CONTINUE_BUTTON" desc="Button text on a dialog shown when the user closes the browser or the last private window while one or more downloads are in progress. When clicked, the button will continue the download without exiting.">
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_CONTINUE_BUTTON" desc="Button text on a dialog shown when the user closes the browser or the last Private window while one or more downloads are in progress. When clicked, the button will continue the download without exiting.">
           Continue downloading
         </message>
       </if>
       <if expr="use_titlecase">
-        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_CONTINUE_BUTTON" desc="In Title Case: Button text on a dialog shown when the user closes the browser or the last private window while one or more downloads are in progress. When clicked, the button will continue the download without exiting.">
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_CONTINUE_BUTTON" desc="In Title Case: Button text on a dialog shown when the user closes the browser or the last Private window while one or more downloads are in progress. When clicked, the button will continue the download without exiting.">
           Continue Downloading
         </message>
       </if>
       <if expr="not is_macosx">
-        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last private window while one or more downloads are in progress. This string is shown on Windows, Chrome OS, and Linux, which all use 'Exit' to refer to closing a browser.">
-          Exit private mode anyway?
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last Private window while one or more downloads are in progress. This string is shown on Windows, Chrome OS, and Linux, which all use 'Exit' to refer to closing a browser.">
+          Exit Private mode anyway?
         </message>
         <message name="IDS_ABANDON_DOWNLOAD_DIALOG_GUEST_MESSAGE" desc="Message on a dialog shown when the user closes the last guest window while one or more downloads are in progress. This string is shown on Windows, Chrome OS, and Linux, which all use 'Exit' to refer to closing a browser.">
           Exit guest mode anyway?
         </message>
-        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_EXIT_BUTTON" desc="Button text on a dialog shown when the user closes the browser or the last private window while one or more downloads are in progress. When clicked, the button will abandon the download and exit. This string is shown on Windows, Chrome OS, and Linux, which all use 'Exit' to refer to closing a browser.">
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_EXIT_BUTTON" desc="Button text on a dialog shown when the user closes the browser or the last Private window while one or more downloads are in progress. When clicked, the button will abandon the download and exit. This string is shown on Windows, Chrome OS, and Linux, which all use 'Exit' to refer to closing a browser.">
           Exit
         </message>
       </if>
       <if expr="is_macosx">
-        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last private window while one or more downloads are in progress. This string is shown on Mac OSX only, which uses 'Quit' to refer to closing a browser.">
-          Quit private mode anyway?
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last Private window while one or more downloads are in progress. This string is shown on Mac OSX only, which uses 'Quit' to refer to closing a browser.">
+          Quit Private mode anyway?
         </message>
         <message name="IDS_ABANDON_DOWNLOAD_DIALOG_GUEST_MESSAGE" desc="Message on a dialog shown when the user closes the last guest window while one or more downloads are in progress. This string is shown on Mac OSX only, which uses 'Exit' to refer to closing a browser.">
           Exit guest mode anyway?
         </message>
-        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_EXIT_BUTTON" desc="Button text on a dialog shown when the user closes the browser or the last private window while one or more downloads are in progress. When clicked, the button will abandon the download and quit. This string is shown on Mac OSX only, which uses 'Quit' to refer to closing a browser.">
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_EXIT_BUTTON" desc="Button text on a dialog shown when the user closes the browser or the last Private window while one or more downloads are in progress. When clicked, the button will abandon the download and quit. This string is shown on Mac OSX only, which uses 'Quit' to refer to closing a browser.">
           Quit
         </message>
       </if>
@@ -3226,11 +3240,6 @@ are declared in tools/grit/grit_rule.gni.
         Empty Cache and Hard Reload
       </message>
 
-      <!-- Fullscreen mode -->
-      <message name="IDS_EXIT_FULLSCREEN_MODE" desc="Clickable message displayed on entering full screen mode. Clicking on the link exits full screen mode.">
-        Exit full screen
-      </message>
-
       <!-- Tab sharing infobar -->
       <message name="IDS_TAB_SHARING_INFOBAR_SHARING_CURRENT_TAB_LABEL" desc="Text displayed on an infobar when current tab is being shared.">
        Sharing this tab to <ph name="APP_NAME">$1<ex>meet.google.com</ex></ph>
@@ -3428,19 +3437,19 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_TASK_MANAGER_EXTENSION_PREFIX" desc="The prefix for a Task Manager extension row (always visible if the extension has a view)">
           Extension: <ph name="EXTENSION_NAME">$1<ex>Sample Extension</ex></ph>
         </message>
-        <message name="IDS_TASK_MANAGER_EXTENSION_INCOGNITO_PREFIX" desc="The prefix for a Task Manager private extension row (may not be visible if private is not open)">
+        <message name="IDS_TASK_MANAGER_EXTENSION_INCOGNITO_PREFIX" desc="The prefix for a Task Manager Private extension row (may not be visible if Private is not open)">
           Private Extension: <ph name="EXTENSION_NAME">$1<ex>Sample Extension</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_APP_PREFIX" desc="The prefix for a Task Manager app row (always visible if the app has a view)">
           App: <ph name="APP_NAME">$1<ex>Sample App</ex></ph>
         </message>
-        <message name="IDS_TASK_MANAGER_APP_INCOGNITO_PREFIX" desc="The prefix for a Task Manager private app row (may not be visible if the app is not open in private)">
+        <message name="IDS_TASK_MANAGER_APP_INCOGNITO_PREFIX" desc="The prefix for a Task Manager Private app row (may not be visible if the app is not open in Private)">
           Private App: <ph name="APP_NAME">$1<ex>Sample App</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_TAB_PREFIX" desc="The prefix for a Task Manager Tab row">
           Tab: <ph name="TAB_NAME">$1<ex>Brave</ex></ph>
         </message>
-        <message name="IDS_TASK_MANAGER_TAB_INCOGNITO_PREFIX" desc="The prefix for a Task Manager private Tab row (may not be visible if private is not open)">
+        <message name="IDS_TASK_MANAGER_TAB_INCOGNITO_PREFIX" desc="The prefix for a Task Manager Private Tab row (may not be visible if Private is not open)">
           Private Tab: <ph name="TAB_NAME">$1<ex>Brave</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_BACKGROUND_APP_PREFIX" desc="The prefix for a Task Manager background app task representing a BackgroundContents">
@@ -3494,13 +3503,13 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_TASK_MANAGER_SUBFRAME_PREFIX" desc="The prefix for a out-of-process-iframe row in the Task Manager (these processes are created when site isolation is enabled)">
           Subframe: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
         </message>
-        <message name="IDS_TASK_MANAGER_SUBFRAME_INCOGNITO_PREFIX" desc="The prefix for a Private out-of-process-iframe process row in the Task Manager (these processes are created when site isolation is enabled, in private mode)">
+        <message name="IDS_TASK_MANAGER_SUBFRAME_INCOGNITO_PREFIX" desc="The prefix for a Private out-of-process-iframe process row in the Task Manager (these processes are created when site isolation is enabled, in Private mode)">
           Private Subframe: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_PORTAL_PREFIX" desc="The prefix for a portal row in the Task Manager (these processes are created when portals is enabled)">
           Portal: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
         </message>
-        <message name="IDS_TASK_MANAGER_PORTAL_INCOGNITO_PREFIX" desc="The prefix for a Private portal row in the Task Manager (these processes are created when portals is enabled, in private mode)">
+        <message name="IDS_TASK_MANAGER_PORTAL_INCOGNITO_PREFIX" desc="The prefix for a Private portal row in the Task Manager (these processes are created when portals is enabled, in Private mode)">
           Private Portal: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_ARC_PREFIX" desc="The prefix for an ARC general process row">
@@ -3719,10 +3728,10 @@ are declared in tools/grit/grit_rule.gni.
       </message>
 
       <!-- Extension/App install dialog strings -->
-      <message name="IDS_EXTENSION_PROMPT_APP_CONNECT_FROM_INCOGNITO" desc="Shown when a website tries to connect to an app from private mode, prompting the user to allow or deny the request.">
+      <message name="IDS_EXTENSION_PROMPT_APP_CONNECT_FROM_INCOGNITO" desc="Shown when a website tries to connect to an app from Private mode, prompting the user to allow or deny the request.">
         <ph name="ORIGIN">$1<ex>http://www.google.com</ex></ph> wants to communicate with the app "<ph name="EXTENSION_NAME">$2<ex>Gmail</ex></ph>"
       </message>
-      <message name="IDS_EXTENSION_PROMPT_EXTENSION_CONNECT_FROM_INCOGNITO" desc="Shown when a website tries to connect to an extension from private mode, prompting the user to allow or deny the request.">
+      <message name="IDS_EXTENSION_PROMPT_EXTENSION_CONNECT_FROM_INCOGNITO" desc="Shown when a website tries to connect to an extension from Private mode, prompting the user to allow or deny the request.">
         <ph name="ORIGIN">$1<ex>http://www.google.com</ex></ph> wants to communicate with the extension "<ph name="EXTENSION_NAME">$2<ex>Gmail Checker</ex></ph>"
       </message>
       <message name="IDS_EXTENSION_PROMPT_WILL_HAVE_ACCESS_TO" desc="Second line in the content area of the extension or app installation prompt. Note that the exact wording is important. This should mean that the extension or app _can_ access the listed privileges, but not necessarily that it will or needs to.">
@@ -4083,6 +4092,9 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_PLATFORMKEYS" desc="Permission string for enterprise platform keys permission.">
           Perform security-related tasks for your organization, such as managing certificates and keys stored on the device
+        </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_REPORTING_PRIVATE" desc="Permission string for enterprise private reporting permission.">
+          Read information about your browser, OS, and device
         </message>
       </if>
 
@@ -4996,8 +5008,20 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
 
       <!-- Experimental Lacros Infobar-->
-      <message name="IDS_EXPERIMENTAL_LACROS_WARNING_MESSAGE" desc="Message shown when user uses Lacros, an experimental feature.">
-        Lacros is an experimental Browser. Please report issues with: Help &gt; "Report an issue..." The standard browser can be found by typing "Brave" into Launcher.
+      <message name="IDS_EXPERIMENTAL_LACROS_WARNING_MESSAGE" desc="Message shown when user launches Lacros, an experimental feature, for the first time.">
+        Lacros is an experimental Browser. Please report issues with: Help &gt; "Report an issue...".
+      </message>
+
+      <message name="IDS_EXPERIMENTAL_LACROS_WARNING_MESSAGE_PRIMARY" desc="Addendum which is sometimes added to the initial warning message.">
+        The standard browser can be found by typing "Brave" into Launcher.
+      </message>
+
+      <message name="IDS_EXPERIMENTAL_LACROS_WARNING_MESSAGE_MANAGED" desc="Addendum which is sometimes added to the initial warning message.">
+        For more information, contact your administrator.
+      </message>
+
+      <message name="IDS_EXPERIMENTAL_LACROS_WARNING_LEARN_MORE" desc="A section of text that the user can click on to learn more about Lacros.">
+        Learn More
       </message>
 
       <!-- Bad Flags Infobar-->
@@ -5178,7 +5202,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Clear input
       </message>
       <if expr="is_android or enable_vr">
-        <message name="IDS_SEARCH_OR_TYPE_WEB_ADDRESS" desc="Prompt to enter text into the text field that will either perform web searches or navigate to a website. [CHAR-LIMIT=38]" formatter_data="android_java">
+        <message name="IDS_SEARCH_OR_TYPE_WEB_ADDRESS" desc="Prompt to enter text into the text field that will either perform web searches or navigate to a website. [CHAR_LIMIT=38]" formatter_data="android_java">
           Search or type web address
         </message>
       </if>
@@ -5517,7 +5541,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
         your carts
       </message>
       <message name="IDS_NTP_MODULES_DRIVE_SENTENCE" desc="Name of the Drive module in sentence case shown in various UIs.">
+        Google Drive files
+      </message>
+      <message name="IDS_NTP_MODULES_DRIVE_SENTENCE2" desc="Variant of the name of the Drive module in sentence case shown in various UIs.">
         Drive files
+      </message>
+      <message name="IDS_NTP_MODULES_DRIVE_FILES_SENTENCE" desc="Name of the files in the Drive module in sentence case shown in various UIs.">
+        Files
+      </message>
+      <message name="IDS_NTP_MODULES_DRIVE_FILES_LOWER" desc="Name of the files in the Drive module in lowercase shown in various UIs.">
+        these files
       </message>
       <message name="IDS_NTP_MODULES_DUMMY_LOWER" translateable="false" desc="Name of the dummy module in lowercase shown in various UIs.">
         this module
@@ -5529,7 +5562,13 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Even Better Module
       </message>
       <message name="IDS_NTP_MODULES_DRIVE_TITLE" desc="Title shown in the header of the drive module and various other UIs.">
-        From Google Drive
+        From your Google Drive
+      </message>
+      <message name="IDS_NTP_MODULES_DRIVE_INFO" desc="Text shown in the body of the info dialog of the drive module.">
+        You’re seeing your recent and suggested documents based on your previous activity using Google Drive.
+        <ph name="BREAK">&lt;br&gt;</ph>
+        <ph name="BREAK">&lt;br&gt;</ph>
+        Learn about the data Google Drive collects and why <ph name="BEGIN_LINK">&lt;a href="https://support.google.com/drive/answer/2450387" target="_blank" rel="noopener noreferrer"&gt;</ph>here<ph name="END_LINK">&lt;/a&gt;</ph>.
       </message>
       <message name="IDS_NTP_MODULES_KALEIDOSCOPE_TITLE" desc="Title shown in the header of the Kaleidoscope module.">
         Top picks for you
@@ -5537,11 +5576,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_SHOPPING_TASKS_INFO_TITLE" desc="Title shown on the info dialog of a task module.">
         Why am I seeing this?
       </message>
-      <message name="IDS_NTP_MODULES_SHOPPING_TASKS_INFO_1" desc="First paragraph shown in the body of the info dialog of a task module.">
-        You're seeing this item based on your previous activity using Brave services. You can see your data, delete it, and change your settings at <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;</ph>.
-      </message>
-      <message name="IDS_NTP_MODULES_SHOPPING_TASKS_INFO_2" desc="Second paragraph shown in the body of the info dialog of a task module.">
-        Learn about the data Brave collects and why at <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>policies.google.com<ph name="END_LINK">&lt;/a&gt;</ph>.
+      <message name="IDS_NTP_MODULES_TASKS_INFO" desc="Text shown in the body of the info dialog of a task module.">
+        You're seeing this item based on your previous activity using Brave services. You can see your data, delete it, and change your settings at <ph name="BEGIN_LINK">&lt;a href="https://myactivity.google.com/" target="_blank" rel="noopener noreferrer"&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;</ph>.
+        <ph name="BREAK">&lt;br&gt;</ph>
+        <ph name="BREAK">&lt;br&gt;</ph>
+        Learn about the data Brave collects and why at <ph name="BEGIN_LINK">&lt;a href="https://policies.google.com/" target="_blank" rel="noopener noreferrer"&gt;</ph>policies.google.com<ph name="END_LINK">&lt;/a&gt;</ph>.
       </message>
       <message name="IDS_NTP_MODULES_SHOPPING_TASKS_INFO_CLOSE" desc="Text shown on close button of a task module.">
         Close
@@ -5574,7 +5613,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Up to <ph name="DISCOUNT_UP_TO_AMOUNT">$1<ex>15%</ex></ph> off
       </message>
       <message name="IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_CONTENT" desc="Text shown on the consent card for rule-based discount asking if users would like to give their consent to the feature.">
-        Ask Brave to find discounts on what you’ve added to your carts?
+        Allow Brave to find discounts on what you add to your carts?
       </message>
       <message name="IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_ACCEPT" desc="Text shown on the accept button of the consent card for rule-based discount. By clicking this button, users have chosen to opt in the feature and let Brave get discounts for them. See consent request in IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_CONTENT.">
         Get discounts
@@ -5678,6 +5717,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TOOLTIP_CHROMELABS_BUTTON" desc="The tooltip for the Brave Labs button in the toolbar">
         Enable featured experiments
       </message>
+      <message name="IDS_TOOLTIP_LEFT_ALIGNED_SIDE_PANEL_BUTTON" desc="The tooltip for the left aligned side panel toggle button">
+        Toggle left aligned side panel
+      </message>
       <message name="IDS_TOOLTIP_CHROMELABS_COMBOBOX" desc="The tooltip for the Brave Labs combobox to select between experiment states">
         Select experiment state for <ph name="EXPERIMENT_NAME">$1<ex>Tab Scrolling</ex></ph>
       </message>
@@ -5773,7 +5815,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </if>
 
       <!--Accessible name/action strings-->
-      <message name="IDS_ACCESSIBLE_INCOGNITO_WINDOW_TITLE_FORMAT" desc="The format for the accessible title of a private window">
+      <message name="IDS_ACCESSIBLE_INCOGNITO_WINDOW_TITLE_FORMAT" desc="The format for the accessible title of a Private window">
         <ph name="WINDOW_TITLE">$1</ph> (Private)
       </message>
       <message name="IDS_ACCESSIBLE_GUEST_WINDOW_TITLE_FORMAT" desc="The format for the accessible title of a guest mode window">
@@ -5811,6 +5853,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_ACCNAME_CHROMELABS_BUTTON" desc="The accessible name for the Brave Labs experiments button">
         Experiments
+      </message>
+      <message name="IDS_ACCNAME_LEFT_ALIGNED_SIDE_PANEL_BUTTON" desc="The accessible name for the left aligned side panel toggle button">
+        Left aligned side panel
       </message>
       <message name="IDS_ACCESSIBLE_TEXT_CHROMELABS_BUTTON_ADDED_BY_ENTERPRISE_POLICY" desc="The text read out by the screen reader when the Brave Labs experiments button is added to the toolbar by an enterprise policy change.">
         Enterprise policy changed. Experiments button added to toolbar. Click the button to open a dialog to enable experiments.
@@ -5892,22 +5937,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
         New! Control your music, videos, and more.
       </message>
       <message name="IDS_INCOGNITOWINDOW_PROMO_0" desc="Variations option 1. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
-        You can browse privately using a private window
+        You can browse privately using a Private window
       </message>
       <message name="IDS_INCOGNITOWINDOW_PROMO_1" desc="Variations option 2. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
-        Use the web without saving your browsing history with a private window
+        Use the web without saving your browsing history with a Private window
       </message>
       <message name="IDS_INCOGNITOWINDOW_PROMO_2" desc="Variations option 3. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
-        Using a shared computer? Try opening a private window.
+        Using a shared computer? Try opening a Private window.
       </message>
       <message name="IDS_INCOGNITOWINDOW_PROMO_3" desc="Variations option 4. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
-        To browse privately, click the dots icon menu to open a private window
-      </message>
-      <message name="IDS_LIVE_CAPTION_PROMO" desc="Text shown on promotional UI appearing next to the global media controls button">
-        Get captions for your audio and video
-      </message>
-      <message name="IDS_LIVE_CAPTION_PROMO_SCREENREADER" desc="Text announced encouraging users to open live caption">
-        Get captions for your audio and video by enabling Live Caption in settings
+        To browse privately, click the dots icon menu to open a Private window
       </message>
       <message name="IDS_NEWTAB_PROMO_0" desc="Variations option 1. Text shown on promotional UI appearing next to the New Tab button, which encourages users to use it.">
         Open a new tab with one click
@@ -5922,13 +5961,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
         When you're ready, find your reading list here
       </message>
       <message name="IDS_READING_LIST_ENTRY_POINT_PROMO" desc="Text shown on promotional UI to encourage users to add a tab to their reading list">
-        Add this page to reading list
+        To add this page to your reading list, click the Bookmark icon
       </message>
       <message name="IDS_REOPEN_TAB_PROMO" desc="Text shown on promotional UI appearing next to the app menu button">
         Reopen a tab if you accidentally closed it
       </message>
       <message name="IDS_DESKTOP_PWA_INSTALL_PROMO" desc="Text shown on promotional UI appearing next to the PWA install icon">
         To get back here quickly, install <ph name="APP_NAME">$1<ex>Brave Maps</ex></ph> by clicking the install button
+      </message>
+      <message name="IDS_UPDATED_CONNECTION_SECURITY_INDICATORS_PROMO" desc="Text shown on promotional UI appearing next to the new omnibox connection security icon">
+        Your connection is always secure unless Brave tells you otherwise
       </message>
       <message name="IDS_REOPEN_TAB_PROMO_SCREENREADER" desc="Text announced encouraging users to reopen a tab with the given shortcut">
         <ph name="SHORTCUT">$1<ex>CTRL+SHIFT+T</ex></ph> can reopen accidentally closed tabs
@@ -6034,10 +6076,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
           No thanks
         </message>
       </if>
-      <message name="IDS_PASSWORD_MANAGER_USERNAME_LABEL" desc="Label for the username field in a prompt to store new credential">
+      <message name="IDS_PASSWORD_MANAGER_USERNAME_LABEL" desc="Label for the username field in a prompt to store new credential" formatter_data="android_java">
         Username
       </message>
-      <message name="IDS_PASSWORD_MANAGER_PASSWORD_LABEL" desc="Label for the password field in a prompt to store new credential">
+      <message name="IDS_PASSWORD_MANAGER_PASSWORD_LABEL" desc="Label for the password field in a prompt to store new credential" formatter_data="android_java">
         Password
       </message>
       <if expr="not is_android">
@@ -6145,7 +6187,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_BLOCKLIST_BUTTON" desc="Mobile: Button text for the 'Save Password' infobar's 'Never remember for this site' option">
           Never
         </message>
-        <message name="IDS_PASSWORD_MANAGER_UPDATE_BUTTON" desc="Label for the 'update' button in the Update Password infobar. This infobar asks if the user wishes to update the saved password for a site to a new password the user has just entered; the button applies the suggested update.">
+        <message name="IDS_PASSWORD_MANAGER_UPDATE_BUTTON" desc="Label for the 'update' button in the Update Password infobar. This infobar asks if the user wishes to update the saved password for a site to a new password the user has just entered; the button applies the suggested update." formatter_data="android_java">
           Update
         </message>
         <message name="IDS_PASSWORD_SAVING_STATUS_TOGGLE" desc="Label for the toggle that shows whether saving passwords for the current site is enabled or disabled.">
@@ -6172,10 +6214,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_GENERATE_PASSWORD_BUTTON_TITLE" desc="Text for the button used to generate a password.">
           Suggest strong password
         </message>
-        <message name="IDS_UPDATE_PASSWORD_DIALOG_TITLE" desc="The title of the update password dialog.">
+        <message name="IDS_UPDATE_PASSWORD_DIALOG_TITLE" desc="The title of the update password dialog." formatter_data="android_java">
           Update password for <ph name="ORIGIN">%1$s<ex>example.com</ex></ph>
         </message>
-        <message name="IDS_UPDATE_PASSWORD_DIALOG_SIGNED_IN_DESCRIPTION" desc="The description at the bottom of update password dialog when the user is signed in.">
+        <message name="IDS_UPDATE_PASSWORD_DIALOG_SIGNED_IN_DESCRIPTION" desc="The description at the bottom of update password dialog when the user is signed in." formatter_data="android_java">
           Passwords are saved in your Brave sync chain (<ph name="ACCOUNT">%1$s<ex>user@gmail.com</ex></ph>) so you can use them on any device
         </message>
       </if>
@@ -6797,6 +6839,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TAB_SEARCH_A11Y_FOUND_TABS_FOR" desc="Plural form of a11y message after user changes search field when search filed is not empty.">
         Found <ph name="NUM">$1<ex>2</ex></ph> Tabs For '<ph name="SEARCH_TEXT">$2<ex>google</ex></ph>'
       </message>
+      <message name="IDS_TAB_SEARCH_A11Y_OPEN_TAB" desc="Singular form of a11y message announced after user selects an open tab.">
+        Open Tab
+      </message>
+      <message name="IDS_TAB_SEARCH_A11Y_RECENTLY_CLOSED_TAB" desc="Singular form of a11y message announced after user selects a recently closed tab.">
+        Recently Closed Tab
+      </message>
       <message name="IDS_TAB_SEARCH_OPEN_TABS" desc="The label on the tab search list section corresponding to open tabs.">
         Open Tabs
       </message>
@@ -6990,16 +7038,13 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
       </if>
 
-      <!-- Mac First-run dialog -->
+      <!-- First-run dialog -->
       <message name="IDS_FR_ENABLE_LOGGING" desc="The label of the checkbox to enable/disable crash and user metrics logging">
         Automatically send crash reports to Brave
       </message>
 
       <!-- Mac First-run dialog messages -->
       <if expr="is_macosx">
-        <message name="IDS_FIRSTRUN_DLG_MAC_WINDOW_TITLE" desc="Window title of First Run Title on OS X - displayed in Window title bar">
-          Welcome to <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph>
-        </message>
         <message name="IDS_FIRSTRUN_DLG_MAC_COMPLETE_INSTALLATION_LABEL" desc="Label at top of Dialog noting what's going to happen">
           <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph> is ready to complete your installation
         </message>
@@ -7326,6 +7371,23 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Can't create QR code
       </message>
 
+      <!-- Sharing Hub feature strings. -->
+      <message name="IDS_SHARING_HUB_TITLE" desc="The title for the Sharing Hub feature.">
+        Share
+      </message>
+      <message name="IDS_SHARING_HUB_TOOLTIP" desc="Tooltip for the Sharing Hub feature omnibox icon.">
+        Share this page
+      </message>
+      <message name="IDS_SHARING_HUB_COPY_LINK_LABEL" desc="The text label for the copy link button in the Sharing Hub dialog and app menu.">
+        Copy link
+      </message>
+      <message name="IDS_SHARING_HUB_SAVE_PAGE_LABEL" desc="The text label for the save page button in the Sharing Hub dialog and app menu.">
+        Save page as...
+      </message>
+      <message name="IDS_SHARING_HUB_MEDIA_ROUTER_LABEL" desc="The text label for the media router button in the Sharing Hub dialog and app menu.">
+        Cast...
+      </message>
+
       <!-- Clipboard History Menu feature. -->
       <message name="IDS_CONTEXT_MENU_SHOW_CLIPBOARD_HISTORY_MENU" desc="Show the clipboard history menu.">
           Clipboard
@@ -7346,12 +7408,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_SHARING_REMOTE_COPY_NOTIFICATION_DESCRIPTION" desc="Second line of text displayed in a Remote Copy notification.">
         Press <ph name="MODIFIER_KEY_DESCRIPTION">$1<ex>Ctrl+V</ex></ph> to paste
-      </message>
-      <message name="IDS_SHARING_REMOTE_COPY_NOTIFICATION_PREPARING_DOWNLOAD" desc="Subtext shown in a Remote Copy notification while preparing the image download.">
-        Preparing download
-      </message>
-      <message name="IDS_SHARING_REMOTE_COPY_NOTIFICATION_PROCESSING_IMAGE" desc="Subtext shown in a Remote Copy notification while processing the received image.">
-        Processing image
       </message>
       <message name="IDS_OMNIBOX_TOOLTIP_SMS_REMOTE_FETCHER" translateable="false" desc="The label of item for sms remote fetcher in the omnibox for showing device name when one device is available.">
         Tap the notification on <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph> to verify your phone number
@@ -7926,7 +7982,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Continue
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_GUEST_LINK" desc="Text of the link to offer switching to a Guest profile">
-            Not your device? Use <ph name="BEGIN_LINK">&lt;a href="#" target="_blank" rel="noopener noreferrer"&gt;</ph>Guest mode<ph name="END_LINK">&lt;/a&gt;</ph>.
+            Not your device? Use <ph name="BEGIN_LINK">&lt;a is="action-link" target="_blank" rel="noopener noreferrer"&gt;</ph>Guest mode<ph name="END_LINK">&lt;/a&gt;</ph>.
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_BUBBLE_DESC" desc="Body of the web signin interception bubble when the new account is personal and the existing account is managed">
           This will separate your browsing from <ph name="EXISTING_USER">$1<ex>bob@example.com</ex></ph>
@@ -8214,9 +8270,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <!-- Sync strings -->
 
       <!-- Shared between all the plaforms -->
-      <message name="IDS_SYNC_ACCOUNT_INFO" desc="The message that appears in the options dialog indicating that the user is signed in with the given email address.">
-        Signed in as <ph name="USER_EMAIL_ADDRESS">$1<ex>foo@gmail.com</ex></ph>.
-      </message>
       <message name="IDS_SYNC_ACCOUNT_SYNCING" desc="The message that appears in the settings page indicating that account is syncing all data types.">
         On - sync everything
       </message>
@@ -8257,9 +8310,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_SYNC_ERROR_USER_MENU_RETRIEVE_KEYS_BUTTON" desc="Button in the header of desktop user menu that prompts the user to reauthentication to fix the sync error affecting encrypted datatypes.">
         Verify it's you
-      </message>
-      <message name="IDS_SYNC_ERROR_USER_MENU_SIGNIN_AGAIN_BUTTON" desc="Button in the header of desktop user menu that signs out and signs back in in an attempt to resolve an unrecoverable error.">
-        Sign in again
       </message>
       <message name="IDS_SYNC_ERROR_USER_MENU_SIGNOUT_BUTTON" desc="Button in the header of desktop user menu for managed users to sign out in an attempt to resolve an unrecoverable error.">
         Sign out
@@ -8403,23 +8453,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Data was encrypted with your sync passphrase on
           <ph name="TIME">$1<ex>Sept 1, 2012</ex></ph>. This doesn't include payment methods and addresses from Brave Pay.
         </message>
-        <message name="IDS_SYNC_FULL_ENCRYPTION_BODY_GOOGLE_WITH_DATE" desc="Text of the radio that when selected enables full encryption.">
-          Data was encrypted with your Brave password as of
-          <ph name="TIME">$1<ex>Sept 1, 2012</ex></ph>. This doesn't include payment methods and addresses from Brave Pay.
-        </message>
-
-        <!-- Sync promo on chrome://apps -->
-        <if expr="not chromeos">
-          <message name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_HEADER" desc="The first line of the of the message shown in NTP when a user is not signed into sync.">
-            Not signed in to <ph name="SHORT_PRODUCT_NAME">$1<ex>Brave</ex></ph>
-          </message>
-          <message name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_SUB_HEADER" desc="The second line of the of the message shown in NTP when a user is not signed in to sync.">
-            (You're missing out—<ph name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_LINK">$1<ex>sign in</ex></ph>)
-          </message>
-          <message name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_LINK" desc="The linkified portion of the sync sign in promo on the NTP. Clicking this text allows the user to sign in to sync.">
-            sign in
-          </message>
-        </if>
       </if>
 
       <!-- Translate Bubble -->
@@ -8563,7 +8596,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_NOTIFICATION_BUTTON_CLOSE" desc="Button label to close a notification">
         Close
       </message>
-      <message name="IDS_NOTIFICATION_BUTTON_MORE" desc="Label shown on the second button of a MAC OSX system notification used to expand further options. [CHAR-LIMIT=12]">
+      <message name="IDS_NOTIFICATION_BUTTON_MORE" desc="Label shown on the second button of a MAC OSX system notification used to expand further options. [CHAR_LIMIT=12]">
         More
       </message>
       <message name="IDS_NOTIFICATION_REPLY_PLACEHOLDER" desc="Placeholder text shown in the text box before any text is entered when replying directly to a notification.">
@@ -8716,7 +8749,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_NEW_WINDOW_MAC" desc="The Mac menu item for opening a new window in the file menu.">
           New Window
         </message>
-        <message name="IDS_NEW_INCOGNITO_WINDOW_MAC" desc="The Mac menu item for opening a new private window in the file menu.">
+        <message name="IDS_NEW_INCOGNITO_WINDOW_MAC" desc="The Mac menu item for opening a new Private window in the file menu.">
           New Private Window
         </message>
         <message name="IDS_BACKGROUND_APPS_MAC" desc="The Mac submenu for opening Background Apps.">
@@ -8902,6 +8935,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_HISTORY_CLOSED_RESTORE_WINDOW_MAC" desc="The Mac menu item for restoring all the tabs of a recently closed window.">
           Restore All Tabs
+        </message>
+        <message name="IDS_HISTORY_INCOGNITO_DISCLAIMER_MAC" desc="The Mac menu item for the Private disclaimer text.">
+          History isn’t saved in Private
         </message>
         <!-- Window menu -->
         <message name="IDS_MINIMIZE_WINDOW_MAC" desc="The Mac menu item for minimize the window menu." meaning="Mac Menubar: The Mac menu item for minimize the window menu.">
@@ -9368,9 +9404,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_FULLSCREEN_PRESS_ESC_TO_EXIT_MOUSELOCK" desc="Text displayed in the bubble to tell users how to return from mouselock mode (where the mouse cursor is hidden) to normal mode. Please surround the name of the key (e.g. 'Esc') in pipe characters so it can be rendered as a key.">
         Press |<ph name="ACCELERATOR">$1<ex>Esc</ex></ph>| to show your cursor
       </message>
-      <message name="IDS_FULLSCREEN_HOLD_ESC_TO_EXIT_FULLSCREEN" desc="Text displayed in the bubble to tell users how to return from fullscreen mode (where the web page occupies the entire screen) to normal mode. Please surround the name of the key (e.g. 'Esc') in pipe characters so it can be rendered as a key.">
-        Press and hold |<ph name="ACCELERATOR">$1<ex>Esc</ex></ph>| to exit full screen
-      </message>
 
       <!-- Register Protocol Handler Strings -->
       <message name="IDS_REGISTER_PROTOCOL_HANDLER_MAILTO_NAME" desc="A more user friendly way of describing mailto: links.">
@@ -9474,38 +9507,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </if>
 
       <!-- Live caption. -->
-      <message name="IDS_LIVE_CAPTION_BUBBLE_TITLE" desc="Title of the Live Caption bubble">
-        Live Caption
+      <message name="IDS_LIVE_CAPTION_PROMO" desc="Text shown on promotional UI appearing next to the global media controls button">
+        Get captions for your audio and video
       </message>
-      <message name="IDS_LIVE_CAPTION_BUBBLE_CLOSE" desc="Tooltip for the Live Caption close button">
-        Turn off Live Caption for now
-      </message>
-      <message name="IDS_LIVE_CAPTION_BUBBLE_EXPAND" desc="Tooltip for the Live Caption expand button">
-        Show more lines
-      </message>
-      <message name="IDS_LIVE_CAPTION_BUBBLE_COLLAPSE" desc="Tooltip for the Live Caption collapse button">
-        Show fewer lines
-      </message>
-      <message name="IDS_LIVE_CAPTION_BUBBLE_ERROR" desc="Error message for the Live Caption bubble when Live Captions are unavailable.">
-        Live Caption is not available right now
-      </message>
-    <if expr="chromeos">
-      <message name="IDS_LIVE_CAPTION_BUBBLE_APPEAR_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers on BraveOS when the Live Caption bubble appears to inform users of how to focus the bubble.">
-        Live Caption visible, press Ctrl + Back or Ctrl + Forward to cycle focus
-      </message>
-    </if>
-    <if expr="is_macosx">
-      <message name="IDS_LIVE_CAPTION_BUBBLE_APPEAR_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers on MacOS when the Live Caption bubble appears to inform users of how to focus the bubble.">
-        Live Caption visible, press ⌘ + Option + Up arrow or Down arrow to cycle focus
-      </message>
-    </if>
-    <if expr="is_win or desktop_linux">
-      <message name="IDS_LIVE_CAPTION_BUBBLE_APPEAR_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers on Windows or Linux when the Live Caption bubble appears to inform users of how to focus the bubble.">
-        Live Caption visible, press F6 to cycle focus
-      </message>
-    </if>
-      <message name="IDS_LIVE_CAPTION_BUBBLE_MOVE_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers when the Live Caption bubble moves.">
-        Moved caption bubble to <ph name="POSITION_ON_SCREEN_FROM_LEFT">$1<ex>20</ex></ph>% across, <ph name="POSITION_ON_SCREEN_FROM_TOP">$2<ex>80</ex></ph>% down
+      <message name="IDS_LIVE_CAPTION_PROMO_SCREENREADER" desc="Text announced encouraging users to open live caption">
+        Get captions for your audio and video by enabling Live Caption in settings
       </message>
 
       <!-- Caret browsing. -->
@@ -9630,8 +9636,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_APP_LIST_NEW_WINDOW" desc="The text label of the New Window menu item">
           New window
         </message>
-        <message name="IDS_APP_LIST_NEW_INCOGNITO_WINDOW" desc="The text label of the New private window menu item">
-          New private window
+        <message name="IDS_APP_LIST_NEW_INCOGNITO_WINDOW" desc="The text label of the New Private window menu item">
+          New Private window
         </message>
         <message name="IDS_APP_LIST_OEM_DEFAULT_FOLDER_NAME" desc="The default name for OEM folders in the App Launcher">
           OEM folder
@@ -9679,9 +9685,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_MULTIPLE_SCREEN_NAME" desc="Name for screens in the desktop media picker UI when there are multiple monitors.">
         {SCREEN_INDEX, plural, =1{Screen #} other{Screen #}}
-      </message>
-      <message name="IDS_DESKTOP_MEDIA_PRESENTER_TOOLS" desc="Text for the checkbox on window picker dialog, when checked the presenter tools will be shown.">
-        Presenter Tools
       </message>
       <if expr="toolkit_views">
         <message name="IDS_DESKTOP_MEDIA_PICKER_SOURCE_TYPE_THIS_TAB" desc="Text for one of the dialog-tabs on the media picker dialog. This dialog-tab controls sharing the current tab.">
@@ -10052,14 +10055,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
     <if expr="not is_android">
       <!-- Device Chooser Prompt -->
-      <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_PROMPT_ORIGIN" desc="The label that is used to introduce Bluetooth chooser details to the user in a popup when it is from a website.">
-        <ph name="Origin">$1<ex>www.google.com</ex></ph> wants to pair
-      </message>
       <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_PROMPT_EXTENSION_NAME" desc="The label that is used to introduce Bluetooth chooser details to the user in a popup when it is from a Brave extension.">
         "<ph name="CHROME_EXTENSION_NAME">$1<ex>Brave Extension Name</ex></ph>" wants to pair
-      </message>
-      <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_NO_DEVICES_FOUND_PROMPT" desc="The label shown to the user to inform them that no Bluetooth devices were found matching the requirements that the application provided.">
-        No compatible devices found.
       </message>
       <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_TURN_ADAPTER_OFF" desc="Text of a link the user can click to get help information when Bluetooth adapter is turned off.">
         <ph name="TURN_ON_BLUETOOTH_LINK">$1<ex>Turn on Bluetooth</ex></ph> to allow pairing
@@ -10076,15 +10073,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_RE_SCAN_TOOLTIP" desc="Tooltip for the button that lets the user start a new scan for Bluetooth devices.">
         Re-scan Bluetooth devices
       </message>
-      <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_SCANNING_LABEL" desc="Text on label that indicates a scan for Bluetooth devices is in progress.">
-        Scanning...
-      </message>
-      <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_SCANNING_LABEL_TOOLTIP" desc="Tooltip for the label that shows while scanning for Bluetooth devices.">
-        Scanning for Bluetooth devices...
-      </message>
-      <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_PAIR_BUTTON_TEXT" desc="Label on the button that closes the Bluetooth chooser popup and pairs the selected device.">
-        Pair
-      </message>
       <message name="IDS_DEVICE_CHOOSER_GET_HELP_LINK_WITH_SCANNING_STATUS" desc="This text is shown at the bottom of the chooser popup with a link to 'Get help'.">
         Get help<ph name="SCANNING_STATUS">$1<ex> while scanning for devices...</ex></ph>
       </message>
@@ -10098,32 +10086,14 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <ph name="DEVICE_NAME">$1<ex>device name</ex></ph> - Paired
       </message>
     </if>
-    <message name="IDS_USB_DEVICE_CHOOSER_PROMPT_ORIGIN" desc="The label that is used to introduce USB chooser details to the user in a popup when it is from a website.">
-      <ph name="Origin">$1<ex>www.google.com</ex></ph> wants to connect
-    </message>
     <message name="IDS_USB_DEVICE_CHOOSER_PROMPT_EXTENSION_NAME" desc="The label that is used to introduce USB chooser details to the user in a popup when it is from a Brave extension.">
       "<ph name="CHROME_EXTENSION_NAME">$1<ex>Brave Extension Name</ex></ph>" wants to connect
     </message>
     <message name="IDS_DEVICE_CHOOSER_DEVICE_NAME_WITH_ID" desc="To distinguish devices with the same name, the device chooser shows the device name with id.">
       <ph name="DEVICE_NAME">$1<ex>device name</ex></ph> (<ph name="DEVICE_ID">$2<ex>device id</ex></ph>)
     </message>
-    <message name="IDS_DEVICE_CHOOSER_NO_DEVICES_FOUND_PROMPT" desc="The label shown to the user to inform them that no USB devices were found matching the requirements that the application provided.">
-      No compatible devices found.
-    </message>
     <message name="IDS_DEVICE_CHOOSER_ACCNAME_COMPATIBLE_DEVICES_LIST" desc="The accessible name for the list of compatible devices, read to screen reader users when navigating to the container.">
       Compatible devices
-    </message>
-    <message name="IDS_USB_DEVICE_CHOOSER_CONNECT_BUTTON_TEXT" desc="Label on the button that closes the USB chooser popup and connects the selected device.">
-      Connect
-    </message>
-    <message name="IDS_USB_DEVICE_CHOOSER_LOADING_LABEL" desc="Text on label that the browser is loading the list of USB devices.">
-      Finding devices...
-    </message>
-    <message name="IDS_USB_DEVICE_CHOOSER_LOADING_LABEL_TOOLTIP" desc="Tooltip for the label that the browser is loading the list of USB devices.">
-      Finding USB devices...
-    </message>
-    <message name="IDS_DEVICE_CHOOSER_CANCEL_BUTTON_TEXT" desc="Label on the button that closes the chooser popup without selecting an option.">
-      Cancel
     </message>
 
     <!-- Device Chooser Device Name Unknown -->
@@ -10152,19 +10122,19 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <!-- Device descriptions for devices defined by policy with wildcards. -->
-    <message name="IDS_DEVICE_DESCRIPTION_FOR_PRODUCT_ID_AND_VENDOR_NAME" desc="String describing a device by its vendor name when only the numeric product ID is available.">
+    <message name="IDS_USB_POLICY_DEVICE_DESCRIPTION_FOR_PRODUCT_ID_AND_VENDOR_NAME" desc="String describing a device by its vendor name when only the numeric product ID is available.">
       Unknown product <ph name="PRODUCT_ID">$1<ex>123</ex></ph> from <ph name="VENDOR_NAME">$2<ex>Brave</ex></ph>
     </message>
-    <message name="IDS_DEVICE_DESCRIPTION_FOR_PRODUCT_ID_AND_VENDOR_ID" desc="String describing a device when only the numeric product ID and vendor ID are available.">
+    <message name="IDS_USB_POLICY_DEVICE_DESCRIPTION_FOR_PRODUCT_ID_AND_VENDOR_ID" desc="String describing a device when only the numeric product ID and vendor ID are available.">
       Unknown product <ph name="PRODUCT_ID">$1<ex>123</ex></ph> from vendor <ph name="VENDOR_ID">$2<ex>123</ex></ph>
     </message>
-    <message name="IDS_DEVICE_DESCRIPTION_FOR_VENDOR_ID" desc="String describing devices from a vendor by ID.">
+    <message name="IDS_USB_POLICY_DEVICE_DESCRIPTION_FOR_VENDOR_ID" desc="String describing devices from a vendor by ID.">
       Devices from vendor <ph name="VENDOR_ID">$1<ex>123</ex></ph>
     </message>
-    <message name="IDS_DEVICE_DESCRIPTION_FOR_VENDOR_NAME" desc="String describing devices from a vendor.">
+    <message name="IDS_USB_POLICY_DEVICE_DESCRIPTION_FOR_VENDOR_NAME" desc="String describing devices from a vendor.">
       Devices from <ph name="VENDOR_NAME">$1<ex>Brave</ex></ph>
     </message>
-    <message name="IDS_DEVICE_DESCRIPTION_FOR_ANY_VENDOR" desc="String describing devices from any vendor.">
+    <message name="IDS_USB_POLICY_DEVICE_DESCRIPTION_FOR_ANY_VENDOR" desc="String describing devices from any vendor.">
       Devices from any vendor
     </message>
 
@@ -10191,6 +10161,21 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_SERIAL_PORT_CHOOSER_LOADING_LABEL_TOOLTIP" desc="Tooltip for the label that the browser is loading the list of serial devices.">
         Finding serial devices...
       </message>
+      <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_USB_PRODUCT_ID_AND_VENDOR_NAME" desc="String describing a USB device permission granted by enterprise policy to a site when the vendor name is available by a numeric product ID must be used.">
+        USB device from <ph name="VENDOR_NAME">$2<ex>Brave</ex></ph> (product <ph name="PRODUCT_ID">$1<ex>0x12AB</ex></ph>)
+      </message>
+      <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_USB_PRODUCT_ID_AND_VENDOR_ID" desc="String describing a USB device permission granted by enterprise policy to a site when only the numeric product ID and vendor ID are available.">
+        USB device (<ph name="VENDOR_ID">$2<ex>12AB</ex></ph>:<ph name="PRODUCT_ID">$1<ex>12AB</ex></ph>)
+      </message>
+      <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_USB_VENDOR_ID" desc="String describing a USB device permission granted by enterprise policy to a site for all devices from a single vendor when only the numeric vendor ID is available.">
+        USB devices from vendor <ph name="VENDOR_ID">$1<ex>12AB</ex></ph>
+      </message>
+      <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_USB_VENDOR_NAME" desc="String describing a USB device permission granted by enterprise policy to a site for all devices from a single vendor.">
+        USB devices from <ph name="VENDOR_NAME">$1<ex>Brave</ex></ph>
+      </message>
+      <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_ANY_PORT" desc="String describing a serial port permission granted by enterprise policy for all ports.">
+        Any serial port
+      </message>
     </if>
 
     <!-- HID (Human Interface Device) chooser -->
@@ -10208,6 +10193,16 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_HID_CHOOSER_LOADING_LABEL_TOOLTIP" desc="Tooltip for the label that the browser is loading the list of HID devices.">
         Finding HID devices...
+      </message>
+    </if>
+
+    <!-- File Handling permission prompt -->
+    <if expr="not is_android">
+      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_TEXT" desc="Permission request shown if the user is opening a file using a PWA with registered file handlers. Follows a prompt: 'This site would like to:'">
+        Open <ph name="FILE_EXTENSIONS">$1<ex>.txt, .csv, .md</ex></ph> files
+      </message>
+      <message name="IDS_WEB_APP_FILE_HANDLING_EXTENSION_LIST_SEPARATOR" desc="Text/punctuation that separates a list of file types/extensions, such as .txt or .csv." meaning="List separator for file extensions.">
+         , '''
       </message>
     </if>
 
@@ -10517,9 +10512,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_TRANSPORT_USB" desc="Menu item text. The user selects this to use a security key (an external physical device for user authentication) plugged in to the USB port of the computer.">
         USB security key
       </message>
-      <message name="IDS_WEBAUTHN_TRANSPORT_NFC" desc="Menu item text. The user selects this to use a security key (an external physical device for user authentication) connected to the computer over Near-Field Communication.">
-        NFC security key
-      </message>
       <message name="IDS_WEBAUTHN_TRANSPORT_INTERNAL" desc="Menu item text. The user selects this to use a hardware-based authentication mechanism that is built in to the computer, such as a fingerprint reader.">
         This device
       </message>
@@ -10589,9 +10581,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_PAIR_PHONE" desc="Menu item text. The user selects this to begin the process of pairing with a previously unknown smartphone.">
         Pair with new phone
       </message>
-      <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_NFC" desc="Menu item text. The user selects this to verify their identity on a web site (i.e. sign in) using a security key (an external physical device for user authentication) connected to the computer over Near-Field Communication.">
-        Verify via NFC
-      </message>
       <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_INTERNAL" desc="Menu item text. The user selects this to verify their identity on a web site (i.e. sign in) using a hardware-based authentication mechanism that is built in to the computer, such as a fingerprint reader.">
         Use this device
       </message>
@@ -10608,10 +10597,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
         A notification was sent to your phone to confirm it's you.
       </message>
 
-      <message name="IDS_WEBAUTHN_CABLEV2_SERVERLINK_DESCRIPTION" desc="Contents of the dialog shown when the user tries to sign-in using a phone as a security key. The second placeholder will be replaced by the contents of the translated string IDS_WEBAUTHN_CABLEV2_SERVERLINK_TROUBLE. A placeholder is used for this because that link will be styled as a clickable link. The word 'Yes' will appear on the phone and is TC ID 6139894934866548097.">
-        <ph name="WEBSITE"><ex>accounts.google.com</ex>$1</ph> sent a notification to your phone. Tap Yes to confirm it's you. <ph name="LINK"><ex>Didn't get it?</ex>$2</ph>
+      <message name="IDS_WEBAUTHN_CABLEV2_SERVERLINK_DESCRIPTION" desc="Contents of the dialog shown when the user tries to sign-in using a phone as a security key.">
+        <ph name="WEBSITE"><ex>accounts.google.com</ex>$1</ph> sent a notification to your phone. To confirm it's you, follow the steps there.
       </message>
-      <message name="IDS_WEBAUTHN_CABLEV2_SERVERLINK_TROUBLE" desc="This message is shown as a link inside of IDS_WEBAUTHN_CABLEV2_SERVERLINK_DESCRIPTION and replaces placeholder two. The 'it' referenced here is the notification mentioned in that message.">
+      <message name="IDS_WEBAUTHN_CABLEV2_SERVERLINK_TROUBLE" desc="This message is shown as a link below IDS_WEBAUTHN_CABLEV2_SERVERLINK_DESCRIPTION. The 'it' referenced here is the notification mentioned in that message.">
         Didn't get it?
       </message>
       <message name="IDS_WEBAUTHN_CABLEV2_AOA_TITLE" desc="Contents of the dialog shown when the user tries to sign-in using a phone as a security key. The 'cable' is a physical USB cable.">
@@ -10622,6 +10611,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_WEBAUTHN_CABLEV2_AOA_REQUEST_DESCRIPTION" desc="Potentially displayed in a permissions dialog on Android to describe the type of request that a computer, that is connected over USB, is making. In this context the request from the computer is to use the Android device as a security key. A 'security key' is typically a physical USB token used for authentication (e.g. a gNubby) but in this case the phone is acting as one. The translation of 'security key' should match the phrase used in TC IDs such as 1685482178220389035 and 7775033610159191691">
         Security key request
+      </message>
+      <message name="IDS_WEBAUTHN_CABLEV2_2ND_FACTOR_DESCRIPTION" desc="The contents of a dialog shown when the user tries to sign-in using a phone as a security key, or tries to register their phone as a security key for a future sign-in. A security key is traditionally a small USB device that is touched to confirm a sign-in (e.g. a gNubby) and, in this context, the phone is replacing the need for a separate device. The placeholder for the notification title will be replaced with the string that will appear in the notification on the phone. These messages are 4300134428943426639 and 581442427601260656.">
+        <ph name="WEBSITE"><ex>accounts.google.com</ex>$1</ph> sent a notification to your phone. To confirm it's you, tap the “<ph name="NOTIFICATIONTITLE"><ex>Verify with this phone</ex>$2</ph>” notification and follow the steps.
       </message>
 
       <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_DESCRIPTION_SHORT" desc="Second line of text in an item letting the user know that they can use their phone as a security key. The user needs to check their phone and respond to a notification that will ask them to press a button on the phone's screen to confirm that they're logging in.">
@@ -10773,8 +10765,19 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
    </if>
 
+   <!-- WebAuthn strings that are used on both Android and Desktop -->
+   <if expr="is_win or is_macosx or desktop_linux or chromeos or is_android">
+      <message name="IDS_CABLEV2_MAKE_CREDENTIAL_NOTIFICATION_TITLE" desc="The title of a notification shown on Android that informs the user that a website wishes to register their phone for signing into that website." formatter_data="android_java">
+        Verify with this phone
+      </message>
+
+      <message name="IDS_CABLEV2_GET_ASSERTION_NOTIFICATION_TITLE" desc="The title of a notification shown on Android that informs the user that a website wishes to use their phone to sign them in on another computer." formatter_data="android_java">
+        Verify your identity
+      </message>
+   </if>
+
    <!-- Private Profile Menu bubble. -->
-    <message name="IDS_INCOGNITO_PROFILE_MENU_TITLE" desc="The title of the private version of profile menu.">
+    <message name="IDS_INCOGNITO_PROFILE_MENU_TITLE" desc="The title of the Private version of profile menu.">
       Private
     </message>
     <message name="IDS_INCOGNITO_WINDOW_COUNT_MESSAGE" desc="The message showing the number of open incogntio windows. This is not used for zero windows.[ICU Syntax]">
@@ -10783,13 +10786,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
         other {# open windows}
       }
     </message>
-    <message name="IDS_INCOGNITO_PROFILE_MENU_CREATE_SHORTCUT_BUTTON" desc="Label of the button to create a desktop shortcut for private mode.">
+    <message name="IDS_INCOGNITO_PROFILE_MENU_CREATE_SHORTCUT_BUTTON" desc="Label of the button to create a desktop shortcut for Private mode.">
       Create shortcut
     </message>
-    <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON" desc="The text of the button offering to close all private windows.">
+    <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON" desc="The text of the button offering to close all Private windows.">
       Exit Private
     </message>
-    <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON_NEW" desc="The text of the button offering to close all private windows.">
+    <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON_NEW" desc="The text of the button offering to close all Private windows.">
       Close Private
     </message>
 

@@ -1,11 +1,11 @@
 diff --git a/components/content_settings/core/browser/content_settings_default_provider.cc b/components/content_settings/core/browser/content_settings_default_provider.cc
-index 4b4c23346ec51e15ea949442d1ba82b6dc36624c..4e631dc8d86433150c80d4ed5a86fe8a58a395ba 100644
+index cbfaabb1c417ec91bd566a7b535f354237687176..d38422430e49bf2af7a629c9fa3e8a840660fa8e 100644
 --- a/components/content_settings/core/browser/content_settings_default_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_default_provider.cc
-@@ -388,6 +388,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
-   prefs_->ClearPref(kObsoletePluginsDataDefaultPref);
- #endif  // !defined(OS_ANDROID)
- #endif  // !defined(OS_IOS)
+@@ -408,6 +408,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
+   }
+   prefs_->ClearPref(kDeprecatedEnableDRM);
+ #endif  // BUILDFLAG(IS_CHROMEOS_ASH) || defined(OS_WIN)
 +BRAVE_DISCARD_OR_MIGRATE_OBSOLETE_PREFERENCES
  }
  

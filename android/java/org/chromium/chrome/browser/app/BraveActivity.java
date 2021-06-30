@@ -41,6 +41,7 @@ import org.chromium.base.Log;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.UnownedUserDataSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
@@ -69,6 +70,7 @@ import org.chromium.chrome.browser.compositor.layouts.phone.StackLayout;
 import org.chromium.chrome.browser.crypto_wallet.CryptoWalletActivity;
 import org.chromium.chrome.browser.dependency_injection.ChromeActivityComponent;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
+import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.informers.BraveAndroidSyncDisabledInformer;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
@@ -88,7 +90,7 @@ import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.share.ShareDelegate;
-import org.chromium.chrome.browser.share.ShareDelegateImpl.ShareOrigin;
+import org.chromium.chrome.browser.share.ShareDelegate.ShareOrigin;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tab.TabLaunchType;
@@ -158,7 +160,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
 
     // Explicitly declare this variable to avoid build errors.
     // It will be removed in asm and parent variable will be used instead.
-    protected ObservableSupplier<Profile> mTabModelProfileSupplier;
+    private UnownedUserDataSupplier<BrowserControlsManager> mBrowserControlsManagerSupplier;
 
     private static final List<String> yandexRegions =
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
@@ -841,6 +843,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         if (activeLayout instanceof StackLayout) {
             ((StackLayout) activeLayout).commitOutstandingModelState(LayoutManagerImpl.time());
         }
+    }
+
+    public ObservableSupplier<BrowserControlsManager> getBrowserControlsManagerSupplier() {
+        return mBrowserControlsManagerSupplier;
     }
 
     @NativeMethods

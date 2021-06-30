@@ -26,9 +26,9 @@ const base::Feature* kBraveFeaturesExposedToJava[] = {
 
 const base::Feature* BraveFindFeatureExposedToJava(
     const std::string& feature_name) {
-  for (size_t i = 0; i < base::size(kBraveFeaturesExposedToJava); ++i) {
-    if (kBraveFeaturesExposedToJava[i]->name == feature_name)
-      return kBraveFeaturesExposedToJava[i];
+  for (const base::Feature* feature : kBraveFeaturesExposedToJava) {
+    if (feature->name == feature_name)
+      return feature;
   }
 
   return nullptr;

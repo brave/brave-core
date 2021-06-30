@@ -22,6 +22,7 @@
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_registry_observer.h"
 #include "extensions/common/extension.h"
+#include "ui/gfx/skia_util.h"
 #include "ui/views/view.h"
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -60,8 +61,6 @@ class BraveActionsContainer : public views::View,
   void SetShouldHide(bool should_hide);
   // ToolbarActionView::Delegate
   content::WebContents* GetCurrentWebContents() override;
-  // Notifies that a drag completed.
-  void OnToolbarActionViewDragDone() override;
   // Returns the view of the toolbar actions overflow menu to use as a
   // reference point for a popup when this view isn't visible.
   views::LabelButton* GetOverflowReferenceView() const override;

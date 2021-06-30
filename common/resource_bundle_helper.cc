@@ -9,10 +9,10 @@
 
 #include "base/command_line.h"
 #include "base/path_service.h"
-#include "chrome/common/chrome_paths.h"
 #include "ui/base/resource/resource_bundle.h"
 
 #if !defined(OS_IOS)
+#include "chrome/common/chrome_paths.h"
 #include "content/public/common/content_switches.h"
 #endif
 

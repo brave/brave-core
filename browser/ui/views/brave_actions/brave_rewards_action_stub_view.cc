@@ -21,15 +21,16 @@
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/geometry/rect.h"
+#include "ui/gfx/image/canvas_image_source.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/image/image_skia_rep_default.h"
-#include "ui/gfx/image/canvas_image_source.h"
-#include "ui/views/view.h"
-#include "ui/views/view_class_properties.h"
+#include "ui/gfx/skia_util.h"
 #include "ui/views/animation/ink_drop_impl.h"
 #include "ui/views/controls/button/label_button_border.h"
 #include "ui/views/controls/highlight_path_generator.h"
+#include "ui/views/view.h"
+#include "ui/views/view_class_properties.h"
 
 namespace {
 
@@ -61,10 +62,14 @@ BraveRewardsActionStubView::BraveRewardsActionStubView(
           std::u16string()),
       profile_(profile),
       delegate_(delegate) {
-  SetInkDropMode(InkDropMode::ON);
+  ink_drop()->SetMode(views::InkDropHost::InkDropMode::ON);
+  ink_drop()->SetBaseColorCallback(base::BindRepeating(
+      [](views::View* host) { return GetToolbarInkDropBaseColor(host); },
+      this));
+
   SetHasInkDropActionOnClick(true);
   SetHorizontalAlignment(gfx::ALIGN_CENTER);
-  SetInkDropVisibleOpacity(kToolbarInkDropVisibleOpacity);
+  ink_drop()->SetVisibleOpacity(kToolbarInkDropVisibleOpacity);
   // Create badge-and-image source like an extension icon would
   auto preferred_size = GetPreferredSize();
   ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
@@ -89,7 +94,6 @@ BraveRewardsActionStubView::BraveRewardsActionStubView(
           SK_ColorWHITE,
           kRewardsBadgeBg));
   image_source->SetBadge(std::move(badge));
-  image_source->set_paint_page_action_decoration(false);
   gfx::ImageSkia icon(gfx::Image(
       gfx::ImageSkia(
           std::move(image_source),
@@ -143,13 +147,4 @@ std::unique_ptr<views::LabelButtonBorder> BraveRewardsActionStubView::
   border->set_insets(
       gfx::Insets(0, 0, 0, 0));
   return border;
-}
-
-SkColor BraveRewardsActionStubView::GetInkDropBaseColor() const {
-  return GetToolbarInkDropBaseColor(this);
-}
-
-std::unique_ptr<views::InkDropHighlight>
-BraveRewardsActionStubView::CreateInkDropHighlight() const {
-  return CreateToolbarInkDropHighlight(this);
 }

@@ -23,8 +23,8 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
-#include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/infobars/content/content_infobar_manager.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_registry.h"
@@ -77,9 +77,9 @@ BraveWalletPromptToEnableWalletFunction::Run() {
                             base::NumberToString(params->tab_id)));
   }
 
-  InfoBarService* infobar_service =
-      InfoBarService::FromWebContents(contents);
-  if (infobar_service) {
+  infobars::ContentInfoBarManager* infobar_manager =
+      infobars::ContentInfoBarManager::FromWebContents(contents);
+  if (infobar_manager) {
     CryptoWalletsInfoBarDelegate::InfobarSubType subtype =
         CryptoWalletsInfoBarDelegate::InfobarSubType::GENERIC_SETUP;
     auto* service = GetEthereumRemoteClientService(browser_context());
@@ -87,7 +87,7 @@ BraveWalletPromptToEnableWalletFunction::Run() {
       subtype = CryptoWalletsInfoBarDelegate::InfobarSubType::
           LOAD_CRYPTO_WALLETS;
     }
-    CryptoWalletsInfoBarDelegate::Create(infobar_service, subtype);
+    CryptoWalletsInfoBarDelegate::Create(infobar_manager, subtype);
   }
 
   return RespondNow(NoArguments());

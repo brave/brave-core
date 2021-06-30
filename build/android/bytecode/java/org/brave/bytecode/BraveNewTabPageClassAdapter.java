@@ -14,6 +14,8 @@ public class BraveNewTabPageClassAdapter extends BraveClassVisitor {
     public BraveNewTabPageClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
+        redirectConstructor(sNewTabPageClassName, sBraveNewTabPageClassName);
+
         deleteField(sBraveNewTabPageClassName, "mNewTabPageLayout");
         makeProtectedField(sNewTabPageClassName, "mNewTabPageLayout");
 

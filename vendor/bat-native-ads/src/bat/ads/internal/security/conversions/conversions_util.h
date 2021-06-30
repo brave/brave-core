@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/optional.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -18,7 +18,7 @@ namespace security {
 
 struct VerifiableConversionEnvelopeInfo;
 
-base::Optional<VerifiableConversionEnvelopeInfo> EnvelopeSeal(
+absl::optional<VerifiableConversionEnvelopeInfo> EnvelopeSeal(
     const VerifiableConversionInfo& verifiable_conversion);
 
 }  // namespace security

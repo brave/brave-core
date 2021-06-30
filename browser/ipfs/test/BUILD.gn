@@ -66,6 +66,7 @@ source_set("browsertests") {
       "//brave/components/ipfs",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
+      "//components/infobars/content",
       "//components/network_session_configurator/common:common",
       "//components/policy/core/browser",
       "//components/policy/core/common:test_support",

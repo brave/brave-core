@@ -17,7 +17,7 @@ source_set("content_settings") {
   ]
 }
 
-source_set("unit_tests") {
+static_library("unit_tests") {
   testonly = true
 
   sources = [ "brave_content_settings_default_provider_unittest.cc" ]

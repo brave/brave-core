@@ -13,10 +13,10 @@
 #include "brave/components/ipfs/ipfs_navigation_throttle.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
-#include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/infobars/content/content_infobar_manager.h"
 #include "components/policy/core/browser/browser_policy_connector.h"
 #include "components/policy/core/common/mock_configuration_policy_provider.h"
 #include "components/policy/core/common/policy_map.h"
@@ -76,9 +76,9 @@ class IpfsPolicyTest : public InProcessBrowserTest {
   }
 
   size_t infobar_count() const {
-    InfoBarService* infobar_service =
-        InfoBarService::FromWebContents(web_contents());
-    return infobar_service->infobar_count();
+    infobars::ContentInfoBarManager* infobar_manager =
+        infobars::ContentInfoBarManager::FromWebContents(web_contents());
+    return infobar_manager->infobar_count();
   }
 
   const GURL& ipfs_url() { return ipfs_url_; }

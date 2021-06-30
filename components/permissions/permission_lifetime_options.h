@@ -8,14 +8,14 @@
 
 #include <vector>
 
-#include "base/optional.h"
 #include "base/time/time.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace permissions {
 
 struct PermissionLifetimeOption {
   PermissionLifetimeOption(std::u16string label,
-                           base::Optional<base::TimeDelta> lifetime);
+                           absl::optional<base::TimeDelta> lifetime);
   PermissionLifetimeOption(const PermissionLifetimeOption&);
   PermissionLifetimeOption& operator=(const PermissionLifetimeOption&);
   PermissionLifetimeOption(PermissionLifetimeOption&&) noexcept;
@@ -26,7 +26,7 @@ struct PermissionLifetimeOption {
   std::u16string label;
   // If not set, lifetime will not be controlled (i.e. permanent). If set to
   // base::TimeDelta(), permission should be alive until eTLD+1 is closed.
-  base::Optional<base::TimeDelta> lifetime;
+  absl::optional<base::TimeDelta> lifetime;
 };
 
 }  // namespace permissions

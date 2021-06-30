@@ -113,7 +113,7 @@ void PostSuggestionsClaim::OnRequest(
     return;
   }
 
-  base::Optional<base::Value> value = base::JSONReader::Read(response.body);
+  absl::optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     callback(type::Result::LEDGER_ERROR, "");

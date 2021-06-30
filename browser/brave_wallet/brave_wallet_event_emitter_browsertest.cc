@@ -120,8 +120,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest, CheckForAConnectEvent) {
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
 
-  auto result_first = EvalJsWithManualReply(
-      contents, CheckForEventScript("received_connect_event"));
+  auto result_first =
+      EvalJs(contents, CheckForEventScript("received_connect_event"),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result_first.value);
 }
 
@@ -136,7 +137,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
   auto* controller = GetEthJsonRpcController();
   controller->SetNetwork(brave_wallet::Network::kGoerli);
 
-  auto result_first = EvalJsWithManualReply(
-      contents, CheckForEventScript("received_chain_changed_event"));
+  auto result_first =
+      EvalJs(contents, CheckForEventScript("received_chain_changed_event"),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result_first.value);
 }

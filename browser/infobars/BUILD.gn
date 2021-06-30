@@ -19,6 +19,7 @@ source_set("infobars") {
     "//brave/components/p3a",
     "//chrome/app:chromium_strings",
     "//chrome/browser/ui",
+    "//components/infobars/content",
     "//components/infobars/core",
     "//components/prefs",
     "//components/strings",

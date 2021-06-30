@@ -23,6 +23,7 @@
 namespace brave {
 class BraveReferralsService;
 class BraveP3AService;
+class HistogramsBraveizer;
 class BraveFederatedLearningService;
 }  // namespace brave
 
@@ -166,6 +167,7 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   std::unique_ptr<brave::BraveFederatedLearningService>
       brave_federated_learning_service_;
   scoped_refptr<brave::BraveP3AService> brave_p3a_service_;
+  scoped_refptr<brave::HistogramsBraveizer> histogram_braveizer_;
   std::unique_ptr<ntp_background_images::NTPBackgroundImagesService>
       ntp_background_images_service_;
 

@@ -9,7 +9,6 @@
 #include <map>
 #include <utility>
 
-#include "base/optional.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
@@ -23,17 +22,17 @@
 #include "content/public/browser/web_contents.h"
 #include "net/base/escape.h"
 #include "net/base/url_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
 namespace {
 
-void LoadNewTabURL(
-    const GURL& url,
-    content::WebContents::OnceGetter web_contents_getter,
-    ui::PageTransition page_transition,
-    bool has_user_gesture,
-    const base::Optional<url::Origin>& initiating_origin) {
+void LoadNewTabURL(const GURL& url,
+                   content::WebContents::OnceGetter web_contents_getter,
+                   ui::PageTransition page_transition,
+                   bool has_user_gesture,
+                   const absl::optional<url::Origin>& initiating_origin) {
   content::WebContents* web_contents = std::move(web_contents_getter).Run();
   if (!web_contents) {
     return;
@@ -73,10 +72,10 @@ void LoadNewTabURL(
 namespace gemini {
 
 void HandleGeminiProtocol(const GURL& url,
-                           content::WebContents::OnceGetter web_contents_getter,
-                           ui::PageTransition page_transition,
-                           bool has_user_gesture,
-                           const base::Optional<url::Origin>& initiator) {
+                          content::WebContents::OnceGetter web_contents_getter,
+                          ui::PageTransition page_transition,
+                          bool has_user_gesture,
+                          const absl::optional<url::Origin>& initiator) {
   DCHECK(IsGeminiProtocol(url));
   base::PostTask(
       FROM_HERE, {content::BrowserThread::UI},

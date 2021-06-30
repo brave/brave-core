@@ -49,8 +49,13 @@
 }
 
 -keep class org.chromium.chrome.browser.ntp.NewTabPage {
+    public <init>(...);
     *** mNewTabPageLayout;
     *** mFeedSurfaceProvider;
+}
+
+-keep class org.chromium.chrome.browser.ntp.BraveNewTabPage {
+    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.EditUrlSuggestionProcessor {
@@ -111,6 +116,13 @@
     *** mIncognitoStateProvider;
     *** mTabCountProvider;
     *** mTabGroupUi;
+    *** mBottomSheetController;
+    *** mActivityLifecycleDispatcher;
+    *** mIsWarmOnResumeSupplier;
+    *** mTabContentManager;
+    *** mTabCreatorManager;
+    *** mOverviewModeBehaviorSupplier;
+    *** mSnackbarManager;
     *** onOrientationChange(...);
     *** updateButtonStatus(...);
     *** updateBookmarkButtonStatus(...);
@@ -132,8 +144,10 @@
     *** mToggleTabStackButton;
     *** mMenuButton;
     *** mShouldShowNewTabVariation;
+    *** mIsIncognito;
     *** updateNewTabButtonVisibility(...);
     *** shouldShowIncognitoToggle(...);
+    *** getToolbarColorForCurrentState(...);
 }
 
 -keep class org.chromium.chrome.browser.download.MimeUtils {
@@ -141,7 +155,7 @@
 }
 
 -keep class org.chromium.chrome.browser.app.ChromeActivity {
-    *** mTabModelProfileSupplier;
+    *** mBrowserControlsManagerSupplier;
 }
 
 -keep class org.chromium.chrome.browser.tabbed_mode.TabbedRootUiCoordinator {
@@ -291,4 +305,20 @@
 -keep class org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities {
     *** isGridTabSwitcherEnabled(...);
     *** isTabGroupsAndroidEnabled(...);
+}
+
+-keep class org.chromium.components.browser_ui.notifications.NotificationManagerProxyImpl {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.notifications.BraveNotificationManagerProxyImpl {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.status.StatusMediator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.status.BraveStatusMediator {
+    public <init>(...);
 }

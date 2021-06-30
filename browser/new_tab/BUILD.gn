@@ -3,13 +3,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-source_set("unittest") {
+static_library("unittest") {
   testonly = true
 
   if (!is_android) {
-    sources = [
-      "new_tab_shows_options_unittest.cc",
-    ]
+    sources = [ "new_tab_shows_options_unittest.cc" ]
     deps = [
       "//brave/browser",
       "//brave/common",

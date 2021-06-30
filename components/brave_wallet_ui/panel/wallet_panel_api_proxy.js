@@ -56,7 +56,7 @@ export default class WalletPanelApiProxyImpl {
   /** @override */
   getWalletHandler() {
     return this.wallet_handler;
-  } 
+  }
 }
 
 addSingletonGetter(WalletPanelApiProxyImpl);

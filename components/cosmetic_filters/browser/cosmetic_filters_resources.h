@@ -11,9 +11,9 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
-#include "base/optional.h"
 #include "base/values.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class HostContentSettingsMap;
 
@@ -54,10 +54,10 @@ class CosmeticFiltersResources final
 
  private:
   void HiddenClassIdSelectorsOnUI(HiddenClassIdSelectorsCallback callback,
-                                  base::Optional<base::Value> resources);
+                                  absl::optional<base::Value> resources);
 
   void UrlCosmeticResourcesOnUI(UrlCosmeticResourcesCallback callback,
-                                base::Optional<base::Value> resources);
+                                absl::optional<base::Value> resources);
 
   HostContentSettingsMap* settings_map_;             // Not owned
   brave_shields::AdBlockService* ad_block_service_;  // Not owned

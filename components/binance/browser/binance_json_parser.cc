@@ -29,7 +29,7 @@ bool BinanceJSONParser::GetTokensFromJSON(
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           json, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& records_v = value_with_error.value;
+  absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
@@ -71,7 +71,7 @@ bool BinanceJSONParser::GetAccountBalancesFromJSON(
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           json, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& records_v = value_with_error.value;
+  absl::optional<base::Value>& records_v = value_with_error.value;
 
   if (!records_v) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
@@ -136,7 +136,7 @@ bool BinanceJSONParser::GetQuoteInfoFromJSON(
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           json, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& records_v = value_with_error.value;
+  absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
@@ -184,7 +184,7 @@ bool BinanceJSONParser::GetDepositInfoFromJSON(
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           json, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& records_v = value_with_error.value;
+  absl::optional<base::Value>& records_v = value_with_error.value;
 
   if (!records_v) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
@@ -240,7 +240,7 @@ bool BinanceJSONParser::GetConfirmStatusFromJSON(
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           json, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& records_v = value_with_error.value;
+  absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
@@ -308,7 +308,7 @@ bool BinanceJSONParser::GetConvertAssetsFromJSON(const std::string& json,
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           json, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& records_v = value_with_error.value;
+  absl::optional<base::Value>& records_v = value_with_error.value;
 
   if (!records_v) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
@@ -362,7 +362,7 @@ bool BinanceJSONParser::RevokeTokenFromJSON(
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           json, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& records_v = value_with_error.value;
+  absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
@@ -409,7 +409,7 @@ bool BinanceJSONParser::GetCoinNetworksFromJSON(
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           json, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& records_v = value_with_error.value;
+  absl::optional<base::Value>& records_v = value_with_error.value;
 
   if (!records_v) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;

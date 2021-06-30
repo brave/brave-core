@@ -7,6 +7,7 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
+#include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/common/brave_paths.h"

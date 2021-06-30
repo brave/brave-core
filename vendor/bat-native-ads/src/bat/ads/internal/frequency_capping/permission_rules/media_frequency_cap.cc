@@ -34,7 +34,7 @@ std::string MediaFrequencyCap::get_last_message() const {
 }
 
 bool MediaFrequencyCap::DoesRespectCap() {
-  const base::Optional<TabInfo> tab = TabManager::Get()->GetVisible();
+  const absl::optional<TabInfo> tab = TabManager::Get()->GetVisible();
   if (!tab) {
     return true;
   }

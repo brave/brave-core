@@ -33,7 +33,7 @@ BraveWebMainParts::BraveWebMainParts() {}
 
 BraveWebMainParts::~BraveWebMainParts() {}
 
-void BraveWebMainParts::PreMainMessageLoopStart() {
+void BraveWebMainParts::PreCreateMainMessageLoop() {
   l10n_util::OverrideLocaleWithCocoaLocale();
 
    const std::string loaded_locale =

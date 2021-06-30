@@ -6,6 +6,7 @@
 import { Reducer } from 'redux'
 
 // Constants
+import { loadTimeData } from '../../common/loadTimeData'
 import { types } from '../constants/welcome_types'
 
 // Utils
@@ -44,7 +45,7 @@ const welcomeReducer: Reducer<Welcome.State | undefined> = (state: Welcome.State
     case types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS:
       // TODO(bsclifton): remove when ready for other regions
       const showBraveSearch: boolean =
-          ['US', 'CA'].includes(window.loadTimeData.getString('countryString'))
+          ['US', 'CA'].includes(loadTimeData.getString('countryString'))
       // Only show Brave Search during onboarding for US/CA
       const filteredSearchList = payload.filter((item: any) => {
         return !(item.name && item.name.startsWith('Brave ') && item.canBeRemoved)

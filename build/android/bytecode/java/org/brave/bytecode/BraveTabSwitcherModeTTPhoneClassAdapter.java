@@ -28,8 +28,15 @@ public class BraveTabSwitcherModeTTPhoneClassAdapter extends BraveClassVisitor {
         deleteField(sBraveTabSwitcherModeTTPhoneClassName, "mShouldShowNewTabVariation");
         makeProtectedField(sTabSwitcherModeTTPhoneClassName, "mShouldShowNewTabVariation");
 
+        deleteField(sBraveTabSwitcherModeTTPhoneClassName, "mIsIncognito");
+        makeProtectedField(sTabSwitcherModeTTPhoneClassName, "mIsIncognito");
+
         makePublicMethod(sTabSwitcherModeTTPhoneClassName, "updateNewTabButtonVisibility");
         addMethodAnnotation(sBraveTabSwitcherModeTTPhoneClassName, "updateNewTabButtonVisibility",
+                "Ljava/lang/Override;");
+
+        makePublicMethod(sTabSwitcherModeTTPhoneClassName, "getToolbarColorForCurrentState");
+        addMethodAnnotation(sBraveTabSwitcherModeTTPhoneClassName, "getToolbarColorForCurrentState",
                 "Ljava/lang/Override;");
 
         makePublicMethod(sTabSwitcherModeTTPhoneClassName, "shouldShowIncognitoToggle");

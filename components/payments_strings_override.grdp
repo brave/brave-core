@@ -24,8 +24,8 @@
   <if expr="not use_titlecase">
     </if>  <if expr="use_titlecase">
     </if>  <if expr="is_android">
-    <message name="IDS_EXTERNAL_PAYMENT_APP_LEAVE_INCOGNITO_WARNING" desc="Alert dialog text warning the user that private mode does not continue into external payment apps." formatter_data="android_java">
-      Leaving private mode to pay via an external application. Continue?
+    <message name="IDS_EXTERNAL_PAYMENT_APP_LEAVE_INCOGNITO_WARNING" desc="Alert dialog text warning the user that Private mode does not continue into external payment apps." formatter_data="android_java">
+      Leaving Private mode to pay via an external application. Continue?
     </message>
   </if>
 
@@ -35,6 +35,6 @@
   <if expr="not is_win">
     </if>  <if expr="is_win">
     </if>  <message name="IDS_PAYMENT_CREDENTIAL_ENROLLMENT_OFF_THE_RECORD_DESCRIPTION" desc="Extra description at the bottom of a dialog that asks for the user's permission to set up device-based sign-in (i.e., using their computer's biometric sensor or screen unlock/PIN) to verify card payments. This is shown only in Private mode and explains that the sign-in data will be stored to the device.">
-    Sign-in data will be stored on this device after you exit private mode.
+    Sign-in data will be stored on this device after you exit Private mode.
   </message>
   </grit-part>

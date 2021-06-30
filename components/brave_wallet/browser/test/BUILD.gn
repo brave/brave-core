@@ -7,7 +7,7 @@ import("//brave/build/config.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
-source_set("brave_wallet_unit_tests") {
+static_library("brave_wallet_unit_tests") {
   testonly = true
   if (brave_wallet_enabled) {
     sources = [

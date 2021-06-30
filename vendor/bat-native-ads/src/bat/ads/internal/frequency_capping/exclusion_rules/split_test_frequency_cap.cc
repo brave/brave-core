@@ -6,9 +6,9 @@
 #include "bat/ads/internal/frequency_capping/exclusion_rules/split_test_frequency_cap.h"
 
 #include "base/metrics/field_trial.h"
-#include "base/optional.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -16,10 +16,10 @@ namespace {
 
 const char kStudyName[] = "AdvertiserSplitTestStudy";
 
-base::Optional<std::string> GetSplitTestGroup(const std::string study_name) {
+absl::optional<std::string> GetSplitTestGroup(const std::string study_name) {
   base::FieldTrial* field_trial = base::FieldTrialList::Find(study_name);
   if (!field_trial) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   return field_trial->group_name();
@@ -49,7 +49,7 @@ std::string SplitTestFrequencyCap::get_last_message() const {
 }
 
 bool SplitTestFrequencyCap::DoesRespectCap(const CreativeAdInfo& ad) const {
-  const base::Optional<std::string> split_test_group =
+  const absl::optional<std::string> split_test_group =
       GetSplitTestGroup(kStudyName);
   if (!split_test_group) {
     // Only respect cap if browser has signed up to a field trial

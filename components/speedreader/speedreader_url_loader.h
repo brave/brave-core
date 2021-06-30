@@ -22,6 +22,7 @@
 #include "mojo/public/cpp/system/simple_watcher.h"
 #include "services/network/public/mojom/url_loader.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace speedreader {
 
@@ -101,10 +102,10 @@ class SpeedReaderURLLoader : public network::mojom::URLLoaderClient,
   // network::mojom::URLLoader implementation (called from the destination of
   // the response):
   void FollowRedirect(
-        const std::vector<std::string>& removed_headers,
-        const net::HttpRequestHeaders& modified_headers,
-        const net::HttpRequestHeaders& modified_cors_exempt_headers,
-        const base::Optional<GURL>& new_url) override;
+      const std::vector<std::string>& removed_headers,
+      const net::HttpRequestHeaders& modified_headers,
+      const net::HttpRequestHeaders& modified_cors_exempt_headers,
+      const absl::optional<GURL>& new_url) override;
   void SetPriority(net::RequestPriority priority,
                    int32_t intra_priority_value) override;
   void PauseReadingBodyFromNet() override;
@@ -136,7 +137,7 @@ class SpeedReaderURLLoader : public network::mojom::URLLoaderClient,
   State state_ = State::kWaitForBody;
 
   // Set if OnComplete() is called during distilling.
-  base::Optional<network::URLLoaderCompletionStatus> complete_status_;
+  absl::optional<network::URLLoaderCompletionStatus> complete_status_;
 
   // Note that this could be replaced by a distilled version.
   std::string buffered_body_;

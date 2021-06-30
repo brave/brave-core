@@ -27,7 +27,7 @@ std::unique_ptr<views::StyledLabel> BuildLabelWithEndingLink(
     views::Link::ClickedCallback callback) {
   auto label = std::make_unique<views::StyledLabel>();
   std::u16string text = reg_text;
-  text.append(base::ASCIIToUTF16(kSpeedreaderSeparator));
+  text.append(kSpeedreaderSeparator);
   size_t default_format_offset = text.length();
   text.append(link_text);
   label->SetText(text);

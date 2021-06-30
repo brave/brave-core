@@ -65,7 +65,7 @@ TEST_F(BraveNetworkDelegateBaseTest, RemoveTrackableSecurityHeaders) {
                                               url::Origin::Create(tab_url),
                                               nullptr, &headers);
   for (auto header : *TrackableSecurityHeaders()) {
-    EXPECT_FALSE(headers->HasHeader(header.as_string()));
+    EXPECT_FALSE(headers->HasHeader(std::string(header)));
   }
   EXPECT_TRUE(headers->HasHeader(kAcceptLanguageHeader));
   EXPECT_TRUE(headers->HasHeader(kXSSProtectionHeader));
@@ -83,7 +83,7 @@ TEST_F(BraveNetworkDelegateBaseTest, RemoveTrackableSecurityHeadersMixedCase) {
                                               url::Origin::Create(tab_url),
                                               nullptr, &headers);
   for (auto header : *TrackableSecurityHeaders()) {
-    EXPECT_FALSE(headers->HasHeader(header.as_string()));
+    EXPECT_FALSE(headers->HasHeader(std::string(header)));
   }
   EXPECT_TRUE(headers->HasHeader(kAcceptLanguageHeader));
   EXPECT_TRUE(headers->HasHeader(kXSSProtectionHeader));
@@ -101,7 +101,7 @@ TEST_F(BraveNetworkDelegateBaseTest, RetainTrackableSecurityHeaders) {
                                               url::Origin::Create(tab_url),
                                               nullptr, &headers);
   for (auto header : *TrackableSecurityHeaders()) {
-    EXPECT_TRUE(headers->HasHeader(header.as_string()));
+    EXPECT_TRUE(headers->HasHeader(std::string(header)));
   }
   EXPECT_TRUE(headers->HasHeader(kAcceptLanguageHeader));
   EXPECT_TRUE(headers->HasHeader(kXSSProtectionHeader));

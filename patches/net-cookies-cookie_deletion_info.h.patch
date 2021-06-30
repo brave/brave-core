@@ -1,11 +1,11 @@
 diff --git a/net/cookies/cookie_deletion_info.h b/net/cookies/cookie_deletion_info.h
-index 13865421490472ad33f0a16373017bdaeaa3e524..47a389f990d15c7877ec669d32acc984838172f4 100644
+index 30c46a63cd8042542fe133393aa222ca0503d31a..8cbf89652714fd1bba3e047101a52fe9589c297b 100644
 --- a/net/cookies/cookie_deletion_info.h
 +++ b/net/cookies/cookie_deletion_info.h
 @@ -139,6 +139,7 @@ struct NET_EXPORT CookieDeletionInfo {
  
    // Used only for testing purposes.
-   base::Optional<std::string> value_for_testing;
+   absl::optional<std::string> value_for_testing;
 +  BRAVE_COOKIE_DELETION_INFO_H
  };
  

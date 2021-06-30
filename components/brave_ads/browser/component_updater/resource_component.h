@@ -31,7 +31,7 @@ class ResourceComponent : public brave_component_updater::BraveComponent {
   void RemoveObserver(Observer* observer);
   void NotifyObservers(const std::string& id);
 
-  base::Optional<base::FilePath> GetPath(const std::string& id,
+  absl::optional<base::FilePath> GetPath(const std::string& id,
                                          const int version);
 
  private:

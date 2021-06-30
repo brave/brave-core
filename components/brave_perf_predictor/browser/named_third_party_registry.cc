@@ -20,6 +20,7 @@
 #include "brave/components/brave_perf_predictor/browser/bandwidth_linreg_parameters.h"
 #include "components/grit/brave_components_resources.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "url/gurl.h"
 
@@ -34,7 +35,7 @@ ParseMappings(const base::StringPiece entities, bool discard_irrelevant) {
   base::flat_map<std::string, std::string> entity_by_root_domain;
 
   // Parse the JSON
-  base::Optional<base::Value> document = base::JSONReader::Read(entities);
+  absl::optional<base::Value> document = base::JSONReader::Read(entities);
   if (!document || !document->is_list()) {
     LOG(ERROR) << "Cannot parse the third-party entities list";
     return {};
@@ -124,16 +125,16 @@ void NamedThirdPartyRegistry::UpdateMappings(
   initialized_ = true;
 }
 
-base::Optional<std::string> NamedThirdPartyRegistry::GetThirdParty(
+absl::optional<std::string> NamedThirdPartyRegistry::GetThirdParty(
     const base::StringPiece request_url) const {
   if (!IsInitialized()) {
     VLOG(2) << "Named Third Party Registry not initialized";
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   const GURL url(request_url);
   if (!url.is_valid())
-    return base::nullopt;
+    return absl::nullopt;
 
   if (url.has_host()) {
     auto domain_entry = entity_by_domain_.find(url.host());
@@ -148,7 +149,7 @@ base::Optional<std::string> NamedThirdPartyRegistry::GetThirdParty(
       return root_domain_entry->second;
   }
 
-  return base::nullopt;
+  return absl::nullopt;
 }
 
 NamedThirdPartyRegistry::NamedThirdPartyRegistry() = default;

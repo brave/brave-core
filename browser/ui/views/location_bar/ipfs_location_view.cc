@@ -25,6 +25,7 @@
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/gfx/skia_util.h"
 #include "ui/gfx/text_constants.h"
 #include "ui/views/animation/ink_drop_impl.h"
 #include "ui/views/background.h"
@@ -77,11 +78,11 @@ class IPFSLocationButtonView : public views::LabelButton {
     SetEnabledTextColors(kTextColor);
     SetHorizontalAlignment(gfx::ALIGN_RIGHT);
     SetImageLabelSpacing(6);
-    SetInkDropMode(InkDropMode::ON);
+    ink_drop()->SetMode(views::InkDropHost::InkDropMode::ON);
     SetBorder(views::CreateEmptyBorder(
         GetLayoutInsets(LOCATION_BAR_ICON_INTERIOR_PADDING)));
     SetHasInkDropActionOnClick(true);
-    SetInkDropVisibleOpacity(kToolbarInkDropVisibleOpacity);
+    ink_drop()->SetVisibleOpacity(kToolbarInkDropVisibleOpacity);
     UpdateBorder();
     // Ensure focus ring follows border
     views::HighlightPathGenerator::Install(

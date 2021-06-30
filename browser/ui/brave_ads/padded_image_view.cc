@@ -5,11 +5,11 @@
 
 #include "brave/browser/ui/brave_ads/padded_image_view.h"
 
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
-#include "ui/views/metadata/metadata_impl_macros.h"
 
 namespace brave_ads {
 

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_avatar_icon_util.cc b/chrome/browser/profiles/profile_avatar_icon_util.cc
-index 0163a84851a0cdbc043744813b96622243572b3a..e2d9624d36465f57a234964c660f513453d687d9 100644
+index a9ddd43a1f9bb8b291251772251eee64e2c52af6..3eee13296f043c45e15c32e542d4de0b3be85dce 100644
 --- a/chrome/browser/profiles/profile_avatar_icon_util.cc
 +++ b/chrome/browser/profiles/profile_avatar_icon_util.cc
 @@ -345,7 +345,7 @@ constexpr size_t kDefaultAvatarIconsCount = 1;

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/settings.js b/chrome/browser/resources/settings/settings.js
-index e8f45136edd3d1558a9afe7c45219ae37aa36877..142cf2c52728c2f400267d50c2ee4ff9ef9a3918 100644
+index 2c1b24970acaa2e8280744fcb72434119ac22c15..724867b34a92211b42cef2de7a03773011807597 100644
 --- a/chrome/browser/resources/settings/settings.js
 +++ b/chrome/browser/resources/settings/settings.js
 @@ -2,6 +2,7 @@
@@ -9,4 +9,4 @@ index e8f45136edd3d1558a9afe7c45219ae37aa36877..142cf2c52728c2f400267d50c2ee4ff9
 +import './brave_overrides/index.js';
  import './settings_ui/settings_ui.js';
  
- export {PluralStringProxyImpl as SettingsPluralStringProxyImpl} from 'chrome://resources/js/plural_string_proxy.js';
+ export {CrToolbarElement} from 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.js';

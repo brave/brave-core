@@ -5,13 +5,6 @@
 
 export {}
 
-type loadTimeData = {
-  getString: (key: string) => string
-  getInteger: (key: string) => number
-  getBoolean: (key: string) => boolean
-  data_: Record<string, string>
-}
-
 type RequestIdleCallbackHandle = any
 type RequestIdleCallbackOptions = {
   timeout: number
@@ -30,49 +23,6 @@ declare global {
       opts?: RequestIdleCallbackOptions
     ) => RequestIdleCallbackHandle)
     cancelIdleCallback: ((handle: RequestIdleCallbackHandle) => void)
-    loadTimeData: loadTimeData
-    cr: {
-      define: (name: string, init: () => void) => void
-      sendWithPromise<T> (method: string, ...args: any[]): Promise<T>
-      addWebUIListener: (eventName: string, callback: (...args: any[]) => void) => void
-    }
-    i18nTemplate: {
-      process: (document: Document, translations: loadTimeData) => void
-    }
-    brave_adblock: {
-      initialize: () => void
-    }
-    brave_new_tab: {
-      initialize: () => void
-      statsUpdated: () => void
-    }
-    brave_rewards: {
-      initialize: () => void
-      parameters: chrome.events.Event<(properties: Rewards.RewardsParameters) => void>
-      recoverWalletData: chrome.events.Event<(result: number) => void>
-      reconcileStamp: chrome.events.Event<(stamp: number) => void>
-      addresses: chrome.events.Event<(addresses: Record<string, string>) => void>
-      contributeList: chrome.events.Event<(list: Rewards.Publisher[]) => void>
-      balanceReports: chrome.events.Event<(reports: Record<string, Rewards.BalanceReport>) => void>
-    }
-    brave_welcome: {
-      initialize: () => void
-    }
-    brave_rewards_tip: {
-      initialize: () => void
-    }
-    brave_rewards_internals: {
-      initialize: () => void
-    }
-    ipfs: {
-      initialize: () => void
-    }
-    sync_ui_exports: {
-      initialize: () => void
-    }
-    tor_internals: {
-      initialize: () => void
-    }
     alreadyInserted: boolean
     web3: any
     content_cosmetic: {

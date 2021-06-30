@@ -9,8 +9,8 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "base/optional.h"
 #include "content/public/browser/url_data_source.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
 class FilePath;
@@ -47,7 +47,7 @@ class NTPBackgroundImagesSource : public content::URLDataSource {
   void GetImageFile(const base::FilePath& image_file_path,
                     GotDataCallback callback);
   void OnGotImageFile(GotDataCallback callback,
-                      base::Optional<std::string> input);
+                      absl::optional<std::string> input);
   bool IsValidPath(const std::string& path) const;
   bool IsLogoPath(const std::string& path) const;
   bool IsDefaultLogoPath(const std::string& path) const;

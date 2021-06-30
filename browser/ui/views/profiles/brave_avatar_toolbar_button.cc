@@ -18,11 +18,13 @@
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/pointer/touch_ui_controller.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/gfx/skia_util.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/highlight_path_generator.h"
@@ -56,7 +58,7 @@ BraveAvatarToolbarButton::BraveAvatarToolbarButton(BrowserView* browser_view)
 
 void BraveAvatarToolbarButton::SetHighlight(
     const std::u16string& highlight_text,
-    base::Optional<SkColor> highlight_color) {
+    absl::optional<SkColor> highlight_color) {
   std::u16string revised_highlight_text;
   if (browser_->profile()->IsTor()) {
     revised_highlight_text =

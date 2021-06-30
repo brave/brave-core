@@ -75,6 +75,10 @@ include_rules = [
   "-brave/services",
   "-ios",
   "-brave/third_party/bitcoin-core",
+
+  # Temporary change for the base::Optional -> absl::optional migration, to be
+  # removed once this rule is allowed in chromium's src/DEPS file.
+  "+third_party/abseil-cpp/absl/types/optional.h",
 ]
 
 # Temporary workaround for massive nummber of incorrect test includes

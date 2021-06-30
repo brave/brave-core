@@ -70,11 +70,9 @@ std::string GetFormattedResponseBody(const std::string& json_response) {
 
 CryptoDotComService::CryptoDotComService(content::BrowserContext* context)
     : context_(context),
-      url_loader_factory_(
-          content::BrowserContext::GetDefaultStoragePartition(context_)
-              ->GetURLLoaderFactoryForBrowserProcess()),
-      weak_factory_(this) {
-}
+      url_loader_factory_(context_->GetDefaultStoragePartition()
+                              ->GetURLLoaderFactoryForBrowserProcess()),
+      weak_factory_(this) {}
 
 CryptoDotComService::~CryptoDotComService() {
 }
@@ -194,8 +192,7 @@ bool CryptoDotComService::NetworkRequest(const GURL &url,
       network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
 
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
-  auto* default_storage_partition =
-      content::BrowserContext::GetDefaultStoragePartition(context_);
+  auto* default_storage_partition = context_->GetDefaultStoragePartition();
   auto* url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess().get();
 

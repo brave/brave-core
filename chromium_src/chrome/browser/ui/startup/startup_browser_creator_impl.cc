@@ -5,13 +5,14 @@
 
 #include "brave/browser/ui/startup/default_brave_browser_prompt.h"
 #include "chrome/browser/ui/startup/google_api_keys_infobar_delegate.h"
+#include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/confirm_infobar_delegate.h"
 
 #define GoogleApiKeysInfoBarDelegate BraveGoogleKeysInfoBarDelegate
 
 class BraveGoogleKeysInfoBarDelegate {
  public:
-  static void Create(InfoBarService* infobar_service) {
+  static void Create(infobars::ContentInfoBarManager* infobar_manager) {
     // lulz
   }
 };

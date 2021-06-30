@@ -318,8 +318,8 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTwoBrowsersTest, OneOTR) {
   SetExepectedRemoveDataCallCount(1);
 
   // Open a second browser window with OTR profile.
-  Browser* second_window =
-      NewBrowserWindow(browser()->profile()->GetPrimaryOTRProfile());
+  Browser* second_window = NewBrowserWindow(
+      browser()->profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true));
   // Close second browser window
   CloseBrowserWindow(second_window);
   EXPECT_EQ(0, remove_data_call_count());
@@ -335,8 +335,8 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTwoBrowsersTest, OneOTRExitsLast) {
   SetExepectedRemoveDataCallCount(1);
 
   // Open a second browser window with OTR profile.
-  Browser* second_window =
-      NewBrowserWindow(browser()->profile()->GetPrimaryOTRProfile());
+  Browser* second_window = NewBrowserWindow(
+      browser()->profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true));
 
   // Close regular profile window.
   CloseBrowserWindow(browser());

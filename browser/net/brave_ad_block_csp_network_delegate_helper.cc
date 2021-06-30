@@ -17,9 +17,9 @@
 
 namespace brave {
 
-base::Optional<std::string> GetCspDirectivesOnTaskRunner(
+absl::optional<std::string> GetCspDirectivesOnTaskRunner(
     std::shared_ptr<BraveRequestInfo> ctx,
-    base::Optional<std::string> original_csp) {
+    absl::optional<std::string> original_csp) {
   std::string source_host;
   if (ctx->initiator_url.is_valid() && !ctx->initiator_url.host().empty()) {
     source_host = ctx->initiator_url.host();
@@ -29,10 +29,10 @@ base::Optional<std::string> GetCspDirectivesOnTaskRunner(
     // use the request URL as the initiator.
     source_host = ctx->request_url.host();
   } else {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
-  base::Optional<std::string> csp_directives =
+  absl::optional<std::string> csp_directives =
       g_brave_browser_process->ad_block_service()->GetCspDirectives(
           ctx->request_url, ctx->resource_type, source_host);
 
@@ -44,7 +44,7 @@ void OnReceiveCspDirectives(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx,
     scoped_refptr<net::HttpResponseHeaders> override_response_headers,
-    base::Optional<std::string> csp_directives) {
+    absl::optional<std::string> csp_directives) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   if (csp_directives) {
@@ -81,11 +81,11 @@ int OnHeadersReceived_AdBlockCspWork(
         g_brave_browser_process->ad_block_service()->GetTaskRunner();
 
     std::string original_csp_string;
-    base::Optional<std::string> original_csp = base::nullopt;
+    absl::optional<std::string> original_csp = absl::nullopt;
     if ((*override_response_headers)
             ->GetNormalizedHeader("Content-Security-Policy",
                                   &original_csp_string)) {
-      original_csp = base::Optional<std::string>(original_csp_string);
+      original_csp = absl::optional<std::string>(original_csp_string);
     }
 
     (*override_response_headers)->RemoveHeader("Content-Security-Policy");

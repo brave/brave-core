@@ -78,7 +78,6 @@ public class BravePrivacySettingsTest {
         assertNotEquals(null, mFragment.findPreference(PREF_SAFE_BROWSING));
         assertNotEquals(null, mFragment.findPreference(PREF_SYNC_AND_SERVICES_LINK));
         assertNotEquals(null, mFragment.findPreference(PREF_CLEAR_BROWSING_DATA));
-        assertEquals(null, mFragment.findPreference(PREF_PRIVACY_SANDBOX));
     }
 
     @Test

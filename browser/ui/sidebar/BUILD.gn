@@ -63,7 +63,7 @@ source_set("browser_tests") {
   }
 }
 
-source_set("unit_tests") {
+static_library("unit_tests") {
   if (enable_sidebar) {
     testonly = true
 

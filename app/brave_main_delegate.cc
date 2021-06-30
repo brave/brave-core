@@ -221,6 +221,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     features::kIdleDetection.name,
     features::kLangClientHintHeader.name,
     features::kNotificationTriggers.name,
+    features::kPrivacySandboxSettings.name,
     features::kSignedExchangePrefetchCacheForNavigations.name,
     features::kSignedExchangeSubresourcePrefetch.name,
     features::kSubresourceWebBundles.name,

@@ -103,7 +103,7 @@ ds_store = rebase_path("//brave/build/mac/$ds_store_file_name")
 dmg_icon = rebase_path("//brave/build/mac/$dmg_icon_file_name.icns")
 
 action("generate_dsa_sig_for_dmg") {
-  script = "generate_dsa_sig.py"
+  script = "generate_sig.py"
 
   sign_update_path = "$root_out_dir/old_dsa_scripts/sign_update"
   target_dmg_path = "$root_out_dir/$brave_dmg"
@@ -118,6 +118,7 @@ action("generate_dsa_sig_for_dmg") {
     rebase_path("$target_dmg_path"),
     "--output",
     rebase_path("$output_dmg_dsa_path"),
+    "--dsa",
   ]
 
   inputs = [
@@ -135,7 +136,7 @@ action("generate_dsa_sig_for_dmg") {
 }
 
 action("generate_eddsa_sig_for_dmg") {
-  script = "generate_eddsa_sig.py"
+  script = "generate_sig.py"
 
   sign_update_path = "$root_out_dir/sign_update"
   target_dmg_path = "$root_out_dir/$brave_dmg"
@@ -150,6 +151,7 @@ action("generate_eddsa_sig_for_dmg") {
     rebase_path("$target_dmg_path"),
     "--output",
     rebase_path("$output_dmg_eddsa_path"),
+    "--eddsa",
   ]
 
   inputs = [
@@ -201,7 +203,7 @@ action("build_delta_installer") {
 }
 
 action("generate_eddsa_sig_for_delta") {
-  script = "generate_eddsa_sig.py"
+  script = "generate_sig.py"
 
   sign_update_path = "$root_out_dir/sign_update"
   target_delta_path = "$root_out_dir/$brave_delta"
@@ -216,6 +218,7 @@ action("generate_eddsa_sig_for_delta") {
     rebase_path("$target_delta_path"),
     "--output",
     rebase_path("$output_delta_eddsa_path"),
+    "--eddsa",
   ]
 
   inputs = [

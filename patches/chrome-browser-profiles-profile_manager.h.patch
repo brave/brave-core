@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile_manager.h b/chrome/browser/profiles/profile_manager.h
-index 88ee84697998c9ffc4b26857cbed8af94fae39c4..2c189fdc62c4b31215afddad93e74d963968560b 100644
+index cd6fdbba9b4354c849a52cfe6194fb9843d524f2..80e3dc69398d0de4fc55eb0d2b484fa0d12e4233 100644
 --- a/chrome/browser/profiles/profile_manager.h
 +++ b/chrome/browser/profiles/profile_manager.h
-@@ -284,6 +284,7 @@ class ProfileManager : public Profile::Delegate {
+@@ -278,6 +278,7 @@ class ProfileManager : public Profile::Delegate {
    void set_do_final_services_init(bool do_final_services_init) {
      do_final_services_init_ = do_final_services_init;
    }

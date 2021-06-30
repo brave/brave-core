@@ -32,9 +32,9 @@
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/components/p3a/brave_histogram_rewrite.h"
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/p3a/buildflags.h"
+#include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/services/network/public/cpp/system_request_handler.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
 #include "chrome/browser/net/system_network_context_manager.h"
@@ -128,7 +128,7 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   // Create P3A Service early to catch more histograms. The full initialization
   // should be started once browser process impl is ready.
   brave_p3a_service();
-  brave::SetupHistogramsBraveization();
+  histogram_braveizer_ = brave::HistogramsBraveizer::Create();
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 }
 

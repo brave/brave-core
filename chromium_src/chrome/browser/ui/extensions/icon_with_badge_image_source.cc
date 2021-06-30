@@ -19,15 +19,17 @@
 #undef BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_DRAW_2
 #undef BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_DRAW_1
 
+#include "third_party/abseil-cpp/absl/types/optional.h"
+
 // Implement default virtual methods
-base::Optional<int> IconWithBadgeImageSource::GetCustomGraphicSize() {
-  return base::nullopt;
+absl::optional<int> IconWithBadgeImageSource::GetCustomGraphicSize() {
+  return absl::nullopt;
 }
 
-base::Optional<int> IconWithBadgeImageSource::GetCustomGraphicXOffset() {
-  return base::nullopt;
+absl::optional<int> IconWithBadgeImageSource::GetCustomGraphicXOffset() {
+  return absl::nullopt;
 }
 
-base::Optional<int> IconWithBadgeImageSource::GetCustomGraphicYOffset() {
-  return base::nullopt;
+absl::optional<int> IconWithBadgeImageSource::GetCustomGraphicYOffset() {
+  return absl::nullopt;
 }

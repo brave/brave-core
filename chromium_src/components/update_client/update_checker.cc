@@ -65,7 +65,7 @@ void SequentialUpdateChecker::CheckNext() {
 }
 
 void SequentialUpdateChecker::UpdateResultAvailable(
-    const base::Optional<ProtocolParser::Results>& results,
+    const absl::optional<ProtocolParser::Results>& results,
     ErrorCategory error_category,
     int error,
     int retry_after_sec) {
@@ -85,8 +85,8 @@ void SequentialUpdateChecker::UpdateResultAvailable(
         FROM_HERE,
         base::BindOnce(
             std::move(update_check_callback_),
-            error ? base::nullopt
-                  : base::make_optional<ProtocolParser::Results>(results_),
+            error ? absl::nullopt
+                  : absl::make_optional<ProtocolParser::Results>(results_),
             error_category, error, retry_after_sec));
   else
     CheckNext();

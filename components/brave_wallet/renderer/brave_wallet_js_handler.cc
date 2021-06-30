@@ -39,7 +39,7 @@ std::string LoadDataResource(const int id) {
     return resource_bundle.LoadDataResourceString(id);
   }
 
-  return resource_bundle.GetRawDataResource(id).as_string();
+  return std::string(resource_bundle.GetRawDataResource(id));
 }
 
 v8::MaybeLocal<v8::Value> GetProperty(v8::Local<v8::Context> context,

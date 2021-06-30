@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/services/ipfs/ipfs_service_utils.h"
+
 #include <memory>
 #include <utility>
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-
-#include "brave/components/services/ipfs/ipfs_service_utils.h"
-
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ipfs {
 
@@ -22,7 +22,7 @@ bool UpdateConfigJSON(const std::string& source,
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           source, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& records_v = value_with_error.value;
+  absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v) {
     VLOG(1) << "Could not parse JSON, JSON is: " << source;
     return false;

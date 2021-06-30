@@ -312,7 +312,7 @@ PermissionExpirations::ParseExpiringPermissions(
     if (!requesting_origin) {
       continue;
     }
-    base::Optional<int> content_setting = item.FindIntKey(kContentSettingKey);
+    absl::optional<int> content_setting = item.FindIntKey(kContentSettingKey);
     expiring_permissions.push_back(PermissionOrigins(
         requesting_origin, embedding_origin,
         content_setting.value_or(ContentSetting::CONTENT_SETTING_ALLOW)));

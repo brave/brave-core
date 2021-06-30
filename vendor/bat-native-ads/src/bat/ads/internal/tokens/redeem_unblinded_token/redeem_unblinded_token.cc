@@ -165,7 +165,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
 
   // Parse JSON response
-  base::Optional<base::Value> dictionary =
+  absl::optional<base::Value> dictionary =
       base::JSONReader::Read(url_response.body);
   if (!dictionary || !dictionary->is_dict()) {
     BLOG(3, "Failed to parse response: " << url_response.body);

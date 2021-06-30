@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { addWebUIListener } from '../../../../common/cr'
+import { loadTimeData } from '../../../../common/loadTimeData'
 import { OnboardingCompletedStore } from '../../shared/lib/onboarding_completed_store'
 
 import { createStateManager } from './state_manager'
@@ -53,7 +55,7 @@ function getDialogArgs (): DialogArgs {
 
 function addWebUIListeners (listeners: Record<string, any>) {
   for (const [name, listener] of Object.entries(listeners)) {
-    self.cr.addWebUIListener(name, listener)
+    addWebUIListener(name, listener)
   }
 }
 
@@ -164,8 +166,6 @@ export function createHost (): Host {
 
   })
 
-  self.i18nTemplate.process(document, self.loadTimeData)
-
   // Expose a symbol-keyed method for testing the display of
   // error messaging which may be difficult to reproduce.
   self[Symbol.for('setTipDialogErrorForTesting')] =
@@ -187,7 +187,7 @@ export function createHost (): Host {
     },
 
     getString (key: string) {
-      return self.loadTimeData.getString(key)
+      return loadTimeData.getString(key)
     },
 
     getDialogArgs () {

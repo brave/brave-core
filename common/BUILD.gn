@@ -163,6 +163,7 @@ source_set("common") {
 
     deps += [
       "//brave/components/resources",
+      "//chrome/common:constants",
       "//components/resources",
       "//content/public/common",
       "//third_party/widevine/cdm:buildflags",

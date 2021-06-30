@@ -135,8 +135,7 @@ void BrowsingDataRemovalWatcher::ClearBrowsingDataForLoadedProfiles(
                                             &origin_mask))
       continue;
     ++num_profiles_to_clear_;
-    content::BrowsingDataRemover* remover =
-        content::BrowserContext::GetBrowsingDataRemover(profile);
+    content::BrowsingDataRemover* remover = profile->GetBrowsingDataRemover();
     observer_.AddObservation(remover);
     if (testing_callback)
       testing_callback->BeforeClearOnExitRemoveData(remover, remove_mask,

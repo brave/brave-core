@@ -15,7 +15,7 @@ namespace ads {
 SegmentList DeserializeSegments(const std::string& json) {
   SegmentList segments;
 
-  base::Optional<base::Value> value = base::JSONReader::Read(json);
+  absl::optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_list()) {
     return segments;
   }
@@ -25,7 +25,7 @@ SegmentList DeserializeSegments(const std::string& json) {
     return segments;
   }
 
-  for (const auto& value : *list) {
+  for (const auto& value : list->GetList()) {
     if (!value.is_string()) {
       NOTREACHED();
       continue;

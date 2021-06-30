@@ -72,7 +72,8 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
   EXPECT_TRUE(IsUnstoppableDomainsResolveMethodEthereum(local_state()));
 
   // No redirect for OTR context.
-  brave_request_info->browser_context = profile()->GetPrimaryOTRProfile();
+  brave_request_info->browser_context =
+      profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true);
   rc = OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(ResponseCallback(),
                                                           brave_request_info);
   EXPECT_EQ(rc, net::OK);

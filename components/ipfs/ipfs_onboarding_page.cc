@@ -26,9 +26,9 @@
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
-const char kResponseScript[] =
-    "window.postMessage({command: 'ipfs', value: {value}, text: '{text}'}, "
-    "'*')";
+const char16_t kResponseScript[] =
+    u"window.postMessage({command: 'ipfs', value: {value}, text: '{text}'}, "
+    u"'*')";
 constexpr int kOnboardingIsolatedWorldId =
     content::ISOLATED_WORLD_ID_CONTENT_END + 1;
 
@@ -165,7 +165,7 @@ void IPFSOnboardingPage::RespondToPage(IPFSOnboardingResponse value,
   auto* main_frame = web_contents()->GetMainFrame();
   DCHECK(main_frame);
 
-  std::u16string script(base::UTF8ToUTF16(kResponseScript));
+  std::u16string script(kResponseScript);
   base::ReplaceSubstringsAfterOffset(&script, 0, u"{value}",
                                      base::NumberToString16(value));
   base::ReplaceSubstringsAfterOffset(&script, 0, u"{text}", text);

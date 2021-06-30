@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/resources/history/history_toolbar.js b/chrome/browser/resources/history/history_toolbar.js
-index 0e5a49f707bf49f40b726f2bc3e8de629354acff..32af7450688ac1538ccc0f35aa2ed567e79c2f15 100644
+index 6fd5cf161986d4f3901d628f9a1452b1ee370563..176ec53205eb4ab53e5ff180d1cbc4c0b1757819 100644
 --- a/chrome/browser/resources/history/history_toolbar.js
 +++ b/chrome/browser/resources/history/history_toolbar.js
-@@ -3,7 +3,7 @@
- // found in the LICENSE file.
- 
- import 'chrome://resources/cr_elements/cr_lazy_render/cr_lazy_render.m.js';
--import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.js';
-+import 'chrome://brave-resources/br_elements/br_toolbar/br_toolbar.m.js'
+@@ -6,7 +6,7 @@ import 'chrome://resources/cr_elements/cr_lazy_render/cr_lazy_render.m.js';
  import './shared_style.js';
  import './strings.m.js';
  
+-import {CrToolbarElement} from 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.js';
++import 'chrome://brave-resources/br_elements/br_toolbar/br_toolbar.m.js'
+ import {CrToolbarSearchFieldElement} from 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar_search_field.js';
+ import {loadTimeData} from 'chrome://resources/js/load_time_data.m.js';
+ import {html, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';

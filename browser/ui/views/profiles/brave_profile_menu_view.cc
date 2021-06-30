@@ -34,9 +34,9 @@ void BraveProfileMenuView::BuildIdentity() {
   SetProfileIdentityInfo(
       /*profile_name=*/std::u16string(),
       profile_attributes->GetProfileThemeColors().profile_highlight_color,
-      /*edit_button=*/base::nullopt,
+      /*edit_button=*/absl::nullopt,
       ui::ImageModel::FromImage(profile_attributes->GetAvatarIcon()),
-      /*title=*/std::u16string());
+      /*title=*/profile_attributes->GetName());
 }
 
 // We don't want autofill buttons in this menu.
@@ -50,7 +50,8 @@ void BraveProfileMenuView::BuildFeatureButtons() {
   Profile* profile = browser()->profile();
   int window_count = chrome::GetBrowserCount(profile);
   if (!profile->IsOffTheRecord() && profile->HasPrimaryOTRProfile())
-    window_count += chrome::GetBrowserCount(profile->GetPrimaryOTRProfile());
+    window_count += chrome::GetBrowserCount(
+        profile->GetPrimaryOTRProfile(/*create_if_needed=*/true));
   if (window_count > 1) {
     AddFeatureButton(
         l10n_util::GetPluralStringFUTF16(IDS_PROFILES_CLOSE_X_WINDOWS_BUTTON,

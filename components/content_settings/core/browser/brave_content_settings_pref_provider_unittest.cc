@@ -7,7 +7,6 @@
 #include <utility>
 
 #include "base/macros.h"
-#include "base/optional.h"
 #include "base/values.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -25,6 +24,7 @@
 #include "services/preferences/public/cpp/dictionary_value_update.h"
 #include "services/preferences/public/cpp/scoped_pref_update.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace content_settings {

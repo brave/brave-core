@@ -71,7 +71,7 @@ std::string ExtractData(const std::string& data,
 void GetVimeoParts(
     const std::string& query,
     std::vector<base::flat_map<std::string, std::string>>* parts) {
-  base::Optional<base::Value> data = base::JSONReader::Read(query);
+  absl::optional<base::Value> data = base::JSONReader::Read(query);
   if (!data || !data->is_list()) {
     return;
   }

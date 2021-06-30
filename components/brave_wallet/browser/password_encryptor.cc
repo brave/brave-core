@@ -61,7 +61,7 @@ bool PasswordEncryptor::Decrypt(base::span<const uint8_t> ciphertext,
     return false;
   crypto::Aead aead(crypto::Aead::AES_256_GCM_SIV);
   aead.Init(key_);
-  base::Optional<std::vector<uint8_t>> decrypted =
+  absl::optional<std::vector<uint8_t>> decrypted =
       aead.Open(ciphertext, nonce, std::vector<uint8_t>());
   if (!decrypted)
     return false;

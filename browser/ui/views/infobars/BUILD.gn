@@ -16,6 +16,8 @@ source_set("brave_wayback_machine") {
     "//brave/app:brave_generated_resources_grit",
     "//brave/app/vector_icons",
     "//brave/components/brave_wayback_machine",
+    "//components/infobars/content",
+    "//components/infobars/core",
     "//components/prefs:prefs",
     "//components/resources",
     "//components/user_prefs",

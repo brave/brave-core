@@ -12,6 +12,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_item_added_feedback_bubble.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/compositor/layer.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/background.h"
 #include "ui/views/bubble/bubble_border.h"
@@ -68,7 +69,6 @@ SidebarItemAddedFeedbackBubble::CreateNonClientFrameView(
       std::make_unique<BubbleBorderWithArrow>(arrow(), GetShadow(), color());
   constexpr int kFeedbackBubbleRadius = 6;
   border->SetCornerRadius(kFeedbackBubbleRadius);
-  border->set_md_shadow_color(SkColorSetARGB(0x5C, 0x63, 0x69, 0x6E));
   auto* border_ptr = border.get();
   frame->SetBubbleBorder(std::move(border));
   // Replace default background to draw arrow.
