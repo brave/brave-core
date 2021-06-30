@@ -4,8 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 //-------------------------------------------------------------------------------
-// |BraveOperationalProfiling| is a class for handling the collection of
-// operational profiles, which are are anonymous, minimal representations of how
+// |BraveOperationalPatterns| is a class for handling the collection of
+// operational patterns, which are are anonymous, minimal representations of how
 // users engage with the browser over a collection period. A collection period
 // is divided into collection slots (i.e. 30m intervals). Two timers are
 // instatiated at startup:
@@ -16,12 +16,12 @@
 // to the server.
 //
 // For more information see
-// https://github.com/brave/brave-browser/wiki/Anonymous-Operational-Profiles
+// https://github.com/brave/brave-browser/wiki/Operational-Patterns
 //
 //-------------------------------------------------------------------------------
 
-#ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_LEARNING_BRAVE_OPERATIONAL_PROFILING_H_
-#define BRAVE_COMPONENTS_BRAVE_FEDERATED_LEARNING_BRAVE_OPERATIONAL_PROFILING_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_LEARNING_BRAVE_OPERATIONAL_PATTERNS_H_
+#define BRAVE_COMPONENTS_BRAVE_FEDERATED_LEARNING_BRAVE_OPERATIONAL_PATTERNS_H_
 
 #include <memory>
 #include <string>
@@ -45,15 +45,14 @@ class SimpleURLLoader;
 
 namespace brave {
 
-class BraveOperationalProfiling final {
+class BraveOperationalPatterns final {
  public:
-  BraveOperationalProfiling(
+  BraveOperationalPatterns(
       PrefService* pref_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  ~BraveOperationalProfiling();
-  BraveOperationalProfiling(const BraveOperationalProfiling&) = delete;
-  BraveOperationalProfiling& operator=(const BraveOperationalProfiling&) =
-      delete;
+  ~BraveOperationalPatterns();
+  BraveOperationalPatterns(const BraveOperationalPatterns&) = delete;
+  BraveOperationalPatterns& operator=(const BraveOperationalPatterns&) = delete;
 
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
@@ -90,4 +89,4 @@ class BraveOperationalProfiling final {
 
 }  // namespace brave
 
-#endif  // BRAVE_COMPONENTS_BRAVE_FEDERATED_LEARNING_BRAVE_OPERATIONAL_PROFILING_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_FEDERATED_LEARNING_BRAVE_OPERATIONAL_PATTERNS_H_
