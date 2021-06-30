@@ -408,9 +408,11 @@ IN_PROC_BROWSER_TEST_F(DomainBlockDisabledTest, NoInterstitial) {
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedDoesNotAffectOtherDomains) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   GURL url_a = embedded_test_server()->GetURL("a.com", "/simple.html");
-  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url_a);
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK,
+                                  url_a);
   GURL url_b = embedded_test_server()->GetURL("b.com", "/simple.html");
-  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url_b);
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK,
+                                  url_b);
 
   // Navigate to a page on a.com. This should work normally.
   NavigateTo(url_a);
