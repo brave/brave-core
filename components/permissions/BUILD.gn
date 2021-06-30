@@ -1,4 +1,4 @@
-static_library("unit_tests") {
+source_set("unit_tests") {
   testonly = true
 
   sources = [ "permission_expirations_unittest.cc" ]

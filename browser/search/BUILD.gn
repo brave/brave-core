@@ -24,7 +24,7 @@ source_set("search") {
   }
 }
 
-static_library("unit_tests") {
+source_set("unit_tests") {
   testonly = true
 
   if (!is_android) {

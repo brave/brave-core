@@ -1,6 +1,6 @@
 import("//brave/components/tor/buildflags/buildflags.gni")
 
-static_library("unit_tests") {
+source_set("unit_tests") {
   testonly = true
   if (enable_tor) {
     sources = [
