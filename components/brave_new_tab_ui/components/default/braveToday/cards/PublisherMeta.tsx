@@ -8,9 +8,12 @@ import styled from 'styled-components'
 import { getLocale } from '../../../../../common/locale'
 import { OnSetPublisherPref } from '../'
 
+type MenuPosition = 'top' | 'bottom'
+
 type Props = {
   publisher: BraveToday.Publisher
   onSetPublisherPref: OnSetPublisherPref
+  menuPos: MenuPosition
   title?: boolean
 }
 
@@ -69,14 +72,16 @@ const Text = styled('span')`
   font-family: ${p => p.theme.fontFamily.heading};
 `
 
-const Menu = styled('ul')`
+const Menu = styled('ul')<{ pos: MenuPosition }>`
   list-style: none;
   list-style-type: none;
   margin: 0;
   position: absolute;
   width: max-content;
   min-width: 166px;
-  bottom: 114%;
+  bottom: ${p => p.pos === 'top' ? '114%' : 'auto'};
+  top: ${p => p.pos === 'bottom' ? '114%' : 'auto'};
+  z-index: 1;
   left: 0;
   border-radius: 4px;
   box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
@@ -188,6 +193,7 @@ export default function PublisherMetaComponent (props: Props) {
         {isMenuOpen &&
           <Menu
             role='menu'
+            pos={props.menuPos}
           >
             <MenuItem
               role='menuitem'
@@ -201,4 +207,8 @@ export default function PublisherMetaComponent (props: Props) {
       </Trigger>
     </PublisherMeta>
   )
+}
+
+PublisherMetaComponent.defaultProps = {
+  menuPos: 'top'
 }

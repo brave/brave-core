@@ -57,6 +57,7 @@ export default function PublisherGroup (props: Props) {
             publisher={props.publisher}
             title={true}
             onSetPublisherPref={props.onSetPublisherPref}
+            menuPos='bottom'
           />
         </Card.ListTitle>
       }
