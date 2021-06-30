@@ -404,3 +404,41 @@ IN_PROC_BROWSER_TEST_F(DomainBlockDisabledTest, NoInterstitial) {
   content::TitleWatcher watcher(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
+
+IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedDoesNotAffectOtherDomains) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  GURL url_a = embedded_test_server()->GetURL("a.com", "/simple.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url_a);
+  GURL url_b = embedded_test_server()->GetURL("b.com", "/simple.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url_b);
+
+  // Navigate to a page on a.com. This should work normally.
+  NavigateTo(url_a);
+  ASSERT_FALSE(IsShowingInterstitial());
+
+  // Block a.com, then attempt to navigate to a page on a.com. This should be
+  // interrupted by the domain block interstitial.
+  BlockDomainByURL(url_a);
+  NavigateTo(url_a);
+  ASSERT_TRUE(IsShowingInterstitial());
+
+  // Simulate click on "Proceed anyway" button. This should navigate to the
+  // originally requested page.
+  ClickAndWaitForNavigation("primary-button");
+  ASSERT_FALSE(IsShowingInterstitial());
+  std::u16string expected_title(u"OK");
+  content::TitleWatcher watcher(web_contents(), expected_title);
+  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+
+  // Navigate to a page on b.com. This should work normally.
+  NavigateTo(url_b);
+  ASSERT_FALSE(IsShowingInterstitial());
+
+  // Block b.com, then attempt to navigate to a page on b.com. This should be
+  // interrupted by the domain block interstitial, because "proceed anyway"
+  // permission was only given to a.com and should not apply to other domains
+  // in the same tab.
+  BlockDomainByURL(url_b);
+  NavigateTo(url_b);
+  ASSERT_TRUE(IsShowingInterstitial());
+}
