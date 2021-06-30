@@ -70,7 +70,7 @@ void Build(const std::string& creative_instance_id,
         const base::DictionaryValue conversion_user_data =
             GetConversion(conversion_queue_item);
 
-        base::Optional<base::Value> user_data_as_value =
+        absl::optional<base::Value> user_data_as_value =
             base::JSONReader::Read(user_data_as_string);
         if (!user_data_as_value || !user_data_as_value->is_dict()) {
           return;

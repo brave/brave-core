@@ -37,7 +37,7 @@ bool HasImportableExtensions(const base::FilePath& secured_preference_path) {
 
   std::string secured_preference_content;
   base::ReadFileToString(secured_preference_path, &secured_preference_content);
-  base::Optional<base::Value> secured_preference =
+  absl::optional<base::Value> secured_preference =
       base::JSONReader::Read(secured_preference_content);
   if (auto* extensions = secured_preference->FindPath(
           kChromeExtensionsListPath)) {
@@ -84,8 +84,8 @@ base::ListValue* GetChromeSourceProfiles(
   } else {
     std::string local_state_content;
     base::ReadFileToString(local_state_path, &local_state_content);
-    base::Optional<base::Value> local_state =
-      base::JSONReader::Read(local_state_content);
+    absl::optional<base::Value> local_state =
+        base::JSONReader::Read(local_state_content);
     const base::DictionaryValue* local_state_dict;
     const base::DictionaryValue* profile_dict;
     const base::DictionaryValue* info_cache;

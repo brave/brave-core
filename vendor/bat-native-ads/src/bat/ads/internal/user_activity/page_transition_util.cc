@@ -43,7 +43,7 @@ bool DidTransitionFromExternalApplication(const PageTransitionType type) {
   return PageTransitionGetQualifier(type) == kPageTransitionFromAPI;
 }
 
-base::Optional<UserActivityEventType> ToUserActivityEventType(
+absl::optional<UserActivityEventType> ToUserActivityEventType(
     const PageTransitionType type) {
   const PageTransitionType core_value = PageTransitionGetCoreValue(type);
 
@@ -81,7 +81,7 @@ base::Optional<UserActivityEventType> ToUserActivityEventType(
     }
 
     default: {
-      return base::nullopt;
+      return absl::nullopt;
     }
   }
 }

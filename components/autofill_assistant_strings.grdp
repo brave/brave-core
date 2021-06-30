@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
-  <message name="IDS_AUTOFILL_ASSISTANT_PAYMENT_INFO_CONFIRM" desc="Text on the payment request primary button to confirm payment information [CHAR-LIMIT=32]">
+  <message name="IDS_AUTOFILL_ASSISTANT_PAYMENT_INFO_CONFIRM" desc="Text on the payment request primary button to confirm payment information [CHAR_LIMIT=32]">
     Continue
   </message>
   <message name="IDS_AUTOFILL_ASSISTANT_DEFAULT_ERROR" desc="Text label that is shown when autofill assistant cannot help anymore, because something went wrong.">

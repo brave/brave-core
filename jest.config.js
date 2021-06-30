@@ -56,6 +56,7 @@ module.exports = {
     "\\.(jpg|jpeg|png|gif|eot|otf|svg|ttf|woff|woff2)$": "<rootDir>/components/test/fileMock.ts",
     "\\.(css|less)$": "identity-obj-proxy",
     "^brave-ui$": "<rootDir>/node_modules/brave-ui/src",
-    "^brave-ui\\/(.*)": "<rootDir>/node_modules/brave-ui/src/$1"
+    "^brave-ui\\/(.*)": "<rootDir>/node_modules/brave-ui/src/$1",
+    "^chrome:\/\/resources\\/(.*)": "<rootDir>/.storybook/chrome-resources-mock/$1"
   }
 }

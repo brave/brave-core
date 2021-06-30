@@ -28,6 +28,7 @@ public class BraveClassAdapter {
         chain = new BraveMimeUtilsClassAdapter(chain);
         chain = new BraveNewTabPageClassAdapter(chain);
         chain = new BraveNewTabPageLayoutClassAdapter(chain);
+        chain = new BraveNotificationManagerProxyImplClassAdapter(chain);
         chain = new BravePasswordSettingsBaseClassAdapter(chain);
         chain = new BravePermissionDialogDelegateClassAdapter(chain);
         chain = new BravePermissionDialogModelClassAdapter(chain);
@@ -36,6 +37,7 @@ public class BraveClassAdapter {
         chain = new BraveSettingsLauncherImplClassAdapter(chain);
         chain = new BraveSingleCategorySettingsClassAdapter(chain);
         chain = new BraveSiteSettingsDelegateClassAdapter(chain);
+        chain = new BraveStatusMediatorClassAdapter(chain);
         chain = new BraveTabbedActivityClassAdapter(chain);
         chain = new BraveTabGroupUiCoordinatorClassAdapter(chain);
         chain = new BraveTabSwitcherModeTTCoordinatorPhoneClassAdapter(chain);

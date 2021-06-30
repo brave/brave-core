@@ -113,7 +113,7 @@ std::unique_ptr<message_center::Notification> CreateMessageCenterNotification(
   message_center::RichNotificationData notification_data;
   // hack to prevent origin from showing in the notification
   // since we're using that to get the notification_id to OpenSettings
-  notification_data.context_message = base::ASCIIToUTF16(" ");
+  notification_data.context_message = u" ";
   auto notification = std::make_unique<message_center::Notification>(
       message_center::NOTIFICATION_TYPE_SIMPLE, uuid, title, body, gfx::Image(),
       std::u16string(), link,
@@ -187,8 +187,8 @@ void IpfsImportController::SaveWebPage(const base::FilePath& directory) {
   saved_main_directory_path = saved_main_directory_path.Append(
       saved_main_file_path.RemoveExtension().BaseName().value() +
       FILE_PATH_LITERAL("_files"));
-  auto* download_manager = content::BrowserContext::GetDownloadManager(
-      web_contents_->GetBrowserContext());
+  auto* download_manager =
+      web_contents_->GetBrowserContext()->GetDownloadManager();
   save_package_observer_.reset(new SavePackageFinishedObserver(
       download_manager, saved_main_file_path,
       base::BindOnce(&IpfsImportController::OnDownloadFinished,

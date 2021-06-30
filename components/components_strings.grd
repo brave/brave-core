@@ -290,13 +290,16 @@
       <part file="bookmark_component_strings.grdp" />
       <part file="blocked_content_strings.grdp" />
       <part file="browsing_data_strings.grdp" />
+      <part file="live_caption_strings.grdp" />
       <part file="components_settings_strings.grdp" />
+      <part file="content_creation_strings.grdp" />
       <part file="crash_strings.grdp" />
       <part file="dialog_strings.grdp" />
       <part file="dom_distiller_strings.grdp" />
       <part file="error_page_strings.grdp" />
       <part file="find_in_page_strings.grdp" />
       <part file="flags_strings.grdp" />
+      <part file="fullscreen_control_strings.grdp" />
       <part file="heavy_ad_intervention_strings.grdp" />
       <part file="history_strings.grdp" />
       <part file="javascript_dialogs_strings.grdp" />
@@ -314,6 +317,7 @@
       <part file="policy_strings.grdp" />
       <part file="print_media_strings.grdp" />
       <part file="printing_component_strings.grdp" />
+      <part file="privacy_sandbox_strings.grdp" />
       <part file="reset_password_strings.grdp" />
       <part file="safe_browsing_strings.grdp" />
       <part file="security_interstitials_strings.grdp" />
@@ -387,10 +391,10 @@
         Update
       </message>
       <if expr="is_android">
-        <message name="IDS_SHOW_CONTENT" desc="Generic label to show content for a feature. [CHAR-LIMIT=20]" formatter_data="android_java">
+        <message name="IDS_SHOW_CONTENT" desc="Generic label to show content for a feature. [CHAR_LIMIT=20]" formatter_data="android_java">
           Show
         </message>
-        <message name="IDS_HIDE_CONTENT" desc="Generic label to hide content for a feature. [CHAR-LIMIT=20]" formatter_data="android_java">
+        <message name="IDS_HIDE_CONTENT" desc="Generic label to hide content for a feature. [CHAR_LIMIT=20]" formatter_data="android_java">
           Hide
         </message>
       </if>
@@ -450,7 +454,7 @@
           Recently Closed
         </message>
       </if>
-      <message name="IDS_CHOOSE" desc="Label for a button to choose something, like a shipping address for a payment request. [CHAR-LIMIT=20]" formatter_data="android_java">
+      <message name="IDS_CHOOSE" desc="Label for a button to choose something, like a shipping address for a payment request. [CHAR_LIMIT=20]" formatter_data="android_java">
         Choose
       </message>
 

@@ -87,14 +87,14 @@
   <message name="IDS_OS_SETTINGS_TAG_CELLULAR_TURN_OFF_ALT1" desc="Text for search result item which, when clicked, navigates the user to cellular network settings, with a toggle to turn off cellular. Alternate phrase for: 'Turn off cellular network'">
     Disable Cellular
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ADD_CELLULAR" desc="Text for search result item which, when clicked, navigates the user to cellular network settings, with an add cellular icon button. Alternate phrase for: 'Activate physical SIM', 'Set up eSIM'">
-    Add Cellular
+  <message name="IDS_OS_SETTINGS_TAG_ADD_ESIM" desc="Text for search result item which, when clicked, navigates the user to cellular network settings, with an add eSIM icon button. Alternate phrase for: 'Install eSIM profile', 'Download eSIM profile'">
+    Add eSIM profile
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ADD_CELLULAR_ALT1" desc="Text for search result item which, when clicked, navigates the user to cellular network settings, with an add cellular icon button. Alternate phrase for: 'Add Cellular', 'Set up eSIM'">
-    Activate physical SIM
+  <message name="IDS_OS_SETTINGS_TAG_ADD_ESIM_ALT1" desc="Text for search result item which, when clicked, navigates the user to cellular network settings, with an add eSIM icon button. Alternate phrase for: 'Add eSIM profile', 'Download eSIM profile'">
+    Install eSIM profile
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ADD_CELLULAR_ALT2" desc="Text for search result item which, when clicked, navigates the user to cellular network settings, with an add cellular icon button. Alternate phrase for: 'Add Cellular', 'Activate physical SIM'">
-    Set up eSIM
+  <message name="IDS_OS_SETTINGS_TAG_ADD_ESIM_ALT2" desc="Text for search result item which, when clicked, navigates the user to cellular network settings, with an add eSIM icon button. Alternate phrase for: 'Add eSIM profile', 'Install eSIM profile'">
+    Download eSIM profile
   </message>
   <message name="IDS_OS_SETTINGS_TAG_CELLULAR_TURN_ON" desc="Text for search result item which, when clicked, navigates the user to cellular network settings, with a toggle to turn on cellular. Alternate phrase for: 'Enable cellular'">
     Turn on Cellular network
@@ -717,6 +717,18 @@
   <message name="IDS_OS_SETTINGS_TAG_PREFERRED_SEARCH_ENGINE" desc="Text for search result item which, when clicked, navigates the user to search settings, with an option to set the user's preferred search engine.">
     Preferred search engine
   </message>
+  <message name="IDS_OS_SETTINGS_TAG_QUICK_ANSWERS" desc="Text for search result item which, when clicked, navigates the user to Quick Answers settings, with a toggle to enable/disable the functionality. Alternate phrase for: 'Look up', 'Quick search', 'Right click card'">
+    Quick Answers
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_QUICK_ANSWERS_ALT1" desc="Text for search result item which, when clicked, navigates the user to Quick Answers settings, with a toggle to enable/disable the functionality. Alternate phrase for: 'Quick Answers', 'Quick search', 'Right click card'">
+    Look up
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_QUICK_ANSWERS_ALT2" desc="Text for search result item which, when clicked, navigates the user to Quick Answers settings, with a toggle to enable/disable the functionality. Alternate phrase for: 'Quick Answers', 'Look up', 'Right click card'">
+    Quick search
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_QUICK_ANSWERS_ALT3" desc="Text for search result item which, when clicked, navigates the user to Quick Answers settings, with a toggle to enable/disable the functionality. Alternate phrase for: 'Quick Answers', 'Look up', 'Quick search'">
+    Right click card
+  </message>
   <message name="IDS_OS_SETTINGS_TAG_ASSISTANT" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings.">
     Brave Assistant
   </message>
@@ -940,9 +952,6 @@
   </message>
 
   <!-- Languages and Input section. -->
-  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_INPUT" desc="Text for search result item which, when clicked, navigates the user to languages and input settings.">
-    Languages and inputs
-  </message>
   <message name="IDS_OS_SETTINGS_TAG_LANGUAGES" desc="Text for search result item which, when clicked, navigates the user to languages settings.">
     Languages
   </message>
@@ -966,9 +975,6 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_EDIT_DICTIONARY" desc="Text for search result item which, when clicked, navigates the user to edit dictionary page.">
     Customize spell check
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_INPUT_METHODS" desc="Text for search result item which, when clicked, navigates the user to input settings, with the option to enable/disable input in supported languages.">
-    Manage input methods
   </message>
   <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_INPUT_INPUT_OPTIONS_SHELF" desc="Text for search result item which, when clicked, navigates the user to languages and input settings, with a toggle to enable/disable showing input options in the shelf. Alternate phrase for: 'Input options in toolbar'">
     Show input options in the shelf

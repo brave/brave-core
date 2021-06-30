@@ -24,13 +24,11 @@ source_set("search") {
   }
 }
 
-source_set("unit_tests") {
+static_library("unit_tests") {
   testonly = true
 
   if (!is_android) {
-    sources = [
-      "ntp_utils_unittest.cc",
-    ]
+    sources = [ "ntp_utils_unittest.cc" ]
     deps = [
       "//brave/browser/search",
       "//brave/common:pref_names",
@@ -42,9 +40,7 @@ source_set("unit_tests") {
       "//testing/gtest",
     ]
     if (crypto_dot_com_enabled) {
-      deps += [
-        "//brave/components/crypto_dot_com/common",
-      ]
+      deps += [ "//brave/components/crypto_dot_com/common" ]
     }
   }
 }

@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/notreached.h"
+#include "base/strings/stringprintf.h"
 #include "brave/installer/util/brave_shell_util.h"
 #include "chrome/common/chrome_icon_resources_win.h"
 #include "chrome/install_static/install_util.h"

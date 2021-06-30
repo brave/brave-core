@@ -234,7 +234,7 @@ std::string ConfirmationsState::ToJson() {
 }
 
 bool ConfirmationsState::FromJson(const std::string& json) {
-  base::Optional<base::Value> value = base::JSONReader::Read(json);
+  absl::optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
     return false;
   }
@@ -332,7 +332,7 @@ base::Value ConfirmationsState::GetFailedConfirmationsAsDictionary(
     confirmation_dictionary.SetKey("credential",
                                    base::Value(confirmation.credential));
 
-    base::Optional<base::Value> user_data =
+    absl::optional<base::Value> user_data =
         base::JSONReader::Read(confirmation.user_data);
     if (user_data && user_data->is_dict()) {
       base::DictionaryValue* user_data_dictionary = nullptr;
@@ -501,7 +501,7 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
     }
 
     // Created
-    base::Optional<bool> created =
+    absl::optional<bool> created =
         confirmation_dictionary->FindBoolKey("created");
     confirmation.created = created.value_or(true);
 
@@ -600,7 +600,7 @@ bool ConfirmationsState::GetTransactionsFromDictionary(
     }
 
     // Estimated redemption value
-    const base::Optional<double> estimated_redemption_value =
+    const absl::optional<double> estimated_redemption_value =
         transaction_dictionary->FindDoubleKey("estimated_redemption_value");
     if (!estimated_redemption_value) {
       continue;

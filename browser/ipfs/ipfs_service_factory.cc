@@ -78,7 +78,7 @@ KeyedService* IpfsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   base::FilePath user_data_dir;
   base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
-  auto url_loader = content::BrowserContext::GetDefaultStoragePartition(context)
+  auto url_loader = context->GetDefaultStoragePartition()
                         ->GetURLLoaderFactoryForBrowserProcess();
   auto context_getter = std::make_unique<IpfsBlobContextGetterFactory>(context);
   auto* ipfs_updater = g_brave_browser_process

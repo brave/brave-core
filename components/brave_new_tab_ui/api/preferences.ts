@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import { addWebUIListener, sendWithPromise } from '../../common/cr'
+
 //
 // Manages get and set of NTP preference data
 // Ensures everything to do with communication
@@ -13,7 +15,7 @@
 type PreferencesUpdatedHandler = (prefData: NewTab.Preferences) => void
 
 export function getPreferences (): Promise<NewTab.Preferences> {
-  return window.cr.sendWithPromise<NewTab.Preferences>('getNewTabPagePreferences')
+  return sendWithPromise<NewTab.Preferences>('getNewTabPagePreferences')
 }
 
 function sendSavePref (key: string, value: any) {
@@ -81,5 +83,5 @@ export function saveSetAllStackWidgets (visible: boolean): void {
 }
 
 export function addChangeListener (listener: PreferencesUpdatedHandler): void {
-  window.cr.addWebUIListener('preferences-changed', listener)
+  addWebUIListener('preferences-changed', listener)
 }

@@ -14,10 +14,12 @@
   if (ExecutionContext* context = ExecutionContext::From(script_state)) { \
     if (WebContentSettingsClient* settings =                              \
             brave::GetContentSettingsClientFor(context)) {                \
+      SkPixmap image_data_pixmap = image_data->GetSkPixmap();             \
       brave::BraveSessionCache::From(*context).PerturbPixels(             \
           settings,                                                       \
-          static_cast<const unsigned char*>(data_array->BaseAddress()),   \
-          data_array->byteLength());                                      \
+          static_cast<const unsigned char*>(                              \
+              image_data_pixmap.writable_addr()),                         \
+          image_data_pixmap.computeByteSize());                           \
     }                                                                     \
   }
 
@@ -41,16 +43,6 @@ bool AllowFingerprintingFromScriptState(blink::ScriptState* script_state) {
 }  // namespace
 
 namespace blink {
-
-ImageData* BaseRenderingContext2D::getImageData(
-    int sx,
-    int sy,
-    int sw,
-    int sh,
-    ExceptionState& exception_state) {
-  NOTREACHED();
-  return nullptr;
-}
 
 ImageData* BaseRenderingContext2D::getImageData(
     int sx,
@@ -83,17 +75,6 @@ ImageData* BaseRenderingContext2D::getImageDataInternal_Unused(
     ExceptionState& exception_state) {
   NOTREACHED();
   return nullptr;
-}
-
-ImageData* BaseRenderingContext2D::getImageData(
-    ScriptState* script_state,
-    int sx,
-    int sy,
-    int sw,
-    int sh,
-    ExceptionState& exception_state) {
-  return getImageDataInternal(script_state, sx, sy, sw, sh, nullptr,
-                              exception_state);
 }
 
 ImageData* BaseRenderingContext2D::getImageData(

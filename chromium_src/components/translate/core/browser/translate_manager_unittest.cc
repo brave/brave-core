@@ -145,14 +145,6 @@ class TranslateManagerTest : public ::testing::Test {
               translate_manager_->GetLanguageState()->HasLanguageChanged());
   }
 
-  void SetLanguageTooOftenDenied(const std::string& language) {
-    translate_prefs_.UpdateLastDeniedTime(language);
-    translate_prefs_.UpdateLastDeniedTime(language);
-
-    EXPECT_TRUE(translate_prefs_.IsTooOftenDenied(language));
-    EXPECT_FALSE(translate_prefs_.IsTooOftenDenied("other_language"));
-  }
-
   // Required to instantiate a net::test::MockNetworkChangeNotifier, because it
   // uses ObserverListThreadSafe.
   base::test::TaskEnvironment task_environment_;

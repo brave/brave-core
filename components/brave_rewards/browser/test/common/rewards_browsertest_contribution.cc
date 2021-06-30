@@ -5,6 +5,7 @@
 
 #include <utility>
 
+#include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_contribution.h"

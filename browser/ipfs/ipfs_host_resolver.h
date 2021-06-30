@@ -49,7 +49,7 @@ class IPFSHostResolver : public network::ResolveHostClientBase {
   void OnComplete(
       int result,
       const net::ResolveErrorInfo& resolve_error_info,
-      const base::Optional<net::AddressList>& resolved_addresses) override;
+      const absl::optional<net::AddressList>& resolved_addresses) override;
   void OnTextResults(const std::vector<std::string>& text_results) override;
 
   std::string resolving_host_;

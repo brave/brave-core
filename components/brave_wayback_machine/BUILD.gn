@@ -27,6 +27,7 @@ source_set("brave_wayback_machine") {
 
   deps = [
     "//base",
+    "//components/infobars/content",
     "//components/infobars/core",
     "//components/prefs",
     "//components/user_prefs",
@@ -36,7 +37,5 @@ source_set("brave_wayback_machine") {
     "//url",
   ]
 
-  public_deps = [
-    ":buildflags",
-  ]
+  public_deps = [ ":buildflags" ]
 }

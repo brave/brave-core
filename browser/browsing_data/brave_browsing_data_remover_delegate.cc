@@ -72,12 +72,10 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
   if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_HISTORY) {
     auto* event_router = extensions::EventRouter::Get(profile_);
     if (event_router) {
-      std::unique_ptr<base::ListValue> args(
-          extensions::api::brave_today::OnClearHistory::Create().release());
       std::unique_ptr<extensions::Event> event(new extensions::Event(
           extensions::events::BRAVE_START,
           extensions::api::brave_today::OnClearHistory::kEventName,
-          std::move(args)));
+          extensions::api::brave_today::OnClearHistory::Create()));
       event_router->BroadcastEvent(std::move(event));
     }
   }

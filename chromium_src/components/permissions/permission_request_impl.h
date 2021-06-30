@@ -12,12 +12,13 @@
 
 namespace permissions {
 
-// Make it final to protect from accidental permission lifetime handling issues.
-class PermissionRequestImpl final : public PermissionRequestImpl_ChromiumImpl {
+class PermissionRequestImpl : public PermissionRequestImpl_ChromiumImpl {
  public:
   using PermissionRequestImpl_ChromiumImpl::PermissionRequestImpl_ChromiumImpl;
 
-  bool SupportsLifetime() const override;
+  // Make it final to protect from accidental permission lifetime handling
+  // issues.
+  bool SupportsLifetime() const final;
 };
 
 }  // namespace permissions

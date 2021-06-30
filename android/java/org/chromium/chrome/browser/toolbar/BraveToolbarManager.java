@@ -30,6 +30,8 @@ import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.Invalidator;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
+import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
+import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.homepage.HomepageManager;
@@ -43,6 +45,7 @@ import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.SadTab;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
+import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.tab_management.TabGroupUi;
 import org.chromium.chrome.browser.tasks.tab_management.TabManagementModuleProvider;
@@ -65,8 +68,10 @@ import org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator;
 import org.chromium.chrome.browser.ui.TabObscuringHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.features.start_surface.StartSurface;
+import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
@@ -81,7 +86,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private FullscreenManager mFullscreenManager;
     private ActivityTabProvider mActivityTabProvider;
     private AppThemeColorProvider mAppThemeColorProvider;
-    private ObservableSupplier<ShareDelegate> mShareDelegateSupplier;
+    private Supplier<ShareDelegate> mShareDelegateSupplier;
     private ScrimCoordinator mScrimCoordinator;
     private Supplier<Boolean> mShowStartSurfaceSupplier;
     private MenuButtonCoordinator mMenuButtonCoordinator;
@@ -97,6 +102,13 @@ public class BraveToolbarManager extends ToolbarManager {
     private IncognitoStateProvider mIncognitoStateProvider;
     private TabCountProvider mTabCountProvider;
     private TabGroupUi mTabGroupUi;
+    private BottomSheetController mBottomSheetController;
+    private ActivityLifecycleDispatcher mActivityLifecycleDispatcher;
+    private Supplier<Boolean> mIsWarmOnResumeSupplier;
+    private TabContentManager mTabContentManager;
+    private TabCreatorManager mTabCreatorManager;
+    private OneshotSupplier<OverviewModeBehavior> mOverviewModeBehaviorSupplier;
+    private SnackbarManager mSnackbarManager;
 
     // Own members.
     private boolean mIsBottomToolbarVisible;
@@ -134,7 +146,13 @@ public class BraveToolbarManager extends ToolbarManager {
             Supplier<ModalDialogManager> modalDialogManagerSupplier,
             StatusBarColorController statusBarColorController, AppMenuDelegate appMenuDelegate,
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
-            @NonNull Supplier<Tab> startSurfaceParentTabSupplier) {
+            @NonNull Supplier<Tab> startSurfaceParentTabSupplier,
+            @NonNull BottomSheetController bottomSheetController,
+            @NonNull Supplier<Boolean> isWarmOnResumeSupplier,
+            @NonNull TabContentManager tabContentManager,
+            @NonNull TabCreatorManager tabCreatorManager,
+            @NonNull OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
+            @NonNull SnackbarManager snackbarManager) {
         super(activity, controlsSizer, fullscreenManager, controlContainer, compositorViewHolder,
                 urlFocusChangedCallback, topUiThemeColorProvider, tabObscuringHandler,
                 shareDelegateSupplier, identityDiscController, buttonDataProviders, tabProvider,
@@ -144,7 +162,9 @@ public class BraveToolbarManager extends ToolbarManager {
                 tabModelSelectorSupplier, startSurfaceSupplier, omniboxFocusStateSupplier,
                 intentMetadataOneshotSupplier, promoShownOneshotSupplier, windowAndroid,
                 isInOverviewModeSupplier, modalDialogManagerSupplier, statusBarColorController,
-                appMenuDelegate, activityLifecycleDispatcher, startSurfaceParentTabSupplier);
+                appMenuDelegate, activityLifecycleDispatcher, startSurfaceParentTabSupplier,
+                bottomSheetController, isWarmOnResumeSupplier, tabContentManager, tabCreatorManager,
+                overviewModeBehaviorSupplier, snackbarManager);
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
         mActivity = activity;
@@ -184,9 +204,14 @@ public class BraveToolbarManager extends ToolbarManager {
                     (BraveScrollingBottomViewResourceFrameLayout) bottomControlsStub.inflate();
             if (TabUiFeatureUtilities.isTabGroupsAndroidEnabled()
                     || TabUiFeatureUtilities.isConditionalTabStripEnabled()) {
-                mTabGroupUi = TabManagementModuleProvider.getDelegate().createTabGroupUi(
+                mTabGroupUi = TabManagementModuleProvider.getDelegate().createTabGroupUi(mActivity,
                         mBottomControls.findViewById(R.id.bottom_container_slot),
-                        mAppThemeColorProvider, mScrimCoordinator, mOmniboxFocusStateSupplier);
+                        mAppThemeColorProvider, mScrimCoordinator, mOmniboxFocusStateSupplier,
+                        mBottomSheetController, mActivityLifecycleDispatcher,
+                        mIsWarmOnResumeSupplier, mTabModelSelector, mTabContentManager,
+                        mCompositorViewHolder, mCompositorViewHolder::getDynamicResourceLoader,
+                        mTabCreatorManager, mShareDelegateSupplier, mOverviewModeBehaviorSupplier,
+                        mSnackbarManager);
             }
             mBottomControlsCoordinatorSupplier.set(new BraveBottomControlsCoordinator(
                     mLayoutStateProviderSupplier,

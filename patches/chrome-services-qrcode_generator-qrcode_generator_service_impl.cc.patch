@@ -1,5 +1,5 @@
 diff --git a/chrome/services/qrcode_generator/qrcode_generator_service_impl.cc b/chrome/services/qrcode_generator/qrcode_generator_service_impl.cc
-index 1094d0e20ed97cc62b41782426dedaeced8f3fd1..4676cb65d55f45d70fce6457f01f163a417f0908 100644
+index ad9469445ff4b7665ef78b29982e6d2b998657a1..21cc4b9939f6a1cb4798234e56b0a2653aed5c6b 100644
 --- a/chrome/services/qrcode_generator/qrcode_generator_service_impl.cc
 +++ b/chrome/services/qrcode_generator/qrcode_generator_service_impl.cc
 @@ -78,7 +78,7 @@ void QRCodeGeneratorServiceImpl::DrawDino(SkCanvas* canvas,

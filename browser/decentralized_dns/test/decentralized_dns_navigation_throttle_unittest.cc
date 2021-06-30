@@ -51,7 +51,8 @@ class DecentralizedDnsNavigationThrottleTest : public testing::Test {
 
   // Helper that creates simple test guest profile.
   Profile* CreateGuestProfile() {
-    return profile_manager_.CreateGuestProfile()->GetPrimaryOTRProfile();
+    return profile_manager_.CreateGuestProfile()->GetPrimaryOTRProfile(
+        /*create_if_needed=*/true);
   }
 
   TestingProfile* profile() { return profile_; }
@@ -77,7 +78,7 @@ TEST_F(DecentralizedDnsNavigationThrottleTest, Instantiation) {
 
   // Disable in OTR profile.
   auto otr_web_contents = content::WebContentsTester::CreateTestWebContents(
-      profile()->GetPrimaryOTRProfile(), nullptr);
+      profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true), nullptr);
   content::MockNavigationHandle otr_test_handle(otr_web_contents.get());
   auto throttle_in_otr =
       DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(

@@ -489,7 +489,7 @@ void BraveRewardsGetRewardsParametersFunction::OnGet(
 
   auto ac_choices = std::make_unique<base::ListValue>();
   for (double const& choice : parameters->auto_contribute_choices) {
-    ac_choices->AppendDouble(choice);
+    ac_choices->Append(choice);
   }
   data.SetList("autoContributeChoices", std::move(ac_choices));
 

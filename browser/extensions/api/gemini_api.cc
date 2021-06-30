@@ -17,7 +17,6 @@
 #include "brave/components/gemini/browser/regions.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
-#include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "extensions/browser/extension_util.h"
 #include "extensions/common/constants.h"

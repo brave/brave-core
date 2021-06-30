@@ -22,13 +22,13 @@ namespace pipeline {
 
 struct PipelineInfo;
 
-base::Optional<TransformationVector> ParseTransformationsJSON(
+absl::optional<TransformationVector> ParseTransformationsJSON(
     base::Value* transformations_value);
 
-base::Optional<model::Linear> ParseClassifierJSON(
+absl::optional<model::Linear> ParseClassifierJSON(
     base::Value* classifier_value);
 
-base::Optional<PipelineInfo> ParsePipelineJSON(const std::string& json);
+absl::optional<PipelineInfo> ParsePipelineJSON(const std::string& json);
 
 }  // namespace pipeline
 }  // namespace ml

@@ -351,7 +351,7 @@ void NTPBackgroundImagesService::OnGetMappingTableData(
     return;
   }
 
-  base::Optional<base::Value> mapping_table_value =
+  absl::optional<base::Value> mapping_table_value =
       base::JSONReader::Read(json_string);
 
   if (!mapping_table_value) {

@@ -9,6 +9,7 @@
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "ui/gfx/canvas.h"
+#include "ui/gfx/skia_util.h"
 #include "ui/views/view.h"
 
 // static

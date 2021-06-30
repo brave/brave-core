@@ -1,5 +1,5 @@
 diff --git a/chrome/tools/build/win/create_installer_archive.py b/chrome/tools/build/win/create_installer_archive.py
-index 818e836776cb99acb7e6e64bd5ebd3ac26c58c33..142d09ef2468b2666552296379f5d57916a837fd 100755
+index 732479bbf5975289bd251ab6d41c8dda7e808a50..b85b6ffd7bab57a5da1d6819bccbaab05f6902e5 100755
 --- a/chrome/tools/build/win/create_installer_archive.py
 +++ b/chrome/tools/build/win/create_installer_archive.py
 @@ -42,6 +42,7 @@ SETUP_PATCH_FILE_PREFIX = "setup_patch"
@@ -27,7 +27,7 @@ index 818e836776cb99acb7e6e64bd5ebd3ac26c58c33..142d09ef2468b2666552296379f5d579
           prev_archive_file,
           'Chrome-bin/*/chrome.dll',]
    RunSystemCommand(cmd, options.verbose)
-@@ -558,6 +560,7 @@ def main(options):
+@@ -559,6 +561,7 @@ def main(options):
    if prev_version:
      version_numbers = prev_version.split('.')
      prev_build_number = version_numbers[2] + '.' + version_numbers[3]
@@ -35,7 +35,7 @@ index 818e836776cb99acb7e6e64bd5ebd3ac26c58c33..142d09ef2468b2666552296379f5d579
  
    # Name of the archive file built (for example - chrome.7z or
    # patch-<old_version>-<new_version>.7z or patch-<new_version>.7z
-@@ -631,6 +634,7 @@ def _ParseOptions():
+@@ -632,6 +635,7 @@ def _ParseOptions():
             'with the installer archive {x86|x64}.')
    parser.add_option('-v', '--verbose', action='store_true', dest='verbose',
                      default=False)

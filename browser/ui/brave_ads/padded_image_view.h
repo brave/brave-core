@@ -6,8 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_ADS_PADDED_IMAGE_VIEW_H_
 #define BRAVE_BROWSER_UI_BRAVE_ADS_PADDED_IMAGE_VIEW_H_
 
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/image_view.h"
-#include "ui/views/metadata/metadata_header_macros.h"
 
 namespace brave_ads {
 

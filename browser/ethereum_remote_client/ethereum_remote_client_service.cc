@@ -54,8 +54,8 @@ EthereumRemoteClientService::EthereumRemoteClientService(
   pref_change_registrar_->Init(user_prefs::UserPrefs::Get(context_));
   pref_change_registrar_->Add(
       kBraveWalletWeb3Provider,
-      base::Bind(&EthereumRemoteClientService::OnPreferenceChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(&EthereumRemoteClientService::OnPreferenceChanged,
+                          base::Unretained(this)));
   // In case any web3 providers have already loaded content scripts at
   // this point.
   RemoveUnusedWeb3ProviderContentScripts();

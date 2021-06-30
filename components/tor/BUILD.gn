@@ -81,7 +81,7 @@ source_set("pref_names") {
   ]
 }
 
-source_set("tor_unit_tests") {
+static_library("tor_unit_tests") {
   testonly = true
   if (enable_tor) {
     sources = [

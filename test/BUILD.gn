@@ -379,8 +379,8 @@ test("brave_unit_tests") {
       "//chrome/browser/extensions",
       "//components/crx_file",
       "//components/policy/core/common:test_support",
+      "//extensions/browser",
       "//extensions/browser:test_support",
-      "//extensions/browser/api/web_request",
       "//url",
     ]
   }
@@ -728,6 +728,8 @@ if (!is_android) {
         "//brave/components/brave_wallet/browser",
         "//brave/components/brave_wallet/common",
         "//brave/components/brave_wallet/common:mojom",
+        "//components/infobars/content",
+        "//components/infobars/core",
       ]
     }
 
@@ -928,6 +930,7 @@ if (!is_android) {
     android_manifest_dep = ":brave_browser_tests_manifest"
 
     deps = [
+      ":test_support",
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/app/theme:brave_unscaled_resources_grit",
       "//brave/browser/brave_ads",
@@ -954,6 +957,7 @@ if (!is_android) {
       "//chrome/android:app_hooks_java",
       "//chrome/browser:browser_process",
       "//chrome/browser/flags:flags_android",
+      "//chrome/browser/lens:delegate_public_impl_java",
       "//chrome/browser/metrics:test_support",
       "//chrome/test:android_browsertests_assets",
       "//chrome/test:android_browsertests_java",
@@ -1086,10 +1090,12 @@ if (is_android) {
       "//chrome/browser/tab:java",
       "//chrome/browser/tabmodel:java",
       "//chrome/browser/ui/android/appmenu:java",
+      "//chrome/browser/ui/android/native_page:java",
       "//chrome/browser/ui/android/theme:java",
       "//chrome/browser/ui/android/toolbar:java",
       "//chrome/browser/ui/messages/android:java",
       "//chrome/test/android:chrome_java_test_support",
+      "//components/browser_ui/bottomsheet/android:java",
       "//components/browser_ui/widget/android:java",
       "//components/embedder_support/android:browser_context_java",
       "//components/password_manager/core/browser:password_manager_java_enums",

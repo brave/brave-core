@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/js/web_ui_listener_behavior.js b/ui/webui/resources/js/web_ui_listener_behavior.js
-index 837518397f7fc79a68c51211b98155afd2d2bfb5..9381fde24cdc6b52b4c2254cfe70e80985b6fd69 100644
+index ffe11ba7bb7c2458198790c1269a6f9d6f5fa1e5..3573b8159e7a5e2c724c8782273a0c1ae1eb30ec 100644
 --- a/ui/webui/resources/js/web_ui_listener_behavior.js
 +++ b/ui/webui/resources/js/web_ui_listener_behavior.js
 @@ -8,6 +8,7 @@

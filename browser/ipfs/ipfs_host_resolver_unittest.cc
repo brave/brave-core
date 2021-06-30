@@ -92,7 +92,7 @@ class FakeHostResolverFail : public FakeHostResolver {
                        pending_response_client) override {
     mojo::Remote<network::mojom::ResolveHostClient> response_client;
     response_client.Bind(std::move(pending_response_client));
-    response_client->OnComplete(-2, net::ResolveErrorInfo(), base::nullopt);
+    response_client->OnComplete(-2, net::ResolveErrorInfo(), absl::nullopt);
     resolve_host_called_++;
   }
 };

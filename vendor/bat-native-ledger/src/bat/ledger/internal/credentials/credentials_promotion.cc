@@ -382,7 +382,7 @@ void CredentialsPromotion::VerifyPublicKey(
   }
 
   bool valid = false;
-  for (auto& item : *promotion_keys) {
+  for (auto& item : promotion_keys->GetList()) {
     if (item.GetString() == creds.public_key) {
       valid = true;
     }

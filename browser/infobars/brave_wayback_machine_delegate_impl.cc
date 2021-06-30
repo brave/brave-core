@@ -9,8 +9,8 @@
 #include "brave/common/brave_switches.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_infobar_delegate.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
+#include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
-#include "chrome/browser/infobars/infobar_service.h"
 
 // static
 void BraveWaybackMachineDelegateImpl::AttachTabHelperIfNeeded(
@@ -31,9 +31,9 @@ BraveWaybackMachineDelegateImpl::~BraveWaybackMachineDelegateImpl() = default;
 
 void BraveWaybackMachineDelegateImpl::CreateInfoBar(
     content::WebContents* web_contents) {
-  InfoBarService::FromWebContents(web_contents)->AddInfoBar(
-      CreateInfoBarView(
-          std::make_unique<BraveWaybackMachineInfoBarDelegate>(),
-          web_contents),
-      true);
+  infobars::ContentInfoBarManager::FromWebContents(web_contents)
+      ->AddInfoBar(CreateInfoBarView(
+                       std::make_unique<BraveWaybackMachineInfoBarDelegate>(),
+                       web_contents),
+                   true);
 }

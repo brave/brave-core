@@ -12,12 +12,12 @@
 #include <string>
 #include <vector>
 
-#include "base/optional.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "content/public/browser/browser_thread.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class AdBlockServiceTest;
 class DomainBlockTest;
@@ -56,13 +56,13 @@ class AdBlockService : public AdBlockBaseService {
                           bool* did_match_exception,
                           bool* did_match_important,
                           std::string* mock_data_url) override;
-  base::Optional<std::string> GetCspDirectives(
+  absl::optional<std::string> GetCspDirectives(
       const GURL& url,
       blink::mojom::ResourceType resource_type,
       const std::string& tab_host);
-  base::Optional<base::Value> UrlCosmeticResources(
+  absl::optional<base::Value> UrlCosmeticResources(
       const std::string& url) override;
-  base::Optional<base::Value> HiddenClassIdSelectors(
+  absl::optional<base::Value> HiddenClassIdSelectors(
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions) override;

@@ -5,6 +5,7 @@
 import welcomeReducer from '../../../brave_welcome_ui/reducers/welcome_reducer'
 import * as actions from '../../../brave_welcome_ui/actions/welcome_actions'
 import * as storage from '../../../brave_welcome_ui/storage'
+import { loadTimeData } from '../../../common/loadTimeData'
 import { types } from '../../../brave_welcome_ui/constants/welcome_types'
 import { mockSearchProviders, mockImportSources } from '../../testData'
 
@@ -141,7 +142,7 @@ describe('welcomeReducer', () => {
         { name: 'Brave Search beta', canBeRemoved: true }
       ]
       let countryString: string = 'US'
-      window.loadTimeData = {
+      loadTimeData = {
         getString: (fieldName: string) => {
           switch (fieldName) {
             case 'countryString': return countryString
@@ -152,7 +153,7 @@ describe('welcomeReducer', () => {
       let spy: jest.SpyInstance
 
       beforeEach(() => {
-        spy = jest.spyOn(window.loadTimeData, 'getString')
+        spy = jest.spyOn(loadTimeData, 'getString')
       })
       afterEach(() => {
         spy.mockRestore()

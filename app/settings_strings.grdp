@@ -689,6 +689,14 @@
   <message name="IDS_SETTINGS_PASSWORD_ROW_FEDERATED_MORE_ACTIONS" desc="The ARIA (accessibility) message for the More Actions button, which sits in every row of the password list. For this row does not include a password, only information of the account. It opens a menu with a list of actions, which apply to the account presented on this row.">
     More actions, saved account for <ph name="USERNAME">$1<ex>example@gmail.com</ex></ph> on <ph name="DOMAIN">$2<ex>www.google.com</ex></ph>
   </message>
+  <!-- TODO(crbug.com/1202088): Remove "translateable=false" once definitive string is available, and update description. -->
+  <message translateable="false" name="IDS_SETTINGS_TRUSTED_VAULT_OPT_IN_LABEL" desc="Label for the link to the page to opt in to trusted vault encryption">
+    Trusted vault
+  </message>
+  <!-- TODO(crbug.com/1202088): Remove "translateable=false" once definitive string is available, and update description. -->
+  <message translateable="false" name="IDS_SETTINGS_TRUSTED_VAULT_OPT_IN_SUB_LABEL" desc="Sub-label for the link to the page to opt in to trusted vault encryption">
+    Opt in to trusted vault
+  </message>
 
 
   <!-- Default Browser Page -->
@@ -957,13 +965,19 @@
     Signs you out of most sites. You'll stay signed in to your Brave sync chain so your synced data can be cleared.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY" desc="A subtext for the basic tab explaining browsing history.">
-    Clears history and autocompletions in the address bar.
+    Clears history and autocompletions in the search box
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY_SIGNED_IN" desc="A description explaining other forms of activity for signed in users.">
-    Clears history and autocompletions in the address bar. Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+    Clears history and autocompletions in the search box. Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+  </message>
+  <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY_SIGNED_IN_NO_LINK" desc="A description explaining from which devices history will be cleared.">
+    Clears history from all synced devices
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY_SYNCED" desc="A description for the basic tab explaining browsing history for users with history sync.">
     Clears history from all signed-in devices. Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+  </message>
+  <message name="IDS_SETTINGS_CLEAR_SEARCH_BROWSING_HISTORY_SUMMARY_SIGNED_IN" desc="A description explaining that search history can be cleared through the Brave account.">
+    To clear <ph name="BEGIN_LINK_SEARCH">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>search<ph name="END_LINK_SEARCH">&lt;/a&gt;</ph> or other forms of history, visit <ph name="BEGIN_LINK_GOOGLE">&lt;a target="_blank" rel="noopener noreferrer" href="$2"&gt;</ph>My Brave sync chain<ph name="END_LINK_GOOGLE">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_CLEAR_DOWNLOAD_HISTORY" desc="Checkbox for deleting Download History">
     Download history
@@ -1133,6 +1147,15 @@
   <message name="IDS_SETTINGS_LANGUAGES_ENABLED_LANGUAGES" desc="Header for the list of enabled languages, which the user can use to disable languages, on the Manage Languages page.">
     Enabled languages
   </message>
+  <message name="IDS_SETTINGS_LANGUAGES_NO_LANGUAGES_ADDED" desc="Placeholder for language list settings when no languages have been added, on the Manage Languages page.">
+    No languages added
+  </message>
+  <message name="IDS_SETTINGS_LANGUAGES_AUTOMATIC_TRANSLATE" desc="Title of Translation settings that lists languages that should be automatically translated.">
+    Automatically translate these languages
+  </message>
+  <message name="IDS_SETTINGS_LANGUAGES_NEVER_LANGUAGES" desc="Title of Translation settings that lists languages that should never be offered to translate.">
+    Don’t offer to translate these languages
+  </message>
   <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_TITLE" desc="Title for the section containing all the options for spell check settings. The options include picking between using the system's spell check or using Brave's web service and a list of the enabled languages which support spell checking.">
     Spell check
   </message>
@@ -1217,6 +1240,12 @@
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_EXPLANATION4" desc="Part 4 of the explanation of the Privacy Sandbox, shown on the Privacy Sandbox Page. The 'Learn more' link navigates the user to a page with more details.">
     Privacy Sandbox is still in active development and is available in selected regions. For now, sites may try out Privacy Sandbox while continuing to use current web technologies like third-party cookies. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_EXPLANATION1_PHASE2" desc="Part 1 of the phase 2 explanation of the Privacy Sandbox, shown on the Privacy Sandbox Page. The 'Privacy Sandbox' link navigates the user to a page with more details.">
+    With <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>Privacy Sandbox<ph name="END_LINK">&lt;/a&gt;</ph>, Brave is developing new technologies to safeguard you from cross-site tracking while preserving the open web.
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_EXPLANATION2_PHASE2" desc="Part 2 of the phase 2 explanation of the Privacy Sandbox, shown on the Privacy Sandbox Page. The 'Privacy Sandbox' link navigates the user to a page with more details.">
+   Privacy Sandbox trials are still in active development and are available in selected regions. For now, sites may try out Privacy Sandbox while continuing to use current web technologies like third-party cookies.
+  </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_SETTING_TITLE" desc="Title of the description of the setting to enable or disable the Privacy Sandbox.">
     Privacy Sandbox trials
   </message>
@@ -1229,6 +1258,15 @@
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_SETTING_EXPLANATION3" desc="Part 3 of the explanation of the setting to enable or disable the Privacy Sandbox.">
     Advertisers can study the effectiveness of ads in a way that does not track you across sites.
   </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_SETTING_EXPLANATION1_PHASE2" desc="Part 1 of the phase 2 explanation of the setting to enable or disable the Privacy Sandbox.">
+    When on, sites may use the privacy-preserving techniques shown here to provide their content and services. These include alternatives to cross-site tracking. More trials may be added over time.
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_SETTING_EXPLANATION2_PHASE2" desc="Part 2 of the phase 2 explanation of the setting to enable or disable the Privacy Sandbox.">
+    Advertisers and publishers can use FLoC, described later on this page.
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_SETTING_EXPLANATION3_PHASE2" desc="Part 2 of the phase 2 explanation of the setting to enable or disable the Privacy Sandbox.">
+    Advertisers and publishers can study the effectiveness of ads in a way that does not track you across sites.
+  </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_DETAILS" desc="Label of a button in the Privacy Sandbox page that leads the user to more details about the Privacy Sandbox.">
     Details
   </message>
@@ -1237,6 +1275,28 @@
   </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_TRIALS_DISABLED" desc="A short description that informs the user that the Privacy Sandbox trial features are disabled.">
     Trial features are off
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_FLOC_HEADING" desc="The heading of the card which displays the user's Federated Learning of Cohorts (FLoC) settings">
+    FLoC
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_FLOC_EXPLANATION" desc="Explanation of Federated Learning of Cohorts (FLoC) which appears at the top of the FLoC settings card. The some regions link goes to a site indicating where FLoC is currently available">
+    When on and the status is active, Brave uses your browsing history over 7 days to determine a group, or “cohort”, that you’re in. Advertisers can select ads for the group. Your browsing history is kept private on your device. This trial is active only in
+    <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>some regions<ph name="END_LINK">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_FLOC_TRIAL_ACTIVE" desc="Sentence indicating that FLoC is only available in some regions, including a link to a page that describes exactly what regions it is available. This will only every appear directly after another sentence.">
+    This trial is active only in <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>some regions<ph name="END_LINK">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_FLOC_STATUS" desc="The text used to label the user's current Federated Learning of Cohorts (FLoC) trial status">
+    Status
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_FLOC_COHORT" desc="The text used to label the user's current Federated Learning of Cohorts (FLoC) cohort">
+    Group number
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_FLOC_COHORT_NEXT_UPDATE" desc="The text used to label when the user's current Federated Learning of Cohorts (FLoC) cohort will next be updated">
+    Next update
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_FLOC_RESET_COHORT" desc="The text used to label the button which allows a user to reset their Federated Learning of Cohorts (FLoC) cohort identifier">
+    Reset group
   </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_COOKIES_DIALOG" desc="Text of a dialog shown to users when they interacted with cookies to make them aware of the Privacy Sandbox.">
     Learn about and control new technologies that aim to replace third-party cookies
@@ -1430,7 +1490,7 @@
     Uses cookies to remember your preferences, even if you don’t visit those pages
   </message>
   <message name="IDS_SETTINGS_NETWORK_PREDICTION_ENABLED_DESC_COOKIES_PAGE" desc="On the cookies page, the secondary text next to the checkbox that enables prediction of network actions.">
-    Pre-fetches information from pages, including pages you have not yet visited. Information fetched may include cookies, if you allow cookies.
+    Preloads pages that Brave thinks you might visit. To do this, Brave may use cookies, if you allow cookies, and may encrypt and send pages through Brave to hide your identity from sites.
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENABLEPROTECTION" desc="The section title of 'Protects you and your device from dangerous sites'">
     Google Safe Browsing (protects you and your device from dangerous sites)
@@ -1724,6 +1784,19 @@
   <message name="IDS_SETTINGS_SEARCH_ENGINES_MANAGE_EXTENSION" desc="Text displayed for a button that allows the user to manage a Brave extension">
     Manage
   </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_TITLE" desc="Label for scoped search mode trigger options section">
+    Keyboard shortcuts for search keywords
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_DESCRIPTION" desc="Text explaining how to use keyword mode">
+    In the address bar, enter the keyword for the website you want to search. Then, use a keyboard shortcut to continue.
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_SPACE_OR_TAB" desc="Label for setting that toggles whether scoped search mode can be triggered by space">
+    Space or Tab
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_TAB" desc="Label for setting that toggles whether scoped search mode can be triggered by space">
+    Tab
+  </message>
+
 
   <!-- Site Settings Page -->
   <message name="IDS_SETTINGS_EXCEPTIONS_EMBEDDED_ON_HOST" desc="Template text for a child row in the content Exceptions page view. Controls the permission setting for the parent page when embedded on the specified site.">
@@ -1778,7 +1851,7 @@
     All sites can show any ads to you
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ADS_BLOCKED" desc="Label for the disabled option of the ads content setting.">
-    Block ads on sites that show intrusive or misleading ads (recommended)
+    Block ads on sites that show intrusive or misleading ads
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ADS_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the ads content setting.">
     Allowed to show any ads
@@ -1805,7 +1878,7 @@
     Sites might automatically download related files together to save you time
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_DOWNLOADS_ALLOWED" desc="Label for the enabled option of the automatic downloads content setting.">
-    Sites can ask to automatically download multiple files (recommended)
+    Sites can ask to automatically download multiple files
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_DOWNLOADS_BLOCKED" desc="Label for the disabled option of the automatic downloads content setting.">
     Don't allow sites to automatically download multiple files
@@ -1820,10 +1893,13 @@
     After you leave a site, it can keep syncing to finish tasks, like uploading photos or sending a chat message
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_BACKGROUND_SYNC_ALLOWED" desc="Label for the enabled option of the background sync content setting.">
-    Recently closed sites can finish sending and receiving data (recommended)
+    Recently closed sites can finish sending and receiving data
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_BACKGROUND_SYNC_BLOCKED" desc="Label for the disabled option of the background sync content setting.">
     Don't allow closed sites to finish sending or receiving data
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_BACKGROUND_SYNC_BLOCKED_SUB_LABEL" desc="Sub label for the disabled option of the background sync content setting.">
+    After closing a page, tasks you started might not finish
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_BACKGROUND_SYNC_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the background sync content setting.">
     Allowed to finish sending and receiving data
@@ -1844,7 +1920,7 @@
     Sites usually use your video camera for communication features like video chatting
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CAMERA_ALLOWED" desc="Label for the enabled option of the camera content setting.">
-    Sites can ask to use your camera (recommended)
+    Sites can ask to use your camera
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CAMERA_BLOCKED" desc="Label for the disabled option of the camera content setting.">
     Don't allow sites to use your camera
@@ -1907,7 +1983,7 @@
     Sites usually access files and folders on your device for features like automatically saving your work
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_WRITE_ALLOWED" desc="Label for the enabled option of the file system write content setting.">
-    Sites can ask to edit files and folders on your device (recommended)
+    Sites can ask to edit files and folders on your device
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_WRITE_BLOCKED" desc="Label for the disabled option of the file system write content setting.">
     Don't allow sites to edit files or folders on your device
@@ -1943,10 +2019,13 @@
     Sites usually show images to provide illustration, like photos for online stores or news articles
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_IMAGES_ALLOWED" desc="Label for the enabled option of the images content setting.">
-    Sites can show images (recommended)
+    Sites can show images
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_IMAGES_BLOCKED" desc="Label for the disabled option of the images content setting.">
     Don't allow sites to show images
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_IMAGES_BLOCKED_SUB_LABEL" desc="Sub label for the disabled option of the images content setting.">
+    Features that need images won't work
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_IMAGES_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the images content setting.">
     Allowed to show images
@@ -1967,7 +2046,7 @@
     Sites usually use Javascript to display interactive features, like video games or web forms
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_ALLOWED" desc="Label for the enabled option of the Javascript content setting.">
-    Sites can use Javascript (recommended)
+    Sites can use Javascript
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_BLOCKED" desc="Label for the disabled option of the Javascript content setting.">
     Don't allow sites to use Javascript
@@ -1982,7 +2061,7 @@
     Sites usually use your location for relevant features or info, like local news or nearby shops
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_LOCATION_ALLOWED" desc="Label for the enabled option of the location content setting.">
-    Sites can ask for your location (recommended)
+    Sites can ask for your location
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_LOCATION_BLOCKED" desc="Label for the disabled option of the location content setting.">
     Don't allow sites to see your location
@@ -2000,7 +2079,7 @@
     Sites usually use your microphone for communication features like video chatting
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_MIC_ALLOWED" desc="Label for the enabled option of the microphone content setting.">
-    Sites can ask to use your microphone (recommended)
+    Sites can ask to use your microphone
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_MIC_BLOCKED" desc="Label for the disabled option of the microphone content setting.">
     Don't allow sites to use your microphone
@@ -2075,7 +2154,7 @@
     Sites usually install payment handlers for shopping features like easier checkout
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PAYMENT_HANDLERS_ALLOWED" desc="Label for the enabled option of the payment handlers content setting.">
-    Sites can install payment handlers (recommended)
+    Sites can install payment handlers
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PAYMENT_HANDLERS_BLOCKED" desc="Label for the disabled option of the payment handlers content setting.">
     Don't allow sites to install payment handlers
@@ -2099,7 +2178,7 @@
     Sites can send pop-ups and use redirects
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_POPUPS_BLOCKED" desc="Label for the disabled option of the pop-ups content setting.">
-    Don't allow sites to send pop-ups or use redirects (recommended)
+    Don't allow sites to send pop-ups or use redirects
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_POPUPS_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the pop-ups content setting.">
     Allowed to send pop-ups and use redirects
@@ -2111,10 +2190,13 @@
     When a site plays content protected by copyright, it might ask to recognize your device
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_ALLOWED" desc="Label for the enabled option of the protected content content setting.">
-    Sites can ask to play protected content (recommended)
+    Sites can ask to play protected content
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_BLOCKED" desc="Label for the disabled option of the protected content content setting.">
     Don't allow sites to play protected content
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_BLOCKED_SUB_LABEL" desc="Sub label for the disabled option of the protected content content setting.">
+    Media with a copyright might not play
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the protected content content setting.">
     Allowed to play protected content
@@ -2147,10 +2229,13 @@
     Sites might play sound to provide audio for music, videos, and other media
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SOUND_ALLOWED" desc="Label for the enabled option of the sound content setting.">
-    Sites can play sound (recommended)
+    Sites can play sound
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SOUND_BLOCKED" desc="Label for the disabled option of the sound content setting.">
     Don't allow sites to play sound
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SOUND_BLOCKED_SUB_LABEL" desc=" Sub label for the disabled option of the sound content setting.">
+    Features that need sound won't work
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SOUND_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the sound content setting.">
     Allowed to play sound
@@ -2257,14 +2342,14 @@
   <message name="IDS_SETTINGS_COOKIES_ALLOW_ALL_BULLET_TWO" desc="Description for the first bullet of allow all cookies radio toggle">
     Sites can use cookies to see your browsing activity across different sites, for example, to personalize ads
   </message>
-  <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO" desc="Label for block third party cookies in private radio toggle">
+  <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO" desc="Label for block third party cookies in Private radio toggle">
     Block third-party cookies in Private
   </message>
-  <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO_BULLET_ONE" desc="Description for the first bullet of block third party cookies in private radio toggle">
+  <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO_BULLET_ONE" desc="Description for the first bullet of block third party cookies in Private radio toggle">
     Sites can use cookies to improve your browsing experience, for example, to keep you signed in or to remember items in your shopping cart
   </message>
-  <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO_BULLET_TWO" desc="Description for the first bullet of block third party cookies in private radio toggle">
-    While in private, sites can't use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
+  <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO_BULLET_TWO" desc="Description for the first bullet of block third party cookies in Private radio toggle">
+    While in Private, sites can't use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
   </message>
   <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY" desc="Label for block third party cookies radio toggle">
     Block third-party cookies
@@ -2601,7 +2686,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_BLOCK_THIRD_PARTY" desc="The sub-label for links to manage cookies when the current cookie setting is to block third party cookies.">
     Third-party cookies are blocked
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO" desc="The sub-label for links to manage cookies when the current cookie setting is to block third party cookies in private.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO" desc="The sub-label for links to manage cookies when the current cookie setting is to block third party cookies in Private.">
     Third-party cookies are blocked in Private mode
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_ALLOW_SITES" desc="The 'allow cookies' label in site settings.">
@@ -2791,9 +2876,6 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_CONTENT_MORE" desc="The text on the button used to toggle the display of additional content settings.">
     Additional content settings
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SOURCE_DRM_DISABLED" desc="A label shown when the protected content / protected media identifier permission on the Site Details page is disabled because the user has turned off using unique identifiers to access protected content.">
-    To change this setting, first <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>turn on identifiers<ph name="END_LINK">&lt;/a&gt;</ph>
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ALLOWLISTED" desc="A subtitle for the ‘Allowlisted’ setting, shown if a WebUI's permission is internally allowlisted by Brave.">
     Allowlisted internally
   </message>
@@ -2959,10 +3041,10 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE" desc="A label for the action of removing (deleting) a certain handler.">
     Remove
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_INCOGNITO_ONLY" desc="A label for the checkbox to make the rule apply to the current private session only.">
-    Current private session only
+  <message name="IDS_SETTINGS_SITE_SETTINGS_INCOGNITO_ONLY" desc="A label for the checkbox to make the rule apply to the current Private session only.">
+    Current Private session only
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_INCOGNITO_SITE_EXCEPTION_DESC" desc="The text displayed in order to explain to a user that a content setting only applies to the current private session.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_INCOGNITO_SITE_EXCEPTION_DESC" desc="The text displayed in order to explain to a user that a content setting only applies to the current Private session.">
     This custom setting will be removed when you close all your Private windows
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_NO_ZOOMED_SITES" desc="A label explaining that no sites have a configured zoom in/out value.">
@@ -3642,6 +3724,9 @@
   <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_NAME_LABEL" desc="A label for a text input field containing a descriptive name for a fingerprint enrolled to a security key.">
     Name
   </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_NAME_LABEL_TOO_LONG" desc="A validation error shown beneath a text box where the user is expected to enter a descriptive name for a fingerprint enrolled to a security key.">
+    Try a shorter name
+  </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_NO_ENROLLMENTS_LABEL" desc="A label informing the user that there are no fingerprints stored on their security key (authentication hardware device).">
     Your security key has no fingerprints stored
   </message>
@@ -3668,6 +3753,9 @@
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_NO_PIN" desc="An error message shown when a user attempts to enroll a fingerprint on their security key (an authentication hardware device), but the user has not set up a PIN (short, often numeric codes that are often used with, for example, ATM cards) for that security key.">
     Your security key is not protected with a PIN. To manage fingerprints, first create a PIN.
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_STORAGE_FULL" desc="An error message shown when a user attempts to enroll a fingerprint on their security key (an authentication hardware device), but the security key's internal storage for fingerprints is exhausted.">
+    Your security key can't store any more fingerprints. To add a new one, first delete an existing fingerprint.
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_TOUCH_TO_CONTINUE" desc="A label instructing the user to physically touch the activation button on their security key (an authentication hardware device).">
     To continue, insert and touch your security key

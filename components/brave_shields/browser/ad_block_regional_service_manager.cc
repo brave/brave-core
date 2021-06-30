@@ -135,11 +135,11 @@ void AdBlockRegionalServiceManager::ShouldStartRequest(
   }
 }
 
-base::Optional<std::string> AdBlockRegionalServiceManager::GetCspDirectives(
+absl::optional<std::string> AdBlockRegionalServiceManager::GetCspDirectives(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host) {
-  base::Optional<std::string> csp_directives = base::nullopt;
+  absl::optional<std::string> csp_directives = absl::nullopt;
 
   for (const auto& regional_service : regional_services_) {
     const auto directive =
@@ -201,19 +201,18 @@ void AdBlockRegionalServiceManager::EnableFilterList(
                      base::Unretained(this), uuid, enabled));
 }
 
-base::Optional<base::Value>
-AdBlockRegionalServiceManager::UrlCosmeticResources(
-        const std::string& url) {
+absl::optional<base::Value> AdBlockRegionalServiceManager::UrlCosmeticResources(
+    const std::string& url) {
   base::AutoLock lock(regional_services_lock_);
   auto it = regional_services_.begin();
   if (it == regional_services_.end()) {
-    return base::Optional<base::Value>();
+    return absl::optional<base::Value>();
   }
-  base::Optional<base::Value> first_value =
+  absl::optional<base::Value> first_value =
       it->second->UrlCosmeticResources(url);
 
   for ( ; it != regional_services_.end(); it++) {
-    base::Optional<base::Value> next_value =
+    absl::optional<base::Value> next_value =
         it->second->UrlCosmeticResources(url);
     if (first_value) {
       if (next_value) {
@@ -227,21 +226,21 @@ AdBlockRegionalServiceManager::UrlCosmeticResources(
   return first_value;
 }
 
-base::Optional<base::Value>
+absl::optional<base::Value>
 AdBlockRegionalServiceManager::HiddenClassIdSelectors(
-        const std::vector<std::string>& classes,
-        const std::vector<std::string>& ids,
-        const std::vector<std::string>& exceptions) {
+    const std::vector<std::string>& classes,
+    const std::vector<std::string>& ids,
+    const std::vector<std::string>& exceptions) {
   base::AutoLock lock(regional_services_lock_);
   auto it = regional_services_.begin();
   if (it == regional_services_.end()) {
-    return base::Optional<base::Value>();
+    return absl::optional<base::Value>();
   }
-  base::Optional<base::Value> first_value =
+  absl::optional<base::Value> first_value =
       it->second->HiddenClassIdSelectors(classes, ids, exceptions);
 
   for ( ; it != regional_services_.end(); it++) {
-    base::Optional<base::Value> next_value =
+    absl::optional<base::Value> next_value =
         it->second->HiddenClassIdSelectors(classes, ids, exceptions);
     if (first_value && first_value->is_list()) {
       if (next_value && next_value->is_list()) {

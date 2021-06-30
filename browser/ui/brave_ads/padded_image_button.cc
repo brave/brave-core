@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/color_utils.h"
 #include "ui/gfx/geometry/insets.h"
@@ -16,7 +17,6 @@
 #include "ui/views/animation/ink_drop_impl.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
-#include "ui/views/metadata/metadata_impl_macros.h"
 
 namespace brave_ads {
 
@@ -36,14 +36,18 @@ const float kVisibleOpacity = 0.12f;
 
 PaddedImageButton::PaddedImageButton(PressedCallback callback)
     : views::ImageButton(callback) {
+  views::InkDrop::UseInkDropForSquareRipple(ink_drop(),
+                                            /*highlight_on_hover=*/false,
+                                            /*highlight_on_focus=*/false);
+
   SetBackground(views::CreateSolidBackground(kBackgroundColor));
 
   SetBorder(views::CreateEmptyBorder(kBorderInset));
 
   SetAnimateOnStateChange(false);
 
-  SetInkDropMode(InkDropMode::ON);
-  SetInkDropVisibleOpacity(kVisibleOpacity);
+  ink_drop()->SetMode(views::InkDropHost::InkDropMode::ON);
+  ink_drop()->SetVisibleOpacity(kVisibleOpacity);
   SetHasInkDropActionOnClick(true);
 }
 
@@ -60,19 +64,13 @@ void PaddedImageButton::AdjustBorderInsetToFitHeight(const int height) {
   SetBorder(views::CreateEmptyBorder(insets));
 }
 
-std::unique_ptr<views::InkDrop> PaddedImageButton::CreateInkDrop() {
-  std::unique_ptr<views::InkDropImpl> ink_drop = CreateDefaultInkDropImpl();
-  ink_drop->SetShowHighlightOnHover(false);
-  ink_drop->SetShowHighlightOnFocus(false);
-  return std::move(ink_drop);
-}
-
 void PaddedImageButton::OnThemeChanged() {
   ImageButton::OnThemeChanged();
 
   const SkColor background_color = GetNativeTheme()->GetSystemColor(
       ui::NativeTheme::kColorId_WindowBackground);
-  SetInkDropBaseColor(color_utils::GetColorWithMaxContrast(background_color));
+  ink_drop()->SetBaseColor(
+      color_utils::GetColorWithMaxContrast(background_color));
 }
 
 BEGIN_METADATA(PaddedImageButton, views::ImageButton)

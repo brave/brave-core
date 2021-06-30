@@ -16,8 +16,7 @@ namespace ipfs {
 IpfsBlobContextGetterFactory::IpfsBlobContextGetterFactory(
     content::BrowserContext* browser_context) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  getter_callback_ =
-      content::BrowserContext::GetBlobStorageContext(browser_context);
+  getter_callback_ = browser_context->GetBlobStorageContext();
   DCHECK(getter_callback_);
 }
 

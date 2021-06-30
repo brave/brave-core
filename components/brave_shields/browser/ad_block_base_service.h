@@ -48,7 +48,7 @@ class AdBlockBaseService : public BaseBraveShieldsService {
                           bool* did_match_exception,
                           bool* did_match_important,
                           std::string* mock_data_url) override;
-  base::Optional<std::string> GetCspDirectives(
+  absl::optional<std::string> GetCspDirectives(
       const GURL& url,
       blink::mojom::ResourceType resource_type,
       const std::string& tab_host);
@@ -56,9 +56,9 @@ class AdBlockBaseService : public BaseBraveShieldsService {
   void EnableTag(const std::string& tag, bool enabled);
   bool TagExists(const std::string& tag);
 
-  virtual base::Optional<base::Value> UrlCosmeticResources(
+  virtual absl::optional<base::Value> UrlCosmeticResources(
       const std::string& url);
-  virtual base::Optional<base::Value> HiddenClassIdSelectors(
+  virtual absl::optional<base::Value> HiddenClassIdSelectors(
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions);

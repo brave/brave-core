@@ -10,7 +10,7 @@
 #include <map>
 #include <string>
 
-#include "base/optional.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -43,11 +43,11 @@ class TabManager {
 
   bool IsPlayingMedia(const int32_t id) const;
 
-  base::Optional<TabInfo> GetVisible() const;
+  absl::optional<TabInfo> GetVisible() const;
 
-  base::Optional<TabInfo> GetLastVisible() const;
+  absl::optional<TabInfo> GetLastVisible() const;
 
-  base::Optional<TabInfo> GetForId(const int32_t id) const;
+  absl::optional<TabInfo> GetForId(const int32_t id) const;
 
  private:
   int32_t visible_tab_id_ = 0;

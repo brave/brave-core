@@ -37,8 +37,7 @@ BraveWalletServiceFactory::~BraveWalletServiceFactory() {}
 
 KeyedService* BraveWalletServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  auto* default_storage_partition =
-      content::BrowserContext::GetDefaultStoragePartition(context);
+  auto* default_storage_partition = context->GetDefaultStoragePartition();
   auto shared_url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
   return new BraveWalletService(user_prefs::UserPrefs::Get(context),

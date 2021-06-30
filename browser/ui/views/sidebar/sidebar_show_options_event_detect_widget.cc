@@ -128,7 +128,7 @@ SidebarShowOptionsEventDetectWidget::CreateWidget(Delegate* delegate) {
   params.ownership = views::Widget::InitParams::WIDGET_OWNS_NATIVE_WIDGET;
   params.parent = browser_view_->GetWidget()->GetNativeView();
   params.opacity = views::Widget::InitParams::WindowOpacity::kTranslucent;
-  params.activatable = views::Widget::InitParams::ACTIVATABLE_NO;
+  params.activatable = views::Widget::InitParams::Activatable::kNo;
   widget->Init(std::move(params));
 
   std::unique_ptr<ContentsView> contents_view =

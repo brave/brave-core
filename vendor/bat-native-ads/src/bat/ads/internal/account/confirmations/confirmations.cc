@@ -256,7 +256,7 @@ void Confirmations::OnDidRedeemUnblindedToken(
   const CatalogIssuersInfo catalog_issuers =
       ConfirmationsState::Get()->get_catalog_issuers();
 
-  const base::Optional<double> estimated_redemption_value =
+  const absl::optional<double> estimated_redemption_value =
       catalog_issuers.GetEstimatedRedemptionValue(
           unblinded_payment_token.public_key.encode_base64());
   if (!estimated_redemption_value) {

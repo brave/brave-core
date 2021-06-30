@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
-#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/guest_window_search_engine_provider_service.h"
@@ -50,7 +49,8 @@ TemplateURLData CreateTestSearchEngine() {
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PrivateWindowPrefTestWithNonQwantRegion) {
   Profile* profile = browser()->profile();
-  Profile* incognito_profile = profile->GetPrimaryOTRProfile();
+  Profile* incognito_profile =
+      profile->GetPrimaryOTRProfile(/*create_if_needed=*/true);
 
   // This test case is only for non-qwant region.
   if (brave::IsRegionForQwant(profile))
@@ -99,7 +99,8 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PrivateWindowTestWithQwantRegion) {
   Profile* profile = browser()->profile();
-  Profile* incognito_profile = profile->GetPrimaryOTRProfile();
+  Profile* incognito_profile =
+      profile->GetPrimaryOTRProfile(/*create_if_needed=*/true);
 
   // This test case is only for qwant region.
   if (!brave::IsRegionForQwant(profile))
@@ -256,8 +257,8 @@ const int kTestExtensionPrepopulatedId = 3;
 // chrome/test/data/extensions/settings_override/manifest.json
 std::unique_ptr<TemplateURLData> TestExtensionSearchEngine(PrefService* prefs) {
   auto result = std::make_unique<TemplateURLData>();
-  result->SetShortName(base::ASCIIToUTF16("name.de"));
-  result->SetKeyword(base::ASCIIToUTF16("keyword.de"));
+  result->SetShortName(u"name.de");
+  result->SetKeyword(u"keyword.de");
   result->SetURL("http://www.foo.de/s?q={searchTerms}&id=10");
   result->favicon_url = GURL("http://www.foo.de/favicon.ico?id=10");
   result->suggestions_url = "http://www.foo.de/suggest?q={searchTerms}&id=10";
@@ -311,7 +312,8 @@ IN_PROC_BROWSER_TEST_F(ExtensionBrowserTest,
       TestExtensionSearchEngine(prefs);
   ExpectSimilar(extension_dse.get(), &current_dse->data());
 
-  Profile* incognito_profile = profile()->GetPrimaryOTRProfile();
+  Profile* incognito_profile =
+      profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true);
 
   auto* incognito_url_service =
       TemplateURLServiceFactory::GetForProfile(incognito_profile);
@@ -337,8 +339,7 @@ IN_PROC_BROWSER_TEST_F(ExtensionBrowserTest,
 
   // After unloading private window's search provider is ddg.
   current_incognito_dse = incognito_url_service->GetDefaultSearchProvider();
-  EXPECT_EQ(current_incognito_dse->data().short_name(),
-            base::ASCIIToUTF16("DuckDuckGo"));
+  EXPECT_EQ(current_incognito_dse->data().short_name(), u"DuckDuckGo");
   EXPECT_EQ(TemplateURL::NORMAL, current_incognito_dse->type());
 }
 #endif

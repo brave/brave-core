@@ -89,6 +89,7 @@
       <part file="new_or_sad_tab_strings_override.grdp" />
       <part file="omnibox_strings_override.grdp" />
       <part file="payments_strings_override.grdp" />
+      <part file="privacy_sandbox_strings_override.grdp" />
       <part file="security_interstitials_strings_override.grdp" />
       <if expr="not is_android and not is_ios">
         </if>

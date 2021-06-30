@@ -22,9 +22,10 @@
 #include "chrome/grit/generated_resources.h"
 #include "components/dom_distiller/content/browser/distillable_page_utils.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/theme_provider.h"
+#include "ui/views/animation/ink_drop_host_view.h"
 #include "ui/views/animation/ink_drop_state.h"
-#include "ui/views/metadata/metadata_impl_macros.h"
 
 using DistillState = speedreader::SpeedreaderTabHelper::DistillState;
 
@@ -64,8 +65,8 @@ void SpeedreaderIconView::UpdateImpl() {
     return;
   }
 
-  if (GetHighlighted() && !IsBubbleShowing())
-    AnimateInkDrop(views::InkDropState::HIDDEN, nullptr);
+  if (ink_drop()->GetHighlighted() && !IsBubbleShowing())
+    ink_drop()->AnimateToState(views::InkDropState::HIDDEN, nullptr);
 
   auto* old_contents = web_contents();
   if (contents != old_contents) {

@@ -16,13 +16,8 @@ const char* GetApplicationName();
     attrs.Append("application", GetApplicationName()); \
   } else  // NOLINT
 
-#define BRAVE_KEY_STORAGE_LIBSECRET_K_APPLICATION_NAME \
-  const char kApplicationName[] = "brave";
-
 #include "../../../../components/os_crypt/key_storage_libsecret.cc"
-#undef BRAVE_KEY_STORAGE_LIBSECRET_K_APPLICATION_NAME
 #undef BRAVE_KEY_STORAGE_LIBSECRET_GET_KEY_IMPL
-
 namespace {
 
 const char* GetApplicationName() {
@@ -33,7 +28,7 @@ const char* GetApplicationName() {
              command_line->HasSwitch("import-brave")) {
     return "chromium";
   } else {
-    return kApplicationName;
+    return "brave";
   }
 }
 

@@ -124,7 +124,7 @@ bool CatalogIssuersInfo::PublicKeyExists(const std::string& public_key) const {
   return true;
 }
 
-base::Optional<double> CatalogIssuersInfo::GetEstimatedRedemptionValue(
+absl::optional<double> CatalogIssuersInfo::GetEstimatedRedemptionValue(
     const std::string& public_key) const {
   const auto iter = std::find_if(issuers.begin(), issuers.end(),
                                  [&public_key](const auto& issuer) {
@@ -132,7 +132,7 @@ base::Optional<double> CatalogIssuersInfo::GetEstimatedRedemptionValue(
                                  });
 
   if (iter == issuers.end()) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   const CatalogIssuerInfo catalog_issuer = *iter;
@@ -144,7 +144,7 @@ base::Optional<double> CatalogIssuersInfo::GetEstimatedRedemptionValue(
          "Failed to get estimated redemption value due to invalid catalog "
          "issuer name");
 
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   double estimated_redemption_value;
@@ -153,7 +153,7 @@ base::Optional<double> CatalogIssuersInfo::GetEstimatedRedemptionValue(
          "Failed to get estimated redemption value due to invalid catalog "
          "issuer name");
 
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   return estimated_redemption_value;

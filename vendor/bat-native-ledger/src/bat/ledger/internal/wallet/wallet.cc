@@ -224,7 +224,7 @@ type::BraveWalletPtr Wallet::GetWallet() {
     return nullptr;
   }
 
-  base::Optional<base::Value> value = base::JSONReader::Read(wallet_string);
+  absl::optional<base::Value> value = base::JSONReader::Read(wallet_string);
   if (!value || !value->is_dict()) {
     BLOG(0, "Parsing of brave wallet failed");
     return nullptr;

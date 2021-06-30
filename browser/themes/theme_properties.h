@@ -6,9 +6,9 @@
 #ifndef BRAVE_BROWSER_THEMES_THEME_PROPERTIES_H_
 #define BRAVE_BROWSER_THEMES_THEME_PROPERTIES_H_
 
-#include "base/optional.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/skia/include/core/SkColor.h"
 
 namespace BraveThemeProperties {
@@ -49,8 +49,10 @@ bool IsBraveThemeProperties(int id);
 
 }  // namespace BraveThemeProperties
 
-base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(
-    int id, bool incognito,
-    bool is_tor, dark_mode::BraveDarkModeType dark_mode);
+absl::optional<SkColor> MaybeGetDefaultColorForBraveUi(
+    int id,
+    bool incognito,
+    bool is_tor,
+    dark_mode::BraveDarkModeType dark_mode);
 
 #endif  // BRAVE_BROWSER_THEMES_THEME_PROPERTIES_H_

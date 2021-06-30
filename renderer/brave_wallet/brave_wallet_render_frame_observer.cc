@@ -6,6 +6,7 @@
 #include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 
 #include "content/public/renderer/render_frame.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 
 namespace brave_wallet {
@@ -19,7 +20,7 @@ BraveWalletRenderFrameObserver::~BraveWalletRenderFrameObserver() {}
 
 void BraveWalletRenderFrameObserver::DidStartNavigation(
     const GURL& url,
-    base::Optional<blink::WebNavigationType> navigation_type) {
+    absl::optional<blink::WebNavigationType> navigation_type) {
   url_ = url;
 }
 

@@ -28,7 +28,7 @@ void LoadNewTabURL(const GURL& url,
                    content::WebContents::OnceGetter web_contents_getter,
                    ui::PageTransition page_transition,
                    bool has_user_gesture,
-                   const base::Optional<url::Origin>& initiating_origin) {
+                   const absl::optional<url::Origin>& initiating_origin) {
   content::WebContents* web_contents = std::move(web_contents_getter).Run();
   if (!web_contents) {
     return;
@@ -87,7 +87,7 @@ void HandleFTXProtocol(const GURL& url,
                        content::WebContents::OnceGetter web_contents_getter,
                        ui::PageTransition page_transition,
                        bool has_user_gesture,
-                       const base::Optional<url::Origin>& initiator) {
+                       const absl::optional<url::Origin>& initiator) {
   DCHECK(IsFTXProtocol(url));
   base::PostTask(
       FROM_HERE, {content::BrowserThread::UI},

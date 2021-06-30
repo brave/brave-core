@@ -9,7 +9,7 @@
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 #include "components/dom_distiller/content/browser/distillable_page_utils.h"
 #include "content/public/browser/web_contents_observer.h"
-#include "ui/views/metadata/metadata_header_macros.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
 namespace content {
 class NavigationHandle;

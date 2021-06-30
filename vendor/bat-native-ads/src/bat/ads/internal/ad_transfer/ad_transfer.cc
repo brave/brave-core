@@ -114,7 +114,7 @@ void AdTransfer::OnTransferAd(const int32_t tab_id, const std::string& url) {
     return;
   }
 
-  const base::Optional<TabInfo> tab = TabManager::Get()->GetForId(tab_id);
+  const absl::optional<TabInfo> tab = TabManager::Get()->GetForId(tab_id);
   if (!tab) {
     BLOG(1, "Failed to transfer ad for " << url);
     NotifyAdTransferFailed(ad);

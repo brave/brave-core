@@ -89,7 +89,7 @@ void AdBlockService::ShouldStartRequest(
       did_match_important, mock_data_url);
 }
 
-base::Optional<std::string> AdBlockService::GetCspDirectives(
+absl::optional<std::string> AdBlockService::GetCspDirectives(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host) {
@@ -107,16 +107,16 @@ base::Optional<std::string> AdBlockService::GetCspDirectives(
   return csp_directives;
 }
 
-base::Optional<base::Value> AdBlockService::UrlCosmeticResources(
+absl::optional<base::Value> AdBlockService::UrlCosmeticResources(
     const std::string& url) {
-  base::Optional<base::Value> resources =
+  absl::optional<base::Value> resources =
       AdBlockBaseService::UrlCosmeticResources(url);
 
   if (!resources || !resources->is_dict()) {
     return resources;
   }
 
-  base::Optional<base::Value> regional_resources =
+  absl::optional<base::Value> regional_resources =
       regional_service_manager()->UrlCosmeticResources(url);
 
   if (regional_resources && regional_resources->is_dict()) {
@@ -124,7 +124,7 @@ base::Optional<base::Value> AdBlockService::UrlCosmeticResources(
                        /*force_hide=*/false);
   }
 
-  base::Optional<base::Value> custom_resources =
+  absl::optional<base::Value> custom_resources =
       custom_filters_service()->UrlCosmeticResources(url);
 
   if (custom_resources && custom_resources->is_dict()) {
@@ -135,18 +135,18 @@ base::Optional<base::Value> AdBlockService::UrlCosmeticResources(
   return resources;
 }
 
-base::Optional<base::Value> AdBlockService::HiddenClassIdSelectors(
+absl::optional<base::Value> AdBlockService::HiddenClassIdSelectors(
     const std::vector<std::string>& classes,
     const std::vector<std::string>& ids,
     const std::vector<std::string>& exceptions) {
-  base::Optional<base::Value> hide_selectors =
+  absl::optional<base::Value> hide_selectors =
       AdBlockBaseService::HiddenClassIdSelectors(classes, ids, exceptions);
 
-  base::Optional<base::Value> regional_selectors =
+  absl::optional<base::Value> regional_selectors =
       regional_service_manager()->HiddenClassIdSelectors(classes, ids,
                                                          exceptions);
 
-  base::Optional<base::Value> custom_selectors =
+  absl::optional<base::Value> custom_selectors =
       custom_filters_service()->HiddenClassIdSelectors(classes, ids,
                                                        exceptions);
 

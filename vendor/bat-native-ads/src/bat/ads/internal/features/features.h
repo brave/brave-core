@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/metrics/field_trial.h"
-#include "base/optional.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace features {

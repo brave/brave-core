@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 2d724556541329b6d024e52a54097c18892e72d8..3f1b9abe41bc68178b94de7e1dfa7219a06b693d 100644
+index b18cc56bb82b08b153112339effd7e28eb453aec..9ac98ee442e7adf33a3fabfccd4e966d194c9092 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -884,6 +884,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -926,6 +926,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
  #if defined(TOOLKIT_VIEWS)
    RegisterBrowserViewLocalPrefs(registry);
  #endif
@@ -10,7 +10,7 @@ index 2d724556541329b6d024e52a54097c18892e72d8..3f1b9abe41bc68178b94de7e1dfa7219
  
    // This is intentionally last.
    RegisterLocalStatePrefsForMigration(registry);
-@@ -1167,6 +1168,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -1216,6 +1217,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
  #endif
  
    RegisterProfilePrefsForMigration(registry);

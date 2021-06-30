@@ -18,7 +18,7 @@ namespace {
 const char kSecurityOrigin[] = "chrome://cosmetic_filters";
 
 void EnsureIsolatedWorldInitialized(int world_id) {
-  static base::Optional<int> last_used_world_id;
+  static absl::optional<int> last_used_world_id;
   if (last_used_world_id) {
     // Early return since the isolated world info. is already initialized.
     DCHECK_EQ(*last_used_world_id, world_id)
@@ -58,7 +58,7 @@ CosmeticFiltersJsRenderFrameObserver::~CosmeticFiltersJsRenderFrameObserver() {}
 
 void CosmeticFiltersJsRenderFrameObserver::DidStartNavigation(
     const GURL& url,
-    base::Optional<blink::WebNavigationType> navigation_type) {
+    absl::optional<blink::WebNavigationType> navigation_type) {
   url_ = url;
 }
 

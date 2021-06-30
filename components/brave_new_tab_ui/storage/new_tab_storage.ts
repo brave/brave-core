@@ -5,13 +5,14 @@
 
 // Utils
 import { debounce } from '../../common/debounce'
+import { loadTimeData } from '../../common/loadTimeData'
 
 export const keyName = 'new-tab-data'
 
 export const defaultState: NewTab.State = {
   initialDataLoaded: false,
-  textDirection: window.loadTimeData.getString('textdirection'),
-  featureFlagBraveNTPSponsoredImagesWallpaper: window.loadTimeData.getBoolean('featureFlagBraveNTPSponsoredImagesWallpaper'),
+  textDirection: loadTimeData.getString('textdirection'),
+  featureFlagBraveNTPSponsoredImagesWallpaper: loadTimeData.getBoolean('featureFlagBraveNTPSponsoredImagesWallpaper'),
   showBackgroundImage: false,
   showStats: false,
   showToday: false,
@@ -133,8 +134,8 @@ export const defaultState: NewTab.State = {
 }
 
 if (chrome.extension.inIncognitoContext) {
-  defaultState.isTor = window.loadTimeData.getBoolean('isTor')
-  defaultState.isQwant = window.loadTimeData.getBoolean('isQwant')
+  defaultState.isTor = loadTimeData.getBoolean('isTor')
+  defaultState.isQwant = loadTimeData.getBoolean('isQwant')
 }
 
 // For users upgrading to the new list based widget stack state,

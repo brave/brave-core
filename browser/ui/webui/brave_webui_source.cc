@@ -1158,7 +1158,8 @@ content::WebUIDataSource* CreateWebUIDataSource(
     // Allow a policy to be created so that we
     // can allow trusted HTML and trusted lazy-load script sources.
     source->OverrideContentSecurityPolicy(
-        network::mojom::CSPDirectiveName::TrustedTypes, "default");
+        network::mojom::CSPDirectiveName::TrustedTypes,
+        "trusted-types default;");
   }
 
   source->UseStringsJs();

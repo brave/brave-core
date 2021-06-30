@@ -95,7 +95,7 @@ EpsilonGreedyBanditArms::~EpsilonGreedyBanditArms() = default;
 EpsilonGreedyBanditArmMap EpsilonGreedyBanditArms::FromJson(
     const std::string& json) {
   EpsilonGreedyBanditArmMap arms;
-  base::Optional<base::Value> value = base::JSONReader::Read(json);
+  absl::optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
     return arms;
   }

@@ -10,12 +10,12 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "base/optional.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/tor_launcher_factory.h"
 #include "brave/components/tor/tor_launcher_observer.h"
 #include "brave/components/tor/tor_profile_service.h"
 #include "net/proxy_resolution/proxy_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace content {
 class BrowserContext;
@@ -28,8 +28,8 @@ class ProxyConfigServiceTor;
 
 namespace tor {
 
-using NewTorCircuitCallback = base::OnceCallback<void(
-    const base::Optional<net::ProxyInfo>& proxy_info)>;
+using NewTorCircuitCallback =
+    base::OnceCallback<void(const absl::optional<net::ProxyInfo>& proxy_info)>;
 
 class TorProfileServiceImpl : public TorProfileService,
                               public BraveTorClientUpdater::Observer,

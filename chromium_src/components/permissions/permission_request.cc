@@ -6,7 +6,9 @@
 #include "components/permissions/permission_request.h"
 
 #define PermissionRequest PermissionRequest_ChromiumImpl
+#define IsDuplicateOf IsDuplicateOf_ChromiumImpl
 #include "../../../../components/permissions/permission_request.cc"
+#undef IsDuplicateOf
 #undef PermissionRequest
 
 namespace permissions {
@@ -19,14 +21,19 @@ bool PermissionRequest::SupportsLifetime() const {
   return false;
 }
 
-void PermissionRequest::SetLifetime(base::Optional<base::TimeDelta> lifetime) {
+void PermissionRequest::SetLifetime(absl::optional<base::TimeDelta> lifetime) {
   DCHECK(SupportsLifetime());
   lifetime_ = std::move(lifetime);
 }
 
-const base::Optional<base::TimeDelta>& PermissionRequest::GetLifetime() const {
+const absl::optional<base::TimeDelta>& PermissionRequest::GetLifetime() const {
   DCHECK(SupportsLifetime());
   return lifetime_;
+}
+
+bool PermissionRequest::IsDuplicateOf(PermissionRequest* other_request) const {
+  return PermissionRequest_ChromiumImpl::IsDuplicateOf_ChromiumImpl(
+      other_request);
 }
 
 }  // namespace permissions

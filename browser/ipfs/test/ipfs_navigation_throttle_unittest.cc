@@ -378,10 +378,11 @@ TEST_F(IpfsNavigationThrottleUnitTest, Instantiation) {
 
   // Disable in OTR profile.
   auto otr_web_contents = content::WebContentsTester::CreateTestWebContents(
-      profile()->GetPrimaryOTRProfile(), nullptr);
+      profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true), nullptr);
   content::MockNavigationHandle otr_test_handle(otr_web_contents.get());
   auto throttle_in_otr = IpfsNavigationThrottle::MaybeCreateThrottleFor(
-      &otr_test_handle, ipfs_service(profile()->GetPrimaryOTRProfile()),
+      &otr_test_handle,
+      ipfs_service(profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true)),
       profile()->GetPrefs(), locale());
   EXPECT_EQ(throttle_in_otr, nullptr);
 

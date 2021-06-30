@@ -24,6 +24,7 @@
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/origin.h"
 
 using brave_component_updater::BraveComponent;
@@ -139,7 +140,7 @@ void AdBlockBaseService::ShouldStartRequest(
   //  << ", url.spec(): " << url.spec();
 }
 
-base::Optional<std::string> AdBlockBaseService::GetCspDirectives(
+absl::optional<std::string> AdBlockBaseService::GetCspDirectives(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host) {
@@ -157,9 +158,9 @@ base::Optional<std::string> AdBlockBaseService::GetCspDirectives(
       ResourceTypeToString(resource_type));
 
   if (result.empty()) {
-    return base::nullopt;
+    return absl::nullopt;
   } else {
-    return base::Optional<std::string>(result);
+    return absl::optional<std::string>(result);
   }
 }
 
@@ -200,16 +201,16 @@ bool AdBlockBaseService::TagExists(const std::string& tag) {
   return std::find(tags_.begin(), tags_.end(), tag) != tags_.end();
 }
 
-base::Optional<base::Value> AdBlockBaseService::UrlCosmeticResources(
-        const std::string& url) {
+absl::optional<base::Value> AdBlockBaseService::UrlCosmeticResources(
+    const std::string& url) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
   return base::JSONReader::Read(ad_block_client_->urlCosmeticResources(url));
 }
 
-base::Optional<base::Value> AdBlockBaseService::HiddenClassIdSelectors(
-        const std::vector<std::string>& classes,
-        const std::vector<std::string>& ids,
-        const std::vector<std::string>& exceptions) {
+absl::optional<base::Value> AdBlockBaseService::HiddenClassIdSelectors(
+    const std::vector<std::string>& classes,
+    const std::vector<std::string>& ids,
+    const std::vector<std::string>& exceptions) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
   return base::JSONReader::Read(
       ad_block_client_->hiddenClassIdSelectors(classes, ids, exceptions));
