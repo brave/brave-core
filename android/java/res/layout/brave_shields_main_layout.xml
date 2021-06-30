@@ -140,6 +140,10 @@
 		</LinearLayout>
 
 		<include
+			android:id="@+id/brave_shields_block_cross_trackers_layout_id"
+			layout="@layout/brave_shields_option_layout"/>
+
+		<include
 			android:id="@+id/brave_shields_block_cookies_layout_id"
 			layout="@layout/brave_shields_option_layout"/>
 

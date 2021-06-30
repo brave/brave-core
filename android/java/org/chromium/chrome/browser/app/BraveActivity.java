@@ -478,7 +478,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     private void checkForNotificationData() {
         Intent notifIntent = getIntent();
         if (notifIntent != null && notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE) != null) {
-            Log.e("NTP", notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE));
             String notificationType = notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE);
             switch (notificationType) {
             case RetentionNotificationUtil.HOUR_3:
