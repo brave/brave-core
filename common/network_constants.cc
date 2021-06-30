@@ -5,6 +5,8 @@
 
 #include "brave/common/network_constants.h"
 
+const char kExtensionUpdaterDomain[] = "extensionupdater.brave.com";
+
 const char kBraveProxyPattern[] = "https://*.brave.com/*";
 const char kBraveSoftwareProxyPattern[] = "https://*.bravesoftware.com/*";
 

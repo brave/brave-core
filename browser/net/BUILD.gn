@@ -30,6 +30,8 @@ source_set("net") {
     "brave_proxying_web_socket.h",
     "brave_request_handler.cc",
     "brave_request_handler.h",
+    "brave_service_key_network_delegate_helper.cc",
+    "brave_service_key_network_delegate_helper.h",
     "brave_site_hacks_network_delegate_helper.cc",
     "brave_site_hacks_network_delegate_helper.h",
     "brave_static_redirect_network_delegate_helper.cc",

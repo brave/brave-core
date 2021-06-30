@@ -594,6 +594,7 @@ if (!is_android) {
       "//brave/browser/extensions/brave_theme_event_router_browsertest.cc",
       "//brave/browser/net/brave_network_delegate_browsertest.cc",
       "//brave/browser/net/brave_network_delegate_hsts_fingerprinting_browsertest.cc",
+      "//brave/browser/net/brave_service_key_network_delegate_helper_browsertest.cc",
       "//brave/browser/net/brave_site_hacks_network_delegate_helper_browsertest.cc",
       "//brave/browser/net/brave_system_request_handler_browsertest.cc",
       "//brave/browser/net/global_privacy_control_network_delegate_helper_browsertest.cc",
