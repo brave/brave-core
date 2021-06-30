@@ -5,10 +5,11 @@
 
 #include "brave/browser/search_engines/tor_window_search_engine_provider_service.h"
 
+#include "base/bind.h"
+#include "base/sequenced_task_runner.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
-#include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "components/search_engines/template_url_service.h"
 
@@ -35,11 +36,7 @@ void TorWindowSearchEngineProviderService::Shutdown() {
 }
 
 void TorWindowSearchEngineProviderService::ConfigureSearchEngineProvider() {
-  const bool use_extension_provider = ShouldUseExtensionSearchProvider();
-  otr_profile_->GetPrefs()->SetBoolean(prefs::kDefaultSearchProviderByExtension,
-                                       use_extension_provider);
-
-  if (use_extension_provider) {
+  if (ShouldUseExtensionSearchProvider()) {
     UseExtensionSearchProvider();
   } else {
     otr_template_url_service_->SetUserSelectedDefaultSearchProvider(
@@ -48,7 +45,9 @@ void TorWindowSearchEngineProviderService::ConfigureSearchEngineProvider() {
 }
 
 void TorWindowSearchEngineProviderService::OnTemplateURLServiceChanged() {
-  ConfigureSearchEngineProvider();
+  base::SequencedTaskRunnerHandle::Get()->PostTask(
+    FROM_HERE, base::BindOnce(&TorWindowSearchEngineProviderService::ConfigureSearchEngineProvider,
+                              weak_factory_.GetWeakPtr()));
 }
 
 std::unique_ptr<TemplateURLData>

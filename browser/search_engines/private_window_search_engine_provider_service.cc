@@ -5,10 +5,11 @@
 
 #include "brave/browser/search_engines/private_window_search_engine_provider_service.h"
 
+#include "base/bind.h"
+#include "base/sequenced_task_runner.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/default_search_manager.h"
-#include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/template_url.h"
 
 PrivateWindowSearchEngineProviderService::
@@ -16,11 +17,7 @@ PrivateWindowSearchEngineProviderService(Profile* otr_profile)
     : SearchEngineProviderService(otr_profile) {
   DCHECK(otr_profile->IsIncognitoProfile());
 
-  const bool use_extension_provider = ShouldUseExtensionSearchProvider();
-  otr_profile->GetPrefs()->SetBoolean(prefs::kDefaultSearchProviderByExtension,
-                                      use_extension_provider);
-
-  if (use_extension_provider) {
+  if (ShouldUseExtensionSearchProvider()) {
     UseExtensionSearchProvider();
   } else {
     ConfigureSearchEngineProvider();
@@ -46,7 +43,8 @@ OnUseAlternativeSearchEngineProviderChanged() {
 
 void PrivateWindowSearchEngineProviderService::
 ConfigureSearchEngineProvider() {
-  DCHECK(!ShouldUseExtensionSearchProvider());
+  if (ShouldUseExtensionSearchProvider())
+    return;
 
   UseAlternativeSearchEngineProvider()
       ? ChangeToAlternativeSearchEngineProvider()
@@ -54,16 +52,16 @@ ConfigureSearchEngineProvider() {
 }
 
 void PrivateWindowSearchEngineProviderService::OnTemplateURLServiceChanged() {
-  const bool use_extension_provider = ShouldUseExtensionSearchProvider();
-  otr_profile_->GetPrefs()->SetBoolean(prefs::kDefaultSearchProviderByExtension,
-                                       use_extension_provider);
-
-  if (use_extension_provider) {
-    UseExtensionSearchProvider();
+  if (ShouldUseExtensionSearchProvider()) {
+    base::SequencedTaskRunnerHandle::Get()->PostTask(
+      FROM_HERE, base::BindOnce(&PrivateWindowSearchEngineProviderService::UseExtensionSearchProvider,
+                                weak_factory_.GetWeakPtr()));
     return;
   }
 
-  ConfigureSearchEngineProvider();
+  base::SequencedTaskRunnerHandle::Get()->PostTask(
+      FROM_HERE, base::BindOnce(&PrivateWindowSearchEngineProviderService::ConfigureSearchEngineProvider,
+                                weak_factory_.GetWeakPtr()));
 }
 
 void PrivateWindowSearchEngineProviderService::Shutdown() {

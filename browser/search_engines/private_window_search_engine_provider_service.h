@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_SEARCH_ENGINES_PRIVATE_WINDOW_SEARCH_ENGINE_PROVIDER_SERVICE_H_
 #define BRAVE_BROWSER_SEARCH_ENGINES_PRIVATE_WINDOW_SEARCH_ENGINE_PROVIDER_SERVICE_H_
 
+#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/search_engines/search_engine_provider_service.h"
 #include "components/search_engines/template_url_service.h"
@@ -35,6 +36,7 @@ class PrivateWindowSearchEngineProviderService
 
   base::ScopedObservation<TemplateURLService, TemplateURLServiceObserver>
       observation_{this};
+  base::WeakPtrFactory<PrivateWindowSearchEngineProviderService> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_SEARCH_ENGINES_PRIVATE_WINDOW_SEARCH_ENGINE_PROVIDER_SERVICE_H_
