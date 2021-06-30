@@ -32,10 +32,10 @@ def GetCommandOutput(command):
 
     From chromium_utils.
     """
-    with open(os.devnull, 'w') as devnull:
-        with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=devnull, bufsize=1) as proc:
-            output = proc.communicate()[0]
-            return output.decode('utf-8')
+    devnull = open(os.devnull, 'w') # pylint: disable=consider-using-with
+    proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=devnull) # pylint: disable=consider-using-with
+    output = proc.communicate()[0]
+    return output.decode('utf-8')
 
 
 def mkdir_p(path):
@@ -76,8 +76,9 @@ def GenerateSymbols(options, binaries):
                                        module_line.group(1))
             mkdir_p(output_path)
             symbol_file = "%s.sym" % module_line.group(2)[:-4]  # strip .pdb
-            with open(os.path.join(output_path, symbol_file), 'w') as f:
-                f.write(syms)
+            f = open(os.path.join(output_path, symbol_file), 'w') # pylint: disable=consider-using-with
+            f.write(syms)
+            f.close()
 
             if options.verbose:
                 with print_lock:
