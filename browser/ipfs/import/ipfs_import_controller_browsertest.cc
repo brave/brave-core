@@ -6,8 +6,10 @@
 #include "brave/browser/ipfs/import/ipfs_import_controller.h"
 
 #include "base/path_service.h"
+#include "brave/browser/ipfs/ipfs_blob_context_getter_factory.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
+#include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
@@ -102,9 +104,11 @@ class IpfsImportControllerBrowserTest : public InProcessBrowserTest {
     display_service_ = std::make_unique<NotificationDisplayServiceTester>(
         Profile::FromBrowserContext(active_contents()->GetBrowserContext()));
     base::FilePath user_dir = base::FilePath(FILE_PATH_LITERAL("test"));
+    auto context_getter = std::make_unique<IpfsBlobContextGetterFactory>(
+        active_contents()->GetBrowserContext());
     fake_service_ = std::make_unique<FakeIpfsService>(
-        browser()->profile()->GetPrefs(), nullptr, nullptr, nullptr, user_dir,
-        chrome::GetChannel());
+        browser()->profile()->GetPrefs(), nullptr, std::move(context_getter),
+        nullptr, user_dir, chrome::GetChannel());
   }
 
   content::WebContents* active_contents() {

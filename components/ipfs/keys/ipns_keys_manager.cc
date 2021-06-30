@@ -34,7 +34,9 @@ IpnsKeysManager::IpnsKeysManager(
     const GURL& server_endpoint)
     : blob_context_getter_factory_(context_factory),
       url_loader_factory_(url_loader_factory),
-      server_endpoint_(server_endpoint) {}
+      server_endpoint_(server_endpoint) {
+  DCHECK(blob_context_getter_factory_);
+}
 
 IpnsKeysManager::~IpnsKeysManager() {}
 

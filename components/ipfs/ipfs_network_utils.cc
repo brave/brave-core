@@ -194,6 +194,7 @@ std::unique_ptr<network::ResourceRequest> CreateResourceRequest(
     const std::string& content_type,
     BlobContextGetterFactory* blob_context_getter_factory) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
+  DCHECK(blob_context_getter_factory);
   std::unique_ptr<storage::BlobDataBuilder> blob_builder =
       std::move(blob_builder_callback).Run();
 

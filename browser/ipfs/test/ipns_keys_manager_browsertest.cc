@@ -210,4 +210,23 @@ IN_PROC_BROWSER_TEST_F(IpnsManagerBrowserTest, RemoveKey) {
   ASSERT_FALSE(ipns_manager->KeyExists("self"));
 }
 
+IN_PROC_BROWSER_TEST_F(IpnsManagerBrowserTest, ImportKey) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  base::ScopedTempDir temp_dir;
+  ASSERT_TRUE(temp_dir.CreateUniqueTempDir());
+  base::FilePath fake_key_file(temp_dir.GetPath().AppendASCII("key_file"));
+  base::RunLoop run_loop;
+  auto* ipns_manager = ipfs_service()->GetIpnsKeysManager();
+  ipns_manager->ImportKey(
+      fake_key_file, "test",
+      base::BindOnce(
+          [](base::OnceCallback<void(void)> launch_callback,
+             const std::string& name, const std::string& value, bool success) {
+            if (launch_callback)
+              std::move(launch_callback).Run();
+          },
+          run_loop.QuitClosure()));
+  run_loop.Run();
+}
+
 }  // namespace ipfs
