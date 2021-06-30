@@ -720,7 +720,7 @@ Config.prototype.update = function (options) {
   if (options.xcode_gen) {
     assert(process.platform === 'darwin' || options.target_os === 'ios')
     if (options.xcode_gen === 'ios') {
-      this.xcode_gen_target = '//brave/vendor/brave-ios:*'
+      this.xcode_gen_target = '//brave/ios:*'
     } else {
       this.xcode_gen_target = options.xcode_gen
     }

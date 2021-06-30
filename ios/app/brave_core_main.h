@@ -11,10 +11,15 @@
 @class BraveBookmarksAPI;
 @class BraveHistoryAPI;
 @class BraveSyncProfileServiceIOS;
-
 @class BraveWalletAPI;
 
 NS_ASSUME_NONNULL_BEGIN
+
+typedef bool (^BraveCoreLogHandler)(int severity,
+                                    NSString* file,
+                                    int line,
+                                    size_t messageStart,
+                                    NSString* formattedMessage);
 
 OBJC_EXPORT
 @interface BraveCoreMain : NSObject
@@ -25,6 +30,8 @@ OBJC_EXPORT
 
 @property(nullable, nonatomic, readonly)
     BraveSyncProfileServiceIOS* syncProfileService;
+
++ (void)setLogHandler:(nullable BraveCoreLogHandler)logHandler;
 
 - (instancetype)init;
 

@@ -148,8 +148,6 @@ source_set("common") {
     ":switches",
     "//base",
     "//brave/chromium_src:common",
-    "//brave/components/resources",
-    "//components/resources",
     "//extensions/buildflags",
     "//services/service_manager",
     "//ui/base",

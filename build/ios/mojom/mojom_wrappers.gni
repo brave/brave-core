@@ -1,0 +1,93 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/ios_sdk.gni")
+
+# Template to generate Obj-C wrappers for generated C++ mojo files
+#
+# Arguments
+#
+#   mojom_target
+#     the target which generates C++ mojom files
+#   mojom_file
+#     path to the .mojom file
+#   class_prefix
+#     an optional string to prefix all generated wrapper classes.
+#
+template("mojom_wrappers") {
+  assert(defined(invoker.mojom_target) && invoker.mojom_target != "",
+         "mojom_target must be defined for $target_name")
+  assert(defined(invoker.mojom_file) && invoker.mojom_file != "",
+         "mojom_file must be defined for $target_name")
+
+  _mojom_target_parser =
+      get_path_info("${invoker.mojom_target}:interfaces__parser", "abspath")
+  _mojom_target_parser_gen_dir =
+      get_label_info(_mojom_target_parser, "target_gen_dir")
+  _mojom_include_dir = string_replace(
+          get_path_info(get_label_info(invoker.mojom_target, "dir"), "abspath"),
+          "//",
+          "",
+          1)
+  _mojom_output_dir = rebase_path(target_gen_dir)
+  _mojom_file = invoker.mojom_file
+  _mojom_filename = get_path_info(_mojom_file, "file")
+  _mojom_module =
+      rebase_path("$_mojom_target_parser_gen_dir/$_mojom_filename-module")
+
+  _generate_wrappers_target = "${target_name}_generate_wrappers"
+  _generate_wrappers_output = [
+    "$target_gen_dir/$_mojom_filename.objc.h",
+    "$target_gen_dir/$_mojom_filename.objc+private.h",
+    "$target_gen_dir/$_mojom_filename.objc.mm",
+  ]
+
+  action(_generate_wrappers_target) {
+    script = "//brave/build/ios/mojom/gen_model_wrappers.py"
+    inputs = [
+      _mojom_module,
+      "//brave/build/ios/mojom/cpp_transformations.h",
+      "//brave/build/ios/mojom/objc_templates/enum.tmpl",
+      "//brave/build/ios/mojom/objc_templates/module.h.tmpl",
+      "//brave/build/ios/mojom/objc_templates/module+private.h.tmpl",
+      "//brave/build/ios/mojom/objc_templates/module.mm.tmpl",
+      "//brave/build/ios/mojom/objc_templates/interface_declaration.tmpl",
+      "//brave/build/ios/mojom/objc_templates/private_interface_declaration.tmpl",
+      "//brave/build/ios/mojom/objc_templates/private_interface_implementation.tmpl",
+    ]
+    outputs = _generate_wrappers_output
+    args = [
+      "--mojom-module=$_mojom_module",
+      "--module-include-path=$_mojom_include_dir",
+      "--output-dir=$_mojom_output_dir",
+    ]
+    if (defined(invoker.class_prefix)) {
+      args += [ "--class-prefix=${invoker.class_prefix}" ]
+    }
+    deps = [
+      "//mojo/public/cpp/bindings",
+      _mojom_target_parser,
+    ]
+  }
+
+  source_set(target_name) {
+    forward_variables_from(invoker,
+                           "*",
+                           [
+                             "mojom_file",
+                             "mojom_target",
+                             "sources",
+                           ])
+    if (!defined(public_deps)) {
+      public_deps = []
+    }
+    sources = _generate_wrappers_output
+    configs += [ "//build/config/compiler:enable_arc" ]
+    public_deps += [
+      ":$_generate_wrappers_target",
+      "//base",
+    ]
+  }
+}

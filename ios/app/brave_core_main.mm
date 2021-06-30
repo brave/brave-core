@@ -5,9 +5,11 @@
 
 #import "brave/ios/app/brave_core_main.h"
 
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
 #include "base/compiler_specific.h"
+#include "base/logging.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/ios/app/brave_main_delegate.h"
@@ -34,6 +36,10 @@
 #import "brave/ios/browser/api/wallet/brave_wallet_api+private.h"
 #import "brave/ios/browser/api/wallet/brave_wallet_service_factory.h"
 #endif
+
+// Chromium logging is global, therefore we cannot link this to the instance in
+// question
+static BraveCoreLogHandler _Nullable _logHandler = nil;
 
 @interface BraveCoreMain () {
   std::unique_ptr<BraveWebClient> _webClient;
@@ -127,6 +133,29 @@
 - (void)setUserAgent:(NSString*)userAgent {
   _webClient->SetUserAgent(base::SysNSStringToUTF8(userAgent));
 }
+
++ (void)setLogHandler:(BraveCoreLogHandler)logHandler {
+  _logHandler = logHandler;
+  logging::SetLogMessageHandler(&CustomLogHandler);
+}
+
+static bool CustomLogHandler(int severity,
+                             const char* file,
+                             int line,
+                             size_t message_start,
+                             const std::string& str) {
+  if (!_logHandler) {
+    return false;
+  }
+  const int vlog_level = logging::GetVlogLevelHelper(file, strlen(file));
+  if (severity <= vlog_level) {
+    return _logHandler(severity, base::SysUTF8ToNSString(file), line,
+                       message_start, base::SysUTF8ToNSString(str));
+  }
+  return true;
+}
+
+#pragma mark -
 
 - (BraveBookmarksAPI*)bookmarksAPI {
   if (!_bookmarksAPI) {

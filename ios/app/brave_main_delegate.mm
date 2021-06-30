@@ -5,15 +5,16 @@
 
 #include "brave/ios/app/brave_main_delegate.h"
 
+#include "base/base_paths.h"
+#include "base/base_switches.h"
 #include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/mac/bundle_locations.h"
-#include "base/base_paths.h"
 #include "base/path_service.h"
-#include "components/sync/driver/sync_driver_switches.h"
-#include "components/sync/base/model_type.h"
 #include "components/browser_sync/browser_sync_switches.h"
+#include "components/sync/base/model_type.h"
 #include "components/sync/base/sync_base_switches.h"
+#include "components/sync/driver/sync_driver_switches.h"
 #include "ios/chrome/browser/chrome_switches.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -53,6 +54,7 @@ void BraveMainDelegate::BasicStartupComplete() {
   // Brave's sync protocol does not use the sync service url
   command_line->AppendSwitchASCII(switches::kSyncServiceURL,
                                  brave_sync_service_url_.c_str());
+  command_line->AppendSwitchASCII(switches::kVModule, "*/brave/*=5");
 
   IOSChromeMainDelegate::BasicStartupComplete();
 }
