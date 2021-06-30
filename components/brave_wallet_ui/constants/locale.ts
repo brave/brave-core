@@ -87,7 +87,7 @@ const locale = {
   welcomeRestoreButton: 'Restore',
 
   // Backup Wallet Intro
-  backupIntroTitle: 'Backup your wallet now!',
+  backupIntroTitle: 'Backup your crypto account now!',
   backupIntroDescription: 'In the next step you will see 12 words that allows you to recover your crypto wallet.',
   backupIntroTerms: 'I understand that if I lose my recovery words, I will not be able to access my crypto wallet.',
   backupButtonSkip: 'Skip',
@@ -107,8 +107,8 @@ const locale = {
   verifyError: 'Phrases did not match, please try again.',
 
   // Create Password
-  createPasswordTitle: 'Secure Brave Wallet with a password',
-  createPasswordDescription: 'Password must be at least 7 characters containg at least one number and a special character',
+  createPasswordTitle: 'Secure your crypto with a password',
+  createPasswordDescription: 'Password must be at least 7 characters containing at least one number and a special character',
   createPasswordInput: 'Password',
   createPasswordInput2: 'Re-Type Password',
   createPasswordError: 'Password must be 7 or more characters',
@@ -126,9 +126,11 @@ const locale = {
 
   // Backup Warning
   backupWarningText: 'Backup your wallet now to protect your crypto portfolio from loss of access.',
+  backupButton: 'Backup',
+  dismissButton: 'Dismiss',
 
   // Restore Screen
-  restoreTite: 'Restore Crypto Account',
+  restoreTite: 'Restore Primary Crypto Accounts',
   restoreDescription: 'Enter your recovery phrase to restore your Brave Wallet crypto account.',
   restoreError: 'The recovery phrase entered is invalid.',
   restorePlaceholder: 'Paste recovery phrase from clipboard',
@@ -136,7 +138,36 @@ const locale = {
   restoreFormText: 'New Password',
 
   // Tool Tips
-  toolTipCopyToClipboard: 'Copy to Clipboard'
+  toolTipCopyToClipboard: 'Copy to Clipboard',
+
+  // Accounts Tab
+  accountsPrimary: 'Primary Crypto Accounts',
+  accountsSecondary: 'Secondary Accounts',
+  accountsSecondaryDisclaimer: 'These accounts can be used with web 3 dapps and can be shown in your portfolio, however, they cannot not be restored via recovery phrase from your primary account backup. Enable Brave Sync accounts to auto-restore secondary accounts.',
+
+  // Add Account Options
+  addAccountCreate: 'Create',
+  addAccountImport: 'Import',
+  addAccountHardware: 'Hardware',
+  addAccountConnect: 'Connect',
+  addAccountPlaceholder: 'Account Name',
+
+  // Import Account
+  importAccountButton: 'Import',
+  importAccountDisclaimer: 'Imported accounts can be used with web 3 dapps and can be shown in your portfolio, however, they cannot not be restored via recovery phrase from your primary account backup. Enable Brave Sync accounts to auto-restore secondary accounts.',
+  importAccountPlaceholder: 'Paste private key from clipboard',
+  importAccountKey: 'Private Key',
+  importAccountFile: 'JSON File',
+  importAccountUploadButton: 'Choose File',
+  importAccountUploadPlaceholder: 'No file chosen',
+
+  // Connect Hardware Wallet
+  connectHardwareTitle: 'Select your hardware wallet device',
+  connectHardwareInfo1: 'Connect your',
+  connectHardwareInfo2: 'wallet directly to your computer.',
+  connectHardwareInfo3: 'Unlock your device and select the Ethereum app.',
+  connectHardwareTrezor: 'Trezor',
+  connectHardwareLedger: 'Ledger'
 }
 
 export default locale

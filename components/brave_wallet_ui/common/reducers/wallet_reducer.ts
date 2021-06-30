@@ -30,7 +30,8 @@ reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadTy
       address,
       balance: 0,
       fiatBalance: '0',
-      asset: 'eth'
+      asset: 'eth',
+      accountType: 'Primary'
     }
   })
 

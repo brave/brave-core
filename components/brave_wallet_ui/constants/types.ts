@@ -5,6 +5,7 @@ export interface WalletAccountType {
   balance: number
   fiatBalance: string
   asset: string
+  accountType: string
 }
 
 export interface UserAccountType {
@@ -76,6 +77,11 @@ export type TopTabNavTypes =
   | 'nfts'
   | 'accounts'
 
+export type AddAccountNavTypes =
+  | 'create'
+  | 'import'
+  | 'hardware'
+
 export type BuySendSwapTypes =
   | 'buy'
   | 'send'
@@ -103,7 +109,7 @@ export interface BuySendSwapObjectType {
 
 export interface TopTabNavObjectType {
   name: string
-  id: TopTabNavTypes
+  id: TopTabNavTypes | AddAccountNavTypes
 }
 
 export interface NavObjectType {
