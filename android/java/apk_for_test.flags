@@ -59,7 +59,12 @@
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.EditUrlSuggestionProcessor {
+    public <init>(...);
     *** mHasClearedOmniboxForFocus;
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.BraveEditUrlSuggestionProcessor {
+    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.sync.settings.ManageSyncSettings {
