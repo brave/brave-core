@@ -11,11 +11,11 @@
 
 namespace ads {
 
-Environment g_environment = Environment::DEVELOPMENT;
+mojom::Environment g_environment = mojom::Environment::kDevelopment;
 
-SysInfo g_sys_info;
+mojom::SysInfo g_sys_info;
 
-BuildChannel g_build_channel;
+mojom::BuildChannel g_build_channel;
 
 bool g_is_debug = false;
 

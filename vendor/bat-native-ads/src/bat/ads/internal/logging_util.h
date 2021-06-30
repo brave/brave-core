@@ -8,17 +8,17 @@
 
 #include <string>
 
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
-std::string UrlRequestToString(const UrlRequestPtr& url_request);
+std::string UrlRequestToString(const mojom::UrlRequestPtr& url_request);
 
-std::string UrlRequestHeadersToString(const UrlRequestPtr& url_request);
+std::string UrlRequestHeadersToString(const mojom::UrlRequestPtr& url_request);
 
-std::string UrlResponseToString(const UrlResponse& url_response);
+std::string UrlResponseToString(const mojom::UrlResponse& url_response);
 
-std::string UrlResponseHeadersToString(const UrlResponse& url_response);
+std::string UrlResponseHeadersToString(const mojom::UrlResponse& url_response);
 
 }  // namespace ads
 

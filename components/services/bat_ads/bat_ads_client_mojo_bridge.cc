@@ -120,10 +120,9 @@ std::vector<uint64_t> BatAdsClientMojoBridge::GetAdEvents(
   return ad_events;
 }
 
-void OnUrlRequest(
-    const ads::UrlRequestCallback& callback,
-    const ads::UrlResponsePtr url_response_ptr) {
-  ads::UrlResponse url_response;
+void OnUrlRequest(const ads::UrlRequestCallback& callback,
+                  const ads::mojom::UrlResponsePtr url_response_ptr) {
+  ads::mojom::UrlResponse url_response;
 
   if (!url_response_ptr) {
     url_response.status_code = 418;  // I'm a teapot
@@ -138,11 +137,10 @@ void OnUrlRequest(
   callback(url_response);
 }
 
-void BatAdsClientMojoBridge::UrlRequest(
-    ads::UrlRequestPtr url_request,
-    ads::UrlRequestCallback callback) {
+void BatAdsClientMojoBridge::UrlRequest(ads::mojom::UrlRequestPtr url_request,
+                                        ads::UrlRequestCallback callback) {
   if (!connected()) {
-    ads::UrlResponse response;
+    ads::mojom::UrlResponse response;
     response.url = url_request->url;
     response.status_code = 418;  // I'm a teapot
     callback(response);
@@ -209,10 +207,9 @@ void BatAdsClientMojoBridge::GetBrowsingHistory(
       base::BindOnce(&OnGetBrowsingHistory, std::move(callback)));
 }
 
-void BatAdsClientMojoBridge::RecordP2AEvent(
-    const std::string& name,
-    const ads::P2AEventType type,
-    const std::string& value) {
+void BatAdsClientMojoBridge::RecordP2AEvent(const std::string& name,
+                                            const ads::mojom::P2AEventType type,
+                                            const std::string& value) {
   if (!connected()) {
     return;
   }
@@ -250,14 +247,13 @@ std::string BatAdsClientMojoBridge::LoadResourceForId(
   return value;
 }
 
-void OnRunDBTransaction(
-    const ads::RunDBTransactionCallback& callback,
-    ads::DBCommandResponsePtr response) {
+void OnRunDBTransaction(const ads::RunDBTransactionCallback& callback,
+                        ads::mojom::DBCommandResponsePtr response) {
   callback(std::move(response));
 }
 
 void BatAdsClientMojoBridge::RunDBTransaction(
-    ads::DBTransactionPtr transaction,
+    ads::mojom::DBTransactionPtr transaction,
     ads::RunDBTransactionCallback callback) {
   bat_ads_client_->RunDBTransaction(std::move(transaction),
       base::BindOnce(&OnRunDBTransaction, std::move(callback)));

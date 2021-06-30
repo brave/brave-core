@@ -73,7 +73,7 @@ class BatAdsRequestSignedTokensUrlRequestBuilderTest : public UnitTestBase {
 
 TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForRPill) {
   // Arrange
-  SysInfo sys_info;
+  mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = true;
   SetSysInfo(sys_info);
 
@@ -90,10 +90,10 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForRPill) {
                                                            blinded_tokens);
 
   // Act
-  UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
 
   // Assert
-  UrlRequestPtr expected_url_request = UrlRequest::New();
+  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url =
       R"(https://ads-serve.brave.software/v1/confirmation/token/d4ed0af0-bfa9-464b-abd7-67b29d891b8b)";
   expected_url_request->headers = {
@@ -105,14 +105,14 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForRPill) {
   expected_url_request->content =
       R"({"blindedTokens":["iEK4BXJINfAa0kzgpnnukGUAHvH5303+Y/msR5+u/nY=","eAAv7FNH2twpELsYf3glHLlOhnnlIMovIeEgEmcjgyo=","1G0+8546Y6jCIUXG0cKJq0qpkd6NsnG+4w9oSVW3gH8="]})";
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = UrlRequestMethod::POST;
+  expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
   EXPECT_TRUE(url_request.Equals(expected_url_request));
 }
 
 TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForBPill) {
   // Arrange
-  SysInfo sys_info;
+  mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = false;
   SetSysInfo(sys_info);
 
@@ -129,10 +129,10 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForBPill) {
                                                            blinded_tokens);
 
   // Act
-  UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
 
   // Assert
-  UrlRequestPtr expected_url_request = UrlRequest::New();
+  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url =
       R"(https://ads-serve.brave.software/v1/confirmation/token/d4ed0af0-bfa9-464b-abd7-67b29d891b8b)";
   expected_url_request->headers = {
@@ -144,7 +144,7 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForBPill) {
   expected_url_request->content =
       R"({"blindedTokens":["iEK4BXJINfAa0kzgpnnukGUAHvH5303+Y/msR5+u/nY=","eAAv7FNH2twpELsYf3glHLlOhnnlIMovIeEgEmcjgyo=","1G0+8546Y6jCIUXG0cKJq0qpkd6NsnG+4w9oSVW3gH8="]})";
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = UrlRequestMethod::POST;
+  expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
   EXPECT_TRUE(url_request.Equals(expected_url_request));
 }

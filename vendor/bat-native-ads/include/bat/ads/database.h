@@ -13,7 +13,7 @@
 #include "base/memory/memory_pressure_listener.h"
 #include "base/sequence_checker.h"
 #include "bat/ads/export.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "sql/database.h"
 #include "sql/init_status.h"
 #include "sql/meta_table.h"
@@ -29,23 +29,25 @@ class ADS_EXPORT Database {
   Database(const Database&) = delete;
   Database& operator=(const Database&) = delete;
 
-  void RunTransaction(DBTransactionPtr transaction,
-                      DBCommandResponse* command_response);
+  void RunTransaction(mojom::DBTransactionPtr transaction,
+                      mojom::DBCommandResponse* command_response);
 
  private:
-  DBCommandResponse::Status Initialize(const int32_t version,
-                                       const int32_t compatible_version,
-                                       DBCommandResponse* command_response);
+  mojom::DBCommandResponse::Status Initialize(
+      const int32_t version,
+      const int32_t compatible_version,
+      mojom::DBCommandResponse* command_response);
 
-  DBCommandResponse::Status Execute(DBCommand* command);
+  mojom::DBCommandResponse::Status Execute(mojom::DBCommand* command);
 
-  DBCommandResponse::Status Run(DBCommand* command);
+  mojom::DBCommandResponse::Status Run(mojom::DBCommand* command);
 
-  DBCommandResponse::Status Read(DBCommand* command,
-                                 DBCommandResponse* command_response);
+  mojom::DBCommandResponse::Status Read(
+      mojom::DBCommand* command,
+      mojom::DBCommandResponse* command_response);
 
-  DBCommandResponse::Status Migrate(const int32_t version,
-                                    const int32_t compatible_version);
+  mojom::DBCommandResponse::Status Migrate(const int32_t version,
+                                           const int32_t compatible_version);
 
   void OnErrorCallback(const int error, sql::Statement* statement);
 

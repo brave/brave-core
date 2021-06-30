@@ -19,7 +19,7 @@ class AdGrantsUrlRequestBuilder : UrlRequestBuilder {
 
   ~AdGrantsUrlRequestBuilder() override;
 
-  UrlRequestPtr Build() override;
+  mojom::UrlRequestPtr Build() override;
 
  private:
   WalletInfo wallet_;

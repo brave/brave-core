@@ -17,7 +17,7 @@ namespace table {
 namespace ad_events {
 
 void Reset(ResultCallback callback) {
-  DBTransactionPtr transaction = DBTransaction::New();
+  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
 
   util::Delete(transaction.get(), "ad_events");
 

@@ -22,7 +22,8 @@ void RecordEvent(const std::string& name,
   std::string json;
   base::JSONWriter::Write(list, &json);
 
-  AdsClientHelper::Get()->RecordP2AEvent(name, P2AEventType::kListType, json);
+  AdsClientHelper::Get()->RecordP2AEvent(name, mojom::P2AEventType::kListType,
+                                         json);
 }
 
 }  // namespace p2a

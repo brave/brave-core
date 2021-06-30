@@ -47,7 +47,8 @@ class AdsClientMock : public AdsClient {
                             const std::string& confirmation_type));
 
   MOCK_METHOD2(UrlRequest,
-               void(UrlRequestPtr url_request, UrlRequestCallback callback));
+               void(mojom::UrlRequestPtr url_request,
+                    UrlRequestCallback callback));
 
   MOCK_METHOD3(Save,
                void(const std::string& name,
@@ -69,13 +70,13 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD1(LoadResourceForId, std::string(const std::string& id));
 
   MOCK_METHOD2(RunDBTransaction,
-               void(DBTransactionPtr, RunDBTransactionCallback));
+               void(mojom::DBTransactionPtr, RunDBTransactionCallback));
 
   MOCK_METHOD0(OnAdRewardsChanged, void());
 
   MOCK_METHOD3(RecordP2AEvent,
                void(const std::string& name,
-                    const ads::P2AEventType type,
+                    const mojom::P2AEventType type,
                     const std::string& value));
 
   MOCK_METHOD4(Log,

@@ -109,19 +109,19 @@ class BatAdsAdTargetingTest
 
   void ProcessBandit() {
     const std::vector<processor::BanditFeedbackInfo> feedbacks = {
-        {"science", AdNotificationEventType::kClicked},
-        {"science", AdNotificationEventType::kClicked},
-        {"science", AdNotificationEventType::kClicked},
-        {"travel", AdNotificationEventType::kDismissed},
-        {"travel", AdNotificationEventType::kClicked},
-        {"travel", AdNotificationEventType::kClicked},
-        {"technology & computing", AdNotificationEventType::kDismissed},
-        {"technology & computing", AdNotificationEventType::kDismissed},
-        {"technology & computing", AdNotificationEventType::kClicked}};
+        {"science", mojom::AdNotificationEventType::kClicked},
+        {"science", mojom::AdNotificationEventType::kClicked},
+        {"science", mojom::AdNotificationEventType::kClicked},
+        {"travel", mojom::AdNotificationEventType::kDismissed},
+        {"travel", mojom::AdNotificationEventType::kClicked},
+        {"travel", mojom::AdNotificationEventType::kClicked},
+        {"technology & computing", mojom::AdNotificationEventType::kDismissed},
+        {"technology & computing", mojom::AdNotificationEventType::kDismissed},
+        {"technology & computing", mojom::AdNotificationEventType::kClicked}};
 
     for (const auto& segment : kSegments) {
       bandit_processor_->Process(
-          {segment, AdNotificationEventType::kDismissed});
+          {segment, mojom::AdNotificationEventType::kDismissed});
     }
 
     for (const auto& feedback : feedbacks) {

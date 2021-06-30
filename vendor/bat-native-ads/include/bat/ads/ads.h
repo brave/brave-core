@@ -17,8 +17,8 @@
 #include "bat/ads/category_content_info.h"
 #include "bat/ads/export.h"
 #include "bat/ads/inline_content_ad_info.h"
-#include "bat/ads/mojom.h"
 #include "bat/ads/promoted_content_ad_info.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/result.h"
 #include "bat/ads/statement_info.h"
 
@@ -37,13 +37,13 @@ using GetAccountStatementCallback =
 
 // |g_environment| indicates that URL requests should use production, staging or
 // development servers but can be overridden via command-line arguments
-extern Environment g_environment;
+extern mojom::Environment g_environment;
 
 // |g_sys_info| contains the hardware |manufacturer| and |model|
-extern SysInfo g_sys_info;
+extern mojom::SysInfo g_sys_info;
 
 // |g_build_channel| indicates the build channel
-extern BuildChannel g_build_channel;
+extern mojom::BuildChannel g_build_channel;
 
 // |g_is_debug| indicates that the next catalog download should be reduced from
 // ~1 hour to ~25 seconds. This value should be set to false on production
@@ -162,18 +162,19 @@ class ADS_EXPORT Ads {
   // or an ad notification times out
   virtual void OnAdNotificationEvent(
       const std::string& uuid,
-      const AdNotificationEventType event_type) = 0;
+      const mojom::AdNotificationEventType event_type) = 0;
 
   // Should be called when a user views or clicks a new tab page ad
-  virtual void OnNewTabPageAdEvent(const std::string& uuid,
-                                   const std::string& creative_instance_id,
-                                   const NewTabPageAdEventType event_type) = 0;
+  virtual void OnNewTabPageAdEvent(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const mojom::NewTabPageAdEventType event_type) = 0;
 
   // Should be called when a user views or clicks a promoted content ad
   virtual void OnPromotedContentAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const PromotedContentAdEventType event_type) = 0;
+      const mojom::PromotedContentAdEventType event_type) = 0;
 
   // Should be called to get an eligible inline content ad for the specified
   // size
@@ -184,7 +185,7 @@ class ADS_EXPORT Ads {
   virtual void OnInlineContentAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const InlineContentAdEventType event_type) = 0;
+      const mojom::InlineContentAdEventType event_type) = 0;
 
   // Should be called to remove all cached history. The callback takes one
   // argument - |Result| should be set to |SUCCESS| if successful otherwise

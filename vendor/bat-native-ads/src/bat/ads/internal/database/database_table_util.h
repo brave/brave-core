@@ -10,41 +10,41 @@
 #include <string>
 #include <vector>
 
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 namespace database {
 namespace table {
 namespace util {
 
-void Drop(DBTransaction* transaction, const std::string& table_name);
+void Drop(mojom::DBTransaction* transaction, const std::string& table_name);
 
-void Delete(DBTransaction* transaction, const std::string& table_name);
+void Delete(mojom::DBTransaction* transaction, const std::string& table_name);
 
 std::string BuildInsertQuery(const std::string& from,
                              const std::string& to,
                              const std::map<std::string, std::string>& columns,
                              const std::string& group_by);
 
-void Migrate(DBTransaction* transaction,
+void Migrate(mojom::DBTransaction* transaction,
              const std::string& from,
              const std::string& to,
              const std::map<std::string, std::string>& columns,
              const bool should_drop,
              const std::string& group_by = "");
 
-void Migrate(DBTransaction* transaction,
+void Migrate(mojom::DBTransaction* transaction,
              const std::string& from,
              const std::string& to,
              const std::vector<std::string>& columns,
              const bool should_drop,
              const std::string& group_by = "");
 
-void Rename(DBTransaction* transaction,
+void Rename(mojom::DBTransaction* transaction,
             const std::string& from,
             const std::string& to);
 
-void CreateIndex(DBTransaction* transaction,
+void CreateIndex(mojom::DBTransaction* transaction,
                  const std::string& table_name,
                  const std::string& key);
 

@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 namespace ad_targeting {
@@ -16,7 +16,7 @@ namespace processor {
 
 struct BanditFeedbackInfo {
   std::string segment;
-  AdNotificationEventType ad_event_type;
+  mojom::AdNotificationEventType ad_event_type;
 };
 
 }  // namespace processor

@@ -23,23 +23,25 @@ class Dayparts : public Table {
 
   ~Dayparts() override;
 
-  void InsertOrUpdate(DBTransaction* transaction,
+  void InsertOrUpdate(mojom::DBTransaction* transaction,
                       const CreativeAdList& creative_ads);
 
   void Delete(ResultCallback callback);
 
   std::string get_table_name() const override;
 
-  void Migrate(DBTransaction* transaction, const int to_version) override;
+  void Migrate(mojom::DBTransaction* transaction,
+               const int to_version) override;
 
  private:
-  int BindParameters(DBCommand* command, const CreativeAdList& creative_ads);
+  int BindParameters(mojom::DBCommand* command,
+                     const CreativeAdList& creative_ads);
 
-  std::string BuildInsertOrUpdateQuery(DBCommand* command,
+  std::string BuildInsertOrUpdateQuery(mojom::DBCommand* command,
                                        const CreativeAdList& creative_ads);
 
-  void CreateTableV15(DBTransaction* transaction);
-  void MigrateToV15(DBTransaction* transaction);
+  void CreateTableV15(mojom::DBTransaction* transaction);
+  void MigrateToV15(mojom::DBTransaction* transaction);
 };
 
 }  // namespace table

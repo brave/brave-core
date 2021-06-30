@@ -20,7 +20,7 @@ class FetchPaymentTokenUrlRequestBuilder : UrlRequestBuilder {
 
   ~FetchPaymentTokenUrlRequestBuilder() override;
 
-  UrlRequestPtr Build() override;
+  mojom::UrlRequestPtr Build() override;
 
  private:
   ConfirmationInfo confirmation_;

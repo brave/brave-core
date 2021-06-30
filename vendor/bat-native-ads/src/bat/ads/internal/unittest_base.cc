@@ -7,7 +7,7 @@
 
 #include "base/files/file_path.h"
 #include "bat/ads/internal/unittest_util.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/result.h"
 
 using ::testing::NiceMock;
@@ -125,7 +125,7 @@ size_t UnitTestBase::GetPendingTaskCount() const {
 void UnitTestBase::Initialize() {
   ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
 
-  SetEnvironment(Environment::DEVELOPMENT);
+  SetEnvironment(mojom::Environment::kDevelopment);
 
   SetSysInfo(SysInfo());
 

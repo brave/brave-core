@@ -86,9 +86,9 @@ base::FilePath GetResourcesPath();
 base::Optional<std::string> ReadFileFromResourcePathToString(
     const std::string& name);
 
-void SetEnvironment(const Environment environment);
+void SetEnvironment(const mojom::Environment environment);
 
-void SetSysInfo(const SysInfo& sys_info);
+void SetSysInfo(const mojom::SysInfo& sys_info);
 
 void SetBuildChannel(const bool is_release, const std::string& name);
 

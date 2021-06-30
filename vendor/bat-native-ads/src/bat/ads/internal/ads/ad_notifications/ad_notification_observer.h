@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/observer_list.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
@@ -35,7 +35,7 @@ class AdNotificationObserver : public base::CheckedObserver {
   // Invoked when an ad notification event fails
   virtual void OnAdNotificationEventFailed(
       const std::string& uuid,
-      const AdNotificationEventType event_type) {}
+      const mojom::AdNotificationEventType event_type) {}
 
  protected:
   ~AdNotificationObserver() override = default;

@@ -21,15 +21,15 @@ const char kDevelopmentHost[] = "https://ads-serve.brave.software";
 
 std::string GetHost() {
   switch (g_environment) {
-    case Environment::PRODUCTION: {
+    case mojom::Environment::kProduction: {
       return kProductionHost;
     }
 
-    case Environment::STAGING: {
+    case mojom::Environment::kStaging: {
       return kStagingHost;
     }
 
-    case Environment::DEVELOPMENT: {
+    case mojom::Environment::kDevelopment: {
       return kDevelopmentHost;
     }
   }

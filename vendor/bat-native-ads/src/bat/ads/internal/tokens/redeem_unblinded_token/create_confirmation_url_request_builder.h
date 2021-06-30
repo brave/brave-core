@@ -25,7 +25,7 @@ class CreateConfirmationUrlRequestBuilder : UrlRequestBuilder {
 
   ~CreateConfirmationUrlRequestBuilder() override;
 
-  UrlRequestPtr Build() override;
+  mojom::UrlRequestPtr Build() override;
 
  private:
   ConfirmationInfo confirmation_;

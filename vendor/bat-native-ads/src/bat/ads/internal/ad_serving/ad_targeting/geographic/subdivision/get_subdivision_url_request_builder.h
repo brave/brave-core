@@ -20,7 +20,7 @@ class GetSubdivisionUrlRequestBuilder : UrlRequestBuilder {
 
   ~GetSubdivisionUrlRequestBuilder() override;
 
-  UrlRequestPtr Build() override;
+  mojom::UrlRequestPtr Build() override;
 
  private:
   std::string BuildUrl() const;

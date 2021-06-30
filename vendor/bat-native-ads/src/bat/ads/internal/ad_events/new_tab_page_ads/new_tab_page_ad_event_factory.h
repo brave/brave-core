@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "bat/ads/internal/ad_events/ad_event.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
@@ -20,7 +20,7 @@ namespace new_tab_page_ads {
 class AdEventFactory {
  public:
   static std::unique_ptr<AdEvent<NewTabPageAdInfo>> Build(
-      const NewTabPageAdEventType event_type);
+      const mojom::NewTabPageAdEventType event_type);
 };
 
 }  // namespace new_tab_page_ads

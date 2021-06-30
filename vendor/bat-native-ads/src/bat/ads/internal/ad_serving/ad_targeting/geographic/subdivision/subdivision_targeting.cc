@@ -165,7 +165,7 @@ void SubdivisionTargeting::Fetch() {
   BLOG(2, "GET /v1/getstate");
 
   GetSubdivisionUrlRequestBuilder url_request_builder;
-  UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
   BLOG(5, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
@@ -174,7 +174,7 @@ void SubdivisionTargeting::Fetch() {
   AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
 }
 
-void SubdivisionTargeting::OnFetch(const UrlResponse& url_response) {
+void SubdivisionTargeting::OnFetch(const mojom::UrlResponse& url_response) {
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 

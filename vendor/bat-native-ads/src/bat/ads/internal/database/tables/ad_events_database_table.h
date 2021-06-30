@@ -11,7 +11,7 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/database/database_table.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/result.h"
 
 namespace ads {
@@ -38,28 +38,30 @@ class AdEvents : public Table {
 
   std::string get_table_name() const override;
 
-  void Migrate(DBTransaction* transaction, const int to_version) override;
+  void Migrate(mojom::DBTransaction* transaction,
+               const int to_version) override;
 
  private:
   void RunTransaction(const std::string& query, GetAdEventsCallback callback);
 
-  void InsertOrUpdate(DBTransaction* transaction, const AdEventList& ad_event);
+  void InsertOrUpdate(mojom::DBTransaction* transaction,
+                      const AdEventList& ad_event);
 
-  int BindParameters(DBCommand* command, const AdEventList& ad_events);
+  int BindParameters(mojom::DBCommand* command, const AdEventList& ad_events);
 
-  std::string BuildInsertOrUpdateQuery(DBCommand* command,
+  std::string BuildInsertOrUpdateQuery(mojom::DBCommand* command,
                                        const AdEventList& ad_events);
 
-  void OnGetAdEvents(DBCommandResponsePtr response,
+  void OnGetAdEvents(mojom::DBCommandResponsePtr response,
                      GetAdEventsCallback callback);
 
-  AdEventInfo GetFromRecord(DBRecord* record) const;
+  AdEventInfo GetFromRecord(mojom::DBRecord* record) const;
 
-  void CreateTableV5(DBTransaction* transaction);
-  void MigrateToV5(DBTransaction* transaction);
+  void CreateTableV5(mojom::DBTransaction* transaction);
+  void MigrateToV5(mojom::DBTransaction* transaction);
 
-  void CreateTableV13(DBTransaction* transaction);
-  void MigrateToV13(DBTransaction* transaction);
+  void CreateTableV13(mojom::DBTransaction* transaction);
+  void MigrateToV13(mojom::DBTransaction* transaction);
 };
 
 }  // namespace table

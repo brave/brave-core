@@ -14,7 +14,7 @@ namespace ads {
 
 TEST(BatAdsServeServerUtilTest, Production) {
   // Arrange
-  SetEnvironment(Environment::PRODUCTION);
+  SetEnvironment(mojom::Environment::kProduction);
 
   // Act
   const std::string host = serve::server::GetHost();
@@ -26,7 +26,7 @@ TEST(BatAdsServeServerUtilTest, Production) {
 
 TEST(BatAdsServeServerUtilTest, Staging) {
   // Arrange
-  SetEnvironment(Environment::STAGING);
+  SetEnvironment(mojom::Environment::kStaging);
 
   // Act
   const std::string host = serve::server::GetHost();
@@ -38,7 +38,7 @@ TEST(BatAdsServeServerUtilTest, Staging) {
 
 TEST(BatAdsServeServerUtilTest, Development) {
   // Arrange
-  SetEnvironment(Environment::DEVELOPMENT);
+  SetEnvironment(mojom::Environment::kDevelopment);
 
   // Act
   const std::string host = serve::server::GetHost();

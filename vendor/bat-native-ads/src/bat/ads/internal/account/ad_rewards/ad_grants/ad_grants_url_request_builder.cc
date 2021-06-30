@@ -20,10 +20,10 @@ AdGrantsUrlRequestBuilder::~AdGrantsUrlRequestBuilder() = default;
 
 // GET /v1/promotions/ads/grants/summary?paymentId={payment_id}
 
-UrlRequestPtr AdGrantsUrlRequestBuilder::Build() {
-  UrlRequestPtr url_request = UrlRequest::New();
+mojom::UrlRequestPtr AdGrantsUrlRequestBuilder::Build() {
+  mojom::UrlRequestPtr url_request = UrlRequest::New();
   url_request->url = BuildUrl();
-  url_request->method = UrlRequestMethod::GET;
+  url_request->method = mojom::UrlRequestMethod::kGet;
 
   return url_request;
 }

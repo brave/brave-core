@@ -11,7 +11,7 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/database/database_table.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/result.h"
 
 namespace ads {
@@ -49,33 +49,34 @@ class ConversionQueue : public Table {
 
   std::string get_table_name() const override;
 
-  void Migrate(DBTransaction* transaction, const int to_version) override;
+  void Migrate(mojom::DBTransaction* transaction,
+               const int to_version) override;
 
  private:
-  void InsertOrUpdate(DBTransaction* transaction,
+  void InsertOrUpdate(mojom::DBTransaction* transaction,
                       const ConversionQueueItemList& conversion_queue_items);
 
-  int BindParameters(DBCommand* command,
+  int BindParameters(mojom::DBCommand* command,
                      const ConversionQueueItemList& conversion_queue_items);
 
   std::string BuildInsertOrUpdateQuery(
-      DBCommand* command,
+      mojom::DBCommand* command,
       const ConversionQueueItemList& conversion_queue_items);
 
-  void OnGetAll(DBCommandResponsePtr response,
+  void OnGetAll(mojom::DBCommandResponsePtr response,
                 GetConversionQueueCallback callback);
 
   void OnGetForCreativeInstanceId(
-      DBCommandResponsePtr response,
+      mojom::DBCommandResponsePtr response,
       const std::string& creative_instance_id,
       GetConversionQueueForCreativeInstanceIdCallback callback);
 
-  ConversionQueueItemInfo GetFromRecord(DBRecord* record) const;
+  ConversionQueueItemInfo GetFromRecord(mojom::DBRecord* record) const;
 
-  void CreateTableV10(DBTransaction* transaction);
-  void MigrateToV10(DBTransaction* transaction);
+  void CreateTableV10(mojom::DBTransaction* transaction);
+  void MigrateToV10(mojom::DBTransaction* transaction);
 
-  void MigrateToV11(DBTransaction* transaction);
+  void MigrateToV11(mojom::DBTransaction* transaction);
 
   int batch_size_;
 };

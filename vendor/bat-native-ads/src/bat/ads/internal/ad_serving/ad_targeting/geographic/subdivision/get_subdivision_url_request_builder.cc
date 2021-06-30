@@ -18,10 +18,10 @@ GetSubdivisionUrlRequestBuilder::~GetSubdivisionUrlRequestBuilder() = default;
 
 // GET /v1/getstate
 
-UrlRequestPtr GetSubdivisionUrlRequestBuilder::Build() {
-  UrlRequestPtr url_request = UrlRequest::New();
+mojom::UrlRequestPtr GetSubdivisionUrlRequestBuilder::Build() {
+  mojom::UrlRequestPtr url_request = mojom::UrlRequest::New();
   url_request->url = BuildUrl();
-  url_request->method = UrlRequestMethod::GET;
+  url_request->method = mojom::UrlRequestMethod::kGet;
 
   return url_request;
 }

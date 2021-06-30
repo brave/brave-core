@@ -122,12 +122,12 @@ class AdsService : public KeyedService {
   virtual void OnNewTabPageAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const ads::mojom::BraveAdsNewTabPageAdEventType event_type) = 0;
+      const ads::mojom::mojom::NewTabPageAdEventType event_type) = 0;
 
   virtual void OnPromotedContentAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const ads::mojom::BraveAdsPromotedContentAdEventType event_type) = 0;
+      const ads::mojom::mojom::PromotedContentAdEventType event_type) = 0;
 
   virtual void GetInlineContentAd(const std::string& dimensions,
                                   OnGetInlineContentAdCallback callback) = 0;
@@ -135,7 +135,7 @@ class AdsService : public KeyedService {
   virtual void OnInlineContentAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const ads::mojom::BraveAdsInlineContentAdEventType event_type) = 0;
+      const ads::mojom::mojom::InlineContentAdEventType event_type) = 0;
 
   virtual void ReconcileAdRewards() = 0;
 

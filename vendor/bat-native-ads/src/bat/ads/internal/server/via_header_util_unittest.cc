@@ -21,7 +21,7 @@ class BatAdsViaHeaderUtilTest : public UnitTestBase {
 
 TEST_F(BatAdsViaHeaderUtilTest, BuildViaHeaderForUncertainFuture) {
   // Arrange
-  SysInfo sys_info;
+  mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = true;
   SetSysInfo(sys_info);
 
@@ -37,7 +37,7 @@ TEST_F(BatAdsViaHeaderUtilTest, BuildViaHeaderForUncertainFuture) {
 
 TEST_F(BatAdsViaHeaderUtilTest, BuildViaHeaderForABrightFuture) {
   // Arrange
-  SysInfo sys_info;
+  mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = false;
   SetSysInfo(sys_info);
 

@@ -14,7 +14,7 @@ struct AdNotificationInfo;
 
 namespace ad_notifications {
 
-class AdEventTimedOut : public ads::AdEvent<AdNotificationInfo> {
+class AdEventTimedOut : public AdEvent<AdNotificationInfo> {
  public:
   AdEventTimedOut();
 

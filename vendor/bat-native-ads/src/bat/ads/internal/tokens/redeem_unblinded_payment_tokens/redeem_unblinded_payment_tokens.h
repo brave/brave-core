@@ -11,7 +11,7 @@
 #include "bat/ads/internal/backoff_timer.h"
 #include "bat/ads/internal/timer.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
@@ -31,7 +31,7 @@ class RedeemUnblindedPaymentTokens {
   Timer timer_;
 
   void Redeem();
-  void OnRedeem(const UrlResponse& url_response);
+  void OnRedeem(const mojom::UrlResponse& url_response);
 
   void OnDidRedeemUnblindedPaymentTokens();
 

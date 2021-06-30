@@ -10,7 +10,7 @@
 
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads/promoted_content_ads/promoted_content_ad_observer.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
@@ -27,7 +27,7 @@ class PromotedContentAd : public PromotedContentAdObserver {
 
   void FireEvent(const std::string& uuid,
                  const std::string& creative_instance_id,
-                 const PromotedContentAdEventType event_type);
+                 const mojom::PromotedContentAdEventType event_type);
 
  private:
   base::ObserverList<PromotedContentAdObserver> observers_;
@@ -35,11 +35,11 @@ class PromotedContentAd : public PromotedContentAdObserver {
   void FireEvent(const PromotedContentAdInfo& ad,
                  const std::string& uuid,
                  const std::string& creative_instance_id,
-                 const PromotedContentAdEventType event_type);
+                 const mojom::PromotedContentAdEventType event_type);
 
   void NotifyPromotedContentAdEvent(
       const PromotedContentAdInfo& ad,
-      const PromotedContentAdEventType event_type) const;
+      const mojom::PromotedContentAdEventType event_type) const;
 
   void NotifyPromotedContentAdServed(const PromotedContentAdInfo& ad) const;
   void NotifyPromotedContentAdViewed(const PromotedContentAdInfo& ad) const;
@@ -48,7 +48,7 @@ class PromotedContentAd : public PromotedContentAdObserver {
   void NotifyPromotedContentAdEventFailed(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const PromotedContentAdEventType event_type) const;
+      const mojom::PromotedContentAdEventType event_type) const;
 };
 
 }  // namespace ads

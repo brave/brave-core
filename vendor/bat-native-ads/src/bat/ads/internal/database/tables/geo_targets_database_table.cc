@@ -26,7 +26,7 @@ GeoTargets::GeoTargets() = default;
 
 GeoTargets::~GeoTargets() = default;
 
-void GeoTargets::InsertOrUpdate(DBTransaction* transaction,
+void GeoTargets::InsertOrUpdate(mojom::DBTransaction* transaction,
                                 const CreativeAdList& creative_ads) {
   DCHECK(transaction);
 
@@ -34,15 +34,15 @@ void GeoTargets::InsertOrUpdate(DBTransaction* transaction,
     return;
   }
 
-  DBCommandPtr command = DBCommand::New();
-  command->type = DBCommand::Type::RUN;
+  mojom::DBCommandPtr command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = BuildInsertOrUpdateQuery(command.get(), creative_ads);
 
   transaction->commands.push_back(std::move(command));
 }
 
 void GeoTargets::Delete(ResultCallback callback) {
-  DBTransactionPtr transaction = DBTransaction::New();
+  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
 
   util::Delete(transaction.get(), get_table_name());
 
@@ -55,7 +55,8 @@ std::string GeoTargets::get_table_name() const {
   return kTableName;
 }
 
-void GeoTargets::Migrate(DBTransaction* transaction, const int to_version) {
+void GeoTargets::Migrate(mojom::DBTransaction* transaction,
+                         const int to_version) {
   DCHECK(transaction);
 
   switch (to_version) {
@@ -72,7 +73,7 @@ void GeoTargets::Migrate(DBTransaction* transaction, const int to_version) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int GeoTargets::BindParameters(DBCommand* command,
+int GeoTargets::BindParameters(mojom::DBCommand* command,
                                const CreativeAdList& creative_ads) {
   DCHECK(command);
 
@@ -92,7 +93,7 @@ int GeoTargets::BindParameters(DBCommand* command,
 }
 
 std::string GeoTargets::BuildInsertOrUpdateQuery(
-    DBCommand* command,
+    mojom::DBCommand* command,
     const CreativeAdList& creative_ads) {
   const int count = BindParameters(command, creative_ads);
 
@@ -104,7 +105,7 @@ std::string GeoTargets::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(2, count).c_str());
 }
 
-void GeoTargets::CreateTableV15(DBTransaction* transaction) {
+void GeoTargets::CreateTableV15(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
@@ -115,14 +116,14 @@ void GeoTargets::CreateTableV15(DBTransaction* transaction) {
       "UNIQUE(campaign_id, geo_target) ON CONFLICT REPLACE)",
       get_table_name().c_str());
 
-  DBCommandPtr command = DBCommand::New();
-  command->type = DBCommand::Type::EXECUTE;
+  mojom::DBCommandPtr command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::EXECUTE;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));
 }
 
-void GeoTargets::MigrateToV15(DBTransaction* transaction) {
+void GeoTargets::MigrateToV15(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());

@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/observer_list.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
@@ -30,7 +30,7 @@ class InlineContentAdObserver : public base::CheckedObserver {
   virtual void OnInlineContentAdEventFailed(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const InlineContentAdEventType event_type) {}
+      const mojom::InlineContentAdEventType event_type) {}
 
  protected:
   ~InlineContentAdObserver() override = default;

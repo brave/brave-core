@@ -26,7 +26,7 @@ CreativeAds::CreativeAds() = default;
 
 CreativeAds::~CreativeAds() = default;
 
-void CreativeAds::InsertOrUpdate(DBTransaction* transaction,
+void CreativeAds::InsertOrUpdate(mojom::DBTransaction* transaction,
                                  const CreativeAdList& creative_ads) {
   DCHECK(transaction);
 
@@ -34,15 +34,15 @@ void CreativeAds::InsertOrUpdate(DBTransaction* transaction,
     return;
   }
 
-  DBCommandPtr command = DBCommand::New();
-  command->type = DBCommand::Type::RUN;
+  mojom::DBCommandPtr command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = BuildInsertOrUpdateQuery(command.get(), creative_ads);
 
   transaction->commands.push_back(std::move(command));
 }
 
 void CreativeAds::Delete(ResultCallback callback) {
-  DBTransactionPtr transaction = DBTransaction::New();
+  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
 
   util::Delete(transaction.get(), get_table_name());
 
@@ -55,7 +55,8 @@ std::string CreativeAds::get_table_name() const {
   return kTableName;
 }
 
-void CreativeAds::Migrate(DBTransaction* transaction, const int to_version) {
+void CreativeAds::Migrate(mojom::DBTransaction* transaction,
+                          const int to_version) {
   DCHECK(transaction);
 
   switch (to_version) {
@@ -72,7 +73,7 @@ void CreativeAds::Migrate(DBTransaction* transaction, const int to_version) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int CreativeAds::BindParameters(DBCommand* command,
+int CreativeAds::BindParameters(mojom::DBCommand* command,
                                 const CreativeAdList& creative_ads) {
   DCHECK(command);
 
@@ -96,7 +97,7 @@ int CreativeAds::BindParameters(DBCommand* command,
 }
 
 std::string CreativeAds::BuildInsertOrUpdateQuery(
-    DBCommand* command,
+    mojom::DBCommand* command,
     const CreativeAdList& creative_ads) {
   const int count = BindParameters(command, creative_ads);
 
@@ -114,7 +115,7 @@ std::string CreativeAds::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(8, count).c_str());
 }
 
-void CreativeAds::CreateTableV15(DBTransaction* transaction) {
+void CreativeAds::CreateTableV15(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
@@ -130,14 +131,14 @@ void CreativeAds::CreateTableV15(DBTransaction* transaction) {
       "target_url TEXT NOT NULL)",
       get_table_name().c_str());
 
-  DBCommandPtr command = DBCommand::New();
-  command->type = DBCommand::Type::EXECUTE;
+  mojom::DBCommandPtr command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::EXECUTE;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));
 }
 
-void CreativeAds::MigrateToV15(DBTransaction* transaction) {
+void CreativeAds::MigrateToV15(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());

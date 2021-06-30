@@ -8,7 +8,7 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/server/confirmations_server_util.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
@@ -23,10 +23,10 @@ FetchPaymentTokenUrlRequestBuilder::~FetchPaymentTokenUrlRequestBuilder() =
 
 // GET /v1/confirmation/{confirmation_id}/paymentToken
 
-UrlRequestPtr FetchPaymentTokenUrlRequestBuilder::Build() {
-  UrlRequestPtr url_request = UrlRequest::New();
+mojom::UrlRequestPtr FetchPaymentTokenUrlRequestBuilder::Build() {
+  mojom::UrlRequestPtr url_request = mojom::UrlRequest::New();
   url_request->url = BuildUrl();
-  url_request->method = UrlRequestMethod::GET;
+  url_request->method = mojom::UrlRequestMethod::kGet;
 
   return url_request;
 }

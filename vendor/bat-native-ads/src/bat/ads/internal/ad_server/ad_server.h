@@ -9,7 +9,7 @@
 #include "bat/ads/internal/ad_server/ad_server_observer.h"
 #include "bat/ads/internal/backoff_timer.h"
 #include "bat/ads/internal/timer.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
@@ -34,7 +34,7 @@ class AdServer {
   Timer timer_;
 
   void Fetch();
-  void OnFetch(const UrlResponse& url_response);
+  void OnFetch(const mojom::UrlResponse& url_response);
 
   void SaveCatalog(const Catalog& catalog);
 

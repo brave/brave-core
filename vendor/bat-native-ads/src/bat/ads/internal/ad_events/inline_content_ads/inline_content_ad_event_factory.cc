@@ -14,17 +14,17 @@ namespace ads {
 namespace inline_content_ads {
 
 std::unique_ptr<AdEvent<InlineContentAdInfo>> AdEventFactory::Build(
-    const InlineContentAdEventType event_type) {
+    const mojom::InlineContentAdEventType event_type) {
   switch (event_type) {
-    case InlineContentAdEventType::kServed: {
+    case mojom::InlineContentAdEventType::kServed: {
       return std::make_unique<AdEventServed>();
     }
 
-    case InlineContentAdEventType::kViewed: {
+    case mojom::InlineContentAdEventType::kViewed: {
       return std::make_unique<AdEventViewed>();
     }
 
-    case InlineContentAdEventType::kClicked: {
+    case mojom::InlineContentAdEventType::kClicked: {
       return std::make_unique<AdEventClicked>();
     }
   }

@@ -14,7 +14,7 @@
 #include "bat/ads/category_content_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/inline_content_ad_info.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 
 using std::placeholders::_1;
@@ -138,21 +138,21 @@ void BatAdsImpl::GetAdNotification(
 
 void BatAdsImpl::OnAdNotificationEvent(
     const std::string& uuid,
-    const ads::AdNotificationEventType event_type) {
+    const ads::mojom::AdNotificationEventType event_type) {
   ads_->OnAdNotificationEvent(uuid, event_type);
 }
 
 void BatAdsImpl::OnNewTabPageAdEvent(
     const std::string& uuid,
     const std::string& creative_instance_id,
-    const ads::NewTabPageAdEventType event_type) {
+    const ads::mojom::NewTabPageAdEventType event_type) {
   ads_->OnNewTabPageAdEvent(uuid, creative_instance_id, event_type);
 }
 
 void BatAdsImpl::OnPromotedContentAdEvent(
     const std::string& uuid,
     const std::string& creative_instance_id,
-    const ads::PromotedContentAdEventType event_type) {
+    const ads::mojom::PromotedContentAdEventType event_type) {
   ads_->OnPromotedContentAdEvent(uuid, creative_instance_id, event_type);
 }
 
@@ -169,7 +169,7 @@ void BatAdsImpl::GetInlineContentAd(const std::string& dimensions,
 void BatAdsImpl::OnInlineContentAdEvent(
     const std::string& uuid,
     const std::string& creative_instance_id,
-    const ads::InlineContentAdEventType event_type) {
+    const ads::mojom::InlineContentAdEventType event_type) {
   ads_->OnInlineContentAdEvent(uuid, creative_instance_id, event_type);
 }
 
