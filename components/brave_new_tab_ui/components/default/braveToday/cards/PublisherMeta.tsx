@@ -66,6 +66,7 @@ const Text = styled('span')`
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-family: ${p => p.theme.fontFamily.heading};
 `
 
 const Menu = styled('ul')`
