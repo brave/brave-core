@@ -655,7 +655,8 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->purgeOrphanedAdEventsForType(adType.UTF8String);
+  ads->PurgeOrphanedAdEventsForType(
+      static_cast<ads::mojom::BraveAdsAdType>(adType));
 }
 
 - (void)reconcileAdRewards {
