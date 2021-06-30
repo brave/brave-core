@@ -14,7 +14,6 @@
 #include "bat/ads/category_content_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/inline_content_ad_info.h"
-#include "bat/ads/mojom.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 
 using std::placeholders::_1;
@@ -171,6 +170,11 @@ void BatAdsImpl::OnInlineContentAdEvent(
     const std::string& creative_instance_id,
     const ads::InlineContentAdEventType event_type) {
   ads_->OnInlineContentAdEvent(uuid, creative_instance_id, event_type);
+}
+
+void BatAdsImpl::PurgeOrphanedAdEventsForType(
+    const ads::mojom::BraveAdsAdType ad_type) {
+  ads_->PurgeOrphanedAdEventsForType(ad_type);
 }
 
 void BatAdsImpl::RemoveAllHistory(

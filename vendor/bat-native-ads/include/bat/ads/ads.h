@@ -17,8 +17,8 @@
 #include "bat/ads/category_content_info.h"
 #include "bat/ads/export.h"
 #include "bat/ads/inline_content_ad_info.h"
-#include "bat/ads/mojom.h"
 #include "bat/ads/promoted_content_ad_info.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/result.h"
 #include "bat/ads/statement_info.h"
 
@@ -185,6 +185,10 @@ class ADS_EXPORT Ads {
       const std::string& uuid,
       const std::string& creative_instance_id,
       const InlineContentAdEventType event_type) = 0;
+
+  // Purge orphaned ad events for the specified |ad_type|
+  virtual void PurgeOrphanedAdEventsForType(
+      const mojom::BraveAdsAdType ad_type) = 0;
 
   // Should be called to remove all cached history. The callback takes one
   // argument - |Result| should be set to |SUCCESS| if successful otherwise

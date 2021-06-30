@@ -77,8 +77,6 @@ void AdEvents::GetAll(GetAdEventsCallback callback) {
 }
 
 void AdEvents::PurgeExpired(ResultCallback callback) {
-  DBTransactionPtr transaction = DBTransaction::New();
-
   const std::string query = base::StringPrintf(
       "DELETE FROM %s "
       "WHERE creative_set_id NOT IN "
@@ -92,6 +90,32 @@ void AdEvents::PurgeExpired(ResultCallback callback) {
   command->type = DBCommand::Type::EXECUTE;
   command->command = query;
 
+  DBTransactionPtr transaction = DBTransaction::New();
+  transaction->commands.push_back(std::move(command));
+
+  AdsClientHelper::Get()->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+}
+
+void AdEvents::PurgeOrphaned(const mojom::BraveAdsAdType ad_type,
+                             ResultCallback callback) {
+  const std::string ad_type_as_string = AdType(ad_type).ToString();
+
+  const std::string query = base::StringPrintf(
+      "DELETE FROM %s "
+      "WHERE uuid IN (SELECT uuid from %s GROUP BY uuid having count(*) = 1) "
+      "AND confirmation_type IN (SELECT confirmation_type from %s "
+      "WHERE confirmation_type = 'served') "
+      "AND type = '%s'",
+      get_table_name().c_str(), get_table_name().c_str(),
+      get_table_name().c_str(), ad_type_as_string.c_str());
+
+  DBCommandPtr command = DBCommand::New();
+  command->type = DBCommand::Type::EXECUTE;
+  command->command = query;
+
+  DBTransactionPtr transaction = DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::Get()->RunDBTransaction(

@@ -25,6 +25,8 @@ class AdEventHistory {
   std::vector<uint64_t> Get(const std::string& ad_type,
                             const std::string& confirmation_type) const;
 
+  void Reset();
+
  private:
   std::map<std::string, std::vector<uint64_t>> history_;
 };

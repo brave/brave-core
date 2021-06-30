@@ -36,6 +36,7 @@
             timestamp:(const uint64_t)timestamp;
 - (std::vector<uint64_t>)getAdEvents:(const std::string&)ad_type
                     confirmationType:(const std::string&)confirmation_type;
+- (void)resetAdEvents;
 - (void)UrlRequest:(ads::UrlRequestPtr)url_request callback:(ads::UrlRequestCallback)callback;
 - (bool)shouldAllowAdsSubdivisionTargeting;
 - (void)setAllowAdsSubdivisionTargeting:(const bool)should_allow;

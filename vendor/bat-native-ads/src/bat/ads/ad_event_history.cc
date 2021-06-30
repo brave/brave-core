@@ -69,4 +69,8 @@ std::vector<uint64_t> AdEventHistory::Get(
   return iter->second;
 }
 
+void AdEventHistory::Reset() {
+  history_ = {};
+}
+
 }  // namespace ads

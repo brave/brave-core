@@ -651,6 +651,13 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       static_cast<ads::PromotedContentAdEventType>(eventType));
 }
 
+- (void)purgeOrphanedAdEvents:(BATBraveAdsAdType)adType {
+  if (![self isAdsServiceRunning]) {
+    return;
+  }
+  ads->purgeOrphanedAdEventsForType(adType.UTF8String);
+}
+
 - (void)reconcileAdRewards {
   if (![self isAdsServiceRunning]) {
     return;
@@ -1242,6 +1249,14 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   }
 
   return adEventHistory->Get(ad_type, confirmation_type);
+}
+
+- (void)resetAdEvents {
+  if (!adEventHistory) {
+    return;
+  }
+
+  return adEventHistory->Reset();
 }
 
 - (bool)shouldAllowAdsSubdivisionTargeting {

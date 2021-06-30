@@ -45,8 +45,19 @@ void LogAdEvent(const AdEventInfo& ad_event, AdEventCallback callback) {
 
 void PurgeExpiredAdEvents(AdEventCallback callback) {
   database::table::AdEvents database_table;
-  database_table.PurgeExpired(
-      [callback](const Result result) { callback(result); });
+  database_table.PurgeExpired([callback](const Result result) {
+    RebuildAdEventsFromDatabase();
+    callback(result);
+  });
+}
+
+void PurgeOrphanedAdEvents(const mojom::BraveAdsAdType ad_type,
+                           AdEventCallback callback) {
+  database::table::AdEvents database_table;
+  database_table.PurgeOrphaned(ad_type, [callback](const Result result) {
+    RebuildAdEventsFromDatabase();
+    callback(result);
+  });
 }
 
 void RebuildAdEventsFromDatabase() {
@@ -56,6 +67,8 @@ void RebuildAdEventsFromDatabase() {
       BLOG(1, "Failed to get ad events");
       return;
     }
+
+    AdsClientHelper::Get()->ResetAdEvents();
 
     for (const auto& ad_event : ad_events) {
       RecordAdEvent(ad_event);

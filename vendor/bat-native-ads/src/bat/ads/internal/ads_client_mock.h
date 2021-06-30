@@ -46,6 +46,8 @@ class AdsClientMock : public AdsClient {
       std::vector<uint64_t>(const std::string& ad_type,
                             const std::string& confirmation_type));
 
+  MOCK_CONST_METHOD0(ResetAdEvents, void());
+
   MOCK_METHOD2(UrlRequest,
                void(UrlRequestPtr url_request, UrlRequestCallback callback));
 

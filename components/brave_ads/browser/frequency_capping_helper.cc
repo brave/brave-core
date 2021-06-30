@@ -27,4 +27,8 @@ std::vector<uint64_t> FrequencyCappingHelper::GetAdEvents(
   return ad_event_history_.Get(ad_type, confirmation_type);
 }
 
+void FrequencyCappingHelper::ResetAdEvents() {
+  ad_event_history_.Reset();
+}
+
 }  // namespace brave_ads

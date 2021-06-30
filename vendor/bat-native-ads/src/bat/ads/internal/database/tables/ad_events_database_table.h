@@ -12,6 +12,7 @@
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/database/database_table.h"
 #include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/result.h"
 
 namespace ads {
@@ -35,6 +36,8 @@ class AdEvents : public Table {
   void GetAll(GetAdEventsCallback callback);
 
   void PurgeExpired(ResultCallback callback);
+  void PurgeOrphaned(const mojom::BraveAdsAdType ad_type,
+                     ResultCallback callback);
 
   std::string get_table_name() const override;
 

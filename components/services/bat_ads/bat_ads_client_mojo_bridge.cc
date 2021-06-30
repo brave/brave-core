@@ -120,6 +120,14 @@ std::vector<uint64_t> BatAdsClientMojoBridge::GetAdEvents(
   return ad_events;
 }
 
+void BatAdsClientMojoBridge::ResetAdEvents() const {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_client_->ResetAdEvents();
+}
+
 void OnUrlRequest(
     const ads::UrlRequestCallback& callback,
     const ads::UrlResponsePtr url_response_ptr) {
