@@ -42,7 +42,7 @@ void StateMigrationV10::Migrate(ledger::ResultCallback callback) {
                                   : type::WalletStatus::NOT_CONNECTED;
       uphold_wallet->address = {};
       break;
-    case type::WalletStatus::VERIFIED:
+    case type::WalletStatus::VERIFIED: {
       if (uphold_wallet->token.empty() || uphold_wallet->address.empty()) {
         uphold_wallet->status = !uphold_wallet->token.empty()
                                     ? type::WalletStatus::PENDING
@@ -51,8 +51,15 @@ void StateMigrationV10::Migrate(ledger::ResultCallback callback) {
         break;
       }
 
-      return get_wallet_->Request(
-          std::bind(&StateMigrationV10::OnGetWallet, this, _1, _2, callback));
+      auto wallet_info_endpoint_callback =
+          std::bind(&StateMigrationV10::OnGetWallet, this, _1, _2, callback);
+
+      if (ledger::is_testing) {
+        return wallet_info_endpoint_callback(type::Result::LEDGER_ERROR, false);
+      } else {
+        return get_wallet_->Request(std::move(wallet_info_endpoint_callback));
+      }
+    }
     case type::WalletStatus::DISCONNECTED_NOT_VERIFIED:
       uphold_wallet->status = type::WalletStatus::DISCONNECTED_VERIFIED;
       uphold_wallet->token = {};

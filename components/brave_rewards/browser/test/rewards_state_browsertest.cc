@@ -5,6 +5,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/files/file_util.h"
+#include "base/json/json_reader.h"
 #include "base/path_service.h"
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
@@ -289,6 +290,703 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsDisabledACDisabled) {
   EXPECT_EQ(
       profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"),
       false);
+}
+
+class UpholdStateMachine : public RewardsStateBrowserTest,
+                           public ::testing::WithParamInterface<
+                               std::pair<std::string, std::string>> {
+ public:
+  static std::string NameSuffixGenerator(
+      const ::testing::TestParamInfo<UpholdStateMachine::ParamType>& info) {
+    return from_json(std::get<0>(info.param)) + "__" +
+           from_json(std::get<1>(info.param));
+  }
+
+ private:
+  static std::string from_json(const std::string& json) {
+    std::string suffix{};
+
+    base::Optional<base::Value> value = base::JSONReader::Read(json);
+    if (value && value->is_dict()) {
+      base::DictionaryValue* dictionary = nullptr;
+      if (value->GetAsDictionary(&dictionary)) {
+        suffix += to_string(dictionary->FindIntKey("status").value_or(-1));
+        suffix += to_string("token", dictionary->FindStringKey("token"));
+        suffix += to_string("address", dictionary->FindStringKey("address"));
+      }
+    }
+
+    return suffix;
+  }
+
+  static std::string to_string(int status) {
+    return status == -1 ? "unknown_WalletStatus_value"
+                        : (std::ostringstream{}
+                           << static_cast<ledger::type::WalletStatus>(status))
+                              .str();
+  }
+
+  static std::string to_string(const std::string& key, std::string* value) {
+    std::string suffix{'_' + key};
+
+    if (value) {
+      suffix += '_' + std::string{value->empty() ? "empty" : "non_empty"};
+    }
+
+    return suffix;
+  }
+};
+
+#ifdef OFFICIAL_BUILD
+#define _UPHOLD_CLIENT_ID_ UPHOLD_CLIENT_ID
+#define _UPHOLD_URL_ "https://uphold.com"
+#else
+#define _UPHOLD_CLIENT_ID_ UPHOLD_STAGING_CLIENT_ID
+#define _UPHOLD_URL_ "https://wallet-sandbox.uphold.com"
+#endif
+
+// clang-format off
+INSTANTIATE_TEST_SUITE_P(
+    RewardsStateBrowserTest,
+    UpholdStateMachine,
+    ::testing::Values(
+        // NOLINTNEXTLINE
+        std::make_pair(  // NOT_CONNECTED_token_empty_address_empty__NOT_CONNECTED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":0,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":0,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("withdraw_url":""})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // NOT_CONNECTED_token_non_empty_address_empty__NOT_CONNECTED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":0,)"
+                R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":0,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("withdraw_url":""})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // NOT_CONNECTED_token_empty_address_non_empty__NOT_CONNECTED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"962df5b1-bb72-4619-a349-c8087941b795",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":0,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":0,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("withdraw_url":""})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // NOT_CONNECTED_token_non_empty_address_non_empty__NOT_CONNECTED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"962df5b1-bb72-4619-a349-c8087941b795",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":0,)"
+                R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":0,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("withdraw_url":""})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // CONNECTED_token_empty_address_empty__NOT_CONNECTED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":1,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":0,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("withdraw_url":""})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // CONNECTED_token_non_empty_address_empty__NOT_CONNECTED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":1,)"
+                R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":5,)"
+                R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
+                R"("withdraw_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc"})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // CONNECTED_token_empty_address_non_empty__NOT_CONNECTED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"962df5b1-bb72-4619-a349-c8087941b795",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":1,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":0,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("withdraw_url":""})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // CONNECTED_token_non_empty_address_non_empty__NOT_CONNECTED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"962df5b1-bb72-4619-a349-c8087941b795",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":1,)"
+                R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":5,)"
+                R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
+                R"("withdraw_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc"})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // VERIFIED_token_empty_address_empty__DISCONNECTED_VERIFIED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":2,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":4,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("withdraw_url":""})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // VERIFIED_token_non_empty_address_empty__NOT_CONNECTED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":2,)"
+                R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":5,)"
+                R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
+                R"("withdraw_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc"})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // VERIFIED_token_empty_address_non_empty__DISCONNECTED_VERIFIED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"962df5b1-bb72-4619-a349-c8087941b795",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":2,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":4,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("withdraw_url":""})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // VERIFIED_token_non_empty_address_non_empty__PENDING_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"962df5b1-bb72-4619-a349-c8087941b795",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":2,)"
+                R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":5,)"
+                R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
+                R"("withdraw_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc"})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // DISCONNECTED_NOT_VERIFIED_token_empty_address_empty__DISCONNECTED_VERIFIED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":3,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":4,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("withdraw_url":""})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // DISCONNECTED_NOT_VERIFIED_token_non_empty_address_empty__DISCONNECTED_VERIFIED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":3,)"
+                R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":4,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("withdraw_url":""})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // DISCONNECTED_NOT_VERIFIED_token_empty_address_non_empty__DISCONNECTED_VERIFIED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"962df5b1-bb72-4619-a349-c8087941b795",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":3,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":4,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("withdraw_url":""})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // DISCONNECTED_NOT_VERIFIED_token_non_empty_address_non_empty__DISCONNECTED_VERIFIED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"962df5b1-bb72-4619-a349-c8087941b795",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":3,)"
+                R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":4,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("withdraw_url":""})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // DISCONNECTED_VERIFIED_token_empty_address_empty__DISCONNECTED_VERIFIED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":4,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":4,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("withdraw_url":""})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // DISCONNECTED_VERIFIED_token_non_empty_address_empty__DISCONNECTED_VERIFIED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":4,)"
+                R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":4,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("withdraw_url":""})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // DISCONNECTED_VERIFIED_token_empty_address_non_empty__DISCONNECTED_VERIFIED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"962df5b1-bb72-4619-a349-c8087941b795",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":4,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":4,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("withdraw_url":""})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // DISCONNECTED_VERIFIED_token_non_empty_address_non_empty__DISCONNECTED_VERIFIED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"962df5b1-bb72-4619-a349-c8087941b795",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":4,)"
+                R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":4,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("withdraw_url":""})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // PENDING_token_empty_address_empty__NOT_CONNECTED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":5,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":0,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("withdraw_url":""})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // PENDING_token_non_empty_address_empty__NOT_CONNECTED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":5,)"
+                R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":5,)"
+                R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
+                R"("withdraw_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc"})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // PENDING_token_empty_address_non_empty__NOT_CONNECTED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"962df5b1-bb72-4619-a349-c8087941b795",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":5,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":"",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":0,)"
+                R"("token":"",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("withdraw_url":""})"}),
+        // NOLINTNEXTLINE
+        std::make_pair(  // PENDING_token_non_empty_address_non_empty__NOT_CONNECTED_token_empty_address_empty
+            std::string{
+                R"({"account_url":"",)"
+                R"("add_url":"",)"
+                R"("address":"962df5b1-bb72-4619-a349-c8087941b795",)"
+                R"("fees":{},)"
+                R"("login_url":"",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":5,)"
+                R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
+                R"("user_name":"",)"
+                R"("verify_url":"",)"
+                R"("withdraw_url":""})"},
+            std::string{
+                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("add_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
+                R"("address":"",)"
+                R"("fees":{},)"
+                R"("login_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=accounts:read accounts:write cards:read cards:write user:read transactions:deposit transactions:read transactions:transfer:application transactions:transfer:others&intention=login&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("one_time_string":"49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
+                R"("status":5,)"
+                R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
+                R"("user_name":"",)"
+                R"("verify_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
+                R"("withdraw_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc"})"})),
+    UpholdStateMachine::NameSuffixGenerator);
+// clang-format on
+
+IN_PROC_BROWSER_TEST_P_(UpholdStateMachine, Migration) {
+  const auto& params = GetParam();
+  const auto& from = std::get<0>(params);
+  const auto& to = std::get<1>(params);
+
+  profile_->GetPrefs()->SetInteger("brave.rewards.version", 9);
+  rewards_service_->SetEncryptedStringState("wallets.uphold", from);
+
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  EXPECT_EQ(rewards_service_->GetEncryptedStringState("wallets.uphold"), to);
 }
 
 }  // namespace rewards_browsertest
