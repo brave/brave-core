@@ -131,6 +131,17 @@ DomainBlockNavigationThrottle::WillRedirectRequest() {
   return WillStartRequest();
 }
 
+content::NavigationThrottle::ThrottleCheckResult
+DomainBlockNavigationThrottle::WillProcessResponse() {
+  // If there is an DomainBlockTabStorage associated to |web_contents_|, clear
+  // the IsProceeding flag.
+  DomainBlockTabStorage* tab_storage = DomainBlockTabStorage::FromWebContents(
+      navigation_handle()->GetWebContents());
+  if (tab_storage)
+    tab_storage->SetIsProceeding(false);
+  return content::NavigationThrottle::PROCEED;
+}
+
 void DomainBlockNavigationThrottle::OnShouldBlockDomain(
     bool should_block_domain) {
   if (should_block_domain) {
