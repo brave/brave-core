@@ -37,9 +37,10 @@ def GetCommandOutput(command):
 
     From chromium_utils.
     """
-    with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL) as proc:
-        output = proc.communicate()[0]
-        return output.decode('utf-8')
+    devnull = open(os.devnull, 'w') # pylint: disable=consider-using-with
+    proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=devnull) # pylint: disable=consider-using-with
+    output = proc.communicate()[0]
+    return output.decode('utf-8')
 
 
 def GetDumpSymsBinary(build_dir=None):
@@ -203,8 +204,9 @@ def GenerateSymbols(options, binaries):
                                            module_line.group(1))
                 mkdir_p(output_path)
                 symbol_file = "%s.sym" % module_line.group(2)
-                with open(os.path.join(output_path, symbol_file), 'w') as f:
-                    f.write(syms)
+                f = open(os.path.join(output_path, symbol_file), 'w') # pylint: disable=consider-using-with
+                f.write(syms)
+                f.close()
             except Exception as inst: # pylint: disable=broad-except
                 if options.verbose:
                     with print_lock:
