@@ -41,6 +41,8 @@ import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.SearchEngineLogoUtils;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.status.PageInfoIPHController;
+import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
+import org.chromium.chrome.browser.omnibox.suggestions.UrlBarDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
 import org.chromium.chrome.browser.tabmodel.ChromeTabCreator;
@@ -300,7 +302,7 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/tabmodel/BraveTabCreator", Activity.class,
                 WindowAndroid.class, StartupTabPreloader.class, Supplier.class, boolean.class,
                 ChromeTabCreator.OverviewNTPCreator.class, AsyncTabParamsManager.class,
-                ObservableSupplier.class, ObservableSupplier.class));
+                Supplier.class, Supplier.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/toolbar/ToolbarManager",
                 "org/chromium/chrome/browser/toolbar/BraveToolbarManager", AppCompatActivity.class,
                 BrowserControlsSizer.class, FullscreenManager.class, ToolbarControlContainer.class,
@@ -360,6 +362,11 @@ public class BytecodeTest {
                 ActivityLifecycleDispatcher.class, TabModelSelector.class, boolean.class,
                 NewTabPageUma.class, boolean.class, NativePageHost.class, Tab.class, String.class,
                 BottomSheetController.class, Supplier.class, WindowAndroid.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
+                "org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor",
+                Context.class, SuggestionHost.class, UrlBarDelegate.class, Supplier.class,
+                Supplier.class, Supplier.class));
     }
 
     @Test
