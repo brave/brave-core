@@ -2,10 +2,10 @@ source_set("brave_federated_learning") {
   sources = [
     "brave_federated_learning_service.cc",
     "brave_federated_learning_service.h",
-    "brave_operational_profiling.cc",
-    "brave_operational_profiling.h",
-    "brave_operational_profiling_features.cc",
-    "brave_operational_profiling_features.h",
+    "brave_operational_patterns.cc",
+    "brave_operational_patterns.h",
+    "brave_operational_patterns_features.cc",
+    "brave_operational_patterns_features.h",
   ]
 
   deps = [
