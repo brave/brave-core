@@ -49,6 +49,7 @@ html_to_js("templatize") {
   js_files = [
     "change_ipfs_gateway_dialog.js",
     "add_p2p_key_dialog.js",
+    "rotate_p2p_key_dialog.js",
     "add_ipfs_peer_dialog.js",
   ]
 }

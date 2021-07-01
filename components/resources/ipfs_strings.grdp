@@ -141,5 +141,8 @@
     <message name="IDS_IPFS_IMPORT_PARTLY_COMPLETED_NOTIFICATION_BODY" desc="The title for ips import error notification.">
       The data was successfully uploaded but not moved to the brave-import directory. You can do this manually on the import settings page.
     </message>
+    <message name="IDS_IPFS_ROTATE_IDENTITY_TITLE" desc="The title for the link to rotate identity on ipfs diagnostic page.">
+      Manage PeerID and IPNS keys
+    </message>
   </if>
 </grit-part>

@@ -64,7 +64,7 @@ class FakeIpfsService : public ipfs::IpfsService {
                           channel) {}
   ~FakeIpfsService() override {}
 
-  void LaunchDaemon(LaunchDaemonCallback callback) override {
+  void LaunchDaemon(BoolCallback callback) override {
     if (callback)
       std::move(callback).Run(launch_result_);
   }

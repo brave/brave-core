@@ -128,6 +128,30 @@
         ]
       },
       {
+        "name": "rotateKey",
+        "type": "function",
+        "description": "Rotate default ipns key",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "string",
+            "description": "The name of oldkey key"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called when key is rotated",
+            "parameters": [
+              {
+                "name": "result",
+                "type": "boolean",
+                "description": "json stringified created key information"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "removeIpnsKey",
         "type": "function",
         "description": "Removes existing ipns key",

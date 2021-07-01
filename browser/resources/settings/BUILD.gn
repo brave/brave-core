@@ -138,6 +138,7 @@ preprocess_if_expr("preprocess_generated") {
     "brave_ipfs_page/brave_ipfs_page.m.js",
     "brave_ipfs_page/change_ipfs_gateway_dialog.js",
     "brave_ipfs_page/add_p2p_key_dialog.js",
+    "brave_ipfs_page/rotate_p2p_key_dialog.js",
     "brave_ipfs_page/p2p_keys_subpage.m.js",
     "brave_ipfs_page/ipfs_peers_subpage.m.js",
     "brave_ipfs_page/add_ipfs_peer_dialog.js",

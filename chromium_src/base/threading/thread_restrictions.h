@@ -7,9 +7,13 @@
 #define BRAVE_CHROMIUM_SRC_BASE_THREADING_THREAD_RESTRICTIONS_H_
 
 class BraveBrowsingDataRemoverDelegate;
+namespace ipfs {
+class IpfsService;
+}
 
-#define BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H \
-  friend class ::BraveBrowsingDataRemoverDelegate;
+#define BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H  \
+  friend class ::BraveBrowsingDataRemoverDelegate; \
+  friend class ipfs::IpfsService;
 
 #include "../../../../base/threading/thread_restrictions.h"
 #undef BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H

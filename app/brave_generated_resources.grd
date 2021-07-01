@@ -796,11 +796,23 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_IPNS_ADD_PEER_DIALOG_TITLE" desc="The title of the dialog to add new peer on IPFS Settings page">
         Add new peer connection string
       </message>
+      <message name="IDS_SETTINGS_IPFS_ROTATE_KEY_DIALOG_TITLE" desc="The title of the dialog to rotate key on IPFS Settings page">
+        Rotate key
+      </message>
+      <message name="IDS_SETTINGS_IPFS_ROTATION_STOP_ERROR" desc="The error message of the dialog when unable to stop ipfs node">
+        Unable to stop local node
+      </message>
+      <message name="IDS_SETTINGS_IPFS_ROTATION_LAUNCH_ERROR" desc="The error message of the dialog when unable to launch ipfs node">
+        Unable to launch local node
+      </message>
       <message name="IDS_SETTINGS_IPFS_PEER_NODE_RESTART" desc="The message to restart node if peers were chagned on IPFS Settings page">
         Restart node to apply changes
       </message>
       <message name="IDS_SETTINGS_IPFS_PEER_NODE_RESTART_BUTTON" desc="The button title to restart node if peers were chagned on IPFS Settings page">
         Restart node
+      </message>
+      <message name="IDS_SETTINGS_IPFS_ROTATE_BUTTON" desc="The button title to rotate key on IPFS Settings page">
+        Rotate
       </message>
       <message name="IDS_SETTINGS_ADD_PEER_DIALOG_PLACEHOLDER" desc="The placholder of the dialog to add new peer on IPFS Settings page">
         /ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2
