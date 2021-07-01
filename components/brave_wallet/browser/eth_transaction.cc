@@ -16,20 +16,29 @@
 
 namespace brave_wallet {
 
+EthTransaction::TxData::TxData() = default;
+EthTransaction::TxData::~TxData() = default;
+EthTransaction::TxData::TxData(const uint256_t& nonce_in,
+                               const uint256_t& gas_price_in,
+                               const uint256_t& gas_limit_in,
+                               const EthAddress& to_in,
+                               const uint256_t& value_in,
+                               const std::vector<uint8_t>& data_in)
+    : nonce(nonce_in),
+      gas_price(gas_price_in),
+      gas_limit(gas_limit_in),
+      to(to_in),
+      value(value_in),
+      data(data_in) {}
+
 EthTransaction::EthTransaction() = default;
-EthTransaction::EthTransaction(const uint256_t& nonce,
-                               const uint256_t& gas_price,
-                               const uint256_t& gas_limit,
-                               const EthAddress& to,
-                               const uint256_t& value,
-                               const std::vector<uint8_t> data)
-    : nonce_(nonce),
-      gas_price_(gas_price),
-      gas_limit_(gas_limit),
-      to_(to),
-      value_(value),
-      data_(data),
-      v_(0) {}
+EthTransaction::EthTransaction(const TxData& tx_data)
+    : nonce_(tx_data.nonce),
+      gas_price_(tx_data.gas_price),
+      gas_limit_(tx_data.gas_limit),
+      to_(tx_data.to),
+      value_(tx_data.value),
+      data_(tx_data.data) {}
 
 EthTransaction::EthTransaction(const EthTransaction&) = default;
 EthTransaction::~EthTransaction() = default;
