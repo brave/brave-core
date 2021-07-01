@@ -23,8 +23,16 @@ function createMenuElement (title, href, iconName, pageVisibilitySection) {
 }
 
 function getMenuElement (templateContent, href) {
-  const menuEl = templateContent.querySelector(`a[href="${href}"]`)
+  let menuEl = templateContent.querySelector(`a[href="${href}"]`)
   if (!menuEl) {
+    // Search templates
+    const templates = templateContent.querySelectorAll('template')
+    for (const template of templates) {
+      menuEl = template.content.querySelector(`a[href="${href}"]`)
+      if (menuEl) {
+        return menuEl
+      }
+    }
     console.error(`[Brave Settings Overrides] Could not find menu item '${href}'`)
   }
   return menuEl
