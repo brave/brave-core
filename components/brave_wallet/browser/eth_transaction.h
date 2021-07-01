@@ -21,6 +21,7 @@ class Value;
 namespace brave_wallet {
 FORWARD_DECLARE_TEST(EthTransactionTest, GetSignedTransaction);
 FORWARD_DECLARE_TEST(EthTransactionTest, TransactionAndValue);
+FORWARD_DECLARE_TEST(Eip2930TransactionUnitTest, GetSignedTransaction);
 
 class EthTransaction {
  public:
@@ -98,6 +99,7 @@ class EthTransaction {
  private:
   FRIEND_TEST_ALL_PREFIXES(EthTransactionUnitTest, GetSignedTransaction);
   FRIEND_TEST_ALL_PREFIXES(EthTransactionUnitTest, TransactionAndValue);
+  FRIEND_TEST_ALL_PREFIXES(Eip2930TransactionUnitTest, GetSignedTransaction);
 };
 
 }  // namespace brave_wallet
