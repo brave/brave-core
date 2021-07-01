@@ -256,12 +256,12 @@ bool ConfirmationsState::FromJson(const std::string& json) {
     BLOG(1, "Failed to parse failed confirmations");
   }
 
-  if (!ParseAdRewardsFromDictionary(dictionary)) {
-    BLOG(1, "Failed to parse ad rewards");
-  }
-
   if (!ParseTransactionsFromDictionary(dictionary)) {
     BLOG(1, "Failed to parse transactions");
+  }
+
+  if (!ParseAdRewardsFromDictionary(dictionary)) {
+    BLOG(1, "Failed to parse ad rewards");
   }
 
   if (!ParseUnblindedTokensFromDictionary(dictionary)) {
