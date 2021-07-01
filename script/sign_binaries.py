@@ -32,11 +32,11 @@ def get_sign_cmd(file):
 
 
 def run_cmd(cmd):
-    with subprocess.Popen(cmd, stdout=subprocess.PIPE) as p:
-        for line in p.stdout:
-            print(line)
-        p.wait()
-        assert p.returncode == 0, "Error signing"
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE) # pylint: disable=consider-using-with
+    for line in p.stdout:
+        print(line)
+    p.wait()
+    assert p.returncode == 0, "Error signing"
 
 
 def sign_binaries(base_dir, endswidth=('.exe', '.dll')):
