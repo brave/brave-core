@@ -8,7 +8,7 @@ import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//build/config/sanitizers/sanitizers.gni")
 import("//testing/test.gni")
 
-static_library("brave_rewards_unit_tests") {
+source_set("brave_rewards_unit_tests") {
   testonly = true
 
   if (brave_rewards_enabled) {

@@ -1,6 +1,6 @@
 import("//brave/build/config.gni")
 
-source_set("browser") {
+static_library("browser") {
   sources = [
     "ntp_widget_utils_oauth.cc",
     "ntp_widget_utils_oauth.h",

@@ -3,7 +3,7 @@ if (is_android) {
   import("//build/config/android/rules.gni")
 }
 
-source_set("browser") {
+static_library("browser") {
   # Remove when https://github.com/brave/brave-browser/issues/10646 is resolved
   check_includes = false
   public_deps = [ "//brave/components/brave_referrals/buildflags" ]

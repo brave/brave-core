@@ -3,17 +3,15 @@ import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
 
 assert(crypto_dot_com_enabled)
 
-source_set("browser") {
-  public_deps = [
-    "buildflags"
-  ]
+static_library("browser") {
+  public_deps = [ "buildflags" ]
   sources = [
-    "crypto_dot_com_service.cc",
-    "crypto_dot_com_service.h",
     "crypto_dot_com_json_parser.cc",
     "crypto_dot_com_json_parser.h",
     "crypto_dot_com_pref_utils.cc",
     "crypto_dot_com_pref_utils.h",
+    "crypto_dot_com_service.cc",
+    "crypto_dot_com_service.h",
     "regions.h",
   ]
 

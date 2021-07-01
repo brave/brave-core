@@ -6,7 +6,7 @@ buildflag_header("buildflags") {
   flags = [ "ENABLE_BRAVE_WAYBACK_MACHINE=$enable_brave_wayback_machine" ]
 }
 
-source_set("brave_wayback_machine") {
+static_library("brave_wayback_machine") {
   assert_no_deps = [ "//chrome/*" ]
 
   sources = [

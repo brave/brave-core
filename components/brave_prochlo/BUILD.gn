@@ -1,6 +1,6 @@
 import("//third_party/protobuf/proto_library.gni")
 
-source_set("brave_prochlo") {
+static_library("brave_prochlo") {
   sources = [
     "brave_prochlo_crypto.cc",
     "brave_prochlo_crypto.h",
@@ -21,8 +21,6 @@ source_set("brave_prochlo") {
 }
 
 proto_library("prochlo_proto") {
-  sources = [
-    "prochlo_message.proto",
-  ]
+  sources = [ "prochlo_message.proto" ]
   proto_in_dir = "."
 }

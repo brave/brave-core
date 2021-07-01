@@ -7,7 +7,7 @@ import("//brave/build/config.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
-static_library("brave_ipfs_unit_tests") {
+source_set("brave_ipfs_unit_tests") {
   testonly = true
   if (ipfs_enabled) {
     sources = [

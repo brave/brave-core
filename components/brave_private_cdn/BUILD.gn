@@ -1,10 +1,8 @@
-source_set("brave_private_cdn") {
+static_library("brave_private_cdn") {
   sources = [
-    "private_cdn_helper.h",
     "private_cdn_helper.cc",
+    "private_cdn_helper.h",
   ]
 
-  deps = [
-    "//base",
-  ]
+  deps = [ "//base" ]
 }

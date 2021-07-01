@@ -1,4 +1,4 @@
-source_set("ipfs") {
+static_library("ipfs") {
   sources = [
     "ipfs_service_impl.h",
     "ipfs_service_utils.cc",
