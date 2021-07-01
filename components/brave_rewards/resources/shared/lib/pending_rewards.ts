@@ -16,12 +16,20 @@ export function getDaysUntilRewardsPayment (nextPaymentDate: number | Date) {
     nextPaymentDate = new Date(nextPaymentDate)
   }
 
+  // Round next payment date down to midnight local time
+  nextPaymentDate = new Date(
+    nextPaymentDate.getFullYear(),
+    nextPaymentDate.getMonth(),
+    nextPaymentDate.getDate())
+
+  const now = Date.now()
+
   // Only show pending days when payment date is within the current month
-  if (nextPaymentDate.getMonth() !== new Date().getMonth()) {
+  if (nextPaymentDate.getMonth() !== new Date(now).getMonth()) {
     return ''
   }
 
-  const delta = nextPaymentDate.getTime() - Date.now()
+  const delta = nextPaymentDate.getTime() - now
   const days = Math.ceil(delta / 24 / 60 / 60 / 1000)
   if (days < 1) {
     return ''
