@@ -57,6 +57,12 @@ std::string ToHex(const std::string& data) {
   return "0x" + base::ToLowerASCII(base::HexEncode(data.data(), data.size()));
 }
 
+std::string ToHex(const std::vector<uint8_t>& data) {
+  if (data.empty())
+    return "0x0";
+  return "0x" + base::ToLowerASCII(base::HexEncode(data));
+}
+
 std::string KeccakHash(const std::string& input, bool to_hex) {
   std::vector<uint8_t> bytes(input.begin(), input.end());
   std::vector<uint8_t> result = KeccakHash(bytes);
