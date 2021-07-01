@@ -1,4 +1,7 @@
-import("//third_party/protobuf/proto_library.gni")
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
 
 source_set("brave_prochlo") {
   sources = [
@@ -12,17 +15,9 @@ source_set("brave_prochlo") {
   ]
 
   public_deps = [
-    ":prochlo_proto",
-    "//base:base",
+    "//base",
     "//crypto",
     "//third_party/boringssl",
-    "//third_party/protobuf:protobuf_lite",
   ]
 }
 
-proto_library("prochlo_proto") {
-  sources = [
-    "prochlo_message.proto",
-  ]
-  proto_in_dir = "."
-}

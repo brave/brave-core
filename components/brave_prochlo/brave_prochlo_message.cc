@@ -7,14 +7,15 @@
 
 #include <vector>
 
+#include "base/base64.h"
 #include "base/containers/flat_set.h"
+#include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/stl_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_prochlo/brave_prochlo_crypto.h"
 #include "brave/components/brave_prochlo/prochlo_data.h"
-#include "brave/components/brave_prochlo/prochlo_message.pb.h"
 #include "crypto/sha2.h"
 
 namespace prochlo {
@@ -35,6 +36,7 @@ MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEQCeVJbcADloHb8bwftIi1UO0smiz
 8ObdAFQ8j3U9cMehGqI3zXgS8APvBW/9XxMkb4XWQe+t9h6qHq82P6zcBg==
 -----END PUBLIC KEY-----)";
 
+// TODO(iefremov): check performance. Note that for now it happens on UI thread.
 bool MakeProchlomation(uint64_t metric,
                        const uint8_t* data,
                        const uint8_t* crowd_id,
@@ -89,18 +91,6 @@ bool MakeProchlomation(uint64_t metric,
   return true;
 }
 
-void InitProchloMessage(uint64_t metric_hash,
-                        const ShufflerItem& item,
-                        brave_pyxis::PyxisMessage* pyxis_message) {
-  DCHECK(pyxis_message);
-  brave_pyxis::PyxisValue* value = pyxis_message->add_pyxis_values();
-  value->set_ciphertext(item.ciphertext, kPlainShufflerItemLength);
-  value->set_tag(item.tag, kTagLength);
-  value->set_nonce(item.nonce, kNonceLength);
-  value->set_metric_id(metric_hash);
-  value->set_client_public_key(item.client_public_key, kPublicKeyLength);
-}
-
 }  // namespace
 
 MessageMetainfo::MessageMetainfo() = default;
@@ -108,8 +98,7 @@ MessageMetainfo::~MessageMetainfo() = default;
 
 void GenerateProchloMessage(uint64_t metric_hash,
                             uint64_t metric_value,
-                            const MessageMetainfo& meta,
-                            brave_pyxis::PyxisMessage* pyxis_message) {
+                            const MessageMetainfo& meta) {
   // TODO(iefremov): - create patch for adding `brave_p3a`
   // to src/base/trace_event/builtin_categories.h
   // TRACE_EVENT0("brave_p3a", "GenerateProchloMessage");
@@ -156,13 +145,13 @@ void GenerateProchloMessage(uint64_t metric_hash,
       crowd_id, kCrowdIdLength);
   MakeProchlomation(metric_hash, data, crowd_id, &item);
 
-  InitProchloMessage(metric_hash, item, pyxis_message);
+  // TODO(iefremov): re-check needed fields and return JSON as in
+  // `GenerateP3AMessage` below.
 }
 
-void GenerateP3AMessage(uint64_t metric_hash,
-                        uint64_t metric_value,
-                        const MessageMetainfo& meta,
-                        brave_pyxis::RawP3AValue* p3a_message) {
+std::string GenerateP3AMessage(uint64_t metric_hash,
+                               uint64_t metric_value,
+                               const MessageMetainfo& meta) {
   // TODO(iefremov): - create patch for adding `brave_p3a`
   // to src/base/trace_event/builtin_categories.h
   // TRACE_EVENT0("brave_p3a", "GenerateP3AMessage");
@@ -202,8 +191,14 @@ void GenerateP3AMessage(uint64_t metric_hash,
   memcpy(ptr, metric_value_str.data(), metric_value_str.size());
 
   // Init the message.
-  p3a_message->set_metric_id(metric_hash);
-  p3a_message->set_p3a_info(data, kProchlomationDataLength);
+  base::Value message(base::Value::Type::DICTIONARY);
+  message.SetStringKey("metric_id", std::to_string(metric_hash));
+  message.SetStringKey("p3a_info",
+                       base::Base64Encode({data, kProchlomationDataLength}));
+  std::string result;
+  base::JSONWriter::Write(message, &result);
+
+  return result;
 }
 
 void MaybeStripRefcodeAndCountry(prochlo::MessageMetainfo* meta) {

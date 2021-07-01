@@ -33,8 +33,7 @@ class BraveP3AUploader {
   ~BraveP3AUploader();
 
   // From metrics::MetricsLogUploader
-  void UploadLog(const std::string& compressed_log_data,
-                 const std::string& upload_type);
+  void UploadLog(const std::string& log_data, const std::string& upload_type);
 
   void OnUploadComplete(std::unique_ptr<std::string> response_body);
 
