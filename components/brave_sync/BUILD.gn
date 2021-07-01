@@ -8,12 +8,12 @@ declare_args() {
   brave_sync_endpoint = ""
 }
 
-if (is_official_build) { assert(brave_sync_endpoint != "") }
+if (is_official_build) {
+  assert(brave_sync_endpoint != "")
+}
 
 config("brave_sync_config") {
-  defines = [
-    "BRAVE_SYNC_ENDPOINT=\"$brave_sync_endpoint\""
-  ]
+  defines = [ "BRAVE_SYNC_ENDPOINT=\"$brave_sync_endpoint\"" ]
 }
 
 static_library("crypto") {
@@ -42,8 +42,8 @@ source_set("features") {
   ]
 
   deps = [
-    "//base",
     "buildflags",
+    "//base",
   ]
 }
 
@@ -82,8 +82,8 @@ static_library("profile_sync_service_helper") {
 
   deps = [
     "//base",
-    "//components/sync_device_info",
     "//components/sync/driver",
+    "//components/sync_device_info",
   ]
 }
 

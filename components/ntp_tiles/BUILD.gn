@@ -4,7 +4,5 @@ static_library("ntp_tiles") {
     "brave_popular_sites_impl.h",
   ]
 
-  deps = [
-    "//components/ntp_tiles",
-  ]
+  deps = [ "//components/ntp_tiles" ]
 }

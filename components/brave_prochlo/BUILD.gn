@@ -21,8 +21,6 @@ static_library("brave_prochlo") {
 }
 
 proto_library("prochlo_proto") {
-  sources = [
-    "prochlo_message.proto",
-  ]
+  sources = [ "prochlo_message.proto" ]
   proto_in_dir = "."
 }

@@ -1,7 +1,5 @@
 static_library("common") {
-  deps = [
-    "//base",
-  ]
+  deps = [ "//base" ]
 
   sources = [
     "locale_util.cc",

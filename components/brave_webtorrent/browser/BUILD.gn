@@ -17,13 +17,11 @@ static_library("browser") {
     "//components/pref_registry",
     "//components/prefs",
     "//content/public/browser",
-    "//extensions/buildflags",
     "//extensions/browser",
+    "//extensions/buildflags",
     "//extensions/common",
     "//net",
   ]
 
-  public_deps = [
-    "buildflags",
-  ]
+  public_deps = [ "buildflags" ]
 }

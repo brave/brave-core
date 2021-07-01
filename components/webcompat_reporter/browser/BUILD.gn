@@ -5,9 +5,7 @@ declare_args() {
 }
 
 config("webcompat_reporter_config") {
-  defines = [
-    "WEBCOMPAT_REPORT_ENDPOINT=\"$webcompat_report_api_endpoint\""
-  ]
+  defines = [ "WEBCOMPAT_REPORT_ENDPOINT=\"$webcompat_report_api_endpoint\"" ]
 }
 
 static_library("browser") {
