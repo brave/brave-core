@@ -139,7 +139,9 @@ void AdsImpl::ChangeLocale(const std::string& locale) {
 }
 
 void AdsImpl::OnPrefChanged(const std::string& path) {
-  if (path == prefs::kAdsPerHour) {
+  if (path == prefs::kEnabled) {
+    MaybeServeAdNotificationsAtRegularIntervals();
+  } else if (path == prefs::kAdsPerHour) {
     ad_notification_serving_->OnAdsPerHourChanged();
   } else if (path == prefs::kAdsSubdivisionTargetingCode) {
     subdivision_targeting_->MaybeFetchForCurrentLocale();
@@ -655,7 +657,8 @@ void AdsImpl::MaybeServeAdNotificationsAtRegularIntervals() {
     return;
   }
 
-  if ((BrowserManager::Get()->IsActive() ||
+  if (IsInitialized() &&
+      (BrowserManager::Get()->IsActive() ||
        AdsClientHelper::Get()->CanShowBackgroundNotifications()) &&
       settings::GetAdsPerHour() > 0) {
     ad_notification_serving_->StartServingAdsAtRegularIntervals();

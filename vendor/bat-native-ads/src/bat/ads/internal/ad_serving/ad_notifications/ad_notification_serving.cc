@@ -59,6 +59,8 @@ void AdServing::StartServingAdsAtRegularIntervals() {
     return;
   }
 
+  BLOG(1, "Start serving ads at regular intervals");
+
   base::TimeDelta delay;
 
   if (Client::Get()->GetNextAdServingInterval().is_null()) {
@@ -81,6 +83,12 @@ void AdServing::StartServingAdsAtRegularIntervals() {
 }
 
 void AdServing::StopServingAdsAtRegularIntervals() {
+  if (!timer_.IsRunning()) {
+    return;
+  }
+
+  BLOG(1, "Stop serving ads at regular intervals");
+
   timer_.Stop();
 }
 
