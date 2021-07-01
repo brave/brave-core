@@ -134,11 +134,11 @@ export interface AppsListType {
 
 export interface ChartTimelineObjectType {
   name: string
-  id: ChartTimelineType
+  id: AssetPriceTimeframe
 }
 
 export interface PriceDataObjectType {
-  date: string
+  date: Date | number
   close: number
 }
 
@@ -165,12 +165,14 @@ export interface PageState {
   hasInitialized: boolean
   showRecoveryPhrase: boolean
   invalidMnemonic: boolean
-  selectedTimeline: ChartTimelineType
+  selectedTimeline: AssetPriceTimeframe
   selectedAsset: AssetOptionType | undefined
   selectedAssetPrice: AssetPriceReturnInfo | undefined
-  selectedAssetPriceHistory: PriceDataObjectType[]
+  selectedAssetPriceHistory: GetAssetPriceHistoryReturnInfo[]
+  portfolioPriceHistory: PriceDataObjectType[]
   userAssets: string[]
   mnemonic?: string
+  isFetchingPriceHistory: boolean
 }
 
 export interface WalletPageState {
@@ -243,7 +245,11 @@ export interface GetAssetPriceReturnInfo {
 
 export interface GetAssetPriceHistoryReturnInfo {
   price: string,
-  date: string
+  date: MojoTime
+}
+
+export interface GetAssetPriceHistoryReturnObjectInfo {
+  values: GetAssetPriceHistoryReturnInfo[]
 }
 
 export interface RestoreWalletReturnInfo {
@@ -255,7 +261,7 @@ export interface WalletAPIHandler {
   lockWallet: () => Promise<void>
   unlockWallet: (password: string) => Promise<UnlockWalletReturnInfo>
   getAssetPrice: (asset: string) => Promise<GetAssetPriceReturnInfo>
-  getAssetPriceHistory: (asset: string, timeframe: AssetPriceTimeframe) => Promise<GetAssetPriceHistoryReturnInfo>
+  getAssetPriceHistory: (asset: string, timeframe: AssetPriceTimeframe) => Promise<GetAssetPriceHistoryReturnObjectInfo>
   addFavoriteApp: (appItem: AppObjectType) => Promise<void>
   removeFavoriteApp: (appItem: AppObjectType) => Promise<void>
   restoreWallet: (mnemonic: string, password: string) => Promise<RestoreWalletReturnInfo>
