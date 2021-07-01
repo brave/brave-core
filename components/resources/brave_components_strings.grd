@@ -215,7 +215,7 @@
       <message name="IDS_BRAVE_NEW_TAB_SHOW_FAVORITES_DESC" desc="Desc for allowing customizing of top sites">Top sites are curated by you</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_FRECENCY_LABEL" desc="Label for showing most visited istes as top sites">Frequently Visited</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_FRECENCY_DESC" desc="Desc for showing most visited sites as top sites">Top sites are suggested based on websites you visit often</message>
-      <message name="IDS_BRAVE_NEW_TAB_ADD_SITE_MENU_LABEL" desc="Label for adding site to top sites menu item of topsites tiles">Add Site</message>
+      <message name="IDS_BRAVE_NEW_TAB_ADD_SITE_MENU_LABEL" desc="Label for adding site to top sites menu item of topsites tiles">Add site</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_FRECENCY_MENU_LABEL" desc="Label for showing frecency menu item of topsites tiles">Show frequently visited</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_FAVORITES_MENU_LABEL" desc="Label for showing favorites menu item of topsites tiles">Show favorites</message>
 
