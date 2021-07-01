@@ -27,6 +27,17 @@
           menu-options="[[webRTCPolicies_]]">
       </settings-dropdown-menu>
     </div>
+    <settings-toggle-button id="pushMessagingEnabled"
+        class="cr-row"
+        pref="{{prefs.brave.gcm.channel_status}}"
+        label="$i18n{pushMessagingLabel}">
+        <template is="dom-if" if="[[shouldShowRestart_(
+          prefs.brave.gcm.channel_status.value)]]">
+        <cr-button on-click="restartBrowser_" slot="more-actions">
+          $i18n{restart}
+        </cr-button>
+      </template>
+    </settings-toggle-button>
     <settings-toggle-button id="p3aEnabled"
         class="cr-row"
         pref=""
@@ -42,17 +53,6 @@
         label="$i18n{statsUsagePingEnabledTitle}"
         sub-label="$i18n{statsUsagePingEnabledDesc}"
         on-settings-boolean-control-change="onStatsUsagePingEnabledChange_">
-    </settings-toggle-button>
-    <settings-toggle-button id="pushMessagingEnabled"
-        class="cr-row"
-        pref="{{prefs.brave.gcm.channel_status}}"
-        label="$i18n{pushMessagingLabel}">
-        <template is="dom-if" if="[[shouldShowRestart_(
-          prefs.brave.gcm.channel_status.value)]]">
-        <cr-button on-click="restartBrowser_" slot="more-actions">
-          $i18n{restart}
-        </cr-button>
-      </template>
     </settings-toggle-button>
   </template>
   <script src="brave_personalization_options.js"></script>

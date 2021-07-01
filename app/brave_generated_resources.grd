@@ -1190,10 +1190,10 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 
       <!-- Stats -->
       <message name="IDS_BRAVE_STATS_USAGE_PING_SETTING" desc="Description that shows in settings for toggling stats usage pings">
-        Automatically send completely private usage statistics to Brave
+        Automatically send daily usage ping to Brave
       </message>
       <message name="IDS_BRAVE_STATS_USAGE_PING_SETTING_SUBITEM" desc="Description that shows under main toggle setting for usage pings">
-        This anonymous info lets Brave estimate active users.
+        This anonymous, private ping lets Brave estimate active users.
       </message>
 
       <!-- P3A -->
@@ -1207,10 +1207,10 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Disable
       </message>
       <message name="IDS_BRAVE_P3A_ENABLE_SETTING" desc="Description that shows in settings for toggling P3A">
-        Automatically send completely private product analytics to Brave
+        Allow privacy-preserving product analytics (P3A)
       </message>
       <message name="IDS_BRAVE_P3A_ENABLE_SETTING_SUBITEM" desc="Description that shows under main toggle setting for P3A">
-        This anonymous info only lets Brave estimate the overall usage of certain features.
+        This completely anonymised info helps Brave estimate the overall usage of certain features and make them better for you.
       </message>
       <!-- Web3 detection -->
       <message name="IDS_BRAVE_CRYPTO_WALLETS_LAZY_LOAD_TEXT" desc="Text that shows on the info bar when a Dapp is detected">
