@@ -1,8 +1,6 @@
 /vendor/*
 !/vendor/bat-native-ledger
 !/vendor/bat-native-ads
-!/vendor/brave-ios
-!/vendor/CPPLINT.cfg
 .DS_Store
 .tags*
 /.idea/
