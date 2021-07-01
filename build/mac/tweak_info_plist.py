@@ -23,7 +23,15 @@
 
 import argparse
 import plistlib
+import subprocess
 import sys
+import tempfile
+
+def _ConvertPlist(source_plist, output_plist, fmt):
+    """Convert |source_plist| to |fmt| and save as |output_plist|."""
+    return subprocess.call(
+        ['plutil', '-convert', fmt, '-o', output_plist, source_plist])
+
 
 def _RemoveKeys(plist, *keys):
     """Removes a varargs of keys from the plist."""
@@ -71,9 +79,13 @@ def Main():
     parser.add_argument('--skip_signing', dest='skip_signing', action='store_true')
     args = parser.parse_args()
 
-    # Read the plist into its parsed format.
-    with open(args.plist_path, 'rb') as f:
-        plist = plistlib.load(f)
+    # Read the plist into its parsed format. Convert the file to 'xml1' as
+    # plistlib only supports that format in Python 2.7.
+    with tempfile.NamedTemporaryFile() as temp_info_plist:
+        retcode = _ConvertPlist(args.plist_path, temp_info_plist.name, 'xml1')
+        if retcode != 0:
+            return retcode
+        plist = plistlib.readPlist(temp_info_plist.name)
 
     output_path = args.plist_path
     if args.plist_output is not None:
@@ -99,9 +111,12 @@ def Main():
     plist['NSUserNotificationAlertStyle'] = 'alert'
 
     # Now that all keys have been mutated, rewrite the file.
-    with open(output_path, 'wb') as f:
-        plist_format = {'binary1': plistlib.FMT_BINARY, 'xml1': plistlib.FMT_XML} # pylint: disable=no-member
-        plistlib.dump(plist, f, fmt=plist_format[args.format])
+    with tempfile.NamedTemporaryFile() as temp_info_plist:
+        plistlib.writePlist(plist, temp_info_plist.name)
+
+        # Convert Info.plist to the format requested by the --format flag. Any
+        # format would work on Mac but iOS requires specific format.
+        return _ConvertPlist(temp_info_plist.name, output_path, args.format)
 
 
 if __name__ == '__main__':
