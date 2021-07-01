@@ -5,7 +5,7 @@ import("//tools/grit/preprocess_if_expr.gni")
 preprocess_folder = "preprocessed"
 preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
 
-source_set("common") {
+static_library("common") {
   public_deps = [ "buildflags" ]
   sources = [
     "features.cc",

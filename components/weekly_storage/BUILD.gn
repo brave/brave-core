@@ -1,4 +1,4 @@
-source_set("weekly_storage") {
+static_library("weekly_storage") {
   sources = [
     "daily_storage.cc",
     "daily_storage.h",

@@ -4,22 +4,18 @@ import("buildflags/buildflags.gni")
 
 buildflag_header("buildflags") {
   header = "buildflags.h"
-  flags = [
-    "ENABLE_BRAVE_PERF_PREDICTOR=$enable_brave_perf_predictor",
-  ]
+  flags = [ "ENABLE_BRAVE_PERF_PREDICTOR=$enable_brave_perf_predictor" ]
 }
 
-source_set("browser") {
+static_library("browser") {
   # Remove when https://github.com/brave/brave-browser/issues/10647 is resolved
   check_includes = false
-  public_deps = [
-    ":buildflags",
-  ]
+  public_deps = [ ":buildflags" ]
 
   sources = [
-    "bandwidth_linreg_parameters.h",
     "bandwidth_linreg.cc",
     "bandwidth_linreg.h",
+    "bandwidth_linreg_parameters.h",
     "bandwidth_savings_predictor.cc",
     "bandwidth_savings_predictor.h",
     "named_third_party_registry.cc",

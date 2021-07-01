@@ -2,7 +2,7 @@ import("//extensions/buildflags/buildflags.gni")
 
 assert(enable_extensions)
 
-source_set("browser") {
+static_library("browser") {
   # Remove when https://github.com/brave/brave-browser/issues/10649 is resolved
   check_includes = false
   sources = [
@@ -17,13 +17,11 @@ source_set("browser") {
     "//components/pref_registry",
     "//components/prefs",
     "//content/public/browser",
-    "//extensions/buildflags",
     "//extensions/browser",
+    "//extensions/buildflags",
     "//extensions/common",
     "//net",
   ]
 
-  public_deps = [
-    "buildflags",
-  ]
+  public_deps = [ "buildflags" ]
 }

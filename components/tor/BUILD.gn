@@ -1,6 +1,6 @@
 import("//brave/components/tor/buildflags/buildflags.gni")
 
-source_set("tor") {
+static_library("tor") {
   public_deps = [ "//brave/components/tor/buildflags" ]
 
   sources = [
@@ -81,7 +81,7 @@ source_set("pref_names") {
   ]
 }
 
-static_library("tor_unit_tests") {
+source_set("tor_unit_tests") {
   testonly = true
   if (enable_tor) {
     sources = [

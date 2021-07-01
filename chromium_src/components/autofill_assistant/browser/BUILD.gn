@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-static_library("unit_tests") {
+source_set("unit_tests") {
   testonly = true
   sources = [
     # "//components/autofill_assistant/browser" target doesn't seem to build

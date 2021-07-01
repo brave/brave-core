@@ -81,6 +81,9 @@ static_library("brave_test_support_unit") {
 test("brave_unit_tests") {
   testonly = true
 
+  configs += [ "//build/config:precompiled_headers" ]
+  configs += [ "//chrome/test:disable_thinlto_cache_flags" ]
+
   sources = [
     "../../components/domain_reliability/test_util.cc",
     "../../components/domain_reliability/test_util.h",
@@ -567,6 +570,9 @@ static_library("browser_tests_runner") {
 if (!is_android) {
   test("brave_browser_tests") {
     testonly = true
+
+    configs += [ "//build/config:precompiled_headers" ]
+    configs += [ "//chrome/test:disable_thinlto_cache_flags" ]
 
     sources = [
       "//brave/app/brave_main_delegate_browsertest.cc",

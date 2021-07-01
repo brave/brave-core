@@ -1,6 +1,6 @@
 import("//brave/build/config.gni")
 
-source_set("browser") {
+static_library("browser") {
   sources = [
     "urls.cc",
     "urls.h",

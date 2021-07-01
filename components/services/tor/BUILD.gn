@@ -1,4 +1,4 @@
-source_set("tor") {
+static_library("tor") {
   visibility = [
     "//brave/test:*",
     "//chrome/utility:*",
