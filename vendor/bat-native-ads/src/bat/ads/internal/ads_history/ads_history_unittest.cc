@@ -152,12 +152,12 @@ TEST_F(BatAdsAdsHistoryTest, AddMultipleAdTypesToHistory) {
   ASSERT_EQ(4UL, history.size());
 }
 
-TEST_F(BatAdsAdsHistoryTest, PurgedHistoryEntriesAfter7Days) {
+TEST_F(BatAdsAdsHistoryTest, PurgedHistoryEntriesOnOrAfter30Days) {
   // Arrange
   NewTabPageAdInfo new_tab_page_ad;
   history::AddNewTabPageAd(new_tab_page_ad, ConfirmationType::kViewed);
 
-  AdvanceClock(base::TimeDelta::FromDays(7) + base::TimeDelta::FromSeconds(1));
+  AdvanceClock(base::TimeDelta::FromDays(30) + base::TimeDelta::FromSeconds(1));
 
   // Act
   PromotedContentAdInfo promoted_content_ad;
@@ -166,6 +166,22 @@ TEST_F(BatAdsAdsHistoryTest, PurgedHistoryEntriesAfter7Days) {
   // Assert
   const std::deque<AdHistoryInfo> history = Client::Get()->GetAdsHistory();
   ASSERT_EQ(1UL, history.size());
+}
+
+TEST_F(BatAdsAdsHistoryTest, DoNotPurgedHistoryEntriesBefore30Days) {
+  // Arrange
+  NewTabPageAdInfo new_tab_page_ad;
+  history::AddNewTabPageAd(new_tab_page_ad, ConfirmationType::kViewed);
+
+  AdvanceClock(base::TimeDelta::FromDays(30));
+
+  // Act
+  PromotedContentAdInfo promoted_content_ad;
+  history::AddPromotedContentAd(promoted_content_ad, ConfirmationType::kViewed);
+
+  // Assert
+  const std::deque<AdHistoryInfo> history = Client::Get()->GetAdsHistory();
+  ASSERT_EQ(2UL, history.size());
 }
 
 }  // namespace ads

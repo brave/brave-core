@@ -23,7 +23,7 @@ struct PromotedContentAdInfo;
 
 namespace history {
 
-const int kForDays = 7;
+const int kForDays = 30;
 
 AdsHistoryInfo Get(const AdsHistoryInfo::FilterType filter_type,
                    const AdsHistoryInfo::SortType sort_type,
