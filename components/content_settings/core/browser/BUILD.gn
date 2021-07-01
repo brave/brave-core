@@ -1,4 +1,4 @@
-source_set("browser") {
+static_library("browser") {
   # Remove when https://github.com/brave/brave-browser/issues/10624 is resolved
   check_includes = false
   if (!is_ios) {

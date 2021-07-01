@@ -1,4 +1,4 @@
-source_set("common") {
+static_library("common") {
   deps = [
     "//base",
   ]

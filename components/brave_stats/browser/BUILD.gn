@@ -2,7 +2,7 @@ declare_args() {
   brave_stats_api_key = ""
 }
 
-source_set("browser") {
+static_library("browser") {
     defines = [
       "BRAVE_STATS_API_KEY=\"$brave_stats_api_key\"",
     ]

@@ -9,7 +9,7 @@ buildflag_header("buildflags") {
   ]
 }
 
-source_set("browser") {
+static_library("browser") {
   # Remove when https://github.com/brave/brave-browser/issues/10647 is resolved
   check_includes = false
   public_deps = [

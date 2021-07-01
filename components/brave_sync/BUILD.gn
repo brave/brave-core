@@ -16,7 +16,7 @@ config("brave_sync_config") {
   ]
 }
 
-source_set("crypto") {
+static_library("crypto") {
   sources = [
     "crypto/crypto.cc",
     "crypto/crypto.h",
@@ -47,7 +47,7 @@ source_set("features") {
   ]
 }
 
-source_set("network_time_helper") {
+static_library("network_time_helper") {
   # Remove when https://github.com/brave/brave-browser/issues/10650 is resolved
   check_includes = false
   sources = [
@@ -74,7 +74,7 @@ source_set("prefs") {
   ]
 }
 
-source_set("profile_sync_service_helper") {
+static_library("profile_sync_service_helper") {
   sources = [
     "profile_sync_service_helper.cc",
     "profile_sync_service_helper.h",

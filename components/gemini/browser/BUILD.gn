@@ -8,7 +8,7 @@ declare_args() {
   gemini_client_secret = ""
 }
 
-source_set("browser") {
+static_library("browser") {
   public_deps = [
     "buildflags"
   ]

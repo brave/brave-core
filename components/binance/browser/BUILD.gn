@@ -7,7 +7,7 @@ declare_args() {
   binance_client_id = ""
 }
 
-source_set("browser") {
+static_library("browser") {
   public_deps = [
     "buildflags"
   ]

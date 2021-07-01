@@ -10,7 +10,7 @@ config("webcompat_reporter_config") {
   ]
 }
 
-source_set("browser") {
+static_library("browser") {
   public_configs = [ ":webcompat_reporter_config" ]
 
   sources = [

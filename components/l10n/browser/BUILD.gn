@@ -1,4 +1,4 @@
-source_set("browser") {
+static_library("browser") {
   deps = [
     "//base",
   ]

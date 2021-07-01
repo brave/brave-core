@@ -1,4 +1,4 @@
-source_set("brave_federated_learning") {
+static_library("brave_federated_learning") {
   sources = [
     "brave_federated_learning_service.cc",
     "brave_federated_learning_service.h",
