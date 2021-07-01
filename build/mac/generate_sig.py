@@ -16,9 +16,9 @@ def Main():
         help='The path of sign_update binary', required=True)
     group_key = parser.add_mutually_exclusive_group(required=True)
     group_key.add_argument('--sign-key-file', dest='sign_key_file', action='store',
-        help='The private key file to sign dmg file', required=True)
+        help='The private key file to sign dmg file')
     group_key.add_argument('--sign-key', dest='sign_key', action='store',
-        help='The private key to sign dmg or patch file', required=True)
+        help='The private key to sign dmg or patch file')
     parser.add_argument('--target', dest='target', action='store',
         help='Target file path for signing.', required=True)
     parser.add_argument('--output', dest='output', action='store',
