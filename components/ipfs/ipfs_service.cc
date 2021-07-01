@@ -125,7 +125,7 @@ IpfsService::IpfsService(
   }
 #if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
   ipns_keys_manager_ = std::make_unique<IpnsKeysManager>(
-      blob_context_getter_factory.get(), url_loader_factory.get(),
+      blob_context_getter_factory_.get(), url_loader_factory.get(),
       server_endpoint_);
   AddObserver(ipns_keys_manager_.get());
 #endif
