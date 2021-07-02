@@ -10,14 +10,26 @@
 
 namespace brave_vpn {
 
-struct BraveVPNConnectionInfo {
-  std::string connection_name;
-  std::string hostname;
-  std::string username;
-  std::string password;
-
+class BraveVPNConnectionInfo {
+ public:
   BraveVPNConnectionInfo();
   ~BraveVPNConnectionInfo();
+
+  void SetConnectionInfo(const std::string& connection_name,
+                         const std::string& hostname,
+                         const std::string& username,
+                         const std::string& password);
+
+  std::string connection_name() const { return connection_name_; }
+  std::string hostname() const { return hostname_; }
+  std::string username() const { return username_; }
+  std::string password() const { return password_; }
+
+ private:
+  std::string connection_name_;
+  std::string hostname_;
+  std::string username_;
+  std::string password_;
 };
 
 }  // namespace brave_vpn

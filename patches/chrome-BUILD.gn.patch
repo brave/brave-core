@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index ec09d0836a976ff1c4c005a928e7feb51640a381..1a864d9c1b044c08aae67001aeb4eb52b531a14e 100644
+index ec09d0836a976ff1c4c005a928e7feb51640a381..7e60fd7ea39dc9e6f37e95dc39ca0b7fc43a2327 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -170,6 +170,7 @@ if (!is_android && !is_mac) {
@@ -57,7 +57,7 @@ index ec09d0836a976ff1c4c005a928e7feb51640a381..1a864d9c1b044c08aae67001aeb4eb52
  
    compile_entitlements("entitlements") {
      entitlements_templates = [ "app/app-entitlements.plist" ]
-+    if (is_official_build) { entitlements_templates += [ "app/app-entitlements-chrome.plist" ] }
++    if (is_official_build) { entitlements_templates += [ "app/app-entitlements-chrome.plist", "//brave/app/app-entitlements-brave.plist" ] }
      if (is_chrome_branded) {
        # These entitlements are bound to the official Google Chrome signing
        # certificate and will not necessarily work in any other build.
