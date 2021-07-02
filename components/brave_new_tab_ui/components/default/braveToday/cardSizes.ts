@@ -23,6 +23,12 @@ export const Small = styled(StandardBlock.withComponent('article'))`
   padding: 0;
   width: 100%;
   min-height: 310px;
+
+  a {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
 `
 
 export const DealsCard = styled(StandardBlock)`
@@ -32,6 +38,10 @@ export const Content = styled('div')<{}>`
   box-sizing: border-box;
   padding: 25px 35px;
   ${Small} & {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
     padding: 20px 28px;
   }
 `
