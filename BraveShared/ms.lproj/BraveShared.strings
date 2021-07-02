@@ -214,18 +214,6 @@
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Untuk bermula, anda perlu memasangkan Brave pada semua peranti yang anda ingin segerakkan. Untuk menghubungkan mereka bersama-sama, mulakan rantaian penyegerakan yang anda akan gunakan untuk menghubungkan semua peranti anda dengan selamat.";
 
-/* Browser Lock feature callout enable action. */
-"BrowserLockCalloutEnable" = "Aktifkan";
-
-/* Browser Lock feature callout message. */
-"BrowserLockCalloutMessage" = "Dengan Kunci Penyemak Imbas, anda perlu memasukkan PIN untuk mengakses Brave.";
-
-/* Browser Lock feature callout not now action. */
-"BrowserLockCalloutNotNow" = "Bukan Sekarang";
-
-/* Browser Lock feature callout title. */
-"BrowserLockCalloutTitle" = "Peribadi bermakna peribadi.";
-
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Menyemak Imbas Sejarah";
 
@@ -327,18 +315,6 @@
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Data Jangkaan \nDisimpan";
-
-/* DuckDuckGo callout enable action. */
-"DDGCalloutEnable" = "Ya";
-
-/* DuckDuckGo message. */
-"DDGCalloutMessage" = "Dengan carian peribadi, Brave akan menggunakan DuckDuckGo untuk menjawab carian anda semasa anda berada di Tab Peribadi ini. DuckDuckGo ialah enjin carian yang tidak menjejaki sejarah carian anda. Ia membolehkan anda mencari secara peribadi.";
-
-/* DuckDuckGo callout no action. */
-"DDGCalloutNo" = "Tidak";
-
-/* DuckDuckGo callout title. */
-"DDGCalloutTitle" = "Carian peribadi dengan DuckDuckGo?";
 
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "Bukan sekarang";
@@ -583,9 +559,6 @@
 /* History tableview section header */
 "LastWeek" = "Minggu lepas";
 
-/* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "Ketahui carian peribadi\ndengan DuckDuckGo";
-
 /* No comment provided by engineer. */
 "learnMore" = "Ketahui Lebih Lanjut";
 
@@ -785,10 +758,10 @@
 "PrivateBrowsingOnlyWarning" = "Mod Penyemakan Imbas Peribadi Sahaja akan menutup semua tab semasa anda dan mengelog anda keluar daripada semua tapak.";
 
 /* Private tab details */
-"PrivateTabBody" = "Tab Peribadi tidak disimpan dalam Brave, namun ia tidak merahsiakan kehadiran anda dalam talian. Laman yang anda lawati dalam tab peribadi tidak akan ditunjukkan dalam sejarah anda dan kuki laman tersebut sentiasa hilang apabila anda menutupnya — tidak akan ada apa-apa jejak kuki tersebut dalam Brave. Namun begitu, muat turun akan disimpan. \nPembawa mudah alih anda (atau pemilik sambungan VPN atau rangkaian Wi-Fi anda) boleh melihat laman yang anda lawati dan laman tersebut akan mengetahui alamat IP awam anda, walaupun dalam Tab Peribadi.";
+"PrivateTabBody" = "Tab Peribadi tidak disimpan di dalam Brave, tetapi ia tidak menjadikan anda tanpa nama dalam talian. Tapak yang anda lawati dalam tab peribadi tidak akan muncul dalam sejarah anda dan kukinya sentiasa hilang apabila anda menutupnya — tidak akan ada sebarang jejak yang tinggal di dalam Brave. Walau bagaimanapun, muat turun akan disimpan.\nPembawa mudah alih anda (atau pemilik rangkaian Wi-Fi atau VPN yang anda disambungkan) boleh melihat tapak mana yang anda lawati dan tapak tersebut akan mengetahui alamat IP awam anda, walaupun di dalam Tab Peribadi.";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "Penggunaan Tab Peribadi hanya dapat mengubah apa yang dibuat dengan Brave pada peranti anda, ia tidak mengubah tingkah laku orang lain.\n\nLaman sentiasa belajar alamat IP anda apabila anda melawat laman tersebut. Dengan ini, laman sering boleh meneka lokasi kasar anda - biasanya bandar anda. Kadang-kadang tekaan lokasi boleh menjadi lebih spesifik. Laman juga tahu semua perkara yang anda katakan kepada mereka secara khusus, seperti istilah carian. Jika anda log masuk ke laman, mereka akan mengetahui bahawa anda pemilik akaun itu. Anda masih akan dilog keluar apabila anda menutup Tab Peribadi kerana Brave akan membuang kuki yang mengekalkan log masuk anda.\n\nSesiapa pun yang menghubungkan anda kepada Internet (ISP anda) dapat melihat semua aktiviti rangkaian anda. Biasanya, ini merupakan pembawa mudah alih anda. Jika anda disambungkan ke rangkaian WiFi, ini merupakan pemilik rangkaian itu, dan jika anda menggunakan VPN, maka sesiapa pun yang menguruskan VPN itu. ISP anda boleh melihat laman web yang anda kunjungi semasa anda melawatnya. Sekiranya laman web tersebut menggunakan HTTPS, mereka hanya dapat meneka apa yang anda lakukan di laman web tersebut. Sekiranya laman hanya menggunakan HTTP maka ISP anda dapat melihat segala-galanya: istilah carian anda, laman yang anda baca, dan pautan yang anda ikuti.\n\nSekiranya majikan menguruskan peranti anda, mereka mungkin juga menjejaki apa yang anda lakukan dengannya. Penggunaan Tab Peribadi mungkin tidak dapat menghalang mereka daripada mengetahui laman yang telah anda lawati. Seseorang yang mempunyai akses ke peranti anda juga boleh memasangkan perisian yang memantau aktiviti anda, dan Tab Pribadi tidak akan melindungi anda daripada perbuatan tersebut.";
+"PrivateTabDetails" = "Menggunakan Tab Peribadi hanya mengubah tindakan Brave pada peranti anda, ia tidak mengubah tingkah laku orang lain.\n\nTapak sentiasa mengetahui alamat IP anda apabila anda melawatnya. Dari sini, ia sering dapat meneka secara kasar di mana anda berada — biasanya bandar anda. Kadangkala tekaan lokasi boleh jauh lebih spesifik. Tapak juga mengetahui semua yang anda sampaikan secara khusus, seperti istilah carian. Sekiranya anda log masuk ke sesuatu tapak, ia akan mengetahui bahawa anda pemilik akaun tersebut. Anda akan masih akan dilog keluar apabila anda menutup Tab Peribadi kerana Brave akan membuang kuki yang membuatkan anda kekal dilog masuk.\n\nSesiapa yang menyambungkan anda ke Internet (ISP anda) boleh melihat semua aktiviti rangkaian anda. Selalunya, ini adalah pembawa mudah alih anda. Sekiranya anda disambungkan ke rangkaian Wi-Fi, ini adalah pemilik rangkaian tersebut, dan jika anda menggunakan VPN, maka ia siapa saja yang menjalankan VPN tersebut. ISP anda dapat melihat tapak mana yang anda lawati semasa anda mengunjunginya. Sekiranya tapak tersebut menggunakan HTTPS, ia tidak boleh membuat lebih daripada sekadar tekaan bijak mengenai apa yang anda lakukan di tapak tersebut. Tetapi jika tapak hanya menggunakan HTTP, ISP anda dapat melihat semuanya: istilah carian anda, halaman mana yang anda baca, dan pautan mana yang anda ikuti.\n\nSekiranya majikan menguruskan peranti anda, mereka mungkin juga memantau apa yang anda lakukan dengannya. Menggunakan Tab Peribadi mungkin tidak akan menghalang mereka untuk mengetahui tapak mana yang telah anda lawati. Orang lain yang mempunyai akses ke peranti anda juga boleh memasang perisian yang memantau aktiviti anda, dan Tab Peribadi tidak akan melindungi anda daripada ini juga.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Ketahui tentang Tab Peribadi.";
@@ -948,6 +921,9 @@
 
 /* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
 "SearchSuggestionSectionTitleFormat" = "Carian %@";
+
+/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
+"SearchSuggestionSectionTitleNoSearchFormat" = "Carian";
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Cadangan Carian";

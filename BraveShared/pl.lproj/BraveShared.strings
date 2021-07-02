@@ -214,18 +214,6 @@
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Aby rozpocząć, należy zainstalować oprogramowanie Brave na wszystkich urządzeniach, które planujesz zsynchronizować. Aby je połączyć, rozpocznij łańcuch synchronizacji, który zostanie użyty do bezpiecznego połączenia ze sobą wszystkich urządzeń.";
 
-/* Browser Lock feature callout enable action. */
-"BrowserLockCalloutEnable" = "Aktywuj";
-
-/* Browser Lock feature callout message. */
-"BrowserLockCalloutMessage" = "Aby uzyskać dostęp do Brave, gdy przeglądarka jest zablokowana, musisz podać PIN.";
-
-/* Browser Lock feature callout not now action. */
-"BrowserLockCalloutNotNow" = "Nie teraz";
-
-/* Browser Lock feature callout title. */
-"BrowserLockCalloutTitle" = "Prywatne, czyli prywatne.";
-
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Historia przeglądania";
 
@@ -327,18 +315,6 @@
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Szacunkowe dane\nzapisane";
-
-/* DuckDuckGo callout enable action. */
-"DDGCalloutEnable" = "Tak";
-
-/* DuckDuckGo message. */
-"DDGCalloutMessage" = "Podczas wyszukiwania w trybie prywatnym Brave skorzysta z DuckDuckGo, aby wyświetlić wyniki wyszukiwania w prywatnej karcie. DuckDuckGo to wyszukiwarka, która nie śledzi Twojej historii wyszukiwania, dzięki czemu możesz korzystać z przeglądarki bez obaw o prywatność.";
-
-/* DuckDuckGo callout no action. */
-"DDGCalloutNo" = "Nie";
-
-/* DuckDuckGo callout title. */
-"DDGCalloutTitle" = "Czy DuckDuckGo ma wyszukiwać w trybie prywatnym?";
 
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "Nie teraz";
@@ -583,9 +559,6 @@
 /* History tableview section header */
 "LastWeek" = "W zeszłym tygodniu";
 
-/* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "Dowiedz się więcej o wyszukiwaniu w trybie prywatnym\nz wykorzystaniem DuckDuckGo";
-
 /* No comment provided by engineer. */
 "learnMore" = "Dowiedz się więcej";
 
@@ -785,10 +758,10 @@
 "PrivateBrowsingOnlyWarning" = "Tryb przeglądania wyłącznie w trybie prywatnym zamknie wszystkie bieżące karty i wyloguje Cię ze wszystkich stron.";
 
 /* Private tab details */
-"PrivateTabBody" = "Karty w trybie prywatnym nie są zapisywane w przeglądarce Brave, ale nie czyni to Ciebie anonimowym użytkownikiem sieci. Strony odwiedzane w trybie prywatnym nie będą wyświetlane w historii, a pliki cookie zostaną usunięte po zamknięciu stron — w przeglądarce Brave nie pozostanie po nich żaden ślad, ale zapisane pliki nie zostaną usunięte.\nTwój operator (lub właściciel użytkowanych przez Ciebie sieci Wi-Fi lub VPN) może zobaczyć odwiedzane przez Ciebie witryny, a na tych witrynach będzie znany Twój publiczny adres IP, nawet podczas korzystania z kart w trybie prywatnym.";
+"PrivateTabBody" = "Karty w trybie prywatnym nie są zapisywane w przeglądarce Brave, ale nie czyni to Cię anonimowym użytkownikiem sieci. Strony odwiedzane w trybie prywatnym nie będą wyświetlane w historii, a pliki cookie zostaną usunięte po zamknięciu stron — w przeglądarce Brave nie pozostanie po nich żaden ślad, ale zapisane pliki nie zostaną usunięte.\nTwój operator sieci komórkowej (lub właściciel użytkowanych przez Ciebie sieci Wi-Fi lub VPN) może zobaczyć odwiedzane przez Ciebie witryny, a na tych witrynach będzie znany Twój publiczny adres IP, nawet podczas korzystania z kart w trybie prywatnym.";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "Używanie kart prywatnych zmienia tylko działanie Brave na Twoim urządzeniu, nie zmieniając zachowań innych.\n\nStrony zawsze poznają Twój adres IP, gdy je odwiedzasz. Na tej podstawie są często w stanie z grubsza odgadnąć Twoją lokalizację – zazwyczaj miasto. Czasem określenie lokalizacji może być znacznie bardziej precyzyjne. Strony mają też informację o wszystkim, co przekaże im użytkownik np. o wyszukiwanych hasłach. W przypadku zalogowania się na stronie, wiadomo, kto jest właścicielem konta. Po zamknięciu kart prywatnych nastąpi wylogowanie, ponieważ Brave usuwa pliki cookie odpowiedzialne za zalogowanie.\n\nKażdy, kto podłącza Cię do Internetu (czyli Twój dostawca) widzi całą Twoją aktywność sieciową. Często jest to Twój dostawca usług telefonii komórkowej. W przypadku podłączenia do sieci Wi-Fi jest to właściciel tej sieci, a jeśli korzystasz z VPN, jest to jego operator. Twój dostawca widzi, jakie strony odwiedzasz. W przypadku korzystania z protokołu HTTPS można tyko zgadywać, co robisz na stronie, ale jeśli używany jest zwykły protokół HTTP to dostawca widzi wszystko: wyszukiwane hasła, czytane strony i klikane łącza.\n\nJeśli Twój pracodawca zarządza Twoim urządzeniem to może też monitorować Twoje korzystanie z niego. Korzystanie z kart prywatnych prawdopodobnie nie ukryje odwiedzanych stron. Ktoś, kto ma dostęp do Twojego urządzenia mógł zainstalować oprogramowanie, które monitoruje Twoją aktywność, a karty prywatne nie chronią przed tym.";
+"PrivateTabDetails" = "Używanie kart prywatnych zmienia tylko działanie Brave na Twoim urządzeniu, nie zmieniając zachowań innych.\n\nStrony zawsze poznają Twój adres IP, gdy je odwiedzasz. Na tej podstawie są często w stanie z grubsza odgadnąć Twoją lokalizację – zazwyczaj miasto. Czasem określenie lokalizacji może być znacznie bardziej precyzyjne. Strony mają też informację o wszystkim, co przekaże im użytkownik np. o wyszukiwanych hasłach. W przypadku zalogowania się na stronie, wiadomo, kto jest właścicielem konta. Po zamknięciu kart prywatnych nastąpi wylogowanie, ponieważ Brave usuwa pliki cookie odpowiedzialne za zalogowanie.\n\nKażdy, kto podłącza Cię do Internetu (czyli Twój dostawca usług internetowych) może zobaczyć całą Twoją aktywność w sieci. Często jest to Twój dostawca usług telefonii komórkowej. W przypadku podłączenia do sieci Wi-Fi jest to właściciel tej sieci, a jeśli korzystasz z VPN, jest to jego operator. Twój dostawca widzi, jakie strony odwiedzasz. W przypadku korzystania z protokołu HTTPS można tyko zgadywać, co robisz na stronie. Ale jeśli używany jest zwykły protokół HTTP to dostawca widzi wszystko: wyszukiwane hasła, czytane strony i klikane łącza.\n\nJeśli Twój pracodawca zarządza Twoim urządzeniem to może też monitorować Twoje korzystanie z niego. Korzystanie z kart prywatnych prawdopodobnie nie ukryje odwiedzanych stron. Ktoś, kto ma dostęp do Twojego urządzenia mógł zainstalować oprogramowanie, które monitoruje Twoją aktywność, a karty prywatne nie chronią przed tym.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Dowiedz się więcej o kartach w trybie prywatnym.";
@@ -948,6 +921,9 @@
 
 /* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
 "SearchSuggestionSectionTitleFormat" = "Wyszukaj za pomocą %@";
+
+/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
+"SearchSuggestionSectionTitleNoSearchFormat" = "Szukaj";
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Sugestie wyszukiwania";

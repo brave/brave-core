@@ -214,18 +214,6 @@
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Lo primero que tendrás que hacer es instalar Brave en todos los dispositivos que quieras sincronizar. Para conectarlos entre sí, inicia una cadena de sincronización con la que vincular todos tus dispositivos de forma segura.";
 
-/* Browser Lock feature callout enable action. */
-"BrowserLockCalloutEnable" = "Habilitar";
-
-/* Browser Lock feature callout message. */
-"BrowserLockCalloutMessage" = "La función Bloqueo de navegador requiere que introduzca un código PIN para utilizar Brave.";
-
-/* Browser Lock feature callout not now action. */
-"BrowserLockCalloutNotNow" = "Ahora no";
-
-/* Browser Lock feature callout title. */
-"BrowserLockCalloutTitle" = "Privado significa privado.";
-
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Historial de navegación";
 
@@ -327,18 +315,6 @@
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Datos estimados \nahorrados";
-
-/* DuckDuckGo callout enable action. */
-"DDGCalloutEnable" = "Sí";
-
-/* DuckDuckGo message. */
-"DDGCalloutMessage" = "Con la búsqueda privada, Brave utilizará DuckDuckGo para atender tus búsquedas mientras navegas en esta pestaña privada. DuckDuckGo es un buscador que no rastrea tu historial de búsqueda, lo que te permite realizar búsquedas con total privacidad.";
-
-/* DuckDuckGo callout no action. */
-"DDGCalloutNo" = "No";
-
-/* DuckDuckGo callout title. */
-"DDGCalloutTitle" = "¿Búsqueda privada con DuckDuckGo?";
 
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "Ahora no";
@@ -583,9 +559,6 @@
 /* History tableview section header */
 "LastWeek" = "La semana pasada";
 
-/* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "Obtén información sobre búsquedas privadas \ncon DuckDuckGo";
-
 /* No comment provided by engineer. */
 "learnMore" = "Más información";
 
@@ -785,7 +758,7 @@
 "PrivateBrowsingOnlyWarning" = "El modo \"Solo navegación privada\" cerrará todas las pestañas que tengas abiertas y te desconectará de todos los sitios.";
 
 /* Private tab details */
-"PrivateTabBody" = "Las pestañas privadas no se guardan en Brave, pero tampoco te hacen guardar el anonimato en línea. Los sitios que visitas con una pestaña privada no constan en el historial y las cookies desaparecen al cerrarla, sin que quede rastro alguno de ellas en Brave. No obstante, las descargas sí quedarán guardadas.\nTu operador de telefonía móvil (o el propietario de la red wifi o RPV a la que estés conectado) puede ver los sitios que visitas, y esos mismos sitios conocerán tu dirección IP pública aunque utilices pestañas privadas.";
+"PrivateTabBody" = "Las pestañas privadas no se guardan en Brave, pero tampoco te convierten en alguien anónimo en línea. Los sitios que visitas con una pestaña privada no constan en el historial y las cookies desaparecen al cerrarla, sin que quede rastro alguno de ellas en Brave. No obstante, las descargas sí quedarán guardadas.\nTu operador de telefonía móvil (o el propietario de la red wifi o RPV a la que estés conectado) puede ver los sitios que visitas, y esos mismos sitios conocerán tu dirección IP pública aunque utilices pestañas privadas.";
 
 /* Private tab detail text */
 "PrivateTabDetails" = "Lo único que cambia el uso de pestañas privadas es lo que hace Brave en tu dispositivo, no lo que hacen los demás.\n\nLos sitios web retienen tu dirección IP cada vez que los visitas, lo que significa que suelen tener una idea aproximada sobre tu ubicación (como la ciudad en la que te encuentras). A veces, la localización puede ser mucho más precisa. Los sitios web también retienen todo lo que compartes con ellos, como los términos de búsqueda que utilizas. Si inicias sesión en un sitio web, este sabrá que eres el propietario de esa cuenta. Aun así, tu sesión finalizará en cuanto cierres las pestañas privadas, ya que Brave desechará la cookie que mantiene tu sesión iniciada.\n\nTu proveedor de acceso a Internet, sea quien sea, puede ver toda tu actividad en la red. A menudo, se trata de tu compañía telefónica. Si estás conectado a una red wifi, el proveedor será el propietario de dicha red, mientras que, si usas una VPN, el proveedor será el encargado de gestionar esa VPN. Tu proveedor de acceso a Internet puede ver qué sitios visitas en tiempo real. Si esos sitios utilizan HTTPS, solo podrán obtener una idea aproximada de lo que haces en esos sitios web; sin embargo, si un sitio no utiliza más que HTTP, tu proveedor de acceso a Internet podrá verlo todo: tus términos de búsqueda, las páginas que consultas y los enlaces en los que clicas.\n\nSi el dispositivo lo gestiona tu empresa, puede que esta también supervise lo que haces con él. Es muy probable que el uso de pestañas privadas no logre impedir que la empresa sepa qué sitios visitas. Además, existe la posibilidad de que otra persona con acceso a tu dispositivo haya instalado en él un software para controlar tu actividad, ante lo que las pestañas privadas tampoco pueden protegerte.";
@@ -948,6 +921,9 @@
 
 /* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
 "SearchSuggestionSectionTitleFormat" = "Búsqueda de %@";
+
+/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
+"SearchSuggestionSectionTitleNoSearchFormat" = "Buscar";
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Sugerencias de búsqueda";

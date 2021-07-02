@@ -214,18 +214,6 @@
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Zum Starten müssen Sie Brave auf allen zu synchronisierenden Geräten installiert haben. Um sie miteinander zu verketten, starten Sie eine Synchronisierungskette, mit der Sie alle Ihre Geräte sicher miteinander verbinden können.";
 
-/* Browser Lock feature callout enable action. */
-"BrowserLockCalloutEnable" = "Aktivieren";
-
-/* Browser Lock feature callout message. */
-"BrowserLockCalloutMessage" = "Mit der Browser-Sperre ist für den Zugriff auf Brave die Eingabe einer PIN erforderlich.";
-
-/* Browser Lock feature callout not now action. */
-"BrowserLockCalloutNotNow" = "Nicht jetzt";
-
-/* Browser Lock feature callout title. */
-"BrowserLockCalloutTitle" = "Privat heißt privat.";
-
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Browser-Verlauf";
 
@@ -327,18 +315,6 @@
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Geschätzte \nDatenersparnis";
-
-/* DuckDuckGo callout enable action. */
-"DDGCalloutEnable" = "Ja";
-
-/* DuckDuckGo message. */
-"DDGCalloutMessage" = "Bei der privaten Suche in diesem Tab verwendet Brave für Ihre Suchanfragen DuckDuckGo. DuckDuckGo ist eine Suchmaschine, die Ihren Suchverlauf nicht verfolgt und somit eine private Suche ermöglicht.";
-
-/* DuckDuckGo callout no action. */
-"DDGCalloutNo" = "Nein";
-
-/* DuckDuckGo callout title. */
-"DDGCalloutTitle" = "Private Suche über DuckDuckGo?";
 
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "Nicht jetzt";
@@ -583,9 +559,6 @@
 /* History tableview section header */
 "LastWeek" = "Letzte Woche";
 
-/* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "Mehr erfahren zur privaten Suche \nmit DuckDuckGo";
-
 /* No comment provided by engineer. */
 "learnMore" = "Mehr erfahren";
 
@@ -785,10 +758,10 @@
 "PrivateBrowsingOnlyWarning" = "Der Modus Nur privates Browsen schließt alle aktuellen Registerkarten und meldet Sie von allen Seiten ab.";
 
 /* Private tab details */
-"PrivateTabBody" = "Private Tabs werden in Brave nicht gespeichert, aber Sie sind dadurch nicht anonym im Netz unterwegs. Websites, die Sie in einem privaten Tab aufrufen, werden in Ihrem Verlauf nicht angezeigt, und ihre Cookies werden immer gelöscht, wenn Sie die Seiten schließen. In Brave wird keine Spur von ihnen hinterlassen. Downloads werden jedoch gespeichert.\nIhr Mobilfunkanbieter (oder der Eigentümer des WLAN- bzw. VPN-Netzwerks, mit dem Sie verbunden sind) kann die von Ihnen besuchten Websites sehen und diese Websites speichern Ihre öffentliche IP-Adresse, auch in privaten Tabs.";
+"PrivateTabBody" = "Private Tabs werden in Brave nicht gespeichert, aber Sie sind dadurch nicht anonym im Netz unterwegs. Websites, die Sie in einem privaten Tab aufrufen, werden in Ihrem Verlauf nicht angezeigt, und ihre Cookies werden immer gelöscht, wenn Sie die Websites schließen. In Brave wird keine Spur von ihnen hinterlassen. Downloads werden jedoch gespeichert.\nIhr Mobilfunkanbieter (oder der Eigentümer des WLAN- bzw. VPN-Netzwerks, mit dem Sie verbunden sind) kann die von Ihnen besuchten Websites sehen und diese Websites speichern Ihre öffentliche IP-Adresse, auch in privaten Tabs.";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "Die Nutzung privater Tabs ändert lediglich das Verhalten von Brave auf Ihrem Gerät, nicht das Verhalten anderer.\n              \n              Wenn Sie eine Website besuchen, senden Sie stets Ihre IP-Adresse mit, wodurch Ihr Standort – in der Regel Ihre Stadt – grob ermittelt werden kann. Manchmal ist Ihr Standort auch konkreter feststellbar. Darüber hinaus erhalten die Websites alle von Ihnen mitgeteilten Informationen, z. B. Suchbegriffe. Wenn Sie sich bei einer Website anmelden, teilen Sie mit, dass Sie der Eigentümer dieses Kontos sind. Dennoch werden Sie abgemeldet, sobald Sie den entsprechenden privaten Tab schließen, da Brave den Cookie entfernt, mit dem Sie angemeldet bleiben.\n              \n              Für den, der Ihre Internetverbindung herstellt (Ihr ISP), ist Ihre gesamte Netzwerkaktivität sichtbar. Häufig handelt es sich hierbei um Ihren Mobilfunkanbieter. Wenn Sie mit einem WLAN-Netzwerk verbunden sind, ist dies der Eigentümer des Netzwerks. Falls Sie wiederum ein VPN nutzen, dann gehört es dem Betreiber des VPNs. Für Ihren ISP sind die von Ihnen besuchten Websites in dem Moment sichtbar, wenn Sie sie besuchen. Verwenden diese Websites HTTPS, erhalten sie keine konkreten Einblicke in Ihre Aktivitäten auf diesen Websites. Wenn eine Website jedoch nur HTTP nutzt, kann Ihr ISP alles sehen: Ihre Suchbegriffe, die von Ihnen gelesenen Seiten und die von Ihnen angeklickten Links.\n              \n              Wenn Ihr Arbeitgeber Ihr Gerät verwaltet, könnte auch dieser dessen Nutzung durch Sie verfolgen. Auch die Verwendung privater Tabs kann wahrscheinlich nicht verhindern, dass er die von Ihnen besuchten Websites einsehen kann. Jemand anderes, der Zugriff auf Ihr Gerät hat, könnte eine Software zur Überwachung Ihrer Aktivitäten installiert haben. Auch davor schützen Sie private Tabs nicht.";
+"PrivateTabDetails" = "Die Nutzung privater Tabs ändert lediglich das Verhalten von Brave auf Ihrem Gerät, nicht das Verhalten anderer.\n\nWenn Sie eine Website besuchen, senden Sie stets Ihre IP-Adresse mit, wodurch Ihr Standort – in der Regel Ihre Stadt – grob ermittelt werden kann. Manchmal ist Ihr Standort auch konkreter feststellbar. Darüber hinaus erhalten die Websites alle von Ihnen mitgeteilten Informationen, z. B. Suchbegriffe. Wenn Sie sich bei einer Website anmelden, teilen Sie mit, dass Sie der Eigentümer dieses Kontos sind. Dennoch werden Sie abgemeldet, sobald Sie den entsprechenden privaten Tab schließen, da Brave den Cookie entfernt, mit dem Sie angemeldet bleiben.\n\nFür den, der Ihre Internetverbindung herstellt (Ihr ISP), ist Ihre gesamte Netzwerkaktivität sichtbar. Häufig handelt es sich hierbei um Ihren Mobilfunkanbieter. Wenn Sie mit einem WLAN-Netzwerk verbunden sind, ist dies der Eigentümer des Netzwerks. Falls Sie wiederum ein VPN nutzen, dann gehört es dem Betreiber des VPNs. Für Ihren ISP sind die von Ihnen besuchten Websites in dem Moment sichtbar, wenn Sie sie besuchen. Verwenden diese Websites HTTPS, erhalten sie keine konkreten Einblicke in Ihre Aktivitäten auf diesen Websites. Wenn eine Website jedoch nur HTTP nutzt, kann Ihr ISP alles sehen: Ihre Suchbegriffe, die von Ihnen gelesenen Seiten und die von Ihnen angeklickten Links.\n\nWenn Ihr Arbeitgeber Ihr Gerät verwaltet, könnte auch dieser dessen Nutzung durch Sie verfolgen. Auch die Verwendung privater Tabs kann wahrscheinlich nicht verhindern, dass er die von Ihnen besuchten Websites einsehen kann. Jemand anderes, der Zugriff auf Ihr Gerät hat, könnte eine Software zur Überwachung Ihrer Aktivitäten installiert haben. Auch davor schützen Sie private Tabs nicht.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Erfahren Sie mehr über private Tabs.";
@@ -948,6 +921,9 @@
 
 /* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
 "SearchSuggestionSectionTitleFormat" = "%@-Suche";
+
+/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
+"SearchSuggestionSectionTitleNoSearchFormat" = "Suche";
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Suchvorschläge";

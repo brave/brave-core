@@ -214,18 +214,6 @@
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Till att börja med måste du ha installerat Brave på alla enheter du vill synkronisera. För att sammanlänka dem kan du starta en synkroniseringskedja som du använder för att koppla ihop alla dina enheter säkert.";
 
-/* Browser Lock feature callout enable action. */
-"BrowserLockCalloutEnable" = "Aktivera";
-
-/* Browser Lock feature callout message. */
-"BrowserLockCalloutMessage" = "Med kodlåset för Brave så kommer du behöva ange koden för att komma in i webbläsaren.";
-
-/* Browser Lock feature callout not now action. */
-"BrowserLockCalloutNotNow" = "Inte nu";
-
-/* Browser Lock feature callout title. */
-"BrowserLockCalloutTitle" = "Privat betyder privat.";
-
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Webbläsarhistorik";
 
@@ -327,18 +315,6 @@
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Uppskattade data\nsparade";
-
-/* DuckDuckGo callout enable action. */
-"DDGCalloutEnable" = "Ja";
-
-/* DuckDuckGo message. */
-"DDGCalloutMessage" = "Vid privat sökning använder Brave DuckDuckGo för att leverera sökträffar. DuckDuckGo är en sökmotor som inte spårar din sökhistorik, vilket låter dig göra privata sökningar.";
-
-/* DuckDuckGo callout no action. */
-"DDGCalloutNo" = "Nej";
-
-/* DuckDuckGo callout title. */
-"DDGCalloutTitle" = "Privat sökning med DuckDuckGo?";
 
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "Inte nu";
@@ -583,9 +559,6 @@
 /* History tableview section header */
 "LastWeek" = "Förra veckan";
 
-/* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "Läs om privat sökning \nmed DuckDuckGo";
-
 /* No comment provided by engineer. */
 "learnMore" = "Lär dig mer";
 
@@ -785,7 +758,7 @@
 "PrivateBrowsingOnlyWarning" = "Läget endast privat surfning kommer att stänga alla öppna flikar och logga ut dig från alla webbplatser.";
 
 /* Private tab details */
-"PrivateTabBody" = "Privata flikar sparas inte i Brave, men de gör dig inte anonym online. Webbplatser som du besöker på en privat flik visas inte i din historik och deras cookies försvinner alltid när du stänger dem - det finns inga spår av dem kvar i Brave. Men hämtningar sparas.\nDin mobiloperatör (eller ägaren till WiFi-nätverket eller den VPN som du är ansluten till) kan se vilka webbplatser som du besöker och vilka webbplatser som kommer att lära sig din offentliga IP-adress, även i privata flikar.";
+"PrivateTabBody" = "Privata flikar sparas inte i Brave, men de gör dig inte anonym online. Webbplatser som du besöker på en privat flik visas inte i din historik och deras cookies försvinner alltid när du stänger dem – det finns inga spår av dem kvar i Brave. Men hämtningar sparas.\nDin mobiloperatör (eller ägaren till WiFi-nätverket eller den VPN som du är ansluten till) kan se vilka webbplatser som du besöker och vilka webbplatser som kommer att lära sig din offentliga IP-adress, även i privata flikar.";
 
 /* Private tab detail text */
 "PrivateTabDetails" = "När du använder privata flikar ändras Brave bara på din enhet, ingen annans.\n\nWebbplatser får alltid veta din IP-adress när du besöker dem. Utifrån detta kan de oftast räkna ut ungefär var du befinner dig, till exempel din ort. Ibland kan de gissa mer specifikt. Webbplatser vet också allt som du explicit anger, till exempel sökningar. Om du loggar in på en webbplats vet de att du äger kontot. Du loggas ut när du stänger den privata fliken eftersom Brave raderar den cookie som håller dig inloggad.\n\nDin internetleverantör, alltså den som tillhandahåller din internetanslutning, kan se all din nätverksaktivitet. Beroende på anslutningstyp är leverantören din mobilleverantör (för mobildata), wifi-nätets ägare (för wifi) eller den som tillhandahåller din VPN-anslutning (för VPN). Leverantören kan se vilka webbplatser du besöker. Om webbplatserna har HTTPS kan leverantören inte se mer än vilken platsen är, men om webbplatsen bara har HTTP kan leverantören se allt: vad du söker på, vilka sidor du läser och vilka länkar du följer.\n\nOm ditt företag ansvarar för din enhet kan de också se vad du gör med den. Att använda privata flikar kommer förmodligen inte hindra dem från att ta reda på vilka webbplatser du besökt. Någon annan med tillgång till din enhet kan ha installerat ett program som övervakar din aktivitet, och privata flikar skyddar inte mot det heller.";
@@ -948,6 +921,9 @@
 
 /* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
 "SearchSuggestionSectionTitleFormat" = "%@ sök";
+
+/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
+"SearchSuggestionSectionTitleNoSearchFormat" = "Sök";
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Sökförslag";

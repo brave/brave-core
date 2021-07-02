@@ -214,18 +214,6 @@
 /* Sync settings welcome */
 "BraveSyncWelcome" = "首先，您需要將 Brave 安裝在您計畫同步的所有裝置中。如要將裝置鏈接一起，請啟用一個同步鏈，用於將所有裝置安全鏈接。";
 
-/* Browser Lock feature callout enable action. */
-"BrowserLockCalloutEnable" = "啟用";
-
-/* Browser Lock feature callout message. */
-"BrowserLockCalloutMessage" = "啟用瀏覽器鎖定功能後，您必須輸入 PIN 碼才能存取 Brave。";
-
-/* Browser Lock feature callout not now action. */
-"BrowserLockCalloutNotNow" = "現在不要";
-
-/* Browser Lock feature callout title. */
-"BrowserLockCalloutTitle" = "隱私不容妥協。";
-
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "瀏覽記錄";
 
@@ -327,18 +315,6 @@
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "預計節省\n數據量";
-
-/* DuckDuckGo callout enable action. */
-"DDGCalloutEnable" = "是";
-
-/* DuckDuckGo message. */
-"DDGCalloutMessage" = "在隱私分頁中執行私密搜尋時，Brave 會使用 DuckDuckGo 回應您的搜尋要求。DuckDuckGo 搜尋引擎不會收集您的搜尋記錄，藉以保護您的搜尋隱私。";
-
-/* DuckDuckGo callout no action. */
-"DDGCalloutNo" = "否";
-
-/* DuckDuckGo callout title. */
-"DDGCalloutTitle" = "使用 DuckDuckGo 執行隱私搜尋？";
 
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "稍後再說";
@@ -583,9 +559,6 @@
 /* History tableview section header */
 "LastWeek" = "上週";
 
-/* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "深入瞭解\nDuckDuckGo 隱私搜尋";
-
 /* No comment provided by engineer. */
 "learnMore" = "了解更多";
 
@@ -785,10 +758,10 @@
 "PrivateBrowsingOnlyWarning" = "「僅限私人瀏覽」模式將關閉所有當前分頁，將您登出所有網站。";
 
 /* Private tab details */
-"PrivateTabBody" = "私密標籤頁不會儲存在 Brave ，但也不會讓您於網站上匿名。 您在私密標籤頁瀏覽的網站不會在歷史記錄中顯示，且當您關閉網站後，cookie 一率會消失，在 Brave 中不會留下任何痕跡。但所有下載將會被儲存。\n您的行動裝置電信業者（或您所連線的 WiFi 或 VPN 的所有人）可以查看您所瀏覽的網站，而透過這些網站將獲悉您的 IP 位址，即使是在私密標籤頁也是如此。";
+"PrivateTabBody" = "Brave 不會儲存隱私分頁，但這並不代表您在網路上為匿名狀態。您使用隱私分頁造訪的網站不會顯示在您的瀏覽記錄中，且一旦您關閉分頁，網站的 Cookie 也將一律刪除，也就是說，Brave 不會留下任何瀏覽記錄。不過，下載項目仍會儲存。即便使用隱私分頁，您的行動網路業者 (或是您所連線的 Wi-Fi 網路或 VPN 擁有者) 仍能看見您造訪哪些網站，而這些網站亦將取得您的公開 IP 位址。";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "使用隱私分頁只會變更 Brave 可在您裝置上執行的作業，無法改變他人行為。\n\n當您造訪網站時，網站能得知您的 IP 位置。根據這項資訊，網站可以大略猜出您的所在位置，通常能知道您所在的城市，有時猜測的位置會更精確。網站也會收集您明確提供的所有內容，像是搜尋內容。當您登入網站時，網站也會知道您是該帳戶的所有人。若關閉隱私分頁，Brave 會捨棄那些協助您保持登入的 Cookie，因此系統依然會將您隨即登出。\n\n提供您網際網路連線的公司 (您的 ISP 業者) 可以查看您在網路上的所有活動。很多時候，這會是您的行動網路業者；如果您使用的是 WiFi 網路，該網路的所有者可以看到您的活動；如果您是使用 VPN 上網，則運作該 VPN 的一方可以看到活動。您的 ISP 業者可以在您造訪網站時，瞭解您瀏覽了哪些網站。如果這些網站使用 HTTPS，ISP 業者只能大略猜測您在網站上的活動；但如果網站僅使用 HTTP，則 ISP 業者可以看到所有活動，包括搜尋內容、讀取的頁面以及追蹤的連結。\n\n如果您的裝置是由雇主所管理，他們可能會追蹤您的裝置使用情形。即使您使用隱私分頁，雇主仍可知道您曾瀏覽過哪些網站。能存取您裝置的其他人士，可能也會安裝軟體以監控您的活動。這類情形下，即使使用隱私分頁，也不會有太大意義。";
+"PrivateTabDetails" = "使用隱私分頁只會變更 Brave 可在您裝置上執行的作業，無法改變他人行為。\n\n當您造訪網站時，網站能得知您的 IP 位址。根據這項資訊，網站可以大略猜出您的所在位置，通常能知道您所在的城市，有時猜測的位置會更精確。網站也會知道您明確提供的所有內容，像是搜尋內容。當您登入網站時，網站也會知道您是該帳戶的所有人。若關閉隱私分頁，Brave 會捨棄那些將您保持登入的 Cookie，因此系統依然會將您隨即登出。\n\n將您連線至網際網路的公司 (您的 ISP 業者) 可以查看您在網路上的所有活動。這通常會是您的行動網路業者。如果您連線至 Wi-Fi 網路，該網路的所有者可以看到您的活動；如果您是使用 VPN，則是營運該 VPN 的一方。您的 ISP 業者可以在您造訪網站時，瞭解您瀏覽了哪些網站。如果這些網站使用 HTTPS，ISP 業者只能大略猜測您在網站上的活動；但如果網站僅使用 HTTP，則 ISP 業者可以看到所有活動，包括搜尋內容、讀取的頁面以及點選的連結。\n\n如果您的裝置是由雇主所管理，他們可能會追蹤您的裝置使用情形。即使您使用隱私分頁，雇主仍可知道您曾瀏覽過哪些網站。能存取您裝置的其他人士，可能也會安裝軟體以監控您的活動。這類情形下，即使使用隱私分頁，也無法保護您。";
 
 /* Private tab information link */
 "PrivateTabLink" = "深入了解隱私分頁。";
@@ -948,6 +921,9 @@
 
 /* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
 "SearchSuggestionSectionTitleFormat" = "%@ 搜尋";
+
+/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
+"SearchSuggestionSectionTitleNoSearchFormat" = "搜尋";
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "搜尋建議";
