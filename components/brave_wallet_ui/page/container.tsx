@@ -28,7 +28,7 @@ import {
   WalletState,
   PageState,
   WalletPageState,
-  ChartTimelineType,
+  AssetPriceTimeframe,
   AssetOptionType
 } from '../constants/types'
 import { NavOptions } from '../options/side-nav-options'
@@ -36,6 +36,7 @@ import BuySendSwap from '../components/buy-send-swap'
 import Onboarding from '../stories/screens/onboarding'
 import BackupWallet from '../stories/screens/backup-wallet'
 import { formatePrices } from '../utils/format-prices'
+import { convertMojoTimeToJS } from '../utils/mojo-time'
 import { AssetOptions } from '../options/asset-options'
 
 type Props = {
@@ -65,7 +66,9 @@ function Container (props: Props) {
     selectedAsset,
     selectedAssetPrice,
     selectedAssetPriceHistory,
-    userAssets
+    portfolioPriceHistory,
+    userAssets,
+    isFetchingPriceHistory
   } = props.page
 
   const [view, setView] = React.useState<NavTypes>('crypto')
@@ -130,10 +133,10 @@ function Container (props: Props) {
 
   const recoveryPhrase = (mnemonic || '').split(' ')
 
-  // Will need to add additional logic here and in the reducer
-  // to fetch price history once the pricing api is read.
-  const onChangeTimeline = (timeline: ChartTimelineType) => {
-    props.walletPageActions.changeTimline(timeline)
+  const onChangeTimeline = (timeline: AssetPriceTimeframe) => {
+    if (selectedAsset) {
+      props.walletPageActions.selectAsset({ asset: selectedAsset, timeFrame: timeline })
+    }
   }
 
   // This will scrape all of the user's accounts and combine the asset balances for a single asset
@@ -173,7 +176,7 @@ function Container (props: Props) {
   }, [userAssets, accounts])
 
   const onSelectAsset = (asset: AssetOptionType) => {
-    props.walletPageActions.selectAsset(asset)
+    props.walletPageActions.selectAsset({ asset: asset, timeFrame: selectedTimeline })
   }
 
   // This will scrape all of the user's accounts and combine the fiat value for every asset
@@ -187,8 +190,19 @@ function Container (props: Props) {
     return formatePrices(grandTotal)
   }, [userAssetList])
 
+  const formatedPriceHistory = React.useMemo(() => {
+    const formated = selectedAssetPriceHistory.map((obj) => {
+      return {
+        date: convertMojoTimeToJS(obj.date),
+        close: Number(obj.price)
+      }
+    })
+    console.log(formated)
+    return formated
+  }, [selectedAssetPriceHistory])
+
   const onCreateWallet = () => {
-    // Todo: Add logic to add/create a new wallet address
+    // Logic here to add a wallet
   }
 
   const onConnectHardwareWallet = () => {
@@ -240,13 +254,15 @@ function Container (props: Props) {
                   portfolioBalance={fullPortfolioBalance}
                   selectedAsset={selectedAsset}
                   selectedAssetPrice={selectedAssetPrice}
-                  selectedAssetPriceHistory={selectedAssetPriceHistory}
+                  selectedAssetPriceHistory={formatedPriceHistory}
+                  portfolioPriceHistory={portfolioPriceHistory}
                   selectedTimeline={selectedTimeline}
                   transactions={transactions}
                   userAssetList={userAssetList}
                   onConnectHardwareWallet={onConnectHardwareWallet}
                   onCreateAccount={onCreateWallet}
                   onImportAccount={onImportAccount}
+                  isLoading={isFetchingPriceHistory}
                 />
               )}
             </>

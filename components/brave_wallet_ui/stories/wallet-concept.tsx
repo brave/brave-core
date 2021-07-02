@@ -9,7 +9,7 @@ import {
 } from '../components/desktop'
 import {
   NavTypes,
-  ChartTimelineType,
+  AssetPriceTimeframe,
   PriceDataObjectType,
   AssetOptionType,
   AssetPriceReturnInfo,
@@ -45,7 +45,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [inputValue, setInputValue] = React.useState<string>('')
   const [hasRestoreError, setHasRestoreError] = React.useState<boolean>(false)
   const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
-  const [selectedTimeline, setSelectedTimeline] = React.useState<ChartTimelineType>('24HRS')
+  const [selectedTimeline, setSelectedTimeline] = React.useState<AssetPriceTimeframe>(AssetPriceTimeframe.OneDay)
   const [selectedAssetPriceHistory, setSelectedAssetPriceHistory] = React.useState<PriceDataObjectType[]>(PriceHistoryMockData.slice(15, 20))
   const [selectedAsset, setSelectedAsset] = React.useState<AssetOptionType>()
 
@@ -219,27 +219,27 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   }
 
   // This will change once we hit a real api for pricing
-  const timeline = (path: ChartTimelineType) => {
+  const timeline = (path: AssetPriceTimeframe) => {
     switch (path) {
-      case '5MIN':
+      case AssetPriceTimeframe.Live:
         return 17
-      case '24HRS':
+      case AssetPriceTimeframe.OneDay:
         return 15
-      case '7Day':
+      case AssetPriceTimeframe.OneWeek:
         return 12
-      case '1Month':
+      case AssetPriceTimeframe.OneMonth:
         return 10
-      case '3Months':
+      case AssetPriceTimeframe.ThreeMonths:
         return 8
-      case '1Year':
+      case AssetPriceTimeframe.OneYear:
         return 4
-      case 'AllTime':
+      case AssetPriceTimeframe.All:
         return 0
     }
   }
 
   // This updates the price chart timeline
-  const onChangeTimeline = (path: ChartTimelineType) => {
+  const onChangeTimeline = (path: AssetPriceTimeframe) => {
     setSelectedAssetPriceHistory(PriceHistoryMockData.slice(timeline(path), 20))
     setSelectedTimeline(path)
   }
@@ -308,6 +308,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                           selectedTimeline={selectedTimeline}
                           selectedAsset={selectedAsset}
                           onSelectAsset={onSelectAsset}
+                          portfolioPriceHistory={selectedAssetPriceHistory}
                           portfolioBalance={scrapedFullPortfolioBalance()}
                           transactions={transactions}
                           selectedAssetPrice={selectedAssetPrice}
@@ -315,6 +316,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                           onConnectHardwareWallet={onConnectHardwareWallet}
                           onCreateAccount={onCreateAccount}
                           onImportAccount={onImportAccount}
+                          isLoading={false}
                         />
                       )}
                     </>

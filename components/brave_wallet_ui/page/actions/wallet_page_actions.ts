@@ -4,8 +4,15 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { createAction } from 'redux-act'
-import { CreateWalletPayloadType, WalletCreatedPayloadType, RecoveryWordsAvailablePayloadType, RestoreWalletPayloadType } from '../constants/action_types'
-import { ChartTimelineType, AssetOptionType } from '../../constants/types'
+import {
+  CreateWalletPayloadType,
+  WalletCreatedPayloadType,
+  RecoveryWordsAvailablePayloadType,
+  RestoreWalletPayloadType,
+  SelectAssetPayloadType,
+  UpdateSelectedAssetType
+} from '../constants/action_types'
+import { AssetOptionType } from '../../constants/types'
 
 export const createWallet = createAction<CreateWalletPayloadType>('createWallet')
 export const restoreWallet = createAction<RestoreWalletPayloadType>('restoreWallet')
@@ -15,5 +22,7 @@ export const showRecoveryPhrase = createAction<boolean>('showRecoveryPhrase')
 export const recoveryWordsAvailable = createAction<RecoveryWordsAvailablePayloadType>('recoveryWordsAvailable')
 export const walletBackupComplete = createAction('walletBackupComplete')
 export const hasMnemonicError = createAction<boolean>('hasMnemonicError')
-export const changeTimline = createAction<ChartTimelineType>('changeTimline')
-export const selectAsset = createAction<AssetOptionType>('selectAsset')
+export const updatePriceInfo = createAction<SelectAssetPayloadType>('updatePriceInfo')
+export const selectAsset = createAction<UpdateSelectedAssetType>('selectAsset')
+export const updateSelectedAsset = createAction<AssetOptionType>('updateSelectedAsset')
+export const setIsFetchingPriceHistory = createAction<boolean>('setIsFetchingPriceHistory')

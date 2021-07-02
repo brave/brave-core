@@ -2,13 +2,13 @@ import * as React from 'react'
 
 // Constants
 import {
-  ChartTimelineType,
   PriceDataObjectType,
   AssetOptionType,
   RPCTransactionType,
   AssetPriceReturnInfo,
   UserAssetOptionType,
-  WalletAccountType
+  WalletAccountType,
+  AssetPriceTimeframe
 } from '../../../../constants/types'
 import locale from '../../../../constants/locale'
 
@@ -52,18 +52,19 @@ import {
 
 export interface Props {
   toggleNav: () => void
-  onChangeTimeline: (path: ChartTimelineType) => void
+  onChangeTimeline: (path: AssetPriceTimeframe) => void
   onSelectAsset: (asset: AssetOptionType | undefined) => void
   onClickAddAccount: () => void
   userAssetList: UserAssetOptionType[]
   accounts: WalletAccountType[]
-  selectedTimeline: ChartTimelineType
+  selectedTimeline: AssetPriceTimeframe
   selectedAsset: AssetOptionType | undefined
   selectedAssetPrice: AssetPriceReturnInfo | undefined
   selectedAssetPriceHistory: PriceDataObjectType[]
-  portfolioPriceHistory?: []
+  portfolioPriceHistory: PriceDataObjectType[]
   portfolioBalance: string
   transactions: (RPCTransactionType | undefined)[]
+  isLoading: boolean
 }
 
 const Portfolio = (props: Props) => {
@@ -72,6 +73,7 @@ const Portfolio = (props: Props) => {
     onChangeTimeline,
     onSelectAsset,
     onClickAddAccount,
+    portfolioPriceHistory,
     selectedAssetPriceHistory,
     selectedAssetPrice,
     selectedTimeline,
@@ -79,7 +81,8 @@ const Portfolio = (props: Props) => {
     selectedAsset,
     portfolioBalance,
     transactions,
-    userAssetList
+    userAssetList,
+    isLoading
   } = props
 
   const [filteredAssetList, setfilteredAssetList] = React.useState<UserAssetOptionType[]>(userAssetList)
@@ -165,7 +168,7 @@ const Portfolio = (props: Props) => {
           </AssetRow>
           <DetailText>{selectedAsset.name} {locale.price} ({selectedAsset.symbol})</DetailText>
           <PriceRow>
-            <PriceText>${hoverPrice ? hoverPrice : selectedAssetPrice ? selectedAssetPrice.usd : 0.00}</PriceText>
+            <PriceText>${hoverPrice ? hoverPrice : selectedAssetPrice ? formatePrices(Number(selectedAssetPrice.usd)) : 0.00}</PriceText>
             <PercentBubble isDown={selectedAssetPrice ? selectedAssetPrice.change24Hour < 0 : false}>
               <ArrowIcon isDown={selectedAssetPrice ? selectedAssetPrice.change24Hour < 0 : false} />
               <PercentText>{selectedAssetPrice ? selectedAssetPrice.change24Hour : 0}%</PercentText>
@@ -177,8 +180,9 @@ const Portfolio = (props: Props) => {
       <LineChart
         isDown={selectedAsset && selectedAssetPrice ? selectedAssetPrice.change24Hour < 0 : false}
         isAsset={!!selectedAsset}
-        priceData={selectedAssetPriceHistory}
+        priceData={selectedAsset ? selectedAssetPriceHistory : portfolioPriceHistory}
         onUpdateBalance={onUpdateBalance}
+        isLoading={isLoading}
       />
       {selectedAsset &&
         <>

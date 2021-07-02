@@ -4,30 +4,30 @@ import locale from '../constants/locale'
 export const ChartTimelineOptions: ChartTimelineObjectType[] = [
   {
     name: locale.chartLive,
-    id: '5MIN'
+    id: 0
   },
   {
     name: locale.chartOneDay,
-    id: '24HRS'
+    id: 1
   },
   {
     name: locale.chartOneWeek,
-    id: '7Day'
+    id: 2
   },
   {
     name: locale.chartOneMonth,
-    id: '1Month'
+    id: 3
   },
   {
     name: locale.chartThreeMonths,
-    id: '3Months'
+    id: 4
   },
   {
     name: locale.chartOneYear,
-    id: '1Year'
+    id: 5
   },
   {
     name: locale.chartAllTime,
-    id: 'AllTime'
+    id: 6
   }
 ]

@@ -5,13 +5,13 @@ import {
   TopTabNavTypes,
   AppObjectType,
   AppsListType,
-  ChartTimelineType,
   PriceDataObjectType,
   AssetOptionType,
   UserAssetOptionType,
   RPCTransactionType,
   AssetPriceReturnInfo,
-  WalletAccountType
+  WalletAccountType,
+  AssetPriceTimeframe
 } from '../../../../constants/types'
 import { TopNavOptions } from '../../../../options/top-nav-options'
 import { TopTabNav, BackupWarningBanner, AddAccountModal } from '../../'
@@ -24,20 +24,22 @@ import { PortfolioView, AccountsView } from '../'
 export interface Props {
   onLockWallet: () => void
   onShowBackup: () => void
-  onChangeTimeline: (path: ChartTimelineType) => void
+  onChangeTimeline: (path: AssetPriceTimeframe) => void
   onSelectAsset: (asset: AssetOptionType | undefined) => void
   onCreateAccount: (name: string) => void
   onImportAccount: (name: string, key: string) => void
   onConnectHardwareWallet: (hardware: 'Ledger' | 'Trezor') => void
   needsBackup: boolean
   accounts: WalletAccountType[]
-  selectedTimeline: ChartTimelineType
+  selectedTimeline: AssetPriceTimeframe
+  portfolioPriceHistory: PriceDataObjectType[]
   selectedAssetPriceHistory: PriceDataObjectType[]
   selectedAssetPrice: AssetPriceReturnInfo | undefined
   selectedAsset: AssetOptionType | undefined
   portfolioBalance: string
   transactions: (RPCTransactionType | undefined)[]
   userAssetList: UserAssetOptionType[]
+  isLoading: boolean
 }
 
 const CryptoView = (props: Props) => {
@@ -49,6 +51,7 @@ const CryptoView = (props: Props) => {
     onCreateAccount,
     onImportAccount,
     onConnectHardwareWallet,
+    portfolioPriceHistory,
     userAssetList,
     selectedTimeline,
     selectedAssetPriceHistory,
@@ -57,7 +60,8 @@ const CryptoView = (props: Props) => {
     selectedAsset,
     portfolioBalance,
     transactions,
-    selectedAssetPrice
+    selectedAssetPrice,
+    isLoading
   } = props
   const [selectedTab, setSelectedTab] = React.useState<TopTabNavTypes>('portfolio')
   const [favoriteApps, setFavoriteApps] = React.useState<AppObjectType[]>([
@@ -154,9 +158,11 @@ const CryptoView = (props: Props) => {
           onClickAddAccount={onClickAddAccount}
           selectedAsset={selectedAsset}
           portfolioBalance={portfolioBalance}
+          portfolioPriceHistory={portfolioPriceHistory}
           transactions={transactions}
           selectedAssetPrice={selectedAssetPrice}
           userAssetList={userAssetList}
+          isLoading={isLoading}
         />
       }
       {selectedTab === 'accounts' &&
