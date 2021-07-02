@@ -232,7 +232,8 @@ void IPFSTabHelper::UpdateDnsLinkButtonState() {
 
 bool IPFSTabHelper::CanResolveURL(const GURL& url) const {
   return url.SchemeIsHTTPOrHTTPS() &&
-         !IsAPIGateway(url.GetOrigin(), chrome::GetChannel());
+         !IsAPIGateway(url.GetOrigin(), chrome::GetChannel()) &&
+         !IsDefaultGatewayURL(url, pref_service_);
 }
 
 void IPFSTabHelper::MaybeShowDNSLinkButton(
