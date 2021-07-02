@@ -54,6 +54,9 @@ const LargeArticle = React.forwardRef<HTMLElement, ArticleProps>(function (props
 
   const innerRef = React.useRef<HTMLElement>(null)
 
+  const onItemViewedRef = React.useRef(props.onItemViewed)
+  onItemViewedRef.current = props.onItemViewed
+
   React.useEffect(() => {
     if (!innerRef.current) {
       return
@@ -72,15 +75,20 @@ const LargeArticle = React.forwardRef<HTMLElement, ArticleProps>(function (props
     if (!props.onItemViewed) {
       return
     }
-    let onItemViewed = props.onItemViewed
+
     const observer = new VisibilityTimer(() => {
-      onItemViewed(item)
+      const onItemViewed = onItemViewedRef.current
+      if (onItemViewed) {
+        onItemViewed(item)
+      }
     }, 100, innerRef.current)
+
     observer.startTracking()
+
     return () => {
       observer.stopTracking()
     }
-  }, [innerRef.current, props.onItemViewed])
+  }, [innerRef.current, Boolean(props.onItemViewed)])
 
   // TODO(petemill): Avoid nested links
   // `ref as any` due to https://github.com/DefinitelyTyped/DefinitelyTyped/issues/28884
