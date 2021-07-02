@@ -48,6 +48,13 @@ handler.on(WalletPageActions.restoreWallet.getType(), async (store, payload: Res
   await refreshWalletInfo(store)
 })
 
+handler.on(WalletPageActions.addAccountToWallet.getType(), async (store) => {
+  const apiProxy = await getAPIProxy()
+  const result = await apiProxy.addAccountToWallet()
+  await refreshWalletInfo(store)
+  return result.success
+})
+
 handler.on(WalletPageActions.showRecoveryPhrase.getType(), async (store, payload: boolean) => {
   const apiProxy = await getAPIProxy()
   const result = await apiProxy.getRecoveryWords()

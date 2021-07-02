@@ -51,6 +51,17 @@ void WalletPageHandler::CreateWallet(const std::string& password,
   std::move(callback).Run(keyring_controller->GetMnemonicForDefaultKeyring());
 }
 
+void WalletPageHandler::AddAccountToWallet(AddAccountToWalletCallback callback) {
+  auto* browser_context = web_ui_->GetWebContents()->GetBrowserContext();
+  auto* keyring_controller =
+      GetBraveWalletService(browser_context)->keyring_controller();
+  auto* keyring = keyring_controller->GetDefaultKeyring();
+  if (keyring) {
+    keyring->AddAccounts();
+  }
+  std::move(callback).Run(keyring);
+}
+
 void WalletPageHandler::GetRecoveryWords(GetRecoveryWordsCallback callback) {
   auto* browser_context = web_ui_->GetWebContents()->GetBrowserContext();
   auto* keyring_controller =

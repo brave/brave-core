@@ -29,6 +29,7 @@ export interface Props {
   onCreateAccount: (name: string) => void
   onImportAccount: (name: string, key: string) => void
   onConnectHardwareWallet: (hardware: 'Ledger' | 'Trezor') => void
+  onToggleAddModal: () => void
   needsBackup: boolean
   accounts: WalletAccountType[]
   selectedTimeline: AssetPriceTimeframe
@@ -40,6 +41,7 @@ export interface Props {
   transactions: (RPCTransactionType | undefined)[]
   userAssetList: UserAssetOptionType[]
   isLoading: boolean
+  showAddModal: boolean
 }
 
 const CryptoView = (props: Props) => {
@@ -61,7 +63,9 @@ const CryptoView = (props: Props) => {
     portfolioBalance,
     transactions,
     selectedAssetPrice,
-    isLoading
+    isLoading,
+    showAddModal,
+    onToggleAddModal
   } = props
   const [selectedTab, setSelectedTab] = React.useState<TopTabNavTypes>('portfolio')
   const [favoriteApps, setFavoriteApps] = React.useState<AppObjectType[]>([
@@ -70,7 +74,6 @@ const CryptoView = (props: Props) => {
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
   const [hideNav, setHideNav] = React.useState<boolean>(false)
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
-  const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
 
   // In the future these will be actual paths
   // for example wallet/crypto/portfolio
@@ -106,11 +109,11 @@ const CryptoView = (props: Props) => {
   }
 
   const onClickAddAccount = () => {
-    setShowAddModal(true)
+    onToggleAddModal()
   }
 
   const onCloseAddModal = () => {
-    setShowAddModal(false)
+    onToggleAddModal()
   }
 
   return (

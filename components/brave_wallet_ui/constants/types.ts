@@ -256,9 +256,14 @@ export interface RestoreWalletReturnInfo {
   isValidMnemonic: boolean
 }
 
+export interface AddAccountToWalletReturnInfo {
+  success: boolean
+}
+
 export interface WalletAPIHandler {
   getWalletInfo: () => Promise<WalletInfo>
   lockWallet: () => Promise<void>
+  addAccountToWallet: () => Promise<AddAccountToWalletReturnInfo>
   unlockWallet: (password: string) => Promise<UnlockWalletReturnInfo>
   getAssetPrice: (asset: string) => Promise<GetAssetPriceReturnInfo>
   getAssetPriceHistory: (asset: string, timeframe: AssetPriceTimeframe) => Promise<GetAssetPriceHistoryReturnObjectInfo>

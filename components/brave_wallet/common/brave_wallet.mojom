@@ -50,6 +50,7 @@ interface PageHandler {
   CreateWallet(string password) => (string mnemonic);
   RestoreWallet(string mnemonic, string password) => (bool isValidMnemonic);
   GetRecoveryWords() => (string mnemonic);
+  AddAccountToWallet() => (bool success);
 };
 
 struct AppItem {

@@ -48,6 +48,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [selectedTimeline, setSelectedTimeline] = React.useState<AssetPriceTimeframe>(AssetPriceTimeframe.OneDay)
   const [selectedAssetPriceHistory, setSelectedAssetPriceHistory] = React.useState<PriceDataObjectType[]>(PriceHistoryMockData.slice(15, 20))
   const [selectedAsset, setSelectedAsset] = React.useState<AssetOptionType>()
+  const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
 
   // In the future these will be actual paths
   // for example wallet/rewards
@@ -260,6 +261,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     alert(`Connecting to ${hardware} wallet`)
   }
 
+  const onToggleAddModal = () => {
+    setShowAddModal(!showAddModal)
+  }
+
   return (
     <WalletPageLayout>
       <SideNav
@@ -317,6 +322,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                           onCreateAccount={onCreateAccount}
                           onImportAccount={onImportAccount}
                           isLoading={false}
+                          showAddModal={showAddModal}
+                          onToggleAddModal={onToggleAddModal}
                         />
                       )}
                     </>
