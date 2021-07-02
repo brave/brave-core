@@ -75,13 +75,25 @@ RegisterStyleOverride(
         padding-inline-start: 0 !important;
       }
 
+      a[href]:focus {
+        border: 4px solid rgba(160, 165, 235, 1) !important;
+        outline: none !important;
+        border-radius: 6px;
+      }
+
       a[href].iron-selected {
-        color: var(--settings-nav-item-color) !important;
+        color: none;
+        background: -webkit-linear-gradient(314.42deg, #FA7250 6.04%, #FF1893 44.31%, #A78AFF 100%) !important;
+        -webkit-background-clip: text !important;;
+        -webkit-text-fill-color: transparent !important;
         font-weight: 600 !important;
       }
 
+      a:hover, iron-icon:hover {
+        color: rgba(76, 84, 210, 1) !important;
+      }
+
       iron-icon {
-        color: var(--settings-nav-item-color);
         margin-inline-end: 16px !important;
         width: 20px;
         height: 20px;
