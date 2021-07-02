@@ -243,10 +243,10 @@
   "devDependencies": {
     "@babel/core": "7.13.8",
     "@dump247/storybook-state": "1.6.1",
-    "@storybook/addon-essentials": "6.2.9",
+    "@storybook/addon-essentials": "^6.3.1",
     "@storybook/addon-knobs": "6.2.9",
     "@storybook/addons": "6.2.9",
-    "@storybook/react": "6.2.9",
+    "@storybook/react": "^6.3.1",
     "@types/array-move": "2.0.0",
     "@types/bluebird": "3.5.33",
     "@types/chrome": "0.0.133",
