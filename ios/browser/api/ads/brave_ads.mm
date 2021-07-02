@@ -250,21 +250,24 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 #pragma mark - Initialization / Shutdown
 
-- (void)initializeIfAdsEnabled:(void (^)(bool))completion {
-  if (![self isAdsServiceRunning] && self.enabled) {
-    const auto dbPath = base::SysNSStringToUTF8([self adsDatabasePath]);
-    adsDatabase = new ads::Database(base::FilePath(dbPath));
-
-    adEventHistory = new ads::AdEventHistory();
-
-    adsClient = new AdsClientIOS(self);
-    ads = ads::Ads::CreateInstance(adsClient);
-    ads->Initialize(^(ads::Result result) {
-      [self periodicallyCheckForAdsResourceUpdates];
-      [self registerAdsResources];
-      completion(result == ads::Result::SUCCESS);
-    });
+- (void)initialize:(void (^)(bool))completion {
+  if ([self isAdsServiceRunning]) {
+    completion(false);  // Already running
+    return;
   }
+
+  const auto dbPath = base::SysNSStringToUTF8([self adsDatabasePath]);
+  adsDatabase = new ads::Database(base::FilePath(dbPath));
+
+  adEventHistory = new ads::AdEventHistory();
+
+  adsClient = new AdsClientIOS(self);
+  ads = ads::Ads::CreateInstance(adsClient);
+  ads->Initialize(^(ads::Result result) {
+    [self periodicallyCheckForAdsResourceUpdates];
+    [self registerAdsResources];
+    completion(result == ads::Result::SUCCESS);
+  });
 }
 
 - (void)updateWalletInfo:(NSString*)paymentId base64Seed:(NSString*)base64Seed {

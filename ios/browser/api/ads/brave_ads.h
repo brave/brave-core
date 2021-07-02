@@ -61,8 +61,8 @@ OBJC_EXPORT
 
 #pragma mark - Initialization / Shutdown
 
-/// Initializes the ads service if ads is enabled
-- (void)initializeIfAdsEnabled:(void (^)(bool success))completion;
+/// Initializes the ads service
+- (void)initialize:(void (^)(bool success))completion;
 
 /// Shuts down the ads service if its running
 - (void)shutdown:(nullable void (^)())completion;
@@ -75,8 +75,10 @@ OBJC_EXPORT
 
 #pragma mark - Configuration
 
-/// Whether or not Brave Ads is enabled
-@property(nonatomic, assign, getter=isEnabled) BOOL enabled;
+/// Whether or not Brave Ads is enabled and the user should receive
+/// notification-style ads and be rewarded for it
+@property(nonatomic, assign, getter=isEnabled)
+    BOOL enabled NS_SWIFT_NAME(isEnabled);
 
 /// The max number of ads the user can see in an hour
 @property(nonatomic, assign)
