@@ -214,18 +214,6 @@
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Pour pouvoir commencer, vous devez avoir installé Brave sur tous les appareils que vous souhaitez synchroniser. Pour les associer, lancez une chaîne de synchronisation que vous utiliserez pour associer tous vos appareils en toute sécurité.";
 
-/* Browser Lock feature callout enable action. */
-"BrowserLockCalloutEnable" = "Activer";
-
-/* Browser Lock feature callout message. */
-"BrowserLockCalloutMessage" = "Avec le verrouillage de navigateur, vous devez saisir un code confidentiel pour accéder à Brave.";
-
-/* Browser Lock feature callout not now action. */
-"BrowserLockCalloutNotNow" = "Pas maintenant";
-
-/* Browser Lock feature callout title. */
-"BrowserLockCalloutTitle" = "Les informations privées doivent rester confidentielles.";
-
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Historique de navigation";
 
@@ -327,18 +315,6 @@
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Données économisées \nest.";
-
-/* DuckDuckGo callout enable action. */
-"DDGCalloutEnable" = "Oui";
-
-/* DuckDuckGo message. */
-"DDGCalloutMessage" = "Lorsque vous effectuez des recherches privées dans cet onglet, Brave utilise DuckDuckGo. DuckDuckGo est un moteur de recherche qui ne collecte pas votre historique de recherches et vous permet ainsi d'effectuer des recherches privées.";
-
-/* DuckDuckGo callout no action. */
-"DDGCalloutNo" = "Non";
-
-/* DuckDuckGo callout title. */
-"DDGCalloutTitle" = "Effectuer une recherche privée avec DuckDuckGo ?";
 
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "Pas maintenant";
@@ -582,9 +558,6 @@
 
 /* History tableview section header */
 "LastWeek" = "La semaine dernière";
-
-/* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "En savoir plus sur la recherche privée \navec DuckDuckGo";
 
 /* No comment provided by engineer. */
 "learnMore" = "En savoir plus";
@@ -948,6 +921,9 @@
 
 /* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
 "SearchSuggestionSectionTitleFormat" = "Recherche sur %@";
+
+/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
+"SearchSuggestionSectionTitleNoSearchFormat" = "Rechercher";
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Suggestions de recherche";

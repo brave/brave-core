@@ -388,13 +388,13 @@
 /* Recent Search Scanned text when a user scans a qr code */
 "RecentSearchScanned" = "已掃描";
 
-/* Scanning a QRCode for searching body */
-"RecentSearchScannerDescriptionBody" = "若要依 QRCode 搜尋，請對準頁框中央的 QR。";
+/* Scanning a QR Code for searching body */
+"RecentSearchScannerDescriptionBody" = "若要以 QR 碼搜尋，請對準方框中央的 QR 碼。";
 
-/* Scanning a QRCode for title */
+/* Scanning a QR Code for title */
 "RecentSearchScannerDescriptionTitle" = "說明";
 
-/* Scanning a QRCode for searching */
+/* Scanning a QR Code for searching */
 "RecentSearchScannerTitle" = "掃描 QR 碼";
 
 /* Recent Search Section Description */
@@ -793,6 +793,12 @@
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkSpecialTierTitle" = "恭喜，您已具有特別的地位。";
 
+/* Subtitle for  The parameter substituted for \"%@\" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB */
+"shieldEducation.domainSpecificDataSavedSubtitle" = "平均節省的數據用量\n%@ MB";
+
+/* Action title for button at domain specific data saved pop-up */
+"shieldEducation.dontShowThisTitle" = "不再顯示";
+
 /* Action title for inspectable Education warnings */
 "shieldEducation.inspectTitle" = "立即查看";
 
@@ -831,6 +837,9 @@
 
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "謝謝";
+
+/* Title used when in warning pop-over when domain specific data save appears */
+"socialSharing.domainSpecificDataSavedTitle" = "我每天使用 Brave 瀏覽網頁來節省數據用量。";
 
 /* Text used for social sharing together with Brave Shield values */
 "socialSharing.shareDescriptionTitle" = "我每天使用 Brave 瀏覽網頁來節省數據用量。";

@@ -214,18 +214,6 @@
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Per iniziare, avrai bisogno che Brave sia installato su tutti i dispositivi che prevedi di sincronizzare. Per metterli in collegamento, crea una catena di sincronizzazione che userai per collegare in modo sicuro tutti i tuoi dispositivi.";
 
-/* Browser Lock feature callout enable action. */
-"BrowserLockCalloutEnable" = "Attiva";
-
-/* Browser Lock feature callout message. */
-"BrowserLockCalloutMessage" = "Con la funzione Blocco del browser, dovrai inserire un PIN per accedere a Brave.";
-
-/* Browser Lock feature callout not now action. */
-"BrowserLockCalloutNotNow" = "Non ora";
-
-/* Browser Lock feature callout title. */
-"BrowserLockCalloutTitle" = "Privato significa privato.";
-
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Cronologia di navigazione";
 
@@ -327,18 +315,6 @@
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Dati (stima)\nsalvati";
-
-/* DuckDuckGo callout enable action. */
-"DDGCalloutEnable" = "Sì";
-
-/* DuckDuckGo message. */
-"DDGCalloutMessage" = "Con la ricerca privata, Brave userà DuckDuckGo per rispondere alle ricerche eseguite in questa scheda. DuckDuckGo è un motore di ricerca che non tiene traccia della cronologia di ricerca e permette ricerche private.";
-
-/* DuckDuckGo callout no action. */
-"DDGCalloutNo" = "No";
-
-/* DuckDuckGo callout title. */
-"DDGCalloutTitle" = "Ricerca privata con DuckDuckGo?";
 
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "Non ora";
@@ -583,9 +559,6 @@
 /* History tableview section header */
 "LastWeek" = "Ultima settimana";
 
-/* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "Scopri di più sulla ricerca privata \ncon DuckDuckGo";
-
 /* No comment provided by engineer. */
 "learnMore" = "Scopri di più";
 
@@ -785,10 +758,10 @@
 "PrivateBrowsingOnlyWarning" = "Con la modalità “Solo navigazione privata”, verranno chiuse tutte le schede aperte e uscirai da tutti i siti.";
 
 /* Private tab details */
-"PrivateTabBody" = "Le schede private non vengono salvate su Brave, ma non garantiscono l’anonimato online. I siti che visiti in una scheda privata non appariranno nella cronologia, e quando chiudi la scheda i loro cookie scompaiono sempre: non ne resterà traccia su Brave.\nIl tuo gestore di telefonia mobile (o il proprietario della rete Wi-Fi o VPN con cui ti connetti) può vedere quali siti visiti, e questi siti memorizzeranno il tuo indirizzo IP pubblico, anche nelle schede private.";
+"PrivateTabBody" = "Le schede private non vengono salvate in Brave, ma non ti danno l’anonimato online. I siti che visiti in una scheda privata non verranno visualizzati nella tua cronologia e i loro cookie svaniscono sempre quando li chiudi: non ne rimarrà alcuna traccia in Brave. Tuttavia, i download verranno salvati.\nIl tuo operatore di telefonia mobile (o il proprietario della rete Wi-Fi o VPN alla quale hai la connessione) può vedere quali siti visiti e quei siti conosceranno il tuo indirizzo IP pubblico, anche nelle schede private.";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "L’uso delle schede private cambia soltanto quello che fa Brave sul tuo dispositivo, e non modifica il comportamento di nessun altro.\n\nI siti che visiti continuano a conoscere il tuo indirizzo IP. Partendo da questa informazione, spesso possono risalire alla tua posizione indicativa, in genere alla città in cui ti trovi; e a volte la conoscenza della posizione può essere molto più particolareggiata. Inoltre i siti sanno tutto quello che dici direttamente a loro, per esempio i termini che usi per le ricerche. Se fai il log‑in per accedere a un sito, questo saprà che sei tu il proprietario dell’account. Chiudendo la scheda privata, si continuerà a rimanere disconnessi perché Brave rimuoverà i cookie che servono a mantenere attivo l’accesso.\n\nIl tuo Internet service provider (ISP), cioè chi ti fornisce il collegamento a internet, chiunque esso sia, può vedere la tua attività di rete. Spesso si tratta del tuo operatore di telefonia mobile. Se ti connetti tramite una rete Wi‑Fi è il proprietario della rete, e se usi una VPN è chiunque gestisca la VPN. Il tuo ISP può vedere quali siti visiti mentre li visiti. Se questi siti usano il protocollo HTTPS, può al massimo ipotizzare quello che stai facendo durante la visita. Se però usano solo l’HTTP, allora il tuo ISP è in grado di vedere tutto: i termini di ricerca, le pagine che leggi e i link che apri.\n\nSe a gestire il tuo dispositivo è un datore di lavoro, potrebbe anche tenere traccia di quello che fai con il dispositivo. Usando le schede private, probabilmente non gli impedirai di sapere quali siti hai visitato. Qualcun altro con accesso al tuo dispositivo potrebbe inoltre avere installato del software che monitora la tua attività, e anche da questo le schede private non ti possono proteggere.";
+"PrivateTabDetails" = "L’utilizzo delle schede private ha effetto solo su come Brave agisce sul tuo dispositivo, non cambia il comportamento di altri.\n\nI siti conoscono sempre il tuo indirizzo IP quando li visiti. Da questo, spesso possono indovinare approssimativamente dove ti trovi, in genere la tua città. A volte quell’ipotesi di posizione può essere molto più specifica. I siti sanno anche tutto ciò che dici loro specificamente, come i termini di ricerca. Se accedi a un sito, sapranno che quell’account ti appartiene. La tua connessione sarà chiusa quando chiudi le schede private perché Brave eliminerà il cookie che mantiene la connessione.\n\nChiunque ti fornisca la connessione a Internet (il tuo ISP) può vedere tutta la tua attività di rete. Spesso, questo è il tuo operatore di telefonia mobile. Se hai una connessione a una rete Wi-Fi, questo è il proprietario di quella rete, e se stai utilizzando una VPN, allora è chi esegue quella VPN. Il tuo ISP può vedere quali siti visiti mentre li visiti. Se quei siti utilizzano HTTPS, non possono fare molto di più di un’ipotesi plausibile su ciò che fai su quei siti. Ma se un sito utilizza solo HTTP, il tuo ISP può vedere tutto: i tuoi termini di ricerca, quali pagine leggi e quali link segui.\n\nSe un datore di lavoro gestisce il tuo dispositivo, potrebbe anche tenere traccia di come lo utilizzi. L’uso delle schede private probabilmente non impedirà loro di sapere quali siti hai visitato. Qualcun altro con accesso al tuo dispositivo potrebbe anche aver installato un software che monitora la tua attività e anche le schede private non ti proteggeranno da questo monitoraggio.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Scopri di più sulle schede private.";
@@ -948,6 +921,9 @@
 
 /* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
 "SearchSuggestionSectionTitleFormat" = "Ricerca con %@";
+
+/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
+"SearchSuggestionSectionTitleNoSearchFormat" = "Ricerca";
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Suggerimenti di ricerca";

@@ -214,18 +214,6 @@
 /* Sync settings welcome */
 "BraveSyncWelcome" = "はじめに、同期させたいすべてのデバイスにBraveをインストールする必要があります。そして、同期チェーンを開始してすべてのデバイスを安全にリンクできます。";
 
-/* Browser Lock feature callout enable action. */
-"BrowserLockCalloutEnable" = "有効にする";
-
-/* Browser Lock feature callout message. */
-"BrowserLockCalloutMessage" = "ブラウザロックを有効にすると、Braveへのアクセス時に PIN の入力が必要になります。";
-
-/* Browser Lock feature callout not now action. */
-"BrowserLockCalloutNotNow" = "後で";
-
-/* Browser Lock feature callout title. */
-"BrowserLockCalloutTitle" = "Braveをよりプライベートに";
-
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "閲覧履歴";
 
@@ -327,18 +315,6 @@
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "節約できた\nデータ量(推定)";
-
-/* DuckDuckGo callout enable action. */
-"DDGCalloutEnable" = "はい";
-
-/* DuckDuckGo message. */
-"DDGCalloutMessage" = "プライベート検索を有効にすると、このプライベートタブの使用時は検索の応答に DuckDuckGo が使われます。DuckDuckGo は検索履歴を追跡しない検索エンジンで、これによりプライベートな検索が可能になります。";
-
-/* DuckDuckGo callout no action. */
-"DDGCalloutNo" = "いいえ";
-
-/* DuckDuckGo callout title. */
-"DDGCalloutTitle" = "DuckDuckGo によるプライベート検索を有効にしますか？";
 
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "今はしない";
@@ -583,9 +559,6 @@
 /* History tableview section header */
 "LastWeek" = "先週";
 
-/* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "DuckDuckGoのプライベート\n検索について詳しく";
-
 /* No comment provided by engineer. */
 "learnMore" = "詳しく";
 
@@ -785,10 +758,10 @@
 "PrivateBrowsingOnlyWarning" = "プライベートブラウジングのみモードでは、現在のタブがすべて閉じられ、すべてのサイトからログアウトされます。";
 
 /* Private tab details */
-"PrivateTabBody" = "プライベートタブはBraveには保存されませんが、オンラインで匿名化されることはありません。 プライベートタブでアクセスしたサイトは履歴に表示されず、Cookieを閉じると常に消えます。Braveにはそれらの痕跡は残りません。 ただし、ダウンロードしたファイルは保存されます。携帯通信会社（または接続しているWiFiネットワークまたはVPNの所有者）は、アクセスしたサイトを確認できます。プライベートタブを使っていても、パブリックIPアドレスは利用したサイト側で確認可能です。";
+"PrivateTabBody" = "プライベートタブはBraveに保存されませんが、オンライン上で匿名になるわけではありません。プライベートタブで訪問したサイトは、履歴には表示されず、そのサイトを閉じるとCookieは常に消滅し、Braveにはその痕跡が残りません。ただし、ダウンロードは保存されます。\nプライベートタブを利用していても、携帯電話会社（または接続しているWi-FiネットワークやVPNの所有者）は、あなたがどのサイトを訪れたかを知ることができ、それらのサイトはあなたの公開IPアドレスを知ることができます。";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "プライベートタブを使うと、Braveのデバイス上での動作は変わりますが、その他の行動は変わりません。\n              \n              あなたのIPアドレスは訪問先のサイトにより追跡され、あなたがいるおよその位置 (都市など) が推測されます。この位置情報の推測は、さらに詳細になる場合もあります。また、サイトはあなたが具体的に伝達したあらゆる内容 (検索語句など) を知ることができます。サイトにログインした場合、サイトにはあなたがそのアカウントの所有者であることが伝わります。プライベートタブを閉じるとことで、Braveはログイン状態を維持するCookieを破棄するため、あなたはログアウトします。\n              \n              あなたをインターネットに接続する者 (ISP) は、あなたのネットワークアクティビティをすべて見ることができます。多くの場合、これはご利用の携帯電話会社になります。WiFiネットワークに接続している場合は、そのネットワークの所有者になります。VPNを使用している場合は、そのVPNの管理者になります。ISPは、あなたがどのサイトを訪問したかを知ることができます。サイトがHTTPSを使っている場合、あなたがそのサイトで何をしたかについてISPの推測能力が限られます。HTTPのみが使用されている場合は、ISPによりあらゆること (検索語句、閲覧したページ、ジャンプしたリンク) がサイトに伝わります。\n              \n              雇用主がデバイスを管理している場合、雇用主もあなたがそのデバイスで行った行動を追跡できる可能性があります。プライベートタブを使ったとしても、訪問先のサイトを隠すことは不可能です。また、そのデバイスにアクセスできる他の人が、あなたのアクティビティをモニタリングするソフトウェアをインストールしている可能性もあります。その場合、プライベートタブを使ってもモニタリングを回避することはできません。";
+"PrivateTabDetails" = "プライベートタブを使うと、Braveがあなたのデバイス上で行うことが変わるだけで、他の人の行動が変わることはありません。\n\nお客様がサイトにアクセスすると、サイトは常にお客様のIPアドレスを取得します。このIPアドレスから、多くの場合、あなたがどこにいるか（通常は都市）を推測することができます。推測される場所は、より具体的な場合もあります。また、サイトは、検索キーワードなど、あなたが具体的に伝えたこともすべて把握しています。サイトにログインすると、あなたがそのアカウントの所有者であることがわかります。プライベートタブを閉じても、ログイン状態を維持するCookieがBraveによって破棄されるため、ログアウトされたままになります。\n\nあなたがインターネットに接続することを可能にしている人（あなたのISP）は、お客様のネットワーク活動をすべて見ることができます。多くの場合、これはあなたの携帯電話会社です。Wi-Fiネットワークに接続している場合は、そのネットワークの所有者であり、VPNを使用している場合は、そのVPNを運営している会社となります。あなたのISPは、あなたがどのサイトを訪れたかを見ることができます。それらのサイトがHTTPSを使用している場合、ISPはあなたがそのサイトで何をしているかについて、経験則に基づく推測以上のことはできません。しかし、サイトが HTTP のみを使用している場合、ISP は、あなたの検索用語、どのページを読んだか、どのリンクを辿ったかなど、すべてを見ることができます。\n\n雇用主があなたのデバイスを管理している場合は、あなたがそのデバイスで何をしているかを追跡しているかもしれません。プライベートタブを使用しても、あなたがどのサイトにアクセスしたかを雇用主に知られないようにすることはできないかもしれません。また、あなたのデバイスにアクセスできる誰かが、あなたの行動を監視するソフトウェアをインストールしている可能性もあり、プライベートタブを使用してもそうしたソフトウェアからあなたを保護することはできません。\n\n";
 
 /* Private tab information link */
 "PrivateTabLink" = "プライベートタブについて";
@@ -948,6 +921,9 @@
 
 /* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
 "SearchSuggestionSectionTitleFormat" = "%@で検索";
+
+/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
+"SearchSuggestionSectionTitleNoSearchFormat" = "検索";
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "検索候補";

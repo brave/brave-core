@@ -214,18 +214,6 @@
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Para começar, é necessário que o Brave esteja instalado em todos os dispositivos que você pretende sincronizar. Para vincular todos os seus dispositivos com segurança, crie uma cadeia de sincronização.";
 
-/* Browser Lock feature callout enable action. */
-"BrowserLockCalloutEnable" = "Ativar";
-
-/* Browser Lock feature callout message. */
-"BrowserLockCalloutMessage" = "Com o Bloqueio de navegador, você precisará inserir um PIN para acessar o Brave.";
-
-/* Browser Lock feature callout not now action. */
-"BrowserLockCalloutNotNow" = "Agora não";
-
-/* Browser Lock feature callout title. */
-"BrowserLockCalloutTitle" = "Privado significa privado mesmo.";
-
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Histórico de navegação";
 
@@ -327,18 +315,6 @@
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Economia de dados \nestimada";
-
-/* DuckDuckGo callout enable action. */
-"DDGCalloutEnable" = "Sim";
-
-/* DuckDuckGo message. */
-"DDGCalloutMessage" = "Com a pesquisa privada, o Brave usará o DuckDuckGo para responder às suas pesquisas enquanto você estiver nesta aba privada. O DuckDuckGo é um mecanismo de pesquisa que não rastreia seu histórico de pesquisas, permitindo que você faça buscas de modo privado.";
-
-/* DuckDuckGo callout no action. */
-"DDGCalloutNo" = "Não";
-
-/* DuckDuckGo callout title. */
-"DDGCalloutTitle" = "Usar o DuckDuckGo para realizar pesquisas privadas?";
 
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "Agora não";
@@ -582,9 +558,6 @@
 
 /* History tableview section header */
 "LastWeek" = "Última semana";
-
-/* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "Saiba mais sobre a pesquisa privada \ncom o DuckDuckGo";
 
 /* No comment provided by engineer. */
 "learnMore" = "Saiba mais";
@@ -948,6 +921,9 @@
 
 /* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
 "SearchSuggestionSectionTitleFormat" = "Pesquisa %@";
+
+/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
+"SearchSuggestionSectionTitleNoSearchFormat" = "Pesquisa";
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Sugestões de pesquisa";

@@ -214,18 +214,6 @@
 /* Sync settings welcome */
 "BraveSyncWelcome" = "首先，您需要在所有计划同步的设备上安装 Brave。要将它们链接在一起，请启动同步链，您将使用该同步链将所有设备安全地链接在一起。";
 
-/* Browser Lock feature callout enable action. */
-"BrowserLockCalloutEnable" = "启用";
-
-/* Browser Lock feature callout message. */
-"BrowserLockCalloutMessage" = "有了浏览器锁，您将需要输入 PIN 才可访问 Brave。";
-
-/* Browser Lock feature callout not now action. */
-"BrowserLockCalloutNotNow" = "现在不";
-
-/* Browser Lock feature callout title. */
-"BrowserLockCalloutTitle" = "隐私意味着保密。";
-
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "浏览历史";
 
@@ -327,18 +315,6 @@
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "估算数据 \n已保存";
-
-/* DuckDuckGo callout enable action. */
-"DDGCalloutEnable" = "是";
-
-/* DuckDuckGo message. */
-"DDGCalloutMessage" = "通过私人搜索功能，Brave 会在您在此私人标签中时通过 DuckDuckGo 对您的搜索进行回应。DuckDuckGo 是一个不会跟踪您的搜索历史的搜索引擎，让您可以私下进行搜索。";
-
-/* DuckDuckGo callout no action. */
-"DDGCalloutNo" = "不";
-
-/* DuckDuckGo callout title. */
-"DDGCalloutTitle" = "使用 DuckDuckGo 进行隐私搜索？";
 
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "回头再说";
@@ -583,9 +559,6 @@
 /* History tableview section header */
 "LastWeek" = "上周";
 
-/* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "通过 DuckDuckGo\n了解有关隐私搜索的内容";
-
 /* No comment provided by engineer. */
 "learnMore" = "了解更多";
 
@@ -785,10 +758,10 @@
 "PrivateBrowsingOnlyWarning" = "“仅私人浏览”模式会关闭所有当前选项卡，而且还会将你退出所有站点。";
 
 /* Private tab details */
-"PrivateTabBody" = "私人标签未保存在 Brave 中，但它们不会让您在线匿名。您在私人标签中访问的网站将不会在您的历史记录中显示，并且当您关闭它们时，其 Cookie 总是会消失 - 不会在 Brave 中留下任何痕迹。您的移动运营商（或您所连接的 WiFi 网络或 VPN  的所有者）可以查看您访问的网站，这些网站将学习您的公共IP地址，即使在私人标签中也是如此。";
+"PrivateTabBody" = "私人标签未保存在 Brave 上，但它们不会让您在线匿名。您在私人标签中访问的网站将不会在您的历史记录中显示，并且当您关闭那些网站时，其 Cookie 总是会消失，而不会在Brave  中留下任何痕迹。但是，下载会被保存。\n您的移动运营商（或您所连接的 WiFi 网络或 VPN  的所有者）可以看到您访问了哪些网站，而那些网站会指导您的公共 IP 地址（即使在私人标签中也是如此）。";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "使用私密 Tabs 只会更改 Brave 对您设备的操作，不会更改其他应用对您设备的操作。\n\n当您访问网站时，网站会随时知晓您的 IP 地址。由此地址，他们通常可以大致猜测您的位置 - 通常是您所在的城市。有时，对于位置的猜测可能更加具体。网站也会知晓您明确告诉他们的所有内容，例如您的搜索条件。如果您登录某个网站，他们就会知晓您是该帐户的所有者。当您关闭私密 Tabs 时，您仍然会被迫退出，因为 Brave 会删除辅助您随时登录的 cookie。\n\n为您连网（您的 ISP）的任何人都可以看到您所有的网络活动。通常是您的移动运营商。如果您连接到 WiFi 网络，则是该网络的所有者，如果您在使用 VPN，则是运行该 VPN 的人。您的 ISP 可以在您访问时查看您访问的网站。如果这些网站使用 HTTPS，它们只能对您在这些网站上所进行的操作进行合理的猜测。但是，如果某个网站仅使用 HTTP，那么您的 ISP 可以查看所有内容：您的搜索条件，您所阅读的页面以及您关注的链接。\n\n如果雇主管理您的设备，他们也可能会跟踪您的设备。使用私密 Tabs 可能不会阻止他们知晓您访问过哪些网站。有权访问您设备的其他人也可能安装了监控您活动的软件，而私密 Tabs 也无法保护您不受此影响。";
+"PrivateTabDetails" = "使用私人标签只会更改 Brave 在您设备上的操作，不会更改其他应用在您设备上的操作。\n\n当您访问网站时，网站会随时知晓您的 IP 地址。由此地址，他们通常可以大致猜测您的位置（通常是您所在的城市）。有时，对于位置的猜测可能更加具体。网站也会知晓您明确告诉他们的所有内容，例如您的搜索条件。如果您登录某个网站，他们就会知晓您是该帐户的所有者。当您关闭私人标签时，您仍然会被迫退出，因为 Brave 会删除辅助您随时登录的 cookie。\n\n为您连网（您的 ISP）的任何人都可以看到您所有的网络活动。通常是您的移动运营商。如果您连接到 WiFi 网络，则是该网络的所有者，如果您在使用 VPN，则是运行该 VPN 的人。您的 ISP 可以在您访问时查看您访问的网站。如果这些网站使用 HTTPS，它们只能对您在这些网站上所进行的操作进行合理的猜测。但是，如果某个网站仅使用 HTTP，那么您的 ISP 可以查看所有内容：您的搜索条件，您所阅读的页面以及您关注的链接。\n\n如果雇主管理您的设备，他们也可能会跟踪您的设备。使用私人标签可能不会阻止他们知晓您访问过哪些网站。有权访问您设备的其他人也可能安装了监控您活动的软件，而私人标签 也无法保护您不受此影响。";
 
 /* Private tab information link */
 "PrivateTabLink" = "了解私人标签";
@@ -948,6 +921,9 @@
 
 /* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
 "SearchSuggestionSectionTitleFormat" = "%@ 搜索";
+
+/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
+"SearchSuggestionSectionTitleNoSearchFormat" = "搜索";
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "搜索建议";

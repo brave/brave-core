@@ -214,18 +214,6 @@
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Başlamak için, senkronize etmeyi planladığınız tüm cihazlarda Brave'in yüklü olması gerekir. Bunları birbirine zincirlemek için, tüm cihazlarınızı güvenli bir şekilde birbirine bağlarken kullanacağınız bir eşitleme zinciri başlatın.";
 
-/* Browser Lock feature callout enable action. */
-"BrowserLockCalloutEnable" = "Etkinleştir";
-
-/* Browser Lock feature callout message. */
-"BrowserLockCalloutMessage" = "Tarayıcı Kilidi ile Brave'e erişmek için bir PIN girmeniz gerekir.";
-
-/* Browser Lock feature callout not now action. */
-"BrowserLockCalloutNotNow" = "Şimdi Değil";
-
-/* Browser Lock feature callout title. */
-"BrowserLockCalloutTitle" = "Özel demek özel demektir.";
-
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Arama Geçmişi";
 
@@ -327,18 +315,6 @@
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Tah. Veri \nMiktarı";
-
-/* DuckDuckGo callout enable action. */
-"DDGCalloutEnable" = "Evet";
-
-/* DuckDuckGo message. */
-"DDGCalloutMessage" = "Özel arama ile Brave, bu Özel Sekmedeyken aramalarınızı yanıtlamak için DuckDuckGo'yu kullanacaktır. DuckDuckGo, arama geçmişinizi izlemeyen ve gizlilik içinde arama yapmanızı sağlayan bir arama motorudur.";
-
-/* DuckDuckGo callout no action. */
-"DDGCalloutNo" = "Hayır";
-
-/* DuckDuckGo callout title. */
-"DDGCalloutTitle" = "DuckDuckGo ile gizlilik içinde arama yapmak istiyor musunuz?";
 
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "Şimdi değil";
@@ -583,9 +559,6 @@
 /* History tableview section header */
 "LastWeek" = "Geçen hafta";
 
-/* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "Gizli arama hakkında bilgi edinin \nDuckDuckGo ile birlikte";
-
 /* No comment provided by engineer. */
 "learnMore" = "Daha fazla bilgi edinin";
 
@@ -785,10 +758,10 @@
 "PrivateBrowsingOnlyWarning" = "Yalnızca Gizli Tarama modu tüm mevcut sekmelerinizi ve tüm sitelerdeki oturumlarınızı kapatır.";
 
 /* Private tab details */
-"PrivateTabBody" = "Gizli Sekmeler Brave'e kaydedilmez, ancak bu sizi internette anonim hale getirmez. Gizli bir sekmede ziyaret ettiğiniz siteler geçmişinizde gösterilmez ve bunları kapattığınızda çerezleri her zaman kaybolur - Brave'de bunlardan hiçbir iz kalmaz. Ancak, indirmeler kaydedilir.\nMobil operatörünüz (veya bağlı olduğunuz WiFi ağının veya VPN'in sahibi) hangi siteleri ziyaret ettiğinizi görebilir ve bu siteler Gizli Sekmelerde bile herkese açık IP adresinizi öğrenir.";
+"PrivateTabBody" = "Gizli Sekmeler Brave'e kaydedilmez, ancak bu sizi internette anonim hale getirmez. Gizli bir sekmede ziyaret ettiğiniz siteler geçmişinizde gösterilmez ve bunları kapattığınızda çerezleri her zaman kaybolur - Brave'de bunlardan hiçbir iz kalmaz. Ancak, indirmeler kaydedilir.\nMobil operatörünüz (veya bağlı olduğunuz Wi-Fi ağının veya VPN'in sahibi) hangi siteleri ziyaret ettiğinizi görebilir ve bu siteler Gizli Sekmelerde bile herkese açık IP adresinizi öğrenir.";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "Gizli Sekmeleri kullanmak yalnızca Brave'in cihazınızda yaptıklarını değiştirir, başka  bir kimsenin davranışını değiştirmez.\n\nSiteler IP adresinizi her ziyaret ettiğinizde öğrenir. Bundan, genellikle nerede olduğunuzu, genellikle bulunduğunuz şehri tahmin edebilir. Bazen bu konum tahmini çok daha spesifik olabilir. Siteler ayrıca arama terimleri gibi özel olarak onlara söylediğiniz her şeyi bilir. Bir siteye giriş yaptığınızda, bu hesabın sahibi olduğunuzu anlarlar. Gizli Sekmeleri kapattığınızda yine de oturumunuz kapatılacaktır, çünkü Brave oturum açmanızı sağlayan çerezi silecektir.\n\nSizi Internet'e (ISS'niz) kim bağlıyorsa, tüm ağ etkinliğinizi görebilir. Genellikle, bu mobil operatörünüzdür. Bir WiFi ağına bağlıysanız, bu ağın sahibidir ve bir VPN kullanıyorsanız, o VPN'i çalıştıran kişidir. ISS'niz hangi siteleri ziyaret ettiğinizi siz siteleri ziyaret ederken görebilir. Bu siteler HTTPS kullanıyorsa, bu sitelerde ne yaptığınız hakkında eğitimli bir tahminden daha fazlasını yapamazlar. Ancak bir site yalnızca HTTP kullanıyorsa ISS'niz her şeyi görebilir: arama terimleriniz, hangi sayfaları okuduğunuz ve hangi bağlantıları takip ettiğiniz.\n\nCihazınızı bir işveren yönetiyorsa, cihazınızla ne yaptığınızı takip edebilir. Gizli Sekmeleri kullanmak muhtemelen hangi siteleri ziyaret ettiğinizi bilmelerini engellemez. Cihazınıza erişimi olan başka biri de etkinliğinizi izleyen bir yazılım yüklemiş olabilir ve Gizli Sekmeler sizi bundan korumaz.";
+"PrivateTabDetails" = "Gizli Sekmeleri kullanmak yalnızca Brave'in cihazınızda yaptıklarını değiştirir, başka hiç kimsenin davranışını değiştirmez.\n\nSiteler IP adresinizi onları her ziyaret ettiğinizde öğrenir. Bundan genellikle nerede olduğunuzu, tipik olarak bulunduğunuz şehri tahmin edebilir. Bazen bu konum tahmini çok daha spesifik olabilir. Siteler ayrıca arama terimleri gibi özel olarak onlara ilettiğiniz her şeyi bilir. Bir siteye giriş yaptığınızda, söz konusu hesabın sahibi olduğunuzu anlarlar. Gizli Sekmeleri kapattığınızda yine de oturumunuz kapatılacaktır, çünkü Brave oturumunuzun açık kalmasını sağlayan çerezi silecektir.\n\nSizi internete bağlayan taraf (İSS'niz) tüm ağ etkinliğinizi görebilir. Genellikle, bu mobil operatörünüzdür. Bir Wi-Fi ağına bağlıysanız, bu ağın sahibidir ve bir VPN kullanıyorsanız, o VPN'i işleten taraftır. İSS'niz hangi siteleri ziyaret ettiğinizi siz siteleri ziyaret ederken görebilir. Bu siteler HTTPS kullanıyorsa, bu sitelerde ne yaptığınız hakkında bilgiye dayalı bir tahminden daha fazlasını yapamazlar. Ancak bir site yalnızca HTTP kullanıyorsa İSS'niz her şeyi görebilir: arama terimleriniz, hangi sayfaları okuduğunuz ve hangi bağlantıları takip ettiğiniz.\n\nCihazınızı bir işveren yönetiyorsa, o da cihazınızla ne yaptığınızı takip edebilir. Gizli Sekmeleri kullanmak muhtemelen hangi siteleri ziyaret ettiğinizi bilmelerini engellemez. Cihazınıza erişimi olan başka biri de etkinliğinizi izleyen bir yazılım yüklemiş olabilir ve Gizli Sekmeler sizi bundan korumaz.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Gizli Sekmeler hakkında bilgi edinin.";
@@ -948,6 +921,9 @@
 
 /* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
 "SearchSuggestionSectionTitleFormat" = "%@ Araması";
+
+/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
+"SearchSuggestionSectionTitleNoSearchFormat" = "Ara";
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Arama Önerileri";

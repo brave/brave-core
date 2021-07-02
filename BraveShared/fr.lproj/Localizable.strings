@@ -388,13 +388,13 @@
 /* Recent Search Scanned text when a user scans a qr code */
 "RecentSearchScanned" = "Scanné";
 
-/* Scanning a QRCode for searching body */
+/* Scanning a QR Code for searching body */
 "RecentSearchScannerDescriptionBody" = "Pour effectuer une recherche par code QR, alignez ce dernier sur le centre du cadre.";
 
-/* Scanning a QRCode for title */
+/* Scanning a QR Code for title */
 "RecentSearchScannerDescriptionTitle" = "Instructions";
 
-/* Scanning a QRCode for searching */
+/* Scanning a QR Code for searching */
 "RecentSearchScannerTitle" = "Scanner un code QR";
 
 /* Recent Search Section Description */
@@ -793,6 +793,12 @@
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkSpecialTierTitle" = "Félicitations, vous êtes exceptionnel.";
 
+/* Subtitle for  The parameter substituted for \"%@\" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB */
+"shieldEducation.domainSpecificDataSavedSubtitle" = "Moyenne des données économisées\n%@ Mo";
+
+/* Action title for button at domain specific data saved pop-up */
+"shieldEducation.dontShowThisTitle" = "Ne plus afficher ce message";
+
 /* Action title for inspectable Education warnings */
 "shieldEducation.inspectTitle" = "Jetez-y un coup d'œil";
 
@@ -831,6 +837,9 @@
 
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Merci";
+
+/* Title used when in warning pop-over when domain specific data save appears */
+"socialSharing.domainSpecificDataSavedTitle" = "J'enregistre tous les jours des données en naviguant sur le Web avec Brave.";
 
 /* Text used for social sharing together with Brave Shield values */
 "socialSharing.shareDescriptionTitle" = "J'enregistre tous les jours des données en naviguant sur le Web avec Brave.";

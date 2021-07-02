@@ -214,18 +214,6 @@
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Brave må være installert på alle enhetene du vil synkronisere. Start en synkkjede for å knytte alle enhetene dine sikkert sammen.";
 
-/* Browser Lock feature callout enable action. */
-"BrowserLockCalloutEnable" = "Aktiver";
-
-/* Browser Lock feature callout message. */
-"BrowserLockCalloutMessage" = "Med nettleserlås må du taste inn en PIN for å få tilgang til Brave.";
-
-/* Browser Lock feature callout not now action. */
-"BrowserLockCalloutNotNow" = "Ikke nå";
-
-/* Browser Lock feature callout title. */
-"BrowserLockCalloutTitle" = "Privat betyr privat.";
-
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Nettleserhistorikk";
 
@@ -327,18 +315,6 @@
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Est. data \nlagret";
-
-/* DuckDuckGo callout enable action. */
-"DDGCalloutEnable" = "Ja";
-
-/* DuckDuckGo message. */
-"DDGCalloutMessage" = "Med privat søk vil Brave bruke DuckDuckGo til å besvare søkene dine mens du er i denne private fanen. DuckDuckGo er en søkemotor som ikke sporer søkeloggen din, slik at du kan søke privat.";
-
-/* DuckDuckGo callout no action. */
-"DDGCalloutNo" = "Nei";
-
-/* DuckDuckGo callout title. */
-"DDGCalloutTitle" = "Søke privat med DuckDuckGo?";
 
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "Ikke nå";
@@ -583,9 +559,6 @@
 /* History tableview section header */
 "LastWeek" = "Siste uke";
 
-/* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "Finn ut mer om private søk \nmed DuckDuckGo";
-
 /* No comment provided by engineer. */
 "learnMore" = "Lær mer";
 
@@ -785,10 +758,10 @@
 "PrivateBrowsingOnlyWarning" = "Modusen Kun privat nettlesing vil lukke alle de gjeldende fanene og logge deg ut av alle nettstedene.";
 
 /* Private tab details */
-"PrivateTabBody" = "Private faner blir ikke lagret i Brave, men de gjør deg ikke anonym på nett. Sidene du besøker i private faner, vises ikke i historikken din, og informasjonskapslene deres forsvinner alltid når du lukker dem – det vil ikke være spor etter dem i Brave. Nedlastinger vil derimot lagres.\nMobilleverandøren din (eller eieren av WiFi-nettverket eller VPN du er tilkoblet) kan se hvilke sider du besøker, og disse sidene vil ha din offentlige IP-adresse, selv i private faner.";
+"PrivateTabBody" = "Private faner blir ikke lagret i Brave, men de gjør deg ikke anonym på nett. Sidene du besøker i private faner, vises ikke i historikken din, og informasjonskapslene deres forsvinner alltid når du lukker dem – det vil ikke være spor etter dem i Brave. Nedlastinger vil derimot lagres.\nMobilleverandøren din (eller eieren av Wi-Fi-nettverket eller VPN-en du er tilkoblet) kan se hvilke sider du besøker, og disse sidene vil ha din offentlige IP-adresse, selv i private faner.";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "Det å bruke private faner påvirker kun det Brave gjør på enheten din, det forandrer ikke andres adferd.\n\nNettsteder får alltid vite IP-adressen din når du besøker dem. Ut ifra dette kan de ofte gjette omtrent hvor du befinner deg, men vanligvis er ikke dette mer nøyaktig enn hvilken by du er i. Noen ganger kan imidlertid posisjonen de anslår, være mer spesifikk. Nettsteder får også vite alt du spesifikt oppgir til dem, som søkeord. Hvis du logger på et nettsted, vet nettstedet at du eier den gjeldende kontoen. Du blir likevel logget ut når du lukker de private fanene, for Brave kaster informasjonskapselen som holder deg pålogget.\n\nDen som kobler deg til internett (vanligvis internettleverandøren din) kan se all aktiviteten på nettverket ditt. Ofte er internettleverandøren mobilleverandøren din. Hvis du er koblet til et WiFi-nettverk, er internettleverandøren eieren av nettverket, og hvis du bruker en VPN, er det den som drifter VPN-en. Internettleverandøren din kan se hvilke nettsteder du besøker, samtidig som du besøker dem. Hvis disse nettstedene bruker HTTPS, kan internettleverandøren gjøre mer enn en kvalifisert gjetning angående hva du foretar deg på slike nettsteder. Hvis et nettsted kun bruker HTTP, kan imidlertid internettleverandøren din se alt: søkeordene dine, hvilke sider du leser, og hvilke lenker du følger.\n\nHvis arbeidsgiveren din administrerer enheten din, kan arbeidsgiveren også se hva du gjør med den. Det å bruke private faner vil sannsynligvis ikke hindre at de finner ut hvilke nettsteder du har besøkt. Andre som har tilgang til enheten din, kan også ha installert programvare som overvåker aktiviteten din, og private faner beskytter deg heller ikke mot dette.";
+"PrivateTabDetails" = "Det å bruke private faner påvirker kun det Brave gjør på enheten din, det forandrer ikke andres adferd.\n\nNettsteder får alltid vite IP-adressen din når du besøker dem. Ut ifra dette kan de ofte gjette omtrent hvor du befinner deg, men vanligvis er ikke dette mer nøyaktig enn hvilken by du er i. Noen ganger kan imidlertid posisjonen de anslår, være mer spesifikk. Nettsteder får også vite alt du spesifikt oppgir til dem, som søkeord. Hvis du logger på et nettsted, vet nettstedet at du eier den gjeldende kontoen. Du blir likevel logget ut når du lukker de private fanene, for Brave kaster informasjonskapselen som holder deg pålogget.\n\nDen som kobler deg til internett (vanligvis internettleverandøren din) kan se all aktiviteten på nettverket ditt. Ofte er internettleverandøren mobilleverandøren din. Hvis du er koblet til et Wi-Fi-nettverk, er internettleverandøren eieren av nettverket, og hvis du bruker en VPN, er det den som drifter VPN-en. Internettleverandøren din kan se hvilke nettsteder du besøker, samtidig som du besøker dem. Hvis disse nettstedene bruker HTTPS, kan internettleverandøren gjøre mer enn en kvalifisert gjetning angående hva du foretar deg på slike nettsteder. Hvis et nettsted kun bruker HTTP, kan imidlertid internettleverandøren din se alt: søkeordene dine, hvilke sider du leser, og hvilke lenker du følger.\n\nHvis arbeidsgiveren din administrerer enheten din, kan arbeidsgiveren også se hva du gjør med den. Det å bruke private faner vil sannsynligvis ikke hindre at de finner ut hvilke nettsteder du har besøkt. Andre som har tilgang til enheten din, kan også ha installert programvare som overvåker aktiviteten din, og private faner beskytter deg heller ikke mot dette.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Lær om private faner.";
@@ -948,6 +921,9 @@
 
 /* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
 "SearchSuggestionSectionTitleFormat" = "%@-søk";
+
+/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
+"SearchSuggestionSectionTitleNoSearchFormat" = "Søk";
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Søkeforslag";
