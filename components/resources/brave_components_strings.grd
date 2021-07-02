@@ -797,7 +797,7 @@
       <message name="IDS_BRAVE_UI_ONE_TIME" desc="">One-time</message>
       <message name="IDS_BRAVE_UI_ONE_TIME_DONATION" desc="">One-time Tips</message>
       <message name="IDS_BRAVE_UI_OPEN_BALANCE" desc="">Opening Balance</message>
-      <message name="IDS_BRAVE_UI_OPEN_ADS_HISTORY" desc="">7-day Ads History</message>
+      <message name="IDS_BRAVE_UI_OPEN_ADS_HISTORY" desc="">30-day Ads History</message>
       <message name="IDS_BRAVE_UI_PAYMENT" desc="">Payment</message>
       <message name="IDS_BRAVE_UI_PAYMENT_NOT_MADE" desc="">Payment not made.</message>
       <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_HEADER" desc="">Pinned sites are now</message>
