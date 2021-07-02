@@ -188,54 +188,28 @@ export class Panel extends React.Component<Props, State> {
     }
   }
 
-  onBackupWallet = (id: string) => {
-    chrome.tabs.create({
-      url: 'chrome://rewards#manage-wallet'
-    })
-    this.actions.deleteNotification(id)
+  onEvent = (learnMore: string) => {
+    return function (id: string) {
+      chrome.tabs.create({
+        url: learnMore
+      })
+      this.actions.deleteNotification(id)
+    }
   }
 
-  onDeviceLimitReached = (id: string) => {
-    chrome.tabs.create({
-      url: 'https://support.brave.com/hc/en-us/articles/360056508071'
-    })
-    this.actions.deleteNotification(id)
-  }
+  onBackupWallet = this.onEvent('chrome://rewards#manage-wallet')
 
-  onUpholdBATNotAllowedForUser = (id: string) => {
-    chrome.tabs.create({
-      url: 'https://support.uphold.com/hc/en-us/articles/360033020351-Brave-BAT-and-US-availability'
-    })
-    this.actions.deleteNotification(id)
-  }
+  onDeviceLimitReached = this.onEvent('https://support.brave.com/hc/en-us/articles/360056508071')
 
-  onUpholdBlockedUser = (id: string) => {
-    chrome.tabs.create({
-      url: 'https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk'
-    })
-    this.actions.deleteNotification(id)
-  }
+  onUpholdBATNotAllowedForUser = this.onEvent('https://support.uphold.com/hc/en-us/articles/360033020351-Brave-BAT-and-US-availability')
 
-  onUpholdPendingUser = (id: string) => {
-    chrome.tabs.create({
-      url: 'https://support.uphold.com/hc/en-us/articles/206695986-How-do-I-sign-up-for-Uphold-Web-'
-    })
-    this.actions.deleteNotification(id)
-  }
+  onUpholdBlockedUser = this.onEvent('https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk')
 
-  onUpholdRestrictedUser = (id: string) => {
-    chrome.tabs.create({
-      url: 'https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk'
-    })
-    this.actions.deleteNotification(id)
-  }
+  onUpholdPendingUser = this.onEvent('https://support.uphold.com/hc/en-us/articles/206695986-How-do-I-sign-up-for-Uphold-Web-')
 
-  onUpholdUnverifiedUser = (id: string) => {
-    chrome.tabs.create({
-      url: 'https://support.uphold.com/hc/en-us/articles/202766795-Here-s-how-to-verify-your-identity-it-s-easy'
-    })
-    this.actions.deleteNotification(id)
-  }
+  onUpholdRestrictedUser = this.onEvent('https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk')
+
+  onUpholdUnverifiedUser = this.onEvent('https://support.uphold.com/hc/en-us/articles/202766795-Here-s-how-to-verify-your-identity-it-s-easy')
 
   onPromotionHide = (promotionId: string) => {
     this.actions.resetPromotion(promotionId)

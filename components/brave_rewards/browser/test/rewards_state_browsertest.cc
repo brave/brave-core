@@ -10,6 +10,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
+#include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/common/brave_paths.h"
@@ -978,15 +979,17 @@ INSTANTIATE_TEST_SUITE_P(
 // clang-format on
 
 IN_PROC_BROWSER_TEST_P_(UpholdStateMachine, Migration) {
+  using ledger::state::kWalletUphold;
+
   const auto& params = GetParam();
   const auto& from = std::get<0>(params);
   const auto& to = std::get<1>(params);
 
   profile_->GetPrefs()->SetInteger("brave.rewards.version", 9);
-  rewards_service_->SetEncryptedStringState("wallets.uphold", from);
+  rewards_service_->SetEncryptedStringState(kWalletUphold, from);
 
   rewards_browsertest_util::StartProcess(rewards_service_);
-  EXPECT_EQ(rewards_service_->GetEncryptedStringState("wallets.uphold"), to);
+  EXPECT_EQ(rewards_service_->GetEncryptedStringState(kWalletUphold), to);
 }
 
 }  // namespace rewards_browsertest
