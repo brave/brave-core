@@ -22,6 +22,7 @@ template("mojom_wrappers") {
   assert(defined(invoker.mojom_file) && invoker.mojom_file != "",
          "mojom_file must be defined for $target_name")
 
+  _mojom_target = invoker.mojom_target
   _mojom_target_parser =
       get_path_info("${invoker.mojom_target}:interfaces__parser", "abspath")
   _mojom_target_parser_gen_dir =
@@ -88,6 +89,7 @@ template("mojom_wrappers") {
     public_deps += [
       ":$_generate_wrappers_target",
       "//base",
+      _mojom_target,
     ]
   }
 }
