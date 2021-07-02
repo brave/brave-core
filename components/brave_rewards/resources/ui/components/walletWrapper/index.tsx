@@ -280,27 +280,12 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
         buttonAction = this.onNotificationClick
         break
       case 'deviceLimitReached':
-        buttonText = getLocale('deviceLimitReachedLearnMore')
-        buttonAction = this.onNotificationClick
-        break
       case 'upholdBATNotAllowedForUser':
-        buttonText = getLocale('upholdBATNotAllowedForUserLearnMore')
-        buttonAction = this.onNotificationClick
-        break
       case 'upholdBlockedUser':
-        buttonText = getLocale('upholdBlockedUserLearnMore')
-        buttonAction = this.onNotificationClick
-        break
       case 'upholdPendingUser':
-        buttonText = getLocale('upholdPendingUserLearnMore')
-        buttonAction = this.onNotificationClick
-        break
       case 'upholdRestrictedUser':
-        buttonText = getLocale('upholdRestrictedUserLearnMore')
-        buttonAction = this.onNotificationClick
-        break
       case 'upholdUnverifiedUser':
-        buttonText = getLocale('upholdUnverifiedUserLearnMore')
+        buttonText = getLocale(type + 'LearnMore')
         buttonAction = this.onNotificationClick
         break
       default:
@@ -516,17 +501,22 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     let typeText
 
     switch (notification.type) {
+      case 'backupWallet':
+      case 'deviceLimitReached':
+      case 'pendingContribution':
+      case 'upholdBATNotAllowedForUser':
+      case 'upholdBlockedUser':
+      case 'upholdPendingUser':
+      case 'upholdRestrictedUser':
+      case 'upholdUnverifiedUser':
+      case 'verifyWallet':
+        typeText = getLocale(notification.type + 'Title')
+        break
       case 'ads':
         typeText = getLocale('braveAdsTitle')
         break
-      case 'backupWallet':
-        typeText = getLocale('backupWalletTitle')
-        break
       case 'contribute':
         typeText = getLocale('braveContributeTitle')
-        break
-      case 'deviceLimitReached':
-        typeText = getLocale('deviceLimitReachedTitle')
         break
       case 'grant':
         typeText = getLocale('tokenGrants')
@@ -534,29 +524,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       case 'insufficientFunds':
         typeText = getLocale('insufficientFunds')
         break
-      case 'pendingContribution':
-        typeText = getLocale('pendingContributionTitle')
-        break
       case 'tipsProcessed':
         typeText = getLocale('contributionTips')
-        break
-      case 'upholdBATNotAllowedForUser':
-        typeText = getLocale('upholdBATNotAllowedForUserTitle')
-        break
-      case 'upholdBlockedUser':
-        typeText = getLocale('upholdBlockedUserTitle')
-        break
-      case 'upholdPendingUser':
-        typeText = getLocale('upholdPendingUserTitle')
-        break
-      case 'upholdRestrictedUser':
-        typeText = getLocale('upholdRestrictedUserTitle')
-        break
-      case 'upholdUnverifiedUser':
-        typeText = getLocale('upholdUnverifiedUserTitle')
-        break
-      case 'verifyWallet':
-        typeText = getLocale('verifyWalletTitle')
         break
       default:
         typeText = ''

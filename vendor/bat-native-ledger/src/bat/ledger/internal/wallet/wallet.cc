@@ -126,32 +126,34 @@ void Wallet::AuthorizeWallet(
 void Wallet::DisconnectWallet(const std::string& wallet_type,
                               ledger::ResultCallback callback) {
   if (wallet_type == constant::kWalletUphold) {
-    auto uphold_wallet = ledger_->uphold()->GetWallet();
-    if (!uphold_wallet) {
+    if (const auto uphold_wallet = ledger_->uphold()->GetWallet()) {
+      if (uphold_wallet->status != type::WalletStatus::PENDING &&
+          uphold_wallet->status != type::WalletStatus::VERIFIED) {
+        BLOG(0, "Wallet status should have been either PENDING or VERIFIED!");
+      } else {
+        DCHECK(!uphold_wallet->token.empty());
+        DCHECK(uphold_wallet->status == type::WalletStatus::PENDING
+                   ? uphold_wallet->address.empty()
+                   : !uphold_wallet->address.empty());
+      }
+    } else {
       BLOG(0, "Uphold wallet is null!");
-      return callback(type::Result::LEDGER_ERROR);
-    }
-
-    if (uphold_wallet->status != type::WalletStatus::PENDING &&
-        uphold_wallet->status != type::WalletStatus::VERIFIED) {
-      return callback(type::Result::LEDGER_OK);
-    }
-
-    DCHECK(!uphold_wallet->token.empty());
-    DCHECK(uphold_wallet->status == type::WalletStatus::PENDING
-               ? uphold_wallet->address.empty()
-               : !uphold_wallet->address.empty());
-
-    if (uphold_wallet->status == type::WalletStatus::PENDING) {
-      ledger_->uphold()->DisconnectWallet({});
-      return callback(type::Result::LEDGER_OK);
     }
 
     return promotion_server_->delete_claim()->Request(
         constant::kWalletUphold, [this, callback](const type::Result result) {
           if (result != type::Result::LEDGER_OK) {
-            BLOG(0, "Wallet unlinking failed");
-            return callback(result);
+            const auto uphold_wallet = ledger_->uphold()->GetWallet();
+            if (!uphold_wallet) {
+              BLOG(0, "Uphold wallet is null!");
+              BLOG(0, "Wallet unlinking failed!");
+              return callback(type::Result::LEDGER_ERROR);
+            }
+
+            if (uphold_wallet->status == type::WalletStatus::VERIFIED) {
+              BLOG(0, "Wallet unlinking failed!");
+              return callback(result);
+            }
           }
 
           ledger_->uphold()->DisconnectWallet({});
