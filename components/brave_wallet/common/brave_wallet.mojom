@@ -112,7 +112,8 @@ struct SwapResponse {
 interface WalletHandler {
   GetWalletInfo() => (bool isWalletCreated, bool isWalletLocked,
                       array<AppItem> favoriteApps,
-                      bool isWalletBackedUp, array<string> accounts);
+                      bool isWalletBackedUp, array<string> accounts,
+                      array<string> walletAccountNames);
   LockWallet();
   UnlockWallet(string password) => (bool isWalletUnlocked);
   GetAssetPrice(string asset) => (string price);
@@ -121,6 +122,7 @@ interface WalletHandler {
   GetTransactionPayload(SwapParams params) => (SwapResponse response);
   AddFavoriteApp(AppItem appItem);
   RemoveFavoriteApp(AppItem appItem);
+  UpdateWalletNames(array<string> accountNames);
   NotifyWalletBackupComplete();
 };
 

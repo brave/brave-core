@@ -11,8 +11,13 @@ export type InitializedPayloadType = {
   favoriteApps: AppObjectType[]
   accounts: string[]
   isWalletBackedUp: boolean
+  walletAccountNames: string[]
 }
 
 export type UnlockWalletPayloadType = {
   password: string
+}
+
+export type UpdateWalletNamesPayloadType = {
+  accountNames: string[]
 }

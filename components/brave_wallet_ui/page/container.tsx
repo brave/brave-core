@@ -54,7 +54,8 @@ function Container (props: Props) {
     isWalletBackedUp,
     hasIncorrectPassword,
     accounts,
-    transactions
+    transactions,
+    walletAccountNames
   } = props.wallet
 
   // Page Props
@@ -206,8 +207,9 @@ function Container (props: Props) {
     setShowAddModal(!showAddModal)
   }
 
-  const onCreateWallet = () => {
-    const created = props.walletPageActions.addAccountToWallet()
+  const onCreateAccount = (name: string) => {
+    const newList = [...walletAccountNames, name]
+    const created = props.walletPageActions.addAccountToWallet({ accountNames: newList })
     if (created) {
       onToggleAddModal()
     }
@@ -268,7 +270,7 @@ function Container (props: Props) {
                   transactions={transactions}
                   userAssetList={userAssetList}
                   onConnectHardwareWallet={onConnectHardwareWallet}
-                  onCreateAccount={onCreateWallet}
+                  onCreateAccount={onCreateAccount}
                   onImportAccount={onImportAccount}
                   isLoading={isFetchingPriceHistory}
                   showAddModal={showAddModal}

@@ -7,7 +7,7 @@ import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletPageActions from '../actions/wallet_page_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
-import { CreateWalletPayloadType, RestoreWalletPayloadType, UpdateSelectedAssetType } from '../constants/action_types'
+import { CreateWalletPayloadType, RestoreWalletPayloadType, UpdateSelectedAssetType, AddAccountToWalletPayloadType } from '../constants/action_types'
 import { WalletAPIHandler } from '../../constants/types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
@@ -34,6 +34,7 @@ async function refreshWalletInfo (store: Store) {
 handler.on(WalletPageActions.createWallet.getType(), async (store, payload: CreateWalletPayloadType) => {
   const apiProxy = await getAPIProxy()
   const result = await apiProxy.createWallet(payload.password)
+  store.dispatch(WalletActions.updateWalletNames({ accountNames: ['Account 1'] }))
   store.dispatch(WalletPageActions.walletCreated({ mnemonic: result.mnemonic }))
 })
 
@@ -44,13 +45,15 @@ handler.on(WalletPageActions.restoreWallet.getType(), async (store, payload: Res
     store.dispatch(WalletPageActions.hasMnemonicError(!result.isValidMnemonic))
     return
   }
+  store.dispatch(WalletActions.updateWalletNames({ accountNames: ['Account 1'] }))
   await apiProxy.notifyWalletBackupComplete()
   await refreshWalletInfo(store)
 })
 
-handler.on(WalletPageActions.addAccountToWallet.getType(), async (store) => {
+handler.on(WalletPageActions.addAccountToWallet.getType(), async (store, payload: AddAccountToWalletPayloadType) => {
   const apiProxy = await getAPIProxy()
   const result = await apiProxy.addAccountToWallet()
+  store.dispatch(WalletActions.updateWalletNames({ accountNames: payload.accountNames }))
   await refreshWalletInfo(store)
   return result.success
 })
