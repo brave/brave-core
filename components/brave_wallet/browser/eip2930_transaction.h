@@ -22,6 +22,8 @@ class Eip2930Transaction : public EthTransaction {
     AccessListItem();
     ~AccessListItem();
     AccessListItem(const AccessListItem&);
+    bool operator==(const AccessListItem&) const;
+    bool operator!=(const AccessListItem&) const;
 
     AccessedAddress address;
     std::vector<AccessedStorageKey> storage_keys;
@@ -35,6 +37,12 @@ class Eip2930Transaction : public EthTransaction {
   ~Eip2930Transaction() override;
   bool operator==(const Eip2930Transaction&) const;
 
+  static base::Optional<Eip2930Transaction> FromValue(const base::Value& value);
+
+  static std::vector<base::Value> AccessListToValue(const AccessList&);
+  static base::Optional<AccessList> ValueToAccessList(const base::Value&);
+
+  uint64_t chain_id() const { return chain_id_; }
   const AccessList* access_list() const { return &access_list_; }
   AccessList* access_list() { return &access_list_; }
 
@@ -52,9 +60,9 @@ class Eip2930Transaction : public EthTransaction {
 
   bool IsSigned() const override;
 
- private:
-  std::vector<base::Value> AccessListToValue(const AccessList&) const;
+  base::Value ToValue() const override;
 
+ private:
   uint64_t chain_id_;
   AccessList access_list_;
 };

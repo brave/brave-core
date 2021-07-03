@@ -58,6 +58,9 @@ class EthTransaction {
   EthAddress to() const { return to_; }
   uint256_t value() const { return value_; }
   std::vector<uint8_t> data() const { return data_; }
+  uint8_t v() const { return v_; }
+  std::vector<uint8_t> r() const { return r_; }
+  std::vector<uint8_t> s() const { return s_; }
 
   void set_nonce(uint256_t nonce) { nonce_ = nonce; }
   void set_gas_price(uint256_t gas_price) { gas_price_ = gas_price; }
@@ -79,7 +82,7 @@ class EthTransaction {
 
   virtual bool IsSigned() const;
 
-  base::Value ToValue() const;
+  virtual base::Value ToValue() const;
 
  protected:
   // type 0 would be LegacyTransaction

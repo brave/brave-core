@@ -7,11 +7,70 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/eip2930_transaction.h"
 #include "brave/components/brave_wallet/browser/hd_key.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
+
+TEST(Eip2930TransactionUnitTest, AccessListItemEqualOperator) {
+  Eip2930Transaction::AccessListItem item_a;
+  item_a.address.fill(0x0a);
+  Eip2930Transaction::AccessedStorageKey storage_key_0;
+  storage_key_0.fill(0x00);
+  Eip2930Transaction::AccessedStorageKey storage_key_1;
+  storage_key_1.fill(0x01);
+  item_a.storage_keys.push_back(storage_key_0);
+  item_a.storage_keys.push_back(storage_key_1);
+
+  Eip2930Transaction::AccessListItem item_b;
+  item_b.address.fill(0x0a);
+  item_b.storage_keys.push_back(storage_key_0);
+  item_b.storage_keys.push_back(storage_key_1);
+  EXPECT_EQ(item_a, item_b);
+
+  Eip2930Transaction::AccessListItem item_c(item_b);
+  item_c.address.fill(0x0b);
+  EXPECT_NE(item_a, item_c);
+
+  Eip2930Transaction::AccessListItem item_d(item_b);
+  item_d.storage_keys.push_back(storage_key_0);
+  EXPECT_NE(item_a, item_d);
+
+  Eip2930Transaction::AccessListItem item_e(item_b);
+  item_e.storage_keys[0].fill(0x03);
+  EXPECT_NE(item_a, item_e);
+}
+
+TEST(Eip2930TransactionUnitTest, AccessListAndValue) {
+  Eip2930Transaction::AccessList access_list;
+  Eip2930Transaction::AccessListItem item_a;
+  item_a.address.fill(0x0a);
+  Eip2930Transaction::AccessedStorageKey storage_key_0;
+  storage_key_0.fill(0x00);
+  Eip2930Transaction::AccessedStorageKey storage_key_1;
+  storage_key_1.fill(0x01);
+  item_a.storage_keys.push_back(storage_key_0);
+  item_a.storage_keys.push_back(storage_key_1);
+
+  access_list.push_back(item_a);
+
+  Eip2930Transaction::AccessListItem item_b;
+  item_b.address.fill(0x0b);
+  item_b.storage_keys.push_back(storage_key_1);
+  item_b.storage_keys.push_back(storage_key_0);
+
+  access_list.push_back(item_b);
+
+  base::Value access_list_value =
+      base::Value(Eip2930Transaction::AccessListToValue(access_list));
+  auto access_list_from_value =
+      Eip2930Transaction::ValueToAccessList(access_list_value);
+  ASSERT_NE(access_list_from_value, base::nullopt);
+  EXPECT_EQ(access_list_from_value, access_list);
+}
+
 TEST(Eip2930TransactionUnitTest, GetMessageToSign) {
   std::vector<uint8_t> data;
   EXPECT_TRUE(base::HexStringToBytes("010200", &data));
@@ -83,4 +142,26 @@ TEST(Eip2930TransactionUnitTest, GetSignedTransaction) {
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.s_)),
             "0be950468ba1c25a5cb50e9f6d8aa13c8cd21f24ba909402775b262ac76d374d");
 }
+
+TEST(Eip2930TransactionUnitTest, Serialization) {
+  Eip2930Transaction tx(
+      EthTransaction::TxData(
+          0x09, 0x4a817c800, 0x5208,
+          EthAddress::FromHex("0x3535353535353535353535353535353535353535"),
+          0x0de0b6b3a7640000, std::vector<uint8_t>()),
+      5566);
+  auto* access_list = tx.access_list();
+  Eip2930Transaction::AccessListItem item_a;
+  item_a.address.fill(0x0a);
+  Eip2930Transaction::AccessedStorageKey storage_key_0;
+  storage_key_0.fill(0x00);
+  item_a.storage_keys.push_back(storage_key_0);
+  access_list->push_back(item_a);
+
+  base::Value tx_value = tx.ToValue();
+  auto tx_from_value = Eip2930Transaction::FromValue(tx_value);
+  ASSERT_NE(tx_from_value, base::nullopt);
+  EXPECT_EQ(tx_from_value, tx);
+}
+
 }  // namespace brave_wallet

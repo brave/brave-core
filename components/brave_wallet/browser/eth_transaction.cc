@@ -48,7 +48,7 @@ bool EthTransaction::operator==(const EthTransaction& tx) const {
          gas_limit_ == tx.gas_limit_ && to_ == tx.to_ && value_ == tx.value_ &&
          std::equal(data_.begin(), data_.end(), tx.data_.begin()) &&
          v_ == tx.v_ && std::equal(r_.begin(), r_.end(), tx.r_.begin()) &&
-         std::equal(s_.begin(), s_.end(), tx.s_.begin());
+         std::equal(s_.begin(), s_.end(), tx.s_.begin()) && type_ == tx.type_;
 }
 
 // static
@@ -112,6 +112,11 @@ base::Optional<EthTransaction> EthTransaction::FromValue(
   if (!base::Base64Decode(*s, &s_decoded))
     return base::nullopt;
   tx.s_ = std::vector<uint8_t>(s_decoded.begin(), s_decoded.end());
+
+  base::Optional<int> type = value.FindIntKey("type");
+  if (!type)
+    return base::nullopt;
+  tx.type_ = (uint8_t)*type;
 
   return tx;
 }
@@ -183,6 +188,8 @@ base::Value EthTransaction::ToValue() const {
   dict.SetIntKey("v", static_cast<int>(v_));
   dict.SetStringKey("r", base::Base64Encode(r_));
   dict.SetStringKey("s", base::Base64Encode(s_));
+  dict.SetIntKey("type", static_cast<int>(type_));
+
   return dict;
 }
 
