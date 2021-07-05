@@ -12,8 +12,6 @@
 #include "base/android/jni_weak_ref.h"
 #include "base/memory/weak_ptr.h"
 
-class BraveVpnService;
-
 namespace chrome {
 namespace android {
 class BraveVpnNativeWorker {
@@ -69,7 +67,6 @@ class BraveVpnNativeWorker {
 
  private:
   JavaObjectWeakGlobalRef weak_java_brave_vpn_native_worker_;
-  BraveVpnService* brave_vpn_service_;
   base::WeakPtrFactory<BraveVpnNativeWorker> weak_factory_;
 };
 }  // namespace android
