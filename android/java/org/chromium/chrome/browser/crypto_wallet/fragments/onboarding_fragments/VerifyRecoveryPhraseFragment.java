@@ -69,7 +69,6 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
 
     private void setupRecoveryPhraseRecyclerView(View view) {
         phraseRecyclerView = view.findViewById(R.id.recovery_phrase_recyclerview);
-        phraseRecyclerView.setHasFixedSize(true);
         assert getActivity() != null;
         phraseRecyclerView.addItemDecoration(
                 new ItemOffsetDecoration(getActivity(), R.dimen.zero_margin));
@@ -84,7 +83,6 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
 
     private void setupSelectedRecoveryPhraseRecyclerView(View view) {
         selectedPhraseRecyclerView = view.findViewById(R.id.recovery_phrase_selected_recyclerview);
-        selectedPhraseRecyclerView.setHasFixedSize(true);
         assert getActivity() != null;
         selectedPhraseRecyclerView.addItemDecoration(
                 new ItemOffsetDecoration(getActivity(), R.dimen.zero_margin));

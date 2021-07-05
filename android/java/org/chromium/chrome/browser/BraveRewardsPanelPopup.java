@@ -1610,7 +1610,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             String non_verified_summary =
                     String.format(
                             root.getResources().getString(R.string.brave_ui_reserved_amount_text),
-                            String.format("%.3f", amount))
+                            String.format(Locale.getDefault(), "%.3f", amount))
                     + " <font color=#73CBFF>" + root.getResources().getString(R.string.learn_more)
                     + ".</font>";
             Spanned toInsert = BraveRewardsHelper.spannedFromHtmlString(non_verified_summary);
@@ -2026,6 +2026,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                         mActivity.getResources().getString(R.string.continue_to_login));
         int countinueToLoginIndex = verifiedAccountUpholdText.indexOf(
                 mActivity.getResources().getString(R.string.continue_to_login));
+        assert countinueToLoginIndex != 0;
         Spanned verifiedAccountUpholdTextSpanned =
                 BraveRewardsHelper.spannedFromHtmlString(verifiedAccountUpholdText);
         SpannableString verifiedAccountUpholdTextSS =
