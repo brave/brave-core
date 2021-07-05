@@ -75,9 +75,8 @@ RegisterStyleOverride(
         padding-inline-start: 0 !important;
       }
 
-      a[href]:focus {
-        border: 4px solid rgba(160, 165, 235, 1) !important;
-        outline: none !important;
+      a[href]:focus-visible {
+        outline: 4px solid rgba(160, 165, 235, 1) !important;
         border-radius: 6px;
       }
 
