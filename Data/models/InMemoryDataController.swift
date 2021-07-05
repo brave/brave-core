@@ -8,14 +8,15 @@ import Shared
 import XCGLogger
 
 public class InMemoryDataController: DataController {
-    
-    override init() {
-        super.init()
-        
+    override func addPersistentStore(for container: NSPersistentContainer, store: URL) {
         let description = NSPersistentStoreDescription()
         description.type = NSInMemoryStoreType
         
         container.persistentStoreDescriptions = [description]
+    }
+    
+    override init() {
+        super.init()
         
         // Calling `initialize` in constructor.
         // Initialize code in constructor can't happen in persistent database
