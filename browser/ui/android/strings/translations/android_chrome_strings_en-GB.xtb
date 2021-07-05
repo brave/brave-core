@@ -17,7 +17,7 @@
 <translation id="1113597929977215864">Show simplified view</translation>
 <translation id="1118561384561215815">Get help with tasks on the web</translation>
 <translation id="8577410793886633063">How you interact with Brave, settings that you’ve selected, details of Brave crashes</translation>
-<translation id="1295971429974142731">Does not protect you against dangerous websites, downloads and extensions. You’ll still get Safe Browsing protection, where available, in other Brave services, like Gmail and Search.</translation>
+<translation id="1295971429974142731">Does not protect you against dangerous websites, downloads or extensions.</translation>
 <translation id="1129510026454351943">Details: <ph name="ERROR_DESCRIPTION"/></translation>
 <translation id="1141800923049248244">{FILE_COUNT,plural, =1{1 download pending.}other{# downloads pending.}}</translation>
 <translation id="1142732900304639782">Don’t offer to translate these sites</translation>

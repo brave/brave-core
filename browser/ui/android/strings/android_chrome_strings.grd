@@ -1120,7 +1120,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         No protection (not recommended)
       </message>
       <message name="IDS_SAFE_BROWSING_NO_PROTECTION_SUMMARY" desc="Summary for Safe Browsing no protection mode.">
-        Does not protect you against dangerous websites, downloads, and extensions. You’ll still get Safe Browsing protection, where available, in other Brave services, like Gmail and Search.
+        Does not protect you against dangerous websites, downloads, or extensions.
       </message>
 
       <!-- Safe Browsing enhanced protection preferences -->
