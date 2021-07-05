@@ -52,22 +52,23 @@ namespace {
 // AdNotificationPopup management to NotificationPopupCollection
 std::map<std::string, AdNotificationPopup*> g_ad_notification_popups;
 
-const int kShadowElevation = 5;
-
 constexpr SkColor kLightModeBackgroundColor = SkColorSetRGB(0xed, 0xf0, 0xf2);
 constexpr SkColor kDarkModeBackgroundColor = SkColorSetRGB(0x20, 0x23, 0x27);
 
 constexpr SkColor kLightModeBorderColor = SkColorSetRGB(0xd5, 0xdb, 0xe2);
 constexpr SkColor kDarkModeBorderColor = SkColorSetRGB(0x3f, 0x41, 0x45);
-const int kBorderThickness = 1;
+constexpr int kBorderThickness = 1;
 
 #if defined(OS_WIN)
-const int kCornerRadius = 0;
+constexpr int kShadowElevation = 5;
+constexpr int kCornerRadius = 0;
 #elif defined(OS_MAC)
-const int kCornerRadius = 7;
+constexpr int kShadowElevation = 5;
+constexpr int kCornerRadius = 7;
 #elif defined(OS_LINUX)
-const int kCornerRadius = 7;
-#endif
+constexpr int kShadowElevation = 0;
+constexpr int kCornerRadius = 0;
+#endif  // defined(OS_WIN)
 
 }  // namespace
 
@@ -423,7 +424,14 @@ void AdNotificationPopup::CreateWidgetView() {
   params.type = views::Widget::InitParams::TYPE_WINDOW_FRAMELESS;
   params.z_order = ui::ZOrderLevel::kFloatingWindow;
   params.opacity = views::Widget::InitParams::WindowOpacity::kTranslucent;
+  // Chromium doesn't always support transparent window background on X11.
+  // This can cause artifacts on shadows around ads notification popup. To fix
+  // this shadows are drawn by Widget.
+#if defined(OS_LINUX)
+  params.shadow_type = views::Widget::InitParams::ShadowType::kDrop;
+#else
   params.shadow_type = views::Widget::InitParams::ShadowType::kNone;
+#endif  // defined(OS_LINUX)
   params.bounds = CalculateBounds();
 
   views::Widget* widget = new views::Widget();
