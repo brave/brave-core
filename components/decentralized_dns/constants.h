@@ -47,7 +47,7 @@ constexpr char kProxyReaderContractAddress[] =
     "0xa6E7cEf2EDDEA66352Fd68E5915b60BDbb7309f5";
 
 constexpr char kEnsRegistryContractAddress[] =
-    "0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41";
+    "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
 
 }  // namespace decentralized_dns
 
