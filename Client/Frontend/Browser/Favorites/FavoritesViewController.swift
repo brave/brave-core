@@ -396,6 +396,10 @@ extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewD
         }
     }
     
+    func collectionView(_ collectionView: UICollectionView, targetIndexPathForMoveFromItemAt currentIndexPath: IndexPath, toProposedIndexPath proposedIndexPath: IndexPath) -> IndexPath {
+        currentIndexPath.section == proposedIndexPath.section ? proposedIndexPath : currentIndexPath
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         guard let section = availableSections[safe: section] else {
             assertionFailure("Invalid Section")
