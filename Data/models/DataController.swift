@@ -65,7 +65,7 @@ public class DataController {
         return FileManager.default.fileExists(atPath: storeURL.path)
     }
     
-    let container = NSPersistentContainer(name: DataController.modelName,
+    private let container = NSPersistentContainer(name: DataController.modelName,
                                                   managedObjectModel: DataController.model)
     
     // MARK: - Old Database migration methods
@@ -239,12 +239,24 @@ public class DataController {
         return DataController.sharedInMemory.container.viewContext
     }
     
+    func addPersistentStore(for container: NSPersistentContainer, store: URL) {
+        let storeDescription = NSPersistentStoreDescription(url: store)
+        
+        // This makes the database file encrypted until device is unlocked.
+        let completeProtection = FileProtectionType.complete as NSObject
+        storeDescription.setOption(completeProtection, forKey: NSPersistentStoreFileProtectionKey)
+        
+        container.persistentStoreDescriptions = [storeDescription]
+    }
+    
     var storeURL: URL {
         let supportDirectory = Preferences.Database.DocumentToSupportDirectoryMigration.completed.value
         return supportDirectory ? supportStoreURL : oldDocumentStoreURL
     }
     
     private func configureContainer(_ container: NSPersistentContainer, store: URL) {
+        addPersistentStore(for: container, store: store)
+        
         container.loadPersistentStores(completionHandler: { store, error in
             if let error = error {
                 // Do not crash the app if the store already exists.
