@@ -10,7 +10,7 @@ namespace features {
 
 // Enables the option of an automatic permission expiration time.
 const base::Feature kPermissionLifetime{"PermissionLifetime",
-                                        base::FEATURE_DISABLED_BY_DEFAULT};
+                                        base::FEATURE_ENABLED_BY_DEFAULT};
 
 }  // namespace features
 }  // namespace permissions
