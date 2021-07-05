@@ -28,7 +28,14 @@ void AdNotificationPopupWidget::InitWidget(views::WidgetDelegate* delegate,
   params.type = views::Widget::InitParams::TYPE_WINDOW_FRAMELESS;
   params.z_order = ui::ZOrderLevel::kFloatingWindow;
   params.opacity = views::Widget::InitParams::WindowOpacity::kTranslucent;
+  // Chromium doesn't always support transparent window background on X11.
+  // This can cause artifacts on shadows around ads notification popup. To fix
+  // this shadows are drawn by Widget.
+#if defined(OS_LINUX)
+  params.shadow_type = views::Widget::InitParams::ShadowType::kDrop;
+#else
   params.shadow_type = views::Widget::InitParams::ShadowType::kNone;
+#endif  // defined(OS_LINUX)
   params.bounds = bounds;
 
 #if defined(OS_WIN)
