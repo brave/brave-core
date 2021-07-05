@@ -390,7 +390,7 @@ gfx::ImageSkia SidebarItemsContentsView::GetImageForBuiltInItems(
     return gfx::CreateVectorIcon(kSidebarCryptoWalletIcon, base_button_color);
   }
 
-  if (item_url == GURL("https://together.brave.com/")) {
+  if (item_url == GURL("https://talk.brave.com/")) {
     if (focused)
       return *bundle.GetImageSkiaNamed(IDR_SIDEBAR_BRAVE_TOGETHER_FOCUSED);
     return gfx::CreateVectorIcon(kSidebarBraveTogetherIcon, base_button_color);

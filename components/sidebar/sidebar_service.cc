@@ -33,7 +33,7 @@ std::vector<SidebarItem> GetDefaultSidebarItems() {
   // TODO(simonhong): Get titles by observing webcontents.
   std::vector<SidebarItem> items;
   items.push_back(SidebarItem::Create(
-      GURL("https://together.brave.com/"),
+      GURL("https://talk.brave.com/"),
       l10n_util::GetStringUTF16(IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE),
       SidebarItem::Type::kTypeBuiltIn, true));
   items.push_back(SidebarItem::Create(
