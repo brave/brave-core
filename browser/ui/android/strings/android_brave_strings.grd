@@ -583,7 +583,7 @@ month...
         Backup Wallet
       </message>
       <message name="IDS_BRAVE_UI_BACKUP_WALLET_DESC" desc="A notification message description about backing up the wallet">
-        Please backup your Brave wallet.
+        Please back up your Brave wallet.
       </message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_UH_OH" desc="A prefix to a message about a problem">
         Uh oh!
@@ -1739,7 +1739,7 @@ until they verify, or until 90 days have passed.
       Setup Crypto
     </message>
     <message name="IDS_BACKUP_YOUR_WALLET">
-      Backup your wallet now!
+      Back up your wallet now!
     </message>
     <message name="IDS_BACKUP_YOUR_WALLET_TEXT">
       In the next step you will see 12 words that allows you to recover your crypto wallet.

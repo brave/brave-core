@@ -179,7 +179,7 @@ let locale: Record<string, string> = {
   restoreAll: 'Restore All',
   restoreSite: 'Restore this site',
   reviewSitesMsg: 'Your pinned sites have been moved to',
-  rewardsBackupNoticeText1: 'The funds in your Brave wallet are virtual and not required to backup. It\'s available for you to spend exclusively on this browser.',
+  rewardsBackupNoticeText1: 'The funds in your Brave wallet are virtual and not required to back up. It\'s available for you to spend exclusively on this browser.',
   rewardsBackupNoticeText2: 'If you\'d like to secure all of your funds in the case of clean installing the browser or switching to a new device, and have other benefits such as adding, withdrawing and transferring funds, we recommend',
   rewardsBackupNoticeText3: 'connecting to a verified Uphold wallet.',
   rewardsBackupText1: 'Keep this recovery key safe.',

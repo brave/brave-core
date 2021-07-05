@@ -216,7 +216,7 @@
     "description": "Notification title when we ask user to backup wallet"
   },
   "backupWalletNotification": {
-    "message": "Please backup your Brave wallet.",
+    "message": "Please back up your Brave wallet.",
     "description": "Description for backup wallet notification"
   },
   "deviceLimitReachedLearnMore": {
