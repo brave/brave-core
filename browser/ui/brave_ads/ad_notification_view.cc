@@ -17,7 +17,6 @@
 #include "ui/compositor/layer.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/vector2d.h"
-#include "ui/native_theme/native_theme.h"
 #include "ui/views/view.h"
 
 namespace brave_ads {
