@@ -5,6 +5,8 @@
 
 #include "services/network/cookie_settings.h"
 
+#include "url/origin.h"
+
 namespace network {
 
 bool CookieSettings::IsEphemeralCookieAccessible(
@@ -23,6 +25,26 @@ bool CookieSettings::IsEphemeralCookieAccessible(
   return IsCookieAccessible(cookie, url, site_for_cookies, top_frame_origin);
 }
 
+bool CookieSettings::AnnotateAndMoveUserBlockedEphemeralCookies(
+    const GURL& url,
+    const GURL& site_for_cookies,
+    const url::Origin* top_frame_origin,
+    net::CookieAccessResultList& maybe_included_cookies,
+    net::CookieAccessResultList& excluded_cookies) const {
+  absl::optional<url::Origin> top_frame_origin_opt;
+  if (top_frame_origin)
+    top_frame_origin_opt = *top_frame_origin;
+
+  if (IsEphemeralCookieAccessAllowed(url, site_for_cookies,
+                                     top_frame_origin_opt)) {
+    return true;
+  }
+
+  return AnnotateAndMoveUserBlockedCookies(
+      url, site_for_cookies, top_frame_origin, maybe_included_cookies,
+      excluded_cookies);
+}
+
 }  // namespace network
 
-#include "../../../../../../services/network/cookie_settings.cc"  // NOLINT
+#include "../../../../services/network/cookie_settings.cc"
