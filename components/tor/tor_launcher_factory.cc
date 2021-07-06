@@ -355,6 +355,8 @@ void TorLauncherFactory::OnTorEvent(
              event == tor::TorControlEvent::WARN ||
              event == tor::TorControlEvent::ERR) {
     tor_log_ += raw_event + '\n';
+    for (auto& observer : observers_)
+      observer.OnTorLogUpdated();
   }
 }
 

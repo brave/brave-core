@@ -77,6 +77,11 @@ void TorInternalsDOMHandler::OnTorControlEvent(const std::string& event) {
                                          base::Value(event));
 }
 
+void TorInternalsDOMHandler::OnTorLogUpdated() {
+  tor_launcher_factory_->GetTorLog(base::BindOnce(
+      &TorInternalsDOMHandler::OnGetTorLog, weak_ptr_factory_.GetWeakPtr()));
+}
+
 void TorInternalsDOMHandler::OnTorInitializing(const std::string& percentage) {
   web_ui()->CallJavascriptFunctionUnsafe("tor_internals.onGetTorInitPercentage",
                                          base::Value(percentage));
