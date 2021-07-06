@@ -67,7 +67,7 @@ TEST(Eip2930TransactionUnitTest, AccessListAndValue) {
       base::Value(Eip2930Transaction::AccessListToValue(access_list));
   auto access_list_from_value =
       Eip2930Transaction::ValueToAccessList(access_list_value);
-  ASSERT_NE(access_list_from_value, base::nullopt);
+  ASSERT_NE(access_list_from_value, absl::nullopt);
   EXPECT_EQ(access_list_from_value, access_list);
 }
 
@@ -160,7 +160,7 @@ TEST(Eip2930TransactionUnitTest, Serialization) {
 
   base::Value tx_value = tx.ToValue();
   auto tx_from_value = Eip2930Transaction::FromValue(tx_value);
-  ASSERT_NE(tx_from_value, base::nullopt);
+  ASSERT_NE(tx_from_value, absl::nullopt);
   EXPECT_EQ(tx_from_value, tx);
 }
 

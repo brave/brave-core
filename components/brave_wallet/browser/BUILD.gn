@@ -82,6 +82,7 @@ static_library("browser") {
     "//components/prefs",
     "//crypto",
     "//services/network/public/cpp",
+    "//third_party/abseil-cpp:absl",
     "//third_party/boringssl",
     "//url",
   ]

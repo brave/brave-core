@@ -52,7 +52,7 @@ bool EthTransaction::operator==(const EthTransaction& tx) const {
 }
 
 // static
-base::Optional<EthTransaction> EthTransaction::FromValue(
+absl::optional<EthTransaction> EthTransaction::FromValue(
     const base::Value& value) {
   EthTransaction tx;
   const std::string* nonce = value.FindStringKey("nonce");
@@ -92,7 +92,7 @@ base::Optional<EthTransaction> EthTransaction::FromValue(
     return base::nullopt;
   tx.data_ = std::vector<uint8_t>(data_decoded.begin(), data_decoded.end());
 
-  base::Optional<int> v = value.FindIntKey("v");
+  absl::optional<int> v = value.FindIntKey("v");
   if (!v)
     return base::nullopt;
   tx.v_ = (uint8_t)*v;
@@ -113,7 +113,7 @@ base::Optional<EthTransaction> EthTransaction::FromValue(
     return base::nullopt;
   tx.s_ = std::vector<uint8_t>(s_decoded.begin(), s_decoded.end());
 
-  base::Optional<int> type = value.FindIntKey("type");
+  absl::optional<int> type = value.FindIntKey("type");
   if (!type)
     return base::nullopt;
   tx.type_ = (uint8_t)*type;

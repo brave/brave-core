@@ -157,7 +157,7 @@ TEST(EthTransactionUnitTest, TransactionAndValue) {
       0x0de0b6b3a7640000, std::vector<uint8_t>()));
   base::Value tx_value = tx.ToValue();
   auto tx_from_value = EthTransaction::FromValue(tx_value);
-  ASSERT_NE(tx_from_value, base::nullopt);
+  ASSERT_NE(tx_from_value, absl::nullopt);
   EXPECT_EQ(tx_from_value, tx);
 }
 

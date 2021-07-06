@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -37,10 +38,10 @@ class Eip2930Transaction : public EthTransaction {
   ~Eip2930Transaction() override;
   bool operator==(const Eip2930Transaction&) const;
 
-  static base::Optional<Eip2930Transaction> FromValue(const base::Value& value);
+  static absl::optional<Eip2930Transaction> FromValue(const base::Value& value);
 
   static std::vector<base::Value> AccessListToValue(const AccessList&);
-  static base::Optional<AccessList> ValueToAccessList(const base::Value&);
+  static absl::optional<AccessList> ValueToAccessList(const base::Value&);
 
   uint64_t chain_id() const { return chain_id_; }
   const AccessList* access_list() const { return &access_list_; }

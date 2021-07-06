@@ -53,9 +53,9 @@ bool Eip2930Transaction::operator==(const Eip2930Transaction& tx) const {
 }
 
 // static
-base::Optional<Eip2930Transaction> Eip2930Transaction::FromValue(
+absl::optional<Eip2930Transaction> Eip2930Transaction::FromValue(
     const base::Value& value) {
-  base::Optional<EthTransaction> legacy_tx = EthTransaction::FromValue(value);
+  absl::optional<EthTransaction> legacy_tx = EthTransaction::FromValue(value);
   if (!legacy_tx)
     return base::nullopt;
   TxData tx_data(legacy_tx->nonce(), legacy_tx->gas_price(),
@@ -77,7 +77,7 @@ base::Optional<Eip2930Transaction> Eip2930Transaction::FromValue(
   const base::Value* access_list = value.FindKey("access_list");
   if (!access_list)
     return base::nullopt;
-  base::Optional<AccessList> access_list_from_value =
+  absl::optional<AccessList> access_list_from_value =
       ValueToAccessList(*access_list);
   if (!access_list_from_value)
     return base::nullopt;
@@ -105,7 +105,7 @@ std::vector<base::Value> Eip2930Transaction::AccessListToValue(
 }
 
 // static
-base::Optional<Eip2930Transaction::AccessList>
+absl::optional<Eip2930Transaction::AccessList>
 Eip2930Transaction::ValueToAccessList(const base::Value& value) {
   AccessList access_list;
   for (const auto& item_value : value.GetList()) {
