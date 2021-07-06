@@ -63,6 +63,7 @@ class SpeedreaderTabHelper
   // Returns |true| if the user has enabled Speedreader but the domain in the
   // active web contents is blacklisted.
   bool IsEnabledForSite();
+  bool IsEnabledForSite(const GURL& url);
 
   DistillState PageDistillState() const { return distill_state_; }
 

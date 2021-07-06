@@ -18,6 +18,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/web_contents.h"
 
 namespace speedreader {
 
@@ -36,14 +37,17 @@ bool SpeedreaderTabHelper::IsSpeedreaderEnabled() const {
 }
 
 bool SpeedreaderTabHelper::IsEnabledForSite() {
+  return IsEnabledForSite(web_contents()->GetLastCommittedURL());
+}
+
+bool SpeedreaderTabHelper::IsEnabledForSite(const GURL& url) {
   if (!IsSpeedreaderEnabled())
     return false;
 
   Profile* profile =
       Profile::FromBrowserContext(web_contents()->GetBrowserContext());
   auto* content_rules = HostContentSettingsMapFactory::GetForProfile(profile);
-  return speedreader::IsEnabledForSite(content_rules,
-                                       web_contents()->GetLastCommittedURL());
+  return speedreader::IsEnabledForSite(content_rules, url);
 }
 
 void SpeedreaderTabHelper::MaybeToggleEnabledForSite(bool on) {
@@ -101,7 +105,7 @@ void SpeedreaderTabHelper::UpdateActiveState(
               << "URL passed speedreader heuristic: " << handle->GetURL();
       if (!IsSpeedreaderEnabled()) {
         SetNextRequestState(DistillState::kPageProbablyReadable);
-      } else if (!IsEnabledForSite()) {
+      } else if (!IsEnabledForSite(handle->GetURL())) {
         SetNextRequestState(DistillState::kSpeedreaderOnDisabledPage);
       } else {
         SetNextRequestState(DistillState::kSpeedreaderMode);
