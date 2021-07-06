@@ -248,7 +248,7 @@
     "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
-    "message": "Error: Pending",
+    "message": "Error: Pending account",
     "description": "Title for pending user notification"
   },
   "upholdPendingUserNotification": {

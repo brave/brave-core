@@ -133,7 +133,7 @@ void UpholdWallet::OnGetUser(const type::Result result,
         !notification.empty() ? notification
                               : ledger::notifications::kWalletDisconnected);
 
-    return callback(type::Result::LEDGER_OK);
+    return callback(type::Result::LEDGER_ERROR);
   }
 
   if (uphold_wallet->status == type::WalletStatus::VERIFIED) {
@@ -223,13 +223,8 @@ void UpholdWallet::OnGetAnonFunds(const type::Result result,
   DCHECK(uphold_wallet->address.empty());
   DCHECK(!id.empty());
 
-  if (result != type::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK || !balance) {
     BLOG(0, "Couldn't get anonymous funds!");
-    return callback(result);
-  }
-
-  if (!balance) {
-    BLOG(0, "Balance is null!");
     return callback(type::Result::LEDGER_ERROR);
   }
 
@@ -278,7 +273,7 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
   }
 
   if (result != type::Result::LEDGER_OK) {
-    return callback(result);  // used to be callback(type::Result::CONTINUE);
+    return callback(type::Result::LEDGER_ERROR);
   }
 
   const auto from = uphold_wallet->status;

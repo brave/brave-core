@@ -63,7 +63,7 @@ void UpholdAuthorization::Authorize(
   }
 
   if (args.empty()) {
-    BLOG(0, "Arguments are empty");
+    BLOG(0, "Arguments are empty!");
     return callback(type::Result::LEDGER_ERROR, {});
   }
 
@@ -74,7 +74,7 @@ void UpholdAuthorization::Authorize(
   }
 
   if (code.empty()) {
-    BLOG(0, "Code is empty");
+    BLOG(0, "code is empty!");
     return callback(type::Result::LEDGER_ERROR, {});
   }
 
@@ -85,12 +85,12 @@ void UpholdAuthorization::Authorize(
   }
 
   if (one_time_string.empty()) {
-    BLOG(0, "One time string is empty");
+    BLOG(0, "state is empty!");
     return callback(type::Result::LEDGER_ERROR, {});
   }
 
   if (current_one_time != one_time_string) {
-    BLOG(0, "One time string mismatch");
+    BLOG(0, "One-time string mismatch!");
     return callback(type::Result::LEDGER_ERROR, {});
   }
 
@@ -111,7 +111,9 @@ void UpholdAuthorization::OnAuthorize(
 
   if (uphold_wallet->status != type::WalletStatus::NOT_CONNECTED &&
       uphold_wallet->status != type::WalletStatus::DISCONNECTED_VERIFIED) {
-    return callback(type::Result::LEDGER_OK, {});
+    BLOG(0, "Attempting to re-authorize in " << uphold_wallet->status
+                                             << " status!");
+    return callback(type::Result::LEDGER_ERROR, {});
   }
 
   DCHECK(uphold_wallet->token.empty());
