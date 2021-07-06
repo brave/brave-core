@@ -40,6 +40,10 @@ class SequencedTaskRunner;
 
 namespace ledger {
 
+namespace uphold {
+FORWARD_DECLARE_TEST(DisconnectWallet, Paths);
+}
+
 class BATLedgerContext;
 
 class LedgerImpl : public Ledger {
@@ -356,6 +360,8 @@ class LedgerImpl : public Ledger {
   uint32_t last_shown_tab_id_ = -1;
   std::queue<std::function<void()>> ready_callbacks_;
   ReadyState ready_state_ = ReadyState::kUninitialized;
+
+  FRIEND_TEST_ALL_PREFIXES(uphold::DisconnectWallet, Paths);
 };
 
 }  // namespace ledger
