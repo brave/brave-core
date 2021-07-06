@@ -10,7 +10,7 @@ import Data
 
 // MARK: - SearchViewControllerDelegate
 
-protocol SearchViewControllerDelegate: class {
+protocol SearchViewControllerDelegate: AnyObject {
     func searchViewController(_ searchViewController: SearchViewController, didSubmit query: String)
     func searchViewController(_ searchViewController: SearchViewController, didSelectURL url: URL)
     func searchViewController(_ searchViewController: SearchViewController, didLongPressSuggestion suggestion: String)
@@ -58,6 +58,7 @@ class SearchViewController: SiteTableViewController, LoaderListener {
     
     private let tabType: TabType
     private var suggestClient: SearchSuggestClient?
+    private var keyboardHeightForOrientation: (portrait: CGFloat, landscape: CGFloat) = (0, 0)
 
     // Views for displaying the bottom scrollable search engine list. searchEngineScrollView is the
     // scrollable container; searchEngineScrollViewContent contains the actual set of search engine buttons.
@@ -214,8 +215,10 @@ class SearchViewController: SiteTableViewController, LoaderListener {
     private func animateSearchEnginesWithKeyboard(_ keyboardState: KeyboardState) {
         layoutSearchEngineScrollView()
 
-        UIView.animate(withDuration: keyboardState.animationDuration, animations: {
-            UIView.setAnimationCurve(keyboardState.animationCurve)
+        UIView.animate(withDuration: keyboardState.animationDuration,
+                       delay: 0,
+                       options: UIView.AnimationOptions(rawValue: UInt(keyboardState.animationCurve.rawValue << 16)),
+                       animations: {
             self.view.layoutIfNeeded()
         })
     }
@@ -253,10 +256,26 @@ class SearchViewController: SiteTableViewController, LoaderListener {
         if !hasQuickSearchEngines { return }
         
         let keyboardHeight = KeyboardHelper.defaultHelper.currentState?.intersectionHeightForView(view) ?? 0
+
+        if UIDevice.current.orientation.isLandscape, keyboardHeightForOrientation.landscape == 0 {
+            keyboardHeightForOrientation.landscape = keyboardHeight
+        } else if UIDevice.current.orientation.isPortrait, keyboardHeightForOrientation.portrait == 0 {
+            keyboardHeightForOrientation.portrait = keyboardHeight
+        }
+            
         searchEngineScrollView.snp.remakeConstraints { make in
             make.leading.trailing.equalTo(view)
-            make.bottom.equalTo(view).offset(-keyboardHeight)
             
+            if keyboardHeight == 0 {
+                make.bottom.equalTo(view.safeArea.bottom)
+            } else {
+                let keyboardOrientationHeight = UIDevice.current.orientation.isPortrait
+                    ? keyboardHeightForOrientation.portrait
+                    : keyboardHeightForOrientation.landscape
+                let keyboardOffset = UIDevice.isIpad ? keyboardHeight : keyboardOrientationHeight
+                
+                make.bottom.equalTo(view).offset(-(keyboardOffset))
+            }
         }
     }
     
