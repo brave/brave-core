@@ -44,6 +44,19 @@ void BraveWalletNativeWorker::Destroy(
 }
 
 base::android::ScopedJavaLocalRef<jstring>
+BraveWalletNativeWorker::GetRecoveryWords(JNIEnv* env) {
+  auto* keyring_controller = GetBraveWalletService()->keyring_controller();
+  keyring_controller->GetMnemonicForDefaultKeyring();
+  return base::android::ConvertUTF8ToJavaString(
+      env, keyring_controller->GetMnemonicForDefaultKeyring());
+}
+
+bool BraveWalletNativeWorker::IsWalletLocked(JNIEnv* env) {
+  auto* keyring_controller = GetBraveWalletService()->keyring_controller();
+  return keyring_controller->IsLocked();
+}
+
+base::android::ScopedJavaLocalRef<jstring>
 BraveWalletNativeWorker::CreateWallet(
     JNIEnv* env,
     const base::android::JavaParamRef<jstring>& password) {
@@ -58,11 +71,6 @@ BraveWalletNativeWorker::CreateWallet(
       env, keyring_controller->GetMnemonicForDefaultKeyring());
 }
 
-bool BraveWalletNativeWorker::IsWalletLocked(JNIEnv* env) {
-  auto* keyring_controller = GetBraveWalletService()->keyring_controller();
-  return keyring_controller->IsLocked();
-}
-
 void BraveWalletNativeWorker::LockWallet(JNIEnv* env) {
   auto* keyring_controller = GetBraveWalletService()->keyring_controller();
   keyring_controller->Lock();
@@ -75,6 +83,22 @@ bool BraveWalletNativeWorker::UnlockWallet(
 
   return keyring_controller->Unlock(
       base::android::ConvertJavaStringToUTF8(env, password));
+}
+
+base::android::ScopedJavaLocalRef<jstring>
+BraveWalletNativeWorker::RestoreWallet(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& mnemonic,
+    const base::android::JavaParamRef<jstring>& password) {
+  auto* keyring_controller = GetBraveWalletService()->keyring_controller();
+  auto* keyring = keyring_controller->RestoreDefaultKeyring(
+      base::android::ConvertJavaStringToUTF8(env, mnemonic),
+      base::android::ConvertJavaStringToUTF8(env, password));
+  if (keyring) {
+    keyring->AddAccounts();
+  }
+  return base::android::ConvertUTF8ToJavaString(
+      env, keyring_controller->GetMnemonicForDefaultKeyring());
 }
 
 void BraveWalletNativeWorker::ResetWallet(JNIEnv* env) {

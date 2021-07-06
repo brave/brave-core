@@ -10,6 +10,9 @@ import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.SharedPreferences;
+
+import org.chromium.base.ContextUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +35,8 @@ public class Utils {
     public static int ONBOARDING_ACTION = 1;
     public static int UNLOCK_WALLET_ACTION = 2;
     public static int RESTORE_WALLET_ACTION = 3;
+
+    private static final String PREF_CRYPTO_ONBOARDING = "crypto_onboarding";
 
     public static Map<Integer, String> getRecoveryPhraseMap(List<String> recoveryPhrases) {
         Map<Integer, String> recoveryPhraseMap = new HashMap<>();
@@ -60,5 +65,17 @@ public class Utils {
             ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
             return item.getText().toString();
         }
+    }
+
+    public static boolean shouldShowCryptoOnboarding() {
+        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
+        return mSharedPreferences.getBoolean(PREF_CRYPTO_ONBOARDING, true);
+    }
+
+    public static void disableCryptoOnboarding() {
+        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_CRYPTO_ONBOARDING, false);
+        sharedPreferencesEditor.apply();
     }
 }

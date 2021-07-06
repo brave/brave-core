@@ -51,13 +51,17 @@ public class BraveWalletNativeWorker {
         mNativeBraveWalletNativeWorker = nativePtr;
     }
 
-    public String createWallet(String password) {
-        return BraveWalletNativeWorkerJni.get().createWallet(
-                mNativeBraveWalletNativeWorker, password);
+    public String getRecoveryWords() {
+        return BraveWalletNativeWorkerJni.get().getRecoveryWords(mNativeBraveWalletNativeWorker);
     }
 
     public boolean isWalletLocked() {
         return BraveWalletNativeWorkerJni.get().isWalletLocked(mNativeBraveWalletNativeWorker);
+    }
+
+    public String createWallet(String password) {
+        return BraveWalletNativeWorkerJni.get().createWallet(
+                mNativeBraveWalletNativeWorker, password);
     }
 
     public void lockWallet() {
@@ -69,13 +73,25 @@ public class BraveWalletNativeWorker {
                 mNativeBraveWalletNativeWorker, password);
     }
 
+    public String restoreWallet(String mnemonic, String password) {
+        return BraveWalletNativeWorkerJni.get().restoreWallet(
+                mNativeBraveWalletNativeWorker, mnemonic, password);
+    }
+
+    public void resetWallet() {
+        BraveWalletNativeWorkerJni.get().resetWallet(mNativeBraveWalletNativeWorker);
+    }
+
     @NativeMethods
     interface Natives {
         void init(BraveWalletNativeWorker caller);
         void destroy(long nativeBraveWalletNativeWorker, BraveWalletNativeWorker caller);
-        String createWallet(long nativeBraveWalletNativeWorker, String password);
+        String getRecoveryWords(long nativeBraveWalletNativeWorker);
         boolean isWalletLocked(long nativeBraveWalletNativeWorker);
+        String createWallet(long nativeBraveWalletNativeWorker, String password);
         void lockWallet(long nativeBraveWalletNativeWorker);
         boolean unlockWallet(long nativeBraveWalletNativeWorker, String password);
+        String restoreWallet(long nativeBraveWalletNativeWorker, String mnemonic, String password);
+        void resetWallet(long nativeBraveWalletNativeWorker);
     }
 }

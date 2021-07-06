@@ -30,6 +30,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.RewardsFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.SwapBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnFinishOnboarding;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 
 import java.util.ArrayList;
@@ -41,12 +42,9 @@ public class CryptoWalletActivity extends AsyncInitializationActivity {
     private WalletNavigationFragmentPageAdapter walletNavigationFragmentPageAdapter;
     private ViewPager navigationViewPager;
 
-    public static boolean isOnboardingDone;
-
     private final OnFinishOnboarding onFinishOnboarding = new OnFinishOnboarding() {
         @Override
         public void onFinish() {
-            isOnboardingDone = true;
             setNavigationFragments();
         }
     };
@@ -132,7 +130,7 @@ public class CryptoWalletActivity extends AsyncInitializationActivity {
                 getResources().getString(R.string.title_rewards), RewardsFragment.newInstance()));
         navigationItems.add(new NavigationItem(
                 getResources().getString(R.string.title_cards), CardsFragment.newInstance()));
-        if (isOnboardingDone) {
+        if (!Utils.shouldShowCryptoOnboarding()) {
             findViewById(R.id.swapActionButton).setVisibility(View.VISIBLE);
             navigationMenu = R.menu.navigation;
         } else {

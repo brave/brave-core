@@ -38,6 +38,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnFinishOnboarding;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,9 +77,7 @@ public class CryptoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         cryptoLayout = view.findViewById(R.id.crypto_layout);
-        if (CryptoWalletActivity.isOnboardingDone) {
-            setCryptoLayout();
-        } else {
+        if (Utils.shouldShowCryptoOnboarding()) {
             cryptoLayout.setVisibility(View.GONE);
             cryptoWalletOnboardingViewPager =
                     view.findViewById(R.id.crypto_wallet_onboarding_viewpager);
@@ -123,6 +122,8 @@ public class CryptoFragment extends Fragment {
             // } else {
             setNavigationFragments(ONBOARDING_ACTION);
             // }
+        } else {
+            setCryptoLayout();
         }
     }
 

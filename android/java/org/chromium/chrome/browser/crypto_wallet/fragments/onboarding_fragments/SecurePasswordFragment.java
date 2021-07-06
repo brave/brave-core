@@ -67,6 +67,7 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
                     Utils.recoveryPhrase = BraveWalletNativeWorker.getInstance()
                                                    .createWallet(passwordInput)
                                                    .trim();
+                    Utils.disableCryptoOnboarding();
                     onNextPage.gotoNextPage(false);
                 }
             }
@@ -101,6 +102,7 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
                     BraveWalletNativeWorker.getInstance()
                             .createWallet(passwordEdittext.getText().toString().trim())
                             .trim();
+            Utils.disableCryptoOnboarding();
             onNextPage.gotoNextPage(false);
         }
 

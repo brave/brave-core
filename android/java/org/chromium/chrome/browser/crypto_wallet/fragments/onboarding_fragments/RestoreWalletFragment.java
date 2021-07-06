@@ -20,7 +20,9 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 public class RestoreWalletFragment extends CryptoOnboardingFragment {
@@ -67,7 +69,12 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                 retypePasswordEdittext.setError(
                         getResources().getString(R.string.retype_password_error));
             } else {
-                // Restore button
+                String recoveryPhrase =
+                        BraveWalletNativeWorker.getInstance()
+                                .restoreWallet(recoveryPhraseText.getText().toString().trim(),
+                                        passwordEdittext.getText().toString().trim())
+                                .trim();
+                Log.e("NTP", "RecoveryPhrase : " + recoveryPhrase);
             }
         });
     }
