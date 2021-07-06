@@ -29,6 +29,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.TabLaunchType;
@@ -57,7 +58,11 @@ public class BraveAdsNotificationDialog {
         mNotificationId = notificationId;
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        b.setView(inflater.inflate(R.layout.brave_ads_custom_notification, null));
+        if (shouldUseDarkModeTheme()) {
+            b.setView(inflater.inflate(R.layout.brave_ads_custom_notification_dark, null));
+        } else {
+            b.setView(inflater.inflate(R.layout.brave_ads_custom_notification, null));
+        }
         mAdsDialog = b.create();
 
         if (mNotificationId != null) {
@@ -176,6 +181,10 @@ public class BraveAdsNotificationDialog {
         } catch (IllegalArgumentException e) {
             mAdsDialog = null;
         }
+    }
+
+    private static boolean shouldUseDarkModeTheme() {
+        return GlobalNightModeStateProviderHolder.getInstance().isInNightMode();
     }
 
     /**
