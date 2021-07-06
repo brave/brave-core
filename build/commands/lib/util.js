@@ -59,6 +59,18 @@ async function applyPatches() {
   }
 }
 
+const restoreBraveCoreGitUrlIfGitCacheEnabled = () => {
+  const gitCachePath = util.runGit(config.braveCoreDir, ['config', 'cache.cachepath'], true)
+  if (!gitCachePath) {
+    return
+  }
+  const gitBraveCoreRemoteUrl = util.runGit(config.braveCoreDir, ['remote', 'get-url', 'origin'], true)
+  const gitBraveCoreRemotePushUrl = util.runGit(config.braveCoreDir, ['remote', 'get-url', '--push', 'origin'], true)
+  if (gitBraveCoreRemoteUrl != gitBraveCoreRemotePushUrl) {
+    util.runGit(config.braveCoreDir, ['remote', 'set-url', 'origin', gitBraveCoreRemotePushUrl], true)
+  }
+}
+
 const util = {
 
   runProcess: (cmd, args = [], options = {}) => {
@@ -671,6 +683,10 @@ const util = {
     }
 
     runGClient(args, options)
+    // When git cache is enabled, gclient sync will use a local directory as a
+    // git remote url. This will break non gclient-triggered git operations, so
+    // after gclient is done, we restore the remote url here.
+    restoreBraveCoreGitUrlIfGitCacheEnabled()
 
     return {
       didUpdateChromium,
