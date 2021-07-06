@@ -40,11 +40,6 @@ class ScopedEphemeralStorageAwareness {
   bool IsChromiumFullCookieAccessAllowed(                                    \
       const GURL& url, const GURL& site_for_cookies,                         \
       const absl::optional<url::Origin>& top_frame_origin) const;            \
-  bool IsChromiumCookieAccessAllowed(const GURL& url,                        \
-                                     const GURL& first_party_url) const;     \
-  bool IsChromiumCookieAccessAllowed(                                        \
-      const GURL& url, const GURL& site_for_cookies,                         \
-      const absl::optional<url::Origin>& top_frame_origin) const;            \
                                                                              \
  private:                                                                    \
   bool IsCookieAccessAllowedImpl(                                            \

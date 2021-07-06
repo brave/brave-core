@@ -13,8 +13,17 @@
       const absl::optional<url::Origin>& top_frame_origin) const; \
   bool IsCookieAccessible
 
-#include "../../../../../../services/network/cookie_settings.h"
+#define AnnotateAndMoveUserBlockedCookies                   \
+  AnnotateAndMoveUserBlockedEphemeralCookies(               \
+      const GURL& url, const GURL& site_for_cookies,        \
+      const url::Origin* top_frame_origin,                  \
+      net::CookieAccessResultList& maybe_included_cookies,  \
+      net::CookieAccessResultList& excluded_cookies) const; \
+  bool AnnotateAndMoveUserBlockedCookies
 
+#include "../../../../services/network/cookie_settings.h"
+
+#undef AnnotateAndMoveUserBlockedCookies
 #undef IsCookieAccessible
 
 #endif  // BRAVE_CHROMIUM_SRC_SERVICES_NETWORK_COOKIE_SETTINGS_H_
