@@ -10,6 +10,7 @@
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/ipfs/ipfs_blob_context_getter_factory.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
@@ -94,9 +95,11 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
     InProcessBrowserTest::SetUpOnMainThread();
     base::FilePath user_dir = base::FilePath(FILE_PATH_LITERAL("test"));
+    auto context_getter =
+        std::make_unique<IpfsBlobContextGetterFactory>(browser()->profile());
     fake_service_ = std::make_unique<FakeIpfsService>(
-        browser()->profile()->GetPrefs(), nullptr, nullptr, nullptr, user_dir,
-        chrome::GetChannel());
+        browser()->profile()->GetPrefs(), nullptr, std::move(context_getter),
+        nullptr, user_dir, chrome::GetChannel());
   }
 
   void ResetTestServer(
@@ -1098,12 +1101,20 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, UpdaterRegistration) {
       g_brave_browser_process->ipfs_client_updater();
   auto* prefs = browser()->profile()->GetPrefs();
   {
-    std::unique_ptr<FakeIpfsService> fake_service(new FakeIpfsService(
-        prefs, nullptr, nullptr, updater, user_dir, chrome::GetChannel()));
+    auto context_getter =
+        std::make_unique<IpfsBlobContextGetterFactory>(browser()->profile());
+
+    std::unique_ptr<FakeIpfsService> fake_service(
+        new FakeIpfsService(prefs, nullptr, std::move(context_getter), updater,
+                            user_dir, chrome::GetChannel()));
   }
   {
-    std::unique_ptr<FakeIpfsService> fake_service(new FakeIpfsService(
-        prefs, nullptr, nullptr, updater, user_dir, chrome::GetChannel()));
+    auto context_getter =
+        std::make_unique<IpfsBlobContextGetterFactory>(browser()->profile());
+
+    std::unique_ptr<FakeIpfsService> fake_service(
+        new FakeIpfsService(prefs, nullptr, std::move(context_getter), updater,
+                            user_dir, chrome::GetChannel()));
 
     ASSERT_FALSE(fake_service->IsDaemonLaunched());
     ASSERT_FALSE(updater->IsRegistered());
