@@ -567,9 +567,13 @@ extension FavoritesViewController: UICollectionViewDragDelegate, UICollectionVie
         if let indexPath = coordinator.destinationIndexPath {
             destinationIndexPath = indexPath
         } else {
-            let section = collectionView.numberOfSections - 1
+            let section = max(collectionView.numberOfSections - 1, 0)
             let row = collectionView.numberOfItems(inSection: section)
-            destinationIndexPath = IndexPath(row: row - 1, section: section)
+            destinationIndexPath = IndexPath(row: max(row - 1, 0), section: section)
+        }
+        
+        if sourceIndexPath.section != destinationIndexPath.section {
+            return
         }
         
         switch coordinator.proposal.operation {
