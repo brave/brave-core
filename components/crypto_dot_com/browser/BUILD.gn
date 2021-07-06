@@ -23,10 +23,9 @@ static_library("browser") {
     "//components/keyed_service/core",
     "//components/os_crypt",
     "//components/prefs",
-    "//components/user_prefs",
-    "//content/public/browser",
     "//net",
     "//services/network/public/cpp",
+    "//ui/base",
     "//url",
   ]
 }

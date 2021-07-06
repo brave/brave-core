@@ -23,5 +23,7 @@ if (crypto_dot_com_enabled) {
     "//brave/components/crypto_dot_com/common",
     "//chrome/browser/profiles:profile",
     "//components/keyed_service/content",
+    "//components/user_prefs",
+    "//content/public/browser",
   ]
 }

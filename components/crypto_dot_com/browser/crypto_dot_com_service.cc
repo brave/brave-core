@@ -23,9 +23,6 @@
 #include "brave/components/crypto_dot_com/common/pref_names.h"
 #include "components/os_crypt/os_crypt.h"
 #include "components/prefs/pref_service.h"
-#include "components/user_prefs/user_prefs.h"
-#include "content/public/browser/browser_context.h"
-#include "content/public/browser/storage_partition.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -71,16 +68,14 @@ std::string GetFormattedResponseBody(const std::string& json_response) {
 
 }  // namespace
 
-CryptoDotComService::CryptoDotComService(content::BrowserContext* context)
-    : context_(context),
-      url_loader_factory_(context_->GetDefaultStoragePartition()
-                              ->GetURLLoaderFactoryForBrowserProcess()),
-      weak_factory_(this) {
+CryptoDotComService::CryptoDotComService(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    PrefService* prefs)
+    : prefs_(prefs), url_loader_factory_(url_loader_factory) {
   LoadTokenFromPrefs();
 }
 
-CryptoDotComService::~CryptoDotComService() {
-}
+CryptoDotComService::~CryptoDotComService() = default;
 
 bool CryptoDotComService::GetTickerInfo(const std::string& asset,
                                         GetTickerInfoCallback callback) {
@@ -373,9 +368,8 @@ std::string CryptoDotComService::GetAuthClientUrl() const {
 bool CryptoDotComService::SetAccessToken(const std::string& access_token) {
   access_token_ = access_token;
 
-  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   if (access_token_.empty()) {
-    prefs->SetString(kCryptoDotComAccessToken, access_token_);
+    prefs_->SetString(kCryptoDotComAccessToken, access_token_);
     return true;
   }
 
@@ -387,15 +381,14 @@ bool CryptoDotComService::SetAccessToken(const std::string& access_token) {
 
   std::string encoded_encrypted_access_token;
   base::Base64Encode(encrypted_access_token, &encoded_encrypted_access_token);
-  prefs->SetString(kCryptoDotComAccessToken, encoded_encrypted_access_token);
+  prefs_->SetString(kCryptoDotComAccessToken, encoded_encrypted_access_token);
 
   return true;
 }
 
 bool CryptoDotComService::LoadTokenFromPrefs() {
-  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   std::string encoded_encrypted_access_token =
-      prefs->GetString(kCryptoDotComAccessToken);
+      prefs_->GetString(kCryptoDotComAccessToken);
 
   std::string encrypted_access_token;
   if (!base::Base64Decode(encoded_encrypted_access_token,
@@ -439,12 +432,8 @@ bool CryptoDotComService::NetworkRequest(const GURL& url,
       network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
 
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
-  auto* default_storage_partition = context_->GetDefaultStoragePartition();
-  auto* url_loader_factory =
-      default_storage_partition->GetURLLoaderFactoryForBrowserProcess().get();
-
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory,
+      url_loader_factory_.get(),
       base::BindOnce(&CryptoDotComService::OnURLLoaderComplete,
                      base::Unretained(this), iter, std::move(callback)));
 

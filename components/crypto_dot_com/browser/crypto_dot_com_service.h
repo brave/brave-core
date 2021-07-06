@@ -17,10 +17,11 @@
 #include "base/files/file_path.h"
 #include "base/macros.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "url/gurl.h"
+
+class PrefService;
 
 namespace base {
 class FilePath;
@@ -53,8 +54,13 @@ typedef std::map<std::string, std::vector<std::map<std::string, std::string>>>
 
 class CryptoDotComService : public KeyedService {
  public:
-  explicit CryptoDotComService(content::BrowserContext* context);
+  CryptoDotComService(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      PrefService* prefs);
   ~CryptoDotComService() override;
+
+  CryptoDotComService(const CryptoDotComService&) = delete;
+  CryptoDotComService& operator=(const CryptoDotComService&) = delete;
 
   using GetTickerInfoCallback =
         base::OnceCallback<void(const CryptoDotComTickerInfo&)>;
@@ -90,6 +96,8 @@ class CryptoDotComService : public KeyedService {
   bool SetAccessToken(const std::string& access_token);
 
  private:
+  friend class CryptoDotComAPIBrowserTest;
+
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
   using URLRequestCallback =
@@ -149,14 +157,9 @@ class CryptoDotComService : public KeyedService {
       const std::unique_ptr<std::string> response_body);
 
   std::string access_token_;
-  content::BrowserContext* context_;
+  PrefService* prefs_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   SimpleURLLoaderList url_loaders_;
-  base::WeakPtrFactory<CryptoDotComService> weak_factory_;
-
-  friend class CryptoDotComAPIBrowserTest;
-
-  DISALLOW_COPY_AND_ASSIGN(CryptoDotComService);
 };
 
 #endif  // BRAVE_COMPONENTS_CRYPTO_DOT_COM_BROWSER_CRYPTO_DOT_COM_SERVICE_H_
