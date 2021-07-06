@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,8 +21,11 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.chromium.base.ApplicationStatus;
 import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.WalletHandler;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletNavigationFragmentPageAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.CardsFragment;
@@ -31,6 +35,8 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.SwapBottomSheetDialog
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnFinishOnboarding;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.content_public.browser.RenderFrameHost;
+import org.chromium.content_public.browser.WebContents;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,10 +116,37 @@ public class CryptoWalletActivity extends AsyncInitializationActivity {
         setNavigationFragments();
     }
 
+    private ChromeTabbedActivity getChromeTabbedActivity() {
+        for (Activity ref : ApplicationStatus.getRunningActivities()) {
+            if (!(ref instanceof ChromeTabbedActivity)) continue;
+
+            return (ChromeTabbedActivity)ref;
+        }
+
+        return null;
+    }
+
     @Override
     public void onPause() {
         super.onPause();
-        BraveWalletNativeWorker.getInstance().lockWallet();
+        ChromeTabbedActivity mainActivity = getChromeTabbedActivity();
+        if (mainActivity == null) {
+            return;
+        }
+        org.chromium.base.Log.i("TAG", "!!!mainActivity == " + mainActivity);
+        WebContents webContents = mainActivity.getActivityTab().getWebContents();
+        if (webContents == null) return;
+
+        RenderFrameHost mainFrame = webContents.getMainFrame();
+        if (mainFrame == null) return;
+
+        if (!mainFrame.isRenderFrameCreated()) return;
+
+        WalletHandler walletHandler = mainFrame.getInterfaceToRendererFrame(WalletHandler.MANAGER);
+        org.chromium.base.Log.i("TAG", "!!!before lockWallet walletHandler == " + walletHandler);
+        walletHandler.lockWallet();
+        org.chromium.base.Log.i("TAG", "!!!after lockWallet " + WalletHandler.MANAGER.getName());
+        //BraveWalletNativeWorker.getInstance().lockWallet();
     }
 
     @Override

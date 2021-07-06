@@ -107,25 +107,30 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
         @Override
         public void onAuthenticationError(int errorCode, CharSequence errString) {
             super.onAuthenticationError(errorCode, errString);
-            switch (errorCode) {
-                case BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED:
-                    Toast.makeText(getActivity(), errString, Toast.LENGTH_SHORT).show();
-                    break;
-                case BiometricPrompt.BIOMETRIC_ERROR_HW_NOT_PRESENT:
-                case BiometricPrompt.BIOMETRIC_ERROR_HW_UNAVAILABLE:
-                    Toast.makeText(getActivity(),
-                                 "Device doesn't have the supported fingerprint hardware.",
-                                 Toast.LENGTH_SHORT)
-                            .show();
-                    break;
-                case BiometricPrompt.BIOMETRIC_ERROR_NO_BIOMETRICS:
-                    Toast.makeText(getActivity(), "User did not register any fingerprints.",
-                                 Toast.LENGTH_SHORT)
-                            .show();
-                    break;
-                default:
-                    Toast.makeText(getActivity(), "unrecoverable error", Toast.LENGTH_SHORT).show();
-            }
+            // switch (errorCode) {
+            //     case BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED:
+            //         Toast.makeText(getActivity(), errString, Toast.LENGTH_SHORT).show();
+            //         break;
+            //     case BiometricPrompt.BIOMETRIC_ERROR_HW_NOT_PRESENT:
+            //     case BiometricPrompt.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+            //         Toast.makeText(getActivity(),
+            //                      "Device doesn't have the supported fingerprint hardware.",
+            //                      Toast.LENGTH_SHORT)
+            //                 .show();
+            //         break;
+            //     case BiometricPrompt.BIOMETRIC_ERROR_NO_BIOMETRICS:
+            //         Toast.makeText(getActivity(), "User did not register any fingerprints.",
+            //                      Toast.LENGTH_SHORT)
+            //                 .show();
+            //         break;
+            //     default:
+            //         Toast.makeText(getActivity(), "unrecoverable error", Toast.LENGTH_SHORT).show();
+            // }
+            Utils.recoveryPhrase =
+                    BraveWalletNativeWorker.getInstance()
+                            .createWallet(passwordEdittext.getText().toString().trim())
+                            .trim();
+            onNextPage.gotoNextPage(false);
         }
     };
 }

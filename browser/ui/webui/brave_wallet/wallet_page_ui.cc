@@ -63,5 +63,7 @@ void WalletPageUI::CreatePageHandler(
   page_handler_ = std::make_unique<WalletPageHandler>(
       std::move(page_receiver), std::move(page), web_ui(), this);
   wallet_handler_ = std::make_unique<WalletHandler>(
-      std::move(wallet_receiver), std::move(page), web_ui(), this);
+      std::move(wallet_receiver),
+      std::move(page),
+      Profile::FromWebUI(web_ui()));
 }

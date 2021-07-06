@@ -16,7 +16,7 @@
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/brave_wallet/browser/swap_controller.h"
 #include "chrome/browser/profiles/profile.h"
-#include "content/public/browser/web_ui.h"
+//#include "content/public/browser/web_ui.h"
 
 namespace {
 
@@ -29,21 +29,28 @@ brave_wallet::BraveWalletService* GetBraveWalletService(
 }  // namespace
 
 WalletHandler::WalletHandler(
+#if !defined(OS_ANDROID)
     mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> receiver,
     mojo::PendingRemote<brave_wallet::mojom::Page> page,
-    content::WebUI* web_ui,
-    ui::MojoWebUIController* webui_controller)
-    : receiver_(this, std::move(receiver)),
+#endif
+    Profile* profile
+    /*content::WebUI* web_ui,
+    ui::MojoWebUIController* webui_controller*/)
+    :
+#if !defined(OS_ANDROID)
+      receiver_(this, std::move(receiver)),
       page_(std::move(page)),
-      web_ui_(web_ui),
+#endif
+      //web_ui_(web_ui),
+      profile_(profile),
       weak_ptr_factory_(this) {}
 
 WalletHandler::~WalletHandler() = default;
 
 void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
-  auto* profile = Profile::FromWebUI(web_ui_);
+  //auto* profile = Profile::FromWebUI(web_ui_);
   std::vector<std::string> accounts;
-  auto* service = GetBraveWalletService(profile);
+  auto* service = GetBraveWalletService(profile_);
   auto* keyring_controller = service->keyring_controller();
   auto* default_keyring = keyring_controller->GetDefaultKeyring();
   if (default_keyring) {
@@ -63,26 +70,27 @@ void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
 }
 
 void WalletHandler::LockWallet() {
-  auto* profile = Profile::FromWebUI(web_ui_);
+  //auto* profile = Profile::FromWebUI(web_ui_);
+  LOG(ERROR) << "!!!locking";
   auto* keyring_controller =
-      GetBraveWalletService(profile)->keyring_controller();
+      GetBraveWalletService(profile_)->keyring_controller();
   keyring_controller->Lock();
 }
 
 void WalletHandler::UnlockWallet(const std::string& password,
                                  UnlockWalletCallback callback) {
-  auto* profile = Profile::FromWebUI(web_ui_);
+  //auto* profile = Profile::FromWebUI(web_ui_);
   auto* keyring_controller =
-      GetBraveWalletService(profile)->keyring_controller();
+      GetBraveWalletService(profile_)->keyring_controller();
   bool result = keyring_controller->Unlock(password);
   std::move(callback).Run(result);
 }
 
 void WalletHandler::GetAssetPrice(const std::string& asset,
                                   GetAssetPriceCallback callback) {
-  auto* profile = Profile::FromWebUI(web_ui_);
+  //auto* profile = Profile::FromWebUI(web_ui_);
   auto* asset_ratio_controller =
-      GetBraveWalletService(profile)->asset_ratio_controller();
+      GetBraveWalletService(profile_)->asset_ratio_controller();
   asset_ratio_controller->GetPrice(
       asset,
       base::BindOnce(&WalletHandler::OnGetPrice, weak_ptr_factory_.GetWeakPtr(),
@@ -99,9 +107,9 @@ void WalletHandler::GetAssetPriceHistory(
     const std::string& asset,
     brave_wallet::mojom::AssetPriceTimeframe timeframe,
     GetAssetPriceHistoryCallback callback) {
-  auto* profile = Profile::FromWebUI(web_ui_);
+  //auto* profile = Profile::FromWebUI(web_ui_);
   auto* asset_ratio_controller =
-      GetBraveWalletService(profile)->asset_ratio_controller();
+      GetBraveWalletService(profile_)->asset_ratio_controller();
   asset_ratio_controller->GetPriceHistory(
       asset, timeframe,
       base::BindOnce(&WalletHandler::OnGetPriceHistory,
@@ -117,8 +125,8 @@ void WalletHandler::OnGetPriceHistory(
 
 void WalletHandler::GetPriceQuote(brave_wallet::mojom::SwapParamsPtr params,
                                   GetPriceQuoteCallback callback) {
-  auto* profile = Profile::FromWebUI(web_ui_);
-  auto* swap_controller = GetBraveWalletService(profile)->swap_controller();
+  //auto* profile = Profile::FromWebUI(web_ui_);
+  auto* swap_controller = GetBraveWalletService(profile_)->swap_controller();
   swap_controller->GetPriceQuote(
       *params,
       base::BindOnce(&WalletHandler::OnGetPriceQuote,
@@ -135,8 +143,8 @@ void WalletHandler::OnGetPriceQuote(
 void WalletHandler::GetTransactionPayload(
     brave_wallet::mojom::SwapParamsPtr params,
     GetTransactionPayloadCallback callback) {
-  auto* profile = Profile::FromWebUI(web_ui_);
-  auto* swap_controller = GetBraveWalletService(profile)->swap_controller();
+  //auto* profile = Profile::FromWebUI(web_ui_);
+  auto* swap_controller = GetBraveWalletService(profile_)->swap_controller();
   swap_controller->GetTransactionPayload(
       *params,
       base::BindOnce(&WalletHandler::OnGetTransactionPayload,
@@ -165,7 +173,7 @@ void WalletHandler::RemoveFavoriteApp(
 }
 
 void WalletHandler::NotifyWalletBackupComplete() {
-  auto* profile = Profile::FromWebUI(web_ui_);
-  auto* service = GetBraveWalletService(profile);
+  //auto* profile = Profile::FromWebUI(web_ui_);
+  auto* service = GetBraveWalletService(profile_);
   service->NotifyWalletBackupComplete();
 }

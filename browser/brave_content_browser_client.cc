@@ -155,6 +155,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #else
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_android.h"
+#include "brave/browser/ui/webui/brave_wallet/common_handler/wallet_handler.h"
 #endif
 #endif
 
@@ -228,6 +229,22 @@ void MaybeBindBraveWalletProvider(
 #endif
               web_contents)),
       std::move(receiver));
+}
+
+void BindBraveWalletHandler(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> receiver) {
+  LOG(ERROR) << "!!!here2";
+  auto* web_contents = content::WebContents::FromRenderFrameHost(frame_host);
+  if (!web_contents)
+    return;
+
+  auto* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<WalletHandler>(profile),
+      std::move(receiver));
+  LOG(ERROR) << "!!!here3";
 }
 #endif
 
@@ -351,6 +368,10 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       brave_wallet::mojom::PanelHandlerFactory, WalletPanelUI>(map);
   chrome::internal::RegisterWebUIControllerInterfaceBinder<
       brave_wallet::mojom::PageHandlerFactory, WalletPageUI>(map);
+#else
+  LOG(ERROR) << "!!!here1";
+  map->Add<brave_wallet::mojom::WalletHandler>(
+      base::BindRepeating(&BindBraveWalletHandler));
 #endif
 #endif
 }

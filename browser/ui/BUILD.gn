@@ -500,24 +500,26 @@ source_set("ui") {
     deps += [ "//brave/components/tor/resources:internals_generated_resources" ]
   }
 
-  if (brave_wallet_enabled && !is_android && !is_ios) {
-    sources += [
-      "views/toolbar/wallet_button.cc",
-      "views/toolbar/wallet_button.h",
-      "webui/brave_wallet/wallet_page_ui.cc",
-      "webui/brave_wallet/wallet_page_ui.h",
-      "webui/brave_wallet/wallet_panel_ui.cc",
-      "webui/brave_wallet/wallet_panel_ui.h",
-    ]
-    deps += [
-      "//brave/browser/ui/webui/brave_wallet/common_handler",
-      "//brave/browser/ui/webui/brave_wallet/page_handler",
-      "//brave/browser/ui/webui/brave_wallet/panel_handler",
-      "//brave/components/brave_wallet/common:mojom",
-      "//brave/components/brave_wallet_ui:resources",
-      "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
-      "//brave/components/brave_wallet_ui/panel:brave_wallet_panel_generated",
-    ]
+  if (brave_wallet_enabled && !is_ios) {
+    deps += [ "//brave/browser/ui/webui/brave_wallet/common_handler" ]
+    if (!is_android) {
+      sources += [
+        "views/toolbar/wallet_button.cc",
+        "views/toolbar/wallet_button.h",
+        "webui/brave_wallet/wallet_page_ui.cc",
+        "webui/brave_wallet/wallet_page_ui.h",
+        "webui/brave_wallet/wallet_panel_ui.cc",
+        "webui/brave_wallet/wallet_panel_ui.h",
+      ]
+      deps += [
+        "//brave/browser/ui/webui/brave_wallet/page_handler",
+        "//brave/browser/ui/webui/brave_wallet/panel_handler",
+        "//brave/components/brave_wallet/common:mojom",
+        "//brave/components/brave_wallet_ui:resources",
+        "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
+        "//brave/components/brave_wallet_ui/panel:brave_wallet_panel_generated",
+      ]
+    }
   }
 
   if (ethereum_remote_client_enabled && !is_android && !is_ios) {

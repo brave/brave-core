@@ -11,12 +11,17 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "content/public/browser/web_contents_observer.h"
+//#include "content/public/browser/web_contents_observer.h"
+
+#if !defined(OS_ANDROID)
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "ui/webui/mojo_web_ui_controller.h"
+#endif
+//#include "ui/webui/mojo_web_ui_controller.h"
+
+class Profile;
 
 namespace content {
 class WebUI;
@@ -25,10 +30,13 @@ class WebUI;
 class WalletHandler : public brave_wallet::mojom::WalletHandler {
  public:
   WalletHandler(
+#if !defined(OS_ANDROID)
       mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> receiver,
       mojo::PendingRemote<brave_wallet::mojom::Page> page,
-      content::WebUI* web_ui,
-      ui::MojoWebUIController* webui_controller);
+#endif
+      Profile* profile
+      /*content::WebUI* web_ui,
+      ui::MojoWebUIController* webui_controller*/);
 
   WalletHandler(const WalletHandler&) = delete;
   WalletHandler& operator=(const WalletHandler&) = delete;
@@ -68,9 +76,12 @@ class WalletHandler : public brave_wallet::mojom::WalletHandler {
 
   // TODO(bbondy): This needs to be persisted in prefs
   std::vector<brave_wallet::mojom::AppItemPtr> favorite_apps;
+#if !defined(OS_ANDROID)
   mojo::Receiver<brave_wallet::mojom::WalletHandler> receiver_;
   mojo::Remote<brave_wallet::mojom::Page> page_;
-  content::WebUI* const web_ui_;
+#endif
+  //content::WebUI* const web_ui_;
+  Profile* const profile_;
 
   base::WeakPtrFactory<WalletHandler> weak_ptr_factory_;
 };
