@@ -24,31 +24,36 @@ class ScopedEphemeralStorageAwareness {
 
 }  // namespace content_settings
 
-#define IsCookieSessionOnly                                               \
-  ShouldUseEphemeralStorage(                                              \
-      const GURL& url, const GURL& site_for_cookies,                      \
-      const absl::optional<url::Origin>& top_frame_origin) const;         \
-  ScopedEphemeralStorageAwareness CreateScopedEphemeralStorageAwareness() \
-      const;                                                              \
-  bool IsEphemeralCookieAccessAllowed(const GURL& url,                    \
-                                      const GURL& first_party_url) const; \
-  bool IsEphemeralCookieAccessAllowed(                                    \
-      const GURL& url, const GURL& site_for_cookies,                      \
-      const absl::optional<url::Origin>& top_frame_origin) const;         \
-  bool IsChromiumCookieAccessAllowed(const GURL& url,                     \
-                                     const GURL& first_party_url) const;  \
-  bool IsChromiumCookieAccessAllowed(                                     \
-      const GURL& url, const GURL& site_for_cookies,                      \
-      const absl::optional<url::Origin>& top_frame_origin) const;         \
-                                                                          \
- private:                                                                 \
-  bool IsCookieAccessAllowedImpl(                                         \
-      const GURL& url, const GURL& site_for_cookies,                      \
-      const absl::optional<url::Origin>& top_frame_origin) const;         \
-                                                                          \
-  mutable bool ephemeral_storage_aware_ = false;                          \
-                                                                          \
- public:                                                                  \
+#define IsCookieSessionOnly                                                  \
+  ShouldUseEphemeralStorage(                                                 \
+      const GURL& url, const GURL& site_for_cookies,                         \
+      const absl::optional<url::Origin>& top_frame_origin) const;            \
+  ScopedEphemeralStorageAwareness CreateScopedEphemeralStorageAwareness()    \
+      const;                                                                 \
+  bool IsEphemeralCookieAccessAllowed(const GURL& url,                       \
+                                      const GURL& first_party_url) const;    \
+  bool IsEphemeralCookieAccessAllowed(                                       \
+      const GURL& url, const GURL& site_for_cookies,                         \
+      const absl::optional<url::Origin>& top_frame_origin) const;            \
+  bool IsChromiumFullCookieAccessAllowed(const GURL& url,                    \
+                                         const GURL& first_party_url) const; \
+  bool IsChromiumFullCookieAccessAllowed(                                    \
+      const GURL& url, const GURL& site_for_cookies,                         \
+      const absl::optional<url::Origin>& top_frame_origin) const;            \
+  bool IsChromiumCookieAccessAllowed(const GURL& url,                        \
+                                     const GURL& first_party_url) const;     \
+  bool IsChromiumCookieAccessAllowed(                                        \
+      const GURL& url, const GURL& site_for_cookies,                         \
+      const absl::optional<url::Origin>& top_frame_origin) const;            \
+                                                                             \
+ private:                                                                    \
+  bool IsCookieAccessAllowedImpl(                                            \
+      const GURL& url, const GURL& site_for_cookies,                         \
+      const absl::optional<url::Origin>& top_frame_origin) const;            \
+                                                                             \
+  mutable bool ephemeral_storage_aware_ = false;                             \
+                                                                             \
+ public:                                                                     \
   bool IsCookieSessionOnly
 
 #include "../../../../../../components/content_settings/core/common/cookie_settings_base.h"
