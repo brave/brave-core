@@ -68,6 +68,11 @@ void DeleteDir(const base::FilePath& path) {
   base::DeletePathRecursively(path);
 }
 
+void DeleteFile(const base::FilePath& file) {
+  if (base::PathExists(file))
+    base::DeleteFile(file);
+}
+
 }  // namespace
 
 #if defined(OS_WIN)
@@ -120,7 +125,9 @@ BraveTorClientUpdater::BraveTorClientUpdater(
       registered_(false),
       local_state_(local_state),
       user_data_dir_(user_data_dir),
-      weak_ptr_factory_(this) {}
+      weak_ptr_factory_(this) {
+  RemoveObsoleteFiles();
+}
 
 BraveTorClientUpdater::~BraveTorClientUpdater() {}
 
@@ -133,8 +140,7 @@ void BraveTorClientUpdater::Register() {
     return;
   }
 
-  BraveComponent::Register(kTorClientComponentName,
-                           g_tor_client_component_id_,
+  BraveComponent::Register(kTorClientComponentName, g_tor_client_component_id_,
                            g_tor_client_component_base64_public_key_);
   registered_ = true;
 }
@@ -155,6 +161,12 @@ void BraveTorClientUpdater::Cleanup() {
                          base::BindOnce(&DeleteDir, GetTorDataPath()));
   task_runner_->PostTask(FROM_HERE,
                          base::BindOnce(&DeleteDir, GetTorWatchPath()));
+}
+
+void BraveTorClientUpdater::RemoveObsoleteFiles() {
+  // tor log
+  base::FilePath tor_log = GetTorDataPath().AppendASCII("tor.log");
+  task_runner_->PostTask(FROM_HERE, base::BindOnce(&DeleteFile, tor_log));
 }
 
 void BraveTorClientUpdater::SetExecutablePath(const base::FilePath& path) {
@@ -179,10 +191,9 @@ base::FilePath BraveTorClientUpdater::GetTorWatchPath() const {
       .Append(FILE_PATH_LITERAL("watch"));
 }
 
-void BraveTorClientUpdater::OnComponentReady(
-    const std::string& component_id,
-    const base::FilePath& install_dir,
-    const std::string& manifest) {
+void BraveTorClientUpdater::OnComponentReady(const std::string& component_id,
+                                             const base::FilePath& install_dir,
+                                             const std::string& manifest) {
   base::PostTaskAndReplyWithResult(
       GetTaskRunner().get(), FROM_HERE,
       base::BindOnce(&InitExecutablePath, install_dir),
