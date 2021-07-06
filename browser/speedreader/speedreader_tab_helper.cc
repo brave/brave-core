@@ -64,9 +64,21 @@ void SpeedreaderTabHelper::MaybeToggleEnabledForSite(bool on) {
 
 void SpeedreaderTabHelper::SingleShotSpeedreader() {
   single_shot_next_request_ = true;
+
+  // Refresh the page so it runs through the speedreader throttle
   auto* contents = web_contents();
   if (contents)
     contents->GetController().Reload(content::ReloadType::NORMAL, false);
+
+  // Determine if bubble should be shown automatically
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  DCHECK(profile);
+  auto* speedreader_service = SpeedreaderServiceFactory::GetForProfile(profile);
+  if (speedreader_service->ShouldPromptUserToEnable()) {
+    ShowReaderModeBubble();
+    speedreader_service->IncrementPromptCount();
+  }
 }
 
 void SpeedreaderTabHelper::UpdateActiveState(

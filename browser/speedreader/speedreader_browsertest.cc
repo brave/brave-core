@@ -120,7 +120,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, P3ATest) {
   ui_test_utils::NavigateToURL(browser(), url);
 
   // SpeedReader never enabled
-  DCHECK(!speedreader_service()->IsEnabled());
+  EXPECT_FALSE(speedreader_service()->IsEnabled());
   tester.ExpectBucketCount(kSpeedreaderEnabledUMAHistogramName, 0, 1);
   tester.ExpectBucketCount(kSpeedreaderToggleUMAHistogramName, 0, 1);
 

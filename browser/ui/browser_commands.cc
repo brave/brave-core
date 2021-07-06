@@ -100,17 +100,9 @@ void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
       case DistillState::kReaderMode:
         tab_helper->ShowReaderModeBubble();
         break;
-      case DistillState::kPageProbablyReadable: {
-        auto* speedreader_service =
-            speedreader::SpeedreaderServiceFactory::GetForProfile(
-                browser->profile());
+      case DistillState::kPageProbablyReadable:
         tab_helper->SingleShotSpeedreader();
-        if (speedreader_service->ShouldPromptUserToEnable()) {
-          tab_helper->ShowReaderModeBubble();
-          speedreader_service->IncrementPromptCount();
-        }
         break;
-      }
       default:
         NOTREACHED();
     }
