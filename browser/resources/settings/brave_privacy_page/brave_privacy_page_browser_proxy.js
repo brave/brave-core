@@ -18,6 +18,14 @@ cr.define('settings', function() {
      */
     setP3AEnabled(value) {}
     /**
+     * @return {!Promise<string>}
+     */
+    getStatsUsagePingEnabled() {}
+    /**
+     * @param {boolean} enabled (true/false).
+     */
+    setStatsUsagePingEnabled(value) {}
+    /**
      * @return {boolean}
      */
     wasPushMessagingEnabledAtStartup() {}
@@ -34,6 +42,14 @@ cr.define('settings', function() {
 
     setP3AEnabled(value) {
       chrome.send('setP3AEnabled', [value])
+    }
+
+    getStatsUsagePingEnabled() {
+      return cr.sendWithPromise('getStatsUsagePingEnabled');
+    }
+
+    setStatsUsagePingEnabled(value) {
+      chrome.send('setStatsUsagePingEnabled', [value])
     }
 
     wasPushMessagingEnabledAtStartup() {

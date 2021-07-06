@@ -27,7 +27,8 @@ Polymer({
     },
 
     webRTCPolicy_: String,
-    p3aEnabled_: Boolean
+    p3aEnabled_: Boolean,
+    statsUsagePingEnabled_: Boolean
   },
 
   /** @private {?settings.BravePrivacyBrowserProxy} */
@@ -46,6 +47,12 @@ Polymer({
     this.browserProxy_.getP3AEnabled().then(enabled => {
       this.p3aEnabled_ = enabled;
     });
+    this.browserProxy_.getStatsUsagePingEnabled().then(enabled => {
+      this.statsUsagePingEnabled_ = enabled;
+    });
+    this.addWebUIListener('stats-usage-ping-enabled-changed', (enabled) => {
+      this.statsUsagePingEnabled_ = enabled;
+    })
     this.addWebUIListener('p3a-enabled-changed', (enabled) => {
       this.p3aEnabled_ = enabled
     })
@@ -53,6 +60,10 @@ Polymer({
 
   onP3AEnabledChange_: function() {
     this.browserProxy_.setP3AEnabled(this.$.p3aEnabled.checked);
+  },
+
+  onStatsUsagePingEnabledChange_: function() {
+    this.browserProxy_.setStatsUsagePingEnabled(this.$.statsUsagePingEnabled.checked);
   },
 
   shouldShowRestart_: function(enabled) {
