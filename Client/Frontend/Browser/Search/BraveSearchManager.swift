@@ -41,11 +41,10 @@ class BraveSearchManager: NSObject {
     private var cancellables: Set<AnyCancellable> = []
     private static var cachedCredentials: URLCredential?
     
+    static let validDomains = ["search.brave.com", "search-dev.brave.com"]
+    
     static func isValidURL(_ url: URL) -> Bool {
-        let validURLs = AppConstants.buildChannel.isPublic ?
-            ["search.brave.com"] : ["search.brave.com", "search-dev.brave.com"]
-        
-        return validURLs.contains(url.host ?? "")
+        validDomains.contains(url.host ?? "")
     }
     
     init?(url: URL, cookies: [HTTPCookie]) {
@@ -230,9 +229,7 @@ extension BraveSearchManager: URLSessionDataDelegate {
             return
         }
         
-        let validURLs = AppConstants.buildChannel.isPublic ?
-            ["search.brave.com"] : ["search.brave.com", "search-dev.brave.com"]
-        if !validURLs.contains(challenge.protectionSpace.host) {
+        if !BraveSearchManager.validDomains.contains(challenge.protectionSpace.host) {
             completionHandler(.performDefaultHandling, nil)
             return
         }
