@@ -18,6 +18,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
 #include "content/public/test/browser_test.h"
+#include "net/base/net_errors.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 
@@ -227,6 +228,20 @@ IN_PROC_BROWSER_TEST_F(IpnsManagerBrowserTest, ImportKey) {
           },
           run_loop.QuitClosure()));
   run_loop.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(IpnsManagerBrowserTest, LoadKeysRetry) {
+  base::RunLoop run_loop;
+  auto* ipns_manager = ipfs_service()->GetIpnsKeysManager();
+  ipns_manager->LoadKeys(base::BindOnce(
+      [](base::OnceCallback<void(void)> launch_callback, const bool success) {
+        ASSERT_FALSE(success);
+        if (launch_callback)
+          std::move(launch_callback).Run();
+      },
+      run_loop.QuitClosure()));
+  run_loop.Run();
+  EXPECT_EQ(ipns_manager->GetLastLoadRetryForTest(), 0);
 }
 
 }  // namespace ipfs
