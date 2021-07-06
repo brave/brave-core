@@ -62,6 +62,7 @@ class IpnsKeysManager : public IpfsServiceObserver {
                  ImportKeyCallback callback);
   void SetServerEndpointForTest(const GURL& gurl);
   void SetLoadCallbackForTest(LoadKeysCallback callback);
+  int GetLastLoadRetryForTest() const;
 
  private:
   using SimpleURLLoaderList =
@@ -81,14 +82,16 @@ class IpnsKeysManager : public IpfsServiceObserver {
                     RemoveKeyCallback callback,
                     std::unique_ptr<std::string> response_body);
   void OnKeysLoaded(SimpleURLLoaderList::iterator iter,
+                    int retry_number,
                     std::unique_ptr<std::string> response_body);
 
   void NotifyKeysLoaded(bool result);
-
+  void LoadKeysInternal(int retries);
   void UploadData(ImportKeyCallback callback,
                   const std::string& name,
                   std::unique_ptr<network::ResourceRequest> request);
 
+  int last_load_retry_value_for_test_ = -1;
   BlobContextGetterFactory* blob_context_getter_factory_ = nullptr;
   network::mojom::URLLoaderFactory* url_loader_factory_;
   SimpleURLLoaderList url_loaders_;
