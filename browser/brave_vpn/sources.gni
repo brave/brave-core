@@ -16,7 +16,6 @@ if (enable_brave_vpn) {
 
   brave_browser_brave_vpn_deps += [
     "//base",
-    "//brave/build/android:jni_headers",
     "//brave/components/brave_vpn",
     "//chrome/browser/profiles:profile",
     "//components/keyed_service/content",
@@ -28,5 +27,6 @@ if (enable_brave_vpn) {
       "//brave/browser/brave_vpn/android/brave_vpn_native_worker.cc",
       "//brave/browser/brave_vpn/android/brave_vpn_native_worker.h",
     ]
+    brave_browser_brave_vpn_deps += [ "//brave/build/android:jni_headers" ]
   }
 }
