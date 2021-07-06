@@ -1,0 +1,182 @@
+{
+  "ads_rewards": {
+    "payments": [
+      {
+        "balance": 0.28,
+        "month": "2021-05",
+        "transaction_count": "48"
+      },
+      {
+        "balance": 2.8025,
+        "month": "2021-04",
+        "transaction_count": "290"
+      },
+      {
+        "balance": 4.25,
+        "month": "2021-03",
+        "transaction_count": "342"
+      },
+      {
+        "balance": 6.73,
+        "month": "2021-02",
+        "transaction_count": "420"
+      },
+      {
+        "balance": 5.775,
+        "month": "2021-01",
+        "transaction_count": "432"
+      },
+      {
+        "balance": 5.475,
+        "month": "2020-12",
+        "transaction_count": "180"
+      },
+      {
+        "balance": 5.405,
+        "month": "2020-11",
+        "transaction_count": "151"
+      },
+      {
+        "balance": 0.825,
+        "month": "2020-10",
+        "transaction_count": "33"
+      },
+      {
+        "balance": 1.625,
+        "month": "2020-09",
+        "transaction_count": "80"
+      },
+      {
+        "balance": 6.45,
+        "month": "2020-08",
+        "transaction_count": "156"
+      },
+      {
+        "balance": 12.2,
+        "month": "2020-07",
+        "transaction_count": "241"
+      },
+      {
+        "balance": 11.79,
+        "month": "2020-06",
+        "transaction_count": "242"
+      },
+      {
+        "balance": 12.45,
+        "month": "2020-05",
+        "transaction_count": "238"
+      },
+      {
+        "balance": 15.55,
+        "month": "2020-04",
+        "transaction_count": "293"
+      },
+      {
+        "balance": 15.05,
+        "month": "2020-03",
+        "transaction_count": "284"
+      },
+      {
+        "balance": 7.65,
+        "month": "2020-02",
+        "transaction_count": "149"
+      },
+      {
+        "balance": 3.45,
+        "month": "2020-01",
+        "transaction_count": "65"
+      },
+      {
+        "balance": 5.5,
+        "month": "2019-12",
+        "transaction_count": "110"
+      },
+      {
+        "balance": 2.1,
+        "month": "2019-11",
+        "transaction_count": "42"
+      },
+      {
+        "balance": 6.2,
+        "month": "2019-10",
+        "transaction_count": "124"
+      },
+      {
+        "balance": 7.25,
+        "month": "2019-09",
+        "transaction_count": "115"
+      },
+      {
+        "balance": 13.65,
+        "month": "2019-08",
+        "transaction_count": "225"
+      },
+      {
+        "balance": 6.1,
+        "month": "2019-07",
+        "transaction_count": "114"
+      },
+      {
+        "balance": 12.65,
+        "month": "2019-06",
+        "transaction_count": "253"
+      }
+    ],
+    "unreconciled_estimated_pending_rewards": 2.8034999999999997,
+    "grants_balance": 169.68
+  },
+  "catalog_issuers": {
+  },
+  "confirmations": {
+    "failed_confirmations": []
+  },
+  "next_token_redemption_date_in_seconds": "4102444799",
+  "transaction_history": {
+    "transactions": [
+      {
+        "confirmation_type": "view",
+        "estimated_redemption_value": 0.01,
+        "timestamp_in_seconds": "1625096431"
+      },
+      {
+        "confirmation_type": "view",
+        "estimated_redemption_value": 0.01,
+        "timestamp_in_seconds": "1625142812"
+      },
+      {
+        "confirmation_type": "dismiss",
+        "estimated_redemption_value": 0,
+        "timestamp_in_seconds": "1625142813"
+      },
+      {
+        "confirmation_type": "view",
+        "estimated_redemption_value": 0.01,
+        "timestamp_in_seconds": "1625142861"
+      },
+      {
+        "confirmation_type": "view",
+        "estimated_redemption_value": 0.01,
+        "timestamp_in_seconds": "1625143649"
+      }
+    ]
+  },
+  "unblinded_payment_tokens": [
+    {
+      "public_key": "oOJO/xLaCXGW6yhpeIfM4K1X2ln7sgdjTCTCHe8BugE=",
+      "unblinded_token": "sd4NG8YF9jIzjqAapwO9Y+geBMh5YDdwn6jtD2PfBSye89L6s14SlMc/MLyJXb+oVwMI/ktpk7O3IlvYaxKZG4x+Rm/uDbXWjdqx8kQ7Ge1QVDvGkFdD2oAKsyiz4OYm"
+    },
+    {
+      "public_key": "uor3AzFj4OmdCxwetsYD1TxPXZSw40t3j/VOCUyC7Rs=",
+      "unblinded_token": "CtfIk2jtylneiONnhkBDv/H4MPgOLuVzuYEHpnGU94EZ4vy2RxJJu/NrQxmkGwBvNAUUit6KmvQvgVcLFvU5ynLwKUBSiZGsnykUYbCsYwDODzZPnIFN/RzV2UidiB0o"
+    },
+    {
+      "public_key": "oOJO/xLaCXGW6yhpeIfM4K1X2ln7sgdjTCTCHe8BugE=",
+      "unblinded_token": "I0PdV23mdq71MWCXhiIIgmrWDHR92S1gbXJRfOKtCFpuXY9+fiIlbr5Kk7iyaAP0Xkw7oLUcCQTS5g2lw0jvSKLiEuCeOMIYD8U1TF2J2r13hu7Nh1COoOEELhCnyeBe"
+    },
+    {
+      "public_key": "oOJO/xLaCXGW6yhpeIfM4K1X2ln7sgdjTCTCHe8BugE=",
+      "unblinded_token": "hlwvI/EELm+pEJt/KCL698hhg4iQpOygzbdIUk6num1+SLNFvkQsMlH1qfu5N3CkVG+U18o/SbINieAr2ghzopTVIP4C3ZgTx5WQKjq7Czmz7J0hTmsKDShayU2JGF1I"
+    }
+  ],
+  "unblinded_tokens": []
+}
