@@ -1,0 +1,6 @@
+include_rules = [
+  "+ui/compositor",
+  "+ui/gfx/image",
+  "+ui/snapshot",
+  "+ui/views/widget/widget.h",
+]
