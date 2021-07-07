@@ -1,8 +1,8 @@
 diff --git a/services/network/restricted_cookie_manager.cc b/services/network/restricted_cookie_manager.cc
-index eb72668601ad388d98dfc21020557af6a18051f4..18f068cfd1c55a9c4e3f5f07282e0fde1316c79d 100644
+index 6b5e12bbf92752b7fdb1a1c0516d08cdf1ae44d9..48ad30f2640581c9bf7070228e0f52ad76232301 100644
 --- a/services/network/restricted_cookie_manager.cc
 +++ b/services/network/restricted_cookie_manager.cc
-@@ -286,6 +286,7 @@ void RestrictedCookieManager::GetAllForUrl(
+@@ -300,6 +300,7 @@ void RestrictedCookieManager::GetAllForUrl(
    //                                 removing deprecation warnings.
    net_options.set_return_excluded_cookies();
  
@@ -10,7 +10,7 @@ index eb72668601ad388d98dfc21020557af6a18051f4..18f068cfd1c55a9c4e3f5f07282e0fde
    cookie_store_->GetCookieListWithOptionsAsync(
        url, net_options,
        base::BindOnce(&RestrictedCookieManager::CookieListToGetAllForUrlCallback,
-@@ -437,6 +438,7 @@ void RestrictedCookieManager::SetCanonicalCookie(
+@@ -451,6 +452,7 @@ void RestrictedCookieManager::SetCanonicalCookie(
        role_, url, site_for_cookies, isolation_info_, cookie_settings(),
        cookie_store_->cookie_access_delegate());
  
