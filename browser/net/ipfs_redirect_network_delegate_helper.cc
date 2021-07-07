@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "chrome/common/channel_info.h"
 #include "components/prefs/pref_service.h"
@@ -19,7 +20,7 @@ namespace ipfs {
 int OnBeforeURLRequest_IPFSRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
-  if (!ctx->browser_context)
+  if (!ctx->browser_context || !brave::IsRegularProfile(ctx->browser_context))
     return net::OK;
   auto* prefs = user_prefs::UserPrefs::Get(ctx->browser_context);
   if (IsIpfsResolveMethodDisabled(prefs)) {
