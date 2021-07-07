@@ -29,9 +29,6 @@ const char kCastCloudServicesHelpURL[] =
 const char kCastNoDestinationFoundURL[] =
     "https://support.brave.com/";
 
-const char kChooserBluetoothOverviewURL[] =
-    "https://github.com/brave/brave-browser/wiki/Web-API-Permissions";
-
 const char kChooserHidOverviewUrl[] =
     "https://github.com/brave/brave-browser/wiki/Web-API-Permissions";
 
