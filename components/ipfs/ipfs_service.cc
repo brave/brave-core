@@ -305,13 +305,31 @@ void IpfsService::RotateKey(const std::string& oldkey, BoolCallback callback) {
   cmdline.AppendArg("key");
   cmdline.AppendArg("rotate");
   cmdline.AppendArg("--oldkey=" + oldkey);
+  ExecuteNodeCommand(cmdline, GetDataPath(), std::move(callback));
+}
 
+void IpfsService::ExportKey(const std::string& key,
+                            const base::FilePath& target_path,
+                            BoolCallback callback) {
+  base::FilePath path = GetIpfsExecutablePath();
+  if (path.empty())
+    return;
+
+  base::CommandLine cmdline(path);
+  cmdline.AppendArg("key");
+  cmdline.AppendArg("export");
+  cmdline.AppendArg("-o=" + target_path.MaybeAsASCII());
+  cmdline.AppendArg(key);
+  ExecuteNodeCommand(cmdline, GetDataPath(), std::move(callback));
+}
+void IpfsService::ExecuteNodeCommand(const base::CommandLine& command_line,
+                                     const base::FilePath& data,
+                                     BoolCallback callback) {
   base::LaunchOptions options;
-
 #if defined(OS_WIN)
-  options.environment[L"IPFS_PATH"] = GetDataPath().value();
+  options.environment[L"IPFS_PATH"] = data.value();
 #else
-  options.environment["IPFS_PATH"] = GetDataPath().value();
+  options.environment["IPFS_PATH"] = data.value();
 #endif
 
 #if defined(OS_LINUX)
@@ -320,7 +338,7 @@ void IpfsService::RotateKey(const std::string& oldkey, BoolCallback callback) {
 #if defined(OS_WIN)
   options.start_hidden = true;
 #endif
-  base::Process process = base::LaunchProcess(cmdline, options);
+  base::Process process = base::LaunchProcess(command_line, options);
   if (!process.IsValid()) {
     if (callback)
       std::move(callback).Run(false);

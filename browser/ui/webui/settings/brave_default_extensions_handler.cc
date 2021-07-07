@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/bind.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/common/pref_names.h"
@@ -95,6 +96,10 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "launchIPFSService",
       base::BindRepeating(&BraveDefaultExtensionsHandler::LaunchIPFSService,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "exportIPNSKey",
+      base::BindRepeating(&BraveDefaultExtensionsHandler::ExportIPNSKey,
                           base::Unretained(this)));
 #endif
 
@@ -394,6 +399,33 @@ void BraveDefaultExtensionsHandler::OnWidevineEnabledChanged() {
   }
 }
 
+void BraveDefaultExtensionsHandler::ExportIPNSKey(const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  CHECK(profile_);
+  std::string key_name;
+  args->GetString(0, &key_name);
+  DCHECK(!key_name.empty());
+  auto* web_contents = web_ui()->GetWebContents();
+  select_file_dialog_ = ui::SelectFileDialog::Create(
+      this, std::make_unique<ChromeSelectFilePolicy>(web_contents));
+  if (!select_file_dialog_) {
+    VLOG(1) << "Export already in progress";
+    return;
+  }
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  const base::FilePath directory = profile->last_selected_directory();
+  gfx::NativeWindow parent_window = web_contents->GetTopLevelNativeWindow();
+  ui::SelectFileDialog::FileTypeInfo file_types;
+  file_types.allowed_paths = ui::SelectFileDialog::FileTypeInfo::NATIVE_PATH;
+  dialog_key_ = key_name;
+  auto suggested_directory = directory.AppendASCII(key_name);
+  dialog_type_ = ui::SelectFileDialog::SELECT_SAVEAS_FILE;
+  select_file_dialog_->SelectFile(
+      ui::SelectFileDialog::SELECT_SAVEAS_FILE, base::UTF8ToUTF16(key_name),
+      suggested_directory, &file_types, 0, FILE_PATH_LITERAL("key"),
+      parent_window, nullptr);
+}
 
 void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
     const base::ListValue* args) {
@@ -515,12 +547,26 @@ void BraveDefaultExtensionsHandler::FileSelected(const base::FilePath& path,
       ipfs::IpfsServiceFactory::GetForContext(profile_);
   if (!service)
     return;
-  service->GetIpnsKeysManager()->ImportKey(
-      path, dialog_key_,
-      base::BindOnce(&BraveDefaultExtensionsHandler::OnKeyImported,
-                     weak_ptr_factory_.GetWeakPtr()));
+  if (dialog_type_ == ui::SelectFileDialog::SELECT_OPEN_FILE) {
+    service->GetIpnsKeysManager()->ImportKey(
+        path, dialog_key_,
+        base::BindOnce(&BraveDefaultExtensionsHandler::OnKeyImported,
+                       weak_ptr_factory_.GetWeakPtr()));
+  } else if (dialog_type_ == ui::SelectFileDialog::SELECT_SAVEAS_FILE) {
+    service->ExportKey(
+        dialog_key_, path,
+        base::BindOnce(&BraveDefaultExtensionsHandler::OnKeyExported,
+                       weak_ptr_factory_.GetWeakPtr(), dialog_key_));
+  }
+  dialog_type_ = ui::SelectFileDialog::SELECT_NONE;
   select_file_dialog_.reset();
   dialog_key_.clear();
+}
+
+void BraveDefaultExtensionsHandler::OnKeyExported(const std::string& key,
+                                                  bool success) {
+  FireWebUIListener("brave-ipfs-key-exported", base::Value(key),
+                    base::Value(success));
 }
 
 void BraveDefaultExtensionsHandler::OnKeyImported(const std::string& key,
@@ -554,6 +600,7 @@ void BraveDefaultExtensionsHandler::ImportIpnsKey(const base::ListValue* args) {
   ui::SelectFileDialog::FileTypeInfo file_types;
   file_types.allowed_paths = ui::SelectFileDialog::FileTypeInfo::NATIVE_PATH;
   dialog_key_ = key_name;
+  dialog_type_ = ui::SelectFileDialog::SELECT_OPEN_FILE;
   select_file_dialog_->SelectFile(
       ui::SelectFileDialog::SELECT_OPEN_FILE, std::u16string(), directory,
       &file_types, 0, FILE_PATH_LITERAL("key"), parent_window, nullptr);

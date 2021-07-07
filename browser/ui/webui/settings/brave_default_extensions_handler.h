@@ -76,6 +76,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
   void SetIPFSStorageMax(const base::ListValue* args);
   void ImportIpnsKey(const base::ListValue* args);
   void LaunchIPFSService(const base::ListValue* args);
+  void ExportIPNSKey(const base::ListValue* args);
 
   // ui::SelectFileDialog::Listener
   void FileSelected(const base::FilePath& path,
@@ -86,6 +87,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
   void OnKeyImported(const std::string& key,
                      const std::string& value,
                      bool success);
+  void OnKeyExported(const std::string& key, bool success);
   // ipfs::IpfsServiceObserver
   void OnIpfsLaunched(bool result, int64_t pid) override;
   void OnIpfsShutdown() override;
@@ -94,6 +96,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
   void NotifyNodeStatus();
 
   std::string dialog_key_;
+  ui::SelectFileDialog::Type dialog_type_ = ui::SelectFileDialog::SELECT_NONE;
   scoped_refptr<ui::SelectFileDialog> select_file_dialog_;
 #endif
 

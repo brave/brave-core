@@ -823,6 +823,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_IPFS_PEERS_LINK_TITLE" desc="The ipfs peers page link title on IPFS settings page">
         Modify the peers list
       </message>
+      <message name="IDS_SETTINGS_IPNS_KEY_EXPORT_ITEM" desc="The text for ipfs key export item">
+        Export key
+      </message>
+      <message name="IDS_SETTINGS_IPNS_KEY_REMOVE_ITEM" desc="The text for ipfs key remove item">
+        Remove key
+      </message>
       <message name="IDS_SETTINGS_IPFS_PEERS_LINK_TITLE_DESC" desc="The ipfs peers page link description on IPFS settings page">
         Set up ipfs peers description
       </message>
@@ -840,6 +846,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <message name="IDS_SETTINGS_IPNS_KEYS_IMPORT_ERROR" desc="The error text if ipns keys import failed">
         '<ph name="KEY_NAME">$1<ex>MyCustomKey</ex></ph>' key import failed
+      </message>
+      <message name="IDS_SETTINGS_IPNS_KEYS_EXPORT_ERROR" desc="The error text if ipns keys export failed">
+        '<ph name="KEY_NAME">$1<ex>MyCustomKey</ex></ph>' key export failed
       </message>
       <message name="IDS_SETTINGS_IPNS_KEYS_IMPORT_BUTTON_TITLE" desc="The title of the button to import ipns keys">
         Import
