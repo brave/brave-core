@@ -1,5 +1,5 @@
 diff --git a/components/page_info/BUILD.gn b/components/page_info/BUILD.gn
-index 17371dc77e439256ec1adad5d993ab7e3778cdaa..a3aea553872c6eca70d9fa09618ccce97beb4b8c 100644
+index 090e99cf272e59c744598c5ce121bc9cd7aec590..cbdc37eb8f8cbdc5e9b2b46f0396937e04e75dbb 100644
 --- a/components/page_info/BUILD.gn
 +++ b/components/page_info/BUILD.gn
 @@ -43,6 +43,7 @@ static_library("page_info") {
