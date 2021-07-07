@@ -1,0 +1,8 @@
+include_rules = [
+  "+services/network/public/cpp",
+  "+base",
+  "+components/keyed_service/core",
+  "+net",
+  "+url",
+  "+brave/components/api_request_helper",
+]

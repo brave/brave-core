@@ -23,18 +23,25 @@ APIRequestHelper::APIRequestHelper(
 
 APIRequestHelper::~APIRequestHelper() {}
 
-void APIRequestHelper::Request(const std::string& method,
-                               const GURL& url,
-                               const std::string& payload,
-                               const std::string& payload_content_type,
-                               bool auto_retry_on_network_change,
-                               ResultCallback callback) {
+void APIRequestHelper::Request(
+    const std::string& method,
+    const GURL& url,
+    const std::string& payload,
+    const std::string& payload_content_type,
+    bool auto_retry_on_network_change,
+    ResultCallback callback,
+    const std::map<std::string, std::string>& headers) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = url;
   request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
                         net::LOAD_DO_NOT_SAVE_COOKIES;
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   request->method = method;
+
+  if (!headers.empty()) {
+    for (auto entry : headers)
+      request->headers.SetHeader(entry.first, entry.second);
+  }
 
   auto url_loader =
       network::SimpleURLLoader::Create(std::move(request), annotation_tag_);

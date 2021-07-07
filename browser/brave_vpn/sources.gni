@@ -1,0 +1,32 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/buildflags/buildflags.gni")
+
+brave_browser_brave_vpn_sources = []
+brave_browser_brave_vpn_deps = []
+
+if (enable_brave_vpn) {
+  brave_browser_brave_vpn_sources += [
+    "//brave/browser/brave_vpn/brave_vpn_service_factory.cc",
+    "//brave/browser/brave_vpn/brave_vpn_service_factory.h",
+  ]
+
+  brave_browser_brave_vpn_deps += [
+    "//base",
+    "//brave/components/brave_vpn",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/content",
+    "//content/public/browser",
+  ]
+
+  if (is_android) {
+    brave_browser_brave_vpn_sources += [
+      "//brave/browser/brave_vpn/android/brave_vpn_native_worker.cc",
+      "//brave/browser/brave_vpn/android/brave_vpn_native_worker.h",
+    ]
+    brave_browser_brave_vpn_deps += [ "//brave/build/android:jni_headers" ]
+  }
+}
