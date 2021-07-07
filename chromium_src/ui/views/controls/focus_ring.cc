@@ -4,6 +4,8 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "base/no_destructor.h"
+// include this header so that setStyle redefine doesn't flow to cc::PaintFlags
+#include "cc/paint/paint_flags.h"
 #include "ui/gfx/skia_util.h"
 #include "ui/gfx/color_palette.h"
 
@@ -45,13 +47,11 @@ FocusRingTheme* GetFocusRingTheme() {
 
 }  // namespace
 
-#define BRAVE_FOCUS_RING_ON_PAINT_SET_COLOR_VALIDITY \
-  paint.setColor(color_.value_or(                    \
-      GetFocusRingTheme()->GetSystemColor(ColorIdForValidity(!invalid_))));
+#define setStyle                                                            \
+  setColor(color_.value_or(                                                 \
+      GetFocusRingTheme()->GetSystemColor(ColorIdForValidity(!invalid_)))); \
+  paint.setStyle
 
-#define BRAVE_FOCUS_RING_ON_PAINT_SET_COLOR_FOCUS_AURA \
-  flags.setColor(GetFocusRingTheme()->GetSystemColor(  \
-      ui::NativeTheme::kColorId_FocusAuraColor));
 #include "../../../../../ui/views/controls/focus_ring.cc"
-#undef BRAVE_FOCUS_RING_ON_PAINT_SET_COLOR_FOCUS_AURA
-#undef BRAVE_FOCUS_RING_ON_PAINT_SET_COLOR_VALIDITY
+
+#undef setStyle
