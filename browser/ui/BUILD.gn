@@ -537,3 +537,19 @@ source_set("ui") {
     }
   }
 }
+
+source_set("browser_tests") {
+  if (!is_android) {
+    testonly = true
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+    sources = [ "brave_browser_browsertest.cc" ]
+
+    deps = [
+      "//brave/browser/ui",
+      "//chrome/browser/ui",
+      "//chrome/test:test_support_ui",
+      "//content/test:test_support",
+    ]
+  }
+}

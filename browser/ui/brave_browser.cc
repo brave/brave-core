@@ -4,6 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/brave_browser.h"
+#include "chrome/browser/search/search.h"
+#include "chrome/common/webui_url_constants.h"
+#include "content/public/common/url_constants.h"
+#include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
 #include "brave/browser/ui/brave_browser_window.h"
@@ -47,6 +51,29 @@ void BraveBrowser::ScheduleUIUpdate(content::WebContents* source,
     }
   }
 #endif
+}
+
+bool BraveBrowser::ShouldDisplayFavicon(
+    content::WebContents* web_contents) const {
+  // Override to not show favicon for NTP in tab.
+
+  // Suppress the icon for the new-tab page, even if a navigation to it is
+  // not committed yet. Note that we're looking at the visible URL, so
+  // navigations from NTP generally don't hit this case and still show an icon.
+  GURL url = web_contents->GetVisibleURL();
+  if (url.SchemeIs(content::kChromeUIScheme) &&
+      url.host_piece() == chrome::kChromeUINewTabHost) {
+    return false;
+  }
+
+  // Also suppress instant-NTP. This does not use search::IsInstantNTP since
+  // it looks at the last-committed entry and we need to show icons for pending
+  // navigations away from it.
+  if (search::IsInstantNTPURL(url, profile())) {
+    return false;
+  }
+
+  return Browser::ShouldDisplayFavicon(web_contents);
 }
 
 void BraveBrowser::OnTabStripModelChanged(
