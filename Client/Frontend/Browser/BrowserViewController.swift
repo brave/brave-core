@@ -1307,9 +1307,10 @@ class BrowserViewController: UIViewController {
         switch path {
         case .estimatedProgress:
             guard tab === tabManager.selectedTab,
-                let progress = change?[.newKey] as? Float else { break }
+                  // `WKWebView.estimatedProgress` is a `Double` type so it must be casted as such
+                let progress = change?[.newKey] as? Double else { break }
             if webView.url?.isLocalUtility == false {
-                topToolbar.updateProgressBar(progress)
+                topToolbar.updateProgressBar(Float(progress))
             } else {
                 topToolbar.hideProgressBar()
             }
