@@ -103,6 +103,9 @@ RegisterStyleOverride(
         a[href].iron-selected iron-icon {
           color: var(--settings-nav-item-color) !important;
         }
+        a:hover, iron-icon:hover {
+          color: #737ADE !important;
+        }
       }
 
       a[href],
