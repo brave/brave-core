@@ -128,7 +128,8 @@ const Config = function () {
   this.git_cache_path = getNPMConfig(['git_cache_path'])
   this.sccache = getNPMConfig(['sccache'])
   this.gomaServerHost = getNPMConfig(['goma_server_host'])
-  this.gomaJValue = Math.min(100, (os.cpus().length + 1) * 3)
+  // os.cpus().length is number of threads not physical cores
+  this.gomaJValue = Math.min(40, os.cpus().length * 2)
   this.braveStatsApiKey = getNPMConfig(['brave_stats_api_key']) || ''
   this.braveStatsUpdaterUrl = getNPMConfig(['brave_stats_updater_url']) || ''
   this.ignore_compile_failure = false
@@ -778,6 +779,8 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     if (this.use_goma && this.gomaServerHost) {
       env.CC_WRAPPER = path.join(this.depotToolsDir, '.cipd_bin', 'gomacc')
       env.GOMA_SERVER_HOST = this.gomaServerHost
+      // env.NINJA_REMOTE_NUM_JOBS = this.gomaJValue
+      // console.log('ninja remote jobs number is ' + env.NINJA_REMOTE_NUM_JOBS)
       console.log('using goma with j value of ' + this.gomaJValue + ' at ' + this.gomaServerHost)
     } else if (this.sccache) {
       env.CC_WRAPPER = this.sccache
