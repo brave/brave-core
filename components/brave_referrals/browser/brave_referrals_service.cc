@@ -229,7 +229,7 @@ bool BraveReferralsService::GetMatchingReferralHeaders(
     const GURL& url) {
   // If the domain for this request matches one of our target domains,
   // set the associated custom headers.
-  for (const auto& headers_value : referral_headers_list) {
+  for (const auto& headers_value : referral_headers_list.GetList()) {
     const base::Value* domains_list =
         headers_value.FindKeyOfType("domains", base::Value::Type::LIST);
     if (!domains_list) {
