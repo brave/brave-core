@@ -67,6 +67,12 @@ RegisterStyleOverride(
         padding-inline-start: 0 !important;
       }
 
+      a[href]:focus-visible {
+        box-shadow: 0 0 0 4px rgba(160, 165, 235, 1) !important;
+        outline: none !important;
+        border-radius: 6px !important;
+      }
+
       a[href].iron-selected {
         color: var(--settings-nav-item-color) !important;
         font-weight: 600 !important;
