@@ -29,7 +29,7 @@ SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) {
   switch (type) {
     case SidebarItem::BuiltInItemType::kBraveTalk:
       return SidebarItem::Create(
-          GURL("https://together.brave.com/"),
+          GURL("https://talk.brave.com/"),
           l10n_util::GetStringUTF16(IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE),
           SidebarItem::Type::kTypeBuiltIn,
           SidebarItem::BuiltInItemType::kBraveTalk, true);
@@ -61,7 +61,7 @@ SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) {
 }
 
 SidebarItem::BuiltInItemType GetBuiltInItemTypeForURL(const std::string& url) {
-  if (url == "https://together.brave.com/")
+  if (url == "https://together.brave.com/" || url == "https://talk.brave.com/")
     return SidebarItem::BuiltInItemType::kBraveTalk;
 
   if (url == "chrome://wallet/")
