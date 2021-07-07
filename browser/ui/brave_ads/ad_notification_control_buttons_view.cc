@@ -12,13 +12,13 @@
 #include "brave/browser/ui/brave_ads/ad_notification_view.h"
 #include "brave/browser/ui/brave_ads/padded_image_button.h"
 #include "brave/browser/ui/brave_ads/padded_image_view.h"
+#include "brave/browser/ui/brave_ads/window_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/paint_vector_icon.h"
-#include "ui/native_theme/native_theme.h"
 #include "ui/views/background.h"
 #include "ui/views/layout/box_layout.h"
 
@@ -82,7 +82,7 @@ void AdNotificationControlButtonsView::CreateInfoButton() {
 }
 
 void AdNotificationControlButtonsView::UpdateInfoButton() {
-  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
+  const bool should_use_dark_colors = ShouldUseDarkModeTheme();
 
   const gfx::ImageSkia image_skia = gfx::CreateVectorIcon(
       should_use_dark_colors ? kBraveAdsDarkModeInfoButtonIcon
@@ -106,7 +106,7 @@ void AdNotificationControlButtonsView::CreateCloseButton() {
 void AdNotificationControlButtonsView::UpdateCloseButton() {
   DCHECK(close_button_);
 
-  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
+  const bool should_use_dark_colors = ShouldUseDarkModeTheme();
 
   const gfx::ImageSkia image_skia = gfx::CreateVectorIcon(
       kBraveAdsCloseButtonIcon, kCloseButtonIconDipSize,

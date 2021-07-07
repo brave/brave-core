@@ -12,6 +12,7 @@
 #include "brave/browser/ui/brave_ads/ad_notification_control_buttons_view.h"
 #include "brave/browser/ui/brave_ads/ad_notification_header_view.h"
 #include "brave/browser/ui/brave_ads/insets_util.h"
+#include "brave/browser/ui/brave_ads/window_util.h"
 #include "build/build_config.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/font.h"
@@ -19,7 +20,6 @@
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/text_constants.h"
-#include "ui/native_theme/native_theme.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/layout/box_layout.h"
@@ -155,7 +155,7 @@ views::View* TextAdNotificationView::CreateBodyView(
 
 views::Label* TextAdNotificationView::CreateBodyLabel(
     const AdNotification& ad_notification) {
-  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
+  const bool should_use_dark_colors = ShouldUseDarkModeTheme();
 
   const std::u16string body = ad_notification.body();
 
@@ -194,7 +194,7 @@ views::Label* TextAdNotificationView::CreateBodyLabel(
 }
 
 void TextAdNotificationView::UpdateBodyLabel() {
-  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
+  const bool should_use_dark_colors = ShouldUseDarkModeTheme();
 
   DCHECK(body_label_);
   body_label_->SetEnabledColor(should_use_dark_colors ? kDarkModeBodyColor

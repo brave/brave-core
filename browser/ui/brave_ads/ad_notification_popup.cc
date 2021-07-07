@@ -13,6 +13,7 @@
 #include "brave/browser/ui/brave_ads/ad_notification_view.h"
 #include "brave/browser/ui/brave_ads/ad_notification_view_factory.h"
 #include "brave/browser/ui/brave_ads/bounds_util.h"
+#include "brave/browser/ui/brave_ads/window_util.h"
 #include "brave/components/brave_ads/browser/features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -36,7 +37,6 @@
 #include "ui/gfx/shadow_util.h"
 #include "ui/gfx/shadow_value.h"
 #include "ui/gfx/skia_paint_util.h"
-#include "ui/native_theme/native_theme.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/widget/widget.h"
 
@@ -212,7 +212,7 @@ void AdNotificationPopup::OnPaintBackground(gfx::Canvas* canvas) {
   gfx::Rect bounds(GetWidget()->GetLayer()->bounds());
   bounds.Inset(-GetShadowMargin());
 
-  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
+  const bool should_use_dark_colors = ShouldUseDarkModeTheme();
 
   // Draw border with drop shadow
   cc::PaintFlags border_flags;
