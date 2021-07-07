@@ -1,0 +1,12 @@
+diff --git a/components/content_settings/browser/content_settings_manager_impl.cc b/components/content_settings/browser/content_settings_manager_impl.cc
+index 59fb64215055341548f1131d394678485ca9fce3..ea8f23ffceedbc0b1b53f048859ce17f599b3bc9 100644
+--- a/components/content_settings/browser/content_settings_manager_impl.cc
++++ b/components/content_settings/browser/content_settings_manager_impl.cc
+@@ -87,6 +87,7 @@ void ContentSettingsManagerImpl::AllowStorageAccess(
+ 
+   bool allowed = cookie_settings_->IsCookieAccessAllowed(url, site_for_cookies,
+                                                          top_frame_origin);
++  BRAVE_CONTENT_SETTINGS_MANAGER_IMPL_ALLOW_STORAGE_ACCESS
+   if (delegate_->AllowStorageAccess(render_process_id_, render_frame_id,
+                                     storage_type, url, allowed, &callback)) {
+     DCHECK(!callback);

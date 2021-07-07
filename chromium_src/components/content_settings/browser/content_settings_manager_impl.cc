@@ -5,7 +5,15 @@
 
 #include "components/content_settings/browser/content_settings_manager_impl.h"
 
+#define BRAVE_CONTENT_SETTINGS_MANAGER_IMPL_ALLOW_STORAGE_ACCESS \
+  if (allowed) {                                                 \
+    allowed &= cookie_settings_->IsStorageAccessAllowed(         \
+        url, site_for_cookies, top_frame_origin, storage_type);  \
+  }
+
 #include "../../../../../components/content_settings/browser/content_settings_manager_impl.cc"
+
+#undef BRAVE_CONTENT_SETTINGS_MANAGER_IMPL_ALLOW_STORAGE_ACCESS
 
 namespace content_settings {
 

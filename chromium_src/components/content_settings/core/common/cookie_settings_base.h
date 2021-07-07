@@ -7,6 +7,8 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_COMMON_COOKIE_SETTINGS_BASE_H_
 
 #include "base/auto_reset.h"
+#include "base/optional.h"
+#include "components/content_settings/common/content_settings_manager.mojom.h"
 
 namespace content_settings {
 
@@ -25,6 +27,7 @@ class ScopedEphemeralStorageAwareness {
 }  // namespace content_settings
 
 #define BRAVE_COOKIE_SETTINGS_BASE_H                                      \
+  using StorageType = mojom::ContentSettingsManager::StorageType;         \
   bool ShouldUseEphemeralStorage(                                         \
       const GURL& url, const GURL& site_for_cookies,                      \
       const absl::optional<url::Origin>& top_frame_origin) const;         \
@@ -40,6 +43,10 @@ class ScopedEphemeralStorageAwareness {
   bool IsChromiumCookieAccessAllowed(                                     \
       const GURL& url, const GURL& site_for_cookies,                      \
       const absl::optional<url::Origin>& top_frame_origin) const;         \
+  bool IsStorageAccessAllowed(                                            \
+      const GURL& url, const GURL& site_for_cookies,                      \
+      const absl::optional<url::Origin>& top_frame_origin,                \
+      StorageType storage_type) const;                                    \
                                                                           \
  private:                                                                 \
   bool IsCookieAccessAllowedImpl(                                         \

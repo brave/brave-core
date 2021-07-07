@@ -190,6 +190,22 @@ bool CookieSettingsBase::IsCookieAccessAllowedImpl(
   return false;
 }
 
+bool CookieSettingsBase::IsStorageAccessAllowed(
+    const GURL& url,
+    const GURL& site_for_cookies,
+    const absl::optional<url::Origin>& top_frame_origin,
+    StorageType storage_type) const {
+  if (storage_type != StorageType::INDEXED_DB ||
+      !base::FeatureList::IsEnabled(
+          net::features::kBraveFirstPartyEphemeralStorage)) {
+    return true;
+  }
+
+  // Allow INDEXED_DB only for non session-only (1pES) cookie sites.
+  return !IsCookieSessionOnly(
+      GetFirstPartyURL(site_for_cookies, top_frame_origin));
+}
+
 }  // namespace content_settings
 
 #define IsCookieAccessAllowed IsChromiumCookieAccessAllowed
