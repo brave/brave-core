@@ -80,8 +80,9 @@ gfx::Size SidebarItemsContentsView::CalculatePreferredSize() const {
   if (children().empty())
     return {0, 0};
   const gfx::Size child_size = children()[0]->GetPreferredSize();
-  return {child_size.width() + GetInsets().width(),
-          children().size() * child_size.height() + GetInsets().height()};
+  return gfx::Size(
+      child_size.width() + GetInsets().width(),
+      children().size() * child_size.height() + GetInsets().height());
 }
 
 void SidebarItemsContentsView::OnThemeChanged() {
