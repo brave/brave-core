@@ -74,11 +74,6 @@ bool BraveIsAllowedThirdParty(const GURL& url,
   return false;
 }
 
-GURL GetFirstPartyURL(const GURL& site_for_cookies,
-                      const absl::optional<url::Origin>& top_frame_origin) {
-  return top_frame_origin ? top_frame_origin->GetURL() : site_for_cookies;
-}
-
 bool IsFirstPartyAccessAllowed(
     const GURL& first_party_url,
     const CookieSettingsBase* const cookie_settings) {
@@ -105,8 +100,8 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
     return false;
 
-  const GURL first_party_url =
-      GetFirstPartyURL(site_for_cookies, top_frame_origin);
+  const GURL first_party_url = GetFirstPartyURL(
+      site_for_cookies, base::OptionalOrNullptr(top_frame_origin));
 
   if (!first_party_url.is_valid())
     return false;
@@ -172,8 +167,8 @@ bool CookieSettingsBase::IsCookieAccessAllowedImpl(
   if (allow)
     return true;
 
-  const GURL first_party_url =
-      GetFirstPartyURL(site_for_cookies, top_frame_origin);
+  const GURL first_party_url = GetFirstPartyURL(
+      site_for_cookies, base::OptionalOrNullptr(top_frame_origin));
 
   if (!IsFirstPartyAccessAllowed(first_party_url, this))
     return false;
