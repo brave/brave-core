@@ -10,11 +10,12 @@ import * as Background from '../../../../../common/Background'
 type Props = {
   imageUrl: string
   list?: boolean
+  isUnpadded?: boolean
   isPromoted?: boolean
   onLoaded?: () => any
 }
 
-function useGetUnpaddedImage (paddedUrl: string, onLoaded?: () => any) {
+function useGetUnpaddedImage (paddedUrl: string, isUnpadded: boolean, onLoaded?: () => any) {
   const [unpaddedUrl, setUnpaddedUrl] = React.useState('')
   const onReceiveUnpaddedUrl = (result: string) => {
     setUnpaddedUrl(result)
@@ -25,6 +26,10 @@ function useGetUnpaddedImage (paddedUrl: string, onLoaded?: () => any) {
     })
   }
   React.useEffect(() => {
+    if (isUnpadded) {
+      onReceiveUnpaddedUrl(paddedUrl)
+      return
+    }
     // Storybook method
     // @ts-ignore
     if (window.braveStorybookUnpadUrl) {
@@ -42,22 +47,26 @@ function useGetUnpaddedImage (paddedUrl: string, onLoaded?: () => any) {
     .catch(err => {
       console.error(`Error getting image for ${paddedUrl}.`, err)
     })
-
-  }, [paddedUrl])
+  }, [paddedUrl, isUnpadded])
   return unpaddedUrl
 }
 
 export default function CardImage (props: Props) {
-  const unpaddedUrl = useGetUnpaddedImage(props.imageUrl, props.onLoaded)
+  const unpaddedUrl = useGetUnpaddedImage(props.imageUrl, !!props.isUnpadded, props.onLoaded)
   const [isImageLoaded, setIsImageLoaded] = React.useState(false)
   React.useEffect(() => {
     if (unpaddedUrl) {
       const img = new Image()
+      let shouldCancel = false
       img.addEventListener('load', () => {
-        setIsImageLoaded(true)
+        if (!shouldCancel) {
+          setIsImageLoaded(true)
+        }
       })
       img.src = unpaddedUrl
+      return () => { shouldCancel = true }
     }
+    return // otherwise ts complains: "Not all code paths return a value." 🤷‍♂️
   }, [unpaddedUrl])
   const Frame = props.list ? Card.ListImageFrame : Card.ImageFrame
   return (

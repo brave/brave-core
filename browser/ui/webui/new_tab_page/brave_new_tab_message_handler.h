@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/tor/tor_launcher_observer.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -61,6 +62,9 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   void HandleTodayOnCardVisit(const base::ListValue* args);
   void HandleTodayOnCardViews(const base::ListValue* args);
   void HandleTodayOnPromotedCardView(const base::ListValue* args);
+  void HandleTodayGetDisplayAd(const base::ListValue* args);
+  void HandleTodayOnDisplayAdVisit(const base::ListValue* args);
+  void HandleTodayOnDisplayAdView(const base::ListValue* args);
 
   void OnStatsChanged();
   void OnPreferencesChanged();
@@ -76,6 +80,7 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
 #if BUILDFLAG(ENABLE_TOR)
   TorLauncherFactory* tor_launcher_factory_ = nullptr;
 #endif
+  base::WeakPtrFactory<BraveNewTabMessageHandler> weak_ptr_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveNewTabMessageHandler);
 };

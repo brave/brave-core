@@ -25,7 +25,7 @@ import * as Page from '../../components/default/page'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
 import { brandedWallpaperLogoClicked } from '../../api/brandedWallpaper'
 import BraveTodayHint from '../../components/default/braveToday/hint'
-import BraveToday from '../../components/default/braveToday'
+import BraveToday, { GetDisplayAdContent } from '../../components/default/braveToday'
 import { addNewTopSite, editTopSite } from '../../api/topSites'
 
 // Helpers
@@ -56,6 +56,7 @@ interface Props {
   todayData: BraveTodayState
   ftx: FTXState
   actions: NewTabActions
+  getBraveNewsDisplayAd: GetDisplayAdContent
   saveShowBackgroundImage: (value: boolean) => void
   saveShowStats: (value: boolean) => void
   saveShowToday: (value: boolean) => any
@@ -1159,6 +1160,7 @@ class NewTabPage extends React.Component<Props, State> {
         <BraveToday
           feed={this.props.todayData.feed}
           articleToScrollTo={this.props.todayData.articleScrollTo}
+          displayAdToScrollTo={this.props.todayData.displayAdToScrollTo}
           displayedPageCount={this.props.todayData.currentPageIndex}
           publishers={this.props.todayData.publishers}
           isFetching={this.props.todayData.isFetching === true}
@@ -1177,6 +1179,9 @@ class NewTabPage extends React.Component<Props, State> {
           onSetPublisherPref={this.props.actions.today.setPublisherPref}
           onCheckForUpdate={this.props.actions.today.checkForUpdate}
           onOptIn={this.props.actions.today.optIn}
+          onViewedDisplayAd={this.props.actions.today.displayAdViewed}
+          onVisitDisplayAd={this.props.actions.today.visitDisplayAd}
+          getDisplayAd={this.props.getBraveNewsDisplayAd}
         />
         }
         <Settings

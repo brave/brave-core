@@ -106,7 +106,6 @@ export default async function getBraveTodayData (
     .sort((a, b) => dealsCategoryCounts[a] - dealsCategoryCounts[b])
 
   const firstHeadlines = take(articles, 1, isArticleTopNews)
-  const firstDeals = deals.splice(0, 3)
 
   // Generate as many pages of content as possible.
   const pages: BraveToday.Page[] = []
@@ -129,7 +128,6 @@ export default async function getBraveTodayData (
   return {
     hash,
     featuredArticle: firstHeadlines.length ? firstHeadlines[0] : undefined,
-    featuredDeals: firstDeals,
     pages
   }
 }
@@ -156,7 +154,12 @@ function generateNextPage (
   dealsCategory?: string): BraveToday.Page | null {
 
   // Collect headlines
-  const headlines = take(articles, 13)
+  // TODO(petemill): Use the CardType type and PageContentOrder array
+  // from cardsGroup.tsx here instead of having to synchronise the amount
+  // of articles we take per page with how many get rendered.
+  // Or generate the pages on the frontend and just provide the data in 1 array
+  // here.
+  const headlines = take(articles, 15)
   if (!headlines.length) {
     return null
   }
@@ -180,7 +183,7 @@ function generateNextPage (
 
   const publisherInfo = generateArticleSourceGroup(articles)
 
-  const randomArticles = take(articles, 4, isArticleWithin48Hours, true)
+  const randomArticles = take(articles, 3, isArticleWithin48Hours, true)
 
   return {
     articles: headlines,
