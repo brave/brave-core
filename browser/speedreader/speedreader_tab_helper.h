@@ -24,32 +24,38 @@ class SpeedreaderTabHelper
       public content::WebContentsUserData<SpeedreaderTabHelper> {
  public:
   enum class DistillState {
-    // The web contents is not distilled by either
+    // The web contents is not distilled
     kNone,
-    // kReaderMode is the manual reader mode state. It uses Speedreader to mimic
-    // how reader modes in other browsers behave. This state can be reached two
-    // ways:
-    //   (1) Speedreader is disabled. The Speedreader icon will pop up in the
-    //       address bar, and the user clicks it. It runs Speedreader is "Single
-    //       Shot Mode". The Speedreader throttle is created for the following
-    //       request, then deactivated.
-    //   (2) Speedreader is enabled, but the page was blacklisted by the user.
-    //       they are still able to come back and manually distill the page. It
-    //       uses the same mechanism as (1).
+
+    // Reader mode state that can only be reached when Speedreader is disabled
+    // The Speedreader icon will pop up in the address bar, and the user clicks
+    // it. It runs Speedreader is "Single Shot Mode".  The Speedreader throttle
+    // is created for the following request, then deactivated.
     //
     // The first time a user activates reader mode on a page, a bubble drops
     // down asking them to enable the Speedreader feature for automatic
     // distillation.
     kReaderMode,
+
     // Speedreader is enabled and the page was automatically distilled.
     kSpeedreaderMode,
+
+    // Speedreader is enabled, but the page was blacklisted by the user.
+    kSpeedreaderOnDisabledPage,
+
+    // Speedreader is disabled, the URL passes the heuristic.
+    kPageProbablyReadable,
   };
+
+  static bool PageStateIsDistilled(DistillState state) {
+    return state == DistillState::kReaderMode ||
+           state == DistillState::kSpeedreaderMode;
+  }
+
   ~SpeedreaderTabHelper() override;
 
   SpeedreaderTabHelper(const SpeedreaderTabHelper&) = delete;
   SpeedreaderTabHelper& operator=(SpeedreaderTabHelper&) = delete;
-
-  bool IsActiveForMainFrame() const;
 
   // Returns |true| if Speedreader is turned on for all sites.
   bool IsSpeedreaderEnabled() const;
@@ -91,6 +97,11 @@ class SpeedreaderTabHelper
   // |is_bubble_speedreader| will show a bubble for pages in Speedreader if set
   // to true, otherwise pages in reader mode.
   void ShowBubble(bool is_bubble_speedreader);
+
+  // Returns |true| if the user has enabled Speedreader but the URL is
+  // blacklisted. This method is used when the URL we want to check has not been
+  // committed to the WebContents.
+  bool IsEnabledForSite(const GURL& url);
 
   void UpdateActiveState(content::NavigationHandle* handle);
   void SetNextRequestState(DistillState state);

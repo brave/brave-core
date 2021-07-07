@@ -7,7 +7,6 @@
 #define BRAVE_BROWSER_UI_VIEWS_SPEEDREADER_SPEEDREADER_ICON_VIEW_H_
 
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
-#include "components/dom_distiller/content/browser/distillable_page_utils.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
@@ -19,7 +18,6 @@ class PrefService;
 
 class SpeedreaderIconView : public PageActionIconView,
                             public IconLabelBubbleView::Delegate,
-                            public dom_distiller::DistillabilityObserver,
                             public content::WebContentsObserver {
  public:
   METADATA_HEADER(SpeedreaderIconView);
@@ -44,10 +42,9 @@ class SpeedreaderIconView : public PageActionIconView,
   SkColor GetIconLabelBubbleInkDropColor() const override;
   SkColor GetIconLabelBubbleBackgroundColor() const override;
 
-  // dom_distiller::DistillabilityObserver:
-  void OnResult(const dom_distiller::DistillabilityResult& result) override;
-
  private:
+  SkColor GetLabelColorOr(SkColor fallback) const;
+
   IconLabelBubbleView::Delegate* icon_label_bubble_delegate_ = nullptr;
 };
 

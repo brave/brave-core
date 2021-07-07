@@ -165,9 +165,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 #if BUILDFLAG(BRAVE_ADS_ENABLED) || BUILDFLAG(ENABLE_SPEEDREADER)
   command_line.AppendSwitch(switches::kEnableDomDistiller);
 #endif  // BUILDFLAG(BRAVE_ADS_ENABLED) || BUILDFLAG(ENABLE_SPEEDREADER)
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-  command_line.AppendSwitch(switches::kEnableDistillabilityService);
-#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
   command_line.AppendSwitch(switches::kDisableDomainReliability);
   command_line.AppendSwitch(switches::kNoPings);
 

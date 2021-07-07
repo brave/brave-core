@@ -18,6 +18,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/web_contents.h"
 
 namespace speedreader {
 
@@ -36,14 +37,17 @@ bool SpeedreaderTabHelper::IsSpeedreaderEnabled() const {
 }
 
 bool SpeedreaderTabHelper::IsEnabledForSite() {
+  return IsEnabledForSite(web_contents()->GetLastCommittedURL());
+}
+
+bool SpeedreaderTabHelper::IsEnabledForSite(const GURL& url) {
   if (!IsSpeedreaderEnabled())
     return false;
 
   Profile* profile =
       Profile::FromBrowserContext(web_contents()->GetBrowserContext());
   auto* content_rules = HostContentSettingsMapFactory::GetForProfile(profile);
-  return speedreader::IsEnabledForSite(content_rules,
-                                       web_contents()->GetLastCommittedURL());
+  return speedreader::IsEnabledForSite(content_rules, url);
 }
 
 void SpeedreaderTabHelper::MaybeToggleEnabledForSite(bool on) {
@@ -64,9 +68,21 @@ void SpeedreaderTabHelper::MaybeToggleEnabledForSite(bool on) {
 
 void SpeedreaderTabHelper::SingleShotSpeedreader() {
   single_shot_next_request_ = true;
+
+  // Refresh the page so it runs through the speedreader throttle
   auto* contents = web_contents();
   if (contents)
     contents->GetController().Reload(content::ReloadType::NORMAL, false);
+
+  // Determine if bubble should be shown automatically
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  DCHECK(profile);
+  auto* speedreader_service = SpeedreaderServiceFactory::GetForProfile(profile);
+  if (speedreader_service->ShouldPromptUserToEnable()) {
+    ShowReaderModeBubble();
+    speedreader_service->IncrementPromptCount();
+  }
 }
 
 void SpeedreaderTabHelper::UpdateActiveState(
@@ -79,19 +95,21 @@ void SpeedreaderTabHelper::UpdateActiveState(
     return;
   }
 
-  if (!IsEnabledForSite()) {
-    SetNextRequestState(DistillState::kNone);
-    return;
-  }
-
   // Work only with casual main frame navigations.
   if (handle->GetURL().SchemeIsHTTPOrHTTPS()) {
     auto* rewriter_service =
         g_brave_browser_process->speedreader_rewriter_service();
     if (speedreader::IsWhitelistedForTest(handle->GetURL()) ||
         rewriter_service->IsWhitelisted(handle->GetURL())) {
-      VLOG(2) << __func__ << " SpeedReader active for " << handle->GetURL();
-      SetNextRequestState(DistillState::kSpeedreaderMode);
+      VLOG(2) << __func__
+              << "URL passed speedreader heuristic: " << handle->GetURL();
+      if (!IsSpeedreaderEnabled()) {
+        SetNextRequestState(DistillState::kPageProbablyReadable);
+      } else if (!IsEnabledForSite(handle->GetURL())) {
+        SetNextRequestState(DistillState::kSpeedreaderOnDisabledPage);
+      } else {
+        SetNextRequestState(DistillState::kSpeedreaderMode);
+      }
       return;
     }
   }
@@ -101,10 +119,6 @@ void SpeedreaderTabHelper::UpdateActiveState(
 void SpeedreaderTabHelper::SetNextRequestState(DistillState state) {
   distill_state_ = state;
   single_shot_next_request_ = false;
-}
-
-bool SpeedreaderTabHelper::IsActiveForMainFrame() const {
-  return distill_state_ != DistillState::kNone;
 }
 
 void SpeedreaderTabHelper::DidStartNavigation(

@@ -24,6 +24,8 @@ class SpeedreaderService : public KeyedService {
 
   void ToggleSpeedreader();
   bool IsEnabled();
+  bool ShouldPromptUserToEnable() const;
+  void IncrementPromptCount();
 
   SpeedreaderService(const SpeedreaderService&) = delete;
   SpeedreaderService& operator=(const SpeedreaderService&) = delete;
