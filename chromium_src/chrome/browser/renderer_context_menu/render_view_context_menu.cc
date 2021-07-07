@@ -16,6 +16,7 @@
 #include "chrome/common/channel_info.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
+#include "net/base/filename_util.h"
 #include "ui/base/models/menu_separator_types.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image_skia.h"
@@ -143,9 +144,16 @@ void BraveRenderViewContextMenu::ExecuteIPFSCommand(int id, int event_flags) {
       break;
     case IDC_CONTENT_CONTEXT_IMPORT_IMAGE_IPFS:
     case IDC_CONTENT_CONTEXT_IMPORT_VIDEO_IPFS:
-    case IDC_CONTENT_CONTEXT_IMPORT_AUDIO_IPFS:
-      controller->ImportLinkToIpfs(params_.src_url);
-      break;
+    case IDC_CONTENT_CONTEXT_IMPORT_AUDIO_IPFS: {
+      if (params_.src_url.SchemeIsFile()) {
+        base::FilePath path;
+        if (net::FileURLToFilePath(params_.src_url, &path) && !path.empty()) {
+          controller->ImportFileToIpfs(path, std::string());
+        }
+      } else {
+        controller->ImportLinkToIpfs(params_.src_url);
+      }
+    }; break;
     case IDC_CONTENT_CONTEXT_IMPORT_LINK_IPFS:
       controller->ImportLinkToIpfs(params_.link_url);
       break;
