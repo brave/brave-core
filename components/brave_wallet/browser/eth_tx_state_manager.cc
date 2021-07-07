@@ -10,6 +10,7 @@
 #include "base/util/values/values_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/eip2930_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -120,7 +121,22 @@ base::Optional<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
   const base::Value* tx = value.FindKey("tx");
   if (!tx)
     return base::nullopt;
-  base::Optional<EthTransaction> tx_from_value = EthTransaction::FromValue(*tx);
+  base::Optional<int> type = tx->FindIntKey("type");
+  if (!type)
+    return base::nullopt;
+
+  base::Optional<EthTransaction> tx_from_value;
+  switch (static_cast<uint8_t>(*type)) {
+    case 0:
+      tx_from_value = EthTransaction::FromValue(*tx);
+      break;
+    case 1:
+      tx_from_value = Eip2930Transaction::FromValue(*tx);
+      break;
+    default:
+      LOG(ERROR) << "tx type is not supported";
+      break;
+  }
   if (!tx_from_value)
     return base::nullopt;
   meta.tx = *tx_from_value;

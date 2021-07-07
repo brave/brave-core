@@ -23,6 +23,7 @@ namespace brave_wallet {
 bool IsNativeWalletEnabled();
 // Equivalent to web3.utils.toHex(string);
 std::string ToHex(const std::string& data);
+std::string ToHex(const std::vector<uint8_t>& data);
 // Equivalent to web3.utils.keccak256(string)
 std::string KeccakHash(const std::string& input, bool to_hex = true);
 std::vector<uint8_t> KeccakHash(const std::vector<uint8_t>& input);

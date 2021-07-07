@@ -21,6 +21,11 @@ namespace brave_wallet {
 TEST(BraveWalletUtilsUnitTest, ToHex) {
   ASSERT_EQ(ToHex(""), "0x0");
   ASSERT_EQ(ToHex("hello world"), "0x68656c6c6f20776f726c64");
+
+  ASSERT_EQ(ToHex(std::vector<uint8_t>()), "0x0");
+  const std::string str1("hello world");
+  ASSERT_EQ(ToHex(std::vector<uint8_t>(str1.begin(), str1.end())),
+            "0x68656c6c6f20776f726c64");
 }
 
 TEST(BraveWalletUtilsUnitTest, KeccakHash) {

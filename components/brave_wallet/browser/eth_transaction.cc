@@ -16,20 +16,29 @@
 
 namespace brave_wallet {
 
+EthTransaction::TxData::TxData() = default;
+EthTransaction::TxData::~TxData() = default;
+EthTransaction::TxData::TxData(const uint256_t& nonce_in,
+                               const uint256_t& gas_price_in,
+                               const uint256_t& gas_limit_in,
+                               const EthAddress& to_in,
+                               const uint256_t& value_in,
+                               const std::vector<uint8_t>& data_in)
+    : nonce(nonce_in),
+      gas_price(gas_price_in),
+      gas_limit(gas_limit_in),
+      to(to_in),
+      value(value_in),
+      data(data_in) {}
+
 EthTransaction::EthTransaction() = default;
-EthTransaction::EthTransaction(const uint256_t& nonce,
-                               const uint256_t& gas_price,
-                               const uint256_t& gas_limit,
-                               const EthAddress& to,
-                               const uint256_t& value,
-                               const std::vector<uint8_t> data)
-    : nonce_(nonce),
-      gas_price_(gas_price),
-      gas_limit_(gas_limit),
-      to_(to),
-      value_(value),
-      data_(data),
-      v_(0) {}
+EthTransaction::EthTransaction(const TxData& tx_data)
+    : nonce_(tx_data.nonce),
+      gas_price_(tx_data.gas_price),
+      gas_limit_(tx_data.gas_limit),
+      to_(tx_data.to),
+      value_(tx_data.value),
+      data_(tx_data.data) {}
 
 EthTransaction::EthTransaction(const EthTransaction&) = default;
 EthTransaction::~EthTransaction() = default;
@@ -39,11 +48,11 @@ bool EthTransaction::operator==(const EthTransaction& tx) const {
          gas_limit_ == tx.gas_limit_ && to_ == tx.to_ && value_ == tx.value_ &&
          std::equal(data_.begin(), data_.end(), tx.data_.begin()) &&
          v_ == tx.v_ && std::equal(r_.begin(), r_.end(), tx.r_.begin()) &&
-         std::equal(s_.begin(), s_.end(), tx.s_.begin());
+         std::equal(s_.begin(), s_.end(), tx.s_.begin()) && type_ == tx.type_;
 }
 
 // static
-base::Optional<EthTransaction> EthTransaction::FromValue(
+absl::optional<EthTransaction> EthTransaction::FromValue(
     const base::Value& value) {
   EthTransaction tx;
   const std::string* nonce = value.FindStringKey("nonce");
@@ -83,7 +92,7 @@ base::Optional<EthTransaction> EthTransaction::FromValue(
     return base::nullopt;
   tx.data_ = std::vector<uint8_t>(data_decoded.begin(), data_decoded.end());
 
-  base::Optional<int> v = value.FindIntKey("v");
+  absl::optional<int> v = value.FindIntKey("v");
   if (!v)
     return base::nullopt;
   tx.v_ = (uint8_t)*v;
@@ -103,6 +112,11 @@ base::Optional<EthTransaction> EthTransaction::FromValue(
   if (!base::Base64Decode(*s, &s_decoded))
     return base::nullopt;
   tx.s_ = std::vector<uint8_t>(s_decoded.begin(), s_decoded.end());
+
+  absl::optional<int> type = value.FindIntKey("type");
+  if (!type)
+    return base::nullopt;
+  tx.type_ = (uint8_t)*type;
 
   return tx;
 }
@@ -174,6 +188,8 @@ base::Value EthTransaction::ToValue() const {
   dict.SetIntKey("v", static_cast<int>(v_));
   dict.SetStringKey("r", base::Base64Encode(r_));
   dict.SetStringKey("s", base::Base64Encode(s_));
+  dict.SetIntKey("type", static_cast<int>(type_));
+
   return dict;
 }
 
