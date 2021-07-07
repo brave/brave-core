@@ -1,18 +1,18 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.js b/chrome/browser/resources/settings/privacy_page/personalization_options.js
-index 868be6eab0d36ea429d474852aa631a77e14eb1d..26e2be6a3b71ca4ccfad4f2919658f3cd577391c 100644
+index fd6a7b11cda563c1e462d6244cce2b4f01c2be77..de554fbd716054b5cf771034062f7d66173df7d6 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.js
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.js
-@@ -54,7 +54,7 @@ Polymer({
-     /** @type {SyncStatus} */
-     syncStatus: Object,
+@@ -66,7 +66,7 @@ export class SettingsPersonalizationOptionsElement extends
+       /** @type {SyncStatus} */
+       syncStatus: Object,
  
--    // <if expr="_google_chrome and not chromeos">
-+    // <if expr="_chromium and not chromeos">
-     // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
-     // (but handled differently in C++).
-     /** @private {chrome.settingsPrivate.PrefObject} */
-@@ -105,7 +105,7 @@ Polymer({
-   ready() {
+-      // <if expr="_google_chrome and not chromeos">
++      // <if expr="_chromium and not chromeos">
+       // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
+       // (but handled differently in C++).
+       /** @private {chrome.settingsPrivate.PrefObject} */
+@@ -125,7 +125,7 @@ export class SettingsPersonalizationOptionsElement extends
+ 
      this.browserProxy_ = PrivacyPageBrowserProxyImpl.getInstance();
  
 -    // <if expr="_google_chrome and not chromeos">
@@ -20,27 +20,27 @@ index 868be6eab0d36ea429d474852aa631a77e14eb1d..26e2be6a3b71ca4ccfad4f2919658f3c
      const setMetricsReportingPref = this.setMetricsReportingPref_.bind(this);
      this.addWebUIListener('metrics-reporting-change', setMetricsReportingPref);
      this.browserProxy_.getMetricsReporting().then(setMetricsReportingPref);
-@@ -136,7 +136,7 @@ Polymer({
-     return /** @type {?CrToggleElement} */ (this.$$('#driveSuggestControl'));
-   },
+@@ -159,7 +159,7 @@ export class SettingsPersonalizationOptionsElement extends
+         this.shadowRoot.querySelector('#driveSuggestControl'));
+   }
  
 -  // <if expr="_google_chrome and not chromeos">
 +  // <if expr="_chromium and not chromeos">
    /** @private */
    onMetricsReportingChange_() {
      const enabled = this.$.metricsReportingControl.checked;
-@@ -186,6 +186,7 @@ Polymer({
-   },
+@@ -209,6 +209,7 @@ export class SettingsPersonalizationOptionsElement extends
+   }
    // </if>
  
 +  // <if expr="_google_chrome">
    /**
     * @return {boolean}
     * @private
-@@ -234,6 +235,7 @@ Polymer({
+@@ -258,6 +259,7 @@ export class SettingsPersonalizationOptionsElement extends
      }
      this.showSignoutDialog_ = false;
-   },
+   }
 +  // </if>
  
    /**
