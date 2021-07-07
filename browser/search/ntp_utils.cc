@@ -9,7 +9,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
-#include "components/ntp_tiles/pref_names.h"
+#include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -46,7 +46,7 @@ void MigrateNewTabPagePrefs(Profile* profile) {
   const PrefService::Preference* top_sites_pref =
       prefs->FindPreference(kNewTabPageShowTopSites);
   if (top_sites_pref->HasUserSetting()) {
-    prefs->SetBoolean(ntp_tiles::prefs::kNtpShortcutsVisible,
+    prefs->SetBoolean(ntp_prefs::kNtpShortcutsVisible,
                       prefs->GetBoolean(kNewTabPageShowTopSites));
   }
 
