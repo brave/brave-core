@@ -65,10 +65,15 @@ RegisterStyleOverride(
         padding-bottom: 0 !important;
         padding-top: 0 !important;
         padding-inline-start: 0 !important;
+        position: relative; !important;
       }
 
       a[href].iron-selected {
-        color: var(--settings-nav-item-color) !important;
+        color: none;
+        background: linear-gradient(122.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%) !important;
+
+        -webkit-background-clip: text !important;;
+        -webkit-text-fill-color: transparent !important;
         font-weight: 600 !important;
       }
 
@@ -78,6 +83,19 @@ RegisterStyleOverride(
         width: 20px;
         height: 20px;
       }
+
+      a[href].iron-selected::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: calc(-1 * var(--brave-settings-menu-padding));
+        transform: translateY(-50%);
+        display: block;
+        height: 170%;
+        width: 4px;
+        background: linear-gradient(122.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%);
+        border-radius: 0px 2px 2px 0px;
+    }
 
       @media (prefers-color-scheme: dark) {
         a[href].iron-selected iron-icon {
