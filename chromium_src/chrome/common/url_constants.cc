@@ -198,6 +198,10 @@ const char kSyncGoogleDashboardURL[] =
 const char kSyncLearnMoreURL[] =
     "https://support.brave.com/";
 
+#if !defined(OS_ANDROID)
+const char kSyncTrustedVaultOptInURL[] = "https://support.brave.com/";
+#endif
+
 const char kUpgradeHelpCenterBaseURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360025390311-How-do-I-download-and-install-Brave-";
