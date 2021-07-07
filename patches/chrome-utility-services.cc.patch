@@ -1,11 +1,11 @@
 diff --git a/chrome/utility/services.cc b/chrome/utility/services.cc
-index 3fc96174d7e387fb07003021ae25f38e76369f73..64c2f24008d6b79bc3dc34c75468eac6e7c240b3 100644
+index 0728a65184f274ea9e6466f590500ff6b81aef28..19ead0f220f2783deb19de44c85797a124c16fad 100644
 --- a/chrome/utility/services.cc
 +++ b/chrome/utility/services.cc
-@@ -376,6 +376,7 @@ void RegisterMainThreadServices(mojo::ServiceFactory& services) {
-   services.Add(RunAssistantAudioDecoder);
- #endif
- #endif
+@@ -389,6 +389,7 @@ void RegisterMainThreadServices(mojo::ServiceFactory& services) {
+ #endif  // BUILDFLAG(ENABLE_LIBASSISTANT_SANDBOX)
+ #endif  // BUILDFLAG(ENABLE_CROS_LIBASSISTANT)
+ #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
 +    BRAVE_GET_MAIN_THREAD_SERVICE_FACTORY
  }
  
