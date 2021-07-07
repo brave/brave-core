@@ -886,6 +886,7 @@ if (!is_android) {
       "//brave/components/tor",
       "//brave/components/tor:utils",
       "//brave/components/tor/buildflags",
+      "//brave/test/snapshot",
       "//build:chromeos_buildflags",
       "//chrome/app:command_ids",
       "//chrome/browser:browser_process",

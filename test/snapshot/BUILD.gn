@@ -1,0 +1,21 @@
+source_set("snapshot") {
+  testonly = true
+
+  sources = [
+    "widget_snapshot_checker.cc",
+    "widget_snapshot_checker.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/common",
+    "//skia",
+    "//testing/gtest",
+    "//ui/base",
+    "//ui/compositor:test_support",
+    "//ui/display",
+    "//ui/gfx",
+    "//ui/snapshot",
+    "//ui/views",
+  ]
+}

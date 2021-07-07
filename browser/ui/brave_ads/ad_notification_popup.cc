@@ -49,6 +49,8 @@ namespace {
 // AdNotificationPopup management to NotificationPopupCollection
 std::map<std::string, AdNotificationPopup*> g_ad_notification_popups;
 
+bool g_disable_fade_in_animation_for_testing = true;
+
 const int kShadowElevation = 5;
 
 constexpr SkColor kLightModeBackgroundColor = SkColorSetRGB(0xed, 0xf0, 0xf2);
@@ -194,6 +196,23 @@ gfx::Rect AdNotificationPopup::GetBounds(const std::string& notification_id) {
   DCHECK(popup);
 
   return popup->CalculateBounds();
+}
+
+// static
+views::Widget* AdNotificationPopup::GetWidgetForTesting(
+    const std::string& notification_id) {
+  DCHECK(!notification_id.empty());
+
+  DCHECK(g_ad_notification_popups[notification_id]);
+  AdNotificationPopup* popup = g_ad_notification_popups[notification_id];
+  DCHECK(popup);
+
+  return popup->GetWidget();
+}
+
+// static
+void AdNotificationPopup::SetDisableFadeInAnimationForTesting(bool disable) {
+  g_disable_fade_in_animation_for_testing = disable;
 }
 
 void AdNotificationPopup::OnDisplayRemoved(
@@ -444,7 +463,8 @@ void AdNotificationPopup::CreateWidgetView() {
 
   widget->InitWidget(this, CalculateBounds());
 
-  widget->SetOpacity(0.0);
+  if (!g_disable_fade_in_animation_for_testing)
+    widget->SetOpacity(0.0);
   widget->ShowInactive();
 }
 
@@ -462,6 +482,9 @@ void AdNotificationPopup::CloseWidgetView() {
 }
 
 void AdNotificationPopup::FadeIn() {
+  if (g_disable_fade_in_animation_for_testing)
+    return;
+
   animation_state_ = AnimationState::kFadeIn;
 
   const base::TimeDelta fade_duration =
