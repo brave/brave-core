@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/settings_ui/settings_ui.js b/chrome/browser/resources/settings/settings_ui/settings_ui.js
-index b45f56f3edb37c160704344dbc2797b1cf493686..8f94c91e4c220d64e2089c6100c170e16ce959b1 100644
+index d61e6510b9b963b78ecc37f6dc3c047663b468b4..f22bacd066e12e83201a3170b59841ce1b16e1ee 100644
 --- a/chrome/browser/resources/settings/settings_ui/settings_ui.js
 +++ b/chrome/browser/resources/settings/settings_ui/settings_ui.js
-@@ -23,7 +23,7 @@ import '../prefs/prefs.js';
+@@ -22,7 +22,7 @@ import '../settings_shared_css.js';
  import '../settings_vars_css.js';
  
  import {CrContainerShadowBehavior} from 'chrome://resources/cr_elements/cr_container_shadow_behavior.m.js';
