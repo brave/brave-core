@@ -22,7 +22,7 @@ dependencies = [
  "percent-encoding 2.1.0",
  "psl",
  "regex",
- "rmp-serde",
+ "rmp-serde 0.13.7",
  "seahash",
  "serde",
  "twoway",
@@ -31,9 +31,8 @@ dependencies = [
 
 [[package]]
 name = "adblock"
-version = "0.3.11"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "95db2d8202bf8b028041d30082765a64b9ea8987aca62f961c97671c39457c82"
+version = "0.3.14"
+source = "git+https://github.com/brave/adblock-rust#752712261b45de10369e43931dc30b08c9bb69fb"
 dependencies = [
  "base64 0.13.0",
  "bitflags",
@@ -44,7 +43,8 @@ dependencies = [
  "once_cell",
  "percent-encoding 2.1.0",
  "regex",
- "rmp-serde",
+ "rmp-serde 0.13.7",
+ "rmp-serde 0.15.5",
  "seahash",
  "serde",
  "twoway",
@@ -55,7 +55,7 @@ dependencies = [
 name = "adblock-ffi"
 version = "0.1.0"
 dependencies = [
- "adblock 0.3.11",
+ "adblock 0.3.14",
  "libc",
  "serde_json",
 ]
@@ -1391,6 +1391,17 @@ name = "rmp-serde"
 version = "0.13.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "011e1d58446e9fa3af7cdc1fb91295b10621d3ac4cb3a85cc86385ee9ca50cd3"
+dependencies = [
+ "byteorder",
+ "rmp",
+ "serde",
+]
+
+[[package]]
+name = "rmp-serde"
+version = "0.15.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "723ecff9ad04f4ad92fe1c8ca6c20d2196d9286e9c60727c4cb5511629260e9d"
 dependencies = [
  "byteorder",
  "rmp",
