@@ -90,9 +90,6 @@ class ConfirmationsState {
 
   bool ParseAdRewardsFromDictionary(base::DictionaryValue* dictionary);
 
-  double GetUnreconciledEstimatedPendingRewards(
-      base::DictionaryValue* dictionary);
-
   std::unique_ptr<privacy::UnblindedTokens> unblinded_tokens_;
   bool ParseUnblindedTokensFromDictionary(base::DictionaryValue* dictionary);
 
