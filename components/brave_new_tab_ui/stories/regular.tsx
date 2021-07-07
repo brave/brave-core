@@ -11,6 +11,7 @@ import { getActionsForDispatch } from '../api/getActions'
 import store from '../store'
 import { getNewTabData, getGridSitesData } from './default/data/storybookState'
 import getTodayState from './default/data/todayStorybookState'
+import getBraveNewsDisplayAd from './default/data/getBraveNewsDisplayAd'
 
 const doNothingDispatch: Dispatch = (action: any) => action
 
@@ -71,6 +72,7 @@ export const Regular = () => {
       saveShowFTX={doNothing}
       saveBrandedWallpaperOptIn={doNothing}
       saveSetAllStackWidgets={doNothing}
+      getBraveNewsDisplayAd={getBraveNewsDisplayAd}
     />
   )
 }

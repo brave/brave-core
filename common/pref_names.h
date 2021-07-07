@@ -55,12 +55,14 @@ extern const char kNewTabPageShowGemini[];
 extern const char kNewTabPageShowTogether[];
 extern const char kNewTabPageHideAllWidgets[];
 extern const char kNewTabPageShowsOptions[];
+// TODO(petemill): Move to brave_today component
 extern const char kBraveTodaySources[];
 extern const char kBraveTodayIntroDismissed[];
 extern const char kBraveTodayOptedIn[];
 extern const char kBraveTodayWeeklySessionCount[];
 extern const char kBraveTodayWeeklyCardViewsCount[];
 extern const char kBraveTodayWeeklyCardVisitsCount[];
+extern const char kBraveTodayWeeklyDisplayAdViewedCount[];
 extern const char kBraveEnabledMediaRouter[];
 extern const char kAlwaysShowBookmarkBarOnNTP[];
 extern const char kAutocompleteEnabled[];

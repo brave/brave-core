@@ -12,6 +12,7 @@ import NewPrivateTabPage from './privateTab'
 import NewTabPage from './newTab'
 
 // Utils
+import { sendWithPromise } from '../../common/cr'
 import * as PreferencesAPI from '../api/preferences'
 import { getActionsForDispatch } from '../api/getActions'
 
@@ -20,6 +21,7 @@ import { NewTabActions } from '../constants/new_tab_types'
 import { ApplicationState } from '../reducers'
 import { BraveTodayState } from '../reducers/today'
 import { FTXState } from '../widgets/ftx/ftx_state'
+import { GetDisplayAdContent } from '../components/default/braveToday'
 
 interface Props {
   actions: NewTabActions
@@ -30,6 +32,10 @@ interface Props {
   // redux / widget state to the components, instead of collecting and passing
   // through all these layers.
   ftx: FTXState
+}
+
+const getBraveNewsDisplayAd: GetDisplayAdContent = function GetBraveNewsDisplayAd () {
+  return sendWithPromise<BraveToday.DisplayAd | null>('todayGetDisplayAd')
 }
 
 function DefaultPage (props: Props) {
@@ -60,6 +66,7 @@ function DefaultPage (props: Props) {
         saveShowFTX={PreferencesAPI.saveShowFTX}
         saveBrandedWallpaperOptIn={PreferencesAPI.saveBrandedWallpaperOptIn}
         saveSetAllStackWidgets={PreferencesAPI.saveSetAllStackWidgets}
+        getBraveNewsDisplayAd={getBraveNewsDisplayAd}
       />
     )
 }

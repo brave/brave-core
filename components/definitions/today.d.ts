@@ -46,12 +46,11 @@ declare namespace BraveToday {
     pages: Page[]
     featuredSponsor?: Article
     featuredArticle?: Article
-    featuredDeals?: Deal[]
   }
 
   export interface Page {
-    articles: Article[] // 13
-    randomArticles: Article[] // 4
+    articles: Article[] // 15
+    randomArticles: Article[] // 3
     itemsByCategory?: {
       categoryName: string
       items: Article[] // 3
@@ -68,6 +67,17 @@ declare namespace BraveToday {
     sponsors: Article[]
     deals: Deal[]
     articles: Article[]
+  }
+
+  export type DisplayAd = {
+    uuid: string
+    creativeInstanceId: string
+    dimensions: string
+    title: string
+    description: string // Advertiser name
+    imageUrl: string
+    targetUrl: string
+    ctaText?: string
   }
 
   type BaseFeedItem = {

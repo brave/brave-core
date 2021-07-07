@@ -72,6 +72,8 @@ const char kBraveTodayWeeklyCardViewsCount[] =
     "brave.today.p3a_weekly_card_views_count";
 const char kBraveTodayWeeklyCardVisitsCount[] =
     "brave.today.p3a_weekly_card_visits_count";
+const char kBraveTodayWeeklyDisplayAdViewedCount[] =
+    "brave.today.p3a_weekly_display_ad_viewed_count";
 const char kBraveEnabledMediaRouter[] = "brave.enable_media_router";
 const char kBinanceAccessToken[] = "brave.binance.access_token";
 const char kBinanceRefreshToken[] = "brave.binance.refresh_token";

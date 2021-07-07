@@ -13,16 +13,14 @@ const Button = styled('button')`
   background: none;
   border-radius: 24px;
   border: solid var(--border-size);
-  padding: 14px 25px;
+  padding: 10px 22px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 4px;
   color: white;
-  font-family: Poppins;
-  font-size: 15px;
-  font-weight: 600;
+  font: 600 13px/20px ${p => p.theme.fontFamily.heading};
   /* Use box-shadow for borders so we get a smooth (and layout-free performance-cheap)
     animation as well as multiple borders. */
   box-shadow: 0 0 0 var(--outer-border-size) rgba(255, 255, 255, .6),
