@@ -309,8 +309,8 @@
     <message name="IDS_PAGE_INFO_TYPE_ADS" desc="The label used for the ads permission controls in the Page Info popup.">
       Ads
     </message>
-    <message name="IDS_PAGE_INFO_TYPE_PROTECTED_MEDIA_IDENTIFIER" desc="The label used for the protected media identifier permission controls in the Page Info popup.">
-      Protected content
+    <message name="IDS_PAGE_INFO_TYPE_PROTECTED_MEDIA_IDENTIFIER" desc="The label used for the protected media identifier permission that controls content controlled by DRM (e.g. paid subscriptions). Appears in the Page Info popover when you click the icon next to the URL. Protected content refers to DRM-controlled content. IDs is short for identifiers; use abbreviation to avoid truncation.">
+      Protected content IDs
     </message>
     <message name="IDS_PAGE_INFO_TYPE_BACKGROUND_SYNC" desc="The label used for the background sync permission controls in the Page Info popup.">
       Background Sync
@@ -688,5 +688,13 @@
   <!-- Subpages headers -->
   <message name="IDS_PAGE_INFO_SECURITY_SUBPAGE_HEADER" desc="The header label of the Security subpage in page info bubble.">
     Security
+  </message>
+
+  <!-- Permissions subpage -->
+  <message name="IDS_PAGE_INFO_PERMISSIONS_SUBPAGE_MANAGE_BUTTON" desc="The text on the button, that opens settings page for the permission, in permission's subpage in page info bubble.">
+    Manage
+  </message>
+  <message name="IDS_PAGE_INFO_PERMISSIONS_SUBPAGE_REMEMBER_THIS_SETTING" desc="The text near the checkbox, that controls if user's decision will be remembered for this permission, in permission's subpage in page info bubble.">
+    Remember this setting
   </message>
 </grit-part>

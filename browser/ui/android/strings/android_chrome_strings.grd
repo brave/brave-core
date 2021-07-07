@@ -953,9 +953,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_CLEAR_BROWSING_DATA_TAB_PERIOD_FOUR_WEEKS" desc="The option to delete browsing data from the last 4 weeks.">
         Last 4 weeks
       </message>
-      <message name="IDS_CLEAR_BROWSING_DATA_TAB_PERIOD_OLDER_THAN_30_DAYS" desc="The option to delete browsing data older than 30 days.">
-        Older than 30 days
-      </message>
       <message name="IDS_CLEAR_BROWSING_DATA_TAB_PERIOD_EVERYTHING" desc="The option to delete browsing data from the beginning of time.">
         All time
       </message>
@@ -1244,12 +1241,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_LANGUAGES_SRP_SUBTITLE" desc="Subtitle warning a user that the language of their keyboard will not change if they change the application language of Brave on Android.">
         Your keyboard won’t change
-      </message>
-      <message name="IDS_LANGUAGES_SRP_CANCEL_TITLE" desc="Text on button to cancel the language picker dialog and not change the application language of Brave on Android.">
-        No thanks
-      </message>
-      <message name="IDS_LANGUAGES_SRP_ACCEPT_TITLE" desc="Text on button to confirm changing the application language of Brave on Android.">
-        Change language
       </message>
       <message name="IDS_LANGUAGES_SRP_LOADING_TEXT" desc="Text to display while a language pack is being downloaded.">
         Loading <ph name="LANG">%1$s<ex>Hindi</ex></ph>
@@ -1813,62 +1804,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_SYNC_KEEP_EXISTING_DATA_SEPARATE_SUBTEXT_EXISTING_DATA" desc="Subtext describing what happens if the user elects to keep the existing data separate signing into a new account after have previously being signed into a different account then signed out.">
         Delete existing data.
-      </message>
-
-      <!-- Bluetooth Picker UI strings -->
-      <message name="IDS_BLUETOOTH_DIALOG_TITLE" desc="The header message shown on top of the dialog that lets the user pick a Bluetooth device for the site to pair with. Shown above a list of Bluetooth devices discovered. ">
-        <ph name="SITE">%1$s<ex>https://www.google.com</ex></ph> wants to pair</message>
-      <message name="IDS_BLUETOOTH_SEARCHING" desc="The message shown in the Bluetooth picker dialog while scanning for devices.">
-        <ph name="BEGIN_LINK">&lt;link&gt;</ph>Get help<ph name="END_LINK">&lt;/link&gt;</ph> while scanning for devices…
-      </message>
-      <message name="IDS_BLUETOOTH_CONFIRM_BUTTON" desc="The button to confirm association of a website with a Bluetooth device. Use the same term as in 'Pair this Bluetooth headset with your phone.'">
-        Pair
-      </message>
-      <message name="IDS_BLUETOOTH_NOT_SEEING_IT_IDLE" desc="The message to show at the bottom of the dialog when Bluetooth scanning has uncovered some items but is no longer discovering devices. Allows the user to restart the scan, in case their device is not listed.">
-        <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Get help<ph name="END_LINK1">&lt;/link1&gt;</ph> or <ph name="BEGIN_LINK2">&lt;link2&gt;</ph>re-scan<ph name="END_LINK2">&lt;/link2&gt;</ph>
-      </message>
-      <message name="IDS_BLUETOOTH_NOT_FOUND" desc="The label shown to the user to inform them that no Bluetooth devices were found matching the requirements that the application provided.">
-        No compatible devices found
-      </message>
-      <message name="IDS_BLUETOOTH_ADAPTER_OFF" desc="The message to show when scanning cannot start because the bluetooth adapter is turned off.">
-        <ph name="BEGIN_LINK">&lt;link&gt;</ph>Turn on Bluetooth<ph name="END_LINK">&lt;/link&gt;</ph> to allow pairing
-      </message>
-      <message name="IDS_BLUETOOTH_UNABLE_TO_TURN_ON_ADAPTER" desc="The message to show when Brave is unable to turn on the Bluetooth adapter.">
-          Brave is unable to turn on Bluetooth adapter
-      </message>
-      <message name="IDS_BLUETOOTH_ADAPTER_OFF_HELP" desc="The status message to show along with the message when the bluetooth adapter is turned off (to get Help).">
-        <ph name="BEGIN_LINK">&lt;link&gt;</ph>Get help<ph name="END_LINK">&lt;/link&gt;</ph>
-      </message>
-      <message name="IDS_BLUETOOTH_NEED_LOCATION_PERMISSION" desc="The message to show when scanning cannot start because Brave needs the Location permission in order for Android to return any Bluetooth devices from a scan.">
-        Brave needs location access to scan for devices. <ph name="BEGIN_LINK">&lt;permission_link&gt;</ph>Update permissions<ph name="END_LINK">&lt;/permission_link&gt;</ph>
-      </message>
-      <message name="IDS_BLUETOOTH_NEED_LOCATION_SERVICES_ON" desc="The message to show when scanning cannot start because Android location services are off, but they must be turned on for Android to return any Bluetooth devices from a scan.">
-        Brave needs location access to scan for devices. Location access is <ph name="BEGIN_LINK">&lt;services_link&gt;</ph>turned off for this device<ph name="END_LINK">&lt;/services_link&gt;</ph>.
-      </message>
-      <message name="IDS_BLUETOOTH_NEED_LOCATION_PERMISSION_AND_SERVICES_ON" desc="The message to show when scanning cannot start because Brave doesn't have the Location permission and the device's location services are turned off, and both must be enabled in order for Android to return any Bluetooth devices from a scan.">
-        Brave needs location access to scan for devices. <ph name="BEGIN_LINK1">&lt;permission_link&gt;</ph>Update permissions<ph name="END_LINK1">&lt;/permission_link&gt;</ph>. Location access is also <ph name="BEGIN_LINK2">&lt;services_link&gt;</ph>turned off for this device<ph name="END_LINK2">&lt;/services_link&gt;</ph>.
-      </message>
-      <message name="IDS_BLUETOOTH_NEED_LOCATION_PERMISSION_HELP" desc="The status message to get more information about why Brave needs the Location permission in order to scan for Bluetooth devices.">
-        <ph name="BEGIN_LINK">&lt;link&gt;</ph>Get help<ph name="END_LINK">&lt;/link&gt;</ph>
-      </message>
-      <message name="IDS_BLUETOOTH_NEED_NEARBY_DEVICES_PERMISSION" desc="The message to show when scanning cannot start because Brave needs the Nearby devices permission in order for Android to return any Bluetooth devices from a scan.">
-        Brave needs permission to scan for nearby devices. <ph name="BEGIN_LINK">&lt;permission_link&gt;</ph>Update permissions<ph name="END_LINK">&lt;/permission_link&gt;</ph>.
-      </message>
-      <message name="IDS_BLUETOOTH_DEVICE_CONNECTED" desc="Content description for the connected icon next to connected Bluetooth devices.">
-        Connected Device
-      </message>
-      <message name="IDS_SIGNAL_STRENGTH_LEVEL_N_BARS" desc="Text to be shown next to devices indicating their received signal strength. [ICU Syntax]">
-        {N_BARS, plural,
-          =1 {Signal Strength Level: # bar}
-          other {Signal Strength Level: # bars}}
-      </message>
-
-      <!-- Bluetooth Scanning Prompt strings -->
-      <message name="IDS_BLUETOOTH_SCANNING_PROMPT_ORIGIN" desc="The label that is used to introduce Bluetooth scanning prompt details to the user when it is from a website.">
-        <ph name="SITE">%1$s<ex>www.google.com</ex></ph> wants to scan for nearby Bluetooth devices. The following devices have been found:
-      </message>
-      <message name="IDS_BLUETOOTH_SCANNING_DEVICE_UNKNOWN" desc="Text to identify Bluetooth devices of unknown or unsupported class.">
-        Unknown or unsupported device (<ph name="DEVICE_ID">%1$s<ex>A1:B2:C3:D4:E5:F6</ex></ph>)
       </message>
 
       <!-- Hint of sync error solution strings -->
@@ -3010,6 +2945,15 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_ADAPTIVE_TOOLBAR_BUTTON_VOICE_SEARCH_IPH" desc="An in-product-help message for the voice search button.">
         Quickly search with your voice. To edit this shortcut, touch and hold.
       </message>
+      <message name="IDS_ADAPTIVE_TOOLBAR_BUTTON_NEW_TAB_IPH_SETTINGS" desc="An in-product-help message for the new tab button referring to toolbar settings.">
+        Quickly open a new tab. To edit this shortcut, go to Settings.
+      </message>
+        <message name="IDS_ADAPTIVE_TOOLBAR_BUTTON_SHARE_IPH_SETTINGS" desc="An in-product-help message for the share button referring to toolbar settings.">
+        Quickly share this page. To edit this shortcut, go to Settings.
+      </message>
+      <message name="IDS_ADAPTIVE_TOOLBAR_BUTTON_VOICE_SEARCH_IPH_SETTINGS" desc="An in-product-help message for the voice search button referring to toolbar settings.">
+        Quickly search with your voice. To edit this shortcut, go to Settings.
+      </message>
       <message name="IDS_ADAPTIVE_TOOLBAR_MENU_EDIT_SHORTCUT" desc="The menu option for opening adaptive toolbar settings.">
         Edit shortcut
       </message>
@@ -3784,11 +3728,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Using Brave for search
       </message>
 
-      <!-- Item Chooser UI strings -->
-      <message name="IDS_ITEM_CHOOSER_ITEM_NAME_WITH_ID" desc="To distinguish items with the same name, the item chooser shows the item name with id.">
-        <ph name="ITEM_NAME">%1$s<ex>item_name</ex></ph> (<ph name="ITEM_ID">%2$s<ex>item id</ex></ph>)
-      </message>
-
       <!-- WebAPK/TWA related strings -->
       <message name="IDS_TWA_RUNNING_IN_CHROME" desc="Message on a snackbar indicating that the current Activity may use Brave data (the rest of the app may not be).">
         Running in Brave
@@ -4217,17 +4156,24 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- Sms Fetcher -->
-      <message name="IDS_SMS_FETCHER_NOTIFICATION_TITLE_UNKNOWN_DEVICE" translateable="false" desc="Title text shown when the browser has received an SMS on the user's behalf when the source device name is unknown.">
-        Verify your phone number on other device
+      <message name="IDS_SMS_FETCHER_NOTIFICATION_TITLE" desc="Title text shown when the Android Brave receives a ONE_TIME_CODE from an incoming SMS and ask users for permission to submit the code to their linked Desktop Brave">
+        Submit <ph name="ONE_TIME_CODE">%1$s<ex>123</ex></ph> on <ph name="CLIENT_NAME">%2$s<ex>Zoe's Macbook</ex></ph>?
       </message>
-      <message name="IDS_SMS_FETCHER_NOTIFICATION_TITLE" translateable="false" desc="Title text shown when the browser has received an SMS on the user's behalf.">
-        Verify your phone number on <ph name="CLIENT_NAME">%1$s<ex>Zoe's Macbook</ex></ph>
+      <message name="IDS_SMS_FETCHER_NOTIFICATION_TEXT" desc="Content text shown to let users know that the submitted code will be received by ORIGIN for verification purpose.">
+        Let <ph name="ORIGIN">%1$s<ex>example.com</ex></ph> verify it's you
       </message>
-      <message name="IDS_SMS_FETCHER_NOTIFICATION_TEXT" translateable="false" desc="Content text shown when the browser has received an SMS on the user's behalf.">
-        Let Brave submit <ph name="ONE_TIME_CODE">%1$s<ex>123</ex></ph> on <ph name="ORIGIN">%2$s<ex>example.com</ex></ph>
+      <message name="IDS_SMS_FETCHER_NOTIFICATION_TEXT_FOR_EMBEDDED_FRAME" desc="Content text shown to let users know that the submitted code will be received by EMBEDDED_ORIGIN for verification purpose. User is on TOP_ORIGIN and they need to use service provided by EMBEDDED_ORIGIN. EMBEDDED_ORIGIN sends out an SMS to verify the user identity.">
+        Let <ph name="EMBEDDED_ORIGIN">%1$s<ex>payment.com</ex></ph> verify it's you for <ph name="TOP_ORIGIN">%2$s<ex>shopping.com</ex></ph>
       </message>
-      <message name="IDS_SMS_FETCHER_NOTIFICATION_TEXT_FOR_EMBEDDED_FRAME" translateable="false" desc="Content text shown when the browser has received an SMS on the user's behalf. User is on TOP_ORIGIN and they need to use service provided by EMBEDDED_ORIGIN. EMBEDDED_ORIGIN sends out an SMS to verify user identity.">
-        Tap OK to submit <ph name="ONE_TIME_CODE">%1$s<ex>123</ex></ph> on <ph name="EMBEDDED_ORIGIN">%3$s<ex>payment.com</ex></ph> to continue on <ph name="TOP_ORIGIN">%2$s<ex>shopping.com</ex></ph>
+
+      <message name="IDS_SMS_FETCHER_NOTIFICATION_TITLE_SIMPLE_STRING" translateable="false" desc="Title text shown when the Android Brave receives a ONE_TIME_CODE from an incoming SMS and ask users for permission to submit the code to ORIGIN">
+        Submit <ph name="ONE_TIME_CODE">%1$s<ex>123</ex></ph> to <ph name="ORIGIN">%2$s<ex>example.com</ex></ph>?
+      </message>
+      <message name="IDS_SMS_FETCHER_NOTIFICATION_TITLE_FOR_EMBEDDED_FRAME_SIMPLE_STRING" translateable="false" desc="Title text shown when the Android Brave receives a ONE_TIME_CODE from an incoming SMS and ask users for permission to submit the code to EMBEDDED_ORIGIN.">
+        Submit <ph name="ONE_TIME_CODE">%1$s<ex>123</ex></ph> to <ph name="EMBEDDED_ORIGIN">%2$s<ex>payment.com</ex></ph>?
+      </message>
+      <message name="IDS_SMS_FETCHER_NOTIFICATION_TEXT_FOR_EMBEDDED_FRAME_SIMPLE_STRING" translateable="false" desc="Content text shown the TOP_ORIGIN and the remote device name.">
+        <ph name="TOP_ORIGIN">%1$s<ex>shopping.com</ex></ph> <ph name="CLIENT_NAME">%2$s<ex>Zoe's Macbook</ex></ph>
       </message>
 
       <!-- Interventions -->
@@ -4797,6 +4743,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_CONTENT_CREATION_NOTE_SHORTENED_MESSAGE" desc="Toast message displayed when highlighted text is too long and is cropped to fit in the note.">
         Highlight was shortened
+      </message>
+      <message name="IDS_QUOTATION_MARK_PREFIX" desc="String to put in front of other text to represent it as a quote start.">
+        “
+      </message>
+      <message name="IDS_QUOTATION_MARK_SUFFIX" desc="String to put after other text to represent it as a quote end.">
+        ”
       </message>
     </messages>
   </release>

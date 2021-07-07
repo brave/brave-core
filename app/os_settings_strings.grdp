@@ -346,6 +346,9 @@
   <message name="IDS_OS_SETTINGS_LANGUAGES_TRANSLATE_TARGET_LABEL" desc="The label of the toggle that enables the prompt to translate a page to users.">
     Language used when translating pages
   </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_TRANSLATE_TARGET_LABEL_WITH_QUICK_ANSWERS" desc="The label of the section that indicates the target language used for translation and quick answers.">
+    Language used for translating pages and Quick answers
+  </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_OFFER_TO_TRANSLATE_THIS_LANGUAGE" desc="The label of the checkbox that enables the prompt to translate a page in the given language to users.">
     Offer to translate pages in this language
   </message>
@@ -765,6 +768,18 @@
   <message name="IDS_OS_SETTINGS_DARK_MODE_OFF" desc="Label for the toggle row in dark mode settings page when it is disabled.">
     Off
   </message>
+  <message name="IDS_OS_SETTINGS_DARK_MODE_THEMED_RADIO_GROUP_TITLE" desc="The title of the radio group that allows the user to configure the accent color of the dark mode.">
+    Accent color
+  </message>
+  <message name="IDS_OS_SETTINGS_DARK_MODE_THEMED_RADIO_GROUP_DESCRIPTION" desc="The description of the radio group that allows the user to configure the accent color of the dark mode.">
+    Choose the color theme for Launcher, shelf, Quick Settings, and more
+  </message>
+  <message name="IDS_OS_SETTINGS_DARK_MODE_THEMED_ON" desc="Label for the checkbox which set the color mode is computed based on the user's wallpaper.">
+    Based on your wallpaper
+  </message>
+  <message name="IDS_OS_SETTINGS_DARK_MODE_THEMED_OFF" desc="Label for the checkbox which set the color mode to default color than calculated from the current wallpaper.">
+    Neutral
+  </message>
 
   <!-- Search and Assistant section. -->
   <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_LABEL" desc="Label in OS settings describing search engine behavior.">
@@ -812,7 +827,7 @@
     Translation
   </message>
   <message name="IDS_SETTINGS_QUICK_ANSWERS_TRANSLATION_ENABLE_DESCRIPTION" desc="Sub label for the Quick Answers translation toggle.">
-    Add your preferred website languages. The top language from the list will be used for translations.
+    Add your preferred <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="#"&gt;</ph>website languages<ph name="LINK_END">&lt;/a&gt;</ph>. The top language from the list will be used for translations.
   </message>
   <message name="IDS_SETTINGS_QUICK_ANSWERS_UNIT_CONVERSION_ENABLE" desc="Title for a toggle that controls the Quick Answers unit conversion feature.">
     Unit Conversion
@@ -1221,6 +1236,9 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_INTRO_BODY" desc="The message displayed on the first page of the Switch Access setup guide, instructing the user to confirm that their external switch is appropriately connected to the chromebook. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     To get started, please make sure your USB or Bluetooth switch is connected to your Bravebook. You can also use keyboard keys.
   </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_ASSIGN_SELECT_TITLE" desc="The title for the page of the Switch Access setup guide where the user assigns a switch to perform the action select, which selects the element onscreen currently surrounded by the focus ring. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Assign switch: Select
+  </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_AUTO_SCAN_ENABLED_TITLE" desc="The title for the page of the Switch Access setup guide that informs the user that auto-scan has been enabled, meaning that the focused item will change periodically with no additional input. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Auto-scan enabled
   </message>
@@ -1254,11 +1272,20 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_AUTO_SCAN_SPEED_DESCRIPTION" desc="The description on the page of the Switch Access setup guide adjusting the auto-scan speed. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Choose how long the highlight should stay on each item
   </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_ASSIGN_NEXT_TITLE" desc="The title for the page of the Switch Access setup guide where the user assigns a switch to perform the action next, which advances the focus ring to the next element onscreen. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Assign switch: Next
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_ASSIGN_PREVIOUS_TITLE" desc="The title for the page of the Switch Access setup guide where the user assigns a switch to perform the action previous, which moves the focus ring to the previous element onscreen. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Assign switch: Previous
+  </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CLOSING_TITLE" desc="The title for the final page of the Switch Access setup guide, which informs the user that setup is complete and provides some final information. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     You're all set!
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CLOSING_AUTO_SCAN_INSTRUCTIONS" desc="Instructions for how to close the Switch Access setup guide using Switch Access with auto-scan enabled. Switch Access is an alternative input method designed for users with limited mobility where the user has as little as one switch (for example, a button) to control the computer. Auto-scan is a feature of Switch Access where focus moves from one element to the next at a set interval automatically, so the user only has to select the element when it is highlighted.">
     Press your switch when the focus is on the Done button to close the guide.
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CLOSING_MANUAL_SCAN_INSTRUCTIONS" desc="Instructions for how to close the Switch Access setup guide using Switch Access with at least one switch assigned to navigation. Switch Access is an alternative input method designed for users with limited mobility where the user has as little as one switch (for example, a button) to control the computer. Auto-scan is a feature of Switch Access where focus moves from one element to the next at a set interval automatically, so the user only has to select the element when it is highlighted.">
+    Now that you have more switches to navigate, auto-scan has been turned off. Navigate to the Done button and press the Select switch to close the guide.
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CLOSING_INFO" desc="Final advice on changing the settings for Switch Access after the Switch Access setup guide has been closed. Switch Access is an alternative input method designed for users with limited mobility where the user has as little as one switch (for example, a button) to control the computer.">
     You can always change additional settings or open the setup guide again from Switch Access settings.
@@ -1880,7 +1907,11 @@ Press an assigned switch to remove assignment.
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_REMOVE" desc="Label for removing (unpairing) a paired Bluetooth device">
     Remove from list
-  </message>   <message name="IDS_SETTINGS_BLUETOOTH_PAIR" desc="Label for the settings button to pair a previously paired Bluetooth device.">
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_MANAGED" desc="Tooltip description for icon notifying user that the Bluetooth device is managed by an enterprise policy and may have restricted functionality.">
+    Your administrator has blocked some functionality for this device
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIR" desc="Label for the settings button to pair a previously paired Bluetooth device.">
     Pair
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_ENTER_KEY" desc="Bluetooth pairing dialog: Text for enter key when pairing keyboard devices.">
