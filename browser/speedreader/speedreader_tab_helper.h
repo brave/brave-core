@@ -63,7 +63,6 @@ class SpeedreaderTabHelper
   // Returns |true| if the user has enabled Speedreader but the domain in the
   // active web contents is blacklisted.
   bool IsEnabledForSite();
-  bool IsEnabledForSite(const GURL& url);
 
   DistillState PageDistillState() const { return distill_state_; }
 
@@ -98,6 +97,11 @@ class SpeedreaderTabHelper
   // |is_bubble_speedreader| will show a bubble for pages in Speedreader if set
   // to true, otherwise pages in reader mode.
   void ShowBubble(bool is_bubble_speedreader);
+
+  // Returns |true| if the user has enabled Speedreader but the URL is
+  // blacklisted. This method is used when the URL we want to check has not been
+  // committed to the WebContents.
+  bool IsEnabledForSite(const GURL& url);
 
   void UpdateActiveState(content::NavigationHandle* handle);
   void SetNextRequestState(DistillState state);

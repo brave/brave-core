@@ -17,7 +17,7 @@ constexpr char kSpeedreaderPrefEverEnabled[] = "brave.speedreader.ever_enabled";
 // Number of times the user has toggled Speedreader
 constexpr char kSpeedreaderPrefToggleCount[] = "brave.speedreader.toggle_count";
 
-// Number of times the "Enable Speedreader" button was show automatically
+// Number of times the "Enable Speedreader" button was shown automatically
 constexpr char kSpeedreaderPrefPromptCount[] = "brave.speedreader.prompt_count";
 
 }  // namespace speedreader
