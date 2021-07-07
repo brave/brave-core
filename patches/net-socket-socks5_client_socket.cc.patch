@@ -1,5 +1,5 @@
 diff --git a/net/socket/socks5_client_socket.cc b/net/socket/socks5_client_socket.cc
-index ae130d9b5f8b83ded0bcdc83c1c392904967cd6f..ff8adb800f2d18c25260158b0460b561cc4e209e 100644
+index ae130d9b5f8b83ded0bcdc83c1c392904967cd6f..3335cddfd75ea2da414aef8766333f1235fec4e7 100644
 --- a/net/socket/socks5_client_socket.cc
 +++ b/net/socket/socks5_client_socket.cc
 @@ -238,6 +238,9 @@ int SOCKS5ClientSocket::DoLoop(int last_io_result) {
@@ -30,7 +30,7 @@ index ae130d9b5f8b83ded0bcdc83c1c392904967cd6f..ff8adb800f2d18c25260158b0460b561
 +    const char greeting[] = {
 +      0x05,			// SOCKS version
 +      0x01,			// number of authentication methods
-+      auth_method(),
++      static_cast<char>(auth_method()),
 +    };
 +    buffer_ = std::string(greeting, sizeof(greeting));
      bytes_sent_ = 0;
