@@ -256,12 +256,12 @@ bool ConfirmationsState::FromJson(const std::string& json) {
     BLOG(1, "Failed to parse failed confirmations");
   }
 
-  if (!ParseTransactionsFromDictionary(dictionary)) {
-    BLOG(1, "Failed to parse transactions");
-  }
-
   if (!ParseAdRewardsFromDictionary(dictionary)) {
     BLOG(1, "Failed to parse ad rewards");
+  }
+
+  if (!ParseTransactionsFromDictionary(dictionary)) {
+    BLOG(1, "Failed to parse transactions");
   }
 
   if (!ParseUnblindedTokensFromDictionary(dictionary)) {
@@ -674,14 +674,6 @@ bool ConfirmationsState::ParseAdRewardsFromDictionary(
   base::Value* ad_rewards_dictionary = dictionary->FindDictKey("ads_rewards");
   if (!ad_rewards_dictionary) {
     return false;
-  }
-
-  const base::Value* unblinded_tokens =
-      dictionary->FindListKey("unblinded_payment_tokens");
-  if (unblinded_tokens && unblinded_tokens->GetList().empty()) {
-    // Migration path for https://github.com/brave/brave-browser/issues/16678
-    ad_rewards_dictionary->SetDoubleKey(
-        "unreconciled_estimated_pending_rewards", 0.0);
   }
 
   ad_rewards_->SetFromDictionary(ad_rewards_dictionary);

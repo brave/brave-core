@@ -398,8 +398,7 @@ void MockDefaultPrefs(const std::unique_ptr<AdsClientMock>& mock) {
   mock->SetInt64Pref(prefs::kCatalogPing, 7200000);
   mock->SetInt64Pref(prefs::kCatalogLastUpdated, DistantPastAsTimestamp());
 
-  mock->SetBooleanPref(prefs::kHasMigratedConversionState, false);
-  mock->SetBooleanPref(prefs::kHasMigratedEstimatedPendingRewards, false);
+  mock->SetBooleanPref(prefs::kHasMigratedConversionState, true);
 }
 
 }  // namespace

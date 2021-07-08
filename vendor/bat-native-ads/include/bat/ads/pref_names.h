@@ -38,7 +38,6 @@ extern const char kEpsilonGreedyBanditArms[];
 extern const char kEpsilonGreedyBanditEligibleSegments[];
 
 extern const char kHasMigratedConversionState[];
-extern const char kHasMigratedEstimatedPendingRewards[];
 
 }  // namespace prefs
 
