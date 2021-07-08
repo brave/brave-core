@@ -32,7 +32,7 @@ const size_t kVacMessageMaxLength = 30;
 const size_t kVacMessageMinLength = 1;
 
 bool IsConversionIdValid(const std::string& conversion_id) {
-  return RE2::FullMatch(conversion_id, "^[a-zA-Z0-9/-]*$");
+  return RE2::FullMatch(conversion_id, "^[a-zA-Z0-9-]*$");
 }
 
 }  // namespace
