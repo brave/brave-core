@@ -6,6 +6,7 @@ import * as bluebird from 'bluebird'
 
 import './background/greaselion'
 import './background/today'
+import './background/webDiscoveryProject'
 
 // workaround https://github.com/DefinitelyTyped/DefinitelyTyped/issues/42084
 global.Promise = bluebird as any

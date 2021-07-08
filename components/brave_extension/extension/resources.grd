@@ -28,6 +28,10 @@
       <include name="IDR_BRAVE_EXTENSION_BRAVELIZER_JS" file="brave_extension/assets/bravelizer.css" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSION_PICKER_HTML" file="brave_extension/elementPicker.html" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSION_PICKER_JS" file="brave_extension/elementPicker.js" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSION_WEB_DISCOVERY_CONTENT_SCRIPT" file="../../../vendor/web-discovery-project/build/module-content-script.js" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSION_WEB_DISCOVERY_WASM_BUNDLE" file="brave_extension/modules/hpnv2/worker.wasm.bundle.js" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSION_WEB_DISCOVERY_ASMJS_BUNDLE" file="brave_extension/modules/hpnv2/worker.asmjs.bundle.js" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSION_WEB_DISCOVERY_STAR_WASM" file="brave_extension/star.wasm" type="BINDATA" />
     </includes>
   </release>
 </grit>
