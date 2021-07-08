@@ -24,13 +24,7 @@
   },
   "next_token_redemption_date_in_seconds": "4102444799",
   "transaction_history": {
-    "transactions": [
-      {
-        "confirmation_type": "view",
-        "estimated_redemption_value": 0.01,
-        "timestamp_in_seconds": "1625096431"
-      }
-    ]
+    "transactions": []
   },
   "unblinded_payment_tokens": [
     {
