@@ -31,13 +31,6 @@ class InitialSearchEnginesTests: XCTestCase {
     
     // MARK: - Locale overrides
     
-    func testDDGRegions() {
-        for region in InitialSearchEngines.ddgDefaultRegions {
-            let localeSE = SE(locale: Locale(identifier: "en_\(region)"))
-            XCTAssertEqual(localeSE.defaultSearchEngine, .duckduckgo)
-        }
-    }
-    
     func testQwantRegions() {
         for region in InitialSearchEngines.qwantDefaultRegions {
             let localeSE = SE(locale: Locale(identifier: "en_\(region)"))
@@ -131,23 +124,23 @@ class InitialSearchEnginesTests: XCTestCase {
         let localeSE = SE(locale: Locale(identifier: "de_DE"))
         
         let availableEngines = localeSE.engines.map { $0.id }
-        XCTAssertEqual(availableEngines, [.duckduckgo,
+        XCTAssertEqual(availableEngines, [.google,
                                           .braveSearch,
-                                          .google,
                                           .bing,
+                                          .duckduckgo,
                                           .qwant,
                                           .startpage,
                                           .ecosia])
         
         let onboardingEngines = localeSE.onboardingEngines.map { $0.id }
-        XCTAssertEqual(onboardingEngines, [.duckduckgo,
-                                           .google,
+        XCTAssertEqual(onboardingEngines, [.google,
                                            .bing,
+                                           .duckduckgo,
                                            .qwant,
                                            .startpage,
                                            .ecosia])
         
-        XCTAssertEqual(localeSE.defaultSearchEngine, .duckduckgo)
+        XCTAssertEqual(localeSE.defaultSearchEngine, .google)
         XCTAssertNil(localeSE.priorityEngine)
     }
     

@@ -74,7 +74,6 @@ class InitialSearchEngines {
     }
     
     static let braveSearchOnboardingRegions = ["US", "CA"]
-    static let ddgDefaultRegions = ["DE", "AU", "NZ", "IE"]
     static let qwantDefaultRegions = ["FR"]
     static let yandexDefaultRegions = ["AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "TZ"]
     static let ecosiaDefaultRegions = ["AT", "AU", "BE", "CA", "DK", "ES", "FI", "GR", "HU", "IT",
@@ -132,10 +131,6 @@ class InitialSearchEngines {
     
     private func regionOverrides() {
         guard let region = locale.regionCode else { return }
-        
-        if Self.ddgDefaultRegions.contains(region) {
-            defaultSearchEngine = .duckduckgo
-        }
         
         if Self.qwantDefaultRegions.contains(region) {
             defaultSearchEngine = .qwant
