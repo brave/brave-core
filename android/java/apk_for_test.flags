@@ -137,6 +137,11 @@
 -keep class org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator {
     *** mTabSwitcherModeCoordinatorPhone;
     *** mOptionalButtonController;
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.top.BraveTopToolbarCoordinator {
+    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTTCoordinatorPhone {

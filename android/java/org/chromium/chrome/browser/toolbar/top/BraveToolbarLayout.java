@@ -62,6 +62,7 @@ import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
+import org.chromium.chrome.browser.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
@@ -105,6 +106,7 @@ import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
+import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.components.browser_ui.styles.ChromeColors;
 import org.chromium.components.embedder_support.util.UrlConstants;
@@ -1256,8 +1258,10 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
     @Override
     protected void initialize(ToolbarDataProvider toolbarDataProvider,
             ToolbarTabController tabController, MenuButtonCoordinator menuButtonCoordinator,
-            BooleanSupplier isInVrSupplier) {
-        super.initialize(toolbarDataProvider, tabController, menuButtonCoordinator, isInVrSupplier);
+            BooleanSupplier isInVrSupplier, HistoryDelegate historyDelegate,
+            BooleanSupplier partnerHomepageEnabledSupplier, OfflineDownloader offlineDownloader) {
+        super.initialize(toolbarDataProvider, tabController, menuButtonCoordinator, isInVrSupplier,
+                historyDelegate, partnerHomepageEnabledSupplier, offlineDownloader);
         BraveMenuButtonCoordinator.setMenuFromBottom(isMenuButtonOnBottom());
     }
 
