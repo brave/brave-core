@@ -1757,6 +1757,8 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
     if (!ipfs::ParseCIDAndPathFromIPFSUrl(parsed_url, &cid, &path) ||
         cid.empty())
       return;
+    if (!GetDomainAndRegistry(cid, INCLUDE_PRIVATE_REGISTRIES).empty())
+      return;
     origin = GURL(parsed_url.scheme() + "://" + cid);
     baseDomain = cid;
   } else if (parsed_url.SchemeIs(ipfs::kIPFSScheme)) {
