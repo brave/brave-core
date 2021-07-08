@@ -263,14 +263,14 @@ export const List = styled(Box)<StyleProps>`
 
 export const ListItem = styled('li')<StyleProps>`
   border-bottom: 1px solid rgba(79, 86, 97, 0.7);
-  padding: 5px;
+  padding: ${p => (p.$p ? `${p.$p}px` : '5px')};
   border-radius: 2px;
   display: ${p => (p.isFlex ? 'flex' : 'block')};
   cursor: ${p => (p.onClick ? 'pointer' : 'initial')}
   height: ${p => (p.$height ? `${p.$height}px` : 'auto')};
   ${(p) =>
     p.isFlex && `
-    justify-content: space-between;
+    justify-content: ${p.justify || 'space-between'};
     align-items: center;
   `};
 `
