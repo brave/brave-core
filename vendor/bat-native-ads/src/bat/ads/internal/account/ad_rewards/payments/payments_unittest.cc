@@ -165,12 +165,38 @@ TEST_F(BatAdsPaymentsTest,
 }
 
 TEST_F(BatAdsPaymentsTest,
+    DidReconcileBalanceGreaterThanOrEqualToUnreconciledEstimatedPendingRewards) {  // NOLINT
+  // Arrange
+  const std::string json = R"(
+    [
+      {
+        "balance" : "0.5",
+        "month" : "2019-06",
+        "transactionCount" : "10"
+      }
+    ]
+  )";
+
+  payments_->SetFromJson(json);
+
+  const double last_balance = 0.3;
+  const double unreconciled_estimated_pending_rewards = 0.2;
+
+  // Act
+  const bool did_reconcile = payments_->DidReconcileBalance(last_balance,
+      unreconciled_estimated_pending_rewards);
+
+  // Assert
+  EXPECT_TRUE(did_reconcile);
+}
+
+TEST_F(BatAdsPaymentsTest,
     DidNotReconcileBalanceLessThanUnreconciledEstimatedPendingRewards) {
   // Arrange
   const std::string json = R"(
     [
       {
-        "balance" : "0.3",
+        "balance" : "0.2",
         "month" : "2019-06",
         "transactionCount" : "5"
       }

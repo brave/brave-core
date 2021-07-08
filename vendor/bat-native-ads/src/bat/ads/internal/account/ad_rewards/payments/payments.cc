@@ -127,7 +127,7 @@ bool Payments::DidReconcileBalance(
     AdsClientHelper::Get()->SetBooleanPref(
         prefs::kHasMigratedEstimatedPendingRewards, true);
 
-    if (balance > last_balance) {
+    if (DoubleIsGreaterEqual(balance, last_balance)) {
       return true;
     }
   }
