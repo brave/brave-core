@@ -61,6 +61,9 @@ bool ParsePeerConnectionString(const std::string& value,
 GURL ContentHashToCIDv1URL(const std::string& contenthash);
 bool IsAPIGateway(const GURL& url, version_info::Channel channel);
 bool IsIpfsResolveMethodDisabled(PrefService* prefs);
+bool GetRegistryDomainFromIPNS(const GURL& url,
+                               std::string* domain,
+                               std::string* path);
 }  // namespace ipfs
 
 #endif  // BRAVE_COMPONENTS_IPFS_IPFS_UTILS_H_

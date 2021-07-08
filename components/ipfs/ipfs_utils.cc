@@ -19,6 +19,7 @@
 #include "brave/components/ipfs/pref_names.h"
 #include "components/base32/base32.h"
 #include "components/prefs/pref_service.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
@@ -386,6 +387,27 @@ GURL ContentHashToCIDv1URL(const std::string& contenthash) {
   std::string cidv1 = "b" + lowercase;
   std::string scheme = (code == kIpnsNSCodec) ? kIPNSScheme : kIPFSScheme;
   return GURL(scheme + "://" + cidv1);
+}
+
+bool GetRegistryDomainFromIPNS(const GURL& url,
+                               std::string* domain,
+                               std::string* path) {
+  if (!url.SchemeIs(ipfs::kIPNSScheme))
+    return false;
+  DCHECK(domain);
+  DCHECK(path);
+  std::string cid;
+  std::string ipfs_path;
+  if (!ipfs::ParseCIDAndPathFromIPFSUrl(url, &cid, &ipfs_path) || cid.empty())
+    return false;
+  if (GetDomainAndRegistry(
+          cid, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)
+          .empty()) {
+    return false;
+  }
+  *domain = cid;
+  *path = ipfs_path;
+  return !domain->empty();
 }
 
 }  // namespace ipfs

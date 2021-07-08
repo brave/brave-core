@@ -1774,8 +1774,7 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
 #if BUILDFLAG(IPFS_ENABLED)
   if (parsed_url.SchemeIs(ipfs::kIPNSScheme)) {
     std::string cid;
-    if (!ipfs::ParseCIDAndPathFromIPFSUrl(parsed_url, &cid, &path) ||
-        cid.empty())
+    if (!ipfs::GetRegistryDomainFromIPNS(parsed_url, &cid, &path))
       return;
     origin = GURL(parsed_url.scheme() + "://" + cid);
     baseDomain = cid;

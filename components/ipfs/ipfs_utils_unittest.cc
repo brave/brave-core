@@ -657,3 +657,38 @@ TEST_F(IpfsUtilsUnitTest, IsAPIGatewayTest) {
   ASSERT_FALSE(ipfs::IsAPIGateway(GURL("https://brave.com"), channel));
   ASSERT_FALSE(ipfs::IsAPIGateway(GURL(), channel));
 }
+
+TEST_F(IpfsUtilsUnitTest, IPNSRegistryDomain) {
+  std::string cid;
+  std::string path;
+  ASSERT_FALSE(
+      ipfs::GetRegistryDomainFromIPNS(GURL("ipfs://bafy"), &cid, &path));
+  EXPECT_TRUE(cid.empty());
+  EXPECT_TRUE(path.empty());
+
+  ASSERT_FALSE(
+      ipfs::GetRegistryDomainFromIPNS(GURL("ipfs://QmfdSDf"), &cid, &path));
+  EXPECT_TRUE(cid.empty());
+  EXPECT_TRUE(path.empty());
+
+  ASSERT_FALSE(
+      ipfs::GetRegistryDomainFromIPNS(GURL("ipns://QmfdSDf"), &cid, &path));
+  EXPECT_TRUE(cid.empty());
+  EXPECT_TRUE(path.empty());
+
+  ASSERT_FALSE(
+      ipfs::GetRegistryDomainFromIPNS(GURL("ipns://bafyff"), &cid, &path));
+  EXPECT_TRUE(cid.empty());
+  EXPECT_TRUE(path.empty());
+
+  ASSERT_TRUE(ipfs::GetRegistryDomainFromIPNS(GURL("ipns://brantly.eth.link"),
+                                              &cid, &path));
+  EXPECT_EQ(cid, "brantly.eth.link");
+  EXPECT_TRUE(path.empty());
+
+  cid.clear();
+  ASSERT_TRUE(ipfs::GetRegistryDomainFromIPNS(GURL("ipns://brantly.eth/path"),
+                                              &cid, &path));
+  EXPECT_EQ(cid, "brantly.eth");
+  EXPECT_EQ(path, "/path");
+}
