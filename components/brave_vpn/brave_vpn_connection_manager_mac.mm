@@ -36,8 +36,8 @@ NSData* GetPasswordRefForAccount(const NSString* account_key) {
     (__bridge id)kSecMatchLimit : (__bridge id)kSecMatchLimitOne,
     (__bridge id)kSecReturnPersistentRef : (__bridge id)kCFBooleanTrue,
   };
-  OSStatus results = SecItemCopyMatching((__bridge CFDictionaryRef)query,
-                                         &copy_result);
+  OSStatus results =
+      SecItemCopyMatching((__bridge CFDictionaryRef)query, &copy_result);
   if (results != errSecSuccess)
     LOG(ERROR) << "Error: obtaining password ref(status:" << results << ")";
   return (__bridge NSData*)copy_result;
@@ -75,7 +75,8 @@ OSStatus StorePassword(const NSString* password, const NSString* account_key) {
 
   CFTypeRef result = NULL;
   NSString* bundle_id = [[NSBundle mainBundle] bundleIdentifier];
-  NSData* password_data = [[password dataUsingEncoding:NSUTF8StringEncoding] autorelease];
+  NSData* password_data =
+      [[password dataUsingEncoding:NSUTF8StringEncoding] autorelease];
   NSDictionary* sec_item = @{
     (__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
     (__bridge id)kSecAttrService : bundle_id,
@@ -152,8 +153,8 @@ void BraveVPNConnectionManagerMac::CreateVPNConnection(
     const BraveVPNConnectionInfo& info) {
   info_ = info;
 
-  if (StorePassword(base::SysUTF8ToNSString(info_.password()),
-                    kBraveVPNKey) != errSecSuccess)
+  if (StorePassword(base::SysUTF8ToNSString(info_.password()), kBraveVPNKey) !=
+      errSecSuccess)
     return;
 
   NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
@@ -165,7 +166,8 @@ void BraveVPNConnectionManagerMac::CreateVPNConnection(
     }
 
     [vpn_manager setEnabled:YES];
-    [vpn_manager setProtocolConfiguration:[CreateProtocolConfig(info_) autorelease]];
+    [vpn_manager
+        setProtocolConfiguration:[CreateProtocolConfig(info_) autorelease]];
     [vpn_manager setLocalizedDescription:base::SysUTF8ToNSString(
                                              info_.connection_name())];
 
