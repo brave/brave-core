@@ -53,9 +53,9 @@ function initialize () {
     document.getElementById('root'))
 }
 
-function onGetConnectedPeers (peerCount: number) {
+function onGetConnectedPeers (connectedPeers: IPFS.ConnectedPeers) {
   const actions = bindActionCreators(ipfsActions, store.dispatch.bind(store))
-  actions.onGetConnectedPeers(peerCount)
+  actions.onGetConnectedPeers(connectedPeers)
 }
 
 function onGetAddressesConfig (addressesConfig: IPFS.AddressesConfig) {
