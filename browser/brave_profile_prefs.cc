@@ -109,6 +109,7 @@
 
 #if defined(OS_ANDROID)
 #include "components/feed/core/shared_prefs/pref_names.h"
+#include "components/ntp_tiles/pref_names.h"
 #include "components/translate/core/browser/translate_pref_names.h"
 #endif
 
