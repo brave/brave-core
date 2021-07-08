@@ -33,7 +33,8 @@ class NavigationRouterTests: XCTestCase {
         let url = "http://google.com?a=1&b=2&c=foo%20bar".escape()!
         let appURL = "\(appScheme)://open-url?url=\(url)"
         let navItem = NavigationPath(url: URL(string: appURL)!)!
-        XCTAssertEqual(navItem, NavigationPath.url(webURL: URL(string: url.unescape()!)!, isPrivate: false))
+        let encodedUrl = url.unescape()!.addingPercentEncoding(withAllowedCharacters: .URLAllowed)!
+        XCTAssertEqual(navItem, NavigationPath.url(webURL: URL(string: encodedUrl)!, isPrivate: false))
         
         let emptyNav = NavigationPath(url: URL(string: "\(appScheme)://open-url?private=true")!)
         XCTAssertEqual(emptyNav, NavigationPath.url(webURL: nil, isPrivate: true))
