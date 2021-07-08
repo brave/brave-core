@@ -13,6 +13,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/browser/themes/theme_properties.h"
 #include "brave/components/speedreader/features.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -27,10 +28,6 @@
 #include "ui/views/animation/ink_drop_state.h"
 
 using DistillState = speedreader::SpeedreaderTabHelper::DistillState;
-
-namespace {
-SkColor kReaderIconColor = SkColorSetRGB(0x4c, 0x54, 0xd2);
-}  // anonymous namespace
 
 SpeedreaderIconView::SpeedreaderIconView(
     CommandUpdater* command_updater,
@@ -69,6 +66,7 @@ void SpeedreaderIconView::UpdateImpl() {
     return;
   }
 
+  const ui::ThemeProvider* theme_provider = GetThemeProvider();
   const DistillState state = tab_helper->PageDistillState();
   const bool is_distilled =
       speedreader::SpeedreaderTabHelper::PageStateIsDistilled(state);
@@ -89,10 +87,11 @@ void SpeedreaderIconView::UpdateImpl() {
 
     if (GetVisible()) {
       // Reset the icon color
-      const ui::ThemeProvider* tp = GetThemeProvider();
-      SkColor icon_color_default =
-          GetOmniboxColor(tp, OmniboxPart::RESULTS_ICON);
-      SetIconColor(icon_color_default);
+      if (theme_provider) {
+        SkColor icon_color_default =
+            GetOmniboxColor(theme_provider, OmniboxPart::RESULTS_ICON);
+        SetIconColor(icon_color_default);
+      }
     }
   }
 
@@ -102,7 +101,9 @@ void SpeedreaderIconView::UpdateImpl() {
                              : IDS_ICON_SPEEDREADER_MODE_LABEL;
     SetLabel(l10n_util::GetStringUTF16(label_id));
     UpdateLabelColors();
-    SetIconColor(kReaderIconColor);
+    if (theme_provider)
+      SetIconColor(theme_provider->GetColor(
+          BraveThemeProperties::COLOR_SPEEDREADER_ICON));
     SetVisible(true);
     label()->SetVisible(true);
   }
@@ -141,6 +142,10 @@ SkColor SpeedreaderIconView::GetLabelColorOr(SkColor fallback) const {
   if (!web_contents)
     return fallback;
 
+  const ui::ThemeProvider* theme_provider = GetThemeProvider();
+  if (!theme_provider)
+    return fallback;
+
   auto* tab_helper =
       speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);
   if (!tab_helper)
@@ -148,7 +153,8 @@ SkColor SpeedreaderIconView::GetLabelColorOr(SkColor fallback) const {
 
   const DistillState state = tab_helper->PageDistillState();
   if (speedreader::SpeedreaderTabHelper::PageStateIsDistilled(state))
-    return kReaderIconColor;
+    return theme_provider->GetColor(
+        BraveThemeProperties::COLOR_SPEEDREADER_ICON);
 
   return fallback;
 }
