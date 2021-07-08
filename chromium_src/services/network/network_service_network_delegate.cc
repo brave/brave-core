@@ -5,6 +5,9 @@
 
 #include "services/network/network_service_network_delegate.h"
 
+#include "services/network/cookie_settings.h"
+
+#define IsCookieAccessible IsEphemeralCookieAccessible
 #define OnCanGetCookies OnCanGetCookies_ChromiumImpl
 #define OnCanSetCookie OnCanSetCookie_ChromiumImpl
 
@@ -12,6 +15,7 @@
 
 #undef OnCanSetCookie
 #undef OnCanGetCookies
+#undef IsCookieAccessible
 
 namespace network {
 
