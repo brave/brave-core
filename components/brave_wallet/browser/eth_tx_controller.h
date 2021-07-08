@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_pending_tx_tracker.h"
@@ -24,7 +23,8 @@ class SequencedTaskRunner;
 
 namespace brave_wallet {
 
-class BraveWalletService;
+class EthJsonRpcController;
+class KeyringController;
 
 class EthTxController {
  public:
@@ -35,8 +35,7 @@ class EthTxController {
    protected:
     ~Observer() override = default;
   };
-  explicit EthTxController(base::WeakPtr<BraveWalletService> wallet_service,
-                           PrefService* prefs);
+  EthTxController(EthJsonRpcController*, KeyringController*, PrefService*);
   ~EthTxController();
   EthTxController(const EthTxController&) = delete;
   EthTxController operator=(const EthTxController&) = delete;
@@ -59,7 +58,9 @@ class EthTxController {
                             bool status,
                             const std::string& tx_hash);
 
-  base::WeakPtr<BraveWalletService> wallet_service_;
+  EthJsonRpcController* rpc_controller_;
+  KeyringController* keyring_controller_;
+
   std::unique_ptr<EthTxStateManager> tx_state_manager_;
   std::unique_ptr<EthNonceTracker> nonce_tracker_;
   std::unique_ptr<EthPendingTxTracker> pending_tx_tracker_;

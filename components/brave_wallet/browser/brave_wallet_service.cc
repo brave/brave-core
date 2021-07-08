@@ -31,7 +31,7 @@ BraveWalletService::BraveWalletService(
   keyring_controller_ =
       std::make_unique<brave_wallet::KeyringController>(prefs);
   tx_controller_ = std::make_unique<brave_wallet::EthTxController>(
-      base::AsWeakPtr(this), prefs);
+      rpc_controller_.get(), keyring_controller_.get(), prefs);
   asset_ratio_controller_ =
       std::make_unique<brave_wallet::AssetRatioController>(url_loader_factory);
   swap_controller_ =
