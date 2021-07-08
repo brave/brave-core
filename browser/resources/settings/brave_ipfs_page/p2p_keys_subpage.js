@@ -77,7 +77,7 @@ Polymer({
       this.actionKeysError_ = !success
       if (this.actionKeysError_ ) {
         const errorLabel = (this.$$('#key-error'));
-        errorLabel.textContent = this.i18n('ipfsExportKeysError', key)
+        errorLabel.textContent = this.i18n('ipfsKeyExportError', key)
         return;
       }
     })

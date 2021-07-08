@@ -38,14 +38,14 @@ constexpr int kDefaultRetries = 5;
 // it may fail requests sometimes right after launch,
 // Actual value will be generated randomly in range
 // (kMinimalRequestRetryIntervalMs,
-//  kRequetsRetryRate*kMinimalRequestRetryIntervalMs)
+//  kRequestsRetryRate*kMinimalRequestRetryIntervalMs)
 const int kMinimalRequestRetryIntervalMs = 350;
-const int kRequetsRetryRate = 3;
+const int kRequestsRetryRate = 3;
 
 base::TimeDelta CalculateKeysRetryTime() {
   return base::TimeDelta::FromMilliseconds(
       base::RandInt(kMinimalRequestRetryIntervalMs,
-                    kRequetsRetryRate * kMinimalRequestRetryIntervalMs));
+                    kRequestsRetryRate * kMinimalRequestRetryIntervalMs));
 }
 
 }  // namespace
