@@ -484,6 +484,9 @@ extension Strings {
     public static let defaultBrowserCalloutCloseAccesabilityLabel =
         NSLocalizedString("defaultBrowserCalloutCloseAccesabilityLabel", tableName: "BraveShared",
                           bundle: .braveShared, value: "Close default browser callout", comment: "")
+    public static let enablePullToRefresh =
+        NSLocalizedString("enablePullToRefresh", tableName: "BraveShared",
+                          bundle: .braveShared, value: "Enable Pull-to-refresh", comment: "Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh")
 }
 
 extension Strings {
