@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "base/callback_helpers.h"
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
@@ -31,7 +30,6 @@
 #include "ui/base/theme_provider.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/events/event.h"
-#include "ui/views/background.h"
 #include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/controls/button/toggle_button.h"
 #include "ui/views/controls/label.h"
@@ -139,7 +137,6 @@ void SpeedreaderModeBubble::Init() {
       base::BindRepeating(&SpeedreaderModeBubble::OnLinkClicked,
                           base::Unretained(this)));
   site_toggle_explanation_ = AddChildView(std::move(site_toggle_explanation));
-  UpdateColors();
 }
 
 void SpeedreaderModeBubble::UpdateColors() {
@@ -151,6 +148,10 @@ void SpeedreaderModeBubble::UpdateColors() {
     site_toggle_button_->SetTrackOnColor(theme_provider->GetColor(
         BraveThemeProperties::COLOR_SPEEDREADER_TOGGLE_TRACK));
   }
+}
+
+void SpeedreaderModeBubble::AddedToWidget() {
+  UpdateColors();
 }
 
 void SpeedreaderModeBubble::OnThemeChanged() {

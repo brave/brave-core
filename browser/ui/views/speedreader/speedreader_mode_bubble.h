@@ -58,7 +58,8 @@ class SpeedreaderModeBubble : public SpeedreaderBubbleView,
   void Init() override;
   void OnThemeChanged() override;
 
-  // views::View
+  // views::View:
+  void AddedToWidget() override;
   gfx::Size CalculatePreferredSize() const override;
 
   void UpdateColors();
