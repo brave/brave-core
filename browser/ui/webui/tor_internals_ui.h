@@ -35,6 +35,7 @@ class TorInternalsDOMHandler : public content::WebUIMessageHandler,
   void OnTorCircuitEstablished(bool result) override;
   void OnTorInitializing(const std::string& percentage) override;
   void OnTorControlEvent(const std::string& event) override;
+  void OnTorLogUpdated() override;
 
   TorLauncherFactory* tor_launcher_factory_ = nullptr;
 

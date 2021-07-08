@@ -58,19 +58,12 @@ void TorLauncherImpl::Launch(mojom::TorConfigPtr config,
   args.AppendArg("/nonexistent");
   args.AppendArg("--SocksPort");
   args.AppendArg("auto");
-  args.AppendArg("--TruncateLogFile");
-  args.AppendArg("1");
   base::FilePath tor_data_path = config->tor_data_path;
   if (!tor_data_path.empty()) {
     if (!base::DirectoryExists(tor_data_path))
       base::CreateDirectory(tor_data_path);
     args.AppendArg("--DataDirectory");
     args.AppendArgPath(tor_data_path);
-    args.AppendArg("--Log");
-    base::CommandLine::StringType log_file;
-    log_file += FILE_PATH_LITERAL("notice file ");
-    args.AppendArgNative(log_file +
-                         tor_data_path.AppendASCII("tor.log").value());
   }
   args.AppendArg("--__OwningControllerProcess");
   args.AppendArg(base::NumberToString(base::Process::Current().Pid()));
