@@ -256,12 +256,12 @@ bool ConfirmationsState::FromJson(const std::string& json) {
     BLOG(1, "Failed to parse failed confirmations");
   }
 
-  if (!ParseTransactionsFromDictionary(dictionary)) {
-    BLOG(1, "Failed to parse transactions");
-  }
-
   if (!ParseAdRewardsFromDictionary(dictionary)) {
     BLOG(1, "Failed to parse ad rewards");
+  }
+
+  if (!ParseTransactionsFromDictionary(dictionary)) {
+    BLOG(1, "Failed to parse transactions");
   }
 
   if (!ParseUnblindedTokensFromDictionary(dictionary)) {
@@ -676,50 +676,17 @@ bool ConfirmationsState::ParseAdRewardsFromDictionary(
     return false;
   }
 
-  // Migration path for https://github.com/brave/brave-browser/issues/16678 and
-  // https://github.com/brave/brave-browser/issues/16744
-  const double value = GetUnreconciledEstimatedPendingRewards(dictionary);
-  ad_rewards_dictionary->SetDoubleKey("unreconciled_estimated_pending_rewards",
-                                      value);
+  const base::Value* unblinded_tokens =
+      dictionary->FindListKey("unblinded_payment_tokens");
+  if (unblinded_tokens && unblinded_tokens->GetList().empty()) {
+    // Migration path for https://github.com/brave/brave-browser/issues/16678
+    ad_rewards_dictionary->SetDoubleKey(
+        "unreconciled_estimated_pending_rewards", 0.0);
+  }
 
   ad_rewards_->SetFromDictionary(ad_rewards_dictionary);
 
   return true;
-}
-
-double ConfirmationsState::GetUnreconciledEstimatedPendingRewards(
-    base::DictionaryValue* dictionary) {
-  DCHECK(dictionary);
-
-  const base::Value* unblinded_payment_tokens =
-      dictionary->FindListKey("unblinded_payment_tokens");
-  if (!unblinded_payment_tokens) {
-    return 0.0;
-  }
-
-  size_t count = unblinded_payment_tokens->GetList().size();
-  if (count == 0) {
-    // There are no uncleared unblinded payment tokens to redeem
-    return 0.0;
-  }
-
-  // Uncleared transactions are always at the end of the transaction history
-  if (transactions_.size() < count) {
-    // There are fewer transactions than unblinded payment tokens which is
-    // likely due to manually editing transactions in confirmations.json
-    NOTREACHED();
-    count = transactions_.size();
-  }
-
-  const TransactionList transactions(transactions_.end() - count,
-                                     transactions_.end());
-
-  double value = 0.0;
-  for (const auto& transaction : transactions) {
-    value += transaction.estimated_redemption_value;
-  }
-
-  return value;
 }
 
 bool ConfirmationsState::ParseUnblindedTokensFromDictionary(
