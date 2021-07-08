@@ -56,10 +56,12 @@ class SpeedreaderModeBubble : public SpeedreaderBubbleView,
 
   // views::BubbleDialogDelegateView:
   void Init() override;
+  void OnThemeChanged() override;
 
   // views::View
   gfx::Size CalculatePreferredSize() const override;
 
+  void UpdateColors();
   void OnButtonPressed(const ui::Event& event);
   void OnLinkClicked(const ui::Event& event);
 

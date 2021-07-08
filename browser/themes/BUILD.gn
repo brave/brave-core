@@ -31,6 +31,7 @@ source_set("themes") {
 
     deps += [
       "//brave/components/sidebar/buildflags",
+      "//brave/components/speedreader:buildflags",
       "//chrome/browser:theme_properties",
       "//skia:skia",
       "//ui/gfx:color_utils",

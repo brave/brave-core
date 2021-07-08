@@ -79,6 +79,13 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
         COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_BACKGROUND_HOVERED:
       return SkColorSetRGB(0x4C, 0x54, 0xD2);
 #endif
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+    case BraveThemeProperties::COLOR_SPEEDREADER_ICON:
+    case BraveThemeProperties::COLOR_SPEEDREADER_TOGGLE_THUMB:
+      return SkColorSetRGB(0x4C, 0x54, 0xD2);
+    case BraveThemeProperties::COLOR_SPEEDREADER_TOGGLE_TRACK:
+      return SkColorSetRGB(0xE1, 0xE2, 0xF6);
+#endif
     case BraveThemeProperties::COLOR_FOR_TEST:
       return BraveThemeProperties::kLightColorForTest;
     default:
@@ -155,6 +162,14 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
     case BraveThemeProperties::
         COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_BACKGROUND_HOVERED:
       return SkColorSetRGB(0x4C, 0x54, 0xD2);
+#endif
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+    case BraveThemeProperties::COLOR_SPEEDREADER_ICON:
+      return SkColorSetRGB(0x73, 0x7A, 0xDE);
+    case BraveThemeProperties::COLOR_SPEEDREADER_TOGGLE_THUMB:
+      return SkColorSetRGB(0x44, 0x36, 0xE1);
+    case BraveThemeProperties::COLOR_SPEEDREADER_TOGGLE_TRACK:
+      return SkColorSetRGB(0x76, 0x79, 0xB1);
 #endif
     case BraveThemeProperties::COLOR_FOR_TEST:
       return BraveThemeProperties::kDarkColorForTest;

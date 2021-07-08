@@ -8,6 +8,7 @@
 
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
+#include "brave/components/speedreader/buildflags.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/skia/include/core/SkColor.h"
 
@@ -41,6 +42,11 @@ enum ThemeProperties {
   COLOR_SIDEBAR_ARROW_NORMAL,
   COLOR_SIDEBAR_ARROW_DISABLED,
   COLOR_SIDEBAR_SEPARATOR,
+#endif
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  COLOR_SPEEDREADER_ICON,
+  COLOR_SPEEDREADER_TOGGLE_TRACK,
+  COLOR_SPEEDREADER_TOGGLE_THUMB,
 #endif
   BRAVE_THEME_PROPERTIES_LAST = COLOR_SIDEBAR_SEPARATOR,
 };
