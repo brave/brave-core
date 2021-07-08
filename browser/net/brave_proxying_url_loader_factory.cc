@@ -30,6 +30,7 @@
 #include "net/url_request/url_request.h"
 #include "services/network/public/cpp/features.h"
 #include "services/network/public/cpp/parsed_headers.h"
+#include "services/network/public/mojom/early_hints.mojom.h"
 #include "url/origin.h"
 
 namespace {
