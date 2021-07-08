@@ -68,8 +68,6 @@ void AdsService::RegisterProfilePrefs(
                                "");
 
   registry->RegisterBooleanPref(ads::prefs::kHasMigratedConversionState, false);
-  registry->RegisterBooleanPref(ads::prefs::kHasMigratedEstimatedPendingRewards,
-                                false);
 }
 
 }  // namespace brave_ads

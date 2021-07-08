@@ -57,8 +57,6 @@ const char kEpsilonGreedyBanditEligibleSegments[] =
 // Stores migration status
 const char kHasMigratedConversionState[] =
     "brave.brave_ads.migrated.conversion_state";
-const char kHasMigratedEstimatedPendingRewards[] =
-    "brave.brave_ads.migrated.estimated_pending_rewards";
 
 }  // namespace prefs
 
