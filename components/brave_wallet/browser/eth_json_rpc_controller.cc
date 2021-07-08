@@ -287,10 +287,51 @@ void EthJsonRpcController::OnGetERC20TokenBalance(
   std::move(callback).Run(true, result);
 }
 
+bool EthJsonRpcController::EnsProxyReaderGetResolverAddress(
+    const std::string& contract_address,
+    const std::string& domain,
+    UnstoppableDomainsProxyReaderGetManyCallback callback) {
+  auto internal_callback = base::BindOnce(
+      &EthJsonRpcController::OnEnsProxyReaderGetResolverAddress,
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback), domain);
+  std::string data;
+  if (!ens::GetResolverAddress(domain, &data)) {
+    return false;
+  }
+
+  Request(eth_call("", contract_address, "", "", "", data, "latest"),
+          std::move(internal_callback), true);
+  return true;
+}
+
+void EthJsonRpcController::OnEnsProxyReaderGetResolverAddress(
+    UnstoppableDomainsProxyReaderGetManyCallback callback,
+    const std::string& domain,
+    int status,
+    const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  DCHECK(callback);
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+  std::string result;
+  if (!ParseEthCall(body, &result) || result.empty()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+  size_t offset = 2 /* len of "0x" */ + 24 /* len of offset to array */;
+  if (offset >= result.size()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+  std::string contenthash = "0x" + result.substr(offset);
+  EnsProxyReaderResolveAddress(contenthash, domain, std::move(callback));
+}
+
 bool EthJsonRpcController::EnsProxyReaderResolveAddress(
     const std::string& contract_address,
     const std::string& domain,
-    const std::vector<std::string>& keys,
     UnstoppableDomainsProxyReaderGetManyCallback callback) {
   auto internal_callback =
       base::BindOnce(&EthJsonRpcController::OnEnsProxyReaderResolveAddress,
