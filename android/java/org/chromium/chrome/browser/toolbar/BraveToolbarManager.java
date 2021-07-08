@@ -202,7 +202,7 @@ public class BraveToolbarManager extends ToolbarManager {
                     (ViewStub) mActivity.findViewById(R.id.bottom_controls_stub);
             mBottomControls =
                     (BraveScrollingBottomViewResourceFrameLayout) bottomControlsStub.inflate();
-            if (TabUiFeatureUtilities.isTabGroupsAndroidEnabled()
+            if (TabUiFeatureUtilities.isTabGroupsAndroidEnabled(mActivity)
                     || TabUiFeatureUtilities.isConditionalTabStripEnabled()) {
                 mTabGroupUi = TabManagementModuleProvider.getDelegate().createTabGroupUi(mActivity,
                         mBottomControls.findViewById(R.id.bottom_container_slot),
