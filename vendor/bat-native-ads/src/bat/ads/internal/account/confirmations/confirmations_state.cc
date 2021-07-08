@@ -676,14 +676,6 @@ bool ConfirmationsState::ParseAdRewardsFromDictionary(
     return false;
   }
 
-  const base::Value* unblinded_tokens =
-      dictionary->FindListKey("unblinded_payment_tokens");
-  if (unblinded_tokens && unblinded_tokens->GetList().empty()) {
-    // Migration path for https://github.com/brave/brave-browser/issues/16678
-    ad_rewards_dictionary->SetDoubleKey(
-        "unreconciled_estimated_pending_rewards", 0.0);
-  }
-
   ad_rewards_->SetFromDictionary(ad_rewards_dictionary);
 
   return true;
