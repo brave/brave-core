@@ -350,6 +350,7 @@ class BrowserViewController: UIViewController {
         Preferences.Privacy.privateBrowsingOnly.observe(from: self)
         Preferences.General.tabBarVisibility.observe(from: self)
         Preferences.General.alwaysRequestDesktopSite.observe(from: self)
+        Preferences.General.enablePullToRefresh.observe(from: self)
         Preferences.Shields.allShields.forEach { $0.observe(from: self) }
         Preferences.Privacy.blockAllCookies.observe(from: self)
         Preferences.Rewards.hideRewardsIcon.observe(from: self)
@@ -2150,7 +2151,8 @@ extension BrowserViewController: TabManagerDelegate {
 
         updateFindInPageVisibility(visible: false, tab: previous)
         updateTabsBarVisibility()
-
+        selected?.updatePullToRefreshVisibility()
+        
         topToolbar.locationView.loading = selected?.loading ?? false
         navigationToolbar.updateBackStatus(selected?.canGoBack ?? false)
         navigationToolbar.updateForwardStatus(selected?.canGoForward ?? false)
@@ -2746,6 +2748,8 @@ extension BrowserViewController: PreferencesObserver {
         case Preferences.General.alwaysRequestDesktopSite.key:
             tabManager.reset()
             self.tabManager.reloadSelectedTab()
+        case Preferences.General.enablePullToRefresh.key:
+            tabManager.selectedTab?.updatePullToRefreshVisibility()
         case Preferences.Shields.blockAdsAndTracking.key,
              Preferences.Shields.httpsEverywhere.key,
              Preferences.Shields.blockScripts.key,

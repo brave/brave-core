@@ -249,6 +249,12 @@ class SettingsViewController: TableViewController {
             }, cellClass: MultilineButtonCell.self))
         }
         
+        general.rows.append(
+            .boolRow(title: Strings.enablePullToRefresh,
+                     option: Preferences.General.enablePullToRefresh,
+                     image: #imageLiteral(resourceName: "settings-pull-to-refresh").template)
+        )
+        
         return general
     }()
     
