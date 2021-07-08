@@ -28,6 +28,12 @@ class StringExtensionTests: XCTestCase {
         XCTAssertNotNil(schemelessURL.firstURL)
     }
     
+    func testURLEncoding() {
+        let urlString = "https://example.com/test%"
+        let urlStringEncoded = "https://example.com/test%25"
+        XCTAssertEqual(urlString.addingPercentEncoding(withAllowedCharacters: .URLAllowed), urlStringEncoded)
+    }
+    
     func testWords() {
         let longMultilinedText = """
         Multiple words
