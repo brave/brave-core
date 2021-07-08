@@ -15,7 +15,7 @@ import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.browser.AppHooks;
 import org.chromium.chrome.browser.signin.services.SigninManager;
 import org.chromium.components.signin.base.CoreAccountInfo;
-import org.chromium.components.signin.identitymanager.AccountInfoServiceImpl;
+import org.chromium.components.signin.identitymanager.AccountInfoServiceProvider;
 import org.chromium.components.signin.identitymanager.AccountTrackerService;
 import org.chromium.components.signin.identitymanager.IdentityManager;
 import org.chromium.components.signin.identitymanager.IdentityMutator;
@@ -102,12 +102,12 @@ public class BraveSigninManager implements SigninManager {
     static SigninManager create(long nativeSigninManagerAndroid,
             AccountTrackerService accountTrackerService, IdentityManager identityManager,
             IdentityMutator identityMutator) {
-                AccountInfoServiceImpl.init(identityManager, accountTrackerService);
+        AccountInfoServiceProvider.init(identityManager, accountTrackerService);
         return new BraveSigninManager(identityManager);
     }
 
     @CalledByNative
     void destroy() {
-        AccountInfoServiceImpl.get().destroy();
+        AccountInfoServiceProvider.get().destroy();
     }
 }
