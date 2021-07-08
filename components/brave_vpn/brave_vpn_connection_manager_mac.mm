@@ -22,6 +22,11 @@ namespace {
 const NSString* kBraveVPNKey = @"BraveVPNKey";
 
 NSData* GetPasswordRefForAccount(const NSString* account_key) {
+  if (account_key == nil || [account_key length] == 0) {
+    LOG(ERROR) << "Error: account key is empty";
+    return nil;
+  }
+
   NSString* bundle_id = [[NSBundle mainBundle] bundleIdentifier];
   CFTypeRef copy_result = NULL;
   NSDictionary* query = @{
@@ -32,13 +37,18 @@ NSData* GetPasswordRefForAccount(const NSString* account_key) {
     (__bridge id)kSecReturnPersistentRef : (__bridge id)kCFBooleanTrue,
   };
   OSStatus results = SecItemCopyMatching((__bridge CFDictionaryRef)query,
-                                         (CFTypeRef*)&copy_result);
+                                         &copy_result);
   if (results != errSecSuccess)
     LOG(ERROR) << "Error: obtaining password ref(status:" << results << ")";
   return (__bridge NSData*)copy_result;
 }
 
-OSStatus RemoveKeychanItemForAccount(const NSString* account_key) {
+OSStatus RemoveKeychainItemForAccount(const NSString* account_key) {
+  if (account_key == nil || [account_key length] == 0) {
+    LOG(ERROR) << "Error: account key is empty";
+    return errSecParam;
+  }
+
   NSString* bundle_id = [[NSBundle mainBundle] bundleIdentifier];
   NSDictionary* query = @{
     (__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
@@ -53,8 +63,13 @@ OSStatus RemoveKeychanItemForAccount(const NSString* account_key) {
 }
 
 OSStatus StorePassword(const NSString* password, const NSString* account_key) {
-  if (password == nil) {
+  if (password == nil || [password length] == 0) {
     LOG(ERROR) << "Error: password is empty";
+    return errSecParam;
+  }
+
+  if (account_key == nil || [account_key length] == 0) {
+    LOG(ERROR) << "Error: account key is empty";
     return errSecParam;
   }
 
@@ -72,7 +87,7 @@ OSStatus StorePassword(const NSString* password, const NSString* account_key) {
   if (status != errSecSuccess) {
     if (status == errSecDuplicateItem) {
       VLOG(2) << "There is duplicated key in keychain. removing and re-adding.";
-      if (RemoveKeychanItemForAccount(account_key) == errSecSuccess)
+      if (RemoveKeychainItemForAccount(account_key) == errSecSuccess)
         return StorePassword(password, account_key);
     }
     LOG(ERROR) << "Error: storing password";
@@ -82,8 +97,8 @@ OSStatus StorePassword(const NSString* password, const NSString* account_key) {
 }
 
 NEVPNProtocolIKEv2* CreateProtocolConfig(const BraveVPNConnectionInfo& info) {
-  NSString* hostname = [NSString stringWithUTF8String:info.hostname().c_str()];
-  NSString* username = [NSString stringWithUTF8String:info.username().c_str()];
+  NSString* hostname = base::SysUTF8ToNSString(info.hostname());
+  NSString* username = base::SysUTF8ToNSString(info.username());
 
   NEVPNProtocolIKEv2* protocol_config = [[NEVPNProtocolIKEv2 alloc] init];
   protocol_config.serverAddress = hostname;
@@ -137,7 +152,7 @@ void BraveVPNConnectionManagerMac::CreateVPNConnection(
     const BraveVPNConnectionInfo& info) {
   info_ = info;
 
-  if (StorePassword([NSString stringWithUTF8String:info_.password().c_str()],
+  if (StorePassword(base::SysUTF8ToNSString(info_.password()),
                     kBraveVPNKey) != errSecSuccess)
     return;
 
@@ -191,7 +206,7 @@ void BraveVPNConnectionManagerMac::RemoveVPNConnection(
           obs.OnRemoved(std::string());
       }];
     }
-    RemoveKeychanItemForAccount(kBraveVPNKey);
+    RemoveKeychainItemForAccount(kBraveVPNKey);
   }];
 }
 
