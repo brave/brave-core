@@ -20,7 +20,10 @@ namespace {
 // Regex pattern for paths like /blog/, /article/, /post/, hinting the page
 // is a blog entry, magazine entry, or news article.
 constexpr char kReadablePathSingleComponentHints[] =
-    "(?i)/(blogs?|news|story|entry|articles?|posts?|amp)(/|$)";
+    "(?i)/"
+    "(blogs?|news|story|entry|articles?|posts?|amp|technology|politics|"
+    "business)/";
+
 // Regex pattern for matching URL paths of the form /YYYY/MM/DD/, which is
 // extremely common for news websites.
 constexpr char kReadablePathMultiComponentHints[] = "/\\d\\d\\d\\d/\\d\\d/";
