@@ -73,7 +73,7 @@ class SearchEngines {
         let engineType = type ?? (PrivateBrowsingManager.shared.isPrivateBrowsing ? .privateMode : .standard)
             
         if let name = engineType.option.value,
-            let defaultEngine = orderedEngines.first(where: { $0.shortName == name }) {
+           let defaultEngine = orderedEngines.first(where: { $0.engineID == name || $0.shortName == name }) {
             return defaultEngine
         }
         
@@ -298,8 +298,9 @@ class SearchEngines {
     /// Get all known search engines, possibly as ordered by the user.
     fileprivate func getOrderedEngines() -> [OpenSearchEngine] {
         let selectedSearchEngines = [Preferences.Search.defaultEngineName, Preferences.Search.defaultPrivateEngineName].compactMap { $0.value }
-        let unorderedEngines = customEngines
-            + SearchEngines.getUnorderedBundledEngines(for: selectedSearchEngines, isOnboarding: false)
+        let unorderedEngines =
+        SearchEngines.getUnorderedBundledEngines(for: selectedSearchEngines, isOnboarding: false) +
+        customEngines
 
         // might not work to change the default.
         guard let orderedEngineNames = Preferences.Search.orderedEngines.value else {
