@@ -706,6 +706,67 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, NetworkCookiesAreSetIn3p) {
   EXPECT_EQ("", site_b_tab_values.iframe_2.cookies);
 }
 
+IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, LocalStorageIsShared) {
+  WebContents* site_a_tab1 =
+      LoadURLInNewTab(a_site_ephemeral_storage_with_network_cookies_url_);
+  WebContents* site_a_tab2 = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+
+  SetValuesInFrames(site_a_tab1, "a.com", "from=a.com");
+  ValuesFromFrames site_a_tab1_values = GetValuesFromFrames(site_a_tab1);
+  EXPECT_EQ("a.com", site_a_tab1_values.main_frame.local_storage);
+  EXPECT_EQ("a.com", site_a_tab1_values.iframe_1.local_storage);
+  EXPECT_EQ("a.com", site_a_tab1_values.iframe_2.local_storage);
+
+  EXPECT_EQ("a.com", site_a_tab1_values.main_frame.session_storage);
+  EXPECT_EQ("a.com", site_a_tab1_values.iframe_1.session_storage);
+  EXPECT_EQ("a.com", site_a_tab1_values.iframe_2.session_storage);
+
+  EXPECT_EQ("name=acom_simple; from=a.com",
+            site_a_tab1_values.main_frame.cookies);
+  EXPECT_EQ("name=bcom_simple; from=a.com",
+            site_a_tab1_values.iframe_1.cookies);
+  EXPECT_EQ("name=bcom_simple; from=a.com",
+            site_a_tab1_values.iframe_2.cookies);
+
+  // The second tab is loaded on the same domain, so should see the same
+  // storage for the third-party iframes.
+  ValuesFromFrames site_a_tab2_values = GetValuesFromFrames(site_a_tab2);
+  EXPECT_EQ("a.com", site_a_tab2_values.main_frame.local_storage);
+  EXPECT_EQ("a.com", site_a_tab2_values.iframe_1.local_storage);
+  EXPECT_EQ("a.com", site_a_tab2_values.iframe_2.local_storage);
+
+  EXPECT_EQ(nullptr, site_a_tab2_values.main_frame.session_storage);
+  EXPECT_EQ(nullptr, site_a_tab2_values.iframe_1.session_storage);
+  EXPECT_EQ(nullptr, site_a_tab2_values.iframe_2.session_storage);
+
+  EXPECT_EQ("name=acom_simple; from=a.com",
+            site_a_tab2_values.main_frame.cookies);
+  EXPECT_EQ("name=bcom_simple; from=a.com",
+            site_a_tab2_values.iframe_1.cookies);
+  EXPECT_EQ("name=bcom_simple; from=a.com",
+            site_a_tab2_values.iframe_2.cookies);
+
+  // Set values in the first tab. The second tab should see changes.
+  SetValuesInFrames(site_a_tab1, "a.com-modify", "from=a.com-modify");
+  {
+    ValuesFromFrames site_a_tab2_values = GetValuesFromFrames(site_a_tab2);
+    EXPECT_EQ("a.com-modify", site_a_tab2_values.main_frame.local_storage);
+    EXPECT_EQ("a.com-modify", site_a_tab2_values.iframe_1.local_storage);
+    EXPECT_EQ("a.com-modify", site_a_tab2_values.iframe_2.local_storage);
+
+    EXPECT_EQ(nullptr, site_a_tab2_values.main_frame.session_storage);
+    EXPECT_EQ(nullptr, site_a_tab2_values.iframe_1.session_storage);
+    EXPECT_EQ(nullptr, site_a_tab2_values.iframe_2.session_storage);
+
+    EXPECT_EQ("name=acom_simple; from=a.com-modify",
+              site_a_tab2_values.main_frame.cookies);
+    EXPECT_EQ("name=bcom_simple; from=a.com-modify",
+              site_a_tab2_values.iframe_1.cookies);
+    EXPECT_EQ("name=bcom_simple; from=a.com-modify",
+              site_a_tab2_values.iframe_2.cookies);
+  }
+}
+
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                        FirstPartyNestedInThirdParty) {
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();

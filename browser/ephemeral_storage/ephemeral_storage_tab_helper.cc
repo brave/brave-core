@@ -6,12 +6,16 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 
 #include <map>
+#include <memory>
 #include <set>
 
 #include "base/feature_list.h"
 #include "base/hash/md5.h"
 #include "base/ranges/ranges.h"
 #include "base/threading/sequenced_task_runner_handle.h"
+#include "chrome/browser/content_settings/cookie_settings_factory.h"
+#include "chrome/browser/profiles/profile.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/session_storage_namespace.h"
 #include "content/public/browser/storage_partition.h"
@@ -31,7 +35,6 @@ namespace {
 
 // TODO(bridiver) - share these constants with DOMWindowStorage
 constexpr char kSessionStorageSuffix[] = "/ephemeral-session-storage";
-constexpr char kLocalStorageSuffix[] = "/ephemeral-local-storage";
 
 base::TimeDelta g_storage_keep_alive_for_testing = base::TimeDelta::Min();
 
@@ -46,6 +49,23 @@ std::string StringToSessionStorageId(const std::string& string,
   DCHECK_EQ(hash.size(), 36u);
   return hash;
 }
+
+class EphemeralStorageOriginsSourceImpl
+    : public content::TLDEphemeralLifetime::EphemeralStorageOriginsSource {
+ public:
+  EphemeralStorageOriginsSourceImpl(
+      scoped_refptr<content_settings::CookieSettings> cookie_settings)
+      : cookie_settings_(std::move(cookie_settings)) {}
+
+  std::vector<url::Origin> TakeEphemeralStorageOpaqueOrigins(
+      const std::string& ephemeral_storage_domain) override {
+    return cookie_settings_->TakeEphemeralStorageOpaqueOrigins(
+        ephemeral_storage_domain);
+  }
+
+ private:
+  scoped_refptr<content_settings::CookieSettings> cookie_settings_;
+};
 
 }  // namespace
 
@@ -68,7 +88,6 @@ EphemeralStorageTabHelper::~EphemeralStorageTabHelper() {}
 
 void EphemeralStorageTabHelper::WebContentsDestroyed() {
   keep_alive_tld_ephemeral_lifetime_list_.clear();
-  keep_alive_local_storage_list_.clear();
 }
 
 void EphemeralStorageTabHelper::ReadyToCommitNavigation(
@@ -91,24 +110,12 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
 
 void EphemeralStorageTabHelper::ClearEphemeralLifetimeKeepalive(
     const content::TLDEphemeralLifetimeKey& key) {
-  ClearLocalStorageKeepAlive(
-      StringToSessionStorageId(key.second, kLocalStorageSuffix));
-
   auto it = base::ranges::find_if(keep_alive_tld_ephemeral_lifetime_list_,
                                   [&key](const auto& tld_ephermal_liftime) {
                                     return tld_ephermal_liftime->key() == key;
                                   });
   if (it != keep_alive_tld_ephemeral_lifetime_list_.end())
     keep_alive_tld_ephemeral_lifetime_list_.erase(it);
-}
-
-void EphemeralStorageTabHelper::ClearLocalStorageKeepAlive(
-    const std::string& id) {
-  auto it = base::ranges::find_if(
-      keep_alive_local_storage_list_,
-      [&id](const auto& local_storage) { return local_storage->id() == id; });
-  if (it != keep_alive_local_storage_list_.end())
-    keep_alive_local_storage_list_.erase(it);
 }
 
 void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
@@ -126,7 +133,6 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
           net::features::kBraveEphemeralStorageKeepAlive) &&
       tld_ephemeral_lifetime_) {
     keep_alive_tld_ephemeral_lifetime_list_.push_back(tld_ephemeral_lifetime_);
-    keep_alive_local_storage_list_.push_back(local_storage_namespace_);
 
     // keep the ephemeral storage alive for some time to handle redirects
     // including meta refresh or other page driven "redirects" that end up back
@@ -142,15 +148,6 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
                       .Get())
             : g_storage_keep_alive_for_testing);
   }
-
-  // This will fetch a session storage namespace for this storage partition
-  // and storage domain. If another tab helper is already using the same
-  // namespace, this will just give us a new reference. When the last tab helper
-  // drops the reference, the namespace should be deleted.
-  std::string local_partition_id =
-      StringToSessionStorageId(new_domain, kLocalStorageSuffix);
-  local_storage_namespace_ = content::CreateSessionStorageNamespace(
-      partition, local_partition_id, absl::nullopt);
 
   // Session storage is always per-tab and never per-TLD, so we always delete
   // and recreate the session storage when switching domains.
@@ -176,7 +173,10 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
           : absl::nullopt);
 
   tld_ephemeral_lifetime_ = content::TLDEphemeralLifetime::GetOrCreate(
-      browser_context, partition, new_domain);
+      browser_context, partition, new_domain,
+      std::make_unique<EphemeralStorageOriginsSourceImpl>(
+          CookieSettingsFactory::GetForProfile(
+              Profile::FromBrowserContext(browser_context))));
 }
 
 // static

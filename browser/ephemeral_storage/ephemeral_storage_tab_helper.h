@@ -45,20 +45,16 @@ class EphemeralStorageTabHelper
 
   void ClearEphemeralLifetimeKeepalive(
       const content::TLDEphemeralLifetimeKey& key);
-  void ClearLocalStorageKeepAlive(const std::string& id);
 
   void CreateEphemeralStorageAreasForDomainAndURL(const std::string& new_domain,
                                                   const GURL& new_url);
 
   friend class content::WebContentsUserData<EphemeralStorageTabHelper>;
-  scoped_refptr<content::SessionStorageNamespace> local_storage_namespace_;
   scoped_refptr<content::SessionStorageNamespace> session_storage_namespace_;
   scoped_refptr<content::TLDEphemeralLifetime> tld_ephemeral_lifetime_;
 
   std::vector<scoped_refptr<content::TLDEphemeralLifetime>>
       keep_alive_tld_ephemeral_lifetime_list_;
-  std::vector<scoped_refptr<content::SessionStorageNamespace>>
-      keep_alive_local_storage_list_;
 
   base::WeakPtrFactory<EphemeralStorageTabHelper> weak_factory_{this};
 
