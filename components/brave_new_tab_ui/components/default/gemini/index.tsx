@@ -992,7 +992,10 @@ class Gemini extends React.PureComponent<Props, State> {
 
           return (
             <S.ListItem
-              key={`list-${asset}`} isFlex={true} justify='flex-start' $p={10}
+              key={`list-${asset}`}
+              isFlex={true}
+              justify='flex-start'
+              $p={10}
               onClick={this.setCurrentDepositAsset.bind(this, asset)}
             >
               <S.FlexItem $mr={10} $w={25} $h={25}>
