@@ -9,6 +9,7 @@ package org.chromium.chrome.browser.vpn;
 
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
+import org.chromium.base.annotations.NativeMethods;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class BraveVpnNativeWorker {
 
     private void init() {
         if (mNativeBraveVpnNativeWorker == 0) {
-            nativeInit();
+            BraveVpnNativeWorkerJni.get().init(this);
         }
     }
 
@@ -49,7 +50,7 @@ public class BraveVpnNativeWorker {
 
     private void destroy() {
         if (mNativeBraveVpnNativeWorker != 0) {
-            nativeDestroy(mNativeBraveVpnNativeWorker);
+            BraveVpnNativeWorkerJni.get().destroy(mNativeBraveVpnNativeWorker, this);
             mNativeBraveVpnNativeWorker = 0;
         }
     }
@@ -108,35 +109,38 @@ public class BraveVpnNativeWorker {
     }
 
     public void getAllServerRegions() {
-        nativeGetAllServerRegions(mNativeBraveVpnNativeWorker);
+        BraveVpnNativeWorkerJni.get().getAllServerRegions(mNativeBraveVpnNativeWorker);
     }
 
     public void getTimezonesForRegions() {
-        nativeGetTimezonesForRegions(mNativeBraveVpnNativeWorker);
+        BraveVpnNativeWorkerJni.get().getTimezonesForRegions(mNativeBraveVpnNativeWorker);
     }
 
     public void getHostnamesForRegion(String region) {
-        nativeGetHostnamesForRegion(mNativeBraveVpnNativeWorker, region);
+        BraveVpnNativeWorkerJni.get().getHostnamesForRegion(mNativeBraveVpnNativeWorker, region);
     }
 
     public void getSubscriberCredential(
             String productType, String productId, String validationMethod, String purchaseToken) {
-        nativeGetSubscriberCredential(mNativeBraveVpnNativeWorker, productType, productId,
-                validationMethod, purchaseToken);
+        BraveVpnNativeWorkerJni.get().getSubscriberCredential(mNativeBraveVpnNativeWorker,
+                productType, productId, validationMethod, purchaseToken);
     }
 
     public void verifyPurchaseToken(String purchaseToken, String productId, String productType) {
-        nativeVerifyPurchaseToken(
+        BraveVpnNativeWorkerJni.get().verifyPurchaseToken(
                 mNativeBraveVpnNativeWorker, purchaseToken, productId, productType);
     }
 
-    private native void nativeInit();
-    private native void nativeDestroy(long nativeBraveVpnNativeWorker);
-    private native void nativeGetAllServerRegions(long nativeBraveVpnNativeWorker);
-    private native void nativeGetTimezonesForRegions(long nativeBraveVpnNativeWorker);
-    private native void nativeGetHostnamesForRegion(long nativeBraveVpnNativeWorker, String region);
-    private native void nativeGetSubscriberCredential(long nativeBraveVpnNativeWorker,
-            String productType, String productId, String validationMethod, String purchaseToken);
-    private native void nativeVerifyPurchaseToken(long nativeBraveVpnNativeWorker,
-            String purchaseToken, String productId, String productType);
+    @NativeMethods
+    interface Natives {
+        void init(BraveVpnNativeWorker caller);
+        void destroy(long nativeBraveVpnNativeWorker, BraveVpnNativeWorker caller);
+        void getAllServerRegions(long nativeBraveVpnNativeWorker);
+        void getTimezonesForRegions(long nativeBraveVpnNativeWorker);
+        void getHostnamesForRegion(long nativeBraveVpnNativeWorker, String region);
+        void getSubscriberCredential(long nativeBraveVpnNativeWorker, String productType,
+                String productId, String validationMethod, String purchaseToken);
+        void verifyPurchaseToken(long nativeBraveVpnNativeWorker, String purchaseToken,
+                String productId, String productType);
+    }
 }

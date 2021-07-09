@@ -45,9 +45,7 @@ void BraveVpnNativeWorker::Destroy(
   delete this;
 }
 
-void BraveVpnNativeWorker::GetAllServerRegions(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+void BraveVpnNativeWorker::GetAllServerRegions(JNIEnv* env) {
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->GetAllServerRegions(
@@ -66,9 +64,7 @@ void BraveVpnNativeWorker::OnGetAllServerRegions(
       success);
 }
 
-void BraveVpnNativeWorker::GetTimezonesForRegions(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+void BraveVpnNativeWorker::GetTimezonesForRegions(JNIEnv* env) {
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->GetTimezonesForRegions(
@@ -88,7 +84,6 @@ void BraveVpnNativeWorker::OnGetTimezonesForRegions(
 
 void BraveVpnNativeWorker::GetHostnamesForRegion(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller,
     const base::android::JavaParamRef<jstring>& region) {
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
@@ -110,7 +105,6 @@ void BraveVpnNativeWorker::OnGetHostnamesForRegion(
 
 void BraveVpnNativeWorker::GetSubscriberCredential(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller,
     const base::android::JavaParamRef<jstring>& product_type,
     const base::android::JavaParamRef<jstring>& product_id,
     const base::android::JavaParamRef<jstring>& validation_method,
@@ -139,7 +133,6 @@ void BraveVpnNativeWorker::OnGetSubscriberCredential(
 
 void BraveVpnNativeWorker::VerifyPurchaseToken(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller,
     const base::android::JavaParamRef<jstring>& purchase_token,
     const base::android::JavaParamRef<jstring>& product_id,
     const base::android::JavaParamRef<jstring>& product_type) {
