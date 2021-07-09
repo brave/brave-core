@@ -21,18 +21,13 @@ namespace {
 
 const NSString* kBraveVPNKey = @"BraveVPNKey";
 
-NSData* GetPasswordRefForAccount(const NSString* account_key) {
-  if (account_key == nil || [account_key length] == 0) {
-    LOG(ERROR) << "Error: account key is empty";
-    return nil;
-  }
-
+NSData* GetPasswordRefForAccount() {
   NSString* bundle_id = [[NSBundle mainBundle] bundleIdentifier];
   CFTypeRef copy_result = NULL;
   NSDictionary* query = @{
     (__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
     (__bridge id)kSecAttrService : bundle_id,
-    (__bridge id)kSecAttrAccount : account_key,
+    (__bridge id)kSecAttrAccount : kBraveVPNKey,
     (__bridge id)kSecMatchLimit : (__bridge id)kSecMatchLimitOne,
     (__bridge id)kSecReturnPersistentRef : (__bridge id)kCFBooleanTrue,
   };
@@ -43,17 +38,12 @@ NSData* GetPasswordRefForAccount(const NSString* account_key) {
   return (__bridge NSData*)copy_result;
 }
 
-OSStatus RemoveKeychainItemForAccount(const NSString* account_key) {
-  if (account_key == nil || [account_key length] == 0) {
-    LOG(ERROR) << "Error: account key is empty";
-    return errSecParam;
-  }
-
+OSStatus RemoveKeychainItemForAccount() {
   NSString* bundle_id = [[NSBundle mainBundle] bundleIdentifier];
   NSDictionary* query = @{
     (__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
     (__bridge id)kSecAttrService : bundle_id,
-    (__bridge id)kSecAttrAccount : account_key,
+    (__bridge id)kSecAttrAccount : kBraveVPNKey,
     (__bridge id)kSecReturnPersistentRef : (__bridge id)kCFBooleanTrue,
   };
   OSStatus result = SecItemDelete((__bridge CFDictionaryRef)query);
@@ -62,14 +52,9 @@ OSStatus RemoveKeychainItemForAccount(const NSString* account_key) {
   return result;
 }
 
-OSStatus StorePassword(const NSString* password, const NSString* account_key) {
+OSStatus StorePassword(const NSString* password) {
   if (password == nil || [password length] == 0) {
     LOG(ERROR) << "Error: password is empty";
-    return errSecParam;
-  }
-
-  if (account_key == nil || [account_key length] == 0) {
-    LOG(ERROR) << "Error: account key is empty";
     return errSecParam;
   }
 
@@ -81,18 +66,24 @@ OSStatus StorePassword(const NSString* password, const NSString* account_key) {
     (__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
     (__bridge id)kSecAttrService : bundle_id,
     (__bridge id)kSecAttrSynchronizable : (__bridge id)kCFBooleanFalse,
-    (__bridge id)kSecAttrAccount : account_key,
+    (__bridge id)kSecAttrAccount : kBraveVPNKey,
     (__bridge id)kSecValueData : password_data,
   };
   OSStatus status = SecItemAdd((__bridge CFDictionaryRef)sec_item, &result);
-  if (status != errSecSuccess) {
-    if (status == errSecDuplicateItem) {
-      VLOG(2) << "There is duplicated key in keychain. removing and re-adding.";
-      if (RemoveKeychainItemForAccount(account_key) == errSecSuccess)
-        return StorePassword(password, account_key);
-    }
-    LOG(ERROR) << "Error: storing password";
+  if (status == errSecDuplicateItem) {
+    VLOG(2) << "There is duplicated key in keychain. Update it.";
+    NSDictionary* query = @{
+      (__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
+      (__bridge id)kSecAttrService : bundle_id,
+      (__bridge id)kSecAttrAccount : kBraveVPNKey,
+      (__bridge id)kSecReturnPersistentRef : (__bridge id)kCFBooleanTrue,
+    };
+    status = SecItemUpdate((__bridge CFDictionaryRef)query,
+                           (__bridge CFDictionaryRef)sec_item);
   }
+
+  if (status != errSecSuccess)
+    LOG(ERROR) << "Error: storing password";
 
   return status;
 }
@@ -114,7 +105,7 @@ NEVPNProtocolIKEv2* CreateProtocolConfig(const BraveVPNConnectionInfo& info) {
   protocol_config.certificateType = NEVPNIKEv2CertificateTypeECDSA256;
   protocol_config.useExtendedAuthentication = YES;
   protocol_config.username = username;
-  protocol_config.passwordReference = GetPasswordRefForAccount(kBraveVPNKey);
+  protocol_config.passwordReference = GetPasswordRefForAccount();
   protocol_config.deadPeerDetectionRate =
       NEVPNIKEv2DeadPeerDetectionRateLow; /* increase DPD tolerance from default
                                              10min to 30min */
@@ -153,8 +144,7 @@ void BraveVPNConnectionManagerMac::CreateVPNConnection(
     const BraveVPNConnectionInfo& info) {
   info_ = info;
 
-  if (StorePassword(base::SysUTF8ToNSString(info_.password()), kBraveVPNKey) !=
-      errSecSuccess)
+  if (StorePassword(base::SysUTF8ToNSString(info_.password())) != errSecSuccess)
     return;
 
   NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
@@ -208,7 +198,7 @@ void BraveVPNConnectionManagerMac::RemoveVPNConnection(
           obs.OnRemoved(std::string());
       }];
     }
-    RemoveKeychainItemForAccount(kBraveVPNKey);
+    RemoveKeychainItemForAccount();
   }];
 }
 
