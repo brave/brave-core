@@ -7,6 +7,7 @@ import alcx from './alcx.png'
 import algo from './algo.png'
 import alpha from './alpha.png'
 import alt from './alt.png'
+import amp from './amp.svg'
 import ampl from './ampl.png'
 import ankr from './ankr.png'
 import atom from './atom.png'
@@ -18,11 +19,11 @@ import axs from './axs.png'
 import badger from './badger.png'
 import band from './band.png'
 import bao from './bao.png'
-import bal from './bal.png'
+import bal from './bal.svg'
 import bat from './bat.png'
 import bch from './bch.png'
 import bnb from './bnb.png'
-import bnt from './bnt.png'
+import bnt from './bnt.svg'
 import brz from './brz.png'
 import bsv from './bsv.png'
 import btc from './btc.png'
@@ -109,6 +110,7 @@ import one from './one.png'
 import oneinch from './1inch.png'
 import ont from './ont.png'
 import orbs from './orbs.png'
+import oxt from './oxt.svg'
 import oxy from './oxy.png'
 import paxg from './paxg.png'
 import perp from './perp.png'
@@ -120,7 +122,7 @@ import ramp from './ramp.png'
 import rari from './rari.png'
 import ray from './ray.svg'
 import reef from './reef.png'
-import ren from './ren.png'
+import ren from './ren.svg'
 import rlc from './rlc.png'
 import rly from './rly.png'
 import rook from './rook.png'
@@ -132,7 +134,7 @@ import seco from './seco.png'
 import shib from './shib.png'
 import shit from './shit.png'
 import skl from './skl.png'
-import snx from './snx.png'
+import snx from './snx.svg'
 import sol from './sol.png'
 import srm from './srm.svg'
 import srn from './srn.png'
@@ -177,6 +179,7 @@ export default {
   algo,
   alpha,
   alt,
+  amp,
   ampl,
   ankr,
   atom,
@@ -279,6 +282,7 @@ export default {
   oneinch,
   ont,
   orbs,
+  oxt,
   oxy,
   paxg,
   perp,
