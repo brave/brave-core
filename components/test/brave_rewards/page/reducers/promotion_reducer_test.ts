@@ -329,7 +329,7 @@ describe('Promotion Reducer', () => {
       const expectedState: Rewards.State = {
         ...defaultState,
         promotions: [],
-        firstLoad: null
+        firstLoad: false
       }
 
       expect(assertion).toEqual({
