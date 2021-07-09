@@ -104,7 +104,7 @@ public class AppearancePreferences extends BravePreferenceFragment
         enableTabGroups.setOnPreferenceChangeListener(this);
         if (enableTabGroups instanceof ChromeSwitchPreference) {
             ((ChromeSwitchPreference) enableTabGroups)
-                    .setChecked(TabUiFeatureUtilities.isTabGroupsAndroidEnabled());
+                    .setChecked(TabUiFeatureUtilities.isTabGroupsAndroidEnabled(getActivity()));
         }
     }
 
