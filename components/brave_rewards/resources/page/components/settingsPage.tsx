@@ -149,6 +149,7 @@ class SettingsPage extends React.Component<Props, State> {
     this.actions.fetchPromotions()
     this.actions.getExternalWallet()
     this.actions.getOnboardingStatus()
+    this.actions.getEnabledInlineTippingPlatforms()
 
     this.handleURL()
   }
