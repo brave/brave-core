@@ -132,22 +132,6 @@ void BraveShieldsHiddenClassIdSelectorsFunction::GetHiddenClassIdSelectorsOnUI(
 }
 
 ExtensionFunction::ResponseAction
-BraveShieldsMigrateLegacyCosmeticFiltersFunction::Run() {
-  std::unique_ptr<brave_shields::MigrateLegacyCosmeticFilters::Params> params(
-      brave_shields::MigrateLegacyCosmeticFilters::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
-  const bool success =
-      g_brave_browser_process->ad_block_custom_filters_service()
-          ->MigrateLegacyCosmeticFilters(
-              params->legacy_filters.additional_properties);
-
-  auto callback_args = std::make_unique<base::ListValue>();
-  callback_args->Append(base::Value(success));
-  return RespondNow(ArgumentList(std::move(callback_args)));
-}
-
-ExtensionFunction::ResponseAction
 BraveShieldsAddSiteCosmeticFilterFunction::Run() {
   std::unique_ptr<brave_shields::AddSiteCosmeticFilter::Params> params(
       brave_shields::AddSiteCosmeticFilter::Params::Create(*args_));
