@@ -29,6 +29,7 @@ import org.chromium.chrome.browser.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
+import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedBridge;
@@ -97,7 +98,8 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/LaunchIntentDispatcher"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/NewTabPageLayout"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator"));
-        Assert.assertTrue(classExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/NewTabPage"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/BraveNewTabPage"));
         Assert.assertTrue(classExists(
@@ -189,6 +191,10 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/omnibox/status/StatusMediator"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/omnibox/status/BraveStatusMediator"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator"));
     }
 
     @Test
@@ -391,6 +397,13 @@ public class BytecodeTest {
                 OneshotSupplier.class, Supplier.class, BooleanSupplier.class, BooleanSupplier.class,
                 boolean.class, boolean.class, boolean.class, boolean.class, HistoryDelegate.class,
                 BooleanSupplier.class, OfflineDownloader.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
+                "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator",
+                OneshotSupplier.class, BrowserStateBrowserControlsVisibilityDelegate.class,
+                WindowAndroid.class, MenuButtonCoordinator.SetFocusFunction.class, Runnable.class,
+                boolean.class, Supplier.class, ThemeColorProvider.class, Supplier.class,
+                Runnable.class, int.class));
     }
 
     @Test
