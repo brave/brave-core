@@ -11,6 +11,7 @@
 #include "base/synchronization/lock.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -30,7 +31,7 @@ void EthPendingTxTracker::UpdatePendingTransactions() {
 
   auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
       EthTxStateManager::TransactionStatus::SUBMITTED,
-      base::Optional<EthAddress>());
+      absl::optional<EthAddress>());
   for (const auto& pending_transaction : pending_transactions) {
     if (IsNonceTaken(pending_transaction)) {
       DropTransaction(pending_transaction);
@@ -51,7 +52,7 @@ void EthPendingTxTracker::ResubmitPendingTransactions() {
   // TODO(darkdh): limit the rate of tx publishing
   auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
       EthTxStateManager::TransactionStatus::SUBMITTED,
-      base::Optional<EthAddress>());
+      absl::optional<EthAddress>());
   for (const auto& pending_transaction : pending_transactions) {
     if (!pending_transaction.tx.IsSigned()) {
       continue;
@@ -103,7 +104,7 @@ void EthPendingTxTracker::OnSendRawTransaction(bool status,
 bool EthPendingTxTracker::IsNonceTaken(const EthTxStateManager::TxMeta& meta) {
   auto confirmed_transactions = tx_state_manager_->GetTransactionsByStatus(
       EthTxStateManager::TransactionStatus::CONFIRMED,
-      base::Optional<EthAddress>());
+      absl::optional<EthAddress>());
   for (const auto& confirmed_transaction : confirmed_transactions) {
     if (confirmed_transaction.tx.nonce() == meta.tx.nonce() &&
         confirmed_transaction.id != meta.id)

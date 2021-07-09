@@ -24,7 +24,7 @@ EthTxStateManager::EthTxStateManager(PrefService* prefs) : prefs_(prefs) {
   for (base::DictionaryValue::Iterator iter(*value); !iter.IsAtEnd();
        iter.Advance()) {
     const std::string id = iter.key();
-    base::Optional<TxMeta> meta = ValueToTxMeta(iter.value());
+    absl::optional<TxMeta> meta = ValueToTxMeta(iter.value());
     if (!meta) {
       LOG(ERROR) << "invalid TxMeta, id=" << id;
       continue;
@@ -58,74 +58,74 @@ base::Value EthTxStateManager::TxMetaToValue(const TxMeta& meta) {
   return dict;
 }
 
-base::Optional<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
+absl::optional<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
     const base::Value& value) {
   EthTxStateManager::TxMeta meta;
-  base::Optional<int> status = value.FindIntKey("status");
+  absl::optional<int> status = value.FindIntKey("status");
   if (!status)
-    return base::nullopt;
+    return absl::nullopt;
   meta.status = static_cast<EthTxStateManager::TransactionStatus>(*status);
 
   const std::string* from = value.FindStringKey("from");
   if (!from)
-    return base::nullopt;
+    return absl::nullopt;
   meta.from = EthAddress::FromHex(*from);
 
   const std::string* last_gas_price = value.FindStringKey("last_gas_price");
   if (!last_gas_price)
-    return base::nullopt;
+    return absl::nullopt;
   uint256_t last_gas_price_uint;
   if (!HexValueToUint256(*last_gas_price, &last_gas_price_uint))
-    return base::nullopt;
+    return absl::nullopt;
   meta.last_gas_price = last_gas_price_uint;
 
   const base::Value* created_time = value.FindKey("created_time");
   if (!created_time)
-    return base::nullopt;
-  base::Optional<base::Time> created_time_from_value =
+    return absl::nullopt;
+  absl::optional<base::Time> created_time_from_value =
       util::ValueToTime(created_time);
   if (!created_time_from_value)
-    return base::nullopt;
+    return absl::nullopt;
   meta.created_time = *created_time_from_value;
 
   const base::Value* submitted_time = value.FindKey("submitted_time");
   if (!submitted_time)
-    return base::nullopt;
-  base::Optional<base::Time> submitted_time_from_value =
+    return absl::nullopt;
+  absl::optional<base::Time> submitted_time_from_value =
       util::ValueToTime(submitted_time);
   if (!submitted_time_from_value)
-    return base::nullopt;
+    return absl::nullopt;
   meta.submitted_time = *submitted_time_from_value;
 
   const base::Value* confirmed_time = value.FindKey("confirmed_time");
   if (!confirmed_time)
-    return base::nullopt;
-  base::Optional<base::Time> confirmed_time_from_value =
+    return absl::nullopt;
+  absl::optional<base::Time> confirmed_time_from_value =
       util::ValueToTime(confirmed_time);
   if (!confirmed_time_from_value)
-    return base::nullopt;
+    return absl::nullopt;
   meta.confirmed_time = *confirmed_time_from_value;
 
   const base::Value* tx_receipt = value.FindKey("tx_receipt");
   if (!tx_receipt)
-    return base::nullopt;
-  base::Optional<TransactionReceipt> tx_receipt_from_value =
+    return absl::nullopt;
+  absl::optional<TransactionReceipt> tx_receipt_from_value =
       ValueToTransactionReceipt(*tx_receipt);
   meta.tx_receipt = *tx_receipt_from_value;
 
   const std::string* tx_hash = value.FindStringKey("tx_hash");
   if (!tx_hash)
-    return base::nullopt;
+    return absl::nullopt;
   meta.tx_hash = *tx_hash;
 
   const base::Value* tx = value.FindKey("tx");
   if (!tx)
-    return base::nullopt;
-  base::Optional<int> type = tx->FindIntKey("type");
+    return absl::nullopt;
+  absl::optional<int> type = tx->FindIntKey("type");
   if (!type)
-    return base::nullopt;
+    return absl::nullopt;
 
-  base::Optional<EthTransaction> tx_from_value;
+  absl::optional<EthTransaction> tx_from_value;
   switch (static_cast<uint8_t>(*type)) {
     case 0:
       tx_from_value = EthTransaction::FromValue(*tx);
@@ -138,7 +138,7 @@ base::Optional<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
       break;
   }
   if (!tx_from_value)
-    return base::nullopt;
+    return absl::nullopt;
   meta.tx = *tx_from_value;
 
   return meta;
@@ -177,7 +177,7 @@ void EthTxStateManager::WipeTxs() {
 
 std::vector<EthTxStateManager::TxMeta>
 EthTxStateManager::GetTransactionsByStatus(TransactionStatus status,
-                                           base::Optional<EthAddress> from) {
+                                           absl::optional<EthAddress> from) {
   std::vector<EthTxStateManager::TxMeta> result;
   for (auto& tx_meta : tx_meta_map_) {
     if (tx_meta.second.status == status) {

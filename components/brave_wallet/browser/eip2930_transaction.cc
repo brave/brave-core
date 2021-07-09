@@ -57,17 +57,17 @@ absl::optional<Eip2930Transaction> Eip2930Transaction::FromValue(
     const base::Value& value) {
   absl::optional<EthTransaction> legacy_tx = EthTransaction::FromValue(value);
   if (!legacy_tx)
-    return base::nullopt;
+    return absl::nullopt;
   TxData tx_data(legacy_tx->nonce(), legacy_tx->gas_price(),
                  legacy_tx->gas_limit(), legacy_tx->to(), legacy_tx->value(),
                  legacy_tx->data());
 
   const std::string* tx_chain_id = value.FindStringKey("chain_id");
   if (!tx_chain_id)
-    return base::nullopt;
+    return absl::nullopt;
   uint256_t chain_id;
   if (!HexValueToUint256(*tx_chain_id, &chain_id))
-    return base::nullopt;
+    return absl::nullopt;
 
   Eip2930Transaction tx(tx_data, static_cast<uint64_t>(chain_id));
   tx.v_ = legacy_tx->v();
@@ -76,11 +76,11 @@ absl::optional<Eip2930Transaction> Eip2930Transaction::FromValue(
 
   const base::Value* access_list = value.FindKey("access_list");
   if (!access_list)
-    return base::nullopt;
+    return absl::nullopt;
   absl::optional<AccessList> access_list_from_value =
       ValueToAccessList(*access_list);
   if (!access_list_from_value)
-    return base::nullopt;
+    return absl::nullopt;
   tx.access_list_ = *access_list_from_value;
 
   return tx;

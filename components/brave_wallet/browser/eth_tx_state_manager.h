@@ -10,11 +10,11 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
-#include "base/optional.h"
 #include "base/time/time.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
 
@@ -62,7 +62,7 @@ class EthTxStateManager {
   static std::string GenerateMetaID();
   // id will be excluded because it is used as key of dictionary
   static base::Value TxMetaToValue(const TxMeta& meta);
-  static base::Optional<TxMeta> ValueToTxMeta(const base::Value& value);
+  static absl::optional<TxMeta> ValueToTxMeta(const base::Value& value);
 
   void AddOrUpdateTx(const TxMeta& meta);
   bool GetTx(const std::string& id, TxMeta* meta);
@@ -70,7 +70,7 @@ class EthTxStateManager {
   void WipeTxs();
 
   std::vector<TxMeta> GetTransactionsByStatus(TransactionStatus status,
-                                              base::Optional<EthAddress> from);
+                                              absl::optional<EthAddress> from);
 
  private:
   PrefService* prefs_;

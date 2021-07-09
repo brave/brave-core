@@ -57,65 +57,65 @@ absl::optional<EthTransaction> EthTransaction::FromValue(
   EthTransaction tx;
   const std::string* nonce = value.FindStringKey("nonce");
   if (!nonce)
-    return base::nullopt;
+    return absl::nullopt;
   if (!HexValueToUint256(*nonce, &tx.nonce_))
-    return base::nullopt;
+    return absl::nullopt;
 
   const std::string* gas_price = value.FindStringKey("gas_price");
   if (!gas_price)
-    return base::nullopt;
+    return absl::nullopt;
   if (!HexValueToUint256(*gas_price, &tx.gas_price_))
-    return base::nullopt;
+    return absl::nullopt;
 
   const std::string* gas_limit = value.FindStringKey("gas_limit");
   if (!gas_limit)
-    return base::nullopt;
+    return absl::nullopt;
   if (!HexValueToUint256(*gas_limit, &tx.gas_limit_))
-    return base::nullopt;
+    return absl::nullopt;
 
   const std::string* to = value.FindStringKey("to");
   if (!to)
-    return base::nullopt;
+    return absl::nullopt;
   tx.to_ = EthAddress::FromHex(*to);
 
   const std::string* tx_value = value.FindStringKey("value");
   if (!tx_value)
-    return base::nullopt;
+    return absl::nullopt;
   if (!HexValueToUint256(*tx_value, &tx.value_))
-    return base::nullopt;
+    return absl::nullopt;
 
   const std::string* data = value.FindStringKey("data");
   if (!data)
-    return base::nullopt;
+    return absl::nullopt;
   std::string data_decoded;
   if (!base::Base64Decode(*data, &data_decoded))
-    return base::nullopt;
+    return absl::nullopt;
   tx.data_ = std::vector<uint8_t>(data_decoded.begin(), data_decoded.end());
 
   absl::optional<int> v = value.FindIntKey("v");
   if (!v)
-    return base::nullopt;
+    return absl::nullopt;
   tx.v_ = (uint8_t)*v;
 
   const std::string* r = value.FindStringKey("r");
   if (!r)
-    return base::nullopt;
+    return absl::nullopt;
   std::string r_decoded;
   if (!base::Base64Decode(*r, &r_decoded))
-    return base::nullopt;
+    return absl::nullopt;
   tx.r_ = std::vector<uint8_t>(r_decoded.begin(), r_decoded.end());
 
   const std::string* s = value.FindStringKey("s");
   if (!s)
-    return base::nullopt;
+    return absl::nullopt;
   std::string s_decoded;
   if (!base::Base64Decode(*s, &s_decoded))
-    return base::nullopt;
+    return absl::nullopt;
   tx.s_ = std::vector<uint8_t>(s_decoded.begin(), s_decoded.end());
 
   absl::optional<int> type = value.FindIntKey("type");
   if (!type)
-    return base::nullopt;
+    return absl::nullopt;
   tx.type_ = (uint8_t)*type;
 
   return tx;

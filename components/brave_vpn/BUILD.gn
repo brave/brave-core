@@ -20,6 +20,7 @@ static_library("brave_vpn") {
     "//components/keyed_service/core",
     "//net",
     "//services/network/public/cpp",
+    "//third_party/abseil-cpp:absl",
     "//url",
   ]
 

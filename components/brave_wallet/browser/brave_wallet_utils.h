@@ -10,8 +10,8 @@
 #include <string>
 #include <vector>
 
-#include "base/optional.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
 namespace base {
@@ -88,7 +88,7 @@ void SecureZeroData(void* data, size_t size);
 void UpdateLastUnlockPref(PrefService* prefs);
 
 base::Value TransactionReceiptToValue(const TransactionReceipt& tx_receipt);
-base::Optional<TransactionReceipt> ValueToTransactionReceipt(
+absl::optional<TransactionReceipt> ValueToTransactionReceipt(
     const base::Value& value);
 
 }  // namespace brave_wallet

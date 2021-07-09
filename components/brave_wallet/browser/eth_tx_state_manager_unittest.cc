@@ -9,6 +9,7 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -49,7 +50,7 @@ TEST(EthTxStateManagerUnitTest, TxMetaAndValye) {
 
   base::Value meta_value = EthTxStateManager::TxMetaToValue(meta);
   auto meta_from_value = EthTxStateManager::ValueToTxMeta(meta_value);
-  ASSERT_NE(meta_from_value, base::nullopt);
+  ASSERT_NE(meta_from_value, absl::nullopt);
   EXPECT_EQ(meta_from_value->status, meta.status);
   EXPECT_EQ(meta_from_value->from, meta.from);
   EXPECT_EQ(meta_from_value->last_gas_price, meta.last_gas_price);
