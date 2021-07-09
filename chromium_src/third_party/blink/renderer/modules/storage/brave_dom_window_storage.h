@@ -34,11 +34,13 @@ class BraveDOMWindowStorage final
 
  private:
   StorageArea* ephemeralSessionStorage();
-  StorageArea* ephemeralLocalStorage();
+  StorageArea* ephemeralLocalStorage(const SecurityOrigin* es_security_origin);
 
   mutable Member<EphemeralStorageNamespaces> ephemeral_storage_namespaces_;
   mutable Member<StorageArea> ephemeral_session_storage_;
   mutable Member<StorageArea> ephemeral_local_storage_;
+  base::flat_map<url::Origin, scoped_refptr<SecurityOrigin>>
+      es_security_origins_;
 };
 
 }  // namespace blink

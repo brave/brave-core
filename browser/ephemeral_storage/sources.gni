@@ -1,0 +1,14 @@
+brave_browser_ephemeral_storage_sources = [
+  "//brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.cc",
+  "//brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h",
+]
+
+brave_browser_ephemeral_storage_deps = [
+  "//base",
+  "//chrome/browser/profiles",
+  "//chrome/browser/ui",
+  "//components/content_settings/core/browser",
+  "//content/public/browser",
+  "//net",
+  "//third_party/blink/public/common",
+]

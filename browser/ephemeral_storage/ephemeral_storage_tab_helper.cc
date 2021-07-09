@@ -6,12 +6,16 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 
 #include <map>
+#include <memory>
 #include <set>
 
 #include "base/feature_list.h"
 #include "base/hash/md5.h"
 #include "base/ranges/ranges.h"
 #include "base/threading/sequenced_task_runner_handle.h"
+#include "chrome/browser/content_settings/cookie_settings_factory.h"
+#include "chrome/browser/profiles/profile.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/session_storage_namespace.h"
 #include "content/public/browser/storage_partition.h"
@@ -46,6 +50,23 @@ std::string StringToSessionStorageId(const std::string& string,
   DCHECK_EQ(hash.size(), 36u);
   return hash;
 }
+
+class EphemeralStorageOriginsSourceImpl
+    : public content::TLDEphemeralLifetime::EphemeralStorageOriginsSource {
+ public:
+  EphemeralStorageOriginsSourceImpl(
+      scoped_refptr<content_settings::CookieSettings> cookie_settings)
+      : cookie_settings_(std::move(cookie_settings)) {}
+
+  base::flat_map<url::Origin, url::Origin> TakeEphemeralStorageOrigins(
+      const std::string& ephemeral_storage_domain) override {
+    return cookie_settings_->TakeEphemeralStorageOrigins(
+        ephemeral_storage_domain);
+  }
+
+ private:
+  scoped_refptr<content_settings::CookieSettings> cookie_settings_;
+};
 
 }  // namespace
 
@@ -176,7 +197,10 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
           : absl::nullopt);
 
   tld_ephemeral_lifetime_ = content::TLDEphemeralLifetime::GetOrCreate(
-      browser_context, partition, new_domain);
+      browser_context, partition, new_domain,
+      std::make_unique<EphemeralStorageOriginsSourceImpl>(
+          CookieSettingsFactory::GetForProfile(
+              Profile::FromBrowserContext(browser_context))));
 }
 
 // static

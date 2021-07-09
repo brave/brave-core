@@ -6,6 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_BROWSER_CONTENT_SETTINGS_MANAGER_IMPL_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_BROWSER_CONTENT_SETTINGS_MANAGER_IMPL_H_
 
+#include "base/containers/flat_map.h"
 #include "components/content_settings/common/content_settings_manager.mojom.h"
 
 #define OnContentBlocked                                       \
@@ -14,7 +15,7 @@
       int32_t render_frame_id, StorageType storage_type,       \
       const url::Origin& origin, const GURL& site_for_cookies, \
       const url::Origin& top_frame_origin,                     \
-      base::OnceCallback<void(bool)> callback) override;       \
+      AllowEphemeralStorageAccessCallback callback) override;  \
   void OnContentBlocked
 
 #include "../../../../../components/content_settings/browser/content_settings_manager_impl.h"

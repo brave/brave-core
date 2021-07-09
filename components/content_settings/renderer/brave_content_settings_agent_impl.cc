@@ -133,19 +133,20 @@ void BraveContentSettingsAgentImpl::DidNotAllowScript() {
   ContentSettingsAgentImpl::DidNotAllowScript();
 }
 
-bool BraveContentSettingsAgentImpl::UseEphemeralStorageSync(
+absl::optional<url::Origin>
+BraveContentSettingsAgentImpl::UseEphemeralStorageSync(
     StorageType storage_type) {
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
-    return false;
+    return absl::nullopt;
 
   if (storage_type != StorageType::kLocalStorage &&
       storage_type != StorageType::kSessionStorage)
-    return false;
+    return absl::nullopt;
 
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
 
   if (!frame || IsFrameWithOpaqueOrigin(frame))
-    return false;
+    return absl::nullopt;
 
   auto frame_origin = url::Origin(frame->GetSecurityOrigin());
   StoragePermissionsKey key(frame_origin, storage_type);
@@ -159,10 +160,10 @@ bool BraveContentSettingsAgentImpl::UseEphemeralStorageSync(
       net::registry_controlled_domains::SameDomainOrHost(
           top_origin, frame_origin,
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
-    return false;
+    return absl::nullopt;
   }
 
-  bool result = false;
+  absl::optional<url::Origin> result;
   GetContentSettingsManager().AllowEphemeralStorageAccess(
       routing_id(), ConvertToMojoStorageType(storage_type), frame_origin,
       frame->GetDocument().SiteForCookies().RepresentativeUrl(), top_origin,

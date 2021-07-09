@@ -6,7 +6,7 @@
 #define BRAVE_COOKIE_SETTINGS_GET_COOKIE_SETTINGS_INTERNAL \
   if (cookie_setting == CONTENT_SETTING_SESSION_ONLY) {    \
     /* Do nothing */                                       \
-  } else
+  } else  // NOLINT
 
 #include "../../../../services/network/cookie_settings.cc"
 

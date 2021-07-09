@@ -32,17 +32,17 @@ String StringToSessionStorageId(const String& string,
   return String(hash.c_str());
 }
 
-bool ShouldUseEphemeralStorage(
+absl::optional<url::Origin> ShouldUseEphemeralStorage(
     LocalDOMWindow* window,
     WebContentSettingsClient::StorageType storage_type) {
   auto* frame = window->GetFrame();
   if (!frame)
-    return false;
+    return absl::nullopt;
 
   if (auto* settings_client = frame->GetContentSettingsClient())
     return settings_client->UseEphemeralStorageSync(storage_type);
 
-  return false;
+  return absl::nullopt;
 }
 
 }  // namespace
@@ -70,7 +70,23 @@ class EphemeralStorageNamespaces
   StorageNamespace* local_storage() { return local_storage_.Get(); }
   void Trace(Visitor* visitor) const override;
 
+  const SecurityOrigin* GetLocalStorageUniqueSecurityOrigin(
+      const SecurityOrigin* origin) {
+    auto origin_it = origins_.find(origin);
+    if (origin_it != origins_.end()) {
+      return origin_it->value.get();
+    }
+    auto result = SecurityOrigin::CreateWithReferenceOrigin(
+        KURL(String("data:ephemeral")), origin);
+    origins_.insert(origin, result);
+    return result.get();
+  }
+
  private:
+  HashMap<scoped_refptr<const SecurityOrigin>,
+          scoped_refptr<const SecurityOrigin>,
+          SecurityOriginHash>
+      origins_;
   Member<StorageNamespace> session_storage_;
   Member<StorageNamespace> local_storage_;
 };
@@ -86,9 +102,7 @@ EphemeralStorageNamespaces::EphemeralStorageNamespaces(
       session_storage_(
           MakeGarbageCollected<StorageNamespace>(controller,
                                                  session_storage_id)),
-      local_storage_(MakeGarbageCollected<StorageNamespace>(controller,
-                                                            local_storage_id)) {
-}
+      local_storage_(MakeGarbageCollected<StorageNamespace>(controller)) {}
 
 void EphemeralStorageNamespaces::Trace(Visitor* visitor) const {
   visitor->Trace(session_storage_);
@@ -173,8 +187,9 @@ StorageArea* BraveDOMWindowStorage::sessionStorage(
   auto* storage =
       DOMWindowStorage::From(*window).sessionStorage(exception_state);
 
-  if (!ShouldUseEphemeralStorage(
-          window, WebContentSettingsClient::StorageType::kSessionStorage))
+  auto es_origin = ShouldUseEphemeralStorage(
+      window, WebContentSettingsClient::StorageType::kSessionStorage);
+  if (!es_origin)
     return storage;
 
   return ephemeralSessionStorage();
@@ -209,14 +224,26 @@ StorageArea* BraveDOMWindowStorage::localStorage(
   LocalDOMWindow* window = GetSupplementable();
   auto* storage = DOMWindowStorage::From(*window).localStorage(exception_state);
 
-  if (!ShouldUseEphemeralStorage(
-          window, WebContentSettingsClient::StorageType::kLocalStorage))
+  auto es_origin = ShouldUseEphemeralStorage(
+      window, WebContentSettingsClient::StorageType::kLocalStorage);
+  if (!es_origin)
     return storage;
 
-  return ephemeralLocalStorage();
+  const SecurityOrigin* es_security_origin = nullptr;
+  auto es_security_origin_it = es_security_origins_.find(*es_origin);
+  if (es_security_origin_it != es_security_origins_.end()) {
+    es_security_origin = es_security_origin_it->second.get();
+  } else {
+    auto sec_origin = SecurityOrigin::CreateFromUrlOrigin(*es_origin);
+    es_security_origin = sec_origin.get();
+    es_security_origins_.emplace(*es_origin, std::move(sec_origin));
+  }
+
+  return ephemeralLocalStorage(es_security_origin);
 }
 
-StorageArea* BraveDOMWindowStorage::ephemeralLocalStorage() {
+StorageArea* BraveDOMWindowStorage::ephemeralLocalStorage(
+    const SecurityOrigin* es_security_origin) {
   LocalDOMWindow* window = GetSupplementable();
   Page* page = window->GetFrame()->GetDocument()->GetPage();
   EphemeralStorageNamespaces* namespaces =
@@ -231,14 +258,13 @@ StorageArea* BraveDOMWindowStorage::ephemeralLocalStorage() {
   ephemeral_storage_namespaces_ = namespaces;
 
   auto storage_area =
-      namespaces->local_storage()->GetCachedArea(window->GetSecurityOrigin());
+      namespaces->local_storage()->GetCachedArea(es_security_origin);
 
   // Ephemeral localStorage never persists stored data, which is also how
   // sessionStorage works. Due to this, when opening up a new ephemeral
   // localStorage area, we use the sessionStorage infrastructure.
-  ephemeral_local_storage_ =
-      StorageArea::Create(window, std::move(storage_area),
-                          StorageArea::StorageType::kSessionStorage);
+  ephemeral_local_storage_ = StorageArea::Create(
+      window, std::move(storage_area), StorageArea::StorageType::kLocalStorage);
 
   return ephemeral_local_storage_;
 }
