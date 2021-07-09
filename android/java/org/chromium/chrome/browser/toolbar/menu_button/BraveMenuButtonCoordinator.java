@@ -21,6 +21,8 @@ import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuCoordinator;
 import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.modelutil.PropertyModel;
+import org.chromium.ui.modelutil.PropertyModelChangeProcessor;
 
 public class BraveMenuButtonCoordinator extends MenuButtonCoordinator {
     private static final String BRAVE_IS_MENU_FROM_BOTTOM = "brave_is_menu_from_bottom";
@@ -77,5 +79,15 @@ public class BraveMenuButtonCoordinator extends MenuButtonCoordinator {
     public static boolean isMenuFromBottom() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         return sharedPreferences.getBoolean(BRAVE_IS_MENU_FROM_BOTTOM, true);
+    }
+
+    public static void setupPropertyModel(
+            MenuButton menuButton, Supplier<MenuButtonState> menuButtonStateSupplier) {
+        PropertyModel menuButtonPropertyModel =
+                new PropertyModel.Builder(MenuButtonProperties.ALL_KEYS)
+                        .with(MenuButtonProperties.STATE_SUPPLIER, menuButtonStateSupplier)
+                        .build();
+        PropertyModelChangeProcessor.create(
+                menuButtonPropertyModel, menuButton, new MenuButtonViewBinder());
     }
 }

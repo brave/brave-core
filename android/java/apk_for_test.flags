@@ -348,3 +348,11 @@
     *** isEnhancedProtectionPromoEnabled(...);
     *** isReliabilityLoggingEnabled(...);
 }
+
+-keep class org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator {
+    public <init>(...);
+}
