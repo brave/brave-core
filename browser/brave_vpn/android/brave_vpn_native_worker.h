@@ -25,29 +25,24 @@ class BraveVpnNativeWorker {
   void Destroy(JNIEnv* env,
                const base::android::JavaParamRef<jobject>& jcaller);
 
-  void GetAllServerRegions(JNIEnv* env,
-                           const base::android::JavaParamRef<jobject>& jcaller);
+  void GetAllServerRegions(JNIEnv* env);
 
   void OnGetAllServerRegions(const std::string& server_regions_json,
                              bool success);
 
-  void GetTimezonesForRegions(
-      JNIEnv* env,
-      const base::android::JavaParamRef<jobject>& jcaller);
+  void GetTimezonesForRegions(JNIEnv* env);
 
   void OnGetTimezonesForRegions(const std::string& timezones_json,
                                 bool success);
 
   void GetHostnamesForRegion(
       JNIEnv* env,
-      const base::android::JavaParamRef<jobject>& jcaller,
       const base::android::JavaParamRef<jstring>& region);
 
   void OnGetHostnamesForRegion(const std::string& hostname_json, bool success);
 
   void GetSubscriberCredential(
       JNIEnv* env,
-      const base::android::JavaParamRef<jobject>& jcaller,
       const base::android::JavaParamRef<jstring>& product_type,
       const base::android::JavaParamRef<jstring>& product_id,
       const base::android::JavaParamRef<jstring>& validation_method,
@@ -58,7 +53,6 @@ class BraveVpnNativeWorker {
 
   void VerifyPurchaseToken(
       JNIEnv* env,
-      const base::android::JavaParamRef<jobject>& jcaller,
       const base::android::JavaParamRef<jstring>& purchase_token,
       const base::android::JavaParamRef<jstring>& product_id,
       const base::android::JavaParamRef<jstring>& product_type);
