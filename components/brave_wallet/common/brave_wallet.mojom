@@ -122,7 +122,8 @@ interface WalletHandler {
   GetTransactionPayload(SwapParams params) => (SwapResponse response);
   AddFavoriteApp(AppItem appItem);
   RemoveFavoriteApp(AppItem appItem);
-  UpdateWalletNames(array<string> accountNames);
+  SetInitialAccountNames(array<string> accountNames);
+  AddNewAccountName(string accountName);
   NotifyWalletBackupComplete();
 };
 

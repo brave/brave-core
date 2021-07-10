@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/swap_controller.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_wallet {
@@ -88,17 +89,18 @@ std::vector<std::string> BraveWalletService::WalletAccountNames() const {
   return account_names;
 }
 
-// TODO(Douglas): This need to be seperated into 2 separate methods
-// 1. SetInitialAccountName to set the initial account name/names
-// 2. AddNewAccountName to use ListPrefUpdate to add a new account name to the
-// bottom of list
-void BraveWalletService::UpdateAccountNames(
+void BraveWalletService::SetInitialAccountNames(
     const std::vector<std::string>& account_names) {
   std::vector<base::Value> account_names_list;
   for (const std::string& name : account_names) {
     account_names_list.push_back(base::Value(name));
   }
   prefs_->Set(kBraveWalletAccountNames, base::Value(account_names_list));
+}
+
+void BraveWalletService::AddNewAccountName(const std::string& account_name) {
+  ListPrefUpdate update(prefs_, kBraveWalletAccountNames);
+  update->Append(base::Value(account_name));
 }
 
 bool BraveWalletService::IsWalletBackedUp() const {

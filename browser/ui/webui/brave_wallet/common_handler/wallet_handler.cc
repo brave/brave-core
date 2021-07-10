@@ -170,9 +170,15 @@ void WalletHandler::NotifyWalletBackupComplete() {
   service->NotifyWalletBackupComplete();
 }
 
-void WalletHandler::UpdateWalletNames(
+void WalletHandler::SetInitialAccountNames(
     const std::vector<std::string>& account_names) {
   auto* profile = Profile::FromWebUI(web_ui_);
   auto* service = GetBraveWalletService(profile);
-  service->UpdateAccountNames(account_names);
+  service->SetInitialAccountNames(account_names);
+}
+
+void WalletHandler::AddNewAccountName(const std::string& account_name) {
+  auto* profile = Profile::FromWebUI(web_ui_);
+  auto* service = GetBraveWalletService(profile);
+  service->AddNewAccountName(account_name);
 }

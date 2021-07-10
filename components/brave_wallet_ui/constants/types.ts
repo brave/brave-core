@@ -271,7 +271,8 @@ export interface WalletAPIHandler {
   getAssetPriceHistory: (asset: string, timeframe: AssetPriceTimeframe) => Promise<GetAssetPriceHistoryReturnObjectInfo>
   addFavoriteApp: (appItem: AppObjectType) => Promise<void>
   removeFavoriteApp: (appItem: AppObjectType) => Promise<void>
-  updateWalletNames: (accountNames: string[]) => Promise<void>
+  setInitialAccountNames: (accountNames: string[]) => Promise<void>
+  addNewAccountName: (accountName: string) => Promise<void>
   restoreWallet: (mnemonic: string, password: string) => Promise<RestoreWalletReturnInfo>
   getPriceQuote: (swapParams: SwapParams) => Promise<SwapResponse>
   getTransactionPayload: (swapParams: SwapParams) => Promise<SwapResponse>

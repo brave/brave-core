@@ -54,8 +54,7 @@ function Container (props: Props) {
     isWalletBackedUp,
     hasIncorrectPassword,
     accounts,
-    transactions,
-    walletAccountNames
+    transactions
   } = props.wallet
 
   // Page Props
@@ -208,8 +207,7 @@ function Container (props: Props) {
   }
 
   const onCreateAccount = (name: string) => {
-    const newList = [...walletAccountNames, name]
-    const created = props.walletPageActions.addAccountToWallet({ accountNames: newList })
+    const created = props.walletPageActions.addAccountToWallet({ accountName: name })
     if (created) {
       onToggleAddModal()
     }

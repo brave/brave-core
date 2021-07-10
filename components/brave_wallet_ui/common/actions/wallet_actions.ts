@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { createAction } from 'redux-act'
-import { InitializedPayloadType, UnlockWalletPayloadType, UpdateWalletNamesPayloadType } from '../constants/action_types'
+import { InitializedPayloadType, UnlockWalletPayloadType, SetInitialAccountNamesPayloadType, AddNewAccountNamePayloadType } from '../constants/action_types'
 import { AppObjectType } from '../../constants/types'
 
 export const initialize = createAction('initialize')
@@ -14,4 +14,5 @@ export const unlockWallet = createAction<UnlockWalletPayloadType>('unlockWallet'
 export const addFavoriteApp = createAction<AppObjectType>('addFavoriteApp')
 export const removeFavoriteApp = createAction<AppObjectType>('removeFavoriteApp')
 export const hasIncorrectPassword = createAction<boolean>('hasIncorrectPassword')
-export const updateWalletNames = createAction<UpdateWalletNamesPayloadType>('updateWalletNames')
+export const setInitialAccountNames = createAction<SetInitialAccountNamesPayloadType>('setInitialAccountNames')
+export const addNewAccountName = createAction<AddNewAccountNamePayloadType>('addNewAccountName')

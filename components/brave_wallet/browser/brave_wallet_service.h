@@ -46,7 +46,8 @@ class BraveWalletService : public KeyedService,
   brave_wallet::SwapController* swap_controller() const;
 
   std::vector<std::string> WalletAccountNames() const;
-  void UpdateAccountNames(const std::vector<std::string>& account_names);
+  void SetInitialAccountNames(const std::vector<std::string>& account_names);
+  void AddNewAccountName(const std::string& account_name);
   bool IsWalletBackedUp() const;
   void NotifyWalletBackupComplete();
 
