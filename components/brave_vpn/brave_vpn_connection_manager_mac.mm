@@ -60,8 +60,7 @@ OSStatus StorePassword(const NSString* password) {
 
   CFTypeRef result = NULL;
   NSString* bundle_id = [[NSBundle mainBundle] bundleIdentifier];
-  NSData* password_data =
-      [[password dataUsingEncoding:NSUTF8StringEncoding] autorelease];
+  NSData* password_data = [password dataUsingEncoding:NSUTF8StringEncoding];
   NSDictionary* sec_item = @{
     (__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
     (__bridge id)kSecAttrService : bundle_id,
@@ -156,8 +155,7 @@ void BraveVPNConnectionManagerMac::CreateVPNConnection(
     }
 
     [vpn_manager setEnabled:YES];
-    [vpn_manager
-        setProtocolConfiguration:[CreateProtocolConfig(info_) autorelease]];
+    [vpn_manager setProtocolConfiguration:CreateProtocolConfig(info_)];
     [vpn_manager setLocalizedDescription:base::SysUTF8ToNSString(
                                              info_.connection_name())];
 

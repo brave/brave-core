@@ -41,6 +41,7 @@ static_library("brave_vpn") {
     ]
 
     frameworks = [ "NetworkExtension.framework" ]
+    configs += [ "//build/config/compiler:enable_arc" ]
   }
 }
 
