@@ -20,6 +20,8 @@ class WalletPageApiProxy {
 
   restoreWallet (mnemonic, password) { }
 
+  addAccountToWallet () { }
+
   getRecoveryWords (password) { }
 
   notifyWalletBackupComplete () { }
@@ -56,6 +58,11 @@ export default class WalletPageApiProxyImpl {
   /** @override */
   restoreWallet (mnemonic, password) {
     return this.page_handler.restoreWallet(mnemonic, password);
+  }
+
+  /** @override */
+  addAccountToWallet () {
+    return this.page_handler.addAccountToWallet();
   }
 
   /** @override */

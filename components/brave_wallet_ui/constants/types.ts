@@ -150,6 +150,7 @@ export interface WalletState {
   isWalletBackedUp: boolean
   hasIncorrectPassword: boolean
   accounts: WalletAccountType[]
+  walletAccountNames: string[]
   transactions: RPCTransactionType[]
 }
 
@@ -190,6 +191,7 @@ export interface WalletInfo {
   isWalletLocked: boolean,
   favoriteApps: AppObjectType[],
   isWalletBackedUp: boolean,
+  walletAccountNames: string[]
   accounts: string[]
 }
 
@@ -256,14 +258,20 @@ export interface RestoreWalletReturnInfo {
   isValidMnemonic: boolean
 }
 
+export interface AddAccountToWalletReturnInfo {
+  success: boolean
+}
+
 export interface WalletAPIHandler {
   getWalletInfo: () => Promise<WalletInfo>
   lockWallet: () => Promise<void>
+  addAccountToWallet: () => Promise<AddAccountToWalletReturnInfo>
   unlockWallet: (password: string) => Promise<UnlockWalletReturnInfo>
   getAssetPrice: (asset: string) => Promise<GetAssetPriceReturnInfo>
   getAssetPriceHistory: (asset: string, timeframe: AssetPriceTimeframe) => Promise<GetAssetPriceHistoryReturnObjectInfo>
   addFavoriteApp: (appItem: AppObjectType) => Promise<void>
   removeFavoriteApp: (appItem: AppObjectType) => Promise<void>
+  updateWalletNames: (accountNames: string[]) => Promise<void>
   restoreWallet: (mnemonic: string, password: string) => Promise<RestoreWalletReturnInfo>
   getPriceQuote: (swapParams: SwapParams) => Promise<SwapResponse>
   getTransactionPayload: (swapParams: SwapParams) => Promise<SwapResponse>

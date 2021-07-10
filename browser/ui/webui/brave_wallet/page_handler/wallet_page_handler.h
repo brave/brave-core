@@ -41,6 +41,7 @@ class WalletPageHandler : public brave_wallet::mojom::PageHandler,
   void RestoreWallet(const std::string& mnemonic,
                      const std::string& password,
                      RestoreWalletCallback) override;
+  void AddAccountToWallet(AddAccountToWalletCallback) override;
   void GetRecoveryWords(GetRecoveryWordsCallback) override;
 
  private:

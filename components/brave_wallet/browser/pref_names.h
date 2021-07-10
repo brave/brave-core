@@ -13,6 +13,7 @@ extern const char kBraveWalletEncryptedMnemonic[];
 extern const char kBraveWalletDefaultKeyringAccountNum[];
 extern const char kBraveWalletTransactions[];
 extern const char kShowWalletIconOnToolbar[];
+extern const char kBraveWalletAccountNames[];
 extern const char kBraveWalletBackupComplete[];
 extern const char kBraveWalletLastUnlockTime[];
 

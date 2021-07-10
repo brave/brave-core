@@ -16,6 +16,7 @@ const char kBraveWalletDefaultKeyringAccountNum[] =
 const char kBraveWalletTransactions[] = "brave.wallet.transactions";
 const char kShowWalletIconOnToolbar[] =
     "brave.wallet.show_wallet_icon_on_toolbar";
+const char kBraveWalletAccountNames[] = "brave.wallet.wallet_account_names";
 const char kBraveWalletBackupComplete[] = "brave.wallet.wallet_backup_complete";
 const char kBraveWalletLastUnlockTime[] =
     "brave.wallet.wallet_last_unlock_time";
