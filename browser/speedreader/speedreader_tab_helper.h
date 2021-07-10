@@ -24,6 +24,9 @@ class SpeedreaderTabHelper
       public content::WebContentsUserData<SpeedreaderTabHelper> {
  public:
   enum class DistillState {
+    // Used as an initialization state
+    kUnknown,
+
     // The web contents is not distilled
     kNone,
 
