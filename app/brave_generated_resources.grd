@@ -1189,12 +1189,6 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         <message name="IDS_PAGE_IS_DISTILLED" desc="Speedreader is enabled on this page">
           in Speedreader
         </message>
-        <message name="IDS_ICON_READER_MODE_LABEL" desc="Icon label indicating Reader Mode is enabled">
-          Reader Mode
-        </message>
-        <message name="IDS_ICON_SPEEDREADER_MODE_LABEL" desc="Icon label indicating Speedreader is enabled">
-          Speedreader
-        </message>
       </if>
 
       <!-- Stats -->

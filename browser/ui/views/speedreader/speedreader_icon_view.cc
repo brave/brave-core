@@ -36,9 +36,8 @@ SpeedreaderIconView::SpeedreaderIconView(
     PrefService* pref_service)
     : PageActionIconView(command_updater,
                          IDC_SPEEDREADER_ICON_ONCLICK,
-                         this, /* Make ourselves the icon bubble delegate */
-                         page_action_icon_delegate),
-      icon_label_bubble_delegate_(icon_label_bubble_delegate) {
+                         icon_label_bubble_delegate,
+                         page_action_icon_delegate) {
   SetVisible(false);
 }
 
@@ -72,17 +71,11 @@ void SpeedreaderIconView::UpdateImpl() {
       speedreader::SpeedreaderTabHelper::PageStateIsDistilled(state);
 
   if (!is_distilled) {
-    if (state == DistillState::kSpeedreaderOnDisabledPage) {
-      SetLabel(l10n_util::GetStringUTF16(IDS_ICON_SPEEDREADER_MODE_LABEL));
+    if (state == DistillState::kSpeedreaderOnDisabledPage ||
+        state == DistillState::kPageProbablyReadable) {
       SetVisible(true);
-      label()->SetVisible(true);
-      UpdateLabelColors();
-    } else if (state == DistillState::kPageProbablyReadable) {
-      SetVisible(true);
-      label()->SetVisible(false);
     } else {
       SetVisible(false);
-      label()->SetVisible(false);
     }
 
     if (GetVisible()) {
@@ -92,27 +85,36 @@ void SpeedreaderIconView::UpdateImpl() {
             GetOmniboxColor(theme_provider, OmniboxPart::RESULTS_ICON);
         SetIconColor(icon_color_default);
       }
+      UpdateIconImage();
     }
   }
 
   if (is_distilled) {
-    const int label_id = state == DistillState::kReaderMode
-                             ? IDS_ICON_READER_MODE_LABEL
-                             : IDS_ICON_SPEEDREADER_MODE_LABEL;
-    SetLabel(l10n_util::GetStringUTF16(label_id));
-    UpdateLabelColors();
+    UpdateIconImage();
     if (theme_provider)
       SetIconColor(theme_provider->GetColor(
           BraveThemeProperties::COLOR_SPEEDREADER_ICON));
     SetVisible(true);
-    label()->SetVisible(true);
   }
-
-  Observe(contents);
 }
 
 const gfx::VectorIcon& SpeedreaderIconView::GetVectorIcon() const {
-  return kSpeedreaderIcon;
+  auto* web_contents = GetWebContents();
+  if (!web_contents)
+    return kBraveReaderModeIcon;
+
+  auto* tab_helper =
+      speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);
+  if (!tab_helper)
+    return kBraveReaderModeIcon;
+
+  const DistillState state = tab_helper->PageDistillState();
+  if (state == DistillState::kSpeedreaderMode ||
+      state == DistillState::kSpeedreaderOnDisabledPage) {
+    return kBraveSpeedreaderModeIcon;
+  } else {
+    return kBraveReaderModeIcon;
+  }
 }
 
 std::u16string SpeedreaderIconView::GetTextForTooltipAndAccessibleName() const {
@@ -135,45 +137,6 @@ views::BubbleDialogDelegate* SpeedreaderIconView::GetBubble() const {
 
   return reinterpret_cast<LocationBarBubbleDelegateView*>(
       tab_helper->speedreader_bubble_view());
-}
-
-SkColor SpeedreaderIconView::GetLabelColorOr(SkColor fallback) const {
-  auto* web_contents = GetWebContents();
-  if (!web_contents)
-    return fallback;
-
-  const ui::ThemeProvider* theme_provider = GetThemeProvider();
-  if (!theme_provider)
-    return fallback;
-
-  auto* tab_helper =
-      speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);
-  if (!tab_helper)
-    return fallback;
-
-  const DistillState state = tab_helper->PageDistillState();
-  if (speedreader::SpeedreaderTabHelper::PageStateIsDistilled(state))
-    return theme_provider->GetColor(
-        BraveThemeProperties::COLOR_SPEEDREADER_ICON);
-
-  return fallback;
-}
-
-SkColor SpeedreaderIconView::GetIconLabelBubbleSurroundingForegroundColor()
-    const {
-  const auto fallback = icon_label_bubble_delegate_
-                            ->GetIconLabelBubbleSurroundingForegroundColor();
-  return GetLabelColorOr(fallback);
-}
-
-SkColor SpeedreaderIconView::GetIconLabelBubbleInkDropColor() const {
-  const auto fallback =
-      icon_label_bubble_delegate_->GetIconLabelBubbleInkDropColor();
-  return GetLabelColorOr(fallback);
-}
-
-SkColor SpeedreaderIconView::GetIconLabelBubbleBackgroundColor() const {
-  return icon_label_bubble_delegate_->GetIconLabelBubbleBackgroundColor();
 }
 
 BEGIN_METADATA(SpeedreaderIconView, PageActionIconView)

@@ -16,9 +16,7 @@ class NavigationHandle;
 
 class PrefService;
 
-class SpeedreaderIconView : public PageActionIconView,
-                            public IconLabelBubbleView::Delegate,
-                            public content::WebContentsObserver {
+class SpeedreaderIconView : public PageActionIconView {
  public:
   METADATA_HEADER(SpeedreaderIconView);
   SpeedreaderIconView(CommandUpdater* command_updater,
@@ -36,16 +34,6 @@ class SpeedreaderIconView : public PageActionIconView,
   views::BubbleDialogDelegate* GetBubble() const override;
   std::u16string GetTextForTooltipAndAccessibleName() const override;
   void UpdateImpl() override;
-
-  // IconLabelBubbleView::Delegate:
-  SkColor GetIconLabelBubbleSurroundingForegroundColor() const override;
-  SkColor GetIconLabelBubbleInkDropColor() const override;
-  SkColor GetIconLabelBubbleBackgroundColor() const override;
-
- private:
-  SkColor GetLabelColorOr(SkColor fallback) const;
-
-  IconLabelBubbleView::Delegate* icon_label_bubble_delegate_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SPEEDREADER_SPEEDREADER_ICON_VIEW_H_
