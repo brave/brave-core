@@ -8,11 +8,13 @@
 #include <memory>
 #include <utility>
 
+#include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
+using std::placeholders::_3;
 
 namespace ledger {
 namespace state {
@@ -51,11 +53,12 @@ void StateMigrationV10::Migrate(ledger::ResultCallback callback) {
         break;
       }
 
-      auto wallet_info_endpoint_callback =
-          std::bind(&StateMigrationV10::OnGetWallet, this, _1, _2, callback);
+      auto wallet_info_endpoint_callback = std::bind(
+          &StateMigrationV10::OnGetWallet, this, _1, _2, _3, callback);
 
       if (ledger::is_testing) {
-        return wallet_info_endpoint_callback(type::Result::LEDGER_ERROR, false);
+        return wallet_info_endpoint_callback(type::Result::LEDGER_ERROR,
+                                             std::string{}, false);
       } else {
         return get_wallet_->Request(std::move(wallet_info_endpoint_callback));
       }
@@ -86,6 +89,7 @@ void StateMigrationV10::Migrate(ledger::ResultCallback callback) {
 }
 
 void StateMigrationV10::OnGetWallet(type::Result result,
+                                    const std::string& custodian,
                                     bool linked,
                                     ledger::ResultCallback callback) {
   auto uphold_wallet = ledger::uphold::GetWallet(ledger_);
@@ -99,6 +103,7 @@ void StateMigrationV10::OnGetWallet(type::Result result,
   DCHECK(!uphold_wallet->address.empty());
 
   if (result != type::Result::LEDGER_OK ||
+      custodian != constant::kWalletUphold ||
       !linked) {  // deemed semi-VERIFIED || semi-VERIFIED
     uphold_wallet->status = type::WalletStatus::PENDING;
     uphold_wallet->address = {};

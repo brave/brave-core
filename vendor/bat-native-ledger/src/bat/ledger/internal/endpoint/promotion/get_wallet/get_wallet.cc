@@ -47,12 +47,13 @@ void GetWallet::OnRequest(const type::UrlResponse& response,
 
   type::Result result = CheckStatusCode(response.status_code);
   if (result != type::Result::LEDGER_OK) {
-    return callback(result, false);
+    return callback(result, std::string{}, false);
   }
 
+  std::string custodian{};
   bool linked{};
-  result = ParseBody(response.body, &linked);
-  callback(result, linked);
+  result = ParseBody(response.body, &custodian, &linked);
+  callback(result, custodian, linked);
 }
 
 type::Result GetWallet::CheckStatusCode(int status_code) const {
@@ -74,8 +75,13 @@ type::Result GetWallet::CheckStatusCode(int status_code) const {
   return type::Result::LEDGER_OK;
 }
 
-type::Result GetWallet::ParseBody(const std::string& body, bool* linked) const {
+type::Result GetWallet::ParseBody(const std::string& body,
+                                  std::string* custodian,
+                                  bool* linked) const {
+  DCHECK(custodian);
   DCHECK(linked);
+  *custodian = {};
+  *linked = {};
 
   base::Optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
@@ -89,14 +95,20 @@ type::Result GetWallet::ParseBody(const std::string& body, bool* linked) const {
     return type::Result::LEDGER_ERROR;
   }
 
-  const std::string* linking_id =
-      dictionary->FindStringPath("depositAccountProvider.linkingId");
+  if (const auto* deposit_account_provider =
+          dictionary->FindDictKey("depositAccountProvider")) {
+    const std::string* name = deposit_account_provider->FindStringKey("name");
+    const std::string* id = deposit_account_provider->FindStringKey("id");
+    const std::string* linking_id =
+        deposit_account_provider->FindStringKey("linkingId");
 
-  if (!linking_id) {
-    return type::Result::LEDGER_ERROR;
+    if (!name || !id || !linking_id) {
+      return type::Result::LEDGER_ERROR;
+    }
+
+    *custodian = *name;
+    *linked = !id->empty() && !linking_id->empty();
   }
-
-  *linked = !linking_id->empty();
 
   return type::Result::LEDGER_OK;
 }
