@@ -81,7 +81,6 @@ static_library("brave_test_support_unit") {
 test("brave_unit_tests") {
   testonly = true
 
-  configs += [ "//build/config:precompiled_headers" ]
   configs += [ "//chrome/test:disable_thinlto_cache_flags" ]
 
   sources = [
