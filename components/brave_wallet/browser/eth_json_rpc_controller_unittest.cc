@@ -7,11 +7,10 @@
 #include <utility>
 #include <vector>
 
+#include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "content/public/browser/storage_partition.h"
-#include "content/public/test/browser_task_environment.h"
-#include "content/public/test/test_browser_context.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
@@ -24,8 +23,7 @@ namespace brave_wallet {
 
 class EthJsonRpcControllerUnitTest : public testing::Test {
  public:
-  EthJsonRpcControllerUnitTest()
-      : browser_context_(new content::TestBrowserContext()) {
+  EthJsonRpcControllerUnitTest() {
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
@@ -36,13 +34,13 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
 
   ~EthJsonRpcControllerUnitTest() override = default;
 
-  network::SharedURLLoaderFactory* shared_url_loader_factory() {
-    return url_loader_factory_.GetSafeWeakWrapper().get();
+  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory() {
+    return shared_url_loader_factory_;
   }
   void SwitchToNextResponse() {
     url_loader_factory_.ClearResponses();
     url_loader_factory_.AddResponse(
-        "https://mainnet-infura.brave.com/f7106c838853428280fa0c585acc9485",
+        "http://localhost:8545/",
         "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x0000000000000000000000"
         "0000000000000000000000000000000000000000200000000000000000000000000"
         "000000000000000000000000000000000000026e3010170122008ab7bf21b738283"
@@ -57,17 +55,15 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
 
   void SetRegistrarResponse() {
     url_loader_factory_.AddResponse(
-        "https://mainnet-infura.brave.com/f7106c838853428280fa0c585acc9485",
+        "http://localhost:8545/",
         "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x00000"
         "0000000000000000000226159d592e2b063810a10ebf6dcbada94ed68b8\"}");
   }
-  content::TestBrowserContext* context() { return browser_context_.get(); }
 
  private:
+  base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  content::BrowserTaskEnvironment task_environment_;
-  std::unique_ptr<content::TestBrowserContext> browser_context_;
 };
 
 TEST_F(EthJsonRpcControllerUnitTest, SetNetwork) {
@@ -117,7 +113,7 @@ TEST_F(EthJsonRpcControllerUnitTest, SetCustomNetwork) {
 }
 
 TEST_F(EthJsonRpcControllerUnitTest, ResolveENSDomain) {
-  EthJsonRpcController controller(Network::kMainnet,
+  EthJsonRpcController controller(Network::kLocalhost,
                                   shared_url_loader_factory());
   SetRegistrarResponse();
   base::RunLoop run;
