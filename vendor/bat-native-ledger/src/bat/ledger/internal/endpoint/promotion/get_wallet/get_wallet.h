@@ -42,7 +42,8 @@ class LedgerImpl;
 namespace endpoint {
 namespace promotion {
 
-using GetWalletCallback = std::function<void(type::Result result, bool linked)>;
+using GetWalletCallback = std::function<
+    void(type::Result result, const std::string& custodian, bool linked)>;
 
 class GetWallet {
  public:
@@ -59,7 +60,9 @@ class GetWallet {
 
   type::Result CheckStatusCode(int status_code) const;
 
-  type::Result ParseBody(const std::string& body, bool* linked) const;
+  type::Result ParseBody(const std::string& body,
+                         std::string* custodian,
+                         bool* linked) const;
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

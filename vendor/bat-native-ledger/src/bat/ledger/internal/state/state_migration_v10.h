@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_STATE_STATE_MIGRATION_V10_H_
 
 #include <memory>
+#include <string>
 
 #include "bat/ledger/internal/endpoint/promotion/get_wallet/get_wallet.h"
 #include "bat/ledger/ledger.h"
@@ -25,6 +26,7 @@ class StateMigrationV10 {
 
  private:
   void OnGetWallet(type::Result result,
+                   const std::string& custodian,
                    bool linked,
                    ledger::ResultCallback callback);
 
