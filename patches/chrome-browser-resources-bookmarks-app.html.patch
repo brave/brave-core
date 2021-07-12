@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/resources/bookmarks/app.html b/chrome/browser/resources/bookmarks/app.html
-index 13b4d207f6bb567775e071b77ad1c99cee723388..df3e6f2c77e193a52f8d9ca4def12a93933f11c2 100644
+index 13b4d207f6bb567775e071b77ad1c99cee723388..487d32077095792e65154bf4ce43692a6e54294f 100644
 --- a/chrome/browser/resources/bookmarks/app.html
 +++ b/chrome/browser/resources/bookmarks/app.html
 @@ -1,3 +1,4 @@
-+<linu rel="import" href="chrome://bookmarks/brave/brave_bookmarks_overrides.html">
++<link rel="import" href="chrome://bookmarks/brave/brave_bookmarks_overrides.html">
  <style>
    :host {
      color: var(--cr-primary-text-color);

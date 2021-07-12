@@ -16,8 +16,8 @@
   const std::string prefix = "brave/"; \
   for (size_t i = 0; i < kBraveBookmarksResourcesSize; ++i) { \
     std::string path = prefix; \
-    path += kBraveBookmarksResources[i].name; \
-    source->AddResourcePath(path, kBraveBookmarksResources[i].value); \
+    path += kBraveBookmarksResources[i].path; \
+    source->AddResourcePath(path, kBraveBookmarksResources[i].id); \
   }
 
 #include "../../../../../../../chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc"
