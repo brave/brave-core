@@ -1726,9 +1726,6 @@ until they verify, or until 90 days have passed.
     <message name="IDS_SWAP">
       Swap
     </message>
-    <message name="IDS_TITLE_LOCK">
-      Lock
-    </message>
     <message name="IDS_DEFI_SECURE_STORAGE">
       DeFi &amp; Secure Crypto Storage
     </message>
