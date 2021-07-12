@@ -11,7 +11,6 @@
   <release seq="1">
     <includes>
       <include name="IDR_BOOKMARKS_BRAVE_BOOKMARKS_OVERRIDES_HTML" file="brave_bookmarks_overrides.html" type="chrome_html" preprocess="true" />
-      <include name="IDR_BOOKMARKS_BRAVE_BOOKMARKS_OVERRIDES_JS" file="brave_bookmarks_overrides.js" type="chrome_html" preprocess="true" />
     </includes>
   </release>
 </grit>

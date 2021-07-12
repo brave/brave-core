@@ -1,9 +1,11 @@
 diff --git a/chrome/browser/resources/bookmarks/app.html b/chrome/browser/resources/bookmarks/app.html
-index 13b4d207f6bb567775e071b77ad1c99cee723388..487d32077095792e65154bf4ce43692a6e54294f 100644
+index 13b4d207f6bb567775e071b77ad1c99cee723388..28cbeb102951dd8cc6f2d2f62d0e987550ec8173 100644
 --- a/chrome/browser/resources/bookmarks/app.html
 +++ b/chrome/browser/resources/bookmarks/app.html
-@@ -1,3 +1,4 @@
+@@ -1,4 +1,5 @@
+-<style>
 +<link rel="import" href="chrome://bookmarks/brave/brave_bookmarks_overrides.html">
- <style>
++<style include="brave-override-style-shared-style">
    :host {
      color: var(--cr-primary-text-color);
+     display: flex;
