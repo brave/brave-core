@@ -56,10 +56,19 @@ class NTPBackground: Codable {
         let y: CGFloat?
     }
     
-    lazy var image: UIImage? = {
+    var image: UIImage? {
         // Remote resources are downloaded files, so must be loaded differently
-        packaged == true ? UIImage(named: imageUrl) : UIImage(contentsOfFile: imageUrl)
-    }()
+        if packaged == true {
+            // Load without cache if possible
+            if let path = Bundle.main.path(forResource: imageUrl, ofType: nil) {
+                return UIImage(contentsOfFile: path)
+            }
+            
+            // Load with cache
+            return UIImage(named: imageUrl)
+        }
+        return UIImage(contentsOfFile: imageUrl)
+    }
 }
 
 class NTPLogo: Codable {
@@ -76,7 +85,7 @@ class NTPLogo: Codable {
         self.destinationUrl = destinationUrl
     }
     
-    lazy var image: UIImage? = {
+    var image: UIImage? {
         UIImage(contentsOfFile: imageUrl)
-    }()
+    }
 }
