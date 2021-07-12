@@ -242,6 +242,12 @@ class NewTabPageViewController: UIViewController {
         backgroundButtonsView.collectionViewSafeAreaInsets = view.safeAreaInsets
     }
     
+    override func willMove(toParent parent: UIViewController?) {
+        super.willMove(toParent: parent)
+        
+        backgroundView.imageView.image = parent == nil ? nil : background.backgroundImage
+    }
+    
     // MARK: - Background
     
     /// Hide any visible sponsored image notification if the current background
