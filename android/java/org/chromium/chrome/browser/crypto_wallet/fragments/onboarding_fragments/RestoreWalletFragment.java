@@ -79,7 +79,9 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                     onNextPage.gotoNextPage(true);
                     Utils.disableCryptoOnboarding();
                 } else {
-                    Toast.makeText(getActivity(), R.string.account_recovery_failed, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.account_recovery_failed,
+                                 Toast.LENGTH_SHORT)
+                            .show();
                 }
             }
         });

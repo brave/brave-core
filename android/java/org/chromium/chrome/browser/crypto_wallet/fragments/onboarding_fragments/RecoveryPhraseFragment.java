@@ -19,8 +19,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
+import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
@@ -44,8 +44,9 @@ public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
         recoveryPhrases = Utils.getRecoveryPhraseAsList();
         TextView copyButton = view.findViewById(R.id.btn_copy);
         assert getActivity() != null;
-        copyButton.setOnClickListener(
-                v -> Utils.saveTextToClipboard(getActivity(), Utils.getRecoveryPhraseFromList(recoveryPhrases)));
+        copyButton.setOnClickListener(v
+                -> Utils.saveTextToClipboard(
+                        getActivity(), Utils.getRecoveryPhraseFromList(recoveryPhrases)));
 
         Button recoveryPhraseButton = view.findViewById(R.id.btn_recovery_phrase_continue);
         recoveryPhraseButton.setOnClickListener(v -> onNextPage.gotoNextPage(false));

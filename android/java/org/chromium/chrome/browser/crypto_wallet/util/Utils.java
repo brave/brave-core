@@ -12,8 +12,9 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import org.chromium.chrome.R;
 import org.chromium.base.ContextUtils;
+import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
 import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,8 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
 
 public class Utils {
     public static final Pattern PASSWORD_PATTERN = Pattern.compile("^"
@@ -41,8 +40,8 @@ public class Utils {
     private static final String PREF_CRYPTO_ONBOARDING = "crypto_onboarding";
 
     public static List<String> getRecoveryPhraseAsList() {
-        String[] recoveryPhraseArray = BraveWalletNativeWorker.getInstance()
-                                                   .getRecoveryWords().split(" ");
+        String[] recoveryPhraseArray =
+                BraveWalletNativeWorker.getInstance().getRecoveryWords().split(" ");
         return new ArrayList<String>(Arrays.asList(recoveryPhraseArray));
     }
 

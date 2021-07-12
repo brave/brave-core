@@ -13,8 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.chrome.R;
 import org.chromium.base.Log;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.VerifyRecoveryPhraseFragment;
 
 import java.util.ArrayList;
@@ -39,10 +39,10 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final String recoveryPhrase = recoveryPhraseMap.get(position);
-        holder.recoveryPhraseText.setText(String.format(
-                            holder.recoveryPhraseText.getContext().getResources().getString(
-                                    R.string.recovery_phrase_item_text),
-                            (position + 1), recoveryPhrase));
+        holder.recoveryPhraseText.setText(
+                String.format(holder.recoveryPhraseText.getContext().getResources().getString(
+                                      R.string.recovery_phrase_item_text),
+                        (position + 1), recoveryPhrase));
         if (onRecoveryPhraseSelected != null) {
             holder.itemView.setOnClickListener(v -> {
                 if (isSelectedRecoveryPhrase) {
@@ -50,8 +50,8 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
                 } else {
                     selectedRecoveryPhraseMap.add(recoveryPhrase);
                 }
-                    onRecoveryPhraseSelected.onSelectedRecoveryPhrase(recoveryPhrase);
-                });
+                onRecoveryPhraseSelected.onSelectedRecoveryPhrase(recoveryPhrase);
+            });
             if (!isSelectedRecoveryPhrase) {
                 if (selectedRecoveryPhraseMap.contains(recoveryPhrase)) {
                     holder.recoveryPhraseText.setEnabled(false);

@@ -9,6 +9,7 @@
 #include "base/android/jni_string.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/build/android/jni_headers/BraveWalletNativeWorker_jni.h"
+#include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
@@ -30,7 +31,7 @@ namespace android {
 BraveWalletNativeWorker::BraveWalletNativeWorker(
     JNIEnv* env,
     const base::android::JavaRef<jobject>& obj)
-    : weak_java_brave_wallet_native_worker_(env, obj), weak_factory_(this) {
+    : weak_java_brave_wallet_native_worker_(env, obj), weak_ptr_factory_(this) {
   Java_BraveWalletNativeWorker_setNativePtr(env, obj,
                                             reinterpret_cast<intptr_t>(this));
 }
@@ -104,6 +105,29 @@ BraveWalletNativeWorker::RestoreWallet(
 void BraveWalletNativeWorker::ResetWallet(JNIEnv* env) {
   auto* keyring_controller = GetBraveWalletService()->keyring_controller();
   keyring_controller->Reset();
+}
+
+void BraveWalletNativeWorker::GetAssetPrice(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& asset) {
+  brave_wallet::BraveWalletService* brave_wallet_service =
+      GetBraveWalletService();
+  if (brave_wallet_service) {
+    auto* asset_ratio_controller =
+        brave_wallet_service->asset_ratio_controller();
+    asset_ratio_controller->GetPrice(
+        base::android::ConvertJavaStringToUTF8(env, asset),
+        base::BindOnce(&BraveWalletNativeWorker::OnGetPrice,
+                       weak_ptr_factory_.GetWeakPtr()));
+  }
+}
+
+void BraveWalletNativeWorker::OnGetPrice(bool success,
+                                         const std::string& price) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveWalletNativeWorker_OnGetPrice(
+      env, weak_java_brave_wallet_native_worker_.get(env),
+      base::android::ConvertUTF8ToJavaString(env, price), success);
 }
 
 static void JNI_BraveWalletNativeWorker_Init(

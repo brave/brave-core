@@ -35,9 +35,13 @@ class BraveWalletNativeWorker {
       const base::android::JavaParamRef<jstring>& password);
   void ResetWallet(JNIEnv* env);
 
+  void GetAssetPrice(JNIEnv* env,
+                     const base::android::JavaParamRef<jstring>& asset);
+  void OnGetPrice(bool success, const std::string& price);
+
  private:
   JavaObjectWeakGlobalRef weak_java_brave_wallet_native_worker_;
-  base::WeakPtrFactory<BraveWalletNativeWorker> weak_factory_;
+  base::WeakPtrFactory<BraveWalletNativeWorker> weak_ptr_factory_;
 };
 }  // namespace android
 }  // namespace chrome

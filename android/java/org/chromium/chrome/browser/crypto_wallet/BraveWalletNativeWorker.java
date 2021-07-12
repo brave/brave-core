@@ -5,15 +5,23 @@
 
 package org.chromium.chrome.browser.crypto_wallet;
 
+import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletObserver;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @JNINamespace("chrome::android")
 public class BraveWalletNativeWorker {
     private long mNativeBraveWalletNativeWorker;
     private static final Object lock = new Object();
     private static BraveWalletNativeWorker instance;
+
+    private List<BraveWalletObserver> mObservers;
 
     public static BraveWalletNativeWorker getInstance() {
         synchronized (lock) {
@@ -25,7 +33,9 @@ public class BraveWalletNativeWorker {
         return instance;
     }
 
-    private BraveWalletNativeWorker() {}
+    private BraveWalletNativeWorker() {
+        mObservers = new ArrayList<BraveWalletObserver>();
+    }
 
     private void init() {
         if (mNativeBraveWalletNativeWorker == 0) {
@@ -42,6 +52,18 @@ public class BraveWalletNativeWorker {
         if (mNativeBraveWalletNativeWorker != 0) {
             BraveWalletNativeWorkerJni.get().destroy(mNativeBraveWalletNativeWorker, this);
             mNativeBraveWalletNativeWorker = 0;
+        }
+    }
+
+    public void AddObserver(BraveWalletObserver observer) {
+        synchronized (lock) {
+            mObservers.add(observer);
+        }
+    }
+
+    public void RemoveObserver(BraveWalletObserver observer) {
+        synchronized (lock) {
+            mObservers.remove(observer);
         }
     }
 
@@ -82,6 +104,18 @@ public class BraveWalletNativeWorker {
         BraveWalletNativeWorkerJni.get().resetWallet(mNativeBraveWalletNativeWorker);
     }
 
+    public void getAssetPrice(String asset) {
+        BraveWalletNativeWorkerJni.get().getAssetPrice(mNativeBraveWalletNativeWorker, asset);
+    }
+
+    @CalledByNative
+    public void OnGetPrice(String price, boolean isSuccess) {
+        Log.e("NTP", "Asset price : " + price);
+        for (BraveWalletObserver observer : mObservers) {
+            observer.OnGetPrice(price, isSuccess);
+        }
+    }
+
     @NativeMethods
     interface Natives {
         void init(BraveWalletNativeWorker caller);
@@ -93,5 +127,6 @@ public class BraveWalletNativeWorker {
         boolean unlockWallet(long nativeBraveWalletNativeWorker, String password);
         String restoreWallet(long nativeBraveWalletNativeWorker, String mnemonic, String password);
         void resetWallet(long nativeBraveWalletNativeWorker);
+        void getAssetPrice(long nativeBraveWalletNativeWorker, String asset);
     }
 }

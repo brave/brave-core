@@ -262,6 +262,7 @@ if (enable_brave_sync) {
 if (brave_wallet_enabled) {
   brave_java_sources += [
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletNativeWorker.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletObserver.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/CryptoWalletActivity.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/CryptoFragmentPageAdapter.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/CryptoWalletOnboardingPagerAdapter.java",

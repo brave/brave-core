@@ -50,10 +50,10 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
         });
 
         TextView unlockWalletRestoreButton = view.findViewById(R.id.btn_unlock_wallet_restore);
-        unlockWalletRestoreButton.setOnClickListener(v -> { 
+        unlockWalletRestoreButton.setOnClickListener(v -> {
             if (onNextPage != null) {
                 onNextPage.gotoRestorePage();
-            } 
+            }
         });
     }
 }

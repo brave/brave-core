@@ -56,8 +56,7 @@ public class CryptoWalletActivity extends AsyncInitializationActivity {
         SearchView searchView = (SearchView) searchItem.getActionView();
         // TODO below code will get updated in follow up issue.
 
-        EditText searchEditText =
-        searchView.findViewById(R.id.search_src_text);
+        EditText searchEditText = searchView.findViewById(R.id.search_src_text);
         searchEditText.setTextColor(getResources().getColor(android.R.color.black));
         searchEditText.setHintTextColor(getResources().getColor(android.R.color.darker_gray));
         ImageView closeButtonImage = searchView.findViewById(R.id.search_close_btn);

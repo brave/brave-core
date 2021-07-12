@@ -23,8 +23,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
-import org.chromium.chrome.R;
 import org.chromium.base.Log;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
 import org.chromium.chrome.browser.crypto_wallet.CryptoWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter;
@@ -44,7 +44,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CryptoFragment extends Fragment  implements OnNextPage{
+public class CryptoFragment extends Fragment implements OnNextPage {
     private OnFinishOnboarding onFinishOnboarding;
 
     private View rootView;
@@ -79,49 +79,49 @@ public class CryptoFragment extends Fragment  implements OnNextPage{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         cryptoLayout = view.findViewById(R.id.crypto_layout);
         cryptoWalletOnboardingViewPager =
-                    view.findViewById(R.id.crypto_wallet_onboarding_viewpager);
-            assert getActivity() != null;
-            cryptoWalletOnboardingPagerAdapter = new CryptoWalletOnboardingPagerAdapter(
-                    getChildFragmentManager());
-            cryptoWalletOnboardingViewPager.setAdapter(cryptoWalletOnboardingPagerAdapter);
-            cryptoWalletOnboardingViewPager.setOffscreenPageLimit(
-                    cryptoWalletOnboardingPagerAdapter.getCount() - 1);
+                view.findViewById(R.id.crypto_wallet_onboarding_viewpager);
+        assert getActivity() != null;
+        cryptoWalletOnboardingPagerAdapter =
+                new CryptoWalletOnboardingPagerAdapter(getChildFragmentManager());
+        cryptoWalletOnboardingViewPager.setAdapter(cryptoWalletOnboardingPagerAdapter);
+        cryptoWalletOnboardingViewPager.setOffscreenPageLimit(
+                cryptoWalletOnboardingPagerAdapter.getCount() - 1);
 
-            ImageView onboardingBackButton = view.findViewById(R.id.onboarding_back_button);
-            onboardingBackButton.setVisibility(View.GONE);
-            onboardingBackButton.setOnClickListener(v -> {
-                if (cryptoWalletOnboardingViewPager != null) {
-                    cryptoWalletOnboardingViewPager.setCurrentItem(
-                            cryptoWalletOnboardingViewPager.getCurrentItem() - 1);
-                }
-            });
+        ImageView onboardingBackButton = view.findViewById(R.id.onboarding_back_button);
+        onboardingBackButton.setVisibility(View.GONE);
+        onboardingBackButton.setOnClickListener(v -> {
+            if (cryptoWalletOnboardingViewPager != null) {
+                cryptoWalletOnboardingViewPager.setCurrentItem(
+                        cryptoWalletOnboardingViewPager.getCurrentItem() - 1);
+            }
+        });
 
-            cryptoWalletOnboardingViewPager.addOnPageChangeListener(
-                    new ViewPager.OnPageChangeListener() {
-                        @Override
-                        public void onPageScrolled(
-                                int position, float positionOffset, int positionOffsetPixels) {}
+        cryptoWalletOnboardingViewPager.addOnPageChangeListener(
+                new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(
+                            int position, float positionOffset, int positionOffsetPixels) {}
 
-                        @Override
-                        public void onPageSelected(int position) {
-                            if (position == 0 || position == 2) {
-                                onboardingBackButton.setVisibility(View.GONE);
-                            } else {
-                                onboardingBackButton.setVisibility(View.VISIBLE);
-                            }
+                    @Override
+                    public void onPageSelected(int position) {
+                        if (position == 0 || position == 2) {
+                            onboardingBackButton.setVisibility(View.GONE);
+                        } else {
+                            onboardingBackButton.setVisibility(View.VISIBLE);
                         }
+                    }
 
-                        @Override
-                        public void onPageScrollStateChanged(int state) {}
-                    });
+                    @Override
+                    public void onPageScrollStateChanged(int state) {}
+                });
         if (Utils.shouldShowCryptoOnboarding()) {
             setNavigationFragments(ONBOARDING_ACTION);
         } else {
-            boolean isLocked= BraveWalletNativeWorker.getInstance().isWalletLocked();
+            boolean isLocked = BraveWalletNativeWorker.getInstance().isWalletLocked();
             if (isLocked) {
                 setNavigationFragments(UNLOCK_WALLET_ACTION);
             } else {
-            setCryptoLayout();
+                setCryptoLayout();
             }
         }
     }
@@ -186,15 +186,15 @@ public class CryptoFragment extends Fragment  implements OnNextPage{
     }
 
     @Override
-        public void gotoNextPage(boolean finishOnboarding) {
-            if (finishOnboarding) {
-                onFinishOnboarding.onFinish();
-            } else {
-                if (cryptoWalletOnboardingViewPager != null)
-                    cryptoWalletOnboardingViewPager.setCurrentItem(
-                            cryptoWalletOnboardingViewPager.getCurrentItem() + 1);
-            }
+    public void gotoNextPage(boolean finishOnboarding) {
+        if (finishOnboarding) {
+            onFinishOnboarding.onFinish();
+        } else {
+            if (cryptoWalletOnboardingViewPager != null)
+                cryptoWalletOnboardingViewPager.setCurrentItem(
+                        cryptoWalletOnboardingViewPager.getCurrentItem() + 1);
         }
+    }
 
         @Override
         public void gotoRestorePage() {
