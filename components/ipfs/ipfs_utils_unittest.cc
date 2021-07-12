@@ -659,36 +659,16 @@ TEST_F(IpfsUtilsUnitTest, IsAPIGatewayTest) {
 }
 
 TEST_F(IpfsUtilsUnitTest, IPNSRegistryDomain) {
-  std::string cid;
-  std::string path;
-  ASSERT_FALSE(
-      ipfs::GetRegistryDomainFromIPNS(GURL("ipfs://bafy"), &cid, &path));
-  EXPECT_TRUE(cid.empty());
-  EXPECT_TRUE(path.empty());
-
-  ASSERT_FALSE(
-      ipfs::GetRegistryDomainFromIPNS(GURL("ipfs://QmfdSDf"), &cid, &path));
-  EXPECT_TRUE(cid.empty());
-  EXPECT_TRUE(path.empty());
-
-  ASSERT_FALSE(
-      ipfs::GetRegistryDomainFromIPNS(GURL("ipns://QmfdSDf"), &cid, &path));
-  EXPECT_TRUE(cid.empty());
-  EXPECT_TRUE(path.empty());
-
-  ASSERT_FALSE(
-      ipfs::GetRegistryDomainFromIPNS(GURL("ipns://bafyff"), &cid, &path));
-  EXPECT_TRUE(cid.empty());
-  EXPECT_TRUE(path.empty());
-
-  ASSERT_TRUE(ipfs::GetRegistryDomainFromIPNS(GURL("ipns://brantly.eth.link"),
-                                              &cid, &path));
-  EXPECT_EQ(cid, "brantly.eth.link");
-  EXPECT_TRUE(path.empty());
-
-  cid.clear();
-  ASSERT_TRUE(ipfs::GetRegistryDomainFromIPNS(GURL("ipns://brantly.eth/path"),
-                                              &cid, &path));
-  EXPECT_EQ(cid, "brantly.eth");
-  EXPECT_EQ(path, "/path");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("http://google.com")), "");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("https://google.com")), "");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("ipfs://bafy")), "");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("ipfs://QmfdSDf")), "");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("ipns://QmfdSDf/path")), "");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("ipns://bafyff/path")), "");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("ipns://brantly.eth.link")),
+            "brantly.eth.link");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("ipns://brantly.eth/path")),
+            "brantly.eth");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("ipns://blah.google.com")),
+            "google.com");
 }

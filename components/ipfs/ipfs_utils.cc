@@ -389,25 +389,15 @@ GURL ContentHashToCIDv1URL(const std::string& contenthash) {
   return GURL(scheme + "://" + cidv1);
 }
 
-bool GetRegistryDomainFromIPNS(const GURL& url,
-                               std::string* domain,
-                               std::string* path) {
+std::string GetRegistryDomainFromIPNS(const GURL& url) {
   if (!url.SchemeIs(ipfs::kIPNSScheme))
-    return false;
-  DCHECK(domain);
-  DCHECK(path);
+    return std::string();
   std::string cid;
   std::string ipfs_path;
   if (!ipfs::ParseCIDAndPathFromIPFSUrl(url, &cid, &ipfs_path) || cid.empty())
-    return false;
-  if (GetDomainAndRegistry(
-          cid, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)
-          .empty()) {
-    return false;
-  }
-  *domain = cid;
-  *path = ipfs_path;
-  return !domain->empty();
+    return std::string();
+  return GetDomainAndRegistry(
+      cid, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
 
 }  // namespace ipfs

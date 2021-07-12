@@ -53,6 +53,10 @@ int LookupSuffixInReversedSet(const unsigned char* graph,
     *suffix_length = strlen(decentralized_dns::kEthDomain) - 1;
     return kDafsaFound;
   }
+  if (base::EndsWith(host, decentralized_dns::kDNSForEthDomain)) {
+    *suffix_length = strlen(decentralized_dns::kDNSForEthDomain) - 1;
+    return kDafsaFound;
+  }
 
   return LookupSuffixInReversedSet_ChromiumImpl(graph, length, include_private,
                                                 host, suffix_length);

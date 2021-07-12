@@ -651,18 +651,25 @@ void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
     return;
   }
 
-  auto origin = url.GetOrigin();
-  const std::string baseDomain =
-      GetDomainAndRegistry(origin.host(), INCLUDE_PRIVATE_REGISTRIES);
-
+  auto origin = url.GetOrigin().host();
+  std::string baseDomain =
+      GetDomainAndRegistry(url.host(), INCLUDE_PRIVATE_REGISTRIES);
+#if BUILDFLAG(IPFS_ENABLED)
+  if (baseDomain.empty()) {
+    baseDomain = ipfs::GetRegistryDomainFromIPNS(url);
+    if (!baseDomain.empty()) {
+      origin = baseDomain;
+    }
+  }
+#endif
   if (baseDomain == "")
     return;
 
-  const std::string publisher_url = origin.scheme() + "://" + baseDomain + "/";
+  const std::string publisher_url = url.scheme() + "://" + baseDomain + "/";
 
   ledger::type::VisitDataPtr data = ledger::type::VisitData::New();
   data->tld = data->name = baseDomain;
-  data->domain = origin.host(),
+  data->domain = origin;
   data->path = url.path();
   data->tab_id = tab_id.id();
   data->url = publisher_url;
@@ -1767,20 +1774,16 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
     return;
   }
 
-  auto origin = parsed_url.GetOrigin();
+  auto origin = parsed_url.GetOrigin().spec();
   std::string baseDomain =
-      GetDomainAndRegistry(origin.host(), INCLUDE_PRIVATE_REGISTRIES);
+      GetDomainAndRegistry(parsed_url.host(), INCLUDE_PRIVATE_REGISTRIES);
   std::string path = parsed_url.PathForRequest();
 #if BUILDFLAG(IPFS_ENABLED)
-  if (parsed_url.SchemeIs(ipfs::kIPNSScheme)) {
-    std::string cid;
-    if (!ipfs::GetRegistryDomainFromIPNS(parsed_url, &cid, &path))
-      return;
-    origin = GURL(parsed_url.scheme() + "://" + cid);
-    baseDomain = cid;
-  } else if (parsed_url.SchemeIs(ipfs::kIPFSScheme)) {
-    OnPanelPublisherInfo(ledger::type::Result::NOT_FOUND, nullptr, windowId);
-    return;
+  if (baseDomain.empty()) {
+    baseDomain = ipfs::GetRegistryDomainFromIPNS(parsed_url);
+    if (!baseDomain.empty()) {
+      origin = parsed_url.scheme() + "://" + baseDomain + "/";
+    }
   }
 #endif
   if (baseDomain == "") {
@@ -1799,7 +1802,7 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
   ledger::type::VisitDataPtr visit_data = ledger::type::VisitData::New();
   visit_data->domain = visit_data->name = baseDomain;
   visit_data->path = path;
-  visit_data->url = origin.spec();
+  visit_data->url = origin;
   visit_data->favicon_url = favicon_url;
 
   bat_ledger_->GetPublisherActivityFromUrl(
