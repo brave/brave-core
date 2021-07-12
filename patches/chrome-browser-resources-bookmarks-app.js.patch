@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/bookmarks/app.js b/chrome/browser/resources/bookmarks/app.js
+index 9204c8ccc7316acc463a362a8ab5dc1a026cc6ca..e467e177747492b43b004666d57f6a5da2e12fe1 100644
+--- a/chrome/browser/resources/bookmarks/app.js
++++ b/chrome/browser/resources/bookmarks/app.js
+@@ -13,6 +13,7 @@ import './router.js';
+ import './shared_vars.js';
+ import './strings.m.js';
+ import './command_manager.js';
++import 'chrome://bookmarks/brave/brave_bookmarks_overrides.js'
+ 
+ import {FindShortcutBehavior, FindShortcutBehaviorInterface} from 'chrome://resources/cr_elements/find_shortcut_behavior.js';
+ import {StoreObserver} from 'chrome://resources/js/cr/ui/store.m.js';

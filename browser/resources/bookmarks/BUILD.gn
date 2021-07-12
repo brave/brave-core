@@ -1,5 +1,6 @@
 import("//chrome/common/features.gni")
 import("//tools/grit/grit_rule.gni")
+import("//tools/polymer/html_to_js.gni")
 
 grit("resources") {
   source = "bookmarks_resources.grd"
@@ -13,4 +14,12 @@ grit("resources") {
 
   output_dir = "$root_gen_dir/brave/browser/resources/bookmarks"
   resource_ids = "//brave/browser/resources/resource_ids"
+
+  deps = [ ":web_components" ]
+}
+
+html_to_js("web_components") {
+  js_files = [
+    "brave_bookmarks_overrides.js",
+  ]
 }

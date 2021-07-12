@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/resources/bookmarks/item.html b/chrome/browser/resources/bookmarks/item.html
+index 5f3e550498ac4a2931ff4735d8d2b2cb9e96df5e..9d3a7d1d5b5257efa1759abcd17e67d19ac792ec 100644
+--- a/chrome/browser/resources/bookmarks/item.html
++++ b/chrome/browser/resources/bookmarks/item.html
+@@ -1,4 +1,4 @@
+-<style include="shared-style cr-icons">
++<style include="shared-style cr-icons brave-bookmarks-shared-style">
+   :host {
+     align-items: center;
+     color: inherit;
+@@ -112,4 +112,4 @@
+           isMultiSelect_)]]"
+       on-click="onMenuButtonClick_"
+       aria-haspopup="menu"></cr-icon-button>
+-</div>
+\ No newline at end of file
++</div>

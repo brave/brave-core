@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/resources/bookmarks/folder_node.html b/chrome/browser/resources/bookmarks/folder_node.html
+index 4009e7dec7ef28296bf42dece67616498648a48d..883896e5724f4912d0449ec0f9fc8352388bf5c7 100644
+--- a/chrome/browser/resources/bookmarks/folder_node.html
++++ b/chrome/browser/resources/bookmarks/folder_node.html
+@@ -1,4 +1,4 @@
+-<style include="cr-shared-style shared-style">
++<style include="cr-shared-style shared-style brave-bookmarks-shared-style">
+   :host {
+     display: block;
+     --cr-vertical-tab-height: 33px;
+@@ -107,4 +107,4 @@
+       </bookmarks-folder-node>
+     </template>
+   </template>
+-</div>
+\ No newline at end of file
++</div>

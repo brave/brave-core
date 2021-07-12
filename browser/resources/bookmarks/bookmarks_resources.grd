@@ -10,7 +10,7 @@
   </outputs>
   <release seq="1">
     <includes>
-      <include name="IDR_BOOKMARKS_BRAVE_BOOKMARKS_OVERRIDES_HTML" file="brave_bookmarks_overrides.html" type="chrome_html" preprocess="true" />
+      <include name="IDR_BOOKMARKS_BRAVE_BOOKMARKS_OVERRIDES_JS" file="${root_gen_dir}/brave/browser/resources/bookmarks/brave_bookmarks_overrides.js" resource_path="brave_bookmarks_overrides.js" type="chrome_html" preprocess="true" use_base_dir="false" />
     </includes>
   </release>
 </grit>
