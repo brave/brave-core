@@ -64,18 +64,22 @@ static_library("browser") {
     "swap_controller.h",
     "swap_response_parser.cc",
     "swap_response_parser.h",
+    "wallet_data_files_installer.cc",
+    "wallet_data_files_installer.h",
   ]
 
   deps = [
     "//base",
     "//base/util/values:values_util",
     "//brave/components/api_request_helper",
+    "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/third_party/bitcoin-core",
     "//brave/third_party/bitcoin-core:secp256k1",
     "//brave/third_party/ethash",
     "//brave/vendor/bip39wally-core-native:bip39wally-core",
+    "//components/component_updater",
     "//components/keyed_service/core",
     "//components/prefs",
     "//components/sync_preferences",
