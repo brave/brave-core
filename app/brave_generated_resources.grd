@@ -1189,11 +1189,14 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         <message name="IDS_PAGE_IS_DISTILLED" desc="Speedreader is enabled on this page">
           in Speedreader
         </message>
-        <message name="IDS_ICON_READER_MODE_LABEL" desc="Icon label indicating Reader Mode is enabled">
-          Reader Mode
+        <message name="IDS_SPEEDREADER_ICON_TURN_OFF_READER_MODE" desc="Accessible text shown when a page is in Reader Mode">
+          Turn off reader mode
         </message>
-        <message name="IDS_ICON_SPEEDREADER_MODE_LABEL" desc="Icon label indicating Speedreader is enabled">
-          Speedreader
+        <message name="IDS_SPEEDREADER_ICON_TURN_ON_READER_MODE" desc="Accessible text shown when a page can be distilled">
+          Turn on reader mode
+        </message>
+        <message name="IDS_SPEEDREADER_ICON_SPEEDREADER_SETTINGS" desc="Accessible text shown when a page is in Speedreader Mode">
+          Speedreader settings
         </message>
       </if>
 

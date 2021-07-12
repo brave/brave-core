@@ -4,6 +4,7 @@
 
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
+import("//brave/components/speedreader/buildflags.gni")
 import("//components/vector_icons/vector_icons.gni")
 
 aggregate_vector_icons("brave_vector_icons") {
@@ -16,7 +17,6 @@ aggregate_vector_icons("brave_vector_icons") {
     "download_unlock.icon",
     "open_in_ipfs.icon",
     "open_in_tor.icon",
-    "speedreader.icon",
   ]
 
   if (enable_sidebar) {
@@ -32,6 +32,13 @@ aggregate_vector_icons("brave_vector_icons") {
       "sidebar_items_up_arrow.icon",
       "sidebar_settings.icon",
       "sidebar_trash.icon",
+    ]
+  }
+
+  if (enable_speedreader) {
+    sources += [
+      "brave_reader_mode.icon",
+      "brave_speedreader_mode.icon",
     ]
   }
 
