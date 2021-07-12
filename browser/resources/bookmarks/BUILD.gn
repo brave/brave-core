@@ -19,7 +19,5 @@ grit("resources") {
 }
 
 html_to_js("web_components") {
-  js_files = [
-    "brave_bookmarks_overrides.js",
-  ]
+  js_files = [ "brave_bookmarks_overrides.js" ]
 }

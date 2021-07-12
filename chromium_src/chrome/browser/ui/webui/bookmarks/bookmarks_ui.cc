@@ -9,15 +9,15 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "content/public/browser/web_ui_data_source.h"
 
-#define BRAVE_CREATE_BOOKMARKS_UI_HTML_SOURCE \
-  NavigationBarDataProvider::Initialize(source); \
-  source->AddLocalizedString( \
-      "emptyList", IDS_BRAVE_BOOKMARK_MANAGER_EMPTY_LIST); \
-  const std::string prefix = "brave/"; \
-  for (size_t i = 0; i < kBraveBookmarksResourcesSize; ++i) { \
-    std::string path = prefix; \
-    path += kBraveBookmarksResources[i].path; \
-    source->AddResourcePath(path, kBraveBookmarksResources[i].id); \
+#define BRAVE_CREATE_BOOKMARKS_UI_HTML_SOURCE                        \
+  NavigationBarDataProvider::Initialize(source);                     \
+  source->AddLocalizedString("emptyList",                            \
+                             IDS_BRAVE_BOOKMARK_MANAGER_EMPTY_LIST); \
+  const std::string prefix = "brave/";                               \
+  for (size_t i = 0; i < kBraveBookmarksResourcesSize; ++i) {        \
+    std::string path = prefix;                                       \
+    path += kBraveBookmarksResources[i].path;                        \
+    source->AddResourcePath(path, kBraveBookmarksResources[i].id);   \
   }
 
 #include "../../../../../../../chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc"
