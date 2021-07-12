@@ -135,10 +135,10 @@ class OnboardingWebViewController: UIViewController, WKNavigationDelegate {
             
             SecTrustSetPolicies(trust, policies as CFTypeRef)
             
-            var result: SecTrustResultType = .invalid
-            SecTrustEvaluate(trust, &result)
+            var error: CFError?
+            let result = SecTrustEvaluateWithError(trust, &error)
             
-            if (result == .proceed || result == .unspecified) && webView.hasOnlySecureContent {
+            if result && webView.hasOnlySecureContent {
                 toolbar.secureIcon.tintColor = UX.secureWebPageColor
                 toolbar.urlLabel.textColor = UX.secureWebPageColor
             } else {

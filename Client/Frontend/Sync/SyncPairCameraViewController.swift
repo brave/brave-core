@@ -16,7 +16,9 @@ class SyncPairCameraViewController: SyncViewController {
     var enterWordsButton: RoundInterfaceButton!
     
     var loadingView: UIView!
-    let loadingSpinner = UIActivityIndicatorView(style: .whiteLarge)
+    let loadingSpinner = UIActivityIndicatorView(style: .large).then {
+        $0.color = .white
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

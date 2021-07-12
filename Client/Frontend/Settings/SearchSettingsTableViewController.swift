@@ -9,7 +9,7 @@ private let log = Logger.browserLogger
 
 // MARK: - SearchEnginePickerDelegate
 
-protocol SearchEnginePickerDelegate: class {
+protocol SearchEnginePickerDelegate: AnyObject {
     func searchEnginePicker(_ searchEnginePicker: SearchEnginePicker?,
                             didSelectSearchEngine engine: OpenSearchEngine?, forType: DefaultEngineType?)
 }

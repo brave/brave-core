@@ -4,7 +4,7 @@
 
 import UIKit
 
-protocol BookmarkDetailsViewDelegate: class {
+protocol BookmarkDetailsViewDelegate: AnyObject {
     func correctValues(validationPassed: Bool)
 }
 

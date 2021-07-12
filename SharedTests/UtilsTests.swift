@@ -76,33 +76,4 @@ class UtilsTests: XCTestCase {
             XCTAssertEqual(expected as NSArray, actual as NSArray)
         }
     }
-
-    func testParseTimestamps() {
-        let millis = "1492316843992"        // Firefox for iOS produced millisecond timestamps. Oops.
-        let decimal = "1492316843.99"
-        let truncated = "1492316843"
-        let huge = "1844674407370955161512"
-
-        XCTAssertNil(decimalSecondsStringToTimestamp(""))
-        XCTAssertNil(decimalSecondsStringToTimestamp(huge))
-        XCTAssertNil(decimalSecondsStringToTimestamp("foo"))
-
-        XCTAssertNil(someKindOfTimestampStringToTimestamp(""))
-        XCTAssertNil(someKindOfTimestampStringToTimestamp(huge))
-        XCTAssertNil(someKindOfTimestampStringToTimestamp("foo"))
-
-        let ts1: Timestamp = 1492316843990
-        XCTAssertEqual(decimalSecondsStringToTimestamp(decimal) ?? 0, ts1)
-        XCTAssertEqual(someKindOfTimestampStringToTimestamp(decimal) ?? 0, ts1)
-
-        let ts2: Timestamp = 1492316843000
-        XCTAssertEqual(decimalSecondsStringToTimestamp(truncated) ?? 0, ts2)
-        XCTAssertEqual(someKindOfTimestampStringToTimestamp(truncated) ?? 0, ts2)
-
-        let ts3: Timestamp = 1492316843992000
-        XCTAssertEqual(decimalSecondsStringToTimestamp(millis) ?? 0, ts3)  // Oops.
-
-        let ts4: Timestamp = 1492316843992
-        XCTAssertEqual(someKindOfTimestampStringToTimestamp(millis) ?? 0, ts4)
-    }
 }

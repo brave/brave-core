@@ -4,7 +4,7 @@
 
 import Foundation
 
-protocol ToolbarProtocol: class {
+protocol ToolbarProtocol: AnyObject {
     
     var tabToolbarDelegate: ToolbarDelegate? { get set }
     var tabsButton: TabsButton { get }
@@ -39,7 +39,7 @@ extension ToolbarProtocol {
     }
 }
 
-protocol ToolbarDelegate: class {
+protocol ToolbarDelegate: AnyObject {
     func tabToolbarDidPressBack(_ tabToolbar: ToolbarProtocol, button: UIButton)
     func tabToolbarDidPressForward(_ tabToolbar: ToolbarProtocol, button: UIButton)
     func tabToolbarDidLongPressBack(_ tabToolbar: ToolbarProtocol, button: UIButton)

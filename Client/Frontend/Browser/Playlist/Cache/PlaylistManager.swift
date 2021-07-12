@@ -188,6 +188,7 @@ class PlaylistManager: NSObject {
         }
     }
     
+    @discardableResult
     func deleteCache(item: PlaylistInfo) -> Bool {
         cancelDownload(item: item)
         

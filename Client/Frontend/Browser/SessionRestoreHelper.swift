@@ -8,7 +8,7 @@ import WebKit
 
 private let log = Logger.browserLogger
 
-protocol SessionRestoreHelperDelegate: class {
+protocol SessionRestoreHelperDelegate: AnyObject {
     func sessionRestoreHelper(_ helper: SessionRestoreHelper, didRestoreSessionForTab tab: Tab)
 }
 

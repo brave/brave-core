@@ -228,10 +228,10 @@ extension BrowserViewController: KeyboardHelperDelegate {
         keyboardState = state
         updateViewConstraints()
 
-        UIView.animate(withDuration: state.animationDuration) {
-            UIView.setAnimationCurve(state.animationCurve)
+        UIViewPropertyAnimator(duration: state.animationDuration, curve: state.animationCurve) {
             self.alertStackView.layoutIfNeeded()
         }
+        .startAnimation()
 
         guard let webView = tabManager.selectedTab?.webView else { return }
 
@@ -252,9 +252,9 @@ extension BrowserViewController: KeyboardHelperDelegate {
             openSearchTextFieldInputAssistantBarButtonGroup.removeAll()
         }
 
-        UIView.animate(withDuration: state.animationDuration) {
-            UIView.setAnimationCurve(state.animationCurve)
+        UIViewPropertyAnimator(duration: state.animationDuration, curve: state.animationCurve) {
             self.alertStackView.layoutIfNeeded()
         }
+        .startAnimation()
     }
 }

@@ -32,7 +32,7 @@ class SpinnerView: UIView {
         $0.backgroundColor = DefaultUX.spinnerBackgroundColor
     }
     
-    private let activityView = UIActivityIndicatorView(style: .whiteLarge).then {
+    private let activityView = UIActivityIndicatorView(style: .large).then {
         $0.color = .white
         $0.startAnimating()
     }

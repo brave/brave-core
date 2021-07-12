@@ -115,6 +115,9 @@ extension WebImageCache {
             
         case .disk:
             return ImageCacheType.disk
+            
+        case .all:
+            return ImageCacheType.disk
 
         @unknown default:
             return ImageCacheType.none

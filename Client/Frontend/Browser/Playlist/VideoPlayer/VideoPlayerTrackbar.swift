@@ -149,7 +149,7 @@ private class VideoSliderBar: UIControl {
     }
 }
 
-protocol VideoTrackerBarDelegate: class {
+protocol VideoTrackerBarDelegate: AnyObject {
     func onValueChanged(_ trackBar: VideoTrackerBar, value: CGFloat)
     func onValueEnded(_ trackBar: VideoTrackerBar, value: CGFloat)
 }

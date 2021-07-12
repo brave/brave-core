@@ -20,7 +20,7 @@ public class Preferences {
 /// Defines an object which may watch a set of `Preference.Option`s
 /// - note: @objc was added here due to a Swift compiler bug which doesn't allow a class-bound protocol
 /// to act as `AnyObject` in a `AnyObject` generic constraint (i.e. `WeakList`)
-@objc public protocol PreferencesObserver: class {
+@objc public protocol PreferencesObserver: AnyObject {
     /// A preference value was changed for some given preference key
     func preferencesDidChange(for key: String)
 }

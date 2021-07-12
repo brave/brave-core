@@ -57,10 +57,6 @@ class TemporaryDocument: NSObject {
         
         if let tab = self.tab, let url = request.url {
             ResourceDownloadManager.downloadResource(for: tab, url: url)
-            
-            ensureMainThread {
-                UIApplication.shared.isNetworkActivityIndicatorVisible = true
-            }
         } else {
             onDocumentDownloaded(document: nil, error: nil)
         }
@@ -69,10 +65,6 @@ class TemporaryDocument: NSObject {
     }
     
     func onDocumentDownloaded(document: DownloadedResourceResponse?, error: Error?) {
-        ensureMainThread {
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-        }
-        
         // Store the blob/data in a local temporary file.
         if let document = document, let data = document.data, !data.isEmpty {
             let tempDirectory = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("TempDocs")
@@ -104,10 +96,6 @@ class TemporaryDocument: NSObject {
 
 extension TemporaryDocument: URLSessionTaskDelegate, URLSessionDownloadDelegate {
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        ensureMainThread {
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-        }
-
         // If we encounter an error downloading the temp file, just return with the
         // original remote URL so it can still be shared as a web URL.
         if error != nil, let remoteURL = request.url {

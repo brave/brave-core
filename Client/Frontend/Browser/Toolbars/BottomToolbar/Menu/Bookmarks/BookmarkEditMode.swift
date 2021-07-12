@@ -59,8 +59,8 @@ enum BookmarkEditMode {
     var specialCells: [AddEditBookmarkTableViewController.SpecialCell] {
         // Order of cells matters.
         switch self {
-        case .addFolder(_), .editFolder(_): return [.rootLevel]
-        case .addBookmark(_), .editBookmark(_), .editFavorite(_): return [.addFolder, .favorites, .rootLevel]
+        case .addFolder, .editFolder: return [.rootLevel]
+        case .addBookmark, .editBookmark, .editFavorite: return [.addFolder, .favorites, .rootLevel]
         }
     }
 }
