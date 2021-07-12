@@ -8,14 +8,7 @@
 
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
-#include "content/public/browser/web_contents_observer.h"
 #include "ui/base/metadata/metadata_header_macros.h"
-
-using DistillState = speedreader::SpeedreaderTabHelper::DistillState;
-
-namespace content {
-class NavigationHandle;
-}  // namespace content
 
 class PrefService;
 
@@ -38,7 +31,7 @@ class SpeedreaderIconView : public PageActionIconView {
   std::u16string GetTextForTooltipAndAccessibleName() const override;
   void UpdateImpl() override;
  private:
-  DistillState GetDistillState() const;
+  speedreader::SpeedreaderTabHelper::DistillState GetDistillState() const;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SPEEDREADER_SPEEDREADER_ICON_VIEW_H_

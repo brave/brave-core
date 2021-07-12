@@ -27,6 +27,8 @@
 #include "ui/views/animation/ink_drop_host_view.h"
 #include "ui/views/animation/ink_drop_state.h"
 
+using DistillState = speedreader::SpeedreaderTabHelper::DistillState;
+
 SpeedreaderIconView::SpeedreaderIconView(
     CommandUpdater* command_updater,
     IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
