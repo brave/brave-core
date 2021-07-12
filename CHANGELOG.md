@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.28](https://github.com/brave/brave-ios/releases/tag/v1.28)
+
+- Added switch app alert message to be shown when clicking on telephone numbers. ([#3361](https://github.com/brave/brave-ios/issues/3361))
+- Fixed menu to open in full when settings is opened. ([#3779](https://github.com/brave/brave-ios/issues/3779))
+- Fixed bookmarks from being hidden behind the bottom toolbar. ([#3788](https://github.com/brave/brave-ios/issues/3788))
+- Fixed Private browsing disclaimer text to reflect as Wi-Fi. ([#3794](https://github.com/brave/brave-ios/issues/3794))
+- Fixed long search queries to be truncated to show search engine details. ([#3815](https://github.com/brave/brave-ios/issues/3815))
+- Fixed menu position to be easily dismissed when VoiceOver is active. ([#3838](https://github.com/brave/brave-ios/issues/3838))
+- Fixed quick search engine overlay to only scroll horizontally. ([#3843](https://github.com/brave/brave-ios/issues/3843))
+- Fixed browser crash when long pressed on a visited site in search overlay. ([#3853](https://github.com/brave/brave-ios/issues/3853))
+- Fixed browser crash when dragging favorites beyond the favorites list. ([#3879](https://github.com/brave/brave-ios/issues/3879))
+
 ## [1.27.1](https://github.com/brave/brave-ios/releases/tag/v1.27.1)
 
 - Added Brave Search beta to the list of available search engines. ([#3745](https://github.com/brave/brave-ios/issues/3745))
