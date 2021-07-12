@@ -14,8 +14,6 @@ import App from './components/app'
 require('../../../../ui/webui/resources/fonts/muli.css')
 require('../../../../ui/webui/resources/fonts/poppins.css')
 
-import { WithThemeVariables } from '../shared/components/with_theme_variables'
-
 // Utils
 import store from './store'
 import { ThemeProvider } from 'styled-components'
@@ -35,9 +33,7 @@ window.cr.define('brave_rewards', function () {
     render(
       <Provider store={store}>
         <ThemeProvider theme={Theme}>
-          <WithThemeVariables>
-            <App />
-          </WithThemeVariables>
+          <App />
         </ThemeProvider>
       </Provider>,
       document.getElementById('root'))
@@ -107,7 +103,7 @@ window.cr.define('brave_rewards', function () {
     }
   }
 
-  function statement (data: any) {
+  function statement (data: {adsEstimatedPendingRewards: number, adsNextPaymentDate: string, adsReceivedThisMonth: number}) {
     getActions().onStatement(data)
   }
 

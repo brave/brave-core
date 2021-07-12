@@ -8,7 +8,6 @@ import { convertBalance } from '../../../../brave_rewards/resources/page/utils'
 import { getLocale, splitStringForTag } from '../../../../common/locale'
 
 import {
-  ArrivingSoon,
   WidgetWrapper,
   WidgetLayer,
   NotificationsList,
@@ -34,9 +33,6 @@ import { StyledTitleTab } from '../widgetTitleTab'
 import Notification from './notification'
 import BrandedWallpaperNotification from './brandedWallpaperNotification'
 import { BatColorIcon, CloseStrokeIcon } from 'brave-ui/components/icons'
-
-import { formatMessage } from '../../../../../components/brave_rewards/resources/shared/lib/locale_context'
-import { getDaysUntilRewardsPayment } from '../../../../../components/brave_rewards/resources/shared/lib/pending_rewards'
 
 export interface RewardsProps {
   enabledAds: boolean
@@ -70,13 +66,12 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
 
     const rate = parameters.rate || 0.0
     const showEnableAds = !enabledAds && adsSupported
-    const amount = adsAccountStatement ? adsAccountStatement.earningsThisMonth : 0
+    const amount = adsAccountStatement ? adsAccountStatement.estimatedPendingRewards : 0
     const converted = convertBalance(amount, rate)
     const batFormatString = getLocale('rewardsWidgetBat')
 
     return (
       <AmountItem isActionPrompt={!!showEnableAds} isLast={false}>
-        {this.renderPendingRewardsNotice()}
         {
           adsSupported
           ? <div data-test-id={`widget-amount-total-ads`}>
@@ -85,10 +80,14 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
                 {batFormatString}<AmountUSD>{converted} USD</AmountUSD>
               </ConvertedAmount>
             </div>
-          :
-            <UnsupportedMessage>
+          : null
+        }
+        {
+          !adsSupported
+          ? <UnsupportedMessage>
               {getLocale('rewardsWidgetAdsNotSupported')}
             </UnsupportedMessage>
+          : null
         }
         <AmountDescription>
           {getLocale('rewardsWidgetEstimatedEarnings')}
@@ -147,39 +146,6 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
         />
         <StyledTOS title={getLocale('rewardsWidgetTurnOnAds')} />
       </StyleCenter>
-    )
-  }
-
-  renderPendingRewardsNotice = () => {
-    if (!this.props.adsAccountStatement) {
-      return null
-    }
-
-    const {
-      nextPaymentDate,
-      earningsLastMonth
-    } = this.props.adsAccountStatement
-
-    if (earningsLastMonth <= 0) {
-      return null
-    }
-
-    const days = getDaysUntilRewardsPayment(nextPaymentDate)
-    if (!days) {
-      return null
-    }
-
-    return (
-      <ArrivingSoon>
-        {
-          formatMessage(getLocale('pendingRewardsMessage'), [
-            <span className='amount' key='amount'>
-              <strong>+{earningsLastMonth}</strong> BAT
-            </span>,
-            days
-          ])
-        }
-      </ArrivingSoon>
     )
   }
 

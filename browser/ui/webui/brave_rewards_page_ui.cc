@@ -1405,10 +1405,18 @@ void RewardsDOMHandler::OnGetStatement(const bool success,
 
   base::DictionaryValue history;
 
-  history.SetDouble("adsNextPaymentDate", next_payment_date * 1000);
+  history.SetDouble("adsEstimatedPendingRewards",
+      estimated_pending_rewards);
+
+  if (next_payment_date == 0) {
+    history.SetString("adsNextPaymentDate", "");
+  } else {
+    base::Time time = base::Time::FromDoubleT(next_payment_date);
+    history.SetString("adsNextPaymentDate",
+        base::TimeFormatWithPattern(time, "MMMd"));
+  }
+
   history.SetInteger("adsReceivedThisMonth", ads_received_this_month);
-  history.SetDouble("adsEarningsThisMonth", earnings_this_month);
-  history.SetDouble("adsEarningsLastMonth", earnings_last_month);
 
   CallJavascriptFunction("brave_rewards.statement", history);
 }

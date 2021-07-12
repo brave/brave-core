@@ -12,24 +12,14 @@ import { List, NextContribution, Tokens } from '../../ui/components'
 import { Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
 import AdsOnboarding from './adsOnboarding'
 import {
-  StyledArrivingSoon,
   StyledListContent,
   StyledTotalContent
 } from './style'
-
-import { MoneyBagIcon } from '../../shared/components/icons/money_bag'
-import { formatMessage } from '../../shared/lib/locale_context'
-import { getDaysUntilRewardsPayment } from '../../shared/lib/pending_rewards'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
-
-const nextPaymentDateFormatter = new Intl.DateTimeFormat(undefined, {
-  month: 'short',
-  day: 'numeric'
-})
 
 interface Props extends Rewards.ComponentProps {
 }
@@ -189,11 +179,9 @@ class AdsBox extends React.Component<Props, {}> {
     let adsEnabled = false
     let adsUIEnabled = false
     let adsIsSupported = false
-    let nextPaymentDate = 0
+    let estimatedPendingRewards = 0
+    let nextPaymentDate = ''
     let adsReceivedThisMonth = 0
-    let earningsThisMonth = 0
-    let earningsLastMonth = 0
-
     const {
       adsData,
       safetyNetFailed,
@@ -204,10 +192,9 @@ class AdsBox extends React.Component<Props, {}> {
       adsEnabled = adsData.adsEnabled
       adsUIEnabled = adsData.adsUIEnabled
       adsIsSupported = adsData.adsIsSupported
+      estimatedPendingRewards = adsData.adsEstimatedPendingRewards || 0
       nextPaymentDate = adsData.adsNextPaymentDate
       adsReceivedThisMonth = adsData.adsReceivedThisMonth || 0
-      earningsThisMonth = adsData.adsEarningsThisMonth || 0
-      earningsLastMonth = adsData.adsEarningsLastMonth || 0
     }
 
     // disabled / alert state
@@ -235,7 +222,6 @@ class AdsBox extends React.Component<Props, {}> {
     }
 
     const tokenString = getLocale('tokens')
-    const estimatedPendingDays = getDaysUntilRewardsPayment(nextPaymentDate)
 
     return (
       <BoxMobile
@@ -245,32 +231,18 @@ class AdsBox extends React.Component<Props, {}> {
         settingsChild={this.adsSettings(adsEnabled)}
         {...boxPropsExtra}
       >
-        {
-          earningsLastMonth > 0 && estimatedPendingDays &&
-            <StyledArrivingSoon>
-              <MoneyBagIcon />
-              {
-                formatMessage(getLocale('pendingRewardsMessage'), [
-                  <span className='amount' key='amount'>
-                    +{earningsLastMonth} BAT
-                  </span>,
-                  estimatedPendingDays
-                ])
-              }
-            </StyledArrivingSoon>
-        }
         <List title={<StyledListContent>{getLocale('adsCurrentEarnings')}</StyledListContent>}>
           <StyledTotalContent>
             <Tokens
-              value={earningsThisMonth.toFixed(3)}
-              converted={utils.convertBalance(earningsThisMonth, parameters.rate)}
+              value={estimatedPendingRewards.toFixed(3)}
+              converted={utils.convertBalance(estimatedPendingRewards, parameters.rate)}
             />
           </StyledTotalContent>
         </List>
         <List title={<StyledListContent>{getLocale('adsPaymentDate')}</StyledListContent>}>
           <StyledListContent>
             <NextContribution>
-              {nextPaymentDateFormatter.format(new Date(nextPaymentDate))}
+              {nextPaymentDate}
             </NextContribution>
           </StyledListContent>
         </List>

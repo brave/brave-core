@@ -247,10 +247,9 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
 
       const data = action.payload.data
+      state.adsData.adsEstimatedPendingRewards = data.adsEstimatedPendingRewards
       state.adsData.adsNextPaymentDate = data.adsNextPaymentDate
       state.adsData.adsReceivedThisMonth = data.adsReceivedThisMonth
-      state.adsData.adsEarningsThisMonth = data.adsEarningsThisMonth
-      state.adsData.adsEarningsLastMonth = data.adsEarningsLastMonth
       break
     }
     case types.ON_INLINE_TIP_SETTINGS_CHANGE: {

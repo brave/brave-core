@@ -1132,8 +1132,11 @@
                 "type": "object",
                 "optional": true,
                 "properties": {
-                  "nextPaymentDate": {
+                  "estimatedPendingRewards": {
                     "type": "number"
+                  },
+                  "nextPaymentDate": {
+                    "type": "string"
                   },
                   "adsReceivedThisMonth": {
                     "type": "integer"

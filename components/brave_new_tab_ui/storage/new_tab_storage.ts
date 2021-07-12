@@ -54,7 +54,8 @@ export const defaultState: NewTab.State = {
   togetherPromptDismissed: false,
   rewardsState: {
     adsAccountStatement: {
-      nextPaymentDate: 0,
+      estimatedPendingRewards: 0,
+      nextPaymentDate: '',
       adsReceivedThisMonth: 0,
       earningsThisMonth: 0,
       earningsLastMonth: 0
@@ -236,22 +237,16 @@ export const replaceStackWidgets = (state: NewTab.State) => {
 }
 
 const cleanData = (state: NewTab.State) => {
-  const { rewardsState } = state
-
-  if (typeof (rewardsState.totalContribution as any) === 'string') {
-    rewardsState.totalContribution = 0
+  // We need to disable linter as we defined in d.ts that this values are number,
+  // but we need this check to covert from old version to a new one
+  /* tslint:disable */
+  if (typeof state.rewardsState.totalContribution === 'string') {
+    state.rewardsState.totalContribution = 0.0
   }
+  /* tslint:enable */
 
-  // nextPaymentDate updated from seconds-since-epoch-string to ms-since-epoch
-  const { adsAccountStatement } = rewardsState
-  if (adsAccountStatement &&
-      typeof (adsAccountStatement.nextPaymentDate as any) === 'string') {
-    adsAccountStatement.nextPaymentDate =
-      Number(adsAccountStatement.nextPaymentDate) * 1000 || 0
-  }
-
-  if (!rewardsState.parameters) {
-    rewardsState.parameters = defaultState.rewardsState.parameters
+  if (!state.rewardsState.parameters) {
+    state.rewardsState.parameters = defaultState.rewardsState.parameters
   }
 
   return state

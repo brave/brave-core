@@ -224,10 +224,9 @@ declare namespace Rewards {
     shouldAllowAdsSubdivisionTargeting: boolean
     adsUIEnabled: boolean
     adsIsSupported: boolean
-    adsNextPaymentDate: number
+    adsEstimatedPendingRewards: number
+    adsNextPaymentDate: string
     adsReceivedThisMonth: number
-    adsEarningsThisMonth: number
-    adsEarningsLastMonth: number
   }
 
   export enum RewardsType {

@@ -154,7 +154,7 @@ window.cr.define('brave_rewards', function () {
     }
   }
 
-  function statement (data: any) {
+  function statement (data: {adsEstimatedPendingRewards: number, adsNextPaymentDate: string, adsReceivedThisMonth: number}) {
     getActions().onStatement(data)
   }
 
