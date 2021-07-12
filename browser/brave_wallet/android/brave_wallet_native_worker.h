@@ -7,9 +7,13 @@
 #define BRAVE_BROWSER_BRAVE_WALLET_ANDROID_BRAVE_WALLET_NATIVE_WORKER_H_
 
 #include <jni.h>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include "base/android/jni_weak_ref.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace chrome {
 namespace android {
@@ -38,6 +42,13 @@ class BraveWalletNativeWorker {
   void GetAssetPrice(JNIEnv* env,
                      const base::android::JavaParamRef<jstring>& asset);
   void OnGetPrice(bool success, const std::string& price);
+
+  void GetAssetPriceHistory(JNIEnv* env,
+                            const base::android::JavaParamRef<jstring>& asset,
+                            const jint timeFrameType);
+  void OnGetPriceHistory(
+      bool success,
+      std::vector<brave_wallet::mojom::AssetTimePricePtr> values);
 
  private:
   JavaObjectWeakGlobalRef weak_java_brave_wallet_native_worker_;

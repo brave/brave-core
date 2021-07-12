@@ -116,6 +116,19 @@ public class BraveWalletNativeWorker {
         }
     }
 
+    public void getAssetPriceHistory(String asset, int timeFrame) {
+        BraveWalletNativeWorkerJni.get().getAssetPriceHistory(
+                mNativeBraveWalletNativeWorker, asset, timeFrame);
+    }
+
+    @CalledByNative
+    public void OnGetPriceHistory(String priceHistory, boolean isSuccess) {
+        Log.e("NTP", "priceHistory : " + priceHistory);
+        for (BraveWalletObserver observer : mObservers) {
+            observer.OnGetPriceHistory(priceHistory, isSuccess);
+        }
+    }
+
     @NativeMethods
     interface Natives {
         void init(BraveWalletNativeWorker caller);
@@ -128,5 +141,6 @@ public class BraveWalletNativeWorker {
         String restoreWallet(long nativeBraveWalletNativeWorker, String mnemonic, String password);
         void resetWallet(long nativeBraveWalletNativeWorker);
         void getAssetPrice(long nativeBraveWalletNativeWorker, String asset);
+        void getAssetPriceHistory(long nativeBraveWalletNativeWorker, String asset, int timeFrame);
     }
 }

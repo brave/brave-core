@@ -7,4 +7,5 @@ package org.chromium.chrome.browser.crypto_wallet;
 
 public interface BraveWalletObserver {
     default public void OnGetPrice(String price, boolean isSuccess){};
+    default public void OnGetPriceHistory(String priceHistory, boolean isSuccess){};
 }
