@@ -6,5 +6,5 @@
 #include "../../../../../../../chrome/browser/ui/views/download/download_item_view.cc"
 
 bool DownloadItemView::IsShowingWarningDialog() const {
-  return is_download_warning(mode_);
+  return has_warning_label(mode_);
 }
