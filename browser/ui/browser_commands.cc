@@ -98,7 +98,8 @@ void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
         tab_helper->ShowSpeedreaderBubble();
         break;
       case DistillState::kReaderMode:
-        tab_helper->ShowReaderModeBubble();
+        // Refresh the page (toggles off Speedreader)
+        contents->GetController().Reload(content::ReloadType::NORMAL, false);
         break;
       case DistillState::kPageProbablyReadable:
         tab_helper->SingleShotSpeedreader();
