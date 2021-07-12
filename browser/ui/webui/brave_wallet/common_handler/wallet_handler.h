@@ -50,8 +50,9 @@ class WalletHandler : public brave_wallet::mojom::WalletHandler {
   void AddFavoriteApp(brave_wallet::mojom::AppItemPtr app_item) override;
   void RemoveFavoriteApp(brave_wallet::mojom::AppItemPtr app_item) override;
   void NotifyWalletBackupComplete() override;
-  void UpdateWalletNames(
+  void SetInitialAccountNames(
       const std::vector<std::string>& account_names) override;
+  void AddNewAccountName(const std::string& account_name) override;
 
  private:
   void OnGetPrice(GetAssetPriceCallback callback,

@@ -34,7 +34,7 @@ async function refreshWalletInfo (store: Store) {
 handler.on(WalletPageActions.createWallet.getType(), async (store, payload: CreateWalletPayloadType) => {
   const apiProxy = await getAPIProxy()
   const result = await apiProxy.createWallet(payload.password)
-  store.dispatch(WalletActions.updateWalletNames({ accountNames: ['Account 1'] }))
+  store.dispatch(WalletActions.setInitialAccountNames({ accountNames: ['Account 1'] }))
   store.dispatch(WalletPageActions.walletCreated({ mnemonic: result.mnemonic }))
 })
 
@@ -45,7 +45,7 @@ handler.on(WalletPageActions.restoreWallet.getType(), async (store, payload: Res
     store.dispatch(WalletPageActions.hasMnemonicError(!result.isValidMnemonic))
     return
   }
-  store.dispatch(WalletActions.updateWalletNames({ accountNames: ['Account 1'] }))
+  store.dispatch(WalletActions.setInitialAccountNames({ accountNames: ['Account 1'] }))
   await apiProxy.notifyWalletBackupComplete()
   await refreshWalletInfo(store)
 })
@@ -53,7 +53,7 @@ handler.on(WalletPageActions.restoreWallet.getType(), async (store, payload: Res
 handler.on(WalletPageActions.addAccountToWallet.getType(), async (store, payload: AddAccountToWalletPayloadType) => {
   const apiProxy = await getAPIProxy()
   const result = await apiProxy.addAccountToWallet()
-  store.dispatch(WalletActions.updateWalletNames({ accountNames: payload.accountNames }))
+  store.dispatch(WalletActions.addNewAccountName({ accountName: payload.accountName }))
   await refreshWalletInfo(store)
   return result.success
 })

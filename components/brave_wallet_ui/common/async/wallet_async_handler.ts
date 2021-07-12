@@ -6,7 +6,7 @@
 import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletActions from '../actions/wallet_actions'
-import { UnlockWalletPayloadType, UpdateWalletNamesPayloadType } from '../constants/action_types'
+import { UnlockWalletPayloadType, SetInitialAccountNamesPayloadType, AddNewAccountNamePayloadType } from '../constants/action_types'
 import { WalletAPIHandler, AppObjectType } from '../../constants/types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
@@ -58,9 +58,14 @@ handler.on(WalletActions.removeFavoriteApp.getType(), async (store, appItem: App
   await refreshWalletInfo(store)
 })
 
-handler.on(WalletActions.updateWalletNames.getType(), async (store, payload: UpdateWalletNamesPayloadType) => {
+handler.on(WalletActions.setInitialAccountNames.getType(), async (store, payload: SetInitialAccountNamesPayloadType) => {
   const walletHandler = await getWalletHandler()
-  await walletHandler.updateWalletNames(payload.accountNames)
+  await walletHandler.setInitialAccountNames(payload.accountNames)
+})
+
+handler.on(WalletActions.addNewAccountName.getType(), async (store, payload: AddNewAccountNamePayloadType) => {
+  const walletHandler = await getWalletHandler()
+  await walletHandler.addNewAccountName(payload.accountName)
 })
 
 export default handler.middleware

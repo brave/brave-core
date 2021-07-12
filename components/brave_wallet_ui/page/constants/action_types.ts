@@ -9,7 +9,7 @@ export type CreateWalletPayloadType = {
 }
 
 export type AddAccountToWalletPayloadType = {
-  accountNames: string[]
+  accountName: string
 }
 
 export type RestoreWalletPayloadType = {

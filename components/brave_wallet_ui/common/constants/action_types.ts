@@ -18,6 +18,10 @@ export type UnlockWalletPayloadType = {
   password: string
 }
 
-export type UpdateWalletNamesPayloadType = {
+export type SetInitialAccountNamesPayloadType = {
   accountNames: string[]
+}
+
+export type AddNewAccountNamePayloadType = {
+  accountName: string
 }
