@@ -22,9 +22,8 @@ This pull request fixes #<number>
 
 - [ ] Issues include necessary QA labels:
   - `QA/(Yes|No)`
-  - `release-notes/(include|exclude)`
   - `bug` / `enhancement`
 - [ ] Necessary [security reviews](https://github.com/brave/security/issues/new/choose) have taken place.
 - [ ] Adequate unit test coverage exists to prevent regressions.
 - [ ] Adequate test plan exists for QA to validate (if applicable).
-- [ ] Issue is assigned to a milestone (should happen at merge time).
+- [ ] Issue and pull request is assigned to a milestone (should happen at merge time).
