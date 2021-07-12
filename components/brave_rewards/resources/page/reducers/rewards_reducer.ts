@@ -457,10 +457,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
       break
     }
-    case types.SET_FIRST_LOAD: {
-      state.firstLoad = action.payload.firstLoad
-      break
-    }
     case types.GET_ONBOARDING_STATUS: {
       chrome.send('brave_rewards.getOnboardingStatus')
       break
