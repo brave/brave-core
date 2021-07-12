@@ -24,7 +24,7 @@ class SpeedreaderBubbleBrowserTest : public DialogBrowserTest {
 
   // DialogBrowserTest:
   void ShowUi(const std::string& name) override {
-    if (tab_helper()->IsSpeedreaderEnabled())
+    if (speedreader_service()->IsEnabled())
       tab_helper()->ShowSpeedreaderBubble();
     else
       tab_helper()->ShowReaderModeBubble();
@@ -47,24 +47,22 @@ class SpeedreaderBubbleBrowserTest : public DialogBrowserTest {
         ActiveWebContents());
   }
 
-  void ToggleSpeedreader() {
-    auto* speedreader_service =
-        speedreader::SpeedreaderServiceFactory::GetForProfile(
-            browser()->profile());
-    speedreader_service->ToggleSpeedreader();
+  speedreader::SpeedreaderService* speedreader_service() {
+    return speedreader::SpeedreaderServiceFactory::GetForProfile(
+        browser()->profile());
   }
 };
 
 IN_PROC_BROWSER_TEST_F(SpeedreaderBubbleBrowserTest,
                        InvokeUi_reader_mode_bubble_basic) {
-  EXPECT_FALSE(tab_helper()->IsSpeedreaderEnabled());
+  EXPECT_FALSE(speedreader_service()->IsEnabled());
   ShowAndVerifyUi();
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedreaderBubbleBrowserTest,
                        InvokeUi_speedreader_mode_bubble_basic) {
-  ToggleSpeedreader();
-  EXPECT_TRUE(tab_helper()->IsSpeedreaderEnabled());
+  speedreader_service()->ToggleSpeedreader();
+  EXPECT_TRUE(speedreader_service()->IsEnabled());
   // We need to navigate somewhere so the host is non-empty. For tests the new
   // tab page is fine.
   NavigateToNewTab();
