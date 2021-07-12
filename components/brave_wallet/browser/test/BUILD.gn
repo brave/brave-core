@@ -18,6 +18,7 @@ source_set("brave_wallet_unit_tests") {
       "//brave/components/brave_wallet/browser/eth_address_unittest.cc",
       "//brave/components/brave_wallet/browser/eth_call_data_builder_unittest.cc",
       "//brave/components/brave_wallet/browser/eth_json_rpc_controller_unittest.cc",
+      "//brave/components/brave_wallet/browser/eth_nonce_tracker_unittest.cc",
       "//brave/components/brave_wallet/browser/eth_requests_unittest.cc",
       "//brave/components/brave_wallet/browser/eth_response_parser_unittest.cc",
       "//brave/components/brave_wallet/browser/eth_transaction_unittest.cc",
