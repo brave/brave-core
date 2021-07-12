@@ -75,7 +75,7 @@ class SearchCustomEngineViewController: UIViewController {
     
     fileprivate var faviconImage: UIImage?
     
-    private lazy var spinnerView = UIActivityIndicatorView(style: .gray).then {
+    private lazy var spinnerView = UIActivityIndicatorView(style: .medium).then {
         $0.hidesWhenStopped = true
     }
     

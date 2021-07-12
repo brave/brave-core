@@ -48,6 +48,8 @@ extension ContributionStep {
             return s.contributionsStepExternalTransaction
         case .stepCreds:
             return s.contributionsStepCreds
+        case .stepRetryCount:
+            fallthrough
         @unknown default:
             return "-"
         }

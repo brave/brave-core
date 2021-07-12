@@ -34,8 +34,7 @@ extension UIColor {
     public convenience init(colorString: String) {
         let string = colorString.replacingOccurrences(of: "#", with: "")
         
-        var colorInt: UInt32 = 0
-        Scanner(string: string).scanHexInt32(&colorInt)
+        let colorInt = UInt32(Scanner(string: string).scanInt32(representation: .hexadecimal) ?? 0)
         self.init(rgb: (Int) (colorInt))
     }
 }

@@ -726,7 +726,7 @@ extension TabManagerDataSource: UICollectionViewDropDelegate {
     }
 }
 
-@objc protocol TabSelectionDelegate: class {
+@objc protocol TabSelectionDelegate: AnyObject {
     func didSelectTabAtIndex(_ index: Int)
 }
 

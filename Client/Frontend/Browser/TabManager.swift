@@ -14,7 +14,7 @@ import CoreData
 private let log = Logger.browserLogger
 private let rewardsLog = Logger.rewardsLogger
 
-protocol TabManagerDelegate: class {
+protocol TabManagerDelegate: AnyObject {
     func tabManager(_ tabManager: TabManager, didSelectedTabChange selected: Tab?, previous: Tab?)
     func tabManager(_ tabManager: TabManager, willAddTab tab: Tab)
     func tabManager(_ tabManager: TabManager, didAddTab tab: Tab)
@@ -26,7 +26,7 @@ protocol TabManagerDelegate: class {
     func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?)
 }
 
-protocol TabManagerStateDelegate: class {
+protocol TabManagerStateDelegate: AnyObject {
     func tabManagerWillStoreTabs(_ tabs: [Tab])
 }
 
@@ -523,8 +523,6 @@ class TabManager: NSObject {
 
     func removeTab(_ tab: Tab) {
         assert(Thread.isMainThread)
-        
-        hideNetworkActivitySpinner()
 
         guard let removalIndex = allTabs.firstIndex(where: { $0 === tab }) else {
             log.debug("Could not find index of tab to remove")
@@ -912,8 +910,6 @@ extension TabManager: WKNavigationDelegate {
 
     // Note the main frame JSContext (i.e. document, window) is not available yet.
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-
         if let tab = self[webView] {
             tab.contentBlocker.clearPageStats()
         }
@@ -932,7 +928,6 @@ extension TabManager: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        hideNetworkActivitySpinner()
         // only store changes if this is not an error page
         // as we current handle tab restore as error page redirects then this ensures that we don't
         // call storeChanges unnecessarily on startup
@@ -949,19 +944,6 @@ extension TabManager: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        hideNetworkActivitySpinner()
-    }
-
-    func hideNetworkActivitySpinner() {
-        for tab in allTabs {
-            if let tabWebView = tab.webView {
-                // If we find one tab loading, we don't hide the spinner
-                if tabWebView.isLoading {
-                    return
-                }
-            }
-        }
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
 
     /// Called when the WKWebView's content process has gone away. If this happens for the currently selected tab

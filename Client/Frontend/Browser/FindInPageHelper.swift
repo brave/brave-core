@@ -8,7 +8,7 @@ import WebKit
 
 private let log = Logger.browserLogger
 
-protocol FindInPageHelperDelegate: class {
+protocol FindInPageHelperDelegate: AnyObject {
     func findInPageHelper(_ findInPageHelper: FindInPageHelper, didUpdateCurrentResult currentResult: Int)
     func findInPageHelper(_ findInPageHelper: FindInPageHelper, didUpdateTotalResults totalResults: Int)
 }

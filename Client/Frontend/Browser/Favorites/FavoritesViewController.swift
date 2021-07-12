@@ -186,17 +186,14 @@ extension FavoritesViewController: KeyboardHelperDelegate {
     func updateKeyboardInset(_ state: KeyboardState, animated: Bool = true) {
         if collectionView.bounds.size == .zero { return }
         let keyboardHeight = state.intersectionHeightForView(self.view) - view.safeAreaInsets.bottom
-        UIView.animate(withDuration: animated ? state.animationDuration : 0.0, animations: {
-            if animated {
-                UIView.setAnimationCurve(state.animationCurve)
-            }
+        UIViewPropertyAnimator(duration: animated ? state.animationDuration : 0.0, curve: state.animationCurve) {
             self.collectionView.contentInset = self.collectionView.contentInset.with {
                 $0.bottom = keyboardHeight
             }
-            self.collectionView.scrollIndicatorInsets = self.collectionView.scrollIndicatorInsets.with {
+            self.collectionView.scrollIndicatorInsets = self.collectionView.verticalScrollIndicatorInsets.with {
                 $0.bottom = keyboardHeight
             }
-        })
+        }.startAnimation()
     }
     
     func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillShowWithState state: KeyboardState) {

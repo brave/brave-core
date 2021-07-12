@@ -9,7 +9,7 @@ import BraveShared
 
 private let log = Logger.browserLogger
 
-protocol ContentBlocker: class, Hashable {
+protocol ContentBlocker: AnyObject, Hashable {
     // Make constant `let
     var filename: String { get }
     var rule: WKContentRuleList? { get set }

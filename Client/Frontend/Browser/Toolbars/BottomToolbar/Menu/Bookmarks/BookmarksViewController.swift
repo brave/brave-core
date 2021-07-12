@@ -373,9 +373,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
             configCell(image: #imageLiteral(resourceName: "bookmarks_folder_hollow").withTintColor(.braveLabel))
             cell.textLabel?.font = UIFont.boldSystemFont(ofSize: fontSize)
             cell.accessoryType = .disclosureIndicator
-            if let twoLineCell = cell as? TwoLineTableViewCell {
-                twoLineCell.setRightBadge(nil)
-            }
+            cell.setRightBadge(nil)
         }
     }
     

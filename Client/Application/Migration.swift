@@ -128,9 +128,6 @@ fileprivate extension Preferences {
             return
         }
         
-        // Grab the user defaults that Prefs saves too and the key prefix all objects inside it are saved under
-        let userDefaults = UserDefaults(suiteName: AppInfo.sharedContainerIdentifier)
-        
         /// Wrapper around BraveShared migrate, to automate prefix injection
         func migrate<T>(key: String, to option: Preferences.Option<T>, transform: ((T) -> T)? = nil) {
             self.migrate(keyPrefix: keyPrefix, key: key, to: option, transform: transform)

@@ -1433,16 +1433,17 @@ class BrowserViewController: UIViewController {
             ]
             
             SecTrustSetPolicies(serverTrust, policies as CFTypeRef)
-            SecTrustEvaluateAsync(serverTrust, DispatchQueue.global()) { _, secTrustResult in
-                switch secTrustResult {
-                case .proceed, .unspecified:
-                    tab.secureContentState = .secure
-                default:
-                    tab.secureContentState = .insecure
-                }
-
-                DispatchQueue.main.async {
-                    self.updateURLBar()
+            let queue = DispatchQueue.global()
+            queue.async {
+                SecTrustEvaluateAsyncWithError(serverTrust, queue) { _, secTrustResult, _ in
+                    DispatchQueue.main.async {
+                        if secTrustResult {
+                            tab.secureContentState = .secure
+                        } else {
+                            tab.secureContentState = .insecure
+                        }
+                        self.updateURLBar()
+                    }
                 }
             }
         default:

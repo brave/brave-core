@@ -5,7 +5,7 @@
 import UIKit
 import Shared
 
-protocol FindInPageBarDelegate: class {
+protocol FindInPageBarDelegate: AnyObject {
     func findInPage(_ findInPage: FindInPageBar, didTextChange text: String)
     func findInPage(_ findInPage: FindInPageBar, didFindPreviousWithText text: String)
     func findInPage(_ findInPage: FindInPageBar, didFindNextWithText text: String)

@@ -5,7 +5,7 @@
 import Foundation
 import UIKit
 
-public protocol BasicAnimationControllerDelegate: class {
+public protocol BasicAnimationControllerDelegate: AnyObject {
   
   /// Animate the presentation of a controller
   ///

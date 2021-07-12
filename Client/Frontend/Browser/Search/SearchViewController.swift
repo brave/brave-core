@@ -215,12 +215,10 @@ class SearchViewController: SiteTableViewController, LoaderListener {
     private func animateSearchEnginesWithKeyboard(_ keyboardState: KeyboardState) {
         layoutSearchEngineScrollView()
 
-        UIView.animate(withDuration: keyboardState.animationDuration,
-                       delay: 0,
-                       options: UIView.AnimationOptions(rawValue: UInt(keyboardState.animationCurve.rawValue << 16)),
-                       animations: {
+        UIViewPropertyAnimator(duration: keyboardState.animationDuration, curve: keyboardState.animationCurve) {
             self.view.layoutIfNeeded()
-        })
+        }
+        .startAnimation()
     }
 
     @objc func dynamicFontChanged(_ notification: Notification) {

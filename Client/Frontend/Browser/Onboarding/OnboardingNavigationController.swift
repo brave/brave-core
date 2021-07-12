@@ -11,7 +11,7 @@ import BraveRewards
 
 private let log = Logger.browserLogger
 
-protocol Onboardable: class {
+protocol Onboardable: AnyObject {
     /// Show next on boarding screen if possible.
     /// If last screen is currently presenting, the view is dimissed instead(onboarding finished).
     func presentNextScreen(current: OnboardingViewController)
@@ -21,7 +21,7 @@ protocol Onboardable: class {
     func skip()
 }
 
-protocol OnboardingControllerDelegate: class {
+protocol OnboardingControllerDelegate: AnyObject {
     func onboardingCompleted(_ onboardingController: OnboardingNavigationController)
     func onboardingSkipped(_ onboardingController: OnboardingNavigationController)
 }

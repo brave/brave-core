@@ -207,7 +207,6 @@ class U2FExtensions: NSObject {
         } else {
             return YubiKitManager.shared.nfcSession.fido2Service
         }
-        return nil
     }
     
     private var keyU2fService: YKFKeyU2FServiceProtocol? {
@@ -216,7 +215,6 @@ class U2FExtensions: NSObject {
         } else {
             return YubiKitManager.shared.nfcSession.u2fService
         }
-        return nil
     }
 
     init(tab: Tab) {
@@ -868,7 +866,7 @@ class U2FExtensions: NSObject {
                     self.verificationPendingPopup.update(title: Strings.verificationPending + currentURL)
                     self.verificationPendingPopup.showWithType(showType: .flyUp)
                 }
-                return self.verifyPin(completion: completion) ?? .flyDown
+                return self.verifyPin(completion: completion)
             }
             self.pinVerificationPopup.showWithType(showType: .flyUp)
         }

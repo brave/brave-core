@@ -1,6 +1,6 @@
 import UIKit
 
-public protocol Cell: class {
+public protocol Cell: AnyObject {
     static func description() -> String
     static func nib() -> UINib?
 

@@ -10,7 +10,7 @@ public struct ClipboardBarToastUX {
     static let toastDelay = DispatchTimeInterval.milliseconds(4000)
 }
 
-protocol ClipboardBarDisplayHandlerDelegate: class {
+protocol ClipboardBarDisplayHandlerDelegate: AnyObject {
     func shouldDisplay(clipboardBar bar: ButtonToast)
 }
 

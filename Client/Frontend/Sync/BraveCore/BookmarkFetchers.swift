@@ -7,7 +7,7 @@ import Foundation
 import BraveRewards
 import CoreData
 
-protocol BookmarksV2FetchResultsDelegate: class {
+protocol BookmarksV2FetchResultsDelegate: AnyObject {
     func controllerWillChangeContent(_ controller: BookmarksV2FetchResultsController)
     
     func controllerDidChangeContent(_ controller: BookmarksV2FetchResultsController)

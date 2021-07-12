@@ -21,8 +21,6 @@ enum ResourceLocale: String {
     pl, ru, uk, be, es, sl, sv, tr, vi
     
     func resourceName(for fileType: FileType) -> String {
-        var resourceId = ""
-        
         switch self {
         case .ar: return "9FCEECEC-52B4-4487-8E57-8781E82C91D0"
         case .bg: return "FD176DD1-F9A0-4469-B43E-B1764893DD5C"

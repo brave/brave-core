@@ -18,7 +18,7 @@ public enum VideoViewRepeatMode {
     case repeatAll
 }
 
-public protocol VideoViewDelegate: class {
+public protocol VideoViewDelegate: AnyObject {
     func onPreviousTrack(isUserInitiated: Bool)
     func onNextTrack(isUserInitiated: Bool)
     func onSidePanelStateChanged()
