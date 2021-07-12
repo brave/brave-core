@@ -56,12 +56,12 @@ public class CryptoWalletActivity extends AsyncInitializationActivity {
         SearchView searchView = (SearchView) searchItem.getActionView();
         // TODO below code will get updated in follow up issue.
 
-        // EditText searchEditText =
-        // searchView.findViewById(androidx.appcompat.R.id.search_src_text);
-        // searchEditText.setTextColor(getResources().getColor(android.R.color.black));
-        // searchEditText.setHintTextColor(getResources().getColor(android.R.color.darker_gray));
-        // ImageView closeButtonImage = searchView.findViewById(R.id.search_close_btn);
-        // closeButtonImage.setImageResource(R.drawable.ic_baseline_close_24);
+        EditText searchEditText =
+        searchView.findViewById(R.id.search_src_text);
+        searchEditText.setTextColor(getResources().getColor(android.R.color.black));
+        searchEditText.setHintTextColor(getResources().getColor(android.R.color.darker_gray));
+        ImageView closeButtonImage = searchView.findViewById(R.id.search_close_btn);
+        closeButtonImage.setImageResource(R.drawable.ic_baseline_close_24);
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return super.onCreateOptionsMenu(menu);

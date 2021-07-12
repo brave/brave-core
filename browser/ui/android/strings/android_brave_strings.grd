@@ -1843,6 +1843,8 @@ until they verify, or until 90 days have passed.
     <message name="IDS_BRAVE_SAFE_BROWSING_NO_PROTECTION_SUMMARY" desc="Summary for Safe Browsing no protection mode.">
         Does not protect you against dangerous websites, downloads, and extensions.
     </message>
+    <message name="IDS_PHRASES_DID_NOT_MATCH">Phrases did not match, Please try again.</message>
+    <message name="IDS_ACCOUNT_RECOVERY_FAILED"> Account recovery failed. Please try again.</message>
     </messages>
   </release>
 </grit>

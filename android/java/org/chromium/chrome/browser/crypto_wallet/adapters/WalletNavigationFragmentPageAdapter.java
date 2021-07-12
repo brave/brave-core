@@ -9,14 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class WalletNavigationFragmentPageAdapter extends FragmentPagerAdapter {
+public class WalletNavigationFragmentPageAdapter extends FragmentStatePagerAdapter {
     private List<NavigationItem> navigationItems = new ArrayList<>();
 
     public void setNavigationItems(List<NavigationItem> navigationItems) {

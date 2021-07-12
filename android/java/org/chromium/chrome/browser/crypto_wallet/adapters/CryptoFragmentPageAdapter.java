@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import org.chromium.chrome.browser.crypto_wallet.fragments.CryptoChildFragment;
 
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CryptoFragmentPageAdapter extends FragmentPagerAdapter {
+public class CryptoFragmentPageAdapter extends FragmentStatePagerAdapter {
     private final List<String> titles =
             new ArrayList<>(Arrays.asList("PORTFOLIO", "PRICES", "DEFI", "NFTS", "ACCOUNTS"));
     public CryptoFragmentPageAdapter(FragmentManager fm) {

@@ -24,6 +24,7 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.ui.widget.Toast;
 
 public class RestoreWalletFragment extends CryptoOnboardingFragment {
     @Override
@@ -74,7 +75,12 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                                 .restoreWallet(recoveryPhraseText.getText().toString().trim(),
                                         passwordEdittext.getText().toString().trim())
                                 .trim();
-                Log.e("NTP", "RecoveryPhrase : " + recoveryPhrase);
+                if (!TextUtils.isEmpty(recoveryPhrase)) {
+                    onNextPage.gotoNextPage(true);
+                    Utils.disableCryptoOnboarding();
+                } else {
+                    Toast.makeText(getActivity(), R.string.account_recovery_failed, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

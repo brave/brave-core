@@ -64,7 +64,7 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     showFingerprintDialog(authenticationCallback);
                 } else {
-                    Utils.recoveryPhrase = BraveWalletNativeWorker.getInstance()
+                    BraveWalletNativeWorker.getInstance()
                                                    .createWallet(passwordInput)
                                                    .trim();
                     Utils.disableCryptoOnboarding();
@@ -98,8 +98,7 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
         public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
             super.onAuthenticationSucceeded(result);
             // Go to next Page
-            Utils.recoveryPhrase =
-                    BraveWalletNativeWorker.getInstance()
+            BraveWalletNativeWorker.getInstance()
                             .createWallet(passwordEdittext.getText().toString().trim())
                             .trim();
             Utils.disableCryptoOnboarding();

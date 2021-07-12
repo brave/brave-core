@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
+import org.chromium.base.Log;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.VerifyRecoveryPhraseFragment;
 
 import java.util.ArrayList;
@@ -22,9 +23,10 @@ import java.util.List;
 import java.util.Map;
 
 public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAdapter.ViewHolder> {
-    Map<Integer, String> recoveryPhraseMap = new HashMap<>();
-    Map<Integer, String> selectedRecoveryPhraseMap = new HashMap<>();
+    List<String> recoveryPhraseMap = new ArrayList<>();
+    List<String> selectedRecoveryPhraseMap = new ArrayList<>();
     private VerifyRecoveryPhraseFragment.OnRecoveryPhraseSelected onRecoveryPhraseSelected;
+    private boolean isSelectedRecoveryPhrase;
 
     @NonNull
     @Override
@@ -36,20 +38,22 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        List<Integer> recoveryPhrasePositions = new ArrayList<>(recoveryPhraseMap.keySet());
-        int recoveryPhrasePosition = recoveryPhrasePositions.get(position);
-        final String recoveryPhrase = recoveryPhraseMap.get(recoveryPhrasePosition);
-        if (recoveryPhrase != null) {
-            holder.recoveryPhraseText.setText(
-                    String.format(holder.recoveryPhraseText.getContext().getResources().getString(
-                                          R.string.recovery_phrase_item_text),
+        final String recoveryPhrase = recoveryPhraseMap.get(position);
+        holder.recoveryPhraseText.setText(String.format(
+                            holder.recoveryPhraseText.getContext().getResources().getString(
+                                    R.string.recovery_phrase_item_text),
                             (position + 1), recoveryPhrase));
-            if (onRecoveryPhraseSelected != null) {
-                holder.itemView.setOnClickListener(v -> {
-                    selectedRecoveryPhraseMap.put(position, recoveryPhrase);
-                    onRecoveryPhraseSelected.onSelectedRecoveryPhrase();
+        if (onRecoveryPhraseSelected != null) {
+            holder.itemView.setOnClickListener(v -> {
+                if (isSelectedRecoveryPhrase) {
+                    recoveryPhraseMap.remove(recoveryPhrase);
+                } else {
+                    selectedRecoveryPhraseMap.add(recoveryPhrase);
+                }
+                    onRecoveryPhraseSelected.onSelectedRecoveryPhrase(recoveryPhrase);
                 });
-                if (selectedRecoveryPhraseMap.containsKey(position)) {
+            if (!isSelectedRecoveryPhrase) {
+                if (selectedRecoveryPhraseMap.contains(recoveryPhrase)) {
                     holder.recoveryPhraseText.setEnabled(false);
                     holder.recoveryPhraseText.setAlpha(0.5f);
                     holder.recoveryPhraseText.setText("");
@@ -65,7 +69,19 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
         }
     }
 
-    public void setRecoveryPhraseMap(Map<Integer, String> recoveryPhraseMap) {
+    public void setSelectedRecoveryPhrase(boolean isSelectedRecoveryPhrase) {
+        this.isSelectedRecoveryPhrase = isSelectedRecoveryPhrase;
+    }
+
+    public void addPhraseAtPosition(int position, String phrase) {
+        this.recoveryPhraseMap.set(position, phrase);
+    }
+
+    public void removeSelectedPhrase(String phrase) {
+        this.selectedRecoveryPhraseMap.remove(phrase);
+    }
+
+    public void setRecoveryPhraseMap(List<String> recoveryPhraseMap) {
         this.recoveryPhraseMap = recoveryPhraseMap;
     }
 
@@ -74,8 +90,12 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
         this.onRecoveryPhraseSelected = onRecoveryPhraseSelected;
     }
 
-    public Map<Integer, String> getSelectedRecoveryPhraseMap() {
+    public List<String> getSelectedRecoveryPhraseMap() {
         return selectedRecoveryPhraseMap;
+    }
+
+    public List<String> getRecoveryPhraseMap() {
+        return recoveryPhraseMap;
     }
 
     @Override

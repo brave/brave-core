@@ -24,6 +24,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.chrome.R;
+import org.chromium.base.Log;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
 import org.chromium.chrome.browser.crypto_wallet.CryptoWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter;
@@ -43,7 +44,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CryptoFragment extends Fragment {
+public class CryptoFragment extends Fragment  implements OnNextPage{
     private OnFinishOnboarding onFinishOnboarding;
 
     private View rootView;
@@ -77,13 +78,11 @@ public class CryptoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         cryptoLayout = view.findViewById(R.id.crypto_layout);
-        if (Utils.shouldShowCryptoOnboarding()) {
-            cryptoLayout.setVisibility(View.GONE);
-            cryptoWalletOnboardingViewPager =
+        cryptoWalletOnboardingViewPager =
                     view.findViewById(R.id.crypto_wallet_onboarding_viewpager);
             assert getActivity() != null;
             cryptoWalletOnboardingPagerAdapter = new CryptoWalletOnboardingPagerAdapter(
-                    ((FragmentActivity) getActivity()).getSupportFragmentManager());
+                    getChildFragmentManager());
             cryptoWalletOnboardingViewPager.setAdapter(cryptoWalletOnboardingPagerAdapter);
             cryptoWalletOnboardingViewPager.setOffscreenPageLimit(
                     cryptoWalletOnboardingPagerAdapter.getCount() - 1);
@@ -115,15 +114,15 @@ public class CryptoFragment extends Fragment {
                         @Override
                         public void onPageScrollStateChanged(int state) {}
                     });
-            // TODO below code commented out for logic, it will get updated in follow up issue.
-
-            // if (BraveWalletNativeWorker.getInstance().isWalletLocked()) {
-            //     setNavigationFragments(UNLOCK_WALLET_ACTION);
-            // } else {
+        if (Utils.shouldShowCryptoOnboarding()) {
             setNavigationFragments(ONBOARDING_ACTION);
-            // }
         } else {
+            boolean isLocked= BraveWalletNativeWorker.getInstance().isWalletLocked();
+            if (isLocked) {
+                setNavigationFragments(UNLOCK_WALLET_ACTION);
+            } else {
             setCryptoLayout();
+            }
         }
     }
 
@@ -131,36 +130,36 @@ public class CryptoFragment extends Fragment {
         List<NavigationItem> navigationItems = new ArrayList<>();
         if (type == ONBOARDING_ACTION) {
             SetupWalletFragment setupWalletFragment = new SetupWalletFragment();
-            setupWalletFragment.setOnNextPageListener(onNextPage);
+            setupWalletFragment.setOnNextPageListener(this);
             navigationItems.add(new NavigationItem(
                     getResources().getString(R.string.setup_crypto), setupWalletFragment));
             SecurePasswordFragment securePasswordFragment = new SecurePasswordFragment();
-            securePasswordFragment.setOnNextPageListener(onNextPage);
+            securePasswordFragment.setOnNextPageListener(this);
             navigationItems.add(new NavigationItem(
                     getResources().getString(R.string.secure_your_crypto), securePasswordFragment));
             BackupWalletFragment backupWalletFragment = new BackupWalletFragment();
-            backupWalletFragment.setOnNextPageListener(onNextPage);
+            backupWalletFragment.setOnNextPageListener(this);
             navigationItems.add(new NavigationItem(
                     getResources().getString(R.string.backup_your_wallet), backupWalletFragment));
             RecoveryPhraseFragment recoveryPhraseFragment = new RecoveryPhraseFragment();
-            recoveryPhraseFragment.setOnNextPageListener(onNextPage);
+            recoveryPhraseFragment.setOnNextPageListener(this);
             navigationItems.add(
                     new NavigationItem(getResources().getString(R.string.your_recovery_phrase),
                             recoveryPhraseFragment));
             VerifyRecoveryPhraseFragment verifyRecoveryPhraseFragment =
                     new VerifyRecoveryPhraseFragment();
-            verifyRecoveryPhraseFragment.setOnNextPageListener(onNextPage);
+            verifyRecoveryPhraseFragment.setOnNextPageListener(this);
             navigationItems.add(
                     new NavigationItem(getResources().getString(R.string.verify_recovery_phrase),
                             verifyRecoveryPhraseFragment));
         } else if (type == UNLOCK_WALLET_ACTION) {
             UnlockWalletFragment unlockWalletFragment = new UnlockWalletFragment();
-            unlockWalletFragment.setOnNextPageListener(onNextPage);
+            unlockWalletFragment.setOnNextPageListener(this);
             navigationItems.add(new NavigationItem(
                     getResources().getString(R.string.unlock_wallet_title), unlockWalletFragment));
         } else if (type == RESTORE_WALLET_ACTION) {
             RestoreWalletFragment restoreWalletFragment = new RestoreWalletFragment();
-            restoreWalletFragment.setOnNextPageListener(onNextPage);
+            restoreWalletFragment.setOnNextPageListener(this);
             navigationItems.add(
                     new NavigationItem(getResources().getString(R.string.restore_crypto_account),
                             restoreWalletFragment));
@@ -186,8 +185,7 @@ public class CryptoFragment extends Fragment {
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    private final OnNextPage onNextPage = new OnNextPage() {
-        @Override
+    @Override
         public void gotoNextPage(boolean finishOnboarding) {
             if (finishOnboarding) {
                 onFinishOnboarding.onFinish();
@@ -202,5 +200,4 @@ public class CryptoFragment extends Fragment {
         public void gotoRestorePage() {
             setNavigationFragments(RESTORE_WALLET_ACTION);
         }
-    };
 }

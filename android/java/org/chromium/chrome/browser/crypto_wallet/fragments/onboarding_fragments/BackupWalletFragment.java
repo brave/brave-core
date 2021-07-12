@@ -20,11 +20,6 @@ import org.chromium.chrome.R;
 
 public class BackupWalletFragment extends CryptoOnboardingFragment {
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_backup_wallet, container, false);

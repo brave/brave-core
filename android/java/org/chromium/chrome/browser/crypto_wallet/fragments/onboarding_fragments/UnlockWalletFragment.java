@@ -22,11 +22,6 @@ import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
 
 public class UnlockWalletFragment extends CryptoOnboardingFragment {
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_unlock_wallet, container, false);
@@ -46,13 +41,19 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
 
             if (BraveWalletNativeWorker.getInstance().unlockWallet(
                         unlockWalletPassword.getText().toString())) {
-                onNextPage.gotoNextPage(true);
+                if (onNextPage != null) {
+                    onNextPage.gotoNextPage(true);
+                }
             } else {
                 unlockWalletPassword.setError(getString(R.string.password_error));
             }
         });
 
         TextView unlockWalletRestoreButton = view.findViewById(R.id.btn_unlock_wallet_restore);
-        unlockWalletRestoreButton.setOnClickListener(v -> onNextPage.gotoRestorePage());
+        unlockWalletRestoreButton.setOnClickListener(v -> { 
+            if (onNextPage != null) {
+                onNextPage.gotoRestorePage();
+            } 
+        });
     }
 }

@@ -91,21 +91,22 @@
                         android:gravity="center"
                         android:padding="8dp"
                         android:textColor="@color/crypto_wallet_radiobutton_color_selector"
-                        android:checked="true"
                         android:button="@null"
                         android:textSize="14sp"
                         android:textStyle="bold"
+                        android:checked="true"
                         android:text="@string/day_1" />
 
                     <RadioButton
                         android:id="@+id/week_1_radiobutton"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:button="@null"
                         android:layout_height="wrap_content"
                         android:background="@drawable/wallet_radio_button_selector"
                         android:gravity="center"
+                        android:padding="8dp"
                         android:textColor="@color/crypto_wallet_radiobutton_color_selector"
+                        android:button="@null"
                         android:textSize="14sp"
                         android:textStyle="bold"
                         android:text="@string/week_1" />
@@ -114,13 +115,14 @@
                         android:id="@+id/month_1_radiobutton"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:button="@null"
                         android:layout_height="wrap_content"
                         android:background="@drawable/wallet_radio_button_selector"
                         android:gravity="center"
+                        android:padding="8dp"
+                        android:textColor="@color/crypto_wallet_radiobutton_color_selector"
+                        android:button="@null"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:textColor="@color/crypto_wallet_radiobutton_color_selector"
                         android:text="@string/month_1" />
 
                     <RadioButton
@@ -130,6 +132,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/wallet_radio_button_selector"
                         android:gravity="center"
+                        android:padding="8dp"
                         android:textColor="@color/crypto_wallet_radiobutton_color_selector"
                         android:button="@null"
                         android:textSize="14sp"
@@ -140,26 +143,28 @@
                         android:id="@+id/year_1_radiobutton"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:button="@null"
                         android:layout_height="wrap_content"
                         android:background="@drawable/wallet_radio_button_selector"
                         android:gravity="center"
+                        android:padding="8dp"
+                        android:textColor="@color/crypto_wallet_radiobutton_color_selector"
+                        android:button="@null"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:textColor="@color/crypto_wallet_radiobutton_color_selector"
                         android:text="@string/year_1" />
 
                     <RadioButton
                         android:id="@+id/all_radiobutton"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:button="@null"
                         android:layout_height="wrap_content"
                         android:background="@drawable/wallet_radio_button_selector"
                         android:gravity="center"
+                        android:padding="8dp"
+                        android:textColor="@color/crypto_wallet_radiobutton_color_selector"
+                        android:button="@null"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:textColor="@color/crypto_wallet_radiobutton_color_selector"
                         android:text="@string/all" />
 
                 </RadioGroup>

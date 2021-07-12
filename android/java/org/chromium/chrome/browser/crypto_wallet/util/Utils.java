@@ -12,7 +12,9 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.chromium.chrome.R;
 import org.chromium.base.ContextUtils;
+import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
 
 public class Utils {
     public static final Pattern PASSWORD_PATTERN = Pattern.compile("^"
@@ -30,20 +34,24 @@ public class Utils {
             ".{7,}" + // at least 7 characters
             "$");
 
-    public static String recoveryPhrase = "";
-
     public static int ONBOARDING_ACTION = 1;
     public static int UNLOCK_WALLET_ACTION = 2;
     public static int RESTORE_WALLET_ACTION = 3;
 
     private static final String PREF_CRYPTO_ONBOARDING = "crypto_onboarding";
 
-    public static Map<Integer, String> getRecoveryPhraseMap(List<String> recoveryPhrases) {
-        Map<Integer, String> recoveryPhraseMap = new HashMap<>();
-        for (int i = 0; i < recoveryPhrases.size(); i++) {
-            recoveryPhraseMap.put(i, recoveryPhrases.get(i));
+    public static List<String> getRecoveryPhraseAsList() {
+        String[] recoveryPhraseArray = BraveWalletNativeWorker.getInstance()
+                                                   .getRecoveryWords().split(" ");
+        return new ArrayList<String>(Arrays.asList(recoveryPhraseArray));
+    }
+
+    public static String getRecoveryPhraseFromList(List<String> recoveryPhrases) {
+        String recoveryPhrasesText = "";
+        for (String phrase : recoveryPhrases) {
+            recoveryPhrasesText = recoveryPhrasesText.concat(phrase).concat(" ");
         }
-        return recoveryPhraseMap;
+        return recoveryPhrasesText.trim();
     }
 
     public static void saveTextToClipboard(Context context, String textToCopy) {
@@ -51,6 +59,7 @@ public class Utils {
                 (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("", textToCopy);
         clipboard.setPrimaryClip(clip);
+        Toast.makeText(context, R.string.text_has_been_copied, Toast.LENGTH_SHORT).show();
     }
 
     public static String getTextFromClipboard(Context context) {
