@@ -35,7 +35,6 @@ class SearchCustomEngineViewController: UIViewController {
     // MARK: Constants
     
     struct Constants {
-        static let urlEntryMaxCharacterCount  = 150
         static let titleEntryMaxCharacterCount = 50
     }
     
@@ -506,7 +505,7 @@ extension SearchCustomEngineViewController: UITextViewDelegate {
         let textLengthInRange = textView.text.count + (text.count - range.length)
             
         // The default text "https://" cant ne deleted or changed so nothing without a secure scheme can be added
-        return textLengthInRange <= Constants.urlEntryMaxCharacterCount && textLengthInRange >= 8
+        return textLengthInRange >= 8
     }
     
     func textViewDidChange(_ textView: UITextView) {
