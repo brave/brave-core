@@ -17,10 +17,17 @@
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/signin/profile_colors_util.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/vector_icons/vector_icons.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
+
+namespace {
+bool IsGuest(Profile* profile) {
+  return profile->IsGuestSession() || profile->IsEphemeralGuestProfile();
+}
+}  // namespace
 
 void BraveProfileMenuView::BuildIdentity() {
   ProfileMenuView::BuildIdentity();
@@ -52,13 +59,23 @@ void BraveProfileMenuView::BuildFeatureButtons() {
   if (!profile->IsOffTheRecord() && profile->HasPrimaryOTRProfile())
     window_count += chrome::GetBrowserCount(
         profile->GetPrimaryOTRProfile(/*create_if_needed=*/true));
-  if (window_count > 1) {
+  if (base::FeatureList::IsEnabled(features::kNewProfilePicker) &&
+      IsGuest(profile)) {
     AddFeatureButton(
-        l10n_util::GetPluralStringFUTF16(IDS_PROFILES_CLOSE_X_WINDOWS_BUTTON,
+        l10n_util::GetPluralStringFUTF16(IDS_GUEST_PROFILE_MENU_CLOSE_BUTTON,
                                          window_count),
-        base::BindRepeating(&ProfileMenuView::OnExitProfileButtonClicked,
+        base::BindRepeating(&BraveProfileMenuView::OnExitProfileButtonClicked,
                             base::Unretained(this)),
         vector_icons::kCloseIcon);
+  } else {
+    if (window_count > 1) {
+      AddFeatureButton(
+          l10n_util::GetPluralStringFUTF16(IDS_PROFILES_CLOSE_X_WINDOWS_BUTTON,
+                                           window_count),
+          base::BindRepeating(&BraveProfileMenuView::OnExitProfileButtonClicked,
+                              base::Unretained(this)),
+          vector_icons::kCloseIcon);
+    }
   }
 }
 
@@ -67,10 +84,3 @@ gfx::ImageSkia BraveProfileMenuView::GetSyncIcon() const {
   return gfx::ImageSkia();
 }
 
-void BraveProfileMenuView::OnExitProfileButtonClicked() {
-  if (browser()->profile()->IsGuestSession()) {
-    RecordClick(ActionableItem::kExitProfileButton);
-  } else {
-    ProfileMenuView::OnExitProfileButtonClicked();
-  }
-}

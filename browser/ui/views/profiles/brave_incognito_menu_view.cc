@@ -70,11 +70,12 @@ void BraveIncognitoMenuView::BuildMenu() {
 
   AddTorButton();
 
-  AddFeatureButton(l10n_util::GetStringUTF16(
-                       GetProfileMenuCloseButtonTextId(browser()->profile())),
-                   base::BindRepeating(&IncognitoMenuView::OnExitButtonClicked,
-                                       base::Unretained(this)),
-                   kCloseAllIcon);
+  AddFeatureButton(
+      l10n_util::GetStringUTF16(
+          GetProfileMenuCloseButtonTextId(browser()->profile())),
+      base::BindRepeating(&BraveIncognitoMenuView::OnExitButtonClicked,
+                          base::Unretained(this)),
+      kCloseAllIcon);
 }
 
 void BraveIncognitoMenuView::AddTorButton() {
