@@ -82,6 +82,10 @@ export type AddAccountNavTypes =
   | 'import'
   | 'hardware'
 
+export type AccountSettingsNavTypes =
+  | 'details'
+  | 'watchlist'
+
 export type BuySendSwapTypes =
   | 'buy'
   | 'send'
@@ -109,7 +113,7 @@ export interface BuySendSwapObjectType {
 
 export interface TopTabNavObjectType {
   name: string
-  id: TopTabNavTypes | AddAccountNavTypes
+  id: TopTabNavTypes | AddAccountNavTypes | AccountSettingsNavTypes
 }
 
 export interface NavObjectType {

@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import icon from '../../../assets/svg-icons/plus-icon.svg'
+import { EditOIcon } from 'brave-ui/components/icons'
 interface StyleProps {
   buttonType: 'primary' | 'secondary'
 }
@@ -34,4 +35,11 @@ export const PlusIcon = styled.div`
   height: 15px;
   background: url(${icon});
   margin-right: 10px;
+`
+
+export const EditIcon = styled(EditOIcon)`
+  width: 15px;
+  height: 15px;
+  color: ${(p) => p.theme.color.interactive07};
+  margin-right: 8px;
 `

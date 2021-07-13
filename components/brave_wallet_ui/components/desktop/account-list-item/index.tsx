@@ -3,6 +3,7 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import { create } from 'ethereum-blockies'
 import { Tooltip } from '../../shared'
+import { WalletAccountType } from '../../../constants/types'
 import locale from '../../../constants/locale'
 
 // Styled Components
@@ -13,31 +14,36 @@ import {
   AccountAndAddress,
   NameAndIcon,
   AccountCircle,
-  DeleteButton,
-  DeleteIcon,
   RightSide,
   HardwareIcon,
   AccountNameRow
 } from './style'
 
 export interface Props {
-  onDelete: () => void
-  onClick: () => void
+  onDelete?: () => void
+  onClick: (account: WalletAccountType) => void
+  account: WalletAccountType
   isHardwareWallet: boolean
-  address: string
-  name: string
 }
 
 function AccountListItem (props: Props) {
-  const { address, name, isHardwareWallet, onDelete, onClick } = props
+  const {
+    account,
+    isHardwareWallet,
+    onClick
+  } = props
 
   const onCopyToClipboard = async () => {
-    await copyToClipboard(address)
+    await copyToClipboard(account.address)
+  }
+
+  const onSelectAccount = () => {
+    onClick(account)
   }
 
   const orb = React.useMemo(() => {
-    return create({ seed: address, size: 8, scale: 16 }).toDataURL()
-  }, [address])
+    return create({ seed: account.address, size: 8, scale: 16 }).toDataURL()
+  }, [account.address])
 
   return (
     <StyledWrapper>
@@ -46,17 +52,17 @@ function AccountListItem (props: Props) {
         <AccountAndAddress>
           <AccountNameRow>
             {isHardwareWallet && <HardwareIcon />}
-            <AccountName onClick={onClick}>{name}</AccountName>
+            <AccountName onClick={onSelectAccount}>{account.name}</AccountName>
           </AccountNameRow>
           <Tooltip text={locale.toolTipCopyToClipboard}>
-            <AccountAddress onClick={onCopyToClipboard}>{reduceAddress(address)}</AccountAddress>
+            <AccountAddress onClick={onCopyToClipboard}>{reduceAddress(account.address)}</AccountAddress>
           </Tooltip>
         </AccountAndAddress>
       </NameAndIcon>
       <RightSide>
-        <DeleteButton onClick={onDelete}>
+        {/* <DeleteButton onClick={onDelete}>
           <DeleteIcon />
-        </DeleteButton>
+        </DeleteButton> */}
       </RightSide>
     </StyledWrapper>
   )

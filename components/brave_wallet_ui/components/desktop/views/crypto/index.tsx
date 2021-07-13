@@ -29,7 +29,9 @@ export interface Props {
   onCreateAccount: (name: string) => void
   onImportAccount: (name: string, key: string) => void
   onConnectHardwareWallet: (hardware: 'Ledger' | 'Trezor') => void
+  onUpdateAccountName: (name: string) => void
   onToggleAddModal: () => void
+  onUpdateWatchList: (list: string[]) => void
   needsBackup: boolean
   accounts: WalletAccountType[]
   selectedTimeline: AssetPriceTimeframe
@@ -40,6 +42,7 @@ export interface Props {
   portfolioBalance: string
   transactions: (RPCTransactionType | undefined)[]
   userAssetList: UserAssetOptionType[]
+  userWatchList: string[]
   isLoading: boolean
   showAddModal: boolean
 }
@@ -53,8 +56,11 @@ const CryptoView = (props: Props) => {
     onCreateAccount,
     onImportAccount,
     onConnectHardwareWallet,
+    onUpdateAccountName,
+    onUpdateWatchList,
     portfolioPriceHistory,
     userAssetList,
+    userWatchList,
     selectedTimeline,
     selectedAssetPriceHistory,
     needsBackup,
@@ -174,6 +180,11 @@ const CryptoView = (props: Props) => {
           accounts={accounts}
           onClickBackup={onShowBackup}
           onClickAddAccount={onClickAddAccount}
+          onUpdateAccountName={onUpdateAccountName}
+          onUpdateWatchList={onUpdateWatchList}
+          userAssetList={userAssetList}
+          userWatchList={userWatchList}
+          transactions={transactions}
         />
       }
       {selectedTab !== 'portfolio' && selectedTab !== 'defi' && selectedTab !== 'accounts' &&

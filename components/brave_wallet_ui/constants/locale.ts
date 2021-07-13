@@ -144,6 +144,8 @@ const locale = {
   accountsPrimary: 'Primary Crypto Accounts',
   accountsSecondary: 'Secondary Accounts',
   accountsSecondaryDisclaimer: 'These accounts can be used with web 3 dapps and can be shown in your portfolio, however, they cannot not be restored via recovery phrase from your primary account backup. Enable Brave Sync accounts to auto-restore secondary accounts.',
+  accountsWatchlist: 'Watchlist',
+  accountsEditWatchList: 'Edit Watchlist',
 
   // Add Account Options
   addAccountCreate: 'Create',
@@ -167,7 +169,15 @@ const locale = {
   connectHardwareInfo2: 'wallet directly to your computer.',
   connectHardwareInfo3: 'Unlock your device and select the Ethereum app.',
   connectHardwareTrezor: 'Trezor',
-  connectHardwareLedger: 'Ledger'
+  connectHardwareLedger: 'Ledger',
+
+  // Account Settings Modal
+  accountSettingsDetails: 'Details',
+  accountSettingsWatchlist: 'Watchlist',
+  accountSettingsSave: 'Save',
+  accountSettingsRemove: 'Remove Account',
+  watchlistButton: 'Save Account Watchlist',
+  watchListSearchPlaceholder: 'Search tokens or contract address'
 }
 
 export default locale

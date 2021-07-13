@@ -1,5 +1,11 @@
 import * as React from 'react'
-import { TopTabNavObjectType, TopTabNavTypes, AddAccountNavTypes } from '../../../constants/types'
+import {
+  TopTabNavObjectType,
+  TopTabNavTypes,
+  AddAccountNavTypes,
+  AccountSettingsNavTypes
+} from '../../../constants/types'
+
 // Styled Components
 import {
   StyledWrapper,
@@ -15,15 +21,15 @@ import { TopTabNavButton } from '../'
 
 export interface Props {
   tabList: TopTabNavObjectType[]
-  selectedTab: TopTabNavTypes | AddAccountNavTypes
-  onSubmit: (id: TopTabNavTypes | AddAccountNavTypes) => void
+  selectedTab: TopTabNavTypes | AddAccountNavTypes | AccountSettingsNavTypes
+  onSubmit: (id: TopTabNavTypes | AddAccountNavTypes | AccountSettingsNavTypes) => void
   onLockWallet?: () => void
   hasMoreButtons?: boolean
   onClickMoreButton?: () => void
 }
 
 export default class TopTabNav extends React.PureComponent<Props, {}> {
-  onNav = (id: TopTabNavTypes | AddAccountNavTypes) => () => {
+  onNav = (id: TopTabNavTypes | AddAccountNavTypes | AccountSettingsNavTypes) => () => {
     this.props.onSubmit(id)
   }
 

@@ -198,7 +198,6 @@ function Container (props: Props) {
         close: Number(obj.price)
       }
     })
-    console.log(formated)
     return formated
   }, [selectedAssetPriceHistory])
 
@@ -219,6 +218,15 @@ function Container (props: Props) {
 
   const onImportAccount = () => {
     // Todo: Add logic to import a secondary account
+  }
+
+  const onUpdateAccountName = () => {
+    // Todo: Need to add logic to update and Existing Account Name
+  }
+
+  const onUpdateWatchList = () => {
+    // Todo: Need to persist a AssetWatchList and add logic to update
+    // the AssetWatchList
   }
 
   const renderWallet = React.useMemo(() => {
@@ -273,6 +281,9 @@ function Container (props: Props) {
                   isLoading={isFetchingPriceHistory}
                   showAddModal={showAddModal}
                   onToggleAddModal={onToggleAddModal}
+                  onUpdateAccountName={onUpdateAccountName}
+                  onUpdateWatchList={onUpdateWatchList}
+                  userWatchList={['1']}
                 />
               )}
             </>
