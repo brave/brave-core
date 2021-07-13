@@ -12,7 +12,7 @@ import {
 } from './style'
 
 export interface Props {
-  action: () => void
+  action?: () => void
   name: string
   symbol: string
   icon: string

@@ -86,6 +86,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setInputValue(value)
   }
 
+  const onUpdateAccountName = () => {
+    alert('Will update account name')
+  }
+
   const onShowBackup = () => {
     setShowBackup(true)
   }
@@ -265,6 +269,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setShowAddModal(!showAddModal)
   }
 
+  const onUpdateWatchList = () => {
+    alert('Will update Watchlist')
+  }
+
   return (
     <WalletPageLayout>
       <SideNav
@@ -324,6 +332,9 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                           isLoading={false}
                           showAddModal={showAddModal}
                           onToggleAddModal={onToggleAddModal}
+                          onUpdateAccountName={onUpdateAccountName}
+                          onUpdateWatchList={onUpdateWatchList}
+                          userWatchList={['1']}
                         />
                       )}
                     </>

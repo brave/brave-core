@@ -16,6 +16,8 @@ import WalletMorePopup from './wallet-more-popup'
 import BackupWarningBanner from './backup-warning-banner'
 import PopupModal from './popup-modals'
 import AddAccountModal from './popup-modals/add-account-modal'
+import AccountSettingsModal from './popup-modals/account-settings-modal'
+import AssetWatchlistItem from './asset-watchlist-item'
 import { CryptoView, PortfolioView } from './views'
 import {
   OnboardingWelcome,
@@ -52,5 +54,7 @@ export {
   OnboardingRestore,
   AccountListItem,
   PopupModal,
-  AddAccountModal
+  AddAccountModal,
+  AccountSettingsModal,
+  AssetWatchlistItem
 }
