@@ -289,6 +289,9 @@ void AdRewards::OnGetPayments(const UrlResponse& url_response) {
     return;
   }
 
+  unreconciled_estimated_pending_rewards_ = 0.0;
+  ConfirmationsState::Get()->Save();
+
   GetAdGrants();
 }
 
@@ -340,9 +343,6 @@ void AdRewards::OnDidReconcileAdRewards() {
   BLOG(1, "Successfully reconciled ad rewards");
 
   retry_timer_.Stop();
-
-  unreconciled_estimated_pending_rewards_ = 0.0;
-  ConfirmationsState::Get()->Save();
 
   if (delegate_) {
     delegate_->OnDidReconcileAdRewards();
