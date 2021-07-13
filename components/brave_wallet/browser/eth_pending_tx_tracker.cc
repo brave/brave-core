@@ -35,8 +35,7 @@ void EthPendingTxTracker::UpdatePendingTransactions() {
   for (const auto& pending_transaction : pending_transactions) {
     if (IsNonceTaken(pending_transaction)) {
       DropTransaction(pending_transaction);
-      nonce_lock->Release();
-      return;
+      continue;
     }
     std::string id = pending_transaction.id;
     rpc_controller_->GetTransactionReceipt(
