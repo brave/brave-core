@@ -11,14 +11,19 @@ import android.view.View;
 
 import androidx.preference.PreferenceViewHolder;
 
+import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescriptionAndAuxButton;
 
 public class BraveRadioButtonGroupSafeBrowsingPreference
         extends RadioButtonGroupSafeBrowsingPreference {
     private RadioButtonWithDescriptionAndAuxButton mEnhancedProtection;
+    private String noProtectionSummary;
 
     public BraveRadioButtonGroupSafeBrowsingPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        noProtectionSummary = context.getResources().getString(
+                R.string.brave_safe_browsing_no_protection_summary);
     }
 
     @Override
@@ -30,6 +35,13 @@ public class BraveRadioButtonGroupSafeBrowsingPreference
         assert enhancedProtection != null : "Something has changed in the upstream!";
         if (enhancedProtection != null) {
             enhancedProtection.setVisibility(View.GONE);
+        }
+
+        RadioButtonWithDescription noProtection =
+                (RadioButtonWithDescription) holder.findViewById(R.id.no_protection);
+        assert noProtection != null : "Something has changed in the upstream!";
+        if (noProtection != null) {
+            noProtection.setDescriptionText(noProtectionSummary);
         }
     }
 }
