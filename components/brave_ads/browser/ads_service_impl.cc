@@ -866,6 +866,9 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(const bool success) {
       bat_ads_.BindNewEndpointAndPassReceiver(),
       base::BindOnce(&AdsServiceImpl::OnCreate, AsWeakPtr()));
 
+  const std::string locale = GetLocale();
+  RegisterResourceComponentsForLocale(locale);
+
   OnWalletUpdated();
 
   MaybeShowMyFirstAdNotification();
@@ -1742,9 +1745,6 @@ void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
       if (!IsEnabled()) {
         SuspendP2AHistograms();
         VLOG(1) << "P2A histograms suspended";
-      } else {
-        const std::string locale = GetLocale();
-        RegisterResourceComponentsForLocale(locale);
       }
 
       brave_rewards::p3a::UpdateAdsStateOnPreferenceChange(profile_->GetPrefs(),
