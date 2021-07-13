@@ -42,6 +42,17 @@ extension Row {
             uuid: option.key
         )
     }
+    
+    /// Creates a switch toggle `Row` which holds local value and no preference update
+    static func boolRow(title: String, detailText: String? = nil, toggleValue: Bool, valueChange: @escaping ValueChange, cellReuseId: String) -> Row {
+        return Row(
+            text: title,
+            detailText: detailText,
+            accessory: .view(SwitchAccessoryView(initialValue: toggleValue, valueChange: valueChange)),
+            cellClass: MultilineSubtitleCell.self,
+            reuseIdentifier: cellReuseId
+        )
+    }
 }
 
 class MultilineButtonCell: ButtonCell {

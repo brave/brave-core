@@ -144,9 +144,7 @@ public struct Row: Hashable, Equatable {
         return selection != nil
     }
 
-    var cellIdentifier: String {
-        return cellClass.description()
-    }
+    var cellIdentifier: String
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(uuid)
@@ -156,7 +154,7 @@ public struct Row: Hashable, Equatable {
     // MARK: - Initializers
 
     public init(text: String? = nil, detailText: String? = nil, selection: Selection? = nil,
-        image: UIImage? = nil, accessory: Accessory = .none, cellClass: Cell.Type? = nil, context: Context? = nil, editActions: [EditAction] = [], uuid: String = UUID().uuidString, accessibilityIdentifier: String? = nil) {
+                image: UIImage? = nil, accessory: Accessory = .none, cellClass: Cell.Type? = nil, context: Context? = nil, editActions: [EditAction] = [], uuid: String = UUID().uuidString, accessibilityIdentifier: String? = nil, reuseIdentifier: String? = nil) {
         self.accessibilityIdentifier = accessibilityIdentifier
         self.uuid = uuid
         self.text = text
@@ -167,6 +165,12 @@ public struct Row: Hashable, Equatable {
         self.cellClass = cellClass ?? Value1Cell.self
         self.context = context
         self.editActions = editActions
+        
+        if let cellReuseIdentifier = reuseIdentifier {
+            self.cellIdentifier = cellReuseIdentifier
+        } else {
+            self.cellIdentifier = self.cellClass.description()
+        }
     }
 }
 
