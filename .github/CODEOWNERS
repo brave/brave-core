@@ -36,12 +36,12 @@ components/services/bat_ads/**/*.mm @brave/ads-client
 vendor/bat-native-ads/**/*.cc @brave/ads-client
 vendor/bat-native-ads/**/*.h @brave/ads-client
 vendor/bat-native-ads/**/*.mm @brave/ads-client
-vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*.cc @brave/ads-client @fmarier
-vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*.h @brave/ads-client @fmarier
-vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*.mm @brave/ads-client @fmarier
-vendor/bat-native-ads/src/bat/ads/internal/security/**/*.cc @brave/ads-client @orspetol
-vendor/bat-native-ads/src/bat/ads/internal/security/**/*.h @brave/ads-client @orspetol
-vendor/bat-native-ads/src/bat/ads/internal/security/**/*.mm @brave/ads-client @orspetol
+vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*.cc @brave/ads-client
+vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*.h @brave/ads-client
+vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*.mm @brave/ads-client
+vendor/bat-native-ads/src/bat/ads/internal/security/**/*.cc @brave/ads-client
+vendor/bat-native-ads/src/bat/ads/internal/security/**/*.h @brave/ads-client
+vendor/bat-native-ads/src/bat/ads/internal/security/**/*.mm @brave/ads-client
 
 # Network
 browser/net/ @iefremov
