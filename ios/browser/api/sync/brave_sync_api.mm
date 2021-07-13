@@ -105,7 +105,7 @@
 }
 
 - (bool)syncEnabled {
-  return _worker->IsSyncEnabled();
+  return _worker->CanSyncFeatureStart();
 }
 
 - (void)setSyncEnabled:(bool)enabled {

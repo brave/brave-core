@@ -309,7 +309,7 @@ void BraveSyncWorker::OnResetDone() {
   }
 }
 
-bool BraveSyncWorker::IsSyncEnabled() {
+bool BraveSyncWorker::CanSyncFeatureStart() {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* setup_service =
       SyncSetupServiceFactory::GetForBrowserState(browser_state_);
@@ -318,7 +318,7 @@ bool BraveSyncWorker::IsSyncEnabled() {
     return false;
   }
 
-  return setup_service->IsSyncEnabled();
+  return setup_service->CanSyncFeatureStart();
 }
 
 bool BraveSyncWorker::IsSyncFeatureActive() {
