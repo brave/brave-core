@@ -101,9 +101,6 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         .reduce((accumulator: number, item: Rewards.PendingContribution) => {
           return accumulator + item.amount
         }, 0)
-      if (total > 0) {
-        state.firstLoad = false
-      }
       state.pendingContributionTotal = total
       break
     }

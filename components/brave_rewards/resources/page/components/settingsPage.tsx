@@ -68,14 +68,6 @@ class SettingsPage extends React.Component<Props, State> {
   }
 
   componentDidMount () {
-    if (this.props.rewardsData.firstLoad === null) {
-      // First load ever
-      this.actions.onSettingSave('firstLoad', true, false)
-    } else if (this.props.rewardsData.firstLoad) {
-      // Second load ever
-      this.actions.onSettingSave('firstLoad', false, false)
-    }
-
     if (!this.props.rewardsData.initializing) {
       this.startRewards()
     }
@@ -128,15 +120,7 @@ class SettingsPage extends React.Component<Props, State> {
   }
 
   startRewards () {
-    if (this.props.rewardsData.firstLoad) {
-      this.actions.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear())
-      this.actions.getAdsData()
-      this.actions.getPendingContributions()
-      this.actions.getCountryCode()
-    } else {
-      // normal load
-      this.refreshActions()
-    }
+    this.refreshActions()
 
     this.actions.getRewardsParameters()
     this.actions.getContributionAmount()
@@ -149,6 +133,7 @@ class SettingsPage extends React.Component<Props, State> {
     this.actions.fetchPromotions()
     this.actions.getExternalWallet()
     this.actions.getOnboardingStatus()
+    this.actions.getEnabledInlineTippingPlatforms()
 
     this.handleURL()
   }

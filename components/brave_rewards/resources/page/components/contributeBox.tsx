@@ -205,7 +205,6 @@ class ContributeBox extends React.Component<Props, State> {
 
   render () {
     const {
-      firstLoad,
       parameters,
       contributionMonthly,
       enabledContribute,
@@ -221,7 +220,6 @@ class ContributeBox extends React.Component<Props, State> {
     const numRows = contributeRows && contributeRows.length
     const numExcludedRows = excludedRows && excludedRows.length
     const allSites = !(excludedRows.length > 0 || numRows > 5)
-    const showDisabled = firstLoad !== false || !enabledContribute
 
     // Hide AC options from bitFlyer wallet regions.
     if (externalWallet && externalWallet.type === 'bitflyer') {
@@ -236,7 +234,7 @@ class ContributeBox extends React.Component<Props, State> {
         toggle={true}
         checked={enabledContribute}
         settingsChild={this.contributeSettings(monthlyList)}
-        disabledContent={showDisabled ? this.contributeDisabled() : null}
+        disabledContent={!enabledContribute ? this.contributeDisabled() : null}
         onToggle={this.onToggleContribution}
         testId={'autoContribution'}
         settingsOpened={this.state.settings}

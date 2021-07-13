@@ -262,6 +262,10 @@ function onboardingStatus (result: { showOnboarding: boolean }) {
   getActions().onOnboardingStatus(result.showOnboarding)
 }
 
+function enabledInlineTippingPlatforms (list: string[]) {
+  getActions().onEnabledInlineTippingPlatforms(list)
+}
+
 // Expose functions to Page Handlers.
 // TODO(petemill): Use event listeners instead.
 // @ts-ignore
@@ -310,7 +314,8 @@ window.brave_rewards = {
   completeReset,
   paymentId,
   walletPassphrase,
-  onboardingStatus
+  onboardingStatus,
+  enabledInlineTippingPlatforms
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

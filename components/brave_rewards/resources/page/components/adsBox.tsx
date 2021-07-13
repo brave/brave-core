@@ -392,7 +392,6 @@ class AdsBox extends React.Component<Props, State> {
     const {
       adsData,
       adsHistory,
-      firstLoad,
       parameters
     } = this.props.rewardsData
 
@@ -409,7 +408,7 @@ class AdsBox extends React.Component<Props, State> {
 
     const enabled = adsEnabled && adsIsSupported
     const toggle = !(!adsUIEnabled || !adsIsSupported)
-    const showDisabled = firstLoad !== false || !toggle || !adsEnabled || !adsIsSupported
+    const showDisabled = !toggle || !adsEnabled || !adsIsSupported
 
     const historyEntries = adsHistory || []
     const rows = this.getGroupedAdsHistory(historyEntries, savedOnly)
@@ -456,7 +455,11 @@ class AdsBox extends React.Component<Props, State> {
           </List>
           <List title={getLocale('adsPaymentDate')}>
             <NextContribution>
-              {nextPaymentDateFormatter.format(new Date(nextPaymentDate))}
+              {
+                nextPaymentDate
+                  ? nextPaymentDateFormatter.format(new Date(nextPaymentDate))
+                  : ''
+              }
             </NextContribution>
           </List>
           <List title={getLocale('adsNotificationsReceived')}>

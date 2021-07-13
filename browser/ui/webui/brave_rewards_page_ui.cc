@@ -26,11 +26,13 @@
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_page_generated_map.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -134,6 +136,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   void OnGetOneTimeTips(ledger::type::PublisherInfoList list);
 
+  void GetEnabledInlineTippingPlatforms(const base::ListValue* args);
   void SetInlineTippingPlatformEnabled(const base::ListValue* args);
 
   void GetPendingContributions(const base::ListValue* args);
@@ -418,6 +421,10 @@ void RewardsDOMHandler::RegisterMessages() {
       "brave_rewards.getStatement",
       base::BindRepeating(&RewardsDOMHandler::GetStatement,
       base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards.getEnabledInlineTippingPlatforms",
+      base::BindRepeating(&RewardsDOMHandler::GetEnabledInlineTippingPlatforms,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards.setInlineTippingPlatformEnabled",
       base::BindRepeating(&RewardsDOMHandler::SetInlineTippingPlatformEnabled,
@@ -1443,6 +1450,28 @@ void RewardsDOMHandler::OnRecurringTipRemoved(
 
   CallJavascriptFunction("brave_rewards.recurringTipRemoved",
                          base::Value(success));
+}
+
+void RewardsDOMHandler::GetEnabledInlineTippingPlatforms(
+    const base::ListValue* args) {
+  AllowJavascript();
+
+  // TODO(zenparsing): Consider using a PrefChangeRegistrar to monitor changes
+  // to these values.
+  auto* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
+  base::Value list(base::Value::Type::LIST);
+
+  if (prefs->GetBoolean(brave_rewards::prefs::kInlineTipGithubEnabled))
+    list.Append("github");
+
+  if (prefs->GetBoolean(brave_rewards::prefs::kInlineTipRedditEnabled))
+    list.Append("reddit");
+
+  if (prefs->GetBoolean(brave_rewards::prefs::kInlineTipTwitterEnabled))
+    list.Append("twitter");
+
+  CallJavascriptFunction("brave_rewards.enabledInlineTippingPlatforms",
+                         std::move(list));
 }
 
 void RewardsDOMHandler::SetInlineTippingPlatformEnabled(

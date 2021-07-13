@@ -7,7 +7,6 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 import {
-  DisabledContent,
   Box,
   TableDonation,
   List,
@@ -39,16 +38,6 @@ class MonthlyContributionBox extends React.Component<Props, State> {
 
   get actions () {
     return this.props.actions
-  }
-
-  disabledContent = () => {
-    return (
-      <DisabledContent
-        type={'monthly'}
-      >
-        {getLocale('monthlyContributionDisabledText')}
-      </DisabledContent>
-    )
   }
 
   getRows = () => {
@@ -94,11 +83,9 @@ class MonthlyContributionBox extends React.Component<Props, State> {
   render () {
     const {
       parameters,
-      firstLoad,
       recurringList,
       reconcileStamp
     } = this.props.rewardsData
-    const showDisabled = firstLoad !== false
     const tipRows = this.getRows()
     const topRows = tipRows.slice(0, 5)
     const numRows = tipRows && tipRows.length
@@ -111,7 +98,6 @@ class MonthlyContributionBox extends React.Component<Props, State> {
         type={'donation'}
         title={getLocale('monthlyContributionTitle')}
         description={getLocale('monthlyContributionDesc')}
-        disabledContent={showDisabled ? this.disabledContent() : null}
       >
         {
           this.state.modalShowAll
