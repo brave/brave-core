@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/bookmarks/app.js b/chrome/browser/resources/bookmarks/app.js
-index 9204c8ccc7316acc463a362a8ab5dc1a026cc6ca..e467e177747492b43b004666d57f6a5da2e12fe1 100644
+index 9204c8ccc7316acc463a362a8ab5dc1a026cc6ca..bc501ae3a39c5a44037e3413de02fc25dce87d80 100644
 --- a/chrome/browser/resources/bookmarks/app.js
 +++ b/chrome/browser/resources/bookmarks/app.js
-@@ -13,6 +13,7 @@ import './router.js';
- import './shared_vars.js';
- import './strings.m.js';
- import './command_manager.js';
-+import 'chrome://bookmarks/brave/brave_bookmarks_overrides.js'
+@@ -2,6 +2,7 @@
+ // Use of this source code is governed by a BSD-style license that can be
+ // found in the LICENSE file.
  
- import {FindShortcutBehavior, FindShortcutBehaviorInterface} from 'chrome://resources/cr_elements/find_shortcut_behavior.js';
- import {StoreObserver} from 'chrome://resources/js/cr/ui/store.m.js';
++import './brave_bookmarks_overrides.js'
+ import 'chrome://resources/cr_components/managed_footnote/managed_footnote.js';
+ import 'chrome://resources/cr_elements/shared_vars_css.m.js';
+ import 'chrome://resources/cr_elements/cr_button/cr_button.m.js';

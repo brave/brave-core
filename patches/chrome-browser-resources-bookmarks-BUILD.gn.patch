@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/bookmarks/BUILD.gn b/chrome/browser/resources/bookmarks/BUILD.gn
+index dd8bd076d8f5d0fdd8caaecce23ffdb8c6715871..45c0be073562c9099ec1a437c6436a6eb28f5584 100644
+--- a/chrome/browser/resources/bookmarks/BUILD.gn
++++ b/chrome/browser/resources/bookmarks/BUILD.gn
+@@ -30,6 +30,7 @@ if (optimize_webui) {
+       "../../../../ui/webui/resources:preprocess",
+     ]
+     excludes = [ "chrome://resources/js/cr.m.js" ]
++    deps += brave_deps_chrome_browser_resources_bookmarks_build
+   }
+ }
+ 

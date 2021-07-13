@@ -1,23 +1,66 @@
+import("//chrome/browser/resources/tools/optimize_webui.gni")
 import("//chrome/common/features.gni")
 import("//tools/grit/grit_rule.gni")
-import("//tools/polymer/html_to_js.gni")
+import("//tools/grit/preprocess_if_expr.gni")
+import("//tools/polymer/polymer.gni")
+import("//ui/webui/resources/tools/generate_grd.gni")
+
+preprocess_folder = "preprocessed"
+preprocess_manifest = "brave_preprocessed_manifest.json"
+
+webui_resource_name = "bookmarks"
+webui_gen_path = "$root_gen_dir/chrome/browser/resources/$webui_resource_name/"
+brave_resource_name = "brave_$webui_resource_name"
+brave_gen_dir = "$root_gen_dir/brave/browser/resources/$webui_resource_name"
+grd_name = brave_resource_name + "_resources.grd"
+grd_path = "$brave_gen_dir/$grd_name"
 
 grit("resources") {
-  source = "bookmarks_resources.grd"
+  source = grd_path
 
-  outputs = [
-    "grit/brave_bookmarks_resources.h",
-    "grit/brave_bookmarks_resources_map.cc",
-    "grit/brave_bookmarks_resources_map.h",
-    "brave_bookmarks_resources.pak",
+  grit_flags = [
+    "-E",
+    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
+    "-E",
+    "root_src_dir=" + rebase_path("//", root_build_dir),
   ]
 
-  output_dir = "$root_gen_dir/brave/browser/resources/bookmarks"
-  resource_ids = "//brave/browser/resources/resource_ids"
+  deps = [":build_grd"]
 
-  deps = [ ":web_components" ]
+  defines = chrome_grit_defines
+
+  outputs = [
+    "grit/$brave_resource_name" + "_resources.h",
+    "grit/$brave_resource_name" + "_resources_map.cc",
+    "grit/$brave_resource_name" + "_resources_map.h",
+    "$brave_resource_name" + "_resources.pak",
+  ]
+
+  output_dir = brave_gen_dir
+  resource_ids = "//brave/browser/resources/resource_ids"
 }
 
-html_to_js("web_components") {
-  js_files = [ "brave_bookmarks_overrides.js" ]
+generate_grd("build_grd") {
+  grd_prefix = "$brave_resource_name"
+  out_grd = grd_path
+  input_files = []
+  input_files_base_dir = rebase_path(".", "//")
+
+  deps = [
+    ":preprocess",
+  ]
+  manifest_files = [
+    "$webui_gen_path/$preprocess_manifest",
+  ]
+}
+
+preprocess_if_expr("preprocess") {
+  in_folder = "./"
+  out_folder =
+      "$webui_gen_path/$preprocess_folder"
+  out_manifest =
+      "$webui_gen_path/$preprocess_manifest"
+  in_files = [
+    "brave_bookmarks_overrides.js"
+  ]
 }
