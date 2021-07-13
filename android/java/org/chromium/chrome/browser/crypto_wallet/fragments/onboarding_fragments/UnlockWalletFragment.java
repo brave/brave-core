@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 public class UnlockWalletFragment extends CryptoOnboardingFragment {
     @Override
@@ -42,6 +43,7 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
             if (BraveWalletNativeWorker.getInstance().unlockWallet(
                         unlockWalletPassword.getText().toString())) {
                 if (onNextPage != null) {
+                    Utils.hideKeyboard(getActivity());
                     onNextPage.gotoNextPage(true);
                 }
             } else {

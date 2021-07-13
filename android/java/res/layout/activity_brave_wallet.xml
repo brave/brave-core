@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BraveWalletActivity">
+
+    <LinearLayout
+        android:id="@+id/crypto_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F8F9FA"
+            app:tabIndicatorColor="@color/tab_color"
+            app:tabTextAppearance="@style/BraveWalletTabsTextAppearance"
+            app:tabGravity="fill"
+            app:tabSelectedTextColor="@color/tab_color"
+            app:tabTextColor="@color/wallet_text_color" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/navigation_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <include android:id="@+id/crypto_onboarding_layout"
+        layout="@layout/fragment_crypto_wallet_onboarding"/>
+
+    <ImageView
+        android:id="@+id/swap_button"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|end"
+        android:contentDescription="@null"
+        app:srcCompat="@drawable/ic_swap_icon"
+        android:background="@drawable/ic_swap_bg"
+        android:elevation="10dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:scaleType="center"
+        android:visibility="gone"/>
+
+</FrameLayout>

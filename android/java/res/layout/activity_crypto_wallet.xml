@@ -56,7 +56,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_gravity="bottom|end"
-        app:srcCompat="@drawable/ic_swap"
         android:contentDescription="@null" />
 
 </FrameLayout>

@@ -76,6 +76,7 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                                         passwordEdittext.getText().toString().trim())
                                 .trim();
                 if (!TextUtils.isEmpty(recoveryPhrase)) {
+                    Utils.hideKeyboard(getActivity());
                     onNextPage.gotoNextPage(true);
                     Utils.disableCryptoOnboarding();
                 } else {

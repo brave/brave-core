@@ -19,7 +19,7 @@ import java.util.List;
 
 public class CryptoFragmentPageAdapter extends FragmentStatePagerAdapter {
     private final List<String> titles =
-            new ArrayList<>(Arrays.asList("PORTFOLIO", "PRICES", "DEFI", "NFTS", "ACCOUNTS"));
+            new ArrayList<>(Arrays.asList("Portfolio", "Apps", "Accounts"));
     public CryptoFragmentPageAdapter(FragmentManager fm) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }

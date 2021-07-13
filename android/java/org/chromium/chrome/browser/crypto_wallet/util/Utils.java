@@ -7,10 +7,12 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.view.inputmethod.InputMethodManager;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
@@ -85,5 +87,11 @@ public class Utils {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_CRYPTO_ONBOARDING, false);
         sharedPreferencesEditor.apply();
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm =
+                (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 }
