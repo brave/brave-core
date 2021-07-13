@@ -60,9 +60,7 @@ function addBraveTemplateModifications(moduleName, component, modifyFn) {
 
 const styleOverridePrefix = 'brave-override-style-'
 
-function addBraveStyleOverride(moduleName, component) {
-  // does have template style element?
-  const template = component.template || component._template
+function addBraveStyleOverride(moduleName, component, template = component.template || component._template) {
   if (!template) {
     console.error(`No template found for component (${moduleName}) with found style overrides`, component)
     return
@@ -198,32 +196,9 @@ export function OverrideIronIcons(iconSetName, overridingIconSetName, iconOverri
   srcIconSet.getIconNames()
 }
 
-function PerformBraveModifications(name, component) {
-  if (debug) {
-    console.debug(`Polymer component registering: ${name}`, component)
-  }
-  addBraveBehaviors(name, component)
-  addBraveProperties(name, component)
-  const templateModifyFn = allBraveTemplateModificationsMap[name]
-  if (templateModifyFn) {
-    addBraveTemplateModifications(name, component, templateModifyFn)
-    delete allBraveTemplateModificationsMap[name]
-  }
-  if (moduleNamesWithStyleOverrides.includes(name)) {
-    addBraveStyleOverride(name, component)
-  }
-}
-
-// TODO(petemill): Overriding Polymer.Class only works because
-// chromium components at the moment are passing objects rather
-// than classes. If this changes, or for something more robust,
-// we can instead hook in to `window.customElements.define`. This
-// will require changing how we inject behaviors to instead return a
-// subclass of the original component, with the lifecycle methods added.
-// That's because behaviors are a legacy polymer feature,
-// now migrated to subclassing.
-// That should work for any type of Polymer component (class or
-// object-to-generated-class).
+// Overriding Polymer.Class only works for some
+// chromium components which call Polymer() and pass objects rather
+// than classes.
 const oldClass = Polymer.Class
 Polymer.Class = function (info, mixin) {
   if (!info) {
@@ -237,10 +212,39 @@ Polymer.Class = function (info, mixin) {
     return oldClass(info, mixin)
   }
   if (debug) {
-    console.log('defined', name)
+    console.debug(`Polymer component legacy registering: ${name}`, info)
   }
-  PerformBraveModifications(name, info)
+  addBraveBehaviors(name, info)
   return oldClass(info, mixin)
+}
+
+// Also override for components which do not call Polymer() but instead
+// inherit from PolymerElement.
+const oldPrepareTemplate = PolymerElement._prepareTemplate;
+PolymerElement._prepareTemplate = function BravePolymer_PrepareTemplate() {
+  oldPrepareTemplate.call(this)
+  const name = this.is
+  if (!name) {
+    if (debug) {
+      console.warn('PolymerElement defined with no name', this, this.prototype)
+    }
+    return
+  }
+  if (debug) {
+    console.log('PolymerElement defined: ', name, this, this.prototype)
+  }
+  // Perform modifications
+  // TODO(petemill): support mixins (behaviors). Older style Behaviors won't
+  // work as they are a legacy polymer feature, now migrated to subclassing.
+  addBraveProperties(name, this.prototype)
+  const templateModifyFn = allBraveTemplateModificationsMap[name]
+  if (templateModifyFn) {
+    addBraveTemplateModifications(name, this.prototype, templateModifyFn)
+    delete allBraveTemplateModificationsMap[name]
+  }
+  if (moduleNamesWithStyleOverrides.includes(name)) {
+    addBraveStyleOverride(name, this.prototype)
+  }
 }
 
 // Overrides for all pages
