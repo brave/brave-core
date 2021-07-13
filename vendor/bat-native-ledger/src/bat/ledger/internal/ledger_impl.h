@@ -20,6 +20,7 @@
 #include "bat/ledger/internal/bitflyer/bitflyer.h"
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/database/database.h"
+#include "bat/ledger/internal/gemini/gemini.h"
 #include "bat/ledger/internal/legacy/media/media.h"
 #include "bat/ledger/internal/logging/logging.h"
 #include "bat/ledger/internal/promotion/promotion.h"
@@ -72,6 +73,8 @@ class LedgerImpl : public Ledger {
   api::API* api() const;
 
   bitflyer::Bitflyer* bitflyer() const;
+
+  gemini::Gemini* gemini() const;
 
   uphold::Uphold* uphold() const;
 
@@ -345,6 +348,7 @@ class LedgerImpl : public Ledger {
   std::unique_ptr<api::API> api_;
   std::unique_ptr<recovery::Recovery> recovery_;
   std::unique_ptr<bitflyer::Bitflyer> bitflyer_;
+  std::unique_ptr<gemini::Gemini> gemini_;
   std::unique_ptr<uphold::Uphold> uphold_;
 
   std::map<uint32_t, type::VisitData> current_pages_;

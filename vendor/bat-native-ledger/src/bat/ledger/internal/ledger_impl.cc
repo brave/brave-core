@@ -37,6 +37,7 @@ LedgerImpl::LedgerImpl(LedgerClient* client)
       api_(std::make_unique<api::API>(this)),
       recovery_(std::make_unique<recovery::Recovery>(this)),
       bitflyer_(std::make_unique<bitflyer::Bitflyer>(this)),
+      gemini_(std::make_unique<gemini::Gemini>(this)),
       uphold_(std::make_unique<uphold::Uphold>(this)) {
   DCHECK(base::ThreadPoolInstance::Get());
   set_ledger_client_for_logging(ledger_client_);
@@ -94,6 +95,10 @@ database::Database* LedgerImpl::database() const {
 
 bitflyer::Bitflyer* LedgerImpl::bitflyer() const {
   return bitflyer_.get();
+}
+
+gemini::Gemini* LedgerImpl::gemini() const {
+  return gemini_.get();
 }
 
 uphold::Uphold* LedgerImpl::uphold() const {
@@ -732,6 +737,11 @@ void LedgerImpl::FetchBalance(FetchBalanceCallback callback) {
 void LedgerImpl::GetExternalWallet(const std::string& wallet_type,
                                    ExternalWalletCallback callback) {
   WhenReady([this, wallet_type, callback]() {
+    if (wallet_type == "") {
+      callback(type::Result::LEDGER_OK, nullptr);
+      return;
+    }
+
     if (wallet_type == constant::kWalletUphold) {
       uphold()->GenerateWallet([this, callback](type::Result result) {
         if (result != type::Result::LEDGER_OK &&
@@ -755,6 +765,20 @@ void LedgerImpl::GetExternalWallet(const std::string& wallet_type,
         }
 
         auto wallet = bitflyer()->GetWallet();
+        callback(type::Result::LEDGER_OK, std::move(wallet));
+      });
+      return;
+    }
+
+    if (wallet_type == constant::kWalletGemini) {
+      gemini()->GenerateWallet([this, callback](type::Result result) {
+        if (result != type::Result::LEDGER_OK &&
+            result != type::Result::CONTINUE) {
+          callback(result, nullptr);
+          return;
+        }
+
+        auto wallet = gemini()->GetWallet();
         callback(type::Result::LEDGER_OK, std::move(wallet));
       });
       return;

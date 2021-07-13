@@ -50,6 +50,14 @@ class WalletBalance {
       type::BalancePtr balance,
       ledger::FetchBalanceCallback callback);
 
+  void FetchBalanceGemini(type::BalancePtr balance,
+                          ledger::FetchBalanceCallback callback);
+
+  void OnFetchBalanceGemini(type::Balance info,
+                            ledger::FetchBalanceCallback callback,
+                            const type::Result result,
+                            const double balance);
+
   void FetchBalanceUphold(type::BalancePtr balance,
                           ledger::FetchBalanceCallback callback);
 

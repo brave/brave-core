@@ -22,6 +22,7 @@ import {
 } from 'brave-ui/components/icons'
 
 import { BitflyerIconWithText } from '../../../shared/components/icons/bitflyer_icon'
+import { GeminiIcon } from '../../../shared/components/icons/gemini_icon'
 
 export interface Props {
   children: React.ReactNode
@@ -77,6 +78,7 @@ export default class WalletPopup extends React.PureComponent<Props, {}> {
                 {
                   walletType === 'uphold' ? <UpholdColorIcon /> :
                   walletType === 'bitflyer' ? <BitflyerIconWithText /> :
+                  walletType === 'gemini' ? <GeminiIcon /> :
                   null
                 }
               </StyledIcon>

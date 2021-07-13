@@ -61,6 +61,7 @@ class PageWallet extends React.Component<Props, State> {
     this.isDisconnectUrl()
     this.isVerifyUrl()
     this.actions.getMonthlyReportIds()
+    chrome.send('brave_rewards.getExternalWalletProviders')
   }
 
   onModalBackupClose = () => {
@@ -349,14 +350,18 @@ class PageWallet extends React.Component<Props, State> {
       return
     }
 
-    this.onConnectWalletContinue()
-  }
+    if (externalWallet.status === 1) {
+      window.open(externalWallet.verifyUrl, '_self')
+      return
+    }
 
-  onConnectWalletContinue = () => {
-    const { externalWallet } = this.props.rewardsData
-    if (externalWallet && externalWallet.loginUrl) {
+    if (externalWallet.loginUrl) {
       window.open(externalWallet.loginUrl, '_self')
     }
+  }
+
+  onConnectWalletContinue = (provider: string) => {
+    chrome.send('brave_rewards.setExternalWalletType', [provider])
   }
 
   onVerifyClick = () => {
@@ -776,9 +781,14 @@ class PageWallet extends React.Component<Props, State> {
     return ''
   }
 
+  generateExternalWalletProviderList = (walletProviders: string[]) => {
+    return walletProviders.map((type) => ({ type, name: utils.getWalletProviderName(type) }))
+  }
+
   render () {
     const {
       balance,
+      externalWalletProviderList,
       ui,
       pendingContributionTotal,
       recoveryKey,
@@ -853,7 +863,7 @@ class PageWallet extends React.Component<Props, State> {
           this.state.modalVerify
             ? <ConnectWalletModal
                 rewardsBalance={balance.total}
-                providers={[{ type: walletType || '', name: walletProvider }]}
+                providers={this.generateExternalWalletProviderList(externalWalletProviderList)}
                 onContinue={this.onConnectWalletContinue}
                 onClose={this.toggleVerifyModal}
             />

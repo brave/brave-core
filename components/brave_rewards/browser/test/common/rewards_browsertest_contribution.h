@@ -16,6 +16,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
+#include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser.h"
 
 namespace rewards_browsertest {
@@ -85,6 +86,13 @@ class RewardsBrowserTestContribution
       const double balance,
       const ledger::type::WalletStatus status =
         ledger::type::WalletStatus::VERIFIED);
+
+#if BUILDFLAG(ENABLE_GEMINI_WALLET)
+  void SetUpGeminiWallet(brave_rewards::RewardsServiceImpl* rewards_service,
+                         const double balance,
+                         const ledger::type::WalletStatus status =
+                             ledger::type::WalletStatus::VERIFIED);
+#endif
 
   std::vector<ledger::type::Result> GetMultipleTipStatus();
 

@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_FLAG_DESCRIPTIONS_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_FLAG_DESCRIPTIONS_H_
 
+#include "brave/components/brave_rewards/common/buildflags/buildflags.h"
+
 #include "../../../../chrome/browser/flag_descriptions.h"
 
 namespace flag_descriptions {
@@ -39,6 +41,12 @@ extern const char kBraveSyncName[];
 extern const char kBraveSyncDescription[];
 extern const char kBraveIpfsName[];
 extern const char kBraveIpfsDescription[];
+
+#if BUILDFLAG(ENABLE_GEMINI_WALLET)
+extern const char kBraveRewardsGeminiName[];
+extern const char kBraveRewardsGeminiDescription[];
+#endif
+
 extern const char kBraveRewardsVerboseLoggingName[];
 extern const char kBraveRewardsVerboseLoggingDescription[];
 extern const char kNativeBraveWalletName[];

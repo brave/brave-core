@@ -1,0 +1,3 @@
+declare_args() {
+  enable_gemini_wallet = is_mac || is_linux || is_win
+}

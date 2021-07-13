@@ -87,6 +87,16 @@ void GetPublisherStatusFromMessage(
           break;
       }
     }
+    if (wallet.has_gemini_wallet()) {
+      switch (wallet.gemini_wallet().wallet_state()) {
+        case publishers_pb::GEMINI_ACCOUNT_KYC:
+          info->status = ledger::type::PublisherStatus::GEMINI_VERIFIED;
+          info->address = wallet.gemini_wallet().address();
+          return;
+        default:
+          break;
+      }
+    }
   }
 }
 

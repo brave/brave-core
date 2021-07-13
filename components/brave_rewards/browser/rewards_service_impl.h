@@ -190,6 +190,8 @@ class RewardsServiceImpl : public RewardsService,
   void SetPublisherExclude(
       const std::string& publisher_key,
       bool exclude) override;
+  void SetExternalWalletType(const std::string& wallet_type) override;
+
   RewardsNotificationService* GetNotificationService() const override;
   void SetBackupCompleted() override;
   void GetRewardsInternalsInfo(
@@ -291,6 +293,10 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetExternalWallet(GetExternalWalletCallback callback) override;
 
+  std::string GetExternalWalletType() const;
+
+  const std::vector<std::string> GetExternalWalletProviders() const override;
+
   void ExternalWalletAuthorization(
       const std::string& wallet_type,
       const base::flat_map<std::string, std::string>& args,
@@ -368,8 +374,6 @@ class RewardsServiceImpl : public RewardsService,
   void StartLedgerProcessIfNecessary();
 
   void EnableGreaseLion();
-
-  std::string GetExternalWalletType() const;
 
   void OnStopLedger(
       StopLedgerCallback callback,
@@ -745,6 +749,10 @@ class RewardsServiceImpl : public RewardsService,
   void OnGetBraveWallet(
       GetBraveWalletCallback callback,
       ledger::type::BraveWalletPtr wallet);
+
+  bool IsBitFlyerRegion() const;
+
+  bool IsValidWalletType(const std::string& wallet_type) const;
 
 #if defined(OS_ANDROID)
   ledger::type::Environment GetServerEnvironmentForAndroid();

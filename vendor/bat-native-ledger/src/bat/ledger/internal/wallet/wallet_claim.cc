@@ -59,7 +59,7 @@ void WalletClaim::OnBalance(
     return;
   }
 
-  auto wallet_ptr = uphold::GetWallet(ledger_);
+  auto wallet_ptr = ledger_->uphold()->GetWallet();
 
   if (!wallet_ptr) {
     BLOG(0, "Wallet is null");
@@ -92,7 +92,7 @@ void WalletClaim::OnTransferFunds(
                                                {}, [](type::Result) {});
 
     std::string event_text = "uphold";
-    if (auto wallet_ptr = uphold::GetWallet(ledger_))
+    if (auto wallet_ptr = ledger_->uphold()->GetWallet())
       event_text += "/" + wallet_ptr->address.substr(0, 5);
 
     ledger_->database()->SaveEventLog(log::kDeviceLimitReached, event_text);

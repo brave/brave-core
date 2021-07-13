@@ -32,7 +32,7 @@ UpholdAuthorization::~UpholdAuthorization() = default;
 void UpholdAuthorization::Authorize(
     const base::flat_map<std::string, std::string>& args,
     ledger::ExternalWalletAuthorizationCallback callback) {
-  auto wallet = GetWallet(ledger_);
+  auto wallet = ledger_->uphold()->GetWallet();
 
   if (!wallet) {
     BLOG(0, "Wallet is null");
@@ -131,7 +131,7 @@ void UpholdAuthorization::OnAuthorize(
     return;
   }
 
-  auto wallet_ptr = GetWallet(ledger_);
+  auto wallet_ptr = ledger_->uphold()->GetWallet();
 
   wallet_ptr->token = token;
 
@@ -171,7 +171,7 @@ void UpholdAuthorization::OnGetUser(
     const type::Result result,
     const User& user,
     ledger::ExternalWalletAuthorizationCallback callback) {
-  auto wallet_ptr = GetWallet(ledger_);
+  auto wallet_ptr = ledger_->uphold()->GetWallet();
   base::flat_map<std::string, std::string> args;
 
   if (user.bat_not_allowed || !wallet_ptr) {
@@ -218,7 +218,7 @@ void UpholdAuthorization::OnCardCreate(
     return;
   }
 
-  auto wallet_ptr = GetWallet(ledger_);
+  auto wallet_ptr = ledger_->uphold()->GetWallet();
   wallet_ptr->address = address;
   ledger_->uphold()->SetWallet(wallet_ptr->Clone());
 

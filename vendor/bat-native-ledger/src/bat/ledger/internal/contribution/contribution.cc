@@ -76,6 +76,7 @@ Contribution::~Contribution() = default;
 void Contribution::Initialize() {
   ledger_->uphold()->Initialize();
   ledger_->bitflyer()->Initialize();
+  ledger_->gemini()->Initialize();
 
   CheckContributionQueue();
   CheckNotCompletedContributions();
@@ -423,7 +424,8 @@ void Contribution::OnEntrySaved(
 
     sku_->AnonUserFunds(contribution_id, wallet_type, result_callback);
   } else if (wallet_type == constant::kWalletUphold ||
-             wallet_type == constant::kWalletBitflyer) {
+             wallet_type == constant::kWalletBitflyer ||
+             wallet_type == constant::kWalletGemini) {
     auto result_callback = std::bind(&Contribution::Result,
         this,
         _1,
@@ -527,6 +529,11 @@ void Contribution::TransferFunds(
   if (wallet_type == constant::kWalletBitflyer) {
     ledger_->bitflyer()->TransferFunds(transaction.amount, destination,
                                        callback);
+    return;
+  }
+
+  if (wallet_type == constant::kWalletGemini) {
+    ledger_->gemini()->TransferFunds(transaction.amount, destination, callback);
     return;
   }
 
@@ -745,7 +752,8 @@ void Contribution::Retry(
       return;
     }
     case type::ContributionProcessor::UPHOLD:
-    case type::ContributionProcessor::BITFLYER: {
+    case type::ContributionProcessor::BITFLYER:
+    case type::ContributionProcessor::GEMINI: {
       if ((*shared_contribution)->type ==
           type::RewardsType::AUTO_CONTRIBUTE) {
         sku_->Retry((*shared_contribution)->Clone(), result_callback);

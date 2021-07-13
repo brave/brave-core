@@ -310,6 +310,8 @@ class RewardsService : public KeyedService {
 
   virtual void GetExternalWallet(GetExternalWalletCallback callback) = 0;
 
+  virtual const std::vector<std::string> GetExternalWalletProviders() const = 0;
+
   virtual void ProcessRewardsPageUrl(
       const std::string& path,
       const std::string& query,
@@ -364,6 +366,8 @@ class RewardsService : public KeyedService {
   virtual void SetAdsEnabled(const bool is_enabled) = 0;
 
   virtual bool IsRewardsEnabled() const = 0;
+
+  virtual void SetExternalWalletType(const std::string& wallet_type) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

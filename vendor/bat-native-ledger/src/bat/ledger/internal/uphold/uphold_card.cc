@@ -37,7 +37,7 @@ UpholdCard::UpholdCard(LedgerImpl* ledger) :
 UpholdCard::~UpholdCard() = default;
 
 void UpholdCard::CreateIfNecessary(CreateCardCallback callback) {
-  auto wallet = GetWallet(ledger_);
+  auto wallet = ledger_->uphold()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
     callback(type::Result::LEDGER_ERROR, "");
@@ -73,7 +73,7 @@ void UpholdCard::OnCreateIfNecessary(
 
 void UpholdCard::Create(
     CreateCardCallback callback) {
-  auto wallet = GetWallet(ledger_);
+  auto wallet = ledger_->uphold()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
     callback(type::Result::LEDGER_ERROR, "");
@@ -106,7 +106,7 @@ void UpholdCard::OnCreate(
     return;
   }
 
-  auto wallet_ptr = GetWallet(ledger_);
+  auto wallet_ptr = ledger_->uphold()->GetWallet();
   if (!wallet_ptr) {
     BLOG(0, "Wallet is null");
     callback(type::Result::LEDGER_ERROR, "");
@@ -142,7 +142,7 @@ void UpholdCard::OnCreateUpdate(
 void UpholdCard::Update(
     const UpdateCard& card,
     ledger::ResultCallback callback) {
-  auto wallet = GetWallet(ledger_);
+  auto wallet = ledger_->uphold()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
     callback(type::Result::LEDGER_ERROR);

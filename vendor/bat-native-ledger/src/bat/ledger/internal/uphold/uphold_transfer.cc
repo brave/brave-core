@@ -6,10 +6,12 @@
 #include <utility>
 
 #include "base/strings/stringprintf.h"
+#include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/endpoint/uphold/uphold_server.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/uphold/uphold_transfer.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
+#include "bat/ledger/internal/wallet/wallet_util.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -29,7 +31,7 @@ UpholdTransfer::~UpholdTransfer() = default;
 void UpholdTransfer::Start(
     const Transaction& transaction,
     client::TransactionCallback callback) {
-  auto wallet = GetWallet(ledger_);
+  auto wallet = ledger_->uphold()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
     callback(type::Result::LEDGER_ERROR, "");
@@ -70,7 +72,7 @@ void UpholdTransfer::OnCreateTransaction(
 void UpholdTransfer::CommitTransaction(
     const std::string& transaction_id,
     client::TransactionCallback callback) {
-  auto wallet = GetWallet(ledger_);
+  auto wallet = ledger_->uphold()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
     callback(type::Result::LEDGER_ERROR, "");

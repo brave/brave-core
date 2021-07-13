@@ -363,7 +363,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         break
       }
 
-      if (data.walletType === 'uphold' || data.walletType === 'bitflyer') {
+      if (data.walletType === 'uphold' || data.walletType === 'bitflyer' || data.walletType === 'gemini') {
         chrome.send('brave_rewards.fetchBalance')
 
         if (data.action === 'authorization') {

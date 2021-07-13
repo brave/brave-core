@@ -8,6 +8,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -20,6 +21,7 @@
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_promotion.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
+#include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -39,6 +41,7 @@ class RewardsBrowserTest : public InProcessBrowserTest {
     response_ = std::make_unique<RewardsBrowserTestResponse>();
     contribution_ = std::make_unique<RewardsBrowserTestContribution>();
     promotion_ = std::make_unique<RewardsBrowserTestPromotion>();
+    feature_list_.InitAndEnableFeature(brave_rewards::features::kGeminiFeature);
   }
 
   void SetUpOnMainThread() override {
@@ -123,6 +126,7 @@ class RewardsBrowserTest : public InProcessBrowserTest {
     return total;
   }
 
+  base::test::ScopedFeatureList feature_list_;
   brave_rewards::RewardsServiceImpl* rewards_service_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<RewardsBrowserTestResponse> response_;
@@ -284,7 +288,8 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowACPercentInThePanel) {
   EXPECT_NE(score.find("100%"), std::string::npos);
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ZeroBalanceWalletClaimNotCalled) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
+                       ZeroBalanceWalletClaimNotCalled_Uphold) {
   response_->SetVerifiedWallet(true);
   rewards_browsertest_util::StartProcess(rewards_service_);
   contribution_->SetUpUpholdWallet(rewards_service_, 50.0);
@@ -292,25 +297,55 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ZeroBalanceWalletClaimNotCalled) {
   response_->ClearRequests();
 
   base::RunLoop run_loop;
-  auto test_callback =
-      [&](const ledger::type::Result result,
-          ledger::type::ExternalWalletPtr wallet) {
-        auto requests = response_->GetRequests();
-        EXPECT_EQ(result, ledger::type::Result::LEDGER_OK);
-        EXPECT_FALSE(requests.empty());
+  auto test_callback = [&](const ledger::type::Result result,
+                           ledger::type::ExternalWalletPtr wallet) {
+    auto requests = response_->GetRequests();
+    EXPECT_EQ(result, ledger::type::Result::LEDGER_OK);
+    EXPECT_FALSE(requests.empty());
 
-        // Should not attempt to call /v2/wallet/UUID/claim endpoint
-        // since by default the wallet should contain 0 `user_funds`
-        auto wallet_claim_call = std::find_if(
-            requests.begin(), requests.end(),
-            [](const Request& req) {
-              return req.url.find("/v2/wallet") != std::string::npos &&
-                     req.url.find("/claim") != std::string::npos;
-            });
+    // Should not attempt to call /v2/wallet/UUID/claim endpoint
+    // since by default the wallet should contain 0 `user_funds`
+    auto wallet_claim_call =
+        std::find_if(requests.begin(), requests.end(), [](const Request& req) {
+          return req.url.find("/v2/wallet") != std::string::npos &&
+                 req.url.find("/claim") != std::string::npos;
+        });
 
-        EXPECT_TRUE(wallet_claim_call == requests.end());
-        run_loop.Quit();
-      };
+    EXPECT_TRUE(wallet_claim_call == requests.end());
+    run_loop.Quit();
+  };
+
+  rewards_service_->GetExternalWallet(
+      base::BindLambdaForTesting(test_callback));
+  run_loop.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
+                       ZeroBalanceWalletClaimNotCalled_Gemini) {
+  response_->SetVerifiedWallet(true);
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  contribution_->SetUpGeminiWallet(rewards_service_, 50.0);
+
+  response_->ClearRequests();
+
+  base::RunLoop run_loop;
+  auto test_callback = [&](const ledger::type::Result result,
+                           ledger::type::ExternalWalletPtr wallet) {
+    auto requests = response_->GetRequests();
+    EXPECT_EQ(result, ledger::type::Result::LEDGER_OK);
+    EXPECT_FALSE(requests.empty());
+
+    // Should not attempt to call /v2/wallet/UUID/claim endpoint
+    // since by default the wallet should contain 0 `user_funds`
+    auto wallet_claim_call =
+        std::find_if(requests.begin(), requests.end(), [](const Request& req) {
+          return req.url.find("/v2/wallet") != std::string::npos &&
+                 req.url.find("/claim") != std::string::npos;
+        });
+
+    EXPECT_TRUE(wallet_claim_call == requests.end());
+    run_loop.Quit();
+  };
 
   rewards_service_->GetExternalWallet(
       base::BindLambdaForTesting(test_callback));

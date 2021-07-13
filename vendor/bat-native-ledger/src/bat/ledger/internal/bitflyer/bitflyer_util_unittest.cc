@@ -135,7 +135,7 @@ TEST_F(BitflyerUtilTest, GetWallet) {
   // no wallet
   ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletBitflyer))
       .WillByDefault(testing::Return(""));
-  auto result = bitflyer::GetWallet(mock_ledger_impl_.get());
+  auto result = mock_ledger_impl_.get()->bitflyer()->GetWallet();
   ASSERT_TRUE(!result);
 
   const std::string wallet = R"({
@@ -157,7 +157,7 @@ TEST_F(BitflyerUtilTest, GetWallet) {
       .WillByDefault(testing::Return(wallet));
 
   // Bitflyer wallet
-  result = bitflyer::GetWallet(mock_ledger_impl_.get());
+  result = mock_ledger_impl_.get()->bitflyer()->GetWallet();
   ASSERT_TRUE(result);
   ASSERT_EQ(result->address, "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af");
   ASSERT_EQ(result->user_name, "test");

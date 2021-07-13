@@ -52,6 +52,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/static_values.h"
 #include "brave/components/brave_rewards/browser/switches.h"
+#include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
@@ -1293,6 +1294,25 @@ void RewardsServiceImpl::OnRecoverWallet(const ledger::type::Result result) {
   for (auto& observer : observers_) {
     observer.OnRecoverWallet(this, result);
   }
+}
+
+const std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
+    const {
+  std::vector<std::string> providers;
+
+  if (IsBitFlyerRegion()) {
+    providers.push_back(ledger::constant::kWalletBitflyer);
+    return providers;
+  }
+
+  providers.push_back(ledger::constant::kWalletUphold);
+
+#if BUILDFLAG(ENABLE_GEMINI_WALLET)
+  if (base::FeatureList::IsEnabled(features::kGeminiFeature)) {
+    providers.push_back(ledger::constant::kWalletGemini);
+  }
+#endif
+  return providers;
 }
 
 void RewardsServiceImpl::AttestPromotion(
@@ -2883,7 +2903,8 @@ void RewardsServiceImpl::ProcessRewardsPageUrl(
 
   if (action == "authorization") {
     if (wallet_type == ledger::constant::kWalletUphold ||
-        wallet_type == ledger::constant::kWalletBitflyer) {
+        wallet_type == ledger::constant::kWalletBitflyer ||
+        wallet_type == ledger::constant::kWalletGemini) {
       ExternalWalletAuthorization(
           wallet_type,
           query_map,
@@ -3415,7 +3436,7 @@ void RewardsServiceImpl::OnWalletCreatedForSetAdsEnabled(
   }
 }
 
-std::string RewardsServiceImpl::GetExternalWalletType() const {
+bool RewardsServiceImpl::IsBitFlyerRegion() const {
   int32_t current_country = country_id_;
 
   if (!current_country) {
@@ -3429,11 +3450,40 @@ std::string RewardsServiceImpl::GetExternalWalletType() const {
           country_codes::CountryCharsToCountryID(country.at(0), country.at(1));
 
       if (id == current_country)
-        return ledger::constant::kWalletBitflyer;
+        return true;
     }
+  }
+  return false;
+}
+
+bool RewardsServiceImpl::IsValidWalletType(
+    const std::string& wallet_type) const {
+  for (auto& provider : GetExternalWalletProviders()) {
+    if (wallet_type == provider)
+      return true;
+  }
+  return false;
+}
+
+std::string RewardsServiceImpl::GetExternalWalletType() const {
+  if (IsBitFlyerRegion()) {
+    return ledger::constant::kWalletBitflyer;
+  }
+
+  const std::string type =
+      profile_->GetPrefs()->GetString(prefs::kExternalWalletType);
+
+  if (IsValidWalletType(type)) {
+    return type;
   }
 
   return ledger::constant::kWalletUphold;
+}
+
+void RewardsServiceImpl::SetExternalWalletType(const std::string& wallet_type) {
+  if (IsValidWalletType(wallet_type)) {
+    profile_->GetPrefs()->SetString(prefs::kExternalWalletType, wallet_type);
+  }
 }
 
 }  // namespace brave_rewards

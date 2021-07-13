@@ -14,12 +14,14 @@
 #include "bat/ledger/internal/endpoint/uphold/uphold_server.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
+#include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/uphold/uphold_authorization.h"
 #include "bat/ledger/internal/uphold/uphold_card.h"
 #include "bat/ledger/internal/uphold/uphold_transfer.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "bat/ledger/internal/uphold/uphold_wallet.h"
+#include "bat/ledger/internal/wallet/wallet_util.h"
 #include "brave_base/random.h"
 
 using std::placeholders::_1;
@@ -201,7 +203,8 @@ void Uphold::DisconnectWallet(const bool manual) {
             wallet->address.substr(0, 5));
   }
 
-  wallet = ResetWallet(std::move(wallet));
+  wallet =
+      ledger::wallet::ResetWallet(std::move(wallet), constant::kWalletUphold);
   if (manual) {
     wallet->status = type::WalletStatus::NOT_CONNECTED;
   }
@@ -304,11 +307,12 @@ void Uphold::OnTransferFeeTimerElapsed(const std::string& id, int attempts) {
 }
 
 type::ExternalWalletPtr Uphold::GetWallet() {
-  return ::ledger::uphold::GetWallet(ledger_);
+  return ::ledger::wallet::GetWallet(ledger_, constant::kWalletUphold);
 }
 
 bool Uphold::SetWallet(type::ExternalWalletPtr wallet) {
-  return ::ledger::uphold::SetWallet(ledger_, std::move(wallet));
+  return ::ledger::wallet::SetWallet(ledger_, std::move(wallet),
+                                     state::kWalletUphold);
 }
 
 void Uphold::RemoveTransferFee(const std::string& contribution_id) {
