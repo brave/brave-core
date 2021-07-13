@@ -1,14 +1,12 @@
 {
   "ads_rewards": {
-    "grants_balance": 4.21,
     "payments": [
       {
         "balance": 48.0,
         "month": "2021-04",
         "transaction_count": "16"
       }
-    ],
-    "unreconciled_estimated_pending_rewards": 0
+    ]
   },
   "catalog_issuers": {
     "issuers": [

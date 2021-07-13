@@ -26,7 +26,6 @@ struct ADS_EXPORT StatementInfo {
   std::string ToJson() const;
   bool FromJson(const std::string& json);
 
-  double estimated_pending_rewards = 0.0;
   int64_t next_payment_date = 0;
   int ads_received_this_month = 0;
   double earnings_this_month = 0.0;
@@ -35,9 +34,6 @@ struct ADS_EXPORT StatementInfo {
   TransactionList uncleared_transactions;
 
  private:
-  double GetEstimatedPendingRewardsFromDictionary(
-      base::DictionaryValue* dictionary) const;
-
   uint64_t GetNextPaymentDateFromDictionary(
       base::DictionaryValue* dictionary) const;
 

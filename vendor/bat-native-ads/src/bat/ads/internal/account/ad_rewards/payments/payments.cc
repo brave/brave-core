@@ -32,7 +32,13 @@ bool Payments::SetFromJson(const std::string& json) {
     return false;
   }
 
-  payments_ = GetFromList(list);
+  const PaymentList payments = GetFromList(list);
+
+  if (!DidReconcile(payments)) {
+    return false;
+  }
+
+  payments_ = payments;
 
   return true;
 }
@@ -115,21 +121,6 @@ double Payments::GetBalance() const {
   return balance;
 }
 
-bool Payments::DidReconcileBalance(
-    const double last_balance,
-    const double unreconciled_estimated_pending_rewards) const {
-  if (unreconciled_estimated_pending_rewards == 0.0) {
-    return true;
-  }
-
-  const double delta = GetBalance() - last_balance;
-  if (DoubleIsGreaterEqual(delta, unreconciled_estimated_pending_rewards)) {
-    return true;
-  }
-
-  return false;
-}
-
 base::Time Payments::CalculateNextPaymentDate(
     const base::Time& time,
     const base::Time& next_token_redemption_date) const {
@@ -205,6 +196,21 @@ PaymentInfo Payments::GetForThisMonth(const base::Time& time) const {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+bool Payments::DidReconcile(const PaymentList& payments) const {
+  double new_balance = 0.0;
+  for (const auto& payment : payments) {
+    new_balance += payment.balance;
+  }
+
+  const double old_balance = GetBalance();
+
+  if (new_balance < old_balance) {
+    return false;
+  }
+
+  return true;
+}
 
 PaymentList Payments::GetFromList(base::ListValue* list) const {
   DCHECK(list);

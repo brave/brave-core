@@ -194,16 +194,6 @@ void Account::OnDidReconcileAdRewards() {
 void Account::OnDidRedeemUnblindedPaymentTokens() {
   BLOG(1, "Successfully redeemed unblinded payment tokens");
 
-  if (ConfirmationsState::Get()->get_unblinded_payment_tokens()->IsEmpty()) {
-    return;
-  }
-
-  const TransactionList transactions = transactions::GetUncleared();
-  ad_rewards_->SetUnreconciledTransactions(transactions);
-
-  ConfirmationsState::Get()->get_unblinded_payment_tokens()->RemoveAllTokens();
-  ConfirmationsState::Get()->Save();
-
   Reconcile();
 }
 

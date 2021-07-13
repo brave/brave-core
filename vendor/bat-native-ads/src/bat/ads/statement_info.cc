@@ -20,9 +20,7 @@ StatementInfo::StatementInfo(const StatementInfo& info) = default;
 StatementInfo::~StatementInfo() = default;
 
 bool StatementInfo::operator==(const StatementInfo& rhs) const {
-  return DoubleEquals(estimated_pending_rewards,
-                      rhs.estimated_pending_rewards) &&
-         next_payment_date == rhs.next_payment_date &&
+  return next_payment_date == rhs.next_payment_date &&
          ads_received_this_month == rhs.ads_received_this_month &&
          DoubleEquals(earnings_this_month, rhs.earnings_this_month) &&
          DoubleEquals(earnings_last_month, rhs.earnings_last_month) &&
@@ -36,10 +34,6 @@ bool StatementInfo::operator!=(const StatementInfo& rhs) const {
 
 std::string StatementInfo::ToJson() const {
   base::Value dictionary(base::Value::Type::DICTIONARY);
-
-  // Estimated pending rewards
-  dictionary.SetKey("estimated_pending_rewards",
-                    base::Value(estimated_pending_rewards));
 
   // Next payment date
   dictionary.SetKey("next_payment_date",
@@ -82,9 +76,6 @@ bool StatementInfo::FromJson(const std::string& json) {
     return false;
   }
 
-  estimated_pending_rewards =
-      GetEstimatedPendingRewardsFromDictionary(dictionary);
-
   next_payment_date = GetNextPaymentDateFromDictionary(dictionary);
 
   ads_received_this_month = GetAdsReceivedThisMonthFromDictionary(dictionary);
@@ -101,13 +92,6 @@ bool StatementInfo::FromJson(const std::string& json) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-double StatementInfo::GetEstimatedPendingRewardsFromDictionary(
-    base::DictionaryValue* dictionary) const {
-  DCHECK(dictionary);
-
-  return dictionary->FindDoubleKey("estimated_pending_rewards").value_or(0.0);
-}
 
 uint64_t StatementInfo::GetNextPaymentDateFromDictionary(
     base::DictionaryValue* dictionary) const {

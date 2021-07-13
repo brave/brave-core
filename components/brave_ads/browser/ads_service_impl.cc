@@ -1309,9 +1309,8 @@ void AdsServiceImpl::OnGetAccountStatement(GetAccountStatementCallback callback,
   statement.FromJson(json);
 
   std::move(callback).Run(
-      success, statement.estimated_pending_rewards, statement.next_payment_date,
-      statement.ads_received_this_month, statement.earnings_this_month,
-      statement.earnings_last_month);
+      success, statement.next_payment_date, statement.ads_received_this_month,
+      statement.earnings_this_month, statement.earnings_last_month);
 }
 
 void AdsServiceImpl::OnRemoveAllHistory(const int32_t result) {

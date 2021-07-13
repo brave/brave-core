@@ -72,10 +72,7 @@ TEST_F(BatAdsStatementTest, GetForThisMonth) {
                 "transactionCount": "7"
               }
             ]
-          )"}}},
-      {// Get ad grants
-       R"(/v1/promotions/ads/grants/summary?paymentId=27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
-       {{net::HTTP_NO_CONTENT, ""}}}};
+          )"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
@@ -192,112 +189,6 @@ TEST_F(BatAdsStatementTest, GetForThisMonthWithInvalidJsonForPayments) {
   EXPECT_EQ(expected_statement, statement);
 }
 
-TEST_F(BatAdsStatementTest, GetForThisMonthWithInternalServerErrorForAdGrants) {
-  // Arrange
-  const URLEndpoints endpoints = {
-      {// Get payments
-       R"(/v1/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
-       {{net::HTTP_OK, R"(
-            [
-              {
-                "balance": "0.35",
-                "month": "2020-11",
-                "transactionCount": "7"
-              }
-            ]
-          )"}}},
-      {// Get ad grants
-       R"(/v1/promotions/ads/grants/summary?paymentId=27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
-       {{net::HTTP_INTERNAL_SERVER_ERROR, ""}}}};
-
-  MockUrlRequest(ads_client_mock_, endpoints);
-
-  EXPECT_CALL(*ad_rewards_delegate_mock_, OnDidReconcileAdRewards()).Times(0);
-
-  EXPECT_CALL(*ad_rewards_delegate_mock_, OnFailedToReconcileAdRewards())
-      .Times(1);
-
-  EXPECT_CALL(*ad_rewards_delegate_mock_, OnWillRetryToReconcileAdRewards())
-      .Times(1);
-
-  const WalletInfo wallet = GetWallet();
-  ad_rewards_->MaybeReconcile(wallet);
-
-  AdvanceClock(TimeFromDateString("18 November 2020"));
-  AddTransactions(7);
-
-  // Act
-  const StatementInfo statement =
-      statement_->Get(DistantPastAsTimestamp(), NowAsTimestamp());
-
-  // Assert
-  StatementInfo expected_statement;
-  expected_statement.estimated_pending_rewards = 0.35;
-  expected_statement.next_payment_date =
-      TimestampFromDateString("5 December 2020");
-  expected_statement.ads_received_this_month = 7;
-  expected_statement.earnings_this_month = 0.35;
-  expected_statement.earnings_last_month = 0.0;
-  expected_statement.transactions =
-      transactions::GetCleared(DistantPastAsTimestamp(), NowAsTimestamp());
-  expected_statement.uncleared_transactions = transactions::GetUncleared();
-
-  EXPECT_EQ(expected_statement, statement);
-}
-
-TEST_F(BatAdsStatementTest, GetForThisMonthWithInvalidJsonForAdGrants) {
-  // Arrange
-  const URLEndpoints endpoints = {
-      {// Get payments
-       R"(/v1/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
-       {{net::HTTP_OK, R"(
-            [
-              {
-                "balance": "0.35",
-                "month": "2020-11",
-                "transactionCount": "7"
-              }
-            ]
-          )"}}},
-      {// Get ad grants
-       R"(/v1/promotions/ads/grants/summary?paymentId=27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
-       {{net::HTTP_OK, "invalid_json"}}}};
-
-  MockUrlRequest(ads_client_mock_, endpoints);
-
-  EXPECT_CALL(*ad_rewards_delegate_mock_, OnDidReconcileAdRewards()).Times(0);
-
-  EXPECT_CALL(*ad_rewards_delegate_mock_, OnFailedToReconcileAdRewards())
-      .Times(1);
-
-  EXPECT_CALL(*ad_rewards_delegate_mock_, OnWillRetryToReconcileAdRewards())
-      .Times(1);
-
-  const WalletInfo wallet = GetWallet();
-  ad_rewards_->MaybeReconcile(wallet);
-
-  AdvanceClock(TimeFromDateString("18 November 2020"));
-  AddTransactions(7);
-
-  // Act
-  const StatementInfo statement =
-      statement_->Get(DistantPastAsTimestamp(), NowAsTimestamp());
-
-  // Assert
-  StatementInfo expected_statement;
-  expected_statement.estimated_pending_rewards = 0.35;
-  expected_statement.next_payment_date =
-      TimestampFromDateString("5 December 2020");
-  expected_statement.ads_received_this_month = 7;
-  expected_statement.earnings_this_month = 0.35;
-  expected_statement.earnings_last_month = 0.0;
-  expected_statement.transactions =
-      transactions::GetCleared(DistantPastAsTimestamp(), NowAsTimestamp());
-  expected_statement.uncleared_transactions = transactions::GetUncleared();
-
-  EXPECT_EQ(expected_statement, statement);
-}
-
 TEST_F(BatAdsStatementTest, GetForPastTwoMonths) {
   // Arrange
   const URLEndpoints endpoints = {
@@ -316,10 +207,7 @@ TEST_F(BatAdsStatementTest, GetForPastTwoMonths) {
                 "transactionCount": "7"
               }
             ]
-          )"}}},
-      {// Get ad grants
-       R"(/v1/promotions/ads/grants/summary?paymentId=27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
-       {{net::HTTP_NO_CONTENT, ""}}}};
+          )"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
@@ -376,10 +264,7 @@ TEST_F(BatAdsStatementTest, GetForPastTwoMonthsOverTwoYears) {
                 "transactionCount": "7"
               }
             ]
-          )"}}},
-      {// Get ad grants
-       R"(/v1/promotions/ads/grants/summary?paymentId=27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
-       {{net::HTTP_NO_CONTENT, ""}}}};
+          )"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
@@ -441,10 +326,7 @@ TEST_F(BatAdsStatementTest, GetForPastThreeMonths) {
                 "transactionCount": "7"
               }
             ]
-          )"}}},
-      {// Get ad grants
-       R"(/v1/promotions/ads/grants/summary?paymentId=27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
-       {{net::HTTP_NO_CONTENT, ""}}}};
+          )"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
@@ -485,79 +367,6 @@ TEST_F(BatAdsStatementTest, GetForPastThreeMonths) {
   EXPECT_EQ(expected_statement, statement);
 }
 
-TEST_F(BatAdsStatementTest, GetForPastThreeMonthsWithAdGrants) {
-  // Arrange
-  const URLEndpoints endpoints = {
-      {// Get payments
-       R"(/v1/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
-       {{net::HTTP_OK, R"(
-            [
-              {
-                "balance": "0.45",
-                "month": "2020-09",
-                "transactionCount": "9"
-              },
-              {
-                "balance": "0.7",
-                "month": "2020-10",
-                "transactionCount": "14"
-              },
-              {
-                "balance": "0.35",
-                "month": "2020-11",
-                "transactionCount": "7"
-              }
-            ]
-          )"}}},
-      {// Get ad grants
-       R"(/v1/promotions/ads/grants/summary?paymentId=27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
-       {{net::HTTP_OK, R"(
-            {
-              "type" : "ads",
-              "amount" : "0.75",
-              "lastClaim" : "2020-11-18T12:34:56.789Z"
-            }
-          )"}}}};
-
-  MockUrlRequest(ads_client_mock_, endpoints);
-
-  EXPECT_CALL(*ad_rewards_delegate_mock_, OnDidReconcileAdRewards()).Times(1);
-
-  EXPECT_CALL(*ad_rewards_delegate_mock_, OnFailedToReconcileAdRewards())
-      .Times(0);
-
-  EXPECT_CALL(*ad_rewards_delegate_mock_, OnWillRetryToReconcileAdRewards())
-      .Times(0);
-
-  const WalletInfo wallet = GetWallet();
-  ad_rewards_->MaybeReconcile(wallet);
-
-  AdvanceClock(TimeFromDateString("12 September 2020"));
-  AddTransactions(9);
-  AdvanceClock(TimeFromDateString("21 October 2020"));
-  AddTransactions(14);
-  AdvanceClock(TimeFromDateString("18 November 2020"));
-  AddTransactions(7);
-
-  // Act
-  const StatementInfo statement =
-      statement_->Get(DistantPastAsTimestamp(), NowAsTimestamp());
-
-  // Assert
-  StatementInfo expected_statement;
-  expected_statement.estimated_pending_rewards = 0.75;
-  expected_statement.next_payment_date =
-      TimestampFromDateString("5 December 2020");
-  expected_statement.ads_received_this_month = 7;
-  expected_statement.earnings_this_month = 0.35;
-  expected_statement.earnings_last_month = 0.7;
-  expected_statement.transactions =
-      transactions::GetCleared(DistantPastAsTimestamp(), NowAsTimestamp());
-  expected_statement.uncleared_transactions = transactions::GetUncleared();
-
-  EXPECT_EQ(expected_statement, statement);
-}
-
 TEST_F(BatAdsStatementTest, KeepOldValuesAfterServerErrorForPayments) {
   // Arrange
   const URLEndpoints endpoints = {
@@ -576,91 +385,6 @@ TEST_F(BatAdsStatementTest, KeepOldValuesAfterServerErrorForPayments) {
                 "transactionCount": "7"
               }
             ]
-          )"},
-        {net::HTTP_INTERNAL_SERVER_ERROR, ""}}},
-      {// Get ad grants
-       R"(/v1/promotions/ads/grants/summary?paymentId=27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
-       {{net::HTTP_NO_CONTENT, ""}}}};
-
-  MockUrlRequest(ads_client_mock_, endpoints);
-
-  EXPECT_CALL(*ad_rewards_delegate_mock_, OnDidReconcileAdRewards()).Times(1);
-
-  EXPECT_CALL(*ad_rewards_delegate_mock_, OnFailedToReconcileAdRewards())
-      .Times(1);
-
-  EXPECT_CALL(*ad_rewards_delegate_mock_, OnWillRetryToReconcileAdRewards())
-      .Times(1);
-
-  const WalletInfo wallet = GetWallet();
-  ad_rewards_->MaybeReconcile(wallet);
-  ad_rewards_->MaybeReconcile(wallet);
-
-  AdvanceClock(TimeFromDateString("21 October 2020"));
-  AddTransactions(35);
-  AdvanceClock(TimeFromDateString("18 November 2020"));
-  AddTransactions(7);
-
-  // Act
-  const StatementInfo statement =
-      statement_->Get(DistantPastAsTimestamp(), NowAsTimestamp());
-
-  // Assert
-  StatementInfo expected_statement;
-  expected_statement.estimated_pending_rewards = 2.1;
-  expected_statement.next_payment_date =
-      TimestampFromDateString("5 December 2020");
-  expected_statement.ads_received_this_month = 7;
-  expected_statement.earnings_this_month = 0.35;
-  expected_statement.earnings_last_month = 1.75;
-  expected_statement.transactions =
-      transactions::GetCleared(DistantPastAsTimestamp(), NowAsTimestamp());
-  expected_statement.uncleared_transactions = transactions::GetUncleared();
-
-  EXPECT_EQ(expected_statement, statement);
-}
-
-TEST_F(BatAdsStatementTest, KeepOldValuesAfterServerErrorForAdGrants) {
-  // Arrange
-  const URLEndpoints endpoints = {
-      {// Get payments
-       R"(/v1/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
-       {{net::HTTP_OK, R"(
-            [
-              {
-                "balance": "1.75",
-                "month": "2020-10",
-                "transactionCount": "35"
-              },
-              {
-                "balance": "0.35",
-                "month": "2020-11",
-                "transactionCount": "7"
-              }
-            ]
-          )"},
-        {net::HTTP_OK, R"(
-            [
-              {
-                "balance": "1.75",
-                "month": "2020-10",
-                "transactionCount": "35"
-              },
-              {
-                "balance": "0.35",
-                "month": "2020-11",
-                "transactionCount": "7"
-              }
-            ]
-          )"}}},
-      {// Get ad grants
-       R"(/v1/promotions/ads/grants/summary?paymentId=27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
-       {{net::HTTP_OK, R"(
-            {
-              "type" : "ads",
-              "amount" : "0.75",
-              "lastClaim" : "2020-11-18T12:34:56.789Z"
-            }
           )"},
         {net::HTTP_INTERNAL_SERVER_ERROR, ""}}}};
 
@@ -689,7 +413,7 @@ TEST_F(BatAdsStatementTest, KeepOldValuesAfterServerErrorForAdGrants) {
 
   // Assert
   StatementInfo expected_statement;
-  expected_statement.estimated_pending_rewards = 1.35;
+  expected_statement.estimated_pending_rewards = 2.1;
   expected_statement.next_payment_date =
       TimestampFromDateString("5 December 2020");
   expected_statement.ads_received_this_month = 7;

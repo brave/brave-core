@@ -23,9 +23,6 @@ StatementInfo Statement::Get(const int64_t from_timestamp,
 
   StatementInfo statement;
 
-  statement.estimated_pending_rewards =
-      ad_rewards_->GetEstimatedPendingRewards();
-
   statement.next_payment_date = ad_rewards_->GetNextPaymentDate();
 
   statement.ads_received_this_month = GetAdsReceivedThisMonth();
