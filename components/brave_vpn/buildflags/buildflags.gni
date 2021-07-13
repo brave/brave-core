@@ -4,5 +4,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 declare_args() {
-  enable_brave_vpn = is_win || is_android
+  # On macOS, vpn is not available w/o signing.
+  enable_brave_vpn = is_win || is_android || (is_mac && is_official_build)
 }

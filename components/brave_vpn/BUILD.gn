@@ -33,6 +33,16 @@ static_library("brave_vpn") {
 
     libs += [ "rasapi32.lib" ]
   }
+
+  if (is_mac) {
+    sources += [
+      "brave_vpn_connection_manager_mac.h",
+      "brave_vpn_connection_manager_mac.mm",
+    ]
+
+    frameworks = [ "NetworkExtension.framework" ]
+    configs += [ "//build/config/compiler:enable_arc" ]
+  }
 }
 
 source_set("brave_vpn_internal") {
@@ -61,6 +71,6 @@ executable("vpntool") {
   ]
 
   if (is_win) {
-    sources = [ "winvpntool.cc" ]
+    sources += [ "winvpntool.cc" ]
   }
 }

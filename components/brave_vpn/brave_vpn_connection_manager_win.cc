@@ -35,17 +35,17 @@ BraveVPNConnectionManagerWin::~BraveVPNConnectionManagerWin() = default;
 
 void BraveVPNConnectionManagerWin::CreateVPNConnection(
     const BraveVPNConnectionInfo& info) {
-  const std::wstring name = base::UTF8ToWide(info.connection_name);
-  const std::wstring host = base::UTF8ToWide(info.hostname);
-  const std::wstring user = base::UTF8ToWide(info.username);
-  const std::wstring password = base::UTF8ToWide(info.password);
+  const std::wstring name = base::UTF8ToWide(info.connection_name());
+  const std::wstring host = base::UTF8ToWide(info.hostname());
+  const std::wstring user = base::UTF8ToWide(info.username());
+  const std::wstring password = base::UTF8ToWide(info.password());
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&CreateEntry, name.c_str(), host.c_str(), user.c_str(),
                      password.c_str()),
       base::BindOnce(&BraveVPNConnectionManagerWin::OnCreated,
-                     weak_factory_.GetWeakPtr(), info.connection_name));
+                     weak_factory_.GetWeakPtr(), info.connection_name()));
 }
 
 void BraveVPNConnectionManagerWin::UpdateVPNConnection(
