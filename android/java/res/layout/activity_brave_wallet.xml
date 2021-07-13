@@ -12,6 +12,25 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <com.google.android.material.appbar.AppBarLayout
+          android:id="@+id/app_bar"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+          app:elevation="0dp">
+
+          <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#F8F9FA"
+              android:translationZ="10dp"
+              app:titleTextColor="@color/wallet_text_color"
+              app:collapseIcon="@drawable/ic_baseline_arrow_back_24"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        </com.google.android.material.appbar.AppBarLayout>
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
@@ -27,7 +46,8 @@
             android:id="@+id/navigation_view_pager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </LinearLayout>
 
     <include android:id="@+id/crypto_onboarding_layout"

@@ -10,7 +10,7 @@
   <item android:id="@+id/search"
       android:title="@string/search_title"
       android:icon="@drawable/ic_search"
-      app:showAsAction="collapseActionView|ifRoom"
+      app:showAsAction="collapseActionView|always"
       app:actionViewClass="androidx.appcompat.widget.SearchView" />
 
   <item android:id="@+id/settings"

@@ -105,6 +105,7 @@ public class CryptoWalletActivity extends AsyncInitializationActivity {
             return false;
         });
         setNavigationFragments();
+        onInitialLayoutInflationComplete();
     }
 
     @Override

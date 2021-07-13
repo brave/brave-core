@@ -48,7 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BraveWalletActivity extends AsyncInitializationActivity implements OnNextPage {
-    // private Toolbar toolbar;
+    private Toolbar toolbar;
 
     private View cryptoLayout;
     private ImageView swapButton;
@@ -74,11 +74,12 @@ public class BraveWalletActivity extends AsyncInitializationActivity implements 
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_brave_wallet);
-        // toolbar = findViewById(R.id.toolbar);
-        // toolbar.setTitleTextColor(getResources().getColor(android.R.color.black));
-        // toolbar.setOverflowIcon(
-        //         ContextCompat.getDrawable(this, R.drawable.ic_baseline_more_vert_24));
-        // setSupportActionBar(toolbar);
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(android.R.color.black));
+        toolbar.setTitle("");
+        toolbar.setOverflowIcon(
+                ContextCompat.getDrawable(this, R.drawable.ic_baseline_more_vert_24));
+        setSupportActionBar(toolbar);
 
         swapButton = findViewById(R.id.swap_button);
         swapButton.setOnClickListener(v -> {
@@ -133,6 +134,8 @@ public class BraveWalletActivity extends AsyncInitializationActivity implements 
                 setCryptoLayout();
             }
         }
+
+        onInitialLayoutInflationComplete();
     }
 
     @Override

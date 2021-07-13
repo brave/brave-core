@@ -1844,7 +1844,8 @@ until they verify, or until 90 days have passed.
         Does not protect you against dangerous websites, downloads, and extensions.
     </message>
     <message name="IDS_PHRASES_DID_NOT_MATCH">Phrases did not match, Please try again.</message>
-    <message name="IDS_ACCOUNT_RECOVERY_FAILED"> Account recovery failed. Please try again.</message>
+    <message name="IDS_ACCOUNT_RECOVERY_FAILED">Account recovery failed. Please try again.</message>
+    <message name="IDS_MAINNET">Mainnet</message>
     </messages>
   </release>
 </grit>

@@ -55,13 +55,13 @@ public class BraveWalletNativeWorker {
         }
     }
 
-    public void AddObserver(BraveWalletObserver observer) {
+    public void addObserver(BraveWalletObserver observer) {
         synchronized (lock) {
             mObservers.add(observer);
         }
     }
 
-    public void RemoveObserver(BraveWalletObserver observer) {
+    public void removeObserver(BraveWalletObserver observer) {
         synchronized (lock) {
             mObservers.remove(observer);
         }

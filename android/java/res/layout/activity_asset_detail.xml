@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="16dp"
+    android:layout_marginBottom="16dp"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/asset_title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:gravity="center_vertical"
+                app:drawableStartCompat="@drawable/ic_eth"
+                android:drawablePadding="12dp"
+                android:layout_marginEnd="20dp"/>
+
+            <TextView
+                android:id="@+id/asset_network_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:gravity="center_vertical"
+                android:text="@string/mainnet"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:background="@drawable/rounded_white_holo_bg"
+                app:drawableEndCompat="@drawable/ic_circle_down"
+                android:drawablePadding="8dp"
+                android:layout_marginEnd="20dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/asset_price_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="Ethereum Price (ETH)"
+            android:textColor="#84889C"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="$1,812.31"
+            android:textColor="@color/wallet_text_color"
+            android:textStyle="bold"
+            android:textSize="32sp" />
+
+        <TextView
+            android:id="@+id/asset_price_btc_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="0.03265 BTC"
+            android:textColor="#84889C"/>
+
+        <org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced
+            android:layout_marginTop="32dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/line_chart"
+            android:background="@android:color/white" />
+
+            <RadioGroup
+                android:id="@+id/asset_duration_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/live_radiobutton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/wallet_radio_button_selector"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:textColor="@color/crypto_wallet_radiobutton_color_selector"
+                    android:button="@null"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_live_dot"
+                    android:drawablePadding="4dp"
+                    android:text="@string/live" />
+
+                <RadioButton
+                    android:id="@+id/day_1_radiobutton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/wallet_radio_button_selector"
+                    android:gravity="center"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:textColor="@color/crypto_wallet_radiobutton_color_selector"
+                    android:button="@null"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:checked="true"
+                    android:text="@string/day_1" />
+
+                <RadioButton
+                    android:id="@+id/week_1_radiobutton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/wallet_radio_button_selector"
+                    android:gravity="center"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:textColor="@color/crypto_wallet_radiobutton_color_selector"
+                    android:button="@null"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:text="@string/week_1" />
+
+                <RadioButton
+                    android:id="@+id/month_1_radiobutton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/wallet_radio_button_selector"
+                    android:gravity="center"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:textColor="@color/crypto_wallet_radiobutton_color_selector"
+                    android:button="@null"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:text="@string/month_1" />
+
+                <RadioButton
+                    android:id="@+id/month_3_radiobutton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/wallet_radio_button_selector"
+                    android:gravity="center"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:textColor="@color/crypto_wallet_radiobutton_color_selector"
+                    android:button="@null"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:text="@string/month_3" />
+
+                <RadioButton
+                    android:id="@+id/year_1_radiobutton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/wallet_radio_button_selector"
+                    android:gravity="center"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:textColor="@color/crypto_wallet_radiobutton_color_selector"
+                    android:button="@null"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:text="@string/year_1" />
+
+                <RadioButton
+                    android:id="@+id/all_radiobutton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/wallet_radio_button_selector"
+                    android:gravity="center"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:textColor="@color/crypto_wallet_radiobutton_color_selector"
+                    android:button="@null"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:text="@string/all" />
+
+            </RadioGroup>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E9E9F4"
+            android:layout_marginBottom="16dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_buy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:background="@drawable/crypto_wallet_blue_button"
+                android:text="@string/buy"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@android:color/white"
+                style="?android:attr/borderlessButtonStyle"/>
+
+            <Button
+                android:id="@+id/btn_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:background="@drawable/crypto_wallet_blue_button"
+                android:text="@string/send"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@android:color/white"
+                style="?android:attr/borderlessButtonStyle"/>
+
+            <Button
+                android:id="@+id/btn_swap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:background="@drawable/crypto_wallet_blue_button"
+                android:text="@string/swap"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@android:color/white"
+                style="?android:attr/borderlessButtonStyle"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

@@ -62,6 +62,10 @@
     android:theme="@style/Theme.Chromium.Activity"
     android:screenOrientation="sensorPortrait"/>
 
+<activity android:name="org.chromium.chrome.browser.crypto_wallet.AssetDetailActivity"
+    android:theme="@style/Theme.Chromium.Activity"
+    android:screenOrientation="sensorPortrait"/>
+
 <activity
     android:name="org.chromium.chrome.browser.widget.crypto.binance.BinanceActivity"
     android:theme="@style/Theme.Chromium.Activity.Fullscreen">

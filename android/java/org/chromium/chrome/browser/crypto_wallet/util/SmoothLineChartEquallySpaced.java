@@ -33,6 +33,7 @@ public class SmoothLineChartEquallySpaced extends View {
 
     private float[] mValues;
     private float mMaxY;
+    private int[] colors;
 
     public SmoothLineChartEquallySpaced(Context context) {
         this(context, null, 0);
@@ -69,6 +70,10 @@ public class SmoothLineChartEquallySpaced extends View {
         }
 
         invalidate();
+    }
+
+    public void setColors(int[] colors) {
+        this.colors = colors;
     }
 
     @Override
@@ -120,11 +125,14 @@ public class SmoothLineChartEquallySpaced extends View {
         }
 
         // draw path
-        LinearGradient linearGradient = new LinearGradient(0, 0, width, height,
-                new int[] {0xFFF73A1C, 0xFFBF14A2,
-                        0xFF6F4CD2}, // substitute the correct colors for these
-                new float[] {0, 0.60f, 0.90f}, Shader.TileMode.CLAMP);
-        mPaint.setShader(linearGradient);
+        if (colors.length > 1) {
+            LinearGradient linearGradient = new LinearGradient(0, 0, width, height,
+                    colors, // substitute the correct colors for these
+                    new float[] {0, 0.60f, 0.90f}, Shader.TileMode.CLAMP);
+            mPaint.setShader(linearGradient);
+        } else {
+            mPaint.setColor(colors[0]);
+        }
         mPaint.setStyle(Style.STROKE);
         canvas.drawPath(mPath, mPaint);
 
