@@ -54,11 +54,11 @@ void BraveSyncDeviceTracker::OnDeviceInfoChange() {
 }
 
 BraveSyncServiceTracker::BraveSyncServiceTracker(
-    syncer::SyncServiceImpl* profile_sync_service,
+    syncer::SyncServiceImpl* sync_service_impl,
     std::function<void()> on_state_changed_callback)
     : on_state_changed_callback_(on_state_changed_callback) {
-  DCHECK(profile_sync_service);
-  sync_service_observer_.Observe(profile_sync_service);
+  DCHECK(sync_service_impl);
+  sync_service_observer_.Observe(sync_service_impl);
 }
 
 BraveSyncServiceTracker::~BraveSyncServiceTracker() {

@@ -23,7 +23,7 @@ namespace syncer {
 class BraveProfileSyncService;
 class DeviceInfo;
 class BraveDeviceInfo;
-class ProfileSyncService;
+class SyncServiceImpl;
 }  // namespace syncer
 
 class BraveSyncDeviceTracker : public syncer::DeviceInfoTracker::Observer {
@@ -44,7 +44,7 @@ class BraveSyncDeviceTracker : public syncer::DeviceInfoTracker::Observer {
 
 class BraveSyncServiceTracker : public syncer::SyncServiceObserver {
  public:
-  BraveSyncServiceTracker(syncer::ProfileSyncService* profile_sync_service,
+  BraveSyncServiceTracker(syncer::SyncServiceImpl* sync_service_impl,
                           std::function<void()> on_state_changed_callback);
   ~BraveSyncServiceTracker() override;
 
