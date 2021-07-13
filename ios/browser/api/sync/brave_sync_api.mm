@@ -217,7 +217,7 @@
 }
 
 - (id)createSyncServiceObserver:(void (^)())onSyncServiceStateChanged {
-  auto* service = SyncServiceFactory::GetAsProfileSyncServiceForBrowserState(
+  auto* service = SyncServiceFactory::GetAsSyncServiceImplForBrowserState(
       _chromeBrowserState);
   return [[BraveSyncServiceObserver alloc]
       initWithProfileSyncService:service
