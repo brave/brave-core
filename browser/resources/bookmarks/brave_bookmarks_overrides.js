@@ -19,3 +19,17 @@ RegisterStyleOverride(
     </style>
   `
 )
+
+RegisterStyleOverride(
+  'bookmarks-item',
+  html`
+    <style>
+<if expr="not is_macosx">
+      @media (prefers-color-scheme: dark) {
+        .folder-icon[open] { content: url(chrome://theme/IDR_BRAVE_BOOKMARK_FOLDER_OPEN_WHITE); }
+        .folder-icon { content: url(chrome://theme/IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WHITE); }
+      }
+</if>
+    </style>
+  `
+)
