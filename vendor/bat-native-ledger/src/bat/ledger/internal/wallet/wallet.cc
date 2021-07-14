@@ -139,12 +139,10 @@ void Wallet::DisconnectWallet(
         constant::kWalletUphold, [this, callback](const type::Result result) {
           if (result != type::Result::LEDGER_OK) {
             BLOG(0, "Wallet unlinking failed");
-            callback(result);
-            return;
           }
           ledger_->uphold()->DisconnectWallet(true);
           ledger_->state()->ResetWalletType();
-          callback(type::Result::LEDGER_OK);
+          callback(result);
         });
     return;
   }
@@ -154,12 +152,10 @@ void Wallet::DisconnectWallet(
         constant::kWalletBitflyer, [this, callback](const type::Result result) {
           if (result != type::Result::LEDGER_OK) {
             BLOG(0, "Wallet unlinking failed");
-            callback(result);
-            return;
           }
           ledger_->bitflyer()->DisconnectWallet(true);
           ledger_->state()->ResetWalletType();
-          callback(type::Result::LEDGER_OK);
+          callback(result);
         });
     return;
   }
@@ -169,12 +165,10 @@ void Wallet::DisconnectWallet(
         constant::kWalletGemini, [this, callback](const type::Result result) {
           if (result != type::Result::LEDGER_OK) {
             BLOG(0, "Wallet unlinking failed");
-            callback(result);
-            return;
           }
           ledger_->gemini()->DisconnectWallet(true);
           ledger_->state()->ResetWalletType();
-          callback(type::Result::LEDGER_OK);
+          callback(result);
         });
     return;
   }
