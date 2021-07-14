@@ -64,7 +64,6 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
 #endif
   registry->RegisterUint64Pref(prefs::kPromotionLastFetchStamp, 0ull);
   registry->RegisterBooleanPref(prefs::kPromotionCorruptedMigrated, false);
-  registry->RegisterBooleanPref(prefs::kAnonTransferChecked, false);
   registry->RegisterIntegerPref(prefs::kVersion, 0);
   registry->RegisterIntegerPref(prefs::kMinVisitTime, 8);
   registry->RegisterIntegerPref(prefs::kMinVisits, 1);

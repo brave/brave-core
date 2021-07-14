@@ -16,7 +16,7 @@ const char kUpholdAnonAddress[] = "uphold_anon_address";  // DEPRECATED
 const char kPromotionLastFetchStamp[] = "promotion_last_fetch_stamp";
 const char kPromotionCorruptedMigrated[] =
     "promotion_corrupted_migrated2";
-const char kAnonTransferChecked[] = "anon_transfer_checked";
+const char kAnonTransferChecked[] = "anon_transfer_checked";  // DEPRECATED
 const char kVersion[] = "version";
 const char kMinVisitTime[] = "ac.min_visit_time";
 const char kMinVisits[] = "ac.min_visits";

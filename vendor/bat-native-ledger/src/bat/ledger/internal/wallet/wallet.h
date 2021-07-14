@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_WALLET_WALLET_H_
-#define BRAVELEDGER_WALLET_WALLET_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_WALLET_WALLET_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_WALLET_WALLET_H_
 
 #include <stdint.h>
 
@@ -14,7 +14,6 @@
 #include "base/containers/flat_map.h"
 #include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 #include "bat/ledger/internal/wallet/wallet_balance.h"
-#include "bat/ledger/internal/wallet/wallet_claim.h"
 #include "bat/ledger/internal/wallet/wallet_create.h"
 #include "bat/ledger/internal/wallet/wallet_recover.h"
 #include "bat/ledger/ledger.h"
@@ -48,8 +47,6 @@ class Wallet {
       const std::string& wallet_type,
       ledger::ResultCallback callback);
 
-  void ClaimFunds(ledger::ResultCallback callback);
-
   void GetAnonWalletStatus(ledger::ResultCallback callback);
 
   void DisconnectAllWallets(ledger::ResultCallback callback);
@@ -71,10 +68,9 @@ class Wallet {
   std::unique_ptr<WalletCreate> create_;
   std::unique_ptr<WalletRecover> recover_;
   std::unique_ptr<WalletBalance> balance_;
-  std::unique_ptr<WalletClaim> claim_;
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };
 
 }  // namespace wallet
 }  // namespace ledger
-#endif  // BRAVELEDGER_WALLET_WALLET_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_WALLET_WALLET_H_

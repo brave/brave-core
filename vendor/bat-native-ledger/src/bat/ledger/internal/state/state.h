@@ -107,10 +107,6 @@ class State {
 
   uint64_t GetPromotionLastFetchStamp();
 
-  void SetAnonTransferChecked(const bool checked);
-
-  bool GetAnonTransferChecked();
-
  private:
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<StateMigration> migration_;

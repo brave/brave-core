@@ -105,7 +105,6 @@ void WalletRecover::OnRecover(
     return;
   }
 
-  ledger_->state()->SetAnonTransferChecked(false);
   ledger_->state()->SetPromotionLastFetchStamp(0);
   ledger_->state()->SetPromotionCorruptedMigrated(true);
   if (legacy_wallet) {

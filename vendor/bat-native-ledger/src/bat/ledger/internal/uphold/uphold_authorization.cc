@@ -22,16 +22,16 @@ using std::placeholders::_3;
 namespace ledger {
 namespace uphold {
 
-UpholdAuthorization::UpholdAuthorization(LedgerImpl* ledger) :
-    ledger_(ledger),
-    uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)) {
-}
+UpholdAuthorization::UpholdAuthorization(LedgerImpl* ledger)
+    : ledger_(ledger),
+      promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)),
+      uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)) {}
 
 UpholdAuthorization::~UpholdAuthorization() = default;
 
 void UpholdAuthorization::Authorize(
     const base::flat_map<std::string, std::string>& args,
-    ledger::ExternalWalletAuthorizationCallback callback) {
+    ledger::ExternalWalletAuthorizationCallback callback) const {
   auto wallet = GetWallet(ledger_);
 
   if (!wallet) {
@@ -99,11 +99,8 @@ void UpholdAuthorization::Authorize(
     return;
   }
 
-  auto url_callback = std::bind(&UpholdAuthorization::OnAuthorize,
-      this,
-      _1,
-      _2,
-      callback);
+  auto url_callback =
+      std::bind(&UpholdAuthorization::OnAuthorize, this, _1, _2, callback);
 
   uphold_server_->post_oauth()->Request(code, url_callback);
 }
@@ -111,7 +108,7 @@ void UpholdAuthorization::Authorize(
 void UpholdAuthorization::OnAuthorize(
     const type::Result result,
     const std::string& token,
-    ledger::ExternalWalletAuthorizationCallback callback) {
+    ledger::ExternalWalletAuthorizationCallback callback) const {
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     callback(type::Result::EXPIRED_TOKEN, {});
@@ -152,25 +149,17 @@ void UpholdAuthorization::OnAuthorize(
       break;
   }
 
-  // After a login, we want to attempt to relink the user's payment ID to their
-  // Uphold wallet address. Clear the flag that will cause relinking to be
-  // skipped.
-  ledger_->state()->SetAnonTransferChecked(false);
-
   ledger_->uphold()->SetWallet(wallet_ptr->Clone());
 
-  auto user_callback = std::bind(&UpholdAuthorization::OnGetUser,
-      this,
-      _1,
-      _2,
-      callback);
+  auto user_callback =
+      std::bind(&UpholdAuthorization::OnGetUser, this, _1, _2, callback);
   ledger_->uphold()->GetUser(user_callback);
 }
 
 void UpholdAuthorization::OnGetUser(
     const type::Result result,
     const User& user,
-    ledger::ExternalWalletAuthorizationCallback callback) {
+    ledger::ExternalWalletAuthorizationCallback callback) const {
   auto wallet_ptr = GetWallet(ledger_);
   base::flat_map<std::string, std::string> args;
 
@@ -181,17 +170,13 @@ void UpholdAuthorization::OnGetUser(
   }
 
   if (user.status == UserStatus::OK) {
-    wallet_ptr->status = user.verified
-        ? type::WalletStatus::VERIFIED
-        : type::WalletStatus::CONNECTED;
+    wallet_ptr->status = user.verified ? type::WalletStatus::VERIFIED
+                                       : type::WalletStatus::CONNECTED;
     ledger_->uphold()->SetWallet(wallet_ptr->Clone());
 
     if (wallet_ptr->address.empty()) {
-      auto new_callback = std::bind(&UpholdAuthorization::OnCardCreate,
-          this,
-          _1,
-          _2,
-          callback);
+      auto new_callback =
+          std::bind(&UpholdAuthorization::OnCardCreate, this, _1, _2, callback);
       ledger_->uphold()->CreateCard(new_callback);
       return;
     }
@@ -211,7 +196,7 @@ void UpholdAuthorization::OnGetUser(
 void UpholdAuthorization::OnCardCreate(
     const type::Result result,
     const std::string& address,
-    ledger::ExternalWalletAuthorizationCallback callback) {
+    ledger::ExternalWalletAuthorizationCallback callback) const {
   if (result == type::Result::LEDGER_ERROR) {
     BLOG(0, "Card creation");
     callback(type::Result::LEDGER_ERROR, {});
@@ -229,12 +214,95 @@ void UpholdAuthorization::OnCardCreate(
             address.substr(0, 5));
   }
 
-  base::flat_map<std::string, std::string> args;
   if (wallet_ptr->status != type::WalletStatus::VERIFIED) {
+    base::flat_map<std::string, std::string> args{};
     args["redirect_url"] = GetSecondStepVerify();
+    callback(type::Result::LEDGER_OK, args);
   }
 
-  callback(type::Result::LEDGER_OK, args);
+  GetAnonFunds(
+      std::bind(&UpholdAuthorization::OnGetAnonFunds, this, _1, _2, callback));
+}
+
+void UpholdAuthorization::GetAnonFunds(
+    endpoint::promotion::GetWalletBalanceCallback callback) const {
+  // if we don't have user funds in anon card anymore
+  // we can skip balance server ping
+  if (!ledger_->state()->GetFetchOldBalanceEnabled()) {
+    callback(type::Result::LEDGER_OK, type::Balance::New());
+    return;
+  }
+
+  const auto wallet = ledger_->wallet()->GetWallet();
+  if (!wallet) {
+    BLOG(1, "Wallet is not created!");
+    ledger_->state()->SetFetchOldBalanceEnabled(false);
+    callback(type::Result::LEDGER_OK, type::Balance::New());
+    return;
+  }
+
+  if (wallet->payment_id.empty()) {
+    BLOG(0, "Payment ID is empty!");
+    callback(type::Result::LEDGER_ERROR, nullptr);
+    return;
+  }
+
+  promotion_server_->get_wallet_balance()->Request(callback);
+}
+
+void UpholdAuthorization::OnGetAnonFunds(
+    const type::Result result,
+    type::BalancePtr balance,
+    ledger::ExternalWalletAuthorizationCallback callback) const {
+  if (result != type::Result::LEDGER_OK || !balance) {
+    BLOG(0, "Couldn't get anonymous funds!");
+    callback(type::Result::LEDGER_ERROR, {});
+    return;
+  }
+
+  if (balance->user_funds == 0.0) {  // == floating-point comparison!
+    ledger_->state()->SetFetchOldBalanceEnabled(false);
+  }
+
+  LinkWallet(balance->user_funds,
+             std::bind(&UpholdAuthorization::OnLinkWallet, this, _1, callback));
+}
+
+void UpholdAuthorization::LinkWallet(
+    const double user_funds,
+    ledger::endpoint::promotion::PostClaimUpholdCallback callback) const {
+  if (!uphold::GetWallet(ledger_)) {
+    BLOG(0, "Wallet is null!");
+    callback(type::Result::LEDGER_ERROR);
+    return;
+  }
+
+  promotion_server_->post_claim_uphold()->Request(user_funds, callback);
+}
+
+void UpholdAuthorization::OnLinkWallet(
+    const type::Result result,
+    ledger::ExternalWalletAuthorizationCallback callback) const {
+  if (result == type::Result::LEDGER_OK) {
+    callback(type::Result::LEDGER_OK, {});
+    return;
+  }
+
+  if (result == type::Result::ALREADY_EXISTS) {
+    ledger_->ledger_client()->ShowNotification("wallet_device_limit_reached",
+                                               {}, [](type::Result) {});
+
+    std::string event_text = "uphold";
+    if (auto wallet_ptr = uphold::GetWallet(ledger_))
+      event_text += "/" + wallet_ptr->address.substr(0, 5);
+
+    ledger_->database()->SaveEventLog(log::kDeviceLimitReached, event_text);
+
+    callback(type::Result::ALREADY_EXISTS, {});
+    return;
+  }
+
+  callback(type::Result::LEDGER_ERROR, {});
 }
 
 }  // namespace uphold
