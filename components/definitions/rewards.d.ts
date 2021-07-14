@@ -49,6 +49,8 @@ declare namespace Rewards {
       github: boolean
     }
     excludedList: ExcludedPublisher[]
+    // TODO(zenparsing): Remove |firstLoad| when Android settings page has been
+    // migrated to native.
     firstLoad: boolean | null
     monthlyReport: MonthlyReport
     monthlyReportIds: string[]

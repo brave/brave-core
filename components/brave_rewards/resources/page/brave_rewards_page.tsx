@@ -263,6 +263,10 @@ window.cr.define('brave_rewards', function () {
     getActions().onOnboardingStatus(result.showOnboarding)
   }
 
+  function enabledInlineTippingPlatforms (list: string[]) {
+    getActions().onEnabledInlineTippingPlatforms(list)
+  }
+
   return {
     initialize,
     rewardsParameters,
@@ -308,7 +312,8 @@ window.cr.define('brave_rewards', function () {
     completeReset,
     paymentId,
     walletPassphrase,
-    onboardingStatus
+    onboardingStatus,
+    enabledInlineTippingPlatforms
   }
 })
 

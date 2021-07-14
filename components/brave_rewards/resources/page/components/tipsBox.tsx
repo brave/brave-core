@@ -9,7 +9,6 @@ import { connect } from 'react-redux'
 // Components
 import { Checkbox, Grid, Column, ControlWrapper } from 'brave-ui/components'
 import {
-  DisabledContent,
   Box,
   TableDonation,
   List,
@@ -43,17 +42,6 @@ class TipBox extends React.Component<Props, State> {
 
   get actions () {
     return this.props.actions
-  }
-
-  disabledContent = () => {
-    return (
-      <DisabledContent
-        type={'donation'}
-      >
-        {getLocale('donationDisabledText1')}<br/>
-        {getLocale('donationDisabledText2')}
-      </DisabledContent>
-    )
   }
 
   getTipsRows = () => {
@@ -154,12 +142,7 @@ class TipBox extends React.Component<Props, State> {
   }
 
   render () {
-    const {
-      parameters,
-      firstLoad,
-      tipsList
-    } = this.props.rewardsData
-    const showDisabled = firstLoad !== false
+    const { parameters, tipsList } = this.props.rewardsData
     const tipRows = this.getTipsRows()
     const topRows = tipRows.slice(0, 5)
     const numRows = tipRows && tipRows.length
@@ -172,7 +155,6 @@ class TipBox extends React.Component<Props, State> {
         title={getLocale('donationTitle')}
         type={'donation'}
         description={getLocale('donationDesc')}
-        disabledContent={showDisabled ? this.disabledContent() : null}
         settingsChild={this.donationSettingsChild()}
         settingsOpened={this.state.settings}
         onSettingsClick={this.onSettingsToggle}
