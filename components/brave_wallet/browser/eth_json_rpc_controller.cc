@@ -147,8 +147,7 @@ void EthJsonRpcController::GetBlockNumber(GetBlockNumberCallback callback) {
   auto internal_callback =
       base::BindOnce(&EthJsonRpcController::OnGetBlockNumber,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  return Request(eth_blockNumber(),
-                 std::move(internal_callback), true);
+  return Request(eth_blockNumber(), std::move(internal_callback), true);
 }
 
 void EthJsonRpcController::OnGetBlockNumber(

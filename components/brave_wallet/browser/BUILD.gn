@@ -28,6 +28,8 @@ static_library("browser") {
     "eip2930_transaction.h",
     "eth_address.cc",
     "eth_address.h",
+    "eth_block_tracker.cc",
+    "eth_block_tracker.h",
     "eth_call_data_builder.cc",
     "eth_call_data_builder.h",
     "eth_json_rpc_controller.cc",
