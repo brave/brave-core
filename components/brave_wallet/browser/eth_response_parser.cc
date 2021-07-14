@@ -59,6 +59,17 @@ bool ParseSingleStringResult(const std::string& json, std::string* result) {
 
 namespace brave_wallet {
 
+bool ParseEthGetBlockNumber(const std::string& json, uint256_t* block_num) {
+  std::string block_num_str;
+  if (!ParseSingleStringResult(json, &block_num_str))
+    return false;
+
+  if (!HexValueToUint256(block_num_str, block_num))
+    return false;
+
+  return true;
+}
+
 bool ParseEthGetBalance(const std::string& json, std::string* hex_balance) {
   return ParseSingleStringResult(json, hex_balance);
 }
