@@ -44,6 +44,7 @@ public class CryptoChildFragment extends Fragment {
         assert getActivity() != null;
 
         SmoothLineChartEquallySpaced chartES = view.findViewById(R.id.line_chart);
+        chartES.setColors(new int[] {0xFFF73A1C, 0xFFBF14A2, 0xFF6F4CD2});
         chartES.setData(new float[] {15, 21, 9, 21, 25, 35, 24, 28});
 
         setUpCoinList(view);

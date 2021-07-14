@@ -7,9 +7,17 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.view.inputmethod.InputMethodManager;
+
+import org.chromium.base.ContextUtils;
+import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
+import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,18 +35,24 @@ public class Utils {
             ".{7,}" + // at least 7 characters
             "$");
 
-    public static String recoveryPhrase = "";
-
     public static int ONBOARDING_ACTION = 1;
     public static int UNLOCK_WALLET_ACTION = 2;
     public static int RESTORE_WALLET_ACTION = 3;
 
-    public static Map<Integer, String> getRecoveryPhraseMap(List<String> recoveryPhrases) {
-        Map<Integer, String> recoveryPhraseMap = new HashMap<>();
-        for (int i = 0; i < recoveryPhrases.size(); i++) {
-            recoveryPhraseMap.put(i, recoveryPhrases.get(i));
+    private static final String PREF_CRYPTO_ONBOARDING = "crypto_onboarding";
+
+    public static List<String> getRecoveryPhraseAsList() {
+        String[] recoveryPhraseArray =
+                BraveWalletNativeWorker.getInstance().getRecoveryWords().split(" ");
+        return new ArrayList<String>(Arrays.asList(recoveryPhraseArray));
+    }
+
+    public static String getRecoveryPhraseFromList(List<String> recoveryPhrases) {
+        String recoveryPhrasesText = "";
+        for (String phrase : recoveryPhrases) {
+            recoveryPhrasesText = recoveryPhrasesText.concat(phrase).concat(" ");
         }
-        return recoveryPhraseMap;
+        return recoveryPhrasesText.trim();
     }
 
     public static void saveTextToClipboard(Context context, String textToCopy) {
@@ -46,6 +60,7 @@ public class Utils {
                 (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("", textToCopy);
         clipboard.setPrimaryClip(clip);
+        Toast.makeText(context, R.string.text_has_been_copied, Toast.LENGTH_SHORT).show();
     }
 
     public static String getTextFromClipboard(Context context) {
@@ -60,5 +75,23 @@ public class Utils {
             ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
             return item.getText().toString();
         }
+    }
+
+    public static boolean shouldShowCryptoOnboarding() {
+        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
+        return mSharedPreferences.getBoolean(PREF_CRYPTO_ONBOARDING, true);
+    }
+
+    public static void disableCryptoOnboarding() {
+        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_CRYPTO_ONBOARDING, false);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm =
+                (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 }

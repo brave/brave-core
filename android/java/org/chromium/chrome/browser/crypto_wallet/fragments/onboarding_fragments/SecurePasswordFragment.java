@@ -64,9 +64,10 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     showFingerprintDialog(authenticationCallback);
                 } else {
-                    Utils.recoveryPhrase = BraveWalletNativeWorker.getInstance()
-                                                   .createWallet(passwordInput)
-                                                   .trim();
+                    String recoveryPhrases = BraveWalletNativeWorker.getInstance()
+                                                     .createWallet(passwordInput)
+                                                     .trim();
+                    Utils.disableCryptoOnboarding();
                     onNextPage.gotoNextPage(false);
                 }
             }
@@ -97,10 +98,11 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
         public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
             super.onAuthenticationSucceeded(result);
             // Go to next Page
-            Utils.recoveryPhrase =
+            String recoveryPhrases =
                     BraveWalletNativeWorker.getInstance()
                             .createWallet(passwordEdittext.getText().toString().trim())
                             .trim();
+            Utils.disableCryptoOnboarding();
             onNextPage.gotoNextPage(false);
         }
 
@@ -110,6 +112,12 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
             switch (errorCode) {
                 case BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED:
                     Toast.makeText(getActivity(), errString, Toast.LENGTH_SHORT).show();
+                    String recoveryPhrases =
+                            BraveWalletNativeWorker.getInstance()
+                                    .createWallet(passwordEdittext.getText().toString().trim())
+                                    .trim();
+                    Utils.disableCryptoOnboarding();
+                    onNextPage.gotoNextPage(false);
                     break;
                 case BiometricPrompt.BIOMETRIC_ERROR_HW_NOT_PRESENT:
                 case BiometricPrompt.BIOMETRIC_ERROR_HW_UNAVAILABLE:

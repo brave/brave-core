@@ -8,12 +8,19 @@ package org.chromium.chrome.browser.crypto_wallet;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletObserver;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @JNINamespace("chrome::android")
 public class BraveWalletNativeWorker {
     private long mNativeBraveWalletNativeWorker;
     private static final Object lock = new Object();
     private static BraveWalletNativeWorker instance;
+
+    private List<BraveWalletObserver> mObservers;
 
     public static BraveWalletNativeWorker getInstance() {
         synchronized (lock) {
@@ -25,7 +32,9 @@ public class BraveWalletNativeWorker {
         return instance;
     }
 
-    private BraveWalletNativeWorker() {}
+    private BraveWalletNativeWorker() {
+        mObservers = new ArrayList<BraveWalletObserver>();
+    }
 
     private void init() {
         if (mNativeBraveWalletNativeWorker == 0) {
@@ -45,19 +54,35 @@ public class BraveWalletNativeWorker {
         }
     }
 
+    public void addObserver(BraveWalletObserver observer) {
+        synchronized (lock) {
+            mObservers.add(observer);
+        }
+    }
+
+    public void removeObserver(BraveWalletObserver observer) {
+        synchronized (lock) {
+            mObservers.remove(observer);
+        }
+    }
+
     @CalledByNative
     private void setNativePtr(long nativePtr) {
         assert mNativeBraveWalletNativeWorker == 0;
         mNativeBraveWalletNativeWorker = nativePtr;
     }
 
-    public String createWallet(String password) {
-        return BraveWalletNativeWorkerJni.get().createWallet(
-                mNativeBraveWalletNativeWorker, password);
+    public String getRecoveryWords() {
+        return BraveWalletNativeWorkerJni.get().getRecoveryWords(mNativeBraveWalletNativeWorker);
     }
 
     public boolean isWalletLocked() {
         return BraveWalletNativeWorkerJni.get().isWalletLocked(mNativeBraveWalletNativeWorker);
+    }
+
+    public String createWallet(String password) {
+        return BraveWalletNativeWorkerJni.get().createWallet(
+                mNativeBraveWalletNativeWorker, password);
     }
 
     public void lockWallet() {
@@ -69,13 +94,50 @@ public class BraveWalletNativeWorker {
                 mNativeBraveWalletNativeWorker, password);
     }
 
+    public String restoreWallet(String mnemonic, String password) {
+        return BraveWalletNativeWorkerJni.get().restoreWallet(
+                mNativeBraveWalletNativeWorker, mnemonic, password);
+    }
+
+    public void resetWallet() {
+        BraveWalletNativeWorkerJni.get().resetWallet(mNativeBraveWalletNativeWorker);
+    }
+
+    public void getAssetPrice(String asset) {
+        BraveWalletNativeWorkerJni.get().getAssetPrice(mNativeBraveWalletNativeWorker, asset);
+    }
+
+    @CalledByNative
+    public void OnGetPrice(String price, boolean isSuccess) {
+        for (BraveWalletObserver observer : mObservers) {
+            observer.OnGetPrice(price, isSuccess);
+        }
+    }
+
+    public void getAssetPriceHistory(String asset, int timeFrame) {
+        BraveWalletNativeWorkerJni.get().getAssetPriceHistory(
+                mNativeBraveWalletNativeWorker, asset, timeFrame);
+    }
+
+    @CalledByNative
+    public void OnGetPriceHistory(String priceHistory, boolean isSuccess) {
+        for (BraveWalletObserver observer : mObservers) {
+            observer.OnGetPriceHistory(priceHistory, isSuccess);
+        }
+    }
+
     @NativeMethods
     interface Natives {
         void init(BraveWalletNativeWorker caller);
         void destroy(long nativeBraveWalletNativeWorker, BraveWalletNativeWorker caller);
-        String createWallet(long nativeBraveWalletNativeWorker, String password);
+        String getRecoveryWords(long nativeBraveWalletNativeWorker);
         boolean isWalletLocked(long nativeBraveWalletNativeWorker);
+        String createWallet(long nativeBraveWalletNativeWorker, String password);
         void lockWallet(long nativeBraveWalletNativeWorker);
         boolean unlockWallet(long nativeBraveWalletNativeWorker, String password);
+        String restoreWallet(long nativeBraveWalletNativeWorker, String mnemonic, String password);
+        void resetWallet(long nativeBraveWalletNativeWorker);
+        void getAssetPrice(long nativeBraveWalletNativeWorker, String asset);
+        void getAssetPriceHistory(long nativeBraveWalletNativeWorker, String asset, int timeFrame);
     }
 }

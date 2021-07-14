@@ -81,4 +81,8 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">false</item>
     </style>
+
+    <style name="BraveWalletTabsTextAppearance" parent="TextAppearance.Design.Tab">
+      <item name="textAllCaps">false</item>
+    </style>
 </resources>

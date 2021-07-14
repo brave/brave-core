@@ -19,24 +19,17 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
 import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
     private List<String> recoveryPhrases;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        recoveryPhrases = new ArrayList<String>(Arrays.asList(Utils.recoveryPhrase.split(" ")));
-    }
-
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,10 +39,12 @@ public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        recoveryPhrases = Utils.getRecoveryPhraseAsList();
         TextView copyButton = view.findViewById(R.id.btn_copy);
         assert getActivity() != null;
-        copyButton.setOnClickListener(
-                v -> Utils.saveTextToClipboard(getActivity(), getRecoveryPhraseToCopy()));
+        copyButton.setOnClickListener(v
+                -> Utils.saveTextToClipboard(
+                        getActivity(), Utils.getRecoveryPhraseFromList(recoveryPhrases)));
 
         Button recoveryPhraseButton = view.findViewById(R.id.btn_recovery_phrase_continue);
         recoveryPhraseButton.setOnClickListener(v -> onNextPage.gotoNextPage(false));
@@ -78,15 +73,7 @@ public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
         recyclerView.setLayoutManager(layoutManager);
 
         RecoveryPhraseAdapter recoveryPhraseAdapter = new RecoveryPhraseAdapter();
-        recoveryPhraseAdapter.setRecoveryPhraseMap(Utils.getRecoveryPhraseMap(recoveryPhrases));
+        recoveryPhraseAdapter.setRecoveryPhraseList(recoveryPhrases);
         recyclerView.setAdapter(recoveryPhraseAdapter);
-    }
-
-    private String getRecoveryPhraseToCopy() {
-        String recoveryPhrasesText = "";
-        for (String phrase : recoveryPhrases) {
-            recoveryPhrasesText = recoveryPhrasesText.concat(phrase).concat(" ");
-        }
-        return recoveryPhrasesText.trim();
     }
 }

@@ -20,8 +20,11 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.ui.widget.Toast;
 
 public class RestoreWalletFragment extends CryptoOnboardingFragment {
     @Override
@@ -67,7 +70,20 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                 retypePasswordEdittext.setError(
                         getResources().getString(R.string.retype_password_error));
             } else {
-                // Restore button
+                String recoveryPhrase =
+                        BraveWalletNativeWorker.getInstance()
+                                .restoreWallet(recoveryPhraseText.getText().toString().trim(),
+                                        passwordEdittext.getText().toString().trim())
+                                .trim();
+                if (!TextUtils.isEmpty(recoveryPhrase)) {
+                    Utils.hideKeyboard(getActivity());
+                    onNextPage.gotoNextPage(true);
+                    Utils.disableCryptoOnboarding();
+                } else {
+                    Toast.makeText(getActivity(), R.string.account_recovery_failed,
+                                 Toast.LENGTH_SHORT)
+                            .show();
+                }
             }
         });
     }
