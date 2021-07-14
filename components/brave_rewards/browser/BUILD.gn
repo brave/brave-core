@@ -8,18 +8,6 @@ static_library("browser") {
   check_includes = false
   public_deps = [ "buildflags" ]
 
-  defines = [
-    "BITFLYER_CLIENT_ID=\"$bitflyer_client_id\"",
-    "BITFLYER_CLIENT_SECRET=\"$bitflyer_client_secret\"",
-    "BITFLYER_STAGING_CLIENT_ID=\"$bitflyer_staging_client_id\"",
-    "BITFLYER_STAGING_CLIENT_SECRET=\"$bitflyer_staging_client_secret\"",
-    "BITFLYER_STAGING_URL=\"$bitflyer_staging_url\"",
-    "UPHOLD_CLIENT_ID=\"$uphold_client_id\"",
-    "UPHOLD_CLIENT_SECRET=\"$uphold_client_secret\"",
-    "UPHOLD_STAGING_CLIENT_ID=\"$uphold_staging_client_id\"",
-    "UPHOLD_STAGING_CLIENT_SECRET=\"$uphold_staging_client_secret\"",
-  ]
-
   sources = [
     "android_util.cc",
     "android_util.h",
@@ -44,6 +32,7 @@ static_library("browser") {
   deps = [
     "//base",
     "//brave/components/brave_rewards/common",
+    "//brave/components/brave_rewards/common/buildflags",
 
     # for profile.h
     "//components/domain_reliability",

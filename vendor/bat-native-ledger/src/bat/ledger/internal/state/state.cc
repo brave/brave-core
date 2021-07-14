@@ -367,6 +367,10 @@ void State::SetPromotionLastFetchStamp(const uint64_t stamp) {
   ledger_->ledger_client()->SetUint64State(kPromotionLastFetchStamp, stamp);
 }
 
+void State::ResetWalletType() {
+  ledger_->ledger_client()->SetStringState(kExternalWalletType, "");
+}
+
 uint64_t State::GetPromotionLastFetchStamp() {
   return ledger_->ledger_client()->GetUint64State(kPromotionLastFetchStamp);
 }

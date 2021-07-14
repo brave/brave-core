@@ -95,7 +95,7 @@ export const isPublisherNotVerified = (status?: RewardsExtension.PublisherStatus
 
 export const getWalletStatus = (externalWallet?: RewardsExtension.ExternalWallet): WalletState | undefined => {
   if (!externalWallet) {
-    return undefined
+    return 'unverified'
   }
 
   switch (externalWallet.status) {
@@ -128,14 +128,12 @@ export const getGreetings = (externalWallet?: RewardsExtension.ExternalWallet) =
 }
 
 export const handleExternalWalletLink = (balance: RewardsExtension.Balance, externalWallet?: RewardsExtension.ExternalWallet) => {
-  if (!externalWallet) {
-    return
-  }
-
-  let link = externalWallet.verifyUrl
+  let link = ''
 
   if (!externalWallet || (externalWallet && externalWallet.status === 0)) {
     link = 'brave://rewards/#verify'
+  } else {
+    link = externalWallet.verifyUrl
   }
 
   chrome.tabs.create({

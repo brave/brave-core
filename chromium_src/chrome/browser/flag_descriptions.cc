@@ -103,4 +103,10 @@ const char kBravePermissionLifetimeName[] = "Permission Lifetime";
 const char kBravePermissionLifetimeDescription[] =
     "Enables the option to choose a time period after which a permission will "
     "be automatically revoked";
+
+#if BUILDFLAG(ENABLE_GEMINI_WALLET)
+const char kBraveRewardsGeminiName[] = "Enable Gemini for Brave Rewards";
+const char kBraveRewardsGeminiDescription[] =
+    "Enables support for Gemini as an external wallet provider for Brave";
+#endif
 }  // namespace flag_descriptions

@@ -40,7 +40,7 @@ void BitflyerAuthorization::Authorize(
     return;
   }
 
-  auto bitflyer_wallet = GetWallet(ledger_);
+  auto bitflyer_wallet = ledger_->bitflyer()->GetWallet();
   if (!bitflyer_wallet) {
     BLOG(0, "Wallet is null");
     callback(type::Result::LEDGER_ERROR, {});
@@ -176,13 +176,14 @@ void BitflyerAuthorization::OnClaimWallet(
     const std::string& address,
     const std::string& linking_info,
     ledger::ExternalWalletAuthorizationCallback callback) {
+  auto wallet_ptr = ledger_->bitflyer()->GetWallet();
   if (result == type::Result::ALREADY_EXISTS) {
     BLOG(0, "Wallet linking limit reached");
     ledger_->ledger_client()->ShowNotification("wallet_device_limit_reached",
                                                {}, [](type::Result) {});
 
     std::string event_text = "bitflyer";
-    if (auto wallet_ptr = GetWallet(ledger_))
+    if (wallet_ptr)
       event_text += "/" + wallet_ptr->address.substr(0, 5);
 
     ledger_->database()->SaveEventLog(log::kDeviceLimitReached, event_text);
@@ -195,8 +196,6 @@ void BitflyerAuthorization::OnClaimWallet(
     callback(type::Result::LEDGER_ERROR, {});
     return;
   }
-
-  auto wallet_ptr = GetWallet(ledger_);
 
   wallet_ptr->token = token;
   wallet_ptr->address = address;

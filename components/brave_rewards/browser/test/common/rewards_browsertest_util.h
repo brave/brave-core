@@ -40,6 +40,8 @@ std::string BalanceDoubleToString(double amount);
 
 std::string GetUpholdExternalAddress();
 
+std::string GetGeminiExternalAddress();
+
 void NavigateToPublisherPage(
     Browser* browser,
     net::EmbeddedTestServer* https_server,

@@ -57,6 +57,9 @@ void ContributionExternalWallet::ContributionInfo(
     case type::ContributionProcessor::BITFLYER:
       wallet = ledger_->bitflyer()->GetWallet();
       break;
+    case type::ContributionProcessor::GEMINI:
+      wallet = ledger_->gemini()->GetWallet();
+      break;
     default:
       break;
   }
@@ -134,6 +137,9 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     case type::PublisherStatus::BITFLYER_VERIFIED:
       publisher_verified = processor == type::ContributionProcessor::BITFLYER;
       break;
+    case type::PublisherStatus::GEMINI_VERIFIED:
+      publisher_verified = processor == type::ContributionProcessor::GEMINI;
+      break;
     default:
       break;
   }
@@ -180,6 +186,10 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     case type::ContributionProcessor::BITFLYER:
       ledger_->bitflyer()->StartContribution(contribution_id, std::move(info),
                                              amount, start_callback);
+      break;
+    case type::ContributionProcessor::GEMINI:
+      ledger_->gemini()->StartContribution(contribution_id, std::move(info),
+                                           amount, start_callback);
       break;
     default:
       NOTREACHED();

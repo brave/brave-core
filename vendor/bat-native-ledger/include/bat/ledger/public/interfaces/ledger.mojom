@@ -25,7 +25,8 @@ enum ContributionProcessor {
   BRAVE_TOKENS = 1,
   UPHOLD = 2,
   BRAVE_USER_FUNDS = 3,
-  BITFLYER = 4
+  BITFLYER = 4,
+  GEMINI = 5
 };
 
 struct ContributionInfo {
@@ -245,7 +246,8 @@ enum PublisherStatus {
   NOT_VERIFIED = 0,
   CONNECTED = 1,
   UPHOLD_VERIFIED = 2,
-  BITFLYER_VERIFIED = 3
+  BITFLYER_VERIFIED = 3,
+  GEMINI_VERIFIED = 4
 };
 
 enum DrainStatus {
@@ -496,7 +498,8 @@ enum SKUTransactionType {
   NONE = 0,
   UPHOLD = 1,
   ANONYMOUS_CARD = 2,
-  TOKENS = 3
+  TOKENS = 3,
+  GEMINI = 4
 };
 
 enum SKUTransactionStatus {

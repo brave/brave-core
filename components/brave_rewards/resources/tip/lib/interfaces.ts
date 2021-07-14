@@ -57,7 +57,8 @@ export enum PublisherStatus {
   NOT_VERIFIED = 0,
   CONNECTED = 1,
   UPHOLD_VERIFIED = 2,
-  BITFLYER_VERIFIED = 3
+  BITFLYER_VERIFIED = 3,
+  GEMINI_VERIFIED = 4
 }
 
 export interface PublisherInfo {
@@ -88,7 +89,7 @@ export enum ExternalWalletStatus {
 
 export interface ExternalWalletInfo {
   status: ExternalWalletStatus
-  type: 'anonymous' | 'uphold' | 'bitflyer'
+  type: 'anonymous' | 'uphold' | 'bitflyer' | 'gemini'
 }
 
 export interface RewardsParameters {

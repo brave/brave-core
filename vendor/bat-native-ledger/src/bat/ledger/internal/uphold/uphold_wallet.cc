@@ -27,7 +27,7 @@ UpholdWallet::UpholdWallet(LedgerImpl* ledger) :
 UpholdWallet::~UpholdWallet() = default;
 
 void UpholdWallet::Generate(ledger::ResultCallback callback) {
-  auto wallet = GetWallet(ledger_);
+  auto wallet = ledger_->uphold()->GetWallet();
   if (!wallet) {
     wallet = type::ExternalWallet::New();
     wallet->type = constant::kWalletUphold;
@@ -66,7 +66,7 @@ void UpholdWallet::OnGenerate(
     const type::Result result,
     const User& user,
     ledger::ResultCallback callback) {
-  auto wallet_ptr = GetWallet(ledger_);
+  auto wallet_ptr = ledger_->uphold()->GetWallet();
   if (result == type::Result::EXPIRED_TOKEN) {
     ledger_->uphold()->DisconnectWallet();
     callback(result);
@@ -118,7 +118,7 @@ void UpholdWallet::OnCreateCard(
     const type::Result result,
     const std::string& address,
     ledger::ResultCallback callback) {
-  auto wallet_ptr = GetWallet(ledger_);
+  auto wallet_ptr = ledger_->uphold()->GetWallet();
   if (result != type::Result::LEDGER_OK || !wallet_ptr) {
     BLOG(0, "Card not created");
     callback(result);

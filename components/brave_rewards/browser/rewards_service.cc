@@ -62,6 +62,7 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
 #if defined(OS_ANDROID)
   registry->RegisterBooleanPref(prefs::kUseRewardsStagingServer, false);
 #endif
+  registry->RegisterStringPref(prefs::kExternalWalletType, "");
   registry->RegisterUint64Pref(prefs::kPromotionLastFetchStamp, 0ull);
   registry->RegisterBooleanPref(prefs::kPromotionCorruptedMigrated, false);
   registry->RegisterBooleanPref(prefs::kAnonTransferChecked, false);
@@ -95,6 +96,7 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kWalletBrave, "");
   registry->RegisterStringPref(prefs::kWalletUphold, "");
   registry->RegisterStringPref(prefs::kWalletBitflyer, "");
+  registry->RegisterStringPref(prefs::kWalletGemini, "");
 }
 
 }  // namespace brave_rewards

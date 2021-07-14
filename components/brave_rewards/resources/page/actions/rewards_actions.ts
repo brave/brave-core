@@ -94,6 +94,10 @@ export const onBalanceReport = (properties: {month: number, year: number, report
   report: properties.report
 })
 
+export const onExternalWalletProviderList = (list: Rewards.ExternalWalletProvider[]) => action(types.ON_EXTERNAL_WALLET_PROVIDER_LIST, {
+  list
+})
+
 export const getBalanceReport = (month: number, year: number) => action(types.GET_BALANCE_REPORT, {
   month,
   year

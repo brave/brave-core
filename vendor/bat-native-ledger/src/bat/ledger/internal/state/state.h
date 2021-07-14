@@ -105,6 +105,8 @@ class State {
 
   void SetPromotionLastFetchStamp(const uint64_t stamp);
 
+  void ResetWalletType();
+
   uint64_t GetPromotionLastFetchStamp();
 
   void SetAnonTransferChecked(const bool checked);

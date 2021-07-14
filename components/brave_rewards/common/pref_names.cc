@@ -29,6 +29,7 @@ const char kUpholdAnonAddress[] =
     "brave.rewards.uphold_anon_address";
 const char kBadgeText[] = "brave.rewards.badge_text";
 const char kUseRewardsStagingServer[] = "brave.rewards.use_staging_server";
+const char kExternalWalletType[] = "brave.rewards.external_wallet_type";
 const char kPromotionLastFetchStamp[] =
     "brave.rewards.promotion_last_fetch_stamp";
 const char kPromotionCorruptedMigrated[] =
@@ -69,6 +70,7 @@ const char kWalletBrave[] =
 const char kWalletUphold[] =
     "brave.rewards.wallets.uphold";
 const char kWalletBitflyer[] = "brave.rewards.wallets.bitflyer";
+const char kWalletGemini[] = "brave.rewards.wallets.gemini";
 
 }  // namespace prefs
 }  // namespace brave_rewards

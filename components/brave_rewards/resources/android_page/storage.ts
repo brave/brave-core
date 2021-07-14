@@ -61,6 +61,7 @@ export const defaultState: Rewards.State = {
   },
   pendingContributions: [],
   excludedList: [],
+  externalWalletProviderList: [],
   balance: {
     total: 0,
     wallets: {}

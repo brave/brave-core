@@ -9,6 +9,7 @@
 #include "brave/common/brave_features.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_component_updater/browser/features.h"
+#include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
@@ -78,6 +79,16 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      FEATURE_VALUE_TYPE(brave_sync::features::kBraveSync)},
 #else
 #define BRAVE_SYNC_FEATURE_ENTRIES
+#endif
+
+#if BUILDFLAG(ENABLE_GEMINI_WALLET)
+#define BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                                \
+    {"brave-rewards-gemini",                                                \
+     flag_descriptions::kBraveRewardsGeminiName,                            \
+     flag_descriptions::kBraveRewardsGeminiDescription, kOsDesktop,         \
+     FEATURE_VALUE_TYPE(brave_rewards::features::kGeminiFeature)},
+#else
+#define BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
@@ -188,8 +199,8 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveRewardsVerboseLoggingName,                    \
      flag_descriptions::kBraveRewardsVerboseLoggingDescription,             \
      kOsDesktop | kOsAndroid,                                               \
-     FEATURE_VALUE_TYPE(brave_rewards::features::kVerboseLoggingFeature)},
-
+     FEATURE_VALUE_TYPE(brave_rewards::features::kVerboseLoggingFeature)},  \
+     BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES
 
 #define SetFeatureEntryEnabled SetFeatureEntryEnabled_ChromiumImpl
 #include "../../../../chrome/browser/about_flags.cc"  // NOLINT

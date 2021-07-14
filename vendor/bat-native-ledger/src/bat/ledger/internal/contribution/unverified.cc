@@ -85,6 +85,9 @@ void Unverified::OnContributeUnverifiedPublishers(
       case type::ContributionProcessor::BITFLYER:
         process = item->status == type::PublisherStatus::BITFLYER_VERIFIED;
         break;
+      case type::ContributionProcessor::GEMINI:
+        process = item->status == type::PublisherStatus::GEMINI_VERIFIED;
+        break;
       default:
         process = item->status != type::PublisherStatus::NOT_VERIFIED &&
                   item->status != type::PublisherStatus::CONNECTED;

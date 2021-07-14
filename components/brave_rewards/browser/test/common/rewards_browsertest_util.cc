@@ -77,6 +77,10 @@ std::string GetUpholdExternalAddress() {
   return "abe5f454-fedd-4ea9-9203-470ae7315bb3";
 }
 
+std::string GetGeminiExternalAddress() {
+  return "00471311-fc4d-463b-9317-579e82b0a6b8";
+}
+
 void NavigateToPublisherPage(
     Browser* browser,
     net::EmbeddedTestServer* https_server,

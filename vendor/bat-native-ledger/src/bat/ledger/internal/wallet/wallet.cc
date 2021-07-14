@@ -122,6 +122,11 @@ void Wallet::AuthorizeWallet(
     return;
   }
 
+  if (wallet_type == constant::kWalletGemini) {
+    ledger_->gemini()->WalletAuthorization(args, callback);
+    return;
+  }
+
   NOTREACHED();
   callback(type::Result::LEDGER_ERROR, {});
 }
@@ -138,6 +143,7 @@ void Wallet::DisconnectWallet(
             return;
           }
           ledger_->uphold()->DisconnectWallet(true);
+          ledger_->state()->ResetWalletType();
           callback(type::Result::LEDGER_OK);
         });
     return;
@@ -152,6 +158,22 @@ void Wallet::DisconnectWallet(
             return;
           }
           ledger_->bitflyer()->DisconnectWallet(true);
+          ledger_->state()->ResetWalletType();
+          callback(type::Result::LEDGER_OK);
+        });
+    return;
+  }
+
+  if (wallet_type == constant::kWalletGemini) {
+    promotion_server_->delete_claim()->Request(
+        constant::kWalletGemini, [this, callback](const type::Result result) {
+          if (result != type::Result::LEDGER_OK) {
+            BLOG(0, "Wallet unlinking failed");
+            callback(result);
+            return;
+          }
+          ledger_->gemini()->DisconnectWallet(true);
+          ledger_->state()->ResetWalletType();
           callback(type::Result::LEDGER_OK);
         });
     return;
@@ -213,6 +235,7 @@ void Wallet::GetAnonWalletStatus(ledger::ResultCallback callback) {
 void Wallet::DisconnectAllWallets(ledger::ResultCallback callback) {
   DisconnectWallet(constant::kWalletUphold, [](const type::Result result) {});
   DisconnectWallet(constant::kWalletBitflyer, [](const type::Result result) {});
+  DisconnectWallet(constant::kWalletGemini, [](const type::Result result) {});
   callback(type::Result::LEDGER_OK);
 }
 

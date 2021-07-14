@@ -100,6 +100,14 @@ const Config = function () {
   this.bitflyerStagingClientId = getNPMConfig(['bitflyer_staging_client_id']) || ''
   this.bitflyerStagingClientSecret = getNPMConfig(['bitflyer_staging_client_secret']) || ''
   this.bitflyerStagingUrl = getNPMConfig(['bitflyer_staging_url']) || ''
+  this.geminiApiUrl = getNPMConfig(['gemini_api_url']) || ''
+  this.geminiApiStagingUrl = getNPMConfig(['gemini_api_staging_url']) || ''
+  this.geminiOauthUrl = getNPMConfig(['gemini_oauth_url']) || ''
+  this.geminiOauthStagingUrl = getNPMConfig(['gemini_oauth_staging_url']) || ''
+  this.geminiWalletClientId = getNPMConfig(['gemini_wallet_client_id']) || ''
+  this.geminiWalletClientSecret = getNPMConfig(['gemini_wallet_client_secret']) || ''
+  this.geminiWalletStagingClientId = getNPMConfig(['gemini_wallet_staging_client_id']) || ''
+  this.geminiWalletStagingClientSecret = getNPMConfig(['gemini_wallet_staging_client_secret']) || ''
   this.geminiClientId = getNPMConfig(['gemini_client_id']) || ''
   this.geminiClientSecret = getNPMConfig(['gemini_client_secret']) || ''
   this.upholdClientId = getNPMConfig(['uphold_client_id']) || ''
@@ -227,6 +235,14 @@ Config.prototype.buildArgs = function () {
     bitflyer_staging_client_id: this.bitflyerStagingClientId,
     bitflyer_staging_client_secret: this.bitflyerStagingClientSecret,
     bitflyer_staging_url: this.bitflyerStagingUrl,
+    gemini_api_url: this.geminiApiUrl,
+    gemini_api_staging_url: this.geminiApiStagingUrl,
+    gemini_oauth_url: this.geminiOauthUrl,
+    gemini_oauth_staging_url: this.geminiOauthStagingUrl,
+    gemini_wallet_client_id: this.geminiWalletClientId,
+    gemini_wallet_client_secret: this.geminiWalletClientSecret,
+    gemini_wallet_staging_client_id: this.geminiWalletStagingClientId,
+    gemini_wallet_staging_client_secret: this.geminiWalletStagingClientSecret,
     gemini_client_id: this.geminiClientId,
     gemini_client_secret: this.geminiClientSecret,
     uphold_client_id: this.upholdClientId,
@@ -432,6 +448,14 @@ Config.prototype.buildArgs = function () {
     delete args.bitflyer_staging_client_id
     delete args.bitflyer_staging_client_secret
     delete args.bitflyer_staging_url
+    delete args.gemini_api_url
+    delete args.gemini_api_staging_url
+    delete args.gemini_oauth_url
+    delete args.gemini_oauth_staging_url
+    delete args.gemini_wallet_client_id
+    delete args.gemini_wallet_client_secret
+    delete args.gemini_wallet_staging_client_id
+    delete args.gemini_wallet_staging_client_secret
     delete args.gemini_client_id
     delete args.gemini_client_secret
     delete args.uphold_client_id
@@ -626,6 +650,35 @@ Config.prototype.update = function (options) {
   if (options.bitflyer_staging_url) {
     this.bitflyerStagingUrl = options.bitflyer_staging_url
   }
+
+  if (options.gemini_api_url) {
+    this.geminiApiUrl = options.gemini_api_url
+  }
+
+  if (options.gemini_api_staging_url) {
+    this.geminiApiStagingUrl = options.gemini_api_staging_url
+  }
+
+  if (options.gemini_oauth_url) {
+    this.geminiOauthUrl = options.gemini_oauth_url
+  }
+
+  if (options.gemini_oauth_staging_url) {
+    this.geminiOauthStagingUrl = options.gemini_oauth_staging_url
+  }
+
+  if (options.gemini_wallet_client_secret) {
+    this.geminiWalletClientSecret = options.gemini_wallet_client_secret
+  }
+
+  if (options.gemini_wallet_staging_client_id) {
+    this.geminiWalletStagingClientId = options.gemini_wallet_staging_client_id
+  }
+
+  if (options.gemini_wallet_staging_client_secret) {
+    this.geminiWalletStagingClientSecret = options.gemini_wallet_staging_client_secret
+  }
+
 
   if (options.gemini_client_id) {
     this.geminiClientId = options.gemini_client_id

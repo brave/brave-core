@@ -49,6 +49,7 @@ declare namespace Rewards {
       github: boolean
     }
     excludedList: ExcludedPublisher[]
+    externalWalletProviderList: string[]
     // TODO(zenparsing): Remove |firstLoad| when Android settings page has been
     // migrated to native.
     firstLoad: boolean | null
@@ -114,7 +115,8 @@ declare namespace Rewards {
     BRAVE_TOKENS = 1,
     UPHOLD = 2,
     BRAVE_USER_FUNDS = 3,
-    BITFLYER = 4
+    BITFLYER = 4,
+    GEMINI = 5
   }
 
   export interface TransactionReport {
@@ -177,7 +179,8 @@ declare namespace Rewards {
     NOT_VERIFIED = 0,
     CONNECTED = 1,
     UPHOLD_VERIFIED = 2,
-    BITFLYER_VERIFIED = 3
+    BITFLYER_VERIFIED = 3,
+    GEMINI_VERIFIED = 4
   }
 
   export interface Publisher {
@@ -192,6 +195,11 @@ declare namespace Rewards {
     id: string
     tipDate?: number
     weight: number
+  }
+
+  export interface ExternalWalletProvider {
+    type: string
+    name: string
   }
 
   export interface ExcludedPublisher {
@@ -264,7 +272,7 @@ declare namespace Rewards {
     wallets: Record<string, number>
   }
 
-  export type WalletType = 'anonymous' | 'uphold' | 'bitflyer'
+  export type WalletType = 'anonymous' | 'uphold' | 'bitflyer' | 'gemini'
 
   export enum WalletStatus {
     NOT_CONNECTED = 0,

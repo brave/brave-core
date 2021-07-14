@@ -183,7 +183,7 @@ TEST_F(UpholdUtilTest, GetWallet) {
   // no wallet
   ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletUphold))
       .WillByDefault(testing::Return(""));
-  auto result = uphold::GetWallet(mock_ledger_impl_.get());
+  auto result = mock_ledger_impl_.get()->uphold()->GetWallet();
   ASSERT_TRUE(!result);
 
   const std::string wallet = R"({
@@ -205,7 +205,7 @@ TEST_F(UpholdUtilTest, GetWallet) {
       .WillByDefault(testing::Return(wallet));
 
   // uphold wallet
-  result = uphold::GetWallet(mock_ledger_impl_.get());
+  result = mock_ledger_impl_.get()->uphold()->GetWallet();
   ASSERT_TRUE(result);
   ASSERT_EQ(result->address, "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af");
   ASSERT_EQ(result->user_name, "test");
