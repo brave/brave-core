@@ -110,8 +110,8 @@ void IPFSDOMHandler::HandleGetConnectedPeers(const base::ListValue* args) {
   if (!service) {
     return;
   }
-
-  service->GetConnectedPeers(base::NullCallback());
+  service->GetConnectedPeers(base::BindOnce(
+      &IPFSDOMHandler::OnGetConnectedPeers, weak_ptr_factory_.GetWeakPtr()));
 }
 
 void IPFSDOMHandler::OnGetConnectedPeers(
@@ -119,9 +119,10 @@ void IPFSDOMHandler::OnGetConnectedPeers(
     const std::vector<std::string>& peers) {
   if (!web_ui()->CanCallJavascript())
     return;
-
-  web_ui()->CallJavascriptFunctionUnsafe(
-      "ipfs.onGetConnectedPeers", base::Value(static_cast<int>(peers.size())));
+  base::Value stats_value(base::Value::Type::DICTIONARY);
+  stats_value.SetDoubleKey("peerCount", peers.size());
+  web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetConnectedPeers",
+                                         std::move(stats_value));
 }
 
 void IPFSDOMHandler::HandleGetAddressesConfig(const base::ListValue* args) {

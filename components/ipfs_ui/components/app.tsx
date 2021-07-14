@@ -93,7 +93,7 @@ export class IPFSPage extends React.Component<Props, {}> {
           this.props.ipfsData.daemonStatus.restarting ||
           !this.props.ipfsData.daemonStatus.launched) ? GrayStyle : {}}
         >
-          <ConnectedPeers addressesConfig={this.props.ipfsData.addressesConfig} peerCount={this.props.ipfsData.connectedPeers.peerCount} onOpenPeersWebUI={this.openPeersWebUI} />
+          <ConnectedPeers addressesConfig={this.props.ipfsData.addressesConfig} connectedPeers={this.props.ipfsData.connectedPeers} onOpenPeersWebUI={this.openPeersWebUI} />
           <AddressesConfig addressesConfig={this.props.ipfsData.addressesConfig} />
           <RepoStats repoStats={this.props.ipfsData.repoStats} daemonStatus={this.props.ipfsData.daemonStatus} garbageCollectionStatus={this.props.ipfsData.garbageCollectionStatus} onGarbageCollection={this.garbageCollection} />
           <NodeInfo nodeInfo={this.props.ipfsData.nodeInfo} />

@@ -10,9 +10,9 @@ import { types } from '../constants/ipfs_types'
 
 export const getConnectedPeers = () => action(types.IPFS_GET_CONNECTED_PEERS)
 
-export const onGetConnectedPeers = (peerCount: number) =>
+export const onGetConnectedPeers = (connectedPeers: IPFS.ConnectedPeers) =>
   action(types.IPFS_ON_GET_CONNECTED_PEERS, {
-    peerCount
+    connectedPeers
   })
 
 export const getAddressesConfig = () => action(types.IPFS_GET_ADDRESSES_CONFIG)
