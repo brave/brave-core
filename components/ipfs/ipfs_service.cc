@@ -266,11 +266,11 @@ void IpfsService::NotifyDaemonLaunched(bool result, int64_t pid) {
 void IpfsService::OnIpfsLaunched(bool result, int64_t pid) {
   if (result) {
     ipfs_pid_ = pid;
-    RegisterIpfsClientUpdater();
   } else {
     VLOG(0) << "Failed to launch IPFS";
     Shutdown();
   }
+  RegisterIpfsClientUpdater();
   NotifyDaemonLaunched(result, pid);
 }
 

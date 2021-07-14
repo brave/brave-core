@@ -1102,7 +1102,8 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportFileAndPinToIpfsSuccess) {
   WaitForRequest();
 }
 
-IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, UpdaterRegistration) {
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
+                       UpdaterRegistrationSuccessLaunch) {
   base::FilePath user_dir = base::FilePath(FILE_PATH_LITERAL("test"));
   BraveIpfsClientUpdater* updater =
       g_brave_browser_process->ipfs_client_updater();
@@ -1125,11 +1126,28 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, UpdaterRegistration) {
 
     ASSERT_FALSE(fake_service->IsDaemonLaunched());
     ASSERT_FALSE(updater->IsRegistered());
-    fake_service->OnIpfsLaunched(false, 0);
-    ASSERT_FALSE(updater->IsRegistered());
     fake_service->OnIpfsLaunched(true, 0);
     ASSERT_TRUE(updater->IsRegistered());
   }
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
+                       UpdaterRegistrationServiceNotLaunched) {
+  base::FilePath user_dir = base::FilePath(FILE_PATH_LITERAL("test"));
+  BraveIpfsClientUpdater* updater =
+      g_brave_browser_process->ipfs_client_updater();
+  auto* prefs = browser()->profile()->GetPrefs();
+  auto context_getter =
+      std::make_unique<IpfsBlobContextGetterFactory>(browser()->profile());
+
+  std::unique_ptr<FakeIpfsService> fake_service(
+      new FakeIpfsService(prefs, nullptr, std::move(context_getter), updater,
+                          user_dir, chrome::GetChannel()));
+
+  ASSERT_FALSE(fake_service->IsDaemonLaunched());
+  ASSERT_FALSE(updater->IsRegistered());
+  fake_service->OnIpfsLaunched(false, 0);
+  ASSERT_TRUE(updater->IsRegistered());
 }
 
 }  // namespace ipfs
