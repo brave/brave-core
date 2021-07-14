@@ -90,6 +90,8 @@ source_set("headers") {
     "include/bat/ledger/option_keys.h",
   ]
 
+  deps = [ "//sql:sql" ]
+
   public_deps = [ "include/bat/ledger/public/interfaces" ]
 }
 
@@ -385,8 +387,6 @@ source_set("ledger") {
     "src/bat/ledger/internal/endpoint/uphold/uphold_server.h",
     "src/bat/ledger/internal/endpoint/uphold/uphold_utils.cc",
     "src/bat/ledger/internal/endpoint/uphold/uphold_utils.h",
-    "src/bat/ledger/internal/ledger_database_impl.cc",
-    "src/bat/ledger/internal/ledger_database_impl.h",
     "src/bat/ledger/internal/ledger_impl.cc",
     "src/bat/ledger/internal/ledger_impl.h",
     "src/bat/ledger/internal/legacy/bat_helper.cc",
