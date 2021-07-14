@@ -26,18 +26,14 @@ struct ADS_EXPORT StatementInfo {
   std::string ToJson() const;
   bool FromJson(const std::string& json);
 
-  double estimated_pending_rewards = 0.0;
   int64_t next_payment_date = 0;
   int ads_received_this_month = 0;
   double earnings_this_month = 0.0;
   double earnings_last_month = 0.0;
-  TransactionList transactions;
+  TransactionList cleared_transactions;
   TransactionList uncleared_transactions;
 
  private:
-  double GetEstimatedPendingRewardsFromDictionary(
-      base::DictionaryValue* dictionary) const;
-
   uint64_t GetNextPaymentDateFromDictionary(
       base::DictionaryValue* dictionary) const;
 
@@ -46,14 +42,12 @@ struct ADS_EXPORT StatementInfo {
 
   double GetEarningsThisMonthFromDictionary(
       base::DictionaryValue* dictionary) const;
-
   double GetEarningsLastMonthFromDictionary(
       base::DictionaryValue* dictionary) const;
 
-  base::Value GetTransactionsAsList() const;
-  TransactionList GetTransactionsFromDictionary(
+  base::Value GetClearedTransactionsAsList() const;
+  TransactionList GetClearedTransactionsFromDictionary(
       base::DictionaryValue* dictionary) const;
-
   base::Value GetUnclearedTransactionsAsList() const;
   TransactionList GetUnclearedTransactionsFromDictionary(
       base::DictionaryValue* dictionary) const;

@@ -92,7 +92,8 @@ class Account : public AdRewardsDelegate,
   void OnConfirmAdFailed(const ConfirmationInfo& confirmation) override;
 
   // RedeemUnblindedPaymentTokensDelegate implementation
-  void OnDidRedeemUnblindedPaymentTokens() override;
+  void OnDidRedeemUnblindedPaymentTokens(
+      const privacy::UnblindedTokenList unblinded_tokens) override;
   void OnFailedToRedeemUnblindedPaymentTokens() override;
   void OnDidRetryRedeemingUnblindedPaymentTokens() override;
 };
