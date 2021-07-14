@@ -207,7 +207,8 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, HeadersIPFSWorkNoRedirect) {
 TEST_F(IPFSRedirectNetworkDelegateHelperTest, PrivateProfile) {
   GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  brave_request_info->browser_context = profile()->GetPrimaryOTRProfile();
+  brave_request_info->browser_context =
+      profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true);
   brave_request_info->ipfs_gateway_url = GetPublicGateway();
   brave_request_info->initiator_url = ipfs::GetIPFSGatewayURL(
       initiator_cid, "", ipfs::GetDefaultIPFSGateway(profile()->GetPrefs()));
