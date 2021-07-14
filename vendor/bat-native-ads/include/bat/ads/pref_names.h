@@ -37,6 +37,8 @@ extern const char kCatalogLastUpdated[];
 extern const char kEpsilonGreedyBanditArms[];
 extern const char kEpsilonGreedyBanditEligibleSegments[];
 
+extern const char kUnreconciledTransactions[];
+
 extern const char kHasMigratedConversionState[];
 
 }  // namespace prefs

@@ -1103,7 +1103,6 @@ BraveRewardsGetAdsAccountStatementFunction::Run() {
 
 void BraveRewardsGetAdsAccountStatementFunction::OnGetAdsAccountStatement(
     const bool success,
-    const double estimated_pending_rewards,
     const int64_t next_payment_date,
     const int ads_received_this_month,
     const double earnings_this_month,

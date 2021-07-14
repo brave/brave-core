@@ -27,18 +27,18 @@ class Payments {
 
   double GetBalance() const;
 
-  bool DidReconcileBalance(
-      const double balance,
-      const double unreconciled_estimated_pending_rewards) const;
-
   base::Time CalculateNextPaymentDate(
       const base::Time& time,
       const base::Time& token_redemption_date) const;
 
-  PaymentInfo GetForThisMonth(const base::Time& time) const;
+  PaymentInfo GetForMonth(const base::Time& time) const;
 
  private:
   PaymentList payments_;
+
+  double GetBalanceForPayments(const PaymentList& payments) const;
+
+  bool DidReconcile(const PaymentList& payments) const;
 
   PaymentList GetFromList(base::ListValue* list) const;
 
