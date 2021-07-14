@@ -161,6 +161,7 @@ source_set("common") {
 
     deps += [
       "//brave/components/resources",
+      "//chrome/common",
       "//chrome/common:constants",
       "//components/resources",
       "//content/public/common",

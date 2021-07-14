@@ -67,6 +67,7 @@ static_library("brave_test_support_unit") {
   deps = [
     ":test_support",
     "//brave/browser/profiles",
+    "//brave/common",
     "//brave/common:pref_names",
     "//components/gcm_driver",
     "//components/gcm_driver:gcm_buildflags",
@@ -673,6 +674,7 @@ if (!is_android) {
       "//brave/browser/ui/tabs/test:browser_tests",
       "//brave/browser/widevine:browser_tests",
       "//brave/chromium_src/third_party/blink/renderer/modules:browser_tests",
+      "//brave/common",
       "//brave/components/brave_rewards/common:features",
       "//brave/components/brave_rewards/common/buildflags:buildflags",
       "//brave/components/brave_search/browser",

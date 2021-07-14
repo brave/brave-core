@@ -23,6 +23,7 @@ source_set("unittests") {
     "//brave/browser",
     "//brave/browser/net:net",
     "//brave/browser/tor",
+    "//brave/common",
     "//brave/components/decentralized_dns/buildflags",
     "//brave/components/ipfs",
     "//brave/components/tor/buildflags",
