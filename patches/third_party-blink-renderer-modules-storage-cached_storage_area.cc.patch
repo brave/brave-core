@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/modules/storage/cached_storage_area.cc b/third_party/blink/renderer/modules/storage/cached_storage_area.cc
+index 4b98ae5eb00fa84a42133be5a77e38adb636cceb..5fd6b337b66b52f9234e307aeb1c2d8edb9d2468 100644
+--- a/third_party/blink/renderer/modules/storage/cached_storage_area.cc
++++ b/third_party/blink/renderer/modules/storage/cached_storage_area.cc
+@@ -566,6 +566,7 @@ void CachedStorageArea::MaybeApplyNonLocalMutationForKey(
+ }
+ 
+ void CachedStorageArea::EnsureLoaded() {
++  BRAVE_CACHED_STORAGE_AREA_ENSURE_LOADED
+   if (map_)
+     return;
+ 
