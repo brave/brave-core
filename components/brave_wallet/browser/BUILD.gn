@@ -28,6 +28,8 @@ static_library("browser") {
     "eip2930_transaction.h",
     "erc_token_list_parser.cc",
     "erc_token_list_parser.h",
+    "erc_token_registry.cc",
+    "erc_token_registry.h",
     "eth_address.cc",
     "eth_address.h",
     "eth_call_data_builder.cc",
