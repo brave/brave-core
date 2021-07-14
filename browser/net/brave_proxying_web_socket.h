@@ -14,7 +14,6 @@
 #include "base/macros.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
-#include "base/optional.h"
 #include "brave/browser/net/resource_context_data.h"
 #include "brave/browser/net/url_context.h"
 #include "content/public/browser/content_browser_client.h"
@@ -26,6 +25,7 @@
 #include "services/network/public/mojom/network_context.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "services/network/public/mojom/websocket.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -63,7 +63,7 @@ class BraveProxyingWebSocket
       content::ContentBrowserClient::WebSocketFactory factory,
       const GURL& url,
       const net::SiteForCookies& site_for_cookies,
-      const base::Optional<std::string>& user_agent,
+      const absl::optional<std::string>& user_agent,
       mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
           handshake_client);
 
@@ -117,11 +117,11 @@ class BraveProxyingWebSocket
   void ContinueToHeadersReceived();
   void OnBeforeSendHeadersCompleteFromProxy(
       int error_code,
-      const base::Optional<net::HttpRequestHeaders>& headers);
+      const absl::optional<net::HttpRequestHeaders>& headers);
   void OnHeadersReceivedCompleteFromProxy(
       int error_code,
-      const base::Optional<std::string>& headers,
-      const base::Optional<GURL>& url);
+      const absl::optional<std::string>& headers,
+      const absl::optional<GURL>& url);
 
   void PauseIncomingMethodCallProcessing();
   void ResumeIncomingMethodCallProcessing();

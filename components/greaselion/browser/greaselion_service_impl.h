@@ -20,6 +20,7 @@
 #include "base/version.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #include "extensions/common/extension_id.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace base {
@@ -70,7 +71,7 @@ class GreaselionServiceImpl : public GreaselionService {
   void SetBrowserVersionForTesting(const base::Version& version) override;
   void CreateAndInstallExtensions();
   void PostConvert(
-      base::Optional<GreaselionConvertedExtension> converted_extension);
+      absl::optional<GreaselionConvertedExtension> converted_extension);
   void Install(scoped_refptr<extensions::Extension> extension);
   void MaybeNotifyObservers();
 

@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl b/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
-index b04e33e473ee605c57e8e0acc243c51ee736beea..ee55b3ac39bd77841aaf59b1e864039ffe9fce02 100644
+index 9783aef36a0ee9f764c88b120092b201cfa8ba63..14ace4b01219c3c2c6b2ca2912949299dc10d311 100644
 --- a/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
-@@ -76,10 +76,10 @@
+@@ -75,10 +75,10 @@
      void stroke(Path2D path);
      void clip(optional CanvasFillRule winding);
      void clip(Path2D path, optional CanvasFillRule winding);
@@ -17,12 +17,12 @@ index b04e33e473ee605c57e8e0acc243c51ee736beea..ee55b3ac39bd77841aaf59b1e864039f
  
      // text (see also the CanvasDrawingStyles interface)
      void fillText(DOMString text, unrestricted double x, unrestricted double y, optional unrestricted double maxWidth);
-@@ -94,7 +94,7 @@
+@@ -93,7 +93,7 @@
      // pixel manipulation
      [RaisesException] ImageData createImageData(ImageData imagedata);
-     [RaisesException] ImageData createImageData(long sw, long sh);
--    [HighEntropy, MeasureAs=OffscreenCanvasGetImageData, RaisesException] ImageData getImageData(long sx, long sy, long sw, long sh);
-+    [CallWith=ScriptState, HighEntropy, MeasureAs=OffscreenCanvasGetImageData, RaisesException] ImageData getImageData(long sx, long sy, long sw, long sh);
+     [RaisesException] ImageData createImageData(long sw, long sh, optional ImageDataSettings imageDataSettings = {});
+-    [HighEntropy, MeasureAs=OffscreenCanvasGetImageData, RaisesException] ImageData getImageData(long sx, long sy, long sw, long sh, optional ImageDataSettings imageDataSettings = {});
++    [CallWith=ScriptState, HighEntropy, MeasureAs=OffscreenCanvasGetImageData, RaisesException] ImageData getImageData(long sx, long sy, long sw, long sh, optional ImageDataSettings imageDataSettings = {});
      [RaisesException] void putImageData(ImageData imagedata, long dx, long dy);
      [RaisesException] void putImageData(ImageData imagedata, long dx, long dy, long dirtyX, long dirtyY, long dirtyWidth, long dirtyHeight);
  

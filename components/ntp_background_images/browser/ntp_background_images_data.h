@@ -10,11 +10,11 @@
 #include <vector>
 
 #include "base/files/file_path.h"
-#include "base/optional.h"
 #include "base/values.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "third_party/skia/include/core/SkColor.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/rect.h"
-#include "third_party/skia/include/core/SkColor.h"
 
 namespace ntp_background_images {
 
@@ -55,8 +55,8 @@ struct Background {
 
   std::string creative_instance_id;
 
-  base::Optional<Logo> logo;
-  base::Optional<gfx::Rect> viewbox;
+  absl::optional<Logo> logo;
+  absl::optional<gfx::Rect> viewbox;
 
   Background();
   // For unit test.

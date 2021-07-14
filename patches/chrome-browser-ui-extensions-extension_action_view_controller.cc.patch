@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/extensions/extension_action_view_controller.cc b/chrome/browser/ui/extensions/extension_action_view_controller.cc
-index 730629846a5238eada7944b38880152af6926fa2..9fb65a84f811f1cf9c8dd79390fb1a738d73d9a3 100644
+index f15dba73a0b60eb75e4cbd70097ec8ec46993c00..40e6e93687a4caf93afc525f97f7b5b527c002d9 100644
 --- a/chrome/browser/ui/extensions/extension_action_view_controller.cc
 +++ b/chrome/browser/ui/extensions/extension_action_view_controller.cc
-@@ -59,7 +59,6 @@ ExtensionActionViewController::ExtensionActionViewController(
-       icon_factory_(browser->profile(), extension, extension_action, this),
-       extension_registry_(
-           extensions::ExtensionRegistry::Get(browser_->profile())) {
+@@ -50,7 +50,6 @@ ExtensionActionViewController::Create(
+     Browser* browser,
+     ExtensionsContainer* extensions_container) {
+   DCHECK(browser);
 -  DCHECK(extensions_container);
-   DCHECK(extension_action);
-   DCHECK(extension);
- }
+ 
+   auto* registry = extensions::ExtensionRegistry::Get(browser->profile());
+   scoped_refptr<const extensions::Extension> extension =

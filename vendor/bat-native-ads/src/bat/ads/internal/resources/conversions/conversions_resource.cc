@@ -61,13 +61,13 @@ ConversionIdPatternMap Conversions::get() const {
 bool Conversions::FromJson(const std::string& json) {
   ConversionIdPatternMap conversion_id_patterns;
 
-  base::Optional<base::Value> root = base::JSONReader::Read(json);
+  absl::optional<base::Value> root = base::JSONReader::Read(json);
   if (!root) {
     BLOG(1, "Failed to load from JSON, root missing");
     return false;
   }
 
-  if (base::Optional<int> version = root->FindIntPath("version")) {
+  if (absl::optional<int> version = root->FindIntPath("version")) {
     if (kVersionId != *version) {
       BLOG(1, "Failed to load from JSON, version missing");
       return false;

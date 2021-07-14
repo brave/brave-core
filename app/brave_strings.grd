@@ -206,6 +206,11 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           Welcome to Brave; new browser window opened
         </message>
       </if>
+      <if expr="is_macosx or is_linux">
+        <message name="IDS_FIRST_RUN_DIALOG_WINDOW_TITLE" desc="Window title of First Run dialog on Mac and Linux, displayed in title bar">
+          Welcome to Brave
+        </message>
+      </if>
       <if expr="chromeos">
         <message name="IDS_PRODUCT_OS_NAME" desc="The Chrome OS application name">
           Chrome OS
@@ -289,7 +294,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           Chrome OS is made possible by additional <ph name="BEGIN_LINK_CROS_OSS">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>open source software<ph name="END_LINK_CROS_OSS">&lt;/a&gt;</ph>.
         </message>
         <message name="IDS_ABOUT_CROS_WITH_LINUX_VERSION_LICENSE" desc="Additional text displayed beneath the Brave open source URLs for Chrome OS when Crostini is installed.">
-          Chrome OS is made possible by additional <ph name="BEGIN_LINK_CROS_OSS">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>open source software<ph name="END_LINK_CROS_OSS">&lt;/a&gt;</ph>, as is <ph name="BEGIN_LINK_LINUX_OSS">&lt;a target="_blank" rel="noopener noreferrer" href="$2"&gt;</ph>Linux development environment (Beta)<ph name="END_LINK_LINUX_OSS">&lt;/a&gt;</ph>.
+          Chrome OS is made possible by additional <ph name="BEGIN_LINK_CROS_OSS">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>open source software<ph name="END_LINK_CROS_OSS">&lt;/a&gt;</ph>, as is <ph name="BEGIN_LINK_LINUX_OSS">&lt;a target="_blank" rel="noopener noreferrer" href="$2"&gt;</ph>Linux development environment<ph name="END_LINK_LINUX_OSS">&lt;/a&gt;</ph>.
         </message>
         <message name="IDS_ABOUT_SAFETY_INFORMATION" desc="The safety label in the About box." translateable="false">
           Not used in Brave. Placeholder to keep resource maps in sync.
@@ -530,6 +535,10 @@ Brave is unable to recover your settings.
         This file may be dangerous, so Brave has blocked it.
       </message>
 
+      <message name="IDS_PROMPT_CONFIRM_DANGEROUS_DOWNLOAD_ACCOUNT_COMPROMISE_BODY" desc="Body prompt text for the confirmation dialog asking whether the user really meant to keep a download deemed to be associated with account compromise by safebrowsing">
+        Brave recommends that you don't download or open this file.
+      </message>
+
       <!-- Abandon in-progress downloads confirmation dialog -->
       <if expr="not is_macosx">
         <message name="IDS_ABANDON_DOWNLOAD_DIALOG_BROWSER_MESSAGE" desc="Message on a dialog shown when the user closes the browser while one or more downloads are in progress. This string is shown on Windows, Chrome OS, and Linux, which all use 'Exit' to refer to closing a browser.">
@@ -567,8 +576,8 @@ Brave is unable to recover your settings.
       </if>
 
       <!-- chrome://settings/extensions page -->
-      <message name="IDS_EXTENSIONS_INCOGNITO_WARNING" desc="Warns the user that Brave cannot prevent extensions from recording history in private mode. Displayed in extensions management UI after an extension is selected to be run in private mode.">
-        Warning: Brave cannot prevent extensions from recording your browsing history. To disable this extension in private mode, unselect this option.
+      <message name="IDS_EXTENSIONS_INCOGNITO_WARNING" desc="Warns the user that Brave cannot prevent extensions from recording history in Private mode. Displayed in extensions management UI after an extension is selected to be run in Private mode.">
+        Warning: Brave cannot prevent extensions from recording your browsing history. To disable this extension in Private mode, unselect this option.
       </message>
       <message name="IDS_EXTENSIONS_UNINSTALL" desc="The link for uninstalling extensions.">
         Remove from Brave...
@@ -610,6 +619,9 @@ Brave is unable to recover your settings.
         <message name="IDS_UPDATE_NOW" desc="In Title Case: The text label of the Update Brave Now menu item">
           Update &amp;Brave
         </message>
+        <message name="IDS_RELAUNCH_TO_UPDATE" desc="In Title Case: The text label of the Update Brave menu item, when relaunch to update experiment is enabled">
+          Relaunch to Update &amp;Brave
+        </message>
       </if>
       <if expr="not use_titlecase and not chromeos">
         <message name="IDS_ABOUT" desc="The text label of the About Brave menu item">
@@ -618,6 +630,9 @@ Brave is unable to recover your settings.
         <message name="IDS_UPDATE_NOW" desc="The text label of the Update Brave Now menu item">
           Update &amp;Brave
         </message>
+        <message name="IDS_RELAUNCH_TO_UPDATE" desc="The text label of the Update Brave menu item, when relaunch to update experiment is enabled">
+          Relaunch to update &amp;Brave
+        </message>
       </if>
       <if expr="chromeos">
         <message name="IDS_ABOUT" desc="The text label of the About Brave menu item">
@@ -625,6 +640,9 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_UPDATE_NOW" desc="The text label of the Update Chrome OS Now menu item">
           Update &amp;Chrome OS
+        </message>
+        <message name="IDS_RELAUNCH_TO_UPDATE" desc="The text label of the Update Chrome OS menu item, when relaunch to update experiment is enabled">
+          Relaunch to update &amp;Chrome OS
         </message>
       </if>
 
@@ -920,7 +938,7 @@ Brave is unable to recover your settings.
           <message name="IDS_CONTENT_CONTEXT_OPENLINKNEWTAB_INAPP" desc="The name of the command to open a link in a newly created browser tab when the user is in an app window">
             Open link in new Brave &amp;tab
           </message>
-          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP" desc="The name of the command to open a link in a private browser window when the user is in an app window">
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP" desc="The name of the command to open a link in a Private browser window when the user is in an app window">
             Open link in Brave &amp;private window
           </message>
         </if>
@@ -928,7 +946,7 @@ Brave is unable to recover your settings.
           <message name="IDS_CONTENT_CONTEXT_OPENLINKNEWTAB_INAPP" desc="In Title Case: The name of the command to open a link in a newly created browser tab when the user is in an app window">
             Open Link in New Brave &amp;tab
           </message>
-          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP" desc="In Title Case: The name of the command to open a link in a private browser window when the user is in an app window">
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP" desc="In Title Case: The name of the command to open a link in a Private browser window when the user is in an app window">
             Open Link in Brave &amp;Private Window
           </message>
         </if>
@@ -939,7 +957,7 @@ Brave is unable to recover your settings.
         <message name="IDS_UPDATE_RECOMMENDED_DIALOG_TITLE" desc="The window title for the Update Recommended dialog.">
           Relaunch Brave
         </message>
-        <message name="IDS_UPDATE_RECOMMENDED" desc="The main text of the Update Recommended dialog with a count of open private windows.">
+        <message name="IDS_UPDATE_RECOMMENDED" desc="The main text of the Update Recommended dialog with a count of open Private windows.">
           {COUNT, plural,
           =0 {A new update for Brave is available and will be applied as soon as you relaunch.}
           =1 {A new update for Brave is available and will be applied as soon as you relaunch. Your Private window won't reopen.}
@@ -1068,6 +1086,13 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_EULA_SCREEN_ACCESSIBLE_TITLE" desc="Title to be spoken on opening the OOBE EULA screen">
           Chrome OS terms
+        </message>
+        <message name="IDS_OOBE_WELCOME_START_OS_INSTALL" desc="Label for button shown on the OOBE welcome screen to show the OS installation screens">
+          Install Chrome OS
+        </message>
+
+        <message name="IDS_OS_INSTALL_SCREEN_INTRO_TITLE" desc="Title of the introduction page in the OS install screen">
+          Install Chrome OS
         </message>
       </if>
 

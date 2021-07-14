@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<grit-part>
+  <message name="IDS_PRIVACY_SANDBOX_FLOC_DESCRIPTION" desc="Description of how FLoC works displayed to the user.">
+    {NUM_DAYS, plural,
+     =0 {When this control is on and the status is active, Brave determines which large group of profiles, or "cohort," your recent browsing activity is most similar to. Advertisers can select ads for the group and your browsing activity is kept private on your device. Your group is updated every day.}
+     =1 {When this control is on and the status is active, Brave determines which large group of profiles, or "cohort," your recent browsing activity is most similar to. Advertisers can select ads for the group and your browsing activity is kept private on your device. Your group is updated every day.}
+     other {When this control is on and the status is active, Brave determines which large group of profiles, or "cohort," your recent browsing activity is most similar to. Advertisers can select ads for the group and your browsing activity is kept private on your device. Your group is updated every {NUM_DAYS} days.}}
+  </message>
+  </grit-part>

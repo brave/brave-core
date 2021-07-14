@@ -30,7 +30,7 @@ std::unique_ptr<base::Value> FormProviderResponse(
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           controller_response, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& response = value_with_error.value;
+  absl::optional<base::Value>& response = value_with_error.value;
 
   if (!response) {
     ProviderErrors code = ProviderErrors::kUnsupportedMethod;
@@ -63,7 +63,7 @@ std::string FormProviderErrorResponse(const std::string& controller_response) {
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           controller_response, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& response = value_with_error.value;
+  absl::optional<base::Value>& response = value_with_error.value;
 
   if (response) {
     const base::Value* error = response->FindKey("error");

@@ -98,6 +98,7 @@ include_rules = [
   "+components/gcm_driver/gcm_buildflags.h",
   "+components/grit/brave_components_resources.h",
   "+components/grit/brave_components_strings.h",
+  "+components/infobars/content",
   "+components/infobars/core",
   "+components/keep_alive_registry",
   "+components/keyed_service/content",

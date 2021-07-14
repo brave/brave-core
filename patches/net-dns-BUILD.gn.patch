@@ -1,5 +1,5 @@
 diff --git a/net/dns/BUILD.gn b/net/dns/BUILD.gn
-index 72ec4c53076394990da99eb48b3e75a196671d3a..56af0ed052310c042717330a0d3f2e30a634f1d4 100644
+index c398d8ac69b2f0b49a61eb7209c1f55497bfd888..0bcbb15ee81f5510b026701e6f748874315c32af 100644
 --- a/net/dns/BUILD.gn
 +++ b/net/dns/BUILD.gn
 @@ -23,6 +23,7 @@ source_set("dns") {
@@ -10,19 +10,19 @@ index 72ec4c53076394990da99eb48b3e75a196671d3a..56af0ed052310c042717330a0d3f2e30
  
    public = []
    sources = [
-@@ -217,6 +218,7 @@ source_set("host_resolver") {
+@@ -212,6 +213,7 @@ source_set("host_resolver") {
      # wrapper.
      "//services/proxy_resolver/*",
    ]
 +  friend += brave_dns_friend
  
-   sources = []
-   public = []
-@@ -321,6 +323,7 @@ source_set("dns_client") {
+   sources = [
+     "dns_config.h",
+@@ -308,6 +310,7 @@ source_set("dns_client") {
      "//net/*",
      "//services/network/*",
    ]
 +  friend += brave_dns_friend
  
-   sources = []
-   public = []
+   sources = [
+     "dns_client.h",

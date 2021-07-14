@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/themes/theme_helper.h b/chrome/browser/themes/theme_helper.h
-index 3ae127e5fe97491306ada6b97b93170b3f65ce6e..236f174c84c12b565ef3768cc7e1c2cd4acf3ed1 100644
+index 28ca8e7dfacaea8873ecf60667b29b7551de504a..bbecbefdef3754d589f471057c63851062d08935 100644
 --- a/chrome/browser/themes/theme_helper.h
 +++ b/chrome/browser/themes/theme_helper.h
-@@ -107,6 +107,7 @@ class ThemeHelper {
+@@ -108,6 +108,7 @@ class ThemeHelper {
        bool incognito,
        const CustomThemeSupplier* theme_supplier) const;
  

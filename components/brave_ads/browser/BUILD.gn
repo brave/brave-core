@@ -2,7 +2,7 @@ import("//brave/build/config.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 
-source_set("browser") {
+static_library("browser") {
   # Remove when https://github.com/brave/brave-browser/issues/10639 is resolved
   check_includes = false
   public_deps = [

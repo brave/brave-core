@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.tasks.tab_management;
 
+import android.content.Context;
+
 import org.chromium.chrome.browser.flags.CachedFeatureFlags;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
@@ -14,17 +16,17 @@ public class BraveTabUiFeatureUtilities {
     /**
      * @return Whether the Grid Tab Switcher UI is enabled and available for use.
      */
-    public static boolean isGridTabSwitcherEnabled() {
-        if (!isTabGroupsAndroidEnabled()) {
+    public static boolean isGridTabSwitcherEnabled(Context context) {
+        if (!isTabGroupsAndroidEnabled(context)) {
             return false;
         }
-        return TabUiFeatureUtilities.isGridTabSwitcherEnabled();
+        return TabUiFeatureUtilities.isGridTabSwitcherEnabled(context);
     }
 
     /**
      * @return Whether the tab group feature is enabled and available for use.
      */
-    public static boolean isTabGroupsAndroidEnabled() {
+    public static boolean isTabGroupsAndroidEnabled(Context context) {
         // For backward compatibility we take value of Tab Grid feature if BRAVE_TAB_GROUPS_ENABLED
         // setting hasn't been created. We don't want to rely on Tab Grid feature itself since it
         // can be removed in the upstream going forward.
@@ -40,6 +42,6 @@ public class BraveTabUiFeatureUtilities {
             return false;
         }
 
-        return TabUiFeatureUtilities.isTabGroupsAndroidEnabled();
+        return TabUiFeatureUtilities.isTabGroupsAndroidEnabled(context);
     }
 }

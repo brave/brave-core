@@ -94,6 +94,9 @@
     <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_CONFIRM" desc="Text to show for the Autofill upload save credit card prompt accept button when more information (e.g., CVC) was needed in order to save the card and was entered." formatter_data="android_java">
       Confirm
     </message>
+    <message name="IDS_AUTOFILL_MOBILE_SAVE_CARD_TO_CLOUD_CONFIRMATION_DIALOG_TITLE" desc="This message appears as the title of a confirmation dialog in which the user can view/edit the information that will be saved to Brave Payments, and only appears after the user has expressed interest in uploading the card.">
+      Save to Brave sync chain
+    </message>
   </if>
   <if expr="is_ios">
     <then>
@@ -223,7 +226,7 @@
     <message name="IDS_AUTOFILL_LOCAL_CARD_MIGRATION_DIALOG_CHECKBOX_UNCHECK_WARNING" desc="The warning text, after the user unchecks the checkbox, to indicate this card will still be saved on this device only, not to Brave account.">
       Saved on this device only
     </message>
-    <message name="IDS_AUTOFILL_LOCAL_CARD_MIGRATION_DIALOG_MESSAGE_OFFER" desc="The body text for a dialog that offers to migrate local cards into the cloud. [CHAR-LIMIT=NONE] [ICU Syntax]">
+    <message name="IDS_AUTOFILL_LOCAL_CARD_MIGRATION_DIALOG_MESSAGE_OFFER" desc="The body text for a dialog that offers to migrate local cards into the cloud. [CHAR_LIMIT=NONE] [ICU Syntax]">
       {NUM_CARDS, plural,
       =1 {This card and its billing address will be saved. You'll be able to use it when signed in to <ph name="USER_EMAIL">$1<ex>user@gmail.com</ex></ph>.}
       other {These cards and their billing addresses will be saved. You'll be able to use them when signed in to <ph name="USER_EMAIL">$1<ex>user@gmail.com</ex></ph>.}}
@@ -393,7 +396,7 @@
   <message name="IDS_AUTOFILL_CARD_UNMASK_NEW_CARD_LINK" desc="Text for link that prompts user to update their credit card after it may have been re-issued." formatter_data="android_java">
     Update card
   </message>
-  <message name="IDS_AUTOFILL_DIALOG_PLACEHOLDER_CVC" desc="The placeholder/label text for credit card verification code in the requestAutocomplete dialog. The text field where this is presented can be very narrow, so please prefer to translate this to the most common abbreviated form. [CHAR-LIMIT=4]" meaning="Placeholder label for a very narrow CVC field that should preferably be translated to an abbreviated form.">
+  <message name="IDS_AUTOFILL_DIALOG_PLACEHOLDER_CVC" desc="The placeholder/label text for credit card verification code in the requestAutocomplete dialog. The text field where this is presented can be very narrow, so please prefer to translate this to the most common abbreviated form. [CHAR_LIMIT=4]" meaning="Placeholder label for a very narrow CVC field that should preferably be translated to an abbreviated form.">
     CVC
   </message>
 
@@ -471,7 +474,7 @@
     From Brave Pay
   </message>
 
-  <!-- Cloud token related strings (Desktop only) -->
+  <!-- virtual cards related strings -->
   <if expr="not is_ios and not is_android">
     <message name="IDS_AUTOFILL_CLOUD_TOKEN_DROPDOWN_OPTION_LABEL" desc="Text shown in the button in the Autofill dropdown menu when a credit card form field is queried, to offer the option to use a virtual card.">
       Use a virtual card number...
@@ -491,6 +494,22 @@
     </message>
     <message name="IDS_AUTOFILL_VIRTUAL_CARD_SELECTION_DIALOG_CANCEL_BUTTON_LABEL" desc="Text shown in the Cancel button in the Autofill virtual card selection dialog. This dialog offers all available virtual credit cards for users to choose.">
       Cancel
+    </message>
+    <message name="IDS_AUTOFILL_VIRTUAL_CARD_MANUAL_FALLBACK_BUBBLE_TITLE" desc="The title shown in the Autofill virtual card manual fallback bubble on Desktop. This bubble shows the complete information for the virtual card selected to fill the form.">
+      Virtual card number
+    </message>
+    <message name="IDS_AUTOFILL_VIRTUAL_CARD_MANUAL_FALLBACK_BUBBLE_CARD_NUMBER_LABEL" desc="Text shown next to the virtual card number in the virtual card manual fallback bubble on Desktop. This bubble shows the complete information for the virtual card selected to fill the form.">
+      Virtual number:
+    </message>
+    <message name="IDS_AUTOFILL_VIRTUAL_CARD_MANUAL_FALLBACK_BUBBLE_EXP_DATE_LABEL" desc="Text shown next to the virtual card expiration date in the virtual card manual fallback bubble on Desktop. This bubble shows the complete information for the virtual card selected to fill the form.">
+      Month/Year:
+    </message>
+    <message name="IDS_AUTOFILL_VIRTUAL_CARD_MANUAL_FALLBACK_BUBBLE_CVC_LABEL" desc="Text shown next to the virtual card CVC code in the virtual card manual fallback bubble on Desktop. This bubble shows the complete information for the virtual card selected to fill the form.">
+      CVC:
+    </message>
+    <!-- TODO(crbug.com/1020740): Update tooltip message with final wording -->
+    <message name="IDS_AUTOFILL_VIRTUAL_CARD_MANUAL_FALLBACK_ICON_TOOLTIP" desc="The tooltip message for the omnibox icon for the virtual card manual fallback bubble on Desktop. This bubble shows the complete information for the virtual card selected to fill the form.">
+      View virtual card details
     </message>
   </if>
 
@@ -528,6 +547,16 @@
     </message>
     <message name="IDS_AUTOFILL_OFFERS_REMINDER_DEEP_LINK_TEXT" desc="Text to be linked to take the user to the offer in the Brave Pay app." formatter_data="android_java">
       See details
+    </message>
+  </if>
+
+  <!-- Strings related to virtual card numbers -->
+  <if expr="is_android">
+    <message name="IDS_AUTOFILL_VIRTUAL_CARD_NUMBER_SNACKBAR_MESSAGE_TEXT" desc="Text to be displayed in the snackbar shown after a virtual card number id autofilled.">
+      Your virtual card number is applied.
+    </message>
+    <message name="IDS_AUTOFILL_VIRTUAL_CARD_NUMBER_SNACKBAR_ACTION_TEXT" desc="Text to be displayed as the snackbar action shown after a virtual card number id autofilled.">
+      View virtual card
     </message>
   </if>
 </grit-part>

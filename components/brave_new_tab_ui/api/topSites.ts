@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import { addWebUIListener } from '../../common/cr'
+
 export type MostVisitedInfoChanged = {
   tiles: NewTab.Site[]
   custom_links_enabled: boolean
@@ -17,7 +19,7 @@ export function updateMostVisitedInfo () {
 }
 
 export function addMostVistedInfoChangedListener (listener: MostVisitedInfoChangedHandler): void {
-  window.cr.addWebUIListener('most-visited-info-changed', listener)
+  addWebUIListener('most-visited-info-changed', listener)
 }
 
 export function deleteMostVisitedTile (url: string): void {

@@ -822,8 +822,6 @@ brave_java_resources = [
   "java/res/layout/user_wallet_activity.xml",
   "java/res/layout/verify_wallet_activity.xml",
   "java/res/layout/wallet_coin_list_item.xml",
-  "java/res/layout/web_notification_big_brave_ads.xml",
-  "java/res/layout/web_notification_brave_ads.xml",
   "java/res/layout/web_notification_icon_frame_brave.xml",
   "java/res/menu/exit_settings_menu.xml",
   "java/res/menu/navigation.xml",

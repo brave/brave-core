@@ -17,6 +17,7 @@
 #include "base/path_service.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "base/system/sys_info.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
@@ -228,7 +229,7 @@ bool BraveReferralsService::GetMatchingReferralHeaders(
     const GURL& url) {
   // If the domain for this request matches one of our target domains,
   // set the associated custom headers.
-  for (const auto& headers_value : referral_headers_list) {
+  for (const auto& headers_value : referral_headers_list.GetList()) {
     const base::Value* domains_list =
         headers_value.FindKeyOfType("domains", base::Value::Type::LIST);
     if (!domains_list) {

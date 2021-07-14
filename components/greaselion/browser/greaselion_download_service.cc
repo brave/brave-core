@@ -282,7 +282,7 @@ void GreaselionDownloadService::OnDATFileDataReady(std::string contents) {
     LOG(ERROR) << "Could not obtain Greaselion configuration";
     return;
   }
-  base::Optional<base::Value> root = base::JSONReader::Read(contents);
+  absl::optional<base::Value> root = base::JSONReader::Read(contents);
   if (!root) {
     LOG(ERROR) << "Failed to parse Greaselion configuration";
     return;

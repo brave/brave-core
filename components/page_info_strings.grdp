@@ -250,6 +250,12 @@
       <message name="IDS_PAGE_INFO_CERTIFICATE_INVALID_PARENTHESIZED" desc="Button text used as part of IDS_PAGE_INFO_CERTIFICATE_BUTTON_TEXT when the Page Information bubble has been opened for a site with an invalid certificate.">
         (Invalid)
       </message>
+      <message name="IDS_PAGE_INFO_CERTIFICATE_IS_VALID" desc="Title of the certificate area in the Page Info bubble, shown when a HTTPS site is loaded with a valid certificate.">
+        Certificate is valid
+      </message>
+      <message name="IDS_PAGE_INFO_CERTIFICATE_IS_NOT_VALID" desc="Title of the certificate area in the Page Info bubble, shown when a HTTPS site is loaded with an invalid certificate.">
+        Certificate is not valid
+      </message>
       <message name="IDS_PAGE_INFO_CERTIFICATE_VALID_LINK_TOOLTIP" desc="The text of the tooltip on IDS_PAGE_INFO_CERTIFICATE_VALID_LINK.">
         Show certificate (issued by <ph name="ISSUER">$1<ex>Let's Encrypt X3</ex></ph>)
       </message>
@@ -276,6 +282,9 @@
       </message>
       <message name="IDS_PAGE_INFO_NUM_COOKIES_PARENTHESIZED" desc="The label of the counts for allowed cookies that are in use on the page. This text will be used in IDS_PAGE_INFO_COOKIES_BUTTON_TEXT.">
         {NUM_COOKIES, plural, =1 {(1 in use)} other {(# in use)}}
+      </message>
+      <message name="IDS_PAGE_INFO_NUM_COOKIES" desc="The label of the counts for allowed cookies that are in use on the page. This text will be shown next to IDS_PAGE_INFO_COOKIES_BUTTON_TEXT. It is the same as IDS_PAGE_INFO_NUM_COOKIES_PARENTHESIZED, but without parenthesis">
+        {NUM_COOKIES, plural, =1 {1 in use} other {# in use}}
       </message>
       <message name="IDS_PAGE_INFO_COOKIES_TOOLTIP" desc="The text of the tooltip on IDS_PAGE_INFO_NUM_COOKIES_PARENTHESIZED.">
         Show cookies
@@ -456,6 +465,9 @@
     </message>
     <message name="IDS_PAGE_INFO_SERIAL_PORT_SECONDARY_LABEL" desc="The label displayed underneath the port name to inform the user that the permission listed refers to a serial port.">
       Serial port
+    </message>
+    <message name="IDS_PAGE_INFO_SERIAL_PORT_ALLOWED_BY_POLICY_LABEL" desc="The label displayed underneath the device name to inform the user that the item listed is refering to a serial port explicitly allowed by the user's enterprise policy.">
+      Serial port allowed by your administrator
     </message>
     <message name="IDS_PAGE_INFO_DELETE_SERIAL_PORT" desc="The tooltip displayed when hovering over the button that will remove permission to access a serial port that the user previously granted to the site.">
       Revoke access
@@ -657,5 +669,10 @@
   </message>
   <message name="IDS_CERT_X509_SUBJECT_ALT_NAME" desc="description of extension Certificate Subject Alternative Name">
     Certificate Subject Alternative Name
+  </message>
+
+  <!-- Subpages headers -->
+  <message name="IDS_PAGE_INFO_SECURITY_SUBPAGE_HEADER" desc="The header label of the Security subpage in page info bubble.">
+    Security
   </message>
 </grit-part>

@@ -213,7 +213,7 @@ bool AdRewards::SetFromDictionary(base::Value* dictionary) {
     return false;
   }
 
-  const base::Optional<double> unreconciled_estimated_pending_rewards =
+  const absl::optional<double> unreconciled_estimated_pending_rewards =
       dictionary->FindDoubleKey("unreconciled_estimated_pending_rewards");
   unreconciled_estimated_pending_rewards_ =
       unreconciled_estimated_pending_rewards.value_or(0.0);

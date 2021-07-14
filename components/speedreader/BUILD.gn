@@ -9,7 +9,7 @@ buildflag_header("buildflags") {
   ]
 }
 
-source_set("speedreader") {
+static_library("speedreader") {
   public_deps = [
     ":buildflags",
     "rust/ffi",

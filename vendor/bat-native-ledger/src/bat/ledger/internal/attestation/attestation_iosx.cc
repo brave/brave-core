@@ -27,7 +27,7 @@ AttestationIOS::~AttestationIOS() = default;
 
 std::string AttestationIOS::ParseStartPayload(
     const std::string& response) {
-  base::Optional<base::Value> value = base::JSONReader::Read(response);
+  absl::optional<base::Value> value = base::JSONReader::Read(response);
   if (!value || !value->is_dict()) {
     return "";
   }
@@ -51,7 +51,7 @@ type::Result AttestationIOS::ParseClaimSolution(
     std::string* nonce,
     std::string* blob,
     std::string* signature) {
-  base::Optional<base::Value> value = base::JSONReader::Read(response);
+  absl::optional<base::Value> value = base::JSONReader::Read(response);
   if (!value || !value->is_dict()) {
     return type::Result::LEDGER_ERROR;
   }

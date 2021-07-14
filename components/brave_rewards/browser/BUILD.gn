@@ -3,7 +3,7 @@ import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/vendor/bat-native-ledger/config.gni")
 import("//extensions/buildflags/buildflags.gni")
 
-source_set("browser") {
+static_library("browser") {
   # Remove when https://github.com/brave/brave-browser/issues/10618 is resolved
   check_includes = false
   public_deps = [ "buildflags" ]

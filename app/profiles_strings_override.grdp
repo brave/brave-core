@@ -1,20 +1,20 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Profiles specific strings (included from generated_resources.grd). -->
 <grit-part>
-  <message name="IDS_INCOGNITO_BUBBLE_ACCESSIBLE_TITLE" desc="Accessible title of the avatar menu, opened in private mode. The message also shows the number of open private windows if they are more than one. [ICU Syntax]">
+  <message name="IDS_INCOGNITO_BUBBLE_ACCESSIBLE_TITLE" desc="Accessible title of the avatar menu, opened in Private mode. The message also shows the number of open Private windows if they are more than one. [ICU Syntax]">
       {0, plural,
         =1 {Private}
-        other {# open private windows}
+        other {# open Private windows}
       }
   </message>
-  <message name="IDS_AVATAR_BUTTON_INCOGNITO" desc="Short label for the avatar button when the user is in private mode and the number of open private windows if there are more than one private window open. [ICU Syntax]" meaning="This window is browsing in incognito mode and there are more than one incognito windows open. The counter is not shown when there is only one incognito window open.">
+  <message name="IDS_AVATAR_BUTTON_INCOGNITO" desc="Short label for the avatar button when the user is in Private mode and the number of open Private windows if there are more than one Private window open. [ICU Syntax]" meaning="This window is browsing in Incognito mode and there are more than one Incognito windows open. The counter is not shown when there is only one Incognito window open.">
     {0, plural,
       =1 {Private}
       other {Private (#)}
     }
   </message>
-  <message name="IDS_AVATAR_BUTTON_INCOGNITO_TOOLTIP" desc="Tooltip for the avatar button when the user is in private mode.">
-    This is a private window
+  <message name="IDS_AVATAR_BUTTON_INCOGNITO_TOOLTIP" desc="Tooltip for the avatar button when the user is in Private mode.">
+    You're Private
   </message>
   <message name="IDS_PROFILES_OPTIONS_GROUP_NAME" desc="The name of the sync group in the options dialog when using the new Profiles UI.">
     Profiles
@@ -73,7 +73,7 @@
   </if>
 
   <if expr="not chromeos and not is_android">
-    <message name="IDS_PROFILE_PICKER_PROFILE_MENU_INCOGNITO_TEXT" desc="Text of the private button in profile card menu">
+    <message name="IDS_PROFILE_PICKER_PROFILE_MENU_INCOGNITO_TEXT" desc="Text of the Private button in profile card menu">
       Private
     </message>
     </if>

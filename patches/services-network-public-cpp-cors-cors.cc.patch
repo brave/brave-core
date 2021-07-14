@@ -1,5 +1,5 @@
 diff --git a/services/network/public/cpp/cors/cors.cc b/services/network/public/cpp/cors/cors.cc
-index 20b537c63e6ac3cc795f9fe3ba72c8197ae95811..4f7fa1bb899d5846230439c8d36e4d6cfa625b54 100644
+index 2e960432f19cc2afb807ae9f5a9d51a2bfa431a2..01d27bebe7a6dcae64473c413048587724a3f34e 100644
 --- a/services/network/public/cpp/cors/cors.cc
 +++ b/services/network/public/cpp/cors/cors.cc
 @@ -457,6 +457,7 @@ bool IsCorsSafelistedHeader(const std::string& name, const std::string& value) {
@@ -7,6 +7,6 @@ index 20b537c63e6ac3cc795f9fe3ba72c8197ae95811..4f7fa1bb899d5846230439c8d36e4d6c
        "sec-ch-ua-full-version",
        "sec-ch-ua-platform-version",
 +      "x-brave-partner", // Prevent Allow-Cross-Origin-Request-Header failures
-   };
-   if (std::find(std::begin(safe_names), std::end(safe_names), lower_name) ==
-       std::end(safe_names))
+ 
+       // The `Sec-CH-Prefers-Color-Scheme` header field is modeled after the
+       // prefers-color-scheme user preference media feature. It reflects the

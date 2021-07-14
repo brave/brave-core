@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -47,8 +48,8 @@ void AdsNotificationHandler::OnClick(
     Profile* profile,
     const GURL& origin,
     const std::string& id,
-    const base::Optional<int>& action_index,
-    const base::Optional<std::u16string>& reply,
+    const absl::optional<int>& action_index,
+    const absl::optional<std::u16string>& reply,
     base::OnceClosure completed_closure) {
   AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
   if (!ads_service) {

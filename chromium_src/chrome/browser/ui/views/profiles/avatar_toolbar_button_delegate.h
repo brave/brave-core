@@ -13,7 +13,6 @@
 #include "base/scoped_observer.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
-#include "chrome/browser/ui/avatar_button_error_controller_delegate.h"
 #include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 #include "components/signin/public/identity_manager/identity_manager.h"

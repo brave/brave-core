@@ -11,18 +11,22 @@
 #include "components/infobars/core/confirm_infobar_delegate.h"
 #include "url/gurl.h"
 
-class InfoBarService;
 class PrefService;
 
 namespace content {
 class WebContents;
-}
+}  // namespace content
+
+namespace infobars {
+class ContentInfoBarManager;
+}  // namespace infobars
 
 // An infobar that is run with a string, buttons, and a "Learn More" link.
 class CryptoWalletsInfoBarDelegate : public ConfirmInfoBarDelegate {
  public:
   enum class InfobarSubType { LOAD_CRYPTO_WALLETS, GENERIC_SETUP };
-  static void Create(InfoBarService* infobar_service, InfobarSubType subtype);
+  static void Create(infobars::ContentInfoBarManager* infobar_manager,
+                     InfobarSubType subtype);
 
  private:
   explicit CryptoWalletsInfoBarDelegate(InfobarSubType subtype);

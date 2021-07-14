@@ -250,8 +250,8 @@ void BraveSyncWorker::SetEncryptionPassphrase(syncer::SyncService* service) {
   syncer::SyncUserSettings* sync_user_settings = service->GetUserSettings();
   DCHECK(!sync_user_settings->IsPassphraseRequired());
 
-  if (sync_user_settings->IsEncryptEverythingAllowed() &&
-      !sync_user_settings->IsUsingSecondaryPassphrase() &&
+  if (sync_user_settings->IsCustomPassphraseAllowed() &&
+      !sync_user_settings->IsUsingExplicitPassphrase() &&
       !sync_user_settings->IsTrustedVaultKeyRequired()) {
     sync_user_settings->SetEncryptionPassphrase(this->passphrase_);
 

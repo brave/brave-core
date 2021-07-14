@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplierImpl;
 import org.chromium.base.supplier.Supplier;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.compositor.LayerTitleCache;
 import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
@@ -39,28 +40,28 @@ public class BraveLayoutManagerChrome extends LayoutManagerChrome
             ObservableSupplier<TabContentManager> tabContentManagerSupplier,
             Supplier<LayerTitleCache> layerTitleCacheSupplier,
             OneshotSupplierImpl<OverviewModeBehavior> overviewModeBehaviorSupplier,
-            OneshotSupplierImpl<LayoutStateProvider> layoutStateProviderOneshotSupplier,
             Supplier<TopUiThemeColorProvider> topUiThemeColorProvider) {
         super(host, contentContainer, createOverviewLayout, startSurface, tabContentManagerSupplier,
-                layerTitleCacheSupplier, overviewModeBehaviorSupplier,
-                layoutStateProviderOneshotSupplier, topUiThemeColorProvider);
+                layerTitleCacheSupplier, overviewModeBehaviorSupplier, topUiThemeColorProvider);
 
         mCreateOverviewLayout = createOverviewLayout && startSurface == null;
     }
 
     @Override
     public void init(TabModelSelector selector, TabCreatorManager creator,
-            ControlContainer controlContainer, DynamicResourceLoader dynamicResourceLoader) {
+            ControlContainer controlContainer, DynamicResourceLoader dynamicResourceLoader,
+            TopUiThemeColorProvider topUiColorProvider) {
         if (mCreateOverviewLayout) {
             Context context = mHost.getContext();
             LayoutRenderHost renderHost = mHost.getLayoutRenderHost();
             final ObservableSupplier<? extends BrowserControlsStateProvider>
-                    browserControlsSupplier = mHost.getBrowserControlsManagerSupplier();
+                    browserControlsSupplier =
+                            BraveActivity.getBraveActivity().getBrowserControlsManagerSupplier();
             mOverviewLayout = new StackLayout(context, this, renderHost,
                     (ObservableSupplier<BrowserControlsStateProvider>) browserControlsSupplier);
         }
 
-        super.init(selector, creator, controlContainer, dynamicResourceLoader);
+        super.init(selector, creator, controlContainer, dynamicResourceLoader, topUiColorProvider);
     }
 
     @Override

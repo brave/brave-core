@@ -34,14 +34,14 @@ void RunHashingExtractorTestCase(const std::string& test_case_name) {
   // Arrange
   const double kTolerance = 1e-7;
 
-  const base::Optional<std::string> opt_value =
+  const absl::optional<std::string> opt_value =
       ReadFileFromTestPathToString(kHashCheck);
 
   // Act
   ASSERT_TRUE(opt_value.has_value());
   const std::string hash_check_json = opt_value.value();
 
-  const base::Optional<base::Value> root =
+  const absl::optional<base::Value> root =
       base::JSONReader::Read(hash_check_json);
   ASSERT_TRUE(root);
 
@@ -76,7 +76,7 @@ void RunHashingExtractorTestCase(const std::string& test_case_name) {
 
 TEST_F(BatAdsHashVectorizerTest, ValidJsonScheme) {
   // Arrange
-  const base::Optional<base::Value> root = base::JSONReader::Read(
+  const absl::optional<base::Value> root = base::JSONReader::Read(
       "{"
       "  \"test\": {"
       "    \"foo\": true,"

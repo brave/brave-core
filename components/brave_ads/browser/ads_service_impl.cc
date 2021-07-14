@@ -73,9 +73,10 @@
 #include "chrome/browser/fullscreen.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_navigator.h"
+#include "chrome/browser/ui/browser_navigator_params.h"
 #endif
 #include "chrome/browser/first_run/first_run.h"
-#include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/common/chrome_constants.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_service.h"
@@ -87,6 +88,7 @@
 #include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/dom_distiller_js/dom_distiller.pb.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -659,8 +661,8 @@ void AdsServiceImpl::Initialize() {
                           base::Unretained(this)));
 
   profile_pref_change_registrar_.Add(
-      kBraveTodayOptedIn,
-      base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
+      kBraveTodayOptedIn, base::BindRepeating(&AdsServiceImpl::OnPrefsChanged,
+                                              base::Unretained(this)));
 
   MaybeStart(false);
 }
@@ -1793,7 +1795,7 @@ std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(
   if (resource_bundle.IsGzipped(id)) {
     data_resource = resource_bundle.LoadDataResourceString(id);
   } else {
-    data_resource = resource_bundle.GetRawDataResource(id).as_string();
+    data_resource = std::string(resource_bundle.GetRawDataResource(id));
   }
 
   return data_resource;
@@ -1962,7 +1964,7 @@ void AdsServiceImpl::UrlRequest(ads::UrlRequestPtr url_request,
   auto url_loader_it =
       url_loaders_.insert(url_loaders_.end(), std::move(url_loader));
   url_loader_it->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      content::BrowserContext::GetDefaultStoragePartition(profile_)
+      profile_->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess()
           .get(),
       base::BindOnce(&AdsServiceImpl::OnURLRequestComplete,
@@ -1983,7 +1985,7 @@ void AdsServiceImpl::Save(const std::string& name,
 void AdsServiceImpl::LoadAdsResource(const std::string& id,
                                      const int version,
                                      ads::LoadCallback callback) {
-  const base::Optional<base::FilePath> path =
+  const absl::optional<base::FilePath> path =
       g_brave_browser_process->resource_component()->GetPath(id, version);
 
   if (!path) {
@@ -2039,7 +2041,7 @@ void AdsServiceImpl::RecordP2AEvent(const std::string& name,
                                     const std::string& value) {
   switch (type) {
     case ads::P2AEventType::kListType: {
-      base::Optional<base::Value> maybe_list = base::JSONReader::Read(value);
+      absl::optional<base::Value> maybe_list = base::JSONReader::Read(value);
       if (!maybe_list || !maybe_list->is_list()) {
         break;
       }
@@ -2049,7 +2051,7 @@ void AdsServiceImpl::RecordP2AEvent(const std::string& name,
         break;
       }
 
-      for (auto& item : *list) {
+      for (auto& item : list->GetList()) {
         RecordInWeeklyStorageAndEmitP2AHistogramAnswer(profile_->GetPrefs(),
                                                        item.GetString());
       }

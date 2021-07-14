@@ -30,7 +30,7 @@ TEST(ChromeImporterUtilsTest, BasicTest) {
 
   std::string secured_preference_content;
   base::ReadFileToString(secured_preference_path, &secured_preference_content);
-  base::Optional<base::Value> secured_preference =
+  absl::optional<base::Value> secured_preference =
       base::JSONReader::Read(secured_preference_content);
   auto* extensions = secured_preference->FindPath(kChromeExtensionsListPath);
   auto extensions_list =

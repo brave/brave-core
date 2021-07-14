@@ -5,7 +5,7 @@
 
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 
-source_set("sidebar") {
+static_library("sidebar") {
   sources = [
     "features.cc",
     "features.h",

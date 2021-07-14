@@ -43,9 +43,9 @@ const char* SpeedreaderButton::GetClassName() const {
 }
 
 void SpeedreaderButton::SetHighlighted(bool bubble_visible) {
-  AnimateInkDrop(bubble_visible ? views::InkDropState::ACTIVATED
-                                : views::InkDropState::DEACTIVATED,
-                 nullptr);
+  ink_drop()->AnimateToState(bubble_visible ? views::InkDropState::ACTIVATED
+                                            : views::InkDropState::DEACTIVATED,
+                             nullptr);
 }
 
 void SpeedreaderButton::OnPreferenceChanged() {

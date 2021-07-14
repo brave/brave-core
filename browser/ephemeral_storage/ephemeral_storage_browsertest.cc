@@ -6,6 +6,7 @@
 #include <string>
 
 #include "base/path_service.h"
+#include "base/strings/stringprintf.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "base/time/time.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"

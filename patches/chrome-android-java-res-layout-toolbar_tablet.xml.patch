@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/res/layout/toolbar_tablet.xml b/chrome/android/java/res/layout/toolbar_tablet.xml
-index 2fd51c5ad015ee86b23272e64bd00fbf3de103cc..0a81f8bb6d3b3dea0e3d374e9c6b4d851706f900 100644
+index 4fa98ea6b6a6342fa6f9303419b5f551f750e7e3..3ebb7f849268724cb473890a0330a05c7bd5fb91 100644
 --- a/chrome/android/java/res/layout/toolbar_tablet.xml
 +++ b/chrome/android/java/res/layout/toolbar_tablet.xml
 @@ -58,7 +58,7 @@
@@ -8,10 +8,10 @@ index 2fd51c5ad015ee86b23272e64bd00fbf3de103cc..0a81f8bb6d3b3dea0e3d374e9c6b4d85
              android:layout_gravity="center_vertical"
 -            android:background="@drawable/modern_toolbar_text_box_background"
 +            android:background="@drawable/brave_modern_toolbar_text_box_background"
+             android:paddingStart="@dimen/location_bar_lateral_padding"
              android:paddingEnd="@dimen/location_bar_lateral_padding" />
  
-         <ViewStub
-@@ -74,6 +74,7 @@
+@@ -75,6 +75,7 @@
              style="@style/ToolbarButton"
              android:contentDescription="@string/accessibility_toolbar_btn_tabswitcher_toggle_default"
              android:visibility="gone" />

@@ -61,7 +61,7 @@ void BraveIncognitoMenuView::BuildMenu() {
   SetProfileIdentityInfo(
       /*profile_name=*/std::u16string(),
       /*background_color=*/SK_ColorTRANSPARENT,
-      /*edit_button=*/base::nullopt,
+      /*edit_button=*/absl::nullopt,
       ui::ImageModel::FromVectorIcon(kIncognitoProfileIcon, icon_color),
       l10n_util::GetStringUTF16(GetProfileMenuTitleId(browser()->profile())),
       window_count > 1 ? l10n_util::GetPluralStringFUTF16(
@@ -70,11 +70,12 @@ void BraveIncognitoMenuView::BuildMenu() {
 
   AddTorButton();
 
-  AddFeatureButton(l10n_util::GetStringUTF16(
-                       GetProfileMenuCloseButtonTextId(browser()->profile())),
-                   base::BindRepeating(&IncognitoMenuView::OnExitButtonClicked,
-                                       base::Unretained(this)),
-                   kCloseAllIcon);
+  AddFeatureButton(
+      l10n_util::GetStringUTF16(
+          GetProfileMenuCloseButtonTextId(browser()->profile())),
+      base::BindRepeating(&BraveIncognitoMenuView::OnExitButtonClicked,
+                          base::Unretained(this)),
+      kCloseAllIcon);
 }
 
 void BraveIncognitoMenuView::AddTorButton() {

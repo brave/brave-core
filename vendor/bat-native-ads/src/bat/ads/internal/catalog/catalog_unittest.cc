@@ -388,7 +388,7 @@ class BatAdsCatalogTest : public UnitTestBase {
 
 TEST_F(BatAdsCatalogTest, ParseCatalog) {
   // Arrange
-  const base::Optional<std::string> opt_value =
+  const absl::optional<std::string> opt_value =
       ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
   ASSERT_TRUE(opt_value.has_value());
 
@@ -404,7 +404,7 @@ TEST_F(BatAdsCatalogTest, ParseCatalog) {
 
 TEST_F(BatAdsCatalogTest, ParseEmptyCatalog) {
   // Arrange
-  const base::Optional<std::string> opt_value =
+  const absl::optional<std::string> opt_value =
       ReadFileFromTestPathToString(kEmptyCatalog);
   ASSERT_TRUE(opt_value.has_value());
 
@@ -431,7 +431,7 @@ TEST_F(BatAdsCatalogTest, InvalidCatalog) {
 
 TEST_F(BatAdsCatalogTest, HasChanged) {
   // Arrange
-  const base::Optional<std::string> opt_value =
+  const absl::optional<std::string> opt_value =
       ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
   ASSERT_TRUE(opt_value.has_value());
 
@@ -450,7 +450,7 @@ TEST_F(BatAdsCatalogTest, HasChanged) {
 
 TEST_F(BatAdsCatalogTest, HasNotChanged) {
   // Arrange
-  const base::Optional<std::string> opt_value =
+  const absl::optional<std::string> opt_value =
       ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
   ASSERT_TRUE(opt_value.has_value());
 
@@ -469,7 +469,7 @@ TEST_F(BatAdsCatalogTest, HasNotChanged) {
 
 TEST_F(BatAdsCatalogTest, GetId) {
   // Arrange
-  const base::Optional<std::string> opt_value =
+  const absl::optional<std::string> opt_value =
       ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
   ASSERT_TRUE(opt_value.has_value());
 
@@ -487,7 +487,7 @@ TEST_F(BatAdsCatalogTest, GetId) {
 
 TEST_F(BatAdsCatalogTest, GetVersion) {
   // Arrange
-  const base::Optional<std::string> opt_value =
+  const absl::optional<std::string> opt_value =
       ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
   ASSERT_TRUE(opt_value.has_value());
 
@@ -505,7 +505,7 @@ TEST_F(BatAdsCatalogTest, GetVersion) {
 
 TEST_F(BatAdsCatalogTest, GetPing) {
   // Arrange
-  const base::Optional<std::string> opt_value =
+  const absl::optional<std::string> opt_value =
       ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
   ASSERT_TRUE(opt_value.has_value());
 
@@ -523,7 +523,7 @@ TEST_F(BatAdsCatalogTest, GetPing) {
 
 TEST_F(BatAdsCatalogTest, GetIssuers) {
   // Arrange
-  const base::Optional<std::string> opt_value =
+  const absl::optional<std::string> opt_value =
       ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
   ASSERT_TRUE(opt_value.has_value());
 
@@ -556,7 +556,7 @@ TEST_F(BatAdsCatalogTest, GetIssuers) {
 
 TEST_F(BatAdsCatalogTest, GetCampaign) {
   // Arrange
-  const base::Optional<std::string> opt_value =
+  const absl::optional<std::string> opt_value =
       ReadFileFromTestPathToString(kCatalogWithSingleCampaign);
   ASSERT_TRUE(opt_value.has_value());
 
@@ -578,7 +578,7 @@ TEST_F(BatAdsCatalogTest, GetCampaign) {
 
 TEST_F(BatAdsCatalogTest, GetCampaigns) {
   // Arrange
-  const base::Optional<std::string> opt_value =
+  const absl::optional<std::string> opt_value =
       ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
   ASSERT_TRUE(opt_value.has_value());
 

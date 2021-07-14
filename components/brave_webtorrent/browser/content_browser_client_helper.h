@@ -85,7 +85,7 @@ static void LoadOrLaunchMagnetURL(
     content::WebContents::OnceGetter web_contents_getter,
     ui::PageTransition page_transition,
     bool has_user_gesture,
-    const base::Optional<url::Origin>& initiating_origin) {
+    const absl::optional<url::Origin>& initiating_origin) {
   content::WebContents* web_contents = std::move(web_contents_getter).Run();
   if (!web_contents)
     return;
@@ -116,7 +116,7 @@ static void HandleMagnetProtocol(
     content::WebContents::OnceGetter web_contents_getter,
     ui::PageTransition page_transition,
     bool has_user_gesture,
-    const base::Optional<url::Origin>& initiating_origin) {
+    const absl::optional<url::Origin>& initiating_origin) {
   DCHECK(url.SchemeIs(kMagnetScheme));
   base::PostTask(FROM_HERE, {content::BrowserThread::UI},
                  base::BindOnce(&LoadOrLaunchMagnetURL, url,

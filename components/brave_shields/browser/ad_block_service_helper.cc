@@ -52,7 +52,7 @@ std::vector<FilterList> RegionalCatalogFromJSON(
     const std::string& catalog_json) {
   std::vector<adblock::FilterList> catalog = std::vector<adblock::FilterList>();
 
-  base::Optional<base::Value> regional_lists =
+  absl::optional<base::Value> regional_lists =
       base::JSONReader::Read(catalog_json);
   if (!regional_lists) {
     LOG(ERROR) << "Could not load regional adblock catalog";
@@ -119,8 +119,8 @@ std::vector<FilterList> RegionalCatalogFromJSON(
 //
 // Distinct policies are merged with comma separators, according to
 // https://www.w3.org/TR/CSP2/#implementation-considerations
-void MergeCspDirectiveInto(base::Optional<std::string> from,
-                           base::Optional<std::string>* into) {
+void MergeCspDirectiveInto(absl::optional<std::string> from,
+                           absl::optional<std::string>* into) {
   DCHECK(into);
 
   if (!from) {
@@ -135,7 +135,7 @@ void MergeCspDirectiveInto(base::Optional<std::string> from,
   const std::string from_str = *from;
   const std::string into_str = **into;
 
-  *into = base::Optional<std::string>(from_str + ", " + into_str);
+  *into = absl::optional<std::string>(from_str + ", " + into_str);
 }
 
 // Merges the contents of the first UrlCosmeticResources Value into the second

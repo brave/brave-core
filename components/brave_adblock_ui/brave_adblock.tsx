@@ -14,45 +14,42 @@ import App from './components/app'
 import store from './store'
 import * as adblockActions from './actions/adblock_actions'
 
-window.cr.define('brave_adblock', function () {
-  'use strict'
+function getCustomFilters () {
+  const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
+  actions.getCustomFilters()
+}
 
-  function getCustomFilters () {
-    const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
-    actions.getCustomFilters()
-  }
+function getRegionalLists () {
+  const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
+  actions.getRegionalLists()
+}
 
-  function getRegionalLists () {
-    const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
-    actions.getRegionalLists()
-  }
+function initialize () {
+  getCustomFilters()
+  getRegionalLists()
+  render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById('root'))
+}
 
-  function initialize () {
-    getCustomFilters()
-    getRegionalLists()
-    render(
-      <Provider store={store}>
-        <App />
-      </Provider>,
-      document.getElementById('root'))
-    window.i18nTemplate.process(window.document, window.loadTimeData)
-  }
+function onGetCustomFilters (customFilters: string) {
+  const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
+  actions.onGetCustomFilters(customFilters)
+}
 
-  function onGetCustomFilters (customFilters: string) {
-    const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
-    actions.onGetCustomFilters(customFilters)
-  }
+function onGetRegionalLists (regionalLists: AdBlock.FilterList[]) {
+  const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
+  actions.onGetRegionalLists(regionalLists)
+}
 
-  function onGetRegionalLists (regionalLists: AdBlock.FilterList[]) {
-    const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
-    actions.onGetRegionalLists(regionalLists)
-  }
+// Expose functions to Page Handlers.
+// TODO(petemill): Use event listeners instead.
+// @ts-ignore
+window.brave_adblock = {
+  onGetCustomFilters,
+  onGetRegionalLists
+}
 
-  return {
-    initialize,
-    onGetCustomFilters,
-    onGetRegionalLists
-  }
-})
-
-document.addEventListener('DOMContentLoaded', window.brave_adblock.initialize)
+document.addEventListener('DOMContentLoaded', initialize)

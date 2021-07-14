@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- MD Extensions strings (included from generated_resources.grd). -->
 <grit-part>
-  <message name="IDS_EXTENSIONS_VIEW_INCOGNITO" desc="Text that signifies that the extension view is in a private process.">
+  <message name="IDS_EXTENSIONS_VIEW_INCOGNITO" desc="Text that signifies that the extension view is in a Private process.">
     (Private)
   </message>
-  <message name="IDS_EXTENSIONS_ITEM_ALLOW_INCOGNITO" desc="The text next to the checkbox to enable an extension in private mode.">
-    Allow in private
+  <message name="IDS_EXTENSIONS_ITEM_ALLOW_INCOGNITO" desc="The text next to the checkbox to enable an extension in Private mode.">
+    Allow in Private
   </message>
   <message name="IDS_EXTENSIONS_ITEM_CHROME_WEB_STORE" desc="Label for button to visit the Brave web store.">
     View in Web Store

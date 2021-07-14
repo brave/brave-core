@@ -25,10 +25,10 @@ namespace ntp_background_images {
 
 namespace {
 
-base::Optional<std::string> ReadFileToString(const base::FilePath& path) {
+absl::optional<std::string> ReadFileToString(const base::FilePath& path) {
   std::string contents;
   if (!base::ReadFileToString(path, &contents))
-    return base::Optional<std::string>();
+    return absl::optional<std::string>();
   return contents;
 }
 
@@ -108,7 +108,7 @@ void NTPBackgroundImagesSource::GetImageFile(
 
 void NTPBackgroundImagesSource::OnGotImageFile(
     GotDataCallback callback,
-    base::Optional<std::string> input) {
+    absl::optional<std::string> input) {
   if (!input)
     return;
 

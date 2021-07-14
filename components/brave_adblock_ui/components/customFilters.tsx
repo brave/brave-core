@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import { getLocale } from '../../common/locale'
 
 interface Props {
   actions: any,
@@ -22,13 +23,15 @@ export class CustomFilters extends React.Component<Props, {}> {
     return (
       <div>
         <div
-          i18n-content='customFiltersTitle'
           style={{ fontSize: '18px', marginTop: '20px' }}
-        />
+        >
+          {getLocale('customFiltersTitle')}
+        </div>
         <div
-          i18n-content='customFiltersInstructions'
           style={{ fontWeight: 'bold' }}
-        />
+        >
+          {getLocale('customFiltersInstructions')}
+        </div>
         <textarea
           style={{ marginTop: '10px' }}
           data-test-id={'customFiltersInput'}

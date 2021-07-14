@@ -11,6 +11,7 @@
 
 #include "base/base64.h"
 #include "base/path_service.h"
+#include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
@@ -1228,39 +1229,42 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringSimple) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  auto result_first = EvalJsWithManualReply(contents,
-                                            R"(function waitCSSSelector() {
+  auto result_first = EvalJs(contents,
+                             R"(function waitCSSSelector() {
           if (checkSelector('#ad-banner', 'display', 'none')) {
             window.domAutomationController.send(true);
           } else {
             console.log('still waiting for css selector');
             setTimeout(waitCSSSelector, 200);
           }
-        } waitCSSSelector())");
+        } waitCSSSelector())",
+                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   ASSERT_TRUE(result_first.error.empty());
   EXPECT_EQ(base::Value(true), result_first.value);
 
-  auto result_second = EvalJsWithManualReply(contents,
-                                             R"(function waitCSSSelector() {
+  auto result_second = EvalJs(contents,
+                              R"(function waitCSSSelector() {
           if (checkSelector('.ad-banner', 'display', 'block')) {
             window.domAutomationController.send(true);
           } else {
             console.log('still waiting for css selector');
             setTimeout(waitCSSSelector, 200);
           }
-        } waitCSSSelector())");
+        } waitCSSSelector())",
+                              content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   ASSERT_TRUE(result_second.error.empty());
   EXPECT_EQ(base::Value(true), result_second.value);
 
-  auto result_third = EvalJsWithManualReply(contents,
-                                            R"(function waitCSSSelector() {
+  auto result_third = EvalJs(contents,
+                             R"(function waitCSSSelector() {
           if (checkSelector('.ad', 'display', 'none')) {
             window.domAutomationController.send(true);
           } else {
             console.log('still waiting for css selector');
             setTimeout(waitCSSSelector, 200);
           }
-        } waitCSSSelector())");
+        } waitCSSSelector())",
+                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   ASSERT_TRUE(result_third.error.empty());
   EXPECT_EQ(base::Value(true), result_third.value);
 }
@@ -1299,15 +1303,16 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringHide1pContent) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  auto result = EvalJsWithManualReply(contents,
-                                      R"(function waitCSSSelector() {
+  auto result = EvalJs(contents,
+                       R"(function waitCSSSelector() {
           if (checkSelector('.fpsponsored', 'display', 'none')) {
             window.domAutomationController.send(true);
           } else {
             console.log('still waiting for css selector');
             setTimeout(waitCSSSelector, 200);
           }
-        } waitCSSSelector())");
+        } waitCSSSelector())",
+                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   ASSERT_TRUE(result.error.empty());
   EXPECT_EQ(base::Value(true), result.value);
 }
@@ -1325,27 +1330,29 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamic) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  auto result_first = EvalJsWithManualReply(contents,
-                                            R"(function waitCSSSelector() {
+  auto result_first = EvalJs(contents,
+                             R"(function waitCSSSelector() {
           if (checkSelector('.blockme', 'display', 'none')) {
             window.domAutomationController.send(true);
           } else {
             console.log('still waiting for css selector');
             setTimeout(waitCSSSelector, 200);
           }
-        } waitCSSSelector())");
+        } waitCSSSelector())",
+                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   ASSERT_TRUE(result_first.error.empty());
   EXPECT_EQ(base::Value(true), result_first.value);
 
-  auto result_second = EvalJsWithManualReply(contents,
-                                             R"(function waitCSSSelector() {
+  auto result_second = EvalJs(contents,
+                              R"(function waitCSSSelector() {
           if (checkSelector('.dontblockme', 'display', 'block')) {
             window.domAutomationController.send(true);
           } else {
             console.log('still waiting for css selector');
             setTimeout(waitCSSSelector, 200);
           }
-        } waitCSSSelector())");
+        } waitCSSSelector())",
+                              content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   ASSERT_TRUE(result_second.error.empty());
   EXPECT_EQ(base::Value(true), result_second.value);
 }
@@ -1391,15 +1398,16 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringCustomStyle) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  auto result = EvalJsWithManualReply(contents,
-                                      R"(function waitCSSSelector() {
+  auto result = EvalJs(contents,
+                       R"(function waitCSSSelector() {
           if (checkSelector('.ad', 'padding-bottom', '10px')) {
             window.domAutomationController.send(true);
           } else {
             console.log('still waiting for css selector');
             setTimeout(waitCSSSelector, 200);
           }
-        } waitCSSSelector())");
+        } waitCSSSelector())",
+                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   ASSERT_TRUE(result.error.empty());
   EXPECT_EQ(base::Value(true), result.value);
 }
@@ -1421,27 +1429,29 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringUnhide) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  auto result_first = EvalJsWithManualReply(contents,
-                                            R"(function waitCSSSelector() {
+  auto result_first = EvalJs(contents,
+                             R"(function waitCSSSelector() {
           if (checkSelector('.ad', 'display', 'block')) {
             window.domAutomationController.send(true);
           } else {
             console.log('still waiting for css selector');
             setTimeout(waitCSSSelector, 200);
           }
-        } waitCSSSelector())");
+        } waitCSSSelector())",
+                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   ASSERT_TRUE(result_first.error.empty());
   EXPECT_EQ(base::Value(true), result_first.value);
 
-  auto result_second = EvalJsWithManualReply(contents,
-                                             R"(function waitCSSSelector() {
+  auto result_second = EvalJs(contents,
+                              R"(function waitCSSSelector() {
           if (checkSelector('#ad-banner', 'display', 'none')) {
             window.domAutomationController.send(true);
           } else {
             console.log('still waiting for css selector');
             setTimeout(waitCSSSelector, 200);
           }
-        } waitCSSSelector())");
+        } waitCSSSelector())",
+                              content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   ASSERT_TRUE(result_second.error.empty());
   EXPECT_EQ(base::Value(true), result_second.value);
 }
@@ -1478,15 +1488,16 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringWindowScriptlet) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  auto result = EvalJsWithManualReply(contents,
-                                      R"(function waitCSSSelector() {
+  auto result = EvalJs(contents,
+                       R"(function waitCSSSelector() {
           if (checkSelector('.ad', 'color', 'Impossible value')) {
             window.domAutomationController.send(true);
           } else {
             console.log('still waiting for css selector');
             setTimeout(waitCSSSelector, 200);
           }
-        } waitCSSSelector())");
+        } waitCSSSelector())",
+                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   ASSERT_TRUE(result.error.empty());
   EXPECT_EQ(base::Value(true), result.value);
 }

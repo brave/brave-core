@@ -24,7 +24,7 @@ bool Verify(const ConfirmationInfo& confirmation) {
   std::string credential;
   base::Base64Decode(confirmation.credential, &credential);
 
-  base::Optional<base::Value> value = base::JSONReader::Read(credential);
+  absl::optional<base::Value> value = base::JSONReader::Read(credential);
   if (!value || !value->is_dict()) {
     return false;
   }

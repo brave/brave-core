@@ -8,8 +8,8 @@
 
 #include <memory>
 
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/button/image_button.h"
-#include "ui/views/metadata/metadata_header_macros.h"
 
 namespace views {
 class InkDrop;
@@ -29,9 +29,6 @@ class PaddedImageButton : public views::ImageButton {
   ~PaddedImageButton() override = default;
 
   void AdjustBorderInsetToFitHeight(const int height);
-
-  // views::InkDropHostView:
-  std::unique_ptr<views::InkDrop> CreateInkDrop() override;
 
   // views::Button:
   void OnThemeChanged() override;

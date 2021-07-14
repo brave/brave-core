@@ -8,6 +8,7 @@
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
+#include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/common/brave_paths.h"

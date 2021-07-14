@@ -37,7 +37,8 @@ class BraveSpellingMenuObserverTest : public InProcessBrowserTest {
   void Reset(bool incognito = false) {
     observer_.reset();
     menu_.reset(new BraveMockRenderViewContextMenu(
-        incognito ? browser()->profile()->GetPrimaryOTRProfile()
+        incognito ? browser()->profile()->GetPrimaryOTRProfile(
+                        /*create_if_needed=*/true)
                   : browser()->profile()));
     observer_.reset(new SpellingMenuObserver(menu_.get()));
     menu_->SetObserver(observer_.get());

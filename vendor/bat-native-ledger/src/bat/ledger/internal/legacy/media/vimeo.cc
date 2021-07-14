@@ -388,7 +388,7 @@ void Vimeo::OnEmbedResponse(
     return;
   }
 
-  base::Optional<base::Value> data = base::JSONReader::Read(response.body);
+  absl::optional<base::Value> data = base::JSONReader::Read(response.body);
   if (!data || !data->is_dict()) {
     auto callback = std::bind(&Vimeo::OnUnknownPage,
                               this,

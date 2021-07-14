@@ -245,6 +245,9 @@
   <message name="IDS_POLICY_VALUE_DEPRECATED" desc="The text displayed in the status column when a specific value for a policy is deprecated.">
     This value is deprecated for this policy.
   </message>
+  <message name="IDS_POLICY_DEPENDENCY_ERROR" desc="The text displayed in the status column when a policy is ignored as another policies is not set properly.">
+    Ignored because <ph name="POLICY_NAME">$1<ex>CloudReportingEnabled</ex></ph> is not set to <ph name="VALUE">$2<ex>Enabled</ex></ph>.
+  </message>
   <if expr="chromeos">
     <message name="IDS_POLICY_NETWORK_CONFIG_PARSE_FAILED" desc="The text displayed in the status column when the corresponding network configuration policy failed to parse.">
       Network configuration failed to be parsed (invalid JSON).
@@ -318,9 +321,6 @@ Additional details:
     Brave Update
   </message>
  </if>
-  <message name="IDS_POLICY_LABEL_ENTERPRISE_ENROLLMENT_DOMAIN" desc="Label for the enrollment domain in the device policy status box.">
-    Enrollment domain:
-  </message>
   <message name="IDS_POLICY_LABEL_MACHINE_ENROLLMENT_DOMAIN" desc="Label for the enrollment domain in the machine policy status box.">
     Enrollment domain:
   </message>
@@ -356,6 +356,9 @@ Additional details:
   </message>
   <message name="IDS_POLICY_LABEL_TIME_SINCE_LAST_REFRESH" desc="Label for the time since the last refresh in the policy status boxes.">
     Last fetched:
+  </message>
+  <message name="IDS_POLICY_LABEL_LAST_CLOUD_REPORT_SENT_TIMESTAMP" desc="Label for the time when the last cloud report is sent successfully.">
+    Report sent:
   </message>
   <message name="IDS_POLICY_NOT_SPECIFIED" desc="Indicates if that device attribute has not specified yet.">
     Not Specified
@@ -480,6 +483,9 @@ Additional details:
   </message>
   <message name="IDS_POLICY_SOURCE_MERGED" desc="Indicates that the policy is a merged values from multiple sources.">
     Merged
+  </message>
+  <message name="IDS_POLICY_SOURCE_CLOUD_FROM_ASH" desc="Indicates that the policy originates from the cloud in Ash and piped to Lacros.">
+    Cloud (system-wide)
   </message>
   <message name="IDS_POLICY_SOURCE_ACTIVE_DIRECTORY" desc="Indicates that the policy originates from a local server, e.g. Samba or Active Directory.">
     <ph name="MICROSOFT_ACTIVE_DIRECTORY">Local Server</ph>

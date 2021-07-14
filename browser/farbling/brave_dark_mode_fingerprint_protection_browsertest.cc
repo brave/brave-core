@@ -113,17 +113,17 @@ IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtection, DarkModeCheck) {
   NavigateToURLUntilLoadStop(dark_mode_url());
   std::u16string tab_title;
   ASSERT_TRUE(ui_test_utils::GetCurrentTabTitle(browser(), &tab_title));
-  EXPECT_EQ(base::ASCIIToUTF16("dark"), tab_title);
+  EXPECT_EQ(u"dark", tab_title);
   // On fingerprinting default, should return dark mode
   SetFingerprintingDefault();
   NavigateToURLUntilLoadStop(dark_mode_url());
   ASSERT_TRUE(ui_test_utils::GetCurrentTabTitle(browser(), &tab_title));
-  EXPECT_EQ(base::ASCIIToUTF16("dark"), tab_title);
+  EXPECT_EQ(u"dark", tab_title);
   // On fingerprinting block, should return light
   BlockFingerprinting();
   NavigateToURLUntilLoadStop(dark_mode_url());
   ASSERT_TRUE(ui_test_utils::GetCurrentTabTitle(browser(), &tab_title));
-  EXPECT_EQ(base::ASCIIToUTF16("light"), tab_title);
+  EXPECT_EQ(u"light", tab_title);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtection, RegressionCheck) {
@@ -134,17 +134,17 @@ IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtection, RegressionCheck) {
   NavigateToURLUntilLoadStop(dark_mode_url());
   std::u16string tab_title;
   ASSERT_TRUE(ui_test_utils::GetCurrentTabTitle(browser(), &tab_title));
-  EXPECT_EQ(base::ASCIIToUTF16("light"), tab_title);
+  EXPECT_EQ(u"light", tab_title);
   // Fingerprinting default
   SetFingerprintingDefault();
   NavigateToURLUntilLoadStop(dark_mode_url());
   ASSERT_TRUE(ui_test_utils::GetCurrentTabTitle(browser(), &tab_title));
-  EXPECT_EQ(base::ASCIIToUTF16("light"), tab_title);
+  EXPECT_EQ(u"light", tab_title);
   // Fingerprinting strict/block
   BlockFingerprinting();
   NavigateToURLUntilLoadStop(dark_mode_url());
   ASSERT_TRUE(ui_test_utils::GetCurrentTabTitle(browser(), &tab_title));
-  EXPECT_EQ(base::ASCIIToUTF16("light"), tab_title);
+  EXPECT_EQ(u"light", tab_title);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtection, SettingsPagesCheck) {

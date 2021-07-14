@@ -83,6 +83,27 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
         deleteField(sBraveToolbarManagerClassName, "mTabGroupUi");
         makeProtectedField(sToolbarManagerClassName, "mTabGroupUi");
 
+        deleteField(sBraveToolbarManagerClassName, "mBottomSheetController");
+        makeProtectedField(sToolbarManagerClassName, "mBottomSheetController");
+
+        deleteField(sBraveToolbarManagerClassName, "mActivityLifecycleDispatcher");
+        makeProtectedField(sToolbarManagerClassName, "mActivityLifecycleDispatcher");
+
+        deleteField(sBraveToolbarManagerClassName, "mIsWarmOnResumeSupplier");
+        makeProtectedField(sToolbarManagerClassName, "mIsWarmOnResumeSupplier");
+
+        deleteField(sBraveToolbarManagerClassName, "mTabContentManager");
+        makeProtectedField(sToolbarManagerClassName, "mTabContentManager");
+
+        deleteField(sBraveToolbarManagerClassName, "mTabCreatorManager");
+        makeProtectedField(sToolbarManagerClassName, "mTabCreatorManager");
+
+        deleteField(sBraveToolbarManagerClassName, "mOverviewModeBehaviorSupplier");
+        makeProtectedField(sToolbarManagerClassName, "mOverviewModeBehaviorSupplier");
+
+        deleteField(sBraveToolbarManagerClassName, "mSnackbarManager");
+        makeProtectedField(sToolbarManagerClassName, "mSnackbarManager");
+
         makePublicMethod(sToolbarManagerClassName, "onOrientationChange");
         addMethodAnnotation(
                 sBraveToolbarManagerClassName, "onOrientationChange", "Ljava/lang/Override;");

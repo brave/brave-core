@@ -184,12 +184,10 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEventForWebContents(
     details.tab_id = extensions::ExtensionTabUtil::GetTabId(web_contents);
     details.block_type = block_type;
     details.subresource = subresource;
-    std::unique_ptr<base::ListValue> args(
-        extensions::api::brave_shields::OnBlocked::Create(details).release());
     std::unique_ptr<Event> event(
         new Event(extensions::events::BRAVE_AD_BLOCKED,
                   extensions::api::brave_shields::OnBlocked::kEventName,
-                  std::move(args)));
+                  extensions::api::brave_shields::OnBlocked::Create(details)));
     event_router->BroadcastEvent(std::move(event));
   }
 #endif

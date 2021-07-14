@@ -15,6 +15,7 @@
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_browser_context.h"
 #include "services/network/public/cpp/data_element.h"
+#include "services/network/public/cpp/resource_request.h"
 #include "storage/browser/blob/blob_data_builder.h"
 #include "storage/browser/blob/blob_data_item.h"
 #include "testing/gtest/include/gtest/gtest.h"

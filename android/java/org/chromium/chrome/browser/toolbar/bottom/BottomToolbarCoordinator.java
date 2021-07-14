@@ -37,6 +37,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tasks.ReturnToChromeExperimentsUtil;
+import org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.HomeButton;
 import org.chromium.chrome.browser.toolbar.TabCountProvider;
@@ -157,9 +158,11 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                 topToolbarRoot, incognitoStateProvider, mThemeColorProvider, newTabClickListener,
                 closeTabsClickListener, mMenuButtonHelperSupplier, tabCountProvider);
 
+        ChromeActivity activity = BraveActivity.getBraveActivity();
         // Do not change bottom bar if StartSurface Single Pane is enabled and HomePage is not
         // customized.
-        if (!ReturnToChromeExperimentsUtil.shouldShowStartSurfaceAsTheHomePage()
+        if (!ReturnToChromeExperimentsUtil.shouldShowStartSurfaceAsTheHomePage(
+                    activity != null ? activity : mContext)
                 && BottomToolbarVariationManager.shouldBottomToolbarBeVisibleInOverviewMode()) {
             mLayoutStateObserver = new LayoutStateProvider.LayoutStateObserver() {
                 @Override
@@ -252,7 +255,6 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
             mNewTabButton.setOnLongClickListener(this);
         }
 
-        ChromeActivity activity = BraveActivity.getBraveActivity();
         if (mScrollingBottomView != null && activity != null) {
             mScrollingBottomView.setSwipeDetector(
                     activity.getCompositorViewHolder().getLayoutManager().getToolbarSwipeHandler());
@@ -264,7 +266,10 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
      */
     void setBottomToolbarVisible(boolean isVisible) {
         if (mTabSwitcherModeCoordinator != null) {
-            mTabSwitcherModeCoordinator.showToolbarOnTop(!isVisible);
+            ChromeActivity activity = BraveActivity.getBraveActivity();
+            mTabSwitcherModeCoordinator.showToolbarOnTop(!isVisible,
+                    TabUiFeatureUtilities.isGridTabSwitcherEnabled(
+                            activity != null ? activity : mContext));
         }
         mBrowsingModeCoordinator.onVisibilityChanged(isVisible);
     }

@@ -6,8 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_ADS_AD_NOTIFICATION_HEADER_VIEW_H_
 #define BRAVE_BROWSER_UI_BRAVE_ADS_AD_NOTIFICATION_HEADER_VIEW_H_
 
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/text_constants.h"
-#include "ui/views/metadata/metadata_header_macros.h"
 #include "ui/views/view.h"
 
 namespace views {

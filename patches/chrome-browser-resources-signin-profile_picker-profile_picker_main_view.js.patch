@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.js b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.js
-index 2b0cc9a8e244f81822cbbb34db915e8dd764a93a..189aef26ce2e3ed630bd5f7bdcf052a45b9c5725 100644
+index e4d18fe19621df0f75394798f602f54ce0d53fed..20c72407d88aa5e58c6ee02a4fc10499c574ffad 100644
 --- a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.js
 +++ b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.js
-@@ -87,6 +87,7 @@ Polymer({
+@@ -79,6 +79,7 @@ Polymer({
  
      this.manageProfilesBrowserProxy_ =
          ManageProfilesBrowserProxyImpl.getInstance();

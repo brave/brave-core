@@ -176,6 +176,10 @@ const char kSafeBrowsingHelpCenterURL[] =
 
 const char kSafetyTipHelpCenterURL[] =
     "https://support.brave.com/";
+
+const char kSearchHistoryUrlInClearBrowsingData[] =
+    "https://support.brave.com/";
+
 const char kSeeMoreSecurityTipsURL[] =
     "https://support.brave.com/";
 

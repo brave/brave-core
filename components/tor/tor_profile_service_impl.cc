@@ -86,14 +86,14 @@ class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
              content::BrowserTaskType::kPreconnect}));
     receiver_.set_disconnect_handler(base::BindOnce(
         &TorProxyLookupClient::OnProxyLookupComplete, base::Unretained(this),
-        net::ERR_ABORTED, base::nullopt));
+        net::ERR_ABORTED, absl::nullopt));
     return pending_remote;
   }
 
   // network::mojom::ProxyLookupClient:
   void OnProxyLookupComplete(
       int32_t net_error,
-      const base::Optional<net::ProxyInfo>& proxy_info) override {
+      const absl::optional<net::ProxyInfo>& proxy_info) override {
     std::move(callback_).Run(proxy_info);
     delete this;
   }
@@ -105,7 +105,7 @@ class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
 };
 
 void OnNewTorCircuit(std::unique_ptr<NewTorCircuitTracker> tracker,
-                     const base::Optional<net::ProxyInfo>& proxy_info) {
+                     const absl::optional<net::ProxyInfo>& proxy_info) {
   tracker->NewIdentityLoaded(proxy_info.has_value() &&
                              !proxy_info->is_direct());
 }
@@ -193,11 +193,9 @@ void TorProfileServiceImpl::SetNewTorCircuit(WebContents* tab) {
 
   // Force lookup to erase the old circuit and also get a callback
   // so we know when it is safe to reload the tab
-  auto* storage_partition =
-      BrowserContext::GetStoragePartitionForUrl(context_, url, false);
+  auto* storage_partition = context_->GetStoragePartitionForUrl(url, false);
   if (!storage_partition) {
-    storage_partition =
-        content::BrowserContext::GetDefaultStoragePartition(context_);
+    storage_partition = context_->GetDefaultStoragePartition();
   }
   auto proxy_lookup_client =
       TorProxyLookupClient::CreateTorProxyLookupClient(std::move(callback));

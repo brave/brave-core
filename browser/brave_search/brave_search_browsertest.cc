@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
+#include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
@@ -154,8 +155,8 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAFunction) {
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
 
-  auto result_first =
-      EvalJsWithManualReply(contents, GetChromeFetchBackupResultsAvailScript());
+  auto result_first = EvalJs(contents, GetChromeFetchBackupResultsAvailScript(),
+                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result_first.value);
 }
 
@@ -166,8 +167,8 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAFunctionDev) {
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
 
-  auto result_first =
-      EvalJsWithManualReply(contents, GetChromeFetchBackupResultsAvailScript());
+  auto result_first = EvalJs(contents, GetChromeFetchBackupResultsAvailScript(),
+                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result_first.value);
 }
 
@@ -178,8 +179,8 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAnUndefinedFunction) {
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
 
-  auto result_first =
-      EvalJsWithManualReply(contents, GetChromeFetchBackupResultsAvailScript());
+  auto result_first = EvalJs(contents, GetChromeFetchBackupResultsAvailScript(),
+                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(false), result_first.value);
 }
 

@@ -8,7 +8,6 @@
 #include <string>
 
 #include "base/memory/ref_counted.h"
-#include "base/optional.h"
 #include "content/browser/dom_storage/dom_storage_context_wrapper.h"
 #include "content/browser/dom_storage/session_storage_namespace_impl.h"
 #include "content/browser/renderer_host/navigation_controller_impl.h"
@@ -18,13 +17,14 @@
 #include "content/public/browser/session_storage_namespace.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace content {
 
 scoped_refptr<content::SessionStorageNamespace> CreateSessionStorageNamespace(
     content::StoragePartition* partition,
     const std::string& namespace_id,
-    base::Optional<std::string> clone_from_namespace_id) {
+    absl::optional<std::string> clone_from_namespace_id) {
   content::DOMStorageContextWrapper* context_wrapper =
       static_cast<content::DOMStorageContextWrapper*>(
           partition->GetDOMStorageContext());

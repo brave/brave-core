@@ -1,7 +1,7 @@
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
-source_set("ipfs") {
+static_library("ipfs") {
   sources = [
     "addresses_config.cc",
     "addresses_config.h",

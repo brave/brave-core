@@ -1,8 +1,8 @@
 diff --git a/device/fido/virtual_u2f_device.cc b/device/fido/virtual_u2f_device.cc
-index 789c81b88dbf4f505d8f39e4e3ace9fbe97bcd44..afd6ecb22ebae8ceed5427800933e2a6c77030d5 100644
+index 58f5994ecfd98d29852737c7e4cb340b01c14103..445dd2eab78724978bd7d761a35aaee280be4640 100644
 --- a/device/fido/virtual_u2f_device.cc
 +++ b/device/fido/virtual_u2f_device.cc
-@@ -148,7 +148,7 @@ base::Optional<std::vector<uint8_t>> VirtualU2fDevice::DoRegister(
+@@ -149,7 +149,7 @@ absl::optional<std::vector<uint8_t>> VirtualU2fDevice::DoRegister(
  
    if (mutable_state()->u2f_invalid_public_key) {
      // Flip a bit in the x-coordinate, which will push the point off the curve.
@@ -11,7 +11,7 @@ index 789c81b88dbf4f505d8f39e4e3ace9fbe97bcd44..afd6ecb22ebae8ceed5427800933e2a6
    }
  
    // Our key handles are simple hashes of the public key.
-@@ -253,7 +253,7 @@ base::Optional<std::vector<uint8_t>> VirtualU2fDevice::DoSign(
+@@ -254,7 +254,7 @@ absl::optional<std::vector<uint8_t>> VirtualU2fDevice::DoSign(
    if (mutable_state()->u2f_invalid_signature) {
      // Flip a bit in the ASN.1 header to make the signature structurally
      // invalid.

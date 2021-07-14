@@ -4,6 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
+
+#include "base/strings/stringprintf.h"
 #include "content/public/test/browser_test_utils.h"
 
 namespace rewards_browsertest_util {

@@ -221,6 +221,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     features::kIdleDetection.name,
     features::kLangClientHintHeader.name,
     features::kNotificationTriggers.name,
+    features::kPrivacySandboxSettings.name,
     features::kSignedExchangePrefetchCacheForNavigations.name,
     features::kSignedExchangeSubresourcePrefetch.name,
     features::kSubresourceWebBundles.name,
@@ -231,6 +232,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     net::features::kFirstPartySets.name,
     network::features::kTrustTokens.name,
     network_time::kNetworkTimeServiceQuerying.name,
+    password_manager::features::kEnablePasswordsAccountStorage.name,
 #if defined(OS_ANDROID)
     features::kWebNfc.name,
     feed::kInterestFeedContentSuggestions.name,

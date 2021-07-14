@@ -16,6 +16,7 @@
 #include "base/values.h"
 #include "brave/common/url_constants.h"
 #include "chrome/browser/importer/external_process_importer_host.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/tab_modal_confirm_dialog.h"

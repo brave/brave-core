@@ -81,9 +81,8 @@ BinanceService::BinanceService(content::BrowserContext* context)
       oauth_host_(oauth_host),
       gateway_host_(gateway_host),
       context_(context),
-      url_loader_factory_(
-          content::BrowserContext::GetDefaultStoragePartition(context_)
-              ->GetURLLoaderFactoryForBrowserProcess()),
+      url_loader_factory_(context_->GetDefaultStoragePartition()
+                              ->GetURLLoaderFactoryForBrowserProcess()),
       weak_factory_(this) {
   LoadTokensFromPrefs();
 }
@@ -208,8 +207,7 @@ bool BinanceService::OAuthRequest(const GURL &url,
           network::SimpleURLLoader::RetryMode::RETRY_NEVER);
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
 
-  auto* default_storage_partition =
-      content::BrowserContext::GetDefaultStoragePartition(context_);
+  auto* default_storage_partition = context_->GetDefaultStoragePartition();
   auto* url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess().get();
 

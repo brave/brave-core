@@ -28,7 +28,7 @@ constexpr int kLineHeight = 16;
 constexpr int kBoxLayoutChildSpacing = 10;
 
 // Separator used in StyledLabel
-constexpr char kSpeedreaderSeparator[] = " ";
+constexpr char16_t kSpeedreaderSeparator[] = u" ";
 
 // Reader Mode blurple color
 constexpr SkColor kColorReaderBlurple = SkColorSetRGB(0x4c, 0x54, 0xd2);

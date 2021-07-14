@@ -7,7 +7,7 @@ source_set("features") {
   deps = [ "//base" ]
 }
 
-source_set("common") {
+static_library("common") {
   sources = [
     "pref_names.cc",
     "pref_names.h",

@@ -17,6 +17,7 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.feed.shared.FeedSurfaceDelegate;
 import org.chromium.chrome.browser.native_page.NativePageNavigationDelegate;
+import org.chromium.chrome.browser.ntp.NewTabPageLaunchOrigin;
 import org.chromium.chrome.browser.ntp.ScrollableContainerDelegate;
 import org.chromium.chrome.browser.ntp.SnapScrollHelper;
 import org.chromium.chrome.browser.ntp.snippets.SectionHeaderView;
@@ -42,11 +43,12 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             @Nullable NativePageNavigationDelegate pageNavigationDelegate, Profile profile,
             boolean isPlaceholderShownInitially, BottomSheetController bottomSheetController,
             Supplier<ShareDelegate> shareDelegateSupplier,
-            @Nullable ScrollableContainerDelegate externalScrollableContainerDelegate) {
+            @Nullable ScrollableContainerDelegate externalScrollableContainerDelegate,
+            TabModelSelector tabModelSelector, @NewTabPageLaunchOrigin int launchOrigin) {
         super(activity, snackbarManager, windowAndroid, snapScrollHelper, ntpHeader,
                 sectionHeaderView, showDarkBackground, delegate, pageNavigationDelegate, profile,
                 isPlaceholderShownInitially, bottomSheetController, shareDelegateSupplier,
-                externalScrollableContainerDelegate);
+                externalScrollableContainerDelegate, tabModelSelector, launchOrigin);
     }
 
     @Override

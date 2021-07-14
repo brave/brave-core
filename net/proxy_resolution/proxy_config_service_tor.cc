@@ -140,7 +140,7 @@ std::string ProxyConfigServiceTor::CircuitIsolationKey(const GURL& url) {
   const net::SchemefulSite url_site(url);
   const net::NetworkIsolationKey network_isolation_key(url_site, url_site);
 
-  const base::Optional<net::SchemefulSite>& schemeful_site =
+  const absl::optional<net::SchemefulSite>& schemeful_site =
       network_isolation_key.GetTopFrameSite();
   DCHECK(schemeful_site.has_value());
   std::string host = GURL(schemeful_site->Serialize()).host();
