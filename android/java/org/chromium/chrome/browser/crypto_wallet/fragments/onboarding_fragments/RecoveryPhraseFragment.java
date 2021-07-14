@@ -26,9 +26,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
     private List<String> recoveryPhrases;
@@ -75,7 +73,7 @@ public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
         recyclerView.setLayoutManager(layoutManager);
 
         RecoveryPhraseAdapter recoveryPhraseAdapter = new RecoveryPhraseAdapter();
-        recoveryPhraseAdapter.setRecoveryPhraseMap(recoveryPhrases);
+        recoveryPhraseAdapter.setRecoveryPhraseList(recoveryPhrases);
         recyclerView.setAdapter(recoveryPhraseAdapter);
     }
 }

@@ -18,13 +18,11 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.VerifyRecoveryPhraseFragment;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAdapter.ViewHolder> {
-    List<String> recoveryPhraseMap = new ArrayList<>();
-    List<String> selectedRecoveryPhraseMap = new ArrayList<>();
+    List<String> recoveryPhraseList = new ArrayList<>();
+    List<String> selectedRecoveryPhraseList = new ArrayList<>();
     private VerifyRecoveryPhraseFragment.OnRecoveryPhraseSelected onRecoveryPhraseSelected;
     private boolean isSelectedRecoveryPhrase;
 
@@ -38,7 +36,7 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final String recoveryPhrase = recoveryPhraseMap.get(position);
+        final String recoveryPhrase = recoveryPhraseList.get(position);
         holder.recoveryPhraseText.setText(
                 String.format(holder.recoveryPhraseText.getContext().getResources().getString(
                                       R.string.recovery_phrase_item_text),
@@ -46,14 +44,14 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
         if (onRecoveryPhraseSelected != null) {
             holder.itemView.setOnClickListener(v -> {
                 if (isSelectedRecoveryPhrase) {
-                    recoveryPhraseMap.remove(recoveryPhrase);
+                    recoveryPhraseList.remove(recoveryPhrase);
                 } else {
-                    selectedRecoveryPhraseMap.add(recoveryPhrase);
+                    selectedRecoveryPhraseList.add(recoveryPhrase);
                 }
                 onRecoveryPhraseSelected.onSelectedRecoveryPhrase(recoveryPhrase);
             });
             if (!isSelectedRecoveryPhrase) {
-                if (selectedRecoveryPhraseMap.contains(recoveryPhrase)) {
+                if (selectedRecoveryPhraseList.contains(recoveryPhrase)) {
                     holder.recoveryPhraseText.setEnabled(false);
                     holder.recoveryPhraseText.setAlpha(0.5f);
                     holder.recoveryPhraseText.setText("");
@@ -74,15 +72,15 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
     }
 
     public void addPhraseAtPosition(int position, String phrase) {
-        this.recoveryPhraseMap.set(position, phrase);
+        this.recoveryPhraseList.set(position, phrase);
     }
 
     public void removeSelectedPhrase(String phrase) {
-        this.selectedRecoveryPhraseMap.remove(phrase);
+        this.selectedRecoveryPhraseList.remove(phrase);
     }
 
-    public void setRecoveryPhraseMap(List<String> recoveryPhraseMap) {
-        this.recoveryPhraseMap = recoveryPhraseMap;
+    public void setRecoveryPhraseList(List<String> recoveryPhraseList) {
+        this.recoveryPhraseList = recoveryPhraseList;
     }
 
     public void setOnRecoveryPhraseSelectedListener(
@@ -90,17 +88,17 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
         this.onRecoveryPhraseSelected = onRecoveryPhraseSelected;
     }
 
-    public List<String> getSelectedRecoveryPhraseMap() {
-        return selectedRecoveryPhraseMap;
+    public List<String> getSelectedRecoveryPhraseList() {
+        return selectedRecoveryPhraseList;
     }
 
-    public List<String> getRecoveryPhraseMap() {
-        return recoveryPhraseMap;
+    public List<String> getRecoveryPhraseList() {
+        return recoveryPhraseList;
     }
 
     @Override
     public int getItemCount() {
-        return recoveryPhraseMap.size();
+        return recoveryPhraseList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

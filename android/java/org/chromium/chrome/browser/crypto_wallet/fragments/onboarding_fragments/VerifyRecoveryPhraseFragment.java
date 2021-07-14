@@ -56,7 +56,6 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recoveryPhrases = Utils.getRecoveryPhraseAsList();
-        Log.e("NTP", "recoveryPhrases : " + Utils.getRecoveryPhraseFromList(recoveryPhrases));
         Collections.shuffle(recoveryPhrases);
         recoveryPhraseButton = view.findViewById(R.id.btn_verify_recovery_phrase_continue);
         recoveryPhraseButton.setOnClickListener(v -> {
@@ -79,13 +78,9 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
 
     private boolean isRecoveryPhraseVerified() {
         if (recoveryPhrasesToVerifyAdapter != null
-                && recoveryPhrasesToVerifyAdapter.getRecoveryPhraseMap().size() > 0) {
+                && recoveryPhrasesToVerifyAdapter.getRecoveryPhraseList().size() > 0) {
             String recoveryPhraseToVerify = Utils.getRecoveryPhraseFromList(
-                    recoveryPhrasesToVerifyAdapter.getRecoveryPhraseMap());
-            Log.e("NTP",
-                    "BraveWalletNativeWorker.getInstance().getRecoveryWords() : "
-                            + BraveWalletNativeWorker.getInstance().getRecoveryWords());
-            Log.e("NTP", "recoveryPhraseToVerify : " + recoveryPhraseToVerify);
+                    recoveryPhrasesToVerifyAdapter.getRecoveryPhraseList());
             return BraveWalletNativeWorker.getInstance().getRecoveryWords().equals(
                     recoveryPhraseToVerify);
         }
@@ -95,12 +90,12 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
     private void resetRecoveryPhrasesViews() {
         if (recoveryPhrasesAdapter != null && recoveryPhrasesRecyclerView != null) {
             recoveryPhrasesAdapter = new RecoveryPhraseAdapter();
-            recoveryPhrasesAdapter.setRecoveryPhraseMap(recoveryPhrases);
+            recoveryPhrasesAdapter.setRecoveryPhraseList(recoveryPhrases);
             recoveryPhrasesAdapter.setOnRecoveryPhraseSelectedListener(onRecoveryPhraseSelected);
             recoveryPhrasesRecyclerView.setAdapter(recoveryPhrasesAdapter);
         }
         if (recoveryPhrasesToVerifyAdapter != null) {
-            recoveryPhrasesToVerifyAdapter.setRecoveryPhraseMap(new ArrayList<>());
+            recoveryPhrasesToVerifyAdapter.setRecoveryPhraseList(new ArrayList<>());
             recoveryPhrasesToVerifyAdapter.notifyDataSetChanged();
         }
     }
@@ -114,7 +109,7 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
         recoveryPhrasesRecyclerView.setLayoutManager(layoutManager);
 
         recoveryPhrasesAdapter = new RecoveryPhraseAdapter();
-        recoveryPhrasesAdapter.setRecoveryPhraseMap(recoveryPhrases);
+        recoveryPhrasesAdapter.setRecoveryPhraseList(recoveryPhrases);
         recoveryPhrasesAdapter.setOnRecoveryPhraseSelectedListener(onRecoveryPhraseSelected);
         recoveryPhrasesRecyclerView.setAdapter(recoveryPhrasesAdapter);
     }
@@ -128,8 +123,8 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
         selectedPhraseRecyclerView.setLayoutManager(layoutManager);
 
         recoveryPhrasesToVerifyAdapter = new RecoveryPhraseAdapter();
-        recoveryPhrasesToVerifyAdapter.setRecoveryPhraseMap(
-                recoveryPhrasesAdapter.getSelectedRecoveryPhraseMap());
+        recoveryPhrasesToVerifyAdapter.setRecoveryPhraseList(
+                recoveryPhrasesAdapter.getSelectedRecoveryPhraseList());
         recoveryPhrasesToVerifyAdapter.setOnRecoveryPhraseSelectedListener(
                 onSelectedRecoveryPhraseSelected);
         recoveryPhrasesToVerifyAdapter.setSelectedRecoveryPhrase(true);
@@ -154,13 +149,13 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
             }
 
             if (recoveryPhrasesAdapter != null && recoveryPhrasesToVerifyAdapter != null) {
-                recoveryPhrasesToVerifyAdapter.setRecoveryPhraseMap(
-                        recoveryPhrasesAdapter.getSelectedRecoveryPhraseMap());
+                recoveryPhrasesToVerifyAdapter.setRecoveryPhraseList(
+                        recoveryPhrasesAdapter.getSelectedRecoveryPhraseList());
                 recoveryPhrasesToVerifyAdapter.notifyDataSetChanged();
             }
 
             if (recoveryPhrasesAdapter != null
-                    && recoveryPhrasesAdapter.getSelectedRecoveryPhraseMap().size()
+                    && recoveryPhrasesAdapter.getSelectedRecoveryPhraseList().size()
                             == recoveryPhrases.size()) {
                 recoveryPhraseButton.setAlpha(1f);
                 recoveryPhraseButton.setEnabled(true);
@@ -178,13 +173,13 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
             }
 
             if (recoveryPhrasesAdapter != null && recoveryPhrasesToVerifyAdapter != null) {
-                recoveryPhrasesToVerifyAdapter.setRecoveryPhraseMap(
-                        recoveryPhrasesAdapter.getSelectedRecoveryPhraseMap());
+                recoveryPhrasesToVerifyAdapter.setRecoveryPhraseList(
+                        recoveryPhrasesAdapter.getSelectedRecoveryPhraseList());
                 recoveryPhrasesToVerifyAdapter.notifyDataSetChanged();
             }
 
             if (recoveryPhrasesAdapter != null
-                    && recoveryPhrasesAdapter.getSelectedRecoveryPhraseMap().size()
+                    && recoveryPhrasesAdapter.getSelectedRecoveryPhraseList().size()
                             == recoveryPhrases.size()) {
                 recoveryPhraseButton.setAlpha(1f);
                 recoveryPhraseButton.setEnabled(true);

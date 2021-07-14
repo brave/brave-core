@@ -149,6 +149,7 @@ public class BraveWalletActivity extends AsyncInitializationActivity implements 
 
     private void setNavigationFragments(int type) {
         List<NavigationItem> navigationItems = new ArrayList<>();
+        cryptoLayout.setVisibility(View.GONE);
         if (type == ONBOARDING_ACTION) {
             SetupWalletFragment setupWalletFragment = new SetupWalletFragment();
             setupWalletFragment.setOnNextPageListener(this);

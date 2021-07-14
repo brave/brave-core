@@ -112,6 +112,12 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
             switch (errorCode) {
                 case BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED:
                     Toast.makeText(getActivity(), errString, Toast.LENGTH_SHORT).show();
+                    String recoveryPhrases =
+                            BraveWalletNativeWorker.getInstance()
+                                    .createWallet(passwordEdittext.getText().toString().trim())
+                                    .trim();
+                    Utils.disableCryptoOnboarding();
+                    onNextPage.gotoNextPage(false);
                     break;
                 case BiometricPrompt.BIOMETRIC_ERROR_HW_NOT_PRESENT:
                 case BiometricPrompt.BIOMETRIC_ERROR_HW_UNAVAILABLE:

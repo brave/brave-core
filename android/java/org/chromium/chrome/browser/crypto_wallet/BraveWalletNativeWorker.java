@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet;
 
-import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
@@ -110,7 +109,6 @@ public class BraveWalletNativeWorker {
 
     @CalledByNative
     public void OnGetPrice(String price, boolean isSuccess) {
-        Log.e("NTP", "Asset price : " + price);
         for (BraveWalletObserver observer : mObservers) {
             observer.OnGetPrice(price, isSuccess);
         }
@@ -123,7 +121,6 @@ public class BraveWalletNativeWorker {
 
     @CalledByNative
     public void OnGetPriceHistory(String priceHistory, boolean isSuccess) {
-        Log.e("NTP", "priceHistory : " + priceHistory);
         for (BraveWalletObserver observer : mObservers) {
             observer.OnGetPriceHistory(priceHistory, isSuccess);
         }
