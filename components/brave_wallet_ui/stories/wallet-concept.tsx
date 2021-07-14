@@ -13,13 +13,21 @@ import {
   PriceDataObjectType,
   AssetOptionType,
   AssetPriceReturnInfo,
-  RPCResponseType
+  RPCResponseType,
+  NetworkOptionsType,
+  OrderTypes,
+  UserAccountType,
+  SlippagePresetObjectType,
+  ExpirationPresetObjectType
 } from '../constants/types'
 import Onboarding from './screens/onboarding'
 import BackupWallet from './screens/backup-wallet'
 import { NavOptions } from '../options/side-nav-options'
 import { AssetOptions } from '../options/asset-options'
-import BuySendSwap from '../components/buy-send-swap'
+import { NetworkOptions } from '../options/network-options'
+import { SlippagePresetOptions } from '../options/slippage-preset-options'
+import { ExpirationPresetOptions } from '../options/expiration-preset-options'
+import BuySendSwap from './screens/buy-send-swap'
 import { recoveryPhrase, mockUserAccounts } from './mock-data/user-accounts'
 import { mockRPCResponse } from './mock-data/rpc-response'
 import { CurrentPriceMockData } from './mock-data/current-price-data'
@@ -48,7 +56,17 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [selectedTimeline, setSelectedTimeline] = React.useState<AssetPriceTimeframe>(AssetPriceTimeframe.OneDay)
   const [selectedAssetPriceHistory, setSelectedAssetPriceHistory] = React.useState<PriceDataObjectType[]>(PriceHistoryMockData.slice(15, 20))
   const [selectedAsset, setSelectedAsset] = React.useState<AssetOptionType>()
+  const [selectedNetwork, setSelectedNetwork] = React.useState<NetworkOptionsType>(NetworkOptions[0])
+  const [selectedAccount, setSelectedAccount] = React.useState<UserAccountType>(mockUserAccounts[0])
   const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
+  const [fromAsset, setFromAsset] = React.useState<AssetOptionType>(AssetOptions[0])
+  const [toAsset, setToAsset] = React.useState<AssetOptionType>(AssetOptions[1])
+  const [orderType, setOrderType] = React.useState<OrderTypes>('market')
+  const [exchangeRate, setExchangeRate] = React.useState('0.0027533')
+  const [slippageTolerance, setSlippageTolerance] = React.useState<SlippagePresetObjectType>(SlippagePresetOptions[0])
+  const [orderExpiration, setOrderExpiration] = React.useState<ExpirationPresetObjectType>(ExpirationPresetOptions[0])
+  const [fromAmount, setFromAmount] = React.useState('')
+  const [toAmount, setToAmount] = React.useState('')
 
   // In the future these will be actual paths
   // for example wallet/rewards
@@ -269,8 +287,84 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setShowAddModal(!showAddModal)
   }
 
+  const onSelectNetwork = (network: NetworkOptionsType) => {
+    setSelectedNetwork(network)
+  }
+
   const onUpdateWatchList = () => {
     alert('Will update Watchlist')
+  }
+
+  const onSelectSwapAsset = (asset: AssetOptionType, toOrFrom: string) => {
+    if (toOrFrom === 'from') {
+      setFromAsset(asset)
+    } else {
+      setToAsset(asset)
+    }
+  }
+
+  const flipSwapAssets = () => {
+    setFromAsset(toAsset)
+    setToAsset(fromAsset)
+  }
+
+  const onSubmitSwap = () => {
+    alert('Submit Swap Transaction')
+  }
+
+  const calculateToAmount = (amount: number, market: boolean) => {
+    if (market) {
+      const calculated = Number(amount) / Number(exchangeRate)
+      setToAmount(calculated.toString())
+    } else {
+      const calculated = Number(fromAmount) / Number(amount)
+      setToAmount(calculated.toString())
+    }
+  }
+
+  const onToggleOrderType = () => {
+    if (orderType === 'market') {
+      setOrderType('limit')
+    } else {
+      setOrderType('market')
+      setExchangeRate('0.0027533')
+      calculateToAmount(Number('0.0027533'), false)
+    }
+  }
+
+  const fromAssetBalance = '26'
+  const toAssetBalance = '78'
+
+  const onSelectPresetAmount = (percent: number) => {
+    const amount = Number(fromAssetBalance) * percent
+    setFromAmount(amount.toString())
+    calculateToAmount(amount, true)
+  }
+
+  const onSelectAccount = (account: UserAccountType) => {
+    setSelectedAccount(account)
+  }
+
+  const onSelectExpiration = (expiration: ExpirationPresetObjectType) => {
+    setOrderExpiration(expiration)
+  }
+
+  const onSelectSlippageTolerance = (slippage: SlippagePresetObjectType) => {
+    setSlippageTolerance(slippage)
+  }
+
+  const onSetExchangeRate = (value: string) => {
+    setExchangeRate(value)
+    calculateToAmount(Number(value), false)
+  }
+
+  const onSetFromAmount = (value: string) => {
+    setFromAmount(value)
+    calculateToAmount(Number(value), true)
+  }
+
+  const onSetToAmount = (value: string) => {
+    setToAmount(value)
   }
 
   return (
@@ -350,7 +444,33 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
       </WalletSubViewLayout>
       <WalletWidgetStandIn>
         {!needsOnboarding && !walletLocked &&
-          <BuySendSwap />
+          <BuySendSwap
+            orderType={orderType}
+            swapToAsset={toAsset}
+            exchangeRate={exchangeRate}
+            orderExpiration={orderExpiration}
+            slippageTolerance={slippageTolerance}
+            swapFromAsset={fromAsset}
+            accounts={mockUserAccounts}
+            selectedNetwork={selectedNetwork}
+            selectedAccount={selectedAccount}
+            fromAmount={fromAmount}
+            toAmount={toAmount}
+            fromAssetBalance={fromAssetBalance}
+            toAssetBalance={toAssetBalance}
+            onSetFromAmount={onSetFromAmount}
+            onSetToAmount={onSetToAmount}
+            onSubmitSwap={onSubmitSwap}
+            flipSwapAssets={flipSwapAssets}
+            onSelectNetwork={onSelectNetwork}
+            onSelectAccount={onSelectAccount}
+            onToggleOrderType={onToggleOrderType}
+            onSelectSwapAsset={onSelectSwapAsset}
+            onSelectExpiration={onSelectExpiration}
+            onSetExchangeRate={onSetExchangeRate}
+            onSelectSlippageTolerance={onSelectSlippageTolerance}
+            onSelectPresetAmount={onSelectPresetAmount}
+          />
         }
       </WalletWidgetStandIn>
     </WalletPageLayout>

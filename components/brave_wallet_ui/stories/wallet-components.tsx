@@ -1,13 +1,14 @@
 import * as React from 'react'
-import { DesktopComponentWrapper, DesktopComponentWrapperRow, WalletWidgetStandIn } from './style'
+import { DesktopComponentWrapper, DesktopComponentWrapperRow } from './style'
 import { SideNav, TopTabNav, ChartControlBar, WalletPageLayout, WalletSubViewLayout } from '../components/desktop'
 import { NavTypes, TopTabNavTypes, AssetPriceTimeframe } from '../constants/types'
 import { NavOptions } from '../options/side-nav-options'
 import { TopNavOptions } from '../options/top-nav-options'
 import { ChartTimelineOptions } from '../options/chart-timeline-options'
-import BuySendSwap from '../components/buy-send-swap'
 import Onboarding from './screens/onboarding'
-import { recoveryPhrase } from './mock-data/user-accounts'
+import {
+  recoveryPhrase
+} from './mock-data/user-accounts'
 
 export default {
   title: 'Wallet/Desktop/Components',
@@ -79,18 +80,6 @@ export const _LineChartControls = () => {
 
 _LineChartControls.story = {
   name: 'Chart Controls'
-}
-
-export const _BuySendSwap = () => {
-  return (
-    <WalletWidgetStandIn>
-      <BuySendSwap />
-    </WalletWidgetStandIn>
-  )
-}
-
-_BuySendSwap.story = {
-  name: 'Buy/Send/Swap'
 }
 
 export const _Onboarding = () => {

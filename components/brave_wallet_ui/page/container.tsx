@@ -29,15 +29,24 @@ import {
   PageState,
   WalletPageState,
   AssetPriceTimeframe,
-  AssetOptionType
+  AssetOptionType,
+  NetworkOptionsType,
+  OrderTypes,
+  UserAccountType,
+  SlippagePresetObjectType,
+  ExpirationPresetObjectType
 } from '../constants/types'
+import { mockUserAccounts } from '../stories/mock-data/user-accounts'
 import { NavOptions } from '../options/side-nav-options'
-import BuySendSwap from '../components/buy-send-swap'
+import BuySendSwap from '../stories/screens/buy-send-swap'
 import Onboarding from '../stories/screens/onboarding'
 import BackupWallet from '../stories/screens/backup-wallet'
 import { formatePrices } from '../utils/format-prices'
 import { convertMojoTimeToJS } from '../utils/mojo-time'
 import { AssetOptions } from '../options/asset-options'
+import { NetworkOptions } from '../options/network-options'
+import { SlippagePresetOptions } from '../options/slippage-preset-options'
+import { ExpirationPresetOptions } from '../options/expiration-preset-options'
 
 type Props = {
   wallet: WalletState
@@ -74,6 +83,82 @@ function Container (props: Props) {
   const [view, setView] = React.useState<NavTypes>('crypto')
   const [inputValue, setInputValue] = React.useState<string>('')
   const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
+  const [exchangeRate, setExchangeRate] = React.useState('')
+  const [fromAmount, setFromAmount] = React.useState('')
+  const [toAmount, setToAmount] = React.useState('')
+  const [slippageTolerance, setSlippageTolerance] = React.useState<SlippagePresetObjectType>(SlippagePresetOptions[0])
+  const [orderExpiration, setOrderExpiration] = React.useState<ExpirationPresetObjectType>(ExpirationPresetOptions[0])
+  const [orderType, setOrderType] = React.useState<OrderTypes>('market')
+
+  const onSetFromAmount = (value: string) => {
+    setFromAmount(value)
+  }
+
+  const onSetToAmount = (value: string) => {
+    setToAmount(value)
+  }
+
+  const onSetExchangeRate = (value: string) => {
+    setExchangeRate(value)
+  }
+
+  const onSelectExpiration = (expiration: ExpirationPresetObjectType) => {
+    setOrderExpiration(expiration)
+  }
+
+  const onSelectSlippageTolerance = (slippage: SlippagePresetObjectType) => {
+    setSlippageTolerance(slippage)
+  }
+
+  const onSelectPresetAmount = (percent: number) => {
+    // 0 Will be replaced with selected from asset's Balance
+    // once we are able to get balances
+    const amount = 0 * percent
+    setFromAmount(amount.toString())
+  }
+
+  const onToggleOrderType = () => {
+    if (orderType === 'market') {
+      setOrderType('limit')
+    } else {
+      setOrderType('market')
+    }
+  }
+
+  // TODO (DOUGLAS): SelectedAccount needs to be stored in reducer
+  // and setSelectedAccount as a page action
+  const initialValue = React.useMemo(() => {
+    if (isWalletLocked) {
+      return mockUserAccounts[0]
+    }
+    return accounts[0]
+  }, [invalidMnemonic])
+  const [selectedAccount, setSelectedAccount] = React.useState<UserAccountType>(initialValue)
+  const onSelectAccount = (account: UserAccountType) => {
+    setSelectedAccount(account)
+  }
+
+  // TODO (DOUGLAS): This needs to be set up in the Reducer in a future PR
+  // When the network Controller is Setup
+  const [selectedNetwork, setSelectedNetwork] = React.useState<NetworkOptionsType>(NetworkOptions[0])
+  const onSelectNetwork = (network: NetworkOptionsType) => {
+    setSelectedNetwork(network)
+  }
+
+  // TODO (DOUGLAS): This needs to be set up in the Reducer in a future PR
+  const [fromAsset, setFromAsset] = React.useState<AssetOptionType>(AssetOptions[0])
+  const [toAsset, setToAsset] = React.useState<AssetOptionType>(AssetOptions[1])
+  const onSelectSwapAsset = (asset: AssetOptionType, toOrFrom: string) => {
+    if (toOrFrom === 'from') {
+      setFromAsset(asset)
+    } else {
+      setToAsset(asset)
+    }
+  }
+  const flipSwapAssets = () => {
+    setFromAsset(toAsset)
+    setToAsset(fromAsset)
+  }
 
   // In the future these will be actual paths
   // for example wallet/rewards
@@ -213,20 +298,24 @@ function Container (props: Props) {
   }
 
   const onConnectHardwareWallet = () => {
-    // Todo: Add logic to connect a hardware wallet
+    // TODO (DOUGLAS): Add logic to connect a hardware wallet
   }
 
   const onImportAccount = () => {
-    // Todo: Add logic to import a secondary account
+    // TODO (DOUGLAS): Add logic to import a secondary account
   }
 
   const onUpdateAccountName = () => {
-    // Todo: Need to add logic to update and Existing Account Name
+    // TODO (DOUGLAS): Need to add logic to update and Existing Account Name
   }
 
   const onUpdateWatchList = () => {
-    // Todo: Need to persist a AssetWatchList and add logic to update
+    // TODO (DOUGLAS): Need to persist a AssetWatchList and add logic to update
     // the AssetWatchList
+  }
+
+  const onSubmitSwap = () => {
+    // TODO (DOUGLAS): logic Here to submit a swap transaction
   }
 
   const renderWallet = React.useMemo(() => {
@@ -319,7 +408,34 @@ function Container (props: Props) {
       </WalletSubViewLayout>
       <WalletWidgetStandIn>
         {isWalletCreated && !isWalletLocked &&
-          <BuySendSwap />
+          <BuySendSwap
+            accounts={accounts}
+            orderType={orderType}
+            swapToAsset={toAsset}
+            swapFromAsset={fromAsset}
+            selectedNetwork={selectedNetwork}
+            selectedAccount={selectedAccount}
+            exchangeRate={exchangeRate}
+            fromAmount={fromAmount}
+            fromAssetBalance='0'
+            toAmount={toAmount}
+            toAssetBalance='0'
+            orderExpiration={orderExpiration}
+            slippageTolerance={slippageTolerance}
+            onSelectExpiration={onSelectExpiration}
+            onSelectPresetAmount={onSelectPresetAmount}
+            onSelectSlippageTolerance={onSelectSlippageTolerance}
+            onSetExchangeRate={onSetExchangeRate}
+            onSetFromAmount={onSetFromAmount}
+            onSetToAmount={onSetToAmount}
+            onSubmitSwap={onSubmitSwap}
+            flipSwapAssets={flipSwapAssets}
+            onSelectNetwork={onSelectNetwork}
+            onSelectAccount={onSelectAccount}
+            onToggleOrderType={onToggleOrderType}
+            onSelectSwapAsset={onSelectSwapAsset}
+
+          />
         }
       </WalletWidgetStandIn>
     </WalletPageLayout>

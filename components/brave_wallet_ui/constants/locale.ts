@@ -177,7 +177,39 @@ const locale = {
   accountSettingsSave: 'Save',
   accountSettingsRemove: 'Remove Account',
   watchlistButton: 'Save Account Watchlist',
-  watchListSearchPlaceholder: 'Search tokens or contract address'
+  watchListSearchPlaceholder: 'Search tokens or contract address',
+
+  // AmountPresets
+  preset25: '25%',
+  preset50: '50%',
+  preset75: '75%',
+  preset100: 'All',
+
+  // Networks
+  networkETH: 'Ethereum',
+  networkMain: 'Mainnet',
+  networkTest: 'Test Network',
+  networkRopsten: 'Roptsten',
+  networkKavan: 'Kavan',
+  networkRinkeby: 'Rinkeby',
+  networkGoerli: 'Goerli',
+  networkBinance: 'Binance Smart Chain',
+  networkBinanceAbbr: 'BSC',
+
+  // Select Screens
+  selectAccount: 'Select Account',
+  searchAccount: 'Search Accounts',
+  selectNetwork: 'Select Network',
+  selectAsset: 'Select From',
+  searchAsset: 'Search Coins',
+
+  // Swap
+  swapFrom: 'From',
+  swapTo: 'To',
+  swapEstimate: 'estimate',
+  swapMarket: 'Market',
+  swapLimit: 'Limit',
+  swapPriceIn: 'Price in'
 }
 
 export default locale
