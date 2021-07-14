@@ -85,7 +85,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
 
   // Act
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidRedeemUnblindedPaymentTokens())
+              OnDidRedeemUnblindedPaymentTokens(_))
       .Times(1);
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
@@ -110,6 +110,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
   FastForwardClockBy(NextPendingTaskDelay());
 
   // Assert
+  EXPECT_EQ(0, get_unblinded_payment_tokens()->Count());
 }
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
@@ -157,7 +158,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
 
   // Act
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidRedeemUnblindedPaymentTokens())
+              OnDidRedeemUnblindedPaymentTokens(_))
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
@@ -214,7 +215,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
 
   // Act
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidRedeemUnblindedPaymentTokens())
+              OnDidRedeemUnblindedPaymentTokens(_))
       .Times(1);
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
@@ -239,6 +240,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
   FastForwardClockBy(NextPendingTaskDelay());
 
   // Assert
+  EXPECT_EQ(0, get_unblinded_payment_tokens()->Count());
 }
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
@@ -285,7 +287,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidRedeemUnblindedPaymentTokens())
+              OnDidRedeemUnblindedPaymentTokens(_))
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
@@ -327,7 +329,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
 
   // Act
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidRedeemUnblindedPaymentTokens())
+              OnDidRedeemUnblindedPaymentTokens(_))
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
@@ -352,6 +354,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
   FastForwardClockBy(NextPendingTaskDelay());
 
   // Assert
+  EXPECT_EQ(0, get_unblinded_payment_tokens()->Count());
 }
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
@@ -398,7 +401,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
       .Times(1);
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidRedeemUnblindedPaymentTokens())
+              OnDidRedeemUnblindedPaymentTokens(_))
       .Times(1);
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
@@ -412,7 +415,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
   FastForwardClockBy(NextPendingTaskDelay());
 
   // Assert
-  EXPECT_EQ(1, get_unblinded_payment_tokens()->Count());
+  EXPECT_EQ(0, get_unblinded_payment_tokens()->Count());
 }
 
 }  // namespace ads
