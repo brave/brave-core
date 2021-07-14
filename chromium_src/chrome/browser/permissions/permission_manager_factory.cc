@@ -26,10 +26,10 @@ KeyedService* PermissionManagerFactory::BuildServiceInstanceFor(
   auto permission_contexts = CreatePermissionContexts(profile);
   if (base::FeatureList::IsEnabled(
           permissions::features::kPermissionLifetime)) {
-    auto* lifetime_manager =
-        PermissionLifetimeManagerFactory::GetInstance()->GetForProfile(profile);
+    auto factory =
+        base::BindRepeating(&PermissionLifetimeManagerFactory::GetForProfile);
     for (auto& permission_context : permission_contexts) {
-      permission_context.second->SetPermissionLifetimeManager(lifetime_manager);
+      permission_context.second->SetPermissionLifetimeManagerFactory(factory);
     }
   }
   return new permissions::PermissionManager(profile,
