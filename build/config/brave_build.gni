@@ -3,6 +3,7 @@
 # import("//build/config/chrome_build.gni") in compiler.gni
 import("//brave/brave_repack_locales.gni")
 import("//brave/browser/extensions/resources.gni")
+import("//brave/browser/resources/bookmarks/sources.gni")
 import("//brave/browser/resources/extensions/sources.gni")
 import("//brave/browser/resources/settings/sources.gni")
 import("//brave/build/config/compiler.gni")
