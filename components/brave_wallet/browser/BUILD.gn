@@ -26,6 +26,8 @@ static_library("browser") {
     "brave_wallet_utils.h",
     "eip2930_transaction.cc",
     "eip2930_transaction.h",
+    "erc_token_list_parser.cc",
+    "erc_token_list_parser.h",
     "eth_address.cc",
     "eth_address.h",
     "eth_call_data_builder.cc",
