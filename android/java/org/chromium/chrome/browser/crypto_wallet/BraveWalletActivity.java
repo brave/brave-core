@@ -27,7 +27,6 @@ import com.google.android.material.tabs.TabLayout;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
-import org.chromium.chrome.browser.crypto_wallet.CryptoWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoWalletOnboardingPagerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.SwapBottomSheetDialogFragment;
@@ -38,7 +37,6 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.SetupWalletFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.UnlockWalletFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.VerifyRecoveryPhraseFragment;
-import org.chromium.chrome.browser.crypto_wallet.listeners.OnFinishOnboarding;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;

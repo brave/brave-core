@@ -64,7 +64,9 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     showFingerprintDialog(authenticationCallback);
                 } else {
-                    BraveWalletNativeWorker.getInstance().createWallet(passwordInput).trim();
+                    String recoveryPhrases = BraveWalletNativeWorker.getInstance()
+                                                     .createWallet(passwordInput)
+                                                     .trim();
                     Utils.disableCryptoOnboarding();
                     onNextPage.gotoNextPage(false);
                 }
@@ -96,9 +98,10 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
         public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
             super.onAuthenticationSucceeded(result);
             // Go to next Page
-            BraveWalletNativeWorker.getInstance()
-                    .createWallet(passwordEdittext.getText().toString().trim())
-                    .trim();
+            String recoveryPhrases =
+                    BraveWalletNativeWorker.getInstance()
+                            .createWallet(passwordEdittext.getText().toString().trim())
+                            .trim();
             Utils.disableCryptoOnboarding();
             onNextPage.gotoNextPage(false);
         }

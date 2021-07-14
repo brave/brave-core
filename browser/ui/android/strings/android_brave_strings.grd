@@ -1705,23 +1705,11 @@ until they verify, or until 90 days have passed.
       <message name="IDS_CONTINUE_TO_LOGIN" desc="Uphold continue to login text">
         continue to login
       </message>
-      <message name="IDS_TITLE_CRYPTO">
-        Crypto
-      </message>
-    <message name="IDS_TITLE_REWARDS">
-      Rewards
-    </message>
-    <message name="IDS_TITLE_CARDS">
-      Cards
-    </message>
     <message name="IDS_SEND">
       Send
     </message>
     <message name="IDS_SEARCH_TITLE">
       Search
-    </message>
-    <message name="IDS_MY">
-      My <ph name="TITLE">%1$s</ph>
     </message>
     <message name="IDS_SWAP">
       Swap
