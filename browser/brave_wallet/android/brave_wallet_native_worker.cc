@@ -5,7 +5,11 @@
 
 #include "brave/browser/brave_wallet/android/brave_wallet_native_worker.h"
 
+#include <string>
+#include <vector>
+
 #include "base/android/jni_android.h"
+#include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
@@ -183,6 +187,38 @@ void BraveWalletNativeWorker::OnGetPriceHistory(
   Java_BraveWalletNativeWorker_OnGetPriceHistory(
       env, weak_java_brave_wallet_native_worker_.get(env),
       base::android::ConvertUTF8ToJavaString(env, price_history), success);
+}
+
+bool BraveWalletNativeWorker::AddAccountToWallet(JNIEnv* env) {
+  auto* keyring_controller = GetBraveWalletService()->keyring_controller();
+  auto* keyring = keyring_controller->GetDefaultKeyring();
+  if (keyring) {
+    keyring->AddAccounts();
+  }
+
+  return keyring != nullptr;
+}
+
+base::android::ScopedJavaLocalRef<jobjectArray>
+BraveWalletNativeWorker::WalletAccountNames(JNIEnv* env) {
+  auto* service = GetBraveWalletService();
+  if (!service)
+    return base::android::ToJavaArrayOfStrings(env,
+                                               service->WalletAccountNames());
+
+  return base::android::ToJavaArrayOfStrings(env, std::vector<std::string>());
+}
+
+void BraveWalletNativeWorker::UpdateAccountNames(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobjectArray>& account_names) {
+  std::vector<std::string> names;
+  JavaArrayOfByteArrayToStringVector(env, account_names, &names);
+  auto* service = GetBraveWalletService();
+  if (!service)
+    return;
+
+  service->UpdateAccountNames(names);
 }
 
 static void JNI_BraveWalletNativeWorker_Init(

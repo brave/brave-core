@@ -126,6 +126,10 @@ public class BraveWalletNativeWorker {
         }
     }
 
+    public boolean addAccountToWallet() {
+        return BraveWalletNativeWorkerJni.get().addAccountToWallet(mNativeBraveWalletNativeWorker);
+    }
+
     @NativeMethods
     interface Natives {
         void init(BraveWalletNativeWorker caller);
@@ -139,5 +143,8 @@ public class BraveWalletNativeWorker {
         void resetWallet(long nativeBraveWalletNativeWorker);
         void getAssetPrice(long nativeBraveWalletNativeWorker, String asset);
         void getAssetPriceHistory(long nativeBraveWalletNativeWorker, String asset, int timeFrame);
+        boolean addAccountToWallet(long nativeBraveWalletNativeWorker);
+        String[] walletAccountNames(long nativeBraveWalletNativeWorker);
+        void updateAccountNames(long nativeBraveWalletNativeWorker, String[] accountNames);
     }
 }

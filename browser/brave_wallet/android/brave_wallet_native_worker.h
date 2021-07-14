@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/android/jni_weak_ref.h"
+#include "base/android/scoped_java_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
@@ -38,6 +39,12 @@ class BraveWalletNativeWorker {
       const base::android::JavaParamRef<jstring>& mnemonic,
       const base::android::JavaParamRef<jstring>& password);
   void ResetWallet(JNIEnv* env);
+  bool AddAccountToWallet(JNIEnv* env);
+  base::android::ScopedJavaLocalRef<jobjectArray> WalletAccountNames(
+      JNIEnv* env);
+  void UpdateAccountNames(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jobjectArray>& account_names);
 
   void GetAssetPrice(JNIEnv* env,
                      const base::android::JavaParamRef<jstring>& asset);
