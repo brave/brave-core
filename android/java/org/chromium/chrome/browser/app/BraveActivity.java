@@ -84,6 +84,7 @@ import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
+import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rate.RateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
@@ -290,6 +291,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                     BravePreferenceKeys.BRAVE_DOUBLE_RESTART, false);
             BraveRelaunchUtils.restart();
             return;
+        }
+
+        // Make sure this option is disabled
+        if (PrivacyPreferencesManagerImpl.getInstance().getNetworkPredictionEnabled()) {
+            PrivacyPreferencesManagerImpl.getInstance().setNetworkPredictionEnabled(false);
         }
 
         if (BraveRewardsHelper.hasRewardsEnvChange()) {

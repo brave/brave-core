@@ -19,7 +19,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.privacy.settings.PrivacySettings;
+import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.privacy_sandbox.PrivacySandboxBridge;
 import org.chromium.chrome.browser.privacy_sandbox.PrivacySandboxSettingsFragment;
 import org.chromium.chrome.browser.settings.SettingsActivityTestRule;
@@ -43,51 +43,51 @@ public class BravePrivacySettingsTest {
     private static final String PREF_PRIVACY_SANDBOX = "privacy_sandbox";
 
     // Ignore "usage_stats_reporting" and "privacy_sandbox"
-    private static int NUMBER_OF_ITEMS = 7;
+    private static int PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 7;
+    private static int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 18;
 
     @Rule
     public ChromeTabbedActivityTestRule mActivityTestRule = new ChromeTabbedActivityTestRule();
 
     @Rule
-    public SettingsActivityTestRule<PrivacySettings> mSettingsActivityTestRule =
-            new SettingsActivityTestRule<>(PrivacySettings.class);
-    private PrivacySettings mFragment;
+    public SettingsActivityTestRule<BravePrivacySettings> mSettingsActivityTestRule =
+            new SettingsActivityTestRule<>(BravePrivacySettings.class);
+    private BravePrivacySettings mFragment;
 
     @Before
     public void setUp() {
         mSettingsActivityTestRule.startSettingsActivity();
-        mFragment = (PrivacySettings) mSettingsActivityTestRule.getFragment();
+        mFragment = (BravePrivacySettings) mSettingsActivityTestRule.getFragment();
     }
 
     @Test
     @SmallTest
     public void testNumberOfItemsNotChanged() {
-        System.out.print("testNumberOfItemsNotChangedprn");
-        System.out.println("prefs count: " + mFragment.getPreferenceScreen().getPreferenceCount());
-        assertEquals(NUMBER_OF_ITEMS, mFragment.getPreferenceScreen().getPreferenceCount());
+        assertEquals(PRIVACY_SETTINGS_NUMBER_OF_ITEMS + BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS,
+                mFragment.getPreferenceScreen().getPreferenceCount());
     }
 
     @Test
     @SmallTest
-    public void testExactSameItemsAreThere() {
+    public void testParentItems() {
         assertNotEquals(null, mFragment.findPreference(PREF_CAN_MAKE_PAYMENT));
-        assertNotEquals(null, mFragment.findPreference(PREF_NETWORK_PREDICTIONS));
         assertNotEquals(null, mFragment.findPreference(PREF_SECURE_DNS));
-        assertEquals(null, mFragment.findPreference(PREF_USAGE_STATS));
         assertNotEquals(null, mFragment.findPreference(PREF_DO_NOT_TRACK));
         assertNotEquals(null, mFragment.findPreference(PREF_SAFE_BROWSING));
-        assertNotEquals(null, mFragment.findPreference(PREF_SYNC_AND_SERVICES_LINK));
         assertNotEquals(null, mFragment.findPreference(PREF_CLEAR_BROWSING_DATA));
+        // These parent items should be removed
+        assertEquals(null, mFragment.findPreference(PREF_NETWORK_PREDICTIONS));
+        assertEquals(null, mFragment.findPreference(PREF_USAGE_STATS));
+        assertEquals(null, mFragment.findPreference(PREF_SYNC_AND_SERVICES_LINK));
+        assertEquals(null, mFragment.findPreference(PREF_PRIVACY_SANDBOX));
     }
 
     @Test
     @SmallTest
-    public void testPrivacySandboxDefauktIsFalseAndNull() {
+    public void testDisabledOptions() {
         TestThreadUtils.runOnUiThreadBlocking(() -> {
             assertFalse(PrivacySandboxBridge.isPrivacySandboxSettingsFunctional());
-            if (!PrivacySandboxBridge.isPrivacySandboxSettingsFunctional()) {
-                assertEquals(null, mFragment.findPreference(PREF_PRIVACY_SANDBOX));
-            }
+            assertFalse(PrivacyPreferencesManagerImpl.getInstance().getNetworkPredictionEnabled());
         });
     }
 }
