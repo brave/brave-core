@@ -10,7 +10,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/brave_ads/insets_util.h"
 #include "brave/browser/ui/brave_ads/spacer_view.h"
-#include "brave/browser/ui/brave_ads/window_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "ui/accessibility/ax_enums.mojom.h"
 #include "ui/accessibility/ax_node_data.h"
@@ -20,6 +19,7 @@
 #include "ui/gfx/font_list.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/size.h"
+#include "ui/native_theme/native_theme.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/layout/flex_layout.h"
@@ -126,7 +126,7 @@ void AdNotificationHeaderView::CreateView(const int width) {
 }
 
 views::Label* AdNotificationHeaderView::CreateTitleLabel() {
-  const bool should_use_dark_colors = ShouldUseDarkModeTheme();
+  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
 
   views::Label* label = new views::Label();
 
@@ -159,7 +159,7 @@ views::Label* AdNotificationHeaderView::CreateTitleLabel() {
 }
 
 void AdNotificationHeaderView::UpdateTitleLabel() {
-  const bool should_use_dark_colors = ShouldUseDarkModeTheme();
+  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
 
   DCHECK(title_label_);
   title_label_->SetEnabledColor(should_use_dark_colors ? kDarkModeTitleColor
