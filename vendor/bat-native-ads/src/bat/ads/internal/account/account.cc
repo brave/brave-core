@@ -9,7 +9,6 @@
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_util.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/account/confirmations/confirmations.h"
-#include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/account/statement/statement.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/account/wallet/wallet.h"
@@ -191,18 +190,12 @@ void Account::OnDidReconcileAdRewards() {
   NotifyAdRewardsChanged();
 }
 
-void Account::OnDidRedeemUnblindedPaymentTokens() {
+void Account::OnDidRedeemUnblindedPaymentTokens(
+    const privacy::UnblindedTokenList unblinded_tokens) {
   BLOG(1, "Successfully redeemed unblinded payment tokens");
 
-  if (ConfirmationsState::Get()->get_unblinded_payment_tokens()->IsEmpty()) {
-    return;
-  }
-
   const TransactionList transactions = transactions::GetUncleared();
-  ad_rewards_->SetUnreconciledTransactions(transactions);
-
-  ConfirmationsState::Get()->get_unblinded_payment_tokens()->RemoveAllTokens();
-  ConfirmationsState::Get()->Save();
+  ad_rewards_->AppendUnreconciledTransactions(transactions);
 
   Reconcile();
 }
