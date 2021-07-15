@@ -1,8 +1,8 @@
 diff --git a/net/dns/dns_transaction.cc b/net/dns/dns_transaction.cc
-index bb17713af7800733c5fc520429c571df81c6ab7c..89ebaea00cb3a2b83ab721ad1d6bd64fefa989f4 100644
+index 57d5663ae832636b927f1b4a334f69db0609c1e7..56e2a9b4497042700be2e4e1564e2b885cd9c298 100644
 --- a/net/dns/dns_transaction.cc
 +++ b/net/dns/dns_transaction.cc
-@@ -1303,6 +1303,7 @@ class DnsTransactionImpl : public DnsTransaction,
+@@ -1302,6 +1302,7 @@ class DnsTransactionImpl : public DnsTransaction,
      DCHECK(secure_);
  
      size_t doh_server_index = dns_server_iterator_->GetNextAttemptIndex();
