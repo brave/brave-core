@@ -5,7 +5,7 @@
 
 import("//build/config/ios/ios_sdk.gni")
 
-# Template to generate Obj-C wrappers for generated C++ mojo files
+# Template to generate Obj-C wrappers for generated C++ mojo target
 #
 # Arguments
 #
@@ -15,6 +15,8 @@ import("//build/config/ios/ios_sdk.gni")
 #     path to the .mojom file
 #   class_prefix
 #     an optional string to prefix all generated wrapper classes.
+#   exclude_types
+#     a list of types to exclude from within the mojom file provided
 #
 template("mojom_wrappers") {
   assert(defined(invoker.mojom_target) && invoker.mojom_target != "",
@@ -23,18 +25,15 @@ template("mojom_wrappers") {
          "mojom_file must be defined for $target_name")
 
   _mojom_target = invoker.mojom_target
+  _mojom_target_path = get_label_info(_mojom_target, "dir")
+  _mojom_target_name = get_label_info(_mojom_target, "name")
   _mojom_target_parser =
-      get_path_info("${invoker.mojom_target}:interfaces__parser", "abspath")
+      get_path_info("${_mojom_target_path}:${_mojom_target_name}__parser",
+                    "abspath")
   _mojom_target_parser_gen_dir =
       get_label_info(_mojom_target_parser, "target_gen_dir")
-  _mojom_include_dir = string_replace(
-          get_path_info(get_label_info(invoker.mojom_target, "dir"), "abspath"),
-          "//",
-          "",
-          1)
   _mojom_output_dir = rebase_path(target_gen_dir)
-  _mojom_file = invoker.mojom_file
-  _mojom_filename = get_path_info(_mojom_file, "file")
+  _mojom_filename = get_path_info(invoker.mojom_file, "file")
   _mojom_module =
       rebase_path("$_mojom_target_parser_gen_dir/$_mojom_filename-module")
 
@@ -61,11 +60,14 @@ template("mojom_wrappers") {
     outputs = _generate_wrappers_output
     args = [
       "--mojom-module=$_mojom_module",
-      "--module-include-path=$_mojom_include_dir",
       "--output-dir=$_mojom_output_dir",
     ]
     if (defined(invoker.class_prefix)) {
       args += [ "--class-prefix=${invoker.class_prefix}" ]
+    }
+    if (defined(invoker.exclude_types)) {
+      _excluded_types = string_join(",", invoker.exclude_types)
+      args += [ "--exclude=$_excluded_types" ]
     }
     deps = [
       "//mojo/public/cpp/bindings",

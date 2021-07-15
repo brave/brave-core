@@ -1,5 +1,6 @@
 
-{% set objc_class_name = "%s%s"|format(class_prefix, struct.name) -%}
+{%- set cpp_namespace = struct|cpp_namespace_from_kind %}
+{%- set objc_class_name = "%s%s"|format(class_prefix, struct.name) -%}
 @implementation {{objc_class_name}}
 - (instancetype)init
 {

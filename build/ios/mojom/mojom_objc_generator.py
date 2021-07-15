@@ -51,6 +51,7 @@ class Generator(generator.Generator):
       "objc_enum_formatter": self._ObjCEnumFormatter,
       "cpp_to_objc_assign": self._CppToObjCAssign,
       "objc_to_cpp_assign": self._ObjCToCppAssign,
+      "cpp_namespace_from_kind": self._CppNamespaceFromKind,
       "swift_enum_name_formatter": self._SwiftEnumNameFormatter,
     }
     return objc_filters
@@ -86,7 +87,7 @@ class Generator(generator.Generator):
       return '0' if not field.default else field.default
     if mojom.IsEnumKind(kind):
       value = '0' if not field.default else field.default.field.value
-      return 'static_cast<%s%s>(%s)' % (self.class_prefix, kind.name, value)
+      return 'static_cast<%s%s>(%s)' % (self._ObjCPrefix(), kind.name, value)
     if mojom.IsStringKind(kind):
       return '@""' if not field.default else '@%s' % field.default
     if mojom.IsArrayKind(kind):
@@ -94,22 +95,23 @@ class Generator(generator.Generator):
     if mojom.IsMapKind(kind):
       return '@{}'
     if self._IsMojomStruct(kind):
-      return "[[%s%s alloc] init]" % (self.class_prefix, kind.name)
+      return "[[%s%s alloc] init]" % (self._ObjCPrefix(), kind.name)
     raise Exception("Unrecognized kind %s" % kind.spec)
 
   def _IsMojomStruct(self, kind):
     """ Whether or not a kind is a struct that has an Obj-C++ counterpart generated """
     if not mojom.IsStructKind(kind):
       return False
-    return kind.mojom_name in map(lambda s: s.mojom_name, self.module.structs)
+    return True
+#    return kind.mojom_name in map(lambda s: s.mojom_name, self.module.structs)
 
   def _GetObjCWrapperType(self, kind, objectType = False):
     if self._IsMojomStruct(kind):
-      return "%s%s *" % (self.class_prefix, kind.name)
+      return "%s%s *" % (self._ObjCPrefix(), kind.name)
     if mojom.IsEnumKind(kind):
-      return "%s%s" % (self.class_prefix, kind.name)
+      return "%s%s" % (self._ObjCPrefix(), kind.name)
     if mojom.IsInterfaceKind(kind):
-      return "id<%s%s>" % (self.class_prefix, kind.name)
+      return "id<%s%s>" % (self._ObjCPrefix(), kind.name)
     if mojom.IsStringKind(kind):
       return "NSString *"
     if mojom.IsArrayKind(kind):
@@ -183,7 +185,7 @@ class Generator(generator.Generator):
     ]
     if name in reserved:
       # Keep them prefixed in Swift
-      return "%s%s" % (self.class_prefix, name)
+      return "%s%s" % (self._ObjCPrefix(), name)
     return name
 
   def _ObjCEnumFormatter(self, str):
@@ -198,7 +200,7 @@ class Generator(generator.Generator):
     return kind in _kind_to_nsnumber_getter
 
   def _CppPtrToObjCTransform(self, kind, obj):
-    args = (self.class_prefix, kind.name, kind.name, obj)
+    args = (self._ObjCPrefix(), kind.name, kind.name, obj)
     return "[[%s%s alloc] initWith%s:*%s]" % args
 
   def _ObjCToCppAssign(self, field, obj):
@@ -213,7 +215,7 @@ class Generator(generator.Generator):
       else:
         return "%s.cppObjPtr" % accessor
     if mojom.IsEnumKind(kind):
-      return "static_cast<%s::%s>(%s)" % (self._CppNamespace(), kind.name, accessor)
+      return "static_cast<%s::%s>(%s)" % (self._CppNamespaceFromKind(kind), kind.name, accessor)
     if mojom.IsStringKind(kind):
       return "%s.UTF8String" % accessor
     if mojom.IsArrayKind(kind):
@@ -244,7 +246,7 @@ class Generator(generator.Generator):
               array.push_back(obj.cppObjPtr);
             }
             return array;
-          }()""" % (self._CppNamespace(), array_kind.name, self.class_prefix, array_kind.name, accessor)
+          }()""" % (self._CppNamespaceFromKind(array_kind), array_kind.name, self._ObjCPrefix(), array_kind.name, accessor)
       else:
         raise Exception("Unsupported array kind %s" % array_kind.spec)
     if mojom.IsMapKind(kind):
@@ -276,7 +278,7 @@ class Generator(generator.Generator):
               map[key.UTF8String] = %s[key].cppObjPtr;
             }
             return map;
-          }()""" % (self._CppNamespace(), val_kind.name, accessor, accessor)
+          }()""" % (self._CppNamespaceFromKind(val_kind), val_kind.name, accessor, accessor)
         else:
           raise Exception("Unsupported dictionary value kind %s" % val_kind.spec)
       else:
@@ -289,7 +291,7 @@ class Generator(generator.Generator):
     if self._IsObjCNumberKind(kind):
       return accessor
     if self._IsMojomStruct(kind):
-      args = (self.class_prefix, kind.name, kind.name, accessor)
+      args = (self._ObjCPrefix(), kind.name, kind.name, accessor)
       base = "[[%s%s alloc] initWith%s:*%s]" % args
       if mojom.IsNullableKind(kind):
         return """^%s%s *{
@@ -297,11 +299,11 @@ class Generator(generator.Generator):
             return %s;
           }
           return nil;
-        }()""" % (self.class_prefix, kind.name, accessor, base)
+        }()""" % (self._ObjCPrefix(), kind.name, accessor, base)
       else:
         return base
     if mojom.IsEnumKind(kind):
-      return "static_cast<%s%s>(%s)" % (self.class_prefix, kind.name, accessor)
+      return "static_cast<%s%s>(%s)" % (self._ObjCPrefix(), kind.name, accessor)
     if mojom.IsStringKind(kind):
       return "[NSString stringWithUTF8String:%s.c_str()]" % accessor
     if mojom.IsArrayKind(kind):
@@ -351,13 +353,35 @@ class Generator(generator.Generator):
 
     return "%s" % accessor
 
-  def _CppNamespace(self):
-    return str(self.module.namespace).replace(".", "::")
+  def _CppNamespaceFromKind(self, kind):
+    return str(kind.module.namespace).replace(".", "::")
+
+  def _ObjCPrefix(self):
+    if len(self.class_prefix) > 0:
+      return self.class_prefix
+    return self._UnderToCamel(str(self.module.namespace).replace(".mojom", ""))
+
+  def _UnderToCamel(self, value, digits_split=False):
+    # There are some mojom files that don't use snake_cased names, so we try to
+    # fix that to get more consistent output.
+    return generator.ToCamel(generator.ToLowerSnakeCase(value),
+                              digits_split=digits_split)
 
   def _GetJinjaExports(self):
+    all_structs = [item for item in self.module.structs if item.name not in self.excludedTypes]
     all_enums = list(self.module.enums)
-    for struct in self.module.structs:
+    for struct in all_structs:
       all_enums.extend(struct.enums)
+      # This allows us to only generate Obj-C++ wrappers for types actually used
+      # within other types
+      for field in struct.fields:
+        if field.kind.module is not None and field.kind.module.namespace != self.module.namespace:
+          if mojom.IsStructKind(field.kind):
+            all_structs.append(field.kind)
+            all_enums.extend(field.kind.enums)
+          elif mojom.IsEnumKind(field.kind):
+            all_enums.append(field.kind)
+
     for interface in self.module.interfaces:
       all_enums.extend(interface.enums)
     return {
@@ -368,11 +392,8 @@ class Generator(generator.Generator):
       "kinds": self.module.kinds,
       "module": self.module,
       "module_name": os.path.basename(self.module.path),
-      "module_include_path": self.module_include_path,
-      "cpp_namespace": self._CppNamespace(),
-      "class_prefix": self.class_prefix,
-      # "namespaces_as_array": NamespaceToArray(self.module.namespace),
-      "structs": self.module.structs,
+      "class_prefix": self._ObjCPrefix(),
+      "structs": all_structs,
       "unions": self.module.unions,
     }
 
