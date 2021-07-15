@@ -1,7 +1,7 @@
-diff --git a/chrome/android/java/res/layout/toolbar_tablet.xml b/chrome/android/java/res/layout/toolbar_tablet.xml
+diff --git a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
 index 4fa98ea6b6a6342fa6f9303419b5f551f750e7e3..3ebb7f849268724cb473890a0330a05c7bd5fb91 100644
---- a/chrome/android/java/res/layout/toolbar_tablet.xml
-+++ b/chrome/android/java/res/layout/toolbar_tablet.xml
+--- a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
++++ b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
 @@ -58,7 +58,7 @@
              android:layout_height="@dimen/modern_toolbar_background_size"
              android:layout_weight="1"
