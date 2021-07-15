@@ -91,6 +91,11 @@ Profile* TorProfileManager::GetTorProfile(Profile* original_profile) {
   return tor_profile;
 }
 
+void TorProfileManager::CloseAllTorWindows() {
+  for (const auto& it : tor_profiles_)
+    CloseTorProfileWindows(it.second);
+}
+
 void TorProfileManager::OnBrowserRemoved(Browser* browser) {
   if (!browser || !browser->profile()->IsTor())
     return;
