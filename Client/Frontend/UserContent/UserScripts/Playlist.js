@@ -52,7 +52,7 @@ window.__firefox__.includeOnce("$<Playlist>", function() {
                 name = document.title;
             }
             
-            if (target.src !== "") {
+            if (target.src && target.src !== "") {
                 $<sendMessage>({
                     "securitytoken": "$<security_token>",
                     "name": name,
@@ -65,8 +65,8 @@ window.__firefox__.includeOnce("$<Playlist>", function() {
                 });
             }
             else {
-                document.querySelectorAll('source').forEach(function(node) {
-                    if (node.src !== "") {
+                target.querySelectorAll('source').forEach(function(node) {
+                    if (node.src && node.src !== "") {
                         if (node.closest('video') === target) {
                             $<sendMessage>({
                                 "securitytoken": "$<security_token>",
@@ -102,59 +102,74 @@ window.__firefox__.includeOnce("$<Playlist>", function() {
         Object.defineProperty(window, '$<onLongPressActivated>', {
           value:
             function(localX, localY) {
-                var target = document.elementFromPoint(localX, localY);
-                var targetVideo = target ? target.closest("video") : null;
-                var targetAudio = target ? target.closest("audio") : null;
+                function execute(page, offsetX, offsetY) {
+                    var target = page.document.elementFromPoint(localX - offsetX, localY - offsetY);
+                    var targetVideo = target ? target.closest("video") : null;
+                    var targetAudio = target ? target.closest("audio") : null;
 
-                // Video or Audio might have some sort of overlay..
-                // Like player controls for pause/play, etc..
-                // So we search for video/audio elements relative to touch position.
-                if (!targetVideo && !targetAudio) {
-                    var touchX = localX + window.scrollX;
-                    var touchY = localY + window.scrollY;
-                
-                    var videoElements = document.querySelectorAll('video');
-                    for (element of videoElements) {
-                        var rect = element.getBoundingClientRect();
-                        var x = rect.left + window.scrollX;
-                        var y = rect.top + window.scrollY;
-                        var w = rect.right - rect.left;
-                        var h = rect.bottom - rect.top;
-                        
-                        if (touchX >= x && touchX <= (x + w) && touchY >= y && touchY <= (y + h)) {
-                            targetVideo = element;
-                            break;
-                        }
-                    }
-                    
-                    var audioElements = document.querySelectorAll('audio');
-                    for (element of audioElements) {
-                        var rect = element.getBoundingClientRect();
-                        var x = rect.left + window.scrollX;
-                        var y = rect.top + window.scrollY;
-                        var w = rect.right - rect.left;
-                        var h = rect.bottom - rect.top;
-                        
-                        if (touchX >= x && touchX <= (x + w) && touchY >= y && touchY <= (y + h)) {
-                            targetAudio = element;
-                            break;
-                        }
-                    }
-                    
-                    //No elements found nearby so do nothing..
+                    // Video or Audio might have some sort of overlay..
+                    // Like player controls for pause/play, etc..
+                    // So we search for video/audio elements relative to touch position.
                     if (!targetVideo && !targetAudio) {
-                        //webkit.messageHandlers.$<handler>.postMessage({});
-                        return;
+                        var touchX = localX + (page.scrollX + offsetX);
+                        var touchY = localY + (page.scrollY + offsetY);
+                    
+                        var videoElements = page.document.querySelectorAll('video');
+                        for (element of videoElements) {
+                            var rect = element.getBoundingClientRect();
+                            var x = rect.left + (page.scrollX + offsetX);
+                            var y = rect.top + (page.scrollY + offsetY);
+                            var w = rect.right - rect.left;
+                            var h = rect.bottom - rect.top;
+                            
+                            if (touchX >= x && touchX <= (x + w) && touchY >= y && touchY <= (y + h)) {
+                                targetVideo = element;
+                                break;
+                            }
+                        }
+                        
+                        var audioElements = page.document.querySelectorAll('audio');
+                        for (element of audioElements) {
+                            var rect = element.getBoundingClientRect();
+                            var x = rect.left + (page.scrollX + offsetX);
+                            var y = rect.top + (page.scrollY + offsetY);
+                            var w = rect.right - rect.left;
+                            var h = rect.bottom - rect.top;
+                            
+                            if (touchX >= x && touchX <= (x + w) && touchY >= y && touchY <= (y + h)) {
+                                targetAudio = element;
+                                break;
+                            }
+                        }
+                        
+                        // No elements found nearby so do nothing..
+                        if (!targetVideo && !targetAudio) {
+                            // webkit.messageHandlers.$<handler>.postMessage({});
+                            return;
+                        }
+                    }
+                    
+                    // Elements found
+                    if (targetVideo) {
+                        $<notify>(targetVideo, 'video');
+                    }
+
+                    if (targetAudio) {
+                        $<notify>(targetAudio, 'audio');
                     }
                 }
                 
-                //Elements found
-                if (targetVideo) {
-                    $<notify>(targetVideo, 'video');
-                }
-
-                if (targetAudio) {
-                    $<notify>(targetAudio, 'audio');
+                // Any videos in the current `window.document`
+                // will have an offset of (0, 0) relative to the window.
+                execute(window, 0, 0);
+                
+                // Any videos in a `iframe.contentWindow.document`
+                // will have an offset of (0, 0) relative to its contentWindow.
+                // However, it will have an offset of (X, Y) relative to the current window.
+                for (frame of document.querySelectorAll('iframe')) {
+                    // Get the frame's bounds relative to the current window.
+                    var bounds = frame.getBoundingClientRect();
+                    execute(frame.contentWindow, bounds.left, bounds.top);
                 }
             }
         });
