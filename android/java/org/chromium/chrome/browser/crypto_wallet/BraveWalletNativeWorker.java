@@ -145,6 +145,6 @@ public class BraveWalletNativeWorker {
         void getAssetPriceHistory(long nativeBraveWalletNativeWorker, String asset, int timeFrame);
         boolean addAccountToWallet(long nativeBraveWalletNativeWorker);
         String[] walletAccountNames(long nativeBraveWalletNativeWorker);
-        void updateAccountNames(long nativeBraveWalletNativeWorker, String[] accountNames);
+        void setInitialAccountNames(long nativeBraveWalletNativeWorker, String[] accountNames);
     }
 }

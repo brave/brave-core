@@ -209,7 +209,7 @@ BraveWalletNativeWorker::WalletAccountNames(JNIEnv* env) {
   return base::android::ToJavaArrayOfStrings(env, std::vector<std::string>());
 }
 
-void BraveWalletNativeWorker::UpdateAccountNames(
+void BraveWalletNativeWorker::SetInitialAccountNames(
     JNIEnv* env,
     const base::android::JavaParamRef<jobjectArray>& account_names) {
   std::vector<std::string> names;
@@ -218,7 +218,7 @@ void BraveWalletNativeWorker::UpdateAccountNames(
   if (!service)
     return;
 
-  service->UpdateAccountNames(names);
+  service->SetInitialAccountNames(names);
 }
 
 static void JNI_BraveWalletNativeWorker_Init(

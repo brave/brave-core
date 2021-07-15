@@ -42,7 +42,7 @@ class BraveWalletNativeWorker {
   bool AddAccountToWallet(JNIEnv* env);
   base::android::ScopedJavaLocalRef<jobjectArray> WalletAccountNames(
       JNIEnv* env);
-  void UpdateAccountNames(
+  void SetInitialAccountNames(
       JNIEnv* env,
       const base::android::JavaParamRef<jobjectArray>& account_names);
 
