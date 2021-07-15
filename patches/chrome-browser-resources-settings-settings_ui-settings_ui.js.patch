@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/settings_ui/settings_ui.js b/chrome/browser/resources/settings/settings_ui/settings_ui.js
-index d61e6510b9b963b78ecc37f6dc3c047663b468b4..f22bacd066e12e83201a3170b59841ce1b16e1ee 100644
+index 05e73d25546f800af1f3a1d64736a56945f3ab18..2de6aed365a051c42b665360be160b7793ae8418 100644
 --- a/chrome/browser/resources/settings/settings_ui/settings_ui.js
 +++ b/chrome/browser/resources/settings/settings_ui/settings_ui.js
 @@ -22,7 +22,7 @@ import '../settings_shared_css.js';

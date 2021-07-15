@@ -1,8 +1,8 @@
 diff --git a/content/browser/renderer_host/navigation_controller_impl.cc b/content/browser/renderer_host/navigation_controller_impl.cc
-index 4f88ba8bae251e26fd53157ffda484e3cfd16b9d..652d50d93d2bb5ff60cddb615dbbe9992f0d6ebc 100644
+index e04121dc5df9dffae00e1cc3de4200a5f3e02d87..3c41958e563d37804d2ef72fa29c7c5d80b57dea 100644
 --- a/content/browser/renderer_host/navigation_controller_impl.cc
 +++ b/content/browser/renderer_host/navigation_controller_impl.cc
-@@ -3119,16 +3119,17 @@ base::WeakPtr<NavigationHandle> NavigationControllerImpl::NavigateWithoutEntry(
+@@ -3139,16 +3139,17 @@ base::WeakPtr<NavigationHandle> NavigationControllerImpl::NavigateWithoutEntry(
    // Note: we intentionally leave the pending entry in place for renderer debug
    // URLs, unlike the cases below where we clear it if the navigation doesn't
    // proceed.

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_navigator.cc b/chrome/browser/ui/browser_navigator.cc
-index 29890d8b342a4392b6736a59b7a7b873af055ce7..6351ca0fa36b636d46217d54122bfca1a9dbd8b2 100644
+index df2bdd20c792d7042d0208664570b3b44897f829..c9d0d03002ba426e0a997eda4d63496e54a7ef6b 100644
 --- a/chrome/browser/ui/browser_navigator.cc
 +++ b/chrome/browser/ui/browser_navigator.cc
 @@ -490,6 +490,7 @@ void Navigate(NavigateParams* params) {
