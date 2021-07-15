@@ -20,8 +20,7 @@
 using brave::ResponseCallback;
 
 TEST(BraveReferralsNetworkDelegateHelperTest, ReplaceHeadersForMatchingDomain) {
-  const std::array<std::tuple<GURL, std::string>, 3> test_cases = {
-      std::make_tuple<>(GURL("https://eaff.com"), "eaff"),
+  const std::array<std::tuple<GURL, std::string>, 2> test_cases = {
       std::make_tuple<>(GURL("https://api-sandbox.uphold.com"), "uphold"),
       std::make_tuple<>(GURL("http://grammarly.com"), "grammarly"),
   };
