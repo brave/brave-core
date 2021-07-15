@@ -14,6 +14,9 @@ import org.chromium.chrome.browser.crypto_wallet.BraveWalletObserver;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.chromium.brave_wallet.mojom.SwapParams;
+
+
 @JNINamespace("chrome::android")
 public class BraveWalletNativeWorker {
     private long mNativeBraveWalletNativeWorker;
@@ -130,6 +133,12 @@ public class BraveWalletNativeWorker {
         return BraveWalletNativeWorkerJni.get().addAccountToWallet(mNativeBraveWalletNativeWorker);
     }
 
+    public void getTransactionPayload(SwapParams params) {
+        org.chromium.base.Log.i("TAG", "!!!fields count == " + params.getClass().getDeclaredFields().length);
+        BraveWalletNativeWorkerJni.get().getTransactionPayload(
+            mNativeBraveWalletNativeWorker, params);
+    }
+
     @NativeMethods
     interface Natives {
         void init(BraveWalletNativeWorker caller);
@@ -146,5 +155,6 @@ public class BraveWalletNativeWorker {
         boolean addAccountToWallet(long nativeBraveWalletNativeWorker);
         String[] walletAccountNames(long nativeBraveWalletNativeWorker);
         void setInitialAccountNames(long nativeBraveWalletNativeWorker, String[] accountNames);
+        void getTransactionPayload(long nativeBraveWalletNativeWorker, SwapParams params);
     }
 }

@@ -221,6 +221,12 @@ void BraveWalletNativeWorker::SetInitialAccountNames(
   service->SetInitialAccountNames(names);
 }
 
+void BraveWalletNativeWorker::GetTransactionPayload(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jobject>& params) {
+  
+}
+
 static void JNI_BraveWalletNativeWorker_Init(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jcaller) {

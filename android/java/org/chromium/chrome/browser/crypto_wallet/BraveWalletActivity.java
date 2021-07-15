@@ -45,6 +45,8 @@ import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.chromium.brave_wallet.mojom.SwapParams;
+
 public class BraveWalletActivity extends AsyncInitializationActivity implements OnNextPage {
     private Toolbar toolbar;
 
@@ -139,6 +141,10 @@ public class BraveWalletActivity extends AsyncInitializationActivity implements 
     @Override
     public void onPause() {
         super.onPause();
+        //
+        SwapParams params = new SwapParams();
+        BraveWalletNativeWorker.getInstance().getTransactionPayload(params);
+        //
         BraveWalletNativeWorker.getInstance().lockWallet();
     }
 

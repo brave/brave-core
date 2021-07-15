@@ -45,6 +45,9 @@ class BraveWalletNativeWorker {
   void SetInitialAccountNames(
       JNIEnv* env,
       const base::android::JavaParamRef<jobjectArray>& account_names);
+  void GetTransactionPayload(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jobject>& params);
 
   void GetAssetPrice(JNIEnv* env,
                      const base::android::JavaParamRef<jstring>& asset);
