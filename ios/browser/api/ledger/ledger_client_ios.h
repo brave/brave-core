@@ -80,9 +80,8 @@ class LedgerClientIOS : public ledger::LedgerClient {
   void ClearAllNotifications() override;
   void WalletDisconnected(const std::string& wallet_type) override;
   void DeleteLog(ledger::client::ResultCallback callback) override;
-  bool SetEncryptedStringState(const std::string& key,
-                               const std::string& value) override;
-  std::string GetEncryptedStringState(const std::string& key) override;
+  absl::optional<std::string> EncryptString(const std::string& value) override;
+  absl::optional<std::string> DecryptString(const std::string& value) override;
 };
 
 #endif  // BRAVE_IOS_BROWSER_API_LEDGER_LEDGER_CLIENT_IOS_H_

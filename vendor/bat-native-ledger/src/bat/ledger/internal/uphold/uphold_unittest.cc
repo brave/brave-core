@@ -57,12 +57,12 @@ class UpholdTest : public Test {
 };
 
 TEST_F(UpholdTest, FetchBalanceConnectedWallet) {
-  const std::string wallet = R"({
+  const std::string wallet = FakeEncryption::Base64EncryptString(R"({
       "token":"token",
       "address":"address"
       "status":1
-    })";
-  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletUphold))
+    })");
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
       .WillByDefault(Return(wallet));
   EXPECT_CALL(*mock_ledger_client_, LoadURL(_, _)).Times(0);
 
@@ -344,25 +344,20 @@ INSTANTIATE_TEST_SUITE_P(
 
 TEST_P(Authorize, Paths) {
   const auto& params = GetParam();
-  const auto& input_uphold_wallet = std::get<1>(params);
+  std::string uphold_wallet = std::get<1>(params);
   const auto& input_args = std::get<2>(params);
   const auto& uphold_oauth_response = std::get<3>(params);
   const auto expected_result = std::get<4>(params);
   const auto& expected_args = std::get<5>(params);
   const auto expected_status = std::get<6>(params);
 
-  std::string uphold_wallet = "";
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
+      .WillByDefault(
+          [&] { return FakeEncryption::Base64EncryptString(uphold_wallet); });
 
-  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletUphold))
-      .WillByDefault([&] {
-        return uphold_wallet.empty() ? uphold_wallet = input_uphold_wallet
-                                     : uphold_wallet;
-      });
-
-  ON_CALL(*mock_ledger_client_,
-          SetEncryptedStringState(state::kWalletUphold, _))
+  ON_CALL(*mock_ledger_client_, SetStringState(state::kWalletUphold, _))
       .WillByDefault([&](const std::string&, const std::string& value) {
-        uphold_wallet = value;
+        uphold_wallet = *FakeEncryption::Base64DecryptString(value);
         return true;
       });
 
@@ -429,22 +424,17 @@ INSTANTIATE_TEST_SUITE_P(
 
 TEST_P(Generate, Paths) {
   const auto& params = GetParam();
-  const auto& input_uphold_wallet = std::get<1>(params);
+  std::string uphold_wallet = std::get<1>(params);
   const auto expected_result = std::get<2>(params);
   const auto expected_status = std::get<3>(params);
 
-  std::string uphold_wallet = "";
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
+      .WillByDefault(
+          [&] { return FakeEncryption::Base64EncryptString(uphold_wallet); });
 
-  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletUphold))
-      .WillByDefault([&] {
-        return uphold_wallet.empty() ? uphold_wallet = input_uphold_wallet
-                                     : uphold_wallet;
-      });
-
-  ON_CALL(*mock_ledger_client_,
-          SetEncryptedStringState(state::kWalletUphold, _))
+  ON_CALL(*mock_ledger_client_, SetStringState(state::kWalletUphold, _))
       .WillByDefault([&](const std::string&, const std::string& value) {
-        uphold_wallet = value;
+        uphold_wallet = *FakeEncryption::Base64DecryptString(value);
         return true;
       });
 
@@ -654,23 +644,18 @@ INSTANTIATE_TEST_SUITE_P(
 
 TEST_P(GetUser, Paths) {
   const auto& params = GetParam();
-  const auto& input_uphold_wallet = std::get<1>(params);
+  std::string uphold_wallet = std::get<1>(params);
   const auto& uphold_get_user_response = std::get<2>(params);
   const auto expected_result = std::get<3>(params);
   const auto expected_status = std::get<4>(params);
 
-  std::string uphold_wallet = "";
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
+      .WillByDefault(
+          [&] { return FakeEncryption::Base64EncryptString(uphold_wallet); });
 
-  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletUphold))
-      .WillByDefault([&] {
-        return uphold_wallet.empty() ? uphold_wallet = input_uphold_wallet
-                                     : uphold_wallet;
-      });
-
-  ON_CALL(*mock_ledger_client_,
-          SetEncryptedStringState(state::kWalletUphold, _))
+  ON_CALL(*mock_ledger_client_, SetStringState(state::kWalletUphold, _))
       .WillByDefault([&](const std::string&, const std::string& value) {
-        uphold_wallet = value;
+        uphold_wallet = *FakeEncryption::Base64DecryptString(value);
         return true;
       });
 
@@ -895,7 +880,7 @@ INSTANTIATE_TEST_SUITE_P(
 
 TEST_P(GetCardID, Paths) {
   const auto& params = GetParam();
-  const auto& input_uphold_wallet = std::get<1>(params);
+  std::string uphold_wallet = std::get<1>(params);
   const auto& uphold_get_user_response = std::get<2>(params);
   const auto& uphold_list_cards_response = std::get<3>(params);
   const auto& uphold_create_card_response = std::get<4>(params);
@@ -903,18 +888,13 @@ TEST_P(GetCardID, Paths) {
   const auto expected_result = std::get<6>(params);
   const auto expected_status = std::get<7>(params);
 
-  std::string uphold_wallet = "";
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
+      .WillByDefault(
+          [&] { return FakeEncryption::Base64EncryptString(uphold_wallet); });
 
-  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletUphold))
-      .WillByDefault([&] {
-        return uphold_wallet.empty() ? uphold_wallet = input_uphold_wallet
-                                     : uphold_wallet;
-      });
-
-  ON_CALL(*mock_ledger_client_,
-          SetEncryptedStringState(state::kWalletUphold, _))
+  ON_CALL(*mock_ledger_client_, SetStringState(state::kWalletUphold, _))
       .WillByDefault([&](const std::string&, const std::string& value) {
-        uphold_wallet = value;
+        uphold_wallet = *FakeEncryption::Base64DecryptString(value);
         return true;
       });
 
@@ -1026,7 +1006,7 @@ INSTANTIATE_TEST_SUITE_P(
 
 TEST_P(GetAnonFunds, Paths) {
   const auto& params = GetParam();
-  const auto& input_uphold_wallet = std::get<1>(params);
+  std::string uphold_wallet = std::get<1>(params);
   const auto& uphold_get_user_response = std::get<2>(params);
   const auto& uphold_list_cards_response = std::get<3>(params);
   const auto fetch_old_balance = std::get<4>(params);
@@ -1036,18 +1016,13 @@ TEST_P(GetAnonFunds, Paths) {
   const auto expected_result = std::get<7>(params);
   const auto expected_status = std::get<8>(params);
 
-  std::string uphold_wallet = "";
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
+      .WillByDefault(
+          [&] { return FakeEncryption::Base64EncryptString(uphold_wallet); });
 
-  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletUphold))
-      .WillByDefault([&] {
-        return uphold_wallet.empty() ? uphold_wallet = input_uphold_wallet
-                                     : uphold_wallet;
-      });
-
-  ON_CALL(*mock_ledger_client_,
-          SetEncryptedStringState(state::kWalletUphold, _))
+  ON_CALL(*mock_ledger_client_, SetStringState(state::kWalletUphold, _))
       .WillByDefault([&](const std::string&, const std::string& value) {
-        uphold_wallet = value;
+        uphold_wallet = *FakeEncryption::Base64DecryptString(value);
         return true;
       });
 
@@ -1067,10 +1042,11 @@ TEST_P(GetAnonFunds, Paths) {
       .WillByDefault(Return(mock_database_.get()));
 
   ON_CALL(*mock_ledger_client_, GetBooleanState(state::kFetchOldBalance))
-      .WillByDefault(testing::Return(fetch_old_balance));
+      .WillByDefault(Return(fetch_old_balance));
 
-  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletBrave))
-      .WillByDefault(testing::Return(input_rewards_wallet));
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBrave))
+      .WillByDefault(
+          Return(FakeEncryption::Base64EncryptString(input_rewards_wallet)));
 
   uphold_->GenerateWallet([&](type::Result result) {
     ASSERT_EQ(result, expected_result);
@@ -1197,7 +1173,7 @@ INSTANTIATE_TEST_SUITE_P(
 
 TEST_P(LinkWallet, Paths) {
   const auto& params = GetParam();
-  const auto& input_uphold_wallet = std::get<1>(params);
+  std::string uphold_wallet = std::get<1>(params);
   const auto& uphold_get_user_response = std::get<2>(params);
   const auto& uphold_list_cards_response = std::get<3>(params);
   const auto fetch_old_balance = std::get<4>(params);
@@ -1206,18 +1182,13 @@ TEST_P(LinkWallet, Paths) {
   const auto expected_result = std::get<7>(params);
   const auto expected_status = std::get<8>(params);
 
-  std::string uphold_wallet = "";
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
+      .WillByDefault(
+          [&] { return FakeEncryption::Base64EncryptString(uphold_wallet); });
 
-  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletUphold))
-      .WillByDefault([&] {
-        return uphold_wallet.empty() ? uphold_wallet = input_uphold_wallet
-                                     : uphold_wallet;
-      });
-
-  ON_CALL(*mock_ledger_client_,
-          SetEncryptedStringState(state::kWalletUphold, _))
+  ON_CALL(*mock_ledger_client_, SetStringState(state::kWalletUphold, _))
       .WillByDefault([&](const std::string&, const std::string& value) {
-        uphold_wallet = value;
+        uphold_wallet = *FakeEncryption::Base64DecryptString(value);
         return true;
       });
 
@@ -1237,10 +1208,11 @@ TEST_P(LinkWallet, Paths) {
       .WillByDefault(Return(mock_database_.get()));
 
   ON_CALL(*mock_ledger_client_, GetBooleanState(state::kFetchOldBalance))
-      .WillByDefault(testing::Return(fetch_old_balance));
+      .WillByDefault(Return(fetch_old_balance));
 
-  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletBrave))
-      .WillByDefault(testing::Return(input_rewards_wallet));
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBrave))
+      .WillByDefault(
+          Return(FakeEncryption::Base64EncryptString(input_rewards_wallet)));
 
   uphold_->GenerateWallet(
       [&](type::Result result) { ASSERT_EQ(result, expected_result); });
@@ -1397,29 +1369,25 @@ INSTANTIATE_TEST_SUITE_P(
 
 TEST_P(DisconnectWallet, Paths) {
   const auto& params = GetParam();
-  const auto& input_uphold_wallet = std::get<1>(params);
+  std::string uphold_wallet = std::get<1>(params);
   const auto& input_rewards_wallet = std::get<2>(params);
   const auto& rewards_unlink_wallet_response = std::get<3>(params);
   const auto expected_result = std::get<4>(params);
   const auto expected_status = std::get<5>(params);
 
-  std::string uphold_wallet = "";
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
+      .WillByDefault(
+          [&] { return FakeEncryption::Base64EncryptString(uphold_wallet); });
 
-  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletUphold))
-      .WillByDefault([&] {
-        return uphold_wallet.empty() ? uphold_wallet = input_uphold_wallet
-                                     : uphold_wallet;
-      });
-
-  ON_CALL(*mock_ledger_client_,
-          SetEncryptedStringState(state::kWalletUphold, _))
+  ON_CALL(*mock_ledger_client_, SetStringState(state::kWalletUphold, _))
       .WillByDefault([&](const std::string&, const std::string& value) {
-        uphold_wallet = value;
+        uphold_wallet = *FakeEncryption::Base64DecryptString(value);
         return true;
       });
 
-  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletBrave))
-      .WillByDefault(testing::Return(input_rewards_wallet));
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBrave))
+      .WillByDefault(
+          Return(FakeEncryption::Base64EncryptString(input_rewards_wallet)));
 
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(

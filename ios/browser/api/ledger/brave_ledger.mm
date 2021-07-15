@@ -2095,45 +2095,20 @@ BATLedgerBridge(BOOL,
   callback(ledger::type::Result::LEDGER_OK);
 }
 
-- (bool)setEncryptedStringState:(const std::string&)key
-                          value:(const std::string&)value {
-  const auto bridgedKey = base::SysUTF8ToNSString(key);
-
+- (absl::optional<std::string>)encryptString:(const std::string&)value {
   std::string encrypted_value;
   if (!OSCrypt::EncryptString(value, &encrypted_value)) {
-    BLOG(0, @"Couldn't encrypt value for %@", bridgedKey);
-    return false;
+    return {};
   }
-
-  std::string encoded_value;
-  base::Base64Encode(encrypted_value, &encoded_value);
-
-  self.prefs[bridgedKey] = base::SysUTF8ToNSString(encoded_value);
-  [self savePrefs];
-  return true;
+  return encrypted_value;
 }
 
-- (std::string)getEncryptedStringState:(const std::string&)key {
-  const auto bridgedKey = base::SysUTF8ToNSString(key);
-  NSString* savedValue = self.prefs[bridgedKey];
-  if (!savedValue || ![savedValue isKindOfClass:NSString.class]) {
-    return "";
+- (absl::optional<std::string>)decryptString:(const std::string&)value {
+  std::string decrypted_value;
+  if (!OSCrypt::DecryptString(value, &decrypted_value)) {
+    return {};
   }
-
-  std::string encoded_value = base::SysNSStringToUTF8(savedValue);
-  std::string encrypted_value;
-  if (!base::Base64Decode(encoded_value, &encrypted_value)) {
-    BLOG(0, @"base64 decode failed for %@", bridgedKey);
-    return "";
-  }
-
-  std::string value;
-  if (!OSCrypt::DecryptString(encrypted_value, &value)) {
-    BLOG(0, @"Decrypting failed for %@", bridgedKey);
-    return "";
-  }
-
-  return value;
+  return decrypted_value;
 }
 
 @end

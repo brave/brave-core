@@ -11,4 +11,14 @@ MockLedgerClient::MockLedgerClient() = default;
 
 MockLedgerClient::~MockLedgerClient() = default;
 
+absl::optional<std::string> MockLedgerClient::EncryptString(
+    const std::string& value) {
+  return FakeEncryption::EncryptString(value);
+}
+
+absl::optional<std::string> MockLedgerClient::DecryptString(
+    const std::string& value) {
+  return FakeEncryption::DecryptString(value);
+}
+
 }  // namespace ledger

@@ -16,6 +16,7 @@
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/bitflyer/bitflyer.h"
 #include "bat/ledger/internal/bitflyer/bitflyer_util.h"
+#include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/state/state_keys.h"
@@ -228,15 +229,23 @@ void Wallet::DisconnectAllWallets(ledger::ResultCallback callback) {
   callback(type::Result::LEDGER_OK);
 }
 
-type::BraveWalletPtr Wallet::GetWallet() {
-  const std::string wallet_string =
-      ledger_->ledger_client()->GetEncryptedStringState(state::kWalletBrave);
+type::BraveWalletPtr Wallet::GetWallet(bool create) {
+  auto json = ledger_->state()->GetEncryptedString(state::kWalletBrave);
+  if (!json)
+    return nullptr;
 
-  if (wallet_string.empty()) {
+  if (json->empty()) {
+    if (create) {
+      auto wallet = type::BraveWallet::New();
+      wallet->recovery_seed = util::Security::GenerateSeed();
+      if (SetWallet(wallet->Clone()))
+        return wallet;
+    }
+
     return nullptr;
   }
 
-  absl::optional<base::Value> value = base::JSONReader::Read(wallet_string);
+  absl::optional<base::Value> value = base::JSONReader::Read(*json);
   if (!value || !value->is_dict()) {
     BLOG(0, "Parsing of brave wallet failed");
     return nullptr;
@@ -293,16 +302,17 @@ bool Wallet::SetWallet(type::BraveWalletPtr wallet) {
 
   std::string json;
   base::JSONWriter::Write(new_wallet, &json);
-  const bool success = ledger_->ledger_client()->SetEncryptedStringState(
-      state::kWalletBrave, json);
+
+  if (!ledger_->state()->SetEncryptedString(state::kWalletBrave, json))
+    return false;
+
   ledger_->database()->SaveEventLog(state::kRecoverySeed, event_string);
+
   if (!wallet->payment_id.empty()) {
     ledger_->database()->SaveEventLog(state::kPaymentId, wallet->payment_id);
   }
 
-  BLOG_IF(0, !success, "Can't encrypt brave wallet");
-
-  return success;
+  return true;
 }
 
 void Wallet::LinkBraveWallet(const std::string& destination_payment_id,

@@ -49,7 +49,7 @@ class Wallet {
 
   void DisconnectAllWallets(ledger::ResultCallback callback);
 
-  type::BraveWalletPtr GetWallet();
+  type::BraveWalletPtr GetWallet(bool create = false);
 
   bool SetWallet(type::BraveWalletPtr wallet);
 
@@ -70,4 +70,5 @@ class Wallet {
 
 }  // namespace wallet
 }  // namespace ledger
+
 #endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_WALLET_WALLET_H_

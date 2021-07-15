@@ -8,8 +8,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/json_reader.h"
-#include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/constants.h"
@@ -29,22 +27,16 @@ WalletCreate::WalletCreate(LedgerImpl* ledger) :
 WalletCreate::~WalletCreate() = default;
 
 void WalletCreate::Start(ledger::ResultCallback callback) {
-  auto wallet = ledger_->wallet()->GetWallet();
-
-  if (wallet && !wallet->payment_id.empty()) {
-    BLOG(1, "Wallet already exists");
-    callback(type::Result::WALLET_CREATED);
+  auto wallet = ledger_->wallet()->GetWallet(true);
+  if (!wallet) {
+    BLOG(0, "Wallet does not exist and could not be created");
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  wallet = type::BraveWallet::New();
-  const auto key_info_seed = util::Security::GenerateSeed();
-  wallet->recovery_seed = key_info_seed;
-  const bool success = ledger_->wallet()->SetWallet(std::move(wallet));
-
-  if (!success) {
-    BLOG(0, "Wallet couldn't be set");
-    callback(type::Result::LEDGER_ERROR);
+  if (!wallet->payment_id.empty()) {
+    BLOG(1, "Wallet already exists");
+    callback(type::Result::WALLET_CREATED);
     return;
   }
 

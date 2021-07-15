@@ -165,10 +165,11 @@ void LedgerClientIOS::WalletDisconnected(const std::string& wallet_type) {
 void LedgerClientIOS::DeleteLog(ledger::client::ResultCallback callback) {
   [bridge_ deleteLog:callback];
 }
-bool LedgerClientIOS::SetEncryptedStringState(const std::string& key,
-                                              const std::string& value) {
-  return [bridge_ setEncryptedStringState:key value:value];
+absl::optional<std::string> LedgerClientIOS::EncryptString(
+    const std::string& value) {
+  return [bridge_ encryptString:value];
 }
-std::string LedgerClientIOS::GetEncryptedStringState(const std::string& key) {
-  return [bridge_ getEncryptedStringState:key];
+absl::optional<std::string> LedgerClientIOS::DecryptString(
+    const std::string& value) {
+  return [bridge_ decryptString:value];
 }

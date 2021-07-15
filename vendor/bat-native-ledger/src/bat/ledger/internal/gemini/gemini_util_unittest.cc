@@ -136,12 +136,12 @@ TEST_F(GeminiUtilTest, GetWithdrawUrl) {
 
 TEST_F(GeminiUtilTest, GetWallet) {
   // no wallet
-  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletGemini))
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletGemini))
       .WillByDefault(testing::Return(""));
   auto result = mock_ledger_impl_.get()->gemini()->GetWallet();
   ASSERT_TRUE(!result);
 
-  const std::string wallet = R"({
+  const std::string wallet = FakeEncryption::Base64EncryptString(R"({
     "account_url": "https://exchange.sandbox.gemini.com",
     "add_url": "",
     "address": "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af",
@@ -153,9 +153,9 @@ TEST_F(GeminiUtilTest, GetWallet) {
     "user_name": "test",
     "verify_url": "https://exchange.sandbox.gemini.com/auth/token",
     "withdraw_url": ""
-  })";
+  })");
 
-  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletGemini))
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletGemini))
       .WillByDefault(testing::Return(wallet));
 
   // Gemini wallet

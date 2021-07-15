@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 
+#include "third_party/abseil-cpp/absl/types/optional.h"
+
 namespace ledger {
 class LedgerImpl;
 
@@ -108,6 +110,10 @@ class State {
   void ResetWalletType();
 
   uint64_t GetPromotionLastFetchStamp();
+
+  absl::optional<std::string> GetEncryptedString(const std::string& key);
+
+  bool SetEncryptedString(const std::string& key, const std::string& value);
 
  private:
   LedgerImpl* ledger_;  // NOT OWNED

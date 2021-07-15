@@ -375,5 +375,42 @@ uint64_t State::GetPromotionLastFetchStamp() {
   return ledger_->ledger_client()->GetUint64State(kPromotionLastFetchStamp);
 }
 
+absl::optional<std::string> State::GetEncryptedString(const std::string& key) {
+  std::string value = ledger_->ledger_client()->GetStringState(key);
+
+  // If the state value is empty, then we consider this a successful read of a
+  // default empty string.
+  if (value.empty())
+    return "";
+
+  if (!base::Base64Decode(value, &value)) {
+    BLOG(0, "Base64 decoding failed for " << key);
+    return {};
+  }
+
+  auto decrypted = ledger_->ledger_client()->DecryptString(value);
+  if (!decrypted) {
+    BLOG(0, "Decryption failed for " << key);
+    return {};
+  }
+
+  return *decrypted;
+}
+
+bool State::SetEncryptedString(const std::string& key,
+                               const std::string& value) {
+  auto encrypted = ledger_->ledger_client()->EncryptString(value);
+  if (!encrypted) {
+    BLOG(0, "Encryption failed for " << key);
+    return false;
+  }
+
+  std::string base64_string;
+  base::Base64Encode(*encrypted, &base64_string);
+
+  ledger_->ledger_client()->SetStringState(key, base64_string);
+  return true;
+}
+
 }  // namespace state
 }  // namespace ledger
