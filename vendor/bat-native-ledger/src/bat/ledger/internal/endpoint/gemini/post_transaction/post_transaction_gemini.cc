@@ -14,6 +14,7 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/endpoint/gemini/gemini_utils.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 using std::placeholders::_1;
 
@@ -53,7 +54,7 @@ type::Result PostTransaction::ParseBody(const std::string& body,
   DCHECK(transfer_id);
   DCHECK(transfer_status);
 
-  base::Optional<base::Value> value = base::JSONReader::Read(body);
+  absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     return type::Result::LEDGER_ERROR;

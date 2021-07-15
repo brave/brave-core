@@ -13,6 +13,7 @@
 #include "bat/ledger/internal/endpoint/gemini/gemini_utils.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 using std::placeholders::_1;
 
@@ -40,7 +41,7 @@ type::Result PostAccount::ParseBody(const std::string& body,
   DCHECK(user_name);
   DCHECK(verified);
 
-  base::Optional<base::Value> value = base::JSONReader::Read(body);
+  absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     return type::Result::LEDGER_ERROR;
@@ -88,7 +89,7 @@ type::Result PostAccount::ParseBody(const std::string& body,
     return type::Result::LEDGER_ERROR;
   }
 
-  base::Optional<bool> is_verified = user_list[0].FindBoolKey("isVerified");
+  absl::optional<bool> is_verified = user_list[0].FindBoolKey("isVerified");
   if (!verified) {
     BLOG(0, "Missing isVerified flag");
     return type::Result::LEDGER_ERROR;
