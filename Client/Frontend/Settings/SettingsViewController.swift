@@ -12,6 +12,7 @@ import SwiftyJSON
 import Data
 import WebKit
 import BraveRewards
+import SwiftUI
 
 extension TabBarVisibility: RepresentableOptionType {
     public var displayString: String {
@@ -36,7 +37,7 @@ extension DataSource {
         return IndexPath(row: row, section: section)
     }
     
-    func reloadCell(row: Row, section: Section, displayText: String) {
+    func reloadCell(row: Row, section: Static.Section, displayText: String) {
         if let indexPath = indexPath(rowUUID: row.uuid, sectionUUID: section.uuid) {
             sections[indexPath.section].rows[indexPath.row].detailText = displayText
         }
@@ -97,7 +98,14 @@ class SettingsViewController: TableViewController {
         navigationController?.pushViewController(settings, animated: true)
     }
     
-    private var sections: [Section] {
+    private func displayBraveSearchDebugMenu() {
+        let hostingController =
+            UIHostingController(rootView: BraveSearchDebugMenu(logging: BraveSearchLogEntry.shared))
+        
+        navigationController?.pushViewController(hostingController, animated: true)
+    }
+    
+    private var sections: [Static.Section] {
         var list = [
             featuresSection,
             generalSection,
@@ -133,7 +141,7 @@ class SettingsViewController: TableViewController {
     
     // MARK: - Sections
     
-    private lazy var enableBraveVPNSection: Section = {
+    private lazy var enableBraveVPNSection: Static.Section = {
         let header = EnableVPNSettingHeader()
         header.enableVPNTapped = { [weak self] in
             self?.enableVPNTapped()
@@ -151,11 +159,11 @@ class SettingsViewController: TableViewController {
         
         header.bounds = CGRect(size: calculatedSize)
         
-        return Section(header: .view(header))
+        return Static.Section(header: .view(header))
     }()
     
-    private lazy var featuresSection: Section = {
-        var section = Section(
+    private lazy var featuresSection: Static.Section = {
+        var section = Static.Section(
             header: .title(Strings.features),
             rows: [
                 Row(text: Strings.braveShieldsAndPrivacy, selection: { [unowned self] in
@@ -206,8 +214,8 @@ class SettingsViewController: TableViewController {
         return section
     }()
     
-    private lazy var generalSection: Section = {
-        var general = Section(
+    private lazy var generalSection: Static.Section = {
+        var general = Static.Section(
             header: .title(Strings.settingsGeneralSectionTitle),
             rows: [
                 Row(text: Strings.searchEngines, selection: { [unowned self] in
@@ -258,8 +266,8 @@ class SettingsViewController: TableViewController {
         return general
     }()
     
-    private lazy var displaySection: Section = {
-        var display = Section(
+    private lazy var displaySection: Static.Section = {
+        var display = Static.Section(
             header: .title(Strings.displaySettingsSection),
             rows: []
         )
@@ -389,7 +397,7 @@ class SettingsViewController: TableViewController {
                cellClass: ColoredDetailCell.self, context: [ColoredDetailCell.colorKey: color], uuid: "vpnrow")
     }
 
-    private lazy var securitySection: Section = {
+    private lazy var securitySection: Static.Section = {
         let passcodeTitle: String = {
             let localAuthContext = LAContext()
             if localAuthContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
@@ -404,7 +412,7 @@ class SettingsViewController: TableViewController {
             }
         }()
         
-        return Section(
+        return Static.Section(
             header: .title(Strings.security),
             rows: [
                 Row(text: passcodeTitle, selection: { [unowned self] in
@@ -416,8 +424,8 @@ class SettingsViewController: TableViewController {
         )
     }()
     
-    private lazy var supportSection: Section = {
-        return Section(
+    private lazy var supportSection: Static.Section = {
+        return Static.Section(
             header: .title(Strings.support),
             rows: [
                 Row(text: Strings.reportABug,
@@ -441,11 +449,11 @@ class SettingsViewController: TableViewController {
         )
     }()
     
-    private lazy var aboutSection: Section = {
+    private lazy var aboutSection: Static.Section = {
         let version = String(format: Strings.versionTemplate,
                              Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "",
                              Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "")
-        return Section(
+        return Static.Section(
             header: .title(Strings.about),
             rows: [
                 Row(text: version, selection: { [unowned self] in
@@ -490,10 +498,10 @@ class SettingsViewController: TableViewController {
         )
     }()
     
-    private lazy var debugSection: Section? = {
+    private lazy var debugSection: Static.Section? = {
         if AppConstants.buildChannel.isPublic { return nil }
         
-        return Section(
+        return Static.Section(
             rows: [
                 Row(text: "Region: \(Locale.current.regionCode ?? "--")"),
                 Row(text: "Adblock Debug", selection: { [unowned self] in
@@ -509,6 +517,9 @@ class SettingsViewController: TableViewController {
                 }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
                 Row(text: "View Brave News Debug Menu", selection: { [unowned self] in
                     self.displayBraveNewsDebugMenu()
+                }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+                Row(text: "View Brave Search Debug Menu", selection: { [unowned self] in
+                    self.displayBraveSearchDebugMenu()
                 }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
                 Row(text: "VPN Logs", selection: { [unowned self] in
                     self.navigationController?.pushViewController(VPNLogsViewController(), animated: true)
@@ -549,7 +560,7 @@ class SettingsViewController: TableViewController {
     
     private func dismissVPNHeaderTapped() {
         if dataSource.sections.isEmpty { return }
-        dataSource.sections[0] = Section()
+        dataSource.sections[0] = Static.Section()
         Preferences.VPN.vpnSettingHeaderWasDismissed.value = true
     }
 }
