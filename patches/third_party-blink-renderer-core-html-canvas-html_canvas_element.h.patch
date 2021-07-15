@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-index 905b0acc5618b4ded9cffb0061fafbb0f310c910..eeae33d929de266d54357a7b318bab0b1f0064f8 100644
+index 1d10cd7e27735a3b1333114d0e5a235fee1a6d9b..02c74b76860426e17bf26885f5edea8357776e51 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-@@ -321,6 +321,7 @@ class CORE_EXPORT HTMLCanvasElement final
+@@ -323,6 +323,7 @@ class CORE_EXPORT HTMLCanvasElement final
  
    bool IsCanvasClear() { return canvas_is_clear_; }
  

@@ -1,8 +1,8 @@
 diff --git a/components/policy/tools/generate_policy_source.py b/components/policy/tools/generate_policy_source.py
-index 4d4bab954c95a90fc30314516d361392b078c2c9..3ca1b397bb83d1588e31c1907ead75cd58d62835 100755
+index db57ccfb60149631b8161be7bc76c2c2d703cc71..f4c2e7e4e7cc6425a10bbd569649a9701e795785 100755
 --- a/components/policy/tools/generate_policy_source.py
 +++ b/components/policy/tools/generate_policy_source.py
-@@ -42,6 +42,7 @@ PLATFORM_STRINGS = {
+@@ -43,6 +43,7 @@ PLATFORM_STRINGS = {
      'chrome.win7': ['win']
  }
  
@@ -10,7 +10,7 @@ index 4d4bab954c95a90fc30314516d361392b078c2c9..3ca1b397bb83d1588e31c1907ead75cd
  
  class PolicyDetails:
    """Parses a policy template and caches all its details."""
-@@ -353,6 +354,7 @@ def main():
+@@ -354,6 +355,7 @@ def main():
      chrome_major_version = ParseVersionFile(version_path)
  
    template_file_contents = _LoadJSONFile(template_file_name)

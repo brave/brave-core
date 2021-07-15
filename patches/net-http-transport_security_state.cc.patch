@@ -1,5 +1,5 @@
 diff --git a/net/http/transport_security_state.cc b/net/http/transport_security_state.cc
-index 857a7b4d0cb292c75278c612a064224fa4fa4e39..871ffdc8c96d99c3f43da7d0c3698e790307a027 100644
+index 1a13b0e6883a4622380ccedf2ac6a02e4c2c842d..49e209cdcc8d394c84cd6ad5b2f130f67d4127b6 100644
 --- a/net/http/transport_security_state.cc
 +++ b/net/http/transport_security_state.cc
 @@ -409,6 +409,7 @@ TransportSecurityState::TransportSecurityState(

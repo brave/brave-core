@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h b/chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h
-index 3071cb2cf4bb88f0f2ec1ef62dff9134d2d5eaba..25012166f5c42a31226d213c766cfaee65da177f 100644
+index 1fa9f791678d01f09fb96f535268deff947d9c22..24340c8f7436a19ee06272f195e21a0e481ec604 100644
 --- a/chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h
 +++ b/chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h
-@@ -57,6 +57,7 @@ class ChromeLocationBarModelDelegate : public LocationBarModelDelegate {
+@@ -58,6 +58,7 @@ class ChromeLocationBarModelDelegate : public LocationBarModelDelegate {
  
    // Helper method to get the navigation entry from the navigation controller.
    content::NavigationEntry* GetNavigationEntry() const;
