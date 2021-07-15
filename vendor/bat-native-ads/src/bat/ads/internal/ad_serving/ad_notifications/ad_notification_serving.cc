@@ -16,6 +16,7 @@
 #include "bat/ads/internal/ad_targeting/ad_targeting_segment.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notification_builder.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notification_permission_rules.h"
+#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications.h"
 #include "bat/ads/internal/logging.h"
@@ -27,6 +28,11 @@
 
 namespace ads {
 namespace ad_notifications {
+
+namespace {
+constexpr base::TimeDelta kRetryServingAdAtNextInterval =
+    base::TimeDelta::FromMinutes(2);
+}  // namespace
 
 AdServing::AdServing(
     AdTargeting* ad_targeting,
@@ -78,7 +84,7 @@ void AdServing::StartServingAdsAtRegularIntervals() {
     }
   }
 
-  const base::Time next_interval = MaybeServeAfter(delay);
+  const base::Time next_interval = MaybeServeAdAfter(delay);
   BLOG(1, "Maybe serve ad notification " << FriendlyDateAndTime(next_interval));
 }
 
@@ -129,7 +135,7 @@ void AdServing::MaybeServeAd() {
         }
 
         BLOG(1, "Served ad notification");
-        ServedAd();
+        ServedAd(ad);
       });
 }
 
@@ -137,16 +143,29 @@ void AdServing::OnAdsPerHourChanged() {
   const int64_t ads_per_hour = settings::GetAdsPerHour();
   BLOG(1, "Maximum ads per hour changed to " << ads_per_hour);
 
-  if (!PlatformHelper::GetInstance()->IsMobile()) {
+  if (!ShouldServeAdsAtRegularIntervals()) {
     return;
   }
 
-  MaybeServeNextAd();
+  if (ads_per_hour == 0) {
+    StopServingAdsAtRegularIntervals();
+    return;
+  }
+
+  MaybeServeAdAtNextRegularInterval();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void AdServing::MaybeServeNextAd() {
+bool AdServing::ShouldServeAdsAtRegularIntervals() const {
+  return PlatformHelper::GetInstance()->IsMobile();
+}
+
+void AdServing::MaybeServeAdAtNextRegularInterval() {
+  if (!ShouldServeAdsAtRegularIntervals()) {
+    return;
+  }
+
   const int64_t ads_per_hour = settings::GetAdsPerHour();
   if (ads_per_hour == 0) {
     return;
@@ -154,7 +173,17 @@ void AdServing::MaybeServeNextAd() {
 
   const int64_t seconds = base::Time::kSecondsPerHour / ads_per_hour;
   const base::TimeDelta delay = base::TimeDelta::FromSeconds(seconds);
-  const base::Time next_interval = MaybeServeAfter(delay);
+  const base::Time next_interval = MaybeServeAdAfter(delay);
+  BLOG(1, "Maybe serve ad notification " << FriendlyDateAndTime(next_interval));
+}
+
+void AdServing::RetryServingAdAtNextInterval() {
+  if (!ShouldServeAdsAtRegularIntervals()) {
+    return;
+  }
+
+  const base::Time next_interval =
+      MaybeServeAdAfter(kRetryServingAdAtNextInterval);
   BLOG(1, "Maybe serve ad notification " << FriendlyDateAndTime(next_interval));
 }
 
@@ -167,9 +196,7 @@ bool AdServing::ShouldServeAd() const {
   return true;
 }
 
-base::Time AdServing::MaybeServeAfter(const base::TimeDelta delay) {
-  StopServingAdsAtRegularIntervals();
-
+base::Time AdServing::MaybeServeAdAfter(const base::TimeDelta delay) {
   const base::Time next_interval = base::Time::Now() + delay;
   Client::Get()->SetNextAdServingInterval(next_interval);
 
@@ -195,33 +222,24 @@ bool AdServing::ServeAd(
               << "  targetUrl: " << ad_notification.target_url);
 
   AdDelivery ad_delivery;
-  if (!ad_delivery.MaybeDeliverAd(ad_notification)) {
-    NotifyFailedToServeAdNotification();
-    return false;
-  }
-
-  eligible_ads_->SetLastServedAd(creative_ad_notification);
-
-  NotifyDidServeAdNotification(ad_notification);
-
-  return true;
+  return ad_delivery.MaybeDeliverAd(ad_notification);
 }
 
 void AdServing::FailedToServeAd() {
-  if (!PlatformHelper::GetInstance()->IsMobile()) {
-    return;
-  }
+  NotifyFailedToServeAdNotification();
 
-  const base::TimeDelta delay = base::TimeDelta::FromMinutes(2);
-  MaybeServeAfter(delay);
+  RetryServingAdAtNextInterval();
 }
 
-void AdServing::ServedAd() {
-  if (!PlatformHelper::GetInstance()->IsMobile()) {
-    return;
-  }
+void AdServing::ServedAd(
+    const CreativeAdNotificationInfo& creative_ad_notification) {
+  eligible_ads_->SetLastServedAd(creative_ad_notification);
 
-  MaybeServeNextAd();
+  const AdNotificationInfo ad_notification =
+      BuildAdNotification(creative_ad_notification);
+  NotifyDidServeAdNotification(ad_notification);
+
+  MaybeServeAdAtNextRegularInterval();
 }
 
 void AdServing::NotifyDidServeAdNotification(
