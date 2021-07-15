@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.js b/chrome/browser/resources/settings/privacy_page/personalization_options.js
-index fd6a7b11cda563c1e462d6244cce2b4f01c2be77..de554fbd716054b5cf771034062f7d66173df7d6 100644
+index 5a8630b3a7c10fce3b0f69a74c54e1c2a8a79f12..d031c337bd1c58a9bf7e49f0735c14d3d88afe1c 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.js
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.js
-@@ -66,7 +66,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -69,7 +69,7 @@ export class SettingsPersonalizationOptionsElement extends
        /** @type {SyncStatus} */
        syncStatus: Object,
  
@@ -11,16 +11,16 @@ index fd6a7b11cda563c1e462d6244cce2b4f01c2be77..de554fbd716054b5cf771034062f7d66
        // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
        // (but handled differently in C++).
        /** @private {chrome.settingsPrivate.PrefObject} */
-@@ -125,7 +125,7 @@ export class SettingsPersonalizationOptionsElement extends
- 
-     this.browserProxy_ = PrivacyPageBrowserProxyImpl.getInstance();
+@@ -126,7 +126,7 @@ export class SettingsPersonalizationOptionsElement extends
+   ready() {
+     super.ready();
  
 -    // <if expr="_google_chrome and not chromeos">
 +    // <if expr="_chromium and not chromeos">
      const setMetricsReportingPref = this.setMetricsReportingPref_.bind(this);
      this.addWebUIListener('metrics-reporting-change', setMetricsReportingPref);
      this.browserProxy_.getMetricsReporting().then(setMetricsReportingPref);
-@@ -159,7 +159,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -160,7 +160,7 @@ export class SettingsPersonalizationOptionsElement extends
          this.shadowRoot.querySelector('#driveSuggestControl'));
    }
  
@@ -29,7 +29,7 @@ index fd6a7b11cda563c1e462d6244cce2b4f01c2be77..de554fbd716054b5cf771034062f7d66
    /** @private */
    onMetricsReportingChange_() {
      const enabled = this.$.metricsReportingControl.checked;
-@@ -209,6 +209,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -210,6 +210,7 @@ export class SettingsPersonalizationOptionsElement extends
    }
    // </if>
  
@@ -37,7 +37,7 @@ index fd6a7b11cda563c1e462d6244cce2b4f01c2be77..de554fbd716054b5cf771034062f7d66
    /**
     * @return {boolean}
     * @private
-@@ -258,6 +259,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -259,6 +260,7 @@ export class SettingsPersonalizationOptionsElement extends
      }
      this.showSignoutDialog_ = false;
    }
