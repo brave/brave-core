@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/site_settings/site_details.html b/chrome/browser/resources/settings/site_settings/site_details.html
-index dc274605f76c22da716eb0a20687b311f58cd42e..fe02d10a8dbabdc3d6b3230f8550a9c2eb8cc438 100644
+index a92d514fa35e99bdcce9100cecc871802df38fb5..a18fc20fd3cc35de62f7ea7ce40b6b61b87a2dc3 100644
 --- a/chrome/browser/resources/settings/site_settings/site_details.html
 +++ b/chrome/browser/resources/settings/site_settings/site_details.html
 @@ -186,6 +186,11 @@
@@ -11,6 +11,6 @@ index dc274605f76c22da716eb0a20687b311f58cd42e..fe02d10a8dbabdc3d6b3230f8550a9c2
 +          icon="cr:extension" id="autoplay"
 +          label="$i18n{siteSettingsAutoplay}">
 +      </site-details-permission>
- <if expr="chromeos">
+ <if expr="chromeos or is_win">
        <site-details-permission
            category="[[ContentSettingsTypes.PROTECTED_CONTENT]]"
