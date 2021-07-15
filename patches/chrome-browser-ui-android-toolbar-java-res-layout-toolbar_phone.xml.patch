@@ -1,7 +1,7 @@
-diff --git a/chrome/android/java/res/layout/toolbar_phone.xml b/chrome/android/java/res/layout/toolbar_phone.xml
+diff --git a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml
 index 8ba029c3f9a138a01351cc0232a77e97491792df..c7e118e478fac17a9a6778b5c7ab74a7a44d0484 100644
---- a/chrome/android/java/res/layout/toolbar_phone.xml
-+++ b/chrome/android/java/res/layout/toolbar_phone.xml
+--- a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml
++++ b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml
 @@ -13,6 +13,7 @@
      android:layout_width="match_parent"
      android:layout_height="@dimen/toolbar_height_no_shadow" >
