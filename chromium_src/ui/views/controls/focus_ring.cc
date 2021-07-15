@@ -38,16 +38,16 @@ class FocusRingTheme {
   }
 };
 
-FocusRingTheme* GetFocusRingTheme() {
-  static base::NoDestructor<FocusRingTheme> instance;
-  return instance.get();
+FocusRingTheme& GetFocusRingTheme() {
+  static FocusRingTheme instance;
+  return instance;
 }
 
 }  // namespace
 
 #define BRAVE_FOCUS_RING_ON_PAINT_SET_COLOR_VALIDITY \
   paint.setColor(color_.value_or(                    \
-      GetFocusRingTheme()->GetSystemColor(ColorIdForValidity(!invalid_))));
+      GetFocusRingTheme().GetSystemColor(ColorIdForValidity(!invalid_))));
 
 #include "../../../../../ui/views/controls/focus_ring.cc"
 
