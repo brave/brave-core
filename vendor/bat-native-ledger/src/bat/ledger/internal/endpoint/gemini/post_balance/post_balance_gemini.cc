@@ -12,6 +12,7 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/endpoint/gemini/gemini_utils.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 using std::placeholders::_1;
 
@@ -33,7 +34,7 @@ type::Result PostBalance::ParseBody(const std::string& body,
                                     double* available) {
   DCHECK(available);
 
-  base::Optional<base::Value> value = base::JSONReader::Read(body);
+  absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_list()) {
     BLOG(0, "Invalid JSON");
     return type::Result::LEDGER_ERROR;
