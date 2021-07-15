@@ -21,7 +21,6 @@
 #include "brave/components/speedreader/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
-#include "components/permissions/features.h"
 #include "components/prefs/pref_service.h"
 #include "net/base/features.h"
 
