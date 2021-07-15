@@ -10,13 +10,12 @@
 
 #include "base/time/time.h"
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving_observer.h"
-#include "bat/ads/internal/ads/ad_notifications/ad_notification_observer.h"
-#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
 #include "bat/ads/internal/timer.h"
 
 namespace ads {
 
 class AdTargeting;
+struct CreativeAdNotificationInfo;
 
 namespace ad_targeting {
 namespace geographic {
@@ -63,15 +62,17 @@ class AdServing {
 
   std::unique_ptr<EligibleAds> eligible_ads_;
 
-  void MaybeServeNextAd();
+  bool ShouldServeAdsAtRegularIntervals() const;
+  void MaybeServeAdAtNextRegularInterval();
+  void RetryServingAdAtNextInterval();
 
   bool ShouldServeAd() const;
-  base::Time MaybeServeAfter(const base::TimeDelta delay);
+  base::Time MaybeServeAdAfter(const base::TimeDelta delay);
 
   bool ServeAd(
       const CreativeAdNotificationInfo& creative_ad_notification) const;
   void FailedToServeAd();
-  void ServedAd();
+  void ServedAd(const CreativeAdNotificationInfo& creative_ad_notification);
 
   base::ObserverList<AdNotificationServingObserver> observers_;
 
