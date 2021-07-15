@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/browser/page_specific_content_settings.cc b/components/content_settings/browser/page_specific_content_settings.cc
-index 0a206ad47b3033ce3d3cbc6a30a57de74c72857f..7e770baa73b042472f2b40599db5d23ab47bdeeb 100644
+index 7d55a3442633ec45f57a41f5d236156ddfa359ba..eb0cbd02261e0b7685f86a22f912cdc0175091c3 100644
 --- a/components/content_settings/browser/page_specific_content_settings.cc
 +++ b/components/content_settings/browser/page_specific_content_settings.cc
-@@ -426,6 +426,7 @@ bool PageSpecificContentSettings::IsContentBlocked(
+@@ -425,6 +425,7 @@ bool PageSpecificContentSettings::IsContentBlocked(
        content_type == ContentSettingsType::ADS ||
        content_type == ContentSettingsType::SOUND ||
        content_type == ContentSettingsType::CLIPBOARD_READ_WRITE ||
@@ -10,7 +10,7 @@ index 0a206ad47b3033ce3d3cbc6a30a57de74c72857f..7e770baa73b042472f2b40599db5d23a
        content_type == ContentSettingsType::SENSORS ||
        content_type == ContentSettingsType::GEOLOCATION) {
      const auto& it = content_settings_status_.find(content_type);
-@@ -449,6 +450,7 @@ bool PageSpecificContentSettings::IsContentAllowed(
+@@ -448,6 +449,7 @@ bool PageSpecificContentSettings::IsContentAllowed(
        content_type != ContentSettingsType::PPAPI_BROKER &&
        content_type != ContentSettingsType::MIDI_SYSEX &&
        content_type != ContentSettingsType::CLIPBOARD_READ_WRITE &&

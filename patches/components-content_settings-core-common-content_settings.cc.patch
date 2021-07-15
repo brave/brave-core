@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/common/content_settings.cc b/components/content_settings/core/common/content_settings.cc
-index edf31ba76eb0e2949aaa916d2f83fb55a8dc7b03..461bd7774178dc56cbe18e3503a6d49c47c422ef 100644
+index 807a39d67582b91b293056db4be50382f544b6e7..291264444ac9fd9703c066f73826e102ca3becb3 100644
 --- a/components/content_settings/core/common/content_settings.cc
 +++ b/components/content_settings/core/common/content_settings.cc
 @@ -97,6 +97,7 @@ constexpr HistogramValue kHistogramValue[] = {
