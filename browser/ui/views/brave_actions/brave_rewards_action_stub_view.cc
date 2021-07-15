@@ -10,12 +10,14 @@
 #include <utility>
 
 #include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"  // NOLINT
+#include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"  // NOLINT
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_action_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/common/constants.h"
 #include "third_party/skia/include/core/SkBitmap.h"
@@ -36,19 +38,15 @@ namespace {
 
 constexpr SkColor kRewardsBadgeBg = SkColorSetRGB(0xfb, 0x54, 0x2b);
 
-class BraveRewardsActionStubViewHighlightPathGenerator
-      : public views::HighlightPathGenerator {
+class ButtonHighlightPathGenerator : public views::HighlightPathGenerator {
  public:
-  BraveRewardsActionStubViewHighlightPathGenerator() = default;
+  ButtonHighlightPathGenerator() = default;
 
-  // HighlightPathGenerator
+  // HighlightPathGenerator:
   SkPath GetHighlightPath(const views::View* view) override {
     return static_cast<const BraveRewardsActionStubView*>(view)
         ->GetHighlightPath();
   }
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveRewardsActionStubViewHighlightPathGenerator);
 };
 
 }  // namespace
@@ -57,9 +55,13 @@ BraveRewardsActionStubView::BraveRewardsActionStubView(
     Profile* profile,
     BraveRewardsActionStubView::Delegate* delegate)
     : LabelButton(
-          base::BindRepeating(&BraveRewardsActionStubView::ButtonPressed,
+          base::BindRepeating(&BraveRewardsActionStubView::OnButtonPressed,
                               base::Unretained(this)),
           std::u16string()),
+      bubble_manager_(this,
+                      profile,
+                      GURL(kBraveRewardsPanelURL),
+                      IDS_ACCNAME_BRAVE_REWARDS_BUBBLE),
       profile_(profile),
       delegate_(delegate) {
   ink_drop()->SetMode(views::InkDropHost::InkDropMode::ON);
@@ -104,10 +106,10 @@ BraveRewardsActionStubView::BraveRewardsActionStubView(
   // Install highlight path generator
   views::HighlightPathGenerator::Install(
       this,
-      std::make_unique<BraveRewardsActionStubViewHighlightPathGenerator>());
+      std::make_unique<ButtonHighlightPathGenerator>());
 }
 
-BraveRewardsActionStubView::~BraveRewardsActionStubView() {}
+BraveRewardsActionStubView::~BraveRewardsActionStubView() = default;
 
 SkPath BraveRewardsActionStubView::GetHighlightPath() const {
   // Set the highlight path for the toolbar button,
@@ -123,7 +125,7 @@ SkPath BraveRewardsActionStubView::GetHighlightPath() const {
   return path;
 }
 
-void BraveRewardsActionStubView::ButtonPressed() {
+void BraveRewardsActionStubView::OnButtonPressed() {
   // We only show the default badge text once, so once the button
   // is clicked then change it back. We consider pressing the button
   // as an action to 'dismiss' the badge notification.
@@ -133,7 +135,24 @@ void BraveRewardsActionStubView::ButtonPressed() {
     profile_->GetPrefs()->SetString(brave_rewards::prefs::kBadgeText,
         "");
   }
-  delegate_->OnRewardsStubButtonClicked();
+  ToggleRewardsPanel();
+  // delegate_->OnRewardsStubButtonClicked();
+}
+
+void BraveRewardsActionStubView::ToggleRewardsPanel() {
+  if (bubble_manager_.ShowBubble()) {
+    // TODO(zenparsing): Use a bubble observer to get notified when the panel has
+    // been closed. Use a pressed lock to "hold" down the button while the panel
+    // is visible
+    LOG(ERROR) << "weez just opened a bubble!";
+  } else {
+    LOG(ERROR) << "haz bubble, let's close it";
+    CloseRewardsPanel();
+  }
+}
+
+void BraveRewardsActionStubView::CloseRewardsPanel() {
+  bubble_manager_.CloseBubble();
 }
 
 gfx::Size BraveRewardsActionStubView::CalculatePreferredSize() const {
@@ -142,9 +161,7 @@ gfx::Size BraveRewardsActionStubView::CalculatePreferredSize() const {
 
 std::unique_ptr<views::LabelButtonBorder> BraveRewardsActionStubView::
     CreateDefaultBorder() const {
-  std::unique_ptr<views::LabelButtonBorder> border =
-      LabelButton::CreateDefaultBorder();
-  border->set_insets(
-      gfx::Insets(0, 0, 0, 0));
+  auto border = LabelButton::CreateDefaultBorder();
+  border->set_insets(gfx::Insets(0, 0, 0, 0));
   return border;
 }

@@ -1,0 +1,14 @@
+import("//brave/components/common/typescript.gni")
+
+transpile_web_ui("brave_rewards_panel_new") {
+  entry_points = [
+    ["brave_rewards_panel_new", rebase_path("main.tsx")]
+  ]
+  resource_name = "brave_rewards_panel_new"
+}
+
+pack_web_resources("brave_rewards_panel_new_generated") {
+  resource_name = "brave_rewards_panel_new"
+  output_dir = "$root_gen_dir/brave/components/brave_rewards/resources"
+  deps = [ ":brave_rewards_panel_new" ]
+}

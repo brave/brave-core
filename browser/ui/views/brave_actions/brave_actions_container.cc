@@ -196,6 +196,9 @@ bool BraveActionsContainer::ShouldAddBraveRewardsAction() const {
 
 void BraveActionsContainer::AddAction(const extensions::Extension* extension) {
   DCHECK(extension);
+  if (extension->id() == brave_rewards_extension_id)
+    return;
+
   if (!ShouldAddAction(extension->id()))
     return;
   VLOG(1) << "AddAction (" << extension->id() << "), was already loaded: "
@@ -257,6 +260,11 @@ void BraveActionsContainer::AttachAction(BraveActionInfo &action) {
 
 void BraveActionsContainer::AddAction(const std::string& id) {
   DCHECK(extension_registry_);
+
+  // TODO(zenparsing): Skip adding the action button for the rewards extension.
+  if (id == brave_rewards_extension_id)
+    return;
+
   const extensions::Extension* extension =
       extension_registry_->enabled_extensions().GetByID(id);
   if (extension) {
@@ -389,7 +397,8 @@ void BraveActionsContainer::OnExtensionSystemReady() {
   // Check if extensions already loaded
   AddAction(brave_extension_id);
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  AddAction(brave_rewards_extension_id);
+  AddActionStubForRewards();
+  // AddAction(brave_rewards_extension_id);
 #endif
 }
 

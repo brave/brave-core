@@ -475,12 +475,16 @@ source_set("ui") {
       sources += [
         "webui/brave_tip_ui.cc",
         "webui/brave_tip_ui.h",
+        "webui/brave_rewards/rewards_panel_ui.cc",
+        "webui/brave_rewards/rewards_panel_ui.h",
       ]
     }
 
     deps += [
       "//brave/browser/brave_ads",
       "//brave/components/brave_ads/browser",
+      # TODO(zenparsing): Shouldn't this be in the !is_android block?
+      "//brave/components/brave_rewards/resources/rewards_panel:brave_rewards_panel_new_generated",
       "//brave/components/brave_rewards/resources:internals_generated_resources",
       "//brave/components/brave_rewards/resources:page_generated_resources",
       "//brave/components/brave_rewards/resources:tip_generated_resources",

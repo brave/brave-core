@@ -8,11 +8,15 @@
 
 #include <memory>
 
+#include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
+#include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "components/prefs/pref_member.h"
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/view.h"
 
 class Profile;
+
+// TODO(zenparsing): Rename this thing, since it's no longer a "stub"
 
 // A button to take the place of an extension that will be loaded in the future.
 // Call SetImage with the BraveActionIconWithBadgeImageSource
@@ -21,13 +25,13 @@ class BraveRewardsActionStubView : public views::LabelButton {
  public:
   class Delegate {
    public:
+    virtual ~Delegate() = default;
+
     virtual void OnRewardsStubButtonClicked() = 0;
     virtual gfx::Size GetToolbarActionSize() = 0;
-   protected:
-    ~Delegate() {}
   };
 
-  explicit BraveRewardsActionStubView(Profile* profile, Delegate* delegate);
+  BraveRewardsActionStubView(Profile* profile, Delegate* delegate);
   ~BraveRewardsActionStubView() override;
 
   // views::LabelButton:
@@ -38,11 +42,15 @@ class BraveRewardsActionStubView : public views::LabelButton {
 
  private:
   gfx::Size CalculatePreferredSize() const override;
-  void ButtonPressed();
+  void OnButtonPressed();
 
+  void ToggleRewardsPanel();
+  void CloseRewardsPanel();
+
+  WebUIBubbleManagerT<RewardsPanelUI> bubble_manager_;
   StringPrefMember badge_text_pref_;
-  Profile* profile_;
-  Delegate* delegate_;
+  Profile* profile_ = nullptr;
+  Delegate* delegate_ = nullptr;
 
   DISALLOW_COPY_AND_ASSIGN(BraveRewardsActionStubView);
 };

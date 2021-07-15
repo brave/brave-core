@@ -34,6 +34,8 @@
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "brave/browser/ui/webui/brave_tip_ui.h"
+#include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
+// TODO(zenparsing): Prototyping only
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_page_ui.h"
 #endif
@@ -101,6 +103,10 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 #if !defined(OS_ANDROID)
   } else if (host == kTipHost) {
     return new BraveTipUI(web_ui, url.host());
+  } else if (host == kBraveRewardsPanelHost) {
+    // TODO(zenparsing): This is for prototyping only. The panel will only be
+    // opened using a WebUIBubbleManager thing
+    return new RewardsPanelUI(web_ui);
 #endif  // !defined(OS_ANDROID)
 #endif  // BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #if !defined(OS_ANDROID)
@@ -138,6 +144,8 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       url.host_piece() == kRewardsPageHost ||
       url.host_piece() == kRewardsInternalsHost ||
       url.host_piece() == kTipHost ||
+      // TODO(zenparsing): Prototyping only
+      url.host_piece() == kBraveRewardsPanelHost ||
 #endif
 #if BUILDFLAG(ENABLE_TOR)
       url.host_piece() == kTorInternalsHost ||

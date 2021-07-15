@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <!--TODO(zenparsing): Not working without?-->
+  <!--<if expr="brave_rewards_enabled">-->
+    <message name="IDS_ACCNAME_BRAVE_REWARDS_BUBBLE" desc="The accessible name for the Brave Rewards panel bubble.">Brave Rewards</message>
+  <!--</if>-->
+</grit-part>

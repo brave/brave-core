@@ -59,6 +59,9 @@
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_rewards_page/brave_rewards_page.grd": {
     "includes": [38480],
   },
+  "<(ROOT_GEN_DIR)/brave/web-ui-brave_rewards_panel_new/brave_rewards_panel_new.grd": {
+    "includes": [38600],
+  },
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_rewards_internals/brave_rewards_internals.grd": {
     "includes": [38640],

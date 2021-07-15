@@ -54,6 +54,7 @@ grit("static_resources") {
   output_dir = "$root_gen_dir/brave/components/brave_rewards/resources"
 }
 
+# TODO(zenparsing): What is this repack thing about?
 repack("resources") {
   public_deps = [
     ":page_generated_resources",
@@ -68,8 +69,15 @@ repack("resources") {
   ]
 
   if (!is_android) {
-    sources += [ "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_tip_generated.pak" ]
-    public_deps += [ ":tip_generated_resources" ]
+    sources += [
+      "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_tip_generated.pak",
+      "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_panel_new_generated.pak",
+    ]
+
+    public_deps += [
+      ":tip_generated_resources",
+      "rewards_panel:brave_rewards_panel_new_generated",
+    ]
   }
 
   output = "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_resources.pak"
