@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.h b/chrome/browser/renderer_context_menu/render_view_context_menu.h
-index b0b04af937235ab583e5c827694acb19598c470b..0168fe2acdb59ed0eb3388d182c0233580de0ca7 100644
+index 9f23d7fed4025254630992dbfff727e7fc405ff2..d922f1ca8d3bcee0c55a0b96f1d91fe12923e692 100644
 --- a/chrome/browser/renderer_context_menu/render_view_context_menu.h
 +++ b/chrome/browser/renderer_context_menu/render_view_context_menu.h
-@@ -116,6 +116,7 @@ class RenderViewContextMenu : public RenderViewContextMenuBase {
+@@ -125,6 +125,7 @@ class RenderViewContextMenu : public RenderViewContextMenuBase,
    // Returns true if keyboard lock is active and requires the user to press and
    // hold escape to exit exclusive access mode.
    bool IsPressAndHoldEscRequiredToExitFullscreen() const;
 +  BRAVE_RENDER_VIEW_CONTEXT_MENU_H_
  
-  private:
-   friend class RenderViewContextMenuTest;
+ #if BUILDFLAG(IS_CHROMEOS_ASH)
+   virtual const policy::DlpRulesManager* GetDlpRulesManager() const;
