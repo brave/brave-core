@@ -229,8 +229,11 @@
   <message name="IDS_SETTINGS_EDIT" desc="Label used on a menu item or button, used in different contexts to edit an item.">
     Edit
   </message>
+  <message name="IDS_SETTINGS_END_TIME" desc="The label of the end time bubble of settings-scheduler-slider">
+    End time
+  </message>
   <message name="IDS_SETTINGS_NOT_VALID" desc="Text indicating that an input is not valid.">
-   Not valid
+    Not valid
   </message>
   <message name="IDS_SETTINGS_NOT_VALID_WEB_ADDRESS" desc="Text indicating that the Web address entered by the user is invalid.">
     Not a valid web address
@@ -239,10 +242,13 @@
     Origin must be secure
   </message>
   <message name="IDS_SETTINGS_RETRY" desc="The label text of the retry button because there is an error.">
-   Retry
+    Retry
   </message>
   <message name="IDS_SETTINGS_SLIDER_MIN_MAX_ARIA_ROLE_DESCRIPTION" desc="A label to be read aloud by screen readers when a user focuses on a slider. A settings slider generally has a minimum value, a maximum value, and a fixed range of values in between. This label gives the user context for what the minimum and maximum values represent for that particular slider.">
     Slider: <ph name="MIN_LABEL">$1<ex>Slowest</ex></ph> to <ph name="MAX_LABEL">$2<ex>Fastest</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_START_TIME" desc="The label of the start time bubble of settings-scheduler-slider">
+    Start time
   </message>
 
   <!-- Autofill Page -->
@@ -959,10 +965,10 @@
     Signs you out of most sites. You'll stay signed in to your Brave sync chain so your synced data can be cleared.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY" desc="A subtext for the basic tab explaining browsing history.">
-    Clears history in the search box
+    Clears history, including in the search box
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY_SIGNED_IN" desc="A description explaining other forms of activity for signed in users.">
-    Clears history and autocompletions in the search box. Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+    Clears history in the search box. Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY_SIGNED_IN_NO_LINK" desc="A description explaining from which devices history will be cleared.">
     Clears history from all synced devices
@@ -970,8 +976,17 @@
   <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY_SYNCED" desc="A description for the basic tab explaining browsing history for users with history sync.">
     Clears history from all signed-in devices. Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
-  <message name="IDS_SETTINGS_CLEAR_SEARCH_BROWSING_HISTORY_SUMMARY_SIGNED_IN" desc="A description explaining that search history can be cleared through the Brave account.">
-    To clear <ph name="BEGIN_LINK_SEARCH">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>search<ph name="END_LINK_SEARCH">&lt;/a&gt;</ph> or other forms of history, visit <ph name="BEGIN_LINK_GOOGLE">&lt;a target="_blank" rel="noopener noreferrer" href="$2"&gt;</ph>My Brave sync chain<ph name="END_LINK_GOOGLE">&lt;/a&gt;</ph>
+  <message name="IDS_SETTINGS_CLEAR_GOOGLE_SEARCH_HISTORY_GOOGLE_DSE" desc="A description explaining that search history and other forms of activity can be cleared through the Brave account.">
+    <ph name="BEGIN_LINK_SEARCH">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Search history<ph name="END_LINK_SEARCH">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_GOOGLE">&lt;a target="_blank" rel="noopener noreferrer" href="$2"&gt;</ph>other forms of activity<ph name="END_LINK_GOOGLE">&lt;/a&gt;</ph> may be saved in your Brave sync chain when you're signed in. You can delete them at any time.
+  </message>
+  <message name="IDS_SETTINGS_CLEAR_GOOGLE_SEARCH_HISTORY_NON_GOOGLE_DSE" desc="A description explaining that other forms of activity can be cleared through the Brave account.">
+    <ph name="BEGIN_LINK_GOOGLE">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Other forms of activity<ph name="END_LINK_GOOGLE">&lt;/a&gt;</ph> may be saved in your Brave sync chain when you're signed in. You can delete them at any time.
+  </message>
+  <message name="IDS_SETTINGS_CLEAR_NON_GOOGLE_SEARCH_HISTORY_PREPOPULATED_DSE" desc="A description informing the user about the way to clear their search history when their Default Search Engine is not Brave.">
+    Your search engine is <ph name="DSE">$1<ex>Bing</ex></ph>. See their instructions for deleting your search history, if applicable.
+  </message>
+  <message name="IDS_SETTINGS_CLEAR_NON_GOOGLE_SEARCH_HISTORY_NON_PREPOPULATED_DSE" desc="A description informing the user about the way to clear their search history when their Default Search Engine is not Brave.">
+    See your search engine's instructions for deleting your search history, if applicable
   </message>
   <message name="IDS_SETTINGS_CLEAR_DOWNLOAD_HISTORY" desc="Checkbox for deleting Download History">
     Download history
@@ -1593,6 +1608,12 @@
   <message name="IDS_SETTINGS_ADVANCED_PROTECTION_PROGRAM_DESC" desc="Description of the Brave     Advanced Protection Program">
     Safeguards the personal Brave sync chains of anyone at risk of targeted attacks
   </message>
+  <message name="IDS_SETTINGS_HTTPS_ONLY_MODE" desc="Text for HTTPS-Only Mode toggle in Security settings">
+    Always use secure connections
+  </message>
+  <message name="IDS_SETTINGS_HTTPS_ONLY_MODE_DESCRIPTION" desc="Secondary, continued explanation of HTTPS-Only Mode in Security settings">
+    Upgrade all navigations to HTTPS and warn you before loading sites that don't support it
+  </message>
   <message name="IDS_SETTINGS_MANAGE_CERTIFICATES" desc="Text for manage certificates button in Privacy options">
     Manage certificates
   </message>
@@ -1848,6 +1869,9 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CUSTOMIZED_BEHAVIORS_DESCRIPTION" desc="Description for the site settings exceptions.">
     Sites listed below follow a custom setting instead of the default
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CUSTOMIZED_BEHAVIORS_DESCRIPTION_SHORT" desc="Short description for the site settings exceptions.">
+    Sites listed below follow a custom setting
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ADS_DESCRIPTION" desc="Description of the ads content setting.">
     Sites usually show ads so they can provide content or services for free. But, some sites are known to show intrusive or misleading ads.
