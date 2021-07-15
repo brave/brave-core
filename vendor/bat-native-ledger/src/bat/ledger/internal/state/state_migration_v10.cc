@@ -27,7 +27,7 @@ StateMigrationV10::StateMigrationV10(LedgerImpl* ledger)
 StateMigrationV10::~StateMigrationV10() = default;
 
 void StateMigrationV10::Migrate(ledger::ResultCallback callback) {
-  auto uphold_wallet = ledger::uphold::GetWallet(ledger_);
+  auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(1, "Uphold wallet is null.");
     return callback(type::Result::LEDGER_OK);
@@ -92,7 +92,7 @@ void StateMigrationV10::OnGetWallet(type::Result result,
                                     const std::string& custodian,
                                     bool linked,
                                     ledger::ResultCallback callback) {
-  auto uphold_wallet = ledger::uphold::GetWallet(ledger_);
+  auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
     return callback(type::Result::LEDGER_ERROR);

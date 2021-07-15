@@ -56,8 +56,6 @@ type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet);
 
 std::string GenerateVerifyLink(type::ExternalWalletPtr wallet);
 
-type::ExternalWalletPtr ResetWallet(type::ExternalWalletPtr wallet);
-
 void LogWalletStatusChange(LedgerImpl* ledger,
                            base::Optional<type::WalletStatus> from,
                            type::WalletStatus to);
