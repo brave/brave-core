@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/common/cookie_settings_base.h b/components/content_settings/core/common/cookie_settings_base.h
-index de17a2bc1972e2c80cee72eb934d8b64d547d94c..12dea0efe3308e69c4d3f9e58be6c462db8b06e8 100644
+index ed5dd8ba2016476ab5b1d564d5e5ed87f9ce47ef..a707e531a207a4df63c3056c0ad4412c3c845f21 100644
 --- a/components/content_settings/core/common/cookie_settings_base.h
 +++ b/components/content_settings/core/common/cookie_settings_base.h
-@@ -169,6 +169,7 @@ class CookieSettingsBase {
+@@ -175,6 +175,7 @@ class CookieSettingsBase {
    // Determines whether |setting| is a valid content setting for legacy cookie
    // access.
    static bool IsValidSettingForLegacyAccess(ContentSetting setting);

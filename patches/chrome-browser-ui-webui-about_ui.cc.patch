@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/about_ui.cc b/chrome/browser/ui/webui/about_ui.cc
-index 5503490c72cfdb8a868645b1f234070e62641c46..eae2fe5a6e8d3caecda67419614cd498b471032e 100644
+index e04c83a8031397dd54088e1ea565227dc33a3a47..9f2bcc20dc12c34fbb0843d81724de04cb274ceb 100644
 --- a/chrome/browser/ui/webui/about_ui.cc
 +++ b/chrome/browser/ui/webui/about_ui.cc
 @@ -579,6 +579,7 @@ std::string ChromeURLs() {

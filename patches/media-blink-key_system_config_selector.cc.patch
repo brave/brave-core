@@ -1,8 +1,8 @@
 diff --git a/media/blink/key_system_config_selector.cc b/media/blink/key_system_config_selector.cc
-index 68c833ec965146799e9aa747f50d43ad96db34c3..73427bca81a280ef68e334b30502371516554995 100644
+index 0acaf77db4d0c5cc8c8119f43730c65c12836d8a..5d33d674bbb735989ab35e7b604854648e5200fe 100644
 --- a/media/blink/key_system_config_selector.cc
 +++ b/media/blink/key_system_config_selector.cc
-@@ -994,6 +994,7 @@ void KeySystemConfigSelector::SelectConfig(
+@@ -990,6 +990,7 @@ void KeySystemConfigSelector::SelectConfig(
  
    key_systems_->UpdateIfNeeded();
  

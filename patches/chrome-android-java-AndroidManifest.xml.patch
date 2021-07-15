@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 538e955d96246db5718302649fc1e9ce15b52ccc..96b1df9eca7f86a48fe3b085980ec280bd945cca 100644
+index 9f21b4fbcd92d754324aa637c7991ed27f80fa08..5a0f003c4232238f0245ce7601ab9c618d4cb8cd 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -56,7 +56,9 @@ by a child template that "extends" this file.
