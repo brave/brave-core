@@ -250,6 +250,12 @@ CHAR_LIMIT guidelines:
       <message name="IDS_NOTIFICATION_CATEGORY_ANNOUNCEMENT" desc="Label for announcements notifications, within a list of notification categories. [CHAR_LIMIT=32]">
         Announcements
       </message>
+      <message name="IDS_NOTIFICATION_CATEGORY_WEBAPPS" desc="Label for webapps notifications, within a list of notification categories [CHAR_LIMIT=32]">
+        Web apps
+      </message>
+      <message name="IDS_NOTIFICATION_CATEGORY_WEBAPPS_QUIET" desc="Label for quiet webapps notifications that used for follow up notifications telling the user a TWA is running in Brave. [CHAR_LIMIT=32]">
+        Web apps (quiet)
+      </message>
       <message name="IDS_NOTIFICATION_CATEGORY_PERMISSION_REQUESTS" desc="Label for permission requests, within a list of notification categories. [CHAR_LIMIT=32]">
        Permission requests
       </message>
@@ -900,7 +906,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         Signs you out of most sites. You won't be signed out of your Brave sync chain.
       </message>
       <message name="IDS_CLEAR_BROWSING_HISTORY_SUMMARY" desc="A text for the basic tab explaining browsing history.">
-        Clears history and autocompletions in the address bar.
+        Clears history, including in the search box.
       </message>
       <message name="IDS_CLEAR_BROWSING_HISTORY_SUMMARY_SYNCED_NO_LINK" desc="A text for the basic tab explaining browsing history for users with history sync. This version is shown when the link to MyActivity is displayed separately.">
         Clears history from all synced devices.
@@ -912,13 +918,13 @@ Your Brave account may have other forms of browsing history like searches and ac
         Clears history from all synced devices. Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;link&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/link&gt;</ph>.
       </message>
       <message name="IDS_CLEAR_SEARCH_HISTORY_LINK" desc="Text informing the user that they can clear search history and other data using MyActivity.">
-        To clear <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>search<ph name="END_LINK1">&lt;/link1&gt;</ph> or other forms of history, visit <ph name="BEGIN_LINK2">&lt;link2&gt;</ph>My Brave Activity<ph name="END_LINK2">&lt;/link2&gt;</ph>
+        <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Search history<ph name="END_LINK1">&lt;/link1&gt;</ph> and <ph name="BEGIN_LINK2">&lt;link2&gt;</ph>other forms of activity<ph name="END_LINK2">&lt;/link2&gt;</ph> may be saved in your Brave sync chain when you’re signed in. You can delete them at any time.
       </message>
       <message name="IDS_CLEAR_SEARCH_HISTORY_LINK_OTHER_FORMS" desc="Text informing the user that they can clear their Brave data using MyActivity when their Default Search Engine is not Brave.">
-        To clear other forms of history, visit <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>My Brave Activity<ph name="END_LINK1">&lt;/link1&gt;</ph>
+        <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Other forms of activity<ph name="END_LINK1">&lt;/link1&gt;</ph> may be saved in your Brave sync chain when you’re signed in. You can delete them at any time.
       </message>
       <message name="IDS_CLEAR_SEARCH_HISTORY_NON_GOOGLE_DSE" desc="Text informing the user about the way to clear their search history when their Default Search Engine is not Brave.">
-        Your search engine is <ph name="dse">%1$s<ex>Bing</ex></ph>. If applicable, see their instructions to delete your search history.
+        Your search engine is <ph name="dse">%1$s<ex>Bing</ex></ph>. See their instructions for deleting your search history, if applicable.
       </message>
       <message name="IDS_CLEAR_SEARCH_HISTORY_NON_GOOGLE_DSE_UNKNOWN" desc="Text informing the user about the way to clear their search history when their Default Search Engine is not Brave and is also not prepopulated.">
         See your search engine’s instructions for deleting your search history, if applicable
@@ -3308,6 +3314,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_READER_VIEW_TEXT_ALT" desc="Message shown on the reader mode button bar, to invite the user to tap to open a reader mode. Reader mode extracts content and removes clutter from a web page and puts the result in a panel making it easier to read. This is used when &quot;Reader Mode for Accessibility&quot; is available.">
         Show simplified view
       </message>
+      <message name="IDS_READER_MODE_MESSAGE_TITLE" desc="Message shown on the reader mode prompt, to invite the user to tap to open a reader mode.">
+        View simplified page?
+      </message>
+      <message name="IDS_READER_MODE_MESSAGE_BUTTON" desc="The label for the button to open the current page in reader mode.">
+        View
+      </message>
       <message name="IDS_CONTENT_PROVIDER_SEARCH_DESCRIPTION" desc="Description for Brave's entry in QSB's list of search suggestion providers [CHAR_LIMIT=32]">
         Bookmarks and web history
       </message>
@@ -3738,12 +3750,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_GOT_IT" desc="Button for the user to accept a disclosure/message">
         Got it
       </message>
-      <message name="IDS_TWA_RUNNING_IN_CHROME_CHANNEL_NAME_INITIAL" desc="Notification channel name for the initial, urgent priority notification telling the user a TWA is running in Brave.">
-        Web apps
-      </message>
-      <message name="IDS_TWA_RUNNING_IN_CHROME_CHANNEL_NAME_SUBSEQUENT" desc="Notification channel name for follow up notifications telling the user a TWA is running in Brave.">
-        Web apps (quiet)
-      </message>
       <message name="IDS_TWA_CLEAR_DATA_DIALOG_TITLE" desc="Title of the clear data dialog showing after user uninstalls or clears data of an app hosting a Trusted Web Activity">
         <ph name="APP_NAME">%1$s<ex>YouTube</ex></ph> also has data in Brave
       </message>
@@ -4166,14 +4172,8 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Let <ph name="EMBEDDED_ORIGIN">%1$s<ex>payment.com</ex></ph> verify it's you for <ph name="TOP_ORIGIN">%2$s<ex>shopping.com</ex></ph>
       </message>
 
-      <message name="IDS_SMS_FETCHER_NOTIFICATION_TITLE_SIMPLE_STRING" translateable="false" desc="Title text shown when the Android Brave receives a ONE_TIME_CODE from an incoming SMS and ask users for permission to submit the code to ORIGIN">
+      <message name="IDS_SMS_FETCHER_NOTIFICATION_TITLE_SIMPLE_STRING" desc="Title text shown when the Android Brave receives a ONE_TIME_CODE from an incoming SMS and ask users for permission to submit the code to ORIGIN">
         Submit <ph name="ONE_TIME_CODE">%1$s<ex>123</ex></ph> to <ph name="ORIGIN">%2$s<ex>example.com</ex></ph>?
-      </message>
-      <message name="IDS_SMS_FETCHER_NOTIFICATION_TITLE_FOR_EMBEDDED_FRAME_SIMPLE_STRING" translateable="false" desc="Title text shown when the Android Brave receives a ONE_TIME_CODE from an incoming SMS and ask users for permission to submit the code to EMBEDDED_ORIGIN.">
-        Submit <ph name="ONE_TIME_CODE">%1$s<ex>123</ex></ph> to <ph name="EMBEDDED_ORIGIN">%2$s<ex>payment.com</ex></ph>?
-      </message>
-      <message name="IDS_SMS_FETCHER_NOTIFICATION_TEXT_FOR_EMBEDDED_FRAME_SIMPLE_STRING" translateable="false" desc="Content text shown the TOP_ORIGIN and the remote device name.">
-        <ph name="TOP_ORIGIN">%1$s<ex>shopping.com</ex></ph> <ph name="CLIENT_NAME">%2$s<ex>Zoe's Macbook</ex></ph>
       </message>
 
       <!-- Interventions -->
@@ -4451,10 +4451,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Link to highlight
       </message>
 
-      <message name="IDS_SHARING_WEBNOTES_STYLIZED" desc="Label for stylized highlight creation button in the sharing hub.">
-        Stylize highlight
+      <message name="IDS_SHARING_WEBNOTES_CREATE_CARD" desc="Label for the button in sharing hub for creating card for the highlight text.">
+        Create card
       </message>
-
       <message name="IDS_SHARING_COPIED" desc="Text shown in the toast notification when Copy is selected in the sharing hub.">
         Copied
       </message>
@@ -4564,6 +4563,11 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <!-- Image Editor DFM module strings -->
       <message name="IDS_IMAGE_EDITOR_MODULE_TITLE" desc="Text shown when the image editor module is referenced in install start, success, failure UI (e.g. in IDS_MODULE_INSTALL_START_TEXT, which will expand to 'Installing Image Editor for Brave…').">
         Image Editor
+      </message>
+
+      <!-- Survey DFM module strings -->
+      <message name="IDS_SURVEY_MODULE_TITLE" desc="Text shown when the surveys module is referenced in install start, success, failure UI (e.g. in IDS_MODULE_INSTALL_START_TEXT, which will expand to 'Installing Surveys for Brave…').">
+        Surveys
       </message>
 
       <!-- Paint Preview Demo -->
@@ -4713,7 +4717,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Create a <ph name="SITE_NAME">%1$s<ex>airbnb.com</ex></ph> account…
       </message>
       <message name="IDS_ACCOUNT_SELECTION_CONTINUE" desc="Title of the button that continues filling with the only available set of credentials." translateable="false">
-        Sign up
+        Continue as <ph name="NAME">%1$s<ex>Albus (or Albus Dumbledore)</ex></ph>
       </message>
       <message name="IDS_ACCOUNT_SELECTION_CONTENT_DESCRIPTION" desc="Accessibility string read when the Account Selection bottom sheet is opened. It describes the bottom sheet where a user can pick an account." translateable="false">
         List of accounts to be selected.

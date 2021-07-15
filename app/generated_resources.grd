@@ -747,6 +747,9 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_SEARCHLENSFORIMAGE" desc="The name of the Search Lens for Image command in the content area context menu">
             Search image with Brave Lens
           </message>
+          <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH" desc="The name of the Lens Region Search command in the content area context menu">
+            Search part of the page with Brave Lens
+          </message>
           <message name="IDS_CONTENT_CONTEXT_GOTOURL" desc="The name of the Go to 'url' command in the content area context menu">
             &amp;Go to <ph name="URL">$1<ex>http://www.google.com/</ex></ph>
           </message>
@@ -987,6 +990,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_SEARCHLENSFORIMAGE" desc="In Title Case: The name of the Search Lens for Image command in the content area context menu">
             Search Image with Brave Lens
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
+            Search Part of the Page with Brave Lens
           </message>
           <message name="IDS_CONTENT_CONTEXT_GOTOURL" desc="In Title Case: The name of the Go to url for 'string' command in the content area context menu">
             &amp;Go to <ph name="URL">$1<ex>http://www.google.com/</ex></ph>
@@ -1247,11 +1253,17 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_RESTORE_TAB" desc="The text label of the Restore Tab menu item">
           R&amp;eopen closed tab
         </message>
-        <message name="IDS_RESTORE_WINDOW" desc="The text label of the Restore Window menu item">
+        <message name="IDS_REOPEN_WINDOW" desc="The text label of the Reopen Closed Window menu item">
           R&amp;eopen closed window
         </message>
-        <message name="IDS_RESTORE_GROUP" desc="The text label of the Restore Group menu item">
+        <message name="IDS_REOPEN_GROUP" desc="The text label of the Reopen Closed Group menu item">
           Reopen closed group
+        </message>
+        <message name="IDS_RESTORE_WINDOW" desc="The text label of the Restore Window menu item">
+          &amp;Restore window
+        </message>
+        <message name="IDS_RESTORE_GROUP" desc="The text label of the Restore Group menu item">
+          &amp;Restore group
         </message>
         <message name="IDS_NAME_WINDOW" desc="The text label of the Name Window menu item, used to give a user-specified name to a window.">
           Name &amp;window...
@@ -1288,11 +1300,17 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_RESTORE_TAB" desc="In Title Case: The text label of the Restore Tab menu item">
           R&amp;eopen Closed Tab
         </message>
-        <message name="IDS_RESTORE_WINDOW" desc="In Title Case: The text label of the Restore Window menu item">
+        <message name="IDS_REOPEN_WINDOW" desc="In Title Case: The text label of the Reopen Closed Window menu item">
           R&amp;eopen Closed Window
         </message>
-        <message name="IDS_RESTORE_GROUP" desc="In Title Case: The text label of the Restore Group menu item">
+        <message name="IDS_REOPEN_GROUP" desc="In Title Case: The text label of the Reopen Closed Group menu item">
           Reopen Closed Group
+        </message>
+        <message name="IDS_RESTORE_WINDOW" desc="In Title Case: The text label of the Restore Window menu item">
+          &amp;Restore Window
+        </message>
+        <message name="IDS_RESTORE_GROUP" desc="In Title Case: The text label of the Restore Group menu item">
+          &amp;Restore Group
         </message>
         <message name="IDS_NAME_WINDOW" desc="In Title Case: The text label of the Name Window menu item, used to give a user-specified name to a window.">
           Name &amp;Window...
@@ -1583,6 +1601,9 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_SERVER_PROBLEM" desc="Download page message: Server problem.">
         Unknown server error. Please try again, or contact the server administrator.
       </message>
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_WEB_DRIVE_ERROR" desc="Download page message: Upload failed.">
+        <ph name="WEB_DRIVE_MESSAGE">$1<ex>Storage limit reached.</ex></ph> (<ph name="SUPPORT_INFO">$2<ex>Request ID 12345</ex></ph>)
+      </message>
       <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_SHUTDOWN" desc="Shutdown.">
         Shutdown
       </message>
@@ -1683,6 +1704,15 @@ are declared in tools/grit/grit_rule.gni.
       <!-- TODO(dbeam): can this be merged with IDS_DOWNLOAD_FILE_REMOVED? -->
       <message name="IDS_DOWNLOAD_STATUS_REMOVED" desc="Text that appears under the downloaded files that have been removed.">
         Removed
+      </message>
+      <message name="IDS_DOWNLOAD_STATUS_UPLOADING" desc="Status text for a download item that is being uploaded.">
+        Sending to <ph name="WEB_DRIVE">$1<ex>Google Drive</ex></ph>
+      </message>
+      <message name="IDS_DOWNLOAD_STATUS_UPLOADED" desc="Status text for a download item that has been uploaded.">
+        Saved to <ph name="WEB_DRIVE">$1<ex>Google Drive</ex></ph>
+      </message>
+      <message name="IDS_DOWNLOAD_STATUS_UPLOAD_INTERRUPTED" desc="Status text for a download item that was interrupted during reroute upload.">
+        Failed to save to <ph name="WEB_DRIVE">$1<ex>Google Drive</ex></ph> - <ph name="INTERRUPT_REASON">$2<ex>Disk full</ex></ph>
       </message>
       <message name="IDS_DOWNLOAD_STATUS_INTERRUPTED" desc="Status text for a download item that was interrupted.">
         Failed - <ph name="INTERRUPT_REASON">$1<ex>Disk full</ex></ph>
@@ -3270,6 +3300,16 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_TAB_SHARING_INFOBAR_STOP_BUTTON" desc="Text displayed on the button to stop sharing a tab.">
        Stop
       </message>
+      <message name="IDS_TAB_SHARING_INFOBAR_SWITCH_TO_BUTTON" desc="Text displayed on an infobar button offering to change focus to another tab.">
+       Switch to tab (<ph name="TAB_ORIGIN">$1<ex>meet.google.com</ex></ph>)
+      </message>
+      <message name="IDS_TAB_SHARING_INFOBAR_SWITCH_TO_CAPTURER_BUTTON" desc="Text displayed on an infobar button offering to change focus to the capturer if its hostname cannot be determined. (Otherwise, IDS_TAB_SHARING_INFOBAR_SWITCH_TO_BUTTON will be used.)">
+       Switch to capturing tab
+      </message>
+      <message name="IDS_TAB_SHARING_INFOBAR_SWITCH_TO_CAPTURED_BUTTON" desc="Text displayed on an infobar button offering to change focus to the capturer if its hostname cannot be determined. (Otherwise, IDS_TAB_SHARING_INFOBAR_SWITCH_TO_BUTTON will be used.)">
+       Switch to captured tab
+      </message>
+
 
       <!-- Task Manager Window -->
       <if expr="not is_android">
@@ -3472,6 +3512,12 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_TASK_MANAGER_BACKGROUND_PREFIX" desc="The prefix for a Task Manager background page row">
           Background Page: <ph name="BACKGROUND_PAGE_URL">$1<ex>http://www.google.com</ex></ph>
         </message>
+        <message name="IDS_TASK_MANAGER_BACK_FORWARD_CACHE_PREFIX" desc="The prefix for a page stored in the Back/Forward Cache">
+          Back/Forward Cached Page: <ph name="BACK_FORWARD_CACHE_PAGE_URL">$1<ex>http://www.google.com</ex></ph>
+        </message>
+        <message name="IDS_TASK_MANAGER_BACK_FORWARD_CACHE_INCOGNITO_PREFIX" desc="The prefix for a Private page stored in the Back/Forward Cache">
+          Private Back/Forward Cached Page: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL">$1<ex>http://www.google.com</ex></ph>
+        </message>
         <message name="IDS_TASK_MANAGER_PLUGIN_PREFIX" desc="The prefix for a Task Manager plugin row">
           Plugin: <ph name="PLUGIN_NAME">$1<ex>Unknown Plugin</ex></ph>
         </message>
@@ -3519,6 +3565,12 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_TASK_MANAGER_SUBFRAME_INCOGNITO_PREFIX" desc="The prefix for a Private out-of-process-iframe process row in the Task Manager (these processes are created when site isolation is enabled, in Private mode)">
           Private Subframe: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
+        </message>
+        <message name="IDS_TASK_MANAGER_BACK_FORWARD_CACHE_SUBFRAME_PREFIX" desc="The prefix for a out-of-process-iframe row stored in the Back/Forward Cache">
+          Back/Forward Cached Subframe: <ph name="BACK_FORWARD_CACHE_PAGE_URL">$1<ex>http://www.google.com</ex></ph>
+        </message>
+        <message name="IDS_TASK_MANAGER_BACK_FORWARD_CACHE_INCOGNITO_SUBFRAME_PREFIX" desc="The prefix for a Private out-of-process-iframe row stored in the Back/Forward Cache">
+          Private Back/Forward Cached Subframe: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL">$1<ex>http://www.google.com</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_PORTAL_PREFIX" desc="The prefix for a portal row in the Task Manager (these processes are created when portals is enabled)">
           Portal: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
@@ -4740,10 +4792,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Customize and control <ph name="APP_NAME">$1<ex>GMail</ex></ph>
       </message>
       <message name="IDS_WEB_APP_ENABLE_WINDOW_CONTROLS_OVERLAY_TOOLTIP">
-        Enable window controls overlay
+        Hide title bar
       </message>
       <message name="IDS_WEB_APP_DISABLE_WINDOW_CONTROLS_OVERLAY_TOOLTIP">
-        Disable window controls overlay
+        Show title bar
       </message>
 
       <!-- Components -->
@@ -4837,9 +4889,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_PASSWORD_MANAGER_CONFIRM_SAVED_TITLE" desc="The title text used in the passwords bubble after the user has saved a password.">
         Password saved
-      </message>
-      <message name="IDS_PASSWORD_MANAGER_SYNC_PROMO_TITLE" desc="The title text used in the sync promo bubble when the user has saved a password.">
-        Password saved on this device
       </message>
       <message name="IDS_PASSWORD_GENERATION_SUGGESTION" desc="Text shown next to a generated password describing it as a suggestion.">
         Use suggested password
@@ -5565,6 +5614,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_CART_SENTENCE" desc="Name of the chrome cart module in sentence case shown in various UIs.">
         Your carts
       </message>
+      <message name="IDS_NTP_MODULES_CART_SENTENCE_V2" desc="Name of the chrome cart module V2 in sentence case shown in various UIs.">
+        In your shopping cart
+      </message>
       <message name="IDS_NTP_MODULES_CART_LOWER" desc="Name of the chrome cart module in lowercase shown in various UIs.">
         carts
       </message>
@@ -5748,6 +5800,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_READ_LATER_ADD_CURRENT_TAB" desc="Label for button to add the current tab to Read later">
         Add current tab
+      </message>
+
+      <!-- Read Later context menu -->
+      <message name="IDS_READ_LATER_CONTEXT_MENU_MARK_AS_UNREAD" desc="Label for context menu item to a read later entry as unread.">
+        Mark as unread
+      </message>
+      <message name="IDS_READ_LATER_CONTEXT_MENU_MARK_AS_READ" desc="Label for context menu item to a read later entry as read.">
+        Mark as read
+      </message>
+      <message name="IDS_READ_LATER_CONTEXT_MENU_DELETE" desc="Label for context menu item to a delete a read later entry.">
+        Delete
       </message>
 
       <!--Tooltip strings-->
@@ -6861,6 +6924,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </if>
 
       <!-- Tab Search -->
+      <message name="IDS_TAB_SEARCH_PROMO" desc="Promo UI shown next to the tab search button to encourage it's use.">
+        To search your tabs, click here
+      </message>
       <message name="IDS_TAB_SEARCH_SEARCH_TABS" desc="The label on the tab search search filed when user input is empty.">
         Search Tabs
       </message>
@@ -7461,6 +7527,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_SHARING_HUB_TOOLTIP" desc="Tooltip for the Sharing Hub feature omnibox icon.">
         Share this page
+      </message>
+      <message name="IDS_SHARING_HUB_SCREENSHOT_LABEL" desc="The text label for the screenshot button in the Sharing Hub dialog and app menu.">
+        Screenshot
       </message>
       <message name="IDS_SHARING_HUB_COPY_LINK_LABEL" desc="The text label for the copy link button in the Sharing Hub dialog and app menu.">
         Copy link
@@ -8715,6 +8784,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
             =1 {Show}
             other {Show all}}
         </message>
+        <message name="IDS_NOTIFICATION_MUTED_ACTION_SNOOZE" desc="Action button text to snooze future notifications during the current screen capture session." translateable="false">
+          Snooze
+        </message>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_NOTIFICATION_MUTED_TITLE" desc="In Title Case: Title of a notification showing how many new notifications are currently hidden. The number is always greater than zero.">
@@ -8726,6 +8798,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
           {MUTED_NOTIFICATIONS_COUNT, plural,
             =1 {Show}
             other {Show All}}
+        </message>
+        <message name="IDS_NOTIFICATION_MUTED_ACTION_SNOOZE" desc="In Title Case: Action button text to snooze future notifications during the current screen capture session." translateable="false">
+          Snooze
         </message>
       </if>
       <if expr="is_android">
@@ -9790,43 +9865,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
       </if>
 
-      <!-- Confirmation dialog for getCurrentBrowsingContextMedia API -->
-      <message name="IDS_GET_CURRENT_BROWSING_CONTEXT_MEDIA_DIALOG_TITLE" desc="Title for the confirmation dialog shown when getCurrentBrowsingContextMedia is requested by an app.">
-        Share this tab
-      </message>
-      <message name="IDS_GET_CURRENT_BROWSING_CONTEXT_MEDIA_DIALOG_TEXT_REQUESTED_BY_APP" desc="Text for the confirmation dialog shown when getCurrentBrowsingContextMedia is requested by an app.">
-        <ph name="TARGET_NAME">$1<ex>https://google.com</ex></ph> is asking for permission to capture the contents of this tab.
-      </message>
-      <message name="IDS_GET_CURRENT_BROWSING_CONTEXT_MEDIA_DIALOG_AUDIO_SHARE" desc="Text for the checkbox on the confirmation dialog for getCurrentBrowsingContextMedia API, when checked, audio will be shared, otherwise just video sharing">
-        Share audio
-      </message>
-      <message name="IDS_GET_CURRENT_BROWSING_CONTEXT_MEDIA_DIALOG_SHARE_BUTTON" desc="Used for Share on buttons">
-        Share
-      </message>
-
-      <!-- Local Device Discovery display strings -->
-      <if expr="enable_service_discovery">
-        <message name="IDS_LOCAL_DISCOVERY_NOTIFICATION_TITLE_PRINTER" desc="Title of notification for one or more new printer showing up on your network. [ICU Syntax]">
-        {NUM_PRINTER, plural,
-         =1 {New printer on your network}
-         other {New printers on your network}}
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_NOTIFICATION_CONTENTS_PRINTER" desc="Contents of notification for one or more new printers showing up on your network. [ICU Syntax]">
-        {NUM_PRINTER, plural,
-          =1 {Add the printer to Google Cloud Print so you can print from anywhere.}
-          other {Add # printers to Google Cloud Print so you can print from anywhere.}}
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_SERVICE_NAME_PRINTER" desc="Display name for notification for a new printer showing up on your network">
-          Google Cloud Print
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_NOTIFICATION_BUTTON_PRINTER" desc="Message on registration button for printer">
-          Add to Cloud Print
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_NOTIFICATIONS_DISABLE_BUTTON_LABEL" desc="Label for button disabling local device notifications">
-          Don't show this again
-        </message>
-      </if>
-
       <!--Printer registration message for local discovery and Print Preview-->
       <message name="IDS_CLOUD_PRINT_REGISTER_PRINTER_INFORMATION" desc="Information about registering printers with Google Cloud Print shown to the user before they confirm registration.">
         Documents are <ph name="BEGIN_LINK_HELP">&lt;a is="action-link" href="https://support.google.com/cloudprint/answer/2541843" target="_blank" rel="noopener noreferrer"&gt;</ph>sent to Brave<ph name="END_LINK_HELP">&lt;/a&gt;</ph> to prepare them for printing. View, edit and manage your printers and printer history on the <ph name="BEGIN_LINK_DASHBOARD">&lt;a is="action-link" href="https://www.google.com/cloudprint#jobs" target="_blank" rel="noopener noreferrer"&gt;</ph>Google Cloud Print dashboard<ph name="END_LINK_DASHBOARD">&lt;/a&gt;</ph>.
@@ -10184,9 +10222,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_USB_DEVICE_CHOOSER_PROMPT_EXTENSION_NAME" desc="The label that is used to introduce USB chooser details to the user in a popup when it is from a Brave extension.">
       "<ph name="CHROME_EXTENSION_NAME">$1<ex>Brave Extension Name</ex></ph>" wants to connect
     </message>
-    <message name="IDS_DEVICE_CHOOSER_DEVICE_NAME_WITH_ID" desc="To distinguish devices with the same name, the device chooser shows the device name with id.">
-      <ph name="DEVICE_NAME">$1<ex>device name</ex></ph> (<ph name="DEVICE_ID">$2<ex>device id</ex></ph>)
-    </message>
     <message name="IDS_DEVICE_CHOOSER_ACCNAME_COMPATIBLE_DEVICES_LIST" desc="The accessible name for the list of compatible devices, read to screen reader users when navigating to the container.">
       Compatible devices
     </message>
@@ -10197,14 +10232,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_DEVICE_CHOOSER_DEVICE_NAME_UNKNOWN_DEVICE_WITH_VENDOR_ID_AND_PRODUCT_ID" desc="String describing a device when only numeric vendor and product IDs are available.">
       Unknown device [<ph name="VENDOR_ID">$1<ex>123</ex></ph>:<ph name="PRODUCT_ID">$2<ex>123</ex></ph>]
-    </message>
-
-    <!-- Bluetooth Scanning Prompt -->
-    <message name="IDS_BLUETOOTH_SCANNING_PROMPT_ORIGIN" desc="The label that is used to introduce Bluetooth scanning prompt details to the user when it is from a website.">
-      <ph name="Origin">$1<ex>www.google.com</ex></ph> wants to scan for nearby Bluetooth devices. The following devices have been found:
-    </message>
-    <message name="IDS_BLUETOOTH_SCANNING_DEVICE_UNKNOWN" desc="Text to identify Bluetooth devices of unknown or unsupported class.">
-      Unknown or unsupported device (<ph name="DEVICE_ID">$1<ex>A1:B2:C3:D4:E5:F6</ex></ph>)
     </message>
 
     <!-- Device descriptions for devices defined by policy with wildcards. -->
@@ -11001,6 +11028,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_DEEP_SCANNING_DIALOG_CUSTOM_MESSAGE_LEARN_MORE_LINK" desc="Text value of the link passed for the custom message set by the administrator when deep scanning returns a failure.">
       Learn more
     </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_DOWNLOADS_DISCARD_FILE_BUTTON" desc="Text of the button used for discarding a dangerous file from the Content Analysis Dialog.">
+      Discard file
+    </message>
 
 
     <!-- Deep scanning open now dialog strings -->
@@ -11049,6 +11079,33 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_DEEP_SCANNING_TIMED_OUT_DIALOG_OPEN_NOW_BUTTON" desc="The text on the open now button in tab modal dialog when deep scanning times out.">
       Open now
+    </message>
+
+    <!-- Enterprise file system connector service providers' display names -->
+    <message name="IDS_FILE_SYSTEM_CONNECTOR_BOX" meaning="box.com" desc="Display name for Box.">
+      Box
+    </message>
+    <message name="IDS_FILE_SYSTEM_CONNECTOR_GOOGLE_DRIVE" desc="Display name for Google Drive.">
+      Google Drive
+    </message>
+
+    <!-- Enterprise file system connector sign in on first download confirmation dialog -->
+    <message name="IDS_FILE_SYSTEM_CONNECTOR_SIGNIN_REQUIRED_TITLE" desc="Title shown in modal shown upon first eligible download to be uploaded, before sign in dia;pg">
+      Sign into <ph name="WEB_DRIVE">$1<ex>Google Drive</ex></ph> to complete download
+    </message>
+    <message name="IDS_FILE_SYSTEM_CONNECTOR_SIGNIN_REQUIRED_MESSAGE" desc="Meesage shown in above-mentioned modal">
+      Your organization requires eligible downloads to be saved to <ph name="WEB_DRIVE">$1<ex>Google Drive</ex></ph>. Upon signing in, an unique authentication token will be stored and used for all future eligible downloads.
+    </message>
+    <message name="IDS_FILE_SYSTEM_CONNECTOR_SIGNIN_REQUIRED_CANCEL_BUTTON" desc="Text displayed for cancel button in above-mentioned modal">
+      Cancel download
+    </message>
+    <message name="IDS_FILE_SYSTEM_CONNECTOR_SIGNIN_REQUIRED_ACCEPT_BUTTON" desc="Text displayed for accept button in above-mentioned modal">
+      Sign in
+    </message>
+
+    <!-- Enterprise file system connector sign in dialog -->
+    <message name="IDS_FILE_SYSTEM_CONNECTOR_SIGNIN_DIALOG_TITLE" desc="Title shown in dialog when prompting user to sign in to link a web drive account.">
+      Link <ph name="WEB_DRIVE">$1<ex>Google Drive</ex></ph> account for Downloads
     </message>
 
     <!-- App uninstall prompt title -->
@@ -11186,13 +11243,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_SIDE_PANEL_EXPERIMENT_DESCRIPTION" desc="Description for Side Panel experiment">
       Enables a browser-level side panel for a useful and persistent way to access your Reading List and Bookmarks.
-    </message>
-    <!-- BraveLabs Read Later-->
-    <message name="IDS_READ_LATER_EXPERIMENT_NAME" desc="Name for Read Later experiment">
-      Reading List
-    </message>
-    <message name="IDS_READ_LATER_EXPERIMENT_DESCRIPTION" desc="Description for Read Later experiment">
-      Right click on a tab or click the Bookmark icon to add tabs to a reading list. Access from the Bookmarks bar.
     </message>
     <!-- BraveLabs Tab Scrolling-->
     <message name="IDS_TAB_SCROLLING_EXPERIMENT_NAME" desc="Name for Tab Scrolling experiment">
