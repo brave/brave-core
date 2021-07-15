@@ -15,6 +15,7 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -750,7 +751,7 @@ TEST(BraveWalletUtilsUnitTest, TransactionReceiptAndValue) {
 
   base::Value tx_receipt_value = TransactionReceiptToValue(tx_receipt);
   auto tx_receipt_from_value = ValueToTransactionReceipt(tx_receipt_value);
-  ASSERT_NE(tx_receipt_from_value, base::nullopt);
+  ASSERT_NE(tx_receipt_from_value, absl::nullopt);
   EXPECT_EQ(tx_receipt, *tx_receipt_from_value);
 }
 

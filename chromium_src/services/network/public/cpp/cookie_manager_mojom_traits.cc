@@ -27,7 +27,7 @@ bool StructTraits<network::mojom::CookieOptionsDataView, net::CookieOptions>::
     return false;
   out->set_site_for_cookies(site_for_cookies);
 
-  base::Optional<url::Origin> top_frame_origin;
+  absl::optional<url::Origin> top_frame_origin;
   if (!data.ReadTopFrameOrigin(&top_frame_origin))
     return false;
   out->set_top_frame_origin(top_frame_origin);

@@ -10,6 +10,7 @@
 #include "bat/ads/internal/catalog/catalog.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -30,7 +31,7 @@ class BatAdsEpsilonGreedyBanditResourceTest : public UnitTestBase {
 TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
        SuccessfullyInitializeWithValidCatalog) {
   // Arrange
-  const base::Optional<std::string> opt_value =
+  const absl::optional<std::string> opt_value =
       ReadFileFromTestPathToString(kCatalog);
   ASSERT_TRUE(opt_value.has_value());
 

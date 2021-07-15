@@ -28,7 +28,7 @@ struct StructTraits<network::mojom::CookieOptionsDataView, net::CookieOptions>
       const net::CookieOptions& o) {
     return o.site_for_cookies();
   }
-  static const base::Optional<url::Origin>& top_frame_origin(
+  static const absl::optional<url::Origin>& top_frame_origin(
       const net::CookieOptions& o) {
     return o.top_frame_origin();
   }

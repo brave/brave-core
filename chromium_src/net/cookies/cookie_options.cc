@@ -28,7 +28,7 @@ CookieOptions::CookieOptions(CookieOptions_ChromiumImpl&& rhs)
 void FillEphemeralStorageParams(
     const GURL& url,
     const SiteForCookies& site_for_cookies,
-    const base::Optional<url::Origin>& top_frame_origin,
+    const absl::optional<url::Origin>& top_frame_origin,
     const CookieAccessDelegate* cookie_access_delegate,
     CookieOptions* cookie_options) {
   DCHECK(cookie_options);
