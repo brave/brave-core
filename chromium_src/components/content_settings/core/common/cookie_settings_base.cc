@@ -7,6 +7,7 @@
 
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
+#include "base/stl_util.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/features.h"
