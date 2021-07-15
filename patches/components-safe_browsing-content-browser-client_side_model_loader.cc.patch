@@ -1,5 +1,5 @@
 diff --git a/components/safe_browsing/content/browser/client_side_model_loader.cc b/components/safe_browsing/content/browser/client_side_model_loader.cc
-index 8f7e3fb9bb9f7368e90a481454253b98605cc226..330caad55c89b67aad1c7d994be073de91b6b054 100644
+index 7fbcb79da40246d9a77605dec15e85f041a45be4..fbd36247ea4432d32c1453720a4e743e8ad75dca 100644
 --- a/components/safe_browsing/content/browser/client_side_model_loader.cc
 +++ b/components/safe_browsing/content/browser/client_side_model_loader.cc
 @@ -61,7 +61,7 @@ std::string ReadFileIntoString(base::FilePath path) {

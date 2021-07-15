@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/resources/settings/site_settings/site_details.html b/chrome/browser/resources/settings/site_settings/site_details.html
-index a92d514fa35e99bdcce9100cecc871802df38fb5..a18fc20fd3cc35de62f7ea7ce40b6b61b87a2dc3 100644
+index 17c9267deb17338e6a4269a17b1a04b17e76fe06..3b6fb71dc93ed700eb21a3c7ca737a0c8b798b6f 100644
 --- a/chrome/browser/resources/settings/site_settings/site_details.html
 +++ b/chrome/browser/resources/settings/site_settings/site_details.html
 @@ -186,6 +186,11 @@
-       <site-details-permission category="[[ContentSettingsTypes.HID_DEVICES]]"
+       <site-details-permission category="[[contentSettingsTypesEnum_.HID_DEVICES]]"
            icon="settings:hid-device" label="$i18n{siteSettingsHidDevices}">
        </site-details-permission>
 +      <site-details-permission
@@ -13,4 +13,4 @@ index a92d514fa35e99bdcce9100cecc871802df38fb5..a18fc20fd3cc35de62f7ea7ce40b6b61
 +      </site-details-permission>
  <if expr="chromeos or is_win">
        <site-details-permission
-           category="[[ContentSettingsTypes.PROTECTED_CONTENT]]"
+           category="[[contentSettingsTypesEnum_.PROTECTED_CONTENT]]"
