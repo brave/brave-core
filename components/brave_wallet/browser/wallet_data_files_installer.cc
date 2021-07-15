@@ -24,8 +24,8 @@
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#endif
-
+#include "brave/components/brave_wallet/browser/erc_token_list_parser.h"
+#include "brave/components/brave_wallet/browser/erc_token_registry.h"
 namespace brave_wallet {
 
 namespace {
@@ -45,6 +45,7 @@ const char kWalletBaseDirectory[] = "BraveWallet";
 
 static_assert(base::size(kWalletDataFilesSha2Hash) == crypto::kSHA256Length,
               "Wrong hash length");
+
 }  // namespace
 
 class WalletDataFilesInstallerPolicy
@@ -71,8 +72,10 @@ class WalletDataFilesInstallerPolicy
   std::string GetName() const override;
   update_client::InstallerAttributes GetInstallerAttributes() const override;
 
-  void UpdateTokenList(const base::FilePath& install_dir,
-                       std::unique_ptr<base::DictionaryValue> manifest);
+  std::vector<mojom::ERCTokenPtr> TokenListReady(
+      const base::FilePath& install_dir,
+      std::unique_ptr<base::DictionaryValue> manifest);
+  void UpdateTokenRegistry(std::vector<mojom::ERCTokenPtr>);
 
   DISALLOW_COPY_AND_ASSIGN(WalletDataFilesInstallerPolicy);
 };
@@ -101,10 +104,12 @@ void WalletDataFilesInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& path,
     std::unique_ptr<base::DictionaryValue> manifest) {
-  base::ThreadPool::PostTask(
+  base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
-      base::BindOnce(&WalletDataFilesInstallerPolicy::UpdateTokenList,
-                     base::Unretained(this), path, std::move(manifest)));
+      base::BindOnce(&WalletDataFilesInstallerPolicy::TokenListReady,
+                     base::Unretained(this), path, std::move(manifest)),
+      base::BindOnce(&WalletDataFilesInstallerPolicy::UpdateTokenRegistry,
+                     base::Unretained(this)));
 }
 
 bool WalletDataFilesInstallerPolicy::VerifyInstallation(
@@ -133,9 +138,10 @@ WalletDataFilesInstallerPolicy::GetInstallerAttributes() const {
   return update_client::InstallerAttributes();
 }
 
-void WalletDataFilesInstallerPolicy::UpdateTokenList(
+std::vector<mojom::ERCTokenPtr> WalletDataFilesInstallerPolicy::TokenListReady(
     const base::FilePath& install_dir,
     std::unique_ptr<base::DictionaryValue> manifest) {
+  std::vector<mojom::ERCTokenPtr> erc_tokens;
   // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
   // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
   // requires IO so it can only be done in this function.
@@ -144,7 +150,7 @@ void WalletDataFilesInstallerPolicy::UpdateTokenList(
 
   if (absolute_install_dir.empty()) {
     LOG(ERROR) << "Failed to get absolute install path.";
-    return;
+    return erc_tokens;
   }
 
   const base::FilePath token_list_json_path =
@@ -153,7 +159,16 @@ void WalletDataFilesInstallerPolicy::UpdateTokenList(
   if (!base::ReadFileToString(token_list_json_path, &token_list_json)) {
     LOG(ERROR) << "Can't read token list file.";
   }
+
+  ParseTokenList(token_list_json, &erc_tokens);
+  return erc_tokens;
 }
+
+void WalletDataFilesInstallerPolicy::UpdateTokenRegistry(
+    std::vector<mojom::ERCTokenPtr> erc_tokens) {
+  ERCTokenRegistry::GetInstance()->UpdateTokenList(std::move(erc_tokens));
+}
+#endif
 
 void RegisterWalletDataFilesComponent(
     component_updater::ComponentUpdateService* cus) {

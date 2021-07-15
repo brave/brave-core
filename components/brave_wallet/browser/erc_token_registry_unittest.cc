@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "brave/components/brave_wallet/browser/erc_token_list_parser.h"
 #include "brave/components/brave_wallet/browser/erc_token_registry.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -14,7 +15,7 @@ namespace brave_wallet {
 
 namespace {
 
-const char json[] = R"(
+const char token_list_json[] = R"(
   {
    "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d": {
      "name": "Crypto Kitties",
@@ -45,7 +46,10 @@ const char json[] = R"(
 
 TEST(ERCTokenRegistryUnitTest, GetAllTokens) {
   auto* registry = ERCTokenRegistry::GetInstance();
-  ASSERT_TRUE(registry->ParseERCTokens(json));
+
+  std::vector<mojom::ERCTokenPtr> input_erc_tokens;
+  ASSERT_TRUE(ParseTokenList(token_list_json, &input_erc_tokens));
+  registry->UpdateTokenList(std::move(input_erc_tokens));
 
   std::vector<mojom::ERCTokenPtr> token_list = registry->GetAllTokens();
   ASSERT_EQ(token_list.size(), 3UL);
@@ -77,7 +81,11 @@ TEST(ERCTokenRegistryUnitTest, GetAllTokens) {
 
 TEST(ERCTokenRegistryUnitTest, GetTokenByContract) {
   auto* registry = ERCTokenRegistry::GetInstance();
-  ASSERT_TRUE(registry->ParseERCTokens(json));
+
+  std::vector<mojom::ERCTokenPtr> input_erc_tokens;
+  ASSERT_TRUE(ParseTokenList(token_list_json, &input_erc_tokens));
+  registry->UpdateTokenList(std::move(input_erc_tokens));
+
   auto token = registry->GetTokenByContract(
       "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
   ASSERT_EQ(token->symbol, "BAT");
@@ -87,7 +95,11 @@ TEST(ERCTokenRegistryUnitTest, GetTokenByContract) {
 
 TEST(ERCTokenRegistryUnitTest, GetTokenBySymbol) {
   auto* registry = ERCTokenRegistry::GetInstance();
-  ASSERT_TRUE(registry->ParseERCTokens(json));
+
+  std::vector<mojom::ERCTokenPtr> input_erc_tokens;
+  ASSERT_TRUE(ParseTokenList(token_list_json, &input_erc_tokens));
+  registry->UpdateTokenList(std::move(input_erc_tokens));
+
   auto token = registry->GetTokenBySymbol("BAT");
   ASSERT_EQ(token->contract_address,
             "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");

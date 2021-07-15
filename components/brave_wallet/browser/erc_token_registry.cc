@@ -6,8 +6,7 @@
 #include "brave/components/brave_wallet/browser/erc_token_registry.h"
 
 #include <algorithm>
-
-#include "brave/components/brave_wallet/browser/erc_token_list_parser.h"
+#include <utility>
 
 namespace brave_wallet {
 
@@ -19,8 +18,9 @@ ERCTokenRegistry* ERCTokenRegistry::GetInstance() {
   return base::Singleton<ERCTokenRegistry>::get();
 }
 
-bool ERCTokenRegistry::ParseERCTokens(const std::string& token_list_json) {
-  return ParseTokenList(token_list_json, &erc_tokens_);
+void ERCTokenRegistry::UpdateTokenList(
+    std::vector<mojom::ERCTokenPtr> erc_tokens) {
+  erc_tokens_ = std::move(erc_tokens);
 }
 
 mojom::ERCTokenPtr ERCTokenRegistry::GetTokenByContract(
