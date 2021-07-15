@@ -15,6 +15,21 @@
 
 namespace net {
 
+namespace {
+
+HostPortPair ToLegacyDestinationEndpoint(
+    const TransportSocketParams::Endpoint& endpoint) {
+  if (absl::holds_alternative<url::SchemeHostPort>(endpoint)) {
+    return HostPortPair::FromSchemeHostPort(
+        absl::get<url::SchemeHostPort>(endpoint));
+  }
+
+  DCHECK(absl::holds_alternative<HostPortPair>(endpoint));
+  return absl::get<HostPortPair>(endpoint);
+}
+
+}  // namespace
+
 int SOCKS5ClientSocket::DoAuth(int rv) {
   rv = Authenticate(rv, net_log_, io_callback_);
   next_state_ = (rv == OK ? STATE_HANDSHAKE_WRITE : STATE_AUTH);
@@ -36,12 +51,12 @@ SOCKS5ClientSocketAuth::SOCKS5ClientSocketAuth(
     std::unique_ptr<StreamSocket> transport_socket,
     const HostPortPair& destination,
     const NetworkTrafficAnnotationTag& traffic_annotation,
-    const HostPortPair& proxy_host_port)
-    : SOCKS5ClientSocket(std::move(transport_socket), destination,
+    const TransportSocketParams::Endpoint& proxy_endpoint)
+    : SOCKS5ClientSocket(std::move(transport_socket),
+                         destination,
                          traffic_annotation),
-      proxy_host_port_(proxy_host_port),
-      next_state_(STATE_INIT_WRITE) {
-}
+      proxy_host_port_(ToLegacyDestinationEndpoint(proxy_endpoint)),
+      next_state_(STATE_INIT_WRITE) {}
 
 SOCKS5ClientSocketAuth::~SOCKS5ClientSocketAuth() = default;
 
