@@ -113,7 +113,7 @@ void CenterVertically(NSView* view) {
   // This string starts with the app name, which is strongly LTR, so force the
   // correct layout.
   std::u16string completeInstallationString = l10n_util::GetStringUTF16(
-      IDS_FIRSTRUN_DLG_MAC_COMPLETE_INSTALLATION_LABEL_BRAVE);
+      IDS_FIRSTRUN_DLG_COMPLETE_INSTALLATION_LABEL_BRAVE);
   base::i18n::AdjustStringForLocaleDirection(&completeInstallationString);
   NSTextField* completionLabel = [TextFieldUtils
       labelWithString:base::SysUTF16ToNSString(completeInstallationString)];
@@ -121,7 +121,7 @@ void CenterVertically(NSView* view) {
 
   _defaultBrowserCheckbox = [ButtonUtils
       checkboxWithTitle:l10n_util::GetNSString(
-                            IDS_FIRSTRUN_DLG_MAC_SET_DEFAULT_BROWSER_LABEL_BRAVE)];
+                            IDS_FR_CUSTOMIZE_DEFAULT_BROWSER_BRAVE)];
   [_defaultBrowserCheckbox
       setFrame:NSMakeRect(45, 80, kDialogWidth - 2 * 45, 18)];
   [_defaultBrowserCheckbox setState:NSOnState];
