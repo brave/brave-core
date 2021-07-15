@@ -1,12 +1,13 @@
 diff --git a/chrome/browser/resources/history/history_toolbar.ts b/chrome/browser/resources/history/history_toolbar.ts
-index 223a15ac3e3fe41a2dd65d2fdce94710faf78355..c95262fccacdd35e5524b7f8ea459bcb733f6796 100644
+index 223a15ac3e3fe41a2dd65d2fdce94710faf78355..73ec11298511de6008d81061d9cc616a42422042 100644
 --- a/chrome/browser/resources/history/history_toolbar.ts
 +++ b/chrome/browser/resources/history/history_toolbar.ts
-@@ -7,6 +7,7 @@ import './strings.m.js';
- import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.js';
+@@ -4,7 +4,7 @@
+ 
+ import './shared_style.js';
+ import './strings.m.js';
+-import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.js';
++import 'chrome://brave-resources/br_elements/br_toolbar/br_toolbar.m.js'
  import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar_search_field.js';
  
-+import 'chrome://brave-resources/br_elements/br_toolbar/br_toolbar.m.js'
  import {CrToolbarElement} from 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.js';
- import {CrToolbarSearchFieldElement} from 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar_search_field.js';
- import {loadTimeData} from 'chrome://resources/js/load_time_data.m.js';
