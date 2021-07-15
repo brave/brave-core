@@ -85,14 +85,19 @@ extension BrowserViewController {
              */
             return supportsAutoAdd
         }
-        
-        if openSearchTextFieldInputAssistantBarButtonGroup.isEmpty {
-            openSearchTextFieldInputAssistantBarButtonGroup = webContentView.inputAssistantItem.trailingBarButtonGroups
-        }
-        
+                
         if UIDevice.isIpad {
-            webContentView.inputAssistantItem.trailingBarButtonGroups = openSearchTextFieldInputAssistantBarButtonGroup +
-                [UIBarButtonItemGroup(barButtonItems: [UIBarButtonItem(customView: customSearchEngineButton)], representativeItem: nil)]
+            if customSearchBarButtonItemGroup == nil {
+                customSearchBarButtonItemGroup = UIBarButtonItemGroup(
+                    barButtonItems: [UIBarButtonItem(customView: customSearchEngineButton)], representativeItem: nil)
+            } else {
+                webContentView.inputAssistantItem.trailingBarButtonGroups.removeAll(
+                    where: { $0.barButtonItems.contains(where: { $0.customView != nil })})
+            }
+            
+            if let barButtonItemGroup = customSearchBarButtonItemGroup {
+                webContentView.inputAssistantItem.trailingBarButtonGroups.append(barButtonItemGroup)
+            }
         } else {
             let argumentNextItem: [Any] = ["_n", "extI", "tem"]
             let argumentView: [Any] = ["v", "ie", "w"]
@@ -241,15 +246,12 @@ extension BrowserViewController: KeyboardHelperDelegate {
     func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillHideWithState state: KeyboardState) {
         keyboardState = nil
         updateViewConstraints()
-        // If the searchEngineButton exists remove it form the keyboard
-        if let buttonGroup = customSearchBarButton?.buttonGroup {
-            buttonGroup.barButtonItems = buttonGroup.barButtonItems.filter { $0 != customSearchBarButton }
-            customSearchBarButton = nil
-        }
 
-        if self.customSearchEngineButton.superview != nil {
-            self.customSearchEngineButton.removeFromSuperview()
-            openSearchTextFieldInputAssistantBarButtonGroup.removeAll()
+        customSearchBarButtonItemGroup?.barButtonItems.removeAll()
+        customSearchBarButtonItemGroup = nil
+        
+        if customSearchEngineButton.superview != nil {
+            customSearchEngineButton.removeFromSuperview()
         }
 
         UIViewPropertyAnimator(duration: state.animationDuration, curve: state.animationCurve) {
