@@ -40,16 +40,16 @@ class FocusRingTheme {
   }
 };
 
-FocusRingTheme* GetFocusRingTheme() {
-  static base::NoDestructor<FocusRingTheme> instance;
-  return instance.get();
+FocusRingTheme& GetFocusRingTheme() {
+  static FocusRingTheme instance;
+  return instance;
 }
 
 }  // namespace
 
 #define setStyle                                                            \
   setColor(color_.value_or(                                                 \
-      GetFocusRingTheme()->GetSystemColor(ColorIdForValidity(!invalid_)))); \
+      GetFocusRingTheme().GetSystemColor(ColorIdForValidity(!invalid_)))); \
   paint.setStyle
 
 #include "../../../../../ui/views/controls/focus_ring.cc"
