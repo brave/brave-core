@@ -113,7 +113,7 @@ include_rules = [
   "+components/policy/core/browser",
   "+components/policy/core/common",
   "+components/prefs",
-  "+components/safe_browsing/core/proto/csd.pb.h",
+  "+components/safe_browsing/core/common/proto/csd.pb.h",
   "+components/search",
   "+components/signin/public/identity_manager",
   "+components/spellcheck/browser",

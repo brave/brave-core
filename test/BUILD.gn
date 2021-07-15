@@ -904,7 +904,7 @@ if (!is_android) {
       "//components/prefs",
       "//components/renderer_context_menu",
       "//components/safe_browsing/content/browser/web_ui",
-      "//components/safe_browsing/core:features",
+      "//components/safe_browsing/core/common",
       "//components/spellcheck/browser",
       "//extensions/browser:test_support",
       "//extensions/common:common_constants",
