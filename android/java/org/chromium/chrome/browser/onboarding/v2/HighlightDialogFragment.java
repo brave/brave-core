@@ -103,6 +103,7 @@ public class HighlightDialogFragment extends DialogFragment {
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                checkAndOpenNtpPage();
                 dismiss();
             }
         });
@@ -187,11 +188,7 @@ public class HighlightDialogFragment extends DialogFragment {
                         || isFromStats) {
                     dismiss();
                     BraveStatsUtil.showBraveStats();
-                    String countryCode = Locale.getDefault().getCountry();
-                    if (((BraveActivity) getActivity()) != null && countryCode.equals("JP")) {
-                        ((BraveActivity) getActivity())
-                                .openNewOrSelectExistingTab(NTP_TUTORIAL_PAGE);
-                    }
+                    checkAndOpenNtpPage();
                 } else {
                     viewpager.setCurrentItem(currentPage + 1);
                 }
@@ -205,4 +202,12 @@ public class HighlightDialogFragment extends DialogFragment {
             ((BraveActivity)getActivity()).showOnboardingV2(false);
         }
     };
+
+    private void checkAndOpenNtpPage() {
+        String countryCode = Locale.getDefault().getCountry();
+                    if (((BraveActivity) getActivity()) != null && countryCode.equals("JP")) {
+                        ((BraveActivity) getActivity())
+                                .openNewOrSelectExistingTab(NTP_TUTORIAL_PAGE);
+                    }
+    }
 }
