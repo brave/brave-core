@@ -59,12 +59,11 @@ void BraveProfileMenuView::BuildFeatureButtons() {
   if (!profile->IsOffTheRecord() && profile->HasPrimaryOTRProfile())
     window_count += chrome::GetBrowserCount(
         profile->GetPrimaryOTRProfile(/*create_if_needed=*/true));
-  if (base::FeatureList::IsEnabled(features::kNewProfilePicker) &&
-      IsGuest(profile)) {
+  if (IsGuest(profile)) {
     AddFeatureButton(
         l10n_util::GetPluralStringFUTF16(IDS_GUEST_PROFILE_MENU_CLOSE_BUTTON,
                                          window_count),
-        base::BindRepeating(&BraveProfileMenuView::OnExitProfileButtonClicked,
+        base::BindRepeating(&ProfileMenuView::OnExitProfileButtonClicked,
                             base::Unretained(this)),
         vector_icons::kCloseIcon);
   } else {
@@ -72,7 +71,7 @@ void BraveProfileMenuView::BuildFeatureButtons() {
       AddFeatureButton(
           l10n_util::GetPluralStringFUTF16(IDS_PROFILES_CLOSE_X_WINDOWS_BUTTON,
                                            window_count),
-          base::BindRepeating(&BraveProfileMenuView::OnExitProfileButtonClicked,
+          base::BindRepeating(&ProfileMenuView::OnExitProfileButtonClicked,
                               base::Unretained(this)),
           vector_icons::kCloseIcon);
     }
