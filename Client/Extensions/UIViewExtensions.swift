@@ -79,16 +79,18 @@ extension UIView {
      */
     static func findSubViewWithFirstResponder(_ view: UIView) -> UIView? {
         let subviews = view.subviews
-        if subviews.isEmpty {
+
+        guard !subviews.isEmpty else {
             return nil
         }
         
-        guard let firstSubview = subviews.first else { return nil }
-        if firstSubview.isFirstResponder {
-            return firstSubview
-        } else {
-            return findSubViewWithFirstResponder(firstSubview)
+        if let firstResponderSubview = subviews.first(where: { $0.isFirstResponder }) {
+            return firstResponderSubview
         }
+        
+        guard let firstSubview = subviews.first( where: { !($0 is UIRefreshControl) }) else { return nil }
+
+        return findSubViewWithFirstResponder(firstSubview)
     }
     
     /// Creates empty view with specified height or width parameter.
