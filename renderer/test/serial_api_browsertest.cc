@@ -60,8 +60,8 @@ IN_PROC_BROWSER_TEST_F(SerialAPIBrowserTest, SerialAPIDisabled) {
         return ports.length;
       })())");
 
-  EXPECT_TRUE(
-      result.error.find("Cannot read property 'getPorts' of undefined") !=
-      std::string::npos)
+  EXPECT_TRUE(result.error.find(
+                  "Cannot read properties of undefined (reading 'getPorts')") !=
+              std::string::npos)
       << result.error;
 }
