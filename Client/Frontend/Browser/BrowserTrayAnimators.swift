@@ -314,8 +314,13 @@ private func createTransitionCellFromTab(_ tab: Tab?, withFrame frame: CGRect) -
     cell.screenshotView.image = tab?.screenshot
     cell.titleLabel.text = tab?.displayTitle
 
-    if let favIcon = tab?.displayFavicon {
-        cell.favicon.sd_setImage(with: URL(string: favIcon.url)!)
+    if let favIcon = tab?.displayFavicon, let url = URL(string: favIcon.url) {
+        let scale = UIScreen.main.scale
+        let thumbnailSize = CGSize(width: 50 * scale, height: 50 * scale)
+
+        cell.favicon.sd_setImage(with: url,
+                                 placeholderImage: #imageLiteral(resourceName: "defaultFavicon"),
+                                 context: [.imageThumbnailPixelSize: thumbnailSize])
     } else {
         cell.favicon.image = #imageLiteral(resourceName: "defaultFavicon")
     }
