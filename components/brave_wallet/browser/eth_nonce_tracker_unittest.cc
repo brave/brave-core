@@ -52,9 +52,11 @@ class EthNonceTrackerUnitTest : public testing::Test {
   void SetTransactionCount(uint256_t count) {
     transaction_count_ = count;
     url_loader_factory_.ClearResponses();
-    url_loader_factory_.AddResponse(
-        "https://mainnet-infura.brave.com/f7106c838853428280fa0c585acc9485",
-        GetResultString());
+
+    // See EthJsonRpcController::SetNetwork() to better understand where the
+    // http://localhost:8545 URL used below is coming from.
+    url_loader_factory_.AddResponse("http://localhost:8545/",
+                                    GetResultString());
   }
 
  private:
@@ -72,7 +74,7 @@ class EthNonceTrackerUnitTest : public testing::Test {
 };
 
 TEST_F(EthNonceTrackerUnitTest, GetNonce) {
-  EthJsonRpcController controller(Network::kMainnet,
+  EthJsonRpcController controller(Network::kLocalhost,
                                   shared_url_loader_factory());
   EthTxStateManager tx_state_manager(GetPrefs());
   EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
@@ -157,7 +159,7 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
 }
 
 TEST_F(EthNonceTrackerUnitTest, NonceLock) {
-  EthJsonRpcController controller(Network::kMainnet,
+  EthJsonRpcController controller(Network::kLocalhost,
                                   shared_url_loader_factory());
   EthTxStateManager tx_state_manager(GetPrefs());
   EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
