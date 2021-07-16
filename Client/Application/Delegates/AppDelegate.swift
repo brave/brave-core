@@ -233,15 +233,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     
     private var cancellables: Set<AnyCancellable> = []
     
-    private func updateTheme() {
-        guard let window = window,
-              let themeOverride = DefaultTheme(rawValue: Preferences.General.themeNormalMode.value)?.userInterfaceStyleOverride else {
-            return
-        }
+    private var expectedThemeOverride: UIUserInterfaceStyle {
+        let themeOverride = DefaultTheme(
+            rawValue: Preferences.General.themeNormalMode.value
+        )?.userInterfaceStyleOverride ?? .unspecified
         let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
-        let override: UIUserInterfaceStyle = isPrivateBrowsing ? .dark : themeOverride
+        return isPrivateBrowsing ? .dark : themeOverride
+    }
+    
+    private func updateTheme() {
+        guard let window = window else { return }
         UIView.transition(with: window, duration: 0.15, options: [.transitionCrossDissolve], animations: {
-            window.overrideUserInterfaceStyle = override
+            window.overrideUserInterfaceStyle = self.expectedThemeOverride
         }, completion: nil)
     }
 
@@ -288,9 +291,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             }
             .store(in: &cancellables)
         
-        if let themeOverride = DefaultTheme(rawValue: Preferences.General.themeNormalMode.value)?.userInterfaceStyleOverride {
-            window?.overrideUserInterfaceStyle = themeOverride
-        }
+        window?.overrideUserInterfaceStyle = expectedThemeOverride
         window?.tintColor = UIColor {
             if $0.userInterfaceStyle == .dark {
                 return .braveLighterBlurple
