@@ -5,6 +5,18 @@
 
 #include "brave/browser/ui/views/tabs/brave_alert_indicator.h"
 
+// Set alert indicator's pos to start of the title and
+// move title after the alert indicator.
+// Title right should respect close btn's space
+
+#define BRAVE_UI_VIEWS_TABS_TAB_ALERT_INDICATOR_POSITION    \
+  alert_indicator_->SetX(title_left - after_title_padding); \
+  title_right = close_x - after_title_padding;              \
+  if (showing_close_button_)                                \
+    title_right = close_x - after_title_padding;            \
+  title_left =                                              \
+      alert_indicator_->x() + alert_indicator_->width() + after_title_padding;
 #define AlertIndicator BraveAlertIndicator
 #include "../../../../../../../chrome/browser/ui/views/tabs/tab.cc"  // NOLINT
 #undef AlertIndicator
+#undef BRAVE_UI_VIEWS_TABS_TAB_ALERT_INDICATOR_POSITION

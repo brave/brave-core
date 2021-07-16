@@ -9,6 +9,7 @@
 #include <string>
 
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/tabs/tab_types.h"
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -62,12 +63,15 @@ BraveAlertIndicator::BraveAlertIndicator(Tab* parent_tab)
 }
 
 SkColor BraveAlertIndicator::GetBackgroundColor() const {
-  TabStyle::TabColors colors = parent_tab_->tab_style()->CalculateColors();
+  SkColor fill_color = parent_tab_->controller()->GetTabBackgroundColor(
+      parent_tab_->IsActive() ? TabActive::kInactive : TabActive::kActive,
+      BrowserFrameActiveState::kUseCurrent);
+
   if (!IsTabAudioToggleable() || !IsMouseHovered())
-    return colors.background_color;
+    return fill_color;
 
   // Approximating the InkDrop behavior of the close button.
-  return color_utils::BlendTowardMaxContrast(colors.background_color,
+  return color_utils::BlendTowardMaxContrast(fill_color,
                                              mouse_pressed_ ? 72 : 36);
 }
 
