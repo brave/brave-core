@@ -14,7 +14,6 @@
 #include "bat/ads/internal/locale/country_code_util.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/platform/platform_helper.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
 #include "bat/ads/internal/server/confirmations_server_util.h"
 #include "bat/ads/internal/server/via_header_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
