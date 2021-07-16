@@ -5228,11 +5228,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Always show full URLs
         </message>
       </if>
-      <if expr="not use_titlecase">
-        <message name="IDS_CONTEXT_MENU_SHOW_FULL_URLS" desc="The text label of the omnibox context menu option to show full URLs">
-          Always show full URLs
-        </message>
-      </if>
 
       <!-- NTP -->
       <message name="IDS_GOOGLE_SEARCH_BOX_EMPTY_HINT" desc="The text displayed in the fakebox (on the New Tab page) when it is empty, and Brave is the default search engine.">
