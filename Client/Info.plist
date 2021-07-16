@@ -93,6 +93,9 @@
 	<string>This lets you save photos.</string>
 	<key>NSUserActivityTypes</key>
 	<array>
+		<string>OpenBookmarkWebsiteIntent</string>
+		<string>OpenHistoryWebsiteIntent</string>
+		<string>OpenWebsiteIntent</string>
 		<string>org.mozilla.ios.firefox.browsing</string>
 	</array>
 	<key>UIAppFonts</key>

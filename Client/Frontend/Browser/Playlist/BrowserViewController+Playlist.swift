@@ -75,6 +75,12 @@ extension BrowserViewController: PlaylistHelperDelegate {
     private func openPlaylist() {
         let playlistController = (UIApplication.shared.delegate as? AppDelegate)?.playlistRestorationController ?? PlaylistViewController()
         playlistController.modalPresentationStyle = .fullScreen
+        
+        /// Donate Open Playlist Activity for suggestions
+        let openPlaylist = ActivityShortcutManager.shared.createShortcutActivity(type: .openPlayList)
+        self.userActivity = openPlaylist
+        openPlaylist.becomeCurrent()
+
         present(playlistController, animated: true)
     }
     

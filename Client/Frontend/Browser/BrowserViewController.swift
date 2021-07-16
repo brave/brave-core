@@ -1128,7 +1128,14 @@ class BrowserViewController: UIViewController {
                                                          dataSource: backgroundDataSource,
                                                          feedDataSource: feedDataSource,
                                                          rewards: rewards)
+            /// Donate NewTabPage Activity For Custom Suggestions
+            let newTabPageActivity =
+                ActivityShortcutManager.shared.createShortcutActivity(type: selectedTab.isPrivate ? .newPrivateTab : .newTab)
+            
             ntpController.delegate = self
+            ntpController.userActivity = newTabPageActivity
+            
+            newTabPageActivity.becomeCurrent()
             selectedTab.newTabPageViewController = ntpController
         }
         guard let ntpController = selectedTab.newTabPageViewController else {
@@ -1546,8 +1553,11 @@ class BrowserViewController: UIViewController {
         _ = tabManager.addTabAndSelect(request, isPrivate: isPrivate)
     }
 
-    func openBlankNewTab(attemptLocationFieldFocus: Bool, isPrivate: Bool = false, searchFor searchText: String? = nil) {
-        popToBVC()
+    func openBlankNewTab(attemptLocationFieldFocus: Bool, isPrivate: Bool = false, searchFor searchText: String? = nil, isExternal: Bool = false) {
+        if !isExternal {
+            popToBVC()
+        }
+        
         openURLInNewTab(nil, isPrivate: isPrivate, isPrivileged: true)
         let freshTab = tabManager.selectedTab
         
@@ -1563,6 +1573,30 @@ class BrowserViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    func clearHistoryAndOpenNewTab() {
+        History.deleteAll { [weak self] in
+            guard let self = self else { return }
+            
+            self.tabManager.clearTabHistory() {
+                self.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: false)
+            }
+        }
+    }
+    
+    func openInsideSettingsNavigation(with viewController: UIViewController) {
+        let settingsNavigationController = SettingsNavigationController(rootViewController: viewController)
+        settingsNavigationController.isModalInPresentation = false
+        settingsNavigationController.modalPresentationStyle =
+            UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
+        settingsNavigationController.navigationBar.topItem?.leftBarButtonItem =
+            UIBarButtonItem(barButtonSystemItem: .done, target: settingsNavigationController, action: #selector(settingsNavigationController.done))
+        
+        // All menu views should be opened in portrait on iPhones.
+        UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
+
+        present(settingsNavigationController, animated: true)
     }
 
     func popToBVC() {

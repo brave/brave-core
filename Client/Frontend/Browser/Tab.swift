@@ -408,8 +408,15 @@ class Tab: NSObject {
     @discardableResult func loadRequest(_ request: URLRequest) -> WKNavigation? {
         if let webView = webView {
             lastRequest = request
-            if let url = request.url, url.isFileURL, request.isPrivileged {
-                return webView.loadFileURL(url, allowingReadAccessTo: url)
+            if let url = request.url {
+                if url.isFileURL, request.isPrivileged {
+                    return webView.loadFileURL(url, allowingReadAccessTo: url)
+                }
+                
+                /// Donate Custom Intent Open Website
+                if url.isSecureWebPage(), !isPrivate {
+                    ActivityShortcutManager.shared.donateCustomIntent(for: .openWebsite, with: url.absoluteString)
+                }
             }
 
             return webView.load(request)
