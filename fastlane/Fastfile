@@ -84,7 +84,8 @@ platform :ios do
         method: "app-store",
         provisioningProfiles: { 
           "com.brave.ios.browser" => "Brave iOS",
-          "com.brave.ios.browser.BraveShareTo" => "Brave iOS Share Extension"
+          "com.brave.ios.browser.BraveShareTo" => "Brave iOS Share Extension",
+          "com.brave.ios.browser.BrowserIntents" => "Brave iOS Intents Extension"
         }
       },
     }
