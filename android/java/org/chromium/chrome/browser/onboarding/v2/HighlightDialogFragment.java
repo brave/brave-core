@@ -36,9 +36,11 @@ import org.chromium.components.user_prefs.UserPrefs;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class HighlightDialogFragment extends DialogFragment {
     final public static String TAG_FRAGMENT = "HIGHLIGHT_FRAG";
+    private final static String NTP_TUTORIAL_PAGE = "https://brave.com/ja/android-ntp-tutorial";
 
     public interface HighlightDialogListener {
         void onNextPage();
@@ -101,6 +103,7 @@ public class HighlightDialogFragment extends DialogFragment {
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                checkAndOpenNtpPage();
                 dismiss();
             }
         });
@@ -185,6 +188,7 @@ public class HighlightDialogFragment extends DialogFragment {
                         || isFromStats) {
                     dismiss();
                     BraveStatsUtil.showBraveStats();
+                    checkAndOpenNtpPage();
                 } else {
                     viewpager.setCurrentItem(currentPage + 1);
                 }
@@ -198,4 +202,11 @@ public class HighlightDialogFragment extends DialogFragment {
             ((BraveActivity)getActivity()).showOnboardingV2(false);
         }
     };
+
+    private void checkAndOpenNtpPage() {
+        String countryCode = Locale.getDefault().getCountry();
+        if (((BraveActivity) getActivity()) != null && countryCode.equals("JP")) {
+            ((BraveActivity) getActivity()).openNewOrSelectExistingTab(NTP_TUTORIAL_PAGE);
+        }
+    }
 }
