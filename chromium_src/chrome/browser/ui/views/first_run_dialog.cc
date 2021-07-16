@@ -94,7 +94,8 @@ FirstRunDialog::FirstRunDialog(Profile* profile) {
       contents_font));
   contents_label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
   contents_label->SetMultiLine(true);
-  contents_label->SetMaximumWidth(450);
+  constexpr int kMaxWidth = 450;
+  contents_label->SetMaximumWidth(kMaxWidth);
 
   make_default_ = AddChildView(std::make_unique<views::Checkbox>(
       l10n_util::GetStringUTF16(IDS_FR_CUSTOMIZE_DEFAULT_BROWSER_BRAVE)));
