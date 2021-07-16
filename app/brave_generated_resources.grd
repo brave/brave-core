@@ -1313,7 +1313,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <!--First-run dialog messages -->
       <message name="IDS_FR_CUSTOMIZE_DEFAULT_BROWSER_BRAVE" desc="Default browser checkbox label">
-        Set Brave as your default browser
+        Set Brave as default browser
       </message>
       <message name="IDS_FIRSTRUN_DLG_COMPLETE_INSTALLATION_LABEL_BRAVE" desc="Label at top of Dialog noting what's going to happen">
         To ensure the best privacy online, consider setting Brave as the default browser on your computer. With Brave as default, any web link you click will open with Brave's privacy protections.
