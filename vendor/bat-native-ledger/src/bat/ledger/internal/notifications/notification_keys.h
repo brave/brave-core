@@ -11,6 +11,7 @@ namespace notifications {
 
 const char kWalletDeviceLimitReached[] = "wallet_device_limit_reached";
 const char kWalletDisconnected[] = "wallet_disconnected";
+const char kWalletNewVerified[] = "wallet_new_verified";
 
 }  // namespace notifications
 }  // namespace ledger

@@ -288,8 +288,12 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
   LogWalletStatusChange(ledger_, from, to);
 
   ledger_->database()->SaveEventLog(
-      log::kWalletConnected,
+      log::kWalletVerified,
       constant::kWalletUphold + std::string("/") + id.substr(0, 5));
+
+  ledger_->ledger_client()->ShowNotification(
+      ledger::notifications::kWalletNewVerified, {"Uphold"},
+      [](type::Result) {});
 
   ledger_->promotion()->TransferTokens(
       std::bind(&UpholdWallet::OnTransferTokens, this, _1, _2, callback));
