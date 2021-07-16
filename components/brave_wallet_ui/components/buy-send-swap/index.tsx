@@ -4,6 +4,7 @@ import SelectNetwork from './select-network-with-header'
 import SelectAsset from './select-asset'
 import Header from './header'
 import Swap from './swap'
+import Send from './send'
 
 export {
   SelectAccount,
@@ -11,5 +12,6 @@ export {
   SelectAsset,
   Header,
   Layout,
-  Swap
+  Swap,
+  Send
 }

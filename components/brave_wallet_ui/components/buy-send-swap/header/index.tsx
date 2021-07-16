@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { UserAccountType, NetworkOptionsType, SwapViewTypes } from '../../../constants/types'
+import { UserAccountType, NetworkOptionsType, BuySendSwapViewTypes } from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { create } from 'ethereum-blockies'
 // Styled Components
@@ -18,7 +18,7 @@ import {
 export interface Props {
   selectedAccount: UserAccountType
   selectedNetwork: NetworkOptionsType
-  onChangeSwapView: (view: SwapViewTypes) => void
+  onChangeSwapView: (view: BuySendSwapViewTypes) => void
 }
 
 function SwapHeader (props: Props) {

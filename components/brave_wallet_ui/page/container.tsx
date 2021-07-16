@@ -34,7 +34,8 @@ import {
   OrderTypes,
   UserAccountType,
   SlippagePresetObjectType,
-  ExpirationPresetObjectType
+  ExpirationPresetObjectType,
+  ToOrFromType
 } from '../constants/types'
 import { mockUserAccounts } from '../stories/mock-data/user-accounts'
 import { NavOptions } from '../options/side-nav-options'
@@ -84,14 +85,24 @@ function Container (props: Props) {
   const [inputValue, setInputValue] = React.useState<string>('')
   const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
   const [exchangeRate, setExchangeRate] = React.useState('')
+  const [toAddress, setToAddress] = React.useState('')
+  const [sendAmount, setSendAmount] = React.useState('')
   const [fromAmount, setFromAmount] = React.useState('')
   const [toAmount, setToAmount] = React.useState('')
   const [slippageTolerance, setSlippageTolerance] = React.useState<SlippagePresetObjectType>(SlippagePresetOptions[0])
   const [orderExpiration, setOrderExpiration] = React.useState<ExpirationPresetObjectType>(ExpirationPresetOptions[0])
   const [orderType, setOrderType] = React.useState<OrderTypes>('market')
 
+  const onSetToAddress = (value: string) => {
+    setToAddress(value)
+  }
+
   const onSetFromAmount = (value: string) => {
     setFromAmount(value)
+  }
+
+  const onSetSendAmount = (value: string) => {
+    setSendAmount(value)
   }
 
   const onSetToAmount = (value: string) => {
@@ -148,7 +159,7 @@ function Container (props: Props) {
   // TODO (DOUGLAS): This needs to be set up in the Reducer in a future PR
   const [fromAsset, setFromAsset] = React.useState<AssetOptionType>(AssetOptions[0])
   const [toAsset, setToAsset] = React.useState<AssetOptionType>(AssetOptions[1])
-  const onSelectSwapAsset = (asset: AssetOptionType, toOrFrom: string) => {
+  const onSelectTransactAsset = (asset: AssetOptionType, toOrFrom: ToOrFromType) => {
     if (toOrFrom === 'from') {
       setFromAsset(asset)
     } else {
@@ -318,6 +329,10 @@ function Container (props: Props) {
     // TODO (DOUGLAS): logic Here to submit a swap transaction
   }
 
+  const onSubmitSend = () => {
+    // TODO (DOUGLAS): logic Here to submit a send transaction
+  }
+
   const renderWallet = React.useMemo(() => {
     if (!isWalletCreated) {
       return (
@@ -416,24 +431,29 @@ function Container (props: Props) {
             selectedNetwork={selectedNetwork}
             selectedAccount={selectedAccount}
             exchangeRate={exchangeRate}
+            sendAmount={sendAmount}
             fromAmount={fromAmount}
             fromAssetBalance='0'
             toAmount={toAmount}
             toAssetBalance='0'
             orderExpiration={orderExpiration}
             slippageTolerance={slippageTolerance}
+            toAddress={toAddress}
+            onSetToAddress={onSetToAddress}
             onSelectExpiration={onSelectExpiration}
             onSelectPresetAmount={onSelectPresetAmount}
             onSelectSlippageTolerance={onSelectSlippageTolerance}
             onSetExchangeRate={onSetExchangeRate}
+            onSetSendAmount={onSetSendAmount}
             onSetFromAmount={onSetFromAmount}
             onSetToAmount={onSetToAmount}
             onSubmitSwap={onSubmitSwap}
+            onSubmitSend={onSubmitSend}
             flipSwapAssets={flipSwapAssets}
             onSelectNetwork={onSelectNetwork}
             onSelectAccount={onSelectAccount}
             onToggleOrderType={onToggleOrderType}
-            onSelectSwapAsset={onSelectSwapAsset}
+            onSelectAsset={onSelectTransactAsset}
 
           />
         }

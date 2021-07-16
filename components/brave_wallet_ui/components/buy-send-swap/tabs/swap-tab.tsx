@@ -4,9 +4,10 @@ import {
   AssetOptionType,
   NetworkOptionsType,
   OrderTypes,
-  SwapViewTypes,
+  BuySendSwapViewTypes,
   SlippagePresetObjectType,
-  ExpirationPresetObjectType
+  ExpirationPresetObjectType,
+  ToOrFromType
 } from '../../../constants/types'
 import { AssetOptions } from '../../../options/asset-options'
 import { NetworkOptions } from '../../../options/network-options'
@@ -37,7 +38,7 @@ export interface Props {
   onSelectNetwork: (network: NetworkOptionsType) => void
   onSelectAccount: (account: UserAccountType) => void
   onToggleOrderType: () => void
-  onSelectSwapAsset: (asset: AssetOptionType, toOrFrom: string) => void
+  onSelectSwapAsset: (asset: AssetOptionType, toOrFrom: ToOrFromType) => void
   onSelectSlippageTolerance: (slippage: SlippagePresetObjectType) => void
   onSelectExpiration: (expiration: ExpirationPresetObjectType) => void
   onSetExchangeRate: (value: string) => void
@@ -74,11 +75,11 @@ function SwapTab (props: Props) {
     onSetToAmount,
     onSelectPresetAmount
   } = props
-  const [swapView, setSwapView] = React.useState<SwapViewTypes>('swap')
-  const [isSelectingAsset, setIsSelectingAsset] = React.useState<string>('')
+  const [swapView, setSwapView] = React.useState<BuySendSwapViewTypes>('swap')
+  const [isSelectingAsset, setIsSelectingAsset] = React.useState<ToOrFromType>('from')
   const [filteredAssetList, setFilteredAssetList] = React.useState<AssetOptionType[]>(AssetOptions)
 
-  const onChangeSwapView = (view: SwapViewTypes, option?: 'to' | 'from') => {
+  const onChangeSwapView = (view: BuySendSwapViewTypes, option?: ToOrFromType) => {
     if (option) {
       setIsSelectingAsset(option)
       setSwapView(view)

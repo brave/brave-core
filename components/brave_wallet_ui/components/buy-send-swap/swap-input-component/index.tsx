@@ -20,16 +20,27 @@ import {
   SelectValueText,
   SelectText,
   Input,
-  Row
+  Row,
+  PasteIcon,
+  PasteButton
 } from './style'
 
 import { BubbleContainer } from '../shared-styles'
 
+export type BuySendSwapInputType =
+  | 'toAmount'
+  | 'fromAmount'
+  | 'toAddress'
+  | 'buyAmount'
+  | 'exchange'
+  | 'selector'
+
 export interface Props {
-  componentType: 'toAmount' | 'fromAmount' | 'toAddress' | 'buyAmount' | 'exchange' | 'selector'
+  componentType: BuySendSwapInputType
   selectedAssetBalance?: string
   selectedAsset?: AssetOptionType
   selectedAssetInputAmount?: string
+  toAddress?: string
   inputName?: string
   orderType?: OrderTypes
   slippageTolerance?: SlippagePresetObjectType
@@ -41,6 +52,7 @@ export interface Props {
   onToggleOrderType?: () => void
   onShowSelection?: () => void
   onRefresh?: () => void
+  onPaste?: () => void
 }
 
 function SwapInputComponent (props: Props) {
@@ -50,10 +62,12 @@ function SwapInputComponent (props: Props) {
     componentType,
     selectedAssetInputAmount,
     inputName,
+    toAddress,
     orderType,
     slippageTolerance,
     orderExpiration,
     onInputChange,
+    onPaste,
     onRefresh,
     onSelectPresetAmount,
     onSelectSlippageTolerance,
@@ -139,22 +153,28 @@ function SwapInputComponent (props: Props) {
       {componentType !== 'selector' &&
         <>
           <Row>
-            <FromBalanceText isExchange={componentType === 'exchange'}>{getTitle()}</FromBalanceText>
-            {componentType === 'exchange' ? (
+            <FromBalanceText componentType={componentType}>{getTitle()}</FromBalanceText>
+            {componentType === 'exchange' &&
               <MarketLimitButton onClick={onToggleOrderType}>{orderType === 'market' ? locale.swapLimit : locale.swapMarket}</MarketLimitButton>
-            ) : (
+            }
+            {componentType !== 'exchange' && componentType !== 'toAddress' &&
               <FromBalanceText>{locale.balance}: {selectedAssetBalance}</FromBalanceText>
-            )
+            }
+            {componentType === 'toAddress' &&
+              <PasteButton onClick={onPaste}>
+                <PasteIcon />
+              </PasteButton>
             }
           </Row>
-          <Row isExchange={componentType === 'exchange'}>
+          <Row componentType={componentType}>
             <Input
-              isExchange={componentType === 'exchange'}
-              type='number'
-              placeholder='0.0'
-              value={selectedAssetInputAmount}
+              componentType={componentType}
+              type={componentType === 'toAddress' ? 'text' : 'number'}
+              placeholder={componentType === 'toAddress' ? '0x address or url' : '0'}
+              value={componentType === 'toAddress' ? toAddress : selectedAssetInputAmount}
               name={inputName}
               onChange={onInputChanged}
+              spellCheck={false}
               hasError={selectedAssetBalance && componentType === 'fromAmount' ? Number(selectedAssetInputAmount) > Number(selectedAssetBalance) : false}
               disabled={orderType === 'market' && componentType === 'exchange' || orderType === 'limit' && componentType === 'toAmount'}
             />
@@ -166,7 +186,7 @@ function SwapInputComponent (props: Props) {
                 />
               </RefreshButton>
             }
-            {componentType !== 'exchange' &&
+            {componentType !== 'exchange' && componentType !== 'toAddress' &&
               <AssetButton onClick={onShowSelection}>
                 <AssetIcon icon={selectedAsset?.icon} />
                 <AssetTicker>{selectedAsset?.symbol}</AssetTicker>

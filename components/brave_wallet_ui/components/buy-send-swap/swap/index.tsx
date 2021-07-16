@@ -2,9 +2,10 @@ import * as React from 'react'
 import {
   AssetOptionType,
   OrderTypes,
-  SwapViewTypes,
+  BuySendSwapViewTypes,
   SlippagePresetObjectType,
-  ExpirationPresetObjectType
+  ExpirationPresetObjectType,
+  ToOrFromType
 } from '../../../constants/types'
 import { NavButton } from '../../extension'
 import SwapInputComponent from '../swap-input-component'
@@ -30,7 +31,7 @@ export interface Props {
   onFlipAssets: () => void
   onSubmitSwap: () => void
   onInputChange: (value: string, name: string) => void
-  onChangeSwapView: (view: SwapViewTypes, option?: string) => void
+  onChangeSwapView: (view: BuySendSwapViewTypes, option?: ToOrFromType) => void
   onSelectPresetAmount: (percent: number) => void
   onSelectExpiration: (expiration: ExpirationPresetObjectType) => void
   onSelectSlippageTolerance: (slippage: SlippagePresetObjectType) => void
