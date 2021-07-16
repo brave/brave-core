@@ -833,7 +833,8 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Set up ipfs peers description
       </message>
       <message name="IDS_SETTINGS_IPFS_DELETE_PEER_CONFIRMATION" desc="Confirmation text for deleting a peer from IPFS peers manager page">
-        Do you really want to delete <ph name="KEY_NAME">$1<ex>MyCustomPeerId</ex></ph>?
+         <ph name="KEY_NAME">$1<ex>MyCustomKey</ex></ph>
+         Are you sure you want to delete this IPFS peer?
       </message>
       <message name="IDS_SETTINGS_IPNS_DELETE_KEY_CONFIRMATION" desc="Confirmation text for deleting a key from IPFS keys manager page">
         Do you really want to delete <ph name="KEY_NAME">$1<ex>MyCustomKey</ex></ph>?
