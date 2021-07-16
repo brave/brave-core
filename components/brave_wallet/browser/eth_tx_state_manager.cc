@@ -18,26 +18,22 @@
 
 namespace brave_wallet {
 
-EthTxStateManager::EthTxStateManager(PrefService* prefs) : prefs_(prefs) {
-  const base::DictionaryValue* value =
-      prefs_->GetDictionary(kBraveWalletTransactions);
-  for (base::DictionaryValue::Iterator iter(*value); !iter.IsAtEnd();
-       iter.Advance()) {
-    const std::string id = iter.key();
-    absl::optional<TxMeta> meta = ValueToTxMeta(iter.value());
-    if (!meta) {
-      LOG(ERROR) << "invalid TxMeta, id=" << id;
-      continue;
-    }
-    tx_meta_map_[id] = *meta;
-  }
-}
+EthTxStateManager::EthTxStateManager(PrefService* prefs) : prefs_(prefs) {}
 EthTxStateManager::~EthTxStateManager() = default;
 
 EthTxStateManager::TxMeta::TxMeta() = default;
 EthTxStateManager::TxMeta::TxMeta(const EthTransaction& tx) : tx(tx) {}
 EthTxStateManager::TxMeta::TxMeta(const TxMeta& meta) = default;
 EthTxStateManager::TxMeta::~TxMeta() = default;
+bool EthTxStateManager::TxMeta::operator==(const TxMeta& meta) const {
+  return id == meta.id && status == meta.status && from == meta.from &&
+         last_gas_price == meta.last_gas_price &&
+         created_time == meta.created_time &&
+         submitted_time == meta.submitted_time &&
+         confirmed_time == meta.confirmed_time &&
+         tx_receipt == meta.tx_receipt && tx_hash == meta.tx_hash &&
+         tx == meta.tx;
+}
 
 std::string EthTxStateManager::GenerateMetaID() {
   return base::GenerateGUID();
@@ -45,6 +41,7 @@ std::string EthTxStateManager::GenerateMetaID() {
 
 base::Value EthTxStateManager::TxMetaToValue(const TxMeta& meta) {
   base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("id", meta.id);
   dict.SetIntKey("status", static_cast<int>(meta.status));
   dict.SetStringKey("from", meta.from.ToHex());
   dict.SetStringKey("last_gas_price", Uint256ValueToHex(meta.last_gas_price));
@@ -61,6 +58,11 @@ base::Value EthTxStateManager::TxMetaToValue(const TxMeta& meta) {
 absl::optional<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
     const base::Value& value) {
   EthTxStateManager::TxMeta meta;
+  const std::string* id = value.FindStringKey("id");
+  if (!id)
+    return absl::nullopt;
+  meta.id = *id;
+
   absl::optional<int> status = value.FindIntKey("status");
   if (!status)
     return absl::nullopt;
@@ -148,17 +150,24 @@ void EthTxStateManager::AddOrUpdateTx(const TxMeta& meta) {
   DictionaryPrefUpdate update(prefs_, kBraveWalletTransactions);
   base::DictionaryValue* dict = update.Get();
   dict->SetKey(meta.id, TxMetaToValue(meta));
-  tx_meta_map_[meta.id] = meta;
 }
 
 bool EthTxStateManager::GetTx(const std::string& id, TxMeta* meta) {
   if (!meta)
     return false;
-  auto iter = tx_meta_map_.find(id);
-  if (iter == tx_meta_map_.end())
+  const base::DictionaryValue* dict =
+      prefs_->GetDictionary(kBraveWalletTransactions);
+  if (!dict)
+    return false;
+  const base::Value* value = dict->FindKey(id);
+  if (!value)
     return false;
 
-  *meta = iter->second;
+  absl::optional<TxMeta> meta_from_value = ValueToTxMeta(*value);
+  if (!meta_from_value)
+    return false;
+
+  *meta = *meta_from_value;
 
   return true;
 }
@@ -167,23 +176,28 @@ void EthTxStateManager::DeleteTx(const std::string& id) {
   DictionaryPrefUpdate update(prefs_, kBraveWalletTransactions);
   base::DictionaryValue* dict = update.Get();
   dict->RemoveKey(id);
-  tx_meta_map_.erase(id);
 }
 
 void EthTxStateManager::WipeTxs() {
   prefs_->ClearPref(kBraveWalletTransactions);
-  tx_meta_map_.clear();
 }
 
 std::vector<EthTxStateManager::TxMeta>
 EthTxStateManager::GetTransactionsByStatus(TransactionStatus status,
                                            absl::optional<EthAddress> from) {
   std::vector<EthTxStateManager::TxMeta> result;
-  for (auto& tx_meta : tx_meta_map_) {
-    if (tx_meta.second.status == status) {
-      if (from.has_value() && tx_meta.second.from != *from)
+  const base::DictionaryValue* value =
+      prefs_->GetDictionary(kBraveWalletTransactions);
+  for (base::DictionaryValue::Iterator iter(*value); !iter.IsAtEnd();
+       iter.Advance()) {
+    absl::optional<TxMeta> meta = ValueToTxMeta(iter.value());
+    if (!meta) {
+      continue;
+    }
+    if (meta->status == status) {
+      if (from.has_value() && meta->from != *from)
         continue;
-      result.push_back(tx_meta.second);
+      result.push_back(*meta);
     }
   }
   return result;

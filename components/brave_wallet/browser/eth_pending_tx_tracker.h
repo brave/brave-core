@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
+#include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
@@ -31,6 +32,10 @@ class EthPendingTxTracker {
   void ResubmitPendingTransactions();
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, IsNonceTaken);
+  FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, ShouldTxDropped);
+  FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, DropTransaction);
+
   void OnGetTxReceipt(std::string id, bool status, TransactionReceipt receipt);
   void OnGetNetworkNonce(std::string address, bool status, uint256_t result);
   void OnSendRawTransaction(bool status, const std::string& tx_hash);

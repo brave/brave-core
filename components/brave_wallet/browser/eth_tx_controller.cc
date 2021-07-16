@@ -17,19 +17,22 @@
 
 namespace brave_wallet {
 
-EthTxController::EthTxController(
-    base::WeakPtr<BraveWalletService> wallet_service,
-    PrefService* prefs)
-    : wallet_service_(wallet_service),
+EthTxController::EthTxController(EthJsonRpcController* rpc_controller,
+                                 KeyringController* keyring_controller,
+                                 PrefService* prefs)
+    : rpc_controller_(rpc_controller),
+      keyring_controller_(keyring_controller),
       tx_state_manager_(std::make_unique<EthTxStateManager>(prefs)),
-      nonce_tracker_(
-          std::make_unique<EthNonceTracker>(tx_state_manager_.get(),
-                                            wallet_service_->rpc_controller())),
-      pending_tx_tracker_(std::make_unique<EthPendingTxTracker>(
-          tx_state_manager_.get(),
-          wallet_service_->rpc_controller(),
-          nonce_tracker_.get())),
-      weak_factory_(this) {}
+      nonce_tracker_(std::make_unique<EthNonceTracker>(tx_state_manager_.get(),
+                                                       rpc_controller)),
+      pending_tx_tracker_(
+          std::make_unique<EthPendingTxTracker>(tx_state_manager_.get(),
+                                                rpc_controller_,
+                                                nonce_tracker_.get())),
+      weak_factory_(this) {
+  DCHECK(rpc_controller_);
+  DCHECK(keyring_controller_);
+}
 
 EthTxController::~EthTxController() = default;
 
@@ -93,9 +96,8 @@ void EthTxController::OnGetNextNonce(EthTxStateManager::TxMeta meta,
     return;
   }
   meta.tx.set_nonce(nonce);
-  auto* keyring_controller = wallet_service_->keyring_controller();
-  DCHECK(!keyring_controller->IsLocked());
-  auto* default_keyring = keyring_controller->GetDefaultKeyring();
+  DCHECK(!keyring_controller_->IsLocked());
+  auto* default_keyring = keyring_controller_->GetDefaultKeyring();
   DCHECK(default_keyring);
   default_keyring->SignTransaction(meta.from.ToChecksumAddress(), &meta.tx);
   meta.status = EthTxStateManager::TransactionStatus::APPROVED;
@@ -109,10 +111,8 @@ void EthTxController::PublishTransaction(const EthTransaction& tx,
     LOG(ERROR) << "Transaction must be signed first";
     return;
   }
-  EthJsonRpcController* rpc_controller = wallet_service_->rpc_controller();
-  DCHECK(rpc_controller);
 
-  rpc_controller->SendRawTransaction(
+  rpc_controller_->SendRawTransaction(
       tx.GetSignedTransaction(),
       base::BindOnce(&EthTxController::OnPublishTransaction,
                      weak_factory_.GetWeakPtr(), std::string(tx_meta_id)));
