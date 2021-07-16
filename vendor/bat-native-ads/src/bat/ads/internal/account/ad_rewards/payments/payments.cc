@@ -10,6 +10,7 @@
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
+#include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/features/ad_rewards/ad_rewards_features.h"
 #include "bat/ads/internal/logging.h"
@@ -43,6 +44,7 @@ bool Payments::SetFromJson(const std::string& json) {
   }
 
   payments_ = payments;
+  ConfirmationsState::Get()->Save();
 
   return true;
 }
