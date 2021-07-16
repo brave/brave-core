@@ -137,6 +137,8 @@ test("brave_unit_tests") {
     "//brave/vendor/brave_base/random_unittest.cc",
     "//chrome/browser/custom_handlers/test_protocol_handler_registry_delegate.cc",
     "//chrome/browser/custom_handlers/test_protocol_handler_registry_delegate.h",
+    "//chrome/browser/signin/test_signin_client_builder.cc",
+    "//chrome/browser/signin/test_signin_client_builder.h",
     "//components/bookmarks/browser/bookmark_model_unittest.cc",
   ]
 
