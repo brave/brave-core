@@ -73,9 +73,11 @@ struct BraveSearchDebugMenuDetail: View {
   }
 }
 
+#if DEBUG
 struct BraveSearchDebugMenuDetail_Previews: PreviewProvider {
   static var previews: some View {
     BraveSearchDebugMenuDetail(
       logEntry: BraveSearchDebugMenuFixture.sample)
   }
 }
+#endif
