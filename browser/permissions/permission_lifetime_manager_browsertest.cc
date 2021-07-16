@@ -11,7 +11,6 @@
 #include "base/metrics/field_trial.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/scoped_mock_time_message_loop_task_runner.h"
 #include "base/test/test_mock_time_task_runner.h"
 #include "base/threading/sequenced_task_runner_handle.h"
@@ -57,7 +56,6 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
  public:
   PermissionLifetimeManagerBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    scoped_feature_list_.InitAndEnableFeature(features::kPermissionLifetime);
   }
 
   ~PermissionLifetimeManagerBrowserTest() override = default;
@@ -134,7 +132,6 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
-  base::test::ScopedFeatureList scoped_feature_list_;
   net::test_server::EmbeddedTestServer https_server_;
   std::unique_ptr<MockPermissionLifetimePromptFactory> prompt_factory_;
   base::Value pre_test_data_{base::Value::Type::DICTIONARY};
@@ -281,9 +278,6 @@ class PermissionLifetimeManagerWithOriginMonitorBrowserTest
         SetKeepAliveTimeDelayForTesting(
             base::TimeDelta::FromSeconds(kKeepAliveInterval));
   }
-
- protected:
-  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
