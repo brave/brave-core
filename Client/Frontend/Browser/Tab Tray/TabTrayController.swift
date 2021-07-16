@@ -99,6 +99,8 @@ class TabTrayController: UIViewController {
         tabManager.addDelegate(self)
         
         Preferences.Privacy.privateBrowsingOnly.observe(from: self)
+        
+        setPrivateMode()
     }
 
     convenience init(tabManager: TabManager, profile: Profile, tabTrayDelegate: TabTrayDelegate) {
@@ -152,9 +154,7 @@ class TabTrayController: UIViewController {
             make.bottom.equalTo(self.toolbar.snp.top)
         }
 
-        if let tab = tabManager.selectedTab, tab.isPrivate {
-            privateMode = true
-        }
+        setPrivateMode()
 
         // XXX: Bug 1447726 - Temporarily disable 3DT in tabs tray
         // register for previewing delegate to enable peek and pop if force touch feature available
@@ -372,6 +372,12 @@ class TabTrayController: UIViewController {
     private func updateApplicationShortcuts() {
         if let delegate = UIApplication.shared.delegate as? AppDelegate {
             delegate.updateShortcutItems(UIApplication.shared)
+        }
+    }
+    
+    private func setPrivateMode() {
+        if let tab = tabManager.selectedTab, tab.isPrivate {
+            privateMode = true
         }
     }
 }

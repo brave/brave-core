@@ -607,10 +607,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             self.window?.rootViewController?.present(mailComposeViewController, animated: true, completion: nil)
         }
     }
+}
 
+// MARK: - NSUserActivity
+
+extension AppDelegate {
+    
     func application(_ application: UIApplication, continue userActivity: NSUserActivity,
                      restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-
         if let url = userActivity.webpageURL {
             switch UniversalLinkManager.universalLinkType(for: url, checkPath: false) {
             case .buyVPN:
@@ -624,21 +628,76 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             return true
         }
 
-        // Otherwise, check if the `NSUserActivity` is a CoreSpotlight item and switch to its tab or
-        // open a new one.
-        if userActivity.activityType == CSSearchableItemActionType {
-            if let userInfo = userActivity.userInfo,
-                let urlString = userInfo[CSSearchableItemActivityIdentifier] as? String,
-                let url = URL(string: urlString) {
-                browserViewController.switchToTabForURLOrOpen(url, isPrivileged: true)
+        switch userActivity.activityType {
+            case CSSearchableItemActionType:
+                // Otherwise, check if the `NSUserActivity` is a CoreSpotlight item and switch to its tab or
+                // open a new one.
+                if let userInfo = userActivity.userInfo,
+                    let urlString = userInfo[CSSearchableItemActivityIdentifier] as? String,
+                    let url = URL(string: urlString) {
+                    browserViewController.switchToTabForURLOrOpen(url, isPrivileged: false)
+                    return true
+                }
+            case ActivityType.newTab.identifier:
+                ActivityShortcutManager.shared.performShortcutActivity(
+                    type: .newTab, using: browserViewController)
+                
                 return true
-            }
+            case ActivityType.newPrivateTab.identifier:
+                ActivityShortcutManager.shared.performShortcutActivity(
+                    type: .newPrivateTab, using: browserViewController)
+                
+                return true
+            case ActivityType.clearBrowsingHistory.identifier:
+                ActivityShortcutManager.shared.performShortcutActivity(
+                    type: .clearBrowsingHistory, using: browserViewController)
+                
+                return true
+            case ActivityType.enableBraveVPN.identifier:
+                ActivityShortcutManager.shared.performShortcutActivity(
+                    type: .enableBraveVPN, using: browserViewController)
+                
+                return true
+            case ActivityType.openBraveNews.identifier:
+                ActivityShortcutManager.shared.performShortcutActivity(
+                    type: .openBraveNews, using: browserViewController)
+                
+                return true
+            case ActivityType.openPlayList.identifier:
+                ActivityShortcutManager.shared.performShortcutActivity(
+                    type: .openPlayList, using: browserViewController)
+                
+                return true
+            default:
+                break
         }
+        
+        func switchToTabForIntentURL(intentURL: String?) -> Bool {
+            guard let siteURL = intentURL, let url = URL(string: siteURL) else {
+                return false
+            }
 
+            browserViewController.switchToTabForURLOrOpen(url, isPrivileged: false)
+            return true
+        }
+        
+        if let intent = userActivity.interaction?.intent as? OpenWebsiteIntent {
+            return switchToTabForIntentURL(intentURL: intent.websiteURL)
+        }
+        
+        if let intent = userActivity.interaction?.intent as? OpenHistoryWebsiteIntent {
+            return switchToTabForIntentURL(intentURL: intent.websiteURL)
+        }
+        
+        if let intent = userActivity.interaction?.intent as? OpenBookmarkWebsiteIntent {
+            return switchToTabForIntentURL(intentURL: intent.websiteURL)
+        }
+        
         return false
     }
-
-    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+    
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem,
+                     completionHandler: @escaping (Bool) -> Void) {
         let handledShortCutItem = QuickActions.sharedInstance.handleShortCutItem(shortcutItem, withBrowserViewController: browserViewController)
 
         completionHandler(handledShortCutItem)

@@ -246,6 +246,7 @@ extension MenuViewController: PanModalPresentable {
     var panModalBackgroundColor: UIColor {
         UIColor(white: 0.0, alpha: 0.5)
     }
+
     var dragIndicatorBackgroundColor: UIColor {
         UIColor(white: 0.95, alpha: 1.0)
     }
