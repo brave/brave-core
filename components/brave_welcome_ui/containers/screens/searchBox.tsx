@@ -56,17 +56,12 @@ export default class SearchEngineBox extends React.PureComponent<Props, State> {
     ? `${searchProvider.name} (${getLocale('default')})`
     : searchProvider.name
 
-  getBodyText = (searchProviderName: string): string =>
-    searchProviderName === 'Google'
-      ? `${getLocale('chooseSearchEngine')} ${getLocale('privateExperience')}`
-      : getLocale('chooseSearchEngine')
-
   render () {
     const { index, currentScreen, onClick, searchProviders } = this.props
     const { searchEngineSelected } = this.state
     const defaultProvider = this.getDefaultSearchProvider(searchProviders)
     const bodyText = defaultProvider
-      ? this.getBodyText(defaultProvider.name) || ''
+      ? getLocale('chooseSearchEngine') || ''
       : ''
 
     return (

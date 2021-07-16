@@ -157,7 +157,7 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForUSA) {
 }
 
 TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForGermany) {
-  CheckForCountry('D', 'E', "DuckDuckGo");
+  CheckForCountry('D', 'E', "Google");
 }
 
 TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForFrance) {
@@ -166,16 +166,16 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForFrance) {
 
 TEST_F(BraveTemplateURLPrepopulateDataTest,
        DefaultSearchProvidersForAustralia) {
-  CheckForCountry('A', 'U', "DuckDuckGo");
+  CheckForCountry('A', 'U', "Google");
 }
 
 TEST_F(BraveTemplateURLPrepopulateDataTest,
        DefaultSearchProvidersForNewZealand) {
-  CheckForCountry('N', 'Z', "DuckDuckGo");
+  CheckForCountry('N', 'Z', "Google");
 }
 
 TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForIreland) {
-  CheckForCountry('I', 'E', "DuckDuckGo");
+  CheckForCountry('I', 'E', "Google");
 }
 
 TEST_F(BraveTemplateURLPrepopulateDataTest,
