@@ -57,8 +57,6 @@ class BatAdsAdNotificationServingTest : public UnitTestBase {
     MockUrlRequest(ads_client_mock_, endpoints);
 
     InitializeAds();
-
-    RecordUserActivityEvents();
   }
 
   void RecordUserActivityEvents() {
@@ -114,20 +112,61 @@ class BatAdsAdNotificationServingTest : public UnitTestBase {
 
 TEST_F(BatAdsAdNotificationServingTest, ServeAd) {
   // Arrange
-  CreativeAdNotificationList creative_ad_notifications;
+  RecordUserActivityEvents();
 
+  CreativeAdNotificationList creative_ad_notifications;
   CreativeAdNotificationInfo creative_ad_notification =
       GetCreativeAdNotification();
   creative_ad_notifications.push_back(creative_ad_notification);
-
   Save(creative_ad_notifications);
 
-  // Act
   EXPECT_CALL(*ads_client_mock_,
               ShowNotification(DoesMatchCreativeInstanceId(
                   creative_ad_notification.creative_instance_id)))
       .Times(1);
 
+  // Act
+  ServeAd();
+
+  // Assert
+}
+
+TEST_F(BatAdsAdNotificationServingTest, DoNotServeAdIfNoEligibleAdsFound) {
+  // Arrange
+  RecordUserActivityEvents();
+
+  EXPECT_CALL(*ads_client_mock_, ShowNotification(_)).Times(0);
+
+  // Act
+  ServeAd();
+
+  // Assert
+}
+
+TEST_F(BatAdsAdNotificationServingTest, DoNotServeInvalidAd) {
+  // Arrange
+  RecordUserActivityEvents();
+
+  EXPECT_CALL(*ads_client_mock_, ShowNotification(_)).Times(0);
+
+  // Act
+  ServeAd();
+
+  // Assert
+}
+
+TEST_F(BatAdsAdNotificationServingTest,
+       DoNotServeAdIfNotAllowedDueToPermissionRules) {
+  // Arrange
+  CreativeAdNotificationList creative_ad_notifications;
+  CreativeAdNotificationInfo creative_ad_notification =
+      GetCreativeAdNotification();
+  creative_ad_notifications.push_back(creative_ad_notification);
+  Save(creative_ad_notifications);
+
+  EXPECT_CALL(*ads_client_mock_, ShowNotification(_)).Times(0);
+
+  // Act
   ServeAd();
 
   // Assert
