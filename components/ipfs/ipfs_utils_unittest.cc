@@ -657,3 +657,18 @@ TEST_F(IpfsUtilsUnitTest, IsAPIGatewayTest) {
   ASSERT_FALSE(ipfs::IsAPIGateway(GURL("https://brave.com"), channel));
   ASSERT_FALSE(ipfs::IsAPIGateway(GURL(), channel));
 }
+
+TEST_F(IpfsUtilsUnitTest, IPNSRegistryDomain) {
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("http://google.com")), "");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("https://google.com")), "");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("ipfs://bafy")), "");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("ipfs://QmfdSDf")), "");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("ipns://QmfdSDf/path")), "");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("ipns://bafyff/path")), "");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("ipns://brantly.eth.link")),
+            "brantly.eth.link");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("ipns://brantly.eth/path")),
+            "brantly.eth");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("ipns://blah.google.com")),
+            "google.com");
+}
