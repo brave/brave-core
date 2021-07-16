@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.brave_stats;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -95,6 +96,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     }
 
     @Override
+    @SuppressLint("SourceLockedOrientationActivity")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = ContextUtils.getApplicationContext();

@@ -38,7 +38,7 @@ public class AssetDetailActivity
         setContentView(R.layout.activity_asset_detail);
 
         TextView assetTitleText = findViewById(R.id.asset_title_text);
-        assetTitleText.setText("Ethereum");
+        assetTitleText.setText(this.getText(R.string.eth_name));
 
         RadioGroup radioGroup = findViewById(R.id.asset_duration_radio_group);
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
