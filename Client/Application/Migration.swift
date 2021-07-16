@@ -29,6 +29,11 @@ class Migration {
         if !Preferences.Migration.playlistV1FileSettingsLocationCompleted.value {
             movePlaylistV1Items()
         }
+        
+        if !Preferences.Migration.removeLargeFaviconsMigrationCompleted.value {
+            FaviconMO.clearTooLargeFavicons()
+            Preferences.Migration.removeLargeFaviconsMigrationCompleted.value = true
+        }
     }
     
     static func moveDatabaseToApplicationDirectory() {
@@ -120,6 +125,8 @@ fileprivate extension Preferences {
             Option<Bool>(key: "migration.documents-dir-completed", default: false)
         static let playlistV1FileSettingsLocationCompleted =
             Option<Bool>(key: "migration.playlistv1-file-settings-location-completed", default: false)
+        static let removeLargeFaviconsMigrationCompleted =
+            Option<Bool>(key: "migration.remove-large-favicons", default: false)
     }
     
     /// Migrate the users preferences from prior versions of the app (<2.0)

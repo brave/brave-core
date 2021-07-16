@@ -10,6 +10,7 @@ const {getMetadata:metadataparser, metadataRuleSets} = require("page-metadata-pa
 function MetadataWrapper() {
   this.getMetadata = function() {
     const customRuleSets = metadataRuleSets;
+    customRuleSets.icon.defaultValue = () => "";
     customRuleSets.icon.rules = [
        ['link[rel="icon" i]', element => element.getAttribute('href')],
        ['link[rel="fluid-icon"]', element => element.getAttribute('href')],

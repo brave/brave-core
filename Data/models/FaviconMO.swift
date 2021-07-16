@@ -4,6 +4,10 @@ import UIKit
 import CoreData
 import Foundation
 import Storage
+import Shared
+import BraveShared
+
+private let log = Logger.browserLogger
 
 public final class FaviconMO: NSManagedObject, CRUD {
     
@@ -12,10 +16,23 @@ public final class FaviconMO: NSManagedObject, CRUD {
     @NSManaged public var height: Int32
     @NSManaged public var type: Int16
     @NSManaged public var domain: Domain?
+    
+    /// Maximum size of favicon that can be stored on the device.
+    public static let maxSize = 1024
 
     // MARK: - Public interface
     
     public class func add(_ favicon: Favicon, forSiteUrl siteUrl: URL, persistent: Bool) {
+        guard let width = favicon.width, let height = favicon.height else {
+            log.warning("Failed to unwrap favicon's width or height")
+            return
+        }
+        
+        if width > maxSize || height > maxSize {
+            log.warning("Favicon to save is too large.")
+            return
+        }
+        
         DataController.perform(context: .new(inMemory: !persistent)) { context in
             var item = FaviconMO.get(forFaviconUrl: favicon.url, context: context)
             if item == nil {
@@ -45,6 +62,11 @@ public final class FaviconMO: NSManagedObject, CRUD {
                 item!.type = t
             }
         }
+    }
+    
+    public static func clearTooLargeFavicons() {
+        let predicate = NSPredicate(format: "width > \(maxSize) OR height > \(maxSize)")
+        deleteAll(predicate: predicate)
     }
 }
 

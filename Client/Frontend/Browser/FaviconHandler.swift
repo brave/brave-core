@@ -51,10 +51,23 @@ class FaviconHandler {
         let onCompletedSiteFavicon: ImageCacheCompletion = { image, data, _, _, url in
             let favicon = Favicon(url: url.absoluteString, date: Date(), type: type)
 
-            guard let image = image else {
+            guard let image = image,
+                  let imageData = data else {
                 favicon.width = 0
                 favicon.height = 0
 
+                onSuccess(favicon, data)
+                return
+            }
+            
+            if let header = "%PDF".data(using: .utf8),
+               imageData.count >= header.count,
+               let range = imageData.range(of: header),
+               range.lowerBound.distance(to: imageData.startIndex) < 8 { //strict PDF parsing. Otherwise index <= (1024 - header.count)
+                // ^8 is the best range because some PDF's can contain a UTF-8 BOM (Byte-Order Mark)
+                
+                favicon.width = 0
+                favicon.height = 0
                 onSuccess(favicon, data)
                 return
             }
@@ -96,6 +109,13 @@ extension FaviconHandler: TabEventHandler {
             }
         } else if let iconURL = metadata.faviconURL {
             loadFaviconURL(iconURL, type: .icon, forTab: tab) >>== { (favicon, data) in
+                TabEvent.post(.didLoadFavicon(favicon, with: data), for: tab)
+            }
+        }
+        // No favicon fetched from metadata, trying base domain's standard favicon location.
+        else if let baseURL = tab.url?.domainURL {
+            loadFaviconURL(baseURL.appendingPathComponent("favicon.ico").absoluteString,
+                           type: .icon, forTab: tab) >>== { (favicon, data) in
                 TabEvent.post(.didLoadFavicon(favicon, with: data), for: tab)
             }
         }
