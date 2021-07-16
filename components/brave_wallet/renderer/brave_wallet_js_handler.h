@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/renderer/render_frame.h"
@@ -30,7 +31,6 @@ class BraveWalletJSHandler : public mojom::EventsListener {
   void OnGetChainId(const std::string& chain_id);
   void DisconnectEvent(const std::string& message);
   void AccountsChangedEvent(const std::string& accounts);
-  void ResetRemote(content::RenderFrame* render_frame);
 
   void ChainChangedEvent(const std::string& chain_id) override;
 
@@ -48,6 +48,7 @@ class BraveWalletJSHandler : public mojom::EventsListener {
   void CreateEthereumObject(v8::Isolate* isolate,
                             v8::Local<v8::Context> context);
   bool EnsureConnected();
+  void OnRemoteDisconnect();
   void InjectInitScript();
   void ExecuteScript(const std::string script);
 
@@ -72,6 +73,7 @@ class BraveWalletJSHandler : public mojom::EventsListener {
   mojo::Receiver<mojom::EventsListener> receiver_{this};
   bool is_connected_;
   std::string chain_id_;
+  base::WeakPtrFactory<BraveWalletJSHandler> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet
