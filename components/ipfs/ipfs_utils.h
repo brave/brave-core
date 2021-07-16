@@ -23,12 +23,6 @@ bool HasIPFSPath(const GURL& url);
 bool IsDefaultGatewayURL(const GURL& url, PrefService* prefs);
 bool IsLocalGatewayURL(const GURL& url);
 bool IsIPFSScheme(const GURL& url);
-// Extracts cid and path from ipfs URLs like:
-// [scheme]://[cid][.gateway][/path]
-// [scheme]://[cid][/path]
-bool ParseCIDAndPathFromIPFSUrl(const GURL& url,
-                                std::string* cid,
-                                std::string* path);
 GURL ToPublicGatewayURL(const GURL& url, PrefService* prefs);
 GURL GetIPFSGatewayURL(const std::string& cid,
                        const std::string& path,

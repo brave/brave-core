@@ -31,7 +31,7 @@ class IpfsRedirectNetworkDelegateHelperBrowserTest
     ipfs_url_ = GURL("ipfs://QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
     gateway_url_ = GURL(
         "https://dweb.link/ipfs/"
-        "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
+        "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR/");
   }
 
   content::WebContents* web_contents() const {

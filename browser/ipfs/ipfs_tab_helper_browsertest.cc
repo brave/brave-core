@@ -269,12 +269,13 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolveIPFSLinkCalled5xx) {
   EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), std::string());
   ASSERT_FALSE(resolver_raw->resolve_called());
   SetHttpStatusCode(net::HTTP_INTERNAL_SERVER_ERROR);
-  const GURL test_url = https_server_.GetURL("/5xx.html?query#fragment");
+  const GURL test_url =
+      embedded_test_server()->GetURL("a.com", "/5xx.html?query#fragment");
   ui_test_utils::NavigateToURL(browser(), test_url);
   ASSERT_FALSE(WaitForLoadStop(active_contents()));
   ASSERT_TRUE(resolver_raw->resolve_called());
-  GURL ipns = ReplaceScheme(test_url, ipfs::kIPNSScheme);
-  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), ipns);
+  EXPECT_EQ(helper->GetIPFSResolvedURL(),
+            GURL("ipns://a.com/5xx.html?query#fragment"));
 }
 
 IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolveNotCalled5xx) {
