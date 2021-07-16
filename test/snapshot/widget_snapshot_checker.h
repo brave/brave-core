@@ -12,17 +12,24 @@ namespace views {
 class Widget;
 }
 
-class WidgetSnapshotChecker {
+// Snapshot tests check visual appearance of widget on different platforms.
+// Tests are performed by comparison of widget snapshot and image file from
+// repo. Original snapshots are stored in this directory:
+// "brave\test\data\ui\snapshots\".
+// If actual snapshot doesn't match with original one, then actual snapshot is
+// stored in output directory at path: "test\ui\failed_snapshots\".
+// Note that linux snapshot tests should be executed using xvfb-run script to
+// make the same snapshots with infra build machines.
+class WidgetSnapshotChecker final {
  public:
   WidgetSnapshotChecker();
+  WidgetSnapshotChecker(const WidgetSnapshotChecker&) = delete;
+  WidgetSnapshotChecker& operator=(const WidgetSnapshotChecker&) = delete;
   ~WidgetSnapshotChecker();
 
   void CaptureAndCheckSnapshot(views::Widget* widget);
 
  private:
-  WidgetSnapshotChecker(const WidgetSnapshotChecker&) = delete;
-  WidgetSnapshotChecker& operator=(const WidgetSnapshotChecker&) = delete;
-
   base::FilePath GetSnapshotPath();
   base::FilePath GetFailedSnapshotDir();
   base::FilePath GetTestRelativeDir();

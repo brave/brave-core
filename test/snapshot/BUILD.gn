@@ -9,6 +9,7 @@ source_set("snapshot") {
   deps = [
     "//base",
     "//brave/common",
+    "//cc:test_support",
     "//skia",
     "//testing/gtest",
     "//ui/base",
