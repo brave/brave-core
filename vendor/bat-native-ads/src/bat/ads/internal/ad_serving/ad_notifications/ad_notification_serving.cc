@@ -222,7 +222,13 @@ bool AdServing::ServeAd(
               << "  targetUrl: " << ad_notification.target_url);
 
   AdDelivery ad_delivery;
-  return ad_delivery.MaybeDeliverAd(ad_notification);
+  if (!ad_delivery.MaybeDeliverAd(ad_notification)) {
+    return false;
+  }
+
+  NotifyDidServeAdNotification(ad_notification);
+
+  return true;
 }
 
 void AdServing::FailedToServeAd() {
@@ -234,10 +240,6 @@ void AdServing::FailedToServeAd() {
 void AdServing::ServedAd(
     const CreativeAdNotificationInfo& creative_ad_notification) {
   eligible_ads_->SetLastServedAd(creative_ad_notification);
-
-  const AdNotificationInfo ad_notification =
-      BuildAdNotification(creative_ad_notification);
-  NotifyDidServeAdNotification(ad_notification);
 
   MaybeServeAdAtNextRegularInterval();
 }
