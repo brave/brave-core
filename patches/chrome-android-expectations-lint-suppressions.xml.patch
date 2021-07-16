@@ -2,12 +2,11 @@ diff --git a/chrome/android/expectations/lint-suppressions.xml b/chrome/android/
 index 34e1f3da8338897e4c654e79d807c1f62d0686ee..1bafc6bb48522e226d0c6400cdf0f78596e3099a 100644
 --- a/chrome/android/expectations/lint-suppressions.xml
 +++ b/chrome/android/expectations/lint-suppressions.xml
-@@ -122,6 +122,8 @@ https://chromium.googlesource.com/chromium/src/+/main/build/android/docs/lint.md
+@@ -122,6 +122,7 @@ https://chromium.googlesource.com/chromium/src/+/main/build/android/docs/lint.md
      <ignore regexp="chrome/browser/ui/android/strings/ui_strings_grd.resources.zip/values/android_chrome_strings.xml"/>
      <!-- This string has a % in it. -->
      <ignore regexp="data_reduction_promo_infobar_title"/>
-+    <ignore regexp="sponsored_images_bottom_sheet_text"/>
-+    <ignore regexp="notification_marketing"/>
++    <ignore regexp="sponsored_images_bottom_sheet_text"/><ignore regexp="notification_marketing"/>
    </issue>
    <!-- Many .xtb files have a % that is not part of a formatted string.
         https://crbug.com/941164 -->
