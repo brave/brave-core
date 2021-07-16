@@ -21,8 +21,7 @@ const int kDefaultResourceVersion = 1;
 const char kFieldTrialParameterDefaultConversionIdPattern[] =
     "conversions_default_conversion_id_pattern";
 const char kDefaultDefaultConversionIdPattern[] =
-    "<meta.*name=\"ad-conversion-id\".*content=\"(.*)\".*>";
-
+    "<meta.*name=\"ad-conversion-id\".*content=\"([^\"]*)\".*>";
 }  // namespace
 
 const base::Feature kFeature{kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT};
