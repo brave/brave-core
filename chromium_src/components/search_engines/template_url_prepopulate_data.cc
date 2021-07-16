@@ -363,7 +363,7 @@ std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
   if (!t_urls.empty())
     return t_urls;
 
-  int version = kBraveFirstTrackedDataVersion;
+  int version = kBraveCurrentDataVersion;
   if (prefs && prefs->HasPrefPath(kBraveDefaultSearchVersion)) {
     version = prefs->GetInteger(kBraveDefaultSearchVersion);
   }
