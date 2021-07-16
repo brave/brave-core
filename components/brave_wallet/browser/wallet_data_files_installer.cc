@@ -17,15 +17,13 @@
 #include "base/logging.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/erc_token_list_parser.h"
+#include "brave/components/brave_wallet/browser/erc_token_registry.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
 #include "crypto/sha2.h"
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/erc_token_list_parser.h"
-#include "brave/components/brave_wallet/browser/erc_token_registry.h"
 namespace brave_wallet {
 
 namespace {
@@ -77,7 +75,10 @@ class WalletDataFilesInstallerPolicy
       std::unique_ptr<base::DictionaryValue> manifest);
   void UpdateTokenRegistry(std::vector<mojom::ERCTokenPtr>);
 
-  DISALLOW_COPY_AND_ASSIGN(WalletDataFilesInstallerPolicy);
+  WalletDataFilesInstallerPolicy(const WalletDataFilesInstallerPolicy&) =
+      delete;
+  WalletDataFilesInstallerPolicy operator=(
+      const WalletDataFilesInstallerPolicy&) = delete;
 };
 
 WalletDataFilesInstallerPolicy::WalletDataFilesInstallerPolicy() = default;
@@ -154,13 +155,17 @@ std::vector<mojom::ERCTokenPtr> WalletDataFilesInstallerPolicy::TokenListReady(
   }
 
   const base::FilePath token_list_json_path =
-      absolute_install_dir.Append("contract-map.json");
+      absolute_install_dir.AppendASCII("contract-map.json");
   std::string token_list_json;
   if (!base::ReadFileToString(token_list_json_path, &token_list_json)) {
     LOG(ERROR) << "Can't read token list file.";
   }
 
-  ParseTokenList(token_list_json, &erc_tokens);
+  if (!ParseTokenList(token_list_json, &erc_tokens)) {
+    LOG(ERROR) << "Can't parse token list.";
+    erc_tokens.clear();
+  }
+
   return erc_tokens;
 }
 
@@ -168,18 +173,15 @@ void WalletDataFilesInstallerPolicy::UpdateTokenRegistry(
     std::vector<mojom::ERCTokenPtr> erc_tokens) {
   ERCTokenRegistry::GetInstance()->UpdateTokenList(std::move(erc_tokens));
 }
-#endif
 
 void RegisterWalletDataFilesComponent(
     component_updater::ComponentUpdateService* cus) {
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   if (brave_wallet::IsNativeWalletEnabled()) {
     auto installer =
         base::MakeRefCounted<component_updater::ComponentInstaller>(
             std::make_unique<WalletDataFilesInstallerPolicy>());
     installer->Register(cus, base::OnceClosure());
   }
-#endif
 }
 
 }  // namespace brave_wallet
