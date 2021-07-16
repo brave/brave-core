@@ -21,7 +21,6 @@
 #include "brave/components/speedreader/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
-#include "components/permissions/features.h"
 #include "components/prefs/pref_service.h"
 #include "net/base/features.h"
 
@@ -191,10 +190,6 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveEphemeralStorageKeepAliveName,                \
      flag_descriptions::kBraveEphemeralStorageKeepAliveDescription, kOsAll, \
      FEATURE_VALUE_TYPE(net::features::kBraveEphemeralStorageKeepAlive)},   \
-    {"brave-permission-lifetime",                                           \
-     flag_descriptions::kBravePermissionLifetimeName,                       \
-     flag_descriptions::kBravePermissionLifetimeDescription, kOsAll,        \
-     FEATURE_VALUE_TYPE(permissions::features::kPermissionLifetime)},       \
     {"brave-rewards-verbose-logging",                                       \
      flag_descriptions::kBraveRewardsVerboseLoggingName,                    \
      flag_descriptions::kBraveRewardsVerboseLoggingDescription,             \

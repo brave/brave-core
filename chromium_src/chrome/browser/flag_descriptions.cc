@@ -99,10 +99,6 @@ const char kBraveEphemeralStorageKeepAliveName[] =
 const char kBraveEphemeralStorageKeepAliveDescription[] =
     "Keep ephemeral storage partitions alive for a specified time after all "
     "tabs for that origin are closed";
-const char kBravePermissionLifetimeName[] = "Permission Lifetime";
-const char kBravePermissionLifetimeDescription[] =
-    "Enables the option to choose a time period after which a permission will "
-    "be automatically revoked";
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
 const char kBraveRewardsGeminiName[] = "Enable Gemini for Brave Rewards";
