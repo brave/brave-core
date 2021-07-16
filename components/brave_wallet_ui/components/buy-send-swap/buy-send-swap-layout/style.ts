@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { BuySendSwapTypes } from '../../constants/types'
+import { BuySendSwapTypes } from '../../../constants/types'
 
 interface StyleProps {
   isSelected: boolean
@@ -12,7 +12,6 @@ export const StyledWrapper = styled.div`
   display: flex;
   height: 100%;
   width: 100%;
-  min-width: 285px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -33,15 +32,17 @@ export const MainContainerWrapper = styled.div<Partial<StyleProps>>`
 export const MainContainer = styled.div<Partial<StyleProps>>`
   position: relative;
   display: flex;
-  height: 100%;
   width: 100%;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding: 18px;
   background-color: ${(p) => p.theme.color.background02};
   border: ${(p) => `2px solid ${p.theme.color.divider01}`};
   border-radius: ${(p) =>
-    p.selectedTab === 'buy' ? '0px 8px 8px 8px' : p.selectedTab === 'swap' ? '8px 0px 8px 8px' : '8px'}
+    p.selectedTab === 'buy' ? '0px 8px 8px 8px' : p.selectedTab === 'swap' ? '8px 0px 8px 8px' : '8px'};
+  min-height: 470px;
+  overflow: hidden;
 `
 
 export const ButtonRow = styled.div`

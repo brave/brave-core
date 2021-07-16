@@ -1,42 +1,15 @@
-import * as React from 'react'
-import { BuySendSwapTypes } from '../../constants/types'
-import { BuySendSwapOptions } from '../../options/buy-send-swap-options'
-// Styled Components
-import {
-  StyledWrapper,
-  MainContainer,
-  MainContainerWrapper,
-  ButtonRow,
-  TabButton,
-  TabButtonText,
-  RightDivider,
-  LeftDivider
-} from './style'
+import Layout from './buy-send-swap-layout'
+import SelectAccount from './select-account-with-header'
+import SelectNetwork from './select-network-with-header'
+import SelectAsset from './select-asset'
+import Header from './header'
+import Swap from './swap'
 
-const BuySendSwap = () => {
-  const [selectedTab, setSelectedTab] = React.useState<BuySendSwapTypes>('buy')
-  const changeTab = (tab: BuySendSwapTypes) => () => {
-    setSelectedTab(tab)
-  }
-
-  return (
-    <StyledWrapper>
-      <ButtonRow>
-        {BuySendSwapOptions.map((option) =>
-          <TabButton key={option.id} isSelected={selectedTab === option.id} onClick={changeTab(option.id)}>
-            <RightDivider tabID={option.id} selectedTab={selectedTab} />
-            <LeftDivider tabID={option.id} selectedTab={selectedTab} />
-            <TabButtonText isSelected={selectedTab === option.id}>{option.name}</TabButtonText>
-          </TabButton>
-        )}
-      </ButtonRow>
-      <MainContainerWrapper>
-        <MainContainer selectedTab={selectedTab}>
-          <span>{selectedTab.toUpperCase()} Container</span>
-        </MainContainer>
-      </MainContainerWrapper>
-    </StyledWrapper>
-  )
+export {
+  SelectAccount,
+  SelectNetwork,
+  SelectAsset,
+  Header,
+  Layout,
+  Swap
 }
-
-export default BuySendSwap

@@ -290,3 +290,41 @@ export interface RecoveryObject {
 export interface MojoTime {
   internalValue: number
 }
+
+export interface NetworkOptionsType {
+  name: string
+  id: number
+  abbr: string
+}
+
+export type SwapViewTypes =
+  | 'swap'
+  | 'acounts'
+  | 'networks'
+  | 'assets'
+
+export type OrderTypes =
+  | 'market'
+  | 'limit'
+
+export interface SlippagePresetObjectType {
+  id: number
+  slippage: number
+}
+
+export interface ExpirationPresetObjectType {
+  id: number
+  name: string
+  expiration: number
+}
+
+export type AmountPresetTypes =
+  | 0.25
+  | 0.50
+  | 0.75
+  | 1
+
+export interface AmountPresetObjectType {
+  name: string
+  id: AmountPresetTypes
+}
