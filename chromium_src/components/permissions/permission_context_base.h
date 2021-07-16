@@ -6,14 +6,23 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_CONTEXT_BASE_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_CONTEXT_BASE_H_
 
+#include "base/callback.h"
+
 namespace permissions {
 class PermissionContextBase;
 using PermissionContextBase_BraveImpl = PermissionContextBase;
+class PermissionLifetimeManager;
 }  // namespace permissions
 
 #define PermissionContextBase PermissionContextBase_ChromiumImpl
 #define PermissionDecided virtual PermissionDecided
-#define BRAVE_PERMISSION_CONTEXT_BASE_H_ friend PermissionContextBase_BraveImpl;
+#define BRAVE_PERMISSION_CONTEXT_BASE_H_              \
+  friend PermissionContextBase_BraveImpl;             \
+                                                      \
+ protected:                                           \
+  base::RepeatingCallback<PermissionLifetimeManager*( \
+      content::BrowserContext*)>                      \
+      permission_lifetime_manager_factory_;
 
 #include "../../../../components/permissions/permission_context_base.h"
 
@@ -23,14 +32,13 @@ using PermissionContextBase_BraveImpl = PermissionContextBase;
 
 namespace permissions {
 
-class PermissionLifetimeManager;
-
 class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
  public:
   using PermissionContextBase_ChromiumImpl::PermissionContextBase_ChromiumImpl;
 
-  void SetPermissionLifetimeManager(
-      PermissionLifetimeManager* lifetime_manager);
+  void SetPermissionLifetimeManagerFactory(
+      const base::RepeatingCallback<
+          PermissionLifetimeManager*(content::BrowserContext*)>& factory);
 
  private:
   void PermissionDecided(const PermissionRequestID& id,
@@ -39,8 +47,6 @@ class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
                          BrowserPermissionCallback callback,
                          ContentSetting content_setting,
                          bool is_one_time) override;
-
-  PermissionLifetimeManager* permission_lifetime_manager_ = nullptr;
 };
 
 }  // namespace permissions
