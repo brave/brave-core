@@ -7,6 +7,7 @@
 
 package org.chromium.chrome.browser.onboarding.v2;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -126,6 +127,7 @@ public class HighlightDialogFragment extends DialogFragment {
     }
 
     @Override
+    @SuppressLint("SourceLockedOrientationActivity")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

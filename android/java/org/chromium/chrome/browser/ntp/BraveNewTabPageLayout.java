@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.ntp;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -241,6 +242,7 @@ public class BraveNewTabPageLayout
                 mActivity.getResources().getColor(android.R.color.transparent));
         mBraveStatsViewFallBackLayout.setOnClickListener(new View.OnClickListener() {
             @Override
+            @SuppressLint("SourceLockedOrientationActivity")
             public void onClick(View v) {
                 mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 checkForBraveStats();
@@ -275,6 +277,7 @@ public class BraveNewTabPageLayout
                 View mBraveStatsView = inflater.inflate(R.layout.brave_stats_layout, null);
                 mBraveStatsView.setOnClickListener(new View.OnClickListener() {
                     @Override
+                    @SuppressLint("SourceLockedOrientationActivity")
                     public void onClick(View v) {
                         mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                         checkForBraveStats();

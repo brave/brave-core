@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.sync;
 
 import android.accounts.Account;
+import android.annotation.SuppressLint;
 
 import org.chromium.chrome.browser.sync.ProfileSyncService;
 
@@ -13,6 +14,7 @@ import org.chromium.chrome.browser.sync.ProfileSyncService;
 public class BraveAndroidSyncSettings extends AndroidSyncSettings {
     private boolean mMasterSyncEnabled;
 
+    @SuppressLint("VisibleForTests")
     public BraveAndroidSyncSettings(Account account) {
         super(account);
     }

@@ -24,7 +24,7 @@
         android:textColor="@color/wallet_text_color"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
-        android:text="Ethereum"
+        android:text="@string/eth_name"
         android:layout_gravity="center_vertical"/>
 
     <LinearLayout
@@ -39,7 +39,7 @@
             android:textSize="16sp"
             android:layout_gravity="end"
             android:textColor="@color/wallet_text_color"
-            android:text="$872.48"/>
+            android:text="@string/wallet_coin_list_usd"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
             android:textSize="16sp"
             android:textColor="#868E96"
             android:layout_gravity="end"
-            android:text="0.31178 ETH"/>
+            android:text="@string/wallet_coin_list_eth"/>
 
     </LinearLayout>
 
