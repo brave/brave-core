@@ -48,6 +48,7 @@ class UnitTestBase : public testing::Test {
   void InitializeAds();
 
   AdsImpl* GetAds() const;
+  AdRewards* GetAdRewards() const;
 
   // testing::Test implementation
   void SetUp() override;
@@ -101,10 +102,10 @@ class UnitTestBase : public testing::Test {
   std::unique_ptr<Client> client_;
   std::unique_ptr<AdRewards> ad_rewards_;
   std::unique_ptr<AdNotifications> ad_notifications_;
-  std::unique_ptr<BrowserManager> browser_manager_;
   std::unique_ptr<ConfirmationsState> confirmations_state_;
   std::unique_ptr<database::Initialize> database_initialize_;
   std::unique_ptr<Database> database_;
+  std::unique_ptr<BrowserManager> browser_manager_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivity> user_activity_;
   std::unique_ptr<AdsImpl> ads_;

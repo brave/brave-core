@@ -14,7 +14,6 @@
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder.h"
@@ -100,11 +99,13 @@ void RedeemUnblindedPaymentTokens::Redeem() {
   BLOG(7, UrlRequestHeadersToString(url_request));
 
   auto callback = std::bind(&RedeemUnblindedPaymentTokens::OnRedeem, this,
-                            std::placeholders::_1);
+                            std::placeholders::_1, unblinded_tokens);
   AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
 }
 
-void RedeemUnblindedPaymentTokens::OnRedeem(const UrlResponse& url_response) {
+void RedeemUnblindedPaymentTokens::OnRedeem(
+    const UrlResponse& url_response,
+    const privacy::UnblindedTokenList unblinded_tokens) {
   BLOG(1, "OnRedeemUnblindedPaymentTokens");
 
   BLOG(6, UrlResponseToString(url_response));
@@ -116,16 +117,21 @@ void RedeemUnblindedPaymentTokens::OnRedeem(const UrlResponse& url_response) {
     return;
   }
 
-  OnDidRedeemUnblindedPaymentTokens();
+  OnDidRedeemUnblindedPaymentTokens(unblinded_tokens);
 }
 
-void RedeemUnblindedPaymentTokens::OnDidRedeemUnblindedPaymentTokens() {
+void RedeemUnblindedPaymentTokens::OnDidRedeemUnblindedPaymentTokens(
+    const privacy::UnblindedTokenList unblinded_tokens) {
   is_processing_ = false;
 
   retry_timer_.Stop();
 
+  ConfirmationsState::Get()->get_unblinded_payment_tokens()->RemoveTokens(
+      unblinded_tokens);
+  ConfirmationsState::Get()->Save();
+
   if (delegate_) {
-    delegate_->OnDidRedeemUnblindedPaymentTokens();
+    delegate_->OnDidRedeemUnblindedPaymentTokens(unblinded_tokens);
   }
 
   ScheduleNextTokenRedemption();

@@ -54,7 +54,6 @@ using OnGetInlineContentAdCallback = base::OnceCallback<
     void(const bool, const std::string&, const base::DictionaryValue&)>;
 
 using GetAccountStatementCallback = base::OnceCallback<void(const bool,
-                                                            const double,
                                                             const int64_t,
                                                             const int,
                                                             const double,

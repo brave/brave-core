@@ -681,7 +681,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       nextPaymentDate =
           [NSDate dateWithTimeIntervalSince1970:list.next_payment_date];
     }
-    completion(list.ads_received_this_month, list.estimated_pending_rewards,
+    completion(list.ads_received_this_month, list.earnings_this_month,
                nextPaymentDate);
   });
 }
