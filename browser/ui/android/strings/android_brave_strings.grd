@@ -406,21 +406,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_MENU_BRAVE_REWARDS" desc="Title for brave rewards menu item">
         Brave Rewards
       </message>
-      <message name="IDS_DDG_OFFER_TITLE" desc="Title for DDG offer.">
-        Private search with DuckDuckGo?
-      </message>
-      <message name="IDS_DDG_OFFER_TEXT" desc="Text for DDG offer.">
-        With private search, Brave will use DuckDuckGo to answer your searches while you are in this private tab. DuckDuckGo is a search engine that does not track your search history, enabling you to search privately.
-      </message>
-      <message name="IDS_DDG_OFFER_POSITIVE" desc="Positive button text for DDG offer.">
-        Yes
-      </message>
-      <message name="IDS_DDG_OFFER_NEGATIVE" desc="Negative button text for DDG offer.">
-        No
-      </message>
-      <message name="IDS_DDG_OFFER_LINK" desc="Text for DDG offer link.">
-        Learn about private search with DuckDuckGo
-      </message>
       <message name="IDS_BRAVE_UI_THANK_YOU" desc="A message that appears after tipping">
         Thank you
       </message>
