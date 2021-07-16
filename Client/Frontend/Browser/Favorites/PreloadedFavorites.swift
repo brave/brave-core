@@ -40,6 +40,28 @@ struct PreloadedFavorites {
 
             return list
         }
+        
+        func appendJapaneseWebsites() -> [FavoriteSite] {
+            var list = [FavoriteSite]()
+            
+            if let url = URL(string: "https://m.youtube.com/") {
+                list.append(FavoriteSite(url: url, title: "YouTube"))
+            }
+            
+            if let url = URL(string: "https://m.yahoo.co.jp/") {
+                list.append(FavoriteSite(url: url, title: "Yahoo! Japan"))
+            }
+            
+            if let url = URL(string: "https://brave.com/ja/ntp-tutorial") {
+                list.append(FavoriteSite(url: url, title: "Braveガイド"))
+            }
+            
+            if let url = URL(string: "https://mobile.twitter.com/") {
+                list.append(FavoriteSite(url: url, title: "Twitter"))
+            }
+
+            return list
+        }
 
         var preloadedFavorites = [FavoriteSite]()
 
@@ -55,6 +77,8 @@ struct PreloadedFavorites {
             // try? list.append(FavoriteSite(url: "https://allegro.pl/".asURL(), title: "Allegro"))
             preloadedFavorites += appendPopularEnglishWebsites()
             break
+        case "JP":
+            preloadedFavorites += appendJapaneseWebsites()
         default:
             preloadedFavorites += appendPopularEnglishWebsites()
         }

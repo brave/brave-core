@@ -1361,6 +1361,13 @@
     "domain": "yahoo.com"
   },
   {
+    "title": "yahoo-jp",
+    "url": "https://yahoo.co.jp/",
+    "image_url": "yahoo-jp.png",
+    "background_color": "#ffffff",
+    "domain": "yahoo.co.jp"
+  },
+  {
     "title": "yelp",
     "url": "http://yelp.com/",
     "image_url": "yelp-com.png",
