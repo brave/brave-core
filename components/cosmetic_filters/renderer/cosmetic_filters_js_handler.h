@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
@@ -46,6 +47,7 @@ class CosmeticFiltersJSHandler {
                             const std::string& name,
                             const base::RepeatingCallback<Sig>& callback);
   bool EnsureConnected();
+  void OnRemoteDisconnect();
 
   void CreateWorkerObject(v8::Isolate* isolate, v8::Local<v8::Context> context);
 
@@ -67,6 +69,7 @@ class CosmeticFiltersJSHandler {
   std::vector<std::string> exceptions_;
   GURL url_;
   std::unique_ptr<base::DictionaryValue> resources_dict_;
+  base::WeakPtrFactory<CosmeticFiltersJSHandler> weak_ptr_factory_{this};
 };
 
 // static

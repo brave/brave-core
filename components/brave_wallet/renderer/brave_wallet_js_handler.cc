@@ -104,13 +104,15 @@ bool BraveWalletJSHandler::EnsureConnected() {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
         brave_wallet_provider_.BindNewPipeAndPassReceiver());
     brave_wallet_provider_->Init(receiver_.BindNewPipeAndPassRemote());
+    brave_wallet_provider_.set_disconnect_handler(
+        base::BindOnce(&BraveWalletJSHandler::OnRemoteDisconnect,
+                       weak_ptr_factory_.GetWeakPtr()));
   }
 
   return brave_wallet_provider_.is_bound();
 }
 
-void BraveWalletJSHandler::ResetRemote(content::RenderFrame* render_frame) {
-  render_frame_ = render_frame;
+void BraveWalletJSHandler::OnRemoteDisconnect() {
   brave_wallet_provider_.reset();
   receiver_.reset();
   EnsureConnected();
@@ -317,7 +319,7 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Enable() {
   v8::Isolate* isolate = v8::Isolate::GetCurrent();
   v8::MaybeLocal<v8::Promise::Resolver> resolver =
       v8::Promise::Resolver::New(isolate->GetCurrentContext());
-  if (resolver.IsEmpty()) {
+  if (!EnsureConnected() || resolver.IsEmpty()) {
     return v8::Local<v8::Promise>();
   }
 
