@@ -44,6 +44,18 @@ class AdNotificationPopup : public views::WidgetDelegateView,
                             public gfx::AnimationDelegate,
                             public display::DisplayObserver {
  public:
+  // Creates instance of AdNotificationPopup. Can be used in tests to specify
+  // AdNotificationPopup instance which is created on AdNotificationPopup::Show
+  // call.
+  class PopupInstanceFactory {
+   public:
+    virtual ~PopupInstanceFactory();
+
+    virtual AdNotificationPopup* CreateInstance(
+        Profile* profile,
+        const AdNotification& ad_notification) = 0;
+  };
+
   METADATA_HEADER(AdNotificationPopup);
 
   explicit AdNotificationPopup(Profile* profile,
@@ -53,6 +65,12 @@ class AdNotificationPopup : public views::WidgetDelegateView,
   // Show the notification popup view for the given |profile| and
   // |ad_notification|
   static void Show(Profile* profile, const AdNotification& ad_notification);
+
+  // Show the notification popup view for the given |profile| and
+  // |ad_notification|. Popup instance is created using |popup_factory|
+  static void Show(Profile* profile,
+                   const AdNotification& ad_notification,
+                   PopupInstanceFactory* popup_factory);
 
   // Close the notification popup view for the given |notification_id|.
   // |by_user| is true if the notification popup was closed by the user,

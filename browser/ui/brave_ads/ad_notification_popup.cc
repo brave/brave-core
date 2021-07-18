@@ -66,7 +66,21 @@ const int kCornerRadius = 7;
 const int kCornerRadius = 7;
 #endif
 
+class DefaultPopupInstanceFactory
+    : public AdNotificationPopup::PopupInstanceFactory {
+ public:
+  ~DefaultPopupInstanceFactory() override = default;
+
+  AdNotificationPopup* CreateInstance(
+      Profile* profile,
+      const AdNotification& ad_notification) override {
+    return new AdNotificationPopup(profile, ad_notification);
+  }
+};
+
 }  // namespace
+
+AdNotificationPopup::PopupInstanceFactory::~PopupInstanceFactory() = default;
 
 AdNotificationPopup::AdNotificationPopup(Profile* profile,
                                          const AdNotification& ad_notification)
@@ -97,13 +111,22 @@ AdNotificationPopup::~AdNotificationPopup() {
 // static
 void AdNotificationPopup::Show(Profile* profile,
                                const AdNotification& ad_notification) {
+  DefaultPopupInstanceFactory default_factory;
+  Show(profile, ad_notification, &default_factory);
+}
+
+// static
+void AdNotificationPopup::Show(Profile* profile,
+                               const AdNotification& ad_notification,
+                               PopupInstanceFactory* popup_factory) {
   DCHECK(profile);
+  DCHECK(popup_factory);
 
   const std::string& id = ad_notification.id();
 
   DCHECK(!g_ad_notification_popups[id]);
   g_ad_notification_popups[id] =
-      new AdNotificationPopup(profile, ad_notification);
+      popup_factory->CreateInstance(profile, ad_notification);
 
   AdNotificationDelegate* delegate = ad_notification.delegate();
   if (delegate) {
