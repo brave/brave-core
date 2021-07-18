@@ -18,7 +18,7 @@ kuchiki = { git = "https://github.com/brave/kuchiki", branch = "speedreader" }
 lazy_static      = "1.4"
 regex            = "1"
 serde_json       = "1.0"
-thiserror        = "1.0.24"
+thiserror        = "1.0.26"
 url              = "1.7"
 
 [dev-dependencies]
