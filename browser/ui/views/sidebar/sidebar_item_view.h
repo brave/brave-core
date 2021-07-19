@@ -25,9 +25,11 @@ class SidebarItemView : public SidebarButtonView {
   void DrawHorizontalBorder(bool top);
   void ClearHorizontalBorder();
 
-  // views::ImageButton overrides:
+  // SidebarButtonView overrides:
   void OnPaintBackground(gfx::Canvas* canvas) override;
   void OnPaintBorder(gfx::Canvas* canvas) override;
+  bool ShouldHandleLongPress() const override;
+  void OnMouseLongPressed() override;
 
  private:
   bool draw_highlight_ = false;
