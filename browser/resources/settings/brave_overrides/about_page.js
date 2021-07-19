@@ -5,12 +5,16 @@
 
 import {RegisterPolymerTemplateModifications} from 'chrome://brave-resources/polymer_overriding.js'
 import {getSectionElement} from './basic_page.js'
+import {loadTimeData} from '../i18n_setup.js'
 
 RegisterPolymerTemplateModifications({
   'settings-about-page': (templateContent) => {
     const section = getSectionElement(templateContent, 'about')
     if (!section.querySelector('a#release-notes')) {
       const version = section.querySelector('#updateStatusMessage ~ .secondary')
+      const braveProductVersion = loadTimeData.getString('braveProductVersion');
+      const [_, chromiumVersion = "", chromiumBuildInfo = ""] = version.innerHTML.match(/([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)\s(.*)/) || []
+
       if (!version) {
         console.error('[Brave Settings Overrides] Could not find version div')
       }
@@ -22,6 +26,8 @@ RegisterPolymerTemplateModifications({
       wrapper.setAttribute('href', 'https://brave.com/latest/')
       parent.replaceChild(wrapper, version)
       wrapper.appendChild(version)
+      version.innerHTML = `Brave ${braveProductVersion} ${chromiumBuildInfo}`
+      version.insertAdjacentHTML('afterend', `<div class="secondary">Chromium ${chromiumVersion}</div>`)
     }
 
     // Help link shown if update fails
