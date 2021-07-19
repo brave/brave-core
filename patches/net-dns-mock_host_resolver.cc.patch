@@ -1,0 +1,21 @@
+diff --git a/net/dns/mock_host_resolver.cc b/net/dns/mock_host_resolver.cc
+index b3ae3903574511f5dae4a35da824de05498bd5f9..e4e4a61d208c52fefbb67adf38c3528b538f4963 100644
+--- a/net/dns/mock_host_resolver.cc
++++ b/net/dns/mock_host_resolver.cc
+@@ -376,6 +376,7 @@ MockHostResolverBase::CreateRequest(
+     const NetworkIsolationKey& network_isolation_key,
+     const NetLogWithSource& source_net_log,
+     const base::Optional<ResolveHostParameters>& optional_parameters) {
++  LOG(ERROR) << "Creating request for " << host.ToString();
+   return std::make_unique<RequestImpl>(host, network_isolation_key,
+                                        optional_parameters, AsWeakPtr());
+ }
+@@ -570,6 +571,8 @@ MockHostResolverBase::MockHostResolverBase(bool use_caching,
+ int MockHostResolverBase::Resolve(RequestImpl* request) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+ 
++  LOG(ERROR) << "About to resolve " << request->request_host().ToString();
++
+   last_request_priority_ = request->parameters().initial_priority;
+   last_request_network_isolation_key_ = request->network_isolation_key();
+   last_secure_dns_mode_override_ =

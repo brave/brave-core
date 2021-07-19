@@ -672,10 +672,14 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
   brave::SetAdblockCnameHostResolverForTesting(&resolver);
 
+  WaitForAdBlockServiceThreads();
+
   ui_test_utils::NavigateToURL(browser(), tab_url);
 
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
+
+  LOG(ERROR) << "initial document loaded";
 
   // Image request to an unblocked first-party endpoint that is CNAME cloaked
   // with 1 alias. The alias has a matching rule, so the request should be
@@ -686,38 +690,44 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                        direct_resource_url.spec().c_str())));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
   // Note one resolution for the root document
-  ASSERT_EQ(2ULL, inner_resolver->num_resolve());
+  LOG(ERROR) << "request 0 loaded";
+  EXPECT_EQ(2ULL, inner_resolver->num_resolve());
 
   // XHR request to an unblocked first-party endpoint that is CNAME cloaked with
   // multiple intermediate aliases. The canonical alias has a matching rule, so
   // the request should be blocked.
-  ASSERT_EQ(true, EvalJs(contents, base::StringPrintf(
+  EXPECT_EQ(true, EvalJs(contents, base::StringPrintf(
                                        "setExpectations(0, 1, 0, 1);"
                                        "xhr('%s')",
                                        chain_resource_url.spec().c_str())));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
-  ASSERT_EQ(3ULL, inner_resolver->num_resolve());
+  LOG(ERROR) << "request 1 loaded";
+  EXPECT_EQ(3ULL, inner_resolver->num_resolve());
 
   // XHR request to an unblocked first-party endpoint that is CNAME cloaked.
   // The canonical alias has no matching rule, so the request should be allowed.
-  ASSERT_EQ(true, EvalJs(contents,
+  EXPECT_EQ(true, EvalJs(contents,
                          base::StringPrintf("setExpectations(0, 1, 1, 1);"
                                             "xhr('%s')",
                                             safe_resource_url.spec().c_str())));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
-  ASSERT_EQ(4ULL, inner_resolver->num_resolve());
+  LOG(ERROR) << "request 2 loaded";
+  EXPECT_EQ(4ULL, inner_resolver->num_resolve());
 
   // XHR request directly to a blocked third-party endpoint.
   // The resolver should not be queried for this request.
-  ASSERT_EQ(true, EvalJs(contents,
+  EXPECT_EQ(true, EvalJs(contents,
                          base::StringPrintf("setExpectations(0, 1, 1, 2);"
                                             "xhr('%s')",
                                             bad_resource_url.spec().c_str())));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 3ULL);
-  ASSERT_EQ(4ULL, inner_resolver->num_resolve());
+  LOG(ERROR) << "request 3 loaded";
+  EXPECT_EQ(4ULL, inner_resolver->num_resolve());
 
   // Unset the host resolver so as not to interfere with later tests.
   brave::SetAdblockCnameHostResolverForTesting(nullptr);
+
+  ADD_FAILURE();
 }
 
 // Make sure that an exception for a URL can apply to a blocking decision made
@@ -758,10 +768,14 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
   brave::SetAdblockCnameHostResolverForTesting(&resolver);
 
+  WaitForAdBlockServiceThreads();
+
   ui_test_utils::NavigateToURL(browser(), tab_url);
 
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
+
+  LOG(ERROR) << "initial document loaded";
 
   // Image request to an unblocked first-party endpoint that is CNAME cloaked
   // with 1 alias. The alias has a matching rule, so the request should be
@@ -772,38 +786,44 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                        direct_resource_url.spec().c_str())));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
   // Note one resolution for the root document
-  ASSERT_EQ(2ULL, inner_resolver->num_resolve());
+  LOG(ERROR) << "request 0 loaded";
+  EXPECT_EQ(2ULL, inner_resolver->num_resolve());
 
   // XHR request to an unblocked first-party endpoint that is CNAME cloaked with
   // multiple intermediate aliases. The canonical alias has a matching rule, so
   // the request should be blocked.
-  ASSERT_EQ(true, EvalJs(contents, base::StringPrintf(
+  EXPECT_EQ(true, EvalJs(contents, base::StringPrintf(
                                        "setExpectations(0, 1, 0, 1);"
                                        "xhr('%s')",
                                        chain_resource_url.spec().c_str())));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
-  ASSERT_EQ(3ULL, inner_resolver->num_resolve());
+  LOG(ERROR) << "request 1 loaded";
+  EXPECT_EQ(3ULL, inner_resolver->num_resolve());
 
   // XHR request to an unblocked first-party endpoint that is CNAME cloaked.
   // The canonical alias has no matching rule, so the request should be allowed.
-  ASSERT_EQ(true, EvalJs(contents,
+  EXPECT_EQ(true, EvalJs(contents,
                          base::StringPrintf("setExpectations(0, 1, 1, 1);"
                                             "xhr('%s')",
                                             safe_resource_url.spec().c_str())));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
-  ASSERT_EQ(4ULL, inner_resolver->num_resolve());
+  LOG(ERROR) << "request 2 loaded";
+  EXPECT_EQ(4ULL, inner_resolver->num_resolve());
 
   // XHR request directly to a blocked third-party endpoint.
   // The resolver should not be queried for this request.
-  ASSERT_EQ(true, EvalJs(contents,
+  EXPECT_EQ(true, EvalJs(contents,
                          base::StringPrintf("setExpectations(0, 1, 1, 2);"
                                             "xhr('%s')",
                                             bad_resource_url.spec().c_str())));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 3ULL);
-  ASSERT_EQ(4ULL, inner_resolver->num_resolve());
+  LOG(ERROR) << "request 3 loaded";
+  EXPECT_EQ(4ULL, inner_resolver->num_resolve());
 
   // Unset the host resolver so as not to interfere with later tests.
   brave::SetAdblockCnameHostResolverForTesting(nullptr);
+
+  ADD_FAILURE();
 }
 
 class CnameUncloakingFlagDisabledTest : public AdBlockServiceTest {
