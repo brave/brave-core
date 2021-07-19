@@ -186,11 +186,17 @@ type::ExternalWalletPtr ResetWallet(type::ExternalWalletPtr wallet,
   wallet = type::ExternalWallet::New();
   wallet->type = wallet_type;
 
-  if (status != type::WalletStatus::NOT_CONNECTED) {
+  if (wallet_type == constant::kWalletUphold) {
     if (status == type::WalletStatus::VERIFIED) {
       wallet->status = type::WalletStatus::DISCONNECTED_VERIFIED;
-    } else {
-      wallet->status = type::WalletStatus::DISCONNECTED_NOT_VERIFIED;
+    }
+  } else {
+    if (status != type::WalletStatus::NOT_CONNECTED) {
+      if (status == type::WalletStatus::VERIFIED) {
+        wallet->status = type::WalletStatus::DISCONNECTED_VERIFIED;
+      } else {
+        wallet->status = type::WalletStatus::DISCONNECTED_NOT_VERIFIED;
+      }
     }
   }
 

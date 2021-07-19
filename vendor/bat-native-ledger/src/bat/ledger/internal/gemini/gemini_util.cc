@@ -119,25 +119,5 @@ type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
   return wallet;
 }
 
-type::ExternalWalletPtr ResetWallet(type::ExternalWalletPtr wallet) {
-  if (!wallet) {
-    return nullptr;
-  }
-
-  const auto status = wallet->status;
-  wallet = type::ExternalWallet::New();
-  wallet->type = constant::kWalletGemini;
-
-  if (status != type::WalletStatus::NOT_CONNECTED) {
-    if (status == type::WalletStatus::VERIFIED) {
-      wallet->status = type::WalletStatus::DISCONNECTED_VERIFIED;
-    } else {
-      wallet->status = type::WalletStatus::DISCONNECTED_NOT_VERIFIED;
-    }
-  }
-
-  return wallet;
-}
-
 }  // namespace gemini
 }  // namespace ledger

@@ -1,10 +1,10 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_PROMOTION_POST_CLAIM_UPHOLD_POST_CLAIM_UPHOLD_H_
-#define BRAVELEDGER_ENDPOINT_PROMOTION_POST_CLAIM_UPHOLD_POST_CLAIM_UPHOLD_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_POST_CLAIM_UPHOLD_POST_CLAIM_UPHOLD_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_POST_CLAIM_UPHOLD_POST_CLAIM_UPHOLD_H_
 
 #include <string>
 
@@ -37,32 +37,30 @@ class LedgerImpl;
 namespace endpoint {
 namespace promotion {
 
-using PostClaimUpholdCallback = std::function<void(
-    const type::Result result)>;
+using PostClaimUpholdCallback =
+    std::function<void(const type::Result result, const std::string& address)>;
 
 class PostClaimUphold {
  public:
   explicit PostClaimUphold(LedgerImpl* ledger);
+
   ~PostClaimUphold();
 
-  void Request(
-      const double user_funds,
-      PostClaimUpholdCallback callback);
+  void Request(const double user_funds,
+               const std::string& address,
+               PostClaimUpholdCallback callback) const;
 
  private:
-  std::string GetUrl();
+  std::string GeneratePayload(const double user_funds,
+                              const std::string& address) const;
 
-  std::string GeneratePayload(const double user_funds);
+  std::string GetUrl() const;
 
-  type::Result CheckStatusCode(const int status_code);
+  void OnRequest(const type::UrlResponse& response,
+                 const std::string& address,
+                 PostClaimUpholdCallback callback) const;
 
-  type::Result ParseBody(
-      const std::string& body,
-      std::string* payment_id);
-
-  void OnRequest(
-      const type::UrlResponse& response,
-      PostClaimUpholdCallback callback);
+  type::Result CheckStatusCode(const int status_code) const;
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
@@ -71,4 +69,4 @@ class PostClaimUphold {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_PROMOTION_POST_CLAIM_UPHOLD_POST_CLAIM_UPHOLD_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_POST_CLAIM_UPHOLD_POST_CLAIM_UPHOLD_H_
