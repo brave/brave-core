@@ -10,7 +10,14 @@ RegisterPolymerTemplateModifications({
     const blockThirdPartyIncognitoRadioButton = templateContent.getElementById('blockThirdPartyIncognito')
     if (!blockThirdPartyIncognitoRadioButton) {
       console.error('[Brave Settings Overrides] Could not find blockThirdPartyIncognito id on cookies page.')
+    } else {
+      blockThirdPartyIncognitoRadioButton.setAttribute('hidden', 'true')
     }
-    blockThirdPartyIncognitoRadioButton.setAttribute('hidden', 'true')
+    const networkPredictionToggle = templateContent.getElementById('networkPrediction')
+    if (!networkPredictionToggle) {
+      console.error('[Brave Settings Overrides] Could not find networkPrediction id on cookies page.')
+    } else {
+      networkPredictionToggle.setAttribute('hidden', 'true')
+    }
   }
 })
