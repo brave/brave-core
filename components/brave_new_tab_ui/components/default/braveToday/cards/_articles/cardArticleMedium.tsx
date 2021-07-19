@@ -44,6 +44,7 @@ function MediumArticle (props: ArticleProps) {
           <Card.Text>
             {item.title}
           <Card.Time>{item.relative_time}</Card.Time>
+          </Card.Text>
           {
             publisher &&
               <Card.Publisher>
@@ -53,7 +54,6 @@ function MediumArticle (props: ArticleProps) {
                 />
               </Card.Publisher>
           }
-          </Card.Text>
         </Card.Content>
       </a>
     </Card.Small>
