@@ -4,11 +4,15 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <utility>
 
 #include "base/feature_list.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/sidebar/constants.h"
 #include "brave/components/sidebar/features.h"
+#include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -27,11 +31,14 @@ class SidebarServiceTest : public testing::Test,
 
     scoped_feature_list_.InitAndEnableFeature(kSidebarFeature);
     SidebarService::RegisterProfilePrefs(prefs_.registry());
-    service_.reset(new SidebarService(&prefs_));
-    service_->AddObserver(this);
   }
 
   void TearDown() override { service_->RemoveObserver(this); }
+
+  void InitService() {
+    service_.reset(new SidebarService(&prefs_));
+    service_->AddObserver(this);
+  }
 
   // SidebarServiceObserver overrides:
   void OnItemAdded(const SidebarItem& item, int index) override {
@@ -75,6 +82,8 @@ class SidebarServiceTest : public testing::Test,
 };
 
 TEST_F(SidebarServiceTest, AddRemoveItems) {
+  InitService();
+
   // Check the default items count.
   EXPECT_EQ(4UL, service_->items().size());
   EXPECT_EQ(0UL, service_->GetNotAddedDefaultSidebarItems().size());
@@ -105,9 +114,9 @@ TEST_F(SidebarServiceTest, AddRemoveItems) {
   EXPECT_TRUE(on_item_added_called_);
   ClearState();
 
-  const SidebarItem item2 =
-      SidebarItem::Create(GURL("https://www.brave.com/"), std::u16string(),
-                          SidebarItem::Type::kTypeWeb, true);
+  const SidebarItem item2 = SidebarItem::Create(
+      GURL("https://www.brave.com/"), std::u16string(),
+      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, true);
   EXPECT_TRUE(IsWebType(item2));
   service_->AddItem(item2);
   EXPECT_EQ(4, item_index_on_called_);
@@ -117,6 +126,8 @@ TEST_F(SidebarServiceTest, AddRemoveItems) {
 }
 
 TEST_F(SidebarServiceTest, MoveItem) {
+  InitService();
+
   EXPECT_EQ(4UL, service_->items().size());
 
   // Move item at 0 to index 2.
@@ -139,6 +150,67 @@ TEST_F(SidebarServiceTest, MoveItem) {
   item = service_->items()[2];
   service_->MoveItem(2, 1);
   EXPECT_EQ(item.url, service_->items()[1].url);
+}
+
+TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithBuiltInItemTypeKey) {
+  // Make prefs already have builtin items before service initialization.
+  // And it has old url.
+  {
+    ListPrefUpdate update(&prefs_, sidebar::kSidebarItems);
+    update->ClearList();
+
+    base::Value dict(base::Value::Type::DICTIONARY);
+    dict.SetStringKey(sidebar::kSidebarItemURLKey,
+                      "https://deprecated.brave.com/");
+    dict.SetStringKey(sidebar::kSidebarItemTitleKey, "Brave together");
+    dict.SetIntKey(sidebar::kSidebarItemTypeKey,
+                   static_cast<int>(SidebarItem::Type::kTypeBuiltIn));
+    dict.SetIntKey(sidebar::kSidebarItemBuiltInItemTypeKey,
+                   static_cast<int>(SidebarItem::BuiltInItemType::kBraveTalk));
+    dict.SetBoolKey(sidebar::kSidebarItemOpenInPanelKey, true);
+    update->Append(std::move(dict));
+  }
+
+  InitService();
+
+  // Check service has updated built-in item. Previously url was deprecated.xxx.
+  EXPECT_EQ(1UL, service_->items().size());
+  EXPECT_EQ("https://talk.brave.com/", service_->items()[0].url);
+
+  // Simulate re-launch and check service has still updated items.
+  service_->RemoveObserver(this);
+  service_.reset();
+
+  InitService();
+
+  // Check service has updated built-in item. Previously url was deprecated.xxx.
+  EXPECT_EQ(1UL, service_->items().size());
+  EXPECT_EQ("https://talk.brave.com/", service_->items()[0].url);
+}
+
+TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithoutBuiltInItemTypeKey) {
+  // Prepare built-in item in prefs w/o setting BuiltInItemType.
+  // If not stored, service uses url to get proper latest properties.
+  {
+    ListPrefUpdate update(&prefs_, sidebar::kSidebarItems);
+    update->ClearList();
+
+    base::Value dict(base::Value::Type::DICTIONARY);
+    dict.SetStringKey(sidebar::kSidebarItemURLKey,
+                      "https://together.brave.com/");
+    dict.SetStringKey(sidebar::kSidebarItemTitleKey, "Brave together");
+    dict.SetIntKey(sidebar::kSidebarItemTypeKey,
+                   static_cast<int>(SidebarItem::Type::kTypeBuiltIn));
+    dict.SetBoolKey(sidebar::kSidebarItemOpenInPanelKey, true);
+    update->Append(std::move(dict));
+  }
+
+  InitService();
+
+  // Check item type is set properly.
+  EXPECT_EQ(1UL, service_->items().size());
+  EXPECT_EQ(SidebarItem::BuiltInItemType::kBraveTalk,
+            service_->items()[0].built_in_item_type);
 }
 
 }  // namespace sidebar

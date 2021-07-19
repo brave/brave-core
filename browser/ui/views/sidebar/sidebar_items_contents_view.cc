@@ -352,13 +352,13 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(int index, bool active) {
     item_view->set_draw_highlight(active);
 
   if (sidebar::IsBuiltInType(item)) {
-    const GURL& url = item.url;
-    item_view->SetImage(views::Button::STATE_NORMAL,
-                        GetImageForBuiltInItems(url, active));
+    item_view->SetImage(
+        views::Button::STATE_NORMAL,
+        GetImageForBuiltInItems(item.built_in_item_type, active));
     item_view->SetImage(views::Button::STATE_HOVERED,
-                        GetImageForBuiltInItems(url, true));
+                        GetImageForBuiltInItems(item.built_in_item_type, true));
     item_view->SetImage(views::Button::STATE_PRESSED,
-                        GetImageForBuiltInItems(url, true));
+                        GetImageForBuiltInItems(item.built_in_item_type, true));
   }
 }
 
@@ -376,7 +376,7 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item) {
 }
 
 gfx::ImageSkia SidebarItemsContentsView::GetImageForBuiltInItems(
-    const GURL& item_url,
+    sidebar::SidebarItem::BuiltInItemType type,
     bool focused) const {
   SkColor base_button_color = SK_ColorWHITE;
   if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
@@ -384,25 +384,25 @@ gfx::ImageSkia SidebarItemsContentsView::GetImageForBuiltInItems(
         BraveThemeProperties::COLOR_SIDEBAR_BUTTON_BASE);
   }
   auto& bundle = ui::ResourceBundle::GetSharedInstance();
-  if (item_url == GURL("chrome://wallet/")) {
+  if (type == sidebar::SidebarItem::BuiltInItemType::kWallet) {
     if (focused)
       return *bundle.GetImageSkiaNamed(IDR_SIDEBAR_CRYPTO_WALLET_FOCUSED);
     return gfx::CreateVectorIcon(kSidebarCryptoWalletIcon, base_button_color);
   }
 
-  if (item_url == GURL("https://together.brave.com/")) {
+  if (type == sidebar::SidebarItem::BuiltInItemType::kBraveTalk) {
     if (focused)
       return *bundle.GetImageSkiaNamed(IDR_SIDEBAR_BRAVE_TOGETHER_FOCUSED);
     return gfx::CreateVectorIcon(kSidebarBraveTogetherIcon, base_button_color);
   }
 
-  if (item_url == GURL("chrome://bookmarks/")) {
+  if (type == sidebar::SidebarItem::BuiltInItemType::kBookmarks) {
     if (focused)
       return *bundle.GetImageSkiaNamed(IDR_SIDEBAR_BOOKMARKS_FOCUSED);
     return gfx::CreateVectorIcon(kSidebarBookmarksIcon, base_button_color);
   }
 
-  if (item_url == GURL("chrome://history/")) {
+  if (type == sidebar::SidebarItem::BuiltInItemType::kHistory) {
     if (focused)
       return *bundle.GetImageSkiaNamed(IDR_SIDEBAR_HISTORY_FOCUSED);
     return gfx::CreateVectorIcon(kSidebarHistoryIcon, base_button_color);

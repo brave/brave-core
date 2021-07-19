@@ -16,9 +16,18 @@ struct SidebarItem {
     kTypeWeb,
   };
 
+  enum class BuiltInItemType {
+    kNone = 0,
+    kBraveTalk,
+    kWallet,
+    kBookmarks,
+    kHistory,
+  };
+
   static SidebarItem Create(const GURL& url,
                             const std::u16string& title,
                             Type type,
+                            BuiltInItemType built_in_item_type,
                             bool open_in_panel);
 
   SidebarItem();
@@ -26,6 +35,7 @@ struct SidebarItem {
 
   GURL url;
   Type type;
+  BuiltInItemType built_in_item_type;
   std::u16string title;
   // Set false to open this item in new tab.
   bool open_in_panel;
