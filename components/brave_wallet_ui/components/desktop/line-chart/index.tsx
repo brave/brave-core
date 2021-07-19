@@ -86,9 +86,14 @@ function LineChart (props: Props) {
     if (value.active && value.payload && value.payload.length) {
       setPosition(value.coordinate.x)
       onUpdateBalance(value.payload[0].value)
-      const labelPosition = Math.trunc(value.coordinate.x) === 8 ? 'start' : Math.trunc(value.coordinate.x) - Math.trunc(value.viewBox.width) === 8 ? 'end' : 'middle'
+      const xLeftCoordinate = Math.trunc(value.coordinate.x)
+      const viewBoxWidth = Math.trunc(value.viewBox.width)
+      const xRightCoordinate = xLeftCoordinate - viewBoxWidth
+      const isEndOrMiddle = xRightCoordinate >= -46 ? 'end' : 'middle'
+      const labelPosition = xLeftCoordinate <= 62 ? 'start' : isEndOrMiddle
+      const middleEndTranslate = xRightCoordinate >= 8 ? 0 : Math.abs(xRightCoordinate) + 8
       return (
-        <LabelWrapper labelPosition={labelPosition}>
+        <LabelWrapper labelTranslate={labelPosition === 'start' ? xLeftCoordinate : middleEndTranslate} labelPosition={labelPosition}>
           <ChartLabel>{parseDate(value.label)}</ChartLabel>
         </LabelWrapper>
       )

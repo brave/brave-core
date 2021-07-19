@@ -3,6 +3,7 @@ import { LoaderIcon } from 'brave-ui/components/icons'
 
 interface StyleProps {
   labelPosition: 'start' | 'middle' | 'end'
+  labelTranslate: number
   isLoading: boolean
 }
 
@@ -15,12 +16,15 @@ export const StyledWrapper = styled.div`
 `
 
 export const LabelWrapper = styled.div<Partial<StyleProps>>`
+  --label-start-translate: translateX(calc(-${(p) => p.labelTranslate}px + 4px));
+  --label-end-translate: translateX(calc(-100% + ${(p) => p.labelTranslate}px));
+  --label-middle-end-condition: ${(p) => p.labelPosition === 'end' ? 'var(--label-end-translate)' : 'translateX(-50%)'};
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
   top: -16px;
-  transform: ${(p) => p.labelPosition === 'start' ? 'translateX(0%)' : p.labelPosition === 'end' ? 'translateX(-100%)' : 'translateX(-50%)'};
+  transform: ${(p) => p.labelPosition === 'start' ? 'var(--label-start-translate)' : 'var(--label-middle-end-condition)'};
   white-space: nowrap
 `
 
