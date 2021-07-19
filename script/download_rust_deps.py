@@ -142,6 +142,7 @@ def cargo_install(tool):
     rustup_bin = os.path.abspath(os.path.join(RUSTUP_HOME, 'bin'))
     cargo_bin = os.path.join(rustup_bin, "cargo" if sys.platform != "win32" else "cargo.exe")
 
+    print(subprocess.check_call([cargo_bin, "--version"], env=env))
     # Install the tool
     cargo_args = []
     cargo_args.append(cargo_bin)
