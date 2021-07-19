@@ -128,7 +128,15 @@ const std::vector<SearchProviderInfo> _search_providers = {
     SearchProviderInfo("findx",
                        "https://findx.com",
                        "https://www.findx.com/search?q={searchTerms}&type=web",
-                       true)};
+                       true),
+     SearchProviderInfo("Google Photos",
+                       "https://photos.google.com",
+                       "https://photos.google.com/search/{searchTerms}",
+                       false),
+    SearchProviderInfo("Mercado Livre",
+                       "https://www.mercadolivre.com.br",
+                       "https://lista.mercadolivre.com.br/{searchTerms}",
+                       false)};
 
 class SearchProviders {
  public:
