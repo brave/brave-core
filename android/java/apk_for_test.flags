@@ -291,7 +291,7 @@
 
 -keep class org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbar
 
--keep class org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout
+-keep class org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl
 
 -keep class org.chromium.chrome.browser.toolbar.top.ToolbarPhone
 

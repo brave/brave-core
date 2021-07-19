@@ -55,10 +55,9 @@ public class BraveNewTabPage extends NewTabPage {
     protected void initializeMainView(Activity activity, WindowAndroid windowAndroid,
             SnackbarManager snackbarManager, NewTabPageUma uma, boolean isInNightMode,
             BottomSheetController bottomSheetController,
-            Supplier<ShareDelegate> shareDelegateSupplier, TabModelSelector tabModelSelector,
-            String url) {
+            Supplier<ShareDelegate> shareDelegateSupplier, String url) {
         super.initializeMainView(activity, windowAndroid, snackbarManager, uma, isInNightMode,
-                bottomSheetController, shareDelegateSupplier, tabModelSelector, url);
+                bottomSheetController, shareDelegateSupplier, url);
         // Override surface provider
         Profile profile = Profile.fromWebContents(mTab.getWebContents());
 
@@ -69,7 +68,7 @@ public class BraveNewTabPage extends NewTabPage {
                 mNewTabPageManager.getNavigationDelegate(), profile,
                 /* isPlaceholderShownInitially= */ false, bottomSheetController,
                 shareDelegateSupplier, /* externalScrollableContainerDelegate= */ null,
-                tabModelSelector, NewTabPageUtils.decodeOriginFromNtpUrl(url),
+                NewTabPageUtils.decodeOriginFromNtpUrl(url),
                 PrivacyPreferencesManagerImpl.getInstance(),
                 /* FeedLaunchReliabilityLoggingState */ null);
     }

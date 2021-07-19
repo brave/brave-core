@@ -11,13 +11,16 @@ public class BraveToolbarLayoutClassAdapter extends BraveClassVisitor {
     static String sCustomTabToolbarClassName =
             "org/chromium/chrome/browser/customtabs/features/toolbar/CustomTabToolbar";
     static String sToolbarPhoneClassName = "org/chromium/chrome/browser/toolbar/top/ToolbarPhone";
+    static String sToolbarTabletClassName = "org/chromium/chrome/browser/toolbar/top/ToolbarTablet";
     static String sBraveToolbarLayoutClassName =
-            "org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout";
+            "org/chromium/chrome/browser/toolbar/top/BraveToolbarLayoutImpl";
 
     public BraveToolbarLayoutClassAdapter(ClassVisitor visitor) {
         super(visitor);
         changeSuperName(sCustomTabToolbarClassName, sBraveToolbarLayoutClassName);
 
         changeSuperName(sToolbarPhoneClassName, sBraveToolbarLayoutClassName);
+
+        changeSuperName(sToolbarTabletClassName, sBraveToolbarLayoutClassName);
     }
 }

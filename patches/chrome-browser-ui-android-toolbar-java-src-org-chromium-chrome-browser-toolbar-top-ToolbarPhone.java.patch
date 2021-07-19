@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index a41e088b95a2900daa15513f399dbd276ca084f9..7448905d9ee4fb47415d6267fc89d0a02367e0dc 100644
+index a41e088b95a2900daa15513f399dbd276ca084f9..a170d8d74392fd20c295057af4173c50ac3d1a86 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -406,6 +406,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
@@ -22,7 +22,7 @@ index a41e088b95a2900daa15513f399dbd276ca084f9..7448905d9ee4fb47415d6267fc89d0a0
       * @return The right bounds of the location bar after accounting for any visible left buttons.
       */
      private int getBoundsAfterAccountingForRightButtons() {
-+        if (true) return Math.max(mToolbarSidePadding, BraveToolbarLayout.class.cast(this).getBoundsAfterAccountingForRightButtons(mToolbarButtonsContainer));
++        if (true) return Math.max(mToolbarSidePadding, BraveToolbarLayout.class.cast(this).getBoundsAfterAccountingForRightButtonsImpl(mToolbarButtonsContainer));
          return Math.max(mToolbarSidePadding, mToolbarButtonsContainer.getMeasuredWidth());
      }
  
@@ -30,7 +30,7 @@ index a41e088b95a2900daa15513f399dbd276ca084f9..7448905d9ee4fb47415d6267fc89d0a0
          } else {
              populateUrlClearExpansionAnimatorSet(animators);
          }
-+        BraveToolbarLayout.class.cast(this).populateUrlAnimatorSet(showExpandedState, URL_FOCUS_TOOLBAR_BUTTONS_DURATION_MS, URL_CLEAR_FOCUS_TABSTACK_DELAY_MS, animators);
++        BraveToolbarLayout.class.cast(this).populateUrlAnimatorSetImpl(showExpandedState, URL_FOCUS_TOOLBAR_BUTTONS_DURATION_MS, URL_CLEAR_FOCUS_TABSTACK_DELAY_MS, animators);
          mUrlFocusLayoutAnimator = new AnimatorSet();
          mUrlFocusLayoutAnimator.playTogether(animators);
  
