@@ -252,7 +252,7 @@
     "@types/chrome": "0.0.147",
     "@types/enzyme": "3.10.9",
     "@types/enzyme-adapter-react-16": "1.0.6",
-    "@types/jest": "26.0.20",
+    "@types/jest": "26.0.24",
     "@types/qr-image": "3.2.3",
     "@types/react": "17.0.2",
     "@types/react-beautiful-dnd": "11.0.5",
