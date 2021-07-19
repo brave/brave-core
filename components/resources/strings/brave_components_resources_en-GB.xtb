@@ -544,7 +544,7 @@
 <translation id="5939518447894949180">Reset</translation>
 <translation id="3157931365184549694">Restore</translation>
 <translation id="1797334173232638045">Your pinned sites have been moved to</translation>
-<translation id="6803187280799213426">The funds in your Brave wallet are virtual and not required to backup. It's available for you to spend exclusively on this browser.</translation>
+<translation id="6803187280799213426">The funds in your Brave wallet are virtual and not required to back up. It's available for you to spend exclusively on this browser.</translation>
 <translation id="5290348443732633227">If you'd like to secure all of your funds in the case of clean installing the browser or switching to a new device, and have other benefits such as adding, withdrawing and transferring funds, we recommend</translation>
 <translation id="467041382895390784">connecting to a verified <ph name="PROVIDER"/> wallet.</translation>
 <translation id="5717619667204259673">Keep this recovery key safe.</translation>
@@ -572,7 +572,7 @@
 <translation id="459721429458957031">Use your recovery key to restore your wallet.</translation>
 <translation id="4600052736217630789">Restoring with a recovery key will replace your current wallet. So make sure you empty or back up your current wallet before restoring.</translation>
 <translation id="3267911153934785912">Enter your recovery key or</translation>
-<translation id="1209382772199769572">Backup your wallet before replacing. Or you will lose the fund, [[funds]], in your current wallet.</translation>
+<translation id="1209382772199769572">Back up your wallet before replacing. Or you will lose the fund, [[funds]], in your current wallet.</translation>
 <translation id="5423214929210538027">Are you sure you want to reset your Rewards Wallet?</translation>
 <translation id="8683358891240311475">Your <ph name="BAT_AMOUNT"/> and other Rewards data will be permanently lost if you reset your wallet. Please ensure you have verified your wallet with <ph name="PROVIDER"/> so you can keep your BAT.</translation>
 <translation id="2028613172174411919">Your Rewards data will be permanently lost if you reset your wallet.</translation>
