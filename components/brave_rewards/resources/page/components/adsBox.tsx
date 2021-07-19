@@ -412,7 +412,6 @@ class AdsBox extends React.Component<Props, State> {
 
     const historyEntries = adsHistory || []
     const rows = this.getGroupedAdsHistory(historyEntries, savedOnly)
-    const notEmpty = rows && rows.length !== 0
     const tokenString = getLocale('tokens')
 
     const estimatedPendingDays = getDaysUntilRewardsPayment(nextPaymentDate)
@@ -469,12 +468,9 @@ class AdsBox extends React.Component<Props, State> {
             />
           </List>
           {
-            notEmpty
-            ? <ShowAdsHistory
+            <ShowAdsHistory
                 onAdsHistoryOpen={this.onAdsHistoryToggle}
-                notEmpty={notEmpty}
             />
-            : null
           }
         </Box>
         {
