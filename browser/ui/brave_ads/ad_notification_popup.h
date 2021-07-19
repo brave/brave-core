@@ -68,6 +68,12 @@ class AdNotificationPopup : public views::WidgetDelegateView,
   // Return the bounds for the given |notification_id|
   static gfx::Rect GetBounds(const std::string& notification_id);
 
+  // Return the instance of AdNotificationPopup for the given |notification_id|
+  static AdNotificationPopup* GetPopupForTesting(
+      const std::string& notification_id);
+
+  static void SetDisableFadeInAnimationForTesting(bool disable);
+
   // display::DisplayObserver:
   void OnDisplayRemoved(const display::Display& old_display) override;
   void OnDisplayMetricsChanged(const display::Display& display,
