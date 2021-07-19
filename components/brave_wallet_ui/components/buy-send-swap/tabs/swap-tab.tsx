@@ -4,7 +4,7 @@ import {
   AssetOptionType,
   NetworkOptionsType,
   OrderTypes,
-  SwapViewTypes,
+  BuySendSwapViewTypes,
   SlippagePresetObjectType,
   ExpirationPresetObjectType
 } from '../../../constants/types'
@@ -74,11 +74,11 @@ function SwapTab (props: Props) {
     onSetToAmount,
     onSelectPresetAmount
   } = props
-  const [swapView, setSwapView] = React.useState<SwapViewTypes>('swap')
+  const [swapView, setSwapView] = React.useState<BuySendSwapViewTypes>('swap')
   const [isSelectingAsset, setIsSelectingAsset] = React.useState<string>('')
   const [filteredAssetList, setFilteredAssetList] = React.useState<AssetOptionType[]>(AssetOptions)
 
-  const onChangeSwapView = (view: SwapViewTypes, option?: 'to' | 'from') => {
+  const onChangeSwapView = (view: BuySendSwapViewTypes, option?: 'to' | 'from') => {
     if (option) {
       setIsSelectingAsset(option)
       setSwapView(view)

@@ -65,6 +65,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [exchangeRate, setExchangeRate] = React.useState('0.0027533')
   const [slippageTolerance, setSlippageTolerance] = React.useState<SlippagePresetObjectType>(SlippagePresetOptions[0])
   const [orderExpiration, setOrderExpiration] = React.useState<ExpirationPresetObjectType>(ExpirationPresetOptions[0])
+  const [toAddress, setToAddress] = React.useState('')
   const [fromAmount, setFromAmount] = React.useState('')
   const [toAmount, setToAmount] = React.useState('')
 
@@ -295,7 +296,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     alert('Will update Watchlist')
   }
 
-  const onSelectSwapAsset = (asset: AssetOptionType, toOrFrom: string) => {
+  const onSelectTransactAsset = (asset: AssetOptionType, toOrFrom: string) => {
     if (toOrFrom === 'from') {
       setFromAsset(asset)
     } else {
@@ -310,6 +311,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
 
   const onSubmitSwap = () => {
     alert('Submit Swap Transaction')
+  }
+
+  const onSubmitSend = () => {
+    alert('Submit Send Transaction')
   }
 
   const calculateToAmount = (amount: number, market: boolean) => {
@@ -365,6 +370,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
 
   const onSetToAmount = (value: string) => {
     setToAmount(value)
+  }
+
+  const onSetToAddress = (value: string) => {
+    setToAddress(value)
   }
 
   return (
@@ -458,14 +467,17 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             toAmount={toAmount}
             fromAssetBalance={fromAssetBalance}
             toAssetBalance={toAssetBalance}
+            toAddress={toAddress}
+            onSetToAddress={onSetToAddress}
             onSetFromAmount={onSetFromAmount}
             onSetToAmount={onSetToAmount}
+            onSubmitSend={onSubmitSend}
             onSubmitSwap={onSubmitSwap}
             flipSwapAssets={flipSwapAssets}
             onSelectNetwork={onSelectNetwork}
             onSelectAccount={onSelectAccount}
             onToggleOrderType={onToggleOrderType}
-            onSelectSwapAsset={onSelectSwapAsset}
+            onSelectAsset={onSelectTransactAsset}
             onSelectExpiration={onSelectExpiration}
             onSetExchangeRate={onSetExchangeRate}
             onSelectSlippageTolerance={onSelectSlippageTolerance}

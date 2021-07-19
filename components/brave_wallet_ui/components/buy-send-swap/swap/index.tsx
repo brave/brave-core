@@ -2,7 +2,7 @@ import * as React from 'react'
 import {
   AssetOptionType,
   OrderTypes,
-  SwapViewTypes,
+  BuySendSwapViewTypes,
   SlippagePresetObjectType,
   ExpirationPresetObjectType
 } from '../../../constants/types'
@@ -30,7 +30,7 @@ export interface Props {
   onFlipAssets: () => void
   onSubmitSwap: () => void
   onInputChange: (value: string, name: string) => void
-  onChangeSwapView: (view: SwapViewTypes, option?: string) => void
+  onChangeSwapView: (view: BuySendSwapViewTypes, option?: string) => void
   onSelectPresetAmount: (percent: number) => void
   onSelectExpiration: (expiration: ExpirationPresetObjectType) => void
   onSelectSlippageTolerance: (slippage: SlippagePresetObjectType) => void

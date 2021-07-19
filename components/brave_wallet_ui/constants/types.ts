@@ -297,8 +297,10 @@ export interface NetworkOptionsType {
   abbr: string
 }
 
-export type SwapViewTypes =
+export type BuySendSwapViewTypes =
   | 'swap'
+  | 'buy'
+  | 'send'
   | 'acounts'
   | 'networks'
   | 'assets'

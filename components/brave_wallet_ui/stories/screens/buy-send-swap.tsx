@@ -9,6 +9,7 @@ import {
   ExpirationPresetObjectType
 } from '../../constants/types'
 import Swap from '../../components/buy-send-swap/tabs/swap-tab'
+import Send from '../../components/buy-send-swap/tabs/send-tab'
 import {
   Layout
 } from '../../components/buy-send-swap'
@@ -27,16 +28,19 @@ export interface Props {
   toAmount: string
   fromAssetBalance: string
   toAssetBalance: string
+  toAddress: string
+  onSubmitSend: () => void
   onSubmitSwap: () => void
   flipSwapAssets: () => void
   onSelectNetwork: (network: NetworkOptionsType) => void
   onSelectAccount: (account: UserAccountType) => void
   onToggleOrderType: () => void
-  onSelectSwapAsset: (asset: AssetOptionType, toOrFrom: string) => void
+  onSelectAsset: (asset: AssetOptionType, toOrFrom: string) => void
   onSelectSlippageTolerance: (slippage: SlippagePresetObjectType) => void
   onSelectExpiration: (expiration: ExpirationPresetObjectType) => void
   onSetExchangeRate: (value: string) => void
   onSetFromAmount: (value: string) => void
+  onSetToAddress: (value: string) => void
   onSetToAmount: (value: string) => void
   onSelectPresetAmount: (percent: number) => void
 }
@@ -56,20 +60,23 @@ function BuySendSwap (props: Props) {
     toAmount,
     fromAssetBalance,
     toAssetBalance,
+    toAddress,
+    onSubmitSend,
     onSubmitSwap,
     flipSwapAssets,
     onSelectNetwork,
     onSelectAccount,
     onToggleOrderType,
-    onSelectSwapAsset,
+    onSelectAsset,
     onSelectSlippageTolerance,
     onSelectExpiration,
     onSetExchangeRate,
     onSetFromAmount,
+    onSetToAddress,
     onSetToAmount,
     onSelectPresetAmount
   } = props
-  const [selectedTab, setSelectedTab] = React.useState<BuySendSwapTypes>('swap')
+  const [selectedTab, setSelectedTab] = React.useState<BuySendSwapTypes>('send')
 
   const changeTab = (tab: BuySendSwapTypes) => () => {
     setSelectedTab(tab)
@@ -96,7 +103,7 @@ function BuySendSwap (props: Props) {
           flipSwapAssets={flipSwapAssets}
           onSelectNetwork={onSelectNetwork}
           onSelectAccount={onSelectAccount}
-          onSelectSwapAsset={onSelectSwapAsset}
+          onSelectSwapAsset={onSelectAsset}
           onToggleOrderType={onToggleOrderType}
           onSelectSlippageTolerance={onSelectSlippageTolerance}
           onSelectExpiration={onSelectExpiration}
@@ -104,6 +111,24 @@ function BuySendSwap (props: Props) {
           onSetFromAmount={onSetFromAmount}
           onSetToAmount={onSetToAmount}
           onSelectPresetAmount={onSelectPresetAmount}
+        />
+      }
+      {selectedTab === 'send' &&
+        <Send
+          accounts={accounts}
+          selectedAssetAmount={fromAmount}
+          selectedAssetBalance={fromAssetBalance}
+          toAddress={toAddress}
+          onSelectAccount={onSelectAccount}
+          onSelectNetwork={onSelectNetwork}
+          onSelectPresetAmount={onSelectPresetAmount}
+          onSelectAsset={onSelectAsset}
+          onSetFromAmount={onSetFromAmount}
+          onSetToAddress={onSetToAddress}
+          onSubmit={onSubmitSend}
+          selectedAccount={selectedAccount}
+          selectedNetwork={selectedNetwork}
+          selectedAsset={swapFromAsset}
         />
       }
     </Layout>
