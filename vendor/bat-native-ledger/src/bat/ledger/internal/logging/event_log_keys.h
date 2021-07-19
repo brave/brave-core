@@ -21,6 +21,7 @@ const char kDatabaseMigrated[] = "database_migrated";
 const char kPromotionsClaimed[] = "promotion_claimed";
 const char kWalletRecovered[] = "wallet_recovered";
 const char kDeviceLimitReached[] = "device_limit_reached";
+const char kTokensDrained[] = "tokens_drained";
 
 }  // namespace log
 }  // namespace ledger
