@@ -11,6 +11,7 @@ extern const char kChromeExtensionScheme[];
 extern const char kBraveUIScheme[];
 extern const char kMagnetScheme[];
 extern const char kBinanceScheme[];
+extern const char kCryptoDotComScheme[];
 extern const char kGeminiScheme[];
 extern const char kFTXScheme[];
 extern const char kWidevineMoreInfoURL[];

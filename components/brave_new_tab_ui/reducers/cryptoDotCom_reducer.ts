@@ -5,18 +5,11 @@
 import { Reducer } from 'redux'
 import { types } from '../constants/cryptoDotCom_types'
 
-interface SupportedPair {
-  base: string
-  pair: string
-  quote: string
-}
-
-function performSideEffect (fn: () => void): void {
-  window.setTimeout(() => fn(), 0)
-}
-
-function reducePairs (rawPairs: SupportedPair[]) {
-  return rawPairs.reduce((pairs: object, currPair: SupportedPair) => {
+function reducePairs (rawPairs: chrome.cryptoDotCom.SupportedPair[]) {
+  if (!rawPairs || !rawPairs.length) {
+    return {}
+  }
+  return rawPairs.reduce((pairs: object, currPair: chrome.cryptoDotCom.SupportedPair) => {
     const { base, pair } = currPair
     pairs[base] = pairs[base]
       ? [...pairs[base], pair]
@@ -30,72 +23,94 @@ const cryptoDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.St
 
   switch (action.type) {
     case types.ON_BTC_PRICE_OPT_IN:
-      state = { ...state }
-      state.cryptoDotComState.optInBTCPrice = true
-      break
-
-    case types.MARKET_DATA_UPDATED:
-      state = { ...state }
-      state.cryptoDotComState = {
-        ...state.cryptoDotComState,
-        tickerPrices: {
-          ...state.cryptoDotComState.tickerPrices,
-          ...payload.tickerPrices
-        },
-        losersGainers: payload.losersGainers
+      state = {
+        ...state,
+        cryptoDotComState: {
+          ...state.cryptoDotComState,
+          optInBTCPrice: true
+        }
       }
       break
 
-    case types.SET_ASSET_DATA:
-      state = { ...state }
-      state.cryptoDotComState = {
-        ...state.cryptoDotComState,
-        charts: {
-          ...state.cryptoDotComState.charts,
-          ...payload.charts
-        },
-        supportedPairs: reducePairs(payload.pairs)
+    case types.ON_IS_CONNECTED_RECEIVED:
+      const isConnected = payload.isConnected
+      state = {
+        ...state,
+        cryptoDotComState: {
+          ...state.cryptoDotComState,
+          isConnected: isConnected,
+          // Reset account specific state if not connected.
+          newsEvents: isConnected ? state.cryptoDotComState.newsEvents : [],
+          depositAddresses: isConnected ? state.cryptoDotComState.depositAddresses : {},
+          accountBalances: isConnected ? state.cryptoDotComState.accountBalances
+                                       : { total_balance: '0', accounts: [] }
+        }
       }
       break
 
-    case types.ON_REFRESH_DATA:
-      state = { ...state }
-      state.cryptoDotComState = {
-        ...state.cryptoDotComState,
-        tickerPrices: {
-          ...state.cryptoDotComState.tickerPrices,
-          ...payload.tickerPrices
-        },
-        charts: {
-          ...state.cryptoDotComState.charts,
-          ...payload.charts
-        },
-        losersGainers: payload.losersGainers
+    case types.SET_DISCONNECT_IN_PROGRESS:
+      state = {
+        ...state,
+        cryptoDotComState: {
+          ...state.cryptoDotComState,
+          disconnectInProgress: payload.inProgress
+        }
       }
       break
 
-    case types.ON_BUY_CRYPTO:
-      performSideEffect(async function () {
-        chrome.cryptoDotCom.onBuyCrypto()
-      })
+    case types.ALL_ASSETS_DETAILS_RECEIVED:
+      state = {
+        ...state,
+        cryptoDotComState: {
+          ...state.cryptoDotComState,
+          charts: {
+            ...state.cryptoDotComState.charts,
+            ...payload.charts
+          },
+          tickerPrices: {
+            ...state.cryptoDotComState.tickerPrices,
+            ...payload.tickerPrices
+          },
+          depositAddresses: {
+            ...state.cryptoDotComState.depositAddresses,
+            [payload.depositAddress.currency]: {
+              address: payload.depositAddress.address,
+              qr_code: payload.depositAddress.qr_code
+            }
+          }
+        }
+      }
       break
 
-    case types.ON_INTERACTION:
-      performSideEffect(async function () {
-        chrome.cryptoDotCom.onInteraction()
-      })
+    case types.HIDE_BALANCE:
+      state = {
+        ...state,
+        cryptoDotComState: {
+          ...state.cryptoDotComState,
+          hideBalance: payload.hide
+        }
+      }
       break
 
-    case types.ON_MARKETS_OPT_IN:
-      state = { ...state }
-      state.cryptoDotComState.optInMarkets = payload.show
-      break
-
-    case types.SET_SUPPORTED_PAIRS:
-      state = { ...state }
-      state.cryptoDotComState = {
-        ...state.cryptoDotComState,
-        supportedPairs: reducePairs(payload.pairs)
+    case types.REFRESHED_DATA_RECEIVED:
+      state = {
+        ...state,
+        cryptoDotComState: {
+          ...state.cryptoDotComState,
+          tickerPrices: {
+            ...state.cryptoDotComState.tickerPrices,
+            ...payload.tickerPrices
+          },
+          losersGainers: payload.losersGainers,
+          charts: payload.charts ? {
+            ...state.cryptoDotComState.charts,
+            ...payload.charts
+          } : state.cryptoDotComState.charts,
+          accountBalances: payload.accountBalances ? payload.accountBalances : state.cryptoDotComState.accountBalances,
+          newsEvents: payload.newsEvents ? payload.newsEvents : state.cryptoDotComState.newsEvents,
+          supportedPairs: payload.pairs ? reducePairs(payload.pairs) : state.cryptoDotComState.supportedPairs,
+          tradingPairs: payload.pairs ? payload.pairs : state.cryptoDotComState.tradingPairs
+        }
       }
       break
 

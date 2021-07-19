@@ -41,6 +41,7 @@
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
+#include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
@@ -132,6 +133,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(BINANCE_ENABLED)
 #include "brave/browser/binance/binance_protocol_handler.h"
+#endif
+
+#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
+#include "brave/browser/crypto_dot_com/crypto_dot_com_protocol_handler.h"
 #endif
 
 #if BUILDFLAG(GEMINI_ENABLED)
@@ -388,6 +393,15 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     binance::HandleBinanceProtocol(url, std::move(web_contents_getter),
                                    page_transition, has_user_gesture,
                                    initiating_origin);
+    return true;
+  }
+#endif
+
+#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
+  if (crypto_dot_com::IsCryptoDotComProtocol(url)) {
+    crypto_dot_com::HandleCryptoDotComProtocol(
+        url, std::move(web_contents_getter), page_transition, has_user_gesture,
+        initiating_origin);
     return true;
   }
 #endif

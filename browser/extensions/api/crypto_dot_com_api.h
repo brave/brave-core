@@ -13,8 +13,6 @@
 #include "extensions/browser/extension_function.h"
 #include "brave/components/crypto_dot_com/browser/crypto_dot_com_service.h"
 
-class Profile;
-
 namespace extensions {
 namespace api {
 
@@ -79,34 +77,82 @@ class CryptoDotComIsSupportedFunction :
   ResponseAction Run() override;
 };
 
-class CryptoDotComOnBuyCryptoFunction :
-    public ExtensionFunction {
+class CryptoDotComGetAccountBalancesFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("cryptoDotCom.onBuyCrypto", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("cryptoDotCom.getAccountBalances", UNKNOWN)
 
  protected:
-  ~CryptoDotComOnBuyCryptoFunction() override {}
+  ~CryptoDotComGetAccountBalancesFunction() override {}
+  ResponseAction Run() override;
+  void OnGetAccountBalancesResult(base::Value balances);
+};
+
+class CryptoDotComGetClientUrlFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("cryptoDotCom.getClientUrl", UNKNOWN)
+
+ protected:
+  ~CryptoDotComGetClientUrlFunction() override {}
   ResponseAction Run() override;
 };
 
-class CryptoDotComOnInteractionFunction :
-    public ExtensionFunction {
+class CryptoDotComIsConnectedFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("cryptoDotCom.onInteraction", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("cryptoDotCom.isConnected", UNKNOWN)
 
  protected:
-  ~CryptoDotComOnInteractionFunction() override {}
+  ~CryptoDotComIsConnectedFunction() override {}
+  ResponseAction Run() override;
+  void OnIsConnectedResult(bool connected);
+};
+
+class CryptoDotComDisconnectFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("cryptoDotCom.disconnect", UNKNOWN)
+
+ protected:
+  ~CryptoDotComDisconnectFunction() override {}
+  ResponseAction Run() override;
+  void OnDisconnectResult(bool success);
+};
+
+class CryptoDotComIsLoggedInFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("cryptoDotCom.isLoggedIn", UNKNOWN)
+
+ protected:
+  ~CryptoDotComIsLoggedInFunction() override {}
   ResponseAction Run() override;
 };
 
-class CryptoDotComGetInteractionsFunction :
-    public ExtensionFunction {
+class CryptoDotComGetNewsEventsFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("cryptoDotCom.getInteractions", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("cryptoDotCom.getNewsEvents", UNKNOWN)
 
  protected:
-  ~CryptoDotComGetInteractionsFunction() override {}
+  ~CryptoDotComGetNewsEventsFunction() override {}
   ResponseAction Run() override;
+  void OnGetNewsEventsResult(base::Value events);
+};
+
+class CryptoDotComGetDepositAddressFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("cryptoDotCom.getDepositAddress", UNKNOWN)
+
+ protected:
+  ~CryptoDotComGetDepositAddressFunction() override {}
+  ResponseAction Run() override;
+  void OnGetDepositAddressResult(base::Value address);
+};
+
+class CryptoDotComCreateMarketOrderFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("cryptoDotCom.createMarketOrder", UNKNOWN)
+
+ protected:
+  ~CryptoDotComCreateMarketOrderFunction() override {}
+  ResponseAction Run() override;
+  void OnCreateMarketOrderResult(base::Value result);
 };
 
 }  // namespace api

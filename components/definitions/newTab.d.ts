@@ -190,14 +190,24 @@ declare namespace NewTab {
     authInvalid: boolean
   }
 
+  export interface DepositAddress {
+    address: string
+    qr_code: string
+  }
+
   export interface CryptoDotComWidgetState {
-    optInTotal: boolean
     optInBTCPrice: boolean
-    optInMarkets: boolean
-    tickerPrices: Record<string, any>
-    losersGainers: Record<string, any>
-    supportedPairs: Record<string, any>
-    charts: Record<string, any>
+    hideBalance: boolean
+    isConnected: boolean
+    disconnectInProgress: boolean
+    tickerPrices: Record<string, chrome.cryptoDotCom.TickerPrice>
+    losersGainers: Record<string, chrome.cryptoDotCom.AssetRanking[]>
+    supportedPairs: Record<string, string[]>
+    tradingPairs: chrome.cryptoDotCom.SupportedPair[]
+    newsEvents: chrome.cryptoDotCom.NewsEvent[]
+    charts: Array<string, chrome.cryptoDotCom.CharData>
+    accountBalances: chrome.cryptoDotCom.AccountBalances
+    depositAddresses: Record<string, DepositAddress>
   }
 
   export interface FTXWidgetState {

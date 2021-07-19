@@ -2,426 +2,212 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 import * as React from 'react'
+import { ThemeProvider } from 'styled-components'
+import Theme from 'brave-ui/theme/brave-default'
 
-import createWidget from '../widget/index'
-import { StyledTitleTab } from '../widgetTitleTab'
-
+import { AssetViews } from './types'
 import {
-  currencyNames,
-  dynamicBuyLink,
-  links
-} from './data'
-
-import {
-  ActionAnchor,
-  ActionButton,
-  BackArrow,
   BasicBox,
-  Box,
   CryptoDotComIcon,
-  FlexItem,
   Header,
+  Link,
   List,
   ListItem,
   PlainButton,
   StyledTitle,
   StyledTitleText,
-  SVG,
   Text,
   WidgetWrapper,
-  UpperCaseText
+  DisconnectWrapper,
+  DisconnectTitle,
+  DisconnectCopy,
+  DisconnectButton,
+  DismissAction
 } from './style'
-import CryptoDotComLogo from './assets/cryptoDotCom-logo'
-import { CaratLeftIcon } from 'brave-ui/components/icons'
-import icons from './assets/icons'
 
-// Utils
+import {
+  convertTimeToHumanReadable,
+  decimalizeCurrency
+} from './utils'
+
+import AssetDepositView from './assetDepositView'
+import AssetDetailView from './assetDetailView'
+import AssetTradeView from './assetTradeView'
+import BalanceSummaryView from './balanceSummaryView'
+import PreOptInView from './preOptInView'
+import TopMoversView from './topMoversView'
+import TradeView from './tradeView'
+import CryptoDotComLogo from './assets/cryptoDotCom-logo'
+
+import createWidget from '../widget/index'
+import { StyledTitleTab } from '../widgetTitleTab'
 import { getLocale } from '../../../../common/locale'
 
+enum MainViews {
+  TOP,
+  TRADE,
+  EVENTS,
+  BALANCE
+}
+
 interface State {
-  selectedAsset: string
-}
-
-interface TickerPrice {
-  price: number
-  volume: number
-}
-
-interface AssetRanking {
-  lastPrice: number
-  pair: string
-  percentChange: number
-}
-
-interface ChartDataPoint {
-  c: number
-  h: number
-  l: number
-  o: number
-  t: number
-  v: number
+  currentView: MainViews
+  currentAssetView: AssetViews
+  selectedBase: string
+  selectedQuote: string
+  clientAuthUrl: string
 }
 
 interface Props {
   showContent: boolean
-  optInTotal: boolean
   optInBTCPrice: boolean
-  optInMarkets: boolean
-  tickerPrices: Record<string, TickerPrice>
-  losersGainers: Record<string, AssetRanking[]>
+  hideBalance: boolean
+  isConnected: boolean
+  disconnectInProgress: boolean
+  accountBalances: chrome.cryptoDotCom.AccountBalances
+  depositAddresses: Record<string, NewTab.DepositAddress>
+  tickerPrices: Record<string, chrome.cryptoDotCom.TickerPrice>
+  losersGainers: Record<string, chrome.cryptoDotCom.AssetRanking[]>
   supportedPairs: Record<string, string[]>
-  charts: Record<string, ChartDataPoint[]>
+  tradingPairs: chrome.cryptoDotCom.SupportedPair[]
+  newsEvents: chrome.cryptoDotCom.NewsEvent[]
+  charts: Record<string, chrome.cryptoDotCom.ChartDataPoint[]>
   stackPosition: number
   onShowContent: () => void
   onDisableWidget: () => void
   onBtcPriceOptIn: () => void
-  onUpdateActions: () => Promise<void>
-  onViewMarketsRequested: (assets: string[]) => Promise<void>
-  onSetAssetData: (assets: string[]) => Promise<void>
-  onBuyCrypto: () => void
-  onInteraction: () => void
-  onOptInMarkets: (show: boolean) => void
-}
-interface ChartConfig {
-  data: Array<any>
-  chartHeight: number
-  chartWidth: number
+  onUpdateActions: (init?: boolean) => Promise<void>
+  onAssetsDetailsRequested: (base: string, quote: string) => void
+  onSetHideBalance: (hide: boolean) => void
+  onIsConnected: (connected: boolean) => void
+  disconnect: () => void
+  cancelDisconnect: () => void
+  isCryptoDotComLoggedIn: (callback: (loggedIn: boolean) => void) => void
+  isCryptoDotComConnected: (callback: (isConnected: boolean) => void) => void
+  getCryptoDotComClientUrl: (callback: (clientAuthUrl: string) => void) => void
+  createCryptoDotComMarketOrder: (order: chrome.cryptoDotCom.Order, callback: (result: chrome.cryptoDotCom.OrderResult) => void) => void
 }
 
 class CryptoDotCom extends React.PureComponent<Props, State> {
-  private refreshInterval: any
-  private topMovers: string[] = Object.keys(currencyNames)
+  private refreshDataInterval: any
+  private checkConnectedStateInterval: any
 
   constructor (props: Props) {
     super(props)
     this.state = {
-      selectedAsset: ''
+      currentView: MainViews.TOP,
+      currentAssetView: AssetViews.DETAILS,
+      selectedBase: '',
+      selectedQuote: '',
+      clientAuthUrl: ''
     }
   }
 
-  // This is a temporary function only necessary for MVP
-  // Merges losers/gainers into one table
-  transformLosersGainers = ({ losers = [], gainers = [] }: Record<string, AssetRanking[]>): Record<string, AssetRanking> => {
-    const losersGainersMerged = [ ...losers, ...gainers ]
-    return losersGainersMerged.reduce((mergedTable: object, asset: AssetRanking) => {
-      let { pair: assetName, ...assetRanking } = asset
-      assetName = assetName.split('_')[0]
-
-      return {
-        ...mergedTable,
-        [assetName]: assetRanking
-      }
-    }, {})
+  componentDidUpdate (prevProps: Props) {
+    if (prevProps.isConnected !== this.props.isConnected ||
+        prevProps.optInBTCPrice !== this.props.optInBTCPrice ||
+        prevProps.showContent !== this.props.showContent) {
+      this.resetRefreshInterval()
+    }
   }
 
   componentDidMount () {
-    const { optInBTCPrice, optInMarkets } = this.props
-
-    if (optInBTCPrice || optInMarkets) {
-      this.checkSetRefreshInterval()
-    }
+    this.resetRefreshInterval()
+    this.getClientURL()
   }
 
   componentWillUnmount () {
     this.clearIntervals()
   }
 
+  resetRefreshInterval = () => {
+    this.clearIntervals()
+
+    // Stop background refresh if this is not visible.
+    if (!this.props.showContent) {
+      return
+    }
+
+    this.props.isCryptoDotComLoggedIn(async (loggedIn: boolean) => {
+      if (loggedIn) {
+        // Periodically check connect status if logged in.
+        this.setCheckIsConnectedInterval()
+
+        this.props.isCryptoDotComConnected(async (isConnected: boolean) => {
+          await this.props.onUpdateActions(true)
+          this.checkSetRefreshInterval()
+          this.props.onIsConnected(isConnected)
+        })
+      } else if (this.props.optInBTCPrice) {
+        await this.props.onUpdateActions(true)
+        this.checkSetRefreshInterval()
+        this.props.onIsConnected(false)
+      }
+    })
+  }
+
+  getClientURL = () => {
+    this.props.getCryptoDotComClientUrl((clientAuthUrl: string) => {
+      this.setState({ clientAuthUrl })
+    })
+  }
+
+  setCheckIsConnectedInterval = () => {
+    if (!this.checkConnectedStateInterval) {
+      this.checkConnectedStateInterval = setInterval(() => {
+        this.props.isCryptoDotComConnected((isConnected: boolean) => {
+          this.props.onIsConnected(isConnected)
+        })
+      }, 30000)
+    }
+  }
+
   checkSetRefreshInterval = () => {
-    if (!this.refreshInterval) {
-      this.refreshInterval = setInterval(async () => {
-        await this.props.onUpdateActions()
+    if (!this.refreshDataInterval) {
+      this.refreshDataInterval = setInterval(async () => {
+        this.props.onUpdateActions()
           .catch((_e) => console.debug('Could not update crypto.com data'))
       }, 30000)
     }
   }
 
   clearIntervals = () => {
-    clearInterval(this.refreshInterval)
-    this.refreshInterval = null
+    clearInterval(this.refreshDataInterval)
+    this.refreshDataInterval = null
+
+    clearInterval(this.checkConnectedStateInterval)
+    this.checkConnectedStateInterval = null
   }
 
-  setSelectedAsset = (asset: string) => {
+  setMainView = (view: MainViews) => {
     this.setState({
-      selectedAsset: asset
+      currentView: view
     })
   }
 
-  handleViewMarketsClick = async () => {
-    this.props.onInteraction()
-    this.optInMarkets(true)
-    await this.props.onViewMarketsRequested(this.topMovers)
+  clearAsset = () => {
+    this.setState({
+      selectedBase: '',
+      selectedQuote: ''
+    })
   }
 
-  optInMarkets = (show: boolean) => {
-    if (show) {
-      this.checkSetRefreshInterval()
-    } else {
-      if (!this.props.optInBTCPrice) {
-        this.clearIntervals()
-      }
-      this.setState({ selectedAsset: '' })
-    }
-
-    this.props.onOptInMarkets(show)
+  handleAssetClick = (base: string, quote?: string, view?: AssetViews) => {
+    this.setState({
+      selectedBase: base,
+      selectedQuote: quote || '',
+      currentAssetView: view || AssetViews.DETAILS
+    })
+    this.props.onAssetsDetailsRequested(base, quote ? quote : 'USDT')
   }
 
-  btcPriceOptIn = () => {
-    this.props.onBtcPriceOptIn()
-    this.checkSetRefreshInterval()
-  }
-
-  handleAssetDetailClick = async (asset: string) => {
-    this.setSelectedAsset(asset)
-    await this.props.onSetAssetData([asset])
-  }
-
-  onClickBuyTopDetail = () => {
-    window.open(links.buyTopDetail, '_blank', 'noopener')
-    this.props.onBuyCrypto()
-  }
-
-  onClickBuyTop = () => {
-    window.open(links.buyTop, '_blank', 'noopener')
-    this.props.onBuyCrypto()
-  }
-
-  onClickBuyBottom = () => {
-    window.open(links.buyBottom, '_blank', 'noopener')
-    this.props.onBuyCrypto()
-  }
-
-  onClickBuyPair = (pair: string) => {
-    window.open(dynamicBuyLink(pair), '_blank', 'noopener')
-    this.props.onBuyCrypto()
-  }
-
-  formattedNum = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      currencyDisplay: 'narrowSymbol'
-    }).format(price)
-  }
-
-  plotData ({ data, chartHeight, chartWidth }: ChartConfig) {
-    const pointsPerDay = 4
-    const daysInrange = 7
-    const yHighs = data.map((point: ChartDataPoint) => point.h)
-    const yLows = data.map((point: ChartDataPoint) => point.l)
-    const dataPoints = data.map((point: ChartDataPoint) => point.c)
-    const chartAreaY = chartHeight - 2
-    const max = Math.max(...yHighs)
-    const min = Math.min(...yLows)
-    const pixelsPerPoint = (max - min) / chartAreaY
-    return dataPoints
-      .map((v, i) => {
-        const y = (v - min) / pixelsPerPoint
-        const x = i * (chartWidth / (pointsPerDay * daysInrange))
-        return `${x},${chartAreaY - y}`
-      })
-      .join('\n')
-  }
-
-  renderIconAsset = (key: string) => {
-    if (!(key in icons)) {
-      return null
-    }
-
-    return (
-      <>
-        <img width={25} src={icons[key]} />
-      </>
-    )
-  }
-
-  renderIndexView () {
-    const { optInBTCPrice } = this.props
-    const currency = 'BTC'
-    const { price = null } = this.props.tickerPrices[currency] || {}
-
-    const losersGainers = this.transformLosersGainers(this.props.losersGainers || {})
-    const { percentChange = null } = losersGainers[currency] || {}
-    return (
-      <>
-        <Box isFlex={true} $height={48} hasPadding={true}>
-          <FlexItem $pr={5}>
-            {this.renderIconAsset(currency.toLowerCase())}
-          </FlexItem>
-          <FlexItem>
-              <Text>{currency}</Text>
-              <Text small={true} textColor='light'>{currencyNames[currency]}</Text>
-          </FlexItem>
-          <FlexItem textAlign='right' flex={1}>
-            {optInBTCPrice ? (
-              <>
-                {(price !== null) && <Text>{this.formattedNum(price)}</Text>}
-                {(percentChange !== null) && <Text textColor={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
-              </>
-            ) : (
-              <PlainButton onClick={this.btcPriceOptIn} textColor='green' inline={true}>
-                {getLocale('cryptoDotComWidgetShowPrice')}
-              </PlainButton>
-            )}
-          </FlexItem>
-          <FlexItem $pl={5}>
-            <ActionButton onClick={this.onClickBuyTop} small={true} light={true}>
-              {getLocale('cryptoDotComWidgetBuy')}
-            </ActionButton>
-          </FlexItem>
-        </Box>
-        <Text center={true} $p='1em 0 0.5em' $fontSize={15}>
-          {getLocale('cryptoDotComWidgetCopyOne')}
-        </Text>
-        <Text center={true} $fontSize={15}>
-          {getLocale('cryptoDotComWidgetCopyTwo')}
-        </Text>
-        <ActionAnchor onClick={this.onClickBuyBottom}>
-          {getLocale('cryptoDotComWidgetBuyBtc')}
-        </ActionAnchor>
-        <PlainButton textColor='light' onClick={this.handleViewMarketsClick} $m='0 auto'>
-          {getLocale('cryptoDotComWidgetViewMarkets')}
-        </PlainButton>
-      </>
-    )
-  }
-
-  renderTopMoversView () {
-    return (
-      <List>
-        {this.topMovers.map(currency => {
-          const { price = null } = this.props.tickerPrices[currency] || {}
-          const losersGainers = this.transformLosersGainers(this.props.losersGainers || {})
-          const { percentChange = null } = losersGainers[currency] || {}
-          return (
-            <ListItem key={currency} isFlex={true} onClick={this.handleAssetDetailClick.bind(this, currency)} $height={48}>
-              <FlexItem $pl={5} $pr={5}>
-                {this.renderIconAsset(currency.toLowerCase())}
-              </FlexItem>
-              <FlexItem>
-                <Text>{currency}</Text>
-                <Text small={true} textColor='light'>{currencyNames[currency]}</Text>
-              </FlexItem>
-              <FlexItem textAlign='right' flex={1}>
-                {(price !== null) && <Text>{this.formattedNum(price)}</Text>}
-                {(percentChange !== null) && <Text textColor={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
-              </FlexItem>
-            </ListItem>
-          )
-        })}
-      </List>
-    )
-  }
-
-  renderAssetDetailView () {
-    const { selectedAsset: currency } = this.state
-    const { price = null, volume = null } = this.props.tickerPrices[currency] || {}
-    const chartData = this.props.charts[currency] || []
-    const pairs = this.props.supportedPairs[currency] || []
-
-    const losersGainers = this.transformLosersGainers(this.props.losersGainers || {})
-    const { percentChange = null } = losersGainers[currency] || {}
-
-    const chartHeight = 100
-    const chartWidth = 309
-    return (
-      <Box hasPadding={false}>
-        <FlexItem
-          hasPadding={true}
-          isFlex={true}
-          isFullWidth={true}
-          hasBorder={true}
-        >
-          <FlexItem>
-            <BackArrow>
-              <CaratLeftIcon onClick={this.setSelectedAsset.bind(this, '')} />
-            </BackArrow>
-          </FlexItem>
-          <FlexItem $pr={5}>
-            {this.renderIconAsset(currency.toLowerCase())}
-          </FlexItem>
-          <FlexItem flex={1}>
-            <Text>{currency}</Text>
-            <Text small={true} textColor='light'>
-              {currencyNames[currency]}
-            </Text>
-          </FlexItem>
-          <FlexItem $pl={5}>
-            <ActionButton onClick={this.onClickBuyTopDetail} small={true} light={true}>
-              <UpperCaseText>
-                {getLocale('cryptoDotComWidgetBuy')}
-              </UpperCaseText>
-            </ActionButton>
-          </FlexItem>
-        </FlexItem>
-        <FlexItem
-          hasPadding={true}
-          isFullWidth={true}
-          hasBorder={true}
-        >
-          {(price !== null) && <Text
-            inline={true}
-            large={true}
-            weight={500}
-            $mr='0.5rem'
-          >
-            {this.formattedNum(price)} USDT
-          </Text>}
-          {(percentChange !== null) && <Text inline={true} textColor={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
-          <SVG viewBox={`0 0 ${chartWidth} ${chartHeight}`}>
-            <polyline
-              fill='none'
-              stroke='#44B0FF'
-              strokeWidth='3'
-              points={this.plotData({
-                data: chartData,
-                chartHeight,
-                chartWidth
-              })}
-            />
-          </SVG>
-        <Text small={true} textColor='xlight'>
-          {getLocale('cryptoDotComWidgetGraph')}
-        </Text>
-        </FlexItem>
-        <FlexItem
-          hasPadding={true}
-          isFullWidth={true}
-        >
-          <BasicBox $mt='0.2em'>
-            <Text small={true} textColor='light' $pb='0.2rem'>
-              <UpperCaseText>
-                {getLocale('cryptoDotComWidgetVolume')}
-              </UpperCaseText>
-            </Text>
-            {volume && <Text weight={500}>{this.formattedNum(volume)} USDT</Text>}
-          </BasicBox>
-          <BasicBox $mt='1em'>
-            <Text small={true} textColor='light' $pb='0.2rem'>
-              <UpperCaseText>
-                {getLocale('cryptoDotComWidgetPairs')}
-              </UpperCaseText>
-            </Text>
-            {pairs.map((pair, i) => {
-              const pairName = pair.replace('_', '/')
-              return (
-                <ActionButton onClick={this.onClickBuyPair.bind(this, pairName)} key={pair} small={true} inline={true} $mr={i === 0 ? 5 : 0} $mb={5}>
-                  {pairName}
-                </ActionButton>
-              )
-            })}
-          </BasicBox>
-        </FlexItem>
-      </Box>
-    )
+  onClickConnectToCryptoDotCom = () => {
+    window.open(this.state.clientAuthUrl, '_self', 'noopener')
   }
 
   renderTitle () {
-    const { selectedAsset } = this.state
-    const { optInMarkets, showContent } = this.props
-    const shouldShowBackArrow = !selectedAsset && showContent && optInMarkets
-
     return (
-      <Header showContent={showContent}>
+      <Header showContent={this.props.showContent}>
         <StyledTitle>
           <CryptoDotComIcon>
             <CryptoDotComLogo />
@@ -429,13 +215,6 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
           <StyledTitleText>
             {'Crypto.com'}
           </StyledTitleText>
-          {shouldShowBackArrow &&
-            <BackArrow marketView={true}>
-              <CaratLeftIcon
-                onClick={this.optInMarkets.bind(this, false)}
-              />
-            </BackArrow>
-          }
         </StyledTitle>
       </Header>
     )
@@ -451,33 +230,210 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
     )
   }
 
-  renderSelectedView () {
-    const { selectedAsset } = this.state
-    const { optInMarkets } = this.props
+  renderNav () {
+    const { currentView } = this.state
+    return (
+      <BasicBox isFlex={true} justify='start' $mb={13.5}>
+        <PlainButton $pl='0' weight={500} textColor={currentView === MainViews.TOP ? 'white' : 'light'} onClick={this.setMainView.bind(null, MainViews.TOP)}>{getLocale('cryptoDotComWidgetTop')}</PlainButton>
+        <PlainButton weight={500} textColor={currentView === MainViews.TRADE ? 'white' : 'light'} onClick={this.setMainView.bind(null, MainViews.TRADE)}>{getLocale('cryptoDotComWidgetTrade')}</PlainButton>
+        <PlainButton weight={500} textColor={currentView === MainViews.EVENTS ? 'white' : 'light'} onClick={this.setMainView.bind(null, MainViews.EVENTS)}>{getLocale('cryptoDotComWidgetEvents')}</PlainButton>
+        <PlainButton weight={500} textColor={currentView === MainViews.BALANCE ? 'white' : 'light'} onClick={this.setMainView.bind(null, MainViews.BALANCE)}>{getLocale('cryptoDotComWidgetBalance')}</PlainButton>
+      </BasicBox>
+    )
+  }
 
-    if (selectedAsset) {
-      return this.renderAssetDetailView()
+  renderEvents () {
+    return (
+      <List>
+        {this.props.newsEvents.map((event: chrome.cryptoDotCom.NewsEvent) => (
+          <ListItem $p={10} key={event.redirect_url}>
+            <Text $fontSize={12} textColor='light'>{convertTimeToHumanReadable(event.updated_at)}</Text>
+            <Text $fontSize={12}>{event.content}</Text>
+            <Link $fontSize={12} $mt={5} inlineBlock={true} href={event.redirect_url} target='_blank'>{event.redirect_title}</Link>
+          </ListItem>
+        ))}
+      </List>
+    )
+  }
+
+  renderCurrentView () {
+    const { currentView } = this.state
+    if (currentView === MainViews.TOP) {
+      return (
+        <TopMoversView
+          losersGainers={this.props.losersGainers}
+          handleAssetClick={this.handleAssetClick}
+        />
+      )
     }
 
-    if (optInMarkets) {
-      return this.renderTopMoversView()
+    if (currentView === MainViews.TRADE) {
+      return (
+        <TradeView
+          tickerPrices={this.props.tickerPrices}
+          losersGainers={this.props.losersGainers}
+          tradingPairs={this.props.tradingPairs}
+          handleAssetClick={this.handleAssetClick}
+        />
+      )
     }
 
-    return this.renderIndexView()
+    if (currentView === MainViews.BALANCE) {
+      return (
+        <BalanceSummaryView
+          hideBalance={this.props.hideBalance}
+          handleAssetClick={this.handleAssetClick}
+          onSetHideBalance={this.props.onSetHideBalance}
+          availableBalance={this.props.accountBalances.total_balance}
+          supportedPairs={this.props.supportedPairs}
+          holdings={this.props.accountBalances.accounts}
+        />
+      )
+    }
+
+    if (currentView === MainViews.EVENTS) {
+      return this.renderEvents()
+    }
+
+    return null
+  }
+
+  getAvailableBalanceForCurrency = (currency: string) => {
+    if (!this.props.accountBalances.accounts) {
+      return 0
+    }
+
+    const account = this.props.accountBalances.accounts.find((account: chrome.cryptoDotCom.Account) => account.currency === currency)
+    if (!account) {
+      return 0
+    }
+    return decimalizeCurrency(account.available, account.currency_decimals)
+  }
+
+  renderAssetView () {
+    const { currentAssetView, selectedBase, selectedQuote } = this.state
+    const { tickerPrices, supportedPairs, charts, losersGainers } = this.props
+
+    if (currentAssetView === AssetViews.DETAILS) {
+      return (
+        <AssetDetailView
+          currency={selectedBase}
+          tickerPrice={tickerPrices[`${selectedBase}_USDT`]}
+          pairs={supportedPairs[selectedBase] || []}
+          chartData={charts[`${selectedBase}_USDT`] || []}
+          losersGainers={losersGainers}
+          handleAssetClick={this.handleAssetClick}
+          handleBackClick={this.clearAsset}
+        />
+      )
+    }
+
+    if (currentAssetView === AssetViews.TRADE) {
+      const baseAvailable = this.getAvailableBalanceForCurrency(selectedBase)
+      const quoteAvailable = this.getAvailableBalanceForCurrency(selectedQuote)
+      const pair = this.props.tradingPairs.filter(pair => pair.base === selectedBase && pair.quote === selectedQuote)
+      return (
+        <AssetTradeView
+          tickerPrices={this.props.tickerPrices}
+          availableBalanceBase={baseAvailable}
+          availableBalanceQuote={quoteAvailable}
+          base={selectedBase}
+          quote={selectedQuote}
+          priceDecimals={pair[0] ? pair[0].price : '0'}
+          quantityDecimals={pair[0] ? pair[0].quantity : '0'}
+          handleBackClick={this.clearAsset}
+          handleAssetClick={this.handleAssetClick}
+          createCryptoDotComMarketOrder={this.props.createCryptoDotComMarketOrder}
+        />
+      )
+    }
+
+    if (currentAssetView === AssetViews.DEPOSIT) {
+      const depositAddress = this.props.depositAddresses[selectedBase]
+      return (
+        <AssetDepositView
+          assetAddress={depositAddress ? depositAddress.address : ''}
+          assetQR={depositAddress ? depositAddress.qr_code : ''}
+          base={selectedBase}
+          handleBackClick={this.clearAsset}
+        />
+      )
+    }
+
+    return null
+  }
+
+  renderIndex () {
+    const { selectedBase } = this.state
+
+    if (selectedBase) {
+      return this.renderAssetView()
+    } else {
+      return (
+        <>
+          {this.renderNav()}
+          {this.renderCurrentView()}
+        </>
+      )
+    }
+  }
+
+  renderDisconnectView = () => {
+    return (
+      <DisconnectWrapper>
+        <DisconnectTitle>
+          {getLocale('cryptoDotComWidgetDisconnectTitle')}
+        </DisconnectTitle>
+        <DisconnectCopy>
+          {getLocale('cryptoDotComWidgetDisconnectText')}
+        </DisconnectCopy>
+        <DisconnectButton onClick={this.props.disconnect}>
+          {getLocale('cryptoDotComWidgetDisconnectButton')}
+        </DisconnectButton>
+        <DismissAction onClick={this.props.cancelDisconnect}>
+          {getLocale('cryptoDotComWidgetCancelText')}
+        </DismissAction>
+      </DisconnectWrapper>
+    )
   }
 
   render () {
-    const { showContent } = this.props
-
-    if (!showContent) {
+    if (!this.props.showContent) {
       return this.renderTitleTab()
     }
 
+    const extendedTheme = {
+      ...Theme,
+      palette: {
+        ...Theme.palette,
+        primary: 'rgba(68, 176, 255, 1)',
+        secondary: 'rgba(15, 28, 45, 0.7)'
+      }
+    }
+
     return (
-      <WidgetWrapper tabIndex={0}>
-        {this.renderTitle()}
-        {this.renderSelectedView()}
-      </WidgetWrapper>
+      <ThemeProvider theme={extendedTheme}>
+        <WidgetWrapper>
+          {
+            this.props.disconnectInProgress
+            ? this.renderDisconnectView()
+            : <>
+                {this.renderTitle()}
+                {(this.props.isConnected) ? (
+                  this.renderIndex()
+                ) : (
+                  <PreOptInView
+                    optInBTCPrice={this.props.optInBTCPrice}
+                    losersGainers={this.props.losersGainers || {}}
+                    tickerPrices={this.props.tickerPrices}
+                    onBTCPriceOptedIn={this.props.onBtcPriceOptIn}
+                    getCryptoDotComClientUrl={this.props.getCryptoDotComClientUrl}
+                  />
+                )}
+              </>
+          }
+        </WidgetWrapper>
+      </ThemeProvider>
     )
   }
 }

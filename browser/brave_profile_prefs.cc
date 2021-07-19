@@ -95,7 +95,6 @@
 
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
 #include "brave/components/crypto_dot_com/browser/crypto_dot_com_pref_utils.h"
-#include "brave/components/crypto_dot_com/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_FTX)

@@ -34,7 +34,10 @@ import {
   fetchCryptoDotComTickerPrices,
   fetchCryptoDotComLosersGainers,
   fetchCryptoDotComCharts,
-  fetchCryptoDotComSupportedPairs
+  fetchCryptoDotComSupportedPairs,
+  fetchCryptoDotComAccountBalances,
+  fetchCryptoDotComDepositAddress,
+  fetchCryptoDotComNewsEvents
 } from '../../api/cryptoDotCom'
 import { generateQRData } from '../../binance-utils'
 
@@ -292,6 +295,10 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   toggleShowCryptoDotCom = () => {
+    // Disconnect when widget gets hidden.
+    if (this.props.newTabData.showCryptoDotCom) {
+      this.disconnectCryptoDotCom()
+    }
     this.props.saveShowCryptoDotCom(!this.props.newTabData.showCryptoDotCom)
   }
 
@@ -535,61 +542,6 @@ class NewTabPage extends React.Component<Props, State> {
     })
   }
 
-  onCryptoDotComMarketsRequested = async (assets: string[]) => {
-    const [tickerPrices, losersGainers] = await Promise.all([
-      fetchCryptoDotComTickerPrices(assets),
-      fetchCryptoDotComLosersGainers()
-    ])
-    this.props.actions.cryptoDotComMarketDataUpdate(tickerPrices, losersGainers)
-  }
-
-  onCryptoDotComAssetData = async (assets: string[]) => {
-    const [charts, pairs] = await Promise.all([
-      fetchCryptoDotComCharts(assets),
-      fetchCryptoDotComSupportedPairs()
-    ])
-    this.props.actions.setCryptoDotComAssetData(charts, pairs)
-  }
-
-  cryptoDotComUpdateActions = async () => {
-    const { supportedPairs, tickerPrices: prices } = this.props.newTabData.cryptoDotComState
-    const assets = Object.keys(prices)
-    const supportedPairsSet = Object.keys(supportedPairs).length
-
-    const [tickerPrices, losersGainers, charts] = await Promise.all([
-      fetchCryptoDotComTickerPrices(assets),
-      fetchCryptoDotComLosersGainers(),
-      fetchCryptoDotComCharts(assets)
-    ])
-
-    // These are rarely updated, so we only need to fetch them
-    // in the refresh interval if they aren't set yet (perhaps due to no connection)
-    if (!supportedPairsSet) {
-      const pairs = await fetchCryptoDotComSupportedPairs()
-      this.props.actions.setCryptoDotComSupportedPairs(pairs)
-    }
-
-    this.props.actions.onCryptoDotComRefreshData(tickerPrices, losersGainers, charts)
-  }
-
-  onBtcPriceOptIn = async () => {
-    this.props.actions.onBtcPriceOptIn()
-    this.props.actions.onCryptoDotComInteraction()
-    await this.onCryptoDotComMarketsRequested(['BTC'])
-  }
-
-  onCryptoDotComBuyCrypto = () => {
-    this.props.actions.onCryptoDotComBuyCrypto()
-  }
-
-  onCryptoDotComInteraction = () => {
-    this.props.actions.onCryptoDotComInteraction()
-  }
-
-  onCryptoDotComOptInMarkets = (show: boolean) => {
-    this.props.actions.onCryptoDotComOptInMarkets(show)
-  }
-
   fetchGeminiBalances = () => {
     chrome.gemini.getAccountBalances((balances: Record<string, string>, authInvalid: boolean) => {
       if (authInvalid) {
@@ -615,6 +567,55 @@ class NewTabPage extends React.Component<Props, State> {
         this.props.actions.setGeminiAssetAddress(asset, address)
         void generateQRData(address, asset, this.setGeminiAssetDepositQRCodeSrc)
       })
+    })
+  }
+
+  onCryptoDotComAssetsDetailsRequested = async (base: string, quote: string) => {
+    const [charts, tickerPrices, depositAddress] = await Promise.all([
+      fetchCryptoDotComCharts([`${base}_${quote}`]),
+      fetchCryptoDotComTickerPrices([`${base}_${quote}`]),
+      fetchCryptoDotComDepositAddress(base)
+    ])
+
+    this.props.actions.onCryptoDotComAssetsDetailsReceived(charts, tickerPrices, depositAddress)
+  }
+
+  onCryptoDotComRefreshRequested = async (init?: boolean) => {
+    const { tickerPrices: prices, tradingPairs: pairs, isConnected, optInBTCPrice } = this.props.newTabData.cryptoDotComState
+    const assets = Object.keys(prices)
+    const fetchPairs = (!pairs || pairs.length === 0)
+
+    const requests = []
+    if (isConnected) {
+      requests.push(fetchCryptoDotComTickerPrices(assets), fetchCryptoDotComLosersGainers(),
+                    fetchCryptoDotComCharts(assets), fetchCryptoDotComAccountBalances(), fetchCryptoDotComNewsEvents(), fetchCryptoDotComSupportedPairs())
+    } else if (optInBTCPrice) {
+      requests.push(fetchCryptoDotComTickerPrices(['BTC_USDT']), fetchCryptoDotComLosersGainers())
+    }
+
+    // These are rarely updated, so we only need to fetch them
+    // in the refresh interval if they aren't set yet (perhaps due to no connection)
+    if (isConnected && (fetchPairs || init)) {
+      requests.push(fetchCryptoDotComSupportedPairs())
+    }
+
+    const [tickerPrices, losersGainers, charts, accountBalances, newsEvents, tradingPairs] = await Promise.all(requests)
+
+    this.props.actions.onCryptoDotComRefreshedDataReceived(tickerPrices, losersGainers, charts, accountBalances, newsEvents, tradingPairs)
+  }
+
+  setCryptoDotComDisconnectInProgress = () => {
+    this.props.actions.setCryptoDotComDisconnectInProgress(true)
+  }
+
+  cancelCryptoDotComDisconnect = () => {
+    this.props.actions.setCryptoDotComDisconnectInProgress(false)
+  }
+
+  disconnectCryptoDotCom = () => {
+    chrome.cryptoDotCom.disconnect((success: boolean) => {
+      this.props.actions.onIsConnectedReceived(false)
+      this.props.actions.setCryptoDotComDisconnectInProgress(false)
     })
   }
 
@@ -970,6 +971,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   renderCryptoDotComWidget (showContent: boolean, position: number) {
+    const menuActions = {}
     const { newTabData } = this.props
     const { cryptoDotComState, showCryptoDotCom, textDirection, cryptoDotComSupported } = newTabData
 
@@ -977,9 +979,15 @@ class NewTabPage extends React.Component<Props, State> {
       return null
     }
 
+    if (showContent && cryptoDotComState.isConnected) {
+      menuActions['onDisconnect'] = this.setCryptoDotComDisconnectInProgress
+      menuActions['onRefreshData'] = this.onCryptoDotComRefreshRequested
+    }
+
     return (
       <CryptoDotCom
         {...cryptoDotComState}
+        {...menuActions}
         isCrypto={true}
         paddingType={'none'}
         isCryptoTab={!showContent}
@@ -992,14 +1000,18 @@ class NewTabPage extends React.Component<Props, State> {
         hideWidget={this.toggleShowCryptoDotCom}
         showContent={showContent}
         onShowContent={this.setForegroundStackWidget.bind(this, 'cryptoDotCom')}
-        onViewMarketsRequested={this.onCryptoDotComMarketsRequested}
-        onSetAssetData={this.onCryptoDotComAssetData}
-        onUpdateActions={this.cryptoDotComUpdateActions}
+        onAssetsDetailsRequested={this.onCryptoDotComAssetsDetailsRequested}
+        onUpdateActions={this.onCryptoDotComRefreshRequested}
         onDisableWidget={this.toggleShowCryptoDotCom}
-        onBtcPriceOptIn={this.onBtcPriceOptIn}
-        onBuyCrypto={this.onCryptoDotComBuyCrypto}
-        onInteraction={this.onCryptoDotComInteraction}
-        onOptInMarkets={this.onCryptoDotComOptInMarkets}
+        onBtcPriceOptIn={this.props.actions.onBtcPriceOptIn}
+        onIsConnected={this.props.actions.onIsConnectedReceived}
+        onSetHideBalance={this.props.actions.setCryptoDotComHideBalance}
+        disconnect={this.disconnectCryptoDotCom}
+        cancelDisconnect={this.cancelCryptoDotComDisconnect}
+        isCryptoDotComLoggedIn={chrome.cryptoDotCom.isLoggedIn}
+        isCryptoDotComConnected={chrome.cryptoDotCom.isConnected}
+        getCryptoDotComClientUrl={chrome.cryptoDotCom.getClientUrl}
+        createCryptoDotComMarketOrder={chrome.cryptoDotCom.createMarketOrder}
       />
     )
   }

@@ -18,13 +18,14 @@ static_library("browser") {
   deps = [
     "//base",
     "//brave/components/crypto_dot_com/common",
+    "//brave/components/resources:strings_grit",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
+    "//components/os_crypt",
     "//components/prefs",
-    "//components/user_prefs",
-    "//content/public/browser",
     "//net",
     "//services/network/public/cpp",
+    "//ui/base",
     "//url",
   ]
 }

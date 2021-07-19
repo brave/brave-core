@@ -10,6 +10,7 @@
 namespace content {
 CONTENT_EXPORT extern const char kBraveUIScheme[];
 CONTENT_EXPORT extern const char kBinanceScheme[];
+CONTENT_EXPORT extern const char kCryptoDotComScheme[];
 CONTENT_EXPORT extern const char kGeminiScheme[];
 CONTENT_EXPORT extern const char kFTXScheme[];
 }

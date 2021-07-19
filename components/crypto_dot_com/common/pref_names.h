@@ -6,8 +6,13 @@
 #ifndef BRAVE_COMPONENTS_CRYPTO_DOT_COM_COMMON_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_CRYPTO_DOT_COM_COMMON_PREF_NAMES_H_
 
-extern const char kCryptoDotComNewTabPageShowCryptoDotCom[];
-extern const char kCryptoDotComHasBoughtCrypto[];
-extern const char kCryptoDotComHasInteracted[];
+constexpr char kCryptoDotComNewTabPageShowCryptoDotCom[] =
+    "crypto_dot_com.new_tab_page.show_crypto_dot_com";
+constexpr char kCryptoDotComHasBoughtCrypto[] =
+    "crypto_dot_com.new_tab_page.has_bought_crypto";
+constexpr char kCryptoDotComHasInteracted[] =
+    "crypto_dot_com.new_tab_page.has_interacted";
+constexpr char kCryptoDotComAccessToken[] =
+    "crypto_dot_com.new_tab_page.access_token";
 
 #endif  // BRAVE_COMPONENTS_CRYPTO_DOT_COM_COMMON_PREF_NAMES_H_

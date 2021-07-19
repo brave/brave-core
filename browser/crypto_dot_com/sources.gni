@@ -10,6 +10,8 @@ brave_browser_crypto_dot_com_deps = []
 
 if (crypto_dot_com_enabled) {
   brave_browser_crypto_dot_com_sources += [
+    "//brave/browser/crypto_dot_com/crypto_dot_com_protocol_handler.cc",
+    "//brave/browser/crypto_dot_com/crypto_dot_com_protocol_handler.h",
     "//brave/browser/crypto_dot_com/crypto_dot_com_service_factory.cc",
     "//brave/browser/crypto_dot_com/crypto_dot_com_service_factory.h",
   ]
@@ -21,5 +23,7 @@ if (crypto_dot_com_enabled) {
     "//brave/components/crypto_dot_com/common",
     "//chrome/browser/profiles:profile",
     "//components/keyed_service/content",
+    "//components/user_prefs",
+    "//content/public/browser",
   ]
 }

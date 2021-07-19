@@ -7,9 +7,14 @@
 
 #include "base/strings/string_piece.h"
 #include "brave/common/url_constants.h"
+#include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "extensions/common/permissions/permissions_data.h"
 #include "extensions/common/url_pattern.h"
 #include "url/origin.h"
+
+#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
+#include "brave/components/crypto_dot_com/common/constants.h"
+#endif
 
 namespace extensions {
 
@@ -40,6 +45,15 @@ bool BraveExtensionsAPIClient::ShouldHideBrowserNetworkRequest(
   if (request.url.SchemeIs(kBinanceScheme)) {
     return true;
   }
+
+#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
+  // CryptoDotCom
+  // TODO(simonhong): Is this origin checking correct?
+  if (origin == url::Origin::Create(GURL(kCryptoDotComAuthURL)) ||
+      request.url.SchemeIs(kCryptoDotComScheme)) {
+    return true;  // protected URL
+  }
+#endif
 
   // Gemini
   URLPattern auth_pattern(URLPattern::SCHEME_HTTPS,

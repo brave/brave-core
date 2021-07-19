@@ -9,6 +9,7 @@ const char kChromeExtensionScheme[] = "chrome-extension";
 const char kBraveUIScheme[] = "brave";
 const char kMagnetScheme[] = "magnet";
 const char kBinanceScheme[] = "com.brave.binance";
+const char kCryptoDotComScheme[] = "com.brave.cryptodotcom";
 const char kGeminiScheme[] = "com.brave.gemini";
 const char kFTXScheme[] = "com.brave.ftx";
 const char kWidevineMoreInfoURL[] = "https://www.eff.org/issues/drm";
