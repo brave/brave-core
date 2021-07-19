@@ -133,6 +133,17 @@ def parse_args():
     return args
 
 
+def rustup_version(version):
+    env = os.environ.copy()
+    env['RUSTUP_HOME'] = RUSTUP_HOME
+    env['CARGO_HOME'] = RUSTUP_HOME
+    
+    rustup_bin_path = os.path.abspath(os.path.join(RUSTUP_HOME, 'bin'))
+    rustup_tool_path = os.path.join(rustup_bin_path, "rustup" if sys.platform != "win32" else "rustup.exe")
+    print(subprocess.check_call([rustup_tool_path, "toolchain", "install", version], env=env))
+    print(subprocess.check_call([rustup_tool_path, "default", version], env=env))
+    
+
 def cargo_install(tool):
     # Set environment variables for rustup
     env = os.environ.copy()
@@ -142,7 +153,7 @@ def cargo_install(tool):
     rustup_bin = os.path.abspath(os.path.join(RUSTUP_HOME, 'bin'))
     cargo_bin = os.path.join(rustup_bin, "cargo" if sys.platform != "win32" else "cargo.exe")
 
-    print(subprocess.check_call([cargo_bin, "--version"], env=env))
+    print(subprocess.check_call([cargo_bin, "--version"], env=env)) 
     # Install the tool
     cargo_args = []
     cargo_args.append(cargo_bin)
@@ -172,6 +183,8 @@ def main():
 
     if args.platform == 'android':
         make_standalone_toolchain_for_android()
+            
+    rustup_version("1.53.0")
 
     tools = [
         {
