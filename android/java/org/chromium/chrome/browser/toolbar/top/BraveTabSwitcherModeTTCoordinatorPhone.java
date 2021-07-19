@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.toolbar.top;
 
 import android.view.ViewStub;
 
+import org.chromium.base.supplier.BooleanSupplier;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 
 class BraveTabSwitcherModeTTCoordinatorPhone extends TabSwitcherModeTTCoordinatorPhone {
@@ -17,9 +18,10 @@ class BraveTabSwitcherModeTTCoordinatorPhone extends TabSwitcherModeTTCoordinato
 
     BraveTabSwitcherModeTTCoordinatorPhone(ViewStub tabSwitcherToolbarStub,
             MenuButtonCoordinator menuButtonCoordinator, boolean isGridTabSwitcherEnabled,
-            boolean isTabToGtsAnimationEnabled, boolean isStartSurfaceEnabled) {
+            boolean isTabToGtsAnimationEnabled, boolean isStartSurfaceEnabled,
+            BooleanSupplier isIncognitoModeEnabledSupplier) {
         super(tabSwitcherToolbarStub, menuButtonCoordinator, isGridTabSwitcherEnabled,
-                isTabToGtsAnimationEnabled, isStartSurfaceEnabled);
+                isTabToGtsAnimationEnabled, isStartSurfaceEnabled, isIncognitoModeEnabledSupplier);
         mBraveMenuButtonCoordinator = menuButtonCoordinator;
     }
 

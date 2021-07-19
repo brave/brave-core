@@ -6,6 +6,7 @@
 
 #include <tuple>
 
+#include "base/cxx17_backports.h"
 #include "base/macros.h"
 #include "base/stl_util.h"
 #include "base/test/test_reg_util_win.h"

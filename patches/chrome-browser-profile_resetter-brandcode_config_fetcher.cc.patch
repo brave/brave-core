@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profile_resetter/brandcode_config_fetcher.cc b/chrome/browser/profile_resetter/brandcode_config_fetcher.cc
-index 9fc57181497917f6c5ce5a559f08d65cc7e6e55a..c8731b421332986a45944de1c8fffe2edc8a54ef 100644
+index e796db904dff91244acaecaed904b88c083fd136..5f10a5779a1195cf4b61f14e8011e161251d6aa3 100644
 --- a/chrome/browser/profile_resetter/brandcode_config_fetcher.cc
 +++ b/chrome/browser/profile_resetter/brandcode_config_fetcher.cc
-@@ -57,6 +57,8 @@ BrandcodeConfigFetcher::BrandcodeConfigFetcher(
+@@ -56,6 +56,8 @@ BrandcodeConfigFetcher::BrandcodeConfigFetcher(
      const GURL& url,
      const std::string& brandcode)
      : fetch_callback_(std::move(callback)), weak_ptr_factory_(this) {

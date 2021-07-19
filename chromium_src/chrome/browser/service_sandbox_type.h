@@ -27,7 +27,19 @@ content::GetServiceSandboxType<brave::mojom::ProfileImport>() {
 #include "brave/components/ipfs/service_sandbox_type.h"
 #endif
 
-#if !defined(OS_ANDROID)  // Android will use default, which is kUtility.
+// bat_ads::mojom::BatAdsService
+namespace bat_ads {
+namespace mojom {
+class BatAdsService;
+}  // namespace mojom
+}  // namespace bat_ads
+
+template <>
+inline sandbox::policy::SandboxType
+content::GetServiceSandboxType<bat_ads::mojom::BatAdsService>() {
+  return sandbox::policy::SandboxType::kUtility;
+}
+
 namespace bat_ledger {
 namespace mojom {
 class BatLedgerService;
@@ -37,8 +49,11 @@ class BatLedgerService;
 template <>
 inline sandbox::policy::SandboxType
 content::GetServiceSandboxType<bat_ledger::mojom::BatLedgerService>() {
+#if !defined(OS_ANDROID)
   return sandbox::policy::SandboxType::kNoSandbox;
-}
+#else
+  return sandbox::policy::SandboxType::kUtility;
 #endif  // !defined(OS_ANDROID)
+}
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_SERVICE_SANDBOX_TYPE_H_

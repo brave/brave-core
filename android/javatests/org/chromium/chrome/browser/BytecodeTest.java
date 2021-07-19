@@ -19,13 +19,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.chromium.base.Callback;
+import org.chromium.base.jank_tracker.JankTracker;
+import org.chromium.base.supplier.BooleanSupplier;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
+import org.chromium.chrome.browser.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
+import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedBridge;
@@ -41,6 +45,8 @@ import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.SearchEngineLogoUtils;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.status.PageInfoIPHController;
+import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
+import org.chromium.chrome.browser.omnibox.suggestions.UrlBarDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
 import org.chromium.chrome.browser.tabmodel.ChromeTabCreator;
@@ -48,14 +54,20 @@ import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
+import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
+import org.chromium.chrome.browser.toolbar.ToolbarTabController;
+import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
+import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
+import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
 import org.chromium.chrome.browser.ui.TabObscuringHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
+import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
@@ -86,6 +98,8 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/LaunchIntentDispatcher"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/NewTabPageLayout"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/NewTabPage"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/BraveNewTabPage"));
         Assert.assertTrue(classExists(
@@ -104,6 +118,8 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/toolbar/BraveToolbarManager"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTCoordinatorPhone"));
         Assert.assertTrue(
@@ -175,6 +191,10 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/omnibox/status/StatusMediator"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/omnibox/status/BraveStatusMediator"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator"));
     }
 
     @Test
@@ -261,6 +281,16 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiFeatureUtilities",
                 "isTabGroupsAndroidEnabled", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator",
+                "isEnhancedProtectionPromoEnabled", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator",
+                "isReliabilityLoggingEnabled", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator",
+                        "isEnhancedProtectionPromoEnabled", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator",
+                        "isReliabilityLoggingEnabled", false, null));
     }
 
     @Test
@@ -284,12 +314,12 @@ public class BytecodeTest {
                 TabModelSelector.class, ToolbarManager.class, View.class, AppMenuDelegate.class,
                 OneshotSupplier.class, ObservableSupplier.class,
                 WebFeedSnackbarController.FeedLauncher.class, ModalDialogManager.class,
-                SnackbarManager.class, WebFeedBridge.class));
+                SnackbarManager.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/tabmodel/ChromeTabCreator",
                 "org/chromium/chrome/browser/tabmodel/BraveTabCreator", Activity.class,
                 WindowAndroid.class, StartupTabPreloader.class, Supplier.class, boolean.class,
                 ChromeTabCreator.OverviewNTPCreator.class, AsyncTabParamsManager.class,
-                ObservableSupplier.class, ObservableSupplier.class));
+                Supplier.class, Supplier.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/toolbar/ToolbarManager",
                 "org/chromium/chrome/browser/toolbar/BraveToolbarManager", AppCompatActivity.class,
                 BrowserControlsSizer.class, FullscreenManager.class, ToolbarControlContainer.class,
@@ -348,7 +378,32 @@ public class BytecodeTest {
                 BrowserControlsStateProvider.class, Supplier.class, SnackbarManager.class,
                 ActivityLifecycleDispatcher.class, TabModelSelector.class, boolean.class,
                 NewTabPageUma.class, boolean.class, NativePageHost.class, Tab.class, String.class,
-                BottomSheetController.class, ObservableSupplier.class, WindowAndroid.class));
+                BottomSheetController.class, Supplier.class, WindowAndroid.class,
+                JankTracker.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
+                "org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor",
+                Context.class, SuggestionHost.class, UrlBarDelegate.class, Supplier.class,
+                Supplier.class, Supplier.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
+                "org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator",
+                ToolbarControlContainer.class, ToolbarLayout.class, ToolbarDataProvider.class,
+                ToolbarTabController.class, UserEducationHelper.class, List.class,
+                OneshotSupplier.class, ThemeColorProvider.class, ThemeColorProvider.class,
+                MenuButtonCoordinator.class, MenuButtonCoordinator.class, ObservableSupplier.class,
+                ObservableSupplier.class, ObservableSupplier.class, ObservableSupplier.class,
+                ObservableSupplier.class, ObservableSupplier.class, Callback.class, Supplier.class,
+                OneshotSupplier.class, Supplier.class, BooleanSupplier.class, BooleanSupplier.class,
+                boolean.class, boolean.class, boolean.class, boolean.class, HistoryDelegate.class,
+                BooleanSupplier.class, OfflineDownloader.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
+                "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator",
+                OneshotSupplier.class, BrowserStateBrowserControlsVisibilityDelegate.class,
+                WindowAndroid.class, MenuButtonCoordinator.SetFocusFunction.class, Runnable.class,
+                boolean.class, Supplier.class, ThemeColorProvider.class, Supplier.class,
+                Runnable.class, int.class));
     }
 
     @Test
@@ -364,8 +419,6 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/ntp/NewTabPageLayout", "mSiteSectionView"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "mTileGroup"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/feed/FeedSurfaceCoordinator", "mActivity"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/feed/FeedSurfaceCoordinator", "mScrollViewForPolicy"));
         Assert.assertTrue(fieldExists(

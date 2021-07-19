@@ -1,11 +1,11 @@
 diff --git a/components/infobars/core/infobar_delegate.h b/components/infobars/core/infobar_delegate.h
-index 940b5f86c2cf5b5c216c54e2bc636fe417a395f7..2a278857466fd30e4090e9f1bb9c33944049dcaf 100644
+index 81001cc84678355004e5644bdc1bb723253488db..4d74ed657e02722911971e1fdde14713d770682a 100644
 --- a/components/infobars/core/infobar_delegate.h
 +++ b/components/infobars/core/infobar_delegate.h
-@@ -175,6 +175,7 @@ class InfoBarDelegate {
-     // Removed: WEBID_PERMISSION_INFOBAR_DELEGATE = 104,
+@@ -176,6 +176,7 @@ class InfoBarDelegate {
      AUTOFILL_OFFER_NOTIFICATION_INFOBAR_DELEGATE = 105,
      AUTOFILL_ADDRESS_PROFILE_INFOBAR_DELEGATE_IOS = 106,
+     ADD_TO_READING_LIST_IOS = 107,
 +    BRAVE_INFOBAR_DELEGATE_IDENTIFIERS
    };
  

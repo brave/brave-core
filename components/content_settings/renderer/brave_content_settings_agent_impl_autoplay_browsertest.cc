@@ -105,9 +105,8 @@ class BraveContentSettingsAgentImplAutoplayBrowserTest
 
     // Unbind the ContentSettingsAgent interface that would be registered by
     // the ContentSettingsAgentImpl created when the render frame is created.
-    view_->GetMainRenderFrame()
-        ->GetAssociatedInterfaceRegistry()
-        ->RemoveInterface(mojom::ContentSettingsAgent::Name_);
+    GetMainRenderFrame()->GetAssociatedInterfaceRegistry()->RemoveInterface(
+        mojom::ContentSettingsAgent::Name_);
   }
 };
 
@@ -125,7 +124,7 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
           content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK)),
       std::string(), false));
 
-  MockContentSettingsAgentImpl agent(view_->GetMainRenderFrame());
+  MockContentSettingsAgentImpl agent(GetMainRenderFrame());
   agent.SetContentSettingRules(&content_setting_rules);
   EXPECT_FALSE(agent.AllowAutoplay(true));
   base::RunLoop().RunUntilIdle();
@@ -158,7 +157,7 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
           content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW)),
       std::string(), false));
 
-  MockContentSettingsAgentImpl agent(view_->GetMainRenderFrame());
+  MockContentSettingsAgentImpl agent(GetMainRenderFrame());
   agent.SetContentSettingRules(&content_setting_rules);
   EXPECT_TRUE(agent.AllowAutoplay(true));
 

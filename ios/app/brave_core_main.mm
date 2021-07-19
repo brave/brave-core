@@ -27,7 +27,7 @@
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/history/web_history_service_factory.h"
-#include "ios/chrome/browser/sync/profile_sync_service_factory.h"
+#include "ios/chrome/browser/sync/sync_service_factory.h"
 #include "ios/chrome/browser/undo/bookmark_undo_service_factory.h"
 #include "ios/public/provider/chrome/browser/chrome_browser_provider.h"
 #include "ios/web/public/init/web_main.h"
@@ -189,7 +189,7 @@ static bool CustomLogHandler(int severity,
 - (BraveSyncProfileServiceIOS*)syncProfileService {
   if (!_syncProfileService) {
     syncer::SyncService* sync_service_ =
-        ProfileSyncServiceFactory::GetForBrowserState(_mainBrowserState);
+        SyncServiceFactory::GetForBrowserState(_mainBrowserState);
     _syncProfileService = [[BraveSyncProfileServiceIOS alloc]
         initWithProfileSyncService:sync_service_];
   }

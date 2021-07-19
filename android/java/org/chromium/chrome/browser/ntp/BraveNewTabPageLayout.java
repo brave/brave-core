@@ -94,7 +94,6 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.suggestions.tile.SiteSection;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup;
 import org.chromium.chrome.browser.tab.EmptyTabObserver;
 import org.chromium.chrome.browser.tab.Tab;
@@ -419,7 +418,7 @@ public class BraveNewTabPageLayout
     protected void insertSiteSectionView() {
         mainLayout = findViewById(R.id.ntp_main_layout);
 
-        mSiteSectionView = SiteSection.inflateSiteSection(mainLayout);
+        mSiteSectionView = NewTabPageLayout.inflateSiteSection(mainLayout);
         ViewGroup.LayoutParams layoutParams = mSiteSectionView.getLayoutParams();
         layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         // If the explore sites section exists as its own section, then space it more closely.

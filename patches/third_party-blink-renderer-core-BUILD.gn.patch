@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/BUILD.gn b/third_party/blink/renderer/core/BUILD.gn
-index dccd9d974b96641e51c4c7c84639b89ea73325a1..8485e2104dce46c367ecd754d1211e657820ce8b 100644
+index db1ce8e3309eb456be4c897c3588342f795f7fc4..c2d1cb9dee2850467ca8a8824d7f79267ca6e237 100644
 --- a/third_party/blink/renderer/core/BUILD.gn
 +++ b/third_party/blink/renderer/core/BUILD.gn
-@@ -174,6 +174,7 @@ component("core") {
+@@ -167,6 +167,7 @@ component("core") {
  
    visibility = []  # Allow re-assignment of list.
    visibility = [ "//third_party/blink/*" ]
@@ -10,11 +10,11 @@ index dccd9d974b96641e51c4c7c84639b89ea73325a1..8485e2104dce46c367ecd754d1211e65
  
    sources = [
      "core_initializer.cc",
-@@ -279,6 +280,7 @@ component("core") {
+@@ -274,6 +275,7 @@ component("core") {
      "//v8",
    ]
  
 +  public_deps += brave_blink_renderer_core_public_deps
    deps = [
+     ":generated_settings_macros",
      "//build:chromeos_buildflags",
-     "//components/paint_preview/common",

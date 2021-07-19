@@ -121,7 +121,8 @@ std::string CountryIDToCountryString(int country_id) {
   if (country_id == country_codes::kCountryIDUnknown)
     return std::string();
 
-  char chars[3] = {(country_id >> 8) & 0xFF, country_id & 0xFF, 0};
+  char chars[3] = {static_cast<char>(country_id >> 8),
+                   static_cast<char>(country_id), 0};
   std::string country_string(chars);
   DCHECK_EQ(country_string.size(), 2U);
   return country_string;

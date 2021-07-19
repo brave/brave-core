@@ -113,13 +113,13 @@ public class BraveMainPreferencesBase
         // Below prefs are removed from main settings.
         removePreferenceIfPresent(MainSettings.PREF_SYNC_PROMO);
         removePreferenceIfPresent(MainSettings.PREF_SIGN_IN);
-        removePreferenceIfPresent(MainSettings.PREF_ACCOUNT_SECTION);
         removePreferenceIfPresent(MainSettings.PREF_DATA_REDUCTION);
-        removePreferenceIfPresent(MainSettings.PREF_SYNC_AND_SERVICES);
         removePreferenceIfPresent(MainSettings.PREF_SEARCH_ENGINE);
         removePreferenceIfPresent(MainSettings.PREF_UI_THEME);
         removePreferenceIfPresent(MainSettings.PREF_DOWNLOADS);
         removePreferenceIfPresent(MainSettings.PREF_SAFETY_CHECK);
+        removePreferenceIfPresent(MainSettings.PREF_ACCOUNT_AND_GOOGLE_SERVICES_SECTION);
+        removePreferenceIfPresent(MainSettings.PREF_GOOGLE_SERVICES);
         removePreferenceIfPresent(PREF_LANGUAGES);
         removePreferenceIfPresent(PREF_BASICS_SECTION);
         // removePreferenceIfPresent(PREF_HOMEPAGE);

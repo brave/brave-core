@@ -5,6 +5,8 @@
 
 #include "third_party/blink/renderer/core/origin_trials/origin_trials.h"
 
+#include "base/containers/contains.h"
+
 namespace blink {
 namespace origin_trials {
 bool IsTrialValid_ChromiumImpl(const StringView& trial_name);

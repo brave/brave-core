@@ -16,9 +16,6 @@
   <message name="IDS_AVATAR_BUTTON_INCOGNITO_TOOLTIP" desc="Tooltip for the avatar button when the user is in Private mode.">
     You're Private
   </message>
-  <message name="IDS_PROFILES_OPTIONS_GROUP_NAME" desc="The name of the sync group in the options dialog when using the new Profiles UI.">
-    Profiles
-  </message>
   <if expr="is_macosx">
     <message name="IDS_PROFILES_CREATE_NEW_PROFILE_OPTION" desc="In Title Case. Create new profile menu item and button title.">
       Add Profile...
@@ -27,21 +24,9 @@
   <if expr="is_linux">
     </if>
   <if expr="not use_titlecase">
-    <message name="IDS_PROFILES_OTHER_PROFILES_TITLE" desc="Title in the profile menu of the 'other profiles' section.">
-      Other profiles
-    </message>
-    <message name="IDS_PROFILES_MANAGE_USERS_BUTTON" desc="Button in the avatar menu bubble view for launching the user manager.">
-      Manage profiles
-    </message>
-  </if>
+    </if>
   <if expr="use_titlecase">
-    <message name="IDS_PROFILES_OTHER_PROFILES_TITLE" desc="Title in the profile menu of the 'other profiles' section.">
-      Other Profiles
-    </message>
-    <message name="IDS_PROFILES_MANAGE_USERS_BUTTON" desc="Button in the avatar menu bubble view for launching the user manager.">
-      Manage Profiles
-    </message>
-  </if>
+    </if>
   <message name="IDS_NEW_NUMBERED_PROFILE_NAME" desc="The name given to a newly created profile. Displayed in wrench menu and settings UI using the --new-profile-management flag.">
     Profile <ph name="VALUE">$1<ex>1</ex></ph>
   </message>

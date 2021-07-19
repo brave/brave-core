@@ -11,6 +11,8 @@
 #include <memory>
 #include <string>
 
+#include "net/socket/transport_connect_job.h"
+
 namespace net {
 
 class NET_EXPORT_PRIVATE SOCKS5ClientSocketAuth : public SOCKS5ClientSocket {
@@ -18,7 +20,7 @@ class NET_EXPORT_PRIVATE SOCKS5ClientSocketAuth : public SOCKS5ClientSocket {
   SOCKS5ClientSocketAuth(std::unique_ptr<StreamSocket> transport_socket,
                          const HostPortPair& destination,
                          const NetworkTrafficAnnotationTag& traffic_annotation,
-                         const HostPortPair& proxy_host_port);
+                         const TransportSocketParams::Endpoint& proxy_endpoint);
   ~SOCKS5ClientSocketAuth() override;
 
  private:

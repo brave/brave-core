@@ -6,6 +6,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/cxx17_backports.h"
 #include "base/test/task_environment.h"
 #include "bat/ledger/internal/contribution/contribution_unblinded.h"
 #include "bat/ledger/internal/database/database_contribution_info.h"

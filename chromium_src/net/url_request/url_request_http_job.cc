@@ -11,7 +11,7 @@ namespace net {
 
 CookieOptions URLRequestHttpJob::CreateCookieOptions(
     CookieOptions::SameSiteCookieContext same_site_context,
-    CookieOptions::SamePartyCookieContextType same_party_context,
+    SamePartyContext same_party_context,
     const IsolationInfo& isolation_info,
     bool is_in_nontrivial_first_party_set) const {
   CookieOptions cookie_options =

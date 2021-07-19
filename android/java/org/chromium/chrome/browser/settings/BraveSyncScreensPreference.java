@@ -83,7 +83,7 @@ import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.settings.SettingsActivity;
 import org.chromium.chrome.browser.sync.BraveSyncDevices;
-import org.chromium.chrome.browser.sync.ProfileSyncService;
+import org.chromium.chrome.browser.sync.SyncService;
 import org.chromium.chrome.browser.sync.settings.BraveManageSyncSettings;
 import org.chromium.chrome.browser.sync.settings.SyncSettingsUtils;
 import org.chromium.chrome.browser.sync.settings.SyncSettingsUtils.SyncError;
@@ -105,7 +105,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         implements View.OnClickListener, SettingsActivity.OnBackPressedListener,
                    BarcodeTracker.BarcodeGraphicTrackerCallback,
                    BraveSyncDevices.DeviceInfoChangedListener,
-                   ProfileSyncService.SyncStateChangedListener {
+                   SyncService.SyncStateChangedListener {
     public static final int BIP39_WORD_COUNT = 24;
     private static final String TAG = "SYNC";
     // Permission request codes need to be < 256
@@ -199,7 +199,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ProfileSyncService.get().addSyncStateChangedListener(this);
+        SyncService.get().addSyncStateChangedListener(this);
 
         InvalidateCodephrase();
 
@@ -899,7 +899,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             mCameraSourcePreview.release();
         }
 
-        ProfileSyncService.get().removeSyncStateChangedListener(this);
+        SyncService.get().removeSyncStateChangedListener(this);
 
         if (deviceInfoObserverSet) {
             BraveSyncDevices.get().removeDeviceInfoChangedListener(this);
@@ -1043,7 +1043,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
     @Override
     public void syncStateChanged() {
-        if (ProfileSyncService.get().isFirstSetupComplete() == false) {
+        if (SyncService.get().isFirstSetupComplete() == false) {
             if (mLeaveSyncChainInProgress) {
                 leaveSyncChainComplete();
             } else {

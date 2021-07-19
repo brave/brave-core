@@ -20,8 +20,8 @@
 #include "ios/chrome/browser/sync/consent_auditor_factory.h"
 #include "ios/chrome/browser/sync/ios_user_event_service_factory.h"
 #include "ios/chrome/browser/sync/model_type_store_service_factory.h"
-#include "ios/chrome/browser/sync/profile_sync_service_factory.h"
 #include "ios/chrome/browser/sync/session_sync_service_factory.h"
+#include "ios/chrome/browser/sync/sync_service_factory.h"
 #include "ios/chrome/browser/sync/sync_setup_service_factory.h"
 #include "ios/chrome/browser/undo/bookmark_undo_service_factory.h"
 #include "ios/chrome/browser/webdata_services/web_data_service_factory.h"
@@ -50,7 +50,7 @@ void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
   IOSChromeProfileInvalidationProviderFactory::GetInstance();
   IOSUserEventServiceFactory::GetInstance();
   ModelTypeStoreServiceFactory::GetInstance();
-  ProfileSyncServiceFactory::GetInstance();
+  SyncServiceFactory::GetInstance();
   ReadingListModelFactory::GetInstance();
   SessionSyncServiceFactory::GetInstance();
   SyncSetupServiceFactory::GetInstance();

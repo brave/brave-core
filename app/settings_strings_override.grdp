@@ -68,14 +68,14 @@
   <if expr="is_win and _google_chrome">
     </if>
 
+  <if expr="chromeos or is_win">
+    </if>
   <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO" desc="Label for block third party cookies in Private radio toggle">
     Block third-party cookies in Private
   </message>
   <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO_BULLET_TWO" desc="Description for the first bullet of block third party cookies in Private radio toggle">
     While in Private, sites can't use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
   </message>
-  <if expr="chromeos or is_win">
-    </if>
   <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO" desc="The sub-label for links to manage cookies when the current cookie setting is to block third party cookies in Private.">
     Third-party cookies are blocked in Private mode
   </message>
@@ -88,9 +88,6 @@
   <if expr="chromeos">
     </if>
 
-  <message name="IDS_SETTINGS_EDIT_PERSON" desc="Title of the edit profile subpage. This is a subpage to edit the name and icon of a Brave Profile.">
-    Edit profile
-  </message>
   <if expr="not chromeos">
     </if>
 

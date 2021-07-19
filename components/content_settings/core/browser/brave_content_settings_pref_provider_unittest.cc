@@ -518,7 +518,7 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromUnknownSettings) {
         pref_service->GetDictionary(GetShieldsSettingUserPrefsPath(
             GetShieldsContentTypeName(content_type)));
     EXPECT_NE(brave_shields_dict, nullptr);
-    EXPECT_TRUE(brave_shields_dict->empty());
+    EXPECT_TRUE(brave_shields_dict->DictEmpty());
   }
 
   provider.ShutdownOnUIThread();

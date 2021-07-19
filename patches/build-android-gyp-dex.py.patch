@@ -1,0 +1,12 @@
+diff --git a/build/android/gyp/dex.py b/build/android/gyp/dex.py
+index e55ab4eccf0549864273b8b8f80aa6e17ce228a7..ddeb3fa2932292891adc0b1ed851895c8333d268 100755
+--- a/build/android/gyp/dex.py
++++ b/build/android/gyp/dex.py
+@@ -48,6 +48,7 @@ _IGNORE_WARNINGS = (
+     # Only relevant for R8 when optimizing an app that doesn't use proto.
+     r'Ignoring -shrinkunusedprotofields since the protobuf-lite runtime is',
+ )
++_IGNORE_WARNINGS += ( r'.Brave', )
+ 
+ 
+ def _ParseArgs(args):

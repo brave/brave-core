@@ -111,7 +111,7 @@ TEST_F(EthTxStateManagerUnitTest, TxOperations) {
     const base::Value* value = dict->FindKey("001");
     ASSERT_TRUE(value);
     auto meta_from_value = EthTxStateManager::ValueToTxMeta(*value);
-    ASSERT_NE(meta_from_value, base::nullopt);
+    ASSERT_NE(meta_from_value, absl::nullopt);
     EXPECT_EQ(*meta_from_value, meta);
   }
 
@@ -125,7 +125,7 @@ TEST_F(EthTxStateManagerUnitTest, TxOperations) {
     const base::Value* value = dict->FindKey("001");
     ASSERT_TRUE(value);
     auto meta_from_value = EthTxStateManager::ValueToTxMeta(*value);
-    ASSERT_NE(meta_from_value, base::nullopt);
+    ASSERT_NE(meta_from_value, absl::nullopt);
     EXPECT_EQ(meta_from_value->tx_hash, meta.tx_hash);
   }
 
@@ -195,19 +195,19 @@ TEST_F(EthTxStateManagerUnitTest, GetTransactionsByStatus) {
   EXPECT_EQ(
       tx_state_manager
           .GetTransactionsByStatus(
-              EthTxStateManager::TransactionStatus::APPROVED, base::nullopt)
+              EthTxStateManager::TransactionStatus::APPROVED, absl::nullopt)
           .size(),
       0u);
   EXPECT_EQ(
       tx_state_manager
           .GetTransactionsByStatus(
-              EthTxStateManager::TransactionStatus::CONFIRMED, base::nullopt)
+              EthTxStateManager::TransactionStatus::CONFIRMED, absl::nullopt)
           .size(),
       10u);
   EXPECT_EQ(
       tx_state_manager
           .GetTransactionsByStatus(
-              EthTxStateManager::TransactionStatus::SUBMITTED, base::nullopt)
+              EthTxStateManager::TransactionStatus::SUBMITTED, absl::nullopt)
           .size(),
       10u);
 

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/extensions/BUILD.gn b/chrome/browser/resources/extensions/BUILD.gn
-index 7cd29898576691edd42f05fbd40b53d7fc1a056a..a8d3a214868586511708b1dc366036553b7f78aa 100644
+index 4ef2212e96c9d19b341747148041c135f5fe05c1..bfca2b06e25552fb1b54e372a81f32fedac32038 100644
 --- a/chrome/browser/resources/extensions/BUILD.gn
 +++ b/chrome/browser/resources/extensions/BUILD.gn
-@@ -34,6 +34,7 @@ if (optimize_webui) {
+@@ -31,6 +31,7 @@ if (optimize_webui) {
        "../../../../ui/webui/resources:preprocess",
      ]
      excludes = [ "chrome://resources/js/cr.m.js" ]
@@ -10,9 +10,9 @@ index 7cd29898576691edd42f05fbd40b53d7fc1a056a..a8d3a214868586511708b1dc36603655
    }
  }
  
-@@ -61,6 +62,7 @@ generate_grd("build_grd") {
-       "$target_gen_dir/$preprocess_gen_manifest",
-     ]
+@@ -52,6 +53,7 @@ generate_grd("build_grd") {
+     deps = [ ":build_ts" ]
+     manifest_files = [ "$target_gen_dir/tsconfig.manifest" ]
    }
 +  deps += [ "//brave/browser/resources/extensions:resources" ]
  }

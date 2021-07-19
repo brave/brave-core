@@ -228,9 +228,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kIpfsStorageMax] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
 #endif
-  // Media Router Pref
-  (*s_brave_allowlist)[kBraveEnabledMediaRouter] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   // Push Messaging Pref

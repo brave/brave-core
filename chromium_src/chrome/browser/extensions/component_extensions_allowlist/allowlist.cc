@@ -7,7 +7,7 @@
 #include "../../../../../../chrome/browser/extensions/component_extensions_allowlist/allowlist.cc"  // NOLINT
 #undef IsComponentExtensionAllowlisted
 
-#include "base/stl_util.h"
+#include "base/cxx17_backports.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/components/brave_extension/grit/brave_extension.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"

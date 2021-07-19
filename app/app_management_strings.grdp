@@ -25,6 +25,12 @@
   <message name="IDS_APP_MANAGEMENT_PIN_TO_SHELF" desc="Label for the pin to shelf button in the app settings page.">
     Pin to shelf
   </message>
+  <message name="IDS_APP_MANAGEMENT_PRESET_WINDOW_SIZES" desc="Label for the preset window sizes toggle in the app settings page.">
+    Preset window sizes
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PRESET_WINDOW_SIZES_TEXT" desc="Label for the description of the window preset toggle in the app settings page.">
+    Use presets for phone, tablet, or resizable windows to prevent app from misbehaving
+  </message>
   <message name="IDS_APP_MANAGEMENT_PRINTING" desc="Label for the printing permission toggle.">
     Printers
   </message>
@@ -42,5 +48,20 @@
   </message>
   <message name="IDS_APP_MANAGEMENT_POLICY_APP_POLICY_STRING" desc="Tooltip label explaining that an app cannot be uninstalled as it has been installed by an adminstrator.">
     This app has been installed by your administrator.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_INTENT_SHARING" desc="Label for the intent sharing settings section.">
+    Opening supported links
+  </message>
+  <message name="IDS_APP_MANAGEMENT_INTENT_SHARING_APP_OPEN" desc="Label for the intent sharing option to open in a specified app.">
+    Open in <ph name="APP_NAME">$1<ex>Brave browser</ex></ph>
+  </message>
+  <message name="IDS_APP_MANAGEMENT_INTENT_SHARING_BROWSER_OPEN" desc="Label for the intent sharing option to open in the browser.">
+    Open in Brave browser
+  </message>
+  <message name="IDS_APP_MANAGEMENT_INTENT_SHARING_TAB_EXPLANATION" desc="Label for the intent sharing description for when the app is set to open in tab mode.">
+    <ph name="APP_NAME">$1<ex>Gmail</ex></ph> is set to open in a new browser tab, supported links will also open in the browser.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_INTENT_SHARING_TAB_LEARN_MORE" desc="Label for the learn more link for when the app is set to open in tab mode.">
+    Learn more.
   </message>
 </grit-part>

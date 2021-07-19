@@ -10,4 +10,5 @@
     <string name="app_name" translatable="false">Brave - Dev</string>
     <string name="bookmark_widget_title" translatable="false">Brave bookmarks</string>
     <string name="search_widget_title" translatable="false">Brave search</string>
+    <string name="quick_action_search_widget_title" translatable="false">Brave quick action search</string>
 </resources>

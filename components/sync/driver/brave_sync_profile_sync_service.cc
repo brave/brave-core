@@ -20,7 +20,7 @@ namespace syncer {
 BraveProfileSyncService::BraveProfileSyncService(
     InitParams init_params,
     std::unique_ptr<ProfileSyncServiceDelegate> profile_service_delegate)
-    : ProfileSyncService(std::move(init_params)),
+    : SyncServiceImpl(std::move(init_params)),
       brave_sync_prefs_(sync_client_->GetPrefService()),
       profile_service_delegate_(std::move(profile_service_delegate)),
       weak_ptr_factory_(this) {
@@ -39,7 +39,7 @@ BraveProfileSyncService::~BraveProfileSyncService() {
 }
 
 void BraveProfileSyncService::Initialize() {
-  ProfileSyncService::Initialize();
+  SyncServiceImpl::Initialize();
   if (!brave_sync_prefs_.IsSyncV1Migrated()) {
     StopImpl(CLEAR_DATA);
     brave_sync_prefs_.SetSyncV1Migrated(true);
@@ -47,7 +47,7 @@ void BraveProfileSyncService::Initialize() {
 }
 
 bool BraveProfileSyncService::IsSetupInProgress() const {
-  return ProfileSyncService::IsSetupInProgress() &&
+  return SyncServiceImpl::IsSetupInProgress() &&
          !user_settings_->IsFirstSetupComplete();
 }
 

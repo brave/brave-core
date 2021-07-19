@@ -31,8 +31,8 @@ void BraveOpaqueBrowserFrameView::OnPaint(gfx::Canvas* canvas) {
   gfx::ScopedCanvas scoped_canvas(canvas);
   gfx::Rect bounds_to_frame_graphic(bounds());
   if (!IsFrameCondensed()) {
-    bounds_to_frame_graphic.Inset(layout()->FrameBorderThickness(false),
-                                  layout()->FrameTopThickness(false));
+    bounds_to_frame_graphic.Inset(layout()->FrameBorderInsets(false).top(),
+                                  layout()->FrameEdgeInsets(false).top());
     canvas->ClipRect(bounds_to_frame_graphic);
   }
   frame_graphic_->Paint(canvas, bounds_to_frame_graphic);

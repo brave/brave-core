@@ -5,7 +5,7 @@
 
 #include "net/url_request/redirect_util.h"
 
-#include "base/stl_util.h"
+#include "base/containers/contains.h"
 #include "net/url_request/url_request_job.h"
 
 #define UpdateHttpRequest UpdateHttpRequest_ChromiumImpl

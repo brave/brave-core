@@ -69,7 +69,6 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
                        extensions::webstore_install::Result result);
 
   void OnRestartNeededChanged();
-  void OnMediaRouterEnabledChanged();
   bool IsRestartNeeded();
 
 #if BUILDFLAG(IPFS_ENABLED)

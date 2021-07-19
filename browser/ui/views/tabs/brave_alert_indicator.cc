@@ -18,6 +18,7 @@
 #include "content/public/browser/web_contents.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/skia/include/core/SkPathTypes.h"
+#include "ui/gfx/canvas.h"
 #include "ui/gfx/color_utils.h"
 #include "ui/views/background.h"
 

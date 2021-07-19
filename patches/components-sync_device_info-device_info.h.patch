@@ -1,8 +1,8 @@
 diff --git a/components/sync_device_info/device_info.h b/components/sync_device_info/device_info.h
-index 832bc5eb8f65941061b5d3efd0a59c90b8f6f295..7e9590f96a32adc8eff72b9705d149a9deafb723 100644
+index 86b78de6c664337d15523e8f71930a0f79f13f2c..e47ccd9a7fca1213fb879055c3ce77068fa656c9 100644
 --- a/components/sync_device_info/device_info.h
 +++ b/components/sync_device_info/device_info.h
-@@ -109,6 +109,7 @@ class DeviceInfo {
+@@ -113,6 +113,7 @@ class DeviceInfo {
               const absl::optional<PhoneAsASecurityKeyInfo>& paask_info,
               const std::string& fcm_registration_token,
               const ModelTypeSet& interested_data_types);

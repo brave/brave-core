@@ -147,7 +147,7 @@ void CredentialsPromotion::Claim(
 
   auto blinded_creds = ParseStringToBaseList(creds->blinded_creds);
 
-  if (!blinded_creds || blinded_creds->empty()) {
+  if (!blinded_creds || blinded_creds->GetList().empty()) {
     BLOG(0, "Blinded creds are corrupted, we will try to blind again");
     auto save_callback =
         std::bind(&CredentialsPromotion::RetryPreviousStepSaved,
@@ -375,7 +375,7 @@ void CredentialsPromotion::VerifyPublicKey(
 
   auto promotion_keys = ParseStringToBaseList(promotion->public_keys);
 
-  if (!promotion_keys || promotion_keys->empty()) {
+  if (!promotion_keys || promotion_keys->GetList().empty()) {
     BLOG(0, "Public key is missing");
     callback(type::Result::LEDGER_ERROR);
     return;

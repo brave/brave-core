@@ -72,7 +72,8 @@ BraveProfileManager::~BraveProfileManager() {
   for (Profile* profile : profiles) {
     if (brave::IsSessionProfile(profile)) {
       // passing false for `success` removes the profile from the info cache
-      OnProfileCreated(profile, false, false);
+      OnProfileCreationFinished(profile, Profile::CREATE_MODE_ASYNCHRONOUS,
+                                false, false);
     }
   }
   RemoveObserver(this);

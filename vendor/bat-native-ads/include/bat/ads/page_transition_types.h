@@ -19,7 +19,7 @@ namespace ads {
 // A type is made of a core value and a set of qualifiers. A type has one core
 // value and 0 or or more qualifiers.
 
-enum PageTransitionType : int32_t {
+enum PageTransitionType : uint32_t {
   // User got to this page by clicking a link on another page.
   kPageTransitionLink = 0,
 

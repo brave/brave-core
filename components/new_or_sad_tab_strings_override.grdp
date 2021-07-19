@@ -41,6 +41,9 @@
       <if expr="is_win or is_linux or is_macosx or chromeos">
         </if>
 
+      <message name="IDS_NEW_INCOGNITO_TAB_TITLE" desc="Title of the new private tab page, not to be confused with the action of opening a new private tab.">
+        New Private Tab
+      </message>
       <if expr="not is_android">
         <message name="IDS_NEW_TAB_OTR_HEADING" desc="Heading used when a profile opens an OTR window">
           You’ve gone Private

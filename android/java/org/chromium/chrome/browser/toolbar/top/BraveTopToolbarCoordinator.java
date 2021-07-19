@@ -13,6 +13,7 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -22,6 +23,7 @@ import org.chromium.chrome.browser.toolbar.ButtonDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
+import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.chrome.features.start_surface.StartSurface;
@@ -53,8 +55,10 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             Callback<Runnable> invalidatorCallback, Supplier<ButtonData> identityDiscButtonSupplier,
             OneshotSupplier<StartSurface> startSurfaceSupplier,
             Supplier<ResourceManager> resourceManagerSupplier, BooleanSupplier isInVrSupplier,
-            boolean isGridTabSwitcherEnabled, boolean isTabToGtsAnimationEnabled,
-            boolean isStartSurfaceEnabled, boolean isTabGroupsAndroidContinuationEnabled) {
+            BooleanSupplier isIncognitoModeEnabledSupplier, boolean isGridTabSwitcherEnabled,
+            boolean isTabToGtsAnimationEnabled, boolean isStartSurfaceEnabled,
+            boolean isTabGroupsAndroidContinuationEnabled, HistoryDelegate historyDelegate,
+            BooleanSupplier partnerHomepageEnabledSupplier, OfflineDownloader offlineDownloader) {
         super(controlContainer, toolbarLayout, toolbarDataProvider, tabController,
                 userEducationHelper, buttonDataProviders, layoutStateProviderSupplier,
                 normalThemeColorProvider, overviewThemeColorProvider,
@@ -63,8 +67,10 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 startSurfaceAsHomepageSupplier, homepageManagedByPolicySupplier,
                 identityDiscStateSupplier, invalidatorCallback, identityDiscButtonSupplier,
                 startSurfaceSupplier, resourceManagerSupplier, isInVrSupplier,
-                isGridTabSwitcherEnabled, isTabToGtsAnimationEnabled, isStartSurfaceEnabled,
-                isTabGroupsAndroidContinuationEnabled);
+                isIncognitoModeEnabledSupplier, isGridTabSwitcherEnabled,
+                isTabToGtsAnimationEnabled, isStartSurfaceEnabled,
+                isTabGroupsAndroidContinuationEnabled, historyDelegate,
+                partnerHomepageEnabledSupplier, offlineDownloader);
 
         mBraveToolbarLayout = toolbarLayout;
 
@@ -73,7 +79,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 mTabSwitcherModeCoordinatorPhone = new BraveTabSwitcherModeTTCoordinatorPhone(
                         controlContainer.getRootView().findViewById(R.id.tab_switcher_toolbar_stub),
                         overviewModeMenuButtonCoordinator, isGridTabSwitcherEnabled,
-                        isTabToGtsAnimationEnabled, isStartSurfaceEnabled);
+                        isTabToGtsAnimationEnabled, isStartSurfaceEnabled,
+                        isIncognitoModeEnabledSupplier);
             }
         }
     }

@@ -67,6 +67,7 @@
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/service_sandbox_type.h"
 #include "chrome/common/chrome_paths.h"
 #if !defined(OS_ANDROID)
 #include "chrome/browser/fullscreen.h"

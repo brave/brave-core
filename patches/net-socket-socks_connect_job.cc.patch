@@ -1,8 +1,8 @@
 diff --git a/net/socket/socks_connect_job.cc b/net/socket/socks_connect_job.cc
-index 97ee6f2f5cf196954ef98bca8e5625a3caf1dc8c..9e188e8aed081d56a6b852eff174b16fcaa9cdea 100644
+index c5824014384eafe06bfe6a887a24713b41296b8d..4f89bfa4683a2a80fb14ac1563990eca8b823c96 100644
 --- a/net/socket/socks_connect_job.cc
 +++ b/net/socket/socks_connect_job.cc
-@@ -167,9 +167,11 @@ int SOCKSConnectJob::DoSOCKSConnect() {
+@@ -179,9 +179,11 @@ int SOCKSConnectJob::DoSOCKSConnect() {
  
    // Add a SOCKS connection on top of the tcp socket.
    if (socks_params_->is_socks_v5()) {

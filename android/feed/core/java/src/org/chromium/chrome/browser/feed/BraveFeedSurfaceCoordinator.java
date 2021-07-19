@@ -21,6 +21,7 @@ import org.chromium.chrome.browser.ntp.NewTabPageLaunchOrigin;
 import org.chromium.chrome.browser.ntp.ScrollableContainerDelegate;
 import org.chromium.chrome.browser.ntp.SnapScrollHelper;
 import org.chromium.chrome.browser.ntp.snippets.SectionHeaderView;
+import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
@@ -31,8 +32,8 @@ import org.chromium.ui.UiUtils;
 import org.chromium.ui.base.WindowAndroid;
 
 public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
-    private Activity mActivity;
-    private ScrollView mScrollViewForPolicy;
+    // To delete in bytecode, members from parent class will be used instead.
+    private @Nullable ScrollView mScrollViewForPolicy;
     private View mNtpHeader;
     private FrameLayout mRootView;
 
@@ -44,11 +45,14 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             boolean isPlaceholderShownInitially, BottomSheetController bottomSheetController,
             Supplier<ShareDelegate> shareDelegateSupplier,
             @Nullable ScrollableContainerDelegate externalScrollableContainerDelegate,
-            TabModelSelector tabModelSelector, @NewTabPageLaunchOrigin int launchOrigin) {
+            TabModelSelector tabModelSelector, @NewTabPageLaunchOrigin int launchOrigin,
+            PrivacyPreferencesManagerImpl privacyPreferencesManager,
+            FeedLaunchReliabilityLoggingState launchReliabilityLoggingState) {
         super(activity, snackbarManager, windowAndroid, snapScrollHelper, ntpHeader,
                 sectionHeaderView, showDarkBackground, delegate, pageNavigationDelegate, profile,
                 isPlaceholderShownInitially, bottomSheetController, shareDelegateSupplier,
-                externalScrollableContainerDelegate, tabModelSelector, launchOrigin);
+                externalScrollableContainerDelegate, tabModelSelector, launchOrigin,
+                privacyPreferencesManager, launchReliabilityLoggingState);
     }
 
     @Override
@@ -80,6 +84,10 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
     }
 
     public boolean isEnhancedProtectionPromoEnabled() {
+        return false;
+    }
+
+    public boolean isReliabilityLoggingEnabled() {
         return false;
     }
 }

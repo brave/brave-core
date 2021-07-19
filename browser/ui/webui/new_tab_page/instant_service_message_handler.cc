@@ -54,11 +54,6 @@ void InstantServiceMessageHandler::RegisterMessages() {
       &InstantServiceMessageHandler::HandleDeleteMostVisitedTile,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-    "reorderMostVisitedTile",
-    base::BindRepeating(
-      &InstantServiceMessageHandler::HandleReorderMostVisitedTile,
-      base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
     "restoreMostVisitedDefaults",
     base::BindRepeating(
       &InstantServiceMessageHandler::HandleRestoreMostVisitedDefaults,
@@ -68,19 +63,6 @@ void InstantServiceMessageHandler::RegisterMessages() {
     base::BindRepeating(
       &InstantServiceMessageHandler::HandleUndoMostVisitedTileAction,
       base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-    "setMostVisitedSettings",
-    base::BindRepeating(
-      &InstantServiceMessageHandler::HandleSetMostVisitedSettings,
-      base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "addNewTopSite",
-      base::BindRepeating(&InstantServiceMessageHandler::HandleAddNewTopSite,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "editTopSite",
-      base::BindRepeating(&InstantServiceMessageHandler::HandleEditTopSite,
-                          base::Unretained(this)));
 }
 
 // InstantServiceObserver:
@@ -131,9 +113,7 @@ void InstantServiceMessageHandler::MostVisitedInfoChanged(
     tile_value.SetIntKey("source", static_cast<int32_t>(tile.title_source));
     tiles.Append(std::move(tile_value));
   }
-  result.SetBoolKey("custom_links_enabled", !info.use_most_visited);
   result.SetKey("tiles", std::move(tiles));
-  result.SetBoolKey("visible", info.is_visible);
   result.SetIntKey("custom_links_num", GetCustomLinksNum());
   top_site_tiles_ = std::move(result);
 
@@ -179,147 +159,21 @@ void InstantServiceMessageHandler::HandleDeleteMostVisitedTile(
   if (!args->GetString(0, &url))
     return;
 
-  GURL gurl(url);
-  if (instant_service_->IsCustomLinksEnabled()) {
-    instant_service_->DeleteCustomLink(gurl);
-  } else {
-    instant_service_->DeleteMostVisitedItem(gurl);
-    last_blacklisted_ = gurl;
-  }
-}
-
-void InstantServiceMessageHandler::HandleReorderMostVisitedTile(
-    const base::ListValue* args) {
-  AllowJavascript();
-
-  std::string url;
-  if (!args->GetString(0, &url))
-    return;
-
-  int new_pos;
-  if (!args->GetInteger(1, &new_pos))
-    return;
-
-  GURL gurl(url);
-  instant_service_->ReorderCustomLink(gurl, (uint8_t)new_pos);
+  last_blacklisted_ = GURL(url);
 }
 
 void InstantServiceMessageHandler::HandleRestoreMostVisitedDefaults(
     const base::ListValue* args) {
   AllowJavascript();
-
-  if (instant_service_->IsCustomLinksEnabled()) {
-    instant_service_->ResetCustomLinks();
-  } else {
-    instant_service_->UndoAllMostVisitedDeletions();
-  }
+  instant_service_->UndoAllMostVisitedDeletions();
 }
 
 void InstantServiceMessageHandler::HandleUndoMostVisitedTileAction(
     const base::ListValue* args) {
   AllowJavascript();
 
-  if (instant_service_->IsCustomLinksEnabled()) {
-    instant_service_->UndoCustomLinkAction();
-  } else if (last_blacklisted_.is_valid()) {
+  if (last_blacklisted_.is_valid()) {
     instant_service_->UndoMostVisitedDeletion(last_blacklisted_);
     last_blacklisted_ = GURL();
   }
-}
-
-void InstantServiceMessageHandler::HandleSetMostVisitedSettings(
-    const base::ListValue* args) {
-  AllowJavascript();
-
-  bool custom_links_enabled;
-  if (!args->GetBoolean(0, &custom_links_enabled))
-    return;
-
-  bool visible;
-  if (!args->GetBoolean(1, &visible))
-    return;
-
-  auto pair = instant_service_->GetCurrentShortcutSettings();
-  // The first of the pair is true if most-visited tiles are being used.
-  bool old_custom_links_enabled = !pair.first;
-  bool old_visible = pair.second;
-  // |ToggleMostVisitedOrCustomLinks()| always notifies observers. Since we only
-  // want to notify once, we need to call |ToggleShortcutsVisibility()| with
-  // false if we are also going to call |ToggleMostVisitedOrCustomLinks()|.
-  bool toggleCustomLinksEnabled =
-      old_custom_links_enabled != custom_links_enabled;
-  if (old_visible != visible) {
-    instant_service_->ToggleShortcutsVisibility(
-        /* do_notify= */ !toggleCustomLinksEnabled);
-  }
-  if (toggleCustomLinksEnabled) {
-    instant_service_->ToggleMostVisitedOrCustomLinks();
-  }
-}
-
-void InstantServiceMessageHandler::HandleEditTopSite(
-    const base::ListValue* args) {
-  AllowJavascript();
-
-  std::string url;
-  if (!args->GetString(0, &url))
-    return;
-  DCHECK(!url.empty());
-
-  std::string new_url;
-  if (!args->GetString(1, &new_url))
-    return;
-
-  std::string title;
-  if (!args->GetString(2, &title))
-    return;
-
-  // |new_url| can be empty if user only want to change title.
-  // Stop editing if we can't make |new_url| valid.
-  if (!new_url.empty() && !GetValidURLStringForTopSite(&new_url))
-    return;
-
-  if (title.empty())
-    title = new_url.empty() ? url : new_url;
-
-  // when user modifies current top sites, change to favorite mode.
-  auto pair = instant_service_->GetCurrentShortcutSettings();
-  const bool custom_links_enabled = !pair.first;
-  if (!custom_links_enabled) {
-    instant_service_->ToggleMostVisitedOrCustomLinks();
-
-    // When user tries to edit from frecency mode, we just try to add modified
-    // item to favorites. If modified url is already existed in favorites,
-    // nothing happened.
-    instant_service_->AddCustomLink(new_url.empty() ? GURL(url) : GURL(new_url),
-                                    title);
-  } else {
-    instant_service_->UpdateCustomLink(GURL(url), GURL(new_url), title);
-  }
-}
-
-void InstantServiceMessageHandler::HandleAddNewTopSite(
-    const base::ListValue* args) {
-  AllowJavascript();
-
-  std::string url;
-  if (!args->GetString(0, &url))
-    return;
-  DCHECK(!url.empty());
-
-  std::string title;
-  if (!args->GetString(1, &title))
-    return;
-
-  // Stop adding if we can't make |url| valid.
-  if (!GetValidURLStringForTopSite(&url))
-    return;
-
-  // when user adds new top sites, change to favorite mode.
-  auto pair = instant_service_->GetCurrentShortcutSettings();
-  const bool custom_links_enabled = !pair.first;
-  if (!custom_links_enabled)
-    instant_service_->ToggleMostVisitedOrCustomLinks();
-
-  instant_service_->AddCustomLink(GURL(url), title);
 }

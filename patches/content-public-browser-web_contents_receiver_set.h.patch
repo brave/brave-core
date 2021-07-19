@@ -1,0 +1,25 @@
+diff --git a/content/public/browser/web_contents_receiver_set.h b/content/public/browser/web_contents_receiver_set.h
+index c373078ea48ebf2886b3a42513eb795d24da159d..8cf8525f3a3b5722b39766d8400854ba78284858 100644
+--- a/content/public/browser/web_contents_receiver_set.h
++++ b/content/public/browser/web_contents_receiver_set.h
+@@ -59,6 +59,11 @@ namespace subresource_filter {
+ class ContentSubresourceFilterThrottleManager;
+ }
+ 
++class BraveDrmTabHelper;
++namespace brave_shields {
++class BraveShieldsWebContentsObserver;
++}
++
+ namespace content {
+ 
+ class ConversionHost;
+@@ -148,6 +153,8 @@ class WebContentsFrameReceiverSetPassKey {
+   friend class DisplayCutoutHostImpl;
+   friend class ScreenOrientationProvider;
+   friend class TestFrameInterfaceBinder;
++  friend class ::BraveDrmTabHelper;
++  friend class ::brave_shields::BraveShieldsWebContentsObserver;
+   FRIEND_TEST_ALL_PREFIXES(WebContentsReceiverSetBrowserTest,
+                            OverrideForTesting);
+ };

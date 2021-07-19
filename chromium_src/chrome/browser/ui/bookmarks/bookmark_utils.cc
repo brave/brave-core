@@ -35,15 +35,36 @@ bool ShouldShowAppsShortcutInBookmarkBar(Profile* profile) {
 }
 
 #if defined(TOOLKIT_VIEWS)
-ui::ImageModel GetBookmarkFolderIcon(SkColor text_color) {
-  int resource_id = color_utils::IsDark(text_color)
-                        ? IDR_BRAVE_BOOKMARK_FOLDER_CLOSED
-                        : IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WHITE;
-  gfx::ImageSkia folder = *ui::ResourceBundle::GetSharedInstance()
-                               .GetNativeImageNamed(resource_id)
-                               .ToImageSkia();
-  return ui::ImageModel::FromImageSkia(
-      gfx::ImageSkia(std::make_unique<RTLFlipSource>(folder), folder.size()));
+ui::ImageModel GetBookmarkFolderIcon(BookmarkFolderIconType icon_type,
+                                     absl::variant<int, SkColor> color) {
+  int default_id = IDR_BRAVE_BOOKMARK_FOLDER_CLOSED;
+  const auto generator = [](int default_id, BookmarkFolderIconType icon_type,
+                            absl::variant<int, SkColor> color,
+                            const ui::NativeTheme* native_theme) {
+    gfx::ImageSkia folder;
+    SkColor sk_color;
+    if (absl::holds_alternative<SkColor>(color)) {
+      sk_color = absl::get<SkColor>(color);
+    } else {
+      DCHECK(native_theme);
+      sk_color = native_theme->GetSystemColor(
+          static_cast<ui::NativeTheme::ColorId>(absl::get<int>(color)));
+    }
+
+    const int resource_id = color_utils::IsDark(sk_color)
+                                ? IDR_BRAVE_BOOKMARK_FOLDER_CLOSED
+                                : IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WHITE;
+    folder = *ui::ResourceBundle::GetSharedInstance()
+                  .GetNativeImageNamed(resource_id)
+                  .ToImageSkia();
+    return gfx::ImageSkia(std::make_unique<RTLFlipSource>(folder),
+                          folder.size());
+  };
+  const gfx::Size size =
+      ui::ResourceBundle::GetSharedInstance().GetImageNamed(default_id).Size();
+  return ui::ImageModel::FromImageGenerator(
+      base::BindRepeating(generator, default_id, icon_type, std::move(color)),
+      size);
 }
 #endif
 

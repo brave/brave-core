@@ -205,10 +205,10 @@
     Sends some cookies and searches from the address bar and search box to your default search engine
   </message>
   <message name="IDS_SETTINGS_ENABLE_LOGGING_PREF" desc="The label of the checkbox to enable/disable crash and user metrics logging. This string does not need a Brave counter-part because it will only be visible if Brave-branded.">
-    Automatic crash reporting
+    Help improve Brave's features and performance
   </message>
   <message name="IDS_SETTINGS_ENABLE_LOGGING_PREF_DESC" desc="The description of the checkbox to enable/disable crash and user metrics logging">
-    Help improve Brave by automatically sending crash reports
+    Automatically sends crash reports to Brave
   </message>
   <message name="IDS_SETTINGS_LINKDOCTOR_PREF" desc="The documentation string of the 'Use Link Doctor' preference to help with navigation errors.">
     Show suggestions for similar pages when a page can't be found

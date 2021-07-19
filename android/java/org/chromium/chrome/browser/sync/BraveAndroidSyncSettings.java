@@ -7,7 +7,7 @@ package org.chromium.chrome.browser.sync;
 
 import android.accounts.Account;
 
-import org.chromium.chrome.browser.sync.ProfileSyncService;
+import org.chromium.chrome.browser.sync.SyncService;
 
 // see org.brave.bytecode.BraveAndroidSyncSettingsAdapter
 public class BraveAndroidSyncSettings extends AndroidSyncSettings {
@@ -26,7 +26,7 @@ public class BraveAndroidSyncSettings extends AndroidSyncSettings {
     // so pretend sync for Brave "account" is always on when sync is configured
     @Override
     public boolean isChromeSyncEnabled() {
-        ProfileSyncService profileSyncService = ProfileSyncService.get();
+        SyncService profileSyncService = SyncService.get();
         return profileSyncService != null && profileSyncService.isFirstSetupComplete();
     }
 }

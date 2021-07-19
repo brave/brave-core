@@ -16,13 +16,6 @@ brave_blink_sub_modules = [
 ]
 
 # common includes which can help minimize patches for
-# src/third_party/blink/renderer/modules/modules_idl_files.gni
-brave_idl_imports = [
-  "//brave/third_party/blink/renderer/modules/brave/idls.gni",
-  "//brave/third_party/blink/renderer/modules/global_privacy_control/idls.gni",
-]
-
-# common includes which can help minimize patches for
 # third_party/blink/renderer/bindings/idl_in_modules.gni
 brave_static_idl_files_in_modules = [
   "//brave/third_party/blink/renderer/modules/brave/brave.idl",

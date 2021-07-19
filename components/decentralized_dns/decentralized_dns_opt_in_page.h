@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/values.h"
 #include "components/security_interstitials/content/security_interstitial_page.h"
 
 namespace content {
@@ -48,8 +49,7 @@ class DecentralizedDnsOptInPage
 
  protected:
   // SecurityInterstitialPage::
-  void PopulateInterstitialStrings(
-      base::DictionaryValue* load_time_data) override;
+  void PopulateInterstitialStrings(base::Value* load_time_data) override;
   int GetHTMLTemplateId() override;
 
  private:

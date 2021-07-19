@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/upgrade_detector/upgrade_detector_impl.cc b/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
-index 00ff379a6244f6f5379268f69103f1219eba4d09..2cb181a8cca503ab370286f721eab31c6113c521 100644
+index 2e9c2ad3e29ed620299dadb9cd56f37ac4cfe245..45a3f00be129b9513a5152f6d0dfa2aa0834aece 100644
 --- a/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
 +++ b/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
-@@ -457,7 +457,7 @@ void UpgradeDetectorImpl::Init() {
+@@ -488,7 +488,7 @@ void UpgradeDetectorImpl::Init() {
    // On Windows, only enable upgrade notifications for Google Chrome builds.
    // Chromium does not use an auto-updater.
  #if !defined(OS_WIN) || BUILDFLAG(GOOGLE_CHROME_BRANDING) || \

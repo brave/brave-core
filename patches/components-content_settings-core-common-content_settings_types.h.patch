@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index 47d6effe7e33e71bbe640943d2122133ede12a56..41b691217961c7d225e22dbecf1ba15e6beb700c 100644
+index 4bb4ad71cc1b3e4776266dce41ed6e67e6d1ca5b..8f7b7f52f7286e0ca6088d11540cc449e75e68ca 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -261,6 +261,7 @@ enum class ContentSettingsType : int32_t {
-   // associated with the relying party's origin.
-   FEDERATED_IDENTITY_REQUEST,
+@@ -264,6 +264,7 @@ enum class ContentSettingsType : int32_t {
+   // Whether to use the v8 optimized JIT for running JavaScript on the page.
+   JAVASCRIPT_JIT,
  
 +  BRAVE_CONTENT_SETTINGS_TYPES_LIST,
    NUM_TYPES,

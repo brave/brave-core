@@ -12,7 +12,7 @@ SidebarButtonView::SidebarButtonView(Delegate* delegate) : delegate_(delegate) {
   SetImageHorizontalAlignment(views::ImageButton::ALIGN_CENTER);
   SetImageVerticalAlignment(views::ImageButton::ALIGN_MIDDLE);
   DCHECK(GetInstallFocusRingOnFocus());
-  focus_ring()->SetColor(gfx::kBraveBlurple300);
+  views::FocusRing::Get(this)->SetColor(gfx::kBraveBlurple300);
 }
 
 SidebarButtonView::~SidebarButtonView() = default;

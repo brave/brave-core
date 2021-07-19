@@ -8,7 +8,7 @@
 #include "chrome/browser/federated_learning/floc_remote_permission_service_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/privacy_sandbox/privacy_sandbox_settings_factory.h"
-#include "chrome/browser/sync/profile_sync_service_factory.h"
+#include "chrome/browser/sync/sync_service_factory.h"
 #include "chrome/browser/sync/user_event_service_factory.h"
 
 #define BuildServiceInstanceFor BuildServiceInstanceFor_ChromiumImpl

@@ -52,12 +52,10 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
             ObservableSupplier<BookmarkBridge> bookmarkBridgeSupplier,
             WebFeedSnackbarController.FeedLauncher feedLauncher,
-            ModalDialogManager modalDialogManager, SnackbarManager snackbarManager,
-            WebFeedBridge webFeedBridge) {
+            ModalDialogManager modalDialogManager, SnackbarManager snackbarManager) {
         super(context, activityTabProvider, multiWindowModeStateDispatcher, tabModelSelector,
                 toolbarManager, decorView, appMenuDelegate, overviewModeBehaviorSupplier,
-                bookmarkBridgeSupplier, feedLauncher, modalDialogManager, snackbarManager,
-                webFeedBridge);
+                bookmarkBridgeSupplier, feedLauncher, modalDialogManager, snackbarManager);
 
         mAppMenuDelegate = appMenuDelegate;
     }

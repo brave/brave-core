@@ -37,8 +37,7 @@ bool RemoveElementFromList(base::Value* root,
   base::ListValue* list = nullptr;
   if (!root->GetAsList(&list) || !list)
     return false;
-  size_t removed_index = 0;
-  return list->Remove(item_to_remove, &removed_index);
+  return list->EraseListValue(item_to_remove);
 }
 
 bool RemoveValueFromList(base::Value* root,

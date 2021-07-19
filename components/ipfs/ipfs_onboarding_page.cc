@@ -203,53 +203,53 @@ void IPFSOnboardingPage::CommandReceived(const std::string& command) {
 }
 
 void IPFSOnboardingPage::PopulateInterstitialStrings(
-    base::DictionaryValue* load_time_data) {
-  load_time_data->SetString(
+    base::Value* load_time_data) {
+  load_time_data->SetStringKey(
       "tabTitle", l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_TITLE));
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "heading", l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_HEADING));
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "primaryParagraph",
       l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_PRIMARY_PARAGRAPH));
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "localNodeButton",
       l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_LOCAL_NODE_BUTTON));
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "publicGatewayButton",
       l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_PUBLIC_GATEWAY_BUTTON));
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "learnMore", l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_LEARN_MORE));
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "localNodeText",
       l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_LOCAL_NODE_TEXT));
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "publicGatewayText",
       l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_PUBLIC_GATEWAY_TEXT));
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "footerText", l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_FOOTER_TEXT));
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "settings", l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_SETTINGS));
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "retryText", l10n_util::GetStringUTF16(IDS_IPFS_SERVICE_LAUNCH_RETRY));
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "installationText",
       l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_INSTALLATION_STATUS));
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "watingPeersText",
       l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_WAITING_PEERS_STATUS));
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "retryLimitPeersText",
       l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_PEERS_LIMIT_ERROR));
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "tryAgainText", l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_TRY_AGAIN));
 
 #if !defined(OS_ANDROID)
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "braveTheme", GetThemeType(ui::NativeTheme::GetInstanceForNativeUi()));
-  load_time_data->SetString("os", "");
+  load_time_data->SetStringKey("os", "");
 #else
-  load_time_data->SetString("braveTheme", "light");
-  load_time_data->SetString("os", "Android");
+  load_time_data->SetStringKey("braveTheme", "light");
+  load_time_data->SetStringKey("os", "Android");
 #endif
 }
 

@@ -22,7 +22,7 @@ BraveTabStripModel::BraveTabStripModel(TabStripModelDelegate* delegate,
     : TabStripModel(delegate, profile) {}
 BraveTabStripModel::~BraveTabStripModel() {}
 
-void BraveTabStripModel::SelectRelativeTab(bool forward,
+void BraveTabStripModel::SelectRelativeTab(TabRelativeDirection direction,
                                            UserGestureDetails detail) {
   if (contents_data_.empty())
     return;
@@ -30,13 +30,14 @@ void BraveTabStripModel::SelectRelativeTab(bool forward,
   bool is_mru_enabled = profile()->GetPrefs()->GetBoolean(kMRUCyclingEnabled);
 
   if (is_mru_enabled) {
-    SelectMRUTab(forward, detail);
+    SelectMRUTab(direction, detail);
   } else {
-    TabStripModel::SelectRelativeTab(forward, detail);
+    TabStripModel::SelectRelativeTab(direction, detail);
   }
 }
 
-void BraveTabStripModel::SelectMRUTab(bool forward, UserGestureDetails detail) {
+void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
+                                      UserGestureDetails detail) {
   if (mru_cycle_list_.empty()) {
     // Start cycling
 
@@ -59,13 +60,11 @@ void BraveTabStripModel::SelectMRUTab(bool forward, UserGestureDetails detail) {
     static_cast<BraveBrowserWindow*>(browser->window())->StartTabCycling();
   }
 
-  if (forward) {
-    std::rotate(mru_cycle_list_.begin(),
-                mru_cycle_list_.begin() + 1,
+  if (direction == TabRelativeDirection::kNext) {
+    std::rotate(mru_cycle_list_.begin(), mru_cycle_list_.begin() + 1,
                 mru_cycle_list_.end());
   } else {
-    std::rotate(mru_cycle_list_.rbegin(),
-                mru_cycle_list_.rbegin() + 1,
+    std::rotate(mru_cycle_list_.rbegin(), mru_cycle_list_.rbegin() + 1,
                 mru_cycle_list_.rend());
   }
 

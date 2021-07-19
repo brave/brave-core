@@ -5,8 +5,8 @@
 
 #include <stddef.h>
 
+#include "base/cxx17_backports.h"
 #include "base/macros.h"
-#include "base/stl_util.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/resources_util.h"

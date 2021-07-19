@@ -11,6 +11,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/background.h"

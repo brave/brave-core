@@ -45,8 +45,8 @@ TEST(TorControlTest, ParseQuoted) {
       {"\"unix:/a\\\"b/c\"", "unix:/a\"b/c", 14},
       {"\"unix:/a\\'b/c\"", "unix:/a'b/c", 14},
       {"\"unix:/a b/c\" \"127.0.0.1:9050\"", "unix:/a b/c", 13},
-      {"\"unix:/a b/c", nullptr, -1},
-      {"\"unix:/a\\fb/c\"", nullptr, -1},
+      {"\"unix:/a b/c", nullptr, static_cast<size_t>(-1)},
+      {"\"unix:/a\\fb/c\"", nullptr, static_cast<size_t>(-1)},
   };
   size_t i;
 
@@ -77,7 +77,7 @@ TEST(TorControlTest, ParseKV) {
       {"foo=\"bar\\\"baz\"", "foo", "bar\"baz", 14},
       {"foo=\"bar\\\"baz\" quux=\"zot\"", "foo", "bar\"baz", 15},
       {"foo=barbaz quux=zot", "foo", "barbaz", 11},
-      {"foo=\"bar", nullptr, nullptr, -1},
+      {"foo=\"bar", nullptr, nullptr, static_cast<size_t>(-1)},
   };
   size_t i;
 

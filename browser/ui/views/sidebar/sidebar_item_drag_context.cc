@@ -38,6 +38,6 @@ bool SidebarItemDragContext::CanStartDrag(const gfx::Point press_pt,
   constexpr int kMinimumDragDistance = 10;
   int x_offset = abs(p.x() - press_pt.x());
   int y_offset = abs(p.y() - press_pt.y());
-  return sqrt(pow(float{x_offset}, 2) + pow(float{y_offset}, 2)) >
-         kMinimumDragDistance;
+  return sqrt(pow(static_cast<float>(x_offset), 2) +
+              pow(static_cast<float>(y_offset), 2)) > kMinimumDragDistance;
 }

@@ -1,5 +1,5 @@
 diff --git a/content/browser/browser_main_runner_impl.cc b/content/browser/browser_main_runner_impl.cc
-index fde9208b8c03d32cd03b3116dde10d36d3ba2f89..3e0347dc9d01628cd34e597ffb0c85b21027d9ee 100644
+index 4edb50243ad1cda95e15fd13be0f47ea182a364f..a5e224ff74420d1b71415ea1248237f38cf0ca91 100644
 --- a/content/browser/browser_main_runner_impl.cc
 +++ b/content/browser/browser_main_runner_impl.cc
 @@ -18,6 +18,7 @@

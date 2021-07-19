@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/base64url.h"
+#include "base/cxx17_backports.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 #include "brave/common/brave_paths.h"
