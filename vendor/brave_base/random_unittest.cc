@@ -102,40 +102,65 @@ TEST_F(BraveRandomDeterministicTest, StdExponential) {
 
 TEST_F(BraveRandomDeterministicTest, Exponential) {
   using brave_base::random::deterministic::Exponential;
+  using brave_base::random::deterministic::ExponentialDelay;
+  static const struct {
+    double v;
+    uint64_t s;
+    double p0;
+    double rate;
+  } C[] = {
+    // Check a rate below 1, i.e. a scale above 1.
+    //
+    // (-2*log(smallest subnormal) turns out to be about 1488.  Sorry!
+    // No Nazi numerology intended here.)
+    { HUGE_VAL,  0, 4.9406564584124654e-324, 0.5 },
+    { 1488.8801438427624,  0, 9.8813129168249309e-324, 0.5 },
+    { 6*M_LN2,  0, 0.25, 0.5 },
+    { 4*M_LN2,  0, 0.5, 0.5 },
+    { 2*M_LN2,  0, 1, 0.5 },
+    { 2*M_LN2,  1, 1, 0.5 },
+    { -2*log(0.75),  1, 0.5, 0.5 },
+    { -2*log(0.875),  1, 0.25, 0.5 },
+    { 9.8813129168249309e-324,  1, 9.8813129168249309e-324, 0.5 },
+    { 0,  1, 4.9406564584124654e-324, 0.5 },
 
-  // Check a rate below 1, i.e. a scale above 1.
-  //
-  // (-2*log(smallest subnormal) turns out to be about 1488.  Sorry!
-  // No Nazi numerology intended here.)
-  EXPECT_DOUBLE_EQ(HUGE_VAL, Exponential(0, 4.9406564584124654e-324, 0.5));
-  EXPECT_DOUBLE_EQ(1488.8801438427624,
-                   Exponential(0, 9.8813129168249309e-324, 0.5));
-  EXPECT_DOUBLE_EQ(6*M_LN2, Exponential(0, 0.25, 0.5));
-  EXPECT_DOUBLE_EQ(4*M_LN2, Exponential(0, 0.5, 0.5));
-  EXPECT_DOUBLE_EQ(2*M_LN2, Exponential(0, 1, 0.5));
-  EXPECT_DOUBLE_EQ(2*M_LN2, Exponential(1, 1, 0.5));
-  EXPECT_DOUBLE_EQ(-2*log(0.75), Exponential(1, 0.5, 0.5));
-  EXPECT_DOUBLE_EQ(-2*log(0.875), Exponential(1, 0.25, 0.5));
-  EXPECT_DOUBLE_EQ(9.8813129168249309e-324,
-                   Exponential(1, 9.8813129168249309e-324, 0.5));
-  EXPECT_DOUBLE_EQ(0, Exponential(1, 4.9406564584124654e-324, 0.5));
+    // Check a rate above 1, i.e. a scale below 1.
+    { HUGE_VAL,  0, 4.9406564584124654e-324, 2 },
+    { 372.2200359606906,  0, 9.8813129168249309e-324, 2 },
+    { 1.5*M_LN2,  0, 0.25, 2 },
+    { M_LN2,  0, 0.5, 2 },
+    { 0.5*M_LN2,  0, 1, 2 },
+    { 0.5*M_LN2,  1, 1, 2 },
+    { -0.5*log(0.75),  1, 0.5, 2 },
+    { -0.5*log(0.875),  1, 0.25, 2 },
+    { 9.8813129168249309e-324,  1, 1.9762625833649862e-323, 2 },
+    { 9.8813129168249309e-324,  1, 1.4821969375237396e-323, 2 },
+    { 0,  1, 9.8813129168249309e-324, 2 },
+    { 0,  1, 4.9406564584124654e-324, 2 },
+  };
+  size_t i;
 
-  // Check a rate above 1, i.e. a scale below 1.
-  EXPECT_DOUBLE_EQ(HUGE_VAL, Exponential(0, 4.9406564584124654e-324, 2));
-  EXPECT_DOUBLE_EQ(372.2200359606906,
-                   Exponential(0, 9.8813129168249309e-324, 2));
-  EXPECT_DOUBLE_EQ(1.5*M_LN2, Exponential(0, 0.25, 2));
-  EXPECT_DOUBLE_EQ(M_LN2, Exponential(0, 0.5, 2));
-  EXPECT_DOUBLE_EQ(0.5*M_LN2, Exponential(0, 1, 2));
-  EXPECT_DOUBLE_EQ(0.5*M_LN2, Exponential(1, 1, 2));
-  EXPECT_DOUBLE_EQ(-0.5*log(0.75), Exponential(1, 0.5, 2));
-  EXPECT_DOUBLE_EQ(-0.5*log(0.875), Exponential(1, 0.25, 2));
-  EXPECT_DOUBLE_EQ(9.8813129168249309e-324,
-                   Exponential(1, 1.9762625833649862e-323, 2));
-  EXPECT_DOUBLE_EQ(9.8813129168249309e-324,
-                   Exponential(1, 1.4821969375237396e-323, 2));
-  EXPECT_DOUBLE_EQ(0, Exponential(1, 9.8813129168249309e-324, 2));
-  EXPECT_DOUBLE_EQ(0, Exponential(1, 4.9406564584124654e-324, 2));
+  for (i = 0; i < sizeof(C)/sizeof(C[0]); i++) {
+    // The Exponential numbers are computed exactly.
+    EXPECT_DOUBLE_EQ(C[i].v, Exponential(C[i].s, C[i].p0, C[i].rate));
+
+    // Confirm that the relative error is quite small in order to
+    // verify ExponentialDelay has the right parametrization, without
+    // making assumptions about the internal precision of
+    // base::TimeDelta as long as it's finer than milliseconds.
+    if (isinf(C[i].v) || std::abs(C[i].v) < 1e-6)
+      continue;
+    const auto avg_delay = base::TimeDelta::FromSecondsD(1 / C[i].rate);
+    double expected = C[i].v;
+    double actual = ExponentialDelay(C[i].s, C[i].p0, avg_delay).InSecondsF();
+    double relerr = expected == 0
+      ? std::abs(actual)
+      : std::abs((expected - actual)/expected);
+    EXPECT_LT(relerr, 1e-3)
+      << "case " << i
+      << " expected " << expected
+      << " actual " << actual;
+  }
 }
 
 TEST_F(BraveRandomDeterministicTest, Geometric) {
