@@ -71,6 +71,7 @@ program
   .option('-C <build_dir>', 'build config (out/Debug, out/Release')
   .option('--target_os <target_os>', 'target OS')
   .option('--target_arch <target_arch>', 'target architecture')
+  .option('--build_target <target>', 'build target name', 'brave')
   .option('--target_android_base <target_android_base>', 'target Android SDK level for apk or aab  (classic, modern, mono)', 'classic')
   .option('--target_android_output_format <target_android_output_format>', 'target Android output format (apk, aab)')
   .option('--android_override_version_name <android_override_version_name>', 'Android version number')
