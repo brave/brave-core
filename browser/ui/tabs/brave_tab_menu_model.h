@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_TABS_BRAVE_TAB_MENU_MODEL_H_
 #define BRAVE_BROWSER_UI_TABS_BRAVE_TAB_MENU_MODEL_H_
 
+#include <vector>
+
 #include "chrome/browser/ui/tabs/tab_menu_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 
@@ -23,6 +25,7 @@ class BraveTabMenuModel : public TabMenuModel {
     CommandStart = TabStripModel::CommandLast,
     CommandRestoreTab,
     CommandBookmarkAllTabs,
+    CommandMuteTab,
     CommandLast,
   };
 
@@ -31,8 +34,11 @@ class BraveTabMenuModel : public TabMenuModel {
                     int index);
   ~BraveTabMenuModel() override;
 
+  bool AreAllTabsMuted(const TabStripModel& tab_strip_model,
+                       const std::vector<int>& indices) const;
+
  private:
-  void Build();
+  void Build(TabStripModel* tab_strip_model, int index);
   int GetRestoreTabCommandStringId() const;
 
   content::WebContents* web_contents_;

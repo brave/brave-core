@@ -54,6 +54,7 @@ class BraveTabContextMenuContents : public ui::SimpleMenuModel::Delegate {
   Browser* browser_;
   sessions::TabRestoreService* restore_service_ = nullptr;
   BraveBrowserTabStripController* controller_;
+  int index_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveTabContextMenuContents);
 };
