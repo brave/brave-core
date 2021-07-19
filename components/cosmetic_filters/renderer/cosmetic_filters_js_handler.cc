@@ -270,9 +270,17 @@ bool CosmeticFiltersJSHandler::EnsureConnected() {
   if (!cosmetic_filters_resources_.is_bound()) {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
         cosmetic_filters_resources_.BindNewPipeAndPassReceiver());
+    cosmetic_filters_resources_.set_disconnect_handler(
+        base::BindOnce(&CosmeticFiltersJSHandler::OnRemoteDisconnect,
+                       weak_ptr_factory_.GetWeakPtr()));
   }
 
   return cosmetic_filters_resources_.is_bound();
+}
+
+void CosmeticFiltersJSHandler::OnRemoteDisconnect() {
+  cosmetic_filters_resources_.reset();
+  EnsureConnected();
 }
 
 void CosmeticFiltersJSHandler::ProcessURL(const GURL& url,
