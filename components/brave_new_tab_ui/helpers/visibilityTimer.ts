@@ -25,7 +25,7 @@ export default class VisibilityTimer {
         this.isIntersecting = entries.some(entry => entry.isIntersecting)
         this.handleVisibility()
       }, {
-        threshold: 1.0
+        threshold: 0.5
       })
     }
   }
