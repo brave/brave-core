@@ -9,6 +9,10 @@
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"
 
+#include "third_party/cld_3/src/src/nnet_language_identifier.h"
+#include "brave/components/l10n/browser/locale_helper.h"
+#include "brave/components/l10n/common/locale_util.h"
+
 namespace ads {
 namespace ad_targeting {
 namespace processor {
@@ -31,6 +35,14 @@ std::string GetTopSegmentFromPageProbabilities(
   return iter->first;
 }
 
+chrome_lang_id::NNetLanguageIdentifier::Result DetectPageLanguage(const std::string& text) {
+  chrome_lang_id::NNetLanguageIdentifier language_detector;
+  const chrome_lang_id::NNetLanguageIdentifier::Result lang_id_result =
+      language_detector.FindTopNMostFreqLangs(text, /* num_langs */1).at(0);
+
+  return lang_id_result;
+}
+
 }  // namespace
 
 TextClassification::TextClassification(resource::TextClassification* resource)
@@ -45,6 +57,19 @@ void TextClassification::Process(const std::string& text) {
     BLOG(1,
          "Failed to process text classification as resource "
          "not initialized");
+    return;
+  }
+
+  const chrome_lang_id::NNetLanguageIdentifier::Result language_id = DetectPageLanguage(text);
+
+  const std::string locale = brave_l10n::LocaleHelper::GetInstance()->GetLocale();
+  const std::string locale_language = brave_l10n::GetLanguageCode(locale);
+
+  if (!language_id.is_reliable || locale_language != language_id.language) {
+    BLOG(1,
+         "Text not classified as locale language (" << locale_language
+         << ") does not match the language of the visited "
+         "webpage (" << language_id.language << ")");
     return;
   }
 
