@@ -20,7 +20,10 @@
 
 namespace brave_rewards {
 
-std::unique_ptr<Profile> CreateBraveRewardsProfile(const base::FilePath& path) {
+const char kCountryIDAtInstall[] = "countryid_at_install";
+
+std::unique_ptr<Profile> CreateBraveRewardsProfile(const base::FilePath& path,
+                                                   const int country_id) {
   // Bitmap fetcher service needed for rewards service
   BitmapFetcherServiceFactory::GetInstance();
   RewardsServiceFactory::GetInstance();
@@ -30,6 +33,7 @@ std::unique_ptr<Profile> CreateBraveRewardsProfile(const base::FilePath& path) {
       factory.CreateSyncable(registry.get()));
   RegisterUserProfilePrefs(registry.get());
   RewardsService::RegisterProfilePrefs(registry.get());
+  prefs->SetInteger(kCountryIDAtInstall, country_id);
   TestingProfile::Builder profile_builder;
   profile_builder.SetPrefService(std::move(prefs));
   profile_builder.SetPath(path);

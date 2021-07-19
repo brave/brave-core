@@ -38,7 +38,7 @@ class RewardsServiceJPTest : public testing::Test {
  protected:
   void SetUp() override {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    profile_ = CreateBraveRewardsProfile(temp_dir_.GetPath());
+    profile_ = CreateBraveRewardsProfile(temp_dir_.GetPath(), 'J' << 8 | 'P');
     ASSERT_TRUE(profile_.get() != NULL);
 #if BUILDFLAG(ENABLE_GREASELION)
     auto* rewards_ = new RewardsServiceImpl(profile(), nullptr);
@@ -48,7 +48,6 @@ class RewardsServiceJPTest : public testing::Test {
     RewardsServiceFactory::SetServiceForTesting(std::move(rewards_));
     rewards_service_ = static_cast<RewardsServiceImpl*>(
         RewardsServiceFactory::GetForProfile(profile()));
-    rewards_service_->HandleFlags("countryid=19024");
     ASSERT_TRUE(RewardsServiceFactory::GetInstance() != NULL);
     ASSERT_TRUE(rewards_service() != NULL);
   }
