@@ -1,3 +1,5 @@
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
 if (!is_android) {
   source_set("browser_tests") {
     testonly = true
@@ -14,6 +16,7 @@ if (!is_android) {
     deps = [
       "//brave/browser",
       "//brave/browser/ephemeral_storage",
+      "//brave/components/brave_wallet/common/buildflags",
       "//chrome/browser",
       "//chrome/browser/ui",
       "//chrome/test:test_support",
@@ -21,6 +24,16 @@ if (!is_android) {
       "//components/permissions",
       "//content/test:test_support",
     ]
+
+    if (brave_wallet_enabled) {
+      sources += [ "permission_manager_browsertest.cc" ]
+
+      deps += [
+        "//brave/browser/brave_wallet",
+        "//brave/components/brave_wallet/browser",
+        "//brave/components/brave_wallet/common",
+      ]
+    }
   }
 }
 

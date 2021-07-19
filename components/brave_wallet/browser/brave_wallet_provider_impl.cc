@@ -51,11 +51,17 @@ void BraveWalletProviderImpl::OnResponse(
   std::move(callback).Run(http_code, response);
 }
 
-void BraveWalletProviderImpl::Enable() {
+void BraveWalletProviderImpl::Enable(EnableCallback callback) {
   if (!delegate_)
     return;
 
-  delegate_->ShowConnectToSiteUI();
+  delegate_->RequestEthereumPermissions(
+      base::BindOnce(&BraveWalletProviderImpl::OnEnable,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void BraveWalletProviderImpl::OnEnable(EnableCallback callback, bool success) {
+  std::move(callback).Run(success);
 }
 
 void BraveWalletProviderImpl::GetChainId(GetChainIdCallback callback) {

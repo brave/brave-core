@@ -7,8 +7,14 @@
 
 #include "brave/browser/geolocation/brave_geolocation_permission_context_delegate.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/permissions/brave_permission_manager.h"
 #include "brave/components/permissions/permission_lifetime_manager.h"
 #include "components/permissions/features.h"
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
+#endif
 
 #define GeolocationPermissionContextDelegate \
   BraveGeolocationPermissionContextDelegate
@@ -24,6 +30,12 @@ KeyedService* PermissionManagerFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   Profile* profile = Profile::FromBrowserContext(context);
   auto permission_contexts = CreatePermissionContexts(profile);
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  permission_contexts[ContentSettingsType::BRAVE_ETHEREUM] =
+      std::make_unique<permissions::BraveEthereumPermissionContext>(profile);
+#endif
+
   if (base::FeatureList::IsEnabled(
           permissions::features::kPermissionLifetime)) {
     auto factory =
@@ -32,6 +44,7 @@ KeyedService* PermissionManagerFactory::BuildServiceInstanceFor(
       permission_context.second->SetPermissionLifetimeManagerFactory(factory);
     }
   }
-  return new permissions::PermissionManager(profile,
-                                            std::move(permission_contexts));
+
+  return new permissions::BravePermissionManager(
+      profile, std::move(permission_contexts));
 }

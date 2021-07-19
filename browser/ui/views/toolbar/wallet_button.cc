@@ -5,16 +5,23 @@
 
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 
+#include <string>
 #include <utility>
+#include <vector>
 
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/ui/brave_view_ids.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/permissions/permission_request.h"
 #include "components/prefs/pref_service.h"
+#include "components/sessions/content/session_tab_helper.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/paint_vector_icon.h"
@@ -47,7 +54,9 @@ WalletButton::WalletButton(View* backup_anchor_view,
 WalletButton::~WalletButton() = default;
 
 void WalletButton::OnWalletPressed(const ui::Event& event) {
-  ShowWalletBubble();
+  if (ShowWalletBubble())
+    return;
+  CloseWalletBubble();
 }
 
 void WalletButton::UpdateImageAndText() {
@@ -86,8 +95,8 @@ void WalletButton::OnWidgetDestroying(views::Widget* widget) {
 }
 
 bool WalletButton::ShowWalletBubble() {
+  // Bubble is already showing or loading in.
   if (webui_bubble_manager_->GetBubbleWidget()) {
-    CloseWalletBubble();
     return false;
   }
 
@@ -105,6 +114,33 @@ bool WalletButton::ShowWalletBubble() {
 
 void WalletButton::CloseWalletBubble() {
   webui_bubble_manager_->CloseBubble();
+}
+
+void WalletButton::ShowWalletPermissionBubble(
+    content::WebContents* web_contents,
+    permissions::PermissionPrompt::Delegate* delegate) {
+  // Parse to get origin and accounts.
+  std::vector<std::string> accounts;
+  std::string requesting_origin;
+  for (auto* request : delegate->Requests()) {
+    std::string account;
+    if (!brave_wallet::ParseRequestingOrigin(request->GetOrigin(),
+                                             true /* sub_req_format */,
+                                             &requesting_origin, &account)) {
+      continue;
+    }
+    accounts.push_back(account);
+  }
+  DCHECK(!accounts.empty());
+
+  ShowWalletBubble();
+
+  auto* service =
+      brave_wallet::BraveWalletServiceFactory::GetInstance()->GetForContext(
+          web_contents->GetBrowserContext());
+  int32_t tab_id = sessions::SessionTabHelper::IdForTab(web_contents).id();
+  service->NotifyShowEthereumPermissionPrompt(tab_id, accounts,
+                                              requesting_origin);
 }
 
 BEGIN_METADATA(WalletButton, ToolbarButton)

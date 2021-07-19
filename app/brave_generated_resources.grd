@@ -240,6 +240,16 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BLOCKED_AUTOPLAY_NO_ACTION" desc="Radio button choice to continue blocking a site from autoplay media, displayed in bubble when a page tries to autoplay media.">
         Continue blocking autoplay
       </message>
+      <!-- Ethereum -->
+      <message name="IDS_SETTINGS_SITE_SETTINGS_ETHEREUM" desc="Label for ethereum site settings.">
+        Ethereum
+      </message>
+      <message name="IDS_SETTINGS_SITE_SETTINGS_ETHEREUM_ASK" desc="Label for ethereum site settings.">
+        Ask when a site wants to access the Ethereum provider API
+      </message>
+      <message name="IDS_SETTINGS_SITE_SETTINGS_ETHEREUM_BLOCK" desc="Label for ethereum site settings.">
+        Block sites from accessing the Ethereum provider API
+      </message>
       <!-- Extensions -->
       <message name="IDS_UNVETTED_EXTENSION_INSTALL_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt which was not vetted by Brave. Asks the user if they want to install a particular extension or app.">
         Brave does not review extensions for security and safety. Only install this extension if you trust the developer.

@@ -9,6 +9,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_events_observer.h"
@@ -39,7 +40,8 @@ class BraveWalletProviderImpl final : public mojom::BraveWalletProvider,
                   const int http_code,
                   const std::string& response,
                   const std::map<std::string, std::string>& headers);
-  void Enable() override;
+  void Enable(EnableCallback callback) override;
+  void OnEnable(EnableCallback callback, bool success);
   void GetChainId(GetChainIdCallback callback) override;
   void Init(
       mojo::PendingRemote<mojom::EventsListener> events_listener) override;

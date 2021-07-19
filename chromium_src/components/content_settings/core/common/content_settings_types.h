@@ -16,7 +16,8 @@
   BRAVE_SHIELDS,                                                               \
   BRAVE_REFERRERS,                                                             \
   BRAVE_COOKIES,                                                               \
-  BRAVE_SPEEDREADER
+  BRAVE_SPEEDREADER,                                                           \
+  BRAVE_ETHEREUM
 // clang-format on
 
 #include "../../../../../../components/content_settings/core/common/content_settings_types.h"

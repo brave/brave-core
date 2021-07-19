@@ -293,3 +293,10 @@ void BraveBrowserView::StopTabCycling() {
   static_cast<BraveTabStripModel*>(browser()->tab_strip_model())->
       StopMRUCycling();
 }
+
+void BraveBrowserView::ShowWalletPermissionBubble(
+    content::WebContents* web_contents,
+    permissions::PermissionPrompt::Delegate* delegate) {
+  DCHECK(GetWalletButton());
+  GetWalletButton()->ShowWalletPermissionBubble(web_contents, delegate);
+}

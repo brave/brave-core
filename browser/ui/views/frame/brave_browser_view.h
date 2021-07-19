@@ -12,6 +12,7 @@
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "components/permissions/permission_prompt.h"
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
 class ContentsLayoutManager;
@@ -48,6 +49,9 @@ class BraveBrowserView : public BrowserView {
       bool is_enabled) override;
   void CreateWalletBubble();
   void CloseWalletBubble();
+  void ShowWalletPermissionBubble(
+      content::WebContents* web_contents,
+      permissions::PermissionPrompt::Delegate* delegate);
   WalletButton* GetWalletButton();
   void StartTabCycling() override;
 

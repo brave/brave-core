@@ -1,4 +1,8 @@
 brave_components_permissions_sources = [
+  "//brave/components/permissions/brave_permission_manager.cc",
+  "//brave/components/permissions/brave_permission_manager.h",
+  "//brave/components/permissions/contexts/brave_ethereum_permission_context.cc",
+  "//brave/components/permissions/contexts/brave_ethereum_permission_context.h",
   "//brave/components/permissions/permission_expiration_key.cc",
   "//brave/components/permissions/permission_expiration_key.h",
   "//brave/components/permissions/permission_expirations.cc",
@@ -26,6 +30,8 @@ brave_components_permissions_deps = [
   "//components/keyed_service/core",
   "//components/pref_registry",
   "//services/preferences/public/cpp",
+  "//third_party/blink/public/common",
+  "//third_party/re2",
   "//ui/base",
   "//url",
 ]

@@ -12,6 +12,7 @@
 
 #include "base/macros.h"
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
 #include "components/keyed_service/core/keyed_service.h"
 
 class PrefService;
@@ -23,6 +24,7 @@ class SharedURLLoaderFactory;
 
 namespace brave_wallet {
 
+class BraveWalletServiceObserver;
 class EthJsonRpcController;
 class EthTxController;
 class KeyringController;
@@ -50,6 +52,26 @@ class BraveWalletService : public KeyedService,
   void AddNewAccountName(const std::string& account_name);
   bool IsWalletBackedUp() const;
   void NotifyWalletBackupComplete();
+  void NotifyShowEthereumPermissionPrompt(
+      int32_t tab_id,
+      const std::vector<std::string>& accounts,
+      const std::string& origin);
+
+  void AddObserver(BraveWalletServiceObserver* observer);
+  void RemoveObserver(BraveWalletServiceObserver* observer);
+
+  struct PermissionRequest {
+    explicit PermissionRequest(int32_t tab_id,
+                               const std::vector<std::string>& accounts,
+                               const std::string& origin);
+    ~PermissionRequest();
+
+    int32_t tab_id;
+    std::vector<std::string> accounts;
+    std::string origin;
+  };
+
+  void SetPanelHandlerReady(bool ready);
 
  private:
   PrefService* prefs_;
@@ -58,6 +80,10 @@ class BraveWalletService : public KeyedService,
   std::unique_ptr<brave_wallet::EthTxController> tx_controller_;
   std::unique_ptr<brave_wallet::AssetRatioController> asset_ratio_controller_;
   std::unique_ptr<brave_wallet::SwapController> swap_controller_;
+  std::unique_ptr<PermissionRequest> pending_permission_request_;
+
+  bool panel_handler_ready_ = false;
+  base::ObserverList<BraveWalletServiceObserver> observers_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveWalletService);
 };

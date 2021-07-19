@@ -7,9 +7,10 @@
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_PANEL_HANDLER_WALLET_PANEL_HANDLER_H_
 
 #include <string>
+#include <vector>
 
+#include "brave/components/brave_wallet/browser/brave_wallet_service_observer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -20,32 +21,47 @@ namespace content {
 class WebUI;
 }
 
+namespace brave_wallet {
+class BraveWalletService;
+}
+
 class WalletPanelHandler : public brave_wallet::mojom::PanelHandler,
-                           public content::WebContentsObserver {
+                           public brave_wallet::BraveWalletServiceObserver {
  public:
+  using GetWebContentsForTabCallback =
+      base::RepeatingCallback<content::WebContents*(int32_t)>;
+
   WalletPanelHandler(
       mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> receiver,
       mojo::PendingRemote<brave_wallet::mojom::Page> page,
       content::WebUI* web_ui,
-      ui::MojoBubbleWebUIController* webui_controller);
+      ui::MojoBubbleWebUIController* webui_controller,
+      GetWebContentsForTabCallback get_web_contents_for_tab);
 
   WalletPanelHandler(const WalletPanelHandler&) = delete;
   WalletPanelHandler& operator=(const WalletPanelHandler&) = delete;
   ~WalletPanelHandler() override;
 
-  // content::WebContentsObserver:
-  void OnVisibilityChanged(content::Visibility visibility) override;
-
   // brave_wallet::mojom::PanelHandler:
   void ShowUI() override;
   void CloseUI() override;
+  void ConnectToSite(const std::vector<std::string>& accounts,
+                     const std::string& origin,
+                     int32_t tab_id) override;
+  void CancelConnectToSite(const std::string& origin, int32_t tab_id) override;
+
+  // brave_wallet::BraveWalletServiceObserver:
+  void OnShowEthereumPermissionPrompt(int32_t tab_id,
+                                      const std::vector<std::string>& accounts,
+                                      const std::string& origin) override;
 
  private:
-  bool webui_hidden_ = false;
   mojo::Receiver<brave_wallet::mojom::PanelHandler> receiver_;
   mojo::Remote<brave_wallet::mojom::Page> page_;
   content::WebUI* const web_ui_;
   ui::MojoBubbleWebUIController* const webui_controller_;
+  brave_wallet::BraveWalletService* wallet_service_;
+  const GetWebContentsForTabCallback get_web_contents_for_tab_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_PANEL_HANDLER_WALLET_PANEL_HANDLER_H_

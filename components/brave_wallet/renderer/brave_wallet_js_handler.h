@@ -67,6 +67,10 @@ class BraveWalletJSHandler : public mojom::EventsListener {
   void OnSendAsync(std::unique_ptr<v8::Global<v8::Function>> callback,
                    const int http_code,
                    const std::string& response);
+  void OnEnable(v8::Global<v8::Promise::Resolver> promise_resolver,
+                v8::Isolate* isolate,
+                v8::Global<v8::Context> context_old,
+                bool success);
 
   content::RenderFrame* render_frame_;
   mojo::Remote<mojom::BraveWalletProvider> brave_wallet_provider_;

@@ -12,6 +12,7 @@
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
+#include "components/permissions/permission_prompt.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/button/menu_button_controller.h"
@@ -31,10 +32,13 @@ class WalletButton : public ToolbarButton, public views::WidgetObserver {
   WalletButton& operator=(const WalletButton&) = delete;
 
   // When this is called the bubble may already be showing or be loading in.
-  // This returns true if the method call results in the creation of a new Tab
-  // Search bubble.
+  // This returns true if the method call results in the creation of a new
+  // wallet bubble.
   bool ShowWalletBubble();
   void CloseWalletBubble();
+  void ShowWalletPermissionBubble(
+      content::WebContents* web_contents,
+      permissions::PermissionPrompt::Delegate* delegate);
 
   void UpdateImageAndText();
   void InitBubbleManagerAnchor();

@@ -16,7 +16,7 @@ interface BraveWalletProvider {
   Init(pending_remote<EventsListener> events_listener);
   Request(string json_payload) => (int32 http_code,
                                    string response);
-  Enable();
+  Enable() => (bool success);
   GetChainId() => (string chain_id);
 };
 
@@ -42,6 +42,9 @@ interface PanelHandler {
 
   // Notify the backend that the dialog should be closed.
   CloseUI();
+
+  ConnectToSite(array<string> accounts, string origin, int32 tab_id);
+  CancelConnectToSite(string origin, int32 tab_id);
 };
 
 // Browser-side handler for requests from WebUI page.
@@ -129,4 +132,7 @@ interface WalletHandler {
 
 // WebUI-side handler for requests from the browser.
 interface Page {
+  ShowConnectToSiteUI(int32 tab_id,
+                      array<string> accounts,
+                      string origin);
 };

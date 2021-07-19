@@ -24,6 +24,8 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate {
   ~BraveWalletProviderDelegateImpl() override = default;
 
   void ShowConnectToSiteUI() override;
+  void RequestEthereumPermissions(
+      RequestEthereumPermissionsCallback callback) override;
 
  private:
   content::WebContents* web_contents_;

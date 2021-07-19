@@ -6,10 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_PROVIDER_DELEGATE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_PROVIDER_DELEGATE_H_
 
+#include <string>
+#include <vector>
+
+#include "base/callback.h"
+
 namespace brave_wallet {
 
 class BraveWalletProviderDelegate {
  public:
+  using RequestEthereumPermissionsCallback = base::OnceCallback<void(bool)>;
+
   BraveWalletProviderDelegate() = default;
   BraveWalletProviderDelegate(const BraveWalletProviderDelegate&) = delete;
   BraveWalletProviderDelegate& operator=(const BraveWalletProviderDelegate&) =
@@ -17,6 +24,8 @@ class BraveWalletProviderDelegate {
   virtual ~BraveWalletProviderDelegate() = default;
 
   virtual void ShowConnectToSiteUI() = 0;
+  virtual void RequestEthereumPermissions(
+      RequestEthereumPermissionsCallback callback) = 0;
 };
 
 }  // namespace brave_wallet

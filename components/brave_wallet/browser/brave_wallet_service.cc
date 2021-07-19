@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+
 #include <string>
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service_observer.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_tx_controller.h"
@@ -109,6 +111,49 @@ bool BraveWalletService::IsWalletBackedUp() const {
 
 void BraveWalletService::NotifyWalletBackupComplete() {
   prefs_->SetBoolean(kBraveWalletBackupComplete, true);
+}
+
+void BraveWalletService::AddObserver(BraveWalletServiceObserver* observer) {
+  observers_.AddObserver(observer);
+}
+
+void BraveWalletService::RemoveObserver(BraveWalletServiceObserver* observer) {
+  observers_.RemoveObserver(observer);
+}
+
+void BraveWalletService::NotifyShowEthereumPermissionPrompt(
+    int32_t tab_id,
+    const std::vector<std::string>& accounts,
+    const std::string& origin) {
+  if (!panel_handler_ready_) {
+    // Only need to save the latest request since we only need to show the
+    // latest one once the panel become ready.
+    pending_permission_request_ =
+        std::make_unique<PermissionRequest>(tab_id, accounts, origin);
+    return;
+  }
+
+  for (auto& observer : observers_)
+    observer.OnShowEthereumPermissionPrompt(tab_id, accounts, origin);
+}
+
+BraveWalletService::PermissionRequest::PermissionRequest(
+    int32_t tab_id,
+    const std::vector<std::string>& accounts,
+    const std::string& origin)
+    : tab_id(tab_id), accounts(accounts), origin(origin) {}
+
+BraveWalletService::PermissionRequest::~PermissionRequest() = default;
+
+void BraveWalletService::SetPanelHandlerReady(bool ready) {
+  panel_handler_ready_ = ready;
+
+  if (ready && pending_permission_request_) {
+    NotifyShowEthereumPermissionPrompt(pending_permission_request_->tab_id,
+                                       pending_permission_request_->accounts,
+                                       pending_permission_request_->origin);
+    pending_permission_request_.reset();
+  }
 }
 
 }  // namespace brave_wallet

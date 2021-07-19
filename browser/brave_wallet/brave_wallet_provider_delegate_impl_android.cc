@@ -12,5 +12,7 @@ BraveWalletProviderDelegateImplAndroid::BraveWalletProviderDelegateImplAndroid(
     content::WebContents* web_contents) {}
 
 void BraveWalletProviderDelegateImplAndroid::ShowConnectToSiteUI() {}
+void BraveWalletProviderDelegateImplAndroid::RequestEthereumPermissions(
+    BraveWalletProviderDelegate::RequestEthereumPermissionsCallback callback) {}
 
 }  // namespace brave_wallet

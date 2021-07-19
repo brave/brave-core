@@ -15,6 +15,9 @@ class WalletPanelApiProxy {
   showUI() {}
   closeUI() {}
 
+  connectToSite(accounts, origin, tab_id) {}
+  cancelConnectToSite(origin, tab_id) {}
+
   /** @return {!braveWallet.mojom.PageCallbackRouter} */
   getCallbackRouter() {}
 
@@ -47,6 +50,16 @@ export default class WalletPanelApiProxyImpl {
   /** @override */
   closeUI() {
     this.panel_handler.closeUI();
+  }
+
+  /** @override */
+  connectToSite(accounts, origin, tab_id) {
+    this.panel_handler.connectToSite(accounts, origin, tab_id);
+  }
+
+  /** @override */
+  cancelConnectToSite(origin, tab_id) {
+    this.panel_handler.cancelConnectToSite(origin, tab_id);
   }
 
   /** @override */

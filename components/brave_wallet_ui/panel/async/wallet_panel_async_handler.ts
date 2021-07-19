@@ -8,7 +8,7 @@ import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
 import { WalletPanelState, PanelState, WalletAPIHandler } from '../../constants/types'
-import { AccountPayloadType } from '../constants/action_types'
+import { AccountPayloadType, ShowConnectToSitePayload } from '../constants/action_types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
 
@@ -45,17 +45,42 @@ handler.on(WalletActions.initialize.getType(), async (store) => {
   document.addEventListener('visibilitychange', () => {
     store.dispatch(PanelActions.visibilityChanged(document.visibilityState === 'visible'))
   })
+  chrome.tabs.onActivated.addListener((activeInfo: any) => {
+    const state = getPanelState(store)
+    const connectingTabId = state.tabId
+    // Switching from current connecting tab to another, reset the states,
+    // when switching back, showConnectToSite will be triggered from C++ side
+    // and stated will be restored using the values from showConnectToSite
+    // call.
+    if (connectingTabId !== activeInfo.tabId) {
+      store.dispatch(PanelActions.resetConnectToSiteStates())
+    }
+  })
+
   const apiProxy = await getAPIProxy()
+  const callbackRouter = apiProxy.getCallbackRouter()
+  callbackRouter.showConnectToSiteUI.addListener((tabId: number, accounts: string[], origin: string) => {
+    store.dispatch(PanelActions.showConnectToSite({ tabId, accounts, origin }))
+  })
+
   apiProxy.showUI()
 })
 
-handler.on(PanelActions.cancelConnectToSite.getType(), async (store) => {
+handler.on(PanelActions.cancelConnectToSite.getType(), async (store, payload: AccountPayloadType) => {
+  const state = getPanelState(store)
   const apiProxy = await getAPIProxy()
+  apiProxy.cancelConnectToSite(payload.siteToConnectTo, state.tabId)
+  store.dispatch(PanelActions.resetConnectToSiteStates())
   apiProxy.closeUI()
 })
 
 handler.on(PanelActions.connectToSite.getType(), async (store, payload: AccountPayloadType) => {
+  const state = getPanelState(store)
   const apiProxy = await getAPIProxy()
+  let accounts: string[] = []
+  payload.selectedAccounts.forEach((account) => { accounts.push(account.address) })
+  apiProxy.connectToSite(accounts, payload.siteToConnectTo, state.tabId)
+  store.dispatch(PanelActions.resetConnectToSiteStates())
   apiProxy.closeUI()
 })
 
@@ -64,6 +89,12 @@ handler.on(PanelActions.visibilityChanged.getType(), async (store, isVisible) =>
     return
   }
   await refreshWalletInfo(store)
+  const apiProxy = await getAPIProxy()
+  apiProxy.showUI()
+})
+
+handler.on(PanelActions.showConnectToSite.getType(), async (store, payload: ShowConnectToSitePayload) => {
+  store.dispatch(PanelActions.navigateTo('connectWithSite'))
   const apiProxy = await getAPIProxy()
   apiProxy.showUI()
 })

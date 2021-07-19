@@ -9,3 +9,9 @@ export type AccountPayloadType = {
   selectedAccounts: WalletAccountType[]
   siteToConnectTo: string
 }
+
+export type ShowConnectToSitePayload = {
+  tabId: number,
+  accounts: string[],
+  origin: string
+}

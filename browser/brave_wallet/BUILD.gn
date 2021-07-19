@@ -55,8 +55,11 @@ source_set("brave_wallet_delegate") {
       "brave_wallet_provider_delegate_impl.h",
     ]
     deps += [
+      "//brave/browser/brave_wallet",
       "//brave/browser/ui",
       "//chrome/browser/ui",
+      "//components/content_settings/core/common",
+      "//components/permissions",
     ]
   }
 }

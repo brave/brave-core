@@ -73,13 +73,20 @@ function Container (props: Props) {
       setReadyToConnect(true)
     } else {
       onSubmit()
+      setSelectedAccounts([])
+      setReadyToConnect(false)
     }
   }
   const secondaryAction = () => {
     if (readyToConnect) {
       setReadyToConnect(false)
     } else {
-      props.walletPanelActions.cancelConnectToSite()
+      props.walletPanelActions.cancelConnectToSite({
+        selectedAccounts,
+        siteToConnectTo: props.panel.connectedSiteOrigin
+      })
+      setSelectedAccounts([])
+      setReadyToConnect(false)
     }
   }
   const unlockWallet = () => {
@@ -168,12 +175,15 @@ function Container (props: Props) {
   }
 
   if (props.panel.selectedPanel === 'connectWithSite') {
+    const accountsToConnect = props.wallet.accounts.filter(
+      (account) => props.panel.connectingAccounts.includes(account.address.toLowerCase())
+    )
     return (
       <StyledExtensionWrapper>
         <ConnectWithSite
           siteURL={props.panel.connectedSiteOrigin}
           isReady={readyToConnect}
-          accounts={props.wallet.accounts}
+          accounts={accountsToConnect}
           primaryAction={primaryAction}
           secondaryAction={secondaryAction}
           selectAccount={selectAccount}

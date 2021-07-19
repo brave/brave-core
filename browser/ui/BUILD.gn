@@ -499,6 +499,8 @@ source_set("ui") {
 
   if (brave_wallet_enabled && !is_android && !is_ios) {
     sources += [
+      "views/permission_bubble/ethereum_permission_prompt_impl.cc",
+      "views/permission_bubble/ethereum_permission_prompt_impl.h",
       "views/toolbar/wallet_button.cc",
       "views/toolbar/wallet_button.h",
       "webui/brave_wallet/wallet_page_ui.cc",
@@ -510,6 +512,7 @@ source_set("ui") {
       "//brave/browser/ui/webui/brave_wallet/common_handler",
       "//brave/browser/ui/webui/brave_wallet/page_handler",
       "//brave/browser/ui/webui/brave_wallet/panel_handler",
+      "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:mojom",
       "//brave/components/brave_wallet_ui:resources",
       "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",

@@ -8,6 +8,9 @@ import { WalletAPIHandler } from '../constants/types'
 export default class APIProxy {
   static getInstance: () => APIProxy
   getWalletHandler: () => WalletAPIHandler
+  getCallbackRouter: () => CallbackRouter
   showUI: () => {}
   closeUI: () => {}
+  connectToSite: (accounts: string[], origin: string, tabId: number) => {}
+  cancelConnectToSite: (origin: string, tabId: number) => {}
 }

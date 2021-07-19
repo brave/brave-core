@@ -23,10 +23,12 @@ class PermissionLifetimeManager;
   base::RepeatingCallback<PermissionLifetimeManager*( \
       content::BrowserContext*)>                      \
       permission_lifetime_manager_factory_;
+#define CleanUpRequest virtual CleanUpRequest
 
 #include "../../../../components/permissions/permission_context_base.h"
 
 #undef BRAVE_PERMISSION_CONTEXT_BASE_H_
+#undef CleanUpRequest
 #undef PermissionDecided
 #undef PermissionContextBase
 
@@ -36,17 +38,60 @@ class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
  public:
   using PermissionContextBase_ChromiumImpl::PermissionContextBase_ChromiumImpl;
 
+  PermissionContextBase(
+      content::BrowserContext* browser_context,
+      ContentSettingsType content_settings_type,
+      blink::mojom::PermissionsPolicyFeature permissions_policy_feature);
+
+  ~PermissionContextBase() override;
+
   void SetPermissionLifetimeManagerFactory(
       const base::RepeatingCallback<
           PermissionLifetimeManager*(content::BrowserContext*)>& factory);
 
+  void DecidePermission(content::WebContents* web_contents,
+                        const PermissionRequestID& id,
+                        const GURL& requesting_origin,
+                        const GURL& embedding_origin,
+                        bool user_gesture,
+                        BrowserPermissionCallback callback) override;
+
+  bool IsPendingEthereumRequestsEmptyForTesting();
+
  private:
+  /**
+   * This class is map to one PermissionManager::RequestPermissions request,
+   * sub-requests for each account address is kept in requests_.
+   * Chromium does not expect multiple sub-requests for a same permission type,
+   * this class is created to support tracking multiple ethereum sub-requests
+   * for each RequestPermissions request. It will clear all pending
+   * sub-requests for one RequestPermissions request after all of its
+   * sub-requests are finished.
+   */
+  class EthereumPermissionRequests {
+   public:
+    EthereumPermissionRequests();
+    ~EthereumPermissionRequests();
+
+    bool IsDone() const;
+    void AddRequest(std::unique_ptr<PermissionRequest> request);
+    void RequestFinished();
+
+   private:
+    std::vector<std::unique_ptr<PermissionRequest>> requests_;
+    size_t finished_request_count_ = 0;
+  };
+
   void PermissionDecided(const PermissionRequestID& id,
                          const GURL& requesting_origin,
                          const GURL& embedding_origin,
                          BrowserPermissionCallback callback,
                          ContentSetting content_setting,
                          bool is_one_time) override;
+  void CleanUpRequest(const PermissionRequestID& id) override;
+
+  std::unordered_map<std::string, std::unique_ptr<EthereumPermissionRequests>>
+      ethereum_pending_requests_;
 };
 
 }  // namespace permissions

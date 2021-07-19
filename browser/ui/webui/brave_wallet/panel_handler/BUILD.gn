@@ -13,6 +13,7 @@ source_set("panel_handler") {
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common:mojom",
     "//chrome/browser/profiles:profile",
+    "//components/permissions",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
     "//ui/webui:webui",

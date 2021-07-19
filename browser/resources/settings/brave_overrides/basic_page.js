@@ -93,6 +93,10 @@ RegisterPolymerTemplateModifications({
     r.BRAVE_NEW_TAB = r.BASIC.createSection('/newTab', 'newTab')
     if (r.SITE_SETTINGS) {
       r.SITE_SETTINGS_AUTOPLAY = r.SITE_SETTINGS.createChild('autoplay')
+      const isNativeBraveWalletFeatureEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
+      if (isNativeBraveWalletFeatureEnabled) {
+        r.SITE_SETTINGS_ETHEREUM = r.SITE_SETTINGS.createChild('ethereum')
+      }
     } else if (!isGuest) {
       console.error('[Brave Settings Overrides] Routes: could not find SITE_SETTINGS page')
     }

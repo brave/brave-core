@@ -22,6 +22,7 @@ static_library("browser") {
     "brave_wallet_provider_impl.h",
     "brave_wallet_service.cc",
     "brave_wallet_service.h",
+    "brave_wallet_service_observer.h",
     "brave_wallet_types.cc",
     "brave_wallet_types.h",
     "brave_wallet_utils.cc",
@@ -48,6 +49,8 @@ static_library("browser") {
     "eth_tx_controller.h",
     "eth_tx_state_manager.cc",
     "eth_tx_state_manager.h",
+    "ethereum_permission_utils.cc",
+    "ethereum_permission_utils.h",
     "hd_key.cc",
     "hd_key.h",
     "hd_keyring.cc",
@@ -84,6 +87,7 @@ static_library("browser") {
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
     "//third_party/boringssl",
+    "//third_party/re2",
     "//url",
   ]
 }
