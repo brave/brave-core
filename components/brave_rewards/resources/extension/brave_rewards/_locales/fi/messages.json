@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Kertatipit",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "voimassaolo päättyy",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Tämä kehittäjä ei ole vielä rekisteröitynyt vastaanottamaan Brave-käyttäjien avustuksia. Kaikki lähettämäsi tipit pysyvät lompakossasi heidän vahvistukseensa saakka.",
+    "message": "Tätä tekijää ei ole tällä hetkellä määritetty saamaan tippejä lompakostasi. Kaikki antamasi tipit pysyvät lompakossasi, ja niitä yritetään antaa automaattisesti 90 päivän ajan.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

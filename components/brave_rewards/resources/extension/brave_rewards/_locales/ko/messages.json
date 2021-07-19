@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "일회성 팁",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "만료됩니다 ",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "이 크리에이터가 아직 브레이브 유저들로부터 기부를 받기 위한 회원 가입을 하지 않으셨습니다. 그들이 확인할 때 까지 귀하께서 보내신 모든 팁들은 귀하의 지갑에 남아있게 됩니다.",
+    "message": "아직 구성되지 않아 회원님의 월렛에서 팁을 받을 수 없는 제작자입니다. 만든 팁은 회원님의 월렛에서 보류 중인 상태로 남고, 90일간 자동으로 재시도합니다.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Eenmalige tips",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "vervalt op",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Deze maker heeft zich nog niet aangemeld voor het ontvangen van bijdragen van Brave-gebruikers. Fooien die je stuurt, blijven in je wallet tot hij of zij verifieert.",
+    "message": "Deze maker is momenteel nog niet geconfigureerd voor het ontvangen van fooi uit je wallet. Alle fooien die je stuurt, blijven in je wallet in behandeling. Na 90 dagen wordt automatisch opnieuw geprobeerd om de fooi te verzenden.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

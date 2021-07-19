@@ -49,7 +49,6 @@
 <translation id="81774600964978477">Các website hàng đầu do bạn tuyển chọn</translation>
 <translation id="5439599923922718668">Thường xuyên Truy cập</translation>
 <translation id="430556192781857057">Các trang mạng hàng đầu được đề xuất dựa trên các website bạn thường truy cập</translation>
-<translation id="8037713009824540257">Thêm Website</translation>
 <translation id="1773147648972887693">Hiển thị các trang thường truy cập</translation>
 <translation id="4546260624932151782">Hiển thị các trang yêu thích</translation>
 <translation id="3446024864193919737">Hiện Brave Rewards</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">Nguồn</translation>
 <translation id="5158129253322921540">Vô hiệu hóa nội dung từ <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Được quảng bá</translation>
+<translation id="4541978218358617681">Quảng cáo</translation>
 <translation id="1776831331757823105">Đồng hồ</translation>
 <translation id="7791543448312431591">Thêm</translation>
 <translation id="7679334366167089823">Kiếm token bằng cách xem quảng cáo tôn trọng quyền riêng tư.</translation>
 <translation id="1531133232292396145">Mua bán Tiền ảo trên Binance ngay trong trình duyệt của bạn.</translation>
 <translation id="2166494527623220386">Mua bán Tiền ảo trên Gemini ngay trong trình duyệt của bạn.</translation>
 <translation id="7191394989411626168">Bằng cách tắt Thẻ, tất cả các thẻ hiện đang hiển thị sẽ bị ẩn. Tuy nhiên, bạn vẫn có thể được thông báo về thẻ mới.</translation>
+<translation id="8112367589167674370">Brave Trò chuyện</translation>
 <translation id="5655621391922317800">Ví Điện tử</translation>
 <translation id="8820817407110198400">Dấu trang</translation>
 <translation id="1644574205037202324">Lịch sử</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">Chọn một công cụ tìm kiếm</translation>
 <translation id="438216590634144114">Chọn công cụ tìm kiếm bạn muốn sử dụng mặc định khi tìm kiếm trên web từ thanh địa chỉ.</translation>
 <translation id="5804484488647369316">Đặt công cụ tìm kiếm mặc định</translation>
-<translation id="4428458837269935199">Để có trải nghiệm tìm kiếm riêng tư hơn, hãy thử dùng DuckDuckGo.</translation>
 <translation id="3829010735958850433">Bỏ qua tour chào mừng</translation>
 <translation id="1201402288615127009">Tiếp theo</translation>
 <translation id="7954950242989581218">Duyệt web an toàn</translation>
@@ -352,15 +352,15 @@
 <translation id="4371618764691059036">Đã thiết lập khoản đóng góp hàng tháng.</translation>
 <translation id="6356822617569064293">Ngày đóng góp tiếp theo:</translation>
 <translation id="3593485149443019592">Không đủ token. Vui lòng <ph name="LINK_BEGIN"/>thêm tiền<ph name="LINK_END"/>.</translation>
-<translation id="4622723187300249546">Khoản tiền tip Một Lần</translation>
-<translation id="5268142130226208198">Số tiền tip một lần:</translation>
+<translation id="207268487070188114">Tiền thưởng một lần</translation>
+<translation id="69861679024013299">Số tiền thưởng một lần:</translation>
 <translation id="3669086939205397942">Chờ đã, bạn chưa thể tặng tiền</translation>
 <translation id="3288812755711687300">Bài đăng của <ph name="USER"/></translation>
 <translation id="5851002232791947896">Tweet của <ph name="USER"/></translation>
 <translation id="5531915212947569943">Rất tiếc khi bạn rời khỏi...</translation>
 <translation id="1420756770787071946">Hỗ trợ nhà sáng tạo này</translation>
 <translation id="3271043362279673449">Xin cảm ơn bạn đã hỗ trợ!</translation>
-<translation id="379596083010863211">Đã gửi khoản tiền tip một lần của bạn</translation>
+<translation id="3312470408978098625">Đã gửi khoản tiền thưởng một lần của bạn</translation>
 <translation id="5096821444729034955">cho bài đăng của họ</translation>
 <translation id="2978223787436054634">Tweet về việc hỗ trợ của bạn</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Tham quan nhanh<ph name="TOUR_LINK_END"/> hoặc <ph name="LEARN_LINK_BEGIN"/>tìm hiểu thêm<ph name="LEARN_LINK_END"/> để biết chi tiết.</translation>
@@ -512,10 +512,10 @@
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">trên</translation>
 <translation id="1166682575529520472">Hàng tháng</translation>
-<translation id="8370173854533168890">Một lần</translation>
+<translation id="1378730109637014435">Một lần</translation>
 <translation id="9182287025588539628">Tiền Tip Một lần</translation>
 <translation id="6381574025952123568">Số dư đầu kỳ</translation>
-<translation id="532275381857891532">Lịch sử Quảng cáo 7 ngày</translation>
+<translation id="156591572855748524">Lịch sử quảng cáo 30 ngày</translation>
 <translation id="4923459931733593730">Thanh toán</translation>
 <translation id="6104680658798556671">Chưa thực hiện thanh toán.</translation>
 <translation id="3138528956349114724">Các trang được ghim giờ đã</translation>
@@ -622,7 +622,7 @@
 <translation id="3780605330121608425">Ví của bạn</translation>
 <translation id="6727483290601442544">Xem Chi tiết</translation>
 <translation id="1988679729106502285">LƯU Ý:</translation>
-<translation id="5815103311506128988">Người sáng tạo này vẫn chưa đăng ký để nhận đóng góp từ người dùng Brave. Trình duyệt của bạn sẽ tiếp tục cố gắng đóng góp cho đến khi họ xác minh hoặc cho đến khi đã qua 90 ngày.</translation>
+<translation id="7979350009208995417">Người sáng tạo này hiện không được định cấu hình để nhận tiền thưởng từ ví của bạn. Mọi tiền thưởng bạn trả sẽ vẫn chờ xử lý trong ví của bạn và tự động thử lại trong 90 ngày.</translation>
 <translation id="7461596279975181413">Người sáng tạo được Brave xác minh này chưa định cấu hình tài khoản của họ để nhận các khoản đóng góp từ người dùng Brave. Trình duyệt của bạn sẽ vẫn cố gắng đóng góp cho đến khi họ xác minh hoặc sau khi 90 ngày trôi qua.</translation>
 <translation id="4292832015778676417">thu được từ quảng cáo</translation>
 <translation id="3197752845651180812">Đóng góp chờ xử lý</translation>
@@ -827,6 +827,7 @@
 <translation id="3741998951694470470">Không tải được dữ liệu để nhập</translation>
 <translation id="7900950536120202771">Lỗi nội bộ nút IPFS</translation>
 <translation id="1036635552229153800">Dữ liệu đã được tải lên thành công nhưng chưa được chuyển đến thư mục brave-import. Bạn có thể thực hiện điều này một cách thủ công trên trang cài đặt nhập.</translation>
+<translation id="3793279629218362523">Quản lý mã Peer và khóa IPNS</translation>
 <translation id="572392919096807438">Ghi nhớ quyết định của tôi</translation>
 <translation id="7978789143098237970">cho đến khi tôi đóng trang này</translation>
 <translation id="3523195733429162409">trong 24 giờ</translation>

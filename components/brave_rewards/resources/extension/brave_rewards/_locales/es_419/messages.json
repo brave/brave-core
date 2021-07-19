@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Propinas por única vez",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "vence el",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Este creador todavía no se ha registrado para recibir contribuciones de usuarios de Brave. Cualquier propina que envíes quedará en tu billetera hasta que el creador confirme la titularidad.",
+    "message": "Este creador no está configurado actualmente para recibir propinas de tu billetera. Cualquier propina que hagas se mantendrá pendiente en tu billetera y se reintentará automáticamente durante 90 días.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

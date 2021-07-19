@@ -49,7 +49,6 @@
 <translation id="81774600964978477">Les sites populaires sont sélectionnés par vos soins</translation>
 <translation id="5439599923922718668">Visites fréquentes</translation>
 <translation id="430556192781857057">Les sites populaires sont suggérés en fonction des sites que vous visitez souvent</translation>
-<translation id="8037713009824540257">Ajouter un site</translation>
 <translation id="1773147648972887693">Afficher les sites fréquemment visités</translation>
 <translation id="4546260624932151782">Afficher les favoris</translation>
 <translation id="3446024864193919737">Afficher les récompenses de Brave</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">Sources</translation>
 <translation id="5158129253322921540">Désactiver le contenu de <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Promotion</translation>
+<translation id="4541978218358617681">Annonce</translation>
 <translation id="1776831331757823105">Horloge</translation>
 <translation id="7791543448312431591">Ajouter</translation>
 <translation id="7679334366167089823">Gagnez des jetons en regardant des publicités respectant la confidentialité.</translation>
 <translation id="1531133232292396145">Échangez des cryptomonnaies sur Binance directement dans votre navigateur.</translation>
 <translation id="2166494527623220386">Echangez des cryptomonnaies sur Gemini directement dans votre navigateur.</translation>
 <translation id="7191394989411626168">En désactivant « Cartes », toutes les cartes actuellement visibles seront cachées. Toutefois, vous pourrez toujours recevoir des notifications pour les nouvelles cartes.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="5655621391922317800">Portefeuilles cryptographiques</translation>
 <translation id="8820817407110198400">Barre de favoris</translation>
 <translation id="1644574205037202324">Historique</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">Sélectionnez un moteur de recherche</translation>
 <translation id="438216590634144114">Choisissez le moteur de recherche que vous souhaitez utiliser par défaut lors d'une recherche sur le Web à partir de la barre d'adresse.</translation>
 <translation id="5804484488647369316">Définir le moteur de recherche par défaut</translation>
-<translation id="4428458837269935199">Pour une expérience de recherche plus discrète, essayez DuckDuckGo.</translation>
 <translation id="3829010735958850433">Sauter le tour d'accueil</translation>
 <translation id="1201402288615127009">Suivant</translation>
 <translation id="7954950242989581218">Naviguer en toute sécurité</translation>
@@ -352,15 +352,15 @@
 <translation id="4371618764691059036">La contribution mensuelle a été définie.</translation>
 <translation id="6356822617569064293">Prochaine date de contribution :</translation>
 <translation id="3593485149443019592">Pas assez de jetons. Veuillez <ph name="LINK_BEGIN"/>ajouter des fonds<ph name="LINK_END"/></translation>
-<translation id="4622723187300249546">Pourboire unique</translation>
-<translation id="5268142130226208198">Montant du pourboire unique :</translation>
+<translation id="207268487070188114">Pourboire unique</translation>
+<translation id="69861679024013299">Montant du pourboire unique</translation>
 <translation id="3669086939205397942">Attendez, vous ne pouvez pas encore donner de pourboire</translation>
 <translation id="3288812755711687300">Publication de <ph name="USER"/></translation>
 <translation id="5851002232791947896">Tweet de <ph name="USER"/></translation>
 <translation id="5531915212947569943">Nous sommes tristes de vous voir partir...</translation>
 <translation id="1420756770787071946">Soutenez ce créateur</translation>
 <translation id="3271043362279673449">Merci pour votre soutien!</translation>
-<translation id="379596083010863211">Votre pourboire unique a été envoyé.</translation>
+<translation id="3312470408978098625">Votre pourboire unique a été envoyée.</translation>
 <translation id="5096821444729034955">pour leur publication</translation>
 <translation id="2978223787436054634">Gazouillez concernant votre soutien</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Suivre une rapide visite guidée<ph name="TOUR_LINK_END"/> ou <ph name="LEARN_LINK_BEGIN"/>En savoir plus<ph name="LEARN_LINK_END"/> pour plus de détails.</translation>
@@ -512,10 +512,10 @@
 <translation id="4921250468871504777">d'accord</translation>
 <translation id="7866482334467279021">activé</translation>
 <translation id="1166682575529520472">Mensuelle</translation>
-<translation id="8370173854533168890">Une fois</translation>
+<translation id="1378730109637014435">Unique</translation>
 <translation id="9182287025588539628">Pourboires uniques</translation>
 <translation id="6381574025952123568">Solde d'ouverture</translation>
-<translation id="532275381857891532">Historique des annonces sur 7 jours</translation>
+<translation id="156591572855748524">Historique des annonces sur 30 jours</translation>
 <translation id="4923459931733593730">Paiement</translation>
 <translation id="6104680658798556671">Le paiement n'a pas été effectué.</translation>
 <translation id="3138528956349114724">Les sites épinglés sont maintenant</translation>
@@ -622,7 +622,7 @@
 <translation id="3780605330121608425">Votre portefeuille</translation>
 <translation id="6727483290601442544">Afficher les détails</translation>
 <translation id="1988679729106502285">NOTE :</translation>
-<translation id="5815103311506128988">Ce créateur n'est pas encore inscrit pour recevoir les contributions des utilisateurs de Brave. Votre navigateur continuera à essayer de contribuer jusqu'à ce qu'il vérifie, ou jusqu'à ce que 90 jours se soient écoulés.</translation>
+<translation id="7979350009208995417">Ce créateur n'a pas encore configuré son compte pour recevoir des pourboires de votre portefeuille. Tous les pourboires que vous envoyez resteront en attente dans votre portefeuille, et de nouvelles tentatives seront effectuées automatiquement pendant 90 jours.</translation>
 <translation id="7461596279975181413">Ce créateur vérifié de Brave n'a pas encore configuré son compte pour recevoir les contributions des utilisateurs de Brave. Votre navigateur continuera d'essayer de contribuer jusqu'à ce qu'ils vérifient, ou jusqu'à ce que 90 jours se soient écoulés.</translation>
 <translation id="4292832015778676417">gains provenant d'annonces</translation>
 <translation id="3197752845651180812">Contributions en attente</translation>
@@ -827,6 +827,7 @@
 <translation id="3741998951694470470">Impossible de récupérer les données à importer</translation>
 <translation id="7900950536120202771">Erreur interne du nœud IPFS</translation>
 <translation id="1036635552229153800">Les données ont bien été importées, mais elles n'ont pas été déplacées dans le répertoire brave-import. Accédez à la page des paramètres d'importation pour le faire manuellement.</translation>
+<translation id="3793279629218362523">Gérer l'identifiant de pair et les clés IPNS</translation>
 <translation id="572392919096807438">Se souvenir de ma décision</translation>
 <translation id="7978789143098237970">jusqu'à ce que je ferme le site</translation>
 <translation id="3523195733429162409">pendant 24 heures</translation>

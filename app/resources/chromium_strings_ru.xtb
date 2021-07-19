@@ -20,6 +20,7 @@
 <translation id="1649714546770135458">Отключив эту функцию, вы сможете входить в систему на сайтах Brave (например, Gmail) без необходимости выполнять вход в Brave.</translation>
 <translation id="189297655255130768">Brave не отвечает. Перезапустить сейчас?</translation>
 <translation id="1775322105159056176">Brave не удалось определить или задать браузер по умолчанию</translation>
+<translation id="7665553140559834626">Перезапустить для обновления &amp;Chrome OS</translation>
 <translation id="9220324636239049437">С устройства будет удален 1 объект. Чтобы восстановить данные позже, войдите в Brave как <ph name="USER_EMAIL"/>.</translation>
 <translation id="831418749472885028">Чтобы проверить, защищены ли другие ваши пароли от утечки данных и прочих проблем с безопасностью, <ph name="BEGIN_LINK"/>войдите в Brave<ph name="END_LINK"/>.</translation>
 <translation id="142389341645668510">Настроить Brave</translation>
@@ -35,6 +36,7 @@
 <translation id="7798069806040634998">Для скачивания файлов браузеру Brave требуется доступ к хранилищу.</translation>
 <translation id="8447483940522230788">Помощник по Brave</translation>
 <translation id="7933006624150961626">Чтобы получить доступ к данным в Brave на всех устройствах, войдите в аккаунт и включите синхронизацию.</translation>
+<translation id="5486618155264784386">Установить Chrome OS</translation>
 <translation id="7291143854620707672">Администратор рабочего профиля может удалять любые данные, сохраненные в браузере Brave при использовании этого профиля (например, добавленные закладки, историю, пароли и настройки). <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">Перезагрузите Brave OS, чтобы установить обновление.</translation>
 <translation id="7387051847644272380">В процессе установки произошла ошибка в операционной системе. Скачайте Brave ещё раз.</translation>
@@ -48,7 +50,6 @@
 <translation id="777113543093865885">Удалить из Brave</translation>
 <translation id="2885378588091291677">Диспетчер задач</translation>
 <translation id="2176825726964012531">О &amp;Brave</translation>
-<translation id="245659736593643560">Chrome OS, как и <ph name="BEGIN_LINK_LINUX_OSS"/>среда разработки Linux (бета)<ph name="END_LINK_LINUX_OSS"/>, работает благодаря дополнительному <ph name="BEGIN_LINK_CROS_OSS"/>программному обеспечению с открытым исходным кодом<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8208853227947884571">Вы используете последнюю версию Brave</translation>
 <translation id="2953892977076487219">Brave пытается изменить пароли</translation>
 <translation id="8755404239607088219">Не удается запустить проверку паролей в Brave. Повторите попытку позже.</translation>
@@ -110,6 +111,7 @@
 <translation id="4823369970559443694">Не удается проверить пароли в Brave. Повторите попытку через 24 часа или <ph name="BEGIN_LINK"/>проверьте пароли в аккаунте Brave<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Используется та же технология проверки правописания, что и в Brave Поиске. Текст, который вы введете в браузере, будет отправлен в Brave. Этот параметр можно изменить в настройках.</translation>
 <translation id="1912973375560256099">Разрешить в Brave передачу входящего трафика по протоколу mDNS</translation>
+<translation id="711601904575862069">Перезапустить для обновления &amp;Brave</translation>
 <translation id="8797356639448065696">Brave работает в фоновом режиме</translation>
 <translation id="7406627712452599344">Используйте Brave в гостевом режиме, если не хотите сохранять данные о посещенных сайтах.</translation>
 <translation id="5952898964075639679">Добавить пользователя Brave</translation>
@@ -125,6 +127,7 @@
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave (бета-версия)</translation>
 <translation id="707769633889902835">Brave OS не может открыть эту страницу</translation>
 <translation id="696826782632239602">Для этого сайта Brave запрашивает доступ к данным о вашем местоположении.</translation>
+<translation id="7886919915603831625">Браузер Brave рекомендует не скачивать и не открывать этот файл.</translation>
 <translation id="1744365871163268756">Подождите, пока Brave устанавливает последние обновления системы</translation>
 <translation id="3861679447659630159">Brave пытается изменить пароли. Чтобы разрешить это действие, введите свой пароль Windows.</translation>
 <translation id="232381795826373334">Открывать PDF-файлы в Brave</translation>
@@ -133,6 +136,7 @@
 <translation id="5646769069113654257">Перезапустите Brave</translation>
 <translation id="2335583906071111058">Отображать Brave на этом языке</translation>
 <translation id="4331809312908958774">Chrome OS</translation>
+<translation id="79947657522496226">Chrome OS, как и <ph name="BEGIN_LINK_LINUX_OSS"/>среда разработки Linux<ph name="END_LINK_LINUX_OSS"/>, работает благодаря дополнительному <ph name="BEGIN_LINK_CROS_OSS"/>программному обеспечению с открытым исходным кодом<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="7207456302801184289">Добро пожаловать в Brave</translation>
 <translation id="5895138241574237353">Перезапустить</translation>
 <translation id="5903106910045431592">"<ph name="PAGE_TITLE"/>" – вход в сеть</translation>
@@ -186,7 +190,6 @@
 <translation id="8828443087767259398">Чтобы продолжить подключение, предоставьте браузеру Brave доступ к Bluetooth. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6418340404893954563">Простые пароли легко подобрать. Разрешите Brave <ph name="BEGIN_LINK"/>создавать и хранить надежные пароли для вас<ph name="END_LINK"/>.</translation>
 <translation id="3335606533094650083">Для этого сайта Brave запрашивает доступ к микрофону.</translation>
-<translation id="1785833016412082453">Не удается запустить проверку паролей в Brave. Повторите попытку позже.</translation>
 <translation id="1705567146636171298">Обновить Brave</translation>
 <translation id="5499063270485366718">Если у изображения нет понятного описания, Brave попытается его найти. Для создания описаний изображения отправляются в Brave.</translation>
 <translation id="1197672524850678392">Не удалось запустить Brave. Повторите попытку.</translation>
@@ -215,7 +218,6 @@
 <translation id="4784414698887946907">Данные о работе в браузере будут удалены с устройства. Чтобы восстановить их позже, войдите в Brave как <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Программе установки не удалось создать временный каталог. Возможно, у вас нет прав на установку приложений или недостаточно места на диске.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
-<translation id="38898988211673781">Удалять файлы cookie и данные сайтов при выходе из Brave</translation>
 <translation id="1652855885539187849">На данном устройстве уже есть профиль Brave для этого аккаунта.</translation>
 <translation id="8462524920674814187">На вашем компьютере используется OS X 10.10. Чтобы получать обновления Brave, установите на устройство OS X 10.11 или более поздней версии.</translation>
 <translation id="7963515534397191222">Не удалось установить последнюю версию Brave, в которой добавлены новые функции и обновления системы безопасности.</translation>
@@ -258,12 +260,13 @@
 <translation id="7863882214613921971">Открыть ссылку в новой вкладке браузера Brave</translation>
 <translation id="911206726377975832">Также удалить данные о работе в браузере?</translation>
 <translation id="2444257125841652328">Ваш системный администратор задал настройки, согласно которым Brave должен запускать альтернативный браузер для доступа к сайту <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="7902365066753170041">Перезапустить для обновления &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="6568793831116033768">Chrome OS</translation>
 <translation id="7977787072794666032">В работе Brave могут возникать сбои, так как браузер больше не поддерживает Windows XP и Windows Vista.</translation>
 <translation id="4484434718272972655">Кто использует Brave?</translation>
 <translation id="8992261409816268381">Авторы Brave</translation>
-<translation id="6134859571175647580">Внимание! Brave не может запретить расширениям записывать историю просмотров. Чтобы отключить данное расширение в режиме инкогнито, снимите этот флажок.</translation>
+<translation id="1299765473362724475">Внимание! Brave не может запретить расширениям записывать историю просмотров. Чтобы отключить данное расширение в Личном режиме, снимите этот флажок.</translation>
 <translation id="1448049584457347995">Чтобы обеспечить безопасность ваших данных, некоторые расширения Brave были отключены, так как <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> не содержит сведений о них, то есть эти компоненты могли быть установлены без вашего ведома.</translation>
 <translation id="8848045066928358658">Чтобы обеспечить безопасность ваших данных, некоторые расширения были отключены, так как <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> не содержит сведений о них (то есть они могли быть установлены без вашего ведома).</translation>
 <translation id="669092380621816981">Данные о работе этого пользователя в браузере будут удалены с устройства. Чтобы восстановить их, войдите в Brave как <ph name="USER_EMAIL"/>.</translation>

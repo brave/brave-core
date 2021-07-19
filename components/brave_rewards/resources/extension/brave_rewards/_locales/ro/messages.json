@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Cadouri bănești o singură dată",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "expiră pe",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Acest creator nu s-a înregistrat încă pentru a primi contribuții de la utilizatorii Brave. Orice plăți ați efectua acestea vor rămâne în portofelul dumneavoastră până când aceștia sunt verificați.",
+    "message": "Acest creator nu este configurat în prezent pentru a primi contribuții din portofelul dvs. Orice plată pe care o faceți va rămâne în așteptare în portofel și se va reîncerca automat efectuarea acesteia timp de 90 de zile.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

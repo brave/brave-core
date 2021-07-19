@@ -79,6 +79,7 @@
 <translation id="3488584642074079080">Atverti nuorodą „Brave“ inkognito lange su „Tor“</translation>
 <translation id="7475547933708221517">Bendrinti vietinį failą naudojant IPFS</translation>
 <translation id="2286177249736199435">Bendrinti vietinį aplanką naudojant IPFS</translation>
+<translation id="4491895534716990473">Importuoti pažymėtą tekstą į IPFS</translation>
 <translation id="8883166554766780543">Importuoti ir kopijuoti nuorodą į IPFS momentinę kopiją</translation>
 <translation id="784573715436258741">Bendrinti vietinį failą naudojant IPFS</translation>
 <translation id="6313675821927505581">Naujas privatus langas su Tor</translation>
@@ -195,16 +196,23 @@
 <translation id="911363100236037920">Įveskite naujo rakto pavadinimą</translation>
 <translation id="6358469157239228181">Šio pavadinimo naudoti negalima</translation>
 <translation id="5761731140570209168">Pridėti naują kolegų ryšio eilutę</translation>
+<translation id="2082206983920804886">Pasukti raktą</translation>
+<translation id="2521133093532260474">Negalima sustabdyti vietinio mazgo</translation>
+<translation id="86879877003581729">Negalima paleisti vietinio mazgo</translation>
 <translation id="6476061084931271248">Paleiskite mazgą iš naujo, kad būtų pritaikyti pakeitimai</translation>
 <translation id="3754226427671882382">Mazgą paleisti iš naujo</translation>
+<translation id="949667118776341807">Pasukti</translation>
 <translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Šis vardas negalioja</translation>
 <translation id="6758961763875471084">Keisti kolegų sąrašą</translation>
+<translation id="1295874070797049002">Eksportuoti raktą</translation>
+<translation id="3946479342297227860">Pašalinti raktą</translation>
 <translation id="1534091531114892221">Nustatyti IPFS kolegų aprašą</translation>
 <translation id="8996633027318264334">Ar tikrai norite ištrinti <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Mazgas nepaleistas</translation>
 <translation id="616058968889448209">IPFS tarnybos paleidimo klaida, daugiau informacijos rasite <ph name="BEGIN_LINK"/>diagnostikos puslapyje<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">„<ph name="KEY_NAME"/>“ rakto importuoti nepavyko</translation>
+<translation id="3364053282600191535">„<ph name="KEY_NAME"/>“ rakto eksportuoti nepavyko</translation>
 <translation id="8275038454117074363">Importuoti</translation>
 <translation id="3654980960391973513">Generuoti</translation>
 <translation id="5531501313997312487">Pradėti mazgą</translation>
@@ -305,11 +313,16 @@
 <translation id="312393675740711187">Straipsniai automatiškai įkeliami skaitymo režimu, kad sutaupytumėte laiko.</translation>
 <translation id="3234744217174488546">Įjunkite / išjunkite skaitymo režimą tik šiai svetainei. Jei norite išjungti spartųjį skaitlį visam naršyklės profiliui, apsilankykite</translation>
 <translation id="7839742507462737706">per spartųjį skaitlį</translation>
+<translation id="8490082094734500369">Išjungti skait. veikseną</translation>
+<translation id="2036503787657622020">Įjungti skait. veikseną</translation>
+<translation id="5226458915125328323">Sparčiojo skaitlio nuostatos</translation>
+<translation id="6284218950354553099">Automatiškai siųsti „Brave“ kasdienio naudojimo signalą</translation>
+<translation id="5288333155754958121">Šis anoniminis inkognito signalas leidžia „Brave“ įvertinti aktyvius naudotojus.</translation>
 <translation id="1872784258300710671">„Brave“ naudoja visiškai privačią produktų analizę bendram tam tikrų funkcijų naudojimui įvertinti</translation>
 <translation id="8712637175834984815">Supratau</translation>
 <translation id="4394049700291259645">Neleisti</translation>
-<translation id="6469509880167172749">Automatiškai siųskite visiškai privačią produktų analizę „Brave“</translation>
-<translation id="7090566321964540749">Ši anoniminė informacija leidžia „Brave“ įvertinti tik bendrą tam tikrų funkcijų naudojimą.</translation>
+<translation id="7142548388914389999">Leisti privatumo nepažeidžiančią produktų analizę (P3A)</translation>
+<translation id="609106526832379947">Ši visiškai nuasmeninta informacija padeda „Brave“ įvertinti bendrą tam tikrų funkcijų naudojimą ir jas patobulinti.</translation>
 <translation id="1947672064022327074">Ar norėtumėte paleisti kriptovaliutų pinigines „Ethereum“ palaikyti?</translation>
 <translation id="7583735190612229830">Nustatykite, kad kriptovaliutų piniginės sąveikautų su šia programa ir kitomis panašiomis programomis.</translation>
 <translation id="8731422418734770661">Nustatyti „Crypto Wallets“</translation>
