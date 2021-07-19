@@ -1,0 +1,13 @@
+diff --git a/components/net_log/resources/net_export.html b/components/net_log/resources/net_export.html
+index 43ec9d24bd315744797ff13d70d01f8d2c9975fb..aeef55ccc2b35e1cfafdb4d666d8e92bccb8d7ac 100644
+--- a/components/net_log/resources/net_export.html
++++ b/components/net_log/resources/net_export.html
+@@ -47,7 +47,7 @@
+         Click the button to start logging future network activity to a file on
+         disk.
+         <if expr="not(is_ios)">
+-        The log includes details of network activity from all of Chrome,
++        The log includes details of network activity from all of Brave,
+         including incognito and non-incognito tabs, visited URLs, and
+         information about the network configuration.
+         </if>
