@@ -10,6 +10,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/eth_block_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_tx_controller.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
@@ -36,6 +37,11 @@ BraveWalletService::BraveWalletService(
       std::make_unique<brave_wallet::AssetRatioController>(url_loader_factory);
   swap_controller_ =
       std::make_unique<brave_wallet::SwapController>(url_loader_factory);
+  block_tracker_ =
+      std::make_unique<brave_wallet::EthBlockTracker>(rpc_controller_.get());
+  // TODO(darkdh): Stop the tracker to save bandwidth when users are not using
+  // wallet actively
+  block_tracker_->Start(base::TimeDelta::FromSeconds(15));
 }
 
 BraveWalletService::~BraveWalletService() {}
@@ -76,6 +82,10 @@ brave_wallet::AssetRatioController* BraveWalletService::asset_ratio_controller()
 
 brave_wallet::SwapController* BraveWalletService::swap_controller() const {
   return swap_controller_.get();
+}
+
+brave_wallet::EthBlockTracker* BraveWalletService::block_tracker() const {
+  return block_tracker_.get();
 }
 
 std::vector<std::string> BraveWalletService::WalletAccountNames() const {
