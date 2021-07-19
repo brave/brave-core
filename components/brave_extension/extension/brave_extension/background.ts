@@ -5,6 +5,7 @@
 import * as bluebird from 'bluebird'
 
 import './background/greaselion'
+import './background/humanWeb'
 import './background/today'
 
 // workaround https://github.com/DefinitelyTyped/DefinitelyTyped/issues/42084

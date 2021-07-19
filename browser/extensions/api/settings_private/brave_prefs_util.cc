@@ -162,6 +162,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kFTXNewTabPageShowFTX] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
+  // Humanweb prefs
+  (*s_brave_allowlist)[kHumanWebEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // Brave today prefs
   (*s_brave_allowlist)[kBraveTodayOptedIn] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;

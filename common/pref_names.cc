@@ -88,6 +88,7 @@ const char kOtherBookmarksMigrated[] = "brave.other_bookmarks_migrated";
 const char kBraveShieldsSettingsVersion[] = "brave.shields_settings_version";
 const char kDefaultBrowserPromptEnabled[] =
     "brave.default_browser_prompt_enabled";
+const char kHumanWebEnabled[] = "brave.human_web_enabled";
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 const char kBraveGCMChannelStatus[] = "brave.gcm.channel_status";
 #endif
