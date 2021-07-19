@@ -1,0 +1,12 @@
+diff --git a/components/content_settings/core/browser/cookie_settings.cc b/components/content_settings/core/browser/cookie_settings.cc
+index b1c017a14bbf260770cd55178aa2376b921d7e1f..80122ae257764851ff2c02be4f834eef77bbbdae 100644
+--- a/components/content_settings/core/browser/cookie_settings.cc
++++ b/components/content_settings/core/browser/cookie_settings.cc
+@@ -190,6 +190,7 @@ ContentSetting CookieSettings::GetCookieSettingInternal(
+   // We should always have a value, at least from the default provider.
+   DCHECK(value);
+   ContentSetting setting = ValueToContentSetting(value.get());
++  BRAVE_COOKIE_SETTINGS_GET_COOKIES_SETTINGS_INTERNAL
+   bool block = block_third && is_third_party_request;
+ 
+   if (!block) {

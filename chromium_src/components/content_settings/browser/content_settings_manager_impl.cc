@@ -5,7 +5,15 @@
 
 #include "components/content_settings/browser/content_settings_manager_impl.h"
 
+#define BRAVE_CONTENT_SETTINGS_MANAGER_IMPL_ALLOW_STORAGE_ACCESS \
+  if (allowed) {                                                 \
+    allowed &= cookie_settings_->IsStorageAccessAllowed(         \
+        url, site_for_cookies, top_frame_origin, storage_type);  \
+  }
+
 #include "../../../../../components/content_settings/browser/content_settings_manager_impl.cc"
+
+#undef BRAVE_CONTENT_SETTINGS_MANAGER_IMPL_ALLOW_STORAGE_ACCESS
 
 namespace content_settings {
 
@@ -15,9 +23,13 @@ void ContentSettingsManagerImpl::AllowEphemeralStorageAccess(
     const url::Origin& origin,
     const GURL& site_for_cookies,
     const url::Origin& top_frame_origin,
-    base::OnceCallback<void(bool)> callback) {
-  std::move(callback).Run(cookie_settings_->ShouldUseEphemeralStorage(
-      origin.GetURL(), site_for_cookies, top_frame_origin));
+    AllowEphemeralStorageAccessCallback callback) {
+  url::Origin storage_origin;
+  const bool should_use = cookie_settings_->ShouldUseEphemeralStorage(
+      origin, site_for_cookies, top_frame_origin, storage_origin);
+  std::move(callback).Run(should_use
+                              ? absl::make_optional<url::Origin>(storage_origin)
+                              : absl::nullopt);
 }
 
 }  // namespace content_settings

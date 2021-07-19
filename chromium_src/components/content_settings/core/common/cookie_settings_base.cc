@@ -111,6 +111,12 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
   if (!first_party_url.is_valid())
     return false;
 
+  if (base::FeatureList::IsEnabled(
+          net::features::kBraveFirstPartyEphemeralStorage) &&
+      IsCookieSessionOnly(first_party_url)) {
+    return true;
+  }
+
   if (net::registry_controlled_domains::SameDomainOrHost(
           first_party_url, url,
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES))
@@ -182,6 +188,22 @@ bool CookieSettingsBase::IsCookieAccessAllowedImpl(
     return true;
 
   return false;
+}
+
+bool CookieSettingsBase::IsStorageAccessAllowed(
+    const GURL& url,
+    const GURL& site_for_cookies,
+    const absl::optional<url::Origin>& top_frame_origin,
+    StorageType storage_type) const {
+  if (storage_type != StorageType::INDEXED_DB ||
+      !base::FeatureList::IsEnabled(
+          net::features::kBraveFirstPartyEphemeralStorage)) {
+    return true;
+  }
+
+  // Allow INDEXED_DB only for non session-only (1pES) cookie sites.
+  return !IsCookieSessionOnly(
+      GetFirstPartyURL(site_for_cookies, top_frame_origin));
 }
 
 }  // namespace content_settings

@@ -17,5 +17,8 @@ const base::FeatureParam<int> kBraveEphemeralStorageKeepAliveTimeInSeconds = {
     &kBraveEphemeralStorageKeepAlive,
     "BraveEphemeralStorageKeepAliveTimeInSeconds", 30};
 
+const base::Feature kBraveFirstPartyEphemeralStorage{
+    "BraveFirstPartyEphemeralStorage", base::FEATURE_DISABLED_BY_DEFAULT};
+
 }  // namespace features
 }  // namespace net

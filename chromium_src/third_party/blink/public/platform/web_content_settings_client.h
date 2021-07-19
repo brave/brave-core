@@ -7,18 +7,20 @@
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_PLATFORM_WEB_CONTENT_SETTINGS_CLIENT_H_
 
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
+#include "url/origin.h"
 
-#define AllowStorageAccessSync                                    \
-  AllowAutoplay(bool play_requested) { return true; }             \
-  virtual bool AllowFingerprinting(bool enabled_per_settings) {   \
-    return enabled_per_settings;                                  \
-  }                                                               \
-  virtual BraveFarblingLevel GetBraveFarblingLevel() {            \
-    return BraveFarblingLevel::OFF;                               \
-  }                                                               \
-  virtual bool UseEphemeralStorageSync(StorageType storageType) { \
-    return false;                                                 \
-  }                                                               \
+#define AllowStorageAccessSync                                  \
+  AllowAutoplay(bool play_requested) { return true; }           \
+  virtual bool AllowFingerprinting(bool enabled_per_settings) { \
+    return enabled_per_settings;                                \
+  }                                                             \
+  virtual BraveFarblingLevel GetBraveFarblingLevel() {          \
+    return BraveFarblingLevel::OFF;                             \
+  }                                                             \
+  virtual absl::optional<url::Origin> UseEphemeralStorageSync(  \
+      StorageType storageType) {                                \
+    return absl::nullopt;                                       \
+  }                                                             \
   virtual bool AllowStorageAccessSync
 
 #include "../../../../../../third_party/blink/public/platform/web_content_settings_client.h"
