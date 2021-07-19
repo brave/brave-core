@@ -51,36 +51,6 @@ bool AdBlockCustomFiltersService::UpdateCustomFilters(
   return true;
 }
 
-bool AdBlockCustomFiltersService::MigrateLegacyCosmeticFilters(
-    const std::map<std::string, std::vector<std::string>> legacyFilters) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  PrefService* local_state = delegate()->local_state();
-  if (!local_state)
-    return false;
-  std::string filters_update =
-      local_state->GetString(prefs::kAdBlockCustomFilters);
-
-  filters_update +=
-      "\n\n! Filters migrated from "
-      "'Right click > Brave > Block element via selector'";
-  for (const auto& hostEntry : legacyFilters) {
-    const std::string& host = hostEntry.first;
-    const std::vector<std::string>& hostSelectors = hostEntry.second;
-
-    for (const auto& selector : hostSelectors) {
-      if (selector.empty()) {
-        continue;
-      }
-
-      const std::string rule = '\n' + host + "##" + selector;
-
-      filters_update += rule;
-    }
-  }
-
-  return UpdateCustomFilters(filters_update);
-}
-
 void AdBlockCustomFiltersService::UpdateCustomFiltersOnFileTaskRunner(
     const std::string& custom_filters) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());

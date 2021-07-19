@@ -28,8 +28,6 @@ class AdBlockCustomFiltersService : public AdBlockBaseService {
 
   std::string GetCustomFilters();
   bool UpdateCustomFilters(const std::string& custom_filters);
-  bool MigrateLegacyCosmeticFilters(
-      const std::map<std::string, std::vector<std::string>> legacyFilters);
 
  protected:
   bool Init() override;
