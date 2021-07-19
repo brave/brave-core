@@ -98,7 +98,7 @@ import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.tab.TabSelectionType;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
-import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout;
+import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.BraveReferrer;
 import org.chromium.chrome.browser.util.PackageUtils;
@@ -554,7 +554,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     }
 
     public void hideRewardsOnboardingIcon() {
-        BraveToolbarLayout layout = (BraveToolbarLayout)findViewById(R.id.toolbar);
+        BraveToolbarLayoutImpl layout = (BraveToolbarLayoutImpl) findViewById(R.id.toolbar);
         assert layout != null;
         if (layout != null) {
             layout.hideRewardsOnboardingIcon();
@@ -654,7 +654,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     }
 
     public void OnRewardsPanelDismiss() {
-        BraveToolbarLayout layout = (BraveToolbarLayout)findViewById(R.id.toolbar);
+        BraveToolbarLayoutImpl layout = (BraveToolbarLayoutImpl) findViewById(R.id.toolbar);
         assert layout != null;
         if (layout != null) {
             layout.onRewardsPanelDismiss();
@@ -662,7 +662,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     }
 
     public void dismissRewardsPanel() {
-        BraveToolbarLayout layout = (BraveToolbarLayout)findViewById(R.id.toolbar);
+        BraveToolbarLayoutImpl layout = (BraveToolbarLayoutImpl) findViewById(R.id.toolbar);
         assert layout != null;
         if (layout != null) {
             layout.dismissRewardsPanel();
@@ -670,7 +670,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     }
 
     public void dismissShieldsTooltip() {
-        BraveToolbarLayout layout = (BraveToolbarLayout)findViewById(R.id.toolbar);
+        BraveToolbarLayoutImpl layout = (BraveToolbarLayoutImpl) findViewById(R.id.toolbar);
         assert layout != null;
         if (layout != null) {
             layout.dismissShieldsTooltip();
@@ -678,7 +678,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     }
 
     public void openRewardsPanel() {
-        BraveToolbarLayout layout = (BraveToolbarLayout)findViewById(R.id.toolbar);
+        BraveToolbarLayoutImpl layout = (BraveToolbarLayoutImpl) findViewById(R.id.toolbar);
         assert layout != null;
         if (layout != null) {
             layout.openRewardsPanel();

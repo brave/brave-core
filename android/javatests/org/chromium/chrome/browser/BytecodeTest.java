@@ -25,7 +25,6 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
-import org.chromium.chrome.browser.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
@@ -58,6 +57,7 @@ import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
+import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
@@ -334,7 +334,7 @@ public class BytecodeTest {
                 StatusBarColorController.class, AppMenuDelegate.class,
                 ActivityLifecycleDispatcher.class, Supplier.class, BottomSheetController.class,
                 Supplier.class, TabContentManager.class, TabCreatorManager.class,
-                OneshotSupplier.class, SnackbarManager.class));
+                OneshotSupplier.class, SnackbarManager.class, JankTracker.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
                 "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
@@ -394,8 +394,8 @@ public class BytecodeTest {
                 MenuButtonCoordinator.class, MenuButtonCoordinator.class, ObservableSupplier.class,
                 ObservableSupplier.class, ObservableSupplier.class, ObservableSupplier.class,
                 ObservableSupplier.class, ObservableSupplier.class, Callback.class, Supplier.class,
-                OneshotSupplier.class, Supplier.class, BooleanSupplier.class, BooleanSupplier.class,
-                boolean.class, boolean.class, boolean.class, boolean.class, HistoryDelegate.class,
+                Supplier.class, BooleanSupplier.class, BooleanSupplier.class, boolean.class,
+                boolean.class, boolean.class, boolean.class, HistoryDelegate.class,
                 BooleanSupplier.class, OfflineDownloader.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
@@ -574,9 +574,11 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/suggestions/tile/BraveTileView"));
         Assert.assertTrue(checkSuperName(
                 "org/chromium/chrome/browser/customtabs/features/toolbar/CustomTabToolbar",
-                "org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout"));
+                "org/chromium/chrome/browser/toolbar/top/BraveToolbarLayoutImpl"));
         Assert.assertTrue(checkSuperName("org/chromium/chrome/browser/toolbar/top/ToolbarPhone",
-                "org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout"));
+                "org/chromium/chrome/browser/toolbar/top/BraveToolbarLayoutImpl"));
+        Assert.assertTrue(checkSuperName("org/chromium/chrome/browser/toolbar/top/ToolbarTablet",
+                "org/chromium/chrome/browser/toolbar/top/BraveToolbarLayoutImpl"));
         Assert.assertTrue(checkSuperName(
                 "org/chromium/chrome/browser/compositor/layouts/LayoutManagerChromePhone",
                 "org/chromium/chrome/browser/compositor/layouts/BraveLayoutManagerChrome"));
