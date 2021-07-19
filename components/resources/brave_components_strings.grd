@@ -302,6 +302,11 @@
       <message name="IDS_BRAVE_NEW_TAB_CARDS_TITLE" desc="Toggle cards title">Cards</message>
       <message name="IDS_BRAVE_NEW_TAB_CARDS_DESC" desc="Toggle cards description">By turning off Cards, all cards currently visible will be hidden. However, you may still be notified of new cards.</message>
 
+      <message name="IDS_BRAVE_ADS_SCHEDULED_CAPTCHA_NOTIFICATION_TITLE" desc="">Brave Ads paused</message>
+      <message name="IDS_BRAVE_ADS_SCHEDULED_CAPTCHA_NOTIFICATION_BODY" desc="">To keep Brave Rewards safe from abuse, we'll randomly ask users to solve a captcha. Click &#8220;Solve&#8221; to resume ads.</message>
+      <message name="IDS_BRAVE_ADS_SCHEDULED_CAPTCHA_NOTIFICATION_OK_BUTTON_TEXT" desc="">Solve</message>
+      <message name="IDS_BRAVE_ADS_SCHEDULED_CAPTCHA_NOTIFICATION_CANCEL_BUTTON_TEXT" desc="">Later</message>
+
       <if expr="enable_sidebar">
         <message name="IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE" desc="Title for brave together item in sidebar">
           Brave Talk

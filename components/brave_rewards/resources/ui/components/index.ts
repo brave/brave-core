@@ -2,6 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import AdaptiveCaptcha from './adaptiveCaptcha'
 import AdRowsDetails from './adRowsDetails'
 import Alert from './alert'
 import Amount from './amount'
@@ -52,6 +53,7 @@ import WalletSummarySlider from './walletSummarySlider'
 import WalletWrapper from './walletWrapper'
 
 export {
+  AdaptiveCaptcha,
   AdRowsDetails,
   Alert,
   Amount,

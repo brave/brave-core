@@ -70,6 +70,14 @@ class AdsClientMock : public AdsClient {
 
   MOCK_METHOD1(LoadResourceForId, std::string(const std::string& id));
 
+  MOCK_METHOD2(GetScheduledCaptcha,
+               void(const std::string& payment_id,
+                    GetScheduledCaptchaCallback callback));
+
+  MOCK_METHOD2(ShowScheduledCaptchaNotification,
+               void(const std::string& payment_id,
+                    const std::string& captcha_id));
+
   MOCK_METHOD2(RunDBTransaction,
                void(DBTransactionPtr, RunDBTransactionCallback));
 

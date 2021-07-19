@@ -1129,6 +1129,11 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Brave Ad Notification
       </message>
 
+      <!-- Brave Tooltips -->
+      <message name="IDS_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_ACCESSIBLE_NAME" desc="Text to be spoken when a tooltip is shown">
+        Brave Tooltip
+      </message>
+
       <!-- Sidebar -->
       <if expr="enable_sidebar">
         <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_REMOVE" desc="Menu for removing an item from sidebar">

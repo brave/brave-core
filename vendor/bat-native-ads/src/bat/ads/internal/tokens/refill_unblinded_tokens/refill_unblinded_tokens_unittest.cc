@@ -20,6 +20,7 @@
 
 using ::testing::_;
 using ::testing::InSequence;
+using ::testing::Invoke;
 using ::testing::NiceMock;
 using ::testing::Return;
 
@@ -185,6 +186,11 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokens) {
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
+  EXPECT_CALL(*ads_client_mock_, GetScheduledCaptcha(_, _))
+      .WillOnce(
+          Invoke([](const std::string& payment_id,
+                    GetScheduledCaptchaCallback callback) { callback(""); }));
+
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
@@ -224,6 +230,11 @@ TEST_F(BatAdsRefillUnblindedTokensTest, CatalogIssuersPublicKeyMismatch) {
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
+
+  EXPECT_CALL(*ads_client_mock_, GetScheduledCaptcha(_, _))
+      .WillOnce(
+          Invoke([](const std::string& payment_id,
+                    GetScheduledCaptchaCallback callback) { callback(""); }));
 
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
@@ -369,6 +380,11 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   // Act
   InSequence seq;
 
+  EXPECT_CALL(*ads_client_mock_, GetScheduledCaptcha(_, _))
+      .WillOnce(
+          Invoke([](const std::string& payment_id,
+                    GetScheduledCaptchaCallback callback) { callback(""); }));
+
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens())
       .Times(1);
@@ -380,6 +396,11 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(1);
+
+  EXPECT_CALL(*ads_client_mock_, GetScheduledCaptcha(_, _))
+      .WillOnce(
+          Invoke([](const std::string& payment_id,
+                    GetScheduledCaptchaCallback callback) { callback(""); }));
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnDidRefillUnblindedTokens())
@@ -424,6 +445,11 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RequestSignedTokensMissingNonce) {
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
+
+  EXPECT_CALL(*ads_client_mock_, GetScheduledCaptcha(_, _))
+      .WillOnce(
+          Invoke([](const std::string& payment_id,
+                    GetScheduledCaptchaCallback callback) { callback(""); }));
 
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
@@ -520,6 +546,11 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   // Act
   InSequence seq;
 
+  EXPECT_CALL(*ads_client_mock_, GetScheduledCaptcha(_, _))
+      .WillOnce(
+          Invoke([](const std::string& payment_id,
+                    GetScheduledCaptchaCallback callback) { callback(""); }));
+
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens())
       .Times(1);
@@ -583,6 +614,11 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
+
+  EXPECT_CALL(*ads_client_mock_, GetScheduledCaptcha(_, _))
+      .WillOnce(
+          Invoke([](const std::string& payment_id,
+                    GetScheduledCaptchaCallback callback) { callback(""); }));
 
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
@@ -686,6 +722,11 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
+  EXPECT_CALL(*ads_client_mock_, GetScheduledCaptcha(_, _))
+      .WillOnce(
+          Invoke([](const std::string& payment_id,
+                    GetScheduledCaptchaCallback callback) { callback(""); }));
+
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
@@ -788,6 +829,11 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingBatchProofDleq) {
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
+  EXPECT_CALL(*ads_client_mock_, GetScheduledCaptcha(_, _))
+      .WillOnce(
+          Invoke([](const std::string& payment_id,
+                    GetScheduledCaptchaCallback callback) { callback(""); }));
+
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
@@ -838,6 +884,11 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
+
+  EXPECT_CALL(*ads_client_mock_, GetScheduledCaptcha(_, _))
+      .WillOnce(
+          Invoke([](const std::string& payment_id,
+                    GetScheduledCaptchaCallback callback) { callback(""); }));
 
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
@@ -942,6 +993,11 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
+  EXPECT_CALL(*ads_client_mock_, GetScheduledCaptcha(_, _))
+      .WillOnce(
+          Invoke([](const std::string& payment_id,
+                    GetScheduledCaptchaCallback callback) { callback(""); }));
+
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
@@ -980,6 +1036,11 @@ TEST_F(BatAdsRefillUnblindedTokensTest, VerifyAndUnblindInvalidTokens) {
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
+
+  EXPECT_CALL(*ads_client_mock_, GetScheduledCaptcha(_, _))
+      .WillOnce(
+          Invoke([](const std::string& payment_id,
+                    GetScheduledCaptchaCallback callback) { callback(""); }));
 
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
@@ -1136,6 +1197,11 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
+
+  EXPECT_CALL(*ads_client_mock_, GetScheduledCaptcha(_, _))
+      .WillOnce(
+          Invoke([](const std::string& payment_id,
+                    GetScheduledCaptchaCallback callback) { callback(""); }));
 
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);

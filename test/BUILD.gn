@@ -169,6 +169,7 @@ test("brave_unit_tests") {
     "//brave/common:network_constants",
     "//brave/common:pref_names",
     "//brave/components/adblock_rust_ffi",
+    "//brave/components/brave_adaptive_captcha/test:brave_adaptive_captcha_unit_tests",
     "//brave/components/brave_ads/test:brave_ads_unit_tests",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_private_cdn",

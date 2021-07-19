@@ -6,6 +6,8 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REFILL_UNBLINDED_TOKENS_REFILL_UNBLINDED_TOKENS_DELEGATE_MOCK_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REFILL_UNBLINDED_TOKENS_REFILL_UNBLINDED_TOKENS_DELEGATE_MOCK_H_
 
+#include <string>
+
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
@@ -28,6 +30,10 @@ class RefillUnblindedTokensDelegateMock : public RefillUnblindedTokensDelegate {
 
   MOCK_METHOD(void, OnWillRetryRefillingUnblindedTokens, ());
   MOCK_METHOD(void, OnDidRetryRefillingUnblindedTokens, ());
+
+  MOCK_METHOD(void,
+              OnCaptchaRequiredToRefillUnblindedTokens,
+              (const std::string& captcha_id));
 };
 
 }  // namespace ads

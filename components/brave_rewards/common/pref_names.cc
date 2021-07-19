@@ -8,6 +8,13 @@
 namespace brave_rewards {
 namespace prefs {
 
+const char kScheduledCaptchaId[] = "brave.rewards.scheduled_captcha.id";
+const char kScheduledCaptchaPaymentId[] =
+    "brave.rewards.scheduled_captcha.payment_id";
+const char kScheduledCaptchaSnoozeCount[] =
+    "brave.rewards.scheduled_captcha.snooze_count";
+const char kScheduledCaptchaFailedAttempts[] =
+    "brave.rewards.scheduled_captcha.failed_attempts";
 const char kHideButton[] = "brave.hide_brave_rewards_button";
 const char kEnabled[] = "brave.rewards.enabled";
 const char kNotifications[] = "brave.rewards.notifications";

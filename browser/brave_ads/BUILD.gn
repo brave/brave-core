@@ -15,6 +15,7 @@ source_set("brave_ads") {
   deps = [
     "//base",
     "//brave/browser/profiles:util",
+    "//brave/components/brave_adaptive_captcha",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/browser/buildflags",
     "//components/dom_distiller/content/browser",

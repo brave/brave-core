@@ -1,0 +1,21 @@
+source_set("tooltips") {
+  sources = [ "ad_tooltip_platform_bridge.h" ]
+
+  if (is_android) {
+    sources += [ "ad_tooltip_platform_bridge_android.cc" ]
+  } else {
+    sources += [ "ad_tooltip_platform_bridge.cc" ]
+  }
+
+  deps = [
+    "//base",
+    "//brave/browser/brave_ads",
+    "//brave/browser/profiles:util",
+    "//brave/browser/ui/brave_ads",
+    "//skia",
+  ]
+
+  if (is_android) {
+    deps += [ "//brave/browser/brave_ads/android:jni_headers" ]
+  }
+}
