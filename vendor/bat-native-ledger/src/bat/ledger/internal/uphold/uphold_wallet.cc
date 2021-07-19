@@ -22,12 +22,12 @@ namespace ledger {
 namespace uphold {
 
 namespace {
-std::string GetNotificationForUserStatus(UserStatus status, bool verified) {
+std::string GetNotificationForUserStatus(UserStatus status) {
+  DCHECK(status != UserStatus::OK);
+
   switch (status) {
     case UserStatus::BLOCKED:
       return notifications::kBlockedUser;
-    case UserStatus::OK:
-      return !verified ? notifications::kUnverifiedUser : std::string{};
     case UserStatus::PENDING:
       return notifications::kPendingUser;
     case UserStatus::RESTRICTED:
@@ -124,9 +124,8 @@ void UpholdWallet::OnGetUser(const type::Result result,
     return callback(type::Result::LEDGER_ERROR);
   }
 
-  if (user.status != UserStatus::OK || !user.verified) {
-    const auto notification =
-        GetNotificationForUserStatus(user.status, user.verified);
+  if (user.status != UserStatus::OK) {
+    const auto notification = GetNotificationForUserStatus(user.status);
 
     // Entering NOT_CONNECTED or DISCONNECTED_VERIFIED.
     ledger_->uphold()->DisconnectWallet(

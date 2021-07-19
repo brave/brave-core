@@ -267,18 +267,6 @@
     "message": "Your account at Uphold is currently restricted.",
     "description": "Description for restricted user notification"
   },
-  "upholdUnverifiedUserLearnMore": {
-    "message": "Learn More",
-    "description": "Notification button text to learn more about the membership process"
-  },
-  "upholdUnverifiedUserTitle": {
-    "message": "Error: Unverified account",
-    "description": "Title for unverified user notification"
-  },
-  "upholdUnverifiedUserNotification": {
-    "message": "Your Uphold account is still not fully verified on Uphold.",
-    "description": "Description for unverified user notification"
-  },
   "deviceLimitReachedLearnMore": {
     "message": "Learn More",
     "description": "Notification button text to learn more about device limit"

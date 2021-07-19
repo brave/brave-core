@@ -209,8 +209,6 @@ export class Panel extends React.Component<Props, State> {
 
   onUpholdRestrictedUser = this.onEvent('https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk')
 
-  onUpholdUnverifiedUser = this.onEvent('https://support.uphold.com/hc/en-us/articles/202766795-Here-s-how-to-verify-your-identity-it-s-easy')
-
   onPromotionHide = (promotionId: string) => {
     this.actions.resetPromotion(promotionId)
   }
@@ -368,9 +366,6 @@ export class Panel extends React.Component<Props, State> {
       case 'upholdRestrictedUser':
         clickEvent = this.onUpholdRestrictedUser.bind(this, id)
         break
-      case 'upholdUnverifiedUser':
-        clickEvent = this.onUpholdUnverifiedUser.bind(this, id)
-        break
       default:
         clickEvent = undefined
         break
@@ -513,10 +508,6 @@ export class Panel extends React.Component<Props, State> {
           case 'uphold_restricted_user':
             type = 'upholdRestrictedUser'
             text = getMessage('upholdRestrictedUserNotification')
-            break
-          case 'uphold_unverified_user':
-            type = 'upholdUnverifiedUser'
-            text = getMessage('upholdUnverifiedUserNotification')
             break
           default:
             break

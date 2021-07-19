@@ -18,7 +18,7 @@
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=UpholdTest.*
+// npm run test -- brave_unit_tests --filter=UpholdTest*
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -557,21 +557,8 @@ INSTANTIATE_TEST_SUITE_P(
       type::Result::LEDGER_ERROR,
       type::WalletStatus::NOT_CONNECTED
     },
-    GetUserParamType{  // Account is unverified at Uphold. (PENDING)
-      "06_PENDING_account_is_unverified_at_uphold",
-      R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
-        {},
-        {},
-        net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": null })",
-        {}
-      },
-      type::Result::LEDGER_ERROR,
-      type::WalletStatus::NOT_CONNECTED
-    },
     GetUserParamType{  // Access token expired! (VERIFIED)
-      "07_VERIFIED_access_token_expired",
+      "06_VERIFIED_access_token_expired",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       type::UrlResponse{
         {},
@@ -584,7 +571,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     GetUserParamType{  // Couldn't get the user object from Uphold! (VERIFIED)
-      "08_VERIFIED_couldn_t_get_the_user_object_from_uphold",
+      "07_VERIFIED_couldn_t_get_the_user_object_from_uphold",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       type::UrlResponse{
         {},
@@ -597,7 +584,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::VERIFIED
     },
     GetUserParamType{  // BAT is not allowed for the user! (VERIFIED)
-      "09_VERIFIED_bat_is_not_allowed_for_the_user",
+      "08_VERIFIED_bat_is_not_allowed_for_the_user",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       type::UrlResponse{
         {},
@@ -610,7 +597,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     GetUserParamType{  // Account is blocked at Uphold. (VERIFIED)
-      "10_VERIFIED_account_is_blocked_at_uphold",
+      "09_VERIFIED_account_is_blocked_at_uphold",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       type::UrlResponse{
         {},
@@ -623,7 +610,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     GetUserParamType{  // Account is pending at Uphold. (VERIFIED)
-      "11_VERIFIED_account_is_pending_at_uphold",
+      "10_VERIFIED_account_is_pending_at_uphold",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       type::UrlResponse{
         {},
@@ -636,7 +623,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     GetUserParamType{  // Account is restricted at Uphold. (VERIFIED)
-      "12_VERIFIED_account_is_restricted_at_uphold",
+      "11_VERIFIED_account_is_restricted_at_uphold",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       type::UrlResponse{
         {},
@@ -648,21 +635,8 @@ INSTANTIATE_TEST_SUITE_P(
       type::Result::LEDGER_ERROR,
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
-    GetUserParamType{  // Account is unverified at Uphold. (VERIFIED)
-      "13_VERIFIED_account_is_unverified_at_uphold",
-      R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
-      type::UrlResponse{
-        {},
-        {},
-        net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": null })",
-        {}
-      },
-      type::Result::LEDGER_ERROR,
-      type::WalletStatus::DISCONNECTED_VERIFIED
-    },
     GetUserParamType{  // Happy path. (VERIFIED)
-      "14_VERIFIED_happy_path",
+      "12_VERIFIED_happy_path",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       type::UrlResponse{
         {},

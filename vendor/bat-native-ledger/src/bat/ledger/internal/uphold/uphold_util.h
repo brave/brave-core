@@ -22,7 +22,6 @@ const char kBATNotAllowedForUser[] = "uphold_bat_not_allowed_for_user";
 const char kBlockedUser[] = "uphold_blocked_user";
 const char kPendingUser[] = "uphold_pending_user";
 const char kRestrictedUser[] = "uphold_restricted_user";
-const char kUnverifiedUser[] = "uphold_unverified_user";
 }  // namespace notifications
 
 const char kUrlStaging[] = "https://wallet-sandbox.uphold.com";

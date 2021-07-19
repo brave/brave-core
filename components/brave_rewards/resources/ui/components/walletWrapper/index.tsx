@@ -103,7 +103,6 @@ export type NotificationType =
   'upholdBlockedUser' |
   'upholdPendingUser' |
   'upholdRestrictedUser' |
-  'upholdUnverifiedUser' |
   'verifyWallet' |
   ''
 
@@ -284,7 +283,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       case 'upholdBlockedUser':
       case 'upholdPendingUser':
       case 'upholdRestrictedUser':
-      case 'upholdUnverifiedUser':
         buttonText = getLocale(type + 'LearnMore')
         buttonAction = this.onNotificationClick
         break
@@ -471,7 +469,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       case 'upholdBlockedUser':
       case 'upholdPendingUser':
       case 'upholdRestrictedUser':
-      case 'upholdUnverifiedUser':
       case 'verifyWallet':
         icon = megaphoneIconUrl
         break
@@ -508,7 +505,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       case 'upholdBlockedUser':
       case 'upholdPendingUser':
       case 'upholdRestrictedUser':
-      case 'upholdUnverifiedUser':
       case 'verifyWallet':
         typeText = getLocale(notification.type + 'Title')
         break
