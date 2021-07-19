@@ -20,6 +20,10 @@ const updateBadgeTextAllWindows = (windows: chrome.windows.Window[], state?: Rew
   }
 
   windows.forEach((window => {
+    if (!window.id) {
+      return
+    }
+
     const tabKey = getTabKey(window.id)
     const publishers: Record<string, RewardsExtension.Publisher> = state.publishers
     const publisher = publishers[tabKey]
