@@ -35,7 +35,7 @@ std::string GetWallet::GetUrl() const {
   const auto rewards_wallet = ledger_->wallet()->GetWallet();
   if (!rewards_wallet) {
     BLOG(0, "Rewards wallet is null!");
-    return {};
+    return "";
   }
 
   return GetServerUrl("/v3/wallet/" + rewards_wallet->payment_id);
@@ -50,8 +50,8 @@ void GetWallet::OnRequest(const type::UrlResponse& response,
     return callback(result, std::string{}, false);
   }
 
-  std::string custodian{};
-  bool linked{};
+  std::string custodian = "";
+  bool linked = false;
   result = ParseBody(response.body, &custodian, &linked);
   callback(result, custodian, linked);
 }
@@ -80,10 +80,10 @@ type::Result GetWallet::ParseBody(const std::string& body,
                                   bool* linked) const {
   DCHECK(custodian);
   DCHECK(linked);
-  *custodian = {};
-  *linked = {};
+  *custodian = "";
+  *linked = false;
 
-  base::Optional<base::Value> value = base::JSONReader::Read(body);
+  absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     return type::Result::LEDGER_ERROR;

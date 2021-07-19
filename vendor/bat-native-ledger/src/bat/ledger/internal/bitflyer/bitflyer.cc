@@ -171,8 +171,7 @@ void Bitflyer::DisconnectWallet(const bool manual) {
             wallet->address.substr(0, 5));
   }
 
-  wallet = ::ledger::wallet::ResetWallet(std::move(wallet),
-                                         constant::kWalletBitflyer);
+  wallet = ::ledger::wallet::ResetWallet(std::move(wallet));
   if (manual) {
     wallet->status = type::WalletStatus::NOT_CONNECTED;
   }

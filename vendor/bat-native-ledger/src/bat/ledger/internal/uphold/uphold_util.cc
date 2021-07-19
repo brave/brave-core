@@ -131,8 +131,8 @@ type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
     case type::WalletStatus::DISCONNECTED_VERIFIED: {
       DCHECK(wallet->token.empty());
       DCHECK(wallet->address.empty());
-      wallet->add_url = {};
-      wallet->withdraw_url = {};
+      wallet->add_url = "";
+      wallet->withdraw_url = "";
       break;
     }
     default:
@@ -147,7 +147,7 @@ type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
 }
 
 std::string GenerateVerifyLink(type::ExternalWalletPtr wallet) {
-  std::string url{};
+  std::string url = "";
   if (!wallet) {
     return url;
   }
@@ -179,7 +179,7 @@ std::string GenerateVerifyLink(type::ExternalWalletPtr wallet) {
 
 template <typename T, typename... Ts>
 bool one_of(T&& t, Ts&&... ts) {
-  bool match{};
+  bool match = false;
 
   static_cast<void>(std::initializer_list<bool>{
       (match = match || std::forward<T>(t) == std::forward<Ts>(ts))...});
@@ -188,7 +188,7 @@ bool one_of(T&& t, Ts&&... ts) {
 }
 
 void LogWalletStatusChange(LedgerImpl* ledger,
-                           base::Optional<type::WalletStatus> from,
+                           absl::optional<type::WalletStatus> from,
                            type::WalletStatus to) {
   DCHECK(ledger);
   DCHECK(!from ||

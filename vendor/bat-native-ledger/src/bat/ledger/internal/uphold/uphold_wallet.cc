@@ -34,7 +34,7 @@ std::string GetNotificationForUserStatus(UserStatus status) {
       return notifications::kRestrictedUser;
     default:
       DCHECK(status == UserStatus::EMPTY);
-      return {};
+      return "";
   }
 }
 }  // namespace

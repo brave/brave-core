@@ -56,7 +56,7 @@ type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet);
 std::string GenerateVerifyLink(type::ExternalWalletPtr wallet);
 
 void LogWalletStatusChange(LedgerImpl* ledger,
-                           base::Optional<type::WalletStatus> from,
+                           absl::optional<type::WalletStatus> from,
                            type::WalletStatus to);
 
 }  // namespace uphold

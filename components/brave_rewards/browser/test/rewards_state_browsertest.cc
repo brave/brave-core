@@ -305,7 +305,7 @@ class UpholdStateMachine : public RewardsStateBrowserTest,
 
  private:
   static std::string from_json(const std::string& json) {
-    std::string suffix{};
+    std::string suffix = "";
 
     base::Optional<base::Value> value = base::JSONReader::Read(json);
     if (value && value->is_dict()) {

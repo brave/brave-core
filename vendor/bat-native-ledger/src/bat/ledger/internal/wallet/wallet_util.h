@@ -27,8 +27,7 @@ bool SetWallet(LedgerImpl* ledger,
                type::ExternalWalletPtr wallet,
                const std::string wallet_type);
 
-type::ExternalWalletPtr ResetWallet(type::ExternalWalletPtr wallet,
-                                    const std::string wallet_type);
+type::ExternalWalletPtr ResetWallet(type::ExternalWalletPtr wallet);
 
 }  // namespace wallet
 }  // namespace ledger

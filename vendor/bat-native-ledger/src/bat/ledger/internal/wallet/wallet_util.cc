@@ -176,13 +176,14 @@ bool SetWallet(LedgerImpl* ledger,
   return success;
 }
 
-type::ExternalWalletPtr ResetWallet(type::ExternalWalletPtr wallet,
-                                    const std::string wallet_type) {
+type::ExternalWalletPtr ResetWallet(type::ExternalWalletPtr wallet) {
   if (!wallet) {
     return nullptr;
   }
 
   const auto status = wallet->status;
+  const auto wallet_type = wallet->type;
+  DCHECK(!wallet_type.empty());
   wallet = type::ExternalWallet::New();
   wallet->type = wallet_type;
 

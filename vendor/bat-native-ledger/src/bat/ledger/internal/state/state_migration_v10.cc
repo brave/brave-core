@@ -35,21 +35,21 @@ void StateMigrationV10::Migrate(ledger::ResultCallback callback) {
 
   switch (uphold_wallet->status) {
     case type::WalletStatus::NOT_CONNECTED:
-      uphold_wallet->token = {};
-      uphold_wallet->address = {};
+      uphold_wallet->token = "";
+      uphold_wallet->address = "";
       break;
     case type::WalletStatus::CONNECTED:
       uphold_wallet->status = !uphold_wallet->token.empty()
                                   ? type::WalletStatus::PENDING
                                   : type::WalletStatus::NOT_CONNECTED;
-      uphold_wallet->address = {};
+      uphold_wallet->address = "";
       break;
     case type::WalletStatus::VERIFIED: {
       if (uphold_wallet->token.empty() || uphold_wallet->address.empty()) {
         uphold_wallet->status = !uphold_wallet->token.empty()
                                     ? type::WalletStatus::PENDING
                                     : type::WalletStatus::DISCONNECTED_VERIFIED;
-        uphold_wallet->address = {};
+        uphold_wallet->address = "";
         break;
       }
 
@@ -65,18 +65,18 @@ void StateMigrationV10::Migrate(ledger::ResultCallback callback) {
     }
     case type::WalletStatus::DISCONNECTED_NOT_VERIFIED:
       uphold_wallet->status = type::WalletStatus::DISCONNECTED_VERIFIED;
-      uphold_wallet->token = {};
-      uphold_wallet->address = {};
+      uphold_wallet->token = "";
+      uphold_wallet->address = "";
       break;
     case type::WalletStatus::DISCONNECTED_VERIFIED:
-      uphold_wallet->token = {};
-      uphold_wallet->address = {};
+      uphold_wallet->token = "";
+      uphold_wallet->address = "";
       break;
     case type::WalletStatus::PENDING:
       uphold_wallet->status = !uphold_wallet->token.empty()
                                   ? type::WalletStatus::PENDING
                                   : type::WalletStatus::NOT_CONNECTED;
-      uphold_wallet->address = {};
+      uphold_wallet->address = "";
       break;
     default:
       NOTREACHED();
@@ -106,7 +106,7 @@ void StateMigrationV10::OnGetWallet(type::Result result,
       custodian != constant::kWalletUphold ||
       !linked) {  // deemed semi-VERIFIED || semi-VERIFIED
     uphold_wallet->status = type::WalletStatus::PENDING;
-    uphold_wallet->address = {};
+    uphold_wallet->address = "";
   }
 
   uphold_wallet = ledger::uphold::GenerateLinks(std::move(uphold_wallet));

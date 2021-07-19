@@ -183,8 +183,7 @@ void Uphold::DisconnectWallet(const std::string& notification) {
   const bool manual = notification.empty();
 
   const auto from = wallet->status;
-  wallet =
-      ledger::wallet::ResetWallet(std::move(wallet), constant::kWalletUphold);
+  wallet = ledger::wallet::ResetWallet(std::move(wallet));
   if (manual) {
     wallet->status = type::WalletStatus::NOT_CONNECTED;
   }

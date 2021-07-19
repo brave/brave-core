@@ -189,7 +189,7 @@ export class Panel extends React.Component<Props, State> {
   }
 
   onEvent = (learnMore: string) => {
-    return function (id: string) {
+    return (id: string) => {
       chrome.tabs.create({
         url: learnMore
       })

@@ -231,8 +231,8 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
 
   // Not connected
   wallet->status = type::WalletStatus::NOT_CONNECTED;
-  wallet->token = {};    // must be empty
-  wallet->address = {};  // must be empty
+  wallet->token = "";    // must be empty
+  wallet->address = "";  // must be empty
   auto result = uphold::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
@@ -262,8 +262,8 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
 
   // Disconnected Verified
   wallet->status = type::WalletStatus::DISCONNECTED_VERIFIED;
-  wallet->token = {};    // must be empty
-  wallet->address = {};  // must be empty
+  wallet->token = "";    // must be empty
+  wallet->address = "";  // must be empty
   result = uphold::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
@@ -280,7 +280,7 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
   // Pending
   wallet->status = type::WalletStatus::PENDING;
   wallet->token = "must be non-empty";
-  wallet->address = {};  // must be empty
+  wallet->address = "";  // must be empty
   result = uphold::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url,
             "https://wallet-sandbox.uphold.com/signup/step2"
@@ -302,8 +302,8 @@ TEST_F(UpholdUtilTest, GenerateVerifyLink) {
 
   // Not connected
   wallet->status = type::WalletStatus::NOT_CONNECTED;
-  wallet->token = {};    // must be empty
-  wallet->address = {};  // must be empty
+  wallet->token = "";    // must be empty
+  wallet->address = "";  // must be empty
   auto result = uphold::GenerateVerifyLink(wallet->Clone());
   ASSERT_EQ(
       result,
@@ -323,8 +323,8 @@ TEST_F(UpholdUtilTest, GenerateVerifyLink) {
 
   // Disconnected Verified
   wallet->status = type::WalletStatus::DISCONNECTED_VERIFIED;
-  wallet->token = {};    // must be empty
-  wallet->address = {};  // must be empty
+  wallet->token = "";    // must be empty
+  wallet->address = "";  // must be empty
   result = uphold::GenerateVerifyLink(wallet->Clone());
   ASSERT_EQ(
       result,
@@ -338,7 +338,7 @@ TEST_F(UpholdUtilTest, GenerateVerifyLink) {
   // Pending
   wallet->status = type::WalletStatus::PENDING;
   wallet->token = "must be non-empty";
-  wallet->address = {};  // must be empty
+  wallet->address = "";  // must be empty
   result = uphold::GenerateVerifyLink(wallet->Clone());
   ASSERT_EQ(result,
             "https://wallet-sandbox.uphold.com/signup/step2"
