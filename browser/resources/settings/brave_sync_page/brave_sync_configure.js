@@ -118,7 +118,9 @@ Polymer({
   },
 
   onDeleteDevice_: async function(e) {
-    const messageText = this.i18n('braveSyncDeleteDeviceConfirmation')
+    const supportsSelfDelete = e.currentTarget.arg2
+    const messageText = (supportsSelfDelete) ? this.i18n('braveSyncDeleteDeviceConfirmation') :
+      this.i18n('braveSyncDeleteUnupdatedDeviceConfirmation')
     const shouldDeleteDevice = confirm(messageText)
     if (!shouldDeleteDevice) {
       return

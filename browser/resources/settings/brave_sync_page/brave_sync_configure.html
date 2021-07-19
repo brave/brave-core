@@ -105,11 +105,11 @@
           </th>
           <td>[[getDeviceDisplayDate(item)]]</td>
           <td>
-            <template is="dom-if" if="[[item.supportsSelfDelete]]">
+            <template is="dom-if" if="[[!item.isCurrentDevice]]">
               <cr-icon-button
                 class="delete-button"
                 iron-icon="brave_settings:close-circle"
-                on-click="onDeleteDevice_" arg="[[item.guid]]"
+                on-click="onDeleteDevice_" arg="[[item.guid]]" arg2="[[item.supportsSelfDelete]]"
                 aria-label="Delete selected device" />
             </template>
           </td>
