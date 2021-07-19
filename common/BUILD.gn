@@ -101,8 +101,6 @@ source_set("common") {
     visibility += [ "//brave/components/ipfs/test:brave_ipfs_browser_tests" ]
   }
 
-  # Remove when https://github.com/brave/brave-browser/issues/10653 is resolved
-  check_includes = false
   deps = []
 
   sources = [
@@ -136,7 +134,11 @@ source_set("common") {
       "extensions/whitelist.h",
     ]
 
-    deps += [ "//extensions/common:common_constants" ]
+    deps += [
+      "//brave/components/brave_component_updater/browser",
+      "//brave/components/brave_wallet/common/buildflags",
+      "//extensions/common:common_constants",
+    ]
 
     public_deps = [ "extensions/api" ]
   }
@@ -148,6 +150,7 @@ source_set("common") {
     ":switches",
     "//base",
     "//brave/chromium_src:common",
+    "//components/version_info:channel",
     "//extensions/buildflags",
     "//services/service_manager",
     "//ui/base",
@@ -161,7 +164,9 @@ source_set("common") {
 
     deps += [
       "//brave/components/resources",
+      "//brave/components/resources:static_resources_grit",
       "//chrome/common",
+      "//chrome/common:channel_info",
       "//chrome/common:constants",
       "//components/resources",
       "//content/public/common",
