@@ -15,6 +15,7 @@
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/views/speedreader/speedreader_bubble_util.h"
+#include "brave/browser/ui/views/speedreader/speedreader_dancing_books.h"
 #include "brave/common/url_constants.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
@@ -137,6 +138,9 @@ void SpeedreaderModeBubble::Init() {
       base::BindRepeating(&SpeedreaderModeBubble::OnLinkClicked,
                           base::Unretained(this)));
   site_toggle_explanation_ = AddChildView(std::move(site_toggle_explanation));
+
+  auto speedreader_dancing_books = std::make_unique<SpeedreaderDancingBooks>();
+  AddChildView(std::move(speedreader_dancing_books));
 }
 
 void SpeedreaderModeBubble::UpdateColors() {

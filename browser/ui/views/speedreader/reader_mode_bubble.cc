@@ -14,6 +14,7 @@
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/views/speedreader/speedreader_bubble_util.h"
+#include "brave/browser/ui/views/speedreader/speedreader_dancing_books.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -128,6 +129,9 @@ void ReaderModeBubble::Init() {
       l10n_util::GetStringUTF16(IDS_SPEEDREADER_ENABLE_BUTTON));
   enable_speedreader_button_ =
       AddChildView(std::move(enable_speedreader_button));
+
+  auto speedreader_dancing_books = std::make_unique<SpeedreaderDancingBooks>();
+  AddChildView(std::move(speedreader_dancing_books));
 }
 
 void ReaderModeBubble::OnButtonPressed(const ui::Event& event) {
