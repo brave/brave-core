@@ -35,7 +35,6 @@ _kind_to_nsnumber_getter = {
 class Generator(generator.Generator):
   def __init__(self, *args, **kwargs):
     super(Generator, self).__init__(*args, **kwargs)
-    self.class_prefix = ""
 
   @staticmethod
   def GetTemplatePrefix():
@@ -52,7 +51,6 @@ class Generator(generator.Generator):
       "cpp_to_objc_assign": self._CppToObjCAssign,
       "objc_to_cpp_assign": self._ObjCToCppAssign,
       "cpp_namespace_from_kind": self._CppNamespaceFromKind,
-      "swift_enum_name_formatter": self._SwiftEnumNameFormatter,
     }
     return objc_filters
 
@@ -145,47 +143,6 @@ class Generator(generator.Generator):
     }
     if name in reserved:
       return reserved[name]
-    return name
-
-  def _SwiftEnumNameFormatter(self, enum):
-    name = enum.name
-    # A set of reserved names that would conflict with commonly used standard Swift types
-    reserved = [
-      # Swift
-      'Character',
-      'Collection',
-      'Result',
-      # SwiftUI
-      'Environment',
-      # Foundation
-      'AffineTransform',
-      'Array',
-      'Calendar',
-      'CharacterSet',
-      'Data',
-      'DateComponents',
-      'DateInterval',
-      'Date',
-      'Decimal',
-      'Dictionary',
-      'IndexPath',
-      'IndexSet',
-      'Locale',
-      'Measurement',
-      'Notification',
-      'PersonNameComponents',
-      'Set',
-      'String',
-      'TimeZone',
-      'URL',
-      'URLComponents',
-      'URLQueryItem',
-      'URLRequest',
-      'UUID',
-    ]
-    if name in reserved:
-      # Keep them prefixed in Swift
-      return "%s%s" % (self._ObjCPrefix(), name)
     return name
 
   def _ObjCEnumFormatter(self, str):
@@ -357,8 +314,6 @@ class Generator(generator.Generator):
     return str(kind.module.namespace).replace(".", "::")
 
   def _ObjCPrefix(self):
-    if len(self.class_prefix) > 0:
-      return self.class_prefix
     return self._UnderToCamel(str(self.module.namespace).replace(".mojom", ""))
 
   def _UnderToCamel(self, value, digits_split=False):

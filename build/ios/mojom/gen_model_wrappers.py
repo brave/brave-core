@@ -17,7 +17,6 @@ def parse_args():
   parser = argparse.ArgumentParser(description='Generate Obj-C files from mojo definitions')
   parser.add_argument('--mojom-module', nargs=1)
   parser.add_argument('--output-dir', nargs=1)
-  parser.add_argument('--class-prefix', nargs='?', default="")
   parser.add_argument('--exclude', nargs='*', default=[])
   return parser.parse_args()
 
@@ -27,7 +26,6 @@ def main():
   args = parse_args()
   mojom_module = args.mojom_module[0]
   output_dir = args.output_dir[0]
-  class_prefix = args.class_prefix
   excluded = args.exclude
 
   ast_root_dir = os.path.dirname(mojom_module)
@@ -38,8 +36,6 @@ def main():
   template_expander.PrecompileTemplates({"objc": generator_module},
                                         bytecode_path)
   generator = generator_module.Generator(None)
-  if len(class_prefix) > 0:
-    generator.class_prefix = class_prefix
   generator.bytecode_path = bytecode_path
   generator.excludedTypes = excluded
   with open(mojom_module, 'rb') as f:

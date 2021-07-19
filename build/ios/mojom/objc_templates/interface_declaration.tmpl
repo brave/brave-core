@@ -1,6 +1,6 @@
 
 OBJC_EXPORT
-NS_SWIFT_NAME({{struct.name}})
+NS_SWIFT_NAME({{class_prefix}}.{{struct.name}})
 @interface {{class_prefix}}{{struct.name}} : NSObject <NSCopying>
 {#- Class properties #}
 {%-  for field in struct.fields %}
