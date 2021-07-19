@@ -62,7 +62,6 @@ import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
-import org.chromium.chrome.browser.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
@@ -105,6 +104,7 @@ import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
+import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
 import org.chromium.chrome.browser.util.PackageUtils;
@@ -126,9 +126,9 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 
-public abstract class BraveToolbarLayout extends ToolbarLayout
-        implements OnClickListener, View.OnLongClickListener, BraveRewardsObserver,
-                   BraveRewardsNativeWorker.PublisherObserver {
+public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
+        implements BraveToolbarLayout, OnClickListener, View.OnLongClickListener,
+                   BraveRewardsObserver, BraveRewardsNativeWorker.PublisherObserver {
     public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
     private static final String JAPAN_COUNTRY_CODE = "JP";
     private static final long MB_10 = 10000000;
@@ -162,7 +162,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
 
     private boolean mIsBottomToolbarVisible;
 
-    public BraveToolbarLayout(Context context, AttributeSet attrs) {
+    public BraveToolbarLayoutImpl(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -183,7 +183,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        if (this instanceof ToolbarTablet) {
+        if (BraveReflectionUtil.EqualTypes(this.getClass(), ToolbarTablet.class)) {
             ImageButton forwardButton = findViewById(R.id.forward_button);
             if (forwardButton != null) {
                 final Drawable forwardButtonDrawable = UiUtils.getTintedDrawable(getContext(),
@@ -841,10 +841,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
     }
 
     @Override
-    public void onClick(View v) {
-        onClickImpl(v);
-    }
-
     public void onClickImpl(View v) {
         if (mBraveShieldsHandler == null) {
             assert false;
@@ -883,6 +879,11 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        onClickImpl(v);
+    }
+
     private boolean checkForRewardsOnboarding() {
         return PackageUtils.isFirstInstall(getContext())
                 && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
@@ -911,7 +912,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
     }
 
     @Override
-    public boolean onLongClick(View v) {
+    public boolean onLongClickImpl(View v) {
         // Use null as the default description since Toast.showAnchoredToast
         // will return false if it is null.
         String description = null;
@@ -930,6 +931,11 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
     }
 
     @Override
+    public boolean onLongClick(View v) {
+        return onLongClickImpl(v);
+    }
+
+    @Override
     public void onUrlFocusChange(boolean hasFocus) {
         Context context = getContext();
         if (hasFocus && PackageUtils.isFirstInstall(context)
@@ -944,7 +950,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         super.onUrlFocusChange(hasFocus);
     }
 
-    public void populateUrlAnimatorSet(boolean showExpandedState,
+    @Override
+    public void populateUrlAnimatorSetImpl(boolean showExpandedState,
             int urlFocusToolbarButtonsDuration, int urlClearFocusTabStackDelayMs,
             List<Animator> animators) {
         if (mBraveShieldsButton != null) {
@@ -981,10 +988,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         }
     }
 
-    private void updateModernLocationBarColor(int color) {
-        updateModernLocationBarColorImpl(color);
-    }
-
+    @Override
     public void updateModernLocationBarColorImpl(int color) {
         if (mShieldsLayout != null && mShieldsLayoutIsColorBackground) {
             mShieldsLayout.setBackgroundColor(
@@ -999,7 +1003,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         }
     }
 
-    public int getBoundsAfterAccountingForRightButtons(ViewGroup toolbarButtonsContainer) {
+    @Override
+    public int getBoundsAfterAccountingForRightButtonsImpl(ViewGroup toolbarButtonsContainer) {
         if (toolbarButtonsContainer == null || mShieldsLayout == null) {
             assert false;
             return 0;
@@ -1186,7 +1191,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
     public void onThemeColorChanged(int color, boolean shouldAnimate) {
         final int textBoxColor = ThemeUtils.getTextBoxColorForToolbarBackgroundInNonNativePage(
                 getContext().getResources(), color, isIncognito());
-        updateModernLocationBarColor(textBoxColor);
+        updateModernLocationBarColorImpl(textBoxColor);
     }
 
     /**
@@ -1232,7 +1237,10 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
     }
 
     private void updateShieldsLayoutBackground(boolean rounded) {
-        if (!(this instanceof ToolbarTablet) || (mShieldsLayout == null)) return;
+        if (!BraveReflectionUtil.EqualTypes(this.getClass(), ToolbarTablet.class)
+                || (mShieldsLayout == null)) {
+            return;
+        }
 
         if (rounded) {
             mShieldsLayout.setBackgroundDrawable(
@@ -1244,7 +1252,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                     ChromeColors.getDefaultThemeColor(getContext().getResources(), isIncognito()));
             mShieldsLayoutIsColorBackground = true;
         }
-        updateModernLocationBarColor(mCurrentToolbarColor);
+        updateModernLocationBarColorImpl(mCurrentToolbarColor);
     }
 
     private boolean isTabSwitcherOnBottom() {

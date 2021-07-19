@@ -18,7 +18,7 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
-import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout;
+import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuCoordinator;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modelutil.PropertyModel;
@@ -64,7 +64,8 @@ public class BraveMenuButtonCoordinator extends MenuButtonCoordinator {
     }
 
     private void updateMenuButtonState() {
-        BraveToolbarLayout layout = (BraveToolbarLayout) mActivity.findViewById(R.id.toolbar);
+        BraveToolbarLayoutImpl layout =
+                (BraveToolbarLayoutImpl) mActivity.findViewById(R.id.toolbar);
         assert layout != null;
         if (layout != null) {
             layout.updateMenuButtonState();
