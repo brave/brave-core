@@ -11,9 +11,11 @@
 #include <vector>
 
 #include "base/callback.h"
+#include "base/containers/flat_map.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
 #include "content/common/content_export.h"
+#include "url/origin.h"
 
 namespace content {
 
@@ -41,14 +43,26 @@ class CONTENT_EXPORT TLDEphemeralLifetime
  public:
   using OnDestroyCallback = base::OnceCallback<void(const std::string&)>;
 
+  class EphemeralStorageOriginsSource {
+   public:
+    virtual ~EphemeralStorageOriginsSource() = default;
+
+    virtual std::vector<url::Origin> TakeEphemeralStorageOpaqueOrigins(
+        const std::string& ephemeral_storage_domain) = 0;
+  };
+
   TLDEphemeralLifetime(const TLDEphemeralLifetimeKey& key,
-                       StoragePartition* storage_partition);
+                       StoragePartition* storage_partition,
+                       std::unique_ptr<EphemeralStorageOriginsSource>
+                           ephemeral_storage_origins_source);
   static TLDEphemeralLifetime* Get(BrowserContext* browser_context,
                                    const std::string& storage_domain);
   static scoped_refptr<TLDEphemeralLifetime> GetOrCreate(
       BrowserContext* browser_context,
       StoragePartition* storage_partition,
-      const std::string& storage_domain);
+      const std::string& storage_domain,
+      std::unique_ptr<EphemeralStorageOriginsSource>
+          ephemeral_storage_origins_source);
 
   // Add a callback to a callback list to be called on destruction.
   void RegisterOnDestroyCallback(OnDestroyCallback callback);
@@ -63,6 +77,8 @@ class CONTENT_EXPORT TLDEphemeralLifetime
 
   TLDEphemeralLifetimeKey key_;
   StoragePartition* storage_partition_;
+  std::unique_ptr<EphemeralStorageOriginsSource>
+      ephemeral_storage_origins_source_;
   std::vector<OnDestroyCallback> on_destroy_callbacks_;
 
   base::WeakPtrFactory<TLDEphemeralLifetime> weak_factory_{this};

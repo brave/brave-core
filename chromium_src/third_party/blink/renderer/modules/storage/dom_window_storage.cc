@@ -20,7 +20,6 @@ namespace blink {
 namespace {
 
 constexpr char kSessionStorageSuffix[] = "/ephemeral-session-storage";
-constexpr char kLocalStorageSuffix[] = "/ephemeral-local-storage";
 
 // This replicates the conversion of a string into a session storage namespace
 // id that is found in the implementation of EphemeralStorageTabHelper.
@@ -32,80 +31,73 @@ String StringToSessionStorageId(const String& string,
   return String(hash.c_str());
 }
 
-bool ShouldUseEphemeralStorage(
+const SecurityOrigin* GetEphemeralStorageOrigin(
     LocalDOMWindow* window,
     WebContentSettingsClient::StorageType storage_type) {
   auto* frame = window->GetFrame();
   if (!frame)
-    return false;
+    return nullptr;
 
   if (auto* settings_client = frame->GetContentSettingsClient())
-    return settings_client->UseEphemeralStorageSync(storage_type);
+    return settings_client->GetEphemeralStorageOriginSync(storage_type).Get();
 
-  return false;
+  return nullptr;
 }
 
 }  // namespace
 
-// EphemeralStorageNamespace manage ephemeral storage namespaces for a
-// particular Page object. The namespaces are instantiated on the Page lazily,
-// as soon as a third-party frame needs ephemeral storage. They are then shared
-// by all third-party frames that are embedded in this Page.
+// EphemeralSessionStorageNamespace manages ephemeral sessionStorage namespace
+// for a particular Page object. The namespace is instantiated on the Page
+// lazily, as soon as a third-party frame needs ephemeral sessionStorage. It's
+// then shared by all third-party frames that are embedded in this Page.
 //
-// These namespaces are created in the browser process ahead of time. We ensure
+// The namespace is created in the browser process ahead of time. We ensure
 // that we are using the same namespace by using a common naming scheme.
-class EphemeralStorageNamespaces
-    : public GarbageCollected<EphemeralStorageNamespaces>,
+class EphemeralSessionStorageNamespace
+    : public GarbageCollected<EphemeralSessionStorageNamespace>,
       public Supplement<Page> {
  public:
-  EphemeralStorageNamespaces(StorageController* controller,
-                             const String& session_storage_id,
-                             const String& local_storage_id);
-  virtual ~EphemeralStorageNamespaces() = default;
+  EphemeralSessionStorageNamespace(StorageController* controller,
+                                   const String& session_storage_id);
+  virtual ~EphemeralSessionStorageNamespace() = default;
 
   static const char kSupplementName[];
-  static EphemeralStorageNamespaces* From(Page* page, LocalDOMWindow* window);
+  static EphemeralSessionStorageNamespace* From(Page* page,
+                                                LocalDOMWindow* window);
 
   StorageNamespace* session_storage() { return session_storage_.Get(); }
-  StorageNamespace* local_storage() { return local_storage_.Get(); }
   void Trace(Visitor* visitor) const override;
 
  private:
   Member<StorageNamespace> session_storage_;
-  Member<StorageNamespace> local_storage_;
 };
 
-const char EphemeralStorageNamespaces::kSupplementName[] =
-    "EphemeralStorageNamespaces";
+const char EphemeralSessionStorageNamespace::kSupplementName[] =
+    "EphemeralSessionStorageNamespace";
 
-EphemeralStorageNamespaces::EphemeralStorageNamespaces(
+EphemeralSessionStorageNamespace::EphemeralSessionStorageNamespace(
     StorageController* controller,
-    const String& session_storage_id,
-    const String& local_storage_id)
+    const String& session_storage_id)
     : Supplement(nullptr),
       session_storage_(
           MakeGarbageCollected<StorageNamespace>(controller,
-                                                 session_storage_id)),
-      local_storage_(MakeGarbageCollected<StorageNamespace>(controller,
-                                                            local_storage_id)) {
-}
+                                                 session_storage_id)) {}
 
-void EphemeralStorageNamespaces::Trace(Visitor* visitor) const {
+void EphemeralSessionStorageNamespace::Trace(Visitor* visitor) const {
   visitor->Trace(session_storage_);
-  visitor->Trace(local_storage_);
   Supplement<Page>::Trace(visitor);
 }
 
 // static
-EphemeralStorageNamespaces* EphemeralStorageNamespaces::From(
+EphemeralSessionStorageNamespace* EphemeralSessionStorageNamespace::From(
     Page* page,
     LocalDOMWindow* window) {
   DCHECK(window);
   if (!page)
     return nullptr;
 
-  EphemeralStorageNamespaces* supplement =
-      Supplement<Page>::From<EphemeralStorageNamespaces>(page);
+  EphemeralSessionStorageNamespace* supplement =
+      Supplement<Page>::From<EphemeralSessionStorageNamespace>(page);
   if (supplement)
     return supplement;
 
@@ -117,20 +109,8 @@ EphemeralStorageNamespaces* EphemeralStorageNamespaces::From(
       String::FromUTF8(webview->GetSessionStorageNamespaceId()),
       kSessionStorageSuffix);
 
-  auto* security_origin =
-      page->MainFrame()->GetSecurityContext()->GetSecurityOrigin();
-  String domain = security_origin->RegistrableDomain();
-  // RegistrableDomain might return an empty string if this host is an IP
-  // address or a file URL.
-  if (domain.IsEmpty()) {
-    url::Origin origin = url::Origin::Create(GURL(window->Url()).GetOrigin());
-    domain = String::FromUTF8(origin.Serialize());
-  }
-
-  String local_storage_id =
-      StringToSessionStorageId(domain, kLocalStorageSuffix);
-  supplement = MakeGarbageCollected<EphemeralStorageNamespaces>(
-      StorageController::GetInstance(), session_storage_id, local_storage_id);
+  supplement = MakeGarbageCollected<EphemeralSessionStorageNamespace>(
+      StorageController::GetInstance(), session_storage_id);
 
   ProvideTo(*page, supplement);
   return supplement;
@@ -173,7 +153,7 @@ StorageArea* BraveDOMWindowStorage::sessionStorage(
   auto* storage =
       DOMWindowStorage::From(*window).sessionStorage(exception_state);
 
-  if (!ShouldUseEphemeralStorage(
+  if (!GetEphemeralStorageOrigin(
           window, WebContentSettingsClient::StorageType::kSessionStorage))
     return storage;
 
@@ -186,13 +166,13 @@ StorageArea* BraveDOMWindowStorage::ephemeralSessionStorage() {
 
   LocalDOMWindow* window = GetSupplementable();
   Page* page = window->GetFrame()->GetDocument()->GetPage();
-  EphemeralStorageNamespaces* namespaces =
-      EphemeralStorageNamespaces::From(page, window);
-  if (!namespaces)
+  EphemeralSessionStorageNamespace* ephemeral_namespace =
+      EphemeralSessionStorageNamespace::From(page, window);
+  if (!ephemeral_namespace)
     return nullptr;
 
-  auto storage_area =
-      namespaces->session_storage()->GetCachedArea(window->GetSecurityOrigin());
+  auto storage_area = ephemeral_namespace->session_storage()->GetCachedArea(
+      window->GetSecurityOrigin());
 
   ephemeral_session_storage_ =
       StorageArea::Create(window, std::move(storage_area),
@@ -205,38 +185,26 @@ StorageArea* BraveDOMWindowStorage::localStorage(
   LocalDOMWindow* window = GetSupplementable();
   auto* storage = DOMWindowStorage::From(*window).localStorage(exception_state);
 
-  if (!ShouldUseEphemeralStorage(
-          window, WebContentSettingsClient::StorageType::kLocalStorage))
+  const SecurityOrigin* ephemeral_storage_origin = GetEphemeralStorageOrigin(
+      window, WebContentSettingsClient::StorageType::kLocalStorage);
+  if (!ephemeral_storage_origin)
     return storage;
 
-  return ephemeralLocalStorage();
+  return ephemeralLocalStorage(ephemeral_storage_origin);
 }
 
-StorageArea* BraveDOMWindowStorage::ephemeralLocalStorage() {
+StorageArea* BraveDOMWindowStorage::ephemeralLocalStorage(
+    const SecurityOrigin* ephemeral_storage_origin) {
+  DCHECK(ephemeral_storage_origin);
   if (ephemeral_local_storage_)
     return ephemeral_local_storage_;
 
   LocalDOMWindow* window = GetSupplementable();
-  Page* page = window->GetFrame()->GetDocument()->GetPage();
-  EphemeralStorageNamespaces* namespaces =
-      EphemeralStorageNamespaces::From(page, window);
-  if (!namespaces)
-    return nullptr;
+  auto storage_area = StorageController::GetInstance()->GetLocalStorageArea(
+      ephemeral_storage_origin);
 
-  auto* controller = StorageController::GetInstance();
-  controller->ClearAreasIfNeeded();
-  auto storage_area = base::MakeRefCounted<CachedStorageArea>(
-      CachedStorageArea::AreaType::kSessionStorage, window->GetSecurityOrigin(),
-      controller->TaskRunner(), namespaces->local_storage(),
-      /*is_session_storage_for_prerendering=*/false);
-
-  // Ephemeral localStorage never persists stored data, which is also how
-  // sessionStorage works. Due to this, when opening up a new ephemeral
-  // localStorage area, we use the sessionStorage infrastructure.
-  ephemeral_local_storage_ =
-      StorageArea::Create(window, std::move(storage_area),
-                          StorageArea::StorageType::kSessionStorage);
-
+  ephemeral_local_storage_ = StorageArea::Create(
+      window, std::move(storage_area), StorageArea::StorageType::kLocalStorage);
   return ephemeral_local_storage_;
 }
 

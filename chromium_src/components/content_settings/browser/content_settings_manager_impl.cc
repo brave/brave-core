@@ -15,9 +15,13 @@ void ContentSettingsManagerImpl::AllowEphemeralStorageAccess(
     const url::Origin& origin,
     const GURL& site_for_cookies,
     const url::Origin& top_frame_origin,
-    base::OnceCallback<void(bool)> callback) {
-  std::move(callback).Run(cookie_settings_->ShouldUseEphemeralStorage(
-      origin.GetURL(), site_for_cookies, top_frame_origin));
+    AllowEphemeralStorageAccessCallback callback) {
+  url::Origin storage_origin;
+  const bool should_use = cookie_settings_->ShouldUseEphemeralStorage(
+      origin, site_for_cookies, top_frame_origin, storage_origin);
+  std::move(callback).Run(should_use
+                              ? absl::make_optional<url::Origin>(storage_origin)
+                              : absl::nullopt);
 }
 
 }  // namespace content_settings
