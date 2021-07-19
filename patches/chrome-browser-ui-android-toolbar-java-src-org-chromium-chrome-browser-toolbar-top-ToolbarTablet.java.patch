@@ -1,26 +1,17 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-index e14c4ffdd2c20e6b3f673066b22512b18e65bb0c..06fa5bcf8ccbf0fe86f9572646693f7d2ff21cb7 100644
+index e14c4ffdd2c20e6b3f673066b22512b18e65bb0c..bc63c6c68a60e46010906c545aa622640ad02b38 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-@@ -59,7 +59,7 @@ import java.util.Collection;
-  * The Toolbar object for Tablet screens.
-  */
- @SuppressLint("Instantiatable")
--public class ToolbarTablet extends ToolbarLayout
-+public class ToolbarTablet extends BraveToolbarLayout
-         implements OnClickListener, View.OnLongClickListener, TabCountObserver {
-     /** Downloads page for offline access. */
-     public interface OfflineDownloader {
 @@ -326,10 +326,12 @@ public class ToolbarTablet extends ToolbarLayout
              mOfflineDownloader.downloadPage(getContext(), getToolbarDataProvider().getTab());
              RecordUserAction.record("MobileToolbarDownloadPage");
          }
-+        super.onClick(v);
++        BraveToolbarLayout.class.cast(this).onClickImpl(v);
      }
  
      @Override
      public boolean onLongClick(View v) {
-+        if (super.onLongClick(v)) return true;
++        if (BraveToolbarLayout.class.cast(this).onLongClickImpl(v)) return true;
          String description = null;
          Context context = getContext();
          Resources resources = context.getResources();
