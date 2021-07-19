@@ -8,6 +8,7 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_shields/cookie_pref_service_factory.h"
+#include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
@@ -58,6 +59,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #endif
   brave_shields::AdBlockPrefServiceFactory::GetInstance();
   brave_shields::CookiePrefServiceFactory::GetInstance();
+  debounce::DebounceServiceFactory::GetInstance();
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionServiceFactory::GetInstance();
 #endif

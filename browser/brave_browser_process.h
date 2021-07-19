@@ -48,6 +48,10 @@ class GreaselionDownloadService;
 #endif
 }  // namespace greaselion
 
+namespace debounce {
+class DebounceDownloadService;
+}  // namespace debounce
+
 namespace ntp_background_images {
 class NTPBackgroundImagesService;
 }  // namespace ntp_background_images
@@ -86,6 +90,7 @@ class BraveBrowserProcess {
   virtual greaselion::GreaselionDownloadService*
   greaselion_download_service() = 0;
 #endif
+  virtual debounce::DebounceDownloadService* debounce_download_service() = 0;
   virtual brave_shields::HTTPSEverywhereService* https_everywhere_service() = 0;
   virtual brave_component_updater::LocalDataFilesService*
   local_data_files_service() = 0;

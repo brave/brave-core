@@ -1,0 +1,20 @@
+[
+  {
+    "include": [
+      "http://simple.a.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://base64.a.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "base64,redirect",
+    "param": "url"
+  }
+]

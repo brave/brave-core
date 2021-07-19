@@ -1,0 +1,12 @@
+source_set("common") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/content_settings/core/common",
+    "//url",
+  ]
+}

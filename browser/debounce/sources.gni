@@ -1,0 +1,13 @@
+brave_browser_debounce_sources = [
+  "//brave/browser/debounce/debounce_service_factory.cc",
+  "//brave/browser/debounce/debounce_service_factory.h",
+]
+
+brave_browser_debounce_deps = [
+  "//base",
+  "//brave/components/debounce/browser",
+  "//brave/components/debounce/common",
+  "//brave/extensions:common",
+  "//chrome/common",
+  "//components/keyed_service/content",
+]

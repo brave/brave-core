@@ -45,9 +45,6 @@ void BaseLocalDataFilesBrowserTest::GetTestDataDir(
 }
 
 void BaseLocalDataFilesBrowserTest::MaybeInitEmbeddedTestServer() {
-  if (!embedded_test_server_directory())
-    return;
-
   base::FilePath test_data_dir;
   GetTestDataDir(&test_data_dir);
   test_data_dir = test_data_dir.AppendASCII(embedded_test_server_directory());
@@ -57,9 +54,6 @@ void BaseLocalDataFilesBrowserTest::MaybeInitEmbeddedTestServer() {
 }
 
 void BaseLocalDataFilesBrowserTest::MaybeSetUpEmbeddedTestServerOnMainThread() {
-  if (!embedded_test_server_directory())
-    return;
-
   host_resolver()->AddRule("*", "127.0.0.1");
 }
 

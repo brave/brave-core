@@ -14,6 +14,7 @@
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/debounce/common/features.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -31,6 +32,7 @@ using brave_shields::features::kBraveAdblockCosmeticFilteringNative;
 using brave_shields::features::kBraveAdblockCspRules;
 using brave_shields::features::kBraveDomainBlock;
 using brave_shields::features::kBraveExtensionNetworkBlocking;
+using debounce::features::kBraveDebounce;
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 using ntp_background_images::features::kBraveNTPBrandedWallpaperDemo;
 using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
@@ -163,10 +165,14 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveAdblockCspRulesName,                          \
      flag_descriptions::kBraveAdblockCspRulesDescription, kOsAll,           \
      FEATURE_VALUE_TYPE(kBraveAdblockCspRules)},                            \
+    {"brave-debounce",                                                      \
+        flag_descriptions::kBraveDebounceName,                              \
+        flag_descriptions::kBraveDebounceDescription, kOsAll,               \
+        FEATURE_VALUE_TYPE(kBraveDebounce)},                                \
     {"brave-domain-block",                                                  \
-     flag_descriptions::kBraveDomainBlockName,                              \
-     flag_descriptions::kBraveDomainBlockDescription, kOsAll,               \
-     FEATURE_VALUE_TYPE(kBraveDomainBlock)},                                \
+        flag_descriptions::kBraveDomainBlockName,                           \
+        flag_descriptions::kBraveDomainBlockDescription, kOsAll,            \
+        FEATURE_VALUE_TYPE(kBraveDomainBlock)},                             \
     {"brave-extension-network-blocking",                                    \
      flag_descriptions::kBraveExtensionNetworkBlockingName,                 \
      flag_descriptions::kBraveExtensionNetworkBlockingDescription, kOsAll,  \
