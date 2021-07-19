@@ -251,10 +251,13 @@ export interface SwapResponseReturnInfo {
 export interface GetAssetPriceReturnInfo {
   success: boolean,
   price: string
+  from_asset: string
+  to_asset: string
+  asset_24h_change: string
 }
 
 export interface GetAssetPriceHistoryReturnInfo {
-  price: string,
+  price: string
   date: MojoTime
 }
 
@@ -276,7 +279,7 @@ export interface WalletAPIHandler {
   lockWallet: () => Promise<void>
   addAccountToWallet: () => Promise<AddAccountToWalletReturnInfo>
   unlockWallet: (password: string) => Promise<UnlockWalletReturnInfo>
-  getAssetPrice: (asset: string) => Promise<GetAssetPriceReturnInfo>
+  getAssetPrices: (assets: string[]) => Promise<GetAssetPriceReturnInfo[]>
   getAssetPriceHistory: (asset: string, timeframe: AssetPriceTimeframe) => Promise<GetAssetPriceHistoryReturnObjectInfo>
   addFavoriteApp: (appItem: AppObjectType) => Promise<void>
   removeFavoriteApp: (appItem: AppObjectType) => Promise<void>
