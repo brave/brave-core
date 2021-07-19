@@ -15,7 +15,10 @@
 
 namespace brave_wallet {
 
-bool ParseAssetPrice(const std::string& json, std::string* price);
+bool ParseAssetPrice(const std::string& json,
+                     const std::vector<std::string>& from_assets,
+                     const std::vector<std::string>& to_assets,
+                     std::vector<brave_wallet::mojom::AssetPricePtr>* values);
 bool ParseAssetPriceHistory(
     const std::string& json,
     std::vector<brave_wallet::mojom::AssetTimePricePtr>* values);

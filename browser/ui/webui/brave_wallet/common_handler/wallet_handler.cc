@@ -103,10 +103,12 @@ void WalletHandler::UnlockWallet(const std::string& password,
   keyring_controller_->Unlock(password, std::move(callback));
 }
 
-void WalletHandler::GetAssetPrice(const std::string& asset,
+void WalletHandler::GetAssetPrice(const std::vector<std::string>& from_assets,
+                                  const std::vector<std::string>& to_assets,
                                   GetAssetPriceCallback callback) {
   EnsureConnected();
-  asset_ratio_controller_->GetPrice(asset, std::move(callback));
+  asset_ratio_controller_->GetPrice(from_assets, to_assets,
+                                    std::move(callback));
 }
 
 void WalletHandler::GetAssetPriceHistory(
