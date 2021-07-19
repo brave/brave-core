@@ -11,6 +11,7 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
@@ -62,6 +63,8 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
   profile->GetPrefs()->ClearPref(kAlternativeSearchEngineProviderInTor);
   // Added 05/2021
   profile->GetPrefs()->ClearPref(kBraveTodayIntroDismissed);
+  // Added 07/2021
+  profile->GetPrefs()->ClearPref(prefs::kNetworkPredictionOptions);
 }
 
 // This method should be periodically pruned of year+ old migrations.
