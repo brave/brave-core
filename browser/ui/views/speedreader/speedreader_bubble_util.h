@@ -27,6 +27,9 @@ constexpr int kLineHeight = 16;
 // Spacing between child nodes in box layout
 constexpr int kBoxLayoutChildSpacing = 10;
 
+// 4px for the bottom margin, so Speedreader graphic is flush.
+constexpr int kBubbleBottomMargin = 4;
+
 // Separator used in StyledLabel
 constexpr char16_t kSpeedreaderSeparator[] = u" ";
 

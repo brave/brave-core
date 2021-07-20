@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "brave/app/vector_icons/vector_icons.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/vector2d.h"
 #include "ui/gfx/paint_vector_icon.h"
@@ -73,5 +74,8 @@ gfx::Size SpeedreaderDancingBooks::CalculatePreferredSize() const {
 gfx::Size SpeedreaderDancingBooks::GetMinimumSize() const {
   return gfx::Size(kMinimumWidth, kMinimumHeight);
 }
+
+BEGIN_METADATA(SpeedreaderDancingBooks, views::View)
+END_METADATA
 
 }  // namespace speedreader

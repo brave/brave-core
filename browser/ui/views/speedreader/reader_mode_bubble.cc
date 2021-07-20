@@ -30,6 +30,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/events/event.h"
+#include "ui/gfx/geometry/insets.h"
 #include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/styled_label.h"
@@ -67,6 +68,10 @@ ReaderModeBubble::ReaderModeBubble(views::View* anchor_view,
     : LocationBarBubbleDelegateView(anchor_view, nullptr),
       tab_helper_(tab_helper) {
   SetButtons(ui::DialogButton::DIALOG_BUTTON_NONE);
+
+  gfx::Insets m = margins();
+  m.set_bottom(kBubbleBottomMargin);
+  set_margins(m);
 }
 
 void ReaderModeBubble::Show() {
