@@ -118,7 +118,8 @@ platform :ios do
         method: "enterprise",
         provisioningProfiles: { 
           "com.brave.ios.enterprise.Browser" => "BraveEnt",
-          "com.brave.ios.enterprise.Browser.BraveShareTo" => "Ent-ShareTo"
+          "com.brave.ios.enterprise.Browser.BraveShareTo" => "Ent-ShareTo",
+          "com.brave.ios.enterprise.Browser.BrowserIntents" => "BraveEnt Browser Intents"
         }
       },
       xcargs: "-allowProvisioningUpdates BRAVE_API_KEY=\"#{ENV['BRAVE_STATS_API_KEY']}\" BRAVE_VERSION=\"#{git_branch}\" GENERATED_BUILD_ID=\"#{get_build_number_repository}\""
