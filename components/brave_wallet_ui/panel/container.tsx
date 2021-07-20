@@ -116,7 +116,7 @@ function Container (props: Props) {
   const onSubmitBuy = () => {
     const url = BuyAssetUrl(selectedNetwork, selectedWyreAsset, selectedAccount, buyAmount)
     if (url) {
-      chrome.tabs.create({ url: url })
+      chrome.tabs.create({ url: url }).catch((e) => { console.error(e) })
     }
   }
 

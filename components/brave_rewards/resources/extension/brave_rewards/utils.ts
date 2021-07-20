@@ -139,7 +139,7 @@ export const handleExternalWalletLink = (balance: RewardsExtension.Balance, exte
 
   chrome.tabs.create({
     url: link
-  })
+  }).catch((e) => { console.error(e) })
 }
 
 export const getExternalWallet = (actions: any, externalWallet?: RewardsExtension.ExternalWallet) => {
