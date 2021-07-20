@@ -80,9 +80,9 @@ handler.on(WalletPageActions.selectAsset.getType(), async (store, payload: Updat
   store.dispatch(WalletPageActions.setIsFetchingPriceHistory(true))
   const walletHandler = await getWalletHandler()
   if (payload.asset) {
-    const priceInfo = await walletHandler.getAssetPrices([payload.asset.symbol.toLowerCase()])
+    const priceInfo = await walletHandler.getAssetPrice([payload.asset.symbol.toLowerCase()], ['usd'])
     const priceHistory = await walletHandler.getAssetPriceHistory(payload.asset.symbol.toLowerCase(), payload.timeFrame)
-    store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: priceHistory, price: priceInfo[0].price, timeFrame: payload.timeFrame }))
+    store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: priceHistory, price: priceInfo.assetPrices[0].price, timeFrame: payload.timeFrame }))
   } else {
     store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: undefined, price: '', timeFrame: payload.timeFrame }))
   }

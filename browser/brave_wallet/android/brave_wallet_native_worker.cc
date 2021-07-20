@@ -5,7 +5,10 @@
 
 #include "brave/browser/brave_wallet/android/brave_wallet_native_worker.h"
 
+#include <vector>
+
 #include "base/android/jni_android.h"
+#include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
@@ -143,21 +146,41 @@ void BraveWalletNativeWorker::ResetWallet(JNIEnv* env) {
 
 void BraveWalletNativeWorker::GetAssetPrice(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& asset) {
+    const base::android::JavaParamRef<jobjectArray>& from_assets,
+    const base::android::JavaParamRef<jobjectArray>& to_assets) {
   EnsureConnected();
 
+  std::vector<std::string> assets_from;
+  base::android::AppendJavaStringArrayToStringVector(env, from_assets,
+                                                     &assets_from);
+  std::vector<std::string> assets_to;
+  base::android::AppendJavaStringArrayToStringVector(env, to_assets,
+
   asset_ratio_controller_->GetPrice(
-      base::android::ConvertJavaStringToUTF8(env, asset),
+      assets_from, assets_to,
       base::BindOnce(&BraveWalletNativeWorker::OnGetPrice,
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void BraveWalletNativeWorker::OnGetPrice(bool success,
-                                         const std::string& price) {
+void BraveWalletNativeWorker::OnGetPrice(
+    bool success,
+    std::vector<brave_wallet::mojom::AssetPricePtr> prices) {
+  std::string prices_json;
+  base::Value list(base::Value::Type::LIST);
+  for (const auto& asset_price : prices) {
+    base::Value dict(base::Value::Type::DICTIONARY);
+    dict.SetStringKey("from_asset", asset_price->from_asset);
+    dict.SetStringKey("to_asset", asset_price->to_asset);
+    dict.SetStringKey("price", asset_price->price);
+    dict.SetStringKey("asset_24h_change", asset_price->asset_24h_change);
+    list.Append(std::move(dict));
+  }
+  base::JSONWriter::Write(list, &prices_json);
+
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveWalletNativeWorker_OnGetPrice(
       env, weak_java_brave_wallet_native_worker_.get(env),
-      base::android::ConvertUTF8ToJavaString(env, price), success);
+      base::android::ConvertUTF8ToJavaString(env, prices_json), success);
 }
 
 void BraveWalletNativeWorker::GetAssetPriceHistory(

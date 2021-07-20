@@ -103,14 +103,15 @@ public class BraveWalletNativeWorker {
         BraveWalletNativeWorkerJni.get().resetWallet(mNativeBraveWalletNativeWorker);
     }
 
-    public void getAssetPrice(String asset) {
-        BraveWalletNativeWorkerJni.get().getAssetPrice(mNativeBraveWalletNativeWorker, asset);
+    public void getAssetPrice(String[] fromAssets, String[] toAssets) {
+        BraveWalletNativeWorkerJni.get().getAssetPrice(
+                mNativeBraveWalletNativeWorker, fromAssets, toAssets);
     }
 
     @CalledByNative
-    public void OnGetPrice(String price, boolean isSuccess) {
+    public void OnGetPrice(String prices, boolean isSuccess) {
         for (BraveWalletObserver observer : mObservers) {
-            observer.OnGetPrice(price, isSuccess);
+            observer.OnGetPrice(prices, isSuccess);
         }
     }
 
@@ -137,7 +138,8 @@ public class BraveWalletNativeWorker {
         boolean unlockWallet(long nativeBraveWalletNativeWorker, String password);
         String restoreWallet(long nativeBraveWalletNativeWorker, String mnemonic, String password);
         void resetWallet(long nativeBraveWalletNativeWorker);
-        void getAssetPrice(long nativeBraveWalletNativeWorker, String asset);
+        void getAssetPrice(
+                long nativeBraveWalletNativeWorker, String[] fromAssets, String[] toAssets);
         void getAssetPriceHistory(long nativeBraveWalletNativeWorker, String asset, int timeFrame);
     }
 }
