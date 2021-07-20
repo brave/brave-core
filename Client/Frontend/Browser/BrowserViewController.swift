@@ -1553,7 +1553,7 @@ class BrowserViewController: UIViewController {
         _ = tabManager.addTabAndSelect(request, isPrivate: isPrivate)
     }
 
-    func openBlankNewTab(attemptLocationFieldFocus: Bool, isPrivate: Bool = false, searchFor searchText: String? = nil, isExternal: Bool = false) {
+    func openBlankNewTab(attemptLocationFieldFocus: Bool, isPrivate: Bool, searchFor searchText: String? = nil, isExternal: Bool = false) {
         if !isExternal {
             popToBVC()
         }

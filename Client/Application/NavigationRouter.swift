@@ -90,6 +90,8 @@ enum NavigationPath: Equatable {
     }
 
     private static func handleText(text: String, with bvc: BrowserViewController) {
-        bvc.openBlankNewTab(attemptLocationFieldFocus: true, searchFor: text)
+        bvc.openBlankNewTab(attemptLocationFieldFocus: true,
+                            isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing,
+                            searchFor: text)
     }
 }
