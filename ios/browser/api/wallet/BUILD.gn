@@ -16,8 +16,6 @@ source_set("wallet") {
     "brave_wallet_api+private.h",
     "brave_wallet_api.h",
     "brave_wallet_api.mm",
-    "brave_wallet_service_factory.cc",
-    "brave_wallet_service_factory.h",
     "hd_keyring_ios+private.h",
     "hd_keyring_ios.h",
     "hd_keyring_ios.mm",

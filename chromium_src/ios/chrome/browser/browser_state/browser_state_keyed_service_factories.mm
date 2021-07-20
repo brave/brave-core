@@ -30,9 +30,9 @@
 #error "This file requires ARC support."
 #endif
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/ios/browser/api/wallet/brave_wallet_service_factory.h"
-#endif
+// #if BUILDFLAG(BRAVE_WALLET_ENABLED)
+// #include "brave/ios/browser/api/wallet/brave_wallet_service_factory.h"
+// #endif
 
 void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
   autofill::PersonalDataManagerFactory::GetInstance();
@@ -54,7 +54,7 @@ void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
   ReadingListModelFactory::GetInstance();
   SessionSyncServiceFactory::GetInstance();
   SyncSetupServiceFactory::GetInstance();
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  BraveWalletServiceFactory::GetInstance();
-#endif
+  // #if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  //   BraveWalletServiceFactory::GetInstance();
+  // #endif
 }

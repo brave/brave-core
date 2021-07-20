@@ -4,10 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -156,16 +155,12 @@ class EthJsonRpcBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  brave_wallet::BraveWalletService* GetBraveWalletService() {
-    brave_wallet::BraveWalletService* service =
-        brave_wallet::BraveWalletServiceFactory::GetInstance()->GetForContext(
-            browser()->profile());
-    EXPECT_TRUE(service);
-    return service;
-  }
-
   brave_wallet::EthJsonRpcController* GetEthJsonRpcController() {
-    return GetBraveWalletService()->rpc_controller();
+    brave_wallet::EthJsonRpcController* controller =
+        brave_wallet::RpcControllerFactory::GetInstance()->GetForContext(
+            browser()->profile());
+    EXPECT_NE(controller, nullptr);
+    return controller;
   }
 
  private:

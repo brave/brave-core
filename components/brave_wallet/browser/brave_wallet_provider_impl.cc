@@ -8,33 +8,26 @@
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 
 namespace brave_wallet {
 
 BraveWalletProviderImpl::BraveWalletProviderImpl(
-    base::WeakPtr<BraveWalletService> wallet_service,
+    EthJsonRpcController* rpc_controller,
     std::unique_ptr<BraveWalletProviderDelegate> delegate)
     : delegate_(std::move(delegate)),
-      wallet_service_(wallet_service),
-      weak_factory_(this) {}
+      rpc_controller_(rpc_controller),
+      weak_factory_(this) {
+  DCHECK(rpc_controller);
+}
 
 BraveWalletProviderImpl::~BraveWalletProviderImpl() {
-  if (!wallet_service_)
-    return;
-
-  auto* rpc_controller = wallet_service_->rpc_controller();
-  rpc_controller->RemoveObserver(this);
+  rpc_controller_->RemoveObserver(this);
 }
 
 void BraveWalletProviderImpl::Request(const std::string& json_payload,
                                       RequestCallback callback) {
-  if (!wallet_service_)
-    return;
-
-  auto* rpc_controller = wallet_service_->rpc_controller();
-  rpc_controller->Request(
+  rpc_controller_->Request(
       json_payload,
       base::BindOnce(&BraveWalletProviderImpl::OnResponse,
                      weak_factory_.GetWeakPtr(), std::move(callback)),
@@ -59,23 +52,15 @@ void BraveWalletProviderImpl::Enable() {
 }
 
 void BraveWalletProviderImpl::GetChainId(GetChainIdCallback callback) {
-  if (!wallet_service_)
-    return;
-
-  auto* rpc_controller = wallet_service_->rpc_controller();
   std::move(callback).Run(EthJsonRpcController::GetChainIDFromNetwork(
-      rpc_controller->GetNetwork()));
+      rpc_controller_->GetNetwork()));
 }
 
 void BraveWalletProviderImpl::Init(
     ::mojo::PendingRemote<mojom::EventsListener> events_listener) {
   if (!events_listener_.is_bound()) {
     events_listener_.Bind(std::move(events_listener));
-    if (!wallet_service_)
-      return;
-
-    auto* rpc_controller = wallet_service_->rpc_controller();
-    rpc_controller->AddObserver(this);
+    rpc_controller_->AddObserver(this);
   }
 }
 

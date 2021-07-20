@@ -144,9 +144,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_impl.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #if !defined(OS_ANDROID)
@@ -207,19 +206,17 @@ void BindCosmeticFiltersResources(
 void MaybeBindBraveWalletProvider(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletProvider> receiver) {
-  auto* context = frame_host->GetBrowserContext();
-  if (!brave_wallet::IsAllowedForContext(context))
-    return;
+  auto* rpc_controller = brave_wallet::RpcControllerFactory::GetForContext(
+      frame_host->GetBrowserContext());
 
-  brave_wallet::BraveWalletService* service =
-      brave_wallet::BraveWalletServiceFactory::GetInstance()->GetForContext(
-          context);
+  if (!rpc_controller)
+    return;
 
   content::WebContents* web_contents =
       content::WebContents::FromRenderFrameHost(frame_host);
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_wallet::BraveWalletProviderImpl>(
-          service->AsWeakPtr(),
+          rpc_controller,
 #if defined(OS_ANDROID)
           std::make_unique<
               brave_wallet::BraveWalletProviderDelegateImplAndroid>(

@@ -15,8 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXPORT
 @interface BraveWalletAPI : NSObject
 
-@property(nonatomic, readonly) KeyringControllerIOS* keyringController;
-
 - (instancetype)init NS_UNAVAILABLE;
 
 @end

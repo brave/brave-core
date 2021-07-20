@@ -7,83 +7,57 @@
 
 #include <utility>
 
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
-#include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_ui.h"
-
-#include "ui/webui/mojo_bubble_web_ui_controller.h"
-
-namespace {
-
-brave_wallet::BraveWalletService* GetBraveWalletService(
-    content::BrowserContext* context) {
-  return brave_wallet::BraveWalletServiceFactory::GetInstance()->GetForContext(
-      context);
-}
-
-}  // namespace
+#include "chrome/browser/profiles/profile.h"
 
 WalletPageHandler::WalletPageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PageHandler> receiver,
-    mojo::PendingRemote<brave_wallet::mojom::Page> page,
-    content::WebUI* web_ui,
-    ui::MojoWebUIController* webui_controller)
+    Profile* profile)
     : receiver_(this, std::move(receiver)),
-      page_(std::move(page)),
-      web_ui_(web_ui) {
-  Observe(web_ui_->GetWebContents());
-}
+      profile_(profile),
+      weak_ptr_factory_(this) {}
 
 WalletPageHandler::~WalletPageHandler() = default;
 
+void WalletPageHandler::EnsureConnected() {
+  if (!keyring_controller_) {
+    auto pending =
+        brave_wallet::KeyringControllerFactory::GetInstance()->GetForContext(
+            profile_);
+    keyring_controller_.Bind(std::move(pending));
+  }
+  DCHECK(keyring_controller_);
+  keyring_controller_.set_disconnect_handler(base::BindOnce(
+      &WalletPageHandler::OnConnectionError, weak_ptr_factory_.GetWeakPtr()));
+}
+
+void WalletPageHandler::OnConnectionError() {
+  keyring_controller_.reset();
+  EnsureConnected();
+}
+
 void WalletPageHandler::CreateWallet(const std::string& password,
                                      CreateWalletCallback callback) {
-  auto* browser_context = web_ui_->GetWebContents()->GetBrowserContext();
-  auto* keyring_controller =
-      GetBraveWalletService(browser_context)->keyring_controller();
-  auto* keyring = keyring_controller->CreateDefaultKeyring(password);
-  if (keyring) {
-    keyring->AddAccounts();
-  }
-  std::move(callback).Run(keyring_controller->GetMnemonicForDefaultKeyring());
+  EnsureConnected();
+  keyring_controller_->CreateWallet(password, std::move(callback));
 }
 
 void WalletPageHandler::AddAccountToWallet(
     AddAccountToWalletCallback callback) {
-  auto* browser_context = web_ui_->GetWebContents()->GetBrowserContext();
-  auto* keyring_controller =
-      GetBraveWalletService(browser_context)->keyring_controller();
-  auto* keyring = keyring_controller->GetDefaultKeyring();
-  if (keyring) {
-    keyring->AddAccounts();
-  }
-  std::move(callback).Run(keyring);
+  EnsureConnected();
+  keyring_controller_->AddAccount(std::move(callback));
 }
 
 void WalletPageHandler::GetRecoveryWords(GetRecoveryWordsCallback callback) {
-  auto* browser_context = web_ui_->GetWebContents()->GetBrowserContext();
-  auto* keyring_controller =
-      GetBraveWalletService(browser_context)->keyring_controller();
-  keyring_controller->GetMnemonicForDefaultKeyring();
-  std::move(callback).Run(keyring_controller->GetMnemonicForDefaultKeyring());
+  EnsureConnected();
+  keyring_controller_->GetMnemonicForDefaultKeyring(std::move(callback));
 }
 
 void WalletPageHandler::RestoreWallet(const std::string& mnemonic,
                                       const std::string& password,
                                       RestoreWalletCallback callback) {
-  auto* browser_context = web_ui_->GetWebContents()->GetBrowserContext();
-  auto* keyring_controller =
-      GetBraveWalletService(browser_context)->keyring_controller();
-  auto* keyring = keyring_controller->RestoreDefaultKeyring(mnemonic, password);
-  if (keyring) {
-    keyring->AddAccounts();
-  }
-  std::move(callback).Run(keyring);
-}
-
-void WalletPageHandler::OnVisibilityChanged(content::Visibility visibility) {
-  webui_hidden_ = visibility == content::Visibility::HIDDEN;
+  EnsureConnected();
+  keyring_controller_->RestoreWallet(mnemonic, password, std::move(callback));
 }

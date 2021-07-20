@@ -7,11 +7,10 @@
 #include "base/task/post_task.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "chrome/browser/profiles/profile.h"
@@ -95,16 +94,12 @@ class BraveWalletEventEmitterTest : public InProcessBrowserTest {
 
   net::EmbeddedTestServer* https_server() { return https_server_.get(); }
 
-  brave_wallet::BraveWalletService* GetBraveWalletService() {
-    brave_wallet::BraveWalletService* service =
-        brave_wallet::BraveWalletServiceFactory::GetInstance()->GetForContext(
-            browser()->profile());
-    EXPECT_TRUE(service);
-    return service;
-  }
-
   brave_wallet::EthJsonRpcController* GetEthJsonRpcController() {
-    return GetBraveWalletService()->rpc_controller();
+    brave_wallet::EthJsonRpcController* controller =
+        brave_wallet::RpcControllerFactory::GetInstance()->GetForContext(
+            browser()->profile());
+    EXPECT_NE(controller, nullptr);
+    return controller;
   }
 
  private:
@@ -134,7 +129,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
-  auto* controller = GetEthJsonRpcController();
+  auto controller = GetEthJsonRpcController();
   controller->SetNetwork(brave_wallet::Network::kGoerli);
 
   auto result_first =

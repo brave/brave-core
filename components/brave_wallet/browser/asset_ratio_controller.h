@@ -17,6 +17,12 @@
 #include "brave/components/brave_wallet/browser/asset_ratio_response_parser.h"
 #include "url/gurl.h"
 
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "components/keyed_service/core/keyed_service.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
+#include "mojo/public/cpp/bindings/remote.h"
+
 namespace network {
 class SharedURLLoaderFactory;
 class SimpleURLLoader;
@@ -24,23 +30,23 @@ class SimpleURLLoader;
 
 namespace brave_wallet {
 
-class AssetRatioController {
+class AssetRatioController : public KeyedService,
+                             public mojom::AssetRatioController {
  public:
   AssetRatioController(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  ~AssetRatioController();
+  ~AssetRatioController() override;
+  AssetRatioController(const AssetRatioController&) = delete;
+  AssetRatioController& operator=(const AssetRatioController&) = delete;
 
-  using GetPriceCallback =
-      base::OnceCallback<void(bool status, const std::string& price)>;
-  void GetPrice(const std::string& asset, GetPriceCallback callback);
+  mojo::PendingRemote<mojom::AssetRatioController> MakeRemote();
 
-  using GetPriceHistoryCallback = base::OnceCallback<void(
-      bool status,
-      std::vector<brave_wallet::mojom::AssetTimePricePtr> values)>;
+  void GetPrice(const std::string& asset, GetPriceCallback callback) override;
   // The asset param is a string like: "bat"
   void GetPriceHistory(const std::string& asset,
                        brave_wallet::mojom::AssetPriceTimeframe timeframe,
-                       GetPriceHistoryCallback callback);
+                       GetPriceHistoryCallback callback) override;
+
   static GURL GetPriceURL(const std::string& asset);
   static GURL GetPriceHistoryURL(
       const std::string& asset,
@@ -56,6 +62,8 @@ class AssetRatioController {
                          const int status,
                          const std::string& body,
                          const std::map<std::string, std::string>& headers);
+
+  mojo::ReceiverSet<mojom::AssetRatioController> receivers_;
 
   static GURL base_url_for_test_;
   api_request_helper::APIRequestHelper api_request_helper_;

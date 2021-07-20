@@ -3,8 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/browser/brave_wallet/swap_controller_factory.h"
 #include "brave/components/brave_wallet/browser/swap_controller.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/profiles/profile.h"
@@ -13,6 +12,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "net/base/url_util.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/http_request.h"
@@ -86,11 +86,11 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequestServerError(
   return std::move(http_response);
 }
 
-brave_wallet::mojom::SwapParams GetCannedSwapParams() {
-  brave_wallet::mojom::SwapParams params;
-  params.buy_token = "ETH";
-  params.sell_token = "DAI";
-  params.buy_amount = "1000000000000000000000";
+brave_wallet::mojom::SwapParamsPtr GetCannedSwapParams() {
+  auto params = brave_wallet::mojom::SwapParams::New();
+  params->buy_token = "ETH";
+  params->sell_token = "DAI";
+  params->buy_amount = "1000000000000000000000";
   return params;
 }  // namespace
 
@@ -209,16 +209,13 @@ class SwapControllerTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  brave_wallet::BraveWalletService* GetBraveWalletService() {
-    brave_wallet::BraveWalletService* service =
-        brave_wallet::BraveWalletServiceFactory::GetInstance()->GetForContext(
+  mojo::Remote<brave_wallet::mojom::SwapController> GetSwapController() {
+    auto pending =
+        brave_wallet::SwapControllerFactory::GetInstance()->GetForContext(
             browser()->profile());
-    EXPECT_TRUE(service);
-    return service;
-  }
-
-  brave_wallet::SwapController* GetSwapController() {
-    return GetBraveWalletService()->swap_controller();
+    mojo::Remote<brave_wallet::mojom::SwapController> asset_ratio_controller;
+    asset_ratio_controller.Bind(std::move(pending));
+    return asset_ratio_controller;
   }
 
  private:
@@ -237,7 +234,7 @@ IN_PROC_BROWSER_TEST_F(SwapControllerTest, GetPriceQuote) {
   params.buy_token = "ETH";
   params.sell_token = "DAI";
   params.buy_amount = "1000000000000000000000";
-  auto* controller = GetSwapController();
+  auto controller = GetSwapController();
   controller->GetPriceQuote(
       GetCannedSwapParams(),
       base::BindOnce(&SwapControllerTest::OnGetPriceQuoteResponse,
@@ -266,7 +263,7 @@ IN_PROC_BROWSER_TEST_F(SwapControllerTest, GetPriceQuote) {
 
 IN_PROC_BROWSER_TEST_F(SwapControllerTest, GetPriceQuoteServerError) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
-  auto* controller = GetSwapController();
+  auto controller = GetSwapController();
   controller->GetPriceQuote(
       GetCannedSwapParams(),
       base::BindOnce(&SwapControllerTest::OnGetPriceQuoteResponse,
@@ -277,7 +274,7 @@ IN_PROC_BROWSER_TEST_F(SwapControllerTest, GetPriceQuoteServerError) {
 
 IN_PROC_BROWSER_TEST_F(SwapControllerTest, GetTransactionPayload) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
-  auto* controller = GetSwapController();
+  auto controller = GetSwapController();
   controller->GetTransactionPayload(
       GetCannedSwapParams(),
       base::BindOnce(&SwapControllerTest::OnGetTransactionPayloadResponse,
@@ -310,7 +307,7 @@ IN_PROC_BROWSER_TEST_F(SwapControllerTest, GetTransactionPayload) {
 
 IN_PROC_BROWSER_TEST_F(SwapControllerTest, GetTransactionPayloadServerError) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
-  auto* controller = GetSwapController();
+  auto controller = GetSwapController();
   controller->GetTransactionPayload(
       GetCannedSwapParams(),
       base::BindOnce(&SwapControllerTest::OnGetTransactionPayloadResponse,

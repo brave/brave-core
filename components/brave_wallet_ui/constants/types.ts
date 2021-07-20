@@ -243,7 +243,13 @@ export interface SwapResponse {
   buyTokenToEthRate: string
 }
 
+export interface SwapResponseReturnInfo {
+  success: boolean,
+  response: SwapResponse
+}
+
 export interface GetAssetPriceReturnInfo {
+  success: boolean,
   price: string
 }
 
@@ -253,6 +259,7 @@ export interface GetAssetPriceHistoryReturnInfo {
 }
 
 export interface GetAssetPriceHistoryReturnObjectInfo {
+  success: boolean,
   values: GetAssetPriceHistoryReturnInfo[]
 }
 
@@ -276,8 +283,8 @@ export interface WalletAPIHandler {
   setInitialAccountNames: (accountNames: string[]) => Promise<void>
   addNewAccountName: (accountName: string) => Promise<void>
   restoreWallet: (mnemonic: string, password: string) => Promise<RestoreWalletReturnInfo>
-  getPriceQuote: (swapParams: SwapParams) => Promise<SwapResponse>
-  getTransactionPayload: (swapParams: SwapParams) => Promise<SwapResponse>
+  getPriceQuote: (swapParams: SwapParams) => Promise<SwapResponseReturnInfo>
+  getTransactionPayload: (swapParams: SwapParams) => Promise<SwapResponseReturnInfo>
 }
 
 export interface RecoveryObject {

@@ -11,24 +11,16 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
-#include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "ui/webui/mojo_web_ui_controller.h"
 
-namespace content {
-class WebUI;
-}
+class Profile;
 
 class WalletHandler : public brave_wallet::mojom::WalletHandler {
  public:
   WalletHandler(
       mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> receiver,
-      mojo::PendingRemote<brave_wallet::mojom::Page> page,
-      content::WebUI* web_ui,
-      ui::MojoWebUIController* webui_controller);
+      Profile* profile);
 
   WalletHandler(const WalletHandler&) = delete;
   WalletHandler& operator=(const WalletHandler&) = delete;
@@ -55,26 +47,22 @@ class WalletHandler : public brave_wallet::mojom::WalletHandler {
   void AddNewAccountName(const std::string& account_name) override;
 
  private:
-  void OnGetPrice(GetAssetPriceCallback callback,
-                  bool success,
-                  const std::string& price);
-  void OnGetPriceHistory(
-      GetAssetPriceHistoryCallback callback,
-      bool success,
-      std::vector<brave_wallet::mojom::AssetTimePricePtr> values);
-  void OnGetPriceQuote(GetPriceQuoteCallback callback,
-                       bool success,
-                       brave_wallet::mojom::SwapResponsePtr response);
-  void OnGetTransactionPayload(GetTransactionPayloadCallback,
-                               bool success,
-                               brave_wallet::mojom::SwapResponsePtr response);
+  void EnsureConnected();
+  void OnConnectionError();
+
+  void OnGetWalletInfo(GetWalletInfoCallback callback,
+                       brave_wallet::mojom::KeyringInfoPtr keyring_info);
+
+  mojo::Remote<brave_wallet::mojom::KeyringController> keyring_controller_;
+  mojo::Remote<brave_wallet::mojom::AssetRatioController>
+      asset_ratio_controller_;
+  mojo::Remote<brave_wallet::mojom::SwapController> swap_controller_;
 
   // TODO(bbondy): This needs to be persisted in prefs
   std::vector<brave_wallet::mojom::AppItemPtr> favorite_apps;
   mojo::Receiver<brave_wallet::mojom::WalletHandler> receiver_;
-  mojo::Remote<brave_wallet::mojom::Page> page_;
-  content::WebUI* const web_ui_;
 
+  Profile* profile_;  // NOT OWNED
   base::WeakPtrFactory<WalletHandler> weak_ptr_factory_;
 };
 

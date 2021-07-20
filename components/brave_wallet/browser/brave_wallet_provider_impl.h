@@ -13,15 +13,13 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_events_observer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
-#include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 namespace brave_wallet {
 
-class BraveWalletService;
 class BraveWalletProviderDelegate;
+class EthJsonRpcController;
 
 class BraveWalletProviderImpl final : public mojom::BraveWalletProvider,
                                       public BraveWalletProviderEventsObserver {
@@ -29,7 +27,7 @@ class BraveWalletProviderImpl final : public mojom::BraveWalletProvider,
   BraveWalletProviderImpl(const BraveWalletProviderImpl&) = delete;
   BraveWalletProviderImpl& operator=(const BraveWalletProviderImpl&) = delete;
   BraveWalletProviderImpl(
-      base::WeakPtr<BraveWalletService> wallet_service,
+      EthJsonRpcController* rpc_controller,
       std::unique_ptr<BraveWalletProviderDelegate> delegate);
   ~BraveWalletProviderImpl() override;
 
@@ -49,7 +47,7 @@ class BraveWalletProviderImpl final : public mojom::BraveWalletProvider,
  private:
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   mojo::Remote<mojom::EventsListener> events_listener_;
-  base::WeakPtr<BraveWalletService> wallet_service_;
+  EthJsonRpcController* rpc_controller_;  // NOT OWNED
 
   base::WeakPtrFactory<BraveWalletProviderImpl> weak_factory_;
 };
