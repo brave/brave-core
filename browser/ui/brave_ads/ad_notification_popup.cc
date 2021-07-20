@@ -438,7 +438,7 @@ gfx::Insets AdNotificationPopup::GetShadowMargin() const {
 void AdNotificationPopup::CreateWidgetView() {
   // The widget instance is owned by its NativeWidget. For more details see
   // ui/views/widget/widget.h
-  auto* widget = new AdNotificationPopupWidget();
+  AdNotificationPopupWidget* widget = new AdNotificationPopupWidget();
   widget->set_focus_on_creation(false);
   widget_observation_.Observe(widget);
 

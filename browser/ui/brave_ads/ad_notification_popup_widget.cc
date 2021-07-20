@@ -48,7 +48,8 @@ const ui::NativeTheme* AdNotificationPopupWidget::GetNativeTheme() const {
   // Ad notification popup widget is created without parent and context
   // specified. In this case default implementation for Linux uses
   // system theme which is not suitable for us. Therefore we return browser
-  // native theme instance directly.
+  // native theme instance directly. This is a workaround until we pass a proper
+  // parent or context on widget creation.
   return ui::NativeTheme::GetInstanceForNativeUi();
 }
 
