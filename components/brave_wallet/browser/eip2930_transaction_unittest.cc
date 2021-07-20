@@ -164,4 +164,52 @@ TEST(Eip2930TransactionUnitTest, Serialization) {
   EXPECT_EQ(tx_from_value, tx);
 }
 
+TEST(Eip2930TransactionUnitTest, GetBaseFee) {
+  std::vector<uint8_t> data;
+  ASSERT_TRUE(base::HexStringToBytes("010200", &data));
+  Eip2930Transaction tx(
+      EthTransaction::TxData(
+          0, 0, 0,
+          EthAddress::FromHex("0x3535353535353535353535353535353535353535"), 0,
+          data),
+      5566);
+
+  auto* access_list = tx.access_list();
+  Eip2930Transaction::AccessListItem item_a;
+  item_a.address.fill(0x0a);
+  Eip2930Transaction::AccessedStorageKey storage_key_0;
+  storage_key_0.fill(0x00);
+  item_a.storage_keys.push_back(storage_key_0);
+  access_list->push_back(item_a);
+
+  // Tx cost + 2*TxDataNonZero + TxDataZero + AccessListAddressCost +
+  // AccessListSlotCost
+  const uint256_t fee = 21000 + 2 * 16 + 4 + 2400 + 1900;
+  EXPECT_EQ(tx.GetBaseFee(), fee);
+
+  Eip2930Transaction tx2(EthTransaction::TxData(0, 0, 0, EthAddress(), 0, data),
+                         5566);
+  *tx2.access_list() = *tx.access_list();
+  // Plus contract creation
+  const uint256_t fee2 = fee + uint256_t(32000); 
+  EXPECT_EQ(tx2.GetBaseFee(), fee2);
+
+  // Duplicate items in Access list
+  Eip2930Transaction tx3(
+      EthTransaction::TxData(
+          0, 0, 0,
+          EthAddress::FromHex("0x3535353535353535353535353535353535353535"), 0,
+          std::vector<uint8_t>()),
+      5566);
+
+  auto* access_list3 = tx3.access_list();
+  access_list3->push_back(item_a);
+  Eip2930Transaction::AccessListItem item_b(item_a);
+  item_b.storage_keys.push_back(storage_key_0);
+  access_list3->push_back(item_b);
+
+  const uint256_t fee3 = 21000 + 2 * 2400 + 3 * 1900;
+  EXPECT_EQ(tx3.GetBaseFee(), fee3);
+}
+
 }  // namespace brave_wallet

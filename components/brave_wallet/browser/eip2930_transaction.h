@@ -63,6 +63,8 @@ class Eip2930Transaction : public EthTransaction {
 
   base::Value ToValue() const override;
 
+  uint256_t GetDataFee() const override;
+
  private:
   uint64_t chain_id_;
   AccessList access_list_;

@@ -16,6 +16,13 @@
 
 namespace brave_wallet {
 
+namespace {
+constexpr uint256_t kContractCreationCost = 32000;
+constexpr uint256_t kTransactionCost = 21000;
+constexpr uint256_t kTxDataZeroCostPerByte = 4;
+constexpr uint256_t kTxDataCostPerByte = 16;
+}  // namespace
+
 EthTransaction::TxData::TxData() = default;
 EthTransaction::TxData::~TxData() = default;
 EthTransaction::TxData::TxData(const uint256_t& nonce_in,
@@ -191,6 +198,26 @@ base::Value EthTransaction::ToValue() const {
   dict.SetIntKey("type", static_cast<int>(type_));
 
   return dict;
+}
+
+uint256_t EthTransaction::GetBaseFee() const {
+  uint256_t fee = GetDataFee() + kTransactionCost;
+  if (IsToCreationAddress())
+    fee += kContractCreationCost;
+
+  return fee;
+}
+
+uint256_t EthTransaction::GetDataFee() const {
+  uint256_t cost = 0;
+  for (uint8_t byte : data_) {
+      cost += byte == 0 ? kTxDataZeroCostPerByte : kTxDataCostPerByte;
+  }
+  return cost;
+}
+
+uint256_t EthTransaction::GetUpfrontCost() const {
+  return gas_limit_ * gas_price_ + value_;
 }
 
 }  // namespace brave_wallet

@@ -66,6 +66,8 @@ class EthTransaction {
   void set_gas_price(uint256_t gas_price) { gas_price_ = gas_price; }
   void set_gas_limit(uint256_t gas_limit) { gas_limit_ = gas_limit; }
 
+  bool IsToCreationAddress() const { return to_.IsEmpty(); }
+
   // return
   // keccack(rlp([nonce, gasPrice, gasLimit, to, value, data, chainID, 0, 0])
   // Support EIP-155 chain id
@@ -83,6 +85,14 @@ class EthTransaction {
   virtual bool IsSigned() const;
 
   virtual base::Value ToValue() const;
+
+  // Minimum gas required (data fee + tx fee + contract creation fee)
+  uint256_t GetBaseFee() const;
+  // Gas paid for the data.
+  virtual uint256_t GetDataFee() const;
+  // The up front amount that an account must have for this transaction to be
+  // valid
+  virtual uint256_t GetUpfrontCost() const;
 
  protected:
   // type 0 would be LegacyTransaction
