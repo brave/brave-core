@@ -12,8 +12,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -43,6 +45,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.core.widget.ImageViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
@@ -540,11 +543,13 @@ public class BraveNewTabPageLayout
             setBackgroundImage(ntpImage);
             mSuperReferralLogo.setVisibility(View.VISIBLE);
             mCreditText.setVisibility(View.GONE);
-            int floatingButtonIcon =
-                GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
-                ? R.drawable.qrcode_dark
-                : R.drawable.qrcode_light;
+            int floatingButtonIcon = R.drawable.ic_qr_code;
             mSuperReferralLogo.setImageResource(floatingButtonIcon);
+            String floatingButtonIconColor =
+                    GlobalNightModeStateProviderHolder.getInstance().isInNightMode() ? "#FFFFFF"
+                                                                                     : "#000000";
+            ImageViewCompat.setImageTintList(mSuperReferralLogo,
+                    ColorStateList.valueOf(Color.parseColor(floatingButtonIconColor)));
             mSuperReferralLogo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

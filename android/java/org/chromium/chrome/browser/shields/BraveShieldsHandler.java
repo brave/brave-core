@@ -753,7 +753,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         braveShieldsHTTPSEverywhereSwitch.setOnCheckedChangeListener(mBraveShieldsHTTPSEverywhereChangeListener);
     }
 
-    private void setupHTTPSEverywhereSwitch(SwitchCompat braveShieldsHTTPSEverywhereSwitch, boolean fromTopSwitch) {
+    private void setupHTTPSEverywhereSwitch(
+            SwitchCompat braveShieldsHTTPSEverywhereSwitch, boolean fromTopSwitch) {
         if (null == braveShieldsHTTPSEverywhereSwitch) {
             return;
         }
@@ -801,7 +802,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         braveShieldsBlockingScriptsSwitch.setOnCheckedChangeListener(mBraveShieldsBlockingScriptsChangeListener);
     }
 
-    private void setupBlockingScriptsSwitch(SwitchCompat braveShieldsBlockingScriptsSwitch, boolean fromTopSwitch) {
+    private void setupBlockingScriptsSwitch(
+            SwitchCompat braveShieldsBlockingScriptsSwitch, boolean fromTopSwitch) {
         if (null == braveShieldsBlockingScriptsSwitch) {
             return;
         }

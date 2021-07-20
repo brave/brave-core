@@ -159,7 +159,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         ((TextView)findViewById(R.id.ten_bat_rate)).setText(tenBatRate);
 
         //set tip button onClick
-        CheckBox monthly = (CheckBox)findViewById(R.id.make_monthly_checkbox);
+        CheckBox monthly = (CheckBox) findViewById(R.id.make_monthly_checkbox);
         View.OnClickListener send_tip_clicker = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -216,7 +216,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
             }
         };
         
-        //set checkbox callback
+        // set checkbox callback
         monthly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

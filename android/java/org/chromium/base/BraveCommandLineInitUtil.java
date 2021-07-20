@@ -5,6 +5,7 @@
 
 package org.chromium.base;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 
 import androidx.annotation.Nullable;
@@ -35,6 +36,7 @@ public abstract class BraveCommandLineInitUtil {
             qaCommandLine +=
                     " --vmodule=*/bat-native-ads/*=6,*/brave_ads/*=6,*/brave_user_model/*=6,*/bat_ads/*=6,*/bat-native-ledger/*=6,*/brave_rewards/*=6";
         }
+        @SuppressLint("VisibleForTests")
         String[] args = CommandLine.tokenizeQuotedArguments(qaCommandLine.toCharArray());
         CommandLine.getInstance().appendSwitchesAndArguments(args);
     }

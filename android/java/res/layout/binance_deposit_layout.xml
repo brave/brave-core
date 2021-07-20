@@ -67,7 +67,8 @@
 			        android:layout_gravity="center_vertical"
 			        android:contentDescription="@null"
 			        android:padding="8dp"
-			        android:src="@drawable/qrcode_dark"/>
+			        app:srcCompat="@drawable/ic_qr_code"
+			        android:tint="#ffffff"/>
 
 	        </LinearLayout>
 
