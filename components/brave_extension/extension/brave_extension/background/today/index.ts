@@ -67,8 +67,8 @@ function ensureUpdateFrequency () {
 }
 
 function stopUpdateFrequency () {
-  chrome.alarms.clear(ALARM_KEY_FEED_UPDATE)
-  chrome.alarms.clear(ALARM_KEY_PUBLISHERS_UPDATE)
+  chrome.alarms.clear(ALARM_KEY_FEED_UPDATE).catch((e) => { console.error(e) })
+  chrome.alarms.clear(ALARM_KEY_PUBLISHERS_UPDATE).catch((e) => { console.error(e) })
 }
 
 // Setup listeners for messages from WebUI

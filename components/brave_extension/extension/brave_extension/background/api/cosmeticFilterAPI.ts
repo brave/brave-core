@@ -33,7 +33,7 @@ export const injectClassIdStylesheet = (tabId: number, classes: string[], ids: s
         code: forceHideStylesheet,
         cssOrigin: 'user',
         runAt: 'document_start'
-      })
+      }).catch((e) => { console.error(e) })
     }
   })
 }
@@ -64,7 +64,7 @@ export const applyAdblockCosmeticFilters = (tabId: number, frameId: number, url:
         code: styledStylesheet,
         cssOrigin: 'user',
         runAt: 'document_start'
-      })
+      }).catch((e) => { console.error(e) })
     }
 
     shieldsPanelActions.cosmeticFilterRuleExceptions(tabId, frameId, resources.exceptions, resources.injected_script || '', resources.generichide)
