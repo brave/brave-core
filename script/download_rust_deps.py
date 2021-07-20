@@ -142,7 +142,8 @@ def rustup_version(version):
     rustup_tool_path = os.path.join(rustup_bin_path, "rustup" if sys.platform != "win32" else "rustup.exe")
     print(subprocess.check_call([rustup_tool_path, "toolchain", "install", version], env=env))
     print(subprocess.check_call([rustup_tool_path, "default", version], env=env))
-    
+    print(subprocess.check_call([rustup_tool_path, "target", "add", "x86_64-apple-ios", "aarch64-apple-ios"], env=env))
+    print(subprocess.check_call([rustup_tool_path, "target", "list"], env=env))
 
 def cargo_install(tool):
     # Set environment variables for rustup
