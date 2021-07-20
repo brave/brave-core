@@ -130,8 +130,8 @@ void ReaderModeBubble::Init() {
   enable_speedreader_button_ =
       AddChildView(std::move(enable_speedreader_button));
 
-  auto speedreader_dancing_books = std::make_unique<SpeedreaderDancingBooks>();
-  AddChildView(std::move(speedreader_dancing_books));
+  // Speedreader Graphic
+  AddChildView(std::make_unique<SpeedreaderDancingBooks>());
 }
 
 void ReaderModeBubble::OnButtonPressed(const ui::Event& event) {

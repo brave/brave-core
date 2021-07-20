@@ -5,11 +5,15 @@
 
 #include "brave/browser/ui/views/speedreader/speedreader_dancing_books.h"
 
+#include <utility>
+
 #include "brave/app/vector_icons/vector_icons.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/vector2d.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/native_theme/native_theme.h"
+
+using BookGraphic = std::pair<gfx::Vector2d, const gfx::VectorIcon*>;
 
 namespace {
 
@@ -21,29 +25,18 @@ constexpr SkColor kBraveSpeedreaderGraphicDark =
 constexpr int kMinimumWidth = 287;
 constexpr int kMinimumHeight = 61;
 
+constexpr std::array<BookGraphic, 6> kGraphicLocations = {
+    std::make_pair(gfx::Vector2d(0, 35), &kBraveSpeedreaderGraphicLinesIcon),
+    std::make_pair(gfx::Vector2d(29, 18), &kBraveSpeedreaderGraphicBook1Icon),
+    std::make_pair(gfx::Vector2d(91, 28), &kBraveSpeedreaderGraphicBook2Icon),
+    std::make_pair(gfx::Vector2d(159, 11), &kBraveSpeedreaderGraphicBook2Icon),
+    std::make_pair(gfx::Vector2d(204, 24), &kBraveSpeedreaderGraphicLinesIcon),
+    std::make_pair(gfx::Vector2d(233, 0), &kBraveSpeedreaderGraphicBook3Icon),
+};
+
 }  // anonymous namespace
 
 namespace speedreader {
-
-SpeedreaderDancingBooks::SpeedreaderDancingBooks() : views::View() {
-  graphics_locations_[0] =
-      std::make_pair(gfx::Vector2d(0, 35), &kBraveSpeedreaderGraphicLinesIcon);
-  graphics_locations_[1] =
-      std::make_pair(gfx::Vector2d(29, 18), &kBraveSpeedreaderGraphicBook1Icon);
-  graphics_locations_[2] =
-      std::make_pair(gfx::Vector2d(91, 28), &kBraveSpeedreaderGraphicBook2Icon);
-  graphics_locations_[3] = std::make_pair(gfx::Vector2d(159, 11),
-                                          &kBraveSpeedreaderGraphicBook2Icon);
-  graphics_locations_[4] = std::make_pair(gfx::Vector2d(204, 24),
-                                          &kBraveSpeedreaderGraphicLinesIcon);
-  graphics_locations_[5] =
-      std::make_pair(gfx::Vector2d(233, 0), &kBraveSpeedreaderGraphicBook3Icon);
-}
-
-SpeedreaderDancingBooks::~SpeedreaderDancingBooks() {
-  // We need a complex destructor, but no deallocation is necessary since
-  // graphics_locations_ only contains weak pointers.
-}
 
 void SpeedreaderDancingBooks::OnPaint(gfx::Canvas* canvas) {
   SkColor color =
@@ -51,20 +44,20 @@ void SpeedreaderDancingBooks::OnPaint(gfx::Canvas* canvas) {
           ? kBraveSpeedreaderGraphicDark
           : kBraveSpeedreaderGraphicLight;
 
-  int xclip = 0;
-  int clip_width = GetBoundsInScreen().width();
+  int xoffset = 0;
+  int clip_width = width();
   if (clip_width < kMinimumWidth) {
     // clip left
-    xclip = clip_width - kMinimumWidth;
+    xoffset = clip_width - kMinimumWidth;
   } else if (clip_width > kMinimumWidth) {
     // center
-    xclip = (clip_width - kMinimumWidth) / 2;
+    xoffset = (clip_width - kMinimumWidth) / 2;
   }
 
-  for (const BookGraphic& graphic : graphics_locations_) {
+  for (const BookGraphic& graphic : kGraphicLocations) {
     canvas->Save();
     gfx::Vector2d translate = graphic.first;
-    translate.set_x(translate.x() + xclip);
+    translate.set_x(translate.x() + xoffset);
     canvas->Translate(translate);
     gfx::PaintVectorIcon(canvas, *graphic.second, color);
     canvas->Restore();

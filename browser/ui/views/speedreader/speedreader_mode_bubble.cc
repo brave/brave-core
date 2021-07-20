@@ -139,8 +139,8 @@ void SpeedreaderModeBubble::Init() {
                           base::Unretained(this)));
   site_toggle_explanation_ = AddChildView(std::move(site_toggle_explanation));
 
-  auto speedreader_dancing_books = std::make_unique<SpeedreaderDancingBooks>();
-  AddChildView(std::move(speedreader_dancing_books));
+  // Speedreader Graphic
+  AddChildView(std::make_unique<SpeedreaderDancingBooks>());
 }
 
 void SpeedreaderModeBubble::UpdateColors() {
