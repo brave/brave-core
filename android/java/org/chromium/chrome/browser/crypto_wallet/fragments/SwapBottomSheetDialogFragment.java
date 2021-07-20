@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
@@ -21,7 +22,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 
-public class SwapBottomSheetDialogFragment extends BottomSheetDialogFragment {
+public class SwapBottomSheetDialogFragment
+        extends BottomSheetDialogFragment implements View.OnClickListener {
     public static final String TAG_FRAGMENT = SwapBottomSheetDialogFragment.class.getName();
 
     public static SwapBottomSheetDialogFragment newInstance() {
@@ -52,8 +54,28 @@ public class SwapBottomSheetDialogFragment extends BottomSheetDialogFragment {
         @SuppressLint("InflateParams")
         final View view =
                 LayoutInflater.from(getContext()).inflate(R.layout.swap_bottom_sheet, null);
+
+        LinearLayout buyLayout = view.findViewById(R.id.buy_layout);
+        buyLayout.setOnClickListener(this);
+        LinearLayout sendLayout = view.findViewById(R.id.send_layout);
+        sendLayout.setOnClickListener(this);
+        LinearLayout swapLayout = view.findViewById(R.id.swap_layout);
+        swapLayout.setOnClickListener(this);
+
         dialog.setContentView(view);
         ViewParent parent = view.getParent();
         ((View) parent).getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+    }
+
+    @Override
+    public void onClick(View view) {
+        openBuySendSwapActivity();
+        dismiss();
+    }
+
+    private void openBuySendSwapActivity() {
+        assert getActivity() != null;
+        Intent buySendSwapActivityIntent = new Intent(getActivity(), BuySendSwapActivity.class);
+        getActivity().startActivity(buySendSwapActivityIntent);
     }
 }
