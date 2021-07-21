@@ -49,7 +49,6 @@
 <translation id="81774600964978477">Ikaw ang nag-curate sa mga nangungunang site</translation>
 <translation id="5439599923922718668">Madalas na Binibisita</translation>
 <translation id="430556192781857057">Iminumungkahi ang mga nangungunang site batay sa mga website na madalas mong binibisita</translation>
-<translation id="8037713009824540257">Magdagdag ng Site</translation>
 <translation id="1773147648972887693">Ipakita ang madalas na binibisita</translation>
 <translation id="4546260624932151782">Ipakita ang mga paborito</translation>
 <translation id="3446024864193919737">Ipakita ang Mga Reward ng Brave</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">Mga Source</translation>
 <translation id="5158129253322921540">I-disable ang content mula sa <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Na-promote</translation>
+<translation id="4541978218358617681">Ad</translation>
 <translation id="1776831331757823105">Orasan</translation>
 <translation id="7791543448312431591">Idagdag</translation>
 <translation id="7679334366167089823">Makakuha ng mga token para sa panonood ng mga ad na nagpapahalaga sa privacy.</translation>
 <translation id="1531133232292396145">Mag-trade ng Crypto sa Binance nang direkta sa iyong browser.</translation>
 <translation id="2166494527623220386">Mag-trade ng Crypto sa Gemini nang direkta sa iyong browser.</translation>
 <translation id="7191394989411626168">Sa pamamagitan ng pag-off ng Mga Card, itatago ang lahat ng card na kasalukuyang nakikita. Gayunpaman, posibleng aabisuhan ka pa rin tungkol sa mga bagong card.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="5655621391922317800">Mga Crypto Wallet</translation>
 <translation id="8820817407110198400">Mga Bookmark</translation>
 <translation id="1644574205037202324">History</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">Pumili ng search engine</translation>
 <translation id="438216590634144114">Piliin ang search engine na gusto mong default na gamitin kapag naghahanap sa web mula sa address bar.</translation>
 <translation id="5804484488647369316">I-set ang default na search engine</translation>
-<translation id="4428458837269935199">Para sa mas pribadong karanasan sa search, subukan ang DuckDuckGo.</translation>
 <translation id="3829010735958850433">Laktawan ang welcome tour</translation>
 <translation id="1201402288615127009">Susunod</translation>
 <translation id="7954950242989581218">Mag-browse nang ligtas at maayos</translation>
@@ -352,15 +352,15 @@
 <translation id="4371618764691059036">Naitakda na ang buwanang kontribusyon.</translation>
 <translation id="6356822617569064293">Petsa ng susunod na kontribusyon:</translation>
 <translation id="3593485149443019592">Hindi sapat ang mga token. <ph name="LINK_BEGIN"/>Magdagdag ng pondo<ph name="LINK_END"/>.</translation>
-<translation id="4622723187300249546">Isang Beses na Tip</translation>
-<translation id="5268142130226208198">Halaga ng isang beses na tip:</translation>
+<translation id="207268487070188114">Isang Beses na Tip</translation>
+<translation id="69861679024013299">Halaga ng isang beses na tip</translation>
 <translation id="3669086939205397942">Teka lang, hindi ka pa makakapagbigay ng tip</translation>
 <translation id="3288812755711687300">Post ni <ph name="USER"/></translation>
 <translation id="5851002232791947896">Tweet ni <ph name="USER"/></translation>
 <translation id="5531915212947569943">Ikinalulungkot naming makita kang umalis…</translation>
 <translation id="1420756770787071946">Suportahan ang creator na ito</translation>
 <translation id="3271043362279673449">Salamat sa suporta!</translation>
-<translation id="379596083010863211">Naipadala na ang iyong isang beses na tip</translation>
+<translation id="3312470408978098625">Naipadala na ang iyong isang beses na tip.</translation>
 <translation id="5096821444729034955">para sa kanyang post.</translation>
 <translation id="2978223787436054634">Mag-tweet tungkol sa iyong suporta</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Mabilisang mag-tour<ph name="TOUR_LINK_END"/> o <ph name="LEARN_LINK_BEGIN"/>matuto pa<ph name="LEARN_LINK_END"/> para sa mga detalye.</translation>
@@ -512,10 +512,10 @@
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">naka-on</translation>
 <translation id="1166682575529520472">Buwanan</translation>
-<translation id="8370173854533168890">Isang beses</translation>
+<translation id="1378730109637014435">Isang beses</translation>
 <translation id="9182287025588539628">Isang Beses na Pagbibigay ng Mga Tip</translation>
 <translation id="6381574025952123568">Balanse sa Pagbubukas</translation>
-<translation id="532275381857891532">7-araw na History ng Mga Ad</translation>
+<translation id="156591572855748524">30 araw na History ng Mga Ad</translation>
 <translation id="4923459931733593730">Pagbabayad</translation>
 <translation id="6104680658798556671">Hindi pa nakakapagbayad.</translation>
 <translation id="3138528956349114724">Ang mga naka-pin na site ngayon</translation>
@@ -622,7 +622,7 @@
 <translation id="3780605330121608425">Ang iyong wallet</translation>
 <translation id="6727483290601442544">Tingnan ang Mga Detalye</translation>
 <translation id="1988679729106502285">TANDAAN:</translation>
-<translation id="5815103311506128988">Hindi pa nagsa-sign up ang creator na ito upang makatanggap ng mga ambag mula sa mga user ng Brave. Patuloy na susubukan ng iyong browser na mag-ambag hanggang sa mag-verify sila, o hanggang sa lumipas ang 90 araw.</translation>
+<translation id="7979350009208995417">Kasalukuyang hindi naka-configure ang creator na ito na makatanggap ng mga tip mula sa iyong wallet. Ang anumang tip na gagawin mo ay mananatiling nakabinbin sa iyong wallet at susubukan ulit na awtomatikong magbigay ng tip sa loob ng 90 araw.</translation>
 <translation id="7461596279975181413">Hindi pa nako-configure ng Creator na ito na Na-verify ng Brave ang kanyang account upang makatanggap ng mga kontribusyon mula sa mga user ng Brave. Patuloy na susubukan ng browser mo na mag-ambag hanggang sa mag-verify sila, o hanggang lumipas ang 90 araw.</translation>
 <translation id="4292832015778676417">kinita sa ads</translation>
 <translation id="3197752845651180812">Mga nakabinbing kontribusyon</translation>
@@ -827,6 +827,7 @@
 <translation id="3741998951694470470">Hindi nakuha ang data para sa pag-import</translation>
 <translation id="7900950536120202771">Internal na error sa node ng IPFS</translation>
 <translation id="1036635552229153800">Na-upload na ang data ngunit hindi ito nailipat sa brave-import directory. Manual mo itong magagawa sa page ng mga setting ng pag-import.</translation>
+<translation id="3793279629218362523">Pamahalaan ang Peer ID at mga key ng IPNS</translation>
 <translation id="572392919096807438">Tandaan ang aking pasya</translation>
 <translation id="7978789143098237970">hanggang sa isara ko ang site na ito</translation>
 <translation id="3523195733429162409">sa loob ng 24 na oras</translation>

@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Разові чайові",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "завершується",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Цей творець ще не зареєструвався на отримання внесків від користувачів Brave. Всі кошти, які ви надсилатимете, залишатимуться у вашому гаманці, доки вони не верифіковані. ",
+    "message": "Наразі налаштування цього автора не дають можливості отримувати чайові з вашого гаманця. Усі чайові, які ви заробите, залишаться у вашому гаманці, а спробу оплати буде автоматично повторено через 90 днів.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Engangstips",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "utløper den",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Denne skaperen har ikke registrert seg for å motta bidrag fra Brave-brukere ennå. Eventuell driks du sender, blir værende i lommeboken din til den er verifisert.",
+    "message": "Denne skaperen har ikke registrert seg for å motta bidrag fra lommeboken din. All driks du mottar vil vises som ventende i lommeboken din og vil bli forsøkt overført på nytt i løpet av 90 dager.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

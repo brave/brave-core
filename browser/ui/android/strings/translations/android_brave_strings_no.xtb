@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="no">
-<translation id="7307834434086582547">Slå Brave Shields på eller av</translation>
+<translation id="7307834434086582547">Aktiver eller deaktiver Brave Shields</translation>
 <translation id="3570081523466826008">Oppgrader tilkoblinger til HTTPS</translation>
 <translation id="2278950434998763147">Åpner enkelte nettsteder med en trygg HTTPS-tilkobling i stedet for standard HTTP.</translation>
 <translation id="94154759592465111">Blokker skript</translation>
@@ -333,7 +333,7 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="4288835546846020774">Gratulerer! Du har blitt en stormester.</translation>
 <translation id="6863752373888328811">Gratulerer! Du er legendarisk.</translation>
 <translation id="4776948189086901857">Brave fungerer overalt</translation>
-<translation id="1606322780901645965">Last ned Brave på brave.com på din bærbare PC eller nettbrett for et raskere og mer privat web</translation>
+<translation id="1606322780901645965">Last ned Brave på brave.com på din bærbare PC eller nettbrett for et raskere og mer privat nett</translation>
 <translation id="8374242949413616101">Personvernbeskyttelse</translation>
 <translation id="4955406228638026265">Brave hindrer annonser &amp; trackere i å samle inn informasjon om deg uten ditt samtykke.</translation>
 <translation id="752842701893882688">Spar data og batteri</translation>
@@ -341,7 +341,7 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="5440744330377972191">Nettsteder lastes raskere</translation>
 <translation id="3000738865641747653">Mindre lasting av data betyr at nettsteder i Brave laster raskere – opptil 8x raskere enn andre nettlesere.</translation>
 <translation id="8903462729414407077">Få ukentlige oppdateringer</translation>
-<translation id="8029219208182772618">Hold deg informert om hvilke av nettstedene du besøker som er mest invaderende for personvernet. \n\nDet er bare du som kan se denne personvernstatistikken. Ingen personlige opplysninger eller historikk om nettleserbruk forlater noengang Brave-nettleseren på enheten din.</translation>
+<translation id="7450323860390658083">Hold deg informert om hvilke av nettstedene du besøker som er mest invaderende for personvernet.\n\nDet er bare du som kan se denne personvernstatistikken. Ingen personopplysninger eller historikk om nettleserbruk forlater noen gang Brave-nettleseren på enheten din.</translation>
 <translation id="6170159749517116894">Slå på personvernrapporter</translation>
 <translation id="5966707198760109579">Uke</translation>
 <translation id="8987927404178983737">Måned</translation>
@@ -430,7 +430,7 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="3477340970981564961">Brave Private Ads belønner deg med polletter for å støtte innholdsskapere, i motsetning til tradisjonelle annonser – samtidig som den personlige informasjonen din beskyttes.</translation>
 <translation id="6973095375773523904">Hvor vises annonsene?</translation>
 <translation id="7556325460112047619">Brave Private Ads vil vises som et ordinært varsel. Du kontrollerer hvor ofte du ser disse annonsene via innstillingene.</translation>
-<translation id="5816125157889950051">Når mottar du belønninger</translation>
+<translation id="6897083627729802351">Når mottar du belønninger</translation>
 <translation id="310863932297733723">Pollettene du har tjent på Brave Private Ads i inneværende måned vil komme inn den 5. i neste måned.</translation>
 <translation id="7712287524451429139">Gi tilbake uten anstrengelser</translation>
 <translation id="105037569026952831">Innholdsprodusenter mottar automatisk token-bidragene basert på engasjementsnivåene dine. Disse måler vi som 'Oppmerksomhet'.</translation>
@@ -447,7 +447,7 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="827315274423079662">Hurra, du er helt klar!</translation>
 <translation id="3895246934788932488">Ved å bruke Brave Rewards styrker du personvernet ditt og bidrar til å gjøre nettet til et bedre sted for alle. Det er bare fantastisk!</translation>
 <translation id="5705882733397021510">Gå tilbake</translation>
-<translation id="5140321319944305531">La oss ta en rask omvisning</translation>
+<translation id="3985567919248057638">La oss ta en rask omvisning</translation>
 <translation id="2434574859640694129">Etter du mottar den første annonseutbetalingen din kan du komme tilbake og tipse denne innholdsprodusenten!</translation>
 <translation id="207242986925259074">Rask oppfrisknings-omvisning</translation>
 <translation id="8342862030112839977">Den første belønningsutbetalingen din kommer innen:</translation>
@@ -465,6 +465,7 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="7320542277711359296">Nest mest populær</translation>
 <translation id="8295049095570748497">En ledende søkemotor i Russland</translation>
 <translation id="2642661895835126239">Planter trær, basert i Berlin</translation>
+<translation id="177282784098234156">Privat, uavhengig, brukeren kommer først</translation>
 <translation id="1410130669636877548">Noen søkemotorer beskytter personvernet ditt bedre enn andre når du søker på nettet.</translation>
 <translation id="1078265935778232285">Velkommen til Brave-nettleseren</translation>
 <translation id="6824713633331856331">Hjelp oss med å lære anonymt</translation>
@@ -501,4 +502,56 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="6960458596933484861">Du må ha minst 15 BAT for å lage en bekreftet Uphold-lommebok. Prøv igjen senere.</translation>
 <translation id="4389085954549744469">Hvis du allerede har en bekreftet Uphold-konto, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">fortsett til innlogging</translation>
+<translation id="1483493594462132177">Send</translation>
+<translation id="538450413584738399">Bytt</translation>
+<translation id="8825032646286791700">DeFi &amp; sikker kryptolagring</translation>
+<translation id="5460364286096798286">Ha kryptoen i din varetekt. Bytt verdier, se priser og hvordan porteføljen din presterer. Invester, lån og lån ut med DeFi.</translation>
+<translation id="1748009926009835882">Sett opp Krypto</translation>
+<translation id="2759836790106646094">Ta sikkerhetskopi av lommeboken din nå!</translation>
+<translation id="7685607706678113458">I neste trinn får du se 12 ord du må bruke til å gjenopprette kryptolommeboken din.</translation>
+<translation id="2359808026110333948">Fortsett</translation>
+<translation id="5024543173656851695">Jeg forstår at hvis jeg mister ordene for gjenoppretting, mister jeg også tilgangen til kryptolommeboken min.</translation>
+<translation id="3933122286596948824">Din gjenopprettingsfrase</translation>
+<translation id="6146351434671268516">Skriv ned eller kopier disse ordene i korrekt rekkefølge, og oppbevar dem på et sikkert sted.</translation>
+<translation id="7408247683131762445">ADVARSEL: Hold sikkerhetsfrasen din hemmelig. Alle som kjenner til frasen kan ta ut verdiene dine for alltid.</translation>
+<translation id="939275786514736244">Jeg har tatt sikkerhetskopi av frasen min og lagret den på et sikkert sted</translation>
+<translation id="6896758677409633944">Kopier</translation>
+<translation id="1202920745614909195">Kjøp krypto med Apple Pay, kreditt- eller debetkort.</translation>
+<translation id="841880029259839903">Send krypto eller overfør fra en konto til en annen.</translation>
+<translation id="8982246458261383692">Bytt kryptoverdier med Brave DEX-samler.</translation>
+<translation id="1783600039044302171">Sikre kryptoen din med et passord</translation>
+<translation id="3726490322412361740">Angi passord</translation>
+<translation id="4450951602553063001">Angi passord på nytt</translation>
+<translation id="1783870616707290226">Passordet må ha 7 tegn eller mer</translation>
+<translation id="7383102760859258982">Passordet som ble skrevet inn på nytt, stemmer ikke</translation>
+<translation id="1538774398124896437">Direkte</translation>
+<translation id="8163269366661594721">1D</translation>
+<translation id="7640956400175663828">1U</translation>
+<translation id="9100647964747998533">1M</translation>
+<translation id="6366007539108097840">3M</translation>
+<translation id="6977728312178289892">1Å</translation>
+<translation id="6895566650974550243">ALLE</translation>
+<translation id="8892168913673237979">Alt klart!</translation>
+<translation id="8331501996028380732">Kjøp, bytt eller ei krypto. Hvis du har en eksisterende kryptokonto, kan du legge til den nå.</translation>
+<translation id="2267753748892043616">Legg til konto</translation>
+<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="8100001366858145406">Aktivere åpning med fingeravtrykk?</translation>
+<translation id="5493402808936397665">Aktiver biometri for å raskt åpne lommeboken din uten bruk av passord.</translation>
+<translation id="8488282162676695335">Brave-lommebok</translation>
+<translation id="6901810042765869341">Angi gjenopprettingsfrasen for å gjenopprette Brave Wallet-kryptokontoen din.</translation>
+<translation id="1970161551843843564">Gjenopprett kryptokonto</translation>
+<translation id="4811736040444856406">Vis gjenopprettingsfrase</translation>
+<translation id="283071225285270357">Angi gjenopprettingsfrasen</translation>
+<translation id="2339124864228588937">Bekreft gjenopprettingsfrase</translation>
+<translation id="6202787708155200390">Trykk på ordene for å legge dem inn etter hverandre i riktig rekkefølge.</translation>
+<translation id="6518133107902771759">Bekreft</translation>
+<translation id="3157931365184549694">Gjenopprett</translation>
+<translation id="9111102763498581341">Lås opp</translation>
+<translation id="6657585470893396449">Passord</translation>
+<translation id="1569452037668432756">Angi passordet for å låse opp</translation>
+<translation id="224719674509047150">Passordet må ha 7 tegn eller mer og må inneholde minst ett tall og et spesialtegn</translation>
+<translation id="1144810021918451336">Beskytter deg ikke mot farlige nettsteder, nedlastinger eller utvidelser.</translation>
+<translation id="745115390910697838">Frasene stemte ikke. Prøv igjen.</translation>
+<translation id="2360588547830602174">Kunne ikke gjenopprette konto. Prøv igjen.</translation>
+<translation id="1530109021798294736">Mainnet</translation>
 </translationbundle>

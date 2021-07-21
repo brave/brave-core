@@ -49,7 +49,6 @@
 <translation id="81774600964978477">শীর্ষ সাইটগুলো আপনি নির্বাচন করে বিন্যস্ত করেছেন</translation>
 <translation id="5439599923922718668">প্রায়শই পরিদর্শন করা</translation>
 <translation id="430556192781857057">আপনার প্রায়শই পরিদর্শন করা ওয়েবসাইটগুলোর উপর ভিত্তি করে শীর্ষ সাইটগুলো প্রস্তাব করা হয়</translation>
-<translation id="8037713009824540257">সাইট যুক্ত করুন</translation>
 <translation id="1773147648972887693">প্রায়শই পরিদর্শন করা সাইটগুলো দেখান</translation>
 <translation id="4546260624932151782">ফেবরিটগুলো দেখান</translation>
 <translation id="3446024864193919737">Brave Rewards দেখান</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">উৎস</translation>
 <translation id="5158129253322921540">বিষয়বস্তুগুলি ডিসেবল করুন <ph name="PUBLISHER_NAME"/> থেকে ;</translation>
 <translation id="3189348785087463371">প্রচারিত</translation>
+<translation id="4541978218358617681">বিজ্ঞাপন</translation>
 <translation id="1776831331757823105">ঘড়ি</translation>
 <translation id="7791543448312431591">জুড়ুন</translation>
 <translation id="7679334366167089823">গোপনীয়তাকে সম্মান দেওয়া বিজ্ঞাপনগুলি দেখার জন্য টোকেন উপার্জন করুন।</translation>
 <translation id="1531133232292396145">আপনার ব্রাউজারে Binance দিয়ে সরাসরি ক্রিপ্টো ট্রেড করুন।</translation>
 <translation id="2166494527623220386">আপনার ব্রাউজারে Gemini দিয়ে সরাসরি ক্রিপ্টো ট্রেড করুন।</translation>
 <translation id="7191394989411626168">কার্ডগুলি বন্ধ করে, বর্তমানে দৃশ্যমান সমস্ত কার্ড গোপন করা হবে। তবে, আপনাকে এখনও নতুন কার্ড সম্পর্কে অবহিত করা হতে পারে।</translation>
+<translation id="8112367589167674370">Brave বাক্যালাপ</translation>
 <translation id="5655621391922317800">Crypto ওয়ালেটগুলি</translation>
 <translation id="8820817407110198400">বুকমার্কগুলি</translation>
 <translation id="1644574205037202324">ইতিহাস</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">একটি সার্চ ইঞ্জিন নির্বাচন করুন</translation>
 <translation id="438216590634144114">আপনি ঠিকানা বার থেকে ওয়েব অনুসন্ধান করার সময় ডিফল্ট হিসাবে যে অনুসন্ধান ইঞ্জিনটি ব্যবহার করতে চান সেটি বেছে নিন।</translation>
 <translation id="5804484488647369316">ডিফল্ট সার্চ ইঞ্জিন সেট করুন</translation>
-<translation id="4428458837269935199">একটি আরও ব্যক্তিগত অনুসন্ধানের জন্য, DuckDuckGo চেষ্টা করে দেখুন।</translation>
 <translation id="3829010735958850433">স্বাগত সফর এড়িয়ে যান</translation>
 <translation id="1201402288615127009">পরবর্তী</translation>
 <translation id="7954950242989581218">নিরাপদে ও ভালোভাবে ব্রাউজ করুন</translation>
@@ -352,15 +352,15 @@
 <translation id="4371618764691059036">মাসিক অনুদান সেট করা হয়েছে।</translation>
 <translation id="6356822617569064293">পরবর্তী অবদানের তারিখ:</translation>
 <translation id="3593485149443019592">পর্যাপ্ত টোকেন নেই। অনুগ্রহ করে <ph name="LINK_BEGIN"/>ফান্ড যোগ করুন<ph name="LINK_END"/>।</translation>
-<translation id="4622723187300249546">এককালীন পরামর্শ</translation>
-<translation id="5268142130226208198">এককালীন পরামর্শের অর্থরাশি:</translation>
+<translation id="207268487070188114">এককালীন টিপ</translation>
+<translation id="69861679024013299">এককালীন টিপের অর্থরাশি:</translation>
 <translation id="3669086939205397942">ধরে থাকুন, আপনি পারবেন’tএখনও টিপ করতে</translation>
 <translation id="3288812755711687300"><ph name="USER"/>’ এর পোস্ট</translation>
 <translation id="5851002232791947896"><ph name="USER"/>’ এর টুইট</translation>
 <translation id="5531915212947569943">আপনাকে চলে যেতে দেখে খারাপ লাগছে…</translation>
 <translation id="1420756770787071946">এই স্রষ্টাকে সহায়তা করুন</translation>
 <translation id="3271043362279673449">সহায়তার জন্য ধন্যবাদ!</translation>
-<translation id="379596083010863211">আপনার এককালীন পরামর্শ পাঠানো হয়েছে।</translation>
+<translation id="3312470408978098625">আপনার এককালীন টিপ পাঠানো হয়েছে।</translation>
 <translation id="5096821444729034955">তাদের পোস্টের জন্য</translation>
 <translation id="2978223787436054634">আপনার সহায়তা সম্পর্কে টুইট</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>এক ঝলকে দেখে নিন<ph name="TOUR_LINK_END"/> বা বিস্তারিতের জন্য <ph name="LEARN_LINK_BEGIN"/>আরো জানুন<ph name="LEARN_LINK_END"/>।</translation>
@@ -512,10 +512,10 @@
 <translation id="4921250468871504777">ঠিক আছে</translation>
 <translation id="7866482334467279021">চালু</translation>
 <translation id="1166682575529520472">মাসিক</translation>
-<translation id="8370173854533168890">এক বারের জন্য</translation>
+<translation id="1378730109637014435">এককালীন</translation>
 <translation id="9182287025588539628">একবারের দান/পরামর্শ</translation>
 <translation id="6381574025952123568">ওপেনিং ব্যালেন্স</translation>
-<translation id="532275381857891532">7-দিনের বিজ্ঞাপনের ইতিহাস</translation>
+<translation id="156591572855748524">30-দিনের বিজ্ঞাপনের ইতিহাস</translation>
 <translation id="4923459931733593730">পেমেন্ট</translation>
 <translation id="6104680658798556671">পেমেন্ট করা হয়নি|</translation>
 <translation id="3138528956349114724">পিন করা সাইটগুলি এখন</translation>
@@ -622,7 +622,7 @@
 <translation id="3780605330121608425">আপনার ওয়ালেট</translation>
 <translation id="6727483290601442544">বিশদ বিবরণ দেখুন</translation>
 <translation id="1988679729106502285">টীকা:</translation>
-<translation id="5815103311506128988">এই নির্মাতাটি Brave ব্যবহারকারীদের থেকে অবদানগুলি পেতে এখনও সাইন আপ করেনি। আপনার ব্রাউজারটি যাচাই করা না হলে অথবা 90 দিন পেরিয়ে না গেলে অবদান দেওয়া চালিয়ে যাব।</translation>
+<translation id="7979350009208995417">এই স্রষ্টা বর্তমানে আপনার ওয়ালেট থেকে টিপগুলি পাওয়ার জন্য কনফিগার করা নেই। আপনার করা যে কোনও টিপ আপনার ওয়ালেটে পড়ে থাকবে এবং 90 দিন পরে স্বয়ংক্রিয়ভাবে পুনঃপ্রচেষ্টা করবে।</translation>
 <translation id="7461596279975181413">এই Brave যাচাইকৃত নির্মাতাগণ Brave ব্যবহারকারীদের থেকে অবদানগুলি পেতে এখনও তাদের অ্যকাউন্ট কনফিগার করেন নি। আপনার ব্রাউজারটি যতক্ষণ না তারা যাচাই করছে অথবা 90 দিন পেরিয়ে না যাওয়া পর্যন্ত অবদান রাখা চালিয়ে যাওয়ার চেষ্টা করতে থাকবে।</translation>
 <translation id="4292832015778676417">বিজ্ঞাপন থেকে অর্জিত</translation>
 <translation id="3197752845651180812">মুলতুবি অবদান</translation>
@@ -827,6 +827,7 @@
 <translation id="3741998951694470470">আমদানির জন্য ডেটা টেনে আনতে ব্যর্থ হয়েছে</translation>
 <translation id="7900950536120202771">IPFS নোড অভ্যন্তরীণ ত্রুটি</translation>
 <translation id="1036635552229153800">ডেটাটি সফলভাবে আপলোড করা হয়েছে কিন্তু brave-আমদানি ডিরেক্টরিতে সরানো হয়নি। আপনি আমদানি সেটিংস পৃষ্ঠায় এটি ম্যানুয়ালি করতে পারেন।</translation>
+<translation id="3793279629218362523">পীয়ার আইডি এবং IPNS কীগুলি পরিচালনা করুন</translation>
 <translation id="572392919096807438">Remember my decision</translation>
 <translation id="7978789143098237970">আমি যতক্ষুন না এই সাইটটি বন্ধ করি</translation>
 <translation id="3523195733429162409">24 ঘণ্টার জন্য</translation>

@@ -49,7 +49,6 @@
 <translation id="81774600964978477">De bedste hjemmesider organiseres af dig</translation>
 <translation id="5439599923922718668">Ofte besøgt</translation>
 <translation id="430556192781857057">Bedste hjemmesider foreslås baseret på hjemmesider, du besøger ofte</translation>
-<translation id="8037713009824540257">Tilføj side</translation>
 <translation id="1773147648972887693">Vis ofte besøgte</translation>
 <translation id="4546260624932151782">Vis favoritter</translation>
 <translation id="3446024864193919737">Vis Brave Belønninger</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">Kilder</translation>
 <translation id="5158129253322921540">Deaktivér indhold fra <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Promoveret</translation>
+<translation id="4541978218358617681">Annonce</translation>
 <translation id="1776831331757823105">Ur</translation>
 <translation id="7791543448312431591">Tilføj</translation>
 <translation id="7679334366167089823">Optjen tokens ved at se datarespekterende reklamer.</translation>
 <translation id="1531133232292396145">Handl kryptovaluta på Binance direkte fra din browser.</translation>
 <translation id="2166494527623220386">Handl kryptovaluta på Gemini direkte i din browser:</translation>
 <translation id="7191394989411626168">Ved at deaktivere Kort, vil alle kort, der på nuværende tidspunkt er synlige, blive skjult. Du kan dog stadig få besked om nye kort.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="5655621391922317800">Crypto-Tegnebøger</translation>
 <translation id="8820817407110198400">Bogmærker</translation>
 <translation id="1644574205037202324">Historik</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">Vælg en søgemotor</translation>
 <translation id="438216590634144114">Vælg den søgemaskine du ønsker at bruge som standard, når du søger på nettet fra adressebjælken.</translation>
 <translation id="5804484488647369316">Indstil standard søgemotor</translation>
-<translation id="4428458837269935199">Prøv DuckDuckGo for en mere privat søgeoplevelse.</translation>
 <translation id="3829010735958850433">Spring over velkomsttur</translation>
 <translation id="1201402288615127009">Næste</translation>
 <translation id="7954950242989581218">Brows trygt og sikkert</translation>
@@ -352,15 +352,15 @@
 <translation id="4371618764691059036">Månedligt bidrag er indstillet.</translation>
 <translation id="6356822617569064293">Næste bidragsdato:</translation>
 <translation id="3593485149443019592">Ikke nok poletter. <ph name="LINK_BEGIN"/>Tilføj add midler<ph name="LINK_END"/>.</translation>
-<translation id="4622723187300249546">Engangsdrikkepenge</translation>
-<translation id="5268142130226208198">Engangsdrikkepengebeløb:</translation>
+<translation id="207268487070188114">Engangsdrikkepenge</translation>
+<translation id="69861679024013299">Beløb for engangsdrikkepenge:</translation>
 <translation id="3669086939205397942">Vent, du kan ikke give drikkepenge endnu</translation>
 <translation id="3288812755711687300">Opslag fra <ph name="USER"/></translation>
 <translation id="5851002232791947896">Tweet fra <ph name="USER"/></translation>
 <translation id="5531915212947569943">Vi er kede af, at du forlader os…</translation>
 <translation id="1420756770787071946">Støt denne indholdsskaber</translation>
 <translation id="3271043362279673449">Tak for støtten!</translation>
-<translation id="379596083010863211">Dine engangsdrikkepenge er blevet sendt.</translation>
+<translation id="3312470408978098625">Din engangsdrikkepenge er blevet sendt.</translation>
 <translation id="5096821444729034955">for deres post</translation>
 <translation id="2978223787436054634">Tweet om din støtte</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Tag en hurtig rundvisning,<ph name="TOUR_LINK_END"/> eller <ph name="LEARN_LINK_BEGIN"/>læs mere<ph name="LEARN_LINK_END"/> for at få mere info.</translation>
@@ -512,10 +512,10 @@
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">til</translation>
 <translation id="1166682575529520472">Månedlig</translation>
-<translation id="8370173854533168890">En gang</translation>
+<translation id="1378730109637014435">Én gang</translation>
 <translation id="9182287025588539628">Engangsdonationer</translation>
 <translation id="6381574025952123568">Åbningssaldo</translation>
-<translation id="532275381857891532">7-dages Reklamehistorik</translation>
+<translation id="156591572855748524">30-dages reklamehistorik</translation>
 <translation id="4923459931733593730">Betaling</translation>
 <translation id="6104680658798556671">Betaling ikke gennemført</translation>
 <translation id="3138528956349114724">Fastgjorte sider er nu</translation>
@@ -622,7 +622,7 @@
 <translation id="3780605330121608425">Din tegnebog</translation>
 <translation id="6727483290601442544">Vis detaljer</translation>
 <translation id="1988679729106502285">NOTE:</translation>
-<translation id="5815103311506128988">Denne skaber har endnu ikke skrevet sig op til at modtage bidrag fra Brave-brugere. Din browser vil fortsat forsøge at bidrage indtil de godkender, eller indtil 90 dage er gået.</translation>
+<translation id="7979350009208995417">Denne indholdsskaber er i øjeblikket ikke konfigureret til at modtage drikkepenge fra din tegnebog. Dine drikkepenge vi forblive i din tegnebog, og de vil forsøge at blive overført automatisk i 90 dage.</translation>
 <translation id="7461596279975181413">Denne Brave Verified Creator har endnu ikke konfigureret sin konto til at modtage bidrag fra Brave-brugere. Din browser fortsætter med at prøve at bidrage, indtil vedkommende bekræfter, eller indtil 90 dage er gået.</translation>
 <translation id="4292832015778676417">tjent på reklamer</translation>
 <translation id="3197752845651180812">Afventende bidrag</translation>
@@ -827,6 +827,7 @@
 <translation id="3741998951694470470">Kunne ikke hente data til import</translation>
 <translation id="7900950536120202771">Intern fejl i IPFS-node</translation>
 <translation id="1036635552229153800">Dataene blevet uploadet, men ikke flyttet til brave-import-mappen. Det kan du gøre manuelt på siden med importindstillinger.</translation>
+<translation id="3793279629218362523">Administrér peer-ID og IPNS-nøgler</translation>
 <translation id="572392919096807438">Husk mit valg</translation>
 <translation id="7978789143098237970">indtil jeg lukker dette websted</translation>
 <translation id="3523195733429162409">i 24 timer</translation>

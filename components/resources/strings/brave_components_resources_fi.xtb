@@ -49,7 +49,6 @@
 <translation id="81774600964978477">Valvot itse kärkisivustoja</translation>
 <translation id="5439599923922718668">Usein käytetty</translation>
 <translation id="430556192781857057">Kärkisivustoja suositellaan useimmin käyttämiesi verkkosivustojen perusteella</translation>
-<translation id="8037713009824540257">Lisää sivusto</translation>
 <translation id="1773147648972887693">Näytä usein käytetyt</translation>
 <translation id="4546260624932151782">Näytä suosikit</translation>
 <translation id="3446024864193919737">Näytä Brave-palkinnot</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">Lähteet</translation>
 <translation id="5158129253322921540">Ota sisältö pois käytöstä julkaisijalta <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Promootio</translation>
+<translation id="4541978218358617681">Mainos</translation>
 <translation id="1776831331757823105">Kello</translation>
 <translation id="7791543448312431591">Lisää</translation>
 <translation id="7679334366167089823">Tienaa poletteja yksityisyyttä kunnioittavien mainosten katselemisesta.</translation>
 <translation id="1531133232292396145">Käy kryptokauppaa Binancessa suoraan selaimestasi käsin.</translation>
 <translation id="2166494527623220386">Käy kryptokauppaa Geminissä suoraan selaimestasi käsin.</translation>
 <translation id="7191394989411626168">Kaikki tällä hetkellä näkyvissä olevat kortit piilotetaan, jos asetat kortit pois päältä. Sinulle kuitenkin voidaan vielä ilmoittaa uusista korteista.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="5655621391922317800">Kryptokukkarot</translation>
 <translation id="8820817407110198400">Kirjanmerkit</translation>
 <translation id="1644574205037202324">Historia</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">Valitse hakukone</translation>
 <translation id="438216590634144114">Valitse oletushakukone, jota käytetään osoitekentän kautta tehtävissä verkkohauissa.</translation>
 <translation id="5804484488647369316">Määritä oletushakukone</translation>
-<translation id="4428458837269935199">Kokeile DuckDuckGo'ta, jos kaipaat yksityisempää hakutapaa.</translation>
 <translation id="3829010735958850433">Ohita tervetuliaiskierros</translation>
 <translation id="1201402288615127009">Seuraava</translation>
 <translation id="7954950242989581218">Selaa turvallisesti ja huoletta</translation>
@@ -352,15 +352,15 @@
 <translation id="4371618764691059036">Kuukausittainen lahjoitus on asetettu.</translation>
 <translation id="6356822617569064293">Seuraava lahjoituspäivämäärä:</translation>
 <translation id="3593485149443019592">Ei riittäväksi merkkejä. <ph name="LINK_BEGIN"/>Lisää varoja<ph name="LINK_END"/>.</translation>
-<translation id="4622723187300249546">Kertaluontoinen tippi</translation>
-<translation id="5268142130226208198">Kertaluontoisten tipin määrä:</translation>
+<translation id="207268487070188114">Kertaluontoinen tippi</translation>
+<translation id="69861679024013299">Kertaluontoisten tipin määrä:</translation>
 <translation id="3669086939205397942">Odota hetki, et voi tipata vielä</translation>
 <translation id="3288812755711687300">Käyttäjän <ph name="USER"/>’ julkaisu</translation>
 <translation id="5851002232791947896">Käyttäjän <ph name="USER"/>’ twiitti</translation>
 <translation id="5531915212947569943">Harmi, että lähdet…</translation>
 <translation id="1420756770787071946">Tue tätä tuottajaa</translation>
 <translation id="3271043362279673449">Kiitos tuestasi!</translation>
-<translation id="379596083010863211">Kertaluontoinen tippi on lähetetty.</translation>
+<translation id="3312470408978098625">Kertaluontoinen tippi on lähetetty.</translation>
 <translation id="5096821444729034955">julkaisulleen</translation>
 <translation id="2978223787436054634">Twiittaa tuestasi</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Tee nopea tutustumiskierros<ph name="TOUR_LINK_END"/> tai <ph name="LEARN_LINK_BEGIN"/>lue lisää<ph name="LEARN_LINK_END"/> saadaksesi lisätietoja.</translation>
@@ -512,10 +512,10 @@
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">päällä</translation>
 <translation id="1166682575529520472">Kuukausittainen</translation>
-<translation id="8370173854533168890">Kertaluontoinen</translation>
+<translation id="1378730109637014435">Kertaluontoinen</translation>
 <translation id="9182287025588539628">Kertatipit</translation>
 <translation id="6381574025952123568">Avoin tase</translation>
-<translation id="532275381857891532">7 päivän mainoshistoria</translation>
+<translation id="156591572855748524">30 päivän mainoshistoria</translation>
 <translation id="4923459931733593730">Maksu</translation>
 <translation id="6104680658798556671">Maksua ei suoritettu.</translation>
 <translation id="3138528956349114724">Kiinnitetyt sivut ovat nyt</translation>
@@ -622,7 +622,7 @@
 <translation id="3780605330121608425">Lompakkosi</translation>
 <translation id="6727483290601442544">Katso yksityiskohdat</translation>
 <translation id="1988679729106502285">HUOMIO:</translation>
-<translation id="5815103311506128988">Tämä kehittäjä ei ole vielä rekisteröitynyt vastaanottamaan  Brave-käyttäjien avustuksia. Selaimesi pyrkii tekemään avustuksia joko kyseisen henkilön vahvistukseen asti tai kunnes 90 päivää on kulunut.</translation>
+<translation id="7979350009208995417">Tätä tekijää ei ole tällä hetkellä määritetty saamaan tippejä lompakostasi. Kaikki antamasi tipit pysyvät lompakossasi, ja niitä yritetään antaa automaattisesti 90 päivän ajan.</translation>
 <translation id="7461596279975181413">Tämä Braven vahvistettu tekijä ei ole vielä asettanut tiliään hyväksymään avustuksia Braven käyttäjiltä. Selaimesi yrittää avustamista kunnes tekijä todentaa itsensä tai 90 päivän raja tulee täyteen.</translation>
 <translation id="4292832015778676417">ansaittu mainoksista</translation>
 <translation id="3197752845651180812">Odottavat lahjoitukset</translation>
@@ -827,6 +827,7 @@
 <translation id="3741998951694470470">Tuotavien tietojen noutaminen epäonnistui</translation>
 <translation id="7900950536120202771">IPFS-noodin sisäinen virhe</translation>
 <translation id="1036635552229153800">Tietojen lataaminen onnistui, mutta niitä ei siirretty Brave-import. Voit suorittaa tämän manuaalisesti tuontiasetusten sivulla.</translation>
+<translation id="3793279629218362523">Hallitse vertaisjärjestelmän tunnuksen ja IPNS-avaimia</translation>
 <translation id="572392919096807438">Muista päätökseni</translation>
 <translation id="7978789143098237970">kunnes suljen tämän sivuston</translation>
 <translation id="3523195733429162409">24 tunnin ajan</translation>

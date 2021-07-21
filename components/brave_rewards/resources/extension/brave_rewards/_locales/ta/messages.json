@@ -4,11 +4,11 @@
     "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "இப்போது சம்பாதிக்க ஆரம்பி!",
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "வெகுமதிகளில் சேர்",
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
@@ -36,15 +36,15 @@
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
-    "message": "Get ready to experience the next Internet.",
+    "message": "அடுத்த இணையத்தை அனுபவிக்க தயாராகுங்கள்.",
     "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "உம் பணப்பை",
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
-    "message": "Grants",
+    "message": "மானியங்கள்",
     "description": "Title for grant section in wallet summary"
   },
   "details": {
@@ -60,7 +60,7 @@
     "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
-    "message": "Attention",
+    "message": "கவனத்திற்கு",
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
@@ -68,7 +68,7 @@
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
-    "message": "Include in Auto-Contribute",
+    "message": "தானியங்கு-பங்களிப்பில் சேர்",
     "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
@@ -76,7 +76,7 @@
     "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "உதவிக்குறிப்புகளை இயக்கு",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
@@ -84,7 +84,7 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "rewardsSummary": {
-    "message": "Rewards Summary",
+    "message": "வெகுமதிகள் சுருக்கம்",
     "description": "Section title in wallet panel, which contains monthly rewards summary"
   },
   "monthApr": {
@@ -96,39 +96,39 @@
     "description": "Month"
   },
   "monthDec": {
-    "message": "December",
+    "message": "டிசம்பர்",
     "description": "Month"
   },
   "monthFeb": {
-    "message": "February",
+    "message": "பிப்ரவரி",
     "description": "Month"
   },
   "monthJan": {
-    "message": "January",
+    "message": "ஜனவரி",
     "description": "Month"
   },
   "monthJul": {
-    "message": "July",
+    "message": "ஜூலை",
     "description": "Month"
   },
   "monthJun": {
-    "message": "June",
+    "message": "ஜூன்",
     "description": "Month"
   },
   "monthMar": {
-    "message": "March",
+    "message": "மார்ச்",
     "description": "Month"
   },
   "monthMay": {
-    "message": "May",
+    "message": "மே",
     "description": "Month"
   },
   "monthNov": {
-    "message": "November",
+    "message": "நவம்பர்",
     "description": "Month"
   },
   "monthOct": {
-    "message": "October",
+    "message": "அக்டோபர்",
     "description": "Month"
   },
   "monthSep": {
@@ -150,16 +150,16 @@
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
-    "message": "Earnings from Ads",
+    "message": "விளம்பரங்களிலிருந்து வருவாய்",
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "தானாக-பங்களி",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
     "message": "One-Time Tips",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "expires on",
@@ -170,11 +170,11 @@
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "ஆஃப்",
+    "message": "முடக்கத்தில்",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
-    "message": "ok",
+    "message": "சரி",
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
@@ -186,7 +186,7 @@
     "description": "Notification title when we display info about ads"
   },
   "braveContributeTitle": {
-    "message": "Auto-Contribute",
+    "message": "தானாக-பங்களி",
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
@@ -240,7 +240,7 @@
     "description": "Title for insufficient funds notification"
   },
   "braveRewardsCreatingText": {
-    "message": "Creating wallet",
+    "message": "பணப்பையை உருவாக்குகிறது",
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
@@ -264,7 +264,7 @@
     "description": "Directs the user to drag the BAT icon"
   },
   "captchaProveHuman": {
-    "message": "Prove that you are human!",
+    "message": "நீ மனிதன் என்று நிரூபி!",
     "description": "Cosmetic text for captcha prompt"
   },
   "captchaTarget": {
@@ -276,7 +276,7 @@
     "description": "Message upon failing captcha"
   },
   "claim": {
-    "message": "Claim",
+    "message": "உரிமைகோரு",
     "description": "Claim text"
   },
   "newTokenGrant": {
@@ -292,7 +292,7 @@
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
-    "message": "Brave Rewards is having an issue. Please try again later.",
+    "message": "பிரேவ் வெகுமதிகள் ஒரு சிக்கலைக் கொண்டுள்ளது. பின்னர் மீண்டும் முயல்க.",
     "description": "Error text when user is having problems claiming a grant."
   },
   "grantGeneralErrorTitle": {
@@ -308,11 +308,11 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "This creator has not yet signed up to receive contributions from Brave users. Any tips you send will remain in your wallet until they verify.",
+    "message": "This creator is currently not configured to receive tips from your wallet. Any tip you make will remain pending in your wallet and retry automatically for 90 days.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
-    "message": "Learn more.",
+    "message": "மேலும் அறிக.",
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
@@ -320,15 +320,15 @@
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
-    "message": "Learn more.",
+    "message": "மேலும் அறிக.",
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "ஆஃப்",
+    "message": "முடக்கத்தில்",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
-    "message": "Settings.",
+    "message": "அமைப்புகள்.",
     "description": "Settings Link for Panel's disabled state"
   },
   "disabledPanelText": {
@@ -340,7 +340,7 @@
     "description": "Title for Panel's disabled state"
   },
   "walletFailedTitle": {
-    "message": "Wallet creation failed",
+    "message": "பணப்பை உருவாக்கம் தோல்வி",
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
@@ -364,7 +364,7 @@
     "description": "The word 'and'"
   },
   "braveRewardsSubTitle": {
-    "message": "Get Rewarded for Browsing!",
+    "message": "உலாவலுக்கு வெகுமதி பெறுங்கள்!",
     "description": "Subtitle for wallet disabled panel"
   },
   "disabledPanelTextTwo": {

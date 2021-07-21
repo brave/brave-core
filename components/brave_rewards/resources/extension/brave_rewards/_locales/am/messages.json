@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "የአንድ ግዜ ምክሮች",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "በ አገልግሎቱ ያበቃል",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "ይህ ፈጣር ከ Brave ተጠቃሚዎች መዋጮዎችን ለመቀበል ገና አልተመዘገበም። እስከሚያረጋግጥ ድረስ ምንም አይነት መወጮ በእርሶ ዋሌት ውስጥ ይቆያል።",
+    "message": "ይህ ፈጣሪ በአሁኑ ጊዜ ከዋሌትዎ ምክሮችን ለመቀበል አልተዋቀረም። የሚሰጡት ማናቸውም ጠቃሚ ምክር በኪስ ቦርሳዎ ውስጥ እንደተጠበቀ ሆኖ ለ 90 ቀናት በራስ-ሰር እንደገና ይሞክሩ።",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

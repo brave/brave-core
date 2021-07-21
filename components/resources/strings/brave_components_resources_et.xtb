@@ -49,7 +49,6 @@
 <translation id="81774600964978477">Popid saidid on teie kureeritud</translation>
 <translation id="5439599923922718668">Sageli külastatud</translation>
 <translation id="430556192781857057">Poppe saite pakutakse teie sageli külastatud veebisaitide alusel</translation>
-<translation id="8037713009824540257">Lisa sait</translation>
 <translation id="1773147648972887693">Kuva sageli külastatud</translation>
 <translation id="4546260624932151782">Kuva lemmikud</translation>
 <translation id="3446024864193919737">Kuva Brave Rewards</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">Allikad</translation>
 <translation id="5158129253322921540">Keela sisu väljaandjalt <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Reklaamitud</translation>
+<translation id="4541978218358617681">Reklaam</translation>
 <translation id="1776831331757823105">Kell</translation>
 <translation id="7791543448312431591">Lisa</translation>
 <translation id="7679334366167089823">Teenite tokeneid privaatsust austavate reklaamide vaatamise eest.</translation>
 <translation id="1531133232292396145">Saate otse oma brauseris Binance'is krüptoga kaubelda.</translation>
 <translation id="2166494527623220386">Saate otse oma brauseris Geminis krüptoga kaubelda.</translation>
 <translation id="7191394989411626168">Kaartide väljalülitamine peidab kõik praegu nähtavad kaardid. Võite siiski saada teateid uutest kaartidest.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="5655621391922317800">Krüptorahakotid</translation>
 <translation id="8820817407110198400">Järjehoidjad</translation>
 <translation id="1644574205037202324">Ajalugu</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">Vali otsingumootor</translation>
 <translation id="438216590634144114">Valige otsingumootor, mida soovite vaikimisi kasutada, kui sisestate otsitava fraasi brauseri aadressiribale.</translation>
 <translation id="5804484488647369316">Määra vaikeotsingumootoriks</translation>
-<translation id="4428458837269935199">Privaatsema otsinguelamuse saamiseks proovige otsingumootorit DuckDuckGo.</translation>
 <translation id="3829010735958850433">Jäta tervitustuur vahele</translation>
 <translation id="1201402288615127009">Edasi</translation>
 <translation id="7954950242989581218">Sirvige ohutult</translation>
@@ -352,15 +352,15 @@
 <translation id="4371618764691059036">Igakuised panused on määratud.</translation>
 <translation id="6356822617569064293">Järgmine panustamise kuupäev:</translation>
 <translation id="3593485149443019592">Ei ole piisavalt tokeneid. Palun <ph name="LINK_BEGIN"/>lisage raha<ph name="LINK_END"/>.</translation>
-<translation id="4622723187300249546">Ühekordne preemia</translation>
-<translation id="5268142130226208198">Ühekordse preemia summa:</translation>
+<translation id="207268487070188114">Ühekordne annetus</translation>
+<translation id="69861679024013299">Ühekordse annetuse summa:</translation>
 <translation id="3669086939205397942">Oodake, te ei saa veel preemiat maksta</translation>
 <translation id="3288812755711687300">Kasutaja <ph name="USER"/>’s postitus</translation>
 <translation id="5851002232791947896">Kasutaja <ph name="USER"/>’s säuts</translation>
 <translation id="5531915212947569943">Väga kahju, et lahkute…</translation>
 <translation id="1420756770787071946">Toeta seda loojat</translation>
 <translation id="3271043362279673449">Täname toetuse eest!</translation>
-<translation id="379596083010863211">Teie ühekordne preemia on saadetud.</translation>
+<translation id="3312470408978098625">Teie ühekordne annetus on saadetud.</translation>
 <translation id="5096821444729034955">tema postituse eest</translation>
 <translation id="2978223787436054634">Andke säutsuga oma toetusest teada</translation>
 <translation id="6717671373796332174">Täpsema teabe saamiseks <ph name="TOUR_LINK_BEGIN"/>tehke kiire ringkäik<ph name="TOUR_LINK_END"/> või <ph name="LEARN_LINK_BEGIN"/>lugege lisateavet<ph name="LEARN_LINK_END"/>.</translation>
@@ -512,10 +512,10 @@
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">sees</translation>
 <translation id="1166682575529520472">Iga kuu</translation>
-<translation id="8370173854533168890">Ühekordne</translation>
+<translation id="1378730109637014435">Ühekordne</translation>
 <translation id="9182287025588539628">Ühekordsed preemiad</translation>
 <translation id="6381574025952123568">Algsaldo</translation>
-<translation id="532275381857891532">7-päevane reklaamide ajalugu</translation>
+<translation id="156591572855748524">30-päevane reklaamide ajalugu</translation>
 <translation id="4923459931733593730">Makse</translation>
 <translation id="6104680658798556671">Makset ei ole tehtud.</translation>
 <translation id="3138528956349114724">Märgistatud saidid on praegu</translation>
@@ -622,7 +622,7 @@
 <translation id="3780605330121608425">Teie rahakott</translation>
 <translation id="6727483290601442544">Vaata andmeid</translation>
 <translation id="1988679729106502285">MÄRKUS.</translation>
-<translation id="5815103311506128988">Autor ei ole veel registreerunud ega saa vastu võtta Brave'i kasutajatelt toetust. Teie arvuti üritab tasu maksta kuni kinnituse saamiseni või kuni möödub 90 päeva.</translation>
+<translation id="7979350009208995417">See looja ei ole hetkel seadistatud teie rahakotist annetusi vastu võtma. Kõik teie poolt saadetud annetused jäävad teie rahakotis ootele ja neid üritatakse automaatselt uuesti saata 90 päeva jooksul.</translation>
 <translation id="7461596279975181413">See Brave’i kinnitatud looja pole veel oma kontot Brave’i kasutajatelt panuste saamiseks konfigureerinud. Teie brauser jätkab panustamise üritamist, kuni looja kinnitab, või kuni 90 päeva on möödunud.</translation>
 <translation id="4292832015778676417">reklaamidest saadud</translation>
 <translation id="3197752845651180812">Ootel annetused</translation>
@@ -827,6 +827,7 @@
 <translation id="3741998951694470470">Impordiks andmete toomine nurjus</translation>
 <translation id="7900950536120202771">IPFS-i sõlme sisetõrge</translation>
 <translation id="1036635552229153800">Andmete üleslaadimine õnnestus, kuid ei neid ei teisaldatud Brave\'i impordikataloogi brave-import. Seda saate teha käsitsi impordiseadete lehelt.</translation>
+<translation id="3793279629218362523">Peer ID ja IPNS võtmete haldamine</translation>
 <translation id="572392919096807438">Jäta minu otsus meelde</translation>
 <translation id="7978789143098237970">kuni sulgen selle saidi</translation>
 <translation id="3523195733429162409">24 tunniks</translation>

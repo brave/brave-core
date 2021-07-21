@@ -5,6 +5,7 @@
 <translation id="3570081523466826008">HTTPSக்கு இணைப்புகளை தரமுயர்த்து</translation>
 <translation id="6302422639282249274">பிரேவ் வெகுமதிகளை நிர்வகி</translation>
 <translation id="5345505584130165588">பிரேவ் கவசங்கள் &amp; தனியுரிமை</translation>
+<translation id="4692623383562244444">தேடுபொறிகள்</translation>
 <translation id="1468415711258933398">நிலையான தாவல்</translation>
 <translation id="3377025655491224618">மறைநிலைத் தாவல்</translation>
 <translation id="9148058034647219655">வெளியேறு</translation>
@@ -12,6 +13,8 @@
 <translation id="4176463684765177261">முடக்கப்பட்டது</translation>
 <translation id="7459000603787995422">வெளியேறுகையில் தாவல்களை மூடு</translation>
 <translation id="1680858055899097121">உலாவல் அமர்வுகளுக்கு இடையே தாவல்களை நிலைத்திருக்காதே</translation>
+<translation id="6572660632052512096">சாளர பயன்முறை</translation>
+<translation id="807636106793708118">தளங்களின் கைபேசி பதிப்பை விரும்பு</translation>
 <translation id="2675679258824361492">பிற தனியுரிமை அமைப்புகள்</translation>
 <translation id="8026334261755873520">உலாவிய தரவை அழி</translation>
 <translation id="6332924730165919598">எல்லா தாவல்களையும் மூடல் பிரேவை மூடும்</translation>
@@ -26,7 +29,22 @@
 <translation id="7136694880210472378">இயல்புநிலையாக மாற்று</translation>
 <translation id="4250680216510889253">இல்லை</translation>
 <translation id="1426410128494586442">ஆம்</translation>
+<translation id="8826007068782654809">நன்றி</translation>
+<translation id="1910721550319506122">வாருங்கள்!</translation>
+<translation id="3250511771491660127">இதை மாதந்திரமாக்கு</translation>
+<translation id="3780605330121608425">உம் பணப்பை</translation>
+<translation id="1165667598801520610">நிதி சேர்</translation>
 <translation id="8428213095426709021">அமைப்புகள்</translation>
+<translation id="8772672608371898774">பிரேவ் சரிபார்க்கப்பட்ட வெளியீட்டாளர்</translation>
+<translation id="9182287025588539628">ஒரு-முறை உதவிக்குறிப்புகள்</translation>
+<translation id="3074127054582480056">கவனத்திற்கு</translation>
+<translation id="298067735430872465">விளம்பரங்களிலிருந்து வருவாய்</translation>
+<translation id="6112368337882254910">தானாக-பங்களி</translation>
+<translation id="13853865024308201">உரிமைகோரு</translation>
+<translation id="7335371657242627509">தானியங்கு-பங்களிப்பில் சேர்</translation>
+<translation id="2323069945529668668">அட டா!</translation>
+<translation id="7510166204621526816">பிரேவ் வெகுமதிகள் தேக்கம் பதிலளிக்கவில்லை. கூடிய விரைவில் இதை சரிசெய்திடுவோம்.</translation>
+<translation id="1036277985068412734">நிதி சேர்</translation>
 <translation id="4157741509680155021">ஒத்திசைவு சங்கிலியிலுள்ள சாதனங்கள்</translation>
 <translation id="6394333525003604181">ஒத்திசைவு சங்கிலியை விட்டு விலகுகிறது...</translation>
 <translation id="7507533586185621084">தவறான ஒத்திசைவு குறியீடு</translation>
@@ -44,10 +62,11 @@
 <translation id="8131740175452115882">உறுதிப்படுத்து</translation>
 <translation id="326454632686131209">சாதனத்தை ஒத்திசை</translation>
 <translation id="8050847734948770789">பிரேவ் வெகுமதிகளை இயக்கு</translation>
+<translation id="6810078320346589989">புத்தகக்குறி உருவாக்கு</translation>
 <translation id="8985635554450124959">ஒத்திசைவை அமைக்க இயலவில்லை</translation>
 <translation id="7173114856073700355">ஒத்திசைவு அமைப்புகளைப் பார்க்கவும்</translation>
 <translation id="6965382102122355670">சரி</translation>
-<translation id="6336451774241870485">புதிய மறைநிலைத் தாவல்</translation>
+<translation id="6336451774241870485">புது மறைநிலைத் தாவல்</translation>
 <translation id="6199596294742117349">இது மறைநிலைத் தாவல்</translation>
 <translation id="7781069478569868053">புது தாவல் பக்கம்</translation>
 <translation id="8522669544471808198">பின்னணி படங்களை காட்டு</translation>
@@ -87,4 +106,11 @@
 <translation id="3479552764303398839">இப்பொழுது இல்லை</translation>
 <translation id="8798099450830957504">இயல்புநிலை</translation>
 <translation id="3171931580569169744">தாவல் குழுக்களை இயக்கு</translation>
+<translation id="1483493594462132177">அனுப்பு</translation>
+<translation id="2359808026110333948">தொடர்க</translation>
+<translation id="6896758677409633944">நகலெடு</translation>
+<translation id="6518133107902771759">சரிபார்</translation>
+<translation id="3157931365184549694">மீட்டமை</translation>
+<translation id="9111102763498581341">பூட்டைத் திற</translation>
+<translation id="6657585470893396449">கடவுச்சொல்</translation>
 </translationbundle>

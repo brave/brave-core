@@ -18,7 +18,7 @@
 <translation id="6241402707160226266">带 Tor 的私人窗户</translation>
 <translation id="8762452230727230396">Tor 对你访问的网站隐藏了你的 IP 地址。</translation>
 <translation id="1369311132025451972">自动重定向 .onion 网站</translation>
-<translation id="2843777623071353503">如果可用，Brave 会在 Tor 窗口中打开网站的 onion 服务</translation>
+<translation id="2843777623071353503">如果可用，Brave 会在 Tor 窗口中打开网站的 onion 服务或 .onion 域名</translation>
 <translation id="8053096063396012732">安装 Widevine</translation>
 <translation id="4840334696217618631">重新启动浏览器以启用 Widevine</translation>
 <translation id="8410111618231938546">Google Widevine 是一款数字版权管理（DRM）代码，Brave Software 不拥有这些代码，也无法检查。 Google Widevine 代码是从 Google 服务器加载的，而不是从我们的服务器加载的。仅在启用此选项时才会加载它。我们不鼓励使用 DRM，但我们尊重用户选择并了解某些 Brave 用户希望使用需要它的服务。
@@ -79,6 +79,7 @@
 <translation id="3488584642074079080">用 Tor 在 Brave 私人窗口中打开链接</translation>
 <translation id="7475547933708221517">使用 IPFS 共享本地文件</translation>
 <translation id="2286177249736199435">使用 IPFS 分享本地文件夹</translation>
+<translation id="4491895534716990473">将所选文本导入 IPFS</translation>
 <translation id="8883166554766780543">导入并复制链接到 IPFS 快照</translation>
 <translation id="784573715436258741">使用 IPFS 共享本地文件</translation>
 <translation id="6313675821927505581">用 Tor 打开新的隐私窗口</translation>
@@ -195,16 +196,23 @@
 <translation id="911363100236037920">输入新密钥的名称</translation>
 <translation id="6358469157239228181">不能使用此名称</translation>
 <translation id="5761731140570209168">添加新的对等连接字符串</translation>
+<translation id="2082206983920804886">旋转密钥</translation>
+<translation id="2521133093532260474">无法停止本地节点</translation>
+<translation id="86879877003581729">无法启动本地节点</translation>
 <translation id="6476061084931271248">重启节点来应用更改</translation>
 <translation id="3754226427671882382">重启节点</translation>
+<translation id="949667118776341807">旋转</translation>
 <translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">此名称无效</translation>
 <translation id="6758961763875471084">修改对等列表</translation>
+<translation id="1295874070797049002">导出密钥</translation>
+<translation id="3946479342297227860">删除密钥</translation>
 <translation id="1534091531114892221">设置 ipfs 对等描述</translation>
 <translation id="8996633027318264334">确定要删除 <ph name="KEY_NAME"/> 吗？</translation>
 <translation id="910215077892371264">节点未启动</translation>
 <translation id="616058968889448209">IPFS 服务启动错误，更多信息见 <ph name="BEGIN_LINK"/>诊断页<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' 密钥导入失败</translation>
+<translation id="3364053282600191535"><ph name="KEY_NAME"/>' 密钥导出失败</translation>
 <translation id="8275038454117074363">导入</translation>
 <translation id="3654980960391973513">生成</translation>
 <translation id="5531501313997312487">启动节点</translation>
@@ -305,11 +313,16 @@
 <translation id="312393675740711187">自动以读者模式加载文章，节省您的时间</translation>
 <translation id="3234744217174488546">为这个网站打开/关闭读者模式。要为整个浏览器配置文件关闭 Speedreader，请访问</translation>
 <translation id="7839742507462737706">Speedreader 处于开启状态</translation>
+<translation id="8490082094734500369">关闭阅读器模式</translation>
+<translation id="2036503787657622020">打开阅读器模式</translation>
+<translation id="5226458915125328323">速读器设置</translation>
+<translation id="6284218950354553099">自动向 Brave 发送每日使用 ping</translation>
+<translation id="5288333155754958121">这种匿名的私人 ping 可以让 Brave 估计活跃用户数</translation>
 <translation id="1872784258300710671">Brave 使用完全隐私的产品分析来估计某些功能的整体使用情况</translation>
 <translation id="8712637175834984815">知道了</translation>
 <translation id="4394049700291259645">停用</translation>
-<translation id="6469509880167172749">将完全的隐私产品分析信息自动发送给 Brave Software</translation>
-<translation id="7090566321964540749">该匿名信息仅使 Brave 能够估计某些功能的整体使用情况。</translation>
+<translation id="7142548388914389999">允许保留隐私的产品分析 (P3A)</translation>
+<translation id="609106526832379947">这些完全匿名的信息可以帮助Brave评估某些功能的总体使用情况，并为您提供更好的服务。</translation>
 <translation id="1947672064022327074">是否要启动 Ethereum 支持的加密钱包？</translation>
 <translation id="7583735190612229830">设置 Crypto Wallets 以与此应用程序以及其他类似的应用程序进行交互。</translation>
 <translation id="8731422418734770661">设置 Crypto Wallets</translation>

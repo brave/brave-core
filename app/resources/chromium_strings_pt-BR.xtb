@@ -20,6 +20,7 @@
 <translation id="1649714546770135458">Desative essa opção para fazer login em sites do Brave, como o Gmail, sem fazer login no Brave</translation>
 <translation id="189297655255130768">O Brave não está respondendo. Reiniciar agora?</translation>
 <translation id="1775322105159056176">O Brave não pode determinar ou definir o navegador padrão</translation>
+<translation id="7665553140559834626">Reinicializar para atualizar o &amp;Chrome OS</translation>
 <translation id="9220324636239049437">Essa ação excluirá 1 item deste dispositivo. Para recuperar seus dados mais tarde, faça login no Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="831418749472885028">Para verificar se suas outras senhas estão protegidas contra violações de dados e outros problemas de segurança, <ph name="BEGIN_LINK"/>faça login no Brave<ph name="END_LINK"/>.</translation>
 <translation id="142389341645668510">Personalizar o Brave</translation>
@@ -35,6 +36,7 @@
 <translation id="7798069806040634998">O Brave precisa de acesso de armazenamento para fazer o download de arquivos</translation>
 <translation id="8447483940522230788">Assistente do Brave</translation>
 <translation id="7933006624150961626">Para ter acesso aos recursos do Brave em todos os seus dispositivos, faça login e ative a sincronização.</translation>
+<translation id="5486618155264784386">Instalar o Chrome OS</translation>
 <translation id="7291143854620707672">Quaisquer dados do Brave gerados quando este perfil estiver sendo usado (como a criação de favoritos, histórico, senhas e outras configurações) podem ser removidos pelo administrador do perfil de trabalho. <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">É necessário reiniciar o Chrome OS para que a atualização seja aplicada.</translation>
 <translation id="7387051847644272380">Ocorreu um erro no sistema operacional durante a instalação. Faça o download do Brave novamente.</translation>
@@ -48,7 +50,6 @@
 <translation id="777113543093865885">Remover do Brave</translation>
 <translation id="2885378588091291677">Gerenciador de tarefas</translation>
 <translation id="2176825726964012531">Sobre o &amp;Brave</translation>
-<translation id="245659736593643560">O Chrome OS tornou-se possível graças a um outro <ph name="BEGIN_LINK_CROS_OSS"/>software de código aberto<ph name="END_LINK_CROS_OSS"/>, como o <ph name="BEGIN_LINK_LINUX_OSS"/>ambiente de desenvolvimento do Linux (Beta)<ph name="END_LINK_LINUX_OSS"/>.</translation>
 <translation id="8208853227947884571">O Brave está atualizado</translation>
 <translation id="2953892977076487219">O Brave está tentando editar senhas.</translation>
 <translation id="8755404239607088219">O Brave não pode verificar suas senhas. Tente mais tarde.</translation>
@@ -110,6 +111,7 @@
 <translation id="4823369970559443694">Não foi possível verificar suas senhas. Tente novamente em 24 horas ou <ph name="BEGIN_LINK"/>verifique-as na sua Conta do Brave<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Esta opção usa o mesmo corretor ortográfico usado na Pesquisa Brave. O texto digitado no navegador é enviado para o Brave. É possível alterar esse comportamento nas configurações a qualquer momento.</translation>
 <translation id="1912973375560256099">Regra interna para que o Brave permita tráfego mDNS.</translation>
+<translation id="711601904575862069">Reinicializar para atualizar o &amp;Brave</translation>
 <translation id="8797356639448065696">O Brave está em modo de segundo plano.</translation>
 <translation id="7406627712452599344">Convidados podem usar o Brave sem deixar nada para trás.</translation>
 <translation id="5952898964075639679">Cadastrar-se no Brave</translation>
@@ -125,6 +127,7 @@
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/>: Brave Beta</translation>
 <translation id="707769633889902835">O Chrome OS não pode abrir essa página.</translation>
 <translation id="696826782632239602">O Brave precisa acessar seu local para compartilhá-lo com este site</translation>
+<translation id="7886919915603831625">O Brave recomenda que você não faça o download nem abra esse arquivo.</translation>
 <translation id="1744365871163268756">Aguarde enquanto o Brave instala as últimas atualizações do sistema.</translation>
 <translation id="3861679447659630159">O Brave está tentando editar senhas. Digite a senha do Windows para permitir essa ação.</translation>
 <translation id="232381795826373334">Abrir PDFs no Brave</translation>
@@ -133,6 +136,7 @@
 <translation id="5646769069113654257">Reinicie o Brave agora</translation>
 <translation id="2335583906071111058">Exibir Brave neste idioma</translation>
 <translation id="4331809312908958774">Chrome OS</translation>
+<translation id="79947657522496226">A existência do Chrome OS tornou-se possível graças a outros <ph name="BEGIN_LINK_CROS_OSS"/>softwares de código aberto<ph name="END_LINK_CROS_OSS"/>, como o <ph name="BEGIN_LINK_LINUX_OSS"/>ambiente para desenvolvedores do Linux<ph name="END_LINK_LINUX_OSS"/>.</translation>
 <translation id="7207456302801184289">Bem-vindo ao Brave</translation>
 <translation id="5895138241574237353">Reiniciar</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - Login na rede</translation>
@@ -185,7 +189,6 @@
  pareamento. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6418340404893954563">Senhas fracas são fáceis de adivinhar. Deixe o Brave <ph name="BEGIN_LINK"/>criar e guardar senhas fortes para você<ph name="END_LINK"/>.</translation>
 <translation id="3335606533094650083">O Brave precisa de permissão para este site acessar seu microfone</translation>
-<translation id="1785833016412082453">O Brave não pode verificar suas extensões. Tente mais tarde.</translation>
 <translation id="1705567146636171298">Atualizar o Brave</translation>
 <translation id="5499063270485366718">Se uma imagem não tiver uma descrição útil, o Brave tentará fornecer uma para você. As imagens serão enviadas ao Brave para a criação de descrições.</translation>
 <translation id="1197672524850678392">Não foi possível iniciar o Brave. Tente novamente.</translation>
@@ -214,7 +217,6 @@
 <translation id="4784414698887946907">Essa ação excluirá seus dados de navegação deste dispositivo. Para recuperá-los mais tarde, faça login no Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">O instalador não conseguiu criar um diretório temporário. Verifique se há espaço livre em disco e se há permissão para a instalação de software.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/>: Brave Canary</translation>
-<translation id="38898988211673781">Limpar cookies e dados de sites ao sair do Brave</translation>
 <translation id="1652855885539187849">Este dispositivo já tem um perfil do Brave com essa conta</translation>
 <translation id="8462524920674814187">Para receber as futuras atualizações do Brave, você precisará do OS X 10.11 ou versão mais recente. Este computador está usando o OS X 10.10.</translation>
 <translation id="7963515534397191222">Não foi possível atualizar o Brave para a versão mais recente. Com isso, você está perdendo novos recursos e correções de segurança.</translation>
@@ -257,12 +259,13 @@
 <translation id="7863882214613921971">Abrir link em nova &amp;guia do Brave</translation>
 <translation id="911206726377975832">Excluir também dados de navegação?</translation>
 <translation id="2444257125841652328">O administrador do seu sistema configurou o Brave para abrir um navegador alternativo ao acessar <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="7902365066753170041">Reinicializar para atualizar o &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="6568793831116033768">Sistema Chrome OS</translation>
 <translation id="7977787072794666032">É possível que o Brave não funcione corretamente, porque ele não é mais compatível com o Windows XP ou Windows Vista</translation>
 <translation id="4484434718272972655">Quem está usando o Brave?</translation>
 <translation id="8992261409816268381">Autores do Brave</translation>
-<translation id="6134859571175647580">Aviso: o Brave não pode impedir que as extensões gravem seu histórico de navegação. Para desativar essa extensão no modo de navegação sem rastros, desmarque esta opção.</translation>
+<translation id="1299765473362724475">Aviso: o Brave não pode impedir que as extensões registrem seu histórico de navegação. Para desativar essa extensão no modo privado, desmarque esta opção.</translation>
 <translation id="1448049584457347995">Para tornar o Brave mais seguro, desativamos algumas extensões que não estão listadas na <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> e podem ser sido adicionadas sem seu conhecimento.</translation>
 <translation id="8848045066928358658">Para tornar o Brave mais seguro, desativamos a extensão a seguir, que não está listada na <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> e pode ter sido adicionada sem seu conhecimento.</translation>
 <translation id="669092380621816981">Os dados de navegação dessa pessoa serão excluídos deste dispositivo. Para recuperar os dados, faça login no Brave como <ph name="USER_EMAIL"/>.</translation>
