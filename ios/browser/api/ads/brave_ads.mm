@@ -216,34 +216,34 @@ ads::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
 
 BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
-    + (int)environment {
-  return static_cast<int>(ads::g_environment);
+    + (AdsBraveAdsEnvironment)environment {
+  return static_cast<AdsBraveAdsEnvironment>(ads::g_environment);
 }
 
-+ (void)setEnvironment:(int)environment {
++ (void)setEnvironment:(AdsBraveAdsEnvironment)environment {
   ads::g_environment = static_cast<ads::Environment>(environment);
 }
 
-+ (BATBraveAdsSysInfo*)sysInfo {
-  auto sys_info = [[BATBraveAdsSysInfo alloc] init];
++ (AdsBraveAdsSysInfo*)sysInfo {
+  auto sys_info = [[AdsBraveAdsSysInfo alloc] init];
   sys_info.isUncertainFuture = ads::g_sys_info.is_uncertain_future;
 
   return sys_info;
 }
 
-+ (void)setSysInfo:(BATBraveAdsSysInfo*)sysInfo {
++ (void)setSysInfo:(AdsBraveAdsSysInfo*)sysInfo {
   ads::g_sys_info.is_uncertain_future = sysInfo.isUncertainFuture;
 }
 
-+ (BATBraveAdsBuildChannel*)buildChannel {
-  auto build_channel = [[BATBraveAdsBuildChannel alloc] init];
++ (AdsBraveAdsBuildChannel*)buildChannel {
+  auto build_channel = [[AdsBraveAdsBuildChannel alloc] init];
   build_channel.isRelease = ads::g_build_channel.is_release;
   build_channel.name = base::SysUTF8ToNSString(ads::g_build_channel.name);
 
   return build_channel;
 }
 
-+ (void)setBuildChannel:(BATBraveAdsBuildChannel*)buildChannel {
++ (void)setBuildChannel:(AdsBraveAdsBuildChannel*)buildChannel {
   ads::g_build_channel.is_release = buildChannel.isRelease;
   ads::g_build_channel.name = base::SysNSStringToUTF8(buildChannel.name);
 }
@@ -586,7 +586,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 - (void)reportAdNotificationEvent:(NSString*)uuid
                         eventType:
-                            (BATBraveAdsAdNotificationEventType)eventType {
+                            (AdsBraveAdsAdNotificationEventType)eventType {
   if (![self isAdsServiceRunning]) {
     return;
   }
@@ -597,7 +597,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 - (void)reportNewTabPageAdEvent:(NSString*)wallpaperId
              creativeInstanceId:(NSString*)creativeInstanceId
-                      eventType:(BATBraveAdsNewTabPageAdEventType)eventType {
+                      eventType:(AdsBraveAdsNewTabPageAdEventType)eventType {
   if (![self isAdsServiceRunning]) {
     return;
   }
@@ -626,7 +626,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 - (void)reportInlineContentAdEvent:(NSString*)uuid
                 creativeInstanceId:(NSString*)creativeInstanceId
                          eventType:
-                             (BATBraveAdsInlineContentAdEventType)eventType {
+                             (AdsBraveAdsInlineContentAdEventType)eventType {
   if (![self isAdsServiceRunning]) {
     return;
   }
@@ -638,7 +638,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 - (void)reportPromotedContentAdEvent:(NSString*)uuid
                   creativeInstanceId:(NSString*)creativeInstanceId
-                           eventType:(BATBraveAdsPromotedContentAdEventType)
+                           eventType:(AdsBraveAdsPromotedContentAdEventType)
                                          eventType {
   if (![self isAdsServiceRunning]) {
     return;
@@ -649,7 +649,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       static_cast<ads::PromotedContentAdEventType>(eventType));
 }
 
-- (void)purgeOrphanedAdEvents:(BATBraveAdsAdType)adType {
+- (void)purgeOrphanedAdEvents:(AdsBraveAdsAdType)adType {
   if (![self isAdsServiceRunning]) {
     return;
   }

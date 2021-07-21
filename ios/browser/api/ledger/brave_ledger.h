@@ -60,10 +60,10 @@ OBJC_EXPORT
 @property(nonatomic, readonly, getter=isInitializing) BOOL initializing;
 
 /// The result when initializing the ledger service. Should be
-/// `BATResultLedgerOk` if `initialized` is `true`
+/// `LedgerResultLedgerOk` if `initialized` is `true`
 ///
-/// If this is not `BATResultLedgerOk`, rewards is not usable for the user
-@property(nonatomic, readonly) BATResult initializationResult;
+/// If this is not `LedgerResultLedgerOk`, rewards is not usable for the user
+@property(nonatomic, readonly) LedgerResult initializationResult;
 
 /// Whether or not data migration failed when initializing and the user should
 /// be notified.
@@ -84,7 +84,7 @@ OBJC_EXPORT
 /// Whether or not to use staging servers. Defaults to false
 @property(nonatomic, class, getter=isDebug) BOOL debug;
 /// The environment that ledger is communicating with
-@property(nonatomic, class) BATEnvironment environment;
+@property(nonatomic, class) LedgerEnvironment environment;
 /// Marks if this is being ran in a test environment. Defaults to false
 @property(nonatomic, class, getter=isTesting) BOOL testing;
 /// Number of minutes between reconciles override. Defaults to 0 (no override)
@@ -103,22 +103,22 @@ OBJC_EXPORT
 
 /// Get the brave wallet's payment ID and seed for ads confirmations
 - (void)currentWalletInfo:
-    (void (^)(BATBraveWallet* _Nullable wallet))completion;
+    (void (^)(LedgerBraveWallet* _Nullable wallet))completion;
 
 /// Get parameters served from the server
 - (void)getRewardsParameters:
-    (nullable void (^)(BATRewardsParameters* _Nullable))completion;
+    (nullable void (^)(LedgerRewardsParameters* _Nullable))completion;
 
 /// The parameters send from the server
 @property(nonatomic, readonly, nullable)
-    BATRewardsParameters* rewardsParameters;
+    LedgerRewardsParameters* rewardsParameters;
 
 /// Fetch details about the users wallet (if they have one) and assigns it to
 /// `balance`
-- (void)fetchBalance:(nullable void (^)(BATBalance* _Nullable))completion;
+- (void)fetchBalance:(nullable void (^)(LedgerBalance* _Nullable))completion;
 
 /// The users current wallet balance and related info
-@property(nonatomic, readonly, nullable) BATBalance* balance;
+@property(nonatomic, readonly, nullable) LedgerBalance* balance;
 
 /// The wallet's passphrase. nil if the wallet has not been created yet
 @property(nonatomic, readonly, nullable) NSString* walletPassphrase;
@@ -138,15 +138,15 @@ OBJC_EXPORT
 
 /// Links a desktop brave wallet given some payment ID
 - (void)linkBraveWalletToPaymentId:(NSString*)paymentId
-                        completion:(void (^)(BATResult result,
+                        completion:(void (^)(LedgerResult result,
                                              NSString* drainID))completion
     NS_SWIFT_NAME(linkBraveWallet(paymentId:completion:));
 
 /// Obtain a drain status given some drain ID previously obtained from
 /// `linkBraveWalletToPaymentId:completion:`
 - (void)drainStatusForDrainId:(NSString *)drainId
-                   completion:(void (^)(BATResult result,
-                                        BATDrainStatus status))completion
+                   completion:(void (^)(LedgerResult result,
+                                        LedgerDrainStatus status))completion
     NS_SWIFT_NAME(drainStatus(for:completion:));
 
 /// Get the amount of BAT that is transferrable via wallet linking
@@ -155,18 +155,19 @@ OBJC_EXPORT
 #pragma mark - User Wallets
 
 /// The last updated external wallet if a user has hooked one up
-@property(nonatomic, readonly, nullable) BATExternalWallet* upholdWallet;
+@property(nonatomic, readonly, nullable) LedgerExternalWallet* upholdWallet;
 
 - (void)fetchUpholdWallet:
-    (nullable void (^)(BATExternalWallet* _Nullable wallet))completion;
+    (nullable void (^)(LedgerExternalWallet* _Nullable wallet))completion;
 
 - (void)disconnectWalletOfType:(ExternalWalletType)walletType
-                    completion:(nullable void (^)(BATResult result))completion;
+                    completion:
+                        (nullable void (^)(LedgerResult result))completion;
 
 - (void)authorizeExternalWalletOfType:(ExternalWalletType)walletType
                            queryItems:
                                (NSDictionary<NSString*, NSString*>*)queryItems
-                           completion:(void (^)(BATResult result,
+                           completion:(void (^)(LedgerResult result,
                                                 NSURL* _Nullable redirectURL))
                                           completion;
 
@@ -183,9 +184,9 @@ OBJC_EXPORT
 /// @note `completion` callback is called synchronously
 - (void)listActivityInfoFromStart:(unsigned int)start
                             limit:(unsigned int)limit
-                           filter:(BATActivityInfoFilter*)filter
+                           filter:(LedgerActivityInfoFilter*)filter
                        completion:
-                           (void (^)(NSArray<BATPublisherInfo*>*))completion;
+                           (void (^)(NSArray<LedgerPublisherInfo*>*))completion;
 
 /// Start a fetch to get a publishers activity information given a URL
 ///
@@ -197,7 +198,7 @@ OBJC_EXPORT
 
 /// Update a publishers exclusion state
 - (void)updatePublisherExclusionState:(NSString*)publisherId
-                                state:(BATPublisherExclude)state
+                                state:(LedgerPublisherExclude)state
     NS_SWIFT_NAME(updatePublisherExclusionState(withId:state:));
 
 /// Restore all sites which had been previously excluded
@@ -210,25 +211,26 @@ OBJC_EXPORT
 ///
 /// @note `completion` callback is called synchronously
 - (void)publisherBannerForId:(NSString*)publisherId
-                  completion:(void (^)(BATPublisherBanner* _Nullable banner))
+                  completion:(void (^)(LedgerPublisherBanner* _Nullable banner))
                                  completion;
 
 /// Refresh a publishers verification status
 - (void)refreshPublisherWithId:(NSString*)publisherId
-                    completion:(void (^)(BATPublisherStatus status))completion;
+                    completion:
+                        (void (^)(LedgerPublisherStatus status))completion;
 
 #pragma mark - SKUs
 
-- (void)processSKUItems:(NSArray<BATSKUOrderItem*>*)items
+- (void)processSKUItems:(NSArray<LedgerSKUOrderItem*>*)items
              completion:
-                 (void (^)(BATResult result, NSString* orderID))completion;
+                 (void (^)(LedgerResult result, NSString* orderID))completion;
 
 #pragma mark - Tips
 
 /// Get a list of publishers who the user has recurring tips on
 ///
 /// @note `completion` callback is called synchronously
-- (void)listRecurringTips:(void (^)(NSArray<BATPublisherInfo*>*))completion;
+- (void)listRecurringTips:(void (^)(NSArray<LedgerPublisherInfo*>*))completion;
 
 - (void)addRecurringTipToPublisherWithId:(NSString*)publisherId
                                   amount:(double)amount
@@ -241,56 +243,57 @@ OBJC_EXPORT
 /// Get a list of publishers who the user has made direct tips too
 ///
 /// @note `completion` callback is called synchronously
-- (void)listOneTimeTips:(void (^)(NSArray<BATPublisherInfo*>*))completion;
+- (void)listOneTimeTips:(void (^)(NSArray<LedgerPublisherInfo*>*))completion;
 
-- (void)tipPublisherDirectly:(BATPublisherInfo*)publisher
+- (void)tipPublisherDirectly:(LedgerPublisherInfo*)publisher
                       amount:(double)amount
                     currency:(NSString*)currency
-                  completion:(void (^)(BATResult result))completion;
+                  completion:(void (^)(LedgerResult result))completion;
 
 #pragma mark - Promotions
 
-@property(nonatomic, readonly) NSArray<BATPromotion*>* pendingPromotions;
+@property(nonatomic, readonly) NSArray<LedgerPromotion*>* pendingPromotions;
 
-@property(nonatomic, readonly) NSArray<BATPromotion*>* finishedPromotions;
+@property(nonatomic, readonly) NSArray<LedgerPromotion*>* finishedPromotions;
 
 /// Updates `pendingPromotions` and `finishedPromotions` based on the database
 - (void)updatePendingAndFinishedPromotions:
     (nullable void (^)(bool shouldReconcileAds))completion;
 
-- (void)fetchPromotions:(nullable void (^)(NSArray<BATPromotion*>* grants,
+- (void)fetchPromotions:(nullable void (^)(NSArray<LedgerPromotion*>* grants,
                                            bool shouldReconcileAds))completion;
 
 - (void)claimPromotion:(NSString*)promotionId
              publicKey:(NSString*)deviceCheckPublicKey
-            completion:(void (^)(BATResult result,
+            completion:(void (^)(LedgerResult result,
                                  NSString* _Nonnull nonce))completion;
 
 - (void)attestPromotion:(NSString*)promotionId
                solution:(PromotionSolution*)solution
-             completion:(nullable void (^)(BATResult result,
-                                           BATPromotion* _Nullable promotion))
-                            completion;
+             completion:(nullable void (^)(
+                            LedgerResult result,
+                            LedgerPromotion* _Nullable promotion))completion;
 
 #pragma mark - Pending Contributions
 
 - (void)pendingContributions:
-    (void (^)(NSArray<BATPendingContributionInfo*>* publishers))completion;
+    (void (^)(NSArray<LedgerPendingContributionInfo*>* publishers))completion;
 
-- (void)removePendingContribution:(BATPendingContributionInfo*)info
-                       completion:(void (^)(BATResult result))completion;
+- (void)removePendingContribution:(LedgerPendingContributionInfo*)info
+                       completion:(void (^)(LedgerResult result))completion;
 
-- (void)removeAllPendingContributions:(void (^)(BATResult result))completion;
+- (void)removeAllPendingContributions:(void (^)(LedgerResult result))completion;
 
 #pragma mark - History
 
-- (void)balanceReportForMonth:(BATActivityMonth)month
+- (void)balanceReportForMonth:(LedgerActivityMonth)month
                          year:(int)year
-                   completion:(void (^)(BATBalanceReportInfo* _Nullable info))
-                                  completion;
+                   completion:
+                       (void (^)(LedgerBalanceReportInfo* _Nullable info))
+                           completion;
 
 @property(nonatomic, readonly)
-    BATAutoContributeProperties* autoContributeProperties;
+    LedgerAutoContributeProperties* autoContributeProperties;
 
 #pragma mark - Misc
 
@@ -299,10 +302,10 @@ OBJC_EXPORT
        referrerURL:(nullable NSURL*)referrerURL;
 
 - (void)rewardsInternalInfo:
-    (void(NS_NOESCAPE ^)(BATRewardsInternalsInfo* _Nullable info))completion;
+    (void(NS_NOESCAPE ^)(LedgerRewardsInternalsInfo* _Nullable info))completion;
 
 - (void)allContributions:
-    (void (^)(NSArray<BATContributionInfo*>* contributions))completion;
+    (void (^)(NSArray<LedgerContributionInfo*>* contributions))completion;
 
 @property(nonatomic, readonly, copy) NSString* rewardsDatabasePath;
 

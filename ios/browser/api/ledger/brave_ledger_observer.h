@@ -27,32 +27,33 @@ NS_SWIFT_NAME(LedgerObserver)
 - (instancetype)initWithLedger:(BraveLedger*)ledger;
 
 /// Executed when the wallet is first initialized
-@property(nonatomic, copy, nullable) void (^walletInitalized)(BATResult result);
+@property(nonatomic, copy, nullable) void (^walletInitalized)
+    (LedgerResult result);
 
 /// A publisher was fetched by its URL for a specific tab identified by tabId
 @property(nonatomic, copy, nullable) void (^fetchedPanelPublisher)
-    (BATPublisherInfo* info, uint64_t tabId);
+    (LedgerPublisherInfo* info, uint64_t tabId);
 
 @property(nonatomic, copy, nullable) void (^publisherListUpdated)();
 
 ///
 @property(nonatomic, copy, nullable) void (^finishedPromotionsAdded)
-    (NSArray<BATPromotion*>* promotions);
+    (NSArray<LedgerPromotion*>* promotions);
 
 /// Eligable grants were added to the wallet
 @property(nonatomic, copy, nullable) void (^promotionsAdded)
-    (NSArray<BATPromotion*>* promotions);
+    (NSArray<LedgerPromotion*>* promotions);
 
 /// A grant was claimed
 @property(nonatomic, copy, nullable) void (^promotionClaimed)
-    (BATPromotion* promotion);
+    (LedgerPromotion* promotion);
 
 /// A reconcile transaction completed and the user may have an updated balance
 /// and likely an updated balance report
 @property(nonatomic, copy, nullable) void (^reconcileCompleted)
-    (BATResult result,
+    (LedgerResult result,
      NSString* viewingId,
-     BATRewardsType type,
+     LedgerRewardsType type,
      NSString* probi);
 
 /// The users balance report has been updated
@@ -60,7 +61,7 @@ NS_SWIFT_NAME(LedgerObserver)
 
 /// The exclusion state of a given publisher has been changed
 @property(nonatomic, copy, nullable) void (^excludedSitesChanged)
-    (NSString* publisherKey, BATPublisherExclude excluded);
+    (NSString* publisherKey, LedgerPublisherExclude excluded);
 
 /// Called when the ledger removes activity info for a given publisher
 @property(nonatomic, copy, nullable) void (^activityRemoved)
@@ -68,7 +69,7 @@ NS_SWIFT_NAME(LedgerObserver)
 
 /// The publisher list was normalized and saved
 @property(nonatomic, copy, nullable) void (^publisherListNormalized)
-    (NSArray<BATPublisherInfo*>* normalizedList);
+    (NSArray<LedgerPublisherInfo*>* normalizedList);
 
 @property(nonatomic, copy, nullable) void (^pendingContributionAdded)();
 
@@ -83,7 +84,7 @@ NS_SWIFT_NAME(LedgerObserver)
 
 // A users contribution was added
 @property(nonatomic, copy, nullable) void (^contributionAdded)
-    (BOOL successful, BATRewardsType type);
+    (BOOL successful, LedgerRewardsType type);
 
 /// A notification was added to the wallet
 @property(nonatomic, copy, nullable) void (^notificationAdded)

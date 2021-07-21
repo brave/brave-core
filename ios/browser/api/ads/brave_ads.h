@@ -51,13 +51,12 @@ OBJC_EXPORT
 
 /// Whether or not to use staging servers. Defaults to false
 @property(nonatomic, class, getter=isDebug) BOOL debug;
-/// The environment that ads is communicating with. See ledger's BATEnvironment
-/// for appropriate values.
-@property(nonatomic, class) int environment;
+/// The environment that ads is communicating with.
+@property(nonatomic, class) AdsBraveAdsEnvironment environment;
 /// System info
-@property(nonatomic, class) BATBraveAdsSysInfo* sysInfo;
+@property(nonatomic, class) AdsBraveAdsSysInfo* sysInfo;
 /// The build channel that ads is configured for
-@property(nonatomic, class) BATBraveAdsBuildChannel* buildChannel;
+@property(nonatomic, class) AdsBraveAdsBuildChannel* buildChannel;
 
 #pragma mark - Initialization / Shutdown
 
@@ -141,7 +140,7 @@ OBJC_EXPORT
 
 /// Report that an ad notification event type was triggered for a given id
 - (void)reportAdNotificationEvent:(NSString*)uuid
-                        eventType:(BATBraveAdsAdNotificationEventType)eventType;
+                        eventType:(AdsBraveAdsAdNotificationEventType)eventType;
 
 /// Get inline content ad for the given dimensions
 - (void)inlineContentAdsWithDimensions:(NSString*)dimensions
@@ -154,21 +153,21 @@ OBJC_EXPORT
 - (void)reportInlineContentAdEvent:(NSString*)uuid
                 creativeInstanceId:(NSString*)creativeInstanceId
                          eventType:
-                             (BATBraveAdsInlineContentAdEventType)eventType;
+                             (AdsBraveAdsInlineContentAdEventType)eventType;
 
 /// Report that a new tab page ad event type was triggered for a given id
 - (void)reportNewTabPageAdEvent:(NSString*)wallpaperId
              creativeInstanceId:(NSString*)creativeInstanceId
-                      eventType:(BATBraveAdsNewTabPageAdEventType)eventType;
+                      eventType:(AdsBraveAdsNewTabPageAdEventType)eventType;
 
 /// Report that a promoted content ad event type was triggered for a given id
 - (void)reportPromotedContentAdEvent:(NSString*)uuid
                   creativeInstanceId:(NSString*)creativeInstanceId
                            eventType:
-                               (BATBraveAdsPromotedContentAdEventType)eventType;
+                               (AdsBraveAdsPromotedContentAdEventType)eventType;
 
 /// Purge orphaned ad events for a given ad type
-- (void)purgeOrphanedAdEvents:(BATBraveAdsAdType)adType;
+- (void)purgeOrphanedAdEvents:(AdsBraveAdsAdType)adType;
 
 /// Reconcile ad rewards with server
 - (void)reconcileAdRewards;

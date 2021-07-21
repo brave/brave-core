@@ -13,8 +13,6 @@ import("//build/config/ios/ios_sdk.gni")
 #     the target which generates C++ mojom files
 #   mojom_file
 #     path to the .mojom file
-#   class_prefix
-#     an optional string to prefix all generated wrapper classes.
 #   exclude_types
 #     a list of types to exclude from within the mojom file provided
 #
