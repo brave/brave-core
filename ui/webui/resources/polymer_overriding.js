@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import {Polymer, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {mixinBehaviors, Polymer, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
 // Global overrides
 import CrButtonStyleTemplate from './overrides/cr_button.js'
@@ -21,7 +21,7 @@ const allBehaviorsMap = {}
 const allPropertiesMap = {}
 const componentPropertyModifications = {}
 
-function addBraveBehaviors(moduleName, component) {
+function addBraveBehaviorsLegacy(moduleName, component) {
   if (allBehaviorsMap[moduleName]) {
     component.behaviors = component.behaviors || []
     component.behaviors.push(...allBehaviorsMap[moduleName])
@@ -60,9 +60,7 @@ function addBraveTemplateModifications(moduleName, component, modifyFn) {
 
 const styleOverridePrefix = 'brave-override-style-'
 
-function addBraveStyleOverride(moduleName, component) {
-  // does have template style element?
-  const template = component.template || component._template
+function addBraveStyleOverride(moduleName, component, template = component.template || component._template) {
   if (!template) {
     console.error(`No template found for component (${moduleName}) with found style overrides`, component)
     return
@@ -198,32 +196,9 @@ export function OverrideIronIcons(iconSetName, overridingIconSetName, iconOverri
   srcIconSet.getIconNames()
 }
 
-function PerformBraveModifications(name, component) {
-  if (debug) {
-    console.debug(`Polymer component registering: ${name}`, component)
-  }
-  addBraveBehaviors(name, component)
-  addBraveProperties(name, component)
-  const templateModifyFn = allBraveTemplateModificationsMap[name]
-  if (templateModifyFn) {
-    addBraveTemplateModifications(name, component, templateModifyFn)
-    delete allBraveTemplateModificationsMap[name]
-  }
-  if (moduleNamesWithStyleOverrides.includes(name)) {
-    addBraveStyleOverride(name, component)
-  }
-}
-
-// TODO(petemill): Overriding Polymer.Class only works because
-// chromium components at the moment are passing objects rather
-// than classes. If this changes, or for something more robust,
-// we can instead hook in to `window.customElements.define`. This
-// will require changing how we inject behaviors to instead return a
-// subclass of the original component, with the lifecycle methods added.
-// That's because behaviors are a legacy polymer feature,
-// now migrated to subclassing.
-// That should work for any type of Polymer component (class or
-// object-to-generated-class).
+// Overriding Polymer.Class only works for some
+// chromium components which call Polymer() and pass objects rather
+// than classes.
 const oldClass = Polymer.Class
 Polymer.Class = function (info, mixin) {
   if (!info) {
@@ -237,10 +212,58 @@ Polymer.Class = function (info, mixin) {
     return oldClass(info, mixin)
   }
   if (debug) {
-    console.log('defined', name)
+    console.debug(`Polymer component legacy registering: ${name}`, info)
   }
-  PerformBraveModifications(name, info)
+  addBraveBehaviorsLegacy(name, info)
   return oldClass(info, mixin)
+}
+
+// Also override for components which do not call Polymer() but instead
+// inherit from PolymerElement.
+const oldPrepareTemplate = PolymerElement._prepareTemplate;
+PolymerElement._prepareTemplate = function BravePolymer_PrepareTemplate() {
+  oldPrepareTemplate.call(this)
+  const name = this.is
+  if (!name) {
+    if (debug) {
+      console.warn('PolymerElement defined with no name', this, this.prototype)
+    }
+    return
+  }
+  if (debug) {
+    console.log('PolymerElement defined: ', name, this, this.prototype)
+  }
+  // Perform modifications that we want to change the original class / prototype
+  // features, such as editing template or properties.
+  // Other modifications, such as injecting overriden classes (aka behaviors),
+  // will happen at component definition time.
+  addBraveProperties(name, this.prototype)
+  const templateModifyFn = allBraveTemplateModificationsMap[name]
+  if (templateModifyFn) {
+    addBraveTemplateModifications(name, this.prototype, templateModifyFn)
+    delete allBraveTemplateModificationsMap[name]
+  }
+  if (moduleNamesWithStyleOverrides.includes(name)) {
+    addBraveStyleOverride(name, this.prototype)
+  }
+}
+
+const oldDefine = window.customElements.define
+window.customElements.define = function BraveDefineCustomElements (name, component, options) {
+  if (component.polymerElementVersion) {
+    if (debug) {
+      console.log('BraveDefineCustomElements PolymerElement defined', name, component, options)
+    }
+    // Inject behaviors
+    if (allBehaviorsMap[name]) {
+      if (debug) {
+        console.log('BraveDefineCustomElements added behavior', allBehaviorsMap[name])
+      }
+      component = mixinBehaviors(allBehaviorsMap[name], component)
+      delete allBehaviorsMap[name]
+    }
+  }
+  oldDefine.call(this, name, component, options)
 }
 
 // Overrides for all pages
