@@ -158,12 +158,15 @@ void JNI_BravePrefServiceBridge_SetCosmeticFilteringControlType(JNIEnv* env,
       brave_shields::SetCosmeticFilteringControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
           ControlType::BLOCK, GURL(), g_browser_process->local_state());
+      brave_shields::SetAdControlType(
+          HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
+          ControlType::BLOCK, GURL(), g_browser_process->local_state());
       break;
     case 1:
       // standard
       brave_shields::SetCosmeticFilteringControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
-          ControlType::ALLOW, GURL(), g_browser_process->local_state());
+          ControlType::DEFAULT, GURL(), g_browser_process->local_state());
       brave_shields::SetAdControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
           ControlType::BLOCK, GURL(), g_browser_process->local_state());
@@ -178,13 +181,14 @@ void JNI_BravePrefServiceBridge_SetCosmeticFilteringControlType(JNIEnv* env,
           ControlType::ALLOW, GURL(), g_browser_process->local_state());
       break;
     default:
+      NOTREACHED() << "There are no other types for cosmetic filtering";
       // standard
       brave_shields::SetAdControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
           ControlType::BLOCK, GURL(), g_browser_process->local_state());
       brave_shields::SetCosmeticFilteringControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
-          ControlType::ALLOW, GURL(), g_browser_process->local_state());
+          ControlType::DEFAULT, GURL(), g_browser_process->local_state());
       break;
   }
 }
