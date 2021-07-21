@@ -15,6 +15,7 @@
 #include "bat/ads/pref_names.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "components/prefs/pref_service.h"
 
@@ -98,6 +99,13 @@ std::string BraveStatsUpdaterParams::GetProcessArchParam() const {
   } else {
     return "virt";
   }
+}
+
+std::string BraveStatsUpdaterParams::GetWalletEnabledParam() const {
+  base::Time wallet_last_unlocked =
+      profile_pref_service_->GetTime(kBraveWalletLastUnlockTime);
+  uint8_t usage_bitset = UsageBitstringFromTimestamp(wallet_last_unlocked);
+  return std::to_string(usage_bitset);
 }
 
 // This is a helper method for dealing with timestamps set by other services in

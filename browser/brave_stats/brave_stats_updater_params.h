@@ -40,6 +40,7 @@ class BraveStatsUpdaterParams {
   std::string GetReferralCodeParam() const;
   std::string GetAdsEnabledParam() const;
   std::string GetProcessArchParam() const;
+  std::string GetWalletEnabledParam() const;
   uint8_t UsageBitstringFromTimestamp(const base::Time& time) const;
 
   void SavePrefs();
