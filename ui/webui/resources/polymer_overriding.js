@@ -10,7 +10,7 @@ import 'chrome://brave-resources/br_elements/br_toolbar/br_toolbar.js';
 import CrButtonStyleTemplate from './overrides/cr_button.js'
 import CrToggleStyleTemplate from './overrides/cr_toggle.js'
 
-const debug = true
+const debug = false
 
 if (debug) {
   // Useful to diagnose module definition timing for template modification
