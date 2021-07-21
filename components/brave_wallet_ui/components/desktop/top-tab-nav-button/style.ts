@@ -7,7 +7,7 @@ interface StyleProps {
 
 export const StyledButton = styled.button<Partial<StyleProps>>`
 	display: flex;
-  width: 100%;
+  width: 240px;
 	align-items: center;
 	justify-content: center;
   flex-direction: column;

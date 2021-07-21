@@ -17,14 +17,14 @@ import '../../../ui/webui/resources/fonts/muli.css'
 
 import { WalletWidgetStandIn } from '../stories/style'
 import {
-  SideNav,
+  // SideNav,
   WalletPageLayout,
   WalletSubViewLayout,
   CryptoView,
   LockScreen
 } from '../components/desktop'
 import {
-  NavTypes,
+  // NavTypes,
   WalletState,
   PageState,
   WalletPageState,
@@ -38,7 +38,7 @@ import {
   ToOrFromType
 } from '../constants/types'
 import { mockUserAccounts } from '../stories/mock-data/user-accounts'
-import { NavOptions } from '../options/side-nav-options'
+// import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../stories/screens/buy-send-swap'
 import Onboarding from '../stories/screens/onboarding'
 import BackupWallet from '../stories/screens/backup-wallet'
@@ -81,7 +81,7 @@ function Container (props: Props) {
     isFetchingPriceHistory
   } = props.page
 
-  const [view, setView] = React.useState<NavTypes>('crypto')
+  // const [view, setView] = React.useState<NavTypes>('crypto')
   const [inputValue, setInputValue] = React.useState<string>('')
   const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
   const [exchangeRate, setExchangeRate] = React.useState('')
@@ -173,9 +173,9 @@ function Container (props: Props) {
 
   // In the future these will be actual paths
   // for example wallet/rewards
-  const navigateTo = (path: NavTypes) => {
-    setView(path)
-  }
+  // const navigateTo = (path: NavTypes) => {
+  //   setView(path)
+  // }
 
   const completeWalletSetup = (recoveryVerified: boolean) => {
     if (recoveryVerified) {
@@ -407,22 +407,23 @@ function Container (props: Props) {
 
   return (
     <WalletPageLayout>
-      <SideNav
+      {/* <SideNav
         navList={NavOptions}
         selectedButton={view}
         onSubmit={navigateTo}
-      />
+      /> */}
       <WalletSubViewLayout>
-        {view === 'crypto' ? (
+        {renderWallet}
+        {/* {view === 'crypto' ? (
           renderWallet
         ) : (
           <div style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <h2>{view} view</h2>
           </div>
-        )}
+        )} */}
       </WalletSubViewLayout>
-      <WalletWidgetStandIn>
-        {isWalletCreated && !isWalletLocked &&
+      {isWalletCreated && !isWalletLocked &&
+        <WalletWidgetStandIn>
           <BuySendSwap
             accounts={accounts}
             orderType={orderType}
@@ -456,8 +457,8 @@ function Container (props: Props) {
             onSelectAsset={onSelectTransactAsset}
 
           />
-        }
-      </WalletWidgetStandIn>
+        </WalletWidgetStandIn>
+      }
     </WalletPageLayout>
   )
 }

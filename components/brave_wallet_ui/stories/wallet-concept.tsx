@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { WalletWidgetStandIn } from './style'
 import {
-  SideNav,
+  // SideNav,
   WalletPageLayout,
   WalletSubViewLayout,
   CryptoView,
@@ -23,7 +23,7 @@ import {
 } from '../constants/types'
 import Onboarding from './screens/onboarding'
 import BackupWallet from './screens/backup-wallet'
-import { NavOptions } from '../options/side-nav-options'
+// import { NavOptions } from '../options/side-nav-options'
 import { AssetOptions } from '../options/asset-options'
 import { NetworkOptions } from '../options/network-options'
 import { SlippagePresetOptions } from '../options/slippage-preset-options'
@@ -46,7 +46,7 @@ export default {
 
 export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boolean }) => {
   const { onboarding, locked } = args
-  const [view, setView] = React.useState<NavTypes>('crypto')
+  const [view] = React.useState<NavTypes>('crypto')
   const [needsOnboarding, setNeedsOnboarding] = React.useState<boolean>(onboarding)
   const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
   const [needsBackup, setNeedsBackup] = React.useState<boolean>(true)
@@ -73,9 +73,9 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
 
   // In the future these will be actual paths
   // for example wallet/rewards
-  const navigateTo = (path: NavTypes) => {
-    setView(path)
-  }
+  // const navigateTo = (path: NavTypes) => {
+  //   setView(path)
+  // }
 
   const completeWalletSetup = (recoveryVerified: boolean) => {
     setNeedsOnboarding(false)
@@ -384,11 +384,11 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
 
   return (
     <WalletPageLayout>
-      <SideNav
+      {/* <SideNav
         navList={NavOptions}
         selectedButton={view}
         onSubmit={navigateTo}
-      />
+      /> */}
       <WalletSubViewLayout>
         {needsOnboarding ?
           (
@@ -457,8 +457,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             </>
           )}
       </WalletSubViewLayout>
-      <WalletWidgetStandIn>
-        {!needsOnboarding && !walletLocked &&
+      {!needsOnboarding && !walletLocked &&
+        <WalletWidgetStandIn>
           <BuySendSwap
             orderType={orderType}
             swapToAsset={toAsset}
@@ -491,8 +491,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             onSelectSlippageTolerance={onSelectSlippageTolerance}
             onSelectPresetAmount={onSelectPresetAmount}
           />
-        }
-      </WalletWidgetStandIn>
+        </WalletWidgetStandIn>
+      }
     </WalletPageLayout>
   )
 }

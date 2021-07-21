@@ -141,7 +141,7 @@ const CryptoView = (props: Props) => {
           }
         </>
       }
-      {selectedTab === 'defi' &&
+      {selectedTab === 'apps' &&
         <>
           <SearchBar
             placeholder={locale.searchText}
@@ -186,9 +186,6 @@ const CryptoView = (props: Props) => {
           userWatchList={userWatchList}
           transactions={transactions}
         />
-      }
-      {selectedTab !== 'portfolio' && selectedTab !== 'defi' && selectedTab !== 'accounts' &&
-        <h2>{selectedTab} view</h2>
       }
       {showAddModal &&
         <AddAccountModal
