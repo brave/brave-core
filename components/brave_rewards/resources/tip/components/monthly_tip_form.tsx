@@ -10,7 +10,7 @@ import { HostContext } from '../lib/host_context'
 import { CurrentMonthlyForm } from './current_monthly_form'
 import { PaymentKindSwitch } from './payment_kind_switch'
 import { BatTipForm } from './bat_tip_form'
-import { ExchangeAmount } from './exchange_amount'
+import { ExchangeAmount } from '../../shared/components/exchange_amount'
 
 import * as style from './monthly_tip_form.style'
 

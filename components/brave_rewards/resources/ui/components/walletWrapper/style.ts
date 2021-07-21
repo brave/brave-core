@@ -118,6 +118,11 @@ export const StyledCopyImage = styled('span')<{}>`
   color: #838391;
   width: 27px;
   height: 27px;
+
+  .icon {
+    height: 20px;
+    width: auto;
+  }
 `
 
 export const StyledIconAction = styled('button')<{}>`
