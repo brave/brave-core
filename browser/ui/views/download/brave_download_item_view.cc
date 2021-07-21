@@ -43,10 +43,10 @@ constexpr int kProgressTextPadding = 8;
 constexpr int kProgressIndicatorSize = 25;
 
 // The minimum vertical padding above and below contents of the download item.
-constexpr int kMinimumVerticalPadding = 6;
+constexpr int kMinimumVerticalPadding = 2;
 
 // The normal height of the item which may be exceeded if text is large.
-constexpr int kDefaultHeight = 65;
+constexpr int kDefaultHeight = 48;
 
 // Lock icon color.
 constexpr SkColor kDownloadUnlockIconColor = SkColorSetRGB(0xC6, 0x36, 0x26);
@@ -62,7 +62,8 @@ BraveDownloadItemView::BraveDownloadItemView(
     views::View* accessible_alert)
     : DownloadItemView(std::move(download), parent, accessible_alert),
       brave_model_(model_.get()),
-      is_origin_url_secure_(false) {
+      is_origin_url_secure_(false),
+      is_origin_url_visible_(false) {
   // Prepare origin url font.
   ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
   origin_url_font_list_ =
@@ -75,11 +76,6 @@ BraveDownloadItemView::~BraveDownloadItemView() {}
 
 void BraveDownloadItemView::Layout() {
   DownloadItemView::Layout();
-  // Adjust the position of the status text label.
-  if (!IsShowingWarningDialog()) {
-    file_name_label_->SetY(GetYForFilenameText());
-    status_label_->SetY(GetYForStatusText());
-  }
 }
 
 gfx::Size BraveDownloadItemView::CalculatePreferredSize() const {
@@ -101,7 +97,9 @@ gfx::Size BraveDownloadItemView::CalculatePreferredSize() const {
 
 void BraveDownloadItemView::OnPaint(gfx::Canvas* canvas) {
   DownloadItemView::OnPaint(canvas);
-  DrawOriginURL(canvas);
+  if (is_origin_url_visible_)
+    DrawOriginURL(canvas);
+  file_name_label_->SetVisible(!is_origin_url_visible_);
 }
 
 // download::DownloadItem::Observer overrides.
@@ -163,7 +161,7 @@ int BraveDownloadItemView::GetYForFilenameText() const {
 
 int BraveDownloadItemView::GetYForOriginURLText() const {
   int y = GetYForFilenameText();
-  y += (file_name_label_->GetLineHeight() + kBraveVerticalTextPadding);
+  y = file_name_label_->y() + kBraveVerticalTextPadding;
   return y;
 }
 
@@ -236,4 +234,20 @@ void BraveDownloadItemView::SetMode(download::DownloadItemMode mode) {
     extra += char16_t(' ') + origin_url_text_;
     accessible_name_ += extra;
   }
+}
+
+void BraveDownloadItemView::OnMouseEntered(const ui::MouseEvent& event) {
+  is_origin_url_visible_ = true;
+}
+
+void BraveDownloadItemView::OnMouseExited(const ui::MouseEvent& event) {
+  is_origin_url_visible_ = false;
+}
+
+void BraveDownloadItemView::OnViewFocused(View* observed_view) {
+  is_origin_url_visible_ = true;
+}
+
+void BraveDownloadItemView::OnViewBlurred(View* observed_view) {
+  is_origin_url_visible_ = false;
 }

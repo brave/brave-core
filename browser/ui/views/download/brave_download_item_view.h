@@ -34,7 +34,7 @@ class BraveDownloadItemView : public DownloadItemView {
   static constexpr int kOriginURLIconRightPadding = 2;
 
   // Vertical padding between text lines.
-  static constexpr int kBraveVerticalTextPadding = 3;
+  static constexpr int kBraveVerticalTextPadding = 2;
 
   // These functions calculate the vertical coordinates for each text line.
   int GetYForFilenameText() const;
@@ -50,6 +50,10 @@ class BraveDownloadItemView : public DownloadItemView {
 
   // Overrides the accessible name construction to reflect the origin URL.
   void SetMode(download::DownloadItemMode mode) override;
+  void OnMouseEntered(const ui::MouseEvent& event) override;
+  void OnMouseExited(const ui::MouseEvent& event) override;
+  void OnViewFocused(View* observed_view) override;
+  void OnViewBlurred(View* observed_view) override;
 
   // Brave download item model.
   BraveDownloadItemModel brave_model_;
@@ -60,6 +64,7 @@ class BraveDownloadItemView : public DownloadItemView {
   // Origin url text.
   std::u16string origin_url_text_;
   bool is_origin_url_secure_;
+  bool is_origin_url_visible_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveDownloadItemView);
 };
