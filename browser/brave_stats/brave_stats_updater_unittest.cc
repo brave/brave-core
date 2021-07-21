@@ -478,3 +478,65 @@ TEST_F(BraveStatsUpdaterTest, GetIsoWeekNumber) {
   EXPECT_TRUE(base::Time::FromLocalExploded(exploded, &time));
   EXPECT_EQ(brave_stats::GetIsoWeekNumber(time), 35);
 }
+
+TEST_F(BraveStatsUpdaterTest, UsageBitstringDaily) {
+  base::Time current_time;
+  base::Time last_used_timestamp;
+
+  EXPECT_TRUE(base::Time::FromString("2020-03-31", &current_time));
+  EXPECT_TRUE(base::Time::FromString("2020-03-30", &last_used_timestamp));
+  SetCurrentTimeForTest(current_time);
+
+  brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
+      GetLocalState(), GetProfilePrefs(), brave_stats::ProcessArch::kArchSkip,
+      kToday, kThisWeek, kThisMonth);
+  // Note: daily implies weekly and monthly
+  EXPECT_EQ(0b111, brave_stats_updater_params.UsageBitstringFromTimestamp(
+                       last_used_timestamp));
+}
+
+TEST_F(BraveStatsUpdaterTest, UsageBitstringWeekly) {
+  base::Time current_time;
+  base::Time last_used_timestamp;
+
+  EXPECT_TRUE(base::Time::FromString("2020-03-27", &current_time));
+  EXPECT_TRUE(base::Time::FromString("2020-03-24", &last_used_timestamp));
+  SetCurrentTimeForTest(current_time);
+
+  brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
+      GetLocalState(), GetProfilePrefs(), brave_stats::ProcessArch::kArchSkip,
+      kToday, kThisWeek, kThisMonth);
+  // Note: Weekly implies monthly
+  EXPECT_EQ(0b110, brave_stats_updater_params.UsageBitstringFromTimestamp(
+                       last_used_timestamp));
+}
+
+TEST_F(BraveStatsUpdaterTest, UsageBitstringMonthly) {
+  base::Time current_time;
+  base::Time last_used_timestamp;
+
+  EXPECT_TRUE(base::Time::FromString("2020-03-31", &current_time));
+  EXPECT_TRUE(base::Time::FromString("2020-03-01", &last_used_timestamp));
+  SetCurrentTimeForTest(current_time);
+
+  brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
+      GetLocalState(), GetProfilePrefs(), brave_stats::ProcessArch::kArchSkip,
+      kToday, kThisWeek, kThisMonth);
+  EXPECT_EQ(0b100, brave_stats_updater_params.UsageBitstringFromTimestamp(
+                       last_used_timestamp));
+}
+
+TEST_F(BraveStatsUpdaterTest, UsageBitstringInactive) {
+  base::Time current_time;
+  base::Time last_used_timestamp;
+
+  EXPECT_TRUE(base::Time::FromString("2020-03-31", &current_time));
+  EXPECT_TRUE(base::Time::FromString("2020-01-01", &last_used_timestamp));
+  SetCurrentTimeForTest(current_time);
+
+  brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
+      GetLocalState(), GetProfilePrefs(), brave_stats::ProcessArch::kArchSkip,
+      kToday, kThisWeek, kThisMonth);
+  EXPECT_EQ(0b000, brave_stats_updater_params.UsageBitstringFromTimestamp(
+                       last_used_timestamp));
+}

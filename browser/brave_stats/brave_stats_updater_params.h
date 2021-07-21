@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_STATS_BRAVE_STATS_UPDATER_PARAMS_H_
 #define BRAVE_BROWSER_BRAVE_STATS_BRAVE_STATS_UPDATER_PARAMS_H_
 
+#include <cstdint>
 #include <string>
 
 #include "base/macros.h"
@@ -39,6 +40,7 @@ class BraveStatsUpdaterParams {
   std::string GetReferralCodeParam() const;
   std::string GetAdsEnabledParam() const;
   std::string GetProcessArchParam() const;
+  uint8_t UsageBitstringFromTimestamp(const base::Time& time) const;
 
   void SavePrefs();
 
