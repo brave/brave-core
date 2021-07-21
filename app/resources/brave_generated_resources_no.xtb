@@ -328,4 +328,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="3738833060602717053">Hjelp til med å forbedre <ph name="PRODUCT_NAME"/> ved å sende rapporter om krasj automatisk</translation>
 <translation id="81720820779436751">Brave vil åpne onion-service for nettstedet når det er tilgjengelig eller .onion-domenet i Tor-vinduet</translation>
 <translation id="4322612543319315652">Importer valgt tekst til IPFS</translation>
+<translation id="1047401034925735299">Importer valgt tekst til IPFS</translation>
+<translation id="6469509880167172749">Send helt privat produktdiagnostikk til Brave automatisk</translation>
+<translation id="7090566321964540749">Denne anonyme infoen lar Brave kun beregne den totale bruken av visse funksjoner.</translation>
 </translationbundle>

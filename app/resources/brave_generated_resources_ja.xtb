@@ -350,4 +350,7 @@
 <translation id="3738833060602717053">クラッシュ報告を自動送信して、<ph name="PRODUCT_NAME"/> Braveの改善を支援してください</translation>
 <translation id="81720820779436751">Braveは、利用可能な場合はウェブサイトのオニオンサービスを開くか、またはTorウィンドウで.onionドメインを開きます</translation>
 <translation id="4322612543319315652">選択したテキストをIPFSにインポート</translation>
+<translation id="1047401034925735299">選択したテキストをIPFSにインポート</translation>
+<translation id="6469509880167172749">Braveに完全に匿名の製品分析を自動的に送る</translation>
+<translation id="7090566321964540749">この匿名の情報は、Braveの特定の機能が全体でどの程度使われるか、予測するためにのみ使われます。</translation>
 </translationbundle>

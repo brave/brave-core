@@ -349,4 +349,7 @@
 <translation id="3738833060602717053">ช่วยปรับปรุง <ph name="PRODUCT_NAME"/>โดยส่งรายงานข้อขัดข้องโดยอัตโนมัติ</translation>
 <translation id="81720820779436751">Brave จะเปิดบริการแบบ Onion ของเว็บไซต์ (เมื่อมีให้บริการ) หรือโดเมน .onion ในหน้าต่าง Tor</translation>
 <translation id="4322612543319315652">นำเข้าข้อความที่เลือกไปยัง IPFS</translation>
+<translation id="1047401034925735299">นำเข้าข้อความที่เลือกไปยัง IPFS</translation>
+<translation id="6469509880167172749">ส่งผลการวิเคราะห์ผลิตภัณฑ์แบบส่วนตัวโดยสมบูรณ์ให้ Brave โดยอัตโนมัติ</translation>
+<translation id="7090566321964540749">ข้อมูลแบบไม่ระบุตัวตนนี้จะช่วยให้ Brave คาดคะเนการใช้งานโดยรวมของฟีเจอร์บางอย่างได้เท่านั้น</translation>
 </translationbundle>

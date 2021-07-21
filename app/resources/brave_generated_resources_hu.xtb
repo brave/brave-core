@@ -349,4 +349,7 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="3738833060602717053">Segíts a <ph name="PRODUCT_NAME"/> fejlesztésében összeomlási jelentések automatikus küldésével.</translation>
 <translation id="81720820779436751">A Brave megnyitja a webhely onion szolgáltatását, amikor ez lehetséges, vagy a .onion domént egy Tor ablakban.</translation>
 <translation id="4322612543319315652">Kiválasztott szöveg importálása IPFS-be</translation>
+<translation id="1047401034925735299">Kiválasztott szöveg importálása IPFS-be</translation>
+<translation id="6469509880167172749">Teljes mértékben anonim termékanalízis automatikus küldése a Brave-hez</translation>
+<translation id="7090566321964540749">Ez az anonimizált adat mindösszesen azt teszi lehetővé, hogy a Brave megbecsülhesse egyes funkciók összesített használatát.</translation>
 </translationbundle>

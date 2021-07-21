@@ -360,12 +360,12 @@ until they verify, or until 90 days have passed.</translation>
 <translation id="7427567994475794038">Turn on privacy reports to see how many trackers &amp; ads have been blocked in the past 3 hours.</translation>
 <translation id="2053891538879944400">You saved <ph name="DATA"/> <ph name="DATA_TEXT"/> data with Brave browser.</translation>
 <translation id="8640064498452534195">Turn on privacy reports to see how much data you've saved.</translation>
-<translation id="2252497442547961651">Brave browser uses 40% less battery on average.&#128267;</translation>
+<translation id="2252497442547961651">Brave browser uses 40% less battery on average.🔋</translation>
 <translation id="1945330434665345785">You blocked <ph name="COUNT"/> trackers &amp; ads with Brave browser last week.</translation>
 <translation id="2883868922264431515">Earn tokens by viewing privacy-respecting ads and support your favourite websites.</translation>
-<translation id="5678925890616256956">Nice! You've blocked 250 trackers &amp; ads with Brave browser.&#128293;</translation>
-<translation id="9199047775708635708">Nice! You've saved 10 MB with Brave browser.&#128267;</translation>
-<translation id="1880168210969863408">Nice! You've saved 10 mins of loading time with Brave browser.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Nice! You've blocked 250 trackers &amp; ads with Brave browser.🔥</translation>
+<translation id="9199047775708635708">Nice! You've saved 10 MB with Brave browser.🔋</translation>
+<translation id="1880168210969863408">Nice! You've saved 10 mins of loading time with Brave browser.💨💨</translation>
 <translation id="7408493389591475748">Start browsing to see privacy reporting</translation>
 <translation id="9080777565335515917">Set Brave as your default browser for private and secure browsing.</translation>
 <translation id="1390943217516275883">Allows Brave to show your privacy statistics</translation>
@@ -552,4 +552,7 @@ until they verify, or until 90 days have passed.</translation>
 <translation id="745115390910697838">Phrases did not match, please try again.</translation>
 <translation id="2360588547830602174">Account recovery failed. Please try again.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="8029219208182772618">Be informed about which websites you visit are the most privacy invasive.\n\nOnly you can see these privacy statistics. No personal data or browsing history ever leaves the Brave browser on your device.</translation>
+<translation id="5816125157889950051">When do you receive rewards</translation>
+<translation id="5140321319944305531">Lets Take A Quick Tour</translation>
 </translationbundle>

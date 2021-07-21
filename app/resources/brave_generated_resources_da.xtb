@@ -350,4 +350,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="3738833060602717053">Hjælp med at forbedre <ph name="PRODUCT_NAME"/> ved automatisk at sende nedbrudsrapporter</translation>
 <translation id="81720820779436751">Brave åbner onion-service på hjemmesiden, når den er tilgængelig, eller .onion-domænet i Tor-vinduet</translation>
 <translation id="4322612543319315652">Importér valgt tekst til IPFS</translation>
+<translation id="1047401034925735299">Importér valgt tekst til IPFS</translation>
+<translation id="6469509880167172749">Send automatisk fuldstændig private produktanalyser til Brave</translation>
+<translation id="7090566321964540749">Disse anonyme informationer giver kun Brave tilladelse til at anslå det generelle forbrug af visse funktioner.</translation>
 </translationbundle>

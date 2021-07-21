@@ -374,12 +374,12 @@ yok...</translation>
 <translation id="7427567994475794038">Son 3 saatte kaç izleyicinin &amp; reklamın engellendiğini görmek için Gizlilik Raporları'nı açın.</translation>
 <translation id="2053891538879944400">Brave tarayıcı ile <ph name="DATA"/> <ph name="DATA_TEXT"/> veri tasarruf ettiniz.</translation>
 <translation id="8640064498452534195">Ne kadar veri tasarruf ettiğinizi görmek için Gizlilik Raporları'nı açın.</translation>
-<translation id="2252497442547961651">Brave tarayıcı ortalama %40 daha az pil kullanır.&#128267;</translation>
+<translation id="2252497442547961651">Brave tarayıcı ortalama %40 daha az pil kullanır.🔋</translation>
 <translation id="1945330434665345785">Brave tarayıcı ile geçen hafta <ph name="COUNT"/> izleyici &amp; reklamı engellediniz.</translation>
 <translation id="2883868922264431515">Gizlilik dostu reklamlar izleyerek token kazanın ve sevdiğiniz websitelerini destekleyin.</translation>
-<translation id="5678925890616256956">Güzel! Brave tarayıcı ile 250 izleyici &amp; reklam engellediniz.&#128293;</translation>
-<translation id="9199047775708635708">Güzel! Brave tarayıcı ile 10 MB tasarruf ettiniz.&#128267;</translation>
-<translation id="1880168210969863408">Güzel! Brave tarayıcı ile yükleme süresinden 10 Dakika tasarruf ettiniz.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Güzel! Brave tarayıcı ile 250 izleyici &amp; reklam engellediniz.🔥</translation>
+<translation id="9199047775708635708">Güzel! Brave tarayıcı ile 10 MB tasarruf ettiniz.🔋</translation>
+<translation id="1880168210969863408">Güzel! Brave tarayıcı ile yükleme süresinden 10 Dakika tasarruf ettiniz.💨💨</translation>
 <translation id="7408493389591475748">Gizlilik raporunu görmek için gezinmeye başlayın</translation>
 <translation id="9080777565335515917">Gizli ve güvenli gezinti için, Brave'i varsayılan tarayıcınız yapın.</translation>
 <translation id="1390943217516275883">Brave'in gizlilik istatistiklerinizi göstermesine izin verir</translation>
@@ -566,4 +566,7 @@ yok...</translation>
 <translation id="745115390910697838">İfadeler eşleşmedi, lütfen tekrar deneyin.</translation>
 <translation id="2360588547830602174">Hesap kurtarılamadı. Lütfen tekrar deneyin.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="8029219208182772618">Ziyaret ettiğiniz websitelerinden hangilerinin gizliliği en fazla ihlal ettiği hakkında bilgi alın.\n\nBu gizlilik istatistiklerini sadece siz görebilirsiniz. Brave tarayıcınızdaki hiçbir kişisel veri veya tarama geçmişi cihazınızı terketmeyecektir.</translation>
+<translation id="5816125157889950051">Ödülleri ne zaman alırsınız</translation>
+<translation id="5140321319944305531">Hadi Hızlı Bir Tur Atalım</translation>
 </translationbundle>

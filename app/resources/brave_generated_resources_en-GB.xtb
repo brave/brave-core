@@ -349,4 +349,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="3738833060602717053">Help improve <ph name="PRODUCT_NAME"/> by automatically sending crash reports</translation>
 <translation id="81720820779436751">Brave will open onion service of the website when available or .onion domain in Tor window</translation>
 <translation id="4322612543319315652">Import Selected text to IPFS</translation>
+<translation id="1047401034925735299">Import Selected text to IPFS</translation>
+<translation id="6469509880167172749">Automatically send completely private product analytics to Brave</translation>
+<translation id="7090566321964540749">This anonymous info only lets Brave estimate the overall usage of certain features.</translation>
 </translationbundle>

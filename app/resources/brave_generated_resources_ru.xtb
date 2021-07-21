@@ -349,4 +349,7 @@
 <translation id="3738833060602717053">Помогите улучшить <ph name="PRODUCT_NAME"/>, автоматически отправляя отчеты о сбоях</translation>
 <translation id="81720820779436751">Brave откроет onion-версию сайта, если она доступна, или домен .onion в окне с режимом Tor</translation>
 <translation id="4322612543319315652">Импортировать выбранный текст в IPFS</translation>
+<translation id="1047401034925735299">Импортировать выбранный текст в IPFS</translation>
+<translation id="6469509880167172749">Автоматически отправлять полностью конфиденциальную аналитику в Brave</translation>
+<translation id="7090566321964540749">Эта анонимная информация позволяет Brave оценить, как люди используют определенные функции.</translation>
 </translationbundle>
