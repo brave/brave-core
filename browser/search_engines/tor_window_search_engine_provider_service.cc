@@ -9,6 +9,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
+#include "components/search_engines/template_url_data_util.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "components/search_engines/template_url_service.h"
 
@@ -54,26 +55,14 @@ void TorWindowSearchEngineProviderService::OnTemplateURLServiceChanged() {
 std::unique_ptr<TemplateURLData>
 TorWindowSearchEngineProviderService::GetInitialSearchEngineProvider(
     PrefService* prefs) const {
-  std::unique_ptr<TemplateURLData> provider_data;
-
-  int initial_id = TemplateURLPrepopulateData::GetPrepopulatedDefaultSearch(
-                       otr_profile_->GetPrefs())
-                       ->prepopulate_id;
-  switch (initial_id) {
-    case TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT:
-    case TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO:
-    case TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE:
-    case TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE:
-      break;
-
-    default:
-      initial_id =
-          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
-      break;
+  std::unique_ptr<TemplateURLData> provider_data =
+      TemplateURLPrepopulateData::GetPrepopulatedDefaultSearch(
+          otr_profile_->GetPrefs());
+  if (provider_data->prepopulate_id ==
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT) {
+    return provider_data;
   }
-  provider_data =
-      TemplateURLPrepopulateData::GetPrepopulatedEngine(prefs, initial_id);
 
-  DCHECK(provider_data);
-  return provider_data;
+  return TemplateURLDataFromPrepopulatedEngine(
+      TemplateURLPrepopulateData::duckduckgo);
 }
