@@ -30,6 +30,7 @@ enum UserStatus {
 
 struct User {
   std::string name;
+  std::string member_id;
   UserStatus status;
   bool bat_not_allowed;
 

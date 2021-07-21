@@ -119,6 +119,7 @@ void UpholdWallet::OnGetUser(const type::Result result,
   }
 
   uphold_wallet->user_name = user.name;
+  uphold_wallet->member_id = user.member_id;
   if (!ledger_->uphold()->SetWallet(uphold_wallet->Clone())) {
     BLOG(0, "Unable to set the Uphold wallet!");
     return callback(type::Result::LEDGER_ERROR);

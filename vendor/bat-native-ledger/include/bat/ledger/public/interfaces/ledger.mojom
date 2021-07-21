@@ -156,6 +156,7 @@ struct ExternalWallet {
   string one_time_string;
   string code_verifier;
   string user_name;
+  string member_id;
   string account_url;
   string login_url;
   map<string, double> fees;
