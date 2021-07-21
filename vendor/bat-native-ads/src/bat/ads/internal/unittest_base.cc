@@ -60,6 +60,10 @@ AdsImpl* UnitTestBase::GetAds() const {
   return ads_.get();
 }
 
+AdRewards* UnitTestBase::GetAdRewards() const {
+  return ad_rewards_.get();
+}
+
 void UnitTestBase::SetUp() {
   // Code here will be called immediately after the constructor (right before
   // each test)
