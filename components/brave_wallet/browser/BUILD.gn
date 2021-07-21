@@ -24,6 +24,8 @@ static_library("browser") {
     "brave_wallet_types.h",
     "brave_wallet_utils.cc",
     "brave_wallet_utils.h",
+    "eip1559_transaction.cc",
+    "eip1559_transaction.h",
     "eip2930_transaction.cc",
     "eip2930_transaction.h",
     "erc_token_list_parser.cc",

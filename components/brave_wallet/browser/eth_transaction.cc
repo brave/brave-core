@@ -216,7 +216,7 @@ uint256_t EthTransaction::GetDataFee() const {
   return cost;
 }
 
-uint256_t EthTransaction::GetUpfrontCost() const {
+uint256_t EthTransaction::GetUpfrontCost(uint256_t block_base_fee) const {
   return gas_limit_ * gas_price_ + value_;
 }
 

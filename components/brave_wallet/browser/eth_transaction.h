@@ -92,7 +92,7 @@ class EthTransaction {
   virtual uint256_t GetDataFee() const;
   // The up front amount that an account must have for this transaction to be
   // valid
-  virtual uint256_t GetUpfrontCost() const;
+  virtual uint256_t GetUpfrontCost(uint256_t block_base_fee = 0) const;
 
  protected:
   // type 0 would be LegacyTransaction
