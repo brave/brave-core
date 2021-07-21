@@ -72,9 +72,7 @@ export type NavTypes =
 
 export type TopTabNavTypes =
   | 'portfolio'
-  | 'prices'
-  | 'defi'
-  | 'nfts'
+  | 'apps'
   | 'accounts'
 
 export type AddAccountNavTypes =

@@ -44,7 +44,7 @@ const locale = {
   // Top Nav Tab Buttons
   topNavPortfolio: 'Portfolio',
   topTabPrices: 'Prices',
-  topTabDefi: 'Defi',
+  topTabApps: 'Apps',
   topNavNFTS: 'NFTs',
   topNavAccounts: 'Accounts',
 
