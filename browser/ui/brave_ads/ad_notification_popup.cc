@@ -199,17 +199,6 @@ gfx::Rect AdNotificationPopup::GetBounds(const std::string& notification_id) {
 }
 
 // static
-AdNotificationPopup* AdNotificationPopup::GetPopupForTesting(
-    const std::string& notification_id) {
-  DCHECK(!notification_id.empty());
-
-  DCHECK(g_ad_notification_popups[notification_id]);
-  AdNotificationPopup* popup = g_ad_notification_popups[notification_id];
-  DCHECK(popup);
-  return popup;
-}
-
-// static
 void AdNotificationPopup::SetDisableFadeInAnimationForTesting(bool disable) {
   g_disable_fade_in_animation_for_testing = disable;
 }

@@ -66,37 +66,6 @@ class AdNotificationPopupBrowserTest : public InProcessBrowserTest {
         {{"should_show_custom_notifications", "true"}});
   }
 
-  base::test::ScopedFeatureList feature_list_;
-};
-
-IN_PROC_BROWSER_TEST_F(AdNotificationPopupBrowserTest,
-                       CheckDynamicThemeChange) {
-  dark_mode::SetBraveDarkModeType(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
-
-  TestPopupInstanceFactory test_factory;
-  AdNotification notification("id", u"test", u"test", {});
-  AdNotificationPopup::Show(browser()->profile(), notification, &test_factory);
-
-  MockAdNotificationPopup* mock_popup = test_factory.get_popup();
-  ASSERT_TRUE(mock_popup);
-
-  base::RunLoop run_loop;
-  EXPECT_CALL(*mock_popup, OnThemeChangedMock()).WillOnce([&run_loop]() {
-    run_loop.Quit();
-  });
-
-  dark_mode::SetBraveDarkModeType(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
-  run_loop.Run();
-  AdNotificationPopup::CloseWidget(notification.id());
-}
-
-class AdNotificationSnapshotBrowserTest
-    : public AdNotificationPopupBrowserTest {
- public:
-  AdNotificationSnapshotBrowserTest() {}
-
   void SetUp() override {
     EnablePixelOutput();
     AdNotificationPopup::SetDisableFadeInAnimationForTesting(true);
@@ -112,28 +81,48 @@ class AdNotificationSnapshotBrowserTest
     InProcessBrowserTest::SetUpOnMainThread();
     brave::RegisterPathProvider();
   }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(AdNotificationSnapshotBrowserTest, ShowPopup) {
+IN_PROC_BROWSER_TEST_F(AdNotificationPopupBrowserTest, CheckThemeChanged) {
   WidgetSnapshotChecker widget_checker;
-  auto check_ads_popup = [&widget_checker, this](base::StringPiece id) {
-    AdNotification notification(id.data(), u"test", u"test", {});
-    AdNotificationPopup::Show(browser()->profile(), notification);
-    AdNotificationPopup* popup =
-        AdNotificationPopup::GetPopupForTesting(notification.id());
+  TestPopupInstanceFactory test_factory;
+  auto check_ads_popup_snapshot = [&widget_checker, &test_factory,
+                                   this](const std::string& id) {
+    AdNotification notification(id, u"test", u"test", {});
+    AdNotificationPopup::Show(browser()->profile(), notification,
+                              &test_factory);
+    MockAdNotificationPopup* mock_popup = test_factory.get_popup();
+    ASSERT_TRUE(mock_popup);
 
     ASSERT_NO_FATAL_FAILURE(
-        widget_checker.CaptureAndCheckSnapshot(popup->GetWidget()));
-    AdNotificationPopup::CloseWidget(notification.id());
+        widget_checker.CaptureAndCheckSnapshot(mock_popup->GetWidget()));
   };
 
+  // Check appearance in light theme.
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
-  check_ads_popup("id_light");
+  std::string notification_id = "id_light";
+  check_ads_popup_snapshot(notification_id);
+  AdNotificationPopup::CloseWidget(notification_id);
 
+  // Check appearance in light theme.
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
-  check_ads_popup("id_dark");
+  notification_id = "id_dark";
+  check_ads_popup_snapshot(notification_id);
+
+  // Check that OnThemeChanged() is called on browser theme change.
+  base::RunLoop run_loop;
+  EXPECT_CALL(*test_factory.get_popup(), OnThemeChangedMock())
+      .WillOnce([&run_loop]() { run_loop.Quit(); });
+  dark_mode::SetBraveDarkModeType(
+      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
+  run_loop.Run();
+
+  AdNotificationPopup::CloseWidget(notification_id);
 }
 
 }  // namespace brave_ads
