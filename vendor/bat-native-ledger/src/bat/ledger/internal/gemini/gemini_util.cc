@@ -77,11 +77,13 @@ std::string GetVerifyUrl() {
 }
 
 std::string GetAddUrl() {
-  return GetAccountUrl();
+  const std::string url = GetUrl();
+  return base::StringPrintf("%s/transfer/deposit", url.c_str());
 }
 
 std::string GetWithdrawUrl() {
-  return GetAccountUrl();
+  const std::string url = GetUrl();
+  return base::StringPrintf("%s/transfer/withdraw", url.c_str());
 }
 
 std::string GetAccountUrl() {
