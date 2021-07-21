@@ -18,7 +18,7 @@ export const topBar = styled.div`
   font-weight: 600;
   font-size: 14px;
   line-height: 18px;
-  padding: 17px 10px;
+  padding: 17px 36px;
 `
 
 export const sadIcon = styled.span`
