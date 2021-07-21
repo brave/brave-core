@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -16,6 +16,13 @@ namespace ledger {
 class LedgerImpl;
 
 namespace uphold {
+
+namespace notifications {
+const char kBATNotAllowedForUser[] = "uphold_bat_not_allowed_for_user";
+const char kBlockedUser[] = "uphold_blocked_user";
+const char kPendingUser[] = "uphold_pending_user";
+const char kRestrictedUser[] = "uphold_restricted_user";
+}  // namespace notifications
 
 const char kUrlStaging[] = "https://wallet-sandbox.uphold.com";
 const char kUrlProduction[] = "https://uphold.com";
@@ -48,7 +55,9 @@ type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet);
 
 std::string GenerateVerifyLink(type::ExternalWalletPtr wallet);
 
-type::ExternalWalletPtr ResetWallet(type::ExternalWalletPtr wallet);
+void LogWalletStatusChange(LedgerImpl* ledger,
+                           absl::optional<type::WalletStatus> from,
+                           type::WalletStatus to);
 
 }  // namespace uphold
 }  // namespace ledger

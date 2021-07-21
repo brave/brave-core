@@ -10,7 +10,7 @@
 
 #include "bat/ledger/ledger.h"
 
-// POST /v3/wallet/{custodian}/{payment_id}/claim
+// DELETE /v3/wallet/{custodian}/{payment_id}/claim
 //
 // Request body:
 // {}

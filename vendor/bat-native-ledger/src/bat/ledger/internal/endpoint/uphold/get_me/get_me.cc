@@ -90,12 +90,6 @@ type::Result GetMe::ParseBody(
     user->name = *name;
   }
 
-  const auto* member_at = dictionary->FindStringKey("memberAt");
-  if (member_at) {
-    user->member_at = *member_at;
-    user->verified = !user->member_at.empty();
-  }
-
   const auto* currencies = dictionary->FindListKey("currencies");
   if (currencies) {
     const std::string currency = "BAT";

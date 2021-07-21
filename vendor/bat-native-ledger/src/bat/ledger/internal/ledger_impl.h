@@ -308,6 +308,8 @@ class LedgerImpl : public Ledger {
   void GetDrainStatus(const std::string& drain_id,
                       GetDrainCallback callback) override;
 
+  void SetInitializedForTesting();
+
  private:
   enum class ReadyState {
     kUninitialized,

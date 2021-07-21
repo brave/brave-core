@@ -930,6 +930,10 @@ void LedgerImpl::GetDrainStatus(const std::string& drain_id,
   });
 }
 
+void LedgerImpl::SetInitializedForTesting() {
+  ready_state_ = ReadyState::kReady;
+}
+
 bool LedgerImpl::IsReady() const {
   return ready_state_ == ReadyState::kReady;
 }

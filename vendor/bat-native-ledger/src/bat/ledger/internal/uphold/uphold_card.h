@@ -1,17 +1,19 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_UPHOLD_UPHOLD_CARD_H_
-#define BRAVELEDGER_UPHOLD_UPHOLD_CARD_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_UPHOLD_UPHOLD_CARD_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_UPHOLD_UPHOLD_CARD_H_
 
-#include <map>
 #include <memory>
 #include <string>
 
-#include "bat/ledger/ledger.h"
+#include "bat/ledger/internal/endpoint/uphold/get_cards/get_cards.h"
+#include "bat/ledger/internal/endpoint/uphold/patch_card/patch_card.h"
+#include "bat/ledger/internal/endpoint/uphold/post_cards/post_cards.h"
 #include "bat/ledger/internal/uphold/uphold.h"
+#include "bat/ledger/ledger.h"
 
 namespace ledger {
 class LedgerImpl;
@@ -24,54 +26,34 @@ namespace uphold {
 
 const char kCardName[] = "Brave Browser";
 
-struct UpdateCard {
-  std::string label;
-  int32_t position;
-  bool starred;
-
-  UpdateCard();
-  ~UpdateCard();
-};
-
-using GetCardAddressesCallback =
-    std::function<void(type::Result, std::map<std::string, std::string>)>;
-
 class UpholdCard {
  public:
   explicit UpholdCard(LedgerImpl* ledger);
 
   ~UpholdCard();
 
-  void CreateIfNecessary(CreateCardCallback callback);
+  void CreateBATCardIfNecessary(CreateCardCallback callback) const;
 
  private:
-  void OnCreateIfNecessary(
-      const type::Result result,
+  void GetBATCardId(endpoint::uphold::GetCardsCallback callback) const;
+
+  void OnGetBATCardId(const type::Result result,
+                      const std::string& id,
+                      CreateCardCallback callback) const;
+
+  void CreateBATCard(endpoint::uphold::PostCardsCallback callback) const;
+
+  void OnCreateBATCard(const type::Result result,
+                       const std::string& id,
+                       CreateCardCallback callback) const;
+
+  void UpdateBATCardSettings(
       const std::string& id,
-      CreateCardCallback callback);
+      endpoint::uphold::PatchCardCallback callback) const;
 
-  void Create(CreateCardCallback callback);
-
-  void OnCreate(
-      const type::Result result,
-      const std::string& id,
-      CreateCardCallback callback);
-
-  void OnCreateUpdate(
-      const type::Result result,
-      const std::string& address,
-      CreateCardCallback callback);
-
-  void Update(
-      const UpdateCard& card,
-      ledger::ResultCallback callback);
-
-  void OnUpdate(
-      const type::Result result,
-      ledger::ResultCallback callback);
-
-  std::map<std::string, std::string> ParseGetCardAddressResponse(
-      const std::string& response);
+  void OnUpdateBATCardSettings(const type::Result result,
+                               const std::string& id,
+                               CreateCardCallback callback) const;
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::UpholdServer> uphold_server_;
@@ -79,4 +61,4 @@ class UpholdCard {
 
 }  // namespace uphold
 }  // namespace ledger
-#endif  // BRAVELEDGER_UPHOLD_UPHOLD_CARD_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_UPHOLD_UPHOLD_CARD_H_

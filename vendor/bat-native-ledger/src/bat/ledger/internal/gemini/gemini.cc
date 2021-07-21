@@ -172,8 +172,7 @@ void Gemini::DisconnectWallet(const bool manual) {
                                       wallet->address.substr(0, prefix_length));
   }
 
-  wallet =
-      ::ledger::wallet::ResetWallet(std::move(wallet), constant::kWalletGemini);
+  wallet = ::ledger::wallet::ResetWallet(std::move(wallet));
 
   const bool shutting_down = ledger_->IsShuttingDown();
 

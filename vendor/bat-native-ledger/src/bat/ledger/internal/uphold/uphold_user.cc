@@ -23,8 +23,6 @@ namespace uphold {
 
 User::User() :
   name(""),
-  member_at(""),
-  verified(false),
   status(UserStatus::EMPTY),
   bat_not_allowed(true) {}
 

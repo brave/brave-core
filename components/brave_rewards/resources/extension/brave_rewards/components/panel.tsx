@@ -188,19 +188,26 @@ export class Panel extends React.Component<Props, State> {
     }
   }
 
-  onBackupWallet = (id: string) => {
-    chrome.tabs.create({
-      url: 'chrome://rewards#manage-wallet'
-    })
-    this.actions.deleteNotification(id)
+  onEvent = (learnMore: string) => {
+    return (id: string) => {
+      chrome.tabs.create({
+        url: learnMore
+      })
+      this.actions.deleteNotification(id)
+    }
   }
 
-  onDeviceLimitReached = (id: string) => {
-    chrome.tabs.create({
-      url: 'https://support.brave.com/hc/en-us/articles/360056508071'
-    })
-    this.actions.deleteNotification(id)
-  }
+  onBackupWallet = this.onEvent('chrome://rewards#manage-wallet')
+
+  onDeviceLimitReached = this.onEvent('https://support.brave.com/hc/en-us/articles/360056508071')
+
+  onUpholdBATNotAllowedForUser = this.onEvent('https://support.uphold.com/hc/en-us/articles/360033020351-Brave-BAT-and-US-availability')
+
+  onUpholdBlockedUser = this.onEvent('https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk')
+
+  onUpholdPendingUser = this.onEvent('https://support.uphold.com/hc/en-us/articles/206695986-How-do-I-sign-up-for-Uphold-Web-')
+
+  onUpholdRestrictedUser = this.onEvent('https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk')
 
   onPromotionHide = (promotionId: string) => {
     this.actions.resetPromotion(promotionId)
@@ -347,6 +354,18 @@ export class Panel extends React.Component<Props, State> {
       case 'deviceLimitReached':
         clickEvent = this.onDeviceLimitReached.bind(this, id)
         break
+      case 'upholdBATNotAllowedForUser':
+        clickEvent = this.onUpholdBATNotAllowedForUser.bind(this, id)
+        break
+      case 'upholdBlockedUser':
+        clickEvent = this.onUpholdBlockedUser.bind(this, id)
+        break
+      case 'upholdPendingUser':
+        clickEvent = this.onUpholdPendingUser.bind(this, id)
+        break
+      case 'upholdRestrictedUser':
+        clickEvent = this.onUpholdRestrictedUser.bind(this, id)
+        break
       default:
         clickEvent = undefined
         break
@@ -473,6 +492,22 @@ export class Panel extends React.Component<Props, State> {
           case 'wallet_device_limit_reached':
             type = 'deviceLimitReached'
             text = getMessage('deviceLimitReachedNotification')
+            break
+          case 'uphold_bat_not_allowed_for_user':
+            type = 'upholdBATNotAllowedForUser'
+            text = getMessage('upholdBATNotAllowedForUserNotification')
+            break
+          case 'uphold_blocked_user':
+            type = 'upholdBlockedUser'
+            text = getMessage('upholdBlockedUserNotification')
+            break
+          case 'uphold_pending_user':
+            type = 'upholdPendingUser'
+            text = getMessage('upholdPendingUserNotification')
+            break
+          case 'uphold_restricted_user':
+            type = 'upholdRestrictedUser'
+            text = getMessage('upholdRestrictedUserNotification')
             break
           default:
             break

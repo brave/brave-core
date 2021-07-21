@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -373,17 +373,6 @@ void State::ResetWalletType() {
 
 uint64_t State::GetPromotionLastFetchStamp() {
   return ledger_->ledger_client()->GetUint64State(kPromotionLastFetchStamp);
-}
-
-void State::SetAnonTransferChecked(const bool checked) {
-  ledger_->database()->SaveEventLog(
-      kAnonTransferChecked,
-      std::to_string(checked));
-  ledger_->ledger_client()->SetBooleanState(kAnonTransferChecked, checked);
-}
-
-bool State::GetAnonTransferChecked() {
-  return ledger_->ledger_client()->GetBooleanState(kAnonTransferChecked);
 }
 
 }  // namespace state

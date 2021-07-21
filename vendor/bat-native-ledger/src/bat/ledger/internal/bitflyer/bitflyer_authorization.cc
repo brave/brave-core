@@ -13,6 +13,7 @@
 #include "bat/ledger/internal/common/random_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
+#include "bat/ledger/internal/notifications/notification_keys.h"
 #include "crypto/sha2.h"
 
 using std::placeholders::_1;
@@ -179,8 +180,9 @@ void BitflyerAuthorization::OnClaimWallet(
   auto wallet_ptr = ledger_->bitflyer()->GetWallet();
   if (result == type::Result::ALREADY_EXISTS) {
     BLOG(0, "Wallet linking limit reached");
-    ledger_->ledger_client()->ShowNotification("wallet_device_limit_reached",
-                                               {}, [](type::Result) {});
+    ledger_->ledger_client()->ShowNotification(
+        ledger::notifications::kWalletDeviceLimitReached, {},
+        [](type::Result) {});
 
     std::string event_text = "bitflyer";
     if (wallet_ptr)
