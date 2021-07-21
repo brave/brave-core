@@ -137,16 +137,16 @@ blink::WebSecurityOrigin
 BraveContentSettingsAgentImpl::GetEphemeralStorageOriginSync(
     StorageType storage_type) {
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
-    return blink::WebSecurityOrigin();
+    return {};
 
   if (storage_type != StorageType::kLocalStorage &&
       storage_type != StorageType::kSessionStorage)
-    return blink::WebSecurityOrigin();
+    return {};
 
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
 
   if (!frame || IsFrameWithOpaqueOrigin(frame))
-    return blink::WebSecurityOrigin();
+    return {};
 
   auto frame_origin = url::Origin(frame->GetSecurityOrigin());
   StoragePermissionsKey key(frame_origin, storage_type);
@@ -159,7 +159,7 @@ BraveContentSettingsAgentImpl::GetEphemeralStorageOriginSync(
   if (net::registry_controlled_domains::SameDomainOrHost(
           top_origin, frame_origin,
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
-    return blink::WebSecurityOrigin();
+    return {};
   }
 
   absl::optional<url::Origin> optional_ephemeral_storage_origin;

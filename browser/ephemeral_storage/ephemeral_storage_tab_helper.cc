@@ -50,10 +50,11 @@ std::string StringToSessionStorageId(const std::string& string,
   return hash;
 }
 
-class EphemeralStorageOriginsSourceImpl
-    : public content::TLDEphemeralLifetime::EphemeralStorageOriginsSource {
+// Helper to access additional info required to cleanup ephemeral parts.
+class BraveTLDEphemeralLifetimeDelegate
+    : public content::TLDEphemeralLifetime::Delegate {
  public:
-  EphemeralStorageOriginsSourceImpl(
+  BraveTLDEphemeralLifetimeDelegate(
       scoped_refptr<content_settings::CookieSettings> cookie_settings)
       : cookie_settings_(std::move(cookie_settings)) {}
 
@@ -174,7 +175,7 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
 
   tld_ephemeral_lifetime_ = content::TLDEphemeralLifetime::GetOrCreate(
       browser_context, partition, new_domain,
-      std::make_unique<EphemeralStorageOriginsSourceImpl>(
+      std::make_unique<BraveTLDEphemeralLifetimeDelegate>(
           CookieSettingsFactory::GetForProfile(
               Profile::FromBrowserContext(browser_context))));
 }

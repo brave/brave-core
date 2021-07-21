@@ -29,19 +29,16 @@ TLDEphemeralLifetimeMap& active_tld_storage_areas() {
 
 }  // namespace
 
-TLDEphemeralLifetime::TLDEphemeralLifetime(
-    const TLDEphemeralLifetimeKey& key,
-    StoragePartition* storage_partition,
-    std::unique_ptr<EphemeralStorageOriginsSource>
-        ephemeral_storage_origins_source)
+TLDEphemeralLifetime::TLDEphemeralLifetime(const TLDEphemeralLifetimeKey& key,
+                                           StoragePartition* storage_partition,
+                                           std::unique_ptr<Delegate> delegate)
     : key_(key),
       storage_partition_(storage_partition),
-      ephemeral_storage_origins_source_(
-          std::move(ephemeral_storage_origins_source)) {
+      delegate_(std::move(delegate)) {
   DCHECK(active_tld_storage_areas().find(key_) ==
          active_tld_storage_areas().end());
   DCHECK(storage_partition_);
-  DCHECK(ephemeral_storage_origins_source_);
+  DCHECK(delegate_);
   active_tld_storage_areas().emplace(key_, weak_factory_.GetWeakPtr());
 }
 
@@ -51,8 +48,7 @@ TLDEphemeralLifetime::~TLDEphemeralLifetime() {
   storage_partition_->GetCookieManagerForBrowserProcess()->DeleteCookies(
       std::move(filter), base::NullCallback());
   for (const auto& opaque_origin :
-       ephemeral_storage_origins_source_->TakeEphemeralStorageOpaqueOrigins(
-           key_.second)) {
+       delegate_->TakeEphemeralStorageOpaqueOrigins(key_.second)) {
     storage_partition_->GetDOMStorageContext()->DeleteLocalStorage(
         opaque_origin, base::DoNothing());
   }
@@ -80,15 +76,14 @@ scoped_refptr<TLDEphemeralLifetime> TLDEphemeralLifetime::GetOrCreate(
     BrowserContext* browser_context,
     StoragePartition* storage_partition,
     const std::string& storage_domain,
-    std::unique_ptr<EphemeralStorageOriginsSource>
-        ephemeral_storage_origins_source) {
+    std::unique_ptr<Delegate> delegate) {
   const TLDEphemeralLifetimeKey key(browser_context, storage_domain);
   if (scoped_refptr<TLDEphemeralLifetime> existing = Get(key)) {
     return existing;
   }
 
-  return base::MakeRefCounted<TLDEphemeralLifetime>(
-      key, storage_partition, std::move(ephemeral_storage_origins_source));
+  return base::MakeRefCounted<TLDEphemeralLifetime>(key, storage_partition,
+                                                    std::move(delegate));
 }
 
 // static
