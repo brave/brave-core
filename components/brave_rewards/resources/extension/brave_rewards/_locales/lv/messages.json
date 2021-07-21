@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Vienreizējās dzeramnaudas",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "derīguma termiņš beidzas",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Šis satura veidotājs vēl nav pierakstījies ziedojumu saņemšanai no Brave lietotājiem. Dzeramnauda, ko nosūtīsiet, paliks jūsu makā līdz brīdim, kad attiecīgais veidotājs to apstiprinās.",
+    "message": "Šis satura veidotājs šobrīd nav iestatījis dzeramnaudas saņemšanu no jūsu maka. Jebkāda dzeramnauda, ko nosūtīsiet, paliks jūsu makā gaidošā statusā, un jauns maksājuma mēģinājums tiks automātiski veikts pēc 90 dienām.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

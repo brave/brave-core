@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Tiền tip Một lần",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "hết hạn vào",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Người sáng tạo này vẫn chưa đăng ký để nhận đóng góp từ người dùng Brave. Bất kỳ khoản tiền tip nào mà bạn gửi sẽ vẫn còn trong ví của bạn cho đến khi họ xác minh.",
+    "message": "Người sáng tạo này hiện không được định cấu hình để nhận mẹo từ ví của bạn. Mọi mẹo bạn tạo sẽ vẫn chờ xử lý trong ví của bạn và tự động thử lại trong 90 ngày.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

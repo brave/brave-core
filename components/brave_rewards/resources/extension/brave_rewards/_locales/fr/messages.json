@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Contributions Ponctuelles",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "expire le",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Ce créateur ne s'est pas encore inscrit pour recevoir les contributions des utilisateurs de Brave. Tous les dons que vous envoyez resteront dans votre portefeuille jusqu'à ce qu'ils soient vérifiés.",
+    "message": "Ce créateur n'a pas encore configuré son compte pour recevoir des contributions de votre portefeuille. Toutes les contributions que vous envoyez resteront en attente dans votre portefeuille, et de nouvelles tentatives seront effectuées automatiquement pendant 90 jours.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

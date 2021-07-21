@@ -49,7 +49,6 @@
 <translation id="81774600964978477">I migliori siti sono curati da te</translation>
 <translation id="5439599923922718668">Visitati di frequente</translation>
 <translation id="430556192781857057">I siti migliori vengono suggeriti in base ai siti web che visiti spesso</translation>
-<translation id="8037713009824540257">Aggiungi sito</translation>
 <translation id="1773147648972887693">Mostra visitati di frequente</translation>
 <translation id="4546260624932151782">Mostra preferiti</translation>
 <translation id="3446024864193919737">Mostra i premi Brave</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">Fonti</translation>
 <translation id="5158129253322921540">Disabilita contenuto da <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Sponsorizzato</translation>
+<translation id="4541978218358617681">Annuncio pubblicitario</translation>
 <translation id="1776831331757823105">Orologio</translation>
 <translation id="7791543448312431591">Aggiungi</translation>
 <translation id="7679334366167089823">Guadagna token guardando ad tutela-privacy.</translation>
 <translation id="1531133232292396145">Scambia criptovalute su Binance direttamente dal tuo browser.</translation>
 <translation id="2166494527623220386">Scambia Criptovalute su Gemini direttamente dal tuo browser.</translation>
 <translation id="7191394989411626168">Spegnendo Carte, tutte le carte visibili al momento saranno nascoste. Tuttavia, puoi continuare a ricevere notifiche su nuove carte.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="5655621391922317800">Portafogli di Criptovalute</translation>
 <translation id="8820817407110198400">Segnalibri</translation>
 <translation id="1644574205037202324">Cronologia</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">Scegli un motore di ricerca</translation>
 <translation id="438216590634144114">Scegli il motore di ricerca che vorresti usare come predefinito quando cerchi nel web dalla barra degli indirizzi.</translation>
 <translation id="5804484488647369316">Imposta motore di ricerca predefinito</translation>
-<translation id="4428458837269935199">Per un'esperienza di ricerca con una privacy maggiore, prova DuckDuckGo.</translation>
 <translation id="3829010735958850433">Salta il tour di benvenuto</translation>
 <translation id="1201402288615127009">Successivo</translation>
 <translation id="7954950242989581218">Naviga sano e salvo</translation>
@@ -353,15 +353,15 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="4371618764691059036">È stato impostato il contributo mensile.</translation>
 <translation id="6356822617569064293">Prossima data del contributo:</translation>
 <translation id="3593485149443019592">I token non sono sufficienti, <ph name="LINK_BEGIN"/>ricarica<ph name="LINK_END"/>.</translation>
-<translation id="4622723187300249546">Donazione una tantum</translation>
-<translation id="5268142130226208198">Importo donazione una tantum:</translation>
+<translation id="207268487070188114">Mancia una tantum</translation>
+<translation id="69861679024013299">Importo mancia una tantum:</translation>
 <translation id="3669086939205397942">Aspetta, non puoi ancora lasciare una mancia</translation>
 <translation id="3288812755711687300">Post di <ph name="USER"/></translation>
 <translation id="5851002232791947896">Tweet di <ph name="USER"/></translation>
 <translation id="5531915212947569943">Ci dispiace vederti andare via…</translation>
 <translation id="1420756770787071946">Supporta questo creatore</translation>
 <translation id="3271043362279673449">Grazie per il supporto!</translation>
-<translation id="379596083010863211">La tua donazione una tantum è stata inviata.</translation>
+<translation id="3312470408978098625">La tua mancia una tantum è stata inviata.</translation>
 <translation id="5096821444729034955">per la loro pubblicazione</translation>
 <translation id="2978223787436054634">Tweet sul tuo supporto</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Fai un breve tour<ph name="TOUR_LINK_END"/> o <ph name="LEARN_LINK_BEGIN"/>cerca maggiori informazioni<ph name="LEARN_LINK_END"/>.</translation>
@@ -513,10 +513,10 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">attivo</translation>
 <translation id="1166682575529520472">Mensile</translation>
-<translation id="8370173854533168890">Una volta</translation>
+<translation id="1378730109637014435">Una tantum</translation>
 <translation id="9182287025588539628">Donazioni singole</translation>
 <translation id="6381574025952123568">Saldo Iniziale</translation>
-<translation id="532275381857891532">Cronologia degli annunci di 7 giorni</translation>
+<translation id="156591572855748524">Cronologia degli annunci di 30 giorni</translation>
 <translation id="4923459931733593730">Pagamento</translation>
 <translation id="6104680658798556671">Pagamento non effettuato.</translation>
 <translation id="3138528956349114724">I siti fissati sono ora</translation>
@@ -623,7 +623,7 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="3780605330121608425">Il tuo portafoglio</translation>
 <translation id="6727483290601442544">Visualizza dettagli</translation>
 <translation id="1988679729106502285">NOTA:</translation>
-<translation id="5815103311506128988">Questo creatore non si è ancora iscritto per ricevere i contributi dagli utenti Brave. Il tuo browser continuerà a provare a contribuire fino a quando non si sarà verificato o fino a quando non saranno passati 90 giorni.</translation>
+<translation id="7979350009208995417">Questo creatore non si è ancora configurato per poter ricevere mance dal tuo portafoglio. Ogni mancia che invierai rimarrà in sospeso nel tuo portafoglio e l’invio verrà ritentato in automatico per 90 giorni.</translation>
 <translation id="7461596279975181413">Questo creatore verificato di Brave non ha ancora configurato il suo account per ricevere contributi da utenti di Brave. Il tuo browser continuerà a cercare di contribuire fino a quando non verrà verificato, o fino a quando non saranno trascorsi 90 giorni.</translation>
 <translation id="4292832015778676417">guadagnati dagli annunci pubblicitari</translation>
 <translation id="3197752845651180812">Contributi in attesa</translation>
@@ -828,6 +828,7 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="3741998951694470470">Non siamo riusciti a recuperare i dati da importare</translation>
 <translation id="7900950536120202771">Errore interno del nodo IPFS</translation>
 <translation id="1036635552229153800">I dati sono stati caricati ma non sono stati spostati nella directory brave-import. Puoi spostarli manualmente andando alla pagina di impostazione delle importazioni.</translation>
+<translation id="3793279629218362523">Gestisci ID Peer e chiavi IPNS</translation>
 <translation id="572392919096807438">Memorizza la mia decisione</translation>
 <translation id="7978789143098237970">finché non chiudo questo sito</translation>
 <translation id="3523195733429162409">per 24 ore</translation>

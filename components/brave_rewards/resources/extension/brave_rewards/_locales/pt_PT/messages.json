@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Contribuições Únicas",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "expira em",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Este criador ainda não efetuou o registo para receber contribuições dos utilizadores do Brave. As gratificações que enviar irão permanecer na sua carteira até que seja verificado.",
+    "message": "Este criador não está atualmente configurado para receber gratificações da sua carteira. As gratificações que enviar irão permanecer na sua carteira e repetir-se-ão automaticamente por 90 dias.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

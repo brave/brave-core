@@ -49,7 +49,6 @@
 <translation id="81774600964978477">Os sites principais são selecionados por si</translation>
 <translation id="5439599923922718668">Visitado frequentemente</translation>
 <translation id="430556192781857057">Os sites principais são sugeridos com base nos sites que visita mais frequentemente</translation>
-<translation id="8037713009824540257">Adicionar Site</translation>
 <translation id="1773147648972887693">Mostrar os visitados frequentemente</translation>
 <translation id="4546260624932151782">Mostrar favoritos</translation>
 <translation id="3446024864193919737">Mostrar Recompensas Brave</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">Fontes</translation>
 <translation id="5158129253322921540">Desativar conteúdo de <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Promovido</translation>
+<translation id="4541978218358617681">Anúncio</translation>
 <translation id="1776831331757823105">Relógio</translation>
 <translation id="7791543448312431591">Adicionar</translation>
 <translation id="7679334366167089823">Ganhe tokens por assistir a anúncios que respeitam a sua privacidade.</translation>
 <translation id="1531133232292396145">Negoceie Criptomedas em Binance diretamente no seu browser.</translation>
 <translation id="2166494527623220386">Negoceie Criptomedas em Binance diretamente no seu browser.</translation>
 <translation id="7191394989411626168">Ao desativar Cartões, todos os cartões atualmente visíveis ficarão ocultos.  No entanto, pode pretender ser notificado sobre novos cartões.</translation>
+<translation id="8112367589167674370">Conversa Brave</translation>
 <translation id="5655621391922317800">Carteiras de criptomoedas</translation>
 <translation id="8820817407110198400">Barra de marcadores</translation>
 <translation id="1644574205037202324">Histórico</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">Selecionar um motor de busca</translation>
 <translation id="438216590634144114">Escolha o motor de busca que gostaria de utilizar por defeito ao pesquisar na Web desde a barra de endereços.</translation>
 <translation id="5804484488647369316">Definir motor de busca padrão</translation>
-<translation id="4428458837269935199">Para uma pesquisa mais privada, experimente o DuckDuckGo.</translation>
 <translation id="3829010735958850433">Ignorar a apresentação das boas-vindas</translation>
 <translation id="1201402288615127009">Seguinte</translation>
 <translation id="7954950242989581218">Navegue em segurança</translation>
@@ -351,15 +351,15 @@
 <translation id="4371618764691059036">A contribuição mensal foi enviada.</translation>
 <translation id="6356822617569064293">Data da próxima contribuição:</translation>
 <translation id="3593485149443019592">Sem tokens suficientes. <ph name="LINK_BEGIN"/>Adicione fundos<ph name="LINK_END"/>.</translation>
-<translation id="4622723187300249546">Contribuição esporádica</translation>
-<translation id="5268142130226208198">Valor da contribuição esporádica:</translation>
+<translation id="207268487070188114">Gratificação esporádica</translation>
+<translation id="69861679024013299">Valor da gratificação esporádica:</translation>
 <translation id="3669086939205397942">Espere, ainda não lhe é possível dar gorjeta</translation>
 <translation id="3288812755711687300">Publicação de <ph name="USER"/></translation>
 <translation id="5851002232791947896">Tweet de <ph name="USER"/></translation>
 <translation id="5531915212947569943">Lamentamos vê-lo partir…</translation>
 <translation id="1420756770787071946">Contribuir para este criador</translation>
 <translation id="3271043362279673449">Agradecemos a sua contribuição!</translation>
-<translation id="379596083010863211">A sua contribuição esporádica foi enviada.</translation>
+<translation id="3312470408978098625">A sua gratificação esporádica foi enviada.</translation>
 <translation id="5096821444729034955">para publicação</translation>
 <translation id="2978223787436054634">Faça um tweet sobre o seu donativo</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Faça uma visita guiada<ph name="TOUR_LINK_END"/> ou <ph name="LEARN_LINK_BEGIN"/>saiba mais<ph name="LEARN_LINK_END"/>.</translation>
@@ -511,10 +511,10 @@
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">ligar</translation>
 <translation id="1166682575529520472">Mensalmente</translation>
-<translation id="8370173854533168890">Uma vez</translation>
+<translation id="1378730109637014435">Esporádica</translation>
 <translation id="9182287025588539628">Gratificar apenas uma vez</translation>
 <translation id="6381574025952123568">Balanço Inicial</translation>
-<translation id="532275381857891532">Histórico de anúncios de 7 dias</translation>
+<translation id="156591572855748524">Histórico de anúncios de 30 dias</translation>
 <translation id="4923459931733593730">Pagamento</translation>
 <translation id="6104680658798556671">Pagamento não feito</translation>
 <translation id="3138528956349114724">Os sites afixados são agora</translation>
@@ -618,7 +618,7 @@
 <translation id="3780605330121608425">A sua carteira</translation>
 <translation id="6727483290601442544">Ver Detalhes</translation>
 <translation id="1988679729106502285">NOTA:</translation>
-<translation id="5815103311506128988">Este criador ainda não se registou para poder receber contribuições de utilizadores Brave. O seu navegador continuará a tentar contribuir até que seja verificado ou até que tenham decorrido 90 dias.</translation>
+<translation id="7979350009208995417">Este criador não está atualmente configurado para receber gratificações da sua carteira. As gratificações que enviar irão permanecer na sua carteira e repetir-se-ão automaticamente por 90 dias.</translation>
 <translation id="7461596279975181413">Este Criador Verificado do Brave ainda não configurou a sua conta para receber contribuições de utilizadores do Brave. O seu navegador continuará a tentar contribuir até que eles sejam verificados ou até que passem 90 dias.</translation>
 <translation id="4292832015778676417">ganhos de anúncios</translation>
 <translation id="3197752845651180812">Contribuições pendentes</translation>
@@ -823,6 +823,7 @@
 <translation id="3741998951694470470">Erro ao obter dados para importar</translation>
 <translation id="7900950536120202771">Erro interno do nó do IPFS</translation>
 <translation id="1036635552229153800">Os dados foram carregados com sucesso, mas não foram movidos para o diretório brave-import. Pode fazê-lo manualmente na página de definições de importação.</translation>
+<translation id="3793279629218362523">Gerir ID do Computador Remoto e chaves IPNS</translation>
 <translation id="572392919096807438">Memorizar a minha decisão</translation>
 <translation id="7978789143098237970">até fechar este site</translation>
 <translation id="3523195733429162409">durante 24 horas</translation>

@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Egyszeri adományok",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "lejárat dátuma",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Ez az alkotó még nem regisztrált, hogy hozzájárulásokat fogadjon a Brave felhasználóktól. Minden borravaló, amit küldesz, a pénztárcádban marad, amíg nem igazolnak. ",
+    "message": "Ez az alkotó még nem regisztrált, hogy hozzájárulásokat fogadjon a pénztárcádból. Minden borravaló, amit küldesz, a pénztárcádban marad függő állapotban, és annak feldolgozása automatikusan meg lesz kísérelve 90 napig.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

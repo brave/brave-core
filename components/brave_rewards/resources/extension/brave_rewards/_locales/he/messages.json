@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "טיפ חד-פעמי",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "פג תוקף ב-",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "יוצר זה עדיין לא נרשם לקבלת תרומות ממשתמשי Brave. כל הטיפים שתשלחו יישארו בארנק שלכם עד אשר יאומת.",
+    "message": "יוצר זה עדיין לא הוגדר לקבלת טיפים מהארנק שלך. כל טיפ שתיתן יישאר בהמתנה בארנק שלך ויתבצע ניסיון חוזר אוטומטית במשך 90 יום.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

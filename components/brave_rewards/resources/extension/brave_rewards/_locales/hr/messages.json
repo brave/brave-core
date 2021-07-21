@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Jednokratne napojnice",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "istječe",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Ovaj stvaratelj nije se još prijavio za primanje doprinosa korisnika Brave. Bilo kakve napojnice koje pošaljete ostaju u vašem novčaniku dok se ne provjere.",
+    "message": "Ovaj autor trenutačno ne može primati napojnice iz vašeg novčanika. Sve napojnice koje mu pošaljete ostat će na čekanju u vašem novčaniku i automatski će se pokušavati poslati 90 dana.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

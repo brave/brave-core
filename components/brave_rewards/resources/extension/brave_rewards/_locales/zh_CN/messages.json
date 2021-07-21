@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "一次赏金",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "过期日期",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "此创建者尚未注册接收来自 Brave 用户的捐款。您发送的任何小费都将保留在您的钱包中，直到通过验证。",
+    "message": "此创建者当前尚未配置为接收来自您的钱包的赏金。您发送的任何赏金都将保留在您的钱包中，并每 90 天自动重试一次。",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

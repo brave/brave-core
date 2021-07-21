@@ -1,10 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hu">
-<translation id="5288293905681750318">Követők és reklámok letiltva</translation>
+<translation id="5288293905681750318">Blokkolt követések és reklámok</translation>
 <translation id="2313532038420432247">HTTPS frissítések</translation>
 <translation id="788493840831967104">Megtakarított idő</translation>
-<translation id="2318592590318590295">Sávszélesség elmentve</translation>
+<translation id="2318592590318590295">Megtakarított sávszélesség</translation>
 <translation id="5206618227023752085">Felső oldal eltávolítva.</translation>
 <translation id="2079545284768500474">Visszavonás</translation>
 <translation id="6040143037577758943">Bezárás</translation>
@@ -49,7 +49,6 @@
 <translation id="81774600964978477">A népszerű oldalakat te állítod össze</translation>
 <translation id="5439599923922718668">Gyakran látogatott</translation>
 <translation id="430556192781857057">A legnépszerűbb oldalakat az általad gyakran látogatott oldalak alapján ajánljuk.</translation>
-<translation id="8037713009824540257">Webhely hozzáadása</translation>
 <translation id="1773147648972887693">Gyakran látogatottak mutatása</translation>
 <translation id="4546260624932151782">Kedvencek mutatása</translation>
 <translation id="3446024864193919737">Brave Rewards mutatása</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">Források</translation>
 <translation id="5158129253322921540">A <ph name="PUBLISHER_NAME"/> tartalmainak letiltása</translation>
 <translation id="3189348785087463371">Promotált</translation>
+<translation id="4541978218358617681">Hirdetés</translation>
 <translation id="1776831331757823105">Óra</translation>
 <translation id="7791543448312431591">Hozzáadás</translation>
 <translation id="7679334366167089823">Szerezz tokeneket a magánéletet tiszteletben tartó reklámok nézésével.</translation>
 <translation id="1531133232292396145">Kereskedj kriptóval a binance-en közvetlenül böngésződben.</translation>
 <translation id="2166494527623220386">Kereskedj kriptóval a Geminin közvetlenül böngésződben.</translation>
 <translation id="7191394989411626168">A Kártyák kikapcsolásával minden jelenleg látható kártya el lesz rejtve. Az új kártyákról továbbra is kaphat értesítéseket.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="5655621391922317800">Kriptopénztárcák</translation>
 <translation id="8820817407110198400">Könyvjelzők</translation>
 <translation id="1644574205037202324">Előzmények</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">Válassz egy keresőmotort</translation>
 <translation id="438216590634144114">Válaszd ki a címsorból végzett webes keresésekhez használandó alapértelmezett keresőmotort.</translation>
 <translation id="5804484488647369316">Állíts be alapértelmezett keresőmotort</translation>
-<translation id="4428458837269935199">Ha még privátabb keresést szeretnél, próbáld ki a DuckDuckGo-t</translation>
 <translation id="3829010735958850433">Üdvözlő bemutató átugrása</translation>
 <translation id="1201402288615127009">Következő</translation>
 <translation id="7954950242989581218">Böngéssz biztonságban</translation>
@@ -205,8 +205,8 @@
 <translation id="6248554379744796526">Nem hitelesített webhelyek megjelenítése a listában</translation>
 <translation id="5875669387851353511">Videókhoz történő hozzájárulás engedélyezése</translation>
 <translation id="8933202740471878108">Egy látogatás</translation>
-<translation id="354797634123275103">Öt látogatás</translation>
-<translation id="3583700907990488238">Tíz látogatás</translation>
+<translation id="354797634123275103">5 látogatás</translation>
+<translation id="3583700907990488238">10 látogatás</translation>
 <translation id="1199044745726588100">Öt másodperc</translation>
 <translation id="4045581694057451126">Nyolc másodperc</translation>
 <translation id="8610523985422563960">Egy perc</translation>
@@ -352,15 +352,15 @@
 <translation id="4371618764691059036">A havi hozzájárulás be lett állítva.</translation>
 <translation id="6356822617569064293">Következő hozzájárulás dátuma:</translation>
 <translation id="3593485149443019592">Nincs elég token. Kérjük, <ph name="LINK_BEGIN"/>adjon hozzá további összeget<ph name="LINK_END"/>.</translation>
-<translation id="4622723187300249546">Egyszeri borravaló</translation>
-<translation id="5268142130226208198">Egyszeri borravaló mértéke:</translation>
+<translation id="207268487070188114">Egyszeri borravaló</translation>
+<translation id="69861679024013299">Egyszeri borravaló mértéke:</translation>
 <translation id="3669086939205397942">Várjon, még nem adhat borravalót</translation>
 <translation id="3288812755711687300"><ph name="USER"/> bejegyzése</translation>
 <translation id="5851002232791947896"><ph name="USER"/> tweetje</translation>
 <translation id="5531915212947569943">Sajnáljuk, hogy távozol…</translation>
 <translation id="1420756770787071946">Támogasd ezt az alkotót</translation>
 <translation id="3271043362279673449">Köszönjük a támogatás!</translation>
-<translation id="379596083010863211">Az egyszeri borravalód el lett küldve.</translation>
+<translation id="3312470408978098625">Az egyszeri borravalód el lett küldve.</translation>
 <translation id="5096821444729034955">bejegyzésükhöz</translation>
 <translation id="2978223787436054634">Tweetelj támogatásodról</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Tekintsen meg egy rövid bemutatót,<ph name="TOUR_LINK_END"/>vagy <ph name="LEARN_LINK_BEGIN"/>tudjon meg többet<ph name="LEARN_LINK_END"/> a részletekről.</translation>
@@ -512,10 +512,10 @@
 <translation id="4921250468871504777">rendben</translation>
 <translation id="7866482334467279021">bekapcsolva</translation>
 <translation id="1166682575529520472">Havonta</translation>
-<translation id="8370173854533168890">Egy alkalom</translation>
+<translation id="1378730109637014435">Egyszeri</translation>
 <translation id="9182287025588539628">Egyszeri adomány</translation>
 <translation id="6381574025952123568">Nyitóegyenleg</translation>
-<translation id="532275381857891532">Hirdetési előzmények az elmúlt 7 napból</translation>
+<translation id="156591572855748524">Hirdetési előzmények az elmúlt 30 napból</translation>
 <translation id="4923459931733593730">Fizetés</translation>
 <translation id="6104680658798556671">A fizetést nem végezték el.</translation>
 <translation id="3138528956349114724">Jelenlegi rögzített oldalak</translation>
@@ -622,7 +622,7 @@
 <translation id="3780605330121608425">Az ön tárcája</translation>
 <translation id="6727483290601442544">Részletek megtekintése</translation>
 <translation id="1988679729106502285">MEGJEGYZÉS:</translation>
-<translation id="5815103311506128988">Ez az alkotó még nem regisztrált, hogy hozzájárulásokat fogadjon a Brave felhasználóktól. Böngésződ próbálkozni fog a folyósítással, amíg igazolnak, vagy eltelik 90 nap.</translation>
+<translation id="7979350009208995417">Ez az alkotó még nem regisztrált, hogy hozzájárulásokat fogadjon a pénztárcádból. Minden borravaló, amit küldesz, a pénztárcádban marad függő állapotban, és annak feldolgozása automatikusan meg lesz kísérelve 90 napig.</translation>
 <translation id="7461596279975181413">Ez a Brave Igazolt Alkotó még nem állította be fiókjában, hogy a Brave Felhasználók hozzájárulásait fogadhassa. Böngésződ addig próbálkozik a hozzájárulás folyósításával, amíg nem igazolják magukat, de legfeljebb 90 napig.</translation>
 <translation id="4292832015778676417">reklámokból begyűjtve:</translation>
 <translation id="3197752845651180812">Függőben lévő hozzájárulások</translation>
@@ -827,6 +827,7 @@
 <translation id="3741998951694470470">Nem sikerült lehívni az adatokat az importáláshoz</translation>
 <translation id="7900950536120202771">IPFS-csomópont belső hiba</translation>
 <translation id="1036635552229153800">Az adatok feltöltése sikeres volt, de nem lettek elmentve a brave-import könyvtárba. Ezt megteheti manuálisan az importálási beállítások oldalon.</translation>
+<translation id="3793279629218362523">Társazonosító és IPNS-kulcsok kezelése</translation>
 <translation id="572392919096807438">Emlékezzen a döntésemre</translation>
 <translation id="7978789143098237970">amíg bezárom ezt az oldalt</translation>
 <translation id="3523195733429162409">24 órára</translation>
