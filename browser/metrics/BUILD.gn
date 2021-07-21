@@ -10,19 +10,23 @@ import("//testing/test.gni")
 
 source_set("brave_metrics_unit_tests") {
   testonly = true
-  if (is_linux) {
-    sources =
-        [ "//brave/browser/metrics/metrics_reporting_util_unittest_linux.cc" ]
 
-    deps = [
-      "//base/test:test_support",
-      "//brave/browser",
-      "//chrome/browser:browser",
+  sources = [ "metrics_reporting_util_unittest.cc" ]
+  deps = [
+    "//base/test:test_support",
+    "//brave/browser",
+    "//chrome/browser",
+    "//chrome/test:test_support",
+    "//content/test:test_support",
+  ]
+
+  if (is_linux) {
+    sources += [ "metrics_reporting_util_unittest_linux.cc" ]
+    configs += [ "//brave/build/linux:linux_channel_names" ]
+
+    deps += [
       "//chrome/common:channel_info",
       "//components/version_info:channel",
-      "//content/test:test_support",
     ]
-
-    configs += [ "//brave/build/linux:linux_channel_names" ]
   }
 }

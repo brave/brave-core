@@ -4,10 +4,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/startup/default_brave_browser_prompt.h"
+#include "chrome/browser/ui/session_crashed_bubble.h"
 #include "chrome/browser/ui/startup/google_api_keys_infobar_delegate.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/confirm_infobar_delegate.h"
 
+#define ShowIfNotOffTheRecordProfile ShowIfNotOffTheRecordProfileBrave
 #define GoogleApiKeysInfoBarDelegate BraveGoogleKeysInfoBarDelegate
 
 class BraveGoogleKeysInfoBarDelegate {
@@ -27,3 +29,4 @@ class BraveGoogleKeysInfoBarDelegate {
 #undef BRAVE_STARTUPBROWSERCREATORIMPL_DETERMINEURLSANDLAUNCH
 #undef GoogleApiKeysInfoBarDelegate
 #undef ShowDefaultBrowserPrompt
+#undef ShowIfNotOffTheRecordProfile
