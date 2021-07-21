@@ -505,7 +505,7 @@ storiesOf('Rewards/Modal', module)
         rows={rows}
         adsPerHour={adsPerHour}
         hasSavedEntries={true}
-        totalDays={7}
+        totalDays={30}
       />
     )
   })
