@@ -484,7 +484,7 @@ class AdsBox extends React.Component<Props, State> {
               adsPerHour={adsPerHour}
               rows={rows}
               hasSavedEntries={this.hasSavedEntries(rows)}
-              totalDays={7}
+              totalDays={30}
           />
           : null
         }
