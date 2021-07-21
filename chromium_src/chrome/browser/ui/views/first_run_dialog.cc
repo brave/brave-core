@@ -3,18 +3,128 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "chrome/browser/ui/views/first_run_dialog.h"
+
+#include <string>
+
+#include "base/bind.h"
+#include "base/run_loop.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "build/build_config.h"
+#include "chrome/browser/first_run/first_run.h"
+#include "chrome/browser/first_run/first_run_dialog.h"
+#include "chrome/browser/metrics/metrics_reporting_state.h"
+#include "chrome/browser/platform_util.h"
+#include "chrome/browser/shell_integration.h"
+#include "chrome/browser/ui/browser_dialogs.h"
+#include "chrome/browser/ui/ui_features.h"
+#include "chrome/browser/ui/views/chrome_layout_provider.h"
+#include "chrome/common/url_constants.h"
 #include "chrome/grit/chromium_strings.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/crash/core/app/breakpad_linux.h"
+#include "components/crash/core/app/crashpad.h"
+#include "components/strings/grit/components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/views/border.h"
+#include "ui/views/controls/button/checkbox.h"
+#include "ui/views/controls/link.h"
+#include "ui/views/layout/box_layout.h"
+#include "ui/views/layout/grid_layout.h"
+#include "ui/views/widget/widget.h"
+#include "ui/views/window/dialog_delegate.h"
 
-// Replaced string here instead of by running 'npm run chromium_rebase_l10n'
-// because same string is used from other IDS_XXX..
-#undef IDS_FR_ENABLE_LOGGING
-#undef IDS_FR_CUSTOMIZE_DEFAULT_BROWSER
-#define IDS_FR_ENABLE_LOGGING IDS_FR_ENABLE_LOGGING_BRAVE
-#define IDS_FR_CUSTOMIZE_DEFAULT_BROWSER IDS_FR_CUSTOMIZE_DEFAULT_BROWSER_BRAVE
+namespace first_run {
 
-#include "../../../../../../chrome/browser/ui/views/first_run_dialog.cc"
+void ShowFirstRunDialog(Profile* profile) {
+#if defined(OS_MAC)
+  if (base::FeatureList::IsEnabled(features::kViewsFirstRunDialog))
+    ShowFirstRunDialogViews(profile);
+  else
+    ShowFirstRunDialogCocoa(profile);
+#else
+  ShowFirstRunDialogViews(profile);
+#endif
+}
 
-#undef IDS_FR_ENABLE_LOGGING
-#undef IDS_FR_CUSTOMIZE_DEFAULT_BROWSER
+void ShowFirstRunDialogViews(Profile* profile) {
+  FirstRunDialog::Show(profile);
+}
+
+}  // namespace first_run
+
+// static
+void FirstRunDialog::Show(Profile* profile) {
+  FirstRunDialog* dialog = new FirstRunDialog(profile);
+  views::DialogDelegate::CreateDialogWidget(dialog, NULL, NULL)->Show();
+
+  base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
+  dialog->quit_runloop_ = run_loop.QuitClosure();
+  run_loop.Run();
+}
+
+FirstRunDialog::FirstRunDialog(Profile* profile) {
+  ALLOW_UNUSED_LOCAL(report_crashes_);
+
+  SetTitle(l10n_util::GetStringUTF16(IDS_FIRST_RUN_DIALOG_WINDOW_TITLE));
+  SetButtons(ui::DIALOG_BUTTON_OK);
+  SetExtraView(
+      std::make_unique<views::Link>(l10n_util::GetStringUTF16(IDS_LEARN_MORE)))
+      ->SetCallback(base::BindRepeating(&platform_util::OpenExternal,
+                                        base::Unretained(profile),
+                                        GURL(chrome::kLearnMoreReportingURL)));
+
+  constexpr int kChildSpacing = 16;
+  constexpr int kPadding = 24;
+
+  SetLayoutManager(std::make_unique<views::BoxLayout>(
+      views::BoxLayout::Orientation::kVertical,
+      gfx::Insets(kPadding, kPadding, kPadding, kPadding), kChildSpacing));
+
+  constexpr int kFontSize = 15;
+  int size_diff = kFontSize - views::Label::GetDefaultFontList().GetFontSize();
+  views::Label::CustomFont contents_font = {
+      views::Label::GetDefaultFontList()
+          .DeriveWithSizeDelta(size_diff)
+          .DeriveWithWeight(gfx::Font::Weight::NORMAL)};
+  auto* contents_label = AddChildView(std::make_unique<views::Label>(
+      l10n_util::GetStringUTF16(
+          IDS_FIRSTRUN_DLG_COMPLETE_INSTALLATION_LABEL_BRAVE),
+      contents_font));
+  contents_label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
+  contents_label->SetMultiLine(true);
+  constexpr int kMaxWidth = 450;
+  contents_label->SetMaximumWidth(kMaxWidth);
+
+  make_default_ = AddChildView(std::make_unique<views::Checkbox>(
+      l10n_util::GetStringUTF16(IDS_FR_CUSTOMIZE_DEFAULT_BROWSER_BRAVE)));
+  make_default_->SetChecked(true);
+
+  chrome::RecordDialogCreation(chrome::DialogIdentifier::FIRST_RUN_DIALOG);
+}
+
+FirstRunDialog::~FirstRunDialog() = default;
+
+void FirstRunDialog::Done() {
+  CHECK(!quit_runloop_.is_null());
+  quit_runloop_.Run();
+}
+
+bool FirstRunDialog::Accept() {
+  GetWidget()->Hide();
+
+  if (make_default_->GetChecked())
+    shell_integration::SetAsDefaultBrowser();
+
+  Done();
+  return true;
+}
+
+void FirstRunDialog::WindowClosing() {
+  first_run::SetShouldShowWelcomePage();
+  Done();
+}
+
+BEGIN_METADATA(FirstRunDialog, views::DialogDelegateView)
+END_METADATA

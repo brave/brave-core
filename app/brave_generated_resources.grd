@@ -1312,17 +1312,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Reset Brave Rewards data...
       </message>
       <!--First-run dialog messages -->
-      <message name="IDS_FR_ENABLE_LOGGING_BRAVE" desc="Label for checkbox to ask whether to send crash reports to brave">
-          Help improve Brave by automatically sending crash reports
-      </message>
       <message name="IDS_FR_CUSTOMIZE_DEFAULT_BROWSER_BRAVE" desc="Default browser checkbox label">
-        Set Brave as your default browser
+        Set Brave as default browser
       </message>
-      <if expr="is_macosx">
-        <message name="IDS_FIRSTRUN_DLG_MAC_OPTIONS_SEND_USAGE_STATS_LABEL_BRAVE" desc="Label for checkbox to ask whether to send crash reports to brave">
-          Help improve <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph> by automatically sending crash reports
-        </message>
-      </if>
+      <message name="IDS_FIRSTRUN_DLG_COMPLETE_INSTALLATION_LABEL_BRAVE" desc="Label at top of Dialog noting what's going to happen">
+        To ensure the best privacy online, consider setting Brave as the default browser on your computer. With Brave as default, any web link you click will open with Brave's privacy protections.
+      </message>
     </messages>
   </release>
 </grit>
