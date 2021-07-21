@@ -114,6 +114,7 @@ preprocess_if_expr("preprocess") {
     "brave_overrides/site_settings_page.js",
     "brave_overrides/sync_account_control.js",
     "brave_overrides/sync_controls.js",
+    "brave_routes.js",
     "brave_sync_page/brave_sync_browser_proxy.js",
   ]
 }
