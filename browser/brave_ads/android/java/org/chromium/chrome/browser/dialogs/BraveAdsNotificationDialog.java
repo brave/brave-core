@@ -70,6 +70,7 @@ public class BraveAdsNotificationDialog {
                     updateWindowPosition((int) event.getRawX() + mXDown);
                     break;
                 case MotionEvent.ACTION_UP:
+                    v.performClick();
                     if (mXDown != 0) {
                         deltaXDp = pxToDp(event.getRawX() + mXDown - mWindowInitialPos,
                                 mContext.getResources().getDisplayMetrics());

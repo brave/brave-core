@@ -48,13 +48,13 @@ import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.ListPopupWindow;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.viewpager.widget.ViewPager;
 
@@ -152,7 +152,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     private Button btAddFunds;
     private Button btRewardsSettings;
     private Button btSendATip;
-    private Switch btAutoContribute;
+    private SwitchCompat btAutoContribute;
     private TextView tvLearnMore;
     private TextView tvYourWalletTitle;
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
@@ -293,7 +293,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         tvPublisherNotVerifiedSummary = (TextView)root.findViewById(R.id.publisher_not_verified_summary);
         tvYourWalletTitle = (TextView)root.findViewById(R.id.your_wallet_title);
         btRewardsSettings = (Button)root.findViewById(R.id.br_rewards_settings);
-        btAutoContribute = (Switch)root.findViewById(R.id.brave_ui_auto_contribute);
+        btAutoContribute = (SwitchCompat) root.findViewById(R.id.brave_ui_auto_contribute);
         btRewardsSummary = (Button)root.findViewById(R.id.rewards_summary);
         btSendATip = (Button)root.findViewById(R.id.send_a_tip);
         tvPublisherNotVerified = (TextView)root.findViewById(R.id.publisher_not_verified);

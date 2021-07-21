@@ -80,7 +80,7 @@
             android:layout_gravity="top"
             android:contentDescription="@string/accessibility_toolbar_btn_tabswitcher_toggle_default" />
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/incognito_switch"
             android:layout_gravity="center"
             android:layout_height="wrap_content"

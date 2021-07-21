@@ -68,7 +68,7 @@
             android:textSize="14sp"
             android:layout_alignBaseline="@+id/brave_ui_auto_contribute"/>
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/brave_ui_auto_contribute"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

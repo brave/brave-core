@@ -157,9 +157,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_SHIELDS_BLOCKS_SCRIPTS_SUMMARY" desc="Switch for Block Scripts summary.">
         Blocks Javascript (may break sites)
       </message>
-      <message name="IDS_BRAVE_SHIELDS_ADS_AND_TRACKERS" desc="Ads and Trackers blocked.">
-        Block cross-site trackers
-      </message>
       <message name="IDS_BRAVE_SHIELDS_SOCIAL_BLOCKING_TITLE" desc="Title for social media blocking.">
         Social Media Blocking
       </message>
@@ -210,6 +207,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_UNSTOPPABLE_DOMAINS_TITLE" desc="Title for Unstoppable Domains settings.">
         Unstoppable Domains
+      </message>
+      <message name="IDS_ETH_NAME" desc="Name of Ethereum.">
+        Ethereum
+      </message>
+      <message name="IDS_ETH_PRICE" desc="Text for of Ethereum price.">
+        Ethereum Price (ETH)
       </message>
       <message name="IDS_ENS_TITLE" desc="Title for ENS settings.">
         Ethereum Name Service

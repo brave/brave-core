@@ -86,6 +86,7 @@
 
                                     <!-- The 'publisher_favicon_update' substitutes 'publisher_favicon' when not available-->
                                     <ProgressBar
+                                        tools:ignore="TooDeepLayout"
                                         android:id="@+id/publisher_favicon_update"
                                         android:indeterminateDrawable="@drawable/progress_indeterminate"
                                         android:layout_width="60dp"

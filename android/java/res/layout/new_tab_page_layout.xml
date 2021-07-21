@@ -5,6 +5,7 @@
 <org.chromium.chrome.browser.ntp.BraveNewTabPageLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ntp_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -118,6 +119,7 @@
                 android:id="@+id/ntp_middle_spacer"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                tools:ignore="NestedWeights"
                 android:layout_weight="0"
                 android:visibility="invisible" />
 
@@ -185,7 +187,8 @@
         android:id="@+id/super_referral_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/qrcode_light"
+        app:srcCompat="@drawable/ic_qr_code"
+        android:tint="#000000"
         android:layout_gravity="bottom|center"
         android:layout_marginBottom="16dp"
         android:contentDescription="@null"

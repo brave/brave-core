@@ -54,10 +54,10 @@ import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.widget.TextViewCompat;
 
@@ -116,9 +116,9 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         Collections.synchronizedMap(new HashMap<Integer, BlockersInfo>());
 
     private OnCheckedChangeListener mBraveShieldsAdsTrackingChangeListener;
-    private Switch mBraveShieldsHTTPSEverywhereSwitch;
+    private SwitchCompat mBraveShieldsHTTPSEverywhereSwitch;
     private OnCheckedChangeListener mBraveShieldsHTTPSEverywhereChangeListener;
-    private Switch mBraveShieldsBlockingScriptsSwitch;
+    private SwitchCompat mBraveShieldsBlockingScriptsSwitch;
     private OnCheckedChangeListener mBraveShieldsBlockingScriptsChangeListener;
 
     private View mPopupView;
@@ -408,7 +408,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         TextView mSiteText = mMainLayout.findViewById(R.id.site_text);
         mSiteText.setText(mTitle.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)", ""));
 
-        Switch mShieldMainSwitch = mMainLayout.findViewById(R.id.site_switch);
+        SwitchCompat mShieldMainSwitch = mMainLayout.findViewById(R.id.site_switch);
 
         ImageView helpImage = (ImageView) mMainLayout.findViewById(R.id.help);
         ImageView shareImage = (ImageView) mMainLayout.findViewById(R.id.share);
@@ -731,7 +731,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         setUpMainLayout();
     }
 
-    private void setupHTTPSEverywhereSwitchClick(Switch braveShieldsHTTPSEverywhereSwitch) {
+    private void setupHTTPSEverywhereSwitchClick(SwitchCompat braveShieldsHTTPSEverywhereSwitch) {
         if (null == braveShieldsHTTPSEverywhereSwitch) {
             return;
         }
@@ -753,7 +753,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         braveShieldsHTTPSEverywhereSwitch.setOnCheckedChangeListener(mBraveShieldsHTTPSEverywhereChangeListener);
     }
 
-    private void setupHTTPSEverywhereSwitch(Switch braveShieldsHTTPSEverywhereSwitch, boolean fromTopSwitch) {
+    private void setupHTTPSEverywhereSwitch(
+            SwitchCompat braveShieldsHTTPSEverywhereSwitch, boolean fromTopSwitch) {
         if (null == braveShieldsHTTPSEverywhereSwitch) {
             return;
         }
@@ -779,7 +780,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
     }
 
-    private void setupBlockingScriptsSwitchClick(Switch braveShieldsBlockingScriptsSwitch) {
+    private void setupBlockingScriptsSwitchClick(SwitchCompat braveShieldsBlockingScriptsSwitch) {
         if (null == braveShieldsBlockingScriptsSwitch) {
             return;
         }
@@ -801,7 +802,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         braveShieldsBlockingScriptsSwitch.setOnCheckedChangeListener(mBraveShieldsBlockingScriptsChangeListener);
     }
 
-    private void setupBlockingScriptsSwitch(Switch braveShieldsBlockingScriptsSwitch, boolean fromTopSwitch) {
+    private void setupBlockingScriptsSwitch(
+            SwitchCompat braveShieldsBlockingScriptsSwitch, boolean fromTopSwitch) {
         if (null == braveShieldsBlockingScriptsSwitch) {
             return;
         }
@@ -827,7 +829,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
     }
 
-    private void setupMainSwitchClick(Switch braveShieldsSwitch) {
+    private void setupMainSwitchClick(SwitchCompat braveShieldsSwitch) {
         if (null == braveShieldsSwitch) {
             return;
         }

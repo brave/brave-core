@@ -58,7 +58,7 @@
             android:textSize="14sp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:text="Ethereum Price (ETH)"
+            android:text="@string/eth_price"
             android:textColor="#84889C"/>
 
         <TextView
