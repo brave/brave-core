@@ -6,10 +6,11 @@
 import {mixinBehaviors, Polymer, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
 // Global overrides
+import 'chrome://brave-resources/br_elements/br_toolbar/br_toolbar.js';
 import CrButtonStyleTemplate from './overrides/cr_button.js'
 import CrToggleStyleTemplate from './overrides/cr_toggle.js'
 
-const debug = false
+const debug = true
 
 if (debug) {
   // Useful to diagnose module definition timing for template modification
@@ -248,11 +249,19 @@ PolymerElement._prepareTemplate = function BravePolymer_PrepareTemplate() {
   }
 }
 
+const ignoredComponents = [
+  'cr-toolbar'
+]
+
 const oldDefine = window.customElements.define
 window.customElements.define = function BraveDefineCustomElements (name, component, options) {
   if (component.polymerElementVersion) {
     if (debug) {
       console.log('BraveDefineCustomElements PolymerElement defined', name, component, options)
+    }
+    // Global replacements
+    if (ignoredComponents.includes(name)) {
+      return
     }
     // Inject behaviors
     if (allBehaviorsMap[name]) {
