@@ -204,9 +204,9 @@ class ADS_EXPORT Ads {
       const uint64_t to_timestamp) = 0;
 
   // Should be called to get the statement of accounts. The callback takes one
-  // argument - |StatementInfo| which contains estimated pending rewards, next
-  // payment date, ads received this month, pending rewards, cleared
-  // transactions and uncleared transactions
+  // argument - |StatementInfo| which contains next payment date, ads received
+  // this month, earnings this month, earnings last month, cleared transactions
+  // and uncleared transactions
   virtual void GetAccountStatement(GetAccountStatementCallback callback) = 0;
 
   // Should be called to indicate interest in the specified ad. This is a

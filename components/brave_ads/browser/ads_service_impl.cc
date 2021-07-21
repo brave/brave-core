@@ -428,7 +428,7 @@ void AdsServiceImpl::GetAdsHistory(const uint64_t from_timestamp,
 
 void AdsServiceImpl::GetAccountStatement(GetAccountStatementCallback callback) {
   if (!connected()) {
-    std::move(callback).Run(/* success */ false, 0.0, 0, 0, 0.0, 0.0);
+    std::move(callback).Run(/* success */ false, 0, 0, 0.0, 0.0);
     return;
   }
 
@@ -1296,7 +1296,7 @@ void AdsServiceImpl::OnGetAccountStatement(GetAccountStatementCallback callback,
                                            const bool success,
                                            const std::string& json) {
   if (!success) {
-    std::move(callback).Run(success, 0.0, 0, 0, 0.0, 0.0);
+    std::move(callback).Run(success, 0, 0, 0.0, 0.0);
     return;
   }
 
@@ -1304,9 +1304,8 @@ void AdsServiceImpl::OnGetAccountStatement(GetAccountStatementCallback callback,
   statement.FromJson(json);
 
   std::move(callback).Run(
-      success, statement.estimated_pending_rewards, statement.next_payment_date,
-      statement.ads_received_this_month, statement.earnings_this_month,
-      statement.earnings_last_month);
+      success, statement.next_payment_date, statement.ads_received_this_month,
+      statement.earnings_this_month, statement.earnings_last_month);
 }
 
 void AdsServiceImpl::OnRemoveAllHistory(const int32_t result) {

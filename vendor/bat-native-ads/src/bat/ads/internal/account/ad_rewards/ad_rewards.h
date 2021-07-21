@@ -20,7 +20,6 @@
 
 namespace ads {
 
-class AdGrants;
 class Payments;
 
 class AdRewards {
@@ -33,8 +32,6 @@ class AdRewards {
 
   void MaybeReconcile(const WalletInfo& wallet);
 
-  double GetEstimatedPendingRewards() const;
-
   uint64_t GetNextPaymentDate() const;
 
   uint64_t GetAdsReceivedThisMonth() const;
@@ -45,8 +42,7 @@ class AdRewards {
 
   double GetUnclearedEarningsForThisMonth() const;
 
-  void SetUnreconciledTransactions(
-      const TransactionList& unreconciled_transactions);
+  void AppendUnreconciledTransactions(const TransactionList& transactions);
 
   base::Value GetAsDictionary();
   bool SetFromDictionary(base::Value* dictionary);
@@ -58,28 +54,21 @@ class AdRewards {
 
   WalletInfo wallet_;
 
-  double unreconciled_estimated_pending_rewards_ = 0.0;
+  double unreconciled_transactions_ = 0.0;
+  void ClearUnreconciledTransactions();
 
   void Reconcile();
-
-  bool DidReconcile(
-      const std::string& json) const;
 
   void GetPayments();
   void OnGetPayments(const UrlResponse& url_response);
 
-  void GetAdGrants();
-  void OnGetAdGrants(const UrlResponse& url_response);
-
   void OnDidReconcileAdRewards();
-
   void OnFailedToReconcileAdRewards();
 
   BackoffTimer retry_timer_;
   void Retry();
   void OnRetry();
 
-  std::unique_ptr<AdGrants> ad_grants_;
   std::unique_ptr<Payments> payments_;
 };
 
