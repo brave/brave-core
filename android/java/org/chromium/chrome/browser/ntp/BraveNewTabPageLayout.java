@@ -545,11 +545,11 @@ public class BraveNewTabPageLayout
             mCreditText.setVisibility(View.GONE);
             int floatingButtonIcon = R.drawable.ic_qr_code;
             mSuperReferralLogo.setImageResource(floatingButtonIcon);
-            String floatingButtonIconColor =
-                    GlobalNightModeStateProviderHolder.getInstance().isInNightMode() ? "#FFFFFF"
-                                                                                     : "#000000";
+            int floatingButtonIconColor =
+                    GlobalNightModeStateProviderHolder.getInstance().isInNightMode() ? android.R.color.white
+                                                                                     : android.R.color.black;
             ImageViewCompat.setImageTintList(mSuperReferralLogo,
-                    ColorStateList.valueOf(Color.parseColor(floatingButtonIconColor)));
+                    ColorStateList.valueOf(floatingButtonIconColor));
             mSuperReferralLogo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

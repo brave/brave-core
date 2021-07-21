@@ -68,7 +68,7 @@
 			        android:contentDescription="@null"
 			        android:padding="8dp"
 			        app:srcCompat="@drawable/ic_qr_code"
-			        android:tint="#ffffff"/>
+			        app:tint="#ffffff"/>
 
 	        </LinearLayout>
 

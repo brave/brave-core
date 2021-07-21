@@ -215,7 +215,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
                 }
             }
         };
-        
+
         // set checkbox callback
         monthly.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -388,6 +388,8 @@ const util = {
       const androidResDest = path.join(config.srcDir, 'chrome', 'android', 'java', 'res')
       const androidResTemplateSource = path.join(config.braveCoreDir, 'android', 'java', 'res_template')
       const androidResTemplateDest = path.join(config.srcDir, 'chrome', 'android', 'java', 'res_template')
+      const androidContentPublicResSource = path.join(config.braveCoreDir, 'content', 'public', 'android', 'java', 'res')
+      const androidContentPublicResDest = path.join(config.srcDir, 'content', 'public', 'android', 'java', 'res')
       const androidTouchtoFillResSource = path.join(config.braveCoreDir, 'browser', 'touch_to_fill', 'android', 'internal', 'java', 'res')
       const androidTouchtoFillResDest = path.join(config.srcDir, 'chrome', 'browser', 'touch_to_fill', 'android', 'internal', 'java', 'res')
       const androidToolbarResSource = path.join(config.braveCoreDir, 'browser', 'ui', 'android', 'toolbar', 'java', 'res')
@@ -403,6 +405,7 @@ const util = {
         [androidIconBaseSource]: [androidIconBaseDest],
         [androidResSource]: [androidResDest],
         [androidResTemplateSource]: [androidResTemplateDest],
+        [androidContentPublicResSource]: [androidContentPublicResDest],
         [androidTouchtoFillResSource]: [androidTouchtoFillResDest],
         [androidToolbarResSource]: [androidToolbarResDest],
         [androidComponentsResSource]: [androidComponentsResDest],
