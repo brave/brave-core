@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "ทิปครั้งเดียว",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "หมดอายุวันที่",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "ผู้สร้างคนนี้ยังไม่ได้ลงทะเบียนรับเงินสนับสนุนจากผู้ใช้ Brave ทิปทั้งหมดที่คุณส่งให้จะยังคงอยู่ในวอลเล็ทของคุณจนกว่าผู้สร้างจะยืนยัน",
+    "message": "ผู้สร้างคนนี้ยังไม่ได้กำหนดค่าให้รับทิปจากกระเป๋าเงินของคุณ ทิปทั้งหมดที่คุณทำจะยังคงค้างอยู่ในกระเป๋าเงินของคุณและจะลองอีกครั้งโดยอัตโนมัติเป็นเวลา 90 วัน",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

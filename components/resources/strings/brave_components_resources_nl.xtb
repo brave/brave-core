@@ -49,7 +49,6 @@
 <translation id="81774600964978477">Top sites worden door u samengesteld</translation>
 <translation id="5439599923922718668">Vaak bezocht</translation>
 <translation id="430556192781857057">Top sites worden voorgesteld op basis van websites die u vaak bezoekt</translation>
-<translation id="8037713009824540257">Website toevoegen</translation>
 <translation id="1773147648972887693">Toon veel bezocht</translation>
 <translation id="4546260624932151782">Toon favorieten</translation>
 <translation id="3446024864193919737">Brave Rewards tonen</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">Bronnen</translation>
 <translation id="5158129253322921540">Inhoud van <ph name="PUBLISHER_NAME"/> uitschakelen</translation>
 <translation id="3189348785087463371">Gepromote inhoud</translation>
+<translation id="4541978218358617681">Advertentie</translation>
 <translation id="1776831331757823105">Klok</translation>
 <translation id="7791543448312431591">Toevoegen</translation>
 <translation id="7679334366167089823">Verdien tokens voor het bekijken van privacy-respecterende advertenties.</translation>
 <translation id="1531133232292396145">Rechtstreeks in uw browser in crypto handelen op Binance.</translation>
 <translation id="2166494527623220386">Rechtstreeks in uw browser in crypto handelen op Gemini.</translation>
 <translation id="7191394989411626168">Door 'Kaarten' uit te schakelen, worden alle kaarten die momenteel zichtbaar zijn, verborgen. U kunt echter nog steeds op de hoogte worden gehouden van nieuwe kaarten.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="5655621391922317800">Crypto Wallets</translation>
 <translation id="8820817407110198400">Bladwijzers</translation>
 <translation id="1644574205037202324">Geschiedenis</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">Selecteer een zoekmachine</translation>
 <translation id="438216590634144114">Kies de zoekmachine die je standaard wilt gebruiken bij het zoeken op het web in de adresbalk.</translation>
 <translation id="5804484488647369316">Stel standaard zoekmachine in</translation>
-<translation id="4428458837269935199">Probeer DuckDuckGo voor een meer private zoekervaring.</translation>
 <translation id="3829010735958850433">Welkomstour overslaan</translation>
 <translation id="1201402288615127009">Volgende</translation>
 <translation id="7954950242989581218">Blader veilig en wel</translation>
@@ -352,15 +352,15 @@
 <translation id="4371618764691059036">Maandelijkse bijdrage is ingesteld.</translation>
 <translation id="6356822617569064293">Datum volgende bijdrage</translation>
 <translation id="3593485149443019592">Niet genoeg tokens. <ph name="LINK_BEGIN"/>Voeg tegoed toe<ph name="LINK_END"/>.</translation>
-<translation id="4622723187300249546">Eenmalige tip</translation>
-<translation id="5268142130226208198">Eenmalig tipbedrag:</translation>
+<translation id="207268487070188114">Eenmalige fooi</translation>
+<translation id="69861679024013299">Eenmalig fooibedrag:</translation>
 <translation id="3669086939205397942">Wacht even, U kunt nog geen fooi geven</translation>
 <translation id="3288812755711687300">Bericht van <ph name="USER"/></translation>
 <translation id="5851002232791947896">Tweet van <ph name="USER"/></translation>
 <translation id="5531915212947569943">Jammer dat je gaat…</translation>
 <translation id="1420756770787071946">Steun deze maker</translation>
 <translation id="3271043362279673449">Bedankt voor de ondersteuning!</translation>
-<translation id="379596083010863211">Uw eenmalige tip is verzonden.</translation>
+<translation id="3312470408978098625">Je eenmalige fooi is verzonden.</translation>
 <translation id="5096821444729034955">voor hun post</translation>
 <translation id="2978223787436054634">Tweet over uw support</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Neem een snelle tour<ph name="TOUR_LINK_END"/> of <ph name="LEARN_LINK_BEGIN"/>krijg meer<ph name="LEARN_LINK_END"/>informatie.</translation>
@@ -512,10 +512,10 @@
 <translation id="4921250468871504777">Oké</translation>
 <translation id="7866482334467279021">op</translation>
 <translation id="1166682575529520472">Maandelijks</translation>
-<translation id="8370173854533168890">Eénmalig</translation>
+<translation id="1378730109637014435">Eenmalig</translation>
 <translation id="9182287025588539628">Eenmalige Fooien</translation>
 <translation id="6381574025952123568">Initieel tegoed</translation>
-<translation id="532275381857891532">30-daagse advertentiegeschiedenis</translation>
+<translation id="156591572855748524">30-daagse advertentiegeschiedenis</translation>
 <translation id="4923459931733593730">Betaling</translation>
 <translation id="6104680658798556671">Betaling niet uitgevoerd</translation>
 <translation id="3138528956349114724">Vastgepinde sites zijn nu</translation>
@@ -622,7 +622,7 @@
 <translation id="3780605330121608425">Je wallet</translation>
 <translation id="6727483290601442544">Bekijk de Details</translation>
 <translation id="1988679729106502285">OPMERKING:</translation>
-<translation id="5815103311506128988">Deze maker heeft zich nog niet aangemeld voor het ontvangen van bijdragen van Brave-gebruikers. Je browser blijft proberen bij te dragen tot hij of zij verifieert of tot er 90 dagen zijn verstreken.</translation>
+<translation id="7979350009208995417">Deze maker is momenteel nog niet geconfigureerd voor het ontvangen van fooi uit je wallet. Alle fooien die je stuurt, blijven in je wallet in behandeling. Na 90 dagen wordt automatisch opnieuw geprobeerd om de fooi te verzenden.</translation>
 <translation id="7461596279975181413">Deze Brave geverifieerde maker heeft zijn account nog niet geconfigureerd om bijdragen van Brave-gebruikers te ontvangen. Uw browser blijft proberen om bij te dragen tot hij verifieert of tot 90 dagen zijn verstreken.</translation>
 <translation id="4292832015778676417">verdiend met advertenties</translation>
 <translation id="3197752845651180812">Openstaande bijdragen</translation>
@@ -827,6 +827,7 @@
 <translation id="3741998951694470470">Kan gegevens voor import niet ophalen</translation>
 <translation id="7900950536120202771">Interne fout bij IPFS-knooppunt</translation>
 <translation id="1036635552229153800">De gegevens zijn geüpload maar zijn niet naar de importmap van Brave verplaatst. Je kunt dit handmatig doen via de pagina voor instellingen van importeren.</translation>
+<translation id="3793279629218362523">ID van peer en IPNS-sleutels beheren</translation>
 <translation id="572392919096807438">Mijn keuze onthouden</translation>
 <translation id="7978789143098237970">totdat ik de website sluit</translation>
 <translation id="3523195733429162409">voor 24 uur</translation>

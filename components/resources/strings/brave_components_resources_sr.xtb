@@ -49,7 +49,6 @@
 <translation id="81774600964978477">Najposećenije lokacije koje ste vi odabrali</translation>
 <translation id="5439599923922718668">Često posećivane</translation>
 <translation id="430556192781857057">Najposećenije lokacije su predložene na osnovu veb-lokacija koje često posećujete</translation>
-<translation id="8037713009824540257">Dodajte lokaciju</translation>
 <translation id="1773147648972887693">Prikaži često posećivane</translation>
 <translation id="4546260624932151782">Prikaži omiljene</translation>
 <translation id="3446024864193919737">Prikaži Brave nagrade</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">Извори</translation>
 <translation id="5158129253322921540">Onemogući sadržaj od strane <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Promovisano</translation>
+<translation id="4541978218358617681">Oglas</translation>
 <translation id="1776831331757823105">Sat</translation>
 <translation id="7791543448312431591">Додај</translation>
 <translation id="7679334366167089823">Zaradite tokene za gledanje oglasa koji poštuju privatnost.</translation>
 <translation id="1531133232292396145">Trgujte kriptovalutama na Binance-u direktno u svom pregledaču.</translation>
 <translation id="2166494527623220386">Trgujte kriptovalutama na Gemini-u direktno iz svog pregledača.</translation>
 <translation id="7191394989411626168">Isključivanjem opcije Kartice, sve kartice koje se trenutno vide će biti sakrivene. Međutim, i dalje možete biti obavešteni o novim karticama.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="5655621391922317800">Crypto novčanici</translation>
 <translation id="8820817407110198400">Obeleživači</translation>
 <translation id="1644574205037202324">Историја</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">Izaberite pretraživač</translation>
 <translation id="438216590634144114">Izaberite pretraživač koji želite da podrazumevano koristite kada pretražujete Veb iz trake adresa.</translation>
 <translation id="5804484488647369316">Postavi podrazumevani pretraživač</translation>
-<translation id="4428458837269935199">Za privatnije iskustvo pretraživanja, probajte DuckDuckGo.</translation>
 <translation id="3829010735958850433">Preskočite obilazak dobrodošlice</translation>
 <translation id="1201402288615127009">Даље</translation>
 <translation id="7954950242989581218">Pretražuj bezbedno</translation>
@@ -353,15 +353,15 @@ ažuriranja.</translation>
 <translation id="4371618764691059036">Mesečni doprinos je poslat.</translation>
 <translation id="6356822617569064293">Datum sledećeg doprinosa:</translation>
 <translation id="3593485149443019592">Nema dovoljno tokena. Dodajte <ph name="LINK_BEGIN"/>sredstva<ph name="LINK_END"/>.</translation>
-<translation id="4622723187300249546">Jednokratna napojnica</translation>
-<translation id="5268142130226208198">Iznos jednokratne napojnice:</translation>
+<translation id="207268487070188114">Jednokratna napojnica</translation>
+<translation id="69861679024013299">Iznos jednokratne napojnice:</translation>
 <translation id="3669086939205397942">Sačekajte, još ne možete da dajete napojnicu</translation>
 <translation id="3288812755711687300">Objava korisnika <ph name="USER"/></translation>
 <translation id="5851002232791947896">Objava tweet korisnika <ph name="USER"/></translation>
 <translation id="5531915212947569943">Žao nam je što nas napuštate…</translation>
 <translation id="1420756770787071946">Podržite ovog autora</translation>
 <translation id="3271043362279673449">Hvala na podršci!</translation>
-<translation id="379596083010863211">Vaša jednokratna napojnica je poslata.</translation>
+<translation id="3312470408978098625">Vaša jednokratna napojnica je poslata.</translation>
 <translation id="5096821444729034955">za njihovu objavu</translation>
 <translation id="2978223787436054634">Tvitujte o svojoj podršci</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Krenite u kratku turneju<ph name="TOUR_LINK_END"/> ili <ph name="LEARN_LINK_BEGIN"/>saznajte više<ph name="LEARN_LINK_END"/> radi pojedinosti.</translation>
@@ -513,10 +513,10 @@ ažuriranja.</translation>
 <translation id="4921250468871504777">u redu</translation>
 <translation id="7866482334467279021">uključeno</translation>
 <translation id="1166682575529520472">Mesečno</translation>
-<translation id="8370173854533168890">1 put</translation>
+<translation id="1378730109637014435">Jednokratno</translation>
 <translation id="9182287025588539628">Jednokratne donacije</translation>
 <translation id="6381574025952123568">Početni saldo</translation>
-<translation id="532275381857891532">Sedmodnevna istorija oglasa</translation>
+<translation id="156591572855748524">30-dnevni istorijat za Ads</translation>
 <translation id="4923459931733593730">Plaćanje</translation>
 <translation id="6104680658798556671">Uplata nije izvršena</translation>
 <translation id="3138528956349114724">Sačuvani sajtovi su sada</translation>
@@ -623,7 +623,7 @@ ažuriranja.</translation>
 <translation id="3780605330121608425">Vaš novčanik</translation>
 <translation id="6727483290601442544">Vidi detalje</translation>
 <translation id="1988679729106502285">BELEŠKA:</translation>
-<translation id="5815103311506128988">Ovaj kreator se još nije prijavio za primanje doprinosa od Brave korisnika. Vaš pretraživač će nastaviti da pokušava da doprinese dok ne potvrde ili dok ne prođe 90 dana.</translation>
+<translation id="7979350009208995417">Ovaj kreator trenutno nije konfigurisan za primanje napojnica iz vašeg novčanika. Sve napojnice koje pošaljete ostaće na čekanju u vašem novčaniku i ponovno slanje će se automatska pokušati u toku od 90 dana.</translation>
 <translation id="7461596279975181413">Ovaj Brave Stvaralac Verifikacija nije još uvek konfigurisao njihove naloge da bi dobijali doprinose od Brave korisnika.  Vaš pregledač će nastaviti da pokušava da doprinese sve dok oni ne verifikuju, ili dok ne prođe 90 dana.</translation>
 <translation id="4292832015778676417">zarađeno od reklama</translation>
 <translation id="3197752845651180812">Doprinosi na čekanju</translation>
@@ -828,6 +828,7 @@ ažuriranja.</translation>
 <translation id="3741998951694470470">Neuspjelo dohvaćanje podataka za uvoz</translation>
 <translation id="7900950536120202771">Unutarnja greška čvora IPFS-a</translation>
 <translation id="1036635552229153800">Podaci su se uspješno preneli, ali nisu se pomaknuli u direktorij za uvoz preglednika Brave. Možete da napravite to ručno na stranici za postavke uvoza.</translation>
+<translation id="3793279629218362523">Upravljaj ključevima Peer ID i IPNS</translation>
 <translation id="572392919096807438">Запамти моју одлуку</translation>
 <translation id="7978789143098237970">dok ne zatvorim ovu stranicu</translation>
 <translation id="3523195733429162409">za 24 časa</translation>

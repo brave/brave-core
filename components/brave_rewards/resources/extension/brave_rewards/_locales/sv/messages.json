@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Engångsdricks",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "går ut den",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Denna skapare har ännu in registrerat sig för att ta emot bidrag från Brave-användare. All dricks du skickar kommer att finnas kvar i din plånbok tills skaparen verifierar sig.",
+    "message": "Den här innehållsskaparen har inte ställt in att kunna ta emot dricks från din plånbok. Om du dricksar reserveras beloppet som väntande och nya försök görs i 90 dagar.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

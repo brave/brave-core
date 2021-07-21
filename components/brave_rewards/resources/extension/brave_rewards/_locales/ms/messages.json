@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Tip Sekali Guna",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "tamat tempoh pada",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Pencipta ini belum lagi mendaftar untuk menerima sumbangan daripada pengguna Brave. Sebarang tip yang anda hantar akan kekal di dalam dompet anda sehingga mereka mengesahkan.",
+    "message": "Pencipta ini pada masa ini tidakdikonfigurasi untuk menerima tip dari dompet anda. Sebarang tip yang anda buat akan kekal di dalam dompet anda dan cuba semula secara aotomatik selama 90 hari.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

@@ -18,7 +18,7 @@
 <translation id="6241402707160226266">Okno v súkromnom režime Tor</translation>
 <translation id="8762452230727230396">Tor skryje vašu IP adresu pred webovými stránkami, ktoré ste navštívili.</translation>
 <translation id="1369311132025451972">Automaticky presmerovať stránky .onion</translation>
-<translation id="2843777623071353503">Brave otvorí onion službu webu, ak je k dispozícii, alebo doménu .onion v okne Tor</translation>
+<translation id="2843777623071353503">Brave otvorí onion službu webu, ak je k dispozícii, alebo doménu .onion v okne Tor.</translation>
 <translation id="8053096063396012732">Inštalovať Widevine</translation>
 <translation id="4840334696217618631">Ak chcete povoliť Widevine, reštartujte prehliadač</translation>
 <translation id="8410111618231938546">Google Widewine je časť kódu Digital Rights Management (DRM), ktorý v Brave Software nevlastníme a nemôžeme kontrolovať. Tento kód je načítaný zo serverov Google, nie z našich vlastných serverov. Táto funkcia funguje iba ak ju povolíte. Našich používateľov odraďujeme od používania DRM, ale rešpektujeme ich voľbu a oznávame, že niektorí používatelia Brave chcú používať služby, ktoré DRM požadujú.
@@ -72,13 +72,13 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="7895302206188277628">Prepojený obsah</translation>
 <translation id="3654831858282189202">Zverejniť pomocou kľúča IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
-<translation id="1047401034925735299">Importovať vybraný text do IPFS</translation>
 <translation id="6925604404524625582">Importovať a kopírovať odkaz do výpisu IPFS</translation>
 <translation id="1434416574322382019">Nové súkromné okno s Torom</translation>
 <translation id="4703780849509456860">Otvoriť odkaz v súkromnom okne s Torom</translation>
 <translation id="3488584642074079080">Torom otvoriť odkaz v súkromnom okne Brave</translation>
 <translation id="7475547933708221517">Zdieľanie lokálneho súboru pomocou IPFS</translation>
 <translation id="2286177249736199435">Zdieľať lokálny priečinok pomocou IPFS</translation>
+<translation id="4491895534716990473">Importovať vybraný text do IPFS</translation>
 <translation id="8883166554766780543">Importovať a kopírovať odkaz do výpisu IPFS</translation>
 <translation id="784573715436258741">Zdieľať lokálny súbor pomocou IPFS</translation>
 <translation id="6313675821927505581">Nové súkromné okno s Torom</translation>
@@ -195,16 +195,23 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="911363100236037920">Zadajte názov pre nový kľúč</translation>
 <translation id="6358469157239228181">Tento názov nie je možné použiť</translation>
 <translation id="5761731140570209168">Pridať nový pripojovací reťazec klienta</translation>
+<translation id="2082206983920804886">Otočiť kľúč</translation>
+<translation id="2521133093532260474">Nie je možné zastaviť lokálny uzol</translation>
+<translation id="86879877003581729">Nie je možné spustiť lokálny uzol</translation>
 <translation id="6476061084931271248">Reštartovať uzol pre uplatnenie zmien</translation>
 <translation id="3754226427671882382">Reštartovať uzol</translation>
+<translation id="949667118776341807">Otočiť</translation>
 <translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Tento názov je neplatný</translation>
 <translation id="6758961763875471084">Upraviť zoznam klientov</translation>
+<translation id="1295874070797049002">Exportovať kľúč</translation>
+<translation id="3946479342297227860">Odstrániť kľúč</translation>
 <translation id="1534091531114892221">Nastaviť popis klientov ipfs</translation>
 <translation id="8996633027318264334">Chcete naozaj vymazať <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Uzol nie je spustený</translation>
 <translation id="616058968889448209">Chyba spustenia služby IPFS, viac informácií je k dispozícii na <ph name="BEGIN_LINK"/>diagnostickej stránke<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' importovanie kľúča zlyhalo</translation>
+<translation id="3364053282600191535">'<ph name="KEY_NAME"/>' exportovanie kľúča zlyhalo</translation>
 <translation id="8275038454117074363">Import</translation>
 <translation id="3654980960391973513">Generovať</translation>
 <translation id="5531501313997312487">Spustiť uzol</translation>
@@ -305,11 +312,16 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="312393675740711187">Články sa načítajú automaticky v režime čítačky, čo vám ušetrí čas.</translation>
 <translation id="3234744217174488546">Zapnúť/vypnúť režim čítačky iba pre túto webovú stránku. Pre vypnutie Speedreader pre celý profil prehliadača navštívte</translation>
 <translation id="7839742507462737706">v Speedreader</translation>
+<translation id="8490082094734500369">Vypnúť režim čítačky</translation>
+<translation id="2036503787657622020">Zapnúť režim čítačky</translation>
+<translation id="5226458915125328323">Nastavenia Speedreader</translation>
+<translation id="6284218950354553099">Automaticky odoslať správu o dennom využívaní službe Brave</translation>
+<translation id="5288333155754958121">Táto anonymná, súkromná správa umožní Brave odhadnúť počet aktívnych používateľov.</translation>
 <translation id="1872784258300710671">Na výpočet odhadu celkového využívania určitých funkcií používa Brave výlučne vlastné produktové analýzy</translation>
 <translation id="8712637175834984815">Dobre</translation>
 <translation id="4394049700291259645">Zakázať</translation>
-<translation id="6469509880167172749">Automatické odosielanie výlučne vlastných produktových analýz do Brave</translation>
-<translation id="7090566321964540749">Táto anonymná informácia umožní Brave len odhadnúť celkové využívanie určitých funkcií .</translation>
+<translation id="7142548388914389999">Povoliť analýzu produktov chrániacich súkromie (P3A)</translation>
+<translation id="609106526832379947">Tieto úplne anonymizované informácie pomáhajú prehliadaču Brave odhadnúť celkové využívanie určitých funkcií a vylepšiť ich pre vás.</translation>
 <translation id="1947672064022327074">Prajete si spustiť Crypto Peňaženky pre podporu Etherea?</translation>
 <translation id="7583735190612229830">Nastavte Krypto peňaženky na interakciu s touto aplikáciou a ďalšími podobnými.</translation>
 <translation id="8731422418734770661">Nastaviť kryptopeňaženky</translation>
