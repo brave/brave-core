@@ -10,10 +10,10 @@
 
 #include "base/time/time.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/ui/brave_ads/ad_notification_popup_widget.h"
 #include "brave/browser/ui/brave_ads/ad_notification_view.h"
 #include "brave/browser/ui/brave_ads/ad_notification_view_factory.h"
 #include "brave/browser/ui/brave_ads/bounds_util.h"
-#include "brave/browser/ui/brave_ads/window_util.h"
 #include "brave/components/brave_ads/browser/features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -37,12 +37,9 @@
 #include "ui/gfx/shadow_util.h"
 #include "ui/gfx/shadow_value.h"
 #include "ui/gfx/skia_paint_util.h"
+#include "ui/native_theme/native_theme.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/widget/widget.h"
-
-#if defined(OS_WIN)
-#include "ui/views/widget/desktop_aura/desktop_native_widget_aura.h"
-#endif
 
 namespace brave_ads {
 
@@ -69,7 +66,21 @@ const int kCornerRadius = 7;
 const int kCornerRadius = 7;
 #endif
 
+class DefaultPopupInstanceFactory
+    : public AdNotificationPopup::PopupInstanceFactory {
+ public:
+  ~DefaultPopupInstanceFactory() override = default;
+
+  AdNotificationPopup* CreateInstance(
+      Profile* profile,
+      const AdNotification& ad_notification) override {
+    return new AdNotificationPopup(profile, ad_notification);
+  }
+};
+
 }  // namespace
+
+AdNotificationPopup::PopupInstanceFactory::~PopupInstanceFactory() = default;
 
 AdNotificationPopup::AdNotificationPopup(Profile* profile,
                                          const AdNotification& ad_notification)
@@ -100,13 +111,22 @@ AdNotificationPopup::~AdNotificationPopup() {
 // static
 void AdNotificationPopup::Show(Profile* profile,
                                const AdNotification& ad_notification) {
+  DefaultPopupInstanceFactory default_factory;
+  Show(profile, ad_notification, &default_factory);
+}
+
+// static
+void AdNotificationPopup::Show(Profile* profile,
+                               const AdNotification& ad_notification,
+                               PopupInstanceFactory* popup_factory) {
   DCHECK(profile);
+  DCHECK(popup_factory);
 
   const std::string& id = ad_notification.id();
 
   DCHECK(!g_ad_notification_popups[id]);
   g_ad_notification_popups[id] =
-      new AdNotificationPopup(profile, ad_notification);
+      popup_factory->CreateInstance(profile, ad_notification);
 
   AdNotificationDelegate* delegate = ad_notification.delegate();
   if (delegate) {
@@ -212,7 +232,7 @@ void AdNotificationPopup::OnPaintBackground(gfx::Canvas* canvas) {
   gfx::Rect bounds(GetWidget()->GetLayer()->bounds());
   bounds.Inset(-GetShadowMargin());
 
-  const bool should_use_dark_colors = ShouldUseDarkModeTheme();
+  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
 
   // Draw border with drop shadow
   cc::PaintFlags border_flags;
@@ -418,29 +438,11 @@ gfx::Insets AdNotificationPopup::GetShadowMargin() const {
 void AdNotificationPopup::CreateWidgetView() {
   // The widget instance is owned by its NativeWidget. For more details see
   // ui/views/widget/widget.h
-  views::Widget::InitParams params;
-  params.delegate = this;
-  params.type = views::Widget::InitParams::TYPE_WINDOW_FRAMELESS;
-  params.z_order = ui::ZOrderLevel::kFloatingWindow;
-  params.opacity = views::Widget::InitParams::WindowOpacity::kTranslucent;
-  params.shadow_type = views::Widget::InitParams::ShadowType::kNone;
-  params.bounds = CalculateBounds();
-
-  views::Widget* widget = new views::Widget();
+  AdNotificationPopupWidget* widget = new AdNotificationPopupWidget();
   widget->set_focus_on_creation(false);
   widget_observation_.Observe(widget);
 
-#if defined(OS_WIN)
-  // We want to ensure that this toast always goes to the native desktop,
-  // not the Ash desktop (since there is already another toast contents view
-  // there
-  if (!params.parent) {
-    DCHECK(!params.native_widget);
-    params.native_widget = new views::DesktopNativeWidgetAura(widget);
-  }
-#endif
-
-  widget->Init(std::move(params));
+  widget->InitWidget(this, CalculateBounds());
 
   widget->SetOpacity(0.0);
   widget->ShowInactive();

@@ -21,7 +21,6 @@ source_set("brave_ads") {
       "//brave/app:brave_generated_resources_grit",
       "//brave/app/vector_icons",
       "//brave/browser/profiles:util",
-      "//brave/browser/themes",
       "//brave/components/brave_ads/browser",
       "//brave/components/brave_ads/common",
       "//components/prefs",
@@ -31,6 +30,7 @@ source_set("brave_ads") {
       "//ui/compositor",
       "//ui/display",
       "//ui/gfx",
+      "//ui/native_theme",
       "//ui/views",
     ]
 
@@ -51,6 +51,8 @@ source_set("brave_ads") {
       "ad_notification_header_view.h",
       "ad_notification_popup.cc",
       "ad_notification_popup.h",
+      "ad_notification_popup_widget.cc",
+      "ad_notification_popup_widget.h",
       "ad_notification_view.cc",
       "ad_notification_view.h",
       "ad_notification_view_factory.cc",
@@ -67,8 +69,6 @@ source_set("brave_ads") {
       "spacer_view.h",
       "text_ad_notification_view.cc",
       "text_ad_notification_view.h",
-      "window_util.cc",
-      "window_util.h",
     ]
 
     if (is_mac) {
