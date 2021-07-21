@@ -139,6 +139,8 @@
     <color name="shields_tooltip_arrow_color_2">#2673DD</color>
 
     <color name="wallet_text_color">#212529</color>
+    <color name="recovery_phrase_text_color">#F8F9FA</color>
+    <color name="wallet_toolbar_bg_color">#F8F9FA</color>
     <color name="tab_color">#FF4081</color>
     
 </resources>

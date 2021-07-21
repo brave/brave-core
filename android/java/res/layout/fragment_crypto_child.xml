@@ -55,8 +55,7 @@
                 android:layout_marginTop="32dp"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:id="@+id/line_chart"
-                android:background="@android:color/white" />
+                android:id="@+id/line_chart" />
 
             <LinearLayout
                 android:layout_width="match_parent"

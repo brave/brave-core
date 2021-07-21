@@ -52,4 +52,8 @@
     <color name="brave_stats_radio_button_active">#3B3E4F</color>
     <color name="spinner_bg_color">#212529</color>
     <color name="brave_blue_tint_color">#737ADE</color>
+
+    <color name="wallet_text_color">#F0F2FF</color>
+    <color name="recovery_phrase_text_color">#1E2029</color>
+    <color name="wallet_toolbar_bg_color">#1E2029</color>
 </resources>
