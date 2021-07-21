@@ -1412,7 +1412,7 @@ extension Strings {
     }
 }
 
-// MARK: - Shorcuts
+// MARK: - Shortcuts
 
 extension Strings {
     public struct Shortcuts {
@@ -1537,9 +1537,9 @@ extension Strings {
                               comment: "")
         
         public static let shortcutSettingsTitle =
-            NSLocalizedString("shortcuts.shorcutSettingsTitle",
+            NSLocalizedString("shortcuts.shortcutSettingsTitle",
                               bundle: .braveShared,
-                              value: "Siri Shorcuts",
+                              value: "Siri Shortcuts",
                               comment: "")
         
         public static let shortcutSettingsOpenNewTabTitle =
@@ -1608,11 +1608,23 @@ extension Strings {
                               value: "Open Playlist",
                               comment: "")
         
-        public static let shorcutSettingsOpenPlaylistDescription =
-            NSLocalizedString("shortcuts.shorcutSettingsOpenPlaylistDescription",
+        public static let shortcutSettingsOpenPlaylistDescription =
+            NSLocalizedString("shortcuts.shortcutSettingsOpenPlaylistDescription",
                               bundle: .braveShared,
                               value: "Use Shortcuts to enable Brave VPN via Siri - Voice Assistant",
                               comment: "Use Shortcuts to Open Playlist via Siri - Voice Assistant")
+        
+        public static let shortcutOpenApplicationSettingsTitle =
+            NSLocalizedString("shortcuts.shortcutOpenApplicationSettingsTitle",
+                              bundle: .braveShared,
+                              value: "Open Settings",
+                              comment: "Button title that open application settings")
+        
+        public static let shortcutOpenApplicationSettingsDescription =
+            NSLocalizedString("shortcuts.shortcutOpenApplicationSettingsDescription",
+                              bundle: .braveShared,
+                              value: "This option will open Brave Settings. In order to change various Siri options, please select 'Siri & Search' menu item and customize your choices.",
+                              comment: "Description for opening Brave Settings for altering Siri shortcut.")
     }
 }
 

@@ -784,7 +784,7 @@ extension NewTabPageViewController {
         }
     }
     
-    /// Moves New Tab Page Scroll to start of Brave News - Used for shorcut
+    /// Moves New Tab Page Scroll to start of Brave News - Used for shortcut
     func scrollToBraveNews() {
         // Offset of where Brave News starts
         let todayStart = collectionView.frame.height - feedOverlayView.headerView.bounds.height - 32 - 16

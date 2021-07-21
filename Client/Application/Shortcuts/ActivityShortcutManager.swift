@@ -204,7 +204,7 @@ class ActivityShortcutManager: NSObject {
                 return
             }
             
-            log.error("Failed to donate shorcut open website, error: \(error)")
+            log.error("Failed to donate shortcut open website, error: \(error)")
         }
     }
 }
