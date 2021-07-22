@@ -1,10 +1,10 @@
 {
   "appName": {
-    "message": "The Brave Extension",
+    "message": "பிரேவ் நீட்டிப்பு",
     "description": "The name of the the extension."
   },
   "shields": {
-    "message": "Shields",
+    "message": "கவசங்கள்",
     "description": "The Shields feature name"
   },
   "up": {
@@ -132,7 +132,7 @@
     "description": "Message for the resources blocked *block all* option"
   },
   "allowAll": {
-    "message": "Allow all",
+    "message": "எல்லாம் அனுமதி",
     "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
@@ -156,7 +156,7 @@
     "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
   "cancel": {
-    "message": "ரத்து செய்",
+    "message": "ரத்துசெய்",
     "description": "Message for the button inside the static list of resources blocked to cancel the operation"
   },
   "goBack": {
@@ -164,7 +164,7 @@
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   },
   "applyOnce": {
-    "message": "Apply once",
+    "message": "ஒருமுறை விண்ணப்பி",
     "description": "Message for action in dynamic list of resources blocked to *apply once*"
   },
   "changeDefaults": {

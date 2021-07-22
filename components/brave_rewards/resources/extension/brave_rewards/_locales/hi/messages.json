@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "1- टाइम टिप्स",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "पर समय सीमा समाप्त\n",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "इस निर्माता ने Brave उपयोगकर्ताओं से योगदान प्राप्त करने के लिए अभी तक साइन अप नहीं किया है। उनके सत्यापित होने तक आपके द्वारा भेजी गयी कोई भी बख्शीश आपके ही बटुए में रहेगी।",
+    "message": "यह निर्माता वर्तमान में आपके वॉलेट से टिप्स प्राप्त करने के लिए कॉन्फ़िगर नहीं किया गया है. आपके द्वारा दी गई कोई भी टिप आपके वॉलेट में लंबित रहेगी और 90 दिनों तक अपने आप दोबारा कोशिश करेगी.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

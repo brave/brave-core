@@ -49,7 +49,6 @@
 <translation id="81774600964978477">शीर्ष साइटें आपके द्वारा क्यूरेट की जाती हैं</translation>
 <translation id="5439599923922718668">बार-बार देखी जाने वाली</translation>
 <translation id="430556192781857057">आपके द्वारा अक्सर देखी जाने वाली वेबसाइटों के आधार पर शीर्ष साइटों का सुझाव दिया जाता है</translation>
-<translation id="8037713009824540257">साइट जोड़ें</translation>
 <translation id="1773147648972887693">बार-बार विजिट की जाने वाली चीजें दिखाएँ</translation>
 <translation id="4546260624932151782">पसंदीदा दिखाएँ</translation>
 <translation id="3446024864193919737">Brave पुरस्कार दिखाएँ</translation>
@@ -80,12 +79,14 @@
 <translation id="5158129253322921540"><ph name="PUBLISHER_NAME"/>
 से कंटेंट को अक्षम करें।</translation>
 <translation id="3189348785087463371">प्रमोट कर दिया गया</translation>
+<translation id="4541978218358617681">विज्ञापन</translation>
 <translation id="1776831331757823105">घड़ी</translation>
 <translation id="7791543448312431591">जोड़ें</translation>
 <translation id="7679334366167089823">गोपनीयता-सम्मान वाले विज्ञापन देखने के लिए टोकन कमाएँ।</translation>
 <translation id="1531133232292396145">सीधे अपने ब्राउज़र में Binance पर क्रिप्टो ट्रेड करें।</translation>
 <translation id="2166494527623220386">सीधे अपने ब्राउज़र में Gemini पर ट्रेड क्रिप्टो करें।</translation>
 <translation id="7191394989411626168">कार्डस बंद करने से, वर्तमान में दिखाई देने वाले सभी कार्ड छिप जाएंगे। हालाँकि आपको अभी भी नए कार्ड के बारे में सूचित किया जा सकता है।</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="5655621391922317800">क्रिप्टो वॉलेट</translation>
 <translation id="8820817407110198400">बुकमार्क</translation>
 <translation id="1644574205037202324">इतिहास</translation>
@@ -144,7 +145,6 @@
 <translation id="2469440407442116729">खोज प्रणाली चुनें</translation>
 <translation id="438216590634144114">एड्रेस बार द्वारा वेब पर सर्च करने के लिए, आपके द्वारा उपयोग किये जाने वाले डिफ़ॉल्ट सर्च इंजन का चयन करें।</translation>
 <translation id="5804484488647369316">डिफ़ॉल्ट खोज प्रणाली सेट करें</translation>
-<translation id="4428458837269935199">और अधिक निजी अनुभव के लिए DuckDuckGo आज़माएँ।</translation>
 <translation id="3829010735958850433">स्वागत यात्रा को छोड़ें</translation>
 <translation id="1201402288615127009">अगला</translation>
 <translation id="7954950242989581218">सुरक्षित और अच्छा ब्राउज़ करें</translation>
@@ -353,15 +353,15 @@
 <translation id="4371618764691059036">मासिक योगदान तय किया गया है।</translation>
 <translation id="6356822617569064293">अगली योगदान तिथि:</translation>
 <translation id="3593485149443019592">पर्याप्त टोकन नहीं हैं. कृपया<ph name="LINK_BEGIN"/>पैसे  डालें<ph name="LINK_END"/>.</translation>
-<translation id="4622723187300249546">एकबार की टिप</translation>
-<translation id="5268142130226208198">एकबार की टिप राशि:</translation>
+<translation id="207268487070188114">1- टाइम टिप</translation>
+<translation id="69861679024013299">1- टाइम टिप की राशि:</translation>
 <translation id="3669086939205397942">रुकें, आप अभी तक टिप नहीं कर सकते</translation>
 <translation id="3288812755711687300"><ph name="USER"/> पोस्ट</translation>
 <translation id="5851002232791947896"><ph name="USER"/> ट्वीट</translation>
 <translation id="5531915212947569943">आपके जाने पर … बहुत दुख हो रहा है</translation>
 <translation id="1420756770787071946">इस क्रिएटर का सपोर्ट करें</translation>
 <translation id="3271043362279673449">सहायता के लिए धन्यवाद!</translation>
-<translation id="379596083010863211">आपकी एकबार की टिप भेजी जा चुकी है।</translation>
+<translation id="3312470408978098625">आपकी एकबार की टिप भेजी जा चुकी है.</translation>
 <translation id="5096821444729034955">उनके पोस्ट के लिए</translation>
 <translation id="2978223787436054634">अपने सपोर्ट के बारे में ट्वीट करें</translation>
 <translation id="6717671373796332174">अधिक जानकारी के लिए<ph name="TOUR_LINK_BEGIN"/>फ़टाफ़ट एक टूर लें<ph name="TOUR_LINK_END"/> या <ph name="LEARN_LINK_BEGIN"/>अधिक जानें<ph name="LEARN_LINK_END"/>.</translation>
@@ -513,10 +513,10 @@
 <translation id="4921250468871504777">ठीक है</translation>
 <translation id="7866482334467279021">पर</translation>
 <translation id="1166682575529520472">मासिक</translation>
-<translation id="8370173854533168890">One टाइम</translation>
+<translation id="1378730109637014435">वन टाइम</translation>
 <translation id="9182287025588539628">1-टाइम टिप्स</translation>
 <translation id="6381574025952123568">प्रारंभिक शेष</translation>
-<translation id="532275381857891532">30-दिवसीय विज्ञापन इतिहास</translation>
+<translation id="156591572855748524">30 दिनों का विज्ञापन इतिहास</translation>
 <translation id="4923459931733593730">भुगतान</translation>
 <translation id="6104680658798556671">भुगतान नहीं किया गया।</translation>
 <translation id="3138528956349114724">पिन किए हुए साइट अब आए हैं</translation>
@@ -623,7 +623,7 @@
 <translation id="3780605330121608425">आपका वॉलेट</translation>
 <translation id="6727483290601442544">जानकारी देखें</translation>
 <translation id="1988679729106502285">नोट:</translation>
-<translation id="5815103311506128988">इस निर्माता ने Brave उपयोगकर्ताओं से योगदान प्राप्त करने के लिए अभी तक साइन अप नहीं किया है। उनके सत्यापित होने तक, या 90 दिनों के बीतने तक आपके द्वारा भेजी गयी कोई भी बख्शीश आपके ही बटुए में रहेगी।</translation>
+<translation id="7979350009208995417">यह निर्माता वर्तमान में आपके वॉलेट से टिप्स प्राप्त करने के लिए कॉन्फ़िगर नहीं किया गया है. आपके द्वारा दी गई कोई भी टिप आपके वॉलेट में लंबित रहेगी और 90 दिनों तक अपने आप दोबारा कोशिश करेगी.</translation>
 <translation id="7461596279975181413">इस Brave सत्यापित निर्माता ने अभी तक Brave उपयोगकर्ताओं से योगदान प्राप्त करने के लिए अपने खाते को कॉन्फ़िगर नहीं किया है. आपका ब्राउज़र सत्यापन करने तक या 90 दिन बीत जाने तक योगदान देने का प्रयास करता रहेगा.</translation>
 <translation id="4292832015778676417">विज्ञापनों द्वारा कमाया हुआ</translation>
 <translation id="3197752845651180812">लंबित योगदान</translation>
@@ -828,6 +828,7 @@
 <translation id="3741998951694470470">इम्पोर्ट करने के लिए डेटा नहीं आ पाया</translation>
 <translation id="7900950536120202771">IPFS नोड की अंदरूनी गड़बड़ी</translation>
 <translation id="1036635552229153800">डेटा सफलतापूर्वक अपलोड किया गया था, लेकिन Brave-इम्पोर्ट डायरेक्टरी में नहीं ले जाया गया. आप इसे मैन्युअल रूप से इम्पोर्ट आयात सेटिंग्स पेज पर कर सकते हैं.</translation>
+<translation id="3793279629218362523">पीयर ID और IPNS की मैनेज करें</translation>
 <translation id="572392919096807438">मेरेे निर्णय को याद रखें</translation>
 <translation id="7978789143098237970">जब तक मैं इस पेज को बंद नहीं करता</translation>
 <translation id="3523195733429162409">24 घंटे के लिए</translation>

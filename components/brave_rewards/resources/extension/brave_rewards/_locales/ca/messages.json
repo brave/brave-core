@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Propines d'una sola vegada",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "caduca el",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Aquest creador encara no s'ha donat d'alta per poder rebre contribucions per part dels usuaris Brave. Qualsevol propina que enviïs es quedarà al teu moneder fins que hagi estat comprovada.",
+    "message": "Aquest creador actualment no està configurat per rebre propines de la vostra cartera. Qualsevol propina que doneu quedarà pendent a la vostra cartera i es reintentarà automàticament durant 90 dies.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

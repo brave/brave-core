@@ -18,7 +18,7 @@
 <translation id="6241402707160226266">Ventana privada con Tor</translation>
 <translation id="8762452230727230396">Tor oculta tu dirección IP a los sitios que visitas.</translation>
 <translation id="1369311132025451972">Redirigir automáticamente a los sitios de .onion</translation>
-<translation id="2843777623071353503">Brave abrirá el servicio onion de la página web cuando esté disponible o el dominio .onion en la ventana de Tor</translation>
+<translation id="2843777623071353503">Brave abrirá el servicio onion de la página web cuando esté disponible o el dominio .onion en la ventana de Tor.</translation>
 <translation id="8053096063396012732">Instalar Widevine</translation>
 <translation id="4840334696217618631">Reinicia el navegador para habilitar Widevine</translation>
 <translation id="8410111618231938546">Google Widevine es una pieza de código de Administración de Derechos Digitales (DRM)  que no es propiedad de Brave Software y por tanto no podemos inspeccionar. El código de Google Widevine se carga desde los servidores de Google, no desde nuestros servidores. Se carga solo cuando habilitas esta opción. Desaconsejamos el uso de DRM, pero respetamos la elección del usuario y entendemos que a algunos usuarios de Brave les gustaría usar algunos servicios que lo requieran.
@@ -72,13 +72,13 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="7895302206188277628">Contenido vinculado</translation>
 <translation id="3654831858282189202">Publicar con clave IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
-<translation id="1047401034925735299">Importar el texto seleccionado a IPFS</translation>
 <translation id="6925604404524625582">Importar y copiar enlace a instantánea de IPFS</translation>
 <translation id="1434416574322382019">Nueva ventana privada con Tor</translation>
 <translation id="4703780849509456860">Abrir enlace en ventana privada con Tor</translation>
 <translation id="3488584642074079080">Abrir enlace en una ventana privada con Tor</translation>
 <translation id="7475547933708221517">Compartir el archivo local con IPFS</translation>
 <translation id="2286177249736199435">Compartir carpeta local con IPFS</translation>
+<translation id="4491895534716990473">Importar el texto seleccionado a IPFS</translation>
 <translation id="8883166554766780543">Importar y copiar enlace a instantánea de IPFS</translation>
 <translation id="784573715436258741">Compartir el archivo local con IPFS</translation>
 <translation id="6313675821927505581">Nueva ventana privada con Tor</translation>
@@ -195,16 +195,23 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="911363100236037920">Introduce un nombre para la nueva clave</translation>
 <translation id="6358469157239228181">No es posible usar este nombre</translation>
 <translation id="5761731140570209168">Añadir nueva cadena de conexión de pares</translation>
+<translation id="2082206983920804886">Rotar clave</translation>
+<translation id="2521133093532260474">No ha sido posible detener el nodo local</translation>
+<translation id="86879877003581729">No ha sido posible iniciar el nodo local</translation>
 <translation id="6476061084931271248">Reiniciar nodo para aplicar los cambios</translation>
 <translation id="3754226427671882382">Reiniciar nodo</translation>
+<translation id="949667118776341807">Rotar</translation>
 <translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Este nombre no es válido</translation>
 <translation id="6758961763875471084">Modificar la lista de pares</translation>
+<translation id="1295874070797049002">Exportar clave</translation>
+<translation id="3946479342297227860">Eliminar clave</translation>
 <translation id="1534091531114892221">Configura la descripción de pares IPFS</translation>
 <translation id="8996633027318264334">¿Seguro que quieres eliminar <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">No se ha iniciado el nodo</translation>
 <translation id="616058968889448209">Error al iniciar el servicio de IPFS. Encontrarás más información en la <ph name="BEGIN_LINK"/>página de diagnósticos<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Error al importar la clave '<ph name="KEY_NAME"/>'</translation>
+<translation id="3364053282600191535">'<ph name="KEY_NAME"/>' error al importar la clave</translation>
 <translation id="8275038454117074363">Importar</translation>
 <translation id="3654980960391973513">Generar</translation>
 <translation id="5531501313997312487">Iniciar nodo</translation>
@@ -305,11 +312,16 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="312393675740711187">Los artículos se cargan automáticamente en el modo lectura para ahorrarte tiempo.</translation>
 <translation id="3234744217174488546">Activa o desactiva el modo lectura únicamente para este sitio web. Si deseas desactivar Speedreader en todo tu perfil de navegación, visita</translation>
 <translation id="7839742507462737706">en Speedreader</translation>
+<translation id="8490082094734500369">Desactivar el modo de lectura</translation>
+<translation id="2036503787657622020">Activar el modo de lectura</translation>
+<translation id="5226458915125328323">Ajustes de Speedreader</translation>
+<translation id="6284218950354553099">Enviar automáticamente el ping de uso diario a Brave</translation>
+<translation id="5288333155754958121">Este ping privado y anónimo permite a Brave calcular el número de usuarios activos.</translation>
 <translation id="1872784258300710671">Brave utiliza análisis de productos de manera completamente privada para estimar el uso general de ciertas funciones</translation>
 <translation id="8712637175834984815">Listo</translation>
 <translation id="4394049700291259645">Deshabilitar</translation>
-<translation id="6469509880167172749">Enviar automáticamente los análisis de productos de manera completamente privada a Brave</translation>
-<translation id="7090566321964540749">Esta información anónima solo le permite a Brave estimar el uso general de ciertas funciones.</translation>
+<translation id="7142548388914389999">Permitir estadísticas de productos que preservan la privacidad (P3A)</translation>
+<translation id="609106526832379947">Esta información totalmente anonimizada permite a Brave calcular el uso general de ciertas funciones y mejorarlas para ti.</translation>
 <translation id="1947672064022327074">¿Quieres iniciar carteras de criptomonedas para la compatibilidad con Ethereum?</translation>
 <translation id="7583735190612229830">Configura Crypto Wallets para interactuar con esta aplicación y otras similares.</translation>
 <translation id="8731422418734770661">Configurar las criptocarteras</translation>

@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "ಒಂದು ಬಾರಿಯ ಸಲಹೆಗಳು",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "ಅವಧಿ ಮೀರುವ ದಿನಾಂಕ",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Brave ಬಳಕೆದಾರರಿಂದ ಕೊಡುಗೆಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಈ ರಚನೆಕಾರ ಇನ್ನೂ ಸೈನ್ ಅಪ್ ಮಾಡಿಲ್ಲ. ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಅನ್ನು ಪರಿಶೀಲಿಸುವವರೆಗೆ ನೀವು ಕಳುಹಿಸಿದ ಟಿಪ್‌ಗಳು ಉಳಿಯುತ್ತವೆ.",
+    "message": "ನಿಮ್ಮ ವ್ಯಾಲೆಟ್‌ನಿಂದ ಟಿಪ್ಸ್ ಸ್ವೀಕರಿಸಲು ಈ ರಚನೆಕಾರರನ್ನು ಪ್ರಸ್ತುತ ಕಾನ್ಫಿಗರ್ ಮಾಡಲಾಗಿಲ್ಲ. ನೀವು ಪಡೆಯುವ ಯಾವುದೇ ಟಿಪ್ ನಿಮ್ಮ ವ್ಯಾಲೆಟ್‌ನಲ್ಲಿಯೇ ಬಾಕಿ ಇರುತ್ತದೆ ಮತ್ತು 90 ದಿನಗಳವರೆಗೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರುಪ್ರಯತ್ನಿಸಿ.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

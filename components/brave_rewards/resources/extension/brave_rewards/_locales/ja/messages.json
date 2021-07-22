@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "一度だけチップを送る",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "有効期限",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "このクリエイターは、Braveユーザーから支援を受け取る登録をまだ行っていません。彼らが認証するまでは、贈ったチップはあなたのウォレットに保留されます。",
+    "message": "このクリエイターは現在、あなたのウォレットからチップを受け取る設定が完了していません。あなたが作成したチップは、あなたのウォレットに保留されたまま90日間自動的に再試行されます。",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

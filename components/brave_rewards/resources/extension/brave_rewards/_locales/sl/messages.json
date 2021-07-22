@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Enkratne donacije",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "poteče",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Ta ustvarjalec se še ni vpisal, da bi prejel donacije uporabnikov Brave. Vse donacije, ki jih pošiljate, bodo ostale v vaši denarnici, dokler se ustvarjalec ne vpiše.",
+    "message": "Ta ustvarjalec trenutno ni nastavljen tako, da bi lahko iz vaše denarnice prejemal napitnine. Vse napitnine, ki jih boste dali, bodo v vaši denarnici 90 dni ostale na čakanju in se samodejno poskušale izvršiti.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

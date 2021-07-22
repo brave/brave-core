@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Tip Satu Kali",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "kedaluwarsa pada",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Pembuat konten ini belum mendaftar untuk menerima kontribusi dari pengguna Brave. Setiap tips yang Anda kirim akan tetap disimpan di dompet Anda sampai mereka memverifikasi.",
+    "message": "Kreator ini saat ini tidak dikonfigurasikan untuk menerima tip dari dompet Anda. Setiap tip yang Anda berikan akan tetap ditunda di dompet Anda dan mencoba kembali secara otomatis selama 90 hari.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

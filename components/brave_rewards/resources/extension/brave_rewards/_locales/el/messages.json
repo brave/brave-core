@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Φιλοδώρημα για μια φορά",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "λήγει στις",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Αυτός ο δημιουργός δεν έχει ακόμη εγγραφεί για να λάβει συνεισφορές από χρήστες Brave. Οποιαδήποτε φιλοδωρήματα θα στείλετε θα παραμείνουν στο πορτοφόλι σας μέχρι να επαληθευτούν.",
+    "message": "Αυτός ο δημιουργός δεν διαθέτει ακόμα κατάλληλη διαμόρφωση για να λαμβάνει φιλοδωρήματα από το πορτοφόλι σας. Αν στείλετε κάποιο φιλοδώρημα, αυτό θα παραμείνει στο πορτοφόλι σας και θα επαναλαμβάνεται αυτόματα επί 90 ημέρες.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

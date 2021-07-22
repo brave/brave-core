@@ -49,7 +49,6 @@
 <translation id="81774600964978477">Най-добрите сайтове са управлявани от Вас</translation>
 <translation id="5439599923922718668">Често посещавани</translation>
 <translation id="430556192781857057">Най-добрите сайтове се предлагат въз основа на уебсайтове, които посещавате често</translation>
-<translation id="8037713009824540257">Добавяне на сайт</translation>
 <translation id="1773147648972887693">Показване на често посещавани</translation>
 <translation id="4546260624932151782">Показване на любими</translation>
 <translation id="3446024864193919737">Покажи Brave Rewards</translation>
@@ -60,7 +59,7 @@
 <translation id="2875302873837723333">топ сайтове</translation>
 <translation id="8173998484743827990">Статистика за Brave</translation>
 <translation id="383680190590774040">часовник</translation>
-<translation id="3333887201479867589">Brave награди</translation>
+<translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="3159285901314605198">Фоново изображение</translation>
 <translation id="385051799172605136">Назад</translation>
 <translation id="9024104284526126630">Можете да започнете частно обаждане в Brave.</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">Източници</translation>
 <translation id="5158129253322921540">Деактивирайте съдържанието от <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Повишен</translation>
+<translation id="4541978218358617681">Реклама</translation>
 <translation id="1776831331757823105">Часовник</translation>
 <translation id="7791543448312431591">Добавяне</translation>
 <translation id="7679334366167089823">Печелете токени за гледане на реклами, зачитащи поверителността.</translation>
 <translation id="1531133232292396145">Търгувайте с криптовалути на Binance директно във вашия браузър.</translation>
 <translation id="2166494527623220386">Търгувайте с криптовалута на Gemini директно във вашия браузър.</translation>
 <translation id="7191394989411626168">Изключвайки Карти, всички видими в момента карти ще бъдат скрити. Все пак може да бъдете уведомени за нови карти.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="5655621391922317800">Крипто портфейли</translation>
 <translation id="8820817407110198400">Отметки</translation>
 <translation id="1644574205037202324">История</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">Изберете търсачка</translation>
 <translation id="438216590634144114">Изберете търсачката, която искате да използвате по подразбиране когато търсите в нета от адресната лента.</translation>
 <translation id="5804484488647369316">Задаване на търсачка по подразбиране</translation>
-<translation id="4428458837269935199">За опит с по-поверително търсене, опитайте DuckDuckGo.</translation>
 <translation id="3829010735958850433">Пропуснете увода за добре дошли</translation>
 <translation id="1201402288615127009">Напред</translation>
 <translation id="7954950242989581218">Браузвайте безопасно и сигурно</translation>
@@ -352,15 +352,15 @@
 <translation id="4371618764691059036">Месечното ппащане беше зададено.</translation>
 <translation id="6356822617569064293">Дата на следващо плащане:</translation>
 <translation id="3593485149443019592">Недостатъчен брой жетони. Моля, <ph name="LINK_BEGIN"/>добавете средства<ph name="LINK_END"/>.</translation>
-<translation id="4622723187300249546">Еднократен бакшиш</translation>
-<translation id="5268142130226208198">Еднократна сума за бакшиша:</translation>
+<translation id="207268487070188114">Еднократно дарение</translation>
+<translation id="69861679024013299">Сума на еднократното дарение:</translation>
 <translation id="3669086939205397942">Изчакайте, още не можете да подпомагате</translation>
 <translation id="3288812755711687300">публикация на <ph name="USER"/></translation>
 <translation id="5851002232791947896">туит на <ph name="USER"/></translation>
 <translation id="5531915212947569943">Съжаляваме, че напускате…</translation>
 <translation id="1420756770787071946">Подкрепете този създател</translation>
 <translation id="3271043362279673449">Благодарим Ви за подкрепата!</translation>
-<translation id="379596083010863211">Вашият еднократен бакшиш беше изпратен.</translation>
+<translation id="3312470408978098625">Вашето еднократно дарение беше изпратено.</translation>
 <translation id="5096821444729034955">за тяхната публикация</translation>
 <translation id="2978223787436054634">Изпратете туийт за Вашата поддръжка</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Направете кратка обиколка<ph name="TOUR_LINK_END"/> или <ph name="LEARN_LINK_BEGIN"/>научете повече<ph name="LEARN_LINK_END"/> за подробности.</translation>
@@ -377,7 +377,7 @@
 <translation id="6318696841371191107">Направете кратка обиколка</translation>
 <translation id="8465790416279415448">С продължаването си, Вие се съгласявате с <ph name="TOS_LINK_BEGIN"/>Условията на ползване<ph name="TOS_LINK_END"/> и <ph name="PP_LINK_BEGIN"/>Политиката за поверителност<ph name="PP_LINK_END"/>.</translation>
 <translation id="2404165674840145940">Подпомагайте с Brave Rewards</translation>
-<translation id="5820285701794581330">Използвайки Brave rewards, ще започнете да печелите BAT, които можете да използвате, за да подкрепите създателите.</translation>
+<translation id="5820285701794581330">Използвайки Brave Rewards, ще започнете да печелите BAT, които можете да използвате, за да подкрепите създателите.</translation>
 <translation id="5705882733397021510">Назад</translation>
 <translation id="185034574799484512">Нека направим кратка обиколка</translation>
 <translation id="8281886186245836920">Пропускане</translation>
@@ -408,7 +408,7 @@
 <translation id="5094577350232361255">за</translation>
 <translation id="4918086044614829423">Приемам</translation>
 <translation id="5916290544882167205">Brave Software. Brave е регистрирана търговска марка на Brave Software. Имената на сайтове могат да бъдат търговски марки или регистрирани търговски марки на собственика на сайта.</translation>
-<translation id="9026369588205476247">За да защитим поверителността ви, това изявление на Brave награди не се запазва, записва или се регистрира някъде другаде, освен на вашето устройство (този компютър). То не може да бъде извлечено от Brave в случай на загуба на данни на вашето устройство.</translation>
+<translation id="9026369588205476247">За да защитим поверителността ви, това изявление на Brave Rewards не се запазва, записва или се регистрира някъде другаде, освен на вашето устройство (този компютър). То не може да бъде извлечено от Brave в случай на загуба на данни на вашето устройство.</translation>
 <translation id="1036277985068412734">добавете средства</translation>
 <translation id="3587482841069643663">Всички</translation>
 <translation id="4241224519481557898">Категория</translation>
@@ -512,10 +512,10 @@
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">на</translation>
 <translation id="1166682575529520472">Месечен</translation>
-<translation id="8370173854533168890">Еднократно</translation>
+<translation id="1378730109637014435">Еднократно</translation>
 <translation id="9182287025588539628">Еднократни бакшиши</translation>
 <translation id="6381574025952123568">Начален баланс</translation>
-<translation id="532275381857891532">30-дневна хронология на рекламите</translation>
+<translation id="156591572855748524">30-дневна хронология на рекламите</translation>
 <translation id="4923459931733593730">Плащане</translation>
 <translation id="6104680658798556671">Плащането не беше направено.</translation>
 <translation id="3138528956349114724">Фиксираните сайтове сега са</translation>
@@ -566,7 +566,7 @@
 <translation id="1370034647041840967">Печелете токени за вниманието ви към рекламите и ги платете по-нататък, за да подкрепите създателите на съдържание, които цените!</translation>
 <translation id="4919888432594361029">Добавяйте, теглете и управлявайте средства в <ph name="PROVIDER"/>.</translation>
 <translation id="3092054349246483285">Вашият Brave портфейл се поддържа от <ph name="PROVIDER"/>.</translation>
-<translation id="6401272292123354754">Наградите на Brave са основани на Basic Attention Token (жетон за основно внимание). Научете повече за BAT</translation>
+<translation id="6401272292123354754">Brave Rewards са основани на Basic Attention Token (жетон за основно внимание). Научете повече за BAT</translation>
 <translation id="7823359893981882407">тук</translation>
 <translation id="4483635855837696643">Възстановете вашето портмоне</translation>
 <translation id="459721429458957031">Използвайте ключа си за възстановяване, за да възстановите портфейла си.</translation>
@@ -618,11 +618,11 @@
 <translation id="318487899513214296">Вижте какво е подобрено</translation>
 <translation id="4083384190339959182">Направихме’големи актуализации на Brave.</translation>
 <translation id="5395851053710553429">Пригответе се да се насладите на следващия интернет.</translation>
-<translation id="63956545637156715">Защо възнаграждения от Brave?</translation>
+<translation id="63956545637156715">Защо Brave Rewards?</translation>
 <translation id="3780605330121608425">Вашето портмоне</translation>
 <translation id="6727483290601442544">Преглед на детайлите</translation>
 <translation id="1988679729106502285">ЗАБЕЛЕЖКА:</translation>
-<translation id="5815103311506128988">Този създател все още не се е регистрирал да получава вноски от Brave потребители. Вашият браузър ще продължава да се опитва да прави вноски докато той потвърди или до 90 дена.</translation>
+<translation id="7979350009208995417">Този създател в момента не е конфигуриран да получава дарения от вашия портфейл. Всяко дарение, което направите, ще остане в състояние на изчакване във вашия портфейл и ще се извършва повторен опит автоматично в продължение на 90 дни.</translation>
 <translation id="7461596279975181413">Този проверен създател на Brave все още не е конфигурирал акаунта си, за да получава приноси от Brave потребители. Вашият браузър ще продължава да се опитва да даде своя принос, докато той не потвърди или до изтичане на 90 дни.</translation>
 <translation id="4292832015778676417">спечелено от реклами</translation>
 <translation id="3197752845651180812">Допринасяния в процес на изчакване</translation>
@@ -637,7 +637,7 @@
 <translation id="923467487918828349">Показване на всички</translation>
 <translation id="5113531205597573951">Прегледани Сайтове</translation>
 <translation id="4560448935659791043">Спечелихте награда за реклама!</translation>
-<translation id="4947094120398792493">Вашата награда е на път към портфейла ви Brave.</translation>
+<translation id="4947094120398792493">Вашата награда е на път към портфейла ви Brave Rewards.</translation>
 <translation id="39734939514946950">Вашата сума на възнаграждение</translation>
 <translation id="2151535059686617995">It’s вашият късметлийски ден!</translation>
 <translation id="6436689611575806470">Вашите безвъзмездни средства в [[currency]] са на път.</translation>
@@ -646,7 +646,7 @@
 <translation id="543510923939676996">Портфейлът е потвърден</translation>
 <translation id="2659764755126740206">Отидете в моя акаунт <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Завършете проверката на портфейла</translation>
-<translation id="9200453331904391567">Разкачане от Brave награди</translation>
+<translation id="9200453331904391567">Прекъсване на връзката с Brave Rewards</translation>
 <translation id="7404779623219601861">Осребряване на карти за подаръци</translation>
 <translation id="6215565499749144110">С TAP Network можете да осребрите BAT за популярни карти за подаръци с имена.</translation>
 <translation id="6915065518766963119">* Изисква поддържана проверка.</translation>
@@ -828,6 +828,7 @@
 <translation id="3741998951694470470">Грешка при извличане на данни за импортиране</translation>
 <translation id="7900950536120202771">Вътрешна грешка в IPFS възела</translation>
 <translation id="1036635552229153800">Данните бяха успешно качени, но не са пренесени в директорията brave-import. Можете да направите това ръчно от страницата за настройки на импортирането.</translation>
+<translation id="3793279629218362523">Управление на  Peer ID и IPNS ключове</translation>
 <translation id="572392919096807438">Запомняне на решението ми</translation>
 <translation id="7978789143098237970">до затваряне на този сайт</translation>
 <translation id="3523195733429162409">за 24 часа</translation>
