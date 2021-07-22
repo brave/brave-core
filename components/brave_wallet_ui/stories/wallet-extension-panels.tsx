@@ -3,14 +3,17 @@ import * as React from 'react'
 // Components
 import { ConnectWithSite, ConnectedPanel, Panel, WelcomePanel } from '../components/extension'
 import { AppList } from '../components/shared'
-import { WalletAccountType, PanelTypes, AppObjectType, AppsListType } from '../constants/types'
+import { Send, SelectAsset } from '../components/buy-send-swap'
+import { WalletAccountType, PanelTypes, AppObjectType, AppsListType, AssetOptionType, BuySendSwapViewTypes } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import { filterAppList } from '../utils/filter-app-list'
 import LockPanel from '../components/extension/lock-panel'
 import {
   StyledExtensionWrapper,
-  ScrollContainer
+  ScrollContainer,
+  SelectContainer
 } from './style'
+import { AssetOptions } from '../options/asset-options'
 
 export default {
   title: 'Wallet/Extension/Panels',
@@ -120,6 +123,34 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
   const [walletConnected, setWalletConnected] = React.useState<boolean>(true)
   const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
+  const [selectedAsset, setSelectedAsset] = React.useState<AssetOptionType>(AssetOptions[0])
+  const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
+  const [toAddress, setToAddress] = React.useState('')
+  const [fromAmount, setFromAmount] = React.useState('')
+
+  const onChangeSendView = (view: BuySendSwapViewTypes) => {
+    if (view === 'assets') {
+      setShowSelectAsset(true)
+    }
+  }
+
+  const onHideSelectAsset = () => {
+    setShowSelectAsset(false)
+  }
+
+  const onSelectAsset = (asset: AssetOptionType) => () => {
+    setSelectedAsset(asset)
+    setShowSelectAsset(false)
+  }
+
+  const onInputChange = (value: string, name: string) => {
+    if (name === 'address') {
+      setToAddress(value)
+    } else {
+      setFromAmount(value)
+    }
+  }
+
   const toggleConnected = () => {
     setWalletConnected(!walletConnected)
   }
@@ -168,9 +199,18 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     }
   }
 
+  const onSelectPresetAmount = (percent: number) => {
+    const amount = Number(selectedAccount.balance) * percent
+    setFromAmount(amount.toString())
+  }
+
   const handlePasswordChanged = (value: string) => {
     setHasPasswordError(false)
     setInputValue(value)
+  }
+
+  const onSubmitSend = () => {
+    alert('Will submit Send')
   }
 
   return (
@@ -192,24 +232,49 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
               navAction={navigateTo}
             />
           ) : (
-            <Panel
-              navAction={navigateTo}
-              title={panelTitle}
-              useSearch={selectedPanel === 'apps'}
-              searchAction={selectedPanel === 'apps' ? filterList : undefined}
-            >
-              {selectedPanel === 'apps' &&
-                <ScrollContainer>
-                  <AppList
-                    list={filteredAppsList}
-                    favApps={favoriteApps}
-                    addToFav={addToFavorites}
-                    removeFromFav={removeFromFavorites}
-                    action={browseMore}
+            <>
+              {showSelectAsset &&
+                <SelectContainer>
+                  <SelectAsset
+                    assets={AssetOptions}
+                    onSelectAsset={onSelectAsset}
+                    onBack={onHideSelectAsset}
                   />
-                </ScrollContainer>
+                </SelectContainer>
               }
-            </Panel>
+              {!showSelectAsset &&
+                <Panel
+                  navAction={navigateTo}
+                  title={panelTitle}
+                  useSearch={selectedPanel === 'apps'}
+                  searchAction={selectedPanel === 'apps' ? filterList : undefined}
+                >
+                  <ScrollContainer>
+                    {selectedPanel === 'apps' &&
+                      <AppList
+                        list={filteredAppsList}
+                        favApps={favoriteApps}
+                        addToFav={addToFavorites}
+                        removeFromFav={removeFromFavorites}
+                        action={browseMore}
+                      />
+                    }
+                    {selectedPanel === 'send' &&
+                      <Send
+                        onChangeSendView={onChangeSendView}
+                        onInputChange={onInputChange}
+                        onSelectPresetAmount={onSelectPresetAmount}
+                        onSubmit={onSubmitSend}
+                        selectedAsset={selectedAsset}
+                        selectedAssetAmount={fromAmount}
+                        selectedAssetBalance={selectedAccount.balance.toString()}
+                        toAddress={toAddress}
+                      />
+                    }
+                  </ScrollContainer>
+                </Panel>
+              }
+            </>
           )}
         </>
       )}

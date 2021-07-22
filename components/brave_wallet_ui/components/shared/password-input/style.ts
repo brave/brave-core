@@ -27,6 +27,7 @@ export const Input = styled.input<StyleProps>`
   line-height: 20px;
   letter-spacing: 0.01em;
   padding: 10px 10px 10px 10px;
+  margin: 0px;
   color: ${(p) => p.theme.color.text01};
   ::placeholder {
     font-family: Poppins;

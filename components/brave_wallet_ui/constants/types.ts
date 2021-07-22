@@ -64,6 +64,7 @@ export type PanelTypes =
   | 'networks'
   | 'settings'
   | 'expanded'
+  | 'assets'
 
 export type NavTypes =
   | 'crypto'

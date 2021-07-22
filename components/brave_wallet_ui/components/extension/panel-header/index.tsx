@@ -28,7 +28,7 @@ export default class PanelHeader extends React.PureComponent<Props> {
   render () {
     const { title, searchAction, useSearch } = this.props
     return (
-      <HeaderWrapper>
+      <HeaderWrapper hasSearch={useSearch ? useSearch : false}>
         <TopRow>
           <HeaderTitle>{title}</HeaderTitle>
           <CloseButton onClick={this.navigate('main')} />

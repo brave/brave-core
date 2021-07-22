@@ -13,6 +13,7 @@ import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 import store from './store'
 import * as WalletActions from '../common/actions/wallet_actions'
 import Container from './container'
+import { PanelWrapper } from './style'
 
 function App () {
   const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
@@ -22,13 +23,15 @@ function App () {
   return (
     <Provider store={store}>
       {initialThemeType &&
-      <BraveCoreThemeProvider
-        initialThemeType={initialThemeType}
-        dark={walletDarkTheme}
-        light={walletLightTheme}
-      >
-        <Container />
-      </BraveCoreThemeProvider>
+        <BraveCoreThemeProvider
+          initialThemeType={initialThemeType}
+          dark={walletDarkTheme}
+          light={walletLightTheme}
+        >
+          <PanelWrapper>
+            <Container />
+          </PanelWrapper>
+        </BraveCoreThemeProvider>
       }
     </Provider>
   )
