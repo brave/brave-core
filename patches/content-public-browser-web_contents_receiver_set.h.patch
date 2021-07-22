@@ -1,8 +1,8 @@
 diff --git a/content/public/browser/web_contents_receiver_set.h b/content/public/browser/web_contents_receiver_set.h
-index 725e64c675465d2beb6a3db4763230d75bf7bb93..743cdc5db25b817a37faac5be026472972520bb5 100644
+index b0fa64b5e1642a596df697a4a2c8d772db4730e2..5f3e1dc086bc22f61990f7211439ceae6eb7d17a 100644
 --- a/content/public/browser/web_contents_receiver_set.h
 +++ b/content/public/browser/web_contents_receiver_set.h
-@@ -55,6 +55,11 @@ namespace subresource_redirect {
+@@ -53,6 +53,11 @@ namespace subresource_redirect {
  class SubresourceRedirectObserver;
  }
  
@@ -14,7 +14,7 @@ index 725e64c675465d2beb6a3db4763230d75bf7bb93..743cdc5db25b817a37faac5be0264729
  namespace content {
  
  class ConversionHost;
-@@ -142,6 +147,8 @@ class WebContentsFrameReceiverSetPassKey {
+@@ -138,6 +143,8 @@ class WebContentsFrameReceiverSetPassKey {
    friend class DisplayCutoutHostImpl;
    friend class ScreenOrientationProvider;
    friend class TestFrameInterfaceBinder;
