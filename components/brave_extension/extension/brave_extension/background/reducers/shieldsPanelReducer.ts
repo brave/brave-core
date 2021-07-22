@@ -71,7 +71,7 @@ export default function shieldsPanelReducer (
       break
     }
     case windowTypes.WINDOW_CREATED: {
-      if (action.window.id && (action.window.focused || Object.keys(state.windows).length === 0)) {
+      if (action.window.focused || Object.keys(state.windows).length === 0) {
         state = shieldsPanelState.focusedWindowChanged(state, action.window.id)
       }
       break
