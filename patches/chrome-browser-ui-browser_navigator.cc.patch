@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_navigator.cc b/chrome/browser/ui/browser_navigator.cc
-index df2bdd20c792d7042d0208664570b3b44897f829..c9d0d03002ba426e0a997eda4d63496e54a7ef6b 100644
+index a4af0836da1aa34768f01774df321c7ae458bad2..b07017b833fbd436a2b56c0818fc09efeda1c914 100644
 --- a/chrome/browser/ui/browser_navigator.cc
 +++ b/chrome/browser/ui/browser_navigator.cc
 @@ -490,6 +490,7 @@ void Navigate(NavigateParams* params) {
@@ -17,4 +17,4 @@ index df2bdd20c792d7042d0208664570b3b44897f829..c9d0d03002ba426e0a997eda4d63496e
 +  if (!IsHostAllowedInIncognitoBraveImpl(host)) return false;
    if (scheme == chrome::kChromeSearchScheme) {
      return host != chrome::kChromeUIThumbnailHost &&
-            host != chrome::kChromeUIThumbnailHost2 &&
+            host != chrome::kChromeUIThumbnailHost2;
