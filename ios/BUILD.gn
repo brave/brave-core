@@ -32,6 +32,7 @@ brave_core_public_headers = [
   "//brave/ios/browser/api/sync/driver/brave_sync_profile_service.h",
   "//brave/ios/browser/api/wallet/brave_wallet_api.h",
   "//brave/ios/browser/api/wallet/hd_keyring_ios.h",
+
   # "//brave/ios/browser/api/wallet/keyring_controller_ios.h",
   "//brave/ios/browser/api/ads/brave_ads.h",
   "//brave/ios/browser/api/ads/ad_notification_ios.h",

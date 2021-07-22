@@ -19,6 +19,7 @@ source_set("wallet") {
     "hd_keyring_ios+private.h",
     "hd_keyring_ios.h",
     "hd_keyring_ios.mm",
+
     # "keyring_controller_ios+private.h",
     # "keyring_controller_ios.h",
     # "keyring_controller_ios.mm",
