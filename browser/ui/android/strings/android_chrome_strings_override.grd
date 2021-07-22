@@ -146,8 +146,12 @@ CHAR_LIMIT guidelines:
         Private tab
       </message>
       <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_TITLE" desc="Title that states history is not saved in Private mode.">
-        History isn’t saved in Private
+        Sites you visit aren’t saved in Private
       </message>
+      <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_DESCRIPTION" desc="Description that states history is not saved in Private mode.">
+        To clear Private browsing history from your device, close all tabs
+      </message>
+
       <message name="IDS_CLOSE_ALL_INCOGNITO_NOTIFICATION_TITLE" desc="Title on the notification that closes all Private tabs on Android N+.">
         Private Tabs
       </message>
@@ -195,8 +199,8 @@ CHAR_LIMIT guidelines:
       <if expr="enable_arcore">
         </if>
 
-      <message name="IDS_QR_CODE_SHARE_DESCRIPTION" desc="Text on QR code sharing tab describing how to use the QR code.">
-        To share with profiles nearby, let them scan this QR code
+      <message name="IDS_QR_CODE_SHARE_DESCRIPTION" desc="Text on QR Code sharing tab describing how to use the QR Code.">
+        To share with profiles nearby, let them scan this QR Code
       </message>
 
       </messages>
