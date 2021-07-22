@@ -167,7 +167,7 @@
         Brave Ad Block
       </message>
       <message name="IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER" desc="The menu item to report a broken site in the app menu">
-        Report a Broken Site
+        Report a broken site
       </message>
       <message name="IDS_SHOW_BRAVE_SYNC" desc="The show brave sync menu in the app menu">
         Sync
@@ -176,10 +176,10 @@
         Wallet
       </message>
       <message name="IDS_ADD_NEW_PROFILE" desc="The app menu item to create a new User Profile">
-        Create a New Profile
+        Create a new profile
       </message>
       <message name="IDS_OPEN_GUEST_PROFILE" desc="The app menu item to create a new User Profile">
-        Open Guest Window
+        Open guest window
       </message>
       <message name="IDS_OPEN_MORE_OTHER_DEVICES_SESSIONS" desc="The history sub-menu item to show sessions from other devices">
         More…
