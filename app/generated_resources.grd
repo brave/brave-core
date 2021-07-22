@@ -750,6 +750,15 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH" desc="The name of the Lens Region Search command in the content area context menu">
             Search part of the page with Brave Lens
           </message>
+          <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT1" desc="The name of the Lens Region Search command in the content area context menu">
+            Drag to search images with Brave Lens
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT2" desc="The name of the Lens Region Search command in the content area context menu">
+            Drag over images to search with Brave Lens
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT3" desc="The name of the Lens Region Search command in the content area context menu">
+            Search your screen with Brave Lens
+          </message>
           <message name="IDS_CONTENT_CONTEXT_GOTOURL" desc="The name of the Go to 'url' command in the content area context menu">
             &amp;Go to <ph name="URL">$1<ex>http://www.google.com/</ex></ph>
           </message>
@@ -993,6 +1002,15 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
             Search Part of the Page with Brave Lens
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT1" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
+            Drag to Search Images with Brave Lens
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT2" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
+            Drag over Images to Search with Brave Lens
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT3" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
+            Search Your Screen with Brave Lens
           </message>
           <message name="IDS_CONTENT_CONTEXT_GOTOURL" desc="In Title Case: The name of the Go to url for 'string' command in the content area context menu">
             &amp;Go to <ph name="URL">$1<ex>http://www.google.com/</ex></ph>
@@ -1923,6 +1941,9 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_LINK_RETRY" desc="In the download view, 'Retry' button text to retry downloading a file.">
         Retry
       </message>
+      <message name="IDS_DOWNLOAD_LINK_SHOW_IN_WEB_DRIVE" desc="In the download view, 'Show in web_drive' link text">
+          Show in <ph name="LOCATION">$1<ex>Google Drive</ex></ph>
+      </message>
       <if expr="not is_macosx">
         <message name="IDS_DOWNLOAD_LINK_SHOW" desc="In the download view, 'Show in folder' link text">
           Show in folder
@@ -2295,6 +2316,29 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_BOOKMARK_APP_BUBBLE_OPEN_AS_TABBED_WINDOW" desc="Checkbox text for opening the bookmark app as a tabbed window.">
         Open as tabbed window
+      </message>
+
+      <!-- WebApp name/icon update dialog -->
+      <message name="IDS_WEBAPP_UPDATE_DIALOG_TITLE_NAME" desc="The title at the top of the dialog when only the name changed.">
+        Review name updates
+      </message>
+      <message name="IDS_WEBAPP_UPDATE_DIALOG_TITLE_ICON" desc="The title at the top of the dialog when only the icon changed.">
+        Review icon updates
+      </message>
+      <message name="IDS_WEBAPP_UPDATE_DIALOG_TITLE_NAME_AND_ICON" desc="The title at the top of the dialog when the name and icon changed.">
+        Review name &amp; icon updates
+      </message>
+      <message name="IDS_WEBAPP_UPDATE_EXPLANATION" desc="The text at the top of the dialog, explaining what to do when an app changes its identity.">
+        If this web app is trying to trick you into thinking it is a different app, uninstall it.
+      </message>
+      <message name="IDS_WEBAPP_UPDATE_NEGATIVE_BUTTON" desc="The text for the negative button (aka. cancel button), allowing the user to uninstall the app and report it to the abuse team.">
+        Uninstall app
+      </message>
+      <message name="IDS_UPDATE_WEBAPP_CURRENT_ICON" desc="The accessibility string explaining which icon is the current icon.">
+        Current icon
+      </message>
+      <message name="IDS_UPDATE_WEBAPP_UPDATED_ICON" desc="The accessibility string explaining which icon is the new icon.">
+        New icon
       </message>
 
       <!-- Finish policy app installation dialog -->
@@ -3298,10 +3342,10 @@ are declared in tools/grit/grit_rule.gni.
        Share this tab instead
       </message>
       <message name="IDS_TAB_SHARING_INFOBAR_STOP_BUTTON" desc="Text displayed on the button to stop sharing a tab.">
-       Stop
+       Stop sharing
       </message>
-      <message name="IDS_TAB_SHARING_INFOBAR_SWITCH_TO_BUTTON" desc="Text displayed on an infobar button offering to change focus to another tab.">
-       Switch to tab (<ph name="TAB_ORIGIN">$1<ex>meet.google.com</ex></ph>)
+      <message name="IDS_TAB_SHARING_INFOBAR_SWITCH_TO_BUTTON" desc="The user is sharing (presenting) a tab via a screensharing app like Brave Meet. This button allows the user to continue sharing a tab but view a different tab [url] at the same time.">
+       View tab <ph name="TAB_ORIGIN">$1<ex>meet.google.com</ex></ph>
       </message>
       <message name="IDS_TAB_SHARING_INFOBAR_SWITCH_TO_CAPTURER_BUTTON" desc="Text displayed on an infobar button offering to change focus to the capturer if its hostname cannot be determined. (Otherwise, IDS_TAB_SHARING_INFOBAR_SWITCH_TO_BUTTON will be used.)">
        Switch to capturing tab
@@ -3614,7 +3658,7 @@ are declared in tools/grit/grit_rule.gni.
           Profile Importer
         </message>
       </if>
-      <message name="IDS_UTILITY_PROCESS_QRCODE_GENERATOR_SERVICE_NAME" desc="The name of the utility process used for encoding QR codes.">
+      <message name="IDS_UTILITY_PROCESS_QRCODE_GENERATOR_SERVICE_NAME" desc="The name of the utility process used for encoding QR Codes.">
         QR Code Generator
       </message>
       <if expr="is_win">
@@ -5663,10 +5707,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Why am I seeing this?
       </message>
       <message name="IDS_NTP_MODULES_TASKS_INFO" desc="Text shown in the body of the info dialog of a task module.">
-        You're seeing this item based on your previous activity using Brave services. You can see your data, delete it, and change your settings at <ph name="BEGIN_LINK">&lt;a href="https://myactivity.google.com/" target="_blank" rel="noopener noreferrer"&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;</ph>.
+        You're seeing this item based on your previous activity using Brave services. You can see your data, delete it, and change your settings at <ph name="BEGIN_LINK1">&lt;a href="https://myactivity.google.com/" target="_blank" rel="noopener noreferrer"&gt;</ph>myactivity.google.com<ph name="END_LINK1">&lt;/a&gt;</ph>.
         <ph name="BREAK">&lt;br&gt;</ph>
         <ph name="BREAK">&lt;br&gt;</ph>
-        Learn about the data Brave collects and why at <ph name="BEGIN_LINK">&lt;a href="https://policies.google.com/" target="_blank" rel="noopener noreferrer"&gt;</ph>policies.google.com<ph name="END_LINK">&lt;/a&gt;</ph>.
+        Learn about the data Brave collects and why at <ph name="BEGIN_LINK2">&lt;a href="https://policies.google.com/" target="_blank" rel="noopener noreferrer"&gt;</ph>policies.google.com<ph name="END_LINK2">&lt;/a&gt;</ph>.
       </message>
       <message name="IDS_NTP_MODULES_SHOPPING_TASKS_INFO_CLOSE" desc="Text shown on close button of a task module.">
         Close
@@ -7477,48 +7521,48 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       </if>
 
-      <!-- Share via QR code strings -->
+      <!-- Share via QR Code strings -->
       <if expr="not use_titlecase">
-        <message name="IDS_CONTEXT_MENU_GENERATE_QR_CODE_PAGE" desc="The label for the Create QR code for this Page context menu item.">
-          Create QR code for this page
+        <message name="IDS_CONTEXT_MENU_GENERATE_QR_CODE_PAGE" desc="The label for the Create QR Code for this Page context menu item.">
+          Create QR Code for this page
         </message>
-        <message name="IDS_CONTEXT_MENU_GENERATE_QR_CODE_IMAGE" desc="The label for the Create QR code for this Image context menu item.">
-          Create QR code for this image
+        <message name="IDS_CONTEXT_MENU_GENERATE_QR_CODE_IMAGE" desc="The label for the Create QR Code for this Image context menu item.">
+          Create QR Code for this image
         </message>
       </if>
       <if expr="use_titlecase">
-        <message name="IDS_CONTEXT_MENU_GENERATE_QR_CODE_PAGE" desc="The label for the Create QR code for this Page context menu item.">
-          Create QR code for this Page
+        <message name="IDS_CONTEXT_MENU_GENERATE_QR_CODE_PAGE" desc="The label for the Create QR Code for this Page context menu item.">
+          Create QR Code for this Page
         </message>
-        <message name="IDS_CONTEXT_MENU_GENERATE_QR_CODE_IMAGE" desc="The label for the Create QR code for this Image context menu item.">
-          Create QR code for this Image
+        <message name="IDS_CONTEXT_MENU_GENERATE_QR_CODE_IMAGE" desc="The label for the Create QR Code for this Image context menu item.">
+          Create QR Code for this Image
         </message>
       </if>
       <if expr="not is_android">
-        <message name="IDS_OMNIBOX_QRCODE_GENERATOR_ICON_LABEL" desc="String for the omnibox icon label for the QR code Generator">
-          QR code
+        <message name="IDS_OMNIBOX_QRCODE_GENERATOR_ICON_LABEL" desc="String for the omnibox icon label for the QR Code Generator">
+          QR Code
         </message>
-        <message name="IDS_OMNIBOX_QRCODE_GENERATOR_ICON_TOOLTIP" desc="Tooltip for the omnibox icon label for the QR code Generator">
-          Create QR code for this Page
+        <message name="IDS_OMNIBOX_QRCODE_GENERATOR_ICON_TOOLTIP" desc="Tooltip for the omnibox icon label for the QR Code Generator">
+          Create QR Code for this Page
         </message>
       </if>
       <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_TITLE" desc="Title for the QR Generator dialog.">
-        Scan QR code
+        Scan QR Code
       </message>
-      <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_URL_TEXTFIELD_ACCESSIBLE_NAME" desc="Text to be spoken for the QR code Generator's URL Textfield.">
+      <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_URL_TEXTFIELD_ACCESSIBLE_NAME" desc="Text to be spoken for the QR Code Generator's URL Textfield.">
         URL
       </message>
-      <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_TOOLTIP" desc="Tooltip string for QR Generator dialog informing the user they           can scan a QR code with their phone.">
+      <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_TOOLTIP" desc="Tooltip string for QR Generator dialog informing the user they           can scan a QR Code with their phone.">
         To scan this code, you can use a QR scanner app on your phone, or some camera apps.
       </message>
-      <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_DOWNLOAD_BUTTON_LABEL" desc="Button text for the QR code generator's download button.">
+      <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_DOWNLOAD_BUTTON_LABEL" desc="Button text for the QR Code generator's download button.">
         Download
       </message>
-      <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_ERROR_TOO_LONG" desc="Error message displayed when a URL exceeds the limit for which we can generate a QR code.">
+      <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_ERROR_TOO_LONG" desc="Error message displayed when a URL exceeds the limit for which we can generate a QR Code.">
         Use <ph name="CHARACTER_LIMIT">$1<ex>300</ex></ph> characters or fewer
       </message>
       <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_ERROR_UNKNOWN" desc="Error message displayed when an unknown error occurs.">
-          Can't create QR code
+          Can't create QR Code
       </message>
 
       <!-- Sharing Hub feature strings. -->
@@ -8440,10 +8484,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_SYNC_ERROR_BUBBLE_VIEW_TITLE" desc="Title in the sync error bubble view/notification.">
         Sync isn't working
       </message>
+      <message name="IDS_SYNC_ERROR_PASSWORDS_BUBBLE_VIEW_TITLE" desc="Title in the sync error bubble view/notification for the case where the error only affects sync-ed passwords.">
+        Password sync isn't working
+      </message>
       <message name="IDS_SYNC_ERROR_USER_MENU_TITLE" desc="Title of the sync/signin error header of desktop user menu.">
         Sync isn't working
       </message>
-      <message name="IDS_SYNC_ERROR_PASSWORDS_USER_MENU_TITLE" desc="Title of the sync/signin error header of desktop user menu.">
+      <message name="IDS_SYNC_ERROR_PASSWORDS_USER_MENU_TITLE" desc="Title of the sync/signin error header of desktop user menu for the case where the error only affects sync-ed passwords..">
         Password sync isn't working
       </message>
       <message name="IDS_SYNC_ERROR_PASSWORDS_USER_MENU_TITLE_SIGNED_IN_ONLY" desc="Title of the sync/signin error header of desktop user menu. Shown for users who are signed-in but not syncing.">
@@ -8457,6 +8504,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_SYNC_ERROR_USER_MENU_SIGNIN_BUTTON" desc="Button in the header of desktop user menu that prompts the user to sign in again to fix the out-of-date signin info error.">
         Sign in again
+      </message>
+      <message name="IDS_SYNC_NEEDS_VERIFICATION_BUBBLE_VIEW_TITLE" desc="Title in the sync error bubble view/notification for the case where sync needs to verify the user.">
+        Sync needs to verify it's you
       </message>
       <message name="IDS_SYNC_ERROR_USER_MENU_PASSPHRASE_BUTTON" desc="Button in the header of desktop user menu that prompts the user to enter the sync passphrase to fix the out-of-date passphrase error.">
         Enter passphrase
@@ -9841,8 +9891,14 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_DESKTOP_MEDIA_PICKER_TEXT_DELEGATED" desc="Text for the window picker dialog shown when desktop capture is requested by an app to be used by a tab.">
         <ph name="APP_NAME">$1<ex>Brave Hangouts</ex></ph> wants to share the contents of your screen with <ph name="TARGET_NAME">$2<ex>https://google.com</ex></ph>.
       </message>
-      <message name="IDS_DESKTOP_MEDIA_PICKER_AUDIO_SHARE" desc="Text for the checkbox on the window picker dialog, when checked, audio will be shared, otherwise just video sharing">
-        Share audio
+      <message name="IDS_DESKTOP_MEDIA_PICKER_AUDIO_SHARE_SCREEN" desc="Text for the checkbox on the window picker dialog which is displayed when attempting to share a screen. In that case, when checked, system audio will be shared; otherwise only video.">
+        Share system audio
+      </message>
+      <message name="IDS_DESKTOP_MEDIA_PICKER_AUDIO_SHARE_WINDOW" desc="Text for the checkbox on the window picker dialog which is displayed when attempting to share a window. In that case, when checked, window audio will be shared; otherwise only video.">
+        Share window audio
+      </message>
+      <message name="IDS_DESKTOP_MEDIA_PICKER_AUDIO_SHARE_TAB" desc="Text for the checkbox on the window picker dialog which is displayed when attempting to share a tab. In that case, when checked, tab audio will be shared; otherwise only video.">
+        Share tab audio
       </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_SOURCE_TYPE_SCREEN" desc="Text for the button on the window picker dialog, clicking which takes one to full screen sharing" meaning="Refers to the device's entire screen. Short for 'share the entire screen'.">
         Entire Screen
@@ -10314,8 +10370,31 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_TEXT" desc="Permission request shown if the user is opening a file using a PWA with registered file handlers. Follows a prompt: 'This site would like to:'">
         Open <ph name="FILE_EXTENSIONS">$1<ex>.txt, .csv, .md</ex></ph> files
       </message>
-      <message name="IDS_WEB_APP_FILE_HANDLING_EXTENSION_LIST_SEPARATOR" desc="Text/punctuation that separates a list of file types/extensions, such as .txt or .csv." meaning="List separator for file extensions.">
+      <message name="IDS_WEB_APP_FILE_HANDLING_LIST_SEPARATOR" desc="Text/punctuation that separates items in a lists. For example, this is used in a list of files, such as 'todo_list.txt, shopping_list.txt', and file types/extensions, such as '.txt, .csv.'" meaning="List separator for files.">
          , '''
+      </message>
+      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_TITLE" desc="Title of permission request dialog that is when the user is opening a file using a PWA.">
+        Open file?
+      </message>
+      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_TITLE_MULTIPLE" desc="Title of permission request dialog that is shown when the user is opening multiple files using a PWA.">
+        Open files?
+      </message>
+      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_DESCRIPTION" desc="Descriptive text in permission request dialog that is shown when the user is opening a file using a PWA.">
+        <ph name="APP_ORIGIN">$1<ex>example.com</ex></ph> wants to open this file:
+      </message>
+      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_DESCRIPTION_MULTIPLE" desc="Descriptive text in permission request dialog that is shown when the user is opening multiple files using a PWA.">
+        <ph name="APP_ORIGIN">$1<ex>example.com</ex></ph> wants to open these files:
+      </message>
+      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_STICKY_CHOICE" desc="In permission request dialog that is shown when the user is opening files in a PWA: text for a toggle that makes the permission decision permanent (single file format).">
+        Don't ask again when opening this file format in this app:
+<ph name="FILE_FORMAT">$1<ex>TXT</ex></ph>
+      </message>
+      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_STICKY_CHOICE_MULTIPLE" desc="In permission request dialog that is shown when the user is opening files in a PWA: text for a toggle that makes the permission decision permanent (multiple file formats).">
+        Don't ask again when opening these file formats in this app:
+<ph name="FILE_FORMATS">$1<ex>TXT, CSV, DOC</ex></ph>
+      </message>
+      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_DONT_ALLOW" desc="In permission request dialog that is shown when the user is opening files in a PWA: text for button that doesn't allow PWA to open the file(s).">
+        Don't allow
       </message>
     </if>
 
@@ -10750,11 +10829,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_CABLE_V2_ACTIVATE_DESCRIPTION_SHORT" desc="Second line of text in an item letting the user know how they can use Brave on their Android phone as a security key. The substring 'Use phone as a security key' refers to the string IDS_PHONE_AS_SECURITY_KEY_TEXT in Brave on Android.">
         Open Brave on your Android phone, and go to "Settings &gt; Passwords &gt; Use phone as a security key", and follow the instructions there.
       </message>
-      <message name="IDS_WEBAUTHN_CABLE_QR_TITLE" desc="Title of a dialog that contains a QR-code for the user to scan with a mobile phone app. A QR code is a type of barcode that can be read using a smartphone's camera.">
+      <message name="IDS_WEBAUTHN_CABLE_QR_TITLE" desc="Title of a dialog that contains a QR-code for the user to scan with a mobile phone app. A QR Code is a type of barcode that can be read using a smartphone's camera.">
         Add new phone
       </message>
-      <message name="IDS_WEBAUTHN_CABLE_QR_DESCRIPTION" desc="Description text in a dialog that contains a QR-code for the user to scan with Brave on their Android phone. A QR code is a type of barcode that can be read using a smartphone's camera. The substring 'Use phone as a security key' refers to the string IDS_PHONE_AS_SECURITY_KEY_TEXT in Brave on Android.">
-        To set up an Android phone to be used as a security key with this computer for the first time, open Brave on your phone and go to "Settings &gt; Passwords &gt; Use phone as a security key". Then tap "Connect new device" and scan this QR code.
+      <message name="IDS_WEBAUTHN_CABLE_QR_DESCRIPTION" desc="Description text in a dialog that contains a QR-code for the user to scan with Brave on their Android phone. A QR Code is a type of barcode that can be read using a smartphone's camera. The substring 'Use phone as a security key' refers to the string IDS_PHONE_AS_SECURITY_KEY_TEXT in Brave on Android.">
+        To set up an Android phone to be used as a security key with this computer for the first time, open Brave on your phone and go to "Settings &gt; Passwords &gt; Use phone as a security key". Then tap "Connect new device" and scan this QR Code.
       </message>
 
       <!-- WebAuthn authenticator PIN entry/setup -->
