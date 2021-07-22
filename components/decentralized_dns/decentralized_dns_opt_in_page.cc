@@ -5,6 +5,7 @@
 
 #include "brave/components/decentralized_dns/decentralized_dns_opt_in_page.h"
 
+#include <ostream>
 #include <utility>
 #include <vector>
 
