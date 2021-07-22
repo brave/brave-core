@@ -84,8 +84,9 @@ void NewTabPageAd::FireEvent(const NewTabPageAdInfo& ad,
       return;
     }
 
-    if (HasFiredAdViewedEvent(ad, ad_events)) {
-      BLOG(1, "New tab page ad: Not allowed");
+    if (event_type == NewTabPageAdEventType::kViewed &&
+        HasFiredAdViewedEvent(ad, ad_events)) {
+      BLOG(1, "New tab page ad: Not allowed as already viewed uuid " << uuid);
       NotifyNewTabPageAdEventFailed(uuid, creative_instance_id, event_type);
       return;
     }

@@ -85,8 +85,9 @@ void InlineContentAd::FireEvent(const InlineContentAdInfo& ad,
       return;
     }
 
-    if (HasFiredAdViewedEvent(ad, ad_events)) {
-      BLOG(1, "Inline content ad: Not allowed");
+    if (event_type == InlineContentAdEventType::kViewed &&
+        HasFiredAdViewedEvent(ad, ad_events)) {
+      BLOG(1, "Inline content ad: Not allowed as already viewed uuid " << uuid);
       NotifyInlineContentAdEventFailed(uuid, creative_instance_id, event_type);
       return;
     }
