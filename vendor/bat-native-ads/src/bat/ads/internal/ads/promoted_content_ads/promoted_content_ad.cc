@@ -85,8 +85,10 @@ void PromotedContentAd::FireEvent(const PromotedContentAdInfo& ad,
       return;
     }
 
-    if (HasFiredAdViewedEvent(ad, ad_events)) {
-      BLOG(1, "Promoted content ad: Not allowed");
+    if (event_type == PromotedContentAdEventType::kViewed &&
+        HasFiredAdViewedEvent(ad, ad_events)) {
+      BLOG(1,
+           "Promoted content ad: Not allowed as already viewed uuid " << uuid);
       NotifyPromotedContentAdEventFailed(uuid, creative_instance_id,
                                          event_type);
       return;
