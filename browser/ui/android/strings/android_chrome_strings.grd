@@ -315,7 +315,7 @@ CHAR_LIMIT guidelines:
         Allow Brave sign-in
       </message>
       <message name="IDS_ALLOW_CHROME_SIGNIN_SUMMARY" desc="Summary for a checkbox in Brave services that controls sign-in and sync prompts.">
-        Show Brave sign-in prompts when you sign in to your Brave sync chain
+        Shows prompts to sign in to Brave
       </message>
       <message name="IDS_AUTOCOMPLETE_SEARCHES_AND_URLS_TITLE" desc="Title for a checkbox in Settings that controls URL and search autocompletion and informs the user about the data shared by this feature.">
         Autocomplete searches and URLs
@@ -1642,11 +1642,11 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_CHROME_ADDITIONAL_TERMS_OF_SERVICE_URL" desc="URL for Brave and Chrome OS additional terms of service" translateable="false">
         https://www.google.com/chrome/terms/
       </message>
-      <message name="IDS_PRIVACY_NOTICE_TITLE" desc="Title for the Brave privacy notice">
-        Brave Privacy Notice
+      <message name="IDS_PRIVACY_POLICY_TITLE" desc="Title for the Brave privacy policy">
+        Brave Privacy Policy
       </message>
-      <message name="IDS_CHROME_PRIVACY_NOTICE_URL" desc="URL for the Brave privacy notice" translateable="false">
-        https://www.google.com/intl/$LOCALE/chrome/browser/privacy/
+      <message name="IDS_CHROME_PRIVACY_POLICY_URL" desc="URL for the Brave privacy policy" translateable="false">
+        https://policies.google.com/privacy
       </message>
       <message name="IDS_FAMILY_LINK_PRIVACY_POLICY_URL" desc="URL for the Family Link privacy policy" translateable="false">
         https://families.google.com/intl/$LOCALE/familylink/privacy/child-policy/
@@ -2586,6 +2586,11 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Your browser is managed by your organization
       </message>
 
+      <!-- Signin First Run strings -->
+      <message name="IDS_SIGNIN_FRE_DISMISS_BUTTON" desc="Text for the dismiss button on the welcome sign-in screen. By clicking this button users will continue without signing in,">
+        Use without an account
+      </message>
+
       <!-- Account Signin Strings -->
       <message name="IDS_SIGNIN_ADD_ACCOUNT" desc="Text for adding another Brave sync chain">
         Add account
@@ -2685,6 +2690,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- New Tab Page strings -->
+      <message name="IDS_NEW_TAB_TITLE" desc="Title in tab strip when opening a new tab.">
+        New tab
+      </message>
+      <message name="IDS_NEW_INCOGNITO_TAB_TITLE" desc="Title in tab strip when opening a new Private tab.">
+        New Private tab
+      </message>
       <message name="IDS_RECENT_TABS" desc="Text for button to show 'Recent tabs', i.e. recently closed tabs and tabs that are open on other devices [CHAR_LIMIT=20]">
         Recent tabs
       </message>

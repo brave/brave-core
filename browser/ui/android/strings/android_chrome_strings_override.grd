@@ -155,6 +155,9 @@ CHAR_LIMIT guidelines:
         Close all Private tabs
       </message>
 
+      <message name="IDS_NEW_INCOGNITO_TAB_TITLE" desc="Title in tab strip when opening a new Private tab.">
+        New Private tab
+      </message>
       <message name="IDS_BUTTON_NEW_INCOGNITO_TAB" desc="Tooltip for the button to open a new Private browser tab.">
         New Private tab
       </message>
