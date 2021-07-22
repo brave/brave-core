@@ -41,7 +41,7 @@ BraveProfileSyncService::~BraveProfileSyncService() {
 void BraveProfileSyncService::Initialize() {
   SyncServiceImpl::Initialize();
   if (!brave_sync_prefs_.IsSyncV1Migrated()) {
-    StopImpl(CLEAR_DATA);
+    StopAndClearImpl();
     brave_sync_prefs_.SetSyncV1Migrated(true);
   }
 }
