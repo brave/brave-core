@@ -9,9 +9,6 @@
   <if expr="not use_titlecase">
     </if>
 
-  <if expr="chromeos">
-    </if>
-
   <if expr="not is_ios">
 
     <if expr="is_android">
