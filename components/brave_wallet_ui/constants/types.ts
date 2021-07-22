@@ -248,12 +248,16 @@ export interface SwapResponseReturnInfo {
   response: SwapResponse
 }
 
-export interface GetAssetPriceReturnInfo {
-  success: boolean,
-  price: string
+export interface AssetPriceInfo {
   fromAsset: string
   toAsset: string
+  price: string
   asset24hChange: string
+}
+
+export interface GetAssetPriceReturnInfo {
+  success: boolean,
+  assetPrices: AssetPriceInfo[]
 }
 
 export interface GetAssetPriceHistoryReturnInfo {
@@ -279,7 +283,7 @@ export interface WalletAPIHandler {
   lockWallet: () => Promise<void>
   addAccountToWallet: () => Promise<AddAccountToWalletReturnInfo>
   unlockWallet: (password: string) => Promise<UnlockWalletReturnInfo>
-  getAssetPrice: (fromAssets: string[], toAssets: string[]) => Promise<GetAssetPriceReturnInfo[]>
+  getAssetPrice: (fromAssets: string[], toAssets: string[]) => Promise<GetAssetPriceReturnInfo>
   getAssetPriceHistory: (asset: string, timeframe: AssetPriceTimeframe) => Promise<GetAssetPriceHistoryReturnObjectInfo>
   addFavoriteApp: (appItem: AppObjectType) => Promise<void>
   removeFavoriteApp: (appItem: AppObjectType) => Promise<void>
