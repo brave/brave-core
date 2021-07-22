@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-index e14c4ffdd2c20e6b3f673066b22512b18e65bb0c..bc63c6c68a60e46010906c545aa622640ad02b38 100644
+index 66a9468b3e0d2df56f9a23221b021af0273779a6..19862dce58251d4cd47ba3793309874221e30c28 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-@@ -326,10 +326,12 @@ public class ToolbarTablet extends ToolbarLayout
+@@ -327,10 +327,12 @@ public class ToolbarTablet extends ToolbarLayout
              mOfflineDownloader.downloadPage(getContext(), getToolbarDataProvider().getTab());
              RecordUserAction.record("MobileToolbarDownloadPage");
          }
@@ -15,7 +15,7 @@ index e14c4ffdd2c20e6b3f673066b22512b18e65bb0c..bc63c6c68a60e46010906c545aa62264
          String description = null;
          Context context = getContext();
          Resources resources = context.getResources();
-@@ -395,6 +397,7 @@ public class ToolbarTablet extends ToolbarLayout
+@@ -396,6 +398,7 @@ public class ToolbarTablet extends ToolbarLayout
                  textBoxColor, PorterDuff.Mode.SRC_IN);
  
          mLocationBar.updateVisualsForState();

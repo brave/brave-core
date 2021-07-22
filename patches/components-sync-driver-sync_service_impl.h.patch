@@ -1,5 +1,5 @@
 diff --git a/components/sync/driver/sync_service_impl.h b/components/sync/driver/sync_service_impl.h
-index a241c23af686216d463d8b99b982a3a1a8783326..0979c2483d0095460edf6eb129caf9c00c5ce94e 100644
+index 47d55621c8a53e360e85512eabc5cdb5edb290e0..551d796494d6965d710b3e32b4297d2471ad6037 100644
 --- a/components/sync/driver/sync_service_impl.h
 +++ b/components/sync/driver/sync_service_impl.h
 @@ -251,6 +251,7 @@ class SyncServiceImpl : public SyncService,
@@ -8,5 +8,5 @@ index a241c23af686216d463d8b99b982a3a1a8783326..0979c2483d0095460edf6eb129caf9c0
  
 +  BRAVE_PROFILE_SYNC_SERVICE_H_
   private:
-   // Passed as an argument to StopImpl to control whether or not the sync
-   // engine should clear its data when it shuts down. See StopImpl for more
+   enum UnrecoverableErrorReason {
+     ERROR_REASON_ENGINE_INIT_FAILURE,

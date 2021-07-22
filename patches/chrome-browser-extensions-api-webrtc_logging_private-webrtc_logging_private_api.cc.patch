@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc b/chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc
-index 840bf97407c772243837fd5070202d9ab5fc3b4b..683a8d653e0a651835c5996d3d0b67f540479c74 100644
+index 9a5fc00d8b8967128e4520348f14437263ea70dd..0f04c145e05d3cc28e8a7a76e3f628eb67f13e4d 100644
 --- a/chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc
 +++ b/chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc
 @@ -90,6 +90,7 @@ content::RenderProcessHost* WebrtcLoggingPrivateFunction::RphFromRequest(
