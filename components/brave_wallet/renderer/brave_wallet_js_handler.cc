@@ -79,9 +79,9 @@ void CallMethodOfObject(blink::WebLocalFrame* web_frame,
                                                                   context));
   }
 
-  web_frame->ExecuteMethodAndReturnValue(
-      v8::Local<v8::Function>::Cast(method), object,
-      static_cast<int>(args.size()), args.data()).ToLocalChecked();
+  web_frame->ExecuteMethodAndReturnValue(v8::Local<v8::Function>::Cast(method),
+                                         object, static_cast<int>(args.size()),
+                                         args.data());
 }
 
 }  // namespace
