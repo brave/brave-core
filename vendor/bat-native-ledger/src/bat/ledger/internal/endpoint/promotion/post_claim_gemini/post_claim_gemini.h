@@ -43,12 +43,14 @@ class PostClaimGemini {
   ~PostClaimGemini();
 
   void Request(const std::string& linking_info,
+               const std::string& recipient_id,
                PostClaimGeminiCallback callback);
 
  private:
   std::string GetUrl();
 
-  std::string GeneratePayload(const std::string& linking_info);
+  std::string GeneratePayload(const std::string& linking_info,
+                              const std::string& recipient_id);
 
   type::Result CheckStatusCode(const int status_code);
 

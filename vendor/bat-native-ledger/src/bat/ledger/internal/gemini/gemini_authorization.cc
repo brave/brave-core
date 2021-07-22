@@ -19,7 +19,6 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 using std::placeholders::_4;
-using std::placeholders::_5;
 
 namespace ledger {
 namespace gemini {
@@ -142,14 +141,40 @@ void GeminiAuthorization::OnAuthorize(
     callback(type::Result::LEDGER_ERROR, {});
     return;
   }
+  auto url_callback = std::bind(&GeminiAuthorization::OnFetchRecipientId, this,
+                                _1, _2, token, callback);
+  gemini_server_->post_recipient_id()->Request(token, url_callback);
+}
+
+void GeminiAuthorization::OnFetchRecipientId(
+    const type::Result result,
+    const std::string& recipient_id,
+    const std::string& token,
+    ledger::ExternalWalletAuthorizationCallback callback) {
+  if (result == type::Result::EXPIRED_TOKEN) {
+    BLOG(0, "Expired token");
+    callback(type::Result::EXPIRED_TOKEN, {});
+    ledger_->gemini()->DisconnectWallet();
+    return;
+  }
+
+  if (result != type::Result::LEDGER_OK) {
+    BLOG(0, "Couldn't get token");
+    callback(type::Result::LEDGER_ERROR, {});
+    return;
+  }
+
+  auto wallet_ptr = ledger_->gemini()->GetWallet();
+  wallet_ptr->address = recipient_id;
+  ledger_->gemini()->SetWallet(wallet_ptr->Clone());
+
   auto url_callback = std::bind(&GeminiAuthorization::OnPostAccount, this, _1,
-                                _2, _3, _4, _5, token, callback);
+                                _2, _3, _4, token, callback);
   gemini_server_->post_account()->Request(token, url_callback);
 }
 
 void GeminiAuthorization::OnPostAccount(
     const type::Result result,
-    const std::string& address,
     const std::string& linking_info,
     const std::string& name,
     const bool& verified,
@@ -171,7 +196,6 @@ void GeminiAuthorization::OnPostAccount(
   auto wallet_ptr = ledger_->gemini()->GetWallet();
 
   wallet_ptr->token = token;
-  wallet_ptr->address = address;
   wallet_ptr->user_name = name;
   wallet_ptr->status =
       verified ? type::WalletStatus::VERIFIED : type::WalletStatus::CONNECTED;
@@ -180,7 +204,8 @@ void GeminiAuthorization::OnPostAccount(
 
   auto url_callback =
       std::bind(&GeminiAuthorization::OnClaimWallet, this, _1, token, callback);
-  promotion_server_->post_claim_gemini()->Request(linking_info, url_callback);
+  promotion_server_->post_claim_gemini()->Request(
+      linking_info, wallet_ptr->address, url_callback);
 }
 
 void GeminiAuthorization::OnClaimWallet(
