@@ -86,7 +86,7 @@ void DailyStorage::Save() {
   FilterToDay();
   ListPrefUpdate update(prefs_, pref_name_);
   base::ListValue* list = update.Get();
-  list->Clear();
+  list->ClearList();
   for (const auto& u : daily_values_) {
     base::DictionaryValue value;
     value.SetKey("day", base::Value(u.time.ToDoubleT()));
