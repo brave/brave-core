@@ -1693,135 +1693,165 @@ until they verify, or until 90 days have passed.
       <message name="IDS_CONTINUE_TO_LOGIN" desc="Uphold continue to login text">
         continue to login
       </message>
-    <message name="IDS_SEND">
+    <message name="IDS_SEND" desc="Brave Wallet send button text">
       Send
     </message>
-    <message name="IDS_SEARCH_TITLE">
+    <message name="IDS_SEARCH_TITLE" desc="Brave Wallet search toolbar button hint text">
       Search
     </message>
-    <message name="IDS_SWAP">
+    <message name="IDS_SWAP" desc="Brave Wallet swap button text">
       Swap
     </message>
-    <message name="IDS_DEFI_SECURE_STORAGE">
+    <message name="IDS_DEFI_SECURE_STORAGE" desc="Brave Wallet onboarding text">
       DeFi &amp; Secure Crypto Storage
     </message>
-    <message name="IDS_DEFI_SECURE_STORAGE_TEXT">
+    <message name="IDS_DEFI_SECURE_STORAGE_TEXT" desc="Brave Wallet onboarding text">
       Hold crypto in your custody. Trade assets. View Prices and portfolio performance. Invest, Borrow, and lend with DeFi.
     </message>
-    <message name="IDS_SETUP_CRYPTO">
+    <message name="IDS_SETUP_CRYPTO" desc="Brave Wallet onboarding button text">
       Setup Crypto
     </message>
-    <message name="IDS_BACKUP_YOUR_WALLET">
+    <message name="IDS_BACKUP_YOUR_WALLET" desc="Brave Wallet onboarding text">
       Backup your wallet now!
     </message>
-    <message name="IDS_BACKUP_YOUR_WALLET_TEXT">
+    <message name="IDS_BACKUP_YOUR_WALLET_TEXT" desc="Brave Wallet onboarding text">
       In the next step you will see 12 words that allows you to recover your crypto wallet.
     </message>
-    <message name="IDS_CONTINUE_TEXT">
+    <message name="IDS_CONTINUE_TEXT" desc="Brave Wallet onboarding text">
       Continue
     </message>
-    <message name="IDS_BACKUP_WALLET_CHECKBOX_TEXT">
+    <message name="IDS_BACKUP_WALLET_CHECKBOX_TEXT" desc="Brave Wallet onboarding text">
       I understand that if I lose my recovery words, I will not be able to access my crypto wallet.
     </message>
-    <message name="IDS_YOUR_RECOVERY_PHRASE">
+    <message name="IDS_YOUR_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
       Your recovery phrase
     </message>
-    <message name="IDS_YOUR_RECOVERY_PHRASE_TEXT">
+    <message name="IDS_YOUR_RECOVERY_PHRASE_TEXT" desc="Brave Wallet onboarding text">
       Write down or copy these words in the right order and save them somewhere safe.
     </message>
-    <message name="IDS_YOUR_RECOVERY_PHRASE_WARNING_TEXT">
+    <message name="IDS_YOUR_RECOVERY_PHRASE_WARNING_TEXT" desc="Brave Wallet onboarding text">
       WARNING: Never disclose your backup phrase. Anyone with this phrase can take your funds forever.
     </message>
-    <message name="IDS_RECOVERY_PHRASE_CHECKBOX_TEXT">
+    <message name="IDS_RECOVERY_PHRASE_CHECKBOX_TEXT" desc="Brave Wallet onboarding text">
       I have backed up my phrase somewhere safe
     </message>
-    <message name="IDS_COPY">
+    <message name="IDS_COPY" desc="Brave Wallet onboarding button text">
       Copy
     </message>
-    <message name="IDS_BUY_SWAP_TEXT">
+    <message name="IDS_BUY_SWAP_TEXT" desc="Brave Wallet buy bottomsheet text">
       Buy crypto with Apple Pay, credit or debit card.
     </message>
-    <message name="IDS_SEND_SWAP_TEXT">
+    <message name="IDS_SEND_SWAP_TEXT" desc="Brave Wallet send bottomsheet text">
       Send crypto or transfer from one account to another.
     </message>
-    <message name="IDS_SWAP_TEXT">
+    <message name="IDS_SWAP_TEXT" desc="Brave Wallet swap bottomsheet text">
       Swap crypto assets with Brave DEX aggregator.
     </message>
-    <message name="IDS_SECURE_YOUR_CRYPTO">
+    <message name="IDS_SECURE_YOUR_CRYPTO" desc="Brave Wallet onboarding text">
       Secure your crypto with a password
     </message>
-    <message name="IDS_ENTER_PASSWORD">
+    <message name="IDS_ENTER_PASSWORD" desc="Brave wallet password hint text">
       Enter Password
     </message>
-    <message name="IDS_RETYPE_PASSWORD">
+    <message name="IDS_RETYPE_PASSWORD" desc="Brave wallet password hint text">
       Re-enter password
     </message>
-    <message name="IDS_PASSWORD_ERROR">
+    <message name="IDS_PASSWORD_ERROR" desc="Brave Wallet password error text">
       Password must be 7 or more characters
     </message>
-    <message name="IDS_RETYPE_PASSWORD_ERROR">
+    <message name="IDS_RETYPE_PASSWORD_ERROR" desc="Brave Wallet password error text">
       Re-typed password did not match
     </message>
-    <message name="IDS_LIVE">
+    <message name="IDS_LIVE" desc="Brave Wallet graph duration text">
       Live
     </message>
-    <message name="IDS_DAY_1">
+    <message name="IDS_DAY_1" desc="Brave Wallet graph duration text">
       1D
     </message>
-    <message name="IDS_WEEK_1">
+    <message name="IDS_WEEK_1" desc="Brave Wallet graph duration text">
       1W
     </message>
-    <message name="IDS_MONTH_1">
+    <message name="IDS_MONTH_1" desc="Brave Wallet graph duration text">
       1M
     </message>
-    <message name="IDS_MONTH_3">
+    <message name="IDS_MONTH_3" desc="Brave Wallet graph duration text">
       3M
     </message>
-    <message name="IDS_YEAR_1">
+    <message name="IDS_YEAR_1" desc="Brave Wallet graph duration text">
       1Y
     </message>
-    <message name="IDS_ALL">
+    <message name="IDS_ALL" desc="Brave Wallet graph duration text">
       ALL
     </message>
-    <message name="IDS_ALL_SET">
+    <message name="IDS_ALL_SET" desc="Brave Wallet onboarding text">
       All set!
     </message>
-    <message name="IDS_ADD_ACCOUNT_DIALOG_TEXT">
+    <message name="IDS_ADD_ACCOUNT_DIALOG_TEXT" desc="Brave Wallet onboarding text">
       Buy, trade, or hold crypto. If you have an existing crypto account you may add it now.
     </message>
-    <message name="IDS_ADD_ACCOUNT">
+    <message name="IDS_ADD_ACCOUNT" desc="Brave Wallet account dialog button text">
       Add Account
     </message>
-    <message name="IDS_RECOVERY_PHRASE_ITEM_TEXT">
+    <message name="IDS_RECOVERY_PHRASE_ITEM_TEXT" desc="Brave Wallet onboarding text">
       <ph name="NUMBER">%1$s</ph>. <ph name="RECOVERY_PHRASE">%2$s</ph>
     </message>
-    <message name="IDS_ENABLE_FINGERPRINT_UNLOCK">
+    <message name="IDS_ENABLE_FINGERPRINT_UNLOCK" desc="Brave Wallet onboarding text">
       Enable fingerprint unlock?
     </message>
-    <message name="IDS_ENABLE_FINGERPRINT_TEXT">
+    <message name="IDS_ENABLE_FINGERPRINT_TEXT" desc="Brave Wallet onboarding text">
       Enable biometrics to quickly unlock your wallet without entering your password.
     </message>
-    <message name="IDS_MENU_BRAVE_WALLET">
+    <message name="IDS_MENU_BRAVE_WALLET" desc="Brave Wallet menu item text">
       Brave Wallet
     </message>
-    <message name="IDS_RESTORE_CRYPTO_TEXT">Enter your recovery phrase to restore your Brave Wallet crypto account.</message>
-    <message name="IDS_RESTORE_CRYPTO_ACCOUNT">Restore Crypto Account</message>
-    <message name="IDS_SHOW_RECOVERY_PHRASE">Show recovery phrase</message>
-    <message name="IDS_ENTER_RECOVERY_PHRASE">Enter your recovery phrase</message>
-    <message name="IDS_VERIFY_RECOVERY_PHRASE">Verify recovery phrase</message>
-    <message name="IDS_VERIFY_RECOVERY_PHRASE_TEXT">Tap the words top put them next to each other in the correct order.</message>
-    <message name="IDS_VERIFY">Verify</message>
-    <message name="IDS_RESTORE">Restore</message>
-    <message name="IDS_UNLOCK">Unlock</message>
-    <message name="IDS_PASSWORD">Password</message>
-    <message name="IDS_UNLOCK_WALLET_TITLE">Enter your password to unlock</message>
-    <message name="IDS_PASSWORD_TEXT">Password must be at least 7 characters containg at least one number and a special character</message>
+    <message name="IDS_RESTORE_CRYPTO_TEXT" desc="Brave Wallet onboarding text">
+      Enter your recovery phrase to restore your Brave Wallet crypto account.
+    </message>
+    <message name="IDS_RESTORE_CRYPTO_ACCOUNT" desc="Brave Wallet onboarding text">
+      Restore Crypto Account
+    </message>
+    <message name="IDS_SHOW_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
+      Show recovery phrase
+    </message>
+    <message name="IDS_ENTER_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
+      Enter your recovery phrase
+    </message>
+    <message name="IDS_VERIFY_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
+      Verify recovery phrase
+    </message>
+    <message name="IDS_VERIFY_RECOVERY_PHRASE_TEXT" desc="Brave Wallet onboarding text">
+      Tap the words top put them next to each other in the correct order.
+    </message>
+    <message name="IDS_VERIFY" desc="Brave Wallet onboarding text">
+      Verify
+    </message>
+    <message name="IDS_RESTORE" desc="Brave Wallet onboarding text">
+      Restore
+    </message>
+    <message name="IDS_UNLOCK" desc="Brave Wallet onboarding text">
+      Unlock
+    </message>
+    <message name="IDS_PASSWORD" desc="Brave Wallet onboarding text">
+      Password
+    </message>
+    <message name="IDS_UNLOCK_WALLET_TITLE" desc="Brave Wallet onboarding text">
+      Enter your password to unlock
+    </message>
+    <message name="IDS_PASSWORD_TEXT" desc="Brave Wallet onboarding text">
+      Password must be at least 7 characters containg at least one number and a special character
+    </message>
     <message name="IDS_BRAVE_SAFE_BROWSING_NO_PROTECTION_SUMMARY" desc="Summary for Safe Browsing no protection mode.">
         Does not protect you against dangerous websites, downloads, and extensions.
     </message>
-    <message name="IDS_PHRASES_DID_NOT_MATCH">Phrases did not match, Please try again.</message>
-    <message name="IDS_ACCOUNT_RECOVERY_FAILED">Account recovery failed. Please try again.</message>
-    <message name="IDS_MAINNET">Mainnet</message>
+    <message name="IDS_PHRASES_DID_NOT_MATCH" desc="Brave Wallet text">
+      Phrases did not match, Please try again.
+    </message>
+    <message name="IDS_ACCOUNT_RECOVERY_FAILED" desc="Brave Wallet text">
+      Account recovery failed. Please try again.
+    </message>
+    <message name="IDS_MAINNET" desc="Brave Wallet network selection button text">
+      Mainnet
+    </message>
     </messages>
   </release>
 </grit>
