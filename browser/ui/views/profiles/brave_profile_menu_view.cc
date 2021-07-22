@@ -23,12 +23,6 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 
-namespace {
-bool IsGuest(Profile* profile) {
-  return profile->IsGuestSession() || profile->IsEphemeralGuestProfile();
-}
-}  // namespace
-
 void BraveProfileMenuView::BuildIdentity() {
   ProfileMenuView::BuildIdentity();
   Profile* profile = browser()->profile();
@@ -59,7 +53,7 @@ void BraveProfileMenuView::BuildFeatureButtons() {
   if (!profile->IsOffTheRecord() && profile->HasPrimaryOTRProfile())
     window_count += chrome::GetBrowserCount(
         profile->GetPrimaryOTRProfile(/*create_if_needed=*/true));
-  if (IsGuest(profile)) {
+  if (profile->IsGuestSession()) {
     AddFeatureButton(
         l10n_util::GetPluralStringFUTF16(IDS_GUEST_PROFILE_MENU_CLOSE_BUTTON,
                                          window_count),
