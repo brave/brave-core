@@ -115,7 +115,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private final Map<Integer, BlockersInfo> mTabsStat =
         Collections.synchronizedMap(new HashMap<Integer, BlockersInfo>());
 
-    private Switch mBraveShieldsBlockTrackersSwitch;
     private OnCheckedChangeListener mBraveShieldsAdsTrackingChangeListener;
     private Switch mBraveShieldsHTTPSEverywhereSwitch;
     private OnCheckedChangeListener mBraveShieldsHTTPSEverywhereChangeListener;
@@ -732,54 +731,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         setUpMainLayout();
     }
 
-    private void setupAdsTrackingSwitchClick(Switch braveShieldsAdsTrackingSwitch) {
-        if (null == braveShieldsAdsTrackingSwitch) {
-            return;
-        }
-        setupAdsTrackingSwitch(braveShieldsAdsTrackingSwitch, false);
-
-        mBraveShieldsAdsTrackingChangeListener = new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                                         boolean isChecked) {
-                if (0 != mHost.length()) {
-                    BraveShieldsContentSettings.setShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS_TRACKERS, isChecked, false);
-                    if (null != mMenuObserver) {
-                        mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
-                    }
-                }
-            }
-        };
-
-        braveShieldsAdsTrackingSwitch.setOnCheckedChangeListener(mBraveShieldsAdsTrackingChangeListener);
-    }
-
-    private void setupAdsTrackingSwitch(Switch braveShieldsAdsTrackingSwitch, boolean fromTopSwitch) {
-        if (null == braveShieldsAdsTrackingSwitch) {
-            return;
-        }
-        if (fromTopSwitch) {
-            // Prevents to fire an event when top shields changed
-            braveShieldsAdsTrackingSwitch.setOnCheckedChangeListener(null);
-        }
-        if (0 != mHost.length()) {
-            if (BraveShieldsContentSettings.getShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
-                if (BraveShieldsContentSettings.getShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS_TRACKERS)) {
-                    braveShieldsAdsTrackingSwitch.setChecked(true);
-                } else {
-                    braveShieldsAdsTrackingSwitch.setChecked(false);
-                }
-                braveShieldsAdsTrackingSwitch.setEnabled(true);
-            } else {
-                braveShieldsAdsTrackingSwitch.setChecked(false);
-                braveShieldsAdsTrackingSwitch.setEnabled(false);
-            }
-        }
-        if (fromTopSwitch) {
-            braveShieldsAdsTrackingSwitch.setOnCheckedChangeListener(mBraveShieldsAdsTrackingChangeListener);
-        }
-    }
-
     private void setupHTTPSEverywhereSwitchClick(Switch braveShieldsHTTPSEverywhereSwitch) {
         if (null == braveShieldsHTTPSEverywhereSwitch) {
             return;
@@ -895,7 +846,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                                          boolean isChecked) {
                 if (0 != mHost.length()) {
                     BraveShieldsContentSettings.setShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS, isChecked, false);
-                    setupAdsTrackingSwitch(mBraveShieldsBlockTrackersSwitch, true);
                     setupHTTPSEverywhereSwitch(mBraveShieldsHTTPSEverywhereSwitch, true);
                     setupBlockingScriptsSwitch(mBraveShieldsBlockingScriptsSwitch, true);
                     if (null != mMenuObserver) {
