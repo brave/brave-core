@@ -2833,7 +2833,7 @@ std::string RewardsServiceImpl::GetLegacyWallet() {
   auto* dict = profile_->GetPrefs()->GetDictionary(prefs::kExternalWallets);
 
   std::string json;
-  for (const auto& it : dict->DictItems()) {
+  for (auto it : dict->DictItems()) {
     base::JSONWriter::Write(std::move(it.second), &json);
   }
 
