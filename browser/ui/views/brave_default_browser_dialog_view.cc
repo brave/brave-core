@@ -146,7 +146,7 @@ bool BraveDefaultBrowserDialogView::ShouldShowCloseButton() const {
   return false;
 }
 
-void BraveDefaultBrowserDialogView::OnDialogInitialized() {
+void BraveDefaultBrowserDialogView::OnWidgetInitialized() {
   SetButtonRowInsets(gfx::Insets(0, kPadding, kPadding, kPadding));
 }
 
