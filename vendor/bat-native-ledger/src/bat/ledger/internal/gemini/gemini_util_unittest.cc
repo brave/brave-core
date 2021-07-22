@@ -114,24 +114,24 @@ TEST_F(GeminiUtilTest, GetAddUrl) {
   // production
   ledger::_environment = type::Environment::PRODUCTION;
   std::string result = gemini::GetAddUrl();
-  ASSERT_EQ(result, GEMINI_OAUTH_URL);
+  ASSERT_EQ(result, GEMINI_OAUTH_URL "/transfer/deposit");
 
   // staging
   ledger::_environment = type::Environment::STAGING;
   result = gemini::GetAddUrl();
-  ASSERT_EQ(result, GEMINI_OAUTH_STAGING_URL);
+  ASSERT_EQ(result, GEMINI_OAUTH_STAGING_URL "/transfer/deposit");
 }
 
 TEST_F(GeminiUtilTest, GetWithdrawUrl) {
   // production
   ledger::_environment = type::Environment::PRODUCTION;
   std::string result = gemini::GetWithdrawUrl();
-  ASSERT_EQ(result, GEMINI_OAUTH_URL);
+  ASSERT_EQ(result, GEMINI_OAUTH_URL "/transfer/withdraw");
 
   // staging
   ledger::_environment = type::Environment::STAGING;
   result = gemini::GetWithdrawUrl();
-  ASSERT_EQ(result, GEMINI_OAUTH_STAGING_URL);
+  ASSERT_EQ(result, GEMINI_OAUTH_STAGING_URL "/transfer/withdraw");
 }
 
 TEST_F(GeminiUtilTest, GetWallet) {
@@ -206,8 +206,9 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
   // Verified
   wallet->status = type::WalletStatus::VERIFIED;
   result = gemini::GenerateLinks(wallet->Clone());
-  ASSERT_EQ(result->add_url, GEMINI_OAUTH_STAGING_URL);
-  ASSERT_EQ(result->withdraw_url, GEMINI_OAUTH_STAGING_URL);
+  ASSERT_EQ(result->add_url, GEMINI_OAUTH_STAGING_URL "/transfer/deposit");
+  ASSERT_EQ(result->withdraw_url,
+            GEMINI_OAUTH_STAGING_URL "/transfer/withdraw");
   ASSERT_EQ(result->verify_url, GEMINI_OAUTH_STAGING_URL "/register/verify");
   ASSERT_EQ(result->account_url, GEMINI_OAUTH_STAGING_URL);
 
