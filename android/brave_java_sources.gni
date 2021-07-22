@@ -90,7 +90,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/notifications/retention/RetentionNotification.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/retention/RetentionNotificationPublisher.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/retention/RetentionNotificationUtil.java",
-  "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveDuckDuckGoOfferView.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPage.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPageLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/IncognitoNewTabPageView.java",
