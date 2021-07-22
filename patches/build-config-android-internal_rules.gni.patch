@@ -1,12 +1,12 @@
 diff --git a/build/config/android/internal_rules.gni b/build/config/android/internal_rules.gni
-index 7bd1a333cdc292f633f28eecd5ebb7e7f6570155..2b77bda0a8284cb8af7358386c01e039d5c2b554 100644
+index 3ed306a9e70c5fee55f11dfbd455c6449b897a36..cee90c42ae6aeff49e66b0bb662db6814e861b24 100644
 --- a/build/config/android/internal_rules.gni
 +++ b/build/config/android/internal_rules.gni
-@@ -1940,6 +1940,7 @@ if (enable_java_templates) {
-         _deps = [ ":$_desugar_target" ]
-         _previous_output_jar = _desugar_output_jar
-       }
-+      foreach(bytecode_jar, brave_bytecode_jars) { if (rebase_path(invoker.input_jar_path, root_build_dir) == bytecode_jar) { _bytecode_rewriter_output_jar = "$target_out_dir/$target_name.bytecode-rewritten.jar" brave_bytecode_rewriter("${target_name}__bytecode_rewrite"){} _deps = [] _deps = [ ":${target_name}__bytecode_rewrite" ] _previous_output_jar = _bytecode_rewriter_output_jar } }
+@@ -1894,6 +1894,7 @@ if (enable_java_templates) {
+       _deps = [ ":$_desugar_target" ]
+       _previous_output_jar = _desugar_output_jar
+     }
++    foreach(bytecode_jar, brave_bytecode_jars) { if (rebase_path(invoker.input_jar_path, root_build_dir) == bytecode_jar) { _bytecode_rewriter_output_jar = "$target_out_dir/$target_name.bytecode-rewritten.jar" brave_bytecode_rewriter("${target_name}__bytecode_rewrite"){} _deps = [] _deps = [ ":${target_name}__bytecode_rewrite" ] _previous_output_jar = _bytecode_rewriter_output_jar } }
  
-       if (invoker.jacoco_instrument) {
-         _filter_jar_target_name = "${target_name}_device__filter_jar"
+     if (invoker.jacoco_instrument) {
+       _filter_jar_target_name = "${target_name}__filter_jar"
