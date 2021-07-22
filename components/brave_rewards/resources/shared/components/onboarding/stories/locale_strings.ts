@@ -14,7 +14,7 @@ export const localeStrings = {
   onboardingTakeTour: 'Take a quick tour',
   onboardingTerms: 'By proceeding, you agree to the $1Terms of Service$2 and $3Privacy Policy$4.',
   onboardingTipHeader: 'Tip with Brave rewards',
-  onboardingTipText: 'By using Brave rewards, you will start to gain BAT that you can use to tip creators.',
+  onboardingTipText: 'Earn Rewards by viewing Brave Private Ads and support content creators automatically',
   onboardingTourBack: 'Go Back',
   onboardingTourBegin: 'Let’s take a quick tour',
   onboardingTourContinue: 'Continue',
