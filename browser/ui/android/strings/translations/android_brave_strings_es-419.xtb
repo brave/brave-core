@@ -344,7 +344,7 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="5440744330377972191">Los sitios web cargan más rápido</translation>
 <translation id="3000738865641747653">Menos datos cargados significa que los sitios web en Brave cargan hasta ocho veces más rápido que en otros navegadores.</translation>
 <translation id="8903462729414407077">Recibe actualizaciones semanales</translation>
-<translation id="8029219208182772618">Conoce los sitios web que más invaden tu privacidad.\n\nSolo tú puedes ver estas estadísticas de privacidad. El navegador Brave de tu dispositivo nunca da a conocer tus datos personales ni tu historial de navegación.</translation>
+<translation id="7450323860390658083">Conoce los sitios web que más invaden tu privacidad.\n\nSolo tú puedes ver estas estadísticas de privacidad. El navegador Brave de tu dispositivo nunca da a conocer tus datos personales ni tu historial de navegación.</translation>
 <translation id="6170159749517116894">Activar informes de privacidad</translation>
 <translation id="5966707198760109579">Semana</translation>
 <translation id="8987927404178983737">Mes</translation>
@@ -365,12 +365,12 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="7427567994475794038">Activa los informes de privacidad para ver cuántos rastreadores y anuncios has bloqueado en las últimas 3 horas.</translation>
 <translation id="2053891538879944400">Has ahorrado <ph name="DATA"/> <ph name="DATA_TEXT"/> datos con el navegador Brave.</translation>
 <translation id="8640064498452534195">Activa los informes de privacidad para ver cuántos datos has ahorrado.</translation>
-<translation id="2252497442547961651">El navegador Brave usa un 40 % menos de batería en promedio.&#128267;</translation>
+<translation id="2252497442547961651">El navegador Brave usa un 40 % menos de batería en promedio.🔋</translation>
 <translation id="1945330434665345785">Has bloqueado <ph name="COUNT"/> rastreadores y anuncios con el navegador Brave la semana pasada.</translation>
 <translation id="2883868922264431515">Gana tokens por ver anuncios que respetan la privacidad y apoya a tu sitios web favoritos.</translation>
-<translation id="5678925890616256956">¡Genial! Has bloqueado 250 rastreadores y anuncios con el navegador Brave.&#128293;</translation>
-<translation id="9199047775708635708">¡Genial! Has ahorrado 10 MB con el navegador Brave.&#128267;</translation>
-<translation id="1880168210969863408">¡Genial! Has ahorrado 10 minutos de tiempo de carga con el navegador Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">¡Genial! Has bloqueado 250 rastreadores y anuncios con el navegador Brave.🔥</translation>
+<translation id="9199047775708635708">¡Genial! Has ahorrado 10 MB con el navegador Brave.🔋</translation>
+<translation id="1880168210969863408">¡Genial! Has ahorrado 10 minutos de tiempo de carga con el navegador Brave.💨💨</translation>
 <translation id="7408493389591475748">Empieza a navegar para ver informes de privacidad</translation>
 <translation id="9080777565335515917">Usa Brave como tu navegador predeterminado para navegar de forma privada y segura.</translation>
 <translation id="1390943217516275883">Permite que Brave muestre tus estadísticas de privacidad</translation>
@@ -433,7 +433,7 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="3477340970981564961">Brave Private Ads te recompensan con tokens para apoyar a creadores de contenido a diferencia de los anuncios tradicionales, todo mientras mantienes la privacidad de tu información personal.</translation>
 <translation id="6973095375773523904">¿Dónde se muestran los anuncios?</translation>
 <translation id="7556325460112047619">Los Brave Private Ads se mostrarán como una notificación normal. Puedes controlar con qué frecuencia deseas ver estos anuncios en la configuración.</translation>
-<translation id="5816125157889950051">¿Cuándo recibes recompensas?</translation>
+<translation id="6897083627729802351">¿Cuándo recibes recompensas?</translation>
 <translation id="310863932297733723">Recibirás los tokens que ganaste de Brave Private Ads durante el mes actual el día 5 del mes siguiente.</translation>
 <translation id="7712287524451429139">Retribuye sin demasiado esfuerzo</translation>
 <translation id="105037569026952831">Los creadores reciben tus contribuciones de tokens de forma automática en función de tus niveles de participación que medimos como ‘Atención’.</translation>
@@ -450,7 +450,7 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="827315274423079662">¡Felicitaciones, has terminado!</translation>
 <translation id="3895246934788932488">Al utilizar Recompensas Brave, estás protegiendo tu privacidad y ayudando a hacer de la web un lugar mejor para todas las personas. ¡Y eso es genial!</translation>
 <translation id="5705882733397021510">Regresar</translation>
-<translation id="5140321319944305531">Hagamos un recorrido rápido</translation>
+<translation id="3985567919248057638">Hagamos un recorrido rápido</translation>
 <translation id="2434574859640694129">Después de recibir tu primer pago de anuncios, ¡puedes regresar y darle una propina a este creador!</translation>
 <translation id="207242986925259074">Recorrido rápido de actualización</translation>
 <translation id="8342862030112839977">Recibirás tu primer pago de recompensas el:</translation>
@@ -468,6 +468,7 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="7320542277711359296">Segundo más popular</translation>
 <translation id="8295049095570748497">Un motor de búsqueda líder en Rusia</translation>
 <translation id="2642661895835126239">Planta árboles, con sede en Berlín</translation>
+<translation id="177282784098234156">Con privacidad, independencia y el usuario como prioridad</translation>
 <translation id="1410130669636877548">Algunos motores de búsqueda protegen tu privacidad mejor que otros cuando realizas búsquedas en la web.</translation>
 <translation id="1078265935778232285">Te damos la bienvenida a Brave</translation>
 <translation id="6824713633331856331">Ayúdanos a aprender de forma anónima</translation>
@@ -504,4 +505,59 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="6960458596933484861">Necesitas tener un mínimo de 15 BAT para crear una billetera de Uphold verificada. Inténtalo de nuevo más tarde.</translation>
 <translation id="4389085954549744469">Si ya tienes una cuenta de Uphold verificada, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">continúa para iniciar sesión</translation>
+<translation id="1483493594462132177">Enviar</translation>
+<translation id="538450413584738399">Intercambio</translation>
+<translation id="8825032646286791700">Finanzas descentralizadas y almacenamiento seguro de criptomonedas</translation>
+<translation id="5460364286096798286">Conserva criptomonedas bajo tu custodia. Intercambia activos. Consulta precios y el rendimiento de carteras. Invierte, pide prestado y presta con finanzas descentralizadas.</translation>
+<translation id="1748009926009835882">Configurar criptomonedas</translation>
+<translation id="2759836790106646094">¡Haz una copia de seguridad de tu billetera ahora!</translation>
+<translation id="7685607706678113458">En el siguiente paso, verás 12 palabras que te permiten recuperar tu billetera de criptomonedas.</translation>
+<translation id="2359808026110333948">Continuar</translation>
+<translation id="5024543173656851695">Entiendo que no podré acceder a mi billetera de criptomonedas si pierdo mis palabras de recuperación.</translation>
+<translation id="3933122286596948824">Tu frase de recuperación</translation>
+<translation id="6146351434671268516">Escribe o copia estas palabras en el orden correcto y guárdalas en un lugar seguro.</translation>
+<translation id="7408247683131762445">ADVERTENCIA: Nunca reveles tu frase de copia de seguridad. Cualquier persona que tenga acceso a esta frase puede llevarse tus fondos permanentemente.</translation>
+<translation id="939275786514736244">He guardado mi copia en un lugar seguro</translation>
+<translation id="6896758677409633944">Copiar</translation>
+<translation id="1202920745614909195">Compra criptomonedas con Apple Pay, tarjeta de crédito o tarjeta de débito.</translation>
+<translation id="841880029259839903">Envía criptomonedas o transfiere de una cuenta a otra.</translation>
+<translation id="8982246458261383692">Intercambia activos de criptomonedas con el agregador DEX de Brave.</translation>
+<translation id="1783600039044302171">Protege tus criptomonedas con una contraseña</translation>
+<translation id="3726490322412361740">Introduce la contraseña</translation>
+<translation id="4450951602553063001">Vuelve a introducir la contraseña</translation>
+<translation id="1783870616707290226">La contraseña debe tener 7 caracteres o más</translation>
+<translation id="7383102760859258982">La contraseña reescrita no coincide</translation>
+<translation id="1538774398124896437">En vivo</translation>
+<translation id="8163269366661594721">1D</translation>
+<translation id="7640956400175663828">1S</translation>
+<translation id="9100647964747998533">1M</translation>
+<translation id="6366007539108097840">3M</translation>
+<translation id="6977728312178289892">1A</translation>
+<translation id="6895566650974550243">TODO</translation>
+<translation id="8892168913673237979">¡Todo listo!</translation>
+<translation id="8331501996028380732">Compra, intercambia o conserva criptomonedas. Si tienes una cuenta de criptomonedas existente, puedes agregarla ahora.</translation>
+<translation id="2267753748892043616">Agregar cuenta</translation>
+<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="8100001366858145406">¿Habilitar desbloqueo mediante huella digital?</translation>
+<translation id="5493402808936397665">Habilita los datos biométricos para desbloquear rápidamente tu billetera sin introducir la contraseña.</translation>
+<translation id="8488282162676695335">Billetera de Brave</translation>
+<translation id="6901810042765869341">Introduce tu frase de recuperación para restaurar la cuenta de criptomonedas de tu billetera de Brave.</translation>
+<translation id="1970161551843843564">Restaurar cuenta de criptomonedas</translation>
+<translation id="4811736040444856406">Mostrar la frase de recuperación</translation>
+<translation id="283071225285270357">Introduce tu frase de recuperación</translation>
+<translation id="2339124864228588937">Verificar la frase de recuperación</translation>
+<translation id="6202787708155200390">Toca las palabras para ponerlas una al lado de la otra en el orden correcto.</translation>
+<translation id="6518133107902771759">Verificar</translation>
+<translation id="3157931365184549694">Restaurar</translation>
+<translation id="9111102763498581341">Desbloquear</translation>
+<translation id="6657585470893396449">Contraseña</translation>
+<translation id="1569452037668432756">Introduce tu contraseña para desbloquear</translation>
+<translation id="224719674509047150">La contraseña debe tener al menos 7 caracteres, un número y un carácter especial</translation>
+<translation id="1144810021918451336">No te protege frente a sitios web, descargas o extensiones peligrosos.</translation>
+<translation id="745115390910697838">Las frases no coincidieron. Inténtalo de nuevo.</translation>
+<translation id="2360588547830602174">La recuperación de la cuenta ha fallado. Inténtalo de nuevo.</translation>
+<translation id="1530109021798294736">Mainnet</translation>
+<translation id="8029219208182772618">Conoce los sitios web que más invaden tu privacidad.\n\nSolo tú puedes ver estas estadísticas de privacidad. El navegador Brave de tu dispositivo nunca da a conocer tus datos personales ni tu historial de navegación.</translation>
+<translation id="5816125157889950051">¿Cuándo recibes recompensas?</translation>
+<translation id="5140321319944305531">Hagamos un recorrido rápido</translation>
 </translationbundle>

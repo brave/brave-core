@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "একবারের দান/পরামর্শ",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "মেয়াদোত্তীর্ণ হচ্ছে এততে",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "এই নির্মাতাটি Brave ব্যবহারকারীদের থেকে অবদানগুলি পেতে এখনও সাইন আপ করেনি। আপনার পাঠানো যে কোনও টিপস যাচাই না হওয়া অবধি আপনার ওয়ালেটে থেকে যাবে।",
+    "message": "এই স্রষ্টা বর্তমানে আপনার ওয়ালেট থেকে টিপগুলি পাওয়ার জন্য কনফিগার করা নেই। আপনার করা যে কোনও টিপ আপনার ওয়ালেটে পড়ে থাকবে এবং 90 দিন পরে স্বয়ংক্রিয়ভাবে পুনঃপ্রচেষ্টা করবে।",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

@@ -18,7 +18,7 @@
 <translation id="6241402707160226266">Pribadong window na may Tor</translation>
 <translation id="8762452230727230396">Itinatago ng tor ang iyong IP address mula sa mga site na binibisita mo.</translation>
 <translation id="1369311132025451972">Awtomatikong i-redirect ang mga .onion na site</translation>
-<translation id="2843777623071353503">Magbubukas ang Brave ng serbisyo ng onion ng website kapag available ito o ng .onion domain sa window ng Tor</translation>
+<translation id="2843777623071353503">Magbubukas ang Brave ng serbisyo ng onion ng website kapag available ito o ng .onion domain sa window ng Tor.</translation>
 <translation id="8053096063396012732">I-install ang Widevine</translation>
 <translation id="4840334696217618631">I-restart ang browser para i-enable ang Widevine</translation>
 <translation id="8410111618231938546">Ang Google Widevine ay isang bahagi ng code ng Digital Rights Management (DRM) na hindi namin pag-aari sa Brave Software at hindi namin maaaring suriin. Naka-load ang Google Widevine sa mga server ng Google, hindi sa mga server namin. Malo-load lang ito kapag na-enable mo ang opsyong ito. Hindi namin hinihikayat ang paggamit ng DRM, ngunit iginagalang namin ang pasya ng user at kinikilala namin na ang ilang user ng Brave ay gustong gumamit ng mga serbisyong humihingi nito.
@@ -72,13 +72,13 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="7895302206188277628">Naka-link na content</translation>
 <translation id="3654831858282189202">I-publish gamit ang key ng IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
-<translation id="1047401034925735299">I-import sa IPFS ang Napiling text</translation>
 <translation id="6925604404524625582">I-import at Kopyahin ang Link sa IPFS Snapshot</translation>
 <translation id="1434416574322382019">Bagong Pribadong Window na may Tor</translation>
 <translation id="4703780849509456860">Buksan ang Link sa Pribadong Window na may Tor</translation>
 <translation id="3488584642074079080">Buksan ang Link sa Bagong Pribadong Window ng Brave na may Tor</translation>
 <translation id="7475547933708221517">Ibahagi ang Lokal na File Gamit ang IPFS</translation>
 <translation id="2286177249736199435">Ibahagi ang Lokal na Folder Gamit ang IPFS</translation>
+<translation id="4491895534716990473">I-import sa IPFS ang napiling text</translation>
 <translation id="8883166554766780543">I-import at kopyahin ang link sa snapshot ng IPFS</translation>
 <translation id="784573715436258741">Ibahagi ang lokal na file gamit ang IPFS</translation>
 <translation id="6313675821927505581">Bagong pribadong window na may Tor</translation>
@@ -195,16 +195,23 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="911363100236037920">Maglagay ng pangalan para sa bagong key</translation>
 <translation id="6358469157239228181">Hindi puwedeng gamitin ang pangalang ito</translation>
 <translation id="5761731140570209168">Magdagdag ng bagong peer connection string</translation>
+<translation id="2082206983920804886">Key sa pag-rotate</translation>
+<translation id="2521133093532260474">Hindi maihinto ang lokal na node</translation>
+<translation id="86879877003581729">Hindi mailunsad ang lokal na node</translation>
 <translation id="6476061084931271248">I-restart ang node para ma-apply ang mga pagbabago</translation>
 <translation id="3754226427671882382">I-restart ang node</translation>
+<translation id="949667118776341807">I-rotate</translation>
 <translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Hindi valid ang pangalang ito</translation>
 <translation id="6758961763875471084">Baguhin ang listahan ng mga peer</translation>
+<translation id="1295874070797049002">Key sa pag-export</translation>
+<translation id="3946479342297227860">Key sa pag-aalis</translation>
 <translation id="1534091531114892221">I-set up ang paglalarawan ng ipfs peers</translation>
 <translation id="8996633027318264334">Gusto mo ba talagang i-delete ang <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Hindi nailunsad ang node</translation>
 <translation id="616058968889448209">Error sa paglunsad ng serbisyo ng IPFS, available ang higit pang impormasyon sa <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Hindi na-import ang key na '<ph name="KEY_NAME"/>'</translation>
+<translation id="3364053282600191535">Hindi na-export ang key na '<ph name="KEY_NAME"/>'</translation>
 <translation id="8275038454117074363">I-import</translation>
 <translation id="3654980960391973513">Buuin</translation>
 <translation id="5531501313997312487">Simulan ang node</translation>
@@ -305,11 +312,16 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="312393675740711187">Awtomatikong malo-load ang mga artikulo sa reader mode, na makakatipid ng oras para sa iyo.</translation>
 <translation id="3234744217174488546">I-on/i-off ang reader mode para lang sa website na ito. Para i-off ang Speedreader para sa iyong buong browser profile, bisitahin ang</translation>
 <translation id="7839742507462737706">sa Speedreader</translation>
+<translation id="8490082094734500369">I-off ang reader mode</translation>
+<translation id="2036503787657622020">I-on ang reader mode</translation>
+<translation id="5226458915125328323">Mga setting ng Speedreader</translation>
+<translation id="6284218950354553099">Awtomatikong ipadala sa Brave ang ping ng araw-araw na paggamit</translation>
+<translation id="5288333155754958121">Nagbibigay-daan sa Brave ang anonymous na pribadong ping na ito na matantiya ang mga aktibong user.</translation>
 <translation id="1872784258300710671">Gumagamit ang Brave ng ganap na pribadong analytics ng produkto upang tantyahin ang kabuuang paggamit ng ilang partikular na feature</translation>
 <translation id="8712637175834984815">Nakuha ko</translation>
 <translation id="4394049700291259645">Huwag paganahin</translation>
-<translation id="6469509880167172749">Awtomatikong magpadala ng ganap na pribadong analytics ng produkto sa Brave</translation>
-<translation id="7090566321964540749">Pinapayagan lang ng hindi kilalang impormasyon na ito ang Brave na tantyahin ang kabuuang paggamit ng ilang partikular na feature.</translation>
+<translation id="7142548388914389999">Payagan ang privacy-preserving product analytics (P3A)</translation>
+<translation id="609106526832379947">Nakakatulong sa Brave ang ganap na naka-anonymize na impormasyong ito na matantiya ang pangkalahatang paggamit ng ilang partikular na feature at mapahusay ang mga ito para sa iyo.</translation>
 <translation id="1947672064022327074">Gusto mo bang simulan ang Crypto Wallets para sa suporta sa Ethereum?</translation>
 <translation id="7583735190612229830">I-set up ang Crypto Wallets para makaugnayan ang app na ito at ang iba pang tulad nito.</translation>
 <translation id="8731422418734770661">I-set up ang Crypto Wallets</translation>
@@ -337,4 +349,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="3738833060602717053">Tumulong na mapahusay ang <ph name="PRODUCT_NAME"/> sa pamamagitan ng awtomatikong pagpapadala ng mga ulat ng pag-crash</translation>
 <translation id="81720820779436751">Magbubukas ang Brave ng serbisyo ng onion ng website kapag available ito o ng .onion domain sa window ng Tor</translation>
 <translation id="4322612543319315652">I-import sa IPFS ang Napiling text</translation>
+<translation id="1047401034925735299">I-import sa IPFS ang Napiling text</translation>
+<translation id="6469509880167172749">Awtomatikong magpadala ng ganap na pribadong analytics ng produkto sa Brave</translation>
+<translation id="7090566321964540749">Pinapayagan lang ng hindi kilalang impormasyon na ito ang Brave na tantyahin ang kabuuang paggamit ng ilang partikular na feature.</translation>
 </translationbundle>

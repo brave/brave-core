@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Einmalige Spenden",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "läuft ab am",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Dieser Ersteller hat sich noch nicht angemeldet, um Beiträge von Brave-Nutzern zu erhalten. Alle von Ihnen gesendeten Trinkgelder bleiben in Ihrem Wallet, bis er sich verifiziert hat.",
+    "message": "Dieser Creator ist derzeit nicht konfiguriert, Trinkgelder aus deinem Wallet zu erhalten. Deine Trinkgelder verbleiben als ausstehend in deinem Wallet und es wird 90 Tage lang automatisch weiter versucht.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

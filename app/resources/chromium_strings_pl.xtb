@@ -20,6 +20,7 @@
 <translation id="1649714546770135458">Jeśli wyłączysz tę opcję, możesz logować się na stronach Brave takich jak Gmail bez logowania się w Brave</translation>
 <translation id="189297655255130768">Brave nie odpowiada. Uruchomić go teraz ponownie?</translation>
 <translation id="1775322105159056176">Brave nie może określić ani ustawić domyślnej przeglądarki</translation>
+<translation id="7665553140559834626">Uruchom ponownie, aby zaktualizować &amp;Brave OS</translation>
 <translation id="9220324636239049437">Spowoduje to usunięcie 1 elementu z tego urządzenia. Aby później odzyskać dane, zaloguj się w Brave jako <ph name="USER_EMAIL"/>.</translation>
 <translation id="831418749472885028">Aby sprawdzić, czy Twoje pozostałe hasła są chronione przed naruszeniami bezpieczeństwa danych i innymi zagrożeniami tego typu, <ph name="BEGIN_LINK"/>zaloguj się w Brave<ph name="END_LINK"/>.</translation>
 <translation id="142389341645668510">Dostosuj Brave</translation>
@@ -35,6 +36,7 @@
 <translation id="7798069806040634998">Brave musi mieć dostęp do pamięci, by pobierać pliki</translation>
 <translation id="8447483940522230788">Pomoc Brave</translation>
 <translation id="7933006624150961626">Aby mieć dostęp do danych z Brave na wszystkich swoich urządzeniach, zaloguj się, co umożliwi włączenie synchronizacji.</translation>
+<translation id="5486618155264784386">Zainstaluj system operacyjny Brave</translation>
 <translation id="7291143854620707672">Wszystkie dane Brave wygenerowane podczas używania tego profilu (takie jak zakładki, historia, hasła i inne ustawienia) mogą zostać usunięte przez administratora profilu służbowego. <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">Zastosowanie aktualizacji wymaga ponownego uruchomienia systemu operacyjnego Brave.</translation>
 <translation id="7387051847644272380">Podczas instalacji wystąpił błąd systemu operacyjnego. Pobierz Brave ponownie.</translation>
@@ -48,7 +50,6 @@
 <translation id="777113543093865885">Usuń z Brave...</translation>
 <translation id="2885378588091291677">Menedżer zadań</translation>
 <translation id="2176825726964012531">&amp;Brave – informacje</translation>
-<translation id="245659736593643560">Opracowanie Brave OS było możliwe dzięki dodatkowemu <ph name="BEGIN_LINK_CROS_OSS"/>oprogramowaniu open source<ph name="END_LINK_CROS_OSS"/>. To samo dotyczy <ph name="BEGIN_LINK_LINUX_OSS"/>Środowiska programistycznego Linuksa (beta)<ph name="END_LINK_LINUX_OSS"/>.</translation>
 <translation id="8208853227947884571">Masz aktualną wersję Brave</translation>
 <translation id="2953892977076487219">Brave próbuje edytować hasła.</translation>
 <translation id="8755404239607088219">Brave nie może sprawdzić Twoich haseł. Spróbuj później.</translation>
@@ -110,6 +111,7 @@
 <translation id="4823369970559443694">Brave nie może sprawdzić Twoich haseł. Spróbuj ponownie za 24 godziny lub <ph name="BEGIN_LINK"/>sprawdź hasła na koncie Brave<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Będzie stosowany ten sam mechanizm sprawdzania pisowni, który jest używany w wyszukiwarce Brave. Tekst wpisywany w przeglądarce jest wysyłany do Brave. Zawsze możesz to zmienić w ustawieniach.</translation>
 <translation id="1912973375560256099">Reguła dla ruchu przychodzącego w Brave zezwalająca na ruch mDNS.</translation>
+<translation id="711601904575862069">Uruchom ponownie, aby zaktualizować &amp;Brave</translation>
 <translation id="8797356639448065696">Brave jest w trybie działania w tle</translation>
 <translation id="7406627712452599344">Goście mogą korzystać z Brave, nie pozostawiając żadnych danych.</translation>
 <translation id="5952898964075639679">Dodaj siebie do Brave</translation>
@@ -125,6 +127,7 @@
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
 <translation id="707769633889902835">System operacyjny Brave nie może otworzyć tej strony.</translation>
 <translation id="696826782632239602">Brave musi mieć dostęp do Twojej lokalizacji, by udostępnić ją tej stronie</translation>
+<translation id="7886919915603831625">Brave zaleca, aby nie pobierać ani nie otwierać tego pliku.</translation>
 <translation id="1744365871163268756">Poczekaj, aż Brave zainstaluje najnowsze aktualizacje systemu.</translation>
 <translation id="3861679447659630159">Brave próbuje edytować hasła. Aby na to zezwolić, podaj swoje hasło do systemu Windows.</translation>
 <translation id="232381795826373334">Otwieranie plików PDF w Brave</translation>
@@ -133,6 +136,7 @@
 <translation id="5646769069113654257">Uruchom Brave ponownie</translation>
 <translation id="2335583906071111058">Wyświetlaj Brave w tym języku</translation>
 <translation id="4331809312908958774">System operacyjny Brave</translation>
+<translation id="79947657522496226">Opracowanie Brave OS było możliwe dzięki dodatkowemu <ph name="BEGIN_LINK_CROS_OSS"/>oprogramowaniu open source<ph name="END_LINK_CROS_OSS"/>. To samo dotyczy <ph name="BEGIN_LINK_LINUX_OSS"/>środowiska programistycznego Linuksa<ph name="END_LINK_LINUX_OSS"/>.</translation>
 <translation id="7207456302801184289">Brave – witamy!</translation>
 <translation id="5895138241574237353">Uruchom ponownie</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – logowanie do sieci</translation>
@@ -186,7 +190,6 @@ Niektóre funkcje mogą być niedostępne. Podaj inny katalog z profilem lub uż
 <translation id="8828443087767259398">Aby kontynuować parowanie, Brave potrzebuje dostępu do Bluetootha. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6418340404893954563">Słabe hasła są łatwe do odgadnięcia. Pozwól Brave <ph name="BEGIN_LINK"/>utworzyć i zapamiętać silne hasła<ph name="END_LINK"/>.</translation>
 <translation id="3335606533094650083">Brave potrzebuje uprawnień dostępu do mikrofonu na tej stronie</translation>
-<translation id="1785833016412082453">Brave nie może sprawdzić Twoich rozszerzeń. Spróbuj później.</translation>
 <translation id="1705567146636171298">Zaktualizuj Brave</translation>
 <translation id="5499063270485366718">Jeśli obraz nie ma przydatnego opisu, Brave spróbuje go dla Ciebie stworzyć. W tym celu obrazy zostaną wysłane do Brave.</translation>
 <translation id="1197672524850678392">Nie udało się uruchomić Brave. Spróbuj ponownie.</translation>
@@ -217,7 +220,6 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="4784414698887946907">Spowoduje to usunięcie danych przeglądania z tego urządzenia. Aby później odzyskać dane, zaloguj się w Brave jako <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Instalator nie mógł utworzyć katalogu tymczasowego. Sprawdź, czy na dysku jest dość wolnego miejsca oraz sprawdź, czy posiadasz uprawnienia do instalowania programów.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
-<translation id="38898988211673781">Wyczyść pliki cookie i dane witryn w momencie zamknięcia Brave</translation>
 <translation id="1652855885539187849">Na tym urządzeniu istnieje już profil Brave z tym kontem</translation>
 <translation id="8462524920674814187">Aby otrzymywać w przyszłości aktualizacje Brave, musisz mieć system OS X 10.11 lub nowszy. Na komputerze jest zainstalowany system OS X 10.10.</translation>
 <translation id="7963515534397191222">Aktualizacja Brave do najnowszej wersji nie udała się, więc nie masz dostępu do najnowszych funkcji i poprawek zabezpieczeń.</translation>
@@ -260,12 +262,13 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="7863882214613921971">O&amp;twórz link w nowej karcie Brave</translation>
 <translation id="911206726377975832">Czy usunąć także dane przeglądania?</translation>
 <translation id="2444257125841652328">Administrator systemu skonfigurował Brave w taki sposób, by strona <ph name="TARGET_URL_HOSTNAME"/> otwierała się w alternatywnej przeglądarce.</translation>
+<translation id="7902365066753170041">Uruchom ponownie, aby zaktualizować &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="6568793831116033768">System operacyjny Brave</translation>
 <translation id="7977787072794666032">Brave może działać nieprawidłowo, bo nie jest już zgodny z Windows XP ani Windows Vista</translation>
 <translation id="4484434718272972655">Kto używa Brave?</translation>
 <translation id="8992261409816268381">Autorzy Brave</translation>
-<translation id="6134859571175647580">Ostrzeżenie: Brave nie może uniemożliwić rozszerzeniom zapisywania historii przeglądania. Aby wyłączyć to rozszerzenie w trybie prywatnym, odznacz tę opcję.</translation>
+<translation id="1299765473362724475">Ostrzeżenie: Brave nie może zapobiec rozszerzeniom zapisywania historii przeglądania. Aby wyłączyć to rozszerzenie w trybie prywatnym, usuń zaznaczenie tej opcji.</translation>
 <translation id="1448049584457347995">Aby poprawić bezpieczeństwo Brave, wyłączyliśmy niektóre rozszerzenia niedostępne w <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>, które mogły zostać dodane bez Twojej wiedzy.</translation>
 <translation id="8848045066928358658">Aby poprawić bezpieczeństwo Brave, wyłączyliśmy to rozszerzenie. Nie jest ono dostępne w <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> i mogło zostać dodane bez Twojej wiedzy.</translation>
 <translation id="669092380621816981">Dane przeglądania tej osoby zostaną usunięte z tego urządzenia. Aby je odzyskać, zaloguj się w Brave jako <ph name="USER_EMAIL"/>.</translation>

@@ -49,7 +49,6 @@
 <translation id="81774600964978477">Top-Sites werden von Ihnen kuratiert</translation>
 <translation id="5439599923922718668">Kürzlich besucht</translation>
 <translation id="430556192781857057">Top-Websites werden basierend auf Websites vorgeschlagen, die Sie häufig besuchen</translation>
-<translation id="8037713009824540257">Site hinzufügen</translation>
 <translation id="1773147648972887693">Kürzlich besuchte Websites anzeigen</translation>
 <translation id="4546260624932151782">Favoriten anzeigen</translation>
 <translation id="3446024864193919737">Brave Rewards anzeigen</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">Quellen</translation>
 <translation id="5158129253322921540">Inhalte von <ph name="PUBLISHER_NAME"/> deaktivieren</translation>
 <translation id="3189348785087463371">Befördert</translation>
+<translation id="4541978218358617681">Werbung</translation>
 <translation id="1776831331757823105">Uhr</translation>
 <translation id="7791543448312431591">Hinzufügen</translation>
 <translation id="7679334366167089823">Verdienen Sie Tokens für das Anschauen von Werbung, die die Privatsphäre respektiert.</translation>
 <translation id="1531133232292396145">Traden Sie Krypto auf Binance direkt in Ihrem Browser.</translation>
 <translation id="2166494527623220386">Traden Sie Krypto auf Gemini direkt in Ihrem Browser.</translation>
 <translation id="7191394989411626168">Nach Deaktivierung von Karten werden alle aktuell sichtbaren Karten verborgen. Sie werden jedoch noch immer über neue Karten benachrichtigt.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="5655621391922317800">Krypto-Wallets</translation>
 <translation id="8820817407110198400">Lesezeichen</translation>
 <translation id="1644574205037202324">Verlauf</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">Suchmaschine auswählen</translation>
 <translation id="438216590634144114">Wählen Sie, welche Suchmaschine Sie standardmäßig verwenden wollen, wenn Sie von der Adresszeile aus das Web durchsuchen.</translation>
 <translation id="5804484488647369316">Standard-Suchmaschine festlegen</translation>
-<translation id="4428458837269935199">Probieren Sie für eine vertraulichere Sucherfahrung DuckDuckGo aus.</translation>
 <translation id="3829010735958850433">Die Einführung überspringen</translation>
 <translation id="1201402288615127009">Weiter</translation>
 <translation id="7954950242989581218">Sicheres Surfen</translation>
@@ -352,15 +352,15 @@
 <translation id="4371618764691059036">Monatliche Unterstützung wurde festgelegt.</translation>
 <translation id="6356822617569064293">Nächstes Unterstützungsdatum:</translation>
 <translation id="3593485149443019592">Nicht genug Token. Bitte <ph name="LINK_BEGIN"/>Geldmittel hinzufügen<ph name="LINK_END"/>.</translation>
-<translation id="4622723187300249546">Einmaliges Trinkgeld</translation>
-<translation id="5268142130226208198">Höhe des einmaligen Trinkgelds:</translation>
+<translation id="207268487070188114">Einmaliges Trinkgeld</translation>
+<translation id="69861679024013299">Betrag des einmaligen Trinkgelds:</translation>
 <translation id="3669086939205397942">Momentchen mal, Sie können noch keine Spenden vergeben</translation>
 <translation id="3288812755711687300">Beitrag von <ph name="USER"/></translation>
 <translation id="5851002232791947896">Tweet von <ph name="USER"/></translation>
 <translation id="5531915212947569943">Schade, dass Sie gehen…</translation>
 <translation id="1420756770787071946">Diesen Creator unterstützen</translation>
 <translation id="3271043362279673449">Danke für die Unterstützung!</translation>
-<translation id="379596083010863211">Ihr einmaliges Trinkgeld wurde gesendet.</translation>
+<translation id="3312470408978098625">Dein einmaliges Trinkgeld wurde gesendet.</translation>
 <translation id="5096821444729034955">für deren Post</translation>
 <translation id="2978223787436054634">Über Ihre Unterstützung twittern</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Machen Sie eine schnelle Tour<ph name="TOUR_LINK_END"/> oder <ph name="LEARN_LINK_BEGIN"/>lesen Sie mehr,<ph name="LEARN_LINK_END"/> um Einzelheiten zu erfahren.</translation>
@@ -512,10 +512,10 @@
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">an</translation>
 <translation id="1166682575529520472">Monatlich</translation>
-<translation id="8370173854533168890">Einmal</translation>
+<translation id="1378730109637014435">Einmalig</translation>
 <translation id="9182287025588539628">Einmalige Trinkgelder</translation>
 <translation id="6381574025952123568">Eröffnungsbilanz</translation>
-<translation id="532275381857891532">7-tägiger Werbeverlauf</translation>
+<translation id="156591572855748524">30-tägiger Werbeverlauf</translation>
 <translation id="4923459931733593730">Bezahlung</translation>
 <translation id="6104680658798556671">Bezahlung nicht erfolgt.</translation>
 <translation id="3138528956349114724">Angeheftete Seiten sind jetzt</translation>
@@ -622,7 +622,7 @@
 <translation id="3780605330121608425">Ihre Wallet</translation>
 <translation id="6727483290601442544">Detaillierte Informationen anzeigen</translation>
 <translation id="1988679729106502285">HINWEIS:</translation>
-<translation id="5815103311506128988">Dieser Ersteller hat sich noch nicht angemeldet, um Beiträge von Brave-Nutzern zu erhalten. Ihr Browser wird weiterhin versuchen, ihm Beiträge zukommen zu lassen, bis er sich verifiziert hat oder bis 90 Tage verstrichen sind.</translation>
+<translation id="7979350009208995417">Dieser Creator ist derzeit nicht konfiguriert, Trinkgelder aus deinem Wallet zu erhalten. Deine Trinkgelder verbleiben als ausstehend in deinem Wallet und es wird 90 Tage lang automatisch weiter versucht.</translation>
 <translation id="7461596279975181413">Dieser durch Brave verifizierte Urheber hat sein Konto noch nicht so konfiguriert, dass er Beiträge von Brave-Nutzern erhalten kann. Ihr Browser wird versuchen, Beiträge zu leisten, bis er sich verifiziert hat oder bis 90 Tage vergangen sind.</translation>
 <translation id="4292832015778676417">durch Werbung verdient</translation>
 <translation id="3197752845651180812">Ausstehende Beiträge</translation>
@@ -827,6 +827,7 @@
 <translation id="3741998951694470470">Fehler beim Abrufen der Daten für den Import</translation>
 <translation id="7900950536120202771">Interner Fehler des IPFS-Knotens</translation>
 <translation id="1036635552229153800">Die Daten wurden erfolgreich hochgeladen, aber nicht in das Brave-Import-Verzeichnis verschoben. Sie können dies manuell auf der Seite mit den Importeinstellungen erledigen.</translation>
+<translation id="3793279629218362523">Peer ID und IPNS-Schlüssel verwalten</translation>
 <translation id="572392919096807438">Meine Entscheidung speichern</translation>
 <translation id="7978789143098237970">bis ich diese Seite schließe</translation>
 <translation id="3523195733429162409">für 24 Stunden</translation>
@@ -864,4 +865,12 @@
 <translation id="6973157709854838218">Guthabenanzeige ausblenden</translation>
 <translation id="4548946945059463969">Guthabenanzeige erlauben</translation>
 <translation id="242959166945779492">Sie haben kein Guthaben auf Ihrem Konto. Gehen Sie zu FTX, um welches zu kaufen.</translation>
+<translation id="8037713009824540257">Site hinzufügen</translation>
+<translation id="4428458837269935199">Probieren Sie für eine vertraulichere Sucherfahrung DuckDuckGo aus.</translation>
+<translation id="4622723187300249546">Einmaliges Trinkgeld</translation>
+<translation id="5268142130226208198">Höhe des einmaligen Trinkgelds:</translation>
+<translation id="379596083010863211">Ihr einmaliges Trinkgeld wurde gesendet.</translation>
+<translation id="8370173854533168890">Einmal</translation>
+<translation id="532275381857891532">7-tägiger Werbeverlauf</translation>
+<translation id="5815103311506128988">Dieser Ersteller hat sich noch nicht angemeldet, um Beiträge von Brave-Nutzern zu erhalten. Ihr Browser wird weiterhin versuchen, ihm Beiträge zukommen zu lassen, bis er sich verifiziert hat oder bis 90 Tage verstrichen sind.</translation>
 </translationbundle>

@@ -18,7 +18,7 @@
 <translation id="6241402707160226266">Tor와 함께하는 개인정보 보호 창</translation>
 <translation id="8762452230727230396">Tor는 방문하는 사이트에서 IP 주소를 숨깁니다.</translation>
 <translation id="1369311132025451972">.onion 사이트 자동 리디렉션</translation>
-<translation id="2843777623071353503">Brave는 웹사이트의 onion 서비스가 사용 가능할 경우 해당 웹사이트나 .onion 도메인을 Tor 창에서 열 것입니다</translation>
+<translation id="2843777623071353503">Tor 창에서 .onion 도메인을 사용할 수 있을 때 Brave가 웹사이트의 onion 서비스를 엽니다.</translation>
 <translation id="8053096063396012732">Widevine 설치</translation>
 <translation id="4840334696217618631">Widevine을 활성화라혀면 브라우저를 재시작하세요</translation>
 <translation id="8410111618231938546">Google Widevine는 Brave Software가 소유하거나 관리 할 수 없는 디지털 권한 관리(DRM) 코드입니다. Google Widevine 코드는 우리의 서버가 아닌 Google 서버에서 로드합니다. 이 기능을 활성화 한 경우에만 로드 되며, 우리는 DRM 사용을 권장하지 않지만 사용자의 선택을 존중하며, 일부 Brave 사용자는 이 서비스가 필요함을 인정합니다.
@@ -72,13 +72,13 @@
 <translation id="7895302206188277628">연결된 콘텐츠</translation>
 <translation id="3654831858282189202">IPNS 키로 게시</translation>
 <translation id="7691598647605453992">IPFS</translation>
-<translation id="1047401034925735299">선택한 텍스트를 IPFS로 가져오기</translation>
 <translation id="6925604404524625582">IPFS 스냅샷 링크 가져오기 및 복사</translation>
 <translation id="1434416574322382019">Tor와 함께하는 새로운 비공개 윈도우</translation>
 <translation id="4703780849509456860">Tor와 함께 비공개 윈도우에서 링크 열기</translation>
 <translation id="3488584642074079080">Brave 비공개 창의 링크를 Tor로 열기</translation>
 <translation id="7475547933708221517">IPFS를 사용하여 로컬 파일 공유</translation>
 <translation id="2286177249736199435">IPFS를 사용하여 로컬 폴더 공유</translation>
+<translation id="4491895534716990473">선택한 텍스트를 IPFS로 가져오기</translation>
 <translation id="8883166554766780543">IPFS 스냅샷 링크 가져오기 및 복사</translation>
 <translation id="784573715436258741">IPFS를 사용하여 로컬 파일 공유</translation>
 <translation id="6313675821927505581">Tor를 이용한 새로운 비공개 윈도우</translation>
@@ -195,16 +195,23 @@
 <translation id="911363100236037920">새 키 이름 입력</translation>
 <translation id="6358469157239228181">사용할 수 없는 이름</translation>
 <translation id="5761731140570209168">새 피어 연결 문자열 추가</translation>
+<translation id="2082206983920804886">키 로테이션</translation>
+<translation id="2521133093532260474">로컬 노드를 중지할 수 없음</translation>
+<translation id="86879877003581729">로컬 노드를 시작할 수 없음</translation>
 <translation id="6476061084931271248">변경사항을 적용하려면 노드 재시작 필요</translation>
 <translation id="3754226427671882382">노드 재시작</translation>
+<translation id="949667118776341807">로테이션</translation>
 <translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">유효하지 않은 이름</translation>
 <translation id="6758961763875471084">피어 목록 수정</translation>
+<translation id="1295874070797049002">키 내보내기</translation>
+<translation id="3946479342297227860">키 제거</translation>
 <translation id="1534091531114892221">IPFS 피어 설명 설정</translation>
 <translation id="8996633027318264334"><ph name="KEY_NAME"/>를 삭제하시겠습니까?</translation>
 <translation id="910215077892371264">노드가 시작되지 않음</translation>
 <translation id="616058968889448209">IPFS 서비스 런처 오류. 자세한 정보는 <ph name="BEGIN_LINK"/>진단 페이지<ph name="END_LINK"/>에서 확인하세요.</translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' 키 가져오기 실패</translation>
+<translation id="3364053282600191535">'<ph name="KEY_NAME"/>' 키 내보내기 실패</translation>
 <translation id="8275038454117074363">가져오기</translation>
 <translation id="3654980960391973513">생성</translation>
 <translation id="5531501313997312487">노드 시작</translation>
@@ -305,11 +312,16 @@
 <translation id="312393675740711187">기사가 리더 모드로 자동 로드되어 시간을 절약합니다.</translation>
 <translation id="3234744217174488546">이 웹사이트에만 리더 모드를 켜고 끕니다. 브라우저 프로필 전체에 Speedreader를 끄려면 다음을 방문하세요.</translation>
 <translation id="7839742507462737706">Speedreader 적용 중</translation>
+<translation id="8490082094734500369">리더 모드 끄기</translation>
+<translation id="2036503787657622020">리더 모드 켜기</translation>
+<translation id="5226458915125328323">Speedreader 설정</translation>
+<translation id="6284218950354553099">일일 사용 Ping을 Brave에 자동으로 보내기</translation>
+<translation id="5288333155754958121">이 익명, 비공개 Ping으로 Brave는 활성 사용자 수를 추산합니다.</translation>
 <translation id="1872784258300710671">Brave는 비밀이 완전히 보장되는 제품 애널리틱스를 사용하여 특정 기능의 전체 사용량을 추정합니다</translation>
 <translation id="8712637175834984815">확인</translation>
 <translation id="4394049700291259645">사용 중지</translation>
-<translation id="6469509880167172749">비밀이 완전히 보장되는 제품 애널리틱스를 자동으로 Brave에 전송합니다</translation>
-<translation id="7090566321964540749">이 익명 정보는 Brave가 특정 기능의 전체 사용량을 추정하는 데만 사용됩니다.</translation>
+<translation id="7142548388914389999">프라이버시 보호 제품 분석(P3A) 허용</translation>
+<translation id="609106526832379947">이 완전히 자동화된 정보를 통해 Brave가 특정 기능의 총 사용량을 산정하고 맞춤 구성합니다.</translation>
 <translation id="1947672064022327074">이더리움 지원을 위해 암호 화폐 지갑을 시작하시겠습니까?</translation>
 <translation id="7583735190612229830">크립토 월렛을 설정하여 이 앱 및 기타 비슷한 앱과 소통하십시오.</translation>
 <translation id="8731422418734770661">Crypto 월렛 설정</translation>
@@ -337,4 +349,7 @@
 <translation id="3738833060602717053">자동으로 충돌 보고서를 보내 <ph name="PRODUCT_NAME"/> 개선 지원</translation>
 <translation id="81720820779436751">Brave는 웹사이트의 onion 서비스가 사용 가능할 경우 해당 웹사이트나 .onion 도메인을 Tor 창에서 열 것입니다</translation>
 <translation id="4322612543319315652">선택한 텍스트를 IPFS로 가져오기</translation>
+<translation id="1047401034925735299">선택한 텍스트를 IPFS로 가져오기</translation>
+<translation id="6469509880167172749">비밀이 완전히 보장되는 제품 애널리틱스를 자동으로 Brave에 전송합니다</translation>
+<translation id="7090566321964540749">이 익명 정보는 Brave가 특정 기능의 전체 사용량을 추정하는 데만 사용됩니다.</translation>
 </translationbundle>

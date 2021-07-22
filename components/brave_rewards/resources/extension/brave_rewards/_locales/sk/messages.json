@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Jednorazové príspevky",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "uplynie v ",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Tento tvorca sa ešte nezaregistroval, aby dostával príspevky od používateľov Brave. Všetky tipy, ktoré odošlete, zostanú vo vašej peňaženke, kým ich neoveria.",
+    "message": "Tento tvorca nie je aktuálne nakonfigurovaný na prijímanie príspevkov z vašej peňaženky. Akýkoľvek príspevok, ktoré zadáte, zostane čakajúci vo vašej peňaženke a bude sa opakovať automaticky počas 90 dní.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

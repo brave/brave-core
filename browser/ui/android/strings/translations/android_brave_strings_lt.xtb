@@ -122,6 +122,8 @@
 <translation id="8428213095426709021">Nustatymai</translation>
 <translation id="8772672608371898774">„Brave“ patvirtintas leidėjas</translation>
 <translation id="1397683270551078781">Dar nepatvirtinta</translation>
+<translation id="880893465294676334">Šis „Brave“ patvirtintas kūrėjas dar nesukonfigūravo savo sąskaitos indėliams iš „Brave“ naudotojų gauti.
+        Visi jūsų siunčiami arbatpinigiai liks jūsų piniginėje, kol jis užbaigs šį procesą.</translation>
 <translation id="8918760045046434238">Siųsti arbatpinigių...</translation>
 <translation id="1978261665418056203">Šį mėnesį veiklos
 dar nebuvo...</translation>
@@ -329,6 +331,7 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="5617673581653540121">Dabar jūsų ryšys šifruojamas.</translation>
 <translation id="4055107796760496928">Jei galima, „Brave“ automatiškai užmezga jums saugų ryšį.</translation>
 <translation id="8869714780588464835">Pasidalykite naujienomis</translation>
+<translation id="7427391215172269363">Kasdien naršydamas saityną su „Brave“ taupau duomenis.</translation>
 <translation id="5372054974373489308">Užblokuota 1 000 sekiklių ir reklamų!</translation>
 <translation id="2338952568654182692">Užblokuota 5 000 sekiklių ir reklamų!</translation>
 <translation id="5289711064670408815">Užblokuota 10 000 sekiklių ir reklamų!</translation>
@@ -353,7 +356,7 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="5440744330377972191">Svetainės įkeliamos greičiau</translation>
 <translation id="3000738865641747653">Greitesnis įkėlimas reiškia, kad svetainės „Brave“ naršyklėje įkeliamos sparčiau – iki 8 kartų greičiau nei kitose.</translation>
 <translation id="8903462729414407077">Gaukite savaitinius naujinimus</translation>
-<translation id="8029219208182772618">Būkite informuoti apie tai, kurios jūsų lankomos svetainės labiausiai pažeidžia privatumą.\n\nŠią privatumo statistiką matysite tik jūs. „Brave“ naršyklė jūsų įrenginyje neviešina jokių asmeninių duomenų ar naršymo istorijos.</translation>
+<translation id="7450323860390658083">Būkite informuoti, kurios jūsų lankomos svetainės labiausiai pažeidžia privatumą.\n\nŠią privatumo statistiką matysite tik jūs. „Brave“ naršyklė jūsų įrenginyje neviešina jokių asmeninių duomenų ar naršymo istorijos.</translation>
 <translation id="6170159749517116894">Įjungti privatumo ataskaitas</translation>
 <translation id="5966707198760109579">Savaitė</translation>
 <translation id="8987927404178983737">Mėnuo</translation>
@@ -374,12 +377,12 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="7427567994475794038">Įjunkite privatumo ataskaitas ir matykite, kiek sekiklių ir reklamų užblokavote per pastarąsias 3 valandas.</translation>
 <translation id="2053891538879944400">Naudodami „Brave“ naršyklę sutaupėte <ph name="DATA"/> <ph name="DATA_TEXT"/> duomenų.</translation>
 <translation id="8640064498452534195">Įjunkite privatumo ataskaitas ir matykite, kiek duomenų sutaupėte.</translation>
-<translation id="2252497442547961651">„Brave“ naršyklė naudoja vidutiniškai 40 % mažiau baterijos energijos.&#128267;</translation>
+<translation id="2252497442547961651">„Brave“ naršyklė naudoja vidutiniškai 40 % mažiau baterijos energijos.🔋</translation>
 <translation id="1945330434665345785">Praėjusią savaitę „Brave“ naršyklėje užblokavote tiek sekiklių ir reklamų: <ph name="COUNT"/>.</translation>
 <translation id="2883868922264431515">Gaukite žetonų už privatumo nepažeidžiančių reklamų peržiūrą ir paremkite mėgstamas svetaines.</translation>
-<translation id="5678925890616256956">Puiku! „Brave“ naršyklėje užblokavote 250 sekiklių ir reklamų.&#128293;</translation>
-<translation id="9199047775708635708">Puiku! Naudodami „Brave“ naršyklę sutaupėte 10 MB.&#128267;</translation>
-<translation id="1880168210969863408">Puiku! Naudodami „Brave“ naršyklę sutaupėte 10 minučių įkėlimo laiko.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Puiku! „Brave“ naršyklėje užblokavote 250 sekiklių ir reklamų.🔥</translation>
+<translation id="9199047775708635708">Puiku! Naudodami „Brave“ naršyklę sutaupėte 10 MB.🔋</translation>
+<translation id="1880168210969863408">Puiku! Naudodami „Brave“ naršyklę sutaupėte 10 minučių įkėlimo laiko.💨💨</translation>
 <translation id="7408493389591475748">Pradėkite naršyti, kad pamatytumėte privatumo ataskaitas</translation>
 <translation id="9080777565335515917">Nustatykite „Brave“ kaip numatytąją naršyklę, kad galėtumėte naršyti privačiai ir saugiai.</translation>
 <translation id="1390943217516275883">Suteikia „Brave“ galimybę rodyti jūsų privatumo statistiką</translation>
@@ -442,7 +445,7 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="3477340970981564961">„Brave Private Ads“, skirtingai nuo įprastinių reklamų, skiria jums žetonų, kuriais galite paremti turinio kūrėjus. Visa tai vyksta saugant jūsų asmens duomenų privatumą.</translation>
 <translation id="6973095375773523904">Kur rodomos reklamos?</translation>
 <translation id="7556325460112047619">„Brave Private Ads“ rodomos kaip įprastas pranešimas. Nuostatų skiltyje galite pasirinkti, kaip dažnai norite matyti šias reklamas.</translation>
-<translation id="5816125157889950051">Kada gaunate atlygį</translation>
+<translation id="6897083627729802351">Kada gaunate atlygį</translation>
 <translation id="310863932297733723">Žetonai, kuriuos iš „Brave Private Ads“ gavote per einamąjį mėnesį, jus pasieks kito mėnesio 5 dieną.</translation>
 <translation id="7712287524451429139">Atsilyginti dabar paprasta</translation>
 <translation id="105037569026952831">Kūrėjai jūsų skiriamus žetonus gauna automatiškai pagal jūsų susidomėjimo lygį, kurį matuojame kaip „dėmesį“.</translation>
@@ -459,7 +462,7 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="827315274423079662">Valio! Viskas parengta!</translation>
 <translation id="3895246934788932488">Naudodami „Brave Rewards“, saugote savo privatumą ir padedate padaryti, kad žiniatinklis būtų geresnė vieta visiems. Juk tai puiku!</translation>
 <translation id="5705882733397021510">Grįžti</translation>
-<translation id="5140321319944305531">Peržiūrėkite trumpą apžvalgą</translation>
+<translation id="3985567919248057638">Peržiūrėkite trumpą apžvalgą</translation>
 <translation id="2434574859640694129">Gavę pirmąją išmoką už reklamas galite grįžti ir skirti arbatpinigių šiam kūrėjui!</translation>
 <translation id="207242986925259074">Trumpa priminimo apžvalga</translation>
 <translation id="8342862030112839977">Pirmojo atlygio išmoką gausite:</translation>
@@ -477,6 +480,7 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="7320542277711359296">Antra pagal populiarumą</translation>
 <translation id="8295049095570748497">Rusijoje populiariausia paieškos sistema</translation>
 <translation id="2642661895835126239">Berlyne sodinami medžiai</translation>
+<translation id="177282784098234156">Privati, nepriklausoma, pritaikyta pirmiausia naudotojui</translation>
 <translation id="1410130669636877548">Kai naršote internete, vienos paieškos sistemos jūsų privatumą saugo geriau nei kitos.</translation>
 <translation id="1078265935778232285">Sveiki, tai – naršyklė „Brave“</translation>
 <translation id="6824713633331856331">Anonimiškai padėkite mums tobulėti</translation>
@@ -513,4 +517,59 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="6960458596933484861">Jums reikia mažiausiai 15 BAT, kad galėtumėte susikurti patvirtintą „Uphold“ piniginę. Bandykite dar kartą vėliau.</translation>
 <translation id="4389085954549744469">Jei jau turite patvirtintą „Uphold“ paskyrą, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">pereikite prie prisijungimo</translation>
+<translation id="1483493594462132177">Siųsti</translation>
+<translation id="538450413584738399">„Swap“</translation>
+<translation id="8825032646286791700">„DeFi“ &amp; Saugus kriptovaliutos saugojimas</translation>
+<translation id="5460364286096798286">Laikykite kriptovaliutą savo žinioje. Prekiaukite aktyvais. Peržiūrėkite kainas ir savo investicijų portfelio rezultatus. Investuokite, skolinkitės ir skolinkite naudodami „DeFi“.</translation>
+<translation id="1748009926009835882">Nustatyti kriptovaliutą</translation>
+<translation id="2759836790106646094">Kurti atsarginę piniginės kopiją dabar!</translation>
+<translation id="7685607706678113458">Kitame žingsnyje pamatysite 12 žodžių, kurie leis jums atkurti savo kriptopiniginę.</translation>
+<translation id="2359808026110333948">Tęsti</translation>
+<translation id="5024543173656851695">Suprantu, kad praradęs atkūrimo žodžius neteksiu prieigos prie savo kriptopiniginės.</translation>
+<translation id="3933122286596948824">Jūsų atkūrimo frazė</translation>
+<translation id="6146351434671268516">Užsirašykite arba nusifotografuokite šiuos žodžius tokia seka, kokia jie pateikti, ir laikykite saugioje vietoje.</translation>
+<translation id="7408247683131762445">ĮSPĖJIMAS. Niekada neatskleiskite savo atsarginės frazės. Bet kas, žinantis šią frazę, gali visiems laikams pasisavinti jūsų lėšas.</translation>
+<translation id="939275786514736244">Savo frazę išsaugojau saugioje vietoje</translation>
+<translation id="6896758677409633944">Kopijuoti</translation>
+<translation id="1202920745614909195">Pirkite kriptovaliutą naudodami „Apple Pay“, kredito ar debeto kortelę.</translation>
+<translation id="841880029259839903">Siųskite kriptovaliutą arba perveskite iš vienos sąskaitos į kitą.</translation>
+<translation id="8982246458261383692">Keistis kriptoaktyvais su „Brave DEX“ agregatoriumi.</translation>
+<translation id="1783600039044302171">Apsaugokite savo kriptovaliutą slaptažodžiu</translation>
+<translation id="3726490322412361740">Įveskite slaptažodį</translation>
+<translation id="4450951602553063001">Pakartokite slaptažodį</translation>
+<translation id="1783870616707290226">Slaptažodį turi sudaryti 7 ar daugiau ženklų</translation>
+<translation id="7383102760859258982">Slaptažodžiai nesutampa</translation>
+<translation id="1538774398124896437">Tiesiogiai</translation>
+<translation id="8163269366661594721">1D</translation>
+<translation id="7640956400175663828">1W</translation>
+<translation id="9100647964747998533">1M</translation>
+<translation id="6366007539108097840">3M</translation>
+<translation id="6977728312178289892">1Y</translation>
+<translation id="6895566650974550243">VISI</translation>
+<translation id="8892168913673237979">Paruošta!</translation>
+<translation id="8331501996028380732">Pirkite, parduokite ar laikykite kriptovaliutą. Jei turite sukurtą kriptovaliutos sąskaitą, galite pridėti ją dabar.</translation>
+<translation id="2267753748892043616">Pridėti paskyrą</translation>
+<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="8100001366858145406">Įgalinti atrakinimą naudojant kontrolinį kodą?</translation>
+<translation id="5493402808936397665">Įjunkite biometrinių duomenų naudojimą, kad galėtumėte prisijungti prie savo piniginės be slaptažodžio.</translation>
+<translation id="8488282162676695335">„Brave“ piniginė</translation>
+<translation id="6901810042765869341">Norėdami atkurti savo „Brave Wallet“ kriptovaliutos sąskaitą, įveskite savo atkūrimo frazę.</translation>
+<translation id="1970161551843843564">Atkurti kriptosąskaitą</translation>
+<translation id="4811736040444856406">Rodyti atkūrimo frazę</translation>
+<translation id="283071225285270357">Įveskite atkūrimo frazę</translation>
+<translation id="2339124864228588937">Patikrinkite atkūrimo frazę</translation>
+<translation id="6202787708155200390">Spustelėkite ant žodžių viršuje ir sudėliokite greta vienas kito teisinga seka.</translation>
+<translation id="6518133107902771759">Patvirtinti</translation>
+<translation id="3157931365184549694">Atkurti</translation>
+<translation id="9111102763498581341">Atrakinti</translation>
+<translation id="6657585470893396449">Slaptažodis</translation>
+<translation id="1569452037668432756">Įveskite savo slaptažodį, kad atrakintumėte</translation>
+<translation id="224719674509047150">Slaptažodį turi sudaryti mažiausiai 7 simboliai, kurių bent vienas turi būti skaičius ir bent vienas specialusis simbolis</translation>
+<translation id="1144810021918451336">Neapsaugo nuo pavojingų svetainių, siuntų ir plėtinių.</translation>
+<translation id="745115390910697838">Frazės nesutampa. Bandykite dar kartą.</translation>
+<translation id="2360588547830602174">Sąskaitos atkurti nepavyko. Bandykite dar kartą.</translation>
+<translation id="1530109021798294736">„Mainnet“</translation>
+<translation id="8029219208182772618">Būkite informuoti apie tai, kurios jūsų lankomos svetainės labiausiai pažeidžia privatumą.\n\nŠią privatumo statistiką matysite tik jūs. „Brave“ naršyklė jūsų įrenginyje neviešina jokių asmeninių duomenų ar naršymo istorijos.</translation>
+<translation id="5816125157889950051">Kada gaunate atlygį</translation>
+<translation id="5140321319944305531">Peržiūrėkite trumpą apžvalgą</translation>
 </translationbundle>

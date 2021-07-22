@@ -18,7 +18,7 @@
 <translation id="6241402707160226266">پنجره خصوصی با Tor</translation>
 <translation id="8762452230727230396">Tor نشانی IP شما را از سایت‌هایی که بازدید می‌کنید، مخفی می‌کند.</translation>
 <translation id="1369311132025451972">هدایت خودکار سایت‌های ‎Onion</translation>
-<translation id="2843777623071353503">در صورت وجود، Brave سرویس onion وب‌سایت یا دامنه ‎.onion را در پنجره Tor باز خواهد کرد</translation>
+<translation id="2843777623071353503">در صورت وجود، Brave سرویس onion وب‌سایت یا دامنه ‎.onion را در پنجره Tor باز خواهد کرد.</translation>
 <translation id="8053096063396012732">نصب Widevine</translation>
 <translation id="4840334696217618631">برای فعال کردن Widevine، مرورگر را دوباره راه‌اندازی کنید</translation>
 <translation id="8410111618231938546">Google Widevine قطعه‌ای از کد «مدیریت حقوق دیجیتال» (DRM) است که ما (Brave Software) مالک آن نیستیم و نمی‌توانیم آن را بازبینی کنیم. کد Google Widevine از سرورهای Google - نه سرورهای ما - بارگیری می‌شود. این کد فقط در صورتی بارگیری می‌شود که این گزینه را فعال کنید. کاربران را به استفاده از DRM تشویق نمی‌کنیم، اما به انتخاب کاربران احترام می‌گذاریم و اذعان داریم بعضی از کاربران Brave تمایل دارند از سرویس‌هایی که به DRM نیاز دارند استفاده کنند.
@@ -72,13 +72,13 @@
 <translation id="7895302206188277628">محتوای این پیوند</translation>
 <translation id="3654831858282189202">انتشار با کلید IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
-<translation id="1047401034925735299">وارد کردن نوشتار انتخاب‌شده در IPFS</translation>
 <translation id="6925604404524625582">وارد کردن و کپی کردن پیوند در عکس فوری IPFS</translation>
 <translation id="1434416574322382019">Window with Tor خصوصی جدید</translation>
 <translation id="4703780849509456860">باز کردن پیوند در Window with Tor خصوصی</translation>
 <translation id="3488584642074079080">باز کردن پیوند در Window with Tor خصوصی Brave</translation>
 <translation id="7475547933708221517">اشتراک‌گذاری فایل محلی بااستفاده از IPFS</translation>
 <translation id="2286177249736199435">اشتراک‌گذاری پوشه محلی با استفاده از IPFS</translation>
+<translation id="4491895534716990473">وارد کردن نوشتار انتخاب‌شده در IPFS</translation>
 <translation id="8883166554766780543">وارد کردن و کپی کردن پیوند به عکس فوری IPFS</translation>
 <translation id="784573715436258741">اشتراک‌گذاری فایل محلی با استفاده از IPFS</translation>
 <translation id="6313675821927505581">Window with Tor خصوصی جدید</translation>
@@ -195,16 +195,23 @@
 <translation id="911363100236037920">نامی را برای کلید جدید وارد کنید</translation>
 <translation id="6358469157239228181">این نام قابل استفاده نیست</translation>
 <translation id="5761731140570209168">افزودن رشته اتصال همتای جدید</translation>
+<translation id="2082206983920804886">کلید چرخش</translation>
+<translation id="2521133093532260474">متوقف کردن گره محلی امکان‌پذیر نیست</translation>
+<translation id="86879877003581729">راه‌اندازی گره محلی امکان‌پذیر نیست</translation>
 <translation id="6476061084931271248">برای اعمال تغییرات، گره را مجدداً راه‌اندازی کنید</translation>
 <translation id="3754226427671882382">راه‌اندازی مجدد گره</translation>
+<translation id="949667118776341807">چرخش</translation>
 <translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">این نام معتبر نیست</translation>
 <translation id="6758961763875471084">تغییر فهرست همتایان</translation>
+<translation id="1295874070797049002">کلید صدور</translation>
+<translation id="3946479342297227860">کلید حذف</translation>
 <translation id="1534091531114892221">راه‌اندازی شرح همتایان ipfs</translation>
 <translation id="8996633027318264334">آیا واقعاً می‌خواهید <ph name="KEY_NAME"/> را حذف کنید؟</translation>
 <translation id="910215077892371264">گره راه‌اندازی نمی‌شود</translation>
 <translation id="616058968889448209">خطا در راه‌اندازی سرویس IPFS، اطلاعات بیشتر در <ph name="BEGIN_LINK"/>صفحه عیب‌یابی<ph name="END_LINK"/> موجود است</translation>
 <translation id="6912148685459054619">کلید «<ph name="KEY_NAME"/>» وارد نشد</translation>
+<translation id="3364053282600191535">کلید '<ph name="KEY_NAME"/>' صادر نشد</translation>
 <translation id="8275038454117074363">وارد کردن</translation>
 <translation id="3654980960391973513">ایجاد</translation>
 <translation id="5531501313997312487">شروع گره</translation>
@@ -305,11 +312,16 @@
 <translation id="312393675740711187">مقالات به‌طور خودکار در حالت پرونده‌خوان بارگیری می‌شوند و در زمان شما صرفه‌جویی می‌شود</translation>
 <translation id="3234744217174488546">حالت پرونده‌خوان را فقط برای این وب‌سایت روشن/خاموش کنید. برای خاموش کردن Speedreader برای کل نمایه مرورگرتان، به اینجا بروید</translation>
 <translation id="7839742507462737706">در Speedreader</translation>
+<translation id="8490082094734500369">خاموش کردن حالت خواننده</translation>
+<translation id="2036503787657622020">روشن کردن حالت خواننده</translation>
+<translation id="5226458915125328323">تنظیمات تندخوان</translation>
+<translation id="6284218950354553099">ارسال خودکار پینگ مصرف روزانه به Brave</translation>
+<translation id="5288333155754958121">این پینگ ناشناس خصوصی امکان تخمین کاربران فعال را برای Brave فراهم می‌کند.</translation>
 <translation id="1872784258300710671">Brave از تجزیه‌وتحلیل‌های کاملاً خصوصی محصول برای تخمین استفاده کلی از بعضی از قابلیت‌ها استفاده می‌کند.</translation>
 <translation id="8712637175834984815">متوجه شدم</translation>
 <translation id="4394049700291259645">غیر فعال کردن</translation>
-<translation id="6469509880167172749">‏ارسال خودکار تجزیه‌وتحلیل کاملاً خصوصی محصول به Brave</translation>
-<translation id="7090566321964540749">این اطلاعات ناشناس فقط به Brave اجازه می‌دهد استفاده کلی از بعضی از قابلیت‌ها را تخمین بزند.</translation>
+<translation id="7142548388914389999">مجاز کردن تجزیه‌وتحلیل‌های محصول حفاظت‌کننده از حریم‌خصوصی (P3A)</translation>
+<translation id="609106526832379947">این اطلاعات که کاملاً به شکل ناشناس درآمده است به Brave کمک می‌کند استفاده کلی از برخی ویژگی‌ها را تخمین بزند و آنها را برایتان بهبود ببخشد.</translation>
 <translation id="1947672064022327074">مایل هستید «کیف پول‌های رمزگذاری‌شده» را برای پشتیبانی از Ethereum راه‌اندازی کنید؟</translation>
 <translation id="7583735190612229830">برای داشتن تعامل با این برنامه و برنامه‌های دیگر مشابه آن، «کیف پول رمزنگاری‌شده» را تنظیم کنید.</translation>
 <translation id="8731422418734770661">راه‌اندازی Crypto Wallets</translation>
@@ -337,4 +349,7 @@
 <translation id="3738833060602717053">با ارسال خودکار گزارش‌های خرابی به بهبود <ph name="PRODUCT_NAME"/> کمک کنید.</translation>
 <translation id="81720820779436751">در صورت وجود، Brave سرویس onion وب‌سایت یا دامنه ‎.onion را در پنجره Tor باز خواهد کرد</translation>
 <translation id="4322612543319315652">وارد کردن نوشتار انتخاب‌شده در IPFS</translation>
+<translation id="1047401034925735299">وارد کردن نوشتار انتخاب‌شده در IPFS</translation>
+<translation id="6469509880167172749">‏ارسال خودکار تجزیه‌وتحلیل کاملاً خصوصی محصول به Brave</translation>
+<translation id="7090566321964540749">این اطلاعات ناشناس فقط به Brave اجازه می‌دهد استفاده کلی از بعضی از قابلیت‌ها را تخمین بزند.</translation>
 </translationbundle>

@@ -49,7 +49,6 @@
 <translation id="81774600964978477">Tú seleccionas los sitios populares</translation>
 <translation id="5439599923922718668">Los más visitados</translation>
 <translation id="430556192781857057">Los sitios populares se sugieren en base a sitios web que visitas a menudo</translation>
-<translation id="8037713009824540257">Agregar sitio</translation>
 <translation id="1773147648972887693">Mostrar los más visitados</translation>
 <translation id="4546260624932151782">Mostrar favoritos</translation>
 <translation id="3446024864193919737">Mostrar recompensas de Brave</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">Fuentes</translation>
 <translation id="5158129253322921540">Desactivar contenido de <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Promocionado</translation>
+<translation id="4541978218358617681">Anuncio</translation>
 <translation id="1776831331757823105">Reloj</translation>
 <translation id="7791543448312431591">Agregar</translation>
 <translation id="7679334366167089823">Gana tokens por ver anuncios que respetan la privacidad.</translation>
 <translation id="1531133232292396145">Opera con criptomonedas en Binance directamente en tu navegador.</translation>
 <translation id="2166494527623220386">Opera con criptomonedas en Gemini directamente en tu navegador.</translation>
 <translation id="7191394989411626168">Al desactivar Tarjetas, se ocultarán todas las tarjetas actualmente visibles. Sin embargo, es posible que continúes recibiendo notificaciones de nuevas tarjetas.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="5655621391922317800">Billeteras de criptomonedas</translation>
 <translation id="8820817407110198400">Barra de favoritos</translation>
 <translation id="1644574205037202324">Historial</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">Selecciona un motor de búsqueda</translation>
 <translation id="438216590634144114">Elige el motor de búsqueda que quieres usar de forma predeterminada para navegar por Internet desde la barra de direcciones.</translation>
 <translation id="5804484488647369316">Elige el motor de búsqueda predeterminado</translation>
-<translation id="4428458837269935199">Si quieres apostar aún más por la privacidad, prueba el buscador DuckDuckGo.</translation>
 <translation id="3829010735958850433">Salter el tour de bienvenida</translation>
 <translation id="1201402288615127009">Siguiente</translation>
 <translation id="7954950242989581218">Navega con total tranquilidad</translation>
@@ -352,15 +352,15 @@
 <translation id="4371618764691059036">Se ha establecido la contribución mensual.</translation>
 <translation id="6356822617569064293">Fecha de la próxima contribución:</translation>
 <translation id="3593485149443019592">No hay tokens suficientes. <ph name="LINK_BEGIN"/>Agrega fondos<ph name="LINK_END"/>.</translation>
-<translation id="4622723187300249546">Propina por única vez</translation>
-<translation id="5268142130226208198">Importe de propina por única vez:</translation>
+<translation id="207268487070188114">Propina por única vez</translation>
+<translation id="69861679024013299">Importe de propina por única vez:</translation>
 <translation id="3669086939205397942">Espera, todavía no puedes dar propinas.</translation>
 <translation id="3288812755711687300">Publicación de <ph name="USER"/></translation>
 <translation id="5851002232791947896">Tuit de <ph name="USER"/></translation>
 <translation id="5531915212947569943">Lamentamos que te vayas…</translation>
 <translation id="1420756770787071946">Apoyar a este creador</translation>
 <translation id="3271043362279673449">¡Gracias por tu apoyo!</translation>
-<translation id="379596083010863211">Tu propina única se ha enviado.</translation>
+<translation id="3312470408978098625">Tu propina única se ha enviado.</translation>
 <translation id="5096821444729034955">por su publicación</translation>
 <translation id="2978223787436054634">Tuit sobre tu ayuda</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Haz un recorrido rápido<ph name="TOUR_LINK_END"/> u <ph name="LEARN_LINK_BEGIN"/>obtén más información<ph name="LEARN_LINK_END"/> para conocer los detalles.</translation>
@@ -512,10 +512,10 @@
 <translation id="4921250468871504777">OK</translation>
 <translation id="7866482334467279021">activado</translation>
 <translation id="1166682575529520472">Mensual</translation>
-<translation id="8370173854533168890">Una vez</translation>
+<translation id="1378730109637014435">Única vez</translation>
 <translation id="9182287025588539628">Propinas por única vez</translation>
 <translation id="6381574025952123568">Saldo inicial</translation>
-<translation id="532275381857891532">Historial de publicidades de 7 días</translation>
+<translation id="156591572855748524">Historial de anuncios de 30 días</translation>
 <translation id="4923459931733593730">Pago</translation>
 <translation id="6104680658798556671">El pago no se realizó.</translation>
 <translation id="3138528956349114724">Los sitios anclados ahora están</translation>
@@ -622,7 +622,7 @@
 <translation id="3780605330121608425">Tu billetera</translation>
 <translation id="6727483290601442544">Ver detalles</translation>
 <translation id="1988679729106502285">NOTA:</translation>
-<translation id="5815103311506128988">Este creador todavía no se ha registrado para recibir contribuciones de usuarios de Brave. Tu navegador seguirá intentando contribuir hasta que el creador confirme la titularidad o hasta que hayan transcurrido 90 días.</translation>
+<translation id="7979350009208995417">Este creador no está configurado actualmente para recibir propinas de tu billetera. Cualquier propina que hagas se mantendrá pendiente en tu billetera y se reintentará automáticamente durante 90 días.</translation>
 <translation id="7461596279975181413">Este creador verificado de Brave todavía no ha configurado su cuenta para recibir contribuciones de usuarios de Brave. Tu navegador seguirá intentando contribuir hasta que el creador confirme la titularidad o hasta que hayan transcurrido 90 días.</translation>
 <translation id="4292832015778676417">ingresos de publicidades</translation>
 <translation id="3197752845651180812">Contribuciones pendientes</translation>
@@ -827,6 +827,7 @@
 <translation id="3741998951694470470">No se pudieron buscar los datos para la importación</translation>
 <translation id="7900950536120202771">Error interno del nodo IPFS</translation>
 <translation id="1036635552229153800">Los datos se cargaron con éxito, pero no se movieron al directorio de importación de Brave. Puedes hacerlo de forma manual en la página de configuración de importación.</translation>
+<translation id="3793279629218362523">Administrar ID de par y claves de IPNS</translation>
 <translation id="572392919096807438">Recordar mi decisión</translation>
 <translation id="7978789143098237970">hasta que cierre este sitio</translation>
 <translation id="3523195733429162409">durante 24 horas</translation>
@@ -864,4 +865,12 @@
 <translation id="6973157709854838218">Oculta tus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Muestra tus saldos en la pantalla</translation>
 <translation id="242959166945779492">No tienes ningún saldo en tu cuenta. Visita FTX para adquirir un poco.</translation>
+<translation id="8037713009824540257">Agregar sitio</translation>
+<translation id="4428458837269935199">Si quieres apostar aún más por la privacidad, prueba el buscador DuckDuckGo.</translation>
+<translation id="4622723187300249546">Propina por única vez</translation>
+<translation id="5268142130226208198">Importe de propina por única vez:</translation>
+<translation id="379596083010863211">Tu propina única se ha enviado.</translation>
+<translation id="8370173854533168890">Una vez</translation>
+<translation id="532275381857891532">Historial de publicidades de 7 días</translation>
+<translation id="5815103311506128988">Este creador todavía no se ha registrado para recibir contribuciones de usuarios de Brave. Tu navegador seguirá intentando contribuir hasta que el creador confirme la titularidad o hasta que hayan transcurrido 90 días.</translation>
 </translationbundle>

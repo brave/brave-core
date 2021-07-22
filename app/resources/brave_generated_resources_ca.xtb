@@ -18,7 +18,7 @@
 <translation id="6241402707160226266">Finestra Privada amb Tor</translation>
 <translation id="8762452230727230396">Tor amaga la vostra adreça IP dels llocs que visiteu.</translation>
 <translation id="1369311132025451972">Redirigir automaticament els llocs .onion</translation>
-<translation id="2843777623071353503">Brave obrirà el servei de ceba del lloc web quan estigui disponible o el domini .onion a la finestra Tor</translation>
+<translation id="2843777623071353503">Brave obrirá el servei Onion a la pàgina web quan estigui disponible o el domini .onion a la finestra de Tor.</translation>
 <translation id="8053096063396012732">Instal·la Widevine</translation>
 <translation id="4840334696217618631">Reinicia el navegador per activar Widevine</translation>
 <translation id="8410111618231938546">Google Widevine és una part del codi de Gestió de Drets Digitals (DRM) que a Brave Software no tenim i no podem inspeccionar. El codi de Google Widevine es carrega dels servidors de Google, no dels nostres servidors. Es carrega només quan habiliteu aquesta opció. No encoratgem la utilització del DRM, però respectem l'elecció de l'usuari i sabem que a alguns usuaris de Brave els agradaria poder utilitzar els serveis que ho requereixen.
@@ -72,13 +72,13 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="7895302206188277628">Contingut vinculat</translation>
 <translation id="3654831858282189202">Publica amb clau IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
-<translation id="1047401034925735299">Importa el text seleccionat a IPFS</translation>
 <translation id="6925604404524625582">Importa i copia l'enllaç a la captura d'IPFS</translation>
 <translation id="1434416574322382019">Nova finestra privada amb Tor</translation>
 <translation id="4703780849509456860">Obre l'enllaç a una finestra privada amb Tor</translation>
 <translation id="3488584642074079080">Obre l'enllaç a una finestra privada de Brave amb Tor</translation>
 <translation id="7475547933708221517">Comparteix el fitxer local mitjançant IPFS</translation>
 <translation id="2286177249736199435">Comparteix la carpeta local mitjançant IPFS</translation>
+<translation id="4491895534716990473">Importa el text seleccionat a IPFS</translation>
 <translation id="8883166554766780543">Importa i copia l'enllaç a la captura d'IPFS</translation>
 <translation id="784573715436258741">Comparteix el fitxer local mitjançant IPFS</translation>
 <translation id="6313675821927505581">Nova finestra privada amb Tor</translation>
@@ -195,16 +195,23 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="911363100236037920">Introdueix un nom per a la nova clau</translation>
 <translation id="6358469157239228181">Aquest nom no es pot utilitzar</translation>
 <translation id="5761731140570209168">Afegir una nova cadena de connexió de parells</translation>
+<translation id="2082206983920804886">Gira la clau</translation>
+<translation id="2521133093532260474">No s'ha pogut aturar el node local</translation>
+<translation id="86879877003581729">No s'ha pogut iniciar el node local</translation>
 <translation id="6476061084931271248">Reinicia el node per aplicar els canvis</translation>
 <translation id="3754226427671882382">Reinicia el node</translation>
+<translation id="949667118776341807">Gira</translation>
 <translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Aquest nom no és vàlid</translation>
 <translation id="6758961763875471084">Modifica la llista de parells</translation>
+<translation id="1295874070797049002">Exporta la clau</translation>
+<translation id="3946479342297227860">Elimina la clau</translation>
 <translation id="1534091531114892221">Configura la descripció de parells d'ipfs</translation>
 <translation id="8996633027318264334">Vols suprimir <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">El node no s'ha executat</translation>
 <translation id="616058968889448209">Error d'inici del sistema IPFS, trobaràs més informació disponible a la <ph name="BEGIN_LINK"/>pàgina de diagnòstic<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">No ha estat possible importar la clau '<ph name="KEY_NAME"/>'</translation>
+<translation id="3364053282600191535">Error en l'exportació de la clau '<ph name="KEY_NAME"/>'</translation>
 <translation id="8275038454117074363">Importa</translation>
 <translation id="3654980960391973513">Genera</translation>
 <translation id="5531501313997312487">Node d'inici</translation>
@@ -305,11 +312,16 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="312393675740711187">Els articles es carreguen automàticament en el mode de lector, fet que estalvia temps.</translation>
 <translation id="3234744217174488546">Activa/desactiva el mode de lector només per aquesta pàgina web. Per desactivar el lector de velocitat per a tot el perfil del navegador, visita</translation>
 <translation id="7839742507462737706">a l'Speedreader</translation>
+<translation id="8490082094734500369">Desactiva el mode de lector</translation>
+<translation id="2036503787657622020">Activa el mode de lector</translation>
+<translation id="5226458915125328323">Configuració de l'Speedreader</translation>
+<translation id="6284218950354553099">Envieu automàticament el ping d'ús diari a Brave</translation>
+<translation id="5288333155754958121">Aquest ping anònim privat permet a Brave calcular els usuaris actius.</translation>
 <translation id="1872784258300710671">Brave fa servir analítiques dels seus productes totalment privades per a estimar l'ús global de determinades característiques</translation>
 <translation id="8712637175834984815">D'acord</translation>
 <translation id="4394049700291259645">Desactiva</translation>
-<translation id="6469509880167172749">Envieu analítiques de productes completament privades a Brave automàticament</translation>
-<translation id="7090566321964540749">Aquesta informació anònima només permet a Brave d'estimar l'ús global de determinades característiques.</translation>
+<translation id="7142548388914389999">Permet l'anàlisi de productes que preserven la privacitat (P3A)</translation>
+<translation id="609106526832379947">Aquesta informació completament anònima ajuda a Brave a calcular l'ús total de determinades funcions i a millorar-les.</translation>
 <translation id="1947672064022327074">Voleu iniciar Crypto Wallets per obtenir assistència a EtheSi ja disposeu d'un compte Uphold verificat, continueu per iniciar la sessió.reum?</translation>
 <translation id="7583735190612229830">Estableix criptomoneders per interactuar amb aquesta app i d'altres similars.</translation>
 <translation id="8731422418734770661">Configura Crypto Wallets</translation>
@@ -337,4 +349,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="3738833060602717053">Ajudeu a millorar <ph name="PRODUCT_NAME"/> enviant informes d'errors automàticament</translation>
 <translation id="81720820779436751">Brave obrirà el servei de ceba del lloc web quan estigui disponible o el domini .onion a la finestra Tor</translation>
 <translation id="4322612543319315652">Importa el text seleccionat a IPFS</translation>
+<translation id="1047401034925735299">Importa el text seleccionat a IPFS</translation>
+<translation id="6469509880167172749">Envieu analítiques de productes completament privades a Brave automàticament</translation>
+<translation id="7090566321964540749">Aquesta informació anònima només permet a Brave d'estimar l'ús global de determinades característiques.</translation>
 </translationbundle>

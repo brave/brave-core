@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Doações Únicas",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "expira em",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Esse criador ainda não se inscreveu para receber contribuições de usuários do Brave. Todas as gorjetas que você enviar vão permanecer na sua carteira até que eles sejam verificados.",
+    "message": "No momento, este criador não está configurado para receber doações da sua carteira. Qualquer doação que você fizer ficará pendente na sua carteira, e novas tentativas serão realizadas automaticamente por 90 dias.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

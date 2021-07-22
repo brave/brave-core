@@ -159,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Ühekordsed preemiad",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "aegub",
@@ -308,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "See looja pole veel end Brave'i kasutajate sissemaksete saajaks registreerinud. Kogu teie saadetud raha jääb kuni kinnitamiseni teie rahakotti.",
+    "message": "See looja ei ole hetkel seadistatud teie rahakotist annetusi vastu võtma. Kõik teie poolt saadetud annetused jäävad teie rahakotis ootele ja neid üritatakse automaatselt uuesti saata 90 päeva jooksul.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

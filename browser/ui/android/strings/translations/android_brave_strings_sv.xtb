@@ -355,7 +355,7 @@ försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</transla
 <translation id="5440744330377972191">Webbplatser laddas snabbare</translation>
 <translation id="3000738865641747653">Eftersom mindre data laddas öppnas webbplatser snabbare i Brave – upp till 8x snabbare än andra webbläsare.</translation>
 <translation id="8903462729414407077">Få uppdateringar varje vecka</translation>
-<translation id="8029219208182772618">Bli informerad om vilka webbplatser du besöker som inkräktar mest på integriteten.\n\nEndast du kan se denna integritetsstatistik. Ingen personlig information eller surfhistorik lämnar någonsin Brave webbläsare på din enhet.</translation>
+<translation id="7450323860390658083">Bli informerad om vilka webbplatser du besöker som inkräktar mest på integriteten.\n\nEndast du kan se denna integritetsstatistik. Ingen personlig information eller surfhistorik lämnar någonsin Brave-webbläsaren på din enhet.</translation>
 <translation id="6170159749517116894">Aktivera integritetsrapporter</translation>
 <translation id="5966707198760109579">Vecka</translation>
 <translation id="8987927404178983737">Månad</translation>
@@ -376,12 +376,12 @@ försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</transla
 <translation id="7427567994475794038">Aktivera integritetsrapporter för att se hur många trackers och annonser som har blockerats under de senaste 3 timmarna.</translation>
 <translation id="2053891538879944400">Du sparade <ph name="DATA"/> <ph name="DATA_TEXT"/> data med Brave webbläsare.</translation>
 <translation id="8640064498452534195">Aktivera integritetsrapporter för att se hur mycket data du har sparat.</translation>
-<translation id="2252497442547961651">Brave-webbläsaren använder i genomsnitt 40 % mindre batteri.&#128267;</translation>
+<translation id="2252497442547961651">Brave-webbläsaren använder i genomsnitt 40 % mindre batteri.🔋</translation>
 <translation id="1945330434665345785">Du blockerade <ph name="COUNT"/> trackers och annonser med Brave webbläsare förra veckan.</translation>
 <translation id="2883868922264431515">Tjäna tokens genom att visa annonser som respekterar din integritet och stöd dina favoritwebbplatser.</translation>
-<translation id="5678925890616256956">Utmärkt! Du har blockerat 250 trackers och annonser med Brave-webbläsaren.&#128293;</translation>
-<translation id="9199047775708635708">Utmärkt! Du har sparat 10 MB med Brave-webbläsaren.&#128267;</translation>
-<translation id="1880168210969863408">Utmärkt! Du har sparat 10 minuter laddningstid med Brave-webbläsaren.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Utmärkt! Du har blockerat 250 trackers och annonser med Brave-webbläsaren.🔥</translation>
+<translation id="9199047775708635708">Utmärkt! Du har sparat 10 MB med Brave-webbläsaren.🔋</translation>
+<translation id="1880168210969863408">Utmärkt! Du har sparat 10 minuter laddningstid med Brave-webbläsaren.💨💨</translation>
 <translation id="7408493389591475748">Börja surfa för att se integritetsrapporter</translation>
 <translation id="9080777565335515917">Ställ in Brave som din standardwebbläsare för privat och säker surfning.</translation>
 <translation id="1390943217516275883">Tillåt Brave att visa din integritetsstatistik</translation>
@@ -444,7 +444,7 @@ försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</transla
 <translation id="3477340970981564961">Brave privata annonser belönar dig med tokens för att stödja innehållsleverantörer, till skillnad från traditionella annonser, samtidigt som de håller din personliga information privat.</translation>
 <translation id="6973095375773523904">Var visas annonser?</translation>
 <translation id="7556325460112047619">Brave privata annonser dyker upp som en normal notifiering. Du kontrollerar hur ofta du ser dessa annonser i inställningar.</translation>
-<translation id="5816125157889950051">När får du belöningar</translation>
+<translation id="6897083627729802351">När får du belöningar</translation>
 <translation id="310863932297733723">Dina intjänade tokens från Brave privata annonser under innevarande månad anländer den 5:e nästkommande månad.</translation>
 <translation id="7712287524451429139">Ge tillbaka på ett enkelt sätt</translation>
 <translation id="105037569026952831">Innehållsskapare får dina tokenbidrag automatiskt baserat på dina engagemangsnivåer som vi mäter som ‘Attention’.</translation>
@@ -461,7 +461,7 @@ försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</transla
 <translation id="827315274423079662">Tjoho, du är klar!</translation>
 <translation id="3895246934788932488">Genom att använda Brave Rewards skyddar du din integritet och hjälper till att göra webben till en bättre plats för alla. Och det är fantastiskt!</translation>
 <translation id="5705882733397021510">Gå tillbaka</translation>
-<translation id="5140321319944305531">Låt oss ta en snabb rundtur</translation>
+<translation id="3985567919248057638">Låt oss ta en snabb rundtur</translation>
 <translation id="2434574859640694129">Efter att du har fått din första utbetalning kan du komma tillbaka och ge ett bidrag till denna skapare!</translation>
 <translation id="207242986925259074">Snabb uppdatering</translation>
 <translation id="8342862030112839977">Din första belöningsutbetalning kommer att anlända:</translation>
@@ -479,6 +479,7 @@ försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</transla
 <translation id="7320542277711359296">Näst mest populära</translation>
 <translation id="8295049095570748497">En ledande sökmotor i Ryssland</translation>
 <translation id="2642661895835126239">Planterar träd, baserat i Berlin</translation>
+<translation id="177282784098234156">Privat, oberoende, användaren i fokus</translation>
 <translation id="1410130669636877548">En del sökmotorer skyddar din integritet bättre än andra när du söker på nätet.</translation>
 <translation id="1078265935778232285">Välkommen till Brave-webbläsaren</translation>
 <translation id="6824713633331856331">Hjälp oss att lära oss anonymt</translation>
@@ -515,4 +516,59 @@ försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</transla
 <translation id="6960458596933484861">Du måste ha minst 15 BAT för att skapa en verifierad Uphold-plånbok. Försök igen senare.</translation>
 <translation id="4389085954549744469">Om du redan har ett verifierat Uphold-konto kan du <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">fortsätta till inloggning</translation>
+<translation id="1483493594462132177">Skicka</translation>
+<translation id="538450413584738399">Swap</translation>
+<translation id="8825032646286791700">Decentraliserad finans och säker kryptoförvaring</translation>
+<translation id="5460364286096798286">Håll krypto. Handla med tillgångar. Se priser och följ portföljens utveckling. Investera, låna och låna ut med decentraliserad finans.</translation>
+<translation id="1748009926009835882">Ställ in krypto</translation>
+<translation id="2759836790106646094">Säkerhetskopiera din plånbok nu!</translation>
+<translation id="7685607706678113458">I nästa steg visas 12 ord som låter dig återställa din kryptoplånbok.</translation>
+<translation id="2359808026110333948">Fortsätt</translation>
+<translation id="5024543173656851695">Jag förstår att jag inte kommer åt min kryptoplånbok om jag tappar bort min återställningsnyckel.</translation>
+<translation id="3933122286596948824">Din återställningsfras</translation>
+<translation id="6146351434671268516">Skriv ner eller kopiera de här orden i rätt ordning och spara dem på en säker plats.</translation>
+<translation id="7408247683131762445">VARNING: Avslöja aldrig din återställningsfras. Den som känner till frasen kan ta dina medel för alltid.</translation>
+<translation id="939275786514736244">Jag har sparat frasen på en säker plats</translation>
+<translation id="6896758677409633944">Kopiera</translation>
+<translation id="1202920745614909195">Köp krypto med Apple Pay eller betalkort</translation>
+<translation id="841880029259839903">Skicka krypto eller för över från ett konto till ett annat.</translation>
+<translation id="8982246458261383692">Byt kryptotillgångar med Braves DEX-aggregator.</translation>
+<translation id="1783600039044302171">Skydda din krypto med ett lösenord</translation>
+<translation id="3726490322412361740">Ange lösenord</translation>
+<translation id="4450951602553063001">Ange lösenord igen</translation>
+<translation id="1783870616707290226">Lösenordet måste vara minst 7 tecken långt</translation>
+<translation id="7383102760859258982">Lösenorden matchar inte</translation>
+<translation id="1538774398124896437">Live</translation>
+<translation id="8163269366661594721">1D</translation>
+<translation id="7640956400175663828">1V</translation>
+<translation id="9100647964747998533">1M</translation>
+<translation id="6366007539108097840">3M</translation>
+<translation id="6977728312178289892">1Å</translation>
+<translation id="6895566650974550243">ALLA</translation>
+<translation id="8892168913673237979">Allt klart!</translation>
+<translation id="8331501996028380732">Köp, sälj eller håll krypto. Om du redan har ett kryptokonto kan du lägga till det nu.</translation>
+<translation id="2267753748892043616">Lägg till konto</translation>
+<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="8100001366858145406">Vill du aktivera upplåsning med fingeravtryck?</translation>
+<translation id="5493402808936397665">Aktivera biometri för att snabbt låsa upp din plånbok utan att behöva ange ditt lösenord.</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
+<translation id="6901810042765869341">Ange din återställningsfras för att återställa ditt Brave Wallet-kryptokonto.</translation>
+<translation id="1970161551843843564">Återställ kryptoplånbok</translation>
+<translation id="4811736040444856406">Visa återställningsfras</translation>
+<translation id="283071225285270357">Ange din återställningsfras</translation>
+<translation id="2339124864228588937">Bekräfta återställningsfras</translation>
+<translation id="6202787708155200390">Tryck på orden för att ange dem i rätt ordning.</translation>
+<translation id="6518133107902771759">Verifiera</translation>
+<translation id="3157931365184549694">Återställ</translation>
+<translation id="9111102763498581341">Lås upp</translation>
+<translation id="6657585470893396449">Lösenord</translation>
+<translation id="1569452037668432756">Ange ditt lösenord för att låsa upp</translation>
+<translation id="224719674509047150">Lösenordet måste vara minst 7 tecken långt, varav minst en siffra och ett specialtecken</translation>
+<translation id="1144810021918451336">Skyddar dig inte mot farliga webbplatser, nedladdningar eller tillägg.</translation>
+<translation id="745115390910697838">Fraserna matchar inte. Försök igen.</translation>
+<translation id="2360588547830602174">Kontoåterställningen misslyckades. Försök igen.</translation>
+<translation id="1530109021798294736">Mainnet</translation>
+<translation id="8029219208182772618">Bli informerad om vilka webbplatser du besöker som inkräktar mest på integriteten.\n\nEndast du kan se denna integritetsstatistik. Ingen personlig information eller surfhistorik lämnar någonsin Brave webbläsare på din enhet.</translation>
+<translation id="5816125157889950051">När får du belöningar</translation>
+<translation id="5140321319944305531">Låt oss ta en snabb rundtur</translation>
 </translationbundle>

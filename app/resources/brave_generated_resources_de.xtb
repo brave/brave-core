@@ -18,7 +18,7 @@
 <translation id="6241402707160226266">Privates Fenster mit Tor</translation>
 <translation id="8762452230727230396">Tor verbirgt Ihre IP-Adresse vor den Websites, die Sie besuchen.</translation>
 <translation id="1369311132025451972">.onion-Seiten automatisch weiterleiten</translation>
-<translation id="2843777623071353503">Brave wird onion-Service der Webseite, wenn verfügbar, oder onion-Domain in Tor-Fenster öffnen.</translation>
+<translation id="2843777623071353503">Wenn verfügbar öffnet Brave den Onion-Dienst der Website oder die .onion-Domain in einem Tor-Fenster.</translation>
 <translation id="8053096063396012732">Widevine installieren</translation>
 <translation id="4840334696217618631">Browser neu starten, um Widevine zu aktivieren</translation>
 <translation id="8410111618231938546">Google Widevine ist ein Stück Digital Rights Management (DRM)-Code, den wir bei Brave Software nicht besitzen und nicht überprüfen können. Der Google Widevine Code wird von Google Servern geladen, nicht von unseren Servern. Er wird nur geladen, wenn Sie diese Option aktivieren. Wir raten von der Verwendung von DRM ab, aber wir respektieren die Wahl der Benutzer und erkennen an, dass einige mutige Benutzer Dienste nutzen möchten, die dies erfordern.
@@ -72,13 +72,13 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="7895302206188277628">Verknüpfter Inhalt</translation>
 <translation id="3654831858282189202">Mit IPNS-Schlüssel veröffentlichen</translation>
 <translation id="7691598647605453992">IPFS</translation>
-<translation id="1047401034925735299">Ausgewählten Text in IPFS importieren</translation>
 <translation id="6925604404524625582">Importieren und Link in IPFS-Snapshot kopieren</translation>
 <translation id="1434416574322382019">Neues privates Fenster mit Tor</translation>
 <translation id="4703780849509456860">Link in privatem Fenster mit Tor öffnen</translation>
 <translation id="3488584642074079080">Link in Brave in privatem Fenster mit Tor öffnen</translation>
 <translation id="7475547933708221517">Lokale Datei mit IPFS freigeben</translation>
 <translation id="2286177249736199435">Lokalen Ordner mit IPFS freigeben</translation>
+<translation id="4491895534716990473">Ausgewählten Text in IPFS importieren</translation>
 <translation id="8883166554766780543">Importieren und Link in IPFS-Snapshot kopieren</translation>
 <translation id="784573715436258741">Geben Sie die lokale Datei mit IPFS frei</translation>
 <translation id="6313675821927505581">Neues privates Fenster mit Tor</translation>
@@ -195,16 +195,23 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="911363100236037920">Geben Sie einen Namen für den neuen Schlüssel ein</translation>
 <translation id="6358469157239228181">Dieser Name kann nicht verwendet werden</translation>
 <translation id="5761731140570209168">Neue Peer-Verbindung eingeben</translation>
+<translation id="2082206983920804886">Schlüssel drehen</translation>
+<translation id="2521133093532260474">Lokaler Knoten kann nicht gestoppt werden.</translation>
+<translation id="86879877003581729">Lokaler Knoten kann nicht gestartet werden.</translation>
 <translation id="6476061084931271248">Starten Sie den Knoten neu, um die Änderungen zu übernehmen</translation>
 <translation id="3754226427671882382">Knoten neu starten</translation>
+<translation id="949667118776341807">Drehen</translation>
 <translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Dieser Name ist nicht gültig</translation>
 <translation id="6758961763875471084">Peer-Liste bearbeiten</translation>
+<translation id="1295874070797049002">Schlüssel exportieren</translation>
+<translation id="3946479342297227860">Schlüssel entfernen</translation>
 <translation id="1534091531114892221">IPFS-Peers-Beschreibung einrichten</translation>
 <translation id="8996633027318264334">Wollen Sie <ph name="KEY_NAME"/> wirklich löschen?</translation>
 <translation id="910215077892371264">Der Knoten wurde nicht gestartet</translation>
 <translation id="616058968889448209">Fehler beim Starten des IFPS-Dienstes. Weitere Informationen finden Sie auf der <ph name="BEGIN_LINK"/>Diagnoseseite<ph name="END_LINK"/>.</translation>
 <translation id="6912148685459054619">Import des „<ph name="KEY_NAME"/>“-Schlüssels fehlgeschlagen</translation>
+<translation id="3364053282600191535">'<ph name="KEY_NAME"/>' Schlüssel-Export fehlgeschlagen</translation>
 <translation id="8275038454117074363">Importieren</translation>
 <translation id="3654980960391973513">Erzeugen</translation>
 <translation id="5531501313997312487">Knoten starten</translation>
@@ -305,11 +312,16 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="312393675740711187">Artikel werden automatisch im Lesemodus geladen, um Ihnen Zeit zu sparen.</translation>
 <translation id="3234744217174488546">Lesemodus nur für diese Website ein- bzw. ausschalten. Für das gesamte Browserprofil können Sie Speedreader hier ausschalten:</translation>
 <translation id="7839742507462737706">im Speedreader</translation>
+<translation id="8490082094734500369">Lesemodus deaktivieren</translation>
+<translation id="2036503787657622020">Lesemodus aktivieren</translation>
+<translation id="5226458915125328323">Speedreader-Einstellungen</translation>
+<translation id="6284218950354553099">Ping der täglichen Nutzung automatisch an Brave senden.</translation>
+<translation id="5288333155754958121">Mit diesem anonymen, privaten Ping kann Brave die aktiven Nutzer schätzen.</translation>
 <translation id="1872784258300710671">Brave verwendet vollständig private Produktanalysen, um die Gesamtnutzung bestimmter Funktionen einzuschätzen</translation>
 <translation id="8712637175834984815">Alles klar</translation>
 <translation id="4394049700291259645">Deaktivieren</translation>
-<translation id="6469509880167172749">Automatisch vollständig private Produktanalysen an Brave senden</translation>
-<translation id="7090566321964540749">Mit dieser anonymen Information kann Brave nur die Gesamtnutzung bestimmter Funktionen einschätzen.</translation>
+<translation id="7142548388914389999">Erlaubt Produktanalyse, die den Datenschutz respektiert (P3A)</translation>
+<translation id="609106526832379947">Diese komplett anonymisierten Daten helfen Brave, die Nutzung bestimmter Funktionen besser abzuschätzen und sie entsprechend zu verbessern.</translation>
 <translation id="1947672064022327074">Möchten Sie Crypto Wallets zur Ethereum-Unterstützung anlegen?</translation>
 <translation id="7583735190612229830">Richten Sie Krypto-Wallets ein, um mit dieser und ähnlichen Apps zu interagieren.</translation>
 <translation id="8731422418734770661">Crypto Wallets einrichten</translation>
@@ -337,4 +349,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="3738833060602717053">Helfen Sie durch automatisches Senden von Absturzberichten, <ph name="PRODUCT_NAME"/> zu verbessern</translation>
 <translation id="81720820779436751">Brave wird onion-Service der Webseite, wenn verfügbar, oder onion-Domain in Tor-Fenster öffnen.</translation>
 <translation id="4322612543319315652">Ausgewählten Text in IPFS importieren</translation>
+<translation id="1047401034925735299">Ausgewählten Text in IPFS importieren</translation>
+<translation id="6469509880167172749">Automatisch vollständig private Produktanalysen an Brave senden</translation>
+<translation id="7090566321964540749">Mit dieser anonymen Information kann Brave nur die Gesamtnutzung bestimmter Funktionen einschätzen.</translation>
 </translationbundle>

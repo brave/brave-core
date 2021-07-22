@@ -18,7 +18,7 @@
 <translation id="6241402707160226266">Private window with Tor</translation>
 <translation id="8762452230727230396">Tor hides your IP address from the sites you visit.</translation>
 <translation id="1369311132025451972">Automatically redirect .onion sites</translation>
-<translation id="2843777623071353503">Brave will open onion service of the website when available or .onion domain in Tor window</translation>
+<translation id="2843777623071353503">Brave will open onion service of the website when available or .onion domain in Tor window.</translation>
 <translation id="8053096063396012732">Install Widevine</translation>
 <translation id="4840334696217618631">Restart browser to enable Widevine</translation>
 <translation id="8410111618231938546">Google Widevine is a piece of Digital Rights Management (DRM) code that we at Brave Software do not own and cannot inspect. The Google Widevine code is loaded from Google servers, not from our servers. It is loaded only when you enable this option. We discourage the use of DRM, but we respect user choice and acknowledge that some Brave users would like to use services that require it.
@@ -72,13 +72,13 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="7895302206188277628">Linked content</translation>
 <translation id="3654831858282189202">Publish with IPNS key</translation>
 <translation id="7691598647605453992">IPFS</translation>
-<translation id="1047401034925735299">Import Selected text to IPFS</translation>
 <translation id="6925604404524625582">Import and copy link to IPFS Snapshot</translation>
 <translation id="1434416574322382019">New Private Window with Tor</translation>
 <translation id="4703780849509456860">Open Link in Private Window with Tor</translation>
 <translation id="3488584642074079080">Open Link in Brave Private Window with Tor</translation>
 <translation id="7475547933708221517">Share Local File Using IPFS</translation>
 <translation id="2286177249736199435">Share local folder using IPFS</translation>
+<translation id="4491895534716990473">Import selected text to IPFS</translation>
 <translation id="8883166554766780543">Import and copy link to IPFS snapshot</translation>
 <translation id="784573715436258741">Share local file using IPFS</translation>
 <translation id="6313675821927505581">New private window with Tor</translation>
@@ -195,16 +195,23 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="911363100236037920">Enter a name for the new key</translation>
 <translation id="6358469157239228181">This name cannot be used</translation>
 <translation id="5761731140570209168">Add new peer connection string</translation>
+<translation id="2082206983920804886">Rotate key</translation>
+<translation id="2521133093532260474">Unable to stop local node</translation>
+<translation id="86879877003581729">Unable to launch local node</translation>
 <translation id="6476061084931271248">Restart node to apply changes</translation>
 <translation id="3754226427671882382">Restart node</translation>
+<translation id="949667118776341807">Rotate</translation>
 <translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">This name is not valid</translation>
 <translation id="6758961763875471084">Modify the peers list</translation>
+<translation id="1295874070797049002">Export key</translation>
+<translation id="3946479342297227860">Remove key</translation>
 <translation id="1534091531114892221">Set up ipfs peers description</translation>
 <translation id="8996633027318264334">Do you really want to delete <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Node is not launched</translation>
 <translation id="616058968889448209">IPFS service launch error, more information is available on the <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' key import failed</translation>
+<translation id="3364053282600191535">'<ph name="KEY_NAME"/>' key export failed</translation>
 <translation id="8275038454117074363">Import</translation>
 <translation id="3654980960391973513">Generate</translation>
 <translation id="5531501313997312487">Start node</translation>
@@ -305,11 +312,16 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="312393675740711187">Articles automatically load in reader mode, saving you time.</translation>
 <translation id="3234744217174488546">Turn on/off reader mode just for this website. To turn off Speedreader for your entire browser profile, visit</translation>
 <translation id="7839742507462737706">in Speedreader</translation>
+<translation id="8490082094734500369">Turn off reader mode</translation>
+<translation id="2036503787657622020">Turn on reader mode</translation>
+<translation id="5226458915125328323">Speedreader settings</translation>
+<translation id="6284218950354553099">Automatically send daily usage ping to Brave</translation>
+<translation id="5288333155754958121">This anonymous, private ping lets Brave estimate active users.</translation>
 <translation id="1872784258300710671">Brave uses completely private product analytics to estimate the overall usage of certain features</translation>
 <translation id="8712637175834984815">Got it</translation>
 <translation id="4394049700291259645">Disable</translation>
-<translation id="6469509880167172749">Automatically send completely private product analytics to Brave</translation>
-<translation id="7090566321964540749">This anonymous info only lets Brave estimate the overall usage of certain features.</translation>
+<translation id="7142548388914389999">Allow privacy-preserving product analytics (P3A)</translation>
+<translation id="609106526832379947">This completely anonymised info helps Brave estimate the overall usage of certain features and make them better for you.</translation>
 <translation id="1947672064022327074">Would you like to start Crypto Wallets for Ethereum support?</translation>
 <translation id="7583735190612229830">Set up Crypto Wallets to interact with this app and others like it.</translation>
 <translation id="8731422418734770661">Set up Crypto Wallets</translation>
@@ -337,4 +349,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="3738833060602717053">Help improve <ph name="PRODUCT_NAME"/> by automatically sending crash reports</translation>
 <translation id="81720820779436751">Brave will open onion service of the website when available or .onion domain in Tor window</translation>
 <translation id="4322612543319315652">Import Selected text to IPFS</translation>
+<translation id="1047401034925735299">Import Selected text to IPFS</translation>
+<translation id="6469509880167172749">Automatically send completely private product analytics to Brave</translation>
+<translation id="7090566321964540749">This anonymous info only lets Brave estimate the overall usage of certain features.</translation>
 </translationbundle>

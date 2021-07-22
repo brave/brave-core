@@ -18,7 +18,7 @@
 <translation id="6241402707160226266">Privatni prozor u Toru</translation>
 <translation id="8762452230727230396">Tor krije vašu IP adresu od lokacija koje ste posetili.</translation>
 <translation id="1369311132025451972">Automatski preusmeri .onion lokacije</translation>
-<translation id="2843777623071353503">Brave će otvoriti onion uslugu veb lokacije kada bude dostupna ili .onion domen u Tor prozoru</translation>
+<translation id="2843777623071353503">Brave će otvoriti onion uslugu sajta kada bude dostupna ili .onion domen u prozoru pregledača Tor.</translation>
 <translation id="8053096063396012732">Instalirajte Widevine</translation>
 <translation id="4840334696217618631">Ponovo pokrenite pregledač da omogućite Widevine</translation>
 <translation id="8410111618231938546">Google Widevine je deo Digital Rights Management (DRM) koda koji mi u Brave softveru ne posedujemo i ne možemo da ispitujemo. Google Widevine kod se učitava sa Google servera, a ne sa naših servera. Učitava se samo kada omogućite ovu opciju. Mi odvraćamo od upotrebe DRM-a, ali poštujemo izbor korisnika i razumemo da neki Brave korisnici žele da koriste usluge koje to zahtevaju.
@@ -72,13 +72,13 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="7895302206188277628">Povezani sadržaj</translation>
 <translation id="3654831858282189202">Objaviti sa IPNS ključem</translation>
 <translation id="7691598647605453992">IPFS</translation>
-<translation id="1047401034925735299">Uvezi odabrani tekst u IPFS</translation>
 <translation id="6925604404524625582">Uvesti i kopirati link na IPFS snimak</translation>
 <translation id="1434416574322382019">Novi privatni prozor sa Tor-om</translation>
 <translation id="4703780849509456860">Otvorite vezu u privatnom prozoru sa Tor-om</translation>
 <translation id="3488584642074079080">Otvorite vezu u Brejv privatnom Vinousu sa Torom</translation>
 <translation id="7475547933708221517">Podeli lokalnu datoteku IPFS-om</translation>
 <translation id="2286177249736199435">Podeliti lokalnu datoteku IPFS-om</translation>
+<translation id="4491895534716990473">Uvezi odabrani tekst u IPFS</translation>
 <translation id="8883166554766780543">Uvesti i kopirati link na IPFS snimak</translation>
 <translation id="784573715436258741">Podeli lokalnu datoteku IPFS-om</translation>
 <translation id="6313675821927505581">Novi privatni prozor sa Tor-om</translation>
@@ -195,16 +195,23 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="911363100236037920">Unesite naziv za novi ključ</translation>
 <translation id="6358469157239228181">Ovaj naziv ne može da se koristi</translation>
 <translation id="5761731140570209168">Dodati novi string jednakih veza</translation>
+<translation id="2082206983920804886">Rotiraj ključ</translation>
+<translation id="2521133093532260474">Zaustavljanje lokalnog čvora nije moguće</translation>
+<translation id="86879877003581729">Pokretanje lokalnog čvora nije uspelo</translation>
 <translation id="6476061084931271248">Ponovo pokrenuti čvor da bi izmene bile primenjene</translation>
 <translation id="3754226427671882382">Ponovno pokretanje čvora</translation>
+<translation id="949667118776341807">Rotiraj</translation>
 <translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Ovo ime nije validno</translation>
 <translation id="6758961763875471084">Modifikovanje spiska korisnika</translation>
+<translation id="1295874070797049002">Izvezi ključ</translation>
+<translation id="3946479342297227860">Ukloni ključ</translation>
 <translation id="1534091531114892221">Podesiti opis ipfs korisnika</translation>
 <translation id="8996633027318264334">Da li zaista želite da izbrišete <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Čvor nije pokrenut</translation>
 <translation id="616058968889448209">Greška u pokretanju IPFS servisa, više informacija je dostupno na <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Uvoz ključa '<ph name="KEY_NAME"/>' nije uspeo</translation>
+<translation id="3364053282600191535">'<ph name="KEY_NAME"/>' uvoz ključa nije uspeo</translation>
 <translation id="8275038454117074363">Uvoz</translation>
 <translation id="3654980960391973513">Generisati</translation>
 <translation id="5531501313997312487">Pokreni čvor</translation>
@@ -305,11 +312,16 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="312393675740711187">Članci se automatski učitavaju u režimu čitača, što vam štedi vreme</translation>
 <translation id="3234744217174488546">Uključiti/isključiti režim čitača samo za ovaj veb-sajt. Da biste isključili Speedreader za ceo profil vašeg pretraživača, posetite</translation>
 <translation id="7839742507462737706">u Speedreader-u</translation>
+<translation id="8490082094734500369">Isključi režim čitaoca</translation>
+<translation id="2036503787657622020">Uključi režim čitaoca</translation>
+<translation id="5226458915125328323">Podešavanje Speedreader-a</translation>
+<translation id="6284218950354553099">Automatski šalji dnevni signal provere odziva Brave-u</translation>
+<translation id="5288333155754958121">Ova anonimna, privatna provera odziva omogućava Brave-u da proceni broj aktivnih korisnika.</translation>
 <translation id="1872784258300710671">Brave koristi potpuno privatnu analitiku proizvoda da bi procenio ukupno korišćenje određenih karakteristika</translation>
 <translation id="8712637175834984815">Важи</translation>
 <translation id="4394049700291259645">Онемогући</translation>
-<translation id="6469509880167172749">Automatski pošalji potpuno privatnu analitiku proizvoda Brave-u</translation>
-<translation id="7090566321964540749">Ova anonimna informacija samo Brave-u dozvoljava da procenjuje ukupno korišćenje određenih karakteristika.</translation>
+<translation id="7142548388914389999">Dopušta analitiku proizvoda koji čuva privatnost (P3A)</translation>
+<translation id="609106526832379947">Ove potpuno anonimizovane informacije pomažu Brave-u da proceni sveukupno korišćenje određenih funkcija i da ih unapredi za vas.</translation>
 <translation id="1947672064022327074">Da li želite da pokrenete Kripto Novčanike za podršku Ethereumu?</translation>
 <translation id="7583735190612229830">Podesi kripto novčanik za interakciju sa ovom aplikacijom i nekim drugim sličnim aplikacijama.</translation>
 <translation id="8731422418734770661">Podesite kripto novčanike</translation>
@@ -337,4 +349,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="3738833060602717053">Pomozite nam da poboljšamo <ph name="PRODUCT_NAME"/> automatskim slanjem izveštaja o padu</translation>
 <translation id="81720820779436751">Brave će otvoriti onion uslugu veb lokacije kada bude dostupna ili .onion domen u Tor prozoru</translation>
 <translation id="4322612543319315652">Uvezi odabrani tekst u IPFS</translation>
+<translation id="1047401034925735299">Uvezi odabrani tekst u IPFS</translation>
+<translation id="6469509880167172749">Automatski pošalji potpuno privatnu analitiku proizvoda Brave-u</translation>
+<translation id="7090566321964540749">Ova anonimna informacija samo Brave-u dozvoljava da procenjuje ukupno korišćenje određenih karakteristika.</translation>
 </translationbundle>

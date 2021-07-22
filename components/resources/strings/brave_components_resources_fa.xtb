@@ -49,7 +49,6 @@
 <translation id="81774600964978477">سایت‌های برتر برای شما گلچین شده‌اند</translation>
 <translation id="5439599923922718668">اغلب بازدیدشده</translation>
 <translation id="430556192781857057">سایت‌های برتر براساس وب‌سایت‌هایی پیشنهاد می‌شوند که اغلب بازدید می‌کنید</translation>
-<translation id="8037713009824540257">افزودن سایت</translation>
 <translation id="1773147648972887693">نمایش اغلب بازدیدشده</translation>
 <translation id="4546260624932151782">نمایش موارد دلخواه</translation>
 <translation id="3446024864193919737">نشان دادن «پاداش‌های Brave»</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">منابع</translation>
 <translation id="5158129253322921540">محتوا از <ph name="PUBLISHER_NAME"/> غیرفعال شود</translation>
 <translation id="3189348785087463371">ارتقایافته</translation>
+<translation id="4541978218358617681">آگهی</translation>
 <translation id="1776831331757823105">ساعت</translation>
 <translation id="7791543448312431591">افزودن</translation>
 <translation id="7679334366167089823">برای تماشای آگهی‌هایی که به حریم‌خصوصی احترام می‌گذارند، توکن کسب کنید.</translation>
 <translation id="1531133232292396145">رمزارز در Binance را مستقیماً در مرورگر خود معامله کنید.</translation>
 <translation id="2166494527623220386">رمزارز در Gemini را مستقیماً در مرورگر خود معامله کنید.</translation>
 <translation id="7191394989411626168">با خاموش کردن کارت‌ها، همه کارت‌هایی که در حال حاضر قابل مشاهده هستند پنهان خواهند شد. با این وجود، ممکن است همچنان از کارت‌های جدید مطلع شوید.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="5655621391922317800">کیف پول‌های رمزنگاری</translation>
 <translation id="8820817407110198400">نشانک‌ها</translation>
 <translation id="1644574205037202324">سابقه</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">انتخاب موتور جستجو</translation>
 <translation id="438216590634144114">موتور جستجویی را که می‌خواهید به‌طور پیش‌فرض هنگام جستجوی وب از نوار نشانی استفاده شود انتخاب کنید.</translation>
 <translation id="5804484488647369316">موتور جستجوی پیش‌فرض را تنظیم کنید</translation>
-<translation id="4428458837269935199">برای تجربه جستجوی خصوصی‌تر، DuckDuckGo را امتحان کنید.</translation>
 <translation id="3829010735958850433">رد شدن از گشت خوش آمدگویی</translation>
 <translation id="1201402288615127009">بعدی</translation>
 <translation id="7954950242989581218">امن و ایمن مرور کنید</translation>
@@ -352,15 +352,15 @@
 <translation id="4371618764691059036">کمک ماهانه تنظیم شده است.</translation>
 <translation id="6356822617569064293">تاریخ کمک بعدی:</translation>
 <translation id="3593485149443019592">توکن‌ها کافی نیستند. لطفاً <ph name="LINK_BEGIN"/>سرمایه اضافه کنید<ph name="LINK_END"/>.</translation>
-<translation id="4622723187300249546">انعام یک‌باره</translation>
-<translation id="5268142130226208198">مقدار انعام یک‌باره:</translation>
+<translation id="207268487070188114">انعام یک‌باره</translation>
+<translation id="69861679024013299">مقدار انعام یک‌باره:</translation>
 <translation id="3669086939205397942">دست نگه دارید، هنوز نمی‌توانید انعام بدهید</translation>
 <translation id="3288812755711687300">پست <ph name="USER"/>’</translation>
 <translation id="5851002232791947896">توییت <ph name="USER"/>’</translation>
 <translation id="5531915212947569943">از اینکه اینجا را ترک می‌کنید متأسفیم…</translation>
 <translation id="1420756770787071946">پشتیبانی از این سازنده</translation>
 <translation id="3271043362279673449">بابت پشتیبانی سپاسگزاریم!</translation>
-<translation id="379596083010863211">انعام یک‌باره شما ارسال شد.</translation>
+<translation id="3312470408978098625">انعام یک‌باره شما ارسال شده است.</translation>
 <translation id="5096821444729034955">برای پست آن‌ها</translation>
 <translation id="2978223787436054634">درباره پشتیبانی خود توییت کنید</translation>
 <translation id="6717671373796332174">برای جزئیات، <ph name="TOUR_LINK_BEGIN"/>گشت سریعی بزنید<ph name="TOUR_LINK_END"/> یا <ph name="LEARN_LINK_BEGIN"/>بیشتر بدانید<ph name="LEARN_LINK_END"/>.</translation>
@@ -512,10 +512,10 @@
 <translation id="4921250468871504777">تأیید</translation>
 <translation id="7866482334467279021">روشن</translation>
 <translation id="1166682575529520472">ماهانه</translation>
-<translation id="8370173854533168890">یک‌باره</translation>
+<translation id="1378730109637014435">یک‌باره</translation>
 <translation id="9182287025588539628">انعام یک‌باره</translation>
 <translation id="6381574025952123568">موجودی اولیه</translation>
-<translation id="532275381857891532">تاریخچه 7 روزه تبلیغات</translation>
+<translation id="156591572855748524">تاریخچه 30 روزه تبلیغات</translation>
 <translation id="4923459931733593730">پرداخت</translation>
 <translation id="6104680658798556671">پرداخت انجام نشد.</translation>
 <translation id="3138528956349114724">سایت‌های پین‌شده اکنون به این صورت هستند</translation>
@@ -622,7 +622,7 @@
 <translation id="3780605330121608425">کیف پول شما</translation>
 <translation id="6727483290601442544">مشاهده جزئیات</translation>
 <translation id="1988679729106502285">توجه:</translation>
-<translation id="5815103311506128988">این پدیدآورنده هنوز برای دریافت کمک از کاربران Brave ثبت‌نام نکرده است. مرورگرتان تا زمانی که پدیدآورنده به تأیید برسد، یا تا 90 روز  سعی می‌کند کمک را انجام دهد.</translation>
+<translation id="7979350009208995417">این پدیدآورنده در حال حاضر برای دریافت انعام‌ها از کیف پول شما پیکربندی نشده است. هر انعامی که شما بدهید به حالت معوق در کیف پولتان باقی می‌ماند و به‌طور خودکار به‌مدت 90 روز تلاش مجدد انجام خواهد شد.</translation>
 <translation id="7461596279975181413">این «پدیدآورنده تأییدشده Brave» هنوز حسابش را تنظیم نکرده است تا از کاربران Brave کمک مالی دریافت کند. مرورگرتان تا زمانی که پدیدآورنده کمک را تأیید کند، یا حداکثر 90 روز تلاش می‌کند این کمک را انتقال دهد.</translation>
 <translation id="4292832015778676417">دریافت‌شده از آگهی‌ها</translation>
 <translation id="3197752845651180812">مشارکت‌های معلق</translation>
@@ -827,6 +827,7 @@
 <translation id="3741998951694470470">واکشی داده برای وارد کردن انجام نشد</translation>
 <translation id="7900950536120202771">خطای داخلی گره IPFS</translation>
 <translation id="1036635552229153800">داده با موفقیت آپلود شد اما به فهرست راهنمای brave-import منتقل نشد. می‌توانید این کار را به‌صورت دستی در صفحه تنظیمات وارد کردن انجام دهید.</translation>
+<translation id="3793279629218362523">مدیریت کلیدهای IPNS و شناسه همتا</translation>
 <translation id="572392919096807438">تصمیم من به یاد سپرده شود</translation>
 <translation id="7978789143098237970">تا وقتی این سایت را ببندم</translation>
 <translation id="3523195733429162409">برای 24 ساعت</translation>
@@ -864,4 +865,12 @@
 <translation id="6973157709854838218">پنهان کردن موجودی‌های ارزی شما در صفحه‌نمایش</translation>
 <translation id="4548946945059463969">نشان دادن موجودی‌های ارزی شما در صفحه‌نمایش</translation>
 <translation id="242959166945779492">هیچ موجودی در حسابتان ندارید. برای خرید مقداری ارز، به FTX بروید.</translation>
+<translation id="8037713009824540257">افزودن سایت</translation>
+<translation id="4428458837269935199">برای تجربه جستجوی خصوصی‌تر، DuckDuckGo را امتحان کنید.</translation>
+<translation id="4622723187300249546">انعام یک‌باره</translation>
+<translation id="5268142130226208198">مقدار انعام یک‌باره:</translation>
+<translation id="379596083010863211">انعام یک‌باره شما ارسال شد.</translation>
+<translation id="8370173854533168890">یک‌باره</translation>
+<translation id="532275381857891532">تاریخچه 7 روزه تبلیغات</translation>
+<translation id="5815103311506128988">این پدیدآورنده هنوز برای دریافت کمک از کاربران Brave ثبت‌نام نکرده است. مرورگرتان تا زمانی که پدیدآورنده به تأیید برسد، یا تا 90 روز  سعی می‌کند کمک را انجام دهد.</translation>
 </translationbundle>

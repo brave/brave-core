@@ -355,7 +355,7 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="5440744330377972191">Los sitios web se cargan más deprisa.</translation>
 <translation id="3000738865641747653">Cargar menos datos significa que los sitios web se cargan más rápido en Brave: hasta 8 veces más rápido que otros navegadores.</translation>
 <translation id="8903462729414407077">Obtén actualizaciones semanales</translation>
-<translation id="8029219208182772618">Obtenga información sobre cuáles de los sitios web que visita invaden más la privacidad.\n\nSolo usted puede ver estas estadísticas de privacidad. Ningún dato personal o historial de navegación sale nunca del navegador Brave de su dispositivo.</translation>
+<translation id="7450323860390658083">Obtén información sobre qué sitios web visitados respetan menos la privacidad.\n\nSolo tú puedes ver estas estadísticas de privacidad. Los datos personales y el historial de navegación no salen nunca del navegador Brave de tu dispositivo.</translation>
 <translation id="6170159749517116894">Activar informes de privacidad</translation>
 <translation id="5966707198760109579">Semana</translation>
 <translation id="8987927404178983737">Mes</translation>
@@ -376,12 +376,12 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="7427567994475794038">Active los informes de privacidad para ver cuántos rastreadores y anuncios se han bloqueado en las últimas 3 horas.</translation>
 <translation id="2053891538879944400">Ha ahorrado <ph name="DATA"/> <ph name="DATA_TEXT"/> datos con el navegador Brave.</translation>
 <translation id="8640064498452534195">Active los informes de privacidad para ver cuántos datos ha ahorrado.</translation>
-<translation id="2252497442547961651">El navegador Brave usa un 40 % menos de batería en promedio.&#128267;</translation>
+<translation id="2252497442547961651">El navegador Brave usa un 40 % menos de batería en promedio.🔋</translation>
 <translation id="1945330434665345785">Bloqueó <ph name="COUNT"/> rastreadores y anuncios con el navegador Brave la semana pasada.</translation>
 <translation id="2883868922264431515">Gana tokens al ver anuncios que respetan la privacidad y apoye a sus sitios web favoritos.</translation>
-<translation id="5678925890616256956">¡Genial! Has bloqueado 250 rastreadores &amp; anuncios con el navegador Brave.&#128293;</translation>
-<translation id="9199047775708635708">¡Genial! Te has ahorrado 10 MB con el navegador Brave.&#128267;</translation>
-<translation id="1880168210969863408">¡Genial! Te has ahorrado 10 minutos de tiempo de carga con el navegador Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">¡Genial! Has bloqueado 250 rastreadores &amp; anuncios con el navegador Brave.🔥</translation>
+<translation id="9199047775708635708">¡Genial! Te has ahorrado 10 MB con el navegador Brave.🔋</translation>
+<translation id="1880168210969863408">¡Genial! Te has ahorrado 10 minutos de tiempo de carga con el navegador Brave.💨💨</translation>
 <translation id="7408493389591475748">Empiece a navegar para ver el informe de privacidad</translation>
 <translation id="9080777565335515917">Establezca Brave como su navegador predeterminado para tener una navegación privada y segura.</translation>
 <translation id="1390943217516275883">Permite a Brave mostrar tus estadísticas de privacidad</translation>
@@ -444,10 +444,10 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="3477340970981564961">Los anuncios privados de Brave te premian con vales que sirven para apoyar a los creadores de contenido. Y a diferencia de los anuncios tradicionales, no tendrás que renunciar a la privacidad de tu información personal.</translation>
 <translation id="6973095375773523904">¿Dónde se muestran los anuncios?</translation>
 <translation id="7556325460112047619">Los anuncios privados de Brave aparecerán como una notificación normal. Puedes controlar la frecuencia con la que ves los anuncios en la configuración.</translation>
-<translation id="5816125157889950051">¿Cuándo recibe recompensas?</translation>
+<translation id="6897083627729802351">¿Cuándo recibe recompensas?</translation>
 <translation id="310863932297733723">Los vales que hayas conseguido con los anuncios privados de Brave a lo largo del mes en curso se acreditarán el día cinco del mes siguiente.</translation>
 <translation id="7712287524451429139">Retribuir es facilísimo</translation>
-<translation id="105037569026952831">Los creadores reciben sus contribuciones de tokens automáticamente en función del nivel de participación que usted tanga. Ese nivel lo medimos como ‘Atención’.</translation>
+<translation id="105037569026952831">Los creadores reciben sus contribuciones de tokens automáticamente en función del nivel de participación que usted tenga. Ese nivel lo medimos como ‘Atención’.</translation>
 <translation id="5323267338679539010">Dé las gracias con las propinas</translation>
 <translation id="6730444165801605682">Dar una gratificación es una forma de incentivar y de apoyar de forma personal el contenido o a los creadores que te encantan. ¡Consigue gratificaciones!</translation>
 <translation id="7509452925943421624">¿Qué puede hacer con los tokens?</translation>
@@ -461,7 +461,7 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="827315274423079662">¡Bien!, ya’ tienes todo lo que necesitas.</translation>
 <translation id="3895246934788932488">Al utilizar Brave Rewards, protege su privacidad y ayuda a que la web sea un lugar mejor para todos. ¡Y eso es estupendo!</translation>
 <translation id="5705882733397021510">Volver</translation>
-<translation id="5140321319944305531">Hagamos una visita rápida</translation>
+<translation id="3985567919248057638">Hagamos una visita rápida</translation>
 <translation id="2434574859640694129">Una vez que haya recibido su primer pago por publicidad puede volver y dar una propina a este creador.</translation>
 <translation id="207242986925259074">Visita rápida de repaso</translation>
 <translation id="8342862030112839977">Tu primer pago de Rewards llegará antes del:</translation>
@@ -479,6 +479,7 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="7320542277711359296">El segundo más popular</translation>
 <translation id="8295049095570748497">Un motor de búsqueda líder en Rusia</translation>
 <translation id="2642661895835126239">Plants trees, con sede en Berlín</translation>
+<translation id="177282784098234156">Privado, independiente y centrado en el usuario</translation>
 <translation id="1410130669636877548">Algunos motores de búsqueda protegen tu privacidad mejor que otros cuando haces búsquedas en la web.</translation>
 <translation id="1078265935778232285">Bienvenido a Brave Browser</translation>
 <translation id="6824713633331856331">Ayúdanos de forma anónima a aprender</translation>
@@ -515,4 +516,59 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="6960458596933484861">Necesitas 15 BAT como mínimo para crear una cartera Uphold verificada. Inténtalo de nuevo más tarde.</translation>
 <translation id="4389085954549744469">Si ya tienes una cuenta Uphold verificada, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">continúa para iniciar sesión</translation>
+<translation id="1483493594462132177">Enviar</translation>
+<translation id="538450413584738399">Swap</translation>
+<translation id="8825032646286791700">Finanzas descentralizadas y almacenamiento seguro de criptomonedas</translation>
+<translation id="5460364286096798286">Ten criptomonedas. Comercia con activos. Consulta precios y el rendimiento de tu cartera. Invierte, pide préstamos y deja prestado con las finanzas descentralizadas.</translation>
+<translation id="1748009926009835882">Configurar criptomonedas</translation>
+<translation id="2759836790106646094">¡Asegura la recuperación de tu monedero!</translation>
+<translation id="7685607706678113458">En el siguiente paso verás 12 palabras que te permitirán recuperar tu monedero de criptomonedas.</translation>
+<translation id="2359808026110333948">Continuar</translation>
+<translation id="5024543173656851695">Entiendo que si pierdo las respuestas de recuperación, no podré acceder a mi monedero de criptomonedas.</translation>
+<translation id="3933122286596948824">Tu frase de recuperación</translation>
+<translation id="6146351434671268516">Anota o copia estas palabras en el orden correcto y guárdalas en un lugar seguro.</translation>
+<translation id="7408247683131762445">ADVERTENCIA: No reveles nunca tu frase de recuperación. Cualquier persona que la tenga podría quedarse con tus fondos para siempre.</translation>
+<translation id="939275786514736244">He guardado la frase en un lugar seguro</translation>
+<translation id="6896758677409633944">Copiar</translation>
+<translation id="1202920745614909195">Compra criptomonedas con Apple Pay o tarjeta de crédito/débito.</translation>
+<translation id="841880029259839903">Envía criptomonedas o transfiere entre cuentas.</translation>
+<translation id="8982246458261383692">Intercambia activos de criptomonedas con el agregador Brave DEX</translation>
+<translation id="1783600039044302171">Protege tus criptomonedas mediante contraseña</translation>
+<translation id="3726490322412361740">Introducir contraseña</translation>
+<translation id="4450951602553063001">Vuelve a introducir la contraseña</translation>
+<translation id="1783870616707290226">Las contraseñas deben tener al menos 7 caracteres</translation>
+<translation id="7383102760859258982">Las contraseñas no coinciden</translation>
+<translation id="1538774398124896437">En directo</translation>
+<translation id="8163269366661594721">1 día</translation>
+<translation id="7640956400175663828">1 semana</translation>
+<translation id="9100647964747998533">1 mes</translation>
+<translation id="6366007539108097840">3 meses</translation>
+<translation id="6977728312178289892">1 año</translation>
+<translation id="6895566650974550243">TODO</translation>
+<translation id="8892168913673237979">¡Todo listo!</translation>
+<translation id="8331501996028380732">Compra, intercambia o conserva criptomonedas. Si ya tienes una cuenta de criptomonedas, puedes añadirla ahora.</translation>
+<translation id="2267753748892043616">Añadir cuenta</translation>
+<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="8100001366858145406">¿Permitir el desbloqueo con huella?</translation>
+<translation id="5493402808936397665">Activa la biometría para desbloquear rápidamente tu monedero sin introducir la contraseña.</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
+<translation id="6901810042765869341">Introduce la frase de recuperación para recuperar tu cuenta de criptomonedas Brave Wallet.</translation>
+<translation id="1970161551843843564">Restaurar cuenta de criptomonedas</translation>
+<translation id="4811736040444856406">Mostrar frase de recuperación</translation>
+<translation id="283071225285270357">Introduce tu frase de recuperación</translation>
+<translation id="2339124864228588937">Verificar frase de recuperación</translation>
+<translation id="6202787708155200390">Pulsa las palabras de arriba y colócalas en el orden correcto.</translation>
+<translation id="6518133107902771759">Verificar</translation>
+<translation id="3157931365184549694">Restaurar</translation>
+<translation id="9111102763498581341">Desbloquear</translation>
+<translation id="6657585470893396449">Contraseña</translation>
+<translation id="1569452037668432756">Introduce la contraseña para desbloquear</translation>
+<translation id="224719674509047150">La contraseña debe tener al menos 7 caracteres, entre ellos al menos un número y un carácter especial</translation>
+<translation id="1144810021918451336">No protege contra extensiones, descargas ni sitios web peligrosos.</translation>
+<translation id="745115390910697838">Las frases no coinciden. Inténtalo de nuevo.</translation>
+<translation id="2360588547830602174">Error al recuperar la cuenta. Inténtalo de nuevo.</translation>
+<translation id="1530109021798294736">Mainnet</translation>
+<translation id="8029219208182772618">Obtenga información sobre cuáles de los sitios web que visita invaden más la privacidad.\n\nSolo usted puede ver estas estadísticas de privacidad. Ningún dato personal o historial de navegación sale nunca del navegador Brave de su dispositivo.</translation>
+<translation id="5816125157889950051">¿Cuándo recibe recompensas?</translation>
+<translation id="5140321319944305531">Hagamos una visita rápida</translation>
 </translationbundle>

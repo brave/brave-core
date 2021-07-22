@@ -353,7 +353,7 @@ yok...</translation>
 <translation id="5440744330377972191">Websiteleri daha hızlı yüklenir</translation>
 <translation id="3000738865641747653">Daha az veri yüklenmesi, websitelerinin Brave'de daha hızlı yüklenmesi demek (diğer tarayıcılardan 8 kata kadar daha hızlı).</translation>
 <translation id="8903462729414407077">Haftalık haber alın</translation>
-<translation id="8029219208182772618">Ziyaret ettiğiniz websitelerinden hangilerinin gizliliği en fazla ihlal ettiği hakkında bilgi alın.\n\nBu gizlilik istatistiklerini sadece siz görebilirsiniz. Brave tarayıcınızdaki hiçbir kişisel veri veya tarama geçmişi cihazınızı terketmeyecektir.</translation>
+<translation id="7450323860390658083">Ziyaret ettiğiniz web sitelerinden hangilerinin gizliliği en fazla ihlal ettiği hakkında bilgi alın.\n\nBu gizlilik istatistiklerini sadece siz görebilirsiniz. Brave tarayıcısındaki hiçbir kişisel veri veya tarama geçmişi cihazınızı terk etmeyecektir.</translation>
 <translation id="6170159749517116894">Gizlilik raporlarını açın</translation>
 <translation id="5966707198760109579">Hafta</translation>
 <translation id="8987927404178983737">Ay</translation>
@@ -374,12 +374,12 @@ yok...</translation>
 <translation id="7427567994475794038">Son 3 saatte kaç izleyicinin &amp; reklamın engellendiğini görmek için Gizlilik Raporları'nı açın.</translation>
 <translation id="2053891538879944400">Brave tarayıcı ile <ph name="DATA"/> <ph name="DATA_TEXT"/> veri tasarruf ettiniz.</translation>
 <translation id="8640064498452534195">Ne kadar veri tasarruf ettiğinizi görmek için Gizlilik Raporları'nı açın.</translation>
-<translation id="2252497442547961651">Brave tarayıcı ortalama %40 daha az pil kullanır.&#128267;</translation>
+<translation id="2252497442547961651">Brave tarayıcı ortalama %40 daha az pil kullanır.🔋</translation>
 <translation id="1945330434665345785">Brave tarayıcı ile geçen hafta <ph name="COUNT"/> izleyici &amp; reklamı engellediniz.</translation>
 <translation id="2883868922264431515">Gizlilik dostu reklamlar izleyerek token kazanın ve sevdiğiniz websitelerini destekleyin.</translation>
-<translation id="5678925890616256956">Güzel! Brave tarayıcı ile 250 izleyici &amp; reklam engellediniz.&#128293;</translation>
-<translation id="9199047775708635708">Güzel! Brave tarayıcı ile 10 MB tasarruf ettiniz.&#128267;</translation>
-<translation id="1880168210969863408">Güzel! Brave tarayıcı ile yükleme süresinden 10 Dakika tasarruf ettiniz.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Güzel! Brave tarayıcı ile 250 izleyici &amp; reklam engellediniz.🔥</translation>
+<translation id="9199047775708635708">Güzel! Brave tarayıcı ile 10 MB tasarruf ettiniz.🔋</translation>
+<translation id="1880168210969863408">Güzel! Brave tarayıcı ile yükleme süresinden 10 Dakika tasarruf ettiniz.💨💨</translation>
 <translation id="7408493389591475748">Gizlilik raporunu görmek için gezinmeye başlayın</translation>
 <translation id="9080777565335515917">Gizli ve güvenli gezinti için, Brave'i varsayılan tarayıcınız yapın.</translation>
 <translation id="1390943217516275883">Brave'in gizlilik istatistiklerinizi göstermesine izin verir</translation>
@@ -442,7 +442,7 @@ yok...</translation>
 <translation id="3477340970981564961">Brave Private Ads, geleneksel reklamlardan farklı olarak sizi içerik üreticilerini desteklemeniz için jetonlarla ödüllendirir, bu sırada kişisel bilgilerinizi gizli tutar.</translation>
 <translation id="6973095375773523904">Reklamlar nerede çıkıyor?</translation>
 <translation id="7556325460112047619">Brave Private Ads normal bir bildirim gibi gözükecektir. Bu reklamları ne sıklıkta göreceğinizi ayarlardan kontrol edersiniz.</translation>
-<translation id="5816125157889950051">Ödülleri ne zaman alırsınız</translation>
+<translation id="6897083627729802351">Ödülleri ne zaman alırsınız</translation>
 <translation id="310863932297733723">Mevcut ay boyunca Brave Private Ads'ten kazanılan jetonlarınız sonraki ayın 5'inde gelecektir.</translation>
 <translation id="7712287524451429139">Geri vermek zahmetsiz hale geldi</translation>
 <translation id="105037569026952831">İçerik üreticiler, ‘Dikkat’ olarak ölçtüğümüz etkileşim düzeylerinize göre jeton katkılarınızı otomatik olarak alır</translation>
@@ -459,7 +459,7 @@ yok...</translation>
 <translation id="827315274423079662">Yaşasın, her şey tamam!</translation>
 <translation id="3895246934788932488">Brave Ödülleri'ni kullanarak, gizliliğinizi koruyor ve internetin herkes için daha iyi bir yer olmasına yardımcı oluyorsunuz. Ve bu harika!</translation>
 <translation id="5705882733397021510">Geri Git</translation>
-<translation id="5140321319944305531">Hadi Hızlı Bir Tur Atalım</translation>
+<translation id="3985567919248057638">Hadi Hızlı Bir Tur Atalım</translation>
 <translation id="2434574859640694129">İlk reklam ödemenizi aldıktan sonra geri gelebilir ve bu üreticiyi destekleyebilirsiniz!</translation>
 <translation id="207242986925259074">Hızlı bir yeniden hatırlama turu</translation>
 <translation id="8342862030112839977">İlk ödül ödemeniz şu tarihe kadar gelecek:</translation>
@@ -477,6 +477,7 @@ yok...</translation>
 <translation id="7320542277711359296">En popüler ikinci</translation>
 <translation id="8295049095570748497">Rusya'nın önde gelen bir arama motoru</translation>
 <translation id="2642661895835126239">Ağaç diker, Berlin'de yer alır</translation>
+<translation id="177282784098234156">Gizli, bağımsız, kullanıcı öncelikli</translation>
 <translation id="1410130669636877548">Webde arama yaptığınızda, bazı arama motorları gizliliğinizi diğerlerinden daha iyi korur.</translation>
 <translation id="1078265935778232285">Brave Tarayıcı'ya Hoş Geldiniz</translation>
 <translation id="6824713633331856331">Anonim olarak öğrenmemize yardım edin</translation>
@@ -513,4 +514,59 @@ yok...</translation>
 <translation id="6960458596933484861">Onaylanmış bir Uphold cüzdanı oluşturmak için en az 15 BAT'ınızın olması gerekiyor. Lütfen daha sonra tekrar deneyin.</translation>
 <translation id="4389085954549744469">Zaten onaylanmış bir Uphold hesabınız varsa, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">oturum açmak için devam edin</translation>
+<translation id="1483493594462132177">Gönder</translation>
+<translation id="538450413584738399">Takas</translation>
+<translation id="8825032646286791700">DeFi &amp; Güvenli Kripto Deposu</translation>
+<translation id="5460364286096798286">Kriptoyu himayenizde tutun. Varlık alım satımı yapın. Fiyatları ve portföy performansını görün. DeFi ile Yatırım Yapın, Borç Alın ve borç verin.</translation>
+<translation id="1748009926009835882">Kripto Kur</translation>
+<translation id="2759836790106646094">Cüzdanınızı hemen yedekleyin!</translation>
+<translation id="7685607706678113458">Bir sonraki adımda, kripto cüzdanınızı kurtarmanıza izin veren 12 sözcük göreceksiniz.</translation>
+<translation id="2359808026110333948">Devam et</translation>
+<translation id="5024543173656851695">Kurtarma sözcüklerimi kaybedersem kripto cüzdanıma erişemeyeceğimi anlıyorum.</translation>
+<translation id="3933122286596948824">Kurtarma ifadeniz</translation>
+<translation id="6146351434671268516">Bu sözcükleri doğru sırayla yazın ya da kopyalayın ve güvenli bir yerde saklayın.</translation>
+<translation id="7408247683131762445">UYARI: Yedekleme ifadenizi asla ifşa etmeyin. Bu ifadeye sahip olanlar, fonlarınızı sonsuza dek ele geçirebilir.</translation>
+<translation id="939275786514736244">İfademi güvenli bir yere yedekledim</translation>
+<translation id="6896758677409633944">Kopyala</translation>
+<translation id="1202920745614909195">Apple Pay, kredi kartı veya bankamatik kartıyla kripto satın alın.</translation>
+<translation id="841880029259839903">Kripto gönderin veya bir hesaptan diğerine aktarın.</translation>
+<translation id="8982246458261383692">Brave DEX toplayıcısı ile kripto varlık takas edin.</translation>
+<translation id="1783600039044302171">Kriptonuzu şifreyle güvenceye alın</translation>
+<translation id="3726490322412361740">Şifre Gir</translation>
+<translation id="4450951602553063001">Şifreyi yeniden gir</translation>
+<translation id="1783870616707290226">Şifre 7 veya daha fazla karakterden oluşmalıdır</translation>
+<translation id="7383102760859258982">Yeniden yazılan şifre eşleşmedi</translation>
+<translation id="1538774398124896437">Canlı</translation>
+<translation id="8163269366661594721">1G</translation>
+<translation id="7640956400175663828">1H</translation>
+<translation id="9100647964747998533">1A</translation>
+<translation id="6366007539108097840">3A</translation>
+<translation id="6977728312178289892">1Y</translation>
+<translation id="6895566650974550243">TÜMÜ</translation>
+<translation id="8892168913673237979">Her şey hazır!</translation>
+<translation id="8331501996028380732">Kripto alın, satın veya saklayın. Mevcut bir kripto hesabınız varsa şimdi ekleyebilirsiniz.</translation>
+<translation id="2267753748892043616">Hesap Ekle</translation>
+<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="8100001366858145406">Parmak iziyle kilit açma etkinleştirilsin mi?</translation>
+<translation id="5493402808936397665">Şifrenizi girmeden cüzdanınızın kilidini hızlıca açmak için biyometriği etkinleştirin.</translation>
+<translation id="8488282162676695335">Brave Cüzdan</translation>
+<translation id="6901810042765869341">Brave Wallet kripto hesabınızı geri yüklemek için kurtarma ifadenizi girin.</translation>
+<translation id="1970161551843843564">Kripto Hesabını Geri Yükle</translation>
+<translation id="4811736040444856406">Kurtarma ifadesini göster</translation>
+<translation id="283071225285270357">Kurtarma ifadenizi girin</translation>
+<translation id="2339124864228588937">Kurtarma ifadesini doğrula</translation>
+<translation id="6202787708155200390">Sözcüklere dokunarak doğru sırayla yan yana yerleştirin.</translation>
+<translation id="6518133107902771759">Doğrula</translation>
+<translation id="3157931365184549694">Geri yükle</translation>
+<translation id="9111102763498581341">Unlock</translation>
+<translation id="6657585470893396449">Şifre</translation>
+<translation id="1569452037668432756">Kilidi açmak için şifrenizi girin</translation>
+<translation id="224719674509047150">Şifre en az 7 karakterden oluşmalıdır, en az bir sayı ve bir özel karakter içermelidir</translation>
+<translation id="1144810021918451336">Sizi tehlikeli web siteleri, indirmeler ve uzantılardan korumaz.</translation>
+<translation id="745115390910697838">İfadeler eşleşmedi, lütfen tekrar deneyin.</translation>
+<translation id="2360588547830602174">Hesap kurtarılamadı. Lütfen tekrar deneyin.</translation>
+<translation id="1530109021798294736">Mainnet</translation>
+<translation id="8029219208182772618">Ziyaret ettiğiniz websitelerinden hangilerinin gizliliği en fazla ihlal ettiği hakkında bilgi alın.\n\nBu gizlilik istatistiklerini sadece siz görebilirsiniz. Brave tarayıcınızdaki hiçbir kişisel veri veya tarama geçmişi cihazınızı terketmeyecektir.</translation>
+<translation id="5816125157889950051">Ödülleri ne zaman alırsınız</translation>
+<translation id="5140321319944305531">Hadi Hızlı Bir Tur Atalım</translation>
 </translationbundle>

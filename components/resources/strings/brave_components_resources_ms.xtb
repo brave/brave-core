@@ -49,7 +49,6 @@
 <translation id="81774600964978477">Laman web teratas dikendalikan oleh anda</translation>
 <translation id="5439599923922718668">Kerap Dilawati</translation>
 <translation id="430556192781857057">Laman web teratas disyorkan berdasarkan laman web yang anda layari dengan kerap</translation>
-<translation id="8037713009824540257">Tambah Laman web</translation>
 <translation id="1773147648972887693">Paparkan laman web yang kerap dilawati</translation>
 <translation id="4546260624932151782">Paparkan keutamaan</translation>
 <translation id="3446024864193919737">Tunjukkan Ganjaran Brave</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">Sumber</translation>
 <translation id="5158129253322921540">Nyahdayakan kandungan daripada <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Tajaan</translation>
+<translation id="4541978218358617681">Iklan</translation>
 <translation id="1776831331757823105">Jam</translation>
 <translation id="7791543448312431591">Tambah</translation>
 <translation id="7679334366167089823">Peroleh token daripada menonton iklan yang menghormati privasi.</translation>
 <translation id="1531133232292396145">Dagangkan Kripto di Binance terus dalam pelayar anda.</translation>
 <translation id="2166494527623220386">Dagangkan Kripto di Gemini terus dalam pelayar anda.</translation>
 <translation id="7191394989411626168">Dengan mematikan Kad, semua kad yang boleh dilihat sekarang akan disembunyikan. Namun, anda mungkin masih akan diberitahu tentang kad-kad baharu.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="5655621391922317800">Dompet Crypto</translation>
 <translation id="8820817407110198400">Penanda buku</translation>
 <translation id="1644574205037202324">Sejarah</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">Pilih enjin carian</translation>
 <translation id="438216590634144114">Pilih enjin carian yang anda ingin gunakan secara lalai ketika mencari web dari bar alamat.</translation>
 <translation id="5804484488647369316">Tetapkan enjin carian lalai</translation>
-<translation id="4428458837269935199">Untuk pengalaman carian yang lebih sulit, cuba DuckDuckGo.</translation>
 <translation id="3829010735958850433">Langkau jelajah alu-aluan</translation>
 <translation id="1201402288615127009">Seterusnya</translation>
 <translation id="7954950242989581218">Belayar dengan selamat</translation>
@@ -352,15 +352,15 @@
 <translation id="4371618764691059036">Bayaran bulanan tetap ditetapkan.</translation>
 <translation id="6356822617569064293">Tarikh bayaran seterusnya:</translation>
 <translation id="3593485149443019592">Tidak cukup token. Sila <ph name="LINK_BEGIN"/>tambah dana<ph name="LINK_END"/>.</translation>
-<translation id="4622723187300249546">Tip Satu Kali</translation>
-<translation id="5268142130226208198">Jumlah tip satu kali:</translation>
+<translation id="207268487070188114">Petua Satu Kali</translation>
+<translation id="69861679024013299">Amaun tip satu kali:</translation>
 <translation id="3669086939205397942">Nanti dulu, anda masih belum boleh memberi tip lagi</translation>
 <translation id="3288812755711687300">SIaran <ph name="USER"/></translation>
 <translation id="5851002232791947896">Ciapan <ph name="USER"/></translation>
 <translation id="5531915212947569943">Kami kesal melihat anda pergi…</translation>
 <translation id="1420756770787071946">Sokong pencipta ini</translation>
 <translation id="3271043362279673449">Terima kasih di atas sokongan!</translation>
-<translation id="379596083010863211">Tip satu kali anda telah dihantar.</translation>
+<translation id="3312470408978098625">Tip satu kali anda telah dihantar.</translation>
 <translation id="5096821444729034955">untuk hebahan mereka</translation>
 <translation id="2978223787436054634">Ciap mengenai sokongan anda</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Take a quick tour<ph name="TOUR_LINK_END"/> or <ph name="LEARN_LINK_BEGIN"/>ketahui lebih lanjut<ph name="LEARN_LINK_END"/> untuk butiran.</translation>
@@ -512,10 +512,10 @@
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">pada</translation>
 <translation id="1166682575529520472">Bulanan</translation>
-<translation id="8370173854533168890">Sekali</translation>
+<translation id="1378730109637014435">Satu kali</translation>
 <translation id="9182287025588539628">Tip-sekali guna</translation>
 <translation id="6381574025952123568">Baki Pembukaan</translation>
-<translation id="532275381857891532">Sejarah Iklan 7 Hari</translation>
+<translation id="156591572855748524">Sejarah Iklan 30 hari</translation>
 <translation id="4923459931733593730">Pembayaran</translation>
 <translation id="6104680658798556671">Pembayaran tidak dibuat.</translation>
 <translation id="3138528956349114724">Tapak dipin kini</translation>
@@ -622,7 +622,7 @@
 <translation id="3780605330121608425">Dompet anda</translation>
 <translation id="6727483290601442544">Lihat Butiran</translation>
 <translation id="1988679729106502285">CATATAN:</translation>
-<translation id="5815103311506128988">Pencipta ini belum lagi mendaftar untuk menerima sumbangan daripada pengguna Brave. Penyemak imbas anda akan terus berusaha untuk menyumbang sehingga mereka mengesahkan, atau sehingga 90 hari telah berlalu.</translation>
+<translation id="7979350009208995417">Pencipta ini pada masa ini tidakdikonfigurasi untuk menerima tip dari dompet anda. Sebarang tip yang anda buat akan kekal di dalam dompet anda dan cuba semula secara aotomatik selama 90 hari.</translation>
 <translation id="7461596279975181413">Pencipta Disahkan Brave ini belum lagi mengkonfigurasikan akaun mereka untuk menerima sumbangan daripada pengguna Brave. Pelayar anda akan terus berusaha menyumbang sehingga disahkan, atau sehingga 90 hari berlalu.</translation>
 <translation id="4292832015778676417">diperoleh daripada iklan</translation>
 <translation id="3197752845651180812">Sumbangan menunggu</translation>
@@ -828,6 +828,7 @@ Anda juga boleh memilih untuk <ph name="LINK_BEGIN"/>hide sponsored images<ph na
 <translation id="3741998951694470470">Gagal mengambil data untuk import</translation>
 <translation id="7900950536120202771">Ralat dalaman nod IPFS</translation>
 <translation id="1036635552229153800">Data berjaya dimuat naik tetapi tidak dialihkan ke direktori import-brave. Anda boleh melakukan ini secara manual di halaman tetapan import.</translation>
+<translation id="3793279629218362523">Urus ID Rakan Sekerja dan kekunci IPNS</translation>
 <translation id="572392919096807438">Ingat keputusan saya</translation>
 <translation id="7978789143098237970">sehingga saya menutup tapak ini</translation>
 <translation id="3523195733429162409">untuk 24 jam</translation>
@@ -865,4 +866,12 @@ Anda juga boleh memilih untuk <ph name="LINK_BEGIN"/>hide sponsored images<ph na
 <translation id="6973157709854838218">Sembunyikan baki anda dari paparan</translation>
 <translation id="4548946945059463969">Dedahkan baki anda di skrin</translation>
 <translation id="242959166945779492">Anda tidak mempunyai sebarang baki dalam akaun anda. Lawati FTX untuk membeli sedikit.</translation>
+<translation id="8037713009824540257">Tambah Laman web</translation>
+<translation id="4428458837269935199">Untuk pengalaman carian yang lebih sulit, cuba DuckDuckGo.</translation>
+<translation id="4622723187300249546">Tip Satu Kali</translation>
+<translation id="5268142130226208198">Jumlah tip satu kali:</translation>
+<translation id="379596083010863211">Tip satu kali anda telah dihantar.</translation>
+<translation id="8370173854533168890">Sekali</translation>
+<translation id="532275381857891532">Sejarah Iklan 7 Hari</translation>
+<translation id="5815103311506128988">Pencipta ini belum lagi mendaftar untuk menerima sumbangan daripada pengguna Brave. Penyemak imbas anda akan terus berusaha untuk menyumbang sehingga mereka mengesahkan, atau sehingga 90 hari telah berlalu.</translation>
 </translationbundle>

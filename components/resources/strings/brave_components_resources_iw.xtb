@@ -49,7 +49,6 @@
 <translation id="81774600964978477">אתרים מובילים אצורים על ידך</translation>
 <translation id="5439599923922718668">ביקורים תכופים</translation>
 <translation id="430556192781857057">אתרים מובילים מוצעים על סמך אתרים שבהם את/ה מבקר/ת תכופות</translation>
-<translation id="8037713009824540257">הוספת אתר</translation>
 <translation id="1773147648972887693">הצג ביקורים תכופים</translation>
 <translation id="4546260624932151782">הצג מועדפים</translation>
 <translation id="3446024864193919737">הצג את Brave Rewards</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">מקורות</translation>
 <translation id="5158129253322921540">השבת תוכן מאת <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">מקודם</translation>
+<translation id="4541978218358617681">פרסומת</translation>
 <translation id="1776831331757823105">שעון</translation>
 <translation id="7791543448312431591">הוספה</translation>
 <translation id="7679334366167089823">הרוויחו טוקנים עבור צפייה בפרסומות השומרות על הפרטיות.</translation>
 <translation id="1531133232292396145">סחרו בקריפטו ב-Binance ישירות בדפדפן שלכם.</translation>
 <translation id="2166494527623220386">סחר בקריפטו ב-Gemini ישירות בדפדפן שלכם.</translation>
 <translation id="7191394989411626168">על ידי כיבוי כרטיסים, כל הכרטיסים שכרגע גלויים יוסתרו. עם זאת, ייתכן שעדיין תקבלו הודעה על כרטיסים חדשים.</translation>
+<translation id="8112367589167674370">שיחת Brave</translation>
 <translation id="5655621391922317800">ארנקי קריפטו</translation>
 <translation id="8820817407110198400">סימניות</translation>
 <translation id="1644574205037202324">היסטוריה</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">בחר מנוע חיפוש</translation>
 <translation id="438216590634144114">בחרו את מנוע החיפוש שבו תרצו להשתמש כברירת מחדל בעת חיפוש באינטרנט מסרגל הכתובות.</translation>
 <translation id="5804484488647369316">הגדר מנוע חיפוש ברירת מחדל</translation>
-<translation id="4428458837269935199">לחוויית חיפוש פרטית יותר, נסו את DuckDuckGo.</translation>
 <translation id="3829010735958850433">לדלג על סיור קבלת הפנים</translation>
 <translation id="1201402288615127009">הבא</translation>
 <translation id="7954950242989581218">גלשו באופן בטוח</translation>
@@ -352,15 +352,15 @@
 <translation id="4371618764691059036">נקבעה תרומה חודשית.</translation>
 <translation id="6356822617569064293">תאריך התרומה הבא:</translation>
 <translation id="3593485149443019592">אין מספיק אסימונים. יש <ph name="LINK_BEGIN"/>להוסיף כספים<ph name="LINK_END"/>.</translation>
-<translation id="4622723187300249546">טיפ חד פעמי</translation>
-<translation id="5268142130226208198">סכום טיפ חד פעמי:</translation>
+<translation id="207268487070188114">טיפ חד-פעמי</translation>
+<translation id="69861679024013299">סכום טיפ חד-פעמי:</translation>
 <translation id="3669086939205397942">נא להמתין, אין באפשרותך’ לתת טיפ עדיין</translation>
 <translation id="3288812755711687300">הפוסט של <ph name="USER"/></translation>
 <translation id="5851002232791947896">הציוץ של <ph name="USER"/></translation>
 <translation id="5531915212947569943">אנו מצטערים לראות אתכם הולכים…</translation>
 <translation id="1420756770787071946">תמכו ביוצר זה</translation>
 <translation id="3271043362279673449">תודה על התמיכה!</translation>
-<translation id="379596083010863211">הטיפ החד פעמי שלך נשלח.</translation>
+<translation id="3312470408978098625">טיפ חד-פעמי נשלח.</translation>
 <translation id="5096821444729034955">עבור הפוסט שלהם</translation>
 <translation id="2978223787436054634">צייצו לגבי התמיכה שלכם</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>ערכו סיור מהיר<ph name="TOUR_LINK_END"/> או <ph name="LEARN_LINK_BEGIN"/>למדו עוד<ph name="LEARN_LINK_END"/> לפרטים.</translation>
@@ -512,10 +512,10 @@
 <translation id="4921250468871504777">אוקיי</translation>
 <translation id="7866482334467279021">פעיל</translation>
 <translation id="1166682575529520472">חודשי</translation>
-<translation id="8370173854533168890">חד פעמי</translation>
+<translation id="1378730109637014435">חד-פעמי</translation>
 <translation id="9182287025588539628">טיפ חד-פעמי</translation>
 <translation id="6381574025952123568">יתרת פתיחה</translation>
-<translation id="532275381857891532">היסטוריית מודעות של 7 ימים</translation>
+<translation id="156591572855748524">היסטוריית מודעות של 30 ימים</translation>
 <translation id="4923459931733593730">תשלום</translation>
 <translation id="6104680658798556671">התשלום לא בוצע.</translation>
 <translation id="3138528956349114724">אתרים מוצמדים נמצאים כעת</translation>
@@ -622,7 +622,7 @@
 <translation id="3780605330121608425">הארנק שלך</translation>
 <translation id="6727483290601442544">הצג פרטים</translation>
 <translation id="1988679729106502285">הערה:</translation>
-<translation id="5815103311506128988">יוצר זה עדיין לא נרשם לקבלת תרומות ממשתמשי Brave. הדפדפן ימשיך לנסות לתרום עד אשר יאומת או עד שיחלפו 90 יום.</translation>
+<translation id="7979350009208995417">יוצר זה עדיין לא הוגדר לקבלת טיפים מהארנק שלך. כל טיפ שתיתן יישאר בהמתנה בארנק שלך ויתבצע ניסיון חוזר אוטומטית במשך 90 יום.</translation>
 <translation id="7461596279975181413">יוצר מאומת זה של Brave טרם הגדיר את חשבונו לקבלת תרומות ממשתמשי Brave. הדפדפן שלך ימשיך לנסות לשלוח תרומה עד שהוא יבצע אימות, או עד לאחר שיחלפו 90 יום.</translation>
 <translation id="4292832015778676417">סכום שהתקבל מפרסומות</translation>
 <translation id="3197752845651180812">תרומות ממתינות</translation>
@@ -827,6 +827,7 @@
 <translation id="3741998951694470470">קבלת נתונים ליבוא נכשלה</translation>
 <translation id="7900950536120202771">שגיאה פנימית של צומת IPFS</translation>
 <translation id="1036635552229153800">הנתונים הועלו בהצלחה אך לא הועברו לספריה brave-import. אפשר לעשות זאת ידנית בדף הגדרות היבוא.</translation>
+<translation id="3793279629218362523">נהל זיהוי עמית ומפתחות IPNS</translation>
 <translation id="572392919096807438">זכור את ההחלטה שלי</translation>
 <translation id="7978789143098237970">עד שאסגור אתר זה</translation>
 <translation id="3523195733429162409">ל-24 שעות</translation>
@@ -865,4 +866,12 @@
 <translation id="6973157709854838218">הסתר יתרות בתצוגה</translation>
 <translation id="4548946945059463969">הציגו את היתרות על המסך</translation>
 <translation id="242959166945779492">אין לך יתרות בחשבון. בקר ב-FTX לרכישת יתרה.</translation>
+<translation id="8037713009824540257">הוספת אתר</translation>
+<translation id="4428458837269935199">לחוויית חיפוש פרטית יותר, נסו את DuckDuckGo.</translation>
+<translation id="4622723187300249546">טיפ חד פעמי</translation>
+<translation id="5268142130226208198">סכום טיפ חד פעמי:</translation>
+<translation id="379596083010863211">הטיפ החד פעמי שלך נשלח.</translation>
+<translation id="8370173854533168890">חד פעמי</translation>
+<translation id="532275381857891532">היסטוריית מודעות של 7 ימים</translation>
+<translation id="5815103311506128988">יוצר זה עדיין לא נרשם לקבלת תרומות ממשתמשי Brave. הדפדפן ימשיך לנסות לתרום עד אשר יאומת או עד שיחלפו 90 יום.</translation>
 </translationbundle>

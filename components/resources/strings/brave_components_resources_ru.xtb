@@ -49,7 +49,6 @@
 <translation id="81774600964978477">Топ сайтов курируете вы</translation>
 <translation id="5439599923922718668">Часто посещаемый</translation>
 <translation id="430556192781857057">Топ сайтов выбирается из тех сайтов, которые вы часто посещаете.</translation>
-<translation id="8037713009824540257">Добавить сайт</translation>
 <translation id="1773147648972887693">Показать часто посещаемые</translation>
 <translation id="4546260624932151782">Показать избранное</translation>
 <translation id="3446024864193919737">Показать Вознаграждение Brave</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">Источники</translation>
 <translation id="5158129253322921540">Отключить контент от <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">На правах рекламы</translation>
+<translation id="4541978218358617681">Реклама</translation>
 <translation id="1776831331757823105">Часы</translation>
 <translation id="7791543448312431591">Добавить</translation>
 <translation id="7679334366167089823">Заработайте токены, просматривая безопасные для вашей конфиденциальности рекламные объявления.</translation>
 <translation id="1531133232292396145">Торгуйте криптовалютами на Binance непосредственно из своего браузера.</translation>
 <translation id="2166494527623220386">Торгуйте криптовалютами на Gemini непосредственно из своего браузера.</translation>
 <translation id="7191394989411626168">Если вы отключите Карты, все карты, которые видны сейчас, будут скрыты. Однако, вы по прежнему можете получать оповещение о новых картах.</translation>
+<translation id="8112367589167674370">Чат Brave</translation>
 <translation id="5655621391922317800">Криптовалютные кошельки</translation>
 <translation id="8820817407110198400">Закладки</translation>
 <translation id="1644574205037202324">История</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">Выберите поисковую систему</translation>
 <translation id="438216590634144114">Выберите поисковую систему по умолчанию при отправке запроса из адресной строки</translation>
 <translation id="5804484488647369316">Установить поисковую систему по умолчанию</translation>
-<translation id="4428458837269935199">Для более конфиденциального поиска попробуйте DuckDuckGo.</translation>
 <translation id="3829010735958850433">Пропустить ознакомительный тур</translation>
 <translation id="1201402288615127009">Далее</translation>
 <translation id="7954950242989581218">Работайте в интернете в полной безопасности</translation>
@@ -352,15 +352,15 @@
 <translation id="4371618764691059036">Ежемесячный взнос установлен.</translation>
 <translation id="6356822617569064293">Дата следующего взноса:</translation>
 <translation id="3593485149443019592">Недостаточно средств. Пожалуйста, <ph name="LINK_BEGIN"/>пополните баланс<ph name="LINK_END"/>.</translation>
-<translation id="4622723187300249546">Единоразовые чаевые</translation>
-<translation id="5268142130226208198">Сумма единоразовых чаевых:</translation>
+<translation id="207268487070188114">Единоразовый платеж</translation>
+<translation id="69861679024013299">Сумма единоразового платежа:</translation>
 <translation id="3669086939205397942">Погодите, пока-что вы не можете давать донаты</translation>
 <translation id="3288812755711687300">Публикация пользователя <ph name="USER"/></translation>
 <translation id="5851002232791947896">Твит пользователя <ph name="USER"/></translation>
 <translation id="5531915212947569943">Очень жаль, что вы уходите…</translation>
 <translation id="1420756770787071946">Поддержать этого творца</translation>
 <translation id="3271043362279673449">Спасибо за поддержку!</translation>
-<translation id="379596083010863211">Ваши единоразовые чаевые отправлены.</translation>
+<translation id="3312470408978098625">Ваш единоразовый платеж отправлен.</translation>
 <translation id="5096821444729034955">для их публикации</translation>
 <translation id="2978223787436054634">Отправьте твит о вашей поддержке</translation>
 <translation id="6717671373796332174">Давайте мы все вам <ph name="TOUR_LINK_BEGIN"/>покажем<ph name="TOUR_LINK_END"/>. А ещё можете ознакомиться со справочными материалами по <ph name="LEARN_LINK_BEGIN"/>ссылке<ph name="LEARN_LINK_END"/>.</translation>
@@ -512,10 +512,10 @@
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">вкл.</translation>
 <translation id="1166682575529520472">Ежемесячно</translation>
-<translation id="8370173854533168890">Один раз</translation>
+<translation id="1378730109637014435">Единоразово</translation>
 <translation id="9182287025588539628">Одноразовые чаевые</translation>
 <translation id="6381574025952123568">Начальное сальдо</translation>
-<translation id="532275381857891532">История рекламы за неделю</translation>
+<translation id="156591572855748524">История рекламы за 30 дней</translation>
 <translation id="4923459931733593730">Платеж</translation>
 <translation id="6104680658798556671">Платеж не осуществлен.</translation>
 <translation id="3138528956349114724">Закрепленные сайты</translation>
@@ -622,7 +622,7 @@
 <translation id="3780605330121608425">Ваш кошелек</translation>
 <translation id="6727483290601442544">Показать детали</translation>
 <translation id="1988679729106502285">ВАЖНО:</translation>
-<translation id="5815103311506128988">Не удалось отправить грант в размере BAT {{reservedAmount}}, поскольку его получатель еще не участвует в программе дарения. Браузер будет повторять попытку до успешного результата, но не более 90 дней.</translation>
+<translation id="7979350009208995417">Этот автор еще не настроил свой аккаунт для получения платежей с вашего кошелька. Пока настройка не будет завершена, все отправляемые вами вознаграждения останутся у вас и будут повторно отправлены через 90 дней.</translation>
 <translation id="7461596279975181413">Этот верифицированный создатель Brave еще не настроил свой аккаунт для получения пожертвований от пользователей Brave. Ваш браузер будет пытаться внести пожертвование, пока пользователь не настроит аккаунт или же не пройдет 90 дней.</translation>
 <translation id="4292832015778676417">заработано на рекламе</translation>
 <translation id="3197752845651180812">Отложенные пожертвования</translation>
@@ -827,6 +827,7 @@
 <translation id="3741998951694470470">Произошла ошибка при получении данных.</translation>
 <translation id="7900950536120202771">Произошла ошибка на узле IPFS.</translation>
 <translation id="1036635552229153800">Данные успешно загружены, но не перемещены в каталог brave-import. Вы сделать это самостоятельно на странице настроек импорта.</translation>
+<translation id="3793279629218362523">Настраивайте ID узлов и ключи IPNS</translation>
 <translation id="572392919096807438">Запомнить выбор</translation>
 <translation id="7978789143098237970">пока я не закрою этот сайт</translation>
 <translation id="3523195733429162409">на 24 часа</translation>
@@ -864,4 +865,12 @@
 <translation id="6973157709854838218">Скрыть средства с экрана</translation>
 <translation id="4548946945059463969">Показать средства на экране</translation>
 <translation id="242959166945779492">На вашем счету нет средств. Чтобы приобрести валюту, посетите биржу FTX.</translation>
+<translation id="8037713009824540257">Добавить сайт</translation>
+<translation id="4428458837269935199">Для более конфиденциального поиска попробуйте DuckDuckGo.</translation>
+<translation id="4622723187300249546">Единоразовые чаевые</translation>
+<translation id="5268142130226208198">Сумма единоразовых чаевых:</translation>
+<translation id="379596083010863211">Ваши единоразовые чаевые отправлены.</translation>
+<translation id="8370173854533168890">Один раз</translation>
+<translation id="532275381857891532">История рекламы за неделю</translation>
+<translation id="5815103311506128988">Не удалось отправить грант в размере BAT {{reservedAmount}}, поскольку его получатель еще не участвует в программе дарения. Браузер будет повторять попытку до успешного результата, но не более 90 дней.</translation>
 </translationbundle>

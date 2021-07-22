@@ -18,7 +18,7 @@
 <translation id="6241402707160226266">Fereastră privată cu Tor</translation>
 <translation id="8762452230727230396">Tor ascunde adresa dvs. de IP de site-urile pe care le vizitați.</translation>
 <translation id="1369311132025451972">Redirecționează automat siteurile .onion</translation>
-<translation id="2843777623071353503">Brave va deschide serviciul onion al site-ului web atunci când este disponibil sau domeniul .onion în fereastra Tor</translation>
+<translation id="2843777623071353503">Brave va deschide serviciul onion al site-ului când acesta este disponibil sau domeniul .onion în fereastra Tor.</translation>
 <translation id="8053096063396012732">Instalează Widevine</translation>
 <translation id="4840334696217618631">Repornește browserul pentru activarea Widevine</translation>
 <translation id="8410111618231938546">Google Widevine este parte din codul de Administrarea Drepturilor Digitale (ADD) care nu este deținut de Brave și nu-l putem inspecta. Codul Google Widevine este încărcat din serverele Google, nu din serverele noastre. Este încărcat doar când activați această opțiune. Noi descurajăm utilizarea ADD, dar respectăm alegerea utilizatorului și confirmăm că unii utilizatori Brave doresc să utilizeze servicii care necesită acest cod.
@@ -72,13 +72,13 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="7895302206188277628">Conținut corelat</translation>
 <translation id="3654831858282189202">Publicați cu cheia IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
-<translation id="1047401034925735299">Importați textul selectat în IPFS</translation>
 <translation id="6925604404524625582">Importați și copiați linkul în IPFS Snapshot</translation>
 <translation id="1434416574322382019">Fereastră Privată nouă cu Tor</translation>
 <translation id="4703780849509456860">Deschide Link în Fereastră Privată cu Tor</translation>
 <translation id="3488584642074079080">Deschide Link în Fereastra Privată Brave cu Tor</translation>
 <translation id="7475547933708221517">Distribuiți fișierul local cu ajutorul IPFS</translation>
 <translation id="2286177249736199435">Distribuiți dosarul local cu ajutorul IPFS</translation>
+<translation id="4491895534716990473">Importați textul selectat în IPFS</translation>
 <translation id="8883166554766780543">Importați și copiați linkul la instantaneul IPFS</translation>
 <translation id="784573715436258741">Distribuiți fișierul local cu ajutorul IPFS</translation>
 <translation id="6313675821927505581">Fereastră privată nouă cu Tor</translation>
@@ -195,16 +195,23 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="911363100236037920">Introduceți un nume pentru cheia nouă</translation>
 <translation id="6358469157239228181">Acest nume nu poate fi utilizat</translation>
 <translation id="5761731140570209168">Adăugați un nou șir de conexiune pereche</translation>
+<translation id="2082206983920804886">Rotire cheie</translation>
+<translation id="2521133093532260474">Nu se poate opri nodul local</translation>
+<translation id="86879877003581729">Nu se poate porni nodul local</translation>
 <translation id="6476061084931271248">Reporniți nodul pentru a aplica modificările</translation>
 <translation id="3754226427671882382">Reporniți nodul</translation>
+<translation id="949667118776341807">Rotire</translation>
 <translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Această denumire nu este validă</translation>
 <translation id="6758961763875471084">Modificați lista de perechi</translation>
+<translation id="1295874070797049002">Exportare cheie</translation>
+<translation id="3946479342297227860">Eliminare cheie</translation>
 <translation id="1534091531114892221">Configurați descrierea perechilor ipfs</translation>
 <translation id="8996633027318264334">Sigur doriți să ștergeți <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Nodul nu este lansat</translation>
 <translation id="616058968889448209">Eroare la lansarea serviciului IPFS. Sunt disponibile informații suplimentare în <ph name="BEGIN_LINK"/>pagina de diagnosticare<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Eroare la importarea cheii '<ph name="KEY_NAME"/>'</translation>
+<translation id="3364053282600191535">Eroare la exportarea cheii '<ph name="KEY_NAME"/>'</translation>
 <translation id="8275038454117074363">Importă</translation>
 <translation id="3654980960391973513">Generare</translation>
 <translation id="5531501313997312487">Start nod</translation>
@@ -305,11 +312,16 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="312393675740711187">Articolele se încarcă automat în modul cititor, ajutându-vă să economisiți timp.</translation>
 <translation id="3234744217174488546">Porniți/opriți modul cititor doar pentru acest site web. Pentru a opri Speedreader pentru întregul profil de browser, accesați</translation>
 <translation id="7839742507462737706">în Speedreader</translation>
+<translation id="8490082094734500369">Dezactivați modul de citire</translation>
+<translation id="2036503787657622020">Activați modul de citire</translation>
+<translation id="5226458915125328323">Setări extensie de citire rapidă</translation>
+<translation id="6284218950354553099">Trimiteți automat la Brave un ping privind utilizarea zilnică</translation>
+<translation id="5288333155754958121">Prin acest ping anonim și confidențial, Brave poate estima numărul de utilizatori activi.</translation>
 <translation id="1872784258300710671">Brave folosește statistici de produs complet private pentru a estima utilizarea totală a anumitor funcții</translation>
 <translation id="8712637175834984815">Am înțeles</translation>
 <translation id="4394049700291259645">Dezactivează</translation>
-<translation id="6469509880167172749">Trimiteți automat statistici de produs complet private către Brave</translation>
-<translation id="7090566321964540749">Folosind aceste informații anonime, Brave poate numai să estimeze utilizarea totală a anumitor funcții.</translation>
+<translation id="7142548388914389999">Permiteți datele de analiză referitoare la produs cu menținerea confidențialități (P3A)</translation>
+<translation id="609106526832379947">Aceste informații complet anonime ajută Brave să estimeze măsura în care sunt utilizate anumite funcții, cu scopul de a le îmbunătăți.</translation>
 <translation id="1947672064022327074">Vrei să pornești portofelele cripto pentru suportul Ethereum?</translation>
 <translation id="7583735190612229830">Configurați Portofele de criptomonede să interacționeze cu această aplicație și altele similare.</translation>
 <translation id="8731422418734770661">Setați portofelele crypto</translation>
@@ -337,4 +349,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="3738833060602717053">Ajutați-ne să îmbunătățim <ph name="PRODUCT_NAME"/> trimițând automat rapoarte de cădere</translation>
 <translation id="81720820779436751">Brave va deschide serviciul onion al site-ului web atunci când este disponibil sau domeniul .onion în fereastra Tor</translation>
 <translation id="4322612543319315652">Importați textul selectat în IPFS</translation>
+<translation id="1047401034925735299">Importați textul selectat în IPFS</translation>
+<translation id="6469509880167172749">Trimiteți automat statistici de produs complet private către Brave</translation>
+<translation id="7090566321964540749">Folosind aceste informații anonime, Brave poate numai să estimeze utilizarea totală a anumitor funcții.</translation>
 </translationbundle>

@@ -49,7 +49,6 @@
 <translation id="81774600964978477">Els millors llocs són seleccionats per tu</translation>
 <translation id="5439599923922718668">Visitats amb freqüència</translation>
 <translation id="430556192781857057">Els llocs principals es suggereixen en funció dels llocs web que visites sovint</translation>
-<translation id="8037713009824540257">Afegir un lloc</translation>
 <translation id="1773147648972887693">Mostra els visitats freqüentment</translation>
 <translation id="4546260624932151782">Mostra els preferits</translation>
 <translation id="3446024864193919737">Mostra les recompenses de Brave</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">Fonts</translation>
 <translation id="5158129253322921540">Deshabiliteu el contingut de <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Promocionat</translation>
+<translation id="4541978218358617681">Anunci</translation>
 <translation id="1776831331757823105">Rellotge</translation>
 <translation id="7791543448312431591">Afegeix</translation>
 <translation id="7679334366167089823">Guanyeu tokens per veure anuncis que respectin la privadesa.</translation>
 <translation id="1531133232292396145">Comercialitzeu criptomonedes amb Binance directament al vostre navegador.</translation>
 <translation id="2166494527623220386">Comercialitzeu criptomonedes amb Gemini directament al vostre navegador.</translation>
 <translation id="7191394989411626168">Si apagueu les Cartes, totes les cartes que ara es veuen s'amagaran. Tot i així, igualment se us notificarà de cartes noves.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="5655621391922317800">Moneders Crypto</translation>
 <translation id="8820817407110198400">Adreces d'interès</translation>
 <translation id="1644574205037202324">Historial</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">Selecciona un motor de cerca</translation>
 <translation id="438216590634144114">Tria el motor de cerca que vulguis fer servir per defecte quan facis cerques a la web des de la barra d'adreces.</translation>
 <translation id="5804484488647369316">Establir el motor de cerca predeterminat</translation>
-<translation id="4428458837269935199">Per obtenir una experiència de cerca més privada, prova DuckDuckGo.</translation>
 <translation id="3829010735958850433">Omet el recorregut de benvinguda</translation>
 <translation id="1201402288615127009">Següent</translation>
 <translation id="7954950242989581218">Navegueu sans i estalvis</translation>
@@ -352,15 +352,15 @@
 <translation id="4371618764691059036">S'ha establert la contribució mensual.</translation>
 <translation id="6356822617569064293">Data de la propera contribució:</translation>
 <translation id="3593485149443019592">No hi ha prou tokens. <ph name="LINK_BEGIN"/>add funds<ph name="LINK_END"/>.</translation>
-<translation id="4622723187300249546">Propina única</translation>
-<translation id="5268142130226208198">Quantitat de propina única:</translation>
+<translation id="207268487070188114">Propina d'una sola vegada</translation>
+<translation id="69861679024013299">Quantitat de propina d'una sola vegada:</translation>
 <translation id="3669086939205397942">Espereu, encara no podeu’t donar propina</translation>
 <translation id="3288812755711687300">publicació de <ph name="USER"/>’s</translation>
 <translation id="5851002232791947896">tweet de <ph name="USER"/>’s</translation>
 <translation id="5531915212947569943">Sentim veureu's marxar…</translation>
 <translation id="1420756770787071946">Doneu suport a aquest creador</translation>
 <translation id="3271043362279673449">Gràcies pel suport!</translation>
-<translation id="379596083010863211">La vostra propina única s'ha enviat.</translation>
+<translation id="3312470408978098625">S'ha enviat la propina d'una sola vegada.</translation>
 <translation id="5096821444729034955">per a les seves publicacions</translation>
 <translation id="2978223787436054634">Piuleu sobre el vostre suport</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Realitzeu un recorregut ràpid<ph name="TOUR_LINK_END"/> o <ph name="LEARN_LINK_BEGIN"/>obtingueu més informació<ph name="LEARN_LINK_END"/>.</translation>
@@ -512,10 +512,10 @@
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">connectat</translation>
 <translation id="1166682575529520472">Mensual</translation>
-<translation id="8370173854533168890">Una vegada</translation>
+<translation id="1378730109637014435">Una vegada</translation>
 <translation id="9182287025588539628">Propines d'una sola vegada</translation>
 <translation id="6381574025952123568">Balanç inicial</translation>
-<translation id="532275381857891532">Historial d'anuncis de 7 dies</translation>
+<translation id="156591572855748524">Historial d'anuncis de 30 dies</translation>
 <translation id="4923459931733593730">Pagament</translation>
 <translation id="6104680658798556671">Pagament pendent.</translation>
 <translation id="3138528956349114724">Els llocs fixats són ara</translation>
@@ -622,7 +622,7 @@
 <translation id="3780605330121608425">La teva cartera</translation>
 <translation id="6727483290601442544">Veure detalls</translation>
 <translation id="1988679729106502285">NOTA:</translation>
-<translation id="5815103311506128988">Aquest creador encara no s'ha donat d'alta per rebre les contribucions dels usuaris Brave. El teu navegador seguirà intentant fer una aportació fins que es verifiqui, o fins que passin 90 dies.</translation>
+<translation id="7979350009208995417">Aquest creador actualment no està configurat per rebre propines de la vostra cartera. Qualsevol propina que doneu quedarà pendent a la vostra cartera i es reintentarà automàticament durant 90 dies.</translation>
 <translation id="7461596279975181413">Aquest Creador Verificat de Brave encara no ha configurat el seu compte per a rebre contribucions d'usuaris de Brave. El vostre navegador seguirà intentant la contribució fins que es verifiqui, o bé fins que hagin passat 90 dies.</translation>
 <translation id="4292832015778676417">guanys dels anuncis</translation>
 <translation id="3197752845651180812">Contribucions pendents</translation>
@@ -827,6 +827,7 @@
 <translation id="3741998951694470470">Error en obtenir les dades per a la importació</translation>
 <translation id="7900950536120202771">Error intern del node IPFS</translation>
 <translation id="1036635552229153800">Les dades s'han carregat correctament, però no s'han mogut al directori d'importació de brave. Podeu fer-ho manualment a la pàgina de configuració de la importació.</translation>
+<translation id="3793279629218362523">Gestioneu les claus d'ID del company i IPNS</translation>
 <translation id="572392919096807438">Recorda la meva decisió</translation>
 <translation id="7978789143098237970">fins que no tanqui aquest lloc</translation>
 <translation id="3523195733429162409">durant 24 hores</translation>
@@ -864,4 +865,12 @@
 <translation id="6973157709854838218">Oculta els teus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Mostra els teus saldos a la pantalla</translation>
 <translation id="242959166945779492">No tens cap balanç al teu compte. Visita FTX per comprar-ne algunes.</translation>
+<translation id="8037713009824540257">Afegir un lloc</translation>
+<translation id="4428458837269935199">Per obtenir una experiència de cerca més privada, prova DuckDuckGo.</translation>
+<translation id="4622723187300249546">Propina única</translation>
+<translation id="5268142130226208198">Quantitat de propina única:</translation>
+<translation id="379596083010863211">La vostra propina única s'ha enviat.</translation>
+<translation id="8370173854533168890">Una vegada</translation>
+<translation id="532275381857891532">Historial d'anuncis de 7 dies</translation>
+<translation id="5815103311506128988">Aquest creador encara no s'ha donat d'alta per rebre les contribucions dels usuaris Brave. El teu navegador seguirà intentant fer una aportació fins que es verifiqui, o fins que passin 90 dies.</translation>
 </translationbundle>

@@ -49,7 +49,6 @@
 <translation id="81774600964978477">Топ сайтів, створений вами</translation>
 <translation id="5439599923922718668">Часто відвідувані</translation>
 <translation id="430556192781857057">Топ сайтів пропонуються на основі вебсайтів, які ви часто відвідуєте</translation>
-<translation id="8037713009824540257">Додати сайт</translation>
 <translation id="1773147648972887693">Показати часто відвідувані</translation>
 <translation id="4546260624932151782">Показати обране</translation>
 <translation id="3446024864193919737">Показувати нагороди Brave</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">Джерела</translation>
 <translation id="5158129253322921540">Відключити контент <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Підвищені</translation>
+<translation id="4541978218358617681">Реклама</translation>
 <translation id="1776831331757823105">Годинник</translation>
 <translation id="7791543448312431591">Додати</translation>
 <translation id="7679334366167089823">Отримайте токени за перегляд реклами, що не порушує вашу конфіденційність.</translation>
 <translation id="1531133232292396145">Торгуйте криптовалютами на Binance безпосередньо зі свого браузера.</translation>
 <translation id="2166494527623220386">Торгуйте криптовалютами на Gemini безпосередньо зі свого браузера.</translation>
 <translation id="7191394989411626168">Після відключення Карток усі наразі видимі картки буде приховано. Однак, ви все ще зможете отримувати повідомлення про нові картки.</translation>
+<translation id="8112367589167674370">Розмови Brave</translation>
 <translation id="5655621391922317800">Криптогаманці</translation>
 <translation id="8820817407110198400">Закладки</translation>
 <translation id="1644574205037202324">Історія</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">Обрати пошуковий засіб</translation>
 <translation id="438216590634144114">Оберіть пошуковий засіб, яким ви бажаєте користуватись зазвичай, виконуючи пошук в інтернеті з адресного рядка.</translation>
 <translation id="5804484488647369316">Встановіть типовий пошуковий засіб</translation>
-<translation id="4428458837269935199">Для більш приватного пошуку спробуйте DuckDuckGo.</translation>
 <translation id="3829010735958850433">Пропустити знайомство</translation>
 <translation id="1201402288615127009">Далі</translation>
 <translation id="7954950242989581218">Переглядайте безпечно</translation>
@@ -352,15 +352,15 @@
 <translation id="4371618764691059036">Місячний внесок було надіслано.</translation>
 <translation id="6356822617569064293">Дата наступного внеску:</translation>
 <translation id="3593485149443019592">Недостатньо токенів. <ph name="LINK_BEGIN"/>Додайте кошти<ph name="LINK_END"/>.</translation>
-<translation id="4622723187300249546">Одноразові чайові</translation>
-<translation id="5268142130226208198">Розмір одноразових чайових:</translation>
+<translation id="207268487070188114">Одноразові чайові</translation>
+<translation id="69861679024013299">Розмір одноразових чайових:</translation>
 <translation id="3669086939205397942">Зачекайте, ви ще не можете давати чайові</translation>
 <translation id="3288812755711687300">Публікація користувача <ph name="USER"/></translation>
 <translation id="5851002232791947896">Твіт користувача <ph name="USER"/></translation>
 <translation id="5531915212947569943">Шкода, що ви нас залишаєте…</translation>
 <translation id="1420756770787071946">Підтримати цього творця</translation>
 <translation id="3271043362279673449">Дякуємо за підтримку!</translation>
-<translation id="379596083010863211">Ваші одноразові чайові надіслані.</translation>
+<translation id="3312470408978098625">Ваші одноразові чайові надіслано.</translation>
 <translation id="5096821444729034955">за їхній допис</translation>
 <translation id="2978223787436054634">Напишіть твіт про вашу підтримку</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Перегляньте короткий огляд<ph name="TOUR_LINK_END"/> або <ph name="LEARN_LINK_BEGIN"/>дізнайтеся більше<ph name="LEARN_LINK_END"/>.</translation>
@@ -512,10 +512,10 @@
 <translation id="4921250468871504777">ОК</translation>
 <translation id="7866482334467279021">увімкнути</translation>
 <translation id="1166682575529520472">Щомісяця</translation>
-<translation id="8370173854533168890">Один раз</translation>
+<translation id="1378730109637014435">Одноразово</translation>
 <translation id="9182287025588539628">Одноразові Відрахування</translation>
 <translation id="6381574025952123568">Вхідний залишок</translation>
-<translation id="532275381857891532">7-денна історія Реклами</translation>
+<translation id="156591572855748524">30-денна історія реклами</translation>
 <translation id="4923459931733593730">Платіж</translation>
 <translation id="6104680658798556671">Платіж не зроблено.</translation>
 <translation id="3138528956349114724">Закріплені сайти</translation>
@@ -622,7 +622,7 @@
 <translation id="3780605330121608425">Ваш гаманець</translation>
 <translation id="6727483290601442544">Переглянути деталі</translation>
 <translation id="1988679729106502285">ЗАУВАЖТЕ:</translation>
-<translation id="5815103311506128988">Цей творець ще не зареєструвався на отримання внесків від користувачів Brave. Ваш браузер буде продовжувати спроби зробити внесок поки вони не пройдуть верифікацію, або поки не пройде 90 днів.</translation>
+<translation id="7979350009208995417">Наразі налаштування цього автора не дають можливості отримувати чайові з вашого гаманця. Усі чайові, які ви заробите, залишаться у вашому гаманці, а спробу оплати буде автоматично повторено через 90 днів.</translation>
 <translation id="7461596279975181413">Цей Перевірений Творець Brave ще не налаштував свій обліковий запис для отримання внесків від користувачів Brave. Ваш браузер намагатиметься зробити внесок до завершення налаштувань або поки не мине 90 днів.</translation>
 <translation id="4292832015778676417">зароблено за рекламні оголошення</translation>
 <translation id="3197752845651180812">Внески, що очікуються</translation>
@@ -827,6 +827,7 @@
 <translation id="3741998951694470470">Не вдалося отримати дані для імпорту</translation>
 <translation id="7900950536120202771">Внутрішня помилка IPFS-вузла</translation>
 <translation id="1036635552229153800">Дані були успішно завантажені, але не переміщені в каталог brave-import. Це можна зробити вручну на сторінці налаштувань імпорту.</translation>
+<translation id="3793279629218362523">Керування ідентифікатором піру й ключами IPNS</translation>
 <translation id="572392919096807438">Запам’ятати моє рішення</translation>
 <translation id="7978789143098237970">поки я не закрию цю сторінку</translation>
 <translation id="3523195733429162409">на 24 години</translation>
@@ -864,4 +865,12 @@
 <translation id="6973157709854838218">Приховати баланси по вашим рахункам з екрана</translation>
 <translation id="4548946945059463969">Відобразити баланси на екрані</translation>
 <translation id="242959166945779492">У вас немає залишків на рахунку. Відвідайте FTX, щоб поповнити його.</translation>
+<translation id="8037713009824540257">Додати сайт</translation>
+<translation id="4428458837269935199">Для більш приватного пошуку спробуйте DuckDuckGo.</translation>
+<translation id="4622723187300249546">Одноразові чайові</translation>
+<translation id="5268142130226208198">Розмір одноразових чайових:</translation>
+<translation id="379596083010863211">Ваші одноразові чайові надіслані.</translation>
+<translation id="8370173854533168890">Один раз</translation>
+<translation id="532275381857891532">7-денна історія Реклами</translation>
+<translation id="5815103311506128988">Цей творець ще не зареєструвався на отримання внесків від користувачів Brave. Ваш браузер буде продовжувати спроби зробити внесок поки вони не пройдуть верифікацію, або поки не пройде 90 днів.</translation>
 </translationbundle>

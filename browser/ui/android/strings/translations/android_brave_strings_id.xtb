@@ -354,7 +354,7 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="5440744330377972191">Website dimuat lebih cepat</translation>
 <translation id="3000738865641747653">Memuat lebih sedikit data berarti website di Brave dimuat lebih cepat - hingga 8x lebih cepat dibanding peramban lainnya.</translation>
 <translation id="8903462729414407077">Dapatkan pembaruan mingguan</translation>
-<translation id="8029219208182772618">Dapatkan info tentang website paling invasif privasi yang pernah Anda kunjungi.\n\nHanya Anda yang dapat melihat statistik privasi ini. Tidak ada data personal atau riwayat ramban yang keluar dari peramban Brave di perangkat Anda.</translation>
+<translation id="7450323860390658083">Carilah informasi tentang situs web yang paling menginvasi privasi dari situs-situs yang Anda kunjungi.\n\nHanya Anda yang dapat melihat statistik privasi ini. Data pribadi atau riwayat perambanan tidak akan keluar dari peramban Brave di perangkat Anda.</translation>
 <translation id="6170159749517116894">Nyalakan pelaporan privasi</translation>
 <translation id="5966707198760109579">Minggu</translation>
 <translation id="8987927404178983737">Bulan</translation>
@@ -375,12 +375,12 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="7427567994475794038">Nyalakan Pelaporan Privasi untuk melihat berapa banyak pelacak &amp; iklan yang sudah diblokir dalam 3 jam terakhir.</translation>
 <translation id="2053891538879944400">Anda menghemat <ph name="DATA"/> <ph name="DATA_TEXT"/> data dengan peramban Brave.</translation>
 <translation id="8640064498452534195">Nyalakan Pelaporan Privasi untuk melihat berapa besar data yang Anda hemat.</translation>
-<translation id="2252497442547961651">Peramban Brave rata-rata memakai baterai 40% lebih sedikit.&#128267;</translation>
+<translation id="2252497442547961651">Peramban Brave rata-rata memakai baterai 40% lebih sedikit.🔋</translation>
 <translation id="1945330434665345785">Anda memblokir <ph name="COUNT"/> trackers &amp; iklan dengan peramban Brave minggu kemarin.</translation>
 <translation id="2883868922264431515">Dapatkan token dengan melihat iklan yang menghormati privasi dan dukung website favorit Anda.</translation>
-<translation id="5678925890616256956">Bagus! Anda telah memblokir 250 pelacak &amp; iklan dengan peramban Brave.&#128293;</translation>
-<translation id="9199047775708635708">Bagus! Anda telah menghemat 10MB dengan peramban Brave.&#128267;</translation>
-<translation id="1880168210969863408">Bagus! Anda telah menghemat waktu pemuatan 10 menit waktu dengan peramban Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Bagus! Anda telah memblokir 250 pelacak &amp; iklan dengan peramban Brave.🔥</translation>
+<translation id="9199047775708635708">Bagus! Anda telah menghemat 10MB dengan peramban Brave.🔋</translation>
+<translation id="1880168210969863408">Bagus! Anda telah menghemat waktu pemuatan 10 menit waktu dengan peramban Brave.💨💨</translation>
 <translation id="7408493389591475748">Mulailah meramban untuk melihat pelaporan privasi</translation>
 <translation id="9080777565335515917">Atur Brave sebagai peramban default untuk meramban privat dan aman.</translation>
 <translation id="1390943217516275883">Izinkan Brave untuk menunjukkan statistik privasi Anda</translation>
@@ -443,7 +443,7 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="3477340970981564961">Berbeda dengan iklan tradisional, Iklan Privat Brave menghadiahi Anda token untuk mendukung kreator konten, sembari menjaga informasi personal Anda tetap privat.</translation>
 <translation id="6973095375773523904">Di mana iklan muncul?</translation>
 <translation id="7556325460112047619">Iklan Privat Brave akan muncul sebagai pemberitahuan normal. Anda mengontrol seberapa sering Anda melihat iklan-iklan ini di pengaturan.</translation>
-<translation id="5816125157889950051">Kapan Anda menerima imbalan</translation>
+<translation id="6897083627729802351">Kapan Anda menerima imbalan</translation>
 <translation id="310863932297733723">Token yang Anda peroleh dari Iklan Privat Brave sepanjang bulan ini akan tiba tanggal 5 bulan berikutnya.</translation>
 <translation id="7712287524451429139">Jadi mudah untuk memberi balik</translation>
 <translation id="105037569026952831">Pencipta menerima kontribusi token Anda secara otomatis berdasarkan tingkat interaksi Anda yang kami ukur sebagai ‘Perhatian’.</translation>
@@ -460,7 +460,7 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="827315274423079662">Cihuy, Anda kini siap!</translation>
 <translation id="3895246934788932488">Dengan menggunakan Brave Rewards, Anda melindungi privasi Anda dan membantu membuat web jadi tempat yang lebih baik bagi semua orang. Dan itu keren!</translation>
 <translation id="5705882733397021510">Kembali</translation>
-<translation id="5140321319944305531">Ayo Mengikuti Tur Cepat</translation>
+<translation id="3985567919248057638">Ayo Mengikuti Tur Cepat</translation>
 <translation id="2434574859640694129">Setelah Anda menerima pembayaran iklan pertama kali, Anda dapat kembali dan memberi tip kepada kreator ini!</translation>
 <translation id="207242986925259074">Tur pengingat singkat</translation>
 <translation id="8342862030112839977">Pembayaran imbalan pertama Anda akan diterima pada:</translation>
@@ -478,6 +478,7 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="7320542277711359296">Terpopuler kedua</translation>
 <translation id="8295049095570748497">Mesin pencarian ternama di Rusia</translation>
 <translation id="2642661895835126239">Menanam pohon, berbasis di Berlin</translation>
+<translation id="177282784098234156">Privat, independen, mendahulukan pengguna</translation>
 <translation id="1410130669636877548">Sejumlah mesin pencarian melindungi privasi lebih baik dibanding lainnya saat Anda mencari di web.</translation>
 <translation id="1078265935778232285">Selamat Datang di Peramban Brave</translation>
 <translation id="6824713633331856331">Bantu kami belajar secara anonim</translation>
@@ -514,4 +515,59 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="6960458596933484861">Anda perlu minimal 15 BAT untuk membuat dompet Uphold yang terverifikasi. Silakan coba kembali nanti.</translation>
 <translation id="4389085954549744469">Jika Anda telah memiliki dompet Uphold yang terverifikasi, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">lanjut untuk masuk</translation>
+<translation id="1483493594462132177">Kirim</translation>
+<translation id="538450413584738399">Swap</translation>
+<translation id="8825032646286791700">DeFi &amp; Penyimpanan Kripto Aman</translation>
+<translation id="5460364286096798286">Menyimpan kripto dalam penjagaan Anda. Berjual beli aset. Melihat Harga dan kinerja portofolio. Berinvestasi, Meminjam, dan Meminjamkan dengan De-Fi.</translation>
+<translation id="1748009926009835882">Siapkan Kripto</translation>
+<translation id="2759836790106646094">Cadangkan dompet Anda sekarang!</translation>
+<translation id="7685607706678113458">Pada tahap selanjutnya, Anda akan melihat 12 kata yang memungkinkan Anda untuk memulihkan dompet kripto Anda.</translation>
+<translation id="2359808026110333948">Lanjutkan</translation>
+<translation id="5024543173656851695">Saya memahami bahwa jika saya kehilangan kata pemulihan, saya tidak akan dapat mengakses dompet kripto saya.</translation>
+<translation id="3933122286596948824">Frasa pemulihan Anda</translation>
+<translation id="6146351434671268516">Tuliskan atau salin kata-kata berikut dalam urutan yang benar dan simpan di tempat yang aman.</translation>
+<translation id="7408247683131762445">PERINGATAN: Dilarang membocorkan frasa cadangan Anda. Siapa pun yang mengetahui frasa ini dapat mengambil dana Anda selamanya.</translation>
+<translation id="939275786514736244">Saya telah menyimpan frasa saya di tempat aman</translation>
+<translation id="6896758677409633944">Salin</translation>
+<translation id="1202920745614909195">Beli kripto dengan Apple Pay, kartu kredit atau debit.</translation>
+<translation id="841880029259839903">Kirim kripto atau transfer dari satu akun ke akun lainnya.</translation>
+<translation id="8982246458261383692">Tukar aset kripto dengan agregrator DEX Brave.</translation>
+<translation id="1783600039044302171">Amankan kripto Anda dengan kata sandi</translation>
+<translation id="3726490322412361740">Masukkan Kata Sandi</translation>
+<translation id="4450951602553063001">Masukkan kembali kata sandi</translation>
+<translation id="1783870616707290226">Kata sandi harus terdiri dari 7 karakter atau lebih</translation>
+<translation id="7383102760859258982">Kata sandi yang diketik ulang tidak sesuai</translation>
+<translation id="1538774398124896437">Langsung</translation>
+<translation id="8163269366661594721">1H</translation>
+<translation id="7640956400175663828">1M</translation>
+<translation id="9100647964747998533">1B</translation>
+<translation id="6366007539108097840">3B</translation>
+<translation id="6977728312178289892">1T</translation>
+<translation id="6895566650974550243">SEMUA</translation>
+<translation id="8892168913673237979">Semua siap!</translation>
+<translation id="8331501996028380732">Beli, tukar, atau simpan kripto. Jika Anda telah memiliki akun kripto, Anda dapat menambahkannya sekarang.</translation>
+<translation id="2267753748892043616">Tambahkan Akun</translation>
+<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="8100001366858145406">Aktifkan buka kunci sidik jari?</translation>
+<translation id="5493402808936397665">Aktifkan biometrik untuk membuka kunci dompet Anda dengan cepat tanpa memasukkan kata sandi Anda.</translation>
+<translation id="8488282162676695335">Dompet Brave.</translation>
+<translation id="6901810042765869341">Masukkan frasa pemulihan Anda untuk memulihkan akun kripto Dompet Brave Anda.</translation>
+<translation id="1970161551843843564">Pulihkan Akun Kripto</translation>
+<translation id="4811736040444856406">Tampilkan frasa pemulihan</translation>
+<translation id="283071225285270357">Masukkan frasa pemulihan Anda</translation>
+<translation id="2339124864228588937">Verifikasikan frasa pemulihan</translation>
+<translation id="6202787708155200390">Ketuk kata-kata agar letaknya saling berdampingan dalam urutan yang benar.</translation>
+<translation id="6518133107902771759">Verifikasi</translation>
+<translation id="3157931365184549694">Pulihkan</translation>
+<translation id="9111102763498581341">Buka kunci</translation>
+<translation id="6657585470893396449">Sandi</translation>
+<translation id="1569452037668432756">Masukkan kata sandi Anda untuk membuka kunci</translation>
+<translation id="224719674509047150">Kata sandi harus terdiri dari minimal 7 karakter dan mencakup minimal satu nomor dan satu karakter khusus</translation>
+<translation id="1144810021918451336">Tidak melindungi Anda terhadap situs-situs, unduhan, dan ekstensi berbahaya.</translation>
+<translation id="745115390910697838">Frasa tidak sesuai. Silakan coba lagi.</translation>
+<translation id="2360588547830602174">Pemulihan akun gagal. Silakan coba lagi.</translation>
+<translation id="1530109021798294736">Mainnet</translation>
+<translation id="8029219208182772618">Dapatkan info tentang website paling invasif privasi yang pernah Anda kunjungi.\n\nHanya Anda yang dapat melihat statistik privasi ini. Tidak ada data personal atau riwayat ramban yang keluar dari peramban Brave di perangkat Anda.</translation>
+<translation id="5816125157889950051">Kapan Anda menerima imbalan</translation>
+<translation id="5140321319944305531">Ayo Mengikuti Tur Cepat</translation>
 </translationbundle>

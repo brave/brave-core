@@ -49,7 +49,6 @@
 <translation id="81774600964978477">Situs Teratas yang Anda seleksi sendiri</translation>
 <translation id="5439599923922718668">Sering Dikunjungi</translation>
 <translation id="430556192781857057">Situs teratas diusulkan berdasarkan situs web yang sering Anda kunjungi</translation>
-<translation id="8037713009824540257">Tambah Situs</translation>
 <translation id="1773147648972887693">Tampilkan situs yang sering dikunjungi</translation>
 <translation id="4546260624932151782">Tampilkan favorit</translation>
 <translation id="3446024864193919737">Tampilkan Brave Rewards</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">Sumber</translation>
 <translation id="5158129253322921540">Nonaktifkan konten dari <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Dipromosikan</translation>
+<translation id="4541978218358617681">Tambahkan</translation>
 <translation id="1776831331757823105">Jam</translation>
 <translation id="7791543448312431591">Tambahkan</translation>
 <translation id="7679334366167089823">Dapatkan token dengan menyaksikan iklan yang menghormati privasi.</translation>
 <translation id="1531133232292396145">Berdagang Kripto di Binance langsung di peramban Anda.</translation>
 <translation id="2166494527623220386">Perdagangkan Kripto di Gemini di peramban Anda.</translation>
 <translation id="7191394989411626168">Dengan mematikan Kartu, semua kartu yang saat ini terlihat akan disembunyikan. Namun, Anda mungkin masih mendapat notifikasi tentang kartu baru.</translation>
+<translation id="8112367589167674370">Obrolan Brave</translation>
 <translation id="5655621391922317800">Dompet Kripto</translation>
 <translation id="8820817407110198400">Markah</translation>
 <translation id="1644574205037202324">Histori</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">Pilih mesin pencarian</translation>
 <translation id="438216590634144114">Pilih mesin pencari yang ingin Anda gunakan secara baku saat mencari web dari bilah alamat.</translation>
 <translation id="5804484488647369316">Atur mesin pencarian default</translation>
-<translation id="4428458837269935199">Untuk pencarian yang lebih privat, cobalah DuckDuckGo.</translation>
 <translation id="3829010735958850433">Lewati tur</translation>
 <translation id="1201402288615127009">Berikutnya</translation>
 <translation id="7954950242989581218">Ramban dengan aman dan selamat</translation>
@@ -352,15 +352,15 @@
 <translation id="4371618764691059036">Kontribusi bulanan telah ditetapkan.</translation>
 <translation id="6356822617569064293">Tanggal kontribusi berikutnya:</translation>
 <translation id="3593485149443019592">Token tidak mencukupi. Silakan <ph name="LINK_BEGIN"/>tambahkan dana<ph name="LINK_END"/>.</translation>
-<translation id="4622723187300249546">Tip Satu Kali</translation>
-<translation id="5268142130226208198">Jumlah tip satu kali:</translation>
+<translation id="207268487070188114">Tip Satu Kali</translation>
+<translation id="69861679024013299">Jumlah tip satu kali:</translation>
 <translation id="3669086939205397942">Tunggu, Anda belum bisa memberi tip</translation>
 <translation id="3288812755711687300">Postingan <ph name="USER"/></translation>
 <translation id="5851002232791947896">Cuitan <ph name="USER"/></translation>
 <translation id="5531915212947569943">Sedih rasanya melihat Anda pergi…</translation>
 <translation id="1420756770787071946">Dukung kreator ini</translation>
 <translation id="3271043362279673449">Terima kasih atas dukungannya!</translation>
-<translation id="379596083010863211">Tip satu kali Anda telah terkirim.</translation>
+<translation id="3312470408978098625">Tip satu kali Anda telah terkirim.</translation>
 <translation id="5096821444729034955">untuk postingan mereka</translation>
 <translation id="2978223787436054634">Tweet tentang dukungan Anda</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Ikuti tur singkat<ph name="TOUR_LINK_END"/> atau <ph name="LEARN_LINK_BEGIN"/>pelajari lebih jauh<ph name="LEARN_LINK_END"/> untuk rincian info.</translation>
@@ -512,10 +512,10 @@
 <translation id="4921250468871504777">oke</translation>
 <translation id="7866482334467279021">di</translation>
 <translation id="1166682575529520472">Bulanan</translation>
-<translation id="8370173854533168890">Satu kali</translation>
+<translation id="1378730109637014435">Satu kali</translation>
 <translation id="9182287025588539628">Tip Satu Kali</translation>
 <translation id="6381574025952123568">Saldo Awal</translation>
-<translation id="532275381857891532">Riwayat Iklan 7 hari</translation>
+<translation id="156591572855748524">Riwayat Iklan 30 Hari</translation>
 <translation id="4923459931733593730">Pembayaran</translation>
 <translation id="6104680658798556671">Pembayaran tidak dilakukan.</translation>
 <translation id="3138528956349114724">Situs tersemat kini</translation>
@@ -622,7 +622,7 @@
 <translation id="3780605330121608425">Dompet Anda</translation>
 <translation id="6727483290601442544">Lihat Rincian</translation>
 <translation id="1988679729106502285">CATATAN:</translation>
-<translation id="5815103311506128988">Pembuat ini belum mendaftar untuk menerima kontribusi dari pengguna Brave. Peramban Anda akan terus berusaha memberi kontribusi sampai mereka memverifikasi, atau sampai 90 hari telah berlalu.</translation>
+<translation id="7979350009208995417">Kreator ini saat ini tidak dikonfigurasikan untuk menerima tip dari dompet Anda. Setiap tip yang Anda berikan akan tetap ditunda di dompet Anda dan mencoba kembali secara otomatis selama 90 hari.</translation>
 <translation id="7461596279975181413">Pencipta Terverifikasi Brave ini belum mengkonfigurasi akunnya untuk menerima kontribusi dari pengguna Brave. Browser Anda akan terus mencoba untuk mengirim kontribusi sampai mereka memverifikasi, atau sampai 90 hari telah berlalu.</translation>
 <translation id="4292832015778676417">diperoleh dari iklan</translation>
 <translation id="3197752845651180812">Kontribusi tertunda</translation>
@@ -827,6 +827,7 @@
 <translation id="3741998951694470470">Gagal mengambil data untuk impor</translation>
 <translation id="7900950536120202771">Kesalahan internal simpul IPFS</translation>
 <translation id="1036635552229153800">Data berhasil diunggah tetapi tidak berpindah ke direktori impor brave. Anda dapat melakukannya secara manual pada halaman pengaturan impor.</translation>
+<translation id="3793279629218362523">Kelola ID Rekan dan kunci IPNS.</translation>
 <translation id="572392919096807438">Ingat keputusan saya</translation>
 <translation id="7978789143098237970">sampai saya menutup situs ini</translation>
 <translation id="3523195733429162409">selama 24 jam</translation>
@@ -864,4 +865,12 @@
 <translation id="6973157709854838218">Sembunyikan saldo Anda agar tidak ditampilkan</translation>
 <translation id="4548946945059463969">Tampilkan saldo Anda pada layar</translation>
 <translation id="242959166945779492">Anda tidak memiliki saldo apa pun di akun Anda. Kunjungi FTX untuk membelinya.</translation>
+<translation id="8037713009824540257">Tambah Situs</translation>
+<translation id="4428458837269935199">Untuk pencarian yang lebih privat, cobalah DuckDuckGo.</translation>
+<translation id="4622723187300249546">Tip Satu Kali</translation>
+<translation id="5268142130226208198">Jumlah tip satu kali:</translation>
+<translation id="379596083010863211">Tip satu kali Anda telah terkirim.</translation>
+<translation id="8370173854533168890">Satu kali</translation>
+<translation id="532275381857891532">Riwayat Iklan 7 hari</translation>
+<translation id="5815103311506128988">Pembuat ini belum mendaftar untuk menerima kontribusi dari pengguna Brave. Peramban Anda akan terus berusaha memberi kontribusi sampai mereka memverifikasi, atau sampai 90 hari telah berlalu.</translation>
 </translationbundle>

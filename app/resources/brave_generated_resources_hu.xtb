@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hu">
-<translation id="3333887201479867589">Miért a Brave jutalmak?</translation>
+<translation id="3333887201479867589">Brave jutalmak</translation>
 <translation id="7942180974165298215">Brave hirdetés blokkolása</translation>
 <translation id="4615489450165434530">Nem működő oldal jelentése</translation>
 <translation id="6406506848690869874">Szinkronizálás</translation>
@@ -72,13 +72,13 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="7895302206188277628">Kapcsolt tartalom</translation>
 <translation id="3654831858282189202">Közzététel IPNS-kulccsal</translation>
 <translation id="7691598647605453992">IPFS</translation>
-<translation id="1047401034925735299">Kiválasztott szöveg importálása IPFS-be</translation>
 <translation id="6925604404524625582">Hivatkozás importálása és másolása az IPFS-pillanatképbe</translation>
 <translation id="1434416574322382019">Új</translation>
 <translation id="4703780849509456860">Link megnyitása Tor használatával privát ablakban</translation>
 <translation id="3488584642074079080">Hivatkozás megnyitása Brave Privát Ablakkal a Torban</translation>
 <translation id="7475547933708221517">Helyi fájl megosztása IPFS használatával</translation>
 <translation id="2286177249736199435">Helyi mappa megosztása IPFS használatával</translation>
+<translation id="4491895534716990473">Kiválasztott szöveg importálása IPFS-be</translation>
 <translation id="8883166554766780543">Hivatkozás importálása és másolása az IPFS-pillanatképbe</translation>
 <translation id="784573715436258741">Helyi fájl megosztása IPFS használatával</translation>
 <translation id="6313675821927505581">Új privát ablak a Tor böngészővel</translation>
@@ -195,16 +195,23 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="911363100236037920">Adjon nevet az új kulcsnak</translation>
 <translation id="6358469157239228181">Ez a név nem használható</translation>
 <translation id="5761731140570209168">Új társkapcsolati karakterlánc hozzáadása</translation>
+<translation id="2082206983920804886">Kulcs elforgatása</translation>
+<translation id="2521133093532260474">A helyi csomópontot nem lehet leállítani</translation>
+<translation id="86879877003581729">A helyi csomópontot nem lehet elindítani</translation>
 <translation id="6476061084931271248">A módosítások alkalmazásához indítsa újra a csomópontot</translation>
 <translation id="3754226427671882382">Csomópont újraindítása</translation>
+<translation id="949667118776341807">Elforgatás</translation>
 <translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Ez a név nem érvényes</translation>
 <translation id="6758961763875471084">Társak listájának módosítása</translation>
+<translation id="1295874070797049002">Kulcs exportálása</translation>
+<translation id="3946479342297227860">Kulcs eltávolítása</translation>
 <translation id="1534091531114892221">IPFS-társak leírásának beállítása</translation>
 <translation id="8996633027318264334">Biztosan törli a következőt: <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">A csomópont nincs elindítva</translation>
 <translation id="616058968889448209">IPFS szolgáltatásindítási hiba, további információkat itt találhat: <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">A(z) '<ph name="KEY_NAME"/>' importálása sikertelen volt</translation>
+<translation id="3364053282600191535">A(z) '<ph name="KEY_NAME"/>' exportálása sikertelen volt</translation>
 <translation id="8275038454117074363">Importálás</translation>
 <translation id="3654980960391973513">Generálás</translation>
 <translation id="5531501313997312487">Csomópont indítása</translation>
@@ -305,11 +312,16 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="312393675740711187">A cikkek automatikusan olvasási módban fognak betölteni, ezzel időt spórolva Önnek.</translation>
 <translation id="3234744217174488546">Olvasási mód be-/kikapcsolása csak ennél a weboldalnál. A Speedreader teljes böngészőprofilon való kikapcsolásához látogasson el ide:</translation>
 <translation id="7839742507462737706">a Speedreaderben</translation>
+<translation id="8490082094734500369">Olvasási mód kikapcsolása</translation>
+<translation id="2036503787657622020">Olvasási mód bekapcsolása</translation>
+<translation id="5226458915125328323">Speedreader beállítások</translation>
+<translation id="6284218950354553099">Napi használatról szóló jelzések automatikus küldése a Brave-be</translation>
+<translation id="5288333155754958121">Ez az anonimizált, privát jelzés lehetővé teszi a Brave számára, hogy megbecsülje az aktív felhasználók számát.</translation>
 <translation id="1872784258300710671">A Brave teljes mértékben anonimizált termékanalízis segítségével becsüli meg egyes funkciók összesített használatát.</translation>
 <translation id="8712637175834984815">Sikerült</translation>
 <translation id="4394049700291259645">Kikapcsolás</translation>
-<translation id="6469509880167172749">Teljes mértékben anonim termékanalízis automatikus küldése a Brave-hez</translation>
-<translation id="7090566321964540749">Ez az anonimizált adat mindösszesen azt teszi lehetővé, hogy a Brave megbecsülhesse egyes funkciók összesített használatát.</translation>
+<translation id="7142548388914389999">Az adatvédelmet megőrző termékelemzés (P3A) engedélyezése</translation>
+<translation id="609106526832379947">Ez a teljes mértékben anonimizált adat segít a Brave-nek megbecsülni bizonyos funkciók használatát, valamint fejleszteni a szolgáltatást.</translation>
 <translation id="1947672064022327074">El szeretné indítani a Crypto Wallets szolgáltatást az Ethereum támogatásához?</translation>
 <translation id="7583735190612229830">Állítsa be, hogy a Crypto Wallets együttműködjön ezzel és más hasonló alkalmazásokkal.</translation>
 <translation id="8731422418734770661">Állítsd be a Crypto Wallets-et</translation>
@@ -337,4 +349,7 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="3738833060602717053">Segíts a <ph name="PRODUCT_NAME"/> fejlesztésében összeomlási jelentések automatikus küldésével.</translation>
 <translation id="81720820779436751">A Brave megnyitja a webhely onion szolgáltatását, amikor ez lehetséges, vagy a .onion domént egy Tor ablakban.</translation>
 <translation id="4322612543319315652">Kiválasztott szöveg importálása IPFS-be</translation>
+<translation id="1047401034925735299">Kiválasztott szöveg importálása IPFS-be</translation>
+<translation id="6469509880167172749">Teljes mértékben anonim termékanalízis automatikus küldése a Brave-hez</translation>
+<translation id="7090566321964540749">Ez az anonimizált adat mindösszesen azt teszi lehetővé, hogy a Brave megbecsülhesse egyes funkciók összesített használatát.</translation>
 </translationbundle>

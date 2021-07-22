@@ -49,7 +49,6 @@
 <translation id="81774600964978477">Tovuti maarufu zinachakuliwa na wewe</translation>
 <translation id="5439599923922718668">Zinazotembelewa Mara kwa Mara</translation>
 <translation id="430556192781857057">Tovuti maarufu zinapendekezwa kulingana na tovuti unazotembelea mara kwa mara</translation>
-<translation id="8037713009824540257">Ongeza Tovuti</translation>
 <translation id="1773147648972887693">Onyesha zinazotembelewa mara kwa mara</translation>
 <translation id="4546260624932151782">Onyesha vipendwa</translation>
 <translation id="3446024864193919737">Onyesha Brave Rewards</translation>
@@ -69,7 +68,7 @@
 <translation id="7415602225677446066">Hadithi bora za leo katika mlisho wa faragha kabisa, kwa ajili yako tu.</translation>
 <translation id="6903061332999399632">Brave News inatumia matangazo yaliyolinganishwa kwa njia ya faragha na kutotambulisha kwenye kifaa chako. Maelezo yako binafsi yanakuwa ya faragha wakati wote, kulingana na <ph name="LINK_START"/>sera yetu ya faragha<ph name="LINK_END"/>.</translation>
 <translation id="7823038307453615214">Onyesha Brave News</translation>
-<translation id="780301667611848630">La, asante</translation>
+<translation id="780301667611848630">Hapana, asante</translation>
 <translation id="9164544612367905452">Inatafuta…</translation>
 <translation id="1276592121036104130">Pakia maudhui mapya</translation>
 <translation id="2875288128871360696">Sogeza upate Brave Today</translation>
@@ -79,12 +78,14 @@
 <translation id="8890516388109605451">Vyanzo</translation>
 <translation id="5158129253322921540">Lemaza maudhui kutoka <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Imekuzwa</translation>
+<translation id="4541978218358617681">Tangazo</translation>
 <translation id="1776831331757823105">Saa</translation>
 <translation id="7791543448312431591">Ongeza</translation>
 <translation id="7679334366167089823">Pata tokeni kwa kutazama matangazo yanayoheshimu faragha.</translation>
 <translation id="1531133232292396145">Uza Crypto kwenye Binance katika kivinjari chako moja kwa moja.</translation>
 <translation id="2166494527623220386">Uza Crypto kwenye Gemni katika kivinjari chako moja kwa moja.</translation>
 <translation id="7191394989411626168">Kwa kuzima Kadi, kadi zote zinazoonekana sasa zitafichwa. Hata hivyo, bado unaweza kuarifiwa kuhusu kadi mpya.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="5655621391922317800">Pochi za Crypto</translation>
 <translation id="8820817407110198400">Vialamisho</translation>
 <translation id="1644574205037202324">Historia</translation>
@@ -143,7 +144,6 @@
 <translation id="2469440407442116729">Chagua kivinjari</translation>
 <translation id="438216590634144114">Chagua kisakuzi ambacho ungependa kutumia kama chaguo msingi wakati ukivinjari kwenye tovuti kutoka kwenye upao wa anwani.</translation>
 <translation id="5804484488647369316">Chagua kivinjari chaguomsingi</translation>
-<translation id="4428458837269935199">Kwa uzoefu wa utafutaji wa faragha zaidi, jaribu DuckDuckGo.</translation>
 <translation id="3829010735958850433">Ruka ziara ya ukaribisho</translation>
 <translation id="1201402288615127009">Inayofuata</translation>
 <translation id="7954950242989581218">Vinjari salama na kwa uzuri</translation>
@@ -352,15 +352,15 @@
 <translation id="4371618764691059036">Mchango wa kila umewekwa.</translation>
 <translation id="6356822617569064293">Tarehe ya mchango inayofuata:</translation>
 <translation id="3593485149443019592">Tokeni hazitoshi. Tafadhali <ph name="LINK_BEGIN"/>ongeza fedha<ph name="LINK_END"/>.</translation>
-<translation id="4622723187300249546">Kidokezo cha Mara Moja</translation>
-<translation id="5268142130226208198">Kiasi cha kidokezo cha wakati mmoja:</translation>
+<translation id="207268487070188114">Bahshishi ya Wakati Mmoja</translation>
+<translation id="69861679024013299">Kiasi cha bahshishi ya wakati mmoja:</translation>
 <translation id="3669086939205397942">Subiri, bado huwezi kutoa bahshishi</translation>
 <translation id="3288812755711687300">Chapisho la <ph name="USER"/>’s</translation>
 <translation id="5851002232791947896">Ujumbe wa twitter wa <ph name="USER"/>’s</translation>
 <translation id="5531915212947569943">Tunasikitika kukuona ukienda…</translation>
 <translation id="1420756770787071946">Mfadhili muundaji huyu</translation>
 <translation id="3271043362279673449">Asante kwa ufadhili!</translation>
-<translation id="379596083010863211">Kidokezo chako cha wakati mmoja kimetumwa.</translation>
+<translation id="3312470408978098625">Bahshishi yako ya wakati mmoja imetumwa.</translation>
 <translation id="5096821444729034955">kwa chapisho lake</translation>
 <translation id="2978223787436054634">Ujumbe wa twitter kuhusu ufadhili wako</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Tazama onyesho la haraka<ph name="TOUR_LINK_END"/> au <ph name="LEARN_LINK_BEGIN"/>jifunze zaidi<ph name="LEARN_LINK_END"/> kwa maelezo.</translation>
@@ -512,10 +512,10 @@
 <translation id="4921250468871504777">sawa</translation>
 <translation id="7866482334467279021">washa</translation>
 <translation id="1166682575529520472">Kila Mwezi</translation>
-<translation id="8370173854533168890">Mara moja</translation>
+<translation id="1378730109637014435">Mara moja</translation>
 <translation id="9182287025588539628">Michango ya Mara Moja</translation>
 <translation id="6381574025952123568">Sakio Anzia</translation>
-<translation id="532275381857891532">Historia ya Matangazo ya Siku 7</translation>
+<translation id="156591572855748524">Historia ya Matangazo ya Siku 30</translation>
 <translation id="4923459931733593730">Malipo</translation>
 <translation id="6104680658798556671">Malipo hayakufanyika.</translation>
 <translation id="3138528956349114724">Tovuti zilizobanwa sasa</translation>
@@ -622,7 +622,7 @@
 <translation id="3780605330121608425">Waleti yako</translation>
 <translation id="6727483290601442544">Tazama Maelezo</translation>
 <translation id="1988679729106502285">ZINGATIA:</translation>
-<translation id="5815103311506128988">Mtengeneza maudhui huyu bado hajajisajili ili kuanza kupokea michango kutoka kwa watumiaji wa Brave. Kisakuzi chako kitaendelea kujaribu kuchangia hadi watakapothibitisha, au hadi siku 90 zitakapokuwa zimepita.</translation>
+<translation id="7979350009208995417">Muundaji maudhui huyu bado hajasanidi kupokea bahshishi kutoka kwenye pochi yako kwa sasa. Bahshishi yoyote unayotoa itaendelea kusubiri katika pochi yako na kujaribu tena kiotomatiki kwa siku 90.</translation>
 <translation id="7461596279975181413">Mbunifu huyu wa Brave Aliyethibitishwa bado hajapangilia akaunti yake ili apokee michango kutoka kwa watumiaji wa Brave. Kivinjari chako kitaendelea kujaribu kuchangia hadi watakapothibitisha, au hadi siku 90 zipite.</translation>
 <translation id="4292832015778676417">mapato yaliyotokana na matangazo</translation>
 <translation id="3197752845651180812">Michango ambayo bado haijachangwa</translation>
@@ -827,6 +827,7 @@
 <translation id="3741998951694470470">Imeshindwa kupata data ya kuleta</translation>
 <translation id="7900950536120202771">Hitilafu ya ndani ya nodi ya IPFS</translation>
 <translation id="1036635552229153800">Data ilipakiwa lakini haikuhamishwa hadi kwenye saraka ya kuleta ya brave. Unaweza kufanya hili mwenyewe kwenye ukurasa wa mipangilio ya kuleta.</translation>
+<translation id="3793279629218362523">Dhibiti funguo za Peer ID na IPNS</translation>
 <translation id="572392919096807438">Kumbuka uamuzi wangu</translation>
 <translation id="7978789143098237970">hadi nifunge tovuti hii</translation>
 <translation id="3523195733429162409">kwa saa 24</translation>
@@ -864,4 +865,12 @@
 <translation id="6973157709854838218">Ficha masalio yako ili yasionekane</translation>
 <translation id="4548946945059463969">Tambua masalio yako kwenye skrini</translation>
 <translation id="242959166945779492">Huna salio lolote katika akaunti yako. Tembelea FTX ili ununue kadhaa.</translation>
+<translation id="8037713009824540257">Ongeza Tovuti</translation>
+<translation id="4428458837269935199">Kwa uzoefu wa utafutaji wa faragha zaidi, jaribu DuckDuckGo.</translation>
+<translation id="4622723187300249546">Kidokezo cha Mara Moja</translation>
+<translation id="5268142130226208198">Kiasi cha kidokezo cha wakati mmoja:</translation>
+<translation id="379596083010863211">Kidokezo chako cha wakati mmoja kimetumwa.</translation>
+<translation id="8370173854533168890">Mara moja</translation>
+<translation id="532275381857891532">Historia ya Matangazo ya Siku 7</translation>
+<translation id="5815103311506128988">Mtengeneza maudhui huyu bado hajajisajili ili kuanza kupokea michango kutoka kwa watumiaji wa Brave. Kisakuzi chako kitaendelea kujaribu kuchangia hadi watakapothibitisha, au hadi siku 90 zitakapokuwa zimepita.</translation>
 </translationbundle>

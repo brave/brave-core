@@ -18,7 +18,7 @@
 <translation id="6241402707160226266">Prywatne okno z Torem</translation>
 <translation id="8762452230727230396">Sieć Tor ukrywa Twój adres IP przed stronami, które odwiedzasz.</translation>
 <translation id="1369311132025451972">Automatycznie przekierowuj strony .onion</translation>
-<translation id="2843777623071353503">Brave otworzy serwis onion tej strony, gdy będzie dostępny lub domenę .onion w oknie Tor</translation>
+<translation id="2843777623071353503">Brave otworzy usługę pseudodomeny strony internetowej, jeśli jest dostępna lub domenę .pseudodomena w oknie Tor.</translation>
 <translation id="8053096063396012732">Zainstaluj Widevine</translation>
 <translation id="4840334696217618631">Uruchom ponownie przeglądarkę, aby włączyć Widevine</translation>
 <translation id="8410111618231938546">Google Widevine to fragment kodu zarządzania prawami cyfrowymi (DRM), który nie należy do Brave Software i którego nie jesteśmy w stanie kontrolować. Kod Google Widevine wczytywany jest z serwerów Google, a nie z naszych. Jest wczytywany tylko wtedy, gdy włączysz taką opcję. Odradzamy używanie DRM, ale szanujemy wybór użytkownika i przyjmujemy do wiadomości, że niektórzy użytkownicy Brave chcą korzystać z usług, które tego wymagają.
@@ -72,13 +72,13 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="7895302206188277628">Powiązane treści</translation>
 <translation id="3654831858282189202">Publikuj za pomocą klucza IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
-<translation id="1047401034925735299">Importuj wybrany tekst do IPFS</translation>
 <translation id="6925604404524625582">Importuj i kopiuj łącze do IPFS Snapshot</translation>
 <translation id="1434416574322382019">Nowe okno prywatne z obsługą sieci Tor</translation>
 <translation id="4703780849509456860">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
 <translation id="3488584642074079080">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
 <translation id="7475547933708221517">Udostępnij plik lokalny, używając IPFS</translation>
 <translation id="2286177249736199435">Udostępnij lokalny folder, używając IPFS</translation>
+<translation id="4491895534716990473">Importuj zaznaczony tekst do IPFS</translation>
 <translation id="8883166554766780543">Zaimportuj i skopiuj link do migawki IPFS</translation>
 <translation id="784573715436258741">Udostępnij plik lokalny, używając IPFS</translation>
 <translation id="6313675821927505581">Nowe okno prywatne z obsługą sieci Tor</translation>
@@ -195,16 +195,23 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="911363100236037920">Wprowadź nazwę dla nowego klucza</translation>
 <translation id="6358469157239228181">Tej nazwy nie można użyć</translation>
 <translation id="5761731140570209168">Dodaj nowy string połączenia peer</translation>
+<translation id="2082206983920804886">Obróć klucz</translation>
+<translation id="2521133093532260474">Nie można zamknąć lokalnego węzła</translation>
+<translation id="86879877003581729">Nie można uruchomić lokalnego węzła</translation>
 <translation id="6476061084931271248">Uruchom ponownie węzeł, aby zastosować zmiany</translation>
 <translation id="3754226427671882382">Zrestartuj węzeł</translation>
+<translation id="949667118776341807">Obróć</translation>
 <translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Ta nazwa jest nieprawidłowa</translation>
 <translation id="6758961763875471084">Modyfikuj listę peerów</translation>
+<translation id="1295874070797049002">Eksportuj klucz</translation>
+<translation id="3946479342297227860">Usuń klucz</translation>
 <translation id="1534091531114892221">Ustaw opis peerów IPFS</translation>
 <translation id="8996633027318264334">Czy naprawdę chcesz usunąć <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Węzeł nie został uruchomiony</translation>
 <translation id="616058968889448209">Błąd uruchomienia usługi IPFS, więcej informacji jest dostępnych na stronie diagnostycznej <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' import klucza nie powiódł się</translation>
+<translation id="3364053282600191535">'<ph name="KEY_NAME"/>' key export failed</translation>
 <translation id="8275038454117074363">Importuj</translation>
 <translation id="3654980960391973513">Wygeneruj</translation>
 <translation id="5531501313997312487">Węzeł wyjściowy</translation>
@@ -305,11 +312,16 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="312393675740711187">Artykuły ładują się automatycznie w trybie czytnika, oszczędzając Twój czas.</translation>
 <translation id="3234744217174488546">Włącz/wyłącz tryb czytnika tylko dla tej witryny. Aby wyłączyć tryb Speedreader dla całego profilu przeglądarki, odwiedź stronę</translation>
 <translation id="7839742507462737706">w Speedreader</translation>
+<translation id="8490082094734500369">Wyłącz tryb czytnika</translation>
+<translation id="2036503787657622020">Włącz tryb czytnika</translation>
+<translation id="5226458915125328323">Ustawienia Speedreader</translation>
+<translation id="6284218950354553099">Automatycznie wysyłaj pingi dziennego użycia do Brave</translation>
+<translation id="5288333155754958121">Ten anonimowy, prywatny ping pozwala Brave oszacować liczbę aktywnych użytkowników</translation>
 <translation id="1872784258300710671">Brave wykorzystuje całkowicie prywatne analizy dotyczące produktu w celu oszacowania ogólnego poziomu korzystania z określonych funkcji.</translation>
 <translation id="8712637175834984815">Rozumiem</translation>
 <translation id="4394049700291259645">Wyłącz</translation>
-<translation id="6469509880167172749">Automatycznie przesyłaj do Brave całkowicie prywatne analizy dotyczące produktu</translation>
-<translation id="7090566321964540749">Te anonimowe informacje pozwalają Brave oszacować jedynie ogólny poziom korzystania z określonych funkcji.</translation>
+<translation id="7142548388914389999">Zezwól na zastosowanie analizy produktów z zachowaniem prywatności (P3A)</translation>
+<translation id="609106526832379947">Te całkowicie anonimowe informacje pomagają Brave oszacować ogólny poziom korzystania z niektórych funkcji i ulepszyć je dla Ciebie.</translation>
 <translation id="1947672064022327074">Czy chcesz uruchomić portfele kryptowalut do obsługi Ethereum?</translation>
 <translation id="7583735190612229830">Skonfiguruj portfele kryptowalut do interakcji z tą aplikacją i innymi podobnymi.</translation>
 <translation id="8731422418734770661">Skonfiguruj portfele kryptowaluty</translation>
@@ -336,4 +348,7 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="3738833060602717053">Pomóż ulepszać przeglądarkę <ph name="PRODUCT_NAME"/>, automatycznie wysyłając raporty o crashach.</translation>
 <translation id="81720820779436751">Brave otworzy serwis onion tej strony, gdy będzie dostępny lub domenę .onion w oknie Tor</translation>
 <translation id="4322612543319315652">Importuj wybrany tekst do IPFS</translation>
+<translation id="1047401034925735299">Importuj wybrany tekst do IPFS</translation>
+<translation id="6469509880167172749">Automatycznie przesyłaj do Brave całkowicie prywatne analizy dotyczące produktu</translation>
+<translation id="7090566321964540749">Te anonimowe informacje pozwalają Brave oszacować jedynie ogólny poziom korzystania z określonych funkcji.</translation>
 </translationbundle>

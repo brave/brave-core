@@ -352,7 +352,7 @@
 <translation id="5440744330377972191">Websites laden schneller</translation>
 <translation id="3000738865641747653">Weniger Daten zu laden, bedeutet, dass Websites in Brave schneller laden – bis zu 8 x schneller als andere Browser.</translation>
 <translation id="8903462729414407077">Wöchentliche Updates erhalten</translation>
-<translation id="8029219208182772618">Seien Sie informiert darüber, welche Websites, die Sie besuchen, die Privatsphäre am meisten verletzen.\n\nNur Sie können diese Privatsphärestatistik sehen. Persönlichen Daten oder Browserverlauf verlassen nie den Brave Browser auf Ihrem Gerät.</translation>
+<translation id="7450323860390658083">Informiere dich darüber, welche der von dir besuchten Websites am meisten in die Privatsphäre eingreifen.\n\nNur du siehst diese Datenschutzstatistik. Persönliche Daten oder Browserverlauf verlassen nie den Brave Browser auf deinem Gerät.</translation>
 <translation id="6170159749517116894">Privatsphäreberichte aktivieren</translation>
 <translation id="5966707198760109579">Woche</translation>
 <translation id="8987927404178983737">Monat</translation>
@@ -373,12 +373,12 @@
 <translation id="7427567994475794038">Aktivieren Sie Privatsphäreberichte, um zu sehen, wie viele Tracker &amp; Werbeanzeigen in den letzten 3 Stunden blockiert wurden.</translation>
 <translation id="2053891538879944400">Sie haben <ph name="DATA"/> <ph name="DATA_TEXT"/> Daten mit dem Brave Browser gespart.</translation>
 <translation id="8640064498452534195">Aktivieren Sie die Privatsphäreberichte, um zu sehen, wie viele Daten Sie gespart haben.</translation>
-<translation id="2252497442547961651">Brave Browser verbraucht im Durchschnitt 40 % weniger Akku.&#128267;</translation>
+<translation id="2252497442547961651">Brave Browser verbraucht im Durchschnitt 40 % weniger Akku.🔋</translation>
 <translation id="1945330434665345785">Letzte Wochen haben Sie <ph name="COUNT"/> Tracker &amp; Werbeanzeigen mit dem Brave Browser blockiert.</translation>
 <translation id="2883868922264431515">Verdienen Sie Tokens, indem Sie Werbung ansehen, die die Privatsphäre respektiert, und unterstützen Sie Ihre Lieblingswebsites.</translation>
-<translation id="5678925890616256956">Toll! Sie haben 250 Tracker und Anzeigen mit Brave Browser blockiert.&#128293;</translation>
-<translation id="9199047775708635708">Toll! Sie haben 10 MB mit Brave Browser gespart.&#128267;</translation>
-<translation id="1880168210969863408">Toll! Sie haben 10 Minuten Ladezeit mit Brave Browser gespart.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Toll! Sie haben 250 Tracker und Anzeigen mit Brave Browser blockiert.🔥</translation>
+<translation id="9199047775708635708">Toll! Sie haben 10 MB mit Brave Browser gespart.🔋</translation>
+<translation id="1880168210969863408">Toll! Sie haben 10 Minuten Ladezeit mit Brave Browser gespart.💨💨</translation>
 <translation id="7408493389591475748">Fangen Sie an, zu browsen, um den Privatsphärebericht zu sehen</translation>
 <translation id="9080777565335515917">Legen Sie für privates und sicheres Browsen Brave als Ihren Standardbrowser fest.</translation>
 <translation id="1390943217516275883">Brave erlauben, Ihre Privatsphärestatistik anzuzeigen</translation>
@@ -441,7 +441,7 @@
 <translation id="3477340970981564961">Anders als herkömmliche Werbung belohnt Brave Private Ads Sie mit Tokens, um Inhaltsersteller zu unterstützen, und schützt dabei Ihre persönlichen Informationen.</translation>
 <translation id="6973095375773523904">Wo tauchen die Werbeanzeigen auf?</translation>
 <translation id="7556325460112047619">Brave Private Ads wird als normale Benachrichtigung erscheinen. Sie kontrollieren in den Einstellungen, wie oft Sie diese Anzeigen sehen.</translation>
-<translation id="5816125157889950051">Wann Sie Belohnungen erhalten</translation>
+<translation id="6897083627729802351">Wann Sie Belohnungen erhalten</translation>
 <translation id="310863932297733723">Ihre im aktuellen Monat  von Brave Private Ads verdienten Tokens werden am 5. des nächsten Monats ankommen.</translation>
 <translation id="7712287524451429139">Andere Unterstützen leicht gemacht</translation>
 <translation id="105037569026952831">Ersteller erhalten die von Ihnen vergebenen Token automatisch basierend auf Ihrer Aktivität, die wir als ‘Aufmerksamkeit’ messen.</translation>
@@ -458,7 +458,7 @@
 <translation id="827315274423079662">Hurra, Sie sind startklar!</translation>
 <translation id="3895246934788932488">Durch Nutzung von Brave Rewards schützen Sie Ihre Privatsphäre und tragen dazu bei, das Internet zu einem besseren Ort zu machen. Und das ist genial!</translation>
 <translation id="5705882733397021510">Zurück</translation>
-<translation id="5140321319944305531">Begeben wir uns auf einen kleinen Rundgang</translation>
+<translation id="3985567919248057638">Begeben wir uns auf einen kleinen Rundgang</translation>
 <translation id="2434574859640694129">Nachdem Sie Ihre Werbeauszahlung erhalten haben, können Sie zurückkommen und an diesen Creator spenden!</translation>
 <translation id="207242986925259074">Kurze Tour zur Auffrischung unternehmen</translation>
 <translation id="8342862030112839977">Die Auszahlung Ihrer ersten Belohnung erfolgt vor dem oder am:</translation>
@@ -476,6 +476,7 @@
 <translation id="7320542277711359296">Zweitbeliebteste</translation>
 <translation id="8295049095570748497">Eine führende Suchmaschine in Russland</translation>
 <translation id="2642661895835126239">Pflanzt Bäume, lebt in Berlin</translation>
+<translation id="177282784098234156">Privat, unabhängig und nutzerzentriert</translation>
 <translation id="1410130669636877548">Einige Suchmaschinen schützen Ihre Daten besser als andere, wenn Sie etwas im Internet suchen.</translation>
 <translation id="1078265935778232285">Willkommen beim Brave Browser</translation>
 <translation id="6824713633331856331">Helfen Sie uns anonym zu lernen</translation>
@@ -512,4 +513,59 @@
 <translation id="6960458596933484861">Sie brauchen mindestens 15 BAT für eine verifizierte Uphold-Wallet. Bitte versuchen Sie es später erneut.</translation>
 <translation id="4389085954549744469">Wenn Sie bereits ein verifiziertes Uphold-Konto haben, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">melden Sie sich an</translation>
+<translation id="1483493594462132177">Senden</translation>
+<translation id="538450413584738399">Swap</translation>
+<translation id="8825032646286791700">DeFi &amp; Sichere Krypto-Speicherung</translation>
+<translation id="5460364286096798286">Halte Kryptowährungen. Handele Vermögenswerte. Sieh dir Kurse und Portfolio-Performance an. Investiere, leihe und verleihe mit DeFi.</translation>
+<translation id="1748009926009835882">Kryptowährung einrichten</translation>
+<translation id="2759836790106646094">Sichere jetzt deine Wallet!</translation>
+<translation id="7685607706678113458">Im nächsten Schritt siehst du 12 Wörter, mit denen du dein Krypto-Konto wiederherstellen kannst.</translation>
+<translation id="2359808026110333948">Fortfahren</translation>
+<translation id="5024543173656851695">Mir ist bewusst, dass ich keinen Zugriff auf mein Krypto-Wallet habe, wenn ich meine Wörter zur Wiederherstellung verliere.</translation>
+<translation id="3933122286596948824">Deine Formulierung zur Wiederherstellung</translation>
+<translation id="6146351434671268516">Diese Wörter musst du in der richtigen Reihenfolge niederschreiben oder kopieren und an einem sicheren Ort speichern.</translation>
+<translation id="7408247683131762445">WARNUNG: Lege niemals deine Sicherungsphrase offen. Wer diese Phrase besitzt, kann sich deine Einlagen aneignen.</translation>
+<translation id="939275786514736244">Ich habe meine Formulierung an einem sicheren Ort gespeichert.</translation>
+<translation id="6896758677409633944">Kopieren</translation>
+<translation id="1202920745614909195">Mit Apple Pay, Kredit- oder Debitkarten Kryptowährungen kaufen.</translation>
+<translation id="841880029259839903">Kryptowährungen senden oder zwischen Konten überweisen.</translation>
+<translation id="8982246458261383692">Krypto-Vermögenswerte mit dem Brave DEX-Aggregator tauschen.</translation>
+<translation id="1783600039044302171">Schütze deine Kryptowährung mit einem Passwort</translation>
+<translation id="3726490322412361740">Passwort eingeben</translation>
+<translation id="4450951602553063001">Passwort erneut eingeben</translation>
+<translation id="1783870616707290226">Passwörter müssen aus mindestens 7 Zeichen bestehen.</translation>
+<translation id="7383102760859258982">Das erneut eingegebene Passwort stimmte nicht überein.</translation>
+<translation id="1538774398124896437">Live</translation>
+<translation id="8163269366661594721">1 T</translation>
+<translation id="7640956400175663828">1 W</translation>
+<translation id="9100647964747998533">1 M</translation>
+<translation id="6366007539108097840">3 M</translation>
+<translation id="6977728312178289892">1 J</translation>
+<translation id="6895566650974550243">ALLE</translation>
+<translation id="8892168913673237979">Fertig!</translation>
+<translation id="8331501996028380732">Kryptowährungen kaufen, handeln und halten. Wenn du bereits über ein Krypto-Konto verfügst, kannst du es jetzt hinzufügen.</translation>
+<translation id="2267753748892043616">Konto hinzufügen</translation>
+<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="8100001366858145406">Entsperren per Fingerabdruck aktivieren?</translation>
+<translation id="5493402808936397665">Biometrie aktivieren, um ohne Passwort Zugriff auf dein Wallet zu haben.</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
+<translation id="6901810042765869341">Gib deine Formulierung zur Wiederherstellung ein, um dein Brave Wallet Krypto-Konto wiederherzustellen.</translation>
+<translation id="1970161551843843564">Krypto-Konto wiederherstellen</translation>
+<translation id="4811736040444856406">Formulierung zur Wiederherstellung anzeigen</translation>
+<translation id="283071225285270357">Formulierung zur Wiederherstellung eingeben</translation>
+<translation id="2339124864228588937">Formulierung zur Wiederherstellung bestätigen</translation>
+<translation id="6202787708155200390">Tippe auf die Wörter, um sie in die richtige Reihenfolge zu bringen.</translation>
+<translation id="6518133107902771759">Überprüfen</translation>
+<translation id="3157931365184549694">Wiederherstellen</translation>
+<translation id="9111102763498581341">Entsperren</translation>
+<translation id="6657585470893396449">Passwort</translation>
+<translation id="1569452037668432756">Zum Entsperren Passswort eingeben</translation>
+<translation id="224719674509047150">Passwörter müssen aus mindestens 7 Zeichen bestehen und mindestens eine Zahl und ein Sonderzeichen enthalten.</translation>
+<translation id="1144810021918451336">Schützt Sie nicht vor gefährlichen Websites, Downloads und Erweiterungen.</translation>
+<translation id="745115390910697838">Die Formulierungen stimmen nicht überein. Bitte erneut versuchen.</translation>
+<translation id="2360588547830602174">Die Wiederherstellung des Kontos schlug fehl. Bitte erneut versuchen.</translation>
+<translation id="1530109021798294736">Mainnet</translation>
+<translation id="8029219208182772618">Seien Sie informiert darüber, welche Websites, die Sie besuchen, die Privatsphäre am meisten verletzen.\n\nNur Sie können diese Privatsphärestatistik sehen. Persönlichen Daten oder Browserverlauf verlassen nie den Brave Browser auf Ihrem Gerät.</translation>
+<translation id="5816125157889950051">Wann Sie Belohnungen erhalten</translation>
+<translation id="5140321319944305531">Begeben wir uns auf einen kleinen Rundgang</translation>
 </translationbundle>
