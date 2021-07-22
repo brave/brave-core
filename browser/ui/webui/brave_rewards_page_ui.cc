@@ -312,7 +312,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
 namespace {
 
-const int kDaysOfAdsHistory = 7;
+const int kDaysOfAdsHistory = 30;
 
 const char kShouldAllowAdsSubdivisionTargeting[] =
     "shouldAllowAdsSubdivisionTargeting";
