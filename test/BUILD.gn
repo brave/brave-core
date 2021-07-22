@@ -894,7 +894,7 @@ if (!is_android) {
       "//chrome/browser:theme_properties",
       "//chrome/browser/media/router:media_router_feature",
       "//chrome/browser/ui",
-      "//chrome/browser/web_applications/components",
+      "//chrome/browser/web_applications",
       "//chrome/test:test_support_ui",
       "//components/bookmarks/browser",
       "//components/content_settings/browser",
