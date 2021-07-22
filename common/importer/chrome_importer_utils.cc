@@ -147,7 +147,7 @@ std::vector<std::string> GetImportableListFromChromeExtensionsList(
   DCHECK(extensions_list.is_dict());
 
   std::vector<std::string> extensions;
-  for (const auto& item : extensions_list.DictItems()) {
+  for (const auto item : extensions_list.DictItems()) {
     // Only import if type is extension, it's came from webstore and it's not
     // installed by default.
     if (item.second.FindBoolKey("was_installed_by_default").value_or(true))

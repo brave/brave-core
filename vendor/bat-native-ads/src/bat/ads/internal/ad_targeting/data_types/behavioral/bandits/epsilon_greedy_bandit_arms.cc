@@ -61,7 +61,7 @@ EpsilonGreedyBanditArmMap GetArmsFromDictionary(
     return arms;
   }
 
-  for (const auto& value : dictionary->DictItems()) {
+  for (const auto value : dictionary->DictItems()) {
     if (!value.second.is_dict()) {
       NOTREACHED();
       continue;
