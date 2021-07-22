@@ -1,0 +1,20 @@
+diff --git a/components/permissions/permission_request.cc b/components/permissions/permission_request.cc
+index d14013d379c85c7e5b7eb42d74169fa91ea809be..0be152de0cd4c4fc32422d2ef200efe6f5f47568 100644
+--- a/components/permissions/permission_request.cc
++++ b/components/permissions/permission_request.cc
+@@ -93,6 +93,7 @@ std::u16string PermissionRequest::GetDialogMessageText() const {
+     case RequestType::kVrSession:
+       message_id = IDS_VR_INFOBAR_TEXT;
+       break;
++    BRAVE_PERMISSION_REQUEST_GET_MESSAGE_TEXT_FRAGMENT
+   }
+   DCHECK_NE(0, message_id);
+   return l10n_util::GetStringFUTF16(
+@@ -206,6 +207,7 @@ std::u16string PermissionRequest::GetMessageTextFragment() const {
+     case RequestType::kVrSession:
+       message_id = IDS_VR_PERMISSION_FRAGMENT;
+       break;
++    BRAVE_PERMISSION_REQUEST_GET_MESSAGE_TEXT_FRAGMENT
+     case RequestType::kWindowPlacement:
+       message_id = IDS_WINDOW_PLACEMENT_PERMISSION_FRAGMENT;
+       break;
