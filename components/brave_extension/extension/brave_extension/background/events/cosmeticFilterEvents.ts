@@ -15,7 +15,7 @@ export const applyCosmeticFilter = (host: string, selector: string) => {
       chrome.tabs.insertCSS({
         code: `${s} {display: none !important;}`,
         cssOrigin: 'user'
-      }).catch((e) => { console.error(e) })
+      })
 
       addSiteCosmeticFilter(host, s)
     }

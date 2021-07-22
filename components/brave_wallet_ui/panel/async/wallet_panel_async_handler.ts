@@ -69,19 +69,19 @@ handler.on(PanelActions.visibilityChanged.getType(), async (store, isVisible) =>
 })
 
 handler.on(PanelActions.setupWallet.getType(), async (store) => {
-  chrome.tabs.create({ url: 'chrome://wallet' }).catch((e) => { console.error(e) })
+  chrome.tabs.create({ url: 'chrome://wallet' })
 })
 
 handler.on(PanelActions.expandWallet.getType(), async (store) => {
-  chrome.tabs.create({ url: 'chrome://wallet' }).catch((e) => { console.error(e) })
+  chrome.tabs.create({ url: 'chrome://wallet' })
 })
 
 handler.on(PanelActions.openWalletApps.getType(), async (store) => {
-  chrome.tabs.create({ url: 'chrome://wallet#apps' }).catch((e) => { console.error(e) })
+  chrome.tabs.create({ url: 'chrome://wallet#apps' })
 })
 
 handler.on(PanelActions.restoreWallet.getType(), async (store) => {
-  chrome.tabs.create({ url: 'chrome://wallet#restore' }).catch((e) => { console.error(e) })
+  chrome.tabs.create({ url: 'chrome://wallet#restore' })
 })
 
 export default handler.middleware
