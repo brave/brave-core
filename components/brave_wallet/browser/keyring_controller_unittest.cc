@@ -25,6 +25,9 @@ class KeyringControllerUnitTest : public testing::Test {
   KeyringControllerUnitTest() {}
   ~KeyringControllerUnitTest() override {}
 
+  void GetBooleanCallback(bool value) { bool_value_ = value; }
+  void GetStringCallback(const std::string& value) { string_value_ = value; }
+
  protected:
   void SetUp() override {
     TestingProfile::Builder builder;
@@ -37,13 +40,14 @@ class KeyringControllerUnitTest : public testing::Test {
 
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
 
-  base::OnceCallback<void(bool)> GetIgnoreResultCallback() const {
-    return base::BindOnce([](bool) {});
-  }
+  bool bool_value() { return bool_value_; }
+  const std::string string_value() { return string_value_; }
 
  private:
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
+  bool bool_value_;
+  std::string string_value_;
 };
 
 TEST_F(KeyringControllerUnitTest, GetPrefsInBytes) {
@@ -285,22 +289,32 @@ TEST_F(KeyringControllerUnitTest, UnlockResumesDefaultKeyring) {
   {
     // KeyringController is now destructed, simlulating relaunch
     KeyringController controller(GetPrefs());
-    controller.Unlock("brave", GetIgnoreResultCallback());
+    controller.Unlock(
+        "brave", base::BindOnce(&KeyringControllerUnitTest::GetBooleanCallback,
+                                base::Unretained(this)));
+    base::RunLoop().RunUntilIdle();
+    ASSERT_EQ(true, bool_value());
     ASSERT_FALSE(controller.IsLocked());
+
     HDKeyring* keyring = controller.GetDefaultKeyring();
     EXPECT_EQ(GetPrefs()->GetString(kBraveWalletPasswordEncryptorSalt), salt);
     EXPECT_EQ(GetPrefs()->GetString(kBraveWalletPasswordEncryptorNonce), nonce);
     EXPECT_EQ(GetPrefs()->GetString(kBraveWalletEncryptedMnemonic), mnemonic);
-    ASSERT_NE(keyring, nullptr);
-    EXPECT_EQ(keyring->GetAccounts().size(), 2u);
+    ASSERT_NE(nullptr, keyring);
+    EXPECT_EQ(2u, keyring->GetAccounts().size());
   }
   {
     KeyringController controller(GetPrefs());
     // wrong password
-    controller.Unlock("brave123", GetIgnoreResultCallback());
+    controller.Unlock(
+        "brave123",
+        base::BindOnce(&KeyringControllerUnitTest::GetBooleanCallback,
+                       base::Unretained(this)));
     ASSERT_TRUE(controller.IsLocked());
     // empty password
-    controller.Unlock("", GetIgnoreResultCallback());
+    controller.Unlock(
+        "", base::BindOnce(&KeyringControllerUnitTest::GetBooleanCallback,
+                           base::Unretained(this)));
     ASSERT_TRUE(controller.IsLocked());
   }
 }
@@ -313,24 +327,43 @@ TEST_F(KeyringControllerUnitTest, GetMnemonicForDefaultKeyring) {
   ASSERT_TRUE(controller.CreateEncryptor("brave"));
 
   // no pref exists yet
-  // EXPECT_TRUE(controller.GetMnemonicForDefaultKeyring().empty());
+  controller.GetMnemonicForDefaultKeyring(base::BindOnce(
+      &KeyringControllerUnitTest::GetStringCallback, base::Unretained(this)));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(string_value().empty());
 
   ASSERT_TRUE(controller.CreateDefaultKeyringInternal(mnemonic));
-  // EXPECT_EQ(controller.GetMnemonicForDefaultKeyring(), mnemonic);
+  controller.GetMnemonicForDefaultKeyring(base::BindOnce(
+      &KeyringControllerUnitTest::GetStringCallback, base::Unretained(this)));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(string_value(), mnemonic);
 
   // Lock controller
   controller.Lock();
   EXPECT_TRUE(controller.IsLocked());
-  // EXPECT_TRUE(controller.GetMnemonicForDefaultKeyring().empty());
+  controller.GetMnemonicForDefaultKeyring(base::BindOnce(
+      &KeyringControllerUnitTest::GetStringCallback, base::Unretained(this)));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(string_value().empty());
 
   // unlock with wrong password
-  controller.Unlock("brave123", GetIgnoreResultCallback());
+  controller.Unlock(
+      "brave123", base::BindOnce(&KeyringControllerUnitTest::GetBooleanCallback,
+                                 base::Unretained(this)));
   EXPECT_TRUE(controller.IsLocked());
-  // EXPECT_TRUE(controller.GetMnemonicForDefaultKeyring().empty());
+  controller.GetMnemonicForDefaultKeyring(base::BindOnce(
+      &KeyringControllerUnitTest::GetStringCallback, base::Unretained(this)));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(string_value().empty());
 
-  controller.Unlock("brave", GetIgnoreResultCallback());
+  controller.Unlock(
+      "brave", base::BindOnce(&KeyringControllerUnitTest::GetBooleanCallback,
+                              base::Unretained(this)));
   EXPECT_FALSE(controller.IsLocked());
-  // EXPECT_EQ(controller.GetMnemonicForDefaultKeyring(), mnemonic);
+  controller.GetMnemonicForDefaultKeyring(base::BindOnce(
+      &KeyringControllerUnitTest::GetStringCallback, base::Unretained(this)));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(string_value(), mnemonic);
 }
 
 TEST_F(KeyringControllerUnitTest, GetDefaultKeyring) {
@@ -345,7 +378,9 @@ TEST_F(KeyringControllerUnitTest, GetDefaultKeyring) {
   controller.Lock();
   EXPECT_EQ(controller.GetDefaultKeyring(), nullptr);
 
-  controller.Unlock("brave", GetIgnoreResultCallback());
+  controller.Unlock(
+      "brave", base::BindOnce(&KeyringControllerUnitTest::GetBooleanCallback,
+                              base::Unretained(this)));
   EXPECT_FALSE(controller.IsLocked());
   ASSERT_NE(controller.GetDefaultKeyring(), nullptr);
   EXPECT_EQ(controller.GetDefaultKeyring()->GetAddress(0), address);
@@ -376,10 +411,14 @@ TEST_F(KeyringControllerUnitTest, LockAndUnlock) {
     EXPECT_EQ(GetPrefs()->GetInteger(kBraveWalletDefaultKeyringAccountNum), 1);
     EXPECT_TRUE(controller.default_keyring_->empty());
 
-    controller.Unlock("abc", GetIgnoreResultCallback());
+    controller.Unlock(
+        "abc", base::BindOnce(&KeyringControllerUnitTest::GetBooleanCallback,
+                              base::Unretained(this)));
     EXPECT_TRUE(controller.IsLocked());
 
-    controller.Unlock("brave", GetIgnoreResultCallback());
+    controller.Unlock(
+        "brave", base::BindOnce(&KeyringControllerUnitTest::GetBooleanCallback,
+                                base::Unretained(this)));
     EXPECT_FALSE(controller.IsLocked());
     controller.default_keyring_->AddAccounts(1);
 
@@ -389,7 +428,9 @@ TEST_F(KeyringControllerUnitTest, LockAndUnlock) {
     EXPECT_TRUE(controller.default_keyring_->empty());
 
     // Simulate unlock shutdown
-    controller.Unlock("brave", GetIgnoreResultCallback());
+    controller.Unlock(
+        "brave", base::BindOnce(&KeyringControllerUnitTest::GetBooleanCallback,
+                                base::Unretained(this)));
     EXPECT_FALSE(controller.IsLocked());
     controller.default_keyring_->AddAccounts(1);
   }
