@@ -92,7 +92,7 @@ void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
                            const base::FilePath& messages_value,
                            const base::FilePath& resource_dir) {
   if (preconditions_value) {
-    for (const auto& kv : preconditions_value->DictItems()) {
+    for (const auto kv : preconditions_value->DictItems()) {
       GreaselionPreconditionValue condition = ParsePrecondition(kv.second);
       if (kv.first == kRewards) {
         preconditions_.rewards_enabled = condition;
