@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_vpn/buildflags/buildflags.gni")
+
 static_library("brave_vpn") {
   sources = [
     "brave_vpn_connection_info.cc",
@@ -11,6 +13,8 @@ static_library("brave_vpn") {
     "brave_vpn_connection_manager.h",
     "brave_vpn_service.cc",
     "brave_vpn_service.h",
+    "features.cc",
+    "features.h",
   ]
 
   deps = [
@@ -59,6 +63,21 @@ source_set("brave_vpn_internal") {
     sources += [
       "utils_win.cc",
       "utils_win.h",
+    ]
+  }
+}
+
+source_set("unit_tests") {
+  if (enable_brave_vpn) {
+    testonly = true
+
+    sources = [ "brave_vpn_unittest.cc" ]
+
+    deps = [
+      ":brave_vpn",
+      "//base",
+      "//content/test:test_support",
+      "//testing/gtest",
     ]
   }
 }
