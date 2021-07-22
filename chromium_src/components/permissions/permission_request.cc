@@ -5,20 +5,90 @@
 
 #include "components/permissions/permission_request.h"
 
+#include <vector>
+
+#include "base/containers/contains.h"
+#include "components/strings/grit/components_strings.h"
+#include "third_party/widevine/cdm/buildflags.h"
+
 #define PermissionRequest PermissionRequest_ChromiumImpl
 #define IsDuplicateOf IsDuplicateOf_ChromiumImpl
+
+// `kWidevine` handled by an override in `WidevinePermissionRequest` and the
+// Brave Ethereum permission has its own permission request prompt.
+#define BRAVE_ENUM_ITEMS_FOR_SWITCH \
+  case RequestType::kBraveEthereum: \
+    NOTREACHED();                   \
+    return std::u16string();        \
+  case RequestType::kWidevine:      \
+    NOTREACHED();                   \
+    return std::u16string();
+
+namespace {
+#if defined(OS_ANDROID)
+const unsigned int IDS_VR_INFOBAR_TEXT_OVERRIDE = IDS_VR_INFOBAR_TEXT;
+#else
+const unsigned int IDS_VR_PERMISSION_FRAGMENT_OVERRIDE =
+    IDS_VR_PERMISSION_FRAGMENT;
+#endif
+}  // namespace
+
+#if defined(OS_ANDROID)
+// For PermissionRequest::GetDialogMessageText
+#undef IDS_VR_INFOBAR_TEXT
+#define IDS_VR_INFOBAR_TEXT     \
+  IDS_VR_INFOBAR_TEXT_OVERRIDE; \
+  break;                        \
+  BRAVE_ENUM_ITEMS_FOR_SWITCH
+#else
+// For PermissionRequest::GetMessageTextFragment
+#undef IDS_VR_PERMISSION_FRAGMENT
+#define IDS_VR_PERMISSION_FRAGMENT     \
+  IDS_VR_PERMISSION_FRAGMENT_OVERRIDE; \
+  break;                               \
+  BRAVE_ENUM_ITEMS_FOR_SWITCH
+#endif
+
 #include "../../../../components/permissions/permission_request.cc"
+#undef IDS_VR_INFOBAR_TEXT
+#undef IDS_VR_PERMISSION_FRAGMENT
 #undef IsDuplicateOf
 #undef PermissionRequest
 
 namespace permissions {
 
-PermissionRequest::PermissionRequest() = default;
+PermissionRequest::PermissionRequest(
+    const GURL& requesting_origin,
+    RequestType request_type,
+    bool has_gesture,
+    PermissionDecidedCallback permission_decided_callback,
+    base::OnceClosure delete_callback)
+    : PermissionRequest_ChromiumImpl(requesting_origin,
+                                     request_type,
+                                     has_gesture,
+                                     std::move(permission_decided_callback),
+                                     std::move(delete_callback)) {}
 
 PermissionRequest::~PermissionRequest() = default;
 
 bool PermissionRequest::SupportsLifetime() const {
-  return false;
+  const RequestType kExcludedTypes[] = {
+    RequestType::kDiskQuota,
+    RequestType::kMultipleDownloads,
+#if defined(OS_ANDROID)
+    RequestType::kProtectedMediaIdentifier,
+#else
+    RequestType::kRegisterProtocolHandler,
+    RequestType::kSecurityAttestation,
+#endif  // defined(OS_ANDROID)
+#if BUILDFLAG(ENABLE_WIDEVINE)
+    RequestType::kWidevine
+#endif  // BUILDFLAG(ENABLE_WIDEVINE)
+  };
+  if (base::Contains(kExcludedTypes, request_type())) {
+    return false;
+  }
+  return true;
 }
 
 void PermissionRequest::SetLifetime(absl::optional<base::TimeDelta> lifetime) {
