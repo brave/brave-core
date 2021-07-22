@@ -28,6 +28,7 @@ import * as rewardsActions from '../actions/rewards_actions'
 import Promotion from './promotion'
 import { getLocale } from '../../../../common/locale'
 import { getActivePromos, getPromo, PromoType, Promo } from '../promos'
+import { getWalletProviderName } from '../utils'
 
 interface Props extends Rewards.ComponentProps {
 }
@@ -239,7 +240,7 @@ class SettingsPage extends React.Component<Props, State> {
         <ModalRedirect
           id={'redirect-modal-id-verification-required'}
           titleText={getLocale('redirectModalKYCRequiredTitle')}
-          errorText={getLocale('redirectModalKYCRequiredText')}
+          errorText={getLocale('redirectModalKYCRequiredText').replace('$1', getWalletProviderName(externalWallet))}
           buttonText={getLocale('redirectModalClose')}
           walletType={walletType}
           onClick={this.actions.hideRedirectModal}
