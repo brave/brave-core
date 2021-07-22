@@ -6,7 +6,8 @@
 #import <Foundation/Foundation.h>
 #import "{{module_name}}.objc+private.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
-#import "base/containers/flat_map.h"
+#include "base/containers/flat_map.h"
+#include "base/strings/sys_string_conversions.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
