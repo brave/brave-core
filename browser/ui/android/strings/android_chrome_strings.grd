@@ -442,7 +442,7 @@ CHAR_LIMIT guidelines:
      <message name="IDS_AUTOFILL_PROFILE_EDITOR_COUNTRY" desc="Label for a spinner input field containing a list of countries or regions [CHAR_LIMIT=32]">
         Country/Region
       </message>
-      <message name="IDS_AUTOFILL_PROFILE_EDITOR_HONORIFIC_PREFIX" desc="Label for text input field containing a title that can be auto-filled by Brave. [CHAR_LIMIT=32]" meaning="A 'Title' field in a web form could be a prefix like Ms., Mx., or Dr. or a position held, like Captain or Rabbi.">
+      <message name="IDS_AUTOFILL_PROFILE_EDITOR_HONORIFIC_PREFIX" desc="Label for text input field containing a title that can be auto-filled by Brave. A 'Title' field in a web form could be a prefix like Ms., Mx., or Dr. or a position held, like Captain or Rabbi. [CHAR_LIMIT=32]" meaning="Honorific">
         Title
       </message>
       <message name="IDS_AUTOFILL_PROFILE_EDITOR_EMAIL_ADDRESS" desc="Label for text input field containing an e-mail address. [CHAR_LIMIT=32]">
@@ -918,10 +918,10 @@ Your Brave account may have other forms of browsing history like searches and ac
         Clears history from all synced devices. Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;link&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/link&gt;</ph>.
       </message>
       <message name="IDS_CLEAR_SEARCH_HISTORY_LINK" desc="Text informing the user that they can clear search history and other data using MyActivity.">
-        <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Search history<ph name="END_LINK1">&lt;/link1&gt;</ph> and <ph name="BEGIN_LINK2">&lt;link2&gt;</ph>other forms of activity<ph name="END_LINK2">&lt;/link2&gt;</ph> may be saved in your Brave sync chain when you’re signed in. You can delete them at any time.
+        <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Search history<ph name="END_LINK1">&lt;/link1&gt;</ph> and <ph name="BEGIN_LINK2">&lt;link2&gt;</ph>other forms of activity<ph name="END_LINK2">&lt;/link2&gt;</ph> may be saved in your Brave sync chain when you’re signed in. You can delete them anytime.
       </message>
       <message name="IDS_CLEAR_SEARCH_HISTORY_LINK_OTHER_FORMS" desc="Text informing the user that they can clear their Brave data using MyActivity when their Default Search Engine is not Brave.">
-        <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Other forms of activity<ph name="END_LINK1">&lt;/link1&gt;</ph> may be saved in your Brave sync chain when you’re signed in. You can delete them at any time.
+        <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Other forms of activity<ph name="END_LINK1">&lt;/link1&gt;</ph> may be saved in your Brave sync chain when you’re signed in. You can delete them anytime.
       </message>
       <message name="IDS_CLEAR_SEARCH_HISTORY_NON_GOOGLE_DSE" desc="Text informing the user about the way to clear their search history when their Default Search Engine is not Brave.">
         Your search engine is <ph name="dse">%1$s<ex>Bing</ex></ph>. See their instructions for deleting your search history, if applicable.
@@ -1636,11 +1636,17 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_GOOGLE_TERMS_OF_SERVICE_URL" desc="URL for Brave terms of service" translateable="false">
         https://policies.google.com/terms/embedded
       </message>
+      <message name="IDS_CHROME_ADDITIONAL_TERMS_OF_SERVICE_TITLE" desc="Title for Brave and Chrome OS addtional terms of service">
+        Brave &amp; Chrome OS Additional Terms of Service
+      </message>
       <message name="IDS_CHROME_ADDITIONAL_TERMS_OF_SERVICE_URL" desc="URL for Brave and Chrome OS additional terms of service" translateable="false">
         https://www.google.com/chrome/terms/
       </message>
       <message name="IDS_PRIVACY_NOTICE_TITLE" desc="Title for the Brave privacy notice">
         Brave Privacy Notice
+      </message>
+      <message name="IDS_CHROME_PRIVACY_NOTICE_URL" desc="URL for the Brave privacy notice" translateable="false">
+        https://www.google.com/intl/$LOCALE/chrome/browser/privacy/
       </message>
       <message name="IDS_FAMILY_LINK_PRIVACY_POLICY_URL" desc="URL for the Family Link privacy policy" translateable="false">
         https://families.google.com/intl/$LOCALE/familylink/privacy/child-policy/
@@ -1815,6 +1821,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_SYNC_SETTINGS_NOT_CONFIRMED_TITLE" desc="Title of the error message shown when sync setup was not complete. [CHAR_LIMIT=60]">
         Initial sync setup not finished
+      </message>
+      <message name="IDS_SYNC_NEEDS_VERIFICATION_TITLE" desc="Title of the error message shown when sync needs to verify the user.">
+        Sync needs to verify it's you
       </message>
       <message name="IDS_HINT_ANDROID_SYNC_DISABLED" desc="Hint message to resolve Android system sync is disabled error.">
         Open Android settings and re-enable Android system sync to start Brave sync
@@ -2230,6 +2239,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_IPH_PWA_INSTALL_AVAILABLE_TEXT" desc="The in-product-help message for PWAs that can be installed to the device.">
         Install this app
       </message>
+      <message name="IDS_IPH_UPDATED_CONNECTION_SECURITY_INDICATORS" desc="A short paragraph explaining a secure site to the user.">
+        The site’s connection is secure unless Brave tells you otherwise.
+      </message>
       <message name="IDS_IPH_BUBBLE_ADD_TO_HOME_SCREEN" desc="The in-product-help text bubble message encouraging users to add a commonly visited webpage to the home screen.">
         To get here quicker, add this page to your Home screen
       </message>
@@ -2520,10 +2532,10 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Search your history
       </message>
       <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_TITLE" desc="Title that states history is not saved in Private mode.">
-        History isn’t saved in Private
+        Sites you visit aren’t saved in Private
       </message>
       <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_DESCRIPTION" desc="Description that states history is not saved in Private mode.">
-        Brave doesn’t save your browsing history when you choose to browse privately. You can still use bookmarks to access your favorite sites.
+        To clear Private browsing history from your device, close all tabs
       </message>
 
       <!-- Close Private tabs notification messages -->
@@ -3033,6 +3045,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_MENU_FOLLOWING" desc="Menu item indicating the current website is followed, allowing users to unfollow the current website. [CHAR_LIMIT=27]">
         Following
+      </message>
+      <message name="IDS_FOLLOW_ACCELERATOR" desc="IPH text for letting a user know that a website can be followed with minimal context. [CHAR_LIMIT=50]">
+        Follow this site here
+      </message>
+      <message name="IDS_ACCESSIBILITY_FOLLOW_ACCELERATOR_IPH" desc="In-product help that points at the menu icon for the news feed on Brave's new tab page. This string informs the user about the  following feature.">
+        Adds the current web site to the list of web sites that you are following.
       </message>
       <message name="IDS_MENU_ITEM_REQUEST_DESKTOP_SITE" desc="Menu item allowing users to change the website from the mobile site to desktop site. [CHAR_LIMIT=27]">
         Request desktop site
@@ -4360,7 +4378,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         QR Code
       </message>
 
-      <message name="IDS_QR_CODE_SHARE_TAB_LABEL" desc="Share tab label for QR Code sharing activity." meaning="Sharing QR code">
+      <message name="IDS_QR_CODE_SHARE_TAB_LABEL" desc="Share tab label for QR Code sharing activity." meaning="Sharing QR Code">
         Share
       </message>
 
@@ -4368,20 +4386,20 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Scan
       </message>
 
-      <message name="IDS_QR_CODE_SHARE_DESCRIPTION" desc="Text on QR code sharing tab describing how to use the QR code.">
-        To share with profiles nearby, let them scan this QR code
+      <message name="IDS_QR_CODE_SHARE_DESCRIPTION" desc="Text on QR Code sharing tab describing how to use the QR Code.">
+        To share with profiles nearby, let them scan this QR Code
       </message>
 
-      <message name="IDS_QR_CODE_DOWNLOAD" desc="Text on QR code download button.">
+      <message name="IDS_QR_CODE_DOWNLOAD" desc="Text on QR Code download button.">
         Download
       </message>
 
-      <message name="IDS_QR_CODE_ERROR_TOO_LONG" desc="Error message displayed when a URL exceeds the limit for which we can generate a QR code.">
-          Can't create QR code. URL is more than <ph name="CHARACTER_LIMIT">%1$d<ex>300</ex></ph> characters.
+      <message name="IDS_QR_CODE_ERROR_TOO_LONG" desc="Error message displayed when a URL exceeds the limit for which we can generate a QR Code.">
+          Can't create QR Code. URL is more than <ph name="CHARACTER_LIMIT">%1$d<ex>300</ex></ph> characters.
       </message>
 
       <message name="IDS_QR_CODE_ERROR_UNKNOWN" desc="Error message displayed when an unknown error occurs.">
-          Can't create QR code
+          Can't create QR Code
       </message>
 
       <!-- Sharing Hub -->
@@ -4460,24 +4478,24 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Image Copied
       </message>
 
-      <message name="IDS_QR_CODE_CAMERA_FRAMING_RECT_DESCRIPTION" desc="Text under the framing rectangle in QR code camera preview.">
-        Position QR/barcode in this frame.
+      <message name="IDS_QR_CODE_CAMERA_FRAMING_RECT_DESCRIPTION" desc="Text under the framing rectangle in QR Code camera preview.">
+        Position QR Code/barcode in this frame.
       </message>
 
-      <message name="IDS_QR_CODE_PERMISSION_DESCRIPTION" desc="Text on QR code sharing tab indicating that permissions need to be given.">
-        To scan a QR code, let Brave use your camera
+      <message name="IDS_QR_CODE_PERMISSION_DESCRIPTION" desc="Text on QR Code sharing tab indicating that permissions need to be given.">
+        To scan a QR Code, let Brave use your camera
       </message>
 
-      <message name="IDS_QR_CODE_OPEN_SETTINGS_DESCRIPTION" desc="Text on QR code sharing tab indicating that user needs to open settings to give camera permission.">
-        To scan a QR code, change your settings so that Brave can use your camera
+      <message name="IDS_QR_CODE_OPEN_SETTINGS_DESCRIPTION" desc="Text on QR Code sharing tab indicating that user needs to open settings to give camera permission.">
+        To scan a QR Code, change your settings so that Brave can use your camera
       </message>
 
-      <message name="IDS_QR_CODE_PERMISSION_CONTINUE_LABEL" desc="Text on button on QR code sharing tab triggering camera permission dialog.">
+      <message name="IDS_QR_CODE_PERMISSION_CONTINUE_LABEL" desc="Text on button on QR Code sharing tab triggering camera permission dialog.">
         Continue
       </message>
 
       <message name="IDS_QR_CODE_NO_CAMERA_ERROR" desc="Error text shown when no camera is found.">
-        To scan a QR code, use a device with a camera.
+        To scan a QR Code, use a device with a camera.
       </message>
 
       <message name="IDS_QR_CODE_DISABLED_CAMERA_ERROR" desc="Error text shown when the camera is disabled by the device policy manager.">
@@ -4492,11 +4510,11 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Can't open your camera. Something went wrong.
       </message>
 
-      <message name="IDS_QR_CODE_OPEN_SETTINGS_LABEL" desc="Text on button on QR code sharing tab triggering Android settings.">
+      <message name="IDS_QR_CODE_OPEN_SETTINGS_LABEL" desc="Text on button on QR Code sharing tab triggering Android settings.">
         Open Settings
       </message>
 
-      <message name="IDS_QR_CODE_NOT_A_URL_LABEL" desc="Text on toast on QR code scanning tab indicating that the QR Code does not correspond to a URL and can not be opened.">
+      <message name="IDS_QR_CODE_NOT_A_URL_LABEL" desc="Text on toast on QR Code scanning tab indicating that the QR Code does not correspond to a URL and can not be opened.">
         This QR Code is not a URL: <ph name="QrCodeValue">%1$s<ex>QR Code Text</ex></ph>
       </message>
 

@@ -273,7 +273,7 @@
   <message name="IDS_SETTINGS_AUTOFILL_ADDRESSES_EMAIL" desc="This is the label for the field that lets a user modify the email address that will be used when auto-filling forms on the web.">
     Email
   </message>
-  <message name="IDS_SETTINGS_AUTOFILL_ADDRESS_HONORIFIC_LABEL" desc="This is the label for the field that lets the user modify their honorific for an address. A honorific is an optional, title like Mr, Dr, etc, which can accompany one's name.">
+  <message name="IDS_SETTINGS_AUTOFILL_ADDRESS_HONORIFIC_LABEL" desc="This is the label for the field that lets the user modify the title that will be used when auto-filling forms on the web. A 'Title' field in a web form could be a prefix like Ms., Mx., or Dr. or a position held, like Captain or Rabbi." meaning="Honorific">
     Title
   </message>
   <message name="IDS_SETTINGS_AUTOFILL_CREDIT_CARD_TYPE_COLUMN_LABEL" desc="Label for the column containing the type of credit card that is saved. The type is in the format: `Visa ****1234`.">
@@ -977,10 +977,10 @@
     Clears history from all signed-in devices. Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_CLEAR_GOOGLE_SEARCH_HISTORY_GOOGLE_DSE" desc="A description explaining that search history and other forms of activity can be cleared through the Brave account.">
-    <ph name="BEGIN_LINK_SEARCH">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Search history<ph name="END_LINK_SEARCH">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_GOOGLE">&lt;a target="_blank" rel="noopener noreferrer" href="$2"&gt;</ph>other forms of activity<ph name="END_LINK_GOOGLE">&lt;/a&gt;</ph> may be saved in your Brave sync chain when you're signed in. You can delete them at any time.
+    <ph name="BEGIN_LINK_SEARCH">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Search history<ph name="END_LINK_SEARCH">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_GOOGLE">&lt;a target="_blank" rel="noopener noreferrer" href="$2"&gt;</ph>other forms of activity<ph name="END_LINK_GOOGLE">&lt;/a&gt;</ph> may be saved in your Brave sync chain when you're signed in. You can delete them anytime.
   </message>
   <message name="IDS_SETTINGS_CLEAR_GOOGLE_SEARCH_HISTORY_NON_GOOGLE_DSE" desc="A description explaining that other forms of activity can be cleared through the Brave account.">
-    <ph name="BEGIN_LINK_GOOGLE">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Other forms of activity<ph name="END_LINK_GOOGLE">&lt;/a&gt;</ph> may be saved in your Brave sync chain when you're signed in. You can delete them at any time.
+    <ph name="BEGIN_LINK_GOOGLE">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Other forms of activity<ph name="END_LINK_GOOGLE">&lt;/a&gt;</ph> may be saved in your Brave sync chain when you're signed in. You can delete them anytime.
   </message>
   <message name="IDS_SETTINGS_CLEAR_NON_GOOGLE_SEARCH_HISTORY_PREPOPULATED_DSE" desc="A description informing the user about the way to clear their search history when their Default Search Engine is not Brave.">
     Your search engine is <ph name="DSE">$1<ex>Bing</ex></ph>. See their instructions for deleting your search history, if applicable.

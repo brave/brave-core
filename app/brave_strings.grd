@@ -734,14 +734,8 @@ Brave is unable to recover your settings.
 
       <if expr="not chromeos and not is_android">
         <!-- Dice Web Signin Interception Bubble-->
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CREATE_BUBBLE_TITLE_V1" desc="Title of the web signin interception bubble">
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CREATE_BUBBLE_TITLE" desc="Title of the web signin interception bubble">
           Continue in a new Brave profile?
-        </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CREATE_BUBBLE_TITLE_V2" desc="Title of the web signin interception bubble">
-          Move account to a new Brave profile?
-        </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CREATE_BUBBLE_TITLE_V3" desc="Title of the web signin interception bubble">
-          Separate Brave profile?
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_SWITCH_BUBBLE_TITLE" desc="Title for the profile switch interception bubble">
           Switch to existing Brave profile?
@@ -1270,12 +1264,6 @@ Brave is unable to recover your settings.
       <if expr="chromeos">
         <message name="IDS_RESTORE_NOTIFICATION_DISPLAY_SOURCE" desc="This is the string shown as the display source of the notification for the user to select restore or not on startup.">
           Chrome OS system
-        </message>
-        <message name="IDS_RESTORE_FOR_CRASH_NOTIFICATION_MESSAGE" desc="This is the text message of the notification for the user to select restore or not on startup after crash.">
-          Chrome OS didn't shut down correctly.
-        </message>
-        <message name="IDS_SET_RESTORE_NOTIFICATION_MESSAGE" desc="This is the text message of the notification for the user to set restore by default.">
-          Chrome OS can always restore your apps &amp; pages after reboot without asking every time.
         </message>
       </if>
 
