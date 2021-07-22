@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/bookmarks/api_listener.ts b/chrome/browser/resources/bookmarks/api_listener.ts
-index 8581e3b11612d4399c39608a362a4e997c5d9c7a..b4a04246115f72300525d22c81d15f80024f49ed 100644
+index 67b7187e0c7d98a102797c6cd07df427f9f43a9a..52eec387e2d3d699444719e1fab529ef01204e83 100644
 --- a/chrome/browser/resources/bookmarks/api_listener.ts
 +++ b/chrome/browser/resources/bookmarks/api_listener.ts
 @@ -118,6 +118,7 @@ function onChildrenReordered(
@@ -7,14 +7,14 @@ index 8581e3b11612d4399c39608a362a4e997c5d9c7a..b4a04246115f72300525d22c81d15f80
  function onImportBegan() {
    chrome.bookmarks.onCreated.removeListener(onBookmarkCreated);
 +  chrome.bookmarks.onMoved.removeListener(onBookmarkMoved);
+   document.dispatchEvent(new CustomEvent('import-began'));
  }
  
- function onImportEnded() {
-@@ -125,6 +126,7 @@ function onImportEnded() {
+@@ -126,6 +127,7 @@ function onImportEnded() {
      dispatch(refreshNodes(normalizeNodes(results[0]!)));
    });
    chrome.bookmarks.onCreated.addListener(onBookmarkCreated);
 +  chrome.bookmarks.onMoved.addListener(onBookmarkMoved);
+   document.dispatchEvent(new CustomEvent('import-ended'));
  }
  
- function onIncognitoAvailabilityChanged(availability: IncognitoAvailability) {

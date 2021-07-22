@@ -1,11 +1,11 @@
 diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
-index d2a5d8b3849cc6a8d43056f9221d7936bbe959b4..d69f91dc626fb9495917ec6f50df5306b6367c96 100644
+index b49244ff645daa99bc13a959076e4681e41f0f30..8924be3929cd2b83fc63c7536d2d75f77d881c62 100644
 --- a/ios/chrome/browser/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/prefs/browser_prefs.mm
-@@ -264,6 +264,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-   registry->RegisterIntegerPref(kPasswordManagerOnboardingState, 0);
-   registry->RegisterBooleanPref(kWasOnboardingFeatureCheckedBefore, false);
-   registry->RegisterDictionaryPref(kDomainsWithCookiePref);
+@@ -272,6 +272,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   if (IsReadingListMessagesEnabled()) {
+     registry->RegisterBooleanPref(kPrefReadingListMessagesNeverShow, false);
+   }
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  
