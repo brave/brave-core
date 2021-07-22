@@ -1,0 +1,25 @@
+diff --git a/ui/views/controls/button/toggle_button.h b/ui/views/controls/button/toggle_button.h
+index bbda0ff3073bef812c7cf49646bbae8ebc7fdcf5..c2599d3dd5e8995d9ec6b96ae8ba64b37b9f1268 100644
+--- a/ui/views/controls/button/toggle_button.h
++++ b/ui/views/controls/button/toggle_button.h
+@@ -35,6 +35,10 @@ class VIEWS_EXPORT ToggleButton : public Button {
+   void SetTrackOffColor(const absl::optional<SkColor>& track_off_color);
+   absl::optional<SkColor> GetTrackOffColor() const;
+ 
++  void SetTrackSize(gfx::Size track_size);
++  gfx::Size GetTrackSize() const;
++  void InsetThumbInwards(bool inset_thumb_inwards);
++
+   void SetAcceptsEvents(bool accepts_events);
+   bool GetAcceptsEvents() const;
+ 
+@@ -89,6 +93,9 @@ class VIEWS_EXPORT ToggleButton : public Button {
+   // in that the view retains focus when this is false but not when disabled.
+   bool accepts_events_ = true;
+ 
++  gfx::Size track_size_ = gfx::Size(24, 12);
++  bool inset_thumb_inwards_ = false;
++
+   DISALLOW_COPY_AND_ASSIGN(ToggleButton);
+ };
+ 

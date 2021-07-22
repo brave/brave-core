@@ -1,0 +1,57 @@
+diff --git a/ui/views/controls/button/toggle_button.cc b/ui/views/controls/button/toggle_button.cc
+index d648b8d86a0c8ecb746bd345b6017653c679e15a..ba113dd487dd9fd8df32fda04a61a2cd34ea06e8 100644
+--- a/ui/views/controls/button/toggle_button.cc
++++ b/ui/views/controls/button/toggle_button.cc
+@@ -31,7 +31,6 @@ namespace views {
+ namespace {
+ 
+ // Constants are measured in dip.
+-constexpr gfx::Size kTrackSize = gfx::Size(28, 12);
+ // Margins from edge of track to edge of view.
+ constexpr int kTrackVerticalMargin = 5;
+ constexpr int kTrackHorizontalMargin = 6;
+@@ -220,6 +219,18 @@ absl::optional<SkColor> ToggleButton::GetTrackOffColor() const {
+   return track_off_color_;
+ }
+ 
++void ToggleButton::SetTrackSize(gfx::Size track_size) {
++  track_size_ = track_size;
++}
++
++gfx::Size ToggleButton::GetTrackSize() const {
++  return track_size_;
++}
++
++void ToggleButton::InsetThumbInwards(bool inset_thumb_inwards) {
++  inset_thumb_inwards_ = inset_thumb_inwards;
++}
++
+ void ToggleButton::SetAcceptsEvents(bool accepts_events) {
+   if (GetAcceptsEvents() == accepts_events)
+     return;
+@@ -241,7 +252,7 @@ void ToggleButton::RemoveLayerBeneathView(ui::Layer* layer) {
+ }
+ 
+ gfx::Size ToggleButton::CalculatePreferredSize() const {
+-  gfx::Rect rect(kTrackSize);
++  gfx::Rect rect(GetTrackSize());
+   rect.Inset(gfx::Insets(-kTrackVerticalMargin, -kTrackHorizontalMargin));
+   if (border())
+     rect.Inset(-border()->GetInsets());
+@@ -250,13 +261,14 @@ gfx::Size ToggleButton::CalculatePreferredSize() const {
+ 
+ gfx::Rect ToggleButton::GetTrackBounds() const {
+   gfx::Rect track_bounds(GetContentsBounds());
+-  track_bounds.ClampToCenteredSize(kTrackSize);
++  track_bounds.ClampToCenteredSize(GetTrackSize());
+   return track_bounds;
+ }
+ 
+ gfx::Rect ToggleButton::GetThumbBounds() const {
+   gfx::Rect thumb_bounds(GetTrackBounds());
+-  thumb_bounds.Inset(gfx::Insets(-kThumbInset));
++  int thumb_inset = inset_thumb_inwards_ ? kThumbInset : -kThumbInset;
++  thumb_bounds.Inset(gfx::Insets(thumb_inset));
+   thumb_bounds.set_x(thumb_bounds.x() +
+                      slide_animation_.GetCurrentValue() *
+                          (thumb_bounds.width() - thumb_bounds.height()));

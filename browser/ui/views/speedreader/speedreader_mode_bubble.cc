@@ -127,9 +127,13 @@ void SpeedreaderModeBubble::Init() {
   // float button right
   site_toggle_layout->set_main_axis_alignment(
       views::BoxLayout::MainAxisAlignment::kEnd);
+  site_toggle_layout->set_cross_axis_alignment(
+      views::BoxLayout::CrossAxisAlignment::kCenter);
   auto site_toggle_button =
       std::make_unique<views::ToggleButton>(base::BindRepeating(
           &SpeedreaderModeBubble::OnButtonPressed, base::Unretained(this)));
+  site_toggle_button->SetTrackSize(gfx::Size(48, 24));
+  site_toggle_button->InsetThumbInwards(true);
   site_toggle_button->SetIsOn(tab_helper_->IsEnabledForSite());
   site_toggle_button_ =
       site_toggle_view->AddChildView(std::move(site_toggle_button));
