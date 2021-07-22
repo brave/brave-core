@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_shields/browser/domain_block_page.h"
 
+#include <ostream>
 #include <utility>
 
 #include "base/notreached.h"

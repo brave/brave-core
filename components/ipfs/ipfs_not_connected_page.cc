@@ -5,6 +5,7 @@
 
 #include "brave/components/ipfs/ipfs_not_connected_page.h"
 
+#include <ostream>
 #include <utility>
 
 #include "base/notreached.h"
