@@ -266,19 +266,19 @@ export default function shieldsPanelReducer (
             chrome.cookies.getAll({ domain: tabData.origin },
               function (cookies) {
                 cookies.forEach(function (cookie) {
-                  chrome.cookies.remove({ 'url': 'http://' + cookie.domain + cookie.path, 'name': cookie.name }).catch((e) => { console.error(e) })
-                  chrome.cookies.remove({ 'url': 'https://' + cookie.domain + cookie.path, 'name': cookie.name }).catch((e) => { console.error(e) })
+                  chrome.cookies.remove({ 'url': 'http://' + cookie.domain + cookie.path, 'name': cookie.name })
+                  chrome.cookies.remove({ 'url': 'https://' + cookie.domain + cookie.path, 'name': cookie.name })
                 })
               }
             )
             chrome.tabs.executeScript(tabData.id, {
               code: 'try { window.sessionStorage.clear(); } catch(e) {}'
-            }).catch((e) => { console.error(e) })
+            })
             // clearing localStorage may fail with SecurityError if third-
             // party cookies are already blocked, but that's okay
             chrome.tabs.executeScript(tabData.id, {
               code: 'try { window.localStorage.clear(); } catch(e) {}'
-            }).catch((e) => { console.error(e) })
+            })
           }
           requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
           reloadTab(tabData.id, true).catch(() => {

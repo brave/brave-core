@@ -32,7 +32,7 @@ export function init () {
   // Setup badge color
   chrome.browserAction.setBadgeBackgroundColor({
     color: '#636473'
-  }).catch((e) => { console.error(e) })
+  })
   // Initial / default icon
   chrome.browserAction.setIcon({
     path: shieldsOnIcon
@@ -40,7 +40,7 @@ export function init () {
   // By default, icon is disabled,
   // so that we do not enable the icon in a new tab and then disable it
   // when the context is not http(s).
-  chrome.browserAction.disable().catch((e) => { console.error(e) })
+  chrome.browserAction.disable()
 }
 
 /**
@@ -52,7 +52,7 @@ export const setBadgeText = (tabId: number, text: string) => {
     chrome.browserAction.setBadgeText({
       tabId,
       text: String(text)
-    }).catch((e) => { console.error(e) })
+    })
   }
 }
 
@@ -68,9 +68,9 @@ export const setIcon = (url: string, tabId: number, shieldsOn: boolean) => {
       tabId
     })
     if (actionIsDisabled) {
-      chrome.browserAction.disable(tabId).catch((e) => { console.error(e) })
+      chrome.browserAction.disable(tabId)
     } else {
-      chrome.browserAction.enable(tabId).catch((e) => { console.error(e) })
+      chrome.browserAction.enable(tabId)
     }
   }
 }

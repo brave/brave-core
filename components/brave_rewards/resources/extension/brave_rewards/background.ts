@@ -20,7 +20,7 @@ const iconOn = {
   }
 }
 
-chrome.browserAction.setBadgeBackgroundColor({ color: '#FB542B' }).catch((e) => { console.error(e) })
+chrome.browserAction.setBadgeBackgroundColor({ color: '#FB542B' })
 chrome.browserAction.setIcon(iconOn)
 
 // We need to set initial state for all active tabs in all windows
