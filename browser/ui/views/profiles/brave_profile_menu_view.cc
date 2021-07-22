@@ -25,7 +25,7 @@
 
 namespace {
 bool IsGuest(Profile* profile) {
-  return profile->IsGuestSession() || profile->IsEphemeralGuestProfile();
+  return profile->IsGuestSession();
 }
 }  // namespace
 
