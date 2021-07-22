@@ -129,7 +129,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
-  auto controller = GetEthJsonRpcController();
+  auto* controller = GetEthJsonRpcController();
   controller->SetNetwork(brave_wallet::Network::kGoerli);
 
   auto result_first =
