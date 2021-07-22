@@ -197,9 +197,9 @@ static bool CustomLogHandler(int severity,
 
 - (nullable BraveWalletAPI*)wallet {
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  if (!_wallet) {
-    _wallet = [[BraveWalletAPI alloc] init];
-  }
+  // if (!_wallet) {
+  //   _wallet = [[BraveWalletAPI alloc] init];
+  // }
   return _wallet;
 #else
   return nil;
