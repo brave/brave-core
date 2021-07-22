@@ -541,8 +541,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "redirectModalError", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR },
         { "redirectModalClose", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_CLOSE },
         { "redirectModalErrorWallet", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR_WALLET },     // NOLINT
-        { "redirectModalBatLimitTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_BAT_LIMIT_TITLE },     // NOLINT
-        { "redirectModalBatLimitText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_BAT_LIMIT_TEXT },     // NOLINT
+        { "redirectModalKYCRequiredTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_KYC_REQUIRED_TITLE },     // NOLINT
+        { "redirectModalKYCRequiredText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_KYC_REQUIRED_TEXT },     // NOLINT
         { "redirectModalNotAllowed", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_NOT_ALLOWED},     // NOLINT
         { "tosAndPp", IDS_BRAVE_REWARDS_LOCAL_TOS_AND_PP},     // NOLINT
 
