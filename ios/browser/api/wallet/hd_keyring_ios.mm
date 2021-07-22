@@ -11,7 +11,6 @@
 
 #include "base/notreached.h"
 #include "base/strings/sys_string_conversions.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 
 @interface HDKeyringIOS () {
