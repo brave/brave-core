@@ -74,7 +74,8 @@ function Container (props: Props) {
     mnemonic,
     selectedTimeline,
     selectedAsset,
-    selectedAssetPrice,
+    selectedUSDAssetPrice,
+    selectedBTCAssetPrice,
     selectedAssetPriceHistory,
     portfolioPriceHistory,
     userAssets,
@@ -373,7 +374,8 @@ function Container (props: Props) {
                   onSelectAsset={onSelectAsset}
                   portfolioBalance={fullPortfolioBalance}
                   selectedAsset={selectedAsset}
-                  selectedAssetPrice={selectedAssetPrice}
+                  selectedUSDAssetPrice={selectedUSDAssetPrice}
+                  selectedBTCAssetPrice={selectedBTCAssetPrice}
                   selectedAssetPriceHistory={formatedPriceHistory}
                   portfolioPriceHistory={portfolioPriceHistory}
                   selectedTimeline={selectedTimeline}

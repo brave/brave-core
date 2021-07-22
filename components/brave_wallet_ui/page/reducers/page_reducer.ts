@@ -15,7 +15,8 @@ const defaultState: PageState = {
   invalidMnemonic: false,
   selectedTimeline: AssetPriceTimeframe.OneDay,
   selectedAsset: undefined,
-  selectedAssetPrice: undefined,
+  selectedUSDAssetPrice: undefined,
+  selectedBTCAssetPrice: undefined,
   selectedAssetPriceHistory: [],
   portfolioPriceHistory: [],
   userAssets: ['1', '2'],
@@ -78,11 +79,8 @@ reducer.on(Actions.updatePriceInfo, (state: PageState, payload: SelectAssetPaylo
   const history = payload.priceHistory ? payload.priceHistory.values : []
   return {
     ...state,
-    selectedAssetPrice: payload.priceHistory ? {
-      usd: payload.price,
-      btc: 0,
-      change24Hour: 0
-    } : undefined,
+    selectedUSDAssetPrice: payload.usdPriceInfo,
+    selectedBTCAssetPrice: payload.btcPriceInfo,
     selectedAssetPriceHistory: history,
     selectedTimeline: payload.timeFrame,
     isFetchingPriceHistory: false

@@ -5,7 +5,7 @@ import {
   PriceDataObjectType,
   AssetOptionType,
   RPCTransactionType,
-  AssetPriceReturnInfo,
+  AssetPriceInfo,
   UserAssetOptionType,
   WalletAccountType,
   AssetPriceTimeframe
@@ -59,7 +59,8 @@ export interface Props {
   accounts: WalletAccountType[]
   selectedTimeline: AssetPriceTimeframe
   selectedAsset: AssetOptionType | undefined
-  selectedAssetPrice: AssetPriceReturnInfo | undefined
+  selectedUSDAssetPrice: AssetPriceInfo | undefined
+  selectedBTCAssetPrice: AssetPriceInfo | undefined
   selectedAssetPriceHistory: PriceDataObjectType[]
   portfolioPriceHistory: PriceDataObjectType[]
   portfolioBalance: string
@@ -75,7 +76,8 @@ const Portfolio = (props: Props) => {
     onClickAddAccount,
     portfolioPriceHistory,
     selectedAssetPriceHistory,
-    selectedAssetPrice,
+    selectedUSDAssetPrice,
+    selectedBTCAssetPrice,
     selectedTimeline,
     accounts,
     selectedAsset,
@@ -168,17 +170,17 @@ const Portfolio = (props: Props) => {
           </AssetRow>
           <DetailText>{selectedAsset.name} {locale.price} ({selectedAsset.symbol})</DetailText>
           <PriceRow>
-            <PriceText>${hoverPrice ? hoverPrice : selectedAssetPrice ? formatePrices(Number(selectedAssetPrice.usd)) : 0.00}</PriceText>
-            <PercentBubble isDown={selectedAssetPrice ? selectedAssetPrice.change24Hour < 0 : false}>
-              <ArrowIcon isDown={selectedAssetPrice ? selectedAssetPrice.change24Hour < 0 : false} />
-              <PercentText>{selectedAssetPrice ? selectedAssetPrice.change24Hour : 0}%</PercentText>
+            <PriceText>${hoverPrice ? hoverPrice : selectedUSDAssetPrice ? formatePrices(Number(selectedUSDAssetPrice.price)) : 0.00}</PriceText>
+            <PercentBubble isDown={selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.asset24hChange) < 0 : false}>
+              <ArrowIcon isDown={selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.asset24hChange) < 0 : false} />
+              <PercentText>{selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.asset24hChange).toFixed(2) : 0.00}%</PercentText>
             </PercentBubble>
           </PriceRow>
-          <DetailText>{selectedAssetPrice ? selectedAssetPrice.btc : 0} BTC</DetailText>
+          <DetailText>{selectedBTCAssetPrice ? selectedBTCAssetPrice.price : 0} BTC</DetailText>
         </InfoColumn>
       )}
       <LineChart
-        isDown={selectedAsset && selectedAssetPrice ? selectedAssetPrice.change24Hour < 0 : false}
+        isDown={selectedAsset && selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.asset24hChange) < 0 : false}
         isAsset={!!selectedAsset}
         priceData={selectedAsset ? selectedAssetPriceHistory : portfolioPriceHistory}
         onUpdateBalance={onUpdateBalance}

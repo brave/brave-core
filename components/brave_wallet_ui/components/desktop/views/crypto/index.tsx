@@ -9,7 +9,7 @@ import {
   AssetOptionType,
   UserAssetOptionType,
   RPCTransactionType,
-  AssetPriceReturnInfo,
+  AssetPriceInfo,
   WalletAccountType,
   AssetPriceTimeframe
 } from '../../../../constants/types'
@@ -37,7 +37,8 @@ export interface Props {
   selectedTimeline: AssetPriceTimeframe
   portfolioPriceHistory: PriceDataObjectType[]
   selectedAssetPriceHistory: PriceDataObjectType[]
-  selectedAssetPrice: AssetPriceReturnInfo | undefined
+  selectedUSDAssetPrice: AssetPriceInfo | undefined
+  selectedBTCAssetPrice: AssetPriceInfo | undefined
   selectedAsset: AssetOptionType | undefined
   portfolioBalance: string
   transactions: (RPCTransactionType | undefined)[]
@@ -68,7 +69,8 @@ const CryptoView = (props: Props) => {
     selectedAsset,
     portfolioBalance,
     transactions,
-    selectedAssetPrice,
+    selectedUSDAssetPrice,
+    selectedBTCAssetPrice,
     isLoading,
     showAddModal,
     onToggleAddModal
@@ -169,7 +171,8 @@ const CryptoView = (props: Props) => {
           portfolioBalance={portfolioBalance}
           portfolioPriceHistory={portfolioPriceHistory}
           transactions={transactions}
-          selectedAssetPrice={selectedAssetPrice}
+          selectedUSDAssetPrice={selectedUSDAssetPrice}
+          selectedBTCAssetPrice={selectedBTCAssetPrice}
           userAssetList={userAssetList}
           isLoading={isLoading}
         />

@@ -98,12 +98,6 @@ export type ChartTimelineType =
   | '1Year'
   | 'AllTime'
 
-export interface AssetPriceReturnInfo {
-  usd: string
-  btc: number
-  change24Hour: number
-}
-
 export interface BuySendSwapObjectType {
   name: string
   id: BuySendSwapTypes
@@ -170,7 +164,8 @@ export interface PageState {
   invalidMnemonic: boolean
   selectedTimeline: AssetPriceTimeframe
   selectedAsset: AssetOptionType | undefined
-  selectedAssetPrice: AssetPriceReturnInfo | undefined
+  selectedBTCAssetPrice: AssetPriceInfo | undefined
+  selectedUSDAssetPrice: AssetPriceInfo | undefined
   selectedAssetPriceHistory: GetAssetPriceHistoryReturnInfo[]
   portfolioPriceHistory: PriceDataObjectType[]
   userAssets: string[]
