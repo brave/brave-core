@@ -11,10 +11,10 @@
 // NOTE: When we add new import feature, also consider to add it for importing
 // in welcome page.
 // See IMPORT_BROWSER_DATA_REQUESTED action in welcome_reducer.ts.
-#define BRAVE_IMPORT_DATA                               \
-  if (*types->FindBoolKey(kImportDialogExtensions))     \
-    selected_items |= importer::EXTENSIONS;             \
-  if (*types->FindBoolKey(kImportDialogPayments))       \
+#define BRAVE_IMPORT_DATA                          \
+  if (*types.FindBoolKey(kImportDialogExtensions)) \
+    selected_items |= importer::EXTENSIONS;        \
+  if (*types.FindBoolKey(kImportDialogPayments))   \
     selected_items |= importer::PAYMENTS;
 
 #define BRAVE_SEND_BROWSER_PROFILE_DATA                                        \
