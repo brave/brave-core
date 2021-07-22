@@ -149,6 +149,7 @@ TEST_F(GetMeTest, ServerOK) {
       [&](const type::Result result, const ::ledger::uphold::User& user) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(user.name, "John");
+        EXPECT_EQ(user.member_id, "b34060c9-5ca3-4bdb-bc32-1f826ecea36e");
         EXPECT_EQ(user.bat_not_allowed, false);
         EXPECT_EQ(user.status, ::ledger::uphold::UserStatus::OK);
       });
