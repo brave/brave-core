@@ -105,7 +105,6 @@ test("brave_unit_tests") {
     "//brave/chromium_src/chrome/browser/signin/account_consistency_disabled_unittest.cc",
     "//brave/chromium_src/components/autofill/core/browser/autofill_experiments_unittest.cc",
     "//brave/chromium_src/components/metrics/enabled_state_provider_unittest.cc",
-    "//brave/chromium_src/components/password_manager/core/browser/password_bubble_experiment_unittest.cc",
     "//brave/chromium_src/components/variations/service/field_trial_unittest.cc",
     "//brave/chromium_src/components/version_info/brave_version_info_unittest.cc",
     "//brave/chromium_src/net/cookies/brave_canonical_cookie_unittest.cc",
