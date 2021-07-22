@@ -379,7 +379,6 @@
       <message name="IDS_BRAVE_WELCOME_PAGE_SEARCH_SELECT" desc="Default option message for selecting search engines">Select a search engine</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_SEARCH_DESC" desc="Explainer text about search engines in Brave">Choose the search engine you would like to use by default when searching the web from the address bar.</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_SEARCH_TITLE" desc="Welcome message title for search engines">Set default search engine</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_PRIVATE_EXPERIENCE_DESC" desc="Explainer text about a more private search option">For a more private search experience, try DuckDuckGo.</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_SKIP_BUTTON" desc="Button to skip the welcome tour and go to the new tab page">Skip welcome tour</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_NEXT_BUTTON" desc="Button to move to the next slide of the welcome tour">Next</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_DONE_BUTTON" desc="Button that ends the welcome tour and moves the user to the new tab page">Done</message>
