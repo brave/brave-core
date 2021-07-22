@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/extensions/extension_popup.cc b/chrome/browser/ui/views/extensions/extension_popup.cc
-index bf6ddd4959bf4df789c2c5c53548b1a199b4d552..4ec1d83c592c833138253a57fe461d62f1c163cd 100644
+index 84714b8c252ebb8df4ec09111074d39a953aa1cf..3f56bd76fa64873d598e1d08fd99efbcf7f00589 100644
 --- a/chrome/browser/ui/views/extensions/extension_popup.cc
 +++ b/chrome/browser/ui/views/extensions/extension_popup.cc
-@@ -75,7 +75,7 @@ gfx::Size ExtensionPopup::CalculatePreferredSize() const {
+@@ -76,7 +76,7 @@ gfx::Size ExtensionPopup::CalculatePreferredSize() const {
  
  void ExtensionPopup::AddedToWidget() {
    BubbleDialogDelegateView::AddedToWidget();
