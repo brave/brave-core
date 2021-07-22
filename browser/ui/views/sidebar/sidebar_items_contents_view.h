@@ -93,8 +93,9 @@ class SidebarItemsContentsView : public views::View,
 
   void OnContextMenuClosed();
 
-  gfx::ImageSkia GetImageForBuiltInItems(const GURL& item_url,
-                                         bool focus) const;
+  gfx::ImageSkia GetImageForBuiltInItems(
+      sidebar::SidebarItem::BuiltInItemType type,
+      bool focus) const;
   void UpdateAllBuiltInItemsViewState();
   void ShowItemAddedFeedbackBubble(views::View* anchor_view);
 

@@ -11,11 +11,13 @@ namespace sidebar {
 SidebarItem SidebarItem::Create(const GURL& url,
                                 const std::u16string& title,
                                 Type type,
+                                BuiltInItemType built_in_item_type,
                                 bool open_in_panel) {
   SidebarItem item;
   item.url = url;
   item.title = title;
   item.type = type;
+  item.built_in_item_type = built_in_item_type;
   item.open_in_panel = open_in_panel;
   return item;
 }
