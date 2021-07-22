@@ -86,6 +86,9 @@ class AdNotificationPopup : public views::WidgetDelegateView,
   // Return the bounds for the given |notification_id|
   static gfx::Rect GetBounds(const std::string& notification_id);
 
+  // Disables fade in animation for snapshot tests.
+  static void SetDisableFadeInAnimationForTesting(bool disable);
+
   // display::DisplayObserver:
   void OnDisplayRemoved(const display::Display& old_display) override;
   void OnDisplayMetricsChanged(const display::Display& display,
