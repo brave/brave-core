@@ -15,7 +15,6 @@ import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 
 public class BuySendSwapActivity
         extends AsyncInitializationActivity implements BraveWalletObserver {
-
     @Override
     protected void onDestroy() {
         BraveWalletNativeWorker.getInstance().removeObserver(this);

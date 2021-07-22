@@ -597,6 +597,7 @@ brave_java_resources = [
   "java/res/drawable/ic_binance.xml",
   "java/res/drawable/ic_brave.xml",
   "java/res/drawable/ic_brave_logo.xml",
+  "java/res/drawable/ic_carat_down.xml",
   "java/res/drawable/ic_checkbox_filled.xml",
   "java/res/drawable/ic_checkbox_outline.xml",
   "java/res/drawable/ic_chevron_left.xml",
