@@ -12,6 +12,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using ::testing::AnyOf;
 using ::testing::Eq;
 using ::testing::Gt;
 using ::testing::Le;
@@ -98,9 +99,11 @@ TEST(InstallModes, VerifyModes) {
     // UNSUPPORTED and BUILDFLAG(USE_GOOGLE_UPDATE_INTEGRATION) which we set for
     // OFFICIAL_BUILD are mutually exclusive.
 #if defined(OFFICIAL_BUILD)
-      ASSERT_THAT(mode.channel_strategy, Ne(ChannelStrategy::UNSUPPORTED));
+    ASSERT_THAT(
+        mode.channel_strategy,
+        AnyOf(ChannelStrategy::ADDITIONAL_PARAMETERS, ChannelStrategy::FIXED));
 #else
-      ASSERT_THAT(mode.channel_strategy, Eq(ChannelStrategy::UNSUPPORTED));
+    ASSERT_THAT(mode.channel_strategy, Eq(ChannelStrategy::UNSUPPORTED));
 #endif
   }
 }
