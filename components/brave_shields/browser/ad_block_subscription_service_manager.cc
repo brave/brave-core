@@ -21,11 +21,13 @@
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager_observer.h"
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "crypto/sha2.h"
+#include "net/base/filename_util.h"
 
 namespace brave_shields {
 
@@ -83,6 +85,16 @@ base::FilePath AdBlockSubscriptionServiceManager::GetSubscriptionPath(
                         &pathsafe_id);
 
   return subscription_path_.AppendASCII(pathsafe_id);
+}
+
+GURL AdBlockSubscriptionServiceManager::GetListTextFileUrl(
+    const SubscriptionIdentifier id) const {
+  base::FilePath cached_list_path = GetSubscriptionPath(id).AppendASCII(
+      brave_shields::kCustomSubscriptionListText);
+
+  const GURL file_url = net::FilePathToFileURL(cached_list_path);
+
+  return file_url;
 }
 
 void AdBlockSubscriptionServiceManager::CreateSubscription(

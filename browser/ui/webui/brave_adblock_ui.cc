@@ -20,13 +20,11 @@
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager_observer.h"
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui_message_handler.h"
-#include "net/base/filename_util.h"
 
 namespace {
 
@@ -258,14 +256,9 @@ void AdblockDOMHandler::HandleViewSubscriptionSource(
     return;
   }
 
-  // TODO(bridiver) - the ui shouldn't have to figure this out
-  const auto cached_list_path =
-      g_brave_browser_process->ad_block_service()
-          ->subscription_service_manager()
-          ->GetSubscriptionPath(list_url)
-          .AppendASCII(brave_shields::kCustomSubscriptionListText);
-
-  const GURL file_url = net::FilePathToFileURL(cached_list_path);
+  const GURL file_url = g_brave_browser_process->ad_block_service()
+                            ->subscription_service_manager()
+                            ->GetListTextFileUrl(list_url);
 
   auto* browser =
       chrome::FindBrowserWithWebContents(web_ui()->GetWebContents());

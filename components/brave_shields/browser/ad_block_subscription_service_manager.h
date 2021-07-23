@@ -50,7 +50,13 @@ class AdBlockSubscriptionServiceManager {
       const base::FilePath& user_data_dir);
   ~AdBlockSubscriptionServiceManager();
 
+  // Returns the directory used to store cached list data for the given
+  // subscription.
   base::FilePath GetSubscriptionPath(const SubscriptionIdentifier id) const;
+
+  // Returns a `file://` URL that points directly to the cached list text file
+  // used for the given subscription.
+  GURL GetListTextFileUrl(const SubscriptionIdentifier id) const;
 
   std::vector<FilterListSubscriptionInfo> GetSubscriptions() const;
   void EnableSubscription(const SubscriptionIdentifier& id, bool enabled);
