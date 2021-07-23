@@ -14,6 +14,7 @@ import("//brave/browser/component_updater/sources.gni")
 import("//brave/browser/crypto_dot_com/sources.gni")
 import("//brave/browser/decentralized_dns/sources.gni")
 import("//brave/browser/download/sources.gni")
+import("//brave/browser/ephemeral_storage/sources.gni")
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/gemini/sources.gni")
 import("//brave/browser/greaselion/sources.gni")
@@ -93,7 +94,6 @@ brave_chrome_browser_deps = [
   "//brave/browser/brave_ads/notifications",
   "//brave/browser/component_updater",
   "//brave/browser/content_settings",
-  "//brave/browser/ephemeral_storage",
   "//brave/browser/gcm_driver",
   "//brave/browser/net",
   "//brave/browser/ntp_background_images",
@@ -340,6 +340,7 @@ brave_chrome_browser_sources += brave_browser_component_updater_sources
 brave_chrome_browser_sources += brave_browser_crypto_dot_com_sources
 brave_chrome_browser_sources += brave_browser_decentralized_dns_sources
 brave_chrome_browser_sources += brave_browser_download_sources
+brave_chrome_browser_sources += brave_browser_ephemeral_storage_sources
 brave_chrome_browser_sources += brave_browser_gemini_sources
 brave_chrome_browser_sources += brave_browser_greaselion_sources
 brave_chrome_browser_sources += brave_browser_importer_sources
@@ -361,6 +362,7 @@ brave_chrome_browser_deps += brave_browser_component_updater_deps
 brave_chrome_browser_deps += brave_browser_crypto_dot_com_deps
 brave_chrome_browser_deps += brave_browser_decentralized_dns_deps
 brave_chrome_browser_deps += brave_browser_download_deps
+brave_chrome_browser_deps += brave_browser_ephemeral_storage_deps
 brave_chrome_browser_deps += brave_browser_gemini_deps
 brave_chrome_browser_deps += brave_browser_greaselion_deps
 brave_chrome_browser_deps += brave_browser_importer_deps

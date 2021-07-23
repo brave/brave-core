@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_PLATFORM_WEB_CONTENT_SETTINGS_CLIENT_H_
 
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
+#include "third_party/blink/public/platform/web_security_origin.h"
 
 #define AllowStorageAccessSync                                    \
   AllowAutoplay(bool play_requested) { return true; }             \
@@ -16,8 +17,9 @@
   virtual BraveFarblingLevel GetBraveFarblingLevel() {            \
     return BraveFarblingLevel::OFF;                               \
   }                                                               \
-  virtual bool UseEphemeralStorageSync(StorageType storageType) { \
-    return false;                                                 \
+  virtual blink::WebSecurityOrigin GetEphemeralStorageOriginSync( \
+      StorageType storageType) {                                  \
+    return blink::WebSecurityOrigin();                            \
   }                                                               \
   virtual bool AllowStorageAccessSync
 
