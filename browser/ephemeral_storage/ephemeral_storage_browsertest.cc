@@ -26,6 +26,7 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/content_switches.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "net/base/features.h"
@@ -860,6 +861,63 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageKeepAliveDisabledBrowserTest,
   EXPECT_EQ(nullptr, values_after.iframe_2.session_storage);
 
   EXPECT_EQ("name=acom_simple; from=a.com", values_after.main_frame.cookies);
+  EXPECT_EQ("", values_after.iframe_1.cookies);
+  EXPECT_EQ("", values_after.iframe_2.cookies);
+}
+
+class EphemeralStorageNoSiteIsolationAndKeepAliveDisabledBrowserTest
+    : public EphemeralStorageKeepAliveDisabledBrowserTest {
+ public:
+  EphemeralStorageNoSiteIsolationAndKeepAliveDisabledBrowserTest() {}
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    EphemeralStorageKeepAliveDisabledBrowserTest::SetUpCommandLine(
+        command_line);
+    command_line->AppendSwitch(switches::kDisableSiteIsolation);
+  }
+};
+
+// Test for Android-specific bug when a renderer reuses CachedStorageArea in the
+// same process without a proper cleanup.
+IN_PROC_BROWSER_TEST_F(
+    EphemeralStorageNoSiteIsolationAndKeepAliveDisabledBrowserTest,
+    RenderInitiatedNavigationClearsEphemeralStorage) {
+  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+
+  SetValuesInFrames(web_contents, "a.com value", "from=a.com");
+
+  ValuesFromFrames values_before = GetValuesFromFrames(web_contents);
+  EXPECT_EQ("a.com value", values_before.main_frame.local_storage);
+  EXPECT_EQ("a.com value", values_before.iframe_1.local_storage);
+  EXPECT_EQ("a.com value", values_before.iframe_2.local_storage);
+
+  EXPECT_EQ("a.com value", values_before.main_frame.session_storage);
+  EXPECT_EQ("a.com value", values_before.iframe_1.session_storage);
+  EXPECT_EQ("a.com value", values_before.iframe_2.session_storage);
+
+  EXPECT_EQ("from=a.com", values_before.main_frame.cookies);
+  EXPECT_EQ("from=a.com", values_before.iframe_1.cookies);
+  EXPECT_EQ("from=a.com", values_before.iframe_2.cookies);
+
+  // Navigate away and then navigate back to the original site using
+  // renderer-initiated navigations.
+  ASSERT_TRUE(content::NavigateToURLFromRenderer(
+      web_contents, b_site_ephemeral_storage_url_));
+  ASSERT_TRUE(content::NavigateToURLFromRenderer(
+      web_contents, a_site_ephemeral_storage_url_));
+
+  // 3p storages should be empty.
+  ValuesFromFrames values_after = GetValuesFromFrames(web_contents);
+  EXPECT_EQ("a.com value", values_after.main_frame.local_storage);
+  EXPECT_EQ(nullptr, values_after.iframe_1.local_storage);
+  EXPECT_EQ(nullptr, values_after.iframe_2.local_storage);
+
+  EXPECT_EQ("a.com value", values_after.main_frame.session_storage);
+  EXPECT_EQ(nullptr, values_after.iframe_1.session_storage);
+  EXPECT_EQ(nullptr, values_after.iframe_2.session_storage);
+
+  EXPECT_EQ("from=a.com", values_after.main_frame.cookies);
   EXPECT_EQ("", values_after.iframe_1.cookies);
   EXPECT_EQ("", values_after.iframe_2.cookies);
 }
