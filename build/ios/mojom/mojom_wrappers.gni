@@ -47,6 +47,7 @@ template("mojom_wrappers") {
     inputs = [
       _mojom_module,
       "//brave/build/ios/mojom/cpp_transformations.h",
+      "//brave/build/ios/mojom/mojom_objc_generator.py",
       "//brave/build/ios/mojom/objc_templates/enum.tmpl",
       "//brave/build/ios/mojom/objc_templates/module.h.tmpl",
       "//brave/build/ios/mojom/objc_templates/module+private.h.tmpl",
@@ -60,9 +61,6 @@ template("mojom_wrappers") {
       "--mojom-module=$_mojom_module",
       "--output-dir=$_mojom_output_dir",
     ]
-    if (defined(invoker.class_prefix)) {
-      args += [ "--class-prefix=${invoker.class_prefix}" ]
-    }
     if (defined(invoker.exclude_types)) {
       _excluded_types = string_join(",", invoker.exclude_types)
       args += [ "--exclude=$_excluded_types" ]

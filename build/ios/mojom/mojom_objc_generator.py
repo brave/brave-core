@@ -60,7 +60,8 @@ class Generator(generator.Generator):
     def _GetObjCPropertyModifiers(self, kind):
         modifiers = ['nonatomic']
         if (mojom.IsArrayKind(kind) or mojom.IsStringKind(kind) or
-                mojom.IsMapKind(kind) or mojom.IsStructKind(kind)):
+                mojom.IsMapKind(kind) or self._IsStructKind(kind) or
+                self._IsTimeKind(kind)):
             modifiers.append('copy')
         if mojom.IsNullableKind(kind):
             modifiers.append('nullable')
@@ -72,7 +73,7 @@ class Generator(generator.Generator):
             # If there's no specified default, only make defaults for required types
             return (not mojom.IsNullableKind(kind) and
                     (mojom.IsStringKind(kind) or mojom.IsArrayKind(kind) or
-                     mojom.IsMapKind(kind) or mojom.IsStructKind(kind)))
+                     mojom.IsMapKind(kind) or self._IsStructKind(kind)))
         if self._IsObjCNumberKind(kind) and field.default == 0:
             # 0 by default anyways
             return False
@@ -93,13 +94,24 @@ class Generator(generator.Generator):
             return '@[]'
         if mojom.IsMapKind(kind):
             return '@{}'
-        if mojom.IsStructKind(kind):
+        if self._IsStructKind(kind):
             return "[[%s%s alloc] init]" % (self._ObjCPrefix(), kind.name)
         raise Exception("Unrecognized kind %s" % kind.spec)
 
+    def _IsMojoBaseKind(self, kind):
+        return kind.module != None and kind.qualified_name.startswith('mojo_base.mojom')
+
+    def _IsTimeKind(self, kind):
+        return self._IsMojoBaseKind(kind) and kind.name == 'Time'
+
+    def _IsStructKind(self, kind):
+        return mojom.IsStructKind(kind) and not self._IsMojoBaseKind(kind)
+
     def _GetObjCWrapperType(self, kind, objectType=False):
-        if mojom.IsStructKind(kind):
+        if self._IsStructKind(kind):
             return "%s%s *" % (self._ObjCPrefix(), kind.name)
+        if self._IsTimeKind(kind):
+            return "NSDate *"
         if mojom.IsEnumKind(kind):
             return "%s%s" % (self._ObjCPrefix(), kind.name)
         if mojom.IsInterfaceKind(kind):
@@ -160,16 +172,18 @@ class Generator(generator.Generator):
 
         if self._IsObjCNumberKind(kind):
             return accessor
-        if mojom.IsStructKind(kind):
+        if self._IsStructKind(kind):
             if mojom.IsNullableKind(kind):
                 return "%s != nil ? %s.cppObjPtr : nullptr" % (accessor, accessor)
             else:
                 return "%s.cppObjPtr" % accessor
+        if self._IsTimeKind(kind):
+            return "base::Time::FromNSDate(%s)" % accessor
         if mojom.IsEnumKind(kind):
             args = (self._CppNamespaceFromKind(kind), kind.name, accessor)
             return "static_cast<%s::%s>(%s)" % args
         if mojom.IsStringKind(kind):
-            return "%s.UTF8String" % accessor
+            return "base::SysNSStringToUTF8(%s)" % accessor
         if mojom.IsArrayKind(kind):
             # Only currently supporting: `[string]`, `[number]`, and `[struct]`
             array_kind = kind.kind
@@ -188,11 +202,11 @@ class Generator(generator.Generator):
                 return """^{
                     std::vector<std::string> array;
                     for (NSString *string in %s) {
-                        array.push_back(string.UTF8String);
+                        array.push_back(base::SysNSStringToUTF8(string));
                     }
                     return array;
                 }()""" % accessor
-            elif mojom.IsStructKind(array_kind):
+            elif self._IsStructKind(array_kind):
                 return """^{
                         std::vector<%s::%sPtr> array;
                         for (%s%s *obj in %s) {
@@ -201,6 +215,14 @@ class Generator(generator.Generator):
                         return array;
                     }()""" % (self._CppNamespaceFromKind(array_kind), array_kind.name,
                               self._ObjCPrefix(), array_kind.name, accessor)
+            elif self._IsTimeKind(array_kind):
+                return """^{
+                        std::vector<base::Time> array;
+                        for (NSDate *obj in %s) {
+                            array.push_back(base::Time::FromNSDate(obj));
+                        }
+                        return array;
+                    }()""" % accessor
             else:
                 raise Exception("Unsupported array kind %s" % array_kind.spec)
         if mojom.IsMapKind(kind):
@@ -213,7 +235,7 @@ class Generator(generator.Generator):
                     return """^{
                         base::flat_map<std::string, %s> map;
                         for (NSString *key in %s) {
-                            map[key.UTF8String] = %s[key].%s;
+                            map[base::SysNSStringToUTF8(key)] = %s[key].%s;
                         }
                         return map;
                     }()""" % (_kind_to_objc_type[val_kind], accessor, accessor,
@@ -222,19 +244,27 @@ class Generator(generator.Generator):
                     return """^{
                         base::flat_map<std::string, std::string> map;
                         for (NSString *key in %s) {
-                            map[key.UTF8String] = %s[key].UTF8String;
+                            map[base::SysNSStringToUTF8(key)] = base::SysNSStringToUTF8(%s[key]);
                         }
                         return map;
                     }()""" % (accessor, accessor)
-                elif mojom.IsStructKind(val_kind):
+                elif self._IsStructKind(val_kind):
                     return """^{
                         base::flat_map<std::string, %s::%sPtr> map;
                         for (NSString *key in %s) {
-                            map[key.UTF8String] = %s[key].cppObjPtr;
+                            map[base::SysNSStringToUTF8(key)] = %s[key].cppObjPtr;
                         }
                         return map;
                     }()""" % (self._CppNamespaceFromKind(val_kind), val_kind.name, accessor,
                               accessor)
+                elif self._IsTimeKind(val_kind):
+                    return """^{
+                        base::flat_map<std::string, base::Time> map;
+                        for (NSString *key in %s) {
+                            map[base::SysNSStringToUTF8(key)] = base::Time::FromNSDate(%s[key]);
+                        }
+                        return map;
+                    }()""" % (accessor, accessor)
                 else:
                     raise Exception("Unsupported dictionary value kind %s" % val_kind.spec)
             else:
@@ -246,7 +276,7 @@ class Generator(generator.Generator):
         accessor = "%s.%s" % (obj, field.name)
         if self._IsObjCNumberKind(kind):
             return accessor
-        if mojom.IsStructKind(kind):
+        if self._IsStructKind(kind):
             args = (self._ObjCPrefix(), kind.name, kind.name, accessor)
             base = "[[%s%s alloc] initWith%s:*%s]" % args
             if mojom.IsNullableKind(kind):
@@ -258,16 +288,18 @@ class Generator(generator.Generator):
                 }()""" % (self._ObjCPrefix(), kind.name, accessor, base)
             else:
                 return base
+        if self._IsTimeKind(kind):
+            return "%s.ToNSDate()" % accessor
         if mojom.IsEnumKind(kind):
             return "static_cast<%s%s>(%s)" % (self._ObjCPrefix(), kind.name, accessor)
         if mojom.IsStringKind(kind):
-            return "[NSString stringWithUTF8String:%s.c_str()]" % accessor
+            return "base::SysUTF8ToNSString(%s)" % accessor
         if mojom.IsArrayKind(kind):
             # Only currently supporting: `[string]`, `[number]`, and `[struct]`
             array_kind = kind.kind
             if mojom.IsStringKind(array_kind) or self._IsObjCNumberKind(array_kind):
                 return "NSArrayFromVector(%s)" % accessor
-            elif mojom.IsStructKind(array_kind):
+            elif self._IsStructKind(array_kind):
                 # Mojo IDL array<struct> actually creates a
                 # `std::vector<mojom::StructPtr<struct>>``, instead of just a plain
                 # vector of `struct`, which needs to be handled appropriately as
@@ -279,6 +311,14 @@ class Generator(generator.Generator):
                     }
                     return a;
                 }()""" % (accessor, self._CppPtrToObjCTransform(array_kind, 'o'))
+            elif self._IsTimeKind(array_kind):
+                return """^{
+                    const auto a = [NSMutableArray new];
+                    for (const auto& o : %s) {
+                        [a addObject:o.ToNSDate()];
+                    }
+                    return a;
+                }()""" % accessor
             else:
                 raise Exception("Unsupported array kind %s" % array_kind.spec)
         if mojom.IsMapKind(kind):
@@ -289,7 +329,7 @@ class Generator(generator.Generator):
             if mojom.IsStringKind(key_kind):
                 if mojom.IsStringKind(val_kind) or self._IsObjCNumberKind(val_kind):
                     return "NSDictionaryFromMap(%s)" % accessor
-                elif mojom.IsStructKind(val_kind):
+                elif self._IsStructKind(val_kind):
                     # Mojo IDL map<*, struct> actually creates a
                     # `base::flat_map<*, mojom::StructPtr<struct>>``, instead of just a
                     # plain std::map of `struct`, which needs to be handled appropriately
@@ -298,10 +338,18 @@ class Generator(generator.Generator):
                     return """^{
                         const auto d = [NSMutableDictionary new];
                         for (const auto& item : %s) {
-                            d[[NSString stringWithUTF8String:item.first.c_str()]] = %s;
+                            d[base::SysUTF8ToNSString(item.first)] = %s;
                         }
                         return d;
                     }()""" % (accessor, self._CppPtrToObjCTransform(val_kind, 'item.second'))
+                elif self._IsTimeKind(val_kind):
+                    return """^{
+                        const auto d = [NSMutableDictionary new];
+                        for (const auto& item : %s) {
+                            d[base::SysUTF8ToNSString(item.first)] = item.second.ToNSDate();
+                        }
+                        return d;
+                    }()""" % accessor
                 else:
                     raise Exception("Unsupported dictionary value kind %s" % val_kind.spec)
             else:
@@ -331,7 +379,7 @@ class Generator(generator.Generator):
             for field in struct.fields:
                 if (field.kind.module is not None and
                         field.kind.module.namespace != self.module.namespace):
-                    if mojom.IsStructKind(field.kind):
+                    if self._IsStructKind(field.kind):
                         all_structs.append(field.kind)
                         all_enums.extend(field.kind.enums)
                     elif mojom.IsEnumKind(field.kind):
