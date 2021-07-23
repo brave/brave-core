@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "base/i18n/time_formatting.h"
-#include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_response_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -54,12 +53,17 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPriceHistory) {
   ASSERT_TRUE(ParseAssetPriceHistory(json, &values));
   ASSERT_EQ(values.size(), 2UL);
   ASSERT_EQ(values[0]->price, "0.8201346624954003");
-  auto date = base::UTF16ToUTF8(base::TimeFormatShortDate(values[0]->date));
-  ASSERT_EQ(date, "Jun 3, 2021");
+  base::Time::Exploded exploded_time;
+  values[0]->date.UTCExplode(&exploded_time);
+  ASSERT_EQ(exploded_time.year, 2021);
+  ASSERT_EQ(exploded_time.month, 6);
+  ASSERT_EQ(exploded_time.day_of_month, 3);
 
   ASSERT_EQ(values[1]->price, "0.8096978545029869");
-  date = base::UTF16ToUTF8(base::TimeFormatShortDate(values[1]->date));
-  ASSERT_EQ(date, "Jun 3, 2021");
+  values[1]->date.UTCExplode(&exploded_time);
+  ASSERT_EQ(exploded_time.year, 2021);
+  ASSERT_EQ(exploded_time.month, 6);
+  ASSERT_EQ(exploded_time.day_of_month, 3);
 
   // Invalid input
   json = R"({"market_caps": []})";
