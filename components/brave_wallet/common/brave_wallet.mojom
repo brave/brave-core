@@ -137,6 +137,15 @@ interface WalletHandler {
   NotifyWalletBackupComplete();
 };
 
+struct ERCToken {
+  string contract_address;
+  string name;
+  bool is_erc20;
+  bool is_erc721;
+  string symbol;
+  int32 decimals;
+};
+
 // WebUI-side handler for requests from the browser.
 interface Page {
 };
