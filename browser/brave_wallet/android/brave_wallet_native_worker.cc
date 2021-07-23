@@ -155,6 +155,7 @@ void BraveWalletNativeWorker::GetAssetPrice(
                                                      &assets_from);
   std::vector<std::string> assets_to;
   base::android::AppendJavaStringArrayToStringVector(env, to_assets,
+                                                     &assets_to);
 
   asset_ratio_controller_->GetPrice(
       assets_from, assets_to,
