@@ -1055,6 +1055,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "rewardsTypeRecurringTip", IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_RECURRING_TIP },   // NOLINT
         { "contributionType", IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_TYPE },
         { "contributions", IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTIONS },
+        { "custodian", IDS_BRAVE_REWARDS_INTERNALS_CUSTODIAN },
+        { "custodianMemberId", IDS_BRAVE_REWARDS_INTERNALS_CUSTODIAN_MEMBER_ID },                // NOLINT
         { "downloadButton", IDS_BRAVE_REWARDS_INTERNALS_DOWNLOAD_BUTTON },
         { "externalWallet", IDS_BRAVE_REWARDS_INTERNALS_EXTERNAL_WALLET },
         { "invalid", IDS_BRAVE_REWARDS_INTERNALS_INVALID },

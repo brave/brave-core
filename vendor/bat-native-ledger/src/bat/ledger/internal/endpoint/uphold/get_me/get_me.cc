@@ -90,6 +90,10 @@ type::Result GetMe::ParseBody(
     user->name = *name;
   }
 
+  if (const auto* id = dictionary->FindStringKey("id")) {
+    user->member_id = *id;
+  }
+
   const auto* currencies = dictionary->FindListKey("currencies");
   if (currencies) {
     const std::string currency = "BAT";

@@ -18,7 +18,9 @@ const defaultState: RewardsInternals.State = {
   fullLog: '',
   externalWallet: {
     address: '',
-    status: 0
+    memberId: '',
+    status: 0,
+    type: ''
   },
   eventLogs: []
 }

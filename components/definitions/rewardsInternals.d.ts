@@ -66,7 +66,9 @@ declare namespace RewardsInternals {
 
   export interface ExternalWallet {
     address: string
+    memberId: string
     status: WalletStatus
+    type: WalletType | ''
   }
 
   export interface EventLog {

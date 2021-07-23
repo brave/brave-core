@@ -21,10 +21,11 @@ using std::placeholders::_3;
 namespace ledger {
 namespace uphold {
 
-User::User() :
-  name(""),
-  status(UserStatus::EMPTY),
-  bat_not_allowed(true) {}
+User::User()
+    : name(""),
+      member_id(""),
+      status(UserStatus::EMPTY),
+      bat_not_allowed(true) {}
 
 User::~User() = default;
 
