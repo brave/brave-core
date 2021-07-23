@@ -5,7 +5,7 @@
 import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import 'chrome://resources/polymer/v3_0/iron-media-query/iron-media-query.js';
 import 'chrome://brave-resources/br_elements/shared_vars_css.m.js';
-import './br_toolbar_search_field.m.js';
+import './br_toolbar_search_field.js';
 
 const customCurrentWebUINameMap = {
   extensions: 'settings',
