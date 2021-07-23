@@ -60,8 +60,10 @@ void WalletPageUI::CreatePageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PageHandler> page_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver) {
   DCHECK(page);
-  page_handler_ = std::make_unique<WalletPageHandler>(
-      std::move(page_receiver), std::move(page), web_ui(), this);
-  wallet_handler_ = std::make_unique<WalletHandler>(
-      std::move(wallet_receiver), std::move(page), web_ui(), this);
+  auto* profile = Profile::FromWebUI(web_ui());
+  DCHECK(profile);
+  page_handler_ =
+      std::make_unique<WalletPageHandler>(std::move(page_receiver), profile);
+  wallet_handler_ =
+      std::make_unique<WalletHandler>(std::move(wallet_receiver), profile);
 }

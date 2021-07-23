@@ -58,8 +58,10 @@ void WalletPanelUI::CreatePanelHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> panel_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver) {
   DCHECK(page);
-  panel_handler_ = std::make_unique<WalletPanelHandler>(
-      std::move(panel_receiver), std::move(page), web_ui(), this);
-  wallet_handler_ = std::make_unique<WalletHandler>(
-      std::move(wallet_receiver), std::move(page), web_ui(), this);
+  auto* profile = Profile::FromWebUI(web_ui());
+  DCHECK(profile);
+  panel_handler_ =
+      std::make_unique<WalletPanelHandler>(std::move(panel_receiver), this);
+  wallet_handler_ =
+      std::make_unique<WalletHandler>(std::move(wallet_receiver), profile);
 }

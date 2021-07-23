@@ -8,47 +8,42 @@
 
 #include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "ui/webui/mojo_web_ui_controller.h"
 
-namespace content {
-class WebUI;
-}
+class Profile;
 
-class WalletPageHandler : public brave_wallet::mojom::PageHandler,
-                          public content::WebContentsObserver {
+class WalletPageHandler : public brave_wallet::mojom::PageHandler {
  public:
   WalletPageHandler(
       mojo::PendingReceiver<brave_wallet::mojom::PageHandler> receiver,
-      mojo::PendingRemote<brave_wallet::mojom::Page> page,
-      content::WebUI* web_ui,
-      ui::MojoWebUIController* webui_controller);
+      Profile* profile);
 
   WalletPageHandler(const WalletPageHandler&) = delete;
   WalletPageHandler& operator=(const WalletPageHandler&) = delete;
   ~WalletPageHandler() override;
 
-  // content::WebContentsObserver:
-  void OnVisibilityChanged(content::Visibility visibility) override;
-
   // brave_wallet::mojom::PageHandler:
-  void CreateWallet(const std::string& password, CreateWalletCallback) override;
+  void CreateWallet(const std::string& password,
+                    CreateWalletCallback callback) override;
   void RestoreWallet(const std::string& mnemonic,
                      const std::string& password,
-                     RestoreWalletCallback) override;
+                     RestoreWalletCallback callback) override;
+  void GetRecoveryWords(GetRecoveryWordsCallback callback) override;
   void AddAccountToWallet(AddAccountToWalletCallback) override;
-  void GetRecoveryWords(GetRecoveryWordsCallback) override;
 
  private:
-  bool webui_hidden_ = false;
+  void EnsureConnected();
+  void OnConnectionError();
+
   mojo::Receiver<brave_wallet::mojom::PageHandler> receiver_;
-  mojo::Remote<brave_wallet::mojom::Page> page_;
-  content::WebUI* const web_ui_;
+  mojo::Remote<brave_wallet::mojom::KeyringController> keyring_controller_;
+
+  Profile* profile_;  // NOT OWNED
+  base::WeakPtrFactory<WalletPageHandler> weak_ptr_factory_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_PAGE_HANDLER_WALLET_PAGE_HANDLER_H_

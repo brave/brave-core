@@ -9,14 +9,9 @@
 
 WalletPanelHandler::WalletPanelHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> receiver,
-    mojo::PendingRemote<brave_wallet::mojom::Page> page,
-    content::WebUI* web_ui,
     ui::MojoBubbleWebUIController* webui_controller)
     : receiver_(this, std::move(receiver)),
-      page_(std::move(page)),
-      web_ui_(web_ui),
       webui_controller_(webui_controller) {
-  Observe(web_ui_->GetWebContents());
 }
 
 WalletPanelHandler::~WalletPanelHandler() = default;
@@ -33,8 +28,4 @@ void WalletPanelHandler::CloseUI() {
   if (embedder) {
     embedder->CloseUI();
   }
-}
-
-void WalletPanelHandler::OnVisibilityChanged(content::Visibility visibility) {
-  webui_hidden_ = visibility == content::Visibility::HIDDEN;
 }

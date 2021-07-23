@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_wallet/browser/eth_pending_tx_tracker.h"
 
+#include <memory>
+#include <utility>
+
 #include "base/bind.h"
 #include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -14,10 +17,10 @@
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
-#include "chrome/browser/profiles/profile_manager.h"
-#include "chrome/test/base/testing_browser_process.h"
-#include "chrome/test/base/testing_profile_manager.h"
+#include "chrome/browser/prefs/browser_prefs.h"
+#include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -27,21 +30,22 @@ namespace brave_wallet {
 
 class EthPendingTxTrackerUnitTest : public testing::Test {
  public:
-  EthPendingTxTrackerUnitTest()
-      : testing_profile_manager_(TestingBrowserProcess::GetGlobal()) {
+  EthPendingTxTrackerUnitTest() {
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
   }
 
   void SetUp() override {
-    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    ASSERT_TRUE(testing_profile_manager_.SetUp(temp_dir_.GetPath()));
+    TestingProfile::Builder builder;
+    auto prefs =
+        std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
+    RegisterUserProfilePrefs(prefs->registry());
+    builder.SetPrefService(std::move(prefs));
+    profile_ = builder.Build();
   }
 
-  PrefService* GetPrefs() {
-    return ProfileManager::GetActiveUserProfile()->GetPrefs();
-  }
+  PrefService* GetPrefs() { return profile_->GetPrefs(); }
 
   network::SharedURLLoaderFactory* shared_url_loader_factory() {
     return url_loader_factory_.GetSafeWeakWrapper().get();
@@ -57,8 +61,7 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   content::BrowserTaskEnvironment task_environment_;
-  TestingProfileManager testing_profile_manager_;
-  base::ScopedTempDir temp_dir_;
+  std::unique_ptr<TestingProfile> profile_;
 };
 
 TEST_F(EthPendingTxTrackerUnitTest, IsNonceTaken) {

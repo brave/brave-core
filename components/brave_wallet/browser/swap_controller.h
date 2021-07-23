@@ -17,6 +17,12 @@
 #include "brave/components/brave_wallet/browser/asset_ratio_response_parser.h"
 #include "url/gurl.h"
 
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "components/keyed_service/core/keyed_service.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
+#include "mojo/public/cpp/bindings/remote.h"
+
 namespace network {
 class SharedURLLoaderFactory;
 class SimpleURLLoader;
@@ -24,27 +30,25 @@ class SimpleURLLoader;
 
 namespace brave_wallet {
 
-class SwapController {
+class SwapController : public KeyedService, public mojom::SwapController {
  public:
   SwapController(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  ~SwapController();
+  ~SwapController() override;
+  SwapController(const SwapController&) = delete;
+  SwapController& operator=(const SwapController&) = delete;
 
-  using GetPriceQuoteCallback =
-      base::OnceCallback<void(bool status,
-                              brave_wallet::mojom::SwapResponsePtr value)>;
-  using GetTransactionPayloadCallback =
-      base::OnceCallback<void(bool status,
-                              brave_wallet::mojom::SwapResponsePtr value)>;
+  mojo::PendingRemote<mojom::SwapController> MakeRemote();
+
   // Obtians a quote for the specified asset
-  void GetPriceQuote(const mojom::SwapParams& swap_params,
-                     GetPriceQuoteCallback callback);
+  void GetPriceQuote(mojom::SwapParamsPtr swap_params,
+                     GetPriceQuoteCallback callback) override;
   // Obtains the transaction payload to be signed.
-  void GetTransactionPayload(const mojom::SwapParams& swap_params,
-                             GetTransactionPayloadCallback callback);
+  void GetTransactionPayload(mojom::SwapParamsPtr swap_params,
+                             GetTransactionPayloadCallback callback) override;
 
-  static GURL GetPriceQuoteURL(const mojom::SwapParams& swap_params);
-  static GURL GetTransactionPayloadURL(const mojom::SwapParams& swap_params);
+  static GURL GetPriceQuoteURL(const mojom::SwapParamsPtr swap_params);
+  static GURL GetTransactionPayloadURL(mojom::SwapParamsPtr swap_params);
   static void SetBaseURLForTest(const GURL& base_url_for_test);
 
  private:
@@ -60,6 +64,9 @@ class SwapController {
 
   static GURL base_url_for_test_;
   api_request_helper::APIRequestHelper api_request_helper_;
+
+  mojo::ReceiverSet<mojom::SwapController> receivers_;
+
   base::WeakPtrFactory<SwapController> weak_ptr_factory_;
 };
 

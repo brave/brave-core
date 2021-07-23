@@ -35,7 +35,9 @@ class EthTxController {
    protected:
     ~Observer() override = default;
   };
-  EthTxController(EthJsonRpcController*, KeyringController*, PrefService*);
+  explicit EthTxController(EthJsonRpcController* rpc_controller,
+                           KeyringController* keyring_controller,
+                           PrefService* prefs);
   ~EthTxController();
   EthTxController(const EthTxController&) = delete;
   EthTxController operator=(const EthTxController&) = delete;
@@ -58,9 +60,8 @@ class EthTxController {
                             bool status,
                             const std::string& tx_hash);
 
-  EthJsonRpcController* rpc_controller_;
-  KeyringController* keyring_controller_;
-
+  EthJsonRpcController* rpc_controller_;   // NOT OWNED
+  KeyringController* keyring_controller_;  // NOT OWNED
   std::unique_ptr<EthTxStateManager> tx_state_manager_;
   std::unique_ptr<EthNonceTracker> nonce_tracker_;
   std::unique_ptr<EthPendingTxTracker> pending_tx_tracker_;

@@ -64,7 +64,7 @@
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/keyring_controller.h"
 #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
@@ -331,7 +331,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // Brave Wallet
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  brave_wallet::BraveWalletService::RegisterProfilePrefs(registry);
+  brave_wallet::KeyringController::RegisterProfilePrefs(registry);
 #endif
 
   // Brave Search

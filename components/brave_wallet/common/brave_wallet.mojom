@@ -108,6 +108,14 @@ struct SwapResponse {
   // Note we could also expose "sources" later
 };
 
+struct KeyringInfo {
+  bool is_default_keyring_created;
+  bool is_locked;
+  bool is_backed_up;
+  array<string> accounts;
+  array<string> account_names;
+};
+
 // Browser-side handler for common panel / page things
 interface WalletHandler {
   GetWalletInfo() => (bool isWalletCreated, bool isWalletLocked,
@@ -116,10 +124,12 @@ interface WalletHandler {
                       array<string> walletAccountNames);
   LockWallet();
   UnlockWallet(string password) => (bool isWalletUnlocked);
-  GetAssetPrice(string asset) => (string price);
-  GetAssetPriceHistory(string asset, AssetPriceTimeframe timeframe) => (array<AssetTimePrice> values);
-  GetPriceQuote(SwapParams params) => (SwapResponse response);
-  GetTransactionPayload(SwapParams params) => (SwapResponse response);
+  GetAssetPrice(string asset) => (bool success, string price);
+  GetAssetPriceHistory(string asset, AssetPriceTimeframe timeframe) =>
+      (bool success, array<AssetTimePrice> values);
+  GetPriceQuote(SwapParams params) => (bool success, SwapResponse response);
+  GetTransactionPayload(SwapParams params) =>
+      (bool success, SwapResponse response);
   AddFavoriteApp(AppItem appItem);
   RemoveFavoriteApp(AppItem appItem);
   SetInitialAccountNames(array<string> accountNames);
@@ -129,4 +139,36 @@ interface WalletHandler {
 
 // WebUI-side handler for requests from the browser.
 interface Page {
+};
+
+interface KeyringController {
+  CreateWallet(string password) => (string mnemonic);
+  GetMnemonicForDefaultKeyring() => (string mnemonic);
+  RestoreWallet(string mnemonic, string password) => (bool isValidMnemonic);
+  Lock();
+  Unlock(string password) => (bool success);
+  AddAccount() => (bool success);
+  IsWalletBackedUp() => (bool backed_up);
+  NotifyWalletBackupComplete();
+  SetInitialAccountNames(array<string> accountNames);
+  AddNewAccountName(string accountName);
+  GetDefaultKeyringInfo() => (KeyringInfo keyring);
+  Reset();
+};
+
+interface AssetRatioController {
+  GetPrice(string asset) => (bool success, string price);
+  GetPriceHistory(string asset, AssetPriceTimeframe timeframe) =>
+      (bool success, array<AssetTimePrice> values);
+};
+
+interface SwapController {
+  GetPriceQuote(SwapParams params) =>
+      (bool success, SwapResponse response);
+  GetTransactionPayload(SwapParams params) =>
+      (bool success, SwapResponse response);
+};
+
+interface EthJsonRpcController {
+
 };

@@ -7,17 +7,16 @@
 
 #include <vector>
 
-#include "net/base/net_errors.h"
-
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/eth_call_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/decentralized_dns/constants.h"
 #include "brave/components/decentralized_dns/utils.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "chrome/browser/browser_process.h"
 #include "content/public/browser/browser_context.h"
+#include "net/base/net_errors.h"
 
 namespace decentralized_dns {
 
@@ -37,41 +36,40 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
     return net::OK;
   }
 
+  auto* rpc_controller =
+      brave_wallet::RpcControllerFactory::GetForContext(ctx->browser_context);
+
+  if (!rpc_controller)
+    return net::OK;
+
   if (IsUnstoppableDomainsTLD(ctx->request_url) &&
       IsUnstoppableDomainsResolveMethodEthereum(
           g_browser_process->local_state())) {
-    auto* service = brave_wallet::BraveWalletServiceFactory::GetForContext(
-        ctx->browser_context);
-    if (!service) {
+    auto keys = std::vector<std::string>(std::begin(kRecordKeys),
+                                         std::end(kRecordKeys));
+    std::string data;
+    if (!brave_wallet::unstoppable_domains::GetMany(
+            keys, ctx->request_url.host(), &data))
       return net::OK;
-    }
 
-    if (!service->rpc_controller()->UnstoppableDomainsProxyReaderGetMany(
-            kProxyReaderContractAddress, ctx->request_url.host(),
-            std::vector<std::string>(std::begin(kRecordKeys),
-                                     std::end(kRecordKeys)),
-            base::BindOnce(&OnBeforeURLRequest_DecentralizedDnsRedirectWork,
-                           next_callback, ctx))) {
-      return net::OK;
-    }
+    rpc_controller->UnstoppableDomainsProxyReaderGetMany(
+        kProxyReaderContractAddress, ctx->request_url.host(), keys,
+        base::BindOnce(&OnBeforeURLRequest_DecentralizedDnsRedirectWork,
+                       next_callback, ctx));
 
     return net::ERR_IO_PENDING;
   }
 
   if (IsENSTLD(ctx->request_url) &&
       IsENSResolveMethodEthereum(g_browser_process->local_state())) {
-    auto* service = brave_wallet::BraveWalletServiceFactory::GetForContext(
-        ctx->browser_context);
-    if (!service) {
+    std::string data;
+    if (!brave_wallet::ens::GetResolverAddress(ctx->request_url.host(), &data))
       return net::OK;
-    }
 
-    if (!service->rpc_controller()->EnsProxyReaderGetResolverAddress(
-            kEnsRegistryContractAddress, ctx->request_url.host(),
-            base::BindOnce(&OnBeforeURLRequest_EnsRedirectWork, next_callback,
-                           ctx))) {
-      return net::OK;
-    }
+    rpc_controller->EnsProxyReaderGetResolverAddress(
+        kEnsRegistryContractAddress, ctx->request_url.host(),
+        base::BindOnce(&OnBeforeURLRequest_EnsRedirectWork, next_callback,
+                       ctx));
 
     return net::ERR_IO_PENDING;
   }

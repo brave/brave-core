@@ -3,9 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/brave_wallet/asset_ratio_controller_factory.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -131,16 +130,15 @@ class AssetRatioControllerTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  brave_wallet::BraveWalletService* GetBraveWalletService() {
-    brave_wallet::BraveWalletService* service =
-        brave_wallet::BraveWalletServiceFactory::GetInstance()->GetForContext(
+  mojo::Remote<brave_wallet::mojom::AssetRatioController>
+  GetAssetRatioController() {
+    auto pending =
+        brave_wallet::AssetRatioControllerFactory::GetInstance()->GetForContext(
             browser()->profile());
-    EXPECT_TRUE(service);
-    return service;
-  }
-
-  brave_wallet::AssetRatioController* GetAssetRatioController() {
-    return GetBraveWalletService()->asset_ratio_controller();
+    mojo::Remote<brave_wallet::mojom::AssetRatioController>
+        asset_ratio_controller;
+    asset_ratio_controller.Bind(std::move(pending));
+    return asset_ratio_controller;
   }
 
  private:
@@ -157,7 +155,7 @@ class AssetRatioControllerTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(AssetRatioControllerTest, GetPrice) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
-  auto* controller = GetAssetRatioController();
+  auto controller = GetAssetRatioController();
   controller->GetPrice("basic-attention-token",
                        base::BindOnce(&AssetRatioControllerTest::OnGetPrice,
                                       base::Unretained(this)));
@@ -166,7 +164,7 @@ IN_PROC_BROWSER_TEST_F(AssetRatioControllerTest, GetPrice) {
 
 IN_PROC_BROWSER_TEST_F(AssetRatioControllerTest, GetPriceServerError) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
-  auto* controller = GetAssetRatioController();
+  auto controller = GetAssetRatioController();
   controller->GetPrice("basic-attention-token",
                        base::BindOnce(&AssetRatioControllerTest::OnGetPrice,
                                       base::Unretained(this)));
@@ -175,7 +173,7 @@ IN_PROC_BROWSER_TEST_F(AssetRatioControllerTest, GetPriceServerError) {
 
 IN_PROC_BROWSER_TEST_F(AssetRatioControllerTest, GetPriceHistory) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
-  auto* controller = GetAssetRatioController();
+  auto controller = GetAssetRatioController();
   controller->GetPriceHistory(
       "basic-attention-token", brave_wallet::mojom::AssetPriceTimeframe::OneDay,
       base::BindOnce(&AssetRatioControllerTest::OnGetPriceHistory,
@@ -199,7 +197,7 @@ IN_PROC_BROWSER_TEST_F(AssetRatioControllerTest, GetPriceHistory) {
 
 IN_PROC_BROWSER_TEST_F(AssetRatioControllerTest, GetPriceHistoryServerError) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
-  auto* controller = GetAssetRatioController();
+  auto controller = GetAssetRatioController();
   controller->GetPriceHistory(
       "basic-attention-token", brave_wallet::mojom::AssetPriceTimeframe::OneDay,
       base::BindOnce(&AssetRatioControllerTest::OnGetPriceHistory,

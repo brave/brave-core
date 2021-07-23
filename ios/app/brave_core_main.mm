@@ -34,7 +34,6 @@
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #import "brave/ios/browser/api/wallet/brave_wallet_api+private.h"
-#import "brave/ios/browser/api/wallet/brave_wallet_service_factory.h"
 #endif
 
 // Chromium logging is global, therefore we cannot link this to the instance in
@@ -198,11 +197,9 @@ static bool CustomLogHandler(int severity,
 
 - (nullable BraveWalletAPI*)wallet {
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  if (!_wallet) {
-    auto* service =
-        BraveWalletServiceFactory::GetForBrowserState(_mainBrowserState);
-    _wallet = [[BraveWalletAPI alloc] initWithWalletService:service];
-  }
+  // if (!_wallet) {
+  //   _wallet = [[BraveWalletAPI alloc] init];
+  // }
   return _wallet;
 #else
   return nil;

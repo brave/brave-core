@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_events_observer.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
+#include "components/keyed_service/core/keyed_service.h"
 #include "url/gurl.h"
 
 namespace network {
@@ -28,12 +29,12 @@ class SimpleURLLoader;
 
 namespace brave_wallet {
 
-class EthJsonRpcController {
+class EthJsonRpcController : public KeyedService {
  public:
   EthJsonRpcController(
       Network network,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  ~EthJsonRpcController();
+  ~EthJsonRpcController() override;
 
   using URLRequestCallback =
       base::OnceCallback<void(const int,
@@ -67,16 +68,17 @@ class EthJsonRpcController {
                             const std::string& address,
                             GetERC20TokenBalanceCallback callback);
 
-  // Call getMany function of ProxyReader contract from Unstoppable Domains.
   using UnstoppableDomainsProxyReaderGetManyCallback =
       base::OnceCallback<void(bool status, const std::string& result)>;
-  bool UnstoppableDomainsProxyReaderGetMany(
+
+  // Call getMany function of ProxyReader contract from Unstoppable Domains.
+  void UnstoppableDomainsProxyReaderGetMany(
       const std::string& contract_address,
       const std::string& domain,
       const std::vector<std::string>& keys,
       UnstoppableDomainsProxyReaderGetManyCallback callback);
 
-  bool EnsProxyReaderGetResolverAddress(
+  void EnsProxyReaderGetResolverAddress(
       const std::string& contract_address,
       const std::string& domain,
       UnstoppableDomainsProxyReaderGetManyCallback callback);

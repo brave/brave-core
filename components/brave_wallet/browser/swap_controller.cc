@@ -79,34 +79,40 @@ SwapController::SwapController(
 
 SwapController::~SwapController() {}
 
+mojo::PendingRemote<mojom::SwapController> SwapController::MakeRemote() {
+  mojo::PendingRemote<mojom::SwapController> remote;
+  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
+  return remote;
+}
+
 void SwapController::SetBaseURLForTest(const GURL& base_url_for_test) {
   base_url_for_test_ = base_url_for_test;
 }
 
 // static
-GURL SwapController::GetPriceQuoteURL(const mojom::SwapParams& swap_params) {
+GURL SwapController::GetPriceQuoteURL(mojom::SwapParamsPtr swap_params) {
   std::string spec = base::StringPrintf(
       "%sswap/v1/price", base_url_for_test_.is_empty()
                              ? kSwapBaseURL
                              : base_url_for_test_.spec().c_str());
   GURL url(spec);
-  url = AppendSwapParams(url, swap_params);
+  url = AppendSwapParams(url, *swap_params);
   return url;
 }
 
 // static
 GURL SwapController::GetTransactionPayloadURL(
-    const mojom::SwapParams& swap_params) {
+    mojom::SwapParamsPtr swap_params) {
   std::string spec = base::StringPrintf(
       "%sswap/v1/quote", base_url_for_test_.is_empty()
                              ? kSwapBaseURL
                              : base_url_for_test_.spec().c_str());
   GURL url(spec);
-  url = AppendSwapParams(url, swap_params);
+  url = AppendSwapParams(url, *swap_params);
   return url;
 }
 
-void SwapController::GetPriceQuote(const mojom::SwapParams& swap_params,
+void SwapController::GetPriceQuote(mojom::SwapParamsPtr swap_params,
                                    GetPriceQuoteCallback callback) {
   auto internal_callback =
       base::BindOnce(&SwapController::OnGetPriceQuote,
@@ -134,7 +140,7 @@ void SwapController::OnGetPriceQuote(
 }
 
 void SwapController::GetTransactionPayload(
-    const mojom::SwapParams& swap_params,
+    mojom::SwapParamsPtr swap_params,
     GetTransactionPayloadCallback callback) {
   auto internal_callback =
       base::BindOnce(&SwapController::OnGetTransactionPayload,

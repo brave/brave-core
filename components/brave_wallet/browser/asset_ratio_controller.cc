@@ -51,6 +51,13 @@ AssetRatioController::AssetRatioController(
 
 AssetRatioController::~AssetRatioController() {}
 
+mojo::PendingRemote<mojom::AssetRatioController>
+AssetRatioController::MakeRemote() {
+  mojo::PendingRemote<mojom::AssetRatioController> remote;
+  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
+  return remote;
+}
+
 void AssetRatioController::SetBaseURLForTest(const GURL& base_url_for_test) {
   base_url_for_test_ = base_url_for_test;
 }

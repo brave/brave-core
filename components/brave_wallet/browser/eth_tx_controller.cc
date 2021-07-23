@@ -9,7 +9,6 @@
 
 #include "base/bind.h"
 #include "base/logging.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
@@ -24,7 +23,7 @@ EthTxController::EthTxController(EthJsonRpcController* rpc_controller,
       keyring_controller_(keyring_controller),
       tx_state_manager_(std::make_unique<EthTxStateManager>(prefs)),
       nonce_tracker_(std::make_unique<EthNonceTracker>(tx_state_manager_.get(),
-                                                       rpc_controller)),
+                                                       rpc_controller_)),
       pending_tx_tracker_(
           std::make_unique<EthPendingTxTracker>(tx_state_manager_.get(),
                                                 rpc_controller_,

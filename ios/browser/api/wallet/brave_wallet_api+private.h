@@ -17,8 +17,7 @@ class BraveWalletService;
 }
 
 @interface BraveWalletAPI (Private)
-- (instancetype)initWithWalletService:
-    (brave_wallet::BraveWalletService*)service;
+- (instancetype)init;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -14,6 +14,7 @@
 #include "base/android/jni_weak_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "mojo/public/cpp/bindings/remote.h"
 
 namespace chrome {
 namespace android {
@@ -51,6 +52,13 @@ class BraveWalletNativeWorker {
       std::vector<brave_wallet::mojom::AssetTimePricePtr> values);
 
  private:
+  void EnsureConnected();
+  void OnConnectionError();
+
+  mojo::Remote<brave_wallet::mojom::KeyringController> keyring_controller_;
+  mojo::Remote<brave_wallet::mojom::AssetRatioController>
+      asset_ratio_controller_;
+
   JavaObjectWeakGlobalRef weak_java_brave_wallet_native_worker_;
   base::WeakPtrFactory<BraveWalletNativeWorker> weak_ptr_factory_;
 };
