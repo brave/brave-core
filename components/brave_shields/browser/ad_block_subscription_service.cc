@@ -6,12 +6,57 @@
 #include "brave/components/brave_shields/browser/ad_block_subscription_service.h"
 
 #include "base/files/file_path.h"
+#include "base/json/json_value_converter.h"
 #include "base/logging.h"
+#include "base/strings/string_piece.h"
+#include "base/util/values/values_util.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 
 namespace brave_shields {
+
+namespace {
+bool SkipGURLField(base::StringPiece value, GURL* field) {
+  return true;
+}
+
+bool ParseFilePathValue(const base::Value* value, base::FilePath* field) {
+  auto path = util::ValueToFilePath(value);
+  if (!path || path->empty()) {
+    return false;
+  }
+  *field = *path;
+  return true;
+}
+
+bool ParseTimeValue(const base::Value* value, base::Time* field) {
+  auto time = util::ValueToTime(value);
+  if (!time) {
+    return false;
+  }
+  *field = *time;
+  return true;
+}
+}  // namespace
+
+void FilterListSubscriptionInfo::RegisterJSONConverter(
+    base::JSONValueConverter<FilterListSubscriptionInfo>* converter) {
+  // The `list_url` field is skipped, as it's not stored within the JSON value
+  // and should be populated externally.
+  converter->RegisterCustomField<SubscriptionIdentifier>(
+      "list_url", &FilterListSubscriptionInfo::list_url, &SkipGURLField);
+  converter->RegisterCustomValueField<base::FilePath>(
+      "list_dir", &FilterListSubscriptionInfo::list_dir, &ParseFilePathValue);
+  converter->RegisterCustomValueField<base::Time>(
+      "last_update_attempt", &FilterListSubscriptionInfo::last_update_attempt,
+      &ParseTimeValue);
+  converter->RegisterCustomValueField<base::Time>(
+      "last_successful_update_attempt",
+      &FilterListSubscriptionInfo::last_successful_update_attempt,
+      &ParseTimeValue);
+  converter->RegisterBoolField("enabled", &FilterListSubscriptionInfo::enabled);
+}
 
 AdBlockSubscriptionService::AdBlockSubscriptionService(
     const FilterListSubscriptionInfo& info,

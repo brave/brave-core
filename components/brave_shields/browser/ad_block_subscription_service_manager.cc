@@ -11,6 +11,7 @@
 
 #include "base/base64url.h"
 #include "base/files/file_util.h"
+#include "base/json/json_value_converter.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "base/time/time.h"
@@ -30,7 +31,6 @@ namespace brave_shields {
 
 namespace {
 
-// TODO(bridiver) - change to Converter
 FilterListSubscriptionInfo BuildInfoFromDict(
     const SubscriptionIdentifier& list_url,
     const base::Value* dict) {
@@ -38,26 +38,10 @@ FilterListSubscriptionInfo BuildInfoFromDict(
   DCHECK(dict->is_dict());
 
   FilterListSubscriptionInfo info;
+  base::JSONValueConverter<FilterListSubscriptionInfo> converter;
+  converter.Convert(*dict, &info);
 
   info.list_url = list_url;
-
-  auto list_dir = util::ValueToFilePath(dict->FindKey("list_dir"));
-  info.list_dir = list_dir ? *list_dir : base::FilePath();
-  DCHECK(!info.list_dir.empty());
-
-  auto last_update_attempt =
-      util::ValueToTime(dict->FindKey("last_update_attempt"));
-  info.last_update_attempt =
-      last_update_attempt ? *last_update_attempt : base::Time::Min();
-
-  auto last_successful_update_attempt =
-      util::ValueToTime(dict->FindKey("last_successful_update_attempt"));
-  info.last_successful_update_attempt = last_successful_update_attempt
-                                            ? *last_successful_update_attempt
-                                            : base::Time::Min();
-
-  auto enabled = dict->FindBoolKey("enabled");
-  info.enabled = enabled.has_value() ? *enabled : false;
 
   return info;
 }

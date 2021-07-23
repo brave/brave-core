@@ -15,6 +15,11 @@
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
 #include "url/gurl.h"
 
+namespace base {
+template <typename StructType>
+class JSONValueConverter;
+}
+
 class AdBlockServiceTest;
 
 namespace brave_shields {
@@ -38,6 +43,9 @@ struct FilterListSubscriptionInfo {
   // otherwise it will be bypassed. Disabled lists will not be automatically
   // updated.
   bool enabled;
+
+  static void RegisterJSONConverter(
+      base::JSONValueConverter<FilterListSubscriptionInfo>*);
 };
 
 // The brave shields service in charge of ad-block checking and init
