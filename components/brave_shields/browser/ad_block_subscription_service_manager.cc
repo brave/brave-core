@@ -90,8 +90,8 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
   FilterListSubscriptionInfo info;
   info.list_url = list_url;
   info.list_dir = GetSubscriptionPath(list_url);
-  info.last_update_attempt = base::Time::Min();
-  info.last_successful_update_attempt = base::Time::Min();
+  info.last_update_attempt = base::Time();
+  info.last_successful_update_attempt = base::Time();
   info.enabled = true;
 
   auto subscription_service = std::make_unique<AdBlockSubscriptionService>(
@@ -238,20 +238,14 @@ void AdBlockSubscriptionServiceManager::UpdateFilterListPrefs(
     return;
   }
 
-  // TODO(bridiver) - update for Time
-  //   base::Value TimeToValue(base::Time time);
-  // base::Optional<base::Time> util::ValueToTime(const base::Value* value);
-  // base::Optional<base::Time> util::ValueToTime(const base::Value& value);
-
   DictionaryPrefUpdate update(local_state, prefs::kAdBlockListSubscriptions);
   base::DictionaryValue* subscriptions_dict = update.Get();
   auto subscription_dict = base::Value(base::Value::Type::DICTIONARY);
   subscription_dict.SetBoolKey("enabled", info.enabled);
-  subscription_dict.SetDoubleKey("last_update_attempt",
-                                 info.last_update_attempt.ToJsTime());
-  subscription_dict.SetDoubleKey(
-      "last_successful_update_attempt",
-      info.last_successful_update_attempt.ToJsTime());
+  subscription_dict.SetKey("last_update_attempt",
+                           util::TimeToValue(info.last_update_attempt));
+  subscription_dict.SetKey("last_update_attempt",
+                           util::TimeToValue(info.last_update_attempt));
   subscriptions_dict->SetKey(id.spec(), std::move(subscription_dict));
 }
 

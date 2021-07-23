@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/scoped_observation.h"
+#include "base/util/values/values_util.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/common/webui_url_constants.h"
@@ -283,10 +284,11 @@ void AdblockDOMHandler::RefreshSubscriptionsList() {
     auto dict = std::make_unique<base::DictionaryValue>();
     dict->SetStringKey("list_url", subscription.list_url.spec());
     dict->SetBoolKey("enabled", subscription.enabled);
-    dict->SetDoubleKey("last_update_attempt",
-                       subscription.last_update_attempt.ToJsTime());
-    dict->SetDoubleKey("last_successful_update_attempt",
-                       subscription.last_successful_update_attempt.ToJsTime());
+    dict->SetKey("last_update_attempt",
+                 util::TimeToValue(subscription.last_update_attempt));
+    dict->SetKey(
+        "last_successful_update_attempt",
+        util::TimeToValue(subscription.last_successful_update_attempt));
     list_value->Append(std::move(dict));
   }
   CallJavascriptFunction("brave_adblock.onGetListSubscriptions", *list_value);
