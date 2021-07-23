@@ -28,7 +28,7 @@ import * as rewardsActions from '../actions/rewards_actions'
 import Promotion from './promotion'
 import { getLocale } from '../../../../common/locale'
 import { getActivePromos, getPromo, PromoType, Promo } from '../promos'
-import { getMinimumBalance } from './connect_wallet_modal'
+import { getWalletProviderName } from '../utils'
 
 interface Props extends Rewards.ComponentProps {
 }
@@ -236,12 +236,11 @@ class SettingsPage extends React.Component<Props, State> {
 
     if (ui.modalRedirect === 'batLimit') {
       // NOTE: The minimum BAT limit error is currently Uphold-specific
-      const text = getLocale('redirectModalBatLimitText')
       return (
         <ModalRedirect
-          id={'redirect-modal-bat-limit'}
-          titleText={getLocale('redirectModalBatLimitTitle')}
-          errorText={text.replace('$1', String(getMinimumBalance(walletType)))}
+          id={'redirect-modal-id-verification-required'}
+          titleText={getLocale('redirectModalKYCRequiredTitle')}
+          errorText={getLocale('redirectModalKYCRequiredText').replace('$1', getWalletProviderName(externalWallet))}
           buttonText={getLocale('redirectModalClose')}
           walletType={walletType}
           onClick={this.actions.hideRedirectModal}
