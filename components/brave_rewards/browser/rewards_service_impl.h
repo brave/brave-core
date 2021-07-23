@@ -332,11 +332,9 @@ class RewardsServiceImpl : public RewardsService,
 
   void StopLedger(StopLedgerCallback callback);
 
-  std::string GetEncryptedStringState(const std::string& name) override;
+  absl::optional<std::string> EncryptString(const std::string& value) override;
 
-  bool SetEncryptedStringState(
-      const std::string& name,
-      const std::string& value) override;
+  absl::optional<std::string> DecryptString(const std::string& value) override;
 
   void GetBraveWallet(GetBraveWalletCallback callback) override;
 

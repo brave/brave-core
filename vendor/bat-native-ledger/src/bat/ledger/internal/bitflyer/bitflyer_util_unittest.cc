@@ -133,12 +133,12 @@ TEST_F(BitflyerUtilTest, GetWithdrawUrl) {
 
 TEST_F(BitflyerUtilTest, GetWallet) {
   // no wallet
-  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletBitflyer))
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBitflyer))
       .WillByDefault(testing::Return(""));
   auto result = mock_ledger_impl_.get()->bitflyer()->GetWallet();
   ASSERT_TRUE(!result);
 
-  const std::string wallet = R"({
+  const std::string wallet = FakeEncryption::Base64EncryptString(R"({
     "account_url": "https://bitflyer.com/ex/Home?login=1",
     "add_url": "",
     "address": "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af",
@@ -151,9 +151,9 @@ TEST_F(BitflyerUtilTest, GetWallet) {
     "user_name": "test",
     "verify_url": "https://sandbox.bitflyer.com/authorize/4c2b665ca060d",
     "withdraw_url": ""
-  })";
+  })");
 
-  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletBitflyer))
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBitflyer))
       .WillByDefault(testing::Return(wallet));
 
   // Bitflyer wallet

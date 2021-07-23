@@ -21,20 +21,16 @@ StateMigrationV7::~StateMigrationV7() = default;
 void StateMigrationV7::Migrate(ledger::ResultCallback callback) {
   const std::string brave =
       ledger_->ledger_client()->GetStringState(kWalletBrave);
-  bool success =
-      ledger_->ledger_client()->SetEncryptedStringState(kWalletBrave, brave);
 
-  if (!success) {
+  if (!ledger_->state()->SetEncryptedString(kWalletBrave, brave)) {
     callback(type::Result::LEDGER_ERROR);
     return;
   }
 
   const std::string uphold =
       ledger_->ledger_client()->GetStringState(kWalletUphold);
-  success =
-      ledger_->ledger_client()->SetEncryptedStringState(kWalletUphold, uphold);
 
-  if (!success) {
+  if (!ledger_->state()->SetEncryptedString(kWalletUphold, uphold)) {
     callback(type::Result::LEDGER_ERROR);
     return;
   }

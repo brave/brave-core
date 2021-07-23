@@ -68,9 +68,8 @@
 - (void)clearAllNotifications;
 - (void)walletDisconnected:(const std::string&)wallet_type;
 - (void)deleteLog:(ledger::client::ResultCallback)callback;
-- (bool)setEncryptedStringState:(const std::string&)key
-                          value:(const std::string&)value;
-- (std::string)getEncryptedStringState:(const std::string&)key;
+- (absl::optional<std::string>)encryptString:(const std::string&)value;
+- (absl::optional<std::string>)decryptString:(const std::string&)value;
 
 @end
 

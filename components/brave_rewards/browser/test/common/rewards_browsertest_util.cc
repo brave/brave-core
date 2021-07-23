@@ -3,8 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
+
 #include <utility>
 
+#include "base/base64.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
@@ -12,7 +15,6 @@
 #include "base/test/bind.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/common/brave_paths.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -123,6 +125,29 @@ void SetOnboardingBypassed(Browser* browser, bool bypassed) {
   // Rewards onboarding will be skipped if the rewards enabled flag is set
   PrefService* prefs = browser->profile()->GetPrefs();
   prefs->SetBoolean(brave_rewards::prefs::kEnabled, bypassed);
+}
+
+absl::optional<std::string> EncryptPrefString(
+    brave_rewards::RewardsServiceImpl* rewards_service,
+    const std::string& value) {
+  DCHECK(rewards_service);
+  auto encrypted = rewards_service->EncryptString(value);
+  if (!encrypted)
+    return {};
+  std::string encoded;
+  base::Base64Encode(*encrypted, &encoded);
+  return encoded;
+}
+
+absl::optional<std::string> DecryptPrefString(
+    brave_rewards::RewardsServiceImpl* rewards_service,
+    const std::string& value) {
+  DCHECK(rewards_service);
+  std::string decoded;
+  if (!base::Base64Decode(value, &decoded))
+    return {};
+
+  return rewards_service->DecryptString(decoded);
 }
 
 }  // namespace rewards_browsertest_util

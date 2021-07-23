@@ -179,12 +179,12 @@ TEST_F(UpholdUtilTest, GetSecondStepVerify) {
 
 TEST_F(UpholdUtilTest, GetWallet) {
   // no wallet
-  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletUphold))
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
       .WillByDefault(testing::Return(""));
   auto result = mock_ledger_impl_.get()->uphold()->GetWallet();
   ASSERT_TRUE(!result);
 
-  const std::string wallet = R"({
+  const std::string wallet = FakeEncryption::Base64EncryptString(R"({
     "account_url":"https://wallet-sandbox.uphold.com/dashboard",
     "add_url":"https://wallet-sandbox.uphold.com/dashboard/cards/asadasdasd/add",
     "address":"2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af",
@@ -197,9 +197,9 @@ TEST_F(UpholdUtilTest, GetWallet) {
     "verify_url":"",
     "withdraw_url":
       "https://wallet-sandbox.uphold.com/dashboard/cards/asadasdasd/use"
-  })";
+  })");
 
-  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletUphold))
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
       .WillByDefault(testing::Return(wallet));
 
   // uphold wallet

@@ -9,6 +9,7 @@
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_contribution.h"
+#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -476,7 +477,11 @@ void RewardsBrowserTestContribution::SetUpGeminiWallet(
 
   std::string json;
   base::JSONWriter::Write(wallet, &json);
-  rewards_service->SetEncryptedStringState("wallets.gemini", json);
+  auto encrypted =
+      rewards_browsertest_util::EncryptPrefString(rewards_service_, json);
+  ASSERT_TRUE(encrypted);
+  browser_->profile()->GetPrefs()->SetString(
+      brave_rewards::prefs::kWalletGemini, *encrypted);
 }
 #endif
 
@@ -506,7 +511,12 @@ void RewardsBrowserTestContribution::SetUpUpholdWallet(
 
   std::string json;
   base::JSONWriter::Write(wallet, &json);
-  rewards_service->SetEncryptedStringState("wallets.uphold", json);
+  auto encrypted =
+      rewards_browsertest_util::EncryptPrefString(rewards_service_, json);
+  ASSERT_TRUE(encrypted);
+
+  browser_->profile()->GetPrefs()->SetString(
+      brave_rewards::prefs::kWalletUphold, *encrypted);
 }
 
 double RewardsBrowserTestContribution::GetReconcileTipTotal() {

@@ -111,6 +111,7 @@ source_set("bat_native_ledger_tests") {
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/publisher/publisher_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/uphold/uphold_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/uphold/uphold_util_unittest.cc",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/wallet/wallet_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/wallet/wallet_utils_unittest.cc",
   ]
 
