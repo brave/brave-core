@@ -38,6 +38,17 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
+std::string VectorToCommaSeparatedList(const std::vector<std::string>& assets) {
+  std::stringstream ss;
+  std::for_each(assets.begin(), assets.end(), [&ss](const std::string asset) {
+    if (ss.tellp() != 0) {
+      ss << ",";
+    }
+    ss << asset;
+  });
+  return ss.str();
+}
+
 }  // namespace
 
 namespace brave_wallet {
@@ -63,12 +74,16 @@ void AssetRatioController::SetBaseURLForTest(const GURL& base_url_for_test) {
 }
 
 // static
-GURL AssetRatioController::GetPriceURL(const std::string& asset) {
+GURL AssetRatioController::GetPriceURL(
+    const std::vector<std::string>& from_assets,
+    const std::vector<std::string>& to_assets) {
+  std::string from = VectorToCommaSeparatedList(from_assets);
+  std::string to = VectorToCommaSeparatedList(to_assets);
   std::string spec = base::StringPrintf(
-      "%sv2/relative/provider/coingecko/%s/usd",
+      "%sv2/relative/provider/coingecko/%s/%s",
       base_url_for_test_.is_empty() ? kAssetRatioBaseURL
                                     : base_url_for_test_.spec().c_str(),
-      asset.c_str());
+      from.c_str(), to.c_str());
   return GURL(spec);
 }
 
@@ -108,31 +123,34 @@ GURL AssetRatioController::GetPriceHistoryURL(
   return GURL(spec);
 }
 
-void AssetRatioController::GetPrice(const std::string& asset,
+void AssetRatioController::GetPrice(const std::vector<std::string>& from_assets,
+                                    const std::vector<std::string>& to_assets,
                                     GetPriceCallback callback) {
-  auto internal_callback =
-      base::BindOnce(&AssetRatioController::OnGetPrice,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  api_request_helper_.Request("GET", GetPriceURL(asset), "", "", true,
-                              std::move(internal_callback));
+  auto internal_callback = base::BindOnce(
+      &AssetRatioController::OnGetPrice, weak_ptr_factory_.GetWeakPtr(),
+      from_assets, to_assets, std::move(callback));
+  api_request_helper_.Request("GET", GetPriceURL(from_assets, to_assets), "",
+                              "", true, std::move(internal_callback));
 }
 
 void AssetRatioController::OnGetPrice(
+    std::vector<std::string> from_assets,
+    std::vector<std::string> to_assets,
     GetPriceCallback callback,
     const int status,
     const std::string& body,
     const std::map<std::string, std::string>& headers) {
+  std::vector<brave_wallet::mojom::AssetPricePtr> prices;
   if (status < 200 || status > 299) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(false, std::move(prices));
     return;
   }
-  std::string price;
-  if (!ParseAssetPrice(body, &price)) {
-    std::move(callback).Run(false, "");
+  if (!ParseAssetPrice(body, from_assets, to_assets, &prices)) {
+    std::move(callback).Run(false, std::move(prices));
     return;
   }
 
-  std::move(callback).Run(true, price);
+  std::move(callback).Run(true, std::move(prices));
 }
 
 void AssetRatioController::GetPriceHistory(

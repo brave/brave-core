@@ -74,17 +74,16 @@ handler.on(WalletPageActions.walletBackupComplete.getType(), async (store) => {
   await refreshWalletInfo(store)
 })
 
-// TODO: Spot Price will need to return btc: value and change24Hour: value in the future
 handler.on(WalletPageActions.selectAsset.getType(), async (store, payload: UpdateSelectedAssetType) => {
   store.dispatch(WalletPageActions.updateSelectedAsset(payload.asset))
   store.dispatch(WalletPageActions.setIsFetchingPriceHistory(true))
   const walletHandler = await getWalletHandler()
   if (payload.asset) {
-    const price = await walletHandler.getAssetPrice(payload.asset.symbol.toLowerCase())
+    const priceInfo = await walletHandler.getAssetPrice([payload.asset.symbol.toLowerCase()], ['usd', 'btc'])
     const priceHistory = await walletHandler.getAssetPriceHistory(payload.asset.symbol.toLowerCase(), payload.timeFrame)
-    store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: priceHistory, price: price.price, timeFrame: payload.timeFrame }))
+    store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: priceHistory, usdPriceInfo: priceInfo.values[0], btcPriceInfo: priceInfo.values[1], timeFrame: payload.timeFrame }))
   } else {
-    store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: undefined, price: '', timeFrame: payload.timeFrame }))
+    store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: undefined, btcPriceInfo: undefined, usdPriceInfo: undefined, timeFrame: payload.timeFrame }))
   }
 })
 

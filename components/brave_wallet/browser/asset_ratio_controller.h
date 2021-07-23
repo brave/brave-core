@@ -41,20 +41,25 @@ class AssetRatioController : public KeyedService,
 
   mojo::PendingRemote<mojom::AssetRatioController> MakeRemote();
 
-  void GetPrice(const std::string& asset, GetPriceCallback callback) override;
+  void GetPrice(const std::vector<std::string>& from_assets,
+                const std::vector<std::string>& to_assets,
+                GetPriceCallback callback) override;
   // The asset param is a string like: "bat"
   void GetPriceHistory(const std::string& asset,
                        brave_wallet::mojom::AssetPriceTimeframe timeframe,
                        GetPriceHistoryCallback callback) override;
 
-  static GURL GetPriceURL(const std::string& asset);
+  static GURL GetPriceURL(const std::vector<std::string>& from_assets,
+                          const std::vector<std::string>& to_assets);
   static GURL GetPriceHistoryURL(
       const std::string& asset,
       brave_wallet::mojom::AssetPriceTimeframe timeframe);
   static void SetBaseURLForTest(const GURL& base_url_for_test);
 
  private:
-  void OnGetPrice(GetPriceCallback callback,
+  void OnGetPrice(std::vector<std::string> from_assets,
+                  std::vector<std::string> to_assets,
+                  GetPriceCallback callback,
                   const int status,
                   const std::string& body,
                   const std::map<std::string, std::string>& headers);

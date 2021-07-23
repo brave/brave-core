@@ -40,9 +40,12 @@ class BraveWalletNativeWorker {
       const base::android::JavaParamRef<jstring>& password);
   void ResetWallet(JNIEnv* env);
 
-  void GetAssetPrice(JNIEnv* env,
-                     const base::android::JavaParamRef<jstring>& asset);
-  void OnGetPrice(bool success, const std::string& price);
+  void GetAssetPrice(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jobjectArray>& from_assets,
+      const base::android::JavaParamRef<jobjectArray>& to_assets);
+  void OnGetPrice(bool success,
+                  std::vector<brave_wallet::mojom::AssetPricePtr> prices);
 
   void GetAssetPriceHistory(JNIEnv* env,
                             const base::android::JavaParamRef<jstring>& asset,

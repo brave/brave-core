@@ -99,12 +99,6 @@ export type ChartTimelineType =
   | '1Year'
   | 'AllTime'
 
-export interface AssetPriceReturnInfo {
-  usd: string
-  btc: number
-  change24Hour: number
-}
-
 export interface BuySendSwapObjectType {
   name: string
   id: BuySendSwapTypes
@@ -171,7 +165,8 @@ export interface PageState {
   invalidMnemonic: boolean
   selectedTimeline: AssetPriceTimeframe
   selectedAsset: AssetOptionType | undefined
-  selectedAssetPrice: AssetPriceReturnInfo | undefined
+  selectedBTCAssetPrice: AssetPriceInfo | undefined
+  selectedUSDAssetPrice: AssetPriceInfo | undefined
   selectedAssetPriceHistory: GetAssetPriceHistoryReturnInfo[]
   portfolioPriceHistory: PriceDataObjectType[]
   userAssets: string[]
@@ -249,13 +244,20 @@ export interface SwapResponseReturnInfo {
   response: SwapResponse
 }
 
+export interface AssetPriceInfo {
+  fromAsset: string
+  toAsset: string
+  price: string
+  asset24hChange: string
+}
+
 export interface GetAssetPriceReturnInfo {
   success: boolean,
-  price: string
+  values: AssetPriceInfo[]
 }
 
 export interface GetAssetPriceHistoryReturnInfo {
-  price: string,
+  price: string
   date: MojoTime
 }
 
@@ -277,7 +279,7 @@ export interface WalletAPIHandler {
   lockWallet: () => Promise<void>
   addAccountToWallet: () => Promise<AddAccountToWalletReturnInfo>
   unlockWallet: (password: string) => Promise<UnlockWalletReturnInfo>
-  getAssetPrice: (asset: string) => Promise<GetAssetPriceReturnInfo>
+  getAssetPrice: (fromAssets: string[], toAssets: string[]) => Promise<GetAssetPriceReturnInfo>
   getAssetPriceHistory: (asset: string, timeframe: AssetPriceTimeframe) => Promise<GetAssetPriceHistoryReturnObjectInfo>
   addFavoriteApp: (appItem: AppObjectType) => Promise<void>
   removeFavoriteApp: (appItem: AppObjectType) => Promise<void>

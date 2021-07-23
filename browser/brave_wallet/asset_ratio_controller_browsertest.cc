@@ -30,8 +30,7 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
   http_response->set_code(net::HTTP_OK);
   http_response->set_content_type("text/html");
   if (request.GetURL().spec().find("/v2/history") != std::string::npos) {
-    http_response->set_content(R"(
-    {
+    http_response->set_content(R"({
       "payload": {
         "prices":[[1622733088498,0.8201346624954003],[1622737203757,0.8096978545029869]],
         "market_caps":[[1622733088498,1223507820.383275],[1622737203757,1210972881.4928021]],
@@ -40,7 +39,29 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
     })");
   } else {
     http_response->set_content(
-        R"({"payload":{"basic-attention-token":{"usd":0.694503}}})");
+        R"({
+         "payload":{
+           "basic-attention-token":{
+             "btc":0.00001732,
+             "btc_24h_change":8.021672460190562,
+             "usd":0.55393,
+             "usd_24h_change":9.523443444373276
+           },
+           "bat":{
+             "btc":0.00001732,
+             "btc_24h_change":8.021672460190562,
+             "usd":0.55393,
+             "usd_24h_change":9.523443444373276
+           },
+           "link":{
+             "btc":0.00261901,
+             "btc_24h_change":0.5871625385632929,
+             "usd":83.77,
+             "usd_24h_change":1.7646208048244043
+           }
+         },
+         "lastUpdated":"2021-07-16T19:11:28.907Z"
+       })");
   }
   return std::move(http_response);
 }
@@ -83,11 +104,12 @@ class AssetRatioControllerTest : public InProcessBrowserTest {
         https_server_->base_url());
   }
 
-  void OnGetPrice(bool success, const std::string& price) {
+  void OnGetPrice(bool success,
+                  std::vector<brave_wallet::mojom::AssetPricePtr> prices) {
     if (wait_for_request_) {
       wait_for_request_->Quit();
     }
-    ASSERT_EQ(expected_price_response_, price);
+    ASSERT_EQ(expected_prices_response_, prices);
     ASSERT_EQ(expected_success_, success);
   }
 
@@ -101,12 +123,13 @@ class AssetRatioControllerTest : public InProcessBrowserTest {
     ASSERT_EQ(expected_success_, success);
   }
 
-  void WaitForPriceResponse(const std::string& expected_price_response,
-                            bool expected_success) {
+  void WaitForPriceResponse(
+      std::vector<brave_wallet::mojom::AssetPricePtr> expected_prices_response,
+      bool expected_success) {
     if (wait_for_request_) {
       return;
     }
-    expected_price_response_ = expected_price_response;
+    expected_prices_response_ = std::move(expected_prices_response);
     expected_success_ = expected_success;
     wait_for_request_.reset(new base::RunLoop);
     wait_for_request_->Run();
@@ -145,7 +168,7 @@ class AssetRatioControllerTest : public InProcessBrowserTest {
   net::EmbeddedTestServer* https_server() { return https_server_.get(); }
 
   bool expected_success_;
-  std::string expected_price_response_;
+  std::vector<brave_wallet::mojom::AssetPricePtr> expected_prices_response_;
   std::vector<brave_wallet::mojom::AssetTimePricePtr>
       expected_price_history_response_;
 
@@ -154,28 +177,59 @@ class AssetRatioControllerTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(AssetRatioControllerTest, GetPrice) {
+  std::vector<brave_wallet::mojom::AssetPricePtr> expected_prices_response;
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
   auto controller = GetAssetRatioController();
-  controller->GetPrice("basic-attention-token",
+  controller->GetPrice({"bat", "link"}, {"btc", "usd"},
                        base::BindOnce(&AssetRatioControllerTest::OnGetPrice,
                                       base::Unretained(this)));
-  WaitForPriceResponse("0.694503", true);
+
+  auto asset_price = brave_wallet::mojom::AssetPrice::New();
+  asset_price->from_asset = "bat";
+  asset_price->to_asset = "btc";
+  asset_price->price = "0.00001732";
+  asset_price->asset_24h_change = "8.021672460190562";
+  expected_prices_response.push_back(std::move(asset_price));
+
+  asset_price = brave_wallet::mojom::AssetPrice::New();
+  asset_price->from_asset = "bat";
+  asset_price->to_asset = "usd";
+  asset_price->price = "0.55393";
+  asset_price->asset_24h_change = "9.523443444373276";
+  expected_prices_response.push_back(std::move(asset_price));
+
+  asset_price = brave_wallet::mojom::AssetPrice::New();
+  asset_price->from_asset = "link";
+  asset_price->to_asset = "btc";
+  asset_price->price = "0.00261901";
+  asset_price->asset_24h_change = "0.5871625385632929";
+  expected_prices_response.push_back(std::move(asset_price));
+
+  asset_price = brave_wallet::mojom::AssetPrice::New();
+  asset_price->from_asset = "link";
+  asset_price->to_asset = "usd";
+  asset_price->price = "83.77";
+  asset_price->asset_24h_change = "1.7646208048244043";
+  expected_prices_response.push_back(std::move(asset_price));
+
+  WaitForPriceResponse(std::move(expected_prices_response), true);
 }
 
 IN_PROC_BROWSER_TEST_F(AssetRatioControllerTest, GetPriceServerError) {
+  std::vector<brave_wallet::mojom::AssetPricePtr> expected_prices_response;
   ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
   auto controller = GetAssetRatioController();
-  controller->GetPrice("basic-attention-token",
+  controller->GetPrice({"bat", "link"}, {"btc", "usd"},
                        base::BindOnce(&AssetRatioControllerTest::OnGetPrice,
                                       base::Unretained(this)));
-  WaitForPriceResponse("", false);
+  WaitForPriceResponse(std::move(expected_prices_response), false);
 }
 
 IN_PROC_BROWSER_TEST_F(AssetRatioControllerTest, GetPriceHistory) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
   auto controller = GetAssetRatioController();
   controller->GetPriceHistory(
-      "basic-attention-token", brave_wallet::mojom::AssetPriceTimeframe::OneDay,
+      "bat", brave_wallet::mojom::AssetPriceTimeframe::OneDay,
       base::BindOnce(&AssetRatioControllerTest::OnGetPriceHistory,
                      base::Unretained(this)));
 
@@ -199,7 +253,7 @@ IN_PROC_BROWSER_TEST_F(AssetRatioControllerTest, GetPriceHistoryServerError) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
   auto controller = GetAssetRatioController();
   controller->GetPriceHistory(
-      "basic-attention-token", brave_wallet::mojom::AssetPriceTimeframe::OneDay,
+      "bat", brave_wallet::mojom::AssetPriceTimeframe::OneDay,
       base::BindOnce(&AssetRatioControllerTest::OnGetPriceHistory,
                      base::Unretained(this)));
   std::vector<brave_wallet::mojom::AssetTimePricePtr>

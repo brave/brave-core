@@ -12,7 +12,7 @@ import {
   AssetPriceTimeframe,
   PriceDataObjectType,
   AssetOptionType,
-  AssetPriceReturnInfo,
+  AssetPriceInfo,
   RPCResponseType,
   NetworkOptionsType,
   OrderTypes,
@@ -127,16 +127,32 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     }
   }
 
-  const selectedAssetPrice = React.useMemo(() => {
+  const selectedUSDAssetPrice = React.useMemo(() => {
     if (selectedAsset) {
       const data = CurrentPriceMockData.find((coin) => coin.symbol === selectedAsset.symbol)
-      const usdValue = data ? data.usd : 0
-      const btcValue = data ? data.btc : 0
-      const change24Hour = data ? data.change24Hour : 0
-      const response: AssetPriceReturnInfo = {
-        usd: formatePrices(usdValue),
-        btc: btcValue,
-        change24Hour: change24Hour
+      const usdValue = data ? data.usd : '0'
+      const usd24hChange = data ? data.usd24hChange : '0'
+      const response: AssetPriceInfo = {
+        price: usdValue,
+        asset24hChange: usd24hChange,
+        fromAsset: '',
+        toAsset: ''
+      }
+      return response
+    }
+    return undefined
+  }, [selectedAsset])
+
+  const selectedBTCAssetPrice = React.useMemo(() => {
+    if (selectedAsset) {
+      const data = CurrentPriceMockData.find((coin) => coin.symbol === selectedAsset.symbol)
+      const btcValue = data ? data.btc : '0'
+      const btc24hChange = data ? data.btc24hChange : '0'
+      const response: AssetPriceInfo = {
+        price: btcValue,
+        asset24hChange: btc24hChange,
+        fromAsset: '',
+        toAsset: ''
       }
       return response
     }
@@ -152,7 +168,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const singleAccountFiatBalance = (account: RPCResponseType) => {
     const asset = assetInfo(account)
     const data = CurrentPriceMockData.find((coin) => coin.symbol === asset?.symbol)
-    const value = data ? asset ? asset.balance * data.usd : 0 : 0
+    const value = data ? asset ? Number(asset.balance) * Number(data.usd) : 0 : 0
     return formatePrices(value)
   }
 
@@ -215,7 +231,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   // This will scrape all of the user's accounts and combine the fiat value for a single asset
   const scrapedFullAssetFiatBalance = (asset: AssetOptionType) => {
     const fullBallance = scrapedFullAssetBalance(asset)
-    const price = CurrentPriceMockData.find((coin) => coin.symbol === asset?.symbol)?.usd
+    const price = Number(CurrentPriceMockData.find((coin) => coin.symbol === asset?.symbol)?.usd)
     const value = price ? price * fullBallance : 0
     return value
   }
@@ -433,7 +449,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                           portfolioPriceHistory={selectedAssetPriceHistory}
                           portfolioBalance={scrapedFullPortfolioBalance()}
                           transactions={transactions}
-                          selectedAssetPrice={selectedAssetPrice}
+                          selectedUSDAssetPrice={selectedUSDAssetPrice}
+                          selectedBTCAssetPrice={selectedBTCAssetPrice}
                           userAssetList={userAssetList}
                           onConnectHardwareWallet={onConnectHardwareWallet}
                           onCreateAccount={onCreateAccount}

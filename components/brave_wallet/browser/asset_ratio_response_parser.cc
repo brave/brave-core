@@ -8,19 +8,42 @@
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
-bool ParseAssetPrice(const std::string& json, std::string* price) {
+bool ParseAssetPrice(const std::string& json,
+                     const std::vector<std::string>& from_assets,
+                     const std::vector<std::string>& to_assets,
+                     std::vector<brave_wallet::mojom::AssetPricePtr>* values) {
   // Parses results like this:
-  // {  "payload":
-  //   {
-  //     "basic-attention-token":{"usd":0.694503}
-  //   }
+  // {
+  //   "payload":{
+  //     "basic-attention-token":{
+  //       "btc":0.00001732,
+  //       "btc_24h_change":8.021672460190562,
+  //       "usd":0.55393,
+  //       "usd_24h_change":9.523443444373276
+  //     },
+  //     "bat":{
+  //       "btc":0.00001732,
+  //       "btc_24h_change":8.021672460190562,
+  //       "usd":0.55393,
+  //       "usd_24h_change":9.523443444373276
+  //     },
+  //     "link":{
+  //       "btc":0.00261901,
+  //       "btc_24h_change":0.5871625385632929,
+  //       "usd":83.77,
+  //       "usd_24h_change":1.7646208048244043
+  //     }
+  //   },
+  //   "lastUpdated":"2021-07-16T19:11:28.907Z"
   // }
-  DCHECK(price);
+
+  DCHECK(values);
 
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
@@ -46,27 +69,37 @@ bool ParseAssetPrice(const std::string& json, std::string* price) {
     return false;
   }
 
-  if (payload->DictSize() == 0) {
-    return false;
-  }
+  for (const std::string& from_asset : from_assets) {
+    const base::Value* from_asset_value =
+        payload_dict->FindDictPath(from_asset);
+    const base::DictionaryValue* from_asset_dict;
+    if (!from_asset_value->GetAsDictionary(&from_asset_dict)) {
+      return false;
+    }
 
-  auto items = payload->DictItems();
-  if (!items.begin()->second.is_dict()) {
-    return false;
-  }
-  const auto& usd_price_dict =
-      base::Value::AsDictionaryValue(items.begin()->second);
-  if (usd_price_dict.DictSize() != 1) {
-    return false;
-  }
-  auto converted_items = usd_price_dict.DictItems();
-  const auto& value = converted_items.begin()->second;
+    for (const std::string& to_asset : to_assets) {
+      auto asset_price = brave_wallet::mojom::AssetPrice::New();
+      asset_price->from_asset = from_asset;
+      asset_price->to_asset = to_asset;
 
-  double num;
-  if (!value.GetAsDouble(&num)) {
-    return false;
+      absl::optional<double> to_price =
+          from_asset_dict->FindDoublePath(to_asset);
+      if (!to_price) {
+        return false;
+      }
+      asset_price->price = base::NumberToString(*to_price);
+      std::string to_asset_24h_key =
+          base::StringPrintf("%s_24h_change", to_asset.c_str());
+      absl::optional<double> to_24h_change =
+          from_asset_dict->FindDoublePath(to_asset_24h_key);
+      if (!to_24h_change) {
+        return false;
+      }
+      asset_price->asset_24h_change = base::NumberToString(*to_24h_change);
+
+      values->push_back(std::move(asset_price));
+    }
   }
-  *price = base::NumberToString(num);
 
   return true;
 }
