@@ -115,5 +115,12 @@ handler.on(WalletPageActions.selectAsset.getType(), async (store, payload: Updat
 //   gasPrice: ''
 // })
 // console.log(swap_response2)
+//
+// TODO(bbondy): Remove - Example usage:
+// const val1 = await walletHandler.getAllTokens()
+// const val2 = await walletHandler.getTokenBySymbol('BAT')
+// const val3 = await walletHandler.getTokenByContract('0x0D8775F648430679A709E98d2b0Cb6250d2887EF')
+// const val4 = await walletHandler.getTokenByContract('dsaida')
+// console.log('val1-4: ', val1, val2, val3, val4)
 
 export default handler.middleware
