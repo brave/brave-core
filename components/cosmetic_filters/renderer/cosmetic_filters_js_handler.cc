@@ -30,7 +30,8 @@ namespace {
 static base::NoDestructor<std::string> g_observing_script("");
 
 static base::NoDestructor<std::vector<std::string>> g_vetted_search_engines(
-    {"duckduckgo", "qwant", "bing", "startpage", "google", "yandex", "ecosia"});
+    {"duckduckgo", "qwant", "bing", "startpage", "google", "yandex", "ecosia",
+     "brave"});
 
 const char kScriptletInitScript[] =
     R"((function() {
