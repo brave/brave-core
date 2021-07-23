@@ -200,6 +200,8 @@ TEST_P(MakeProductDetailsTest, DefaultChannel) {
 }
 
 // Test that the channel name is properly parsed out of additional parameters.
+// This test is only valid for brands that integrate with Google Update.
+#if defined(OFFICIAL_BUILD)
 TEST_P(MakeProductDetailsTest, AdditionalParametersChannels) {
   const std::pair<const wchar_t*, const wchar_t*> kApChannels[] = {
       // stable
@@ -251,6 +253,7 @@ TEST_P(MakeProductDetailsTest, AdditionalParametersChannels) {
     }
   }
 }
+#endif
 
 // Test that the "ap" value is cached during initialization.
 TEST_P(MakeProductDetailsTest, UpdateAp) {
