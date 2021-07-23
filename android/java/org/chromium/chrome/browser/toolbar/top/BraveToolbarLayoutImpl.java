@@ -53,6 +53,7 @@ import org.chromium.base.Log;
 import org.chromium.base.MathUtils;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.supplier.BooleanSupplier;
+import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
@@ -1266,10 +1267,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     @Override
     protected void initialize(ToolbarDataProvider toolbarDataProvider,
             ToolbarTabController tabController, MenuButtonCoordinator menuButtonCoordinator,
-            BooleanSupplier isInVrSupplier, HistoryDelegate historyDelegate,
-            BooleanSupplier partnerHomepageEnabledSupplier, OfflineDownloader offlineDownloader) {
-        super.initialize(toolbarDataProvider, tabController, menuButtonCoordinator, isInVrSupplier,
-                historyDelegate, partnerHomepageEnabledSupplier, offlineDownloader);
+            ObservableSupplier<Boolean> isProgressBarVisibleSupplier,
+            HistoryDelegate historyDelegate, BooleanSupplier partnerHomepageEnabledSupplier,
+            OfflineDownloader offlineDownloader) {
+        super.initialize(toolbarDataProvider, tabController, menuButtonCoordinator,
+                isProgressBarVisibleSupplier, historyDelegate, partnerHomepageEnabledSupplier,
+                offlineDownloader);
         BraveMenuButtonCoordinator.setMenuFromBottom(isMenuButtonOnBottom());
     }
 
