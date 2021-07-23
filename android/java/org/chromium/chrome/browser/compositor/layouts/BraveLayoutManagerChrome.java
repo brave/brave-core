@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 
+import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplierImpl;
 import org.chromium.base.supplier.Supplier;
@@ -40,9 +41,10 @@ public class BraveLayoutManagerChrome extends LayoutManagerChrome
             ObservableSupplier<TabContentManager> tabContentManagerSupplier,
             Supplier<LayerTitleCache> layerTitleCacheSupplier,
             OneshotSupplierImpl<OverviewModeBehavior> overviewModeBehaviorSupplier,
-            Supplier<TopUiThemeColorProvider> topUiThemeColorProvider) {
+            Supplier<TopUiThemeColorProvider> topUiThemeColorProvider, JankTracker jankTracker) {
         super(host, contentContainer, createOverviewLayout, startSurface, tabContentManagerSupplier,
-                layerTitleCacheSupplier, overviewModeBehaviorSupplier, topUiThemeColorProvider);
+                layerTitleCacheSupplier, overviewModeBehaviorSupplier, topUiThemeColorProvider,
+                jankTracker);
 
         mCreateOverviewLayout = createOverviewLayout && startSurface == null;
     }

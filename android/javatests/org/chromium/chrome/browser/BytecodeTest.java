@@ -394,7 +394,7 @@ public class BytecodeTest {
                 MenuButtonCoordinator.class, MenuButtonCoordinator.class, ObservableSupplier.class,
                 ObservableSupplier.class, ObservableSupplier.class, ObservableSupplier.class,
                 ObservableSupplier.class, ObservableSupplier.class, Callback.class, Supplier.class,
-                Supplier.class, BooleanSupplier.class, BooleanSupplier.class, boolean.class,
+                Supplier.class, ObservableSupplier.class, BooleanSupplier.class, boolean.class,
                 boolean.class, boolean.class, boolean.class, HistoryDelegate.class,
                 BooleanSupplier.class, OfflineDownloader.class));
         Assert.assertTrue(constructorsMatch(

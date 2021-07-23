@@ -187,9 +187,4 @@ public class StackLayout extends StackLayoutBase {
 
         super.setActiveStackState(stackIndex);
     }
-
-    @Override
-    public boolean shouldAllowIncognitoSwitching() {
-        return !mAnimatingStackSwitch;
-    }
 }

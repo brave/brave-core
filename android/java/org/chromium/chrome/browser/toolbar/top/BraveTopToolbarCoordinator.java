@@ -53,7 +53,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ObservableSupplier<Boolean> homepageManagedByPolicySupplier,
             ObservableSupplier<Boolean> identityDiscStateSupplier,
             Callback<Runnable> invalidatorCallback, Supplier<ButtonData> identityDiscButtonSupplier,
-            Supplier<ResourceManager> resourceManagerSupplier, BooleanSupplier isInVrSupplier,
+            Supplier<ResourceManager> resourceManagerSupplier,
+            ObservableSupplier<Boolean> isProgressBarVisibleSupplier,
             BooleanSupplier isIncognitoModeEnabledSupplier, boolean isGridTabSwitcherEnabled,
             boolean isTabToGtsAnimationEnabled, boolean isStartSurfaceEnabled,
             boolean isTabGroupsAndroidContinuationEnabled, HistoryDelegate historyDelegate,
@@ -65,8 +66,9 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 appMenuButtonHelperSupplier, tabModelSelectorSupplier, homepageEnabledSupplier,
                 startSurfaceAsHomepageSupplier, homepageManagedByPolicySupplier,
                 identityDiscStateSupplier, invalidatorCallback, identityDiscButtonSupplier,
-                resourceManagerSupplier, isInVrSupplier, isIncognitoModeEnabledSupplier,
-                isGridTabSwitcherEnabled, isTabToGtsAnimationEnabled, isStartSurfaceEnabled,
+                resourceManagerSupplier, isProgressBarVisibleSupplier,
+                isIncognitoModeEnabledSupplier, isGridTabSwitcherEnabled,
+                isTabToGtsAnimationEnabled, isStartSurfaceEnabled,
                 isTabGroupsAndroidContinuationEnabled, historyDelegate,
                 partnerHomepageEnabledSupplier, offlineDownloader);
 
