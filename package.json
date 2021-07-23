@@ -32,7 +32,7 @@
     "pep8": "pycodestyle --max-line-length 120 -r script",
     "pylint": "node ./build/commands/scripts/commands.js pylint",
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",
-    "web-ui": "webpack --config components/webpack/webpack.config.js --progress --colors",
+    "web-ui": "webpack --config components/webpack/webpack.config.js --colors",
     "build-storybook": "build-storybook -c .storybook -o .storybook-out",
     "storybook": "start-storybook",
     "test-unit": "jest -t",

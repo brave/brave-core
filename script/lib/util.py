@@ -170,13 +170,23 @@ def execute(argv, env=os.environ):
     if is_verbose_mode():
         print(' '.join(argv))
     try:
-        output = subprocess.check_output(argv, stderr=subprocess.STDOUT,
-                                         env=env)
+        process = subprocess.Popen(
+          argv, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+          universal_newlines=True)
+        stdout, stderr = process.communicate()
         if is_verbose_mode():
-            print(output)
-        return output
+            print(stdout)
+        elif process.returncode != 0:
+            # Print the output instead of raising it, so that we get pretty output.
+            # Most useful erroroutput from typescript / webpack is in stdout
+            # and not stderr.
+            print(stdout)
+            raise RuntimeError('Command \'%s\' failed' % (' '.join(argv)), stderr)
+        return stdout
     except subprocess.CalledProcessError as e:
-        print(e.output)
+        print('Error in subprocess:')
+        print(' '.join(argv))
+        print(e.stderr)
         raise e
 
 
