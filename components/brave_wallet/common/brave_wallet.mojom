@@ -131,7 +131,7 @@ interface WalletHandler {
                       array<string> walletAccountNames);
   LockWallet();
   UnlockWallet(string password) => (bool isWalletUnlocked);
-  GetAssetPrice(array<string> from_assets, array<string> to_assets) => (bool success, array<AssetTimePrice> values);
+  GetAssetPrice(array<string> from_assets, array<string> to_assets) => (bool success, array<AssetPrice> values);
   GetAssetPriceHistory(string asset, AssetPriceTimeframe timeframe) =>
       (bool success, array<AssetTimePrice> values);
   GetPriceQuote(SwapParams params) => (bool success, SwapResponse response);
@@ -164,7 +164,8 @@ interface KeyringController {
 };
 
 interface AssetRatioController {
-  GetPrice(string asset) => (bool success, string price);
+  GetPrice(array<string> from_assets, array<string> to_assets) =>
+      (bool success, array<AssetPrice> values);
   GetPriceHistory(string asset, AssetPriceTimeframe timeframe) =>
       (bool success, array<AssetTimePrice> values);
 };

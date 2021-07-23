@@ -252,7 +252,7 @@ export interface AssetPriceInfo {
 
 export interface GetAssetPriceReturnInfo {
   success: boolean,
-  assetPrices: AssetPriceInfo[]
+  values: AssetPriceInfo[]
 }
 
 export interface GetAssetPriceHistoryReturnInfo {

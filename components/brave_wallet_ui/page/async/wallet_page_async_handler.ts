@@ -81,7 +81,7 @@ handler.on(WalletPageActions.selectAsset.getType(), async (store, payload: Updat
   if (payload.asset) {
     const priceInfo = await walletHandler.getAssetPrice([payload.asset.symbol.toLowerCase()], ['usd', 'btc'])
     const priceHistory = await walletHandler.getAssetPriceHistory(payload.asset.symbol.toLowerCase(), payload.timeFrame)
-    store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: priceHistory, usdPriceInfo: priceInfo.assetPrices[0], btcPriceInfo: priceInfo.assetPrices[1], timeFrame: payload.timeFrame }))
+    store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: priceHistory, usdPriceInfo: priceInfo.values[0], btcPriceInfo: priceInfo.values[1], timeFrame: payload.timeFrame }))
   } else {
     store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: undefined, btcPriceInfo: undefined, usdPriceInfo: undefined, timeFrame: payload.timeFrame }))
   }

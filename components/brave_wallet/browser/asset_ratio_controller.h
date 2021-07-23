@@ -41,7 +41,9 @@ class AssetRatioController : public KeyedService,
 
   mojo::PendingRemote<mojom::AssetRatioController> MakeRemote();
 
-  void GetPrice(const std::string& asset, GetPriceCallback callback) override;
+  void GetPrice(const std::vector<std::string>& from_assets,
+                const std::vector<std::string>& to_assets,
+                GetPriceCallback callback) override;
   // The asset param is a string like: "bat"
   void GetPriceHistory(const std::string& asset,
                        brave_wallet::mojom::AssetPriceTimeframe timeframe,
