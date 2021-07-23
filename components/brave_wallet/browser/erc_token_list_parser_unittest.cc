@@ -74,7 +74,8 @@ TEST(ParseTokenListUnitTest, ParseTokenList) {
   json = R"({"0x0D8775F648430679A709E98d2b0Cb6250d2887EF": 3})";
   ASSERT_FALSE(ParseTokenList(json, &token_list));
   json = R"({"0x0D8775F648430679A709E98d2b0Cb6250d2887EF": {}})";
-  ASSERT_FALSE(ParseTokenList(json, &token_list));
+  ASSERT_EQ(token_list.size(), 0UL);
+  ASSERT_TRUE(ParseTokenList(json, &token_list));
   json = "3";
   ASSERT_FALSE(ParseTokenList(json, &token_list));
   json = "[3]";

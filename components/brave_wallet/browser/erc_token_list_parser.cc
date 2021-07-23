@@ -90,7 +90,7 @@ bool ParseTokenList(const std::string& json,
       erc_token->is_erc721 = false;
 
     if (!ParseResultFromDict(erc_token_value, "symbol", &erc_token->symbol)) {
-      return false;
+      continue;
     }
     if (!ParseResultFromDict(erc_token_value, "name", &erc_token->name)) {
       return false;
@@ -100,7 +100,7 @@ bool ParseTokenList(const std::string& json,
     if (decimals_opt)
       erc_token->decimals = *decimals_opt;
     else
-      return false;
+      continue;
 
     token_list->push_back(std::move(erc_token));
   }

@@ -38,9 +38,12 @@ const char token_list_json[] = R"(
      "erc20": true,
      "symbol": "UNI",
      "decimals": 18
+   },
+   "0x6090A6e47849629b7245Dfa1Ca21D94cd15878Ef": {
+    "name": "ENS Registrar",
+    "logo": "ens.svg"
    }
-  }
-)";
+  })";
 
 }  // namespace
 
@@ -52,6 +55,8 @@ TEST(ERCTokenRegistryUnitTest, GetAllTokens) {
   registry->UpdateTokenList(std::move(input_erc_tokens));
 
   std::vector<mojom::ERCTokenPtr> token_list = registry->GetAllTokens();
+  // ENS Registrar should not be parsed because it doesn't have decimals
+  // nor a symbol defined
   ASSERT_EQ(token_list.size(), 3UL);
 
   ASSERT_EQ(token_list[0]->name, "Crypto Kitties");
