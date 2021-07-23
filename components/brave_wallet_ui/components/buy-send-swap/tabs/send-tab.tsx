@@ -24,6 +24,7 @@ export interface Props {
   selectedAssetAmount: string
   selectedAssetBalance: string
   toAddress: string
+  showHeader?: boolean
   onSubmit: () => void
   onSelectNetwork: (network: NetworkOptionsType) => void
   onSelectAccount: (account: UserAccountType) => void
@@ -42,6 +43,7 @@ function SendTab (props: Props) {
     selectedAssetAmount,
     selectedAssetBalance,
     toAddress,
+    showHeader,
     onSubmit,
     onSelectNetwork,
     onSelectAccount,
@@ -88,11 +90,13 @@ function SendTab (props: Props) {
     <>
       {sendView === 'send' &&
         <>
-          <Header
-            selectedAccount={selectedAccount}
-            selectedNetwork={selectedNetwork}
-            onChangeSwapView={onChangeSendView}
-          />
+          {showHeader &&
+            <Header
+              selectedAccount={selectedAccount}
+              selectedNetwork={selectedNetwork}
+              onChangeSwapView={onChangeSendView}
+            />
+          }
           <Send
             selectedAssetAmount={selectedAssetAmount}
             selectedAsset={selectedAsset}

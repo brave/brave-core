@@ -1,6 +1,10 @@
 import styled from 'styled-components'
 import CloseIcon from '../assets/close.svg'
 
+interface StyleProps {
+  hasSearch: boolean
+}
+
 export const HeaderTitle = styled.span`
   font-family: Poppins;
   font-size: 18px;
@@ -11,7 +15,7 @@ export const HeaderTitle = styled.span`
   text-transform: capitalize;
 `
 
-export const HeaderWrapper = styled.div`
+export const HeaderWrapper = styled.div<StyleProps>`
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -20,6 +24,7 @@ export const HeaderWrapper = styled.div`
   border-bottom: ${(p) => `1px solid ${p.theme.color.divider01}`};
   padding: 0px 12px;
   max-width: 300px;
+  margin-bottom: ${(p) => p.hasSearch ? '0px' : '8px'};
 `
 
 export const TopRow = styled.div`

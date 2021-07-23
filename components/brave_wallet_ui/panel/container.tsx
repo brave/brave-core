@@ -7,15 +7,18 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
 import { ConnectWithSite, ConnectedPanel, Panel, WelcomePanel } from '../components/extension'
+import { Send, SelectAsset } from '../components/buy-send-swap/'
 import { AppList } from '../components/shared'
 import { filterAppList } from '../utils/filter-app-list'
-import { ScrollContainer, StyledExtensionWrapper } from '../stories/style'
+import { ScrollContainer, StyledExtensionWrapper, SelectContainer } from '../stories/style'
+import { SendWrapper } from './style'
 import store from './store'
 import * as WalletPanelActions from './actions/wallet_panel_actions'
 import * as WalletActions from '../common/actions/wallet_actions'
-import { AppObjectType, AppsListType, WalletState, PanelState, PanelTypes, WalletPanelState, WalletAccountType } from '../constants/types'
+import { AppObjectType, AppsListType, WalletState, PanelState, PanelTypes, WalletPanelState, WalletAccountType, BuySendSwapViewTypes, AssetOptionType } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
+import { AssetOptions } from '../options/asset-options'
 
 type Props = {
   panel: PanelState
@@ -46,6 +49,45 @@ function Container (props: Props) {
   const [selectedAccounts, setSelectedAccounts] = React.useState<WalletAccountType[]>([])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
   const [walletConnected, setWalletConnected] = React.useState<boolean>(true)
+  const [selectedAsset, setSelectedAsset] = React.useState<AssetOptionType>(AssetOptions[0])
+  const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
+  const [toAddress, setToAddress] = React.useState('')
+  const [sendAmount, setSendAmount] = React.useState('')
+
+  const onChangeSendView = (view: BuySendSwapViewTypes) => {
+    if (view === 'assets') {
+      setShowSelectAsset(true)
+    }
+  }
+
+  const onHideSelectAsset = () => {
+    setShowSelectAsset(false)
+  }
+
+  const onSelectAsset = (asset: AssetOptionType) => () => {
+    setSelectedAsset(asset)
+    setShowSelectAsset(false)
+  }
+
+  const onInputChange = (value: string, name: string) => {
+    if (name === 'address') {
+      setToAddress(value)
+    } else {
+      setSendAmount(value)
+    }
+  }
+
+  const onSelectPresetAmount = (percent: number) => {
+    // 0 Will be replaced with selected from asset's Balance
+    // once we are able to get balances
+    const amount = 0 * percent
+    setSendAmount(amount.toString())
+  }
+
+  const onSubmitSend = () => {
+    // Logic here to submit send transaction
+  }
+
   const toggleConnected = () => {
     setWalletConnected(!walletConnected)
   }
@@ -142,7 +184,20 @@ function Container (props: Props) {
           disabled={inputValue === ''}
           onPasswordChanged={handlePasswordChanged}
         />
-      </StyledExtensionWrapper>)
+      </StyledExtensionWrapper>
+    )
+  }
+
+  if (showSelectAsset) {
+    return (
+      <SelectContainer>
+        <SelectAsset
+          assets={AssetOptions}
+          onSelectAsset={onSelectAsset}
+          onBack={onHideSelectAsset}
+        />
+      </SelectContainer>
+    )
   }
 
   if (props.panel.selectedPanel === 'apps') {
@@ -180,6 +235,30 @@ function Container (props: Props) {
           removeAccount={removeAccount}
           selectedAccounts={selectedAccounts}
         />
+      </StyledExtensionWrapper>)
+  }
+
+  if (props.panel.selectedPanel === 'send') {
+    return (
+      <StyledExtensionWrapper>
+        <Panel
+          navAction={navigateTo}
+          title={props.panel.panelTitle}
+          useSearch={false}
+        >
+          <SendWrapper>
+            <Send
+              onChangeSendView={onChangeSendView}
+              onInputChange={onInputChange}
+              onSelectPresetAmount={onSelectPresetAmount}
+              onSubmit={onSubmitSend}
+              selectedAsset={selectedAsset}
+              selectedAssetAmount={sendAmount}
+              selectedAssetBalance='0'
+              toAddress={toAddress}
+            />
+          </SendWrapper>
+        </Panel>
       </StyledExtensionWrapper>)
   }
 

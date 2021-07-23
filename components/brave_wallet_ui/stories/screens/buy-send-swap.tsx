@@ -134,6 +134,7 @@ function BuySendSwap (props: Props) {
           selectedAccount={selectedAccount}
           selectedNetwork={selectedNetwork}
           selectedAsset={swapFromAsset}
+          showHeader={true}
         />
       }
     </Layout>

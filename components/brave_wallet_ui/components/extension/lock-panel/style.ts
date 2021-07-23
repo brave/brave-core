@@ -4,7 +4,7 @@ import LockIcon from '../../../assets/svg-icons/graphic-lock-icon.svg'
 export const StyledWrapper = styled.div`
   display: flex;
   height: 100%;
-  width: 100%;
+  width: 320px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
