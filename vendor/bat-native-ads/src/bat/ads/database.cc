@@ -223,8 +223,7 @@ DBCommandResponse::Status Database::Execute(DBCommand* command) {
     return DBCommandResponse::Status::INITIALIZATION_ERROR;
   }
 
-  const int error = db_.ExecuteAndReturnErrorCode(command->command.c_str());
-  if (error != SQLITE_OK) {
+  if (!db_.Execute(command->command.c_str())) {
     BLOG(0, "Database error: " << db_.GetErrorMessage());
     return DBCommandResponse::Status::COMMAND_ERROR;
   }
