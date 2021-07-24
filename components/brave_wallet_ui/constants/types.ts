@@ -61,6 +61,7 @@ export type PanelTypes =
   | 'send'
   | 'swap'
   | 'apps'
+  | 'accounts'
   | 'networks'
   | 'settings'
   | 'expanded'
@@ -146,6 +147,8 @@ export interface WalletState {
   favoriteApps: AppObjectType[]
   isWalletBackedUp: boolean
   hasIncorrectPassword: boolean
+  selectedAccount: WalletAccountType
+  selectedNetwork: NetworkOptionsType
   accounts: WalletAccountType[]
   walletAccountNames: string[]
   transactions: RPCTransactionType[]

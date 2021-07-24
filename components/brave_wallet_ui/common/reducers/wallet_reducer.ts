@@ -4,8 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 /* global window */
 
+import { NetworkOptions } from '../../options/network-options'
 import { createReducer } from 'redux-act'
-import { WalletState } from '../../constants/types'
+import { NetworkOptionsType, WalletAccountType, WalletState } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 import { InitializedPayloadType } from '../constants/action_types'
 
@@ -16,6 +17,8 @@ const defaultState: WalletState = {
   favoriteApps: [],
   isWalletBackedUp: false,
   hasIncorrectPassword: false,
+  selectedAccount: {} as WalletAccountType,
+  selectedNetwork: NetworkOptions[0],
   accounts: [],
   walletAccountNames: [],
   transactions: []
@@ -44,7 +47,8 @@ reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadTy
     favoriteApps: payload.favoriteApps,
     accounts,
     isWalletBackedUp: payload.isWalletBackedUp,
-    walletAccountNames: payload.walletAccountNames
+    walletAccountNames: payload.walletAccountNames,
+    selectedAccount: accounts[0]
   }
 })
 
@@ -52,6 +56,20 @@ reducer.on(WalletActions.hasIncorrectPassword, (state: any, payload: boolean) =>
   return {
     ...state,
     hasIncorrectPassword: payload
+  }
+})
+
+reducer.on(WalletActions.selectAccount, (state: any, payload: WalletAccountType) => {
+  return {
+    ...state,
+    selectedAccount: payload
+  }
+})
+
+reducer.on(WalletActions.selectNetwork, (state: any, payload: NetworkOptionsType) => {
+  return {
+    ...state,
+    selectedNetwork: payload
   }
 })
 

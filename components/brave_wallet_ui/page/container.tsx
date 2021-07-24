@@ -32,12 +32,11 @@ import {
   AssetOptionType,
   NetworkOptionsType,
   OrderTypes,
-  UserAccountType,
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
-  ToOrFromType
+  ToOrFromType,
+  WalletAccountType
 } from '../constants/types'
-import { mockUserAccounts } from '../stories/mock-data/user-accounts'
 // import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../stories/screens/buy-send-swap'
 import Onboarding from '../stories/screens/onboarding'
@@ -45,7 +44,6 @@ import BackupWallet from '../stories/screens/backup-wallet'
 import { formatePrices } from '../utils/format-prices'
 import { convertMojoTimeToJS } from '../utils/mojo-time'
 import { AssetOptions } from '../options/asset-options'
-import { NetworkOptions } from '../options/network-options'
 import { SlippagePresetOptions } from '../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../options/expiration-preset-options'
 
@@ -64,7 +62,9 @@ function Container (props: Props) {
     isWalletBackedUp,
     hasIncorrectPassword,
     accounts,
-    transactions
+    transactions,
+    selectedNetwork,
+    selectedAccount
   } = props.wallet
 
   // Page Props
@@ -137,24 +137,12 @@ function Container (props: Props) {
     }
   }
 
-  // TODO (DOUGLAS): SelectedAccount needs to be stored in reducer
-  // and setSelectedAccount as a page action
-  const initialValue = React.useMemo(() => {
-    if (isWalletLocked) {
-      return mockUserAccounts[0]
-    }
-    return accounts[0]
-  }, [invalidMnemonic])
-  const [selectedAccount, setSelectedAccount] = React.useState<UserAccountType>(initialValue)
-  const onSelectAccount = (account: UserAccountType) => {
-    setSelectedAccount(account)
+  const onSelectAccount = (account: WalletAccountType) => {
+    props.walletActions.selectAccount(account)
   }
 
-  // TODO (DOUGLAS): This needs to be set up in the Reducer in a future PR
-  // When the network Controller is Setup
-  const [selectedNetwork, setSelectedNetwork] = React.useState<NetworkOptionsType>(NetworkOptions[0])
   const onSelectNetwork = (network: NetworkOptionsType) => {
-    setSelectedNetwork(network)
+    props.walletActions.selectNetwork(network)
   }
 
   // TODO (DOUGLAS): This needs to be set up in the Reducer in a future PR
