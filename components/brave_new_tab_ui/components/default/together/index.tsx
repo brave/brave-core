@@ -60,7 +60,7 @@ class Together extends React.PureComponent<Props, {}> {
 
   shouldCreateCall = (event: any) => {
     event.preventDefault()
-    window.open(`https://together.brave.com/widget`, '_self', 'noopener')
+    window.open(`https://talk.brave.com/widget`, '_self', 'noopener')
   }
 
   render () {
