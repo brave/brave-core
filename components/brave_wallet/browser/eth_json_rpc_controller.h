@@ -43,6 +43,11 @@ class EthJsonRpcController : public KeyedService {
   void Request(const std::string& json_payload,
                URLRequestCallback callback,
                bool auto_retry_on_network_change);
+
+  using GetBlockNumberCallback =
+      base::OnceCallback<void(bool status, uint256_t result)>;
+  void GetBlockNumber(GetBlockNumberCallback callback);
+
   using GetBallanceCallback =
       base::OnceCallback<void(bool status, const std::string& balance)>;
   void GetBalance(const std::string& address, GetBallanceCallback callback);
@@ -102,6 +107,10 @@ class EthJsonRpcController : public KeyedService {
   static GURL GetBlockTrackerURLFromNetwork(Network network);
 
  private:
+  void OnGetBlockNumber(GetBlockNumberCallback callback,
+                        const int status,
+                        const std::string& body,
+                        const std::map<std::string, std::string>& headers);
   void OnGetBalance(GetBallanceCallback callback,
                     const int status,
                     const std::string& body,

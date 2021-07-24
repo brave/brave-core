@@ -143,6 +143,31 @@ void EthJsonRpcController::SetCustomNetwork(const GURL& network_url) {
   network_url_ = network_url;
 }
 
+void EthJsonRpcController::GetBlockNumber(GetBlockNumberCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnGetBlockNumber,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  return Request(eth_blockNumber(), std::move(internal_callback), true);
+}
+
+void EthJsonRpcController::OnGetBlockNumber(
+    GetBlockNumberCallback callback,
+    const int status,
+    const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, 0);
+    return;
+  }
+  uint256_t block_number;
+  if (!ParseEthGetBlockNumber(body, &block_number)) {
+    std::move(callback).Run(false, 0);
+    return;
+  }
+
+  std::move(callback).Run(true, block_number);
+}
+
 void EthJsonRpcController::GetBalance(
     const std::string& address,
     EthJsonRpcController::GetBallanceCallback callback) {

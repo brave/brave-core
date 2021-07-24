@@ -43,6 +43,17 @@ TEST(EthResponseParserUnitTest, ParseEthGetBalanceError) {
   ASSERT_FALSE(ParseEthGetBalance(json, &balance));
 }
 
+TEST(EthResponseParserUnitTest, ParseEthGetBlockNumber) {
+  const std::string json(R"({
+    "id":83,
+    "jsonrpc": "2.0",
+    "result": "0x4b7" // 1207
+  })");
+  uint256_t block_num;
+  ASSERT_TRUE(ParseEthGetBlockNumber(json, &block_num));
+  EXPECT_EQ(block_num, uint256_t(1207));
+}
+
 TEST(EthResponseParserUnitTest, ParseEthCall) {
   std::string json(
       R"({
