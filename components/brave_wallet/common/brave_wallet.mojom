@@ -137,6 +137,11 @@ interface WalletHandler {
   GetPriceQuote(SwapParams params) => (bool success, SwapResponse response);
   GetTransactionPayload(SwapParams params) =>
       (bool success, SwapResponse response);
+
+  GetTokenByContract(string contract) => (ERCToken? token);
+  GetTokenBySymbol(string symbol) => (ERCToken? token);
+  GetAllTokens() => (array<ERCToken> tokens);
+
   AddFavoriteApp(AppItem appItem);
   RemoveFavoriteApp(AppItem appItem);
   SetInitialAccountNames(array<string> accountNames);

@@ -36,6 +36,13 @@ class WalletHandler : public brave_wallet::mojom::WalletHandler {
   void GetAssetPriceHistory(const std::string& asset,
                             brave_wallet::mojom::AssetPriceTimeframe timeframe,
                             GetAssetPriceHistoryCallback) override;
+
+  void GetTokenByContract(const std::string& contract,
+                          GetTokenByContractCallback) override;
+  void GetTokenBySymbol(const std::string& symbol,
+                        GetTokenBySymbolCallback) override;
+  void GetAllTokens(GetAllTokensCallback) override;
+
   void GetPriceQuote(brave_wallet::mojom::SwapParamsPtr params,
                      GetPriceQuoteCallback) override;
   void GetTransactionPayload(brave_wallet::mojom::SwapParamsPtr params,
