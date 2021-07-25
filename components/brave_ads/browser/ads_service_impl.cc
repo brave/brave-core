@@ -1436,7 +1436,8 @@ bool AdsServiceImpl::MigratePrefs(const int source_version,
       {{6, 7}, &AdsServiceImpl::MigratePrefsVersion6To7},
       {{7, 8}, &AdsServiceImpl::MigratePrefsVersion7To8},
       {{8, 9}, &AdsServiceImpl::MigratePrefsVersion8To9},
-      {{9, 10}, &AdsServiceImpl::MigratePrefsVersion9To10}};
+      {{9, 10}, &AdsServiceImpl::MigratePrefsVersion9To10},
+      {{10, 11}, &AdsServiceImpl::MigratePrefsVersion10To11}};
 
   // Cycle through migration paths, i.e. if upgrading from version 2 to 5 we
   // should migrate version 2 to 3, then 3 to 4 and finally version 4 to 5
@@ -1645,18 +1646,30 @@ void AdsServiceImpl::MigratePrefsVersion8To9() {
 }
 
 void AdsServiceImpl::MigratePrefsVersion9To10() {
+  if (!PrefExists(ads::prefs::kAdsPerHour)) {
+    return;
+  }
+
   const int64_t ads_per_hour = GetInt64Pref(ads::prefs::kAdsPerHour);
-  if (ads_per_hour == -1) {
-    // Default value
+  if (ads_per_hour == -1 || ads_per_hour == 2) {
+    // The user did not change the ads per hour setting from the legacy default
+    // value of 2 so we should clear the preference to transition to
+    // |kDefaultAdNotificationsPerHour|
+    profile_->GetPrefs()->ClearPref(ads::prefs::kAdsPerHour);
+  }
+}
+
+void AdsServiceImpl::MigratePrefsVersion10To11() {
+  if (!PrefExists(ads::prefs::kAdsPerHour)) {
     return;
   }
 
-  if (ads_per_hour != 2) {
-    // User changed ads per day from the legacy default value
-    return;
+  const int64_t ads_per_hour = GetInt64Pref(ads::prefs::kAdsPerHour);
+  if (ads_per_hour == 0 || ads_per_hour == -1) {
+    // Clear the ads per hour preference to transition to
+    // |kDefaultAdNotificationsPerHour|
+    profile_->GetPrefs()->ClearPref(ads::prefs::kAdsPerHour);
   }
-
-  SetInt64Pref(ads::prefs::kAdsPerHour, -1);
 }
 
 bool AdsServiceImpl::IsUpgradingFromPreBraveAdsBuild() {
