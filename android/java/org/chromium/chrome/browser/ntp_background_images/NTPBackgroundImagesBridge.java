@@ -7,12 +7,16 @@ package org.chromium.chrome.browser.ntp_background_images;
 
 import androidx.annotation.Nullable;
 
+import org.chromium.base.Log;
 import org.chromium.base.ObserverList;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
+import org.chromium.chrome.browser.ntp_background_images.model.ImageCredit;
+import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
 import org.chromium.chrome.browser.ntp_background_images.model.TopSite;
 import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
 import org.chromium.chrome.browser.ntp_background_images.util.NewTabPageListener;
@@ -67,6 +71,8 @@ public class NTPBackgroundImagesBridge {
     }
 
     static public boolean enableSponsoredImages() {
+        Log.w("NTPBackgroundImagesBridge::enableSponsoredImages", "BraveFeatureList.BRAVE_REWARDS: " + String.valueOf(ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)));
+        Log.w("NTPBackgroundImagesBridge::enableSponsoredImages", "getSafetynetCheckFailed: " + String.valueOf(BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()));
         return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
         && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed();
     }
@@ -76,8 +82,9 @@ public class NTPBackgroundImagesBridge {
     }
 
     @Nullable
-    public Wallpaper getCurrentWallpaper() {
+    public NTPImage getCurrentWallpaper() {
         ThreadUtils.assertOnUiThread();
+        Log.w("NTPBackgroundImagesBridge::getCurrentWallpaper", "enableSponsoredImages: " + String.valueOf(enableSponsoredImages()));
         if (enableSponsoredImages()) {
             return NTPBackgroundImagesBridgeJni.get().getCurrentWallpaper(
                 mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
@@ -139,11 +146,19 @@ public class NTPBackgroundImagesBridge {
     }
 
     @CalledByNative
-    public static Wallpaper createWallpaper(
+    public static BackgroundImage createWallpaper(
+            String imagePath, String author, String link) {
+        Log.w("NTPBackgroundImagesBridge", "createWallpaper:imagePath: " + imagePath);
+        return new BackgroundImage(imagePath, 0, 0, new ImageCredit(author, link));
+    }
+
+    @CalledByNative
+    public static Wallpaper createBrandedWallpaper(
             String imagePath, int focalPointX, int focalPointY,
             String logoPath, String logoDestinationUrl,
             String themeName, boolean isSponsored,
             String creativeInstanceId, String wallpaperId) {
+        Log.w("NTPBackgroundImagesBridge", "createBrandedWallpaper:imagePath: " + imagePath);
         return new Wallpaper(imagePath, focalPointX, focalPointY,
                              logoPath, logoDestinationUrl,
                              themeName, isSponsored, creativeInstanceId,
@@ -160,7 +175,7 @@ public class NTPBackgroundImagesBridge {
     @NativeMethods
     interface Natives {
         NTPBackgroundImagesBridge getInstance(Profile profile);
-        Wallpaper getCurrentWallpaper(long nativeNTPBackgroundImagesBridge,
+        NTPImage getCurrentWallpaper(long nativeNTPBackgroundImagesBridge,
                                       NTPBackgroundImagesBridge caller);
         void registerPageView(long nativeNTPBackgroundImagesBridge,
                               NTPBackgroundImagesBridge caller);

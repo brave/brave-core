@@ -18,6 +18,8 @@ struct SponsoredImagesComponentData {
   std::string component_id;
 };
 
+absl::optional<SponsoredImagesComponentData> GetBackgroundImagesComponentData();
+
 absl::optional<SponsoredImagesComponentData> GetSponsoredImagesComponentData(
     const std::string& region);
 

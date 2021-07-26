@@ -17,22 +17,33 @@ ViewCounterModel::ViewCounterModel() {
 ViewCounterModel::~ViewCounterModel() = default;
 
 bool ViewCounterModel::ShouldShowBrandedWallpaper() const {
+  LOG(WARNING) << "ViewCounterModel::ShouldShowBrandedWallpaper: ignore_count_to_branded_wallpaper_: " << ignore_count_to_branded_wallpaper_ << " count_to_branded_wallpaper_: " << count_to_branded_wallpaper_;
   if (ignore_count_to_branded_wallpaper_)
     return true;
 
   return count_to_branded_wallpaper_ == 0;
 }
 
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 void ViewCounterModel::ResetCurrentWallpaperImageIndex() {
   current_wallpaper_image_index_ = 0;
 }
+#endif
+
+void ViewCounterModel::ResetCurrentBrandedWallpaperImageIndex() {
+  current_branded_wallpaper_image_index_ = 0;
+}
 
 void ViewCounterModel::RegisterPageView() {
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   DCHECK_NE(-1, total_image_count_);
+#endif
+  DCHECK_NE(-1, total_branded_image_count_);
 
+  LOG(WARNING) << "ViewCounterModel::RegisterPageView: ignore_count_to_branded_wallpaper_: " << ignore_count_to_branded_wallpaper_;
   if (ignore_count_to_branded_wallpaper_) {
-    current_wallpaper_image_index_++;
-    current_wallpaper_image_index_ %= total_image_count_;
+    current_branded_wallpaper_image_index_++;
+    current_branded_wallpaper_image_index_ %= total_branded_image_count_;
     return;
   }
 
@@ -45,8 +56,16 @@ void ViewCounterModel::RegisterPageView() {
   if (count_to_branded_wallpaper_ < 0) {
     // Reset count and increse image index for next time.
     count_to_branded_wallpaper_ = kRegularCountToBrandedWallpaper;
+    LOG(WARNING) << "ViewCounterModel::RegisterPageView: count_to_branded_wallpaper_: " << count_to_branded_wallpaper_ << " current_wallpaper_image_index_: " << current_branded_wallpaper_image_index_ << " current_branded_wallpaper_image_index_: " << current_branded_wallpaper_image_index_;
+    current_branded_wallpaper_image_index_++;
+    current_branded_wallpaper_image_index_ %= total_branded_image_count_;
+  } else {
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+    // Increase background image index
+    LOG(WARNING) << "ViewCounterModel::RegisterPageView: count_to_branded_wallpaper_: " << count_to_branded_wallpaper_ << " current_wallpaper_image_index_: " << current_wallpaper_image_index_ << " current_branded_wallpaper_image_index_: " << current_branded_wallpaper_image_index_;
     current_wallpaper_image_index_++;
     current_wallpaper_image_index_ %= total_image_count_;
+#endif
   }
 }
 
@@ -54,8 +73,12 @@ void ViewCounterModel::Reset(bool use_initial_count) {
   count_to_branded_wallpaper_ =
       use_initial_count ? kInitialCountToBrandedWallpaper
                         : kRegularCountToBrandedWallpaper;
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   current_wallpaper_image_index_ = 0;
   total_image_count_ = -1;
+#endif
+  current_branded_wallpaper_image_index_ = 0;
+  total_branded_image_count_ = -1;
   ignore_count_to_branded_wallpaper_ = false;
 }
 

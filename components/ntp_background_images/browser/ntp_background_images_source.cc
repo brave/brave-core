@@ -15,8 +15,8 @@
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
+#include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -69,8 +69,8 @@ void NTPBackgroundImagesSource::StartDataRequest(
     return;
   }
 
-  auto* images_data =
-      service_->GetBackgroundImagesData(IsSuperReferralPath(path));
+  auto* images_data = service_->GetBrandedImagesData(IsSuperReferralPath(path));
+
   if (!images_data) {
     content::GetUIThreadTaskRunner({})->PostTask(
         FROM_HERE, base::BindOnce(std::move(callback),
@@ -164,7 +164,7 @@ bool NTPBackgroundImagesSource::IsLogoPath(const std::string& path) const {
 int NTPBackgroundImagesSource::GetLogoIndexFromPath(
     const std::string& path) const {
   const bool is_super_referral_path = IsSuperReferralPath(path);
-  auto* images_data = service_->GetBackgroundImagesData(is_super_referral_path);
+  auto* images_data = service_->GetBrandedImagesData(is_super_referral_path);
   if (!images_data)
     return -1;
 
@@ -185,7 +185,7 @@ int NTPBackgroundImagesSource::GetLogoIndexFromPath(
 int NTPBackgroundImagesSource::GetWallpaperIndexFromPath(
     const std::string& path) const {
   const bool is_super_referral_path = IsSuperReferralPath(path);
-  auto* images_data = service_->GetBackgroundImagesData(is_super_referral_path);
+  auto* images_data = service_->GetBrandedImagesData(is_super_referral_path);
   if (!images_data)
     return -1;
 

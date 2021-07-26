@@ -12,6 +12,7 @@
 
 #include "base/values.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -31,7 +32,10 @@ class WeeklyStorage;
 
 namespace ntp_background_images {
 
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 struct NTPBackgroundImagesData;
+#endif
+struct NTPSponsoredImagesData;
 struct TopSite;
 
 class ViewCounterService : public KeyedService,
@@ -60,7 +64,10 @@ class ViewCounterService : public KeyedService,
                                    const std::string& wallpaper_id);
 
   base::Value GetCurrentWallpaperForDisplay() const;
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   base::Value GetCurrentWallpaper() const;
+#endif
+  base::Value GetCurrentBrandedWallpaper() const;
   std::vector<TopSite> GetTopSitesVectorForWebUI() const;
   std::vector<TopSite> GetTopSitesVectorData() const;
 
@@ -70,10 +77,13 @@ class ViewCounterService : public KeyedService,
 
   void BrandedWallpaperWillBeDisplayed(const std::string& wallpaper_id);
 
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+  NTPBackgroundImagesData* GetCurrentWallpaperData() const;
+#endif
   // Gets the current data for branded wallpaper, if there
   // is a wallpaper active. Does not consider user opt-in
   // status, or consider whether the wallpaper should be shown.
-  NTPBackgroundImagesData* GetCurrentBrandedWallpaperData() const;
+  NTPSponsoredImagesData* GetCurrentBrandedWallpaperData() const;
 
   void InitializeWebUIDataSource(content::WebUIDataSource* html_source);
 
@@ -105,7 +115,10 @@ class ViewCounterService : public KeyedService,
   void Shutdown() override;
 
   // NTPBackgroundImagesService::Observer
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   void OnUpdated(NTPBackgroundImagesData* data) override;
+#endif
+  void OnUpdated(NTPSponsoredImagesData* data) override;
   void OnSuperReferralEnded() override;
 
   void ResetNotificationState();
