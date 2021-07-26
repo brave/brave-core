@@ -3,47 +3,31 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
+#include "build/build_config.h"
+#include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_command_controller.h"
+#include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/test/test_browser_dialog.h"
-#include "chrome/browser/ui/ui_features.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/tabs/tab.h"
+#include "chrome/browser/ui/views/tabs/tab_close_button.h"
 #include "chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h"
 #include "chrome/browser/ui/views/tabs/tab_hover_card_controller.h"
+#include "chrome/browser/ui/views/tabs/tab_hover_card_metrics.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
-#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/grit/generated_resources.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/views/controls/label.h"
+#include "ui/views/test/widget_test.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_observer.h"
 
 using views::Widget;
-
-// Helper to wait until the hover card widget is visible.
-class HoverCardVisibleWaiter : public views::WidgetObserver {
- public:
-  explicit HoverCardVisibleWaiter(Widget* hover_card)
-      : hover_card_(hover_card) {
-    hover_card_->AddObserver(this);
-  }
-  ~HoverCardVisibleWaiter() override { hover_card_->RemoveObserver(this); }
-
-  void Wait() {
-    if (hover_card_->IsVisible())
-      return;
-    run_loop_.Run();
-  }
-
-  // WidgetObserver overrides:
-  void OnWidgetVisibilityChanged(Widget* widget, bool visible) override {
-    if (visible)
-      run_loop_.Quit();
-  }
-
- private:
-  Widget* const hover_card_;
-  base::RunLoop run_loop_;
-};
 
 class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest {
  public:
@@ -52,54 +36,70 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest {
             gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED)) {
     TabHoverCardController::disable_animations_for_testing_ = true;
   }
+  TabHoverCardBubbleViewBrowserTest(const TabHoverCardBubbleViewBrowserTest&) =
+      delete;
+  TabHoverCardBubbleViewBrowserTest& operator=(
+      const TabHoverCardBubbleViewBrowserTest&) = delete;
   ~TabHoverCardBubbleViewBrowserTest() override = default;
 
-  void SetUp() override {
-    DialogBrowserTest::SetUp();
+  void SetUpOnMainThread() override {
+    DialogBrowserTest::SetUpOnMainThread();
+    tab_strip_ = BrowserView::GetBrowserViewForBrowser(browser())->tabstrip();
   }
 
-  TabHoverCardBubbleView* GetHoverCard(const TabStrip* tab_strip) {
-    return tab_strip->hover_card_controller_->hover_card_;
+  TabStrip* tab_strip() { return tab_strip_; }
+
+  TabHoverCardBubbleView* hover_card() {
+    return tab_strip()->hover_card_controller_->hover_card_;
   }
 
-  static Widget* GetHoverCardWidget(TabHoverCardBubbleView* hover_card) {
-    return hover_card->GetWidget();
+  std::u16string GetHoverCardTitle() {
+    return hover_card()->GetTitleTextForTesting();
   }
 
-  const std::u16string& GetHoverCardTitle(
-      const TabHoverCardBubbleView* hover_card) {
-    return hover_card->title_label_->GetText();
+  std::u16string GetHoverCardDomain() {
+    return hover_card()->GetDomainTextForTesting();
   }
 
-  const std::u16string& GetHoverCardDomain(
-      const TabHoverCardBubbleView* hover_card) {
-    return hover_card->domain_label_->GetText();
+  int GetHoverCardsSeenCount() {
+    return tab_strip()
+        ->hover_card_controller_->metrics_for_testing()
+        ->cards_seen_count();
   }
 
-  void HoverMouseOverTabAt(TabStrip* tab_strip, int index) {
+  void MouseExitTabStrip() {
+    ui::MouseEvent stop_hover_event(ui::ET_MOUSE_EXITED, gfx::Point(),
+                                    gfx::Point(), base::TimeTicks(),
+                                    ui::EF_NONE, 0);
+    tab_strip()->OnMouseExited(stop_hover_event);
+  }
+
+  void ClickMouseOnTab(int index) {
+    Tab* const tab = tab_strip()->tab_at(index);
+    ui::MouseEvent click_event(ui::ET_MOUSE_PRESSED, gfx::Point(), gfx::Point(),
+                               base::TimeTicks(), ui::EF_NONE, 0);
+    tab->OnMousePressed(click_event);
+  }
+
+  void HoverMouseOverTabAt(int index) {
     // We don't use Tab::OnMouseEntered here to invoke the hover card because
     // that path is disabled in browser tests. If we enabled it, the real mouse
     // might interfere with the test.
-    tab_strip->UpdateHoverCard(tab_strip->tab_at(index),
-                               TabController::HoverCardUpdateType::kHover);
+    tab_strip()->UpdateHoverCard(tab_strip()->tab_at(index),
+                                 TabController::HoverCardUpdateType::kHover);
   }
 
   // DialogBrowserTest:
   void ShowUi(const std::string& name) override {
-    TabStrip* tab_strip =
-        BrowserView::GetBrowserViewForBrowser(browser())->tabstrip();
-    HoverMouseOverTabAt(tab_strip, 0);
-    TabHoverCardBubbleView* hover_card = GetHoverCard(tab_strip);
-    Widget* widget = GetHoverCardWidget(hover_card);
-    HoverCardVisibleWaiter waiter(widget);
-    waiter.Wait();
+    HoverMouseOverTabAt(0);
+    views::test::WidgetVisibleWaiter(hover_card()->GetWidget()).Wait();
   }
 
  private:
   std::unique_ptr<base::AutoReset<gfx::Animation::RichAnimationRenderMode>>
       animation_mode_reset_;
 
-  DISALLOW_COPY_AND_ASSIGN(TabHoverCardBubbleViewBrowserTest);
+  TabStrip* tab_strip_ = nullptr;
 };
 
 // This test appears to be flaky on Windows. Upstream tests were also found to
@@ -112,19 +112,16 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest {
 #endif
 IN_PROC_BROWSER_TEST_F(TabHoverCardBubbleViewBrowserTest,
                        MAYBE_ChromeSchemeUrl) {
-  TabStrip* tab_strip =
-      BrowserView::GetBrowserViewForBrowser(browser())->tabstrip();
   TabRendererData new_tab_data = TabRendererData();
   new_tab_data.title = u"Settings - Addresses and more";
   new_tab_data.last_committed_url = GURL("chrome://settings/addresses");
-  tab_strip->AddTabAt(1, new_tab_data, false);
+  tab_strip()->AddTabAt(1, new_tab_data, false);
 
   ShowUi("default");
-  TabHoverCardBubbleView* hover_card = GetHoverCard(tab_strip);
-  Widget* widget = GetHoverCardWidget(hover_card);
+  Widget* widget = hover_card()->GetWidget();
   EXPECT_TRUE(widget != nullptr);
   EXPECT_TRUE(widget->IsVisible());
-  HoverMouseOverTabAt(tab_strip, 1);
-  EXPECT_EQ(GetHoverCardTitle(hover_card), u"Settings - Addresses and more");
-  EXPECT_EQ(GetHoverCardDomain(hover_card), u"brave://settings");
+  HoverMouseOverTabAt(1);
+  EXPECT_EQ(GetHoverCardTitle(), u"Settings - Addresses and more");
+  EXPECT_EQ(GetHoverCardDomain(), u"brave://settings");
 }
