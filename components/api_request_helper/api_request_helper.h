@@ -7,11 +7,11 @@
 #define BRAVE_COMPONENTS_API_REQUEST_HELPER_API_REQUEST_HELPER_H_
 
 #include <list>
-#include <map>
 #include <memory>
 #include <string>
 
 #include "base/callback.h"
+#include "base/containers/flat_map.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "url/gurl.h"
 
@@ -33,14 +33,14 @@ class APIRequestHelper {
   using ResultCallback =
       base::OnceCallback<void(const int,
                               const std::string&,
-                              const std::map<std::string, std::string>&)>;
+                              const base::flat_map<std::string, std::string>&)>;
   void Request(const std::string& method,
                const GURL& url,
                const std::string& payload,
                const std::string& payload_content_type,
                bool auto_retry_on_network_change,
                ResultCallback callback,
-               const std::map<std::string, std::string>& headers = {});
+               const base::flat_map<std::string, std::string>& headers = {});
 
  private:
   APIRequestHelper(const APIRequestHelper&) = delete;

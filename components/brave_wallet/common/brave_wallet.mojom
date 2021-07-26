@@ -7,6 +7,7 @@ module brave_wallet.mojom;
 
 import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
+import "url/mojom/url.mojom";
 
 interface EventsListener {
   ChainChangedEvent(string chain_id);
@@ -14,8 +15,7 @@ interface EventsListener {
 
 interface BraveWalletProvider {
   Init(pending_remote<EventsListener> events_listener);
-  Request(string json_payload) => (int32 http_code,
-                                   string response);
+  Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
   Enable();
   GetChainId() => (string chain_id);
 };
@@ -142,6 +142,14 @@ interface WalletHandler {
   GetTokenBySymbol(string symbol) => (ERCToken? token);
   GetAllTokens() => (array<ERCToken> tokens);
 
+  SetNetwork(Network network);
+  GetNetwork() => (Network network);
+  GetChainId() => (string chainId);
+  GetBlockTrackerUrl() => (string blockTrackerUrl);
+  GetBalance(string address) => (bool status, string balance);
+  GetERC20TokenBalance(string contract,
+                       string address) => (bool status, string balance);
+
   AddFavoriteApp(AppItem appItem);
   RemoveFavoriteApp(AppItem appItem);
   SetInitialAccountNames(array<string> accountNames);
@@ -191,6 +199,32 @@ interface SwapController {
       (bool success, SwapResponse response);
 };
 
-interface EthJsonRpcController {
+enum Network {
+  Mainnet,
+  Rinkeby,
+  Ropsten,
+  Goerli,
+  Kovan,
+  Localhost,
+  Custom
+};
 
+interface EthJsonRpcControllerObserver {
+  ChainChangedEvent(string chain_id);
+};
+
+interface EthJsonRpcController {
+  SetNetwork(Network network);
+  GetNetwork() => (Network network);
+  GetChainId() => (string chainId);
+  GetBlockTrackerUrl() => (string blockTrackerUrl);
+  GetNetworkUrl() => (string networkUrl);
+  GetBalance(string address) => (bool status, string balance);
+  GetERC20TokenBalance(string contract,
+                       string address) => (bool status, string balance);
+  UnstoppableDomainsProxyReaderGetMany(string contract_address, string domain, array<string> keys) => (bool status, string result);
+  EnsProxyReaderGetResolverAddress(string contract_address, string domain) => (bool status, string result);
+  Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
+  AddObserver(pending_remote<EthJsonRpcControllerObserver> observer);
+  SetCustomNetwork(url.mojom.Url provider_url);
 };

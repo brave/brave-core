@@ -12,9 +12,11 @@
 #include "base/bind.h"
 #include "brave/browser/brave_wallet/asset_ratio_controller_factory.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
+#include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/browser/brave_wallet/swap_controller_factory.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
 #include "brave/components/brave_wallet/browser/erc_token_registry.h"
+#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/brave_wallet/browser/swap_controller.h"
@@ -59,12 +61,23 @@ void WalletHandler::EnsureConnected() {
   DCHECK(swap_controller_);
   swap_controller_.set_disconnect_handler(base::BindOnce(
       &WalletHandler::OnConnectionError, weak_ptr_factory_.GetWeakPtr()));
+
+  if (!rpc_controller_) {
+    auto pending =
+        brave_wallet::RpcControllerFactory::GetInstance()->GetForContext(
+            profile_);
+    rpc_controller_.Bind(std::move(pending));
+  }
+  DCHECK(rpc_controller_);
+  rpc_controller_.set_disconnect_handler(base::BindOnce(
+      &WalletHandler::OnConnectionError, weak_ptr_factory_.GetWeakPtr()));
 }
 
 void WalletHandler::OnConnectionError() {
   keyring_controller_.reset();
   asset_ratio_controller_.reset();
   swap_controller_.reset();
+  rpc_controller_.reset();
   EnsureConnected();
 }
 
@@ -180,4 +193,38 @@ void WalletHandler::SetInitialAccountNames(
 void WalletHandler::AddNewAccountName(const std::string& account_name) {
   EnsureConnected();
   keyring_controller_->AddNewAccountName(account_name);
+}
+
+void WalletHandler::GetNetwork(GetNetworkCallback callback) {
+  EnsureConnected();
+  rpc_controller_->GetNetwork(std::move(callback));
+}
+
+void WalletHandler::SetNetwork(brave_wallet::mojom::Network network) {
+  EnsureConnected();
+  rpc_controller_->SetNetwork(network);
+}
+
+void WalletHandler::GetChainId(GetChainIdCallback callback) {
+  EnsureConnected();
+  rpc_controller_->GetChainId(std::move(callback));
+}
+
+void WalletHandler::GetBlockTrackerUrl(GetBlockTrackerUrlCallback callback) {
+  EnsureConnected();
+  rpc_controller_->GetBlockTrackerUrl(std::move(callback));
+}
+
+void WalletHandler::GetBalance(const std::string& address,
+                               GetBalanceCallback callback) {
+  EnsureConnected();
+  rpc_controller_->GetBalance(address, std::move(callback));
+}
+
+void WalletHandler::GetERC20TokenBalance(
+    const std::string& contract,
+    const std::string& address,
+    GetERC20TokenBalanceCallback callback) {
+  EnsureConnected();
+  rpc_controller_->GetERC20TokenBalance(contract, address, std::move(callback));
 }

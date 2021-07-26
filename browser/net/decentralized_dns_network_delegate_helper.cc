@@ -5,12 +5,14 @@
 
 #include "brave/browser/net/decentralized_dns_network_delegate_helper.h"
 
+#include <utility>
 #include <vector>
 
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_call_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/decentralized_dns/constants.h"
 #include "brave/components/decentralized_dns/utils.h"
 #include "brave/components/ipfs/ipfs_utils.h"
@@ -36,8 +38,11 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
     return net::OK;
   }
 
-  auto* rpc_controller =
+  auto pending =
       brave_wallet::RpcControllerFactory::GetForContext(ctx->browser_context);
+
+  mojo::Remote<brave_wallet::mojom::EthJsonRpcController> rpc_controller;
+  rpc_controller.Bind(std::move(pending));
 
   if (!rpc_controller)
     return net::OK;

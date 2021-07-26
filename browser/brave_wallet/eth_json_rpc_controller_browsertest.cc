@@ -3,11 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/containers/flat_map.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -100,13 +102,13 @@ class EthJsonRpcBrowserTest : public InProcessBrowserTest {
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     https_server_->RegisterRequestHandler(callback);
     ASSERT_TRUE(https_server_->Start());
-    auto* rpc_controller = GetEthJsonRpcController();
+    auto rpc_controller = GetEthJsonRpcController();
     rpc_controller->SetCustomNetwork(https_server_->base_url());
   }
 
   void OnResponse(const int status,
                   const std::string& response,
-                  const std::map<std::string, std::string>& headers) {
+                  const base::flat_map<std::string, std::string>& headers) {
     bool success = status == 200;
     if (wait_for_request_) {
       wait_for_request_->Quit();
@@ -155,12 +157,15 @@ class EthJsonRpcBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  brave_wallet::EthJsonRpcController* GetEthJsonRpcController() {
-    brave_wallet::EthJsonRpcController* controller =
-        brave_wallet::RpcControllerFactory::GetInstance()->GetForContext(
-            browser()->profile());
-    EXPECT_NE(controller, nullptr);
-    return controller;
+  mojo::Remote<brave_wallet::mojom::EthJsonRpcController>
+  GetEthJsonRpcController() {
+    if (!rpc_controller_) {
+      auto pending =
+          brave_wallet::RpcControllerFactory::GetInstance()->GetForContext(
+              browser()->profile());
+      rpc_controller_.Bind(std::move(pending));
+    }
+    return std::move(rpc_controller_);
   }
 
  private:
@@ -168,6 +173,7 @@ class EthJsonRpcBrowserTest : public InProcessBrowserTest {
 
   bool expected_success_;
   std::string expected_response_;
+  mojo::Remote<brave_wallet::mojom::EthJsonRpcController> rpc_controller_;
 
   std::unique_ptr<base::RunLoop> wait_for_request_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
@@ -175,16 +181,16 @@ class EthJsonRpcBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, Request) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
-  auto* rpc_controller = GetEthJsonRpcController();
+  auto rpc_controller = GetEthJsonRpcController();
   rpc_controller->Request(R"({
       "id":1,
       "jsonrpc":"2.0",
       "method":"eth_blockNumber",
       "params":[]
     })",
+                          true,
                           base::BindOnce(&EthJsonRpcBrowserTest::OnResponse,
-                                         base::Unretained(this)),
-                          true);
+                                         base::Unretained(this)));
   WaitForResponse(R"({
       "jsonrpc": "2.0",
       "id": 1,
@@ -195,17 +201,16 @@ IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, Request) {
 
 IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, RequestError) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
-  auto* rpc_controller = GetEthJsonRpcController();
-  rpc_controller->Request("",
+  auto rpc_controller = GetEthJsonRpcController();
+  rpc_controller->Request("", true,
                           base::BindOnce(&EthJsonRpcBrowserTest::OnResponse,
-                                         base::Unretained(this)),
-                          true);
+                                         base::Unretained(this)));
   WaitForResponse("", false);
 }
 
 IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, GetBalance) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
-  auto* rpc_controller = GetEthJsonRpcController();
+  auto rpc_controller = GetEthJsonRpcController();
   rpc_controller->GetBalance(
       "0x4e02f254184E904300e0775E4b8eeCB1",
       base::BindOnce(&EthJsonRpcBrowserTest::OnGetBalance,
@@ -215,7 +220,7 @@ IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, GetBalance) {
 
 IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, GetBalanceServerError) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
-  auto* rpc_controller = GetEthJsonRpcController();
+  auto rpc_controller = GetEthJsonRpcController();
   rpc_controller->GetBalance(
       "0x4e02f254184E904300e0775E4b8eeCB1",
       base::BindOnce(&EthJsonRpcBrowserTest::OnGetBalance,
@@ -225,7 +230,7 @@ IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, GetBalanceServerError) {
 
 IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, GetERC20TokenBalance) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
-  auto* rpc_controller = GetEthJsonRpcController();
+  auto rpc_controller = GetEthJsonRpcController();
   rpc_controller->GetERC20TokenBalance(
       "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
       "0x4e02f254184E904300e0775E4b8eeCB1",
@@ -239,7 +244,7 @@ IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, GetERC20TokenBalance) {
 IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest,
                        UnstoppableDomainsProxyReaderGetMany) {
   ResetHTTPSServer(base::BindRepeating(&HandleUnstoppableDomainsRequest));
-  auto* rpc_controller = GetEthJsonRpcController();
+  auto rpc_controller = GetEthJsonRpcController();
   rpc_controller->UnstoppableDomainsProxyReaderGetMany(
       "0xa6E7cEf2EDDEA66352Fd68E5915b60BDbb7309f5" /* contract_address */,
       "brave.crypto" /* domain */,
@@ -268,7 +273,7 @@ IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest,
 IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest,
                        UnstoppableDomainsProxyReaderGetManyServerError) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
-  auto* rpc_controller = GetEthJsonRpcController();
+  auto rpc_controller = GetEthJsonRpcController();
   rpc_controller->UnstoppableDomainsProxyReaderGetMany(
       "0xa6E7cEf2EDDEA66352Fd68E5915b60BDbb7309f5" /* contract_address */,
       "brave.crypto" /* domain */,

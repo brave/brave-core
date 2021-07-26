@@ -89,6 +89,7 @@ handler.on(WalletPageActions.selectAsset.getType(), async (store, payload: Updat
 
 // TODO(bbondy): Remove - Example usage:
 //
+// Swap API
 // import { SwapParams } from '../../constants/types'
 // const walletHandler = await getWalletHandler()
 // var swap_response = await walletHandler.getPriceQuote({
@@ -116,11 +117,23 @@ handler.on(WalletPageActions.selectAsset.getType(), async (store, payload: Updat
 // })
 // console.log(swap_response2)
 //
-// TODO(bbondy): Remove - Example usage:
+// Interacting with the token registry
 // const val1 = await walletHandler.getAllTokens()
 // const val2 = await walletHandler.getTokenBySymbol('BAT')
 // const val3 = await walletHandler.getTokenByContract('0x0D8775F648430679A709E98d2b0Cb6250d2887EF')
 // const val4 = await walletHandler.getTokenByContract('dsaida')
 // console.log('val1-4: ', val1, val2, val3, val4)
+//
+// Getting and setting network:
+//
+// import { Network } from '../../constants/types'
+// const network = await walletHandler.getNetwork()
+// await walletHandler.setNetwork(Network.Rinkeby)
+// const chainId = await walletHandler.getChainId()
+// const blockTrackerUrl = await walletHandler.getBlockTrackerUrl()
+//
+// Getting ETH and BAT ERC20 balance
+// const balance = await walletHandler.getBalance(address)
+// const token_balance = await walletHandler.getERC20TokenBalance('0x0d8775f648430679a709e98d2b0cb6250d2887ef', address)
 
 export default handler.middleware

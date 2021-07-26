@@ -94,15 +94,19 @@ class BraveWalletEventEmitterTest : public InProcessBrowserTest {
 
   net::EmbeddedTestServer* https_server() { return https_server_.get(); }
 
-  brave_wallet::EthJsonRpcController* GetEthJsonRpcController() {
-    brave_wallet::EthJsonRpcController* controller =
-        brave_wallet::RpcControllerFactory::GetInstance()->GetForContext(
-            browser()->profile());
-    EXPECT_NE(controller, nullptr);
-    return controller;
+  mojo::Remote<brave_wallet::mojom::EthJsonRpcController>
+  GetEthJsonRpcController() {
+    if (!rpc_controller_) {
+      auto pending =
+          brave_wallet::RpcControllerFactory::GetInstance()->GetForContext(
+              browser()->profile());
+      rpc_controller_.Bind(std::move(pending));
+    }
+    return std::move(rpc_controller_);
   }
 
  private:
+  mojo::Remote<brave_wallet::mojom::EthJsonRpcController> rpc_controller_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   base::test::ScopedFeatureList feature_list_;
 };
@@ -129,8 +133,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
-  auto* controller = GetEthJsonRpcController();
-  controller->SetNetwork(brave_wallet::Network::kGoerli);
+  auto controller = GetEthJsonRpcController();
+  controller->SetNetwork(brave_wallet::mojom::Network::Goerli);
 
   auto result_first =
       EvalJs(contents, CheckForEventScript("received_chain_changed_event"),

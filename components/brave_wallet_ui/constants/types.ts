@@ -210,6 +210,16 @@ export enum AssetPriceTimeframe {
   All = 6
 }
 
+export enum Network {
+  Mainnet = 0,
+  Rinkeby = 1,
+  Ropsten = 2,
+  Goerli = 3,
+  Kovan = 4,
+  Localhost = 5,
+  Custom = 6
+}
+
 export interface SwapParams {
   takerAddress: string
   sellAmount: string
@@ -245,6 +255,18 @@ export interface SwapResponse {
 export interface SwapResponseReturnInfo {
   success: boolean,
   response: SwapResponse
+}
+
+export interface GetNetworkReturnInfo {
+  network: Network
+}
+
+export interface GetBlockTrackerUrlReturnInfo {
+  blockTrackerUrl: string
+}
+
+export interface GetChainIdReturnInfo {
+  chainId: string
 }
 
 export interface AssetPriceInfo {
@@ -296,6 +318,16 @@ export interface GetAllTokensReturnInfo {
   tokens: TokenInfo[]
 }
 
+export interface GetBalanceReturnInfo {
+  success: boolean
+  balance: string
+}
+
+export interface GetERC20TokenBalanceReturnInfo {
+  success: boolean
+  balance: string
+}
+
 export interface WalletAPIHandler {
   getWalletInfo: () => Promise<WalletInfo>
   lockWallet: () => Promise<void>
@@ -313,6 +345,12 @@ export interface WalletAPIHandler {
   restoreWallet: (mnemonic: string, password: string) => Promise<RestoreWalletReturnInfo>
   getPriceQuote: (swapParams: SwapParams) => Promise<SwapResponseReturnInfo>
   getTransactionPayload: (swapParams: SwapParams) => Promise<SwapResponseReturnInfo>
+  getNetwork: () => Promise<GetNetworkReturnInfo>
+  setNetwork: (netowrk: Network) => Promise<void>
+  getChainId: () => Promise<GetChainIdReturnInfo>
+  getBlockTrackerUrl: () => Promise<GetBlockTrackerUrlReturnInfo>
+  getBalance: (address: string) => Promise<GetBalanceReturnInfo>
+  getERC20TokenBalance: (contract: string, address: string) => Promise<GetERC20TokenBalanceReturnInfo>
 }
 
 export interface RecoveryObject {

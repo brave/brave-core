@@ -125,7 +125,7 @@ void SwapController::OnGetPriceQuote(
     GetPriceQuoteCallback callback,
     const int status,
     const std::string& body,
-    const std::map<std::string, std::string>& headers) {
+    const base::flat_map<std::string, std::string>& headers) {
   auto swap_response = mojom::SwapResponse::New();
   if (status < 200 || status > 299) {
     std::move(callback).Run(false, std::move(swap_response));
@@ -154,7 +154,7 @@ void SwapController::OnGetTransactionPayload(
     GetTransactionPayloadCallback callback,
     const int status,
     const std::string& body,
-    const std::map<std::string, std::string>& headers) {
+    const base::flat_map<std::string, std::string>& headers) {
   auto swap_response = mojom::SwapResponse::New();
   if (status < 200 || status > 299) {
     std::move(callback).Run(false, std::move(std::move(swap_response)));

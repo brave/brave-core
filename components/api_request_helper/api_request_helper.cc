@@ -30,7 +30,7 @@ void APIRequestHelper::Request(
     const std::string& payload_content_type,
     bool auto_retry_on_network_change,
     ResultCallback callback,
-    const std::map<std::string, std::string>& headers) {
+    const base::flat_map<std::string, std::string>& headers) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = url;
   request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
@@ -66,7 +66,7 @@ void APIRequestHelper::OnResponse(
     const std::unique_ptr<std::string> response_body) {
   auto* loader = iter->get();
   auto response_code = -1;
-  std::map<std::string, std::string> headers;
+  base::flat_map<std::string, std::string> headers;
   if (loader->ResponseInfo()) {
     auto headers_list = loader->ResponseInfo()->headers;
     if (headers_list) {

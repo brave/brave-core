@@ -139,7 +139,7 @@ void AssetRatioController::OnGetPrice(
     GetPriceCallback callback,
     const int status,
     const std::string& body,
-    const std::map<std::string, std::string>& headers) {
+    const base::flat_map<std::string, std::string>& headers) {
   std::vector<brave_wallet::mojom::AssetPricePtr> prices;
   if (status < 200 || status > 299) {
     std::move(callback).Run(false, std::move(prices));
@@ -168,7 +168,7 @@ void AssetRatioController::OnGetPriceHistory(
     GetPriceHistoryCallback callback,
     const int status,
     const std::string& body,
-    const std::map<std::string, std::string>& headers) {
+    const base::flat_map<std::string, std::string>& headers) {
   std::vector<brave_wallet::mojom::AssetTimePricePtr> values;
   if (status < 200 || status > 299) {
     std::move(callback).Run(false, std::move(values));

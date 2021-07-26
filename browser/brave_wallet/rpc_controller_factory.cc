@@ -21,14 +21,15 @@ RpcControllerFactory* RpcControllerFactory::GetInstance() {
 }
 
 // static
-EthJsonRpcController* RpcControllerFactory::GetForContext(
-    content::BrowserContext* context) {
+mojo::PendingRemote<mojom::EthJsonRpcController>
+RpcControllerFactory::GetForContext(content::BrowserContext* context) {
   if (!IsAllowedForContext(context)) {
-    return nullptr;
+    return mojo::PendingRemote<mojom::EthJsonRpcController>();
   }
 
   return static_cast<EthJsonRpcController*>(
-      GetInstance()->GetServiceForBrowserContext(context, true));
+             GetInstance()->GetServiceForBrowserContext(context, true))
+      ->MakeRemote();
 }
 
 RpcControllerFactory::RpcControllerFactory()
@@ -44,7 +45,7 @@ KeyedService* RpcControllerFactory::BuildServiceInstanceFor(
   auto shared_url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
 
-  return new EthJsonRpcController(brave_wallet::Network::kMainnet,
+  return new EthJsonRpcController(brave_wallet::mojom::Network::Mainnet,
                                   shared_url_loader_factory);
 }
 

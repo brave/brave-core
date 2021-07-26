@@ -55,6 +55,15 @@ class WalletHandler : public brave_wallet::mojom::WalletHandler {
       const std::vector<std::string>& account_names) override;
   void AddNewAccountName(const std::string& account_name) override;
 
+  void GetNetwork(GetNetworkCallback) override;
+  void SetNetwork(brave_wallet::mojom::Network network) override;
+  void GetChainId(GetChainIdCallback) override;
+  void GetBlockTrackerUrl(GetBlockTrackerUrlCallback) override;
+  void GetBalance(const std::string& address, GetBalanceCallback) override;
+  void GetERC20TokenBalance(const std::string& contract,
+                            const std::string& address,
+                            GetERC20TokenBalanceCallback callback) override;
+
  private:
   void EnsureConnected();
   void OnConnectionError();
@@ -66,6 +75,7 @@ class WalletHandler : public brave_wallet::mojom::WalletHandler {
   mojo::Remote<brave_wallet::mojom::AssetRatioController>
       asset_ratio_controller_;
   mojo::Remote<brave_wallet::mojom::SwapController> swap_controller_;
+  mojo::Remote<brave_wallet::mojom::EthJsonRpcController> rpc_controller_;
 
   // TODO(bbondy): This needs to be persisted in prefs
   std::vector<brave_wallet::mojom::AppItemPtr> favorite_apps;

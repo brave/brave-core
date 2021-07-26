@@ -36,5 +36,8 @@ preprocess_if_expr("preprocess_mojo") {
 mojom("mojom") {
   sources = [ "brave_wallet.mojom" ]
 
-  deps = [ "//mojo/public/mojom/base" ]
+  deps = [
+    "//mojo/public/mojom/base",
+    "//url/mojom:url_mojom_gurl",
+  ]
 }

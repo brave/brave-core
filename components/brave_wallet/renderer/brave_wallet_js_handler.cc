@@ -221,7 +221,7 @@ void BraveWalletJSHandler::SendAsync(gin::Arguments* args) {
       std::make_unique<v8::Global<v8::Function>>(isolate, callback);
 
   brave_wallet_provider_->Request(
-      formed_input,
+      formed_input, true,
       base::BindOnce(&BraveWalletJSHandler::OnSendAsync, base::Unretained(this),
                      std::move(global_callback)));
 }
@@ -267,7 +267,7 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
     auto context_old(
         v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
     brave_wallet_provider_->Request(
-        formed_input,
+        formed_input, true,
         base::BindOnce(&BraveWalletJSHandler::OnRequest, base::Unretained(this),
                        std::move(promise_resolver), isolate,
                        std::move(context_old)));
@@ -283,7 +283,8 @@ void BraveWalletJSHandler::OnRequest(
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
     const int http_code,
-    const std::string& response) {
+    const std::string& response,
+    const base::flat_map<std::string, std::string>& headers) {
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context = context_old.Get(isolate);
   v8::Context::Scope context_scope(context);
@@ -334,7 +335,8 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Enable() {
 void BraveWalletJSHandler::OnSendAsync(
     std::unique_ptr<v8::Global<v8::Function>> callback,
     const int http_code,
-    const std::string& response) {
+    const std::string& response,
+    const base::flat_map<std::string, std::string>& headers) {
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context =
