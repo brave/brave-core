@@ -33,6 +33,7 @@ public class SmoothLineChartEquallySpaced extends View {
 
     private float[] mValues;
     private float mMaxY;
+    private float mCurrentLineX;
     private int[] colors;
 
     public SmoothLineChartEquallySpaced(Context context) {
@@ -48,6 +49,7 @@ public class SmoothLineChartEquallySpaced extends View {
 
         float scale = context.getResources().getDisplayMetrics().density;
 
+        mCurrentLineX = 0;
         mCircleSize = scale * CIRCLE_SIZE;
         mStrokeSize = scale * STROKE_SIZE;
         mBorder = mCircleSize;
@@ -69,6 +71,11 @@ public class SmoothLineChartEquallySpaced extends View {
             }
         }
 
+        invalidate();
+    }
+
+    public void drawLine(float x) {
+        mCurrentLineX = x;
         invalidate();
     }
 
@@ -144,5 +151,29 @@ public class SmoothLineChartEquallySpaced extends View {
         mPaint.setColor(Color.WHITE);
         canvas.drawCircle(points.get(points.size() - 1).x, points.get(points.size() - 1).y,
                 (mCircleSize - mStrokeSize) / 2, mPaint);
+
+        // Draw vertical lines
+        if (mCurrentLineX != -1) {
+            Paint paint = new Paint();
+            paint.setARGB(255, 0, 0, 0);
+
+            paint.setStrokeWidth(2f);
+            canvas.drawLine(mCurrentLineX, 35, mCurrentLineX, canvas.getHeight() - 10, paint);
+            float possibleValue =
+                    mValues.length > 1 ? (mCurrentLineX / (width / mValues.length)) : 0;
+            if (possibleValue < 0) {
+                possibleValue = 0;
+            } else if (possibleValue >= mValues.length) {
+                possibleValue = mValues.length - 1;
+            }
+            Paint paintText = new Paint();
+            paintText.setARGB(255, 0, 0, 0);
+            paintText.setTextSize(35);
+            float textX = mCurrentLineX - 20;
+            if (textX < 0) {
+                textX = mCurrentLineX;
+            }
+            canvas.drawText(String.valueOf(mValues[(int) possibleValue]), textX, 35, paintText);
+        }
     }
 }

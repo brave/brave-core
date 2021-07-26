@@ -6,6 +6,8 @@
 package org.chromium.chrome.browser.crypto_wallet;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -63,6 +65,24 @@ public class AssetDetailActivity
 
         chartES = findViewById(R.id.line_chart);
         chartES.setColors(new int[] {0xFF12A378});
+        chartES.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                SmoothLineChartEquallySpaced chartES = (SmoothLineChartEquallySpaced) v;
+                if (chartES == null) {
+                    return true;
+                }
+                if (event.getAction() == MotionEvent.ACTION_MOVE
+                        || event.getAction() == MotionEvent.ACTION_DOWN) {
+                    chartES.drawLine(event.getRawX());
+                } else if (event.getAction() == MotionEvent.ACTION_UP
+                        || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    chartES.drawLine(-1);
+                }
+
+                return true;
+            }
+        });
 
         onInitialLayoutInflationComplete();
     }
