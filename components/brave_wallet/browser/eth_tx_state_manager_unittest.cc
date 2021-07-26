@@ -115,10 +115,22 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   base::Value value1 = EthTxStateManager::TxMetaToValue(meta1);
   auto meta_from_value1 = EthTxStateManager::ValueToTxMeta(value1);
   ASSERT_NE(meta_from_value1, nullptr);
-  ASSERT_EQ(meta_from_value1->tx->type(), 1);
+  EXPECT_EQ(meta_from_value1->tx->type(), 1);
   Eip2930Transaction* tx_from_value1 =
       static_cast<Eip2930Transaction*>(meta_from_value1->tx.get());
   EXPECT_EQ(*tx_from_value1, *static_cast<Eip2930Transaction*>(meta1.tx.get()));
+
+  // type2
+  std::unique_ptr<Eip1559Transaction> tx2 =
+      std::make_unique<Eip1559Transaction>(tx_data, 3, 30, 50);
+  EthTxStateManager::TxMeta meta2(std::move(tx2));
+  base::Value value2 = EthTxStateManager::TxMetaToValue(meta2);
+  auto meta_from_value2 = EthTxStateManager::ValueToTxMeta(value2);
+  ASSERT_NE(meta_from_value2, nullptr);
+  EXPECT_EQ(meta_from_value2->tx->type(), 2);
+  Eip1559Transaction* tx_from_value2 =
+      static_cast<Eip1559Transaction*>(meta_from_value2->tx.get());
+  EXPECT_EQ(*tx_from_value2, *static_cast<Eip1559Transaction*>(meta2.tx.get()));
 }
 
 TEST_F(EthTxStateManagerUnitTest, TxOperations) {

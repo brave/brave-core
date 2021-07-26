@@ -12,6 +12,7 @@
 #include "base/util/values/values_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eip2930_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -145,6 +146,14 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
       if (!tx_from_value)
         return nullptr;
       meta->tx = std::make_unique<Eip2930Transaction>(*tx_from_value);
+      break;
+    }
+    case 2: {
+      absl::optional<Eip1559Transaction> tx_from_value =
+          Eip1559Transaction::FromValue(*tx);
+      if (!tx_from_value)
+        return nullptr;
+      meta->tx = std::make_unique<Eip1559Transaction>(*tx_from_value);
       break;
     }
     default:
