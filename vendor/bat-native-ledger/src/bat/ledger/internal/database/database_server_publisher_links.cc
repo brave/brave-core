@@ -43,7 +43,7 @@ void DatabaseServerPublisherLinks::InsertOrUpdate(
       continue;
     }
     value_list += base::StringPrintf(
-        R"(("%s","%s","%s"),)",
+        R"(('%s','%s','%s'),)",
         server_info.publisher_key.c_str(),
         link.first.c_str(),
         link.second.c_str());

@@ -40,7 +40,7 @@ void DatabaseServerPublisherAmounts::InsertOrUpdate(
   std::string value_list;
   for (const auto& amount : server_info.banner->amounts) {
     value_list += base::StringPrintf(
-        R"(("%s",%g),)",
+        R"(('%s',%g),)",
         server_info.publisher_key.c_str(),
         amount);
   }

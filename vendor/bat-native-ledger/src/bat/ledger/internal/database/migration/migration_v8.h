@@ -17,7 +17,7 @@ const char v8[] = R"(
 
   CREATE TABLE contribution_info (
     publisher_id LONGVARCHAR,
-    probi TEXT "0"  NOT NULL,
+    probi TEXT '0'  NOT NULL,
     date INTEGER NOT NULL,
     type INTEGER NOT NULL,
     month INTEGER NOT NULL,

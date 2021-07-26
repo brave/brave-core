@@ -48,7 +48,7 @@ void DatabasePublisherInfo::InsertOrUpdate(
       "VALUES (?, ?, ?, ?, ?, "
       "(SELECT IFNULL( "
       "(SELECT favicon FROM %s "
-      "WHERE publisher_id = ?), \"\")));",
+      "WHERE publisher_id = ?), '')));",
       kTableName,
       kTableName);
 
