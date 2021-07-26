@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/wallet_bg"
     android:scrollbars="vertical"
     android:fadeScrollbars="false"
     android:fillViewport="true">
@@ -34,7 +35,7 @@
             android:layout_marginEnd="64dp"
             android:layout_marginBottom="24dp"
             android:text="@string/your_recovery_phrase_text"
-            android:textColor="#686978"
+            android:textColor="@color/wallet_secondary_text_color"
             android:textSize="14sp"/>
 
         <androidx.cardview.widget.CardView
@@ -51,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
-                android:background="@android:color/white"
+                android:background="@color/wallet_warning_box_bg_color"
                 android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
@@ -66,7 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/your_recovery_phrase_warning_text"
-                    android:textColor="#686978"
+                    android:textColor="@color/recovery_phrase_warning_text_color"
                     android:textSize="14sp"/>
 
             </LinearLayout>
@@ -101,7 +102,9 @@
             android:layout_height="wrap_content"
             android:text="@string/recovery_phrase_checkbox_text"
             android:textSize="14sp"
-            android:textColor="#495057"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/wallet_secondary_layout_text_color"
+            android:buttonTint="@color/brave_action_color"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="24dp"/>

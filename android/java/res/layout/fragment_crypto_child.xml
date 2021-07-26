@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/wallet_bg"
     android:fillViewport="true">
 
         <LinearLayout
@@ -37,7 +38,7 @@
                     android:text="1.3%"
                     android:layout_marginEnd="8dp"
                     android:drawablePadding="4dp"
-                    android:textColor="#51CF66"
+                    android:textColor="@color/wallet_positive_trend_color"
                     android:textSize="14sp"
                     app:drawableStartCompat="@drawable/ic_up_icon" />
 
@@ -45,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/today"
-                    android:textColor="#84889C"
+                    android:textColor="@color/wallet_secondary_layout_text_color"
                     android:textSize="14sp" />
 
             </LinearLayout>
@@ -55,8 +56,7 @@
                 android:layout_marginTop="32dp"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:id="@+id/line_chart"
-                android:background="@android:color/white" />
+                android:id="@+id/line_chart" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -80,7 +80,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/wallet_radio_button_selector"
                         android:gravity="center"
-                        android:padding="4dp"
+                        android:layout_margin="4dp"
                         android:textColor="@color/crypto_wallet_radiobutton_color_selector"
                         android:button="@null"
                         android:textSize="14sp"
@@ -211,7 +211,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#E9E9F4"
+                android:background="@color/wallet_edittext_outline_color"
                 android:layout_marginBottom="8dp"/>
 
             <androidx.recyclerview.widget.RecyclerView

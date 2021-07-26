@@ -5,6 +5,7 @@
     tools:ignore="MergeRootFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/wallet_bg"
     tools:context=".BraveWalletActivity">
 
     <LinearLayout
@@ -24,10 +25,10 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#F8F9FA"
-              android:translationZ="10dp"
-              app:titleTextColor="@color/wallet_text_color"
-              app:collapseIcon="@drawable/ic_baseline_arrow_back_24"
+            android:background="@color/wallet_toolbar_bg_color"
+            android:translationZ="10dp"
+            app:titleTextColor="@color/wallet_text_color"
+            app:collapseIcon="@drawable/ic_baseline_arrow_back_24"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
         </com.google.android.material.appbar.AppBarLayout>
@@ -36,7 +37,7 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#F8F9FA"
+            android:background="@color/wallet_toolbar_bg_color"
             app:tabIndicatorColor="@color/tab_color"
             app:tabTextAppearance="@style/BraveWalletTabsTextAppearance"
             app:tabGravity="fill"

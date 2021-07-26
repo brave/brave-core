@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="vertical"
+    android:background="@color/wallet_bg"
     android:fadeScrollbars="false"
     android:fillViewport="true">
 
@@ -26,7 +27,6 @@
             app:srcCompat="@drawable/ic_baseline_arrow_back_24"
             android:padding="16dp"
             android:layout_gravity="start|top"
-            app:tint="@android:color/black"
             android:contentDescription="@null"/>
 
     </FrameLayout>
