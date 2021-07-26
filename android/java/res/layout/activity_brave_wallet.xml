@@ -43,7 +43,7 @@
             app:tabSelectedTextColor="@color/tab_color"
             app:tabTextColor="@color/wallet_text_color" />
 
-        <androidx.viewpager.widget.ViewPager
+        <org.chromium.chrome.browser.custom_layout.NonSwipeableViewPager
             android:id="@+id/navigation_view_pager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
