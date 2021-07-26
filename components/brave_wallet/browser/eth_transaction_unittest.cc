@@ -194,8 +194,8 @@ TEST(EthTransactionUnitTest, GetDataFee) {
 TEST(EthTransactionUnitTest, GetUpFrontCost) {
   EthTransaction tx(EthTransaction::TxData(
       0x00, 1000, 10000000,
-      EthAddress::FromHex("0x3535353535353535353535353535353535353535"),
-      42, std::vector<uint8_t>()));
+      EthAddress::FromHex("0x3535353535353535353535353535353535353535"), 42,
+      std::vector<uint8_t>()));
   EXPECT_EQ(tx.GetUpfrontCost(), uint256_t(10000000042));
 }
 

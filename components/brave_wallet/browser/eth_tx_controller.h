@@ -45,13 +45,13 @@ class EthTxController {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  void AddUnapprovedTransaction(const EthTransaction& tx,
+  void AddUnapprovedTransaction(std::unique_ptr<EthTransaction> tx,
                                 const EthAddress& from);
   bool ApproveTransaction(const std::string& tx_meta_id);
   void RejectTransaction(const std::string& tx_meta_id);
 
  private:
-  void OnGetNextNonce(EthTxStateManager::TxMeta meta,
+  void OnGetNextNonce(std::unique_ptr<EthTxStateManager::TxMeta> meta,
                       bool success,
                       uint256_t nonce);
   void PublishTransaction(const EthTransaction& tx,

@@ -43,13 +43,14 @@ void EthTxController::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void EthTxController::AddUnapprovedTransaction(const EthTransaction& tx,
-                                               const EthAddress& from) {
-  EthTxStateManager::TxMeta meta(tx);
+void EthTxController::AddUnapprovedTransaction(
+    std::unique_ptr<EthTransaction> tx,
+    const EthAddress& from) {
+  EthTxStateManager::TxMeta meta(std::move(tx));
   meta.id = EthTxStateManager::GenerateMetaID();
   // TODO(darkdh): estimate gas price and limit
-  meta.tx.set_gas_price(20);
-  meta.tx.set_gas_limit(21000);
+  meta.tx->set_gas_price(20);
+  meta.tx->set_gas_limit(21000);
   meta.from = from;
   meta.created_time = base::Time::Now();
   meta.status = EthTxStateManager::TransactionStatus::UNAPPROVED;
@@ -60,48 +61,54 @@ void EthTxController::AddUnapprovedTransaction(const EthTransaction& tx,
 }
 
 bool EthTxController::ApproveTransaction(const std::string& tx_meta_id) {
-  EthTxStateManager::TxMeta meta;
-  if (!tx_state_manager_->GetTx(tx_meta_id, &meta)) {
+  std::unique_ptr<EthTxStateManager::TxMeta> meta =
+      tx_state_manager_->GetTx(tx_meta_id);
+  if (!meta) {
     LOG(ERROR) << "No transaction found";
     return false;
   }
-  if (!meta.last_gas_price) {
+  if (!meta->last_gas_price) {
     nonce_tracker_->GetNextNonce(
-        meta.from, base::BindOnce(&EthTxController::OnGetNextNonce,
-                                  weak_factory_.GetWeakPtr(), std::move(meta)));
+        meta->from,
+        base::BindOnce(&EthTxController::OnGetNextNonce,
+                       weak_factory_.GetWeakPtr(), std::move(meta)));
   } else {
-    OnGetNextNonce(EthTxStateManager::TxMeta(meta), true, meta.tx.nonce());
+    uint256_t nonce = meta->tx->nonce();
+    OnGetNextNonce(std::move(meta), true, nonce);
   }
 
   return true;
 }
 
 void EthTxController::RejectTransaction(const std::string& tx_meta_id) {
-  EthTxStateManager::TxMeta meta;
-  if (!tx_state_manager_->GetTx(tx_meta_id, &meta)) {
+  std::unique_ptr<EthTxStateManager::TxMeta> meta =
+      tx_state_manager_->GetTx(tx_meta_id);
+  if (!meta) {
     LOG(ERROR) << "No transaction found";
     return;
   }
-  meta.status = EthTxStateManager::TransactionStatus::REJECTED;
-  tx_state_manager_->AddOrUpdateTx(meta);
+  meta->status = EthTxStateManager::TransactionStatus::REJECTED;
+  tx_state_manager_->AddOrUpdateTx(*meta);
 }
 
-void EthTxController::OnGetNextNonce(EthTxStateManager::TxMeta meta,
-                                     bool success,
-                                     uint256_t nonce) {
+void EthTxController::OnGetNextNonce(
+    std::unique_ptr<EthTxStateManager::TxMeta> meta,
+    bool success,
+    uint256_t nonce) {
   if (!success) {
     // TODO(darkdh): Notify observers
     LOG(ERROR) << "GetNextNonce failed";
     return;
   }
-  meta.tx.set_nonce(nonce);
+  meta->tx->set_nonce(nonce);
   DCHECK(!keyring_controller_->IsLocked());
   auto* default_keyring = keyring_controller_->GetDefaultKeyring();
   DCHECK(default_keyring);
-  default_keyring->SignTransaction(meta.from.ToChecksumAddress(), &meta.tx);
-  meta.status = EthTxStateManager::TransactionStatus::APPROVED;
-  tx_state_manager_->AddOrUpdateTx(meta);
-  PublishTransaction(meta.tx, meta.id);
+  default_keyring->SignTransaction(meta->from.ToChecksumAddress(),
+                                   meta->tx.get());
+  meta->status = EthTxStateManager::TransactionStatus::APPROVED;
+  tx_state_manager_->AddOrUpdateTx(*meta);
+  PublishTransaction(*meta->tx, meta->id);
 }
 
 void EthTxController::PublishTransaction(const EthTransaction& tx,
@@ -120,16 +127,17 @@ void EthTxController::PublishTransaction(const EthTransaction& tx,
 void EthTxController::OnPublishTransaction(std::string tx_meta_id,
                                            bool status,
                                            const std::string& tx_hash) {
-  EthTxStateManager::TxMeta meta;
-  if (!tx_state_manager_->GetTx(tx_meta_id, &meta)) {
+  std::unique_ptr<EthTxStateManager::TxMeta> meta =
+      tx_state_manager_->GetTx(tx_meta_id);
+  if (!meta) {
     DCHECK(false) << "Transaction should be found";
     return;
   }
   if (status) {
-    meta.status = EthTxStateManager::TransactionStatus::SUBMITTED;
-    meta.submitted_time = base::Time::Now();
-    meta.tx_hash = tx_hash;
-    tx_state_manager_->AddOrUpdateTx(meta);
+    meta->status = EthTxStateManager::TransactionStatus::SUBMITTED;
+    meta->submitted_time = base::Time::Now();
+    meta->tx_hash = tx_hash;
+    tx_state_manager_->AddOrUpdateTx(*meta);
     pending_tx_tracker_->UpdatePendingTransactions();
   }
 }

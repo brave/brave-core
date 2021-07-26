@@ -146,7 +146,7 @@ TEST(Eip1559TransactionUnitTest, Serialization) {
   base::Value tx_value = tx.ToValue();
   auto tx_from_value = Eip1559Transaction::FromValue(tx_value);
   ASSERT_NE(tx_from_value, absl::nullopt);
-  EXPECT_EQ(tx_from_value, tx);
-  }
+  EXPECT_EQ(*tx_from_value, tx);
+}
 
 }  // namespace brave_wallet

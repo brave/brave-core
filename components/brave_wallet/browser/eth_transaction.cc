@@ -211,7 +211,7 @@ uint256_t EthTransaction::GetBaseFee() const {
 uint256_t EthTransaction::GetDataFee() const {
   uint256_t cost = 0;
   for (uint8_t byte : data_) {
-      cost += byte == 0 ? kTxDataZeroCostPerByte : kTxDataCostPerByte;
+    cost += byte == 0 ? kTxDataZeroCostPerByte : kTxDataCostPerByte;
   }
   return cost;
 }

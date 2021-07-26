@@ -68,7 +68,7 @@ TEST(Eip2930TransactionUnitTest, AccessListAndValue) {
   auto access_list_from_value =
       Eip2930Transaction::ValueToAccessList(access_list_value);
   ASSERT_NE(access_list_from_value, absl::nullopt);
-  EXPECT_EQ(access_list_from_value, access_list);
+  EXPECT_EQ(*access_list_from_value, access_list);
 }
 
 TEST(Eip2930TransactionUnitTest, GetMessageToSign) {
@@ -191,7 +191,7 @@ TEST(Eip2930TransactionUnitTest, GetBaseFee) {
                          5566);
   *tx2.access_list() = *tx.access_list();
   // Plus contract creation
-  const uint256_t fee2 = fee + uint256_t(32000); 
+  const uint256_t fee2 = fee + uint256_t(32000);
   EXPECT_EQ(tx2.GetBaseFee(), fee2);
 
   // Duplicate items in Access list
