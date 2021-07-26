@@ -564,6 +564,7 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_AUTO" desc="Auto Contribute">Auto Contribute</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_ONE_TIME_TIP" desc="One-time tip">One-time tip</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_RECURRING_TIP" desc="Recurring tip">Recurring tip</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_AD_DIAGNOSTICS" desc="">Ad diagnostics</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_CONTRIBUTIONS" desc="">Contributions</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_EVENT_LOGS" desc="">Event logs</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_GENERAL_INFO" desc="">General info</message>

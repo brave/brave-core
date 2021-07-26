@@ -7,6 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
+import { AdDiagnostics } from './ad_diagnostics'
 import { Contributions } from './contributions'
 import { Promotions } from './promotions'
 import { General } from './general'
@@ -70,6 +71,10 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
         this.getEventLogs()
         break
       }
+      case 'adDiagnostics': {
+        this.getAdDiagnostics()
+        break
+      }
     }
   }
 
@@ -101,8 +106,19 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
     this.actions.getEventLogs()
   }
 
+  getAdDiagnostics = () => {
+    this.actions.getAdDiagnostics()
+  }
+
   render () {
-    const { contributions, promotions, log, fullLog, eventLogs } = this.props.rewardsInternalsData
+    const {
+      contributions,
+      promotions,
+      log,
+      fullLog,
+      eventLogs,
+      adDiagnostics
+    } = this.props.rewardsInternalsData
 
     return (
       <Wrapper id='rewardsInternalsPage'>
@@ -134,6 +150,9 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
           </div>
           <div data-key='eventLogs' data-title={getLocale('tabEventLogs')}>
             <EventLogs items={eventLogs} />
+          </div>
+          <div data-key='adDiagnostics' data-title={getLocale('tabAdDiagnostics')}>
+            <AdDiagnostics entries={adDiagnostics} onGet={this.getAdDiagnostics}/>
           </div>
         </Tabs>
       </Wrapper>)
