@@ -139,8 +139,17 @@
     <color name="shields_tooltip_arrow_color_2">#2673DD</color>
 
     <color name="wallet_text_color">#212529</color>
+    <color name="wallet_secondary_text_color">#686978</color>
+    <color name="wallet_secondary_layout_text_color">#495057</color>
     <color name="recovery_phrase_text_color">#F8F9FA</color>
     <color name="wallet_toolbar_bg_color">#F8F9FA</color>
     <color name="tab_color">#FF4081</color>
-    
+    <color name="wallet_bg">#FFFFFF</color>
+    <color name="wallet_edittext_outline_color">#AEB1C2</color>
+    <color name="wallet_warning_box_bg_color">#FFFFFF</color>
+    <color name="recovery_phrase_warning_text_color">#868E96</color>
+    <color name="brave_action_color">#4C54D2</color>
+    <color name="wallet_positive_trend_color">#51CF66</color>
+    <color name="wallet_asset_graph_color">#12A378</color>
+
 </resources>

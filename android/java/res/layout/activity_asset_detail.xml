@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="16dp"
-    android:layout_marginBottom="16dp"
+    android:background="@color/wallet_bg"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -25,6 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
+                android:textColor="@color/wallet_text_color"
                 android:gravity="center_vertical"
                 app:drawableStartCompat="@drawable/ic_eth"
                 android:drawablePadding="12dp"
@@ -37,6 +39,7 @@
                 android:textSize="12sp"
                 android:gravity="center_vertical"
                 android:text="@string/mainnet"
+                android:textColor="@color/wallet_text_color"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:paddingTop="2dp"
@@ -59,7 +62,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:text="@string/eth_price"
-            android:textColor="#84889C"/>
+            android:textColor="@color/wallet_secondary_text_color"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -79,7 +82,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:text="0.03265 BTC"
-            android:textColor="#84889C"/>
+            android:textColor="@color/wallet_secondary_text_color"/>
 
         <org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced
             android:layout_marginTop="32dp"

@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:scrollbars="vertical"
     android:fadeScrollbars="false"
+    android:background="@color/wallet_bg"
     android:fillViewport="true">
 
     <LinearLayout
@@ -42,7 +43,7 @@
             android:layout_marginEnd="64dp"
             android:layout_marginBottom="120dp"
             android:text="@string/defi_secure_storage_text"
-            android:textColor="#686978"
+            android:textColor="@color/wallet_secondary_text_color"
             android:textSize="16sp"/>
 
         <Button

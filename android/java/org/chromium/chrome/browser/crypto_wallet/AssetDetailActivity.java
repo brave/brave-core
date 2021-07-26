@@ -62,7 +62,7 @@ public class AssetDetailActivity
         });
 
         chartES = findViewById(R.id.line_chart);
-        chartES.setColors(new int[] {0xFF12A378});
+        chartES.setColors(new int[] {getResources().getColor(R.color.wallet_asset_graph_color)});
 
         onInitialLayoutInflationComplete();
     }

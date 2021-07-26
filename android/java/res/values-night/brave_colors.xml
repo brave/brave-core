@@ -54,6 +54,13 @@
     <color name="brave_blue_tint_color">#737ADE</color>
 
     <color name="wallet_text_color">#F0F2FF</color>
+    <color name="wallet_secondary_text_color">#84889C</color>
+    <color name="wallet_secondary_layout_text_color">#C2C4CF</color>
     <color name="recovery_phrase_text_color">#1E2029</color>
     <color name="wallet_toolbar_bg_color">#1E2029</color>
+    <color name="wallet_bg">#17171F</color>
+    <color name="wallet_edittext_outline_color">#3B3E4F</color>
+    <color name="wallet_warning_box_bg_color">#3B3E4F</color>
+    <color name="recovery_phrase_warning_text_color">#1E2029</color>
+
 </resources>

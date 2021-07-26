@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:textColor="#868E96"
+            android:textColor="@color/wallet_secondary_text_color"
             android:layout_gravity="end"
             android:text="0.31178 ETH"/>
 

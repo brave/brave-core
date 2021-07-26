@@ -51,7 +51,7 @@
             android:layout_marginEnd="64dp"
             android:layout_marginBottom="80dp"
             android:text="@string/backup_your_wallet_text"
-            android:textColor="#686978"
+            android:textColor="@color/wallet_secondary_text_color"
             android:textSize="14sp"/>
 
         <CheckBox
@@ -60,7 +60,9 @@
             android:layout_height="wrap_content"
             android:text="@string/backup_wallet_checkbox_text"
             android:textSize="14sp"
-            android:textColor="#495057"
+            android:gravity="center_horizontal"
+            android:textColor="@color/wallet_secondary_layout_text_color"
+            android:buttonTint="@color/brave_action_color"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="40dp"/>

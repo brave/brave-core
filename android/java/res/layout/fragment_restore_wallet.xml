@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="vertical"
+    android:background="@color/wallet_bg"
     android:fadeScrollbars="false"
     android:fillViewport="true">
 
@@ -33,7 +34,7 @@
             android:layout_marginEnd="64dp"
             android:layout_marginBottom="24dp"
             android:text="@string/restore_crypto_text"
-            android:textColor="#686978"
+            android:textColor="@color/wallet_secondary_text_color"
             android:textSize="14sp"/>
 
         <EditText
@@ -55,7 +56,7 @@
             android:textCursorDrawable="@null"
             android:textSize="14sp"
             android:textColor="@color/wallet_text_color"
-            android:textColorHint="#868E96" />
+            android:textColorHint="@color/wallet_edittext_outline_color" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -71,6 +72,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_marginEnd="16dp"
+                android:layout_gravity="center_horizontal"
+                android:buttonTint="@color/brave_action_color"
+                android:textColor="@color/wallet_secondary_text_color"
                 android:text="@string/show_recovery_phrase"/>
 
             <ImageView
@@ -105,7 +109,7 @@
             android:textCursorDrawable="@null"
             android:textSize="14sp"
             android:textColor="@color/wallet_text_color"
-            android:textColorHint="#868E96" />
+            android:textColorHint="@color/wallet_edittext_outline_color" />
 
         <EditText
             android:id="@+id/restore_wallet_retype_password"
@@ -125,7 +129,7 @@
             android:textCursorDrawable="@null"
             android:textSize="14sp"
             android:textColor="@color/wallet_text_color"
-            android:textColorHint="#868E96" />
+            android:textColorHint="@color/wallet_edittext_outline_color" />
 
 
         <Button

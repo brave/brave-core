@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:scrollbars="vertical"
     android:fadeScrollbars="false"
+    android:background="@color/wallet_bg"
     android:fillViewport="true">
 
     <LinearLayout
@@ -61,7 +62,7 @@
             android:textCursorDrawable="@null"
             android:textSize="14sp"
             android:textColor="@color/wallet_text_color"
-            android:textColorHint="#868E96" />
+            android:textColorHint="@color/wallet_edittext_outline_color" />
 
         <Button
             android:id="@+id/btn_unlock"
