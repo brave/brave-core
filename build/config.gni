@@ -17,7 +17,6 @@ declare_args() {
   sparkle_eddsa_public_key = ""
 
   brave_product_name = ""
-  brave_project_name = ""
   brave_exe = ""
   brave_version_major = ""
   brave_version_minor = ""
@@ -44,7 +43,7 @@ declare_args() {
 brave_version = "$brave_version_major.$brave_version_minor.$brave_version_build"
 
 if (brave_exe == "") {
-  brave_exe = brave_project_name
+  brave_exe = brave_product_name
 }
 
 brave_dist_dir = "$root_out_dir/dist"

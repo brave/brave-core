@@ -3,7 +3,7 @@ import("//brave/build/config.gni")
 import("//media/cdm/library_cdm/cdm_paths.gni")
 
 action("generate_breakpad_symbols") {
-  symbols_dir = "$brave_dist_dir/$brave_project_name.breakpad.syms"
+  symbols_dir = "$brave_dist_dir/$brave_product_name.breakpad.syms"
   outputs = [
     symbols_dir
   ]
