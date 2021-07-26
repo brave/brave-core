@@ -180,6 +180,7 @@ test("brave_unit_tests") {
     "//brave/components/brave_search/common",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
+    "//brave/components/brave_vpn:unit_tests",
     "//brave/components/brave_wallet/browser/test:brave_wallet_unit_tests",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/child_process_monitor:unittests",
