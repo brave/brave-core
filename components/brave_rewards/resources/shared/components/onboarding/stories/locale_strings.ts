@@ -13,7 +13,7 @@ export const localeStrings = {
   onboardingStartUsingRewards: 'Start using Brave Rewards',
   onboardingTakeTour: 'Take a quick tour',
   onboardingTerms: 'By proceeding, you agree to the $1Terms of Service$2 and $3Privacy Policy$4.',
-  onboardingTipHeader: 'Tip with Brave rewards',
+  onboardingTipHeader: 'Tip with Brave Rewards',
   onboardingTipText: 'Earn Rewards by viewing Brave Private Ads and support content creators automatically',
   onboardingTourBack: 'Go Back',
   onboardingTourBegin: 'Let’s take a quick tour',
