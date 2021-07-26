@@ -18,7 +18,6 @@ class LocalStorageImpl : public mojom::LocalStorageControl {
  public:
   LocalStorageImpl(const base::FilePath& storage_root,
                    scoped_refptr<base::SequencedTaskRunner> task_runner,
-                   scoped_refptr<base::SequencedTaskRunner> legacy_task_runner,
                    mojo::PendingReceiver<mojom::LocalStorageControl> receiver);
   ~LocalStorageImpl() override;
 
