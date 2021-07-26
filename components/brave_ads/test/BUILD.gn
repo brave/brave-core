@@ -19,6 +19,7 @@ source_set("brave_ads_unit_tests") {
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/account/ad_rewards/ad_rewards_util_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/account/ad_rewards/payments/payments_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/account/statement/statement_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_diagnostics/ad_diagnostics_test.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_pacing/ad_pacing_test.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_priority/ad_priority_test.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving_test.cc",
