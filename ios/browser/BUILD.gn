@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
@@ -21,8 +20,10 @@ source_set("browser") {
     "api/bookmarks",
     "api/bookmarks/exporter",
     "api/bookmarks/importer",
+    "api/brave_wallet",
     "api/history",
     "api/sync",
+    "brave_wallet",
     "metrics",
     "//base",
     "//brave/browser/sync",
@@ -41,8 +42,4 @@ source_set("browser") {
     "//ios/web/public/thread",
     "//ui/base",
   ]
-
-  if (brave_wallet_enabled) {
-    deps += [ "api/wallet" ]
-  }
 }

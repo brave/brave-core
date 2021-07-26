@@ -3,12 +3,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
 source_set("app") {
-  configs += [ "//build/config/compiler:enable_arc" ]
+  configs += [
+    "//brave/ios/browser/api/brave_wallet:mojom_header_config",
+    "//build/config/compiler:enable_arc",
+  ]
 
   sources = [
     "brave_core_main.h",
@@ -21,13 +23,14 @@ source_set("app") {
     "//base",
     "//brave/common:pref_names",
     "//brave/components/brave_sync:constants",
-    "//brave/components/brave_wallet/common/buildflags:buildflags",
     "//brave/ios/browser",
     "//brave/ios/browser/api/ads",
     "//brave/ios/browser/api/bookmarks",
+    "//brave/ios/browser/api/brave_wallet",
     "//brave/ios/browser/api/history",
     "//brave/ios/browser/api/ledger",
     "//brave/ios/browser/api/sync/driver",
+    "//brave/ios/browser/brave_wallet",
     "//components/browser_sync",
     "//components/history/core/browser",
     "//components/keyed_service/core",
@@ -52,10 +55,6 @@ source_set("app") {
   deps += [
     "//ios/third_party/material_components_ios:material_components_ios+link",
   ]
-
-  if (brave_wallet_enabled) {
-    deps += [ "//brave/ios/browser/api/wallet" ]
-  }
 
   frameworks = [
     "Foundation.framework",
