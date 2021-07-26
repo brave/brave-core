@@ -85,7 +85,6 @@ public class AssetDetailActivity
 
     @Override
     public void OnGetPriceHistory(String priceHistory, boolean isSuccess) {
-        Log.e("NTP", "PriceHistory : " + priceHistory);
         List<Float> pricesList = parsePriceHistory(priceHistory);
         final float[] pricesArray = new float[pricesList.size()];
         int index = 0;
