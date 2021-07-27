@@ -76,8 +76,14 @@ class EthNonceTrackerUnitTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
 };
-
-TEST_F(EthNonceTrackerUnitTest, GetNonce) {
+// Remove this when the issue is solved
+// https://github.com/brave/brave-browser/issues/17202
+#if defined(WIN32)
+#define MAYBE_GetNonce DISABLED_GetNonce
+#else
+#define MAYBE_GetNonce GetNonce
+#endif
+TEST_F(EthNonceTrackerUnitTest, MAYBE_GetNonce) {
   EthJsonRpcController controller(Network::kLocalhost,
                                   shared_url_loader_factory());
   EthTxStateManager tx_state_manager(GetPrefs());
@@ -162,7 +168,14 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   EXPECT_EQ(nonce_result, uint256_t(5));
 }
 
-TEST_F(EthNonceTrackerUnitTest, NonceLock) {
+// Remove this when the issue is solved
+// https://github.com/brave/brave-browser/issues/17202
+#if defined(WIN32)
+#define MAYBE_NonceLock DISABLED_NonceLock
+#else
+#define MAYBE_NonceLock NonceLock
+#endif
+TEST_F(EthNonceTrackerUnitTest, MAYBE_NonceLock) {
   EthJsonRpcController controller(Network::kLocalhost,
                                   shared_url_loader_factory());
   EthTxStateManager tx_state_manager(GetPrefs());
