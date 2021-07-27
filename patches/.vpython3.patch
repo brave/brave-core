@@ -1,5 +1,5 @@
 diff --git a/.vpython3 b/.vpython3
-index b93fe7ffb2c44ed77246dbea1ab179811186c84d..52b621f78463f26e57f2b636ec1d3ec823d1cc12 100644
+index 14faab39343e82ff6706e625f948f97163863bb8..0aeeb03f79bdd6cbfb62a47391f4a996619b0594 100644
 --- a/.vpython3
 +++ b/.vpython3
 @@ -204,7 +204,7 @@ wheel <
