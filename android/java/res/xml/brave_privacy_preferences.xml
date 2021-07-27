@@ -132,5 +132,11 @@
             android:title="@string/send_p3a_analytics_title"
             android:summary="@string/send_p3a_analytics_summary"
             android:defaultValue="false" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="send_crash_reports"
+            android:order="25"
+            android:title="@string/send_crash_reports_title"
+            android:summary="@string/send_crash_reports_summary"
+            android:defaultValue="false" />
 
 </PreferenceScreen>
