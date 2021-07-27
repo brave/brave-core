@@ -1,66 +1,99 @@
-"0Lu6sT" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"0Lu6sT" = "Kan inte öppna ${websiteURL} på en ny flik.";
 
-"1QT5y6" = "Open a Website";
+/* (No Comment) */
+"1n1yx4" = "Kan inte öppna ${websiteURL} på en ny flik.";
 
-"1n1yx4" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"1QT5y6" = "Öppna en webbplats";
 
-"3oC6Qm" = "Open a Website in New Tab";
+/* (No Comment) */
+"3oC6Qm" = "Öppna en webbplats på ny flik";
 
-"4HScaO" = "Website URL";
+/* (No Comment) */
+"4HScaO" = "Webbplats-URL";
 
-"9iPSKS" = "Open a Website from Bookmarks";
+/* (No Comment) */
+"9iPSKS" = "Öppna en webbplats från Bokmärken";
 
-"Gn4uX0" = "Website URL";
+/* (No Comment) */
+"azhMra" = "Öppna ${websiteURL} på en ny flik";
 
-"HN8elO" = "Open History Website";
+/* (No Comment) */
+"c9NKFJ" = "Kan inte öppna ${websiteURL} på en ny flik.";
 
-"LHHK1N" = "This will open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"cSYAYC" = "Detta öppnar ${websiteURL} från Historik.";
 
-"Lr38ve" = "${websiteURL}";
+/* (No Comment) */
+"cvU2lS" = "Öppna en webbplats från Historik";
 
-"MISOeA" = "Open from History";
+/* (No Comment) */
+"dk8p9b" = "Webbplats-URL";
 
-"Paq749" = "Website URL";
+/* (No Comment) */
+"Gn4uX0" = "Webbplats-URL";
 
-"UmKnv3" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"HN8elO" = "Öppna webbplatsen Historik";
 
-"VgH3NH" = "Open Bookmark Website";
-
-"Wh3wb1" = "Open Website";
-
-"WiB0aJ" = "Website URL";
-
-"Xx8bbW" = "Website URL";
-
-"YCxX7a" = "${websiteURL}";
-
-"ZgJKfY" = "This will open ${websiteURL}from Bookmarks.";
-
-"azhMra" = "Open ${websiteURL}in a New Tab";
-
-"c9NKFJ" = "Can't Open ${websiteURL} in a new tab.";
-
-"cSYAYC" = "This will open ${websiteURL} from History.";
-
-"cvU2lS" = "Open a Website from History";
-
-"dk8p9b" = "Website URL";
-
+/* (No Comment) */
 "iLL70C" = "${websiteURL}";
 
-"p3NuX2" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"LHHK1N" = "Detta öppnar ${websiteURL} på en ny flik.";
 
-"pvi3Ug" = "This will open ${websiteURL}from Bookmarks.";
+/* (No Comment) */
+"Lr38ve" = "${websiteURL}";
 
-"qkzovY" = "Open a website in a new Tab";
+/* (No Comment) */
+"MISOeA" = "Öppna från historik";
 
-"t7aARA" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"p3NuX2" = "Kan inte öppna ${websiteURL} på en ny flik.";
 
-"uT0Oi7" = "This will open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"Paq749" = "Webbplats-URL";
 
-"wZqW4o" = "This will open ${websiteURL} from History.";
+/* (No Comment) */
+"pvi3Ug" = "Detta öppnar ${websiteURL} från Bokmärken.";
 
-"xgP5Po" = "using website";
+/* (No Comment) */
+"qkzovY" = "Öppna en webbplats på ny flik";
 
-"ycaNZf" = "Open from Bookmarks";
+/* (No Comment) */
+"t7aARA" = "Kan inte öppna ${websiteURL} på en ny flik.";
+
+/* (No Comment) */
+"UmKnv3" = "Kan inte öppna ${websiteURL} på en ny flik.";
+
+/* (No Comment) */
+"uT0Oi7" = "Detta öppnar ${websiteURL} på en ny flik.";
+
+/* (No Comment) */
+"VgH3NH" = "Öppna webbplatsen Bokmärken";
+
+/* (No Comment) */
+"Wh3wb1" = "Öppna webbplats";
+
+/* (No Comment) */
+"WiB0aJ" = "Webbplats-URL";
+
+/* (No Comment) */
+"wZqW4o" = "Detta öppnar ${websiteURL} från Historik.";
+
+/* (No Comment) */
+"xgP5Po" = "använder webbplats";
+
+/* (No Comment) */
+"Xx8bbW" = "Webbplats-URL";
+
+/* (No Comment) */
+"ycaNZf" = "Öppna från Bokmärken";
+
+/* (No Comment) */
+"YCxX7a" = "${websiteURL}";
+
+/* (No Comment) */
+"ZgJKfY" = "Detta öppnar ${websiteURL} från Bokmärken.";
 

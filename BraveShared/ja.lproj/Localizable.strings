@@ -833,6 +833,111 @@
 "ShieldsDownDisclaimer" = "現在Braveのプライバシー保護機能オフの状態でブラウジングしています。Shieldをオンにした状態では不具合が発生しますか？";
 
 /* No comment provided by engineer. */
+"shortcuts.activityTypeBraveNewsDescription" = "Brave Newsを開いて今日のトップストーリーズをチェックする";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryDescription" = "新しいタブでブラウザを立ち上げ、プライベートブラウジングの履歴を全て消去する";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistorySuggestedPhrase" = "ブラウザの履歴を消去する";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryTitle" = "Braveでのブラウジングの履歴を消去する";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNDescription" = "新タブでブラウザを立ち上げ、VPNを有効にする";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNSuggestedPhrase" = "VPNを有効にする";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNTitle" = "Braveブラウザを開き、VPNを有効にする";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "新しくプライベートブラウジングタブを開く";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabTitle" = "新しくプライベートブラウジングのブラウザを立ち上げる";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabSuggestedPhrase" = "新タブを開く";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabTitle" = "新しくブラウザタブを開く";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveNewsTitle" = "Brave Newsを開く";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Brave Newsを開く";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistDescription" = "Playlist内の動画を再生開始する";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistSuggestedPhrase" = "Playlistを開く";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistTitle" = "Playlistを開く";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeTabDescription" = "Braveでwebを安全に検索する";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "ブックマークのウェブサイトを開く";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenHistorySuggestedPhrase" = "履歴のウェブサイトを開く";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "ウェブサイトを開く";
+
+/* Description for opening Brave Settings for altering Siri shortcut. */
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "この項目は、Braveの設定を開きます。様々なSiriオプションを変更するには、「Siriと検索」メニューを選択し、設定をカスタマイズしてください。";
+
+/* Button title that open application settings */
+"shortcuts.shortcutOpenApplicationSettingsTitle" = "設定を開く";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Siri 音声アシスタントで新しくタブを開くショートカットを利用する";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Braveの履歴を消去する";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNDescription" = "Siri 音声アシスタントでBrave VPNを開くショートカットを利用する";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNTitle" = "VPNを有効化する";
+
+/* Description of Open Brave News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Siri 音声アシスタントで新しくタブを開いてBrave Newsのフィードを表示するショートカットを利用する";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Brave Newsを開く";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Siri 音声アシスタントで新しくプライベートタブを開くショートカットを利用する";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabTitle" = "新しくプライベートタブを開く";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabDescription" = "Siri 音声アシスタントで新しくタブを開くショートカットを利用する";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabTitle" = "新しくタブを開く";
+
+/* Use Shortcuts to Open Playlist via Siri - Voice Assistant */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Siri 音声アシスタントでBrave VPNを有効化するショートカットを利用する";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenPlaylistTitle" = "Playlistを開く";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsTitle" = "Siri ショートカット";
+
+/* No comment provided by engineer. */
 "SiteReportedBody" = "Braveの開発者にサイトの問題について知らせてくれてありがとうございます。修正するために最善を尽くします！";
 
 /* No comment provided by engineer. */
@@ -944,7 +1049,7 @@
 "today.introCardNewTextBody" = "我々のプライベートCDNから配信される数百の主要コンテンツ配信元を利用して自分のフィードをカスタマイズし、お気に入りのサイトのRSSフィードを追加して自分に合ったフィードを作成できます。";
 
 /* No comment provided by engineer. */
-"today.introCardTitle" = "Brave Todayは、読みたい記事が上がってくるプライベート・ニュースリーダー。";
+"today.introCardTitle" = "Brave Newsは、読みたい記事が上がってくるプライベート・ニュースリーダー。";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "Brave Newsを表示する";

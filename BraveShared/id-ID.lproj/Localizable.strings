@@ -833,6 +833,111 @@
 "ShieldsDownDisclaimer" = "Anda menjelajahi situs ini tanpa perlindungan privasi Brave. Apakah situs tidak berfungsi benar dengan Perisai?";
 
 /* No comment provided by engineer. */
+"shortcuts.activityTypeBraveNewsDescription" = "Buka Brave News dan Dapatkan Kabar Terpopuler Hari Ini";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryDescription" = "Buka Peramban di Tab Baru dan Hapus Semua Data Riwayat Peramban Privat";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistorySuggestedPhrase" = "Hapus Riwayat Peramban";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryTitle" = "Hapus Riwayat Peramban Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNDescription" = "Buka Peramban di Tab Baru dan Aktfkan VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNSuggestedPhrase" = "Aktifkan VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNTitle" = "Buka Peramban Brave dan Aktifkan VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "Buka Tab Privat Baru";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabTitle" = "Buka Tab Peramban Privat Baru";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabSuggestedPhrase" = "Buka Tab Baru";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabTitle" = "Buka Tab Peramban Baru";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveNewsTitle" = "Buka Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Buka Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistDescription" = "Mulai Memutar Video Anda di Daftar Putar";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistSuggestedPhrase" = "Buka Daftar Putar";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistTitle" = "Buka Daftar Putar";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeTabDescription" = "Mulai Mencari di Web Dengan Aman Bersama Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "Buka Situs Web yang Ditandai";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenHistorySuggestedPhrase" = "Buka Situs Web Riwayat";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Buka Situs Web";
+
+/* Description for opening Brave Settings for altering Siri shortcut. */
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "Pilihan ini akan membuka Pengaturan Brave. Untuk mengubah berbagai pilihan Siri, silakan pilih menu 'Siri & Cari' dan sesuaikan pilihan Anda.";
+
+/* Button title that open application settings */
+"shortcuts.shortcutOpenApplicationSettingsTitle" = "Buka Pengaturan";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Gunakan Jalan Pintas untuk membuka tab baru melalui Siri - Bantuan Suara";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Hapus Riwayat Perambanan";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNDescription" = "Gunakan Jalan Pintas untuk mengaktifkan VPN Brave melalui Siri - Bantuan Suara";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNTitle" = "Aktifkan VPN";
+
+/* Description of Open Brave News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Gunakan Jalan Pintas untuk Membuka Tab Baru & Menampilkan Umpan Brave News melalui Siri - Bantuan Suara";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Buka Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Gunakan Jalan Pintas untuk membuka tab privat baru melalui Siri - Bantuan Suara";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabTitle" = "Buka Tab Privat Baru";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabDescription" = "Gunakan Jalan Pintas untuk membuka tab baru melalui Siri - Bantuan Suara";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabTitle" = "Buka Tab Baru";
+
+/* Use Shortcuts to Open Playlist via Siri - Voice Assistant */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Gunakan Jalan Pintas untuk mengaktifkan VPN Brave melalui Siri - Bantuan Suara";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenPlaylistTitle" = "Buka Daftar Putar";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsTitle" = "Jalan Pintas Siri";
+
+/* No comment provided by engineer. */
 "SiteReportedBody" = "Terima kasih telah memberi tahu pengembang Brave bahwa ada yang tidak berfungsi dengan benar di situs ini. Kami akan membetulkannya sejauh yang kami bisa!";
 
 /* No comment provided by engineer. */

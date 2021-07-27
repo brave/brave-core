@@ -415,6 +415,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "フォルダを編集";
 
+/* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
+"enablePullToRefresh" = "画面を下に引っ張って更新を有効にする";
+
 /* Sync enter code words */
 "EnterCodeWords" = "コードを入力";
 

@@ -1,66 +1,99 @@
-"0Lu6sT" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"0Lu6sT" = "${websiteURL} yeni bir sekmede açılamıyor.";
 
-"1QT5y6" = "Open a Website";
+/* (No Comment) */
+"1n1yx4" = "${websiteURL} yeni bir sekmede açılamıyor.";
 
-"1n1yx4" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"1QT5y6" = "Web Sitesi Aç";
 
-"3oC6Qm" = "Open a Website in New Tab";
+/* (No Comment) */
+"3oC6Qm" = "Yeni Sekmede Web Sitesi Aç";
 
-"4HScaO" = "Website URL";
+/* (No Comment) */
+"4HScaO" = "Web Sitesi URL'si";
 
-"9iPSKS" = "Open a Website from Bookmarks";
+/* (No Comment) */
+"9iPSKS" = "Yer İşaretlerinden Web Sitesi Aç";
 
-"Gn4uX0" = "Website URL";
+/* (No Comment) */
+"azhMra" = "${websiteURL} Bağlantısını Yeni Sekmede Aç";
 
-"HN8elO" = "Open History Website";
+/* (No Comment) */
+"c9NKFJ" = "${websiteURL} yeni bir sekmede açılamıyor.";
 
-"LHHK1N" = "This will open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"cSYAYC" = "Bu işlem, ${websiteURL} bağlantısını Geçmişten açacaktır.";
 
-"Lr38ve" = "${websiteURL}";
+/* (No Comment) */
+"cvU2lS" = "Geçmişten Web Sitesi Aç";
 
-"MISOeA" = "Open from History";
+/* (No Comment) */
+"dk8p9b" = "Web Sitesi URL'si";
 
-"Paq749" = "Website URL";
+/* (No Comment) */
+"Gn4uX0" = "Web Sitesi URL'si";
 
-"UmKnv3" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"HN8elO" = "Geçmiş Web Sitesini Aç";
 
-"VgH3NH" = "Open Bookmark Website";
-
-"Wh3wb1" = "Open Website";
-
-"WiB0aJ" = "Website URL";
-
-"Xx8bbW" = "Website URL";
-
-"YCxX7a" = "${websiteURL}";
-
-"ZgJKfY" = "This will open ${websiteURL}from Bookmarks.";
-
-"azhMra" = "Open ${websiteURL}in a New Tab";
-
-"c9NKFJ" = "Can't Open ${websiteURL} in a new tab.";
-
-"cSYAYC" = "This will open ${websiteURL} from History.";
-
-"cvU2lS" = "Open a Website from History";
-
-"dk8p9b" = "Website URL";
-
+/* (No Comment) */
 "iLL70C" = "${websiteURL}";
 
-"p3NuX2" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"LHHK1N" = "Bu işlem, ${websiteURL} bağlantısını yeni sekmede açacaktır.";
 
-"pvi3Ug" = "This will open ${websiteURL}from Bookmarks.";
+/* (No Comment) */
+"Lr38ve" = "${websiteURL}";
 
-"qkzovY" = "Open a website in a new Tab";
+/* (No Comment) */
+"MISOeA" = "Geçmişten Aç";
 
-"t7aARA" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"p3NuX2" = "${websiteURL} yeni bir sekmede açılamıyor.";
 
-"uT0Oi7" = "This will open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"Paq749" = "Web Sitesi URL'si";
 
-"wZqW4o" = "This will open ${websiteURL} from History.";
+/* (No Comment) */
+"pvi3Ug" = "Bu işlem, ${websiteURL} bağlantısını Yer İşaretlerinden açacaktır.";
 
-"xgP5Po" = "using website";
+/* (No Comment) */
+"qkzovY" = "Yeni Sekmede web sitesi aç";
 
-"ycaNZf" = "Open from Bookmarks";
+/* (No Comment) */
+"t7aARA" = "${websiteURL} yeni bir sekmede açılamıyor.";
+
+/* (No Comment) */
+"UmKnv3" = "${websiteURL} yeni bir sekmede açılamıyor.";
+
+/* (No Comment) */
+"uT0Oi7" = "Bu işlem, ${websiteURL} bağlantısını yeni sekmede açacaktır.";
+
+/* (No Comment) */
+"VgH3NH" = "Yer İşareti Web Sitesini Aç";
+
+/* (No Comment) */
+"Wh3wb1" = "Web Sitesi Aç";
+
+/* (No Comment) */
+"WiB0aJ" = "Web Sitesi URL'si";
+
+/* (No Comment) */
+"wZqW4o" = "Bu işlem, ${websiteURL} bağlantısını Geçmişten açacaktır.";
+
+/* (No Comment) */
+"xgP5Po" = "web sitesi kullanımı";
+
+/* (No Comment) */
+"Xx8bbW" = "Web Sitesi URL'si";
+
+/* (No Comment) */
+"ycaNZf" = "Yer İşaretlerinden Aç";
+
+/* (No Comment) */
+"YCxX7a" = "${websiteURL}";
+
+/* (No Comment) */
+"ZgJKfY" = "Bu işlem, ${websiteURL} bağlantısını Yer İşaretlerinden açacaktır.";
 

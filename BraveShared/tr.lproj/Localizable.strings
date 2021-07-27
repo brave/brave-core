@@ -833,6 +833,111 @@
 "ShieldsDownDisclaimer" = "Brave'in gizlilik koruması olmadan bu siteye göz atıyorsunuz. Kalkanlar açıkken düzgün çalışmıyor mu?";
 
 /* No comment provided by engineer. */
+"shortcuts.activityTypeBraveNewsDescription" = "Brave News'i Aç ve Bugünün En İyi Hikayelerine Göz At";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryDescription" = "Tarayıcıyı Yeni Sekmede Aç ve Tüm Gizli Tarayıcı Geçmiş Verilerini Sil";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistorySuggestedPhrase" = "Tarayıcı Geçmişini Temizle";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryTitle" = "Brave Tarayıcı Geçmişini Temizle";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNDescription" = "Tarayıcıyı Yeni Sekmede Aç ve VPN'i Etkinleştir";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNSuggestedPhrase" = "VPN'i Etkinleştir";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNTitle" = "Brave Tarayıcıyı Aç ve VPN'i Etkinleştir";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "Yeni Gizli Sekme Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabTitle" = "Yeni Gizli Tarayıcı Sekmesi Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabSuggestedPhrase" = "Yeni Sekme Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabTitle" = "Yeni Tarayıcı Sekmesi Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveNewsTitle" = "Brave News'i Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Brave News'i Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistDescription" = "Videolarınızı Oynatma Listesinde Oynatmaya Başlayın";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistSuggestedPhrase" = "Oynatma Listesi Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistTitle" = "Oynatma Listesi Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeTabDescription" = "Brave ile Web'de Güvenle Arama Yapmaya Başlayın";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "Yer İşareti Web Sitesini Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenHistorySuggestedPhrase" = "Geçmiş Web Sitesini Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Web Sitesi Aç";
+
+/* Description for opening Brave Settings for altering Siri shortcut. */
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "Bu seçenek, Brave Ayarlarını açacaktır. Çeşitli Siri seçeneklerini değiştirmek için lütfen \"Siri ve Arama\" menü öğesini seçin ve seçimlerinizi özelleştirin.";
+
+/* Button title that open application settings */
+"shortcuts.shortcutOpenApplicationSettingsTitle" = "Ayarları Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Siri - Sesli Yardımcı ile yeni bir sekme açmak için Kestirmeler'i kullanın";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Tarayıcı Geçmişini Temizle";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNDescription" = "Siri - Sesli Yardımcı ile Brave VPN'i etkinleştirmek için Kestirmeler'i kullanın";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNTitle" = "VPN'i Etkinleştir";
+
+/* Description of Open Brave News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Siri - Sesli Yardımcı ile Yeni Sekme Açmak ve Brave News Akışını Göstermek için Kestirmeler'i kullanın";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Brave News'i Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Siri - Sesli Yardımcı ile yeni bir gizli sekme açmak için Kestirmeler'i kullanın";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabTitle" = "Yeni Gizli Sekme Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabDescription" = "Siri - Sesli Yardımcı ile yeni bir sekme açmak için Kestirmeler'i kullanın";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabTitle" = "Yeni Sekme Aç";
+
+/* Use Shortcuts to Open Playlist via Siri - Voice Assistant */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Siri - Sesli Yardımcı ile Brave VPN'i etkinleştirmek için Kestirmeler'i kullanın";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenPlaylistTitle" = "Oynatma Listesi Aç";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsTitle" = "Siri Kestirmeleri";
+
+/* No comment provided by engineer. */
 "SiteReportedBody" = "Brave'in geliştiricilerine bu sitede bir sorun olduğunu bildirin. Düzeltmek için elimizden geleni yapacağız!";
 
 /* No comment provided by engineer. */

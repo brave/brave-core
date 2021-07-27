@@ -1,4 +1,7 @@
 /* No comment provided by engineer. */
+"/can/answer" = "/kan/svara";
+
+/* No comment provided by engineer. */
 "Brave VPN" = "Brave VPN";
 
 /* Button text to confirm PIN */
@@ -8,6 +11,9 @@
 "insertKeyMessage" = "För in din säkerhetsnyckel för";
 
 /* No comment provided by engineer. */
+"Logs" = "Loggar";
+
+/* No comment provided by engineer. */
 "No server found" = "Ingen server hittades";
 
 /* Placeholder text for PIN */
@@ -15,6 +21,9 @@
 
 /* Title for the alert modal when a security key with PIN is inserted. */
 "pinTitle" = "PIN verifiering krävs";
+
+/* No comment provided by engineer. */
+"Search Fallback" = "Sök reserv";
 
 /* Message for selecting security key. */
 "selectKey" = "Skanna eller för in din säkerhetsnyckel för";

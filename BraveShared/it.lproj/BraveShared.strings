@@ -415,6 +415,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "Modifica cartella";
 
+/* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
+"enablePullToRefresh" = "Abilita Tracina verso il basso per aggiornare";
+
 /* Sync enter code words */
 "EnterCodeWords" = "Inserisci le parole in codice";
 

@@ -1,4 +1,7 @@
 /* No comment provided by engineer. */
+"/can/answer" = "/can/answer";
+
+/* No comment provided by engineer. */
 "Brave VPN" = "Brave VPN";
 
 /* Button text to confirm PIN */
@@ -8,6 +11,9 @@
 "insertKeyMessage" = "Вставьте ваш электронный ключ для";
 
 /* No comment provided by engineer. */
+"Logs" = "Журналы";
+
+/* No comment provided by engineer. */
 "No server found" = "Серверы не найдены";
 
 /* Placeholder text for PIN */
@@ -15,6 +21,9 @@
 
 /* Title for the alert modal when a security key with PIN is inserted. */
 "pinTitle" = "Требуется подтверждение PIN-кода";
+
+/* No comment provided by engineer. */
+"Search Fallback" = "Найти резервную модель";
 
 /* Message for selecting security key. */
 "selectKey" = "Отсканируйте или вставьте электронный ключ для";

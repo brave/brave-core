@@ -1,66 +1,99 @@
-"0Lu6sT" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"0Lu6sT" = "새 탭에서 ${websiteURL} 페이지를 열 수 없습니다.";
 
-"1QT5y6" = "Open a Website";
+/* (No Comment) */
+"1n1yx4" = "새 탭에서 ${websiteURL} 페이지를 열 수 없습니다.";
 
-"1n1yx4" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"1QT5y6" = "웹사이트 열기";
 
-"3oC6Qm" = "Open a Website in New Tab";
+/* (No Comment) */
+"3oC6Qm" = "새 탭에서 웹사이트 열기";
 
-"4HScaO" = "Website URL";
+/* (No Comment) */
+"4HScaO" = "웹사이트 URL";
 
-"9iPSKS" = "Open a Website from Bookmarks";
+/* (No Comment) */
+"9iPSKS" = "북마크에서 웹사이트 열기";
 
-"Gn4uX0" = "Website URL";
+/* (No Comment) */
+"azhMra" = "새 탭에서 ${websiteURL} 열기";
 
-"HN8elO" = "Open History Website";
+/* (No Comment) */
+"c9NKFJ" = "새 탭에서 ${websiteURL} 페이지를 열 수 없습니다.";
 
-"LHHK1N" = "This will open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"cSYAYC" = "기록에서 ${websiteURL} 페이지가 열립니다.";
 
-"Lr38ve" = "${websiteURL}";
+/* (No Comment) */
+"cvU2lS" = "기록에서 웹사이트 열기";
 
-"MISOeA" = "Open from History";
+/* (No Comment) */
+"dk8p9b" = "웹사이트 URL";
 
-"Paq749" = "Website URL";
+/* (No Comment) */
+"Gn4uX0" = "웹사이트 URL";
 
-"UmKnv3" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"HN8elO" = "기록 웹사이트 열기";
 
-"VgH3NH" = "Open Bookmark Website";
-
-"Wh3wb1" = "Open Website";
-
-"WiB0aJ" = "Website URL";
-
-"Xx8bbW" = "Website URL";
-
-"YCxX7a" = "${websiteURL}";
-
-"ZgJKfY" = "This will open ${websiteURL}from Bookmarks.";
-
-"azhMra" = "Open ${websiteURL}in a New Tab";
-
-"c9NKFJ" = "Can't Open ${websiteURL} in a new tab.";
-
-"cSYAYC" = "This will open ${websiteURL} from History.";
-
-"cvU2lS" = "Open a Website from History";
-
-"dk8p9b" = "Website URL";
-
+/* (No Comment) */
 "iLL70C" = "${websiteURL}";
 
-"p3NuX2" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"LHHK1N" = "새 탭에서 ${websiteURL} 페이지가 열립니다.";
 
-"pvi3Ug" = "This will open ${websiteURL}from Bookmarks.";
+/* (No Comment) */
+"Lr38ve" = "${websiteURL}";
 
-"qkzovY" = "Open a website in a new Tab";
+/* (No Comment) */
+"MISOeA" = "기록에서 열기";
 
-"t7aARA" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"p3NuX2" = "새 탭에서 ${websiteURL} 페이지를 열 수 없습니다.";
 
-"uT0Oi7" = "This will open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"Paq749" = "웹사이트 URL";
 
-"wZqW4o" = "This will open ${websiteURL} from History.";
+/* (No Comment) */
+"pvi3Ug" = "북마크에서 ${websiteURL} 페이지가 열립니다.";
 
-"xgP5Po" = "using website";
+/* (No Comment) */
+"qkzovY" = "새 탭에서 웹사이트 열기";
 
-"ycaNZf" = "Open from Bookmarks";
+/* (No Comment) */
+"t7aARA" = "새 탭에서 ${websiteURL} 페이지를 열 수 없습니다.";
+
+/* (No Comment) */
+"UmKnv3" = "새 탭에서 ${websiteURL} 페이지를 열 수 없습니다.";
+
+/* (No Comment) */
+"uT0Oi7" = "새 탭에서 ${websiteURL} 페이지가 열립니다.";
+
+/* (No Comment) */
+"VgH3NH" = "북마크 웹사이트 열기";
+
+/* (No Comment) */
+"Wh3wb1" = "웹사이트 열기";
+
+/* (No Comment) */
+"WiB0aJ" = "웹사이트 URL";
+
+/* (No Comment) */
+"wZqW4o" = "기록에서 ${websiteURL} 페이지가 열립니다.";
+
+/* (No Comment) */
+"xgP5Po" = "웹사이트 사용";
+
+/* (No Comment) */
+"Xx8bbW" = "웹사이트 URL";
+
+/* (No Comment) */
+"ycaNZf" = "북마크에서 열기";
+
+/* (No Comment) */
+"YCxX7a" = "${websiteURL}";
+
+/* (No Comment) */
+"ZgJKfY" = "북마크에서 ${websiteURL} 페이지가 열립니다.";
 

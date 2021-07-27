@@ -1,66 +1,99 @@
-"0Lu6sT" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"0Lu6sT" = "Tidak Boleh Buka ${websiteURL} dalam tab baharu.";
 
-"1QT5y6" = "Open a Website";
+/* (No Comment) */
+"1n1yx4" = "Tidak Boleh Buka ${websiteURL} dalam tab baharu.";
 
-"1n1yx4" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"1QT5y6" = "Buka Laman Web";
 
-"3oC6Qm" = "Open a Website in New Tab";
+/* (No Comment) */
+"3oC6Qm" = "Buka Laman Web dalam Tab Baharu";
 
-"4HScaO" = "Website URL";
+/* (No Comment) */
+"4HScaO" = "URL Laman Web";
 
-"9iPSKS" = "Open a Website from Bookmarks";
+/* (No Comment) */
+"9iPSKS" = "Buka Laman Web dari Penanda Buku";
 
-"Gn4uX0" = "Website URL";
+/* (No Comment) */
+"azhMra" = "Buka ${websiteURL} dalam Tab Baharu";
 
-"HN8elO" = "Open History Website";
+/* (No Comment) */
+"c9NKFJ" = "Tidak Boleh Buka ${websiteURL} dalam tab baharu.";
 
-"LHHK1N" = "This will open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"cSYAYC" = "Ini akan membuka ${websiteURL} dari Sejarah.";
 
-"Lr38ve" = "${websiteURL}";
+/* (No Comment) */
+"cvU2lS" = "Buka Laman Web dari Sejarah";
 
-"MISOeA" = "Open from History";
+/* (No Comment) */
+"dk8p9b" = "URL Laman Web";
 
-"Paq749" = "Website URL";
+/* (No Comment) */
+"Gn4uX0" = "URL Laman Web";
 
-"UmKnv3" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"HN8elO" = "Buka Laman Web Sejarah";
 
-"VgH3NH" = "Open Bookmark Website";
-
-"Wh3wb1" = "Open Website";
-
-"WiB0aJ" = "Website URL";
-
-"Xx8bbW" = "Website URL";
-
-"YCxX7a" = "${websiteURL}";
-
-"ZgJKfY" = "This will open ${websiteURL}from Bookmarks.";
-
-"azhMra" = "Open ${websiteURL}in a New Tab";
-
-"c9NKFJ" = "Can't Open ${websiteURL} in a new tab.";
-
-"cSYAYC" = "This will open ${websiteURL} from History.";
-
-"cvU2lS" = "Open a Website from History";
-
-"dk8p9b" = "Website URL";
-
+/* (No Comment) */
 "iLL70C" = "${websiteURL}";
 
-"p3NuX2" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"LHHK1N" = "Ini akan membuka ${websiteURL} dalam tab baharu.";
 
-"pvi3Ug" = "This will open ${websiteURL}from Bookmarks.";
+/* (No Comment) */
+"Lr38ve" = "${websiteURL}";
 
-"qkzovY" = "Open a website in a new Tab";
+/* (No Comment) */
+"MISOeA" = "Buka dari Sejarah";
 
-"t7aARA" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"p3NuX2" = "Tidak Boleh Buka ${websiteURL} dalam tab baharu.";
 
-"uT0Oi7" = "This will open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"Paq749" = "URL Laman Web";
 
-"wZqW4o" = "This will open ${websiteURL} from History.";
+/* (No Comment) */
+"pvi3Ug" = "Ini akan membuka ${websiteURL}dari Penanda Buku.";
 
-"xgP5Po" = "using website";
+/* (No Comment) */
+"qkzovY" = "Buka laman web dalam Tab baharu";
 
-"ycaNZf" = "Open from Bookmarks";
+/* (No Comment) */
+"t7aARA" = "Tidak Boleh Buka ${websiteURL} dalam tab baharu.";
+
+/* (No Comment) */
+"UmKnv3" = "Tidak Boleh Buka ${websiteURL} dalam tab baharu.";
+
+/* (No Comment) */
+"uT0Oi7" = "Ini akan membuka ${websiteURL} dalam tab baharu.";
+
+/* (No Comment) */
+"VgH3NH" = "Buka Laman Web Penanda Buku";
+
+/* (No Comment) */
+"Wh3wb1" = "Buka Laman Web";
+
+/* (No Comment) */
+"WiB0aJ" = "URL Laman Web";
+
+/* (No Comment) */
+"wZqW4o" = "Ini akan membuka ${websiteURL} dari Sejarah.";
+
+/* (No Comment) */
+"xgP5Po" = "menggunakan laman web";
+
+/* (No Comment) */
+"Xx8bbW" = "URL Laman Web";
+
+/* (No Comment) */
+"ycaNZf" = "Buka dari Penanda Buku";
+
+/* (No Comment) */
+"YCxX7a" = "${websiteURL}";
+
+/* (No Comment) */
+"ZgJKfY" = "Ini akan membuka ${websiteURL} dari Penanda Buku.";
 

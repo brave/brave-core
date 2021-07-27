@@ -1,4 +1,7 @@
 /* No comment provided by engineer. */
+"/can/answer" = "/can/answer";
+
+/* No comment provided by engineer. */
 "Brave VPN" = "Brave VPN";
 
 /* Button text to confirm PIN */
@@ -8,6 +11,9 @@
 "insertKeyMessage" = "セキュリティーキーを入力する";
 
 /* No comment provided by engineer. */
+"Logs" = "ログ";
+
+/* No comment provided by engineer. */
 "No server found" = "サーバーが見つかりません";
 
 /* Placeholder text for PIN */
@@ -15,6 +21,9 @@
 
 /* Title for the alert modal when a security key with PIN is inserted. */
 "pinTitle" = "PIN認証が必要です";
+
+/* No comment provided by engineer. */
+"Search Fallback" = "Search Fallback";
 
 /* Message for selecting security key. */
 "selectKey" = "セキュリティキーをスキャンまたは挿入する";

@@ -415,6 +415,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "Editar carpeta";
 
+/* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
+"enablePullToRefresh" = "Habilita la posibilidad de deslizar para actualizar";
+
 /* Sync enter code words */
 "EnterCodeWords" = "Introduce las palabras clave";
 

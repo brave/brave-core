@@ -415,6 +415,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "폴더 편집";
 
+/* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
+"enablePullToRefresh" = "밀어서 새로고침 활성화";
+
 /* Sync enter code words */
 "EnterCodeWords" = "코드 단어 입력";
 
