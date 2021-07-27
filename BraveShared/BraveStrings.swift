@@ -1611,8 +1611,8 @@ extension Strings {
         public static let shortcutSettingsOpenPlaylistDescription =
             NSLocalizedString("shortcuts.shortcutSettingsOpenPlaylistDescription",
                               bundle: .braveShared,
-                              value: "Use Shortcuts to enable Brave VPN via Siri - Voice Assistant",
-                              comment: "Use Shortcuts to Open Playlist via Siri - Voice Assistant")
+                              value: "Use Shortcuts to Open Playlist via Siri - Voice Assistant",
+                              comment: "Description of Open Playlist Siri Shortcut in Settings Screen")
         
         public static let shortcutOpenApplicationSettingsTitle =
             NSLocalizedString("shortcuts.shortcutOpenApplicationSettingsTitle",
