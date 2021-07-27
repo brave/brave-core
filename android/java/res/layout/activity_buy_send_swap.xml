@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1E2029"
+    android:background="@color/wallet_bg"
     android:fillViewport="true">
 
     <LinearLayout
@@ -39,14 +39,14 @@
                     android:id="@+id/account_name_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#F0F2FF"
+                    android:textColor="@color/wallet_text_color"
                     android:textSize="14sp"/>
 
                 <TextView
                     android:id="@+id/account_value_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#C2C4CF"
+                    android:textColor="@color/wallet_secondary_text_color"
                     android:textSize="12sp"/>
 
             </LinearLayout>
@@ -56,7 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
-                android:textColor="#F0F2FF"
+                android:textColor="@color/wallet_text_color"
                 android:layout_gravity="center_vertical"
                 android:text="@string/mainnet"
                 android:paddingStart="8dp"
@@ -92,14 +92,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/from"
-                    android:textColor="#84889C"
+                    android:textColor="@color/wallet_secondary_text_color"
                     android:textSize="14sp"/>
 
                 <TextView
                     android:id="@+id/from_value_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#F0F2FF"
+                    android:textColor="@color/wallet_text_color"
                     android:textSize="20sp"/>
 
                 <RadioGroup
@@ -179,14 +179,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:textColor="#84889C"
+                    android:textColor="@color/wallet_secondary_text_color"
                     android:textSize="12sp"/>
 
                 <TextView
                     android:id="@+id/from_asset_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#F0F2FF"
+                    android:textColor="@color/wallet_text_color"
                     android:textSize="20sp"
                     android:gravity="center_vertical"
                     android:clickable="true"
@@ -227,14 +227,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/to_estimate"
-                    android:textColor="#84889C"
+                    android:textColor="@color/wallet_secondary_text_color"
                     android:textSize="14sp"/>
 
                 <TextView
                     android:id="@+id/to_value_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#F0F2FF"
+                    android:textColor="@color/wallet_text_color"
                     android:textSize="20sp"/>
 
             </LinearLayout>
@@ -249,14 +249,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:textColor="#84889C"
+                    android:textColor="@color/wallet_secondary_text_color"
                     android:textSize="12sp"/>
 
                 <TextView
                     android:id="@+id/to_asset_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#F0F2FF"
+                    android:textColor="@color/wallet_text_color"
                     android:textSize="20sp"
                     android:gravity="center_vertical"
                     android:clickable="true"
@@ -289,14 +289,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/market_price_in"
-                    android:textColor="#84889C"
+                    android:textColor="@color/wallet_secondary_text_color"
                     android:textSize="14sp"/>
 
                 <TextView
                     android:id="@+id/market_price_value_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#F0F2FF"
+                    android:textColor="@color/wallet_text_color"
                     android:textSize="20sp"/>
 
             </LinearLayout>
@@ -306,7 +306,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/limit"
                 android:layout_marginBottom="4dp"
-                android:textColor="#737ADE"
+                android:textColor="@color/wallet_swap_ui_limit_color"
                 android:drawablePadding="4dp"
                 android:textSize="12sp"
                 app:drawableBottomCompat="@drawable/ic_refresh" />
@@ -327,7 +327,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/slipping_tolerance"
-                android:textColor="#84889C"
+                android:textColor="@color/wallet_secondary_text_color"
                 android:textSize="14sp"/>
 
             <TextView
@@ -335,7 +335,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
-                android:textColor="#F0F2FF"
+                android:textColor="@color/wallet_text_color"
                 android:drawablePadding="4dp"
                 android:textSize="12sp"
                 app:drawableEndCompat="@drawable/ic_carat_down" />
