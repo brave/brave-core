@@ -39,6 +39,7 @@ class SwapController : public KeyedService, public mojom::SwapController {
   SwapController& operator=(const SwapController&) = delete;
 
   mojo::PendingRemote<mojom::SwapController> MakeRemote();
+  void Bind(mojo::PendingReceiver<mojom::SwapController> receiver);
 
   // Obtians a quote for the specified asset
   void GetPriceQuote(mojom::SwapParamsPtr swap_params,

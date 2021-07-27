@@ -79,6 +79,11 @@ EthJsonRpcController::MakeRemote() {
   return remote;
 }
 
+void EthJsonRpcController::Bind(
+    mojo::PendingReceiver<mojom::EthJsonRpcController> receiver) {
+  receivers_.Add(this, std::move(receiver));
+}
+
 void EthJsonRpcController::AddObserver(
     ::mojo::PendingRemote<mojom::EthJsonRpcControllerObserver> observer) {
   observers_.Add(std::move(observer));

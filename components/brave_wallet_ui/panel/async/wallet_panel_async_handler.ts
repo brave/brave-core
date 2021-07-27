@@ -7,7 +7,7 @@ import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
-import { WalletPanelState, PanelState, WalletAPIHandler } from '../../constants/types'
+import { WalletPanelState, PanelState } from '../../constants/types'
 import { AccountPayloadType } from '../constants/action_types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
@@ -24,13 +24,8 @@ function getPanelState (store: MiddlewareAPI<Dispatch<AnyAction>, any>): PanelSt
   return (store.getState() as WalletPanelState).panel
 }
 
-async function getWalletHandler (): Promise<WalletAPIHandler> {
-  const apiProxy = await getAPIProxy()
-  return apiProxy.getWalletHandler()
-}
-
 async function refreshWalletInfo (store: Store) {
-  const walletHandler = await getWalletHandler()
+  const walletHandler = (await getAPIProxy()).walletHandler
   const result = await walletHandler.getWalletInfo()
   store.dispatch(WalletActions.initialized(result))
 }

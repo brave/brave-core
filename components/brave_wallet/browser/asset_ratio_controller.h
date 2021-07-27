@@ -40,6 +40,7 @@ class AssetRatioController : public KeyedService,
   AssetRatioController& operator=(const AssetRatioController&) = delete;
 
   mojo::PendingRemote<mojom::AssetRatioController> MakeRemote();
+  void Bind(mojo::PendingReceiver<mojom::AssetRatioController> receiver);
 
   void GetPrice(const std::vector<std::string>& from_assets,
                 const std::vector<std::string>& to_assets,

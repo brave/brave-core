@@ -30,6 +30,16 @@ mojo::PendingRemote<mojom::SwapController> SwapControllerFactory::GetForContext(
       ->MakeRemote();
 }
 
+// static
+SwapController* SwapControllerFactory::GetControllerForContext(
+    content::BrowserContext* context) {
+  if (!IsAllowedForContext(context)) {
+    return nullptr;
+  }
+  return static_cast<SwapController*>(
+      GetInstance()->GetServiceForBrowserContext(context, true));
+}
+
 SwapControllerFactory::SwapControllerFactory()
     : BrowserContextKeyedServiceFactory(
           "SwapController",

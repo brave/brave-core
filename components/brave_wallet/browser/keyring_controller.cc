@@ -45,6 +45,11 @@ mojo::PendingRemote<mojom::KeyringController> KeyringController::MakeRemote() {
   return remote;
 }
 
+void KeyringController::Bind(
+    mojo::PendingReceiver<mojom::KeyringController> receiver) {
+  receivers_.Add(this, std::move(receiver));
+}
+
 // static
 void KeyringController::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
