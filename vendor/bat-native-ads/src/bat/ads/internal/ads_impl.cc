@@ -216,7 +216,7 @@ void AdsImpl::OnUnIdle(const int idle_time, const bool was_locked) {
     return;
   }
 
-  ad_diagnostics_->set_last_unidle_timestamp(base::Time::Now());
+  AdDiagnostics::Get()->SetLastUnIdleTimestamp(base::Time::Now());
 
   MaybeUpdateIdleTimeThreshold();
 
@@ -408,8 +408,7 @@ void AdsImpl::GetAccountStatement(GetAccountStatementCallback callback) {
 }
 
 void AdsImpl::GetAdDiagnostics(GetAdDiagnosticsCallback callback) {
-  ad_diagnostics_->set_ads_initialized(IsInitialized());
-  ad_diagnostics_->GetAdDiagnostics(std::move(callback));
+  AdDiagnostics::Get()->GetAdDiagnostics(std::move(callback));
 }
 
 AdContentInfo::LikeAction AdsImpl::ToggleAdThumbUp(

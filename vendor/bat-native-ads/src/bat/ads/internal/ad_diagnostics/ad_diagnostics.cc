@@ -20,7 +20,13 @@ namespace ads {
 
 namespace {
 
-std::string TimeToString(const base::Time& time) {
+AdDiagnostics* g_ad_diagnostics = nullptr;
+
+std::string ToString(const bool value) {
+  return value ? "true" : "false";
+}
+
+std::string ToString(const base::Time& time) {
   if (time.is_null())
     return {};
   return base::UTF16ToUTF8(base::TimeFormatShortDateAndTime(time));
@@ -28,9 +34,25 @@ std::string TimeToString(const base::Time& time) {
 
 }  // namespace
 
-AdDiagnostics::AdDiagnostics() = default;
+AdDiagnostics::AdDiagnostics() {
+  DCHECK(!g_ad_diagnostics);
+  g_ad_diagnostics = this;
+}
 
-AdDiagnostics::~AdDiagnostics() = default;
+AdDiagnostics::~AdDiagnostics() {
+  DCHECK(g_ad_diagnostics);
+  g_ad_diagnostics = nullptr;
+}
+
+// static
+AdDiagnostics* AdDiagnostics::Get() {
+  DCHECK(g_ad_diagnostics);
+  return g_ad_diagnostics;
+}
+
+void AdDiagnostics::SetLastUnIdleTimestamp(const base::Time& value) {
+  last_unidle_timestamp_ = value;
+}
 
 void AdDiagnostics::GetAdDiagnostics(GetAdDiagnosticsCallback callback) const {
   base::Value diagnostics = CollectDiagnostics();
@@ -44,12 +66,10 @@ void AdDiagnostics::GetAdDiagnostics(GetAdDiagnosticsCallback callback) const {
 base::Value AdDiagnostics::CollectDiagnostics() const {
   base::Value diagnostics(base::Value::Type::LIST);
 
-  AddDiagnosticsEntry(kDiagnosticsAdsEnabled,
-                      AdsClientHelper::Get()->GetBooleanPref(prefs::kEnabled),
-                      &diagnostics);
-
-  AddDiagnosticsEntry(kDiagnosticsAdsInitialized, ads_initialized_,
-                      &diagnostics);
+  AddDiagnosticsEntry(
+      kDiagnosticsAdsEnabled,
+      ToString(AdsClientHelper::Get()->GetBooleanPref(prefs::kEnabled)),
+      &diagnostics);
 
   AddDiagnosticsEntry(kDiagnosticsLocale,
                       brave_l10n::LocaleHelper::GetInstance()->GetLocale(),
@@ -58,7 +78,7 @@ base::Value AdDiagnostics::CollectDiagnostics() const {
   CollectCatalogDiagnostics(&diagnostics);
 
   AddDiagnosticsEntry(kDiagnosticsLastUnIdleTimestamp,
-                      TimeToString(last_unidle_timestamp_), &diagnostics);
+                      ToString(last_unidle_timestamp_), &diagnostics);
 
   return diagnostics;
 }
@@ -73,7 +93,7 @@ void AdDiagnostics::CollectCatalogDiagnostics(base::Value* diagnostics) const {
   const int64_t catalog_last_updated =
       AdsClientHelper::Get()->GetInt64Pref(prefs::kCatalogLastUpdated);
   const base::Time time = base::Time::FromDoubleT(catalog_last_updated);
-  AddDiagnosticsEntry(kDiagnosticsCatalogLastUpdated, TimeToString(time),
+  AddDiagnosticsEntry(kDiagnosticsCatalogLastUpdated, ToString(time),
                       diagnostics);
 }
 

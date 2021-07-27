@@ -503,6 +503,7 @@
       <message name="IDS_BRAVE_REWARDS_MINIMUM_BALANCE_WARNING" desc=""><ph name="PROVIDER">$1</ph> requires a minimum balance of <ph name="AMOUNT">$2</ph> BAT to create an account. If you connected an account previously,</message>
 
       <!-- WebUI rewards internals resources -->
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_ADS_NOT_YET_INITIALIZED" desc="Ads not yet initialized">Ads have not yet been initialized. Please click ‘Refresh’.</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_AMOUNT" desc="Amount">Amount:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_AUTO_REFRESH" desc="">Automatically refresh every 5 seconds</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_BALANCE_INFO" desc="">Balance info</message>

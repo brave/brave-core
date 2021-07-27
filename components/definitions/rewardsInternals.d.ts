@@ -14,8 +14,8 @@ declare namespace RewardsInternals {
     promotions: Promotion[]
     log: string
     fullLog: string
-    externalWallet: ExternalWallet,
-    eventLogs: EventLog[],
+    externalWallet: ExternalWallet
+    eventLogs: EventLog[]
     adDiagnostics: AdDiagnosticsEntry[]
   }
 

@@ -17,14 +17,18 @@ interface Props {
 
 const getEntries = (entries: RewardsInternals.AdDiagnosticsEntry[]) => {
   if (!entries || entries.length === 0) {
-    return null
+    return (
+      <DiagnosticsEntry>
+        {getLocale('adsNotYetInitialized')}
+      </DiagnosticsEntry>
+    )
   }
 
   return entries.map(entry => (
-        <DiagnosticsEntry key={entry.name}>
-          {entry.name}: {entry.value}
-        </DiagnosticsEntry>
-      ))
+    <DiagnosticsEntry key={entry.name}>
+      {entry.name}: {entry.value}
+    </DiagnosticsEntry>
+  ))
 }
 
 export const AdDiagnostics = (props: Props) => {

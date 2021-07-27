@@ -433,7 +433,7 @@ void AdsServiceImpl::GetAccountStatement(GetAccountStatementCallback callback) {
 
 void AdsServiceImpl::GetAdDiagnostics(GetAdDiagnosticsCallback callback) {
   if (!connected()) {
-    std::move(callback).Run(/* success */ false, std::string{});
+    std::move(callback).Run(/* success */ false, "");
     return;
   }
 

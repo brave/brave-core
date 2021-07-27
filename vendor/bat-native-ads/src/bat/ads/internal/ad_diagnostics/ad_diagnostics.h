@@ -6,6 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_DIAGNOSTICS_AD_DIAGNOSTICS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_DIAGNOSTICS_AD_DIAGNOSTICS_H_
 
+#include "base/time/time.h"
 #include "bat/ads/ads.h"
 
 namespace base {
@@ -21,18 +22,16 @@ class AdDiagnostics final {
   AdDiagnostics& operator=(const AdDiagnostics&) = delete;
   ~AdDiagnostics();
 
-  void GetAdDiagnostics(GetAdDiagnosticsCallback callback) const;
+  static AdDiagnostics* Get();
 
-  void set_ads_initialized(const bool value) { ads_initialized_ = value; }
-  void set_last_unidle_timestamp(const base::Time& value) {
-    last_unidle_timestamp_ = value;
-  }
+  void SetLastUnIdleTimestamp(const base::Time& value);
+
+  void GetAdDiagnostics(GetAdDiagnosticsCallback callback) const;
 
  private:
   base::Value CollectDiagnostics() const;
   void CollectCatalogDiagnostics(base::Value* diagnostics) const;
 
-  bool ads_initialized_ = false;
   base::Time last_unidle_timestamp_;
 };
 

@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ad_diagnostics/ad_diagnostics.h"
 
+#include <string>
+
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_reader.h"
 #include "bat/ads/internal/ad_diagnostics/ad_diagnostics_entry.h"
@@ -39,8 +41,6 @@ TEST_F(AdDiagnosticsTest, CheckAdsInitialized) {
 
     EXPECT_EQ("false",
               GetDiagnosticsEntry(*json_value, kDiagnosticsAdsEnabled));
-    EXPECT_EQ("false",
-              GetDiagnosticsEntry(*json_value, kDiagnosticsAdsInitialized));
     EXPECT_EQ("en-US", GetDiagnosticsEntry(*json_value, kDiagnosticsLocale));
   });
 
@@ -55,8 +55,6 @@ TEST_F(AdDiagnosticsTest, CheckAdsInitialized) {
     ASSERT_TRUE(json_value);
 
     EXPECT_EQ("true", GetDiagnosticsEntry(*json_value, kDiagnosticsAdsEnabled));
-    EXPECT_EQ("true",
-              GetDiagnosticsEntry(*json_value, kDiagnosticsAdsInitialized));
     EXPECT_EQ("en-US", GetDiagnosticsEntry(*json_value, kDiagnosticsLocale));
   });
 }

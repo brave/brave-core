@@ -427,19 +427,11 @@ void RewardsInternalsDOMHandler::GetAdDiagnostics(const base::ListValue* args) {
 
 void RewardsInternalsDOMHandler::OnGetAdDiagnostics(const bool success,
                                                     const std::string& json) {
-  constexpr char kName[] = "name";
-  constexpr char kValue[] = "value";
-
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
 
   base::Value diagnostics(base::Value::Type::LIST);
-  base::Value status(base::Value::Type::DICTIONARY);
-  status.SetStringKey(kName, "Status");
-  status.SetStringKey(kValue, "Ads are not initialized yet. Press Refresh button please.");
-  diagnostics.Append(std::move(status));
-
   if (success && !json.empty()) {
     absl::optional<base::Value> serialized_json = base::JSONReader::Read(json);
     if (serialized_json && serialized_json->is_list() &&
@@ -452,8 +444,9 @@ void RewardsInternalsDOMHandler::OnGetAdDiagnostics(const bool success,
   DCHECK(diagnostics.is_list()) << "Diagnostics should be a list";
   for (const auto& entry : diagnostics.GetList()) {
     DCHECK(entry.is_dict()) << "Diagnostics entry should be a dictionary";
-    DCHECK(entry.FindKey(kName)) << "Diagnostics entry should has 'name' key";
-    DCHECK(entry.FindKey(kValue)) << "Diagnostics entry should has 'value' key";
+    DCHECK(entry.FindKey("name")) << "Diagnostics entry should has 'name' key";
+    DCHECK(entry.FindKey("value"))
+        << "Diagnostics entry should has 'value' key";
   }
 #endif  // DCHECK_IS_ON()
 
