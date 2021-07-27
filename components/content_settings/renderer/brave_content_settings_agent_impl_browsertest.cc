@@ -480,8 +480,15 @@ class BraveContentSettingsAgentImplV2BrowserTest
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
+// This test currently fails on Linux platforms due to an upstream bug when
+// SwANGLE is used, see upstream bug at http://crbug.com/1192632.
+#if defined(OS_LINUX)
+#define MAYBE_WebGLReadPixels DISABLED_WebGLReadPixels
+#else
+#define MAYBE_WebGLReadPixels WebGLReadPixels
+#endif
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplV2BrowserTest,
-                       WebGLReadPixels) {
+                       MAYBE_WebGLReadPixels) {
   std::string origin = "a.com";
   std::string path = "/webgl/readpixels.html";
 
