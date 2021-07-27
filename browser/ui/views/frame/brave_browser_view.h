@@ -65,6 +65,7 @@ class BraveBrowserView : public BrowserView {
       const TabStripSelectionChange& selection) override;
 
   void StopTabCycling();
+  void OnPreferenceChanged(const std::string& pref_name);
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
   sidebar::Sidebar* InitSidebar() override;
@@ -81,6 +82,7 @@ class BraveBrowserView : public BrowserView {
 #endif
 
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
+  PrefChangeRegistrar pref_change_registrar_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserView);
 };

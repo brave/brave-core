@@ -163,6 +163,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kLocationBarIsWide, false);
   registry->RegisterBooleanPref(brave_rewards::prefs::kHideButton, false);
   registry->RegisterBooleanPref(kMRUCyclingEnabled, false);
+  registry->RegisterBooleanPref(kTabsSearchShow, true);
 
   brave_sync::Prefs::RegisterProfilePrefs(registry);
 

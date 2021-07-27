@@ -94,6 +94,7 @@ const char kBraveGCMChannelStatus[] = "brave.gcm.channel_status";
 const char kImportDialogExtensions[] = "import_dialog_extensions";
 const char kImportDialogPayments[] = "import_dialog_payments";
 const char kMRUCyclingEnabled[] = "brave.mru_cycling_enabled";
+const char kTabsSearchShow[] = "brave.tabs_search_show";
 
 #if defined(OS_ANDROID)
 const char kDesktopModeEnabled[] = "brave.desktop_mode_enabled";
