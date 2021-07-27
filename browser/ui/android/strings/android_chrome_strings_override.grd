@@ -146,12 +146,8 @@ CHAR_LIMIT guidelines:
         Private tab
       </message>
       <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_TITLE" desc="Title that states history is not saved in Private mode.">
-        Sites you visit aren’t saved in Private
+        History isn’t saved in Private
       </message>
-      <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_DESCRIPTION" desc="Description that states history is not saved in Private mode.">
-        To clear Private browsing history from your device, close all tabs
-      </message>
-
       <message name="IDS_CLOSE_ALL_INCOGNITO_NOTIFICATION_TITLE" desc="Title on the notification that closes all Private tabs on Android N+.">
         Private Tabs
       </message>
