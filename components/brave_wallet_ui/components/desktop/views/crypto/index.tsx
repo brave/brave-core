@@ -28,7 +28,6 @@ export interface Props {
   onSelectAsset: (asset: AssetOptionType | undefined) => void
   onCreateAccount: (name: string) => void
   onImportAccount: (name: string, key: string) => void
-  onConnectHardwareWallet: (hardware: 'Ledger' | 'Trezor') => void
   onUpdateAccountName: (name: string) => void
   onToggleAddModal: () => void
   onUpdateWatchList: (list: string[]) => void
@@ -56,7 +55,6 @@ const CryptoView = (props: Props) => {
     onSelectAsset,
     onCreateAccount,
     onImportAccount,
-    onConnectHardwareWallet,
     onUpdateAccountName,
     onUpdateWatchList,
     portfolioPriceHistory,
@@ -197,7 +195,6 @@ const CryptoView = (props: Props) => {
           onClose={onCloseAddModal}
           onCreateAccount={onCreateAccount}
           onImportAccount={onImportAccount}
-          onConnectHardwareWallet={onConnectHardwareWallet}
         />
       }
     </StyledWrapper>

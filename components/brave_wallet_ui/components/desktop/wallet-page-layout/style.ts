@@ -13,7 +13,7 @@ export const StyledWrapper = styled('div') <{}>`
 export const StyledContent = styled('div') <{}>`
   display: flex;
   align-items: flex-start;
-  justify-conent: flex-start;
+  justify-content: flex-start;
   flex-direction: row;
   width: 100%;
   max-width: 1600px;

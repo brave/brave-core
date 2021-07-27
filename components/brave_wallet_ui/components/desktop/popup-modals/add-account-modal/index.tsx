@@ -13,36 +13,28 @@ import {
   DisclaimerText,
   DisclaimerWrapper,
   SelectWrapper,
-  HardwareTitle,
-  HardwareButtonRow,
-  HardwareButton,
-  LedgerIcon,
-  TrezorIcon,
-  HardwareInfoRow,
-  HardwareInfoColumn,
-  InfoIcon,
   ImportButton,
   ImportRow
 } from './style'
+
+import HardwareWalletConnect from './hardware-wallet-connect'
 
 export interface Props {
   onClose: () => void
   onCreateAccount: (name: string) => void
   onImportAccount: (name: string, key: string) => void
-  onConnectHardwareWallet: (hardware: 'Ledger' | 'Trezor') => void
   accounts: WalletAccountType[]
   title: string
 }
 
 const AddAccountModal = (props: Props) => {
-  const { title, accounts, onClose, onCreateAccount, onImportAccount, onConnectHardwareWallet } = props
+  const { title, accounts, onClose, onCreateAccount, onImportAccount } = props
   const suggestedAccountName = `${locale.account} ${accounts.length + 1}`
   const [tab, setTab] = React.useState<AddAccountNavTypes>('create')
   const [importOption, setImportOption] = React.useState<string>('key')
   const [file, setFile] = React.useState<HTMLInputElement['files']>()
   const [accountName, setAccountName] = React.useState<string>(suggestedAccountName)
   const [privateKey, setPrivateKey] = React.useState<string>('')
-  const [selectedHardwareWallet, setSelectedHardwareWallet] = React.useState<'Ledger' | 'Trezor'>('Ledger')
 
   const handleAccountNameChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAccountName(event.target.value)
@@ -53,10 +45,6 @@ const AddAccountModal = (props: Props) => {
   }
 
   const onSubmit = () => {
-    if (tab === 'hardware') {
-      onConnectHardwareWallet(selectedHardwareWallet)
-      return
-    }
     if (tab === 'create') {
       onCreateAccount(accountName)
       return
@@ -85,14 +73,6 @@ const AddAccountModal = (props: Props) => {
       setAccountName('')
     }
     setTab(id)
-  }
-
-  const onSelectLedger = () => {
-    setSelectedHardwareWallet('Ledger')
-  }
-
-  const onSelectTrezor = () => {
-    setSelectedHardwareWallet('Trezor')
   }
 
   const onImportOptionChange = (value: string) => {
@@ -169,52 +149,26 @@ const AddAccountModal = (props: Props) => {
           </>
         }
         {tab !== 'hardware' &&
-          <Input
-            value={accountName}
-            placeholder={locale.addAccountPlaceholder}
-            onKeyDown={handleKeyDown}
-            onChange={handleAccountNameChanged}
-          />
-        }
-        {tab === 'hardware' &&
           <>
-            <HardwareTitle>{locale.connectHardwareTitle}</HardwareTitle>
-            <HardwareButtonRow>
-              <HardwareButton
-                onClick={onSelectLedger}
-                isSelected={selectedHardwareWallet === 'Ledger'}
-              >
-                <LedgerIcon />
-              </HardwareButton>
-              <HardwareButton
-                onClick={onSelectTrezor}
-                isSelected={selectedHardwareWallet === 'Trezor'}
-              >
-                <TrezorIcon />
-              </HardwareButton>
-            </HardwareButtonRow>
-            <HardwareInfoRow>
-              <InfoIcon />
-              <HardwareInfoColumn>
-                <DisclaimerText>{locale.connectHardwareInfo1} {selectedHardwareWallet} {locale.connectHardwareInfo2}</DisclaimerText>
-                <DisclaimerText>{locale.connectHardwareInfo3}</DisclaimerText>
-              </HardwareInfoColumn>
-            </HardwareInfoRow>
+            <Input
+              value={accountName}
+              placeholder={locale.addAccountPlaceholder}
+              onKeyDown={handleKeyDown}
+              onChange={handleAccountNameChanged}
+            />
+            <NavButton
+                onSubmit={onSubmit}
+                disabled={isDisabled}
+                text={
+                  tab === 'create' ?
+                    `${locale.addAccountCreate} ${locale.account}`
+                    : locale.addAccountImport
+                }
+                buttonType='primary'
+            />
           </>
         }
-        <NavButton
-          onSubmit={onSubmit}
-          disabled={isDisabled}
-          text={
-            tab === 'create' ?
-              `${locale.addAccountCreate} ${locale.account}`
-              : tab === 'hardware' ?
-                locale.addAccountConnect
-                : locale.addAccountImport
-          }
-          buttonType='primary'
-        />
-
+        {tab === 'hardware' && <HardwareWalletConnect />}
       </StyledWrapper>
     </PopupModal>
   )
