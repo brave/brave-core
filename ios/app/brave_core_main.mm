@@ -11,11 +11,14 @@
 #include "base/compiler_specific.h"
 #include "base/logging.h"
 #include "base/strings/sys_string_conversions.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/ios/app/brave_main_delegate.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
+#include "brave/ios/browser/api/brave_wallet/asset_ratio_controller_ios+private.h"
+#include "brave/ios/browser/api/brave_wallet/keyring_controller_ios+private.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
+#include "brave/ios/browser/brave_wallet/asset_ratio_controller_factory.h"
+#include "brave/ios/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/ios/browser/brave_web_client.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
@@ -32,10 +35,6 @@
 #include "ios/public/provider/chrome/browser/chrome_browser_provider.h"
 #include "ios/web/public/init/web_main.h"
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#import "brave/ios/browser/api/wallet/brave_wallet_api+private.h"
-#endif
-
 // Chromium logging is global, therefore we cannot link this to the instance in
 // question
 static BraveCoreLogHandler _Nullable _logHandler = nil;
@@ -46,12 +45,11 @@ static BraveCoreLogHandler _Nullable _logHandler = nil;
   std::unique_ptr<web::WebMain> _webMain;
   ChromeBrowserState* _mainBrowserState;
 }
-
-@property(nonatomic, readwrite) BraveBookmarksAPI* bookmarksAPI;
-@property(nonatomic, readwrite) BraveHistoryAPI* historyAPI;
-@property(nonatomic, readwrite) BraveSyncProfileServiceIOS* syncProfileService;
-
-@property(nullable, nonatomic, readwrite) BraveWalletAPI* wallet;
+@property(nonatomic) BraveBookmarksAPI* bookmarksAPI;
+@property(nonatomic) BraveHistoryAPI* historyAPI;
+@property(nonatomic) BraveSyncProfileServiceIOS* syncProfileService;
+@property(nonatomic) BraveWalletKeyringController* keyringController;
+@property(nonatomic) BraveWalletAssetRatioController* assetRatioController;
 @end
 
 @implementation BraveCoreMain
@@ -195,15 +193,26 @@ static bool CustomLogHandler(int severity,
   return _syncProfileService;
 }
 
-- (nullable BraveWalletAPI*)wallet {
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  // if (!_wallet) {
-  //   _wallet = [[BraveWalletAPI alloc] init];
-  // }
-  return _wallet;
-#else
-  return nil;
-#endif
+- (BraveWalletKeyringController*)keyringController {
+  if (!_keyringController) {
+    auto* controller =
+        brave_wallet::KeyringControllerFactory::GetForBrowserState(
+            _mainBrowserState);
+    _keyringController =
+        [[BraveWalletKeyringController alloc] initWithController:controller];
+  }
+  return _keyringController;
+}
+
+- (BraveWalletAssetRatioController*)assetRatioController {
+  if (!_assetRatioController) {
+    auto* controller =
+        brave_wallet::AssetRatioControllerFactory::GetForBrowserState(
+            _mainBrowserState);
+    _assetRatioController =
+        [[BraveWalletAssetRatioController alloc] initWithController:controller];
+  }
+  return _assetRatioController;
 }
 
 @end
