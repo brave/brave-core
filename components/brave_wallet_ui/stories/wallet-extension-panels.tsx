@@ -1,11 +1,30 @@
 import * as React from 'react'
 
 // Components
-import { ConnectWithSite, ConnectedPanel, Panel, WelcomePanel } from '../components/extension'
+import {
+  ConnectWithSite,
+  ConnectedPanel,
+  Panel,
+  WelcomePanel
+} from '../components/extension'
 import { AppList } from '../components/shared'
-import { Send, SelectAsset } from '../components/buy-send-swap'
-import { WalletAccountType, PanelTypes, AppObjectType, AppsListType, AssetOptionType, BuySendSwapViewTypes } from '../constants/types'
+import {
+  Send,
+  SelectAsset,
+  SelectNetwork,
+  SelectAccount
+} from '../components/buy-send-swap'
+import {
+  WalletAccountType,
+  PanelTypes,
+  AppObjectType,
+  AppsListType,
+  AssetOptionType,
+  BuySendSwapViewTypes,
+  NetworkOptionsType
+} from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
+import { NetworkOptions } from '../options/network-options'
 import { filterAppList } from '../utils/filter-app-list'
 import LockPanel from '../components/extension/lock-panel'
 import {
@@ -114,7 +133,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
   const [selectedPanel, setSelectedPanel] = React.useState<PanelTypes>('main')
   const [panelTitle, setPanelTitle] = React.useState<string>('main')
-  const [selectedAccount] = React.useState<WalletAccountType>(
+  const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType>(
     accounts[0]
   )
   const [favoriteApps, setFavoriteApps] = React.useState<AppObjectType[]>([
@@ -123,6 +142,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
   const [walletConnected, setWalletConnected] = React.useState<boolean>(true)
   const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
+  const [selectedNetwork, setSelectedNetwork] = React.useState<NetworkOptionsType>(NetworkOptions[0])
   const [selectedAsset, setSelectedAsset] = React.useState<AssetOptionType>(AssetOptions[0])
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
   const [toAddress, setToAddress] = React.useState('')
@@ -132,6 +152,20 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     if (view === 'assets') {
       setShowSelectAsset(true)
     }
+  }
+
+  const onBack = () => {
+    setSelectedPanel('main')
+  }
+
+  const onSelectNetwork = (network: NetworkOptionsType) => () => {
+    setSelectedNetwork(network)
+    setSelectedPanel('main')
+  }
+
+  const onSelectAccount = (account: WalletAccountType) => () => {
+    setSelectedAccount(account)
+    setSelectedPanel('main')
   }
 
   const onHideSelectAsset = () => {
@@ -226,6 +260,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
         <>
           {selectedPanel === 'main' ? (
             <ConnectedPanel
+              selectedNetwork={selectedNetwork}
               selectedAccount={selectedAccount}
               isConnected={walletConnected}
               connectAction={toggleConnected}
@@ -242,7 +277,25 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                   />
                 </SelectContainer>
               }
-              {!showSelectAsset &&
+              {selectedPanel === 'accounts' &&
+                <SelectContainer>
+                  <SelectAccount
+                    accounts={accounts}
+                    onBack={onBack}
+                    onSelectAccount={onSelectAccount}
+                  />
+                </SelectContainer>
+              }
+              {selectedPanel === 'networks' &&
+                <SelectContainer>
+                  <SelectNetwork
+                    networks={NetworkOptions}
+                    onBack={onBack}
+                    onSelectNetwork={onSelectNetwork}
+                  />
+                </SelectContainer>
+              }
+              {!showSelectAsset && selectedPanel !== 'networks' && selectedPanel !== 'accounts' &&
                 <Panel
                   navAction={navigateTo}
                   title={panelTitle}
