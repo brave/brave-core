@@ -11,8 +11,11 @@
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
+#include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
+#include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "extensions/buildflags/buildflags.h"
 #include "ui/events/event_observer.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
@@ -120,6 +123,11 @@ class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
 
 BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     : BrowserView(std::move(browser)) {
+  pref_change_registrar_.Init(GetProfile()->GetPrefs());
+  pref_change_registrar_.Add(
+      kTabsSearchShow,
+      base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
+                          base::Unretained(this)));
 #if BUILDFLAG(ENABLE_SIDEBAR)
   // Only normal window (tabbed) should have sidebar.
   if (!sidebar::CanUseSidebar(browser_->profile()) ||
@@ -150,6 +158,14 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
   // See the comments of BrowserView::find_bar_host_view().
   ReorderChildView(find_bar_host_view_, -1);
 #endif
+}
+
+void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
+  if (pref_name == kTabsSearchShow) {
+    auto show_tabs_search = GetProfile()->GetPrefs()->GetBoolean(pref_name);
+    tab_strip_region_view()->tab_search_button()->SetVisible(show_tabs_search);
+    return;
+  }
 }
 
 BraveBrowserView::~BraveBrowserView() {
