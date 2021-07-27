@@ -15,8 +15,8 @@
         android:title="@string/google_terms_of_service_title"
         app:url="@string/brave_terms_of_service_url" />
     <org.chromium.chrome.browser.about_settings.HyperlinkPreference
-        android:key="privacy_notice"
-        android:title="@string/privacy_notice_title"
+        android:key="privacy_policy"
+        android:title="@string/privacy_policy_title"
         app:url="@string/brave_privacy_notice_url" />
     <Preference
         android:fragment="org.chromium.chrome.browser.settings.BraveLicensePreferences"
