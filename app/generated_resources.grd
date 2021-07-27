@@ -2319,27 +2319,34 @@ are declared in tools/grit/grit_rule.gni.
       </message>
 
       <!-- WebApp name/icon update dialog -->
-      <message name="IDS_WEBAPP_UPDATE_DIALOG_TITLE_NAME" desc="The title at the top of the dialog when only the name changed.">
-        Review name updates
+      <message name="IDS_WEBAPP_UPDATE_DIALOG_TITLE_NAME" desc="The title at the top of the dialog when only the name changed." formatter_data="android_java">
+        Review name update
       </message>
-      <message name="IDS_WEBAPP_UPDATE_DIALOG_TITLE_ICON" desc="The title at the top of the dialog when only the icon changed.">
-        Review icon updates
+      <message name="IDS_WEBAPP_UPDATE_DIALOG_TITLE_ICON" desc="The title at the top of the dialog when only the icon changed." formatter_data="android_java">
+        Review icon update
       </message>
-      <message name="IDS_WEBAPP_UPDATE_DIALOG_TITLE_NAME_AND_ICON" desc="The title at the top of the dialog when the name and icon changed.">
+      <message name="IDS_WEBAPP_UPDATE_DIALOG_TITLE_NAME_AND_ICON" desc="The title at the top of the dialog when the name and icon changed." formatter_data="android_java">
         Review name &amp; icon updates
       </message>
-      <message name="IDS_WEBAPP_UPDATE_EXPLANATION" desc="The text at the top of the dialog, explaining what to do when an app changes its identity.">
-        If this web app is trying to trick you into thinking it is a different app, uninstall it.
+      <message name="IDS_WEBAPP_UPDATE_EXPLANATION" desc="The text at the top of the dialog, explaining what to do when an app changes its identity." formatter_data="android_java">
+        If this web app is trying to trick you into thinking it's a different app, uninstall it.
       </message>
-      <message name="IDS_WEBAPP_UPDATE_NEGATIVE_BUTTON" desc="The text for the negative button (aka. cancel button), allowing the user to uninstall the app and report it to the abuse team.">
-        Uninstall app
-      </message>
-      <message name="IDS_UPDATE_WEBAPP_CURRENT_ICON" desc="The accessibility string explaining which icon is the current icon.">
+      <message name="IDS_WEBAPP_UPDATE_CURRENT_ICON" desc="The accessibility string explaining which icon is the current icon." formatter_data="android_java">
         Current icon
       </message>
-      <message name="IDS_UPDATE_WEBAPP_UPDATED_ICON" desc="The accessibility string explaining which icon is the new icon.">
+      <message name="IDS_WEBAPP_UPDATE_NEW_ICON" desc="The accessibility string explaining which icon is the new icon." formatter_data="android_java">
         New icon
       </message>
+      <if expr="not use_titlecase">
+        <message name="IDS_WEBAPP_UPDATE_NEGATIVE_BUTTON" desc="The text for the negative button (aka. cancel button), allowing the user to uninstall the app and report it to the abuse team (sentence casing)." formatter_data="android_java">
+          Uninstall app
+        </message>
+      </if>
+      <if expr="use_titlecase">
+        <message name="IDS_WEBAPP_UPDATE_NEGATIVE_BUTTON" desc="The text for the negative button (aka. cancel button), allowing the user to uninstall the app and report it to the abuse team (title casing).">
+          Uninstall App
+        </message>
+      </if>
 
       <!-- Finish policy app installation dialog -->
       <message name="IDS_FINISH_POLICY_WEB_APP_INSTALLATION" desc="Main text for the Finish Policy Web App Installation dialog. This is a dialog message that appears on the first launch of an app after it was remotely installed by an enterprise administrator. The app has some cosmetic factors (like the app icon) that can only be fixed if the user launches and then restarts the app. After the initial launch, this dialog encourages users to restart the app to complete the installation.">
@@ -3344,8 +3351,8 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_TAB_SHARING_INFOBAR_STOP_BUTTON" desc="Text displayed on the button to stop sharing a tab.">
        Stop sharing
       </message>
-      <message name="IDS_TAB_SHARING_INFOBAR_SWITCH_TO_BUTTON" desc="The user is sharing (presenting) a tab via a screensharing app like Brave Meet. This button allows the user to continue sharing a tab but view a different tab [url] at the same time.">
-       View tab <ph name="TAB_ORIGIN">$1<ex>meet.google.com</ex></ph>
+      <message name="IDS_TAB_SHARING_INFOBAR_SWITCH_TO_BUTTON" desc="The user is sharing (presenting) a tab via a screensharing app like Brave Meet. This button allows the user to continue sharing a tab but view a different tab [url] at the same time. The URL should not appear in the middle of the button in any language; please observe the structure of [message: url].">
+       View tab: <ph name="TAB_ORIGIN">$1<ex>meet.google.com</ex></ph>
       </message>
       <message name="IDS_TAB_SHARING_INFOBAR_SWITCH_TO_CAPTURER_BUTTON" desc="Text displayed on an infobar button offering to change focus to the capturer if its hostname cannot be determined. (Otherwise, IDS_TAB_SHARING_INFOBAR_SWITCH_TO_BUTTON will be used.)">
        Switch to capturing tab
