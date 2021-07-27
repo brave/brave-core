@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_UNITTEST_BASE_H_
 
 #include <memory>
+#include <string>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/task_environment.h"
@@ -38,6 +39,9 @@ class UnitTestBase : public testing::Test {
 
   UnitTestBase(const UnitTestBase&) = delete;
   UnitTestBase& operator=(const UnitTestBase&) = delete;
+
+  bool CopyFileFromTestPathToTempDir(const std::string& source_filename,
+                                     const std::string& dest_filename) const;
 
   // If |integration_test| is set to true test the functionality and performance
   // under product-like circumstances with data to replicate live settings to
