@@ -43,6 +43,7 @@ class EthJsonRpcController : public KeyedService,
   ~EthJsonRpcController() override;
 
   mojo::PendingRemote<mojom::EthJsonRpcController> MakeRemote();
+  void Bind(mojo::PendingReceiver<mojom::EthJsonRpcController> receiver);
 
   using GetBlockNumberCallback =
       base::OnceCallback<void(bool status, uint256_t result)>;

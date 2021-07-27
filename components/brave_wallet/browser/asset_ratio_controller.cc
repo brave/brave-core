@@ -69,6 +69,11 @@ AssetRatioController::MakeRemote() {
   return remote;
 }
 
+void AssetRatioController::Bind(
+    mojo::PendingReceiver<mojom::AssetRatioController> receiver) {
+  receivers_.Add(this, std::move(receiver));
+}
+
 void AssetRatioController::SetBaseURLForTest(const GURL& base_url_for_test) {
   base_url_for_test_ = base_url_for_test;
 }

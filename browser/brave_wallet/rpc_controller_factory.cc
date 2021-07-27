@@ -32,6 +32,16 @@ RpcControllerFactory::GetForContext(content::BrowserContext* context) {
       ->MakeRemote();
 }
 
+// static
+EthJsonRpcController* RpcControllerFactory::GetControllerForContext(
+    content::BrowserContext* context) {
+  if (!IsAllowedForContext(context)) {
+    return nullptr;
+  }
+  return static_cast<EthJsonRpcController*>(
+      GetInstance()->GetServiceForBrowserContext(context, true));
+}
+
 RpcControllerFactory::RpcControllerFactory()
     : BrowserContextKeyedServiceFactory(
           "RpcController",

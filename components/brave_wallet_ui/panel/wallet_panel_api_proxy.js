@@ -15,10 +15,6 @@ class WalletPanelApiProxy {
   showUI() {}
   closeUI() {}
 
-  /** @return {!braveWallet.mojom.PageCallbackRouter} */
-  getCallbackRouter() {}
-
-  getWalletHandler() {}
 }
 
 /** @implements {WalletPanelApiProxy} */
@@ -26,37 +22,38 @@ export default class WalletPanelApiProxyImpl {
   constructor() {
     /** @type {!braveWallet.mojom.PageCallbackRouter} */
     this.callbackRouter = new braveWallet.mojom.PageCallbackRouter();
-
     /** @type {!braveWallet.mojom.PanelHandlerRemote} */
-    this.panel_handler = new braveWallet.mojom.PanelHandlerRemote();
+    this.panelHandler = new braveWallet.mojom.PanelHandlerRemote();
     /** @type {!braveWallet.mojom.WalletHandlerRemote} */
-    this.wallet_handler = new braveWallet.mojom.WalletHandlerRemote();
+    this.walletHandler = new braveWallet.mojom.WalletHandlerRemote();
+    /** @type {!braveWallet.mojom.EthJsonRpcControllerRemote} */
+    this.ethJsonRpcController = new braveWallet.mojom.EthJsonRpcControllerRemote();
+    /** @type {!braveWallet.mojom.SwapController} */
+    this.swapController = new braveWallet.mojom.SwapControllerRemote();
+    /** @type {!braveWallet.mojom.AssetRatioController} */
+    this.assetRatioController = new braveWallet.mojom.AssetRatioControllerRemote();
+    /** @type {!braveWallet.mojom.KeyringController} */
+    this.keyringController = new braveWallet.mojom.KeyringControllerRemote();
 
     const factory = braveWallet.mojom.PanelHandlerFactory.getRemote();
     factory.createPanelHandler(
         this.callbackRouter.$.bindNewPipeAndPassRemote(),
-        this.panel_handler.$.bindNewPipeAndPassReceiver(),
-        this.wallet_handler.$.bindNewPipeAndPassReceiver());
+        this.panelHandler.$.bindNewPipeAndPassReceiver(),
+        this.walletHandler.$.bindNewPipeAndPassReceiver(),
+        this.ethJsonRpcController.$.bindNewPipeAndPassReceiver(),
+        this.swapController.$.bindNewPipeAndPassReceiver(),
+        this.assetRatioController.$.bindNewPipeAndPassReceiver(),
+        this.keyringController.$.bindNewPipeAndPassReceiver());
   }
 
   /** @override */
   showUI() {
-    this.panel_handler.showUI();
+    this.panelHandler.showUI();
   }
 
   /** @override */
   closeUI() {
-    this.panel_handler.closeUI();
-  }
-
-  /** @override */
-  getCallbackRouter() {
-    return this.callbackRouter;
-  }
-
-  /** @override */
-  getWalletHandler() {
-    return this.wallet_handler;
+    this.panelHandler.closeUI();
   }
 }
 

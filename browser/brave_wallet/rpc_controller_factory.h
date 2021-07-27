@@ -21,6 +21,8 @@ class RpcControllerFactory : public BrowserContextKeyedServiceFactory {
  public:
   static mojo::PendingRemote<mojom::EthJsonRpcController> GetForContext(
       content::BrowserContext* context);
+  static EthJsonRpcController* GetControllerForContext(
+      content::BrowserContext* context);
   static RpcControllerFactory* GetInstance();
 
  private:

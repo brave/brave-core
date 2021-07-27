@@ -85,6 +85,11 @@ mojo::PendingRemote<mojom::SwapController> SwapController::MakeRemote() {
   return remote;
 }
 
+void SwapController::Bind(
+    mojo::PendingReceiver<mojom::SwapController> receiver) {
+  receivers_.Add(this, std::move(receiver));
+}
+
 void SwapController::SetBaseURLForTest(const GURL& base_url_for_test) {
   base_url_for_test_ = base_url_for_test;
 }

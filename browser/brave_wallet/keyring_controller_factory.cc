@@ -29,6 +29,16 @@ KeyringControllerFactory::GetForContext(content::BrowserContext* context) {
       ->MakeRemote();
 }
 
+// static
+KeyringController* KeyringControllerFactory::GetControllerForContext(
+    content::BrowserContext* context) {
+  if (!IsAllowedForContext(context)) {
+    return nullptr;
+  }
+  return static_cast<KeyringController*>(
+      GetInstance()->GetServiceForBrowserContext(context, true));
+}
+
 KeyringControllerFactory::KeyringControllerFactory()
     : BrowserContextKeyedServiceFactory(
           "KeyringController",

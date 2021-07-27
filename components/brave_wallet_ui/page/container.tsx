@@ -291,7 +291,7 @@ function Container (props: Props) {
   }
 
   const onCreateAccount = (name: string) => {
-    const created = props.walletPageActions.addAccountToWallet({ accountName: name })
+    const created = props.walletPageActions.addAccount({ accountName: name })
     if (created) {
       onToggleAddModal()
     }
