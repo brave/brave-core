@@ -833,6 +833,111 @@
 "ShieldsDownDisclaimer" = "Vous utilisez ce site sans les protections de confidentialité de Brave. Ne fonctionne-t-il pas correctement avec Shields activé ?";
 
 /* No comment provided by engineer. */
+"shortcuts.activityTypeBraveNewsDescription" = "Ouvrir Brave News et vérifier les meilleurs articles du jour";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryDescription" = "Ouvrir le navigateur dans un nouvel onglet et supprimer toutes les données de l'historique de navigation privée";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistorySuggestedPhrase" = "Effacer l'historique de navigation";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryTitle" = "Effacer l'historique de navigation Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNDescription" = "Ouvrir le navigateur dans un nouvel onglet et activer le VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNSuggestedPhrase" = "Activer le VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNTitle" = "Ouvrir le navigateur Brave et activer le VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "Ouvrir un nouvel onglet privé";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabTitle" = "Ouvrir un nouvel onglet de navigateur privé";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabSuggestedPhrase" = "Ouvrir un nouvel onglet";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabTitle" = "Ouvrir un nouvel onglet de navigateur";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveNewsTitle" = "Ouvrir Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Ouvrir Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistDescription" = "Commencer à lire vos vidéos dans la liste de lecture";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistSuggestedPhrase" = "Ouvrir la liste de lecture";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistTitle" = "Ouvrir la liste de lecture";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeTabDescription" = "Commencer à chercher sur le Web en toute sécurité avec Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "Ouvrir le site Web à partir du marque-page";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenHistorySuggestedPhrase" = "Ouvrir le site Web depuis l'historique";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Ouvrir le site Web";
+
+/* Description for opening Brave Settings for altering Siri shortcut. */
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "Cette option ouvrira les paramètres de Brave. Afin de changer plusieurs options Siri, sélectionnez l'élément de menu « Siri et recherche » et personnalisez vos choix.";
+
+/* Button title that open application settings */
+"shortcuts.shortcutOpenApplicationSettingsTitle" = "Ouvrir les paramètres";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Utiliser Raccourcis pour ouvrir un nouvel onglet via Siri - Assistant vocal";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Effacer l'historique de navigation";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNDescription" = "Utiliser Raccourcis pour activer Brave VPN via Siri - Assistant vocal";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNTitle" = "Activer le VPN";
+
+/* Description of Open Brave News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Utiliser Raccourcis pour ouvrir un nouvel onglet et afficher Brave News via Siri - Assistant vocal";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Ouvrir Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Utiliser Raccourcis pour ouvrir un nouvel onglet privé via Siri - Assistant vocal";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabTitle" = "Ouvrir un nouvel onglet privé";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabDescription" = "Utiliser Raccourcis pour ouvrir un nouvel onglet via Siri - Assistant vocal";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabTitle" = "Ouvrir un nouvel onglet";
+
+/* Use Shortcuts to Open Playlist via Siri - Voice Assistant */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Utiliser Raccourcis pour activer Brave VPN via Siri - Assistant vocal";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenPlaylistTitle" = "Ouvrir la liste de lecture";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsTitle" = "Raccourcis Siri";
+
+/* No comment provided by engineer. */
 "SiteReportedBody" = "Merci d'avoir signalé aux développeurs de Brave que ce site ne fonctionne pas correctement. Nous allons faire de notre mieux pour corriger le problème !";
 
 /* No comment provided by engineer. */

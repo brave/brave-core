@@ -415,6 +415,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "Redigera mapp";
 
+/* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
+"enablePullToRefresh" = "Aktivera Dra för att uppdatera";
+
 /* Sync enter code words */
 "EnterCodeWords" = "Ange kodord";
 

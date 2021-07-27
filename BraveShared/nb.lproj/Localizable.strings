@@ -833,6 +833,111 @@
 "ShieldsDownDisclaimer" = "Du surfer på dette nettstedet uten Braves personvernsbeskyttelse. Fungerer det ikke med Skjold oppe?";
 
 /* No comment provided by engineer. */
+"shortcuts.activityTypeBraveNewsDescription" = "Åpne Brave News og sjekk dagens nyheter";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryDescription" = "Åpne nettleseren i en ny fane og slett den private nettleserens historikk";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistorySuggestedPhrase" = "Slett nettleserhistorikk";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryTitle" = "Slett Brave-nettleserhistorikk";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNDescription" = "Åpne nettleseren i en ny fane og aktiver VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNSuggestedPhrase" = "Aktiver VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNTitle" = "Åpne Brave-nettleseren og aktiver VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "Åpne en ny privat fane";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabTitle" = "Åpne en ny privat nettleserfane";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabSuggestedPhrase" = "Åpne ny fane";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabTitle" = "Åpne en ny nettleserfane";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveNewsTitle" = "Åpne Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Åpne Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistDescription" = "Begynn å spille av videoene i spillelisten";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistSuggestedPhrase" = "Åpne spilleliste";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistTitle" = "Åpne spilleliste";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeTabDescription" = "Begynn å søke på nettet på trygt vis med Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "Åpne det bokmerkede nettstedet";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenHistorySuggestedPhrase" = "Åpne nettstedet fra nettloggen";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Åpne nettsted";
+
+/* Description for opening Brave Settings for altering Siri shortcut. */
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "Dette alternativet åpner Brave-innstillinger. For å endre forskjellige Siri-alternativer, kan du velge 'Siri og søk' i menyen og tilpasse valgene dine.";
+
+/* Button title that open application settings */
+"shortcuts.shortcutOpenApplicationSettingsTitle" = "Åpne innstillinger";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Bruk snarveier for å åpne en ny fane via Siri – Stemmeassistent";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Slett nettleserhistorikk";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNDescription" = "Bruk snarveier for å aktivere Brave VPN via Siri – Stemmeassistent";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNTitle" = "Aktiver VPN";
+
+/* Description of Open Brave News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Bruk snarveier for å åpne en ny fane og vise Brave-nyhetsfeeden via Siri – Stemmeassistent";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Åpne Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Bruk snarveier for å åpne en ny privat fane via Siri – Stemmeassistent";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabTitle" = "Åpne en ny privat fane";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabDescription" = "Bruk snarveier for å åpne en ny fane via Siri – Stemmeassistent";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabTitle" = "Åpne ny fane";
+
+/* Use Shortcuts to Open Playlist via Siri - Voice Assistant */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Bruk snarveier for å aktivere Brave VPN via Siri – Stemmeassistent";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenPlaylistTitle" = "Åpne spilleliste";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsTitle" = "Siri-snarveier";
+
+/* No comment provided by engineer. */
 "SiteReportedBody" = "Takk for at du forteller Braves utviklere at det er noe galt med dette nettstedet. Vi vil gjøre vårt beste for å fikse det!";
 
 /* No comment provided by engineer. */

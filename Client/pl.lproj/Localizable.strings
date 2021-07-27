@@ -1,4 +1,7 @@
 /* No comment provided by engineer. */
+"/can/answer" = "/can/answer";
+
+/* No comment provided by engineer. */
 "Brave VPN" = "Brave VPN";
 
 /* Button text to confirm PIN */
@@ -8,6 +11,9 @@
 "insertKeyMessage" = "Wprowadź klucz zabezpieczeń dla ";
 
 /* No comment provided by engineer. */
+"Logs" = "Logi";
+
+/* No comment provided by engineer. */
 "No server found" = "Nie znaleziono serwera";
 
 /* Placeholder text for PIN */
@@ -15,6 +21,9 @@
 
 /* Title for the alert modal when a security key with PIN is inserted. */
 "pinTitle" = "Wymagana weryfikacja PIN";
+
+/* No comment provided by engineer. */
+"Search Fallback" = "Wyszukaj procedurę awaryjną";
 
 /* Message for selecting security key. */
 "selectKey" = "Zeskanuj lub wprowadź klucz zabezpieczeń dla ";

@@ -415,6 +415,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "Edytuj folder";
 
+/* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
+"enablePullToRefresh" = "Włącz funkcję odświeżania przez ściąganie";
+
 /* Sync enter code words */
 "EnterCodeWords" = "Wprowadź słowa kodowe";
 

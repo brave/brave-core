@@ -833,6 +833,111 @@
 "ShieldsDownDisclaimer" = "你正在没有 Brave 隐私保护的情况下浏览本网站。Shields 处于开启状态时无法正常工作吗？";
 
 /* No comment provided by engineer. */
+"shortcuts.activityTypeBraveNewsDescription" = "打开 Brave 新闻并查看今日头条";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryDescription" = "在新标签页中打开浏览器，然后删除所有私人浏览器的历史记录数据";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistorySuggestedPhrase" = "清除浏览器历史记录";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryTitle" = "清除 Brave 浏览器历史记录";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNDescription" = "在新标签页中打开浏览器并启用 VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNSuggestedPhrase" = "启用 VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNTitle" = "打开 Brave 浏览器并启用 VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "打开新的私人标签页";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabTitle" = "打开新的私人浏览器标签页";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabSuggestedPhrase" = "打开新标签页";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabTitle" = "打开一个新的浏览器标签页";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveNewsTitle" = "打开 Brave 新闻";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "打开 Brave 新闻";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistDescription" = "开始播放播放列表中的视频";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistSuggestedPhrase" = "打开播放列表";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistTitle" = "打开播放列表";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeTabDescription" = "开始通过 Brave 安全地搜索网络";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "打开书签网站";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenHistorySuggestedPhrase" = "打开历史记录网站";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "打开网站";
+
+/* Description for opening Brave Settings for altering Siri shortcut. */
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "此选项会打开 Brave 设置。要更改各种 Siri 选项，请选择“Siri & Search”菜单项并自定义您的选择。";
+
+/* Button title that open application settings */
+"shortcuts.shortcutOpenApplicationSettingsTitle" = "打开设置";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "用快捷方式通过 Siri - 语音助手打开一个新标签页";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "清除浏览器历史记录";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNDescription" = "用快捷方式通过 Siri - 语音助手来启用 Brave VPN ";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNTitle" = "启用 VPN";
+
+/* Description of Open Brave News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "用快捷方式打开一个新标签页并通过 Siri - 语音助手来显示 Brave 的新闻提要";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "打开 Brave 新闻";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "用快捷方式通过 Siri - 语音助手打开一个新标签页";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabTitle" = "打开新的私人标签页";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabDescription" = "用快捷方式通过 Siri - 语音助手打开一个新标签页";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabTitle" = "打开新标签页";
+
+/* Use Shortcuts to Open Playlist via Siri - Voice Assistant */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "用快捷方式通过 Siri - 语音助手来启用 Brave VPN ";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenPlaylistTitle" = "打开播放列表";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsTitle" = "Siri 快捷方式";
+
+/* No comment provided by engineer. */
 "SiteReportedBody" = "感谢您让 Brave 的开发人员知道该站点出了问题。我们将尽力解决这个问题！";
 
 /* No comment provided by engineer. */

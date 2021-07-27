@@ -1,66 +1,99 @@
-"0Lu6sT" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"0Lu6sT" = "Не удалось открыть ${websiteURL} в новой вкладке.";
 
-"1QT5y6" = "Open a Website";
+/* (No Comment) */
+"1n1yx4" = "Не удалось открыть ${websiteURL} в новой вкладке.";
 
-"1n1yx4" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"1QT5y6" = "Открыть сайт";
 
-"3oC6Qm" = "Open a Website in New Tab";
+/* (No Comment) */
+"3oC6Qm" = "Открыть сайт в новой вкладке";
 
-"4HScaO" = "Website URL";
+/* (No Comment) */
+"4HScaO" = "URL сайта";
 
-"9iPSKS" = "Open a Website from Bookmarks";
+/* (No Comment) */
+"9iPSKS" = "Открыть сайт из закладок";
 
-"Gn4uX0" = "Website URL";
+/* (No Comment) */
+"azhMra" = "Открыть сайт ${websiteURL} в новой вкладке";
 
-"HN8elO" = "Open History Website";
+/* (No Comment) */
+"c9NKFJ" = "Не удалось открыть сайт ${websiteURL} в новой вкладке.";
 
-"LHHK1N" = "This will open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"cSYAYC" = "Сайт ${websiteURL} откроется из истории.";
 
-"Lr38ve" = "${websiteURL}";
+/* (No Comment) */
+"cvU2lS" = "Открыть сайт из истории";
 
-"MISOeA" = "Open from History";
+/* (No Comment) */
+"dk8p9b" = "URL сайта";
 
-"Paq749" = "Website URL";
+/* (No Comment) */
+"Gn4uX0" = "URL сайта";
 
-"UmKnv3" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"HN8elO" = "Открыть историю сайта";
 
-"VgH3NH" = "Open Bookmark Website";
-
-"Wh3wb1" = "Open Website";
-
-"WiB0aJ" = "Website URL";
-
-"Xx8bbW" = "Website URL";
-
-"YCxX7a" = "${websiteURL}";
-
-"ZgJKfY" = "This will open ${websiteURL}from Bookmarks.";
-
-"azhMra" = "Open ${websiteURL}in a New Tab";
-
-"c9NKFJ" = "Can't Open ${websiteURL} in a new tab.";
-
-"cSYAYC" = "This will open ${websiteURL} from History.";
-
-"cvU2lS" = "Open a Website from History";
-
-"dk8p9b" = "Website URL";
-
+/* (No Comment) */
 "iLL70C" = "${websiteURL}";
 
-"p3NuX2" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"LHHK1N" = "Сайт ${websiteURL} откроется в новой вкладке.";
 
-"pvi3Ug" = "This will open ${websiteURL}from Bookmarks.";
+/* (No Comment) */
+"Lr38ve" = "${websiteURL}";
 
-"qkzovY" = "Open a website in a new Tab";
+/* (No Comment) */
+"MISOeA" = "Открыть из истории";
 
-"t7aARA" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"p3NuX2" = "Не удалось открыть сайт ${websiteURL} в новой вкладке.";
 
-"uT0Oi7" = "This will open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"Paq749" = "URL сайта";
 
-"wZqW4o" = "This will open ${websiteURL} from History.";
+/* (No Comment) */
+"pvi3Ug" = "Сайт ${websiteURL} откроется из закладок.";
 
-"xgP5Po" = "using website";
+/* (No Comment) */
+"qkzovY" = "Открыть сайт в новой вкладке";
 
-"ycaNZf" = "Open from Bookmarks";
+/* (No Comment) */
+"t7aARA" = "Не удалось открыть сайт ${websiteURL} в новой вкладке.";
+
+/* (No Comment) */
+"UmKnv3" = "Не удалось открыть ${websiteURL} в новой вкладке.";
+
+/* (No Comment) */
+"uT0Oi7" = "Сайт ${websiteURL} откроется в новой вкладке.";
+
+/* (No Comment) */
+"VgH3NH" = "Открыть закладку";
+
+/* (No Comment) */
+"Wh3wb1" = "Открыть сайт";
+
+/* (No Comment) */
+"WiB0aJ" = "URL сайта";
+
+/* (No Comment) */
+"wZqW4o" = "Сайт ${websiteURL} откроется из истории.";
+
+/* (No Comment) */
+"xgP5Po" = "с помощью сайта";
+
+/* (No Comment) */
+"Xx8bbW" = "URL сайта";
+
+/* (No Comment) */
+"ycaNZf" = "Открыть из закладок";
+
+/* (No Comment) */
+"YCxX7a" = "${websiteURL}";
+
+/* (No Comment) */
+"ZgJKfY" = "Cайт ${websiteURL} откроется из закладок.";
 

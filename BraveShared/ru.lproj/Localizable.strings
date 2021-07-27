@@ -833,6 +833,111 @@
 "ShieldsDownDisclaimer" = "Вы выключили защиту конфиденциальности. Сайт неправильно отображается при включенных щитах?";
 
 /* No comment provided by engineer. */
+"shortcuts.activityTypeBraveNewsDescription" = "Откройте Brave News и узнайте главные новости на сегодня";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryDescription" = "Откройте новую вкладку и удалите все конфиденциальные данные из истории браузера";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistorySuggestedPhrase" = "Очистить историю браузера";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryTitle" = "Очистить историю браузера";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNDescription" = "Откройте новую вкладку и включите VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNSuggestedPhrase" = "Включить VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNTitle" = "Откройте браузер Brave и включите VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "Открыть новую вкладку инкогнито";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabTitle" = "Открыть новую вкладку инкогнито";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabSuggestedPhrase" = "Открыть новую вкладку";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabTitle" = "Открыть новую вкладку";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveNewsTitle" = "Открыть Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Открыть Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistDescription" = "Смотрите видео из своего плейлиста Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistSuggestedPhrase" = "Открыть плейлист";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistTitle" = "Открыть плейлист";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeTabDescription" = "Пользуйтесь безопасным поиском в интернете с Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "Открыть закладку";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenHistorySuggestedPhrase" = "Открыть историю сайта";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Открыть сайт";
+
+/* Description for opening Brave Settings for altering Siri shortcut. */
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "Этот параметр перенаправит вас в настройки Brave. Чтобы изменить настройки Siri, выберите в меню «Siri и Поиск».";
+
+/* Button title that open application settings */
+"shortcuts.shortcutOpenApplicationSettingsTitle" = "Открыть настройки";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Используйте быстрые команды, чтобы открывать новые вкладки с помощью Siri.";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Очистить историю браузера";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNDescription" = "Используйте быстрые команды, чтобы включать VPN в Brave с помощью Siri.";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNTitle" = "Включить VPN";
+
+/* Description of Open Brave News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Используйте быстрые команды, чтобы открывать новые вкладки и ленту Brave News с помощью Siri.";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Открыть Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Используйте быстрые команды, чтобы открывать новые вкладки инкогнито с помощью Siri.";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabTitle" = "Открыть новую вкладку инкогнито";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabDescription" = "Используйте быстрые команды, чтобы открывать новые вкладки с помощью Siri.";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabTitle" = "Откройте новую вкладку";
+
+/* Use Shortcuts to Open Playlist via Siri - Voice Assistant */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Используйте быстрые команды, чтобы включать VPN в Brave с помощью Siri.";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenPlaylistTitle" = "Откройте плейлист";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsTitle" = "Быстрые команды Siri";
+
+/* No comment provided by engineer. */
 "SiteReportedBody" = "Спасибо за предоставленную информацию. Мы постараемся как можно скорее исправить проблему, обещаем.";
 
 /* No comment provided by engineer. */

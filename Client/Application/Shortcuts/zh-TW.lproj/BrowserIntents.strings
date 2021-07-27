@@ -1,66 +1,99 @@
-"0Lu6sT" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"0Lu6sT" = "無法在新標籤中開啟 ${websiteURL}。";
 
-"1QT5y6" = "Open a Website";
+/* (No Comment) */
+"1n1yx4" = "無法在新標籤中開啟 ${websiteURL}。";
 
-"1n1yx4" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"1QT5y6" = "開啟網站";
 
-"3oC6Qm" = "Open a Website in New Tab";
+/* (No Comment) */
+"3oC6Qm" = "在新標籤中開啟網站";
 
-"4HScaO" = "Website URL";
+/* (No Comment) */
+"4HScaO" = "網站 URL";
 
-"9iPSKS" = "Open a Website from Bookmarks";
+/* (No Comment) */
+"9iPSKS" = "從書籤開啟網站";
 
-"Gn4uX0" = "Website URL";
+/* (No Comment) */
+"azhMra" = "在新標籤中開啟 ${websiteURL}";
 
-"HN8elO" = "Open History Website";
+/* (No Comment) */
+"c9NKFJ" = "無法在新標籤中開啟 ${websiteURL}。";
 
-"LHHK1N" = "This will open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"cSYAYC" = "這將從歷史記錄開啟 ${websiteURL}。";
 
-"Lr38ve" = "${websiteURL}";
+/* (No Comment) */
+"cvU2lS" = "從歷史記錄開啟網站";
 
-"MISOeA" = "Open from History";
+/* (No Comment) */
+"dk8p9b" = "網站 URL";
 
-"Paq749" = "Website URL";
+/* (No Comment) */
+"Gn4uX0" = "網站 URL";
 
-"UmKnv3" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"HN8elO" = "開啟歷史記錄網站";
 
-"VgH3NH" = "Open Bookmark Website";
-
-"Wh3wb1" = "Open Website";
-
-"WiB0aJ" = "Website URL";
-
-"Xx8bbW" = "Website URL";
-
-"YCxX7a" = "${websiteURL}";
-
-"ZgJKfY" = "This will open ${websiteURL}from Bookmarks.";
-
-"azhMra" = "Open ${websiteURL}in a New Tab";
-
-"c9NKFJ" = "Can't Open ${websiteURL} in a new tab.";
-
-"cSYAYC" = "This will open ${websiteURL} from History.";
-
-"cvU2lS" = "Open a Website from History";
-
-"dk8p9b" = "Website URL";
-
+/* (No Comment) */
 "iLL70C" = "${websiteURL}";
 
-"p3NuX2" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"LHHK1N" = "這將在新標籤中開啟 ${websiteURL}。";
 
-"pvi3Ug" = "This will open ${websiteURL}from Bookmarks.";
+/* (No Comment) */
+"Lr38ve" = "${websiteURL}";
 
-"qkzovY" = "Open a website in a new Tab";
+/* (No Comment) */
+"MISOeA" = "從歷史記錄開啟";
 
-"t7aARA" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"p3NuX2" = "無法在新標籤中開啟 ${websiteURL}。";
 
-"uT0Oi7" = "This will open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"Paq749" = "網站 URL";
 
-"wZqW4o" = "This will open ${websiteURL} from History.";
+/* (No Comment) */
+"pvi3Ug" = "這將從書籤開啟 ${websiteURL}。";
 
-"xgP5Po" = "using website";
+/* (No Comment) */
+"qkzovY" = "在新標籤中開啟網站";
 
-"ycaNZf" = "Open from Bookmarks";
+/* (No Comment) */
+"t7aARA" = "無法在新標籤中開啟 ${websiteURL}。";
+
+/* (No Comment) */
+"UmKnv3" = "無法在新標籤中開啟 ${websiteURL}。";
+
+/* (No Comment) */
+"uT0Oi7" = "這將在新標籤中開啟 ${websiteURL}。";
+
+/* (No Comment) */
+"VgH3NH" = "開始書籤網站";
+
+/* (No Comment) */
+"Wh3wb1" = "開啟網站";
+
+/* (No Comment) */
+"WiB0aJ" = "網站 URL";
+
+/* (No Comment) */
+"wZqW4o" = "這將從歷史記錄開啟 ${websiteURL}。";
+
+/* (No Comment) */
+"xgP5Po" = "使用網站";
+
+/* (No Comment) */
+"Xx8bbW" = "網站 URL";
+
+/* (No Comment) */
+"ycaNZf" = "從書籤開啟";
+
+/* (No Comment) */
+"YCxX7a" = "${websiteURL}";
+
+/* (No Comment) */
+"ZgJKfY" = "這將從書籤開啟 ${websiteURL}。";
 

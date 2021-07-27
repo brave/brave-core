@@ -1,66 +1,99 @@
-"0Lu6sT" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"0Lu6sT" = "Impossible d'ouvrir ${websiteURL} dans un nouvel onglet.";
 
-"1QT5y6" = "Open a Website";
+/* (No Comment) */
+"1n1yx4" = "Impossible d'ouvrir ${websiteURL} dans un nouvel onglet.";
 
-"1n1yx4" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"1QT5y6" = "Ouvrir un site Web";
 
-"3oC6Qm" = "Open a Website in New Tab";
+/* (No Comment) */
+"3oC6Qm" = "Ouvrir un site Web dans un nouvel onglet";
 
-"4HScaO" = "Website URL";
+/* (No Comment) */
+"4HScaO" = "URL du site Web";
 
-"9iPSKS" = "Open a Website from Bookmarks";
+/* (No Comment) */
+"9iPSKS" = "Ouvrir un site Web à partir des marque-pages";
 
-"Gn4uX0" = "Website URL";
+/* (No Comment) */
+"azhMra" = "Ouvrir ${websiteURL} dans un nouvel onglet";
 
-"HN8elO" = "Open History Website";
+/* (No Comment) */
+"c9NKFJ" = "Impossible d'ouvrir ${websiteURL} dans un nouvel onglet.";
 
-"LHHK1N" = "This will open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"cSYAYC" = "Cette action ouvrira ${websiteURL} depuis l'historique.";
 
-"Lr38ve" = "${websiteURL}";
+/* (No Comment) */
+"cvU2lS" = "Ouvrir un site Web depuis l'historique";
 
-"MISOeA" = "Open from History";
+/* (No Comment) */
+"dk8p9b" = "URL du site Web";
 
-"Paq749" = "Website URL";
+/* (No Comment) */
+"Gn4uX0" = "URL du site Web";
 
-"UmKnv3" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"HN8elO" = "Ouvrir le site Web depuis l'historique";
 
-"VgH3NH" = "Open Bookmark Website";
-
-"Wh3wb1" = "Open Website";
-
-"WiB0aJ" = "Website URL";
-
-"Xx8bbW" = "Website URL";
-
-"YCxX7a" = "${websiteURL}";
-
-"ZgJKfY" = "This will open ${websiteURL}from Bookmarks.";
-
-"azhMra" = "Open ${websiteURL}in a New Tab";
-
-"c9NKFJ" = "Can't Open ${websiteURL} in a new tab.";
-
-"cSYAYC" = "This will open ${websiteURL} from History.";
-
-"cvU2lS" = "Open a Website from History";
-
-"dk8p9b" = "Website URL";
-
+/* (No Comment) */
 "iLL70C" = "${websiteURL}";
 
-"p3NuX2" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"LHHK1N" = "Cette action ouvrira ${websiteURL} dans un nouvel onglet.";
 
-"pvi3Ug" = "This will open ${websiteURL}from Bookmarks.";
+/* (No Comment) */
+"Lr38ve" = "${websiteURL}";
 
-"qkzovY" = "Open a website in a new Tab";
+/* (No Comment) */
+"MISOeA" = "Ouvrir depuis l'historique";
 
-"t7aARA" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"p3NuX2" = "Impossible d'ouvrir ${websiteURL} dans un nouvel onglet.";
 
-"uT0Oi7" = "This will open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"Paq749" = "URL du site Web";
 
-"wZqW4o" = "This will open ${websiteURL} from History.";
+/* (No Comment) */
+"pvi3Ug" = "Cette action ouvrira ${websiteURL} à partir des marque-pages.";
 
-"xgP5Po" = "using website";
+/* (No Comment) */
+"qkzovY" = "Ouvrir un site Web dans un nouvel onglet";
 
-"ycaNZf" = "Open from Bookmarks";
+/* (No Comment) */
+"t7aARA" = "Impossible d'ouvrir ${websiteURL} dans un nouvel onglet.";
+
+/* (No Comment) */
+"UmKnv3" = "Impossible d'ouvrir ${websiteURL} dans un nouvel onglet.";
+
+/* (No Comment) */
+"uT0Oi7" = "Cette action ouvrira ${websiteURL} dans un nouvel onglet.";
+
+/* (No Comment) */
+"VgH3NH" = "Ouvrir le site Web à partir du marque-page";
+
+/* (No Comment) */
+"Wh3wb1" = "Ouvrir le site Web";
+
+/* (No Comment) */
+"WiB0aJ" = "URL du site Web";
+
+/* (No Comment) */
+"wZqW4o" = "Cette action ouvrira ${websiteURL} depuis l'historique.";
+
+/* (No Comment) */
+"xgP5Po" = "à l'aide du site Web";
+
+/* (No Comment) */
+"Xx8bbW" = "URL du site Web";
+
+/* (No Comment) */
+"ycaNZf" = "Ouvrir à partir des marque-pages";
+
+/* (No Comment) */
+"YCxX7a" = "${websiteURL}";
+
+/* (No Comment) */
+"ZgJKfY" = "Cette action ouvrira ${websiteURL} à partir des marque-pages.";
 
