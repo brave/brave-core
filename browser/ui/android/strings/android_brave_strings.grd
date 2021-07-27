@@ -474,10 +474,10 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
 <!--  <message name="IDS_BRAVE_TODAY" desc="Title for Brave today settings">
         Brave today
-      </message>
+      </message> -->
       <message name="IDS_BRAVE_VPN" desc="Title for Brave vpn settings">
         Brave VPN
-      </message> -->
+      </message>
       <message name="IDS_BRAVE_UI_USD" desc="USD value of tokens">
         <ph name="VALUE">%1$s<ex>0.0</ex></ph>
       </message>
@@ -1981,6 +1981,9 @@ until they verify, or until 90 days have passed.
     </message>
     <message name="IDS_BRAVE_FIREWALL_VPN" desc="VPN title text">
       Brave Firewall + VPN
+    </message>
+    <message name="IDS_VPN_SETTINGS_CALLOUT_TEXT" desc="Vpn settings callout text">
+        Upgrade to a VPN to protect your connection and block invasive trackers everywhere.
     </message>
     <message name="IDS_ENABLE" desc="VPN callout text">
       Enable

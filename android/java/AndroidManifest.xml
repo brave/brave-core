@@ -116,6 +116,10 @@
     android:exported="false">
 </activity>
 
+<activity android:name="com.android.billingclient.api.ProxyBillingActivity"
+    android:exported="false">
+</activity>
+
 <!-- Upgrade related -->
 <receiver android:name="org.chromium.chrome.browser.upgrade.BravePackageReplacedBroadcastReceiver"
     android:exported="false">

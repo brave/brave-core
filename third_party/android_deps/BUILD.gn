@@ -30,4 +30,5 @@ android_aar_prebuilt("com_airbnb_android_java") {
 android_aar_prebuilt("com_android_billingclient_java") {
   aar_path = "libs/com_android_billingclient/billing-4.0.0.aar"
   info_path = "libs/com_android_billingclient/com_android_billingclient.info"
+  ignore_manifest = true
 }
