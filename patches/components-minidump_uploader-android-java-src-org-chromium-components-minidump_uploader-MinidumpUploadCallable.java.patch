@@ -1,0 +1,13 @@
+diff --git a/components/minidump_uploader/android/java/src/org/chromium/components/minidump_uploader/MinidumpUploadCallable.java b/components/minidump_uploader/android/java/src/org/chromium/components/minidump_uploader/MinidumpUploadCallable.java
+index a25e74c3d05433889fa219dcc855c69f121f6fd9..306106dc138a31fdf78416c70e1a49859254e490 100644
+--- a/components/minidump_uploader/android/java/src/org/chromium/components/minidump_uploader/MinidumpUploadCallable.java
++++ b/components/minidump_uploader/android/java/src/org/chromium/components/minidump_uploader/MinidumpUploadCallable.java
+@@ -47,7 +47,7 @@ public class MinidumpUploadCallable implements Callable<Integer> {
+ 
+     public MinidumpUploadCallable(
+             File fileToUpload, File logfile, CrashReportingPermissionManager permissionManager) {
+-        this(fileToUpload, logfile, new MinidumpUploader(), permissionManager);
++        this(fileToUpload, logfile, new org.chromium.components.minidump_uploader.BraveMinidumpUploader(), permissionManager);
+     }
+ 
+     public MinidumpUploadCallable(File fileToUpload, File logfile,

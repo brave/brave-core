@@ -1,0 +1,12 @@
+diff --git a/components/minidump_uploader/BUILD.gn b/components/minidump_uploader/BUILD.gn
+index 88b49397b8b9fc5ca82335885c7bad84d74eccc8..044744069779fda667c23bd7f6e164d0bd8adc94 100644
+--- a/components/minidump_uploader/BUILD.gn
++++ b/components/minidump_uploader/BUILD.gn
+@@ -45,6 +45,7 @@ android_library("minidump_uploader_java") {
+     "android/java/src/org/chromium/components/minidump_uploader/util/NetworkPermissionUtil.java",
+   ]
+   annotation_processor_deps = [ "//base/android/jni_generator:jni_processor" ]
++  sources += brave_components_minidump_uploader_java_sources
+ }
+ 
+ android_library("minidump_uploader_javatests") {

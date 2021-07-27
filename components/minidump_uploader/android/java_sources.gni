@@ -1,0 +1,3 @@
+brave_components_minidump_uploader_java_sources = [
+  "//brave/components/minidump_uploader/android/java/src/org/chromium/components/minidump_uploader/BraveMinidumpUploader.java",
+]

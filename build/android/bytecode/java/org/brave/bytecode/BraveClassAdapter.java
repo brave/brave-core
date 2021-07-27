@@ -47,6 +47,7 @@ public class BraveClassAdapter {
         chain = new BraveToolbarLayoutClassAdapter(chain);
         chain = new BraveToolbarManagerClassAdapter(chain);
         chain = new BraveTopToolbarCoordinatorClassAdapter(chain);
+        chain = new BraveMinidumpUploaderClassAdapter(chain);
         return chain;
     }
 }
