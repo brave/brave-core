@@ -43,13 +43,12 @@ class BraveWalletProviderImpl final
   void ChainChangedEvent(const std::string& chain_id) override;
 
  private:
+  void OnConnectionError();
+
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   mojo::Remote<mojom::EventsListener> events_listener_;
   mojo::Remote<mojom::EthJsonRpcController> rpc_controller_;
-  //
-  // Receiver for the CrosNetworkConfigObserver events.
   mojo::Receiver<mojom::EthJsonRpcControllerObserver> observer_receiver_{this};
-
   base::WeakPtrFactory<BraveWalletProviderImpl> weak_factory_;
 };
 
