@@ -19,7 +19,6 @@ import AdsBox from './adsBox'
 import ContributeBox from './contributeBox'
 import TipBox from './tipsBox'
 import MonthlyContributionBox from './monthlyContributionBox'
-import QRBox from './qrBox'
 import { SettingsOptInForm, RewardsTourModal, RewardsTourPromo } from '../../shared/components/onboarding'
 import { TourPromoWrapper } from './style'
 
@@ -405,7 +404,6 @@ class SettingsPage extends React.Component<Props, State> {
           onTOSClick={this.openTOS}
           onPrivacyClick={this.openPrivacyPolicy}
         />
-        <QRBox />
         <AdsBox />
         <ContributeBox />
         <MonthlyContributionBox />
