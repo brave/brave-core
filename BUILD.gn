@@ -343,12 +343,12 @@ if (target_cpu == "x86") {
 }
 
 action("create_symbols_dist") {
-  output = "$brave_dist_dir/$brave_project_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"
+  output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"
 
   script = "//brave/script/create-dist.py"
 
   inputs = get_target_outputs(":brave_license_dist_resources")
-  dir_inputs = [ "$brave_project_name.breakpad.syms" ]
+  dir_inputs = [ "$brave_product_name.breakpad.syms" ]
 
   file_inputs = []
   foreach(input, inputs) {
@@ -374,7 +374,7 @@ action("create_symbols_dist") {
 }
 
 action("create_dist_zips") {
-  output = "$brave_dist_dir/$brave_project_name-v$brave_version-$brave_platform-$target_arch.zip"
+  output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch.zip"
 
   script = "//brave/script/create-dist.py"
 

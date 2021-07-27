@@ -29,7 +29,7 @@ group("symbol_dist_resources") {
 }
 
 action("generate_breakpad_symbols") {
-  symbols_dir = "$brave_dist_dir/$brave_project_name.breakpad.syms"
+  symbols_dir = "$brave_dist_dir/$brave_product_name.breakpad.syms"
   outputs = [
     symbols_dir
   ]

@@ -1,12 +1,12 @@
 import("//brave/build/config.gni")
 
 action("generate_breakpad_symbols") {
-  symbols_dir = "$brave_dist_dir/$brave_project_name.breakpad.syms"
+  symbols_dir = "$brave_dist_dir/$brave_product_name.breakpad.syms"
   outputs = [
     symbols_dir
   ]
 
-  start = [ brave_project_name ]
+  start = [ brave_product_name ]
 
   script = "//brave/tools/posix/generate_breakpad_symbols.py"
   args = [
