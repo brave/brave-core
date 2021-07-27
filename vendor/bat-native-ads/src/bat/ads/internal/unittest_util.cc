@@ -617,30 +617,16 @@ void MockSave(const std::unique_ptr<AdsClientMock>& mock) {
                     ResultCallback callback) { callback(SUCCESS); }));
 }
 
-void MockLoad(const std::unique_ptr<AdsClientMock>& mock) {
-  ON_CALL(*mock, Load(_, _))
-      .WillByDefault(Invoke([](const std::string& name, LoadCallback callback) {
-        base::FilePath path = GetTestPath();
-        path = path.AppendASCII(name);
-
-        std::string value;
-        if (!base::ReadFileToString(path, &value)) {
-          callback(FAILED, value);
-          return;
-        }
-
-        callback(SUCCESS, value);
-      }));
-}
-
 void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
-              const std::string& filename,
-              const std::string& filename_override) {
-  ON_CALL(*mock, Load(filename, _))
+              const base::ScopedTempDir& temp_dir) {
+  ON_CALL(*mock, Load(_, _))
       .WillByDefault(
-          Invoke([=](const std::string& name, LoadCallback callback) {
-            base::FilePath path = GetTestPath();
-            path = path.AppendASCII(filename_override);
+          Invoke([&temp_dir](const std::string& name, LoadCallback callback) {
+            base::FilePath path = temp_dir.GetPath().AppendASCII(name);
+            if (!base::PathExists(path)) {
+              // If path does not exist load file from the test path
+              path = GetTestPath().AppendASCII(name);
+            }
 
             std::string value;
             if (!base::ReadFileToString(path, &value)) {

@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/database.h"
@@ -122,11 +123,8 @@ void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock);
 void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock);
 
 void MockSave(const std::unique_ptr<AdsClientMock>& mock);
-
-void MockLoad(const std::unique_ptr<AdsClientMock>& mock);
 void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
-              const std::string& name,
-              const std::string& filename);
+              const base::ScopedTempDir& temp_dir);
 
 void MockLoadAdsResource(const std::unique_ptr<AdsClientMock>& mock);
 
