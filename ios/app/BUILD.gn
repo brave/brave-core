@@ -5,6 +5,7 @@
 
 import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
+import("//ios/public/provider/chrome/browser/build_config.gni")
 
 source_set("app") {
   configs += [
@@ -44,12 +45,14 @@ source_set("app") {
     "//ios/chrome/browser/bookmarks",
     "//ios/chrome/browser/browser_state",
     "//ios/chrome/browser/history",
-    "//ios/chrome/browser/providers:provider_factory",
     "//ios/chrome/browser/sync",
     "//ios/chrome/browser/undo",
     "//ios/chrome/common",
     "//ios/public/provider/chrome/browser",
     "//ios/web/public/init",
+
+    # Use the provider API controlled by args.gn.
+    ios_provider_target,
   ]
 
   deps += [
