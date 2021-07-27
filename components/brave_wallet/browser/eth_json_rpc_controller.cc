@@ -118,9 +118,10 @@ void EthJsonRpcController::SetNetwork(mojom::Network network) {
       break;
     case brave_wallet::mojom::Network::Localhost:
       network_url_ = GURL("http://localhost:8545");
+      FireNetworkChanged();
       return;
     case brave_wallet::mojom::Network::Custom:
-      return;
+      NOTREACHED();
   }
 
   const std::string spec =
@@ -129,7 +130,10 @@ void EthJsonRpcController::SetNetwork(mojom::Network network) {
                              : "https://%s-infura.brave.com/%s",
                          subdomain.c_str(), GetInfuraProjectID().c_str());
   network_url_ = GURL(spec);
+  FireNetworkChanged();
+}
 
+void EthJsonRpcController::FireNetworkChanged() {
   for (const auto& observer : observers_) {
     observer->ChainChangedEvent(GetChainIdFromNetwork(network_));
   }
@@ -153,6 +157,7 @@ void EthJsonRpcController::GetNetworkUrl(
 void EthJsonRpcController::SetCustomNetwork(const GURL& network_url) {
   network_ = brave_wallet::mojom::Network::Custom;
   network_url_ = network_url;
+  FireNetworkChanged();
 }
 
 void EthJsonRpcController::GetBlockNumber(GetBlockNumberCallback callback) {

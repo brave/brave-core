@@ -111,6 +111,7 @@ class EthJsonRpcController : public KeyedService,
   static GURL GetBlockTrackerUrlFromNetwork(mojom::Network network);
 
  private:
+  void FireNetworkChanged();
   void OnGetBlockNumber(
       GetBlockNumberCallback callback,
       const int status,
