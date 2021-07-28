@@ -19,7 +19,7 @@ namespace brave_wallet {
 namespace {
 
 uint256_t GetHighestLocallyConfirmed(
-    const std::vector<EthTxStateManager::TxMeta> metas) {
+    const std::vector<EthTxStateManager::TxMeta>& metas) {
   uint256_t highest = 0;
   for (auto& meta : metas) {
     highest = std::max(highest, meta.tx.nonce());
@@ -28,7 +28,7 @@ uint256_t GetHighestLocallyConfirmed(
 }
 
 uint256_t GetHighestContinuousFrom(
-    const std::vector<EthTxStateManager::TxMeta> metas,
+    const std::vector<EthTxStateManager::TxMeta>& metas,
     uint256_t start) {
   uint256_t highest = start;
   for (auto& meta : metas) {
