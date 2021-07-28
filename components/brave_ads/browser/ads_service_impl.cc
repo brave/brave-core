@@ -13,6 +13,7 @@
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "base/containers/flat_map.h"
+#include "base/cxx17_backports.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
@@ -24,7 +25,6 @@
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
 #include "base/metrics/field_trial_params.h"
-#include "base/numerics/ranges.h"
 #include "base/path_service.h"
 #include "base/sequenced_task_runner.h"
 #include "base/strings/string_number_conversions.h"
@@ -549,9 +549,9 @@ int64_t AdsServiceImpl::GetAdsPerHour() const {
         ads::kDefaultAdNotificationsPerHour);
   }
 
-  return base::ClampToRange(
-      ads_per_hour, static_cast<int64_t>(ads::kMinimumAdNotificationsPerHour),
-      static_cast<int64_t>(ads::kMaximumAdNotificationsPerHour));
+  return base::clamp(ads_per_hour,
+                     static_cast<int64_t>(ads::kMinimumAdNotificationsPerHour),
+                     static_cast<int64_t>(ads::kMaximumAdNotificationsPerHour));
 }
 
 bool AdsServiceImpl::ShouldAllowAdsSubdivisionTargeting() const {
