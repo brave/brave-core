@@ -1575,8 +1575,8 @@ extension Strings {
         public static let shortcutSettingsClearBrowserHistoryDescription =
             NSLocalizedString("shortcuts.shortcutSettingsClearBrowserHistoryDescription",
                               bundle: .braveShared,
-                              value: "Use Shortcuts to open a new tab via Siri - Voice Assistant",
-                              comment: "")
+                              value: "Use Shortcuts to Open a New Tab & Clear Browser History via Siri - Voice Assistant",
+                              comment: "Description of Clear Browser History Siri Shortcut in Settings Screen")
         
         public static let shortcutSettingsEnableVPNTitle =
             NSLocalizedString("shortcuts.shortcutSettingsEnableVPNTitle",
