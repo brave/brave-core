@@ -166,7 +166,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "showFavoritesMenuLabel", IDS_BRAVE_NEW_TAB_SHOW_FAVORITES_MENU_LABEL },  // NOLINT
         { "showRewards", IDS_BRAVE_NEW_TAB_SHOW_REWARDS },
         { "showBinance", IDS_BRAVE_NEW_TAB_SHOW_BINANCE },
-        { "showTogether", IDS_BRAVE_NEW_TAB_SHOW_TOGETHER },
         { "cards", IDS_BRAVE_NEW_TAB_SHOW_CARDS },
         { "brandedWallpaperOptIn", IDS_BRAVE_NEW_TAB_BRANDED_WALLPAPER_OPT_IN },
         { "topSitesTitle", IDS_BRAVE_NEW_TAB_TOP_SITES },

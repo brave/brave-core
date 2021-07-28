@@ -23,7 +23,7 @@ import {
   ToggleCardsSwitch,
   ToggleCardsText
 } from '../../../components/default'
-import togetherBanner from './assets/bravetogether.png'
+import togetherBanner from './assets/brave-talk.png'
 import binanceBanner from './assets/binance.png'
 import rewardsBanner from './assets/braverewards.png'
 import geminiBanner from './assets/gemini.png'
