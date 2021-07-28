@@ -45,7 +45,7 @@ PermissionLifetimeManager::PermissionLifetimeManager(
       permission_origin_lifetime_monitor_(
           std::move(permission_origin_lifetime_monitor)),
       permission_expirations_(prefs_),
-      expiration_timer_(std::make_unique<util::WallClockTimer>()) {
+      expiration_timer_(std::make_unique<base::WallClockTimer>()) {
   DCHECK(host_content_settings_map_);
   // In incognito prefs_ is nullptr.
 
@@ -187,7 +187,7 @@ void PermissionLifetimeManager::OnContentSettingChanged(
 void PermissionLifetimeManager::RestartExpirationTimerForTesting() {
   StopExpirationTimer();
   // Recreate timer to acknowledge a new task runnner.
-  expiration_timer_ = std::make_unique<util::WallClockTimer>();
+  expiration_timer_ = std::make_unique<base::WallClockTimer>();
   UpdateExpirationTimer();
 }
 
