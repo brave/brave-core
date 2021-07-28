@@ -109,7 +109,7 @@ void Promotion::Initialize() {
 void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
   // If we fetched promotions recently, fulfill this request from the
   // database instead of querying the server again
-  if (!ledger::is_testing) {
+  if (!ledger::is_testing && _environment != type::Environment::STAGING) {
     const uint64_t last_promo_stamp =
         ledger_->state()->GetPromotionLastFetchStamp();
     const uint64_t now = util::GetCurrentTimeStamp();
