@@ -92,7 +92,7 @@ class PermissionLifetimeManager : public KeyedService,
   PermissionExpirations permission_expirations_;
   // WallClockTimer to reset permissions properly even if a machine was put in
   // a long sleep/wake cycle. Stored as pointer to recreate in tests.
-  std::unique_ptr<util::WallClockTimer> expiration_timer_;
+  std::unique_ptr<base::WallClockTimer> expiration_timer_;
 
   base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
       host_content_settings_map_observation_{this};
