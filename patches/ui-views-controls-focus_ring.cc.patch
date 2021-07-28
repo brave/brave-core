@@ -1,12 +1,12 @@
 diff --git a/ui/views/controls/focus_ring.cc b/ui/views/controls/focus_ring.cc
-index 0de6ff1ecffaaddd262692dfd949ab9c59ee5e0d..28bfaccde6099e3cc3e716eb5b571a00a3fe6373 100644
+index 4e684c2533128f5c6478fc183932057e85c75aec..6dc36e8975d1df78ec2a6d8d37171aedb47693f7 100644
 --- a/ui/views/controls/focus_ring.cc
 +++ b/ui/views/controls/focus_ring.cc
-@@ -191,6 +191,7 @@ void FocusRing::OnPaint(gfx::Canvas* canvas) {
-   cc::PaintFlags paint;
-   paint.setAntiAlias(true);
+@@ -215,6 +215,7 @@ void FocusRing::OnPaint(gfx::Canvas* canvas) {
+   }
+ 
    paint.setColor(color_.value_or(GetColor(this, !invalid_)));
 +  BRAVE_FOCUS_RING_ON_PAINT_SET_COLOR_VALIDITY
-   paint.setStyle(cc::PaintFlags::kStroke_Style);
-   paint.setStrokeWidth(PlatformStyle::kFocusHaloThickness);
- 
+   paint.setStrokeWidth(FocusRing::kHaloThickness);
+   canvas->sk_canvas()->drawRRect(ring_rect, paint);
+ }
