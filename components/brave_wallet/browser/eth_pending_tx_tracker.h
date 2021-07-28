@@ -43,7 +43,7 @@ class EthPendingTxTracker {
   bool IsNonceTaken(const EthTxStateManager::TxMeta&);
   bool ShouldTxDropped(const EthTxStateManager::TxMeta&);
 
-  void DropTransaction(const EthTxStateManager::TxMeta&);
+  void DropTransaction(EthTxStateManager::TxMeta*);
 
   // (address, nonce)
   base::flat_map<std::string, uint256_t> network_nonce_map_;

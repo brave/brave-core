@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_TX_STATE_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_TX_STATE_MANAGER_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -37,8 +38,8 @@ class EthTxStateManager {
 
   struct TxMeta {
     TxMeta();
-    explicit TxMeta(const EthTransaction& tx);
-    TxMeta(const TxMeta&);
+    explicit TxMeta(std::unique_ptr<EthTransaction> tx);
+    TxMeta(const TxMeta&) = delete;
     ~TxMeta();
     bool operator==(const TxMeta&) const;
 
@@ -51,7 +52,7 @@ class EthTxStateManager {
     base::Time confirmed_time;
     TransactionReceipt tx_receipt;
     std::string tx_hash;
-    EthTransaction tx;
+    std::unique_ptr<EthTransaction> tx;
   };
 
   explicit EthTxStateManager(PrefService* prefs);
@@ -62,15 +63,16 @@ class EthTxStateManager {
   static std::string GenerateMetaID();
   // id will be excluded because it is used as key of dictionary
   static base::Value TxMetaToValue(const TxMeta& meta);
-  static absl::optional<TxMeta> ValueToTxMeta(const base::Value& value);
+  static std::unique_ptr<TxMeta> ValueToTxMeta(const base::Value& value);
 
   void AddOrUpdateTx(const TxMeta& meta);
-  bool GetTx(const std::string& id, TxMeta* meta);
+  std::unique_ptr<TxMeta> GetTx(const std::string& id);
   void DeleteTx(const std::string& id);
   void WipeTxs();
 
-  std::vector<TxMeta> GetTransactionsByStatus(TransactionStatus status,
-                                              absl::optional<EthAddress> from);
+  std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
+      TransactionStatus status,
+      absl::optional<EthAddress> from);
 
  private:
   PrefService* prefs_;

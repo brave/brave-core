@@ -51,8 +51,8 @@ class Eip2930Transaction : public EthTransaction {
   // accessList]))
   std::vector<uint8_t> GetMessageToSign(uint64_t chain_id = 0) const override;
 
-  // rlp([chainId, nonce, gasPrice, gasLimit, to, value, data, accessList,
-  // signatureYParity, signatureR, signatureS])
+  // 0x01 || rlp([chainId, nonce, gasPrice, gasLimit, to, value, data,
+  // accessList, signatureYParity, signatureR, signatureS])
   std::string GetSignedTransaction() const override;
 
   void ProcessSignature(const std::vector<uint8_t> signature,
@@ -63,7 +63,9 @@ class Eip2930Transaction : public EthTransaction {
 
   base::Value ToValue() const override;
 
- private:
+  uint256_t GetDataFee() const override;
+
+ protected:
   uint64_t chain_id_;
   AccessList access_list_;
 };

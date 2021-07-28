@@ -5,9 +5,13 @@
 
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 
+#include <utility>
+
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/eip1559_transaction.h"
+#include "brave/components/brave_wallet/browser/eip2930_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -47,12 +51,14 @@ TEST_F(EthTxStateManagerUnitTest, GenerateMetaID) {
 }
 
 TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
-  EthTransaction tx(EthTransaction::TxData(
+  EthTransaction::TxData tx_data(
       0x09, 0x4a817c800, 0x5208,
       EthAddress::FromHex("0x3535353535353535353535353535353535353535"),
-      0x0de0b6b3a7640000, std::vector<uint8_t>()));
-
-  EthTxStateManager::TxMeta meta(tx);
+      0x0de0b6b3a7640000, std::vector<uint8_t>());
+  // type 0
+  std::unique_ptr<EthTransaction> tx =
+      std::make_unique<EthTransaction>(tx_data);
+  EthTxStateManager::TxMeta meta(std::move(tx));
   meta.id = EthTxStateManager::GenerateMetaID();
   meta.status = EthTxStateManager::TransactionStatus::SUBMITTED;
   meta.from = EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
@@ -79,7 +85,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
 
   base::Value meta_value = EthTxStateManager::TxMetaToValue(meta);
   auto meta_from_value = EthTxStateManager::ValueToTxMeta(meta_value);
-  ASSERT_NE(meta_from_value, absl::nullopt);
+  ASSERT_NE(meta_from_value, nullptr);
   EXPECT_EQ(meta_from_value->id, meta.id);
   EXPECT_EQ(meta_from_value->status, meta.status);
   EXPECT_EQ(meta_from_value->from, meta.from);
@@ -89,9 +95,42 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   EXPECT_EQ(meta_from_value->confirmed_time, meta.confirmed_time);
   EXPECT_EQ(meta_from_value->tx_receipt, meta.tx_receipt);
   EXPECT_EQ(meta_from_value->tx_hash, meta.tx_hash);
-  EXPECT_EQ(meta_from_value->tx, meta.tx);
+  ASSERT_EQ(meta_from_value->tx->type(), 0);
+  EXPECT_EQ(*meta_from_value->tx, *meta.tx);
 
   EXPECT_EQ(*meta_from_value, meta);
+
+  // type 1
+  std::unique_ptr<Eip2930Transaction> tx1 =
+      std::make_unique<Eip2930Transaction>(tx_data, 3);
+  auto* access_list = tx1->access_list();
+  Eip2930Transaction::AccessListItem item_a;
+  item_a.address.fill(0x0a);
+  Eip2930Transaction::AccessedStorageKey storage_key_0;
+  storage_key_0.fill(0x00);
+  item_a.storage_keys.push_back(storage_key_0);
+  access_list->push_back(item_a);
+
+  EthTxStateManager::TxMeta meta1(std::move(tx1));
+  base::Value value1 = EthTxStateManager::TxMetaToValue(meta1);
+  auto meta_from_value1 = EthTxStateManager::ValueToTxMeta(value1);
+  ASSERT_NE(meta_from_value1, nullptr);
+  EXPECT_EQ(meta_from_value1->tx->type(), 1);
+  Eip2930Transaction* tx_from_value1 =
+      static_cast<Eip2930Transaction*>(meta_from_value1->tx.get());
+  EXPECT_EQ(*tx_from_value1, *static_cast<Eip2930Transaction*>(meta1.tx.get()));
+
+  // type2
+  std::unique_ptr<Eip1559Transaction> tx2 =
+      std::make_unique<Eip1559Transaction>(tx_data, 3, 30, 50);
+  EthTxStateManager::TxMeta meta2(std::move(tx2));
+  base::Value value2 = EthTxStateManager::TxMetaToValue(meta2);
+  auto meta_from_value2 = EthTxStateManager::ValueToTxMeta(value2);
+  ASSERT_NE(meta_from_value2, nullptr);
+  EXPECT_EQ(meta_from_value2->tx->type(), 2);
+  Eip1559Transaction* tx_from_value2 =
+      static_cast<Eip1559Transaction*>(meta_from_value2->tx.get());
+  EXPECT_EQ(*tx_from_value2, *static_cast<Eip1559Transaction*>(meta2.tx.get()));
 }
 
 TEST_F(EthTxStateManagerUnitTest, TxOperations) {
@@ -111,7 +150,7 @@ TEST_F(EthTxStateManagerUnitTest, TxOperations) {
     const base::Value* value = dict->FindKey("001");
     ASSERT_TRUE(value);
     auto meta_from_value = EthTxStateManager::ValueToTxMeta(*value);
-    ASSERT_NE(meta_from_value, base::nullopt);
+    ASSERT_NE(meta_from_value, nullptr);
     EXPECT_EQ(*meta_from_value, meta);
   }
 
@@ -125,7 +164,7 @@ TEST_F(EthTxStateManagerUnitTest, TxOperations) {
     const base::Value* value = dict->FindKey("001");
     ASSERT_TRUE(value);
     auto meta_from_value = EthTxStateManager::ValueToTxMeta(*value);
-    ASSERT_NE(meta_from_value, base::nullopt);
+    ASSERT_NE(meta_from_value, nullptr);
     EXPECT_EQ(meta_from_value->tx_hash, meta.tx_hash);
   }
 
@@ -141,16 +180,16 @@ TEST_F(EthTxStateManagerUnitTest, TxOperations) {
 
   // Get
   {
-    EthTxStateManager::TxMeta meta_fetched;
-    ASSERT_FALSE(tx_state_manager.GetTx("001", nullptr));
-    ASSERT_FALSE(tx_state_manager.GetTx("003", &meta_fetched));
-    ASSERT_TRUE(tx_state_manager.GetTx("001", &meta_fetched));
-    EXPECT_EQ(meta_fetched.id, "001");
-    EXPECT_EQ(meta_fetched.tx_hash, "0xabcd");
+    auto meta_fetched = tx_state_manager.GetTx("001");
+    ASSERT_NE(meta_fetched, nullptr);
+    ASSERT_EQ(tx_state_manager.GetTx("003"), nullptr);
+    EXPECT_EQ(meta_fetched->id, "001");
+    EXPECT_EQ(meta_fetched->tx_hash, "0xabcd");
 
-    ASSERT_TRUE(tx_state_manager.GetTx("002", &meta_fetched));
-    EXPECT_EQ(meta_fetched.id, "002");
-    EXPECT_EQ(meta_fetched.tx_hash, "0xabff");
+    auto meta_fetched2 = tx_state_manager.GetTx("002");
+    ASSERT_NE(meta_fetched2, nullptr);
+    EXPECT_EQ(meta_fetched2->id, "002");
+    EXPECT_EQ(meta_fetched2->tx_hash, "0xabff");
   }
 
   // Delete
@@ -222,7 +261,7 @@ TEST_F(EthTxStateManagerUnitTest, GetTransactionsByStatus) {
   EXPECT_EQ(confirmed_addr1.size(), 5u);
   for (const auto& meta : confirmed_addr1) {
     unsigned id;
-    ASSERT_TRUE(base::StringToUint(meta.id, &id));
+    ASSERT_TRUE(base::StringToUint(meta->id, &id));
     EXPECT_EQ(id % 4, 0u);
   }
 
@@ -231,7 +270,7 @@ TEST_F(EthTxStateManagerUnitTest, GetTransactionsByStatus) {
   EXPECT_EQ(submitted_addr2.size(), 2u);
   for (const auto& meta : submitted_addr2) {
     unsigned id;
-    ASSERT_TRUE(base::StringToUint(meta.id, &id));
+    ASSERT_TRUE(base::StringToUint(meta->id, &id));
     EXPECT_EQ(id % 5, 0u);
   }
 }

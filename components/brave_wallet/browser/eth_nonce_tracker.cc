@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 
 #include <algorithm>
+#include <memory>
 #include <utility>
 #include <vector>
 
@@ -19,20 +20,20 @@ namespace brave_wallet {
 namespace {
 
 uint256_t GetHighestLocallyConfirmed(
-    const std::vector<EthTxStateManager::TxMeta>& metas) {
+    const std::vector<std::unique_ptr<EthTxStateManager::TxMeta>>& metas) {
   uint256_t highest = 0;
   for (auto& meta : metas) {
-    highest = std::max(highest, meta.tx.nonce());
+    highest = std::max(highest, meta->tx->nonce());
   }
   return ++highest;
 }
 
 uint256_t GetHighestContinuousFrom(
-    const std::vector<EthTxStateManager::TxMeta>& metas,
+    const std::vector<std::unique_ptr<EthTxStateManager::TxMeta>>& metas,
     uint256_t start) {
   uint256_t highest = start;
   for (auto& meta : metas) {
-    if (meta.tx.nonce() == highest)
+    if (meta->tx->nonce() == highest)
       highest++;
   }
   return highest;

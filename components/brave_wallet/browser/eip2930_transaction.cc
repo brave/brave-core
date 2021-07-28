@@ -14,6 +14,11 @@
 
 namespace brave_wallet {
 
+namespace {
+constexpr uint256_t kAccessListStorageKeyCost = 1900;
+constexpr uint256_t kAccessListAddressCost = 2400;
+}  // namespace
+
 Eip2930Transaction::AccessListItem::AccessListItem() = default;
 Eip2930Transaction::AccessListItem::~AccessListItem() = default;
 Eip2930Transaction::AccessListItem::AccessListItem(const AccessListItem&) =
@@ -190,6 +195,16 @@ base::Value Eip2930Transaction::ToValue() const {
   tx.SetKey("access_list", base::Value(AccessListToValue(access_list_)));
 
   return tx;
+}
+
+uint256_t Eip2930Transaction::GetDataFee() const {
+  uint256_t fee = EthTransaction::GetDataFee();
+
+  for (const AccessListItem& item : access_list_) {
+    fee += kAccessListAddressCost;
+    fee += uint256_t(item.storage_keys.size()) * kAccessListStorageKeyCost;
+  }
+  return fee;
 }
 
 }  // namespace brave_wallet

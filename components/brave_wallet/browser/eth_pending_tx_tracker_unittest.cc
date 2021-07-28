@@ -75,13 +75,15 @@ TEST_F(EthPendingTxTrackerUnitTest, IsNonceTaken) {
   EthTxStateManager::TxMeta meta;
   meta.from = EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
   meta.id = EthTxStateManager::GenerateMetaID();
-  meta.tx.set_nonce(uint256_t(123));
+  meta.tx->set_nonce(uint256_t(123));
 
   EXPECT_FALSE(pending_tx_tracker.IsNonceTaken(meta));
 
-  EthTxStateManager::TxMeta meta_in_state(meta);
+  EthTxStateManager::TxMeta meta_in_state;
   meta_in_state.id = EthTxStateManager::GenerateMetaID();
   meta_in_state.status = EthTxStateManager::TransactionStatus::CONFIRMED;
+  meta_in_state.from = meta.from;
+  meta_in_state.tx->set_nonce(uint256_t(123));
   tx_state_manager.AddOrUpdateTx(meta_in_state);
 
   EXPECT_TRUE(pending_tx_tracker.IsNonceTaken(meta));
@@ -103,12 +105,12 @@ TEST_F(EthPendingTxTrackerUnitTest, ShouldTxDropped) {
   meta.id = EthTxStateManager::GenerateMetaID();
   meta.tx_hash =
       "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238";
-  meta.tx.set_nonce(uint256_t(1));
+  meta.tx->set_nonce(uint256_t(1));
   EXPECT_TRUE(pending_tx_tracker.ShouldTxDropped(meta));
   EXPECT_TRUE(pending_tx_tracker.network_nonce_map_.find(addr.ToHex()) ==
               pending_tx_tracker.network_nonce_map_.end());
 
-  meta.tx.set_nonce(uint256_t(4));
+  meta.tx->set_nonce(uint256_t(4));
   EXPECT_FALSE(pending_tx_tracker.ShouldTxDropped(meta));
   EXPECT_FALSE(pending_tx_tracker.ShouldTxDropped(meta));
   EXPECT_FALSE(pending_tx_tracker.ShouldTxDropped(meta));
@@ -131,10 +133,10 @@ TEST_F(EthPendingTxTrackerUnitTest, DropTransaction) {
   meta.status = EthTxStateManager::TransactionStatus::SUBMITTED;
   tx_state_manager.AddOrUpdateTx(meta);
 
-  pending_tx_tracker.DropTransaction(meta);
-  EthTxStateManager::TxMeta meta_from_state;
-  ASSERT_TRUE(tx_state_manager.GetTx("001", &meta_from_state));
-  EXPECT_EQ(meta_from_state.status,
+  pending_tx_tracker.DropTransaction(&meta);
+  auto meta_from_state = tx_state_manager.GetTx("001");
+  ASSERT_NE(meta_from_state, nullptr);
+  EXPECT_EQ(meta_from_state->status,
             EthTxStateManager::TransactionStatus::DROPPED);
 }
 
@@ -156,17 +158,17 @@ TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {
   tx_state_manager.AddOrUpdateTx(meta);
   meta.id = "002";
   meta.from = addr2;
-  meta.tx.set_nonce(uint256_t(4));
+  meta.tx->set_nonce(uint256_t(4));
   meta.status = EthTxStateManager::TransactionStatus::CONFIRMED;
   tx_state_manager.AddOrUpdateTx(meta);
   meta.id = "003";
   meta.from = addr2;
-  meta.tx.set_nonce(uint256_t(4));
+  meta.tx->set_nonce(uint256_t(4));
   meta.status = EthTxStateManager::TransactionStatus::SUBMITTED;
   tx_state_manager.AddOrUpdateTx(meta);
   meta.id = "004";
   meta.from = addr2;
-  meta.tx.set_nonce(uint256_t(5));
+  meta.tx->set_nonce(uint256_t(5));
   meta.status = EthTxStateManager::TransactionStatus::SUBMITTED;
   tx_state_manager.AddOrUpdateTx(meta);
 
@@ -194,24 +196,26 @@ TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {
 
   pending_tx_tracker.UpdatePendingTransactions();
   WaitForResponse();
-  EthTxStateManager::TxMeta meta_from_state;
-  ASSERT_TRUE(tx_state_manager.GetTx("001", &meta_from_state));
-  EXPECT_EQ(meta_from_state.status,
+  auto meta_from_state = tx_state_manager.GetTx("001");
+  ASSERT_NE(meta_from_state, nullptr);
+  EXPECT_EQ(meta_from_state->status,
             EthTxStateManager::TransactionStatus::CONFIRMED);
-  EXPECT_EQ(meta_from_state.from, addr1);
-  EXPECT_EQ(meta_from_state.tx_receipt.contract_address,
+  EXPECT_EQ(meta_from_state->from, addr1);
+  EXPECT_EQ(meta_from_state->tx_receipt.contract_address,
             "0xb60e8dd61c5d32be8058bb8eb970870f07233155");
 
-  ASSERT_TRUE(tx_state_manager.GetTx("003", &meta_from_state));
-  EXPECT_EQ(meta_from_state.from, addr2);
-  EXPECT_EQ(meta_from_state.status,
+  meta_from_state = tx_state_manager.GetTx("003");
+  ASSERT_NE(meta_from_state, nullptr);
+  EXPECT_EQ(meta_from_state->from, addr2);
+  EXPECT_EQ(meta_from_state->status,
             EthTxStateManager::TransactionStatus::DROPPED);
-  EXPECT_NE(meta_from_state.tx_receipt.contract_address,
+  EXPECT_NE(meta_from_state->tx_receipt.contract_address,
             "0xb60e8dd61c5d32be8058bb8eb970870f07233155");
-  ASSERT_TRUE(tx_state_manager.GetTx("004", &meta_from_state));
-  EXPECT_EQ(meta_from_state.status,
+  meta_from_state = tx_state_manager.GetTx("004");
+  ASSERT_NE(meta_from_state, nullptr);
+  EXPECT_EQ(meta_from_state->status,
             EthTxStateManager::TransactionStatus::CONFIRMED);
-  EXPECT_EQ(meta_from_state.tx_receipt.contract_address,
+  EXPECT_EQ(meta_from_state->tx_receipt.contract_address,
             "0xb60e8dd61c5d32be8058bb8eb970870f07233155");
 }
 
