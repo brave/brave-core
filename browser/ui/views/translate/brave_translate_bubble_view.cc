@@ -131,7 +131,7 @@ void BraveTranslateBubbleView::DisableOfferTranslatePref() {
   PrefService* const prefs = profile->GetOriginalProfile()->GetPrefs();
   DCHECK(prefs);
 
-  prefs->SetBoolean(prefs::kOfferTranslateEnabled, false);
+  prefs->SetBoolean(translate::prefs::kOfferTranslateEnabled, false);
 }
 
 void BraveTranslateBubbleView::ButtonPressed(ButtonID button_id) {

@@ -126,6 +126,6 @@ void TorProfileManager::InitTorProfileUserPrefs(Profile* profile) {
   // support extensions in Tor mode and users cannot disable this through
   // settings page for Tor windows.
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
-  pref_service->SetBoolean(prefs::kOfferTranslateEnabled, false);
+  pref_service->SetBoolean(translate::prefs::kOfferTranslateEnabled, false);
 #endif
 }
