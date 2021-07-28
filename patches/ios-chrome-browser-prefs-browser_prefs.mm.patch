@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
-index 58f85cc839f24bc098612be89b438e759b290034..26c2073973bf14162b7accd64ccefd0a6a072eb0 100644
+index d0facd07f004e35c7f4ff7e0b10d07fb79924840..8d0d3103fb0efa770f5ec845e62cc52d2aa068cb 100644
 --- a/ios/chrome/browser/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/prefs/browser_prefs.mm
-@@ -274,6 +274,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -277,6 +277,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
    if (IsReadingListMessagesEnabled()) {
      registry->RegisterBooleanPref(kPrefReadingListMessagesNeverShow, false);
    }

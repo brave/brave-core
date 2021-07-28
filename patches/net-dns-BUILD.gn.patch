@@ -1,5 +1,5 @@
 diff --git a/net/dns/BUILD.gn b/net/dns/BUILD.gn
-index ce3c9cf22594dd0976a33cd61c8394638b87cd62..e075b2d272016b1bed5445dcfe377d6c8f968a45 100644
+index 1895dfb66544f8e51f7cce980a76cea4980d4ac0..0dd67f2eab3f57841713959f51b1e14b81f281dd 100644
 --- a/net/dns/BUILD.gn
 +++ b/net/dns/BUILD.gn
 @@ -23,6 +23,7 @@ source_set("dns") {
@@ -10,7 +10,7 @@ index ce3c9cf22594dd0976a33cd61c8394638b87cd62..e075b2d272016b1bed5445dcfe377d6c
  
    public = []
    sources = [
-@@ -208,6 +209,7 @@ source_set("host_resolver") {
+@@ -209,6 +210,7 @@ source_set("host_resolver") {
      "//net/*",
      "//services/network/*",
    ]
