@@ -46,6 +46,8 @@ constexpr int kBubbleWidth = 324;  // width is 324 pixels
 
 constexpr int kFontSizeSiteTitle = 14;  // site title font size
 
+constexpr char kSpeedreaderSettings[] = "brave://settings/?search=speedreader";
+
 }  // anonymous namespace
 
 namespace speedreader {
@@ -175,7 +177,7 @@ void SpeedreaderModeBubble::OnButtonPressed(const ui::Event& event) {
 
 void SpeedreaderModeBubble::OnLinkClicked(const ui::Event& event) {
   tab_helper_->web_contents()->OpenURL(
-      content::OpenURLParams(GURL("chrome://settings"), content::Referrer(),
+      content::OpenURLParams(GURL(kSpeedreaderSettings), content::Referrer(),
                              WindowOpenDisposition::NEW_FOREGROUND_TAB,
                              ui::PAGE_TRANSITION_LINK, false));
 }
