@@ -127,7 +127,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   void Init() override;
 
   void CreateProfileManager();
-  void CreateNotificationPlatformBridge();
 
 #if BUILDFLAG(ENABLE_TOR)
   void OnTorEnabledChanged();
