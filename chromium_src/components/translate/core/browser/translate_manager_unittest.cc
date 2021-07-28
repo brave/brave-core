@@ -101,7 +101,7 @@ struct ProfilePrefRegistration {
     TranslatePrefs::RegisterProfilePrefs(prefs->registry());
     // TODO(groby): Figure out RegisterProfilePrefs() should register this.
     prefs->registry()->RegisterBooleanPref(
-        prefs::kOfferTranslateEnabled, true,
+        translate::prefs::kOfferTranslateEnabled, true,
         user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
   }
 };
@@ -176,9 +176,9 @@ TEST_F(TranslateManagerTest, CanManuallyTranslate_WithoutAPIKey) {
         &mock_translate_ranker_,
         &mock_language_model_));
 
-  prefs_.SetBoolean(prefs::kOfferTranslateEnabled, true);
+  prefs_.SetBoolean(translate::prefs::kOfferTranslateEnabled, true);
   ON_CALL(mock_translate_client_, IsTranslatableURL(GURL::EmptyGURL()))
-          .WillByDefault(Return(true));
+      .WillByDefault(Return(true));
   network_notifier_.SimulateOnline();
 
   translate_manager_->GetLanguageState()->LanguageDetermined("de", true);
@@ -198,9 +198,9 @@ TEST_F(TranslateManagerTest, CanManuallyTranslate_WithAPIKey) {
         &mock_translate_ranker_,
         &mock_language_model_));
 
-  prefs_.SetBoolean(prefs::kOfferTranslateEnabled, true);
+  prefs_.SetBoolean(translate::prefs::kOfferTranslateEnabled, true);
   ON_CALL(mock_translate_client_, IsTranslatableURL(GURL::EmptyGURL()))
-          .WillByDefault(Return(true));
+      .WillByDefault(Return(true));
   network_notifier_.SimulateOnline();
 
   translate_manager_->GetLanguageState()->LanguageDetermined("de", true);
