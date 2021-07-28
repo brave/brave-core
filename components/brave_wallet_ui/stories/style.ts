@@ -30,6 +30,7 @@ export const SelectContainer = styled.div`
   padding: 12px 12px 0px 12px;
   position: relative;
   box-sizing: border-box;
+  background-color: ${(p) => p.theme.color.background01};
 `
 
 export const ScrollContainer = styled.div`
