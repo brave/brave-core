@@ -74,6 +74,7 @@ extension BrowserViewController {
         
         guard let selectedTab = tabManager.selectedTab,
               !benchmarkNotificationPresented,
+              !Preferences.AppState.backgroundedCleanly.value,
               !topToolbar.inOverlayMode,
               !isTabTrayActive,
               selectedTab.webView?.scrollView.isDragging == false,
