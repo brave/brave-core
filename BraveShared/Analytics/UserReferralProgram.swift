@@ -36,17 +36,15 @@ public class UserReferralProgram {
     let service: UrpService
     
     public init?() {
-        func getPlistString(for key: String) -> String? {
-            return Bundle.main.infoDictionary?[key] as? String
-        }
-        
         // This should _probably_ correspond to the baseUrl for NTPDownloader
         let host = AppConstants.buildChannel == .debug ? HostUrl.staging : HostUrl.prod
         
-        guard let apiKey = getPlistString(for: UserReferralProgram.apiKeyPlistKey)?.trimmingCharacters(in: .whitespacesAndNewlines) else {
-                log.error("Urp init error, failed to get values from Brave.plist.")
-                return nil
-        }
+        guard let apiKey = Bundle.main.getPlistString(
+            for: UserReferralProgram.apiKeyPlistKey)?
+                .trimmingCharacters(in: .whitespacesAndNewlines) else {
+                    log.error("Urp init error, failed to get values from Brave.plist.")
+                    return nil
+                }
         
         guard let urpService = UrpService(host: host, apiKey: apiKey) else { return nil }
         
