@@ -8,7 +8,7 @@ import BraveUI
 import SnapKit
 import BraveShared
 
-class OpenSearchEngineButton: Button {
+class OpenSearchEngineButton: BraveButton {
 
     // MARK: Action
     

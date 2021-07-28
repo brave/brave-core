@@ -16,9 +16,6 @@ extension AppDelegate {
     /// - warning: Be careful adjusting colors here, and make sure impact is well known
     func applyAppearanceDefaults() {
         // important! for privacy concerns, otherwise UI can bleed through
-        UIView.appearance(whenContainedInInstancesOf: [BasePasscodeViewController.self])
-            .backgroundColor = .braveBackground
-        
         UIToolbar.appearance().do {
             $0.tintColor = .braveOrange
             $0.standardAppearance = {

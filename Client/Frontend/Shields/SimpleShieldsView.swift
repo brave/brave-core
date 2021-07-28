@@ -94,7 +94,7 @@ class SimpleShieldsView: UIView {
             $0.textColor = .braveLabel
         }
         
-        let infoButton = Button().then {
+        let infoButton = BraveButton().then {
             $0.setImage(#imageLiteral(resourceName: "shields-help").template, for: .normal)
             $0.hitTestSlop = UX.hitBoxEdgeInsets
             $0.imageEdgeInsets = .zero
@@ -107,7 +107,7 @@ class SimpleShieldsView: UIView {
             $0.tintColor = .bravePrimary
         }
         
-        let shareButton = Button().then {
+        let shareButton = BraveButton().then {
             $0.setImage(#imageLiteral(resourceName: "shields-share").withRenderingMode(.alwaysTemplate), for: .normal)
             $0.hitTestSlop = UX.hitBoxEdgeInsets
             $0.imageEdgeInsets = .zero

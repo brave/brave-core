@@ -932,6 +932,18 @@ class BrowserViewController: UIViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
+        if KeychainWrapper.sharedAppContainerKeychain.authenticationInfo() != nil {
+            let controller = UIHostingController(rootView: PasscodeMigrationContainerView())
+            controller.rootView.dismiss = { [unowned controller] enableBrowserLock in
+                KeychainWrapper.sharedAppContainerKeychain.setAuthenticationInfo(nil)
+                Preferences.Privacy.lockWithPasscode.value = enableBrowserLock
+                controller.dismiss(animated: true)
+            }
+            controller.modalPresentationStyle = .fullScreen
+            // No animation to ensure we don't leak the users tabs
+            present(controller, animated: false)
+        }
+        
         presentOnboardingIntro() { [weak self] in
             self?.shouldShowNTPEducation = true
         }

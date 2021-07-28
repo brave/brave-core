@@ -5,7 +5,7 @@
 import UIKit
 import BraveShared
 
-open class ActionButton: Button {
+open class ActionButton: BraveButton {
   
   override public init(frame: CGRect) {
     super.init(frame: frame)
@@ -35,7 +35,7 @@ open class ActionButton: Button {
   }
 }
 
-open class FilledActionButton: Button {
+open class FilledActionButton: BraveButton {
   override public init(frame: CGRect) {
     super.init(frame: frame)
     
