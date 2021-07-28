@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/platform/media/key_system_config_selector.cc b/third_party/blink/renderer/platform/media/key_system_config_selector.cc
-index 86d68a45b24824d9b8ce855ffec5646f8b090483..905ea089c6ba6857cf0508affb2a7af404f39c76 100644
+index ec2da87c1d0099940869044497eee372403f810e..c73a09ba6589302e3eeeaf60cf354ee77ee555cd 100644
 --- a/third_party/blink/renderer/platform/media/key_system_config_selector.cc
 +++ b/third_party/blink/renderer/platform/media/key_system_config_selector.cc
-@@ -995,6 +995,7 @@ void KeySystemConfigSelector::SelectConfig(
+@@ -996,6 +996,7 @@ void KeySystemConfigSelector::SelectConfig(
  
    key_systems_->UpdateIfNeeded();
  

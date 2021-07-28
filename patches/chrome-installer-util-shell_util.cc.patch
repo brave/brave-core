@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/shell_util.cc b/chrome/installer/util/shell_util.cc
-index 5b1d1c9a78b57d0c2b30828a87fc68d6fc701973..778e6119b3f2d496719b89c0ffb814126892e92f 100644
+index e22ef8b926d9e2485114f1bf182afedf0c095b27..78569569a45fe9ceac5c9a35e0ddee347e6a0a5f 100644
 --- a/chrome/installer/util/shell_util.cc
 +++ b/chrome/installer/util/shell_util.cc
 @@ -355,6 +355,7 @@ void GetChromeProgIdEntries(
@@ -34,7 +34,7 @@ index 5b1d1c9a78b57d0c2b30828a87fc68d6fc701973..778e6119b3f2d496719b89c0ffb81412
    return L"SettingsPageAppsDefaultsProtocolView";
  }
  
-@@ -1628,8 +1632,10 @@ const wchar_t* ShellUtil::kPotentialFileAssociations[] = {
+@@ -1676,8 +1680,10 @@ const wchar_t* ShellUtil::kPotentialFileAssociations[] = {
      L".htm", L".html",  L".pdf",  L".shtml", L".svg",
      L".xht", L".xhtml", L".webp", nullptr};
  const wchar_t* ShellUtil::kBrowserProtocolAssociations[] = {L"ftp", L"http",

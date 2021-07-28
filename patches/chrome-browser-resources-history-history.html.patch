@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/history/history.html b/chrome/browser/resources/history/history.html
-index f89232013d3efc189400143cbcc2cf7badbe4a66..70293038b432ab4579eed6a0daa28dde324afe14 100644
+index 1d2d7cba4d8d60c945345eae172301d30e1ba38c..0249e8415a6cbadc44f7552f863e633572c2b389 100644
 --- a/chrome/browser/resources/history/history.html
 +++ b/chrome/browser/resources/history/history.html
-@@ -79,6 +79,7 @@
+@@ -80,6 +80,7 @@
        justify-content: center;
      }
    </style>

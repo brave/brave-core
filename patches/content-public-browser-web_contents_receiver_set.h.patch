@@ -1,8 +1,8 @@
 diff --git a/content/public/browser/web_contents_receiver_set.h b/content/public/browser/web_contents_receiver_set.h
-index b0fa64b5e1642a596df697a4a2c8d772db4730e2..5f3e1dc086bc22f61990f7211439ceae6eb7d17a 100644
+index 10159b1a4c290640cb864563ee3223e016942894..fbf596d58d294012e68235be4abcbfe1069f3440 100644
 --- a/content/public/browser/web_contents_receiver_set.h
 +++ b/content/public/browser/web_contents_receiver_set.h
-@@ -53,6 +53,11 @@ namespace subresource_redirect {
+@@ -47,6 +47,11 @@ namespace subresource_redirect {
  class SubresourceRedirectObserver;
  }
  
@@ -14,8 +14,8 @@ index b0fa64b5e1642a596df697a4a2c8d772db4730e2..5f3e1dc086bc22f61990f7211439ceae
  namespace content {
  
  class ConversionHost;
-@@ -138,6 +143,8 @@ class WebContentsFrameReceiverSetPassKey {
-   friend class DisplayCutoutHostImpl;
+@@ -128,6 +133,8 @@ class WebContentsFrameReceiverSetPassKey {
+   friend class ConversionHost;
    friend class ScreenOrientationProvider;
    friend class TestFrameInterfaceBinder;
 +  friend class ::BraveDrmTabHelper;
