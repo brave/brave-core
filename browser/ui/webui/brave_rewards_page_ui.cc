@@ -31,6 +31,7 @@
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/render_view_host.h"
@@ -66,6 +67,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void RegisterMessages() override;
 
  private:
+  void RestartBrowser(const base::ListValue* args);
   void IsInitialized(const base::ListValue* args);
   void GetRewardsParameters(const base::ListValue* args);
   void GetAutoContributeProperties(const base::ListValue* args);
@@ -335,6 +337,9 @@ void RewardsDOMHandler::RegisterMessages() {
                    profile, chrome::FaviconUrlFormat::kFaviconLegacy));
 #endif
 
+  web_ui()->RegisterMessageCallback("brave_rewards.restartBrowser",
+      base::BindRepeating(&RewardsDOMHandler::RestartBrowser,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.isInitialized",
       base::BindRepeating(&RewardsDOMHandler::IsInitialized,
       base::Unretained(this)));
@@ -504,6 +509,11 @@ void RewardsDOMHandler::Init() {
   rewards_service_->StartProcess(base::DoNothing());
 
   ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
+}
+
+void RewardsDOMHandler::RestartBrowser(const base::ListValue* args) {
+  AllowJavascript();
+  chrome::AttemptRestart();
 }
 
 void RewardsDOMHandler::IsInitialized(const base::ListValue* args) {

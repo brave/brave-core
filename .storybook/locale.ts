@@ -171,6 +171,7 @@ let locale: Record<string, string> = {
   recurring: 'Recurring',
   recurringDonation: 'Recurring Donation',
   recurringDonations: 'Monthly Tips',
+  relaunch: 'Relaunch',
   remove: 'remove',
   reservedAllLink: 'Show all pending contributions',
   removeAdFromSaved: 'Remove From Saved',

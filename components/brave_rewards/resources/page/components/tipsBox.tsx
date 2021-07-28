@@ -7,7 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import { Checkbox, Grid, Column, ControlWrapper } from 'brave-ui/components'
+import { Button, Checkbox, Grid, Column, ControlWrapper } from 'brave-ui/components'
 import {
   Box,
   TableDonation,
@@ -29,6 +29,7 @@ interface Props extends Rewards.ComponentProps {
 interface State {
   modalShowAll: boolean
   settings: boolean
+  restartNeeded: boolean
 }
 
 class TipBox extends React.Component<Props, State> {
@@ -36,7 +37,8 @@ class TipBox extends React.Component<Props, State> {
     super(props)
     this.state = {
       modalShowAll: false,
-      settings: false
+      settings: false,
+      restartNeeded: false
     }
   }
 
@@ -94,6 +96,11 @@ class TipBox extends React.Component<Props, State> {
 
   onInlineTipSettingChange = (key: string, selected: boolean) => {
     this.actions.onInlineTipSettingChange(key, selected)
+    this.setState({ restartNeeded: true })
+  }
+
+  onRelaunch = () => {
+    this.actions.restartBrowser()
   }
 
   donationSettingsChild = () => {
@@ -126,7 +133,6 @@ class TipBox extends React.Component<Props, State> {
               >
                 <div data-key='twitter'>{getLocale('donationAbilityTwitter')}</div>
               </Checkbox>
-
               <Checkbox
                 value={value}
                 multiple={true}
@@ -137,6 +143,16 @@ class TipBox extends React.Component<Props, State> {
             </ControlWrapper>
           </Column>
         </Grid>
+        {
+          this.state.restartNeeded
+          ? <Button
+              text={getLocale('relaunch')}
+              size={'small'}
+              type={'subtle'}
+              onClick={this.onRelaunch}
+          />
+          : null
+        }
       </>
     )
   }
