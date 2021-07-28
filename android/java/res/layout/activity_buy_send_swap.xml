@@ -293,7 +293,7 @@
         </LinearLayout>
 
         <RadioGroup
-            android:id="@+id/stat_type_radio_group"
+            android:id="@+id/buy_send_swap_type_radio_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -305,7 +305,7 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/websites_radio"
+                android:id="@+id/market_radio"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -320,7 +320,7 @@
                 android:text="@string/market" />
 
             <RadioButton
-                android:id="@+id/trackers_radio"
+                android:id="@+id/limit_radio"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:button="@null"

@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -74,6 +75,7 @@ public class AssetDetailActivity
         chartES.setColors(new int[] {getResources().getColor(R.color.wallet_asset_graph_color)});
         chartES.setOnTouchListener(new View.OnTouchListener() {
             @Override
+            @SuppressLint("ClickableViewAccessibility")
             public boolean onTouch(View v, MotionEvent event) {
                 SmoothLineChartEquallySpaced chartES = (SmoothLineChartEquallySpaced) v;
                 if (chartES == null) {

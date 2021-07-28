@@ -61,6 +61,12 @@ public class SmoothLineChartEquallySpaced extends View {
         mPath = new Path();
     }
 
+    @Override
+    public boolean performClick() {
+        super.performClick();
+        return true;
+    }
+
     public void setData(float[] values) {
         mValues = values;
 
@@ -158,7 +164,7 @@ public class SmoothLineChartEquallySpaced extends View {
             paint.setARGB(255, 0, 0, 0);
 
             paint.setStrokeWidth(2f);
-            canvas.drawLine(mCurrentLineX, 35, mCurrentLineX, canvas.getHeight() - 10, paint);
+            canvas.drawLine(mCurrentLineX, 35, mCurrentLineX, getHeight() - 10, paint);
             float possibleValue =
                     mValues.length > 1 ? (mCurrentLineX / (width / mValues.length)) : 0;
             if (possibleValue < 0) {

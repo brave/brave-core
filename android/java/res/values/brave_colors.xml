@@ -151,6 +151,5 @@
     <color name="brave_action_color">#4C54D2</color>
     <color name="wallet_positive_trend_color">#51CF66</color>
     <color name="wallet_asset_graph_color">#12A378</color>
-    <color name="wallet_swap_ui_limit_color">#737ADE</color>
 
 </resources>
