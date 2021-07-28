@@ -12,7 +12,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
-#include "base/util/timer/wall_clock_timer.h"
+#include "base/timer/wall_clock_timer.h"
 #include "brave/components/permissions/permission_expirations.h"
 #include "brave/components/permissions/permission_origin_lifetime_monitor.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
