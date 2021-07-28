@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -40,6 +41,7 @@ public class CryptoChildFragment extends Fragment {
 
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
+            @SuppressLint("ClickableViewAccessibility")
             public boolean onTouch(View v, MotionEvent event) {
                 SmoothLineChartEquallySpaced chartES = view.findViewById(R.id.line_chart);
                 if (chartES == null) {

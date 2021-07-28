@@ -9,7 +9,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
   <item android:id="@+id/search"
       android:title="@string/search_title"
-      app:srcCompat="@drawable/ic_search_21dp"
+      android:icon="@drawable/ic_search_21dp"
       app:showAsAction="collapseActionView|always"
       app:iconTint="@color/wallet_text_color"
       app:actionViewClass="androidx.appcompat.widget.SearchView" />

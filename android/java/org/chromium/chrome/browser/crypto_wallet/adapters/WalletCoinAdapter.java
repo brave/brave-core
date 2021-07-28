@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.AssetDetailActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
 
 public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.ViewHolder> {
     private Context context;

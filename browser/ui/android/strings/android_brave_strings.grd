@@ -1852,6 +1852,33 @@ until they verify, or until 90 days have passed.
     <message name="IDS_MAINNET" desc="Brave Wallet network selection button text">
       Mainnet
     </message>
+    <message name="IDS_MARKET_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
+      Market Price in ETH
+    </message>
+    <message name="IDS_FROM" desc="Brave Wallet buy-send-swap section text">
+      From
+    </message>
+    <message name="IDS_PERCENTAGE_25" desc="Brave Wallet buy-send-swap section text">
+      25%
+    </message>
+    <message name="IDS_PERCENTAGE_50" desc="Brave Wallet buy-send-swap section text">
+      50%
+    </message>
+    <message name="IDS_PERCENTAGE_75" desc="Brave Wallet buy-send-swap section text">
+      75%
+    </message>
+    <message name="IDS_TO_ESTIMATE" desc="Brave Wallet buy-send-swap section text">
+      To (estimate)
+    </message>
+    <message name="IDS_LIMIT" desc="Brave Wallet buy-send-swap section text">
+      Limit
+    </message>
+    <message name="IDS_MARKET" desc="Brave Wallet buy-send-swap section text">
+      Market
+    </message>
+    <message name="IDS_SLIPPING_TOLERANCE" desc="Brave Wallet buy-send-swap section text">
+      Slippage tolerance
+    </message>
     </messages>
   </release>
 </grit>
