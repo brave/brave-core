@@ -46,11 +46,6 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
-#if BUILDFLAG(ENABLE_SYSTEM_NOTIFICATIONS)
-#include "chrome/browser/notifications/notification_platform_bridge.h"
-#include "brave/browser/notifications/brave_notification_platform_bridge.h"
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #endif
@@ -358,27 +353,7 @@ void BraveBrowserProcessImpl::CreateProfileManager() {
 
 NotificationPlatformBridge*
 BraveBrowserProcessImpl::notification_platform_bridge() {
-#if !defined(OS_MAC)
   return BrowserProcessImpl::notification_platform_bridge();
-#else
-#if BUILDFLAG(ENABLE_SYSTEM_NOTIFICATIONS)
-  if (!created_notification_bridge_)
-    CreateNotificationPlatformBridge();
-  return notification_bridge_.get();
-#else
-  return nullptr;
-#endif
-#endif
-}
-
-void BraveBrowserProcessImpl::CreateNotificationPlatformBridge() {
-#if defined(OS_MAC)
-#if BUILDFLAG(ENABLE_SYSTEM_NOTIFICATIONS)
-  DCHECK(!notification_bridge_);
-  notification_bridge_ = BraveNotificationPlatformBridge::Create();
-  created_notification_bridge_ = true;
-#endif
-#endif
 }
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
