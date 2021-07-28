@@ -79,7 +79,6 @@ static_library("browser") {
 
   deps = [
     "//base",
-    "//base/util/values:values_util",
     "//brave/components/api_request_helper",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_wallet/browser:ethereum_permission_utils",
