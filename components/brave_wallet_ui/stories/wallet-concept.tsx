@@ -35,6 +35,7 @@ import { CurrentPriceMockData } from './mock-data/current-price-data'
 import { PriceHistoryMockData } from './mock-data/price-history-data'
 import { mockUserWalletPreferences } from './mock-data/user-wallet-preferences'
 import { formatePrices } from '../utils/format-prices'
+import { BuyAssetUrl } from '../utils/buy-asset-url'
 import locale from '../constants/locale'
 export default {
   title: 'Wallet/Desktop',
@@ -67,6 +68,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [slippageTolerance, setSlippageTolerance] = React.useState<SlippagePresetObjectType>(SlippagePresetOptions[0])
   const [orderExpiration, setOrderExpiration] = React.useState<ExpirationPresetObjectType>(ExpirationPresetOptions[0])
   const [toAddress, setToAddress] = React.useState('')
+  const [buyAmount, setBuyAmount] = React.useState('')
   const [sendAmount, setSendAmount] = React.useState('')
   const [fromAmount, setFromAmount] = React.useState('')
   const [toAmount, setToAmount] = React.useState('')
@@ -327,6 +329,13 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setToAsset(fromAsset)
   }
 
+  const onSubmitBuy = (asset: AssetOptionType) => {
+    const url = BuyAssetUrl(selectedNetwork, asset, selectedAccount, buyAmount)
+    if (url) {
+      window.open(url, '_blank')
+    }
+  }
+
   const onSubmitSwap = () => {
     alert('Submit Swap Transaction')
   }
@@ -379,6 +388,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const onSetExchangeRate = (value: string) => {
     setExchangeRate(value)
     calculateToAmount(Number(value), false)
+  }
+
+  const onSetBuyAmount = (value: string) => {
+    setBuyAmount(value)
   }
 
   const onSetSendAmount = (value: string) => {
@@ -486,12 +499,15 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             accounts={mockUserAccounts}
             selectedNetwork={selectedNetwork}
             selectedAccount={selectedAccount}
+            buyAmount={buyAmount}
             sendAmount={sendAmount}
             fromAmount={fromAmount}
             toAmount={toAmount}
             fromAssetBalance={fromAssetBalance}
             toAssetBalance={toAssetBalance}
             toAddress={toAddress}
+            onSubmitBuy={onSubmitBuy}
+            onSetBuyAmount={onSetBuyAmount}
             onSetSendAmount={onSetSendAmount}
             onSetToAddress={onSetToAddress}
             onSetFromAmount={onSetFromAmount}

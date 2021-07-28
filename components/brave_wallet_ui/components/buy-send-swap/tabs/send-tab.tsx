@@ -7,12 +7,9 @@ import {
   ToOrFromType
 } from '../../../constants/types'
 import { AssetOptions } from '../../../options/asset-options'
-import { NetworkOptions } from '../../../options/network-options'
 import {
+  AccountsAssetsNetworks,
   Header,
-  SelectAccount,
-  SelectAsset,
-  SelectNetwork,
   Send
 } from '..'
 
@@ -109,25 +106,15 @@ function SendTab (props: Props) {
           />
         </>
       }
-      {sendView === 'acounts' &&
-        <SelectAccount
+      {sendView !== 'send' &&
+        <AccountsAssetsNetworks
           accounts={accounts}
-          onSelectAccount={onClickSelectAccount}
-          onBack={goBack}
-        />
-      }
-      {sendView === 'assets' &&
-        <SelectAsset
-          assets={AssetOptions}
-          onSelectAsset={onSelectedAsset}
-          onBack={goBack}
-        />
-      }
-      {sendView === 'networks' &&
-        <SelectNetwork
-          networks={NetworkOptions}
-          onSelectNetwork={onClickSelectNetwork}
-          onBack={goBack}
+          goBack={goBack}
+          assetOptions={AssetOptions}
+          onClickSelectAccount={onClickSelectAccount}
+          onClickSelectNetwork={onClickSelectNetwork}
+          onSelectedAsset={onSelectedAsset}
+          selectedView={sendView}
         />
       }
     </>

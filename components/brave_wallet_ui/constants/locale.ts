@@ -209,7 +209,13 @@ const locale = {
   swapEstimate: 'estimate',
   swapMarket: 'Market',
   swapLimit: 'Limit',
-  swapPriceIn: 'Price in'
+  swapPriceIn: 'Price in',
+
+  // Buy
+  buyTitle: 'Test Faucet',
+  buyDescription: 'Get Ether from a faucet for',
+  buyWyreButton: 'Continue to Wyre',
+  buyFaucetButton: 'Get Ether'
 }
 
 export default locale
