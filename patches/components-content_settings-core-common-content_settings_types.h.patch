@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index 4bb4ad71cc1b3e4776266dce41ed6e67e6d1ca5b..8f7b7f52f7286e0ca6088d11540cc449e75e68ca 100644
+index 53e963234f6aa900d8617ad62ca095a0a623f07f..6314c5cc8bcda33c0bcc2fb4627071aead78ee66 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -264,6 +264,7 @@ enum class ContentSettingsType : int32_t {
+@@ -266,6 +266,7 @@ enum class ContentSettingsType : int32_t {
    // Whether to use the v8 optimized JIT for running JavaScript on the page.
    JAVASCRIPT_JIT,
  
