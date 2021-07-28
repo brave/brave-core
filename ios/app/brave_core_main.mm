@@ -89,7 +89,7 @@ static BraveCoreLogHandler _Nullable _logHandler = nil;
     web::WebMainParams params(_delegate.get());
     _webMain = std::make_unique<web::WebMain>(std::move(params));
 
-    ios::GetChromeBrowserProvider()->Initialize();
+    ios::GetChromeBrowserProvider().Initialize();
 
     ios::ChromeBrowserStateManager* browserStateManager =
         GetApplicationContext()->GetChromeBrowserStateManager();
