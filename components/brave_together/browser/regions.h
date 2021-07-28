@@ -11,7 +11,7 @@
 
 namespace brave_together {
 
-// Brave Together is supported for all :)
+// Brave Talk is supported for all :)
 const std::vector<std::string> unsupported_regions = {
 };
 
