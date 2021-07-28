@@ -48,9 +48,9 @@ base::Value EthTxStateManager::TxMetaToValue(const TxMeta& meta) {
   dict.SetIntKey("status", static_cast<int>(meta.status));
   dict.SetStringKey("from", meta.from.ToHex());
   dict.SetStringKey("last_gas_price", Uint256ValueToHex(meta.last_gas_price));
-  dict.SetKey("created_time", util::TimeToValue(meta.created_time));
-  dict.SetKey("submitted_time", util::TimeToValue(meta.submitted_time));
-  dict.SetKey("confirmed_time", util::TimeToValue(meta.confirmed_time));
+  dict.SetKey("created_time", base::TimeToValue(meta.created_time));
+  dict.SetKey("submitted_time", base::TimeToValue(meta.submitted_time));
+  dict.SetKey("confirmed_time", base::TimeToValue(meta.confirmed_time));
   dict.SetKey("tx_receipt", TransactionReceiptToValue(meta.tx_receipt));
   dict.SetStringKey("tx_hash", meta.tx_hash);
   dict.SetKey("tx", meta.tx->ToValue());
@@ -89,7 +89,7 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
   if (!created_time)
     return nullptr;
   absl::optional<base::Time> created_time_from_value =
-      util::ValueToTime(created_time);
+      base::ValueToTime(created_time);
   if (!created_time_from_value)
     return nullptr;
   meta->created_time = *created_time_from_value;
@@ -98,7 +98,7 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
   if (!submitted_time)
     return nullptr;
   absl::optional<base::Time> submitted_time_from_value =
-      util::ValueToTime(submitted_time);
+      base::ValueToTime(submitted_time);
   if (!submitted_time_from_value)
     return nullptr;
   meta->submitted_time = *submitted_time_from_value;
@@ -107,7 +107,7 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
   if (!confirmed_time)
     return nullptr;
   absl::optional<base::Time> confirmed_time_from_value =
-      util::ValueToTime(confirmed_time);
+      base::ValueToTime(confirmed_time);
   if (!confirmed_time_from_value)
     return nullptr;
   meta->confirmed_time = *confirmed_time_from_value;
