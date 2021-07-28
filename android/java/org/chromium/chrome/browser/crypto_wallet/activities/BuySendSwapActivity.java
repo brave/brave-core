@@ -6,7 +6,10 @@
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.Toolbar;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
@@ -24,6 +27,10 @@ public class BuySendSwapActivity
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_buy_send_swap);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TextView accountNameText = findViewById(R.id.account_name_text);
         accountNameText.setText("Account 1");
@@ -56,6 +63,16 @@ public class BuySendSwapActivity
         slippingToleranceValueText.setText("2%");
 
         onInitialLayoutInflationComplete();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

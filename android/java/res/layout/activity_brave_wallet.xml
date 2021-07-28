@@ -29,8 +29,7 @@
             android:translationZ="10dp"
             app:titleTextColor="@color/wallet_text_color"
             app:collapseIcon="@drawable/ic_baseline_arrow_back_24"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            app:layout_scrollFlags="scroll|enterAlways|snap" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <com.google.android.material.tabs.TabLayout

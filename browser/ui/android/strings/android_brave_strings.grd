@@ -1873,6 +1873,9 @@ until they verify, or until 90 days have passed.
     <message name="IDS_LIMIT" desc="Brave Wallet buy-send-swap section text">
       Limit
     </message>
+    <message name="IDS_MARKET" desc="Brave Wallet buy-send-swap section text">
+      Market
+    </message>
     <message name="IDS_SLIPPING_TOLERANCE" desc="Brave Wallet buy-send-swap section text">
       Slippage tolerance
     </message>

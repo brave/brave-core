@@ -6,10 +6,13 @@
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.Toolbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,6 +41,10 @@ public class AssetDetailActivity
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_asset_detail);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TextView assetTitleText = findViewById(R.id.asset_title_text);
         assetTitleText.setText(this.getText(R.string.eth_name));
@@ -85,6 +92,16 @@ public class AssetDetailActivity
         });
 
         onInitialLayoutInflationComplete();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
