@@ -21,6 +21,8 @@ class AdblockResourceDownloader {
     private let locale: String
     
     static let folderName = "abp-data"
+    private let servicesKeyName = "SERVICES_KEY"
+    private let servicesKeyHeaderValue = "BraveServiceKey"
     
     static let endpoint = "https://adblock-data.s3.brave.com/ios"
     
@@ -92,12 +94,19 @@ class AdblockResourceDownloader {
             url.appendPathComponent(resourceName)
             url.appendPathExtension(fileExtension)
             
+            var headers = [String: String]()
+            if let servicesKeyValue = Bundle.main.getPlistString(for: servicesKeyName) {
+                headers[servicesKeyHeaderValue] = servicesKeyValue
+            }
+            
             let etag = fileFromDocumentsAsString("\(fileName).\(etagExtension)", inFolder: folderName)
-            let request = nm.downloadResource(with: url, resourceType: .cached(etag: etag),
-                                              checkLastServerSideModification: !AppConstants.buildChannel.isPublic)
+            let request =
+            nm.downloadResource(with: url, resourceType: .cached(etag: etag),
+                                checkLastServerSideModification: !AppConstants.buildChannel.isPublic,
+                                customHeaders: headers)
                 .mapQueue(queue) { resource in
                     AdBlockNetworkResource(resource: resource, fileType: fileType, type: type)
-            }
+                }
             
             return request
         }

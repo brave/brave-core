@@ -9,6 +9,7 @@
 MOZ_BUNDLE_DISPLAY_NAME = BraveBeta
 
 BRAVE_API_KEY = key
+BRAVE_SERVICES_KEY = key
 
 // Bundle Identifier
 MOZ_BUNDLE_ID = $(BASE_BUNDLE_ID).browser.beta

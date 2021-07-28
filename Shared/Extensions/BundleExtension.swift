@@ -9,4 +9,8 @@ extension Bundle {
     public static let data: Bundle = Bundle(identifier: "com.brave.Data")!
     public static let braveShared: Bundle = Bundle(identifier: "com.brave.BraveShared")!
     public static let storage: Bundle = Bundle(identifier: "com.brave.Storage")!
+    
+    public func getPlistString(for key: String) -> String? {
+        self.infoDictionary?[key] as? String
+    }
 }

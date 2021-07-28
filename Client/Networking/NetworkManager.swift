@@ -31,7 +31,8 @@ class NetworkManager {
     func downloadResource(with url: URL,
                           resourceType: NetworkResourceType = .regular,
                           retryTimeout: TimeInterval? = 60,
-                          checkLastServerSideModification: Bool = false) -> Deferred<CachedNetworkResource> {
+                          checkLastServerSideModification: Bool = false,
+                          customHeaders: [String: String] = [:]) -> Deferred<CachedNetworkResource> {
         let completion = Deferred<CachedNetworkResource>()
         
         var request = URLRequest(url: url)
@@ -52,6 +53,10 @@ class NetworkManager {
             request.addValue(requestEtag, forHTTPHeaderField: ifNoneMatchHeader)
         default: break
         }
+        
+        customHeaders.forEach {
+            request.addValue($0.value, forHTTPHeaderField: $0.key)
+        }        
         
         session.dataRequest(with: request) { data, response, error -> Void in
             if let err = error {
