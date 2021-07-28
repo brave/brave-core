@@ -15,27 +15,23 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
+import org.chromium.brave_wallet.mojom.AssetRatioController;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
-import org.chromium.chrome.browser.crypto_wallet.BraveWalletObserver;
+import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.mojo.system.MojoException;
 
 public class AssetDetailActivity
-        extends AsyncInitializationActivity implements BraveWalletObserver {
+        extends AsyncInitializationActivity implements ConnectionErrorHandler {
     private SmoothLineChartEquallySpaced chartES;
+    private AssetRatioController mAssetRatioController;
 
     @Override
     protected void onDestroy() {
-        BraveWalletNativeWorker.getInstance().removeObserver(this);
         super.onDestroy();
     }
 
@@ -54,21 +50,21 @@ public class AssetDetailActivity
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             int timeframeType;
             if (checkedId == R.id.live_radiobutton) {
-                timeframeType = 0;
+                timeframeType = AssetPriceTimeframe.LIVE;
             } else if (checkedId == R.id.day_1_radiobutton) {
-                timeframeType = 1;
+                timeframeType = AssetPriceTimeframe.ONE_DAY;
             } else if (checkedId == R.id.week_1_radiobutton) {
-                timeframeType = 2;
+                timeframeType = AssetPriceTimeframe.ONE_WEEK;
             } else if (checkedId == R.id.month_1_radiobutton) {
-                timeframeType = 3;
+                timeframeType = AssetPriceTimeframe.ONE_MONTH;
             } else if (checkedId == R.id.month_3_radiobutton) {
-                timeframeType = 4;
+                timeframeType = AssetPriceTimeframe.THREE_MONTHS;
             } else if (checkedId == R.id.year_1_radiobutton) {
-                timeframeType = 5;
+                timeframeType = AssetPriceTimeframe.ONE_YEAR;
             } else {
-                timeframeType = 6;
+                timeframeType = AssetPriceTimeframe.ALL;
             }
-            BraveWalletNativeWorker.getInstance().getAssetPriceHistory("eth", timeframeType);
+            getPriceHistory("eth", timeframeType);
         });
 
         chartES = findViewById(R.id.line_chart);
@@ -96,6 +92,19 @@ public class AssetDetailActivity
         onInitialLayoutInflationComplete();
     }
 
+    private void getPriceHistory(String asset, int timeframe) {
+        if (mAssetRatioController != null) {
+            mAssetRatioController.getPriceHistory(asset, timeframe, (result, priceHistory) -> {
+                final float[] pricesArray = new float[priceHistory.length];
+                for (int index = 0; index < priceHistory.length; index++) {
+                    // TODO(sergz): We need to retrieve and pass date as well
+                    pricesArray[index] = Float.parseFloat(priceHistory[index].price);
+                }
+                updateAssetGraph(pricesArray);
+            });
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -109,8 +118,23 @@ public class AssetDetailActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        BraveWalletNativeWorker.getInstance().addObserver(this);
-        BraveWalletNativeWorker.getInstance().getAssetPriceHistory("eth", 0);
+        InitAssetRatioController();
+        getPriceHistory("eth", AssetPriceTimeframe.LIVE);
+    }
+
+    @Override
+    public void onConnectionError(MojoException e) {
+        mAssetRatioController = null;
+        InitAssetRatioController();
+    }
+
+    private void InitAssetRatioController() {
+        if (mAssetRatioController != null) {
+            return;
+        }
+
+        mAssetRatioController =
+                AssetRatioControllerFactory.getInstance().GetAssetRatioController(this);
     }
 
     @Override
@@ -120,35 +144,5 @@ public class AssetDetailActivity
 
     private void updateAssetGraph(float[] prices) {
         chartES.setData(prices);
-    }
-
-    @Override
-    public void OnGetPriceHistory(String priceHistory, boolean isSuccess) {
-        List<Float> pricesList = parsePriceHistory(priceHistory);
-        final float[] pricesArray = new float[pricesList.size()];
-        int index = 0;
-        for (final Float value : pricesList) {
-            pricesArray[index++] = value;
-        }
-        updateAssetGraph(pricesArray);
-    }
-
-    private List<Float> parsePriceHistory(String priceHistory) {
-        List<Float> priceList = new ArrayList<>();
-        // Add root element to make it real JSON, otherwise getJSONArray cannot parse it
-        priceHistory = "{\"prices\":" + priceHistory + "}";
-        try {
-            JSONObject result = new JSONObject(priceHistory);
-            JSONArray prices = result.getJSONArray("prices");
-            for (int i = 0; i < prices.length(); i++) {
-                JSONObject price = prices.getJSONObject(i);
-                priceList.add((float) price.getDouble("price"));
-            }
-        } catch (JSONException e) {
-            Log.e("NTP", "parsePriceHistory JSONException error " + e);
-        } catch (IllegalStateException e) {
-            Log.e("NTP", "parsePriceHistory IllegalStateException error " + e);
-        }
-        return priceList;
     }
 }

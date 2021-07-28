@@ -22,24 +22,44 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
+import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
+import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.mojo.system.MojoException;
 
 import java.util.concurrent.Executor;
 
-public class SecurePasswordFragment extends CryptoOnboardingFragment {
+public class SecurePasswordFragment
+        extends CryptoOnboardingFragment implements ConnectionErrorHandler {
     private EditText passwordEdittext;
+    private KeyringController mKeyringController;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        InitKeyringController();
     }
 
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_secure_password, container, false);
+    }
+
+    @Override
+    public void onConnectionError(MojoException e) {
+        mKeyringController = null;
+        InitKeyringController();
+    }
+
+    private void InitKeyringController() {
+        if (mKeyringController != null) {
+            return;
+        }
+
+        mKeyringController = KeyringControllerFactory.getInstance().GetKeyringController(this);
     }
 
     @Override
@@ -64,14 +84,23 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     showFingerprintDialog(authenticationCallback);
                 } else {
-                    String recoveryPhrases = BraveWalletNativeWorker.getInstance()
-                                                     .createWallet(passwordInput)
-                                                     .trim();
-                    Utils.disableCryptoOnboarding();
-                    onNextPage.gotoNextPage(false);
+                    goToTheNextPage();
                 }
             }
         });
+    }
+
+    private void goToTheNextPage() {
+        String passwordInput = passwordEdittext.getText().toString().trim();
+        if (mKeyringController != null) {
+            mKeyringController.createWallet(passwordInput,
+                    recoveryPhrases
+                    -> {
+                            // Do nothing with recovery phrase for now
+                    });
+        }
+        Utils.disableCryptoOnboarding();
+        onNextPage.gotoNextPage(false);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
@@ -96,12 +125,7 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
             authenticationCallback = new BiometricPrompt.AuthenticationCallback() {
         private void onNextPage() {
             // Go to next Page
-            String recoveryPhrases =
-                    BraveWalletNativeWorker.getInstance()
-                            .createWallet(passwordEdittext.getText().toString().trim())
-                            .trim();
-            Utils.disableCryptoOnboarding();
-            onNextPage.gotoNextPage(false);
+            goToTheNextPage();
         }
 
         @Override

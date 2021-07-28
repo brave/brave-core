@@ -17,11 +17,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
+import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.mojo.system.MojoException;
 
-public class UnlockWalletFragment extends CryptoOnboardingFragment {
+public class UnlockWalletFragment
+        extends CryptoOnboardingFragment implements ConnectionErrorHandler {
+    private KeyringController mKeyringController;
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -31,6 +37,7 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        InitKeyringController();
         EditText unlockWalletPassword = view.findViewById(R.id.unlock_wallet_password);
 
         Button unlockButton = view.findViewById(R.id.btn_unlock);
@@ -40,14 +47,17 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
                 return;
             }
 
-            if (BraveWalletNativeWorker.getInstance().unlockWallet(
-                        unlockWalletPassword.getText().toString())) {
-                if (onNextPage != null) {
-                    Utils.hideKeyboard(getActivity());
-                    onNextPage.gotoNextPage(true);
-                }
-            } else {
-                unlockWalletPassword.setError(getString(R.string.password_error));
+            if (mKeyringController != null) {
+                mKeyringController.unlock(unlockWalletPassword.getText().toString(), result -> {
+                    if (result) {
+                        if (onNextPage != null) {
+                            Utils.hideKeyboard(getActivity());
+                            onNextPage.gotoNextPage(true);
+                        }
+                    } else {
+                        unlockWalletPassword.setError(getString(R.string.password_error));
+                    }
+                });
             }
         });
 
@@ -57,5 +67,19 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
                 onNextPage.gotoRestorePage();
             }
         });
+    }
+
+    @Override
+    public void onConnectionError(MojoException e) {
+        mKeyringController = null;
+        InitKeyringController();
+    }
+
+    private void InitKeyringController() {
+        if (mKeyringController != null) {
+            return;
+        }
+
+        mKeyringController = KeyringControllerFactory.getInstance().GetKeyringController(this);
     }
 }

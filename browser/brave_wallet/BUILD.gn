@@ -31,8 +31,8 @@ source_set("brave_wallet") {
   ]
   if (is_android) {
     sources += [
-      "./android/brave_wallet_native_worker.cc",
-      "./android/brave_wallet_native_worker.h",
+      "./android/asset_ratio_controller_factory_android.cc",
+      "./android/keyring_controller_factory_android.cc",
     ]
     deps += [ "//brave/build/android:jni_headers" ]
   }

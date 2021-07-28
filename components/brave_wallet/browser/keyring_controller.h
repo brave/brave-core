@@ -65,6 +65,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
                      RestoreWalletCallback callback) override;
   void Unlock(const std::string& password, UnlockCallback callback) override;
   void Lock() override;
+  void IsLocked(IsLockedCallback callback) override;
   void AddAccount(AddAccountCallback callback) override;
   void IsWalletBackedUp(IsWalletBackedUpCallback callback) override;
   void NotifyWalletBackupComplete() override;
