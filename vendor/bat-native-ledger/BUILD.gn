@@ -312,6 +312,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/endpoint/gemini/post_balance/post_balance_gemini.h",
     "src/bat/ledger/internal/endpoint/gemini/post_oauth/post_oauth_gemini.cc",
     "src/bat/ledger/internal/endpoint/gemini/post_oauth/post_oauth_gemini.h",
+    "src/bat/ledger/internal/endpoint/gemini/post_recipient_id/post_recipient_id_gemini.cc",
+    "src/bat/ledger/internal/endpoint/gemini/post_recipient_id/post_recipient_id_gemini.h",
     "src/bat/ledger/internal/endpoint/gemini/post_transaction/post_transaction_gemini.cc",
     "src/bat/ledger/internal/endpoint/gemini/post_transaction/post_transaction_gemini.h",
     "src/bat/ledger/internal/endpoint/payment/get_credentials/get_credentials.cc",

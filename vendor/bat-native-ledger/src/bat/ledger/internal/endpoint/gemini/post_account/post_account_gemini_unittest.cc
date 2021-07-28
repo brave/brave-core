@@ -69,11 +69,9 @@ TEST_F(GeminiPostAccountTest, ServerOK) {
 
   post_account_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& address,
-         const std::string& linking_info, const std::string& user_name,
-         const bool verified) {
+      [](const type::Result result, const std::string& linking_info,
+         const std::string& user_name, const bool verified) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
-        EXPECT_EQ(address, "Primary");
         EXPECT_EQ(linking_info, "mocktoken");
         EXPECT_EQ(user_name, "Test");
         EXPECT_TRUE(verified);
@@ -93,11 +91,9 @@ TEST_F(GeminiPostAccountTest, ServerError401) {
 
   post_account_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& address,
-         const std::string& linking_info, const std::string& user_name,
-         const bool verified) {
+      [](const type::Result result, const std::string& linking_info,
+         const std::string& user_name, const bool verified) {
         EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
-        EXPECT_EQ(address, "");
         EXPECT_EQ(linking_info, "");
         EXPECT_EQ(user_name, "");
         EXPECT_FALSE(verified);
@@ -117,11 +113,9 @@ TEST_F(GeminiPostAccountTest, ServerError403) {
 
   post_account_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& address,
-         const std::string& linking_info, const std::string& user_name,
-         const bool verified) {
+      [](const type::Result result, const std::string& linking_info,
+         const std::string& user_name, const bool verified) {
         EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
-        EXPECT_EQ(address, "");
         EXPECT_EQ(linking_info, "");
         EXPECT_EQ(user_name, "");
         EXPECT_FALSE(verified);
@@ -141,11 +135,9 @@ TEST_F(GeminiPostAccountTest, ServerError404) {
 
   post_account_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& address,
-         const std::string& linking_info, const std::string& user_name,
-         const bool verified) {
+      [](const type::Result result, const std::string& linking_info,
+         const std::string& user_name, const bool verified) {
         EXPECT_EQ(result, type::Result::NOT_FOUND);
-        EXPECT_EQ(address, "");
         EXPECT_EQ(linking_info, "");
         EXPECT_EQ(user_name, "");
         EXPECT_FALSE(verified);
@@ -165,11 +157,9 @@ TEST_F(GeminiPostAccountTest, ServerErrorRandom) {
 
   post_account_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& address,
-         const std::string& linking_info, const std::string& user_name,
-         const bool verified) {
+      [](const type::Result result, const std::string& linking_info,
+         const std::string& user_name, const bool verified) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-        EXPECT_EQ(address, "");
         EXPECT_EQ(linking_info, "");
         EXPECT_EQ(user_name, "");
         EXPECT_FALSE(verified);

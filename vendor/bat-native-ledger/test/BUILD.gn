@@ -42,6 +42,7 @@ source_set("bat_native_ledger_tests") {
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/gemini/post_account/post_account_gemini_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/gemini/post_balance/post_balance_gemini_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/gemini/post_oauth/post_oauth_gemini_unittest.cc",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/gemini/post_recipient_id/post_recipient_id_gemini_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/gemini/post_transaction/post_transaction_gemini_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/payment/get_credentials/get_credentials_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/payment/payment_util_unittest.cc",

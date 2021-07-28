@@ -30,7 +30,6 @@ class GeminiAuthorization {
 
  private:
   void OnPostAccount(const type::Result result,
-                     const std::string& address,
                      const std::string& linking_info,
                      const std::string& name,
                      const bool& verified,
@@ -44,6 +43,11 @@ class GeminiAuthorization {
   void OnClaimWallet(const type::Result result,
                      const std::string& token,
                      ledger::ExternalWalletAuthorizationCallback callback);
+
+  void OnFetchRecipientId(const type::Result result,
+                          const std::string& recipient_id,
+                          const std::string& token,
+                          ledger::ExternalWalletAuthorizationCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::GeminiServer> gemini_server_;
