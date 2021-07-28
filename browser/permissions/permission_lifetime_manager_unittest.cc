@@ -160,7 +160,7 @@ class PermissionLifetimeManagerTest : public testing::Test {
     manager_.reset();
   }
 
-  const util::WallClockTimer& timer() { return *manager()->expiration_timer_; }
+  const base::WallClockTimer& timer() { return *manager()->expiration_timer_; }
 
   std::unique_ptr<PermissionRequest> CreateRequestAndChooseContentSetting(
       const GURL& origin,

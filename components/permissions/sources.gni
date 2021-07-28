@@ -23,7 +23,6 @@ brave_components_permissions_sources = [
 
 brave_components_permissions_deps = [
   "//base",
-  "//base/util/timer",
   "//brave/components/brave_wallet/common/buildflags",
   "//brave/components/resources:strings_grit",
   "//components/content_settings/core/browser",

@@ -93,7 +93,7 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
         active_web_contents()->GetBrowserContext());
   }
 
-  const util::WallClockTimer& permission_lifetime_timer() {
+  const base::WallClockTimer& permission_lifetime_timer() {
     return *permission_lifetime_manager()->expiration_timer_;
   }
 
