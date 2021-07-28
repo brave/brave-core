@@ -1115,6 +1115,45 @@ and Ctrl+Alt+Brightness down to zoom out.
   <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LOCALE_SUB_LABEL_NETWORK" desc="Sub-label for a drop-down menu to select the language to use for Dictation. Describes how speech will be sent over the network to Brave for processing to create text.">
     <ph name="language">$1<ex>English</ex></ph> speech is sent to Brave for processing.
   </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_CHANGE_LANGUAGE_BUTTON" desc="Text on a button to open a dialog to change the Dictation language.">
+    Change
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_CHANGE_LANGUAGE_DIALOG_TITLE" desc="Title of a dialog allowing the user to change their Dictation language.">
+    Change Dictation language
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LANGUAGE_DIALOG_SEARCH_HINT" desc="Hint in a language search box in the dialog allowing users to change their Dictation language.">
+    Search languages
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LANGUAGE_DIALOG_SEARCH_CLEAR" desc="Hint to clear search in a language search box in the dialog allowing users to change their Dictation language.">
+    Clear search
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LANGUAGE_DIALOG_RECOMMENDED" desc="Heading for suggested languages list in the Dictation change language dialog.">
+    Suggested
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LANGUAGE_DIALOG_ALL" desc="Heading for the list of all Dictation languages in the Dictation change language dialog.">
+    All languages
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LANGUAGE_DIALOG_NO_RESULTS" desc="Message shown when there are no Dictation languages matching the search query the user has typed.">
+    No search results
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LANGUAGE_DIALOG_UPDATE_BUTTON" desc="Text on a button to update the Dictation language in the change language dialog.">
+    Update
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LANGUAGE_DIALOG_CANCEL_BUTTON" desc="Text on a button to cancel the Dictation language dialog without updating the language.">
+    Cancel
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LANGUAGE_DIALOG_OFFLINE_SUBTITLE" desc="Subtitle of a language in the Dictation language settings dialog which indicates that the language is availble offline.">
+    Works offline
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LANGUAGE_DIALOG_OFFLINE_DESCRIPTION" desc="Description of a language that works offline in the Dictation language settings dialog." is_accessibility_with_no_ui="true">
+    <ph name="LANGUAGE">$1<ex>English</ex></ph> (works offline)
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LANGUAGE_DIALOG_SELECTED_DESCRIPTION" desc="Description of a language that is selected in the Dictation language settings dialog." is_accessibility_with_no_ui="true">
+    <ph name="LANGUAGE">$1<ex>English</ex></ph> (selected)
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LANGUAGE_DIALOG_NOT_SELECTED_DESCRIPTION" desc="Description of a language that is not selected in the Dictation language settings dialog." is_accessibility_with_no_ui="true">
+    <ph name="LANGUAGE">$1<ex>English</ex></ph> (not selected)
+  </message>
   <message name="IDS_SETTINGS_ON_SCREEN_KEYBOARD_LABEL" desc="Label for checkbox which enables an on-screen keyboard.">
     Enable on-screen keyboard
   </message>
@@ -1510,7 +1549,7 @@ Press an assigned switch to remove assignment
     Manage your accounts here. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_CHILD_DESCRIPTION_V2" desc="Description of the Account Manager Settings page for child users. Shown just below the title of the page.">
-    This page allows you to manage your signed-in Brave accounts. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    This page allows you to manage your signed-in Brave sync chains. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_CHILD_FIRST_MESSAGE" desc="Description of the Account Manager Settings page for child users. Shown just below the link to learn more about account management.">
      Bookmarks, passwords, and other browser data are synced with the primary account.
@@ -3375,13 +3414,13 @@ Press an assigned switch to remove assignment
     Brave Assistant
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD" desc="Title for a toggle that lets the assistant detect hotword.">
-    "Ok Brave"
+    "Hey Brave"
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD_DESCRIPTION" desc="Sub label for hotword-enable toggle.">
-    Access your Assistant when you say "Ok Brave."
+    Access your Assistant when you say "Hey Brave."
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD_WITHOUT_DSP_DESCRIPTION" desc="Sub label for hotword-enable dropdown without DSP support.">
-    Access your Assistant when you say "Ok Brave." To save battery, choose “On (Recommended.)” Your Assistant will respond only when your device is plugged in or charging.
+    Access your Assistant when you say "Hey Brave." To save battery, choose “On (Recommended.)” Your Assistant will respond only when your device is plugged in or charging.
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD_WITHOUT_DSP_RECOMMENDED" desc="Default label for hotword-enable dropdown without DSP support.">
     On (Recommended)
@@ -3411,7 +3450,7 @@ Press an assigned switch to remove assignment
     Default to using voice instead of keyboard
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_SCREEN_CONTEXT_DESCRIPTION" desc="Sub label for context-enable toggle.">
-    To get responses that are more tailored to you, let Brave Assistant use info on your screen when you ask questions. Your Assistant may also use info about songs or videos that are playing.
+    To get responses that are more tailored to you, let Brave Assistant access a screenshot of what’s on your screen when you ask questions. Your Assistant may also use info about songs or videos that are playing.
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_SETTINGS" desc="Title for a button that opens the Brave Assistant app settings.">
     Brave Assistant settings
@@ -3462,6 +3501,12 @@ Press an assigned switch to remove assignment
   </message>
   <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_SCHEDULE_SUNSET_TO_SUNRISE" desc="In Device Settings &gt; Displays, the label of the option to set the automatic schedule of the Night Light feature to turn on at sunset and off at sunrise.">
     Sunset to sunrise
+  </message>
+  <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_START_TIME" desc="In Device Settings &gt; Displays, the label of the start time bubble.">
+    Start time
+  </message>
+  <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_STOP_TIME" desc="In Device Settings &gt; Displays, the label of the end time bubble.">
+    End time
   </message>
   <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_TEXT" desc="In Device Settings &gt; Displays, text describing the Night Light feature.">
     Make it easier to look at your screen or read in dim light
@@ -3785,6 +3830,15 @@ Press an assigned switch to remove assignment
   </message>
   <message name="IDS_SETTINGS_APP_NOTIFICATIONS_LINK_TEXT" desc="The label for the settings row button in the App section of OS Settings which links to the App Notifications page.">
     Notifications
+  </message>
+  <message name="IDS_SETTINGS_APP_NOTIFICATIONS_DO_NOT_DISTURB_TOGGLE_TITLE" desc="The label for the notfications DoNotDisturb toggle that lets the user silence all app notifications.">
+    Do not disturb
+  </message>
+   <message name="IDS_SETTINGS_APP_NOTIFICATIONS_DO_NOT_DISTURB_TOGGLE_DESC" desc="The text description of the DoNotDisturb toggle within help icon tooltip.">
+    When turned on, all notifications will be silenced
+  </message>
+  <message name="IDS_SETTINGS_APP_NOTIFICATIONS_LINK_TO_BROWSER_SETTINGS_DESCRIPTION" desc="In notifications OSSettings subpage, explanatory text for website notifications link.">
+    For website notifications, go to <ph name="LINK_BEGIN">&lt;a&gt;</ph>Brave Settings<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_ANDROID_APPS_TITLE" desc="The title of Google Play Store (Arc++ / Android Apps) section.">
     Google Play Store
