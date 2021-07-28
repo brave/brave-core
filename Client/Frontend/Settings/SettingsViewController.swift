@@ -401,27 +401,10 @@ class SettingsViewController: TableViewController {
     }
 
     private lazy var securitySection: Static.Section = {
-        let passcodeTitle: String = {
-            let localAuthContext = LAContext()
-            if localAuthContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
-                let title: String
-                if localAuthContext.biometryType == .faceID {
-                    return Strings.authenticationFaceIDPasscodeSetting
-                } else {
-                    return Strings.authenticationTouchIDPasscodeSetting
-                }
-            } else {
-                return Strings.authenticationPasscode
-            }
-        }()
-        
-        return Static.Section(
+        return Section(
             header: .title(Strings.security),
             rows: [
-                Row(text: passcodeTitle, selection: { [unowned self] in
-                    let passcodeSettings = PasscodeSettingsViewController()
-                    self.navigationController?.pushViewController(passcodeSettings, animated: true)
-                    }, image: #imageLiteral(resourceName: "settings-passcode").template, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+                .boolRow(title: Strings.browserLock, detailText: Strings.browserLockDescription, option: Preferences.Privacy.lockWithPasscode, image: #imageLiteral(resourceName: "settings-passcode").template),
                 .boolRow(title: Strings.saveLogins, option: Preferences.General.saveLogins, image: #imageLiteral(resourceName: "settings-save-logins").template)
             ]
         )

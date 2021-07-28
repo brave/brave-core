@@ -88,7 +88,7 @@ extension InstallVPNViewController {
                 .forEach($0.addArrangedSubview(_:))
         }
         
-        let installVPNButton = Button().then {
+        let installVPNButton = BraveButton().then {
             $0.setTitle(Strings.VPN.installProfileButtonText, for: .normal)
             $0.backgroundColor = .braveOrange
             $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
@@ -103,7 +103,7 @@ extension InstallVPNViewController {
             $0.loaderView = LoaderView(size: .small)
         }
         
-        let contactSupportButton = Button(type: .system).then {
+        let contactSupportButton = BraveButton(type: .system).then {
             $0.setTitle(Strings.VPN.settingsContactSupport, for: .normal)
             $0.titleLabel?.font = .systemFont(ofSize: 16)
             $0.setTitleColor(.braveLabel, for: .normal)

@@ -10,7 +10,7 @@ import SnapKit
 ///   - Flipping the image placement
 ///   - Applying a larger hit area without adjusting the bounds
 ///   - Sizing correctly when adding setting `titleEdgeInsets` and `imageEdgeInsets`
-open class Button: UIButton {
+open class BraveButton: UIButton {
   
   // MARK: - Activity
   

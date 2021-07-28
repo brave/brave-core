@@ -9,7 +9,7 @@ import BraveUI
 
 class LegacyWalletTransferStatusButton: UIControl {
     
-    let dismissButton = Button(type: .system).then {
+    let dismissButton = BraveButton(type: .system).then {
         $0.setImage(UIImage(imageLiteralResourceName: "close-medium").template, for: .normal)
         $0.tintColor = .white
         $0.hitTestSlop = UIEdgeInsets(equalInset: -10)

@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
 
     var receivedURLs: [URL]?
     
-    var authenticator: AppAuthenticator?
+    var windowProtection: WindowProtection?
     var shutdownWebServer: DispatchSourceTimer?
     
     /// Object used to handle server pings
@@ -169,7 +169,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
 
         self.window!.rootViewController = rootViewController
 
-        self.updateAuthenticationInfo()
+        windowProtection = WindowProtection(window: window!)
         SystemUtils.onFirstRun()
         
         // Schedule Brave Core Priority Tasks
@@ -299,8 +299,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             return .braveBlurple
         }
         window?.makeKeyAndVisible()
-        
-        authenticator = AppAuthenticator(protectedWindow: window!, promptImmediately: true, isPasscodeEntryCancellable: false)
 
         if Preferences.Rewards.isUsingBAP.value == nil {
             Preferences.Rewards.isUsingBAP.value = Locale.current.regionCode == "JP"
@@ -454,7 +452,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     func applicationDidBecomeActive(_ application: UIApplication) {
         shutdownWebServer?.cancel()
         shutdownWebServer = nil
-        authenticator?.hideBackgroundedBlur()
         
         Preferences.AppState.backgroundedCleanly.value = false
 
@@ -529,32 +526,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         // The reason we need to call this method here instead of `applicationDidBecomeActive`
         // is that this method is only invoked whenever the application is entering the foreground where as
         // `applicationDidBecomeActive` will get called whenever the Touch ID authentication overlay disappears.
-        self.updateAuthenticationInfo()
-        
-        if let authInfo = KeychainWrapper.sharedAppContainerKeychain.authenticationInfo(), authInfo.isPasscodeRequiredImmediately {
-            authenticator?.willEnterForeground()
-        }
-        
         AdblockResourceDownloader.shared.startLoading()
         
         browserViewController.showWalletTransferExpiryPanelIfNeeded()
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
-        if KeychainWrapper.sharedAppContainerKeychain.authenticationInfo() != nil {
-            authenticator?.showBackgroundBlur()
-        }
-        
         Preferences.AppState.backgroundedCleanly.value = true
-    }
-
-    fileprivate func updateAuthenticationInfo() {
-        if let authInfo = KeychainWrapper.sharedAppContainerKeychain.authenticationInfo() {
-            if !LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
-                authInfo.useTouchID = false
-                KeychainWrapper.sharedAppContainerKeychain.setAuthenticationInfo(authInfo)
-            }
-        }
     }
 
     fileprivate func setUpWebServer(_ profile: Profile) {

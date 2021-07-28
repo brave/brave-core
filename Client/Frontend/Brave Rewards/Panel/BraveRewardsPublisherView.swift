@@ -40,7 +40,7 @@ class BraveRewardsPublisherView: UIStackView {
         $0.textColor = .braveLabel
     }
     
-    let learnMoreButton = Button(type: .system).then {
+    let learnMoreButton = BraveButton(type: .system).then {
         $0.setTitle(Strings.learnMore, for: .normal)
         $0.tintColor = .braveBlurple
         $0.isHidden = true

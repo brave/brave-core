@@ -12,7 +12,7 @@ private let log = Logger.browserLogger
 
 class DefaultBrowserIntroCalloutViewController: UIViewController {
     
-    private let openSettingsButton = Button(type: .system).then {
+    private let openSettingsButton = BraveButton(type: .system).then {
         $0.setTitle(Strings.DefaultBrowserCallout.introOpenSettingsButtonText, for: .normal)
         $0.backgroundColor = .braveOrange
         $0.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
