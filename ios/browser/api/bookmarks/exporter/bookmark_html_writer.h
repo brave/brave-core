@@ -41,7 +41,7 @@ void WriteBookmarks(ChromeBrowserState* browser_state,
                     const base::FilePath& path,
                     BookmarksExportObserver* observer);
 
-void WriteBookmarks(std::unique_ptr<base::Value>,
+void WriteBookmarks(base::Value encoded_bookmarks,
                     const base::FilePath& path,
                     BookmarksExportObserver* observer);
 
