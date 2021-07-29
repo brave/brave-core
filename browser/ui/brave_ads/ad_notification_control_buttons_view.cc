@@ -48,6 +48,12 @@ AdNotificationControlButtonsView::AdNotificationControlButtonsView(
 
 AdNotificationControlButtonsView::~AdNotificationControlButtonsView() = default;
 
+void AdNotificationControlButtonsView::OnThemeChanged() {
+  View::OnThemeChanged();
+
+  UpdateContent();
+}
+
 void AdNotificationControlButtonsView::UpdateContent() {
   UpdateInfoButton();
   UpdateCloseButton();
