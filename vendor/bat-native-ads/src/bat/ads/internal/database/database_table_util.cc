@@ -16,6 +16,57 @@ namespace database {
 namespace table {
 namespace util {
 
+namespace {
+
+std::string BuildInsertQuery(const std::string& from,
+                             const std::string& to,
+                             const std::map<std::string, std::string>& columns,
+                             const std::string& group_by) {
+  DCHECK(!from.empty());
+  DCHECK(!to.empty());
+  DCHECK_NE(from, to);
+  DCHECK(!columns.empty());
+
+  std::vector<std::string> from_columns;
+  std::vector<std::string> to_columns;
+
+  for (const auto& column : columns) {
+    from_columns.push_back(column.first);
+    to_columns.push_back(column.second);
+  }
+
+  const std::string comma_separated_from_columns =
+      base::JoinString(from_columns, ", ");
+
+  const std::string comma_separated_to_columns =
+      base::JoinString(to_columns, ", ");
+
+  return base::StringPrintf("INSERT INTO %s (%s) SELECT %s FROM %s %s;",
+                            to.c_str(), comma_separated_to_columns.c_str(),
+                            comma_separated_from_columns.c_str(), from.c_str(),
+                            group_by.c_str());
+}
+
+}  // namespace
+
+void CreateIndex(DBTransaction* transaction,
+                 const std::string& table_name,
+                 const std::string& key) {
+  DCHECK(transaction);
+  DCHECK(!table_name.empty());
+  DCHECK(!key.empty());
+
+  const std::string query = base::StringPrintf(
+      "CREATE INDEX %s_%s_index ON %s (%s)", table_name.c_str(), key.c_str(),
+      table_name.c_str(), key.c_str());
+
+  DBCommandPtr command = DBCommand::New();
+  command->type = DBCommand::Type::EXECUTE;
+  command->command = query;
+
+  transaction->commands.push_back(std::move(command));
+}
+
 void Drop(DBTransaction* transaction, const std::string& table_name) {
   DCHECK(transaction);
   DCHECK(!table_name.empty());
@@ -47,41 +98,12 @@ void Delete(DBTransaction* transaction, const std::string& table_name) {
   transaction->commands.push_back(std::move(command));
 }
 
-std::string BuildInsertQuery(const std::string& from,
-                             const std::string& to,
-                             const std::map<std::string, std::string>& columns,
-                             const std::string& group_by) {
-  DCHECK(!from.empty());
-  DCHECK(!to.empty());
-  DCHECK_NE(from, to);
-  DCHECK(!columns.empty());
-
-  std::vector<std::string> from_columns;
-  std::vector<std::string> to_columns;
-
-  for (const auto& column : columns) {
-    from_columns.push_back(column.first);
-    to_columns.push_back(column.second);
-  }
-
-  const std::string comma_separated_from_columns =
-      base::JoinString(from_columns, ", ");
-
-  const std::string comma_separated_to_columns =
-      base::JoinString(to_columns, ", ");
-
-  return base::StringPrintf("INSERT INTO %s (%s) SELECT %s FROM %s %s",
-                            to.c_str(), comma_separated_to_columns.c_str(),
-                            comma_separated_from_columns.c_str(), from.c_str(),
-                            group_by.c_str());
-}
-
-void Migrate(DBTransaction* transaction,
-             const std::string& from,
-             const std::string& to,
-             const std::map<std::string, std::string>& columns,
-             const bool should_drop,
-             const std::string& group_by) {
+void CopyColumns(DBTransaction* transaction,
+                 const std::string& from,
+                 const std::string& to,
+                 const std::map<std::string, std::string>& columns,
+                 const bool should_drop,
+                 const std::string& group_by) {
   DCHECK(transaction);
   DCHECK(!from.empty());
   DCHECK(!to.empty());
@@ -107,12 +129,12 @@ void Migrate(DBTransaction* transaction,
   transaction->commands.push_back(std::move(command));
 }
 
-void Migrate(DBTransaction* transaction,
-             const std::string& from,
-             const std::string& to,
-             const std::vector<std::string>& columns,
-             const bool should_drop,
-             const std::string& group_by) {
+void CopyColumns(DBTransaction* transaction,
+                 const std::string& from,
+                 const std::string& to,
+                 const std::vector<std::string>& columns,
+                 const bool should_drop,
+                 const std::string& group_by) {
   DCHECK(transaction);
   DCHECK(!from.empty());
   DCHECK(!to.empty());
@@ -124,7 +146,7 @@ void Migrate(DBTransaction* transaction,
     new_columns[column] = column;
   }
 
-  return Migrate(transaction, from, to, new_columns, should_drop, group_by);
+  return CopyColumns(transaction, from, to, new_columns, should_drop, group_by);
 }
 
 void Rename(DBTransaction* transaction,
@@ -137,24 +159,6 @@ void Rename(DBTransaction* transaction,
 
   const std::string query = base::StringPrintf("ALTER TABLE %s RENAME TO %s",
                                                from.c_str(), to.c_str());
-
-  DBCommandPtr command = DBCommand::New();
-  command->type = DBCommand::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
-}
-
-void CreateIndex(DBTransaction* transaction,
-                 const std::string& table_name,
-                 const std::string& key) {
-  DCHECK(transaction);
-  DCHECK(!table_name.empty());
-  DCHECK(!key.empty());
-
-  const std::string query = base::StringPrintf(
-      "CREATE INDEX %s_%s_index ON %s (%s)", table_name.c_str(), key.c_str(),
-      table_name.c_str(), key.c_str());
 
   DBCommandPtr command = DBCommand::New();
   command->type = DBCommand::Type::EXECUTE;
