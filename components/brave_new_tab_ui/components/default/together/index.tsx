@@ -20,6 +20,7 @@ import {
 } from './style'
 import { StyledTitleTab } from '../widgetTitleTab'
 import BraveTogetherIcon from './assets/brave-together-icon'
+import { braveTalkWidgetUrl } from '../../../constants/new_tab_ui'
 
 interface Props {
   showContent: boolean
@@ -60,7 +61,7 @@ class Together extends React.PureComponent<Props, {}> {
 
   shouldCreateCall = (event: any) => {
     event.preventDefault()
-    window.open(`https://together.brave.com/widget`, '_self', 'noopener')
+    window.open(braveTalkWidgetUrl, '_self', 'noopener')
   }
 
   render () {
