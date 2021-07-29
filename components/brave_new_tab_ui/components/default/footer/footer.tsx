@@ -24,8 +24,8 @@ import {
   BookmarkBook,
   HistoryIcon
 } from 'brave-ui/components/icons'
-import TogetherTooltip from './togetherTooltip'
-import TogetherIcon from './togetherTooltip/togetherIcon'
+import TogetherTooltip from './braveTalkTooltip'
+import TogetherIcon from './braveTalkTooltip/braveTalkIcon'
 
 // Helpers
 import { getLocale } from '../../../../common/locale'

@@ -19,7 +19,7 @@ import {
   PrivacyLink
 } from './style'
 import { StyledTitleTab } from '../widgetTitleTab'
-import BraveTogetherIcon from './assets/brave-together-icon'
+import BraveTogetherIcon from './assets/brave-talk-svg'
 import { braveTalkWidgetUrl } from '../../../constants/new_tab_ui'
 
 interface Props {

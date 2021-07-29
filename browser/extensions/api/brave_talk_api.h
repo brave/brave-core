@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_EXTENSIONS_API_BRAVE_TOGETHER_API_H_
-#define BRAVE_BROWSER_EXTENSIONS_API_BRAVE_TOGETHER_API_H_
+#ifndef BRAVE_BROWSER_EXTENSIONS_API_BRAVE_TALK_API_H_
+#define BRAVE_BROWSER_EXTENSIONS_API_BRAVE_TALK_API_H_
 
 #include <map>
 #include <string>
@@ -29,4 +29,4 @@ class BraveTogetherIsSupportedFunction :
 }  // namespace api
 }  // namespace extensions
 
-#endif  // BRAVE_BROWSER_EXTENSIONS_API_BRAVE_TOGETHER_API_H_
+#endif  // BRAVE_BROWSER_EXTENSIONS_API_BRAVE_TALK_API_H_

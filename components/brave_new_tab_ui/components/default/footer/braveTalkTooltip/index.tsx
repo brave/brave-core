@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { getLocale } from '../../../../../common/locale'
-import TogetherIcon from './togetherIcon'
+import TogetherIcon from './braveTalkIcon'
 import CloseIcon from './closeIcon'
 import { LinkButton } from '../../../outlineButton'
 import * as S from './style'
