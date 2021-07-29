@@ -56,7 +56,7 @@ class Conversions : public Table {
   void CreateIndexV1(DBTransaction* transaction);
   void MigrateToV1(DBTransaction* transaction);
 
-  void MigrateToV11(DBTransaction* transaction);
+  void MigrateToV10(DBTransaction* transaction);
 };
 
 }  // namespace table

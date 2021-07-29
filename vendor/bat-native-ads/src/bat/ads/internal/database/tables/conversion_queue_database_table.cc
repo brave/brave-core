@@ -340,16 +340,38 @@ void ConversionQueue::MigrateToV10(DBTransaction* transaction) {
 void ConversionQueue::MigrateToV11(DBTransaction* transaction) {
   DCHECK(transaction);
 
+  const std::string temp_table_name =
+      base::StringPrintf("%s_temp", get_table_name().c_str());
+
+  // Create a temporary table with new |advertiser_public_key| column
   const std::string query = base::StringPrintf(
-      "ALTER TABLE %s "
-      "ADD COLUMN advertiser_public_key TEXT",
-      get_table_name().c_str());
+      "CREATE TABLE %s "
+      "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+      "campaign_id TEXT, "
+      "creative_set_id TEXT NOT NULL, "
+      "creative_instance_id TEXT NOT NULL, "
+      "advertiser_id TEXT, "
+      "conversion_id TEXT, "
+      "advertiser_public_key TEXT, "
+      "timestamp TIMESTAMP NOT NULL)",
+      temp_table_name.c_str());
 
   DBCommandPtr command = DBCommand::New();
   command->type = DBCommand::Type::EXECUTE;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));
+
+  // Copy columns to temporary table
+  const std::vector<std::string> columns = {
+      "campaign_id",   "creative_set_id", "creative_instance_id",
+      "advertiser_id", "conversion_id",   "timestamp"};
+
+  util::CopyColumns(transaction, get_table_name(), temp_table_name, columns,
+                    /* should_drop */ true);
+
+  // Rename temporary table
+  util::Rename(transaction, temp_table_name, get_table_name());
 }
 
 }  // namespace table
