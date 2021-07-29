@@ -16,13 +16,13 @@ class Profile;
 namespace extensions {
 namespace api {
 
-class BraveTogetherIsSupportedFunction :
+class BraveTalkIsSupportedFunction :
     public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveTogether.isSupported", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveTalk.isSupported", UNKNOWN)
 
  protected:
-  ~BraveTogetherIsSupportedFunction() override {}
+  ~BraveTalkIsSupportedFunction() override {}
   ResponseAction Run() override;
 };
 

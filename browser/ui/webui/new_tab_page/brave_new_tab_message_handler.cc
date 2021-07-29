@@ -120,8 +120,8 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
       "showBinance",
       prefs->GetBoolean(kNewTabPageShowBinance));
   pref_data.SetBoolean(
-      "showTogether",
-      prefs->GetBoolean(kNewTabPageShowTogether));
+      "showBraveTalk",
+      prefs->GetBoolean(kNewTabPageShowBraveTalk));
   pref_data.SetBoolean(
       "showGemini",
       prefs->GetBoolean(kNewTabPageShowGemini));
@@ -393,7 +393,7 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      kNewTabPageShowTogether,
+      kNewTabPageShowBraveTalk,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
@@ -528,8 +528,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageHideAllWidgets;
   } else if (settingsKeyInput == "showBinance") {
     settingsKey = kNewTabPageShowBinance;
-  } else if (settingsKeyInput == "showTogether") {
-    settingsKey = kNewTabPageShowTogether;
+  } else if (settingsKeyInput == "showBraveTalk") {
+    settingsKey = kNewTabPageShowBraveTalk;
   } else if (settingsKeyInput == "showGemini") {
     settingsKey = kNewTabPageShowGemini;
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)

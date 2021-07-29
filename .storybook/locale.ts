@@ -341,7 +341,7 @@ let locale: Record<string, string> = {
   showBackgroundImg: 'Show background image',
   showBraveStats: 'Show Brave Stats',
   showBinance: 'Show Binance',
-  togetherWidgetTitle: 'Brave Talk',
+  braveTalkWidgetTitle: 'Brave Talk',
   showClock: 'Show Clock',
   showTopSites: 'Show Top Sites',
   showRewards: 'Show Rewards',

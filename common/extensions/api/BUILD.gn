@@ -14,7 +14,7 @@ json_features("api_features") {
     "//chrome/common/extensions/api/_api_features.json",
     "//extensions/common/api/_api_features.json",
     "_api_features.json",
-    "_brave_together_api_features.json",
+    "_brave_talk_api_features.json",
   ]
 
   if (ethereum_remote_client_enabled) {
@@ -75,7 +75,7 @@ brave_extensions_api_schema_sources = [
   "brave_today.json",
   "greaselion.json",
   "rewards_notifications.json",
-  "brave_together.json",
+  "brave_talk.json",
 ]
 
 if (ipfs_enabled) {

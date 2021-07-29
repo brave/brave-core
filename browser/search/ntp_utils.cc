@@ -27,7 +27,7 @@ void ClearNewTabPageProfilePrefs(Profile* profile) {
 
 const char* const kWidgetPrefNames[] = {
   kNewTabPageShowRewards,
-  kNewTabPageShowTogether,
+  kNewTabPageShowBraveTalk,
   kNewTabPageShowBinance,
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
   kCryptoDotComNewTabPageShowCryptoDotCom,
@@ -82,7 +82,7 @@ void MigrateNewTabPagePrefs(Profile* profile) {
       // take effect, whereby each widget's show/hide setting is remembered
       // individually.
       prefs->SetBoolean(kNewTabPageShowRewards, true);
-      prefs->SetBoolean(kNewTabPageShowTogether, true);
+      prefs->SetBoolean(kNewTabPageShowBraveTalk, true);
       prefs->SetBoolean(kNewTabPageShowBinance, true);
     #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
       prefs->SetBoolean(kCryptoDotComNewTabPageShowCryptoDotCom, true);

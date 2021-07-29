@@ -17,7 +17,7 @@ namespace extensions {
 namespace api {
 
 ExtensionFunction::ResponseAction
-BraveTogetherIsSupportedFunction::Run() {
+BraveTalkIsSupportedFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
 
   if (profile->IsTor()) {
@@ -25,7 +25,7 @@ BraveTogetherIsSupportedFunction::Run() {
   }
 
   bool is_supported = ntp_widget_utils::IsRegionSupported(
-      profile->GetPrefs(), brave_together::unsupported_regions, false);
+      profile->GetPrefs(), brave_talk::unsupported_regions, false);
   return RespondNow(OneArgument(base::Value(is_supported)));
 }
 

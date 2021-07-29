@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-export default class BraveTogetherIcon extends React.PureComponent {
+export default class BraveTalkSvg extends React.PureComponent {
 
   render () {
     return (

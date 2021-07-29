@@ -41,7 +41,7 @@ TEST_F(NTPUtilsTest, MigratesHideWidgetTrue) {
   // Manually turn all off
   auto* prefs = profile()->GetPrefs();
   prefs->SetBoolean(kNewTabPageShowRewards, false);
-  prefs->SetBoolean(kNewTabPageShowTogether, false);
+  prefs->SetBoolean(kNewTabPageShowBraveTalk, false);
   prefs->SetBoolean(kNewTabPageShowBinance, false);
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
   prefs->SetBoolean(kCryptoDotComNewTabPageShowCryptoDotCom, false);
@@ -57,7 +57,7 @@ TEST_F(NTPUtilsTest, MigratesHideWidgetFalse) {
   // Manually turn some off
   auto* prefs = profile()->GetPrefs();
   prefs->SetBoolean(kNewTabPageShowRewards, false);
-  prefs->SetBoolean(kNewTabPageShowTogether, true);
+  prefs->SetBoolean(kNewTabPageShowBraveTalk, true);
   prefs->SetBoolean(kNewTabPageShowBinance, false);
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
   prefs->SetBoolean(kCryptoDotComNewTabPageShowCryptoDotCom, false);

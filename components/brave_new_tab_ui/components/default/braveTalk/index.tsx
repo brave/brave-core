@@ -13,13 +13,13 @@ import {
   WelcomeText,
   ActionsWrapper,
   CallButton,
-  TogetherIcon,
+  BraveTalkIcon,
   StyledTitle,
   Privacy,
   PrivacyLink
 } from './style'
 import { StyledTitleTab } from '../widgetTitleTab'
-import BraveTogetherIcon from './assets/brave-talk-svg'
+import BraveTalkSvg from './assets/brave-talk-svg'
 import { braveTalkWidgetUrl } from '../../../constants/new_tab_ui'
 
 interface Props {
@@ -28,21 +28,21 @@ interface Props {
   onShowContent: () => void
 }
 
-class Together extends React.PureComponent<Props, {}> {
+class BraveTalk extends React.PureComponent<Props, {}> {
 
   getButtonText = () => {
-    return getLocale('togetherWidgetStartButton')
+    return getLocale('braveTalkWidgetStartButton')
   }
 
   renderTitle () {
     return (
       <Header>
         <StyledTitle>
-          <TogetherIcon>
-            <BraveTogetherIcon />
-          </TogetherIcon>
+          <BraveTalkIcon>
+            <BraveTalkSvg />
+          </BraveTalkIcon>
           <>
-            {getLocale('togetherWidgetTitle')}
+            {getLocale('braveTalkWidgetTitle')}
           </>
         </StyledTitle>
       </Header>
@@ -78,11 +78,11 @@ class Together extends React.PureComponent<Props, {}> {
           {this.renderTitle()}
           <Content>
             <WelcomeText>
-              {getLocale('togetherWidgetWelcomeTitle')}
+              {getLocale('braveTalkWidgetWelcomeTitle')}
             </WelcomeText>
             <ActionsWrapper>
               <CallButton onClick={this.shouldCreateCall}>
-                {getLocale('togetherWidgetStartButton')}
+                {getLocale('braveTalkWidgetStartButton')}
               </CallButton>
               <Privacy>
                 <PrivacyLink
@@ -90,7 +90,7 @@ class Together extends React.PureComponent<Props, {}> {
                   target={'_blank'}
                   href={'https://brave.com/privacy/#brave-together-learn'}
                 >
-                  {getLocale('togetherWidgetAboutData')}
+                  {getLocale('braveTalkWidgetAboutData')}
                 </PrivacyLink>
               </Privacy>
             </ActionsWrapper>
@@ -100,4 +100,4 @@ class Together extends React.PureComponent<Props, {}> {
   }
 }
 
-export const TogetherWidget = createWidget(Together)
+export const BraveTalkWidget = createWidget(BraveTalk)

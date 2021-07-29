@@ -4,8 +4,8 @@
 
 [
   {
-    "namespace": "braveTogether",
-    "description": "Use the <code>chrome.braveTogether</code> API to to receive info pertaining to the Brave Talk feature.",
+    "namespace": "braveTalk",
+    "description": "Use the <code>chrome.braveTalk</code> API to to receive info pertaining to the Brave Talk feature.",
     "compiler_options": {
       "implemented_in": "brave/browser/extensions/api/brave_talk_api.h"
     },
