@@ -14,7 +14,7 @@ namespace chrome {
 namespace android {
 static jint JNI_AssetRatioControllerFactory_GetInterfaceToAssetRatioController(
     JNIEnv* env) {
-  auto* profile = ProfileManager::GetActiveUserProfile()->GetOriginalProfile();
+  auto* profile = ProfileManager::GetActiveUserProfile();
   auto pending =
       brave_wallet::AssetRatioControllerFactory::GetInstance()->GetForContext(
           profile);

@@ -14,7 +14,7 @@ namespace chrome {
 namespace android {
 static jint JNI_KeyringControllerFactory_GetInterfaceToKeyringController(
     JNIEnv* env) {
-  auto* profile = ProfileManager::GetActiveUserProfile()->GetOriginalProfile();
+  auto* profile = ProfileManager::GetActiveUserProfile();
   auto pending =
       brave_wallet::KeyringControllerFactory::GetInstance()->GetForContext(
           profile);
