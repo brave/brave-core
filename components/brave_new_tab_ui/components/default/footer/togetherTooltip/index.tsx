@@ -9,6 +9,7 @@ import TogetherIcon from './togetherIcon'
 import CloseIcon from './closeIcon'
 import { LinkButton } from '../../../outlineButton'
 import * as S from './style'
+import { braveTalkWidgetUrl } from '../../../../constants/new_tab_ui'
 
 type Props = {
   onClose: () => any
@@ -25,7 +26,7 @@ const TogetherTooltip: React.FunctionComponent<Props> = function (props) {
         <S.Body>
           {getLocale('togetherPromptDescription')}
         </S.Body>
-        <LinkButton href='https://together.brave.com/widget'>
+        <LinkButton href={braveTalkWidgetUrl}>
           {getLocale('togetherPromptAction')}
         </LinkButton>
         <S.CloseButton
