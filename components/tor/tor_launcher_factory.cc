@@ -273,10 +273,15 @@ void TorLauncherFactory::GotCircuitEstablished(bool error, bool established) {
 void TorLauncherFactory::OnTorControlClosed(bool was_running) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << "TOR CONTROL: Closed!";
-  // If we're still running, try watching again to start over.
-  // TODO(riastradh-brave): Rate limit in case of flapping?
-  if (was_running) {
-    LaunchTorInternal();
+  // We only try to reestablish tor control connection when tor control was
+  // closed unexpectedly and Tor process is still running
+  if (was_running && tor_launcher_.is_bound()) {
+    tor::TorFileWatcher* tor_file_watcher =
+        new tor::TorFileWatcher(config_.tor_watch_path);
+    tor_file_watcher->StartWatching(base::BindPostTask(
+        base::SequencedTaskRunnerHandle::Get(),
+        base::BindOnce(&TorLauncherFactory::OnTorControlPrerequisitesReady,
+                       weak_ptr_factory_.GetWeakPtr(), tor_pid_)));
   }
 }
 
