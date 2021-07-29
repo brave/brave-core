@@ -68,12 +68,6 @@ BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {
       l10n_util::GetStringUTF16(IDS_BRAVE_TRANSLATE_BUBBLE_DONT_ASK_AGAIN));
   dont_ask_button->SetID(BUTTON_ID_ALWAYS_TRANSLATE);
 
-  // Use the same text color as the cancel button.
-  const auto color =
-      views::style::GetColor(*dont_ask_button, views::style::CONTEXT_BUTTON_MD,
-                             views::style::STYLE_PRIMARY);
-  dont_ask_button->SetTextColor(views::Button::STATE_NORMAL, color);
-
   auto accept_button = std::make_unique<views::MdTextButton>(
       base::BindRepeating(&BraveTranslateBubbleView::ButtonPressed,
                           base::Unretained(this), BUTTON_ID_DONE),
@@ -91,6 +85,18 @@ BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {
       views::GridLayout::kFixedSize, kButtonColumnSetId,
       views::GridLayout::kFixedSize,
       provider->GetDistanceMetric(views::DISTANCE_UNRELATED_CONTROL_VERTICAL));
+
+  // We can't call views::style::GetColor() until the associated widget has been
+  // initialized or views::View::GetNativeTheme() will be called to avoid using
+  // the global NativeInstance, which would be an error.
+  RegisterWidgetInitializedCallback(base::BindOnce(
+      [](views::LabelButton* dont_ask_button) {
+        const auto color = views::style::GetColor(
+            *dont_ask_button, views::style::CONTEXT_BUTTON_MD,
+            views::style::STYLE_PRIMARY);
+        dont_ask_button->SetTextColor(views::Button::STATE_NORMAL, color);
+      },
+      base::Unretained(dont_ask_button.get())));
 
   layout->AddView(std::move(dont_ask_button));
 
