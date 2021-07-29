@@ -220,6 +220,8 @@ let locale: Record<string, string> = {
   rewardsRestoreText3: 'Restoring with a recovery key will replace your current wallet. So make sure you empty or back up your current wallet before restoring.',
   rewardsRestoreText4: 'Enter your recovery key or',
   rewardsSummary: 'Rewards Summary',
+  rewardsViewQRCodeText1: 'View QR Code',
+  rewardsViewQRCodeText2: 'for iOS Rewards users transferring BAT.',
   rewardsWhy: 'Why Brave Rewards…',
   rewardsWidgetBraveRewards: 'Brave Rewards',
   rewardsWidgetBat: 'BAT',

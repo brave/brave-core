@@ -45,6 +45,7 @@ storiesOf('Rewards/Modal', module)
     return (
       <div style={{ maxWidth: '900px', background: '#fff', padding: '30px' }}>
         <ModalBackupRestore
+          paymentId={'f2e6494e-fb21-44d1-90e9-b5408799acd8'}
           funds={'55 BAT'}
           activeTabId={store.state.activeTabId}
           showBackupNotice={boolean('Show backup notice?', false)}

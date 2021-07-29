@@ -265,6 +265,7 @@ class PageWallet extends React.Component<Props, State> {
         {
           this.state.modalBackup
             ? <ModalBackupRestore
+              paymentId={'f2e6494e-fb21-44d1-90e9-b5408799acd8'}
               activeTabId={this.state.activeTabId}
               backupKey={'crouch  hint  glow  recall  round  angry  weasel  luggage save  hood  census  near  still   power  vague  balcony camp  law  now  certain  wagon  affair  butter  choice '}
               showBackupNotice={false}
