@@ -12,15 +12,11 @@ import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
-import org.chromium.chrome.browser.crypto_wallet.BraveWalletObserver;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 
-public class BuySendSwapActivity
-        extends AsyncInitializationActivity implements BraveWalletObserver {
+public class BuySendSwapActivity extends AsyncInitializationActivity {
     @Override
     protected void onDestroy() {
-        BraveWalletNativeWorker.getInstance().removeObserver(this);
         super.onDestroy();
     }
 
@@ -78,7 +74,6 @@ public class BuySendSwapActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        BraveWalletNativeWorker.getInstance().addObserver(this);
     }
 
     @Override

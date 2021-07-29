@@ -161,6 +161,7 @@ interface KeyringController {
   RestoreWallet(string mnemonic, string password) => (bool isValidMnemonic);
   Lock();
   Unlock(string password) => (bool success);
+  IsLocked() => (bool isLocked);
   AddAccount() => (bool success);
   IsWalletBackedUp() => (bool backed_up);
   NotifyWalletBackupComplete();

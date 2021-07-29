@@ -16,7 +16,6 @@ import android.view.inputmethod.InputMethodManager;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
 import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
@@ -41,9 +40,8 @@ public class Utils {
 
     private static final String PREF_CRYPTO_ONBOARDING = "crypto_onboarding";
 
-    public static List<String> getRecoveryPhraseAsList() {
-        String[] recoveryPhraseArray =
-                BraveWalletNativeWorker.getInstance().getRecoveryWords().split(" ");
+    public static List<String> getRecoveryPhraseAsList(String recoveryPhrase) {
+        String[] recoveryPhraseArray = recoveryPhrase.split(" ");
         return new ArrayList<String>(Arrays.asList(recoveryPhraseArray));
     }
 

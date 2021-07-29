@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
@@ -21,12 +22,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.ui.widget.Toast;
 
 public class RestoreWalletFragment extends CryptoOnboardingFragment {
+    private KeyringController getKeyringController() {
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getKeyringController();
+        }
+
+        return null;
+    }
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -70,19 +81,20 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                 retypePasswordEdittext.setError(
                         getResources().getString(R.string.retype_password_error));
             } else {
-                String recoveryPhrase =
-                        BraveWalletNativeWorker.getInstance()
-                                .restoreWallet(recoveryPhraseText.getText().toString().trim(),
-                                        passwordEdittext.getText().toString().trim())
-                                .trim();
-                if (!TextUtils.isEmpty(recoveryPhrase)) {
-                    Utils.hideKeyboard(getActivity());
-                    onNextPage.gotoNextPage(true);
-                    Utils.disableCryptoOnboarding();
-                } else {
-                    Toast.makeText(getActivity(), R.string.account_recovery_failed,
-                                 Toast.LENGTH_SHORT)
-                            .show();
+                KeyringController keyringController = getKeyringController();
+                if (keyringController != null) {
+                    keyringController.restoreWallet(recoveryPhraseText.getText().toString().trim(),
+                            passwordEdittext.getText().toString().trim(), result -> {
+                                if (result) {
+                                    Utils.hideKeyboard(getActivity());
+                                    onNextPage.gotoNextPage(true);
+                                    Utils.disableCryptoOnboarding();
+                                } else {
+                                    Toast.makeText(getActivity(), R.string.account_recovery_failed,
+                                                 Toast.LENGTH_SHORT)
+                                            .show();
+                                }
+                            });
                 }
             }
         });

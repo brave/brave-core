@@ -25,8 +25,9 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
+import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoWalletOnboardingPagerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.SwapBottomSheetDialogFragment;
@@ -41,17 +42,21 @@ import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.mojo.system.MojoException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BraveWalletActivity extends AsyncInitializationActivity implements OnNextPage {
+public class BraveWalletActivity
+        extends AsyncInitializationActivity implements OnNextPage, ConnectionErrorHandler {
     private Toolbar toolbar;
 
     private View cryptoLayout;
     private ImageView swapButton;
     private ViewPager cryptoWalletOnboardingViewPager;
     private CryptoWalletOnboardingPagerAdapter cryptoWalletOnboardingPagerAdapter;
+    private KeyringController mKeyringController;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -122,24 +127,51 @@ public class BraveWalletActivity extends AsyncInitializationActivity implements 
                     @Override
                     public void onPageScrollStateChanged(int state) {}
                 });
-        if (Utils.shouldShowCryptoOnboarding()) {
-            setNavigationFragments(ONBOARDING_ACTION);
-        } else {
-            boolean isLocked = BraveWalletNativeWorker.getInstance().isWalletLocked();
-            if (isLocked) {
-                setNavigationFragments(UNLOCK_WALLET_ACTION);
-            } else {
-                setCryptoLayout();
-            }
-        }
 
         onInitialLayoutInflationComplete();
     }
 
     @Override
+    public void onConnectionError(MojoException e) {
+        mKeyringController = null;
+        InitKeyringController();
+    }
+
+    private void InitKeyringController() {
+        if (mKeyringController != null) {
+            return;
+        }
+
+        mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
+    }
+
+    public KeyringController getKeyringController() {
+        return mKeyringController;
+    }
+
+    @Override
+    public void finishNativeInitialization() {
+        super.finishNativeInitialization();
+        InitKeyringController();
+        if (Utils.shouldShowCryptoOnboarding()) {
+            setNavigationFragments(ONBOARDING_ACTION);
+        } else if (mKeyringController != null) {
+            mKeyringController.isLocked(isLocked -> {
+                if (isLocked) {
+                    setNavigationFragments(UNLOCK_WALLET_ACTION);
+                } else {
+                    setCryptoLayout();
+                }
+            });
+        }
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
-        BraveWalletNativeWorker.getInstance().lockWallet();
+        if (mKeyringController != null) {
+            mKeyringController.lock();
+        }
     }
 
     @Override

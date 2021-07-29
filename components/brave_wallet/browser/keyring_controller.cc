@@ -254,6 +254,10 @@ void KeyringController::Unlock(const std::string& password,
   std::move(callback).Run(true);
 }
 
+void KeyringController::IsLocked(IsLockedCallback callback) {
+  std::move(callback).Run(IsLocked());
+}
+
 void KeyringController::Reset() {
   prefs_->ClearPref(kBraveWalletPasswordEncryptorSalt);
   prefs_->ClearPref(kBraveWalletPasswordEncryptorNonce);

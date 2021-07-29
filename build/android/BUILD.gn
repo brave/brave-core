@@ -188,7 +188,10 @@ generate_jni("jni_headers") {
   deps = [ "//brave/android/java/org/chromium/chrome/browser/search_engines/settings:jni_headers" ]
 
   if (brave_wallet_enabled) {
-    sources += [ "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletNativeWorker.java" ]
+    sources += [
+      "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/AssetRatioControllerFactory.java",
+      "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/KeyringControllerFactory.java",
+    ]
   }
 
   if (enable_brave_sync) {

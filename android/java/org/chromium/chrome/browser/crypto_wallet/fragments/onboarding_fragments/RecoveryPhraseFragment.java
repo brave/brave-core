@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +19,9 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -30,6 +32,16 @@ import java.util.List;
 
 public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
     private List<String> recoveryPhrases;
+
+    private KeyringController getKeyringController() {
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getKeyringController();
+        }
+
+        return null;
+    }
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,12 +51,19 @@ public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recoveryPhrases = Utils.getRecoveryPhraseAsList();
-        TextView copyButton = view.findViewById(R.id.btn_copy);
-        assert getActivity() != null;
-        copyButton.setOnClickListener(v
-                -> Utils.saveTextToClipboard(
-                        getActivity(), Utils.getRecoveryPhraseFromList(recoveryPhrases)));
+        KeyringController keyringController = getKeyringController();
+        if (keyringController != null) {
+            keyringController.getMnemonicForDefaultKeyring(result -> {
+                recoveryPhrases = Utils.getRecoveryPhraseAsList(result);
+                setupRecoveryPhraseRecyclerView(view);
+                TextView copyButton = view.findViewById(R.id.btn_copy);
+                assert getActivity() != null;
+                copyButton.setOnClickListener(v
+                        -> Utils.saveTextToClipboard(
+                                getActivity(), Utils.getRecoveryPhraseFromList(recoveryPhrases)));
+                setupRecoveryPhraseRecyclerView(view);
+            });
+        }
 
         Button recoveryPhraseButton = view.findViewById(R.id.btn_recovery_phrase_continue);
         recoveryPhraseButton.setOnClickListener(v -> onNextPage.gotoNextPage(false));
@@ -60,8 +79,6 @@ public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
         });
         TextView recoveryPhraseSkipButton = view.findViewById(R.id.btn_recovery_phrase_skip);
         recoveryPhraseSkipButton.setOnClickListener(v -> onNextPage.gotoNextPage(true));
-
-        setupRecoveryPhraseRecyclerView(view);
     }
 
     private void setupRecoveryPhraseRecyclerView(View view) {
