@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { lookupExternalWalletProviderName } from '../shared/lib/external_wallet'
+
 export let actions: any = null
 
 export const getActions = () => actions
@@ -22,10 +24,7 @@ export const convertBalance = (tokens: number, rate: number): string => {
 }
 
 export const getWalletProviderName = (wallet?: Rewards.ExternalWallet) => {
-  switch (wallet ? wallet.type : '') {
-    case 'uphold' : return 'Uphold'
-    default: return ''
-  }
+  return lookupExternalWalletProviderName(wallet ? wallet.type : '')
 }
 
 export const formatConverted = (converted: string, currency: string = 'USD'): string | null => {

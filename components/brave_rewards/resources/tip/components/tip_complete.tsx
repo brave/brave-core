@@ -10,7 +10,7 @@ import { TipKind } from '../lib/interfaces'
 import { HostContext } from '../lib/host_context'
 import { LocaleContext } from '../../shared/lib/locale_context'
 
-import { TokenAmount } from './token_amount'
+import { TokenAmount } from '../../shared/components/token_amount'
 
 import * as style from './tip_complete.style'
 

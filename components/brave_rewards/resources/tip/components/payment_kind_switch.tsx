@@ -9,7 +9,7 @@ import { BatColorIcon } from 'brave-ui/components/icons'
 import { LocaleContext } from '../../shared/lib/locale_context'
 import { PaymentKind } from '../lib/interfaces'
 
-import { TokenAmount } from './token_amount'
+import { TokenAmount } from '../../shared/components/token_amount'
 import { ButtonSwitch, ButtonSwitchOption } from './button_switch'
 
 import * as style from './payment_kind_switch.style'

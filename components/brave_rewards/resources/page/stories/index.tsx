@@ -25,7 +25,7 @@ function actionLogger (name: string) {
   }
 }
 
-export const ConnectWallet = () => {
+export function ConnectWallet () {
   const providers = [
     {
       type: 'uphold',
