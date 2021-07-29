@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
@@ -23,28 +24,18 @@ import androidx.annotation.Nullable;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.mojo.bindings.ConnectionErrorHandler;
-import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.widget.Toast;
 
-public class RestoreWalletFragment
-        extends CryptoOnboardingFragment implements ConnectionErrorHandler {
-    private KeyringController mKeyringController;
-
-    @Override
-    public void onConnectionError(MojoException e) {
-        mKeyringController = null;
-        InitKeyringController();
-    }
-
-    private void InitKeyringController() {
-        if (mKeyringController != null) {
-            return;
+public class RestoreWalletFragment extends CryptoOnboardingFragment {
+    private KeyringController getKeyringController() {
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getKeyringController();
         }
 
-        mKeyringController = KeyringControllerFactory.getInstance().GetKeyringController(this);
+        return null;
     }
 
     @Override
@@ -56,7 +47,6 @@ public class RestoreWalletFragment
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        InitKeyringController();
         EditText recoveryPhraseText = view.findViewById(R.id.recovery_phrase_text);
 
         ImageView restoreWalletCopyImage = view.findViewById(R.id.restore_wallet_copy_image);
@@ -90,19 +80,22 @@ public class RestoreWalletFragment
                     || !passwordInput.equals(retypePasswordInput)) {
                 retypePasswordEdittext.setError(
                         getResources().getString(R.string.retype_password_error));
-            } else if (mKeyringController != null) {
-                mKeyringController.restoreWallet(recoveryPhraseText.getText().toString().trim(),
-                        passwordEdittext.getText().toString().trim(), result -> {
-                            if (result) {
-                                Utils.hideKeyboard(getActivity());
-                                onNextPage.gotoNextPage(true);
-                                Utils.disableCryptoOnboarding();
-                            } else {
-                                Toast.makeText(getActivity(), R.string.account_recovery_failed,
-                                             Toast.LENGTH_SHORT)
-                                        .show();
-                            }
-                        });
+            } else {
+                KeyringController keyringController = getKeyringController();
+                if (keyringController != null) {
+                    keyringController.restoreWallet(recoveryPhraseText.getText().toString().trim(),
+                            passwordEdittext.getText().toString().trim(), result -> {
+                                if (result) {
+                                    Utils.hideKeyboard(getActivity());
+                                    onNextPage.gotoNextPage(true);
+                                    Utils.disableCryptoOnboarding();
+                                } else {
+                                    Toast.makeText(getActivity(), R.string.account_recovery_failed,
+                                                 Toast.LENGTH_SHORT)
+                                            .show();
+                                }
+                            });
+                }
             }
         });
     }

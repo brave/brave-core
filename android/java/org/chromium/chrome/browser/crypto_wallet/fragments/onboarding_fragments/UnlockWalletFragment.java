@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -19,14 +20,18 @@ import androidx.annotation.Nullable;
 
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.mojo.bindings.ConnectionErrorHandler;
-import org.chromium.mojo.system.MojoException;
 
-public class UnlockWalletFragment
-        extends CryptoOnboardingFragment implements ConnectionErrorHandler {
-    private KeyringController mKeyringController;
+public class UnlockWalletFragment extends CryptoOnboardingFragment {
+    private KeyringController getKeyringController() {
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getKeyringController();
+        }
+
+        return null;
+    }
 
     @Override
     public View onCreateView(
@@ -37,7 +42,6 @@ public class UnlockWalletFragment
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        InitKeyringController();
         EditText unlockWalletPassword = view.findViewById(R.id.unlock_wallet_password);
 
         Button unlockButton = view.findViewById(R.id.btn_unlock);
@@ -47,8 +51,9 @@ public class UnlockWalletFragment
                 return;
             }
 
-            if (mKeyringController != null) {
-                mKeyringController.unlock(unlockWalletPassword.getText().toString(), result -> {
+            KeyringController keyringController = getKeyringController();
+            if (keyringController != null) {
+                keyringController.unlock(unlockWalletPassword.getText().toString(), result -> {
                     if (result) {
                         if (onNextPage != null) {
                             Utils.hideKeyboard(getActivity());
@@ -67,19 +72,5 @@ public class UnlockWalletFragment
                 onNextPage.gotoRestorePage();
             }
         });
-    }
-
-    @Override
-    public void onConnectionError(MojoException e) {
-        mKeyringController = null;
-        InitKeyringController();
-    }
-
-    private void InitKeyringController() {
-        if (mKeyringController != null) {
-            return;
-        }
-
-        mKeyringController = KeyringControllerFactory.getInstance().GetKeyringController(this);
     }
 }

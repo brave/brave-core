@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
+import android.app.Activity;
 import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,42 +25,32 @@ import androidx.core.content.ContextCompat;
 
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.mojo.bindings.ConnectionErrorHandler;
-import org.chromium.mojo.system.MojoException;
 
 import java.util.concurrent.Executor;
 
-public class SecurePasswordFragment
-        extends CryptoOnboardingFragment implements ConnectionErrorHandler {
+public class SecurePasswordFragment extends CryptoOnboardingFragment {
     private EditText passwordEdittext;
-    private KeyringController mKeyringController;
+
+    private KeyringController getKeyringController() {
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getKeyringController();
+        }
+
+        return null;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        InitKeyringController();
     }
 
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_secure_password, container, false);
-    }
-
-    @Override
-    public void onConnectionError(MojoException e) {
-        mKeyringController = null;
-        InitKeyringController();
-    }
-
-    private void InitKeyringController() {
-        if (mKeyringController != null) {
-            return;
-        }
-
-        mKeyringController = KeyringControllerFactory.getInstance().GetKeyringController(this);
     }
 
     @Override
@@ -92,8 +83,9 @@ public class SecurePasswordFragment
 
     private void goToTheNextPage() {
         String passwordInput = passwordEdittext.getText().toString().trim();
-        if (mKeyringController != null) {
-            mKeyringController.createWallet(passwordInput,
+        KeyringController keyringController = getKeyringController();
+        if (keyringController != null) {
+            keyringController.createWallet(passwordInput,
                     recoveryPhrases
                     -> {
                             // Do nothing with recovery phrase for now

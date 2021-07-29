@@ -32,9 +32,9 @@ public class KeyringControllerFactory {
 
     private KeyringControllerFactory() {}
 
-    public KeyringController GetKeyringController(ConnectionErrorHandler connectionErrorHandler) {
+    public KeyringController getKeyringController(ConnectionErrorHandler connectionErrorHandler) {
         int nativeHandle = KeyringControllerFactoryJni.get().getInterfaceToKeyringController();
-        MessagePipeHandle handle = WrapNativeHandle(nativeHandle);
+        MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         KeyringController keyringController = KeyringController.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) keyringController).getProxyHandler();
         handler.setErrorHandler(connectionErrorHandler);
@@ -42,7 +42,7 @@ public class KeyringControllerFactory {
         return keyringController;
     }
 
-    private MessagePipeHandle WrapNativeHandle(int nativeHandle) {
+    private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
         return CoreImpl.getInstance().acquireNativeHandle(nativeHandle).toMessagePipeHandle();
     }
 

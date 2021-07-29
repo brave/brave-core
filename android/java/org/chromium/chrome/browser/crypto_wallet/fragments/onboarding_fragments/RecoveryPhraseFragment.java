@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,21 +21,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.mojo.bindings.ConnectionErrorHandler;
-import org.chromium.mojo.system.MojoException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class RecoveryPhraseFragment
-        extends CryptoOnboardingFragment implements ConnectionErrorHandler {
+public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
     private List<String> recoveryPhrases;
-    private KeyringController mKeyringController;
+
+    private KeyringController getKeyringController() {
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getKeyringController();
+        }
+
+        return null;
+    }
 
     @Override
     public View onCreateView(
@@ -43,25 +49,11 @@ public class RecoveryPhraseFragment
     }
 
     @Override
-    public void onConnectionError(MojoException e) {
-        mKeyringController = null;
-        InitKeyringController();
-    }
-
-    private void InitKeyringController() {
-        if (mKeyringController != null) {
-            return;
-        }
-
-        mKeyringController = KeyringControllerFactory.getInstance().GetKeyringController(this);
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        InitKeyringController();
-        if (mKeyringController != null) {
-            mKeyringController.getMnemonicForDefaultKeyring(result -> {
+        KeyringController keyringController = getKeyringController();
+        if (keyringController != null) {
+            keyringController.getMnemonicForDefaultKeyring(result -> {
                 recoveryPhrases = Utils.getRecoveryPhraseAsList(result);
                 setupRecoveryPhraseRecyclerView(view);
                 TextView copyButton = view.findViewById(R.id.btn_copy);

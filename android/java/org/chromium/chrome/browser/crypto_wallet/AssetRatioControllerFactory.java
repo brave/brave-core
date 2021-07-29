@@ -32,11 +32,11 @@ public class AssetRatioControllerFactory {
 
     private AssetRatioControllerFactory() {}
 
-    public AssetRatioController GetAssetRatioController(
+    public AssetRatioController getAssetRatioController(
             ConnectionErrorHandler connectionErrorHandler) {
         int nativeHandle =
                 AssetRatioControllerFactoryJni.get().getInterfaceToAssetRatioController();
-        MessagePipeHandle handle = WrapNativeHandle(nativeHandle);
+        MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         AssetRatioController assetRatioController =
                 AssetRatioController.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) assetRatioController).getProxyHandler();
@@ -45,7 +45,7 @@ public class AssetRatioControllerFactory {
         return assetRatioController;
     }
 
-    private MessagePipeHandle WrapNativeHandle(int nativeHandle) {
+    private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
         return CoreImpl.getInstance().acquireNativeHandle(nativeHandle).toMessagePipeHandle();
     }
 

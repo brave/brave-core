@@ -134,7 +134,7 @@ public class AssetDetailActivity
         }
 
         mAssetRatioController =
-                AssetRatioControllerFactory.getInstance().GetAssetRatioController(this);
+                AssetRatioControllerFactory.getInstance().getAssetRatioController(this);
     }
 
     @Override

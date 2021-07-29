@@ -57,7 +57,6 @@ public class BraveWalletActivity
     private ViewPager cryptoWalletOnboardingViewPager;
     private CryptoWalletOnboardingPagerAdapter cryptoWalletOnboardingPagerAdapter;
     private KeyringController mKeyringController;
-    private boolean checkonIsLockedAfterNativeIsReady;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -128,12 +127,6 @@ public class BraveWalletActivity
                     @Override
                     public void onPageScrollStateChanged(int state) {}
                 });
-        checkonIsLockedAfterNativeIsReady = false;
-        if (Utils.shouldShowCryptoOnboarding()) {
-            setNavigationFragments(ONBOARDING_ACTION);
-        } else {
-            checkonIsLockedAfterNativeIsReady = true;
-        }
 
         onInitialLayoutInflationComplete();
     }
@@ -149,15 +142,20 @@ public class BraveWalletActivity
             return;
         }
 
-        mKeyringController = KeyringControllerFactory.getInstance().GetKeyringController(this);
+        mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
+    }
+
+    public KeyringController getKeyringController() {
+        return mKeyringController;
     }
 
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
         InitKeyringController();
-        if (checkonIsLockedAfterNativeIsReady && mKeyringController != null) {
-            checkonIsLockedAfterNativeIsReady = false;
+        if (Utils.shouldShowCryptoOnboarding()) {
+            setNavigationFragments(ONBOARDING_ACTION);
+        } else if (mKeyringController != null) {
             mKeyringController.isLocked(isLocked -> {
                 if (isLocked) {
                     setNavigationFragments(UNLOCK_WALLET_ACTION);
