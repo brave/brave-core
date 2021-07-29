@@ -30,7 +30,8 @@ constexpr int brave_value(int incr) {
   {ContentSettingsType::BRAVE_SHIELDS, brave_value(5)},                   \
   {ContentSettingsType::BRAVE_REFERRERS, brave_value(6)},                 \
   {ContentSettingsType::BRAVE_COOKIES, brave_value(7)},                   \
-  {ContentSettingsType::BRAVE_SPEEDREADER, brave_value(8)},
+  {ContentSettingsType::BRAVE_SPEEDREADER, brave_value(8)},               \
+  {ContentSettingsType::BRAVE_ETHEREUM, brave_value(9)},
 // clang-format on
 
 #define ContentSettingTypeToHistogramValue \

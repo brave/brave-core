@@ -1,5 +1,8 @@
 include_rules = [
   "+../../../../components/permissions",
   "+components/permissions",
+  "+components/resources/android",
+  "+components/vector_icons",
   "+third_party/widevine/cdm",
+  "+ui/gfx",
 ]
