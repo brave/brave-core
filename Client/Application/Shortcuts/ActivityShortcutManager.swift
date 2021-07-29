@@ -131,7 +131,7 @@ class ActivityShortcutManager: NSObject {
             case .clearBrowsingHistory:
                 bvc.clearHistoryAndOpenNewTab()
             case .enableBraveVPN:
-                bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: false, isExternal: true)
+                bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing, isExternal: true)
                 bvc.popToBVC()
 
                 switch BraveVPN.vpnState {
@@ -145,6 +145,11 @@ class ActivityShortcutManager: NSObject {
                         }
                 }
             case .openBraveNews:
+                // Do nothing as browser when browser to PB only and Brave News isn't available on private tabs
+                guard !Preferences.Privacy.privateBrowsingOnly.value else {
+                    return
+                }
+                
                 if Preferences.BraveNews.isEnabled.value {
                     bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: false, isExternal: true)
                     bvc.popToBVC()

@@ -1588,11 +1588,18 @@ class BrowserViewController: UIViewController {
     }
     
     func clearHistoryAndOpenNewTab() {
-        History.deleteAll { [weak self] in
-            guard let self = self else { return }
-            
-            self.tabManager.clearTabHistory() {
-                self.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: false)
+        // When PB Only mode is enabled
+        // All private tabs closed and a new private tab is created
+        if Preferences.Privacy.privateBrowsingOnly.value {
+            tabManager.removeAll()
+            openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: true)
+        } else {
+            History.deleteAll { [weak self] in
+                guard let self = self else { return }
+                
+                self.tabManager.clearTabHistory() {
+                    self.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: false)
+                }
             }
         }
     }
