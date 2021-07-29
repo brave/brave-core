@@ -89,7 +89,8 @@
 
 <activity
     android:name="org.chromium.chrome.browser.widget.crypto.binance.BinanceActivity"
-    android:theme="@style/Theme.Chromium.Activity.Fullscreen">
+    android:theme="@style/Theme.Chromium.Activity.Fullscreen"
+    android:exported="false">
     <intent-filter>
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.BROWSABLE" />
