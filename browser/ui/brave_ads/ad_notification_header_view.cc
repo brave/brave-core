@@ -126,16 +126,12 @@ void AdNotificationHeaderView::CreateView(const int width) {
 }
 
 views::Label* AdNotificationHeaderView::CreateTitleLabel() {
-  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
-
   views::Label* label = new views::Label();
 
   const gfx::FontList font_list({kTitleFontName}, kTitleFontStyle,
                                 kTitleFontSize, kTitleFontWeight);
   label->SetFontList(font_list);
 
-  label->SetEnabledColor(should_use_dark_colors ? kDarkModeTitleColor
-                                                : kLightModeTitleColor);
   label->SetBackgroundColor(SK_ColorTRANSPARENT);
 
   label->SetHorizontalAlignment(kTitleHorizontalAlignment);
