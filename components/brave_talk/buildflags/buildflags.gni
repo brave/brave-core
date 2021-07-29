@@ -1,6 +1,0 @@
-import("//brave/build/config.gni")
-
-declare_args() {
-  brave_together_enabled =
-      brave_channel == "nightly" || brave_channel == "development"
-}

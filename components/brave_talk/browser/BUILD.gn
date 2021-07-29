@@ -1,11 +1,5 @@
-import("//brave/components/brave_talk/buildflags/buildflags.gni")
-
 source_set("browser") {
   sources = [
     "regions.h",
-  ]
-
-  public_deps = [
-    "//brave/components/brave_talk/buildflags",
   ]
 }
