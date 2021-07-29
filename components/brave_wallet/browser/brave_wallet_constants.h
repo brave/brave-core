@@ -16,16 +16,6 @@ enum class Web3ProviderTypes {
   BRAVE_WALLET
 };
 
-enum class Network {
-  kMainnet,
-  kRinkeby,
-  kRopsten,
-  kGoerli,
-  kKovan,
-  kLocalhost,
-  kCustom,
-};
-
 extern const char kAssetRatioBaseURL[];
 extern const char kSwapBaseURL[];
 

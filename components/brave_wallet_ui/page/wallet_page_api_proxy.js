@@ -11,78 +11,36 @@ import 'chrome://resources/mojo/brave/components/brave_wallet/common/brave_walle
 import { addSingletonGetter } from 'chrome://resources/js/cr.m.js'
 
 /** @interface */
-class WalletPageApiProxy {
-  /**
-   * @param {string} password
-   * @param {string} mnemonic
-   */
-  createWallet (password) { }
-
-  restoreWallet (mnemonic, password) { }
-
-  addAccountToWallet () { }
-
-  getRecoveryWords (password) { }
-
-  notifyWalletBackupComplete () { }
-
-  /** @return {!braveWallet.mojom.PageCallbackRouter} */
-  getCallbackRouter () { }
-
-  getWalletHandler () { }
-}
+class WalletPageApiProxy {}
 
 /** @implements {WalletPageApiProxy} */
 export default class WalletPageApiProxyImpl {
   constructor() {
     /** @type {!braveWallet.mojom.PageCallbackRouter} */
     this.callbackRouter = new braveWallet.mojom.PageCallbackRouter();
-
     /** @type {!braveWallet.mojom.PageHandlerRemote} */
-    this.page_handler = new braveWallet.mojom.PageHandlerRemote();
+    this.pageHandler = new braveWallet.mojom.PageHandlerRemote();
     /** @type {!braveWallet.mojom.WalletHandlerRemote} */
-    this.wallet_handler = new braveWallet.mojom.WalletHandlerRemote();
+    this.walletHandler = new braveWallet.mojom.WalletHandlerRemote();
+    /** @type {!braveWallet.mojom.EthJsonRpcControllerRemote} */
+    this.ethJsonRpcController = new braveWallet.mojom.EthJsonRpcControllerRemote();
+    /** @type {!braveWallet.mojom.SwapControllerRemote} */
+    this.swapController = new braveWallet.mojom.SwapControllerRemote();
+    /** @type {!braveWallet.mojom.AssetRatioControllerRemote} */
+    this.assetRatioController = new braveWallet.mojom.AssetRatioControllerRemote();
+    /** @type {!braveWallet.mojom.KeyringControllerRemote} */
+    this.keyringController = new braveWallet.mojom.KeyringControllerRemote();
+
 
     const factory = braveWallet.mojom.PageHandlerFactory.getRemote();
     factory.createPageHandler(
       this.callbackRouter.$.bindNewPipeAndPassRemote(),
-      this.page_handler.$.bindNewPipeAndPassReceiver(),
-      this.wallet_handler.$.bindNewPipeAndPassReceiver());
-  }
-
-  /** @override */
-  createWallet (password) {
-    return this.page_handler.createWallet(password);
-  }
-
-  /** @override */
-  restoreWallet (mnemonic, password) {
-    return this.page_handler.restoreWallet(mnemonic, password);
-  }
-
-  /** @override */
-  addAccountToWallet () {
-    return this.page_handler.addAccountToWallet();
-  }
-
-  /** @override */
-  getRecoveryWords (password) {
-    return this.page_handler.getRecoveryWords();
-  }
-
-  /** @override */
-  notifyWalletBackupComplete () {
-    return this.wallet_handler.notifyWalletBackupComplete();
-  }
-
-  /** @override */
-  getCallbackRouter () {
-    return this.callbackRouter;
-  }
-
-  /** @override */
-  getWalletHandler () {
-    return this.wallet_handler;
+      this.pageHandler.$.bindNewPipeAndPassReceiver(),
+      this.walletHandler.$.bindNewPipeAndPassReceiver(),
+      this.ethJsonRpcController.$.bindNewPipeAndPassReceiver(),
+      this.swapController.$.bindNewPipeAndPassReceiver(),
+      this.assetRatioController.$.bindNewPipeAndPassReceiver(),
+      this.keyringController.$.bindNewPipeAndPassReceiver());
   }
 }
 

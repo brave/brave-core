@@ -21,6 +21,18 @@
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/webui/web_ui_util.h"
 
+#include "brave/browser/brave_wallet/rpc_controller_factory.h"
+#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+
+#include "brave/browser/brave_wallet/swap_controller_factory.h"
+#include "brave/components/brave_wallet/browser/swap_controller.h"
+
+#include "brave/browser/brave_wallet/asset_ratio_controller_factory.h"
+#include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
+
+#include "brave/browser/brave_wallet/keyring_controller_factory.h"
+#include "brave/components/brave_wallet/browser/keyring_controller.h"
+
 WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
     : ui::MojoBubbleWebUIController(web_ui,
                                     true /* Needed for webui browser tests */) {
@@ -56,12 +68,46 @@ void WalletPanelUI::BindInterface(
 void WalletPanelUI::CreatePanelHandler(
     mojo::PendingRemote<brave_wallet::mojom::Page> page,
     mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> panel_receiver,
-    mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver) {
+    mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::EthJsonRpcController>
+        eth_json_rpc_controller_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::SwapController>
+        swap_controller_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::AssetRatioController>
+        asset_ratio_controller_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::KeyringController>
+        keyring_controller_receiver) {
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
+
   panel_handler_ =
       std::make_unique<WalletPanelHandler>(std::move(panel_receiver), this);
   wallet_handler_ =
       std::make_unique<WalletHandler>(std::move(wallet_receiver), profile);
+
+  auto* eth_json_rpc_controller =
+      brave_wallet::RpcControllerFactory::GetControllerForContext(profile);
+  if (eth_json_rpc_controller) {
+    eth_json_rpc_controller->Bind(std::move(eth_json_rpc_controller_receiver));
+  }
+
+  auto* swap_controller =
+      brave_wallet::SwapControllerFactory::GetControllerForContext(profile);
+  if (swap_controller) {
+    swap_controller->Bind(std::move(swap_controller_receiver));
+  }
+
+  auto* asset_ratio_controller =
+      brave_wallet::AssetRatioControllerFactory::GetControllerForContext(
+          profile);
+  if (asset_ratio_controller) {
+    asset_ratio_controller->Bind(std::move(asset_ratio_controller_receiver));
+  }
+
+  auto* keyring_controller =
+      brave_wallet::KeyringControllerFactory::GetControllerForContext(profile);
+  if (keyring_controller) {
+    keyring_controller->Bind(std::move(keyring_controller_receiver));
+  }
 }

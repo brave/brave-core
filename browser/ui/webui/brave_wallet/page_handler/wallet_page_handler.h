@@ -26,23 +26,8 @@ class WalletPageHandler : public brave_wallet::mojom::PageHandler {
   WalletPageHandler& operator=(const WalletPageHandler&) = delete;
   ~WalletPageHandler() override;
 
-  // brave_wallet::mojom::PageHandler:
-  void CreateWallet(const std::string& password,
-                    CreateWalletCallback callback) override;
-  void RestoreWallet(const std::string& mnemonic,
-                     const std::string& password,
-                     RestoreWalletCallback callback) override;
-  void GetRecoveryWords(GetRecoveryWordsCallback callback) override;
-  void AddAccountToWallet(AddAccountToWalletCallback) override;
-
  private:
-  void EnsureConnected();
-  void OnConnectionError();
-
   mojo::Receiver<brave_wallet::mojom::PageHandler> receiver_;
-  mojo::Remote<brave_wallet::mojom::KeyringController> keyring_controller_;
-
-  Profile* profile_;  // NOT OWNED
   base::WeakPtrFactory<WalletPageHandler> weak_ptr_factory_;
 };
 

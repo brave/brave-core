@@ -21,6 +21,8 @@ class SwapControllerFactory : public BrowserContextKeyedServiceFactory {
  public:
   static mojo::PendingRemote<mojom::SwapController> GetForContext(
       content::BrowserContext* context);
+  static SwapController* GetControllerForContext(
+      content::BrowserContext* context);
   static SwapControllerFactory* GetInstance();
 
  private:

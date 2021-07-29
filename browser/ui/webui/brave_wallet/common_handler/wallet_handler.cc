@@ -10,14 +10,10 @@
 #include <vector>
 
 #include "base/bind.h"
-#include "brave/browser/brave_wallet/asset_ratio_controller_factory.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
-#include "brave/browser/brave_wallet/swap_controller_factory.h"
-#include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
 #include "brave/components/brave_wallet/browser/erc_token_registry.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
-#include "brave/components/brave_wallet/browser/swap_controller.h"
 #include "chrome/browser/profiles/profile.h"
 
 WalletHandler::WalletHandler(
@@ -39,32 +35,10 @@ void WalletHandler::EnsureConnected() {
   DCHECK(keyring_controller_);
   keyring_controller_.set_disconnect_handler(base::BindOnce(
       &WalletHandler::OnConnectionError, weak_ptr_factory_.GetWeakPtr()));
-
-  if (!asset_ratio_controller_) {
-    auto pending =
-        brave_wallet::AssetRatioControllerFactory::GetInstance()->GetForContext(
-            profile_);
-    asset_ratio_controller_.Bind(std::move(pending));
-  }
-  DCHECK(asset_ratio_controller_);
-  asset_ratio_controller_.set_disconnect_handler(base::BindOnce(
-      &WalletHandler::OnConnectionError, weak_ptr_factory_.GetWeakPtr()));
-
-  if (!swap_controller_) {
-    auto pending =
-        brave_wallet::SwapControllerFactory::GetInstance()->GetForContext(
-            profile_);
-    swap_controller_.Bind(std::move(pending));
-  }
-  DCHECK(swap_controller_);
-  swap_controller_.set_disconnect_handler(base::BindOnce(
-      &WalletHandler::OnConnectionError, weak_ptr_factory_.GetWeakPtr()));
 }
 
 void WalletHandler::OnConnectionError() {
   keyring_controller_.reset();
-  asset_ratio_controller_.reset();
-  swap_controller_.reset();
   EnsureConnected();
 }
 
@@ -93,34 +67,6 @@ void WalletHandler::OnGetWalletInfo(
       keyring_info->accounts, keyring_info->account_names);
 }
 
-void WalletHandler::LockWallet() {
-  EnsureConnected();
-  keyring_controller_->Lock();
-}
-
-void WalletHandler::UnlockWallet(const std::string& password,
-                                 UnlockWalletCallback callback) {
-  EnsureConnected();
-  keyring_controller_->Unlock(password, std::move(callback));
-}
-
-void WalletHandler::GetAssetPrice(const std::vector<std::string>& from_assets,
-                                  const std::vector<std::string>& to_assets,
-                                  GetAssetPriceCallback callback) {
-  EnsureConnected();
-  asset_ratio_controller_->GetPrice(from_assets, to_assets,
-                                    std::move(callback));
-}
-
-void WalletHandler::GetAssetPriceHistory(
-    const std::string& asset,
-    brave_wallet::mojom::AssetPriceTimeframe timeframe,
-    GetAssetPriceHistoryCallback callback) {
-  EnsureConnected();
-  asset_ratio_controller_->GetPriceHistory(asset, timeframe,
-                                           std::move(callback));
-}
-
 void WalletHandler::GetTokenByContract(const std::string& contract,
                                        GetTokenByContractCallback callback) {
   auto* registry = brave_wallet::ERCTokenRegistry::GetInstance();
@@ -138,20 +84,6 @@ void WalletHandler::GetAllTokens(GetAllTokensCallback callback) {
   std::move(callback).Run(registry->GetAllTokens());
 }
 
-void WalletHandler::GetPriceQuote(brave_wallet::mojom::SwapParamsPtr params,
-                                  GetPriceQuoteCallback callback) {
-  EnsureConnected();
-  swap_controller_->GetPriceQuote(std::move(params), std::move(callback));
-}
-
-void WalletHandler::GetTransactionPayload(
-    brave_wallet::mojom::SwapParamsPtr params,
-    GetTransactionPayloadCallback callback) {
-  EnsureConnected();
-  swap_controller_->GetTransactionPayload(std::move(params),
-                                          std::move(callback));
-}
-
 void WalletHandler::AddFavoriteApp(
     const brave_wallet::mojom::AppItemPtr app_item) {
   favorite_apps.push_back(app_item->Clone());
@@ -164,20 +96,4 @@ void WalletHandler::RemoveFavoriteApp(
                 [&app_item](const brave_wallet::mojom::AppItemPtr& it) -> bool {
                   return it->name == app_item->name;
                 }));
-}
-
-void WalletHandler::NotifyWalletBackupComplete() {
-  EnsureConnected();
-  keyring_controller_->NotifyWalletBackupComplete();
-}
-
-void WalletHandler::SetInitialAccountNames(
-    const std::vector<std::string>& account_names) {
-  EnsureConnected();
-  keyring_controller_->SetInitialAccountNames(account_names);
-}
-
-void WalletHandler::AddNewAccountName(const std::string& account_name) {
-  EnsureConnected();
-  keyring_controller_->AddNewAccountName(account_name);
 }

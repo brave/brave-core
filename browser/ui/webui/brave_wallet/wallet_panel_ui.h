@@ -39,8 +39,15 @@ class WalletPanelUI : public ui::MojoBubbleWebUIController,
   void CreatePanelHandler(
       mojo::PendingRemote<brave_wallet::mojom::Page> page,
       mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> panel_receiver,
-      mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver)
-      override;
+      mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
+      mojo::PendingReceiver<brave_wallet::mojom::EthJsonRpcController>
+          eth_json_rpc_controller,
+      mojo::PendingReceiver<brave_wallet::mojom::SwapController>
+          swap_controller,
+      mojo::PendingReceiver<brave_wallet::mojom::AssetRatioController>
+          asset_ratio_controller,
+      mojo::PendingReceiver<brave_wallet::mojom::KeyringController>
+          keyring_controller) override;
 
   std::unique_ptr<WalletPanelHandler> panel_handler_;
   std::unique_ptr<WalletHandler> wallet_handler_;

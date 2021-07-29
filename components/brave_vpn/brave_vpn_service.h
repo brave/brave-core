@@ -50,8 +50,10 @@ class BraveVpnService : public KeyedService {
                            const std::string& product_type);
 
  private:
-  using URLRequestCallback = base::OnceCallback<
-      void(int, const std::string&, const std::map<std::string, std::string>&)>;
+  using URLRequestCallback =
+      base::OnceCallback<void(int,
+                              const std::string&,
+                              const base::flat_map<std::string, std::string>&)>;
 
   void OAuthRequest(const GURL& url,
                     const std::string& method,
@@ -62,13 +64,13 @@ class BraveVpnService : public KeyedService {
   void OnGetResponse(ResponseCallback callback,
                      int status,
                      const std::string& body,
-                     const std::map<std::string, std::string>& headers);
+                     const base::flat_map<std::string, std::string>& headers);
 
   void OnGetSubscriberCredential(
       ResponseCallback callback,
       int status,
       const std::string& body,
-      const std::map<std::string, std::string>& headers);
+      const base::flat_map<std::string, std::string>& headers);
 
   api_request_helper::APIRequestHelper api_request_helper_;
 };

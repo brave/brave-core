@@ -13,35 +13,25 @@
 namespace brave_wallet {
 
 BraveWalletProviderImpl::BraveWalletProviderImpl(
-    EthJsonRpcController* rpc_controller,
+    mojo::PendingRemote<mojom::EthJsonRpcController> rpc_controller,
     std::unique_ptr<BraveWalletProviderDelegate> delegate)
-    : delegate_(std::move(delegate)),
-      rpc_controller_(rpc_controller),
-      weak_factory_(this) {
+    : delegate_(std::move(delegate)), weak_factory_(this) {
   DCHECK(rpc_controller);
+  rpc_controller_.Bind(std::move(rpc_controller));
+  DCHECK(rpc_controller_);
+  rpc_controller_.set_disconnect_handler(base::BindOnce(
+      &BraveWalletProviderImpl::OnConnectionError, weak_factory_.GetWeakPtr()));
 }
 
 BraveWalletProviderImpl::~BraveWalletProviderImpl() {
-  rpc_controller_->RemoveObserver(this);
 }
 
 void BraveWalletProviderImpl::Request(const std::string& json_payload,
+                                      bool auto_retry_on_network_change,
                                       RequestCallback callback) {
-  rpc_controller_->Request(
-      json_payload,
-      base::BindOnce(&BraveWalletProviderImpl::OnResponse,
-                     weak_factory_.GetWeakPtr(), std::move(callback)),
-      true);
-}
-
-void BraveWalletProviderImpl::OnResponse(
-    RequestCallback callback,
-    const int http_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
-  // Do we need to pass headers map to a renderer? We would need to convert
-  // it to base::flat_map in that case
-  std::move(callback).Run(http_code, response);
+  if (rpc_controller_) {
+    rpc_controller_->Request(json_payload, true, std::move(callback));
+  }
 }
 
 void BraveWalletProviderImpl::Enable() {
@@ -52,15 +42,19 @@ void BraveWalletProviderImpl::Enable() {
 }
 
 void BraveWalletProviderImpl::GetChainId(GetChainIdCallback callback) {
-  std::move(callback).Run(EthJsonRpcController::GetChainIDFromNetwork(
-      rpc_controller_->GetNetwork()));
+  if (rpc_controller_) {
+    rpc_controller_->GetChainId(std::move(callback));
+  }
 }
 
 void BraveWalletProviderImpl::Init(
     ::mojo::PendingRemote<mojom::EventsListener> events_listener) {
   if (!events_listener_.is_bound()) {
     events_listener_.Bind(std::move(events_listener));
-    rpc_controller_->AddObserver(this);
+    if (rpc_controller_) {
+      rpc_controller_->AddObserver(
+          observer_receiver_.BindNewPipeAndPassRemote());
+    }
   }
 }
 
@@ -69,6 +63,11 @@ void BraveWalletProviderImpl::ChainChangedEvent(const std::string& chain_id) {
     return;
 
   events_listener_->ChainChangedEvent(chain_id);
+}
+
+void BraveWalletProviderImpl::OnConnectionError() {
+  rpc_controller_.reset();
+  observer_receiver_.reset();
 }
 
 }  // namespace brave_wallet

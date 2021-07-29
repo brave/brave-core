@@ -46,6 +46,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* prefs);
 
   mojo::PendingRemote<mojom::KeyringController> MakeRemote();
+  void Bind(mojo::PendingReceiver<mojom::KeyringController> receiver);
 
   // Currently only support one default keyring, `CreateDefaultKeyring` and
   // `RestoreDefaultKeyring` will overwrite existing one if success

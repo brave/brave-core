@@ -11,13 +11,13 @@ import {
   RestoreWalletPayloadType,
   SelectAssetPayloadType,
   UpdateSelectedAssetType,
-  AddAccountToWalletPayloadType
+  AddAccountPayloadType
 } from '../constants/action_types'
 import { AssetOptionType } from '../../constants/types'
 
 export const createWallet = createAction<CreateWalletPayloadType>('createWallet')
 export const restoreWallet = createAction<RestoreWalletPayloadType>('restoreWallet')
-export const addAccountToWallet = createAction<AddAccountToWalletPayloadType>('addAccountToWallet')
+export const addAccount = createAction<AddAccountPayloadType>('addAccount')
 export const walletCreated = createAction<WalletCreatedPayloadType>('walletCreated')
 export const walletSetupComplete = createAction('walletSetupComplete')
 export const showRecoveryPhrase = createAction<boolean>('showRecoveryPhrase')

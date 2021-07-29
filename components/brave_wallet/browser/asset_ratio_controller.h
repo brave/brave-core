@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ASSET_RATIO_CONTROLLER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ASSET_RATIO_CONTROLLER_H_
 
-#include <map>
 #include <string>
 #include <vector>
 
 #include "base/callback.h"
+#include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -40,6 +40,7 @@ class AssetRatioController : public KeyedService,
   AssetRatioController& operator=(const AssetRatioController&) = delete;
 
   mojo::PendingRemote<mojom::AssetRatioController> MakeRemote();
+  void Bind(mojo::PendingReceiver<mojom::AssetRatioController> receiver);
 
   void GetPrice(const std::vector<std::string>& from_assets,
                 const std::vector<std::string>& to_assets,
@@ -62,11 +63,12 @@ class AssetRatioController : public KeyedService,
                   GetPriceCallback callback,
                   const int status,
                   const std::string& body,
-                  const std::map<std::string, std::string>& headers);
-  void OnGetPriceHistory(GetPriceHistoryCallback callback,
-                         const int status,
-                         const std::string& body,
-                         const std::map<std::string, std::string>& headers);
+                  const base::flat_map<std::string, std::string>& headers);
+  void OnGetPriceHistory(
+      GetPriceHistoryCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
 
   mojo::ReceiverSet<mojom::AssetRatioController> receivers_;
 

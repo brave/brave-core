@@ -30,6 +30,16 @@ AssetRatioControllerFactory::GetForContext(content::BrowserContext* context) {
       ->MakeRemote();
 }
 
+// static
+AssetRatioController* AssetRatioControllerFactory::GetControllerForContext(
+    content::BrowserContext* context) {
+  if (!IsAllowedForContext(context)) {
+    return nullptr;
+  }
+  return static_cast<AssetRatioController*>(
+      GetInstance()->GetServiceForBrowserContext(context, true));
+}
+
 AssetRatioControllerFactory::AssetRatioControllerFactory()
     : BrowserContextKeyedServiceFactory(
           "AssetRatioController",
