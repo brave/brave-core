@@ -14,6 +14,7 @@
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/views/speedreader/speedreader_bubble_util.h"
+#include "brave/browser/ui/views/speedreader/speedreader_dancing_books.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -29,6 +30,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/events/event.h"
+#include "ui/gfx/geometry/insets.h"
 #include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/styled_label.h"
@@ -66,6 +68,10 @@ ReaderModeBubble::ReaderModeBubble(views::View* anchor_view,
     : LocationBarBubbleDelegateView(anchor_view, nullptr),
       tab_helper_(tab_helper) {
   SetButtons(ui::DialogButton::DIALOG_BUTTON_NONE);
+
+  gfx::Insets m = margins();
+  m.set_bottom(kBubbleBottomMargin);
+  set_margins(m);
 }
 
 void ReaderModeBubble::Show() {
@@ -128,6 +134,9 @@ void ReaderModeBubble::Init() {
       l10n_util::GetStringUTF16(IDS_SPEEDREADER_ENABLE_BUTTON));
   enable_speedreader_button_ =
       AddChildView(std::move(enable_speedreader_button));
+
+  // Speedreader Graphic
+  AddChildView(std::make_unique<SpeedreaderDancingBooks>());
 }
 
 void ReaderModeBubble::OnButtonPressed(const ui::Event& event) {

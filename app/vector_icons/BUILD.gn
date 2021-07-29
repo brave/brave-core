@@ -38,6 +38,10 @@ aggregate_vector_icons("brave_vector_icons") {
   if (enable_speedreader) {
     sources += [
       "brave_reader_mode.icon",
+      "brave_speedreader_graphic_book1.icon",
+      "brave_speedreader_graphic_book2.icon",
+      "brave_speedreader_graphic_book3.icon",
+      "brave_speedreader_graphic_lines.icon",
       "brave_speedreader_mode.icon",
     ]
   }
