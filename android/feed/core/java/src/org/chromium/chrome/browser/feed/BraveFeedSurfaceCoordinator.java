@@ -47,12 +47,13 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             @Nullable ScrollableContainerDelegate externalScrollableContainerDelegate,
             @NewTabPageLaunchOrigin int launchOrigin,
             PrivacyPreferencesManagerImpl privacyPreferencesManager,
-            FeedLaunchReliabilityLoggingState launchReliabilityLoggingState) {
+            FeedLaunchReliabilityLoggingState launchReliabilityLoggingState,
+            @Nullable FeedSwipeRefreshLayout swipeRefreshLayout) {
         super(activity, snackbarManager, windowAndroid, snapScrollHelper, ntpHeader,
                 sectionHeaderView, showDarkBackground, delegate, pageNavigationDelegate, profile,
                 isPlaceholderShownInitially, bottomSheetController, shareDelegateSupplier,
                 externalScrollableContainerDelegate, launchOrigin, privacyPreferencesManager,
-                launchReliabilityLoggingState);
+                launchReliabilityLoggingState, swipeRefreshLayout);
     }
 
     @Override

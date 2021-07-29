@@ -15,6 +15,7 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.feed.BraveFeedSurfaceCoordinator;
+import org.chromium.chrome.browser.feed.FeedSwipeRefreshLayout;
 import org.chromium.chrome.browser.feed.shared.FeedFeatures;
 import org.chromium.chrome.browser.feed.shared.FeedSurfaceProvider;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
@@ -70,6 +71,7 @@ public class BraveNewTabPage extends NewTabPage {
                 shareDelegateSupplier, /* externalScrollableContainerDelegate= */ null,
                 NewTabPageUtils.decodeOriginFromNtpUrl(url),
                 PrivacyPreferencesManagerImpl.getInstance(),
-                /* FeedLaunchReliabilityLoggingState */ null);
+                /* FeedLaunchReliabilityLoggingState */ null,
+                FeedSwipeRefreshLayout.create(activity));
     }
 }
