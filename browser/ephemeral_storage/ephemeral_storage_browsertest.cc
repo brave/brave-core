@@ -249,6 +249,32 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
     return add_tab.Wait();
   }
 
+  void CreateBroadcastChannel(RenderFrameHost* frame) {
+    EXPECT_TRUE(
+        content::ExecJs(frame,
+                        "self.bc = new BroadcastChannel('channel');"
+                        "self.bc_message = '';"
+                        "self.bc.onmessage = (m) => { self.bc_message = m.data; };"));
+  }
+
+  void SendBroadcastMessage(RenderFrameHost* frame, base::StringPiece message) {
+    EXPECT_TRUE(content::ExecJs(
+        frame,
+        base::StringPrintf("(async () => {"
+                           "  self.bc.postMessage('%s');"
+                           "  await new Promise(r => setTimeout(r, 200));"
+                           "})();",
+                           message.data())));
+  }
+
+  void ClearBroadcastMessage(RenderFrameHost* frame) {
+    EXPECT_TRUE(content::ExecJs(frame, "self.bc_message = '';"));
+  }
+
+  content::EvalJsResult GetBroadcastMessage(RenderFrameHost* frame) {
+    return content::EvalJs(frame, "self.bc_message");
+  }
+
  protected:
   net::test_server::EmbeddedTestServer https_server_;
   GURL a_site_ephemeral_storage_url_;
@@ -765,6 +791,96 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, LocalStorageIsShared) {
               site_a_tab2_values.iframe_1.cookies);
     EXPECT_EQ("name=bcom_simple; from=a.com-modify",
               site_a_tab2_values.iframe_2.cookies);
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
+                       BroadcastChannelIsPartitioned) {
+  // Create tabs.
+  WebContents* site_a_tab1 = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+  WebContents* site_a_tab2 = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+  WebContents* site_b_tab1 = LoadURLInNewTab(b_site_ephemeral_storage_url_);
+  WebContents* site_b_tab2 = LoadURLInNewTab(b_site_ephemeral_storage_url_);
+
+  // Gather all WebContents and frames in a usable structure.
+  base::flat_map<WebContents*, std::vector<RenderFrameHost*>> frames;
+  for (auto* wc : {site_a_tab1, site_a_tab2, site_b_tab1, site_b_tab2}) {
+    auto* main_rfh = wc->GetMainFrame();
+    CreateBroadcastChannel(main_rfh);
+    frames[wc].push_back(main_rfh);
+    for (size_t child_idx = 0; child_idx < 4; ++child_idx) {
+      auto* child_rfh = content::ChildFrameAt(main_rfh, child_idx);
+      CreateBroadcastChannel(child_rfh);
+      frames[wc].push_back(child_rfh);
+    }
+  }
+
+  // Prepare test cases.
+  struct TestCase {
+    RenderFrameHost* send;
+    std::vector<RenderFrameHost*> expect_received;
+  } const kTestCases[] = {
+      {// Send from a.com main frame.
+       .send = frames[site_a_tab1][0],
+       // Expect received in both a.com tabs and nested 1p a.com frames.
+       .expect_received = {frames[site_a_tab1][3], frames[site_a_tab2][0],
+                           frames[site_a_tab2][3]}},
+      {// Send from 3p b.com frame.
+       .send = frames[site_a_tab1][1],
+       // Expect received in 3p b.com frames inside a.com.
+       .expect_received =
+           {
+               frames[site_a_tab1][2],
+               frames[site_a_tab1][4],
+               frames[site_a_tab2][1],
+               frames[site_a_tab2][2],
+               frames[site_a_tab2][4],
+           }},
+      {// Send from 3p a.com frame.
+       .send = frames[site_b_tab1][3],
+       // Expect received in 3p a.com frame inside b.com.
+       .expect_received =
+           {
+               frames[site_b_tab2][3],
+           }},
+      {// Send from b.com main frame.
+       .send = frames[site_b_tab1][0],
+       // Expect received in both b.com tabs and nested 1p b.com frames.
+       .expect_received = {frames[site_b_tab1][1], frames[site_b_tab1][2],
+                           frames[site_b_tab1][4], frames[site_b_tab2][0],
+                           frames[site_b_tab2][1], frames[site_b_tab2][2],
+                           frames[site_b_tab2][4]}},
+  };
+
+  const char kTestMessage[] = "msg";
+  for (const auto& test_case : kTestCases) {
+    // RenderFrameHosts that were expected to sent something or receive
+    // something. The set is used to skip RFHs in "expect received nothing"
+    // phase.
+    base::flat_set<RenderFrameHost*> processed_rfhs;
+
+    // Send broadcast message.
+    SendBroadcastMessage(test_case.send, kTestMessage);
+    processed_rfhs.insert(test_case.send);
+
+    // Expect broadcast message is received in these frames.
+    for (auto* rfh : test_case.expect_received) {
+      EXPECT_EQ(kTestMessage, GetBroadcastMessage(rfh));
+      processed_rfhs.insert(rfh);
+    }
+
+    for (const auto& wc_frames : frames) {
+      for (auto* rfh : wc_frames.second) {
+        if (!base::Contains(processed_rfhs, rfh)) {
+          SCOPED_TRACE(testing::Message()
+                       << "WebContents URL: "
+                       << wc_frames.first->GetLastCommittedURL()
+                       << " RFH URL: " << rfh->GetLastCommittedURL());
+          EXPECT_NE(kTestMessage, GetBroadcastMessage(rfh));
+        }
+        ClearBroadcastMessage(rfh);
+      }
+    }
   }
 }
 
