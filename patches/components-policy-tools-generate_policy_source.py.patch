@@ -1,9 +1,9 @@
 diff --git a/components/policy/tools/generate_policy_source.py b/components/policy/tools/generate_policy_source.py
-index f8a1c794c3f4629c97158c7974ef26011d67f52e..62625fb3eea1682ae0ea43303a42c6dc72d203f8 100755
+index df7bcc6d3c1ece96171f2c010344251a948575bc..1cfedb75223b90b1f87678bf0d699864fb2f121a 100755
 --- a/components/policy/tools/generate_policy_source.py
 +++ b/components/policy/tools/generate_policy_source.py
 @@ -52,6 +52,7 @@ PLATFORM_STRINGS = {
-     'chrome.win7': ['win']
+     'chrome.win7': ['win'],
  }
  
 +from policy_source_helper import AddBravePolicies, CHROMIUM_POLICY_KEY
