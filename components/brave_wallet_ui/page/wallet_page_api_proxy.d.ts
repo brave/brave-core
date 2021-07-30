@@ -12,4 +12,5 @@ export default class APIProxy {
   swapController: SwapController
   assetRatioController: AssetRatioController
   keyringController: KeyringController
+  addEthJsonRpcControllerObserver: (store: any) => void
 }

@@ -8,8 +8,13 @@ import { createStore, applyMiddleware } from 'redux'
 import reducers from './reducers'
 import walletPanelAsyncHandler from './async/wallet_panel_async_handler'
 import walletAsyncHandler from '../common/async/wallet_async_handler'
+import apiProxy from './wallet_panel_api_proxy.js'
 
-export default createStore(
+const store = createStore(
     reducers,
     applyMiddleware(walletAsyncHandler, walletPanelAsyncHandler)
 )
+
+apiProxy.getInstance().addEthJsonRpcControllerObserver(store)
+
+export default store

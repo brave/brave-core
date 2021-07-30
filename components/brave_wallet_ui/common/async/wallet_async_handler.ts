@@ -6,7 +6,7 @@
 import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletActions from '../actions/wallet_actions'
-import { UnlockWalletPayloadType, SetInitialAccountNamesPayloadType, AddNewAccountNamePayloadType } from '../constants/action_types'
+import { UnlockWalletPayloadType, SetInitialAccountNamesPayloadType, AddNewAccountNamePayloadType, ChainChangedEventPayloadType } from '../constants/action_types'
 import { AppObjectType, APIProxyControllers } from '../../constants/types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
@@ -30,6 +30,10 @@ async function refreshWalletInfo (store: Store) {
 }
 
 handler.on(WalletActions.initialize.getType(), async (store) => {
+  await refreshWalletInfo(store)
+})
+
+handler.on(WalletActions.chainChangedEvent.getType(), async (store, payload: ChainChangedEventPayloadType) => {
   await refreshWalletInfo(store)
 })
 
