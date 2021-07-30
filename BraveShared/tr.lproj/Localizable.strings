@@ -898,8 +898,8 @@
 /* Button title that open application settings */
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "Ayarları Aç";
 
-/* No comment provided by engineer. */
-"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Siri - Sesli Yardımcı ile yeni bir sekme açmak için Kestirmeler'i kullanın";
+/* Description of Clear Browser History Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Siri - Sesli Yardımcı ile Yeni Sekme Açmak ve Tarayıcı Geçmişini Temizlemek için Kestirmeler'i kullanın";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Tarayıcı Geçmişini Temizle";
@@ -928,8 +928,8 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenNewTabTitle" = "Yeni Sekme Aç";
 
-/* Use Shortcuts to Open Playlist via Siri - Voice Assistant */
-"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Siri - Sesli Yardımcı ile Brave VPN'i etkinleştirmek için Kestirmeler'i kullanın";
+/* Description of Open Playlist Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Siri - Sesli Yardımcı ile Oynatma Listesi Açmak için Kestirmeler'i kullanın";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenPlaylistTitle" = "Oynatma Listesi Aç";

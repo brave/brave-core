@@ -37,74 +37,17 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Vis alltid";
 
-/* Label used as a setting item and title of the following screen to change the current passcode */
-"AuthenticationChangePasscode" = "Endre passkode";
-
-/* Touch ID prompt subtitle when disabling Touch ID */
-"AuthenticationDisableTouchReason" = "Bruk fingeravtrykket ditt for å deaktivere Touch ID.";
-
-/* Text displayed above the input field when entering a new passcode */
-"AuthenticationEnterAPasscode" = "Tast inn en passkode";
-
-/* Text displayed above the input field when changing the existing passcode */
-"AuthenticationEnterNewPasscode" = "Tast inn en ny passkode";
-
-/* Text displayed above the input field when changing the existing passcode */
-"AuthenticationEnterPasscode" = "Tast inn passkode";
-
-/* Title of the dialog used to request the passcode */
-"AuthenticationEnterPasscodeTitle" = "Tast inn passkode";
-
 /* Label for the Face ID/Passcode item in Settings */
 "AuthenticationFaceIDPasscodeSetting" = "Face ID og passkode";
 
-/* Immediately' interval item for selecting when to require passcode */
-"AuthenticationImmediately" = "Umiddelbart";
-
-/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app with attempts remaining */
-"AuthenticationIncorrectAttemptsRemaining" = "Ugyldig passkode. Prøv igjen (Gjenværende forsøk: %d).";
-
-/* Touch ID prompt subtitle when accessing logins */
-"AuthenticationLoginsTouchReason" = "Bruk fingeravtrykket ditt for å få tilgang til innlogginger nå.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "For mange mislykkede forsøk.\n Prøv igjen om %d minutter.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedNoTime" = "Maksimalt antall forsøk nådd. Vennligst prøv igjen senere.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedOneMinute" = "For mange mislykkede forsøk.\n Prøv igjen om 1 minutt.";
+/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "Dette autentiserer din tilgang til Brave";
 
 /* Label for the Passcode item in Settings */
-"AuthenticationPasscode" = "Passkode for innlogging";
-
-/* Text displayed above the input field when confirming a passcode */
-"AuthenticationReenterPasscode" = "Tast inn passkode på nytt";
-
-/* Text displayed in the 'Interval' section, followed by the current interval setting, e.g. 'Immediately' */
-"AuthenticationRequirePasscode" = "Krever passkode";
-
-/* Touch ID prompt subtitle when accessing the require passcode setting */
-"AuthenticationRequirePasscodeTouchReason" = "Bruk fingeravtrykket ditt for å få tilgang til tilpassing av intervall for påkrevd passkode.";
-
-/* Title of the dialog used to set a passcode */
-"AuthenticationSetPasscode" = "Sett passkode";
-
-/* When the user taps on the passcode pane, the touch gesture recognizer will bring up the keyboard back on the screen when hidden on iPad. */
-"AuthenticationTouchForKeyboard" = "Trykk for å få frem tastaturtilgjengeligheten";
+"AuthenticationPasscode" = "Passkode";
 
 /* Label for the Touch ID/Passcode item in Settings */
 "AuthenticationTouchIDPasscodeSetting" = "Touch ID og passkode";
-
-/* Label used as a setting item to turn off passcode */
-"AuthenticationTurnOffPasscode" = "Slå passkode av";
-
-/* Label used as a setting item to turn on passcode */
-"AuthenticationTurnOnPasscode" = "Slå passkode på";
-
-/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app */
-"AuthenticationWrongPasscodeError" = "Ugyldig passkode. Prøv igjen.";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Avbryt";
@@ -213,6 +156,24 @@
 
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Brave må være installert på alle enhetene du vil synkronisere. Start en synkkjede for å knytte alle enhetene dine sikkert sammen.";
+
+/* Setting to enable the browser lock privacy feature */
+"BrowserLock" = "Nettleser Lås";
+
+/* No comment provided by engineer. */
+"BrowserLockDescription" = "Lås opp Brave med Touch ID, Face ID eller systempassord.";
+
+/* A button title for the action to move to the next step of the browser lock migration process. */
+"browserLockMigrationContinueButtonTitle" = "Fortsett";
+
+/* Displayed to the user when they don't have a passcode set on their phone, therefore cannot use the Browser Lock feature. \"%@\" will be filled with either \"Touch ID & Passcode\" or \"Face ID & Passcode\" */
+"browserLockMigrationNoPasscodeSetup" = "Har du ikke angitt ID eller passord? Åpne Innstillinger, og trykk deretter på \"% @\"";
+
+/* Subtitle on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
+"browserLockMigrationSubtitle" = "Vi har forenklet Brave Passcodes. Du kan nå få tilgang til Brave med samme ID eller passord du bruker på telefonen.";
+
+/* Title on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
+"browserLockMigrationTitle" = "Åpne Brave med Apple Face ID, Touch ID eller passord";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Nettleserhistorikk";
@@ -717,12 +678,6 @@
 
 /* Sync pair device settings section title */
 "Pair" = "Par";
-
-/* Error message displayed to user when their confirming passcode doesn't match the first code. */
-"PasscodeConfirmMisMatchErrorText" = "Passkodene stemte ikke overens. Prøv igjen.";
-
-/* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
-"PasscodeMatchOldErrorText" = "Den nye passkoden må være ulik den eksisterende koden.";
 
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Bilde av %@";

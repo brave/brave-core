@@ -37,74 +37,17 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "常に表示";
 
-/* Label used as a setting item and title of the following screen to change the current passcode */
-"AuthenticationChangePasscode" = "パスコードを変更";
-
-/* Touch ID prompt subtitle when disabling Touch ID */
-"AuthenticationDisableTouchReason" = "Touch IDを無効にするため指紋認証を行って行ってください。";
-
-/* Text displayed above the input field when entering a new passcode */
-"AuthenticationEnterAPasscode" = "パスコードを入力";
-
-/* Text displayed above the input field when changing the existing passcode */
-"AuthenticationEnterNewPasscode" = "新しいパスコードを入力";
-
-/* Text displayed above the input field when changing the existing passcode */
-"AuthenticationEnterPasscode" = "パスコードを入力";
-
-/* Title of the dialog used to request the passcode */
-"AuthenticationEnterPasscodeTitle" = "パスコードを入力";
-
 /* Label for the Face ID/Passcode item in Settings */
 "AuthenticationFaceIDPasscodeSetting" = "Face ID とパスコード";
 
-/* Immediately' interval item for selecting when to require passcode */
-"AuthenticationImmediately" = "直ちに";
-
-/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app with attempts remaining */
-"AuthenticationIncorrectAttemptsRemaining" = "パスコードが正しくありません。\nやり直してください (残り試行回数: %d)。";
-
-/* Touch ID prompt subtitle when accessing logins */
-"AuthenticationLoginsTouchReason" = "ログイン情報にアクセスするには指紋認証が必要です。";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "規程回数以上の試行が失敗しました。\n%d分後に再試行してください。";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedNoTime" = "試行回数が上限に達しました。\nしばらくしてからやり直してください。";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedOneMinute" = "規程回数以上の試行が失敗しました。\n1分後にもう一度お試しください。";
+/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "これによりBraveへのアクセスを認証します";
 
 /* Label for the Passcode item in Settings */
-"AuthenticationPasscode" = "ログイン情報のパスコード";
-
-/* Text displayed above the input field when confirming a passcode */
-"AuthenticationReenterPasscode" = "パスコードを再入力";
-
-/* Text displayed in the 'Interval' section, followed by the current interval setting, e.g. 'Immediately' */
-"AuthenticationRequirePasscode" = "パスコードを要求";
-
-/* Touch ID prompt subtitle when accessing the require passcode setting */
-"AuthenticationRequirePasscodeTouchReason" = "パスコードの要求時間を変更するには指紋認証が必要です。";
-
-/* Title of the dialog used to set a passcode */
-"AuthenticationSetPasscode" = "パスコードを設定";
-
-/* When the user taps on the passcode pane, the touch gesture recognizer will bring up the keyboard back on the screen when hidden on iPad. */
-"AuthenticationTouchForKeyboard" = "タップしてキーボードのアクセシビリティを表示する";
+"AuthenticationPasscode" = "パスコード";
 
 /* Label for the Touch ID/Passcode item in Settings */
 "AuthenticationTouchIDPasscodeSetting" = "Touch ID とパスコード";
-
-/* Label used as a setting item to turn off passcode */
-"AuthenticationTurnOffPasscode" = "パスコードをオフにする";
-
-/* Label used as a setting item to turn on passcode */
-"AuthenticationTurnOnPasscode" = "パスコードをオンにする";
-
-/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app */
-"AuthenticationWrongPasscodeError" = "パスコードが正しくありません。やり直してください。";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "キャンセル";
@@ -213,6 +156,24 @@
 
 /* Sync settings welcome */
 "BraveSyncWelcome" = "はじめに、同期させたいすべてのデバイスにBraveをインストールする必要があります。そして、同期チェーンを開始してすべてのデバイスを安全にリンクできます。";
+
+/* Setting to enable the browser lock privacy feature */
+"BrowserLock" = "ブラウザのロック";
+
+/* No comment provided by engineer. */
+"BrowserLockDescription" = "BraveをTouch ID、Face ID、システムパスコードでロック解除する";
+
+/* A button title for the action to move to the next step of the browser lock migration process. */
+"browserLockMigrationContinueButtonTitle" = "続ける";
+
+/* Displayed to the user when they don't have a passcode set on their phone, therefore cannot use the Browser Lock feature. \"%@\" will be filled with either \"Touch ID & Passcode\" or \"Face ID & Passcode\" */
+"browserLockMigrationNoPasscodeSetup" = "まだIDやパスコードを設定していませんか？設定を開いて、「%@」をタップしてください。";
+
+/* Subtitle on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
+"browserLockMigrationSubtitle" = "Brave Passcodeをシンプルにしました。これからは、あなたのデバイスに使用しているのと同じIDやパスコードでBraveにアクセスできます。";
+
+/* Title on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
+"browserLockMigrationTitle" = "Apple Face IDやTouch IDやパスコードでBraveを開く";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "閲覧履歴";
@@ -717,12 +678,6 @@
 
 /* Sync pair device settings section title */
 "Pair" = "ペア";
-
-/* Error message displayed to user when their confirming passcode doesn't match the first code. */
-"PasscodeConfirmMisMatchErrorText" = "パスコードが一致しませんでした。やり直してください。";
-
-/* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
-"PasscodeMatchOldErrorText" = "新しいパスコードは既存のコードと異なるものにする必要があります。";
 
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Photo by %@";

@@ -37,74 +37,17 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Показывать всегда";
 
-/* Label used as a setting item and title of the following screen to change the current passcode */
-"AuthenticationChangePasscode" = "Изменить код доступа";
-
-/* Touch ID prompt subtitle when disabling Touch ID */
-"AuthenticationDisableTouchReason" = "Для отключения Touch ID требуется отпечаток пальца.";
-
-/* Text displayed above the input field when entering a new passcode */
-"AuthenticationEnterAPasscode" = "Введите код доступа";
-
-/* Text displayed above the input field when changing the existing passcode */
-"AuthenticationEnterNewPasscode" = "Введите новый код доступа";
-
-/* Text displayed above the input field when changing the existing passcode */
-"AuthenticationEnterPasscode" = "Введите код доступа";
-
-/* Title of the dialog used to request the passcode */
-"AuthenticationEnterPasscodeTitle" = "Введите код доступа";
-
 /* Label for the Face ID/Passcode item in Settings */
 "AuthenticationFaceIDPasscodeSetting" = "Face ID и код доступа";
 
-/* Immediately' interval item for selecting when to require passcode */
-"AuthenticationImmediately" = "Сразу";
-
-/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app with attempts remaining */
-"AuthenticationIncorrectAttemptsRemaining" = "Неверный код доступа. Осталось попыток: %d.";
-
-/* Touch ID prompt subtitle when accessing logins */
-"AuthenticationLoginsTouchReason" = "Для доступа к учетным данным требуется отпечаток пальца.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "Слишком много неудачных попыток.\nПовторите вход через %d мин.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedNoTime" = "Попытки исчерпаны. Повторите вход позже.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedOneMinute" = "Слишком много неудачных попыток.\nПовторите вход через минуту.";
+/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "Так вы подтвердите, что именно вы выполняете вход в Brave.";
 
 /* Label for the Passcode item in Settings */
-"AuthenticationPasscode" = "Код доступа к учетным данным";
-
-/* Text displayed above the input field when confirming a passcode */
-"AuthenticationReenterPasscode" = "Введите код доступа еще раз";
-
-/* Text displayed in the 'Interval' section, followed by the current interval setting, e.g. 'Immediately' */
-"AuthenticationRequirePasscode" = "Запрашивать пароль";
-
-/* Touch ID prompt subtitle when accessing the require passcode setting */
-"AuthenticationRequirePasscodeTouchReason" = "Для доступа к настройкам требуется отпечаток пальца.";
-
-/* Title of the dialog used to set a passcode */
-"AuthenticationSetPasscode" = "Установите код доступа";
-
-/* When the user taps on the passcode pane, the touch gesture recognizer will bring up the keyboard back on the screen when hidden on iPad. */
-"AuthenticationTouchForKeyboard" = "Коснитесь, чтобы открыть клавиатуру";
+"AuthenticationPasscode" = "Код-пароль";
 
 /* Label for the Touch ID/Passcode item in Settings */
 "AuthenticationTouchIDPasscodeSetting" = "Touch ID и код доступа";
-
-/* Label used as a setting item to turn off passcode */
-"AuthenticationTurnOffPasscode" = "Отключить код доступа";
-
-/* Label used as a setting item to turn on passcode */
-"AuthenticationTurnOnPasscode" = "Включить код доступа";
-
-/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app */
-"AuthenticationWrongPasscodeError" = "Неверный код доступа. Повторите попытку.";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Отмена";
@@ -213,6 +156,24 @@
 
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Установите Brave на всех устройствах, которые хотите синхронизировать. Чтобы безопасно связать их между собой, создайте цепочку синхронизации.";
+
+/* Setting to enable the browser lock privacy feature */
+"BrowserLock" = "Блокировка браузера";
+
+/* No comment provided by engineer. */
+"BrowserLockDescription" = "Для разблокировки Brave используйте Touch ID, Face ID или системный код-пароль.";
+
+/* A button title for the action to move to the next step of the browser lock migration process. */
+"browserLockMigrationContinueButtonTitle" = "Продолжить";
+
+/* Displayed to the user when they don't have a passcode set on their phone, therefore cannot use the Browser Lock feature. \"%@\" will be filled with either \"Touch ID & Passcode\" or \"Face ID & Passcode\" */
+"browserLockMigrationNoPasscodeSetup" = "Включите аутентификацию: откройте настройки устройства и выберите «%@».";
+
+/* Subtitle on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
+"browserLockMigrationSubtitle" = "Мы упростили разблокировку Brave. Теперь доступ к браузеру можно получить с помощью Touch ID, Face ID или кода-пароля для телефона.";
+
+/* Title on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
+"browserLockMigrationTitle" = "Открывайте Brave с помощью Face ID, Touch ID или кода-пароля";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "История просмотров";
@@ -717,12 +678,6 @@
 
 /* Sync pair device settings section title */
 "Pair" = "Связать устройства";
-
-/* Error message displayed to user when their confirming passcode doesn't match the first code. */
-"PasscodeConfirmMisMatchErrorText" = "Коды доступа не совпадают. Повторите попытку.";
-
-/* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
-"PasscodeMatchOldErrorText" = "Новый код доступа должен отличаться от прежнего.";
 
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Автор фото: %@";

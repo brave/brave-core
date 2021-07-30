@@ -10,7 +10,7 @@
 "NSCameraUsageDescription" = "Esto le permite realizar y subir fotografías.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Brave requiere Face ID para acceder a sus inicios de sesión guardados.";
+"NSFaceIDUsageDescription" = "Sirve para autenticar tu acceso a Brave";
 
 /* Privacy - Location When In Use Usage Description */
 "NSLocationWhenInUseUsageDescription" = "Los sitios webs que visite podrían solicitar su ubicación.";

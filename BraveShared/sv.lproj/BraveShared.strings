@@ -37,74 +37,17 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Visa alltid";
 
-/* Label used as a setting item and title of the following screen to change the current passcode */
-"AuthenticationChangePasscode" = "Ändra lösenord";
-
-/* Touch ID prompt subtitle when disabling Touch ID */
-"AuthenticationDisableTouchReason" = "Använd ditt fingeravtryck för att inaktivera Touch ID.";
-
-/* Text displayed above the input field when entering a new passcode */
-"AuthenticationEnterAPasscode" = "Ange ett lösenord";
-
-/* Text displayed above the input field when changing the existing passcode */
-"AuthenticationEnterNewPasscode" = "Ange ett nytt lösenord";
-
-/* Text displayed above the input field when changing the existing passcode */
-"AuthenticationEnterPasscode" = "Ange lösenord";
-
-/* Title of the dialog used to request the passcode */
-"AuthenticationEnterPasscodeTitle" = "Ange lösenord";
-
 /* Label for the Face ID/Passcode item in Settings */
 "AuthenticationFaceIDPasscodeSetting" = "Face ID och lösenord";
 
-/* Immediately' interval item for selecting when to require passcode */
-"AuthenticationImmediately" = "Omedelbart";
-
-/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app with attempts remaining */
-"AuthenticationIncorrectAttemptsRemaining" = "Felaktigt lösenord. Försök igen (Återstående försök: %d).";
-
-/* Touch ID prompt subtitle when accessing logins */
-"AuthenticationLoginsTouchReason" = "Använd ditt fingeravtryck för att komma inloggningar nu.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "För många misslyckade försök.\n Vänligen försök igen inom %d minuter.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedNoTime" = "Maximala antalet försök har nåtts. Försök igen senare.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedOneMinute" = "För många misslyckade försök.\n Vänligen försök igen om 1 minut.";
+/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "Detta autentiserar din åtkomst till Brave";
 
 /* Label for the Passcode item in Settings */
-"AuthenticationPasscode" = "Lösenord för inloggning";
-
-/* Text displayed above the input field when confirming a passcode */
-"AuthenticationReenterPasscode" = "Ange lösenordet igen";
-
-/* Text displayed in the 'Interval' section, followed by the current interval setting, e.g. 'Immediately' */
-"AuthenticationRequirePasscode" = "Kräv lösenord";
-
-/* Touch ID prompt subtitle when accessing the require passcode setting */
-"AuthenticationRequirePasscodeTouchReason" = "Använd ditt fingeravtryck för att komma åt inställningarna för hur ofta lösenord behöver anges.";
-
-/* Title of the dialog used to set a passcode */
-"AuthenticationSetPasscode" = "Ställ in lösenord";
-
-/* When the user taps on the passcode pane, the touch gesture recognizer will bring up the keyboard back on the screen when hidden on iPad. */
-"AuthenticationTouchForKeyboard" = "Tryck för att visa hjälpmedelstangentbordet";
+"AuthenticationPasscode" = "Lösenord";
 
 /* Label for the Touch ID/Passcode item in Settings */
 "AuthenticationTouchIDPasscodeSetting" = "Touch ID och lösenord";
-
-/* Label used as a setting item to turn off passcode */
-"AuthenticationTurnOffPasscode" = "Stäng av lösenord";
-
-/* Label used as a setting item to turn on passcode */
-"AuthenticationTurnOnPasscode" = "Sätt på lösenord";
-
-/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app */
-"AuthenticationWrongPasscodeError" = "Felaktigt lösenord. Försök igen.";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Avbryt";
@@ -213,6 +156,24 @@
 
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Till att börja med måste du ha installerat Brave på alla enheter du vill synkronisera. För att sammanlänka dem kan du starta en synkroniseringskedja som du använder för att koppla ihop alla dina enheter säkert.";
+
+/* Setting to enable the browser lock privacy feature */
+"BrowserLock" = "Webbläsarlås";
+
+/* No comment provided by engineer. */
+"BrowserLockDescription" = "Lås upp Brave med Touch ID, Face ID eller systemets lösenord.";
+
+/* A button title for the action to move to the next step of the browser lock migration process. */
+"browserLockMigrationContinueButtonTitle" = "Fortsätt";
+
+/* Displayed to the user when they don't have a passcode set on their phone, therefore cannot use the Browser Lock feature. \"%@\" will be filled with either \"Touch ID & Passcode\" or \"Face ID & Passcode\" */
+"browserLockMigrationNoPasscodeSetup" = "Har du inte skapat ett ID eller en lösenordskod? Öppna Inställningar och tryck på \"%@\"";
+
+/* Subtitle on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
+"browserLockMigrationSubtitle" = "Vi har förenklat Brave-lösenord. Du kan nu komma åt Brave med samma ID eller lösenord som du använder på din telefon.";
+
+/* Title on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
+"browserLockMigrationTitle" = "Öppna Brave med ditt Apple Face ID, Touch ID eller lösenord";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Webbläsarhistorik";
@@ -717,12 +678,6 @@
 
 /* Sync pair device settings section title */
 "Pair" = "Parkoppla";
-
-/* Error message displayed to user when their confirming passcode doesn't match the first code. */
-"PasscodeConfirmMisMatchErrorText" = "Lösenorden matchade inte. Försök igen.";
-
-/* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
-"PasscodeMatchOldErrorText" = "Ditt nya lösenord får inte vara samma som ditt befintliga.";
 
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Foto av %@";

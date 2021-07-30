@@ -37,74 +37,17 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Her Zaman Göster";
 
-/* Label used as a setting item and title of the following screen to change the current passcode */
-"AuthenticationChangePasscode" = "Parolayı Değiştir";
-
-/* Touch ID prompt subtitle when disabling Touch ID */
-"AuthenticationDisableTouchReason" = "Touch ID'yi devre dışı bırakmak için parmak izinizi kullanın.";
-
-/* Text displayed above the input field when entering a new passcode */
-"AuthenticationEnterAPasscode" = "Parola girme";
-
-/* Text displayed above the input field when changing the existing passcode */
-"AuthenticationEnterNewPasscode" = "Yeni parola girme";
-
-/* Text displayed above the input field when changing the existing passcode */
-"AuthenticationEnterPasscode" = "Parola girin";
-
-/* Title of the dialog used to request the passcode */
-"AuthenticationEnterPasscodeTitle" = "Parola Girin";
-
 /* Label for the Face ID/Passcode item in Settings */
 "AuthenticationFaceIDPasscodeSetting" = "Yüz Kimliği ve Parola";
 
-/* Immediately' interval item for selecting when to require passcode */
-"AuthenticationImmediately" = "hemen";
-
-/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app with attempts remaining */
-"AuthenticationIncorrectAttemptsRemaining" = "Yanlış parola. Yeniden deneyin (Kalan denemeler: %d).";
-
-/* Touch ID prompt subtitle when accessing logins */
-"AuthenticationLoginsTouchReason" = "Girişlere şimdi erişmek için parmak izinizi kullanın.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "Çok fazla başarısız deneme.\n Lütfen %d dakika içinde yeniden deneyin.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedNoTime" = "Maksimum deneme sayısına ulaşıldı. Lütfen daha sonra yeniden deneyin.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedOneMinute" = "Çok fazla başarısız deneme.\n Lütfen 1 dakika içinde yeniden deneyin.";
+/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "Bu işlem, Brave erişiminizin kimliğini doğrular";
 
 /* Label for the Passcode item in Settings */
-"AuthenticationPasscode" = "Oturum Açma Parolası";
-
-/* Text displayed above the input field when confirming a passcode */
-"AuthenticationReenterPasscode" = "Parolayı yeniden girin";
-
-/* Text displayed in the 'Interval' section, followed by the current interval setting, e.g. 'Immediately' */
-"AuthenticationRequirePasscode" = "Parola İste";
-
-/* Touch ID prompt subtitle when accessing the require passcode setting */
-"AuthenticationRequirePasscodeTouchReason" = "Gerekli parola aralığınızı yapılandırmaya erişmek için parmak izinizi kullanın.";
-
-/* Title of the dialog used to set a passcode */
-"AuthenticationSetPasscode" = "Parola Belirle";
-
-/* When the user taps on the passcode pane, the touch gesture recognizer will bring up the keyboard back on the screen when hidden on iPad. */
-"AuthenticationTouchForKeyboard" = "Klavye erişilebilirliğini getirmek için dokunun";
+"AuthenticationPasscode" = "Geçiş kodu";
 
 /* Label for the Touch ID/Passcode item in Settings */
 "AuthenticationTouchIDPasscodeSetting" = "Dokunmatik Kimlik ve Parola";
-
-/* Label used as a setting item to turn off passcode */
-"AuthenticationTurnOffPasscode" = "Parolayı Kapat";
-
-/* Label used as a setting item to turn on passcode */
-"AuthenticationTurnOnPasscode" = "Parolayı Aç";
-
-/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app */
-"AuthenticationWrongPasscodeError" = "Yanlış parola. Yeniden deneyin.";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "İptal";
@@ -213,6 +156,24 @@
 
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Başlamak için, senkronize etmeyi planladığınız tüm cihazlarda Brave'in yüklü olması gerekir. Bunları birbirine zincirlemek için, tüm cihazlarınızı güvenli bir şekilde birbirine bağlarken kullanacağınız bir eşitleme zinciri başlatın.";
+
+/* Setting to enable the browser lock privacy feature */
+"BrowserLock" = "Tarayıcı Kilidi";
+
+/* No comment provided by engineer. */
+"BrowserLockDescription" = "Touch ID, Face ID veya sistem geçiş koduyla Brave'in kilidini açın.";
+
+/* A button title for the action to move to the next step of the browser lock migration process. */
+"browserLockMigrationContinueButtonTitle" = "Devam";
+
+/* Displayed to the user when they don't have a passcode set on their phone, therefore cannot use the Browser Lock feature. \"%@\" will be filled with either \"Touch ID & Passcode\" or \"Face ID & Passcode\" */
+"browserLockMigrationNoPasscodeSetup" = "ID veya geçiş kodu ayarlamadınız mı? Ayarlar'ı açın, ardından \"%@\" öğesine dokunun";
+
+/* Subtitle on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
+"browserLockMigrationSubtitle" = "Brave Geçiş Kodlarını basitleştirdik. Artık Brave'e telefonunuzda kullandığınız aynı ID veya geçiş koduyla erişebilirsiniz.";
+
+/* Title on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
+"browserLockMigrationTitle" = "Apple Face ID, Touch ID veya geçiş kodunuzla Brave'i açın";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Arama Geçmişi";
@@ -717,12 +678,6 @@
 
 /* Sync pair device settings section title */
 "Pair" = "Eşleştir";
-
-/* Error message displayed to user when their confirming passcode doesn't match the first code. */
-"PasscodeConfirmMisMatchErrorText" = "Parolalar eşleşmedi. Yeniden deneyin.";
-
-/* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
-"PasscodeMatchOldErrorText" = "Yeni parola varolan koddan farklı olmalıdır.";
 
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Fotoğraf : %@";

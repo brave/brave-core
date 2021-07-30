@@ -37,74 +37,17 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "一律顯示";
 
-/* Label used as a setting item and title of the following screen to change the current passcode */
-"AuthenticationChangePasscode" = "變更密碼";
-
-/* Touch ID prompt subtitle when disabling Touch ID */
-"AuthenticationDisableTouchReason" = "使用您的指紋來停用 Touch ID。";
-
-/* Text displayed above the input field when entering a new passcode */
-"AuthenticationEnterAPasscode" = "輸入密碼";
-
-/* Text displayed above the input field when changing the existing passcode */
-"AuthenticationEnterNewPasscode" = "輸入新密碼";
-
-/* Text displayed above the input field when changing the existing passcode */
-"AuthenticationEnterPasscode" = "輸入密碼";
-
-/* Title of the dialog used to request the passcode */
-"AuthenticationEnterPasscodeTitle" = "輸入密碼";
-
 /* Label for the Face ID/Passcode item in Settings */
 "AuthenticationFaceIDPasscodeSetting" = "Face ID 和密碼";
 
-/* Immediately' interval item for selecting when to require passcode */
-"AuthenticationImmediately" = "立即";
-
-/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app with attempts remaining */
-"AuthenticationIncorrectAttemptsRemaining" = "密碼不正確，請再試一次 (剩餘嘗試次數：%d)。";
-
-/* Touch ID prompt subtitle when accessing logins */
-"AuthenticationLoginsTouchReason" = "立即使用您的指紋登入。";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "已達嘗試次數上限。\n請 %d 分鐘後再試。";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedNoTime" = "已達嘗試次數上限，請稍後再試。";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedOneMinute" = "已達嘗試次數上限。\n請 1 分鐘後再試。";
+/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "這會驗證您對 Brave 的存取權限";
 
 /* Label for the Passcode item in Settings */
-"AuthenticationPasscode" = "登入密碼";
-
-/* Text displayed above the input field when confirming a passcode */
-"AuthenticationReenterPasscode" = "重新輸入密碼";
-
-/* Text displayed in the 'Interval' section, followed by the current interval setting, e.g. 'Immediately' */
-"AuthenticationRequirePasscode" = "請輸入密碼";
-
-/* Touch ID prompt subtitle when accessing the require passcode setting */
-"AuthenticationRequirePasscodeTouchReason" = "使用您的指紋來設定需輸入密碼的間隔時間。";
-
-/* Title of the dialog used to set a passcode */
-"AuthenticationSetPasscode" = "設定密碼";
-
-/* When the user taps on the passcode pane, the touch gesture recognizer will bring up the keyboard back on the screen when hidden on iPad. */
-"AuthenticationTouchForKeyboard" = "輕觸以啟用鍵盤存取";
+"AuthenticationPasscode" = "密碼";
 
 /* Label for the Touch ID/Passcode item in Settings */
 "AuthenticationTouchIDPasscodeSetting" = "Touch ID 和密碼";
-
-/* Label used as a setting item to turn off passcode */
-"AuthenticationTurnOffPasscode" = "關閉密碼";
-
-/* Label used as a setting item to turn on passcode */
-"AuthenticationTurnOnPasscode" = "開啟密碼";
-
-/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app */
-"AuthenticationWrongPasscodeError" = "密碼不正確，請再試一次。";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "取消";
@@ -213,6 +156,24 @@
 
 /* Sync settings welcome */
 "BraveSyncWelcome" = "首先，您需要將 Brave 安裝在您計畫同步的所有裝置中。如要將裝置鏈接一起，請啟用一個同步鏈，用於將所有裝置安全鏈接。";
+
+/* Setting to enable the browser lock privacy feature */
+"BrowserLock" = "瀏覽器鎖定";
+
+/* No comment provided by engineer. */
+"BrowserLockDescription" = "以 Touch ID、Face ID 或系統密碼解鎖 Brave";
+
+/* A button title for the action to move to the next step of the browser lock migration process. */
+"browserLockMigrationContinueButtonTitle" = "繼續";
+
+/* Displayed to the user when they don't have a passcode set on their phone, therefore cannot use the Browser Lock feature. \"%@\" will be filled with either \"Touch ID & Passcode\" or \"Face ID & Passcode\" */
+"browserLockMigrationNoPasscodeSetup" = "尚未設定 ID 或密碼嗎？請開啟「設定」，接著輕觸「%@」。";
+
+/* Subtitle on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
+"browserLockMigrationSubtitle" = "我們已將 Brave 密碼簡化，現在您可以使用您在手機上使用的同一組 ID 或密碼來存取 Brave 了。";
+
+/* Title on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
+"browserLockMigrationTitle" = "以您的 Apple Face ID、Touch ID 或密碼開啟 Brave";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "瀏覽記錄";
@@ -717,12 +678,6 @@
 
 /* Sync pair device settings section title */
 "Pair" = "配對";
-
-/* Error message displayed to user when their confirming passcode doesn't match the first code. */
-"PasscodeConfirmMisMatchErrorText" = "密碼不符，請再試一次。";
-
-/* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
-"PasscodeMatchOldErrorText" = "新密碼必須與現有密碼不同。";
 
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "圖片由 %@ 提供";

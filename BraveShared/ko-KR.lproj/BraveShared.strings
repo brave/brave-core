@@ -37,74 +37,17 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "항상 표시";
 
-/* Label used as a setting item and title of the following screen to change the current passcode */
-"AuthenticationChangePasscode" = "암호 변경";
-
-/* Touch ID prompt subtitle when disabling Touch ID */
-"AuthenticationDisableTouchReason" = "Touch ID를 비활성화하려면 지문을 사용하십시오.";
-
-/* Text displayed above the input field when entering a new passcode */
-"AuthenticationEnterAPasscode" = "암호 입력";
-
-/* Text displayed above the input field when changing the existing passcode */
-"AuthenticationEnterNewPasscode" = "새 암호 입력";
-
-/* Text displayed above the input field when changing the existing passcode */
-"AuthenticationEnterPasscode" = "암호 입력";
-
-/* Title of the dialog used to request the passcode */
-"AuthenticationEnterPasscodeTitle" = "암호 입력";
-
 /* Label for the Face ID/Passcode item in Settings */
 "AuthenticationFaceIDPasscodeSetting" = "Face ID 및 암호";
 
-/* Immediately' interval item for selecting when to require passcode */
-"AuthenticationImmediately" = "즉시";
-
-/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app with attempts remaining */
-"AuthenticationIncorrectAttemptsRemaining" = "암호가 잘못되었습니다. 다시 시도하십시오(남은 시도 횟수: %d).";
-
-/* Touch ID prompt subtitle when accessing logins */
-"AuthenticationLoginsTouchReason" = "지금 로그인에 액세스하려면 지문을 사용하십시오.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "시도 횟수가 너무 많습니다.\n %d분 후에 다시 시도해주세요.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedNoTime" = "최대 시도 횟수에 도달했습니다. 나중에 다시 시도하십시오.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedOneMinute" = "시도 횟수가 너무 많습니다.\n 1분 후에 다시 시도해주세요.";
+/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "이 방법으로 Brave 액세스를 인증합니다.";
 
 /* Label for the Passcode item in Settings */
-"AuthenticationPasscode" = "로그인용 암호";
-
-/* Text displayed above the input field when confirming a passcode */
-"AuthenticationReenterPasscode" = "암호 다시 입력";
-
-/* Text displayed in the 'Interval' section, followed by the current interval setting, e.g. 'Immediately' */
-"AuthenticationRequirePasscode" = "암호 필요";
-
-/* Touch ID prompt subtitle when accessing the require passcode setting */
-"AuthenticationRequirePasscodeTouchReason" = "필수 항목인 암호 간격 구성에 액세스하려면 지문을 사용하십시오.";
-
-/* Title of the dialog used to set a passcode */
-"AuthenticationSetPasscode" = "암호 설정";
-
-/* When the user taps on the passcode pane, the touch gesture recognizer will bring up the keyboard back on the screen when hidden on iPad. */
-"AuthenticationTouchForKeyboard" = "스크린 키보드를 띄우려면 탭";
+"AuthenticationPasscode" = "패스코드";
 
 /* Label for the Touch ID/Passcode item in Settings */
 "AuthenticationTouchIDPasscodeSetting" = "Touch ID 및 암호";
-
-/* Label used as a setting item to turn off passcode */
-"AuthenticationTurnOffPasscode" = "암호 끄기";
-
-/* Label used as a setting item to turn on passcode */
-"AuthenticationTurnOnPasscode" = "암호 켜기";
-
-/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app */
-"AuthenticationWrongPasscodeError" = "암호가 잘못되었습니다. 다시 시도하십시오.";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "취소";
@@ -213,6 +156,24 @@
 
 /* Sync settings welcome */
 "BraveSyncWelcome" = "시작하려면 동기화하려는 모든 기기에 Brave가 설치되어 있어야 합니다. 모든 기기를 연결하려면 모든 기기를 안전하게 연결하는 데 사용할 동기화 체인을 시작하십시오.";
+
+/* Setting to enable the browser lock privacy feature */
+"BrowserLock" = "브라우저 잠금";
+
+/* No comment provided by engineer. */
+"BrowserLockDescription" = "Touch ID, Face ID 또는 시스템 패스코드로 Brave를 잠금 해제합니다.";
+
+/* A button title for the action to move to the next step of the browser lock migration process. */
+"browserLockMigrationContinueButtonTitle" = "계속";
+
+/* Displayed to the user when they don't have a passcode set on their phone, therefore cannot use the Browser Lock feature. \"%@\" will be filled with either \"Touch ID & Passcode\" or \"Face ID & Passcode\" */
+"browserLockMigrationNoPasscodeSetup" = "ID나 패스코드를 설정하지 않으셨나요? 설정을 열고 \"%@\"를 탭하세요.";
+
+/* Subtitle on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
+"browserLockMigrationSubtitle" = "Brave 패스코드가 간편해졌습니다. 휴대전화에서 사용하는 것과 동일한 ID 또는 패스코드로 Brave에 액세스할 수 있습니다.";
+
+/* Title on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
+"browserLockMigrationTitle" = "Apple Face ID, Touch ID, 또는 패스코드로 Brave 열기";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "방문 기록";
@@ -717,12 +678,6 @@
 
 /* Sync pair device settings section title */
 "Pair" = "페어링";
-
-/* Error message displayed to user when their confirming passcode doesn't match the first code. */
-"PasscodeConfirmMisMatchErrorText" = "암호가 일치하지 않습니다. 다시 시도하십시오.";
-
-/* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
-"PasscodeMatchOldErrorText" = "새 암호는 기존 암호와 달라야 합니다.";
 
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "사진 제공: %@";

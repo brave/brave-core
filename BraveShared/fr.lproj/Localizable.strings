@@ -898,8 +898,8 @@
 /* Button title that open application settings */
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "Ouvrir les paramètres";
 
-/* No comment provided by engineer. */
-"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Utiliser Raccourcis pour ouvrir un nouvel onglet via Siri - Assistant vocal";
+/* Description of Clear Browser History Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Utiliser Raccourcis pour ouvrir un nouvel onglet et effacer l'historique du navigateur via Siri - Assistant vocal";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Effacer l'historique de navigation";
@@ -928,8 +928,8 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenNewTabTitle" = "Ouvrir un nouvel onglet";
 
-/* Use Shortcuts to Open Playlist via Siri - Voice Assistant */
-"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Utiliser Raccourcis pour activer Brave VPN via Siri - Assistant vocal";
+/* Description of Open Playlist Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Utiliser Raccourcis pour ouvrir une liste de lecture via Siri - Assistant vocal";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenPlaylistTitle" = "Ouvrir la liste de lecture";
