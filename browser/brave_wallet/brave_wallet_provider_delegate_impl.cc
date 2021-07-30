@@ -4,19 +4,78 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
-#include "brave/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_finder.h"
+
+#include <utility>
+#include <vector>
+
+#include "base/bind.h"
+#include "brave/browser/brave_wallet/keyring_controller_factory.h"
+#include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
+#include "components/content_settings/core/common/content_settings.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "mojo/public/cpp/bindings/remote.h"
 
 namespace brave_wallet {
 
-BraveWalletProviderDelegateImpl::BraveWalletProviderDelegateImpl(
-    content::WebContents* web_contents)
-    : web_contents_(web_contents) {}
+namespace {
 
-void BraveWalletProviderDelegateImpl::ShowConnectToSiteUI() {
-  Browser* browser = chrome::FindBrowserWithWebContents(web_contents_);
-  brave::ShowWalletBubble(browser);
+void OnRequestEthereumPermissions(
+    BraveWalletProviderDelegate::RequestEthereumPermissionsCallback callback,
+    const std::vector<ContentSetting>& responses) {
+  bool success = false;
+  for (auto response : responses) {
+    if (response == CONTENT_SETTING_ALLOW) {
+      success = true;
+      break;
+    }
+  }
+
+  std::move(callback).Run(success);
+}
+
+}  // namespace
+
+BraveWalletProviderDelegateImpl::BraveWalletProviderDelegateImpl(
+    content::WebContents* web_contents,
+    content::RenderFrameHost* const render_frame_host)
+    : web_contents_(web_contents),
+      routing_id_(render_frame_host->GetGlobalFrameRoutingId()),
+      weak_ptr_factory_(this) {}
+
+BraveWalletProviderDelegateImpl::~BraveWalletProviderDelegateImpl() = default;
+
+void BraveWalletProviderDelegateImpl::EnsureConnected() {
+  if (!keyring_controller_) {
+    auto pending =
+        brave_wallet::KeyringControllerFactory::GetInstance()->GetForContext(
+            web_contents_->GetBrowserContext());
+    keyring_controller_.Bind(std::move(pending));
+  }
+  DCHECK(keyring_controller_);
+  keyring_controller_.set_disconnect_handler(
+      base::BindOnce(&BraveWalletProviderDelegateImpl::OnConnectionError,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void BraveWalletProviderDelegateImpl::OnConnectionError() {
+  keyring_controller_.reset();
+  EnsureConnected();
+}
+
+void BraveWalletProviderDelegateImpl::RequestEthereumPermissions(
+    RequestEthereumPermissionsCallback callback) {
+  EnsureConnected();
+  keyring_controller_->GetDefaultKeyringInfo(base::BindOnce(
+      [](content::RenderFrameHost* rfh,
+         RequestEthereumPermissionsCallback callback,
+         brave_wallet::mojom::KeyringInfoPtr keyring_info) {
+        permissions::BraveEthereumPermissionContext::RequestPermissions(
+            rfh, keyring_info->accounts,
+            base::BindOnce(&OnRequestEthereumPermissions, std::move(callback)));
+      },
+      content::RenderFrameHost::FromID(routing_id_), std::move(callback)));
 }
 
 }  // namespace brave_wallet

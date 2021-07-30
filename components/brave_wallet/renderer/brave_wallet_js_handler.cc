@@ -317,6 +317,9 @@ void BraveWalletJSHandler::OnRequest(
 }
 
 v8::Local<v8::Promise> BraveWalletJSHandler::Enable() {
+  if (!EnsureConnected())
+    return v8::Local<v8::Promise>();
+
   v8::Isolate* isolate = v8::Isolate::GetCurrent();
   v8::MaybeLocal<v8::Promise::Resolver> resolver =
       v8::Promise::Resolver::New(isolate->GetCurrentContext());
@@ -328,7 +331,10 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Enable() {
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   auto context_old(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
-  brave_wallet_provider_->Enable();
+  brave_wallet_provider_->Enable(base::BindOnce(
+      &BraveWalletJSHandler::OnEnable, base::Unretained(this),
+      std::move(promise_resolver), isolate, std::move(context_old)));
+
   return resolver.ToLocalChecked()->GetPromise();
 }
 
@@ -370,6 +376,27 @@ void BraveWalletJSHandler::OnSendAsync(
 
   render_frame_->GetWebFrame()->CallFunctionEvenIfScriptDisabled(
       callback_local, v8::Object::New(isolate), 2, argv);
+}
+
+void BraveWalletJSHandler::OnEnable(
+    v8::Global<v8::Promise::Resolver> promise_resolver,
+    v8::Isolate* isolate,
+    v8::Global<v8::Context> context_old,
+    bool success) {
+  v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Context> context = context_old.Get(isolate);
+  v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+
+  v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
+  if (success) {
+    ALLOW_UNUSED_LOCAL(
+        resolver->Resolve(context, v8::Undefined(isolate)).ToChecked());
+  } else {
+    ALLOW_UNUSED_LOCAL(
+        resolver->Reject(context, v8::Undefined(isolate)).ToChecked());
+  }
 }
 
 void BraveWalletJSHandler::ExecuteScript(const std::string script) {

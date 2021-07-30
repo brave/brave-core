@@ -223,7 +223,7 @@ void MaybeBindBraveWalletProvider(
 #else
           std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
 #endif
-              web_contents)),
+              web_contents, frame_host)),
       std::move(receiver));
 }
 #endif
