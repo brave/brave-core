@@ -250,11 +250,11 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
   }
 
   void CreateBroadcastChannel(RenderFrameHost* frame) {
-    EXPECT_TRUE(
-        content::ExecJs(frame,
-                        "self.bc = new BroadcastChannel('channel');"
-                        "self.bc_message = '';"
-                        "self.bc.onmessage = (m) => { self.bc_message = m.data; };"));
+    EXPECT_TRUE(content::ExecJs(
+        frame,
+        "self.bc = new BroadcastChannel('channel');"
+        "self.bc_message = '';"
+        "self.bc.onmessage = (m) => { self.bc_message = m.data; };"));
   }
 
   void SendBroadcastMessage(RenderFrameHost* frame, base::StringPiece message) {
@@ -828,21 +828,13 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
       {// Send from 3p b.com frame.
        .send = frames[site_a_tab1][1],
        // Expect received in 3p b.com frames inside a.com.
-       .expect_received =
-           {
-               frames[site_a_tab1][2],
-               frames[site_a_tab1][4],
-               frames[site_a_tab2][1],
-               frames[site_a_tab2][2],
-               frames[site_a_tab2][4],
-           }},
+       .expect_received = {frames[site_a_tab1][2], frames[site_a_tab1][4],
+                           frames[site_a_tab2][1], frames[site_a_tab2][2],
+                           frames[site_a_tab2][4]}},
       {// Send from 3p a.com frame.
        .send = frames[site_b_tab1][3],
        // Expect received in 3p a.com frame inside b.com.
-       .expect_received =
-           {
-               frames[site_b_tab2][3],
-           }},
+       .expect_received = {frames[site_b_tab2][3]}},
       {// Send from b.com main frame.
        .send = frames[site_b_tab1][0],
        // Expect received in both b.com tabs and nested 1p b.com frames.
