@@ -9,9 +9,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
-import android.support.test.filters.SmallTest;
-
 import androidx.preference.Preference;
+import androidx.test.filters.SmallTest;
 
 import org.junit.Before;
 import org.junit.Rule;

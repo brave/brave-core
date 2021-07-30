@@ -8,11 +8,11 @@ package org.chromium.chrome.browser;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.test.filters.SmallTest;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.test.filters.SmallTest;
 
 import org.junit.Assert;
 import org.junit.Test;
