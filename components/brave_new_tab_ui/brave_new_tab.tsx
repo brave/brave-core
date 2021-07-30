@@ -44,7 +44,6 @@ function initialize () {
   .catch((error) => {
     console.error('Problem mounting brave new tab', error)
   })
-  window.i18nTemplate.process(window.document, window.loadTimeData)
 }
 
 console.timeStamp('JS start')

@@ -9,7 +9,7 @@
 #include <string>
 
 #include "bat/ads/internal/ad_targeting/processors/processor.h"
-#include "bat/ads/internal/ad_targeting/resources/contextual/text_classification/text_classification_resource.h"
+#include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
 
 namespace ads {
 namespace ad_targeting {

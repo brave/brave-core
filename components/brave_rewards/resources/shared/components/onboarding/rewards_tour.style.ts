@@ -105,6 +105,20 @@ export const stepGraphic = styled.div`
     background-image: url('${completedImage}');
     background-size: 89px 89px;
   }
+
+  &.tour-graphic-bitflyer {
+    padding-top: 40px;
+
+    img {
+      width: 100%;
+    }
+
+    /* The narrow view does not have space to accomodate the promo image. */
+    .tour-narrow & {
+      padding-top: 0;
+      > * { display: none; }
+    }
+  }
 `
 
 export const stepLinks = styled.div`

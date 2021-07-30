@@ -14,15 +14,15 @@
 #include "base/feature_list.h"
 #include "base/stl_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/common/render_messages.h"
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/common/features.h"
-#include "brave/content/common/frame_messages.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "content/public/renderer/render_frame.h"
 #include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_frame.h"
@@ -77,27 +77,14 @@ BraveContentSettingsAgentImpl::BraveContentSettingsAgentImpl(
     std::unique_ptr<Delegate> delegate)
     : ContentSettingsAgentImpl(render_frame,
                                should_whitelist,
-                               std::move(delegate)) {}
+                               std::move(delegate)) {
+  render_frame->GetAssociatedInterfaceRegistry()->AddInterface(
+      base::BindRepeating(
+          &BraveContentSettingsAgentImpl::BindBraveShieldsReceiver,
+          base::Unretained(this)));
+}
 
 BraveContentSettingsAgentImpl::~BraveContentSettingsAgentImpl() {}
-
-bool BraveContentSettingsAgentImpl::OnMessageReceived(
-    const IPC::Message& message) {
-  bool handled = true;
-  IPC_BEGIN_MESSAGE_MAP(BraveContentSettingsAgentImpl, message)
-    IPC_MESSAGE_HANDLER(BraveFrameMsg_AllowScriptsOnce, OnAllowScriptsOnce)
-    IPC_MESSAGE_UNHANDLED(handled = false)
-  IPC_END_MESSAGE_MAP()
-
-  if (handled)
-    return true;
-  return ContentSettingsAgentImpl::OnMessageReceived(message);
-}
-
-void BraveContentSettingsAgentImpl::OnAllowScriptsOnce(
-    const std::vector<std::string>& origins) {
-  preloaded_temporarily_allowed_scripts_ = std::move(origins);
-}
 
 void BraveContentSettingsAgentImpl::DidCommitProvisionalLoad(
     ui::PageTransition transition) {
@@ -117,8 +104,9 @@ bool BraveContentSettingsAgentImpl::IsScriptTemporilyAllowed(
 }
 
 void BraveContentSettingsAgentImpl::BraveSpecificDidBlockJavaScript(
-    const base::string16& details) {
-  Send(new BraveViewHostMsg_JavaScriptBlocked(routing_id(), details));
+    const std::u16string& details) {
+  mojo::AssociatedRemote<brave_shields::mojom::BraveShieldsHost> remote;
+  GetOrCreateBraveShieldsRemote()->OnJavaScriptBlocked(details);
 }
 
 bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
@@ -145,66 +133,56 @@ void BraveContentSettingsAgentImpl::DidNotAllowScript() {
   ContentSettingsAgentImpl::DidNotAllowScript();
 }
 
-bool BraveContentSettingsAgentImpl::UseEphemeralStorageSync(
+blink::WebSecurityOrigin
+BraveContentSettingsAgentImpl::GetEphemeralStorageOriginSync(
     StorageType storage_type) {
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
-    return false;
+    return {};
 
   if (storage_type != StorageType::kLocalStorage &&
       storage_type != StorageType::kSessionStorage)
-    return false;
+    return {};
 
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
 
   if (!frame || IsFrameWithOpaqueOrigin(frame))
-    return false;
+    return {};
+
+  auto frame_origin = url::Origin(frame->GetSecurityOrigin());
+  StoragePermissionsKey key(frame_origin, storage_type);
+  const auto ephemeral_storage_origin_it =
+      cached_ephemeral_storage_origins_.find(key);
+  if (ephemeral_storage_origin_it != cached_ephemeral_storage_origins_.end())
+    return ephemeral_storage_origin_it->second;
 
   auto top_origin = url::Origin(frame->Top()->GetSecurityOrigin());
   if (net::registry_controlled_domains::SameDomainOrHost(
-          top_origin, url::Origin(frame->GetSecurityOrigin()),
-          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES))
-    return false;
+          top_origin, frame_origin,
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+    return {};
+  }
 
-  return  // block 3p
-      !ContentSettingsAgentImpl::AllowStorageAccessSync(storage_type) &&
-      // allow 1p
-      AllowStorageAccessForMainFrameSync(storage_type);
+  absl::optional<url::Origin> optional_ephemeral_storage_origin;
+  GetContentSettingsManager().AllowEphemeralStorageAccess(
+      routing_id(), ConvertToMojoStorageType(storage_type), frame_origin,
+      frame->GetDocument().SiteForCookies().RepresentativeUrl(), top_origin,
+      &optional_ephemeral_storage_origin);
+  blink::WebSecurityOrigin ephemeral_storage_origin(
+      optional_ephemeral_storage_origin
+          ? blink::WebSecurityOrigin(*optional_ephemeral_storage_origin)
+          : blink::WebSecurityOrigin());
+  cached_ephemeral_storage_origins_[key] = ephemeral_storage_origin;
+  return ephemeral_storage_origin;
 }
 
 bool BraveContentSettingsAgentImpl::AllowStorageAccessSync(
     StorageType storage_type) {
   bool result = ContentSettingsAgentImpl::AllowStorageAccessSync(storage_type);
 
-  if (result || UseEphemeralStorageSync(storage_type))
+  if (result || !GetEphemeralStorageOriginSync(storage_type).IsNull())
     return true;
 
   return false;
-}
-
-bool BraveContentSettingsAgentImpl::AllowStorageAccessForMainFrameSync(
-    StorageType storage_type) {
-  blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
-
-  if (IsFrameWithOpaqueOrigin(frame))
-    return false;
-
-  bool result = false;
-
-  StoragePermissionsKey key(url::Origin(frame->GetSecurityOrigin()),
-                            storage_type);
-  const auto permissions = cached_storage_permissions_.find(key);
-  if (permissions != cached_storage_permissions_.end())
-    return permissions->second;
-
-  // check for block all by looking at top domain only
-  GetContentSettingsManager().AllowStorageAccess(
-      routing_id(), ConvertToMojoStorageType(storage_type),
-      frame->GetDocument().TopFrameOrigin(),
-      url::Origin(frame->GetDocument().TopFrameOrigin()).GetURL(),
-      frame->GetDocument().TopFrameOrigin(), &result);
-  cached_storage_permissions_[key] = result;
-
-  return result;
 }
 
 bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
@@ -230,11 +208,6 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
   }
 
   return allow;
-}
-
-void BraveContentSettingsAgentImpl::DidBlockFingerprinting(
-    const base::string16& details) {
-  Send(new BraveViewHostMsg_FingerprintingBlocked(routing_id(), details));
 }
 
 bool BraveContentSettingsAgentImpl::IsBraveShieldsDown(
@@ -320,6 +293,28 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool play_requested) {
                "ContentSettingsAgentImpl::AllowAutoplay says so";
   }
   return allow;
+}
+
+void BraveContentSettingsAgentImpl::SetAllowScriptsFromOriginsOnce(
+    const std::vector<std::string>& origins) {
+  preloaded_temporarily_allowed_scripts_ = std::move(origins);
+}
+
+void BraveContentSettingsAgentImpl::BindBraveShieldsReceiver(
+    mojo::PendingAssociatedReceiver<brave_shields::mojom::BraveShields>
+        pending_receiver) {
+  brave_shields_receivers_.Add(this, std::move(pending_receiver));
+}
+
+mojo::AssociatedRemote<brave_shields::mojom::BraveShieldsHost>&
+BraveContentSettingsAgentImpl::GetOrCreateBraveShieldsRemote() {
+  if (!brave_shields_remote_) {
+    render_frame()->GetRemoteAssociatedInterfaces()->GetInterface(
+        &brave_shields_remote_);
+  }
+
+  DCHECK(brave_shields_remote_.is_bound());
+  return brave_shields_remote_;
 }
 
 }  // namespace content_settings

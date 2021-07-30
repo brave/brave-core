@@ -21,8 +21,6 @@ class PrefChangeRegistrar;
 // API).
 class BraveRequestHandler {
  public:
-  using ResponseCallback = base::Callback<void(const base::DictionaryValue&)>;
-
   BraveRequestHandler();
   ~BraveRequestHandler();
 
@@ -47,11 +45,6 @@ class BraveRequestHandler {
 
  private:
   void SetupCallbacks();
-  void InitPrefChangeRegistrar();
-  void OnReferralHeadersChanged();
-  void OnPreferenceChanged(const std::string& pref_name);
-  void UpdateAdBlockFromPref(const std::string& pref_name);
-
   void RunNextCallback(std::shared_ptr<brave::BraveRequestInfo> ctx);
 
   std::vector<brave::OnBeforeURLRequestCallback> before_url_request_callbacks_;
@@ -59,15 +52,7 @@ class BraveRequestHandler {
       before_start_transaction_callbacks_;
   std::vector<brave::OnHeadersReceivedCallback> headers_received_callbacks_;
 
-  // TODO(iefremov): actually, we don't have to keep the list here, since
-  // it is global for the whole browser and could live a singletonce in the
-  // rewards service. Eliminating this will also help to avoid using
-  // PrefChangeRegistrar and corresponding |base::Unretained| usages, that are
-  // illegal.
-  std::unique_ptr<base::ListValue> referral_headers_list_;
   std::map<uint64_t, net::CompletionOnceCallback> callbacks_;
-  std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
-      pref_change_registrar_;
 
   base::WeakPtrFactory<BraveRequestHandler> weak_factory_{this};
   DISALLOW_COPY_AND_ASSIGN(BraveRequestHandler);

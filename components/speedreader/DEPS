@@ -1,11 +1,20 @@
 include_rules = [
+  "+components/content_settings/core",
+  "+components/prefs",
   "+services/network/public",
+  "+services/network/public/cpp",
+  "+services/network/public/mojom",
   "+ui/base",
 ]
 
-# Existing exceptions
 specific_include_rules = {
+  "speedreader_service.h": [
+    "+components/keyed_service/core",
+  ],
   "speedreader_throttle.h": [
     "+third_party/blink/public",
+  ],
+  "speedreader_util.h": [
+    "+third_party/re2",
   ],
 }

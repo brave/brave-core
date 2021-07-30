@@ -1,0 +1,57 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/build/ios/coredata_model.gni")
+import("//brave/build/ios/mojom/mojom_wrappers.gni")
+import("//build/config/ios/rules.gni")
+
+config("external_config") {
+  visibility = [ ":*" ]
+  include_dirs = [ "$target_gen_dir" ]
+}
+
+source_set("ledger") {
+  configs += [
+    ":external_config",
+    "//build/config/compiler:enable_arc",
+  ]
+
+  sources = [
+    "brave_ledger.h",
+    "brave_ledger.mm",
+    "brave_ledger_observer.h",
+    "brave_ledger_observer.mm",
+    "ledger_client_bridge.h",
+    "ledger_client_ios.h",
+    "ledger_client_ios.mm",
+    "promotion_solution.h",
+    "promotion_solution.mm",
+    "rewards_notification.h",
+    "rewards_notification.m",
+  ]
+
+  deps = [
+    ":ledger_mojom_wrappers",
+    "//base",
+    "//brave/ios/browser/api/common",
+    "//brave/ios/browser/api/ledger/legacy_database",
+    "//brave/vendor/bat-native-ledger",
+    "//components/os_crypt",
+    "//net:net",
+    "//url",
+  ]
+
+  frameworks = [
+    "Foundation.framework",
+    "UIKit.framework",
+    "Network.framework",
+  ]
+}
+
+mojom_wrappers("ledger_mojom_wrappers") {
+  mojom_target =
+      "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces"
+  mojom_file = "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom"
+}

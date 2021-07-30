@@ -51,18 +51,6 @@
     "message": "التفاصيل",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "رصيدك",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "نقاط BAT",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "يمكن استخدام ذلك في مكافآت Brave لدعم منشئي المحتوى المفضل لديك. لا يمكن استبدال نقاط الرموز الأساسية للاهتمام بالرموز الأساسية للاهتمام.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "على",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "تم جمع المكافأة المالية التي منحت لك",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "تم تحصيل منحة النقاط",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "أرباح من الإعلانات",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "تلميحات لمرة واحدة",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "تنتهي الصلاحية في",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "لم يسجل هذا المؤلف بعد للحصول على المساهمات من مستخدمي Brave. أي بقشيش سترسله سيبقى في محفظتك حتى يقوم بتأكيد حسابه.",
+    "message": "لم يجر إعداد هذا المنشئ حاليًا لتلقي إرشادات من محفظتك. كما تبقى أي إرشادات  تقدمها معلقة في محفظتك وتتم إعادة المحاولة تلقائيًا لمدة 90 يومًا.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "صيغة BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "تشغيل الإعلانات",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "الحصول على أموال مجانًا",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "منحة نقاط مجانية",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "لقد ربحتَ مكافأة إعلانات!",
@@ -591,17 +567,9 @@
     "message": "عملة رمزية",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "النقاط",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "منح العملة الرمزية",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "منح النقاط",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "مرحباً، $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "يجب أن يكون لديك عدد 25 عملة BAT كحد أدنى لإنشاء حساب Uphold. يُرجى المحاولة مرة أخرى في وقت لاحق.\n  إذا كان لديك بالفعل حساب Uphold قد تم التحقق منه، فتابع تسجيل الدخول.",
-    "description": "Text for login button"
+    "message": "يجب أن يكون لديك $amount$من البات على الأقل لإنشاء حساب Uphold. إذا قمت بالفعل بمصادقة حساب Uphold؛ فتابع لتسجيل الدخول.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "متصل",
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "متى تحصل على المكافآت",
+    "message": "متى تحصل على المكافآت؟",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "باستخدام Brave Rewards، فأنت تساعد في جعل الويب مكاناً أفضل للجميع. وهذا رائع!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "برنامج Brave Rewards في اليابان يتحول إلى نظام جديد!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "تحقق من محفظتك",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "مزيد من المعلومات",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "من أجل سحب الرموز المميزة التي تربحها مقابل عرض الإعلانات، ستحتاج إلى التحقق من محفظتك.",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "يُرجى استخدام رصيدك من BAP بحلول 13 مارس. بعد ذلك، سيتم إيقاف BAP.",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "القيام بذلك لاحقًا",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "التحقق من محفظتي",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "محفظة bitFlyer هي خدمة تديرها شركة bitFlyer، Inc",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "من خلال التحقق من محفظتك وربطها بحساب bitFlyer، ستتمكن من تخزين الرموز المميزة التي اكتسبتها من خلال مكآفات Brave وإدارتها بسهولة أكبر",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$اعرف المزيد$link_end$ عن كيفية الربط بين متصفح Brave الخاص بك وحسابك على bitFlyer.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

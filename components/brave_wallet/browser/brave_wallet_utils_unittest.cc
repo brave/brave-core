@@ -12,14 +12,21 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
 TEST(BraveWalletUtilsUnitTest, ToHex) {
   ASSERT_EQ(ToHex(""), "0x0");
   ASSERT_EQ(ToHex("hello world"), "0x68656c6c6f20776f726c64");
+
+  ASSERT_EQ(ToHex(std::vector<uint8_t>()), "0x0");
+  const std::string str1("hello world");
+  ASSERT_EQ(ToHex(std::vector<uint8_t>(str1.begin(), str1.end())),
+            "0x68656c6c6f20776f726c64");
 }
 
 TEST(BraveWalletUtilsUnitTest, KeccakHash) {
@@ -44,6 +51,15 @@ TEST(BraveWalletUtilsUnitTest, PadHexEncodedParameter) {
   ASSERT_EQ(
       out,
       "0x0000000000000000000000004e02f254184E904300e0775E4b8eeCB14a1b29f0");
+
+  // Corner case: 62
+  ASSERT_TRUE(PadHexEncodedParameter(
+      "0x11111111112222222222333333333344444444445555555555666666666600",
+      &out));
+  ASSERT_EQ(
+      out,
+      "0x0011111111112222222222333333333344444444445555555555666666666600");
+
   ASSERT_TRUE(PadHexEncodedParameter("0x0", &out));
   ASSERT_EQ(
       out,
@@ -58,9 +74,12 @@ TEST(BraveWalletUtilsUnitTest, IsValidHexString) {
   ASSERT_TRUE(IsValidHexString("0x0"));
   ASSERT_TRUE(IsValidHexString("0x4e02f254184E904300e0775E4b8eeCB14a1b29f0"));
   ASSERT_FALSE(IsValidHexString("0x"));
+  ASSERT_FALSE(IsValidHexString("0xZ"));
   ASSERT_FALSE(IsValidHexString("123"));
   ASSERT_FALSE(IsValidHexString("0"));
   ASSERT_FALSE(IsValidHexString(""));
+  ASSERT_FALSE(IsValidHexString("0xBraVe"));
+  ASSERT_FALSE(IsValidHexString("0x12$$"));
 }
 
 TEST(BraveWalletUtilsUnitTest, ConcatHexStrings) {
@@ -271,6 +290,469 @@ TEST(BraveWalletUtilsUnitTest, Mnemonic) {
     // Random generated entropy
     EXPECT_NE(GenerateMnemonic(i), GenerateMnemonic(i));
   }
+}
+
+TEST(BraveWalletUtilsUnitTest, MnemonicToSeed) {
+  EXPECT_NE(MnemonicToSeed("kingdom possible coast island six arrow fluid "
+                           "spell chunk loud glue street",
+                           ""),
+            nullptr);
+  EXPECT_EQ(MnemonicToSeed("lingdom possible coast island six arrow fluid "
+                           "spell chunk loud glue street",
+                           ""),
+            nullptr);
+  EXPECT_EQ(
+      MnemonicToSeed(
+          "kingdom possible coast island six arrow fluid spell chunk loud glue",
+          ""),
+      nullptr);
+  EXPECT_EQ(MnemonicToSeed("", ""), nullptr);
+}
+
+TEST(BraveWalletUtilsUnitTest, EncodeString) {
+  std::string output;
+  EXPECT_TRUE(EncodeString("one", &output));
+  EXPECT_EQ(output,
+            // Count for input string.
+            "0x0000000000000000000000000000000000000000000000000000000000000003"
+            // Encoding for input string.
+            "6f6e650000000000000000000000000000000000000000000000000000000000");
+
+  output.clear();
+  EXPECT_TRUE(EncodeString(
+      "oneoneoneoneoneoneoneoneoneoneoneoneoneoneoneoneoneoneoneoneoneoneoneon"
+      "e",
+      &output));
+  EXPECT_EQ(
+      output,
+      // Count for input string.
+      "0x0000000000000000000000000000000000000000000000000000000000000048"
+      // Encoding for input string.
+      "6f6e656f6e656f6e656f6e656f6e656f6e656f6e656f6e656f6e656f6e656f6e656f6e"
+      "656f6e656f6e656f6e656f6e656f6e656f6e656f6e656f6e656f6e656f6e656f6e656f"
+      "6e65000000000000000000000000000000000000000000000000");
+
+  output.clear();
+  EXPECT_TRUE(EncodeString("", &output));
+  EXPECT_EQ(
+      output,
+      "0x0000000000000000000000000000000000000000000000000000000000000000");
+
+  output.clear();
+  std::string invalid_input = "\xF0\x8F\xBF\xBE";
+  EXPECT_FALSE(base::IsStringUTF8(invalid_input));
+  EXPECT_FALSE(EncodeString(invalid_input, &output));
+}
+
+TEST(BraveWalletUtilsUnitTest, EncodeStringArray) {
+  std::vector<std::string> input({"one", "two", "three"});
+  std::string output;
+  EXPECT_TRUE(EncodeStringArray(input, &output));
+  EXPECT_EQ(output,
+            // count of elements in input array
+            "0x0000000000000000000000000000000000000000000000000000000000000003"
+            // offsets to array elements
+            "0000000000000000000000000000000000000000000000000000000000000060"
+            "00000000000000000000000000000000000000000000000000000000000000a0"
+            "00000000000000000000000000000000000000000000000000000000000000e0"
+            // count for "one"
+            "0000000000000000000000000000000000000000000000000000000000000003"
+            // encoding for "one"
+            "6f6e650000000000000000000000000000000000000000000000000000000000"
+            // count for "two"
+            "0000000000000000000000000000000000000000000000000000000000000003"
+            // encoding for "two"
+            "74776f0000000000000000000000000000000000000000000000000000000000"
+            // count for "three"
+            "0000000000000000000000000000000000000000000000000000000000000005"
+            // encoding for "three"
+            "7468726565000000000000000000000000000000000000000000000000000000");
+
+  input = {"one", "one two three four five six seven eight nine", "two",
+           "one two three four five six seven eight nine ten", "three"};
+  output.clear();
+  EXPECT_TRUE(EncodeStringArray(input, &output));
+
+  EXPECT_EQ(output,
+            // count of elements in input array
+            "0x0000000000000000000000000000000000000000000000000000000000000005"
+            // offsets to array elements
+            "00000000000000000000000000000000000000000000000000000000000000a0"
+            "00000000000000000000000000000000000000000000000000000000000000e0"
+            "0000000000000000000000000000000000000000000000000000000000000140"
+            "0000000000000000000000000000000000000000000000000000000000000180"
+            "00000000000000000000000000000000000000000000000000000000000001e0"
+            // count for "one"
+            "0000000000000000000000000000000000000000000000000000000000000003"
+            // encoding for "one"
+            "6f6e650000000000000000000000000000000000000000000000000000000000"
+            // count for "one two three four five six seven eight nine"
+            "000000000000000000000000000000000000000000000000000000000000002c"
+            // encoding for "one two three four five six seven eight nine"
+            "6f6e652074776f20746872656520666f75722066697665207369782073657665"
+            "6e206569676874206e696e650000000000000000000000000000000000000000"
+            // count for "two"
+            "0000000000000000000000000000000000000000000000000000000000000003"
+            // encoding for "two"
+            "74776f0000000000000000000000000000000000000000000000000000000000"
+            // count for "one two three four five six seven eight nine ten"
+            "0000000000000000000000000000000000000000000000000000000000000030"
+            // encoding for "one two three four five six seven eight nine ten"
+            "6f6e652074776f20746872656520666f75722066697665207369782073657665"
+            "6e206569676874206e696e652074656e00000000000000000000000000000000"
+            // count for "three"
+            "0000000000000000000000000000000000000000000000000000000000000005"
+            // encoding for "three"
+            "7468726565000000000000000000000000000000000000000000000000000000");
+
+  input = {"", "one", "", "two", "", "three"};
+  output.clear();
+  EXPECT_TRUE(EncodeStringArray(input, &output));
+
+  EXPECT_EQ(output,
+            "0x0000000000000000000000000000000000000000000000000000000000000006"
+            // offsets to array elements
+            "00000000000000000000000000000000000000000000000000000000000000c0"
+            "00000000000000000000000000000000000000000000000000000000000000e0"
+            "0000000000000000000000000000000000000000000000000000000000000120"
+            "0000000000000000000000000000000000000000000000000000000000000140"
+            "0000000000000000000000000000000000000000000000000000000000000180"
+            "00000000000000000000000000000000000000000000000000000000000001a0"
+            // count for ""
+            "0000000000000000000000000000000000000000000000000000000000000000"
+            // count for "one"
+            "0000000000000000000000000000000000000000000000000000000000000003"
+            // encoding for "one"
+            "6f6e650000000000000000000000000000000000000000000000000000000000"
+            // count for ""
+            "0000000000000000000000000000000000000000000000000000000000000000"
+            // count for "two"
+            "0000000000000000000000000000000000000000000000000000000000000003"
+            // encoding for "two"
+            "74776f0000000000000000000000000000000000000000000000000000000000"
+            // count for ""
+            "0000000000000000000000000000000000000000000000000000000000000000"
+            // count for "three"
+            "0000000000000000000000000000000000000000000000000000000000000005"
+            // encoding for "three"
+            "7468726565000000000000000000000000000000000000000000000000000000");
+
+  input = {"one", "\xF0\x8F\xBF\xBE"};
+  output.clear();
+  EXPECT_FALSE(EncodeStringArray(input, &output));
+}
+
+TEST(BraveWalletUtilsUnitTest, DecodeString) {
+  std::string output;
+  EXPECT_TRUE(DecodeString(
+      0,
+      // count for "one"
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // encoding for "one"
+      "6f6e650000000000000000000000000000000000000000000000000000000000",
+      &output));
+  EXPECT_EQ(output, "one");
+
+  output.clear();
+  EXPECT_TRUE(DecodeString(
+      0,
+      // count for "one two three four five six seven eight nine"
+      "000000000000000000000000000000000000000000000000000000000000002c"
+      // encoding for "one two three four five six seven eight nine"
+      "6f6e652074776f20746872656520666f75722066697665207369782073657665"
+      "6e206569676874206e696e650000000000000000000000000000000000000000",
+      &output));
+  EXPECT_EQ(output, "one two three four five six seven eight nine");
+
+  output.clear();
+  EXPECT_TRUE(DecodeString(
+      0,
+      // count for ""
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      &output));
+  EXPECT_EQ(output, "");
+
+  // Test invalid inputs.
+  output.clear();
+  EXPECT_FALSE(DecodeString(0, "", &output));
+  EXPECT_FALSE(DecodeString(0, "invalid string", &output));
+  EXPECT_FALSE(DecodeString(
+      0,
+      // invalid count
+      "6f6e650000000000000000000000000000000000000000000000000000000000",
+      &output));
+
+  EXPECT_FALSE(DecodeString(
+      0,
+      // count for "one"
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // invalid encoding for "one": len < expected len of encoding for "one"
+      "6f6e",
+      &output));
+
+  EXPECT_FALSE(DecodeString(
+      0,
+      // count for "one" without encoding of string
+      "0000000000000000000000000000000000000000000000000000000000000003",
+      &output));
+
+  EXPECT_FALSE(DecodeString(
+      64,  // out-of-bound offset
+      "0000000000000000000000000000000000000000000000000000000000000001",
+      &output));
+
+  EXPECT_FALSE(DecodeString(
+      999999,  // out-of-bound invalid offset
+      // count for "one two three four five six seven eight nine"
+      "000000000000000000000000000000000000000000000000000000000000002c"
+      // encoding for "one two three four five six seven eight nine"
+      "6f6e652074776f20746872656520666f75722066697665207369782073657665"
+      "6e206569676874206e696e650000000000000000000000000000000000000000",
+      &output));
+}
+
+TEST(BraveWalletUtilsUnitTest, DecodeStringArray) {
+  std::vector<std::string> output;
+  EXPECT_TRUE(DecodeStringArray(
+      // count of elements in input array
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // offsets to array elements
+      "0000000000000000000000000000000000000000000000000000000000000060"
+      "00000000000000000000000000000000000000000000000000000000000000a0"
+      "00000000000000000000000000000000000000000000000000000000000000e0"
+      // count for "one"
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // encoding for "one"
+      "6f6e650000000000000000000000000000000000000000000000000000000000"
+      // count for "two"
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // encoding for "two"
+      "74776f0000000000000000000000000000000000000000000000000000000000"
+      // count for "three"
+      "0000000000000000000000000000000000000000000000000000000000000005"
+      // encoding for "three"
+      "7468726565000000000000000000000000000000000000000000000000000000",
+      &output));
+  std::vector<std::string> expected_output({"one", "two", "three"});
+  EXPECT_EQ(output, expected_output);
+
+  output.clear();
+  EXPECT_TRUE(DecodeStringArray(
+      "0000000000000000000000000000000000000000000000000000000000000005"
+      // offsets to array elements
+      "00000000000000000000000000000000000000000000000000000000000000a0"
+      "00000000000000000000000000000000000000000000000000000000000000e0"
+      "0000000000000000000000000000000000000000000000000000000000000140"
+      "0000000000000000000000000000000000000000000000000000000000000180"
+      "00000000000000000000000000000000000000000000000000000000000001e0"
+      // count for "one"
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // encoding for "one"
+      "6f6e650000000000000000000000000000000000000000000000000000000000"
+      // count for "one two three four five six seven eight nine"
+      "000000000000000000000000000000000000000000000000000000000000002c"
+      // encoding for "one two three four five six seven eight nine"
+      "6f6e652074776f20746872656520666f75722066697665207369782073657665"
+      "6e206569676874206e696e650000000000000000000000000000000000000000"
+      // count for "two"
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // encoding for "two"
+      "74776f0000000000000000000000000000000000000000000000000000000000"
+      // count for "one two three four five six seven eight nine ten"
+      "0000000000000000000000000000000000000000000000000000000000000030"
+      // encoding for "one two three four five six seven eight nine ten"
+      "6f6e652074776f20746872656520666f75722066697665207369782073657665"
+      "6e206569676874206e696e652074656e00000000000000000000000000000000"
+      // count for "three"
+      "0000000000000000000000000000000000000000000000000000000000000005"
+      // encoding for "three"
+      "7468726565000000000000000000000000000000000000000000000000000000",
+      &output));
+  expected_output = {"one", "one two three four five six seven eight nine",
+                     "two", "one two three four five six seven eight nine ten",
+                     "three"};
+  EXPECT_EQ(output, expected_output);
+
+  output.clear();
+  EXPECT_TRUE(DecodeStringArray(
+      "0000000000000000000000000000000000000000000000000000000000000006"
+      // offsets to array elements
+      "00000000000000000000000000000000000000000000000000000000000000c0"
+      "00000000000000000000000000000000000000000000000000000000000000e0"
+      "0000000000000000000000000000000000000000000000000000000000000120"
+      "0000000000000000000000000000000000000000000000000000000000000140"
+      "0000000000000000000000000000000000000000000000000000000000000180"
+      "00000000000000000000000000000000000000000000000000000000000001a0"
+      // count for ""
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      // count for "one"
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // encoding for "one"
+      "6f6e650000000000000000000000000000000000000000000000000000000000"
+      // count for ""
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      // count for "two"
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // encoding for "two"
+      "74776f0000000000000000000000000000000000000000000000000000000000"
+      // count for ""
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      // count for "three"
+      "0000000000000000000000000000000000000000000000000000000000000005"
+      // encoding for "three"
+      "7468726565000000000000000000000000000000000000000000000000000000",
+      &output));
+  expected_output = {"", "one", "", "two", "", "three"};
+  EXPECT_EQ(output, expected_output);
+
+  // Test invalid input.
+  output.clear();
+  EXPECT_FALSE(DecodeStringArray("", &output));
+  EXPECT_FALSE(DecodeStringArray("1", &output));
+  EXPECT_FALSE(DecodeStringArray("z", &output));
+  EXPECT_FALSE(DecodeStringArray("\xF0\x8F\xBF\xBE", &output));
+  EXPECT_FALSE(DecodeStringArray(
+      // count of array elements
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      // invalid data offset to string element.
+      "0000000000000000000000000000000000000000000000000000000000001",
+      &output));
+  EXPECT_FALSE(DecodeStringArray(
+      // count of array elements
+      "0000000000000000000000000000000000000000000000000000000000000002"
+      // out-of-bound offset to array element
+      "00000000000000000000000000000000000000000000000000000000000001e0",
+      &output));
+
+  EXPECT_FALSE(DecodeStringArray(
+      // Mismatched count of elements in input array
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // offsets to array elements
+      "0000000000000000000000000000000000000000000000000000000000000060"
+      "00000000000000000000000000000000000000000000000000000000000000a0"
+      // count for "one"
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // encoding for "one"
+      "6f6e650000000000000000000000000000000000000000000000000000000000"
+      // count for "two"
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // encoding for "two"
+      "74776f0000000000000000000000000000000000000000000000000000000000",
+      &output));
+
+  EXPECT_FALSE(DecodeStringArray(
+      // count of elements in input array
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // offsets to array elements, last offset point to non-existed data
+      "0000000000000000000000000000000000000000000000000000000000000060"
+      "00000000000000000000000000000000000000000000000000000000000000a0"
+      "00000000000000000000000000000000000000000000000000000000000000e0"
+      // count for "one"
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // encoding for "one"
+      "6f6e650000000000000000000000000000000000000000000000000000000000"
+      // count for "two"
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // encoding for "two"
+      "74776f0000000000000000000000000000000000000000000000000000000000",
+      &output));
+
+  // Missing data offset and data.
+  EXPECT_FALSE(DecodeStringArray(
+      // count of elements in input array
+      "0000000000000000000000000000000000000000000000000000000000000001",
+      &output));
+
+  // Missing data.
+  EXPECT_FALSE(DecodeStringArray(
+      // count of elements in input array
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      // offset for "one", data missing
+      "0000000000000000000000000000000000000000000000000000000000000020",
+      &output));
+
+  // Missing count.
+  EXPECT_FALSE(DecodeStringArray(
+      // count of elements in input array
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      // offset for "one"
+      "0000000000000000000000000000000000000000000000000000000000000020"
+      // encoding for "one"
+      "6f6e650000000000000000000000000000000000000000000000000000000000",
+      &output));
+
+  // Missing encoding of string.
+  EXPECT_FALSE(DecodeStringArray(
+      // count of elements in input array
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      // offset for "one"
+      "0000000000000000000000000000000000000000000000000000000000000020"
+      // count for "one"
+      "0000000000000000000000000000000000000000000000000000000000000003",
+      &output));
+}
+
+TEST(BraveWalletUtilsUnitTest, Namehash) {
+  EXPECT_EQ(
+      Namehash(""),
+      "0x0000000000000000000000000000000000000000000000000000000000000000");
+  EXPECT_EQ(
+      Namehash("eth"),
+      "0x93cdeb708b7545dc668eb9280176169d1c33cfd8ed6f04690a0bcc88a93fc4ae");
+  EXPECT_EQ(
+      Namehash("foo.eth"),
+      "0xde9b09fd7c5f901e23a3f19fecc54828e9c848539801e86591bd9801b019f84f");
+  EXPECT_EQ(
+      Namehash("."),
+      "0x0000000000000000000000000000000000000000000000000000000000000000");
+  EXPECT_EQ(
+      Namehash("crypto"),
+      "0x0f4a10a4f46c288cea365fcf45cccf0e9d901b945b9829ccdb54c10dc3cb7a6f");
+  EXPECT_EQ(
+      Namehash("example.crypto"),
+      "0xd584c5509c6788ad9d9491be8ba8b4422d05caf62674a98fbf8a9988eeadfb7e");
+  EXPECT_EQ(
+      Namehash("www.example.crypto"),
+      "0x3ae54ac25ccd63401d817b6d79a4a56ae7f79a332fe77a98fa0c9d10adf9b2a1");
+  EXPECT_EQ(
+      Namehash("a.b.c.crypto"),
+      "0x353ea3e0449067382e0ea7934767470170dcfa9c49b1be0fe708adc4b1f9cf13");
+  EXPECT_EQ(
+      Namehash("brave.crypto"),
+      "0x77252571a99feee8f5e6b2f0c8b705407d395adc00b3c8ebcc7c19b2ea850013");
+}
+
+TEST(BraveWalletUtilsUnitTest, SecureZeroData) {
+  int a = 123;
+  SecureZeroData(&a, sizeof(a));
+  EXPECT_EQ(a, 0);
+  std::string b = "brave";
+  SecureZeroData(&b, sizeof(b));
+  EXPECT_TRUE(b.empty());
+  std::vector<uint8_t> c = {0xde, 0xad, 0xbe, 0xef};
+  SecureZeroData(&c, sizeof(c));
+  for (const auto& byte : c) {
+    EXPECT_EQ(byte, 0);
+  }
+}
+
+TEST(BraveWalletUtilsUnitTest, TransactionReceiptAndValue) {
+  TransactionReceipt tx_receipt;
+  tx_receipt.transaction_hash =
+      "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238";
+  tx_receipt.transaction_index = 0x1;
+  tx_receipt.block_number = 0xb;
+  tx_receipt.block_hash =
+      "0xc6ef2fc5426d6ad6fd9e2a26abeab0aa2411b7ab17f30a99d3cb96aed1d1055b";
+  tx_receipt.cumulative_gas_used = 0x33bc;
+  tx_receipt.gas_used = 0x4dc;
+  tx_receipt.contract_address = "0xb60e8dd61c5d32be8058bb8eb970870f07233155";
+  tx_receipt.status = true;
+
+  base::Value tx_receipt_value = TransactionReceiptToValue(tx_receipt);
+  auto tx_receipt_from_value = ValueToTransactionReceipt(tx_receipt_value);
+  ASSERT_NE(tx_receipt_from_value, absl::nullopt);
+  EXPECT_EQ(tx_receipt, *tx_receipt_from_value);
 }
 
 }  // namespace brave_wallet

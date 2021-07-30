@@ -51,18 +51,6 @@
     "message": "ዝርዝሮች",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "ቀሪ ሂሳብዎ",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "የ BAT ነጥቦች",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "ለተወዳጅ ይዘት ፈጣሪዎችዎ አስተዋጽኦ ለማድረግ Brave Rewards ውስጥ ሊያገለግል ይችላል። የ BAT ነጥቦችን በ BAT መለወጥ አይቻልም።",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "በ",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "የቶክን ብድር ተጠይቋል",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "የተጠየቁ የነጥብ ብድሮች",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "እባክዎ ከማስተዋቅያ ያግኙ",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "የአንድ ግዜ ምክሮች",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "በ አገልግሎቱ ያበቃል",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "ይህ ፈጣር ከ Brave ተጠቃሚዎች መዋጮዎችን ለመቀበል ገና አልተመዘገበም። እስከሚያረጋግጥ ድረስ ምንም አይነት መወጮ በእርሶ ዋሌት ውስጥ ይቆያል።",
+    "message": "ይህ ፈጣሪ በአሁኑ ጊዜ ከዋሌትዎ ምክሮችን ለመቀበል አልተዋቀረም። የሚሰጡት ማናቸውም ጠቃሚ ምክር በኪስ ቦርሳዎ ውስጥ እንደተጠበቀ ሆኖ ለ 90 ቀናት በራስ-ሰር እንደገና ይሞክሩ።",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "ማስታወቂያዎችን ያብሩ",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "ነፃ የቶክን ብድር",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "የነፃ ነጥብ ብድር",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "የማስታወቂያ ሽልማት አግኝተዋል!",
@@ -591,17 +567,9 @@
     "message": "ተለዋጭ ስም",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "ነጥቦች",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "የቶክን ፍቃዶች",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "የነጥብ ፈቃዶች",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "ሰላም፣ $name$",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "የመያዣ መለያ ለመፍጠር ቢያንስ 25 BAT ያስፈልግዎታል። እባክዎ ቆየት ብለው ይሞክሩ። \n አስቀድሞ የተረጋገጠ የመያዣ መለያ ካለዎት መግባትዎን ይቀጥሉ።",
-    "description": "Text for login button"
+    "message": "የ Uphold መለያ ለመፍጠር ቢያንስ $amount$ BAT ያስፈልግዎታል። ቀድሞውኑ የተረጋገጠ የ Uphold መለያ ካለዎት በመለያ ለመግባት ይቀጥሉ።",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "ተያይዟል",
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "ሽልማቶችን መቼ ይቀበላሉ",
+    "message": "ሽልማቶችን መቼ ይቀበላሉ?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "Brave Rewards ን በመጠቀም ድሩ ለሁሉም ሰው የተሻለ ቦታ እንዲሆን እየረዱ ነው። እና ያ ግሩም ነው!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "በጃፓን ውስጥ የሚገኙ Brave ወሮታዎች ወደ አዲስ ስርዓት እየተቀየሩ ነው!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "ዋለትዎን ያረጋግጡ",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "የበለጠ ለመረዳት",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "ማስታወቂያዎችን በመመልከት ያገኙዋቸውን ቶክኖች ወጪ ለማድረግ ዋለትዎን ማረጋገጥ ያስፈልግዎታል።",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "እባክዎን የራስዎ BAP እስከ ማርች 13 ድረስ ይጠቀሙ። ከዚያ በኋላ ፣ BAP ይቋረጣል።",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "በኋላ ያድርጉት",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "ዋለቴን አረጋግጥ",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "bitFlyer ዋለት በ bitFlyer, Inc. የሚተዳደር አገልግሎት ነው።",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "ዋለትዎን በማረጋገጥ እና ከ bitFlyer መለያ ጋር በማገናኘት በ Brave Rewards ያገኙዋቸውን ቶከንዎችን የበለጠ በቀላሉ ለማከማቸት እና ለማስተዳደር ይችላሉ።",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "​$link_begin$ለተጨማሪ እውቀት​$link_end$ ​ስለ Brave አሳሽዎን ከቢትፍላየር መለያዎ ጋር እንዴት እንደሚያገናኙ።",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

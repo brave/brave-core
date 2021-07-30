@@ -25,7 +25,7 @@ class AutofillExperimentsTest : public testing::Test {
   void SetUp() override {
     pref_service_.registry()->RegisterBooleanPref(
         prefs::kAutofillWalletImportEnabled, true);
-    log_manager_ = LogManager::Create(nullptr, base::Closure());
+    log_manager_ = LogManager::Create(nullptr, base::RepeatingClosure());
   }
 
   bool IsCreditCardUploadEnabled(const AutofillSyncSigninState sync_state) {

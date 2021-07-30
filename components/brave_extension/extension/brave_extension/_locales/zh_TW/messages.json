@@ -171,17 +171,13 @@
     "message": "變更全域防護預設值",
     "description": "Message for the button action linking to the settings page"
   },
-  "addBlockElement": {
-    "message": "透過選取器封鎖元素",
-    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  "manageCustomFilters": {
+    "message": "管理自訂過濾器",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
-  "resetSiteFilterSettings": {
-    "message": "清除這個網站的 CSS 規則",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "清除所有網站的 CSS 規則",
-    "description": "Message for context menu that resets all cosmetic filters"
+  "elementPickerMode": {
+    "message": "封鎖元素",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
     "message": "進階檢視",

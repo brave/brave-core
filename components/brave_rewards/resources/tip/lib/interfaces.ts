@@ -56,7 +56,9 @@ export type OnboardingResult = 'opted-in' | 'dismissed'
 export enum PublisherStatus {
   NOT_VERIFIED = 0,
   CONNECTED = 1,
-  UPHOLD_VERIFIED = 2
+  UPHOLD_VERIFIED = 2,
+  BITFLYER_VERIFIED = 3,
+  GEMINI_VERIFIED = 4
 }
 
 export interface PublisherInfo {
@@ -87,7 +89,7 @@ export enum ExternalWalletStatus {
 
 export interface ExternalWalletInfo {
   status: ExternalWalletStatus
-  type: 'anonymous' | 'uphold'
+  type: 'anonymous' | 'uphold' | 'bitflyer' | 'gemini'
 }
 
 export interface RewardsParameters {
@@ -112,7 +114,6 @@ export interface HostState {
   adsPerHour?: number
   autoContributeAmount?: number
   currentMonthlyTip?: number
-  onlyAnonWallet?: boolean
   showOnboarding?: boolean
   tipProcessed?: boolean
   tipAmount?: number

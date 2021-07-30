@@ -122,6 +122,8 @@ void EmitP2AHistogramAnswer(const std::string& name, uint16_t count_value) {
 }
 
 void SuspendP2AHistograms() {
+  // Record "special value" to prevent sending this week's data to P2A server.
+  // Matches INT_MAX - 1 for |kSuspendedMetricValue| in |brave_p3a_service.cc|
   for (const char* question_name : kP2AQuestionNameList) {
     base::UmaHistogramExactLinear(question_name, INT_MAX,
                                   base::size(kIntervalBuckets) + 1);

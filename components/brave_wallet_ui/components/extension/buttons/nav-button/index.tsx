@@ -4,7 +4,7 @@ import * as React from 'react'
 import { StyledButton, ButtonText } from './style'
 
 export interface Props {
-  buttonType: 'primary' | 'secondary'
+  buttonType: 'primary' | 'secondary' | 'danger'
   text: string | undefined
   onSubmit: () => void
   disabled?: boolean

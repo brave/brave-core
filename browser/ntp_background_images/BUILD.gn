@@ -1,6 +1,4 @@
 source_set("ntp_background_images") {
-  # Remove when https://github.com/brave/brave-browser/issues/10658 is resolved
-  check_includes = false
   sources = [
     "view_counter_service_factory.cc",
     "view_counter_service_factory.h",
@@ -8,11 +6,16 @@ source_set("ntp_background_images") {
 
   deps = [
     "//base",
-    "//brave/components/brave_stats/browser",
-    "//brave/common",
+    "//brave/browser:browser_process",
+    "//brave/browser/brave_ads",
+    "//brave/browser/profiles:util",
+    "//brave/common:pref_names",
     "//brave/components/brave_ads/browser",
+    "//brave/components/brave_stats/browser",
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_background_images/common",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
     "//chrome/common",
     "//components/keyed_service/content",
     "//components/pref_registry",
@@ -21,15 +24,18 @@ source_set("ntp_background_images") {
   ]
 
   if (is_android) {
+    # Remove when https://github.com/brave/brave-browser/issues/10658 is resolved
+    check_includes = false
+
     sources += [
       "android/ntp_background_images_bridge.cc",
       "android/ntp_background_images_bridge.h",
     ]
 
     deps += [
+      "//brave/build/android:jni_headers",
       "//components/keyed_service/content",
       "//components/keyed_service/core",
-      "//brave/build/android:jni_headers",
     ]
   }
 }

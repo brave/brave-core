@@ -1,0 +1,39 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/build/ios/coredata_model.gni")
+import("//build/config/ios/rules.gni")
+
+source_set("legacy_database") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+
+  sources = [
+    "data_controller.h",
+    "data_controller.mm",
+    "legacy_ledger_database.h",
+    "legacy_ledger_database.mm",
+  ]
+
+  deps = [
+    ":ledger_resources",
+    ":model",
+    "//base",
+    "//brave/ios/browser/api/ledger/legacy_database/core_data_models",
+  ]
+
+  frameworks = [
+    "Foundation.framework",
+    "CoreData.framework",
+  ]
+}
+
+coredata_model("model") {
+  model_file = "Model.xcdatamodeld"
+}
+
+bundle_data("ledger_resources") {
+  sources = [ "migrate.sql" ]
+  outputs = [ "{{bundle_resources_dir}}/{{source_file_part}}" ]
+}

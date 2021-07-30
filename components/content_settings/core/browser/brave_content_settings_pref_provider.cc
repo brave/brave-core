@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "base/optional.h"
 #include "base/task/post_task.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/pref_names.h"
@@ -26,6 +25,7 @@
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "services/preferences/public/cpp/dictionary_value_update.h"
 #include "services/preferences/public/cpp/scoped_pref_update.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace content_settings {
 

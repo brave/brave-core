@@ -48,7 +48,7 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
     public static void showOnboardingDialog() {
         BraveActivity braveActivity = BraveActivity.getBraveActivity();
         if (braveActivity != null) {
-            BraveAdsNotificationDialog.displayAdsNotification(braveActivity,
+            BraveAdsNotificationDialog.showAdNotification(braveActivity,
                     BRAVE_ONBOARDING_NOTIFICATION_TAG, getNotificationUrl(),
                     braveActivity.getString(R.string.brave_ui_brave_rewards),
                     braveActivity.getString(R.string.this_is_your_first_ad));

@@ -51,18 +51,6 @@
     "message": "Üksikasjad",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "Teie saldo",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "BAT-punktid",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "Neid saate kasutada Brave Rewardsis, et toetada lemmiksisuloojaid. BAT-punkte ei saa BAT-i vastu välja vahetada.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "sees",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "Kasutatud tokenivõimalused",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "Kasutatud punktivõimalused",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "Reklaamidest saadud tulu",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Ühekordsed preemiad",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "aegub",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "See looja pole veel end Brave'i kasutajate sissemaksete saajaks registreerinud. Kogu teie saadetud raha jääb kuni kinnitamiseni teie rahakotti.",
+    "message": "See looja ei ole hetkel seadistatud teie rahakotist annetusi vastu võtma. Kõik teie poolt saadetud annetused jäävad teie rahakotis ootele ja neid üritatakse automaatselt uuesti saata 90 päeva jooksul.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Lülita reklaamid sisse ",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Tasuta tokenivõimalus",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Tasuta punktivõimalus",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Teenisite reklaamipreemia!",
@@ -591,17 +567,9 @@
     "message": "Luba",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "punkti",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Tokenivõimalused",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Punktivõimalused",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Tere, $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Upholdi konto loomiseks peab teil olema vähemalt 25 BATi. Proovige hiljem uuesti. \n Kui teil on juba kinnitatud Upholdi konto, jätkake sisselogimisega.",
-    "description": "Text for login button"
+    "message": "Upholdi konto loomiseks on vaja vähemalt $amount$ BAT-i. Kui teil on juba kinnitatud Upholdi konto, siis jätkake sisselogimist.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "Ühendatud",
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Millal preemiaid saab?",
+    "message": "Millal saate preemiaid?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "Brave Rewardsi kasutamisega aitate veebi kõigi jaoks paremaks muuta. Ja see on vinge!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards läheb Jaapanis üle uuele süsteemile.",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "Kinnitage oma rahakott",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "Lisateave",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "Et võtta välja reklaamide vaatamise eest teenitud tokeneid, peate kinnitama oma rahakoti.",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "Kasutage oma BAP-d ära 13. märtsiks. Pärast seda BAP-de kasutamine lõpetatakse.",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "Tee seda hiljem",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Kinnita minu rahakott",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "bitFlyeri rahakott on teenus, mida haldab bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Kui kinnitate oma rahakoti ja seote selle bitFlyeri kontoga, saate Brave Rewardsi kaudu teenitud tokeneid lihtsamalt säilitada ja hallata.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Vaata lisateavet$link_end$ selle kohta, kuidas oma Brave’i brauser bitFlyeri kontoga linkida.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

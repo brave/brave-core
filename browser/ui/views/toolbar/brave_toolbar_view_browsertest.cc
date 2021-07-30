@@ -13,11 +13,13 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
+#include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
@@ -37,13 +39,10 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
   BraveToolbarViewTest() = default;
   ~BraveToolbarViewTest() override = default;
 
-  void SetUpOnMainThread() override {
-    Init(browser());
-  }
+  void SetUpOnMainThread() override { Init(browser()); }
 
   void Init(Browser* browser) {
-    BrowserView* browser_view =
-      BrowserView::GetBrowserViewForBrowser(browser);
+    BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
     ASSERT_NE(browser_view, nullptr);
     ASSERT_NE(browser_view->toolbar(), nullptr);
     toolbar_button_provider_ = browser_view->toolbar_button_provider();
@@ -63,16 +62,15 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
-    AvatarButtonNotShownSingleProfile) {
+                       AvatarButtonNotShownSingleProfile) {
   EXPECT_EQ(false, is_avatar_button_shown());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, AvatarButtonIsShownGuestProfile) {
   // Open a Guest window.
   EXPECT_EQ(1U, BrowserList::GetInstance()->size());
-  content::WindowedNotificationObserver browser_creation_observer(
-      chrome::NOTIFICATION_BROWSER_OPENED,
-      content::NotificationService::AllSources());
+  ui_test_utils::BrowserChangeObserver browser_creation_observer(
+      nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
   profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
   base::RunLoop().RunUntilIdle();
   browser_creation_observer.Wait();
@@ -90,7 +88,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, AvatarButtonIsShownGuestProfile) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
-    AvatarButtonIsShownMultipleProfiles) {
+                       AvatarButtonIsShownMultipleProfiles) {
   // Should not be shown in first profile, at first
   EXPECT_EQ(false, is_avatar_button_shown());
 
@@ -102,8 +100,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   base::FilePath new_path = profile_manager->GenerateNextProfileDirectoryPath();
   base::RunLoop run_loop;
   profile_manager->CreateProfileAsync(
-      new_path, base::Bind(&OnUnblockOnProfileCreation, &run_loop),
-      base::string16(), std::string());
+      new_path, base::BindRepeating(&OnUnblockOnProfileCreation, &run_loop));
   run_loop.Run();
   ASSERT_EQ(2u, storage.GetNumberOfProfiles());
   Profile* new_profile = profile_manager->GetProfileByPath(new_path);
@@ -113,14 +110,11 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
 
   // Open the new profile
   EXPECT_EQ(1U, BrowserList::GetInstance()->size());
-  content::WindowedNotificationObserver browser_creation_observer(
-      chrome::NOTIFICATION_BROWSER_OPENED,
-      content::NotificationService::AllSources());
-  profiles::OpenBrowserWindowForProfile(
-    ProfileManager::CreateCallback(),
-    false, true, true,
-    new_profile,
-    Profile::CREATE_STATUS_INITIALIZED);
+  ui_test_utils::BrowserChangeObserver browser_creation_observer(
+      nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
+  profiles::OpenBrowserWindowForProfile(ProfileManager::CreateCallback(), false,
+                                        true, true, new_profile,
+                                        Profile::CREATE_STATUS_INITIALIZED);
   base::RunLoop().RunUntilIdle();
   browser_creation_observer.Wait();
   EXPECT_EQ(2U, BrowserList::GetInstance()->size());

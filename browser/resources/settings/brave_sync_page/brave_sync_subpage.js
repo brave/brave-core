@@ -11,9 +11,9 @@ import 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.m.js';
 import 'chrome://resources/cr_elements/icons.m.js';
 import 'chrome://resources/cr_elements/shared_style_css.m.js';
 import 'chrome://resources/cr_elements/shared_vars_css.m.js';
-import '../settings_shared_css.m.js';
-import '../settings_vars_css.m.js';
-import '../people_page/sync_controls.m.js';
+import '../settings_shared_css.js';
+import '../settings_vars_css.js';
+import '../people_page/sync_controls.js';
 import './brave_sync_configure.js';
 import './brave_sync_setup.js';
 
@@ -21,8 +21,8 @@ import {assert} from 'chrome://resources/js/assert.m.js';
 import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js';
 
-import {Route, RouteObserverBehavior, Router} from '../router.m.js';
-import {SyncBrowserProxyImpl, StatusAction} from '../people_page/sync_browser_proxy.m.js';
+import {Route, RouteObserverBehavior, Router} from '../router.js';
+import {SyncBrowserProxyImpl, StatusAction} from '../people_page/sync_browser_proxy.js';
 
 /**
 * @fileoverview

@@ -51,7 +51,7 @@ Related Projects
 ----------------
 
 - [Demo](https://github.com/kumabook/readability-demo)
-- [ar90-readability ports](https://github.com/masukomi/ar90-readability#ports)
+- [ar90-readability ports](https://github.com/masukomi/arc90-readability#ports)
 
 License
 -------

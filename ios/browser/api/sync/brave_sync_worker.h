@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-#include "base/scoped_observer.h"
+#include "base/scoped_observation.h"
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_observer.h"
 #include "components/sync_device_info/device_info_sync_service.h"
@@ -37,7 +37,8 @@ class BraveSyncDeviceTracker : public syncer::DeviceInfoTracker::Observer {
 
   std::function<void()> on_device_info_changed_callback_;
 
-  ScopedObserver<syncer::DeviceInfoTracker, syncer::DeviceInfoTracker::Observer>
+  base::ScopedObservation<syncer::DeviceInfoTracker,
+                          syncer::DeviceInfoTracker::Observer>
       device_info_tracker_observer_{this};
 };
 
@@ -52,7 +53,7 @@ class BraveSyncServiceTracker : public syncer::SyncServiceObserver {
 
   std::function<void()> on_state_changed_callback_;
 
-  ScopedObserver<syncer::SyncService, syncer::SyncServiceObserver>
+  base::ScopedObservation<syncer::SyncService, syncer::SyncServiceObserver>
       sync_service_observer_{this};
 };
 
@@ -89,7 +90,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   std::string passphrase_;
 
   ChromeBrowserState* browser_state_;  // NOT OWNED
-  ScopedObserver<syncer::SyncService, syncer::SyncServiceObserver>
+  base::ScopedObservation<syncer::SyncService, syncer::SyncServiceObserver>
       sync_service_observer_{this};
   base::WeakPtrFactory<BraveSyncWorker> weak_ptr_factory_{this};
 

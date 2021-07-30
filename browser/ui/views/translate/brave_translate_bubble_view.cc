@@ -36,8 +36,9 @@ BraveTranslateBubbleView::BraveTranslateBubbleView(
 BraveTranslateBubbleView::~BraveTranslateBubbleView() {
 }
 
-views::View* BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {
-  views::View* view = new views::View();
+std::unique_ptr<views::View>
+BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {
+  auto view = std::make_unique<views::View>();
   views::GridLayout* layout =
       view->SetLayoutManager(std::make_unique<views::GridLayout>());
   ChromeLayoutProvider* provider = ChromeLayoutProvider::Get();
@@ -180,6 +181,6 @@ bool BraveTranslateBubbleView::ShouldShowWindowTitle() const {
 
 void BraveTranslateBubbleView::Init() {
   TranslateBubbleView::Init();
-  RemoveChildView(translate_view_);
+  removed_translate_view_ = RemoveChildViewT(translate_view_);
   translate_view_ = AddChildView(BraveCreateViewBeforeTranslate());
 }

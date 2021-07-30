@@ -11,6 +11,7 @@
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
+#include "brave/components/sidebar/constants.h"
 #include "brave/components/sidebar/features.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "components/grit/brave_components_strings.h"
@@ -24,42 +25,85 @@ namespace sidebar {
 
 namespace {
 
-constexpr char kSidebarItemURLKey[] = "url";
-constexpr char kSidebarItemTypeKey[] = "type";
-constexpr char kSidebarItemTitleKey[] = "title";
-constexpr char kSidebarItemOpenInPanelKey[] = "open_in_panel";
+SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) {
+  switch (type) {
+    case SidebarItem::BuiltInItemType::kBraveTalk:
+      return SidebarItem::Create(
+          GURL("https://talk.brave.com/"),
+          l10n_util::GetStringUTF16(IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE),
+          SidebarItem::Type::kTypeBuiltIn,
+          SidebarItem::BuiltInItemType::kBraveTalk, true);
+    case SidebarItem::BuiltInItemType::kWallet:
+      return SidebarItem::Create(
+          GURL("chrome://wallet/"),
+          l10n_util::GetStringUTF16(IDS_SIDEBAR_WALLET_ITEM_TITLE),
+          SidebarItem::Type::kTypeBuiltIn,
+          SidebarItem::BuiltInItemType::kWallet, false);
+      break;
+    case SidebarItem::BuiltInItemType::kBookmarks:
+      return SidebarItem::Create(
+          GURL("chrome://bookmarks/"),
+          l10n_util::GetStringUTF16(IDS_SIDEBAR_BOOKMARKS_ITEM_TITLE),
+          SidebarItem::Type::kTypeBuiltIn,
+          SidebarItem::BuiltInItemType::kBookmarks, true);
+      break;
+    case SidebarItem::BuiltInItemType::kHistory:
+      return SidebarItem::Create(
+          GURL("chrome://history/"),
+          l10n_util::GetStringUTF16(IDS_SIDEBAR_HISTORY_ITEM_TITLE),
+          SidebarItem::Type::kTypeBuiltIn,
+          SidebarItem::BuiltInItemType::kHistory, true);
+      break;
+    default:
+      NOTREACHED();
+  }
+  return SidebarItem();
+}
+
+SidebarItem::BuiltInItemType GetBuiltInItemTypeForURL(const std::string& url) {
+  if (url == "https://together.brave.com/" || url == "https://talk.brave.com/")
+    return SidebarItem::BuiltInItemType::kBraveTalk;
+
+  if (url == "chrome://wallet/")
+    return SidebarItem::BuiltInItemType::kWallet;
+
+  if (url == "chrome://bookmarks/")
+    return SidebarItem::BuiltInItemType::kBookmarks;
+
+  if (url == "chrome://history/")
+    return SidebarItem::BuiltInItemType::kHistory;
+
+  NOTREACHED();
+  return SidebarItem::BuiltInItemType::kNone;
+}
+
+SidebarItem GetBuiltInItemForURL(const std::string& url) {
+  return GetBuiltInItemForType(GetBuiltInItemTypeForURL(url));
+}
 
 std::vector<SidebarItem> GetDefaultSidebarItems() {
-  // TODO(simonhong): Get titles by observing webcontents.
   std::vector<SidebarItem> items;
-  items.push_back(SidebarItem::Create(
-      GURL("https://together.brave.com/"),
-      l10n_util::GetStringUTF16(IDS_SIDEBAR_BRAVE_TOGETHER_ITEM_TITLE),
-      SidebarItem::Type::kTypeBuiltIn, true));
-  items.push_back(SidebarItem::Create(
-      GURL("chrome://wallet/"),
-      l10n_util::GetStringUTF16(IDS_SIDEBAR_WALLET_ITEM_TITLE),
-      SidebarItem::Type::kTypeBuiltIn, false));
-  items.push_back(SidebarItem::Create(
-      GURL("chrome://bookmarks/"),
-      l10n_util::GetStringUTF16(IDS_SIDEBAR_BOOKMARKS_ITEM_TITLE),
-      SidebarItem::Type::kTypeBuiltIn, true));
-  items.push_back(SidebarItem::Create(
-      GURL("chrome://history/"),
-      l10n_util::GetStringUTF16(IDS_SIDEBAR_HISTORY_ITEM_TITLE),
-      SidebarItem::Type::kTypeBuiltIn, true));
+  items.push_back(
+      GetBuiltInItemForType(SidebarItem::BuiltInItemType::kBraveTalk));
+  items.push_back(GetBuiltInItemForType(SidebarItem::BuiltInItemType::kWallet));
+  items.push_back(
+      GetBuiltInItemForType(SidebarItem::BuiltInItemType::kBookmarks));
+  items.push_back(
+      GetBuiltInItemForType(SidebarItem::BuiltInItemType::kHistory));
   return items;
 }
 
 }  // namespace
 
 // static
-void SidebarService::RegisterPrefs(PrefRegistrySimple* registry) {
+void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   if (!base::FeatureList::IsEnabled(kSidebarFeature))
     return;
 
   registry->RegisterListPref(kSidebarItems);
-  registry->RegisterIntegerPref(kSidebarShowOption, kShowAlways);
+  registry->RegisterIntegerPref(
+      kSidebarShowOption, static_cast<int>(ShowSidebarOption::kShowAlways));
+  registry->RegisterIntegerPref(kSidebarItemAddedFeedbackBubbleShowCount, 0);
 }
 
 SidebarService::SidebarService(PrefService* prefs) : prefs_(prefs) {
@@ -99,6 +143,23 @@ void SidebarService::RemoveItemAt(int index) {
   UpdateSidebarItemsToPrefStore();
 }
 
+void SidebarService::MoveItem(int from, int to) {
+  DCHECK(items_.size() > static_cast<size_t>(from) &&
+         items_.size() > static_cast<size_t>(to) && from >= 0 && to >= 0);
+
+  if (from == to)
+    return;
+
+  const SidebarItem item = items_[from];
+  items_.erase(items_.begin() + from);
+  items_.insert(items_.begin() + to, item);
+
+  for (Observer& obs : observers_)
+    obs.OnItemMoved(item, from, to);
+
+  UpdateSidebarItemsToPrefStore();
+}
+
 void SidebarService::UpdateSidebarItemsToPrefStore() {
   ListPrefUpdate update(prefs_, kSidebarItems);
   update->ClearList();
@@ -108,6 +169,8 @@ void SidebarService::UpdateSidebarItemsToPrefStore() {
     dict.SetStringKey(kSidebarItemURLKey, item.url.spec());
     dict.SetStringKey(kSidebarItemTitleKey, base::UTF16ToUTF8(item.title));
     dict.SetIntKey(kSidebarItemTypeKey, static_cast<int>(item.type));
+    dict.SetIntKey(kSidebarItemBuiltInItemTypeKey,
+                   static_cast<int>(item.built_in_item_type));
     dict.SetBoolKey(kSidebarItemOpenInPanelKey, item.open_in_panel);
     update->Append(std::move(dict));
   }
@@ -128,7 +191,8 @@ std::vector<SidebarItem> SidebarService::GetNotAddedDefaultSidebarItems()
   for (const auto& added_item : added_default_items) {
     auto iter = std::find_if(default_items.begin(), default_items.end(),
                              [added_item](const auto& default_item) {
-                               return default_item.url == added_item.url;
+                               return default_item.built_in_item_type ==
+                                      added_item.built_in_item_type;
                              });
     default_items.erase(iter);
   }
@@ -143,12 +207,12 @@ SidebarService::GetDefaultSidebarItemsFromCurrentItems() const {
   return items;
 }
 
-int SidebarService::GetSidebarShowOption() const {
-  return prefs_->GetInteger(kSidebarShowOption);
+SidebarService::ShowSidebarOption SidebarService::GetSidebarShowOption() const {
+  return static_cast<ShowSidebarOption>(prefs_->GetInteger(kSidebarShowOption));
 }
 
-void SidebarService::SetSidebarShowOption(int show_options) {
-  prefs_->SetInteger(kSidebarShowOption, show_options);
+void SidebarService::SetSidebarShowOption(ShowSidebarOption show_options) {
+  prefs_->SetInteger(kSidebarShowOption, static_cast<int>(show_options));
 }
 
 void SidebarService::LoadSidebarItems() {
@@ -160,6 +224,13 @@ void SidebarService::LoadSidebarItems() {
 
   const auto& items = preference->GetValue()->GetList();
   for (const auto& item : items) {
+    SidebarItem::Type type;
+    if (const auto value = item.FindIntKey(kSidebarItemTypeKey)) {
+      type = static_cast<SidebarItem::Type>(*value);
+    } else {
+      continue;
+    }
+
     std::string url;
     if (const auto* value = item.FindStringKey(kSidebarItemURLKey)) {
       url = *value;
@@ -167,10 +238,17 @@ void SidebarService::LoadSidebarItems() {
       continue;
     }
 
-    SidebarItem::Type type;
-    if (const auto value = item.FindIntKey(kSidebarItemTypeKey)) {
-      type = static_cast<SidebarItem::Type>(*value);
-    } else {
+    // Always use latest properties for built-in type item.
+    if (type == SidebarItem::Type::kTypeBuiltIn) {
+      SidebarItem built_in_item;
+      if (const auto value = item.FindIntKey(kSidebarItemBuiltInItemTypeKey)) {
+        built_in_item = GetBuiltInItemForType(
+            static_cast<SidebarItem::BuiltInItemType>(*value));
+      } else {
+        // Fallback when built-in item type key is not existed.
+        built_in_item = GetBuiltInItemForURL(url);
+      }
+      items_.push_back(built_in_item);
       continue;
     }
 
@@ -187,8 +265,10 @@ void SidebarService::LoadSidebarItems() {
       title = *value;
     }
 
-    items_.push_back(SidebarItem::Create(GURL(url), base::UTF8ToUTF16(title),
-                                         type, open_in_panel));
+    DCHECK(type != SidebarItem::Type::kTypeBuiltIn);
+    items_.push_back(SidebarItem::Create(
+        GURL(url), base::UTF8ToUTF16(title), type,
+        SidebarItem::BuiltInItemType::kNone, open_in_panel));
   }
 }
 

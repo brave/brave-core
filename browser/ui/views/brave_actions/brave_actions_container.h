@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 
+#include "base/scoped_observation.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -21,6 +22,7 @@
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_registry_observer.h"
 #include "extensions/common/extension.h"
+#include "ui/gfx/skia_util.h"
 #include "ui/views/view.h"
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -59,9 +61,6 @@ class BraveActionsContainer : public views::View,
   void SetShouldHide(bool should_hide);
   // ToolbarActionView::Delegate
   content::WebContents* GetCurrentWebContents() override;
-  bool ShownInsideMenu() const override;
-  // Notifies that a drag completed.
-  void OnToolbarActionViewDragDone() override;
   // Returns the view of the toolbar actions overflow menu to use as a
   // reference point for a popup when this view isn't visible.
   views::LabelButton* GetOverflowReferenceView() const override;
@@ -168,19 +167,19 @@ class BraveActionsContainer : public views::View,
   extensions::BraveActionAPI* brave_action_api_;
 
   // Listen to extension load, unloaded notifications.
-  ScopedObserver<extensions::ExtensionRegistry,
-                 extensions::ExtensionRegistryObserver>
-      extension_registry_observer_;
+  base::ScopedObservation<extensions::ExtensionRegistry,
+                          extensions::ExtensionRegistryObserver>
+      extension_registry_observer_{this};
 
   // Listen to when the action is updated
-  ScopedObserver<extensions::ExtensionActionAPI,
-                 extensions::ExtensionActionAPI::Observer>
-      extension_action_observer_;
+  base::ScopedObservation<extensions::ExtensionActionAPI,
+                          extensions::ExtensionActionAPI::Observer>
+      extension_action_observer_{this};
 
   // Listen to when we need to open a popup
-  ScopedObserver<extensions::BraveActionAPI,
-                 extensions::BraveActionAPI::Observer>
-      brave_action_observer_;
+  base::ScopedObservation<extensions::BraveActionAPI,
+                          extensions::BraveActionAPI::Observer>
+      brave_action_observer_{this};
 
   // Listen for Brave Rewards preferences changes.
   BooleanPrefMember brave_rewards_enabled_;

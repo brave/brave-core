@@ -1,7 +1,8 @@
+import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_together/buildflags/buildflags.gni")
-import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
+import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//tools/grit/grit_rule.gni")
@@ -16,7 +17,7 @@ json_features("api_features") {
     "_api_features.json",
   ]
 
-  if (brave_wallet_enabled) {
+  if (ethereum_remote_client_enabled) {
     sources += [ "_brave_wallet_api_features.json" ]
   }
 
@@ -30,6 +31,10 @@ json_features("api_features") {
 
   if (gemini_enabled) {
     sources += [ "_gemini_api_features.json" ]
+  }
+
+  if (enable_ftx) {
+    sources += [ "_ftx_api_features.json" ]
   }
 
   if (crypto_dot_com_enabled) {
@@ -80,7 +85,7 @@ if (ipfs_enabled) {
   brave_extensions_api_schema_sources += [ "ipfs.json" ]
 }
 
-if (brave_wallet_enabled) {
+if (ethereum_remote_client_enabled) {
   brave_extensions_api_schema_sources += [ "brave_wallet.json" ]
 }
 
@@ -90,6 +95,10 @@ if (binance_enabled) {
 
 if (gemini_enabled) {
   brave_extensions_api_schema_sources += [ "gemini.json" ]
+}
+
+if (enable_ftx) {
+  brave_extensions_api_schema_sources += [ "ftx.json" ]
 }
 
 if (crypto_dot_com_enabled) {

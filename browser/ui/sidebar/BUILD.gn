@@ -21,6 +21,8 @@ source_set("sidebar") {
     "sidebar_service_factory.h",
     "sidebar_utils.cc",
     "sidebar_utils.h",
+    "sidebar_web_contents_delegate.cc",
+    "sidebar_web_contents_delegate.h",
   ]
 
   deps = [
@@ -35,7 +37,14 @@ source_set("sidebar") {
 
   # included from chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h
   # see check_includes comment above
-  deps += [ "//chrome/browser/promo_browser_command:mojo_bindings" ]
+  deps += [
+    "//chrome/browser/cart:mojo_bindings",
+    "//chrome/browser/promo_browser_command:mojo_bindings",
+    "//chrome/browser/search/drive:mojo_bindings",
+    "//chrome/browser/search/task_module:mojo_bindings",
+    "//chrome/browser/ui/webui/new_tab_page:mojo_bindings",
+    "//chrome/browser/ui/webui/realbox:mojo_bindings",
+  ]
 }
 
 source_set("browser_tests") {
@@ -54,6 +63,26 @@ source_set("browser_tests") {
       "//chrome/browser/ui",
       "//chrome/test:test_support_ui",
       "//content/test:test_support",
+    ]
+  }
+}
+
+source_set("unit_tests") {
+  if (enable_sidebar) {
+    testonly = true
+
+    sources = [ "sidebar_unittest.cc" ]
+
+    deps = [
+      "//base",
+      "//brave/browser/ui",
+      "//brave/browser/ui/sidebar",
+      "//brave/components/sidebar",
+      "//chrome/test:test_support",
+      "//components/prefs",
+      "//components/sync_preferences:test_support",
+      "//content/test:test_support",
+      "//testing/gtest",
     ]
   }
 }

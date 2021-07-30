@@ -1,12 +1,13 @@
 diff --git a/chrome/utility/BUILD.gn b/chrome/utility/BUILD.gn
-index 3c1c93059d71ce27125a67d49624cdadaf3078c8..0ea1995b1ef4b804c2be07556dad744895306556 100644
+index 0976a68da300b0ac06888709e16b3443b5995bb3..e324977bb6d8e9981c4bc297650b67feddb87cba 100644
 --- a/chrome/utility/BUILD.gn
 +++ b/chrome/utility/BUILD.gn
-@@ -29,6 +29,7 @@ static_library("utility") {
+@@ -65,6 +65,8 @@ static_library("utility") {
+     "//ui/base:buildflags",
+   ]
  
-   public_deps = []
-   deps = [
-+    "//brave/utility",
-     "//base",
-     "//build:chromeos_buildflags",
-     "//chrome:resources",
++  import("//brave/utility/sources.gni") sources += brave_utility_sources deps += brave_utility_deps public_deps += brave_utility_public_deps
++
+   if (is_win) {
+     deps += [
+       "//components/services/quarantine",

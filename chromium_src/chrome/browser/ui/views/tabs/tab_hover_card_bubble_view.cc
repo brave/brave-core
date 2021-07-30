@@ -19,14 +19,14 @@
 void TabHoverCardBubbleView_ChromiumImpl::BraveUpdateCardContent(
     const Tab* tab) {
   TabHoverCardBubbleView_ChromiumImpl::UpdateCardContent(tab);
-  const base::string16& domain = domain_label_->GetText();
-  const base::string16 kChromeUISchemeU16 =
+  const std::u16string& domain = domain_label_->GetText();
+  const std::u16string kChromeUISchemeU16 =
       base::ASCIIToUTF16(content::kChromeUIScheme);
   // Replace chrome:// with brave://. Since this is purely in the UI we can
   // just do a sub-string replacement instead of parsing into GURL.
   if (base::StartsWith(domain, kChromeUISchemeU16,
                        base::CompareCase::INSENSITIVE_ASCII)) {
-    base::string16 new_domain = domain;
+    std::u16string new_domain = domain;
     base::ReplaceFirstSubstringAfterOffset(
         &new_domain, 0ul, kChromeUISchemeU16,
         base::ASCIIToUTF16(content::kBraveUIScheme));

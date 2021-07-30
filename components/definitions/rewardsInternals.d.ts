@@ -53,7 +53,7 @@ declare namespace RewardsInternals {
     version: number
   }
 
-  export type WalletType = 'anonymous' | 'uphold'
+  export type WalletType = 'anonymous' | 'uphold' | 'bitflyer' | 'gemini'
 
   export enum WalletStatus {
     NOT_CONNECTED = 0,
@@ -66,7 +66,9 @@ declare namespace RewardsInternals {
 
   export interface ExternalWallet {
     address: string
+    memberId: string
     status: WalletStatus
+    type: WalletType | ''
   }
 
   export interface EventLog {

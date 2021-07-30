@@ -251,18 +251,6 @@ public class BinanceConvertFragment extends Fragment {
         }
     }
 
-    private void dismissBinanceBottomSheet() {
-        FragmentManager fm = getParentFragmentManager();
-        CryptoWidgetBottomSheetDialogFragment fragment =
-                (CryptoWidgetBottomSheetDialogFragment) fm.findFragmentByTag(
-                        CryptoWidgetBottomSheetDialogFragment.TAG_FRAGMENT);
-        FragmentTransaction transaction = fm.beginTransaction();
-
-        if (fragment != null) {
-            fragment.dismiss();
-        }
-    }
-
     private BinanceObserver mBinanaceObserver = new BinanceObserver() {
         @Override
         public void OnGetConvertQuote(

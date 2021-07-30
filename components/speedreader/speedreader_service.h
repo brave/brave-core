@@ -20,10 +20,12 @@ class SpeedreaderService : public KeyedService {
   explicit SpeedreaderService(PrefService* prefs);
   ~SpeedreaderService() override;
 
-  static void RegisterPrefs(PrefRegistrySimple* registry);
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
   void ToggleSpeedreader();
   bool IsEnabled();
+  bool ShouldPromptUserToEnable() const;
+  void IncrementPromptCount();
 
   SpeedreaderService(const SpeedreaderService&) = delete;
   SpeedreaderService& operator=(const SpeedreaderService&) = delete;

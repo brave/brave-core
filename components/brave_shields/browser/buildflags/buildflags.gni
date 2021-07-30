@@ -1,5 +1,0 @@
-import("//build/config/features.gni")
-
-declare_args() {
-  brave_stp_enabled = false
-}

@@ -45,6 +45,14 @@ type::ContributionProcessor GetProcessor(const std::string& wallet_type) {
     return type::ContributionProcessor::UPHOLD;
   }
 
+  if (wallet_type == constant::kWalletBitflyer) {
+    return type::ContributionProcessor::BITFLYER;
+  }
+
+  if (wallet_type == constant::kWalletGemini) {
+    return type::ContributionProcessor::GEMINI;
+  }
+
   return type::ContributionProcessor::NONE;
 }
 
@@ -58,6 +66,14 @@ std::string GetNextProcessor(const std::string& current_processor) {
   }
 
   if (current_processor == constant::kWalletUphold) {
+    return constant::kWalletBitflyer;
+  }
+
+  if (current_processor == constant::kWalletBitflyer) {
+    return constant::kWalletGemini;
+  }
+
+  if (current_processor == constant::kWalletGemini) {
     return "";
   }
 

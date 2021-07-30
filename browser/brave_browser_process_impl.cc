@@ -17,23 +17,24 @@
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
+#include "brave/common/brave_channel_info.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "brave/components/brave_federated_learning/brave_federated_learning_service.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
-#include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/components/p3a/brave_histogram_rewrite.h"
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/p3a/buildflags.h"
+#include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/services/network/public/cpp/system_request_handler.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
 #include "chrome/browser/net/system_network_context_manager.h"
@@ -86,7 +87,7 @@
 #endif
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
-#include "brave/components/brave_user_model/browser/user_model_file_service.h"
+#include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #endif
 
 using brave_component_updater::BraveComponent;
@@ -98,14 +99,13 @@ namespace {
 // Initializes callback for SystemRequestHandler
 void InitSystemRequestHandlerCallback() {
   network::SystemRequestHandler::OnBeforeSystemRequestCallback
-      before_system_request_callback = base::Bind(brave::OnBeforeSystemRequest);
+      before_system_request_callback =
+          base::BindRepeating(brave::OnBeforeSystemRequest);
   network::SystemRequestHandler::GetInstance()
       ->RegisterOnBeforeSystemRequestCallback(before_system_request_callback);
 }
 
 }  // namespace
-
-BraveBrowserProcessImpl* g_brave_browser_process = nullptr;
 
 using content::BrowserThread;
 
@@ -128,7 +128,7 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   // Create P3A Service early to catch more histograms. The full initialization
   // should be started once browser process impl is ready.
   brave_p3a_service();
-  brave::SetupHistogramsBraveization();
+  histogram_braveizer_ = brave::HistogramsBraveizer::Create();
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 }
 
@@ -146,14 +146,14 @@ void BraveBrowserProcessImpl::Init() {
   UpdateBraveDarkMode();
   pref_change_registrar_.Add(
       kBraveDarkMode,
-      base::Bind(&BraveBrowserProcessImpl::OnBraveDarkModeChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(&BraveBrowserProcessImpl::OnBraveDarkModeChanged,
+                          base::Unretained(this)));
 
 #if BUILDFLAG(ENABLE_TOR)
   pref_change_registrar_.Add(
       tor::prefs::kTorDisabled,
-      base::Bind(&BraveBrowserProcessImpl::OnTorEnabledChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(&BraveBrowserProcessImpl::OnTorEnabledChanged,
+                          base::Unretained(this)));
 #endif
 
   InitSystemRequestHandlerCallback();
@@ -180,11 +180,11 @@ void BraveBrowserProcessImpl::StartBraveServices() {
 
   ad_block_service()->Start();
   https_everywhere_service()->Start();
+  brave_federated_learning_service()->Start();
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   extension_whitelist_service();
 #endif
-  tracking_protection_service();
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion_download_service();
 #endif
@@ -192,7 +192,7 @@ void BraveBrowserProcessImpl::StartBraveServices() {
   speedreader_rewriter_service();
 #endif
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
-  user_model_file_service();
+  resource_component();
 #endif
   // Now start the local data files service, which calls all observers.
   local_data_files_service()->Start();
@@ -260,16 +260,6 @@ BraveBrowserProcessImpl::greaselion_download_service() {
 }
 #endif
 
-brave_shields::TrackingProtectionService*
-BraveBrowserProcessImpl::tracking_protection_service() {
-  if (!tracking_protection_service_) {
-    tracking_protection_service_ =
-        brave_shields::TrackingProtectionServiceFactory(
-            local_data_files_service());
-  }
-  return tracking_protection_service_.get();
-}
-
 brave_shields::HTTPSEverywhereService*
 BraveBrowserProcessImpl::https_everywhere_service() {
   if (!https_everywhere_service_)
@@ -320,11 +310,24 @@ void BraveBrowserProcessImpl::OnTorEnabledChanged() {
 }
 #endif
 
+brave::BraveFederatedLearningService*
+BraveBrowserProcessImpl::brave_federated_learning_service() {
+  if (brave_federated_learning_service_) {
+    return brave_federated_learning_service_.get();
+  }
+  brave_federated_learning_service_ =
+      std::make_unique<brave::BraveFederatedLearningService>(
+          local_state(), g_browser_process->shared_url_loader_factory());
+  return brave_federated_learning_service_.get();
+}
+
 brave::BraveP3AService* BraveBrowserProcessImpl::brave_p3a_service() {
   if (brave_p3a_service_) {
     return brave_p3a_service_.get();
   }
-  brave_p3a_service_ = new brave::BraveP3AService(local_state());
+  brave_p3a_service_ = base::MakeRefCounted<brave::BraveP3AService>(
+      local_state(), brave::GetChannelName(),
+      local_state()->GetString(kWeekOfInstallation));
   brave_p3a_service()->InitCallbacks();
   return brave_p3a_service_.get();
 }
@@ -392,14 +395,12 @@ BraveBrowserProcessImpl::speedreader_rewriter_service() {
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
-brave_user_model::UserModelFileService*
-BraveBrowserProcessImpl::user_model_file_service() {
-  if (!user_model_file_service_) {
-    user_model_file_service_.reset(
-        new brave_user_model::UserModelFileService(
-            brave_component_updater_delegate()));
+brave_ads::ResourceComponent* BraveBrowserProcessImpl::resource_component() {
+  if (!resource_component_) {
+    resource_component_.reset(
+        new brave_ads::ResourceComponent(brave_component_updater_delegate()));
   }
-  return user_model_file_service_.get();
+  return resource_component_.get();
 }
 
 #endif  // BUILDFLAG(BRAVE_ADS_ENABLED)

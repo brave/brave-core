@@ -17,6 +17,7 @@ const char kUndefinedConfirmationType[] = "";
 const char kClickedConfirmationType[] = "click";
 const char kDismissedConfirmationType[] = "dismiss";
 const char kViewedConfirmationType[] = "view";
+const char kServedConfirmationType[] = "served";
 const char kTransferredConfirmationType[] = "landed";
 const char kFlaggedConfirmationType[] = "flag";
 const char kUpvotedConfirmationType[] = "upvote";
@@ -34,6 +35,8 @@ ConfirmationType::ConfirmationType(const std::string& value) {
     value_ = kDismissed;
   } else if (value == kViewedConfirmationType) {
     value_ = kViewed;
+  } else if (value == kServedConfirmationType) {
+    value_ = kServed;
   } else if (value == kTransferredConfirmationType) {
     value_ = kTransferred;
   } else if (value == kFlaggedConfirmationType) {
@@ -69,6 +72,10 @@ ConfirmationType::operator std::string() const {
 
     case kViewed: {
       return kViewedConfirmationType;
+    }
+
+    case kServed: {
+      return kServedConfirmationType;
     }
 
     case kTransferred: {

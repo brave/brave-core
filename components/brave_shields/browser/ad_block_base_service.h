@@ -22,6 +22,7 @@
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 
 class AdBlockServiceTest;
+class BraveAdBlockTPNetworkDelegateHelperTest;
 
 using brave_component_updater::BraveComponent;
 namespace adblock {
@@ -47,19 +48,25 @@ class AdBlockBaseService : public BaseBraveShieldsService {
                           bool* did_match_exception,
                           bool* did_match_important,
                           std::string* mock_data_url) override;
+  absl::optional<std::string> GetCspDirectives(
+      const GURL& url,
+      blink::mojom::ResourceType resource_type,
+      const std::string& tab_host);
   void AddResources(const std::string& resources);
   void EnableTag(const std::string& tag, bool enabled);
   bool TagExists(const std::string& tag);
 
-  virtual base::Optional<base::Value> UrlCosmeticResources(
+  virtual absl::optional<base::Value> UrlCosmeticResources(
       const std::string& url);
-  virtual base::Optional<base::Value> HiddenClassIdSelectors(
+  virtual absl::optional<base::Value> HiddenClassIdSelectors(
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions);
 
  protected:
   friend class ::AdBlockServiceTest;
+  friend class ::BraveAdBlockTPNetworkDelegateHelperTest;
+
   bool Init() override;
 
   void GetDATFileData(const base::FilePath& dat_file_path);

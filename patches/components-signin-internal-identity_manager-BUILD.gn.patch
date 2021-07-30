@@ -1,20 +1,12 @@
 diff --git a/components/signin/internal/identity_manager/BUILD.gn b/components/signin/internal/identity_manager/BUILD.gn
-index 206adf213cbf5673d7e29a2af4c07a6ccf17b84f..00a02451f03fd7c3fc2c0b48cb187610460020c8 100644
+index 171d8a0719b1f645cf9a4b640b5925139a04b742..3d0d95c1867c8a7531084738601a36a83145c1fd 100644
 --- a/components/signin/internal/identity_manager/BUILD.gn
 +++ b/components/signin/internal/identity_manager/BUILD.gn
-@@ -4,6 +4,7 @@
- 
- import("//build/config/chromeos/ui_mode.gni")
- import("//components/signin/features.gni")
-+import("//brave/components/signin/internal/identity_manager/sources.gni")
- 
- # This target forms the core of the IdentityManager implementation
- # (//components/signin/public/identity_manager/identity_manager.*).
-@@ -125,6 +126,7 @@ source_set("identity_manager") {
+@@ -135,6 +135,7 @@ source_set("identity_manager") {
        "device_accounts_synchronizer_impl.h",
      ]
    }
-+  sources += brave_components_signin_internal_identity_manager_sources
++  import("//brave/components/signin/internal/identity_manager/sources.gni") sources += brave_components_signin_internal_identity_manager_sources
  }
  
  source_set("unit_tests") {

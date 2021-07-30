@@ -1,6 +1,6 @@
 import("//brave/build/config.gni")
 
-source_set("common") {
+static_library("common") {
   sources = [
     "switches.cc",
     "switches.h",

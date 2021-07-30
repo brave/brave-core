@@ -15,6 +15,9 @@ class RedeemUnblindedTokenDelegate {
  public:
   virtual ~RedeemUnblindedTokenDelegate() = default;
 
+  // Invoked to tell the delegate a |confirmation| was sent
+  virtual void OnDidSendConfirmation(const ConfirmationInfo& confirmation) {}
+
   // Invoked to tell the delegate an unblinded token was redeemed for the
   // corresponding |confirmation| and |unblinded_payment_token|
   virtual void OnDidRedeemUnblindedToken(

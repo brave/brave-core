@@ -17,6 +17,8 @@ type DataReceivedPayload = {
 }
 export const dataReceived = createAction<DataReceivedPayload>('dataReceived')
 
+export const optIn = createAction('optedIn')
+
 /**
  * Scroll has reached a position so that another page of content is needed
  */
@@ -40,6 +42,17 @@ export const readFeedItem = createAction<ReadFeedItemPayload>('readFeedItem')
 export const feedItemViewedCountChanged = createAction<number>('feedItemViewedCountChanged')
 
 export const promotedItemViewed = createAction<BraveToday.PromotedArticle>('promotedItemViewed')
+
+export type VisitDisplayAdPayload = {
+  ad: BraveToday.DisplayAd
+  openInNewTab?: boolean
+}
+export const visitDisplayAd = createAction<VisitDisplayAdPayload>('visitDisplayAd')
+
+export type DisplayAdViewedPayload = {
+  ad: BraveToday.DisplayAd
+}
+export const displayAdViewed = createAction<DisplayAdViewedPayload>('displayAdViewed')
 
 export type SetPublisherPrefPayload = {
   publisherId: string

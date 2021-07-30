@@ -35,6 +35,9 @@ void RecordSearchEngineP3A(const GURL& search_engine_url,
     if (base::EndsWith(search_engine_url.host(), "startpage.com",
                        base::CompareCase::INSENSITIVE_ASCII)) {
       answer = SearchEngineP3A::kStartpage;
+    } else if (base::EndsWith(search_engine_url.host(), "brave.com",
+                              base::CompareCase::INSENSITIVE_ASCII)) {
+      answer = SearchEngineP3A::kBrave;
     }
   }
 
@@ -74,7 +77,7 @@ bool SearchEngineTrackerFactory::ServiceIsCreatedWithBrowserContext() const {
 SearchEngineTracker::SearchEngineTracker(
     TemplateURLService* template_url_service)
     : template_url_service_(template_url_service) {
-  observer_.Add(template_url_service_);
+  observer_.Observe(template_url_service_);
   const TemplateURL* template_url =
       template_url_service_->GetDefaultSearchProvider();
 

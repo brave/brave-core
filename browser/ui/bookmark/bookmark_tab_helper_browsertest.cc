@@ -48,7 +48,7 @@ void AddBookmarkNode(Profile* profile) {
   bookmark_model->GetNodesByURL(url, &nodes);
   EXPECT_EQ(0UL, nodes.size());
 
-  bookmarks::AddIfNotBookmarked(bookmark_model, url, base::string16());
+  bookmarks::AddIfNotBookmarked(bookmark_model, url, std::u16string());
   bookmark_model->GetNodesByURL(url, &nodes);
   EXPECT_EQ(1UL, nodes.size());
 }

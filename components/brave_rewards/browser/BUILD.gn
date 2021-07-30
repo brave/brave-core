@@ -1,18 +1,12 @@
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/vendor/bat-native-ledger/config.gni")
 import("//extensions/buildflags/buildflags.gni")
 
-source_set("browser") {
+static_library("browser") {
   # Remove when https://github.com/brave/brave-browser/issues/10618 is resolved
   check_includes = false
   public_deps = [ "buildflags" ]
-
-  defines = [
-    "UPHOLD_CLIENT_ID=\"$uphold_client_id\"",
-    "UPHOLD_CLIENT_SECRET=\"$uphold_client_secret\"",
-    "UPHOLD_STAGING_CLIENT_ID=\"$uphold_staging_client_id\"",
-    "UPHOLD_STAGING_CLIENT_SECRET=\"$uphold_staging_client_secret\"",
-  ]
 
   sources = [
     "android_util.cc",
@@ -38,6 +32,7 @@ source_set("browser") {
   deps = [
     "//base",
     "//brave/components/brave_rewards/common",
+    "//brave/components/brave_rewards/common/buildflags",
 
     # for profile.h
     "//components/domain_reliability",
@@ -80,6 +75,10 @@ source_set("browser") {
       "//url",
     ]
 
+    if (ipfs_enabled) {
+      deps += [ "//brave/components/ipfs" ]
+    }
+
     public_deps += [ "//brave/vendor/bat-native-ledger:headers" ]
 
     if (is_android) {
@@ -93,7 +92,7 @@ source_set("testutil") {
   deps = [
     ":browser",
     "//base",
-    "//brave/browser:browser_process",
+    "//brave/browser",
     "//brave/vendor/bat-native-ledger:headers",
     "//chrome/test:test_support",
     "//content/public/browser",

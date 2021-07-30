@@ -17,6 +17,7 @@
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_info.h"
+#include "bat/ads/internal/resources/conversions/conversion_id_pattern_info.h"
 #include "bat/ads/internal/security/conversions/verifiable_conversion_envelope_info.h"
 #include "bat/ads/internal/timer.h"
 
@@ -34,7 +35,8 @@ class Conversions {
   bool ShouldAllow() const;
 
   void MaybeConvert(const std::vector<std::string>& redirect_chain,
-                    const std::string& html);
+                    const std::string& html,
+                    const ConversionIdPatternMap& conversion_id_patterns);
 
   void StartTimerIfReady();
 
@@ -44,7 +46,8 @@ class Conversions {
   Timer timer_;
 
   void CheckRedirectChain(const std::vector<std::string>& redirect_chain,
-                          const std::string& html);
+                          const std::string& html,
+                          const ConversionIdPatternMap& conversion_id_patterns);
 
   void Convert(const AdEventInfo& ad_event,
                const VerifiableConversionInfo& verifiable_conversion);
@@ -63,10 +66,11 @@ class Conversions {
   void ProcessQueue();
 
   void StartTimer(const ConversionQueueItemInfo& queue_item);
-  void NotifyConversion(const ConversionQueueItemInfo& conversion_queue_item);
 
+  void NotifyConversion(
+      const ConversionQueueItemInfo& conversion_queue_item) const;
   void NotifyConversionFailed(
-      const ConversionQueueItemInfo& conversion_queue_item);
+      const ConversionQueueItemInfo& conversion_queue_item) const;
 };
 
 }  // namespace ads

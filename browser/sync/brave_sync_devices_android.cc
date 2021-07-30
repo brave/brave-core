@@ -43,12 +43,12 @@ BraveSyncDevicesAndroid::BraveSyncDevicesAndroid(
        ->GetDeviceInfoTracker();
   DCHECK(tracker);
   if (tracker) {
-    device_info_tracker_observer_.Add(tracker);
+    device_info_tracker_observer_.Observe(tracker);
   }
 }
 
 BraveSyncDevicesAndroid::~BraveSyncDevicesAndroid() {
-  // Observer will be removed by ScopedObserver
+  // Observer will be removed by ScopedObservation
 }
 
 void BraveSyncDevicesAndroid::Destroy(JNIEnv* env) {

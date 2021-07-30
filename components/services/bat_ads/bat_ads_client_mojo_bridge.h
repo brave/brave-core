@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_CLIENT_MOJO_BRIDGE_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_CLIENT_MOJO_BRIDGE_H_
 
-#include <memory>
+#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -37,11 +37,17 @@ class BatAdsClientMojoBridge
 
   bool IsFullScreen() const override;
 
-  void ShowNotification(
-      const ads::AdNotificationInfo& ad_notification) override;
+  void ShowNotification(const ads::AdNotificationInfo& info) override;
   bool ShouldShowNotifications() override;
-  void CloseNotification(
-      const std::string& uuid) override;
+  void CloseNotification(const std::string& uuid) override;
+
+  void RecordAdEvent(const std::string& ad_type,
+                     const std::string& confirmation_type,
+                     const uint64_t timestamp) const override;
+  std::vector<uint64_t> GetAdEvents(
+      const std::string& ad_type,
+      const std::string& confirmation_type) const override;
+  void ResetAdEvents() const override;
 
   void UrlRequest(
       ads::UrlRequestPtr url_request,
@@ -51,9 +57,13 @@ class BatAdsClientMojoBridge
       const std::string& name,
       const std::string& value,
       ads::ResultCallback callback) override;
-  void LoadUserModelForId(
-      const std::string& id,
-      ads::LoadCallback callback) override;
+  void LoadAdsResource(const std::string& id,
+                       const int version,
+                       ads::LoadCallback callback) override;
+
+  void GetBrowsingHistory(const int max_count,
+                          const int days_ago,
+                          ads::GetBrowsingHistoryCallback callback) override;
 
   void RecordP2AEvent(
       const std::string& name,

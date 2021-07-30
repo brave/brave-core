@@ -44,14 +44,6 @@ GURL GetTopDocumentGURL(content::FrameTreeNode* frame_tree_node) {
       browser_context, common_params_->url,           \
       GetTopDocumentGURL(frame_tree_node_), &common_params_->referrer);
 
-#define BRAVE_NAVIGATION_REQUEST_ADD_ADDITIONAL_REQUEST_HEADERS \
-  ? GetContentClient()->browser()->GetEffectiveUserAgent(browser_context, url)
-
-#define BRAVE_NAVIGATION_REQUEST_SET_IS_OVERRIDING_USERAGENT            \
-  ? GetContentClient()->browser()->GetEffectiveUserAgent(               \
-        frame_tree_node_->navigator().controller().GetBrowserContext(), \
-        GetURL())
-
 #include "../../../../../content/browser/renderer_host/navigation_request.cc"
 
 #undef BRAVE_ONSTARTCHECKSCOMPLETE_MAYBEHIDEREFERRER

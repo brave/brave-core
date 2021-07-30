@@ -109,7 +109,7 @@ TEST(BatAdsHistoryConfirmationFilterTest, FilterUnsupportedActions) {
 
   AdHistoryInfo ad6;  // View
   ad6.ad_content.uuid = "5c476298-b912-49e1-b827-6096c5829d97";
-  ad6.ad_content.type = AdType::kNewTabPageAd;
+  ad6.ad_content.type = AdType::kInlineContentAd;
   ad6.ad_content.creative_instance_id = "ab9deba5-01bf-492b-9bb8-7bc4318fe272";
   ad6.ad_content.ad_action = ConfirmationType::kViewed;
 

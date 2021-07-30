@@ -18,6 +18,9 @@
       <if expr="not is_android and not is_ios">
         <part file="br_elements_resources_v3.grdp" />
       </if>
+      <if expr="not is_android">
+        <include name="IDR_ETHEREUM_REMOTE_CLIENT_HTML" file="../../../browser/ui/webui/ethereum_remote_client/ethereum_remote_client_page.html" type="BINDATA" />
+      </if>
     </includes>
 
     <structures>

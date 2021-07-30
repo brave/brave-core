@@ -19,12 +19,12 @@ export type InitialData = {
   geminiSupported: boolean
   binanceSupported: boolean
   cryptoDotComSupported: boolean
+  ftxSupported: boolean
 }
 
 export type PreInitialRewardsData = {
   enabledAds: boolean
   adsSupported: boolean
-  onlyAnonWallet: boolean
 }
 
 export type InitialRewardsData = {
@@ -49,6 +49,7 @@ export async function getInitialData (): Promise<InitialData> {
       togetherSupported,
       geminiSupported,
       cryptoDotComSupported,
+      ftxSupported,
       binanceSupported
     ] = await Promise.all([
       preferencesAPI.getPreferences(),
@@ -77,6 +78,11 @@ export async function getInitialData (): Promise<InitialData> {
         })
       }),
       new Promise((resolve) => {
+        chrome.ftx.isSupported((supported: boolean) => {
+          resolve(supported)
+        })
+      }),
+      new Promise((resolve) => {
         chrome.binance.isSupportedRegion((supported: boolean) => {
           resolve(supported)
         })
@@ -92,6 +98,7 @@ export async function getInitialData (): Promise<InitialData> {
       togetherSupported,
       geminiSupported,
       cryptoDotComSupported,
+      ftxSupported,
       binanceSupported
     } as InitialData
   } catch (e) {
@@ -104,23 +111,18 @@ export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData
   try {
     const [
       enabledAds,
-      adsSupported,
-      onlyAnonWallet
+      adsSupported
     ] = await Promise.all([
       new Promise(resolve => chrome.braveRewards.getAdsEnabled((enabledAds: boolean) => {
         resolve(enabledAds)
       })),
       new Promise(resolve => chrome.braveRewards.getAdsSupported((adsSupported: boolean) => {
         resolve(adsSupported)
-      })),
-      new Promise(resolve => chrome.braveRewards.onlyAnonWallet((onlyAnonWallet: boolean) => {
-        resolve(onlyAnonWallet)
       }))
     ])
     return {
       enabledAds,
-      adsSupported,
-      onlyAnonWallet
+      adsSupported
     } as PreInitialRewardsData
   } catch (err) {
     throw Error(err)

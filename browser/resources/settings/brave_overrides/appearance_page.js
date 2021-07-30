@@ -5,7 +5,7 @@
 
 import {RegisterPolymerTemplateModifications} from 'chrome://brave-resources/polymer_overriding.js'
 import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js'
-import {Router} from '../router.m.js'
+import {Router} from '../router.js'
 import {loadTimeData} from '../i18n_setup.js'
 
 import '../brave_appearance_page/super_referral.js'
@@ -69,6 +69,18 @@ RegisterPolymerTemplateModifications({
           label="${I18nBehavior.i18n('mruCyclingSettingLabel')}">
         </settings-toggle-button>
       `)
+      const isSpeedreaderEnabled = loadTimeData.getBoolean('isSpeedreaderFeatureEnabled')
+      if (isSpeedreaderEnabled) {
+        zoomLevel.parentNode.insertAdjacentHTML('afterend', `
+          <settings-toggle-button
+            class="hr"
+            pref="{{prefs.brave.speedreader.enabled}}"
+            label="${I18nBehavior.i18n('speedreaderSettingLabel')}"
+            sub-label="${I18nBehavior.i18n('speedreaderSettingSubLabel')}"
+            learn-more-url="${I18nBehavior.i18n('speedreaderLearnMoreURL')}">
+          </settings-toggle-button>
+      `)
+      }
     }
     // Super referral themes prefs
     const pages = templateContent.getElementById('pages')

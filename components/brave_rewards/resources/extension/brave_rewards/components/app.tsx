@@ -7,8 +7,6 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 import { getTabData } from '../background/api/tabs_api'
 
-import { BAPDeprecationPopup } from '../../../shared/components/bap_deprecation'
-
 // Components
 import Panel from './panel'
 
@@ -21,15 +19,13 @@ interface Props extends RewardsExtension.ComponentProps {
 
 interface State {
   tabId: number
-  onlyAnonWallet: boolean
 }
 
 export class RewardsPanel extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      tabId: -1,
-      onlyAnonWallet: false
+      tabId: -1
     }
   }
 
@@ -39,12 +35,6 @@ export class RewardsPanel extends React.Component<Props, State> {
         this.props.actions.initialized()
         this.startRewards()
       }
-    })
-
-    chrome.braveRewards.onlyAnonWallet((only: boolean) => {
-      this.setState({
-        onlyAnonWallet: !!only
-      })
     })
   }
 
@@ -176,36 +166,7 @@ export class RewardsPanel extends React.Component<Props, State> {
   }
 
   render () {
-    if (/^#?bap-deprecation$/i.test(window.location.hash)) {
-      const onLearnMore = () => {
-        const targetURL = 'chrome://newtab#bap-deprecation'
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-          // If the currently active tab is the newtab page, then update
-          // the hash value for that page's URL. Otherwise, open a new
-          // tab pointed to the newtab page.
-          const [tab] = tabs
-          const tabID = tab ? tab.id : undefined
-          const tabURL = tab ? (tab.url || '') : ''
-          if (tabID && /^chrome:\/\/newtab(\/|$)/i.test(tabURL)) {
-            chrome.tabs.update(tabID, { url: targetURL })
-          } else {
-            chrome.tabs.create({ url: targetURL })
-          }
-          window.close()
-        })
-      }
-
-      return (
-        <BAPDeprecationPopup onLearnMore={onLearnMore} />
-      )
-    }
-
-    return (
-      <Panel
-        tabId={this.state.tabId}
-        onlyAnonWallet={this.state.onlyAnonWallet}
-      />
-    )
+    return <Panel tabId={this.state.tabId} />
   }
 }
 

@@ -10,6 +10,7 @@
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/notification_types.h"
 #include "extensions/browser/test_extension_registry_observer.h"
+#include "extensions/common/mojom/manifest.mojom.h"
 
 #include "brave/common/brave_paths.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -27,7 +28,7 @@ ExtensionFunctionalTest::InstallExtensionSilently(
   scoped_refptr<CrxInstaller> installer(CrxInstaller::CreateSilent(service));
   installer->set_is_gallery_install(false);
   installer->set_allow_silent_install(true);
-  installer->set_install_source(Manifest::INTERNAL);
+  installer->set_install_source(extensions::mojom::ManifestLocation::kInternal);
   installer->set_off_store_install_allow_reason(
       CrxInstaller::OffStoreInstallAllowedInTest);
 

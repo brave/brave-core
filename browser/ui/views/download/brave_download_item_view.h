@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_DOWNLOAD_BRAVE_DOWNLOAD_ITEM_VIEW_H_
 
 #include "brave/browser/download/brave_download_item_model.h"
+#include "chrome/browser/ui/download/download_item_mode.h"
 #include "chrome/browser/ui/views/download/download_item_view.h"
 
 // The purpose of this subclass is to add URL origin and lock icon to the
@@ -48,7 +49,7 @@ class BraveDownloadItemView : public DownloadItemView {
   gfx::ImageSkia GetLockIcon(int height);
 
   // Overrides the accessible name construction to reflect the origin URL.
-  void SetMode(Mode mode) override;
+  void SetMode(download::DownloadItemMode mode) override;
 
   // Brave download item model.
   BraveDownloadItemModel brave_model_;
@@ -57,7 +58,7 @@ class BraveDownloadItemView : public DownloadItemView {
   gfx::FontList origin_url_font_list_;
 
   // Origin url text.
-  base::string16 origin_url_text_;
+  std::u16string origin_url_text_;
   bool is_origin_url_secure_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveDownloadItemView);

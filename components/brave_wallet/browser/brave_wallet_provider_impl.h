@@ -11,31 +11,44 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_wallet/browser/eth_json_rpc_controller_events_observer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-
-class BraveWalletService;
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/remote.h"
 
 namespace brave_wallet {
 
+class BraveWalletProviderDelegate;
+class EthJsonRpcController;
+
 class BraveWalletProviderImpl final
-    : public brave_wallet::mojom::BraveWalletProvider {
+    : public mojom::BraveWalletProvider,
+      public mojom::EthJsonRpcControllerObserver {
  public:
   BraveWalletProviderImpl(const BraveWalletProviderImpl&) = delete;
   BraveWalletProviderImpl& operator=(const BraveWalletProviderImpl&) = delete;
-  explicit BraveWalletProviderImpl(
-      base::WeakPtr<BraveWalletService> wallet_service);
+  BraveWalletProviderImpl(
+      mojo::PendingRemote<mojom::EthJsonRpcController> rpc_controller,
+      std::unique_ptr<BraveWalletProviderDelegate> delegate);
   ~BraveWalletProviderImpl() override;
 
   void Request(const std::string& json_payload,
+               bool auto_retry_on_network_change,
                RequestCallback callback) override;
-  void OnResponse(RequestCallback callback,
-                  const int status,
-                  const std::string& response,
-                  const std::map<std::string, std::string>& headers);
+  void Enable() override;
+  void GetChainId(GetChainIdCallback callback) override;
+  void Init(
+      mojo::PendingRemote<mojom::EventsListener> events_listener) override;
+
+  void ChainChangedEvent(const std::string& chain_id) override;
 
  private:
-  base::WeakPtr<BraveWalletService> wallet_service_;
+  void OnConnectionError();
 
+  std::unique_ptr<BraveWalletProviderDelegate> delegate_;
+  mojo::Remote<mojom::EventsListener> events_listener_;
+  mojo::Remote<mojom::EthJsonRpcController> rpc_controller_;
+  mojo::Receiver<mojom::EthJsonRpcControllerObserver> observer_receiver_{this};
   base::WeakPtrFactory<BraveWalletProviderImpl> weak_factory_;
 };
 

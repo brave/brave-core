@@ -1,0 +1,46 @@
+import("//brave/build/config.gni")
+import("//brave/components/ftx/browser/buildflags/buildflags.gni")
+
+assert(enable_ftx)
+
+declare_args() {
+  ftx_client_id = ""
+  ftx_client_secret = ""
+}
+
+static_library("browser") {
+  public_deps = [ "buildflags" ]
+  sources = [
+    "ftx_json_parser.cc",
+    "ftx_json_parser.h",
+    "ftx_pref_utils.cc",
+    "ftx_pref_utils.h",
+    "ftx_service.cc",
+    "ftx_service.h",
+    "regions.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/ftx/common",
+    "//brave/components/ntp_widget_utils/browser",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//components/os_crypt:os_crypt",
+    "//components/prefs:prefs",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//net",
+    "//services/network/public/cpp",
+    "//url",
+  ]
+
+  configs += [ ":ftx_config" ]
+}
+
+config("ftx_config") {
+  defines = [
+    "FTX_CLIENT_ID=\"$ftx_client_id\"",
+    "FTX_CLIENT_SECRET=\"$ftx_client_secret\"",
+  ]
+}

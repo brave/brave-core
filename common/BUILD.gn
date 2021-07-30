@@ -54,6 +54,7 @@ source_set("pref_names") {
   visibility = brave_common_visibility_targets +
                # These are layering violation and need to be fixed
                [
+                 "//brave/components/brave_shields/browser",
                  "//brave/components/content_settings/core/browser",
                  "//brave/components/p3a",
                  "//brave/components/binance/browser",
@@ -100,8 +101,6 @@ source_set("common") {
     visibility += [ "//brave/components/ipfs/test:brave_ipfs_browser_tests" ]
   }
 
-  # Remove when https://github.com/brave/brave-browser/issues/10653 is resolved
-  check_includes = false
   deps = []
 
   sources = [
@@ -113,8 +112,6 @@ source_set("common") {
     "brave_features.h",
     "brave_paths.cc",
     "brave_paths.h",
-    "common_message_generator.cc",
-    "common_message_generator.h",
     "resource_bundle_helper.cc",
     "resource_bundle_helper.h",
     "translate_network_constants.cc",
@@ -137,7 +134,11 @@ source_set("common") {
       "extensions/whitelist.h",
     ]
 
-    deps += [ "//extensions/common:common_constants" ]
+    deps += [
+      "//brave/components/brave_component_updater/browser",
+      "//brave/components/brave_wallet/common/buildflags",
+      "//extensions/common:common_constants",
+    ]
 
     public_deps = [ "extensions/api" ]
   }
@@ -149,8 +150,7 @@ source_set("common") {
     ":switches",
     "//base",
     "//brave/chromium_src:common",
-    "//brave/components/resources",
-    "//components/resources",
+    "//components/version_info:channel",
     "//extensions/buildflags",
     "//services/service_manager",
     "//ui/base",
@@ -164,6 +164,10 @@ source_set("common") {
 
     deps += [
       "//brave/components/resources",
+      "//brave/components/resources:static_resources_grit",
+      "//chrome/common",
+      "//chrome/common:channel_info",
+      "//chrome/common:constants",
       "//components/resources",
       "//content/public/common",
       "//third_party/widevine/cdm:buildflags",

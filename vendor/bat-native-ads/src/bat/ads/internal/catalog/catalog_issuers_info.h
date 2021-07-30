@@ -8,9 +8,9 @@
 
 #include <string>
 
-#include "base/optional.h"
 #include "base/values.h"
 #include "bat/ads/internal/catalog/catalog_issuer_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -30,7 +30,7 @@ struct CatalogIssuersInfo {
 
   bool PublicKeyExists(const std::string& public_key) const;
 
-  base::Optional<double> GetEstimatedRedemptionValue(
+  absl::optional<double> GetEstimatedRedemptionValue(
       const std::string& public_key) const;
 
   std::string public_key;

@@ -91,6 +91,14 @@ void RedeemUnblindedToken::OnCreateConfirmation(
     BLOG(1, "Duplicate/bad confirmation");
   }
 
+  if (url_response.status_code == 418) {  // I'm a teapot
+    if (delegate_) {
+      delegate_->OnDidSendConfirmation(confirmation);
+    }
+
+    return;
+  }
+
   ConfirmationInfo new_confirmation = confirmation;
   new_confirmation.created = true;
 
@@ -144,6 +152,12 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
     return;
   }
 
+  if (url_response.status_code == net::HTTP_ACCEPTED) {
+    BLOG(1, "Payment token is not ready");
+    OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true);
+    return;
+  }
+
   if (url_response.status_code != net::HTTP_OK) {
     BLOG(1, "Failed to fetch payment token");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true);
@@ -151,7 +165,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
 
   // Parse JSON response
-  base::Optional<base::Value> dictionary =
+  absl::optional<base::Value> dictionary =
       base::JSONReader::Read(url_response.body);
   if (!dictionary || !dictionary->is_dict()) {
     BLOG(3, "Failed to parse response: " << url_response.body);

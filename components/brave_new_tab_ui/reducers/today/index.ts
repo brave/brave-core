@@ -10,6 +10,7 @@ export type BraveTodayState = {
   // Are we in the middle of checking for new data
   isFetching: boolean | string
   isUpdateAvailable: boolean
+  hasInteracted: boolean
   // How many pages have been displayed so far for the current data
   currentPageIndex: number
   cardsViewed: number
@@ -18,6 +19,8 @@ export type BraveTodayState = {
   feed?: BraveToday.Feed
   publishers?: BraveToday.Publishers
   articleScrollTo?: BraveToday.FeedItem
+  // Page number of ad to scroll to
+  displayAdToScrollTo?: number
 }
 
 function storeInHistoryState (data: Object) {
@@ -29,22 +32,27 @@ function storeInHistoryState (data: Object) {
 const defaultState: BraveTodayState = {
   isFetching: true,
   isUpdateAvailable: false,
+  hasInteracted: false,
   currentPageIndex: 0,
   cardsViewed: 0,
   cardsVisited: 0
 }
 // Get previously-clicked article from history state
-if (history.state && history.state.todayArticle) {
+if (history.state && (history.state.todayArticle || history.state.todayAdPosition)) {
   // TODO(petemill): Type this history.state data and put in an API module
   // see `async/today`.
   defaultState.currentPageIndex = history.state.todayPageIndex as number || 0
-  defaultState.articleScrollTo = history.state.todayArticle as BraveToday.FeedItem
+  defaultState.articleScrollTo = history.state.todayArticle as BraveToday.FeedItem | undefined
+  if (!defaultState.articleScrollTo) {
+    defaultState.displayAdToScrollTo = history.state.todayAdPosition as number | undefined
+  }
   defaultState.cardsVisited = history.state.todayCardsVisited as number || 0
   // Clear history state now that we have the info on app state
   storeInHistoryState({
-    todayArticle: null,
-    todayPageIndex: null,
-    todayCardsVisited: null
+    todayArticle: undefined,
+    todayPageIndex: undefined,
+    todayCardsVisited: undefined,
+    todayAdPosition: undefined
   })
 }
 
@@ -58,6 +66,7 @@ export default reducer
 
 reducer.on(Actions.interactionBegin, (state, payload) => ({
   ...state,
+  hasInteracted: true,
   isFetching: true
 }))
 
@@ -73,9 +82,10 @@ reducer.on(Actions.dataReceived, (state, payload) => {
   }
   if (payload.feed) {
     const isNewFeed = !state.feed || state.feed.hash !== payload.feed.hash
+    const shouldMaintainPageIndex = (state.articleScrollTo || state.displayAdToScrollTo)
     if (isNewFeed) {
       newState.feed = payload.feed
-      newState.currentPageIndex = state.articleScrollTo ? state.currentPageIndex : 0
+      newState.currentPageIndex = shouldMaintainPageIndex ? state.currentPageIndex : 0
       newState.isUpdateAvailable = false
     }
   }

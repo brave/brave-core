@@ -5,9 +5,6 @@
 
 #include "bat/ads/internal/string_util.h"
 
-#include <iomanip>
-#include <sstream>
-
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
@@ -28,7 +25,7 @@ std::string Strip(const std::string& value, const std::string& pattern) {
 
   RE2::GlobalReplace(&stripped_value, pattern, " ");
 
-  base::string16 stripped_value_string16 = base::UTF8ToUTF16(stripped_value);
+  std::u16string stripped_value_string16 = base::UTF8ToUTF16(stripped_value);
 
   stripped_value_string16 =
       base::CollapseWhitespace(stripped_value_string16, true);
@@ -62,11 +59,6 @@ std::string StripNonAlphaNumericCharacters(const std::string& value) {
       escaped_characters.c_str());
 
   return Strip(value, pattern);
-}
-
-bool IsLatinAlphaNumeric(const std::string& value) {
-  const std::string pattern = base::StringPrintf("^[a-zA-Z0-9]*$");
-  return RE2::FullMatch(value, pattern);
 }
 
 }  // namespace ads

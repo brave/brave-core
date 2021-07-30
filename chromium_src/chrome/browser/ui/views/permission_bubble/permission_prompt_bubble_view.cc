@@ -124,32 +124,24 @@ class PermissionLifetimeCombobox : public views::Combobox,
   // ui::ComboboxModel:
   int GetItemCount() const override { return lifetime_options_.size(); }
 
-  base::string16 GetItemAt(int index) const override {
+  std::u16string GetItemAt(int index) const override {
     return lifetime_options_[index].label;
   }
 
  private:
   void OnItemSelected() {
-    const auto& lifetime = lifetime_options_[GetSelectedIndex()].lifetime;
-    DLOG(INFO) << "Set permission lifetime "
-               << (lifetime ? lifetime->InSeconds() : -1);
-    // TODO(https://github.com/brave/brave-browser/issues/14126): Set the
-    // lifetime for all current requests.
-    // for (auto* request : delegate_->Requests()) {
-    //   request->SetLifetime(lifetime);
-    // }
+    SetRequestsLifetime(lifetime_options_, GetSelectedIndex(), delegate_);
   }
 
   permissions::PermissionPrompt::Delegate* const delegate_;
   std::vector<permissions::PermissionLifetimeOption> lifetime_options_;
 };
 
-void AddPermissionLifetimeComboboxIfNeeded(
+views::View* AddPermissionLifetimeComboboxIfNeeded(
     views::BubbleDialogDelegateView* dialog_delegate_view,
     permissions::PermissionPrompt::Delegate* delegate) {
-  if (!base::FeatureList::IsEnabled(
-          permissions::features::kPermissionLifetime)) {
-    return;
+  if (!ShouldShowLifetimeOptions(delegate)) {
+    return nullptr;
   }
 
   // Create a single line container for a label and a combobox.
@@ -174,7 +166,7 @@ void AddPermissionLifetimeComboboxIfNeeded(
       ->SetFlexForView(combobox, 1);
 
   // Add the container to the view.
-  dialog_delegate_view->AddChildView(std::move(container));
+  return dialog_delegate_view->AddChildView(std::move(container));
 }
 
 void AddFootnoteViewIfNeeded(
@@ -185,11 +177,11 @@ void AddFootnoteViewIfNeeded(
     return;
   }
 
-  std::vector<base::string16> replacements{
+  std::vector<std::u16string> replacements{
       l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_SITE_PERMISSION_LINK),
       l10n_util::GetStringUTF16(IDS_LEARN_MORE)};
   std::vector<size_t> offsets;
-  base::string16 footnote_text = base::ReplaceStringPlaceholders(
+  std::u16string footnote_text = base::ReplaceStringPlaceholders(
       l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_FOOTNOTE_TEXT),
       replacements, &offsets);
 
@@ -225,17 +217,16 @@ void AddFootnoteViewIfNeeded(
 
 #define BRAVE_PERMISSION_PROMPT_BUBBLE_VIEW                               \
   AddAdditionalWidevineViewControlsIfNeeded(this, delegate_->Requests()); \
-  AddPermissionLifetimeComboboxIfNeeded(this, delegate_);                 \
-  AddFootnoteViewIfNeeded(this, browser_);
-
-static const int IDS_PERMISSION_DENY_CHROMIUM_IMPL = IDS_PERMISSION_DENY;
-#undef IDS_PERMISSION_DENY
-#define IDS_PERMISSION_DENY                                                 \
-  (base::FeatureList::IsEnabled(permissions::features::kPermissionLifetime) \
-       ? IDS_PERMISSIONS_BUBBLE_DENY_FOREVER                                \
-       : IDS_PERMISSION_DENY_CHROMIUM_IMPL)
+  auto* permission_lifetime_view =                                        \
+      AddPermissionLifetimeComboboxIfNeeded(this, delegate_);             \
+  AddFootnoteViewIfNeeded(this, browser_);                                \
+  if (permission_lifetime_view) {                                         \
+    set_fixed_width(                                                      \
+        std::max(GetPreferredSize().width(),                              \
+                 permission_lifetime_view->GetPreferredSize().width()) +  \
+        margins().width());                                               \
+    set_should_ignore_snapping(true);                                     \
+  }
 
 #include "../../../../../../../chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc"
-#undef IDS_PERMISSION_DENY
-#define IDS_PERMISSION_DENY IDS_PERMISSION_DENY_CHROMIUM_IMPL
 #undef BRAVE_PERMISSION_PROMPT_BUBBLE_VIEW

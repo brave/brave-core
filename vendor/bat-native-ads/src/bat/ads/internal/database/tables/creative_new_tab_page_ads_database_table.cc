@@ -104,6 +104,8 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
       "cam.priority, "
       "ca.conversion, "
       "ca.per_day, "
+      "ca.per_week, "
+      "ca.per_month, "
       "ca.total_max, "
       "s.segment, "
       "gt.geo_target, "
@@ -143,6 +145,8 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
       DBCommand::RecordBindingType::INT_TYPE,     // priority
       DBCommand::RecordBindingType::BOOL_TYPE,    // conversion
       DBCommand::RecordBindingType::INT_TYPE,     // per_day
+      DBCommand::RecordBindingType::INT_TYPE,     // per_week
+      DBCommand::RecordBindingType::INT_TYPE,     // per_month
       DBCommand::RecordBindingType::INT_TYPE,     // total_max
       DBCommand::RecordBindingType::STRING_TYPE,  // segment
       DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
@@ -184,6 +188,8 @@ void CreativeNewTabPageAds::GetForSegments(
       "cam.priority, "
       "ca.conversion, "
       "ca.per_day, "
+      "ca.per_week, "
+      "ca.per_month, "
       "ca.total_max, "
       "s.segment, "
       "gt.geo_target, "
@@ -232,6 +238,8 @@ void CreativeNewTabPageAds::GetForSegments(
       DBCommand::RecordBindingType::INT_TYPE,     // priority
       DBCommand::RecordBindingType::BOOL_TYPE,    // conversion
       DBCommand::RecordBindingType::INT_TYPE,     // per_day
+      DBCommand::RecordBindingType::INT_TYPE,     // per_week
+      DBCommand::RecordBindingType::INT_TYPE,     // per_month
       DBCommand::RecordBindingType::INT_TYPE,     // total_max
       DBCommand::RecordBindingType::STRING_TYPE,  // segment
       DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
@@ -266,6 +274,8 @@ void CreativeNewTabPageAds::GetAll(GetCreativeNewTabPageAdsCallback callback) {
       "cam.priority, "
       "ca.conversion, "
       "ca.per_day, "
+      "ca.per_week, "
+      "ca.per_month, "
       "ca.total_max, "
       "s.segment, "
       "gt.geo_target, "
@@ -306,6 +316,8 @@ void CreativeNewTabPageAds::GetAll(GetCreativeNewTabPageAdsCallback callback) {
       DBCommand::RecordBindingType::INT_TYPE,     // priority
       DBCommand::RecordBindingType::BOOL_TYPE,    // conversion
       DBCommand::RecordBindingType::INT_TYPE,     // per_day
+      DBCommand::RecordBindingType::INT_TYPE,     // per_week
+      DBCommand::RecordBindingType::INT_TYPE,     // per_month
       DBCommand::RecordBindingType::INT_TYPE,     // total_max
       DBCommand::RecordBindingType::STRING_TYPE,  // segment
       DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
@@ -341,8 +353,8 @@ void CreativeNewTabPageAds::Migrate(DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 13: {
-      MigrateToV13(transaction);
+    case 15: {
+      MigrateToV15(transaction);
       break;
     }
 
@@ -497,24 +509,26 @@ CreativeNewTabPageAdInfo CreativeNewTabPageAds::GetFromRecord(
   creative_new_tab_page_ad.priority = ColumnInt(record, 7);
   creative_new_tab_page_ad.conversion = ColumnBool(record, 8);
   creative_new_tab_page_ad.per_day = ColumnInt(record, 9);
-  creative_new_tab_page_ad.total_max = ColumnInt(record, 10);
-  creative_new_tab_page_ad.segment = ColumnString(record, 11);
-  creative_new_tab_page_ad.geo_targets.push_back(ColumnString(record, 12));
-  creative_new_tab_page_ad.target_url = ColumnString(record, 13);
-  creative_new_tab_page_ad.company_name = ColumnString(record, 14);
-  creative_new_tab_page_ad.alt = ColumnString(record, 15);
-  creative_new_tab_page_ad.ptr = ColumnDouble(record, 16);
+  creative_new_tab_page_ad.per_week = ColumnInt(record, 10);
+  creative_new_tab_page_ad.per_month = ColumnInt(record, 11);
+  creative_new_tab_page_ad.total_max = ColumnInt(record, 12);
+  creative_new_tab_page_ad.segment = ColumnString(record, 13);
+  creative_new_tab_page_ad.geo_targets.push_back(ColumnString(record, 14));
+  creative_new_tab_page_ad.target_url = ColumnString(record, 15);
+  creative_new_tab_page_ad.company_name = ColumnString(record, 16);
+  creative_new_tab_page_ad.alt = ColumnString(record, 17);
+  creative_new_tab_page_ad.ptr = ColumnDouble(record, 18);
 
   CreativeDaypartInfo daypart;
-  daypart.dow = ColumnString(record, 17);
-  daypart.start_minute = ColumnInt(record, 18);
-  daypart.end_minute = ColumnInt(record, 19);
+  daypart.dow = ColumnString(record, 19);
+  daypart.start_minute = ColumnInt(record, 20);
+  daypart.end_minute = ColumnInt(record, 21);
   creative_new_tab_page_ad.dayparts.push_back(daypart);
 
   return creative_new_tab_page_ad;
 }
 
-void CreativeNewTabPageAds::CreateTableV13(DBTransaction* transaction) {
+void CreativeNewTabPageAds::CreateTableV15(DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
@@ -534,12 +548,12 @@ void CreativeNewTabPageAds::CreateTableV13(DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
-void CreativeNewTabPageAds::MigrateToV13(DBTransaction* transaction) {
+void CreativeNewTabPageAds::MigrateToV15(DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV13(transaction);
+  CreateTableV15(transaction);
 }
 
 }  // namespace table

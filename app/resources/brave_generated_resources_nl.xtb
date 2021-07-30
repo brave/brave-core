@@ -18,7 +18,7 @@
 <translation id="6241402707160226266">Privéscherm met Tor</translation>
 <translation id="8762452230727230396">Tor verbergt je IP-adres van de websites die je bezoekt.</translation>
 <translation id="1369311132025451972">Automatisch .onion-sites doorverwijzen</translation>
-<translation id="81720820779436751">Brave zal onion service openen van de website wanneer beschikbaar of .onion domein in Tor-venster.</translation>
+<translation id="2843777623071353503">Indien beschikbaar opent Brave een 'onion'-dienst van de website of een .onion-domein in een Tor-venster.</translation>
 <translation id="8053096063396012732">Widevine installeren</translation>
 <translation id="4840334696217618631">Start de browser opnieuw om Widevine in te schakelen</translation>
 <translation id="8410111618231938546">Google Widevine is een voorbeeld van Digital Rights Management (DRM) code die wij bij Brave Software niet bezitten en niet kunnen inspecteren. De Google Widevine code wordt geladen vna de Google-servers, en niet van die van ons. Het wordt alleen geladen als je deze optie aanzet. We raden het gebruik van DRM af, maar we respecteren de keuzes van onze gebruikers en begrijpen dat sommige Brave-gebruikers graag diensten willen gebruiken waarvoor DRM nodig is.
@@ -37,6 +37,8 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="6123134130710658846">Verberg Brave Rewards-knop</translation>
 <translation id="1811404036171336214">Toon bladwijzers altijd op een nieuwe tabbladpagina</translation>
 <translation id="1643029991199044105">Ga door de meest  recent gebruikte tabbladen met Ctrl-Tab</translation>
+<translation id="1013121820689882118">Speedreader</translation>
+<translation id="2025435450953474282">Artikels worden automatisch in lezermodus geladen, waardoor je tijd kunt besparen</translation>
 <translation id="5802665280774361839">Autocomplete weergeven in adresbalk</translation>
 <translation id="597020512043916976">Toon topsites in de 
 suggesties voor automatisch aanvullen</translation>
@@ -61,13 +63,29 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="1037341607922068025">Private Window openen met Tor</translation>
 <translation id="1725356094208762656">In Tor openen</translation>
 <translation id="7643538479215207633">Openen met IPFS</translation>
+<translation id="3094628781200061820">Bestanden publiceren en ophalen uit IPFS</translation>
 <translation id="1672270084584211506">Onion beschikbaar</translation>
+<translation id="4901618511712685702">Naar IPFS importeren</translation>
+<translation id="6794469945030154569">Deze pagina</translation>
+<translation id="5037852323412456577">Geselecteerde afbeelding</translation>
+<translation id="2715839724138372481">Geselecteerde video</translation>
+<translation id="4227945450504703638">Geselecteerde audio</translation>
+<translation id="7895302206188277628">Gekoppelde inhoud</translation>
+<translation id="3654831858282189202">Publiceren met IPNS-sleutel</translation>
+<translation id="7691598647605453992">IPFS</translation>
+<translation id="6925604404524625582">Koppeling importeren en kopiëren naar IPFS-momentopname</translation>
 <translation id="1434416574322382019">Nieuw Privévenster in Tor</translation>
 <translation id="4703780849509456860">Open Link in Privévenster in Tor</translation>
 <translation id="3488584642074079080">Open Link met Brave Privévenster met Tor</translation>
+<translation id="7475547933708221517">Lokaal bestand delen met IPFS</translation>
+<translation id="2286177249736199435">Lokale map delen met IPFS</translation>
+<translation id="4491895534716990473">Geselecteerde tekst importeren naar IPFS</translation>
+<translation id="8883166554766780543">Koppeling importeren en kopiëren naar IPFS-momentopname</translation>
+<translation id="784573715436258741">Lokaal bestand delen met IPFS</translation>
 <translation id="6313675821927505581">Nieuw privévenster met Tor</translation>
 <translation id="2638041073279639246">Een link in een privévenster met Tor openen</translation>
 <translation id="3425600262621021599">Een link in een Brave privévenster met Tor openen</translation>
+<translation id="575838692088926391">Lokale map delen met IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat Ads-service</translation>
 <translation id="7924918279836988121">Batregisterservice</translation>
@@ -147,7 +165,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="4112587618563511470">Ongeldige synchronisatie code, check and probeer opnieuw.</translation>
 <translation id="2339730291919608488">Synchronisatieketen verlaten</translation>
 <translation id="115699408012835975">Als je de Synchronisatie opnieuw instelt, moet je een synchronisatie code van een ander apparaat opnieuw invoeren. Ben je er zeker van om door te gaan?</translation>
-<translation id="339086854515247923">Weet u zeker dat u het geselecteerde apparaat wilt verwijderen uit de synchronisatieketen?</translation>
+<translation id="6092564993102418148">Weet u zeker dat u het geselecteerde apparaat wilt verwijderen uit de synchronisatieketen?</translation>
 <translation id="3396347744975515056">Brave Sync is ge-update and vereist configuratie</translation>
 <translation id="7473245612074035141">Begin met de Configuratie</translation>
 <translation id="3411013544209536575">Hulptips</translation>
@@ -167,13 +185,42 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="7090046810227878892">Ethereum-provider voor het gebruik van Dapps</translation>
 <translation id="5913089932885076110">Laad Crypto Wallets bij het opstarten</translation>
 <translation id="757886143331967039">Laad de verouderde Crypto Wallets extensie bij het opstarten</translation>
+<translation id="1834467296210148203">Brave Wallet-pictogram in werkbalk tonen</translation>
 <translation id="6864914031231797928">Google-login voor extensies toestaan</translation>
 <translation id="5927916530277631319">Methode om Unstoppable Domains op te lossen</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/> over DNS via HTTPS en privacy-overwegingen voor Ethereum.</translation>
 <translation id="5248318250177143470">Methode om Ethereum Name Service (ENS) op te lossen</translation>
+<translation id="7024553202001112871">Je IPNS-sleutels instellen</translation>
+<translation id="951216659045543447">Content tekenen op basis van de bijbehorende privésleutel en publiceren in IPNS</translation>
+<translation id="7611728475758612204">Sleutels beschikbaar voor publiceren</translation>
+<translation id="911363100236037920">Een naam invoeren voor de nieuwe sleutel</translation>
+<translation id="6358469157239228181">Deze naam mag niet worden gebruikt</translation>
+<translation id="5761731140570209168">Een nieuwe peer-verbindingsreeks toevoegen</translation>
+<translation id="2082206983920804886">Sleutel vernieuwen</translation>
+<translation id="2521133093532260474">Lokaal knooppunt kan niet worden gestopt</translation>
+<translation id="86879877003581729">Lokaal knooppunt kan niet worden gestart</translation>
+<translation id="6476061084931271248">Knooppunt opnieuw opstarten om wijzigingen door te voeren</translation>
+<translation id="3754226427671882382">Knooppunt opnieuw starten</translation>
+<translation id="949667118776341807">Vernieuwen</translation>
+<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
+<translation id="724513921936768901">Deze naam is ongeldig</translation>
+<translation id="6758961763875471084">Lijst met peers aanpassen</translation>
+<translation id="1295874070797049002">Sleutel exporteren</translation>
+<translation id="3946479342297227860">Sleutel verwijderen</translation>
+<translation id="1534091531114892221">Beschrijving van IPFS-peers instellen</translation>
+<translation id="8996633027318264334">Weet je zeker dat je <ph name="KEY_NAME"/> wilt verwijderen?</translation>
+<translation id="910215077892371264">Knooppunt is niet gestart</translation>
+<translation id="616058968889448209">IPFS-fout bij starten van de service. Meer informatie is beschikbaar op de <ph name="BEGIN_LINK"/>pagina met diagnostische gegevens<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">Importeren van sleutel '<ph name="KEY_NAME"/>' is mislukt</translation>
+<translation id="3364053282600191535">Exporteren van sleutel '<ph name="KEY_NAME"/>' is mislukt</translation>
+<translation id="8275038454117074363">Importeren</translation>
+<translation id="3654980960391973513">Genereren</translation>
+<translation id="5531501313997312487">Knooppunt starten</translation>
 <translation id="9170907049676078643">Methode voor het oplossen van IPFS-bronnen</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokale node</translation>
 <translation id="4927734062756955434">Openbaar IPFS-gateway-adres</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Meer informatie<ph name="END_LINK_MPL"/> over het lokale IPFS-knooppunt en privacy-overwegingen voor de gateway.</translation>
 <translation id="8425213833346101688">Wijzigen</translation>
 <translation id="557281710253742286">Stel IPFS-gateway in</translation>
 <translation id="8571837315037233299">Gateway-adres</translation>
@@ -245,31 +292,42 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
 <translation id="239760341987199724">Brave instellen als je standaardbrowser</translation>
-<translation id="9185422039067880535">Brave browser is momenteel niet ingesteld als uw standaard browser.
-Stel Brave in als uw standaard browser om sneller te surfen op het web -
-tot 6x sneller op de grote nieuwssites.</translation>
+<translation id="1391855377994926460">Sneller online browsen - tot wel 6 keer sneller op populaire nieuwswebsites.</translation>
 <translation id="9218430445555521422">Instellen als standaard</translation>
 <translation id="3479552764303398839">Niet nu</translation>
+<translation id="6040143037577758943">Sluit</translation>
+<translation id="5600566490506283344">Brave-advertentiemelding</translation>
 <translation id="4877147287319222750">Toevoegen aan zijbalk</translation>
+<translation id="4233010476457917696">Zijbalk weergeven</translation>
 <translation id="5404213409401164238">Zijbalk weergeven</translation>
 <translation id="7561196759112975576">Altijd</translation>
 <translation id="7060352228894039151">Bij mouseover</translation>
 <translation id="407173827865827707">Bij klik</translation>
 <translation id="7961015016161918242">Nooit</translation>
+<translation id="8981254605840444865">Instellingen weergeven</translation>
 <translation id="59174027418879706">Ingeschakeld</translation>
 <translation id="8258999165172757081">Toegevoegd</translation>
 <translation id="6959315322491671328">Klik met de rechtermuisknop om te verwijderen</translation>
+<translation id="4651504163033753423">Wil je Speedreader uitschakelen?</translation>
+<translation id="9089090017461255038">Speedreader inschakelen</translation>
+<translation id="312393675740711187">Artikels worden automatisch in lezermodus geladen, waardoor je tijd kunt besparen.</translation>
+<translation id="3234744217174488546">Schakel lezermodus voor deze website in of uit. Om Speedreader in je browser uit te schakelen, ga je naar</translation>
+<translation id="7839742507462737706">in Speedreader</translation>
+<translation id="8490082094734500369">Lezermodus uitschakelen</translation>
+<translation id="2036503787657622020">Lezermodus inschakelen</translation>
+<translation id="5226458915125328323">Speedreader-instellingen</translation>
+<translation id="6284218950354553099">Dagelijks automatisch gebruiksping verzenden naar Brave</translation>
+<translation id="5288333155754958121">Met deze anonieme privéping kan Brave het aantal actieve gebruikers inschatten.</translation>
 <translation id="1872784258300710671">Brave maakt gebruik van volledig privé productanalyses om het totale gebruik van bepaalde functies te schatten</translation>
 <translation id="8712637175834984815">Begrepen</translation>
 <translation id="4394049700291259645">Uitschakelen</translation>
-<translation id="6469509880167172749">Stuur automatisch volledig privé productanalyses naar Brave</translation>
-<translation id="7090566321964540749">Met deze anonieme info kan Brave alleen het algehele gebruik van bepaalde functies schatten.</translation>
+<translation id="7142548388914389999">Productanalyse met privacybescherming (P3A) toestaan</translation>
+<translation id="609106526832379947">Deze volledige geanonimiseerde info helpt Brave om het algehele gebruik van bepaalde functies in te schatten en voor jou te verbeteren.</translation>
 <translation id="1947672064022327074">Wilt u de ondersteuning voor crypto-portemonnee voor Ethereum starten?</translation>
 <translation id="7583735190612229830">Stel Crypto Wallets in om te communiceren met deze en vergelijkbare apps.</translation>
 <translation id="8731422418734770661">Crypto wallets instellen</translation>
 <translation id="8199661191594897555">Start Crypto Wallets en herlaad</translation>
 <translation id="8428213095426709021">Instellingen</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Meer informatie over IPFS en privacy</translation>
 <translation id="4552520379838695057">Sorry, deze pagina bestaat niet.</translation>
 <translation id="2609895996619941644">Wil je bekijken of er een opgeslagen versie beschikbaar is op de Wayback Machine?</translation>

@@ -75,7 +75,8 @@ TorProfileManager::~TorProfileManager() {
 
 Profile* TorProfileManager::GetTorProfile(Profile* original_profile) {
   Profile* tor_profile = original_profile->GetOffTheRecordProfile(
-      Profile::OTRProfileID(tor::kTorProfileID));
+      Profile::OTRProfileID::CreateFromProfileID(tor::kTorProfileID),
+      /*create_if_needed=*/true);
 
   const std::string context_id = tor_profile->UniqueId();
   auto it = tor_profiles_.find(context_id);
@@ -88,6 +89,11 @@ Profile* TorProfileManager::GetTorProfile(Profile* original_profile) {
   tor_profiles_[context_id] = tor_profile;
 
   return tor_profile;
+}
+
+void TorProfileManager::CloseAllTorWindows() {
+  for (const auto& it : tor_profiles_)
+    CloseTorProfileWindows(it.second);
 }
 
 void TorProfileManager::OnBrowserRemoved(Browser* browser) {

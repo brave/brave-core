@@ -1048,7 +1048,7 @@ void BatLedgerImpl::OnGetAllMonthlyReportIds(
   delete holder;
 }
 
-void BatLedgerImpl:: GetAllMonthlyReportIds(
+void BatLedgerImpl::GetAllMonthlyReportIds(
     GetAllMonthlyReportIdsCallback callback) {
   auto* holder = new CallbackHolder<GetAllMonthlyReportIdsCallback>(
       AsWeakPtr(), std::move(callback));

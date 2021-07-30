@@ -1,0 +1,12 @@
+import("//brave/build/config.gni")
+
+source_set("version_info") {
+  # these are only for version_info.cc and should not be exposed as public configs
+  configs += [ "//brave/build:version" ]
+  defines = [ "BRAVE_BROWSER_VERSION=\"$brave_version\"" ]
+
+  sources = [
+    "version_info.cc",
+    "version_info.h",
+  ]
+}

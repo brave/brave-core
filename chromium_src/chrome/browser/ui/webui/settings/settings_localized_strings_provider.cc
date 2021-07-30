@@ -6,13 +6,13 @@
 #include "chrome/browser/ui/webui/settings/settings_localized_strings_provider.h"
 
 #include "base/stl_util.h"
-#include "base/strings/string16.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
-#include "brave/browser/version_info.h"
+#include "brave/common/url_constants.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
+#include "brave/components/version_info/version_info.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
@@ -48,18 +48,22 @@ void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 namespace settings {
 
-const char kWebRTCLearnMoreURL[] =
-    "https://support.brave.com/hc/en-us/articles/"
-    "360017989132-How-do-I-change-my-Privacy-Settings-#webrtc";
-const char kBraveBuildInstructionsUrl[] =
-    "https://github.com/brave/brave-browser/wiki";
-const char kBraveLicenseUrl[] = "https://mozilla.org/MPL/2.0/";
-const char kBraveReleaseTagPrefix[] =
-    "https://github.com/brave/brave-browser/releases/tag/v";
-const char kGoogleLoginLearnMoreURL[] =
-    "https://github.com/brave/brave-browser/wiki/"
-    "Allow-Google-login---Third-Parties-and-Extensions";
-const char kDNSLinkLearnMoreURL[] = "https://docs.ipfs.io/concepts/dnslink/";
+const char16_t kWebRTCLearnMoreURL[] =
+    u"https://support.brave.com/hc/en-us/articles/"
+    u"360017989132-How-do-I-change-my-Privacy-Settings-#webrtc";
+const char16_t kBraveBuildInstructionsUrl[] =
+    u"https://github.com/brave/brave-browser/wiki";
+const char16_t kBraveLicenseUrl[] = u"https://mozilla.org/MPL/2.0/";
+const char16_t kBraveReleaseTagPrefix[] =
+    u"https://github.com/brave/brave-browser/releases/tag/v";
+const char16_t kGoogleLoginLearnMoreURL[] =
+    u"https://github.com/brave/brave-browser/wiki/"
+    u"Allow-Google-login---Third-Parties-and-Extensions";
+const char16_t kDNSLinkLearnMoreURL[] =
+    u"https://docs.ipfs.io/concepts/dnslink/";
+const char16_t kUnstoppableDomainsLearnMoreURL[] =
+    u"https://github.com/brave/brave-browser/wiki/"
+    u"Resolve-Methods-for-Unstoppable-Domains";
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
@@ -101,6 +105,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_DISABLED_DESC},
 #endif
     {"mruCyclingSettingLabel", IDS_SETTINGS_BRAVE_MRU_CYCLING_LABEL},
+    {"speedreaderSettingLabel", IDS_SETTINGS_SPEEDREADER_LABEL},
+    {"speedreaderSettingSubLabel", IDS_SETTINGS_SPEEDREADER_SUB_LABEL},
     {"braveShieldsTitle", IDS_SETTINGS_BRAVE_SHIELDS_TITLE},
     {"braveShieldsDefaultsSectionTitle",
      IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE},
@@ -223,6 +229,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_LOAD_CRYPTO_WALLETS_ON_STARTUP},
     {"loadCryptoWalletsOnStartupDescDeprecated",
      IDS_SETTINGS_LOAD_CRYPTO_WALLETS_ON_STARTUP_DEPRECATED},
+    {"showBravewalletIconOnToolbar",
+     IDS_SETTINGS_SHOW_BRAVE_WALLET_ICON_ON_TOOLBAR},
     {"googleLoginForExtensionsDesc", IDS_SETTINGS_GOOGLE_LOGIN_FOR_EXTENSIONS},
     {"hangoutsEnabledDesc", IDS_SETTINGS_HANGOUTS_ENABLED_DESC},
     {"resolveUnstoppableDomainsDesc",
@@ -264,19 +272,47 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"keyboardShortcuts", IDS_EXTENSIONS_SIDEBAR_KEYBOARD_SHORTCUTS},
     {"getMoreExtensionsLabel", IDS_BRAVE_SETTINGS_GET_MORE_EXTENSIONS_LABEL},
     {"getMoreExtensionsSubLabel", IDS_EXTENSIONS_SIDEBAR_OPEN_CHROME_WEB_STORE},
+    {"statsUsagePingEnabledTitle", IDS_BRAVE_STATS_USAGE_PING_SETTING},
+    {"statsUsagePingEnabledDesc", IDS_BRAVE_STATS_USAGE_PING_SETTING_SUBITEM},
     {"p3aEnableTitle", IDS_BRAVE_P3A_ENABLE_SETTING},
     {"p3aEnabledDesc", IDS_BRAVE_P3A_ENABLE_SETTING_SUBITEM},
     {"siteSettings", IDS_SETTINGS_SITE_AND_SHIELDS_SETTINGS},
     {"resetRewardsData", IDS_SETTINGS_RESET_REWARDS_DATA},
     {"showFullUrls", IDS_CONTEXT_MENU_SHOW_FULL_URLS},
+    {"ipfsIpnsKeysLinkTitle", IDS_SETTINGS_IPNS_KEYS_EDITOR_LINK},
+    {"ipfsIpnsKeysLinkTitleDesc", IDS_SETTINGS_IPNS_KEYS_EDITOR_LINK_DESC},
+    {"ipfsKeysListTitle", IDS_SETTINGS_IPNS_KEYS_LIST_TITLE},
+    {"ipfsAddKeyDialogTitle", IDS_SETTINGS_IPNS_ADD_KEY_DIALOG_TITLE},
+    {"ipfsAddKeyDialogError", IDS_SETTINGS_IPNS_ADD_KEY_DIALOG_ERROR},
+    {"ipfsDeleteKeyConfirmation", IDS_SETTINGS_IPNS_DELETE_KEY_CONFIRMATION},
+    {"ipfsNodeNotLaunched", IDS_SETTINGS_IPFS_NODE_NOT_LAUNCHED},
+    {"ipfsStartNode", IDS_SETTINGS_IPFS_START_NODE},
+    {"ipfsNodeLaunchError", IDS_SETTINGS_IPFS_START_NODE_ERROR},
+    {"ipfsKeyImport", IDS_SETTINGS_IPNS_KEYS_IMPORT_BUTTON_TITLE},
+    {"ipfsKeyGenerate", IDS_SETTINGS_IPNS_KEYS_GENERATE_BUTTON_TITLE},
+    {"ipfsImporKeysError", IDS_SETTINGS_IPNS_KEYS_IMPORT_ERROR},
+    {"ipfsPeersLinkTitle", IDS_SETTINGS_IPFS_PEERS_LINK_TITLE},
+    {"ipfsPeersLinkTitleDesc", IDS_SETTINGS_IPFS_PEERS_LINK_TITLE_DESC},
+    {"ipfsDeletePeerConfirmation", IDS_SETTINGS_IPFS_DELETE_PEER_CONFIRMATION},
+    {"ipfsAddPeerDialogTitle", IDS_SETTINGS_IPNS_ADD_PEER_DIALOG_TITLE},
+    {"ipfsAddPeerDialogError", IDS_SETTINGS_IPNS_ADD_PEER_DIALOG_ERROR},
+    {"ipfsAddPeerDialogPlacehodler", IDS_SETTINGS_ADD_PEER_DIALOG_PLACEHOLDER},
+    {"ipfsPeersNodeRestartText", IDS_SETTINGS_IPFS_PEER_NODE_RESTART},
+    {"ipfsPeersNodeRestartButton", IDS_SETTINGS_IPFS_PEER_NODE_RESTART_BUTTON},
+    {"ipfsRotateButtonName", IDS_SETTINGS_IPFS_ROTATE_BUTTON},
+    {"ipfsRotateKeyDialogTitle", IDS_SETTINGS_IPFS_ROTATE_KEY_DIALOG_TITLE},
+    {"ipfsRotationLaunchError", IDS_SETTINGS_IPFS_ROTATION_LAUNCH_ERROR},
+    {"ipfsRotationStopError", IDS_SETTINGS_IPFS_ROTATION_STOP_ERROR},
+    {"ipfsKeyExport", IDS_SETTINGS_IPNS_KEY_EXPORT_ITEM},
+    {"ipfsKeyRemove", IDS_SETTINGS_IPNS_KEY_REMOVE_ITEM},
+    {"ipfsKeyExportError", IDS_SETTINGS_IPNS_KEYS_EXPORT_ERROR},
   };
+
   html_source->AddLocalizedStrings(localized_strings);
-  html_source->AddString("webRTCLearnMoreURL",
-                         base::ASCIIToUTF16(kWebRTCLearnMoreURL));
-  html_source->AddString("googleLoginLearnMoreURL",
-                         base::ASCIIToUTF16(kGoogleLoginLearnMoreURL));
-  html_source->AddString("ipfsDNSLinkLearnMoreURL",
-                         base::UTF8ToUTF16(kDNSLinkLearnMoreURL));
+  html_source->AddString("webRTCLearnMoreURL", kWebRTCLearnMoreURL);
+  html_source->AddString("googleLoginLearnMoreURL", kGoogleLoginLearnMoreURL);
+  html_source->AddString("ipfsDNSLinkLearnMoreURL", kDNSLinkLearnMoreURL);
+  html_source->AddString("speedreaderLearnMoreURL", kSpeedreaderLearnMoreUrl);
   html_source->AddString(
       "getMoreExtensionsUrl",
       base::ASCIIToUTF16(
@@ -288,10 +324,15 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "ipfsStorageMaxValue",
       std::to_string(profile->GetPrefs()->GetInteger(kIpfsStorageMax)));
 
-  base::string16 ipfs_method_desc =
-      l10n_util::GetStringFUTF16(IDS_SETTINGS_IPFS_METHOD_DESC,
-                                 base::ASCIIToUTF16(ipfs::kIPFSLearnMoreURL));
+  std::u16string ipfs_method_desc = l10n_util::GetStringFUTF16(
+      IDS_SETTINGS_IPFS_METHOD_DESC,
+      base::ASCIIToUTF16(ipfs::kIPFSLearnMorePrivacyURL));
   html_source->AddString("ipfsMethodDesc", ipfs_method_desc);
+
+  html_source->AddString("resolveUnstoppableDomainsSubDesc",
+                         l10n_util::GetStringFUTF16(
+                             IDS_SETTINGS_RESOLVE_UNSTOPPABLE_DOMAINS_SUB_DESC,
+                             kUnstoppableDomainsLearnMoreURL));
 }
 
 void BraveAddResources(content::WebUIDataSource* html_source,
@@ -301,11 +342,11 @@ void BraveAddResources(content::WebUIDataSource* html_source,
 
 void BraveAddAboutStrings(content::WebUIDataSource* html_source,
                           Profile* profile) {
-  base::string16 license = l10n_util::GetStringFUTF16(
-      IDS_BRAVE_VERSION_UI_LICENSE, base::ASCIIToUTF16(kBraveLicenseUrl),
+  std::u16string license = l10n_util::GetStringFUTF16(
+      IDS_BRAVE_VERSION_UI_LICENSE, kBraveLicenseUrl,
       base::ASCIIToUTF16(chrome::kChromeUICreditsURL),
-      base::ASCIIToUTF16(kBraveBuildInstructionsUrl),
-      base::ASCIIToUTF16(kBraveReleaseTagPrefix) +
+      kBraveBuildInstructionsUrl,
+      kBraveReleaseTagPrefix +
           base::UTF8ToUTF16(
               version_info::GetBraveVersionWithoutChromiumMajorVersion()));
   html_source->AddString("aboutProductLicense", license);

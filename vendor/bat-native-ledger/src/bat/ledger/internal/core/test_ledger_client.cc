@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/base64.h"
 #include "base/bind.h"
 #include "base/callback_helpers.h"
 #include "base/logging.h"
@@ -31,6 +32,42 @@ mojom::DBCommandResponsePtr RunDBTransactionInTask(
 
 }  // namespace
 
+std::string FakeEncryption::EncryptString(const std::string& value) {
+  return "ENCRYPTED:" + value;
+}
+
+absl::optional<std::string> FakeEncryption::DecryptString(
+    const std::string& value) {
+  size_t pos = value.find("ENCRYPTED:");
+  if (pos == 0)
+    return value.substr(10);
+
+  return {};
+}
+
+std::string FakeEncryption::Base64EncryptString(const std::string& value) {
+  std::string fake_encrypted = EncryptString(value);
+  std::string encoded;
+  base::Base64Encode(fake_encrypted, &encoded);
+  return encoded;
+}
+
+absl::optional<std::string> FakeEncryption::Base64DecryptString(
+    const std::string& value) {
+  std::string decoded;
+  if (!base::Base64Decode(value, &decoded))
+    return {};
+
+  return DecryptString(decoded);
+}
+
+TestNetworkResult::TestNetworkResult(const std::string& url,
+                                     mojom::UrlMethod method,
+                                     mojom::UrlResponsePtr response)
+    : url(url), method(method), response(std::move(response)) {}
+
+TestNetworkResult::~TestNetworkResult() = default;
+
 base::FilePath GetTestDataPath() {
   base::FilePath path;
   base::PathService::Get(base::DIR_SOURCE_ROOT, &path);
@@ -42,18 +79,10 @@ base::FilePath GetTestDataPath() {
   return path;
 }
 
-TestNetworkResult::TestNetworkResult(const std::string& url,
-                                     mojom::UrlMethod method,
-                                     mojom::UrlResponsePtr response)
-    : url(url), method(method), response(std::move(response)) {}
-
-TestNetworkResult::~TestNetworkResult() = default;
-
 TestLedgerClient::TestLedgerClient()
     : task_runner_(base::SequencedTaskRunnerHandle::Get()),
       ledger_database_(new LedgerDatabaseImpl(base::FilePath())),
       state_store_(base::Value::Type::DICTIONARY),
-      encrypted_state_store_(base::Value::Type::DICTIONARY),
       option_store_(base::Value::Type::DICTIONARY) {
   CHECK(ledger_database_->GetInternalDatabaseForTesting()->OpenInMemory());
 }
@@ -183,27 +212,27 @@ void TestLedgerClient::ClearState(const std::string& name) {
 }
 
 bool TestLedgerClient::GetBooleanOption(const std::string& name) const {
-  auto opt = state_store_.FindBoolPath(name);
+  auto opt = option_store_.FindBoolPath(name);
   return opt ? *opt : false;
 }
 
 int TestLedgerClient::GetIntegerOption(const std::string& name) const {
-  auto opt = state_store_.FindIntPath(name);
+  auto opt = option_store_.FindIntPath(name);
   return opt ? *opt : 0;
 }
 
 double TestLedgerClient::GetDoubleOption(const std::string& name) const {
-  auto opt = state_store_.FindDoublePath(name);
+  auto opt = option_store_.FindDoublePath(name);
   return opt ? *opt : 0.0;
 }
 
 std::string TestLedgerClient::GetStringOption(const std::string& name) const {
-  const std::string* opt = state_store_.FindStringPath(name);
+  const std::string* opt = option_store_.FindStringPath(name);
   return opt ? *opt : "";
 }
 
 int64_t TestLedgerClient::GetInt64Option(const std::string& name) const {
-  if (const std::string* opt = state_store_.FindStringPath(name)) {
+  if (const std::string* opt = option_store_.FindStringPath(name)) {
     int64_t value;
     if (base::StringToInt64(*opt, &value)) {
       return value;
@@ -213,7 +242,7 @@ int64_t TestLedgerClient::GetInt64Option(const std::string& name) const {
 }
 
 uint64_t TestLedgerClient::GetUint64Option(const std::string& name) const {
-  if (const std::string* opt = state_store_.FindStringPath(name)) {
+  if (const std::string* opt = option_store_.FindStringPath(name)) {
     uint64_t value;
     if (base::StringToUint64(*opt, &value)) {
       return value;
@@ -272,15 +301,14 @@ void TestLedgerClient::DeleteLog(client::ResultCallback callback) {
   callback(mojom::Result::LEDGER_OK);
 }
 
-bool TestLedgerClient::SetEncryptedStringState(const std::string& name,
-                                               const std::string& value) {
-  encrypted_state_store_.SetStringPath(name, value);
-  return true;
+absl::optional<std::string> TestLedgerClient::EncryptString(
+    const std::string& value) {
+  return FakeEncryption::EncryptString(value);
 }
 
-std::string TestLedgerClient::GetEncryptedStringState(const std::string& name) {
-  const std::string* opt = encrypted_state_store_.FindStringPath(name);
-  return opt ? *opt : "";
+absl::optional<std::string> TestLedgerClient::DecryptString(
+    const std::string& value) {
+  return FakeEncryption::DecryptString(value);
 }
 
 void TestLedgerClient::SetOptionForTesting(const std::string& name,

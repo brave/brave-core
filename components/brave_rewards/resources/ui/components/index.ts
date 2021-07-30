@@ -10,7 +10,6 @@ import BoxAlert from './boxAlert'
 import CategoryLikePicker from './categoryLikePicker'
 import DisabledContent from './disabledContent'
 import DisabledPanel from './disabledPanel'
-import Donate from './donate'
 import GrantCaptcha from './grantCaptcha'
 import GrantClaim from './grantClaim'
 import GrantComplete from './grantComplete'
@@ -20,7 +19,6 @@ import InfoCard from './infoCard'
 import List from './list'
 import ListToken from './listToken'
 import MainToggle from './mainToggle'
-import MediaBox from './mediaBox'
 import ModalActivity from './modalActivity'
 import ModalBackupRestore from './modalBackupRestore'
 import ModalContribute from './modalContribute'
@@ -28,7 +26,6 @@ import ModalDonation from './modalDonation'
 import ModalPending from './modalPending'
 import ModalRedirect from './modalRedirect'
 import ModalShowAdsHistory from './modalShowAdsHistory'
-import ModalVerify from './modalVerify'
 import ModalQRCode from './modalQRCode'
 import NextContribution from './nextContribution'
 import Profile from './profile'
@@ -37,7 +34,6 @@ import RewardsButton from './rewardsButton'
 import SettingsPage from './settingsPage'
 import ShowAdsHistory from './showAdsHistory'
 import SidebarPromo from './sidebarPromo'
-import SiteBanner from './siteBanner'
 import Tab from './tab'
 import TableAdsHistory from './tableAdsHistory'
 import TableContribute from './tableContribute'
@@ -45,7 +41,6 @@ import TableDonation from './tableDonation'
 import TablePending from './tablePending'
 import TableTransactions from './tableTransactions'
 import ThumbLikePicker from './thumbLikePicker'
-import Tip from './tip'
 import ToggleTips from './toggleTips'
 import Tokens from './tokens'
 import Tooltip from './tooltip'
@@ -65,7 +60,6 @@ export {
   CategoryLikePicker,
   DisabledContent,
   DisabledPanel,
-  Donate,
   GrantCaptcha,
   GrantClaim,
   GrantComplete,
@@ -75,7 +69,6 @@ export {
   List,
   ListToken,
   MainToggle,
-  MediaBox,
   ModalActivity,
   ModalBackupRestore,
   ModalContribute,
@@ -83,7 +76,6 @@ export {
   ModalPending,
   ModalRedirect,
   ModalShowAdsHistory,
-  ModalVerify,
   ModalQRCode,
   NextContribution,
   Profile,
@@ -92,7 +84,6 @@ export {
   SettingsPage,
   ShowAdsHistory,
   SidebarPromo,
-  SiteBanner,
   Tab,
   TableAdsHistory,
   TableContribute,
@@ -100,7 +91,6 @@ export {
   TablePending,
   TableTransactions,
   ThumbLikePicker,
-  Tip,
   ToggleTips,
   Tokens,
   Tooltip,

@@ -1,0 +1,19 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+brave_browser_download_sources = [
+  "//brave/browser/download/brave_download_item_model.cc",
+  "//brave/browser/download/brave_download_item_model.h",
+]
+
+brave_browser_download_deps = [
+  "//base",
+  "//components/download/public/common:public",
+  "//components/strings:components_strings_grit",
+  "//services/network/public/cpp",
+  "//ui/base",
+  "//ui/gfx",
+  "//url",
+]

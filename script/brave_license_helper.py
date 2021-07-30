@@ -54,11 +54,6 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
             "URL": "https://github.com/brave-intl/bat-native-tweetnacl",
             "License": "MPL-2.0",
         },
-        os.path.join('brave', 'vendor', 'bat-native-usermodel'): {
-            "Name": "BAT Native User Model",
-            "URL": "https://github.com/brave-intl/bat-native-usermodel",
-            "License": "MPL-2.0",
-        },
         os.path.join('brave', 'vendor', 'bip39wally-core-native'): {
             "Name": "libwally-core",
             "URL": "https://github.com/brave-intl/bat-native-bip39wally-core",

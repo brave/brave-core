@@ -36,6 +36,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -119,6 +120,7 @@ import org.chromium.url.GURL;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 
@@ -127,10 +129,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                    BraveRewardsNativeWorker.PublisherObserver {
     public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
     private static final String JAPAN_COUNTRY_CODE = "JP";
-
     private static final long MB_10 = 10000000;
     private static final long MINUTES_10 = 10 * 60 * 1000;
-
     private static final int URL_FOCUS_TOOLBAR_BUTTONS_TRANSLATION_X_DP = 10;
 
     private DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
@@ -157,7 +157,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
     private boolean mIsInitialNotificationPosted; // initial red circle notification
 
     private PopupWindowTooltip mShieldsPopupWindowTooltip;
-    private PopupWindowTooltip mRewardsPopupWindowTooltip;
 
     private boolean mIsBottomToolbarVisible;
 
@@ -268,6 +267,20 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                 getMenuButtonCoordinator().setVisibility(false);
             }
         }
+
+        if (BraveReflectionUtil.EqualTypes(this.getClass(), CustomTabToolbar.class)) {
+            LinearLayout customActionButtons = findViewById(R.id.action_buttons);
+            assert customActionButtons != null : "Something has changed in the upstream!";
+            if (customActionButtons != null && mBraveShieldsButton != null) {
+                ViewGroup.MarginLayoutParams braveShieldsButtonLayout =
+                        (ViewGroup.MarginLayoutParams) mBraveShieldsButton.getLayoutParams();
+                ViewGroup.MarginLayoutParams actionButtonsLayout =
+                        (ViewGroup.MarginLayoutParams) customActionButtons.getLayoutParams();
+                actionButtonsLayout.setMarginEnd(actionButtonsLayout.getMarginEnd()
+                        + braveShieldsButtonLayout.getMarginEnd());
+                customActionButtons.setLayoutParams(actionButtonsLayout);
+            }
+        }
     }
 
     @Override
@@ -358,8 +371,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                         OnboardingPrefManager.getInstance().setTimeSavedNotificationStarted(true);
                     }
                     if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
-                            && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()
-                            && !isRewardsTooltipShown() && !isRewardsPanelOpened()) {
+                            && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()) {
                         checkForTooltip(tab);
                     }
                 }
@@ -407,7 +419,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
     private void checkForTooltip(Tab tab) {
         if (!BraveShieldsUtils.isTooltipShown) {
             if (!BraveShieldsUtils.hasShieldsTooltipShown(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)
-                    && mBraveShieldsHandler.getTackersBlockedCount(tab.getId())
+                    && mBraveShieldsHandler.getTrackersBlockedCount(tab.getId())
                                     + mBraveShieldsHandler.getAdsBlockedCount(tab.getId())
                             > 0) {
                 showTooltip(ShieldsTooltipEnum.ONE_TIME_ADS_TRACKER_BLOCKED_TOOLTIP,
@@ -419,7 +431,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                         BraveShieldsUtils.PREF_SHIELDS_VIDEO_ADS_BLOCKED_TOOLTIP);
             } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
                                BraveShieldsUtils.PREF_SHIELDS_ADS_TRACKER_BLOCKED_TOOLTIP)
-                    && mBraveShieldsHandler.getTackersBlockedCount(tab.getId())
+                    && mBraveShieldsHandler.getTrackersBlockedCount(tab.getId())
                                     + mBraveShieldsHandler.getAdsBlockedCount(tab.getId())
                             > 10) {
                 showTooltip(ShieldsTooltipEnum.ADS_TRACKER_BLOCKED_TOOLTIP,
@@ -429,7 +441,104 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                     && mBraveShieldsHandler.getHttpsUpgradeCount(tab.getId()) > 0) {
                 showTooltip(ShieldsTooltipEnum.HTTPS_UPGRADE_TOOLTIP,
                         BraveShieldsUtils.PREF_SHIELDS_HTTPS_UPGRADE_TOOLTIP);
+            } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
+                               BraveShieldsUtils.PREF_SHIELDS_HTTPS_UPGRADE_TOOLTIP)
+                    && mBraveShieldsHandler.getHttpsUpgradeCount(tab.getId()) > 0) {
+                showTooltip(ShieldsTooltipEnum.HTTPS_UPGRADE_TOOLTIP,
+                        BraveShieldsUtils.PREF_SHIELDS_HTTPS_UPGRADE_TOOLTIP);
+            } else {
+                int trackersPlusAdsBlocked =
+                        mBraveShieldsHandler.getTrackersBlockedCount(tab.getId())
+                        + mBraveShieldsHandler.getAdsBlockedCount(tab.getId());
+                chooseStatsShareTier(tab, trackersPlusAdsBlocked);
             }
+        }
+    }
+
+    private void chooseStatsShareTier(Tab tab, int trackersPlusAdsBlocked) {
+        String countryCode = Locale.getDefault().getCountry();
+
+        // the tooltip for stats sharing is shown only for Japan
+        if (!countryCode.equals(JAPAN_COUNTRY_CODE)) {
+            return;
+        }
+
+        // double check if the shields button is shown to prevent situations like showing the
+        // tooltip on new tabs
+        if (mBraveShieldsButton == null || !mBraveShieldsButton.isShown()
+                || BraveActivity.getBraveActivity() == null
+                || BraveActivity.getBraveActivity().getActivityTab() == null
+                || UrlUtilities.isNTPUrl(
+                        BraveActivity.getBraveActivity().getActivityTab().getUrlString())) {
+            return;
+        }
+
+        int totalBlocked =
+                Math.round(Float.parseFloat(BraveStatsUtil.getAdsTrackersBlocked().first.trim()));
+        // show after BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF (20) blocked stuff above the TIER
+        // threshold
+        if (!BraveShieldsUtils.hasShieldsTooltipShown(
+                    BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER1)
+                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER1
+                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
+                        && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER2)) {
+            showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER1_TOOLTIP,
+                    BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER1);
+        } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
+                           BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER2)
+                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER2
+                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
+                        && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER3)) {
+            showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER2_TOOLTIP,
+                    BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER2);
+        } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
+                           BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER3)
+                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER3
+                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
+                        && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER4)) {
+            showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER3_TOOLTIP,
+                    BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER3);
+        } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
+                           BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER4)
+                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER4
+                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
+                        && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER5)) {
+            showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER4_TOOLTIP,
+                    BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER4);
+        } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
+                           BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER5)
+                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER5
+                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
+                        && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER6)) {
+            showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER5_TOOLTIP,
+                    BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER5);
+        } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
+                           BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER6)
+                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER6
+                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
+                        && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER7)) {
+            showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER6_TOOLTIP,
+                    BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER6);
+        } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
+                           BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER7)
+                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER7
+                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
+                        && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER8)) {
+            showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER7_TOOLTIP,
+                    BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER7);
+        } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
+                           BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER8)
+                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER8
+                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
+                        && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER9)) {
+            showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER8_TOOLTIP,
+                    BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER8);
+        } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
+                           BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER9)
+                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER9
+                                + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF)) {
+            showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER9_TOOLTIP,
+                    BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER9);
         }
     }
 
@@ -454,6 +563,18 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
             // Do nothing if url is invalid.
             return false;
         }
+    }
+
+    private EnumSet<ShieldsTooltipEnum> getStatsSharingEnums() {
+        return EnumSet.of(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER1_TOOLTIP,
+                ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER2_TOOLTIP,
+                ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER3_TOOLTIP,
+                ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER4_TOOLTIP,
+                ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER5_TOOLTIP,
+                ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER6_TOOLTIP,
+                ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER7_TOOLTIP,
+                ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER8_TOOLTIP,
+                ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER9_TOOLTIP);
     }
 
     private void showTooltip(ShieldsTooltipEnum shieldsTooltipEnum, String tooltipPref) {
@@ -481,6 +602,29 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                     showShieldsMenu(mBraveShieldsButton);
                 }
             });
+        } else if (getStatsSharingEnums().contains(shieldsTooltipEnum)) {
+            Button btnTooltip = mShieldsPopupWindowTooltip.findViewById(R.id.btn_tooltip);
+
+            SpannableStringBuilder shareStringBuilder = new SpannableStringBuilder();
+            shareStringBuilder
+                    .append(getContext().getResources().getString(
+                            R.string.brave_stats_share_button))
+                    .append("  ");
+            shareStringBuilder.setSpan(new ImageSpan(getContext(), R.drawable.ic_share_white),
+                    shareStringBuilder.length() - 1, shareStringBuilder.length(), 0);
+            btnTooltip.setText(shareStringBuilder, TextView.BufferType.SPANNABLE);
+
+            btnTooltip.setVisibility(View.VISIBLE);
+
+            btnTooltip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismissShieldsTooltip();
+                    if (BraveStatsUtil.hasWritePermission(BraveActivity.getBraveActivity())) {
+                        BraveStatsUtil.shareStats(R.layout.brave_stats_share_layout);
+                    }
+                }
+            });
         }
 
         TextView tooltipTitle = mShieldsPopupWindowTooltip.findViewById(R.id.txt_tooltip_title);
@@ -503,51 +647,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         }
     }
 
-    public void showRewardsTooltip() {
-        ShieldsTooltipEnum shieldsTooltipEnum = ShieldsTooltipEnum.BAP_DEPRECATION_TOOLTIP;
-        mRewardsPopupWindowTooltip = new PopupWindowTooltip.Builder(getContext())
-                                             .anchorView(mBraveRewardsButton)
-                                             .arrowColor(getContext().getResources().getColor(
-                                                     shieldsTooltipEnum.getArrowColor()))
-                                             .gravity(Gravity.BOTTOM)
-                                             .dismissOnOutsideTouch(true)
-                                             .dismissOnInsideTouch(false)
-                                             .modal(true)
-                                             .contentView(R.layout.brave_shields_tooltip_layout)
-                                             .build();
-        mRewardsPopupWindowTooltip.findViewById(R.id.shields_tooltip_layout)
-                .setBackgroundDrawable(ContextCompat.getDrawable(
-                        getContext(), shieldsTooltipEnum.getTooltipBackground()));
-
-        Button btnTooltip = mRewardsPopupWindowTooltip.findViewById(R.id.btn_tooltip);
-        btnTooltip.setText(getContext().getResources().getString(R.string.menu_learn_more));
-        btnTooltip.setVisibility(View.VISIBLE);
-        btnTooltip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismissRewardsTooltip();
-                if (BraveActivity.getBraveActivity() != null)
-                    BraveActivity.getBraveActivity().showDeprecateBAPDialog();
-            }
-        });
-
-        TextView tooltipTitle = mRewardsPopupWindowTooltip.findViewById(R.id.txt_tooltip_title);
-        SpannableStringBuilder ssb =
-                new SpannableStringBuilder(new StringBuilder("\t\t")
-                                                   .append(getContext().getResources().getString(
-                                                           shieldsTooltipEnum.getTitle()))
-                                                   .toString());
-        ssb.setSpan(new ImageSpan(
-                            getContext(), R.drawable.ic_warning_triangle, ImageSpan.ALIGN_BASELINE),
-                0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tooltipTitle.setText(ssb, TextView.BufferType.SPANNABLE);
-
-        TextView tooltipText = mRewardsPopupWindowTooltip.findViewById(R.id.txt_tooltip_text);
-        tooltipText.setText(getContext().getResources().getString(shieldsTooltipEnum.getText()));
-
-        mRewardsPopupWindowTooltip.show();
-    }
-
     public void dismissShieldsTooltip() {
         if (mShieldsPopupWindowTooltip != null && mShieldsPopupWindowTooltip.isShowing()) {
             mShieldsPopupWindowTooltip.dismiss();
@@ -562,24 +661,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         }
     }
 
-    public void dismissRewardsTooltip() {
-        if (mRewardsPopupWindowTooltip != null && mRewardsPopupWindowTooltip.isShowing()) {
-            mRewardsPopupWindowTooltip.dismiss();
-            mRewardsPopupWindowTooltip = null;
-        }
-    }
-
-    public boolean isRewardsTooltipShown() {
-        if (mRewardsPopupWindowTooltip != null) {
-            return mRewardsPopupWindowTooltip.isShowing();
-        }
-        return false;
-    }
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        dismissRewardsTooltip();
         dismissShieldsTooltip();
         reopenShieldsPanel();
     }
@@ -851,9 +935,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                 && BraveActivity.getBraveActivity().getActivityTab() != null
                 && UrlUtilities.isNTPUrl(
                         BraveActivity.getBraveActivity().getActivityTab().getUrlString())
-                && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()
-                && !BraveSearchEngineUtils.getDSEShortName(true).equals(
-                        OnboardingPrefManager.DUCKDUCKGO)) {
+                && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()) {
             Intent searchActivityIntent = new Intent(context, SearchActivity.class);
             context.startActivity(searchActivityIntent);
         }
@@ -995,13 +1077,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
 
     public void openRewardsPanel() {
         onClick(mBraveRewardsButton);
-    }
-
-    public boolean isRewardsPanelOpened() {
-        if (mRewardsPopup != null) {
-            return mRewardsPopup.isShowing();
-        }
-        return false;
     }
 
     public boolean isShieldsTooltipShown() {

@@ -1,0 +1,19 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at http://mozilla.org/MPL/2.0/.
+
+module brave_shields.mojom;
+
+import "mojo/public/mojom/base/string16.mojom";
+
+interface BraveShieldsHost {
+  // Notify the browser process that JavaScript execution has been blocked,
+  // passing the details in |details| as a 16-bit string.
+  OnJavaScriptBlocked(mojo_base.mojom.String16 details);
+};
+
+interface BraveShields {
+  // Tell the associated RenderFrame(s) to temporary allow scripts from a list
+  // of origins once.
+  SetAllowScriptsFromOriginsOnce(array<string> origins);
+};

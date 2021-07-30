@@ -8,10 +8,12 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/memory/ref_counted.h"
 #include "base/metrics/histogram_base.h"
+#include "base/metrics/statistics_recorder.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_prochlo/brave_prochlo_message.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
@@ -35,7 +37,9 @@ class BraveP3AUploader;
 class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
                         public BraveP3ALogStore::Delegate {
  public:
-  explicit BraveP3AService(PrefService* local_state);
+  BraveP3AService(PrefService* local_state,
+                  std::string channel,
+                  std::string week_of_install);
 
   static void RegisterPrefs(PrefRegistrySimple* registry, bool first_run);
 
@@ -91,6 +95,9 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   bool initialized_ = false;
   PrefService* local_state_ = nullptr;
 
+  const std::string channel_;
+  const std::string week_of_install_;
+
   // The average interval between uploading different values.
   base::TimeDelta average_upload_interval_;
   bool randomize_upload_interval_ = true;
@@ -111,6 +118,10 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
 
   // Once fired we restart the overall uploading process.
   base::OneShotTimer rotation_timer_;
+
+  std::vector<
+      std::unique_ptr<base::StatisticsRecorder::ScopedHistogramSampleObserver>>
+      histogram_sample_callbacks_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveP3AService);
 };

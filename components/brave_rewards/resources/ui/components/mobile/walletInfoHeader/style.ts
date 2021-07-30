@@ -17,6 +17,28 @@ export const StyledWrapper = styled('div')<{}>`
   box-shadow: 0 2px 4px rgba(0,0,0,.2);
 `
 
+export const StyledAlertWrapper = styled('div')<{}>`
+  display: flex;
+  align-items: stretch;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  width: 100%;
+`
+
+export const StyledAlertClose = styled('button')<{}>`
+  position: absolute;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 3px;
+  right: 11px;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  color: #9E9FAB;
+`
+
 export const StyledHeader = styled('div')<{}>`
   padding: 16px 21px 14px 19px;
   position: relative;

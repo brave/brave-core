@@ -15,6 +15,8 @@
 #include "base/sequenced_task_runner.h"
 #include "components/component_updater/component_updater_service.h"
 
+class PrefService;
+
 namespace brave_component_updater {
 
 class BraveComponent {
@@ -40,6 +42,10 @@ class BraveComponent {
     // the observers are being notified.
     virtual void RemoveObserver(ComponentObserver* observer) = 0;
     virtual scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() = 0;
+
+    // hacky temporary workaround for g_browser_process
+    virtual const std::string locale() const = 0;
+    virtual PrefService* local_state() = 0;
   };
 
   explicit BraveComponent(Delegate* delegate);
@@ -63,6 +69,7 @@ class BraveComponent {
   virtual void OnComponentReady(const std::string& component_id,
                                 const base::FilePath& install_dir,
                                 const std::string& manifest);
+  Delegate* delegate();
 
  private:
   static void OnComponentRegistered(Delegate* delegate,

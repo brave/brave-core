@@ -7,16 +7,14 @@ declare_args() {
   binance_client_id = ""
 }
 
-source_set("browser") {
-  public_deps = [
-    "buildflags"
-  ]
+static_library("browser") {
+  public_deps = [ "buildflags" ]
   sources = [
     "binance_json_parser.cc",
     "binance_json_parser.h",
     "binance_service.cc",
     "binance_service.h",
-    "regions.h"
+    "regions.h",
   ]
 
   deps = [
@@ -37,9 +35,6 @@ source_set("browser") {
   configs += [ ":binance_config" ]
 }
 
-
 config("binance_config") {
-  defines = [
-    "BINANCE_CLIENT_ID=\"$binance_client_id\""
-  ]
+  defines = [ "BINANCE_CLIENT_ID=\"$binance_client_id\"" ]
 }

@@ -4,15 +4,17 @@ declare namespace IPFS {
   }
 
   export interface State {
-    connectedPeers: {
-      peerCount: number
-    }
+    connectedPeers: ConnectedPeers
     addressesConfig: AddressesConfig
     daemonStatus: DaemonStatus
     repoStats: RepoStats,
     nodeInfo: NodeInfo,
     garbageCollectionStatus: GarbageCollectionStatus,
     installationProgress: InstallationProgress
+  }
+
+  export interface ConnectedPeers {
+    peerCount: number
   }
 
   export interface AddressesConfig {

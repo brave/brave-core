@@ -1,18 +1,11 @@
-import(
-    "//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
-import("//brave/components/brave_shields/browser/buildflags/buildflags.gni")
-import("//extensions/buildflags/buildflags.gni")
-
-source_set("browser") {
-  # Remove when https://github.com/brave/brave-browser/issues/10643 is resolved
-  check_includes = false
-  public_deps = [ "buildflags" ]
-
+static_library("browser") {
   sources = [
     "ad_block_base_service.cc",
     "ad_block_base_service.h",
     "ad_block_custom_filters_service.cc",
     "ad_block_custom_filters_service.h",
+    "ad_block_pref_service.cc",
+    "ad_block_pref_service.h",
     "ad_block_regional_service.cc",
     "ad_block_regional_service.h",
     "ad_block_regional_service_manager.cc",
@@ -29,8 +22,6 @@ source_set("browser") {
     "brave_shields_p3a.h",
     "brave_shields_util.cc",
     "brave_shields_util.h",
-    "brave_shields_web_contents_observer.cc",
-    "brave_shields_web_contents_observer.h",
     "cookie_pref_service.cc",
     "cookie_pref_service.h",
     "domain_block_controller_client.cc",
@@ -44,44 +35,32 @@ source_set("browser") {
     "https_everywhere_recently_used_cache.h",
     "https_everywhere_service.cc",
     "https_everywhere_service.h",
-    "tracking_protection_service.cc",
-    "tracking_protection_service.h",
   ]
-
-  if (is_android) {
-    sources += [ "brave_shields_web_contents_observer_android.cc" ]
-  }
-
-  if (brave_stp_enabled) {
-    sources += [
-      "tracking_protection_helper.cc",
-      "tracking_protection_helper.h",
-    ]
-  }
 
   deps = [
     "//base",
+    "//brave/common:pref_names",
     "//brave/components/adblock_rust_ffi",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_shields/common",
+    "//brave/components/brave_shields/common:mojom",
     "//brave/components/content_settings/core/browser",
+    "//brave/components/content_settings/core/common",
     "//brave/components/p3a",
-    "//brave/content:common",
-    "//chrome/common",
+    "//brave/components/resources:static_resources_grit",
+    "//brave/components/resources:strings_grit",
     "//components/content_settings/core/browser",
     "//components/content_settings/core/common",
-    "//components/keyed_service/core",
     "//components/prefs",
-    "//components/sessions",
+    "//components/security_interstitials/content:security_interstitial_page",
+    "//components/security_interstitials/core",
+    "//components/user_prefs",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
-    "//net",
     "//third_party/blink/public/mojom:mojom_platform_headers",
     "//third_party/leveldatabase",
+    "//third_party/re2",
+    "//third_party/zlib/google:zip",
     "//url",
   ]
-
-  if (enable_brave_perf_predictor) {
-    deps += [ "//brave/components/brave_perf_predictor/browser" ]
-  }
 }

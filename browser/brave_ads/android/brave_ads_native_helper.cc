@@ -5,136 +5,116 @@
 
 #include "brave/browser/brave_ads/android/brave_ads_native_helper.h"
 
-#include <memory>
 #include <string>
 
-#include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
+#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_ads/android/jni_headers/BraveAdsNativeHelper_jni.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_android.h"
-
-using base::android::JavaParamRef;
-using base::android::ScopedJavaLocalRef;
 
 namespace brave_ads {
 
-class AdsNotificationhandler;
-class AdsService;
-class AdsServiceFactory;
-class AdsServiceImpl;
-
 // static
-
 jboolean JNI_BraveAdsNativeHelper_IsBraveAdsEnabled(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android) {
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
-  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
-  if (!ads_service_) {
-    NOTREACHED();
+  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
+  if (!ads_service) {
     return false;
   }
 
-  return ads_service_->IsEnabled();
+  return ads_service->IsEnabled();
 }
 
-jboolean JNI_BraveAdsNativeHelper_IsLocaleValid(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile_android) {
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
-  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
-  if (!ads_service_) {
-    NOTREACHED();
-    return false;
-  }
-
-  return ads_service_->IsSupportedLocale();
-}
-
-jboolean JNI_BraveAdsNativeHelper_IsSupportedLocale(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile_android) {
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
-  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
-  if (!ads_service_) {
-    NOTREACHED();
-    return false;
-  }
-
-  return ads_service_->IsSupportedLocale();
-}
-
-jboolean JNI_BraveAdsNativeHelper_IsNewlySupportedLocale(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile_android) {
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
-  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
-  if (!ads_service_) {
-    NOTREACHED();
-    return false;
-  }
-
-  return ads_service_->IsNewlySupportedLocale();
-}
-
+// static
 void JNI_BraveAdsNativeHelper_SetAdsEnabled(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android) {
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
-  auto* rewards_service =
+  brave_rewards::RewardsService* rewards_service =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    NOTREACHED();
     return;
   }
 
   rewards_service->SetAdsEnabled(true);
 }
 
-void JNI_BraveAdsNativeHelper_AdNotificationClicked(
+// static
+jboolean JNI_BraveAdsNativeHelper_IsNewlySupportedLocale(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& j_profile_android) {
+  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
+  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
+  if (!ads_service) {
+    return false;
+  }
+
+  return ads_service->IsNewlySupportedLocale();
+}
+
+// static
+jboolean JNI_BraveAdsNativeHelper_IsSupportedLocale(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& j_profile_android) {
+  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
+  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
+  if (!ads_service) {
+    return false;
+  }
+
+  return ads_service->IsSupportedLocale();
+}
+
+// static
+void JNI_BraveAdsNativeHelper_OnShowAdNotification(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android,
     const base::android::JavaParamRef<jstring>& j_notification_id) {
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
-  brave_ads::AdsServiceImpl* ads_service =
-      brave_ads::AdsServiceFactory::GetImplForProfile(profile);
+  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
   if (!ads_service) {
-    NOTREACHED();
     return;
   }
-  std::string notification_id =
+
+  const std::string notification_id =
       base::android::ConvertJavaStringToUTF8(env, j_notification_id);
-  std::unique_ptr<brave_ads::AdsNotificationHandler> handler =
-      std::make_unique<brave_ads::AdsNotificationHandler>(
-          static_cast<content::BrowserContext*>(profile));
-  handler->SetAdsService(ads_service);
-  handler->OnClick(profile, GURL(""), notification_id, base::nullopt,
-                   base::nullopt, base::OnceClosure());
+  ads_service->OnShowAdNotification(notification_id);
 }
 
-void JNI_BraveAdsNativeHelper_AdNotificationDismissed(
+// static
+void JNI_BraveAdsNativeHelper_OnCloseAdNotification(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android,
     const base::android::JavaParamRef<jstring>& j_notification_id,
     jboolean j_by_user) {
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
-  brave_ads::AdsServiceImpl* ads_service =
-      brave_ads::AdsServiceFactory::GetImplForProfile(profile);
+  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
   if (!ads_service) {
-    NOTREACHED();
     return;
   }
-  std::string notification_id =
+
+  const std::string notification_id =
       base::android::ConvertJavaStringToUTF8(env, j_notification_id);
-  std::unique_ptr<brave_ads::AdsNotificationHandler> handler =
-      std::make_unique<brave_ads::AdsNotificationHandler>(
-          static_cast<content::BrowserContext*>(profile));
-  handler->SetAdsService(ads_service);
-  handler->OnClose(profile, GURL(""), notification_id, j_by_user,
-                   base::OnceClosure());
+  ads_service->OnCloseAdNotification(notification_id, j_by_user);
+}
+
+// static
+void JNI_BraveAdsNativeHelper_OnClickAdNotification(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& j_profile_android,
+    const base::android::JavaParamRef<jstring>& j_notification_id) {
+  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
+  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
+  if (!ads_service) {
+    return;
+  }
+
+  const std::string notification_id =
+      base::android::ConvertJavaStringToUTF8(env, j_notification_id);
+  ads_service->OnClickAdNotification(notification_id);
 }
 
 }  // namespace brave_ads

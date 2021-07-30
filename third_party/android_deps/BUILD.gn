@@ -15,7 +15,7 @@ android_aar_prebuilt("google_play_services_safetynet_java") {
 }
 
 android_aar_prebuilt("com_android_installreferrer_java") {
-  aar_path = "libs/com_android_installreferrer/installreferrer-1.1.2.aar"
+  aar_path = "libs/com_android_installreferrer/installreferrer-2.1.aar"
   info_path =
       "libs/com_android_installreferrer/com_android_installreferrer.info"
 }

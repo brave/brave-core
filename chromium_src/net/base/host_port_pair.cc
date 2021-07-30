@@ -29,13 +29,13 @@ HostPortPair FromStringWithAuthentication(const std::string& str) {
   std::vector<base::StringPiece> auth_host = base::SplitStringPiece(
       str, "@", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
   HostPortPair host_port_pair =
-      HostPortPair::FromString(auth_host[1].as_string());
+      HostPortPair::FromString(std::string(auth_host[1]));
 
   std::vector<base::StringPiece> user_pass = base::SplitStringPiece(
       str, ":", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
 
-  host_port_pair.set_username(user_pass[0].as_string());
-  host_port_pair.set_password(user_pass[1].as_string());
+  host_port_pair.set_username(std::string(user_pass[0]));
+  host_port_pair.set_password(std::string(user_pass[1]));
   return host_port_pair;
 }
 

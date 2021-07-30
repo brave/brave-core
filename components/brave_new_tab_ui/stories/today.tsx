@@ -6,10 +6,11 @@
 import * as React from 'react'
 import { withKnobs, text } from '@storybook/addon-knobs'
 import ThemeProvider from '../../common/StorybookThemeProvider'
-// Components
 import BraveTodayLoadingCard from '../components/default/braveToday/cards/cardLoading'
 import BraveTodayErrorCard from '../components/default/braveToday/cards/cardError'
 import PublisherMeta from '../components/default/braveToday/cards/PublisherMeta'
+import DisplayAdCard from '../components/default/braveToday/cards/displayAd'
+import getBraveNewsDisplayAd from './default/data/getBraveNewsDisplayAd'
 
 const onClick = (() => alert('clicked'))
 
@@ -72,4 +73,15 @@ export const Loading = () => (
 
 export const Error = () => (
   <BraveTodayErrorCard />
+)
+
+const handleDisplayAdVisit = () => alert('handle visit')
+const handleDisplayAdView = () => console.log('display ad viewed')
+
+export const DisplayAd = () => (
+  <DisplayAdCard
+    getContent={getBraveNewsDisplayAd.bind(undefined, true)}
+    onVisitDisplayAd={handleDisplayAdVisit}
+    onViewedDisplayAd={handleDisplayAdView}
+  />
 )

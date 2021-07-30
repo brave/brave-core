@@ -171,17 +171,13 @@
     "message": "Shieldのデフォルト設定を変更する",
     "description": "Message for the button action linking to the settings page"
   },
-  "addBlockElement": {
-    "message": "セレクターを使って要素をブロックする",
-    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  "manageCustomFilters": {
+    "message": "カスタムフィルターの管理",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
-  "resetSiteFilterSettings": {
-    "message": "このサイトのCSSルールを消去する",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "すべてのサイトのCSSルールを消去する",
-    "description": "Message for context menu that resets all cosmetic filters"
+  "elementPickerMode": {
+    "message": "要素を指定してブロック",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
     "message": "詳細表示",

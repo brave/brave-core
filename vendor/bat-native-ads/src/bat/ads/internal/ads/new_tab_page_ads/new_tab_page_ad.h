@@ -32,23 +32,22 @@ class NewTabPageAd : public NewTabPageAdObserver {
  private:
   base::ObserverList<NewTabPageAdObserver> observers_;
 
-  bool ShouldFireEvent(const NewTabPageAdInfo& ad,
-                       const AdEventList& ad_events);
-
   void FireEvent(const NewTabPageAdInfo& ad,
                  const std::string& uuid,
                  const std::string& creative_instance_id,
                  const NewTabPageAdEventType event_type);
 
   void NotifyNewTabPageAdEvent(const NewTabPageAdInfo& ad,
-                               const NewTabPageAdEventType event_type);
+                               const NewTabPageAdEventType event_type) const;
 
-  void NotifyNewTabPageAdViewed(const NewTabPageAdInfo& ad);
-  void NotifyNewTabPageAdClicked(const NewTabPageAdInfo& ad);
+  void NotifyNewTabPageAdServed(const NewTabPageAdInfo& ad) const;
+  void NotifyNewTabPageAdViewed(const NewTabPageAdInfo& ad) const;
+  void NotifyNewTabPageAdClicked(const NewTabPageAdInfo& ad) const;
 
-  void NotifyNewTabPageAdEventFailed(const std::string& uuid,
-                                     const std::string& creative_instance_id,
-                                     const NewTabPageAdEventType event_type);
+  void NotifyNewTabPageAdEventFailed(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const NewTabPageAdEventType event_type) const;
 };
 
 }  // namespace ads

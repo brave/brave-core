@@ -16,6 +16,17 @@ export const onSettingSave = (key: string, value: any) => action(types.ON_SETTIN
 
 export const getRewardsParameters = () => action(types.GET_REWARDS_PARAMETERS)
 
+export const disconnectWallet = () => action(types.DISCONNECT_WALLET)
+
+export const disconnectWalletError = () => action(types.DISCONNECT_WALLET_ERROR)
+
+export const getExternalWallet = () => action(types.GET_EXTERNAL_WALLET)
+
+export const onExternalWallet = (result: number, wallet: Rewards.ExternalWallet) => action(types.ON_EXTERNAL_WALLET, {
+  result,
+  wallet
+})
+
 export const onRewardsParameters = (properties: Rewards.RewardsParameters) =>
   action(types.ON_REWARDS_PARAMETERS, {
     properties
@@ -124,10 +135,7 @@ export const onPendingContributions = (list: Rewards.PendingContribution[]) =>
     list
   })
 
-export const onStatement = (data: {adsEstimatedPendingRewards: number, adsNextPaymentDate: string, adsReceivedThisMonth: number}) =>
-  action(types.ON_STATEMENT, {
-    data
-  })
+export const onStatement = (data: any) => action(types.ON_STATEMENT, { data })
 
 export const getStatement = () => action(types.GET_STATEMENT)
 
@@ -164,12 +172,6 @@ export const getBalance = () => action(types.GET_BALANCE)
 export const onBalance = (status: number, balance: Rewards.Balance) => action(types.ON_BALANCE, {
   status,
   balance
-})
-
-export const onlyAnonWallet = () => action(types.ONLY_ANON_WALLET)
-
-export const onOnlyAnonWallet = (only: boolean) => action(types.ON_ONLY_ANON_WALLET, {
-  only
 })
 
 export const onInitialized = (result: boolean) => action(types.ON_INITIALIZED, {

@@ -15,6 +15,9 @@ public class BraveFeedSurfaceCoordinatorClassAdapter extends BraveClassVisitor {
 
     public BraveFeedSurfaceCoordinatorClassAdapter(ClassVisitor visitor) {
         super(visitor);
+        makePublicMethod(sFeedSurfaceCoordinatorClassName, "isEnhancedProtectionPromoEnabled");
+        addMethodAnnotation(sBraveFeedSurfaceCoordinatorClassName,
+                "isEnhancedProtectionPromoEnabled", "Ljava/lang/Override;");
 
         deleteField(sBraveFeedSurfaceCoordinatorClassName, "mActivity");
         makeProtectedField(sFeedSurfaceCoordinatorClassName, "mActivity");

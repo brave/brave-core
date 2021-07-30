@@ -8,10 +8,10 @@
 #include <algorithm>
 
 #include "base/notreached.h"
-#include "base/optional.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace {
@@ -101,12 +101,12 @@ bool IsShieldsContentSettingsTypeName(const std::string& content_type_name) {
   return false;
 }
 
-base::Optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(
+absl::optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(
     const ContentSettingsPattern& pattern) {
   if (!CanPatternBeConvertedToWildcardSchemeAndPort(pattern))
-    return base::nullopt;
+    return absl::nullopt;
   DCHECK(!pattern.GetHost().empty());
-  base::Optional<ContentSettingsPattern> new_pattern =
+  absl::optional<ContentSettingsPattern> new_pattern =
       ContentSettingsPattern::FromString("*://" + pattern.GetHost() + "/*");
   return new_pattern;
 }

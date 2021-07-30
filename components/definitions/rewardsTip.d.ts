@@ -10,7 +10,6 @@ declare namespace RewardsTip {
     reconcileStamp: number
     balance: Balance
     externalWallet?: ExternalWallet
-    onlyAnonWallet?: boolean
   }
 
   interface ApplicationState {

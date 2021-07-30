@@ -1,16 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index 350712a350e79ec135fbcdfbbe57b4de233e07ef..8a0d6176386a61ca5bce8be86042098392b387fa 100644
+index 70eeec029bfbf19f8419aa5176acfc7dd8f13732..1be168dddf273d27d28935d2d4d2e64a57796779 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-@@ -16,6 +16,7 @@
- <if expr="not chromeos">
- <link rel="import" href="chrome://resources/cr_elements/cr_toast/cr_toast.html">
- </if>
-+<link rel="import" href="../brave_privacy_page/brave_personalization_options.html">
- 
- <!--
-  * Note: If a synced pref is added/removed from this file, the method
-@@ -35,6 +36,7 @@
+@@ -8,6 +8,7 @@
          border-top: none;
        }
      </style>
@@ -18,7 +10,7 @@ index 350712a350e79ec135fbcdfbbe57b4de233e07ef..8a0d6176386a61ca5bce8be860420983
  <if expr="not chromeos">
      <settings-toggle-button id="signinAllowedToggle"
          class="hr"
-@@ -46,6 +48,7 @@
+@@ -20,6 +21,7 @@
          no-set-pref>
      </settings-toggle-button>
  </if><!-- not chromeos -->
@@ -26,15 +18,7 @@ index 350712a350e79ec135fbcdfbbe57b4de233e07ef..8a0d6176386a61ca5bce8be860420983
      <settings-toggle-button id="searchSuggestToggle"
          class="hr"
          hidden="[[!pageVisibility.searchPrediction]]"
-@@ -53,6 +56,7 @@
-         label="$i18n{searchSuggestPref}"
-         sub-label="$i18n{searchSuggestPrefDesc}">
-     </settings-toggle-button>
-+    <settings-brave-personalization-options prefs="{{prefs}}"></settings-brave-personalization-options>
- <if expr="_google_chrome">
- <if expr="chromeos">
-     <settings-toggle-button class="hr"
-@@ -61,6 +65,8 @@
+@@ -35,6 +37,8 @@
          sub-label="$i18n{enablePersonalizationLoggingDesc}">
      </settings-toggle-button>
  </if><!-- chromeos -->
@@ -43,7 +27,7 @@ index 350712a350e79ec135fbcdfbbe57b4de233e07ef..8a0d6176386a61ca5bce8be860420983
  <if expr="not chromeos">
      <settings-toggle-button id="metricsReportingControl"
          class="hr"
-@@ -76,13 +82,15 @@
+@@ -50,13 +54,15 @@
        </template>
      </settings-toggle-button>
  </if><!-- not chromeos -->
@@ -60,7 +44,7 @@ index 350712a350e79ec135fbcdfbbe57b4de233e07ef..8a0d6176386a61ca5bce8be860420983
  <if expr="_google_chrome">
      <settings-toggle-button id="spellCheckControl"
          class="hr"
-@@ -102,6 +110,7 @@
+@@ -76,6 +82,7 @@
        </settings-toggle-button>
      </template>
  
@@ -68,11 +52,8 @@ index 350712a350e79ec135fbcdfbbe57b4de233e07ef..8a0d6176386a61ca5bce8be860420983
      <template is="dom-if" if="[[showSignoutDialog_]]" restamp>
        <settings-signout-dialog sync-status="[[syncStatus]]"
            on-close="onSignoutDialogClosed_">
-@@ -113,6 +122,7 @@
-       <div>$i18n{restartToApplyChanges}</div>
+@@ -88,3 +95,4 @@
        <cr-button on-click="onRestartTap_">$i18n{restart}</cr-button>
      </cr-toast>
-+</if>
  </if>
-   </template>
-   <script src="personalization_options.js"></script>
++</if>

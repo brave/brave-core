@@ -14,6 +14,8 @@
 #include "content/public/browser/navigation_throttle.h"
 #include "url/gurl.h"
 
+class HostContentSettingsMap;
+
 namespace content {
 class NavigationHandle;
 class WebContents;
@@ -30,6 +32,7 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
       content::NavigationHandle* navigation_handle,
       AdBlockService* ad_block_service,
       AdBlockCustomFiltersService* ad_block_custom_filters_service,
+      HostContentSettingsMap* content_settings,
       const std::string& locale);
   ~DomainBlockNavigationThrottle() override;
 
@@ -41,11 +44,14 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
       content::NavigationHandle* navigation_handle,
       AdBlockService* ad_block_service,
       AdBlockCustomFiltersService* ad_block_custom_filters_service,
+      HostContentSettingsMap* content_settings,
       const std::string& locale);
 
   // content::NavigationThrottle implementation:
   content::NavigationThrottle::ThrottleCheckResult WillStartRequest() override;
   content::NavigationThrottle::ThrottleCheckResult WillRedirectRequest()
+      override;
+  content::NavigationThrottle::ThrottleCheckResult WillProcessResponse()
       override;
   const char* GetNameForLogging() override;
 
@@ -55,6 +61,7 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
 
   AdBlockService* ad_block_service_ = nullptr;
   AdBlockCustomFiltersService* ad_block_custom_filters_service_ = nullptr;
+  HostContentSettingsMap* content_settings_ = nullptr;
   std::string locale_;
   base::WeakPtrFactory<DomainBlockNavigationThrottle> weak_ptr_factory_{this};
 };

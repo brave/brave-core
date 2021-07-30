@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebGL getExtension() test</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <canvas id="test" width="8" height="8"></canvas>
+    <script>
+      var canvas = document.getElementById("test");
+      var gl = canvas.getContext("webgl");
+      var ext_list = [];
+      for (const [i, name] of Object.entries(gl.getSupportedExtensions())) {
+        ext_list = ext_list.concat(gl.getExtension(name) ? name : null);
+      }
+      document.title = ext_list.join("");
+    </script>
+  </body>
+</html>
+
+      }

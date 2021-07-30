@@ -18,11 +18,13 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
+import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.app.appmenu.AppMenuIconRowFooter;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedBridge;
+import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
@@ -35,6 +37,7 @@ import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertiesDelegate {
@@ -48,10 +51,13 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             AppMenuDelegate appMenuDelegate,
             OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
             ObservableSupplier<BookmarkBridge> bookmarkBridgeSupplier,
-            ModalDialogManager modalDialogManager, WebFeedBridge webFeedBridge) {
+            WebFeedSnackbarController.FeedLauncher feedLauncher,
+            ModalDialogManager modalDialogManager, SnackbarManager snackbarManager,
+            WebFeedBridge webFeedBridge) {
         super(context, activityTabProvider, multiWindowModeStateDispatcher, tabModelSelector,
                 toolbarManager, decorView, appMenuDelegate, overviewModeBehaviorSupplier,
-                bookmarkBridgeSupplier, modalDialogManager, webFeedBridge);
+                bookmarkBridgeSupplier, feedLauncher, modalDialogManager, snackbarManager,
+                webFeedBridge);
 
         mAppMenuDelegate = appMenuDelegate;
     }
@@ -94,6 +100,15 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_rewards));
             }
         }
+        if (BraveConfig.NATIVE_WALLET_ENABLED
+                && ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET)) {
+            MenuItem braveWallet =
+                    menu.add(Menu.NONE, R.id.brave_wallet_id, 0, R.string.menu_brave_wallet);
+            if (shouldShowIconBeforeItem()) {
+                braveWallet.setIcon(
+                        AppCompatResources.getDrawable(mContext, R.drawable.ic_crypto_wallets));
+            }
+        }
         MenuItem exit = menu.add(Menu.NONE, R.id.exit_id, 0, R.string.menu_exit);
         if (shouldShowIconBeforeItem()) {
             exit.setIcon(AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_exit));
@@ -124,6 +139,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
         mMenu.removeItem(R.id.set_default_browser);
         mMenu.removeItem(R.id.brave_rewards_id);
+        mMenu.removeItem(R.id.brave_wallet_id);
         mMenu.removeItem(R.id.exit_id);
     }
 

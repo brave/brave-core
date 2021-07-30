@@ -7,6 +7,7 @@
 <ScrollView
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -33,7 +34,7 @@
 		      	android:orientation="horizontal"
         		tools:ignore="UseCompoundDrawables">
 
-			    <ImageView 
+			    <ImageView
 			    	android:id="@+id/site_favicon"
 				    android:layout_width="24dp"
 				    android:layout_height="24dp"
@@ -54,7 +55,7 @@
 
 			</LinearLayout>
 
-			<Switch
+			<androidx.appcompat.widget.SwitchCompat
 		        android:id="@+id/site_switch"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
@@ -107,39 +108,13 @@
 	            android:visibility="gone"
 	            android:textColor="@color/default_icon_color_tint_list"/>
 
-			<LinearLayout
-		      	android:id="@+id/site_block_layout"
-		      	android:layout_width="match_parent"
-		      	android:layout_height="wrap_content"
-		      	android:gravity="center_horizontal"
-		      	android:layout_marginTop="16dp"
-		      	android:layout_marginEnd="16dp"
-		      	android:layout_marginStart="16dp"
-		      	android:orientation="horizontal">
-
-			    <TextView
-				    android:id="@+id/site_block_count_text"
-				    android:layout_width="wrap_content"
-				    android:layout_height="wrap_content"
-				    android:textSize="34sp"
-				    android:textStyle="bold"
-				    android:layout_marginEnd="16dp"
-				    android:fontFamily="sans-serif"
-				    android:textColor="@color/shield_title_color"/>
-
-			    <TextView
-				    android:id="@+id/site_block_text"
-				    android:layout_width="wrap_content"
-				    android:layout_height="wrap_content"
-				    android:textSize="14sp"
-				    android:layout_gravity="center_vertical"
-				    android:textColor="@color/shield_title_color"/>
-
-			</LinearLayout>
+			<include
+				android:id="@+id/site_block_layout"
+				layout="@layout/brave_shields_stats_row"/>
 
 			<TextView
 				android:id="@+id/site_broken_warning_text"
-				android:layout_width="wrap_content"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:textSize="14sp"
 				android:gravity="center_horizontal"
@@ -150,7 +125,7 @@
 				android:layout_marginBottom="8dp"
 				android:text="@string/site_broken_text"/>
 
-			<include 
+			<include
 				android:id="@+id/brave_shields_toggle_layout_id"
 				layout="@layout/brave_shields_toggle_layout"/>
 
@@ -158,29 +133,33 @@
 				android:id="@+id/brave_shields_secondary_layout_id"
 				layout="@layout/brave_shields_secondary_layout"/>
 
-			<include 
+			<include
 				android:id="@+id/brave_shields_privacy_report_layout_id"
 				layout="@layout/brave_shields_toggle_layout"/>
 
 		</LinearLayout>
 
-		<include 
+		<include
+			android:id="@+id/brave_shields_block_cross_trackers_layout_id"
+			layout="@layout/brave_shields_option_layout"/>
+
+		<include
 			android:id="@+id/brave_shields_block_cookies_layout_id"
 			layout="@layout/brave_shields_option_layout"/>
 
-		<include 
+		<include
 			android:id="@+id/brave_shields_block_fingerprinting_layout_id"
 			layout="@layout/brave_shields_option_layout"/>
 
-		<include 
+		<include
 			android:id="@+id/brave_shields_about_layout_id"
 			layout="@layout/brave_shields_option_layout"/>
 
-		<include 
+		<include
 			android:id="@+id/brave_shields_report_site_layout_id"
 			layout="@layout/report_broken_site_layout"/>
 
-		<include 
+		<include
 			android:id="@+id/brave_shields_thank_you_layout_id"
 			layout="@layout/brave_shields_thank_you_layout"/>
 

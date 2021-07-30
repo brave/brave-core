@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -9,6 +9,8 @@
 #include <memory>
 #include <string>
 #include <vector>
+
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger {
 class LedgerImpl;
@@ -105,14 +107,13 @@ class State {
 
   void SetPromotionLastFetchStamp(const uint64_t stamp);
 
+  void ResetWalletType();
+
   uint64_t GetPromotionLastFetchStamp();
 
-  void SetAnonTransferChecked(const bool checked);
+  absl::optional<std::string> GetEncryptedString(const std::string& key);
 
-  bool GetAnonTransferChecked();
-
-  bool GetBAPReported();
-  void SetBAPReported(bool bap_reported);
+  bool SetEncryptedString(const std::string& key, const std::string& value);
 
  private:
   LedgerImpl* ledger_;  // NOT OWNED

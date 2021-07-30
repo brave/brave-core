@@ -23,7 +23,14 @@ class PrefService;
 
 namespace brave_shields {
 
-enum ControlType { ALLOW = 0, BLOCK, BLOCK_THIRD_PARTY, DEFAULT, INVALID };
+enum ControlType {
+  ALLOW = 0,
+  BLOCK,
+  BLOCK_THIRD_PARTY,
+  DEFAULT,
+  INVALID,
+  AGGRESSIVE
+};
 
 ContentSettingsPattern GetPatternFromURL(const GURL& url);
 std::string ControlTypeToString(ControlType type);
@@ -53,6 +60,8 @@ ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
 bool ShouldDoCosmeticFiltering(HostContentSettingsMap* map, const GURL& url);
 bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
                                           const GURL& url);
+
+bool ShouldDoDomainBlocking(HostContentSettingsMap* map, const GURL& url);
 
 void SetCookieControlType(HostContentSettingsMap* map,
                           ControlType type,
@@ -86,12 +95,6 @@ void SetNoScriptControlType(HostContentSettingsMap* map,
                             PrefService* local_state = nullptr);
 ControlType GetNoScriptControlType(HostContentSettingsMap* map,
                                    const GURL& url);
-
-void DispatchBlockedEvent(const GURL& request_url,
-                          int render_frame_id,
-                          int render_process_id,
-                          int frame_tree_node_id,
-                          const std::string& block_type);
 
 bool IsSameOriginNavigation(const GURL& referrer, const GURL& target_url);
 

@@ -36,7 +36,7 @@ def call_github_api(url, headers):
     except Exception as e:
         raise Exception(e)
 
-    if r.status_code is 200:
+    if r.status_code == 200:
         return r
 
 

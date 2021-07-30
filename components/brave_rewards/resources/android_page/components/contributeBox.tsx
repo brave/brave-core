@@ -143,18 +143,14 @@ class ContributeBox extends React.Component<Props, State> {
       contributionMinVisits,
       contributionNonVerified,
       contributionVideos,
-      contributionMonthly,
-      ui
+      contributionMonthly
     } = this.props.rewardsData
-
-    const { onlyAnonWallet } = ui
 
     return (
       <Grid columns={1} customStyle={{ maxWidth: '270px', margin: '0 auto' }}>
         <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
           <ControlWrapper text={getLocale('contributionMonthly')}>
             <SelectMobile
-              onlyAnonWallet={onlyAnonWallet}
               onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
               value={parseFloat((contributionMonthly.toString() || '0')).toFixed(3)}
               amountOptions={this.getAmountOptions(monthlyList)}
@@ -229,8 +225,7 @@ class ContributeBox extends React.Component<Props, State> {
       enabledContribute,
       reconcileStamp,
       autoContributeList,
-      excludedList,
-      ui
+      excludedList
     } = this.props.rewardsData
     const monthlyList: MonthlyChoice[] = utils.generateContributionMonthly(parameters)
     const contributeRows = this.getContributeRows(autoContributeList)
@@ -239,7 +234,6 @@ class ContributeBox extends React.Component<Props, State> {
     const numRows = contributeRows && contributeRows.length
     const numExcludedRows = excludedRows && excludedRows.length
     const allSites = !(excludedRows.length > 0 || numRows > 5)
-    const { onlyAnonWallet } = ui
 
     return (
       <BoxMobile
@@ -269,7 +263,6 @@ class ContributeBox extends React.Component<Props, State> {
               floating={true}
               onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
               value={parseFloat((contributionMonthly.toString() || '0')).toFixed(3)}
-              onlyAnonWallet={onlyAnonWallet}
               amountOptions={this.getAmountOptions(monthlyList)}
             />
           </StyledListContent>

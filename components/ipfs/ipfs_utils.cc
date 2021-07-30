@@ -5,23 +5,48 @@
 
 #include "brave/components/ipfs/ipfs_utils.h"
 
+#include <string>
 #include <vector>
 
 #include "base/feature_list.h"
+#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_ports.h"
+#include "brave/components/ipfs/keys/ipns_keys_manager.h"
 #include "brave/components/ipfs/pref_names.h"
+#include "components/base32/base32.h"
 #include "components/prefs/pref_service.h"
-#include "components/user_prefs/user_prefs.h"
-#include "content/public/browser/browser_context.h"
-#include "extensions/common/url_pattern.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
+#include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
 
 namespace {
+
+// Decodes a varint from the given string piece into the given int64_t. Returns
+// if the  string had a valid varint (where a byte was found with it's top bit
+// set).
+bool DecodeVarInt(base::StringPiece* from, int64_t* into) {
+  base::StringPiece::const_iterator it = from->begin();
+  int shift = 0;
+  uint64_t ret = 0;
+  do {
+    if (it == from->end())
+      return false;
+
+    // Shifting 64 or more bits is undefined behavior.
+    DCHECK_LT(shift, 64);
+    unsigned char c = *it;
+    ret |= static_cast<uint64_t>(c & 0x7f) << shift;
+    shift += 7;
+  } while (*it++ & 0x80);
+  *into = static_cast<int64_t>(ret);
+  from->remove_prefix(it - from->begin());
+  return true;
+}
 
 GURL AppendLocalPort(const std::string& port) {
   GURL gateway = GURL(ipfs::kDefaultIPFSLocalGateway);
@@ -30,10 +55,21 @@ GURL AppendLocalPort(const std::string& port) {
   return gateway.ReplaceComponents(replacements);
 }
 
+// RegEx to validate the node name:
+// go-ipfs_v0.9.0-rc1_windows-amd64 - valid
+// go-ipfs_v0.9.0_windows-amd64 - valid
+constexpr char kExecutableRegEx[] =
+    "go-ipfs_v(\\d+\\.\\d+\\.\\d+)(-rc\\d+)?\\_\\w+-amd64";
+
 // Valid CID multibase prefix, "code" character
 // from https://github.com/multiformats/multibase/blob/master/multibase.csv
 const char kCIDv1Codes[] = "079fFvVtTbBcChkKzZmMuU";
 const char kCIDv0Prefix[] = "Qm";
+
+// Ipfs codes from multicodec table
+// https://github.com/multiformats/multicodec/blob/master/table.csv
+const int64_t kIpfsNSCodec = 0xE3;
+const int64_t kIpnsNSCodec = 0xE5;
 
 }  // namespace
 
@@ -52,54 +88,62 @@ bool IsValidCID(const std::string& cid) {
   return base::StartsWith(cid, kCIDv0Prefix);
 }
 
-bool IsIpfsDisabledByPolicy(content::BrowserContext* context) {
-  DCHECK(context);
-  PrefService* prefs = user_prefs::UserPrefs::Get(context);
-  return prefs->FindPreference(kIPFSEnabled) &&
-         prefs->IsManagedPreference(kIPFSEnabled) &&
-         !prefs->GetBoolean(kIPFSEnabled);
-}
-
-bool IsIpfsEnabled(content::BrowserContext* context) {
-  DCHECK(context);
-  if (context->IsOffTheRecord() || IsIpfsDisabledByPolicy(context) ||
-      !base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
-    return false;
-  }
-
-  return true;
-}
-
-bool IsIpfsResolveMethodDisabled(content::BrowserContext* context) {
-  DCHECK(context);
+bool IsIpfsResolveMethodDisabled(PrefService* prefs) {
+  DCHECK(prefs);
 
   // Ignore the actual pref value if IPFS feature is disabled.
-  if (!IsIpfsEnabled(context)) {
+  if (IsIpfsDisabledByFeatureOrPolicy(prefs)) {
     return true;
   }
 
-  PrefService* prefs = user_prefs::UserPrefs::Get(context);
   return prefs->FindPreference(kIPFSResolveMethod) &&
          prefs->GetInteger(kIPFSResolveMethod) ==
              static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_DISABLED);
 }
 
-bool HasIPFSPath(const GURL& gurl) {
-  static std::vector<URLPattern> url_patterns(
-      {URLPattern(URLPattern::SCHEME_ALL, "*://*/ipfs/*"),
-       URLPattern(URLPattern::SCHEME_ALL, "*://*/ipns/*")});
-  return std::any_of(
-      url_patterns.begin(), url_patterns.end(),
-      [&gurl](URLPattern pattern) { return pattern.MatchesURL(gurl); });
+bool IsIpfsMenuEnabled(PrefService* prefs) {
+  return !ipfs::IsIpfsDisabledByFeatureOrPolicy(prefs) &&
+         ipfs::IsLocalGatewayConfigured(prefs);
 }
 
-bool IsDefaultGatewayURL(const GURL& url, content::BrowserContext* context) {
-  DCHECK(context);
-  std::string gateway_host = GetDefaultIPFSGateway(context).host();
+bool IsIpfsDisabledByFeatureOrPolicy(PrefService* prefs) {
+  DCHECK(prefs);
+  return (IsIpfsDisabledByPolicy(prefs) ||
+          !base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature));
+}
+
+bool IsIpfsDisabledByPolicy(PrefService* prefs) {
+  DCHECK(prefs);
+  return prefs->FindPreference(kIPFSEnabled) &&
+         prefs->IsManagedPreference(kIPFSEnabled) &&
+         !prefs->GetBoolean(kIPFSEnabled);
+}
+
+bool HasIPFSPath(const GURL& gurl) {
+  const auto& path = gurl.path();
+  return gurl.is_valid() && ((path.find("/ipfs/") != std::string::npos) ||
+                             (path.find("/ipns/") != std::string::npos));
+}
+
+bool IsDefaultGatewayURL(const GURL& url, PrefService* prefs) {
+  DCHECK(prefs);
+  std::string gateway_host = GetDefaultIPFSGateway(prefs).host();
   return url.DomainIs(gateway_host) &&
          (HasIPFSPath(url) ||
           url.DomainIs(std::string("ipfs.") + gateway_host) ||
           url.DomainIs(std::string("ipns.") + gateway_host));
+}
+
+bool IsAPIGateway(const GURL& url, version_info::Channel channel) {
+  if (!url.is_valid())
+    return false;
+  auto api_origin = ipfs::GetAPIServer(channel).GetOrigin();
+  if (api_origin == url)
+    return true;
+  if (net::IsLocalhost(api_origin) && net::IsLocalhost(url)) {
+    return api_origin.port() == url.port();
+  }
+  return false;
 }
 
 bool IsLocalGatewayURL(const GURL& url) {
@@ -113,14 +157,14 @@ bool IsIPFSScheme(const GURL& url) {
   return url.SchemeIs(kIPFSScheme) || url.SchemeIs(kIPNSScheme);
 }
 
-GURL ToPublicGatewayURL(const GURL& url, content::BrowserContext* context) {
-  DCHECK(context);
+GURL ToPublicGatewayURL(const GURL& url, PrefService* prefs) {
+  DCHECK(prefs);
   DCHECK(IsIPFSScheme(url) || IsLocalGatewayURL(url));
   GURL new_url;
-
+  GURL gateway_url = GetDefaultIPFSGateway(prefs);
   // For ipfs/ipns schemes, use TranslateIPFSURI directly.
   if (IsIPFSScheme(url) &&
-      TranslateIPFSURI(url, &new_url, GetDefaultIPFSGateway(context), false)) {
+      TranslateIPFSURI(url, &new_url, gateway_url, false)) {
     return new_url;
   }
 
@@ -128,7 +172,6 @@ GURL ToPublicGatewayURL(const GURL& url, content::BrowserContext* context) {
   // public gateway URL.
   if (IsLocalGatewayURL(url)) {
     GURL::Replacements replacements;
-    GURL gateway_url = GetDefaultIPFSGateway(context);
     replacements.ClearPort();
     replacements.SetSchemeStr(gateway_url.scheme_piece());
     replacements.SetHostStr(gateway_url.host_piece());
@@ -163,26 +206,25 @@ GURL GetIPNSGatewayURL(const std::string& cid,
   return GetGatewayURL(cid, path, base_gateway_url, false);
 }
 
-bool IsLocalGatewayConfigured(content::BrowserContext* context) {
-  PrefService* prefs = user_prefs::UserPrefs::Get(context);
+bool IsLocalGatewayConfigured(PrefService* prefs) {
   return static_cast<IPFSResolveMethodTypes>(prefs->GetInteger(
              kIPFSResolveMethod)) == IPFSResolveMethodTypes::IPFS_LOCAL;
 }
 
-GURL GetConfiguredBaseGateway(content::BrowserContext* context,
+GURL GetConfiguredBaseGateway(PrefService* prefs,
                               version_info::Channel channel) {
-  return IsLocalGatewayConfigured(context)
+  return IsLocalGatewayConfigured(prefs)
              ? ::ipfs::GetDefaultIPFSLocalGateway(channel)
-             : ::ipfs::GetDefaultIPFSGateway(context);
+             : ::ipfs::GetDefaultIPFSGateway(prefs);
 }
 
-bool ResolveIPFSURI(content::BrowserContext* context,
+bool ResolveIPFSURI(PrefService* prefs,
                     version_info::Channel channel,
                     const GURL& ipfs_uri,
                     GURL* resolved_url) {
   CHECK(resolved_url);
   return ::ipfs::TranslateIPFSURI(
-      ipfs_uri, resolved_url, GetConfiguredBaseGateway(context, channel), true);
+      ipfs_uri, resolved_url, GetConfiguredBaseGateway(prefs, channel), true);
 }
 
 GURL ipfs_default_gateway_for_test;
@@ -195,13 +237,12 @@ GURL GetDefaultIPFSLocalGateway(version_info::Channel channel) {
   return AppendLocalPort(GetGatewayPort(channel));
 }
 
-GURL GetDefaultIPFSGateway(content::BrowserContext* context) {
+GURL GetDefaultIPFSGateway(PrefService* prefs) {
   if (!ipfs_default_gateway_for_test.is_empty()) {
     return GURL(ipfs_default_gateway_for_test);
   }
 
-  DCHECK(context);
-  PrefService* prefs = user_prefs::UserPrefs::Get(context);
+  DCHECK(prefs);
   GURL gateway_url(prefs->GetString(kIPFSPublicGatewayAddress));
   if (gateway_url.DomainIs(kLocalhostIP)) {
     GURL::Replacements replacements;
@@ -215,30 +256,42 @@ GURL GetAPIServer(version_info::Channel channel) {
   return AppendLocalPort(GetAPIPort(channel));
 }
 
-bool TranslateIPFSURI(const GURL& url,
-                      GURL* new_url,
-                      const GURL& gateway_url,
-                      bool use_subdomain) {
+bool ParseCIDAndPathFromIPFSUrl(const GURL& url,
+                                std::string* cid,
+                                std::string* path) {
   if (!url.SchemeIs(kIPFSScheme) && !url.SchemeIs(kIPNSScheme)) {
     return false;
   }
   if (!url.host().empty())
     return false;
-
+  DCHECK(cid);
+  DCHECK(path);
   // ipfs: or ipfs://
   size_t offset = (url.path().substr(0, 2) == "//") ? 2 : 0;
   // In the case of a URL like ipfs://[cid]/wiki/Vincent_van_Gogh.html
   // host is empty and path is //wiki/Vincent_van_Gogh.html
-  std::string cid(url.path().substr(offset));
+  std::string local_cid(url.path().substr(offset));
   // If we have a path after the CID, get at the real resource path
-  size_t pos = cid.find("/");
-  std::string path;
+  size_t pos = local_cid.find("/");
   if (pos != std::string::npos && pos != 0) {
     // path would be /wiki/Vincent_van_Gogh.html
-    path = cid.substr(pos, cid.length() - pos);
+    *path = local_cid.substr(pos, local_cid.length() - pos);
+
     // cid would be [cid]
-    cid = cid.substr(0, pos);
+    *cid = local_cid.substr(0, pos);
+    return true;
   }
+  *cid = local_cid;
+  return true;
+}
+
+bool TranslateIPFSURI(const GURL& url,
+                      GURL* new_url,
+                      const GURL& gateway_url,
+                      bool use_subdomain) {
+  std::string cid, path;
+  if (!ParseCIDAndPathFromIPFSUrl(url, &cid, &path))
+    return false;
   bool ipfs_scheme = url.scheme() == kIPFSScheme;
   bool ipns_scheme = url.scheme() == kIPNSScheme;
   if ((ipfs_scheme && std::all_of(cid.begin(), cid.end(),
@@ -271,6 +324,80 @@ bool TranslateIPFSURI(const GURL& url,
   }
 
   return false;
+}
+
+GURL ResolveWebUIFilesLocation(const std::string& directory,
+                               version_info::Channel channel) {
+  GURL url = GetAPIServer(channel);
+  GURL::Replacements replacements;
+  replacements.SetPathStr("/webui/");
+  std::string webui_files_ref = std::string("/files") + directory;
+  replacements.SetRefStr(webui_files_ref);
+  return url.ReplaceComponents(replacements);
+}
+
+// Extracts Address and PeerID from peer connection strings like:
+// /ip4/104.131.131.82/udp/4001/quic/p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ
+// /p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ
+// QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ
+bool ParsePeerConnectionString(const std::string& value,
+                               std::string* id,
+                               std::string* address) {
+  if (!id || !address)
+    return false;
+  std::vector<std::string> parts = base::SplitStringUsingSubstr(
+      value, "/p2p/", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+  std::string extracted_id = (parts.size() == 2) ? parts[1] : value;
+  std::string extracted_address =
+      (parts.size() == 2) ? parts[0] : std::string();
+
+  bool valid_cid = IsValidCID(extracted_id);
+  // For compatibility we allow PeerIDs started from 1,
+  // like 12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2
+  // only if p2p is present
+  bool legacy_peer_id = (!extracted_id.empty() && !extracted_address.empty() &&
+                         extracted_id.at(0) == '1');
+  bool valid = valid_cid || legacy_peer_id;
+  if (valid) {
+    *id = extracted_id;
+    *address = extracted_address;
+  }
+  return valid;
+}
+
+bool IsValidNodeFilename(const std::string& filename) {
+  return RE2::FullMatch(filename, kExecutableRegEx);
+}
+
+GURL ContentHashToCIDv1URL(const std::string& contenthash) {
+  int64_t code = 0;
+  base::StringPiece input = contenthash;
+  if (!DecodeVarInt(&input, &code))
+    return GURL();
+  if (code != kIpnsNSCodec && code != kIpfsNSCodec)
+    return GURL();
+  std::string encoded = base32::Base32Encode(input);
+  if (encoded.empty())
+    return GURL();
+  std::string trimmed;
+  base::TrimString(encoded, "=", &trimmed);
+  std::string lowercase = base::ToLowerASCII(trimmed);
+  // multibase format <base-encoding-character><base-encoded-data>
+  // https://github.com/multiformats/multibase/blob/master/multibase.csv
+  std::string cidv1 = "b" + lowercase;
+  std::string scheme = (code == kIpnsNSCodec) ? kIPNSScheme : kIPFSScheme;
+  return GURL(scheme + "://" + cidv1);
+}
+
+std::string GetRegistryDomainFromIPNS(const GURL& url) {
+  if (!url.SchemeIs(ipfs::kIPNSScheme))
+    return std::string();
+  std::string cid;
+  std::string ipfs_path;
+  if (!ipfs::ParseCIDAndPathFromIPFSUrl(url, &cid, &ipfs_path) || cid.empty())
+    return std::string();
+  return GetDomainAndRegistry(
+      cid, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
 
 }  // namespace ipfs

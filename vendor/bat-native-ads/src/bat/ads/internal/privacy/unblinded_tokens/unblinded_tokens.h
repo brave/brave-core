@@ -28,6 +28,7 @@ class UnblindedTokens {
   void AddTokens(const UnblindedTokenList& unblinded_tokens);
 
   bool RemoveToken(const UnblindedTokenInfo& unblinded_token);
+  void RemoveTokens(const UnblindedTokenList& unblinded_tokens);
   void RemoveAllTokens();
 
   bool TokenExists(const UnblindedTokenInfo& unblinded_token);

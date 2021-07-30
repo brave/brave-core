@@ -35,11 +35,12 @@ public class BraveNewTabPage extends NewTabPage {
             Supplier<Tab> activityTabProvider, SnackbarManager snackbarManager,
             ActivityLifecycleDispatcher lifecycleDispatcher, TabModelSelector tabModelSelector,
             boolean isTablet, NewTabPageUma uma, boolean isInNightMode,
-            NativePageHost nativePageHost, Tab tab, BottomSheetController bottomSheetController,
+            NativePageHost nativePageHost, Tab tab, String url,
+            BottomSheetController bottomSheetController,
             ObservableSupplier<ShareDelegate> shareDelegateSupplier, WindowAndroid windowAndroid) {
         super(activity, browserControlsStateProvider, activityTabProvider, snackbarManager,
                 lifecycleDispatcher, tabModelSelector, isTablet, uma, isInNightMode, nativePageHost,
-                tab, bottomSheetController, shareDelegateSupplier, windowAndroid);
+                tab, url, bottomSheetController, shareDelegateSupplier, windowAndroid);
 
         assert mNewTabPageLayout instanceof BraveNewTabPageLayout;
         if (mNewTabPageLayout instanceof BraveNewTabPageLayout) {
@@ -49,19 +50,22 @@ public class BraveNewTabPage extends NewTabPage {
 
     @Override
     protected void initializeMainView(Activity activity, WindowAndroid windowAndroid,
-            SnackbarManager snackbarManager, TabModelSelector tabModelSelector, NewTabPageUma uma,
-            boolean isInNightMode, BottomSheetController bottomSheetController,
-            ObservableSupplier<ShareDelegate> shareDelegateSupplier) {
-        super.initializeMainView(activity, windowAndroid, snackbarManager, tabModelSelector, uma,
-                isInNightMode, bottomSheetController, shareDelegateSupplier);
+            SnackbarManager snackbarManager, NewTabPageUma uma, boolean isInNightMode,
+            BottomSheetController bottomSheetController,
+            ObservableSupplier<ShareDelegate> shareDelegateSupplier,
+            TabModelSelector tabModelSelector, String url) {
+        super.initializeMainView(activity, windowAndroid, snackbarManager, uma, isInNightMode,
+                bottomSheetController, shareDelegateSupplier, tabModelSelector, url);
         // Override surface provider
         Profile profile = Profile.fromWebContents(mTab.getWebContents());
 
         assert !FeedFeatures.isFeedEnabled();
         mFeedSurfaceProvider = new BraveFeedSurfaceCoordinator(activity, snackbarManager,
-                tabModelSelector, windowAndroid,
-                new SnapScrollHelper(mNewTabPageManager, mNewTabPageLayout), mNewTabPageLayout,
-                null, null, isInNightMode, this, mNewTabPageManager.getNavigationDelegate(),
-                profile, false, bottomSheetController, shareDelegateSupplier, null);
+                windowAndroid, new SnapScrollHelper(mNewTabPageManager, mNewTabPageLayout),
+                mNewTabPageLayout, null, isInNightMode, this,
+                mNewTabPageManager.getNavigationDelegate(), profile,
+                /* isPlaceholderShownInitially= */ false, bottomSheetController,
+                shareDelegateSupplier, /* externalScrollableContainerDelegate= */ null,
+                tabModelSelector, NewTabPageUtils.decodeOriginFromNtpUrl(url));
     }
 }

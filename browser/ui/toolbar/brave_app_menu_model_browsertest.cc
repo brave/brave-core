@@ -19,9 +19,11 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
@@ -55,8 +57,8 @@ void CheckCommandsAreInOrderInMenuModel(
     EXPECT_NE(-1, index);
     commands_index.push_back(index);
   }
-  EXPECT_TRUE(std::is_sorted(std::begin(commands_index),
-                             std::end(commands_index)));
+  EXPECT_TRUE(
+      std::is_sorted(std::begin(commands_index), std::end(commands_index)));
 }
 
 // Test brave menu order test.
@@ -151,22 +153,13 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
   CheckCommandsAreDisabledInMenuModel(private_browser,
                                       commands_disabled_for_private_profile);
 
-  content::WindowedNotificationObserver browser_creation_observer(
-      chrome::NOTIFICATION_BROWSER_OPENED,
-      content::NotificationService::AllSources());
+  ui_test_utils::BrowserChangeObserver browser_creation_observer(
+      nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
   profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
 
-  browser_creation_observer.Wait();
-
-  auto* browser_list = BrowserList::GetInstance();
-  Browser* guest_browser = nullptr;
-  for (Browser* browser : *browser_list) {
-    if (browser->profile()->IsGuestSession()) {
-      guest_browser = browser;
-      break;
-    }
-  }
+  Browser* guest_browser = browser_creation_observer.Wait();
   DCHECK(guest_browser);
+  EXPECT_TRUE(guest_browser->profile()->IsGuestSession());
   std::vector<int> commands_in_order_for_guest_profile = {
     IDC_NEW_TAB,
     IDC_NEW_WINDOW,
@@ -197,19 +190,12 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
                                       commands_disabled_for_guest_profile);
 
 #if BUILDFLAG(ENABLE_TOR)
-  content::WindowedNotificationObserver tor_browser_creation_observer(
-      chrome::NOTIFICATION_BROWSER_OPENED,
-      content::NotificationService::AllSources());
+  ui_test_utils::BrowserChangeObserver tor_browser_creation_observer(
+      nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
   brave::NewOffTheRecordWindowTor(browser());
-  tor_browser_creation_observer.Wait();
-  Browser* tor_browser = nullptr;
-  for (Browser* browser : *browser_list) {
-    if (browser->profile()->IsTor()) {
-      tor_browser = browser;
-      break;
-    }
-  }
+  Browser* tor_browser = tor_browser_creation_observer.Wait();
   DCHECK(tor_browser);
+  EXPECT_TRUE(tor_browser->profile()->IsTor());
   std::vector<int> commands_in_order_for_tor_profile = {
     IDC_NEW_TAB,
     IDC_NEW_TOR_CONNECTION_FOR_SITE,

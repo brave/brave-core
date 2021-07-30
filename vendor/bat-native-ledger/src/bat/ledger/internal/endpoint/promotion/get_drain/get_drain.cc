@@ -42,6 +42,7 @@ type::Result GetDrain::CheckStatusCode(const int status_code) {
   }
 
   if (status_code != net::HTTP_OK) {
+    BLOG(0, "Unexpected HTTP status: " << status_code);
     return type::Result::LEDGER_ERROR;
   }
 
@@ -66,7 +67,7 @@ void GetDrain::OnRequest(const type::UrlResponse& response,
     return;
   }
 
-  base::Optional<base::Value> value = base::JSONReader::Read(response.body);
+  absl::optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     callback(type::Result::LEDGER_ERROR, type::DrainStatus::INVALID);

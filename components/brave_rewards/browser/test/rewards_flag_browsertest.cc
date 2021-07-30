@@ -96,30 +96,30 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
   void GetReconcileInterval() {
     ResetWaitForCallback();
     rewards_service_->GetReconcileInterval(
-        base::Bind(&RewardsFlagBrowserTest::OnGetReconcileIntervalWrapper,
-                   base::Unretained(this)));
+        base::BindOnce(&RewardsFlagBrowserTest::OnGetReconcileIntervalWrapper,
+                       base::Unretained(this)));
     WaitForCallback();
   }
 
   void GetShortRetries() {
     ResetWaitForCallback();
     rewards_service_->GetShortRetries(
-        base::Bind(&RewardsFlagBrowserTest::OnGetShortRetriesWrapper,
-                   base::Unretained(this)));
+        base::BindOnce(&RewardsFlagBrowserTest::OnGetShortRetriesWrapper,
+                       base::Unretained(this)));
     WaitForCallback();
   }
 
   void GetEnvironment() {
     ResetWaitForCallback();
     rewards_service_->GetEnvironment(
-        base::Bind(&RewardsFlagBrowserTest::OnGetEnvironmentWrapper,
-                   base::Unretained(this)));
+        base::BindOnce(&RewardsFlagBrowserTest::OnGetEnvironmentWrapper,
+                       base::Unretained(this)));
     WaitForCallback();
   }
 
   void GetDebug() {
     ResetWaitForCallback();
-    rewards_service_->GetDebug(base::Bind(
+    rewards_service_->GetDebug(base::BindOnce(
         &RewardsFlagBrowserTest::OnGetDebugWrapper, base::Unretained(this)));
     WaitForCallback();
   }

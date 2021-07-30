@@ -19,7 +19,6 @@
 #include "base/macros.h"
 #include "base/memory/ref_counted_delete_on_sequence.h"
 #include "base/memory/weak_ptr.h"
-#include "base/optional.h"
 #include "base/time/time.h"
 #include "brave/browser/net/resource_context_data.h"
 #include "brave/browser/net/url_context.h"
@@ -32,6 +31,7 @@
 #include "services/network/public/mojom/network_context.mojom.h"
 #include "services/network/public/mojom/url_loader.mojom.h"
 #include "services/network/public/mojom/url_loader_factory.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace content {
@@ -56,7 +56,6 @@ class BraveProxyingURLLoaderFactory
         int32_t network_service_request_id,
         int render_process_id,
         int frame_tree_node_id,
-        int32_t routing_id,
         uint32_t options,
         const network::ResourceRequest& request,
         content::BrowserContext* browser_context,
@@ -72,13 +71,15 @@ class BraveProxyingURLLoaderFactory
         const std::vector<std::string>& removed_headers,
         const net::HttpRequestHeaders& modified_headers,
         const net::HttpRequestHeaders& modified_cors_exempt_headers,
-        const base::Optional<GURL>& new_url) override;
+        const absl::optional<GURL>& new_url) override;
     void SetPriority(net::RequestPriority priority,
                      int32_t intra_priority_value) override;
     void PauseReadingBodyFromNet() override;
     void ResumeReadingBodyFromNet() override;
 
     // network::mojom::URLLoaderClient:
+    void OnReceiveEarlyHints(
+        network::mojom::EarlyHintsPtr early_hints) override;
     void OnReceiveResponse(
         network::mojom::URLResponseHeadPtr response_head) override;
     void OnReceiveRedirect(
@@ -120,7 +121,6 @@ class BraveProxyingURLLoaderFactory
 
     const int render_process_id_;
     const int frame_tree_node_id_;
-    const int32_t routing_id_;
     const uint32_t options_;
 
     content::BrowserContext* browser_context_;
@@ -159,7 +159,7 @@ class BraveProxyingURLLoaderFactory
       std::vector<std::string> removed_headers;
       net::HttpRequestHeaders modified_headers;
       net::HttpRequestHeaders modified_cors_exempt_headers;
-      base::Optional<GURL> new_url;
+      absl::optional<GURL> new_url;
 
       DISALLOW_COPY_AND_ASSIGN(FollowRedirectParams);
     };
@@ -194,7 +194,6 @@ class BraveProxyingURLLoaderFactory
   // network::mojom::URLLoaderFactory:
   void CreateLoaderAndStart(
       mojo::PendingReceiver<network::mojom::URLLoader> loader_receiver,
-      int32_t routing_id,
       int32_t request_id,
       uint32_t options,
       const network::ResourceRequest& request,

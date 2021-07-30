@@ -1,3 +1,8 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
 import("//brave/components/speedreader/buildflags.gni")
 import("//build/buildflag_header.gni")
 
@@ -9,7 +14,7 @@ buildflag_header("buildflags") {
   ]
 }
 
-source_set("speedreader") {
+static_library("speedreader") {
   public_deps = [
     ":buildflags",
     "rust/ffi",
@@ -32,6 +37,8 @@ source_set("speedreader") {
     "speedreader_throttle.h",
     "speedreader_url_loader.cc",
     "speedreader_url_loader.h",
+    "speedreader_util.cc",
+    "speedreader_util.h",
   ]
 
   deps = [
@@ -39,12 +46,15 @@ source_set("speedreader") {
     "//brave/components/resources",
     "//brave/components/resources:static_resources_grit",
     "//brave/components/weekly_storage",
+    "//components/content_settings/core/browser",
+    "//components/content_settings/core/common",
     "//components/keyed_service/core:core",
     "//components/prefs:prefs",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
     "//third_party/blink/public/common",
-    "//ui/base",  # For ResourceBundle, consider getting rid of this?
+    "//third_party/re2",
+    "//ui/base",  # For ResourceBundle, consider getting rid of this ?
     "//url",
   ]
 }

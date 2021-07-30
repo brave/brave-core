@@ -8,9 +8,9 @@ import { ButtonSwitch } from './button_switch'
 
 import * as style from './tip_amount_selector.style'
 
-interface TipAmountOption {
+export interface TipAmountOption {
   value: number
-  amount: React.ReactNode
+  amount?: React.ReactNode
   currency: React.ReactNode
   exchangeAmount: React.ReactNode
 }
@@ -22,13 +22,16 @@ interface Props {
 }
 
 export function TipAmountSelector (props: Props) {
-  const options = props.options.map((item) => ({
-    value: item.value,
-    content: item.currency
-      ? <><strong>{item.amount}</strong> {item.currency}</>
-      : <><strong>{item.amount}</strong></>,
-    caption: item.exchangeAmount || undefined
-  }))
+  const options = props.options.map((item) => {
+    const amount = item.amount || String(item.value)
+    return {
+      value: item.value,
+      content: item.currency
+        ? <><strong>{amount}</strong> {item.currency}</>
+        : <><strong>{amount}</strong></>,
+      caption: item.exchangeAmount || undefined
+    }
+  })
 
   return (
     <style.root>

@@ -6,7 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SIGNIN_PUBLIC_IDENTITY_MANAGER_IDENTITY_MANAGER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SIGNIN_PUBLIC_IDENTITY_MANAGER_IDENTITY_MANAGER_H_
 
-#define GetAccountsInCookieJar virtual GetAccountsInCookieJar
+#define GetAccountsInCookieJar           \
+  GetAccountsInCookieJar_Unused() const; \
+  AccountsInCookieJarInfo GetAccountsInCookieJar
 
 #include "../../../../../../components/signin/public/identity_manager/identity_manager.h"
 

@@ -6,9 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_EXTENSIONS_EXTENSION_INSTALL_PROMPT_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_EXTENSIONS_EXTENSION_INSTALL_PROMPT_H_
 
-#define GetDialogTitle    \
+#define GetDialogTitle                 \
   GetDialogTitle_ChromiumImpl() const; \
-  base::string16 GetDialogTitle
+  std::u16string GetDialogTitle
 
 #include "../../../../../chrome/browser/extensions/extension_install_prompt.h"
 #undef GetDialogTitle

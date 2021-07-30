@@ -106,7 +106,7 @@ SkColor BraveThemeHelper::GetDefaultColor(
   }
   const dark_mode::BraveDarkModeType type =
       dark_mode::GetActiveBraveDarkModeType();
-  const base::Optional<SkColor> braveColor =
+  const absl::optional<SkColor> braveColor =
       MaybeGetDefaultColorForBraveUi(id, incognito, is_tor_, type);
   if (braveColor) {
     return braveColor.value();
@@ -120,7 +120,7 @@ SkColor BraveThemeHelper::GetDefaultColor(
   return ThemeHelper::GetDefaultColor(id, incognito, theme_supplier);
 }
 
-base::Optional<SkColor> BraveThemeHelper::GetOmniboxColor(
+absl::optional<SkColor> BraveThemeHelper::GetOmniboxColor(
     int id,
     bool incognito,
     const CustomThemeSupplier* theme_supplier,

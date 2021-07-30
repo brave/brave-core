@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "base/macros.h"
+#include "base/memory/weak_ptr.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "content/public/browser/url_data_source.h"
 
@@ -20,6 +20,8 @@ class SkBitmap;
 class BraveRewardsSource : public content::URLDataSource {
  public:
   explicit BraveRewardsSource(Profile* profile);
+  BraveRewardsSource(const BraveRewardsSource&) = delete;
+  BraveRewardsSource& operator=(const BraveRewardsSource&) = delete;
 
   ~BraveRewardsSource() override;
 
@@ -46,7 +48,7 @@ class BraveRewardsSource : public content::URLDataSource {
   Profile* profile_;
   std::vector<GURL> resource_fetchers_;
 
-  DISALLOW_COPY_AND_ASSIGN(BraveRewardsSource);
+  base::WeakPtrFactory<BraveRewardsSource> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_REWARDS_SOURCE_H_

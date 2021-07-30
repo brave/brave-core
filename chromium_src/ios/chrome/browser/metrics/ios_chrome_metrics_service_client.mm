@@ -17,7 +17,6 @@
 #include "base/metrics/persistent_histogram_allocator.h"
 #include "base/path_service.h"
 #include "base/process/process_metrics.h"
-#include "base/strings/string16.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "components/metrics/metrics_log_uploader.h"
@@ -124,6 +123,10 @@ bool IOSChromeMetricsServiceClient::GetBrand(std::string* brand_code) {
 metrics::SystemProfileProto::Channel
 IOSChromeMetricsServiceClient::GetChannel() {
   return metrics::AsProtobufChannel(::GetChannel());
+}
+
+bool IOSChromeMetricsServiceClient::IsExtendedStableChannel() {
+  return false;  // Not supported on iOS.
 }
 
 std::string IOSChromeMetricsServiceClient::GetVersionString() {

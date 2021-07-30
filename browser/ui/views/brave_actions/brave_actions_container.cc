@@ -36,6 +36,7 @@
 #include "extensions/browser/extension_registry_observer.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
+#include "ui/base/dragdrop/drag_drop_types.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/grid_layout.h"
 #include "ui/views/view.h"
@@ -115,17 +116,14 @@ BraveActionsContainer::BraveActionsContainer(Browser* browser, Profile* profile)
       extension_action_manager_(
           extensions::ExtensionActionManager::Get(profile)),
       brave_action_api_(extensions::BraveActionAPI::Get(browser)),
-      extension_registry_observer_(this),
-      extension_action_observer_(this),
-      brave_action_observer_(this),
       empty_extensions_container_(new EmptyExtensionsContainer),
       rewards_service_(
           brave_rewards::RewardsServiceFactory::GetForProfile(profile)),
       weak_ptr_factory_(this) {
   // Handle when the extension system is ready
   extension_system_->ready().Post(
-      FROM_HERE, base::Bind(&BraveActionsContainer::OnExtensionSystemReady,
-                            weak_ptr_factory_.GetWeakPtr()));
+      FROM_HERE, base::BindOnce(&BraveActionsContainer::OnExtensionSystemReady,
+                                weak_ptr_factory_.GetWeakPtr()));
 }
 
 BraveActionsContainer::~BraveActionsContainer() {
@@ -163,10 +161,10 @@ void BraveActionsContainer::Init() {
 
   // React to Brave Rewards preferences changes.
   hide_brave_rewards_button_.Init(
-      brave_rewards::prefs::kHideButton,
-      browser_->profile()->GetPrefs(),
-      base::Bind(&BraveActionsContainer::OnBraveRewardsPreferencesChanged,
-                 base::Unretained(this)));
+      brave_rewards::prefs::kHideButton, browser_->profile()->GetPrefs(),
+      base::BindRepeating(
+          &BraveActionsContainer::OnBraveRewardsPreferencesChanged,
+          base::Unretained(this)));
 }
 
 bool BraveActionsContainer::IsContainerAction(const std::string& id) const {
@@ -211,11 +209,8 @@ void BraveActionsContainer::AddAction(const extensions::Extension* extension) {
     // do not require that logic.
     // If we do require notifications when popups are open or closed,
     // then we should inherit and pass |this| through.
-    actions_[id].view_controller_ = std::make_unique<BraveActionViewController>(
-        extension, browser_,
-        extension_action_manager_->GetExtensionAction(*extension),
-        empty_extensions_container_.get(),
-        /*in_overflow_mode*/false);
+    actions_[id].view_controller_ = BraveActionViewController::Create(
+        extension->id(), browser_, empty_extensions_container_.get());
     // The button view
     actions_[id].view_ = std::make_unique<BraveActionView>(
         actions_[id].view_controller_.get(), this);
@@ -331,13 +326,6 @@ content::WebContents* BraveActionsContainer::GetCurrentWebContents() {
   return browser_->tab_strip_model()->GetActiveWebContents();
 }
 
-bool BraveActionsContainer::ShownInsideMenu() const {
-  return false;
-}
-
-void BraveActionsContainer::OnToolbarActionViewDragDone() {
-}
-
 views::LabelButton* BraveActionsContainer::GetOverflowReferenceView() const {
   // Our action views should always be visible,
   // so we should not need another view.
@@ -395,9 +383,9 @@ void BraveActionsContainer::OnRewardsStubButtonClicked() {
 
 void BraveActionsContainer::OnExtensionSystemReady() {
   // observe changes in extension system
-  extension_registry_observer_.Add(extension_registry_);
-  extension_action_observer_.Add(extension_action_api_);
-  brave_action_observer_.Add(brave_action_api_);
+  extension_registry_observer_.Observe(extension_registry_);
+  extension_action_observer_.Observe(extension_action_api_);
+  brave_action_observer_.Observe(brave_action_api_);
   // Check if extensions already loaded
   AddAction(brave_extension_id);
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)

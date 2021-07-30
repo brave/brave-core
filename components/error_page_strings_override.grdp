@@ -34,5 +34,4 @@
     </if>
   <if expr="not is_android and not is_ios">
     </if>
-
-</grit-part>
+  </grit-part>

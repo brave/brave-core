@@ -5,3 +5,10 @@ include_rules = [
   "+services/network/public",
   "+third_party/re2",
 ]
+
+specific_include_rules = {
+  "tor_utils.cc": [
+    "+chrome/common/chrome_constants.h",
+    "+chrome/common/pref_names.h"
+  ],
+}

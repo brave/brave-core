@@ -1,8 +1,8 @@
 diff --git a/content/browser/browser_main_runner_impl.cc b/content/browser/browser_main_runner_impl.cc
-index 986c41e2f51e20240ccf240e1213a63f13f93677..a7a92e8f36d3fcf22f0937b57a4cf551b7235eda 100644
+index fde9208b8c03d32cd03b3116dde10d36d3ba2f89..3e0347dc9d01628cd34e597ffb0c85b21027d9ee 100644
 --- a/content/browser/browser_main_runner_impl.cc
 +++ b/content/browser/browser_main_runner_impl.cc
-@@ -16,6 +16,7 @@
+@@ -18,6 +18,7 @@
  #include "base/time/time.h"
  #include "base/trace_event/heap_profiler_allocation_context_tracker.h"
  #include "base/trace_event/trace_event.h"
@@ -10,14 +10,12 @@ index 986c41e2f51e20240ccf240e1213a63f13f93677..a7a92e8f36d3fcf22f0937b57a4cf551
  #include "build/build_config.h"
  #include "components/tracing/common/trace_startup_config.h"
  #include "components/tracing/common/tracing_switches.h"
-@@ -94,8 +95,8 @@ int BrowserMainRunnerImpl::Initialize(const MainFunctionParams& parameters) {
+@@ -96,7 +97,7 @@ int BrowserMainRunnerImpl::Initialize(const MainFunctionParams& parameters) {
  
      gfx::InitializeFonts();
  
--    main_loop_.reset(
--        new BrowserMainLoop(parameters, std::move(scoped_execution_fence_)));
-+    main_loop_.reset(new brave::BraveBrowserMainLoop(
-+        parameters, std::move(scoped_execution_fence_)));
+-    main_loop_ = std::make_unique<BrowserMainLoop>(
++    main_loop_ = std::make_unique<brave::BraveBrowserMainLoop>(
+         parameters, std::move(scoped_execution_fence_));
  
      main_loop_->Init();
- 

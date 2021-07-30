@@ -15,11 +15,12 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/features.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/infobars/infobar_service.h"
+#include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/grit/chromium_strings.h"
+#include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
 #include "components/prefs/pref_service.h"
 #include "components/strings/grit/components_strings.h"
@@ -28,7 +29,9 @@
 
 // static
 void SyncV2MigrateInfoBarDelegate::Create(
-    InfoBarService* infobar_service, bool is_v2_user, Profile* profile,
+    infobars::ContentInfoBarManager* infobar_manager,
+    bool is_v2_user,
+    Profile* profile,
     Browser* browser) {
   // Show infobar if user had enabled sync v1 (even if they hadn't
   // re-enabled it via the flag).
@@ -60,8 +63,8 @@ void SyncV2MigrateInfoBarDelegate::Create(
     return;
   }
   // Show infobar
-  infobar_service->AddInfoBar(infobar_service->CreateConfirmInfoBar(
-      std::unique_ptr<ConfirmInfoBarDelegate>(
+  infobar_manager->AddInfoBar(
+      CreateConfirmInfoBar(std::unique_ptr<ConfirmInfoBarDelegate>(
           new SyncV2MigrateInfoBarDelegate(browser, profile))));
 }
 
@@ -95,7 +98,7 @@ void SyncV2MigrateInfoBarDelegate::InfoBarDismissed() {
   brave_sync_prefs.SetDismissSyncMigrateNotice(true);
 }
 
-base::string16 SyncV2MigrateInfoBarDelegate::GetMessageText() const {
+std::u16string SyncV2MigrateInfoBarDelegate::GetMessageText() const {
   return l10n_util::GetStringUTF16(IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_MESSAGE);
 }
 
@@ -103,7 +106,7 @@ int SyncV2MigrateInfoBarDelegate::GetButtons() const {
   return BUTTON_OK;
 }
 
-base::string16 SyncV2MigrateInfoBarDelegate::GetButtonLabel(
+std::u16string SyncV2MigrateInfoBarDelegate::GetButtonLabel(
     InfoBarButton button) const {
   return l10n_util::GetStringUTF16(IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_COMMAND);
 }

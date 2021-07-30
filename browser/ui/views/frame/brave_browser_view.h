@@ -18,6 +18,17 @@ class ContentsLayoutManager;
 class SidebarContainerView;
 #endif
 
+namespace speedreader {
+class SpeedreaderBubbleView;
+class SpeedreaderTabHelper;
+}  // namespace speedreader
+
+namespace content {
+class WebContents;
+}  // namespace content
+
+class WalletButton;
+
 class BraveBrowserView : public BrowserView {
  public:
   explicit BraveBrowserView(std::unique_ptr<Browser> browser);
@@ -32,8 +43,17 @@ class BraveBrowserView : public BrowserView {
       const std::string& target_language,
       translate::TranslateErrors::Type error_type,
       bool is_user_gesture) override;
-
+  speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
+      speedreader::SpeedreaderTabHelper* tab_helper,
+      bool is_enabled) override;
+  void CreateWalletBubble();
+  void CloseWalletBubble();
+  WalletButton* GetWalletButton();
   void StartTabCycling() override;
+
+#if BUILDFLAG(ENABLE_SIDEBAR)
+  views::View* sidebar_host_view() { return sidebar_host_view_; }
+#endif
 
  private:
   class TabCyclingEventHandler;
@@ -57,6 +77,7 @@ class BraveBrowserView : public BrowserView {
   // GetContentsLayoutManager().
   views::View* original_contents_container_ = nullptr;
   SidebarContainerView* sidebar_container_view_ = nullptr;
+  views::View* sidebar_host_view_ = nullptr;
 #endif
 
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;

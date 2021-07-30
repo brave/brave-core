@@ -153,6 +153,7 @@ def cargo_install(tool):
     if "features" in tool:
         cargo_args.append("--features")
         cargo_args.append(tool["features"])
+    cargo_args.append("--locked")
 
     try:
         subprocess.check_call(cargo_args, env=env)

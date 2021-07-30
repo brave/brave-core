@@ -15,17 +15,20 @@ class Value;
 
 namespace decentralized_dns {
 
+enum class Provider;
+
 bool IsDecentralizedDnsEnabled();
 
 bool IsUnstoppableDomainsTLD(const GURL& url);
 bool IsUnstoppableDomainsResolveMethodAsk(PrefService* local_state);
 bool IsUnstoppableDomainsResolveMethodDoH(PrefService* local_state);
+bool IsUnstoppableDomainsResolveMethodEthereum(PrefService* local_state);
 
 bool IsENSTLD(const GURL& url);
 bool IsENSResolveMethodAsk(PrefService* local_state);
 bool IsENSResolveMethodDoH(PrefService* local_state);
-
-base::Value GetResolveMethodList();
+bool IsENSResolveMethodEthereum(PrefService* local_state);
+base::Value GetResolveMethodList(Provider provider);
 
 }  // namespace decentralized_dns
 

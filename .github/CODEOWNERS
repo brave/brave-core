@@ -1,31 +1,51 @@
+brave/build/commands/ @bridiver
 patches/ @brave/patch-reviewers
-chromium_src/ @brave/patch-reviewers
+chromium_src/ @brave/chromium-src-reviewers
 script/build-bisect.py @bsclifton
 script/uplift.py @bsclifton
-vendor/brave-ios/ @kylehickinson
 /README.md @bsclifton
 Jenkinsfile @mihaiplesa
-DEPS @bridiver
+DEPS @brave/deps-reviewers
 
 # Rewards
-browser/brave_rewards/ @brave/rewards
-browser/extensions/api/brave_rewards_api.cc @brave/rewards
-browser/extensions/api/brave_rewards_api.h @brave/rewards
-browser/ui/webui/brave_rewards_page_ui.cc @brave/rewards
-browser/ui/webui/brave_rewards_page_ui.h @brave/rewards
-browser/ui/webui/brave_rewards_ui.cc @brave/rewards
-browser/ui/webui/brave_rewards_ui.h @brave/rewards
-components/brave_rewards/ @brave/rewards
-components/services/bat_ledger/ @brave/rewards
-vendor/bat-native-ledger/ @brave/rewards
+browser/brave_rewards/ @brave/rewards-client
+browser/extensions/api/brave_rewards_api.cc @brave/rewards-client
+browser/extensions/api/brave_rewards_api.h @brave/rewards-client
+browser/ui/webui/brave_rewards_page_ui.cc @brave/rewards-client
+browser/ui/webui/brave_rewards_page_ui.h @brave/rewards-client
+browser/ui/webui/brave_rewards_ui.cc @brave/rewards-client
+browser/ui/webui/brave_rewards_ui.h @brave/rewards-client
+components/brave_rewards/ @brave/rewards-client
+components/services/bat_ledger/ @brave/rewards-client
+vendor/bat-native-ledger/ @brave/rewards-client
 
 # Ads
-vendor/bat-native-ads/ @tmancey
-components/brave_ads/ @tmancey
-components/services/bat_ads/ @tmancey
+browser/brave_ads/**/*.cc @brave/ads-client
+browser/brave_ads/**/*.h @brave/ads-client
+browser/brave_ads/**/*.java @brave/ads-client
+browser/brave_ads/**/*.mm @brave/ads-client
+browser/ui/brave_ads/**/*.cc @brave/ads-client
+browser/ui/brave_ads/**/*.h @brave/ads-client
+browser/ui/brave_ads/**/*.mm @brave/ads-client
+components/brave_ads/**/*.cc @brave/ads-client
+components/brave_ads/**/*.h @brave/ads-client
+components/brave_ads/**/*.mm @brave/ads-client
+components/services/bat_ads/**/*.cc @brave/ads-client
+components/services/bat_ads/**/*.h @brave/ads-client
+components/services/bat_ads/**/*.mm @brave/ads-client
+vendor/bat-native-ads/**/*.cc @brave/ads-client
+vendor/bat-native-ads/**/*.h @brave/ads-client
+vendor/bat-native-ads/**/*.mm @brave/ads-client
+vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*.cc @brave/ads-client
+vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*.h @brave/ads-client
+vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*.mm @brave/ads-client
+vendor/bat-native-ads/src/bat/ads/internal/security/**/*.cc @brave/ads-client
+vendor/bat-native-ads/src/bat/ads/internal/security/**/*.h @brave/ads-client
+vendor/bat-native-ads/src/bat/ads/internal/security/**/*.mm @brave/ads-client
 
 # Network
 browser/net/ @iefremov
+chromium_src/net/tools/transport_security_state_generator/input_file_parsers.cc @brave/sec-team
 
 # Brave theme
 browser/themes @simonhong
@@ -69,9 +89,24 @@ components/weekly_storage/ @iefremov
 # Perf predictor
 components/brave_perf_predictor/ @iefremov
 
+# Permissions
+browser/permissions/**/*expiration* @goodov
+browser/permissions/**/*lifetime* @goodov
+components/permissions/**/*expiration* @goodov
+components/permissions/**/*lifetime* @goodov
+
 # Java patching
 build/android/bytecode/ @samartnik
 patches/*.java.patch @samartnik
 
 # Bitcoin-core
 third_party/bitcoin-core/BUILD.gn @orspetol
+
+# Network auditor
+build/commands/lib/whitelistedUrlPatterns.js @brave/sec-team
+build/commands/lib/whitelistedUrlPrefixes.js @brave/sec-team
+
+# iOS
+ios/ @brave/ios
+build/ios/ @brave/ios
+

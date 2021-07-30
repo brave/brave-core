@@ -51,18 +51,6 @@
     "message": "جزئیات",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "موجودی شما",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "امتیازهای BAT",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "می‌تواند در «پاداش‌های Brave» برای کمک مالی به پدیدآورندگان محتوای محبوب شما استفاده شود. «امتیازهای BAT» را نمی‌توان با BAT معاوضه کرد.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "روشن",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "امتیازهای توکن مطالبه شد",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "هدایای امتیاز مطالبه شد",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "درآمد از آگهی‌ها",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "انعام یک‌باره",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "تاریخ انقضا",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "این پدیدآورنده هنوز برای دریافت کمک از کاربران Brave ثبت‌نام نکرده است. تا زمانی که پدیدآورنده کمک را تأیید نکند، انعام‌هایی که ارسال می‌کنید در کیف پولتان باقی می‌مانند.",
+    "message": "این پدیدآورنده در حال حاضر برای دریافت انعام‌ها از کیف پول شما پیکربندی نشده است. هر انعامی که شما بدهید به حالت معوق در کیف پولتان باقی می‌ماند و به‌طور خودکار به‌مدت 90 روز تلاش مجدد انجام خواهد شد.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "روشن کردن آگهی‌ها",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "امتیاز توکن رایگان",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "امتیاز هدیه رایگان",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "شما «پاداش آگهی‌ها» را کسب کرده‌اید.",
@@ -591,17 +567,9 @@
     "message": "توکن",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "امتیازها",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "امتیازهای توکن",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "هدایای امتیاز",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "سلام، $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "برای ایجاد حساب Uphold، به حداقل 25 BAT نیاز دارید. لطفاً بعداً دوباره امتحان کنید. \nدر صورتی که ازقبل یک حساب تأییدشده Uphold دارید، ورود به سیستم را ادامه دهید.",
-    "description": "Text for login button"
+    "message": "برای ایجاد حساب Uphold، باید حداقل $amount$BAT داشته باشید. اگر ازقبل حساب Uphold تأییدشده‌ای دارید، ورود به سیستم را ادامه دهید.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "متصل",
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "چه زمانی پاداش دریافت می‌کنید",
+    "message": "چه زمانی پاداش دریافت می‌کنید؟",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "با استفاده از Brave Rewards کمک می‌کنید وب به مکانی بهتر برای همه تبدیل شود. و این فوق‌العاده است!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards در ژاپن در حال جابجایی به یک سیستم جدید است!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "تأیید کیف پول",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "بیشتر بدانید",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "برای برداشت کردن توکن‌هایی که بابت تماشای آگهی کسب می‌کنید، باید کیف پول خود را تأیید کنید.",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "لطفاً تا ۱۳ مارس از BAP خود استفاده کنید. پس از آن، BAP متوقف می‌شود.",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "بعداً انجام می‌دهم",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "تأیید کیف پول",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "کیف پول bitFlyer سرویسی است که توسط bitFlyer Inc مدیریت می‌شود.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "با تأیید کیف پول و پیوند دادن آن به حساب bitFlyer، می‌توانید توکن‌هایی را که ازطریق «پاداش‌های Brave» کسب کرده‌اید آسان‌تر ذخیره و مدیریت کنید.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "درباره نحوه پیوند دادن مرورگر Brave خود با حساب bitFlyer، ‍$link_begin$بیشتر بدانید$link_end$.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

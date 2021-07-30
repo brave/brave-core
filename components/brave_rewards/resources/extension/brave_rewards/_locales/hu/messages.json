@@ -51,18 +51,6 @@
     "message": "Részletek",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "Az ön egyenlege",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "BAT-pontok",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "felhasználható a Brave Rewardsban a kedvenc tartalomkészítőinek küldött hozzájáruláshoz. A BAT-pontok nem cserélhetők be BAT-ra.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "bekapcsolva",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "Beváltott zseton adományok ",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "Pontok begyűjtve",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "Jövedelem hirdetésekből",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Egyszeri adományok",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "lejárat dátuma",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Ez az alkotó még nem regisztrált, hogy hozzájárulásokat fogadjon a Brave felhasználóktól. Minden borravaló, amit küldesz, a pénztárcádban marad, amíg nem igazolnak. ",
+    "message": "Ez az alkotó még nem regisztrált, hogy hozzájárulásokat fogadjon a pénztárcádból. Minden borravaló, amit küldesz, a pénztárcádban marad függő állapotban, és annak feldolgozása automatikusan meg lesz kísérelve 90 napig.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Hirdetések bekapcsolása",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Ingyenes zseton adomány",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Ingyenes pontok",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Hirdetési jutalmat kapott!",
@@ -591,17 +567,9 @@
     "message": "Token",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "pontok",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Tokenadományok",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Pontjóváírások",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Szia $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Uphold fiók készítéséhez legalább 25 BAT-od kell legyen. Próbáld újra később.\nFolytasd a belépést, ha már rendelkezel Uphold fiókkal.",
-    "description": "Text for login button"
+    "message": "Uphold-fiók létrehozásához legalább $amount$ BAT szükséges. Ha már van hitelesített Uphold-fiókja, lépjen tovább a bejelentkezésre.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "Kapcsolódva",
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Mikor kapja meg a jutalmakat",
+    "message": "Mikor kapja meg a jutalmakat?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "A Brave Rewards használatával segítesz mindenki számára jobbá tenni az internetet. Ez fantasztikus!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "A Brave Rewards Japánban egy új rendszerre vált!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "Pénztárca megerősítése",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "Tudj meg többet",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "A hirdetések megtekintése után járó tokenek kivonásához erősítse meg a pénztárcáját.",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "Használd el BAP-dat március 13. előtt. Ezután a BAP meg fog szakadni.",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "Később",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "A pénztárcám megerősítése",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "A bitFlyer wallet szolgáltatást a bitFlyer, Inc. kezeli.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "A pénztárcája megerősítésével, valamint annak a bitFlyer-fiókjához kapcsolásával könnyebben tudja tárolni és kezelni a Brave Rewardson keresztül megszerzett tokenjeit.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Tudjon meg többet$link_end$ a Brave böngésző bitFlyer-fiókkal történő összekapcsolásának menetéről.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

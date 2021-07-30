@@ -6,6 +6,7 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 
 #include <string>
+#include <utility>
 
 #include "base/logging.h"
 #include "base/time/time.h"
@@ -13,7 +14,6 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
-#include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/image_fetcher/image_fetcher_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_key.h"
@@ -61,14 +61,15 @@ SidebarModel::SidebarModel(Profile* profile)
 
 SidebarModel::~SidebarModel() = default;
 
-void SidebarModel::Init() {
+void SidebarModel::Init(history::HistoryService* history_service) {
   // Start with saved item list.
   for (const auto& item : GetAllSidebarItems())
     AddItem(item, -1, false);
 
-  sidebar_observed_.Add(GetSidebarService(profile_));
-  history_observed_.Add(HistoryServiceFactory::GetForProfile(
-      profile_, ServiceAccessType::EXPLICIT_ACCESS));
+  sidebar_observed_.Observe(GetSidebarService(profile_));
+  // Can be null in test.
+  if (history_service)
+    history_observed_.Observe(history_service);
 }
 
 void SidebarModel::AddObserver(Observer* observer) {
@@ -104,6 +105,35 @@ void SidebarModel::AddItem(const SidebarItem& item,
 
 void SidebarModel::OnItemAdded(const SidebarItem& item, int index) {
   AddItem(item, index, true);
+}
+
+void SidebarModel::OnItemMoved(const SidebarItem& item, int from, int to) {
+  // Cache active model data to find its new index after moving.
+  SidebarModelData* active_data = nullptr;
+  if (active_index_ != -1) {
+    active_data = data_[active_index_].get();
+  }
+
+  std::unique_ptr<SidebarModelData> data = std::move(data_[from]);
+  data_.erase(data_.begin() + from);
+  data_.insert(data_.begin() + to, std::move(data));
+
+  for (Observer& obs : observers_)
+    obs.OnItemMoved(item, from, to);
+
+  if (!active_data)
+    return;
+
+  // Find new active items index.
+  const int data_size = data_.size();
+  for (int i = 0; i < data_size; ++i) {
+    if (data_[i].get() == active_data) {
+      UpdateActiveIndexAndNotify(i);
+      return;
+    }
+  }
+
+  NOTREACHED();
 }
 
 void SidebarModel::OnWillRemoveItem(const SidebarItem& item, int index) {
@@ -149,14 +179,14 @@ void SidebarModel::RemoveItemAt(int index) {
   }
 }
 
-void SidebarModel::SetActiveIndex(int index) {
+void SidebarModel::SetActiveIndex(int index, bool load) {
   if (index == active_index_)
     return;
 
   // Don't load url if it's already loaded. If not, new loading is started
   // whenever item is activated.
   // TODO(simonhong): Maybe we should have reload option?
-  if (index != -1 && !IsLoadedAt(index))
+  if (load && index != -1 && !IsLoadedAt(index))
     LoadURLAt(GetAllSidebarItems()[index].url, index);
 
   UpdateActiveIndexAndNotify(index);
@@ -202,6 +232,9 @@ void SidebarModel::LoadURLAt(const GURL& url, int index) {
 }
 
 void SidebarModel::UpdateActiveIndexAndNotify(int new_active_index) {
+  if (new_active_index == active_index_)
+    return;
+
   const int old_active_index = active_index_;
   active_index_ = new_active_index;
 

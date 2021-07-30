@@ -18,7 +18,6 @@
 #include "bat/ledger/internal/credentials/credentials_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/wallet_info_properties.h"
-#include "bat/ledger/internal/promotion/bap_reporter.h"
 #include "bat/ledger/internal/promotion/promotion_transfer.h"
 #include "bat/ledger/internal/promotion/promotion_util.h"
 #include "bat/ledger/option_keys.h"
@@ -79,7 +78,6 @@ Promotion::Promotion(LedgerImpl* ledger)
     : attestation_(
           std::make_unique<ledger::attestation::AttestationImpl>(ledger)),
       transfer_(std::make_unique<PromotionTransfer>(ledger)),
-      bap_reporter_(std::make_unique<BAPReporter>(ledger)),
       promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)),
       ledger_(ledger) {
   DCHECK(ledger_);
@@ -101,8 +99,6 @@ void Promotion::Initialize() {
     ledger_->database()->GetAllPromotions(check_callback);
   }
 
-  bap_reporter_->ReportBAPAmount();
-
   auto retry_callback = std::bind(&Promotion::Retry,
       this,
       _1);
@@ -111,22 +107,9 @@ void Promotion::Initialize() {
 }
 
 void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
-  if (ledger_->ledger_client()->GetBooleanOption(
-          option::kContributionsDisabledForBAPMigration)) {
-    BLOG(1, "Fetch promotions disabled for BAP migration");
-    callback(type::Result::LEDGER_OK, {});
-    return;
-  }
-
-  if (ledger_->state()->GetBAPReported()) {
-    BLOG(1, "Fetch promotions disabled after BAP reporting");
-    callback(type::Result::LEDGER_OK, {});
-    return;
-  }
-
   // If we fetched promotions recently, fulfill this request from the
   // database instead of querying the server again
-  if (!ledger::is_testing) {
+  if (!ledger::is_testing && _environment != type::Environment::STAGING) {
     const uint64_t last_promo_stamp =
         ledger_->state()->GetPromotionLastFetchStamp();
     const uint64_t now = util::GetCurrentTimeStamp();

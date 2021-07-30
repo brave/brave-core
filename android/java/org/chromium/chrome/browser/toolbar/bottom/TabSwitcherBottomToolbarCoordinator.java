@@ -95,8 +95,8 @@ public class TabSwitcherBottomToolbarCoordinator {
     /**
      * @param showOnTop Whether to show the tab switcher bottom toolbar on the top of the screen.
      */
-    void showToolbarOnTop(boolean showOnTop) {
-        mMediator.showToolbarOnTop(showOnTop);
+    void showToolbarOnTop(boolean showOnTop, boolean isGridTabSwitcherEnabled) {
+        mMediator.showToolbarOnTop(showOnTop, isGridTabSwitcherEnabled);
     }
 
     /**

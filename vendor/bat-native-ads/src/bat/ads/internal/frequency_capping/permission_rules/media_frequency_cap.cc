@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/media_frequency_cap.h"
 
+#include "bat/ads/internal/frequency_capping/frequency_capping_features.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 #include "bat/ads/internal/tab_manager/tab_info.h"
 #include "bat/ads/internal/tab_manager/tab_manager.h"
@@ -16,6 +17,10 @@ MediaFrequencyCap::MediaFrequencyCap() = default;
 MediaFrequencyCap::~MediaFrequencyCap() = default;
 
 bool MediaFrequencyCap::ShouldAllow() {
+  if (!features::frequency_capping::ShouldOnlyServeAdsIfMediaIsNotPlaying()) {
+    return true;
+  }
+
   if (!DoesRespectCap()) {
     last_message_ = "Media is playing";
     return false;
@@ -29,7 +34,7 @@ std::string MediaFrequencyCap::get_last_message() const {
 }
 
 bool MediaFrequencyCap::DoesRespectCap() {
-  const base::Optional<TabInfo> tab = TabManager::Get()->GetVisible();
+  const absl::optional<TabInfo> tab = TabManager::Get()->GetVisible();
   if (!tab) {
     return true;
   }

@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * you can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -8,11 +9,11 @@
 #include <string>
 
 #include "base/macros.h"
-#include "base/optional.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/views/view.h"
 
-// The RoundedSeparator class is a view that shows a line used to visually separate
-// other views.
+// The RoundedSeparator class is a view that shows a line used to visually
+// separate other views.
 class RoundedSeparator : public views::View {
  public:
   // The separator's class name.
@@ -36,9 +37,9 @@ class RoundedSeparator : public views::View {
 
  private:
   int preferred_height_ = kThickness;
-  base::Optional<SkColor> overridden_color_;
+  absl::optional<SkColor> overridden_color_;
 
   DISALLOW_COPY_AND_ASSIGN(RoundedSeparator);
 };
 
-#endif
+#endif  // BRAVE_BROWSER_UI_VIEWS_ROUNDED_SEPARATOR_H_

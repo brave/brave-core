@@ -90,7 +90,7 @@ def main(args):
     if options.filter:
       command = ['--filter=' + ','.join(options.filter)] + command
     if options.project_root:
-      command = ['--project_root=' + options.project_root] + command
+      command = ['--project_root=' + options.project_root.replace('\\', '/')] + command
     filenames = cpplint.ParseArguments(command)
 
     white_regex = re.compile(settings.GetLintRegex())

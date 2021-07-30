@@ -69,7 +69,7 @@ TEST(AccountConsistencyDisabledTest, DiceFixAuthErrorsForAllProfiles) {
 
     // Incognito profile.
     Profile* incognito_profile = profile.GetOffTheRecordProfile(
-        Profile::OTRProfileID::PrimaryID());
+        Profile::OTRProfileID::PrimaryID(), /*create_if_needed=*/true);
     EXPECT_FALSE(AccountConsistencyModeManager::IsDiceEnabledForProfile(
         incognito_profile));
     EXPECT_FALSE(

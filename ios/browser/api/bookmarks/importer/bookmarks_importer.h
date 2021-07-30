@@ -8,7 +8,6 @@
 
 #include <vector>
 
-#include "base/strings/string16.h"
 #include "brave/ios/browser/api/bookmarks/importer/imported_bookmark_entry.h"
 
 class BookmarksImporter {
@@ -16,7 +15,7 @@ class BookmarksImporter {
   // top_level_folder_name is usually set to IDS_BOOKMARK_GROUP
   // Which is the name of the folder bookmarks will be imported into,
   // if the root folder is not empty.
-  static void AddBookmarks(const base::string16& top_level_folder_name,
+  static void AddBookmarks(const std::u16string& top_level_folder_name,
                            const std::vector<ImportedBookmarkEntry>& bookmarks);
 };
 

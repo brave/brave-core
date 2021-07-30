@@ -9,6 +9,10 @@
 
 namespace ledger {
 
+BATLedgerTest::BATLedgerTest() = default;
+
+BATLedgerTest::~BATLedgerTest() = default;
+
 void BATLedgerTest::AddNetworkResultForTesting(const std::string& url,
                                                mojom::UrlMethod method,
                                                mojom::UrlResponsePtr response) {

@@ -25,12 +25,12 @@ DecentralizedDnsService::DecentralizedDnsService(
   pref_change_registrar_->Init(local_state);
   pref_change_registrar_->Add(
       kUnstoppableDomainsResolveMethod,
-      base::Bind(&DecentralizedDnsService::OnPreferenceChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(&DecentralizedDnsService::OnPreferenceChanged,
+                          base::Unretained(this)));
   pref_change_registrar_->Add(
       kENSResolveMethod,
-      base::Bind(&DecentralizedDnsService::OnPreferenceChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(&DecentralizedDnsService::OnPreferenceChanged,
+                          base::Unretained(this)));
 }
 
 DecentralizedDnsService::~DecentralizedDnsService() = default;

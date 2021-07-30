@@ -51,18 +51,6 @@
     "message": "Detaljer ",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "Din saldo ",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "BAT points ",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "Kan bruges i Brave Præmier til at donere til dine foretrukne indholdsskabere. BAT points kan ikke veksles til BAT. ",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "til",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "Token-Tilskud Taget ",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "Points-tilskud indløst ",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "Indtjening fra reklamer",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Engangsdonationer",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "udløber den",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Denne skaber har endnu ikke skrevet sig op til at modtage bidrag fra Brave-brugere. Alle tips du sender vil forblive i din Tegnebog indtil skaberen godkender. ",
+    "message": "Denne indholdsskaber er i øjeblikket ikke konfigureret til at modtage drikkepenge fra din tegnebog. Dine drikkepenge vi forblive i din tegnebog, og de vil forsøge at blive overført automatisk i 90 dage. ",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP ",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Slå reklamer til ",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Gratis Token-Tilskud ",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Gratis point-tilskud",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Du har optjent en Reklamepræmie! ",
@@ -591,17 +567,9 @@
     "message": "Token",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "point",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Mønttilskud ",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Pointbevillinger",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Hej $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Du skal have mindst 25 BAT for at oprette en Uphold-konto. Prøv igen senere.\n  Hvis du allerede har en bekræftet Uphold-konto, skal du fortsætte for at logge ind.",
-    "description": "Text for login button"
+    "message": "Du skal have mindst $amount$ BAT for at oprette en Uphold-konto. Hvis du allerede har en bekræftet Uphold-konto, kan du fortsætte til login.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "Tilsluttet",
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Når du modtager belønninger",
+    "message": "Hvornår modtager du belønninger?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "Ved at bruge Brave Rewards hjælper du med at gøre internettet til et bedre sted for alle, og det er fantastisk!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards i Japan skifter til et nyt system!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "Bekræft din tegnebog",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "Flere oplysninger",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "For at hæve de polletter, du har tjent ved at se reklamer, skal du bekræfte din tegnebog.",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "Brug venligst din BAP senest den 13. marts. Derefter afbrydes BAP.",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "Gør det senere",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Bekræft min tegnebog",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "bitFlyer-tegnebogen er en tjeneste, der drives af bitFlyver, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Ved at bekræfte din tegnebog og knytte den til en bitFlyer-konto kan du nemmere opbevare og administrere de polletter, du har tjent gennem Brave Rewards.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Se mere$link_end$ om, hvordan du forbinder din Brave-browser med din bitFlyer-konto.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

@@ -51,18 +51,6 @@
     "message": "פרטים",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "היתרה שלך",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "נקודות BAT",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "ניתן להשתמש בו ב-Brave Rewards כדי לתרום ליוצרי התוכן החביבים עליך. לא ניתן להמיר נקודות BAT ב-BAT.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "פעיל",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "מענקי אסימון נתבעו",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "מענקי נקודות נתבעו",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "צבירה מפרסומות",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "טיפ חד-פעמי",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "פג תוקף ב-",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "יוצר זה עדיין לא נרשם לקבלת תרומות ממשתמשי Brave. כל הטיפים שתשלחו יישארו בארנק שלכם עד אשר יאומת.",
+    "message": "יוצר זה עדיין לא הוגדר לקבלת טיפים מהארנק שלך. כל טיפ שתיתן יישאר בהמתנה בארנק שלך ויתבצע ניסיון חוזר אוטומטית במשך 90 יום.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "הפעל פרסומות",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "מענק אסימון חינם ",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "מענק נקודות חינם",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "הרווחת תגמול פרסומות!",
@@ -591,17 +567,9 @@
     "message": "טוקן",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "נקודות",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "מענק אסימונים",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "מענקי נקודות",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "שלום, $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "דרושים לכם מינימום של 25 BAT כדי ליצור חשבון Uphold. נא לנסות שוב מאוחר יותר.\n  אם כבר יש לכם חשבון Uphold מאומת, המשיכו להתחברות.",
-    "description": "Text for login button"
+    "message": "ליצירת חשבון Uphold דרוש סכום מזערי של $amount$ BAT. אם כבר יש לך חשבון Uphold מאומת, יש להמשיך לכניסה.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "מחובר",
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "מתי אתם מקבלים תגמולים",
+    "message": "מתי אתם מקבלים פרסים?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "בשימושכם ב-Brave Rewards אתם עוזרים להפוך את האינטרנט למקום טוב יותר עבור כולם. וזה מדהים!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards ביפן עובר למערכת חדשה!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "אמתו את הארנק שלכם",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "למידע נוסף",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "על מנת למשוך את האסימונים שהרווחתם מצפיית פרסומות, תצטרכו לאמת את הארנק שלכם.",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "אנא השתמש/י ב-BAP שלך עד 13 במרץ. לאחר מכן ייפסק השימוש ב-BAP.",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "עשה זאת מאוחר יותר",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "אמתו את הארנק שלי",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "ארנק bitFlyer הוא שירות המנוהל על ידי bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "על ידי אימות הארנק שלכם וקישורו לחשבון bitFlyer, תוכלו לאחסן ולנהל את האסימונים שהרווחתם באמצעות  Brave Rewards ביתר קלות.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$למידע נוסף$link_end$ אודות אופן הקישור של דפדפן Brave עם חשבון ה-bitFlyer שלכם.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

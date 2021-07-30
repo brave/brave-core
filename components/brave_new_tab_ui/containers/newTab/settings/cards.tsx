@@ -23,11 +23,12 @@ import {
   ToggleCardsSwitch,
   ToggleCardsText
 } from '../../../components/default'
-import togetherBanner from './assets/bravetogether.png'
+import togetherBanner from './assets/brave-talk.png'
 import binanceBanner from './assets/binance.png'
 import rewardsBanner from './assets/braverewards.png'
 import geminiBanner from './assets/gemini.png'
 import cryptoDotComBanner from './assets/crypto-dot-com.png'
+import ftxPreviewImageUrl from './assets/ftx-preview.png'
 import HideIcon from './assets/hide-icon'
 import { Toggle } from '../../../components/toggle'
 import { PlusIcon } from 'brave-ui/components/icons'
@@ -49,6 +50,9 @@ interface Props {
   toggleShowCryptoDotCom: () => void
   showCryptoDotCom: boolean
   cryptoDotComSupported: boolean
+  toggleShowFTX: () => void
+  showFTX: boolean
+  ftxSupported: boolean
   toggleCards: (show: boolean) => void
   cardsHidden: boolean
 }
@@ -95,6 +99,9 @@ class CardsSettings extends React.PureComponent<Props, {}> {
       cryptoDotComSupported,
       toggleShowCryptoDotCom,
       showCryptoDotCom,
+      ftxSupported,
+      toggleShowFTX,
+      showFTX,
       toggleCards,
       cardsHidden
     } = this.props
@@ -163,6 +170,21 @@ class CardsSettings extends React.PureComponent<Props, {}> {
               {this.renderToggleButton(showCryptoDotCom, toggleShowCryptoDotCom, false)}
             </SettingsWidget>
           : null
+        }
+        {
+        ftxSupported &&
+        <SettingsWidget>
+          <StyledBannerImage src={ftxPreviewImageUrl} />
+          <StyledSettingsInfo>
+            <StyledSettingsTitle>
+              FTX
+            </StyledSettingsTitle>
+            <StyledSettingsCopy>
+              {getLocale('ftxWidgetDescription')}
+            </StyledSettingsCopy>
+          </StyledSettingsInfo>
+          {this.renderToggleButton(showFTX, toggleShowFTX, false)}
+        </SettingsWidget>
         }
         <SettingsWidget>
           <StyledBannerImage src={rewardsBanner} />

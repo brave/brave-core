@@ -59,6 +59,18 @@ async function applyPatches() {
   }
 }
 
+const restoreBraveCoreGitUrlIfGitCacheEnabled = () => {
+  const gitCachePath = util.runGit(config.braveCoreDir, ['config', 'cache.cachepath'], true)
+  if (!gitCachePath) {
+    return
+  }
+  const gitBraveCoreRemoteUrl = util.runGit(config.braveCoreDir, ['remote', 'get-url', 'origin'], true)
+  const gitBraveCoreRemotePushUrl = util.runGit(config.braveCoreDir, ['remote', 'get-url', '--push', 'origin'], true)
+  if (gitBraveCoreRemoteUrl != gitBraveCoreRemotePushUrl) {
+    util.runGit(config.braveCoreDir, ['remote', 'set-url', 'origin', gitBraveCoreRemotePushUrl], true)
+  }
+}
+
 const util = {
 
   runProcess: (cmd, args = [], options = {}) => {
@@ -193,7 +205,7 @@ const util = {
   },
 
   calculateFileChecksum: (filename) => {
-    // adapted from https://github.com/roryrjb/md5-file
+    // adapted from https://github.com/kodie/md5-file
     const BUFFER_SIZE = 8192
     const fd = fs.openSync(filename, 'r')
     const buffer = Buffer.alloc(BUFFER_SIZE)
@@ -328,6 +340,33 @@ const util = {
     }
     if (config.targetOS === 'android') {
 
+      let braveOverwrittenFiles = new Set();
+      const removeUnlistedAndroidResources = (braveOverwrittenFiles) => {
+        const suspectedDir = path.join(config.srcDir, 'chrome', 'android', 'java', 'res')
+
+        let untrackedChromiumFiles = util.runGit(suspectedDir, ['ls-files', '--others', '--exclude-standard'], true).split('\n')
+        let untrackedChromiumPaths = [];
+        for (const untrackedChromiumFile of untrackedChromiumFiles) {
+          untrackedChromiumPath = path.join(suspectedDir, untrackedChromiumFile)
+
+          if (!fs.statSync(untrackedChromiumPath).isDirectory()) {
+            untrackedChromiumPaths.push(untrackedChromiumPath);
+          }
+        }
+
+        const isChildOf = (child, parent) => {
+          const relative = path.relative(parent, child);
+          return relative && !relative.startsWith('..') && !path.isAbsolute(relative);
+        }
+
+        for (const untrackedChromiumPath of untrackedChromiumPaths) {
+          if (isChildOf(untrackedChromiumPath, suspectedDir) && !braveOverwrittenFiles.has(untrackedChromiumPath)) {
+            fs.removeSync(untrackedChromiumPath);
+            console.log(`Deleted not listed file: ${untrackedChromiumPath}`);
+          }
+        }
+      }
+
       let androidIconSet = ''
       if (config.channel === 'development') {
         androidIconSet = 'res_brave_default'
@@ -357,6 +396,8 @@ const util = {
       const androidToolbarResDest = path.join(config.srcDir, 'chrome', 'browser', 'ui', 'android', 'toolbar', 'java', 'res')
       const androidComponentsResSource = path.join(config.braveCoreDir, 'components', 'browser_ui', 'widget', 'android', 'java', 'res')
       const androidComponentsResDest = path.join(config.srcDir, 'components', 'browser_ui', 'widget', 'android', 'java', 'res')
+      const androidSafeBrowsingResSource = path.join(config.braveCoreDir, 'browser', 'safe_browsing', 'android', 'java', 'res')
+      const androidSafeBrowsingResDest = path.join(config.srcDir, 'chrome', 'browser', 'safe_browsing', 'android', 'java', 'res')
 
       // Mapping for copying Brave's Android resource into chromium folder.
       const copyAndroidResourceMapping = {
@@ -367,7 +408,8 @@ const util = {
         [androidContentPublicResSource]: [androidContentPublicResDest],
         [androidTouchtoFillResSource]: [androidTouchtoFillResDest],
         [androidToolbarResSource]: [androidToolbarResDest],
-        [androidComponentsResSource]: [androidComponentsResDest]
+        [androidComponentsResSource]: [androidComponentsResDest],
+        [androidSafeBrowsingResSource]: [androidSafeBrowsingResDest]
       }
 
       console.log('copy Android app icons and app resources')
@@ -385,9 +427,11 @@ const util = {
             if (!fs.existsSync(destinationFile) || util.calculateFileChecksum(androidSourceFile) != util.calculateFileChecksum(destinationFile)) {
               fs.copySync(androidSourceFile, destinationFile)
             }
+            braveOverwrittenFiles.add(destinationFile);
           }
         }
       })
+      removeUnlistedAndroidResources(braveOverwrittenFiles)
     }
   },
 
@@ -497,6 +541,21 @@ const util = {
     util.run(msBuild, msBuildArgs)
   },
 
+  runGnGen: (options) => {
+    const buildArgsStr = util.buildArgsToString(config.buildArgs())
+    const buildArgsFile = path.join(config.outputDir, 'brave_build_args.txt')
+    const buildNinjaFile = path.join(config.outputDir, 'build.ninja')
+
+    const shouldRunGnGen = config.force_gn_gen ||
+        !fs.existsSync(buildNinjaFile) || !fs.existsSync(buildArgsFile) ||
+        fs.readFileSync(buildArgsFile) != buildArgsStr
+
+    if (shouldRunGnGen) {
+      util.run('gn', ['gen', config.outputDir, '--args="' + buildArgsStr + '"'], options)
+      fs.writeFileSync(buildArgsFile, buildArgsStr)
+    }
+  },
+
   buildTarget: (options = config.defaultOptions) => {
     console.log('building ' + config.buildTarget + '...')
 
@@ -504,13 +563,11 @@ const util = {
       util.updateOmahaMidlFiles()
       util.buildRedirectCCTool()
     }
+    util.runGnGen(options)
 
     let num_compile_failure = 1
     if (config.ignore_compile_failure)
       num_compile_failure = 0
-
-    const args = util.buildArgsToString(config.buildArgs())
-    util.run('gn', ['gen', config.outputDir, '--args="' + args + '"'], options)
 
     let ninjaOpts = [
       '-C', config.outputDir, config.buildTarget,
@@ -626,6 +683,10 @@ const util = {
     }
 
     runGClient(args, options)
+    // When git cache is enabled, gclient sync will use a local directory as a
+    // git remote url. This will break non gclient-triggered git operations, so
+    // after gclient is done, we restore the remote url here.
+    restoreBraveCoreGitUrlIfGitCacheEnabled()
 
     return {
       didUpdateChromium,

@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.brave_stats;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,8 +21,8 @@ import android.util.DisplayMetrics;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewParent;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -30,10 +31,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -49,6 +50,7 @@ import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.local_database.BraveStatsTable;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
+import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
@@ -94,6 +96,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     }
 
     @Override
+    @SuppressLint("SourceLockedOrientationActivity")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = ContextUtils.getApplicationContext();
@@ -330,11 +333,18 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                         TextView mSiteText = (TextView) layout.findViewById(R.id.site_text);
 
                         mTrackerCountText.setText(String.valueOf(statPair.second));
-                        mTrackerCountText.setTextColor(
-                            mContext.getResources().getColor(R.color.brave_stats_text_color));
                         mSiteText.setText(statPair.first);
-                        mSiteText.setTextColor(
-                            mContext.getResources().getColor(R.color.brave_stats_text_color));
+                        if (GlobalNightModeStateProviderHolder.getInstance().isInNightMode()) {
+                            mSiteText.setTextColor(mContext.getResources().getColor(
+                                    R.color.brave_stats_text_dark_color));
+                            mTrackerCountText.setTextColor(mContext.getResources().getColor(
+                                    R.color.brave_stats_text_dark_color));
+                        } else {
+                            mSiteText.setTextColor(mContext.getResources().getColor(
+                                    R.color.brave_stats_text_light_color));
+                            mTrackerCountText.setTextColor(mContext.getResources().getColor(
+                                    R.color.brave_stats_text_light_color));
+                        }
 
                         rootView.addView(layout);
                     }

@@ -115,8 +115,7 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
         rewardsState: {
           ...state.rewardsState,
           enabledAds: preInitialRewardsDataPayload.enabledAds,
-          adsSupported: preInitialRewardsDataPayload.adsSupported,
-          onlyAnonWallet: preInitialRewardsDataPayload.onlyAnonWallet
+          adsSupported: preInitialRewardsDataPayload.adsSupported
         }
       }
       break
@@ -138,17 +137,6 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
         rewardsState: {
           ...state.rewardsState,
           ...newRewardsState
-        }
-      }
-      break
-
-    case types.SET_ONLY_ANON_WALLET:
-      state = { ...state }
-      state = {
-        ...state,
-        rewardsState: {
-          ...state.rewardsState,
-          onlyAnonWallet: payload.onlyAnonWallet
         }
       }
       break

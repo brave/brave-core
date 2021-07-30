@@ -1,11 +1,12 @@
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
+if (is_android) {
+  import("//build/config/android/rules.gni")
+}
 
-source_set("browser") {
+static_library("browser") {
   # Remove when https://github.com/brave/brave-browser/issues/10646 is resolved
   check_includes = false
-  public_deps = [
-    "//brave/components/brave_referrals/buildflags",
-  ]
+  public_deps = [ "//brave/components/brave_referrals/buildflags" ]
 
   if (enable_brave_referrals) {
     sources = [
@@ -27,7 +28,21 @@ source_set("browser") {
     ]
 
     if (is_android) {
-      deps += [ "//brave/components/safetynet:android" ]
+      sources += [
+        "android_brave_referrer.cc",
+        "android_brave_referrer.h",
+      ]
+
+      deps += [
+        ":jni_headers",
+        "//brave/components/safetynet:android",
+      ]
     }
+  }
+}
+
+if (is_android) {
+  generate_jni("jni_headers") {
+    sources = [ "//brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java" ]
   }
 }

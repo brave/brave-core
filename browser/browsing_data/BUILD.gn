@@ -1,44 +1,12 @@
-import("//brave/components/ipfs/buildflags/buildflags.gni")
-import("//extensions/buildflags/buildflags.gni")
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
 
-source_set("browsing_data") {
-  # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
-  check_includes = false
-  sources = [
-    "brave_browsing_data_remover_delegate.cc",
-    "brave_browsing_data_remover_delegate.h",
-    "brave_clear_browsing_data.cc",
-    "brave_clear_browsing_data.h",
-  ]
+source_set("browser_tests") {
+  testonly = true
 
-  deps = [
-    "//base",
-    "//brave/components/ipfs/buildflags",
-    "//chrome/browser/browsing_data:constants",
-    "//chrome/common",
-    "//components/browsing_data/core",
-    "//components/content_settings/core/browser",
-    "//components/content_settings/core/common",
-    "//components/prefs",
-    "//content/public/browser",
-  ]
-
-  if (enable_extensions) {
-    deps += [
-      "//brave/common/extensions/api",
-      "//extensions/browser",
-    ]
-  }
-
-  if (ipfs_enabled) {
-    deps += [ "//brave/components/ipfs" ]
-  }
-}
-
-if (!is_android) {
-  source_set("browser_tests") {
-    testonly = true
-
+  if (!is_android) {
     sources = [
       "//brave/browser/browsing_data/brave_clear_browsing_data_browsertest.cc",
     ]
@@ -48,7 +16,6 @@ if (!is_android) {
     deps = [
       "//base",
       "//base/test:test_support",
-      "//brave/browser/browsing_data",
       "//chrome/app:command_ids",
       "//chrome/browser",
       "//chrome/browser/browsing_data:constants",

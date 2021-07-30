@@ -26,7 +26,7 @@ void RegisterAndInstallWidevine(ComponentUpdateService* cus) {
   // an on demand update.
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<WidevineCdmComponentInstallerPolicy>());
-  installer->Register(cus, base::Bind(&OnWidevineRegistered));
+  installer->Register(cus, base::BindOnce(&OnWidevineRegistered));
 }
 
 }  // namespace

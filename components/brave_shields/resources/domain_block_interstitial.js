@@ -5,10 +5,10 @@
 
 function setupEvents() {
   $('primary-button').addEventListener('click', function() {
-    sendCommand(SecurityInterstitialCommandId.CMD_DONT_PROCEED);
-  });
-  $('proceed-button').addEventListener('click', function() {
     sendCommand(SecurityInterstitialCommandId.CMD_PROCEED);
+  });
+  $('back-button').addEventListener('click', function() {
+    sendCommand(SecurityInterstitialCommandId.CMD_DONT_PROCEED);
   });
   $('dont-warn-again-checkbox').addEventListener('click', function() {
     sendCommand($('dont-warn-again-checkbox').checked ?

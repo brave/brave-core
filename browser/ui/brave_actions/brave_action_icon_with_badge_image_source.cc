@@ -9,9 +9,9 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "cc/paint/paint_flags.h"
-#include "chrome/browser/ui/toolbar/toolbar_actions_bar.h"
 #include "chrome/grit/theme_resources.h"
 #include "extensions/common/constants.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/canvas.h"
@@ -22,19 +22,19 @@
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/skia_paint_util.h"
 
-base::Optional<int>
+absl::optional<int>
 BraveActionIconWithBadgeImageSource::GetCustomGraphicSize() {
   return kBraveActionGraphicSize;
 }
 
-base::Optional<int>
+absl::optional<int>
 BraveActionIconWithBadgeImageSource::GetCustomGraphicXOffset() {
   return std::floor(
       (size().width() - kBraveActionRightMargin - kBraveActionGraphicSize) /
       2.0);
 }
 
-base::Optional<int>
+absl::optional<int>
 BraveActionIconWithBadgeImageSource::GetCustomGraphicYOffset() {
   return std::floor((size().height() - kBraveActionGraphicSize) / 2.0);
 }
@@ -64,7 +64,7 @@ void BraveActionIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
   ui::ResourceBundle* rb = &ui::ResourceBundle::GetSharedInstance();
   gfx::FontList base_font = rb->GetFontList(ui::ResourceBundle::BaseFont)
                                 .DeriveWithHeightUpperBound(kTextHeightTarget);
-  base::string16 utf16_text = base::UTF8ToUTF16(badge_->text);
+  std::u16string utf16_text = base::UTF8ToUTF16(badge_->text);
 
   // Calculate best font size to fit maximum Width and constant Height
   int text_height = 0;

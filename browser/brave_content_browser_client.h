@@ -10,21 +10,27 @@
 #include <string>
 #include <vector>
 
-#include "base/optional.h"
 #include "chrome/browser/chrome_content_browser_client.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/metrics/public/cpp/ukm_source_id.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/mojom/loader/referrer.mojom.h"
 
-class BraveNavigatorUserAgentFarblingBrowserTest;
 class PrefChangeRegistrar;
 
 namespace content {
 class BrowserContext;
 class RenderProcessHost;
-}
+}  // namespace content
+
+namespace blink {
+class AssociatedInterfaceRegistry;
+}  // namespace blink
+namespace web_pref {
+struct WebPreferences;
+}  // namespace web_pref
 
 class BraveContentBrowserClient : public ChromeContentBrowserClient {
  public:
@@ -41,11 +47,12 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const GURL& url,
       content::WebContents::OnceGetter web_contents_getter,
       int child_id,
+      int frame_tree_node_id,
       content::NavigationUIData* navigation_data,
       bool is_main_frame,
       ui::PageTransition page_transition,
       bool has_user_gesture,
-      const base::Optional<url::Origin>& initiating_origin,
+      const absl::optional<url::Origin>& initiating_origin,
       mojo::PendingRemote<network::mojom::URLLoaderFactory>* out_factory)
       override;
 
@@ -75,7 +82,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       int render_process_id,
       URLLoaderFactoryType type,
       const url::Origin& request_initiator,
-      base::Optional<int64_t> navigation_id,
+      absl::optional<int64_t> navigation_id,
       ukm::SourceIdObj ukm_source_id,
       mojo::PendingReceiver<network::mojom::URLLoaderFactory>* factory_receiver,
       mojo::PendingRemote<network::mojom::TrustedURLLoaderHeaderClient>*
@@ -90,7 +97,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       content::ContentBrowserClient::WebSocketFactory factory,
       const GURL& url,
       const net::SiteForCookies& site_for_cookies,
-      const base::Optional<std::string>& user_agent,
+      const absl::optional<std::string>& user_agent,
       mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
           handshake_client) override;
 
@@ -107,17 +114,20 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   std::vector<std::unique_ptr<content::NavigationThrottle>>
   CreateThrottlesForNavigation(content::NavigationHandle* handle) override;
 
-  std::string GetEffectiveUserAgent(content::BrowserContext* browser_context,
-                                    const GURL& url) override;
+  void ExposeInterfacesToRenderer(
+      service_manager::BinderRegistry* registry,
+      blink::AssociatedInterfaceRegistry* associated_registry,
+      content::RenderProcessHost* render_process_host) override;
+
+  bool OverrideWebPreferencesAfterNavigation(
+      content::WebContents* web_contents,
+      blink::web_pref::WebPreferences* prefs) override;
 
  private:
-  friend class ::BraveNavigatorUserAgentFarblingBrowserTest;
-
   uint64_t session_token_;
   uint64_t incognito_session_token_;
 
   void OnAllowGoogleAuthChanged();
-  std::string GetMinimalUserAgent();
 
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
       pref_change_registrar_;

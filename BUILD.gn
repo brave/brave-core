@@ -1,6 +1,7 @@
 import("//brave/build/cargo.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
 import("//build/config/zip.gni")
 import("//build/util/process_version.gni")
@@ -342,12 +343,12 @@ if (target_cpu == "x86") {
 }
 
 action("create_symbols_dist") {
-  output = "$brave_dist_dir/$brave_project_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"
+  output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"
 
   script = "//brave/script/create-dist.py"
 
   inputs = get_target_outputs(":brave_license_dist_resources")
-  dir_inputs = [ "$brave_project_name.breakpad.syms" ]
+  dir_inputs = [ "$brave_product_name.breakpad.syms" ]
 
   file_inputs = []
   foreach(input, inputs) {
@@ -373,7 +374,7 @@ action("create_symbols_dist") {
 }
 
 action("create_dist_zips") {
-  output = "$brave_dist_dir/$brave_project_name-v$brave_version-$brave_platform-$target_arch.zip"
+  output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch.zip"
 
   script = "//brave/script/create-dist.py"
 
@@ -450,7 +451,6 @@ if (is_mac) {
     args = [
       "--brave_channel=" + brave_channel,
       "--brave_product_dir_name=" + brave_product_dir_name,
-      "--brave_feed_url=" + brave_feed_url,
       "--brave_version=" + brave_version,
       "--brave_eddsa_key=" + sparkle_eddsa_public_key,
     ]
@@ -491,5 +491,11 @@ action("audit_deps") {
   }
   if (audit_dev_deps) {
     args += [ "--audit_dev_deps" ]
+  }
+}
+
+group("tools") {
+  if (enable_brave_vpn) {
+    deps = [ "//brave/components/brave_vpn:vpntool" ]
   }
 }

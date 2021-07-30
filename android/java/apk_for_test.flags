@@ -4,7 +4,7 @@
 
 # Contains flags that should be applied only to brave_public_apk_for_test.
 
-# Do not obfuscate class names, methods and fields that are 
+# Do not obfuscate class names, methods and fields that are
 # needed for checking of existence for bytecode manipulation
 -keepnames class org.chromium.chrome.browser.settings.MainSettings
 
@@ -37,6 +37,8 @@
 -keep class org.chromium.chrome.browser.ntp.NewTabPageLayout {
     *** insertSiteSectionView(...);
     *** mSiteSectionView;
+    *** mTileGroup;
+    *** updateTileGridPlaceholderVisibility(...);
 }
 
 -keep class org.chromium.chrome.browser.feed.FeedSurfaceCoordinator {
@@ -47,8 +49,13 @@
 }
 
 -keep class org.chromium.chrome.browser.ntp.NewTabPage {
+    public <init>(...);
     *** mNewTabPageLayout;
     *** mFeedSurfaceProvider;
+}
+
+-keep class org.chromium.chrome.browser.ntp.BraveNewTabPage {
+    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.EditUrlSuggestionProcessor {
@@ -66,6 +73,11 @@
     *** getPermissionsLinkMessage(...);
     *** getSearchEngineSourceType(...);
     *** sortAndFilterUnnecessaryTemplateUrl(...);
+}
+
+-keep class org.chromium.chrome.browser.search_engines.settings.SearchEngineSettings {
+    *** mSearchEngineAdapter;
+    *** createAdapterIfNecessary(...);
 }
 
 -keep class org.chromium.base.CommandLineInitUtil {
@@ -104,6 +116,13 @@
     *** mIncognitoStateProvider;
     *** mTabCountProvider;
     *** mTabGroupUi;
+    *** mBottomSheetController;
+    *** mActivityLifecycleDispatcher;
+    *** mIsWarmOnResumeSupplier;
+    *** mTabContentManager;
+    *** mTabCreatorManager;
+    *** mOverviewModeBehaviorSupplier;
+    *** mSnackbarManager;
     *** onOrientationChange(...);
     *** updateButtonStatus(...);
     *** updateBookmarkButtonStatus(...);
@@ -125,8 +144,10 @@
     *** mToggleTabStackButton;
     *** mMenuButton;
     *** mShouldShowNewTabVariation;
+    *** mIsIncognito;
     *** updateNewTabButtonVisibility(...);
     *** shouldShowIncognitoToggle(...);
+    *** getToolbarColorForCurrentState(...);
 }
 
 -keep class org.chromium.chrome.browser.download.MimeUtils {
@@ -134,7 +155,7 @@
 }
 
 -keep class org.chromium.chrome.browser.app.ChromeActivity {
-    *** mTabModelProfileSupplier;
+    *** mBrowserControlsManagerSupplier;
 }
 
 -keep class org.chromium.chrome.browser.tabbed_mode.TabbedRootUiCoordinator {
@@ -243,5 +264,61 @@
 }
 
 -keep class org.chromium.chrome.browser.site_settings.ChromeSiteSettingsDelegate {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.settings.BraveMainPreferencesBase
+
+-keep class org.chromium.chrome.browser.search_engines.settings.BraveBaseSearchEngineAdapter
+
+-keep class org.chromium.chrome.browser.ChromeTabbedActivity
+
+-keep class org.chromium.chrome.browser.app.BraveActivity
+
+-keep class org.chromium.chrome.browser.suggestions.tile.SuggestionsTileView
+
+-keep class org.chromium.chrome.browser.suggestions.tile.BraveTileView
+
+-keep class org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbar
+
+-keep class org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout
+
+-keep class org.chromium.chrome.browser.toolbar.top.ToolbarPhone
+
+-keep class org.chromium.components.permissions.BravePermissionDialogModel {
+    *** getModel(...);
+}
+
+-keep class org.chromium.components.permissions.PermissionDialogModel {
+    *** getModel(...);
+}
+
+-keep class org.chromium.chrome.browser.compositor.layouts.LayoutManagerChromePhone
+
+-keep class org.chromium.chrome.browser.compositor.layouts.BraveLayoutManagerChrome
+
+-keep class org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities {
+    *** isGridTabSwitcherEnabled(...);
+    *** isTabGroupsAndroidEnabled(...);
+}
+
+-keep class org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities {
+    *** isGridTabSwitcherEnabled(...);
+    *** isTabGroupsAndroidEnabled(...);
+}
+
+-keep class org.chromium.components.browser_ui.notifications.NotificationManagerProxyImpl {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.notifications.BraveNotificationManagerProxyImpl {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.status.StatusMediator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.status.BraveStatusMediator {
     public <init>(...);
 }

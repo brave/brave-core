@@ -92,16 +92,16 @@ ViewCounterService::~ViewCounterService() = default;
 
 void ViewCounterService::BrandedWallpaperWillBeDisplayed(
     const std::string& wallpaper_id) {
-  base::Value data = ViewCounterService::GetCurrentWallpaperForDisplay();
-  DCHECK(!data.is_none());
-  const std::string creative_instance_id =
-      *data.FindStringKey(kCreativeInstanceIDKey);
+  if (ads_service_) {
+    base::Value data = ViewCounterService::GetCurrentWallpaperForDisplay();
+    DCHECK(!data.is_none());
 
-  if (!ads_service_)
-    return;
-
-  ads_service_->OnNewTabPageAdEvent(wallpaper_id, creative_instance_id,
-      ads::mojom::BraveAdsNewTabPageAdEventType::kViewed);
+    const std::string* creative_instance_id =
+        data.FindStringKey(kCreativeInstanceIDKey);
+    ads_service_->OnNewTabPageAdEvent(
+        wallpaper_id, creative_instance_id ? *creative_instance_id : "",
+        ads::mojom::BraveAdsNewTabPageAdEventType::kViewed);
+  }
 
   branded_new_tab_count_state_->AddDelta(1);
   UpdateP3AValues();

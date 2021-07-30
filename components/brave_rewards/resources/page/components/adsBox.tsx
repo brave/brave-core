@@ -19,10 +19,20 @@ import {
 } from '../../ui/components'
 import { Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
 
+import { ArrivingSoon } from './style'
+import { MoneyBagIcon } from '../../shared/components/icons/money_bag_icon'
+import { formatMessage } from '../../shared/lib/locale_context'
+import { getDaysUntilRewardsPayment } from '../../shared/lib/pending_rewards'
+
 // Utils
 import * as utils from '../utils'
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
+
+const nextPaymentDateFormatter = new Intl.DateTimeFormat(undefined, {
+  month: 'short',
+  day: 'numeric'
+})
 
 interface Props extends Rewards.ComponentProps {
 }
@@ -63,7 +73,7 @@ class AdsBox extends React.Component<Props, State> {
       automaticallyDetectedAdsSubdivisionTargeting
     } = this.props.rewardsData.adsData
 
-    let subdivisions: any = [
+    let subdivisions: [string, string][] = [
       ['US-AL', 'Alabama'],
       ['US-AK', 'Alaska'],
       ['US-AZ', 'Arizona'],
@@ -122,9 +132,9 @@ class AdsBox extends React.Component<Props, State> {
       subdivisions.unshift(['DISABLED', getLocale('adsSubdivisionTargetingDisable')])
     }
 
-    const subdivisionMap = new Map(subdivisions)
-    const subdivision = subdivisionMap.get(automaticallyDetectedAdsSubdivisionTargeting) as string
-    if (subdivision !== '' && adsSubdivisionTargeting === 'AUTO') {
+    const subdivisionMap = new Map<string, string>(subdivisions)
+    const subdivision = subdivisionMap.get(automaticallyDetectedAdsSubdivisionTargeting)
+    if (subdivision && adsSubdivisionTargeting === 'AUTO') {
       subdivisions.unshift(['AUTO', getLocale('adsSubdivisionTargetingAutoDetectedAs', { adsSubdivisionTarget : subdivision })])
     } else {
       subdivisions.unshift(['AUTO', getLocale('adsSubdivisionTargetingAutoDetect')])
@@ -174,7 +184,7 @@ class AdsBox extends React.Component<Props, State> {
               value={adsPerHour.toString()}
               onChange={this.onAdsSettingChange.bind(this, 'adsPerHour')}
             >
-              {['1', '2', '3', '4', '5'].map((num: string) => {
+              {['0', '1', '2', '3', '4', '5', '10'].map((num: string) => {
                 return (
                   <div key={`num-per-hour-${num}`} data-value={num}>
                     {getLocale(`adsPerHour${num}`)}
@@ -193,7 +203,7 @@ class AdsBox extends React.Component<Props, State> {
                   onChange={this.onAdsSettingChange.bind(this, 'adsSubdivisionTargeting')}
                 >
                   {
-                    this.getAdsSubdivisions().map((subdivision: Array<String>) => {
+                    this.getAdsSubdivisions().map((subdivision) => {
                       return (
                         <div key={`${subdivision[0]}`} data-value={subdivision[0]}>
                           {`${subdivision[1]}`}
@@ -374,37 +384,38 @@ class AdsBox extends React.Component<Props, State> {
     let adsPerHour = 0
     let adsUIEnabled = false
     let adsIsSupported = false
-    let estimatedPendingRewards = 0
-    let nextPaymentDate = ''
+    let nextPaymentDate = 0
     let adsReceivedThisMonth = 0
+    let earningsThisMonth = 0
+    let earningsLastMonth = 0
 
     const {
       adsData,
       adsHistory,
-      firstLoad,
-      parameters,
-      ui
+      parameters
     } = this.props.rewardsData
-    const { onlyAnonWallet } = ui
 
     if (adsData) {
       adsEnabled = adsData.adsEnabled
       adsPerHour = adsData.adsPerHour
       adsUIEnabled = adsData.adsUIEnabled
       adsIsSupported = adsData.adsIsSupported
-      estimatedPendingRewards = adsData.adsEstimatedPendingRewards || 0
       nextPaymentDate = adsData.adsNextPaymentDate
       adsReceivedThisMonth = adsData.adsReceivedThisMonth || 0
+      earningsThisMonth = adsData.adsEarningsThisMonth || 0
+      earningsLastMonth = adsData.adsEarningsLastMonth || 0
     }
 
     const enabled = adsEnabled && adsIsSupported
     const toggle = !(!adsUIEnabled || !adsIsSupported)
-    const showDisabled = firstLoad !== false || !toggle || !adsEnabled || !adsIsSupported
+    const showDisabled = !toggle || !adsEnabled || !adsIsSupported
 
     const historyEntries = adsHistory || []
     const rows = this.getGroupedAdsHistory(historyEntries, savedOnly)
     const notEmpty = rows && rows.length !== 0
-    const tokenString = getLocale(onlyAnonWallet ? 'points' : 'tokens')
+    const tokenString = getLocale('tokens')
+
+    const estimatedPendingDays = getDaysUntilRewardsPayment(nextPaymentDate)
 
     return (
       <>
@@ -422,16 +433,33 @@ class AdsBox extends React.Component<Props, State> {
           onSettingsClick={this.onSettingsToggle}
           attachedAlert={this.adsNotSupportedAlert(adsIsSupported)}
         >
+          {
+            earningsLastMonth > 0 && estimatedPendingDays &&
+              <ArrivingSoon>
+                <MoneyBagIcon />
+                {
+                  formatMessage(getLocale('pendingRewardsMessage'), [
+                    <span className='amount' key='amount'>
+                      +{earningsLastMonth} BAT
+                    </span>,
+                    estimatedPendingDays
+                  ])
+                }
+              </ArrivingSoon>
+          }
           <List title={getLocale('adsCurrentEarnings')}>
             <Tokens
-              onlyAnonWallet={onlyAnonWallet}
-              value={estimatedPendingRewards.toFixed(3)}
-              converted={utils.convertBalance(estimatedPendingRewards, parameters.rate)}
+              value={earningsThisMonth.toFixed(3)}
+              converted={utils.convertBalance(earningsThisMonth, parameters.rate)}
             />
           </List>
           <List title={getLocale('adsPaymentDate')}>
             <NextContribution>
-              {nextPaymentDate}
+              {
+                nextPaymentDate
+                  ? nextPaymentDateFormatter.format(new Date(nextPaymentDate))
+                  : ''
+              }
             </NextContribution>
           </List>
           <List title={getLocale('adsNotificationsReceived')}>
@@ -456,7 +484,7 @@ class AdsBox extends React.Component<Props, State> {
               adsPerHour={adsPerHour}
               rows={rows}
               hasSavedEntries={this.hasSavedEntries(rows)}
-              totalDays={7}
+              totalDays={30}
           />
           : null
         }

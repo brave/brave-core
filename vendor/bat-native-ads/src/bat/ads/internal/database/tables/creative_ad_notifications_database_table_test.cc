@@ -30,7 +30,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableIntegrationTest,
        GetCreativeAdNotificationsFromCatalogEndpoint) {
   // Arrange
   const URLEndpoints endpoints = {
-      {"/v7/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+      {"/v8/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 

@@ -12,6 +12,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/container_util.h"
 #include "bat/ads/internal/database/database_statement_util.h"
 #include "bat/ads/internal/database/database_table_util.h"
@@ -57,7 +58,7 @@ void CreativeAdNotifications::Save(
   for (const auto& batch : batches) {
     InsertOrUpdate(transaction.get(), batch);
 
-    std::vector<CreativeAdInfo> creative_ads(batch.begin(), batch.end());
+    CreativeAdList creative_ads(batch.begin(), batch.end());
     campaigns_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
     segments_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
     creative_ads_database_table_->InsertOrUpdate(transaction.get(),
@@ -102,6 +103,8 @@ void CreativeAdNotifications::GetForSegments(
       "cam.priority, "
       "ca.conversion, "
       "ca.per_day, "
+      "ca.per_week, "
+      "ca.per_month, "
       "ca.total_max, "
       "ca.split_test_group, "
       "s.segment, "
@@ -151,6 +154,8 @@ void CreativeAdNotifications::GetForSegments(
       DBCommand::RecordBindingType::INT_TYPE,     // priority
       DBCommand::RecordBindingType::BOOL_TYPE,    // conversion
       DBCommand::RecordBindingType::INT_TYPE,     // per_day
+      DBCommand::RecordBindingType::INT_TYPE,     // per_week
+      DBCommand::RecordBindingType::INT_TYPE,     // per_month
       DBCommand::RecordBindingType::INT_TYPE,     // total_max
       DBCommand::RecordBindingType::STRING_TYPE,  // split_test_group
       DBCommand::RecordBindingType::STRING_TYPE,  // segment
@@ -187,6 +192,8 @@ void CreativeAdNotifications::GetAll(
       "cam.priority, "
       "ca.conversion, "
       "ca.per_day, "
+      "ca.per_week, "
+      "ca.per_month, "
       "ca.total_max, "
       "ca.split_test_group, "
       "s.segment, "
@@ -228,6 +235,8 @@ void CreativeAdNotifications::GetAll(
       DBCommand::RecordBindingType::INT_TYPE,     // priority
       DBCommand::RecordBindingType::BOOL_TYPE,    // conversion
       DBCommand::RecordBindingType::INT_TYPE,     // per_day
+      DBCommand::RecordBindingType::INT_TYPE,     // per_week
+      DBCommand::RecordBindingType::INT_TYPE,     // per_month
       DBCommand::RecordBindingType::INT_TYPE,     // total_max
       DBCommand::RecordBindingType::STRING_TYPE,  // split_test_group
       DBCommand::RecordBindingType::STRING_TYPE,  // segment
@@ -264,8 +273,8 @@ void CreativeAdNotifications::Migrate(DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 13: {
-      MigrateToV13(transaction);
+    case 15: {
+      MigrateToV15(transaction);
       break;
     }
 
@@ -396,25 +405,27 @@ CreativeAdNotificationInfo CreativeAdNotifications::GetFromRecord(
   creative_ad_notification.priority = ColumnInt(record, 7);
   creative_ad_notification.conversion = ColumnBool(record, 8);
   creative_ad_notification.per_day = ColumnInt(record, 9);
-  creative_ad_notification.total_max = ColumnInt(record, 10);
-  creative_ad_notification.split_test_group = ColumnString(record, 11);
-  creative_ad_notification.segment = ColumnString(record, 12);
-  creative_ad_notification.geo_targets.push_back(ColumnString(record, 13));
-  creative_ad_notification.target_url = ColumnString(record, 14);
-  creative_ad_notification.title = ColumnString(record, 15);
-  creative_ad_notification.body = ColumnString(record, 16);
-  creative_ad_notification.ptr = ColumnDouble(record, 17);
+  creative_ad_notification.per_week = ColumnInt(record, 10);
+  creative_ad_notification.per_month = ColumnInt(record, 11);
+  creative_ad_notification.total_max = ColumnInt(record, 12);
+  creative_ad_notification.split_test_group = ColumnString(record, 13);
+  creative_ad_notification.segment = ColumnString(record, 14);
+  creative_ad_notification.geo_targets.push_back(ColumnString(record, 15));
+  creative_ad_notification.target_url = ColumnString(record, 16);
+  creative_ad_notification.title = ColumnString(record, 17);
+  creative_ad_notification.body = ColumnString(record, 18);
+  creative_ad_notification.ptr = ColumnDouble(record, 19);
 
   CreativeDaypartInfo daypart;
-  daypart.dow = ColumnString(record, 18);
-  daypart.start_minute = ColumnInt(record, 19);
-  daypart.end_minute = ColumnInt(record, 20);
+  daypart.dow = ColumnString(record, 20);
+  daypart.start_minute = ColumnInt(record, 21);
+  daypart.end_minute = ColumnInt(record, 22);
   creative_ad_notification.dayparts.push_back(daypart);
 
   return creative_ad_notification;
 }
 
-void CreativeAdNotifications::CreateTableV13(DBTransaction* transaction) {
+void CreativeAdNotifications::CreateTableV15(DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
@@ -434,12 +445,12 @@ void CreativeAdNotifications::CreateTableV13(DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
-void CreativeAdNotifications::MigrateToV13(DBTransaction* transaction) {
+void CreativeAdNotifications::MigrateToV15(DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV13(transaction);
+  CreateTableV15(transaction);
 }
 
 }  // namespace table

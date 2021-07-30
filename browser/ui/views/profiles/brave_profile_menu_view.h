@@ -15,9 +15,6 @@ class BraveProfileMenuView : public ProfileMenuView {
   using ProfileMenuView::ProfileMenuView;
   ~BraveProfileMenuView() override = default;
 
-  // Button/link actions.
-  void OnExitProfileButtonClicked() override;
-
   // Helper methods for building the menu.
   void BuildIdentity() override;
   void BuildAutofillButtons() override;

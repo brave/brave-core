@@ -34,5 +34,8 @@
     <message name="IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_DNS_OVER_HTTPS" desc="Select control value for which decentralized DNS resolve method to use">
       DNS over HTTPS
     </message>
+    <message name="IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_ETHEREUM" desc="Select control value for which decentralized DNS resolve method to use">
+      Ethereum
+    </message>
   </if>
 </grit-part>

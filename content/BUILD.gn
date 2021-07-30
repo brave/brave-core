@@ -1,14 +1,3 @@
-source_set("common") {
-  sources = [
-    "common/content_message_generator.cc",
-    "common/content_message_generator.h",
-  ]
-
-  deps = [
-    "//ipc"
-  ]
-}
-
 source_set("browser") {
   sources = [
     "browser/webui/brave_shared_resources_data_source.cc",
@@ -17,8 +6,8 @@ source_set("browser") {
 
   deps = [
     "//base",
-    "//content/public/browser",
     "//brave/ui/webui/resources",
+    "//content/public/browser",
     "//ui/base",
   ]
 }

@@ -1,11 +1,11 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/analyser_node.cc b/third_party/blink/renderer/modules/webaudio/analyser_node.cc
-index 53528e0538baea73f8afce6ec8d14344b741b642..3f2a175e69f0a3dbb8ad717c71e26cd5a5a93baf 100644
+index 5359becd83e4d958f7c77e0ad79979211b4ba00f..ce5648ea0bfdc40b25524ab0482c209972cca039 100644
 --- a/third_party/blink/renderer/modules/webaudio/analyser_node.cc
 +++ b/third_party/blink/renderer/modules/webaudio/analyser_node.cc
-@@ -35,6 +35,7 @@ namespace blink {
- 
- AnalyserHandler::AnalyserHandler(AudioNode& node, float sample_rate)
-     : AudioBasicInspectorHandler(kNodeTypeAnalyser, node, sample_rate) {
+@@ -37,6 +37,7 @@ AnalyserHandler::AnalyserHandler(AudioNode& node, float sample_rate)
+     : AudioBasicInspectorHandler(kNodeTypeAnalyser, node, sample_rate),
+       analyser_(
+           node.context()->GetDeferredTaskHandler().RenderQuantumFrames()) {
 +  BRAVE_ANALYSERHANDLER_CONSTRUCTOR
    channel_count_ = 2;
    AddOutput(1);

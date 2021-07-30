@@ -51,8 +51,6 @@ public class BraveRewardsOnboardingFragment extends Fragment {
 
     private boolean isAdsAvailable;
 
-    private boolean isAnonWallet;
-
     public BraveRewardsOnboardingFragment() {
         // Required empty public constructor
     }
@@ -61,8 +59,6 @@ public class BraveRewardsOnboardingFragment extends Fragment {
     public View onCreateView(
         LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         isAdsAvailable = OnboardingPrefManager.getInstance().isAdsAvailable();
-
-        isAnonWallet = BraveRewardsHelper.isAnonWallet();
 
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_brave_rewards_onboarding, container, false);
@@ -88,7 +84,10 @@ public class BraveRewardsOnboardingFragment extends Fragment {
         btnNext.setText(getResources().getString(R.string.earn_and_give));
         btnSkip.setText(getResources().getString(R.string.skip));
 
-        String braveRewardsText = "<b>" + String.format(getResources().getString(R.string.earn_tokens), isAnonWallet ? getResources().getString(R.string.point) : getResources().getString(R.string.token)) + "</b> " + getResources().getString(R.string.brave_rewards_onboarding_text);
+        String braveRewardsText = "<b>"
+                + String.format(getResources().getString(R.string.earn_tokens),
+                        getResources().getString(R.string.token))
+                + "</b> " + getResources().getString(R.string.brave_rewards_onboarding_text);
         Spanned textToInsert = BraveRewardsHelper.spannedFromHtmlString(braveRewardsText);
         tvText.setText(textToInsert);
         tvText.setMovementMethod(new ScrollingMovementMethod());

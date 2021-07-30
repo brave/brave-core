@@ -51,18 +51,6 @@
     "message": "Podrobnosti",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "Váš zůstatek",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "BAT body",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "můžete v Brave Rewards použít pro zaslání příspěvku vašemu oblíbenému tvůrci obsahu. Body BAT nelze vyměnit za BAT.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "zapnuto ",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "Nárokovaných žetonových grantů",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "Bodové příspěvky získány",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "Zisk z reklam",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Jednorázové příspěvky ",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "vyprší dne",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Tento tvůrce se dosud nepřihlásil k přijímání příspěvků od uživatelů Brave. Veškeré zaslané příspěvky zůstanou ve vaší peněžence, dokud nedojde k ověření.",
+    "message": "Tento program není v současné době nakonfigurován tak, aby přijímal spropitné z vaší peněženky. Veškeré spropitné, které vytvoříte, zůstane ve vaší peněžence nevyřízené a bude se automaticky opakovat po dobu 90 dnů.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Zapněte Ads",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Volný žetonový grant",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Příspěvek volných bodů",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Získali jste odměnu za reklamy!",
@@ -591,17 +567,9 @@
     "message": "Žeton",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "bodů",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Žetonové granty",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Udělení bodů",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Ahoj, $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Abyste mohli vytvořit účet Uphold, musíte mít minimálně 25 BAT. Zkuste to prosím později.\nPokud již máte ověřený účet Uphold, pokračujte v přihlašování.",
-    "description": "Text for login button"
+    "message": "Abyste mohli vytvořit účet Uphold, musíte mít minimálně $amount$ BAT. Pokud již máte ověřený účet Uphold, pokračujte v přihlašování. ",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "Připojeno",
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Kdy dostanete odměny",
+    "message": "Kdy obdržíte odměnu?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "Používáním služby Brave Rewards pomáháte vytvářet z webu lepší místo pro všechny. A to je úžasné!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards v Japonsku přechází na nový systém!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "Ověřit peněženku",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "Další informace",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "Abyste mohli vybrat tokeny, které získáte za prohlížení reklam, je potřeba ověřit vaši peněženku.",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "Své BAP prosím využijte do 13. března. Po tomto datu dojde k jejich zrušení.",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "Později",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Ověřit peněženku",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Peněženka bitFlyer je služba spravovaná společností bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Ověření peněženky a její propojení s účtem bitFlyer vám umožní snáze ukládat a spravovat tokeny, které jste získali prostřednictvím Brave Rewards",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Zjistěte více$link_end$ o tom, jak propojit váš prohlížeč Brave s vaším účtem bitFlyer.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

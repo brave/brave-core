@@ -14,9 +14,9 @@
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/user_data/confirmation_build_channel_dto_user_data.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/user_data/confirmation_conversion_dto_user_data.h"
-#include "bat/ads/internal/tokens/redeem_unblinded_token/user_data/confirmation_experiment_dto_user_data.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/user_data/confirmation_locale_dto_user_data.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/user_data/confirmation_platform_dto_user_data.h"
+#include "bat/ads/internal/tokens/redeem_unblinded_token/user_data/confirmation_studies_dto_user_data.h"
 
 namespace ads {
 namespace dto {
@@ -36,8 +36,8 @@ void Build(const std::string& creative_instance_id,
   const base::DictionaryValue locale_user_data = GetLocale();
   user_data.MergeDictionary(&locale_user_data);
 
-  const base::DictionaryValue experiment_user_data = GetExperiment();
-  user_data.MergeDictionary(&experiment_user_data);
+  const base::DictionaryValue studies_user_data = GetStudies();
+  user_data.MergeDictionary(&studies_user_data);
 
   if (confirmation_type != ConfirmationType::kConversion) {
     callback(user_data.Clone());
@@ -70,7 +70,7 @@ void Build(const std::string& creative_instance_id,
         const base::DictionaryValue conversion_user_data =
             GetConversion(conversion_queue_item);
 
-        base::Optional<base::Value> user_data_as_value =
+        absl::optional<base::Value> user_data_as_value =
             base::JSONReader::Read(user_data_as_string);
         if (!user_data_as_value || !user_data_as_value->is_dict()) {
           return;

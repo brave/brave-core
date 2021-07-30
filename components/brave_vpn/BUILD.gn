@@ -1,0 +1,96 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/buildflags/buildflags.gni")
+
+static_library("brave_vpn") {
+  sources = [
+    "brave_vpn_connection_info.cc",
+    "brave_vpn_connection_info.h",
+    "brave_vpn_connection_manager.cc",
+    "brave_vpn_connection_manager.h",
+    "brave_vpn_service.cc",
+    "brave_vpn_service.h",
+    "features.cc",
+    "features.h",
+  ]
+
+  deps = [
+    ":brave_vpn_internal",
+    "//base",
+    "//brave/components/api_request_helper:api_request_helper",
+    "//components/keyed_service/core",
+    "//net",
+    "//services/network/public/cpp",
+    "//third_party/abseil-cpp:absl",
+    "//url",
+  ]
+
+  libs = []
+
+  if (is_win) {
+    sources += [
+      "brave_vpn_connection_manager_win.cc",
+      "brave_vpn_connection_manager_win.h",
+    ]
+
+    libs += [ "rasapi32.lib" ]
+  }
+
+  if (is_mac) {
+    sources += [
+      "brave_vpn_connection_manager_mac.h",
+      "brave_vpn_connection_manager_mac.mm",
+    ]
+
+    frameworks = [ "NetworkExtension.framework" ]
+    configs += [ "//build/config/compiler:enable_arc" ]
+  }
+}
+
+source_set("brave_vpn_internal") {
+  visibility = [
+    ":brave_vpn",
+    ":vpntool",
+  ]
+
+  sources = []
+  deps = [ "//base" ]
+
+  if (is_win) {
+    sources += [
+      "utils_win.cc",
+      "utils_win.h",
+    ]
+  }
+}
+
+source_set("unit_tests") {
+  if (enable_brave_vpn) {
+    testonly = true
+
+    sources = [ "brave_vpn_unittest.cc" ]
+
+    deps = [
+      ":brave_vpn",
+      "//base",
+      "//content/test:test_support",
+      "//testing/gtest",
+    ]
+  }
+}
+
+executable("vpntool") {
+  sources = []
+  deps = [
+    ":brave_vpn",
+    ":brave_vpn_internal",
+    "//base",
+  ]
+
+  if (is_win) {
+    sources += [ "winvpntool.cc" ]
+  }
+}

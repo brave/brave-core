@@ -12,10 +12,11 @@
 #include "base/files/file_util.h"
 #include "base/mac/foundation_util.h"
 #include "base/task/post_task.h"
-#include "base/task/task_traits.h"
+#include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/common/url_constants.h"
 #include "chrome/browser/importer/external_process_importer_host.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/tab_modal_confirm_dialog.h"
@@ -46,10 +47,10 @@ class FullDiskAccessConfirmDialogDelegate
 
  private:
   // TabModalConfirmDialogDelegate overrides:
-  base::string16 GetTitle() override;
-  base::string16 GetDialogMessage() override;
-  base::string16 GetLinkText() const override;
-  base::string16 GetAcceptButtonTitle() override;
+  std::u16string GetTitle() override;
+  std::u16string GetDialogMessage() override;
+  std::u16string GetLinkText() const override;
+  std::u16string GetAcceptButtonTitle() override;
   void OnAccepted() override;
   void OnLinkClicked(WindowOpenDisposition disposition) override;
 
@@ -65,19 +66,19 @@ FullDiskAccessConfirmDialogDelegate::FullDiskAccessConfirmDialogDelegate(
 FullDiskAccessConfirmDialogDelegate::
     ~FullDiskAccessConfirmDialogDelegate() = default;
 
-base::string16 FullDiskAccessConfirmDialogDelegate::GetTitle() {
+std::u16string FullDiskAccessConfirmDialogDelegate::GetTitle() {
   return l10n_util::GetStringUTF16(IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_TITLE);
 }
 
-base::string16 FullDiskAccessConfirmDialogDelegate::GetDialogMessage() {
+std::u16string FullDiskAccessConfirmDialogDelegate::GetDialogMessage() {
   return l10n_util::GetStringUTF16(IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_MESSAGE);
 }
 
-base::string16 FullDiskAccessConfirmDialogDelegate::GetLinkText() const {
+std::u16string FullDiskAccessConfirmDialogDelegate::GetLinkText() const {
   return l10n_util::GetStringUTF16(IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_LINK_TEXT);
 }
 
-base::string16 FullDiskAccessConfirmDialogDelegate::GetAcceptButtonTitle() {
+std::u16string FullDiskAccessConfirmDialogDelegate::GetAcceptButtonTitle() {
   return l10n_util::GetStringUTF16(
       IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_OPEN_PREFS_BUTTON_TEXT);
 }
@@ -143,12 +144,12 @@ void BraveImportDataHandler::StartImport(
   if (source_profile.importer_type == importer::TYPE_SAFARI) {
     // Start import if Brave has full disk access permission.
     // If not, show dialog that has infos about that permission.
-    base::PostTaskAndReplyWithResult(
-        FROM_HERE, {base::ThreadPool(), base::MayBlock()},
+    base::ThreadPool::PostTaskAndReplyWithResult(
+        FROM_HERE, {base::MayBlock()},
         base::BindOnce(&HasProperDiskAccessPermission, imported_items),
         base::BindOnce(&BraveImportDataHandler::OnGetDiskAccessPermission,
-                       weak_factory_.GetWeakPtr(),
-                       source_profile, imported_items));
+                       weak_factory_.GetWeakPtr(), source_profile,
+                       imported_items));
     return;
   }
 

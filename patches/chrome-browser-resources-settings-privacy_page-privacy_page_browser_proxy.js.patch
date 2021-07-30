@@ -1,22 +1,22 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.js b/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.js
-index a839289280f3947fb5ac754de1cc0c245e55872c..cfd9430e6711b8b635a1659618af079f90d8524e 100644
+index 5675d8df7f1ce21d1fd429fc4da8ce8cdfdd0d33..fd33e82db3a6548189fab4b1344d9a89efebd73b 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.js
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.js
-@@ -48,7 +48,7 @@ cr.define('settings', function() {
+@@ -47,7 +47,7 @@ export let SecureDnsSetting;
  
-   /** @interface */
-   /* #export */ class PrivacyPageBrowserProxy {
--    // <if expr="_google_chrome and not chromeos">
-+    // <if expr="_chromium and not chromeos">
-     /** @return {!Promise<!settings.MetricsReporting>} */
-     getMetricsReporting() {}
+ /** @interface */
+ export class PrivacyPageBrowserProxy {
+-  // <if expr="_google_chrome and not chromeos">
++  // <if expr="_chromium and not chromeos">
+   /** @return {!Promise<!MetricsReporting>} */
+   getMetricsReporting() {}
  
-@@ -99,7 +99,7 @@ cr.define('settings', function() {
-    * @implements {settings.PrivacyPageBrowserProxy}
-    */
-   /* #export */ class PrivacyPageBrowserProxyImpl {
--    // <if expr="_google_chrome and not chromeos">
-+    // <if expr="_chromium and not chromeos">
-     /** @override */
-     getMetricsReporting() {
-       return cr.sendWithPromise('getMetricsReporting');
+@@ -98,7 +98,7 @@ export class PrivacyPageBrowserProxy {
+  * @implements {PrivacyPageBrowserProxy}
+  */
+ export class PrivacyPageBrowserProxyImpl {
+-  // <if expr="_google_chrome and not chromeos">
++  // <if expr="_chromium and not chromeos">
+   /** @override */
+   getMetricsReporting() {
+     return sendWithPromise('getMetricsReporting');

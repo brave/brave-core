@@ -45,6 +45,7 @@ type::Result GetRecoverWallet::CheckStatusCode(const int status_code) {
   }
 
   if (status_code != net::HTTP_OK) {
+    BLOG(0, "Unexpected HTTP status: " << status_code);
     return type::Result::LEDGER_ERROR;
   }
 
@@ -57,7 +58,7 @@ type::Result GetRecoverWallet::ParseBody(
     bool* legacy_wallet) {
   DCHECK(payment_id && legacy_wallet);
 
-  base::Optional<base::Value> value = base::JSONReader::Read(body);
+  absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     return type::Result::LEDGER_ERROR;

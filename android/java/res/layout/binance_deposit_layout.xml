@@ -5,8 +5,10 @@
      You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MergeRootFrame"
     android:id="@+id/binance_deposit_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -65,7 +67,8 @@
 			        android:layout_gravity="center_vertical"
 			        android:contentDescription="@null"
 			        android:padding="8dp"
-			        android:src="@drawable/qrcode_dark"/>
+			        app:srcCompat="@drawable/ic_qr_code"
+			        app:tint="#ffffff"/>
 
 	        </LinearLayout>
 
@@ -177,4 +180,4 @@
 
     </androidx.cardview.widget.CardView>
 
-</merge>
+</FrameLayout>

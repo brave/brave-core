@@ -1,0 +1,5 @@
+import("//build/config/android/rules.gni")
+
+generate_jni("jni_headers") {
+  sources = [ "java/src/org/chromium/components/permissions/BravePermissionDialogDelegate.java" ]
+}

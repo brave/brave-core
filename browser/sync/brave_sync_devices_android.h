@@ -9,7 +9,7 @@
 #include <jni.h>
 
 #include "base/android/jni_weak_ref.h"
-#include "base/scoped_observer.h"
+#include "base/scoped_observation.h"
 #include "base/values.h"
 #include "chrome/browser/sync/profile_sync_service_android.h"
 #include "components/sync_device_info/device_info_tracker.h"
@@ -42,7 +42,8 @@ class BraveSyncDevicesAndroid : public syncer::DeviceInfoTracker::Observer {
 
   syncer::BraveProfileSyncService* GetSyncService() const;
 
-  ScopedObserver<syncer::DeviceInfoTracker, syncer::DeviceInfoTracker::Observer>
+  base::ScopedObservation<syncer::DeviceInfoTracker,
+                          syncer::DeviceInfoTracker::Observer>
       device_info_tracker_observer_{this};
 
   JavaObjectWeakGlobalRef weak_java_brave_sync_worker_;

@@ -171,17 +171,13 @@
     "message": "Cambiar los escudos globales por defecto",
     "description": "Message for the button action linking to the settings page"
   },
-  "addBlockElement": {
-    "message": "Bloquear elemento vía selector",
-    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  "manageCustomFilters": {
+    "message": "Gestionar filtros personalizados",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
-  "resetSiteFilterSettings": {
-    "message": "Borra las reglas CSS para este sitio web",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Borrar las reglas CSS para todas los sitios web",
-    "description": "Message for context menu that resets all cosmetic filters"
+  "elementPickerMode": {
+    "message": "Bloquear elemento",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
     "message": "Vista avanzada",

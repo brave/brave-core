@@ -18,6 +18,15 @@ namespace component_updater {
 
 void ComponentInstaller::Register(ComponentUpdateService* cus,
                                   base::OnceClosure callback) {
+  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+  DCHECK(cus);
+  Register(base::BindOnce(&ComponentUpdateService::RegisterComponent,
+                          base::Unretained(cus)),
+           std::move(callback));
+}
+
+void ComponentInstaller::Register(RegisterCallback register_callback,
+                                  base::OnceClosure callback) {
   static std::string disallowed_components[] = {
     "bklopemakmnopmghhmccadeonafabnal",  // Legacy TLS Deprecation Config
     "cmahhnpholdijhjokonmfdjbfmklppij",  // Federated Learning of Cohorts
@@ -25,6 +34,8 @@ void ComponentInstaller::Register(ComponentUpdateService* cus,
     "gcmjkmgdlgnkkcocmoeiminaijmmjnii",  // Subresource Filter Rules
     "llkgjffcdpffmhiakmfcdcblohccpfmo",  // Origin Trials
     "ojhpjlocmbogdgmfpkhlaaeamibhnphh",  // Zxcvbn Data Dictionaries
+    "gonpemdgkjcecdgbnaabipppbmgfggbe",  // First Party Sets
+    "dhlpobdgcjafebgbbhjdnapejmpkgiie",  // Desktop Sharing Hub
 #if defined(OS_ANDROID)
     "lmelglejhemejginpboagddgdfbepgmp",  // Optimization Hints
     "obedbbhbpmojnkanicioggnmelmoomoc"   // OnDeviceHeadSuggest
@@ -41,7 +52,7 @@ void ComponentInstaller::Register(ComponentUpdateService* cus,
       return;
     }
   }
-  Register_ChromiumImpl(cus, std::move(callback));
+  Register_ChromiumImpl(std::move(register_callback), std::move(callback));
 }
 
 }  // namespace component_updater

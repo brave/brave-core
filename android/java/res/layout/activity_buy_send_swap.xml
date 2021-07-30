@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wallet_bg"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginBottom="16dp"
+            android:background="@color/wallet_toolbar_bg_color"
+            android:translationZ="10dp"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    app:srcCompat="@drawable/ic_eth_24"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="@null" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/account_name_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/wallet_text_color"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/account_value_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/wallet_secondary_text_color"
+                        android:textSize="12sp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/asset_network_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/wallet_text_color"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/mainnet"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                    android:background="@drawable/rounded_white_holo_bg"
+                    app:drawableEndCompat="@drawable/ic_circle_down"
+                    android:drawablePadding="8dp"
+                    android:layout_marginEnd="20dp"/>
+
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/rounded_filled_bg_radius_12"
+            android:orientation="horizontal"
+            android:baselineAligned="false">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/from"
+                    android:textColor="@color/wallet_secondary_text_color"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/from_value_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/wallet_text_color"
+                    android:textSize="20sp"/>
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/per_25_radiobutton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="4dp"
+                        android:padding="2dp"
+                        android:background="@drawable/wallet_radio_button_selector"
+                        android:gravity="center"
+                        android:textColor="@color/crypto_wallet_radiobutton_color_selector"
+                        android:checked="true"
+                        android:button="@null"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:text="@string/percentage_25" />
+
+                    <RadioButton
+                        android:id="@+id/per_50_radiobutton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:button="@null"
+                        android:layout_margin="4dp"
+                        android:padding="2dp"
+                        android:background="@drawable/wallet_radio_button_selector"
+                        android:gravity="center"
+                        android:textColor="@color/crypto_wallet_radiobutton_color_selector"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:text="@string/percentage_50" />
+
+                    <RadioButton
+                        android:id="@+id/per_75_radiobutton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:button="@null"
+                        android:layout_margin="4dp"
+                        android:padding="2dp"
+                        android:background="@drawable/wallet_radio_button_selector"
+                        android:gravity="center"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/crypto_wallet_radiobutton_color_selector"
+                        android:text="@string/percentage_75" />
+
+                    <RadioButton
+                        android:id="@+id/all_radiobutton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:button="@null"
+                        android:layout_margin="4dp"
+                        android:padding="2dp"
+                        android:background="@drawable/wallet_radio_button_selector"
+                        android:gravity="center"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/crypto_wallet_radiobutton_color_selector"
+                        android:text="@string/all" />
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/from_balance_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="@color/wallet_secondary_text_color"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/from_asset_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/wallet_text_color"
+                    android:textSize="20sp"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                    android:drawablePadding="8dp"
+                    app:drawableStartCompat="@drawable/ic_eth_24"
+                    app:drawableEndCompat="@drawable/ic_carat_down" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:layout_gravity="center_horizontal"
+            app:srcCompat="@drawable/ic_arrow_downward"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_filled_bg_radius_12"
+            android:orientation="horizontal"
+            android:baselineAligned="false">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/to_estimate"
+                    android:textColor="@color/wallet_secondary_text_color"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/to_value_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/wallet_text_color"
+                    android:textSize="20sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/to_balance_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="@color/wallet_secondary_text_color"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/to_asset_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/wallet_text_color"
+                    android:textSize="20sp"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                    android:drawablePadding="8dp"
+                    app:drawableStartCompat="@drawable/ic_eth_24"
+                    app:drawableEndCompat="@drawable/ic_carat_down" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/buy_send_swap_type_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/wallet_swap_radio_group_bg"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/market_radio"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/wallet_swap_radio_button_selector"
+                android:gravity="center"
+                android:textColor="@color/wallet_text_color"
+                android:button="@null"
+                android:checked="true"
+                android:textSize="16sp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="@string/market" />
+
+            <RadioButton
+                android:id="@+id/limit_radio"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:button="@null"
+                android:layout_height="wrap_content"
+                android:background="@drawable/wallet_swap_radio_button_selector"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:textColor="@color/wallet_text_color"
+                android:text="@string/limit" />
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/market_price_in"
+                    android:textColor="@color/wallet_secondary_text_color"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/market_price_value_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/wallet_text_color"
+                    android:textSize="20sp"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/ic_refresh"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_filled_bg_radius_12"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/slipping_tolerance"
+                android:textColor="@color/wallet_secondary_text_color"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/slipping_tolerance_value_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:textColor="@color/wallet_text_color"
+                android:drawablePadding="4dp"
+                android:textSize="12sp"
+                app:drawableEndCompat="@drawable/ic_carat_down" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_swap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:background="@drawable/crypto_wallet_blue_button"
+            android:text="@string/swap"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@android:color/white"
+            style="?android:attr/borderlessButtonStyle"/>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

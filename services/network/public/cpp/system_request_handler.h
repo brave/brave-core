@@ -18,7 +18,7 @@ namespace network {
 
 class COMPONENT_EXPORT(NETWORK_CPP) SystemRequestHandler {
  public:
-  typedef base::Callback<network::ResourceRequest(
+  typedef base::RepeatingCallback<network::ResourceRequest(
       const network::ResourceRequest&)>
       OnBeforeSystemRequestCallback;
 

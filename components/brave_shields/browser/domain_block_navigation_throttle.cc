@@ -14,10 +14,12 @@
 #include "base/threading/thread_task_runner_handle.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/domain_block_controller_client.h"
 #include "brave/components/brave_shields/browser/domain_block_page.h"
 #include "brave/components/brave_shields/browser/domain_block_tab_storage.h"
 #include "brave/components/brave_shields/common/features.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/security_interstitial_tab_helper.h"
 #include "components/user_prefs/user_prefs.h"
@@ -54,6 +56,7 @@ DomainBlockNavigationThrottle::MaybeCreateThrottleFor(
     content::NavigationHandle* navigation_handle,
     AdBlockService* ad_block_service,
     AdBlockCustomFiltersService* ad_block_custom_filters_service,
+    HostContentSettingsMap* content_settings,
     const std::string& locale) {
   if (!ad_block_service || !ad_block_custom_filters_service)
     return nullptr;
@@ -61,17 +64,19 @@ DomainBlockNavigationThrottle::MaybeCreateThrottleFor(
     return nullptr;
   return std::make_unique<DomainBlockNavigationThrottle>(
       navigation_handle, ad_block_service, ad_block_custom_filters_service,
-      locale);
+      content_settings, locale);
 }
 
 DomainBlockNavigationThrottle::DomainBlockNavigationThrottle(
     content::NavigationHandle* navigation_handle,
     AdBlockService* ad_block_service,
     AdBlockCustomFiltersService* ad_block_custom_filters_service,
+    HostContentSettingsMap* content_settings,
     const std::string& locale)
     : content::NavigationThrottle(navigation_handle),
       ad_block_service_(ad_block_service),
       ad_block_custom_filters_service_(ad_block_custom_filters_service),
+      content_settings_(content_settings),
       locale_(locale) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 }
@@ -92,9 +97,10 @@ DomainBlockNavigationThrottle::WillStartRequest() {
   if (!handle->IsInMainFrame())
     return content::NavigationThrottle::PROCEED;
 
-  // Don't bother checking non-HTTP(S) pages
   GURL request_url = handle->GetURL();
-  if (!request_url.SchemeIsHTTPOrHTTPS())
+
+  // Maybe don't block based on Brave Shields settings
+  if (!brave_shields::ShouldDoDomainBlocking(content_settings_, request_url))
     return content::NavigationThrottle::PROCEED;
 
   // If user has just chosen to proceed on our interstitial, don't show
@@ -123,6 +129,17 @@ DomainBlockNavigationThrottle::WillStartRequest() {
 content::NavigationThrottle::ThrottleCheckResult
 DomainBlockNavigationThrottle::WillRedirectRequest() {
   return WillStartRequest();
+}
+
+content::NavigationThrottle::ThrottleCheckResult
+DomainBlockNavigationThrottle::WillProcessResponse() {
+  // If there is an DomainBlockTabStorage associated to |web_contents_|, clear
+  // the IsProceeding flag.
+  DomainBlockTabStorage* tab_storage = DomainBlockTabStorage::FromWebContents(
+      navigation_handle()->GetWebContents());
+  if (tab_storage)
+    tab_storage->SetIsProceeding(false);
+  return content::NavigationThrottle::PROCEED;
 }
 
 void DomainBlockNavigationThrottle::OnShouldBlockDomain(

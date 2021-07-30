@@ -1,0 +1,27 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/speedreader/buildflags.gni")
+
+brave_browser_speedreader_sources = []
+brave_browser_speedreader_deps = []
+
+if (enable_speedreader) {
+  brave_browser_speedreader_sources += [
+    "//brave/browser/speedreader/speedreader_service_factory.cc",
+    "//brave/browser/speedreader/speedreader_service_factory.h",
+    "//brave/browser/speedreader/speedreader_tab_helper.cc",
+    "//brave/browser/speedreader/speedreader_tab_helper.h",
+  ]
+
+  brave_browser_speedreader_deps += [
+    "//base",
+    "//brave/components/speedreader",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//content/public/browser",
+  ]
+}

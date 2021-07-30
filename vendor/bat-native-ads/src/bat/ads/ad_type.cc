@@ -17,6 +17,7 @@ const char kUndefinedType[] = "";
 const char kAdNotificationType[] = "ad_notification";
 const char kNewTabPageAdType[] = "new_tab_page_ad";
 const char kPromotedContentAdType[] = "promoted_content_ad";
+const char kInlineContentAdType[] = "inline_content_ad";
 
 }  // namespace
 
@@ -29,8 +30,39 @@ AdType::AdType(const std::string& value) {
     value_ = kNewTabPageAd;
   } else if (value == kPromotedContentAdType) {
     value_ = kPromotedContentAd;
+  } else if (value == kInlineContentAdType) {
+    value_ = kInlineContentAd;
   } else {
     NOTREACHED();
+  }
+}
+
+AdType::AdType(const mojom::BraveAdsAdType value) {
+  switch (value) {
+    case mojom::BraveAdsAdType::kUndefined: {
+      value_ = kUndefined;
+      break;
+    }
+
+    case mojom::BraveAdsAdType::kAdNotification: {
+      value_ = kAdNotification;
+      break;
+    }
+
+    case mojom::BraveAdsAdType::kNewTabPageAd: {
+      value_ = kNewTabPageAd;
+      break;
+    }
+
+    case mojom::BraveAdsAdType::kPromotedContentAd: {
+      value_ = kPromotedContentAd;
+      break;
+    }
+
+    case mojom::BraveAdsAdType::kInlineContentAd: {
+      value_ = kInlineContentAd;
+      break;
+    }
   }
 }
 
@@ -39,6 +71,10 @@ AdType::Value AdType::value() const {
 }
 
 AdType::operator std::string() const {
+  return ToString();
+}
+
+std::string AdType::ToString() const {
   switch (value_) {
     case kUndefined: {
       return kUndefinedType;
@@ -54,6 +90,10 @@ AdType::operator std::string() const {
 
     case kPromotedContentAd: {
       return kPromotedContentAdType;
+    }
+
+    case kInlineContentAd: {
+      return kInlineContentAdType;
     }
   }
 }

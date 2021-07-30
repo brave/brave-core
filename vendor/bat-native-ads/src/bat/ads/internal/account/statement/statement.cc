@@ -23,9 +23,6 @@ StatementInfo Statement::Get(const int64_t from_timestamp,
 
   StatementInfo statement;
 
-  statement.estimated_pending_rewards =
-      ad_rewards_->GetEstimatedPendingRewards();
-
   statement.next_payment_date = ad_rewards_->GetNextPaymentDate();
 
   statement.ads_received_this_month = GetAdsReceivedThisMonth();
@@ -34,7 +31,7 @@ StatementInfo Statement::Get(const int64_t from_timestamp,
 
   statement.earnings_last_month = GetEarningsForLastMonth();
 
-  statement.transactions =
+  statement.cleared_transactions =
       transactions::GetCleared(from_timestamp, to_timestamp);
 
   statement.uncleared_transactions = transactions::GetUncleared();

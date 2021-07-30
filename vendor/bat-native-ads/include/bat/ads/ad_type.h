@@ -8,11 +8,19 @@
 
 #include <string>
 
+#include "bat/ads/public/interfaces/ads.mojom.h"
+
 namespace ads {
 
 class AdType {
  public:
-  enum Value { kUndefined, kAdNotification, kNewTabPageAd, kPromotedContentAd };
+  enum Value {
+    kUndefined,
+    kAdNotification,
+    kNewTabPageAd,
+    kPromotedContentAd,
+    kInlineContentAd
+  };
 
   AdType() = default;
 
@@ -21,9 +29,12 @@ class AdType {
       : value_(value) {}
 
   explicit AdType(const std::string& value);
+  explicit AdType(const mojom::BraveAdsAdType value);
 
   Value value() const;
+
   operator std::string() const;
+  std::string ToString() const;
 
   bool operator==(const AdType& rhs) const;
   bool operator!=(const AdType& rhs) const;

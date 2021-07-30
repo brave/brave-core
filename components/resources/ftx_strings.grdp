@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_FTX_MORE_MARKETS_LINK" desc="Link text to visit FTX.com or FTX.us to see more cryptocurrency markets">
+    More markets on <ph name="SITE_NAME">$1<ex>ftx.com</ex></ph>
+  </message>
+  <message name="IDS_FTX_WIDGET_DESCRIPTION" desc="Description of what the FTX cryptocurrency feature can do.">
+    View markets and trade crypto on FTX
+  </message>
+  <message name="IDS_FTX_MARKETS" desc="Menu title for cryptocurrency markets">
+    Markets
+  </message>
+  <message name="IDS_FTX_CONVERT" desc="Menu title for cryptocurrency convert tool">
+    Convert
+  </message>
+  <message name="IDS_FTX_SUMMARY" desc="Menu title for cryptocurrency balance summary">
+    Summary
+  </message>
+  <message name="IDS_FTX_INTRO" desc="Introduction to FTX cryptocurrency tool">
+    Connect FTX account to view account balance, explore futures markets, &amp; convert crypto.
+  </message>
+  <message name="IDS_FTX_VIEW_MARKETS" desc="Button title to see cryptocurrency markets">
+    View Future Markets
+  </message>
+  <message name="IDS_FTX_CONNECT" desc="Button title to connect FTX cryptocurrency account">
+    Connect Account
+  </message>
+  <message name="IDS_FTX_GRAPH_LABEL" desc="Graph label">
+    24 hour price history
+  </message>
+  <message name="IDS_FTX_VOLUME_LABEL" desc="Currency volume label">
+    24 hour volume
+  </message>
+  <message name="IDS_FTX_CONVERSION_PREVIEW_LABEL" desc="Command to preview a cryptocurrency conversion">
+    Preview Conversion
+  </message>
+  <message name="IDS_FTX_CONVERSION_PREVIEW_TITLE" desc="Title to confirm a cryptocurrency conversion">
+    Confirm Conversion
+  </message>
+  <message name="IDS_FTX_CONVERSION_QUANTITY_LABEL" desc="Label for quantity of cryptocurrency being sold">
+    Selling
+  </message>
+  <message name="IDS_FTX_CONVERSION_PRICE_LABEL" desc="Label for price of a cryptocurrency transaction">
+    Price
+  </message>
+  <message name="IDS_FTX_CONVERSION_PROCEEDS_LABEL" desc="Label for the amount of cryptocurrency received for a transaction">
+    Proceeds
+  </message>
+  <message name="IDS_FTX_CONVERSION_SUBMITTING_LABEL" desc="Label that the cryptocurrency transaction is being submitted">
+    Submitting…
+  </message>
+  <message name="IDS_FTX_CONVERSION_CONFIRM_LABEL" desc="Button label to confirm, with countdown in seconds to automatically cancel">
+    Confirm (<ph name="NUMBER_OF_SECONDS_LEFT">$1<ex>45</ex></ph>s)
+  </message>
+  <message name="IDS_FTX_CONVERSION_CANCEL_LABEL" desc="Label to cancel transaction">
+    Cancel
+  </message>
+  <message name="IDS_FTX_CONVERSION_SUCCESS_TITLE" desc="Label for successful transaction">
+    Conversion Successful!
+  </message>
+  <message name="IDS_FTX_CONVERSION_DONE_LABEL" desc="">
+    Done
+  </message>
+  <message name="IDS_FTX_CONVERSION_BALANCE_NEEDED" desc="">
+    You need a balance in at least one currency in order to perform a conversion.
+  </message>
+  <message name="IDS_FTX_CONVERSION_AMOUNT_AVAILABLE" desc="">
+    Available <ph name="QUANTITY">$1<ex>2.4</ex></ph> <ph name="CURRENCY_NAME">$2<ex>USD</ex></ph>
+  </message>
+  <message name="IDS_FTX_SUMMARY_BLUR_LABEL" desc="">
+    Hide your balances from display
+  </message>
+  <message name="IDS_FTX_SUMMARY_REVEAL_LABEL" desc="">
+    Reveal your balances on screen
+  </message>
+  <message name="IDS_FTX_SUMMARY_NO_BALANCE" desc="">
+    You do not have any balances in your account. Visit FTX to purchase some.
+  </message>
+</grit-part>

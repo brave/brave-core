@@ -1,0 +1,52 @@
+import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/utility/importer/sources.gni")
+
+brave_utility_sources = [
+  "//brave/utility/brave_content_utility_client.cc",
+  "//brave/utility/brave_content_utility_client.h",
+]
+brave_utility_sources += brave_utility_importer_sources
+
+brave_utility_deps = [
+  "//brave/components/brave_ads/browser/buildflags",
+  "//brave/components/brave_rewards/browser/buildflags",
+  "//brave/components/ipfs/buildflags",
+  "//brave/components/tor/buildflags",
+  "//mojo/public/cpp/bindings",
+]
+
+brave_utility_deps += brave_utility_importer_deps
+
+if (ipfs_enabled) {
+  brave_utility_deps += [
+    "//brave/components/services/ipfs",
+    "//brave/components/services/ipfs/public/mojom",
+  ]
+}
+
+if (enable_tor) {
+  brave_utility_deps += [
+    "//brave/components/services/tor",
+    "//brave/components/services/tor/public/interfaces",
+  ]
+}
+
+if (brave_rewards_enabled) {
+  brave_utility_deps += [
+    "//brave/components/services/bat_ledger:lib",
+    "//brave/components/services/bat_ledger/public/interfaces",
+  ]
+}
+
+if (brave_ads_enabled) {
+  brave_utility_deps += [
+    "//brave/components/services/bat_ads:lib",
+    "//brave/components/services/bat_ads/public/interfaces",
+  ]
+}
+
+brave_utility_public_deps = []
+brave_utility_public_deps += brave_utility_importer_public_deps

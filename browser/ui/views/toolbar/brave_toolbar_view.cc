@@ -10,12 +10,10 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "base/feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
-#include "brave/browser/ui/views/toolbar/speedreader_button.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/speedreader/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/defaults.h"
@@ -30,9 +28,9 @@
 #include "ui/base/window_open_disposition.h"
 #include "ui/events/event.h"
 
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/components/speedreader/features.h"
-#include "brave/components/speedreader/speedreader_pref_names.h"
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/browser/ui/views/toolbar/wallet_button.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #endif
 
 namespace {
@@ -106,7 +104,7 @@ bool IsAvatarButtonHideable(Profile* profile) {
 }  // namespace
 
 BraveToolbarView::BraveToolbarView(Browser* browser, BrowserView* browser_view)
-    : ToolbarView(browser, browser_view), profile_observer_(this) {}
+    : ToolbarView(browser, browser_view) {}
 
 BraveToolbarView::~BraveToolbarView() {}
 
@@ -123,19 +121,19 @@ void BraveToolbarView::Init() {
 
   // Track changes in profile count
   if (IsAvatarButtonHideable(profile)) {
-    profile_observer_.Add(
+    profile_observer_.Observe(
         &g_browser_process->profile_manager()->GetProfileAttributesStorage());
   }
   // track changes in bookmarks enabled setting
   edit_bookmarks_enabled_.Init(
       bookmarks::prefs::kEditBookmarksEnabled, profile->GetPrefs(),
-      base::Bind(&BraveToolbarView::OnEditBookmarksEnabledChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(&BraveToolbarView::OnEditBookmarksEnabledChanged,
+                          base::Unretained(this)));
   // track changes in wide locationbar setting
   location_bar_is_wide_.Init(
       kLocationBarIsWide, profile->GetPrefs(),
-      base::Bind(&BraveToolbarView::OnLocationBarIsWideChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(&BraveToolbarView::OnLocationBarIsWideChanged,
+                          base::Unretained(this)));
 
   const auto callback = [](Browser* browser, int command,
                            const ui::Event& event) {
@@ -151,19 +149,17 @@ void BraveToolbarView::Init() {
   AddChildViewAt(bookmark_, GetIndexOf(location_bar_));
   bookmark_->UpdateImageAndText();
 
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-  // Speedreader.
-  if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
-    speedreader_ = new SpeedreaderButton(
-        base::BindRepeating(callback, browser_, IDC_TOGGLE_SPEEDREADER),
-        profile->GetPrefs());
-    speedreader_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
-                                           ui::EF_MIDDLE_MOUSE_BUTTON);
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  if (brave_wallet::IsNativeWalletEnabled()) {
+    wallet_ =
+        new WalletButton(GetAppMenuButton(), profile, profile->GetPrefs());
+    wallet_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
+                                      ui::EF_MIDDLE_MOUSE_BUTTON);
   }
 
-  if (speedreader_) {
-    AddChildViewAt(speedreader_, GetIndexOf(location_bar_));
-    speedreader_->UpdateImageAndText();
+  if (wallet_) {
+    AddChildViewAt(wallet_, GetIndexOf(GetAppMenuButton()) - 1);
+    wallet_->UpdateImageAndText();
   }
 #endif
 
@@ -190,8 +186,8 @@ void BraveToolbarView::OnThemeChanged() {
 
   if (display_mode_ == DisplayMode::NORMAL && bookmark_)
     bookmark_->UpdateImageAndText();
-  if (display_mode_ == DisplayMode::NORMAL && speedreader_)
-    speedreader_->UpdateImageAndText();
+  if (display_mode_ == DisplayMode::NORMAL && wallet_)
+    wallet_->UpdateImageAndText();
 }
 
 void BraveToolbarView::OnProfileAdded(const base::FilePath& profile_path) {
@@ -199,7 +195,7 @@ void BraveToolbarView::OnProfileAdded(const base::FilePath& profile_path) {
 }
 
 void BraveToolbarView::OnProfileWasRemoved(const base::FilePath& profile_path,
-                                           const base::string16& profile_name) {
+                                           const std::u16string& profile_name) {
   Update(nullptr);
 }
 
@@ -207,8 +203,8 @@ void BraveToolbarView::LoadImages() {
   ToolbarView::LoadImages();
   if (bookmark_)
     bookmark_->UpdateImageAndText();
-  if (speedreader_)
-    speedreader_->UpdateImageAndText();
+  if (wallet_)
+    wallet_->UpdateImageAndText();
 }
 
 void BraveToolbarView::Update(content::WebContents* tab) {
@@ -218,11 +214,7 @@ void BraveToolbarView::Update(content::WebContents* tab) {
     bookmark_->SetVisible(browser_defaults::bookmarks_enabled &&
                           edit_bookmarks_enabled_.GetValue());
   }
-  if (speedreader_) {
-    // Note that we pass active web contents, not the |tab| which is something
-    // different.
-    speedreader_->Update(GetWebContents());
-  }
+
   // Remove avatar menu if only a single user profile exists.
   // Always show if private / tor / guest window, as an indicator.
   auto* avatar_button = GetAvatarToolbarButton();
@@ -294,11 +286,5 @@ void BraveToolbarView::ResetButtonBounds() {
         location_bar_->x() - bookmark_width - button_right_margin;
     bookmark_->SetX(bookmark_x);
     button_right_margin = bookmark_x;
-  }
-
-  if (speedreader_ && speedreader_->GetVisible()) {
-    const int speedreader_width = speedreader_->GetPreferredSize().width();
-    const int speedreader_x = button_right_margin - speedreader_width;
-    speedreader_->SetX(speedreader_x);
   }
 }

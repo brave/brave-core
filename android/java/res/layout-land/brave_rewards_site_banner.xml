@@ -260,6 +260,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|bottom"
+                    tools:ignore="NestedWeights"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:fontFamily="sans-serif"
@@ -339,6 +340,7 @@
                     android:fontFamily="sans-serif"
                     android:paddingTop="2dp"
                     android:text="@string/value_0_usd"
+                    tools:ignore="SmallSp"
                     android:textSize="10sp" />
 
 
@@ -374,6 +376,7 @@
                     android:fontFamily="sans-serif"
                     android:paddingTop="2dp"
                     android:text="@string/value_0_usd"
+                    tools:ignore="SmallSp"
                     android:textSize="10sp" />
 
                 <ToggleButton
@@ -408,6 +411,7 @@
                     android:fontFamily="sans-serif"
                     android:paddingTop="2dp"
                     android:text="@string/value_0_usd"
+                    tools:ignore="SmallSp"
                     android:textSize="10sp" />
 
             </androidx.gridlayout.widget.GridLayout>
@@ -444,7 +448,6 @@
                     android:background="@android:color/transparent"
                     android:button="@drawable/plain_checkbox"
                     android:scaleType="fitXY"
-                    android:onClick="onMonthlyCheckboxClicked"
                     android:checked="false"/>
             </RelativeLayout>
             <!--Row # 4-->

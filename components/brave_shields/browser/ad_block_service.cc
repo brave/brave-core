@@ -18,14 +18,14 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/browser/brave_browser_process_impl.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_shields/common/pref_names.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -36,19 +36,6 @@
 namespace brave_shields {
 
 namespace {
-
-std::string GetTagFromPrefName(const std::string& pref_name) {
-  if (pref_name == kFBEmbedControlType) {
-    return brave_shields::kFacebookEmbeds;
-  }
-  if (pref_name == kTwitterEmbedControlType) {
-    return brave_shields::kTwitterEmbeds;
-  }
-  if (pref_name == kLinkedInEmbedControlType) {
-    return brave_shields::kLinkedInEmbeds;
-  }
-  return "";
-}
 
 // Extracts the start and end characters of a domain from a hostname.
 // Required for correct functionality of adblock-rust.
@@ -102,16 +89,34 @@ void AdBlockService::ShouldStartRequest(
       did_match_important, mock_data_url);
 }
 
-base::Optional<base::Value> AdBlockService::UrlCosmeticResources(
+absl::optional<std::string> AdBlockService::GetCspDirectives(
+    const GURL& url,
+    blink::mojom::ResourceType resource_type,
+    const std::string& tab_host) {
+  auto csp_directives =
+      AdBlockBaseService::GetCspDirectives(url, resource_type, tab_host);
+
+  const auto regional_csp = regional_service_manager()->GetCspDirectives(
+      url, resource_type, tab_host);
+  MergeCspDirectiveInto(regional_csp, &csp_directives);
+
+  const auto custom_csp =
+      custom_filters_service()->GetCspDirectives(url, resource_type, tab_host);
+  MergeCspDirectiveInto(custom_csp, &csp_directives);
+
+  return csp_directives;
+}
+
+absl::optional<base::Value> AdBlockService::UrlCosmeticResources(
     const std::string& url) {
-  base::Optional<base::Value> resources =
+  absl::optional<base::Value> resources =
       AdBlockBaseService::UrlCosmeticResources(url);
 
   if (!resources || !resources->is_dict()) {
     return resources;
   }
 
-  base::Optional<base::Value> regional_resources =
+  absl::optional<base::Value> regional_resources =
       regional_service_manager()->UrlCosmeticResources(url);
 
   if (regional_resources && regional_resources->is_dict()) {
@@ -119,7 +124,7 @@ base::Optional<base::Value> AdBlockService::UrlCosmeticResources(
                        /*force_hide=*/false);
   }
 
-  base::Optional<base::Value> custom_resources =
+  absl::optional<base::Value> custom_resources =
       custom_filters_service()->UrlCosmeticResources(url);
 
   if (custom_resources && custom_resources->is_dict()) {
@@ -130,18 +135,18 @@ base::Optional<base::Value> AdBlockService::UrlCosmeticResources(
   return resources;
 }
 
-base::Optional<base::Value> AdBlockService::HiddenClassIdSelectors(
+absl::optional<base::Value> AdBlockService::HiddenClassIdSelectors(
     const std::vector<std::string>& classes,
     const std::vector<std::string>& ids,
     const std::vector<std::string>& exceptions) {
-  base::Optional<base::Value> hide_selectors =
+  absl::optional<base::Value> hide_selectors =
       AdBlockBaseService::HiddenClassIdSelectors(classes, ids, exceptions);
 
-  base::Optional<base::Value> regional_selectors =
+  absl::optional<base::Value> regional_selectors =
       regional_service_manager()->HiddenClassIdSelectors(classes, ids,
                                                          exceptions);
 
-  base::Optional<base::Value> custom_selectors =
+  absl::optional<base::Value> custom_selectors =
       custom_filters_service()->HiddenClassIdSelectors(classes, ids,
                                                        exceptions);
 
@@ -271,44 +276,9 @@ std::unique_ptr<AdBlockService> AdBlockServiceFactory(
 }
 
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
-  registry->RegisterStringPref(kAdBlockCustomFilters, std::string());
-  registry->RegisterDictionaryPref(kAdBlockRegionalFilters);
-  registry->RegisterBooleanPref(kAdBlockCheckedDefaultRegion, false);
-}
-
-AdBlockPrefService::AdBlockPrefService(PrefService* prefs) : prefs_(prefs) {
-  pref_change_registrar_.reset(new PrefChangeRegistrar());
-  pref_change_registrar_->Init(prefs_);
-  pref_change_registrar_->Add(
-      kFBEmbedControlType,
-      base::BindRepeating(&AdBlockPrefService::OnPreferenceChanged,
-                          base::Unretained(this), kFBEmbedControlType));
-  pref_change_registrar_->Add(
-      kTwitterEmbedControlType,
-      base::BindRepeating(&AdBlockPrefService::OnPreferenceChanged,
-                          base::Unretained(this), kTwitterEmbedControlType));
-  pref_change_registrar_->Add(
-      kLinkedInEmbedControlType,
-      base::BindRepeating(&AdBlockPrefService::OnPreferenceChanged,
-                          base::Unretained(this), kLinkedInEmbedControlType));
-  OnPreferenceChanged(kFBEmbedControlType);
-  OnPreferenceChanged(kTwitterEmbedControlType);
-  OnPreferenceChanged(kLinkedInEmbedControlType);
-}
-
-AdBlockPrefService::~AdBlockPrefService() = default;
-
-void AdBlockPrefService::OnPreferenceChanged(const std::string& pref_name) {
-  std::string tag = GetTagFromPrefName(pref_name);
-  if (tag.length() == 0) {
-    return;
-  }
-  bool enabled = prefs_->GetBoolean(pref_name);
-  g_brave_browser_process->ad_block_service()->EnableTag(tag, enabled);
-  g_brave_browser_process->ad_block_regional_service_manager()->EnableTag(
-      tag, enabled);
-  g_brave_browser_process->ad_block_custom_filters_service()->EnableTag(
-      tag, enabled);
+  registry->RegisterStringPref(prefs::kAdBlockCustomFilters, std::string());
+  registry->RegisterDictionaryPref(prefs::kAdBlockRegionalFilters);
+  registry->RegisterBooleanPref(prefs::kAdBlockCheckedDefaultRegion, false);
 }
 
 }  // namespace brave_shields

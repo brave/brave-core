@@ -7,8 +7,10 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CLIENT_H_
 
 #include <cstdint>
+#include <functional>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/export.h"
@@ -24,6 +26,9 @@ using LoadCallback = std::function<void(const Result, const std::string&)>;
 using UrlRequestCallback = std::function<void(const UrlResponse&)>;
 
 using RunDBTransactionCallback = std::function<void(DBCommandResponsePtr)>;
+
+using GetBrowsingHistoryCallback =
+    std::function<void(const std::vector<std::string>&)>;
 
 class ADS_EXPORT AdsClient {
  public:
@@ -53,6 +58,26 @@ class ADS_EXPORT AdsClient {
   // Close notification
   virtual void CloseNotification(const std::string& uuid) = 0;
 
+  // Record an ad event for the specified |ad_type|, |confirmation_type| and
+  // specified |timestamp|
+  virtual void RecordAdEvent(const std::string& ad_type,
+                             const std::string& confirmation_type,
+                             const uint64_t timestamp) const = 0;
+
+  // Get a list of ad events for the specified |ad_type| and |confirmation_type|
+  virtual std::vector<uint64_t> GetAdEvents(
+      const std::string& ad_type,
+      const std::string& confirmation_type) const = 0;
+
+  // Reset list of ad events
+  virtual void ResetAdEvents() const = 0;
+
+  // Get |max_count| browsing history results for past |days_ago| days from
+  // |HistoryService| and return as list of strings
+  virtual void GetBrowsingHistory(const int max_count,
+                                  const int days_ago,
+                                  GetBrowsingHistoryCallback callback) = 0;
+
   // Fetch and return data. Loading should be performed asynchronously, so that
   // the app remains responsive and should handle incoming data or errors as
   // they arrive. The callback takes 1 argument - |URLResponse| should contain
@@ -72,11 +97,10 @@ class ADS_EXPORT AdsClient {
   // to |FAILED|. |value| should contain the persisted value
   virtual void Load(const std::string& name, LoadCallback callback) = 0;
 
-  // Load user model for id from persistent storage. The callback takes 2
-  // arguments - |Result| should be set to |SUCCESS| if successful otherwise
-  // should be set to |FAILED|. |value| should contain the user model
-  virtual void LoadUserModelForId(const std::string& name,
-                                  LoadCallback callback) = 0;
+  // Load ads resource for name and version from persistent storage.
+  virtual void LoadAdsResource(const std::string& name,
+                               const int version,
+                               LoadCallback callback) = 0;
 
   // Should return the resource for given |id|
   virtual std::string LoadResourceForId(const std::string& id) = 0;

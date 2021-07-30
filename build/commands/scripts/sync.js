@@ -19,7 +19,7 @@ program
   .option('--run_sync', 'This flag is deprecated and no longer has any effect')
   .option('--target_os <target_os>', 'target OS')
   .option('--target_arch <target_arch>', 'target architecture')
-  .option('--target_apk_base <target_apk_base>', 'target Android OS apk (classic, modern, mono)')
+  .option('--target_android_base <target_android_base>', 'target Android OS level for apk or aab (classic, modern, mono)')
   .option('--init', 'initialize all dependencies')
   .option('--all', 'This flag is deprecated and no longer has any effect')
   .option('--force', 'force reset all projects to origin/ref')

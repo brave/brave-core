@@ -51,18 +51,6 @@
     "message": "Details",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "Ihr Kontostand",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "BAT-Punkte",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "können für \"Brave\"-Belohnungen eingesetzt werden, um Ihre Lieblingsurheber zu unterstützen. BAT-Punkte können nicht in BAT getauscht werden.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "auf",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "Kostenlose Tokens erhalten",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "Punkteförderbeträge beansprucht",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "Einnahmen durch Werbung",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Einmalige Spenden",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "läuft ab am",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Dieser Ersteller hat sich noch nicht angemeldet, um Beiträge von Brave-Nutzern zu erhalten. Alle von Ihnen gesendeten Trinkgelder bleiben in Ihrem Wallet, bis er sich verifiziert hat.",
+    "message": "Dieser Creator ist derzeit nicht konfiguriert, Trinkgelder aus deinem Wallet zu erhalten. Deine Trinkgelder verbleiben als ausstehend in deinem Wallet und es wird 90 Tage lang automatisch weiter versucht.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Werbung aktivieren",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Kostenlose Token-Zuwendung",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Gratis-Punkteförderbetrag",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Sie haben sich eine Belohnung für Anzeigen verdient!",
@@ -591,17 +567,9 @@
     "message": "Token",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "Punkte",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Gratis Token",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Punkte-Förderbeträge",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Hallo, $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Sie müssen mindestens 25 BAT haben, um ein Uphold-Konto zu eröffnen. Bitte versuchen sie es später erneut. Falls Sie bereits ein verifiziertes Uphold-Konto haben, fahren Sie mit der Anmeldung fort.",
-    "description": "Text for login button"
+    "message": "Sie benötigen mindestens $amount$ BAT, um ein Uphold-Konto zu erstellen. Wenn Sie bereits ein verifiziertes Uphold-Konto haben, fahren Sie mit der Anmeldung fort.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "Verbunden",
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Wann Sie Belohnungen erhalten",
+    "message": "Wann erhalten Sie Belohnungen?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "Indem Sie Brave Rewards nutzen, helfen Sie, das Web zu einem besseren Ort für alle zu machen. Und das ist toll!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards in Japan wechselt zu einem neuen System!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "Verifizieren Sie Ihre Wallet",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "Weitere Informationen",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "Um die Token abheben zu können, die Sie für das Anzeigen von Werbung verdienen, müssen Sie Ihre Wallet verifizieren.",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "Bitte verwenden Sie Ihre BAP bis zum 13. März. Danach wird BAP eingestellt.",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "Später",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Meine Wallet verifizieren",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Die bitFlyer-Wallet ist ein von bitFlyer, Inc. verwalteter Dienst.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Nach der Verifizierung Ihrer Wallet und ihrer Verknüpfung mit einem bitFlyer-Konto können Sie die durch Brave Rewards verdienten Token leichter speichern und verwalten.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Mehr darüber erfahren$link_end$, wie Sie Ihren Brave-Browser mit Ihrem bitFlyer-Konto verlinken können.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

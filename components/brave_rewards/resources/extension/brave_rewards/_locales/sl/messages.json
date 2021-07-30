@@ -51,18 +51,6 @@
     "message": "Podrobnosti",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "Vaš znesek",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "Točke BAT",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "se lahko uporabijo v programu nagrad Brave Rewards za doniranje vašim najljubšim ustvarjalcem vsebin. Točk BAT ni mogoče zamenjati za BAT.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "vklop",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "Zahtevki za dodelitev žetonov",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "Pridobljene točke za sredstva",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "Zaslužek z ogledom oglasov",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Enkratne donacije",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "poteče",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Ta ustvarjalec se še ni vpisal, da bi prejel donacije uporabnikov Brave. Vse donacije, ki jih pošiljate, bodo ostale v vaši denarnici, dokler se ustvarjalec ne vpiše.",
+    "message": "Ta ustvarjalec trenutno ni nastavljen tako, da bi lahko iz vaše denarnice prejemal napitnine. Vse napitnine, ki jih boste dali, bodo v vaši denarnici 90 dni ostale na čakanju in se samodejno poskušale izvršiti.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Vklopi oglase",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Brezplačna sredstva v obliki žetonov",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Brezplačna točka za sredstva",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Zaslužili ste nagrado za oglase!",
@@ -591,17 +567,9 @@
     "message": "Žeton",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "točke",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Dodeljeni žetoni",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Točka za sredstva",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Pozdravljeni, $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Za ustvarjanje računa Uphold morate imeti najmanj 25 BAT. Prosimo, poskusite kasneje. \n Če že imate preverjen račun Uphold, se še naprej prijavljajte.",
-    "description": "Text for login button"
+    "message": "Za ustvarjanje računa Uphold morate imeti najmanj $amount$. Če že imate preverjen račun Uphold, se še naprej prijavljajte. ",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "Povezano",
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Kdaj prejmete nagrade",
+    "message": "Kdaj prejmete nagrade?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "Z uporabo Brave Rewards pomagate izboljšati splet za vse. In to je super!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards na Japonskem prehaja na nov sistem!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "Preverite svojo denarnico",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "Več o tem",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "Če želite dvigniti žetone, ki ste jih zaslužili za ogled oglasov, morate preveriti svojo denarnico.",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "Prosimo, uporabite svoj BAP do 13. marca. Po tem se BAP ukine.",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "Storite to pozneje",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Preverite mojo denarnico",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Denarnica bitFlyer je storitev, ki jo upravlja bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Če preverite svojo denarnico in jo povežete z računom bitFlyer, boste lažje shranili in upravljali žetone, ki ste jih zaslužili z Brave Rewards.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Preberite več$link_end$o tem, kako povezati svoj brskalnik Brave z vašim računom bitFlyer.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

@@ -9,16 +9,29 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "chrome/common/extensions/webstore_install_result.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
+#if BUILDFLAG(IPFS_ENABLED)
+#include "brave/components/ipfs/ipfs_service.h"
+#include "brave/components/ipfs/ipfs_service_observer.h"
+#include "ui/shell_dialogs/select_file_dialog.h"
+#endif
+
 class Profile;
 
-class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
+class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
+#if BUILDFLAG(IPFS_ENABLED)
+    ,
+                                      ipfs::IpfsServiceObserver,
+                                      public ui::SelectFileDialog::Listener
+#endif
+{
  public:
   BraveDefaultExtensionsHandler();
   ~BraveDefaultExtensionsHandler() override;
@@ -34,10 +47,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
   void SetHangoutsEnabled(const base::ListValue* args);
   void SetIPFSCompanionEnabled(const base::ListValue* args);
   void SetMediaRouterEnabled(const base::ListValue* args);
-  void SetIPFSStorageMax(const base::ListValue* args);
-  void LaunchIPFSService(const base::ListValue* args);
-  void ShutdownIPFSService(const base::ListValue* args);
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   void SetBraveWalletEnabled(const base::ListValue* args);
 #endif
   void SetTorEnabled(const base::ListValue* args);
@@ -62,6 +72,34 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
   void OnMediaRouterEnabledChanged();
   bool IsRestartNeeded();
 
+#if BUILDFLAG(IPFS_ENABLED)
+  void SetIPFSStorageMax(const base::ListValue* args);
+  void ImportIpnsKey(const base::ListValue* args);
+  void LaunchIPFSService(const base::ListValue* args);
+  void ExportIPNSKey(const base::ListValue* args);
+
+  // ui::SelectFileDialog::Listener
+  void FileSelected(const base::FilePath& path,
+                    int index,
+                    void* params) override;
+  void FileSelectionCanceled(void* params) override;
+
+  void OnKeyImported(const std::string& key,
+                     const std::string& value,
+                     bool success);
+  void OnKeyExported(const std::string& key, bool success);
+  // ipfs::IpfsServiceObserver
+  void OnIpfsLaunched(bool result, int64_t pid) override;
+  void OnIpfsShutdown() override;
+  void OnIpnsKeysLoaded(bool success) override;
+  void CheckIpfsNodeStatus(const base::ListValue* args);
+  void NotifyNodeStatus();
+
+  std::string dialog_key_;
+  ui::SelectFileDialog::Type dialog_type_ = ui::SelectFileDialog::SELECT_NONE;
+  scoped_refptr<ui::SelectFileDialog> select_file_dialog_;
+#endif
+
 #if BUILDFLAG(ENABLE_WIDEVINE)
   bool was_widevine_enabled_ = false;
 #endif
@@ -69,6 +107,10 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
   PrefChangeRegistrar pref_change_registrar_;
 #if BUILDFLAG(ENABLE_TOR)
   PrefChangeRegistrar local_state_change_registrar_;
+#endif
+#if BUILDFLAG(IPFS_ENABLED)
+  base::ScopedObservation<ipfs::IpfsService, ipfs::IpfsServiceObserver>
+      ipfs_service_observer_{this};
 #endif
   base::WeakPtrFactory<BraveDefaultExtensionsHandler> weak_ptr_factory_;
 

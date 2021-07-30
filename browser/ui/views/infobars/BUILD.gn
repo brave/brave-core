@@ -14,9 +14,16 @@ source_set("brave_wayback_machine") {
 
   deps = [
     "//brave/app:brave_generated_resources_grit",
+    "//brave/app/theme:brave_theme_resources",
     "//brave/app/vector_icons",
+    "//brave/browser/themes",
     "//brave/components/brave_wayback_machine",
+    "//chrome/browser:theme_properties",
+    "//components/infobars/content",
+    "//components/infobars/core",
+    "//components/prefs:prefs",
     "//components/resources",
+    "//components/user_prefs",
     "//content/public/browser",
     "//ui/base",
     "//ui/gfx",
@@ -31,7 +38,5 @@ source_set("brave_wayback_machine") {
   # brave_wayback_machine_infobar_contents_view.cc.
   # However, this buildflags.h sometimes not generated when
   # brave_wayback_machine_infobar_contents_view.cc is compiled.
-  deps += [
-    "//chrome/common:buildflags",
-  ]
+  deps += [ "//chrome/common:buildflags" ]
 }

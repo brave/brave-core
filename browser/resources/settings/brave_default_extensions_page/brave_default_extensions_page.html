@@ -1,13 +1,13 @@
 <link rel="import" href="chrome://resources/html/cr.html">
 <link rel="import" href="chrome://resources/html/polymer.html">
 
-<link rel="import" href="chrome://resources/cr_elements/cr_link_row/cr_link_row.html">
 <link rel="import" href="chrome://resources/html/i18n_behavior.html">
 <link rel="import" href="chrome://resources/html/web_ui_listener_behavior.html">
 <link rel="import" href="brave_default_extensions_browser_proxy.html">
-<link rel="import" href="../settings_page/settings_section.html">
-<link rel="import" href="../settings_shared_css.html">
-<link rel="import" href="../settings_vars_css.html">
+<script type="module" src="../settings_page/settings_section.js"></script>
+<script type="module" src="../settings_shared_css.js"></script>
+<script type="module" src="../settings_vars_css.js"></script>
+<script type="module" src="chrome://resources/cr_elements/cr_link_row/cr_link_row.js"></script>
 
 <dom-module id="settings-brave-default-extensions-page">
   <template>
@@ -87,16 +87,19 @@
     </settings-toggle-button>
     <template is="dom-if" if="{{ decentralizedDnsEnabled_ }}">
       <div class="settings-box">
-        <div class="start">$i18n{resolveUnstoppableDomainsDesc}</div>
+        <div class="flex cr-padded-text">
+          <div class="start">$i18n{resolveUnstoppableDomainsDesc}</div>
+          <div class="secondary">$i18nRaw{resolveUnstoppableDomainsSubDesc}</div>
+        </div>
         <settings-dropdown-menu id="unstoppableDomainsResolveMethodType"
                                 pref="{{prefs.brave.unstoppable_domains.resolve_method}}"
-                                menu-options="[[decentralizedDnsResolveMethod_]]">
+                                menu-options="[[unstoppableDomainsResolveMethod_]]">
       </div>
       <div class="settings-box">
         <div class="start">$i18n{resolveENSDesc}</div>
         <settings-dropdown-menu id="ensResolveMethodType"
                                 pref="{{prefs.brave.ens.resolve_method}}"
-                                menu-options="[[decentralizedDnsResolveMethod_]]">
+                                menu-options="[[ensResolveMethod_]]">
       </div>
     </template>
     <settings-toggle-button id="mediaRouterEnabled"

@@ -51,18 +51,6 @@
     "message": "Detalii",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "Soldul dumneavoastră",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "Puncte BAT",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "pot fi folosite la Recompense Brave pentru a contribui la creatorii de conținut preferați. Punctele BAT nu pot fi schimbate în BAT.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "pornit",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "Granturi Token Revendicate",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "Acordarea de puncte a fost revendicată",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "Câștiguri din Reclame",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Cadouri bănești o singură dată",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "expiră pe",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Acest creator nu s-a înregistrat încă pentru a primi contribuții de la utilizatorii Brave. Orice plăți ați efectua acestea vor rămâne în portofelul dumneavoastră până când aceștia sunt verificați.",
+    "message": "Acest creator nu este configurat în prezent pentru a primi contribuții din portofelul dvs. Orice plată pe care o faceți va rămâne în așteptare în portofel și se va reîncerca automat efectuarea acesteia timp de 90 de zile.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Activare Ads",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Grant Token Gratuit",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Acordare punct gratuit",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Ați câștigat o Recompensă Reclame!",
@@ -591,17 +567,9 @@
     "message": "Indicativ",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "puncte",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Donații în jetoane",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Granturi de puncte",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Bună ziua, $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Trebuie să aveți minimum 25BAT pentru a crea un cont Uphold. Vă rugăm să încercați din nou mai târziu.\nDacă aveți deja un cont Uphold verificat, continuați cu conectarea.",
-    "description": "Text for login button"
+    "message": "Aveți nevoie de cel puțin $amount$ BAT pentru a vă crea un cont Uphold. Dacă aveți deja un cont Uphold confirmat, accesați pagina de conectare.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "Conectată",
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Când primiți recompensele",
+    "message": "Când primiți recompensele?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "Folosind Recompensele Brave, dai o mână de ajutor la efortul de a face internetul un loc mai bun pentru toată lumea. Și asta este minunat!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards din Japonia trece la un sistem nou!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "Confirmați portofelul dvs.",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "Află mai multe",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "Pentru a putea retrage token-urile câștigate prin afișarea de anunțuri, va trebui să confirmați portofelul dvs.",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "Folosiți BAP până pe 13 martie. După aceea, punctele BAP nu vor mai fi folosite.",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "Mai târziu",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Confirmă portofelul meu",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Portofelul bitFlyer este un serviciu administrat de bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Prin confirmarea portofelului dvs. și conectarea acestuia la un cont bitFlyer, veți putea stoca și gestiona mai ușor token-urile câștigate prin Brave Rewards",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Aflați mai multe$link_end$ despre cum puteți conecta browserul Brave la contul bitFlyer.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

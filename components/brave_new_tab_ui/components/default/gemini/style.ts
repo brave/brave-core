@@ -408,8 +408,6 @@ export const AssetDropdown = styled('div')<StyleProps>`
   border-bottom: ${p => p.itemsShowing ? 'none' : '1px solid white'};
 `
 export const AssetDropdownLabel = styled('span')<{}>`
-  float: left;
-  margin-top: -5px;
   font-weight: bold;
 `
 
@@ -429,13 +427,16 @@ export const AssetItems = styled('div')<StyleProps>`
 `
 
 export const AssetItem = styled('div')<StyleProps>`
-  padding: 3px 0px;
+  padding: 5px 0px;
   font-weight: bold;
   cursor: pointer;
   border-bottom: ${p => !p.isLast ? '1px solid rgb(70, 70, 70)' : ''};
 `
 
 export const DropdownIcon = styled('span')<StyleProps>`
+  height: 15px;
+  float: left;
+  margin-left: 5px;
   margin-right: 10px;
 `
 

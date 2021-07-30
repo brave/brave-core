@@ -14,7 +14,6 @@
 #include "base/base64url.h"
 #include "base/bind.h"
 #include "base/containers/circular_deque.h"
-#include "base/optional.h"
 #include "base/rand_util.h"
 #include "base/run_loop.h"
 #include "base/stl_util.h"
@@ -58,6 +57,7 @@
 #include "net/url_request/url_request_test_util.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 using net::test::IsOk;
 
@@ -279,8 +279,8 @@ class TestSocketFactory : public MockClientSocketFactory {
     explicit RemoteNameserver(DnsOverHttpsServerConfig secure_nameserver)
         : secure_nameserver(secure_nameserver) {}
 
-    base::Optional<IPEndPoint> insecure_nameserver;
-    base::Optional<DnsOverHttpsServerConfig> secure_nameserver;
+    absl::optional<IPEndPoint> insecure_nameserver;
+    absl::optional<DnsOverHttpsServerConfig> secure_nameserver;
   };
 
   std::vector<RemoteNameserver> remote_endpoints_;
@@ -341,7 +341,7 @@ class TransactionHelper {
   void OnTransactionComplete(DnsTransaction* t,
                              int rv,
                              const DnsResponse* response,
-                             base::Optional<std::string> doh_provider_id) {
+                             absl::optional<std::string> doh_provider_id) {
     EXPECT_FALSE(completed_);
     EXPECT_EQ(transaction_.get(), t);
 
@@ -363,7 +363,7 @@ class TransactionHelper {
       ASSERT_TRUE(response != nullptr);
       EXPECT_EQ(static_cast<unsigned>(expected_answer_count_),
                 response->answer_count());
-      EXPECT_EQ(qtype_, response->qtype());
+      EXPECT_EQ(qtype_, response->GetSingleQType());
 
       DnsRecordParser parser = response->Parser();
       DnsResourceRecord record;
@@ -813,7 +813,7 @@ class DnsTransactionTestBase : public testing::Test {
     }
 
     EXPECT_FALSE(request->allow_credentials());
-    EXPECT_TRUE(request->disable_secure_dns());
+    EXPECT_EQ(SecureDnsPolicy::kDisable, request->secure_dns_policy());
 
     std::string accept;
     EXPECT_TRUE(request->extra_request_headers().GetHeader("Accept", &accept));

@@ -45,7 +45,8 @@ void MaybeHandleInParent(NavigateParams* params, bool allow_in_incognito) {
     if (!allow_in_incognito) {
       params->initiating_profile =
           profile->IsOffTheRecord()
-              ? brave::GetParentProfile(profile)->GetPrimaryOTRProfile()
+              ? brave::GetParentProfile(profile)->GetPrimaryOTRProfile(
+                    /*create_if_needed=*/true)
               : brave::GetParentProfile(profile);
     } else if (HandleURLInParent(params, profile)) {
       params->browser = BraveGetOrCreateBrowser(
@@ -55,9 +56,9 @@ void MaybeHandleInParent(NavigateParams* params, bool allow_in_incognito) {
 }
 
 bool IsHostAllowedInIncognitoBraveImpl(const base::StringPiece& host) {
-  if (host == kWalletHost ||
-      host == kRewardsPageHost ||
-      host == chrome::kChromeUISyncInternalsHost) {
+  if (host == kWalletPageHost || host == kWalletPanelHost ||
+      host == kRewardsPageHost || host == chrome::kChromeUISyncInternalsHost ||
+      host == chrome::kChromeUISyncHost) {
     return false;
   }
 

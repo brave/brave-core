@@ -9,19 +9,31 @@
 #include <memory>
 #include <string>
 
+#include "base/containers/flat_map.h"
+#include "base/memory/weak_ptr.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/renderer/render_frame.h"
+#include "gin/arguments.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "v8/include/v8.h"
 
 namespace brave_wallet {
 
-class BraveWalletJSHandler {
+class BraveWalletJSHandler : public mojom::EventsListener {
  public:
   explicit BraveWalletJSHandler(content::RenderFrame* render_frame);
-  ~BraveWalletJSHandler();
+  ~BraveWalletJSHandler() override;
 
   void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
+  void FireEvent(const std::string& event, base::Value event_args);
+  void ConnectEvent();
+  void OnGetChainId(const std::string& chain_id);
+  void DisconnectEvent(const std::string& message);
+  void AccountsChangedEvent(const std::string& accounts);
+
+  void ChainChangedEvent(const std::string& chain_id) override;
 
  private:
   void BindFunctionsToObject(v8::Isolate* isolate,
@@ -37,19 +49,34 @@ class BraveWalletJSHandler {
   void CreateEthereumObject(v8::Isolate* isolate,
                             v8::Local<v8::Context> context);
   bool EnsureConnected();
+  void OnRemoteDisconnect();
+  void InjectInitScript();
+  void ExecuteScript(const std::string script);
 
-  // A function to be called from JS
+  // Functions to be called from JS
   v8::Local<v8::Promise> Request(v8::Isolate* isolate,
-                                 const std::string& input);
-  void OnRequest(
-      std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
-      v8::Isolate* isolate,
-      std::unique_ptr<v8::Global<v8::Context>> context_old,
-      const int status,
-      const std::string& response);
+                                 v8::Local<v8::Value> input);
+  v8::Local<v8::Value> IsConnected();
+  v8::Local<v8::Promise> Enable();
+  void SendAsync(gin::Arguments* args);
+
+  void OnRequest(v8::Global<v8::Promise::Resolver> promise_resolver,
+                 v8::Isolate* isolate,
+                 v8::Global<v8::Context> context_old,
+                 const int http_code,
+                 const std::string& response,
+                 const base::flat_map<std::string, std::string>& headers);
+  void OnSendAsync(std::unique_ptr<v8::Global<v8::Function>> callback,
+                   const int http_code,
+                   const std::string& response,
+                   const base::flat_map<std::string, std::string>& headers);
 
   content::RenderFrame* render_frame_;
-  mojo::Remote<brave_wallet::mojom::BraveWalletProvider> brave_wallet_provider_;
+  mojo::Remote<mojom::BraveWalletProvider> brave_wallet_provider_;
+  mojo::Receiver<mojom::EventsListener> receiver_{this};
+  bool is_connected_;
+  std::string chain_id_;
+  base::WeakPtrFactory<BraveWalletJSHandler> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet

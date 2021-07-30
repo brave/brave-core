@@ -6,16 +6,11 @@ import * as React from 'react'
 
 import { PaymentKind, RewardsParameters, PublisherInfo } from '../lib/interfaces'
 import { HostContext } from '../lib/host_context'
-import { LocaleContext } from '../../shared/lib/locale_context'
-import { formatExchangeAmount } from '../lib/formatting'
 
 import { CurrentMonthlyForm } from './current_monthly_form'
-import { FormSubmitButton } from './form_submit_button'
 import { PaymentKindSwitch } from './payment_kind_switch'
-import { TipAmountSelector } from './tip_amount_selector'
-import { BatString } from './bat_string'
-import { TermsOfService } from './terms_of_service'
-import { CalendarIcon } from './icons/calendar_icon'
+import { BatTipForm } from './bat_tip_form'
+import { ExchangeAmount } from '../../shared/components/exchange_amount'
 
 import * as style from './monthly_tip_form.style'
 
@@ -60,7 +55,6 @@ function getDefaultTipAmount (
 
 export function MonthlyTipForm () {
   const host = React.useContext(HostContext)
-  const { getString } = React.useContext(LocaleContext)
 
   const [balanceInfo, setBalanceInfo] = React.useState(
     host.state.balanceInfo)
@@ -75,13 +69,6 @@ export function MonthlyTipForm () {
 
   const [paymentKind, setPaymentKind] = React.useState<PaymentKind>('bat')
 
-  const [tipAmount, setTipAmount] = React.useState(() => {
-    return getDefaultTipAmount(
-      rewardsParameters,
-      publisherInfo,
-      currentMonthlyTip)
-  })
-
   const [changeAmountSelected, setChangeAmountSelected] = React.useState(
     host.getDialogArgs().entryPoint === 'set-monthly')
 
@@ -94,16 +81,6 @@ export function MonthlyTipForm () {
       setCurrentMonthlyTip(state.currentMonthlyTip || 0)
     })
   }, [host])
-
-  React.useEffect(() => {
-    // Select a default tip amount
-    if (tipAmount === 0) {
-      setTipAmount(getDefaultTipAmount(
-        rewardsParameters,
-        publisherInfo,
-        currentMonthlyTip))
-    }
-  }, [rewardsParameters, publisherInfo, currentMonthlyTip])
 
   if (!balanceInfo || !rewardsParameters || !publisherInfo) {
     return null
@@ -122,45 +99,45 @@ export function MonthlyTipForm () {
     )
   }
 
-  function processTip () {
+  const tipOptions = generateTipOptions(rewardsParameters, publisherInfo)
+
+  const tipAmountOptions = tipOptions.map((value) => ({
+    value,
+    currency: 'BAT',
+    exchangeAmount: (
+      <ExchangeAmount amount={value} rate={rewardsParameters.rate} />
+    )
+  }))
+
+  const defaultTipAmount = getDefaultTipAmount(
+    rewardsParameters,
+    publisherInfo,
+    currentMonthlyTip)
+
+  const onSubmitTip = (tipAmount: number) => {
     if (tipAmount > 0) {
       host.processTip(tipAmount, 'monthly')
     }
   }
 
-  const tipOptions = generateTipOptions(rewardsParameters, publisherInfo)
-
-  const tipAmountOptions = tipOptions.map((value) => ({
-    value,
-    amount: value.toFixed(0),
-    currency: <BatString />,
-    exchangeAmount: formatExchangeAmount(value, rewardsParameters.rate)
-  }))
-
   return (
     <style.root>
-      <style.main>
+      <style.kind>
         <PaymentKindSwitch
           userBalance={balanceInfo.total}
           currentValue={paymentKind}
           onChange={setPaymentKind}
         />
-        <style.amounts>
-          <TipAmountSelector
-            options={tipAmountOptions}
-            selectedValue={tipAmount}
-            onSelect={setTipAmount}
-          />
-        </style.amounts>
-      </style.main>
-      <style.footer>
-        <TermsOfService />
-        <style.submit>
-          <FormSubmitButton onClick={processTip}>
-            <CalendarIcon /> {getString('doMonthly')}
-          </FormSubmitButton>
-        </style.submit>
-      </style.footer>
+      </style.kind>
+      <style.form>
+        <BatTipForm
+          tipKind='monthly'
+          userBalance={balanceInfo.total}
+          tipAmountOptions={tipAmountOptions}
+          defaultTipAmount={defaultTipAmount}
+          onSubmitTip={onSubmitTip}
+        />
+      </style.form>
     </style.root>
   )
 }

@@ -1,8 +1,8 @@
 diff --git a/components/browser_ui/widget/android/java/res/values/dimens.xml b/components/browser_ui/widget/android/java/res/values/dimens.xml
-index 8a1db9d096142efec7f400acb2fdb4aab5564cd0..ae53d00a78cc0bc8ffc7da6e3e3b5ecf1c2d3c4f 100644
+index 5233ea8275c13856f7098863401b60bf8e20e435..6719ecbb698aa6b5ae801460754fb5b011e3ed5c 100644
 --- a/components/browser_ui/widget/android/java/res/values/dimens.xml
 +++ b/components/browser_ui/widget/android/java/res/values/dimens.xml
-@@ -63,7 +63,7 @@
+@@ -64,7 +64,7 @@
      <dimen name="modern_toolbar_background_size">40dp</dimen>
      <!-- Sometimes the modern toolbar is shown at 48dp so a corner radius of
           24dp is needed to completely round the corners. -->

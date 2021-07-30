@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_UPHOLD_UPHOLD_USER_H_
-#define BRAVELEDGER_UPHOLD_UPHOLD_USER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_UPHOLD_UPHOLD_USER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_UPHOLD_UPHOLD_USER_H_
 
 #include <memory>
 #include <string>
@@ -30,8 +30,7 @@ enum UserStatus {
 
 struct User {
   std::string name;
-  std::string member_at;
-  bool verified;
+  std::string member_id;
   UserStatus status;
   bool bat_not_allowed;
 
@@ -55,12 +54,10 @@ class UpholdUser {
       const User& user,
       GetUserCallback callback);
 
-  UserStatus GetStatus(const std::string& status);
-
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::UpholdServer> uphold_server_;
 };
 
 }  // namespace uphold
 }  // namespace ledger
-#endif  // BRAVELEDGER_UPHOLD_UPHOLD_USER_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_UPHOLD_UPHOLD_USER_H_

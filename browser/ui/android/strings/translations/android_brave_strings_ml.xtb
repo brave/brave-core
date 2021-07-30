@@ -1,11 +1,13 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ml">
-<translation id="1506061864768559482">തിരയൽ എഞ്ചിൻ</translation>
+<translation id="4692623383562244444">സെര്‍ച് എഞ്ചിനുകള്‍</translation>
 <translation id="3377025655491224618">അദൃശ്യ ടാബ്</translation>
 <translation id="9148058034647219655">പുറത്തുകടക്കുക</translation>
-<translation id="59174027418879706">പ്രാപ്‌തമാക്കി</translation>
+<translation id="2356070529366658676">ചോദിക്കുക</translation>
 <translation id="4176463684765177261">അപ്രാപ്‌തമാക്കി</translation>
+<translation id="8026334261755873520">ബ്രൌസിംഗ് ഡാറ്റ മായ്‌ക്കുക</translation>
+<translation id="59174027418879706">പ്രാപ്‌തമാക്കി</translation>
 <translation id="4150201353443180367">ഡിസ്‌പ്ലേ</translation>
 <translation id="2433507940547922241">കാഴ്ച്ച</translation>
 <translation id="8281886186245836920">ഉപേക്ഷിക്കുക</translation>
@@ -23,6 +25,8 @@
 <translation id="6336451774241870485">പുതിയ അദൃശ്യ ടാബ്</translation>
 <translation id="8874184842967597500">കണക്റ്റുചെയ്‌തിട്ടില്ല</translation>
 <translation id="3368922792935385530">ബന്ധിപ്പിച്ചു</translation>
+<translation id="987264212798334818">പൊതുവായ</translation>
+<translation id="1116694919640316211">വിവരം</translation>
 <translation id="6680650203439190394">റേറ്റ് ചെയ്യുക</translation>
 <translation id="7961015016161918242">ഒരിക്കലും</translation>
 <translation id="5657156137487675418">എല്ലാ കുക്കികളും അനുവദിക്കൂ</translation>
@@ -33,4 +37,12 @@
 <translation id="7144878232160441200">വീണ്ടും ശ്രമിക്കുക</translation>
 <translation id="8688672835843460752">ലഭ്യമാണ്</translation>
 <translation id="3479552764303398839">ഇപ്പോഴല്ല</translation>
+<translation id="8798099450830957504">സ്ഥിരസ്ഥിതി</translation>
+<translation id="1483493594462132177">അയയ്‌ക്കുക</translation>
+<translation id="2359808026110333948">തുടരുക</translation>
+<translation id="6896758677409633944">പകര്‍ത്തുക</translation>
+<translation id="6518133107902771759">സ്ഥിരീകരിക്കുക</translation>
+<translation id="3157931365184549694">പുനഃസ്ഥാപിക്കുക</translation>
+<translation id="9111102763498581341">അണ്‍ലോക്ക് ചെയ്യുക</translation>
+<translation id="6657585470893396449">പാസ്‌വേഡ്</translation>
 </translationbundle>

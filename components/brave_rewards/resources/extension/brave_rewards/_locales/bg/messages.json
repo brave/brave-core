@@ -51,18 +51,6 @@
     "message": "Подробности",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "Вашият баланс",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "BAT точки",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "може да се използва в Brave награди, за да допринесе на любимите ви създатели на съдържание. ВАТ точки не могат да бъдат разменени за ВАТ.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "на",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "Изискани субсидии на жетони",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "Изискани безвъзмездни средства",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "Приходи от реклами",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Еднократни дарения",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "изтича на",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Този създател все още не се е регистрирал да получава вноски от Brave потребители. Всеки бакшиш който изпратите ще остава във вашия портфейл докато той потвърди.",
+    "message": "Този създател в момента не е конфигуриран да получава дарения от вашия портфейл. Всяко дарение, което направите, ще остане в състояние на изчакване във вашия портфейл и ще се извършва повторен опит автоматично в продължение на 90 дни.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Включете рекламите",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Безплатна субсидия жетон",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Безплатен Point Grant",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Спечелихте награда за реклама!",
@@ -591,17 +567,9 @@
     "message": "Жетон",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "точки",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Субсидии за жетони",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Безвъзмездни средства в точки ",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Здравейте, $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Трябва да имате минимум 25 BAT, за да създадете акаунт в Uphold. Моля, опитайте отново по-късно. Ако вече имате потвърден акаунт в Uphold, продължете, за да влезете.",
-    "description": "Text for login button"
+    "message": "Необходими са ви минимум $amount$ BAT, за да създадете акаунт в Uphold. Ако вече имате потвърден акаунт в Uphold, продължете, за да влезете.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "Установена е връзка",
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Кога получавате награди",
+    "message": "Кога получавате награди?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "Използвайки Brave Rewards, вие помагате да направим мрежата по-добро място за всички. И това е страхотно!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards в Япония преминава към нова система!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "Потвърдете вашия портфейл",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "Научете повече",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "За да изтеглите токените, които сте спечелили за гледане на реклами, е необходимо да потвърдите портфейла си.",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "Моля, използвайте BAP до 13 март. След това BAP ще бъде прекратен.",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "Остави за по-късно",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Потвърди моя портфейл",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Портфейлът bitFlyer е услуга, управлявана от bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Чрез потвърждаване на вашия портфейл и свързването му към bitFlyer акаунта, вие ще можете по-лесно да съхранявате и управлявате вашите токени, които сте спечелили през Brave Rewards.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Научете повече$link_end$ за това как да свържете Вашия браузър Brave с Вашия профил в bitFlyer.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

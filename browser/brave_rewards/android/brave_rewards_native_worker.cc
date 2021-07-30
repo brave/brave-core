@@ -10,20 +10,20 @@
 #include <vector>
 #include <utility>
 
-#include "base/containers/flat_map.h"
-#include "base/time/time.h"
 #include "base/android/jni_android.h"
-#include "base/android/jni_string.h"
 #include "base/android/jni_array.h"
+#include "base/android/jni_string.h"
+#include "base/containers/flat_map.h"
 #include "base/json/json_writer.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/browser/ads_service_factory.h"
+#include "base/time/time.h"
+#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/build/android/jni_headers/BraveRewardsNativeWorker_jni.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "content/public/browser/url_data_source.h"
-#include "brave/build/android/jni_headers/BraveRewardsNativeWorker_jni.h"
 
 #define DEFAULT_ADS_PER_HOUR 2
 #define DEFAULT_AUTO_CONTRIBUTION_AMOUNT 10
@@ -72,7 +72,7 @@ void BraveRewardsNativeWorker::GetRewardsParameters(JNIEnv* env) {
   if (brave_rewards_service_) {
     brave_rewards_service_->GetRewardsParameters(
         base::BindOnce(&BraveRewardsNativeWorker::OnGetRewardsParameters,
-                       base::Unretained(this), brave_rewards_service_));
+                       weak_factory_.GetWeakPtr(), brave_rewards_service_));
   }
 }
 
@@ -218,10 +218,8 @@ void BraveRewardsNativeWorker::OnGetRewardsParameters(
   }
 
   if (rewards_service) {
-    rewards_service->FetchBalance(
-      base::Bind(
-        &BraveRewardsNativeWorker::OnBalance,
-        weak_factory_.GetWeakPtr()));
+    rewards_service->FetchBalance(base::BindOnce(
+        &BraveRewardsNativeWorker::OnBalance, weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -265,9 +263,8 @@ void BraveRewardsNativeWorker::FetchGrants(JNIEnv* env) {
 
 void BraveRewardsNativeWorker::StartProcess(JNIEnv* env) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->StartProcess(base::Bind(
-          &BraveRewardsNativeWorker::OnStartProcess,
-          weak_factory_.GetWeakPtr()));
+    brave_rewards_service_->StartProcess(base::BindOnce(
+        &BraveRewardsNativeWorker::OnStartProcess, weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -286,7 +283,7 @@ void BraveRewardsNativeWorker::GetCurrentBalanceReport(JNIEnv* env) {
     brave_rewards_service_->GetBalanceReport(
         exploded.month, exploded.year,
         base::BindOnce(&BraveRewardsNativeWorker::OnGetCurrentBalanceReport,
-                       base::Unretained(this), brave_rewards_service_));
+                       weak_factory_.GetWeakPtr(), brave_rewards_service_));
   }
 }
 
@@ -352,10 +349,10 @@ void BraveRewardsNativeWorker::GetGrant(JNIEnv* env,
   if (brave_rewards_service_) {
     std::string promotion_id =
       base::android::ConvertJavaStringToUTF8(env, promotionId);
-    brave_rewards_service_->ClaimPromotion(promotion_id,
-      base::BindOnce(
-        &BraveRewardsNativeWorker::OnClaimPromotion,
-        base::Unretained(this)));
+    brave_rewards_service_->ClaimPromotion(
+        promotion_id,
+        base::BindOnce(&BraveRewardsNativeWorker::OnClaimPromotion,
+                       weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -389,17 +386,17 @@ base::android::ScopedJavaLocalRef<jobjectArray>
 
 void BraveRewardsNativeWorker::GetPendingContributionsTotal(JNIEnv* env) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->GetPendingContributionsTotal(base::Bind(
-          &BraveRewardsNativeWorker::OnGetPendingContributionsTotal,
-          weak_factory_.GetWeakPtr()));
+    brave_rewards_service_->GetPendingContributionsTotal(base::BindOnce(
+        &BraveRewardsNativeWorker::OnGetPendingContributionsTotal,
+        weak_factory_.GetWeakPtr()));
   }
 }
 
 void BraveRewardsNativeWorker::GetRecurringDonations(JNIEnv* env) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->GetRecurringTips(base::Bind(
-          &BraveRewardsNativeWorker::OnGetRecurringTips,
-          weak_factory_.GetWeakPtr()));
+    brave_rewards_service_->GetRecurringTips(
+        base::BindOnce(&BraveRewardsNativeWorker::OnGetRecurringTips,
+                       weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -426,8 +423,8 @@ bool BraveRewardsNativeWorker::IsCurrentPublisherInRecurrentDonations(
 void BraveRewardsNativeWorker::GetAutoContributeProperties(JNIEnv* env) {
   if (brave_rewards_service_) {
     brave_rewards_service_->GetAutoContributeProperties(
-        base::Bind(&BraveRewardsNativeWorker::OnGetAutoContributeProperties,
-                   weak_factory_.GetWeakPtr()));
+        base::BindOnce(&BraveRewardsNativeWorker::OnGetAutoContributeProperties,
+                       weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -452,17 +449,17 @@ bool BraveRewardsNativeWorker::IsAutoContributeEnabled(JNIEnv* env) {
 
 void BraveRewardsNativeWorker::GetReconcileStamp(JNIEnv* env) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->GetReconcileStamp(base::Bind(
-            &BraveRewardsNativeWorker::OnGetGetReconcileStamp,
-            weak_factory_.GetWeakPtr()));
+    brave_rewards_service_->GetReconcileStamp(
+        base::BindOnce(&BraveRewardsNativeWorker::OnGetGetReconcileStamp,
+                       weak_factory_.GetWeakPtr()));
   }
 }
 
 void BraveRewardsNativeWorker::ResetTheWholeState(JNIEnv* env) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->CompleteReset(base::Bind(
-           &BraveRewardsNativeWorker::OnResetTheWholeState,
-           weak_factory_.GetWeakPtr()));
+    brave_rewards_service_->CompleteReset(
+        base::BindOnce(&BraveRewardsNativeWorker::OnResetTheWholeState,
+                       weak_factory_.GetWeakPtr()));
   } else {
     JNIEnv* env = base::android::AttachCurrentThread();
 
@@ -605,13 +602,6 @@ void BraveRewardsNativeWorker::SetAutoContributionAmount(JNIEnv* env,
   }
 }
 
-bool BraveRewardsNativeWorker::IsAnonWallet(JNIEnv* env) {
-  if (brave_rewards_service_) {
-    return brave_rewards_service_->OnlyAnonWallet();
-  }
-  return false;
-}
-
 bool BraveRewardsNativeWorker::IsRewardsEnabled(JNIEnv* env) {
   if (brave_rewards_service_) {
     return brave_rewards_service_->IsRewardsEnabled();
@@ -623,7 +613,7 @@ void BraveRewardsNativeWorker::GetExternalWallet(JNIEnv* env) {
   if (brave_rewards_service_) {
     brave_rewards_service_->GetExternalWallet(
         base::BindOnce(&BraveRewardsNativeWorker::OnGetExternalWallet,
-                       base::Unretained(this)));
+                       weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -642,6 +632,7 @@ void BraveRewardsNativeWorker::OnGetExternalWallet(
     dict.SetIntKey("status", static_cast<int32_t>(wallet->status));
     dict.SetStringKey("verify_url", wallet->verify_url);
     dict.SetStringKey("add_url", wallet->add_url);
+    dict.SetStringKey("type", wallet->type);
     dict.SetStringKey("withdraw_url", wallet->withdraw_url);
     dict.SetStringKey("user_name", wallet->user_name);
     dict.SetStringKey("account_url", wallet->account_url);
@@ -678,10 +669,10 @@ void BraveRewardsNativeWorker::ProcessRewardsPageUrl(JNIEnv* env,
   if (brave_rewards_service_) {
     std::string cpath = base::android::ConvertJavaStringToUTF8(env, path);
     std::string cquery = base::android::ConvertJavaStringToUTF8(env, query);
-    auto callback = base::Bind(
-        &BraveRewardsNativeWorker::OnProcessRewardsPageUrl,
-        base::Unretained(this));
-    brave_rewards_service_->ProcessRewardsPageUrl(cpath, cquery, callback);
+    brave_rewards_service_->ProcessRewardsPageUrl(
+        cpath, cquery,
+        base::BindOnce(&BraveRewardsNativeWorker::OnProcessRewardsPageUrl,
+                       weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -739,7 +730,7 @@ void BraveRewardsNativeWorker::RefreshPublisher(
   brave_rewards_service_->RefreshPublisher(
       base::android::ConvertJavaStringToUTF8(env, publisher_key),
       base::BindOnce(&BraveRewardsNativeWorker::OnRefreshPublisher,
-                     base::Unretained(this)));
+                     weak_factory_.GetWeakPtr()));
 }
 
 void BraveRewardsNativeWorker::OnRefreshPublisher(

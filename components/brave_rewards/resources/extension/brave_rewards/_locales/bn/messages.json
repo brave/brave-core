@@ -51,18 +51,6 @@
     "message": "বিস্তারিত বিবরণগুলি",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "আপনার ব্যালেন্স",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "BAT পয়েন্টগুলি",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "আপনার পছন্দের বিষয়বস্তু প্রস্তুতকারকদের অবদান রাখতে Brave পুরস্কারগুলি ব্যবহার করা যাবে। BAT পয়েন্টগুলি BAT এ বিনিময় করা যাবে না।",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "চালু",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "মঞ্জুরি দেওয়া টোকেনের দাবি করা হয়েছে",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "অনুদানজনিত পয়েন্ট দাবি করা হয়েছে",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "Brave বিজ্ঞাপন থেকে করা উপার্জন",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "একবারের দান/পরামর্শ",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "মেয়াদোত্তীর্ণ হচ্ছে এততে",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "এই নির্মাতাটি Brave ব্যবহারকারীদের থেকে অবদানগুলি পেতে এখনও সাইন আপ করেনি। আপনার পাঠানো যে কোনও টিপস যাচাই না হওয়া অবধি আপনার ওয়ালেটে থেকে যাবে।",
+    "message": "এই স্রষ্টা বর্তমানে আপনার ওয়ালেট থেকে টিপগুলি পাওয়ার জন্য কনফিগার করা নেই। আপনার করা যে কোনও টিপ আপনার ওয়ালেটে পড়ে থাকবে এবং 90 দিন পরে স্বয়ংক্রিয়ভাবে পুনঃপ্রচেষ্টা করবে।",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "বিজ্ঞাপনগুলি চালু করুন",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "মুক্ত টোকেন মঞ্জুরি",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "অনুদানজনিত পয়েন্ট বিনামূল্যে",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "আপনি একটি বিজ্ঞাপনের পুরস্কার উপার্জন করেছেন!",
@@ -591,17 +567,9 @@
     "message": "টোকেন",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "পয়েন্টসমূহ",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "টোকেন মঞ্জুরি",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "পয়েন্ট অনুদান",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "হ্যালো, $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "একটি Uphold অ্যাকাউন্ট তৈরি করতে আপনার অন্তত 25 BAT থাকতে হবে। অনুগ্রহ করে পরে আবার চেষ্টা করুন। \n আপনার ইতিমধ্যে একটি যাচাইকৃত Uphold অ্যাকাউন্ট থাকলে, লগইন করা অবিরত রাখুন।",
-    "description": "Text for login button"
+    "message": "একটি ওয়ালেট তৈরি করতে এবং তা বজায় রাখতে আপনার $amount$ BAT এর একটি ন্যুনতম ব্যালেন্স লাগবে। আপনার ইতিমধ্যে একটি যাচাইকৃত আপহোল্ড অ্যাকাউন্ট থাকলে, লগইন করা অবিরত রাখুন।",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "সংযুক্ত",
@@ -789,16 +763,40 @@
     "message": "Brave রিওয়ার্ডস ব্যবহার করে আপনি ওয়েবকে সবার জন্য আরও ভাল জায়গা করতে সহায়তা করছেন। এবং এটি দুর্দান্ত!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "জাপানে Brave পুরষ্কারগুলি একটি নতুন সিস্টেমে স্যুইচ করছে!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "আপনার ওয়ালেট যাচাই করুন",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "আরও জানুন",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "বিজ্ঞাপনগুলো দেখার জন্য আপনার উপার্জিত টোকেনগুলো উইথড্র করতে, আপনাকে আপনার ওয়ালেট যাচাই করতে হবে।",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "13 ই মার্চের মধ্যে আপনার BAP ব্যবহার করুন। এর পরে, BAP বন্ধ করা হবে।",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "সেটি পরে করুন",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "আমার ওয়ালেট যাচাই করুন",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "bitFlyer ওয়ালেট হল bitFlyer, Inc. দ্বারা পরিচালিত একটি পরিষেবা।",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "আপনার ওয়ালেট ভেরিফাই করে এবং সেটি একটি bitFlyer অ্যাকাউন্টের সাথে লিঙ্ক করে, Brave Rewards এর মাধ্যমে আপনার উপার্জিত টোকেনগুলো আপনি আরও সহজে সংরক্ষণ ও পরিচালনা করতে পারবেন",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "আপনার bitFlyer অ্যাকাউন্টের সাথে Brave ব্রাউজারটি কিভাবে সংযুত করবেন সে সম্বন্ধে $link_begin$আরো জানুন$link_end$।",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

@@ -24,8 +24,12 @@ import {
 } from '../lib/interfaces'
 
 import { HostContext } from '../lib/host_context'
-import { Locale, LocaleContext } from '../../shared/lib/locale_context'
-import { formatLocaleTemplate } from '../lib/formatting'
+
+import {
+  Locale,
+  LocaleContext,
+  formatMessage
+} from '../../shared/lib/locale_context'
 
 import { MediaCard } from './media_card'
 import { NewTabLink } from '../../shared/components/new_tab_link'
@@ -182,6 +186,10 @@ function showUnverifiedNotice (
   switch (publisherInfo.status) {
     case PublisherStatus.UPHOLD_VERIFIED:
       return externalWalletInfo.type !== 'uphold'
+    case PublisherStatus.BITFLYER_VERIFIED:
+      return externalWalletInfo.type !== 'bitflyer'
+    case PublisherStatus.GEMINI_VERIFIED:
+      return externalWalletInfo.type !== 'gemini'
   }
 
   // Show the notice if the user does not have any brave funds
@@ -266,12 +274,11 @@ function getDescription (
   mediaMetaData: MediaMetaData
 ) {
   const { getString } = locale
+  const { name } = publisherInfo
 
   if (mediaMetaData.mediaType === 'twitter') {
     const postTime = getPostTimeString(mediaMetaData.postTimestamp)
-    const title = formatLocaleTemplate(getString('postHeaderTwitter'), {
-      user: publisherInfo.name
-    })
+    const title = formatMessage(getString('postHeaderTwitter'), [name])
     return (
       <MediaCard title={title} postTime={postTime} icon={<TwitterColorIcon />}>
         {mediaMetaData.postText}
@@ -281,9 +288,7 @@ function getDescription (
 
   if (mediaMetaData.mediaType === 'reddit') {
     const postTime = getPostTimeString(mediaMetaData.postTimestamp)
-    const title = formatLocaleTemplate(getString('postHeader'), {
-      user: publisherInfo.name
-    })
+    const title = formatMessage(getString('postHeader'), [name])
     return (
       <MediaCard title={title} postTime={postTime} icon={<RedditColorIcon />}>
         {mediaMetaData.postText}

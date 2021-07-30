@@ -15,7 +15,8 @@
   BRAVE_FINGERPRINTING_V2,                                                     \
   BRAVE_SHIELDS,                                                               \
   BRAVE_REFERRERS,                                                             \
-  BRAVE_COOKIES
+  BRAVE_COOKIES,                                                               \
+  BRAVE_SPEEDREADER
 // clang-format on
 
 #include "../../../../../../components/content_settings/core/common/content_settings_types.h"

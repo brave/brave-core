@@ -1,0 +1,26 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+brave_browser_component_updater_sources = [
+  "//brave/browser/component_updater/brave_component_updater_configurator.cc",
+  "//brave/browser/component_updater/brave_component_updater_configurator.h",
+]
+
+brave_browser_component_updater_deps = [
+  "//base",
+  "//brave/common:switches",
+  "//chrome/browser:browser_process",
+  "//components/component_updater",
+  "//components/crx_file",
+  "//components/prefs",
+  "//components/services/patch/content",
+  "//components/services/unzip/content",
+  "//components/update_client",
+  "//components/update_client:network_impl",
+  "//components/update_client:patch_impl",
+  "//components/update_client:unzip_impl",
+  "//content/public/browser",
+  "//services/network/public/cpp",
+]

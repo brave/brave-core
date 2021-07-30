@@ -22,7 +22,7 @@ namespace sidebar {
 // This manages per-context persisted sidebar items list.
 class SidebarService : public KeyedService {
  public:
-  enum ShowSidebarOption {
+  enum class ShowSidebarOption {
     kShowAlways = 0,
     kShowOnMouseOver,
     kShowOnClick,
@@ -32,15 +32,16 @@ class SidebarService : public KeyedService {
   class Observer : public base::CheckedObserver {
    public:
     virtual void OnItemAdded(const SidebarItem& item, int index) {}
+    virtual void OnItemMoved(const SidebarItem& item, int from, int to) {}
     virtual void OnWillRemoveItem(const SidebarItem& item, int index) {}
     virtual void OnItemRemoved(const SidebarItem& item, int index) {}
-    virtual void OnShowSidebarOptionChanged(int option) {}
+    virtual void OnShowSidebarOptionChanged(ShowSidebarOption option) {}
 
    protected:
     ~Observer() override = default;
   };
 
-  static void RegisterPrefs(PrefRegistrySimple* registry);
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
   explicit SidebarService(PrefService* prefs);
   ~SidebarService() override;
@@ -49,13 +50,14 @@ class SidebarService : public KeyedService {
 
   void AddItem(const SidebarItem& item);
   void RemoveItemAt(int index);
+  void MoveItem(int from, int to);
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
   std::vector<SidebarItem> GetNotAddedDefaultSidebarItems() const;
-  int GetSidebarShowOption() const;
-  void SetSidebarShowOption(int show_options);
+  ShowSidebarOption GetSidebarShowOption() const;
+  void SetSidebarShowOption(ShowSidebarOption show_options);
 
   SidebarService(const SidebarService&) = delete;
   SidebarService& operator=(const SidebarService&) = delete;

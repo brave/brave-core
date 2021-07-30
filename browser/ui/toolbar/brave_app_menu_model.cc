@@ -5,8 +5,26 @@
 
 #include "brave/browser/ui/toolbar/brave_app_menu_model.h"
 
+#include <string>
+
+#include "base/strings/utf_string_conversions.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/grit/generated_resources.h"
+
+#if BUILDFLAG(IPFS_ENABLED)
+#include "brave/browser/ipfs/import/ipfs_import_controller.h"
+#include "brave/browser/ipfs/ipfs_service_factory.h"
+#include "brave/browser/ipfs/ipfs_tab_helper.h"
+#include "brave/components/ipfs/ipfs_utils.h"
+#include "brave/components/ipfs/keys/ipns_keys_manager.h"
+#include "brave/grit/brave_generated_resources.h"
+#include "brave/grit/brave_theme_resources.h"
+#include "ui/base/resource/resource_bundle.h"
+#include "ui/gfx/image/image_skia.h"
+#include "ui/gfx/paint_vector_icon.h"
+#endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
@@ -19,6 +37,8 @@
 namespace {
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
+
+using ShowSidebarOption = sidebar::SidebarService::ShowSidebarOption;
 
 class SidebarMenuModel : public ui::SimpleMenuModel,
                          public ui::SimpleMenuModel::Delegate {
@@ -62,25 +82,51 @@ class SidebarMenuModel : public ui::SimpleMenuModel,
                  l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_NEVER));
   }
 
-  int ConvertIDCToSidebarShowOptions(int id) const {
+  ShowSidebarOption ConvertIDCToSidebarShowOptions(int id) const {
     switch (id) {
       case IDC_SIDEBAR_SHOW_OPTION_ALWAYS:
-        return sidebar::SidebarService::kShowAlways;
+        return ShowSidebarOption::kShowAlways;
       case IDC_SIDEBAR_SHOW_OPTION_MOUSEOVER:
-        return sidebar::SidebarService::kShowOnMouseOver;
+        return ShowSidebarOption::kShowOnMouseOver;
       case IDC_SIDEBAR_SHOW_OPTION_ONCLICK:
-        return sidebar::SidebarService::kShowOnClick;
+        return ShowSidebarOption::kShowOnClick;
       case IDC_SIDEBAR_SHOW_OPTION_NEVER:
-        return sidebar::SidebarService::kShowNever;
+        return ShowSidebarOption::kShowNever;
       default:
         break;
     }
     NOTREACHED();
-    return -1;
+    return ShowSidebarOption::kShowAlways;
   }
 
   Browser* browser_ = nullptr;
 };
+
+#endif
+
+#if BUILDFLAG(IPFS_ENABLED)
+// For convenience, we show the last part of the key in the context menu item.
+// The length of the key is divided to this constant and the last part is taken.
+int kKeyTrimRate = 5;
+
+bool IsIpfsServiceLaunched(content::BrowserContext* browser_context) {
+  auto* service = ipfs::IpfsServiceFactory::GetForContext(browser_context);
+  return service && service->IsDaemonLaunched();
+}
+
+ipfs::IpnsKeysManager* GetIpnsKeysManager(
+    content::BrowserContext* browser_context) {
+  DCHECK(browser_context);
+  auto* service = ipfs::IpfsServiceFactory::GetForContext(browser_context);
+  if (!service)
+    return nullptr;
+  return service->GetIpnsKeysManager();
+}
+
+bool IpnsKeysAvailable(content::BrowserContext* browser_context) {
+  auto* keys_manager = GetIpnsKeysManager(browser_context);
+  return keys_manager && keys_manager->GetKeys().size();
+}
 
 #endif
 
@@ -89,7 +135,13 @@ BraveAppMenuModel::BraveAppMenuModel(
     ui::AcceleratorProvider* provider,
     Browser* browser,
     AppMenuIconController* app_menu_icon_controller)
-    : AppMenuModel(provider, browser, app_menu_icon_controller) {}
+    : AppMenuModel(provider, browser, app_menu_icon_controller)
+#if BUILDFLAG(IPFS_ENABLED)
+      ,
+      ipfs_submenu_model_(this)
+#endif
+{
+}
 
 BraveAppMenuModel::~BraveAppMenuModel() = default;
 
@@ -186,8 +238,172 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
   InsertItemWithStringIdAt(GetIndexOfCommandId(IDC_ABOUT),
                            IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER,
                            IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER);
+
+#if BUILDFLAG(IPFS_ENABLED)
+  if (IsCommandIdEnabled(IDC_APP_MENU_IPFS)) {
+    int keys_command_index = IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_START;
+    keys_command_index += AddIpfsImportMenuItem(
+        IDC_APP_MENU_IPFS_IMPORT_LOCAL_FILE,
+        IDS_APP_MENU_IPFS_IMPORT_LOCAL_FILE, keys_command_index);
+    keys_command_index += AddIpfsImportMenuItem(
+        IDC_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER,
+        IDS_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER, keys_command_index);
+    int index = IsCommandIdEnabled(IDC_SHOW_BRAVE_SYNC)
+                    ? GetIndexOfBraveSyncItem() + 1
+                    : GetIndexOfBraveAdBlockItem();
+    InsertSubMenuWithStringIdAt(index, IDC_APP_MENU_IPFS, IDS_APP_MENU_IPFS,
+                                &ipfs_submenu_model_);
+    auto& bundle = ui::ResourceBundle::GetSharedInstance();
+    const auto& ipfs_logo = *bundle.GetImageSkiaNamed(IDR_BRAVE_IPFS_LOGO);
+    ui::ImageModel model = ui::ImageModel::FromImageSkia(ipfs_logo);
+    SetIcon(index, model);
+  }
+#endif
 }
 
+void BraveAppMenuModel::ExecuteCommand(int id, int event_flags) {
+#if BUILDFLAG(IPFS_ENABLED)
+  if (id >= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_START &&
+      id <= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_END) {
+    int ipfs_command = GetSelectedIPFSCommandId(id);
+    if (ipfs_command == -1)
+      return;
+    auto* submenu = ipns_submenu_models_[ipfs_command].get();
+    auto command_index = submenu->GetIndexOfCommandId(id);
+    if (command_index == -1)
+      return;
+    auto label = base::UTF16ToUTF8(submenu->GetLabelAt(command_index));
+    auto key_name = (command_index > 0) ? label : std::string();
+    ExecuteIPFSCommand(ipfs_command, key_name);
+    return;
+  }
+  switch (id) {
+    case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FILE:
+    case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER:
+      ExecuteIPFSCommand(id, std::string());
+      return;
+  }
+#endif
+  return AppMenuModel::ExecuteCommand(id, event_flags);
+}
+
+bool BraveAppMenuModel::IsCommandIdEnabled(int id) const {
+#if BUILDFLAG(IPFS_ENABLED)
+  content::BrowserContext* browser_context =
+      static_cast<content::BrowserContext*>(browser()->profile());
+  if (id >= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_START &&
+      id <= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_END) {
+    if (!IpnsKeysAvailable(browser_context))
+      return false;
+    if (ipns_keys_title_item_index_ != -1 &&
+        FindCommandIndex(id) == ipns_keys_title_item_index_) {
+      return false;
+    }
+    return true;
+  }
+
+  switch (id) {
+    case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FILE:
+    case IDC_APP_MENU_IPFS:
+    case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER:
+      return ipfs::IsIpfsMenuEnabled(browser()->profile()->GetPrefs()) &&
+             IsIpfsServiceLaunched(browser_context);
+  }
+#endif
+  return AppMenuModel::IsCommandIdEnabled(id);
+}
+
+#if BUILDFLAG(IPFS_ENABLED)
+int BraveAppMenuModel::AddIpnsKeysToSubMenu(ui::SimpleMenuModel* submenu,
+                                            ipfs::IpnsKeysManager* manager,
+                                            int key_command_id) {
+  if (!manager)
+    return 0;
+  int command_id = key_command_id + 1;
+
+  auto no_key_title = l10n_util::GetStringUTF16(IDS_IMPORT_WITHOUT_PUBLISHING);
+  submenu->AddItem(command_id++, no_key_title);
+
+  submenu->AddSeparator(ui::NORMAL_SEPARATOR);
+
+  auto ipns_key_title =
+      l10n_util::GetStringUTF16(IDS_IMPORT_USING_IPNS_KEYS_TITLE);
+  submenu->AddItem(command_id, ipns_key_title);
+  ipns_keys_title_item_index_ = command_id - key_command_id;
+  command_id++;
+
+  for (const auto& it : manager->GetKeys()) {
+    submenu->AddItem(command_id, base::ASCIIToUTF16(it.first));
+    int length = std::ceil(it.second.size() / kKeyTrimRate);
+    int size = it.second.size();
+    auto key_part = it.second.substr(size - length, length);
+    auto key_hash_title = std::string("...") + key_part;
+    submenu->SetMinorText(command_id - key_command_id,
+                          base::ASCIIToUTF16(key_hash_title));
+    command_id++;
+  }
+  return command_id - key_command_id;
+}
+
+int BraveAppMenuModel::FindCommandIndex(int command_id) const {
+  for (const auto& it : ipns_submenu_models_) {
+    int index = it.second->GetIndexOfCommandId(command_id);
+    if (index == -1)
+      continue;
+    return index;
+  }
+  return -1;
+}
+
+void BraveAppMenuModel::ExecuteIPFSCommand(int id, const std::string& key) {
+  auto* active_content = browser()->tab_strip_model()->GetActiveWebContents();
+  ipfs::IPFSTabHelper* helper =
+      ipfs::IPFSTabHelper::FromWebContents(active_content);
+  if (!helper)
+    return;
+  switch (id) {
+    case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FILE:
+      helper->ShowImportDialog(ui::SelectFileDialog::SELECT_OPEN_FILE, key);
+      break;
+    case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER:
+      helper->ShowImportDialog(ui::SelectFileDialog::SELECT_EXISTING_FOLDER,
+                               key);
+      break;
+  }
+}
+
+int BraveAppMenuModel::GetSelectedIPFSCommandId(int id) const {
+  for (const auto& it : ipns_submenu_models_) {
+    auto index = it.second->GetIndexOfCommandId(id);
+    if (index == -1)
+      continue;
+    return it.first;
+  }
+  return -1;
+}
+int BraveAppMenuModel::AddIpfsImportMenuItem(int action_command_id,
+                                             int string_id,
+                                             int keys_command_id) {
+  content::BrowserContext* browser_context =
+      static_cast<content::BrowserContext*>(browser()->profile());
+  if (IpnsKeysAvailable(browser_context)) {
+    DCHECK(!ipns_submenu_models_.count(action_command_id));
+    ipns_submenu_models_[action_command_id] =
+        std::make_unique<ui::SimpleMenuModel>(this);
+    auto* keys_submenu = ipns_submenu_models_[action_command_id].get();
+    DCHECK(keys_submenu);
+    auto* keys_manager = GetIpnsKeysManager(browser_context);
+    DCHECK(keys_manager);
+    auto items_added =
+        AddIpnsKeysToSubMenu(keys_submenu, keys_manager, keys_command_id);
+    ipfs_submenu_model_.AddSubMenuWithStringId(action_command_id, string_id,
+                                               keys_submenu);
+    return items_added;
+  }
+  ipfs_submenu_model_.AddItemWithStringId(action_command_id, string_id);
+  return 0;
+}
+#endif
 void BraveAppMenuModel::InsertAlternateProfileItems() {
   // Insert Open Guest Window and Create New Profile items just above
   // the zoom item unless these items are disabled.

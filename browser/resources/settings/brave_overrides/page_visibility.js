@@ -24,6 +24,8 @@ function getPageVisibility () {
       braveSync: false,
       getStarted: false,
       newTab: false,
+      braveIPFS: false,
+      braveWallet: false
     }
   }
   // We need to specify values for every attribute in pageVisibility instead of

@@ -11,12 +11,12 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/ui/views/sidebar/sidebar_add_item_bubble_delegate_view.h"
-#include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
+#include "brave/browser/ui/views/sidebar/sidebar_item_add_button.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "chrome/common/webui_url_constants.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/theme_provider.h"
@@ -26,6 +26,8 @@
 #include "ui/views/controls/menu/menu_runner.h"
 
 namespace {
+
+using ShowSidebarOption = sidebar::SidebarService::ShowSidebarOption;
 
 // To use bold font for title at index 0.
 class ControlViewMenuModel : public ui::SimpleMenuModel {
@@ -55,7 +57,7 @@ SidebarControlView::SidebarControlView(BraveBrowser* browser)
   UpdateItemAddButtonState();
   UpdateSettingsButtonState();
 
-  sidebar_model_observed_.Add(browser_->sidebar_controller()->model());
+  sidebar_model_observed_.Observe(browser_->sidebar_controller()->model());
 }
 
 void SidebarControlView::Layout() {
@@ -134,16 +136,16 @@ void SidebarControlView::ShowContextMenuForViewImpl(
   context_menu_model_->AddTitle(
       l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_TITLE));
   context_menu_model_->AddCheckItem(
-      sidebar::SidebarService::kShowAlways,
+      static_cast<int>(ShowSidebarOption::kShowAlways),
       l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_ALWAYS));
   context_menu_model_->AddCheckItem(
-      sidebar::SidebarService::kShowOnMouseOver,
+      static_cast<int>(ShowSidebarOption::kShowOnMouseOver),
       l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER));
   context_menu_model_->AddCheckItem(
-      sidebar::SidebarService::kShowOnClick,
+      static_cast<int>(ShowSidebarOption::kShowOnClick),
       l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_ONCLICK));
   context_menu_model_->AddCheckItem(
-      sidebar::SidebarService::kShowNever,
+      static_cast<int>(ShowSidebarOption::kShowNever),
       l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_NEVER));
   context_menu_runner_ = std::make_unique<views::MenuRunner>(
       context_menu_model_.get(), views::MenuRunner::CONTEXT_MENU);
@@ -155,13 +157,22 @@ void SidebarControlView::ShowContextMenuForViewImpl(
 void SidebarControlView::ExecuteCommand(int command_id, int event_flags) {
   auto* service =
       sidebar::SidebarServiceFactory::GetForProfile(browser_->profile());
-  service->SetSidebarShowOption(command_id);
+  service->SetSidebarShowOption(static_cast<ShowSidebarOption>(command_id));
 }
 
 bool SidebarControlView::IsCommandIdChecked(int command_id) const {
   const auto* service =
       sidebar::SidebarServiceFactory::GetForProfile(browser_->profile());
-  return command_id == service->GetSidebarShowOption();
+  return static_cast<ShowSidebarOption>(command_id) ==
+         service->GetSidebarShowOption();
+}
+
+std::u16string SidebarControlView::GetTooltipTextFor(
+    const views::View* view) const {
+  if (view == sidebar_settings_view_)
+    return l10n_util::GetStringUTF16(IDS_SIDEBAR_SETTINGS_BUTTON_TOOLTIP);
+
+  return std::u16string();
 }
 
 void SidebarControlView::OnItemAdded(const sidebar::SidebarItem& item,
@@ -179,30 +190,20 @@ void SidebarControlView::AddChildViews() {
       AddChildView(std::make_unique<SidebarItemsScrollView>(browser_));
 
   sidebar_item_add_view_ =
-      AddChildView(std::make_unique<SidebarButtonView>(nullptr));
+      AddChildView(std::make_unique<SidebarItemAddButton>(browser_));
   sidebar_item_add_view_->set_context_menu_controller(this);
-  sidebar_item_add_view_->SetCallback(
-      base::BindRepeating(&SidebarControlView::OnButtonPressed,
-                          base::Unretained(this), sidebar_item_add_view_));
 
   sidebar_settings_view_ =
-      AddChildView(std::make_unique<SidebarButtonView>(nullptr));
+      AddChildView(std::make_unique<SidebarButtonView>(this));
   sidebar_settings_view_->SetCallback(
       base::BindRepeating(&SidebarControlView::OnButtonPressed,
                           base::Unretained(this), sidebar_settings_view_));
 }
 
 void SidebarControlView::OnButtonPressed(views::View* view) {
-  if (view == sidebar_item_add_view_) {
-    auto* bubble = views::BubbleDialogDelegateView::CreateBubble(
-        new SidebarAddItemBubbleDelegateView(browser_, view));
-    bubble->Show();
-    return;
-  }
-
   if (view == sidebar_settings_view_) {
-    // TODO(simonhong): Handle settings button here.
-    NOTIMPLEMENTED();
+    browser_->sidebar_controller()->LoadAtTab(
+        GURL(chrome::kChromeUISettingsURL));
   }
 }
 
@@ -218,38 +219,6 @@ void SidebarControlView::UpdateItemAddButtonState() {
       !sidebar::CanAddCurrentActiveTabToSidebar(browser_)) {
     should_enable = false;
   }
-
-  SkColor button_base_color = SK_ColorWHITE;
-  SkColor button_disabled_color = SK_ColorWHITE;
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
-    button_base_color = theme_provider->GetColor(
-        BraveThemeProperties::COLOR_SIDEBAR_BUTTON_BASE);
-    button_disabled_color = theme_provider->GetColor(
-        BraveThemeProperties::COLOR_SIDEBAR_ADD_BUTTON_DISABLED);
-  }
-
-  // Update add button image based on enabled state.
-  sidebar_item_add_view_->SetImage(views::Button::STATE_NORMAL, nullptr);
-  sidebar_item_add_view_->SetImage(views::Button::STATE_DISABLED, nullptr);
-  sidebar_item_add_view_->SetImage(views::Button::STATE_HOVERED, nullptr);
-  sidebar_item_add_view_->SetImage(views::Button::STATE_PRESSED, nullptr);
-  auto& bundle = ui::ResourceBundle::GetSharedInstance();
-  if (should_enable) {
-    sidebar_item_add_view_->SetImage(
-        views::Button::STATE_NORMAL,
-        gfx::CreateVectorIcon(kSidebarAddItemIcon, button_base_color));
-    sidebar_item_add_view_->SetImage(
-        views::Button::STATE_HOVERED,
-        bundle.GetImageSkiaNamed(IDR_SIDEBAR_ITEM_ADD_FOCUSED));
-    sidebar_item_add_view_->SetImage(
-        views::Button::STATE_PRESSED,
-        bundle.GetImageSkiaNamed(IDR_SIDEBAR_ITEM_ADD_FOCUSED));
-  } else {
-    sidebar_item_add_view_->SetImage(
-        views::Button::STATE_NORMAL,
-        gfx::CreateVectorIcon(kSidebarAddItemIcon, button_disabled_color));
-  }
-
   sidebar_item_add_view_->SetEnabled(should_enable);
 }
 
@@ -270,4 +239,21 @@ void SidebarControlView::UpdateSettingsButtonState() {
         views::Button::STATE_PRESSED,
         bundle.GetImageSkiaNamed(IDR_SIDEBAR_SETTINGS_FOCUSED));
   }
+}
+
+bool SidebarControlView::IsItemReorderingInProgress() const {
+  return sidebar_items_view_->IsItemReorderingInProgress();
+}
+
+bool SidebarControlView::IsBubbleWidgetVisible() const {
+  if (context_menu_runner_ && context_menu_runner_->IsRunning())
+    return true;
+
+  if (sidebar_item_add_view_->IsBubbleVisible())
+    return true;
+
+  if (sidebar_items_view_->IsBubbleVisible())
+    return true;
+
+  return false;
 }

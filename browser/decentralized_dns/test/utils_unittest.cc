@@ -73,6 +73,15 @@ TEST_P(UtilsUnitTest, IsUnstoppableDomainsResolveMethodDoH) {
             IsUnstoppableDomainsResolveMethodDoH(local_state()));
 }
 
+TEST_P(UtilsUnitTest, IsUnstoppableDomainsResolveMethodEthereum) {
+  EXPECT_FALSE(IsUnstoppableDomainsResolveMethodEthereum(local_state()));
+
+  local_state()->SetInteger(kUnstoppableDomainsResolveMethod,
+                            static_cast<int>(ResolveMethodTypes::ETHEREUM));
+  EXPECT_EQ(feature_enabled(),
+            IsUnstoppableDomainsResolveMethodEthereum(local_state()));
+}
+
 TEST_P(UtilsUnitTest, IsENSTLD) {
   EXPECT_TRUE(IsENSTLD(GURL("http://test.eth")));
   EXPECT_FALSE(IsENSTLD(GURL("http://test.com")));

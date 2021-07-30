@@ -19,6 +19,7 @@
 #include "base/time/default_tick_clock.h"
 #include "brave/ios/browser/metrics/ios_brave_metrics_services_manager_client.h"
 #include "components/breadcrumbs/core/breadcrumb_manager.h"
+#include "components/breadcrumbs/core/breadcrumb_persistent_storage_manager.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/gcm_driver/gcm_driver.h"
 #include "components/history/core/browser/history_service.h"
@@ -36,7 +37,6 @@
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager_impl.h"
 #include "ios/chrome/browser/chrome_paths.h"
 #import "ios/chrome/browser/crash_report/breadcrumbs/application_breadcrumbs_logger.h"
-#include "ios/chrome/browser/crash_report/breadcrumbs/breadcrumb_persistent_storage_manager.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/ios_chrome_io_thread.h"
 #include "ios/chrome/browser/policy/browser_policy_connector_ios.h"
@@ -307,7 +307,7 @@ BrowserPolicyConnectorIOS* ApplicationContextImpl::GetBrowserPolicyConnector() {
   return nullptr;
 }
 
-BreadcrumbPersistentStorageManager*
+breadcrumbs::BreadcrumbPersistentStorageManager*
 ApplicationContextImpl::GetBreadcrumbPersistentStorageManager() {
   DCHECK(thread_checker_.CalledOnValidThread());
   return nullptr;

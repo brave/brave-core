@@ -7,6 +7,7 @@ import AsyncActionHandler from '../../common/AsyncActionHandler'
 import * as Background from '../../common/Background'
 import * as Actions from '../actions/today_actions'
 import { ApplicationState } from '../reducers'
+import { saveIsBraveTodayOptedIn } from '../api/preferences'
 
 function storeInHistoryState (data: Object) {
   const oldHistoryState = (typeof history.state === 'object') ? history.state : {}
@@ -44,6 +45,10 @@ handler.on(
     }
   }
 )
+
+handler.on(Actions.optIn.getType(), async () => {
+  saveIsBraveTodayOptedIn(true)
+})
 
 handler.on(Actions.ensureSettingsData.getType(), async (store) => {
   const state = store.getState() as ApplicationState
@@ -133,6 +138,40 @@ handler.on(Actions.resetTodayPrefsToDefault.getType(), async function (store) {
 
 handler.on(Actions.anotherPageNeeded.getType(), async function (store) {
   store.dispatch(Actions.checkForUpdate())
+})
+
+handler.on<Actions.VisitDisplayAdPayload>(Actions.visitDisplayAd.getType(), async function (store, payload) {
+  const state = store.getState() as ApplicationState
+  const todayPageIndex = state.today.currentPageIndex
+  chrome.send('todayOnDisplayAdVisit', [
+    payload.ad.uuid,
+    payload.ad.creativeInstanceId
+  ])
+  const destinationUrl = payload.ad.targetUrl
+  if (!payload.openInNewTab) {
+    // Remember display ad location so we can scroll to it on "back" navigation
+    // We remember position and not ad ID since it can be a different ad on
+    // a new page load.
+    // TODO(petemill): Type this history.state data and put in an API module
+    // (see `reducers/today`).
+    storeInHistoryState({
+      todayAdPosition: todayPageIndex,
+      todayPageIndex,
+      todayCardsVisited: state.today.cardsVisited
+    })
+    // visit article url
+    // @ts-ignore
+    window.location = destinationUrl
+  } else {
+    window.open(destinationUrl, '_blank')
+  }
+})
+
+handler.on<Actions.DisplayAdViewedPayload>(Actions.displayAdViewed.getType(), async (store, item) => {
+  chrome.send('todayOnDisplayAdView', [
+    item.ad.uuid,
+    item.ad.creativeInstanceId
+  ])
 })
 
 export default handler.middleware

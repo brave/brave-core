@@ -8,6 +8,8 @@ import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//brave/components/permissions/android/java_sources.gni")
 import("//brave/components/safetynet/java_sources.gni")
 import("//components/feed/features.gni")
 
@@ -35,7 +37,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveSyncReflectionUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveUphold.java",
   "../../brave/android/java/org/chromium/chrome/browser/CrossPromotionalModalDialogFragment.java",
-  "../../brave/android/java/org/chromium/chrome/browser/DeprecateBAPModalDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/InternetConnection.java",
   "../../brave/android/java/org/chromium/chrome/browser/QRCodeShareDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/SetDefaultBrowserActivity.java",
@@ -46,17 +47,31 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_stats/BraveStatsBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_stats/BraveStatsUtil.java",
+  "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/BraveLayoutManagerChrome.java",
+  "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/StackLayout.java",
+  "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/StackLayoutBase.java",
+  "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/stack/OverlappingStack.java",
+  "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/stack/Stack.java",
+  "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/stack/StackAnimation.java",
+  "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/stack/StackTab.java",
+  "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/stack/StackViewAnimation.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/HeightWrappingViewPager.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/NonSwipeableViewPager.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/VerticalViewPager.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/popup_window_tooltip/ArrowColorDrawable.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/popup_window_tooltip/PopupWindowTooltip.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/popup_window_tooltip/PopupWindowTooltipUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/decentralized_dns/settings/ENSSettingsFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/decentralized_dns/settings/RadioButtonGroupENSResolveMethodPreference.java",
+  "../../brave/android/java/org/chromium/chrome/browser/decentralized_dns/settings/RadioButtonGroupUnstoppableDomainsResolveMethodPreference.java",
+  "../../brave/android/java/org/chromium/chrome/browser/decentralized_dns/settings/UnstoppableDomainsSettingsFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/document/BraveLauncherActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/download/BraveMimeUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/download/settings/BraveDownloadSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/externalnav/BraveExternalNavigationHandler.java",
   "../../brave/android/java/org/chromium/chrome/browser/feedback/BraveHelpAndFeedbackLauncherImpl.java",
+  "../../brave/android/java/org/chromium/chrome/browser/firstrun/BraveFreIntentCreator.java",
+  "../../brave/android/java/org/chromium/chrome/browser/firstrun/P3aOnboardingActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/help/BraveHelpAndFeedbackLauncher.java",
   "../../brave/android/java/org/chromium/chrome/browser/homepage/BraveHomepageManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/homepage/settings/BraveHomepageSettings.java",
@@ -68,16 +83,13 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/local_database/TopSiteTable.java",
   "../../brave/android/java/org/chromium/chrome/browser/night_mode/settings/BraveRadioButtonGroupThemePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/night_mode/settings/BraveThemePreferences.java",
-  "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationManagerProxyImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationPlatformBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationSettingsBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveOnboardingNotification.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveSetDefaultBrowserNotificationService.java",
-  "../../brave/android/java/org/chromium/chrome/browser/notifications/channels/BraveChannelDefinitions.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/retention/RetentionNotification.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/retention/RetentionNotificationPublisher.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/retention/RetentionNotificationUtil.java",
-  "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveDuckDuckGoOfferView.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPage.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPageLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/IncognitoNewTabPageView.java",
@@ -100,13 +112,13 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/ntp_background_images/util/NTPUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp_background_images/util/NewTabPageListener.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp_background_images/util/SponsoredImageUtil.java",
+  "../../brave/android/java/org/chromium/chrome/browser/omnibox/status/BraveStatusMediator.java",
   "../../brave/android/java/org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveRewardsOnboardingFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/OnViewPagerAction.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/OnboardingActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/OnboardingPrefManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/OnboardingViewPagerAdapter.java",
-  "../../brave/android/java/org/chromium/chrome/browser/onboarding/P3aOnboardingActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/SearchActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/SearchEngineEnum.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/SearchEngineOnboardingFragment.java",
@@ -133,26 +145,25 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/rate/RateFeedbackUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/rate/RateUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/safe_browsing/settings/BraveStandardProtectionSettingsFragment.java",
-  "../../brave/android/java/org/chromium/chrome/browser/search_engines/settings/BraveBaseSearchEngineAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/AppearancePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BackgroundImagesPreferences.java",
-  "../../brave/android/java/org/chromium/chrome/browser/settings/BackgroundVideoPlaybackPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveCustomTabsPreference.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveDialogPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveLicensePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveLicensePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveMainPreferencesBase.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BravePreferenceDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BravePreferenceFragment.java",
-  "../../brave/android/java/org/chromium/chrome/browser/settings/BravePrivateSearchEnginePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveRewardsPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveRewardsResetPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveRewardsResetPreferenceDialog.java",
-  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSearchEngineAdapter.java",
-  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSearchEnginePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSearchEngineUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSearchEnginesPreferences.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSettingsActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSettingsLauncherImpl.java",
-  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveStandardSearchEnginePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveStatsPreferences.java",
-  "../../brave/android/java/org/chromium/chrome/browser/settings/ClosingAllTabsClosesBravePreference.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveWebrtcPolicyPreference.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveWebrtcPolicyPreferencesFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/SearchEngineTabModelSelectorObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/developer/BraveQAPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/developer/BraveRewardsDebugPreferences.java",
@@ -199,14 +210,15 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/ui/brave_tricks/checkbox_to_switch/CheckBoxPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/ui/messages/infobar/BraveSimpleConfirmInfoBarBuilder.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/BravePackageReplacedBroadcastReceiver.java",
-  "../../brave/android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentService.java",
+  "../../brave/android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentServiceImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/NotificationIntent.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/BraveDbUtil.java",
-  "../../brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/ConfigurationUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/ImageUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/PackageUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/TabUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnNativeWorker.java",
+  "../../brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceAccountBalance.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceBuyFragment.java",
@@ -229,6 +241,10 @@ if (brave_rewards_enabled || enable_brave_referrals) {
   brave_java_sources += brave_rewards_java_sources
 }
 
+if (enable_brave_referrals) {
+  brave_java_sources += [ "../../brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java" ]
+}
+
 if (brave_ads_enabled) {
   brave_java_sources += brave_ads_java_sources
 }
@@ -239,6 +255,36 @@ if (enable_brave_sync) {
     "../../brave/android/java/org/chromium/chrome/browser/BraveSyncWorker.java",
     "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSyncScreensPreference.java",
     "../../brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",
+  ]
+}
+
+if (brave_wallet_enabled) {
+  brave_java_sources += [
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/AssetRatioControllerFactory.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/KeyringControllerFactory.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/AssetDetailActivity.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/BraveWalletActivity.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/BuySendSwapActivity.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/CryptoFragmentPageAdapter.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/CryptoWalletOnboardingPagerAdapter.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/RecoveryPhraseAdapter.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/WalletCoinAdapter.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/AddAccountOnboardingDialogFragment.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/CryptoChildFragment.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/SwapBottomSheetDialogFragment.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding_fragments/BackupWalletFragment.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding_fragments/CryptoOnboardingFragment.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding_fragments/RecoveryPhraseFragment.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding_fragments/RestoreWalletFragment.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding_fragments/SecurePasswordFragment.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding_fragments/SetupWalletFragment.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding_fragments/UnlockWalletFragment.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding_fragments/VerifyRecoveryPhraseFragment.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/listeners/OnNextPage.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/ItemOffsetDecoration.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/NavigationItem.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/SmoothLineChartEquallySpaced.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/Utils.java",
   ]
 }
 
@@ -256,4 +302,10 @@ brave_java_base_sources = [
   "//brave/android/java/org/chromium/base/BraveReflectionUtil.java",
 ]
 
-brave_android_features_tab_ui_java_sources = [ "//brave/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator.java" ]
+brave_java_base_module_sources = [
+  "//brave/android/java/org/chromium/chrome/browser/base/SplitCompatJobIntentService.java",
+  "//brave/android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentService.java",
+]
+
+brave_java_base_module_deps =
+    [ "//third_party/androidx:androidx_core_core_java" ]

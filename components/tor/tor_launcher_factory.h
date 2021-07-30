@@ -65,8 +65,6 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   TorLauncherFactory();
   ~TorLauncherFactory() override;
 
-  void OnTorLogLoaded(GetLogCallback, const std::pair<bool, std::string>&);
-
   void OnTorControlPrerequisitesReady(int64_t pid,
                                       bool ready,
                                       std::vector<uint8_t> cookie,
@@ -91,6 +89,8 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
 
   std::string tor_proxy_uri_;
   std::string tor_version_;
+
+  std::string tor_log_;
 
   int64_t tor_pid_;
 

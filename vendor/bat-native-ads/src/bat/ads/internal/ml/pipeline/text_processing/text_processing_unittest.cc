@@ -5,6 +5,7 @@
 
 #include <cmath>
 #include <fstream>
+#include <map>
 #include <vector>
 
 #include "bat/ads/internal/ml/data/data.h"
@@ -98,7 +99,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, TestLoadFromJson) {
   const std::vector<std::string> train_labels = {"spam", "spam", "ham", "ham",
                                                  "junk"};
 
-  const base::Optional<std::string> json_optional =
+  const absl::optional<std::string> json_optional =
       ReadFileFromTestPathToString(kValidSpamClassificationPipeline);
   pipeline::TextProcessing text_processing_pipeline;
 
@@ -130,7 +131,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, TestLoadFromJson) {
 TEST_F(BatAdsTextProcessingPipelineTest, InitValidModelTest) {
   // Arrange
   pipeline::TextProcessing text_processing_pipeline;
-  const base::Optional<std::string> json_optional =
+  const absl::optional<std::string> json_optional =
       ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
 
   // Act
@@ -145,7 +146,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, InitValidModelTest) {
 TEST_F(BatAdsTextProcessingPipelineTest, InvalidModelTest) {
   // Arrange
   pipeline::TextProcessing text_processing_pipeline;
-  const base::Optional<std::string> json_optional =
+  const absl::optional<std::string> json_optional =
       ReadFileFromTestPathToString(kInvalidSpamClassificationPipeline);
 
   // Act
@@ -188,7 +189,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, TopPredUnitTest) {
   const size_t kMaxPredictionsSize = 100;
   const std::string kTestPage = "ethereum bitcoin bat zcash crypto tokens!";
   pipeline::TextProcessing text_processing_pipeline;
-  const base::Optional<std::string> json_optional =
+  const absl::optional<std::string> json_optional =
       ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
 
   // Act
@@ -213,14 +214,14 @@ TEST_F(BatAdsTextProcessingPipelineTest, TextCMCCrashTest) {
   const size_t kMaxPredictionsSize = 100;
   pipeline::TextProcessing text_processing_pipeline;
 
-  const base::Optional<std::string> json_optional =
+  const absl::optional<std::string> json_optional =
       ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
   ASSERT_TRUE(json_optional.has_value());
 
   const std::string json = json_optional.value();
   ASSERT_TRUE(text_processing_pipeline.FromJson(json));
 
-  const base::Optional<std::string> text_optional =
+  const absl::optional<std::string> text_optional =
       ReadFileFromTestPathToString(kTextCMCCrash);
 
   // Act

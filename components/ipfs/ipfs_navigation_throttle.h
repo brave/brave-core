@@ -30,6 +30,7 @@ class IpfsNavigationThrottle : public content::NavigationThrottle {
  public:
   explicit IpfsNavigationThrottle(content::NavigationHandle* navigation_handle,
                                   IpfsService* ipfs_service,
+                                  PrefService* pref_service,
                                   const std::string& locale);
   ~IpfsNavigationThrottle() override;
 
@@ -39,6 +40,7 @@ class IpfsNavigationThrottle : public content::NavigationThrottle {
   static std::unique_ptr<IpfsNavigationThrottle> MaybeCreateThrottleFor(
       content::NavigationHandle* navigation_handle,
       IpfsService* ipfs_service,
+      PrefService* pref_service,
       const std::string& locale);
 
   // content::NavigationThrottle implementation:

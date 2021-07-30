@@ -16,6 +16,7 @@
 #include "base/files/file_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "base/task_runner_util.h"
 #include "base/time/time.h"
 #include "base/token.h"
@@ -80,9 +81,8 @@ BinanceService::BinanceService(content::BrowserContext* context)
       oauth_host_(oauth_host),
       gateway_host_(gateway_host),
       context_(context),
-      url_loader_factory_(
-          content::BrowserContext::GetDefaultStoragePartition(context_)
-              ->GetURLLoaderFactoryForBrowserProcess()),
+      url_loader_factory_(context_->GetDefaultStoragePartition()
+                              ->GetURLLoaderFactoryForBrowserProcess()),
       weak_factory_(this) {
   LoadTokensFromPrefs();
 }
@@ -207,15 +207,14 @@ bool BinanceService::OAuthRequest(const GURL &url,
           network::SimpleURLLoader::RetryMode::RETRY_NEVER);
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
 
-  auto* default_storage_partition =
-      content::BrowserContext::GetDefaultStoragePartition(context_);
+  auto* default_storage_partition = context_->GetDefaultStoragePartition();
   auto* url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess().get();
 
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory, base::BindOnce(
-          &BinanceService::OnURLLoaderComplete,
-          base::Unretained(this), std::move(iter), std::move(callback)));
+      url_loader_factory,
+      base::BindOnce(&BinanceService::OnURLLoaderComplete,
+                     base::Unretained(this), iter, std::move(callback)));
 
   return true;
 }
@@ -481,8 +480,8 @@ void BinanceService::OnRevokeToken(RevokeTokenCallback callback,
 
 base::SequencedTaskRunner* BinanceService::io_task_runner() {
   if (!io_task_runner_) {
-    io_task_runner_ = base::CreateSequencedTaskRunner(
-        {base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+    io_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
+        {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
          base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
   }
   return io_task_runner_.get();

@@ -9,9 +9,8 @@ import { TwitterColorIcon } from 'brave-ui/components/icons'
 import { TipKind } from '../lib/interfaces'
 import { HostContext } from '../lib/host_context'
 import { LocaleContext } from '../../shared/lib/locale_context'
-import { formatTokenAmount } from '../lib/formatting'
 
-import { BatString } from './bat_string'
+import { TokenAmount } from '../../shared/components/token_amount'
 
 import * as style from './tip_complete.style'
 
@@ -44,8 +43,6 @@ export function TipComplete (props: Props) {
     })
   }, [host])
 
-  const amountString = formatTokenAmount(props.tipAmount)
-
   function onShareClick () {
     host.shareTip('twitter')
   }
@@ -57,7 +54,7 @@ export function TipComplete (props: Props) {
           <tbody>
             <tr>
               <td>{getString('contributionAmount')}</td>
-              <td><strong>{amountString}</strong> <BatString /></td>
+              <td><TokenAmount amount={props.tipAmount} /></td>
             </tr>
             <tr>
               <td>{getString('nextContributionDate')}</td>
@@ -72,7 +69,7 @@ export function TipComplete (props: Props) {
         <tbody>
           <tr>
             <td>{getString('oneTimeTipAmount')}</td>
-            <td><strong>{amountString}</strong> <BatString /></td>
+            <td><TokenAmount amount={props.tipAmount} /></td>
           </tr>
         </tbody>
       </table>

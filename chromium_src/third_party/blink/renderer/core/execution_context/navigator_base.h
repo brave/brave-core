@@ -13,8 +13,6 @@
 #include "third_party/blink/renderer/core/loader/frame_loader.h"
 
 #define BRAVE_NAVIGATOR_BASE_USER_AGENT                                \
-  if (!GetExecutionContext())                                          \
-    return String();                                                   \
   if (blink::WebContentSettingsClient* settings =                      \
           brave::GetContentSettingsClientFor(GetExecutionContext())) { \
     if (!settings->AllowFingerprinting(true)) {                        \

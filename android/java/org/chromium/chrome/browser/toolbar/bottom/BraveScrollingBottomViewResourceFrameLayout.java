@@ -40,6 +40,9 @@ public class BraveScrollingBottomViewResourceFrameLayout
 
         mBottomContainerSlot = findViewById(R.id.bottom_container_slot);
         assert mBottomContainerSlot != null : "Something has changed in upstream!";
+        if (mBottomContainerSlot != null && BottomToolbarConfiguration.isBottomToolbarEnabled()) {
+            mBottomContainerSlot.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -81,14 +84,20 @@ public class BraveScrollingBottomViewResourceFrameLayout
         mBottomControlsCoordinatorSupplier = bottomControlsCoordinatorSupplier;
         braveBottomControlsCoordinator().getBottomToolbarVisibleSupplier().addObserver(
                 mCallbackController.makeCancelable((visible) -> {
-                    if (mBottomToolbar != null) {
+                    // Only make changes if visibility changed.
+                    if (mBottomToolbar != null
+                            && (mBottomToolbar.getVisibility()
+                                    != (visible ? View.VISIBLE : View.GONE))) {
                         mBottomToolbar.setVisibility(visible ? View.VISIBLE : View.GONE);
                         getResourceAdapter().dropCachedBitmap();
                     }
                 }));
         braveBottomControlsCoordinator().getTabGroupUiVisibleSupplier().addObserver(
                 mCallbackController.makeCancelable((visible) -> {
-                    if (mBottomContainerSlot != null) {
+                    // Only make changes if visibility changed.
+                    if (mBottomContainerSlot != null
+                            && (mBottomContainerSlot.getVisibility()
+                                    != (visible ? View.VISIBLE : View.GONE))) {
                         mBottomContainerSlot.setVisibility(visible ? View.VISIBLE : View.GONE);
                         getResourceAdapter().dropCachedBitmap();
                     }

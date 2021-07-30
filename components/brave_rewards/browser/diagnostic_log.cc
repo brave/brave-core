@@ -13,7 +13,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
-#include "base/task/task_traits.h"
+#include "base/task/thread_pool.h"
 
 namespace {
 
@@ -63,9 +63,8 @@ bool Open(const base::FilePath& file_path, base::File* file) {
 
   file->Initialize(file_path, base::File::FLAG_OPEN | base::File::FLAG_READ |
                                   base::File::FLAG_WRITE);
-  DCHECK(file->IsValid());
 
-  return true;
+  return file->IsValid();
 }
 
 bool CreateOrOpen(const base::FilePath& file_path, base::File* file) {
@@ -79,9 +78,7 @@ bool CreateOrOpen(const base::FilePath& file_path, base::File* file) {
     return false;
   }
 
-  DCHECK(file->IsValid());
-
-  return true;
+  return file->IsValid();
 }
 
 int64_t SeekFromEnd(base::File* file, int num_lines) {
@@ -289,9 +286,8 @@ namespace brave_rewards {
 DiagnosticLog::DiagnosticLog(const base::FilePath& file_path,
                              int64_t max_file_size,
                              int keep_num_lines)
-    : file_task_runner_(base::CreateSequencedTaskRunner(
-          {base::ThreadPool(), base::MayBlock(),
-           base::TaskPriority::USER_VISIBLE,
+    : file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       file_path_(file_path),
       max_file_size_(max_file_size),

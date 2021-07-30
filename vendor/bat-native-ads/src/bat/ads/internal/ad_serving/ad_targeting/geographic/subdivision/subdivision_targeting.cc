@@ -212,7 +212,7 @@ void SubdivisionTargeting::OnFetch(const UrlResponse& url_response) {
 }
 
 bool SubdivisionTargeting::ParseJson(const std::string& json) {
-  base::Optional<base::Value> value = base::JSONReader::Read(json);
+  absl::optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
     return false;
   }

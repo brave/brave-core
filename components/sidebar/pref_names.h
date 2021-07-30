@@ -10,6 +10,8 @@ namespace sidebar {
 
 constexpr char kSidebarItems[] = "brave.sidebar.sidebar_items";
 constexpr char kSidebarShowOption[] = "brave.sidebar.sidebar_show_option";
+constexpr char kSidebarItemAddedFeedbackBubbleShowCount[] =
+    "brave.sidebar.item_added_feedback_bubble_shown_count";
 
 }  // namespace sidebar
 

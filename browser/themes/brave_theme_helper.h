@@ -6,8 +6,8 @@
 #ifndef BRAVE_BROWSER_THEMES_BRAVE_THEME_HELPER_H_
 #define BRAVE_BROWSER_THEMES_BRAVE_THEME_HELPER_H_
 
-#include "base/optional.h"
 #include "chrome/browser/themes/theme_helper.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class Profile;
 
@@ -29,7 +29,7 @@ class BraveThemeHelper : public ThemeHelper {
       bool incognito,
       const CustomThemeSupplier* theme_supplier) const override;
 
-  base::Optional<SkColor> GetOmniboxColor(
+  absl::optional<SkColor> GetOmniboxColor(
       int id,
       bool incognito,
       const CustomThemeSupplier* theme_supplier,

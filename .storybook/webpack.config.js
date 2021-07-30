@@ -19,6 +19,7 @@ module.exports = async ({ config, mode }) => {
   })
   config.resolve.alias = {
     ...config.resolve.alias,
+    'chrome://resources': path.resolve(__dirname, 'chrome-resources-mock'),
     'brave-ui': path.resolve(__dirname, '../node_modules/brave-ui/src'),
     // Force same styled-components module for brave-core and brave-ui
     // which ensure both repos code use the same singletons, e.g. ThemeContext.

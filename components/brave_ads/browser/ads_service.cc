@@ -41,10 +41,13 @@ void AdsService::RegisterProfilePrefs(
 
   registry->RegisterBooleanPref(ads::prefs::kEnabled, false);
 
+  registry->RegisterIntegerPref(prefs::kAdNotificationLastScreenPositionX, 0);
+  registry->RegisterIntegerPref(prefs::kAdNotificationLastScreenPositionY, 0);
+
   registry->RegisterBooleanPref(ads::prefs::kShouldAllowConversionTracking,
                                 true);
 
-  registry->RegisterUint64Pref(ads::prefs::kAdsPerHour, 0);
+  registry->RegisterInt64Pref(ads::prefs::kAdsPerHour, -1);
 
   registry->RegisterIntegerPref(ads::prefs::kIdleTimeThreshold, 15);
 
@@ -63,6 +66,8 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterStringPref(ads::prefs::kEpsilonGreedyBanditArms, "");
   registry->RegisterStringPref(ads::prefs::kEpsilonGreedyBanditEligibleSegments,
                                "");
+
+  registry->RegisterDoublePref(ads::prefs::kUnreconciledTransactions, 0.0);
 
   registry->RegisterBooleanPref(ads::prefs::kHasMigratedConversionState, false);
 }

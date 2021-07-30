@@ -18,10 +18,6 @@
 
 namespace ads {
 
-namespace {
-const char kCreativeInstanceId[] = "9aea9a47-c6a0-4718-a0fa-706338bb2156";
-}  // namespace
-
 class BatAdsNewTabPageAdsPerDayFrequencyCapTest : public UnitTestBase {
  protected:
   BatAdsNewTabPageAdsPerDayFrequencyCapTest() = default;
@@ -45,10 +41,9 @@ class BatAdsNewTabPageAdsPerDayFrequencyCapTest : public UnitTestBase {
 TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
        AllowAdIfThereIsNoAdsHistory) {
   // Arrange
-  const AdEventList ad_events;
 
   // Act
-  NewTabPageAdsPerDayFrequencyCap frequency_cap(ad_events);
+  NewTabPageAdsPerDayFrequencyCap frequency_cap;
   const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert
@@ -57,17 +52,11 @@ TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
 
 TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
-
-  const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kNewTabPageAd, ad, ConfirmationType::kViewed);
-
-  const size_t count = features::GetMaximumNewTabPageAdsPerDay() - 1;
-  const AdEventList ad_events(count, ad_event);
+  const int count = features::GetMaximumNewTabPageAdsPerDay() - 1;
+  RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed, count);
 
   // Act
-  NewTabPageAdsPerDayFrequencyCap frequency_cap(ad_events);
+  NewTabPageAdsPerDayFrequencyCap frequency_cap;
   const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert
@@ -77,19 +66,13 @@ TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
 TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
        AllowAdIfDoesNotExceedCapAfter1Day) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
-
-  const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kNewTabPageAd, ad, ConfirmationType::kViewed);
-
-  const size_t count = features::GetMaximumNewTabPageAdsPerDay();
-  const AdEventList ad_events(count, ad_event);
+  const int count = features::GetMaximumNewTabPageAdsPerDay();
+  RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed, count);
 
   FastForwardClockBy(base::TimeDelta::FromDays(1));
 
   // Act
-  NewTabPageAdsPerDayFrequencyCap frequency_cap(ad_events);
+  NewTabPageAdsPerDayFrequencyCap frequency_cap;
   const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert
@@ -99,19 +82,13 @@ TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
 TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
        DoNotAllowAdIfExceedsCapWithin1Day) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
-
-  const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kNewTabPageAd, ad, ConfirmationType::kViewed);
-
-  const size_t count = features::GetMaximumNewTabPageAdsPerDay();
-  const AdEventList ad_events(count, ad_event);
+  const int count = features::GetMaximumNewTabPageAdsPerDay();
+  RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed, count);
 
   FastForwardClockBy(base::TimeDelta::FromHours(23));
 
   // Act
-  NewTabPageAdsPerDayFrequencyCap frequency_cap(ad_events);
+  NewTabPageAdsPerDayFrequencyCap frequency_cap;
   const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert

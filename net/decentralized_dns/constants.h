@@ -13,6 +13,7 @@ constexpr char kUnstoppableDomainsDoHResolver[] =
     "https://resolver.unstoppable.io/dns-query{?brave_UD}";
 
 constexpr char kEthDomain[] = ".eth";
+constexpr char kDNSForEthDomain[] = ".eth.link";
 constexpr char kENSDoHResolver[] =
     "https://resolver.cloudflare-eth.com/dns-query{?brave_ENS}";
 

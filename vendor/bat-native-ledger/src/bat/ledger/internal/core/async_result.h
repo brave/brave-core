@@ -11,8 +11,8 @@
 #include <utility>
 
 #include "base/callback.h"
-#include "base/optional.h"
 #include "base/threading/sequenced_task_runner_handle.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger {
 
@@ -68,7 +68,7 @@ class AsyncResult {
   struct Store {
     Store() {}
     State state = State::kPending;
-    base::Optional<T> value;
+    absl::optional<T> value;
     std::list<Listener> listeners;
   };
 

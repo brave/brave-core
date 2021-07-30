@@ -6,21 +6,19 @@
 #include <vector>
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/tor/tor_constants.h"
+#include "brave/components/tor/tor_utils.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_manager.h"
-#include "chrome/browser/profiles/profile_window.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/pref_names.h"
-#include "chrome/test/base/in_process_browser_test.h"
-#include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 
@@ -28,6 +26,14 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/ipfs/features.h"
+#endif
+
+#if defined(OS_ANDROID)
+#include "chrome/test/base/android/android_browser_test.h"
+#else
+#include "chrome/browser/profiles/profile_window.h"
+#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
 #endif
 
 namespace {
@@ -42,8 +48,8 @@ void OnUnblockOnProfileCreation(base::RunLoop* run_loop,
 }
 
 struct TestProfileData {
-  base::string16 profile_name;
-  base::string16 profile_name_expected_after_migration;
+  std::u16string profile_name;
+  std::u16string profile_name_expected_after_migration;
   bool force_default_name;
   base::FilePath profile_path;
 };
@@ -51,28 +57,22 @@ struct TestProfileData {
 std::vector<TestProfileData> GetTestProfileData(
     ProfileManager* profile_manager) {
   const std::vector<TestProfileData> profile_data = {
-    {
-      base::ASCIIToUTF16("Person 1"),
-      base::ASCIIToUTF16("Profile 1"), true,
-      profile_manager->user_data_dir().Append(
-          profile_manager->GetInitialProfileDir())},
-    {
-      base::ASCIIToUTF16("Person 2"),
-      base::ASCIIToUTF16("Profile 2"), true,
-      profile_manager->user_data_dir().Append(
-          FILE_PATH_LITERAL("testprofile2"))},
-    {
-      base::ASCIIToUTF16("ZZCustom 3"),
-      base::ASCIIToUTF16("ZZCustom 3"), false,
-      profile_manager->user_data_dir().Append(
-          FILE_PATH_LITERAL("testprofile3"))},
+      {u"Person 1", u"Profile 1", true,
+       profile_manager->user_data_dir().Append(
+           profile_manager->GetInitialProfileDir())},
+      {u"Person 2", u"Profile 2", true,
+       profile_manager->user_data_dir().Append(
+           FILE_PATH_LITERAL("testprofile2"))},
+      {u"ZZCustom 3", u"ZZCustom 3", false,
+       profile_manager->user_data_dir().Append(
+           FILE_PATH_LITERAL("testprofile3"))},
   };
   return profile_data;
 }
 
 }  // namespace
 
-class BraveProfileManagerTest : public InProcessBrowserTest {
+class BraveProfileManagerTest : public PlatformBrowserTest {
  public:
   BraveProfileManagerTest() {
 #if BUILDFLAG(IPFS_ENABLED)
@@ -110,8 +110,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
     base::RunLoop run_loop;
     profile_manager->CreateProfileAsync(
         profile_data[i].profile_path,
-        base::Bind(&OnUnblockOnProfileCreation, &run_loop), base::string16(),
-        std::string());
+        base::BindRepeating(&OnUnblockOnProfileCreation, &run_loop));
     run_loop.Run();
     ProfileAttributesEntry* entry =
         storage.GetProfileAttributesWithPath(profile_data[i].profile_path);
@@ -149,46 +148,59 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ASSERT_TRUE(profile_manager);
   Profile* profile = ProfileManager::GetActiveUserProfile();
-  Profile* otr_profile = profile->GetPrimaryOTRProfile();
+  Profile* otr_profile =
+      profile->GetPrimaryOTRProfile(/*create_if_needed=*/true);
 
+#if !defined(OS_ANDROID)
   profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
   ui_test_utils::WaitForBrowserToOpen();
 
   Profile* guest_profile =
       profile_manager->GetProfileByPath(ProfileManager::GetGuestProfilePath());
-  ASSERT_TRUE(otr_profile->IsOffTheRecord());
+
   ASSERT_TRUE(guest_profile->IsGuestSession());
+
+  EXPECT_EQ(brave_rewards::RewardsServiceFactory::GetForProfile(guest_profile),
+            nullptr);
+  EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(guest_profile),
+            nullptr);
+#endif
+
+  ASSERT_TRUE(otr_profile->IsOffTheRecord());
 
   EXPECT_NE(
       brave_rewards::RewardsServiceFactory::GetForProfile(profile), nullptr);
   EXPECT_EQ(
       brave_rewards::RewardsServiceFactory::GetForProfile(otr_profile),
       nullptr);
-  EXPECT_EQ(
-      brave_rewards::RewardsServiceFactory::GetForProfile(guest_profile),
-      nullptr);
 
   EXPECT_NE(brave_ads::AdsServiceFactory::GetForProfile(profile), nullptr);
   EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(otr_profile),
-            nullptr);
-  EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(guest_profile),
             nullptr);
 
 #if BUILDFLAG(IPFS_ENABLED)
   EXPECT_NE(ipfs::IpfsServiceFactory::GetForContext(profile), nullptr);
   EXPECT_EQ(ipfs::IpfsServiceFactory::GetForContext(otr_profile), nullptr);
+#if !defined(OS_ANDROID)
   EXPECT_EQ(ipfs::IpfsServiceFactory::GetForContext(guest_profile), nullptr);
+#endif
 #endif
 }
 
+#if BUILDFLAG(ENABLE_TOR)
 IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
                        GetLastUsedProfileName) {
   g_browser_process->local_state()->SetString(
       prefs::kProfileLastUsed,
       base::FilePath(tor::kTorProfileDir).AsUTF8Unsafe());
+
+  // The migration happens during the initialization of the browser process, so
+  // we need to explicitly call the method here to test it actually works.
+  tor::MigrateLastUsedProfileFromLocalStatePrefs(
+      g_browser_process->local_state());
+
   ProfileManager* profile_manager = g_browser_process->profile_manager();
-  base::FilePath last_used_path =
-      g_browser_process->profile_manager()->GetLastUsedProfileDir(
-          profile_manager->user_data_dir());
+  base::FilePath last_used_path = profile_manager->GetLastUsedProfileDir();
   EXPECT_EQ(last_used_path.BaseName().AsUTF8Unsafe(), chrome::kInitialProfile);
 }
+#endif

@@ -11,7 +11,8 @@ import CardSmall from './cards/_articles/cardArticleMedium'
 import CategoryGroup from './cards/categoryGroup'
 import PublisherGroup from './cards/publisherGroup'
 import CardDeals from './cards/cardDeals'
-import { attributeNameCardCount, OnPromotedItemViewed, OnReadFeedItem, OnSetPublisherPref } from './'
+import CardDisplayAd from './cards/displayAd'
+import { attributeNameCardCount, GetDisplayAdContent, OnPromotedItemViewed, OnReadFeedItem, OnSetPublisherPref, OnViewedDisplayAd, OnVisitDisplayAd } from './'
 
 // Disabled rules because we have a function
 // which returns elements in a switch.
@@ -21,58 +22,61 @@ enum CardType {
   Headline,
   HeadlinePaired,
   CategoryGroup,
+  PublisherGroup,
   Deals,
-  PromotedArticle,
-  PublisherGroup
+  DisplayAd,
+  PromotedArticle
 }
 
 const PageContentOrder = [
   CardType.Headline,
   CardType.Headline,
   CardType.HeadlinePaired,
-  CardType.HeadlinePaired,
   CardType.PromotedArticle,
   CardType.CategoryGroup,
   CardType.Headline,
-  CardType.Deals,
   CardType.Headline,
   CardType.HeadlinePaired,
-  CardType.PublisherGroup,
+  CardType.HeadlinePaired,
+  CardType.DisplayAd,
   CardType.Headline,
-  CardType.HeadlinePaired
-]
+  CardType.Headline,
+  CardType.PublisherGroup,
+  CardType.HeadlinePaired,
+  CardType.Headline,
+  CardType.Deals
+] // Requires 15 headlines
 
 const RandomContentOrder = [
   CardType.Headline,
-  CardType.HeadlinePaired,
-  CardType.Headline
-]
+  CardType.HeadlinePaired
+] // Requires 3 headlines
 
 export const groupItemCount = PageContentOrder.length + RandomContentOrder.length
 
 type Props = {
   content: BraveToday.Page
   publishers: BraveToday.Publishers
+  displayAds?: BraveToday.DisplayAd[]
   articleToScrollTo?: BraveToday.FeedItem
+  shouldScrollToDisplayAd: boolean
   itemStartingDisplayIndex: number
   onReadFeedItem: OnReadFeedItem
   onSetPublisherPref: OnSetPublisherPref
   onPeriodicCardViews: (element: HTMLElement | null) => void
   onPromotedItemViewed: OnPromotedItemViewed
+  onVisitDisplayAd: OnVisitDisplayAd
+  onViewedDisplayAd: OnViewedDisplayAd
+  getDisplayAdContent: GetDisplayAdContent
 }
 
-type CardProps = Props & {
-  cardType: CardType
-  headlines: BraveToday.Article[]
-}
-
-function Card (props: CardProps) {
-  switch (props.cardType) {
+function getCard (props: Props, cardType: CardType, headlines: BraveToday.Article[]) {
+  switch (cardType) {
     case CardType.Headline:
       // TODO: article card should handle any number of articles and
       // adapt accordingly.
       return <CardLarge
-              content={props.headlines.splice(0, 1)}
+              content={headlines.splice(0, 1)}
               publishers={props.publishers}
               articleToScrollTo={props.articleToScrollTo}
               onReadFeedItem={props.onReadFeedItem}
@@ -81,7 +85,7 @@ function Card (props: CardProps) {
     case CardType.HeadlinePaired:
       // TODO: handle content length < 2
       return <CardSmall
-              content={props.headlines.splice(0, 2)}
+              content={headlines.splice(0, 2)}
               publishers={props.publishers}
               articleToScrollTo={props.articleToScrollTo}
               onReadFeedItem={props.onReadFeedItem}
@@ -131,8 +135,15 @@ function Card (props: CardProps) {
         onReadFeedItem={props.onReadFeedItem}
         articleToScrollTo={props.articleToScrollTo}
       />
+    case CardType.DisplayAd:
+      return <CardDisplayAd
+        shouldScrollIntoView={props.shouldScrollToDisplayAd}
+        onViewedDisplayAd={props.onViewedDisplayAd}
+        onVisitDisplayAd={props.onVisitDisplayAd}
+        getContent={props.getDisplayAdContent}
+      />
   }
-  console.error('Asked to render unknown card type', props.cardType)
+  console.error('Asked to create unknown card type', cardType)
   return null
 }
 
@@ -147,6 +158,10 @@ export default function CardsGroups (props: Props) {
   let displayIndex = props.itemStartingDisplayIndex
   return <>{groups.flatMap((group, groupIndex) => group.order.map(
     (cardType, orderIndex) => {
+      const cardInstance = getCard(props, cardType, group.items)
+      if (!cardInstance) {
+        return null
+      }
       displayIndex++
       // All buckets are divisible by 4, so we send a ping when we are in
       // the next bucket. This is to avoid too many redux action firing
@@ -156,11 +171,7 @@ export default function CardsGroups (props: Props) {
         <React.Fragment
           key={displayIndex}
         >
-          <Card
-            {...props}
-            cardType={cardType}
-            headlines={group.items}
-          />
+          {cardInstance}
           {shouldTriggerViewCountUpdate &&
             <div {...{ [attributeNameCardCount]: displayIndex }} ref={props.onPeriodicCardViews} />
           }

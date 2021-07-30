@@ -24,7 +24,6 @@ export interface Props {
   options?: Option[]
   floating?: boolean
   amountOptions?: Amount[]
-  onlyAnonWallet?: boolean
   onChange?: (value: string) => void
 }
 
@@ -58,13 +57,11 @@ export default class SelectMobile extends React.PureComponent<Props, {}> {
   }
 
   generateAmountOptions = (amountOptions?: Amount[]) => {
-    const { onlyAnonWallet } = this.props
-
     if (!amountOptions) {
       return null
     }
 
-    const batFormatString = onlyAnonWallet ? getLocale('batPoints') : getLocale('bat')
+    const batFormatString = getLocale('bat')
 
     return (
       <>

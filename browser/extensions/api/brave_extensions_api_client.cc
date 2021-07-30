@@ -18,7 +18,7 @@ bool BraveExtensionsAPIClient::ShouldHideBrowserNetworkRequest(
     const WebRequestInfo& request) const {
   const url::Origin origin = url::Origin::Create(request.url);
   const base::StringPiece path = request.url.path_piece();
-  if (((origin.DomainIs("sandbox.uphold.com") ||
+  if (((origin.DomainIs("wallet-sandbox.uphold.com") ||
         origin.DomainIs("uphold.com")) &&
        base::StartsWith(path, "/authorize/",
                         base::CompareCase::INSENSITIVE_ASCII)) ||
@@ -52,6 +52,27 @@ bool BraveExtensionsAPIClient::ShouldHideBrowserNetworkRequest(
   }
 
   if (request.url.SchemeIs(kGeminiScheme)) {
+    return true;
+  }
+
+  // FTX
+  URLPattern ftx_us_auth_pattern(URLPattern::SCHEME_HTTPS,
+                                 "https://ftx.us/oauth*");
+  URLPattern ftx_us_token_pattern(URLPattern::SCHEME_HTTPS,
+                                  "https://ftx.us/api/oauth/token*");
+  URLPattern ftx_com_auth_pattern(URLPattern::SCHEME_HTTPS,
+                                  "https://ftx.com/oauth*");
+  URLPattern ftx_com_token_pattern(URLPattern::SCHEME_HTTPS,
+                                   "https://ftx.com/api/oauth/token*");
+
+  if (ftx_us_auth_pattern.MatchesURL(request.url) ||
+      ftx_us_token_pattern.MatchesURL(request.url) ||
+      ftx_com_auth_pattern.MatchesURL(request.url) ||
+      ftx_com_token_pattern.MatchesURL(request.url)) {
+    return true;
+  }
+
+  if (request.url.SchemeIs(kFTXScheme)) {
     return true;
   }
 

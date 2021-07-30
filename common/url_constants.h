@@ -12,6 +12,7 @@ extern const char kBraveUIScheme[];
 extern const char kMagnetScheme[];
 extern const char kBinanceScheme[];
 extern const char kGeminiScheme[];
+extern const char kFTXScheme[];
 extern const char kWidevineMoreInfoURL[];
 extern const char kWidevineTOS[];
 extern const char kRewardsUpholdSupport[];
@@ -20,6 +21,7 @@ extern const char kP3ASettingsLink[];
 extern const char kImportDataHelpURL[];
 extern const char kCryptoWalletsLearnMoreURL[];
 extern const char kPermissionPromptLearnMoreUrl[];
+extern const char kSpeedreaderLearnMoreUrl[];
 
 // This is introduced to replace |kDownloadChromeUrl| in
 // outdated_upgrade_bubble_view.cc"

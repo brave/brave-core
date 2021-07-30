@@ -4,6 +4,7 @@
 
 import BigNumber from 'bignumber.js'
 
+import { lookupExternalWalletProviderName } from '../../shared/lib/external_wallet'
 import { getMessage } from './background/api/locale_api'
 import { WalletState } from '../../ui/components/walletWrapper'
 
@@ -43,17 +44,15 @@ export const handleContributionAmount = (amount: string) => {
   return result
 }
 
-export const getPromotion = (promotion: RewardsExtension.Promotion, onlyAnonWallet: boolean) => {
+export const getPromotion = (promotion: RewardsExtension.Promotion) => {
   if (!promotion) {
     return promotion
   }
 
-  const tokenString = onlyAnonWallet ? getMessage('point') : getMessage('token')
+  const tokenString = getMessage('token')
   promotion.finishTitle = getMessage('grantFinishTitleUGP')
   promotion.finishText = getMessage('grantFinishTextUGP', [tokenString])
-  promotion.finishTokenTitle = onlyAnonWallet
-    ? getMessage('grantFinishPointTitleUGP')
-    : getMessage('grantFinishTokenTitleUGP')
+  promotion.finishTokenTitle = getMessage('grantFinishTokenTitleUGP')
 
   if (promotion.type === 1) { // Rewards.PromotionTypes.ADS
     promotion.expiresAt = 0
@@ -97,7 +96,7 @@ export const isPublisherNotVerified = (status?: RewardsExtension.PublisherStatus
 
 export const getWalletStatus = (externalWallet?: RewardsExtension.ExternalWallet): WalletState | undefined => {
   if (!externalWallet) {
-    return undefined
+    return 'unverified'
   }
 
   switch (externalWallet.status) {
@@ -130,18 +129,12 @@ export const getGreetings = (externalWallet?: RewardsExtension.ExternalWallet) =
 }
 
 export const handleExternalWalletLink = (balance: RewardsExtension.Balance, externalWallet?: RewardsExtension.ExternalWallet) => {
-  if (!externalWallet) {
-    return
-  }
-
-  let link = externalWallet.verifyUrl
+  let link = ''
 
   if (!externalWallet || (externalWallet && externalWallet.status === 0)) {
     link = 'brave://rewards/#verify'
-  }
-
-  if (balance.total < 25 && externalWallet && externalWallet.type === 'uphold') {
-    link = externalWallet.loginUrl
+  } else {
+    link = externalWallet.verifyUrl
   }
 
   chrome.tabs.create({
@@ -162,8 +155,5 @@ export const getExternalWallet = (actions: any, externalWallet?: RewardsExtensio
 }
 
 export const getWalletProviderName = (wallet?: RewardsExtension.ExternalWallet) => {
-  switch (wallet ? wallet.type : '') {
-    case 'uphold' : return 'Uphold'
-    default: return ''
-  }
+  return lookupExternalWalletProviderName(wallet ? wallet.type : '')
 }

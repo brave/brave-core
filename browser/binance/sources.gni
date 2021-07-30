@@ -1,0 +1,37 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/binance/browser/buildflags/buildflags.gni")
+
+brave_browser_binance_sources = []
+brave_browser_binance_deps = []
+
+if (binance_enabled) {
+  brave_browser_binance_sources += [
+    "//brave/browser/binance/binance_protocol_handler.cc",
+    "//brave/browser/binance/binance_protocol_handler.h",
+    "//brave/browser/binance/binance_service_factory.cc",
+    "//brave/browser/binance/binance_service_factory.h",
+  ]
+
+  brave_browser_binance_deps += [
+    "//base",
+    "//brave/common",
+    "//brave/components/binance/browser",
+    "//chrome/browser/profiles:profile",
+    "//components/country_codes",
+    "//components/keyed_service/content",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//net",
+  ]
+
+  if (is_android) {
+    brave_browser_binance_sources += [
+      "//brave/browser/binance/android/binance_native_worker.cc",
+      "//brave/browser/binance/android/binance_native_worker.h",
+    ]
+  }
+}

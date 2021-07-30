@@ -384,6 +384,29 @@
                                                             }
                                                         },
                                                         "additionalProperties": false
+                                                    },
+                                                    {
+                                                        "properties": {
+                                                            "title": {
+                                                                "type": "string"
+                                                            },
+                                                            "description": {
+                                                                "type": "string"
+                                                            },
+                                                            "imageUrl": {
+                                                                "type": "string"
+                                                            },
+                                                            "dimensions": {
+                                                                "type": "string"
+                                                            },
+                                                            "targetUrl": {
+                                                                "type": "string"
+                                                            },
+                                                            "ctaText": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "additionalProperties": false
                                                     }
                                                 ]
                                             }

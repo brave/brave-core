@@ -6,8 +6,8 @@ import * as React from 'react'
 
 import { HostContext } from '../lib/host_context'
 import { LocaleContext } from '../../shared/lib/locale_context'
-import { formatTokenAmount } from '../lib/formatting'
 
+import { TokenAmount } from '../../shared/components/token_amount'
 import { FormSubmitButton } from './form_submit_button'
 
 import * as style from './current_monthly_form.style'
@@ -64,20 +64,12 @@ export function CurrentMonthlyForm (props: Props) {
         <table>
           <tbody>
             <tr>
-              <td>
-                {getString('contributionAmount')}
-              </td>
-              <td>
-                {formatTokenAmount(props.currentMonthlyTip)} {getString('bat')}
-              </td>
+              <td>{getString('contributionAmount')}</td>
+              <td><TokenAmount amount={props.currentMonthlyTip} /></td>
             </tr>
             <tr>
-              <td>
-                {getString('nextContributionDate')}
-              </td>
-              <td>
-                {getDateString(props.nextReconcileDate)}
-              </td>
+              <td>{getString('nextContributionDate')}</td>
+              <td>{getDateString(props.nextReconcileDate)}</td>
             </tr>
           </tbody>
         </table>

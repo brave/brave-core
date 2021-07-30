@@ -31,6 +31,27 @@ where
     elem_index(v, Ordering::Greater)
 }
 
+#[inline]
+pub fn count_ignore_consecutive_whitespace<I>(chars: I) -> usize
+where
+    I: IntoIterator<Item = char>,
+{
+    let mut len: usize = 0;
+    let mut in_whitespace = false;
+    for c in chars {
+        if c.is_whitespace() {
+            if in_whitespace {
+                continue;
+            }
+            in_whitespace = true;
+        } else {
+            in_whitespace = false;
+        }
+        len += 1;
+    }
+    len
+}
+
 pub trait StringUtils {
     fn substring(&self, start: usize, len: usize) -> Self;
 }
@@ -42,5 +63,23 @@ impl StringUtils for String {
         // from find(), which gives us byte offsets. We can't use chars() because
         // that will break for unicode input.
         String::from_utf8(self.as_bytes()[start..len].to_vec()).unwrap_or_default()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_count_ignore_consecutive_whitespace() {
+        let s = r#"
+        1234567890
+
+           1234567890 123     1234
+        "#;
+        s.trim().chars();
+        let count = count_ignore_consecutive_whitespace(s.trim().chars());
+        // 28 numbers, plus one newline and one space
+        assert_eq!(30, count, "Whitespace counted");
     }
 }

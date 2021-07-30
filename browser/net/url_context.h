@@ -14,6 +14,7 @@
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
 #include "net/url_request/referrer_policy.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
 
@@ -29,7 +30,7 @@ struct ResourceRequest;
 
 namespace brave {
 struct BraveRequestInfo;
-using ResponseCallback = base::Callback<void()>;
+using ResponseCallback = base::RepeatingCallback<void()>;
 }  // namespace brave
 
 namespace brave_rewards {
@@ -69,7 +70,7 @@ struct BraveRequestInfo {
   GURL referrer;
   net::ReferrerPolicy referrer_policy =
       net::ReferrerPolicy::CLEAR_ON_TRANSITION_FROM_SECURE_TO_INSECURE;
-  base::Optional<GURL> new_referrer;
+  absl::optional<GURL> new_referrer;
 
   std::string new_url_spec;
   // TODO(iefremov): rename to shields_up.
@@ -78,8 +79,6 @@ struct BraveRequestInfo {
   bool allow_http_upgradable_resource = false;
   bool allow_referrers = false;
   bool is_webtorrent_disabled = false;
-  int render_process_id = 0;
-  int render_frame_id = 0;
   int frame_tree_node_id = 0;
   uint64_t request_identifier = 0;
   size_t next_url_request_index = 0;
@@ -95,7 +94,6 @@ struct BraveRequestInfo {
 
   GURL* allowed_unsafe_redirect_url = nullptr;
   BraveNetworkDelegateEventType event_type = kUnknownEventType;
-  const base::ListValue* referral_headers_list = nullptr;
   BlockedBy blocked_by = kNotBlocked;
   std::string mock_data_url;
   GURL ipfs_gateway_url;
@@ -135,13 +133,13 @@ struct BraveRequestInfo {
 
 // ResponseListener
 using OnBeforeURLRequestCallback =
-    base::Callback<int(const ResponseCallback& next_callback,
-                       std::shared_ptr<BraveRequestInfo> ctx)>;
+    base::RepeatingCallback<int(const ResponseCallback& next_callback,
+                                std::shared_ptr<BraveRequestInfo> ctx)>;
 using OnBeforeStartTransactionCallback =
-    base::Callback<int(net::HttpRequestHeaders* headers,
-                       const ResponseCallback& next_callback,
-                       std::shared_ptr<BraveRequestInfo> ctx)>;
-using OnHeadersReceivedCallback = base::Callback<int(
+    base::RepeatingCallback<int(net::HttpRequestHeaders* headers,
+                                const ResponseCallback& next_callback,
+                                std::shared_ptr<BraveRequestInfo> ctx)>;
+using OnHeadersReceivedCallback = base::RepeatingCallback<int(
     const net::HttpResponseHeaders* original_response_headers,
     scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
     GURL* allowed_unsafe_redirect_url,

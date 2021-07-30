@@ -15,9 +15,9 @@
 #include <string>
 
 #include "base/memory/ref_counted.h"
-#include "base/optional.h"
 #include "content/common/content_export.h"
 #include "content/public/browser/tld_ephemeral_lifetime.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace content {
 
@@ -29,7 +29,7 @@ CONTENT_EXPORT scoped_refptr<content::SessionStorageNamespace>
 CreateSessionStorageNamespace(
     content::StoragePartition* partition,
     const std::string& namespace_id,
-    base::Optional<std::string> clone_from_namespace_id);
+    absl::optional<std::string> clone_from_namespace_id);
 
 CONTENT_EXPORT std::string GetSessionStorageNamespaceId(WebContents*);
 

@@ -9,11 +9,11 @@
 
 namespace sync_ui_util {
 
-AvatarSyncErrorType GetAvatarSyncErrorType(Profile* profile) {
+absl::optional<AvatarSyncErrorType> GetAvatarSyncErrorType(Profile* profile) {
   // Brave Sync works differently in that there is no sign-in
   // and nothing to prompt the user to manage once their sync
   // chain is setup.
-  return NO_SYNC_ERROR;
+  return absl::nullopt;
 }
 
 }  // namespace sync_ui_util

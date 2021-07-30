@@ -12,7 +12,7 @@ config("updater_config") {
   ]
 }
 
-source_set("browser") {
+static_library("browser") {
   sources = [
     "brave_component.cc",
     "brave_component.h",

@@ -2,7 +2,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
+import("//brave/components/speedreader/buildflags.gni")
 import("//components/vector_icons/vector_icons.gni")
 
 aggregate_vector_icons("brave_vector_icons") {
@@ -10,13 +12,11 @@ aggregate_vector_icons("brave_vector_icons") {
 
   sources = [
     "brave_ads_close_button.icon",
-    "brave_ads_info.icon",
+    "brave_ads_dark_mode_info_button.icon",
+    "brave_ads_light_mode_info_button.icon",
     "download_unlock.icon",
     "open_in_ipfs.icon",
     "open_in_tor.icon",
-    "speedreader.icon",
-    "speedreader_on_active.icon",
-    "speedreader_on_inactive.icon",
   ]
 
   if (enable_sidebar) {
@@ -26,12 +26,28 @@ aggregate_vector_icons("brave_vector_icons") {
       "sidebar_brave_together.icon",
       "sidebar_crypto_wallet.icon",
       "sidebar_history.icon",
+      "sidebar_hover_widget_button.icon",
       "sidebar_item_added_check.icon",
       "sidebar_items_down_arrow.icon",
       "sidebar_items_up_arrow.icon",
       "sidebar_settings.icon",
       "sidebar_trash.icon",
     ]
+  }
+
+  if (enable_speedreader) {
+    sources += [
+      "brave_reader_mode.icon",
+      "brave_speedreader_graphic_book1.icon",
+      "brave_speedreader_graphic_book2.icon",
+      "brave_speedreader_graphic_book3.icon",
+      "brave_speedreader_graphic_lines.icon",
+      "brave_speedreader_mode.icon",
+    ]
+  }
+
+  if (brave_wallet_enabled) {
+    sources += [ "wallet_toolbar_button.icon" ]
   }
 }
 

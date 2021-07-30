@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -10,11 +10,12 @@
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "bat/ledger/internal/common/time_util.h"
+#include "bat/ledger/internal/constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/state/state.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/state/state_migration.h"
-#include "bat/ledger/internal/constants.h"
+#include "bat/ledger/option_keys.h"
 
 namespace {
 
@@ -31,7 +32,7 @@ std::string VectorDoubleToString(const std::vector<double>& items) {
 }
 
 std::vector<double> StringToVectorDouble(const std::string& items_string) {
-  base::Optional<base::Value> list = base::JSONReader::Read(items_string);
+  absl::optional<base::Value> list = base::JSONReader::Read(items_string);
   if (!list || !list->is_list()) {
     return {};
   }
@@ -154,6 +155,13 @@ void State::GetScoreValues(double* a, double* b) {
 }
 
 void State::SetAutoContributeEnabled(bool enabled) {
+#if !defined(OS_ANDROID)
+  // Auto-contribute is not supported for regions where bitFlyer is the external
+  // wallet provider. If AC is not supported, then always set the pref to false.
+  if (ledger_->ledger_client()->GetBooleanOption(option::kIsBitflyerRegion))
+    enabled = false;
+#endif
+
   ledger_->database()->SaveEventLog(
       kAutoContributeEnabled,
       std::to_string(enabled));
@@ -165,6 +173,13 @@ void State::SetAutoContributeEnabled(bool enabled) {
 }
 
 bool State::GetAutoContributeEnabled() {
+#if !defined(OS_ANDROID)
+  // Auto-contribute is not supported for regions where bitFlyer is the external
+  // wallet provider. If AC is not supported, then always report AC as disabled.
+  if (ledger_->ledger_client()->GetBooleanOption(option::kIsBitflyerRegion))
+    return false;
+#endif
+
   return ledger_->ledger_client()->GetBooleanState(kAutoContributeEnabled);
 }
 
@@ -352,28 +367,49 @@ void State::SetPromotionLastFetchStamp(const uint64_t stamp) {
   ledger_->ledger_client()->SetUint64State(kPromotionLastFetchStamp, stamp);
 }
 
+void State::ResetWalletType() {
+  ledger_->ledger_client()->SetStringState(kExternalWalletType, "");
+}
+
 uint64_t State::GetPromotionLastFetchStamp() {
   return ledger_->ledger_client()->GetUint64State(kPromotionLastFetchStamp);
 }
 
-void State::SetAnonTransferChecked(const bool checked) {
-  ledger_->database()->SaveEventLog(
-      kAnonTransferChecked,
-      std::to_string(checked));
-  ledger_->ledger_client()->SetBooleanState(kAnonTransferChecked, checked);
+absl::optional<std::string> State::GetEncryptedString(const std::string& key) {
+  std::string value = ledger_->ledger_client()->GetStringState(key);
+
+  // If the state value is empty, then we consider this a successful read of a
+  // default empty string.
+  if (value.empty())
+    return "";
+
+  if (!base::Base64Decode(value, &value)) {
+    BLOG(0, "Base64 decoding failed for " << key);
+    return {};
+  }
+
+  auto decrypted = ledger_->ledger_client()->DecryptString(value);
+  if (!decrypted) {
+    BLOG(0, "Decryption failed for " << key);
+    return {};
+  }
+
+  return *decrypted;
 }
 
-bool State::GetAnonTransferChecked() {
-  return ledger_->ledger_client()->GetBooleanState(kAnonTransferChecked);
-}
+bool State::SetEncryptedString(const std::string& key,
+                               const std::string& value) {
+  auto encrypted = ledger_->ledger_client()->EncryptString(value);
+  if (!encrypted) {
+    BLOG(0, "Encryption failed for " << key);
+    return false;
+  }
 
-bool State::GetBAPReported() {
-  return ledger_->ledger_client()->GetBooleanState(kBAPReported);
-}
+  std::string base64_string;
+  base::Base64Encode(*encrypted, &base64_string);
 
-void State::SetBAPReported(bool bap_reported) {
-  ledger_->database()->SaveEventLog(kBAPReported, std::to_string(bap_reported));
-  return ledger_->ledger_client()->SetBooleanState(kBAPReported, bap_reported);
+  ledger_->ledger_client()->SetStringState(key, base64_string);
+  return true;
 }
 
 }  // namespace state

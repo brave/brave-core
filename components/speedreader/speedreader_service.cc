@@ -79,10 +79,11 @@ SpeedreaderService::SpeedreaderService(PrefService* prefs) : prefs_(prefs) {}
 SpeedreaderService::~SpeedreaderService() {}
 
 // static
-void SpeedreaderService::RegisterPrefs(PrefRegistrySimple* registry) {
+void SpeedreaderService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kSpeedreaderPrefEnabled, false);
   registry->RegisterBooleanPref(kSpeedreaderPrefEverEnabled, false);
   registry->RegisterListPref(kSpeedreaderPrefToggleCount);
+  registry->RegisterIntegerPref(kSpeedreaderPrefPromptCount, 0);
 }
 
 void SpeedreaderService::ToggleSpeedreader() {
@@ -102,6 +103,20 @@ bool SpeedreaderService::IsEnabled() {
   const bool enabled = prefs_->GetBoolean(kSpeedreaderPrefEnabled);
   RecordHistograms(prefs_, false, enabled);
   return enabled;
+}
+
+bool SpeedreaderService::ShouldPromptUserToEnable() const {
+  constexpr int max_speedreader_prompts = 2;
+
+  if (prefs_->GetBoolean(kSpeedreaderPrefEverEnabled) ||
+      prefs_->GetInteger(kSpeedreaderPrefPromptCount) > max_speedreader_prompts)
+    return false;
+  return true;
+}
+
+void SpeedreaderService::IncrementPromptCount() {
+  int count = prefs_->GetInteger(kSpeedreaderPrefPromptCount);
+  prefs_->SetInteger(kSpeedreaderPrefPromptCount, count + 1);
 }
 
 }  // namespace speedreader

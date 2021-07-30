@@ -29,4 +29,13 @@ TEST(BatAdsTextClassificationFeaturesTest,
   EXPECT_EQ(5, features::GetTextClassificationProbabilitiesHistorySize());
 }
 
+TEST(BatAdsTextClassificationFeaturesTest, TextClassificationResource) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(1, features::GetTextClassificationResourceVersion());
+}
+
 }  // namespace ads

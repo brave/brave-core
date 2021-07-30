@@ -7,10 +7,17 @@
 #include "brave/browser/brave_profile_prefs.h"
 #include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/components/tor/tor_utils.h"
+#endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_utils.h"
@@ -51,6 +58,13 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
 #if !defined(OS_ANDROID)
   new_tab_page::MigrateNewTabPagePrefs(profile);
 #endif
+
+  // Added 04/2021
+  profile->GetPrefs()->ClearPref(kAlternativeSearchEngineProviderInTor);
+  // Added 05/2021
+  profile->GetPrefs()->ClearPref(kBraveTodayIntroDismissed);
+  // Added 07/2021
+  profile->GetPrefs()->ClearPref(prefs::kNetworkPredictionOptions);
 }
 
 // This method should be periodically pruned of year+ old migrations.
@@ -60,5 +74,10 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
 #if BUILDFLAG(ENABLE_WIDEVINE)
   // Added 11/2020.
   MigrateObsoleteWidevineLocalStatePrefs(local_state);
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+  // Added 4/2021.
+  tor::MigrateLastUsedProfileFromLocalStatePrefs(local_state);
 #endif
 }

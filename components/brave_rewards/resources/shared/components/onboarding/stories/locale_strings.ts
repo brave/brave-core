@@ -1,7 +1,4 @@
 export const localeStrings = {
-  bat: 'BAT',
-  bap: 'BAP',
-
   onboardingBraveRewards: 'Brave Rewards',
   onboardingDetailLinks: '$1Take a quick tour$2 or $3learn more$4 for details.',
   onboardingEarnHeader: 'Earn Tokens & Give Back',
@@ -16,8 +13,8 @@ export const localeStrings = {
   onboardingStartUsingRewards: 'Start using Brave Rewards',
   onboardingTakeTour: 'Take a quick tour',
   onboardingTerms: 'By proceeding, you agree to the $1Terms of Service$2 and $3Privacy Policy$4.',
-  onboardingTipHeader: 'Tip with Brave rewards',
-  onboardingTipText: 'By using Brave rewards, you will start to gain BAT that you can use to tip creators.',
+  onboardingTipHeader: 'Tip with Brave Rewards',
+  onboardingTipText: 'Earn Rewards by viewing Brave Private Ads and support content creators automatically',
   onboardingTourBack: 'Go Back',
   onboardingTourBegin: 'Let’s take a quick tour',
   onboardingTourContinue: 'Continue',
@@ -41,5 +38,12 @@ export const localeStrings = {
   onboardingPanelSetupHeader: 'Lastly, let’s get you set up on the basic settings',
   onboardingPanelSetupText: 'You can change this later.',
   onboardingPanelCompleteHeader: 'Woohoo, you’re all set!',
-  onboardingPanelCompleteText: 'By using Brave Rewards you are helping make the web a better place for everyone. And that’s awesome!'
+  onboardingPanelCompleteText: 'By using Brave Rewards you are helping make the web a better place for everyone. And that’s awesome!',
+  onboardingPanelVerifyHeader: 'Verify your wallet',
+  onboardingPanelVerifySubtext: 'In order to withdraw the tokens you earn for viewing ads, you’ll need to verify your wallet.',
+  onboardingPanelVerifyLater: 'Do it later',
+  onboardingPanelVerifyNow: 'Verify my wallet',
+  onboardingPanelBitflyerNote: 'The bitFlyer wallet is a service managed by bitFlyer, Inc.',
+  onboardingPanelBitflyerText: 'By verifying your wallet and linking it to a bitFlyer account, you will be able to store and manage the tokens you have earned through Brave Rewards more easily',
+  onboardingPanelBitflyerLearnMore: '$1Learn more$2 about how to link your Brave browser with your bitFlyer account.'
 }

@@ -16,7 +16,7 @@
 #include "bat/ads/internal/security/conversions/verifiable_conversion_envelope_info.h"
 #include "bat/ads/internal/security/crypto_util.h"
 #include "bat/ads/internal/security/key_pair_info.h"
-#include "bat/ads/internal/string_util.h"
+#include "third_party/re2/src/re2/re2.h"
 #include "tweetnacl.h"  // NOLINT
 
 namespace ads {
@@ -31,20 +31,24 @@ const size_t kVacCipherTextLength = 32;
 const size_t kVacMessageMaxLength = 30;
 const size_t kVacMessageMinLength = 1;
 
+bool IsConversionIdValid(const std::string& conversion_id) {
+  return RE2::FullMatch(conversion_id, "^[a-zA-Z0-9-]*$");
+}
+
 }  // namespace
 
-base::Optional<VerifiableConversionEnvelopeInfo> EnvelopeSeal(
+absl::optional<VerifiableConversionEnvelopeInfo> EnvelopeSeal(
     const VerifiableConversionInfo& verifiable_conversion) {
   const std::string message = verifiable_conversion.id;
   const std::string public_key_base64 = verifiable_conversion.public_key;
 
   if (message.length() < kVacMessageMinLength ||
       message.length() > kVacMessageMaxLength) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
-  if (!IsLatinAlphaNumeric(message)) {
-    return base::nullopt;
+  if (!IsConversionIdValid(message)) {
+    return absl::nullopt;
   }
 
   // Protocol requires at least 2 trailing zero-padding bytes
@@ -54,12 +58,12 @@ base::Optional<VerifiableConversionEnvelopeInfo> EnvelopeSeal(
 
   const std::vector<uint8_t> public_key = Base64ToBytes(public_key_base64);
   if (public_key.size() != kCryptoBoxPublicKeyBytes) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   const KeyPairInfo ephemeral_key_pair = GenerateBoxKeyPair();
   if (!ephemeral_key_pair.IsValid()) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   const std::vector<uint8_t> nonce = GenerateRandom192BitNonce();
@@ -80,7 +84,7 @@ base::Optional<VerifiableConversionEnvelopeInfo> EnvelopeSeal(
   envelope.nonce = base::Base64Encode(nonce);
 
   if (!envelope.IsValid()) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   return envelope;

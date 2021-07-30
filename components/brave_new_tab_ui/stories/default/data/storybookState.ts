@@ -50,9 +50,9 @@ function shouldShowBrandedWallpaperData (shouldShow: boolean): NewTab.BrandedWal
 function getWidgetStackOrder (firstWidget: string): NewTab.StackWidget[] {
   switch (firstWidget) {
     case 'together':
-      return ['rewards', 'binance', 'together']
+      return ['rewards', 'binance', 'together', 'ftx']
     default:
-      return ['together', 'binance', 'rewards']
+      return ['together', 'binance', 'rewards', 'ftx']
   }
 }
 
@@ -69,17 +69,20 @@ export const getNewTabData = (state: NewTab.State = defaultState): NewTab.State 
   customLinksEnabled: boolean('CustomLinks Enabled?', false),
   showBackgroundImage: boolean('Show background image?', true),
   showStats: boolean('Show stats?', true),
-  showToday: boolean('Show today?', true),
+  showToday: boolean('Show Brave News?', true),
   showClock: boolean('Show clock?', true),
   showTopSites: boolean('Show top sites?', true),
   showRewards: boolean('Show rewards?', true),
-  showTogether: boolean('Show together?', true),
-  togetherSupported: boolean('Together supported?', true),
-  togetherPromptDismissed: !boolean('Together prompt?', false),
+  showTogether: boolean('Show Brave Talk?', true),
+  togetherSupported: boolean('Brave Talk supported?', true),
+  togetherPromptDismissed: !boolean('Brave Talk prompt?', false),
   geminiSupported: boolean('Gemini Supported?', true),
   cryptoDotComSupported: boolean('Crypto.com supported?', true),
+  ftxSupported: boolean('FTX supported?', true),
+  showFTX: boolean('Show FTX?', true),
   showBinance: boolean('Show Binance?', true),
-  isBraveTodayIntroDismissed: boolean('Brave Today intro dismissed?', false),
+  hideAllWidgets: boolean('Hide all widgets?', false),
+  isBraveTodayOptedIn: boolean('Brave Today opted-in?', false),
   textDirection: select('Text direction', { ltr: 'ltr', rtl: 'rtl' } , 'ltr'),
   stats: {
     ...state.stats,

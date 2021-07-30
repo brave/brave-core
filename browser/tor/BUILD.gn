@@ -7,12 +7,13 @@ source_set("tor") {
   check_includes = false
   visibility = [
     ":*",
-    "//brave/browser:browser_process",
+    "//brave/browser",
     "//brave/browser/decentralized_dns/test:unit_tests",
     "//brave/browser/ipfs/test:*",
     "//brave/browser/profiles",
     "//brave/browser/ui",
     "//brave/test:*",
+    "//chrome/browser",
   ]
 
   if (enable_tor) {
@@ -97,7 +98,7 @@ source_set("browser_tests") {
     deps = [
       "//base",
       "//brave/app:brave_generated_resources_grit",
-      "//brave/browser:browser_process",
+      "//brave/browser",
       "//brave/browser/tor",
       "//brave/browser/ui",
       "//brave/common",
@@ -125,7 +126,10 @@ source_set("browser_tests") {
     }
 
     if (brave_ads_enabled) {
-      deps += [ "//brave/components/brave_ads/browser" ]
+      deps += [
+        "//brave/browser/brave_ads",
+        "//brave/components/brave_ads/browser",
+      ]
     }
 
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]

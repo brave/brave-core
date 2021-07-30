@@ -19,7 +19,6 @@ import AdsBox from './adsBox'
 import ContributeBox from './contributeBox'
 import TipBox from './tipsBox'
 import MonthlyContributionBox from './monthlyContributionBox'
-import QRBox from './qrBox'
 import { SettingsOptInForm, RewardsTourModal, RewardsTourPromo } from '../../shared/components/onboarding'
 import { TourPromoWrapper } from './style'
 
@@ -28,6 +27,7 @@ import * as rewardsActions from '../actions/rewards_actions'
 import Promotion from './promotion'
 import { getLocale } from '../../../../common/locale'
 import { getActivePromos, getPromo, PromoType, Promo } from '../promos'
+import { getWalletProviderName } from '../utils'
 
 interface Props extends Rewards.ComponentProps {
 }
@@ -67,14 +67,6 @@ class SettingsPage extends React.Component<Props, State> {
   }
 
   componentDidMount () {
-    if (this.props.rewardsData.firstLoad === null) {
-      // First load ever
-      this.actions.onSettingSave('firstLoad', true, false)
-    } else if (this.props.rewardsData.firstLoad) {
-      // Second load ever
-      this.actions.onSettingSave('firstLoad', false, false)
-    }
-
     if (!this.props.rewardsData.initializing) {
       this.startRewards()
     }
@@ -127,15 +119,7 @@ class SettingsPage extends React.Component<Props, State> {
   }
 
   startRewards () {
-    if (this.props.rewardsData.firstLoad) {
-      this.actions.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear())
-      this.actions.getAdsData()
-      this.actions.getPendingContributions()
-      this.actions.getCountryCode()
-    } else {
-      // normal load
-      this.refreshActions()
-    }
+    this.refreshActions()
 
     this.actions.getRewardsParameters()
     this.actions.getContributionAmount()
@@ -148,6 +132,7 @@ class SettingsPage extends React.Component<Props, State> {
     this.actions.fetchPromotions()
     this.actions.getExternalWallet()
     this.actions.getOnboardingStatus()
+    this.actions.getEnabledInlineTippingPlatforms()
 
     this.handleURL()
   }
@@ -184,7 +169,7 @@ class SettingsPage extends React.Component<Props, State> {
   }
 
   getPromotionsClaims = () => {
-    const { promotions, ui } = this.props.rewardsData
+    const { promotions } = this.props.rewardsData
 
     if (!promotions || promotions.length === 0) {
       return null
@@ -199,7 +184,7 @@ class SettingsPage extends React.Component<Props, State> {
 
           return (
             <div key={`promotion-${index}`}>
-              <Promotion promotion={promotion} onlyAnonWallet={ui.onlyAnonWallet} />
+              <Promotion promotion={promotion} />
             </div>
           )
         })}
@@ -252,9 +237,9 @@ class SettingsPage extends React.Component<Props, State> {
       // NOTE: The minimum BAT limit error is currently Uphold-specific
       return (
         <ModalRedirect
-          id={'redirect-modal-bat-limit'}
-          titleText={getLocale('redirectModalBatLimitTitle')}
-          errorText={getLocale('redirectModalBatLimitText')}
+          id={'redirect-modal-id-verification-required'}
+          titleText={getLocale('redirectModalKYCRequiredTitle')}
+          errorText={getLocale('redirectModalKYCRequiredText').replace('$1', getWalletProviderName(externalWallet))}
           buttonText={getLocale('redirectModalClose')}
           walletType={walletType}
           onClick={this.actions.hideRedirectModal}
@@ -270,7 +255,9 @@ class SettingsPage extends React.Component<Props, State> {
           buttonText={getLocale('processingRequestButton')}
           titleText={getLocale('processingRequest')}
           walletType={walletType}
+          displayCloseButton={true}
           onClick={this.onRedirectError}
+          onClose={this.actions.hideRedirectModal}
         />
       )
     }
@@ -345,11 +332,17 @@ class SettingsPage extends React.Component<Props, State> {
     const {
       adsData,
       contributionMonthly,
-      parameters,
-      ui
+      externalWallet,
+      parameters
     } = this.props.rewardsData
 
-    const { autoContributeChoices } = parameters
+    const externalWalletType = externalWallet ? externalWallet.type : ''
+
+    // Hide AC options in rewards onboarding for bitFlyer-associated regions.
+    let { autoContributeChoices } = parameters
+    if (externalWalletType === 'bitflyer') {
+      autoContributeChoices = []
+    }
 
     const onDone = () => {
       this.setState({ showRewardsTour: false, firstTimeSetup: false })
@@ -363,16 +356,23 @@ class SettingsPage extends React.Component<Props, State> {
       this.actions.onSettingSave('contributionMonthly', amount)
     }
 
+    const onVerifyClick = () => {
+      if (externalWallet && externalWallet.verifyUrl) {
+        window.open(externalWallet.verifyUrl, '_self')
+      }
+    }
+
     return (
       <RewardsTourModal
         layout='wide'
         firstTimeSetup={this.state.firstTimeSetup}
-        onlyAnonWallet={ui.onlyAnonWallet}
         adsPerHour={adsData.adsPerHour}
         autoContributeAmount={contributionMonthly}
         autoContributeAmountOptions={autoContributeChoices}
+        externalWalletProvider={externalWalletType}
         onAdsPerHourChanged={onAdsPerHourChanged}
         onAutoContributeAmountChanged={onAcAmountChanged}
+        onVerifyWalletClick={onVerifyClick}
         onDone={onDone}
         onClose={onDone}
       />
@@ -404,7 +404,6 @@ class SettingsPage extends React.Component<Props, State> {
           onTOSClick={this.openTOS}
           onPrivacyClick={this.openPrivacyPolicy}
         />
-        <QRBox />
         <AdsBox />
         <ContributeBox />
         <MonthlyContributionBox />

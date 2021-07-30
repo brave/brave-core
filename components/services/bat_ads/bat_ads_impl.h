@@ -13,10 +13,11 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "bat/ads/ads.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/statement_info.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
-#include "bat/ads/ads.h"
-#include "bat/ads/statement_info.h"
 
 namespace ads {
 class Ads;
@@ -46,7 +47,7 @@ class BatAdsImpl :
   void ChangeLocale(
       const std::string& locale) override;
 
-  void OnAdsSubdivisionTargetingCodeHasChanged() override;
+  void OnPrefChanged(const std::string& path) override;
 
   void OnHtmlLoaded(const int32_t tab_id,
                     const std::vector<std::string>& redirect_chain,
@@ -95,6 +96,17 @@ class BatAdsImpl :
       const std::string& creative_instance_id,
       const ads::PromotedContentAdEventType event_type) override;
 
+  void GetInlineContentAd(const std::string& dimensions,
+                          GetInlineContentAdCallback callback) override;
+
+  void OnInlineContentAdEvent(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const ads::InlineContentAdEventType event_type) override;
+
+  void PurgeOrphanedAdEventsForType(
+      const ads::mojom::BraveAdsAdType ad_type) override;
+
   void RemoveAllHistory(
       RemoveAllHistoryCallback callback) override;
 
@@ -140,8 +152,7 @@ class BatAdsImpl :
       const bool flagged,
       ToggleFlagAdCallback callback) override;
 
-  void OnUserModelUpdated(
-      const std::string& id) override;
+  void OnResourceComponentUpdated(const std::string& id) override;
 
  private:
   // Workaround to pass base::OnceCallback into std::bind
@@ -173,6 +184,12 @@ class BatAdsImpl :
   static void OnShutdown(
       CallbackHolder<ShutdownCallback>* holder,
       const int32_t result);
+
+  static void OnGetInlineContentAd(
+      CallbackHolder<GetInlineContentAdCallback>* holder,
+      const bool success,
+      const std::string& dimensions,
+      const ads::InlineContentAdInfo& ad);
 
   static void OnRemoveAllHistory(
       CallbackHolder<RemoveAllHistoryCallback>* holder,

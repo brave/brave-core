@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <tuple>
 
 #include "base/json/json_reader.h"
 #include "brave/browser/net/url_context.h"
@@ -18,82 +19,33 @@
 
 using brave::ResponseCallback;
 
-namespace {
-const char kTestReferralHeaders[] = R"(
-  [
-    {
-      "domains": [
-         "marketwatch.com",
-         "barrons.com"
-      ],
-      "headers": {
-         "X-Brave-Partner":"dowjones",
-         "X-Invalid": "test"
-      },
-      "cookieNames": [
-      ],
-      "expiration":31536000000
-    },
-    {
-      "domains": [
-         "townsquareblogs.com",
-         "tasteofcountry.com",
-         "ultimateclassicrock.com",
-         "xxlmag.com",
-         "popcrush.com"
-      ],
-      "headers": {
-         "X-Brave-Partner":"townsquare"
-      },
-      "cookieNames":[
-      ],
-      "expiration":31536000000
-    }
-  ])";
-}  // namespace
-
 TEST(BraveReferralsNetworkDelegateHelperTest, ReplaceHeadersForMatchingDomain) {
-  const GURL url("https://www.marketwatch.com");
-  base::JSONReader::ValueWithError referral_headers =
-      base::JSONReader::ReadAndReturnValueWithError(kTestReferralHeaders);
-  ASSERT_TRUE(referral_headers.value);
-  ASSERT_TRUE(referral_headers.value->is_list());
+  const std::array<std::tuple<GURL, std::string>, 2> test_cases = {
+      std::make_tuple<>(GURL("https://api-sandbox.uphold.com"), "uphold"),
+      std::make_tuple<>(GURL("http://grammarly.com"), "grammarly"),
+  };
 
-  const base::ListValue* referral_headers_list = nullptr;
-  referral_headers.value->GetAsList(&referral_headers_list);
+  for (const auto& c : test_cases) {
+    net::HttpRequestHeaders headers;
+    auto request_info =
+        std::make_shared<brave::BraveRequestInfo>(std::get<0>(c));
 
-  net::HttpRequestHeaders headers;
-  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  request_info->referral_headers_list = referral_headers_list;
+    int rc = brave::OnBeforeStartTransaction_ReferralsWork(
+        &headers, brave::ResponseCallback(), request_info);
 
-  int rc = brave::OnBeforeStartTransaction_ReferralsWork(
-      &headers, brave::ResponseCallback(), request_info);
-
-  std::string partner_header;
-  headers.GetHeader("X-Brave-Partner", &partner_header);
-  EXPECT_EQ(partner_header, "dowjones");
-
-  std::string invalid_partner_header;
-  EXPECT_EQ(headers.GetHeader("X-Invalid", &invalid_partner_header), false);
-  EXPECT_EQ(invalid_partner_header, "");
-
-  EXPECT_EQ(rc, net::OK);
+    std::string partner_header;
+    headers.GetHeader("X-Brave-Partner", &partner_header);
+    EXPECT_EQ(partner_header, std::get<1>(c));
+    EXPECT_EQ(rc, net::OK);
+  }
 }
 
 TEST(BraveReferralsNetworkDelegateHelperTest,
      NoReplaceHeadersForNonMatchingDomain) {
   const GURL url("https://www.google.com");
-  base::JSONReader::ValueWithError referral_headers =
-      base::JSONReader::ReadAndReturnValueWithError(kTestReferralHeaders);
-  ASSERT_TRUE(referral_headers.value);
-  ASSERT_TRUE(referral_headers.value->is_list());
-
-  const base::ListValue* referral_headers_list = nullptr;
-  referral_headers.value->GetAsList(&referral_headers_list);
 
   net::HttpRequestHeaders headers;
   auto request_info = std::make_shared<brave::BraveRequestInfo>(GURL());
-  request_info->referral_headers_list = referral_headers_list;
   int rc = brave::OnBeforeStartTransaction_ReferralsWork(
       &headers, brave::ResponseCallback(), request_info);
 

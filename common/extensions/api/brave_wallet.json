@@ -60,6 +60,11 @@
           }
         ]
       }, {
+        "name": "notifyWalletUnlock",
+        "type": "function",
+        "description": "Called to notify Brave that the wallet was unlocked",
+        "parameters": []
+      }, {
         "name": "getWalletSeed",
         "type": "function",
         "description": "Called when website detects a Dapp",

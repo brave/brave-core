@@ -8,6 +8,7 @@ pub use lol_html::OutputSink;
 
 use super::rewriter_config_builder::*;
 use super::speedreader_heuristics::SpeedReaderHeuristics;
+use super::speedreader_readability::SpeedReaderReadability;
 use super::speedreader_streaming::SpeedReaderStreaming;
 use super::whitelist::Whitelist;
 use lol_html::errors::SelectorError;
@@ -30,6 +31,8 @@ pub enum SpeedReaderError {
     BadURL(String),
     #[error("Selector Error: `{0}` - {1}")]
     SelectorError(String, SelectorError),
+    #[error("Processor already closed")]
+    ProcessorClosed,
 }
 
 impl From<lol_html::errors::RewritingError> for SpeedReaderError {
@@ -73,7 +76,8 @@ impl From<std::str::Utf8Error> for SpeedReaderError {
 pub enum RewriterType {
     Streaming = 0,
     Heuristics = 1,
-    Unknown = 2,
+    Readability = 2,
+    Unknown = 3,
 }
 
 impl From<u8> for RewriterType {
@@ -81,6 +85,7 @@ impl From<u8> for RewriterType {
         match r_type {
             0 => RewriterType::Streaming,
             1 => RewriterType::Heuristics,
+            2 => RewriterType::Readability,
             _ => RewriterType::Unknown,
         }
     }
@@ -183,7 +188,7 @@ impl SpeedReader {
         }
     }
 
-    pub fn get_rewriter_type(&self, article_url: &str) -> RewriterType {
+    pub fn get_rewriter_type_from_list(&self, article_url: &str) -> RewriterType {
         if let Ok(url) = Url::parse(article_url) {
             let config = self
                 .whitelist
@@ -194,8 +199,7 @@ impl SpeedReader {
                     declarative_rewrite: Some(_),
                     ..
                 }) => RewriterType::Streaming,
-                Some(_) => RewriterType::Heuristics,
-                None => RewriterType::Unknown,
+                _ => RewriterType::Unknown,
             }
         } else {
             RewriterType::Unknown
@@ -230,7 +234,7 @@ impl SpeedReader {
         if let Ok(url) = Url::parse(article_url) {
             let rewriter_decided = match rewriter_type {
                 Some(r_type) => r_type,
-                None => self.get_rewriter_type(article_url),
+                None => self.get_rewriter_type_from_list(article_url),
             };
 
             if let Some(content_handlers) = extra.downcast_ref::<Vec<(Selector, ContentFunction)>>()
@@ -241,6 +245,9 @@ impl SpeedReader {
                         output_sink,
                         content_handlers,
                     )?)),
+                    RewriterType::Readability => {
+                        Ok(Box::new(SpeedReaderReadability::try_new(url, output_sink)?))
+                    }
                     _ => Ok(Box::new(SpeedReaderHeuristics::try_new(
                         url.as_str(),
                         output_sink,
@@ -317,14 +324,14 @@ mod test {
     #[test]
     pub fn configuration_matching_some() {
         let sr = SpeedReader::with_whitelist(get_whitelist());
-        let config = sr.get_rewriter_type("http://example.com/article/today");
-        assert_eq!(config, RewriterType::Heuristics);
+        let config = sr.get_rewriter_type_from_list("http://example.com/article/today");
+        assert_eq!(config, RewriterType::Unknown);
     }
 
     #[test]
     pub fn configuration_nomatch_none() {
         let sr = SpeedReader::with_whitelist(get_whitelist());
-        let config = sr.get_rewriter_type("http://bbc.com/article/today");
+        let config = sr.get_rewriter_type_from_list("http://bbc.com/article/today");
         assert_eq!(config, RewriterType::Unknown);
     }
 
@@ -332,8 +339,8 @@ mod test {
     pub fn configuration_opaque_correctly_typed() {
         let sr = SpeedReader::with_whitelist(get_whitelist());
         let article = "http://example.com/article/today";
-        let config = sr.get_rewriter_type(article);
-        assert_eq!(config, RewriterType::Heuristics);
+        let config = sr.get_rewriter_type_from_list(article);
+        assert_eq!(config, RewriterType::Unknown);
         let opaque = sr.get_opaque_config(article);
         assert!(opaque
             .downcast_ref::<Vec<(Selector, ContentFunction)>>()
@@ -344,8 +351,8 @@ mod test {
     pub fn rewriter_configured_heuristics() {
         let sr = SpeedReader::with_whitelist(get_whitelist());
         let article = "http://example.com/article/today";
-        let config = sr.get_rewriter_type(article);
-        assert_eq!(config, RewriterType::Heuristics);
+        let config = sr.get_rewriter_type_from_list(article);
+        assert_eq!(config, RewriterType::Unknown);
         let opaque = sr.get_opaque_config(article);
         let maybe_rewriter = sr.get_rewriter(article, &opaque, |_: &[u8]| {}, Some(config));
         assert!(maybe_rewriter.is_ok());
@@ -357,7 +364,7 @@ mod test {
     pub fn rewriter_configured_streaming() {
         let sr = SpeedReader::with_whitelist(get_whitelist());
         let article = "http://example.net/article/today";
-        let config = sr.get_rewriter_type(article);
+        let config = sr.get_rewriter_type_from_list(article);
         assert_eq!(config, RewriterType::Streaming);
         let opaque = sr.get_opaque_config(article);
         let maybe_rewriter = sr.get_rewriter(article, &opaque, |_: &[u8]| {}, Some(config));

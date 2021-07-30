@@ -9,28 +9,39 @@ import org.objectweb.asm.ClassVisitor;
 
 public class BraveSearchEngineAdapterClassAdapter extends BraveClassVisitor {
     static String sSearchEngineAdapterClassName =
-        "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter";
+            "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter";
 
     static String sBraveSearchEngineAdapterBaseClassName =
-        "org/chromium/chrome/browser/search_engines/settings/BraveBaseSearchEngineAdapter";
+            "org/chromium/chrome/browser/search_engines/settings/BraveBaseSearchEngineAdapter";
 
-    static String sMethodGetPermissionsLinkMessage =
-        "getPermissionsLinkMessage";
+    static String sSearchEngineSettingsClassName =
+            "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings";
 
-    static String sMethodGetSearchEngineSourceType =
-        "getSearchEngineSourceType";
+    static String sBraveSearchEnginePreferenceClassName =
+            "org/chromium/chrome/browser/search_engines/settings/BraveSearchEnginePreference";
 
-    static String sMethodSortAndFilterUnnecessaryTemplateUrl = "sortAndFilterUnnecessaryTemplateUrl";
+    static String sMethodGetPermissionsLinkMessage = "getPermissionsLinkMessage";
+
+    static String sMethodGetSearchEngineSourceType = "getSearchEngineSourceType";
+
+    static String sMethodSortAndFilterUnnecessaryTemplateUrl =
+            "sortAndFilterUnnecessaryTemplateUrl";
 
     public BraveSearchEngineAdapterClassAdapter(ClassVisitor visitor) {
         super(visitor);
-        changeSuperName(sSearchEngineAdapterClassName,
-                        sBraveSearchEngineAdapterBaseClassName);
+        changeSuperName(sSearchEngineAdapterClassName, sBraveSearchEngineAdapterBaseClassName);
         changeMethodOwner(sSearchEngineAdapterClassName, sMethodGetSearchEngineSourceType,
-                          sBraveSearchEngineAdapterBaseClassName);
+                sBraveSearchEngineAdapterBaseClassName);
         changeMethodOwner(sSearchEngineAdapterClassName, sMethodGetPermissionsLinkMessage,
-                          sBraveSearchEngineAdapterBaseClassName);
+                sBraveSearchEngineAdapterBaseClassName);
         changeMethodOwner(sSearchEngineAdapterClassName, sMethodSortAndFilterUnnecessaryTemplateUrl,
-                          sBraveSearchEngineAdapterBaseClassName);
+                sBraveSearchEngineAdapterBaseClassName);
+
+        deleteField(sBraveSearchEnginePreferenceClassName, "mSearchEngineAdapter");
+        makeProtectedField(sSearchEngineSettingsClassName, "mSearchEngineAdapter");
+
+        makePublicMethod(sSearchEngineSettingsClassName, "createAdapterIfNecessary");
+        addMethodAnnotation(sBraveSearchEnginePreferenceClassName, "createAdapterIfNecessary",
+                "Ljava/lang/Override;");
     }
 }

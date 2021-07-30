@@ -17,6 +17,9 @@ struct AdNotificationInfo;
 
 class AdNotificationObserver : public base::CheckedObserver {
  public:
+  // Invoked when an ad notification is served
+  virtual void OnAdNotificationServed(const AdNotificationInfo& ad) {}
+
   // Invoked when an ad notification is viewed
   virtual void OnAdNotificationViewed(const AdNotificationInfo& ad) {}
 

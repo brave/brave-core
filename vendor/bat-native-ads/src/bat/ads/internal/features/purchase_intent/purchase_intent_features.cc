@@ -15,6 +15,9 @@ namespace {
 const char kFeatureName[] = "PurchaseIntent";
 const char kFieldTrialParameterThreshold[] = "threshold";
 const char kFieldTrialParameterTimeWindowInSeconds[] = "time_window_in_seconds";
+const char kFieldTrialParameterResourceVersion[] =
+    "purchase_intent_resource_version";
+const int kDefaultResourceVersion = 1;
 }  // namespace
 
 const base::Feature kPurchaseIntent{kFeatureName,
@@ -34,6 +37,12 @@ int64_t GetPurchaseIntentTimeWindowInSeconds() {
   return GetFieldTrialParamByFeatureAsInt(
       kPurchaseIntent, kFieldTrialParameterTimeWindowInSeconds,
       ad_targeting::model::kTimeWindowInSeconds);
+}
+
+int GetPurchaseIntentResourceVersion() {
+  return GetFieldTrialParamByFeatureAsInt(kPurchaseIntent,
+                                          kFieldTrialParameterResourceVersion,
+                                          kDefaultResourceVersion);
 }
 
 }  // namespace features

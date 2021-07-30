@@ -12,7 +12,8 @@ namespace brave {
 
 std::string GetChannelName() {
 #if defined(OFFICIAL_BUILD)
-  std::string channel_name = chrome::GetChannelName();
+  std::string channel_name =
+      chrome::GetChannelName(chrome::WithExtendedStable(false));
   if (channel_name.empty()) {
     channel_name = "release";
   }
@@ -20,15 +21,6 @@ std::string GetChannelName() {
   return channel_name;
 #else  // OFFICIAL_BUILD
   return "developer";
-#endif  // !OFFICIAL_BUILD
-}
-
-bool IsNightlyOrDeveloperBuild() {
-#if defined(OFFICIAL_BUILD)
-  return chrome::GetChannel() == version_info::Channel::CANARY ||
-      chrome::GetChannel() == version_info::Channel::UNKNOWN;
-#else  // OFFICIAL_BUILD
-  return true;
 #endif  // !OFFICIAL_BUILD
 }
 

@@ -1,5 +1,5 @@
 diff --git a/content/browser/zygote_host/zygote_host_impl_linux.cc b/content/browser/zygote_host/zygote_host_impl_linux.cc
-index 87a0c431e214a81bbf545353afb39d80767e6ee6..2f8e2ab0758218f4d055e0d62ac188c742cb1539 100644
+index a63289307dacd50e1eedf728016150862485be78..e47e3189b0e2c5c177d6c35786e6cd6c26ba9053 100644
 --- a/content/browser/zygote_host/zygote_host_impl_linux.cc
 +++ b/content/browser/zygote_host/zygote_host_impl_linux.cc
 @@ -115,6 +115,7 @@ void ZygoteHostImpl::Init(const base::CommandLine& command_line) {
@@ -8,5 +8,5 @@ index 87a0c431e214a81bbf545353afb39d80767e6ee6..2f8e2ab0758218f4d055e0d62ac188c7
      LOG(FATAL)
 +    BRAVE_ZYGOTE_HOST_IMPL_LINUX_ZYGOTE_HOST_IMPL_INIT
          << "No usable sandbox! Update your kernel or see "
-            "https://chromium.googlesource.com/chromium/src/+/master/"
+            "https://chromium.googlesource.com/chromium/src/+/main/"
             "docs/linux/suid_sandbox_development.md for more information on "

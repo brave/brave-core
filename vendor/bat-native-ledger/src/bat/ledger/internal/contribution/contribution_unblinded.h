@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_UNBLINDED_H_
-#define BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_UNBLINDED_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_CONTRIBUTION_UNBLINDED_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_CONTRIBUTION_UNBLINDED_H_
 
 #include <stdint.h>
 
@@ -23,9 +23,9 @@ namespace contribution {
 
 using GetContributionInfoAndUnblindedTokensCallback = std::function<void(
     type::ContributionInfoPtr contribution,
-    const std::vector<type::UnblindedToken>& list)>;
+    const std::vector<type::UnblindedToken>& unblinded_tokens)>;
 
-using Winners = std::map<std::string, uint32_t>;
+using StatisticalVotingWinners = std::map<std::string, uint32_t>;
 
 class Unblinded {
  public:
@@ -43,13 +43,15 @@ class Unblinded {
       ledger::ResultCallback callback);
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(UnblindedTest, GetStatisticalVotingWinner);
+
   void GetContributionInfoAndUnblindedTokens(
       const std::vector<type::CredsBatchType>& types,
       const std::string& contribution_id,
       GetContributionInfoAndUnblindedTokensCallback callback);
 
   void OnUnblindedTokens(
-      type::UnblindedTokenList list,
+      type::UnblindedTokenList unblinded_tokens,
       const std::string& contribution_id,
       GetContributionInfoAndUnblindedTokensCallback callback);
 
@@ -58,29 +60,28 @@ class Unblinded {
       GetContributionInfoAndUnblindedTokensCallback callback);
 
   void OnReservedUnblindedTokens(
-      type::UnblindedTokenList list,
+      type::UnblindedTokenList unblinded_tokens,
       const std::string& contribution_id,
       GetContributionInfoAndUnblindedTokensCallback callback);
 
   void OnGetContributionInfo(
       type::ContributionInfoPtr contribution,
-      const std::vector<type::UnblindedToken>& list,
+      const std::vector<type::UnblindedToken>& unblinded_tokens,
       GetContributionInfoAndUnblindedTokensCallback callback);
 
-  void PrepareTokens(
-      type::ContributionInfoPtr contribution,
-      const std::vector<type::UnblindedToken>& list,
-      const std::vector<type::CredsBatchType>& types,
-      ledger::ResultCallback callback);
+  void PrepareTokens(type::ContributionInfoPtr contribution,
+                     const std::vector<type::UnblindedToken>& unblinded_tokens,
+                     const std::vector<type::CredsBatchType>& types,
+                     ledger::ResultCallback callback);
 
   void PreparePublishers(
-      const std::vector<type::UnblindedToken>& list,
+      const std::vector<type::UnblindedToken>& unblinded_tokens,
       type::ContributionInfoPtr contribution,
       const std::vector<type::CredsBatchType>& types,
       ledger::ResultCallback callback);
 
   type::ContributionPublisherList PrepareAutoContribution(
-      const std::vector<type::UnblindedToken>& list,
+      const std::vector<type::UnblindedToken>& unblinded_tokens,
       type::ContributionInfoPtr contribution);
 
   void OnPrepareAutoContribution(
@@ -102,7 +103,7 @@ class Unblinded {
 
   void OnProcessTokens(
       type::ContributionInfoPtr contribution,
-      const std::vector<type::UnblindedToken>& list,
+      const std::vector<type::UnblindedToken>& unblinded_tokens,
       ledger::ResultCallback callback);
 
   void TokenProcessed(
@@ -120,16 +121,21 @@ class Unblinded {
 
   void OnMarkUnblindedTokensAsReserved(
       const type::Result result,
-      const std::vector<type::UnblindedToken>& list,
+      const std::vector<type::UnblindedToken>& unblinded_tokens,
       std::shared_ptr<type::ContributionInfoPtr> shared_contribution,
       const std::vector<type::CredsBatchType>& types,
       ledger::ResultCallback callback);
 
   void OnReservedUnblindedTokensForRetryAttempt(
-      const type::UnblindedTokenList& list,
+      const type::UnblindedTokenList& unblinded_tokens,
       const std::vector<type::CredsBatchType>& types,
       std::shared_ptr<type::ContributionInfoPtr> shared_contribution,
       ledger::ResultCallback callback);
+
+  std::string GetStatisticalVotingWinnerForTesting(
+      double dart,
+      double amount,
+      const ledger::type::ContributionPublisherList& publisher_list);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<credential::Credentials> credentials_promotion_;
@@ -138,4 +144,4 @@ class Unblinded {
 
 }  // namespace contribution
 }  // namespace ledger
-#endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_UNBLINDED_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_CONTRIBUTION_UNBLINDED_H_

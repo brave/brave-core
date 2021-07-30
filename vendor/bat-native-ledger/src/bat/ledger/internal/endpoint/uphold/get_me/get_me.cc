@@ -56,10 +56,12 @@ std::string GetMe::GetUrl() {
 
 type::Result GetMe::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_UNAUTHORIZED) {
+    BLOG(0, "Unauthorized access");
     return type::Result::EXPIRED_TOKEN;
   }
 
   if (status_code != net::HTTP_OK) {
+    BLOG(0, "Unexpected HTTP status: " << status_code);
     return type::Result::LEDGER_ERROR;
   }
 
@@ -71,7 +73,7 @@ type::Result GetMe::ParseBody(
     ::ledger::uphold::User* user) {
   DCHECK(user);
 
-  base::Optional<base::Value> value = base::JSONReader::Read(body);
+  absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     return type::Result::LEDGER_ERROR;
@@ -88,10 +90,8 @@ type::Result GetMe::ParseBody(
     user->name = *name;
   }
 
-  const auto* member_at = dictionary->FindStringKey("memberAt");
-  if (member_at) {
-    user->member_at = *member_at;
-    user->verified = !user->member_at.empty();
+  if (const auto* id = dictionary->FindStringKey("id")) {
+    user->member_id = *id;
   }
 
   const auto* currencies = dictionary->FindListKey("currencies");

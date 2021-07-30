@@ -6,13 +6,13 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_TOOLBAR_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_TOOLBAR_VIEW_H_
 
-#include "base/scoped_observer.h"
+#include "base/scoped_observation.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "components/prefs/pref_member.h"
 
 class BookmarkButton;
-class SpeedreaderButton;
+class WalletButton;
 
 class BraveToolbarView : public ToolbarView,
                          public ProfileAttributesStorage::Observer {
@@ -21,7 +21,7 @@ class BraveToolbarView : public ToolbarView,
   ~BraveToolbarView() override;
 
   BookmarkButton* bookmark_button() const { return bookmark_; }
-  SpeedreaderButton* speedreader_button() const { return speedreader_; }
+  WalletButton* wallet_button() const { return wallet_; }
   void Init() override;
   void Layout() override;
   void Update(content::WebContents* tab) override;
@@ -40,20 +40,21 @@ class BraveToolbarView : public ToolbarView,
   // ProfileAttributesStorage::Observer:
   void OnProfileAdded(const base::FilePath& profile_path) override;
   void OnProfileWasRemoved(const base::FilePath& profile_path,
-      const base::string16& profile_name) override;
+                           const std::u16string& profile_name) override;
 
   BookmarkButton* bookmark_ = nullptr;
   // Tracks the preference to determine whether bookmark editing is allowed.
   BooleanPrefMember edit_bookmarks_enabled_;
 
-  SpeedreaderButton* speedreader_ = nullptr;
+  WalletButton* wallet_ = nullptr;
 
   BooleanPrefMember location_bar_is_wide_;
   // Whether this toolbar has been initialized.
   bool brave_initialized_ = false;
   // Tracks profile count to determine whether profile switcher should be shown.
-  ScopedObserver<ProfileAttributesStorage, ProfileAttributesStorage::Observer>
-      profile_observer_;
+  base::ScopedObservation<ProfileAttributesStorage,
+                          ProfileAttributesStorage::Observer>
+      profile_observer_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_TOOLBAR_VIEW_H_

@@ -51,9 +51,6 @@ const start = (passthroughArgs, buildConfig = config.defaultBuildConfig, options
   if (options.disable_doh) {
     braveArgs.push('--disable-doh')
   }
-  if (options.enable_smart_tracking_protection) {
-    braveArgs.push('--enable-smart-tracking-protection')
-  }
   if (options.single_process) {
     braveArgs.push('--single-process')
   }

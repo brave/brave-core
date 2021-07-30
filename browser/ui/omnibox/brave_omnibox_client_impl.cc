@@ -68,7 +68,8 @@ BraveOmniboxClientImpl::BraveOmniboxClientImpl(
 
 BraveOmniboxClientImpl::~BraveOmniboxClientImpl() {}
 
-void BraveOmniboxClientImpl::RegisterPrefs(PrefRegistrySimple* registry) {
+void BraveOmniboxClientImpl::RegisterProfilePrefs(
+    PrefRegistrySimple* registry) {
   registry->RegisterListPref(kSearchCountPrefName);
 }
 

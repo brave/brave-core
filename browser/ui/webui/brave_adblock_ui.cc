@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_adblock/resources/grit/brave_adblock_generated_map.h"
@@ -72,24 +72,21 @@ void AdblockDOMHandler::HandleEnableFilterList(const base::ListValue* args) {
 
 void AdblockDOMHandler::HandleGetCustomFilters(const base::ListValue* args) {
   DCHECK_EQ(args->GetSize(), 0U);
+  AllowJavascript();
   const std::string custom_filters =
       g_brave_browser_process->ad_block_custom_filters_service()
           ->GetCustomFilters();
-  if (!web_ui()->CanCallJavascript())
-    return;
-  web_ui()->CallJavascriptFunctionUnsafe("brave_adblock.onGetCustomFilters",
-                                         base::Value(custom_filters));
+  CallJavascriptFunction("brave_adblock.onGetCustomFilters",
+                         base::Value(custom_filters));
 }
 
 void AdblockDOMHandler::HandleGetRegionalLists(const base::ListValue* args) {
   DCHECK_EQ(args->GetSize(), 0U);
-  if (!web_ui()->CanCallJavascript())
-    return;
+  AllowJavascript();
   std::unique_ptr<base::ListValue> regional_lists =
       g_brave_browser_process->ad_block_regional_service_manager()
           ->GetRegionalLists();
-  web_ui()->CallJavascriptFunctionUnsafe("brave_adblock.onGetRegionalLists",
-                                         *regional_lists);
+  CallJavascriptFunction("brave_adblock.onGetRegionalLists", *regional_lists);
 }
 
 void AdblockDOMHandler::HandleUpdateCustomFilters(const base::ListValue* args) {

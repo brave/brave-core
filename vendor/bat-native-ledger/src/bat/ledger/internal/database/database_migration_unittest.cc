@@ -11,6 +11,7 @@
 #include "base/test/task_environment.h"
 #include "bat/ledger/internal/core/test_ledger_client.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/option_keys.h"
 #include "sql/statement.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -53,6 +54,13 @@ class LedgerDatabaseMigrationTest : public testing::Test {
 #endif
 
     return data;
+  }
+
+  void InitializeDatabaseWithScript(const std::string& script_path) {
+    base::FilePath path = GetTestDataPath().AppendASCII(script_path);
+    std::string init_script;
+    ASSERT_TRUE(base::ReadFileToString(path, &init_script));
+    ASSERT_TRUE(GetDB()->Execute(init_script.c_str()));
   }
 
   void InitializeDatabaseAtVersion(int version) {
@@ -237,7 +245,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_11_ContributionInfo) {
       WHERE ci.contribution_id LIKE ?
   )sql";
 
-  // One time tip
+  // One-time tip
   sql::Statement tip_sql(GetDB()->GetUniqueStatement(query.c_str()));
   tip_sql.BindString(0, "id_1570614352_%");
 
@@ -706,6 +714,45 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_28_ServerPublisherInfoCleared) {
     EXPECT_EQ(sql.ColumnString(2), "096f1756-9406-4d9b-94c8-5bb566c2ea5f");
     EXPECT_EQ(sql.ColumnInt64(3), 0);
   }
+}
+
+TEST_F(LedgerDatabaseMigrationTest, Migration_30_NotBitflyerRegion) {
+  InitializeDatabaseAtVersion(29);
+  InitializeLedger();
+  EXPECT_EQ(CountTableRows("unblinded_tokens"), 1);
+}
+
+TEST_F(LedgerDatabaseMigrationTest, Migration_30_BitflyerRegion) {
+  InitializeDatabaseAtVersion(29);
+  client_.SetOptionForTesting(option::kIsBitflyerRegion, base::Value(true));
+  InitializeLedger();
+  EXPECT_EQ(CountTableRows("unblinded_tokens"), 0);
+  EXPECT_EQ(CountTableRows("unblinded_tokens_bap"), 1);
+}
+
+TEST_F(LedgerDatabaseMigrationTest, Migration_31) {
+  InitializeDatabaseAtVersion(30);
+  InitializeLedger();
+
+  sql::Statement sql(GetDB()->GetUniqueStatement(R"sql(
+      SELECT processor FROM pending_contribution
+  )sql"));
+
+  EXPECT_TRUE(sql.Step());
+  EXPECT_EQ(sql.ColumnInt64(0), 0);
+}
+
+TEST_F(LedgerDatabaseMigrationTest, Migration_32_NotBitflyerRegion) {
+  InitializeDatabaseAtVersion(30);
+  InitializeLedger();
+  EXPECT_EQ(CountTableRows("balance_report_info"), 1);
+}
+
+TEST_F(LedgerDatabaseMigrationTest, Migration_32_BitflyerRegion) {
+  InitializeDatabaseAtVersion(30);
+  client_.SetOptionForTesting(option::kIsBitflyerRegion, base::Value(true));
+  InitializeLedger();
+  EXPECT_EQ(CountTableRows("balance_report_info"), 0);
 }
 
 }  // namespace ledger

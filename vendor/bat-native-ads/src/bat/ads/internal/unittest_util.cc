@@ -11,7 +11,6 @@
 #include "base/containers/flat_map.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
-#include "base/strings/string16.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -39,6 +38,8 @@ namespace ads {
 namespace {
 
 static std::map<std::string, uint16_t> g_url_endpoint_indexes;
+
+static std::map<std::string, std::vector<uint64_t>> g_ad_events;
 
 static std::map<std::string, std::string> g_prefs;
 
@@ -382,7 +383,7 @@ void MockClearPref(const std::unique_ptr<AdsClientMock>& mock) {
 void MockDefaultPrefs(const std::unique_ptr<AdsClientMock>& mock) {
   mock->SetBooleanPref(prefs::kEnabled, true);
 
-  mock->SetUint64Pref(prefs::kAdsPerHour, 0);
+  mock->SetInt64Pref(prefs::kAdsPerHour, -1);
 
   mock->SetIntegerPref(prefs::kIdleTimeThreshold, 15);
 
@@ -396,6 +397,8 @@ void MockDefaultPrefs(const std::unique_ptr<AdsClientMock>& mock) {
   mock->SetIntegerPref(prefs::kCatalogVersion, 1);
   mock->SetInt64Pref(prefs::kCatalogPing, 7200000);
   mock->SetInt64Pref(prefs::kCatalogLastUpdated, DistantPastAsTimestamp());
+
+  mock->SetDoublePref(prefs::kUnreconciledTransactions, 0.0);
 
   mock->SetBooleanPref(prefs::kHasMigratedConversionState, true);
 }
@@ -418,14 +421,14 @@ base::FilePath GetTestPath() {
   return path;
 }
 
-base::Optional<std::string> ReadFileFromTestPathToString(
+absl::optional<std::string> ReadFileFromTestPathToString(
     const std::string& name) {
   base::FilePath path = GetTestPath();
   path = path.AppendASCII(name);
 
   std::string value;
   if (!base::ReadFileToString(path, &value)) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   ParseAndReplaceTagsForText(&value);
@@ -439,14 +442,14 @@ base::FilePath GetResourcesPath() {
   return path;
 }
 
-base::Optional<std::string> ReadFileFromResourcePathToString(
+absl::optional<std::string> ReadFileFromResourcePathToString(
     const std::string& name) {
   base::FilePath path = GetResourcesPath();
   path = path.AppendASCII(name);
 
   std::string value;
   if (!base::ReadFileToString(path, &value)) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   return value;
@@ -552,6 +555,67 @@ void MockCloseNotification(const std::unique_ptr<AdsClientMock>& mock) {
       .WillByDefault(Invoke([](const std::string& uuid) {}));
 }
 
+void MockRecordAdEvent(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, RecordAdEvent(_, _, _))
+      .WillByDefault(Invoke([](const std::string& ad_type,
+                               const std::string& confirmation_type,
+                               const uint64_t timestamp) {
+        DCHECK(!ad_type.empty());
+        DCHECK(!confirmation_type.empty());
+
+        const std::string name = ad_type + confirmation_type;
+        const std::string uuid = GetUuid(name);
+
+        const auto iter = g_ad_events.find(uuid);
+        if (iter == g_ad_events.end()) {
+          g_ad_events.insert({uuid, {timestamp}});
+        } else {
+          iter->second.push_back(timestamp);
+        }
+      }));
+}
+
+void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, GetAdEvents(_, _))
+      .WillByDefault(Invoke(
+          [](const std::string& ad_type,
+             const std::string& confirmation_type) -> std::vector<uint64_t> {
+            DCHECK(!ad_type.empty());
+            DCHECK(!confirmation_type.empty());
+
+            const std::string name = ad_type + confirmation_type;
+            const std::string uuid = GetUuid(name);
+
+            const auto iter = g_ad_events.find(uuid);
+            if (iter == g_ad_events.end()) {
+              return {};
+            }
+
+            return iter->second;
+          }));
+}
+
+void MockResetAdEvents(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, ResetAdEvents()).WillByDefault(Invoke([]() {
+    g_ad_events = {};
+  }));
+}
+
+void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, GetBrowsingHistory(_, _, _))
+      .WillByDefault(Invoke([](const int max_count, const int days_ago,
+                               GetBrowsingHistoryCallback callback) {
+        std::vector<std::string> history;
+        for (int i = 0; i < max_count; i++) {
+          const std::string entry =
+              base::StringPrintf("https://www.brave.com/%d", i);
+          history.push_back(entry);
+        }
+
+        callback(history);
+      }));
+}
+
 void MockSave(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, Save(_, _, _))
       .WillByDefault(
@@ -559,37 +623,43 @@ void MockSave(const std::unique_ptr<AdsClientMock>& mock) {
                     ResultCallback callback) { callback(SUCCESS); }));
 }
 
-void MockLoad(const std::unique_ptr<AdsClientMock>& mock) {
+void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
+              const base::ScopedTempDir& temp_dir) {
   ON_CALL(*mock, Load(_, _))
-      .WillByDefault(Invoke([](const std::string& name, LoadCallback callback) {
-        base::FilePath path = GetTestPath();
-        path = path.AppendASCII(name);
+      .WillByDefault(
+          Invoke([&temp_dir](const std::string& name, LoadCallback callback) {
+            base::FilePath path = temp_dir.GetPath().AppendASCII(name);
+            if (!base::PathExists(path)) {
+              // If path does not exist load file from the test path
+              path = GetTestPath().AppendASCII(name);
+            }
 
-        std::string value;
-        if (!base::ReadFileToString(path, &value)) {
-          callback(FAILED, value);
-          return;
-        }
+            std::string value;
+            if (!base::ReadFileToString(path, &value)) {
+              callback(FAILED, value);
+              return;
+            }
 
-        callback(SUCCESS, value);
-      }));
+            callback(SUCCESS, value);
+          }));
 }
 
-void MockLoadUserModelForId(const std::unique_ptr<AdsClientMock>& mock) {
-  ON_CALL(*mock, LoadUserModelForId(_, _))
-      .WillByDefault(Invoke([](const std::string& id, LoadCallback callback) {
-        base::FilePath path = GetTestPath();
-        path = path.AppendASCII("user_models");
-        path = path.AppendASCII(id);
+void MockLoadAdsResource(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, LoadAdsResource(_, _, _))
+      .WillByDefault(Invoke(
+          [](const std::string& id, const int version, LoadCallback callback) {
+            base::FilePath path = GetTestPath();
+            path = path.AppendASCII("resources");
+            path = path.AppendASCII(id);
 
-        std::string value;
-        if (!base::ReadFileToString(path, &value)) {
-          callback(FAILED, value);
-          return;
-        }
+            std::string value;
+            if (!base::ReadFileToString(path, &value)) {
+              callback(FAILED, value);
+              return;
+            }
 
-        callback(SUCCESS, value);
-      }));
+            callback(SUCCESS, value);
+          }));
 }
 
 void MockLoadResourceForId(const std::unique_ptr<AdsClientMock>& mock) {

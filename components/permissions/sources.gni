@@ -1,0 +1,36 @@
+brave_components_permissions_sources = [
+  "//brave/components/permissions/permission_expiration_key.cc",
+  "//brave/components/permissions/permission_expiration_key.h",
+  "//brave/components/permissions/permission_expirations.cc",
+  "//brave/components/permissions/permission_expirations.h",
+  "//brave/components/permissions/permission_lifetime_manager.cc",
+  "//brave/components/permissions/permission_lifetime_manager.h",
+  "//brave/components/permissions/permission_lifetime_options.cc",
+  "//brave/components/permissions/permission_lifetime_options.h",
+  "//brave/components/permissions/permission_lifetime_pref_names.h",
+  "//brave/components/permissions/permission_lifetime_utils.cc",
+  "//brave/components/permissions/permission_lifetime_utils.h",
+  "//brave/components/permissions/permission_origin_lifetime_monitor.h",
+  "//brave/components/permissions/permission_origin_lifetime_monitor_impl.cc",
+  "//brave/components/permissions/permission_origin_lifetime_monitor_impl.h",
+  "//brave/components/permissions/permission_origins.cc",
+  "//brave/components/permissions/permission_origins.h",
+]
+
+brave_components_permissions_deps = [
+  "//base",
+  "//base/util/timer",
+  "//brave/components/resources:strings_grit",
+  "//components/content_settings/core/browser",
+  "//components/content_settings/core/common",
+  "//components/keyed_service/core",
+  "//components/pref_registry",
+  "//services/preferences/public/cpp",
+  "//ui/base",
+  "//url",
+]
+
+if (is_android) {
+  brave_components_permissions_deps +=
+      [ "//brave/components/permissions/android:jni_headers" ]
+}

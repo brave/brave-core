@@ -7,9 +7,10 @@
 
 #include <string>
 
-#include "base/strings/string16.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "chrome/browser/download/download_ui_model.h"
+#include "components/download/public/common/download_item.h"
 #include "components/strings/grit/components_strings.h"
 #include "services/network/public/cpp/is_potentially_trustworthy.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -26,17 +27,17 @@ BraveDownloadItemModel::BraveDownloadItemModel(DownloadUIModel* model)
 BraveDownloadItemModel::~BraveDownloadItemModel() {}
 
 // Adds origin url to the tooltip text and "Not secure", if needed.
-base::string16 BraveDownloadItemModel::GetTooltipText() {
-  base::string16 tooltip = model_->GetTooltipText();
+std::u16string BraveDownloadItemModel::GetTooltipText() {
+  std::u16string tooltip = model_->GetTooltipText();
 
   bool is_secure;
-  base::string16 origin_url = GetOriginURLText(&is_secure);
+  std::u16string origin_url = GetOriginURLText(&is_secure);
 
   if (!origin_url.empty()) {
-    tooltip += base::ASCIIToUTF16("\n");
+    tooltip += u"\n";
     if (!is_secure) {
       tooltip += l10n_util::GetStringUTF16(IDS_NOT_SECURE_VERBOSE_STATE) +
-                 base::char16(' ');
+                 char16_t(' ');
     }
     tooltip += origin_url;
   }
@@ -45,11 +46,11 @@ base::string16 BraveDownloadItemModel::GetTooltipText() {
 }
 
 // Returns origin url text and sets |is_secure|.
-base::string16 BraveDownloadItemModel::GetOriginURLText(bool* is_secure) {
+std::u16string BraveDownloadItemModel::GetOriginURLText(bool* is_secure) {
   *is_secure = false;
   const GURL gurl = model_->download()->GetURL();
   if (gurl.is_empty()) {
-    return base::string16();
+    return std::u16string();
   }
 
   std::string origin;

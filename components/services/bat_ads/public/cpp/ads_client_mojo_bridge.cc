@@ -87,6 +87,20 @@ void AdsClientMojoBridge::ShouldShowNotifications(
   std::move(callback).Run(ads_client_->ShouldShowNotifications());
 }
 
+bool AdsClientMojoBridge::GetAdEvents(const std::string& ad_type,
+                                      const std::string& confirmation_type,
+                                      std::vector<uint64_t>* out_ad_events) {
+  DCHECK(out_ad_events);
+  *out_ad_events = ads_client_->GetAdEvents(ad_type, confirmation_type);
+  return true;
+}
+
+void AdsClientMojoBridge::GetAdEvents(const std::string& ad_type,
+                                      const std::string& confirmation_type,
+                                      GetAdEventsCallback callback) {
+  std::move(callback).Run(ads_client_->GetAdEvents(ad_type, confirmation_type));
+}
+
 bool AdsClientMojoBridge::LoadResourceForId(
     const std::string& id,
     std::string* out_value) {
@@ -110,7 +124,7 @@ void AdsClientMojoBridge::Log(
 }
 
 // static
-void AdsClientMojoBridge::OnLoadUserModelForId(
+void AdsClientMojoBridge::OnLoadAdsResource(
     CallbackHolder<LoadCallback>* holder,
     const ads::Result result,
     const std::string& value) {
@@ -123,14 +137,40 @@ void AdsClientMojoBridge::OnLoadUserModelForId(
   delete holder;
 }
 
-void AdsClientMojoBridge::LoadUserModelForId(
-    const std::string& id,
-    LoadCallback callback) {
+void AdsClientMojoBridge::LoadAdsResource(const std::string& id,
+                                          const int version,
+                                          LoadCallback callback) {
   // this gets deleted in OnLoad
   auto* holder =
       new CallbackHolder<LoadCallback>(AsWeakPtr(), std::move(callback));
-  ads_client_->LoadUserModelForId(
-      id, std::bind(AdsClientMojoBridge::OnLoadUserModelForId, holder, _1, _2));
+  ads_client_->LoadAdsResource(
+      id, version,
+      std::bind(AdsClientMojoBridge::OnLoadAdsResource, holder, _1, _2));
+}
+
+// static
+void AdsClientMojoBridge::OnGetBrowsingHistory(
+    CallbackHolder<GetBrowsingHistoryCallback>* holder,
+    const std::vector<std::string>& history) {
+  DCHECK(holder);
+
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(std::move(history));
+  }
+
+  delete holder;
+}
+
+void AdsClientMojoBridge::GetBrowsingHistory(
+    const int max_count,
+    const int days_ago,
+    GetBrowsingHistoryCallback callback) {
+  // this gets deleted in OnGetBrowsingHistory
+  auto* holder = new CallbackHolder<GetBrowsingHistoryCallback>(
+      AsWeakPtr(), std::move(callback));
+  ads_client_->GetBrowsingHistory(
+      max_count, days_ago,
+      std::bind(AdsClientMojoBridge::OnGetBrowsingHistory, holder, _1));
 }
 
 void AdsClientMojoBridge::RecordP2AEvent(
@@ -225,6 +265,16 @@ void AdsClientMojoBridge::ShowNotification(
 void AdsClientMojoBridge::CloseNotification(
     const std::string& uuid) {
   ads_client_->CloseNotification(uuid);
+}
+
+void AdsClientMojoBridge::RecordAdEvent(const std::string& ad_type,
+                                        const std::string& confirmation_type,
+                                        const uint64_t timestamp) {
+  ads_client_->RecordAdEvent(ad_type, confirmation_type, timestamp);
+}
+
+void AdsClientMojoBridge::ResetAdEvents() {
+  ads_client_->ResetAdEvents();
 }
 
 // static

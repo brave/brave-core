@@ -10,7 +10,7 @@
 
 class SidebarItemView : public SidebarButtonView {
  public:
-  using SidebarButtonView::SidebarButtonView;
+  explicit SidebarItemView(Delegate* delegate);
   ~SidebarItemView() override;
 
   SidebarItemView(const SidebarItemView&) = delete;
@@ -22,6 +22,9 @@ class SidebarItemView : public SidebarButtonView {
     paint_background_on_hovered_ = paint;
   }
 
+  void DrawHorizontalBorder(bool top);
+  void ClearHorizontalBorder();
+
   // views::ImageButton overrides:
   void OnPaintBackground(gfx::Canvas* canvas) override;
   void OnPaintBorder(gfx::Canvas* canvas) override;
@@ -29,6 +32,8 @@ class SidebarItemView : public SidebarButtonView {
  private:
   bool draw_highlight_ = false;
   bool paint_background_on_hovered_ = false;
+  bool draw_horizontal_border_ = false;
+  bool draw_horizontal_border_top_ = false;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ITEM_VIEW_H_

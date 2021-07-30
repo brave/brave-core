@@ -58,6 +58,7 @@ type::Result GetSignedCreds::CheckStatusCode(const int status_code) {
   }
 
   if (status_code != net::HTTP_OK) {
+    BLOG(0, "Unexpected HTTP status: " << status_code);
     return type::Result::LEDGER_ERROR;
   }
 
@@ -69,7 +70,7 @@ type::Result GetSignedCreds::ParseBody(
     type::CredsBatch* batch) {
   DCHECK(batch);
 
-  base::Optional<base::Value> value = base::JSONReader::Read(body);
+  absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     return type::Result::LEDGER_ERROR;

@@ -10,8 +10,12 @@
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
+#include "bat/ads/internal/account/confirmations/confirmations_state.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/features/ad_rewards/ad_rewards_features.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/number_util.h"
+#include "bat/ads/pref_names.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace ads {
@@ -21,17 +25,26 @@ Payments::Payments() = default;
 Payments::~Payments() = default;
 
 bool Payments::SetFromJson(const std::string& json) {
-  base::Optional<base::Value> value = base::JSONReader::Read(json);
+  absl::optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_list()) {
+    BLOG(0, "Failed to parse payment balance");
     return false;
   }
 
   base::ListValue* list = nullptr;
   if (!value->GetAsList(&list)) {
+    BLOG(0, "Failed to parse payment balance");
     return false;
   }
 
-  payments_ = GetFromList(list);
+  const PaymentList payments = GetFromList(list);
+  if (!DidReconcile(payments)) {
+    BLOG(0, "Payment balance not ready");
+    return false;
+  }
+
+  payments_ = payments;
+  ConfirmationsState::Get()->Save();
 
   return true;
 }
@@ -55,7 +68,7 @@ bool Payments::SetFromDictionary(base::Value* dictionary) {
     PaymentInfo payment;
 
     // Balance
-    const base::Optional<double> balance = dictionary->FindDoubleKey("balance");
+    const absl::optional<double> balance = dictionary->FindDoubleKey("balance");
     if (!balance) {
       continue;
     }
@@ -105,28 +118,7 @@ base::Value Payments::GetAsList() {
 }
 
 double Payments::GetBalance() const {
-  double balance = 0.0;
-
-  for (const auto& payment : payments_) {
-    balance += payment.balance;
-  }
-
-  return balance;
-}
-
-bool Payments::DidReconcileBalance(
-    const double last_balance,
-    const double unreconciled_estimated_pending_rewards) const {
-  if (unreconciled_estimated_pending_rewards == 0.0) {
-    return true;
-  }
-
-  const double delta = GetBalance() - last_balance;
-  if (delta >= unreconciled_estimated_pending_rewards) {
-    return true;
-  }
-
-  return false;
+  return GetBalanceForPayments(payments_);
 }
 
 base::Time Payments::CalculateNextPaymentDate(
@@ -197,7 +189,7 @@ base::Time Payments::CalculateNextPaymentDate(
   return next_payment_date;
 }
 
-PaymentInfo Payments::GetForThisMonth(const base::Time& time) const {
+PaymentInfo Payments::GetForMonth(const base::Time& time) const {
   const std::string month = GetTransactionMonth(time);
   const PaymentInfo payment = GetPaymentForTransactionMonth(month);
   return payment;
@@ -205,12 +197,37 @@ PaymentInfo Payments::GetForThisMonth(const base::Time& time) const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+double Payments::GetBalanceForPayments(const PaymentList& payments) const {
+  double balance = 0.0;
+
+  for (const auto& payment : payments) {
+    balance += payment.balance;
+  }
+
+  return balance;
+}
+
+bool Payments::DidReconcile(const PaymentList& payments) const {
+  const double new_balance = GetBalanceForPayments(payments);
+
+  const double old_balance = GetBalance();
+
+  const double unreconciled_transactions =
+      AdsClientHelper::Get()->GetDoublePref(prefs::kUnreconciledTransactions);
+
+  if (DoubleIsLess(new_balance, old_balance + unreconciled_transactions)) {
+    return false;
+  }
+
+  return true;
+}
+
 PaymentList Payments::GetFromList(base::ListValue* list) const {
   DCHECK(list);
 
   PaymentList payments;
 
-  for (auto& value : *list) {
+  for (auto& value : list->GetList()) {
     base::DictionaryValue* dictionary = nullptr;
     if (!value.GetAsDictionary(&dictionary)) {
       continue;

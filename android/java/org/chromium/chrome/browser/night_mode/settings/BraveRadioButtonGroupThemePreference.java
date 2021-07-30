@@ -12,7 +12,7 @@ import android.view.View;
 
 import androidx.preference.PreferenceViewHolder;
 
-import org.chromium.chrome.R;
+import org.chromium.chrome.browser.night_mode.R;
 
 public class BraveRadioButtonGroupThemePreference extends RadioButtonGroupThemePreference {
     public BraveRadioButtonGroupThemePreference(Context context, AttributeSet attrs) {

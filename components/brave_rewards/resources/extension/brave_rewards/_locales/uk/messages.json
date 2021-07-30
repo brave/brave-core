@@ -51,18 +51,6 @@
     "message": "Подробиці",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "Ваш баланс",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "Бали BAT",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "можуть бути використані у Brave Rewards для підтримки ваших улюблених творців контенту. BAT Points не можуть бути обміняні на BAT.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "увімкнути",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "Гранти з токенів запитано",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "Запитано грантів у балах",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "Заробітки від реклами",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Разові чайові",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "завершується",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Цей творець ще не зареєструвався на отримання внесків від користувачів Brave. Всі кошти, які ви надсилатимете, залишатимуться у вашому гаманці, доки вони не верифіковані. ",
+    "message": "Наразі налаштування цього автора не дають можливості отримувати чайові з вашого гаманця. Усі чайові, які ви заробите, залишаться у вашому гаманці, а спробу оплати буде автоматично повторено через 90 днів.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Увімкнути Рекламу",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Безкоштовний грант з токенів",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Грант безкоштовних балів",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Ви заробили Ads Reward!",
@@ -591,17 +567,9 @@
     "message": "Токен",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "бали",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Гранти з токенів",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Гранти у балах",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Вітаємо, $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Для створення облікового запису Uphold, вам потрібно мати щонайменше 25 BAT. Будь ласка, спробуйте пізніше. Якщо ви вже маєте верифікований обліковий запис Uphold -  перейдіть до Входу.",
-    "description": "Text for login button"
+    "message": "Для створення облікового запису Uphold вам потрібно мати щонайменше $amount$ BAT. Якщо ви вже маєте верифікований обліковий запис Uphold, виконайте вхід у систему.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "Підключено",
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Коли ви отримуєте винагороди",
+    "message": "Коли ви отримуєте винагороди?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "Користуючись нагородами Brave, ви допомагаєте зробити мережу кращим місцем для кожного. І це чудово!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards у Японії переходять на нову систему!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "Верифікуйте свій гаманець",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "Докладніше",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "Щоб зняти токени, зароблені за перегляд реклами, вам потрібно верифікувати гаманець.",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "Будь ласка, використайте ваші BAP до 13 березня. Після того дія BAP завершиться. ",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "Зробити це пізніше",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Верифікувати мій гаманець",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Гаманець bitFlyer — це сервіс, роботою якого керує компанія bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Виконавши верифікацію гаманця та прив’язавши його до облікового запису bitFlyer, ви зможете зберігати зароблені за допомогою Винагород Brave токени і керувати ними в більш простий спосіб.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Дізнайтеся детальніше$link_end$, як зв’язати браузер Brave з вашим обліковим записом bitFlyer.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

@@ -7,10 +7,10 @@
 
 #include <memory>
 
-#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/decentralized_dns/decentralized_dns_service_delegate_impl.h"
 #include "brave/components/decentralized_dns/decentralized_dns_service.h"
 #include "brave/components/decentralized_dns/utils.h"
+#include "chrome/browser/browser_process.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
 namespace decentralized_dns {
@@ -41,8 +41,7 @@ KeyedService* DecentralizedDnsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   return new DecentralizedDnsService(
       std::make_unique<DecentralizedDnsServiceDelegateImpl>(), context,
-      g_brave_browser_process ? g_brave_browser_process->local_state()
-                              : nullptr);
+      g_browser_process ? g_browser_process->local_state() : nullptr);
 }
 
 }  // namespace decentralized_dns

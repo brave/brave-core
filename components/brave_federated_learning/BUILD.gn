@@ -1,0 +1,20 @@
+static_library("brave_federated_learning") {
+  sources = [
+    "brave_federated_learning_service.cc",
+    "brave_federated_learning_service.h",
+    "brave_operational_patterns.cc",
+    "brave_operational_patterns.h",
+    "brave_operational_patterns_features.cc",
+    "brave_operational_patterns_features.h",
+  ]
+
+  deps = [
+    "//brave/components/brave_stats/browser",
+    "//brave/components/p3a:p3a",
+    "//brave/components/version_info",
+    "//components/metrics",
+    "//components/prefs",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+  ]
+}

@@ -1,8 +1,216 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 module brave_wallet.mojom;
 
+import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
+import "url/mojom/url.mojom";
+
+interface EventsListener {
+  ChainChangedEvent(string chain_id);
+};
 
 interface BraveWalletProvider {
-  Request(string json_payload) => (int32 status,
-                                   string response);
+  Init(pending_remote<EventsListener> events_listener);
+  Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
+  Enable();
+  GetChainId() => (string chain_id);
+};
+
+// Used by the WebUI page to bootstrap bidirectional communication.
+interface PanelHandlerFactory {
+  // The WebUI calls this method when the page is first initialized.
+  CreatePanelHandler(pending_remote<Page> page,
+                     pending_receiver<PanelHandler> panel_handler,
+                     pending_receiver<WalletHandler> wallet_handler,
+                     pending_receiver<EthJsonRpcController> eth_json_rpc_controller,
+                     pending_receiver<SwapController> swap_controller,
+                     pending_receiver<AssetRatioController> asset_ratio_controller,
+                     pending_receiver<KeyringController> keyring_controller);
+};
+
+interface PageHandlerFactory {
+  // The WebUI calls this method when the page is first initialized.
+  CreatePageHandler(pending_remote<Page> page,
+                    pending_receiver<PageHandler> page_handler,
+                    pending_receiver<WalletHandler> wallet_handler,
+                    pending_receiver<EthJsonRpcController> eth_json_rpc_controller,
+                    pending_receiver<SwapController> swap_controller,
+                    pending_receiver<AssetRatioController> asset_ratio_controller,
+                    pending_receiver<KeyringController> keyring_controller);
+
+};
+
+// Browser-side handler for requests from WebUI page.
+interface PanelHandler {
+  // Notify the backend that the UI is ready to be shown.
+  ShowUI();
+
+  // Notify the backend that the dialog should be closed.
+  CloseUI();
+};
+
+// Browser-side handler for requests from WebUI page.
+interface PageHandler {
+};
+
+struct AppItem {
+  string description;
+  string icon;
+  string name;
+  string url;
+};
+
+enum AssetPriceTimeframe {
+  Live,
+  OneDay,
+  OneWeek,
+  OneMonth,
+  ThreeMonths,
+  OneYear,
+  All
+};
+
+struct AssetTimePrice {
+  mojo_base.mojom.Time date;
+  string price;
+};
+
+struct AssetPrice {
+  string from_asset;
+  string to_asset;
+  string price;
+  string asset_24h_change;
+};
+
+struct SwapParams {
+  string taker_address;
+  string sell_amount;
+  string buy_amount;
+  string buy_token;
+  string sell_token;
+  double buy_token_percentage_fee;
+  double slippage_percentage;
+  string fee_recipient;
+  string gas_price;
+};
+
+struct SwapResponse {
+  string price;
+  string guaranteed_price; // Unused for price quote response
+  string to;   // Unused for price quote response
+  string data; // Unused for price quote response
+  string value;
+  string gas;
+  string estimated_gas;
+  string gas_price;
+  string protocol_fee;
+  string minimum_protocol_fee;
+  string buy_token_address;
+  string sell_token_address;
+  string buy_amount;
+  string sell_amount;
+  string allowance_target;
+  string sell_token_to_eth_rate;
+  string buy_token_to_eth_rate;
+  // Note we could also expose "sources" later
+};
+
+struct KeyringInfo {
+  bool is_default_keyring_created;
+  bool is_locked;
+  bool is_backed_up;
+  array<string> accounts;
+  array<string> account_names;
+};
+
+// Browser-side handler for common panel / page things
+interface WalletHandler {
+  GetWalletInfo() => (bool isWalletCreated, bool isWalletLocked,
+                      array<AppItem> favoriteApps,
+                      bool isWalletBackedUp, array<string> accounts,
+                      array<string> walletAccountNames);
+
+  GetTokenByContract(string contract) => (ERCToken? token);
+  GetTokenBySymbol(string symbol) => (ERCToken? token);
+  GetAllTokens() => (array<ERCToken> tokens);
+
+  AddFavoriteApp(AppItem appItem);
+  RemoveFavoriteApp(AppItem appItem);
+};
+
+struct ERCToken {
+  string contract_address;
+  string name;
+  bool is_erc20;
+  bool is_erc721;
+  string symbol;
+  int32 decimals;
+};
+
+// WebUI-side handler for requests from the browser.
+interface Page {
+};
+
+interface KeyringController {
+  CreateWallet(string password) => (string mnemonic);
+  GetMnemonicForDefaultKeyring() => (string mnemonic);
+  RestoreWallet(string mnemonic, string password) => (bool isValidMnemonic);
+  Lock();
+  Unlock(string password) => (bool success);
+  IsLocked() => (bool isLocked);
+  AddAccount() => (bool success);
+  IsWalletBackedUp() => (bool backed_up);
+  NotifyWalletBackupComplete();
+  SetInitialAccountNames(array<string> accountNames);
+  AddNewAccountName(string accountName);
+  GetDefaultKeyringInfo() => (KeyringInfo keyring);
+  Reset();
+};
+
+interface AssetRatioController {
+  GetPrice(array<string> from_assets, array<string> to_assets) =>
+      (bool success, array<AssetPrice> values);
+  GetPriceHistory(string asset, AssetPriceTimeframe timeframe) =>
+      (bool success, array<AssetTimePrice> values);
+};
+
+interface SwapController {
+  GetPriceQuote(SwapParams params) =>
+      (bool success, SwapResponse response);
+  GetTransactionPayload(SwapParams params) =>
+      (bool success, SwapResponse response);
+};
+
+enum Network {
+  Mainnet,
+  Rinkeby,
+  Ropsten,
+  Goerli,
+  Kovan,
+  Localhost,
+  Custom
+};
+
+interface EthJsonRpcControllerObserver {
+  ChainChangedEvent(string chain_id);
+};
+
+interface EthJsonRpcController {
+  SetNetwork(Network network);
+  GetNetwork() => (Network network);
+  GetChainId() => (string chainId);
+  GetBlockTrackerUrl() => (string blockTrackerUrl);
+  GetNetworkUrl() => (string networkUrl);
+  GetBalance(string address) => (bool status, string balance);
+  GetERC20TokenBalance(string contract,
+                       string address) => (bool status, string balance);
+  UnstoppableDomainsProxyReaderGetMany(string contract_address, string domain, array<string> keys) => (bool status, string result);
+  EnsProxyReaderGetResolverAddress(string contract_address, string domain) => (bool status, string result);
+  Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
+  AddObserver(pending_remote<EthJsonRpcControllerObserver> observer);
+  SetCustomNetwork(url.mojom.Url provider_url);
 };

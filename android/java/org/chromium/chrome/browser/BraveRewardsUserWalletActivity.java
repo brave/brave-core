@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import org.chromium.chrome.R;
@@ -22,12 +21,13 @@ import org.chromium.chrome.browser.BraveRewardsBalance;
 import org.chromium.chrome.browser.BraveRewardsExternalWallet;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 
-public class BraveRewardsUserWalletActivity extends AppCompatActivity {
+public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity {
+    public static final String DISCONNECT_WALLET_URL = "chrome://rewards/#disconnect-wallet";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void triggerLayoutInflation() {
         setContentView(R.layout.user_wallet_activity);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -38,6 +38,8 @@ public class BraveRewardsUserWalletActivity extends AppCompatActivity {
         ab.setDisplayShowTitleEnabled(false);
 
         SetUIControls();
+
+        onInitialLayoutInflationComplete();
     }
 
     private void SetUIControls() {
@@ -111,12 +113,21 @@ public class BraveRewardsUserWalletActivity extends AppCompatActivity {
     private void SetDisconnectBtnClickHandler() {
         Button btnDisconnect = (Button)findViewById(
                 R.id.user_wallet_disconnect);
+        SetBtnOpenUrlClickHandler(btnDisconnect, DISCONNECT_WALLET_URL);
+        /*
+        -- Use this code when android transitions to native code for Brave Rewards UI --
         btnDisconnect.setOnClickListener((View v) -> {
             BraveRewardsNativeWorker.getInstance().DisconnectWallet();
             Intent intent = new Intent();
             setResult(RESULT_OK, intent);
             finish();
         });
+        */
+    }
+
+    @Override
+    public boolean shouldStartGpuProcess() {
+        return true;
     }
 
     @Override

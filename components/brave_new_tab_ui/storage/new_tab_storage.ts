@@ -5,13 +5,14 @@
 
 // Utils
 import { debounce } from '../../common/debounce'
+import { loadTimeData } from '../../common/loadTimeData'
 
 export const keyName = 'new-tab-data'
 
 export const defaultState: NewTab.State = {
   initialDataLoaded: false,
-  textDirection: window.loadTimeData.getString('textdirection'),
-  featureFlagBraveNTPSponsoredImagesWallpaper: window.loadTimeData.getBoolean('featureFlagBraveNTPSponsoredImagesWallpaper'),
+  textDirection: loadTimeData.getString('textdirection'),
+  featureFlagBraveNTPSponsoredImagesWallpaper: loadTimeData.getBoolean('featureFlagBraveNTPSponsoredImagesWallpaper'),
   showBackgroundImage: false,
   showStats: false,
   showToday: false,
@@ -26,15 +27,18 @@ export const defaultState: NewTab.State = {
   showGemini: false,
   showBitcoinDotCom: false,
   showCryptoDotCom: false,
+  showFTX: false,
+  hideAllWidgets: false,
   brandedWallpaperOptIn: false,
   isBrandedWallpaperNotificationDismissed: true,
-  isBraveTodayIntroDismissed: false,
+  isBraveTodayOptedIn: false,
   showEmptyPage: false,
   togetherSupported: false,
   geminiSupported: false,
   binanceSupported: false,
   bitcoinDotComSupported: false,
   cryptoDotComSupported: false,
+  ftxSupported: false,
   isIncognito: chrome.extension.inIncognitoContext,
   useAlternativePrivateSearchEngine: false,
   torCircuitEstablished: false,
@@ -51,8 +55,7 @@ export const defaultState: NewTab.State = {
   togetherPromptDismissed: false,
   rewardsState: {
     adsAccountStatement: {
-      estimatedPendingRewards: 0,
-      nextPaymentDate: '',
+      nextPaymentDate: 0,
       adsReceivedThisMonth: 0,
       earningsThisMonth: 0,
       earningsLastMonth: 0
@@ -65,7 +68,6 @@ export const defaultState: NewTab.State = {
     enabledAds: false,
     adsSupported: false,
     promotions: [],
-    onlyAnonWallet: false,
     totalContribution: 0.0,
     parameters: {
       rate: 0,
@@ -75,8 +77,7 @@ export const defaultState: NewTab.State = {
   currentStackWidget: '',
   removedStackWidgets: [],
   // Order is ascending, with last entry being in the foreground
-  widgetStackOrder: ['cryptoDotCom', 'binance', 'gemini', 'rewards'],
-  savedWidgetStackOrder: [],
+  widgetStackOrder: ['ftx', 'cryptoDotCom', 'binance', 'gemini', 'rewards'],
   binanceState: {
     userTLD: 'com',
     userLocale: 'en',
@@ -126,12 +127,15 @@ export const defaultState: NewTab.State = {
     losersGainers: {},
     supportedPairs: {},
     charts: []
+  },
+  ftxState: {
+    optedIntoMarkets: false
   }
 }
 
 if (chrome.extension.inIncognitoContext) {
-  defaultState.isTor = window.loadTimeData.getBoolean('isTor')
-  defaultState.isQwant = window.loadTimeData.getBoolean('isQwant')
+  defaultState.isTor = loadTimeData.getBoolean('isTor')
+  defaultState.isQwant = loadTimeData.getBoolean('isQwant')
 }
 
 // For users upgrading to the new list based widget stack state,
@@ -233,16 +237,22 @@ export const replaceStackWidgets = (state: NewTab.State) => {
 }
 
 const cleanData = (state: NewTab.State) => {
-  // We need to disable linter as we defined in d.ts that this values are number,
-  // but we need this check to covert from old version to a new one
-  /* tslint:disable */
-  if (typeof state.rewardsState.totalContribution === 'string') {
-    state.rewardsState.totalContribution = 0.0
-  }
-  /* tslint:enable */
+  const { rewardsState } = state
 
-  if (!state.rewardsState.parameters) {
-    state.rewardsState.parameters = defaultState.rewardsState.parameters
+  if (typeof (rewardsState.totalContribution as any) === 'string') {
+    rewardsState.totalContribution = 0
+  }
+
+  // nextPaymentDate updated from seconds-since-epoch-string to ms-since-epoch
+  const { adsAccountStatement } = rewardsState
+  if (adsAccountStatement &&
+      typeof (adsAccountStatement.nextPaymentDate as any) === 'string') {
+    adsAccountStatement.nextPaymentDate =
+      Number(adsAccountStatement.nextPaymentDate) * 1000 || 0
+  }
+
+  if (!rewardsState.parameters) {
+    rewardsState.parameters = defaultState.rewardsState.parameters
   }
 
   return state
@@ -280,9 +290,9 @@ export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
       binanceState: data.binanceState,
       geminiState: data.geminiState,
       cryptoDotComState: data.cryptoDotComState,
+      ftxState: data.ftxState,
       removedStackWidgets: data.removedStackWidgets,
-      widgetStackOrder: data.widgetStackOrder,
-      savedWidgetStackOrder: data.savedWidgetStackOrder
+      widgetStackOrder: data.widgetStackOrder
     }
     window.localStorage.setItem(keyName, JSON.stringify(dataToSave))
   }

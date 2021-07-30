@@ -13,15 +13,18 @@
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/views/infobars/brave_wayback_machine_infobar_button_container.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_infobar_delegate.h"
+#include "brave/components/brave_wayback_machine/pref_names.h"
 #include "brave/components/brave_wayback_machine/wayback_machine_url_fetcher.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
-#include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/chrome_typography.h"
 #include "components/grit/components_scaled_resources.h"
+#include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/storage_partition.h"
@@ -36,6 +39,7 @@
 #include "ui/views/controls/image_view.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/layout/flex_layout.h"
+#include "ui/views/style/platform_style.h"
 #include "ui/views/view_class_properties.h"
 #include "url/gurl.h"
 
@@ -50,9 +54,10 @@ BraveWaybackMachineInfoBarContentsView::BraveWaybackMachineInfoBarContentsView(
     : contents_(contents),
       wayback_machine_url_fetcher_(
           this,
-          content::BrowserContext::GetDefaultStoragePartition(
-              contents->GetBrowserContext())->
-                  GetURLLoaderFactoryForBrowserProcess()) {
+          contents->GetBrowserContext()
+              ->GetDefaultStoragePartition()
+              ->GetURLLoaderFactoryForBrowserProcess()) {
+  pref_service_ = user_prefs::UserPrefs::Get(contents_->GetBrowserContext());
   SetLayoutManager(std::make_unique<views::FlexLayout>());
   InitializeChildren();
 }
@@ -82,7 +87,7 @@ void BraveWaybackMachineInfoBarContentsView::OnWaybackURLFetched(
   DCHECK(wayback_url_fetch_requested_);
   wayback_url_fetch_requested_ = false;
 
-  button_->StopThrobber();
+  fetch_url_button_->StopThrobber();
   Layout();
 
   if (latest_wayback_url.is_empty()) {
@@ -96,26 +101,32 @@ void BraveWaybackMachineInfoBarContentsView::OnWaybackURLFetched(
 }
 
 void BraveWaybackMachineInfoBarContentsView::HideInfobar() {
-  InfoBarService* infobar_service = InfoBarService::FromWebContents(contents_);
-  if (!infobar_service)
+  infobars::ContentInfoBarManager* infobar_manager =
+      infobars::ContentInfoBarManager::FromWebContents(contents_);
+  if (!infobar_manager)
     return;
 
-  for (size_t i = 0; i < infobar_service->infobar_count(); ++i) {
-    infobars::InfoBar* infobar = infobar_service->infobar_at(i);
+  for (size_t i = 0; i < infobar_manager->infobar_count(); ++i) {
+    infobars::InfoBar* infobar = infobar_manager->infobar_at(i);
     if (infobar->delegate()->GetIdentifier() ==
         BraveWaybackMachineInfoBarDelegate::WAYBACK_MACHINE_INFOBAR_DELEGATE) {
-      infobar_service->RemoveInfoBar(infobar);
+      infobar_manager->RemoveInfoBar(infobar);
       break;
     }
   }
 }
 
-void BraveWaybackMachineInfoBarContentsView::ButtonPressed() {
+void BraveWaybackMachineInfoBarContentsView::FetchURLButtonPressed() {
   if (wayback_url_fetch_requested_)
     return;
   wayback_url_fetch_requested_ = true;
-
+  dont_ask_button_->SetVisible(false);
   FetchWaybackURL();
+}
+
+void BraveWaybackMachineInfoBarContentsView::DontAskButtonPressed() {
+  pref_service_->SetBoolean(kBraveWaybackMachineEnabled, false);
+  HideInfobar();
 }
 
 void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
@@ -176,23 +187,47 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
                   0));
   AddChildView(label);
 
-  button_ = new BraveWaybackMachineInfoBarButtonContainer(base::BindRepeating(
-      &BraveWaybackMachineInfoBarContentsView::ButtonPressed,
-      base::Unretained(this)));
-  views_visible_before_checking_.push_back(button_);
-  button_->SetProperty(
-      views::kMarginsKey,
-      gfx::Insets(ChromeLayoutProvider::Get()->GetDistanceMetric(
-                      DISTANCE_TOAST_CONTROL_VERTICAL),
-                  0));
-  button_->SizeToPreferredSize();
-  AddChildView(button_);
+  dont_ask_button_ = AddChildView(std::make_unique<views::MdTextButton>(
+      base::BindRepeating(
+          &BraveWaybackMachineInfoBarContentsView::DontAskButtonPressed,
+          base::Unretained(this)),
+      l10n_util::GetStringUTF16(
+          IDS_BRAVE_WAYBACK_MACHINE_DONT_ASK_AGAIN_TEXT)));
+  views_visible_before_checking_.push_back(dont_ask_button_);
+
+  fetch_url_button_ =
+      AddChildView(std::make_unique<BraveWaybackMachineInfoBarButtonContainer>(
+          base::BindRepeating(
+              &BraveWaybackMachineInfoBarContentsView::FetchURLButtonPressed,
+              base::Unretained(this))));
+  views_visible_before_checking_.push_back(fetch_url_button_);
+
+  const gfx::Insets first_button_margin(
+      ChromeLayoutProvider::Get()->GetDistanceMetric(
+          DISTANCE_TOAST_CONTROL_VERTICAL),
+      ChromeLayoutProvider::Get()->GetDistanceMetric(
+          DISTANCE_RELATED_CONTROL_HORIZONTAL_SMALL));
+
+  const gfx::Insets second_button_margin(
+      ChromeLayoutProvider::Get()->GetDistanceMetric(
+          DISTANCE_TOAST_CONTROL_VERTICAL),
+      0);
+
+  if (views::PlatformStyle::kIsOkButtonLeading) {
+    // Move |dont_ask_button_| at the end.
+    ReorderChildView(dont_ask_button_, -1);
+    fetch_url_button_->SetProperty(views::kMarginsKey, first_button_margin);
+    dont_ask_button_->SetProperty(views::kMarginsKey, second_button_margin);
+  } else {
+    dont_ask_button_->SetProperty(views::kMarginsKey, first_button_margin);
+    fetch_url_button_->SetProperty(views::kMarginsKey, second_button_margin);
+  }
 
   UpdateChildrenVisibility(true);
 }
 
 views::Label* BraveWaybackMachineInfoBarContentsView::CreateLabel(
-    const base::string16& text) {
+    const std::u16string& text) {
   views::Label* label =
       new views::Label(text, views::style::CONTEXT_DIALOG_BODY_TEXT);
   labels_.push_back(label);
@@ -217,7 +252,7 @@ SkColor BraveWaybackMachineInfoBarContentsView::GetColor(int id) const {
 }
 
 void BraveWaybackMachineInfoBarContentsView::FetchWaybackURL() {
-  button_->StartThrobber();
+  fetch_url_button_->StartThrobber();
   wayback_machine_url_fetcher_.Fetch(contents_->GetVisibleURL());
   Layout();
 }

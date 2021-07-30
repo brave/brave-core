@@ -51,18 +51,6 @@
     "message": "รายละเอียด",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "ยอดของคุณ",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "คะแนน BAT",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "สามารถใช้ใน Brave Rewards เพื่อส่งรายได้ให้แก่ผู้สร้างสรรค์เนื้อหาคนโปรดของคุณ แต้ม BAT ไม่สามารถแลกเปลี่ยนเป็น BAT ได้",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "เปิด",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "โทเค็นเงินบริจาคที่เบิกแล้ว",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "ขอรับคะแนนที่แจกแล้ว",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "ได้รายได้จากโฆษณา",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "ทิปครั้งเดียว",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "หมดอายุวันที่",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "ผู้สร้างคนนี้ยังไม่ได้ลงทะเบียนรับเงินสนับสนุนจากผู้ใช้ Brave ทิปทั้งหมดที่คุณส่งให้จะยังคงอยู่ในวอลเล็ทของคุณจนกว่าผู้สร้างจะยืนยัน",
+    "message": "ผู้สร้างคนนี้ยังไม่ได้กำหนดค่าให้รับทิปจากกระเป๋าเงินของคุณ ทิปทั้งหมดที่คุณทำจะยังคงค้างอยู่ในกระเป๋าเงินของคุณและจะลองอีกครั้งโดยอัตโนมัติเป็นเวลา 90 วัน",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "เปิดใช้งาน Ads",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "โทเค็นเงินบริจาคฟรี",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "แจกคะแนนฟรี",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "คุณได้รับรางวัลโฆษณา!",
@@ -591,17 +567,9 @@
     "message": "Token",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "คะแนน",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "จำนวนโทเคนที่ให้",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "คะแนนแจกฟรี",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "สวัสดี $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "คุณจำเป็นต้องมีอย่างน้อย 25 BAT เพื่อสร้างบัญชี Uphold โปรดลองใหม่อีกครั้งภายหลัง\nหากคุณมีบัญชี Uphold ที่ได้รับการยืนยันตัวตนแล้ว ไปที่เข้าสู่ระบบต่อไป",
-    "description": "Text for login button"
+    "message": "คุณต้องมีอย่างน้อย $amount$ BAT เพื่อสร้างบัญชี Uphold หากคุณมีบัญชี Uphold ที่ยืนยันตัวตนแล้ว ให้ทำการเข้าสู่ระบบ",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "เชื่อมต่อแล้ว",
@@ -789,16 +763,40 @@
     "message": "การใช้งาน Brave Reward จะช่วยส่งเสริมให้เว็บนี้เป็นพื้นที่ที่ดีขึ้นสำหรับทุกคน ซึ่งนับว่าเยี่ยมยอดไปเลย!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards ในญี่ปุ่นกำลังเปลี่ยนไปใช้ระบบใหม่!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "ยืนยันกระเป๋าเงินของคุณ",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "ดูข้อมูลเพิ่มเติม",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "ในการถอนโทเค็นที่คุณได้รับจากการดูโฆษณา คุณจะต้องยืนยันกระเป๋าเงินของคุณ",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "โปรดใช้ BAP ของคุณภายในวันที่ 13 มีนาคม หลังจากนั้น BAP จะถูกยกเลิก",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "ไว้ทีหลัง",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "ยืนยันกระเป๋าเงินของฉัน",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "กระเป๋าเงิน bitFlyer เป็นบริการที่จัดการโดย bitFlyer, Inc",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "เมื่อยืนยันกระเป๋าเงินของคุณและเชื่อมโยงกับบัญชี bitFlyer คุณจะสามารถจัดเก็บและจัดการโทเค็นที่คุณได้รับผ่าน Brave Rewards ได้ง่ายขึ้น",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$เรียนรู้เพิ่มเติม$link_end$เกี่ยวกับวิธีเชื่อมโยงเบราว์เซอร์ Brave กับบัญชี bitFlyer ของคุณ",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

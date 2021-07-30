@@ -90,10 +90,10 @@ void RankerModelLoaderImplTest::SetUp() {
 bool RankerModelLoaderImplTest::DoLoaderTest(const base::FilePath& model_path,
                                              const GURL& model_url) {
   auto loader = std::make_unique<RankerModelLoaderImpl>(
-      base::Bind(&RankerModelLoaderImplTest::ValidateModel,
-                 base::Unretained(this)),
-      base::Bind(&RankerModelLoaderImplTest::OnModelAvailable,
-                 base::Unretained(this)),
+      base::BindRepeating(&RankerModelLoaderImplTest::ValidateModel,
+                          base::Unretained(this)),
+      base::BindRepeating(&RankerModelLoaderImplTest::OnModelAvailable,
+                          base::Unretained(this)),
       test_shared_loader_factory_, model_path, model_url,
       "RankerModelLoaderImplTest");
   loader->NotifyOfRankerActivity();

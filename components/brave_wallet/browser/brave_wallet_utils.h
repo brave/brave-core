@@ -11,14 +11,22 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+
+class PrefService;
+namespace base {
+class Value;
+}  // namespace base
 
 namespace brave_wallet {
 
 bool IsNativeWalletEnabled();
 // Equivalent to web3.utils.toHex(string);
 std::string ToHex(const std::string& data);
+std::string ToHex(const std::vector<uint8_t>& data);
 // Equivalent to web3.utils.keccak256(string)
-std::string KeccakHash(const std::string& input);
+std::string KeccakHash(const std::string& input, bool to_hex = true);
+std::vector<uint8_t> KeccakHash(const std::vector<uint8_t>& input);
 // Returns the hex encoding of the first 4 bytes of the hash.
 // For example: keccak('balanceOf(address)')
 std::string GetFunctionHash(const std::string& input);
@@ -35,6 +43,9 @@ bool IsValidHexString(const std::string& hex_input);
 bool ConcatHexStrings(const std::string& hex_input1,
                       const std::string& hex_input2,
                       std::string* out);
+bool ConcatHexStrings(const std::vector<std::string>& hex_inputs,
+                      std::string* out);
+
 bool HexValueToUint256(const std::string& hex_input, uint256_t* out);
 std::string Uint256ValueToHex(uint256_t input);
 
@@ -51,6 +62,34 @@ std::string GenerateMnemonicForTest(const std::vector<uint8_t>& entropy);
 std::unique_ptr<std::vector<uint8_t>> MnemonicToSeed(
     const std::string& mnemonic,
     const std::string& passphrase);
+
+bool EncodeString(const std::string& input, std::string* output);
+bool EncodeStringArray(const std::vector<std::string>& input,
+                       std::string* output);
+
+bool DecodeString(size_t offset, const std::string& input, std::string* output);
+bool DecodeStringArray(const std::string& input,
+                       std::vector<std::string>* output);
+
+// Implement namehash algorithm based on EIP-137 spec.
+// Used for converting domain names in the classic format (ex: brave.crypto) to
+// an ERC-721 token for ENS and Unstoppable Domains.
+std::string Namehash(const std::string& name);
+
+// When we call memset in end of function to clean local variables
+// for security reason, compiler optimizer can remove such call.
+// So we use our own function for this purpose.
+void SecureZeroData(void* data, size_t size);
+
+// Updates preferences for when the wallet is unlocked.
+// This is done in a utils function instead of in the KeyringController
+// because we call it both from the old extension and the new wallet when
+// it unlocks.
+void UpdateLastUnlockPref(PrefService* prefs);
+
+base::Value TransactionReceiptToValue(const TransactionReceipt& tx_receipt);
+absl::optional<TransactionReceipt> ValueToTransactionReceipt(
+    const base::Value& value);
 
 }  // namespace brave_wallet
 

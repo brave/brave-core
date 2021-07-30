@@ -13,18 +13,18 @@
 namespace ads {
 namespace settings {
 
-uint64_t GetAdsPerHour() {
-  uint64_t ads_per_hour =
-      AdsClientHelper::Get()->GetUint64Pref(prefs::kAdsPerHour);
+int64_t GetAdsPerHour() {
+  int64_t ads_per_hour =
+      AdsClientHelper::Get()->GetInt64Pref(prefs::kAdsPerHour);
 
-  if (ads_per_hour == 0) {
+  if (ads_per_hour == -1) {
     ads_per_hour =
         static_cast<uint64_t>(features::GetDefaultAdNotificationsPerHour());
   }
 
   return base::ClampToRange(
-      ads_per_hour, static_cast<uint64_t>(kMinimumAdNotificationsPerHour),
-      static_cast<uint64_t>(kMaximumAdNotificationsPerHour));
+      ads_per_hour, static_cast<int64_t>(kMinimumAdNotificationsPerHour),
+      static_cast<int64_t>(kMaximumAdNotificationsPerHour));
 }
 
 }  // namespace settings

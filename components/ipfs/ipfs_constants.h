@@ -8,6 +8,10 @@
 
 namespace ipfs {
 
+extern const char kAPIKeyListEndpoint[];
+extern const char kAPIKeyGenerateEndpoint[];
+extern const char kAPIKeyRemoveEndpoint[];
+extern const char kAPIKeyImportEndpoint[];
 extern const char kSwarmPeersPath[];
 extern const char kConfigPath[];
 extern const char kArgQueryParam[];
@@ -17,6 +21,7 @@ extern const char kIPFSScheme[];
 extern const char kIPNSScheme[];
 extern const char kDefaultIPFSGateway[];
 extern const char kDefaultIPFSLocalGateway[];
+extern const char kIPFSLearnMorePrivacyURL[];
 extern const char kIPFSLearnMoreURL[];
 extern const char kIPFSSettingsURL[];
 extern const char kRepoStatsPath[];
@@ -26,6 +31,16 @@ extern const char kNodeInfoPath[];
 extern const char kLocalhostIP[];
 extern const char kLocalhostDomain[];
 extern const char kGarbageCollectionPath[];
+extern const char kImportAddPath[];
+extern const char kImportMakeDirectoryPath[];
+extern const char kImportCopyPath[];
+extern const char kImportDirectory[];
+extern const char kAPIPublishNameEndpoint[];
+extern const char kIPFSImportMultipartContentType[];
+extern const char kFileValueName[];
+extern const char kFileMimeType[];
+extern const char kDirectoryMimeType[];
+extern const char kIPFSImportTextMimeType[];
 
 // Keep it synced with IPFSResolveMethodTypes in
 // browser/resources/settings/brave_ipfs_page/brave_ipfs_page.js

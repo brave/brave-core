@@ -92,14 +92,9 @@ class PageWallet extends React.Component<Props, State> {
       ui,
       pendingContributionTotal
     } = this.props.rewardsData
-    const { emptyWallet, onlyAnonWallet } = ui
+    const { emptyWallet } = ui
     const { total } = balance
     const pendingTotal = parseFloat((pendingContributionTotal || 0).toFixed(3))
-
-    let showCopy = false
-    if (!onlyAnonWallet) {
-      showCopy = true
-    }
 
     if (!visible) {
       return null
@@ -118,18 +113,16 @@ class PageWallet extends React.Component<Props, State> {
               actions={[]}
               compact={true}
               isMobile={true}
-              showCopy={showCopy}
+              showCopy={true}
               showSecActions={false}
               alert={this.walletAlerts()}
               walletProvider={''}
-              onlyAnonWallet={onlyAnonWallet}
             >
               {
                 emptyWallet
                 ? <WalletEmpty hideAddFundsText={true} />
                 : <WalletSummary
                   reservedAmount={pendingTotal}
-                  onlyAnonWallet={onlyAnonWallet}
                   reservedMoreLink={'https://brave.com/faq-rewards/#unclaimed-funds'}
                   {...this.getWalletSummary()}
                 />

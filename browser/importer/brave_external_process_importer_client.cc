@@ -100,10 +100,10 @@ void BraveExternalProcessImporterClient::OnImportItemFinished(
 }
 
 void BraveExternalProcessImporterClient::OnCreditCardImportReady(
-    const base::string16& name_on_card,
-    const base::string16& expiration_month,
-    const base::string16& expiration_year,
-    const base::string16& decrypted_card_number,
+    const std::u16string& name_on_card,
+    const std::u16string& expiration_month,
+    const std::u16string& expiration_year,
+    const std::u16string& decrypted_card_number,
     const std::string& origin) {
   if (cancelled_)
     return;

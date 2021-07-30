@@ -1,22 +1,22 @@
 {
-  "transaction_history": {
-    "transactions": [
+  "ads_rewards": {
+    "payments": [
+      {
+        "balance": 48.0,
+        "month": "2021-04",
+        "transaction_count": "16"
+      }
     ]
   },
   "catalog_issuers": {
   },
-  "unblinded_tokens": [
-  ],
-  "unblinded_payment_tokens": [
-  ],
   "confirmations": {
-    "failed_confirmations": [
-    ]
+    "failed_confirmations": []
   },
-  "next_token_redemption_date_in_seconds": "2147483647",
-  "ads_rewards": {
-    "payments": [
-    ],
-    "grants_balance": 0
-  }
+  "next_token_redemption_date_in_seconds": "4102444799",
+  "transaction_history": {
+    "transactions": []
+  },
+  "unblinded_payment_tokens": [],
+  "unblinded_tokens": []
 }

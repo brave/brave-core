@@ -51,18 +51,6 @@
     "message": "వివరాలు",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "Your Balance",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "BAT Points",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "can be used in Brave Rewards to contribute to your favorite content creators. BAT Points cannot be exchanged for BAT.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "on",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "Token Grants Claimed",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "Point Grants Claimed",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "Earnings from Ads",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "One-Time Tips",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "expires on",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "This creator has not yet signed up to receive contributions from Brave users. Any tips you send will remain in your wallet until they verify.",
+    "message": "This creator is currently not configured to receive tips from your wallet. Any tip you make will remain pending in your wallet and retry automatically for 90 days.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Turn on Ads",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Free Token Grant",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Free Point Grant",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "You've earned an Ads Reward!",
@@ -591,17 +567,9 @@
     "message": "Token",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "points",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Token Grants",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Point Grants",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Hello, $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "You need to have minimum 25 BAT to create an Uphold account. Please try again later. \n If you already have a verified Uphold account, continue to login.",
-    "description": "Text for login button"
+    "message": "You need to have minimum $amount$ BAT to create an Uphold account. If you already have a verified Uphold account, continue to login.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "కనెక్ట్ అయింది",
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "When do you receive rewards",
+    "message": "When do you receive rewards?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "By using Brave Rewards you are helping make the web a better place for everyone. And that’s awesome!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards in Japan is switching to a new system!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "Verify your wallet",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "మరింత తెలుసుకోండి",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "In order to withdraw the tokens you earn for viewing ads, you’ll need to verify your wallet.",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "Please use your BAP by March 13th. After that, BAP will be discontinued.",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "Do it later",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Verify my wallet",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "The bitFlyer wallet is a service managed by bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "By verifying your wallet and linking it to a bitFlyer account, you will be able to store and manage the tokens you have earned through Brave Rewards more easily",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Learn more$link_end$ about how to link your Brave browser with your bitFlyer account.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

@@ -17,6 +17,7 @@ const char kBackupNotificationInterval[] =
     "brave.rewards.backup_notification_interval";
 const char kBackupSucceeded[] = "brave.rewards.backup_succeeded";
 const char kUserHasFunded[] = "brave.rewards.user_has_funded";
+const char kUserHasClaimedGrant[] = "brave.rewards.user_has_claimed_grant";
 const char kAddFundsNotification[] =
     "brave.rewards.add_funds_notification";
 const char kNotificationStartupDelay[] =
@@ -28,7 +29,7 @@ const char kUpholdAnonAddress[] =
     "brave.rewards.uphold_anon_address";
 const char kBadgeText[] = "brave.rewards.badge_text";
 const char kUseRewardsStagingServer[] = "brave.rewards.use_staging_server";
-const char kOnboarded[] = "brave.rewards.onboarded";
+const char kExternalWalletType[] = "brave.rewards.external_wallet_type";
 const char kPromotionLastFetchStamp[] =
     "brave.rewards.promotion_last_fetch_stamp";
 const char kPromotionCorruptedMigrated[] =
@@ -64,10 +65,12 @@ const char kFetchOldBalance[] =
     "brave.rewards.fetch_old_balance";
 const char kEmptyBalanceChecked[] =
     "brave.rewards.empty_balance_checked";
-const char kBAPReported[] = "brave.rewards.bap_reported";
 const char kWalletBrave[] =
     "brave.rewards.wallets.brave";
 const char kWalletUphold[] =
     "brave.rewards.wallets.uphold";
+const char kWalletBitflyer[] = "brave.rewards.wallets.bitflyer";
+const char kWalletGemini[] = "brave.rewards.wallets.gemini";
+
 }  // namespace prefs
 }  // namespace brave_rewards

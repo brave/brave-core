@@ -1,5 +1,9 @@
-source_set("ipfs") {
-  sources = [ "ipfs_service_impl.h" ]
+static_library("ipfs") {
+  sources = [
+    "ipfs_service_impl.h",
+    "ipfs_service_utils.cc",
+    "ipfs_service_utils.h",
+  ]
   if (!is_android) {
     sources += [ "ipfs_service_impl.cc" ]
   } else {
@@ -8,6 +12,7 @@ source_set("ipfs") {
 
   deps = [
     "//base",
+    "//brave/components/child_process_monitor",
     "//brave/components/services/ipfs/public/mojom",
     "//mojo/public/cpp/bindings",
   ]

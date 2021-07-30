@@ -10,7 +10,6 @@
 <translation id="4798342026247191171">设置您的新 Brave 个人资料</translation>
 <translation id="113959764510199339">Brave 正尝试显示密码。</translation>
 <translation id="8132634101975074716">您已登录 Brave！</translation>
-<translation id="7370605478942575409">您必须重启 Brave，才能使用 Rosetta 播放受保护的媒体内容。</translation>
 <translation id="7419046106786626209">由于您的网域停用了同步功能，Brave操作系统无法同步您的数据。</translation>
 <translation id="5147525139567260139">共享 Brave 标签页</translation>
 <translation id="1530633922026945685">Brave 需要获得相应权限，才能使用您的摄像头为您的周边环境创建 3D 地图</translation>
@@ -21,12 +20,11 @@
 <translation id="1649714546770135458">关闭此功能后，您无需登录 Brave 即可登录 Gmail 等 Brave 网站</translation>
 <translation id="189297655255130768">Brave 未响应。要立即重新启动吗？</translation>
 <translation id="1775322105159056176">Brave 无法确定或设置默认浏览器</translation>
+<translation id="7665553140559834626">重新启动以更新 Brave 操作系统(&amp;C)</translation>
 <translation id="9220324636239049437">这会从这台设备上删除 1 项内容。如果日后想要检索您的数据，届时请以 <ph name="USER_EMAIL"/> 的身份登录 Brave。</translation>
 <translation id="831418749472885028">若要检查您的其他密码是否未曾遭遇数据泄露和其他安全问题，请<ph name="BEGIN_LINK"/>登录 Brave<ph name="END_LINK"/>。</translation>
-<translation id="796822898986482154">您可在<ph name="LINK_BEGIN"/>设置<ph name="LINK_END"/>中集中管理此帐号以及您已为<ph name="USER_NAME"/>添加的其他 Brave 帐号。
-          您向 Brave 浏览器中的网站和 Google Play 中的应用授予的权限可能会应用于所有帐号。</translation>
+<translation id="142389341645668510">自定义 Brave</translation>
 <translation id="8745514854244955877">Brave - 网络登录 - <ph name="PAGE_TITLE"/></translation>
-<translation id="162629503687514352">Brave 操作系统无法同步您的密码。</translation>
 <translation id="5659384504794665581">如果您与亲朋好友共用计算机，他们将能够使用单独的帐号进行浏览，并可随心所欲地设置Brave。</translation>
 <translation id="5997267581285668459">（可选）自动向 Brave 发送诊断数据和使用情况数据，协助改进 Brave 操作系统的功能和性能。</translation>
 <translation id="9095263438435683933">若要从此处向您的 Android 手机发送电话号码，请在这两部设备上分别登录 Brave。</translation>
@@ -34,26 +32,24 @@
 <translation id="2576129394594491151">“<ph name="EXTENSION_NAME"/>”扩展程序更改了 Brave 启动后系统显示的页面。</translation>
 <translation id="6078442581074612226">在 Brave 中</translation>
 <translation id="2485422356828889247">卸载</translation>
-<translation id="2555639463117073782">重新启动 Brave 以启用 <ph name="PLUGIN_NAME"/></translation>
 <translation id="9026991721384951619">您的帐号登录详细信息已过期，Brave操作系统无法同步您的数据。</translation>
 <translation id="7798069806040634998">Brave 需要获得存储空间使用权限，才能下载文件</translation>
 <translation id="8447483940522230788">Brave 帮助程序</translation>
 <translation id="7933006624150961626">如需在您的所有设备上访问自己的 Brave 信息，请登录您的帐号以便开启同步功能。</translation>
+<translation id="5486618155264784386">安装 Brave 操作系统</translation>
 <translation id="7291143854620707672">在使用此工作资料（例如创建书签、历史记录、密码和其他设置）时生成的任何 Brave 数据都可由工作资料管理员移除。<ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">需要重新启动 Brave 操作系统以应用更新。</translation>
-<translation id="3913823837305937258">此计算机很快将停止接收Brave更新，因为其硬件不再受支持。</translation>
 <translation id="7387051847644272380">安装过程中出现操作系统错误。请重新下载 Brave。</translation>
 <translation id="2648689842065142443">如果您是与亲朋好友共用一部设备，他们将能够使用单独的帐号进行浏览，并可随心所欲地设置 Brave</translation>
-<translation id="3749489756681759571">Brave 建议您停用此扩展程序，因为它目前不符合“增强型安全浏览”标准。</translation>
 <translation id="6791166902140255175">Brave 标签页</translation>
 <translation id="8372880274820509128">为了提高安全性，Brave 将对您的数据进行加密。</translation>
 <translation id="2770231113462710648">将默认浏览器更改为：</translation>
 <translation id="2799223571221894425">重新启动</translation>
 <translation id="6811506454451584223">创建一份单独的 Brave 个人资料？</translation>
+<translation id="3783547330001921298">这样做会为 <ph name="USER_EMAIL_ADDRESS"/> 创建一份新的 Brave 个人资料</translation>
 <translation id="777113543093865885">从Brave中移除…</translation>
 <translation id="2885378588091291677">任务管理器</translation>
 <translation id="2176825726964012531">关于 Brave(&amp;C)</translation>
-<translation id="245659736593643560">Brave 操作系统是借助了其他<ph name="BEGIN_LINK_CROS_OSS"/>开放源代码软件<ph name="END_LINK_CROS_OSS"/>才得以问世，<ph name="BEGIN_LINK_LINUX_OSS"/>Linux 开发环境（Beta 版）<ph name="END_LINK_LINUX_OSS"/>也是如此。</translation>
 <translation id="8208853227947884571">Brave 已是最新版本</translation>
 <translation id="2953892977076487219">Brave 正在尝试修改密码。</translation>
 <translation id="8755404239607088219">Brave 无法检查您的密码。请稍后重试。</translation>
@@ -62,6 +58,7 @@
 <translation id="7365690458036015383">安装程序解压缩归档失败。请重新下载 Brave。</translation>
 <translation id="8919461291440820124">Brave 正在使用您的麦克风。</translation>
 <translation id="4805806622840861220">重新启动 Brave</translation>
+<translation id="1742948938503172561">自定义您的新 Brave 个人资料</translation>
 <translation id="1477146545787277177">哎呀！Brave 崩溃了。要立即重新启动吗？</translation>
 <translation id="7503098128120083822">Brave 想导出您的密码。</translation>
 <translation id="2585240446624043880">Brave 无法读写其数据目录：
@@ -76,6 +73,7 @@
 <translation id="2450003541323895471">借助 Brave 个人资料，您可将自己的所有 Brave 内容分门别类。比如，您可为朋友和家人创建专属个人资料，或者将工作内容和娱乐内容分开。</translation>
 <translation id="9216183508558772570">当您使用已泄露的密码登录时，Brave 会通知您</translation>
 <translation id="5853262807109651878">这会从这台设备上删除 <ph name="ITEMS_COUNT"/> 项内容。如果日后想要检索您的数据，届时请以 <ph name="USER_EMAIL"/> 的身份登录 Brave。</translation>
+<translation id="2024972335338126423"><ph name="SHORTCUT"/> 可用于切换 Brave 个人资料</translation>
 <translation id="8703492925273919597">请关闭所有 Brave 窗口并重试。</translation>
 <translation id="1384923383737428730">您的计算机上存在有害软件。Brave 可以移除该软件、恢复您的设置并停用扩展程序，以确保您的浏览器能够重新正常运行。</translation>
 <translation id="7029305463989165490">若要从 <ph name="ORIGIN"/> 向您的 Android 手机发送电话号码，请在这两部设备上分别登录 Brave。</translation>
@@ -101,6 +99,7 @@
 <translation id="9183662282810237335">仍要退出 Brave？</translation>
 <translation id="4065288863231444640">让 Brave 在后台运行</translation>
 <translation id="8148611988012584308">自定义及控制 Brave</translation>
+<translation id="1201005444605297066">您可在此页面中管理您已登录的 Brave 帐号。这样您就能在 Brave 浏览器和 Play 商店应用以及 Gmail、Brave 云端硬盘和 YouTube 等服务中使用这些帐号了。<ph name="LINK_BEGIN"/>了解详情<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">欢迎使用 Brave；已打开新的浏览器窗口</translation>
 <translation id="2633397153656205379">Brave 未能更新，因为出了点问题。<ph name="BEGIN_LINK"/>请解决导致 Brave 更新失败的问题<ph name="END_LINK"/>。</translation>
 <translation id="3679799810790990472">使用一份新的 Brave 个人资料继续浏览？</translation>
@@ -113,12 +112,13 @@
 <translation id="8668413672647811944">Brave 刚刚应用了一项特殊的安全更新。请立即重启，以便系统恢复您的标签页。</translation>
 <translation id="4823369970559443694">Brave 无法检查您的密码。请过 24 小时再试，或者<ph name="BEGIN_LINK"/>检查您的 Brave 帐号中的密码<ph name="END_LINK"/>。</translation>
 <translation id="215320507915280336">这项服务会使用 Brave 搜索所用的拼写检查工具。您在浏览器中输入的文字会被发送给 Brave。您随时可在“设置”中更改此行为。</translation>
-<translation id="2899369907387169108">在不登录帐号的情况下使用 Brave</translation>
 <translation id="1912973375560256099">Brave的入站规则，允许mDNS流量。</translation>
+<translation id="711601904575862069">重新启动以更新 Brave(&amp;C)</translation>
 <translation id="8797356639448065696">Brave处于后台运行模式。</translation>
 <translation id="7406627712452599344">访客使用Brave不会留下任何痕迹。</translation>
 <translation id="5952898964075639679">将您自己添加到Brave</translation>
 <translation id="9078804073692109646">尚未保存任何密码。您需要先保存密码才能使用 Brave 的密码检查功能。</translation>
+<translation id="729580998737807583"><ph name="EXISTING_USER"/>已登录此 Brave 个人资料。这样做会为 <ph name="USER_EMAIL_ADDRESS"/> 创建一份新的 Brave 个人资料</translation>
 <translation id="8586264863973514035">要想应用您的更改，请重新启动 Brave</translation>
 <translation id="7708394612738038097">您目前登录的帐号是一个托管帐号，该帐号的管理员将能够控制您的 Brave 个人资料。您的 Brave 数据（例如您的应用、书签、历史记录、密码和其他设置）将永远与 <ph name="USER_NAME"/> 相关联。您可以通过 Brave 帐号信息中心删除这些数据，但无法将这些数据与其他帐号相关联。<ph name="LEARN_MORE"/></translation>
 <translation id="1786715389543715322">正在更新 Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
@@ -129,15 +129,16 @@
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave 测试版</translation>
 <translation id="707769633889902835">Brave 操作系统无法打开此网页。</translation>
 <translation id="696826782632239602">Brave 需要获得位置权限，才能将您的位置信息共享给此网站</translation>
+<translation id="7886919915603831625">Brave 建议您不要下载或打开此文件。</translation>
 <translation id="1744365871163268756">Brave正在安装最新的系统更新，请稍候。</translation>
 <translation id="3861679447659630159">Brave 正在尝试修改密码。请输入您的 Windows 密码以允许此操作。</translation>
+<translation id="232381795826373334">在 Brave 中打开 PDF 文件</translation>
 <translation id="1026406809507858026">{0,plural, =0{有一项可用的 Brave 更新}=1{有一项可用的 Brave 更新}other{有一项可用的 Brave 更新（已发布 # 天）}}</translation>
-<translation id="4518479204315969707">Brave 名称和图片</translation>
 <translation id="95624393026532554">Brave 仅支持 Windows 7 或更高版本的操作系统。</translation>
 <translation id="5646769069113654257">请立即重启 Brave</translation>
 <translation id="2335583906071111058">以这种语言显示 Brave</translation>
-<translation id="3009727137063767373">您需要安装 Rosetta，Brave 才能播放受保护的媒体内容。您想现在就安装吗？</translation>
 <translation id="4331809312908958774">Brave 操作系统</translation>
+<translation id="79947657522496226">Brave 操作系统是借助了其他<ph name="BEGIN_LINK_CROS_OSS"/>开源软件<ph name="END_LINK_CROS_OSS"/>才得以问世，<ph name="BEGIN_LINK_LINUX_OSS"/>Linux 开发环境<ph name="END_LINK_LINUX_OSS"/>也是如此。</translation>
 <translation id="7207456302801184289">欢迎使用 Brave</translation>
 <translation id="5895138241574237353">重新启动</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - 网络登录</translation>
@@ -152,14 +153,15 @@
 <translation id="492209281555538239">Brave 会将此密码保存在您的 Brave 帐号中，因此您不必记住它。</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> 存在危险，因此 Brave 已将其拦截。</translation>
 <translation id="7006260220514217183">“安全浏览”功能已关闭。Brave 建议开启此功能。</translation>
+<translation id="4060970194201477024">您可在此处切换 Brave 个人资料</translation>
 <translation id="4368341489795135329">请确保您已在“<ph name="TARGET_DEVICE_NAME"/>”上登录 Brave，然后再次尝试发送。</translation>
 <translation id="8320964054148936490">此计算机已安装了更高版本的 Brave。如果软件无法正常运行，请卸载 Brave 并重试。</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave 将立即重新启动}=1{Brave 将在 1 秒后重新启动}other{Brave 将在 # 秒后重新启动}}</translation>
-<translation id="3127818369811890733">Brave 操作系统无法同步您的数据。</translation>
 <translation id="5019879183386042809">将 Brave 设置为默认浏览器</translation>
 <translation id="428541510811554120">Brave 无法检查是否有更新。请检查您的互联网连接。</translation>
 <translation id="7445061995866044926">退出 Brave？</translation>
 <translation id="6806912298071949921">自定义您的 Brave 个人资料</translation>
+<translation id="3792238845239580301">请为您的 Brave 个人资料命名</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> 可能存在危险，因此 Brave 已将其拦截。</translation>
 <translation id="3205074487970075628">Brave 正在使用您的摄像头。</translation>
 <translation id="1819119299840995223">Brave 正在执行另一项操作，请稍后重试。</translation>
@@ -187,16 +189,13 @@
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay（已复制到 Brave）</translation>
 <translation id="2301993384336631869">Brave 已更新，但您已经至少 30 天未使用它了。</translation>
-<translation id="8522287263361940593">待您安装 Rosetta 之后，Brave 才能播放此页上受保护的媒体内容。</translation>
+<translation id="8828443087767259398">Brave 需获得蓝牙使用权限才能继续配对。<ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6418340404893954563">安全系数低的密码容易被人猜到。不妨让 Brave <ph name="BEGIN_LINK"/>为您创建并记住安全系数高的密码<ph name="END_LINK"/>。</translation>
 <translation id="3335606533094650083">Brave 需要获得相应权限，才能允许此网站使用您的麦克风</translation>
-<translation id="1785833016412082453">Brave 无法检查您的扩展程序。请稍后重试。</translation>
 <translation id="1705567146636171298">更新 Brave</translation>
-<translation id="123620459398936149">Brave操作系统无法同步您的数据。请更新您的同步密码。</translation>
 <translation id="5499063270485366718">如果图片缺少有用的说明，则 Brave 会尝试为您提供一条说明。为便于创建说明，系统会将图片发送给 Brave。</translation>
 <translation id="1197672524850678392">无法启动 Brave。请重试。</translation>
 <translation id="3405035915691517126">Brave 无法检查您的密码。请过 24 小时再试。</translation>
-<translation id="5660079256336839395">在 Brave 菜单中隐藏</translation>
 <translation id="5516268345616100622">任务管理器 - Brave</translation>
 <translation id="61852838583753520">更新 Brave 操作系统(&amp;C)</translation>
 <translation id="1864557848095568223">正在更新 Brave</translation>
@@ -224,14 +223,13 @@ Brave 无法恢复您的设置。</translation>
 <translation id="4784414698887946907">这会从这台设备上删除您的浏览数据。如果日后想要检索您的数据，届时请以 <ph name="USER_EMAIL"/> 的身份登录 Brave。</translation>
 <translation id="7747138024166251722">安装程序无法创建临时目录。请检查您是否有足够的磁盘空间和权限来安装该软件。</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
-<translation id="38898988211673781">退出 Brave 时清除 Cookie 及网站数据</translation>
+<translation id="1652855885539187849">此设备上已有一份使用该帐号创建的 Brave 个人资料</translation>
 <translation id="8462524920674814187">若要接收后续的 Brave 更新，您需使用 OS X 10.11 或更高版本。该计算机目前使用的是 OS X 10.10。</translation>
 <translation id="7963515534397191222">Brave 无法更新至最新版本，因此您未能获得最新的功能和安全修复程序。</translation>
 <translation id="7573289029918943991">若想确认您设备上的操作系统是否是最新版本，请前往 <ph name="LINK_BEGIN"/>Brave 操作系统设置<ph name="LINK_END"/></translation>
 <translation id="6755885556185485672">Brave 操作系统未正确关闭。</translation>
 <translation id="2925193881330501265">您之前登录 Brave 时使用的帐号为 <ph name="USER_EMAIL_ADDRESS"/>，请使用同一帐号再次登录。</translation>
 <translation id="6915252145142862992">这是 Brave 的并行安装，您无法将此浏览器设为默认浏览器。</translation>
-<translation id="4054452651944170004">在 Brave 菜单中隐藏</translation>
 <translation id="7685904775439037072">一旦 Brave 获得了使用权限，网站便能请求您向其授予使用权限。</translation>
 <translation id="9067428552314418522">此文件存在危险，因此 Brave 已将其拦截。</translation>
 <translation id="8207657266087451193">如果图片缺少有用的说明，则 Brave 会尝试为您提供一条说明。为便于创建说明，系统会将图片发送给 Brave。您可以随时在“设置”中关闭此功能。</translation>
@@ -264,15 +262,16 @@ Brave 无法恢复您的设置。</translation>
 <translation id="1156157157416773301">将帐号移到一份新的 Brave 个人资料名下？</translation>
 <translation id="5173820533850252773">Brave版本太旧</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave 将在 1 小时后重新启动}other{Brave 将在 # 小时后重新启动}}</translation>
-<translation id="3867851085410947377">若有多个 Brave 帐号，您可以将它们添加到自己的 <ph name="DEVICE_TYPE"/>。这样您就能在 Brave 浏览器和 Play 商店以及 Gmail、Brave 云端硬盘和 YouTube 等服务中使用这些帐号了。<ph name="LINK_BEGIN"/>了解详情<ph name="LINK_END"/></translation>
 <translation id="7863882214613921971">在 Brave 新标签页中打开链接(&amp;T)</translation>
 <translation id="911206726377975832">同时删除您的浏览数据吗？</translation>
 <translation id="2444257125841652328">您的系统管理员已将 Brave 配置为使用备用浏览器访问 <ph name="TARGET_URL_HOSTNAME"/>。</translation>
+<translation id="7902365066753170041">重新启动以更新 Brave(&amp;C)</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="6568793831116033768">Brave 操作系统</translation>
 <translation id="7977787072794666032">Brave 可能无法正常运行，因为它不再支持 Windows XP 和 Windows Vista</translation>
+<translation id="4484434718272972655">谁在使用 Brave？</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
-<translation id="6134859571175647580">警告：Brave 无法阻止扩展程序记录您的浏览活动。要在无痕模式下停用该扩展程序，请取消选中此选项。</translation>
+<translation id="1299765473362724475">警告:Brave不能阻止扩展记录您的浏览历史。要在私人模式禁用此扩展，取消选择此选项。</translation>
 <translation id="1448049584457347995">为了提高 Brave 的安全性，系统停用了一些未列在 <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>中、可能是在您不知情的情况下添加的扩展程序。</translation>
 <translation id="8848045066928358658">为了提高 Brave 的安全性，我们停用了以下扩展程序（该扩展程序未列在<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>中，并且可能是在您不知情的情况下添加的）。</translation>
 <translation id="669092380621816981">系统将会从此设备上删除该用户的浏览数据。要想恢复这些数据，请以“<ph name="USER_EMAIL"/>”的身份登录 Brave。</translation>

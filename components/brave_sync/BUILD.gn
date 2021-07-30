@@ -8,15 +8,15 @@ declare_args() {
   brave_sync_endpoint = ""
 }
 
-if (is_official_build) { assert(brave_sync_endpoint != "") }
-
-config("brave_sync_config") {
-  defines = [
-    "BRAVE_SYNC_ENDPOINT=\"$brave_sync_endpoint\""
-  ]
+if (is_official_build) {
+  assert(brave_sync_endpoint != "")
 }
 
-source_set("crypto") {
+config("brave_sync_config") {
+  defines = [ "BRAVE_SYNC_ENDPOINT=\"$brave_sync_endpoint\"" ]
+}
+
+static_library("crypto") {
   sources = [
     "crypto/crypto.cc",
     "crypto/crypto.h",
@@ -42,12 +42,12 @@ source_set("features") {
   ]
 
   deps = [
-    "//base",
     "buildflags",
+    "//base",
   ]
 }
 
-source_set("network_time_helper") {
+static_library("network_time_helper") {
   # Remove when https://github.com/brave/brave-browser/issues/10650 is resolved
   check_includes = false
   sources = [
@@ -74,7 +74,7 @@ source_set("prefs") {
   ]
 }
 
-source_set("profile_sync_service_helper") {
+static_library("profile_sync_service_helper") {
   sources = [
     "profile_sync_service_helper.cc",
     "profile_sync_service_helper.h",
@@ -82,8 +82,8 @@ source_set("profile_sync_service_helper") {
 
   deps = [
     "//base",
-    "//components/sync_device_info",
     "//components/sync/driver",
+    "//components/sync_device_info",
   ]
 }
 

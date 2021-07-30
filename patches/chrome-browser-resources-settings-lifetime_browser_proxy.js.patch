@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/lifetime_browser_proxy.js b/chrome/browser/resources/settings/lifetime_browser_proxy.js
-index d109348290ecf852da38a0da26abac5798f9d89c..1b825fde7f16f17a6d75126a8cb1670e47314d05 100644
+index 995719c65672c1d577133c981ed570a6dab95882..b3fb0426ebe1c23a8d837529508562f4a81cb969 100644
 --- a/chrome/browser/resources/settings/lifetime_browser_proxy.js
 +++ b/chrome/browser/resources/settings/lifetime_browser_proxy.js
-@@ -15,6 +15,13 @@ cr.define('settings', function() {
+@@ -14,6 +14,13 @@ import {addSingletonGetter} from 'chrome://resources/js/cr.m.js';
      // Triggers a browser relaunch.
      relaunch() {}
  
@@ -16,7 +16,7 @@ index d109348290ecf852da38a0da26abac5798f9d89c..1b825fde7f16f17a6d75126a8cb1670e
      // <if expr="chromeos">
      // First signs out current user and then performs a restart.
      signOutAndRestart() {}
-@@ -41,6 +48,13 @@ cr.define('settings', function() {
+@@ -40,6 +47,13 @@ import {addSingletonGetter} from 'chrome://resources/js/cr.m.js';
        chrome.send('relaunch');
      }
  

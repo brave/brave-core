@@ -3,4 +3,5 @@ include_rules = [
   "+components",
   "+ios/chrome/browser",
   "+ios/web/public",
+  "+services/network/public/cpp",
 ]

@@ -8,7 +8,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
 #include "base/test/thread_test_helper.h"
-#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/common/brave_paths.h"
@@ -77,10 +76,6 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
     return user_agents_[user_agents_.size() - 1];
   }
 
-  std::string minimal_user_agent() {
-    return browser_content_client_->GetMinimalUserAgent();
-  }
-
   HostContentSettingsMap* content_settings() {
     return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
   }
@@ -118,19 +113,10 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
   std::vector<std::string> user_agents_;
 };
 
-class BraveNavigatorUserAgentFarblingMobileBrowserTest
-    : public BraveNavigatorUserAgentFarblingBrowserTest {
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-#if defined(OS_ANDROID)
-    command_line->AppendSwitch(switches::kUseMobileUserAgent);
-#endif
-  }
-};
-
 // Tests results of farbling user agent
 IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
                        FarbleNavigatorUserAgent) {
-  base::string16 expected_title = base::ASCIIToUTF16("pass");
+  std::u16string expected_title(u"pass");
   std::string domain_b = "b.com";
   std::string domain_z = "z.com";
   GURL url_b = embedded_test_server()->GetURL(domain_b, "/simple.html");
@@ -199,8 +185,8 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   NavigateToURLUntilLoadStop(embedded_test_server()->GetURL(
       domain_b, "/navigator/workers-useragent.html"));
   // HTTP User-Agent header we just sent in that request should be the same as
-  // the farbled user agent
-  EXPECT_EQ(last_requested_http_user_agent(), minimal_user_agent());
+  // the unfarbled user agent
+  EXPECT_EQ(last_requested_http_user_agent(), unfarbled_ua);
   TitleWatcher watcher3(contents(), expected_title);
   EXPECT_EQ(expected_title, watcher3.WaitAndGetTitle());
 
@@ -211,20 +197,4 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   EXPECT_EQ(last_requested_http_user_agent(), unfarbled_ua);
   auto off_ua_b2 = EvalJs(contents(), kUserAgentScript);
   EXPECT_EQ(off_ua_b.ExtractString(), off_ua_b2);
-}
-
-// Tests results of farbling with mobile user agent
-IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingMobileBrowserTest,
-                       FarbleNavigatorUserAgentMobile) {
-  base::string16 expected_title = base::ASCIIToUTF16("pass");
-  std::string domain_b = "b.com";
-  GURL url_b = embedded_test_server()->GetURL(domain_b, "/simple.html");
-  SetFingerprintingDefault(domain_b);
-  NavigateToURLUntilLoadStop(url_b);
-  std::string default_ua_b =
-      EvalJs(contents(), kUserAgentScript).ExtractString();
-  BlockFingerprinting(domain_b);
-  NavigateToURLUntilLoadStop(url_b);
-  EXPECT_EQ(default_ua_b + "   ", EvalJs(contents(), kUserAgentScript));
-  EXPECT_EQ(last_requested_http_user_agent(), minimal_user_agent());
 }

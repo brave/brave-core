@@ -97,6 +97,8 @@
 
     <color name="brave_stats_title_color">#868E96</color>
     <color name="brave_stats_text_color">#212529</color>
+    <color name="brave_stats_text_light_color">#212529</color>
+    <color name="brave_stats_text_dark_color">#F0F2FF</color>
     <color name="ntp_stats_bg_color">#212529</color>
     <color name="ntp_stats_text_color">#C2C4CF</color>
 
@@ -108,6 +110,10 @@
     <color name="brave_stats_empty_bg_color">#335DB5FC</color>
     <color name="brave_stats_empty_border_color">#5DB5FC</color>
     <color name="brave_stats_radio_button_active">@android:color/white</color>
+    <color name="brave_stats_share_data_save_no">#A1A5E6</color>
+    <color name="brave_stats_share_info">@android:color/white</color>
+    <color name="brave_stats_share_time_saved_no">@android:color/white</color>
+    <color name="brave_stats_share_trackers_ads_no">@color/onboarding_indicator_selected_color</color>
 
     <color name="topsite_bg_color">#DADCE8</color>
     <color name="spinner_bg_color">#DADCE8</color>
@@ -131,6 +137,19 @@
 
     <color name="shields_tooltip_arrow_color_1">#DD295B</color>
     <color name="shields_tooltip_arrow_color_2">#2673DD</color>
-    <color name="rewards_tooltip_arrow_color">#A1A9F3</color>
-    
+
+    <color name="wallet_text_color">#212529</color>
+    <color name="wallet_secondary_text_color">#686978</color>
+    <color name="wallet_secondary_layout_text_color">#495057</color>
+    <color name="recovery_phrase_text_color">#F8F9FA</color>
+    <color name="wallet_toolbar_bg_color">#F8F9FA</color>
+    <color name="tab_color">#FF4081</color>
+    <color name="wallet_bg">#FFFFFF</color>
+    <color name="wallet_edittext_outline_color">#AEB1C2</color>
+    <color name="wallet_warning_box_bg_color">#FFFFFF</color>
+    <color name="recovery_phrase_warning_text_color">#868E96</color>
+    <color name="brave_action_color">#4C54D2</color>
+    <color name="wallet_positive_trend_color">#51CF66</color>
+    <color name="wallet_asset_graph_color">#12A378</color>
+
 </resources>

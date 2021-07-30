@@ -61,41 +61,34 @@ export function SetupForm (props: RewardsTourProps) {
           }
         </style.optionBar>
       </style.section>
-      {
-        props.autoContributeAmountOptions.length > 0 &&
-        <style.section>
-          <style.label>
-            {getString('onboardingSetupContributeHeader')}
-          </style.label>
-          <style.sublabel>
-            {getString('onboardingSetupContributeSubheader')}
-          </style.sublabel>
-          <style.optionBar>
-            {
-              acOptions.map((amount) => {
-                const className = amount === props.autoContributeAmount
-                  ? 'selected'
-                  : ''
-                const onClick = () => {
-                  if (amount !== props.autoContributeAmount) {
-                    props.onAutoContributeAmountChanged(amount)
-                  }
+      <style.section>
+        <style.label>
+          {getString('onboardingSetupContributeHeader')}
+        </style.label>
+        <style.sublabel>
+          {getString('onboardingSetupContributeSubheader')}
+        </style.sublabel>
+        <style.optionBar>
+          {
+            acOptions.map((amount) => {
+              const className = amount === props.autoContributeAmount
+                ? 'selected'
+                : ''
+              const onClick = () => {
+                if (amount !== props.autoContributeAmount) {
+                  props.onAutoContributeAmountChanged(amount)
                 }
-                return (
-                  <button key={amount} onClick={onClick} className={className}>
-                    <style.acAmount>
-                      {amount.toFixed(0)}
-                    </style.acAmount>&nbsp;
-                    <style.acCurrency>
-                      {getString(props.onlyAnonWallet ? 'bap' : 'bat')}
-                    </style.acCurrency>
-                  </button>
-                )
-              })
-            }
-          </style.optionBar>
-        </style.section>
-      }
+              }
+              return (
+                <button key={amount} onClick={onClick} className={className}>
+                  <style.acAmount>{amount.toFixed(0)}</style.acAmount>&nbsp;
+                  <style.acCurrency>BAT</style.acCurrency>
+                </button>
+              )
+            })
+          }
+        </style.optionBar>
+      </style.section>
     </style.root>
   )
 }

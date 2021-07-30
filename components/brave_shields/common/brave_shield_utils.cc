@@ -5,15 +5,15 @@
 
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
 
-#include "base/optional.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 ContentSetting GetBraveFPContentSettingFromRules(
     const ContentSettingsForOneType& fp_rules,
     const GURL& primary_url) {
-  base::Optional<ContentSettingPatternSource> global_fp_rule;
-  base::Optional<ContentSettingPatternSource> global_fp_balanced_rule;
+  absl::optional<ContentSettingPatternSource> global_fp_rule;
+  absl::optional<ContentSettingPatternSource> global_fp_balanced_rule;
 
   for (const auto& rule : fp_rules) {
     if (rule.primary_pattern != ContentSettingsPattern::Wildcard() &&

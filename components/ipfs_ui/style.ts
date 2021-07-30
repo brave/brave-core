@@ -22,7 +22,13 @@ export const SideBySideButtons = styled('div')<{}>`
 `
 
 export const PaddedButton = styled(Button as React.ComponentType<ButtonProps>)`
+  background-color: white;
+  color: black;
   margin: 5px;
+`
+
+export const BorderlessButton = styled(PaddedButton as React.ComponentType<ButtonProps>)`
+  border-style: none
 `
 
 export const GrayStyle = {
@@ -42,4 +48,8 @@ export const LearnMoreLink = {
 
 export const Error = {
   color: 'red'
+}
+
+export const LinkContainer = {
+  margin: '10px 0px'
 }

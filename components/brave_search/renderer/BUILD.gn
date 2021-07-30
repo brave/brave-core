@@ -1,19 +1,26 @@
 source_set("renderer") {
   sources = [
-    "brave_search_js_handler.cc",
-    "brave_search_js_handler.h",
+    "brave_search_default_js_handler.cc",
+    "brave_search_default_js_handler.h",
+    "brave_search_fallback_js_handler.cc",
+    "brave_search_fallback_js_handler.h",
     "brave_search_render_frame_observer.cc",
     "brave_search_render_frame_observer.h",
+    "brave_search_service_worker_holder.cc",
+    "brave_search_service_worker_holder.h",
   ]
 
   deps = [
     "//base",
+    "//brave/components/brave_search/common",
     "//brave/components/brave_search/common:mojom",
     "//content/public/renderer",
     "//gin",
     "//mojo/public/cpp/bindings",
     "//third_party/blink/public:blink",
     "//third_party/blink/public/common",
+    "//third_party/blink/public/mojom/frame",
+    "//third_party/blink/public/strings",
     "//v8",
   ]
 }

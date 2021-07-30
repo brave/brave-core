@@ -33,9 +33,10 @@ ContentSetting GetDefaultFromContentSettingsType(
   } else if (content_type == ContentSettingsType::BRAVE_REFERRERS) {
     return CONTENT_SETTING_BLOCK;
   } else if (content_type == ContentSettingsType::BRAVE_COOKIES) {
-    return secondary_url == GURL("https://firstParty/")
-        ? CONTENT_SETTING_BLOCK
-        : CONTENT_SETTING_ALLOW;
+    return secondary_url == GURL("https://firstParty/") ? CONTENT_SETTING_BLOCK
+                                                        : CONTENT_SETTING_ALLOW;
+  } else if (content_type == ContentSettingsType::BRAVE_SPEEDREADER) {
+    return CONTENT_SETTING_ALLOW;
   }
   return CONTENT_SETTING_BLOCK;
 }

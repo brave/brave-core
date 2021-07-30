@@ -33,12 +33,15 @@ std::string CreateConfirmationRequestDTO(const ConfirmationInfo& confirmation) {
 
   const std::string blinded_payment_token_base64 =
       confirmation.blinded_payment_token.encode_base64();
-  dto.SetKey("blindedPaymentToken", base::Value(blinded_payment_token_base64));
+  if (!blinded_payment_token_base64.empty()) {
+    dto.SetKey("blindedPaymentToken",
+               base::Value(blinded_payment_token_base64));
+  }
 
   const std::string type = std::string(confirmation.type);
   dto.SetKey("type", base::Value(type));
 
-  base::Optional<base::Value> user_data =
+  absl::optional<base::Value> user_data =
       base::JSONReader::Read(confirmation.user_data);
   if (user_data && user_data->is_dict()) {
     base::DictionaryValue* user_data_dictionary = nullptr;

@@ -9,10 +9,17 @@
 #include <string>
 #include "base/values.h"
 
+#include "brave/components/brave_wallet/browser/brave_wallet_types.h"
+
 namespace brave_wallet {
 
+bool ParseEthGetBlockNumber(const std::string& json, uint256_t* block_num);
 // Returns the balance of the account of given address.
 bool ParseEthGetBalance(const std::string& json, std::string* hex_balance);
+bool ParseEthGetTransactionCount(const std::string& json, uint256_t* count);
+bool ParseEthGetTransactionReceipt(const std::string& json,
+                                   TransactionReceipt* receipt);
+bool ParseEthSendRawTransaction(const std::string& json, std::string* tx_hash);
 bool ParseEthCall(const std::string& json, std::string* result);
 
 }  // namespace brave_wallet

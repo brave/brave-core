@@ -76,7 +76,7 @@ describe('stackWidgetReducer', () => {
       const expectedState = {
         ...storage.defaultState,
         showBinance: true,
-        widgetStackOrder: ['cryptoDotCom', 'gemini', 'rewards', 'binance']
+        widgetStackOrder: ['ftx', 'cryptoDotCom', 'gemini', 'rewards', 'binance']
       }
       const assertion = handleWidgetPrefsChange(newState, oldState)
       expect(assertion).toEqual(expectedState)
@@ -96,68 +96,6 @@ describe('stackWidgetReducer', () => {
         removedStackWidgets: ['binance']
       }
       const assertion = handleWidgetPrefsChange(newState, oldState)
-      expect(assertion).toEqual(expectedState)
-    })
-  })
-
-  describe('SAVE_WIDGET_STACK_ORDER', () => {
-    it('saves the current enabled widgets, in order, to state (1)', () => {
-      const initialState = {
-        ...storage.defaultState,
-        showBinance: true,
-        showGemini: true,
-        widgetStackOrder: ['binance', 'rewards', 'gemini'],
-        savedWidgetStackOrder: []
-      }
-      const expectedState = {
-        ...initialState,
-        savedWidgetStackOrder: ['binance', 'gemini']
-      }
-      const assertion = stackWidgetReducer({
-        ...initialState
-      }, {
-        type: types.SAVE_WIDGET_STACK_ORDER,
-        payload: {}
-      })
-      expect(assertion).toEqual(expectedState)
-    })
-    it('saves the current enabled widgets, in order, to state (2)', () => {
-      const initialState = {
-        ...storage.defaultState,
-        showBinance: true,
-        showGemini: true,
-        showTogether: true,
-        widgetStackOrder: ['binance', 'together', 'rewards', 'gemini'],
-        savedWidgetStackOrder: []
-      }
-      const expectedState = {
-        ...initialState,
-        savedWidgetStackOrder: ['binance', 'together', 'gemini']
-      }
-      const assertion = stackWidgetReducer({
-        ...initialState
-      }, {
-        type: types.SAVE_WIDGET_STACK_ORDER,
-        payload: {}
-      })
-      expect(assertion).toEqual(expectedState)
-    })
-    it('sets cache to an empty list when non are on', () => {
-      const initialState = {
-        ...storage.defaultState,
-        widgetStackOrder: ['binance', 'together', 'rewards', 'gemini'],
-        savedWidgetStackOrder: []
-      }
-      const expectedState = {
-        ...initialState,
-        savedWidgetStackOrder: []
-      }
-      const assertion = stackWidgetReducer({
-        ...initialState
-      }, {
-        type: types.SAVE_WIDGET_STACK_ORDER,
-        payload: {}
-      })
       expect(assertion).toEqual(expectedState)
     })
   })

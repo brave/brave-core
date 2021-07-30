@@ -1,10 +1,14 @@
-source_set("common") {
+import("//mojo/public/tools/bindings/mojom.gni")
+
+static_library("common") {
   sources = [
     "brave_shield_constants.h",
     "brave_shield_utils.cc",
     "brave_shield_utils.h",
     "features.cc",
     "features.h",
+    "pref_names.cc",
+    "pref_names.h",
   ]
 
   deps = [
@@ -12,4 +16,10 @@ source_set("common") {
     "//components/content_settings/core/common",
     "//url",
   ]
+}
+
+mojom("mojom") {
+  sources = [ "brave_shields.mojom" ]
+
+  deps = [ "//mojo/public/mojom/base" ]
 }

@@ -9,22 +9,25 @@ import("//testing/test.gni")
 
 source_set("browser_tests") {
   testonly = true
-  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
-  sources = [
-    "//brave/browser/decentralized_dns/test/decentralized_dns_navigation_throttle_browsertest.cc",
-    "//brave/browser/decentralized_dns/test/decentralized_dns_service_browsertest.cc",
-  ]
-  deps = [
-    "//base/test:test_support",
-    "//brave/components/decentralized_dns",
-    "//chrome/browser:browser_process",
-    "//chrome/test:test_support",
-    "//chrome/test:test_support_ui",
-    "//components/prefs",
-    "//components/security_interstitials/content:security_interstitial_page",
-    "//content/test:test_support",
-    "//testing/gtest",
-  ]
+  if (!is_android) {
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+    sources = [
+      "//brave/browser/decentralized_dns/test/decentralized_dns_navigation_throttle_browsertest.cc",
+      "//brave/browser/decentralized_dns/test/decentralized_dns_service_browsertest.cc",
+    ]
+    deps = [
+      "//base/test:test_support",
+      "//brave/components/decentralized_dns",
+      "//chrome/browser:browser_process",
+      "//chrome/test:test_support",
+      "//chrome/test:test_support_ui",
+      "//components/prefs",
+      "//components/security_interstitials/content:security_interstitial_page",
+      "//content/test:test_support",
+      "//testing/gtest",
+    ]
+  }  # !is_android
 }  # source_set("browser_tests") {
 
 source_set("unit_tests") {
@@ -32,6 +35,7 @@ source_set("unit_tests") {
   sources = [
     "//brave/browser/decentralized_dns/test/decentralized_dns_navigation_throttle_unittest.cc",
     "//brave/browser/decentralized_dns/test/utils_unittest.cc",
+    "//brave/browser/net/decentralized_dns_network_delegate_helper_unittest.cc",
     "//brave/net/dns/brave_resolve_context_unittest.cc",
     "//brave/net/dns/dns_transaction_unittest.cc",
   ]
@@ -39,6 +43,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
+    "//brave/browser/net",
     "//brave/components/decentralized_dns",
     "//brave/components/tor/buildflags",
     "//chrome/test:test_support",

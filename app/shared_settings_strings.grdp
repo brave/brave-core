@@ -17,11 +17,11 @@
   <message name="IDS_SETTINGS_CAPTIONS_PREFERENCES_TITLE" desc="Section title for caption style setting that is supported by some apps and sites">
     Caption preferences
   </message>
-  <message name="IDS_SETTINGS_CAPTIONS_PREFERENCES_SUBTITLE" desc="Section subtitle for Caption preferences. Disclaimer that not all apps and sites support the system caption style. Some apps and sites don't use the web captioning standard and have their own captioning platform.">
-    Customize caption size and style for apps and sites that support this setting
+  <message name="IDS_SETTINGS_CAPTIONS_PREFERENCES_SUBTITLE" desc="Section subtitle for Caption preferences for Live Caption. Some apps and sites also use the system caption style, but others don't use the web captioning standard and have their own captioning platform.">
+    Customize caption size and style for Live Caption. Some apps and sites will also use this setting.
   </message>
-  <message name="IDS_SETTINGS_CAPTIONS_TEXT_SIZE" desc="Name of the caption text size preference. Text size will apply to captions and alo Live Caption when it's enabled.">
-    Text size (Also applies to Live Caption)
+  <message name="IDS_SETTINGS_CAPTIONS_TEXT_SIZE" desc="Name of the caption text size preference.">
+    Text size
   </message>
   <message name="IDS_SETTINGS_CAPTIONS_TEXT_FONT" desc="Name of the caption text font preference.">
     Text font
@@ -104,7 +104,7 @@
     Device name
   </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_DEVICE_NAME_DIALOG_TITLE" desc="Title for the dialog which allows a user to set the name of their device which is shown to other devices for the Nearby Share feature.">
-    Device Name
+    Change device name
   </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_DEVICE_NAME_FIELD_LABEL" desc="Label for the input field where a user can set the name of their device which is shown to other devices for the Nearby Share feature.">
     New device name
@@ -115,8 +115,11 @@
   <message name="IDS_SETTINGS_NEARBY_SHARE_DEVICE_NAME_ARIA_DESCRIPTION" desc="Description for screen readers, not displayed in UI, specifying the current device name which is shown to other devices for the Nearby Share feature." is_accessibility_with_no_ui="true">
     Current device name is <ph name="DEVICE_NAME">$1<ex>Michael's Bravebook</ex></ph>
   </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_CONFIRM_DEVICE_NAME" desc="Label for the button that allows a user to confirm their device name which is shown to other devices for the Nearby Share feature.">
+    Rename
+  </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_MANAGE_CONTACTS_LABEL" desc="Label for the button that opens contacts management when configuring visibility of their device with their contacts for the Nearby Share feature.">
-    Manage Contacts
+    Manage contacts
   </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_MANAGE_CONTACTS_ROW_TITLE" desc="Text for row in settings that allows user to manage contacts for the Nearby Share feature.">
     Contacts
@@ -125,7 +128,7 @@
     Edit
   </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_UPDATE_DATA_USAGE" desc="Label for the button that allows a user to confirm their choice of data usage setting for the Nearby Share feature.">
-    Done
+    Save
   </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_DATA_USAGE_DIALOG_TITLE" desc="Title for the dialog where a user can select the data usage setting for the Nearby Share feature.">
     Data usage
@@ -168,6 +171,9 @@
   </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_VISIBILITY_DIALOG_TITLE" desc="Title for the dialog which allows a user to set their preference for the visibility of their device with their contacts for the Nearby Share feature.">
     Device visibility
+  </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_VISIBILITY_DIALOG_SAVE" desc="Label for the button that saves a user's preference for the visibility of their device with their contacts for the Nearby Share feature. ">
+    Save
   </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_DESCRIPTION" desc="A description of nearby share that helps users understand what the feature is used for.">
     Share files with profiles around you. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
@@ -234,7 +240,7 @@
     Sync isn't working
   </message>
   <message name="IDS_SETTINGS_PEOPLE_SYNC_PASSWORDS_NOT_WORKING" desc="The label informing the user that password sync is currently not working.">
-    Error syncing passwords
+    Password sync isn't working
   </message>
   <message name="IDS_SETTINGS_SYNC_ADVANCED_PAGE_TITLE" desc="Name of the settings page which manages data used by sync.">
     Manage sync
@@ -255,7 +261,7 @@
   </message>
   <!-- Sync Control Subpage (strings used by the <settings-sync-controls> element) -->
   <message name="IDS_SETTINGS_AUTOFILL_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing autofill settings between multiple browser instances.">
-    Addresses, phone numbers, and more
+    Addresses and more
   </message>
   <message name="IDS_SETTINGS_HISTORY_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing history between multiple browser instances.">
     History
@@ -264,7 +270,7 @@
     Extensions
   </message>
   <message name="IDS_SETTINGS_OPEN_TABS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing open tabs between multiple browser instances.">
-    Open Tabs
+    Open tabs
   </message>
   <message name="IDS_SETTINGS_WIFI_CONFIGURATIONS_CHECKBOX_LABEL" desc="Label for the checkbox which enables syncing of Wi-Fi networks across devices.">
     Wi-Fi networks
@@ -299,13 +305,13 @@
     Submit
   </message>
   <message name="IDS_SETTINGS_ENCRYPT_WITH_GOOGLE_CREDENTIALS_LABEL" desc="Label for the radio button which, when selected, causes synced settings to be encrypted with the Brave login for the current browser profile.">
-    Encrypt synced passwords with your Brave username and password
+    Encrypt synced passwords with your Brave sync chain
   </message>
   <message name="IDS_SETTINGS_BOOKMARKS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing bookmarks between multiple browser instances.">
     Bookmarks
   </message>
   <message name="IDS_SETTINGS_READING_LIST_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing reading list between multiple browser instances.">
-    Reading List
+    Reading list
   </message>
   <message name="IDS_SETTINGS_ENCRYPTION_OPTIONS" desc="Title for the section which includes options for encrypting sync settings.">
     Encryption options

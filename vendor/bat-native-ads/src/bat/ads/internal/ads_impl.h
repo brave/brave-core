@@ -14,14 +14,18 @@
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/account/account_observer.h"
 #include "bat/ads/internal/ad_server/ad_server_observer.h"
+#include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving_observer.h"
+#include "bat/ads/internal/ad_serving/inline_content_ads/inline_content_ad_serving_observer.h"
 #include "bat/ads/internal/ad_transfer/ad_transfer_observer.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notification_observer.h"
+#include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_observer.h"
 #include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_observer.h"
 #include "bat/ads/internal/ads/promoted_content_ads/promoted_content_ad_observer.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/internal/resources/frequency_capping/anti_targeting_info.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/result.h"
 
 namespace ads {
@@ -30,13 +34,11 @@ namespace ad_notifications {
 class AdServing;
 }  // namespace ad_notifications
 
-namespace ad_targeting {
+namespace inline_content_ads {
+class AdServing;
+}  // namespace inline_content_ads
 
-namespace resource {
-class EpsilonGreedyBandit;
-class PurchaseIntent;
-class TextClassification;
-}  // namespace resource
+namespace ad_targeting {
 
 namespace processor {
 class EpsilonGreedyBandit;
@@ -50,6 +52,14 @@ class SubdivisionTargeting;
 
 }  // namespace ad_targeting
 
+namespace resource {
+class AntiTargeting;
+class Conversions;
+class EpsilonGreedyBandit;
+class PurchaseIntent;
+class TextClassification;
+}  // namespace resource
+
 namespace database {
 class Initialize;
 }  // namespace database
@@ -58,10 +68,12 @@ class Account;
 class AdNotification;
 class AdNotificationServing;
 class AdNotifications;
-class AdsClientHelper;
 class AdServer;
 class AdTargeting;
 class AdTransfer;
+class AdsClientHelper;
+class InlineContentAd;
+class InlineContentAdServing;
 class BrowserManager;
 class Catalog;
 class Client;
@@ -74,14 +86,18 @@ class UserActivity;
 struct AdInfo;
 struct AdNotificationInfo;
 struct AdsHistoryInfo;
+struct InlineContentAdInfo;
 struct NewTabPageAdInfo;
 struct PromotedContentAdInfo;
 
 class AdsImpl : public Ads,
                 public AccountObserver,
                 public AdNotificationObserver,
+                public AdNotificationServingObserver,
                 public AdServerObserver,
                 public AdTransferObserver,
+                public InlineContentAdObserver,
+                public InlineContentAdServingObserver,
                 public ConversionsObserver,
                 public NewTabPageAdObserver,
                 public PromotedContentAdObserver {
@@ -104,7 +120,7 @@ class AdsImpl : public Ads,
 
   void ChangeLocale(const std::string& locale) override;
 
-  void OnAdsSubdivisionTargetingCodeHasChanged() override;
+  void OnPrefChanged(const std::string& path) override;
 
   void OnHtmlLoaded(const int32_t tab_id,
                     const std::vector<std::string>& redirect_chain,
@@ -135,7 +151,7 @@ class AdsImpl : public Ads,
 
   void OnWalletUpdated(const std::string& id, const std::string& seed) override;
 
-  void OnUserModelUpdated(const std::string& id) override;
+  void OnResourceComponentUpdated(const std::string& id) override;
 
   bool GetAdNotification(const std::string& uuid,
                          AdNotificationInfo* ad_notification) override;
@@ -150,6 +166,17 @@ class AdsImpl : public Ads,
       const std::string& uuid,
       const std::string& creative_instance_id,
       const PromotedContentAdEventType event_type) override;
+
+  void GetInlineContentAd(const std::string& dimensions,
+                          GetInlineContentAdCallback callback) override;
+
+  void OnInlineContentAdEvent(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const InlineContentAdEventType event_type) override;
+
+  void PurgeOrphanedAdEventsForType(
+      const mojom::BraveAdsAdType ad_type) override;
 
   void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
 
@@ -191,16 +218,16 @@ class AdsImpl : public Ads,
   std::unique_ptr<Account> account_;
   std::unique_ptr<ad_targeting::processor::EpsilonGreedyBandit>
       epsilon_greedy_bandit_processor_;
-  std::unique_ptr<ad_targeting::resource::EpsilonGreedyBandit>
+  std::unique_ptr<resource::EpsilonGreedyBandit>
       epsilon_greedy_bandit_resource_;
-  std::unique_ptr<ad_targeting::resource::TextClassification>
-      text_classification_resource_;
+  std::unique_ptr<resource::TextClassification> text_classification_resource_;
   std::unique_ptr<ad_targeting::processor::TextClassification>
       text_classification_processor_;
-  std::unique_ptr<ad_targeting::resource::PurchaseIntent>
-      purchase_intent_resource_;
+  std::unique_ptr<resource::PurchaseIntent> purchase_intent_resource_;
   std::unique_ptr<ad_targeting::processor::PurchaseIntent>
       purchase_intent_processor_;
+  std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
+  std::unique_ptr<resource::Conversions> conversions_resource_;
   std::unique_ptr<ad_targeting::geographic::SubdivisionTargeting>
       subdivision_targeting_;
   std::unique_ptr<AdTargeting> ad_targeting_;
@@ -209,6 +236,8 @@ class AdsImpl : public Ads,
   std::unique_ptr<AdNotifications> ad_notifications_;
   std::unique_ptr<AdServer> ad_server_;
   std::unique_ptr<AdTransfer> ad_transfer_;
+  std::unique_ptr<inline_content_ads::AdServing> inline_content_ad_serving_;
+  std::unique_ptr<InlineContentAd> inline_content_ad_;
   std::unique_ptr<Client> client_;
   std::unique_ptr<Conversions> conversions_;
   std::unique_ptr<database::Initialize> database_;
@@ -243,19 +272,44 @@ class AdsImpl : public Ads,
   // AdServerObserver implementation
   void OnCatalogUpdated(const Catalog& catalog) override;
 
+  // AdNotificationServingObserver implementation
+  void OnDidServeAdNotification(const AdNotificationInfo& ad) override;
+
   // AdNotificationObserver implementation
   void OnAdNotificationViewed(const AdNotificationInfo& ad) override;
   void OnAdNotificationClicked(const AdNotificationInfo& ad) override;
   void OnAdNotificationDismissed(const AdNotificationInfo& ad) override;
   void OnAdNotificationTimedOut(const AdNotificationInfo& ad) override;
+  void OnAdNotificationEventFailed(
+      const std::string& uuid,
+      const AdNotificationEventType event_type) override;
 
   // NewTabPageAdObserver implementation
   void OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) override;
   void OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) override;
+  void OnNewTabPageAdEventFailed(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const NewTabPageAdEventType event_type) override;
 
   // PromotedContentAdObserver implementation
   void OnPromotedContentAdViewed(const PromotedContentAdInfo& ad) override;
   void OnPromotedContentAdClicked(const PromotedContentAdInfo& ad) override;
+  void OnPromotedContentAdEventFailed(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const PromotedContentAdEventType event_type) override;
+
+  // InlineContentAdServingObserver implementation
+  void OnDidServeInlineContentAd(const InlineContentAdInfo& ad) override;
+
+  // InlineContentAdObserver implementation
+  void OnInlineContentAdViewed(const InlineContentAdInfo& ad) override;
+  void OnInlineContentAdClicked(const InlineContentAdInfo& ad) override;
+  void OnInlineContentAdEventFailed(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const InlineContentAdEventType event_type) override;
 
   // AdTransferObserver implementation
   void OnAdTransfer(const AdInfo& ad) override;

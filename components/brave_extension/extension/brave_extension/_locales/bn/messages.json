@@ -171,17 +171,13 @@
     "message": "গ্লোবাল প্রতিরক্ষা ডিফল্টগুলি পরিবর্তন করুন",
     "description": "Message for the button action linking to the settings page"
   },
-  "addBlockElement": {
-    "message": "নির্বাচকের মাধ্যমে উপকরণ ব্লক করুন",
-    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  "manageCustomFilters": {
+    "message": "কাস্টম ফিল্টারগুলো পরিচালনা করুন",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
-  "resetSiteFilterSettings": {
-    "message": "এই সাইটের জন্য CSS নিয়মগুলি পরিস্কার করুন",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "সমস্ত সাইটের জন্য CSS নিয়মগুলি পরিস্কার করুন",
-    "description": "Message for context menu that resets all cosmetic filters"
+  "elementPickerMode": {
+    "message": "উপাদান অবরুদ্ধ করুন",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
     "message": "উন্নত ভিউ",

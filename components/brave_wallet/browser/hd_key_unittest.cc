@@ -10,6 +10,16 @@
 
 namespace brave_wallet {
 
+namespace {
+bool IsPublicKeyEmpty(const std::vector<uint8_t> public_key) {
+  for (const uint8_t& byte : public_key) {
+    if (byte != 0x00)
+      return false;
+  }
+  return true;
+}
+}  // namespace
+
 TEST(HDKeyUnitTest, GenerateFromSeed) {
   for (size_t i = 16; i <= 64; ++i) {
     EXPECT_NE(HDKey::GenerateFromSeed(std::vector<uint8_t>(i)), nullptr);
@@ -189,15 +199,19 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
             "26132fdbe7bf89cbc64cf8dafa3f9f88b8666220");
 }
 
-TEST(HDKeyUnitTest, SignAndVerify) {
+TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
   std::unique_ptr<HDKey> key = HDKey::GenerateFromExtendedKey(
       "xprvA2nrNbFZABcdryreWet9Ea4LvTJcGsqrMzxHx98MMrotbir7yrKCEXw7nadnHM8Dq38E"
       "GfSh6dqA9QWTyefMLEcBYJUuekgW4BYPJcr9E7j");
 
-  std::vector<uint8_t> msg_a(32, 0x00);
-  std::vector<uint8_t> msg_b(32, 0x08);
-  std::vector<uint8_t> sig_a = key->Sign(msg_a);
-  std::vector<uint8_t> sig_b = key->Sign(msg_b);
+  const std::vector<uint8_t> msg_a(32, 0x00);
+  const std::vector<uint8_t> msg_b(32, 0x08);
+  int recid_a = -1;
+  int recid_b = -1;
+  const std::vector<uint8_t> sig_a = key->Sign(msg_a, &recid_a);
+  const std::vector<uint8_t> sig_b = key->Sign(msg_b, &recid_b);
+  EXPECT_NE(recid_a, -1);
+  EXPECT_NE(recid_b, -1);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_a)),
             "6ba4e554457ce5c1f1d7dbd10459465e39219eb9084ee23270688cbe0d49b52b79"
             "05d5beb28492be439a3250e9359e0390f844321b65f1a88ce07960dd85da06");
@@ -206,6 +220,10 @@ TEST(HDKeyUnitTest, SignAndVerify) {
             "532e5c0ae2a25392d97f5e55ab1288ef1e08d5c034bad3b0956fbbab73b381");
   EXPECT_TRUE(key->Verify(msg_a, sig_a));
   EXPECT_TRUE(key->Verify(msg_b, sig_b));
+  const std::vector<uint8_t> public_key_a = key->Recover(msg_a, sig_a, recid_a);
+  const std::vector<uint8_t> public_key_b = key->Recover(msg_b, sig_b, recid_b);
+  EXPECT_EQ(base::HexEncode(public_key_a), base::HexEncode(key->public_key_));
+  EXPECT_EQ(base::HexEncode(public_key_b), base::HexEncode(key->public_key_));
 
   EXPECT_FALSE(key->Verify(std::vector<uint8_t>(32), std::vector<uint8_t>(64)));
   EXPECT_FALSE(key->Verify(msg_a, sig_b));
@@ -216,6 +234,17 @@ TEST(HDKeyUnitTest, SignAndVerify) {
 
   EXPECT_FALSE(key->Verify(msg_a, std::vector<uint8_t>(63)));
   EXPECT_FALSE(key->Verify(msg_a, std::vector<uint8_t>(65)));
+
+  EXPECT_TRUE(
+      IsPublicKeyEmpty(key->Recover(std::vector<uint8_t>(31), sig_a, recid_a)));
+  EXPECT_TRUE(
+      IsPublicKeyEmpty(key->Recover(std::vector<uint8_t>(33), sig_a, recid_a)));
+  EXPECT_TRUE(
+      IsPublicKeyEmpty(key->Recover(msg_a, std::vector<uint8_t>(31), recid_a)));
+  EXPECT_TRUE(
+      IsPublicKeyEmpty(key->Recover(msg_a, std::vector<uint8_t>(33), recid_a)));
+  EXPECT_TRUE(IsPublicKeyEmpty(key->Recover(msg_a, sig_a, -1)));
+  EXPECT_TRUE(IsPublicKeyEmpty(key->Recover(msg_a, sig_a, 4)));
 }
 
 TEST(HDKeyUnitTest, SetPrivateKey) {
@@ -226,25 +255,18 @@ TEST(HDKeyUnitTest, SetPrivateKey) {
   ASSERT_TRUE(key.private_key_.empty());
   key.SetPrivateKey(std::vector<uint8_t>(32, 0x1));
   EXPECT_FALSE(key.private_key_.empty());
-  for (const uint8_t& byte : key.public_key_) {
-    EXPECT_NE(byte, 0x00);
-  }
+  EXPECT_TRUE(!IsPublicKeyEmpty(key.public_key_));
 }
 
 TEST(HDKeyUnitTest, SetPublicKey) {
   HDKey key;
   key.SetPublicKey(std::vector<uint8_t>(31));
-  for (const uint8_t& byte : key.public_key_) {
-    ASSERT_EQ(byte, 0x00);
-  }
+  EXPECT_TRUE(IsPublicKeyEmpty(key.public_key_));
   key.SetPublicKey(std::vector<uint8_t>(34));
-  for (const uint8_t& byte : key.public_key_) {
-    ASSERT_EQ(byte, 0x00);
-  }
+  EXPECT_TRUE(IsPublicKeyEmpty(key.public_key_));
   key.SetPublicKey(std::vector<uint8_t>(33, 0x1));
-  for (const uint8_t& byte : key.public_key_) {
-    ASSERT_EQ(byte, 0x00);
-  }
+  EXPECT_TRUE(IsPublicKeyEmpty(key.public_key_));
+
   std::vector<uint8_t> bytes;
   const std::string valid_pubkey =
       "024d902e1a2fc7a8755ab5b694c575fce742c48d9ff192e63df5193e4c7afe1f9c";

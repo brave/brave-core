@@ -74,13 +74,14 @@ class Account : public AdRewardsDelegate,
 
   void ProcessUnclearedTransactions();
 
-  void NotifyWalletChanged(const WalletInfo& wallet);
-  void NotifyWalletRestored(const WalletInfo& wallet);
-  void NotifyWalletInvalid();
-  void NotifyCatalogIssuersChanged(const CatalogIssuersInfo& catalog_issuers);
-  void NotifyAdRewardsChanged();
-  void NotifyTransactionsChanged();
-  void NotifyUnclearedTransactionsProcessed();
+  void NotifyWalletChanged(const WalletInfo& wallet) const;
+  void NotifyWalletRestored(const WalletInfo& wallet) const;
+  void NotifyWalletInvalid() const;
+  void NotifyCatalogIssuersChanged(
+      const CatalogIssuersInfo& catalog_issuers) const;
+  void NotifyAdRewardsChanged() const;
+  void NotifyTransactionsChanged() const;
+  void NotifyUnclearedTransactionsProcessed() const;
 
   // AdRewardsDelegate implementation
   void OnDidReconcileAdRewards() override;
@@ -91,7 +92,8 @@ class Account : public AdRewardsDelegate,
   void OnConfirmAdFailed(const ConfirmationInfo& confirmation) override;
 
   // RedeemUnblindedPaymentTokensDelegate implementation
-  void OnDidRedeemUnblindedPaymentTokens() override;
+  void OnDidRedeemUnblindedPaymentTokens(
+      const privacy::UnblindedTokenList unblinded_tokens) override;
   void OnFailedToRedeemUnblindedPaymentTokens() override;
   void OnDidRetryRedeemingUnblindedPaymentTokens() override;
 };

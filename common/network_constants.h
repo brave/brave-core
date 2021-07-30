@@ -6,13 +6,14 @@
 #ifndef BRAVE_COMMON_NETWORK_CONSTANTS_H_
 #define BRAVE_COMMON_NETWORK_CONSTANTS_H_
 
+extern const char kExtensionUpdaterDomain[];
+
 extern const char kBraveProxyPattern[];
 extern const char kBraveSoftwareProxyPattern[];
 
 extern const char kBraveUsageStandardPath[];
 extern const char kBraveUsageThresholdPath[];
 extern const char kBraveReferralsServer[];
-extern const char kBraveReferralsHeadersPath[];
 extern const char kBraveReferralsInitPath[];
 extern const char kBraveReferralsActivityPath[];
 extern const char kBraveSafeBrowsing2Proxy[];

@@ -227,10 +227,13 @@ void RewardsBrowserTestResponse::Get(
   }
 
   if (url.find("/v3/wallet/uphold") != std::string::npos) {
-    if (user_funds_balance_) {
-      *response = user_funds_balance_resp_;
-    } else {
+    if (user_funds_balance_ == 0.0) {
       *response = balance_;
+    } else {
+      *response = user_funds_balance_resp_;
+      base::ReplaceSubstringsAfterOffset(
+          response, 0, "${confirmed}",
+          base::NumberToString(user_funds_balance_));
     }
     return;
   }
@@ -368,7 +371,7 @@ void RewardsBrowserTestResponse::SetExternalBalance(
   external_balance_ = balance;
 }
 
-void RewardsBrowserTestResponse::SetUserFundsBalance(const bool user_funds) {
+void RewardsBrowserTestResponse::SetUserFundsBalance(const double user_funds) {
   user_funds_balance_ = user_funds;
 }
 

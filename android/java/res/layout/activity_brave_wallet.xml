@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MergeRootFrame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wallet_bg"
+    tools:context=".BraveWalletActivity">
+
+    <LinearLayout
+        android:id="@+id/crypto_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+          android:id="@+id/app_bar"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+          app:elevation="10dp">
+
+          <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/wallet_toolbar_bg_color"
+            android:translationZ="10dp"
+            app:titleTextColor="@color/wallet_text_color"
+            app:collapseIcon="@drawable/ic_baseline_arrow_back_24"
+            app:layout_scrollFlags="scroll|enterAlways|snap" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/wallet_toolbar_bg_color"
+            app:tabIndicatorColor="@color/tab_color"
+            app:tabTextAppearance="@style/BraveWalletTabsTextAppearance"
+            app:tabGravity="fill"
+            app:tabSelectedTextColor="@color/tab_color"
+            app:tabTextColor="@color/wallet_text_color" />
+
+        <org.chromium.chrome.browser.custom_layout.NonSwipeableViewPager
+            android:id="@+id/navigation_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </LinearLayout>
+
+    <include android:id="@+id/crypto_onboarding_layout"
+        layout="@layout/fragment_crypto_wallet_onboarding"/>
+
+    <ImageView
+        android:id="@+id/swap_button"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|end"
+        android:contentDescription="@null"
+        app:srcCompat="@drawable/ic_swap_icon"
+        android:background="@drawable/ic_swap_bg"
+        android:elevation="10dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:scaleType="center"
+        android:visibility="gone"/>
+
+</FrameLayout>

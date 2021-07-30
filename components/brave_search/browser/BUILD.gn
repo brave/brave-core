@@ -1,13 +1,25 @@
 import("//build/config/features.gni")
 
-source_set("browser") {
+static_library("browser") {
   sources = [
-    "brave_search_host.cc",
-    "brave_search_host.h",
+    "brave_search_default_host.cc",
+    "brave_search_default_host.h",
+    "brave_search_default_host_private.cc",
+    "brave_search_default_host_private.h",
+    "brave_search_fallback_host.cc",
+    "brave_search_fallback_host.h",
+    "prefs.h",
   ]
 
   deps = [
     "//base",
+    "//brave/components/brave_search/common",
     "//brave/components/brave_search/common:mojom",
+    "//brave/components/weekly_storage",
+    "//components/prefs",
+    "//components/search_engines",
+    "//net",
+    "//services/network/public/cpp",
+    "//url",
   ]
 }

@@ -7,7 +7,6 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 import {
-  DisabledContent,
   Box,
   TableDonation,
   List,
@@ -39,16 +38,6 @@ class MonthlyContributionBox extends React.Component<Props, State> {
 
   get actions () {
     return this.props.actions
-  }
-
-  disabledContent = () => {
-    return (
-      <DisabledContent
-        type={'monthly'}
-      >
-        {getLocale('monthlyContributionDisabledText')}
-      </DisabledContent>
-    )
   }
 
   getRows = () => {
@@ -94,26 +83,21 @@ class MonthlyContributionBox extends React.Component<Props, State> {
   render () {
     const {
       parameters,
-      firstLoad,
       recurringList,
-      reconcileStamp,
-      ui
+      reconcileStamp
     } = this.props.rewardsData
-    const showDisabled = firstLoad !== false
     const tipRows = this.getRows()
     const topRows = tipRows.slice(0, 5)
     const numRows = tipRows && tipRows.length
     const allSites = !(numRows > 5)
     const total = utils.tipsListTotal(recurringList)
     const converted = utils.convertBalance(total, parameters.rate)
-    const { onlyAnonWallet } = ui
 
     return (
       <Box
         type={'donation'}
         title={getLocale('monthlyContributionTitle')}
         description={getLocale('monthlyContributionDesc')}
-        disabledContent={showDisabled ? this.disabledContent() : null}
       >
         {
           this.state.modalShowAll
@@ -125,7 +109,7 @@ class MonthlyContributionBox extends React.Component<Props, State> {
           : null
         }
         <List title={getLocale('donationTotalMonthlyContribution')}>
-          <Tokens onlyAnonWallet={onlyAnonWallet} value={total.toFixed(3)} converted={converted} />
+          <Tokens value={total.toFixed(3)} converted={converted} />
         </List>
         <List title={getLocale('donationNextDate')}>
           <NextContribution>
@@ -139,7 +123,6 @@ class MonthlyContributionBox extends React.Component<Props, State> {
           numItems={numRows}
           headerColor={true}
           onShowAll={this.onModalToggle}
-          onlyAnonWallet={onlyAnonWallet}
         >
           {getLocale('monthlyContributionEmpty')}
         </TableDonation>

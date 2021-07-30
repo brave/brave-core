@@ -12,7 +12,7 @@
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/task/post_task.h"
-#include "base/task/task_traits.h"
+#include "base/task/thread_pool.h"
 #include "brave/browser/importer/brave_importer_p3a.h"
 #include "brave/common/importer/chrome_importer_utils.h"
 #include "brave/common/importer/importer_constants.h"
@@ -25,20 +25,20 @@
 namespace {
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-base::Optional<base::Value> GetChromeExtensionsList(
+absl::optional<base::Value> GetChromeExtensionsList(
     const base::FilePath& secured_preference_path) {
   if (!base::PathExists(secured_preference_path))
-    return base::nullopt;
+    return absl::nullopt;
 
   std::string secured_preference_content;
   base::ReadFileToString(secured_preference_path, &secured_preference_content);
-  base::Optional<base::Value> secured_preference =
+  absl::optional<base::Value> secured_preference =
       base::JSONReader::Read(secured_preference_content);
   if (auto* extensions = secured_preference->FindPath(
           kChromeExtensionsListPath)) {
     return extensions->Clone();
   }
-  return base::nullopt;
+  return absl::nullopt;
 }
 
 // Silent installer via websotre w/o any prompt or bubble.
@@ -72,9 +72,9 @@ void BraveExternalProcessImporterHost::LaunchExtensionsImport() {
 
   const base::FilePath pref_file = source_profile_.source_path.AppendASCII(
       kChromeExtensionsPreferencesFile);
-  base::PostTaskAndReplyWithResult(
+  base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
-      {base::ThreadPool(), base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
        base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
       base::BindOnce(&GetChromeExtensionsList, pref_file),
       base::BindOnce(
@@ -83,7 +83,7 @@ void BraveExternalProcessImporterHost::LaunchExtensionsImport() {
 }
 
 void BraveExternalProcessImporterHost::OnGetChromeExtensionsList(
-    base::Optional<base::Value> extensions_list) {
+    absl::optional<base::Value> extensions_list) {
   if (!extensions_list || !extensions_list->is_dict()) {
     ExternalProcessImporterHost::NotifyImportEnded();
     return;

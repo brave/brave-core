@@ -112,6 +112,12 @@
     <message name="IDS_MANAGEMENT_REPORT_PRINTING" desc="Message stating that administrators can see names of printed files.">
       Names of files that you print
     </message>
+    <message name="IDS_MANAGEMENT_REPORT_PRINT_JOBS" desc="Message stating that administrators can see printing history associated with user, device, and printer.">
+      Printing history
+    </message>
+    <message name="IDS_MANAGEMENT_REPORT_DLP_EVENTS" desc="Message show the users of DLP reporting enabled devices that events are being reported.">
+      Actions taken with data flagged as confidential
+    </message>
     <message name="IDS_MANAGEMENT_CROSTINI" desc="Message stating that administrators can see Crostini usage">
       Linux apps installed and when they were last used
     </message>
@@ -153,6 +159,18 @@
   <message name="IDS_MANAGEMENT_EXTENSIONS_PERMISSIONS" desc="Title of a column of the extension table showing the permissions of the extension">
     Permissions
   </message>
+
+  <!-- Strings related to website managed configuration of the management page -->
+  <message name="IDS_MANAGEMENT_MANAGED_WEBSITES" desc="Title of the configured websites section of the page">
+    Websites with info from your organization
+  </message>
+  <message name="IDS_MANAGEMENT_MANAGED_WEBSITES_EXPLANATION" desc="Message describing that administrator has set some preset organization data to be sent to the following websites">
+    The administrator of this device has sent some info to the following websites, like settings or policies.
+  </message>
+  <message name="IDS_MANAGEMENT_MANAGED_WEBSITES_BY_EXPLANATION" desc="Message describing that administrator has set some preset organization data to be sent to the following websites">
+    Your organization, <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph>, has sent some info to the following websites, like settings or policies.
+  </message>
+
 
   <!-- Strings related to browser reporting section of the management page -->
   <message name="IDS_MANAGEMENT_BROWSER_REPORTING" desc="Title of the types of browser reporting section of the page">

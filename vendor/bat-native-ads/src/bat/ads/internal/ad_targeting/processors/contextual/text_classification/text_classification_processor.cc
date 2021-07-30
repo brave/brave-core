@@ -43,7 +43,7 @@ TextClassification::~TextClassification() = default;
 void TextClassification::Process(const std::string& text) {
   if (!resource_->IsInitialized()) {
     BLOG(1,
-         "Failed to process text classification as user model "
+         "Failed to process text classification as resource "
          "not initialized");
     return;
   }

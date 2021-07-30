@@ -10,7 +10,6 @@
 #include <memory>
 #include <string>
 
-#include "base/memory/weak_ptr.h"
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/mojom_structs.h"
 #include "extensions/browser/extension_function.h"
 
@@ -93,7 +92,6 @@ class BraveRewardsTipSiteFunction : public ExtensionFunction {
 
 class BraveRewardsTipUserFunction : public ExtensionFunction {
  public:
-  BraveRewardsTipUserFunction();
   DECLARE_EXTENSION_FUNCTION("braveRewards.tipUser", UNKNOWN)
 
  protected:
@@ -108,8 +106,6 @@ class BraveRewardsTipUserFunction : public ExtensionFunction {
       ledger::type::PublisherInfoPtr info);
   void OnTipUserSavePublisherInfo(const ledger::type::Result result);
   void ShowTipDialog();
-
-  base::WeakPtrFactory<BraveRewardsTipUserFunction> weak_factory_;
 };
 
 class BraveRewardsGetPublisherDataFunction : public ExtensionFunction {
@@ -383,16 +379,6 @@ class BraveRewardsDisconnectWalletFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsOnlyAnonWalletFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.onlyAnonWallet", UNKNOWN)
-
- protected:
-  ~BraveRewardsOnlyAnonWalletFunction() override;
-
-  ResponseAction Run() override;
-};
-
 class BraveRewardsGetAdsEnabledFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getAdsEnabled", UNKNOWN)
@@ -414,7 +400,6 @@ class BraveRewardsGetAdsAccountStatementFunction : public ExtensionFunction {
 
  private:
   void OnGetAdsAccountStatement(const bool success,
-                                const double estimated_pending_rewards,
                                 const int64_t next_payment_date,
                                 const int ads_received_this_month,
                                 const double earnings_this_month,
@@ -465,12 +450,12 @@ class BraveRewardsShouldShowOnboardingFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsSaveOnboardingResultFunction : public ExtensionFunction {
+class BraveRewardsEnableRewardsFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.saveOnboardingResult", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveRewards.enableRewards", UNKNOWN)
 
  protected:
-  ~BraveRewardsSaveOnboardingResultFunction() override;
+  ~BraveRewardsEnableRewardsFunction() override;
 
   ResponseAction Run() override;
 };

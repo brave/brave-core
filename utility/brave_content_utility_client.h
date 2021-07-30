@@ -16,6 +16,9 @@ class BraveContentUtilityClient : public ChromeContentUtilityClient {
   BraveContentUtilityClient();
   ~BraveContentUtilityClient() override;
 
+  // ChromeContentUtilityClient overrides:
+  void RegisterMainThreadServices(mojo::ServiceFactory& services) override;
+
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveContentUtilityClient);
 };

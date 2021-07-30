@@ -8,8 +8,8 @@
 
 #include "bat/ads/ads_client.h"
 
-#include <cstdint>
 #include <string>
+#include <vector>
 
 #include "testing/gmock/include/gmock/gmock.h"
 
@@ -36,6 +36,18 @@ class AdsClientMock : public AdsClient {
 
   MOCK_METHOD1(CloseNotification, void(const std::string& uuid));
 
+  MOCK_CONST_METHOD3(RecordAdEvent,
+                     void(const std::string& type,
+                          const std::string& confirmation_type,
+                          const uint64_t timestamp));
+
+  MOCK_CONST_METHOD2(
+      GetAdEvents,
+      std::vector<uint64_t>(const std::string& ad_type,
+                            const std::string& confirmation_type));
+
+  MOCK_CONST_METHOD0(ResetAdEvents, void());
+
   MOCK_METHOD2(UrlRequest,
                void(UrlRequestPtr url_request, UrlRequestCallback callback));
 
@@ -46,8 +58,15 @@ class AdsClientMock : public AdsClient {
 
   MOCK_METHOD2(Load, void(const std::string& name, LoadCallback callback));
 
-  MOCK_METHOD2(LoadUserModelForId,
-               void(const std::string& id, LoadCallback callback));
+  MOCK_METHOD3(LoadAdsResource,
+               void(const std::string& id,
+                    const int version,
+                    LoadCallback callback));
+
+  MOCK_METHOD3(GetBrowsingHistory,
+               void(const int max_count,
+                    const int days_ago,
+                    GetBrowsingHistoryCallback callback));
 
   MOCK_METHOD1(LoadResourceForId, std::string(const std::string& id));
 

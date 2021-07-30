@@ -5,22 +5,17 @@
 
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 
-#include "base/path_service.h"
 #include "brave/browser/ipfs/ipfs_host_resolver.h"
-#include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_contents_observer.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
@@ -31,7 +26,6 @@
 
 using content::NavigationHandle;
 using content::WebContents;
-using content::WebContentsObserver;
 
 class IpfsTabHelperBrowserTest : public InProcessBrowserTest {
  public:
@@ -43,6 +37,9 @@ class IpfsTabHelperBrowserTest : public InProcessBrowserTest {
 
     embedded_test_server()->ServeFilesFromSourceDirectory("content/test/data");
     https_server_.ServeFilesFromSourceDirectory("content/test/data");
+    embedded_test_server()->RegisterRequestHandler(base::BindRepeating(
+        &IpfsTabHelperBrowserTest::ResponseHandler, base::Unretained(this)));
+
     https_server_.RegisterRequestHandler(base::BindRepeating(
         &IpfsTabHelperBrowserTest::ResponseHandler, base::Unretained(this)));
     ASSERT_TRUE(https_server_.Start());
@@ -109,8 +106,8 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkLocal) {
       ipfs::IPFSTabHelper::FromWebContents(active_contents());
   if (!helper)
     return;
-  auto* storage_partition = content::BrowserContext::GetDefaultStoragePartition(
-      active_contents()->GetBrowserContext());
+  auto* storage_partition =
+      active_contents()->GetBrowserContext()->GetDefaultStoragePartition();
   std::unique_ptr<FakeIPFSHostResolver> resolver(
       new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
   FakeIPFSHostResolver* resolver_raw = resolver.get();
@@ -121,11 +118,44 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkLocal) {
                     static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
 
   SetXIpfsPathHeader("/ipfs/bafybeiemx/empty.html");
-  const GURL test_url = https_server_.GetURL("/empty.html?query#ref");
+  GURL test_url = https_server_.GetURL("/empty.html?query#ref");
   ui_test_utils::NavigateToURL(browser(), test_url);
   ASSERT_TRUE(WaitForLoadStop(active_contents()));
   ASSERT_FALSE(resolver_raw->resolve_called());
   std::string result = "ipfs://bafybeiemx/empty.html?query#ref";
+  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), result);
+
+  test_url = https_server_.GetURL("/another.html?query#ref");
+  ui_test_utils::NavigateToURL(browser(), test_url);
+  ASSERT_TRUE(WaitForLoadStop(active_contents()));
+  ASSERT_FALSE(resolver_raw->resolve_called());
+  result = "ipfs://bafybeiemx/another.html?query#ref";
+  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), result);
+
+  SetXIpfsPathHeader("/ipns/brave.eth/empty.html");
+  test_url = https_server_.GetURL("/?query#ref");
+  ui_test_utils::NavigateToURL(browser(), test_url);
+  ASSERT_TRUE(WaitForLoadStop(active_contents()));
+  ASSERT_FALSE(resolver_raw->resolve_called());
+  result = "ipns://brave.eth/?query#ref";
+  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), result);
+
+  SetXIpfsPathHeader("/ipfs/bafy");
+  test_url = embedded_test_server()->GetURL(
+      "a.com", "/ipfs/bafy/wiki/empty.html?query#ref");
+  ui_test_utils::NavigateToURL(browser(), test_url);
+  ASSERT_TRUE(WaitForLoadStop(active_contents()));
+  ASSERT_FALSE(resolver_raw->resolve_called());
+  result = "ipfs://bafy/wiki/empty.html?query#ref";
+  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), result);
+
+  SetXIpfsPathHeader("/ipns/bafyb");
+  test_url = embedded_test_server()->GetURL(
+      "a.com", "/ipns/bafyb/wiki/empty.html?query#ref");
+  ui_test_utils::NavigateToURL(browser(), test_url);
+  ASSERT_TRUE(WaitForLoadStop(active_contents()));
+  ASSERT_FALSE(resolver_raw->resolve_called());
+  result = "ipns://bafyb/wiki/empty.html?query#ref";
   EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), result);
 }
 
@@ -136,8 +166,8 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkGateway) {
       ipfs::IPFSTabHelper::FromWebContents(active_contents());
   if (!helper)
     return;
-  auto* storage_partition = content::BrowserContext::GetDefaultStoragePartition(
-      active_contents()->GetBrowserContext());
+  auto* storage_partition =
+      active_contents()->GetBrowserContext()->GetDefaultStoragePartition();
   std::unique_ptr<FakeIPFSHostResolver> resolver(
       new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
   FakeIPFSHostResolver* resolver_raw = resolver.get();
@@ -164,8 +194,8 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, NoResolveIPFSLinkCalledMode) {
       ipfs::IPFSTabHelper::FromWebContents(active_contents());
   if (!helper)
     return;
-  auto* storage_partition = content::BrowserContext::GetDefaultStoragePartition(
-      active_contents()->GetBrowserContext());
+  auto* storage_partition =
+      active_contents()->GetBrowserContext()->GetDefaultStoragePartition();
   std::unique_ptr<FakeIPFSHostResolver> resolver(
       new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
   FakeIPFSHostResolver* resolver_raw = resolver.get();
@@ -199,8 +229,8 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest,
       ipfs::IPFSTabHelper::FromWebContents(active_contents());
   if (!helper)
     return;
-  auto* storage_partition = content::BrowserContext::GetDefaultStoragePartition(
-      active_contents()->GetBrowserContext());
+  auto* storage_partition =
+      active_contents()->GetBrowserContext()->GetDefaultStoragePartition();
   std::unique_ptr<FakeIPFSHostResolver> resolver(
       new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
   FakeIPFSHostResolver* resolver_raw = resolver.get();
@@ -224,8 +254,8 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolveIPFSLinkCalled5xx) {
       ipfs::IPFSTabHelper::FromWebContents(active_contents());
   if (!helper)
     return;
-  auto* storage_partition = content::BrowserContext::GetDefaultStoragePartition(
-      active_contents()->GetBrowserContext());
+  auto* storage_partition =
+      active_contents()->GetBrowserContext()->GetDefaultStoragePartition();
   std::unique_ptr<FakeIPFSHostResolver> resolver(
       new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
   FakeIPFSHostResolver* resolver_raw = resolver.get();
@@ -254,8 +284,8 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolveNotCalled5xx) {
       ipfs::IPFSTabHelper::FromWebContents(active_contents());
   if (!helper)
     return;
-  auto* storage_partition = content::BrowserContext::GetDefaultStoragePartition(
-      active_contents()->GetBrowserContext());
+  auto* storage_partition =
+      active_contents()->GetBrowserContext()->GetDefaultStoragePartition();
   std::unique_ptr<FakeIPFSHostResolver> resolver(
       new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
   FakeIPFSHostResolver* resolver_raw = resolver.get();
@@ -281,8 +311,8 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkBad) {
       ipfs::IPFSTabHelper::FromWebContents(active_contents());
   if (!helper)
     return;
-  auto* storage_partition = content::BrowserContext::GetDefaultStoragePartition(
-      active_contents()->GetBrowserContext());
+  auto* storage_partition =
+      active_contents()->GetBrowserContext()->GetDefaultStoragePartition();
   std::unique_ptr<FakeIPFSHostResolver> resolver(
       new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
   FakeIPFSHostResolver* resolver_raw = resolver.get();

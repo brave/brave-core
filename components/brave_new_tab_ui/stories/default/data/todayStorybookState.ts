@@ -2,13 +2,15 @@ import { boolean } from '@storybook/addon-knobs'
 import { BraveTodayState } from '../../../reducers/today'
 
 export default function getTodayState (): BraveTodayState {
+  const hasDataError = boolean('Today data fetch error?', false)
   return {
     isFetching: boolean('Today is fetching?', false),
+    hasInteracted: boolean('Today has interacted?', true),
     isUpdateAvailable: boolean('Is Today update available?', false),
     currentPageIndex: 10,
     cardsViewed: 0,
     cardsVisited: 0,
-    publishers: {
+    publishers: hasDataError ? undefined : {
       ['5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5']: {
         publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
         publisher_name: `Test Publisher 1`,
@@ -73,7 +75,7 @@ export default function getTodayState (): BraveTodayState {
         user_enabled: null
       }
     },
-    feed: {
+    feed: hasDataError ? undefined : {
       hash: `123abc`,
       featuredArticle: {
         category: `Top News`,
@@ -91,59 +93,6 @@ export default function getTodayState (): BraveTodayState {
         points: 18.525096955122685,
         relative_time: `about 4 hours ago`
       },
-      featuredDeals: [
-        {
-          category: `Brave`,
-          publish_time: `2020-09-10 16:11:41 UTC`,
-          url: `https://privacy.com/`,
-          img: `https://pcdn.brave.software/brave-today/cache/0e9f8fa60d995c1ca86f924b6104195c40555f696598b2f772b27d9b954ce158.jpg.pad`,
-          title: `Privacy.com`,
-          description: `Take control of your subscriptions with Privacy.com`,
-          content_type: `product`,
-          offers_category: `Companion Products`,
-          publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-          publisher_name: `Brave Offers`,
-          url_hash: `cdea8154cd18d0d30319f5a7781ee8ebba81e96a23e6edfee263466af874a974`,
-          padded_img: `https://pcdn.brave.software/brave-today/cache/0e9f8fa60d995c1ca86f924b6104195c40555f696598b2f772b27d9b954ce158.jpg.pad`,
-          score: 60.36526917989538,
-          points: 60.36526917989538,
-          relative_time: `about 1 month ago`
-        },
-        {
-          category: `Brave`,
-          publish_time: `2020-09-10 14:45:02 UTC`,
-          url: `https://www.thegreatcoursesplus.com/lp/t1/3months-50percent?clickid=w9Ux1NxkSxyLR5uwUx0Mo36FUkExD90IY2N82U0&irpid=2051959&irmpname=Brave%20Software%2C%20Inc.&mp_value1=1001190&utm_source=Partner%2FAffiliate&utm_medium=CPA_Affiliate&utm_campaign=1001190`,
-          img: `https://pcdn.brave.software/brave-today/cache/af94d2ccdef4ec9ad820f6f8b0e629bf5908bb4f7fe99fecb0ad1c69d8ea768d.jpg.pad`,
-          title: `The Great Courses Plus`,
-          description: `Lock into our lowest price ever. Free trial and 50% off quarterly plan.`,
-          content_type: `product`,
-          offers_category: `Discounts`,
-          publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-          publisher_name: `Brave Offers`,
-          url_hash: `9503c4e23588bb66436f0bf2b37b65514e4130e5be0f03f0d4e0f586b4654bca`,
-          padded_img: `https://pcdn.brave.software/brave-today/cache/af94d2ccdef4ec9ad820f6f8b0e629bf5908bb4f7fe99fecb0ad1c69d8ea768d.jpg.pad`,
-          score: 120.74214267050688,
-          points: 120.74214267050688,
-          relative_time: `about 1 month ago`
-        },
-        {
-          category: `Brave`,
-          publish_time: `2020-09-10 14:44:02 UTC`,
-          url: `https://dofasting.com/?irgwc=1&utm_source=impact&utm_medium=affiliate&utm_campaign=2051959&irclickid=w60RZUxkSxyLRZA0RHQK3XRkUkExD90cY2N82U0&utm_label=&custom=`,
-          img: `https://pcdn.brave.software/brave-today/cache/a26f7635bb0ad6f4aa725756b889a1c885757caee735d5f3c11b991bce5da117.jpg.pad`,
-          title: `DoFasting`,
-          description: `Easy Intermittent Fasting. 50% off 12mo plan with code BRAVE`,
-          content_type: `product`,
-          offers_category: `Discounts`,
-          publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-          publisher_name: `Brave Offers`,
-          url_hash: `125168435efc750e3394f109335a98419f647b64f66a123911cb3921ba00eb0b`,
-          padded_img: `https://pcdn.brave.software/brave-today/cache/a26f7635bb0ad6f4aa725756b889a1c885757caee735d5f3c11b991bce5da117.jpg.pad`,
-          score: 241.48455300697097,
-          points: 241.48455300697097,
-          relative_time: `about 1 month ago`
-        }
-      ],
       pages: [
         {
           promotedArticle: {

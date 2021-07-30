@@ -1,12 +1,12 @@
 diff --git a/content/browser/browser_main_loop.h b/content/browser/browser_main_loop.h
-index fcb630599074868be09fdb58c174dd93c0e569ad..bea3bdca948ad293205223e38e99edfb6c710663 100644
+index 62acb18b0650fec5d7233993d12050b5a3d21146..cb917b012d1b1b3db6ac11f9537d95a3a71c3bd0 100644
 --- a/content/browser/browser_main_loop.h
 +++ b/content/browser/browser_main_loop.h
-@@ -143,6 +143,7 @@ class CONTENT_EXPORT BrowserMainLoop {
-   void PreMainMessageLoopStart();
-   void MainMessageLoopStart();
-   void PostMainMessageLoopStart();
+@@ -152,6 +152,7 @@ class CONTENT_EXPORT BrowserMainLoop {
+   void RunMainMessageLoop();
+ 
+   // Performs the pre-shutdown steps.
 +  virtual
    void PreShutdown();
  
-   // Create and start running the tasks we need to complete startup. Note that
+   // Performs the shutdown sequence, starting with PostMainMessageLoopRun

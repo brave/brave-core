@@ -171,17 +171,13 @@
     "message": "አለም አቀፍ የራስ ሰር መከላከያዎችን ለውጥ",
     "description": "Message for the button action linking to the settings page"
   },
-  "addBlockElement": {
-    "message": "አንድን ጉዳይ በመምረጫው አማካይነት አግድ ",
-    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  "manageCustomFilters": {
+    "message": "ብጁ ማጣሪያዎችን ያቀናብሩ",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
-  "resetSiteFilterSettings": {
-    "message": "ለዚህ ድረ ገጽ የ CSS ደንቦችን አጥራ ",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "ለሁሉም ድረ ገጾች የ CSS ደንቦችን አጥራ ",
-    "description": "Message for context menu that resets all cosmetic filters"
+  "elementPickerMode": {
+    "message": "Block element<br><br>",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
     "message": "የላቀ እይታ",

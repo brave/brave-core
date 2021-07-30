@@ -6,6 +6,7 @@
 #include "bat/ads/internal/unittest_base.h"
 
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/mojom.h"
 #include "bat/ads/result.h"
@@ -25,6 +26,8 @@ UnitTestBase::UnitTestBase()
           std::make_unique<NiceMock<brave_l10n::LocaleHelperMock>>()),
       platform_helper_mock_(std::make_unique<NiceMock<PlatformHelperMock>>()) {
   // You can do set-up work for each test here
+  CHECK(temp_dir_.CreateUniqueTempDir());
+
   brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
       locale_helper_mock_.get());
 
@@ -48,14 +51,6 @@ void UnitTestBase::SetUp() {
   SetUpForTesting(/* integration_test */ false);
 }
 
-void UnitTestBase::SetUpForTesting(const bool integration_test) {
-  setup_called_ = true;
-
-  integration_test_ = integration_test;
-
-  Initialize();
-}
-
 void UnitTestBase::TearDown() {
   // Code here will be called immediately after each test (right before the
   // destructor)
@@ -64,6 +59,51 @@ void UnitTestBase::TearDown() {
 }
 
 // Objects declared here can be used by all tests in the test case
+
+bool UnitTestBase::CopyFileFromTestPathToTempDir(
+    const std::string& source_filename,
+    const std::string& dest_filename) const {
+  CHECK(!setup_called_)
+      << "|CopyFileFromTestPathToTempDir| should be called before "
+         "|SetUpForTesting|";
+
+  const base::FilePath from_path = GetTestPath().AppendASCII(source_filename);
+
+  const base::FilePath to_path = temp_dir_.GetPath().AppendASCII(dest_filename);
+
+  return base::CopyFile(from_path, to_path);
+}
+
+void UnitTestBase::SetUpForTesting(const bool integration_test) {
+  setup_called_ = true;
+
+  integration_test_ = integration_test;
+
+  Initialize();
+}
+
+void UnitTestBase::InitializeAds() {
+  CHECK(integration_test_)
+      << "|InitializeAds| should only be called if "
+         "|SetUpForTesting| was initialized for integration testing";
+
+  ads_->Initialize([=](const Result result) {
+    ASSERT_EQ(Result::SUCCESS, result);
+
+    ads_->OnWalletUpdated("c387c2d8-a26d-4451-83e4-5c0c6fd942be",
+                          "5BEKM1Y7xcRSg/1q8in/+Lki2weFZQB+UMYZlRw8ql8=");
+  });
+
+  task_environment_.RunUntilIdle();
+}
+
+AdsImpl* UnitTestBase::GetAds() const {
+  return ads_.get();
+}
+
+AdRewards* UnitTestBase::GetAdRewards() const {
+  return ad_rewards_.get();
+}
 
 void UnitTestBase::FastForwardClockBy(const base::TimeDelta& time_delta) {
   task_environment_.FastForwardBy(time_delta);
@@ -104,8 +144,6 @@ size_t UnitTestBase::GetPendingTaskCount() const {
 ///////////////////////////////////////////////////////////////////////////////
 
 void UnitTestBase::Initialize() {
-  ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-
   SetEnvironment(Environment::DEVELOPMENT);
 
   SetSysInfo(SysInfo());
@@ -126,23 +164,26 @@ void UnitTestBase::Initialize() {
   MockShowNotification(ads_client_mock_);
   MockCloseNotification(ads_client_mock_);
 
-  MockLoad(ads_client_mock_);
-  MockLoadUserModelForId(ads_client_mock_);
+  MockRecordAdEvent(ads_client_mock_);
+  MockGetAdEvents(ads_client_mock_);
+  MockResetAdEvents(ads_client_mock_);
+
+  MockGetBrowsingHistory(ads_client_mock_);
+
+  MockLoad(ads_client_mock_, temp_dir_);
+  MockLoadAdsResource(ads_client_mock_);
   MockLoadResourceForId(ads_client_mock_);
   MockSave(ads_client_mock_);
 
   MockPrefs(ads_client_mock_);
 
-  const base::FilePath path = temp_dir_.GetPath();
-  database_ = std::make_unique<Database>(path.AppendASCII(kDatabaseFilename));
+  const base::FilePath path =
+      temp_dir_.GetPath().AppendASCII(kDatabaseFilename);
+  database_ = std::make_unique<Database>(path);
   MockRunDBTransaction(ads_client_mock_, database_);
 
   if (integration_test_) {
     ads_ = std::make_unique<AdsImpl>(ads_client_mock_.get());
-
-    ads_->OnWalletUpdated("c387c2d8-a26d-4451-83e4-5c0c6fd942be",
-                          "5BEKM1Y7xcRSg/1q8in/+Lki2weFZQB+UMYZlRw8ql8=");
-
     return;
   }
 
@@ -150,6 +191,8 @@ void UnitTestBase::Initialize() {
       std::make_unique<AdsClientHelper>(ads_client_mock_.get());
 
   client_ = std::make_unique<Client>();
+  client_->Initialize(
+      [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
 
   ad_notifications_ = std::make_unique<AdNotifications>();
   ad_notifications_->Initialize(
@@ -175,17 +218,6 @@ void UnitTestBase::Initialize() {
   // Fast forward until no tasks remain to ensure "EnsureSqliteInitialized"
   // tasks have fired before running tests
   task_environment_.FastForwardUntilNoTasksRemain();
-}
-
-void UnitTestBase::InitializeAds() {
-  CHECK(integration_test_)
-      << "|InitializeAds| should only be called if "
-         "|SetUpForTesting| was initialized for integration testing";
-
-  ads_->Initialize(
-      [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
-
-  task_environment_.RunUntilIdle();
 }
 
 }  // namespace ads

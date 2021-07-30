@@ -6,9 +6,7 @@
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/test/base/in_process_browser_test.h"
-#include "chrome/test/base/ui_test_utils.h"
+#include "chrome/test/base/chrome_test_utils.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/pref_names.h"
@@ -16,14 +14,21 @@
 #include "content/public/test/browser_test.h"
 #include "url/gurl.h"
 
+#if defined(OS_ANDROID)
+#include "chrome/test/base/android/android_browser_test.h"
+#else
+#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
+#endif
+
 using brave_shields::ControlType;
 
-class CookiePrefServiceTest : public InProcessBrowserTest {
+class CookiePrefServiceTest : public PlatformBrowserTest {
  public:
   CookiePrefServiceTest() = default;
   ~CookiePrefServiceTest() override = default;
 
-  Profile* profile() { return browser()->profile(); }
+  Profile* profile() { return chrome_test_utils::GetProfile(this); }
 
   HostContentSettingsMap* content_settings() {
     return HostContentSettingsMapFactory::GetForProfile(profile());

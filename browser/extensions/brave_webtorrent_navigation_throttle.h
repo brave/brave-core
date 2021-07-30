@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_EXTENSIONS_BRAVE_WEBTORRENT_NAVIGATION_THROTTLE_H_
 
 #include "base/macros.h"
+#include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "content/public/browser/navigation_throttle.h"
 #include "extensions/browser/test_extension_registry_observer.h"
@@ -41,8 +42,8 @@ class BraveWebTorrentNavigationThrottle : public content::NavigationThrottle,
   // ExtensionRegistryObserver:
   void OnExtensionReady(content::BrowserContext* browser_context,
                         const extensions::Extension* extension) override;
-  ScopedObserver<ExtensionRegistry, ExtensionRegistryObserver>
-    extension_registry_observer_;
+  base::ScopedObservation<ExtensionRegistry, ExtensionRegistryObserver>
+      extension_registry_observer_{this};
   bool resume_pending_;
   base::OneShotTimer timer_;
   DISALLOW_COPY_AND_ASSIGN(BraveWebTorrentNavigationThrottle);

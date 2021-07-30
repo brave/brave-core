@@ -7,7 +7,6 @@
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
 #include "base/test/thread_test_helper.h"
-#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
@@ -103,11 +102,11 @@ class AutoplayBrowserTest : public InProcessBrowserTest {
 
   void GotoAutoplayByAttr(bool muted) {
     if (muted) {
-      ASSERT_EQ(true, EvalJsWithManualReply(contents(),
-                                            "clickAutoplayByAttrMuted()"));
+      ASSERT_EQ(true, EvalJs(contents(), "clickAutoplayByAttrMuted()",
+                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY));
     } else {
-      ASSERT_EQ(true,
-                EvalJsWithManualReply(contents(), "clickAutoplayByAttr()"));
+      ASSERT_EQ(true, EvalJs(contents(), "clickAutoplayByAttr()",
+                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY));
     }
     ASSERT_TRUE(WaitForLoadStop(contents()));
     WaitForCanPlay();
@@ -115,19 +114,19 @@ class AutoplayBrowserTest : public InProcessBrowserTest {
 
   void GotoAutoplayByMethod(bool muted) {
     if (muted) {
-      ASSERT_EQ(true, EvalJsWithManualReply(contents(),
-                                            "clickAutoplayByMethodMuted()"));
+      ASSERT_EQ(true, EvalJs(contents(), "clickAutoplayByMethodMuted()",
+                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY));
     } else {
-      ASSERT_EQ(true,
-                EvalJsWithManualReply(contents(), "clickAutoplayByMethod()"));
+      ASSERT_EQ(true, EvalJs(contents(), "clickAutoplayByMethod()",
+                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY));
     }
     ASSERT_TRUE(WaitForLoadStop(contents()));
     WaitForCanPlay();
   }
 
   void WaitForCanPlay() {
-    ASSERT_EQ("CANPLAY",
-              EvalJsWithManualReply(contents(), "notifyWhenCanPlay()"));
+    ASSERT_EQ("CANPLAY", EvalJs(contents(), "notifyWhenCanPlay()",
+                                content::EXECUTE_SCRIPT_USE_MANUAL_REPLY));
   }
 
  private:

@@ -8,10 +8,10 @@ export const StyledWrapper = styled.div`
   flex-direction: row;
   width: 100%;
   height: 32px;
-  border: 1px solid #E9E9F4;
+  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
   box-sizing: border-box;
   border-radius: 8px;
-  background-color: ${(p) => p.theme.palette.white};
+  background-color: ${(p) => p.theme.color.background02};
   margin-bottom: 10px;
   overflow: hidden;
 `
@@ -21,12 +21,14 @@ export const SearchInput = styled.input`
   height: 100%;
   outline: none;
   background-image: none;
+  background-color: ${(p) => p.theme.color.background02};
   box-shadow: none;
   border: none;
   font-family: Poppins;
   font-style: normal;
   font-size: 12px;
   letter-spacing: 0.01em;
+  color: ${(p) => p.theme.color.text01};
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   ::placeholder {
@@ -34,7 +36,7 @@ export const SearchInput = styled.input`
     font-style: normal;
     font-size: 12px;
     letter-spacing: 0.01em;
-    color: ${(p) => p.theme.palette.neutral600};
+    color: ${(p) => p.theme.color.text02};
     font-weight: normal;
   }
   :focus {

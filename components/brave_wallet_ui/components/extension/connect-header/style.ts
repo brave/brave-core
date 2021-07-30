@@ -18,6 +18,7 @@ export const URLText = styled.span`
 	text-align: center;
 	letter-spacing: 0.01em;
 	margin-bottom: 11px;
+  color: ${(p) => p.theme.color.text02};
 `
 
 export const PanelTitle = styled.span`
@@ -28,8 +29,10 @@ export const PanelTitle = styled.span`
 	line-height: 20px;
 	text-align: center;
 	letter-spacing: 0.04em;
+  color: ${(p) => p.theme.color.text01};
 `
 
+// This is temp, will be replaced with real FavIcon
 export const FavIcon = styled.div`
 	width: 44px;
 	height: 44px;

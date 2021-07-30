@@ -49,36 +49,42 @@ TEST(BraveChannelInfoTest, DefaultUserDataDirectoryAndChannelTest) {
   EXPECT_TRUE(chrome::GetDefaultUserDataDirectory(&path));
   EXPECT_EQ("Brave-Browser", path.BaseName().AsUTF8Unsafe());
   EXPECT_EQ(version_info::Channel::STABLE, chrome::GetChannel());
-  EXPECT_EQ(BRAVE_LINUX_CHANNEL_STABLE, chrome::GetChannelName());
+  EXPECT_EQ(BRAVE_LINUX_CHANNEL_STABLE,
+            chrome::GetChannelName(chrome::WithExtendedStable(false)));
 
   env->SetVar("CHROME_VERSION_EXTRA", LINUX_CHANNEL_BETA);
   EXPECT_TRUE(chrome::GetDefaultUserDataDirectory(&path));
   EXPECT_EQ("Brave-Browser-Beta", path.BaseName().AsUTF8Unsafe());
   EXPECT_EQ(version_info::Channel::BETA, chrome::GetChannel());
-  EXPECT_EQ(LINUX_CHANNEL_BETA, chrome::GetChannelName());
+  EXPECT_EQ(LINUX_CHANNEL_BETA,
+            chrome::GetChannelName(chrome::WithExtendedStable(false)));
 
   env->SetVar("CHROME_VERSION_EXTRA", BRAVE_LINUX_CHANNEL_DEV);
   EXPECT_TRUE(chrome::GetDefaultUserDataDirectory(&path));
   EXPECT_EQ("Brave-Browser-Dev", path.BaseName().AsUTF8Unsafe());
   EXPECT_EQ(version_info::Channel::DEV, chrome::GetChannel());
-  EXPECT_EQ(BRAVE_LINUX_CHANNEL_DEV, chrome::GetChannelName());
+  EXPECT_EQ(BRAVE_LINUX_CHANNEL_DEV,
+            chrome::GetChannelName(chrome::WithExtendedStable(false)));
 
   env->SetVar("CHROME_VERSION_EXTRA", LINUX_CHANNEL_DEV);
   EXPECT_TRUE(chrome::GetDefaultUserDataDirectory(&path));
   EXPECT_EQ("Brave-Browser-Dev", path.BaseName().AsUTF8Unsafe());
   EXPECT_EQ(version_info::Channel::DEV, chrome::GetChannel());
-  EXPECT_EQ(BRAVE_LINUX_CHANNEL_DEV, chrome::GetChannelName());
+  EXPECT_EQ(BRAVE_LINUX_CHANNEL_DEV,
+            chrome::GetChannelName(chrome::WithExtendedStable(false)));
 
   env->SetVar("CHROME_VERSION_EXTRA", BRAVE_LINUX_CHANNEL_NIGHTLY);
   EXPECT_TRUE(chrome::GetDefaultUserDataDirectory(&path));
   EXPECT_EQ("Brave-Browser-Nightly", path.BaseName().AsUTF8Unsafe());
   EXPECT_EQ(version_info::Channel::CANARY, chrome::GetChannel());
-  EXPECT_EQ(BRAVE_LINUX_CHANNEL_NIGHTLY, chrome::GetChannelName());
-#else  // OFFICIAL_BUILD
+  EXPECT_EQ(BRAVE_LINUX_CHANNEL_NIGHTLY,
+            chrome::GetChannelName(chrome::WithExtendedStable(false)));
+#else   // OFFICIAL_BUILD
   EXPECT_TRUE(chrome::GetDefaultUserDataDirectory(&path));
   EXPECT_EQ("Brave-Browser-Development", path.BaseName().AsUTF8Unsafe());
   EXPECT_EQ(version_info::Channel::UNKNOWN, chrome::GetChannel());
-  EXPECT_EQ(BRAVE_LINUX_CHANNEL_STABLE, chrome::GetChannelName());
+  EXPECT_EQ(BRAVE_LINUX_CHANNEL_STABLE,
+            chrome::GetChannelName(chrome::WithExtendedStable(false)));
 #endif  // !OFFICIAL_BUILD
 }
 #endif

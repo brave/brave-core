@@ -57,7 +57,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info_1.priority = 2;
   info_1.per_day = 3;
-  info_1.total_max = 4;
+  info_1.per_week = 4;
+  info_1.per_month = 5;
+  info_1.total_max = 6;
   info_1.segment = "Technology & Computing-Software";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = {"US"};
@@ -77,7 +79,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.advertiser_id = "8e3fac86-ce50-4409-ae29-9aa5636aa9a2";
   info_2.priority = 2;
   info_2.per_day = 3;
-  info_2.total_max = 4;
+  info_2.per_week = 4;
+  info_2.per_month = 5;
+  info_2.total_max = 6;
   info_2.segment = "Technology & Computing-Software";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = {"US"};
@@ -125,7 +129,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info_1.priority = 2;
   info_1.per_day = 3;
-  info_1.total_max = 4;
+  info_1.per_week = 4;
+  info_1.per_month = 5;
+  info_1.total_max = 6;
   info_1.segment = "Technology & Computing-Software";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = {"US"};
@@ -145,7 +151,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.advertiser_id = "8e3fac86-ce50-4409-ae29-9aa5636aa9a2";
   info_2.priority = 2;
   info_2.per_day = 3;
-  info_2.total_max = 4;
+  info_2.per_week = 4;
+  info_2.per_month = 5;
+  info_2.total_max = 6;
   info_2.segment = "Technology & Computing-Software";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = {"US"};
@@ -165,7 +173,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_3.advertiser_id = "9a11b60f-e29d-4446-8d1f-318311e36e0a";
   info_3.priority = 2;
   info_3.per_day = 3;
-  info_3.total_max = 4;
+  info_3.per_week = 4;
+  info_3.per_month = 5;
+  info_3.total_max = 6;
   info_3.segment = "Technology & Computing-Software";
   info_3.dayparts.push_back(daypart_info);
   info_3.geo_targets = {"US"};
@@ -211,7 +221,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info.priority = 2;
   info.per_day = 3;
-  info.total_max = 4;
+  info.per_week = 4;
+  info.per_month = 5;
+  info.total_max = 6;
   info.segment = "Technology & Computing-Software";
   info.dayparts.push_back(daypart_info);
   info.geo_targets = {"US"};
@@ -259,7 +271,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info_1.priority = 2;
   info_1.per_day = 3;
-  info_1.total_max = 4;
+  info_1.per_week = 4;
+  info_1.per_month = 5;
+  info_1.total_max = 6;
   info_1.segment = "Technology & Computing-Software";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = {"US"};
@@ -279,7 +293,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.advertiser_id = "8e3fac86-ce50-4409-ae29-9aa5636aa9a2";
   info_2.priority = 2;
   info_2.per_day = 3;
-  info_2.total_max = 4;
+  info_2.per_week = 4;
+  info_2.per_month = 5;
+  info_2.total_max = 6;
   info_2.segment = "Technology & Computing-Software";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = {"US"};
@@ -311,7 +327,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
 }
 
 TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
-       GetCreativeAdNotificationsForEmptyCategories) {
+       GetCreativeAdNotificationsForEmptySegments) {
   // Arrange
   CreativeAdNotificationList creative_ad_notifications;
 
@@ -326,7 +342,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info.priority = 2;
   info.per_day = 3;
-  info.total_max = 4;
+  info.per_week = 4;
+  info.per_month = 5;
+  info.total_max = 6;
   info.segment = "Technology & Computing-Software";
   info.dayparts.push_back(daypart_info);
   info.geo_targets = {"US"};
@@ -372,7 +390,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info.priority = 2;
   info.per_day = 3;
-  info.total_max = 4;
+  info.per_week = 4;
+  info.per_month = 5;
+  info.total_max = 6;
   info.segment = "Technology & Computing-Software";
   info.dayparts.push_back(daypart_info);
   info.geo_targets = {"US"};
@@ -403,7 +423,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
 }
 
 TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
-       GetCreativeAdNotificationsFromMultipleCategories) {
+       GetCreativeAdNotificationsFromMultipleSegments) {
   // Arrange
   CreativeAdNotificationList creative_ad_notifications;
 
@@ -418,7 +438,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info_1.priority = 2;
   info_1.per_day = 3;
-  info_1.total_max = 4;
+  info_1.per_week = 4;
+  info_1.per_month = 5;
+  info_1.total_max = 6;
   info_1.segment = "Technology & Computing-Software";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = {"US"};
@@ -438,7 +460,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.advertiser_id = "8e3fac86-ce50-4409-ae29-9aa5636aa9a2";
   info_2.priority = 2;
   info_2.per_day = 3;
-  info_2.total_max = 4;
+  info_2.per_week = 4;
+  info_2.per_month = 5;
+  info_2.total_max = 6;
   info_2.segment = "Food & Drink";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = {"US"};
@@ -458,7 +482,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_3.advertiser_id = "9a11b60f-e29d-4446-8d1f-318311e36e0a";
   info_3.priority = 2;
   info_3.per_day = 3;
-  info_3.total_max = 4;
+  info_3.per_week = 4;
+  info_3.per_month = 5;
+  info_3.total_max = 6;
   info_3.segment = "Automobiles";
   info_3.dayparts.push_back(daypart_info);
   info_3.geo_targets = {"US"};
@@ -507,7 +533,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info_1.priority = 2;
   info_1.per_day = 3;
-  info_1.total_max = 4;
+  info_1.per_week = 4;
+  info_1.per_month = 5;
+  info_1.total_max = 6;
   info_1.segment = "Technology & Computing-Software";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = {"US"};
@@ -527,7 +555,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.advertiser_id = "8e3fac86-ce50-4409-ae29-9aa5636aa9a2";
   info_2.priority = 2;
   info_2.per_day = 3;
-  info_2.total_max = 4;
+  info_2.per_week = 4;
+  info_2.per_month = 5;
+  info_2.total_max = 6;
   info_2.segment = "Technology & Computing-Software";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = {"US"};
@@ -560,7 +590,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
 }
 
 TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
-       GetCreativeAdNotificationsMatchingCaseInsensitiveCategories) {
+       GetCreativeAdNotificationsMatchingCaseInsensitiveSegments) {
   // Arrange
   CreativeAdNotificationList creative_ad_notifications;
 
@@ -575,7 +605,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info_1.priority = 2;
   info_1.per_day = 3;
-  info_1.total_max = 4;
+  info_1.per_week = 4;
+  info_1.per_month = 5;
+  info_1.total_max = 6;
   info_1.segment = "Technology & Computing-Software";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = {"US"};
@@ -595,7 +627,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.advertiser_id = "9a11b60f-e29d-4446-8d1f-318311e36e0a";
   info_2.priority = 2;
   info_2.per_day = 3;
-  info_2.total_max = 4;
+  info_2.per_week = 4;
+  info_2.per_month = 5;
+  info_2.total_max = 6;
   info_2.segment = "Food & Drink";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = {"US"};

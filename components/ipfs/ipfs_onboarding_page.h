@@ -103,7 +103,7 @@ class IPFSOnboardingPage
   std::string GetThemeType(ui::NativeTheme* theme) const;
   void SetupProtocolHandlers();
   void RespondToPage(IPFSOnboardingResponse command,
-                     const base::string16& text);
+                     const std::u16string& text);
   void UseLocalNode();
   void UsePublicGateway();
   void GetConnectedPeers();

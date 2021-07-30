@@ -7,14 +7,13 @@
 
 #include "base/command_line.h"
 #include "base/feature_list.h"
+#include "brave/browser/brave_ads/ads_tab_helper.h"
+#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/brave_stats/brave_stats_tab_helper.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
-#include "brave/components/brave_ads/browser/ads_tab_helper.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
-#include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
-#include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -36,11 +35,6 @@
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
-#endif
-
-#if BUILDFLAG(BRAVE_STP_ENABLED)
-#include "brave/components/brave_shields/browser/tracking_protection_helper.h"
-#include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -88,13 +82,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   brave_rewards::RewardsTabHelper::CreateForWebContents(web_contents);
-#endif
-
-#if BUILDFLAG(BRAVE_STP_ENABLED)
-  if (brave_shields::TrackingProtectionService::
-          IsSmartTrackingProtectionEnabled()) {
-    brave_shields::TrackingProtectionHelper::CreateForWebContents(web_contents);
-  }
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)

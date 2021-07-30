@@ -5,22 +5,40 @@ import("//tools/grit/grit_rule.gni")
 action("sign_app") {
   script = "//brave/build/android/sign_apk.py"
   _apksigner = "$android_sdk_build_tools/apksigner"
+  _jarsigner = "//third_party/jdk/current/bin/jarsigner"
   _zipalign = "$android_sdk_build_tools/zipalign"
 
   deps = [ "//brave/app/android:create_dist_zips" ]
 
-  target_sign_app_path = ""
-  if (target_cpu == "arm64" || target_cpu == "x64" ||
-      target_apk_base == "mono") {
-    target_sign_app_path = "$root_out_dir/apks/MonochromePublic.apk"
+  if (target_cpu == "arm64" || target_cpu == "x64") {
+    if (target_android_output_format == "aab") {
+      target_sign_app_path = "$root_out_dir/apks/MonochromePublic6432.aab"
+    } else {
+      target_sign_app_path = "$root_out_dir/apks/MonochromePublic.apk"
+    }
   } else {
-    target_sign_app_path = "$root_out_dir/apks/ChromePublic.apk"
+    if (target_android_base == "mono") {
+      if (target_android_output_format == "aab") {
+        target_sign_app_path = "$root_out_dir/apks/MonochromePublic.aab"
+      } else {
+        target_sign_app_path = "$root_out_dir/apks/MonochromePublic.apk"
+      }
+    } else {
+      if (target_android_output_format == "aab") {
+        target_sign_app_path = "$root_out_dir/apks/ChromeModernPublic.aab"
+      } else {
+        target_sign_app_path = "$root_out_dir/apks/ChromePublic.apk"
+      }
+    }
   }
 
   outputs = [ "$target_sign_app_path-singed" ]
   args = [
     rebase_path(_zipalign, root_out_dir),
     rebase_path(_apksigner, root_out_dir),
+    rebase_path(_jarsigner, root_out_dir),
+  ]
+  args += [
     rebase_path(target_sign_app_path, root_out_dir),
     rebase_path("$brave_android_keystore_path", root_out_dir),
     "$brave_android_keystore_password",
@@ -33,15 +51,35 @@ copy("brave") {
   visibility = [ "*" ]
   deps = []
   sources = []
-  if (target_cpu == "arm64" || target_cpu == "x64" ||
-      target_apk_base == "mono") {
-    deps += [ "//chrome/android:monochrome_public_apk" ]
-    sources += [ "$root_out_dir/apks/MonochromePublic.apk" ]
+  if (target_cpu == "arm64" || target_cpu == "x64") {
+    if (target_android_output_format == "aab") {
+      deps += [ "//chrome/android:monochrome_64_32_public_bundle" ]
+      sources += [ "$root_out_dir/apks/MonochromePublic6432.aab" ]
+    } else {
+      # There is no 64-bit apk target for Mono
+      deps += [ "//chrome/android:monochrome_public_apk" ]
+      sources += [ "$root_out_dir/apks/MonochromePublic.apk" ]
+    }
   } else {
-    deps += [ "//chrome/android:chrome_public_apk" ]
-    sources += [ "$root_out_dir/apks/ChromePublic.apk" ]
+    if (target_android_base == "mono") {
+      if (target_android_output_format == "aab") {
+        deps += [ "//chrome/android:monochrome_public_bundle" ]
+        sources += [ "$root_out_dir/apks/MonochromePublic.aab" ]
+      } else {
+        deps += [ "//chrome/android:monochrome_public_apk" ]
+        sources += [ "$root_out_dir/apks/MonochromePublic.apk" ]
+      }
+    } else {
+      if (target_android_output_format == "aab") {
+        deps += [ "//chrome/android:chrome_modern_public_bundle" ]
+        sources += [ "$root_out_dir/apks/ChromeModernPublic.aab" ]
+      } else {
+        deps += [ "//chrome/android:chrome_public_apk" ]
+        sources += [ "$root_out_dir/apks/ChromePublic.apk" ]
+      }
+    }
   }
-  outputs = [ brave_apk_output ]
+  outputs = [ brave_android_output ]
 }
 
 java_strings_grd("android_brave_strings_grd") {
@@ -143,8 +181,18 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",
     "//brave/android/java/org/chromium/chrome/browser/settings/developer/BraveQAPreferences.java",
     "//brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
+    "//brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnNativeWorker.java",
     "//brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceNativeWorker.java",
   ]
+
+  deps = [ "//brave/android/java/org/chromium/chrome/browser/search_engines/settings:jni_headers" ]
+
+  if (brave_wallet_enabled) {
+    sources += [
+      "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/AssetRatioControllerFactory.java",
+      "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/KeyringControllerFactory.java",
+    ]
+  }
 
   if (enable_brave_sync) {
     sources += [

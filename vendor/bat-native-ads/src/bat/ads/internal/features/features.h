@@ -8,16 +8,13 @@
 
 #include <string>
 
-#include "base/optional.h"
+#include "base/metrics/field_trial.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace features {
 
-bool HasActiveStudy();
-
-base::Optional<std::string> GetStudy();
-
-base::Optional<std::string> GetGroup();
+base::FieldTrial::ActiveGroups GetStudies();
 
 void Log();
 

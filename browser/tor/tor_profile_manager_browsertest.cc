@@ -5,12 +5,12 @@
 
 #include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "base/threading/thread_restrictions.h"
+#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/common/brave_paths.h"
-#include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/mock_tor_launcher_factory.h"
 #include "brave/components/tor/tor_constants.h"
@@ -21,6 +21,7 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/bookmarks/test/bookmark_test_helpers.h"
@@ -28,6 +29,7 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "content/public/test/browser_test.h"
+#include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "chrome/browser/extensions/extension_browsertest.h"
@@ -41,6 +43,8 @@
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #endif
+
+#include <algorithm>
 
 namespace {
 
@@ -59,16 +63,17 @@ void OnUnblockOnProfileCreation(base::RunLoop* run_loop,
 }
 
 Profile* SwitchToTorProfile(Profile* parent_profile,
-                            TorLauncherFactory* factory) {
+                            TorLauncherFactory* factory,
+                            size_t current_profile_num = 1) {
   base::RunLoop run_loop;
   TorProfileManager::SwitchToTorProfile(
       parent_profile,
-      base::Bind(&OnUnblockOnProfileCreation, &run_loop, factory));
+      base::BindRepeating(&OnUnblockOnProfileCreation, &run_loop, factory));
   run_loop.Run();
 
   BrowserList* browser_list = BrowserList::GetInstance();
-  EXPECT_EQ(2U, browser_list->size());
-  return browser_list->get(1)->profile();
+  EXPECT_EQ(current_profile_num + 1, browser_list->size());
+  return browser_list->get(current_profile_num)->profile();
 }
 
 }  // namespace
@@ -103,7 +108,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
   Profile* parent_profile = ProfileManager::GetActiveUserProfile();
 
   // Add a bookmark in parent profile.
-  const base::string16 title(base::ASCIIToUTF16("Test"));
+  const std::u16string title(u"Test");
   const GURL url1("https://www.test1.com");
   bookmarks::BookmarkModel* parent_bookmark_model =
       BookmarkModelFactory::GetForBrowserContext(parent_profile);
@@ -239,8 +244,10 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseLastTorWindow) {
   ASSERT_TRUE(profile_manager);
 
   Profile* parent_profile = ProfileManager::GetActiveUserProfile();
+  EXPECT_EQ(BrowserList::GetInstance()->size(), 1u);
   Profile* tor_profile =
       SwitchToTorProfile(parent_profile, GetTorLauncherFactory());
+  EXPECT_EQ(BrowserList::GetInstance()->size(), 2u);
   ASSERT_TRUE(tor_profile->IsTor());
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
   EXPECT_EQ(tor_profile->GetOriginalProfile(), parent_profile);
@@ -248,6 +255,54 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseLastTorWindow) {
   testing::Mock::AllowLeak(GetTorLauncherFactory());
   EXPECT_CALL(*GetTorLauncherFactory(), KillTorProcess).Times(1);
   TorProfileManager::CloseTorProfileWindows(tor_profile);
+  ui_test_utils::WaitForBrowserToClose();
+  BrowserList* browser_list = BrowserList::GetInstance();
+  ASSERT_EQ(browser_list->size(), 1u);
+  EXPECT_FALSE(browser_list->get(0)->profile()->IsTor());
+}
+
+IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseAllTorWindows) {
+  ProfileManager* profile_manager = g_browser_process->profile_manager();
+  ASSERT_TRUE(profile_manager);
+  BrowserList* browser_list = BrowserList::GetInstance();
+
+  Profile* parent_profile1 = ProfileManager::GetActiveUserProfile();
+  ASSERT_NE(CreateIncognitoBrowser(parent_profile1), nullptr);
+  ASSERT_EQ(browser_list->size(), 2u);
+
+  // Create another profile.
+  base::FilePath dest_path = profile_manager->user_data_dir();
+  dest_path = dest_path.Append(FILE_PATH_LITERAL("Profile2"));
+  Profile* parent_profile2 = nullptr;
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    parent_profile2 = profile_manager->GetProfile(dest_path);
+  }
+  ASSERT_TRUE(parent_profile2);
+  ASSERT_NE(CreateBrowser(parent_profile2), nullptr);
+  ASSERT_EQ(browser_list->size(), 3u);
+
+  Profile* tor_profile1 = SwitchToTorProfile(
+      parent_profile1, GetTorLauncherFactory(), browser_list->size());
+  ASSERT_TRUE(tor_profile1->IsTor());
+  ASSERT_EQ(browser_list->size(), 4u);
+
+  Profile* tor_profile2 = SwitchToTorProfile(
+      parent_profile2, GetTorLauncherFactory(), browser_list->size());
+  ASSERT_TRUE(tor_profile2->IsTor());
+  ASSERT_EQ(browser_list->size(), 5u);
+
+  testing::Mock::AllowLeak(GetTorLauncherFactory());
+  EXPECT_CALL(*GetTorLauncherFactory(), KillTorProcess).Times(1);
+  TorProfileManager::GetInstance().CloseAllTorWindows();
+  // We cannot predict the order of which Tor browser get closed first
+  ui_test_utils::WaitForBrowserToClose();
+  ui_test_utils::WaitForBrowserToClose();
+  // only two regular windows and one private window left
+  ASSERT_EQ(browser_list->size(), 3u);
+  std::for_each(
+      browser_list->begin(), browser_list->end(),
+      [](Browser* browser) { EXPECT_FALSE(browser->profile()->IsTor()); });
 }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -321,16 +376,5 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerExtensionTest,
                                                 false);
   EXPECT_TRUE(extensions::util::IsIncognitoEnabled(component_extension->id(),
                                                    tor_profile));
-
-  // "not_allowed" mode will also disable extension in Tor
-  const extensions::Extension* incognito_not_allowed_ext =
-      InstallExtension(incognito_not_allowed_ext_path(), 1);
-  const std::string incognito_not_allowed_id = incognito_not_allowed_ext->id();
-  parent_extension_prefs->SetIsIncognitoEnabled(incognito_not_allowed_id, true);
-  Profile* primary_otr_profile = parent_profile->GetPrimaryOTRProfile();
-  EXPECT_FALSE(extensions::util::IsIncognitoEnabled(incognito_not_allowed_id,
-                                                    primary_otr_profile));
-  EXPECT_FALSE(extensions::util::IsIncognitoEnabled(incognito_not_allowed_id,
-                                                    tor_profile));
 }
 #endif

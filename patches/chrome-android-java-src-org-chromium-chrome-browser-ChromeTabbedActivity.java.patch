@@ -1,0 +1,12 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
+index fc14d41c5c1a87d79ffb1cb65b21ed4c584ad457..b3b292962d5334c2ca8ed55b0d3e8f7cf41537b9 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
+@@ -2303,6 +2303,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+     }
+ 
+     private void hideOverview() {
++        org.chromium.chrome.browser.app.BraveActivity.class.cast(this).hideOverview(mLayoutManager);
+         assert (mOverviewModeController.overviewVisible());
+         if (getCurrentTabModel().getCount() != 0) {
+             // Don't hide overview if current tab stack is empty()

@@ -51,18 +51,6 @@
     "message": "Сведения",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "Ваш баланс",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "Баллы BAT",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "можно использовать в наградах Brave, чтобы пожертвовать средства своим любимым создателям контента. Очки BAT нельзя обменять на BAT.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "вкл.",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "Утвержденные токен-гранты",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "Утвержденные гранты баллов",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "Доход от рекламы",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Разовые чаевые",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "истекает",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Этот создатель пока не участвует в программе дарения и не может получать подарки от пользователей Brave. Транзакция будет повторяться автоматически до успешного результата.",
+    "message": "Этот автор еще не настроил свой аккаунт для получения платежей с вашего кошелька. Пока настройка не будет завершена, все отправляемые вами вознаграждения останутся у вас и будут повторно отправлены через 90 дней.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Включить рекламу",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Токен-грант бесплатно",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Бесплатный грант баллов",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Вы заработали награду за рекламу!",
@@ -591,17 +567,9 @@
     "message": "Token",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "очки",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Выдачи токенов",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Бонусные очки",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Привет, $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Для создания аккаунта Uphold вам нужно иметь минимум 25 BAT. Пожалуйста, повторите попытку позже. \n Если у вас уже есть верифицированный аккаунт Uphold, переходите ко входу в систему.",
-    "description": "Text for login button"
+    "message": "Если вы хотите создать аккаунт Uphold, у вас должно быть не менее $amount$ BAT. Если у вас уже есть подтвержденный аккаунт, войдите в него.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "Подключено",
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Когда вы получаете вознаграждения",
+    "message": "Когда вы получаете вознаграждение?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "Используя Brave Rewards, вы помогаете сделать Интернет лучше для всех. И это прекрасно!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards в Японии переходит на новую систему!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "Подтвердите свой кошелек",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "Подробнее...",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "Чтобы вывести баллы, полученные за просмотр рекламы, подтвердите ваш кошелек.",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "Используйте ваши бонусные баллы BAP до 13 марта включительно. После этого срока использование бонусной системы BAP будет прекращенно.",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "Позже",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Подтверждаю",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Кошелек bitFlyer — сервис, предоставляемый компанией bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Подтвердите ваш кошелек и свяжите его с аккаунтом bitFlyer. Хранить баллы Brave Rewards и управлять ими станет еще удобнее.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Подробнее$link_end$ о том, как привязать аккаунт bitFlyer к браузеру Brave.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -8,12 +8,15 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "base/command_line.h"
+#include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
+#include "base/strings/string_util.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
+#include "brave/components/speedreader/features.h"
 #include "brave/components/speedreader/speedreader_component.h"
-#include "brave/components/speedreader/speedreader_switches.h"
+#include "brave/components/speedreader/speedreader_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "url/gurl.h"
@@ -41,14 +44,8 @@ SpeedreaderRewriterService::SpeedreaderRewriterService(
     brave_component_updater::BraveComponent::Delegate* delegate)
     : component_(new speedreader::SpeedreaderComponent(delegate)),
       speedreader_(new speedreader::SpeedReader) {
-  const base::CommandLine& cmd_line = *base::CommandLine::ForCurrentProcess();
-  if (cmd_line.HasSwitch(speedreader::kSpeedreaderBackend)) {
-    // @pes mentioned we might want to experiment with several backends, so this
-    // will give us the most flexibility.
-    std::string backend = cmd_line.GetSwitchValueASCII(kSpeedreaderBackend);
-    if (backend == "classify-all") {
-      backend_ = RewriterType::RewriterHeuristics;
-    }
+  if (base::FeatureList::IsEnabled(kSpeedreaderLegacyBackend)) {
+    backend_ = RewriterType::RewriterStreaming;
   }
 
   // Load the built-in stylesheet as the default
@@ -77,8 +74,8 @@ SpeedreaderRewriterService::~SpeedreaderRewriterService() {
 
 void SpeedreaderRewriterService::OnWhitelistReady(const base::FilePath& path) {
   VLOG(2) << "Whitelist ready at " << path;
-  base::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::ThreadPool(), base::MayBlock()},
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
       base::BindOnce(
           &brave_component_updater::LoadDATFileData<speedreader::SpeedReader>,
           path),
@@ -87,17 +84,31 @@ void SpeedreaderRewriterService::OnWhitelistReady(const base::FilePath& path) {
 }
 
 void SpeedreaderRewriterService::OnStylesheetReady(const base::FilePath& path) {
-  base::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::ThreadPool(), base::MayBlock()},
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
       base::BindOnce(&GetDistilledPageStylesheet, path),
       base::BindOnce(&SpeedreaderRewriterService::OnLoadStylesheet,
                      weak_factory_.GetWeakPtr()));
 }
 
 bool SpeedreaderRewriterService::IsWhitelisted(const GURL& url) {
-  return backend_ == RewriterType::RewriterStreaming
-             ? speedreader_->IsReadableURL(url.spec())
-             : true;
+  if (backend_ == RewriterType::RewriterStreaming) {
+    return speedreader_->IsReadableURL(url.spec());
+  } else {
+    // Only HTTP is readable.
+    if (!url.SchemeIsHTTPOrHTTPS())
+      return false;
+
+    // @pes research has shown basically no landing pages are readable.
+    if (!url.has_path() || url.path() == "/")
+      return false;
+
+    // TODO(keur): Once implemented, check against the "maybe-speedreadable"
+    // list here.
+
+    // Check URL against precompiled regexes
+    return URLReadableHintExtractor::GetInstance()->HasHints(url);
+  }
 }
 
 std::unique_ptr<Rewriter> SpeedreaderRewriterService::MakeRewriter(

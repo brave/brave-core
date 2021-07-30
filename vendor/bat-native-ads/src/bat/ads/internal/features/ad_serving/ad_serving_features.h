@@ -17,10 +17,18 @@ bool IsAdServingEnabled();
 
 int GetDefaultAdNotificationsPerHour();
 int GetMaximumAdNotificationsPerDay();
+
+int GetMaximumInlineContentAdsPerHour();
+int GetMaximumInlineContentAdsPerDay();
+
 int GetMaximumNewTabPageAdsPerHour();
 int GetMaximumNewTabPageAdsPerDay();
+
 int GetMaximumPromotedContentAdsPerHour();
 int GetMaximumPromotedContentAdsPerDay();
+
+int GetBrowsingHistoryMaxCount();
+int GetBrowsingHistoryDaysAgo();
 
 }  // namespace features
 }  // namespace ads

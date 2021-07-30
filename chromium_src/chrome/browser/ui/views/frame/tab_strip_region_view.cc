@@ -4,7 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
+#include "brave/browser/ui/views/tabs/brave_tab_search_button.h"
 
 #define NewTabButton BraveNewTabButton
+#define TabSearchButton BraveTabSearchButton
 #include "../../../../../../../chrome/browser/ui/views/frame/tab_strip_region_view.cc"
+#undef TabSearchButton
 #undef NewTabButton

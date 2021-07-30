@@ -5,10 +5,8 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_frequency_cap.h"
 
-#include <cstdint>
-#include <deque>
-
 #include "base/time/time.h"
+#include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 #include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/internal/settings/settings.h"
@@ -19,19 +17,21 @@ namespace {
 const uint64_t kMinimumWaitTimeFrequencyCap = 1;
 }  // namespace
 
-MinimumWaitTimeFrequencyCap::MinimumWaitTimeFrequencyCap(
-    const AdEventList& ad_events)
-    : ad_events_(ad_events) {}
+MinimumWaitTimeFrequencyCap::MinimumWaitTimeFrequencyCap() = default;
 
 MinimumWaitTimeFrequencyCap::~MinimumWaitTimeFrequencyCap() = default;
 
 bool MinimumWaitTimeFrequencyCap::ShouldAllow() {
   if (PlatformHelper::GetInstance()->IsMobile()) {
+    // Ads are periodically served on mobile so they will never be served before
+    // the minimum wait time has passed
     return true;
   }
 
-  const AdEventList filtered_ad_events = FilterAdEvents(ad_events_);
-  if (!DoesRespectCap(filtered_ad_events)) {
+  const std::deque<uint64_t> history =
+      GetAdEvents(AdType::kAdNotification, ConfirmationType::kServed);
+
+  if (!DoesRespectCap(history)) {
     last_message_ = "Ad cannot be shown as minimum wait time has not passed";
     return false;
   }
@@ -43,32 +43,17 @@ std::string MinimumWaitTimeFrequencyCap::get_last_message() const {
   return last_message_;
 }
 
-bool MinimumWaitTimeFrequencyCap::DoesRespectCap(const AdEventList& ad_events) {
-  const std::deque<uint64_t> history =
-      GetTimestampHistoryForAdEvents(ad_events);
-
+bool MinimumWaitTimeFrequencyCap::DoesRespectCap(
+    const std::deque<uint64_t>& history) {
   const uint64_t ads_per_hour = settings::GetAdsPerHour();
+  if (ads_per_hour == 0) {
+    return false;
+  }
 
   const uint64_t time_constraint = base::Time::kSecondsPerHour / ads_per_hour;
 
   return DoesHistoryRespectCapForRollingTimeConstraint(
       history, time_constraint, kMinimumWaitTimeFrequencyCap);
-}
-
-AdEventList MinimumWaitTimeFrequencyCap::FilterAdEvents(
-    const AdEventList& ad_events) const {
-  AdEventList filtered_ad_events = ad_events;
-
-  const auto iter = std::remove_if(
-      filtered_ad_events.begin(), filtered_ad_events.end(),
-      [](const AdEventInfo& ad_event) {
-        return ad_event.type != AdType::kAdNotification ||
-               ad_event.confirmation_type != ConfirmationType::kViewed;
-      });
-
-  filtered_ad_events.erase(iter, filtered_ad_events.end());
-
-  return filtered_ad_events;
 }
 
 }  // namespace ads

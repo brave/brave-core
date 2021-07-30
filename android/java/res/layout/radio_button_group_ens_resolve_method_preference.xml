@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2021 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="false">
+    <org.chromium.components.browser_ui.widget.RadioButtonWithDescriptionLayout
+        android:id="@+id/ens_resolve_method_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
+            android:id="@+id/ens_resolve_method_ask_radio_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/min_touch_target_size"
+            app:primaryText="@string/resolve_method_ask" />
+
+        <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
+            android:id="@+id/ens_resolve_method_disabled_radio_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/min_touch_target_size"
+            app:primaryText="@string/resolve_method_disabled" />
+
+        <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
+            android:id="@+id/ens_resolve_method_doh_radio_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/min_touch_target_size"
+            app:primaryText="@string/resolve_method_dns_over_https" />
+
+    </org.chromium.components.browser_ui.widget.RadioButtonWithDescriptionLayout>
+</LinearLayout>

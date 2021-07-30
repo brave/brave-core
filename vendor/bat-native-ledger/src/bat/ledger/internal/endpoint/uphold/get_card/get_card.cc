@@ -36,10 +36,12 @@ type::Result GetCard::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_UNAUTHORIZED ||
       status_code == net::HTTP_NOT_FOUND ||
       status_code == net::HTTP_FORBIDDEN) {
+    BLOG(0, "Unauthorized access HTTP status: " << status_code);
     return type::Result::EXPIRED_TOKEN;
   }
 
   if (status_code != net::HTTP_OK) {
+    BLOG(0, "Unexpected HTTP status: " << status_code);
     return type::Result::LEDGER_ERROR;
   }
 
@@ -51,7 +53,7 @@ type::Result GetCard::ParseBody(
     double* available) {
   DCHECK(available);
 
-  base::Optional<base::Value> value = base::JSONReader::Read(body);
+  absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     return type::Result::LEDGER_ERROR;

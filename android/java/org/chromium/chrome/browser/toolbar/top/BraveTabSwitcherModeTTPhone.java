@@ -14,13 +14,17 @@ import org.chromium.chrome.browser.toolbar.NewTabButton;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButton;
+import org.chromium.components.browser_ui.styles.ChromeColors;
 
 public class BraveTabSwitcherModeTTPhone extends TabSwitcherModeTTPhone {
+    // To delete in bytecode, members from parent class will be used instead.
     private View mNewTabViewButton;
     private NewTabButton mNewTabImageButton;
     private ToggleTabStackButton mToggleTabStackButton;
     private boolean mShouldShowNewTabVariation;
+    private boolean mIsIncognito;
 
+    // Own members.
     private boolean mShouldShowNewTabButton;
 
     public BraveTabSwitcherModeTTPhone(Context context, AttributeSet attrs) {
@@ -52,5 +56,11 @@ public class BraveTabSwitcherModeTTPhone extends TabSwitcherModeTTPhone {
         if (BottomToolbarVariationManager.isTabSwitcherOnBottom() && !shouldShowIncognitoToggle()) {
             mToggleTabStackButton.setVisibility(isVisible ? GONE : VISIBLE);
         }
+    }
+
+    public int getToolbarColorForCurrentState() {
+        // Return primary background color regardless of GridTabSwitcher state. Otherwise toolbar of
+        // browsing mode is still visible in tab switching mode with stack layout.
+        return ChromeColors.getPrimaryBackgroundColor(getResources(), mIsIncognito);
     }
 }

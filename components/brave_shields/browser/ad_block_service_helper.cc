@@ -52,7 +52,7 @@ std::vector<FilterList> RegionalCatalogFromJSON(
     const std::string& catalog_json) {
   std::vector<adblock::FilterList> catalog = std::vector<adblock::FilterList>();
 
-  base::Optional<base::Value> regional_lists =
+  absl::optional<base::Value> regional_lists =
       base::JSONReader::Read(catalog_json);
   if (!regional_lists) {
     LOG(ERROR) << "Could not load regional adblock catalog";
@@ -115,7 +115,30 @@ std::vector<FilterList> RegionalCatalogFromJSON(
   return catalog;
 }
 
-// Merges the contents of the second UrlCosmeticResources Value into the first
+// Merges the first CSP directive into the second one provided, if they exist.
+//
+// Distinct policies are merged with comma separators, according to
+// https://www.w3.org/TR/CSP2/#implementation-considerations
+void MergeCspDirectiveInto(absl::optional<std::string> from,
+                           absl::optional<std::string>* into) {
+  DCHECK(into);
+
+  if (!from) {
+    return;
+  }
+
+  if (!*into) {
+    *into = from;
+    return;
+  }
+
+  const std::string from_str = *from;
+  const std::string into_str = **into;
+
+  *into = absl::optional<std::string>(from_str + ", " + into_str);
+}
+
+// Merges the contents of the first UrlCosmeticResources Value into the second
 // one provided.
 //
 // If `force_hide` is true, the contents of `from`'s `hide_selectors` field

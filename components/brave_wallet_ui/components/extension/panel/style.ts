@@ -6,5 +6,6 @@ export const StyledWrapper = styled.div`
   width: 100%;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start
+  justify-content: flex-start;
+  background-color: ${(p) => p.theme.color.background01};
 `

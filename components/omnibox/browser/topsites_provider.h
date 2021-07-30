@@ -11,7 +11,6 @@
 
 #include "base/compiler_specific.h"
 #include "base/macros.h"
-#include "base/strings/string16.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_provider.h"
 
@@ -32,7 +31,7 @@ class TopSitesProvider : public AutocompleteProvider {
 
   static std::vector<std::string> top_sites_;
 
-  void AddMatch(const base::string16& match_string,
+  void AddMatch(const std::u16string& match_string,
                 const ACMatchClassifications& styles);
 
   static ACMatchClassifications StylesForSingleMatch(

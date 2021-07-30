@@ -21,6 +21,7 @@ source_set("preferences") {
     "//brave/components/brave_referrals/common",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_shields/browser",
+    "//brave/components/brave_shields/common",
     "//brave/components/brave_sync",
     "//brave/components/p3a",
     "//components/content_settings/core/browser",

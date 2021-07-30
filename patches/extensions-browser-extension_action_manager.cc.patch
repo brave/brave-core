@@ -1,8 +1,8 @@
 diff --git a/extensions/browser/extension_action_manager.cc b/extensions/browser/extension_action_manager.cc
-index cdccbe7f5079acc8020ee854d28eda5fc5977331..5a9fd229429efb2bdd2beb701f743dca63196723 100644
+index 4738e9bc0910a2c25d7c29cab33f21619a96a84a..891729feb4442d35e2ba2bcbcdfc39a9ab48b3f7 100644
 --- a/extensions/browser/extension_action_manager.cc
 +++ b/extensions/browser/extension_action_manager.cc
-@@ -107,6 +107,7 @@ ExtensionAction* ExtensionActionManager::GetExtensionAction(
+@@ -108,6 +108,7 @@ ExtensionAction* ExtensionActionManager::GetExtensionAction(
    if (action->default_icon()) {
      action->SetDefaultIconImage(std::make_unique<IconImage>(
          browser_context_, &extension, *action->default_icon(),

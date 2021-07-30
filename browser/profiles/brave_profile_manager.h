@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/scoped_observer.h"
+#include "base/scoped_multi_source_observation.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
 #include "chrome/browser/profiles/profile_observer.h"
@@ -21,7 +21,6 @@ class BraveProfileManager : public ProfileManager,
   ~BraveProfileManager() override;
 
   void InitProfileUserPrefs(Profile* profile) override;
-  std::string GetLastUsedProfileName() override;
   void SetNonPersonalProfilePrefs(Profile* profile) override;
   bool IsAllowedProfilePath(const base::FilePath& path) const override;
   bool LoadProfileByPath(const base::FilePath& profile_path,
@@ -41,7 +40,8 @@ class BraveProfileManager : public ProfileManager,
 
  private:
   void MigrateProfileNames();
-  ScopedObserver<Profile, ProfileObserver> observed_profiles_{this};
+  base::ScopedMultiSourceObservation<Profile, ProfileObserver>
+      observed_profiles_{this};
 
   DISALLOW_COPY_AND_ASSIGN(BraveProfileManager);
 };

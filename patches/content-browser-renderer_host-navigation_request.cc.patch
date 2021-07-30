@@ -1,17 +1,8 @@
 diff --git a/content/browser/renderer_host/navigation_request.cc b/content/browser/renderer_host/navigation_request.cc
-index dae1c91d2d720f09b9a0840d829d4cc8600232ba..7e987915f766bd320cb1db2924047931f4adf4df 100644
+index a3d8dd6b254328a0dd8535c02b20919f6cc9b3c7..582b71571c6d4cff8f8e0876c0f2a840977654ce 100644
 --- a/content/browser/renderer_host/navigation_request.cc
 +++ b/content/browser/renderer_host/navigation_request.cc
-@@ -302,7 +302,7 @@ void AddAdditionalRequestHeaders(
-   headers->SetHeaderIfMissing(
-       net::HttpRequestHeaders::kUserAgent,
-       user_agent_override.empty()
--          ? GetContentClient()->browser()->GetUserAgent()
-+          BRAVE_NAVIGATION_REQUEST_ADD_ADDITIONAL_REQUEST_HEADERS
-           : user_agent_override);
- 
-   if (!render_prefs.enable_referrers) {
-@@ -2041,6 +2041,7 @@ void NavigationRequest::OnRequestRedirected(
+@@ -2154,6 +2154,7 @@ void NavigationRequest::OnRequestRedirected(
    common_params_->url = redirect_info.new_url;
    common_params_->method = redirect_info.new_method;
    common_params_->referrer->url = GURL(redirect_info.new_referrer);
@@ -19,7 +10,7 @@ index dae1c91d2d720f09b9a0840d829d4cc8600232ba..7e987915f766bd320cb1db2924047931
    common_params_->referrer = Referrer::SanitizeForRequest(
        common_params_->url, *common_params_->referrer);
  
-@@ -3079,6 +3080,7 @@ void NavigationRequest::OnStartChecksComplete(
+@@ -3322,6 +3323,7 @@ void NavigationRequest::OnStartChecksComplete(
    headers.MergeFrom(TakeModifiedRequestHeaders());
    begin_params_->headers = headers.ToString();
  
@@ -27,12 +18,3 @@ index dae1c91d2d720f09b9a0840d829d4cc8600232ba..7e987915f766bd320cb1db2924047931
    // TODO(clamy): Avoid cloning the navigation params and create the
    // ResourceRequest directly here.
    std::vector<std::unique_ptr<NavigationLoaderInterceptor>> interceptor;
-@@ -5413,7 +5415,7 @@ void NavigationRequest::SetIsOverridingUserAgent(bool override_ua) {
-   auto user_agent_override = GetUserAgentOverride();
-   headers.SetHeader(net::HttpRequestHeaders::kUserAgent,
-                     user_agent_override.empty()
--                        ? GetContentClient()->browser()->GetUserAgent()
-+                        BRAVE_NAVIGATION_REQUEST_SET_IS_OVERRIDING_USERAGENT
-                         : user_agent_override);
-   BrowserContext* browser_context =
-       frame_tree_node_->navigator().controller().GetBrowserContext();

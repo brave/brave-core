@@ -12,7 +12,6 @@
 <translation id="4798342026247191171">તમારી નવી Brave પ્રોફાઇલ સેટઅપ કરો</translation>
 <translation id="113959764510199339">Brave પાસવર્ડ્સ બતાવવાનો પ્રયાસ કરી રહ્યું છે.</translation>
 <translation id="8132634101975074716">તમે Brave માં સાઇન ઇન કર્યું છે!</translation>
-<translation id="7370605478942575409">સંરક્ષિત મીડિયા ચલાવવા Rosettaનો ઉપયોગ કરવા માટે, તમારે Brave ફરી શરૂ કરવું આવશ્યક છે.</translation>
 <translation id="7419046106786626209">Chrome OS તમારા ડેટાને સિંક કરી શક્યું નથી, કારણ કે તમારા ડોમેન માટે સિંક ઉપલબ્ધ નથી.</translation>
 <translation id="5147525139567260139">Brave ટૅબ શેર કરો</translation>
 <translation id="1530633922026945685">તમારા આસપાસનો 3D નકશો બનાવવા માટે, Braveને તમારા કૅમેરાના ઍક્સેસની પરવાનગી જરૂરી છે</translation>
@@ -23,12 +22,11 @@
 <translation id="1649714546770135458">આને બંધ કરવાથી, તમે Braveમાં સાઇન ઇન કર્યા સિવાય Gmail જેવી Braveની સાઇટમાં સાઇન ઇન કરી શકશો</translation>
 <translation id="189297655255130768">Brave પ્રતિસાદ આપતું નથી. હવે ફરીથી લોંચ કરીએ?</translation>
 <translation id="1775322105159056176">Brave ડિફૉલ્ટ બ્રાઉઝરને નિર્ધારિત અથવા સેટ કરી શકતું નથી</translation>
+<translation id="7665553140559834626">&amp;Chrome OS અપડેટ કરવા માટે, ફરીથી લૉન્ચ કરો</translation>
 <translation id="9220324636239049437">આ, 1 આઇટમને આ ડિવાઇસમાંથી ડિલીટ કરશે. પછીથી તમારો ડેટા ફરીથી મેળવવા માટે, Brave માં <ph name="USER_EMAIL"/> તરીકે સાઇન ઇન કરો.</translation>
 <translation id="831418749472885028">ડેટા ઉલ્લંઘન અને અન્ય સુરક્ષાની સમસ્યાથી તમારા અન્ય પાસવર્ડ સુરક્ષિત છે કે નહીં તે ચેક કરવા માટે, <ph name="BEGIN_LINK"/>Braveમાં સાઇન ઇન કરો<ph name="END_LINK"/>.</translation>
-<translation id="796822898986482154"><ph name="LINK_BEGIN"/>સેટિંગ<ph name="LINK_END"/>માં જઈને તમે આ અને <ph name="USER_NAME"/> માટે ઉમેરેલા અન્ય Brave એકાઉન્ટને એક જ જગ્યાએથી મેનેજ કરી શકો છો.
-          તમે Brave બ્રાઉઝરની વેબસાઇટ અને Google Playમાંની ઍપને આપેલી પરવાનગીઓ બધા એકાઉન્ટ પર લાગુ પડી શકે છે.</translation>
+<translation id="142389341645668510">Brave કસ્ટમાઇઝ કરો</translation>
 <translation id="8745514854244955877">Brave - નેટવર્ક સાઇન ઇન - <ph name="PAGE_TITLE"/></translation>
-<translation id="162629503687514352">Chrome OS તમારા પાસવર્ડને સિંક કરી શક્યું નથી.</translation>
 <translation id="5659384504794665581">જો તમે કમ્પ્યુટરને શેર કરો છો, તો મિત્રો અને કુટુંબીજનો અલગ-અલગ બ્રાઉઝ કરી અને તેમને જોઇએ તેમ Brave ને સેટ કરી શકે છે.</translation>
 <translation id="5997267581285668459">વૈકલ્પિક: Braveને નિદાન અને વપરાશ ડેટા ઑટોમૅટિક રીતે મોકલીને Chrome OSની સુવિધાઓ અને કાર્યપ્રદર્શનને સુધારવામાં સહાય કરો.</translation>
 <translation id="9095263438435683933">અહીંથી તમારા Android ફોન પર નંબર મોકલવા માટે, બન્ને ડિવાઇસ પર Braveમાં સાઇન ઇન કરો.</translation>
@@ -36,26 +34,24 @@
 <translation id="2576129394594491151">જ્યારે તમે Brave શરૂ કરો છો ત્યારે જે પૃષ્ઠ દર્શાવવામાં આવે છે તે <ph name="EXTENSION_NAME"/> એક્સટેન્શને બદલ્યું છે.</translation>
 <translation id="6078442581074612226">Brave માં</translation>
 <translation id="2485422356828889247">અનઇન્સ્ટૉલ કરો</translation>
-<translation id="2555639463117073782"><ph name="PLUGIN_NAME"/>ને ચાલુ કરવા માટે Brave ફરી શરૂ કરો</translation>
 <translation id="9026991721384951619">તમારી એકાઉન્ટ સાઇન ઇન વિગતો જૂની હોવાને કારણે Chrome OS તમારા ડેટાને સિંક કરી શક્યું નથી.</translation>
 <translation id="7798069806040634998">ફાઇલો ડાઉનલોડ કરવા માટે Braveને સ્ટોરેજના ઍક્સેસની જરૂર પડે છે</translation>
 <translation id="8447483940522230788">Brave હેલ્પર</translation>
 <translation id="7933006624150961626">Brave પરની તમારી વસ્તુઓને તમારા બધા ડિવાઇસ પર ઍક્સેસ કરવા માટે સાઇન ઇન કરો, જેથી તમે સિંક કરવાની સુવિધા ચાલુ કરી શકો.</translation>
+<translation id="5486618155264784386">Chrome OS ઇન્સ્ટૉલ કરો</translation>
 <translation id="7291143854620707672">આ પ્રોફાઇલના ઉપયોગ (જેમકે બુકમાર્ક, ઇતિહાસ, પાસવર્ડ બનાવવા અને અન્ય સેટિંગ ગોઠવવા) દરમિયાન જનરેટ થયેલા કોઈપણ Brave ડેટાને ઑફિસની પ્રોફાઇલના વ્યવસ્થાપક કાઢી નાખી શકે છે. <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">અપડેટ લાગુ કરવા માટે Chrome OSને ફરી શરૂ કરવાની જરૂર છે.</translation>
-<translation id="3913823837305937258">આ કમ્પ્યુટર ટૂંક સમયમાં Brave અપડેટ્સ પ્રાપ્ત કરવાનું બંધ કરશે કારણ કે તેના હાર્ડવેરને હવે સમર્થન નથી.</translation>
 <translation id="7387051847644272380">ઇન્સ્ટૉલેશન દરમિયાન ઓપરેટિંગ સિસ્ટમ ભૂલ આવી. કૃપા કરીને ફરીથી Brave ડાઉનલોડ કરો.</translation>
 <translation id="2648689842065142443">જો તમે ડિવાઇસ શેર કરતા હો, તો મિત્રો અને કુટુંબીજનો અલગ-અલગ બ્રાઉઝ કરી શકે છે અને તેઓ તેમને જોઈએ તે પ્રમાણે Braveનું સેટઅપ કરી શકે છે</translation>
-<translation id="3749489756681759571">Brave આ એક્સ્ટેન્શન બંધ કરવાનો સુઝાવ આપે છે, કારણ કે તે હાલમાં Safe Browsingમાં વધારેલી સુરક્ષાના માનકોનું પાલન કરતું નથી.</translation>
 <translation id="6791166902140255175">Brave ટૅબ</translation>
 <translation id="8372880274820509128">ઉમેરેલી સુરક્ષા માટે, Brave તમારા ડેટાને એન્ક્રિપ્ટ કરશે.</translation>
 <translation id="2770231113462710648">ડિફૉલ્ટ બ્રાઉઝરને આના પર બદલો:</translation>
 <translation id="2799223571221894425">ફરીથી લોંચ કરો</translation>
 <translation id="6811506454451584223">Brave પ્રોફાઇલ અલગ કરીએ?</translation>
+<translation id="3783547330001921298">આને લીધે <ph name="USER_EMAIL_ADDRESS"/> માટે નવી Brave પ્રોફાઇલ બનશે</translation>
 <translation id="777113543093865885">Brave માંથી દૂર કરો...</translation>
 <translation id="2885378588091291677">કાર્ય વ્યવસ્થાપક</translation>
 <translation id="2176825726964012531">&amp;Brave વિશે</translation>
-<translation id="245659736593643560"><ph name="BEGIN_LINK_LINUX_OSS"/>Linux ડેવલપમેન્ટ વાતાવરણ (બીટા)<ph name="END_LINK_LINUX_OSS"/>ની જેમ, Chrome OS વધારાના <ph name="BEGIN_LINK_CROS_OSS"/>ઓપન સૉર્સ સૉફ્ટવેર<ph name="END_LINK_CROS_OSS"/> દ્વારા તૈયાર કરવામાં આવ્યું છે.</translation>
 <translation id="8208853227947884571">Brave અપ ટૂ ડેટ છે</translation>
 <translation id="2953892977076487219">Brave પાસવર્ડમાં ફેરફાર કરવાનો પ્રયાસ કરે છે.</translation>
 <translation id="8755404239607088219">Brave તમારા પાસવર્ડ ચેક કરી શકતું નથી. થોડા સમય પછી ફરી પ્રયાસ કરો.</translation>
@@ -64,6 +60,7 @@
 <translation id="7365690458036015383">ઇન્સ્ટૉલર આર્કાઇવને અનકોમ્પ્રેસ કરવામાં નિષ્ફળ. કૃપા કરીને Brave ફરીથી ડાઉનલોડ કરો.</translation>
 <translation id="8919461291440820124">Brave તમારા માઇક્રોફોનનો ઉપયોગ કરી રહ્યું છે.</translation>
 <translation id="4805806622840861220">Brave ને ફરીથી લોંચ કરો</translation>
+<translation id="1742948938503172561">તમારી નવી Brave પ્રોફાઇલ કસ્ટમાઇઝ કરો</translation>
 <translation id="1477146545787277177">ઓહ! Brave ક્રેશ થઈ ગયું. હમણાં ફરીથી લોંચ કરીએ?</translation>
 <translation id="7503098128120083822">Brave તમારા પાસવર્ડની નિકાસ કરવા માગે છે.</translation>
 <translation id="2585240446624043880">Brave એની ડેટા ડિરેક્ટરી વાંચી અથવા લખી શકતુંં નથી:
@@ -78,6 +75,7 @@
 <translation id="2450003541323895471">Brave પ્રોફાઇલ વડે તમે તમારી બધી વસ્તુઓ Brave પર અલગ-અલગ રાખી શકો છો. મિત્રો અને કુટુંબ માટે પ્રોફાઇલ બનાવો અથવા તેને ઑફિસ અને મનોરંજન વચ્ચે વિભાજિત કરો.</translation>
 <translation id="9216183508558772570">જ્યારે તમે ચેડાં કરવામાં આવેલા પાસવર્ડ વડે સાઇન ઇન કરશો ત્યારે Brave તમને સૂચિત કરશે</translation>
 <translation id="5853262807109651878">આ, <ph name="ITEMS_COUNT"/> આઇટમને આ ડિવાઇસમાંથી ડિલીટ કરશે. પછીથી તમારો ડેટા ફરીથી મેળવવા માટે, Brave માં <ph name="USER_EMAIL"/> તરીકે સાઇન ઇન કરો.</translation>
+<translation id="2024972335338126423"><ph name="SHORTCUT"/> વડે એક Brave પ્રોફાઇલથી બીજી Brave પ્રોફાઇલ પર સ્વિચ કરી શકાય છે</translation>
 <translation id="8703492925273919597">કૃપા કરીને બધી Brave વિંડોઝ બંધ કરો અને ફરીથી પ્રયાસ કરો.</translation>
 <translation id="1384923383737428730">તમારા કમ્પ્યુટરમાં નુકસાનકારક સૉફ્ટવેર છે. Brave તે કાઢી શકે છે, તમારું સેટિંગ પાછું મેળવી શકે છે અને એક્સ્ટેંશન બંધ કરી શકે છે જેથી તમારું બ્રાઉઝર ફરી સામાન્ય રીતે કામ કરી શકે.</translation>
 <translation id="7029305463989165490"><ph name="ORIGIN"/>માંથી તમારા Android ફોન પર નંબર મોકલવા માટે, બન્ને ડિવાઇસ પર Braveમાં સાઇન ઇન કરો.</translation>
@@ -103,11 +101,13 @@
 <translation id="9183662282810237335">છતાં પણ Braveમાંથી બહાર નિકળવું છે?</translation>
 <translation id="4065288863231444640">Braveને બૅકગ્રાઉન્ડમાં ચાલવા દો</translation>
 <translation id="8148611988012584308">Brave ને કસ્ટમાઇઝ અને નિયંત્રિત કરો</translation>
+<translation id="1201005444605297066">આ પેજ તમને તમારા સાઇન ઇન કરેલા હોય એવા Brave એકાઉન્ટ મેનેજ કરવાની મંજૂરી આપે છે. આ એકાઉન્ટ Brave બ્રાઉઝર અને Play સ્ટોર ઍપમાં તેમજ Gmail, Drive અને YouTube જેવી સેવાઓમાં ઉપલબ્ધ રહેશે. <ph name="LINK_BEGIN"/>વધુ જાણો<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Brave પર આપનું સ્વાગત છે; નવી બ્રાઉઝર વિન્ડો ખોલી છે</translation>
 <translation id="2633397153656205379">કંઈક ખોટુ થયું હોવાને કારણે Brave અપડેટ થયું નથી. <ph name="BEGIN_LINK"/>Brave અપડેટ કરવામાં આવતી સમસ્યાઓ અને નિષ્ફળ થયેલા અપડેટ સુધારો.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">નવી Brave પ્રોફાઇલમાં બ્રાઉઝિંગ ચાલુ રાખીએ?</translation>
 <translation id="4567424176335768812">તમે <ph name="USER_EMAIL_ADDRESS"/> તરીકે સાઇન ઇન છો. હવે તમે તમારા બધા સાઇન ઇન કરેલા ઉપકરણો પર તમારા બુકમાર્ક્સ, ઇતિહાસ અને અન્ય સેટિંગ્સને ઍક્સેસ કરી શકો છો.</translation>
 <translation id="300669147395456190">Brave ઍપ્લિકેશનો</translation>
+<translation id="1299765473362724475">ચેતવણી: એક્સ્ટેન્શનને તમારો બ્રાઉઝિંગ ઇતિહાસ રેકોર્ડ કરવાથી Brave અટકાવી શકતું નથી. છૂપા મોડમાં આ એક્સ્ટેન્શનને બંધ કરવા માટે, આ વિકલ્પની પસંદગી નાપસંદ કરો.</translation>
 <translation id="8142245354207161805">બીજા કમ્પ્યુટર (<ph name="HOST_NAME"/>) પર પ્રોફાઇલ બીજી Brave પ્રક્રિયા (<ph name="PROCESS_ID"/>) દ્વારા ઉપયોગમાં હોય એવું લાગે છે. Brave એ પ્રોફાઇલને લૉક કરી છે જેથી તે દૂષિત ન થઈ જાય. જો તમને ખાતરી છે કે કોઈ અન્ય પ્રક્રિયાઓ આ પ્રોફાઇલનો ઉપયોગ કરી રહી નથી, તો તમે પ્રોફાઇલને અનલૉક કરી અને Brave ને ફરીથી લોંચ કરી શકો છો.</translation>
 <translation id="3395323229510056640">Chrome OS સાથે સહાય મેળવો</translation>
 <translation id="847561904663814268">કોઈએ આ કોમ્પ્યુટર પર પહેલા <ph name="ACCOUNT_EMAIL_LAST"/> તરીકે Braveમાં સાઇન ઇન કર્યું છે. તમારી માહિતી અલગ રાખવા માટે કૃપા કરીને નવો Brave વપરાશકર્તા બનાવો.</translation>
@@ -115,12 +115,13 @@
 <translation id="8668413672647811944">Brave માટેનું એક વિશિષ્ટ સુરક્ષા અપડેટ હમણાં જ લાગુ કરવામાં આવ્યું. હવે ફરી શરૂ કરો અને અમે તમારાં ટૅબની પુનઃસ્થાપના કરીશું.</translation>
 <translation id="4823369970559443694">Brave તમારા પાસવર્ડ ચેક કરી શકતું નથી. 24 કલાક પછી ફરી પ્રયાસ કરજો અથવા <ph name="BEGIN_LINK"/>તમારા Brave એકાઉન્ટમાં પાસવર્ડ ચેક કરો<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">આ પણ Brave શોધમાં જે જોડણી તપાસનારનો ઉપયોગ થાય છે તેનો જ ઉપયોગ કરે છે. તમે બ્રાઉઝરમાં ટાઇપ કરો છો તે ટેક્સ્ટ Braveને મોકલવામાં આવે છે. તમે સેટિંગમાં આ વર્તણૂકને હંમેશાં બદલી શકો છો.</translation>
-<translation id="2899369907387169108">એકાઉન્ટ વગર Braveનો ઉપયોગ કરો</translation>
 <translation id="1912973375560256099">mDNS ટ્રાફિકને મંજૂરી આપવા Brave માટે ઇનબાઉન્ડ નિયમ.</translation>
+<translation id="711601904575862069">&amp;Brave અપડેટ કરવા માટે, ફરીથી લૉન્ચ કરો</translation>
 <translation id="8797356639448065696">Brave પૃષ્ઠભૂમિ મોડમાં છે.</translation>
 <translation id="7406627712452599344">અતિથિઓ કંઈપણ પાછળ છોડ્યાં વિના Brave નો ઉપયોગ કરી શકે છે.</translation>
 <translation id="5952898964075639679">સ્વયંને Brave માં ઉમેરો</translation>
 <translation id="9078804073692109646">કોઈ સાચવેલા પાસવર્ડ નથી. જ્યારે તમે તમારા પાસવર્ડ સાચવો ત્યારે Brave તેને ચેક કરી શકે છે.</translation>
+<translation id="729580998737807583"><ph name="EXISTING_USER"/> આ Brave પ્રોફાઇલમાં પહેલેથી સાઇન ઇન છે. આને લીધે <ph name="USER_EMAIL_ADDRESS"/> માટે નવી Brave પ્રોફાઇલ બનશે</translation>
 <translation id="8586264863973514035">તમારા ફેરફારો લાગુ કરવા માટે, Braveને ફરી લૉન્ચ કરો</translation>
 <translation id="7708394612738038097">તમે મેનેજ કરેલા એકાઉન્ટ સાથે સાઇન ઇન કરી રહ્યાં છો અને તમારી Brave પ્રોફાઇલ પર એનું એડમિન નિયંત્રણ આપી રહ્યાં છો. તમારો Brave ડેટા, જેમ કે ઍપ, બુકમાર્ક, ઇતિહાસ, પાસવર્ડ અને બીજા સેટિંગ, કાયમ માટે <ph name="USER_NAME"/> થી બંધાયેલ રહેશે. તમે Brave એકાઉન્ટ ડૅશબોર્ડથી આ ડેટાને કાઢી શકશો, પરંતુ તમે આ ડેટાને બીજા એકાઉન્ટ સાથે સાંકળી શકશો નહિ. <ph name="LEARN_MORE"/></translation>
 <translation id="1786715389543715322">Brave અપડેટ થઈ રહ્યું છે (<ph name="PROGRESS_PERCENT"/>)</translation>
@@ -131,15 +132,16 @@
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave બીટા</translation>
 <translation id="707769633889902835">Chrome OS, આ પેજને ખોલી શકતું નથી.</translation>
 <translation id="696826782632239602">Braveને આ સાઇટ સાથે તમારું સ્થાન શેર કરવા માટે તમારા સ્થાનના ઍક્સેસની જરૂર પડે છે</translation>
+<translation id="7886919915603831625">Brave ભલામણ કરે છે કે તમે આ ફાઇલને ડાઉનલોડ ન કરો કે ન ખોલો.</translation>
 <translation id="1744365871163268756">કૃપા કરીને Brave, નવીનતમ સિસ્ટમ અપડેટ્સ ઇન્સ્ટોલ કરે ત્યાં સુધી રાહ જુઓ.</translation>
 <translation id="3861679447659630159">Brave પાસવર્ડમાં ફેરફાર કરવાનો પ્રયાસ કરે છે. આની મંજૂરી આપવા માટે તમારો Windows પાસવર્ડ લખો.</translation>
+<translation id="232381795826373334">Braveમાં PDFs ખોલો</translation>
 <translation id="1026406809507858026">{0,plural, =0{Brave અપડેટ ઉપલબ્ધ છે}=1{Brave અપડેટ ઉપલબ્ધ છે}one{Brave અપડેટ # દિવસ માટે ઉપલબ્ધ છે}other{Brave અપડેટ # દિવસ માટે ઉપલબ્ધ છે}}</translation>
-<translation id="4518479204315969707">Braveમાંનું નામ અને ફોટો</translation>
 <translation id="95624393026532554">Brave માટે Windows 7 અથવા તે પછીનું સંસ્કરણ આવશ્યક છે.</translation>
 <translation id="5646769069113654257">કૃપા કરીને હવે Brave ફરી શરૂ કરો</translation>
 <translation id="2335583906071111058">આ ભાષામાં Brave બતાવો</translation>
-<translation id="3009727137063767373">સંરક્ષિત મીડિયા ચલાવવા Brave ચાલુ કરવા માટે, તમારે Rosetta ઇન્સ્ટૉલ કરવું જરૂરી છે. શું તમે આ હમણાં ઇન્સ્ટૉલ કરવા માગો છો?</translation>
 <translation id="4331809312908958774">Chrome OS</translation>
+<translation id="79947657522496226"><ph name="BEGIN_LINK_LINUX_OSS"/>Linux ડેવલપમેન્ટ વાતાવરણ<ph name="END_LINK_LINUX_OSS"/>ની જેમ, Chrome OS વધારાના <ph name="BEGIN_LINK_CROS_OSS"/>ઓપન સૉર્સ સૉફ્ટવેર<ph name="END_LINK_CROS_OSS"/> દ્વારા તૈયાર કરવામાં આવ્યું છે.</translation>
 <translation id="7207456302801184289">Brave માં સ્વાગત છે</translation>
 <translation id="5895138241574237353">પુનઃપ્રારંભ કરો</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - નેટવર્ક સાઇન ઇન</translation>
@@ -154,14 +156,15 @@
 <translation id="492209281555538239">Brave આ પાસવર્ડ તમારા Brave એકાઉન્ટમાં સાચવશે. તમારે તેને યાદ રાખવો જરૂરી નથી.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> જોખમી છે, તેથી Brave એ તેને અવરોધિત કરેલ છે.</translation>
 <translation id="7006260220514217183">Safe Browsingની સુવિધા બંધ છે. Brave તેને ચાલુ રાખવાનો સુઝાવ આપે છે.</translation>
+<translation id="4060970194201477024">તમે અહીં એક Brave પ્રોફાઇલથી બીજી Brave પ્રોફાઇલ પર સ્વિચ કરી શકો છો</translation>
 <translation id="4368341489795135329">ખાતરી કરો કે તમે તમારા <ph name="TARGET_DEVICE_NAME"/> પર Braveમાં સાઇન ઇન કર્યું છે અને પછી ફરીથી મોકલવાનો પ્રયાસ કરો.</translation>
 <translation id="8320964054148936490">આ કમ્પ્યુટર પર પહેલાંથી જ Braveનું સૌથી તાજેતરનું વર્ઝન છે. જો સૉફ્ટવેર કાર્ય કરી રહ્યું નથી, તો કૃપા કરીને Braveને અનઇન્સ્ટૉલ કરો અને ફરીથી પ્રયાસ કરો.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave હમણાં ફરીથી લૉન્ચ થશે}=1{Brave 1 સેકન્ડમાં ફરીથી લૉન્ચ થશે}one{Brave # સેકન્ડમાં ફરીથી લૉન્ચ થશે}other{Brave # સેકન્ડમાં ફરીથી લૉન્ચ થશે}}</translation>
-<translation id="3127818369811890733">Chrome OS તમારા ડેટાને સિંક કરી શક્યું નથી.</translation>
 <translation id="5019879183386042809">Brave ને ડિફોલ્ટ બ્રાઉઝર બનાવો</translation>
 <translation id="428541510811554120">Brave અપડેટ ચેક કરી શકતું નથી. તમારું ઇન્ટરનેટ કનેક્શન ચેક કરવાનો પ્રયાસ કરો.</translation>
 <translation id="7445061995866044926">Braveમાંથી સાઇન આઉટ કરીએ?</translation>
 <translation id="6806912298071949921">તમારી Brave પ્રોફાઇલને કસ્ટમાઇઝ કરો</translation>
+<translation id="3792238845239580301">તમારી Brave પ્રોફાઇલને નામ આપો</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> જોખમી હોઈ શકે છે, તેથી Brave એ તેને અવરોધિત કરેલ છે.</translation>
 <translation id="3205074487970075628">Brave તમારા કેમેરાનો ઉપયોગ કરી રહ્યું છે.</translation>
 <translation id="1819119299840995223">Brave પર બીજી ક્રિયા ચાલુ છે. કૃપા કરીને પછીથી ફરી પ્રયાસ કરો.</translation>
@@ -189,16 +192,14 @@
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (Brave પર કૉપિ કરેલું છે)</translation>
 <translation id="2301993384336631869">Brave અપડેટ કરવામાં આવ્યું હતું, પણ તમે તેનો 30 દિવસ સુધી ઉપયોગ કર્યો નથી.</translation>
-<translation id="8522287263361940593">Rosettaની મદદથી Brave આ પેજ પર સંરક્ષિત મીડિયા ચલાવી શકશે.</translation>
+<translation id="8828443087767259398">જોડાણ કરવાનું ચાલુ રાખવા માટે, Braveને બ્લૂટૂથના ઍક્સેસની 
+ જરૂર છે. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6418340404893954563">નબળા પાસવર્ડનું અનુમાન કરવું સરળ હોય છે. Braveને <ph name="BEGIN_LINK"/>તમારા માટે સશક્ત પાસવર્ડ બનાવવા અને યાદ રાખવા<ph name="END_LINK"/>ની મંજૂરી આપો.</translation>
 <translation id="3335606533094650083">Braveને આ સાઇટ માટે તમારા માઇક્રોફોનના ઍક્સેસની પરવાનગીની જરૂર પડે છે</translation>
-<translation id="1785833016412082453">Brave તમારા એક્સ્ટેંશન ચેક કરી શકતું નથી. થોડા સમય પછી ફરી પ્રયાસ કરો.</translation>
 <translation id="1705567146636171298">Brave ને અપડેટ કરો</translation>
-<translation id="123620459398936149">Chrome OS તમારા ડેટાને સિંક કરી શક્યું નથી. કૃપા કરીને તમારા સિંક પાસફ્રેઝને અપડેટ કરો.</translation>
 <translation id="5499063270485366718">જો છબીમાં ઉપયોગી વર્ણન ન હોય, તો Brave તમને વર્ણન પૂરું પાડવાનો પ્રયાસ કરશે. વર્ણન બનાવવા માટે, Braveને છબીઓ મોકલવામાં આવે છે.</translation>
 <translation id="1197672524850678392">Brave લૉન્ચ કરી શકાયું નથી. ફરી પ્રયાસ કરો.</translation>
 <translation id="3405035915691517126">Brave તમારા પાસવર્ડ ચેક કરી શકતું નથી. 24 કલાક પછી ફરી પ્રયાસ કરો.</translation>
-<translation id="5660079256336839395">Brave મેનૂમાં છુપાવો</translation>
 <translation id="5516268345616100622">કાર્ય વ્યવસ્થાપક - Brave</translation>
 <translation id="61852838583753520">&amp;Chrome OSને અપડેટ કરો</translation>
 <translation id="1864557848095568223">Brave ને અપડેટ કરી રહ્યું છે</translation>
@@ -226,14 +227,13 @@ Brave તમારી સેટિંગ્સને પુનઃપ્રાપ
 <translation id="4784414698887946907">આ તમારા બ્રાઉઝિંગ ડેટાને આ ડિવાઇસમાંથી ડિલીટ કરશે. પછીથી તમારો ડેટા ફરીથી મેળવવા માટે, Brave માં <ph name="USER_EMAIL"/> તરીકે સાઇન ઇન કરો.</translation>
 <translation id="7747138024166251722">ઇન્સ્ટૉલર અસ્થાયી ડિરેક્ટરી બનાવી શક્યું નથી. કૃપા કરીને ખાલી ડિસ્ક સ્પેસ માટે અને સૉફ્ટવેર ઇન્સ્ટૉલ કરવાની પરવાનગી માટે તપાસો.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
-<translation id="38898988211673781">જ્યારે તમે Braveમાંથી બહાર નીકળો ત્યારે કુકી અને સાઇટનો ડેટા સાફ કરો</translation>
+<translation id="1652855885539187849">આ એકાઉન્ટ સાથેની Brave પ્રોફાઇલ પહેલેથી જ આ ડિવાઇસ પર અસ્તિત્વમાં છે</translation>
 <translation id="8462524920674814187">Braveની ભાવિ અપડેટ મેળવા માટે, તમારે OS X 10.11 કે તે પછીના વર્ઝન પર અપડેટ કરવું જરૂરી રહેશે. આ કમ્પ્યુટર OS X 10.10નો ઉપયોગ કરે છે.</translation>
 <translation id="7963515534397191222">Brave નવીનતમ વર્ઝન પર અપડેટ ન થઈ શક્યું, તેથી તમે નવી સુવિધાઓ અને સુરક્ષાના સુધારા ચૂકી રહ્યા છો.</translation>
 <translation id="7573289029918943991">તમારું ડિવાઇસ અપ ટૂ ડેટ છે કે નહીં, તે જાણવા માટે <ph name="LINK_BEGIN"/>Chrome OS સેટિંગ<ph name="LINK_END"/> પર જાઓ</translation>
 <translation id="6755885556185485672">Chrome OS યોગ્ય રીતે શટ ડાઉન થઈ ન હતી.</translation>
 <translation id="2925193881330501265">તમે Brave માં <ph name="USER_EMAIL_ADDRESS"/> તરીકે સાઇન ઇન કર્યું હતું. ફરીથી સાઇન ઇન કરવા માટે કૃપા કરીને એ જ એકાઉન્ટનો ઉપયોગ કરો.</translation>
 <translation id="6915252145142862992">આ Brave નું દ્વિતીય ઇન્સ્ટૉલેશન છે અને આને તમારું ડિફૉલ્ટ બ્રાઉઝર બનાવી શકાતું નથી.</translation>
-<translation id="4054452651944170004">Brave મેનૂમાં છુપાવો</translation>
 <translation id="7685904775439037072">એકવાર Braveને ઍક્સેસ મળે, તે પછી વેબસાઇટ તમારી પાસે ઍક્સેસ માગી શકશે.</translation>
 <translation id="9067428552314418522">આ ફાઇલ જોખમી છે, તેથી Brave એ તેને અવરોધિત કરેલ છે.</translation>
 <translation id="8207657266087451193">જો છબીમાં ઉપયોગી વર્ણન ન હોય, તો Brave તમને વર્ણન પૂરું પાડવાનો પ્રયાસ કરશે. વર્ણન બનાવવા માટે, Braveને છબીઓ મોકલવામાં આવે છે. તમે આને કોઈપણ સમયે સેટિંગમાં જઈને બંધ કરી શકો છો.</translation>
@@ -266,15 +266,15 @@ Brave તમારી સેટિંગ્સને પુનઃપ્રાપ
 <translation id="1156157157416773301">નવી Brave પ્રોફાઇલમાં એકાઉન્ટ ખસેડીએ?</translation>
 <translation id="5173820533850252773">Brave જૂનું થઈ ગયું છે</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave એક કલાકમાં ફરીથી લૉન્ચ થશે}one{Brave # કલાકમાં ફરીથી લૉન્ચ થશે}other{Brave # કલાકમાં ફરીથી લૉન્ચ થશે}}</translation>
-<translation id="3867851085410947377">જો તમારી પાસે એકથી વધુ Brave એકાઉન્ટ હોય, તો તમે તેને તમારી <ph name="DEVICE_TYPE"/>માં ઉમેરી શકો છો. તમારા એકાઉન્ટ Brave બ્રાઉઝર અને Play સ્ટોરમાં તેમજ Gmail, Drive અને YouTube જેવી સેવાઓમાં ઉપલબ્ધ રહેશે. <ph name="LINK_BEGIN"/>વધુ જાણો<ph name="LINK_END"/></translation>
 <translation id="7863882214613921971">નવા Brave &amp;ટૅબમાં લિંક ખોલો</translation>
 <translation id="911206726377975832">તમારો બ્રાઉઝિંગ ડેટા પણ ડિલીટ કરી દઈએ?</translation>
 <translation id="2444257125841652328">તમારા સિસ્ટમ વ્યવસ્થાપકે <ph name="TARGET_URL_HOSTNAME"/>ને ઍક્સેસ કરવા Braveને વૈકલ્પિક બ્રાઉઝર ખોલવા માટે ગોઠવેલું છે.</translation>
+<translation id="7902365066753170041">&amp;Brave અપડેટ કરવા માટે, ફરીથી લૉન્ચ કરો</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="6568793831116033768">Chrome OS સિસ્ટમ</translation>
 <translation id="7977787072794666032">Brave યોગ્ય રીતે કાર્ય ન કરે તેવું બની શકે કારણ કે તે હવેથી Windows XP અથવા Windows Vista પર સમર્થિત નથી</translation>
+<translation id="4484434718272972655">કોણ Braveનો ઉપયોગ કરે છે?</translation>
 <translation id="8992261409816268381">Brave લેખકો</translation>
-<translation id="6134859571175647580">ચેતવણી: એક્સ્ટેંશનને તમારો બ્રાઉઝિંગ ઇતિહાસ રેકોર્ડ કરવાથી Brave અટકાવી શકતું નથી. છૂપા મોડમાં આ એક્સ્ટેંશનને બંધ કરવા માટે, આ વિકલ્પની પસંદગી નાપસંદ કરો.</translation>
 <translation id="1448049584457347995">Brave ને સુરક્ષિત બનાવવા માટે, અમે <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> માં સૂચિબદ્ધ નથી અને તમારી જાણ વિના ઉમેરવામાં આવ્યાં હોઈ શકે છે તેવા કેટલાક એક્સ્ટેન્શન્સને અક્ષમ કર્યા છે.</translation>
 <translation id="8848045066928358658">Brave ને સુરક્ષિત બનાવવા માટે, અમે નીચેના એક્સ્ટેન્શનને અક્ષમ કર્યું છે કે જે <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> માં સૂચિબદ્ધ નથી અને તમારી જાણ વિના ઉમેરવામાં આવ્યું હોઈ શકે છે.</translation>
 <translation id="669092380621816981">આ વ્યક્તિનો બ્રાઉઝિંગ ડેટા આ ડિવાઇસમાંથી ડિલીટ કરવામાં આવશે. આ ડેટા પાછો મેળવવા માટે, Braveમાં <ph name="USER_EMAIL"/> તરીકે સાઇન ઇન કરો.</translation>

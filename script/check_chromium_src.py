@@ -35,13 +35,26 @@ CHROMIUM_SRC = os.path.abspath(os.path.dirname(BRAVE_SRC))
 
 EXCLUDES = [
     'CPPLINT.cfg',
+    '.*/DEPS',
+    '.*/sources.gni',
     '_(unit|browser)test(_mac)?.cc',
+    'third_party/blink/renderer/core/origin_trials/origin_trials.cc',
     'third_party/blink/renderer/modules/battery/navigator_batterytest.cc',
     'third_party/blink/renderer/modules/bluetooth/navigator_bluetoothtest.cc',
     'third_party/blink/renderer/modules/quota/navigator_storagetest.cc',
     'third_party/blink/renderer/modules/storage/brave_dom_window_storage.h',
     'chrome/installer/linux/common/brave-browser/chromium-browser.appdata.xml',
     'chrome/installer/linux/common/brave-browser/chromium-browser.info',
+    'content/browser/tld_ephemeral_lifetime.cc',
+    'content/public/browser/tld_ephemeral_lifetime.h'
+]
+
+GRIT_EXCLUDES = [
+    '.*/DEPS'
+]
+
+GRIT_INCLUDES = [
+    'third_party/blink/renderer/core/origin_trials/origin_trials.cc'
 ]
 
 
@@ -216,7 +229,9 @@ def main(args):
     do_check_overrides(src_overrides, CHROMIUM_SRC, True)
 
     # Check GRIT overrides.
-    grit_overrides = filter_chromium_src_filepaths(include_regexp='.*grit.*')
+    grit_overrides = filter_chromium_src_filepaths(
+        include_regexp='|'.join(GRIT_INCLUDES + ['.*grit.*']),
+        exclude_regexp='|'.join(GRIT_EXCLUDES))
     do_check_overrides(grit_overrides, gen_buildir, False)
 
 

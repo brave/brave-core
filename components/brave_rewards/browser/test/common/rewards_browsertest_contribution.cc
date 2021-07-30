@@ -5,9 +5,13 @@
 
 #include <utility>
 
+#include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_contribution.h"
+#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
+#include "brave/components/brave_rewards/common/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -77,7 +81,8 @@ void RewardsBrowserTestContribution::TipPublisher(
     const GURL& url,
     rewards_browsertest_util::TipAction tip_action,
     int32_t number_of_contributions,
-    int32_t selection) {
+    int32_t selection,
+    double custom_amount) {
   bool should_contribute = number_of_contributions > 0;
   const std::string publisher = url.host();
   // we shouldn't be adding publisher to AC list,
@@ -95,18 +100,42 @@ void RewardsBrowserTestContribution::TipPublisher(
       context_helper_->OpenSiteBanner(tip_action);
   ASSERT_TRUE(site_banner_contents);
 
-  auto tip_options = rewards_browsertest_util::GetSiteBannerTipOptions(
-          site_banner_contents);
-  const double amount = tip_options.at(selection);
+  double amount = 0.0;
 
-  // Select the tip amount (default is 1.000 BAT)
-  std::string amount_selector = base::StringPrintf(
-      "[data-test-id=tip-amount-options] [data-option-index='%u'] button",
-      selection);
+  if (custom_amount > 0) {
+    amount = custom_amount;
+    rewards_browsertest_util::WaitForElementThenClick(
+        site_banner_contents, "[data-test-id=custom-tip-button]");
 
-  rewards_browsertest_util::WaitForElementThenClick(
-      site_banner_contents,
-      amount_selector);
+    rewards_browsertest_util::WaitForElementToAppear(
+        site_banner_contents, "[data-test-id=custom-amount-input]");
+
+    constexpr char set_input_script[] = R"(
+        const input = document.querySelector(
+          '[data-test-id=custom-amount-input]');
+        input.value = $1;
+        input.blur();
+    )";
+
+    ASSERT_TRUE(ExecJs(site_banner_contents,
+                       content::JsReplace(set_input_script, amount),
+                       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                       content::ISOLATED_WORLD_ID_CONTENT_END));
+
+    rewards_browsertest_util::WaitForElementThenClick(
+        site_banner_contents, "[data-test-id=form-submit-button]");
+  } else {
+    amount = rewards_browsertest_util::GetSiteBannerTipOptions(
+        site_banner_contents)[selection];
+
+    // Select the tip amount (default is 1.000 BAT)
+    std::string amount_selector = base::StringPrintf(
+        "[data-test-id=tip-amount-options] [data-option-index='%u'] button",
+        selection);
+
+    rewards_browsertest_util::WaitForElementThenClick(site_banner_contents,
+                                                      amount_selector);
+  }
 
   // Send the tip
   rewards_browsertest_util::WaitForElementThenClick(
@@ -423,11 +452,50 @@ ledger::type::Result RewardsBrowserTestContribution::GetACStatus() {
   return ac_reconcile_status_;
 }
 
+#if BUILDFLAG(ENABLE_GEMINI_WALLET)
+void RewardsBrowserTestContribution::SetUpGeminiWallet(
+    brave_rewards::RewardsServiceImpl* rewards_service,
+    const double balance,
+    const ledger::type::WalletStatus status) {
+  if (!base::FeatureList::IsEnabled(brave_rewards::features::kGeminiFeature)) {
+    return;
+  }
+  DCHECK(rewards_service);
+  browser_->profile()->GetPrefs()->SetString(
+      brave_rewards::prefs::kExternalWalletType, "gemini");
+  // we need brave wallet as well
+  rewards_browsertest_util::CreateWallet(rewards_service_);
+
+  external_balance_ = balance;
+
+  base::Value wallet(base::Value::Type::DICTIONARY);
+  wallet.SetStringKey("token", "token");
+  wallet.SetStringKey("address",
+                      rewards_browsertest_util::GetGeminiExternalAddress());
+  wallet.SetIntKey("status", static_cast<int>(status));
+  wallet.SetStringKey("user_name", "Brave Test");
+
+  std::string json;
+  base::JSONWriter::Write(wallet, &json);
+  auto encrypted =
+      rewards_browsertest_util::EncryptPrefString(rewards_service_, json);
+  ASSERT_TRUE(encrypted);
+  browser_->profile()->GetPrefs()->SetString(
+      brave_rewards::prefs::kWalletGemini, *encrypted);
+}
+#endif
+
 void RewardsBrowserTestContribution::SetUpUpholdWallet(
     brave_rewards::RewardsServiceImpl* rewards_service,
     const double balance,
     const ledger::type::WalletStatus status) {
   DCHECK(rewards_service);
+#if BUILDFLAG(ENABLE_GEMINI_WALLET)
+  if (base::FeatureList::IsEnabled(brave_rewards::features::kGeminiFeature)) {
+    browser_->profile()->GetPrefs()->SetString(
+        brave_rewards::prefs::kExternalWalletType, "uphold");
+  }
+#endif
   // we need brave wallet as well
   rewards_browsertest_util::CreateWallet(rewards_service_);
 
@@ -443,7 +511,12 @@ void RewardsBrowserTestContribution::SetUpUpholdWallet(
 
   std::string json;
   base::JSONWriter::Write(wallet, &json);
-  rewards_service->SetEncryptedStringState("wallets.uphold", json);
+  auto encrypted =
+      rewards_browsertest_util::EncryptPrefString(rewards_service_, json);
+  ASSERT_TRUE(encrypted);
+
+  browser_->profile()->GetPrefs()->SetString(
+      brave_rewards::prefs::kWalletUphold, *encrypted);
 }
 
 double RewardsBrowserTestContribution::GetReconcileTipTotal() {

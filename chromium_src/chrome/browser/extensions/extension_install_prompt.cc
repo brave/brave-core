@@ -5,7 +5,7 @@
 
 #include "chrome/browser/extensions/extension_install_prompt.h"
 
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_component_updater/browser/extension_whitelist_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -14,7 +14,7 @@
 #include "../../../../../chrome/browser/extensions/extension_install_prompt.cc"
 #undef GetDialogTitle
 
-base::string16 ExtensionInstallPrompt::Prompt::GetDialogTitle() const {
+std::u16string ExtensionInstallPrompt::Prompt::GetDialogTitle() const {
   if (!g_brave_browser_process->extension_whitelist_service()->IsVetted(
           extension())) {
     if (type_ == ExtensionInstallPrompt::INSTALL_PROMPT ||

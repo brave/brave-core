@@ -41,9 +41,14 @@ class BraveTranslateBubbleView : public TranslateBubbleView {
 
  private:
   friend class BraveTranslateBubbleViewTest;
-  views::View* BraveCreateViewBeforeTranslate();
+  std::unique_ptr<views::View> BraveCreateViewBeforeTranslate();
   void DisableOfferTranslatePref();
   void ButtonPressed(ButtonID button_id);
+
+  // Remove this. As we replace |translate_view_|, we should destroy after
+  // replacing it. However, its child view(|tabbed_pane_|) is still referenced
+  // from TranslateBubbleView. Keep to prevent leak.
+  std::unique_ptr<views::View> removed_translate_view_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveTranslateBubbleView);
 };

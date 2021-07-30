@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include "base/scoped_observer.h"
+#include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "ui/gfx/animation/animation_delegate.h"
 #include "ui/gfx/animation/linear_animation.h"
@@ -53,7 +53,7 @@ class SidebarItemAddedFeedbackBubble : public views::BubbleDialogDelegateView,
   base::OneShotTimer fade_timer_;
   gfx::LinearAnimation animation_;
 
-  ScopedObserver<views::View, views::ViewObserver> observed_{this};
+  base::ScopedObservation<views::View, views::ViewObserver> observed_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ITEM_ADDED_FEEDBACK_BUBBLE_H_

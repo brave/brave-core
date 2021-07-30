@@ -7,21 +7,22 @@
 
 #include <memory>
 
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
-#include "content/public/browser/browser_context.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/url_data_source.h"
 
 namespace ntp_background_images {
@@ -64,10 +65,8 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
         browser_context,
         std::make_unique<NTPBackgroundImagesSource>(service));
 
-    return new ViewCounterService(service,
-                                  ads_service,
-                                  profile->GetPrefs(),
-                                  g_brave_browser_process->local_state(),
+    return new ViewCounterService(service, ads_service, profile->GetPrefs(),
+                                  g_browser_process->local_state(),
                                   is_supported_locale);
   }
 

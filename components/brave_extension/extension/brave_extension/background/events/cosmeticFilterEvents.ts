@@ -1,10 +1,25 @@
 import { getLocale } from '../api/localeAPI'
-import { addSiteCosmeticFilter } from '../api/cosmeticFilterAPI'
+import { addSiteCosmeticFilter, openFilterManagementPage } from '../api/cosmeticFilterAPI'
 import shieldsPanelActions from '../actions/shieldsPanelActions'
 
 export let rule = {
   host: '',
   selector: ''
+}
+
+export const applyCosmeticFilter = (host: string, selector: string) => {
+  if (selector) {
+    const s: string = selector.trim()
+
+    if (s.length > 0) {
+      chrome.tabs.insertCSS({
+        code: `${s} {display: none !important;}`,
+        cssOrigin: 'user'
+      })
+
+      addSiteCosmeticFilter(host, s)
+    }
+  }
 }
 
 // parent menu
@@ -13,14 +28,18 @@ chrome.contextMenus.create({
   id: 'brave',
   contexts: ['all']
 })
-// block ad child menu
 chrome.contextMenus.create({
-  title: getLocale('addBlockElement'),
-  id: 'addBlockElement',
+  title: getLocale('elementPickerMode'),
+  id: 'elementPickerMode',
   parentId: 'brave',
   contexts: ['all']
 })
-// context menu listener emit event -> query -> tabsCallback -> onSelectorReturned
+chrome.contextMenus.create({
+  title: getLocale('manageCustomFilters'),
+  id: 'manageCustomFilters',
+  parentId: 'brave',
+  contexts: ['all']
+})
 
 chrome.contextMenus.onClicked.addListener((info: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab) => {
   onContextMenuClicked(info, tab)
@@ -64,48 +83,31 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         break
       }
       shieldsPanelActions.contentScriptsLoaded(tabId, frameId, url)
+      break
+    }
+    case 'cosmeticFilterCreate': {
+      const { host, selector } = msg
+      applyCosmeticFilter(host, selector)
+      break
     }
   }
 })
 
 export function onContextMenuClicked (info: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab) {
   switch (info.menuItemId) {
-    case 'addBlockElement':
-      query()
+    case 'manageCustomFilters':
+      openFilterManagementPage()
       break
+    case 'elementPickerMode': {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs: [chrome.tabs.Tab]) => {
+        if (tabs.length > 0) {
+          chrome.tabs.sendMessage(tabs[0].id!, { type: 'elementPickerLaunch' })
+        }
+      })
+      break
+    }
     default: {
       console.warn('[cosmeticFilterEvents] invalid context menu option: ${info.menuItemId}')
-    }
-  }
-}
-
-export function query () {
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs: [chrome.tabs.Tab]) => {
-    tabsCallback(tabs)
-  })
-}
-
-export function tabsCallback (tabs: any) {
-  chrome.tabs.sendMessage(tabs[0].id, { type: 'getTargetSelector' }, onSelectorReturned)
-}
-
-export async function onSelectorReturned (response: any) {
-  if (!response) {
-    rule.selector = window.prompt('We were unable to automatically populate a correct CSS selector for you. Please manually enter a CSS selector to block:') || ''
-  } else {
-    rule.selector = window.prompt('CSS selector:', `${response}`) || ''
-  }
-
-  if (rule.selector) {
-    const selector: string = rule.selector.trim()
-
-    if (selector.length > 0) {
-      chrome.tabs.insertCSS({
-        code: `${selector} {display: none !important;}`,
-        cssOrigin: 'user'
-      })
-
-      await addSiteCosmeticFilter(rule.host, selector)
     }
   }
 }

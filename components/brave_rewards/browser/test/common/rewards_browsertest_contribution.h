@@ -14,7 +14,9 @@
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
+#include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser.h"
 
 namespace rewards_browsertest {
@@ -36,11 +38,11 @@ class RewardsBrowserTestContribution
       const int32_t number_of_contributions = 0,
       const bool recurring = false);
 
-  void TipPublisher(
-      const GURL& url,
-      rewards_browsertest_util::TipAction tip_action,
-      const int32_t number_of_contributions = 0,
-      const int32_t selection = 0);
+  void TipPublisher(const GURL& url,
+                    rewards_browsertest_util::TipAction tip_action,
+                    const int32_t number_of_contributions = 0,
+                    const int32_t selection = 0,
+                    double custom_amount = 0.0);
 
   void VerifyTip(
       const double amount,
@@ -84,6 +86,13 @@ class RewardsBrowserTestContribution
       const double balance,
       const ledger::type::WalletStatus status =
         ledger::type::WalletStatus::VERIFIED);
+
+#if BUILDFLAG(ENABLE_GEMINI_WALLET)
+  void SetUpGeminiWallet(brave_rewards::RewardsServiceImpl* rewards_service,
+                         const double balance,
+                         const ledger::type::WalletStatus status =
+                             ledger::type::WalletStatus::VERIFIED);
+#endif
 
   std::vector<ledger::type::Result> GetMultipleTipStatus();
 

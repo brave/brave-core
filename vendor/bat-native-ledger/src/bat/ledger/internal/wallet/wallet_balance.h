@@ -50,6 +50,14 @@ class WalletBalance {
       type::BalancePtr balance,
       ledger::FetchBalanceCallback callback);
 
+  void FetchBalanceGemini(type::BalancePtr balance,
+                          ledger::FetchBalanceCallback callback);
+
+  void OnFetchBalanceGemini(type::Balance info,
+                            ledger::FetchBalanceCallback callback,
+                            const type::Result result,
+                            const double balance);
+
   void FetchBalanceUphold(type::BalancePtr balance,
                           ledger::FetchBalanceCallback callback);
 
@@ -57,6 +65,14 @@ class WalletBalance {
                             ledger::FetchBalanceCallback callback,
                             const type::Result result,
                             const double balance);
+
+  void FetchBalanceBitflyer(type::BalancePtr balance,
+                            ledger::FetchBalanceCallback callback);
+
+  void OnFetchBalanceBitflyer(type::Balance info,
+                              ledger::FetchBalanceCallback callback,
+                              const type::Result result,
+                              const double balance);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;

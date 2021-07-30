@@ -22,7 +22,7 @@ constexpr char kSavingsDailyUMAHistogramName[] =
 class P3ABandwidthSavingsTrackerTest : public ::testing::Test {
  public:
   P3ABandwidthSavingsTrackerTest() : clock_(new base::SimpleTestClock) {
-    P3ABandwidthSavingsTracker::RegisterPrefs(pref_service_.registry());
+    P3ABandwidthSavingsTracker::RegisterProfilePrefs(pref_service_.registry());
     tracker_ = std::make_unique<P3ABandwidthSavingsTracker>(
         &pref_service_, std::unique_ptr<base::Clock>(clock_));
     clock_->SetNow(base::Time::Now());

@@ -4,6 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
+
+#include "base/strings/stringprintf.h"
 #include "content/public/test/browser_test_utils.h"
 
 namespace rewards_browsertest_util {
@@ -133,8 +135,8 @@ void WaitForElementToContain(
     const std::string& selector,
     const std::string& substring) {
   DCHECK(context);
-  auto script = kWaitForElementToAppearScript +
-      content::JsReplace(R"(
+  auto script =
+      kWaitForElementToAppearScript + content::JsReplace(R"(
           new Promise(async (resolve, reject) => {
             const TIMEOUT_SECONDS = 5;
             const selector = $1;
@@ -144,7 +146,7 @@ void WaitForElementToContain(
             try {
               let element = await waitForElementToAppear(selector);
 
-              currentText = element.innerText;
+              currentText = element.innerText.replace(/\xa0/g, ' ');
               if (currentText.indexOf(substring) !== -1) {
                 resolve(true);
                 return;
@@ -164,7 +166,7 @@ void WaitForElementToContain(
                   return;
                 }
 
-                currentText = element.innerText;
+                currentText = element.innerText.replace(/\xa0/g, ' ');
                 if (currentText.indexOf(substring) !== -1) {
                   clearTimeout(timerID);
                   observer.disconnect();
@@ -178,8 +180,7 @@ void WaitForElementToContain(
             }
           });
       )",
-      selector,
-      substring);
+                                                         selector, substring);
 
   auto result = EvalJs(
       context,

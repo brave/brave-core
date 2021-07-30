@@ -259,8 +259,8 @@ TEST_F(BraveStatsUpdaterTest, HasDailyRetention) {
   exploded.day_of_month = 4;
 
   EXPECT_TRUE(base::Time::FromLocalExploded(exploded, &dtoi_time));
-  // Make first run date 6 days earlier (still within 14 day window)
-  exploded.day_of_month = 10;
+  // Make first run date 15 days earlier (still within 30 day window)
+  exploded.day_of_month = 20;
   EXPECT_TRUE(base::Time::FromLocalExploded(exploded, &current_time));
 
   SetCurrentTimeForTest(dtoi_time);
@@ -287,8 +287,8 @@ TEST_F(BraveStatsUpdaterTest, HasDailyRetentionExpiration) {
   exploded.day_of_month = 4;
 
   EXPECT_TRUE(base::Time::FromLocalExploded(exploded, &dtoi_time));
-  // Make first run date 14 days earlier (outside 14 day window)
-  exploded.day_of_month = 18;
+  // Make first run date a month earlier (outside 30 day window)
+  exploded.month = 12;
   EXPECT_TRUE(base::Time::FromLocalExploded(exploded, &current_time));
 
   SetCurrentTimeForTest(dtoi_time);

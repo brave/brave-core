@@ -252,7 +252,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, LearnMore) {
 
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 2);
   web_contents = browser()->tab_strip_model()->GetWebContentsAt(1);
-  EXPECT_EQ(GURL(kIPFSLearnMoreURL), web_contents->GetURL());
+  EXPECT_EQ(GURL(kIPFSLearnMorePrivacyURL), web_contents->GetURL());
 }
 
 IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, OpenSettings) {

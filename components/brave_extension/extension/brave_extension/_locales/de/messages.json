@@ -24,7 +24,7 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Sie sind mit dieser Website verbunden, ohne dass Sie Ihre Privatsphäre und Sicherheit durch Brave schützen lassen. Wird Ihnen die Website nicht korrekt angezeigt während der Schutz aktiv ist?",
+    "message": "Sie surfen auf dieser Website ohne den Privatsphären- und Sicherheitsschutz von Brave. Funktioniert es nicht richtig mit eingeschaltetem Schutz?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
@@ -171,17 +171,13 @@
     "message": "Globale Einstellungen ändern",
     "description": "Message for the button action linking to the settings page"
   },
-  "addBlockElement": {
-    "message": "Element per Wahlschalter blockieren",
-    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  "manageCustomFilters": {
+    "message": "Benutzerdefinierte Filter verwalten",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
-  "resetSiteFilterSettings": {
-    "message": "CSS-Regeln für diese Website löschen",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "CSS-Regeln für alle Websites löschen",
-    "description": "Message for context menu that resets all cosmetic filters"
+  "elementPickerMode": {
+    "message": "Element blockieren",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
     "message": "Erweiterte Ansicht",

@@ -9,7 +9,6 @@
 #if defined(OS_ANDROID)
 #include "ui/native_theme/native_theme.h"
 
-#define GetInstanceForNativeUi BraveGetInstanceForNativeUi
 #define IDR_DEFAULT_FAVICON_32 IDR_DEFAULT_FAVICON
 #define IDR_DEFAULT_FAVICON_64 IDR_DEFAULT_FAVICON
 #define IDR_DEFAULT_FAVICON_DARK_32 IDR_DEFAULT_FAVICON_DARK
@@ -66,6 +65,17 @@ class InstantService {
     return false;
   }
 };
+
+// Toolkit views are not enabled for Android, so just fallback to what we had
+// before the change.
+#if !defined(TOOLKIT_VIEWS)
+namespace webui {
+ui::NativeTheme* GetNativeTheme(content::WebContents* web_contents) {
+  return ui::NativeTheme::BraveGetInstanceForNativeUi();
+}
+}  // namespace webui
+#endif  // !defined(TOOLKIT_VIEWS)
+
 #endif  // #if defined(OS_ANDROID)
 
 #include "../../../../../../chrome/browser/ui/webui/favicon_source.cc"

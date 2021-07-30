@@ -47,7 +47,7 @@ TEST_F(BatAdsPerHourFrequencyCapTest, AdAllowedAfter1Hour) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kServed);
 
   ad_events.push_back(ad_event);
 
@@ -69,15 +69,15 @@ TEST_F(BatAdsPerHourFrequencyCapTest, AdAllowedAfter1HourForMultipleTypes) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event_1 =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kServed);
   ad_events.push_back(ad_event_1);
 
   const AdEventInfo ad_event_2 =
-      GenerateAdEvent(AdType::kNewTabPageAd, ad, ConfirmationType::kViewed);
+      GenerateAdEvent(AdType::kNewTabPageAd, ad, ConfirmationType::kServed);
   ad_events.push_back(ad_event_2);
 
   const AdEventInfo ad_event_3 = GenerateAdEvent(AdType::kPromotedContentAd, ad,
-                                                 ConfirmationType::kViewed);
+                                                 ConfirmationType::kServed);
   ad_events.push_back(ad_event_3);
 
   FastForwardClockBy(base::TimeDelta::FromHours(1));
@@ -98,7 +98,7 @@ TEST_F(BatAdsPerHourFrequencyCapTest, DoNotAllowTheSameAdWithin1Hour) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kServed);
 
   ad_events.push_back(ad_event);
 

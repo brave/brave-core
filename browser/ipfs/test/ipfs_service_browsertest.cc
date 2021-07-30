@@ -7,16 +7,24 @@
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
+#include "base/strings/stringprintf.h"
+#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/ipfs/ipfs_blob_context_getter_factory.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/common/brave_paths.h"
+#include "brave/components/ipfs/blob_context_getter_factory.h"
+#include "brave/components/ipfs/brave_ipfs_client_updater.h"
 #include "brave/components/ipfs/features.h"
+#include "brave/components/ipfs/import/imported_data.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/common/channel_info.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
@@ -26,6 +34,49 @@
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 #include "net/test/url_request/url_request_failed_job.h"
+
+namespace {
+const char kTestLinkImportPath[] = "/link.png";
+const char kUnavailableLinkImportPath[] = "/unavailable.png";
+
+std::string GetFileNameForText(const std::string& text,
+                               const std::string& host) {
+  size_t key = base::FastHash(base::as_bytes(base::make_span(text)));
+  std::string filename = host;
+  filename += "_";
+  filename += std::to_string(key);
+  return filename;
+}
+
+class FakeIpfsService : public ipfs::IpfsService {
+ public:
+  FakeIpfsService(
+      PrefService* prefs,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      ipfs::BlobContextGetterFactoryPtr blob_getter_factory,
+      ipfs::BraveIpfsClientUpdater* updater,
+      const base::FilePath& user_dir,
+      version_info::Channel channel)
+      : ipfs::IpfsService(prefs,
+                          url_loader_factory,
+                          std::move(blob_getter_factory),
+                          updater,
+                          user_dir,
+                          channel) {}
+  ~FakeIpfsService() override {}
+
+  void LaunchDaemon(BoolCallback callback) override {
+    if (callback)
+      std::move(callback).Run(launch_result_);
+  }
+
+  void SetLaunchResult(bool result) { launch_result_ = result; }
+
+ private:
+  bool launch_result_ = true;
+};
+
+}  // namespace
 
 namespace ipfs {
 
@@ -44,6 +95,12 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     ipfs_service_->SetAllowIpfsLaunchForTest(true);
     host_resolver()->AddRule("*", "127.0.0.1");
     InProcessBrowserTest::SetUpOnMainThread();
+    base::FilePath user_dir = base::FilePath(FILE_PATH_LITERAL("test"));
+    auto context_getter =
+        std::make_unique<IpfsBlobContextGetterFactory>(browser()->profile());
+    fake_service_ = std::make_unique<FakeIpfsService>(
+        browser()->profile()->GetPrefs(), nullptr, std::move(context_getter),
+        nullptr, user_dir, chrome::GetChannel());
   }
 
   void ResetTestServer(
@@ -156,6 +213,105 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     return http_response;
   }
 
+  std::unique_ptr<net::test_server::HttpResponse> HandleImportRequestsFail(
+      const net::test_server::HttpRequest& request) {
+    const GURL gurl = request.GetURL();
+    if (gurl.path_piece() == kImportAddPath ||
+        gurl.path_piece() == kUnavailableLinkImportPath) {
+      auto http_response =
+          std::make_unique<net::test_server::BasicHttpResponse>();
+      http_response->set_code(net::HTTP_INTERNAL_SERVER_ERROR);
+
+      return http_response;
+    }
+
+    if (gurl.path_piece() == kTestLinkImportPath) {
+      auto http_response =
+          std::make_unique<net::test_server::BasicHttpResponse>();
+      http_response->set_code(net::HTTP_OK);
+      http_response->set_content_type("application/json");
+      http_response->set_content("test");
+      return http_response;
+    }
+
+    return nullptr;
+  }
+
+  std::unique_ptr<net::test_server::HttpResponse> HandlePreWarmRequest(
+      const net::test_server::HttpRequest& request) {
+    auto http_response =
+        std::make_unique<net::test_server::BasicHttpResponse>();
+    http_response->set_code(net::HTTP_OK);
+    http_response->set_content_type("application/json");
+    return http_response;
+  }
+
+  std::unique_ptr<net::test_server::HttpResponse> HandleSecondImportRequests(
+      const std::string& expected_result,
+      const net::test_server::HttpRequest& request) {
+    const GURL gurl = request.GetURL();
+    if (gurl.path_piece() == kImportAddPath) {
+      auto http_response =
+          std::make_unique<net::test_server::BasicHttpResponse>();
+      http_response->set_code(net::HTTP_OK);
+      http_response->set_content_type("application/json");
+      http_response->set_content(expected_result);
+      return http_response;
+    }
+    return HandleImportRequests(expected_result, request);
+  }
+
+  std::unique_ptr<net::test_server::HttpResponse> HandleImportRequests(
+      const std::string& expected_response,
+      const net::test_server::HttpRequest& request) {
+    const GURL gurl = request.GetURL();
+    if (gurl.path_piece() == kAPIPublishNameEndpoint) {
+      auto http_response =
+          std::make_unique<net::test_server::BasicHttpResponse>();
+      http_response->set_code(net::HTTP_OK);
+      http_response->set_content_type("application/json");
+      http_response->set_content(expected_response);
+      return http_response;
+    }
+    if (gurl.path_piece() == kImportAddPath) {
+      auto http_response =
+          std::make_unique<net::test_server::BasicHttpResponse>();
+      http_response->set_code(net::HTTP_OK);
+      http_response->set_content_type("application/json");
+      http_response->set_content(expected_response);
+      return http_response;
+    }
+
+    if (gurl.path_piece() == kImportMakeDirectoryPath) {
+      auto http_response =
+          std::make_unique<net::test_server::BasicHttpResponse>();
+      http_response->set_code(net::HTTP_OK);
+      http_response->set_content_type("application/json");
+      http_response->set_content(expected_response);
+      return http_response;
+    }
+
+    if (gurl.path_piece() == kImportCopyPath) {
+      auto http_response =
+          std::make_unique<net::test_server::BasicHttpResponse>();
+      http_response->set_code(net::HTTP_OK);
+      http_response->set_content_type("application/json");
+      http_response->set_content(expected_response);
+      return http_response;
+    }
+
+    if (gurl.path_piece() == kTestLinkImportPath) {
+      auto http_response =
+          std::make_unique<net::test_server::BasicHttpResponse>();
+      http_response->set_code(net::HTTP_OK);
+      http_response->set_content_type("application/json");
+      http_response->set_content(expected_response);
+      return http_response;
+    }
+
+    return nullptr;
+  }
+
   std::unique_ptr<net::test_server::HttpResponse> HandleGetNodeInfo(
       const net::test_server::HttpRequest& request) {
     const GURL gurl = request.GetURL();
@@ -242,7 +398,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
       http_response->set_code(net::HTTP_TEMPORARY_REDIRECT);
       GURL new_location(ipfs::GetIPFSGatewayURL(
           "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC", "simple_content",
-          GetDefaultIPFSGateway(browser()->profile())));
+          GetDefaultIPFSGateway(browser()->profile()->GetPrefs())));
       http_response->AddCustomHeader("Location", new_location.spec());
     } else if (request_path ==
                "/ipfs/"
@@ -250,7 +406,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
       http_response->set_code(net::HTTP_TEMPORARY_REDIRECT);
       GURL new_location(ipfs::GetIPFSGatewayURL(
           "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC", "simple_content_2",
-          GetDefaultIPFSGateway(browser()->profile())));
+          GetDefaultIPFSGateway(browser()->profile()->GetPrefs())));
       http_response->AddCustomHeader("Location", new_location.spec());
     } else if (request_path ==
                "/ipfs/"
@@ -390,6 +546,43 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     EXPECT_EQ(error, "");
   }
 
+  void OnPublishCompletedSuccess(const ipfs::ImportedData& data) {
+    ASSERT_FALSE(data.hash.empty());
+    ASSERT_FALSE(data.filename.empty());
+    ASSERT_FALSE(data.directory.empty());
+    ASSERT_FALSE(data.published_key.empty());
+    ASSERT_EQ(data.state, ipfs::IPFS_IMPORT_SUCCESS);
+    ASSERT_GT(data.size, -1);
+    if (wait_for_request_) {
+      wait_for_request_->Quit();
+    }
+  }
+
+  void OnImportCompletedSuccess(const ipfs::ImportedData& data) {
+    ASSERT_FALSE(data.hash.empty());
+    ASSERT_FALSE(data.filename.empty());
+    ASSERT_FALSE(data.directory.empty());
+    ASSERT_TRUE(data.published_key.empty());
+    ASSERT_EQ(data.state, ipfs::IPFS_IMPORT_SUCCESS);
+    ASSERT_GT(data.size, -1);
+    if (wait_for_request_) {
+      wait_for_request_->Quit();
+    }
+  }
+
+  void OnImportCompletedFail(ipfs::ImportState expected,
+                             const std::string& expected_filename,
+                             const ipfs::ImportedData& data) {
+    ASSERT_TRUE(data.hash.empty());
+    EXPECT_EQ(data.filename, expected_filename);
+    ASSERT_TRUE(data.directory.empty());
+    ASSERT_LE(data.size, -1);
+    ASSERT_EQ(data.state, expected);
+    if (wait_for_request_) {
+      wait_for_request_->Quit();
+    }
+  }
+
   void OnGarbageCollectionFail(bool success, const std::string& error) {
     if (wait_for_request_) {
       wait_for_request_->Quit();
@@ -406,12 +599,27 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     wait_for_request_->Run();
   }
 
+  FakeIpfsService* fake_ipfs_service() { return fake_service_.get(); }
+
  private:
+  std::unique_ptr<FakeIpfsService> fake_service_;
   std::unique_ptr<base::RunLoop> wait_for_request_;
   std::unique_ptr<net::EmbeddedTestServer> test_server_;
   IpfsService* ipfs_service_;
   base::test::ScopedFeatureList feature_list_;
 };
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, StartSuccessAndLaunch) {
+  auto* fake_service = fake_ipfs_service();
+  fake_service->SetLaunchResult(true);
+  base::MockOnceCallback<void(void)> callback_called;
+  EXPECT_CALL(callback_called, Run()).Times(1);
+  fake_service->StartDaemonAndLaunch(callback_called.Get());
+  fake_service->SetLaunchResult(false);
+  base::MockOnceCallback<void(void)> callback_not_called;
+  EXPECT_CALL(callback_not_called, Run()).Times(0);
+  fake_service->StartDaemonAndLaunch(callback_not_called.Get());
+}
 
 IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetConnectedPeers) {
   ResetTestServer(
@@ -535,12 +743,13 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   auto error_caught =
-      EvalJsWithManualReply(contents,
-                            "fetch('ipfs://"
-                            "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/2')"
-                            "  .catch((e) => {"
-                            "        window.domAutomationController.send(true);"
-                            "  });");
+      EvalJs(contents,
+             "fetch('ipfs://"
+             "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/2')"
+             "  .catch((e) => {"
+             "        window.domAutomationController.send(true);"
+             "  });",
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   ASSERT_TRUE(error_caught.error.empty());
   EXPECT_EQ(base::Value(true), error_caught.value);
 }
@@ -559,16 +768,17 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanFetchIPFSResourcesFromIPFS) {
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  auto got_fetch = EvalJsWithManualReply(
-      contents,
-      "fetch('ipfs://"
-      "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/2')"
-      "  .then(response => { response.text()"
-      "      .then((response_text) => {"
-      "        const result = response_text == 'simple content 2';"
-      "        window.domAutomationController.send(result);"
-      "      })})"
-      ".catch((x) => console.log('error: ' + x));");
+  auto got_fetch =
+      EvalJs(contents,
+             "fetch('ipfs://"
+             "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/2')"
+             "  .then(response => { response.text()"
+             "      .then((response_text) => {"
+             "        const result = response_text == 'simple content 2';"
+             "        window.domAutomationController.send(result);"
+             "      })})"
+             ".catch((x) => console.log('error: ' + x));",
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   ASSERT_TRUE(got_fetch.error.empty());
   EXPECT_EQ(base::Value(true), got_fetch.value);
 }
@@ -584,14 +794,15 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CannotLoadIframeFromHTTP) {
       browser()->tab_strip_model()->GetActiveWebContents();
 
   auto* child_frame = ChildFrameAt(contents->GetMainFrame(), 0);
-  auto location = EvalJsWithManualReply(
-      child_frame,
-      "const timer = setInterval(function () {"
-      "  if (document.readyState == 'complete') {"
-      "    clearInterval(timer);"
-      "    window.domAutomationController.send(window.location.href);"
-      "  }"
-      "}, 100);");
+  auto location =
+      EvalJs(child_frame,
+             "const timer = setInterval(function () {"
+             "  if (document.readyState == 'complete') {"
+             "    clearInterval(timer);"
+             "    window.domAutomationController.send(window.location.href);"
+             "  }"
+             "}, 100);",
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
 
   ASSERT_TRUE(location.error.empty());
   EXPECT_EQ(base::Value("chrome-error://chromewebdata/"), location.value);
@@ -611,32 +822,33 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanLoadIFrameFromIPFS) {
       browser(), GURL("ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC"));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  auto result = EvalJsWithManualReply(
-      contents,
-      "const iframe = document.createElement('iframe');"
-      "iframe.src ="
-      "  'ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/2';"
-      "document.body.appendChild(iframe);"
-      "const timer = setInterval(function () {"
-      "  const iframeDoc = iframe.contentDocument || "
-      "      iframe.contentWindow.document;"
-      "  if (iframeDoc.readyState === 'complete' && "
-      "      iframeDoc.location.href !== 'about:blank') {"
-      "    clearInterval(timer);"
-      "    window.domAutomationController.send(window.location.href);"
-      "  }"
-      "}, 100);");
+  auto result =
+      EvalJs(contents,
+             "const iframe = document.createElement('iframe');"
+             "iframe.src ="
+             "  'ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/2';"
+             "document.body.appendChild(iframe);"
+             "const timer = setInterval(function () {"
+             "  const iframeDoc = iframe.contentDocument || "
+             "      iframe.contentWindow.document;"
+             "  if (iframeDoc.readyState === 'complete' && "
+             "      iframeDoc.location.href !== 'about:blank') {"
+             "    clearInterval(timer);"
+             "    window.domAutomationController.send(window.location.href);"
+             "  }"
+             "}, 100);",
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   ASSERT_TRUE(result.error.empty());
   // Make sure main frame URL didn't change
-  EXPECT_EQ(contents->GetURL(),
+  auto* prefs = browser()->profile()->GetPrefs();
+  EXPECT_EQ(
+      contents->GetLastCommittedURL(),
+      ipfs::GetIPFSGatewayURL("Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC",
+                              "simple_content", GetDefaultIPFSGateway(prefs)));
+  EXPECT_EQ(ChildFrameAt(contents->GetMainFrame(), 0)->GetLastCommittedURL(),
             ipfs::GetIPFSGatewayURL(
                 "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC",
-                "simple_content", GetDefaultIPFSGateway(browser()->profile())));
-  EXPECT_EQ(
-      ChildFrameAt(contents->GetMainFrame(), 0)->GetLastCommittedURL(),
-      ipfs::GetIPFSGatewayURL("Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC",
-                              "simple_content_2",
-                              GetDefaultIPFSGateway(browser()->profile())));
+                "simple_content_2", GetDefaultIPFSGateway(prefs)));
 }
 
 // Make sure an <img src="ipfs://..."> can load within another ipfs:// scheme
@@ -649,7 +861,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanLoadIPFSImageFromIPFS) {
       browser(), GURL("ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC"));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  auto loaded = EvalJsWithManualReply(
+  auto loaded = EvalJs(
       contents,
       "let img = document.createElement('img');"
       "img.src ="
@@ -659,7 +871,8 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanLoadIPFSImageFromIPFS) {
       "};"
       "img.onerror = function() {"
       "  window.domAutomationController.send(true);"
-      "};");
+      "};",
+      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   ASSERT_TRUE(loaded.error.empty());
   EXPECT_EQ(base::Value(true), loaded.value);
 }
@@ -673,7 +886,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CannotLoadIPFSImageFromHTTP) {
   ui_test_utils::NavigateToURL(browser(), GetURL("b.com", "/simple.html"));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  auto loaded = EvalJsWithManualReply(
+  auto loaded = EvalJs(
       contents,
       "let img = document.createElement('img');"
       "img.src ="
@@ -683,7 +896,8 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CannotLoadIPFSImageFromHTTP) {
       "};"
       "img.onerror = function() {"
       "  window.domAutomationController.send(true);"
-      "};");
+      "};",
+      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   ASSERT_TRUE(loaded.error.empty());
   EXPECT_EQ(base::Value(true), loaded.value);
 }
@@ -711,6 +925,229 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, TopLevelAutoRedirectsOff) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(contents->GetURL().host(), other_gateway.host());
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportTextToIpfs) {
+  std::string domain = "test.domain.com";
+  std::string text = "text to import";
+  size_t key = base::FastHash(base::as_bytes(base::make_span(text)));
+  std::string filename = domain;
+  filename += "_";
+  filename += std::to_string(key);
+  std::string expected_response = base::StringPrintf(
+      R"({"Name":"%s","Hash":"QmYbK4SLaSvTKKAKvNZMwyzYPy4P3GqBPN6CZzbS73FxxU")"
+      R"(,"Size":"567857"})",
+      filename.c_str());
+
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequests,
+                          base::Unretained(this), expected_response));
+
+  ipfs_service()->ImportTextToIpfs(
+      text, domain,
+      base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
+                     base::Unretained(this)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportTwiceTextToIpfs) {
+  std::string domain = "test.domain.com";
+  std::string text = "text to import";
+  size_t key = base::FastHash(base::as_bytes(base::make_span(text)));
+  std::string filename = domain;
+  filename += "_";
+  filename += std::to_string(key);
+  std::string expected_response = base::StringPrintf(
+      R"({"Name":"%s", "Hash":"QmYbK4SLaSvTKKAKvNZMwyzYPy4P3GqBPN6CZzbS73FxxU",)"
+      R"("Size":"567857"}
+      {"Name":"%s", "Hash":"QmTEST", "Size":"567857"})",
+      filename.c_str(), filename.c_str());
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleSecondImportRequests,
+                          base::Unretained(this), expected_response));
+
+  ipfs_service()->ImportTextToIpfs(
+      text, domain,
+      base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
+                     base::Unretained(this)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportLinkToIpfs) {
+  std::string test_host = "b.com";
+  std::string expected_response =
+      R"({"Name":"link.png", "Size":"567857", "Hash": "QmYbK4SLa"})";
+
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequests,
+                          base::Unretained(this), expected_response));
+
+  ipfs_service()->ImportLinkToIpfs(
+      GetURL(test_host, kTestLinkImportPath),
+      base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
+                     base::Unretained(this)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportTextToIpfsFail) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequestsFail,
+                          base::Unretained(this)));
+
+  std::string text = "text";
+  std::string host = "host";
+
+  ipfs_service()->ImportTextToIpfs(
+      text, host,
+      base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedFail,
+                     base::Unretained(this), ipfs::IPFS_IMPORT_ERROR_ADD_FAILED,
+                     GetFileNameForText(text, host)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportLinkToIpfsFail) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequestsFail,
+                          base::Unretained(this)));
+
+  ipfs_service()->ImportLinkToIpfs(
+      GetURL("b.com", kTestLinkImportPath),
+      base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedFail,
+                     base::Unretained(this), ipfs::IPFS_IMPORT_ERROR_ADD_FAILED,
+                     "link.png"));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportLinkToIpfsBadLink) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequestsFail,
+                          base::Unretained(this)));
+
+  ipfs_service()->ImportLinkToIpfs(
+      GetURL("b.com", kUnavailableLinkImportPath),
+      base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedFail,
+                     base::Unretained(this),
+                     ipfs::IPFS_IMPORT_ERROR_REQUEST_EMPTY, ""));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, PreWarmLink) {
+  ResetTestServer(base::BindRepeating(
+      &IpfsServiceBrowserTest::HandlePreWarmRequest, base::Unretained(this)));
+  base::RunLoop run_loop;
+  ipfs_service()->SetPreWarmCalbackForTesting(run_loop.QuitClosure());
+  ipfs_service()->PreWarmShareableLink(GetURL("b.com", kTestLinkImportPath));
+  run_loop.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportFileToIpfsSuccess) {
+  std::string expected_response =
+      R"({"Name":"adbanner.js", "Size":"567857", "Hash": "QmYbK4SLa"})";
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequests,
+                          base::Unretained(this), expected_response));
+  auto file_to_upload = embedded_test_server()->GetFullPathFromSourceDirectory(
+      base::FilePath(FILE_PATH_LITERAL("brave/test/data/adbanner.js")));
+  ipfs_service()->ImportFileToIpfs(
+      file_to_upload, std::string(),
+      base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
+                     base::Unretained(this)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportDirectoryToIpfsSuccess) {
+  std::string expected_response =
+      R"({"Name":"autoplay-whitelist-data", "Size":"567857", "Hash": "QmYbK4SLa"})";
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequests,
+                          base::Unretained(this), expected_response));
+  auto* folder = FILE_PATH_LITERAL("brave/test/data/autoplay-whitelist-data");
+  auto test_path = embedded_test_server()->GetFullPathFromSourceDirectory(
+      base::FilePath(folder));
+  ipfs_service()->ImportDirectoryToIpfs(
+      test_path, std::string(),
+      base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
+                     base::Unretained(this)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportAndPinDirectorySuccess) {
+  std::string expected_response =
+      R"({"Name":"autoplay-whitelist-data", "Size":"567857", "Hash": "QmYbK4SLa"})";
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequests,
+                          base::Unretained(this), expected_response));
+  auto* folder = FILE_PATH_LITERAL("brave/test/data/autoplay-whitelist-data");
+  auto test_path = embedded_test_server()->GetFullPathFromSourceDirectory(
+      base::FilePath(folder));
+  ipfs_service()->ImportDirectoryToIpfs(
+      test_path, std::string("pin"),
+      base::BindOnce(&IpfsServiceBrowserTest::OnPublishCompletedSuccess,
+                     base::Unretained(this)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportFileAndPinToIpfsSuccess) {
+  std::string expected_response =
+      R"({"Name":"adbanner.js", "Size":"567857", "Hash": "QmYbK4SLa"})";
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequests,
+                          base::Unretained(this), expected_response));
+  auto file_to_upload = embedded_test_server()->GetFullPathFromSourceDirectory(
+      base::FilePath(FILE_PATH_LITERAL("brave/test/data/adbanner.js")));
+  ipfs_service()->ImportFileToIpfs(
+      file_to_upload, std::string("test_key"),
+      base::BindOnce(&IpfsServiceBrowserTest::OnPublishCompletedSuccess,
+                     base::Unretained(this)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
+                       UpdaterRegistrationSuccessLaunch) {
+  base::FilePath user_dir = base::FilePath(FILE_PATH_LITERAL("test"));
+  BraveIpfsClientUpdater* updater =
+      g_brave_browser_process->ipfs_client_updater();
+  auto* prefs = browser()->profile()->GetPrefs();
+  {
+    auto context_getter =
+        std::make_unique<IpfsBlobContextGetterFactory>(browser()->profile());
+
+    std::unique_ptr<FakeIpfsService> fake_service(
+        new FakeIpfsService(prefs, nullptr, std::move(context_getter), updater,
+                            user_dir, chrome::GetChannel()));
+  }
+  {
+    auto context_getter =
+        std::make_unique<IpfsBlobContextGetterFactory>(browser()->profile());
+
+    std::unique_ptr<FakeIpfsService> fake_service(
+        new FakeIpfsService(prefs, nullptr, std::move(context_getter), updater,
+                            user_dir, chrome::GetChannel()));
+
+    ASSERT_FALSE(fake_service->IsDaemonLaunched());
+    ASSERT_FALSE(updater->IsRegistered());
+    fake_service->OnIpfsLaunched(true, 0);
+    ASSERT_TRUE(updater->IsRegistered());
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
+                       UpdaterRegistrationServiceNotLaunched) {
+  base::FilePath user_dir = base::FilePath(FILE_PATH_LITERAL("test"));
+  BraveIpfsClientUpdater* updater =
+      g_brave_browser_process->ipfs_client_updater();
+  auto* prefs = browser()->profile()->GetPrefs();
+  auto context_getter =
+      std::make_unique<IpfsBlobContextGetterFactory>(browser()->profile());
+
+  std::unique_ptr<FakeIpfsService> fake_service(
+      new FakeIpfsService(prefs, nullptr, std::move(context_getter), updater,
+                          user_dir, chrome::GetChannel()));
+
+  ASSERT_FALSE(fake_service->IsDaemonLaunched());
+  ASSERT_FALSE(updater->IsRegistered());
+  fake_service->OnIpfsLaunched(false, 0);
+  ASSERT_TRUE(updater->IsRegistered());
 }
 
 }  // namespace ipfs

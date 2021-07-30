@@ -86,12 +86,6 @@
                 android:text="@string/learn_more"
                 android:visibility = "gone" />
 
-            <org.chromium.chrome.browser.ntp.BraveDuckDuckGoOfferView android:id="@+id/brave_duck_duck_go_offer_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-                    <include layout="@layout/brave_ddg_offer_link" />
-            </org.chromium.chrome.browser.ntp.BraveDuckDuckGoOfferView>
-
         </LinearLayout>
 
     </org.chromium.chrome.browser.ntp.NewTabPageScrollView>

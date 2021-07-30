@@ -4,10 +4,10 @@
 
 import * as React from 'react'
 
-import { LocaleContext, formatMessageParts } from '../../lib/locale_context'
+import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { NewTabLink } from '../new_tab_link'
+import { TermsOfService } from '../terms_of_service'
 import { BatIcon } from '../icons/bat_icon'
-import { TermsOfService } from './terms_of_service'
 import { MainButton } from './main_button'
 
 import * as style from './settings_opt_in_form.style'
@@ -30,20 +30,18 @@ export function SettingsOptInForm (props: Props) {
       <style.text>
         {getString('onboardingEarnText')}&nbsp;
         {
-          formatMessageParts(getString('onboardingDetailLinks'),
-            (before, tourLink, between, moreLink, ...after) => (
-              <>
-                {before}
-                <a href='javascript:void 0' onClick={props.onTakeTour}>
-                  {tourLink}
-                </a>
-                {between}
-                <NewTabLink href='https://basicattentiontoken.org'>
-                  {moreLink}
+          formatMessage(getString('onboardingDetailLinks'), {
+            tags: {
+              $1: (content) => (
+                <a key='tour' href='#' onClick={props.onTakeTour}>{content}</a>
+              ),
+              $3: (content) => (
+                <NewTabLink key='learn' href='https://basicattentiontoken.org'>
+                  {content}
                 </NewTabLink>
-                {after.join()}
-              </>
-            ))
+              )
+            }
+          })
         }
       </style.text>
       <style.enable>

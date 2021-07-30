@@ -1,6 +1,6 @@
 {
   "total": 0,
   "spendable": 0,
-  "confirmed": 20.0,
+  "confirmed": ${confirmed},
   "unconfirmed": 0
 }

@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -17,7 +17,14 @@ class LedgerImpl;
 
 namespace uphold {
 
-const char kUrlStaging[] = "https://sandbox.uphold.com";
+namespace notifications {
+const char kBATNotAllowedForUser[] = "uphold_bat_not_allowed_for_user";
+const char kBlockedUser[] = "uphold_blocked_user";
+const char kPendingUser[] = "uphold_pending_user";
+const char kRestrictedUser[] = "uphold_restricted_user";
+}  // namespace notifications
+
+const char kUrlStaging[] = "https://wallet-sandbox.uphold.com";
 const char kUrlProduction[] = "https://uphold.com";
 const char kFeeAddressStaging[] = "1b2b466f-5c15-49bf-995e-c91777d3da93";
 const char kFeeAddressProduction[] = "b01e8c55-5004-4761-9e4b-01ec13e25c92";
@@ -42,19 +49,15 @@ std::string GetWithdrawUrl(const std::string& address);
 
 std::string GetSecondStepVerify();
 
-type::ExternalWalletPtr GetWallet(LedgerImpl* ledger);
-
-bool SetWallet(LedgerImpl* ledger, type::ExternalWalletPtr wallet);
-
-std::string GenerateRandomString(bool testing);
-
 std::string GetAccountUrl();
 
 type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet);
 
 std::string GenerateVerifyLink(type::ExternalWalletPtr wallet);
 
-type::ExternalWalletPtr ResetWallet(type::ExternalWalletPtr wallet);
+void LogWalletStatusChange(LedgerImpl* ledger,
+                           absl::optional<type::WalletStatus> from,
+                           type::WalletStatus to);
 
 }  // namespace uphold
 }  // namespace ledger

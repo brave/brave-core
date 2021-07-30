@@ -51,18 +51,6 @@
     "message": "Išsami informacija",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "Jūsų balansas",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "BAT taškai",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "gali būti naudojami „Brave Rewards“ norint prisidėti prie savo mėgstamų turinio kūrėjų. BAT taškų negalima keisti į BAT.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "įjungti",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "Atsiimtos žetonų išmokos",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "Atsiimti suteikti taškai",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "Uždarbis iš reklamos",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Vienkartiniai arbatpinigiai",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "galiojimo laikas baigiasi",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Šis kūrėjas dar neužsiregistravo, kad gautų „Brave“ naudotojų aukas. Visi jūsų išsiųsti arbatpinigiai liks jūsų piniginėje, kol galiausiai jie patvirtins.",
+    "message": "Šis kūrėjas dar nėra sukonfigūruotas gauti arbatpinigių iš jūsų piniginės. Visi jam jūsų siųsti arbatpinigiai bus sulaikyti jūsų piniginėje automatiškai kartojant arbatpinigių siuntimą 90 dienų.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Įjungti reklamas",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Nemokamų žetonų išmoka",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Nemokamas suteikti taškai",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Jūs gavote atlygį už reklamą! ",
@@ -591,17 +567,9 @@
     "message": "Žetonas",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "taškai",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Atpažinimo ženklo suteikimas",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Suteikti taškai",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Sveiki, $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Jums reikia turėti mažiausiai 25 BAT, kad galėtumėte susikurti „Uphold“ paskyrą. Bandykite dar kartą vėliau.\nJei jau turite patvirtintą „Uphold“ paskyrą, tęskite, kad prisijungtumėte.",
-    "description": "Text for login button"
+    "message": "Jums reikia turėti mažiausiai $amount$ BAT, kad galėtumėte susikurti „Uphold“ paskyrą. Jei jau turite patvirtintą „Uphold“ paskyrą, tęskite, kad prisijungtumėte.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "Prijungta",
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Kada gaunate atlygį",
+    "message": "Kada gaunate atlygį?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "Naudodami „Brave Rewards“ padedate siekti, kad žiniatinklis visiems taptų geresne vieta. Juk tai puiku!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "„Brave Rewards“ Japonijoje pereina prie naujos sistemos!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "Patvirtinkite savo piniginę",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "Sužinokite daugiau",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "Norėdami išsiimti žetonus, pelnytus už reklamų peržiūrą, turėsite patvirtinti savo piniginę.",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "Išnaudokite turimus BAP iki kovo 13 d. Po to BAP nustos galioti.",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "Atlikti vėliau",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Patvirtinti mano piniginę",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "„bitFlyer“ piniginė yra „bitFlyer, Inc.“ valdoma paslauga.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Patvirtindami savo piniginę ir susiedami ją su „bitFlyer“ paskyra, galėsite lengviau laikyti ir tvarkyti žetonus, pelnytus per „Brave Rewards“",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Sužinokite daugiau$link_end$ apie tai, kaip susieti „Brave“ naršyklę su turima „bitFlyer“ sąskaita.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

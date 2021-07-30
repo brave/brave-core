@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_CALL_DATA_BUILDER_H_
 
 #include <string>
+#include <vector>
 #include "base/values.h"
 
 namespace brave_wallet {
@@ -17,6 +18,22 @@ namespace erc20 {
 bool BalanceOf(const std::string& address, std::string* data);
 
 }  // namespace erc20
+
+namespace unstoppable_domains {
+
+// Get mutiple record values mapped with keys of the target domain.
+bool GetMany(const std::vector<std::string>& keys,
+             const std::string& domain,
+             std::string* data);
+
+}  // namespace unstoppable_domains
+
+namespace ens {
+
+bool GetResolverAddress(const std::string& domain, std::string* data);
+bool GetContentHashAddress(const std::string& domain, std::string* data);
+
+}  // namespace ens
 
 }  // namespace brave_wallet
 

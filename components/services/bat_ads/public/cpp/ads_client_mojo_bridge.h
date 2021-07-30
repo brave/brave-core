@@ -31,24 +31,26 @@ class AdsClientMojoBridge
   AdsClientMojoBridge& operator=(const AdsClientMojoBridge&) = delete;
 
   // Overridden from BatAdsClient:
-  bool IsForeground(
-      bool* out_is_foreground) override;
-  void IsForeground(
-      IsForegroundCallback callback) override;
+  bool IsForeground(bool* out_is_foreground) override;
+  void IsForeground(IsForegroundCallback callback) override;
   bool IsFullScreen(bool* out_is_full_screen) override;
   void IsFullScreen(IsFullScreenCallback callback) override;
-  bool IsNetworkConnectionAvailable(
-      bool* out_available) override;
+  bool IsNetworkConnectionAvailable(bool* out_available) override;
   void IsNetworkConnectionAvailable(
       IsNetworkConnectionAvailableCallback callback) override;
-  bool CanShowBackgroundNotifications(
-      bool* out_can_show) override;
+  bool CanShowBackgroundNotifications(bool* out_can_show) override;
   void CanShowBackgroundNotifications(
       CanShowBackgroundNotificationsCallback callback) override;
-  bool ShouldShowNotifications(
-      bool* out_should_show) override;
+  bool ShouldShowNotifications(bool* out_should_show) override;
   void ShouldShowNotifications(
       ShouldShowNotificationsCallback callback) override;
+  bool GetAdEvents(const std::string& ad_type,
+                   const std::string& confirmation_type,
+                   std::vector<uint64_t>* out_ad_events) override;
+  void GetAdEvents(const std::string& ad_type,
+                   const std::string& confirmation_type,
+                   GetAdEventsCallback callback) override;
+
   bool LoadResourceForId(
       const std::string& id,
       std::string* out_value) override;
@@ -60,9 +62,13 @@ class AdsClientMojoBridge
       const int32_t line,
       const int32_t verbose_level,
       const std::string& message) override;
-  void LoadUserModelForId(
-      const std::string& id,
-      LoadCallback callback) override;
+  void LoadAdsResource(const std::string& id,
+                       const int version,
+                       LoadCallback callback) override;
+
+  void GetBrowsingHistory(const int max_count,
+                          const int days_ago,
+                          GetBrowsingHistoryCallback callback) override;
 
   void RecordP2AEvent(
       const std::string& name,
@@ -83,6 +89,12 @@ class AdsClientMojoBridge
       const std::string& json) override;
   void CloseNotification(
       const std::string& uuid) override;
+
+  void RecordAdEvent(const std::string& ad_type,
+                     const std::string& confirmation_type,
+                     const uint64_t timestamp) override;
+  void ResetAdEvents() override;
+
   void RunDBTransaction(
       ads::DBTransactionPtr transaction,
       RunDBTransactionCallback callback) override;
@@ -153,10 +165,13 @@ class AdsClientMojoBridge
     Callback callback_;
   };
 
-  static void OnLoadUserModelForId(
-      CallbackHolder<LoadCallback>* holder,
-      const ads::Result result,
-      const std::string& value);
+  static void OnLoadAdsResource(CallbackHolder<LoadCallback>* holder,
+                                const ads::Result result,
+                                const std::string& value);
+
+  static void OnGetBrowsingHistory(
+      CallbackHolder<GetBrowsingHistoryCallback>* holder,
+      const std::vector<std::string>& history);
 
   static void OnLoad(
       CallbackHolder<LoadCallback>* holder,

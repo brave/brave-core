@@ -14,7 +14,7 @@
 
 namespace chrome {
 
-std::string GetChannelName() {
+std::string GetChannelName(WithExtendedStable with_extended_stable) {
 #if defined(OFFICIAL_BUILD)
   static const base::NoDestructor<std::string> channel([] {
     // Use the main Chrome application bundle and not the framework bundle.
@@ -43,7 +43,7 @@ std::string GetChannelName() {
 }
 
 void CacheChannelInfo() {
-  ignore_result(GetChannelName());
+  ignore_result(GetChannelName(chrome::WithExtendedStable(false)));
 }
 
 version_info::Channel GetChannelByName(const std::string& channel) {
@@ -63,7 +63,12 @@ version_info::Channel GetChannelByName(const std::string& channel) {
 }
 
 version_info::Channel GetChannel() {
-  return GetChannelByName(GetChannelName());
+  return GetChannelByName(GetChannelName(chrome::WithExtendedStable(false)));
+}
+
+bool IsExtendedStableChannel() {
+  // No extended stable channel for Brave.
+  return false;
 }
 
 }  // namespace chrome

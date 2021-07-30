@@ -2,18 +2,16 @@ declare_args() {
   brave_stats_api_key = ""
 }
 
-source_set("browser") {
-    defines = [
-      "BRAVE_STATS_API_KEY=\"$brave_stats_api_key\"",
-    ]
+static_library("browser") {
+  defines = [ "BRAVE_STATS_API_KEY=\"$brave_stats_api_key\"" ]
 
-    sources = [
-      "brave_stats_updater_util.cc",
-      "brave_stats_updater_util.h",
-    ]
+  sources = [
+    "brave_stats_updater_util.cc",
+    "brave_stats_updater_util.h",
+  ]
 
-    deps = [
-      "//base",
-      "//components/prefs",
-    ]
+  deps = [
+    "//base",
+    "//components/prefs",
+  ]
 }

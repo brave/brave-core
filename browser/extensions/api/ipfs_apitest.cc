@@ -200,5 +200,15 @@ IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, ResolveIPFSURIMatches) {
   ASSERT_TRUE(catcher.GetNextResult()) << message_;
 }
 
+IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, IpfsPermissionAPIAccess) {
+  ResultCatcher catcher;
+  const Extension* extension =
+      LoadExtension(extension_dir_.AppendASCII("ExtensionWithIpfsPermission"));
+  ASSERT_TRUE(extension);
+  ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
+      browser()->profile(), ipfs_persmission_extension_id, "testBasics()"));
+  ASSERT_TRUE(catcher.GetNextResult()) << message_;
+}
+
 }  // namespace
 }  // namespace extensions

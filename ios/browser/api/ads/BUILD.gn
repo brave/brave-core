@@ -1,0 +1,57 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/build/ios/mojom/mojom_wrappers.gni")
+import("//build/config/ios/rules.gni")
+
+config("external_config") {
+  visibility = [ ":*" ]
+  include_dirs = [ "$target_gen_dir" ]
+}
+
+source_set("ads") {
+  configs += [
+    ":external_config",
+    "//build/config/compiler:enable_arc",
+  ]
+
+  sources = [
+    "ad_notification_ios.h",
+    "ad_notification_ios.mm",
+    "ads_client_bridge.h",
+    "ads_client_ios.h",
+    "ads_client_ios.mm",
+    "brave_ads.h",
+    "brave_ads.mm",
+    "inline_content_ad_ios.h",
+    "inline_content_ad_ios.mm",
+  ]
+
+  deps = [
+    ":ads_mojom_wrappers",
+    ":ads_resources",
+    "//base",
+    "//brave/ios/browser/api/common",
+    "//brave/vendor/bat-native-ads",
+  ]
+
+  frameworks = [
+    "Foundation.framework",
+    "UIKit.framework",
+    "Network.framework",
+  ]
+}
+
+mojom_wrappers("ads_mojom_wrappers") {
+  mojom_target =
+      "//brave/vendor/bat-native-ads/include/bat/ads/public/interfaces"
+  mojom_file = "//brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom"
+}
+
+bundle_data("ads_resources") {
+  sources =
+      [ "//brave/vendor/bat-native-ads/data/resources/catalog-schema.json" ]
+  outputs = [ "{{bundle_resources_dir}}/{{source_file_part}}" ]
+}

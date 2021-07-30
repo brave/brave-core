@@ -10,22 +10,25 @@
 
 #include "base/guid.h"
 #include "base/json/json_writer.h"
+#include "base/memory/weak_ptr.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/values.h"
+#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
+#include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/p3a/brave_p3a_utils.h"
+#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/weekly_storage/weekly_storage.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -47,6 +50,10 @@ using ntp_background_images::ViewCounterServiceFactory;
 
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
 #include "brave/components/crypto_dot_com/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_FTX)
+#include "brave/components/ftx/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -104,9 +111,11 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
   pref_data.SetBoolean(
       "isBrandedWallpaperNotificationDismissed",
       prefs->GetBoolean(kBrandedWallpaperNotificationDismissed));
+  pref_data.SetBoolean("isBraveTodayOptedIn",
+                       prefs->GetBoolean(kBraveTodayOptedIn));
   pref_data.SetBoolean(
-      "isBraveTodayIntroDismissed",
-      prefs->GetBoolean(kBraveTodayIntroDismissed));
+      "hideAllWidgets",
+      prefs->GetBoolean(kNewTabPageHideAllWidgets));
   pref_data.SetBoolean(
       "showBinance",
       prefs->GetBoolean(kNewTabPageShowBinance));
@@ -120,6 +129,9 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
   pref_data.SetBoolean(
       "showCryptoDotCom",
       prefs->GetBoolean(kCryptoDotComNewTabPageShowCryptoDotCom));
+#endif
+#if BUILDFLAG(ENABLE_FTX)
+  pref_data.SetBoolean("showFTX", prefs->GetBoolean(kFTXNewTabPageShowFTX));
 #endif
   return pref_data;
 }
@@ -200,7 +212,7 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
 }
 
 BraveNewTabMessageHandler::BraveNewTabMessageHandler(Profile* profile)
-    : profile_(profile) {
+    : profile_(profile), weak_ptr_factory_(this) {
 #if BUILDFLAG(ENABLE_TOR)
   tor_launcher_factory_ = TorLauncherFactory::GetInstance();
 #endif
@@ -283,6 +295,20 @@ void BraveNewTabMessageHandler::RegisterMessages() {
       base::BindRepeating(
           &BraveNewTabMessageHandler::HandleTodayOnPromotedCardView,
           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "todayGetDisplayAd",
+      base::BindRepeating(&BraveNewTabMessageHandler::HandleTodayGetDisplayAd,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "todayOnDisplayAdVisit",
+      base::BindRepeating(
+          &BraveNewTabMessageHandler::HandleTodayOnDisplayAdVisit,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "todayOnDisplayAdView",
+      base::BindRepeating(
+          &BraveNewTabMessageHandler::HandleTodayOnDisplayAdView,
+          base::Unretained(this)));
 }
 
 void BraveNewTabMessageHandler::OnJavascriptAllowed() {
@@ -290,69 +316,105 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   PrefService* prefs = profile_->GetPrefs();
   pref_change_registrar_.Init(prefs);
   // Stats
-  pref_change_registrar_.Add(kAdsBlocked,
-    base::Bind(&BraveNewTabMessageHandler::OnStatsChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kTrackersBlocked,
-    base::Bind(&BraveNewTabMessageHandler::OnStatsChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kJavascriptBlocked,
-    base::Bind(&BraveNewTabMessageHandler::OnStatsChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kHttpsUpgrades,
-    base::Bind(&BraveNewTabMessageHandler::OnStatsChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kFingerprintingBlocked,
-    base::Bind(&BraveNewTabMessageHandler::OnStatsChanged,
-    base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kAdsBlocked,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnStatsChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kTrackersBlocked,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnStatsChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kJavascriptBlocked,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnStatsChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kHttpsUpgrades,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnStatsChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kFingerprintingBlocked,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnStatsChanged,
+                          base::Unretained(this)));
 
   if (IsPrivateNewTab(profile_)) {
     // Private New Tab Page preferences
-    pref_change_registrar_.Add(kUseAlternativeSearchEngineProvider,
-      base::Bind(&BraveNewTabMessageHandler::OnPrivatePropertiesChanged,
-      base::Unretained(this)));
-    pref_change_registrar_.Add(kAlternativeSearchEngineProviderInTor,
-      base::Bind(&BraveNewTabMessageHandler::OnPrivatePropertiesChanged,
-      base::Unretained(this)));
+    pref_change_registrar_.Add(
+        kUseAlternativeSearchEngineProvider,
+        base::BindRepeating(
+            &BraveNewTabMessageHandler::OnPrivatePropertiesChanged,
+            base::Unretained(this)));
+    pref_change_registrar_.Add(
+        kAlternativeSearchEngineProviderInTor,
+        base::BindRepeating(
+            &BraveNewTabMessageHandler::OnPrivatePropertiesChanged,
+            base::Unretained(this)));
   }
+  // News
+  pref_change_registrar_.Add(
+      kBraveTodayOptedIn,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
   // New Tab Page preferences
-  pref_change_registrar_.Add(kNewTabPageShowBackgroundImage,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageShowSponsoredImagesBackgroundImage,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageShowClock,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageClockFormat,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageShowStats,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageShowToday,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageShowRewards,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kBrandedWallpaperNotificationDismissed,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageShowBinance,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageShowTogether,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageShowGemini,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kNewTabPageShowBackgroundImage,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kNewTabPageShowSponsoredImagesBackgroundImage,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kNewTabPageShowClock,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kNewTabPageClockFormat,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kNewTabPageShowStats,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kNewTabPageShowToday,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kNewTabPageShowRewards,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kBrandedWallpaperNotificationDismissed,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kNewTabPageShowBinance,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kNewTabPageShowTogether,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kNewTabPageShowGemini,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kNewTabPageHideAllWidgets,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-  pref_change_registrar_.Add(kCryptoDotComNewTabPageShowCryptoDotCom,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kCryptoDotComNewTabPageShowCryptoDotCom,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+#endif
+#if BUILDFLAG(ENABLE_FTX)
+  pref_change_registrar_.Add(
+      kFTXNewTabPageShowFTX,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -456,12 +518,14 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageShowStats;
   } else if (settingsKeyInput == "showToday") {
     settingsKey = kNewTabPageShowToday;
-  } else if (settingsKeyInput == "isBraveTodayIntroDismissed") {
-    settingsKey = kBraveTodayIntroDismissed;
+  } else if (settingsKeyInput == "isBraveTodayOptedIn") {
+    settingsKey = kBraveTodayOptedIn;
   } else if (settingsKeyInput == "showRewards") {
     settingsKey = kNewTabPageShowRewards;
   } else if (settingsKeyInput == "isBrandedWallpaperNotificationDismissed") {
     settingsKey = kBrandedWallpaperNotificationDismissed;
+  } else if (settingsKeyInput == "hideAllWidgets") {
+    settingsKey = kNewTabPageHideAllWidgets;
   } else if (settingsKeyInput == "showBinance") {
     settingsKey = kNewTabPageShowBinance;
   } else if (settingsKeyInput == "showTogether") {
@@ -471,6 +535,10 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
   } else if (settingsKeyInput == "showCryptoDotCom") {
     settingsKey = kCryptoDotComNewTabPageShowCryptoDotCom;
+#endif
+#if BUILDFLAG(ENABLE_FTX)
+  } else if (settingsKeyInput == "showFTX") {
+    settingsKey = kFTXNewTabPageShowFTX;
 #endif
   } else {
     LOG(ERROR) << "Invalid setting key";
@@ -635,6 +703,108 @@ void BraveNewTabMessageHandler::HandleTodayOnPromotedCardView(
         item_id, creative_instance_id,
         ads::mojom::BraveAdsPromotedContentAdEventType::kViewed);
   }
+}
+
+void BraveNewTabMessageHandler::HandleTodayGetDisplayAd(
+    const base::ListValue* args) {
+  AllowJavascript();
+  std::string callback_id;
+  args->GetString(0, &callback_id);
+  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
+  if (!ads_service_) {
+    ResolveJavascriptCallback(base::Value(callback_id),
+                              std::move(base::Value()));
+    return;
+  }
+  auto on_ad_received = base::BindOnce(
+      [](base::WeakPtr<BraveNewTabMessageHandler> handler,
+         std::string callback_id, const bool success,
+         const std::string& dimensions, const base::DictionaryValue& ad) {
+        // Validate page hasn't closed
+        if (!handler) {
+          return;
+        }
+        if (!success) {
+          handler->ResolveJavascriptCallback(base::Value(callback_id),
+                                             std::move(base::Value()));
+          return;
+        }
+        handler->ResolveJavascriptCallback(base::Value(callback_id),
+                                           std::move(ad));
+      },
+      weak_ptr_factory_.GetWeakPtr(), callback_id);
+  ads_service_->GetInlineContentAd("900x750", std::move(on_ad_received));
+}
+
+void BraveNewTabMessageHandler::HandleTodayOnDisplayAdVisit(
+    const base::ListValue* args) {
+  // Collect params
+  std::string item_id;
+  std::string creative_instance_id;
+  args->GetString(0, &item_id);
+  args->GetString(1, &creative_instance_id);
+  // Validate
+  if (item_id.empty()) {
+    LOG(ERROR) << "News: asked to record visit for an ad without ad id";
+    return;
+  }
+  if (creative_instance_id.empty()) {
+    LOG(ERROR) << "News: asked to record visit for an ad without "
+                  "ad creative instance id";
+    return;
+  }
+  // Let ad service know an ad was visited
+  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
+  if (!ads_service_) {
+    VLOG(1)
+        << "News: Asked to record an ad visit but there is no ads service for"
+           "this profile!";
+    return;
+  }
+  ads_service_->OnInlineContentAdEvent(
+      item_id, creative_instance_id,
+      ads::mojom::BraveAdsInlineContentAdEventType::kClicked);
+}
+
+void BraveNewTabMessageHandler::HandleTodayOnDisplayAdView(
+    const base::ListValue* args) {
+  // Collect params
+  std::string item_id;
+  std::string creative_instance_id;
+  args->GetString(0, &item_id);
+  args->GetString(1, &creative_instance_id);
+
+  // Validate
+  if (item_id.empty()) {
+    LOG(ERROR) << "News: asked to record view for an ad without ad id";
+    return;
+  }
+  if (creative_instance_id.empty()) {
+    LOG(ERROR) << "News: asked to record view for an ad without "
+                  "ad creative instance id";
+    return;
+  }
+  // Let ad service know an ad was viewed
+  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
+  if (!ads_service_) {
+    VLOG(1)
+        << "News: Asked to record an ad visit but there is no ads service for"
+           "this profile!";
+    return;
+  }
+  ads_service_->OnInlineContentAdEvent(
+      item_id, creative_instance_id,
+      ads::mojom::BraveAdsInlineContentAdEventType::kViewed);
+  // Let p3a know an ad was viewed
+  WeeklyStorage storage(profile_->GetPrefs(), kBraveTodayWeeklyCardViewsCount);
+  storage.AddDelta(1u);
+  // Store current weekly total in p3a, ready to send on the next upload
+  uint64_t total = storage.GetWeeklySum();
+  constexpr int kBuckets[] = {0, 1, 4, 8, 14, 30, 60, 120};
+  const int* it_count = std::lower_bound(kBuckets, std::end(kBuckets), total);
+  int answer = it_count - kBuckets;
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.WeeklyDisplayAdsViewedCount", answer,
+                             base::size(kBuckets) + 1);
 }
 
 void BraveNewTabMessageHandler::OnPrivatePropertiesChanged() {

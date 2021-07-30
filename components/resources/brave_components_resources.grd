@@ -36,7 +36,8 @@
 
       <!-- WebUI wallet resources -->
       <if expr="not is_android">
-        <include name="IDR_BRAVE_WALLET_HTML" file="../brave_wallet_ui/brave_wallet.html" type="BINDATA" />
+        <include name="IDR_WALLET_PAGE_HTML" file="../brave_wallet_ui/page/wallet_page.html" type="BINDATA" />
+        <include name="IDR_WALLET_PANEL_HTML" file="../brave_wallet_ui/panel/wallet_panel.html" type="BINDATA" />
       </if>
 
       <!-- Imagery links -->

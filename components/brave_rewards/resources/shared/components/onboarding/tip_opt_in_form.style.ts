@@ -15,7 +15,7 @@ export const root = styled.div`
 
 export const content = styled.div`
   flex: 1 0 auto;
-  margin-top: 22px;
+  margin-top: 20px;
   padding: 0 30px;
 `
 
@@ -29,11 +29,12 @@ export const heading = styled.div`
   font-weight: 600;
   font-size: 18px;
   line-height: 22px;
-  margin-top: 8px;
+  margin-top: 2px;
 `
 
 export const text = styled.div`
   margin: 4px auto 0;
+  padding: 0 17px;
   color: var(--brave-palette-neutral700);
   font-size: 14px;
   line-height: 24px;
@@ -57,7 +58,7 @@ export const takeTour = styled.div`
 `
 
 export const enable = styled.div`
-  margin-top: 32px;
+  margin-top: 20px;
 `
 
 export const dismiss = styled.div`

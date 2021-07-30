@@ -5,6 +5,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_RENDERER_CONTEXT_MENU_RENDER_VIEW_CONTEXT_MENU_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_RENDERER_CONTEXT_MENU_RENDER_VIEW_CONTEXT_MENU_H_
 
+#include "brave/components/ipfs/buildflags/buildflags.h"
+
 #define BRAVE_RENDER_VIEW_CONTEXT_MENU_H_ \
   private: \
     friend class BraveRenderViewContextMenu; \
@@ -40,6 +42,14 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
  private:
   // RenderViewContextMenuBase:
   void InitMenu() override;
+#if BUILDFLAG(IPFS_ENABLED)
+  void SeIpfsIconAt(int index);
+  void BuildIPFSMenu();
+  void ExecuteIPFSCommand(int id, int event_flags);
+  bool IsIPFSCommandIdEnabled(int command) const;
+
+  ui::SimpleMenuModel ipfs_submenu_model_;
+#endif
 };
 
 // Use our own subclass as the real RenderViewContextMenu.

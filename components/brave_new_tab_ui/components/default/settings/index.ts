@@ -246,7 +246,6 @@ export const SettingsTitle = styled('div')<{}>`
     font-size: 20px;
     line-height: 30px;
     letter-spacing: 0.02em;
-    color: ${p => p.theme.palette.neutral900};
   }
 `
 

@@ -11,10 +11,17 @@
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
-#include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
+#include "brave/browser/ui/sidebar/sidebar_service_factory.h"
+#include "brave/browser/ui/views/sidebar/sidebar_item_drag_context.h"
+#include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
+#include "brave/components/sidebar/sidebar_service.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "ui/base/clipboard/clipboard.h"
+#include "ui/base/clipboard/clipboard_format_type.h"
+#include "ui/base/dragdrop/drag_drop_types.h"
+#include "ui/base/dragdrop/mojom/drag_drop_types.mojom.h"
 #include "ui/base/theme_provider.h"
 #include "ui/events/event.h"
 #include "ui/gfx/canvas.h"
@@ -25,6 +32,8 @@
 #include "ui/views/controls/focus_ring.h"
 
 namespace {
+
+constexpr char kSidebarItemDragType[] = "brave/sidebar-item";
 
 class SidebarItemsArrowView : public views::ImageButton {
  public:
@@ -69,15 +78,16 @@ class SidebarItemsArrowView : public views::ImageButton {
 
 SidebarItemsScrollView::SidebarItemsScrollView(BraveBrowser* browser)
     : browser_(browser),
+      drag_context_(std::make_unique<SidebarItemDragContext>()),
       scroll_animator_for_new_item_(
           std::make_unique<views::BoundsAnimator>(this)),
       scroll_animator_for_smooth_(
           std::make_unique<views::BoundsAnimator>(this)) {
-  model_observed_.Add(browser->sidebar_controller()->model());
-  bounds_animator_observed_.Add(scroll_animator_for_new_item_.get());
-  bounds_animator_observed_.Add(scroll_animator_for_smooth_.get());
+  model_observed_.Observe(browser->sidebar_controller()->model());
+  bounds_animator_observed_.AddObservation(scroll_animator_for_new_item_.get());
+  bounds_animator_observed_.AddObservation(scroll_animator_for_smooth_.get());
   contents_view_ =
-      AddChildView(std::make_unique<SidebarItemsContentsView>(browser_));
+      AddChildView(std::make_unique<SidebarItemsContentsView>(browser_, this));
   up_arrow_ = AddChildView(std::make_unique<SidebarItemsArrowView>());
   up_arrow_->SetCallback(
       base::BindRepeating(&SidebarItemsScrollView::OnButtonPressed,
@@ -191,6 +201,12 @@ void SidebarItemsScrollView::OnItemAdded(const sidebar::SidebarItem& item,
   }
 }
 
+void SidebarItemsScrollView::OnItemMoved(const sidebar::SidebarItem& item,
+                                         int from,
+                                         int to) {
+  contents_view_->OnItemMoved(item, from, to);
+}
+
 void SidebarItemsScrollView::OnItemRemoved(int index) {
   contents_view_->OnItemRemoved(index);
 }
@@ -199,6 +215,7 @@ void SidebarItemsScrollView::OnActiveIndexChanged(int old_index,
                                                   int new_index) {
   contents_view_->OnActiveIndexChanged(old_index, new_index);
 }
+
 void SidebarItemsScrollView::OnFaviconUpdatedForItem(
     const sidebar::SidebarItem& item,
     const gfx::ImageSkia& image) {
@@ -326,4 +343,119 @@ gfx::Rect SidebarItemsScrollView::GetTargetScrollContentsViewRectTo(bool top) {
 
   target_bounds.set_size(contents_bounds.size());
   return target_bounds;
+}
+
+bool SidebarItemsScrollView::IsInVisibleContentsViewBounds(
+    const gfx::Point& position) const {
+  if (!HitTestPoint(position))
+    return false;
+
+  // If this is not scrollable, this scroll view shows all contents view.
+  if (!IsScrollable())
+    return true;
+
+  if (up_arrow_->bounds().Contains(position) ||
+      down_arrow_->bounds().Contains(position)) {
+    return false;
+  }
+
+  return true;
+}
+
+bool SidebarItemsScrollView::GetDropFormats(
+    int* formats,
+    std::set<ui::ClipboardFormatType>* format_types) {
+  format_types->insert(ui::ClipboardFormatType::GetType(kSidebarItemDragType));
+  return true;
+}
+
+bool SidebarItemsScrollView::CanDrop(const OSExchangeData& data) {
+  // Null means sidebar item drag and drop is not initiated by this view.
+  // Don't allow item move from different window.
+  if (!drag_context_->source())
+    return false;
+
+  return data.HasCustomFormat(
+      ui::ClipboardFormatType::GetType(kSidebarItemDragType));
+}
+
+int SidebarItemsScrollView::OnDragUpdated(const ui::DropTargetEvent& event) {
+  auto ret = ui::DragDropTypes::DRAG_NONE;
+
+  // This scroll view is the visible area of items contents view.
+  // If dragging point is in this scroll view, draw indicator.
+  if (IsInVisibleContentsViewBounds(event.location())) {
+    gfx::Point screen_position = event.location();
+    views::View::ConvertPointToScreen(this, &screen_position);
+    views::View* view = drag_context_->source();
+    const int target_index =
+        contents_view_->DrawDragIndicator(view, screen_position);
+    drag_context_->set_drag_indicator_index(target_index);
+    ret = ui::DragDropTypes::DRAG_MOVE;
+  } else {
+    contents_view_->ClearDragIndicator();
+    drag_context_->set_drag_indicator_index(-1);
+  }
+
+  return ret;
+}
+
+void SidebarItemsScrollView::OnDragExited() {
+  contents_view_->ClearDragIndicator();
+  drag_context_->set_drag_indicator_index(-1);
+}
+
+ui::mojom::DragOperation SidebarItemsScrollView::OnPerformDrop(
+    const ui::DropTargetEvent& event) {
+  auto ret = ui::mojom::DragOperation::kNone;
+
+  if (drag_context_->ShouldMoveItem()) {
+    auto* service =
+        sidebar::SidebarServiceFactory::GetForProfile(browser_->profile());
+    service->MoveItem(drag_context_->source_index(),
+                      drag_context_->GetTargetIndex());
+    ret = ui::mojom::DragOperation::kMove;
+  }
+
+  contents_view_->ClearDragIndicator();
+  drag_context_->Reset();
+  return ret;
+}
+
+void SidebarItemsScrollView::WriteDragDataForView(views::View* sender,
+                                                  const gfx::Point& press_pt,
+                                                  ui::OSExchangeData* data) {
+  SidebarItemView* item_view = static_cast<SidebarItemView*>(sender);
+  data->provider().SetDragImage(
+      item_view->GetImage(views::Button::STATE_NORMAL),
+      press_pt.OffsetFromOrigin());
+
+  data->SetPickledData(ui::ClipboardFormatType::GetType(kSidebarItemDragType),
+                       base::Pickle());
+}
+
+int SidebarItemsScrollView::GetDragOperationsForView(views::View* sender,
+                                                     const gfx::Point& p) {
+  return ui::DragDropTypes::DRAG_MOVE;
+}
+
+bool SidebarItemsScrollView::CanStartDragForView(views::View* sender,
+                                                 const gfx::Point& press_pt,
+                                                 const gfx::Point& p) {
+  if (SidebarItemDragContext::CanStartDrag(press_pt, p)) {
+    drag_context_->Reset();
+    drag_context_->set_source(sender);
+    drag_context_->set_source_index(contents_view_->GetIndexOf(sender));
+    return true;
+  }
+
+  return false;
+}
+
+bool SidebarItemsScrollView::IsItemReorderingInProgress() const {
+  return drag_context_->source_index() != -1;
+}
+
+bool SidebarItemsScrollView::IsBubbleVisible() const {
+  return contents_view_->IsBubbleVisible();
 }

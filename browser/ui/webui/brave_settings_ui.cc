@@ -7,8 +7,7 @@
 
 #include <string>
 
-#include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/extensions/brave_component_loader.h"
+#include "base/feature_list.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
@@ -19,10 +18,11 @@
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/ui/webui/settings/brave_sync_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
-#include "brave/browser/version_info.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
+#include "brave/components/speedreader/buildflags.h"
+#include "brave/components/version_info/version_info.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -37,6 +37,10 @@
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/features.h"
 #endif
 
 using ntp_background_images::ViewCounterServiceFactory;
@@ -84,5 +88,11 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   // channels.
   html_source->AddBoolean("isSidebarFeatureEnabled",
                           sidebar::CanUseSidebar(profile));
+#endif
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  // TODO(keur): Remove this when Speedreader feature enabled by default.
+  html_source->AddBoolean(
+      "isSpeedreaderFeatureEnabled",
+      base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature));
 #endif
 }

@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_IMPL_H_
 
 #include <functional>
+#include <list>
 #include <map>
 #include <memory>
 #include <string>
@@ -14,7 +15,6 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
-#include "base/containers/flat_set.h"
 #include "base/files/file.h"
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
@@ -75,16 +75,17 @@ namespace brave_rewards {
 class RewardsNotificationServiceImpl;
 class RewardsBrowserTest;
 
-using GetEnvironmentCallback = base::Callback<void(ledger::type::Environment)>;
-using GetDebugCallback = base::Callback<void(bool)>;
-using GetReconcileIntervalCallback = base::Callback<void(int32_t)>;
-using GetShortRetriesCallback = base::Callback<void(bool)>;
-using GetTestResponseCallback =
-    base::Callback<void(const std::string& url,
-                        int32_t method,
-                        int* response_status_code,
-                        std::string* response,
-                        base::flat_map<std::string, std::string>* headers)>;
+using GetEnvironmentCallback =
+    base::OnceCallback<void(ledger::type::Environment)>;
+using GetDebugCallback = base::OnceCallback<void(bool)>;
+using GetReconcileIntervalCallback = base::OnceCallback<void(int32_t)>;
+using GetShortRetriesCallback = base::OnceCallback<void(bool)>;
+using GetTestResponseCallback = base::RepeatingCallback<void(
+    const std::string& url,
+    int32_t method,
+    int* response_status_code,
+    std::string* response,
+    base::flat_map<std::string, std::string>* headers)>;
 
 using ExternalWalletAuthorizationCallback =
     base::OnceCallback<void(
@@ -130,17 +131,15 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& solution,
       AttestPromotionCallback callback) override;
   void RecoverWallet(const std::string& passPhrase) override;
-  void GetActivityInfoList(
-      const uint32_t start,
-      const uint32_t limit,
-      ledger::type::ActivityInfoFilterPtr filter,
-      const GetPublisherInfoListCallback& callback) override;
+  void GetActivityInfoList(const uint32_t start,
+                           const uint32_t limit,
+                           ledger::type::ActivityInfoFilterPtr filter,
+                           GetPublisherInfoListCallback callback) override;
 
-  void GetExcludedList(const GetPublisherInfoListCallback& callback) override;
+  void GetExcludedList(GetPublisherInfoListCallback callback) override;
 
-  void OnGetPublisherInfoList(
-      const GetPublisherInfoListCallback& callback,
-      ledger::type::PublisherInfoList list);
+  void OnGetPublisherInfoList(GetPublisherInfoListCallback callback,
+                              ledger::type::PublisherInfoList list);
   void OnLoad(SessionID tab_id, const GURL& url) override;
   void OnUnload(SessionID tab_id) override;
   void OnShow(SessionID tab_id) override;
@@ -157,17 +156,16 @@ class RewardsServiceImpl : public RewardsService,
                   const GURL& referrer,
                   const std::string& post_data) override;
   std::string URIEncode(const std::string& value) override;
-  void GetReconcileStamp(const GetReconcileStampCallback& callback) override;
+  void GetReconcileStamp(GetReconcileStampCallback callback) override;
   void GetAutoContributeEnabled(
       GetAutoContributeEnabledCallback callback) override;
   void GetPublisherMinVisitTime(
-      const GetPublisherMinVisitTimeCallback& callback) override;
-  void GetPublisherMinVisits(
-      const GetPublisherMinVisitsCallback& callback) override;
+      GetPublisherMinVisitTimeCallback callback) override;
+  void GetPublisherMinVisits(GetPublisherMinVisitsCallback callback) override;
   void GetPublisherAllowNonVerified(
-      const GetPublisherAllowNonVerifiedCallback& callback) override;
+      GetPublisherAllowNonVerifiedCallback callback) override;
   void GetPublisherAllowVideos(
-      const GetPublisherAllowVideosCallback& callback) override;
+      GetPublisherAllowVideosCallback callback) override;
   void RestorePublishers() override;
   void GetBalanceReport(
       const uint32_t month,
@@ -179,7 +177,7 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& favicon_url,
       const std::string& publisher_blob) override;
   void GetAutoContributionAmount(
-      const GetAutoContributionAmountCallback& callback) override;
+      GetAutoContributionAmountCallback callback) override;
   void GetPublisherBanner(const std::string& publisher_id,
                           GetPublisherBannerCallback callback) override;
   void OnPublisherBanner(GetPublisherBannerCallback callback,
@@ -192,6 +190,8 @@ class RewardsServiceImpl : public RewardsService,
   void SetPublisherExclude(
       const std::string& publisher_key,
       bool exclude) override;
+  void SetExternalWalletType(const std::string& wallet_type) override;
+
   RewardsNotificationService* GetNotificationService() const override;
   void SetBackupCompleted() override;
   void GetRewardsInternalsInfo(
@@ -199,18 +199,18 @@ class RewardsServiceImpl : public RewardsService,
 
   void HandleFlags(const std::string& options);
   void SetEnvironment(ledger::type::Environment environment);
-  void GetEnvironment(const GetEnvironmentCallback& callback);
+  void GetEnvironment(GetEnvironmentCallback callback);
   void SetDebug(bool debug);
-  void GetDebug(const GetDebugCallback& callback);
+  void GetDebug(GetDebugCallback callback);
   void SetReconcileInterval(const int32_t interval);
   void GetReconcileInterval(GetReconcileIntervalCallback callback);
   void SetShortRetries(bool short_retries);
-  void GetShortRetries(const GetShortRetriesCallback& callback);
+  void GetShortRetries(GetShortRetriesCallback callback);
 
   void GetAutoContributeProperties(
-      const GetAutoContributePropertiesCallback& callback) override;
+      GetAutoContributePropertiesCallback callback) override;
   void GetPendingContributionsTotal(
-      const GetPendingContributionsTotalCallback& callback) override;
+      GetPendingContributionsTotalCallback callback) override;
 
   void GetOneTimeTips(GetOneTimeTipsCallback callback) override;
   void RefreshPublisher(
@@ -293,6 +293,10 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetExternalWallet(GetExternalWalletCallback callback) override;
 
+  std::string GetExternalWalletType() const;
+
+  const std::vector<std::string> GetExternalWalletProviders() const override;
+
   void ExternalWalletAuthorization(
       const std::string& wallet_type,
       const base::flat_map<std::string, std::string>& args,
@@ -305,15 +309,13 @@ class RewardsServiceImpl : public RewardsService,
 
   void DisconnectWallet() override;
 
-  bool OnlyAnonWallet() const override;
-
   void GetAnonWalletStatus(GetAnonWalletStatusCallback callback) override;
 
   void SetAutoContributeEnabled(bool enabled) override;
 
   bool ShouldShowOnboarding() const override;
 
-  void SaveOnboardingResult(OnboardingResult result) override;
+  void EnableRewards() override;
 
   void GetMonthlyReport(
       const uint32_t month,
@@ -330,11 +332,9 @@ class RewardsServiceImpl : public RewardsService,
 
   void StopLedger(StopLedgerCallback callback);
 
-  std::string GetEncryptedStringState(const std::string& name) override;
+  absl::optional<std::string> EncryptString(const std::string& value) override;
 
-  bool SetEncryptedStringState(
-      const std::string& name,
-      const std::string& value) override;
+  absl::optional<std::string> DecryptString(const std::string& value) override;
 
   void GetBraveWallet(GetBraveWalletCallback callback) override;
 
@@ -353,10 +353,13 @@ class RewardsServiceImpl : public RewardsService,
   void MaybeShowNotificationAddFundsForTesting(
       base::OnceCallback<void(bool)> callback);
   void CheckInsufficientFundsForTesting();
-  void ForTestingSetTestResponseCallback(GetTestResponseCallback callback);
+  void ForTestingSetTestResponseCallback(
+      const GetTestResponseCallback& callback);
 
  private:
   friend class ::RewardsFlagBrowserTest;
+  using SimpleURLLoaderList =
+      std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
   void OnConnectionClosed(const ledger::type::Result result);
 
@@ -369,8 +372,6 @@ class RewardsServiceImpl : public RewardsService,
   void StartLedgerProcessIfNecessary();
 
   void EnableGreaseLion();
-
-  std::string GetExternalWalletType() const;
 
   void OnStopLedger(
       StopLedgerCallback callback,
@@ -445,7 +446,7 @@ class RewardsServiceImpl : public RewardsService,
     GetPendingContributionsCallback callback,
     ledger::type::PendingContributionInfoList list);
 
-  void OnURLLoaderComplete(network::SimpleURLLoader* loader,
+  void OnURLLoaderComplete(SimpleURLLoaderList::iterator url_loader_it,
                            ledger::client::LoadURLCallback callback,
                            std::unique_ptr<std::string> response_body);
 
@@ -528,7 +529,10 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnWalletCreatedForSetAdsEnabled(const ledger::type::Result result);
 
-  void OnStartProcessForOnboarding();
+  void OnStartProcessForEnableRewards();
+
+  void OnFetchBalanceForEnableRewards(ledger::type::Result result,
+                                      ledger::type::BalancePtr balance);
 
   // ledger::LedgerClient
   void OnReconcileComplete(
@@ -664,7 +668,7 @@ class RewardsServiceImpl : public RewardsService,
 
   // Mojo Proxy methods
   void OnGetAutoContributeProperties(
-      const GetAutoContributePropertiesCallback& callback,
+      GetAutoContributePropertiesCallback callback,
       ledger::type::AutoContributePropertiesPtr props);
   void OnGetRewardsInternalsInfo(GetRewardsInternalsInfoCallback callback,
                                  ledger::type::RewardsInternalsInfoPtr info);
@@ -682,6 +686,8 @@ class RewardsServiceImpl : public RewardsService,
       ledger::type::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) override;
+
+  void OnGetBraveWalletForP3A(ledger::type::BraveWalletPtr wallet);
 
   bool Connected() const;
   void ConnectionClosed();
@@ -742,6 +748,10 @@ class RewardsServiceImpl : public RewardsService,
       GetBraveWalletCallback callback,
       ledger::type::BraveWalletPtr wallet);
 
+  bool IsBitFlyerRegion() const;
+
+  bool IsValidWalletType(const std::string& wallet_type) const;
+
 #if defined(OS_ANDROID)
   ledger::type::Environment GetServerEnvironmentForAndroid();
   void GrantAttestationResult(
@@ -773,7 +783,7 @@ class RewardsServiceImpl : public RewardsService,
   std::unique_ptr<RewardsServicePrivateObserver> private_observer_;
 
   std::unique_ptr<base::OneShotEvent> ready_;
-  base::flat_set<network::SimpleURLLoader*> url_loaders_;
+  SimpleURLLoaderList url_loaders_;
   std::map<std::string, BitmapFetcherService::RequestId>
       current_media_fetchers_;
   std::unique_ptr<base::OneShotTimer> notification_startup_timer_;
@@ -785,7 +795,7 @@ class RewardsServiceImpl : public RewardsService,
   bool reset_states_;
   bool ledger_for_testing_ = false;
   bool resetting_rewards_ = false;
-  bool should_persist_logs_ = false;
+  int persist_log_level_ = 0;
 
   GetTestResponseCallback test_response_callback_;
 

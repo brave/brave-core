@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index a7ea788112619bf5e21009aab6ca254cf2a96b44..b3b2eb28a2e27ba4e99de6b55f4f43513332d24d 100644
+index 47d6effe7e33e71bbe640943d2122133ede12a56..41b691217961c7d225e22dbecf1ba15e6beb700c 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -237,6 +237,7 @@ enum class ContentSettingsType : int32_t {
-   // register the PermissionContext.
-   DISPLAY_CAPTURE,
+@@ -261,6 +261,7 @@ enum class ContentSettingsType : int32_t {
+   // associated with the relying party's origin.
+   FEDERATED_IDENTITY_REQUEST,
  
 +  BRAVE_CONTENT_SETTINGS_TYPES_LIST,
    NUM_TYPES,

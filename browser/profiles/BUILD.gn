@@ -1,3 +1,4 @@
+import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//components/gcm_driver/config.gni")
 
@@ -17,8 +18,6 @@ source_set("profiles") {
     "brave_renderer_updater.h",
     "brave_renderer_updater_factory.cc",
     "brave_renderer_updater_factory.h",
-    "profile_util.cc",
-    "profile_util.h",
   ]
 
   if (is_win) {
@@ -28,19 +27,20 @@ source_set("profiles") {
     ]
   }
 
+  public_deps = [ ":util" ]
+
   deps = [
     "//base",
+    "//brave/browser/brave_ads",
     "//brave/browser/gcm_driver",
     "//brave/common",
     "//brave/common:pref_names",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_sync:prefs",
-    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/content_settings/core/browser",
     "//brave/components/decentralized_dns/buildflags",
     "//brave/components/ipfs/buildflags",
-    "//brave/components/ntp_background_images/common",
     "//brave/components/tor",
     "//brave/content:browser",
     "//chrome/common",
@@ -61,8 +61,24 @@ source_set("profiles") {
   if (enable_tor) {
     deps += [ "//brave/browser/tor" ]
   }
+}
 
-  if (decentralized_dns_enabled) {
-    deps += [ "//brave/browser/decentralized_dns" ]
-  }
+source_set("util") {
+  # Remove when https://github.com/brave/brave-browser/issues/10648 is resolved
+  check_includes = false
+
+  sources = [
+    "profile_util.cc",
+    "profile_util.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/common",
+    "//brave/components/ntp_background_images/common",
+    "//brave/components/search_engines",
+    "//brave/components/tor/buildflags",
+    "//components/prefs",
+    "//content/public/browser",
+  ]
 }

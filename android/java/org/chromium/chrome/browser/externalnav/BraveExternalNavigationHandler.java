@@ -5,11 +5,12 @@
 
 package org.chromium.chrome.browser.externalnav;
 
+import org.chromium.chrome.browser.BraveUphold;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.external_intents.ExternalNavigationHandler;
-import org.chromium.components.external_intents.ExternalNavigationParams;
 import org.chromium.components.external_intents.ExternalNavigationHandler.OverrideUrlLoadingResult;
-import org.chromium.chrome.browser.BraveUphold;
+import org.chromium.components.external_intents.ExternalNavigationParams;
+import org.chromium.url.GURL;
 
 public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
     private BraveUphold mBraveUphold;
@@ -28,7 +29,7 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
     }
 
     private boolean isUpholdOverride(ExternalNavigationParams params) {
-        if (!params.getUrl().startsWith(BraveUphold.UPHOLD_REDIRECT_URL)) return false;
+        if (!params.getUrl().getSpec().startsWith(BraveUphold.UPHOLD_REDIRECT_URL)) return false;
         return true;
     }
 
@@ -49,6 +50,7 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
         if (params.getRedirectHandler() != null) {
             params.getRedirectHandler().setShouldNotOverrideUrlLoadingOnCurrentRedirectChain();
         }
-        return clobberCurrentTab(browserFallbackUrl, params.getReferrerUrl());
+        GURL browserFallbackGURL = new GURL(browserFallbackUrl);
+        return clobberCurrentTab(browserFallbackGURL, params.getReferrerUrl());
     }
 }

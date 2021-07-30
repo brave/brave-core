@@ -1,0 +1,67 @@
+import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
+import("//brave/build/config.gni")
+import("//brave/components/brave_wallet/browser/config.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//build/config/features.gni")
+import("//extensions/buildflags/buildflags.gni")
+
+# ethereum_remote_client_enabled requires brave_wallet_enabled
+assert(brave_wallet_enabled)
+
+assert(ethereum_remote_client_enabled)
+
+source_set("ethereum_remote_client") {
+  configs += [ ":infura_config" ]
+  include_dirs = [ "//brave/third_party/ethash/src/include" ]
+
+  sources = [
+    "ethereum_remote_client_constants.cc",
+    "ethereum_remote_client_constants.h",
+    "ethereum_remote_client_delegate.h",
+    "ethereum_remote_client_service.cc",
+    "ethereum_remote_client_service.h",
+    "pref_names.cc",
+    "pref_names.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/common",
+    "//components/content_settings/core/browser",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//crypto",
+    "//extensions/buildflags",
+    "//services/network/public/cpp",
+    "//url",
+  ]
+
+  if (enable_extensions) {
+    deps += [ "//extensions/browser" ]
+  }
+}
+
+source_set("browser") {
+  sources = [
+    "ethereum_remote_client_delegate_impl.cc",
+    "ethereum_remote_client_delegate_impl.h",
+    "ethereum_remote_client_service_factory.cc",
+    "ethereum_remote_client_service_factory.h",
+  ]
+  deps = [
+    "//brave/browser/ethereum_remote_client",
+    "//brave/browser/extensions",
+    "//chrome/browser/extensions",
+    "//chrome/browser/profiles",
+    "//components/keyed_service/content",
+    "//extensions/browser",
+    "//extensions/buildflags",
+  ]
+}
+
+config("infura_config") {
+  defines = [ "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\"" ]
+}

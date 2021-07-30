@@ -18,10 +18,6 @@
 
 namespace ads {
 
-namespace {
-const char kCreativeInstanceId[] = "9aea9a47-c6a0-4718-a0fa-706338bb2156";
-}  // namespace
-
 class BatAdsAdsPerDayFrequencyCapTest : public UnitTestBase {
  protected:
   BatAdsAdsPerDayFrequencyCapTest() = default;
@@ -44,10 +40,9 @@ class BatAdsAdsPerDayFrequencyCapTest : public UnitTestBase {
 
 TEST_F(BatAdsAdsPerDayFrequencyCapTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange
-  const AdEventList ad_events;
 
   // Act
-  AdsPerDayFrequencyCap frequency_cap(ad_events);
+  AdsPerDayFrequencyCap frequency_cap;
   const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert
@@ -56,17 +51,11 @@ TEST_F(BatAdsAdsPerDayFrequencyCapTest, AllowAdIfThereIsNoAdsHistory) {
 
 TEST_F(BatAdsAdsPerDayFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
-
-  const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
-
   const size_t count = features::GetMaximumAdNotificationsPerDay() - 1;
-  const AdEventList ad_events(count, ad_event);
+  RecordAdEvents(AdType::kAdNotification, ConfirmationType::kServed, count);
 
   // Act
-  AdsPerDayFrequencyCap frequency_cap(ad_events);
+  AdsPerDayFrequencyCap frequency_cap;
   const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert
@@ -75,19 +64,13 @@ TEST_F(BatAdsAdsPerDayFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
 
 TEST_F(BatAdsAdsPerDayFrequencyCapTest, AllowAdIfDoesNotExceedCapAfter1Day) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
-
-  const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
-
   const size_t count = features::GetMaximumAdNotificationsPerDay();
-  const AdEventList ad_events(count, ad_event);
+  RecordAdEvents(AdType::kAdNotification, ConfirmationType::kServed, count);
 
   FastForwardClockBy(base::TimeDelta::FromDays(1));
 
   // Act
-  AdsPerDayFrequencyCap frequency_cap(ad_events);
+  AdsPerDayFrequencyCap frequency_cap;
   const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert
@@ -96,19 +79,13 @@ TEST_F(BatAdsAdsPerDayFrequencyCapTest, AllowAdIfDoesNotExceedCapAfter1Day) {
 
 TEST_F(BatAdsAdsPerDayFrequencyCapTest, DoNotAllowAdIfExceedsCapWithin1Day) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
-
-  const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
-
   const size_t count = features::GetMaximumAdNotificationsPerDay();
-  const AdEventList ad_events(count, ad_event);
+  RecordAdEvents(AdType::kAdNotification, ConfirmationType::kServed, count);
 
   FastForwardClockBy(base::TimeDelta::FromHours(23));
 
   // Act
-  AdsPerDayFrequencyCap frequency_cap(ad_events);
+  AdsPerDayFrequencyCap frequency_cap;
   const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert

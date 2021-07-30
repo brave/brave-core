@@ -6,19 +6,11 @@
 #include <utility>
 #include <vector>
 
-#include "base/strings/stringprintf.h"
 #include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/database/database_migration.h"
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/database/migration/migration_v1.h"
-#include "bat/ledger/internal/database/migration/migration_v2.h"
-#include "bat/ledger/internal/database/migration/migration_v3.h"
-#include "bat/ledger/internal/database/migration/migration_v4.h"
-#include "bat/ledger/internal/database/migration/migration_v5.h"
-#include "bat/ledger/internal/database/migration/migration_v6.h"
-#include "bat/ledger/internal/database/migration/migration_v7.h"
-#include "bat/ledger/internal/database/migration/migration_v8.h"
-#include "bat/ledger/internal/database/migration/migration_v9.h"
 #include "bat/ledger/internal/database/migration/migration_v10.h"
 #include "bat/ledger/internal/database/migration/migration_v11.h"
 #include "bat/ledger/internal/database/migration/migration_v12.h"
@@ -29,6 +21,7 @@
 #include "bat/ledger/internal/database/migration/migration_v17.h"
 #include "bat/ledger/internal/database/migration/migration_v18.h"
 #include "bat/ledger/internal/database/migration/migration_v19.h"
+#include "bat/ledger/internal/database/migration/migration_v2.h"
 #include "bat/ledger/internal/database/migration/migration_v20.h"
 #include "bat/ledger/internal/database/migration/migration_v21.h"
 #include "bat/ledger/internal/database/migration/migration_v22.h"
@@ -39,8 +32,19 @@
 #include "bat/ledger/internal/database/migration/migration_v27.h"
 #include "bat/ledger/internal/database/migration/migration_v28.h"
 #include "bat/ledger/internal/database/migration/migration_v29.h"
+#include "bat/ledger/internal/database/migration/migration_v3.h"
+#include "bat/ledger/internal/database/migration/migration_v30.h"
+#include "bat/ledger/internal/database/migration/migration_v31.h"
+#include "bat/ledger/internal/database/migration/migration_v32.h"
+#include "bat/ledger/internal/database/migration/migration_v4.h"
+#include "bat/ledger/internal/database/migration/migration_v5.h"
+#include "bat/ledger/internal/database/migration/migration_v6.h"
+#include "bat/ledger/internal/database/migration/migration_v7.h"
+#include "bat/ledger/internal/database/migration/migration_v8.h"
+#include "bat/ledger/internal/database/migration/migration_v9.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
+#include "bat/ledger/option_keys.h"
 #include "third_party/re2/src/re2/re2.h"
 
 // NOTICE!!
@@ -76,43 +80,59 @@ void DatabaseMigration::Start(
     return;
   }
 
-  const std::vector<std::string> mappings {
-    "",
-    migration::v1,
-    migration::v2,
-    migration::v3,
-    migration::v4,
-    migration::v5,
-    migration::v6,
-    migration::v7,
-    migration::v8,
-    migration::v9,
-    migration::v10,
-    migration::v11,
-    migration::v12,
-    migration::v13,
-    migration::v14,
-    migration::v15,
-    migration::v16,
-    migration::v17,
-    migration::v18,
-    migration::v19,
-    migration::v20,
-    migration::v21,
-    migration::v22,
-    migration::v23,
-    migration::v24,
-    migration::v25,
-    migration::v26,
-    migration::v27,
-    migration::v28,
-    migration::v29,
-  };
+  // Migration 30 archives and clears the user's unblinded tokens table. It
+  // is intended only for users transitioning from "BAP" (a Japan-specific
+  // representation of BAT) to BAT with bitFlyer support.
+  //
+  // Migration 32 archives and clears additional data associated with BAP in
+  // order to prevent display of BAP historical information in monthly reports.
+  std::string migration_v30 = "";
+  std::string migration_v32 = "";
+  if (ledger_->ledger_client()->GetBooleanOption(option::kIsBitflyerRegion)) {
+    migration_v30 = migration::v30;
+    migration_v32 = migration::v32;
+  }
+
+  const std::vector<std::string> mappings{"",
+                                          migration::v1,
+                                          migration::v2,
+                                          migration::v3,
+                                          migration::v4,
+                                          migration::v5,
+                                          migration::v6,
+                                          migration::v7,
+                                          migration::v8,
+                                          migration::v9,
+                                          migration::v10,
+                                          migration::v11,
+                                          migration::v12,
+                                          migration::v13,
+                                          migration::v14,
+                                          migration::v15,
+                                          migration::v16,
+                                          migration::v17,
+                                          migration::v18,
+                                          migration::v19,
+                                          migration::v20,
+                                          migration::v21,
+                                          migration::v22,
+                                          migration::v23,
+                                          migration::v24,
+                                          migration::v25,
+                                          migration::v26,
+                                          migration::v27,
+                                          migration::v28,
+                                          migration::v29,
+                                          migration_v30,
+                                          migration::v31,
+                                          migration_v32};
 
   DCHECK_LE(target_version, mappings.size());
 
   for (auto i = start_version; i <= target_version; i++) {
-    GenerateCommand(transaction.get(), mappings[i]);
+    if (!mappings[i].empty())
+      GenerateCommand(transaction.get(), mappings[i]);
+
     BLOG(1, "DB: Migrated to version " << i);
     migrated_version = i;
   }

@@ -51,9 +51,9 @@ class BraveStatsUpdater : public ProfileManagerObserver {
   using StatsUpdatedCallback = base::RepeatingCallback<void(const GURL& url)>;
 
   static void SetStatsUpdatedCallbackForTesting(
-      StatsUpdatedCallback stats_updated_callback);
+      StatsUpdatedCallback* stats_updated_callback);
   static void SetStatsThresholdCallbackForTesting(
-      StatsUpdatedCallback stats_threshold_callback);
+      StatsUpdatedCallback* stats_threshold_callback);
 
  private:
   // ProfileManagerObserver

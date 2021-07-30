@@ -8,7 +8,6 @@
 
 #include <vector>
 
-#include "base/scoped_observer.h"
 #include "brave/common/brave_renderer_configuration.mojom-forward.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"

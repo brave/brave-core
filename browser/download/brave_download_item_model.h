@@ -6,7 +6,9 @@
 #ifndef BRAVE_BROWSER_DOWNLOAD_BRAVE_DOWNLOAD_ITEM_MODEL_H_
 #define BRAVE_BROWSER_DOWNLOAD_BRAVE_DOWNLOAD_ITEM_MODEL_H_
 
-#include "chrome/browser/download/download_item_model.h"
+#include <string>
+
+#include "base/macros.h"
 
 // The purpose of this class is to extend DonwloadItemModel's class
 // functionality by adding a method for the origin URL text and
@@ -15,6 +17,8 @@
 // DownloadItemView has a member of DownloadItemModel type. To use this
 // extended functionality, BraveDownloadItemView will have this model as
 // a member.
+class DownloadUIModel;
+
 class BraveDownloadItemModel {
  public:
   // Constructs a BraveDownloadItemModel that encapsulates DownloadItemModel.
@@ -25,11 +29,11 @@ class BraveDownloadItemModel {
   // a regular download, the tooltip is the filename and the origin URL with an
   // indicator if the URL is secure. For an interrupted download, falls back on
   // the base class behavior.
-  base::string16 GetTooltipText();
+  std::u16string GetTooltipText();
 
   // Returns a string suitable for use as the origin URL. |is_secure| is set to
   // true if the url is considered secure.
-  base::string16 GetOriginURLText(bool* is_secure);
+  std::u16string GetOriginURLText(bool* is_secure);
 
   // Encapsulated model.
   DownloadUIModel* model_;

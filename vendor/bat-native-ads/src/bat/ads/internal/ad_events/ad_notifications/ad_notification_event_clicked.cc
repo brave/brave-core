@@ -9,6 +9,7 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/ads_history/ads_history.h"
 #include "bat/ads/internal/logging.h"
 
@@ -24,7 +25,9 @@ void AdEventClicked::FireEvent(const AdNotificationInfo& ad) {
                                                << " and creative instance id "
                                                << ad.creative_instance_id);
 
-  AdNotifications::Get()->Remove(ad.uuid, /* should dismiss */ true);
+  AdNotifications::Get()->Remove(ad.uuid);
+
+  AdsClientHelper::Get()->CloseNotification(ad.uuid);
 
   LogAdEvent(ad, ConfirmationType::kClicked, [](const Result result) {
     if (result != Result::SUCCESS) {

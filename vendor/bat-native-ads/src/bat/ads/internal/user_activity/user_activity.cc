@@ -99,7 +99,7 @@ void UserActivity::RecordEventForPageTransition(const PageTransitionType type) {
     RecordEvent(UserActivityEventType::kOpenedLinkFromExternalApplication);
   }
 
-  const base::Optional<UserActivityEventType> event_type =
+  const absl::optional<UserActivityEventType> event_type =
       ToUserActivityEventType(type);
   if (!event_type) {
     return;

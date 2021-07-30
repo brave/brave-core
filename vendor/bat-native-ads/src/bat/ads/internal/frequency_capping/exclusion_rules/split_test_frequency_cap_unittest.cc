@@ -35,7 +35,35 @@ class BatAdsSplitTestFrequencyCapTest : public UnitTestBase {
   ~BatAdsSplitTestFrequencyCapTest() override = default;
 };
 
-TEST_F(BatAdsSplitTestFrequencyCapTest, AllowIfNoGroupInCatalog) {
+TEST_F(BatAdsSplitTestFrequencyCapTest,
+    AllowIfNoFieldTrialAndNoAdGroup) {
+  // Arrange
+  CreativeAdInfo ad;
+  ad.creative_set_id = kCreativeSetId;
+
+  // Act
+  SplitTestFrequencyCap frequency_cap;
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+
+  // Assert
+  EXPECT_FALSE(should_exclude);
+}
+
+TEST_F(BatAdsSplitTestFrequencyCapTest, DoNotAllowIfNoFieldTrialAndAdGroup) {
+  // Arrange
+  CreativeAdInfo ad;
+  ad.creative_set_id = kCreativeSetId;
+  ad.split_test_group = "GroupA";
+
+  // Act
+  SplitTestFrequencyCap frequency_cap;
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+
+  // Assert
+  EXPECT_TRUE(should_exclude);
+}
+
+TEST_F(BatAdsSplitTestFrequencyCapTest, AllowIfFieldTrialAndNoAdGroup) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
@@ -51,21 +79,7 @@ TEST_F(BatAdsSplitTestFrequencyCapTest, AllowIfNoGroupInCatalog) {
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsSplitTestFrequencyCapTest, AllowIfNoFieldTrial) {
-  // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetId;
-  ad.split_test_group = "GroupA";
-
-  // Act
-  SplitTestFrequencyCap frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
-
-  // Assert
-  EXPECT_FALSE(should_exclude);
-}
-
-TEST_F(BatAdsSplitTestFrequencyCapTest, AllowIfGroupsMatch) {
+TEST_F(BatAdsSplitTestFrequencyCapTest, AllowIfFieldTrialMatchesAdGroup) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
@@ -82,7 +96,8 @@ TEST_F(BatAdsSplitTestFrequencyCapTest, AllowIfGroupsMatch) {
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsSplitTestFrequencyCapTest, DoNotAllowIfGroupsDoNotMatch) {
+TEST_F(BatAdsSplitTestFrequencyCapTest,
+    DoNotAllowIfFieldTrialDoesNotMatchAdGroup) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;

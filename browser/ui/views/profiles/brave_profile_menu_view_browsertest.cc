@@ -3,6 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_attributes_entry.h"
+#include "chrome/browser/profiles/profile_attributes_storage.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 #include "chrome/browser/ui/views/profiles/profile_menu_view_base.h"
@@ -12,7 +17,7 @@
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event.h"
 #include "ui/gfx/geometry/point.h"
-#include "ui/views/controls/button/label_button.h"
+#include "ui/views/controls/label.h"
 
 class BraveProfileMenuViewTest : public InProcessBrowserTest {
  public:
@@ -46,14 +51,29 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
     return bubble;
   }
 
-  void CheckIdentityHasNoText() {
+  std::u16string GetProfileName() {
+    Profile* profile = browser()->profile();
+    ProfileAttributesEntry* profile_attributes =
+        g_browser_process->profile_manager()
+            ->GetProfileAttributesStorage()
+            .GetProfileAttributesWithPath(profile->GetPath());
+    return profile_attributes->GetName();
+  }
+
+  void CheckIdentity() {
     ProfileMenuViewBase* menu = profile_menu();
     // Profile image and title container.
     EXPECT_EQ(2u, menu->identity_info_container_->children().size());
-    // Each should have 0 children.
-    for (const auto* view : menu->identity_info_container_->children()) {
-      EXPECT_EQ(0u, view->children().size());
-    }
+    // Profile image should have 1 child - header and image container.
+    EXPECT_EQ(1u,
+              menu->identity_info_container_->children()[0]->children().size());
+    // Title container should have 1 child - title, which is the profile name.
+    const auto* title_container_view =
+        menu->identity_info_container_->children()[1];
+    EXPECT_EQ(1u, title_container_view->children().size());
+    const auto* title_view = title_container_view->children()[0];
+    EXPECT_EQ(GetProfileName(),
+              static_cast<const views::Label*>(title_view)->GetText());
   }
 
  private:
@@ -62,5 +82,5 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(BraveProfileMenuViewTest, TestCurrentProfileView) {
   OpenProfileMenuView();
-  CheckIdentityHasNoText();
+  CheckIdentity();
 }

@@ -34,8 +34,10 @@ class AdNotifications {
   void PushBack(const AdNotificationInfo& info);
   void PopFront(const bool should_dismiss);
 
-  bool Remove(const std::string& uuid, const bool should_dismiss);
-  void RemoveAll(const bool should_dismiss);
+  bool Remove(const std::string& uuid);
+  void RemoveAll();
+
+  void CloseAndRemoveAll();
 
   bool Exists(const std::string& uuid) const;
 

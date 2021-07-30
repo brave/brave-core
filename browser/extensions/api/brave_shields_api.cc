@@ -9,15 +9,16 @@
 
 #include "base/feature_list.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
+#include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/common/extensions/api/brave_shields.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "chrome/browser/browser_process.h"
@@ -26,6 +27,7 @@
 #include "chrome/browser/extensions/chrome_extension_function_details.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_util.h"
 #include "extensions/common/constants.h"
@@ -66,7 +68,7 @@ BraveShieldsUrlCosmeticResourcesFunction::Run() {
 std::unique_ptr<base::ListValue>
 BraveShieldsUrlCosmeticResourcesFunction::GetUrlCosmeticResourcesOnTaskRunner(
     const std::string& url) {
-  base::Optional<base::Value> resources =
+  absl::optional<base::Value> resources =
       g_brave_browser_process->ad_block_service()->UrlCosmeticResources(url);
 
   if (!resources || !resources->is_dict()) {
@@ -111,7 +113,7 @@ std::unique_ptr<base::ListValue> BraveShieldsHiddenClassIdSelectorsFunction::
         const std::vector<std::string>& classes,
         const std::vector<std::string>& ids,
         const std::vector<std::string>& exceptions) {
-  base::Optional<base::Value> hide_selectors =
+  absl::optional<base::Value> hide_selectors =
       g_brave_browser_process->ad_block_service()->HiddenClassIdSelectors(
           classes, ids, exceptions);
 
@@ -130,22 +132,6 @@ void BraveShieldsHiddenClassIdSelectorsFunction::GetHiddenClassIdSelectorsOnUI(
 }
 
 ExtensionFunction::ResponseAction
-BraveShieldsMigrateLegacyCosmeticFiltersFunction::Run() {
-  std::unique_ptr<brave_shields::MigrateLegacyCosmeticFilters::Params> params(
-      brave_shields::MigrateLegacyCosmeticFilters::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
-  const bool success =
-      g_brave_browser_process->ad_block_custom_filters_service()
-          ->MigrateLegacyCosmeticFilters(
-              params->legacy_filters.additional_properties);
-
-  auto callback_args = std::make_unique<base::ListValue>();
-  callback_args->Append(base::Value(success));
-  return RespondNow(ArgumentList(std::move(callback_args)));
-}
-
-ExtensionFunction::ResponseAction
 BraveShieldsAddSiteCosmeticFilterFunction::Run() {
   std::unique_ptr<brave_shields::AddSiteCosmeticFilter::Params> params(
       brave_shields::AddSiteCosmeticFilter::Params::Create(*args_));
@@ -157,6 +143,16 @@ BraveShieldsAddSiteCosmeticFilterFunction::Run() {
   custom_filters_service->UpdateCustomFilters(custom_filters + '\n' +
                                               params->host + "##" +
                                               params->css_selector + '\n');
+
+  return RespondNow(NoArguments());
+}
+
+ExtensionFunction::ResponseAction
+BraveShieldsOpenFilterManagementPageFunction::Run() {
+  Browser* browser = chrome::FindLastActive();
+  if (browser) {
+    brave::ShowBraveAdblock(browser);
+  }
 
   return RespondNow(NoArguments());
 }

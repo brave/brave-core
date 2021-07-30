@@ -1,4 +1,5 @@
 include_rules = [
+  "+brave/components/version_info",
   "+content/public/browser",
   "+extensions/browser",
   "+extensions/common",
@@ -8,6 +9,5 @@ include_rules = [
 specific_include_rules = {
   "greaselion_service_impl.cc": [
     "+chrome/browser/extensions/extension_service.h",
-    "+brave/browser/version_info.h",
   ],
 }

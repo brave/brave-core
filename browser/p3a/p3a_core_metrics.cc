@@ -58,9 +58,10 @@ constexpr char kDailyUptimesListPrefName[] = "daily_uptimes";
 
 BraveUptimeTracker::BraveUptimeTracker(PrefService* local_state)
     : state_(local_state, kDailyUptimesListPrefName) {
-  timer_.Start(
-      FROM_HERE, base::TimeDelta::FromMinutes(kUsageTimeQueryIntervalMinutes),
-      base::Bind(&BraveUptimeTracker::RecordUsage, base::Unretained(this)));
+  timer_.Start(FROM_HERE,
+               base::TimeDelta::FromMinutes(kUsageTimeQueryIntervalMinutes),
+               base::BindRepeating(&BraveUptimeTracker::RecordUsage,
+                                   base::Unretained(this)));
 }
 
 void BraveUptimeTracker::RecordUsage() {
@@ -110,8 +111,8 @@ BraveWindowTracker::BraveWindowTracker(PrefService* local_state)
   BrowserList::AddObserver(this);
   timer_.Start(FROM_HERE,
                base::TimeDelta::FromMinutes(kWindowUsageP3AIntervalMinutes),
-               base::Bind(&BraveWindowTracker::UpdateP3AValues,
-                          base::Unretained(this)));
+               base::BindRepeating(&BraveWindowTracker::UpdateP3AValues,
+                                   base::Unretained(this)));
   UpdateP3AValues();
 }
 

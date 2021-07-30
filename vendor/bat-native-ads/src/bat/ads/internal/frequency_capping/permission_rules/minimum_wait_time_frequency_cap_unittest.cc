@@ -14,10 +14,6 @@
 
 namespace ads {
 
-namespace {
-const char kCreativeInstanceId[] = "9aea9a47-c6a0-4718-a0fa-706338bb2156";
-}  // namespace
-
 class BatAdsMinimumWaitTimeFrequencyCapTest : public UnitTestBase {
  protected:
   BatAdsMinimumWaitTimeFrequencyCapTest() = default;
@@ -27,10 +23,9 @@ class BatAdsMinimumWaitTimeFrequencyCapTest : public UnitTestBase {
 
 TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange
-  const AdEventList ad_events;
 
   // Act
-  MinimumWaitTimeFrequencyCap frequency_cap(ad_events);
+  MinimumWaitTimeFrequencyCap frequency_cap;
   const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert
@@ -39,22 +34,14 @@ TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest, AllowAdIfThereIsNoAdsHistory) {
 
 TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
-  AdsClientHelper::Get()->SetUint64Pref(prefs::kAdsPerHour, 5);
+  AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, 5);
 
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
-
-  AdEventList ad_events;
-
-  const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
-
-  ad_events.push_back(ad_event);
+  RecordAdEvent(AdType::kAdNotification, ConfirmationType::kServed);
 
   FastForwardClockBy(base::TimeDelta::FromMinutes(12));
 
   // Act
-  MinimumWaitTimeFrequencyCap frequency_cap(ad_events);
+  MinimumWaitTimeFrequencyCap frequency_cap;
   const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert
@@ -63,22 +50,14 @@ TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
 
 TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest, DoNotAllowAdIfExceedsCap) {
   // Arrange
-  AdsClientHelper::Get()->SetUint64Pref(prefs::kAdsPerHour, 5);
+  AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, 5);
 
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
-
-  AdEventList ad_events;
-
-  const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
-
-  ad_events.push_back(ad_event);
+  RecordAdEvent(AdType::kAdNotification, ConfirmationType::kServed);
 
   FastForwardClockBy(base::TimeDelta::FromMinutes(11));
 
   // Act
-  MinimumWaitTimeFrequencyCap frequency_cap(ad_events);
+  MinimumWaitTimeFrequencyCap frequency_cap;
   const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert

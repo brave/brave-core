@@ -171,17 +171,13 @@
     "message": "Промени настройките на глобалния щит по подразбиране",
     "description": "Message for the button action linking to the settings page"
   },
-  "addBlockElement": {
-    "message": "Блокиране на елемента чрез селектор",
-    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  "manageCustomFilters": {
+    "message": "Управлявайте персонализираните филтри",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
-  "resetSiteFilterSettings": {
-    "message": "Изчистване на правилата за CSS за този сайт",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Изчистване на CSS правилата за всички сайтове",
-    "description": "Message for context menu that resets all cosmetic filters"
+  "elementPickerMode": {
+    "message": "Блокиране на елемент",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
     "message": "Допълнителен изглед",

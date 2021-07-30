@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_frequency_cap.h"
 
+#include "bat/ads/internal/account/ad_rewards/ad_rewards_util.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 
@@ -19,6 +20,10 @@ UnblindedTokensFrequencyCap::UnblindedTokensFrequencyCap() = default;
 UnblindedTokensFrequencyCap::~UnblindedTokensFrequencyCap() = default;
 
 bool UnblindedTokensFrequencyCap::ShouldAllow() {
+  if (!ShouldRewardUser()) {
+    return true;
+  }
+
   if (!DoesRespectCap()) {
     last_message_ = "You do not have enough unblinded tokens";
     return false;

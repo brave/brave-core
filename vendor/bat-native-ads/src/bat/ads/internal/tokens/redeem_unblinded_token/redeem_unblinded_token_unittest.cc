@@ -62,22 +62,24 @@ class BatAdsRedeemUnblindedTokenTest : public UnitTestBase {
 
     confirmation.type = ConfirmationType::kViewed;
 
-    const privacy::UnblindedTokenInfo unblinded_token =
-        get_unblinded_tokens()->GetToken();
-    get_unblinded_tokens()->RemoveToken(unblinded_token);
-    confirmation.unblinded_token = unblinded_token;
+    if (!ConfirmationsState::Get()->get_unblinded_tokens()->IsEmpty()) {
+      const privacy::UnblindedTokenInfo unblinded_token =
+          get_unblinded_tokens()->GetToken();
+      get_unblinded_tokens()->RemoveToken(unblinded_token);
+      confirmation.unblinded_token = unblinded_token;
 
-    const std::string payment_token_base64 =
-        R"(aXZNwft34oG2JAVBnpYh/ktTOzr2gi0lKosYNczUUz6ZS9gaDTJmU2FHFps9dIq+QoDwjSjctR5v0rRn+dYo+AHScVqFAgJ5t2s4KtSyawW10gk6hfWPQw16Q0+8u5AG)";
-    confirmation.payment_token = Token::decode_base64(payment_token_base64);
+      const std::string payment_token_base64 =
+          R"(aXZNwft34oG2JAVBnpYh/ktTOzr2gi0lKosYNczUUz6ZS9gaDTJmU2FHFps9dIq+QoDwjSjctR5v0rRn+dYo+AHScVqFAgJ5t2s4KtSyawW10gk6hfWPQw16Q0+8u5AG)";
+      confirmation.payment_token = Token::decode_base64(payment_token_base64);
 
-    const std::string blinded_payment_token_base64 =
-        R"(Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q=)";
-    confirmation.blinded_payment_token =
-        BlindedToken::decode_base64(blinded_payment_token_base64);
+      const std::string blinded_payment_token_base64 =
+          R"(Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q=)";
+      confirmation.blinded_payment_token =
+          BlindedToken::decode_base64(blinded_payment_token_base64);
 
-    const std::string payload = CreateConfirmationRequestDTO(confirmation);
-    confirmation.credential = CreateCredential(unblinded_token, payload);
+      const std::string payload = CreateConfirmationRequestDTO(confirmation);
+      confirmation.credential = CreateCredential(unblinded_token, payload);
+    }
 
     confirmation.timestamp = 1587127747;
 
@@ -256,6 +258,38 @@ TEST_F(
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnFailedToRedeemUnblindedToken(expected_confirmation, true))
+      .Times(1);
+
+  redeem_unblinded_token_->Redeem(confirmation);
+
+  // Assert
+}
+
+TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedTokenIfAdsIsDisabled) {
+  // Arrange
+  const URLEndpoints endpoints = {
+      {// Create confirmation request
+       "/v1/confirmation/9fd71bc4-1b8e-4c1e-8ddc-443193a09f91",
+       {{418 /* I'm a teapot */, R"(
+            {
+              "id" : "9fd71bc4-1b8e-4c1e-8ddc-443193a09f91",
+              "payload" : {},
+              "createdAt" : "2020-04-20T10:27:11.717Z",
+              "type" : "view",
+              "modifiedAt" : "2020-04-20T10:27:11.717Z",
+              "creativeInstanceId" : "70829d71-ce2e-4483-a4c0-e1e2bee96520"
+            }
+          )"}}}};
+
+  MockUrlRequest(ads_client_mock_, endpoints);
+
+  const ConfirmationInfo confirmation = GetConfirmationInfo();
+
+  // Act
+  ConfirmationInfo expected_confirmation = confirmation;
+
+  EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
+              OnDidSendConfirmation(expected_confirmation))
       .Times(1);
 
   redeem_unblinded_token_->Redeem(confirmation);

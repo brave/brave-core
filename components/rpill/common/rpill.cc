@@ -33,7 +33,14 @@ bool IsUncertainFuture(DeviceInfo* device_info_ptr) {
 
   const std::string device_id = device_info_ptr->id();
 
-  static const char* const kKeywords[] = {"amazon", "virtualbox", "vmware",
+  static const char* const kKeywords[] = {"kvm",
+                                          "bochs",
+                                          "virtual machine",
+                                          "parallels virtual platform",
+                                          "vmware virtual platform",
+                                          "virtualbox",
+                                          "amazon",
+                                          "hvm domu",
                                           "xen"};
 
   for (const char* keyword : kKeywords) {

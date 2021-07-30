@@ -25,7 +25,7 @@ namespace ipfs {
 
 #if defined(OS_WIN)
 static const char kIpfsClientComponentName[] =
-    "Brave Ipfs Client Updater (Windows)";
+    "Brave IPFS Client Updater (Windows)";
 static const char kIpfsClientComponentId[] = "lnbclahgobmjphilkalbhebakmblnbij";
 static const char kIpfsClientComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuLxVDZm1QIzpMUFMBYym"
@@ -37,7 +37,7 @@ static const char kIpfsClientComponentBase64PublicKey[] =
     "/QIDAQAB";
 #elif defined(OS_MAC)
 static const char kIpfsClientComponentName[] =
-    "Brave Ipfs Client Updater (Mac)";
+    "Brave IPFS Client Updater (Mac)";
 static const char kIpfsClientComponentId[] = "nljcddpbnaianmglkpkneakjaapinabi";
 static const char kIpfsClientComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu4gvE67b2T0U0i5awN5Q"
@@ -49,7 +49,7 @@ static const char kIpfsClientComponentBase64PublicKey[] =
     "gwIDAQAB";
 #elif defined(OS_LINUX)
 static const char kIpfsClientComponentName[] =
-    "Brave Ipfs Client Updater (Linux)";
+    "Brave IPFS Client Updater (Linux)";
 static const char kIpfsClientComponentId[] = "oecghfpdmkjlhnfpmmjegjacfimiafjp";
 static const char kIpfsClientComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuG1akBG8ka37Pdx0F21r"
@@ -59,8 +59,8 @@ static const char kIpfsClientComponentBase64PublicKey[] =
     "J9HIuxTzVft5v5Ys0S0Kqorn2xo+lFpVzZT7sV2orDHaLiVB5uqCMWhXehVixfRp"
     "BuPGdwSuzJsNkV5aGOObKfoLr1zUgstJYMLB0uWNXTfuKM4EibWUMLMqlCYVzs2R"
     "ewIDAQAB";
-#elif defined(OS_ANDROID)
-// Not used yet
+#else
+// Not used yet for Android/iOS
 static const char kIpfsClientComponentName[] = "";
 static const char kIpfsClientComponentId[] = "";
 static const char kIpfsClientComponentBase64PublicKey[] = "";
@@ -88,6 +88,8 @@ class BraveIpfsClientUpdater : public BraveComponent,
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() {
     return task_runner_;
   }
+
+  bool IsRegistered() const { return registered_; }
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);

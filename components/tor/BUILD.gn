@@ -1,6 +1,6 @@
 import("//brave/components/tor/buildflags/buildflags.gni")
 
-source_set("tor") {
+static_library("tor") {
   public_deps = [ "//brave/components/tor/buildflags" ]
 
   sources = [
@@ -57,6 +57,20 @@ source_set("tor") {
     "//services/service_manager",
     "//third_party/re2",
     "//url",
+  ]
+}
+
+source_set("utils") {
+  sources = [
+    "tor_utils.cc",
+    "tor_utils.h",
+  ]
+
+  deps = [
+    ":tor",
+    "//base",
+    "//chrome/common:constants",
+    "//components/prefs",
   ]
 }
 

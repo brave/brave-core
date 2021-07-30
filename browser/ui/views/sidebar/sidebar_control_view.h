@@ -7,20 +7,19 @@
 #define BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_CONTROL_VIEW_H_
 
 #include <memory>
+#include <string>
 
-#include "base/scoped_observer.h"
+#include "base/scoped_observation.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
+#include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
 #include "ui/base/models/simple_menu_model.h"
 #include "ui/views/context_menu_controller.h"
 #include "ui/views/view.h"
 
 class BraveBrowser;
-class SidebarButtonView;
+class SidebarItemAddButton;
 class SidebarItemsScrollView;
-
-namespace base {
-class CancelableTaskTracker;
-}  // namespace base
+class SidebarContainerView;
 
 namespace views {
 class MenuRunner;
@@ -31,6 +30,7 @@ class MenuRunner;
 class SidebarControlView : public views::View,
                            public views::ContextMenuController,
                            public ui::SimpleMenuModel::Delegate,
+                           public SidebarButtonView::Delegate,
                            public sidebar::SidebarModel::Observer {
  public:
   explicit SidebarControlView(BraveBrowser* browser);
@@ -53,6 +53,9 @@ class SidebarControlView : public views::View,
   void ExecuteCommand(int command_id, int event_flags) override;
   bool IsCommandIdChecked(int command_id) const override;
 
+  // SidebarButtonView::Delegate overrides:
+  std::u16string GetTooltipTextFor(const views::View* view) const override;
+
   // sidebar::SidebarModel::Observer overrides:
   void OnItemAdded(const sidebar::SidebarItem& item,
                    int index,
@@ -60,6 +63,9 @@ class SidebarControlView : public views::View,
   void OnItemRemoved(int index) override;
 
   void Update();
+
+  bool IsItemReorderingInProgress() const;
+  bool IsBubbleWidgetVisible() const;
 
  private:
   void AddChildViews();
@@ -73,11 +79,12 @@ class SidebarControlView : public views::View,
 
   BraveBrowser* browser_ = nullptr;
   SidebarItemsScrollView* sidebar_items_view_ = nullptr;
-  SidebarButtonView* sidebar_item_add_view_ = nullptr;
+  SidebarItemAddButton* sidebar_item_add_view_ = nullptr;
   SidebarButtonView* sidebar_settings_view_ = nullptr;
   std::unique_ptr<ui::SimpleMenuModel> context_menu_model_;
   std::unique_ptr<views::MenuRunner> context_menu_runner_;
-  ScopedObserver<sidebar::SidebarModel, sidebar::SidebarModel::Observer>
+  base::ScopedObservation<sidebar::SidebarModel,
+                          sidebar::SidebarModel::Observer>
       sidebar_model_observed_{this};
 };
 

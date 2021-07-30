@@ -242,8 +242,8 @@ interface BatLedgerClient {
   DeleteLog() => (ledger.mojom.Result result);
 
   [Sync]
-  SetEncryptedStringState(string name, string value) => (bool success);
+  EncryptString(string value) => (string? encrypted);
 
   [Sync]
-  GetEncryptedStringState(string name) => (string value);
+  DecryptString(string value) => (string? decrypted);
 };

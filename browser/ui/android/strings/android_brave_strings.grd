@@ -148,11 +148,14 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_SWITCH" desc="Switch for HTTPS Everywhere.">
         Upgrade connections to HTTPS
       </message>
+      <message name="IDS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_SWITCH_SUMMARY" desc="Summary for HTTPS Everywhere.">
+        Opens some sites using a secure HTTPS connection instead of plain HTTP.
+      </message>
       <message name="IDS_BRAVE_SHIELDS_BLOCKS_SCRIPTS_SWITCH" desc="Switch for Block Scripts.">
         Block Scripts
       </message>
-      <message name="IDS_BRAVE_SHIELDS_ADS_AND_TRACKERS" desc="Ads and Trackers blocked.">
-        Block cross-site trackers
+      <message name="IDS_BRAVE_SHIELDS_BLOCKS_SCRIPTS_SUMMARY" desc="Switch for Block Scripts summary.">
+        Blocks Javascript (may break sites)
       </message>
       <message name="IDS_BRAVE_SHIELDS_SOCIAL_BLOCKING_TITLE" desc="Title for social media blocking.">
         Social Media Blocking
@@ -172,8 +175,20 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_REWARDS" desc="Content description for the button that is enable, disable Brave Rewards.">
         Manage Brave Rewards
       </message>
-      <message name="IDS_PREFS_SECTION_SEARCH_ENGINE" desc="Title for search engine section that can select DSE of normal and private tab">
-        Search engine
+      <message name="IDS_PREFS_SECTION_ONLINE_CHECKOUT" desc="Title for online checkout section">
+        Online checkout
+      </message>
+      <message name="IDS_PREFS_SUPPORT_SECTION" desc="Title for the support section ">
+        Support
+      </message>
+      <message name="IDS_PREFS_SECTION_FEATURES" desc="Title for Brave-specific features section">
+        Features
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_AND_PRIVACY" desc="Label for the settings related to shields and privacy">
+        Brave shields &amp; privacy
+      </message>
+      <message name="IDS_BRAVE_SEARCH_ENGINES" desc="Label for the settings related to the search engines">
+        Search engines
       </message>
       <message name="IDS_PREFS_STANDARD_SEARCH_ENGINE" desc="Title for standard tab search engine option">
         Standard Tab
@@ -184,26 +199,38 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_MENU_EXIT" desc="Menu item for exit browser. [CHAR-LIMIT=27]">
         Exit
       </message>
-      <message name="IDS_HTTPSE_TITLE" desc="Title for HTTPS Everywhere.">
-        HTTPS Everywhere
-      </message>
-      <message name="IDS_HTTPSE_SUMMARY" desc="Summary for HTTPS Everywhere.">
-        Opens supported sites using HTTPS instead of HTTP when possible
-      </message>
       <message name="IDS_IPFS_GATEWAY_TITLE" desc="Title for IPFS setting.">
         IPFS Gateway
       </message>
       <message name="IDS_IPFS_GATEWAY_SUMMARY" desc="Summary for IPFS gateway setting.">
         Allows for navigation to IPFS resources through an IPFS Gateway
       </message>
-      <message name="IDS_AD_BLOCK_TITLE" desc="Title for ad block.">
-        Ad Block
+      <message name="IDS_UNSTOPPABLE_DOMAINS_TITLE" desc="Title for Unstoppable Domains settings.">
+        Unstoppable Domains
       </message>
-      <message name="IDS_AD_BLOCK_SUMMARY" desc="Summary for ad block.">
-        Prevents ads from loading
+      <message name="IDS_ETH_NAME" desc="Name of Ethereum.">
+        Ethereum
       </message>
-      <message name="IDS_FINGERPRINTING_PROTECTION_TITLE" desc="Title for fingerprinting protection.">
-        Fingerprinting Protection
+      <message name="IDS_ETH_PRICE" desc="Text for of Ethereum price.">
+        Ethereum Price (ETH)
+      </message>
+      <message name="IDS_ENS_TITLE" desc="Title for ENS settings.">
+        Ethereum Name Service
+      </message>
+      <message name="IDS_RESOLVE_METHOD_TITLE" desc="Title for resolve method preference category.">
+        Resolve Method
+      </message>
+      <message name="IDS_RESOLVE_METHOD_ASK" desc="Text for resolve method Ask.">
+        Ask
+      </message>
+      <message name="IDS_RESOLVE_METHOD_DISABLED" desc="Text for resolve method Disabled.">
+        Disabled
+      </message>
+      <message name="IDS_RESOLVE_METHOD_DNS_OVER_HTTPS" desc="Text for resolve method DNS over HTTPS.">
+        DNS over HTTPS
+      </message>
+      <message name="IDS_RESOLVE_METHOD_ETHEREUM" desc="Text for resolve method Ethereum.">
+        Ethereum
       </message>
       <message name="IDS_FINGERPRINTING_PROTECTION_SUMMARY" desc="Summary for fingerprinting protection.">
         Prevents browser from fingerprinting
@@ -211,17 +238,24 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_CLOSE_TABS_ON_EXIT_TITLE" desc="Title for closing tabs on exit.">
         Close tabs on exit
       </message>
+      <message name="IDS_BLOCK_TRACKERS_ADS_TITLE" desc="Title for Block trackers and ads.">
+        Block trackers &amp; ads
+      </message>
+      <message name="IDS_BLOCK_TRACKERS_ADS_SUMMARY" desc="Text summary for Block trackers and ads.">
+        Prevents trackers &amp; ads from loading and showing in webpages
+      </message>
+
       <message name="IDS_CLOSE_TABS_ON_EXIT_SUMMARY" desc="Summary for closing tabs on exit.">
         Don't persist tabs between browsing sessions
       </message>
       <message name="IDS_SEND_P3A_ANALYTICS_TITLE" desc="Title for checkbox of send p3a analytics.">
-        Automatically send completely private product analytics to Brave
+        Allow privacy-preserving product analytics (P3A)
       </message>
       <message name="IDS_SEND_P3A_ANALYTICS_SUMMARY" desc="Summary for checkbox of send p3a analytics.">
-        This anonymous info only lets Brave estimate the overall usage of certain features.
+        This completely anonymised info helps Brave estimate the overall usage of certain features and make it better for you.
       </message>
       <message name="IDS_BRAVE_STATS_TEXT_DATA_SAVED" desc="Title for the data saved stats">
-        Data\nSaved
+        Est. Data\nSaved
       </message>
       <message name="IDS_BRAVE_STATS_TEXT_TIME" desc="Title for the estimated saved time">
         Est. Time\nSaved
@@ -247,8 +281,14 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SETTINGS_PLAY_YT_VIDEO_IN_BROWSER_ON" desc="Desc for desktop mode in site settings">
         If enabled, videos will be played in Brave instead of corresponding app
       </message>
-      <message name="IDS_PREFS_SECTION_CONTROLS" desc="Title for controls section in main preferences screen">
-        Controls
+      <message name="IDS_PREFS_SECTION_BRAVE_SHIELDS_GLOBALS" desc="Title for Brave shields global defaults section in the privacy preferences screen">
+        Brave shields global defaults
+      </message>
+      <message name="IDS_PREFS_SECTION_OTHER_PRIVACY_SETTINGS" desc="Title for Other privacy settings section in the privacy preferences screen">
+        Other privacy settings
+      </message>
+      <message name="IDS_PREFS_SECTION_CLEAR_DATA" desc="Title for Clear private data automatically section in the privacy preferences screen">
+        Clear browsing data
       </message>
       <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK" desc="Title for background video playback preference in controls section">
         Background video playback
@@ -369,21 +409,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_MENU_BRAVE_REWARDS" desc="Title for brave rewards menu item">
         Brave Rewards
       </message>
-      <message name="IDS_DDG_OFFER_TITLE" desc="Title for DDG offer.">
-        Private search with DuckDuckGo?
-      </message>
-      <message name="IDS_DDG_OFFER_TEXT" desc="Text for DDG offer.">
-        With private search, Brave will use DuckDuckGo to answer your searches while you are in this private tab. DuckDuckGo is a search engine that does not track your search history, enabling you to search privately.
-      </message>
-      <message name="IDS_DDG_OFFER_POSITIVE" desc="Positive button text for DDG offer.">
-        Yes
-      </message>
-      <message name="IDS_DDG_OFFER_NEGATIVE" desc="Negative button text for DDG offer.">
-        No
-      </message>
-      <message name="IDS_DDG_OFFER_LINK" desc="Text for DDG offer link.">
-        Learn about private search with DuckDuckGo
-      </message>
       <message name="IDS_BRAVE_UI_THANK_YOU" desc="A message that appears after tipping">
         Thank you
       </message>
@@ -441,9 +466,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_UI_YOUR_WALLET" desc="Your wallet title">
         Your wallet
       </message>
-      <message name="IDS_BRAVE_UI_BAT_TEXT" desc="A token name">
-        BAT
+<!--  <message name="IDS_BRAVE_TODAY" desc="Title for Brave today settings">
+        Brave today
       </message>
+      <message name="IDS_BRAVE_VPN" desc="Title for Brave vpn settings">
+        Brave VPN
+      </message> -->
       <message name="IDS_BRAVE_UI_USD" desc="USD value of tokens">
         <ph name="VALUE">%1$s<ex>0.0</ex></ph>
       </message>
@@ -463,8 +491,8 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Not yet verified
       </message>
       <message name="IDS_BRAVE_UI_NOT_VERIFIED_PUBLISHER_DESCRIPTION" desc="A message that appear when a particular publisher is not verified">
-        This creator has not yet signed up to receive contributions from Brave users.
-        Any tips you send will remain in your wallet until they verify.
+        This Brave Verified Creator has not yet configured their account to receive contributions from Brave Users.
+        Any tips you send will remain in your wallet until they complete this process.
       </message>
       <message name="IDS_BRAVE_UI_DONATE_NOW" desc="Send a tip button text">
         Send a tip...
@@ -473,7 +501,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         No activities yet this
 month...
       </message>
-      <message name="IDS_BRAVE_UI_ONE_TIME_DONATION" desc="A message about one time tips">
+      <message name="IDS_BRAVE_UI_ONE_TIME_DONATION" desc="A message about one-time tips">
         One-time Tips
       </message>
       <message name="IDS_BRAVE_UI_RECURRING_DONATION" desc="A message about monthly tips">
@@ -507,7 +535,7 @@ month...
         <ph name="MONTH">%1$s<ex>DECEMBER</ex></ph> <ph name="YEAR">%2$s<ex>2018</ex></ph>
       </message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_DESCRIPTION" desc="A notication message description about auto-contribute">
-        You've contributed <ph name="BAT_VALUE">%1$s<ex>50</ex></ph>  <ph name="BAT_TEXT">%2$s<ex>BAT</ex></ph>.
+        You've contributed <ph name="BAT_VALUE">%1$s<ex>50</ex></ph> BAT.
       </message>
       <message name="IDS_BRAVE_UI_NOTIFICATION_DESC_NO_FUNDS" desc="A notification about not enough funds">
         Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We'll try again in 30 days.
@@ -558,7 +586,7 @@ month...
         on Twitch
       </message>
       <message name="IDS_BRAVE_UI_RESERVED_AMOUNT_TEXT" desc="A message that some amount of tokens reserved for non verified publishers">
-        You've designated <ph name="BAT_VALUE">%1$s<ex>50</ex></ph>  <ph name="BAT_TEXT">%2$s<ex>BAT</ex></ph> for creators who haven't
+        You've designated <ph name="BAT_VALUE">%1$s<ex>50</ex></ph> BAT for creators who haven't
 yet signed up to receive contributions. Your browser will keep trying to contribute
 until they verify, or until 90 days have passed.
       </message>
@@ -795,32 +823,8 @@ until they verify, or until 90 days have passed.
        <message name="IDS_BRAVE_UI_YOUR_BALANCE" desc="Your balance title">
         Your balance
       </message>
-       <message name="IDS_BRAVE_UI_BAP_TEXT" desc="A point name">
-        BAP
-      </message>
-      <message name="IDS_BRAVE_UI_BAT_POINTS_TEXT" desc="A token name for japan">
-        BAT Points
-      </message>
-       <message name="IDS_BRAVE_UI_POINT_GRANT_CLAIMED" desc="A message about points being claimed">
-        Point Grants Claimed
-      </message>
-      <message name="IDS_BRAVE_UI_NEW_POINT_GRANT" desc="A notification about free point grant">
-        Free Point Grant
-      </message>
       <message name="IDS_TOKEN" desc="Text for token">
         token
-      </message>
-      <message name="IDS_POINT" desc="Text for point">
-        point
-      </message>
-      <message name="IDS_ONE_TIP_OPTION" desc="Text for one tip option">
-        1.000 <ph name="TIP">%1$s<ex>BAT</ex></ph>
-      </message>
-      <message name="IDS_FIVE_TIP_OPTION" desc="Text for five tip option">
-        5.000 <ph name="TIP">%1$s<ex>BAT</ex></ph>
-      </message>
-      <message name="IDS_TEN_TIP_OPTION" desc="Text for ten tip option">
-        10.000 <ph name="TIP">%1$s<ex>BAT</ex></ph>
       </message>
       <message name="IDS_PREFS_NEW_TAB_PAGE" desc="Title of New Tab Page settings.">
         New Tab Page
@@ -954,6 +958,12 @@ until they verify, or until 90 days have passed.
       <message name="IDS_PREFS_RATE_BRAVE" desc="Title for rate brave settings option.">
         Rate Brave
       </message>
+      <message name="IDS_PREFS_SECTION_GENERAL" desc="Title for the general section in settings.">
+        General
+      </message>
+      <message name="IDS_PREFS_ABOUT_SECTION" desc="Title for the about section in settings.">
+        About
+      </message>
       <message name="IDS_RATE" desc="Text for rate brave dialog button.">
         Rate
       </message>
@@ -996,6 +1006,15 @@ until they verify, or until 90 days have passed.
       <message name="IDS_SPONSORED_IMAGES_BOTTOM_SHEET_TEXT" desc="Text for SI bottom sheet.">
         For every sponsored image you view, you receive 70% of the revenue in tokens. With Brave Ads, you're always in control of the ads you see.
       </message>
+      <message name="IDS_BLOCK_TRACKERS_ADS_OPTION_1" desc="Text for block trackers and ads option.">
+        Block trackers &amp; ads (Aggressive)
+      </message>
+      <message name="IDS_BLOCK_TRACKERS_ADS_OPTION_2" desc="Text for block trackers and ads option.">
+        Block trackers &amp; ads (Standard)
+      </message>
+      <message name="IDS_BLOCK_TRACKERS_ADS_OPTION_3" desc="Text for block trackers and ads option.">
+        Allow all trackers &amp; ads
+      </message>
       <message name="IDS_BLOCK_CROSS_SITE_COOKIES" desc="Title for shields option.">
         Block cross-site cookies
       </message>
@@ -1014,20 +1033,23 @@ until they verify, or until 90 days have passed.
       <message name="IDS_BLOCK_FINGERPRINTING" desc="Title for shields option.">
         Block Fingerprinting
       </message>
+      <message name="IDS_SHIELDS_SUMMARY" desc="Title for shields option.">
+        These are the default Shields settings for new sites. Changing these won't affect your existing per-site settings.
+      </message>
       <message name="IDS_BLOCK_FINGERPRINTING_TEXT" desc="Text for shields option.">
         Prevents browser from recognizing your device
       </message>
       <message name="IDS_BLOCK_FINGERPRINTING_OPTION_1" desc="Title for shields option.">
-        Fingerprinting blocked(strict, may break sites)
+        Fingerprinting blocked (strict, may break sites)
       </message>
       <message name="IDS_BLOCK_FINGERPRINTING_OPTION_2" desc="Title for shields option.">
-        Fingerprinting blocked(standard)
+        Fingerprinting blocked (standard)
       </message>
       <message name="IDS_BLOCK_FINGERPRINTING_OPTION_3" desc="Title for shields option.">
         Allow all fingerprinting
       </message>
       <message name="IDS_ADS_AND_OTHER_THINGS_BLOCKED" desc="Text for shields option.">
-        Trackers, ads, and\nmore blocked
+        Ads and other creepy things blocked
       </message>
       <message name="IDS_SHIELDS_ABOUT_TEXT" desc="About Text for shields option.">
         Sites often include cookies and scripts which try to identify you and your device. They want to work out who you are and follow you across the web-tracking what you do on every site.\n\nBrave blocks these things so that you can browse without being followed around.
@@ -1064,9 +1086,6 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_ADVANCED_CONTROLS" desc="Title for toggle section.">
         Advanced controls
-      </message>
-      <message name="IDS_REQUIRED_MINIUM_BALANCE" desc="Text for verify wallet minimum required balance.">
-        A minimum balance of 25 BAT is required to verify.
       </message>
       <message name="IDS_AUTOCOMPLETE_TOP_SITES_TITLE" desc="The label for settings switch controlling whether or not top sites show up in autocomplete">
         Show top sites in autocomplete
@@ -1107,6 +1126,57 @@ until they verify, or until 90 days have passed.
       <message name="IDS_TOOLTIP_TEXT_4" desc="Shields tootltip text">
         If available, Brave upgrades you to a secure connection automatically.
       </message>
+      <message name="IDS_BRAVE_STATS_SHARE_BUTTON" desc="Shields tootltip button text">
+        Share the news
+      </message>
+      <message name="IDS_BRAVE_STATS_SHARE_TEXT" desc="Text sent when sharing the stats">
+        Every day I save data by browsing the Web with Brave.
+      </message>
+      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_TIER1_TITLE" desc="Shields tootltip title">
+        1000 trackers &amp; ads blocked!
+      </message>
+      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_TIER2_TITLE" desc="Shields tootltip title">
+        5000 trackers &amp; ads blocked!
+      </message>
+      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_TIER3_TITLE" desc="Shields tootltip title">
+        10,000 trackers &amp; ads blocked!
+      </message>
+      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_TIER4_TITLE" desc="Shields tootltip title">
+        25,000 trackers &amp; ads blocked!
+      </message>
+      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_TIER5_TITLE" desc="Shields tootltip title">
+        75,000 trackers &amp; ads blocked!
+      </message>
+      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_TIER6_TITLE" desc="Shields tootltip title">
+        100,000 trackers &amp; ads blocked!
+      </message>
+      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_TIER7_TITLE" desc="Shields tootltip title">
+        250,000 trackers &amp; ads blocked!
+      </message>
+      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_TIER8_TITLE" desc="Shields tootltip title">
+        500,000 trackers &amp; ads blocked!
+      </message>
+      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_TIER9_TITLE" desc="Shields tootltip title">
+        1,000,000 trackers &amp; ads blocked!
+      </message>
+      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_SPECIAL_TEXT" desc="Shields tootltip text">
+        Congratulations, you're pretty special.
+      </message>
+      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_EXCLUSIVE_TEXT" desc="Shields tootltip text">
+        Congratulations. You’re part of an exclusive club.
+      </message>
+      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_PRO_TEXT" desc="Shields tootltip text">
+        Congratulations. You joined the pros.
+      </message>
+      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_MASTER_TEXT" desc="Shields tootltip text">
+        Congratulations. You’ve become a master.
+      </message>
+      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_GRANDMASTER_TEXT" desc="Shields tootltip text">
+        Congratulations. You’ve become a Grand Master.
+      </message>
+      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_LEGENDARY_TEXT" desc="Shields tootltip text">
+        Congratulations. You are legendary.
+      </message>
       <message name="IDS_BRAVE_WORKS_EVERYWHERE" desc="Cross promotional modal title text">
         Brave works everywhere
       </message>
@@ -1135,7 +1205,7 @@ until they verify, or until 90 days have passed.
         Get weekly updates
       </message>
       <message name="IDS_GET_WEEKLY_UPDATES_TEXT" desc="Text for onboading bottomsheet.">
-        Be informed about which websites you visit are the most privacy invasive.\n\nOnly you can see these privacy statistics. No personal data or browsing history ever leaves the Brave browser on your device.
+        Be informed about which websites you visit are the most privacy-invasive.\n\nOnly you can see these privacy statistics. No personal data or browsing history ever leaves the Brave browser on your device.
       </message>
       <message name="IDS_TURN_ON_PRIVACY_STATS" desc="Button text for onboading bottomsheet.">
         Turn on privacy reports
@@ -1222,13 +1292,19 @@ until they verify, or until 90 days have passed.
         Set Brave as your default browser for private and secure browsing.
       </message>
       <message name="IDS_ALLOWS_BRAVE_TO_SHOW" desc="Brave stats pref summary text">
-        Allows brave to show your privacy statistics
+        Allows Brave to show your privacy statistics
       </message>
       <message name="IDS_SENDS_A_WEEKLY" desc="Brave stats pref summary text">
         Sends a weekly privacy report
       </message>
       <message name="IDS_CLEAR_BRAVE_STATS_DATA" desc="Brave stats pref summary text">
         Clear all privacy reports data
+      </message>
+      <message name="IDS_CLEAR_ON_EXIT" desc="Brave clear data on exit pref title">
+        Clear data on exit
+      </message>
+      <message name="IDS_CLEAR_ON_EXIT_SUMMARY" desc="Brave clear data on exit pref text">
+        Clears all browsing data
       </message>
       <message name="IDS_RESETS_YOUR_BRAVE_STATS" desc="Brave stats pref summary text">
         Resets your privacy reports to zero
@@ -1402,7 +1478,7 @@ until they verify, or until 90 days have passed.
         Brave Private Ads will appear as a normal notification. You control how often you see these ads in settings.
       </message>
       <message name="IDS_WHEN_DO_YOU_RECEIVE_REWARDS" desc="Brave rewards onboarding title">
-        When do you receive rewards
+        When do you receive rewards?
       </message>
       <message name="IDS_WHEN_DO_YOU_RECEIVE_REWARDS_TEXT" desc="Brave rewards onboarding title">
         Your earned tokens from Brave Private Ads throughout the current month will arrive on the 5th of the next month.
@@ -1453,7 +1529,7 @@ until they verify, or until 90 days have passed.
         Go Back
       </message>
       <message name="IDS_LETS_TAKE_A_QUICK_TOUR" desc="Brave rewards onboarding button text">
-        Lets Take A Quick Tour
+        Let's Take A Quick Tour
       </message>
       <message name="IDS_BRAVE_REWARDS_WELCOME_LAYOUT_TEXT" desc="Brave rewards welcome layout text">
         After you receive your first ads payout you can come back and tip this creator!
@@ -1506,6 +1582,9 @@ until they verify, or until 90 days have passed.
       <message name="IDS_ECOSIA_DESC" desc="Onboarding SE text">
         Plants trees, based in Berlin
       </message>
+      <message name="IDS_BRAVE_DESC" desc="Onboarding SE text">
+        Private, independent, user-first
+      </message>
       <message name="IDS_ONBOARDING_SE_TEXT" desc="Onboarding SE title text">
         Some search engines protect your privacy better than others when you search the web.
       </message>
@@ -1541,20 +1620,6 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_NOT_NOW" desc="Set default browser modal button text">
         Not now
-      </message>
-      <message name="IDS_REWARDS_TOOLTIP_TITLE" desc="Rewards tooltip title">
-        Brave Rewards in Japan is switching to a new system!
-      </message>
-      <message name="IDS_REWARDS_TOOLTIP_TEXT" desc="Rewards tooltip text">
-        Starting March 13th, you won’t be able to use your BAP. But once you
-        update to the new system in April, you’ll start off with new tokens!
-      </message>
-      <message name="IDS_REWARDS_MODAL_TEXT" desc="Rewards modal text">
-        As part of this transition, the tipping and contribution features in
-        your browser will be temporarily unavailable starting March 13th, and
-        your BAP balance will show 0.0 until you have updated to the new system
-        in April. Once you’re on the new system, you’ll start off with new
-        tokens!
       </message>
       <message name="IDS_VALUE_1" desc="value for 1">
         1
@@ -1595,6 +1660,225 @@ until they verify, or until 90 days have passed.
       <message name="IDS_VALUE_0_USD" desc="value for 0 USD">
         0.00 USD
       </message>
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_LABEL" desc="WebRTC policy setting label">
+        WebRTC IP handling policy
+      </message>
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_DEFAULT" desc="Select value">
+        Default
+      </message>
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_DEFAULT_PUBLIC_AND_PRIVATE_INTERFACES" desc="Select value">
+        Default public and private interfaces
+      </message>
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_DEFAULT_PUBLIC_INTERFACE_ONLY" desc="Select value">
+        Default public interface only
+      </message>
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_DISABLE_NON_PROXIED_UDP" desc="Select value">
+        Disable non-proxied UDP
+      </message>
+      <message name="IDS_ENABLE_TAB_GROUPS_TITLE" desc="Menu item for enabling Tab Groups.">
+        Enable Tab Groups
+      </message>
+      <message name="IDS_VERIFYING_WALLET_ALLOWS" desc="Uphold login verify text">
+        Verifying wallet allows you to manage your funds easily, adding &amp; withdrawing
+      </message>
+      <message name="IDS_DONT_HAVE_ENOUGH_BAT" desc="Uphold login don't enough text">
+        You don't have enough BAT.
+      </message>
+      <message name="IDS_NEED_TO_HAVE_MINIMUM_BAT" desc="Uphold login need to have minimum balance text">
+        You need to have minimum 15 BAT to create a verified Uphold wallet. Please try again later.
+      </message>
+      <message name="IDS_VERIFIED_ACCOUNT_UPHOLD" desc="Uphold login need to have minimum balance text">
+        If you already have a verified Uphold account, <ph name="CONTINUE_TO_LOGIN">%1$s</ph>.
+      </message>
+      <message name="IDS_CONTINUE_TO_LOGIN" desc="Uphold continue to login text">
+        continue to login
+      </message>
+    <message name="IDS_SEND" desc="Brave Wallet send button text">
+      Send
+    </message>
+    <message name="IDS_SEARCH_TITLE" desc="Brave Wallet search toolbar button hint text">
+      Search
+    </message>
+    <message name="IDS_SWAP" desc="Brave Wallet swap button text">
+      Swap
+    </message>
+    <message name="IDS_DEFI_SECURE_STORAGE" desc="Brave Wallet onboarding text">
+      DeFi &amp; Secure Crypto Storage
+    </message>
+    <message name="IDS_DEFI_SECURE_STORAGE_TEXT" desc="Brave Wallet onboarding text">
+      Hold crypto in your custody. Trade assets. View Prices and portfolio performance. Invest, Borrow, and lend with DeFi.
+    </message>
+    <message name="IDS_SETUP_CRYPTO" desc="Brave Wallet onboarding button text">
+      Setup Crypto
+    </message>
+    <message name="IDS_BACKUP_YOUR_WALLET" desc="Brave Wallet onboarding text">
+      Backup your wallet now!
+    </message>
+    <message name="IDS_BACKUP_YOUR_WALLET_TEXT" desc="Brave Wallet onboarding text">
+      In the next step you will see 12 words that allows you to recover your crypto wallet.
+    </message>
+    <message name="IDS_CONTINUE_TEXT" desc="Brave Wallet onboarding text">
+      Continue
+    </message>
+    <message name="IDS_BACKUP_WALLET_CHECKBOX_TEXT" desc="Brave Wallet onboarding text">
+      I understand that if I lose my recovery words, I will not be able to access my crypto wallet.
+    </message>
+    <message name="IDS_YOUR_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
+      Your recovery phrase
+    </message>
+    <message name="IDS_YOUR_RECOVERY_PHRASE_TEXT" desc="Brave Wallet onboarding text">
+      Write down or copy these words in the right order and save them somewhere safe.
+    </message>
+    <message name="IDS_YOUR_RECOVERY_PHRASE_WARNING_TEXT" desc="Brave Wallet onboarding text">
+      WARNING: Never disclose your backup phrase. Anyone with this phrase can take your funds forever.
+    </message>
+    <message name="IDS_RECOVERY_PHRASE_CHECKBOX_TEXT" desc="Brave Wallet onboarding text">
+      I have backed up my phrase somewhere safe
+    </message>
+    <message name="IDS_COPY" desc="Brave Wallet onboarding button text">
+      Copy
+    </message>
+    <message name="IDS_BUY_SWAP_TEXT" desc="Brave Wallet buy bottomsheet text">
+      Buy crypto with Apple Pay, credit or debit card.
+    </message>
+    <message name="IDS_SEND_SWAP_TEXT" desc="Brave Wallet send bottomsheet text">
+      Send crypto or transfer from one account to another.
+    </message>
+    <message name="IDS_SWAP_TEXT" desc="Brave Wallet swap bottomsheet text">
+      Swap crypto assets with Brave DEX aggregator.
+    </message>
+    <message name="IDS_SECURE_YOUR_CRYPTO" desc="Brave Wallet onboarding text">
+      Secure your crypto with a password
+    </message>
+    <message name="IDS_ENTER_PASSWORD" desc="Brave wallet password hint text">
+      Enter Password
+    </message>
+    <message name="IDS_RETYPE_PASSWORD" desc="Brave wallet password hint text">
+      Re-enter password
+    </message>
+    <message name="IDS_PASSWORD_ERROR" desc="Brave Wallet password error text">
+      Password must be 7 or more characters
+    </message>
+    <message name="IDS_RETYPE_PASSWORD_ERROR" desc="Brave Wallet password error text">
+      Re-typed password did not match
+    </message>
+    <message name="IDS_LIVE" desc="Brave Wallet graph duration text">
+      Live
+    </message>
+    <message name="IDS_DAY_1" desc="Brave Wallet graph duration text">
+      1D
+    </message>
+    <message name="IDS_WEEK_1" desc="Brave Wallet graph duration text">
+      1W
+    </message>
+    <message name="IDS_MONTH_1" desc="Brave Wallet graph duration text">
+      1M
+    </message>
+    <message name="IDS_MONTH_3" desc="Brave Wallet graph duration text">
+      3M
+    </message>
+    <message name="IDS_YEAR_1" desc="Brave Wallet graph duration text">
+      1Y
+    </message>
+    <message name="IDS_ALL" desc="Brave Wallet graph duration text">
+      ALL
+    </message>
+    <message name="IDS_ALL_SET" desc="Brave Wallet onboarding text">
+      All set!
+    </message>
+    <message name="IDS_ADD_ACCOUNT_DIALOG_TEXT" desc="Brave Wallet onboarding text">
+      Buy, trade, or hold crypto. If you have an existing crypto account you may add it now.
+    </message>
+    <message name="IDS_ADD_ACCOUNT" desc="Brave Wallet account dialog button text">
+      Add Account
+    </message>
+    <message name="IDS_RECOVERY_PHRASE_ITEM_TEXT" desc="Brave Wallet onboarding text">
+      <ph name="NUMBER">%1$s</ph>. <ph name="RECOVERY_PHRASE">%2$s</ph>
+    </message>
+    <message name="IDS_ENABLE_FINGERPRINT_UNLOCK" desc="Brave Wallet onboarding text">
+      Enable fingerprint unlock?
+    </message>
+    <message name="IDS_ENABLE_FINGERPRINT_TEXT" desc="Brave Wallet onboarding text">
+      Enable biometrics to quickly unlock your wallet without entering your password.
+    </message>
+    <message name="IDS_MENU_BRAVE_WALLET" desc="Brave Wallet menu item text">
+      Brave Wallet
+    </message>
+    <message name="IDS_RESTORE_CRYPTO_TEXT" desc="Brave Wallet onboarding text">
+      Enter your recovery phrase to restore your Brave Wallet crypto account.
+    </message>
+    <message name="IDS_RESTORE_CRYPTO_ACCOUNT" desc="Brave Wallet onboarding text">
+      Restore Crypto Account
+    </message>
+    <message name="IDS_SHOW_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
+      Show recovery phrase
+    </message>
+    <message name="IDS_ENTER_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
+      Enter your recovery phrase
+    </message>
+    <message name="IDS_VERIFY_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
+      Verify recovery phrase
+    </message>
+    <message name="IDS_VERIFY_RECOVERY_PHRASE_TEXT" desc="Brave Wallet onboarding text">
+      Tap the words top put them next to each other in the correct order.
+    </message>
+    <message name="IDS_VERIFY" desc="Brave Wallet onboarding text">
+      Verify
+    </message>
+    <message name="IDS_RESTORE" desc="Brave Wallet onboarding text">
+      Restore
+    </message>
+    <message name="IDS_UNLOCK" desc="Brave Wallet onboarding text">
+      Unlock
+    </message>
+    <message name="IDS_PASSWORD" desc="Brave Wallet onboarding text">
+      Password
+    </message>
+    <message name="IDS_UNLOCK_WALLET_TITLE" desc="Brave Wallet onboarding text">
+      Enter your password to unlock
+    </message>
+    <message name="IDS_PASSWORD_TEXT" desc="Brave Wallet onboarding text">
+      Password must be at least 7 characters containg at least one number and a special character
+    </message>
+    <message name="IDS_BRAVE_SAFE_BROWSING_NO_PROTECTION_SUMMARY" desc="Summary for Safe Browsing no protection mode.">
+        Does not protect you against dangerous websites, downloads, and extensions.
+    </message>
+    <message name="IDS_PHRASES_DID_NOT_MATCH" desc="Brave Wallet text">
+      Phrases did not match, Please try again.
+    </message>
+    <message name="IDS_ACCOUNT_RECOVERY_FAILED" desc="Brave Wallet text">
+      Account recovery failed. Please try again.
+    </message>
+    <message name="IDS_MAINNET" desc="Brave Wallet network selection button text">
+      Mainnet
+    </message>
+    <message name="IDS_MARKET_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
+      Market Price in ETH
+    </message>
+    <message name="IDS_FROM" desc="Brave Wallet buy-send-swap section text">
+      From
+    </message>
+    <message name="IDS_PERCENTAGE_25" desc="Brave Wallet buy-send-swap section text">
+      25%
+    </message>
+    <message name="IDS_PERCENTAGE_50" desc="Brave Wallet buy-send-swap section text">
+      50%
+    </message>
+    <message name="IDS_PERCENTAGE_75" desc="Brave Wallet buy-send-swap section text">
+      75%
+    </message>
+    <message name="IDS_TO_ESTIMATE" desc="Brave Wallet buy-send-swap section text">
+      To (estimate)
+    </message>
+    <message name="IDS_LIMIT" desc="Brave Wallet buy-send-swap section text">
+      Limit
+    </message>
+    <message name="IDS_MARKET" desc="Brave Wallet buy-send-swap section text">
+      Market
+    </message>
+    <message name="IDS_SLIPPING_TOLERANCE" desc="Brave Wallet buy-send-swap section text">
+      Slippage tolerance
+    </message>
     </messages>
   </release>
 </grit>

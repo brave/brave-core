@@ -1,9 +1,0 @@
-# Copyright (c) 2020 The Brave Authors. All rights reserved.
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
-
-brave_components_signin_public_identity_manager_sources = [
-  "//brave/components/signin/public/identity_manager/brave_identity_manager.cc",
-  "//brave/components/signin/public/identity_manager/brave_identity_manager.h",
-]

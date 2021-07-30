@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/memory/ref_counted.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
@@ -22,6 +23,8 @@
 namespace brave {
 class BraveReferralsService;
 class BraveP3AService;
+class HistogramsBraveizer;
+class BraveFederatedLearningService;
 }  // namespace brave
 
 namespace brave_component_updater {
@@ -36,7 +39,6 @@ class AdBlockService;
 class AdBlockCustomFiltersService;
 class AdBlockRegionalServiceManager;
 class HTTPSEverywhereService;
-class TrackingProtectionService;
 }  // namespace brave_shields
 
 namespace brave_stats {
@@ -65,11 +67,12 @@ namespace speedreader {
 class SpeedreaderRewriterService;
 }
 
-namespace brave_user_model {
-class UserModelFileService;
+namespace brave_ads {
+class ResourceComponent;
 }
 
-class BraveBrowserProcessImpl : public BrowserProcessImpl {
+class BraveBrowserProcessImpl : public BraveBrowserProcess,
+                                public BrowserProcessImpl {
  public:
   explicit BraveBrowserProcessImpl(StartupData* startup_data);
   ~BraveBrowserProcessImpl() override;
@@ -79,37 +82,42 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   ProfileManager* profile_manager() override;
   NotificationPlatformBridge* notification_platform_bridge() override;
 
-  void StartBraveServices();
-  brave_shields::AdBlockService* ad_block_service();
-  brave_shields::AdBlockCustomFiltersService* ad_block_custom_filters_service();
+  // BraveBrowserProcess implementation.
+
+  void StartBraveServices() override;
+  brave_shields::AdBlockService* ad_block_service() override;
+  brave_shields::AdBlockCustomFiltersService* ad_block_custom_filters_service()
+      override;
   brave_shields::AdBlockRegionalServiceManager*
-  ad_block_regional_service_manager();
+  ad_block_regional_service_manager() override;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   brave_component_updater::ExtensionWhitelistService*
-  extension_whitelist_service();
+  extension_whitelist_service() override;
 #endif
 #if BUILDFLAG(ENABLE_GREASELION)
-  greaselion::GreaselionDownloadService* greaselion_download_service();
+  greaselion::GreaselionDownloadService* greaselion_download_service() override;
 #endif
-  brave_shields::TrackingProtectionService* tracking_protection_service();
-  brave_shields::HTTPSEverywhereService* https_everywhere_service();
-  brave_component_updater::LocalDataFilesService* local_data_files_service();
+  brave_shields::HTTPSEverywhereService* https_everywhere_service() override;
+  brave_component_updater::LocalDataFilesService* local_data_files_service()
+      override;
 #if BUILDFLAG(ENABLE_TOR)
-  tor::BraveTorClientUpdater* tor_client_updater();
+  tor::BraveTorClientUpdater* tor_client_updater() override;
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
-  ipfs::BraveIpfsClientUpdater* ipfs_client_updater();
+  ipfs::BraveIpfsClientUpdater* ipfs_client_updater() override;
 #endif
-  brave::BraveP3AService* brave_p3a_service();
-  brave::BraveReferralsService* brave_referrals_service();
-  brave_stats::BraveStatsUpdater* brave_stats_updater();
+  brave::BraveFederatedLearningService* brave_federated_learning_service();
+  brave::BraveP3AService* brave_p3a_service() override;
+  brave::BraveReferralsService* brave_referrals_service() override;
+  brave_stats::BraveStatsUpdater* brave_stats_updater() override;
   ntp_background_images::NTPBackgroundImagesService*
-  ntp_background_images_service();
+  ntp_background_images_service() override;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  speedreader::SpeedreaderRewriterService* speedreader_rewriter_service();
+  speedreader::SpeedreaderRewriterService* speedreader_rewriter_service()
+      override;
 #endif
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
-  brave_user_model::UserModelFileService* user_model_file_service();
+  brave_ads::ResourceComponent* resource_component() override;
 #endif
 
  private:
@@ -144,8 +152,6 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   std::unique_ptr<greaselion::GreaselionDownloadService>
       greaselion_download_service_;
 #endif
-  std::unique_ptr<brave_shields::TrackingProtectionService>
-      tracking_protection_service_;
   std::unique_ptr<brave_shields::HTTPSEverywhereService>
       https_everywhere_service_;
   std::unique_ptr<brave_stats::BraveStatsUpdater> brave_stats_updater_;
@@ -158,7 +164,10 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 #if BUILDFLAG(IPFS_ENABLED)
   std::unique_ptr<ipfs::BraveIpfsClientUpdater> ipfs_client_updater_;
 #endif
+  std::unique_ptr<brave::BraveFederatedLearningService>
+      brave_federated_learning_service_;
   scoped_refptr<brave::BraveP3AService> brave_p3a_service_;
+  scoped_refptr<brave::HistogramsBraveizer> histogram_braveizer_;
   std::unique_ptr<ntp_background_images::NTPBackgroundImagesService>
       ntp_background_images_service_;
 
@@ -168,15 +177,12 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 #endif
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
-  std::unique_ptr<brave_user_model::UserModelFileService>
-      user_model_file_service_;
+  std::unique_ptr<brave_ads::ResourceComponent> resource_component_;
 #endif
 
   SEQUENCE_CHECKER(sequence_checker_);
 
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserProcessImpl);
 };
-
-extern BraveBrowserProcessImpl* g_brave_browser_process;
 
 #endif  // BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_IMPL_H_

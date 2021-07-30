@@ -5,6 +5,7 @@
 
 const path = require('path')
 const GenerateDepfilePlugin = require('./webpack-plugin-depfile')
+const webpack = require('webpack')
 
 module.exports = (env, argv) => ({
   devtool: argv.mode === 'development' ? '#inline-source-map' : false,
@@ -16,6 +17,8 @@ module.exports = (env, argv) => ({
   resolve: {
     extensions: ['.js', '.tsx', '.ts', '.json'],
     alias: {
+      'chrome://resources/mojo': process.env.ROOT_GEN_DIR,
+      'chrome://resources/js': path.resolve(path.join(process.env.ROOT_GEN_DIR, './ui/webui/resources/preprocessed/js')),
       'brave-ui': path.resolve(__dirname, '../../node_modules/brave-ui/src'),
       // Force same styled-components module for brave-core and brave-ui
       // which ensure both repos code use the same singletons, e.g. ThemeContext.
@@ -57,7 +60,7 @@ module.exports = (env, argv) => ({
         loader: 'url-loader?limit=13000&minetype=application/font-woff'
       },
       {
-        test: /\.(ttf|eot|ico|svg|png|jpg|gif)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        test: /\.(ttf|eot|ico|svg|png|jpg|jpeg|gif)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'file-loader'
       }]
   },

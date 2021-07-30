@@ -9,52 +9,78 @@ import { LocaleContext } from '../../lib/locale_context'
 import { RewardsTourProps } from './rewards_tour_props'
 import { TourNavigation } from './tour_navigation'
 import { TourStepLinks } from './tour_step_links'
-import { getTourPanels } from './rewards_tour_panels'
+import { getTourPanels, getVerifyWalletPanel } from './rewards_tour_panels'
 
 import * as style from './rewards_tour.style'
 
 export function RewardsTour (props: RewardsTourProps) {
   const locale = React.useContext(LocaleContext)
   const [currentStep, setCurrentStep] = React.useState(0)
+  const [showVerifyPanel, setShowVerifyPanel] = React.useState(false)
   const stepPanels = getTourPanels(props)
+  const verifyPanel = getVerifyWalletPanel(locale, props)
 
-  if (stepPanels.length === 0 || currentStep >= stepPanels.length) {
+  function getPanelNav () {
+    const stepLinks = (
+      <style.stepLinks>
+        <TourStepLinks
+          stepCount={stepPanels.length}
+          currentStep={currentStep}
+          onSelectStep={setCurrentStep}
+        />
+      </style.stepLinks>
+    )
+
+    const onNavSkip = () => {
+      if (props.firstTimeSetup) {
+        setCurrentStep(stepPanels.length - 1)
+      } else {
+        props.onDone()
+      }
+    }
+
+    const onNavDone = () => {
+      if (verifyPanel) {
+        setShowVerifyPanel(true)
+      } else {
+        props.onDone()
+      }
+    }
+
+    const tourNav = (
+      <style.nav>
+        <TourNavigation
+          layout={props.layout}
+          stepCount={stepPanels.length}
+          currentStep={currentStep}
+          firstTimeSetup={props.firstTimeSetup}
+          postTourContent={Boolean(verifyPanel)}
+          onSelectStep={setCurrentStep}
+          onDone={onNavDone}
+          onSkip={onNavSkip}
+        />
+      </style.nav>
+    )
+
+    return props.layout === 'wide'
+      ? <>{tourNav}{stepLinks}</>
+      : <>{stepLinks}{tourNav}</>
+  }
+
+  function getPanel () {
+    if (showVerifyPanel) {
+      return verifyPanel
+    }
+    if (stepPanels.length === 0 || currentStep >= stepPanels.length) {
+      return null
+    }
+    return stepPanels[currentStep](locale, props)
+  }
+
+  const panel = getPanel()
+  if (!panel) {
     return null
   }
-
-  const panel = stepPanels[currentStep](locale, props)
-
-  const onSkip = () => {
-    if (props.firstTimeSetup) {
-      setCurrentStep(stepPanels.length - 1)
-    } else {
-      props.onDone()
-    }
-  }
-
-  const stepLinks = (
-    <style.stepLinks>
-      <TourStepLinks
-        stepCount={stepPanels.length}
-        currentStep={currentStep}
-        onSelectStep={setCurrentStep}
-      />
-    </style.stepLinks>
-  )
-
-  const tourNav = (
-    <style.nav>
-      <TourNavigation
-        layout={props.layout}
-        stepCount={stepPanels.length}
-        currentStep={currentStep}
-        firstTimeSetup={props.firstTimeSetup}
-        onSelectStep={setCurrentStep}
-        onDone={props.onDone}
-        onSkip={onSkip}
-      />
-    </style.nav>
-  )
 
   return (
     <style.root className={`tour-${props.layout || 'narrow'}`}>
@@ -66,9 +92,9 @@ export function RewardsTour (props: RewardsTourProps) {
         </style.stepGraphic>
       </style.stepContent>
       {
-        props.layout === 'wide'
-          ? <>{tourNav}{stepLinks}</>
-          : <>{stepLinks}{tourNav}</>
+        panel.actions
+          ? <style.nav>{panel.actions}</style.nav>
+          : getPanelNav()
       }
     </style.root>
   )

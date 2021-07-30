@@ -1,0 +1,83 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+
+config("internal_config") {
+  visibility = [ ":*" ]
+  ldflags = [ "-Wl,-no_compact_unwind,-rpath,/usr/lib/swift,-rpath,@executable_path/../Frameworks" ]
+}
+
+group("brave_ios") {
+  public_deps = [ ":brave_core_ios_framework" ]
+}
+
+group("brave_ios_tests") {
+  testonly = true
+  public_deps = [ "testing:brave_core_ios_tests" ]
+}
+
+brave_core_public_headers = [
+  "//brave/components/adblock_rust_ffi/src/lib.h",
+  "//brave/ios/app/brave_core_main.h",
+  "//brave/ios/browser/api/bookmarks/brave_bookmarks_api.h",
+  "//brave/ios/browser/api/bookmarks/brave_bookmarks_observer.h",
+  "//brave/ios/browser/api/bookmarks/importer/brave_bookmarks_importer.h",
+  "//brave/ios/browser/api/bookmarks/exporter/brave_bookmarks_exporter.h",
+  "//brave/ios/browser/api/brave_wallet/asset_ratio_controller_ios.h",
+  "//brave/ios/browser/api/brave_wallet/keyring_controller_ios.h",
+  "$root_gen_dir/brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc.h",
+  "//brave/ios/browser/api/history/brave_history_api.h",
+  "//brave/ios/browser/api/history/brave_history_observer.h",
+  "//brave/ios/browser/api/sync/brave_sync_api.h",
+  "//brave/ios/browser/api/sync/driver/brave_sync_profile_service.h",
+  "//brave/ios/browser/api/ads/brave_ads.h",
+  "//brave/ios/browser/api/ads/ad_notification_ios.h",
+  "//brave/ios/browser/api/ads/inline_content_ad_ios.h",
+  "$root_gen_dir/brave/ios/browser/api/ads/ads.mojom.objc.h",
+  "//brave/ios/browser/api/ledger/brave_ledger.h",
+  "//brave/ios/browser/api/ledger/brave_ledger_observer.h",
+  "//brave/ios/browser/api/ledger/rewards_notification.h",
+  "//brave/ios/browser/api/ledger/promotion_solution.h",
+  "$root_gen_dir/brave/ios/browser/api/ledger/ledger.mojom.objc.h",
+]
+
+action("brave_core_umbrella_header") {
+  script = "//build/config/ios/generate_umbrella_header.py"
+
+  full_header_path = target_gen_dir + "/BraveCore.h"
+  outputs = [ full_header_path ]
+
+  args = [
+    "--output-path",
+    rebase_path(full_header_path, root_build_dir),
+  ]
+
+  args += rebase_path(brave_core_public_headers, root_build_dir)
+}
+
+ios_framework_bundle("brave_core_ios_framework") {
+  output_name = "BraveCore"
+  output_dir = root_out_dir
+
+  info_plist = "Info.plist"
+
+  configs += [ ":internal_config" ]
+  configs += [ "//build/config/compiler:enable_arc" ]
+
+  deps = [
+    ":brave_core_umbrella_header",
+    "//brave/components/adblock_rust_ffi",
+    "//brave/ios/app",
+    "//brave/ios/browser/api/ads:ads_mojom_wrappers",
+    "//brave/ios/browser/api/brave_wallet:wallet_mojom_wrappers",
+    "//brave/ios/browser/api/ledger:ledger_mojom_wrappers",
+  ]
+
+  sources = brave_core_public_headers
+
+  public_headers = get_target_outputs(":brave_core_umbrella_header")
+  public_headers += brave_core_public_headers
+}

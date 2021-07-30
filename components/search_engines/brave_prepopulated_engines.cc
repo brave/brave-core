@@ -12,7 +12,7 @@ namespace TemplateURLPrepopulateData {
 
 // IMPORTANT! Make sure to bump this value if you make changes to the
 // engines below or add/remove engines.
-const int kBraveCurrentDataVersion = 12;
+const int kBraveCurrentDataVersion = 16;
 // DO NOT CHANGE THIS ONE. Used for backfilling kBraveDefaultSearchVersion.
 const int kBraveFirstTrackedDataVersion = 6;
 
@@ -30,6 +30,7 @@ const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>
         {PREPOPULATED_ENGINE_ID_QWANT, &qwant},
         {PREPOPULATED_ENGINE_ID_STARTPAGE, &startpage},
         {PREPOPULATED_ENGINE_ID_ECOSIA, &brave_ecosia},
+        {PREPOPULATED_ENGINE_ID_BRAVE, &brave_search},
 };
 
 PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
@@ -130,7 +131,7 @@ const PrepopulatedEngine brave_ecosia =
 #else
                        "e8eb07a6"
 #endif
-                       "&q={searchTerms}",
+                       "&q={searchTerms}&addon=brave",
                        "https://ac.ecosia.org/?q={searchTerms}",
                        PREPOPULATED_ENGINE_ID_ECOSIA);
 
@@ -192,6 +193,32 @@ const PrepopulatedEngine brave_yandex =
                        "https://suggest.yandex.ru/suggest-ff.cgi?"
                        "part={searchTerms}&v=3&sn=5&srv=brave_desktop",
                        PREPOPULATED_ENGINE_ID_YANDEX);
+
+const PrepopulatedEngine brave_search = {
+    L"Brave",
+    L":br",
+    "https://cdn.search.brave.com/serp/favicon.ico",
+    "https://search.brave.com/search?q={searchTerms}&source="
+#if defined(OS_ANDROID)
+    "android",
+#else
+    "desktop",
+#endif
+    "UTF-8",
+    "https://search.brave.com/api/suggest?q={searchTerms}",
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    0,
+    SEARCH_ENGINE_OTHER,
+    PREPOPULATED_ENGINE_ID_BRAVE,
+};
 
 const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>&
 GetBraveEnginesMap() {

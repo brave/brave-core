@@ -9,9 +9,6 @@
 
 #include "base/bind.h"
 #include "base/bind_post_task.h"
-#include "base/files/file_util.h"
-#include "base/sequenced_task_runner.h"
-#include "base/task/post_task.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/tor/service_sandbox_type.h"
 #include "brave/components/tor/tor_file_watcher.h"
@@ -21,8 +18,6 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/service_process_host.h"
 
-using content::BrowserThread;
-
 namespace {
 constexpr char kTorProxyScheme[] = "socks5://";
 // tor::TorControlEvent::STATUS_CLIENT response
@@ -30,18 +25,6 @@ constexpr char kStatusClientBootstrap[] = "BOOTSTRAP";
 constexpr char kStatusClientBootstrapProgress[] = "PROGRESS=";
 constexpr char kStatusClientCircuitEstablished[] = "CIRCUIT_ESTABLISHED";
 constexpr char kStatusClientCircuitNotEstablished[] = "CIRCUIT_NOT_ESTABLISHED";
-
-std::pair<bool, std::string> LoadTorLogOnFileTaskRunner(
-    const base::FilePath& path) {
-  std::string data;
-  bool success = base::ReadFileToString(path, &data);
-  std::pair<bool, std::string> result;
-  result.first = success;
-  if (success) {
-    result.second = data;
-  }
-  return result;
-}
 }  // namespace
 
 // static
@@ -110,13 +93,6 @@ void TorLauncherFactory::LaunchTorProcess(const tor::mojom::TorConfig& config) {
   LaunchTorInternal();
 }
 
-void TorLauncherFactory::OnTorLogLoaded(
-    GetLogCallback callback,
-    const std::pair<bool, std::string>& result) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  std::move(callback).Run(result.first, result.second);
-}
-
 void TorLauncherFactory::LaunchTorInternal() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -137,7 +113,9 @@ void TorLauncherFactory::KillTorProcess() {
   control_->Stop();
   tor_launcher_.reset();
   tor_pid_ = -1;
+  is_starting_ = false;
   is_connected_ = false;
+  tor_log_.clear();
 }
 
 int64_t TorLauncherFactory::GetTorPid() const {
@@ -162,17 +140,7 @@ std::string TorLauncherFactory::GetTorVersion() const {
 
 void TorLauncherFactory::GetTorLog(GetLogCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  base::FilePath tor_log_path = config_.tor_data_path.AppendASCII("tor.log");
-  scoped_refptr<base::SequencedTaskRunner> file_task_runner(
-      base::CreateSequencedTaskRunner(
-          {base::ThreadPool(), base::MayBlock(),
-           base::TaskPriority::BEST_EFFORT,
-           base::TaskShutdownBehavior::BLOCK_SHUTDOWN}));
-  base::PostTaskAndReplyWithResult(
-      file_task_runner.get(), FROM_HERE,
-      base::BindOnce(&LoadTorLogOnFileTaskRunner, tor_log_path),
-      base::BindOnce(&TorLauncherFactory::OnTorLogLoaded,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  std::move(callback).Run(true, std::string(tor_log_));
 }
 
 void TorLauncherFactory::AddObserver(TorLauncherObserver* observer) {
@@ -250,6 +218,11 @@ void TorLauncherFactory::OnTorControlReady() {
                       base::DoNothing::Once<bool>());
   control_->Subscribe(tor::TorControlEvent::STREAM,
                       base::DoNothing::Once<bool>());
+  control_->Subscribe(tor::TorControlEvent::NOTICE,
+                      base::DoNothing::Once<bool>());
+  control_->Subscribe(tor::TorControlEvent::WARN,
+                      base::DoNothing::Once<bool>());
+  control_->Subscribe(tor::TorControlEvent::ERR, base::DoNothing::Once<bool>());
 }
 
 void TorLauncherFactory::GotVersion(bool error, const std::string& version) {
@@ -300,10 +273,15 @@ void TorLauncherFactory::GotCircuitEstablished(bool error, bool established) {
 void TorLauncherFactory::OnTorControlClosed(bool was_running) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << "TOR CONTROL: Closed!";
-  // If we're still running, try watching again to start over.
-  // TODO(riastradh-brave): Rate limit in case of flapping?
-  if (was_running) {
-    LaunchTorInternal();
+  // We only try to reestablish tor control connection when tor control was
+  // closed unexpectedly and Tor process is still running
+  if (was_running && tor_launcher_.is_bound()) {
+    tor::TorFileWatcher* tor_file_watcher =
+        new tor::TorFileWatcher(config_.tor_watch_path);
+    tor_file_watcher->StartWatching(base::BindPostTask(
+        base::SequencedTaskRunnerHandle::Get(),
+        base::BindOnce(&TorLauncherFactory::OnTorControlPrerequisitesReady,
+                       weak_ptr_factory_.GetWeakPtr(), tor_pid_)));
   }
 }
 
@@ -378,6 +356,12 @@ void TorLauncherFactory::OnTorEvent(
       for (auto& observer : observers_)
         observer.OnTorCircuitEstablished(false);
     }
+  } else if (event == tor::TorControlEvent::NOTICE ||
+             event == tor::TorControlEvent::WARN ||
+             event == tor::TorControlEvent::ERR) {
+    tor_log_ += raw_event + '\n';
+    for (auto& observer : observers_)
+      observer.OnTorLogUpdated();
   }
 }
 

@@ -6,11 +6,13 @@
 #ifndef BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_CONTEXT_UTILS_H_
 #define BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_CONTEXT_UTILS_H_
 
-class Profile;
+namespace content {
+class BrowserContext;
+}
 
 namespace brave_wallet {
 
-bool IsAllowedForProfile(Profile* profile);
+bool IsAllowedForContext(content::BrowserContext* context);
 
 }  // namespace brave_wallet
 

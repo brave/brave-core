@@ -22,6 +22,9 @@ class TorProfileManager : public BrowserListObserver, public ProfileObserver {
   static void CloseTorProfileWindows(Profile* tor_profile);
   Profile* GetTorProfile(Profile* original_profile);
 
+  // Close all Tor windows for all tor profiles
+  void CloseAllTorWindows();
+
  private:
   friend class base::NoDestructor<TorProfileManager>;
   TorProfileManager();

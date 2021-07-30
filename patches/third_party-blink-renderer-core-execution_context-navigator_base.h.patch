@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/core/execution_context/navigator_base.h b/third_party/blink/renderer/core/execution_context/navigator_base.h
-index 4bc9c2e5c57d4fb27377c7e29b985cefa6bb4b06..27fe7d8301862065f9b4bd5848634d90391f6d70 100644
+index eef786a2f87dbe2461500bd2cbf617ac70eb9cf8..4eb0adc17ceafaf2b484f25c20f37be19d424f15 100644
 --- a/third_party/blink/renderer/core/execution_context/navigator_base.h
 +++ b/third_party/blink/renderer/core/execution_context/navigator_base.h
-@@ -51,6 +51,7 @@ class NavigatorBase : public ScriptWrappable,
+@@ -57,6 +57,7 @@ class NavigatorBase : public ScriptWrappable,
+       return String();
  
-   // NavigatorID override
-   String userAgent() const override {
+     GetExecutionContext()->ReportNavigatorUserAgentAccess();
 +    BRAVE_NAVIGATOR_BASE_USER_AGENT
-     return GetExecutionContext() ? GetExecutionContext()->UserAgent()
-                                  : String();
+     return GetExecutionContext()->UserAgent();
    }
+ 

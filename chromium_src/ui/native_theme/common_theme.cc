@@ -44,6 +44,8 @@ SkColor GetAuraColor(NativeTheme::ColorId color_id,
     case NativeTheme::kColorId_LinkEnabled:
     case NativeTheme::kColorId_LinkPressed:
       return is_dark ? kBraveColorOrange300 : kBraveColorBrand;
+    case NativeTheme::kColorId_TextfieldSelectionBackgroundFocused:
+      return is_dark ? gfx::kGoogleBlue800 : gfx::kGoogleBlue200;
     default:
       break;
   }

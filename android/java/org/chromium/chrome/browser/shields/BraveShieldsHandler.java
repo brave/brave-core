@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.shields;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
@@ -12,20 +13,26 @@ import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ImageSpan;
 import android.text.style.StyleSpan;
+import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -39,6 +46,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListPopupWindow;
@@ -46,8 +54,12 @@ import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.core.widget.TextViewCompat;
 
 import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
@@ -55,6 +67,7 @@ import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
@@ -65,6 +78,10 @@ import org.chromium.chrome.browser.shields.BraveShieldsUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -98,11 +115,10 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private final Map<Integer, BlockersInfo> mTabsStat =
         Collections.synchronizedMap(new HashMap<Integer, BlockersInfo>());
 
-    private Switch mBraveShieldsBlockTrackersSwitch;
     private OnCheckedChangeListener mBraveShieldsAdsTrackingChangeListener;
-    private Switch mBraveShieldsHTTPSEverywhereSwitch;
+    private SwitchCompat mBraveShieldsHTTPSEverywhereSwitch;
     private OnCheckedChangeListener mBraveShieldsHTTPSEverywhereChangeListener;
-    private Switch mBraveShieldsBlockingScriptsSwitch;
+    private SwitchCompat mBraveShieldsBlockingScriptsSwitch;
     private OnCheckedChangeListener mBraveShieldsBlockingScriptsChangeListener;
 
     private View mPopupView;
@@ -278,11 +294,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
 
         Rect bgPadding = new Rect();
-        popupWindow.getBackground().getPadding(bgPadding);
-
         int popupWidth = wrapper.getResources().getDimensionPixelSize(R.dimen.menu_width)
                          + bgPadding.left + bgPadding.right;
-
         popupWindow.setWidth(popupWidth);
 
         return popupWindow;
@@ -310,7 +323,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         return blockersInfo.mAdsBlocked;
     }
 
-    public int getTackersBlockedCount(int tabId) {
+    public int getTrackersBlockedCount(int tabId) {
         if (!mTabsStat.containsKey(tabId)) {
             return 0;
         }
@@ -395,25 +408,29 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         TextView mSiteText = mMainLayout.findViewById(R.id.site_text);
         mSiteText.setText(mTitle.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)", ""));
 
-        Switch mShieldMainSwitch = mMainLayout.findViewById(R.id.site_switch);
+        SwitchCompat mShieldMainSwitch = mMainLayout.findViewById(R.id.site_switch);
 
-        ClickableSpan mClickableSpan = new ClickableSpan() {
+        ImageView helpImage = (ImageView) mMainLayout.findViewById(R.id.help);
+        ImageView shareImage = (ImageView) mMainLayout.findViewById(R.id.share);
+
+        helpImage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View widget) {
+            public void onClick(View v) {
                 mMainLayout.setVisibility(View.GONE);
                 mAboutLayout.setVisibility(View.VISIBLE);
                 setUpAboutLayout();
             }
-        };
+        });
 
-        TextView mSiteBlockText = mMainLayout.findViewById(R.id.site_block_text);
-        mSiteBlockText.setMovementMethod(LinkMovementMethod.getInstance());
-        String mBlockText = mContext.getResources().getString(R.string.ads_and_other_things_blocked) + "   ";
-        SpannableString mSpannableString = new SpannableString(mBlockText);
-        ImageSpan mImageSpan = new ImageSpan(mContext, R.drawable.ic_help);
-        mSpannableString.setSpan(mImageSpan, mBlockText.length() - 1, mBlockText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mSpannableString.setSpan(mClickableSpan, mSpannableString.getSpanStart(mImageSpan), mSpannableString.getSpanEnd(mImageSpan), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mSiteBlockText.setText(mSpannableString);
+        shareImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMainLayout.setVisibility(View.GONE);
+                if (BraveStatsUtil.hasWritePermission(BraveActivity.getBraveActivity())) {
+                    BraveStatsUtil.shareStats(R.layout.brave_stats_share_layout);
+                }
+            }
+        });
 
         mToggleIcon.setColorFilter(mContext.getResources().getColor(R.color.shield_toggle_button_tint));
         mToggleLayout.setOnClickListener(new View.OnClickListener() {
@@ -447,6 +464,11 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         setupMainSwitchClick(mShieldMainSwitch);
     }
 
+    private void shareStats() {
+        View shareStatsLayout = BraveStatsUtil.getLayout(R.layout.brave_stats_share_layout);
+        BraveStatsUtil.updateBraveShareStatsLayoutAndShare(shareStatsLayout);
+    }
+
     private void setToggleView(boolean shouldShow) {
         if (shouldShow) {
             mSecondaryLayout.setVisibility(View.VISIBLE);
@@ -464,16 +486,138 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         shieldsText.setText(mTitle.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)", ""));
 
         setUpSwitchLayouts();
-        setUpCookiesLayout();
-        setUpFingerprintingLayout();
+
+        setupDetailsLayouts();
+    }
+
+    private void setupDetailsLayouts() {
+        ArrayList<String> detailsLayouts = new ArrayList<>();
+        detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS);
+        detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING);
+        detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES);
+
+        int layoutId = 0;
+        int mSecondaryLayoutId = 0;
+        int titleStringId = 0;
+        int subtitleStringId = 0;
+        int option1StringId = 0;
+        int option2StringId = 0;
+        int option3StringId = 0;
+
+        for (final String layout : detailsLayouts) {
+            switch (layout) {
+                case BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS:
+                    layoutId = R.id.brave_shields_block_cross_trackers_layout_id;
+                    mSecondaryLayoutId = R.id.brave_shields_cross_site_trackers_layout_id;
+                    titleStringId = R.string.block_trackers_ads_title;
+                    subtitleStringId = R.string.block_trackers_ads_summary;
+                    option1StringId = R.string.block_trackers_ads_option_1;
+                    option2StringId = R.string.block_trackers_ads_option_2;
+                    option3StringId = R.string.block_trackers_ads_option_3;
+                    break;
+                case BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING:
+                    layoutId = R.id.brave_shields_block_fingerprinting_layout_id;
+                    mSecondaryLayoutId = R.id.brave_shields_fingerprinting_layout_id;
+                    titleStringId = R.string.block_fingerprinting;
+                    subtitleStringId = R.string.block_fingerprinting_text;
+                    option1StringId = R.string.block_fingerprinting_option_1;
+                    option2StringId = R.string.block_fingerprinting_option_2;
+                    option3StringId = R.string.block_fingerprinting_option_3;
+                    break;
+                case BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES:
+                    layoutId = R.id.brave_shields_block_cookies_layout_id;
+                    mSecondaryLayoutId = R.id.brave_shields_cookies_layout_id;
+                    titleStringId = R.string.block_cookies;
+                    subtitleStringId = R.string.block_cookies_text;
+                    option1StringId = R.string.block_cookies_option_1;
+                    option2StringId = R.string.block_cross_site_cookies;
+                    option3StringId = R.string.block_cookies_option_3;
+                    break;
+            }
+
+            LinearLayout mBlockShieldsLayout = mPopupView.findViewById(layoutId);
+            TextView mBlockShieldsOptionTitle = mBlockShieldsLayout.findViewById(R.id.option_title);
+            mBlockShieldsOptionTitle.setText(titleStringId);
+            TextView mBlockShieldsOptionText = mBlockShieldsLayout.findViewById(R.id.option_text);
+            mBlockShieldsOptionText.setText(subtitleStringId);
+            RadioButton mBlockShieldsOption1 = mBlockShieldsLayout.findViewById(R.id.option1);
+            mBlockShieldsOption1.setText(option1StringId);
+            RadioButton mBlockShieldsOption2 = mBlockShieldsLayout.findViewById(R.id.option2);
+            mBlockShieldsOption2.setText(option2StringId);
+            RadioButton mBlockShieldsOption3 = mBlockShieldsLayout.findViewById(R.id.option3);
+            mBlockShieldsOption3.setText(option3StringId);
+            Button mBlockShieldsDoneButton = mBlockShieldsLayout.findViewById(R.id.done_button);
+            mBlockShieldsDoneButton.setOnClickListener(mDoneClickListener);
+            ImageView mBlockShieldsBackButton = mBlockShieldsLayout.findViewById(R.id.back_button);
+            mBlockShieldsBackButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mBlockShieldsLayout.setVisibility(View.GONE);
+                    mMainLayout.setVisibility(View.VISIBLE);
+                }
+            });
+
+            LinearLayout mShieldsLayout = mSecondaryLayout.findViewById(mSecondaryLayoutId);
+            mShieldsLayout.setBackground(null);
+            mShieldsLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mMainLayout.setVisibility(View.GONE);
+                    mBlockShieldsLayout.setVisibility(View.VISIBLE);
+                }
+            });
+            ImageView mBlockShieldsIcon = mShieldsLayout.findViewById(R.id.toggle_favicon);
+            mBlockShieldsIcon.setImageResource(R.drawable.ic_chevron_right);
+            mBlockShieldsIcon.setColorFilter(
+                    mContext.getResources().getColor(R.color.default_icon_color_tint_list));
+            TextView mBlockShieldsText = mShieldsLayout.findViewById(R.id.toggle_text);
+            mBlockShieldsText.setText(titleStringId);
+
+            String settingOption =
+                    BraveShieldsContentSettings.getShieldsValue(mProfile, mHost, layout);
+            if (settingOption.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
+                mBlockShieldsOption1.setChecked(true);
+            } else if (settingOption.equals(
+                               BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE)) {
+                mBlockShieldsOption2.setChecked(true);
+            } else if (settingOption.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
+                mBlockShieldsOption3.setChecked(true);
+            }
+
+            RadioGroup mBlockShieldsOptionGroup =
+                    mBlockShieldsLayout.findViewById(R.id.options_radio_group);
+            mBlockShieldsOptionGroup.setOnCheckedChangeListener(
+                    new RadioGroup.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(RadioGroup group, int checkedId) {
+                            RadioButton checkedRadioButton =
+                                    (RadioButton) group.findViewById(checkedId);
+                            boolean isChecked = checkedRadioButton.isChecked();
+                            if (isChecked) {
+                                if (checkedId == R.id.option1) {
+                                    BraveShieldsContentSettings.setShieldsValue(mProfile, mHost,
+                                            layout, BraveShieldsContentSettings.BLOCK_RESOURCE,
+                                            false);
+                                } else if (checkedId == R.id.option2) {
+                                    BraveShieldsContentSettings.setShieldsValue(mProfile, mHost,
+                                            layout,
+                                            BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE,
+                                            false);
+                                } else if (checkedId == R.id.option3) {
+                                    BraveShieldsContentSettings.setShieldsValue(mProfile, mHost,
+                                            layout, BraveShieldsContentSettings.ALLOW_RESOURCE,
+                                            false);
+                                }
+                                if (null != mMenuObserver) {
+                                    mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
+                                }
+                            }
+                        }
+                    });
+        }
     }
 
     private void setUpSwitchLayouts() {
-        LinearLayout mBlockTrackersLayout = mSecondaryLayout.findViewById(R.id.brave_shields_block_trackers_id);
-        TextView mBlockTrackersText = mBlockTrackersLayout.findViewById(R.id.brave_shields_switch_text);
-        mBraveShieldsBlockTrackersSwitch = mBlockTrackersLayout.findViewById(R.id.brave_shields_switch);
-        mBlockTrackersText.setText(R.string.brave_shields_ads_and_trackers);
-        setupAdsTrackingSwitchClick(mBraveShieldsBlockTrackersSwitch);
 
         LinearLayout mUpgradeHttpsLayout = mSecondaryLayout.findViewById(R.id.brave_shields_upgrade_https_id);
         TextView mUpgradeHttpsText = mUpgradeHttpsLayout.findViewById(R.id.brave_shields_switch_text);
@@ -486,146 +630,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         mBraveShieldsBlockingScriptsSwitch = mBlockScriptsLayout.findViewById(R.id.brave_shields_switch);
         mBlockScriptsText.setText(R.string.brave_shields_blocks_scripts_switch);
         setupBlockingScriptsSwitchClick(mBraveShieldsBlockingScriptsSwitch);
-    }
-
-    private void setUpCookiesLayout() {
-        LinearLayout mBlockCookiesLayout = mPopupView.findViewById(R.id.brave_shields_block_cookies_layout_id);
-        TextView mCookiesOptionTitle = mBlockCookiesLayout.findViewById(R.id.option_title);
-        mCookiesOptionTitle.setText(R.string.block_cookies);
-        TextView mCookiesOptionText = mBlockCookiesLayout.findViewById(R.id.option_text);
-        mCookiesOptionText.setText(R.string.block_cookies_text);
-        RadioButton mCookiesOption1 = mBlockCookiesLayout.findViewById(R.id.option1);
-        mCookiesOption1.setText(R.string.block_cookies_option_1);
-        RadioButton mCookiesOption2 = mBlockCookiesLayout.findViewById(R.id.option2);
-        mCookiesOption2.setText(R.string.block_cross_site_cookies);
-        RadioButton mCookiesOption3 = mBlockCookiesLayout.findViewById(R.id.option3);
-        mCookiesOption3.setText(R.string.block_cookies_option_3);
-        Button mCookiesDoneButton = mBlockCookiesLayout.findViewById(R.id.done_button);
-        mCookiesDoneButton.setOnClickListener(mDoneClickListener);
-        ImageView mCookiesBackButton = mBlockCookiesLayout.findViewById(R.id.back_button);
-        mCookiesBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mBlockCookiesLayout.setVisibility(View.GONE);
-                mMainLayout.setVisibility(View.VISIBLE);
-            }
-        });
-
-        LinearLayout mCookiesLayout = mSecondaryLayout.findViewById(R.id.brave_shields_cookies_layout_id);
-        mCookiesLayout.setBackground(null);
-        mCookiesLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mMainLayout.setVisibility(View.GONE);
-                mBlockCookiesLayout.setVisibility(View.VISIBLE);
-            }
-        });
-        ImageView mCookiesIcon = mCookiesLayout.findViewById(R.id.toggle_favicon);
-        mCookiesIcon.setImageResource(R.drawable.ic_chevron_right);
-        mCookiesIcon.setColorFilter(mContext.getResources().getColor(R.color.default_icon_color_tint_list));
-        TextView mCookiesText = mCookiesLayout.findViewById(R.id.toggle_text);
-        mCookiesText.setText(R.string.block_cookies);
-
-        String settingOption = BraveShieldsContentSettings.getShieldsValue(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES);
-        if (settingOption.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
-            mCookiesOption1.setChecked(true);
-        } else if (settingOption.equals(BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE)) {
-            mCookiesOption2.setChecked(true);
-        } else if (settingOption.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
-            mCookiesOption3.setChecked(true);
-        }
-
-        RadioGroup mCookiesOptionGroup = mBlockCookiesLayout.findViewById(R.id.options_radio_group);
-        mCookiesOptionGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
-                boolean isChecked = checkedRadioButton.isChecked();
-
-                if (isChecked) {
-                    if (checkedId == R.id.option1) {
-                        BraveShieldsContentSettings.setShieldsValue(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES, BraveShieldsContentSettings.BLOCK_RESOURCE, false);
-                    } else if (checkedId == R.id.option2) {
-                        BraveShieldsContentSettings.setShieldsValue(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES, BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE, false);
-                    } else if (checkedId == R.id.option3) {
-                        BraveShieldsContentSettings.setShieldsValue(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES, BraveShieldsContentSettings.ALLOW_RESOURCE, false);
-                    }
-                    if (null != mMenuObserver) {
-                        mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
-                    }
-                }
-            }
-        });
-    }
-
-    private void setUpFingerprintingLayout() {
-        LinearLayout mBlockFingerPrintingLayout = mPopupView.findViewById(R.id.brave_shields_block_fingerprinting_layout_id);
-        TextView mFingerprintingOptionTitle = mBlockFingerPrintingLayout.findViewById(R.id.option_title);
-        mFingerprintingOptionTitle.setText(R.string.block_fingerprinting);
-        TextView mFingerprintingOptionText = mBlockFingerPrintingLayout.findViewById(R.id.option_text);
-        mFingerprintingOptionText.setText(R.string.block_fingerprinting_text);
-        RadioButton mFingerprintingOption1 = mBlockFingerPrintingLayout.findViewById(R.id.option1);
-        mFingerprintingOption1.setText(R.string.block_fingerprinting_option_1);
-        RadioButton mFingerprintingOption2 = mBlockFingerPrintingLayout.findViewById(R.id.option2);
-        mFingerprintingOption2.setText(R.string.block_fingerprinting_option_2);
-        RadioButton mFingerprintingOption3 = mBlockFingerPrintingLayout.findViewById(R.id.option3);
-        mFingerprintingOption3.setText(R.string.block_fingerprinting_option_3);
-        Button mFingerprintingDoneButton = mBlockFingerPrintingLayout.findViewById(R.id.done_button);
-        mFingerprintingDoneButton.setOnClickListener(mDoneClickListener);
-        ImageView mFingerprintingBackButton = mBlockFingerPrintingLayout.findViewById(R.id.back_button);
-        mFingerprintingBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mBlockFingerPrintingLayout.setVisibility(View.GONE);
-                mMainLayout.setVisibility(View.VISIBLE);
-            }
-        });
-
-        LinearLayout mFingerPrintingLayout = mSecondaryLayout.findViewById(R.id.brave_shields_fingerprinting_layout_id);
-        mFingerPrintingLayout.setBackground(null);
-        mFingerPrintingLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mMainLayout.setVisibility(View.GONE);
-                mBlockFingerPrintingLayout.setVisibility(View.VISIBLE);
-            }
-        });
-        ImageView mFingerPrintingIcon = mFingerPrintingLayout.findViewById(R.id.toggle_favicon);
-        mFingerPrintingIcon.setImageResource(R.drawable.ic_chevron_right);
-        mFingerPrintingIcon.setColorFilter(mContext.getResources().getColor(R.color.default_icon_color_tint_list));
-        TextView mFingerPrintingText = mFingerPrintingLayout.findViewById(R.id.toggle_text);
-        mFingerPrintingText.setText(R.string.block_fingerprinting);
-
-        String settingOption = BraveShieldsContentSettings.getShieldsValue(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING);
-        if (settingOption.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
-            mFingerprintingOption1.setChecked(true);
-        } else if (settingOption.equals(BraveShieldsContentSettings.DEFAULT)) {
-            mFingerprintingOption2.setChecked(true);
-        } else if (settingOption.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
-            mFingerprintingOption3.setChecked(true);
-        }
-
-        RadioGroup mFingerprintingOptionGroup = mBlockFingerPrintingLayout.findViewById(R.id.options_radio_group);
-        mFingerprintingOptionGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
-                boolean isChecked = checkedRadioButton.isChecked();
-
-                if (isChecked) {
-                    if (checkedId == R.id.option1) {
-                        BraveShieldsContentSettings.setShieldsValue(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING, BraveShieldsContentSettings.BLOCK_RESOURCE, false);
-                    } else if (checkedId == R.id.option2) {
-                        BraveShieldsContentSettings.setShieldsValue(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING, BraveShieldsContentSettings.DEFAULT, false);
-                    } else if (checkedId == R.id.option3) {
-                        BraveShieldsContentSettings.setShieldsValue(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING, BraveShieldsContentSettings.ALLOW_RESOURCE, false);
-                    }
-                    if (null != mMenuObserver) {
-                        mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
-                    }
-                }
-            }
-        });
     }
 
     private void setUpAboutLayout() {
@@ -727,55 +731,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         setUpMainLayout();
     }
 
-    private void setupAdsTrackingSwitchClick(Switch braveShieldsAdsTrackingSwitch) {
-        if (null == braveShieldsAdsTrackingSwitch) {
-            return;
-        }
-        setupAdsTrackingSwitch(braveShieldsAdsTrackingSwitch, false);
-
-        mBraveShieldsAdsTrackingChangeListener = new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                                         boolean isChecked) {
-                if (0 != mHost.length()) {
-                    BraveShieldsContentSettings.setShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS_TRACKERS, isChecked, false);
-                    if (null != mMenuObserver) {
-                        mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
-                    }
-                }
-            }
-        };
-
-        braveShieldsAdsTrackingSwitch.setOnCheckedChangeListener(mBraveShieldsAdsTrackingChangeListener);
-    }
-
-    private void setupAdsTrackingSwitch(Switch braveShieldsAdsTrackingSwitch, boolean fromTopSwitch) {
-        if (null == braveShieldsAdsTrackingSwitch) {
-            return;
-        }
-        if (fromTopSwitch) {
-            // Prevents to fire an event when top shields changed
-            braveShieldsAdsTrackingSwitch.setOnCheckedChangeListener(null);
-        }
-        if (0 != mHost.length()) {
-            if (BraveShieldsContentSettings.getShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
-                if (BraveShieldsContentSettings.getShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS_TRACKERS)) {
-                    braveShieldsAdsTrackingSwitch.setChecked(true);
-                } else {
-                    braveShieldsAdsTrackingSwitch.setChecked(false);
-                }
-                braveShieldsAdsTrackingSwitch.setEnabled(true);
-            } else {
-                braveShieldsAdsTrackingSwitch.setChecked(false);
-                braveShieldsAdsTrackingSwitch.setEnabled(false);
-            }
-        }
-        if (fromTopSwitch) {
-            braveShieldsAdsTrackingSwitch.setOnCheckedChangeListener(mBraveShieldsAdsTrackingChangeListener);
-        }
-    }
-
-    private void setupHTTPSEverywhereSwitchClick(Switch braveShieldsHTTPSEverywhereSwitch) {
+    private void setupHTTPSEverywhereSwitchClick(SwitchCompat braveShieldsHTTPSEverywhereSwitch) {
         if (null == braveShieldsHTTPSEverywhereSwitch) {
             return;
         }
@@ -797,7 +753,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         braveShieldsHTTPSEverywhereSwitch.setOnCheckedChangeListener(mBraveShieldsHTTPSEverywhereChangeListener);
     }
 
-    private void setupHTTPSEverywhereSwitch(Switch braveShieldsHTTPSEverywhereSwitch, boolean fromTopSwitch) {
+    private void setupHTTPSEverywhereSwitch(
+            SwitchCompat braveShieldsHTTPSEverywhereSwitch, boolean fromTopSwitch) {
         if (null == braveShieldsHTTPSEverywhereSwitch) {
             return;
         }
@@ -823,7 +780,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
     }
 
-    private void setupBlockingScriptsSwitchClick(Switch braveShieldsBlockingScriptsSwitch) {
+    private void setupBlockingScriptsSwitchClick(SwitchCompat braveShieldsBlockingScriptsSwitch) {
         if (null == braveShieldsBlockingScriptsSwitch) {
             return;
         }
@@ -845,7 +802,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         braveShieldsBlockingScriptsSwitch.setOnCheckedChangeListener(mBraveShieldsBlockingScriptsChangeListener);
     }
 
-    private void setupBlockingScriptsSwitch(Switch braveShieldsBlockingScriptsSwitch, boolean fromTopSwitch) {
+    private void setupBlockingScriptsSwitch(
+            SwitchCompat braveShieldsBlockingScriptsSwitch, boolean fromTopSwitch) {
         if (null == braveShieldsBlockingScriptsSwitch) {
             return;
         }
@@ -871,7 +829,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
     }
 
-    private void setupMainSwitchClick(Switch braveShieldsSwitch) {
+    private void setupMainSwitchClick(SwitchCompat braveShieldsSwitch) {
         if (null == braveShieldsSwitch) {
             return;
         }
@@ -890,7 +848,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                                          boolean isChecked) {
                 if (0 != mHost.length()) {
                     BraveShieldsContentSettings.setShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS, isChecked, false);
-                    setupAdsTrackingSwitch(mBraveShieldsBlockTrackersSwitch, true);
                     setupHTTPSEverywhereSwitch(mBraveShieldsHTTPSEverywhereSwitch, true);
                     setupBlockingScriptsSwitch(mBraveShieldsBlockingScriptsSwitch, true);
                     if (null != mMenuObserver) {

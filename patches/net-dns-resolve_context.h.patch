@@ -1,5 +1,5 @@
 diff --git a/net/dns/resolve_context.h b/net/dns/resolve_context.h
-index 538690d29bac60f16db077b3d8f8845febdd667e..76a996b0934d1e210bd48affc37b7acbff533e19 100644
+index 0af99b232b8f34214621d53b76b28111bc9a0df6..b09f63b7df1140eca5909f6b5b6ff8c40858fb1f 100644
 --- a/net/dns/resolve_context.h
 +++ b/net/dns/resolve_context.h
 @@ -176,6 +176,7 @@ class NET_EXPORT_PRIVATE ResolveContext : public base::CheckedObserver {

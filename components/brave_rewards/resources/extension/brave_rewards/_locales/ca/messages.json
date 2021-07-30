@@ -51,18 +51,6 @@
     "message": "Detalls",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "El vostre Saldo",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "Punts BAT",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "es pot usar en les Recompenses de Brave per a ajudar els vostres creadors de continguts. Els BAT points no es poden bescanviar per BAT.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "connectat",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "Donacions sol·licitades",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "Punts de subvenció reclamats",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "Guanys dels anuncis",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Propines d'una sola vegada",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "caduca el",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Aquest creador encara no s'ha donat d'alta per poder rebre contribucions per part dels usuaris Brave. Qualsevol propina que enviïs es quedarà al teu moneder fins que hagi estat comprovada.",
+    "message": "Aquest creador actualment no està configurat per rebre propines de la vostra cartera. Qualsevol propina que doneu quedarà pendent a la vostra cartera i es reintentarà automàticament durant 90 dies.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "i cant",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Activeu els anuncis",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Donació gratis",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Punt de subvenció gratuït",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Heu guanyat una recompensa publicitària!",
@@ -591,17 +567,9 @@
     "message": "Token",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "punts",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Fitxes de recompensa",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Recompenses de punts",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Hola,  $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Necessiteu tenir com a mínim 25 BAT per a crear un compte Uphold. Si us plau torneu-ho a provar més tard. Si ja teniu un compte Uphold verificat, continueu a iniciar sessió.  ",
-    "description": "Text for login button"
+    "message": "Necessiteu com a mínim $amount$ BAT per crear un compte Uphold. Si ja disposeu d'un compte Uphold verificat, continueu per iniciar sessió.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "Connectat",
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Quan rebeu recompenses",
+    "message": "Quan rebràs recompenses?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "Fent servir Brave Rewards esteu ajudant a fer de la xarxa un lloc millor per a tots. I això és fantàstic!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "Els Premis Brave al Japó canvien a un sistema nou!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "Verifica la teva cartera",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "Més informació",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "Per tal de retirar els tokens que hagis guanyat visualitzant anuncis, hauràs de verificar la teva cartera.",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "Sisplau, utilitza els teus BAP abans del 13 de març. Després d'això, els BAP desapareixeran.",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "Fes-ho més tard",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Verifica la meva cartera",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "La cartera bitFlyer és un servei que gestiona bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "En verificar la teva cartera i vincular-la a un compte de bitFlyer, podràs emmagatzemar i gestionar els tokens que hagis guanyat amb Brave Rewards més fàcilment",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Aprèn més$link_end$ sobre com enllaçar el teu navegador Brave amb el teu compte de bitFlyer.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

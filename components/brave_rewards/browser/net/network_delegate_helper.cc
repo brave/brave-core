@@ -23,37 +23,15 @@ namespace brave_rewards {
 
 namespace {
 
-content::WebContents* GetWebContents(
-    int render_process_id,
-    int render_frame_id,
-    int frame_tree_node_id) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  content::WebContents* web_contents =
-      content::WebContents::FromFrameTreeNodeId(frame_tree_node_id);
-  if (!web_contents) {
-    content::RenderFrameHost* rfh =
-        content::RenderFrameHost::FromID(render_process_id, render_frame_id);
-    if (!rfh) {
-      return nullptr;
-    }
-    web_contents =
-        content::WebContents::FromRenderFrameHost(rfh);
-  }
-  return web_contents;
-}
-
 void DispatchOnUI(
     const std::string post_data,
     const GURL url,
     const GURL first_party_url,
     const std::string referrer,
-    int render_process_id,
-    int render_frame_id,
     int frame_tree_node_id) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  auto* web_contents = GetWebContents(render_process_id,
-                                      render_frame_id,
-                                      frame_tree_node_id);
+  auto* web_contents =
+      content::WebContents::FromFrameTreeNodeId(frame_tree_node_id);
   if (!web_contents)
     return;
 
@@ -78,13 +56,8 @@ int OnBeforeURLRequest(
 
   if (IsMediaLink(ctx->request_url, ctx->tab_origin, ctx->referrer)) {
     if (!ctx->upload_data.empty()) {
-      DispatchOnUI(ctx->upload_data,
-                   ctx->request_url,
-                   ctx->tab_url,
-                   ctx->referrer.spec(),
-                   ctx->render_process_id,
-                   ctx->render_frame_id,
-                   ctx->frame_tree_node_id);
+      DispatchOnUI(ctx->upload_data, ctx->request_url, ctx->tab_url,
+                   ctx->referrer.spec(), ctx->frame_tree_node_id);
     }
   }
 

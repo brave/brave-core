@@ -141,11 +141,8 @@ class ContributeBox extends React.Component<Props, State> {
       contributionMinVisits,
       contributionNonVerified,
       contributionVideos,
-      contributionMonthly,
-      ui
+      contributionMonthly
     } = this.props.rewardsData
-
-    const { onlyAnonWallet } = ui
 
     return (
       <Grid columns={1} customStyle={{ margin: '0 auto' }}>
@@ -158,7 +155,7 @@ class ContributeBox extends React.Component<Props, State> {
               {
                 monthlyList.map((choice: MonthlyChoice) => {
                   return <div key={`choice-setting-${choice.tokens}`} data-value={choice.tokens.toString()}>
-                    {getLocale('contributionUpTo')} <Tokens value={choice.tokens} converted={choice.converted} onlyAnonWallet={onlyAnonWallet} />
+                    {getLocale('contributionUpTo')} <Tokens value={choice.tokens} converted={choice.converted} />
                   </div>
                 })
               }
@@ -208,14 +205,13 @@ class ContributeBox extends React.Component<Props, State> {
 
   render () {
     const {
-      firstLoad,
       parameters,
       contributionMonthly,
       enabledContribute,
       reconcileStamp,
       autoContributeList,
       excludedList,
-      ui
+      externalWallet
     } = this.props.rewardsData
     const monthlyList: MonthlyChoice[] = utils.generateContributionMonthly(parameters)
     const contributeRows = this.getContributeRows(autoContributeList)
@@ -224,8 +220,11 @@ class ContributeBox extends React.Component<Props, State> {
     const numRows = contributeRows && contributeRows.length
     const numExcludedRows = excludedRows && excludedRows.length
     const allSites = !(excludedRows.length > 0 || numRows > 5)
-    const showDisabled = firstLoad !== false || !enabledContribute
-    const { onlyAnonWallet } = ui
+
+    // Hide AC options from bitFlyer wallet regions.
+    if (externalWallet && externalWallet.type === 'bitflyer') {
+      return null
+    }
 
     return (
       <Box
@@ -235,7 +234,7 @@ class ContributeBox extends React.Component<Props, State> {
         toggle={true}
         checked={enabledContribute}
         settingsChild={this.contributeSettings(monthlyList)}
-        disabledContent={showDisabled ? this.contributeDisabled() : null}
+        disabledContent={!enabledContribute ? this.contributeDisabled() : null}
         onToggle={this.onToggleContribution}
         testId={'autoContribution'}
         settingsOpened={this.state.settings}
@@ -264,7 +263,7 @@ class ContributeBox extends React.Component<Props, State> {
               monthlyList.map((choice: MonthlyChoice) => {
                 return (
                   <div key={`choice-${choice.tokens}`} data-value={choice.tokens.toString()}>
-                    {getLocale('contributionUpTo')} <Tokens onlyAnonWallet={onlyAnonWallet} value={choice.tokens} converted={choice.converted} />
+                    {getLocale('contributionUpTo')} <Tokens value={choice.tokens} converted={choice.converted} />
                   </div>
                 )
               })

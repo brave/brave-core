@@ -1,8 +1,8 @@
 diff --git a/components/vector_icons/vector_icons.gni b/components/vector_icons/vector_icons.gni
-index ec13569abe485f8c0c44d86fb76e05a8383388ca..29576e3b39348bfea7c1c0f0daf534b76d23cf6a 100644
+index a0641b285bbfc8609c757a5a17b6f587035e33a8..3f2fd2501e8f57e1d60c67f4b1d9a436571d1fdb 100644
 --- a/components/vector_icons/vector_icons.gni
 +++ b/components/vector_icons/vector_icons.gni
-@@ -40,6 +40,7 @@ template("aggregate_vector_icons") {
+@@ -42,6 +42,7 @@ template("aggregate_vector_icons") {
        "vector_icons.cc.template",
        "vector_icons.h.template",
      ]
@@ -10,7 +10,7 @@ index ec13569abe485f8c0c44d86fb76e05a8383388ca..29576e3b39348bfea7c1c0f0daf534b7
      inputs =
          rebase_path(templates + invoker.sources, ".", invoker.icon_directory) +
          [ "//components/vector_icons/aggregate_vector_icons.py" ]
-@@ -58,6 +59,7 @@ template("aggregate_vector_icons") {
+@@ -60,6 +61,7 @@ template("aggregate_vector_icons") {
        "--file_list={{response_file_name}}",
        "--output_cc=" + rebase_path(output_cc, root_build_dir),
        "--output_h=" + rebase_path(output_h, root_build_dir),

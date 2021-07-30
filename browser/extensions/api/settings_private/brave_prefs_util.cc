@@ -5,15 +5,19 @@
 
 #include "brave/browser/extensions/api/settings_private/brave_prefs_util.h"
 
+#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_shields/common/pref_names.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
+#include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
+#include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/extensions/api/settings_private/prefs_util.h"
 #include "chrome/common/extensions/api/settings_private.h"
@@ -30,6 +34,10 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #endif
 
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
+#include "brave/browser/ethereum_remote_client/pref_names.h"
+#endif
+
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/components/ipfs/pref_names.h"
 #endif
@@ -42,12 +50,20 @@
 #include "brave/components/sidebar/pref_names.h"
 #endif
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/speedreader_pref_names.h"
+#endif
+
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/pref_names.h"
 #endif
 
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
 #include "brave/components/decentralized_dns/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_FTX)
+#include "brave/components/ftx/common/pref_names.h"
 #endif
 
 namespace extensions {
@@ -87,11 +103,11 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kGoogleLoginControlType] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[kFBEmbedControlType] =
+  (*s_brave_allowlist)[brave_shields::prefs::kFBEmbedControlType] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[kTwitterEmbedControlType] =
+  (*s_brave_allowlist)[brave_shields::prefs::kTwitterEmbedControlType] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[kLinkedInEmbedControlType] =
+  (*s_brave_allowlist)[brave_shields::prefs::kLinkedInEmbedControlType] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 
   // appearance prefs
@@ -112,6 +128,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 #if BUILDFLAG(ENABLE_SIDEBAR)
   (*s_brave_allowlist)[sidebar::kSidebarShowOption] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
+#endif
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  (*s_brave_allowlist)[speedreader::kSpeedreaderPrefEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
   // new tab prefs
   (*s_brave_allowlist)[kNewTabPageShowSponsoredImagesBackgroundImage] =
@@ -138,7 +158,13 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kCryptoDotComNewTabPageShowCryptoDotCom] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
+#if BUILDFLAG(ENABLE_FTX)
+  (*s_brave_allowlist)[kFTXNewTabPageShowFTX] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+#endif
   // Brave today prefs
+  (*s_brave_allowlist)[kBraveTodayOptedIn] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kBraveTodaySources] =
       settings_api::PrefType::PREF_TYPE_DICTIONARY;
   // Clear browsing data on exit prefs.
@@ -175,11 +201,16 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   // IPFS Companion pref
   (*s_brave_allowlist)[kIPFSCompanionEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
+  (*s_brave_allowlist)[kERCLoadCryptoWalletsOnStartup] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+#endif
   // Brave Wallet pref
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   (*s_brave_allowlist)[kBraveWalletWeb3Provider] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
-  (*s_brave_allowlist)[kLoadCryptoWalletsOnStartup] =
+  (*s_brave_allowlist)[kShowWalletIconOnToolbar] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
   // IPFS pref

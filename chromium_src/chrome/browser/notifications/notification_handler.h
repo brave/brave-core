@@ -10,6 +10,8 @@
 #include "../../../../../chrome/browser/notifications/notification_handler.h"
 #undef NotificationHandler
 
+#include "base/check.h"
+
 class NotificationHandler : public NotificationHandler_ChromiumImpl {
  public:
   // GENERATED_JAVA_ENUM_PACKAGE: org.chromium.chrome.browser.notifications

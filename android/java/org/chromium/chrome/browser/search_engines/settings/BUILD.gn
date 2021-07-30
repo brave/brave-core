@@ -1,0 +1,38 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+
+android_library("java") {
+  sources = [
+    "BraveBaseSearchEngineAdapter.java",
+    "BravePrivateSearchEnginePreference.java",
+    "BraveSearchEngineAdapter.java",
+    "BraveSearchEnginePrefHelper.java",
+    "BraveSearchEnginePreference.java",
+    "BraveStandardSearchEnginePreference.java",
+  ]
+  deps = [
+    ":java_resources",
+    "//base:base_java",
+    "//chrome/browser/search_engines/android:java",
+    "//components/search_engines/android:java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+  ]
+
+  annotation_processor_deps = [ "//base/android/jni_generator:jni_processor" ]
+  resources_package = "org.chromium.chrome.browser.search_engines"
+}
+
+generate_jni("jni_headers") {
+  sources = [ "BraveSearchEnginePrefHelper.java" ]
+}
+
+android_resources("java_resources") {
+  deps = [
+    "//brave/build/android:android_brave_strings_grd",
+    "//chrome/browser/search_engines/android:java_resources",
+  ]
+}

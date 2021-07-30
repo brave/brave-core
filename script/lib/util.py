@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+
 import atexit
 import contextlib
 import errno
@@ -11,13 +13,16 @@ import subprocess
 import sys
 import tarfile
 import tempfile
-import urllib2
+try:
+    from urllib.request import urlopen
+except ImportError:
+    from urllib2 import urlopen
 import os
 import zipfile
 
-from config import is_verbose_mode, PLATFORM
-from env_util import get_vs_env
-from helpers import release_channel
+from .config import is_verbose_mode, PLATFORM
+from .env_util import get_vs_env
+from .helpers import release_channel
 
 BOTO_DIR = os.path.abspath(os.path.join(__file__, '..', '..', '..', 'vendor',
                                         'boto'))
@@ -79,7 +84,7 @@ def download(text, url, path):
         if hasattr(ssl, '_create_unverified_context'):
             ssl._create_default_https_context = ssl._create_unverified_context
 
-        web_file = urllib2.urlopen(url)
+        web_file = urlopen(url)
         file_size = int(web_file.info().getheaders("Content-Length")[0])
         downloaded_size = 0
         block_size = 128
@@ -98,12 +103,12 @@ def download(text, url, path):
                 percent = downloaded_size * 100. / file_size
                 status = "\r%s    %10d    [%3.1f%%]" % (
                     text, downloaded_size, percent)
-                print status,
+                print(status)
 
         if ci:
-            print "%s done." % (text)
+            print("%s done." % (text))
         else:
-            print
+            print()
     return path
 
 
@@ -163,25 +168,35 @@ def safe_mkdir(path):
 
 def execute(argv, env=os.environ):
     if is_verbose_mode():
-        print ' '.join(argv)
+        print(' '.join(argv))
     try:
-        output = subprocess.check_output(argv, stderr=subprocess.STDOUT,
-                                         env=env)
+        process = subprocess.Popen(
+          argv, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+          universal_newlines=True)
+        stdout, stderr = process.communicate()
         if is_verbose_mode():
-            print output
-        return output
+            print(stdout)
+        elif process.returncode != 0:
+            # Print the output instead of raising it, so that we get pretty output.
+            # Most useful erroroutput from typescript / webpack is in stdout
+            # and not stderr.
+            print(stdout)
+            raise RuntimeError('Command \'%s\' failed' % (' '.join(argv)), stderr)
+        return stdout
     except subprocess.CalledProcessError as e:
-        print e.output
+        print('Error in subprocess:')
+        print(' '.join(argv))
+        print(e.stderr)
         raise e
 
 
 def execute_stdout(argv, env=os.environ):
     if is_verbose_mode():
-        print ' '.join(argv)
+        print(' '.join(argv))
         try:
             subprocess.check_call(argv, env=env)
         except subprocess.CalledProcessError as e:
-            print e.output
+            print(e.output)
             raise e
     else:
         execute(argv, env)
@@ -249,30 +264,3 @@ def get_platform():
         'win32': 'win32',
     }[sys.platform]
     return PLATFORM
-
-
-def omaha_channel(platform, arch, internal, full=False):
-    if platform == 'darwin':
-        if internal:
-            if release_channel() in ['nightly']:
-                chan = 'test-nite'
-            if release_channel() in ['beta']:
-                chan = 'test-beta'
-            elif release_channel() in ['dev']:
-                chan = 'test-dev'
-            elif release_channel() in ['release']:
-                chan = 'test'
-        else:
-            chan = 'stable' if release_channel() in ['release'] else release_channel()
-    elif platform == 'win32':
-        arch = ('86' if internal else 'x86') if (arch in ['ia32']) else ('64' if internal else 'x64')
-        if release_channel() in ['nightly', 'beta']:
-            chan = '{}-{}{}'.format(arch, release_channel()[0:2], '-test' if internal else '')
-        elif internal:
-            if release_channel() in ['dev']:
-                chan = '{}-dv-test'.format(arch)
-            elif release_channel() in ['release']:
-                chan = '{}-r-test'.format(arch)
-        else:
-            chan = '{}-{}'.format(arch, release_channel()[0:3])
-    return (chan + '-full') if full else chan

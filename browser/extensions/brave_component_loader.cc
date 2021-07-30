@@ -10,7 +10,6 @@
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "bat/ads/pref_names.h"
-#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/component_updater/brave_component_installer.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/pref_names.h"
@@ -21,6 +20,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
@@ -31,12 +31,15 @@
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
+#include "extensions/common/mojom/manifest.mojom.h"
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/browser/extensions/brave_wallet_util.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
+#include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
+#include "brave/browser/ethereum_remote_client/pref_names.h"
+#include "brave/browser/extensions/ethereum_remote_client_util.h"
 #endif
+
+using extensions::mojom::ManifestLocation;
 
 namespace extensions {
 
@@ -49,8 +52,8 @@ BraveComponentLoader::BraveComponentLoader(ExtensionSystem* extension_system,
   pref_change_registrar_.Init(profile_prefs_);
   pref_change_registrar_.Add(
       brave_rewards::prefs::kAutoContributeEnabled,
-      base::Bind(&BraveComponentLoader::CheckRewardsStatus,
-                 base::Unretained(this)));
+      base::BindRepeating(&BraveComponentLoader::CheckRewardsStatus,
+                          base::Unretained(this)));
 #endif
 }
 
@@ -69,7 +72,7 @@ void BraveComponentLoader::OnComponentReady(std::string extension_id,
   if (allow_file_access) {
     ExtensionPrefs::Get(profile_)->SetAllowFileAccess(extension_id, true);
   }
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   if (extension_id == ethereum_remote_client_extension_id) {
     ReinstallAsNonComponent(ethereum_remote_client_extension_id);
   }
@@ -84,11 +87,11 @@ void BraveComponentLoader::ReinstallAsNonComponent(
       extensions::ExtensionRegistry::Get(profile_);
   const Extension* extension = registry->GetInstalledExtension(extension_id);
   DCHECK(extension);
-  if (extension->location() == Manifest::COMPONENT) {
+  if (extension->location() == ManifestLocation::kComponent) {
     service->RemoveComponentExtension(extension_id);
     std::string error;
     scoped_refptr<Extension> normal_extension = Extension::Create(
-        extension->path(), Manifest::EXTERNAL_PREF,
+        extension->path(), ManifestLocation::kExternalPref,
         *extension->manifest()->value(), extension->creation_flags(), &error);
     service->AddExtension(normal_extension.get());
   }
@@ -99,10 +102,10 @@ void BraveComponentLoader::AddExtension(const std::string& extension_id,
                                         const std::string& public_key) {
   brave::RegisterComponent(
       g_browser_process->component_updater(), name, public_key,
-      base::Bind(&BraveComponentLoader::OnComponentRegistered,
-                 base::Unretained(this), extension_id),
-      base::Bind(&BraveComponentLoader::OnComponentReady,
-                 base::Unretained(this), extension_id, true));
+      base::BindOnce(&BraveComponentLoader::OnComponentRegistered,
+                     base::Unretained(this), extension_id),
+      base::BindRepeating(&BraveComponentLoader::OnComponentReady,
+                          base::Unretained(this), extension_id, true));
 }
 
 void BraveComponentLoader::AddHangoutServicesExtension() {
@@ -158,7 +161,7 @@ void BraveComponentLoader::CheckRewardsStatus() {
 }
 #endif
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 void BraveComponentLoader::AddEthereumRemoteClientExtension() {
   AddExtension(ethereum_remote_client_extension_id,
                ethereum_remote_client_extension_name,
@@ -169,7 +172,7 @@ void BraveComponentLoader::AddEthereumRemoteClientExtensionOnStartup() {
   // Only load if the eagerly load Crypto Wallets setting is on and there is a
   // project id configured in the build.
   if (HasInfuraProjectID() &&
-      profile_prefs_->GetBoolean(kLoadCryptoWalletsOnStartup)) {
+      profile_prefs_->GetBoolean(kERCLoadCryptoWalletsOnStartup)) {
     AddEthereumRemoteClientExtension();
   }
 }

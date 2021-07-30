@@ -6,6 +6,7 @@ import ConnectHeader from './connect-header'
 import ConnectBottomNav from './connect-bottom-nav'
 import ConnectedBottomNav from './connected-bottom-nav'
 import ConnectedHeader from './connected-header'
+import WelcomePanel from './welcome-panel'
 import Panel from './panel'
 import PanelHeader from './panel-header'
 import { NavButton } from './buttons'
@@ -21,5 +22,6 @@ export {
   ConnectedBottomNav,
   ConnectedHeader,
   Panel,
-  PanelHeader
+  PanelHeader,
+  WelcomePanel
 }

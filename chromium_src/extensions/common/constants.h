@@ -24,8 +24,8 @@ extern const char brave_webtorrent_extension_filename2[];
 extern const char ipfs_companion_extension_id[];
 extern const char ipfs_companion_extension_name[];
 extern const char ipfs_companion_extension_public_key[];
-
 extern const char ipfs_companion_beta_extension_id[];
+extern const char ipfs_persmission_extension_id[];
 
 extern const char google_translate_extension_id[];
 

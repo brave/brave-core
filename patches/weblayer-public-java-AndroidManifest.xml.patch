@@ -1,0 +1,14 @@
+diff --git a/weblayer/public/java/AndroidManifest.xml b/weblayer/public/java/AndroidManifest.xml
+index df5a0db8ca02d0573fb801bc5ebd6bdc47779345..2e410982b80ab814601bf167dcf63caa5a630269 100644
+--- a/weblayer/public/java/AndroidManifest.xml
++++ b/weblayer/public/java/AndroidManifest.xml
+@@ -16,7 +16,9 @@
+     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+     <uses-permission android:name="android.permission.INTERNET"/>
+     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
++<!--
+     <uses-permission android:name="android.permission.NFC"/>
++-->
+     <uses-permission android:name="android.permission.READ_CONTACTS"/>
+     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+     <uses-permission android:name="android.permission.VIBRATE"/>

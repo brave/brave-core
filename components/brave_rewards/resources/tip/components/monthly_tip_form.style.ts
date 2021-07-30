@@ -10,23 +10,10 @@ export const root = styled.div`
   height: 100%;
 `
 
-export const main = styled.div`
+export const kind = styled.div`
+  flex: 0 0 auto;
+`
+
+export const form = styled.div`
   flex: 1 1 auto;
-  align-self: center;
-  padding: 0 32px;
-  width: 100%;
-  max-width: 450px;
-`
-
-export const amounts = styled.div`
-  padding-top: 24px;
-  margin-top: 11px;
-  border-top: 1px solid rgba(174, 177, 194, 0.5);
-}
-`
-
-export const footer = styled.div``
-
-export const submit = styled.div`
-  --icon-margin-top: -4px;
 `

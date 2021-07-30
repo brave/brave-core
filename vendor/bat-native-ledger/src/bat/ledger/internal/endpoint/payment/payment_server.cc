@@ -10,16 +10,17 @@
 namespace ledger {
 namespace endpoint {
 
-PaymentServer::PaymentServer(LedgerImpl* ledger):
-    post_order_(std::make_unique<payment::PostOrder>(ledger)),
-    post_credentials_(std::make_unique<payment::PostCredentials>(ledger)),
-    get_credentials_(std::make_unique<payment::GetCredentials>(ledger)),
-    post_votes_(std::make_unique<payment::PostVotes>(ledger)),
-    post_transaction_uphold_(
-        std::make_unique<payment::PostTransactionUphold>(ledger)),
-    post_transaction_anon_(
-        std::make_unique<payment::PostTransactionAnon>(ledger)) {
-}
+PaymentServer::PaymentServer(LedgerImpl* ledger)
+    : post_order_(std::make_unique<payment::PostOrder>(ledger)),
+      post_credentials_(std::make_unique<payment::PostCredentials>(ledger)),
+      get_credentials_(std::make_unique<payment::GetCredentials>(ledger)),
+      post_votes_(std::make_unique<payment::PostVotes>(ledger)),
+      post_transaction_gemini_(
+          std::make_unique<payment::PostTransactionGemini>(ledger)),
+      post_transaction_uphold_(
+          std::make_unique<payment::PostTransactionUphold>(ledger)),
+      post_transaction_anon_(
+          std::make_unique<payment::PostTransactionAnon>(ledger)) {}
 
 PaymentServer::~PaymentServer() = default;
 
@@ -37,6 +38,10 @@ payment::GetCredentials* PaymentServer::get_credentials() const {
 
 payment::PostVotes* PaymentServer::post_votes() const {
   return post_votes_.get();
+}
+
+payment::PostTransactionGemini* PaymentServer::post_transaction_gemini() const {
+  return post_transaction_gemini_.get();
 }
 
 payment::PostTransactionUphold* PaymentServer::post_transaction_uphold() const {

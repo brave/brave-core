@@ -94,6 +94,10 @@ export const onBalanceReport = (properties: {month: number, year: number, report
   report: properties.report
 })
 
+export const onExternalWalletProviderList = (list: Rewards.ExternalWalletProvider[]) => action(types.ON_EXTERNAL_WALLET_PROVIDER_LIST, {
+  list
+})
+
 export const getBalanceReport = (month: number, year: number) => action(types.GET_BALANCE_REPORT, {
   month,
   year
@@ -211,10 +215,7 @@ export const onPendingContributions = (list: Rewards.PendingContribution[]) =>
     list
   })
 
-export const onStatement = (data: {adsEstimatedPendingRewards: number, adsNextPaymentDate: string, adsReceivedThisMonth: number}) =>
-  action(types.ON_STATEMENT, {
-    data
-  })
+export const onStatement = (data: any) => action(types.ON_STATEMENT, { data })
 
 export const getStatement = () => action(types.GET_STATEMENT)
 
@@ -260,8 +261,6 @@ export const onExternalWallet = (result: number, wallet: Rewards.ExternalWallet)
   wallet
 })
 
-export const onVerifyOnboardingDisplayed = () => action(types.ON_VERIFY_ONBOARDING_DISPLAYED)
-
 export const processRewardsPageUrl = (path: string, query: string) => action(types.PROCESS_REWARDS_PAGE_URL, {
   path,
   query
@@ -274,12 +273,6 @@ export const onProcessRewardsPageUrl = (data: Rewards.ProcessRewardsPageUrl) => 
 export const hideRedirectModal = () => action(types.HIDE_REDIRECT_MODAL)
 
 export const disconnectWallet = () => action(types.DISCONNECT_WALLET)
-
-export const onlyAnonWallet = () => action(types.ONLY_ANON_WALLET)
-
-export const onOnlyAnonWallet = (only: boolean) => action(types.ON_ONLY_ANON_WALLET, {
-  only
-})
 
 export const getMonthlyReport = (month?: number, year?: number) => action(types.GET_MONTHLY_REPORT, {
   month,
@@ -321,12 +314,10 @@ export const onCompleteReset = (success: boolean) => action(types.ON_COMPLETE_RE
 
 export const getPaymentId = () => action(types.GET_PAYMENT_ID)
 
+export const disconnectWalletError = () => action(types.DISCONNECT_WALLET_ERROR)
+
 export const onPaymentId = (paymentId: string) => action(types.ON_PAYMENT_ID, {
   paymentId
-})
-
-export const setFirstLoad = (firstLoad: boolean) => action(types.SET_FIRST_LOAD, {
-  firstLoad
 })
 
 export const getWalletPassphrase = () => action(types.GET_WALLET_PASSPHRASE)
@@ -343,4 +334,10 @@ export const onOnboardingStatus = (showOnboarding: boolean) => action(types.ON_O
 
 export const saveOnboardingResult = (result: 'opted-in' | 'dismissed') => action(types.SAVE_ONBOARDING_RESULT, {
   result
+})
+
+export const getEnabledInlineTippingPlatforms = () => action(types.GET_ENABLED_INLINE_TIPPING_PLATFORMS)
+
+export const onEnabledInlineTippingPlatforms = (platforms: string[]) => action(types.ON_ENABLED_INLINE_TIPPING_PLATFORMS, {
+  platforms
 })

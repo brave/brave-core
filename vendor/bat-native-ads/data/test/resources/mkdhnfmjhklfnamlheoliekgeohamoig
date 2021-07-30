@@ -1,0 +1,14 @@
+{
+  "locale": "us",
+  "version": 1,
+  "timestamp": "2021-03-32 00:00:00",
+  "sites": {
+    "5bdeab83-048f-48a7-9602-a1092ded123c": [
+      "https://www.brave.com",
+      "https://www.bravesoftware.com/"
+    ],
+    "ccdaf616-b8a8-481a-aa8b-caf5fb131353": [
+      "https://www.bar.org"
+    ]
+  }
+}

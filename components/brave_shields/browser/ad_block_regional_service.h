@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "base/callback.h"
 #include "base/files/file_path.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
@@ -24,9 +25,13 @@ namespace brave_shields {
 // for a specific region.
 class AdBlockRegionalService : public AdBlockBaseService {
  public:
+  using ResourcesFileReadyCallback =
+      base::RepeatingCallback<void(const std::string&)>;
+
   explicit AdBlockRegionalService(
       const adblock::FilterList& catalog_entry,
-      brave_component_updater::BraveComponent::Delegate* delegate);
+      brave_component_updater::BraveComponent::Delegate* delegate,
+      ResourcesFileReadyCallback resoures_file_ready_callback);
   ~AdBlockRegionalService() override;
 
   void SetCatalogEntry(const adblock::FilterList& entry);
@@ -50,6 +55,8 @@ class AdBlockRegionalService : public AdBlockBaseService {
       const std::string& component_id,
       const std::string& component_base64_public_key);
 
+  ResourcesFileReadyCallback resoures_file_ready_callback_;
+
   std::string uuid_;
   std::string title_;
   std::string component_id_;
@@ -62,7 +69,9 @@ class AdBlockRegionalService : public AdBlockBaseService {
 // Creates the AdBlockRegionalService
 std::unique_ptr<AdBlockRegionalService> AdBlockRegionalServiceFactory(
     const adblock::FilterList& catalog_entry,
-    brave_component_updater::BraveComponent::Delegate* delegate);
+    brave_component_updater::BraveComponent::Delegate* delegate,
+    AdBlockRegionalService::ResourcesFileReadyCallback
+        resoures_file_ready_callback);
 
 }  // namespace brave_shields
 

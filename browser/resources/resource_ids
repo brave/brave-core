@@ -17,7 +17,7 @@
   },
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_welcome/brave_welcome.grd": {
-    "includes": [33240],
+    "includes": [33500],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/settings/brave_settings_resources.grd": {
     "META": {"sizes": {"includes": [100],}},
@@ -82,8 +82,14 @@
     "includes": [43000],
   },
   # This file is generated during the build.
-  "<(ROOT_GEN_DIR)/brave/web-ui-brave_wallet/brave_wallet.grd": {
+  "<(ROOT_GEN_DIR)/brave/web-ui-brave_wallet_page/brave_wallet_page.grd": {
     "includes": [43600],
+  },
+  "<(ROOT_GEN_DIR)/brave/web-ui-ethereum_remote_client_page/ethereum_remote_client_page.grd": {
+    "includes": [43675],
+  },
+  "<(ROOT_GEN_DIR)/brave/web-ui-brave_wallet_panel/brave_wallet_panel.grd": {
+    "includes": [43800],
   },
   "brave/components/brave_extension/extension/resources.grd": {
     "includes": [44000],

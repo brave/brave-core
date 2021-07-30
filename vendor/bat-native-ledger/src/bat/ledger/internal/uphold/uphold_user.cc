@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
+#include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/endpoint/uphold/uphold_server.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
@@ -20,12 +21,11 @@ using std::placeholders::_3;
 namespace ledger {
 namespace uphold {
 
-User::User() :
-  name(""),
-  member_at(""),
-  verified(false),
-  status(UserStatus::EMPTY),
-  bat_not_allowed(true) {}
+User::User()
+    : name(""),
+      member_id(""),
+      status(UserStatus::EMPTY),
+      bat_not_allowed(true) {}
 
 User::~User() = default;
 
@@ -37,7 +37,7 @@ UpholdUser::UpholdUser(LedgerImpl* ledger) :
 UpholdUser::~UpholdUser() = default;
 
 void UpholdUser::Get(GetUserCallback callback) {
-  auto wallet = GetWallet(ledger_);
+  auto wallet = ledger_->uphold()->GetWallet();
 
   if (!wallet) {
     User user;

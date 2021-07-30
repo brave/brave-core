@@ -8,15 +8,23 @@
 
 #include <vector>
 
-#include "base/optional.h"
-#include "base/strings/string16.h"
 #include "base/time/time.h"
 #include "brave/components/permissions/permission_lifetime_options.h"
+#include "components/permissions/permission_prompt.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace permissions {
 
 // Returns pre-configured permission lifetime options.
 std::vector<PermissionLifetimeOption> CreatePermissionLifetimeOptions();
+
+// Returns true if all queued requests support the lifetime setting.
+bool ShouldShowLifetimeOptions(PermissionPrompt::Delegate* delegate);
+
+// Sets selected lifetime in all queued requests.
+void SetRequestsLifetime(const std::vector<PermissionLifetimeOption>& options,
+                         int index,
+                         PermissionPrompt::Delegate* delegate);
 
 }  // namespace permissions
 

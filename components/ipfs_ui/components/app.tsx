@@ -14,7 +14,7 @@ import { DaemonStatus } from './daemonStatus'
 import { NodeInfo } from './nodeInfo'
 import { RepoStats } from './repoStats'
 import { UninstalledView } from './uninstalledView'
-import { LearnMoreLink, GrayStyle } from '../style'
+import { LearnMoreLink, GrayStyle, LinkContainer } from '../style'
 import { getLocale } from '../../common/locale'
 
 // Utils
@@ -93,14 +93,19 @@ export class IPFSPage extends React.Component<Props, {}> {
           this.props.ipfsData.daemonStatus.restarting ||
           !this.props.ipfsData.daemonStatus.launched) ? GrayStyle : {}}
         >
-          <ConnectedPeers addressesConfig={this.props.ipfsData.addressesConfig} peerCount={this.props.ipfsData.connectedPeers.peerCount} onOpenPeersWebUI={this.openPeersWebUI} />
+          <ConnectedPeers addressesConfig={this.props.ipfsData.addressesConfig} connectedPeers={this.props.ipfsData.connectedPeers} onOpenPeersWebUI={this.openPeersWebUI} />
           <AddressesConfig addressesConfig={this.props.ipfsData.addressesConfig} />
           <RepoStats repoStats={this.props.ipfsData.repoStats} daemonStatus={this.props.ipfsData.daemonStatus} garbageCollectionStatus={this.props.ipfsData.garbageCollectionStatus} onGarbageCollection={this.garbageCollection} />
           <NodeInfo nodeInfo={this.props.ipfsData.nodeInfo} />
+          <a style={LearnMoreLink} href='chrome://settings/ipfs/keys' target='_blank'>
+            {getLocale('rotateIdentity')}
+          </a>
         </div>
-        <a style={LearnMoreLink} href='https://support.brave.com/hc/en-us/sections/360010974932-InterPlanetary-File-System-IPFS-' target='_blank'>
-          {getLocale('learnMore')}
-        </a>
+        <div style={LinkContainer}>
+          <a style={LearnMoreLink} href='https://support.brave.com/hc/en-us/sections/360010974932-InterPlanetary-File-System-IPFS-' target='_blank'>
+            {getLocale('learnMore')}
+          </a>
+        </div>
       </div>
     )
   }

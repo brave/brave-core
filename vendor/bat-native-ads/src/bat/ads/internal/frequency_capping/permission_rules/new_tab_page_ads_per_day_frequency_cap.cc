@@ -5,24 +5,22 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/new_tab_page_ads_per_day_frequency_cap.h"
 
-#include <cstdint>
-#include <deque>
-
 #include "base/time/time.h"
+#include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/features/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 
 namespace ads {
 
-NewTabPageAdsPerDayFrequencyCap::NewTabPageAdsPerDayFrequencyCap(
-    const AdEventList& ad_events)
-    : ad_events_(ad_events) {}
+NewTabPageAdsPerDayFrequencyCap::NewTabPageAdsPerDayFrequencyCap() = default;
 
 NewTabPageAdsPerDayFrequencyCap::~NewTabPageAdsPerDayFrequencyCap() = default;
 
 bool NewTabPageAdsPerDayFrequencyCap::ShouldAllow() {
-  const AdEventList filtered_ad_events = FilterAdEvents(ad_events_);
-  if (!DoesRespectCap(filtered_ad_events)) {
+  const std::deque<uint64_t> history =
+      GetAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed);
+
+  if (!DoesRespectCap(history)) {
     last_message_ = "You have exceeded the allowed new tab page ads per day";
     return false;
   }
@@ -35,10 +33,7 @@ std::string NewTabPageAdsPerDayFrequencyCap::get_last_message() const {
 }
 
 bool NewTabPageAdsPerDayFrequencyCap::DoesRespectCap(
-    const AdEventList& ad_events) {
-  const std::deque<uint64_t> history =
-      GetTimestampHistoryForAdEvents(ad_events);
-
+    const std::deque<uint64_t>& history) {
   const uint64_t time_constraint =
       base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
 
@@ -46,22 +41,6 @@ bool NewTabPageAdsPerDayFrequencyCap::DoesRespectCap(
 
   return DoesHistoryRespectCapForRollingTimeConstraint(history, time_constraint,
                                                        cap);
-}
-
-AdEventList NewTabPageAdsPerDayFrequencyCap::FilterAdEvents(
-    const AdEventList& ad_events) const {
-  AdEventList filtered_ad_events = ad_events;
-
-  const auto iter = std::remove_if(
-      filtered_ad_events.begin(), filtered_ad_events.end(),
-      [](const AdEventInfo& ad_event) {
-        return ad_event.type != AdType::kNewTabPageAd ||
-               ad_event.confirmation_type != ConfirmationType::kViewed;
-      });
-
-  filtered_ad_events.erase(iter, filtered_ad_events.end());
-
-  return filtered_ad_events;
 }
 
 }  // namespace ads

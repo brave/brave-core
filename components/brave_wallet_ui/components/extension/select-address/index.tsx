@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { WalletAccountType } from '../../../constants/types'
+import { create } from 'ethereum-blockies'
 
 // Styled Components
 import {
@@ -22,22 +23,27 @@ export interface Props {
   action: () => void
 }
 
-export default class SelectAddress extends React.PureComponent<Props> {
-  render () {
-    const { account, isSelected, action } = this.props
-    return (
-      <StyledWrapper onClick={action}>
-        <LeftSide>
-          <AccountCircle />
-          <NameAndAddressColumn>
-            <AccountNameText>{account.name}</AccountNameText>
-            <AccountAddressText>
-              {reduceAddress(account.address)}
-            </AccountAddressText>
-          </NameAndAddressColumn>
-        </LeftSide>
-        {isSelected ? <SelectedIcon /> : <UnSelectedCircle />}
-      </StyledWrapper>
-    )
-  }
+const SelectAddress = (props: Props) => {
+  const { account, isSelected, action } = props
+
+  const orb = React.useMemo(() => {
+    return create({ seed: account.address, size: 8, scale: 16 }).toDataURL()
+  }, [account.address])
+
+  return (
+    <StyledWrapper onClick={action}>
+      <LeftSide>
+        <AccountCircle orb={orb} />
+        <NameAndAddressColumn>
+          <AccountNameText>{account.name}</AccountNameText>
+          <AccountAddressText>
+            {reduceAddress(account.address)}
+          </AccountAddressText>
+        </NameAndAddressColumn>
+      </LeftSide>
+      {isSelected ? <SelectedIcon /> : <UnSelectedCircle />}
+    </StyledWrapper>
+  )
 }
+
+export default SelectAddress

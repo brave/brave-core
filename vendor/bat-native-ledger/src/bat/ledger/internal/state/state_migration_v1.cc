@@ -55,6 +55,8 @@ void StateMigrationV1::OnLoadState(
     return;
   }
 
+  legacy_data_migrated_ = true;
+
   ledger_->ledger_client()->SetIntegerState(
       kMinVisitTime,
       static_cast<int>(legacy_publisher_->GetPublisherMinVisitTime()));

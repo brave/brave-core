@@ -13,10 +13,10 @@
 #include "brave/components/ipfs/ipfs_navigation_throttle.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
-#include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/infobars/content/content_infobar_manager.h"
 #include "components/policy/core/browser/browser_policy_connector.h"
 #include "components/policy/core/common/mock_configuration_policy_provider.h"
 #include "components/policy/core/common/policy_map.h"
@@ -66,7 +66,7 @@ class IpfsPolicyTest : public InProcessBrowserTest {
                  base::Value(enable), nullptr);
     provider_.UpdateChromePolicy(policies);
   }
-
+  PrefService* prefs() { return user_prefs::UserPrefs::Get(browser_context()); }
   content::WebContents* web_contents() const {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
@@ -76,9 +76,9 @@ class IpfsPolicyTest : public InProcessBrowserTest {
   }
 
   size_t infobar_count() const {
-    InfoBarService* infobar_service =
-        InfoBarService::FromWebContents(web_contents());
-    return infobar_service->infobar_count();
+    infobars::ContentInfoBarManager* infobar_manager =
+        infobars::ContentInfoBarManager::FromWebContents(web_contents());
+    return infobar_manager->infobar_count();
   }
 
   const GURL& ipfs_url() { return ipfs_url_; }
@@ -93,15 +93,15 @@ using IpfsEnabledPolicyTest = IpfsPolicyTest<true>;
 using IpfsDisabledPolicyTest = IpfsPolicyTest<false>;
 
 IN_PROC_BROWSER_TEST_F(IpfsEnabledPolicyTest, IsIpfsDisabledByPolicy) {
-  EXPECT_FALSE(ipfs::IsIpfsDisabledByPolicy(browser_context()));
   auto* prefs = user_prefs::UserPrefs::Get(browser_context());
+  EXPECT_FALSE(ipfs::IsIpfsDisabledByPolicy(prefs));
   EXPECT_TRUE(prefs->FindPreference(kIPFSEnabled));
   EXPECT_TRUE(prefs->GetBoolean(kIPFSEnabled));
 }
 
 IN_PROC_BROWSER_TEST_F(IpfsDisabledPolicyTest, IsIpfsDisabledByPolicy) {
-  EXPECT_TRUE(ipfs::IsIpfsDisabledByPolicy(browser_context()));
   auto* prefs = user_prefs::UserPrefs::Get(browser_context());
+  EXPECT_TRUE(ipfs::IsIpfsDisabledByPolicy(prefs));
   EXPECT_TRUE(prefs->FindPreference(kIPFSEnabled));
   EXPECT_FALSE(prefs->GetBoolean(kIPFSEnabled));
 }
@@ -146,7 +146,7 @@ IN_PROC_BROWSER_TEST_F(IpfsEnabledPolicyTest, NavigationThrottle) {
   content::MockNavigationHandle test_handle(web_contents());
   auto throttle = ipfs::IpfsNavigationThrottle::MaybeCreateThrottleFor(
       &test_handle, ipfs::IpfsServiceFactory::GetForContext(browser_context()),
-      "en-US");
+      prefs(), "en-US");
   EXPECT_TRUE(throttle != nullptr);
 }
 
@@ -154,7 +154,7 @@ IN_PROC_BROWSER_TEST_F(IpfsDisabledPolicyTest, NavigationThrottle) {
   content::MockNavigationHandle test_handle(web_contents());
   auto throttle = ipfs::IpfsNavigationThrottle::MaybeCreateThrottleFor(
       &test_handle, ipfs::IpfsServiceFactory::GetForContext(browser_context()),
-      "en-US");
+      prefs(), "en-US");
   EXPECT_TRUE(throttle == nullptr);
 }
 

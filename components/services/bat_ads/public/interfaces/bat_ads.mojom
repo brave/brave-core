@@ -29,6 +29,8 @@ interface BatAdsClient {
   [Sync]
   CanShowBackgroundNotifications() => (bool can_show);
   [Sync]
+  GetAdEvents(string ad_type, string confirmation_type) => (array<uint64> ad_events);
+  [Sync]
   LoadResourceForId(string id) => (string value);
   [Sync]
   GetBooleanPref(string path) => (bool value);
@@ -45,10 +47,13 @@ interface BatAdsClient {
 
   ShowNotification(string json);
   CloseNotification(string uuid);
+  RecordAdEvent(string ad_type, string confirmation_type, uint64 timestamp);
+  ResetAdEvents();
   UrlRequest(ads.mojom.BraveAdsUrlRequest request) => (ads.mojom.BraveAdsUrlResponse response);
   Save(string name, string value) => (int32 result);
   Load(string name) => (int32 result, string value);
-  LoadUserModelForId(string id) => (int32 result, string value);
+  LoadAdsResource(string id, int32 version) => (int32 result, string value);
+  GetBrowsingHistory(int32 max_count, int32 days_ago) => (array<string> history);
   RunDBTransaction(ads_database.mojom.DBTransaction transaction) => (ads_database.mojom.DBCommandResponse response);
   OnAdRewardsChanged();
   RecordP2AEvent(string name, ads.mojom.BraveAdsP2AEventType type, string value);
@@ -66,7 +71,7 @@ interface BatAds {
   Initialize() => (int32 result);
   Shutdown() => (int32 result);
   ChangeLocale(string locale);
-  OnAdsSubdivisionTargetingCodeHasChanged();
+  OnPrefChanged(string path);
   OnHtmlLoaded(int32 tab_id, array<string> redirect_chain, string html);
   OnTextLoaded(int32 tab_id, array<string> redirect_chain, string text);
   OnUserGesture(int32 page_transition_type);
@@ -82,6 +87,9 @@ interface BatAds {
   OnAdNotificationEvent(string uuid, ads.mojom.BraveAdsAdNotificationEventType event_type);
   OnNewTabPageAdEvent(string uuid, string creative_instance_id, ads.mojom.BraveAdsNewTabPageAdEventType event_type);
   OnPromotedContentAdEvent(string uuid, string creative_instance_id, ads.mojom.BraveAdsPromotedContentAdEventType event_type);
+  GetInlineContentAd(string size) => (bool success, string dimensions, string ad);
+  OnInlineContentAdEvent(string uuid, string creative_instance_id, ads.mojom.BraveAdsInlineContentAdEventType event_type);
+  PurgeOrphanedAdEventsForType(ads.mojom.BraveAdsAdType ad_type);
   RemoveAllHistory() => (int32 result);
   OnWalletUpdated(string payment_id, string seed);
   ReconcileAdRewards();
@@ -93,5 +101,5 @@ interface BatAds {
   ToggleAdOptOutAction(string category, int32 action) => (string category, int32 action);
   ToggleSaveAd(string creative_instance_id, string creative_set_id, bool saved) => (string creative_instance_id, bool saved);
   ToggleFlagAd(string creative_instance_id, string creative_set_id, bool flagged) => (string creative_instance_id, bool flagged);
-  OnUserModelUpdated(string id);
+  OnResourceComponentUpdated(string id);
 };

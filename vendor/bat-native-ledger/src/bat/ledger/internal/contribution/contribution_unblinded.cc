@@ -20,60 +20,69 @@ using std::placeholders::_3;
 
 namespace {
 
-bool GetStatisticalVotingWinner(
+// Allocates one "vote" to a publisher. |dart| is a uniform random
+// double in [0,1] "thrown" into the list of publishers to choose a
+// winner. This function encapsulates the deterministic portion of
+// choosing a winning publisher, separated out into a separate
+// function for testing purposes.
+std::string GetStatisticalVotingWinner(
     double dart,
-    const double amount,
-    const std::vector<ledger::type::ContributionPublisher>& list,
-    ledger::contribution::Winners* winners) {
-  DCHECK(winners);
+    double amount,
+    const ledger::type::ContributionPublisherList& publisher_list) {
+  std::string publisher_key;
 
   double upper = 0.0;
-  for (auto& item : list) {
-    upper += item.total_amount / amount;
+  for (const auto& item : publisher_list) {
+    upper += item->total_amount / amount;
     if (upper < dart) {
       continue;
     }
 
-    auto iter = winners->find(item.publisher_key);
-
-    uint32_t current_value = 0;
-    if (iter != winners->end()) {
-      current_value = winners->at(item.publisher_key);
-      winners->at(item.publisher_key) = current_value + 1;
-    } else {
-      winners->emplace(item.publisher_key, 1);
-    }
-
-    return true;
+    publisher_key = item->publisher_key;
+    break;
   }
 
-  return false;
+  return publisher_key;
 }
 
+// Allocates "votes" to a list of publishers based on attention.
+// |total_votes| is the number of votes to allocate (typically the
+// number of unspent unblinded tokens). |publisher_list| is the list
+// of publishers, sorted in ascending order by total_amount field.
 void GetStatisticalVotingWinners(
     uint32_t total_votes,
-    const double amount,
-    const ledger::type::ContributionPublisherList& list,
-    ledger::contribution::Winners* winners) {
+    double amount,
+    const ledger::type::ContributionPublisherList& publisher_list,
+    ledger::contribution::StatisticalVotingWinners* winners) {
   DCHECK(winners);
-  std::vector<ledger::type::ContributionPublisher> converted_list;
 
-  if (total_votes == 0 || list.empty()) {
+  if (total_votes == 0 || publisher_list.empty()) {
     return;
   }
 
-  for (auto& item : list) {
-    ledger::type::ContributionPublisher new_item;
-    new_item.total_amount = item->total_amount;
-    new_item.publisher_key = item->publisher_key;
-    converted_list.push_back(new_item);
+  // Initialize all potential winners to 0, as it's possible that one
+  // or more publishers may receive no votes at all
+  for (const auto& item : publisher_list) {
+    winners->emplace(item->publisher_key, 0);
   }
 
   while (total_votes > 0) {
-    double dart = brave_base::random::Uniform_01();
-    if (GetStatisticalVotingWinner(dart, amount, converted_list, winners)) {
-      --total_votes;
+    const double dart = brave_base::random::Uniform_01();
+    const std::string publisher_key =
+        GetStatisticalVotingWinner(dart, amount, publisher_list);
+    if (publisher_key.empty()) {
+      continue;
     }
+
+    auto iter = winners->find(publisher_key);
+    if (iter != winners->end()) {
+      const uint32_t current_value = winners->at(publisher_key);
+      winners->at(publisher_key) = current_value + 1;
+    } else {
+      winners->emplace(publisher_key, 1);
+    }
+
+    --total_votes;
   }
 }
 
@@ -130,13 +139,13 @@ void Unblinded::GetContributionInfoAndUnblindedTokens(
 }
 
 void Unblinded::OnUnblindedTokens(
-    type::UnblindedTokenList list,
+    type::UnblindedTokenList unblinded_tokens,
     const std::string& contribution_id,
     GetContributionInfoAndUnblindedTokensCallback callback) {
-  BLOG_IF(1, list.empty(), "Token list is empty");
+  BLOG_IF(1, unblinded_tokens.empty(), "Token list is empty");
 
   std::vector<type::UnblindedToken> converted_list;
-  for (const auto& item : list) {
+  for (const auto& item : unblinded_tokens) {
     type::UnblindedToken new_item;
     new_item.id = item->id;
     new_item.token_value = item->token_value;
@@ -170,13 +179,13 @@ void Unblinded::GetContributionInfoAndReservedUnblindedTokens(
 }
 
 void Unblinded::OnReservedUnblindedTokens(
-    type::UnblindedTokenList list,
+    type::UnblindedTokenList unblinded_tokens,
     const std::string& contribution_id,
     GetContributionInfoAndUnblindedTokensCallback callback) {
-  BLOG_IF(1, list.empty(), "Token list is empty");
+  BLOG_IF(1, unblinded_tokens.empty(), "Token list is empty");
 
   std::vector<type::UnblindedToken> converted_list;
-  for (const auto& item : list) {
+  for (const auto& item : unblinded_tokens) {
     type::UnblindedToken new_item;
     new_item.id = item->id;
     new_item.token_value = item->token_value;
@@ -198,14 +207,14 @@ void Unblinded::OnReservedUnblindedTokens(
 
 void Unblinded::OnGetContributionInfo(
     type::ContributionInfoPtr contribution,
-    const std::vector<type::UnblindedToken>& list,
+    const std::vector<type::UnblindedToken>& unblinded_tokens,
     GetContributionInfoAndUnblindedTokensCallback callback) {
-  callback(std::move(contribution), list);
+  callback(std::move(contribution), unblinded_tokens);
 }
 
 void Unblinded::PrepareTokens(
     type::ContributionInfoPtr contribution,
-    const std::vector<type::UnblindedToken>& list,
+    const std::vector<type::UnblindedToken>& unblinded_tokens,
     const std::vector<type::CredsBatchType>& types,
     ledger::ResultCallback callback) {
   if (!contribution) {
@@ -214,7 +223,7 @@ void Unblinded::PrepareTokens(
     return;
   }
 
-  if (list.empty()) {
+  if (unblinded_tokens.empty()) {
     BLOG(0, "Not enough funds");
     callback(type::Result::NOT_ENOUGH_FUNDS);
     return;
@@ -222,7 +231,7 @@ void Unblinded::PrepareTokens(
 
   double current_amount = 0.0;
   std::vector<type::UnblindedToken> token_list;
-  for (const auto& item : list) {
+  for (const auto& item : unblinded_tokens) {
     if (current_amount >= contribution->amount) {
       break;
     }
@@ -261,7 +270,7 @@ void Unblinded::PrepareTokens(
 
 void Unblinded::OnMarkUnblindedTokensAsReserved(
     const type::Result result,
-    const std::vector<type::UnblindedToken>& list,
+    const std::vector<type::UnblindedToken>& unblinded_tokens,
     std::shared_ptr<type::ContributionInfoPtr> shared_contribution,
     const std::vector<type::CredsBatchType>& types,
     ledger::ResultCallback callback) {
@@ -278,11 +287,12 @@ void Unblinded::OnMarkUnblindedTokensAsReserved(
     return;
   }
 
-  PreparePublishers(list, std::move(*shared_contribution), types, callback);
+  PreparePublishers(unblinded_tokens, std::move(*shared_contribution), types,
+                    callback);
 }
 
 void Unblinded::PreparePublishers(
-    const std::vector<type::UnblindedToken>& list,
+    const std::vector<type::UnblindedToken>& unblinded_tokens,
     type::ContributionInfoPtr contribution,
     const std::vector<type::CredsBatchType>& types,
     ledger::ResultCallback callback) {
@@ -294,7 +304,7 @@ void Unblinded::PreparePublishers(
 
   if (contribution->type == type::RewardsType::AUTO_CONTRIBUTE) {
     auto publisher_list =
-        PrepareAutoContribution(list, contribution->Clone());
+        PrepareAutoContribution(unblinded_tokens, contribution->Clone());
 
     if (publisher_list.empty()) {
       BLOG(0, "Publisher list empty");
@@ -331,14 +341,14 @@ void Unblinded::PreparePublishers(
 }
 
 type::ContributionPublisherList Unblinded::PrepareAutoContribution(
-    const std::vector<type::UnblindedToken>& list,
+    const std::vector<type::UnblindedToken>& unblinded_tokens,
     type::ContributionInfoPtr contribution) {
   if (!contribution) {
     BLOG(0, "Contribution is null");
     return {};
   }
 
-  if (list.size() == 0) {
+  if (unblinded_tokens.size() == 0) {
     BLOG(0, "Token list is empty");
     return {};
   }
@@ -348,8 +358,8 @@ type::ContributionPublisherList Unblinded::PrepareAutoContribution(
     return {};
   }
 
-  const double total_votes = static_cast<double>(list.size());
-  Winners winners;
+  const double total_votes = static_cast<double>(unblinded_tokens.size());
+  StatisticalVotingWinners winners;
   GetStatisticalVotingWinners(
       total_votes,
       contribution->amount,
@@ -357,11 +367,7 @@ type::ContributionPublisherList Unblinded::PrepareAutoContribution(
       &winners);
 
   type::ContributionPublisherList publisher_list;
-  for (auto & winner : winners) {
-    if (winner.second == 0) {
-      continue;
-    }
-
+  for (const auto& winner : winners) {
     const std::string publisher_key = winner.first;
     auto publisher = type::ContributionPublisher::New();
     publisher->contribution_id = contribution->contribution_id;
@@ -427,7 +433,7 @@ void Unblinded::ProcessTokens(
 
 void Unblinded::OnProcessTokens(
     type::ContributionInfoPtr contribution,
-    const std::vector<type::UnblindedToken>& list,
+    const std::vector<type::UnblindedToken>& unblinded_tokens,
     ledger::ResultCallback callback) {
   if (!contribution || contribution->publishers.empty()) {
     BLOG(0, "Contribution not found");
@@ -449,7 +455,7 @@ void Unblinded::OnProcessTokens(
 
     std::vector<type::UnblindedToken> token_list;
     double current_amount = 0.0;
-    for (auto& item : list) {
+    for (auto& item : unblinded_tokens) {
       if (current_amount >= (*publisher)->total_amount) {
         break;
       }
@@ -588,11 +594,11 @@ void Unblinded::Retry(
 }
 
 void Unblinded::OnReservedUnblindedTokensForRetryAttempt(
-    const type::UnblindedTokenList& list,
+    const type::UnblindedTokenList& unblinded_tokens,
     const std::vector<type::CredsBatchType>& types,
     std::shared_ptr<type::ContributionInfoPtr> shared_contribution,
     ledger::ResultCallback callback) {
-  if (list.empty()) {
+  if (unblinded_tokens.empty()) {
     BLOG(0, "Token list is empty");
     callback(type::Result::LEDGER_ERROR);
     return;
@@ -605,7 +611,7 @@ void Unblinded::OnReservedUnblindedTokensForRetryAttempt(
   }
 
   std::vector<type::UnblindedToken> converted_list;
-  for (const auto& item : list) {
+  for (const auto& item : unblinded_tokens) {
     type::UnblindedToken new_item;
     new_item.id = item->id;
     new_item.token_value = item->token_value;
@@ -622,6 +628,13 @@ void Unblinded::OnReservedUnblindedTokensForRetryAttempt(
       std::move(*shared_contribution),
       types,
       callback);
+}
+
+std::string Unblinded::GetStatisticalVotingWinnerForTesting(
+    double dart,
+    double amount,
+    const ledger::type::ContributionPublisherList& publisher_list) {
+  return GetStatisticalVotingWinner(dart, amount, publisher_list);
 }
 
 }  // namespace contribution

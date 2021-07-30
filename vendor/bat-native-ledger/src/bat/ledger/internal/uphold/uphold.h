@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -8,9 +8,9 @@
 
 #include <stdint.h>
 
-#include <string>
 #include <map>
 #include <memory>
+#include <string>
 
 #include "base/containers/flat_map.h"
 #include "base/timer/timer.h"
@@ -49,18 +49,16 @@ class Uphold {
 
   void Initialize();
 
-  void StartContribution(
-      const std::string& contribution_id,
-      type::ServerPublisherInfoPtr info,
-      const double amount,
-      ledger::ResultCallback callback);
+  void StartContribution(const std::string& contribution_id,
+                         type::ServerPublisherInfoPtr info,
+                         const double amount,
+                         ledger::ResultCallback callback);
 
   void FetchBalance(FetchBalanceCallback callback);
 
-  void TransferFunds(
-      const double amount,
-      const std::string& address,
-      client::TransactionCallback callback);
+  void TransferFunds(const double amount,
+                     const std::string& address,
+                     client::TransactionCallback callback);
 
   void WalletAuthorization(
       const base::flat_map<std::string, std::string>& args,
@@ -70,7 +68,7 @@ class Uphold {
 
   void CreateCard(CreateCardCallback callback);
 
-  void DisconnectWallet(const bool manual = false);
+  void DisconnectWallet(const std::string& notification);
 
   void GetUser(GetUserCallback callback);
 
@@ -79,31 +77,31 @@ class Uphold {
   bool SetWallet(type::ExternalWalletPtr wallet);
 
  private:
-  void ContributionCompleted(
-      const type::Result result,
-      const std::string& transaction_id,
-      const std::string& contribution_id,
-      const double fee,
-      const std::string& publisher_key,
-      ledger::ResultCallback callback);
+  void ContributionCompleted(const type::Result result,
+                             const std::string& transaction_id,
+                             const std::string& contribution_id,
+                             const double fee,
+                             const std::string& publisher_key,
+                             ledger::ResultCallback callback);
 
-  void OnFetchBalance(
-      const type::Result result,
-      const double available,
-      FetchBalanceCallback callback);
+  void OnFetchBalance(const type::Result result,
+                      const double available,
+                      FetchBalanceCallback callback);
 
   void SaveTransferFee(const std::string& contribution_id, const double amount);
 
-  void StartTransferFeeTimer(const std::string& fee_id);
+  void StartTransferFeeTimer(const std::string& fee_id, int attempts);
 
-  void OnTransferFeeCompleted(
-      const type::Result result,
-      const std::string& transaction_id,
-      const std::string& contribution_id);
+  void OnTransferFeeCompleted(const type::Result result,
+                              const std::string& transaction_id,
+                              const std::string& contribution_id,
+                              int attempts);
 
-  void TransferFee(const std::string& contribution_id, const double amount);
+  void TransferFee(const std::string& contribution_id,
+                   const double amount,
+                   int attempts);
 
-  void OnTransferFeeTimerElapsed(const std::string& id);
+  void OnTransferFeeTimerElapsed(const std::string& id, int attempts);
 
   void RemoveTransferFee(const std::string& contribution_id);
 

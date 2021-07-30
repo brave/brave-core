@@ -167,7 +167,7 @@
         Brave Ad Block
       </message>
       <message name="IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER" desc="The menu item to report a broken site in the app menu">
-        Report a Broken Site
+        Report a broken site
       </message>
       <message name="IDS_SHOW_BRAVE_SYNC" desc="The show brave sync menu in the app menu">
         Sync
@@ -176,10 +176,10 @@
         Wallet
       </message>
       <message name="IDS_ADD_NEW_PROFILE" desc="The app menu item to create a new User Profile">
-        Create a New Profile
+        Create a new profile
       </message>
       <message name="IDS_OPEN_GUEST_PROFILE" desc="The app menu item to create a new User Profile">
-        Open Guest Window
+        Open guest window
       </message>
       <message name="IDS_OPEN_MORE_OTHER_DEVICES_SESSIONS" desc="The history sub-menu item to show sessions from other devices">
         More…
@@ -212,7 +212,7 @@
         Automatically redirect .onion sites
       </message>
       <message name="IDS_SETTINGS_AUTO_ONION_LOCATION_DESC" desc="Text fragment for onion site component">
-        Brave will open onion service of the website when available or .onion domain in Tor window
+        Brave will open onion service of the website when available or .onion domain in Tor window.
       </message>
       <if expr="is_linux">
         <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_INSTALL" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
@@ -269,6 +269,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <message name="IDS_SETTINGS_BRAVE_MRU_CYCLING_LABEL" desc="The label to activate MRU cycling with Ctrl-tab">
         Cycle through the most recently used tabs with Ctrl-Tab
+      </message>
+      <message name="IDS_SETTINGS_SPEEDREADER_LABEL" desc="The label to activate Speedreader">
+        Speedreader
+      </message>
+      <message name="IDS_SETTINGS_SPEEDREADER_SUB_LABEL" desc="The sub-label describing Speedreader">
+        Articles automatically load in reader mode, saving you time
       </message>
       <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR" desc="The label for settings switch controlling the showing of autocomplete in address bar">
         Show autocomplete in address bar
@@ -346,10 +352,43 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_LOCATION_BAR_OPEN_USING_IPFS" desc="Button in location bar to open ipfs available site.">
         Open using IPFS
       </message>
+      <message name="IDS_EXTENSION_PROMPT_WARNING_IPFS" desc="Permisson string for access to ipfs api.">
+        Publish and retrieve files from IPFS
+      </message>
       <message name="IDS_LOCATION_BAR_ONION_AVAILABLE" desc="Button in location bar to indicate onion available site to open a new tab in tor window.">
         Onion Available
       </message>
+      <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS" desc="The name of the IPFS context menu item for renderer">
+        Import to IPFS
+      </message>
+      <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS_PAGE" desc="The name of the IPFS context menu item to import current page using IPFS">
+        This page
+      </message>
+      <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS_IMAGE" desc="The name of the IPFS context menu item to import selected image using IPFS">
+        Selected image
+      </message>
+      <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS_VIDEO" desc="The name of the IPFS context menu item to import selected video using IPFS">
+        Selected video
+      </message>
+      <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS_AUDIO" desc="The name of the IPFS context menu item to import selected audio using IPFS">
+        Selected audio
+      </message>
+      <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS_LINK" desc="The name of the IPFS context menu item to import linked content using IPFS">
+        Linked content
+      </message>
+      <message name="IDS_IMPORT_USING_IPNS_KEYS_TITLE" desc="The name of the IPFS import menu item to publish content using IPNS keys">
+        Publish with IPNS key
+      </message>
+      <message name="IDS_APP_MENU_IPFS" desc="The text label of a menu item to open a new app menu ipfs item.">
+        IPFS
+      </message>
       <if expr="use_titlecase">
+        <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS_SELECTED_TEXT" desc="The name of the IPFS context menu item to import selected text using IPFS">
+          Import Selected Text to IPFS
+        </message>
+        <message name="IDS_IMPORT_WITHOUT_PUBLISHING" desc="The name of the IPFS context menu item to import content without publishing">
+          Import and Copy Link to IPFS Snapshot
+        </message>
         <message name="IDS_NEW_OFFTHERECORD_WINDOW_TOR" desc="Title case: The text label of a menu item to open a new off-the-record window with Tor.">
           New Private Window with Tor
         </message>
@@ -359,8 +398,23 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         <message name="IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP" desc="Title case: The name of the open a link in private window with Tor command">
           Open Link in Brave Private Window with Tor
         </message>
+        <message name="IDS_APP_MENU_IPFS_IMPORT_LOCAL_FILE" desc="Title case: The text label of a menu item to share local file using IPFS.">
+          Share Local File Using IPFS
+        </message>
+        <message name="IDS_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER" desc="Title case: The text label of a menu item to share local fodler using IPFS.">
+          Share Local Folder Using IPFS
+        </message>
       </if>
       <if expr="not use_titlecase">
+        <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS_SELECTED_TEXT" desc="The name of the IPFS context menu item to import selected text using IPFS">
+          Import selected text to IPFS
+        </message>
+        <message name="IDS_IMPORT_WITHOUT_PUBLISHING" desc="The name of the IPFS context menu item to import content without publishing">
+          Import and copy link to IPFS snapshot
+        </message>
+        <message name="IDS_APP_MENU_IPFS_IMPORT_LOCAL_FILE" desc="The text label of a menu item to share local file using IPFS.">
+          Share local file using IPFS
+        </message>
         <message name="IDS_NEW_OFFTHERECORD_WINDOW_TOR" desc="The text label of a menu item to open a new off-the-record window with Tor.">
           New private window with Tor
         </message>
@@ -369,6 +423,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         </message>
         <message name="IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP" desc="The name of the open a link in private window with Tor command">
           Open link in Brave private window with Tor
+        </message>
+        <message name="IDS_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER" desc="The text label of a menu item to share local folder using IPFS.">
+          Share local folder using IPFS
         </message>
       </if>
       <message name="IDS_PROFILES_TOR_PROFILE_NAME" desc="Name of the Tor profile.">
@@ -397,9 +454,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         These are the default Shields settings. They apply to all websites unless you change something in the Shields panel on a particular site. Changing these won't affect your existing per-site settings.
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2" desc="The partial description for Brave shields Defaults sub-section in settings. The sentence is completed with `Brave rewards settings`">
-        This will block most ads on websites, not Brave private ads — those are controlled in the
+        This will block most ads on websites, not Brave Private Ads — those are controlled in the
       </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_3" desc="The partial description for Brave shields Defaults sub-section in settings. Partial of `This will block most ads on websites, not Brave private ads — those are controlled in the Brave Rewards (settings)`">
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_3" desc="The partial description for Brave shields Defaults sub-section in settings. Partial of `This will block most ads on websites, not Brave Private Ads — those are controlled in the Brave Rewards (settings)`">
         settings.
       </message>
       <message name="IDS_SETTINGS_SOCIAL_BLOCKING_DEFAULTS_TITLE" desc="The title the settings section which has options for blocking third-party embeds, commonly from social media sites">
@@ -628,7 +685,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         If you reset Sync, you will have to re-enter a sync code from another device in order to sync with it. Are you sure you want to proceed?
       </message>
       <message name="IDS_BRAVE_SYNC_DELETE_DEVICE_CONFIRMATION" desc="Confirmation message prompt to make sure the user is ok to delete other device from the chain">
-        Are you sure you want to delete selected device from sync chain?
+        Are you sure you want to remove the selected device from the sync chain?
       </message>
       <!-- Sync Infobar -->
       <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_MESSAGE" desc="Message text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
@@ -706,14 +763,101 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_LOAD_CRYPTO_WALLETS_ON_STARTUP_DEPRECATED" desc="The description for always loading the Crypto Wallets extension on startup">
         Load deprecated Crypto Wallets extension on startup
       </message>
+      <message name="IDS_SETTINGS_SHOW_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for showing the Brave wallet panel icon on the toolbar">
+        Show Brave Wallet icon on toolbar
+      </message>
       <message name="IDS_SETTINGS_GOOGLE_LOGIN_FOR_EXTENSIONS" desc="Label for a switch control which allows Google login for extension">
         Allow Google login for extensions
       </message>
       <message name="IDS_SETTINGS_RESOLVE_UNSTOPPABLE_DOMAINS_DESC" desc="The description for how to handle Unstoppable Domains">
         Method to resolve Unstoppable Domains
       </message>
+      <message name="IDS_SETTINGS_RESOLVE_UNSTOPPABLE_DOMAINS_SUB_DESC" desc="The sub-description for how to handle Unstoppable Domains">
+        <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn More<ph name="END_LINK">&lt;/a&gt;</ph> about DNS over HTTPS and Ethereum privacy considerations.
+      </message>
       <message name="IDS_SETTINGS_RESOLVE_ENS_DESC" desc="The description for how to handle ENS">
         Method to resolve Ethereum Name Service (ENS)
+      </message>
+      <message name="IDS_SETTINGS_IPNS_KEYS_EDITOR_LINK" desc="The title of the link to open keys management block in IPFS settings">
+        Set up your IPNS keys
+      </message>
+      <message name="IDS_SETTINGS_IPNS_KEYS_EDITOR_LINK_DESC" desc="The description for the link to open keys management block in IPFS settings">
+        Sign content by the corresponding private key and publish it to IPNS
+      </message>
+      <message name="IDS_SETTINGS_IPNS_KEYS_LIST_TITLE" desc="The title of the keys management list in IPFS settings">
+        Keys available for publishing
+      </message>
+      <message name="IDS_SETTINGS_IPNS_ADD_KEY_DIALOG_TITLE" desc="The title of the dialog to add new key on IPFS Settings page">
+        Enter a name for the new key
+      </message>
+      <message name="IDS_SETTINGS_IPNS_ADD_KEY_DIALOG_ERROR" desc="The error message for the add key dialog on IPFS Settings page if key name is invalid">
+        This name cannot be used
+      </message>
+      <message name="IDS_SETTINGS_IPNS_ADD_PEER_DIALOG_TITLE" desc="The title of the dialog to add new peer on IPFS Settings page">
+        Add new peer connection string
+      </message>
+      <message name="IDS_SETTINGS_IPFS_ROTATE_KEY_DIALOG_TITLE" desc="The title of the dialog to rotate key on IPFS Settings page">
+        Rotate key
+      </message>
+      <message name="IDS_SETTINGS_IPFS_ROTATION_STOP_ERROR" desc="The error message of the dialog when unable to stop ipfs node">
+        Unable to stop local node
+      </message>
+      <message name="IDS_SETTINGS_IPFS_ROTATION_LAUNCH_ERROR" desc="The error message of the dialog when unable to launch ipfs node">
+        Unable to launch local node
+      </message>
+      <message name="IDS_SETTINGS_IPFS_PEER_NODE_RESTART" desc="The message to restart node if peers were chagned on IPFS Settings page">
+        Restart node to apply changes
+      </message>
+      <message name="IDS_SETTINGS_IPFS_PEER_NODE_RESTART_BUTTON" desc="The button title to restart node if peers were chagned on IPFS Settings page">
+        Restart node
+      </message>
+      <message name="IDS_SETTINGS_IPFS_ROTATE_BUTTON" desc="The button title to rotate key on IPFS Settings page">
+        Rotate
+      </message>
+      <message name="IDS_SETTINGS_ADD_PEER_DIALOG_PLACEHOLDER" desc="The placholder of the dialog to add new peer on IPFS Settings page">
+        /ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2
+      </message>
+      <message name="IDS_SETTINGS_IPNS_ADD_PEER_DIALOG_ERROR" desc="The error message for the add peer dialog on IPFS Settings page if the peer name is not valid">
+        This name is not valid
+      </message>
+      <message name="IDS_SETTINGS_IPFS_PEERS_LINK_TITLE" desc="The ipfs peers page link title on IPFS settings page">
+        Modify the peers list
+      </message>
+      <message name="IDS_SETTINGS_IPNS_KEY_EXPORT_ITEM" desc="The text for ipfs key export item">
+        Export key
+      </message>
+      <message name="IDS_SETTINGS_IPNS_KEY_REMOVE_ITEM" desc="The text for ipfs key remove item">
+        Remove key
+      </message>
+      <message name="IDS_SETTINGS_IPFS_PEERS_LINK_TITLE_DESC" desc="The ipfs peers page link description on IPFS settings page">
+        Set up ipfs peers description
+      </message>
+      <message name="IDS_SETTINGS_IPFS_DELETE_PEER_CONFIRMATION" desc="Confirmation text for deleting a peer from IPFS peers manager page">
+        Do you really want to delete <ph name="KEY_NAME">$1<ex>MyCustomPeerId</ex></ph>?
+      </message>
+      <message name="IDS_SETTINGS_IPNS_DELETE_KEY_CONFIRMATION" desc="Confirmation text for deleting a key from IPFS keys manager page">
+        Do you really want to delete <ph name="KEY_NAME">$1<ex>MyCustomKey</ex></ph>?
+      </message>
+      <message name="IDS_SETTINGS_IPFS_NODE_NOT_LAUNCHED" desc="The message when node is not running on IPFS keys manager page">
+        Node is not launched
+      </message>
+      <message name="IDS_SETTINGS_IPFS_START_NODE_ERROR" desc="The error message when node was unable to start on IPFS keys manager page">
+        IPFS service launch error, more information is available on the <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" style="text-decoration: underline;" href="chrome://ipfs-internals/"&gt;</ph>diagnostic page<ph name="END_LINK">&lt;/a&gt;</ph>
+      </message>
+      <message name="IDS_SETTINGS_IPNS_KEYS_IMPORT_ERROR" desc="The error text if ipns keys import failed">
+        '<ph name="KEY_NAME">$1<ex>MyCustomKey</ex></ph>' key import failed
+      </message>
+      <message name="IDS_SETTINGS_IPNS_KEYS_EXPORT_ERROR" desc="The error text if ipns keys export failed">
+        '<ph name="KEY_NAME">$1<ex>MyCustomKey</ex></ph>' key export failed
+      </message>
+      <message name="IDS_SETTINGS_IPNS_KEYS_IMPORT_BUTTON_TITLE" desc="The title of the button to import ipns keys">
+        Import
+      </message>
+      <message name="IDS_SETTINGS_IPNS_KEYS_GENERATE_BUTTON_TITLE" desc="The title of the button to generate ipns keys">
+        Generate
+      </message>
+      <message name="IDS_SETTINGS_IPFS_START_NODE" desc="The button text to start node on IPFS keys manager page">
+        Start node
       </message>
       <message name="IDS_SETTINGS_RESOLVE_IPFS_URLS_DESC" desc="The description for how to handle IPFS URIs">
         Method to resolve IPFS resources
@@ -734,7 +878,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         IPFS public gateway address
       </message>
       <message name="IDS_SETTINGS_IPFS_METHOD_DESC" desc="The description of IPFS protocol on settings page">
-        <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn More<ph name="END_LINK_MPL">&lt;/a&gt;</ph> about IPFS local node and gateway privacy considerations.
+        <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK_MPL">&lt;/a&gt;</ph> about IPFS local node and gateway privacy considerations.
       </message>
       <message name="IDS_SETTINGS_IPFS_CHANGE_GATEWAY_BUTTON_LABEL" desc="The label of the button for changing IPFS gateway address">
         Change
@@ -964,9 +1108,10 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
           Set Brave as your default browser
         </message>
         <message name="IDS_BRAVE_DEFAULT_BROWSER_DIALOG_CONTENTS_TEXT" desc="The contents for default browser dialog">
-          Brave browser is currently not set as your default browser.
-Set Brave as your default to keep browsing the web faster -
-up to 6x faster on major news sites.
+          Keep browsing the web faster - up to 6x faster on major news sites.
+        </message>
+        <message name="IDS_BRAVE_DEFAULT_BROWSER_DIALOG_DONT_ASK" desc="The text for disabling default browser dialog checkbox">
+          Don't ask again
         </message>
         <message name="IDS_BRAVE_DEFAULT_BROWSER_DIALOG_OK_BUTTON_LABEL" desc="The text for default browser dialog ok button">
           Set as default
@@ -976,6 +1121,14 @@ up to 6x faster on major news sites.
         </message>
       </if>
 
+      <!-- Brave Ads -->
+      <message name="IDS_BRAVE_ADS_AD_NOTIFICATION_CLOSE_BUTTON" desc="Text to be spoken for the ad notification close button">
+        Close
+      </message>
+      <message name="IDS_BRAVE_ADS_AD_NOTIFICATION_ACCESSIBLE_NAME" desc="Text to be spoken when an ad notification is shown">
+        Brave Ad Notification
+      </message>
+
       <!-- Sidebar -->
       <if expr="enable_sidebar">
         <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_REMOVE" desc="Menu for removing an item from sidebar">
@@ -983,6 +1136,9 @@ up to 6x faster on major news sites.
         </message>
         <message name="IDS_SIDEBAR_ADD_ITEM_BUBBLE_TITLE" desc="Title of sidebar add item bubble">
           Add to Sidebar
+        </message>
+        <message name="IDS_SIDEBAR_TOOLTIP_ON_SHOW_OPTIONS_WIDGET" desc="Label of tooltip of sidebar show options widget area">
+          Show sidebar
         </message>
         <message name="IDS_SIDEBAR_SHOW_OPTION_TITLE" desc="Title of sidebar show option menu">
           Show Sidebar
@@ -999,6 +1155,9 @@ up to 6x faster on major news sites.
         <message name="IDS_SIDEBAR_SHOW_OPTION_NEVER" desc="Label for show sidebar on click option">
           Never
         </message>
+        <message name="IDS_SIDEBAR_SETTINGS_BUTTON_TOOLTIP" desc="Tooltip text for sidebar settings button">
+          Show settings
+        </message>
         <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_ENABLED_DESC" desc="Label for show sidebar option in settings">
           Enabled
         </message>
@@ -1013,6 +1172,42 @@ up to 6x faster on major news sites.
         </message>
       </if>
 
+      <!-- Speedreader -->
+      <if expr="enable_speedreader">
+        <message name="IDS_SPEEDREADER_ASK_ENABLE" desc="Label prompting user to enable Speedreader">
+          Do you want to turn on Speedreader?
+        </message>
+        <message name="IDS_SPEEDREADER_ENABLE_BUTTON" desc="Button to enable Speedreader">
+          Turn on Speedreader
+        </message>
+        <message name="IDS_SPEEDREADER_EXPLANATION" desc="Label to explain how Speedreader is different from other reader modes">
+          Articles automatically load in reader mode, saving you time.
+        </message>
+        <message name="IDS_SPEEDREADER_DISABLE_THIS_SITE" desc="Label to enable or disable speedreader per site">
+          Turn on/off reader mode just for this website. To turn off Speedreader for your entire browser profile, visit
+        </message>
+        <message name="IDS_PAGE_IS_DISTILLED" desc="Speedreader is enabled on this page">
+          in Speedreader
+        </message>
+        <message name="IDS_SPEEDREADER_ICON_TURN_OFF_READER_MODE" desc="Accessible text shown when a page is in Reader Mode">
+          Turn off reader mode
+        </message>
+        <message name="IDS_SPEEDREADER_ICON_TURN_ON_READER_MODE" desc="Accessible text shown when a page can be distilled">
+          Turn on reader mode
+        </message>
+        <message name="IDS_SPEEDREADER_ICON_SPEEDREADER_SETTINGS" desc="Accessible text shown when a page is in Speedreader Mode">
+          Speedreader settings
+        </message>
+      </if>
+
+      <!-- Stats -->
+      <message name="IDS_BRAVE_STATS_USAGE_PING_SETTING" desc="Description that shows in settings for toggling stats usage pings">
+        Automatically send daily usage ping to Brave
+      </message>
+      <message name="IDS_BRAVE_STATS_USAGE_PING_SETTING_SUBITEM" desc="Description that shows under main toggle setting for usage pings">
+        This anonymous, private ping lets Brave estimate active users.
+      </message>
+
       <!-- P3A -->
       <message name="IDS_BRAVE_CONFIRM_P3A_INFO_BAR" desc="Text that shows on the info bar where user acknowledges the P3A message">
         Brave uses completely private product analytics to estimate the overall usage of certain features
@@ -1024,10 +1219,10 @@ up to 6x faster on major news sites.
         Disable
       </message>
       <message name="IDS_BRAVE_P3A_ENABLE_SETTING" desc="Description that shows in settings for toggling P3A">
-        Automatically send completely private product analytics to Brave
+        Allow privacy-preserving product analytics (P3A)
       </message>
       <message name="IDS_BRAVE_P3A_ENABLE_SETTING_SUBITEM" desc="Description that shows under main toggle setting for P3A">
-        This anonymous info only lets Brave estimate the overall usage of certain features.
+        This completely anonymised info helps Brave estimate the overall usage of certain features and make them better for you.
       </message>
       <!-- Web3 detection -->
       <message name="IDS_BRAVE_CRYPTO_WALLETS_LAZY_LOAD_TEXT" desc="Text that shows on the info bar when a Dapp is detected">
@@ -1070,6 +1265,9 @@ up to 6x faster on major news sites.
       </message>
       <message name="IDS_BRAVE_WAYBACK_MACHINE_CHECK_BUTTON_TEXT" desc="The label for check button on wayback infobar">
         Check for saved version
+      </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_DONT_ASK_AGAIN_TEXT" desc="Text to show for the don't ask again button.">
+        Don't ask me again
       </message>
       <!-- Brave's copyright statement -->
       <message name="IDS_BRAVE_VERSION_UI_LICENSE" desc="The label below the copyright message, containing the URLs.">
@@ -1114,17 +1312,12 @@ up to 6x faster on major news sites.
         Reset Brave Rewards data...
       </message>
       <!--First-run dialog messages -->
-      <message name="IDS_FR_ENABLE_LOGGING_BRAVE" desc="Label for checkbox to ask whether to send crash reports to brave">
-          Help improve Brave by automatically sending crash reports
-      </message>
       <message name="IDS_FR_CUSTOMIZE_DEFAULT_BROWSER_BRAVE" desc="Default browser checkbox label">
-        Set Brave as your default browser
+        Set Brave as default browser
       </message>
-      <if expr="is_macosx">
-        <message name="IDS_FIRSTRUN_DLG_MAC_OPTIONS_SEND_USAGE_STATS_LABEL_BRAVE" desc="Label for checkbox to ask whether to send crash reports to brave">
-          Help improve <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph> by automatically sending crash reports
-        </message>
-      </if>
+      <message name="IDS_FIRSTRUN_DLG_COMPLETE_INSTALLATION_LABEL_BRAVE" desc="Label at top of Dialog noting what's going to happen">
+        To ensure the best privacy online, consider setting Brave as the default browser on your computer. With Brave as default, any web link you click will open with Brave's privacy protections.
+      </message>
     </messages>
   </release>
 </grit>

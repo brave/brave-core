@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/strings/string16.h"
 #include "url/gurl.h"
 
 // This is the provider for Brave Suggested Sites
@@ -18,12 +17,12 @@ class SuggestedSitesMatch {
   SuggestedSitesMatch(const std::string& match_string,
                       const GURL& destination_url,
                       const GURL& stripped_destination_url,
-                      const base::string16& display);
+                      const std::u16string& display);
   ~SuggestedSitesMatch();
   std::string match_string_;
   GURL destination_url_;
   GURL stripped_destination_url_;
-  base::string16 display_;
+  std::u16string display_;
 };
 
 #endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_SUGGESTED_SITES_MATCH_H_

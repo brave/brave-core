@@ -15,11 +15,11 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "bat/ledger/mojom_structs.h"
+#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
@@ -85,7 +85,6 @@ class TipMessageHandler : public WebUIMessageHandler,
   void GetAdsPerHour(const base::ListValue* args);
   void SetAdsPerHour(const base::ListValue* args);
   void TweetTip(const base::ListValue* args);
-  void GetOnlyAnonWallet(const base::ListValue* args);
   void GetExternalWallet(const base::ListValue* args);
   void FetchBalance(const base::ListValue* args);
 
@@ -207,12 +206,6 @@ void TipMessageHandler::RegisterMessages() {
       base::BindRepeating(
           &TipMessageHandler::GetExternalWallet,
           base::Unretained(this)));
-
-  web_ui()->RegisterMessageCallback(
-      "getOnlyAnonWallet",
-      base::BindRepeating(
-          &TipMessageHandler::GetOnlyAnonWallet,
-          base::Unretained(this)));
 }
 
 void TipMessageHandler::OnRecurringTipRemoved(
@@ -282,14 +275,6 @@ void TipMessageHandler::DialogReady(const base::ListValue* args) {
   }
 }
 
-void TipMessageHandler::GetOnlyAnonWallet(const base::ListValue* args) {
-  if (!rewards_service_) {
-    return;
-  }
-  const bool only_anon = rewards_service_->OnlyAnonWallet();
-  FireWebUIListener("onlyAnonWalletUpdated", base::Value(only_anon));
-}
-
 void TipMessageHandler::GetPublisherBanner(const base::ListValue* args) {
   CHECK_EQ(1U, args->GetSize());
   const std::string publisher_key = args->GetList()[0].GetString();
@@ -298,9 +283,10 @@ void TipMessageHandler::GetPublisherBanner(const base::ListValue* args) {
     return;
   }
 
-  rewards_service_->GetPublisherBanner(publisher_key, base::Bind(
-      &TipMessageHandler::GetPublisherBannerCallback,
-      weak_factory_.GetWeakPtr()));
+  rewards_service_->GetPublisherBanner(
+      publisher_key,
+      base::BindOnce(&TipMessageHandler::GetPublisherBannerCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void TipMessageHandler::GetRewardsParameters(const base::ListValue* args) {
@@ -308,9 +294,9 @@ void TipMessageHandler::GetRewardsParameters(const base::ListValue* args) {
     return;
   }
 
-  rewards_service_->GetRewardsParameters(base::Bind(
-      &TipMessageHandler::GetRewardsParametersCallback,
-      weak_factory_.GetWeakPtr()));
+  rewards_service_->GetRewardsParameters(
+      base::BindOnce(&TipMessageHandler::GetRewardsParametersCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void TipMessageHandler::GetOnboardingStatus(const base::ListValue* args) {
@@ -324,21 +310,12 @@ void TipMessageHandler::GetOnboardingStatus(const base::ListValue* args) {
 }
 
 void TipMessageHandler::SaveOnboardingResult(const base::ListValue* args) {
-  using brave_rewards::OnboardingResult;
-
   CHECK_EQ(1U, args->GetSize());
-  if (!rewards_service_) {
+  if (!rewards_service_)
     return;
-  }
 
-  const std::string result_type = args->GetList()[0].GetString();
-  if (result_type == "opted-in") {
-    rewards_service_->SaveOnboardingResult(OnboardingResult::kOptedIn);
-  } else if (result_type == "dismissed") {
-    rewards_service_->SaveOnboardingResult(OnboardingResult::kDismissed);
-  } else {
-    NOTREACHED();
-  }
+  if (args->GetList()[0].GetString() == "opted-in")
+    rewards_service_->EnableRewards();
 }
 
 void TipMessageHandler::OnTip(const base::ListValue* args) {
@@ -353,7 +330,7 @@ void TipMessageHandler::OnTip(const base::ListValue* args) {
 
   if (recurring && amount <= 0) {
     rewards_service_->RemoveRecurringTip(publisher_key);
-  } else if (amount >= 1) {
+  } else if (amount > 0) {
     rewards_service_->OnTip(publisher_key, amount, recurring);
   }
 }
@@ -363,9 +340,9 @@ void TipMessageHandler::GetReconcileStamp(const base::ListValue* args) {
     return;
   }
 
-  rewards_service_->GetReconcileStamp(base::Bind(
-      &TipMessageHandler::GetReconcileStampCallback,
-      weak_factory_.GetWeakPtr()));
+  rewards_service_->GetReconcileStamp(
+      base::BindOnce(&TipMessageHandler::GetReconcileStampCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void TipMessageHandler::GetAutoContributeAmount(const base::ListValue* args) {
@@ -374,8 +351,8 @@ void TipMessageHandler::GetAutoContributeAmount(const base::ListValue* args) {
   }
 
   rewards_service_->GetAutoContributionAmount(
-      base::Bind(&TipMessageHandler::GetAutoContributeAmountCallback,
-                 weak_factory_.GetWeakPtr()));
+      base::BindOnce(&TipMessageHandler::GetAutoContributeAmountCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void TipMessageHandler::SetAutoContributeAmount(const base::ListValue* args) {
@@ -432,10 +409,8 @@ void TipMessageHandler::TweetTip(const base::ListValue* args) {
   share_url_args["tweet_id"] = tweet_id;
 
   rewards_service_->GetShareURL(
-      share_url_args,
-      base::BindOnce(
-          &TipMessageHandler::GetShareURLCallback,
-          base::Unretained(this)));
+      share_url_args, base::BindOnce(&TipMessageHandler::GetShareURLCallback,
+                                     weak_factory_.GetWeakPtr()));
 }
 
 void TipMessageHandler::FetchBalance(const base::ListValue* args) {

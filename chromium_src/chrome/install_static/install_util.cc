@@ -37,7 +37,8 @@ namespace install_static {
 
 version_info::Channel GetChromeChannel() {
 #if defined(OFFICIAL_BUILD)
-  std::wstring channel_name(GetChromeChannelName());
+  std::wstring channel_name(
+      GetChromeChannelName(/*with_extended_stable=*/false));
   if (channel_name == L"nightly")
     return version_info::Channel::CANARY;
   return GetChromeChannel_ChromiumImpl();

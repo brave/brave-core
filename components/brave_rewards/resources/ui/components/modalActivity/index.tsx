@@ -58,7 +58,7 @@ export interface Props {
   transactionRows: TransactionRow[]
   id?: string
   summary: SummaryItem[]
-  onlyAnonWallet?: boolean
+  walletType?: string
 }
 
 interface State {
@@ -78,7 +78,7 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
   private summary: Record<SummaryType, {color: TokenType, translation: string}> = {
     grant: {
       color: 'earning',
-      translation: this.props.onlyAnonWallet ? 'pointGrantClaimed' : 'tokenGrantClaimed'
+      translation: 'tokenGrantClaimed'
     },
     ads: {
       color: 'earning',
@@ -125,6 +125,10 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
       const summaryItem = this.summary[item.type]
       if (!summaryItem) {
         return undefined
+      }
+
+      if (this.props.walletType === 'bitflyer' && item.type === 'contribute') {
+        return null
       }
 
       const negative = summaryItem.color === 'contribute'
@@ -245,7 +249,7 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
   }
 
   generateTabs = () => {
-    const tabs = [
+    let tabs = [
       {
         id: 'transactions',
         title: getLocale('transactions'),
@@ -267,6 +271,10 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
         content: this.getOneTimeTips
       }
     ]
+
+    if (this.props.walletType === 'bitflyer') {
+      tabs = tabs.filter(x => x.id !== 'autoContribute')
+    }
 
     return (
       <>

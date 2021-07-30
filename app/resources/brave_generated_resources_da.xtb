@@ -18,7 +18,7 @@
 <translation id="6241402707160226266">Privat vindue med Tor</translation>
 <translation id="8762452230727230396">Tor skjuler din IP-adresse fra de sider du besøger.</translation>
 <translation id="1369311132025451972">Omdiriger automatisk .onion-hjemmesider</translation>
-<translation id="81720820779436751">Brave åbner onion-service på hjemmesiden, når den er tilgængelig, eller .onion-domænet i Tor-vinduet</translation>
+<translation id="2843777623071353503">Brave vil åbne en onion-udgave af websiden, når den er tilgængelig, eller et .onion-donæne i et Tor-vindue.</translation>
 <translation id="8053096063396012732">Installér Widevine</translation>
 <translation id="4840334696217618631">Genstart browser for at slå Widevine til</translation>
 <translation id="8410111618231938546">Google Widevine er en del af Digital Rights Management (DRM)-koden, som vi på Brave Software ikke ejer og ikke kan inspicere. Google Widevine-koden indlæses fra Google-servere, ikke fra vores servere. Den indlæses kun, når du aktiverer denne mulighed. Vi fraråder brugen af DRM, men vi respekterer brugernes valg og anerkender at nogle Brave-brugere ønsker at bruge tjenester der kræver det.
@@ -37,6 +37,8 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="6123134130710658846">Skjul Brave Rewards-knappen</translation>
 <translation id="1811404036171336214">Vis altid bogmærker i den nye fane</translation>
 <translation id="1643029991199044105">Gennemse de senest anvendte faner med Ctrl-Tab</translation>
+<translation id="1013121820689882118">Speedreader</translation>
+<translation id="2025435450953474282">Artikler indlæses automatisk i læsetilstand, så du sparer tid</translation>
 <translation id="5802665280774361839">Vis autofuldførelse i addressefeltet</translation>
 <translation id="597020512043916976">Vis øverste sider i forslag til automatisk udfyldning</translation>
 <translation id="264150068416846820">Vis Braves foreslåede sider i forslag fra automatisk udfyldning</translation>
@@ -60,14 +62,30 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="1037341607922068025">Åbn privat vindue med Tor</translation>
 <translation id="1725356094208762656">Åbn i Tor</translation>
 <translation id="7643538479215207633">Åbn med IPFS</translation>
+<translation id="3094628781200061820">Udgiv og find filer fra IPFS</translation>
 <translation id="1672270084584211506">Onion tilgængelig</translation>
+<translation id="4901618511712685702">Importér til IPFS</translation>
+<translation id="6794469945030154569">Denne webside</translation>
+<translation id="5037852323412456577">Valgt billede</translation>
+<translation id="2715839724138372481">Valgt video</translation>
+<translation id="4227945450504703638">Valgt lyd</translation>
+<translation id="7895302206188277628">Forbundet indhold</translation>
+<translation id="3654831858282189202">Udgiv med IPNS-nøgle</translation>
+<translation id="7691598647605453992">IPFS</translation>
+<translation id="6925604404524625582">Importér og kopiér link til IPFS-snapshot</translation>
 <translation id="1434416574322382019">Nyt privat vindue med Tor</translation>
 <translation id="4703780849509456860">Åben link i Privat Vindue med Tor</translation>
 <translation id="3488584642074079080">Åbn link i Brave privat vindue med Tor</translation>
+<translation id="7475547933708221517">Del lokal file med IPFS</translation>
+<translation id="2286177249736199435">Del lokal mappe via IPFS</translation>
+<translation id="4491895534716990473">Importér valgt tekst til IPFS</translation>
+<translation id="8883166554766780543">Importér og kopiér link til IPFS-snapshot</translation>
+<translation id="784573715436258741">Del lokal fil med IPFS</translation>
 <translation id="6313675821927505581">Nyt privat vindue med Tor</translation>
 <translation id="2638041073279639246">Åbn link i privat
 vindue med Tor</translation>
 <translation id="3425600262621021599">Åbn link i Brave privat vindue med Tor</translation>
+<translation id="575838692088926391">Del lokal mappe via IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat-annonceservice</translation>
 <translation id="7924918279836988121">Bat Regnskabsservice</translation>
@@ -147,7 +165,7 @@ vindue med Tor</translation>
 <translation id="4112587618563511470">Ugyldig synkroniseringskode, kontrollér venligst og prøv igen.</translation>
 <translation id="2339730291919608488">Forlad synkroniseringskæde</translation>
 <translation id="115699408012835975">Hvis du nulstiller synkronisering, skal du skrive en synkroniseringskode fra en anden enhed igen for at synkronisere med den. Er du sikker på, at du vil fortsætte?</translation>
-<translation id="339086854515247923">Er du sikker på, at du vil slette den valgte enhed fra synkroniseringskæden?</translation>
+<translation id="6092564993102418148">Er du sikker på, at du vil fjerne den valgte enhed fra synkroniseringskæden?</translation>
 <translation id="3396347744975515056">Brave Sync er blevet opgraderet og kræver opsætning</translation>
 <translation id="7473245612074035141">Begynd opsætning</translation>
 <translation id="3411013544209536575">Hjælperåd</translation>
@@ -167,13 +185,42 @@ vindue med Tor</translation>
 <translation id="7090046810227878892">Ethereum-udbyder til brug af Dapps</translation>
 <translation id="5913089932885076110">Hent Krypto-tegnebøger ved opstart</translation>
 <translation id="757886143331967039">Indlæs forældet Crypto Wallets-udvidelse ved opstart</translation>
+<translation id="1834467296210148203">Vis ikon for Brave Wallet på værktøjslinje</translation>
 <translation id="6864914031231797928">Tillad Google-login for udvidelser</translation>
 <translation id="5927916530277631319">Metode til at løsning af Unstoppable-domæner</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Læs mere<ph name="END_LINK"/> om overvejelser af DNS over HTTPS- og Ethereum-anonymitet.</translation>
 <translation id="5248318250177143470">Metode til løsning af Ethereum Name Service (ENS)</translation>
+<translation id="7024553202001112871">Sæt dine IPNS-nøgler op</translation>
+<translation id="951216659045543447">Underskriv indhold med den tilhørende private nøgle, og udgiv det på IPNS.</translation>
+<translation id="7611728475758612204">Nøgler, der kan udgives</translation>
+<translation id="911363100236037920">Angiv navn for ny nøgle</translation>
+<translation id="6358469157239228181">Dette navn kan ikke bruges</translation>
+<translation id="5761731140570209168">Tilføj ny forbindelses til peer</translation>
+<translation id="2082206983920804886">Rotér nøgle</translation>
+<translation id="2521133093532260474">Kunne ikke stoppe lokal node</translation>
+<translation id="86879877003581729">Kunne ikke starte lokal node</translation>
+<translation id="6476061084931271248">Genstart node for at anvende ændringerne</translation>
+<translation id="3754226427671882382">Genstart node</translation>
+<translation id="949667118776341807">Rotér</translation>
+<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
+<translation id="724513921936768901">Navnet er ikke gyldigt</translation>
+<translation id="6758961763875471084">Foretag ændringer af peerliste</translation>
+<translation id="1295874070797049002">Eksportér nøgle</translation>
+<translation id="3946479342297227860">Fjern nøgle</translation>
+<translation id="1534091531114892221">Tilpas beskrivelsen af ipfs-peers</translation>
+<translation id="8996633027318264334">Er du sikker på, du ønsker at slette <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">Node er ikke startet</translation>
+<translation id="616058968889448209">Opstartsfejl for IPFS-service. Se flere oplysninger på <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' importering af nøgle mislykkedes</translation>
+<translation id="3364053282600191535">'<ph name="KEY_NAME"/>' eksport af nøgle mislykkedes</translation>
+<translation id="8275038454117074363">Importer</translation>
+<translation id="3654980960391973513">Opret</translation>
+<translation id="5531501313997312487">Start node</translation>
 <translation id="9170907049676078643">Metode til løsning af IPF-ressourcer</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokal node</translation>
 <translation id="4927734062756955434">Offentlige IPFS-gatewayadresse</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Læs mere<ph name="END_LINK_MPL"/> om overvejelser af IPFS-lokalnode- og gateway-anonymitet.</translation>
 <translation id="8425213833346101688">Skift</translation>
 <translation id="557281710253742286">Opsæt IPFS-gateway</translation>
 <translation id="8571837315037233299">Gatewayadresse</translation>
@@ -245,31 +292,42 @@ vindue med Tor</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
 <translation id="239760341987199724">Angiv Brave som din standardbrowser</translation>
-<translation id="9185422039067880535">Brave browser er i øjeblikket ikke indstillet som din standardbrowser.
-Indstil Brave som din standard for at fortsætte med at surfe på nettet hurtigere -
-op til 6 gange hurtigere på større nyhedswebsteder.</translation>
+<translation id="1391855377994926460">Surf på nettet hurtigere – op til 6x hurtigere på større nyhedswebsider.</translation>
 <translation id="9218430445555521422">Indstil som standard</translation>
 <translation id="3479552764303398839">Ikke nu</translation>
+<translation id="6040143037577758943">Luk</translation>
+<translation id="5600566490506283344">Brave annoncenotifikation</translation>
 <translation id="4877147287319222750">Føj til sidepanel</translation>
+<translation id="4233010476457917696">Vis sidepanel</translation>
 <translation id="5404213409401164238">Vis sidepanel</translation>
 <translation id="7561196759112975576">Altid</translation>
 <translation id="7060352228894039151">Ved musemarkering</translation>
 <translation id="407173827865827707">Ved klik</translation>
 <translation id="7961015016161918242">Aldrig</translation>
+<translation id="8981254605840444865">Vis indstillinger</translation>
 <translation id="59174027418879706">Aktiveret</translation>
 <translation id="8258999165172757081">Tilføjet</translation>
 <translation id="6959315322491671328">Højreklik for at fjerne</translation>
+<translation id="4651504163033753423">Vil du slå speedreader til?</translation>
+<translation id="9089090017461255038">Tænd for speedreader</translation>
+<translation id="312393675740711187">Artikler indlæses automatisk i læsetilstand, så du sparer tid.</translation>
+<translation id="3234744217174488546">Slå læsetilstand til/fra på denne webside. Hvis du vil slå speedreader til for hele din browser, skal du gå til</translation>
+<translation id="7839742507462737706">i speedreader</translation>
+<translation id="8490082094734500369">Slå læsetilstand fra</translation>
+<translation id="2036503787657622020">Slå læsetilstand til</translation>
+<translation id="5226458915125328323">Speedreader-indstillinger</translation>
+<translation id="6284218950354553099">Send automatisk dagligt ping om brug til Brave</translation>
+<translation id="5288333155754958121">Det anonyme, private ping giver Brave mulighed for at estimere antallet af aktive brugere.</translation>
 <translation id="1872784258300710671">Brave bruger fuldstændig private produktanalyser til at anslå det generelle forbrug af visse funktioner</translation>
 <translation id="8712637175834984815">Forstået</translation>
 <translation id="4394049700291259645">Deaktiver</translation>
-<translation id="6469509880167172749">Send automatisk fuldstændig private produktanalyser til Brave</translation>
-<translation id="7090566321964540749">Disse anonyme informationer giver kun Brave tilladelse til at anslå det generelle forbrug af visse funktioner.</translation>
+<translation id="7142548388914389999">Tillad anonymitetsbeskyttede produktanalyser (også kendt som P3A)</translation>
+<translation id="609106526832379947">Disse fuldstændigt anonyme informationer hjælper kun Brave med at anslå det generelle forbrug af visse funktioner og gøre servicen endnu bedre.</translation>
 <translation id="1947672064022327074">Vil du starte Crypto Wallets for Ethereum support?</translation>
 <translation id="7583735190612229830">Sæt dine krypto wallets op til at interagere med denne app og andre som den</translation>
 <translation id="8731422418734770661">Konfigurér krypto-wallets</translation>
 <translation id="8199661191594897555">Åbn Krypto-tegnebøger og genindlæs</translation>
 <translation id="8428213095426709021">Indstillinger</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Lær mere om IPFS og databeskyttelse</translation>
 <translation id="4552520379838695057">Beklager, den side mangler.</translation>
 <translation id="2609895996619941644">Ønsker du at tjekke om en gemt version er tilgængelig på Wayback Machine?</translation>

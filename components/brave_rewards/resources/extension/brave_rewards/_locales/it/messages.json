@@ -51,18 +51,6 @@
     "message": "Dettagli",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "Il tuo saldo",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "Punti BAT",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "può essere usato nei Premi Brave per contribuire al tuo creatore di contenuti preferito. I punti BAT non possono essere scambiati per BAT.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "attivo",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "Contributi in Token Riscossi",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "Point Grants Richiesti",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "Guadagni da Annunci Pubblicitari",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Donazione singola",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "scade il",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Questo creatore non si è ancora iscritto per ricevere i contributi dagli utenti Brave. Ogni mancia che invierai rimarrà nel tuo portafoglio fino a quando non si sarà verificato.",
+    "message": "Questo creatore non si è ancora configurato per poter ricevere mance dal tuo portafoglio. Ogni mancia che invierai rimarrà in sospeso nel tuo portafoglio e l’invio verrà ritentato in automatico per 90 giorni.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Attiva gli Ads",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Contributo di Token Gratuito",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Point Grant Gratis",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Hai ottenuto un Premio Pubblicità!",
@@ -591,17 +567,9 @@
     "message": "Token",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "punti",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Contributi in token",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Donazioni di punti",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Ciao, $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Devi avere minimo 25 BAT per creare un account Uphold. Ti preghiamo di riprovare più tardi. \n Se hai già un account verificato Uphold, procedi con l'accesso.",
-    "description": "Text for login button"
+    "message": "Ti servono almeno $amount$ BAT per creare un portafoglio Uphold. Se hai già un account Uphold verificato, continua per eseguire il login.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "Connessa",
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Quando ricevi premi",
+    "message": "Quando ricevi le ricompense?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "Utilizzando Brave Rewards contribuisci a rendere il web un posto migliore per tutti. Fantastico!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards in Giappone sta passando a un nuovo sistema!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "Verifica il tuo portafoglio",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "Ulteriori informazioni",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "Per incassare i token guadagnati visualizzando gli annunci pubblicitari, devi verificare il tuo portafoglio.",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "Utilizza i tuoi BAP entro il 13 marzo. Dopo tale data, i BAP non saranno più validi.",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "In seguito",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Verifica il mio portafoglio",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Il portafoglio bitFlyer è un servizio gestito da bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Verificando il portafoglio e collegandolo a un account bitFlyer, è più facile conservare e gestire i token guadagnati con Brave Rewards",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Scopri di più$link_end$ su come collegare il browser Brave all’account bitFlyer.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

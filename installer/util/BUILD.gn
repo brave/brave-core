@@ -1,0 +1,12 @@
+source_set("util") {
+  sources = [
+    "brave_shell_util.cc",
+    "brave_shell_util.h",
+  ]
+
+  deps = [
+    "//base",
+    "//chrome/install_static:install_static_util",
+    "//components/version_info",
+  ]
+}

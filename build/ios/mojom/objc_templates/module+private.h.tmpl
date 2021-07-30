@@ -1,0 +1,25 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+{%- set header_guard = "%s_OBJC_PRIVATE_H_"|format(
+        module.path|upper|replace("/","_")|replace(".","_")|
+            replace("-", "_")) %}
+
+#ifndef {{header_guard}}
+#define {{header_guard}}
+
+#import <Foundation/Foundation.h>
+#import "{{module_name}}.objc.h"
+#import "{{module.path}}.h"
+
+#if !defined(__has_feature) || !__has_feature(objc_arc)
+#error "This file requires ARC support."
+#endif
+
+{%- for struct in structs %}
+{%    include "private_interface_declaration.tmpl" %}
+{%- endfor %}
+
+#endif  // {{header_guard}}

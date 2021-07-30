@@ -7,12 +7,12 @@
 
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
-#include "base/optional.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/features.h"
 #include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -75,24 +75,33 @@ bool BraveIsAllowedThirdParty(const GURL& url,
 }
 
 GURL GetFirstPartyURL(const GURL& site_for_cookies,
-                      const base::Optional<url::Origin>& top_frame_origin) {
+                      const absl::optional<url::Origin>& top_frame_origin) {
   return top_frame_origin ? top_frame_origin->GetURL() : site_for_cookies;
 }
+
 bool IsFirstPartyAccessAllowed(
     const GURL& first_party_url,
     const CookieSettingsBase* const cookie_settings) {
-  ContentSetting setting;
-  cookie_settings->GetCookieSetting(first_party_url, first_party_url, nullptr,
-                                    &setting);
+  ContentSetting setting = cookie_settings->GetCookieSetting(
+      first_party_url, first_party_url, nullptr);
   return cookie_settings->IsAllowed(setting);
 }
 
 }  // namespace
 
+ScopedEphemeralStorageAwareness::ScopedEphemeralStorageAwareness(
+    bool* ephemeral_storage_aware)
+    : ephemeral_storage_aware_auto_reset_(ephemeral_storage_aware, true) {}
+ScopedEphemeralStorageAwareness::~ScopedEphemeralStorageAwareness() = default;
+ScopedEphemeralStorageAwareness::ScopedEphemeralStorageAwareness(
+    ScopedEphemeralStorageAwareness&& rhs) = default;
+ScopedEphemeralStorageAwareness& ScopedEphemeralStorageAwareness::operator=(
+    ScopedEphemeralStorageAwareness&& rhs) = default;
+
 bool CookieSettingsBase::ShouldUseEphemeralStorage(
     const GURL& url,
     const GURL& site_for_cookies,
-    const base::Optional<url::Origin>& top_frame_origin) const {
+    const absl::optional<url::Origin>& top_frame_origin) const {
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
     return false;
 
@@ -108,39 +117,55 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
     return false;
 
   bool allow_3p =
-      IsCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
+      IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin);
   bool allow_1p = IsFirstPartyAccessAllowed(first_party_url, this);
 
   // only use ephemeral storage for block 3p
   return allow_1p && !allow_3p;
 }
 
+ScopedEphemeralStorageAwareness
+CookieSettingsBase::CreateScopedEphemeralStorageAwareness() const {
+  return ScopedEphemeralStorageAwareness(&ephemeral_storage_aware_);
+}
+
 bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
     const GURL& url,
     const GURL& first_party_url) const {
-  return IsEphemeralCookieAccessAllowed(url, first_party_url, base::nullopt);
+  return IsEphemeralCookieAccessAllowed(url, first_party_url, absl::nullopt);
 }
 
 bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
     const GURL& url,
     const GURL& site_for_cookies,
-    const base::Optional<url::Origin>& top_frame_origin) const {
-  if (ShouldUseEphemeralStorage(url, site_for_cookies, top_frame_origin))
-    return true;
-
+    const absl::optional<url::Origin>& top_frame_origin) const {
+  auto scoped_ephemeral_storage_awareness =
+      CreateScopedEphemeralStorageAwareness();
   return IsCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
 }
 
 bool CookieSettingsBase::IsCookieAccessAllowed(
     const GURL& url,
     const GURL& first_party_url) const {
-  return IsCookieAccessAllowed(url, first_party_url, base::nullopt);
+  return IsCookieAccessAllowed(url, first_party_url, absl::nullopt);
 }
 
 bool CookieSettingsBase::IsCookieAccessAllowed(
     const GURL& url,
     const GURL& site_for_cookies,
-    const base::Optional<url::Origin>& top_frame_origin) const {
+    const absl::optional<url::Origin>& top_frame_origin) const {
+  if (ephemeral_storage_aware_ &&
+      ShouldUseEphemeralStorage(url, site_for_cookies, top_frame_origin)) {
+    return true;
+  }
+
+  return IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin);
+}
+
+bool CookieSettingsBase::IsCookieAccessAllowedImpl(
+    const GURL& url,
+    const GURL& site_for_cookies,
+    const absl::optional<url::Origin>& top_frame_origin) const {
   bool allow =
       IsChromiumCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
 

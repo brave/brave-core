@@ -118,8 +118,10 @@ export const StyledCopyImage = styled('span')<{}>`
   color: #838391;
   width: 27px;
   height: 27px;
+
   .icon {
-    margin-right: 2px;
+    height: 20px;
+    width: auto;
   }
 `
 
@@ -304,6 +306,10 @@ export const StyledVerifiedButton = styled('button')<{}>`
   color: #fff;
   background: inherit;
   border: none;
+
+  .icon {
+    padding-top: 1px;
+  }
 `
 
 export const StyledVerifiedButtonText = styled('div')<{}>`
@@ -347,33 +353,4 @@ export const StyledLink = styled('a')<{}>`
   text-decoration: none;
   display: inline-block;
   cursor: pointer;
-`
-
-export const LoginMessage = styled('div')<{}>`
-  position: absolute;
-  background: ${palette.white};
-  top: 50px;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  border-radius: 6px;
-  width: 95%;
-  box-shadow: 0 0 12px 0 rgba(12, 13, 33, 0.44);
-  z-index: 5;
-`
-
-export const LoginMessageText = styled('div')<{}>`
-  margin: 0;
-  padding: 15px;
-  line-height: 1.3;
-`
-
-export const LoginMessageButtons = styled('div')<{}>`
-  display: flex;
-  margin: 0 0 15px;
-  justify-content: center;
-
-  > button {
-    margin: 0 5px;
-  }
 `

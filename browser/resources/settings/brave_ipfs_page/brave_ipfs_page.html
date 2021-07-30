@@ -1,13 +1,16 @@
 <link rel="import" href="chrome://resources/html/cr.html">
 <link rel="import" href="chrome://resources/html/polymer.html">
 
-<link rel="import" href="chrome://resources/cr_elements/cr_link_row/cr_link_row.html">
 <link rel="import" href="chrome://resources/html/i18n_behavior.html">
 <link rel="import" href="chrome://resources/html/web_ui_listener_behavior.html">
-<link rel="import" href="brave_ipfs_browser_proxy.html">
-<link rel="import" href="../settings_page/settings_section.html">
-<link rel="import" href="../settings_shared_css.html">
-<link rel="import" href="../settings_vars_css.html">
+<link rel="import" href="p2p_keys_subpage.html">
+<link rel="import" href="ipfs_peers_subpage.html">
+<link rel="import" href="change_ipfs_gateway_dialog.js">
+<script type="module" src="brave_ipfs_browser_proxy.js"></script>
+<script type="module" src="../settings_page/settings_section.js"></script>
+<script type="module" src="../settings_shared_css.js"></script>
+<script type="module" src="../settings_vars_css.js"></script>
+<script type="module" src="chrome://resources/cr_elements/cr_link_row/cr_link_row.js"></script>
 
 <dom-module id="settings-brave-ipfs-page">
   <template>
@@ -28,79 +31,118 @@
       .storage-input {
         display: flex;
       }
+      .hidden {
+        display: none;
+      }
     </style>
-    <div class="settings-box first">
-      <div class="flex cr-padded-text">
-        <div class="start">$i18n{resolveIPFSURLDesc}</div>
-        <div class="secondary" id="defaultIPFSGateway">
-          $i18nRaw{ipfsMethodDesc}
+    <div id="ipfs-settings-block" class$="{{mainBlockVisibility_}}">
+      <div class="settings-box first">
+        <div class="flex cr-padded-text">
+          <div class="start">$i18n{resolveIPFSURLDesc}</div>
+          <div class="secondary" id="defaultIPFSGateway">
+            $i18nRaw{ipfsMethodDesc}
+          </div>
         </div>
+        <settings-dropdown-menu id="ipfsResolveMethodType"
+                                pref="{{prefs.brave.ipfs.resolve_method}}"
+                                menu-options="[[ipfsResolveMethod_]]"
+                                on-settings-control-change="onChangeIpfsMethod_">
+        </settings-dropdown-menu>
       </div>
-      <settings-dropdown-menu id="ipfsResolveMethodType"
-                              pref="{{prefs.brave.ipfs.resolve_method}}"
-                              menu-options="[[ipfsResolveMethod_]]"
-                              on-settings-control-change="onChangeIpfsMethod_">
-      </settings-dropdown-menu>
-    </div>
-        
-    <div class="settings-box">
-      <div class="flex cr-padded-text">
-        <div>$i18n{ipfsPublicGatewayDesc}</div>
-        <div class="secondary" id="defaultIPFSGateway">
-          {{prefs.brave.ipfs.public_gateway_address.value}}
+      <div class="settings-box">
+        <div class="flex cr-padded-text">
+          <div>$i18n{ipfsPublicGatewayDesc}</div>
+          <div class="secondary" id="defaultIPFSGateway">
+            {{prefs.brave.ipfs.public_gateway_address.value}}
+          </div>
         </div>
+        <cr-button id="changeIPFSGateway"
+            on-click="onChangeIPFSGatewayDialogTapped_">
+          $i18n{ipfsChangeGatewayButtonLabel}
+        </cr-button>
       </div>
-      <cr-button id="changeIPFSGateway"
-          on-click="onChangeIPFSGatewayDialogTapped_">
-        $i18n{ipfsChangeGatewayButtonLabel}
-      </cr-button>
-    </div>
-    <settings-toggle-button id="ipfsAutoGatewayFallbackEnabled"
+      <settings-toggle-button id="ipfsAutoGatewayFallbackEnabled"
+          class="cr-row"
+          pref="{{prefs.brave.ipfs.auto_fallback_to_gateway}}"
+          label="$i18n{ipfsAutoFallbackToGatewayLabel}"
+          sub-label="$i18n{ipfsAutoFallbackToGatewayDesc}">
+      </settings-toggle-button>
+      <settings-toggle-button id="ipfsAutoRedirectGateway"
         class="cr-row"
-        pref="{{prefs.brave.ipfs.auto_fallback_to_gateway}}"
-        label=$i18n{ipfsAutoFallbackToGatewayLabel}
-        sub-label=$i18n{ipfsAutoFallbackToGatewayDesc}>
-    </settings-toggle-button>
-    <settings-toggle-button id="ipfsAutoRedirectGateway"
-      class="cr-row"
-      pref="{{prefs.brave.ipfs.auto_redirect_gateway}}"
-      label="$i18n{ipfsAutoRedirectGatewayLabel}"
-      sub-label="$i18n{ipfsAutoRedirectGatewayDesc}">
-    </settings-toggle-button>
-    <settings-toggle-button id="ipfsAutoRedirectDNSLink"
-      class="cr-row"
-      pref="{{prefs.brave.ipfs.auto_redirect_dnslink}}"
-      label="$i18n{ipfsAutoRedirectDNSLinkLabel}"
-      sub-label="$i18n{ipfsAutoRedirectDNSLinkDesc}"
-      learn-more-url="$i18n{ipfsDNSLinkLearnMoreURL}">
-    </settings-toggle-button>
+        pref="{{prefs.brave.ipfs.auto_redirect_gateway}}"
+        label="$i18n{ipfsAutoRedirectGatewayLabel}"
+        sub-label="$i18n{ipfsAutoRedirectGatewayDesc}">
+      </settings-toggle-button>
+      <settings-toggle-button id="ipfsAutoRedirectDNSLink"
+        class="cr-row"
+        pref="{{prefs.brave.ipfs.auto_redirect_dnslink}}"
+        label="$i18n{ipfsAutoRedirectDNSLinkLabel}"
+        sub-label="$i18n{ipfsAutoRedirectDNSLinkDesc}"
+        learn-more-url="$i18n{ipfsDNSLinkLearnMoreURL}">
+      </settings-toggle-button>
 
-    <settings-toggle-button id="ipfsCompanionEnabled"
-      class="cr-row"
-      pref="{{prefs.brave.ipfs_companion_enabled}}"
-      label="IPFS Companion"
-      sub-label="$i18n{ipfsCompanionEnabledDesc}"
-      on-settings-boolean-control-change="onIPFSCompanionEnabledChange_">
-    </settings-toggle-button>
+      <settings-toggle-button id="ipfsCompanionEnabled"
+        class="cr-row"
+        pref="{{prefs.brave.ipfs_companion_enabled}}"
+        label="IPFS Companion"
+        sub-label="$i18n{ipfsCompanionEnabledDesc}"
+        on-settings-boolean-control-change="onIPFSCompanionEnabledChange_">
+      </settings-toggle-button>
 
-    <div class="settings-box" hidden="[[!isStorageMaxEnabled_]]">
-      <div class="flex cr-padded-text">
-        <div>$i18n{changeIpfsStorageMaxLabel}</div>
-        <div class="secondary">$i18n{changeIpfsStorageMaxDesc}</div>
+      <div class="settings-box" hidden="[[!isLocalNodeEnabled_]]">
+        <div class="flex cr-padded-text">
+          <div>$i18n{changeIpfsStorageMaxLabel}</div>
+          <div class="secondary">$i18n{changeIpfsStorageMaxDesc}</div>
+        </div>
+        <cr-input
+          id="ipfsStorageMax" type="number"
+          class="storage-input"
+          value="$i18n{ipfsStorageMaxValue}"
+          on-change=onChangeIpfsStorageMax_
+          min=1
+        >
+        </cr-input>
       </div>
-      <cr-input
-        id="ipfsStorageMax" type="number"
-        class="storage-input"
-        value="$i18n{ipfsStorageMaxValue}"
-        on-change=onChangeIpfsStorageMax_
-        min=1
-      >
-     </cr-input>
     </div>
-
+    <settings-animated-pages id="p2p-keys" section="ipfs">
+      <div route-path="default" hidden="[[!isLocalNodeLaunched_]]">
+        <cr-link-row id="p2pKeysLinkRow" start-icon="settings20:vpn-key"
+          class="hr" label="$i18n{ipfsIpnsKeysLinkTitle}"
+          sub-label="[[ipfsIpnsKeysLinkTitleDesc]]"
+          on-click="onP2pKeysEditorClick_"
+          role-description="$i18n{subpageArrowRoleDescription}">
+        </cr-link-row>
+      </div>
+      <template  is="dom-if" route-path="/ipfs/keys">
+        <settings-subpage
+          associated-control="[[$$('#p2pKeysLinkRow')]]"
+          page-title="$i18n{ipfsIpnsKeysLinkTitle}">
+          <settings-p2p-keys-subpage local-node-method="[[isLocalNodeEnabled_]]" local-node-launched="[[isLocalNodeLaunched_]]">
+          </settings-p2p-keys-subpage>
+        </settings-subpage>
+      </template>
+    </settings-animated-pages>
+    <settings-animated-pages id="ipfs-peers" section="ipfs">
+      <div route-path="default">
+        <cr-link-row id="peersLinkRow"
+          class="hr" label="$i18n{ipfsPeersLinkTitle}"
+          sub-label="[[ipfsPeersLinkTitleDesc]]"
+          on-click="onIpfsPeersEditorClick_"
+          role-description="$i18n{subpageArrowRoleDescription}">
+        </cr-link-row>
+      </div>
+      <template  is="dom-if" route-path="/ipfs/peers">
+        <settings-subpage
+          associated-control="[[$$('#ipfsPeersLinkRow')]]"
+          page-title="$i18n{ipfsPeersLinkTitle}">
+          <settings-ipfs-peers-subpage local-node-method="[[isLocalNodeEnabled_]]" local-node-launched="[[isLocalNodeLaunched_]]">
+          </settings-ipfs-peers-subpage>
+        </settings-subpage>
+      </template>
+    </settings-animated-pages>
     <template is="dom-if" if="[[showChangeIPFSGatewayDialog_]]" restamp>
-        <change-ipfs-gateway-dialog prefs="{{prefs}}" on-close="onChangeIPFSGatewayDialogClosed_">
-        </change-ipfs-gateway-dialog>
+      <change-ipfs-gateway-dialog prefs="{{prefs}}" on-close="onChangeIPFSGatewayDialogClosed_">
+      </change-ipfs-gateway-dialog>
     </template>
   </template>
   <script src="brave_ipfs_page.js"></script>

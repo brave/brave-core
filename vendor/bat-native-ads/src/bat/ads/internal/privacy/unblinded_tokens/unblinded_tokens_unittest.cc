@@ -73,7 +73,6 @@ TEST_F(BatAdsUnblindedTokensTest, GetAllTokens) {
       "fhIcLhD0f1WFod7JpuEkj5pW/rg7nl48EX6nmekgd3D2Hz8JgJnSarzP/8+3l+MW",
       "hQ+6+jh5DUUBFhhGn7bPLDjqrUIKNi/T8QDt1x01bcW9PLADg6aS73dzrVBsHav4"
       "4+4q1QhFE/93u0KHVtZ1RPKMqkt8MIiC6RG575102nGRTJDA2kSOgUM75hjDsI8z"};
-
   UnblindedTokenList expected_unblinded_tokens =
       CreateUnblindedTokens(expected_unblinded_tokens_base64);
 
@@ -93,7 +92,7 @@ TEST_F(BatAdsUnblindedTokensTest, GetTokensAsList) {
 
   EXPECT_EQ(list_values.GetSize(), unblinded_tokens.size());
 
-  for (auto& value : list_values) {
+  for (auto& value : list_values.GetList()) {
     base::DictionaryValue* dictionary = nullptr;
     if (!value.GetAsDictionary(&dictionary)) {
       FAIL();
@@ -352,6 +351,29 @@ TEST_F(BatAdsUnblindedTokensTest, DoNotRemoveTheSameTokenTwice) {
   // Assert
   const int count = get_unblinded_tokens()->Count();
   EXPECT_EQ(2, count);
+}
+
+TEST_F(BatAdsUnblindedTokensTest, RemoveMatchingTokens) {
+  // Arrange
+  UnblindedTokenList unblinded_tokens = GetUnblindedTokens(3);
+  get_unblinded_tokens()->SetTokens(unblinded_tokens);
+
+  UnblindedTokenInfo unblinded_token = unblinded_tokens.back();
+  unblinded_tokens.pop_back();
+
+  // Act
+  get_unblinded_tokens()->RemoveTokens(unblinded_tokens);
+
+  // Assert
+  const std::vector<std::string> expected_unblinded_tokens_base64 = {
+      "bbpQ1DcxfDA+ycNg9WZvIwinjO0GKnCon1UFxDLoDOLZVnKG3ufruNZi/n8dO+G2"
+      "AkTiWkUKbi78xCyKsqsXnGYUlA/6MMEOzmR67rZhMwdJHr14Fu+TCI9JscDlWepa"};
+  const UnblindedTokenList expected_unblinded_tokens =
+      CreateUnblindedTokens(expected_unblinded_tokens_base64);
+
+  unblinded_tokens = get_unblinded_tokens()->GetAllTokens();
+
+  EXPECT_EQ(expected_unblinded_tokens, unblinded_tokens);
 }
 
 TEST_F(BatAdsUnblindedTokensTest, RemoveAllTokens) {

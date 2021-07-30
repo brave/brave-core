@@ -51,18 +51,6 @@
     "message": "Λεπτομέρειες",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "Το Υπόλοιπό Σας",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "Πόντοι BAT",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "μπορεί να χρησιμοποιηθεί στις Ανταμοιβές Brave για συνεισφορά στους αγαπημένους σας δημιουργούς περιεχομένου. Οι Πόντοι BAT δεν μπορούν να ανταλλαγούν με BAT.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "ανοιχτό ",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "Το Κέρμα Επιχορηγήσεων Αποκτήθηκε",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "Χορηγίες Πόντων που Διεκδικήθηκαν",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "Κέρδη από Διαφημίσεις",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Φιλοδώρημα για μια φορά",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "λήγει στις",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Αυτός ο δημιουργός δεν έχει ακόμη εγγραφεί για να λάβει συνεισφορές από χρήστες Brave. Οποιαδήποτε φιλοδωρήματα θα στείλετε θα παραμείνουν στο πορτοφόλι σας μέχρι να επαληθευτούν.",
+    "message": "Αυτός ο δημιουργός δεν διαθέτει ακόμα κατάλληλη διαμόρφωση για να λαμβάνει φιλοδωρήματα από το πορτοφόλι σας. Αν στείλετε κάποιο φιλοδώρημα, αυτό θα παραμείνει στο πορτοφόλι σας και θα επαναλαμβάνεται αυτόματα επί 90 ημέρες.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Ενεργοποιήστε τις Διαφημίσεις",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Δωρεάν Χορηγία Τόκεν",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Χορήγηση Δωρεάν Πόντου",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Κερδίσατε μια Ανταμοιβή Διαφημίσεων!",
@@ -591,17 +567,9 @@
     "message": "Διακριτικό",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "πόντοι",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Κέρμα Επιχορηγήσεων",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Πόντος Eπιχορηγήσεων",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Γεια σας, $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Πρέπει να έχετε τουλάχιστον 25 BAT για να δημιουργήσετε έναν λογαριασμό Uphold. Παρακαλούμε δοκιμάστε ξανά αργότερα.\nΕάν έχετε ήδη έναν επαληθευμένο λογαριασμό Uphold, συνδεθείτε.",
-    "description": "Text for login button"
+    "message": "Πρέπει να έχετε ελάχιστο $amount$ BAT για να δημιουργήσετε έναν Upholod λογαριασμό. Αν έχετε ήδη επαληθευμένο λογαριασμό, συνεχίστε για να συνδεθείτε.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "Σε σύνδεση",
@@ -789,16 +763,40 @@
     "message": "Χρησιμοποιώντας τις Ανταμοιβές Brave βοηθάτε να γίνει το διαδίκτυο ένα καλύτερο μέρος για όλους. Και αυτό είναι φοβερό!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "Οι Ανταμοιβές Brave στην Ιαπωνία μεταβαίνουν σε ένα νέο σύστημα!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "Επαληθεύστε το πορτοφόλι σας",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "Μάθετε περισσότερα",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "Για να κάνετε ανάληψη των μαρκών που κερδίσατε από την προβολή διαφημίσεων, θα πρέπει να επαληθεύσετε το πορτοφόλι σας.",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "Παρακαλούμε χρησιμοποιήστε τα BAP σας έως τις 13 Μαρτίου. Μετά από αυτό, τα BAP θα διακοπούν.",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "Επαλήθευση αργότερα",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Επαλήθευση πορτοφολιού",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Το πορτοφόλι bitFlyer είναι μια υπηρεσία που διαχειρίζεται η bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Με την επαλήθευση και σύνδεση του πορτοφολιού σας με έναν λογαριασμό bitFlyer, θα έχετε τη δυνατότητα να αποθηκεύετε και να διαχειρίζεστε πιο εύκολα τις μάρκες που έχετε κερδίσει μέσω Brave Rewards",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Μάθετε περισσότερα$link_end$ σχετικά με τον τρόπο σύνδεσης του Brave browser με τον λογαριασμό σας bitFlyer. ",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

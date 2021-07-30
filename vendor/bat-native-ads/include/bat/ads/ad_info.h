@@ -18,6 +18,10 @@ struct ADS_EXPORT AdInfo {
   AdInfo(const AdInfo& info);
   ~AdInfo();
 
+  bool operator==(const AdInfo& rhs) const;
+
+  bool operator!=(const AdInfo& rhs) const;
+
   bool IsValid() const;
 
   AdType type = AdType::kUndefined;

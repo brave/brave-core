@@ -45,7 +45,8 @@ void LegacyBatState::OnLoad(
   ledger::ClientProperties state;
   const ledger::ClientState client_state;
   if (!client_state.FromJson(data, &state)) {
-    BLOG(0, "Failed to load client state: " << data);
+    BLOG(0, "Failed to load client state");
+    BLOG(6, "Client state contents: " << data);
     callback(ledger::type::Result::LEDGER_ERROR);
     return;
   }

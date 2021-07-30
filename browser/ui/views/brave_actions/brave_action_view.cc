@@ -17,6 +17,7 @@
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
+#include "ui/gfx/skia_util.h"
 #include "ui/views/controls/button/menu_button.h"
 #include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/view.h"
@@ -56,7 +57,7 @@ SkPath BraveActionView::GetHighlightPath() const {
   gfx::Rect rect(size());
   rect.Inset(highlight_insets);
   const int radii = ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
-      views::EMPHASIS_MAXIMUM, rect.size());
+      views::Emphasis::kMaximum, rect.size());
   path.addRoundRect(gfx::RectToSkRect(rect), radii, radii);
   return path;
 }

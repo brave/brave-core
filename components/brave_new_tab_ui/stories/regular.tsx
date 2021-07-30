@@ -11,6 +11,7 @@ import { getActionsForDispatch } from '../api/getActions'
 import store from '../store'
 import { getNewTabData, getGridSitesData } from './default/data/storybookState'
 import getTodayState from './default/data/todayStorybookState'
+import getBraveNewsDisplayAd from './default/data/getBraveNewsDisplayAd'
 
 const doNothingDispatch: Dispatch = (action: any) => action
 
@@ -20,6 +21,7 @@ function getActions () {
 
 // TODO(petemill): privateCDN should be in /common/
 import { getUnpaddedAsDataUrl } from '../../brave_extension/extension/brave_extension/background/today/privateCDN'
+import getFTXStorybookState from '../widgets/ftx/ftx_storybook_state'
 
 // @ts-ignore
 window.braveStorybookUnpadUrl = async function UnpadUrl (paddedUrl: string, mimeType = 'image/jpg'): Promise<string> {
@@ -39,10 +41,6 @@ const StoreProvider: React.FunctionComponent = ({ children }) => {
   )
 }
 
-function dismissBraveTodayIntroCard () {
-  console.log('brave today intro card dismissed')
-}
-
 export default {
   title: 'New Tab',
   decorators: [
@@ -58,6 +56,7 @@ export const Regular = () => {
   const todayState = getTodayState()
   return (
     <NewTabPage
+      ftx={getFTXStorybookState()}
       newTabData={newTabData}
       todayData={todayState}
       gridSitesData={gridSitesData}
@@ -70,9 +69,10 @@ export const Regular = () => {
       saveShowTogether={doNothing}
       saveShowGemini={doNothing}
       saveShowCryptoDotCom={doNothing}
+      saveShowFTX={doNothing}
       saveBrandedWallpaperOptIn={doNothing}
       saveSetAllStackWidgets={doNothing}
-      onReadBraveTodayIntroCard={dismissBraveTodayIntroCard}
+      getBraveNewsDisplayAd={getBraveNewsDisplayAd}
     />
   )
 }

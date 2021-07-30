@@ -13,7 +13,7 @@
   "brave": {
     "brave_ads": {
       "ads_per_hour": "2",
-      "enabled": true,
+      "enabled": false,
       "prefs": {
         "version": 6
       },

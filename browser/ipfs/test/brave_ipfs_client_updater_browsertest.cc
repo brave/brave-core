@@ -6,7 +6,7 @@
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/test/thread_test_helper.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/ipfs/brave_ipfs_client_updater.h"
@@ -101,6 +101,10 @@ class BraveIpfsClientUpdaterTest : public ExtensionBrowserTest {
     base::RunLoop loop;
     loop.RunUntilIdle();
   }
+
+  void SetIpfsExecutablePath(const base::FilePath& path) {
+    g_brave_browser_process->ipfs_client_updater()->SetExecutablePath(path);
+  }
 };
 
 // Load the Ipfs client updater extension and verify that it correctly
@@ -130,5 +134,10 @@ IN_PROC_BROWSER_TEST_F(BraveIpfsClientUpdaterTest, IpfsExecutableReady) {
   ASSERT_TRUE(PathExists(executable_path));
 
   EXPECT_EQ(ipfs_service->GetIpfsExecutablePath(), executable_path);
+  ASSERT_TRUE(ipfs_service->IsIPFSExecutableAvailable());
+
+  base::FilePath new_path(FILE_PATH_LITERAL("newpath"));
+  SetIpfsExecutablePath(new_path);
+  EXPECT_EQ(ipfs_service->GetIpfsExecutablePath(), new_path);
   ASSERT_TRUE(ipfs_service->IsIPFSExecutableAvailable());
 }

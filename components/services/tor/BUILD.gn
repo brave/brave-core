@@ -1,7 +1,7 @@
-source_set("tor") {
+static_library("tor") {
   visibility = [
-    "//brave/utility:*",
-    "//brave/test:*"
+    "//brave/test:*",
+    "//chrome/utility:*",
   ]
 
   sources = [
@@ -10,8 +10,9 @@ source_set("tor") {
   ]
 
   deps = [
-    "//base",
-    "//mojo/public/cpp/bindings",
     "public/interfaces",
+    "//base",
+    "//brave/components/child_process_monitor",
+    "//mojo/public/cpp/bindings",
   ]
 }

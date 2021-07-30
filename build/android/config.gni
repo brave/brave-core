@@ -9,6 +9,10 @@ declare_args() {
 brave_android_manifest_includes = [ "//brave/android/java/AndroidManifest.xml" ]
 
 brave_chrome_java_deps = [
+  "//brave/android/java/org/chromium/chrome/browser/search_engines/settings:java",
+  "//brave/browser/notifications:brave_java",
+  "//brave/browser/notifications:java",
+  "//brave/browser/safe_browsing/android/java/src/org/chromium/chrome/browser/safe_browsing/settings:java",
   "//brave/third_party/android_deps:com_airbnb_android_java",
   "//brave/third_party/android_deps:com_android_installreferrer_java",
   "//brave/third_party/android_deps:google_play_services_safetynet_java",
@@ -16,6 +20,13 @@ brave_chrome_java_deps = [
   "//third_party/android_deps:google_play_services_vision_common_java",
   "//third_party/android_deps:google_play_services_vision_java",
 ]
+
+if (brave_wallet_enabled) {
+  brave_chrome_java_deps +=
+      [ "//brave/components/brave_wallet/common:mojom_java" ]
+}
+
+brave_chrome_all_java_deps = [ "//brave/android/features/tab_ui:java" ]
 
 # To use our overrided enum in java, put the header file of our overrided enum
 # in brave_android_java_enums_srcjar target and add the chromium header file of

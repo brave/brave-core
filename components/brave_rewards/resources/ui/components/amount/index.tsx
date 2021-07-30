@@ -15,7 +15,6 @@ export interface Props {
   selected?: boolean
   type?: 'big' | 'small'
   currency?: string
-  onlyAnonWallet?: boolean
 }
 
 export default class Amount extends React.PureComponent<Props, {}> {
@@ -34,13 +33,13 @@ export default class Amount extends React.PureComponent<Props, {}> {
   }
 
   getBatString = () => {
-    const { onlyAnonWallet, type } = this.props
+    const { type } = this.props
 
     if (type !== 'big') {
       return null
     }
 
-    return getLocale(onlyAnonWallet ? 'bap' : 'bat')
+    return getLocale('bat')
   }
 
   render () {

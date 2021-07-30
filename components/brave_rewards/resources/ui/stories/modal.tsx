@@ -19,8 +19,7 @@ import {
   ModalDonation,
   ModalPending,
   ModalRedirect,
-  ModalShowAdsHistory,
-  ModalVerify
+  ModalShowAdsHistory
 } from '../components'
 
 const favicon = require('./img/brave-favicon.png')
@@ -46,6 +45,7 @@ storiesOf('Rewards/Modal', module)
     return (
       <div style={{ maxWidth: '900px', background: '#fff', padding: '30px' }}>
         <ModalBackupRestore
+          paymentId={'f2e6494e-fb21-44d1-90e9-b5408799acd8'}
           funds={'55 BAT'}
           activeTabId={store.state.activeTabId}
           showBackupNotice={boolean('Show backup notice?', false)}
@@ -138,7 +138,6 @@ storiesOf('Rewards/Modal', module)
   .add('Activity', () => {
     return (
       <ModalActivity
-        onlyAnonWallet={false}
         activityRows={[
           {
             profile: {
@@ -338,17 +337,6 @@ storiesOf('Rewards/Modal', module)
       />
     )
   })
-  .add('Verify', () => {
-    return (
-      <div style={{ width: '373px', minHeight: '580px', position: 'relative', borderRadius: '5px', overflow: 'hidden' }}>
-        <ModalVerify
-          onVerifyClick={doNothing}
-          onClose={doNothing}
-          walletProvider={'Uphold'}
-        />
-      </div>
-    )
-  })
   .add('Show Ads History',() => {
     const adsPerHour = 2
     const adUuid: number = 0
@@ -518,7 +506,7 @@ storiesOf('Rewards/Modal', module)
         rows={rows}
         adsPerHour={adsPerHour}
         hasSavedEntries={true}
-        totalDays={7}
+        totalDays={30}
       />
     )
   })

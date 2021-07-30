@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -12,8 +13,8 @@ namespace installer {
 
 void DoPostUninstallOperations(const base::Version& version,
                                const base::FilePath& local_data_path,
-                               const base::string16& distribution_data) {
+                               const std::wstring& distribution_data) {
   // Brave browser doesn't launch uninstall survey page.
 }
 
-}
+}  // namespace installer

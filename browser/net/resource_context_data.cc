@@ -61,7 +61,7 @@ BraveProxyingWebSocket* ResourceContextData::StartProxyingWebSocket(
     content::ContentBrowserClient::WebSocketFactory factory,
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    const base::Optional<std::string>& user_agent,
+    const absl::optional<std::string>& user_agent,
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client,
     content::BrowserContext* browser_context,
@@ -92,7 +92,6 @@ BraveProxyingWebSocket* ResourceContextData::StartProxyingWebSocket(
     request.headers.SetHeader(net::HttpRequestHeaders::kUserAgent, *user_agent);
   }
   request.request_initiator = origin;
-  request.render_frame_id = frame_id;
 
   auto proxy = std::make_unique<BraveProxyingWebSocket>(
       std::move(factory), request, std::move(handshake_client),
@@ -106,7 +105,6 @@ BraveProxyingWebSocket* ResourceContextData::StartProxyingWebSocket(
   return raw_proxy;
 }
 
-
 void ResourceContextData::RemoveProxy(BraveProxyingURLLoaderFactory* proxy) {
   auto it = proxies_.find(proxy);
   DCHECK(it != proxies_.end());
@@ -118,4 +116,3 @@ void ResourceContextData::RemoveProxyWebSocket(BraveProxyingWebSocket* proxy) {
   DCHECK(it != websocket_proxies_.end());
   websocket_proxies_.erase(it);
 }
-

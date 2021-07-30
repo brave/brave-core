@@ -22,25 +22,6 @@
 
 namespace brave_perf_predictor {
 
-namespace {
-content::WebContents* GetWebContents(int render_process_id,
-                                     int render_frame_id,
-                                     int frame_tree_node_id) {
-  content::WebContents* web_contents =
-      content::WebContents::FromFrameTreeNodeId(frame_tree_node_id);
-  if (!web_contents) {
-    content::RenderFrameHost* rfh =
-        content::RenderFrameHost::FromID(render_process_id, render_frame_id);
-    if (!rfh) {
-      return nullptr;
-    }
-    web_contents = content::WebContents::FromRenderFrameHost(rfh);
-  }
-  return web_contents;
-}
-
-}  // namespace
-
 PerfPredictorTabHelper::PerfPredictorTabHelper(
     content::WebContents* web_contents)
     : WebContentsObserver(web_contents),
@@ -70,13 +51,11 @@ void PerfPredictorTabHelper::RegisterProfilePrefs(
 // static
 void PerfPredictorTabHelper::DispatchBlockedEvent(
     const std::string& subresource,
-    int render_process_id,
-    int render_frame_id,
     int frame_tree_node_id) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   content::WebContents* web_contents =
-      GetWebContents(render_process_id, render_frame_id, frame_tree_node_id);
+      content::WebContents::FromFrameTreeNodeId(frame_tree_node_id);
   if (!web_contents)
     return;
 

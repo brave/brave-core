@@ -5,6 +5,8 @@
 
 #include "brave/browser/net/brave_stp_util.h"
 
+#include <string>
+
 #include "base/no_destructor.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
@@ -37,7 +39,7 @@ void RemoveTrackableSecurityHeadersForThirdParty(
         new net::HttpResponseHeaders(original_response_headers->raw_headers());
   }
   for (auto header : *TrackableSecurityHeaders()) {
-    (*override_response_headers)->RemoveHeader(header.as_string());
+    (*override_response_headers)->RemoveHeader(std::string(header));
   }
 }
 

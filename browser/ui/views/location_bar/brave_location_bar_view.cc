@@ -25,15 +25,18 @@
 #include "components/omnibox/browser/omnibox_edit_model.h"
 #include "components/version_info/channel.h"
 #include "content/public/browser/navigation_entry.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/gfx/skia_util.h"
 #include "ui/views/controls/highlight_path_generator.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/ui/views/location_bar/onion_location_view.h"
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
+#include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/ui/views/location_bar/ipfs_location_view.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
@@ -56,12 +59,12 @@ class BraveLocationBarViewFocusRingHighlightPathGenerator
   DISALLOW_COPY_AND_ASSIGN(BraveLocationBarViewFocusRingHighlightPathGenerator);
 };
 
-base::Optional<SkColor> GetFocusRingColor(Profile* profile) {
+absl::optional<SkColor> GetFocusRingColor(Profile* profile) {
   constexpr SkColor kPrivateFocusRingColor = SkColorSetRGB(0xC6, 0xB3, 0xFF);
   constexpr SkColor kTorPrivateFocusRingColor = SkColorSetRGB(0xCF, 0xAB, 0xE2);
   if (brave::IsRegularProfile(profile) || profile->IsGuestSession()) {
     // Don't update color.
-    return base::nullopt;
+    return absl::nullopt;
   }
   if (profile->IsTor())
     return kTorPrivateFocusRingColor;
@@ -107,8 +110,9 @@ void BraveLocationBarView::Init() {
 bool BraveLocationBarView::ShouldShowIPFSLocationView() const {
 #if BUILDFLAG(IPFS_ENABLED)
   const GURL& url = GetLocationBarModel()->GetURL();
-  if (!ipfs::IsIPFSScheme(url) || !ipfs::IsIpfsEnabled(profile_) ||
-      !ipfs::IsLocalGatewayConfigured(profile_))
+  if (!ipfs::IpfsServiceFactory::IsIpfsEnabled(profile_) ||
+      !ipfs::IsIPFSScheme(url) ||
+      !ipfs::IsLocalGatewayConfigured(profile_->GetPrefs()))
     return false;
 
   return true;
@@ -241,7 +245,7 @@ void BraveLocationBarView::ChildPreferredSizeChanged(views::View* child) {
 
 int BraveLocationBarView::GetBorderRadius() const {
   return ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
-      views::EMPHASIS_HIGH, size());
+      views::Emphasis::kHigh, size());
 }
 
 SkPath BraveLocationBarView::GetFocusRingHighlightPath() const {

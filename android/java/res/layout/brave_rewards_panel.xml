@@ -86,6 +86,7 @@
 
                                     <!-- The 'publisher_favicon_update' substitutes 'publisher_favicon' when not available-->
                                     <ProgressBar
+                                        tools:ignore="TooDeepLayout"
                                         android:id="@+id/publisher_favicon_update"
                                         android:indeterminateDrawable="@drawable/progress_indeterminate"
                                         android:layout_width="60dp"
@@ -139,7 +140,7 @@
                                         <LinearLayout
                                             android:layout_height="wrap_content"
                                             android:layout_width="wrap_content"
-                                            android:orientation="horizontal" >
+                                            android:orientation="vertical" >
 
                                             <TextView
                                                 android:id="@+id/publisher_verified"
@@ -149,19 +150,9 @@
                                                 android:text="@string/brave_ui_verified_publisher"
                                                 app:drawableStartCompat="@drawable/bat_verified"
                                                 android:drawablePadding="4dp"
+                                                android:layout_marginBottom="4dp"
                                                 android:fontFamily="sans-serif"
                                                 android:gravity="start"
-                                                android:textSize="14sp"
-                                                android:textColor="@color/modern_grey_700"
-                                                android:visibility="gone" />
-
-                                            <TextView
-                                                android:id="@+id/publisher_delimiter"
-                                                android:layout_height="wrap_content"
-                                                android:layout_width="wrap_content"
-                                                android:layout_gravity="start|center"
-                                                android:text=""
-                                                android:fontFamily="sans-serif"
                                                 android:textSize="14sp"
                                                 android:textColor="@color/modern_grey_700"
                                                 android:visibility="gone" />
@@ -175,9 +166,9 @@
                                                 android:fontFamily="sans-serif"
                                                 android:textSize="14sp"
                                                 android:textColor="#4E56CD"
+                                                android:background="?attr/selectableItemBackground"
                                                 android:clickable="true"
-                                                android:focusable="true"
-                                                android:visibility="gone" />
+                                                android:focusable="true"/>
 
                                         </LinearLayout>
 

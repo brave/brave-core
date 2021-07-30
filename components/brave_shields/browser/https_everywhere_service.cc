@@ -148,10 +148,8 @@ void HTTPSEverywhereService::OnComponentReady(
     const base::FilePath& install_dir,
     const std::string& manifest) {
   GetTaskRunner()->PostTask(
-      FROM_HERE,
-      base::Bind(&HTTPSEverywhereService::InitDB,
-                 AsWeakPtr(),
-                 install_dir));
+      FROM_HERE, base::BindOnce(&HTTPSEverywhereService::InitDB, AsWeakPtr(),
+                                install_dir));
 }
 
 bool HTTPSEverywhereService::GetHTTPSURL(
@@ -265,8 +263,8 @@ void HTTPSEverywhereService::AddHTTPSEUrlToRedirectList(
 std::string HTTPSEverywhereService::ApplyHTTPSRule(
     const std::string& originalUrl,
     const std::string& rule) {
-  base::Optional<base::Value> json_object = base::JSONReader::Read(rule);
-  if (base::nullopt == json_object || !json_object->is_list()) {
+  absl::optional<base::Value> json_object = base::JSONReader::Read(rule);
+  if (absl::nullopt == json_object || !json_object->is_list()) {
     return "";
   }
 

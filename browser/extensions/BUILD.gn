@@ -1,15 +1,17 @@
+import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_together/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/config.gni")
-import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
 import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
+import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
+import("//brave/components/speedreader/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//components/gcm_driver/config.gni")
@@ -54,6 +56,7 @@ source_set("extensions") {
     ":resources",
     "//base",
     "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/component_updater",
     "//brave/browser/profiles",
     "//brave/browser/webcompat_reporter",
     "//brave/common",
@@ -91,20 +94,29 @@ source_set("extensions") {
     deps += [ "//brave/components/sidebar" ]
   }
 
-  if (brave_wallet_enabled) {
+  if (enable_speedreader) {
+    deps += [ "//brave/components/speedreader" ]
+  }
+
+  # It seems like this brave_wallet_api should be renamed to ethereum_remote_client_api.
+  # However this is not possible right now because the ethereum-remote-client extension
+  # uses chrome.braveWallet, so the API is intentionally not being renamed now.
+  if (ethereum_remote_client_enabled) {
     sources += [
       "api/brave_wallet_api.cc",
       "api/brave_wallet_api.h",
-      "brave_wallet_util.cc",
-      "brave_wallet_util.h",
+      "ethereum_remote_client_util.cc",
+      "ethereum_remote_client_util.h",
     ]
     configs += [
       ":infura_config",
       ":brave_services_config",
     ]
     deps += [
+      "//brave/browser/ethereum_remote_client",
       "//brave/components/brave_wallet/browser",
-      "//brave/components/brave_wallet/common",
+      "//components/infobars/content",
+      "//components/prefs",
     ]
   }
 
@@ -129,6 +141,8 @@ source_set("extensions") {
     ]
 
     deps += [
+      "//brave/browser/brave_ads",
+      "//brave/components/brave_ads/browser",
       "//brave/components/brave_rewards/browser",
       "//brave/vendor/bat-native-ads:headers",
       "//brave/vendor/bat-native-ledger:headers",
@@ -151,6 +165,18 @@ source_set("extensions") {
     ]
     deps += [
       "//brave/components/gemini/browser",
+      "//brave/components/ntp_widget_utils/browser",
+    ]
+  }
+
+  if (enable_ftx) {
+    sources += [
+      "api/ftx_api.cc",
+      "api/ftx_api.h",
+    ]
+    deps += [
+      "//brave/components/ftx/browser",
+      "//brave/components/ftx/common",
       "//brave/components/ntp_widget_utils/browser",
     ]
   }

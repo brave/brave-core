@@ -1,35 +1,36 @@
-use crate::dom;
+use crate::{dom, util};
 use html5ever::tendril::StrTendril;
 use html5ever::tree_builder::TreeSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
 use html5ever::{LocalName, QualName};
+use kuchiki::iter::NodeIterator;
 use kuchiki::NodeData::{
     Comment, Doctype, Document, DocumentFragment, Element, ProcessingInstruction, Text,
 };
 use kuchiki::NodeRef as Handle;
-use kuchiki::{ElementData, NodeRef, Sink};
+use kuchiki::{ElementData, Sink};
 use regex::Regex;
 use std::cmp::Ordering;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::str::FromStr;
 use url::Url;
 
 pub static PUNCTUATIONS_REGEX: &str = r"([,]\?)";
-pub static UNLIKELY_CANDIDATES: &str = "-ad-|ai2html|banner\
+pub static UNLIKELY_CANDIDATES: &str = "(?i)-ad-|ai2html|banner\
     |breadcrumbs|combx|comment|community|cover-wrap|disqus|extra|foot|gdpr\
     |header|legends|menu|related|remark|replies|rss|shoutbox|sidebar|skyscraper\
     |social|sponsor|supplemental|ad-break|agegate|pagination|pager|popup\
-    |yom-remote";
-pub static LIKELY_CANDIDATES: &str = "and|article|body|column|main\
-    |shadow\
-    |a";
-pub static POSITIVE_CANDIDATES: &str = "article|body|content|entry\
-        |hentry|h-entry|main|page|pagination|post|text|blog|story|paragraph|speakable";
-pub static NEGATIVE_CANDIDATES: &str = "hidden|^hid$|hid$|hid|^hid\
-        |banner|combx|comment|com-|contact|foot|footer|footnote|gdpr|header\
-        |legends|menu|related|remark|replies|rss|shoutbox|sidebar|skyscraper\
-        |social|sponsor|supplemental|ad-break|agegate|pagination|pager|popup\
-        yom-remote";
+    |masthead|yom-remote";
+pub static LIKELY_CANDIDATES: &str = "(?i)and|article|body|column|content|main\
+    |shadow";
+pub static POSITIVE_CANDIDATES: &str = "(?i)article|body|content|entry|hentry|h-entry|\
+        main|page|pagination|post|text|blog|story";
+pub static NEGATIVE_CANDIDATES: &str = "(?i)-ad-|hidden|^hid$| hid$| hid |\
+        ^hid |banner|combx|comment|com-|contact|foot|footer|footnote|gdpr|\
+        masthead|media|meta|outbrain|promo|related|scroll|share|shoutbox|\
+        sidebar|skyscraper|sponsor|shopping|tags|tool|widget|ai2html|legends|\
+        social|sponsor|ad-break";
+pub static HTML_TAGS: &str = r"<[^>]*>";
 static BLOCK_CHILD_TAGS: [&LocalName; 9] = [
     &local_name!("a"),
     &local_name!("blockquote"),
@@ -47,8 +48,32 @@ static ALTER_TO_DIV_EXCEPTIONS: [&LocalName; 3] = [
     &local_name!("section"),
     &local_name!("p"),
 ];
+static LOADABLE_IMG_SUFFIX: [&str; 4] = [".jpg", ".jpeg", ".png", ".webp"];
+static PRESENTATIONAL_ATTRIBUTES: [&LocalName; 12] = [
+    &local_name!("align"),
+    &local_name!("background"),
+    &local_name!("bgcolor"),
+    &local_name!("border"),
+    &local_name!("cellpadding"),
+    &local_name!("cellspacing"),
+    &local_name!("frame"),
+    &local_name!("hspace"),
+    &local_name!("rules"),
+    &local_name!("style"),
+    &local_name!("valign"),
+    &local_name!("vspace"),
+];
 
 static DECAY_FACTOR: f32 = 3.0;
+
+// The number of candidates to consider when choosing the "top" candidate. These
+// top candidates are used in the alternative candidates part of the algorithm.
+// This number is taken from the Mozilla implementation.
+// https://github.com/mozilla/readability/blob/e2aea3121a9bb6e05478edc1596026c41c782779/Readability.js#L111
+static NUM_TOP_CANDIDATES: usize = 5;
+
+// The minimum score to be considered as a top candidate under strict heuristics.
+static CANDIDATE_SCORE_THRESHOLD: f32 = 5.0;
 
 lazy_static! {
     static ref PUNCTUATIONS: Regex = Regex::new(PUNCTUATIONS_REGEX).unwrap();
@@ -56,6 +81,7 @@ lazy_static! {
     static ref UNLIKELY: Regex = Regex::new(UNLIKELY_CANDIDATES).unwrap();
     static ref POSITIVE: Regex = Regex::new(POSITIVE_CANDIDATES).unwrap();
     static ref NEGATIVE: Regex = Regex::new(NEGATIVE_CANDIDATES).unwrap();
+    static ref DECODED_HTML_TAGS: Regex = Regex::new(HTML_TAGS).unwrap();
 }
 
 pub struct TopCandidate {
@@ -93,12 +119,6 @@ impl PartialEq for TopCandidate {
 
 impl Eq for TopCandidate {}
 
-#[derive(Default)]
-pub struct Title {
-    pub title: String,
-    pub is_meta: bool,
-}
-
 /// Add https:// to the img src, if missing.
 pub fn fix_img_path(data: &ElementData, url: &Url) -> Option<Url> {
     if let Some(src) = data.attributes.borrow().get(local_name!("src")) {
@@ -112,6 +132,98 @@ pub fn fix_img_path(data: &ElementData, url: &Url) -> Option<Url> {
     } else {
         None
     }
+}
+
+bitflags::bitflags! {
+    pub struct ImageLoadedMask: u8 {
+        const SRC = 1 << 0;
+        const SRCSET = 1 << 1;
+
+        const NONE = 0;
+    }
+}
+/// Returns true if the image src loads without JavaScript logic. Some sites like Kotaku and The
+/// Atlantic try and get fancy with this. Our simple heuristic is to check if src is set something
+/// reasonable or srcset is set at all. Some things we've seen in the wild are srcset being left
+/// out in favor of data-srcset, and src being base64 encoded.
+#[inline]
+fn img_is_loaded(data: &ElementData) -> ImageLoadedMask {
+    let mut mask: ImageLoadedMask = ImageLoadedMask::NONE;
+    if let Some(src) = data.attributes.borrow().get(local_name!("src")) {
+        for suffix in LOADABLE_IMG_SUFFIX.iter() {
+            if src.ends_with(suffix) {
+                mask |= ImageLoadedMask::SRC;
+                break;
+            }
+        }
+        if !mask.contains(ImageLoadedMask::SRC) {
+            // Try parsing the URL to ignore url params
+            match Url::parse(src) {
+                Ok(url) => {
+                    for suffix in LOADABLE_IMG_SUFFIX.iter() {
+                        if url.path().ends_with(suffix) {
+                            mask |= ImageLoadedMask::SRC;
+                            break;
+                        }
+                    }
+                }
+                _ => (),
+            }
+        }
+    }
+
+    if data
+        .attributes
+        .borrow()
+        .get(local_name!("srcset"))
+        .is_some()
+    {
+        mask |= ImageLoadedMask::SRCSET;
+    }
+    mask
+}
+
+/// Contains metadata about how to load a lazy loaded image.
+struct LazyImage {
+    local: LocalName,
+    value: String,
+}
+
+/// Try and find attributes corresponding to a lazy loaded image and return the new attribute
+/// metadata. Look for anything ending in *srcset (data-srcset is fairly common) or any element
+/// with image suffixes.
+fn try_lazy_img(
+    data: &ElementData,
+    mut mask: ImageLoadedMask,
+) -> (ImageLoadedMask, Vec<LazyImage>) {
+    let mut lazy_srcs: Vec<LazyImage> = Vec::with_capacity(2);
+    for (name, value) in &data.attributes.borrow().map {
+        if mask.is_all() {
+            break;
+        }
+        if !mask.contains(ImageLoadedMask::SRCSET) {
+            if name.local.as_ref().ends_with("-srcset") {
+                mask |= ImageLoadedMask::SRCSET;
+                lazy_srcs.push(LazyImage {
+                    local: local_name!("srcset"),
+                    value: value.value.clone(),
+                });
+            }
+        }
+        if !mask.contains(ImageLoadedMask::SRC) {
+            if LOADABLE_IMG_SUFFIX
+                .iter()
+                .any(|suffix| value.value.ends_with(suffix))
+            {
+                mask |= ImageLoadedMask::SRC;
+                lazy_srcs.push(LazyImage {
+                    local: local_name!("src"),
+                    value: value.value.clone(),
+                });
+            }
+        }
+    }
+    (mask, lazy_srcs)
 }
 
 /// Returns the proportion of links an element contains with the amount of text in the subtree.
@@ -171,13 +283,15 @@ pub fn is_candidate(handle: &Handle) -> bool {
 pub fn init_content_score(handle: &Handle) -> f32 {
     let score = match handle.data() {
         Element(ref data) => match data.name.local {
-            local_name!("article") => 10.0,
-            local_name!("div") => 5.0,
-            local_name!("h1") | local_name!("h2") | local_name!("h3") | local_name!("h4") => -5.0,
+            local_name!("div") | local_name!("section") => 5.0,
+            local_name!("h1")
+            | local_name!("h2")
+            | local_name!("h3")
+            | local_name!("h4")
+            | local_name!("th") => -5.0,
             local_name!("blockquote") => 3.0,
             local_name!("pre") => 3.0,
             local_name!("td") => 3.0,
-            local_name!("th") => 5.0,
             local_name!("address") => -3.0,
             local_name!("ol") => -3.0,
             local_name!("ul") => -3.0,
@@ -199,7 +313,7 @@ pub fn calc_content_score(handle: &Handle) -> f32 {
     let mut text = String::new();
     dom::extract_text(handle, &mut text, true);
     let mat = PUNCTUATIONS.find_iter(&text);
-    score += mat.count() as f32;
+    score += f32::min(mat.count() as f32, 3.0);
     score += f32::min(f32::floor(text.chars().count() as f32 / 100.0), 3.0);
     score
 }
@@ -225,33 +339,6 @@ pub fn get_class_weight(handle: &Handle) -> f32 {
     weight
 }
 
-/// Uses the <meta> elements to extract the article title.
-pub fn get_metadata(data: &ElementData, title: &mut Title) {
-    if title.is_meta {
-        // We already grabbed a title from the metadata earlier in the parse.
-        return;
-    }
-    if let Some(property) = data.attributes.borrow().get(local_name!("property")) {
-        // TODO(keur): grab author, description, site name, etc in here.
-        // For now we are just getting the title.
-        match property.as_ref() {
-            "dc:title"
-            | "dcterm:title"
-            | "og:title"
-            | "weibo:article:title"
-            | "weibo:webpage:title"
-            | "title"
-            | "twitter:title" => {
-                if let Some(content) = data.attributes.borrow().get(local_name!("content")) {
-                    title.title = content.to_string();
-                    title.is_meta = true;
-                }
-            }
-            _ => (),
-        }
-    }
-}
-
 /// Do a subparse. The data inside of a noscript element is text. Send it through the parser and
 /// return the result if it is one img element.
 fn get_inner_img_from_noscript(handle: &Handle) -> Option<Handle> {
@@ -259,10 +346,10 @@ fn get_inner_img_from_noscript(handle: &Handle) -> Option<Handle> {
     if let Some(contents) = child.as_text() {
         let inner = dom::parse_inner(&contents.borrow())?;
         if dom::is_single_image(&inner) {
-            if let Some(data) = inner.as_element() {
-                let img =
-                    NodeRef::new_element(data.name.clone(), data.attributes.borrow().map.clone());
+            if let Some(img) = dom::get_only_child_by_tag(&inner, &local_name!("img")) {
                 return Some(img);
+            } else {
+                return Some(inner);
             }
         }
     }
@@ -279,51 +366,70 @@ fn unwrap_noscript(
 ) {
     if let Some(img) = get_inner_img_from_noscript(handle) {
         new_children.push(img);
-        if let Some(prev) = dom::previous_element_sibling(handle) {
-            if dom::is_single_image(&prev) {
-                useless_nodes.push(prev);
+        for sibling in handle.preceding_siblings().elements() {
+            if dom::is_single_image(&sibling.as_node()) {
+                useless_nodes.push(sibling.as_node().clone());
             }
         }
     }
 }
 
+/// Normalizes the dom by replacing tags we aren't interested in, to reduce the
+/// scoring set of elements we need to consider when cleaning and scoring.
+pub fn replace_tags(dom: &mut Sink) {
+    let mut replacements: Vec<(Handle, Handle)> = vec![];
+
+    // Replace <font> elements with either <span> or <div> nodes. Since
+    // Speedreader does it's own styling, <font> elements can cause problems for
+    // us. Although <font> elements are inlined, there are notable sites that
+    // have block elements as children. To get around this, we check its
+    // children for non-phrasing content, and replace it with a div in that
+    // case, or a span otherwise.
+    for node in dom
+        .document_node
+        .descendants()
+        .elements()
+        .filter(|e| e.name.local == local_name!("font"))
+    {
+        let h = node.as_node();
+        let local: LocalName;
+        if dom::is_phrasing_content(&h) {
+            local = local_name!("span");
+        } else {
+            local = local_name!("div");
+        }
+        let name = QualName::new(None, ns!(), local);
+        let span = dom.create_element(name, vec![], ElementFlags::default());
+        replacements.push((Handle::clone(&h), span));
+    }
+    for t in replacements {
+        dom.reparent_children(&t.0, &t.1);
+        dom.append_before_sibling(&t.0, NodeOrText::AppendNode(t.1));
+        dom.remove_from_parent(&t.0);
+    }
+}
+
 /// Prepare the DOM for the candidate and cleaning steps. Delete "noisy" nodes and do small
 /// transformations.
-pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> bool {
+pub fn preprocess(mut dom: &mut Sink, handle: Handle) -> bool {
     if let Some(data) = handle.as_element() {
         match data.name.local {
-            local_name!("script")
-            | local_name!("noscript")
+            local_name!("noscript")
             | local_name!("link")
-            | local_name!("style") => return true,
-            local_name!("title") => {
-                if !title.is_meta && title.title.is_empty() {
-                    dom::extract_text(&handle, &mut title.title, true);
-                    title.is_meta = false;
-                }
-            }
-            local_name!("meta") => {
-                get_metadata(&data, title);
-            }
+            | local_name!("nav")
+            | local_name!("style")
+            | local_name!("title")
+            | local_name!("script")
+            | local_name!("meta") => return true,
             _ => (),
-        }
-        for attr_name in ["id", "class", "itemProp"].iter() {
-            if let Some(val) = data.attributes.borrow().get(*attr_name) {
-                if data.name.local != local_name!("body")
-                    && UNLIKELY.is_match(&val)
-                    && !LIKELY.is_match(&val)
-                {
-                    return true;
-                }
-            }
         }
     }
     let mut useless_nodes = vec![];
     let mut new_children = vec![];
     let mut paragraph_nodes = vec![];
-    let mut br_count = 0;
+    let mut brs = vec![];
     for child in handle.children() {
-        let pending_removal = preprocess(&mut dom, child.clone(), &mut title);
+        let pending_removal = preprocess(&mut dom, child.clone());
         if pending_removal {
             useless_nodes.push(child.clone());
         }
@@ -333,8 +439,13 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
         match child.data() {
             Element(data) => {
                 match data.name.local {
-                    local_name!("br") => br_count += 1,
-                    _ => br_count = 0,
+                    local_name!("br") => brs.push(child.clone()),
+                    _ => {
+                        if brs.len() >= 2 {
+                            useless_nodes.extend(brs);
+                        }
+                        brs = Vec::new();
+                    }
                 }
                 if data.name.local == local_name!("noscript") {
                     unwrap_noscript(&child, &mut useless_nodes, &mut new_children);
@@ -354,9 +465,11 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
             }
             Text(ref contents) => {
                 let s = contents.borrow();
-                if br_count >= 2 && !s.trim().is_empty() {
-                    paragraph_nodes.push(child.clone());
-                    br_count = 0
+                if !s.trim().is_empty() {
+                    if brs.len() >= 2 {
+                        paragraph_nodes.push(child.clone());
+                    }
+                    brs = Vec::new();
                 }
             }
             _ => (),
@@ -368,6 +481,48 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
     for node in useless_nodes.iter() {
         dom.remove_from_parent(node);
     }
+
+    if dom::get_tag_name(&handle) == Some(&local_name!("div")) {
+        // Convert all divs whose children contains only phrasing
+        // content to paragraphs. An example would look like this:
+        //      <div>Here is a <a>link</a> <br></div>
+        //      <p>Here is a <a>link</a> <br></p>
+        let trim_whitespace = |dom: &mut Sink, p: &Handle| {
+            while let Some(child) = p.last_child() {
+                if !dom::is_whitespace(&child) {
+                    break;
+                }
+                dom.remove_from_parent(&child);
+            }
+        };
+        let mut last_p: Option<Handle> = None;
+        for child in handle.children() {
+            if dom::is_phrasing_content(&child) {
+                if let Some(ref p) = last_p {
+                    if let Some(replacement) = dom::node_or_text(child.clone()) {
+                        dom.remove_from_parent(&child);
+                        dom.append(&p, replacement);
+                    }
+                } else if !dom::is_whitespace(&child) {
+                    let name = QualName::new(None, ns!(), LocalName::from("p"));
+                    let p = dom.create_element(name, vec![], ElementFlags::default());
+                    dom.append_before_sibling(&child, NodeOrText::AppendNode(p.clone()));
+                    dom.remove_from_parent(&child);
+                    if let Some(replacement) = dom::node_or_text(child.clone()) {
+                        dom.append(&p, replacement);
+                    }
+                    last_p = Some(p);
+                }
+            } else if let Some(ref p) = last_p {
+                trim_whitespace(dom, p);
+                last_p = None;
+            }
+        }
+        if let Some(ref p) = last_p {
+            trim_whitespace(dom, p);
+        }
+    }
+
     for node in paragraph_nodes.iter() {
         let name = QualName::new(None, ns!(), LocalName::from("p"));
         let p = dom.create_element(name, vec![], ElementFlags::default());
@@ -379,15 +534,139 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
                 _ => return false,
             }
         }
+        for sibling in p.preceding_siblings() {
+            if !dom::is_whitespace(&sibling) {
+                break;
+            }
+            dom.remove_from_parent(&sibling);
+        }
+        for sibling in p.following_siblings() {
+            // If we approach another <br><br> chain, we are encroaching on another paragraph.
+            if dom::get_tag_name(&sibling) == Some(&local_name!("br")) {
+                if let Some(next) = sibling.next_sibling() {
+                    if dom::get_tag_name(&next) == Some(&local_name!("br")) {
+                        break;
+                    }
+                }
+            }
+            if paragraph_nodes.contains(&sibling) {
+                break;
+            }
+            if !dom::is_phrasing_content(&sibling) {
+                break;
+            }
+            dom.remove_from_parent(&sibling);
+            if let Some(a) = dom::node_or_text(sibling.clone()) {
+                dom.append(&p, a);
+            }
+        }
+        while let Some(child) = p.last_child() {
+            if !dom::is_whitespace(&child) {
+                break;
+            }
+            dom.remove_from_parent(&child);
+        }
     }
     false
 }
 
+/// Find the candidate with the top score to be the new root.
+pub fn get_top_candidate(
+    dom: &Sink,
+    root: &Handle,
+    strip_unlikely_tags: bool,
+) -> Result<Handle, std::io::Error> {
+    // Now that the dom has been processed, get a set of potential dom
+    // candidates and their scoring. `is_candidate` and `score` are attributes
+    // of `ElementData` that get modified.
+    find_candidates(dom, root, strip_unlikely_tags);
+
+    let top_candidate: Handle;
+
+    // scores all candidate nodes
+    let mut top_candidates: Vec<TopCandidate> = vec![];
+    for elem in dom
+        .document_node
+        .descendants()
+        .elements()
+        .filter(|e| e.is_candidate.get())
+    {
+        let node = elem.as_node();
+        let score = elem.score.get() * (1.0 - get_link_density(&node));
+        elem.score.set(score);
+
+        if top_candidates.len() < NUM_TOP_CANDIDATES {
+            top_candidates.push(TopCandidate {
+                node: Handle::clone(node),
+            });
+        } else {
+            let min_index = util::min_elem_index(&top_candidates);
+            let min = &mut top_candidates[min_index];
+            if score > min.score() {
+                *min = TopCandidate {
+                    node: Handle::clone(node),
+                }
+            }
+        }
+    }
+    if top_candidates.len() == 0
+        || dom::is_empty(&top_candidates[0].node)
+        || top_candidates[0].score() < CANDIDATE_SCORE_THRESHOLD
+    {
+        if strip_unlikely_tags {
+            // We didn't find a candidate. We may have been too aggressive
+            // deleting nodes by tag. Let's re-run a more lax version of the
+            // algorithm.
+            return get_top_candidate(dom, root, false);
+        }
+        if let Some(body) = dom::document_body(&dom) {
+            top_candidate = body;
+            initialize_candidate(&top_candidate);
+        } else {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "No candidates found.",
+            ));
+        }
+    } else {
+        let max_index = util::max_elem_index(&top_candidates);
+        top_candidates.swap(0, max_index);
+        if let Some(new_top) = search_alternative_candidates(&top_candidates) {
+            top_candidate = new_top;
+        } else {
+            top_candidate = Handle::clone(&top_candidates[0].node);
+        }
+    }
+    Ok(top_candidate)
+}
+
 /// Walk the DOM and mark all candidate nodes.
-pub fn find_candidates(mut dom: &mut Sink, handle: Handle) {
+pub fn find_candidates(dom: &Sink, handle: &Handle, skip_unlikely: bool) {
     // is candidate iif length of the text in handle is larger than 20 words AND
     // its tag is `div`, `article`, `center`, `section` while not in containing
     // nodes in BLOCK_CHILD_TAGS
+
+    if skip_unlikely
+        && handle
+            .as_element()
+            .map(|data| {
+                for attr_name in ["id", "class", "itemProp"].iter() {
+                    if let Some(val) = data.attributes.borrow().get(*attr_name) {
+                        if data.name.local != local_name!("body")
+                            && data.name.local != local_name!("main")
+                            && UNLIKELY.is_match(&val)
+                            && !LIKELY.is_match(&val)
+                        {
+                            return true;
+                        }
+                    }
+                }
+                false
+            })
+            .unwrap_or(false)
+    {
+        return;
+    }
 
     if is_candidate(&handle) {
         debug_assert!(handle.as_element().is_some());
@@ -433,7 +712,7 @@ pub fn find_candidates(mut dom: &mut Sink, handle: Handle) {
 
     // for all the current child's node, execute recursively find_candidates()
     for child in handle.children() {
-        find_candidates(&mut dom, child.clone());
+        find_candidates(dom, &child, skip_unlikely);
     }
 }
 
@@ -500,23 +779,23 @@ pub fn append_related_siblings(dom: &mut Sink, top_candidate: Handle) {
             let mut related_siblings = vec![];
             let top_attrs = top_elem.attributes.borrow();
             let top_class = top_attrs.get("class");
-            let content_bonus = top_elem.score.get() * 0.2;
+            let sibling_threshold = f32::max(top_elem.score.get() * 0.2, 10.0);
             for sibling in parent.children() {
+                if sibling == top_candidate {
+                    continue;
+                }
                 if let Some(elem) = sibling.as_element() {
-                    top_class
-                        .and_then(|top_class| {
-                            elem.attributes.borrow().get("class").and_then(|class| {
-                                if class == top_class {
-                                    Some(content_bonus)
-                                } else {
-                                    None
-                                }
-                            })
-                        })
-                        .unwrap_or(0.0);
+                    // Increase consideration if the sibling shares the same
+                    // class name as the top scorer.
+                    let bonus = match (top_class, elem.attributes.borrow().get("class")) {
+                        (Some(c0), Some(c1)) if c0 == c1 => top_elem.score.get() * 0.2,
+                        _ => 0.0,
+                    };
 
                     let mut append = false;
-                    if Some(&local_name!("p")) == dom::get_tag_name(&sibling) {
+                    if elem.score.get() + bonus >= sibling_threshold {
+                        append = true;
+                    } else if Some(&local_name!("p")) == dom::get_tag_name(&sibling) {
                         let link_density = get_link_density(&sibling);
                         let content_length = dom::text_len(&sibling);
                         if content_length > 80 && link_density < 0.25 {
@@ -556,8 +835,8 @@ pub fn append_related_siblings(dom: &mut Sink, top_candidate: Handle) {
 pub fn clean<S: ::std::hash::BuildHasher>(
     mut dom: &mut Sink,
     handle: Handle,
+    title_tokens: &HashSet<&str>,
     url: &Url,
-    title: &str,
     features: &HashMap<String, u32, S>,
 ) -> bool {
     let useless = match handle.data() {
@@ -567,7 +846,7 @@ pub fn clean<S: ::std::hash::BuildHasher>(
         Text(_) => false,
         Comment(_) => true,
         Element(ref data) => {
-            match data.name.local {
+            let delete = match data.name.local {
                 local_name!("script")
                 | local_name!("link")
                 | local_name!("style")
@@ -578,33 +857,96 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                 | local_name!("header")
                 | local_name!("footer")
                 | local_name!("embed")
+                | local_name!("textarea")
+                | local_name!("input")
+                | local_name!("select")
+                | local_name!("button")
                 | local_name!("aside") => true,
+                local_name!("h1") | local_name!("h2") => {
+                    // Delete remaining headings that may be duplicates of the title.
+                    let mut heading = String::new();
+                    dom::extract_text(&handle, &mut heading, true);
+                    if heading.is_empty() {
+                        return true;
+                    }
+                    if !title_tokens.is_empty() {
+                        let heading_tokens = heading.split_whitespace().collect::<HashSet<_>>();
+                        let distance = title_tokens.difference(&heading_tokens).count() as f32;
+                        let similarity = 1.0 - distance / title_tokens.len() as f32;
+                        if similarity >= 0.75 {
+                            return true;
+                        }
+                    }
+                    if data.name.local == local_name!("h1") {
+                        // Rewrite any h1 elements as h2s. The only h1 in the
+                        // DOM should be the title.
+                        let name = QualName::new(None, ns!(), LocalName::from("h2"));
+                        let h2 = dom.create_element(name, vec![], ElementFlags::default());
+                        dom.reparent_children(&handle, &h2);
+                        dom.append_before_sibling(&handle, NodeOrText::AppendNode(h2));
+                        true
+                    } else {
+                        false
+                    }
+                }
                 local_name!("form")
                 | local_name!("table")
                 | local_name!("ul")
+                | local_name!("section")
                 | local_name!("div") => is_useless(&handle),
+                local_name!("br") => {
+                    if let Some(sibling) = handle.next_sibling() {
+                        if dom::get_tag_name(&sibling) == Some(&local_name!("p")) {
+                            return true;
+                        }
+                    }
+                    false
+                }
                 local_name!("img") => {
-                    if let Some(fixed_url) = fix_img_path(data, url) {
-                        dom::set_attr("src", fixed_url.as_str(), handle.clone(), false);
-                        false
-                    } else {
+                    let mask = img_is_loaded(data);
+                    let (mask, lazy_srcs) = try_lazy_img(data, mask);
+                    if mask == ImageLoadedMask::NONE {
                         true
+                    } else {
+                        for src in lazy_srcs {
+                            dom::set_attr(src.local.as_ref(), src.value, handle.clone(), true);
+                        }
+                        false
                     }
                 }
+                local_name!("svg") => {
+                    // If the SVG has a parent that is a <figure> it is probably
+                    // an icon to resize the image. This will not format
+                    // correctly in speedreader since images are styled as
+                    // "display: inline".
+                    for ancestor in handle.ancestors().elements() {
+                        if ancestor.name.local == local_name!("figure") {
+                            return true;
+                        }
+                    }
+                    false
+                }
                 _ => false,
+            };
+            if !delete {
+                // Delete style, align, and other elements that will conflict with the Speedreader
+                // stylesheet.
+                let mut attrs = data.attributes.borrow_mut();
+                for attr in PRESENTATIONAL_ATTRIBUTES.iter() {
+                    attrs.remove(*attr);
+                }
             }
-
-            // // cleans all ids, classes and styles in node
-            // dom::clean_attr("id", &mut *attrs.borrow_mut());
-            // dom::clean_attr("class", &mut *attrs.borrow_mut());
-            // dom::clean_attr("style", &mut *attrs.borrow_mut());
+            delete
         }
         ProcessingInstruction(_) => unreachable!(),
     };
 
+    if useless {
+        return true;
+    }
     let mut useless_nodes = vec![];
     for child in handle.children() {
-        if clean(&mut dom, child.clone(), url, title, features) {
+        if clean(&mut dom, child.clone(), title_tokens, url, features) {
             useless_nodes.push(child.clone());
         }
     }
@@ -614,7 +956,7 @@ pub fn clean<S: ::std::hash::BuildHasher>(
     if dom::is_empty(&handle) {
         return true;
     }
-    useless
+    false
 }
 
 /// Using content score and other heuristics, determine if the handle should be marked for
@@ -672,9 +1014,63 @@ pub fn is_useless(handle: &Handle) -> bool {
         }
     }
 
+    let svg_count = dom::count_nodes(&handle, &local_name!("svg"));
+    if svg_count > 1 && content_length < 75 {
+        return true;
+    }
+
     let embed_count = dom::count_nodes(&handle, &local_name!("embed"));
     if (embed_count == 1 && content_length < 75) || embed_count > 1 {
         return true;
     }
     false
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_load_lazy_images_data_srcset() {
+        // This is a truncated <img> tag taken from Kotaku.
+        let input = r#"
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Wipe that paint outta your eyes, 60 fps is on the way."
+     data-srcset="https://i.kinja-img.com/gawker-media/image/upload/c_fill,f_auto,fl_progressive,g_center,h_80,pg_1,q_80,w_80/d3xoltqrhfcqilnauamm.jpg 80w"
+     data-format="jpg" data-alt="Wipe that paint outta your eyes, 60 fps is on the way."
+/>"#;
+        let handle = dom::parse_inner(input).unwrap();
+        let elem = handle.as_element().unwrap();
+        assert_eq!(elem.name.local, local_name!("img"));
+        assert_eq!(img_is_loaded(elem), ImageLoadedMask::NONE);
+        let (mask, _) = try_lazy_img(elem, ImageLoadedMask::NONE);
+        assert_eq!(mask, ImageLoadedMask::SRCSET);
+    }
+
+    #[test]
+    fn test_loaded_image_url_params() {
+        // This is a truncated <img> tag taken from Kotaku.
+        let input = r#"
+<img alt="Hori Parata at his Pātaua farm, the place where he was born and grew up."
+     class="gu-image" itemprop="contentUrl"
+     src="https://i.guim.co.uk/img/media/ff786/master/4800.jpg?width=300&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=575838a657b26493e956c7f84b058080">
+"#;
+        let handle = dom::parse_inner(input).unwrap();
+        let elem = handle.as_element().unwrap();
+        assert_eq!(elem.name.local, local_name!("img"));
+        assert_eq!(img_is_loaded(elem), ImageLoadedMask::SRC);
+    }
+
+    #[test]
+    fn test_load_lazy_images_src_and_srcset() {
+        // look for srcset even if we loaded the src
+        let input = r#"
+        <img src="https://some-site/some-image.jpg"
+            data-srcset="https://some-site/some-image.jpg2000x2000"/>
+        "#;
+        let handle = dom::parse_inner(input).unwrap();
+        let elem = handle.as_element().unwrap();
+        assert_eq!(img_is_loaded(elem), ImageLoadedMask::SRC);
+        let (mask, _) = try_lazy_img(elem, ImageLoadedMask::NONE);
+        assert!(mask.is_all());
+    }
 }

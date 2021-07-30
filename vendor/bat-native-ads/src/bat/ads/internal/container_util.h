@@ -6,11 +6,23 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONTAINER_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONTAINER_UTIL_H_
 
+#include <deque>
 #include <vector>
 
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
+
+template <typename T>
+std::deque<T> VectorToDeque(const std::vector<T>& vector) {
+  std::deque<T> deque;
+
+  for (const auto& element : vector) {
+    deque.push_back(element);
+  }
+
+  return deque;
+}
 
 template <typename T>
 std::vector<std::vector<T>> SplitVector(const std::vector<T>& elements,

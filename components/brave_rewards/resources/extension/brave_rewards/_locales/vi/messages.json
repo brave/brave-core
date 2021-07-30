@@ -51,18 +51,6 @@
     "message": "Thông tin chi tiết",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "Số dư của bạn",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "Điểm BAT",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "có thể sử dụng trong Brave Rewards để đóng góp cho người sáng tạo nội dung yêu thích của bạn. Điểm BAT không thể quy đổi sang BAT.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "trên",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "Khoản thưởng Token Đã nhận",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "Điểm Tặng Đã Nhận",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "Tiền kiếm được từ Quảng cáo",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Tiền tip Một lần",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "hết hạn vào",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Người sáng tạo này vẫn chưa đăng ký để nhận đóng góp từ người dùng Brave. Bất kỳ khoản tiền tip nào mà bạn gửi sẽ vẫn còn trong ví của bạn cho đến khi họ xác minh.",
+    "message": "Người sáng tạo này hiện không được định cấu hình để nhận mẹo từ ví của bạn. Mọi mẹo bạn tạo sẽ vẫn chờ xử lý trong ví của bạn và tự động thử lại trong 90 ngày.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Bật Ads",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Khoản thưởng Token Miễn phí",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Tặng Điểm Miễn phí",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Bạn đã nhận được Điểm thưởng Quảng cáo!",
@@ -591,17 +567,9 @@
     "message": "Token",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "điểm",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Tặng Token",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Điểm tài trợ",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Xin chào, $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Bạn cần có tối thiểu 25 BAT để tạo tài khoản Uphold. Xin vui lòng thử lại sau.\nNếu bạn đã có tài khoản Uphold được xác minh, hãy tiếp tục đăng nhập.",
-    "description": "Text for login button"
+    "message": "You need to have minimum $amount$ BAT to create an Uphold account. If you already have a verified Uphold account, continue to login.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "Đã kết nối",
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Khi nào bạn nhận được phần thưởng",
+    "message": "Khi nào bạn nhận được phần thưởng?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "Khi sử dụng Brave Rewards, bạn đang giúp làm cho trang web trở thành một nơi tốt hơn cho mọi người. Và điều đó thật tuyệt vời!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards ở Nhật Bản đang chuyển sang một hệ thống mới!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "Xác thực ví của bạn",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "Tìm hiểu thêm",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "Để rút các token mà bạn kiếm được khi xem quảng cáo, bạn sẽ cần phải xác thực ví của mình.",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "Xin vui lòng sử dụng BAP của bạn trước ngày 13 tháng 3. Sau đó, BAP sẽ bị ngừng hoạt động.",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "Thực hiện sau",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Xác thực ví của tôi",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Ví bitFlyer là một dịch vụ do bitFlyer, Inc quản lý.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Với việc xác thực ví của bạn và liên kết ví với một tài khoản bitFlyer, bạn sẽ có thể lưu trữ và quản lý các token mà bạn đã kiếm được thông qua Brave Rewards dễ dàng hơn",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Tìm hiểu thêm$link_end$ về cách liên kết trình duyệt Brave với tài khoản bitFlyer của bạn.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

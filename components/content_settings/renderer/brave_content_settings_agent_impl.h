@@ -13,11 +13,15 @@
 
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
-#include "base/strings/string16.h"
+#include "brave/components/brave_shields/common/brave_shields.mojom.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/renderer/content_settings_agent_impl.h"
+#include "mojo/public/cpp/bindings/associated_receiver_set.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
+#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
+
 #include "url/gurl.h"
 
 namespace blink {
@@ -27,7 +31,9 @@ class WebLocalFrame;
 namespace content_settings {
 
 // Handles blocking content per content settings for each RenderFrame.
-class BraveContentSettingsAgentImpl : public ContentSettingsAgentImpl {
+class BraveContentSettingsAgentImpl
+    : public ContentSettingsAgentImpl,
+      public brave_shields::mojom::BraveShields {
  public:
   BraveContentSettingsAgentImpl(content::RenderFrame* render_frame,
                                 bool should_whitelist,
@@ -40,15 +46,15 @@ class BraveContentSettingsAgentImpl : public ContentSettingsAgentImpl {
                              const blink::WebURL& script_url) override;
   void DidNotAllowScript() override;
 
-  bool UseEphemeralStorageSync(StorageType storage_type) override;
+  blink::WebSecurityOrigin GetEphemeralStorageOriginSync(
+      StorageType storage_type) override;
   bool AllowStorageAccessSync(StorageType storage_type) override;
 
-  void BraveSpecificDidBlockJavaScript(const base::string16& details);
+  void BraveSpecificDidBlockJavaScript(const std::u16string& details);
 
   bool AllowAutoplay(bool play_requested) override;
 
   bool AllowFingerprinting(bool enabled_per_settings) override;
-  void DidBlockFingerprinting(const base::string16& details);
 
   BraveFarblingLevel GetBraveFarblingLevel() override;
 
@@ -63,12 +69,22 @@ class BraveContentSettingsAgentImpl : public ContentSettingsAgentImpl {
       const GURL& secondary_url);
 
   // RenderFrameObserver
-  bool OnMessageReceived(const IPC::Message& message) override;
-  void OnAllowScriptsOnce(const std::vector<std::string>& origins);
   void DidCommitProvisionalLoad(ui::PageTransition transition) override;
 
   bool IsScriptTemporilyAllowed(const GURL& script_url);
-  bool AllowStorageAccessForMainFrameSync(StorageType storage_type);
+
+  // brave_shields::mojom::BraveShields.
+  void SetAllowScriptsFromOriginsOnce(
+      const std::vector<std::string>& origins) override;
+
+  void BindBraveShieldsReceiver(
+      mojo::PendingAssociatedReceiver<brave_shields::mojom::BraveShields>
+          pending_receiver);
+
+  // Returns the associated remote used to send messages to the browser process,
+  // lazily initializing it the first time it's used.
+  mojo::AssociatedRemote<brave_shields::mojom::BraveShieldsHost>&
+  GetOrCreateBraveShieldsRemote();
 
   // Origins of scripts which are temporary allowed for this frame in the
   // current load
@@ -81,7 +97,14 @@ class BraveContentSettingsAgentImpl : public ContentSettingsAgentImpl {
   base::flat_set<std::string> preloaded_temporarily_allowed_scripts_;
 
   using StoragePermissionsKey = std::pair<url::Origin, StorageType>;
-  base::flat_map<StoragePermissionsKey, bool> cached_storage_permissions_;
+  base::flat_map<StoragePermissionsKey, blink::WebSecurityOrigin>
+      cached_ephemeral_storage_origins_;
+
+  mojo::AssociatedRemote<brave_shields::mojom::BraveShieldsHost>
+      brave_shields_remote_;
+
+  mojo::AssociatedReceiverSet<brave_shields::mojom::BraveShields>
+      brave_shields_receivers_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveContentSettingsAgentImpl);
 };

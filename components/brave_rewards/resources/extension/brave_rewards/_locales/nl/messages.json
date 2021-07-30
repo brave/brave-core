@@ -51,18 +51,6 @@
     "message": "Details",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "Je saldo",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "BAT-punten",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "kan worden gebruikt in Brave Rewards om je favoriete makers van inhoud te helpen. BAT-punten kunnen niet worden ingewisseld voor BAT.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "op",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "Geclaimde giften",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "Puntentoekenningen geclaimd",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "Inkomsten uit Advertenties",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Eenmalige tips",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "vervalt op",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Deze maker heeft zich nog niet aangemeld voor het ontvangen van bijdragen van Brave-gebruikers. Fooien die je stuurt, blijven in je wallet tot hij of zij verifieert.",
+    "message": "Deze maker is momenteel nog niet geconfigureerd voor het ontvangen van fooi uit je wallet. Alle fooien die je stuurt, blijven in je wallet in behandeling. Na 90 dagen wordt automatisch opnieuw geprobeerd om de fooi te verzenden.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Advertenties inschakelen",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Gratis gift",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Gratis puntentoekenning",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Je hebt een Ads Reward verdiend!",
@@ -591,17 +567,9 @@
     "message": "Token",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "punten",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Tokentoewijzingen",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Puntenbeurzen",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Hallo, $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "U moet minimaal 25 BAT hebben om een Uphold-account aan te maken. Probeer het alstublieft later nogmaals. Als u reeds een geverifieerd Uphold-account heeft, ga dan door naar het inloggen. ",
-    "description": "Text for login button"
+    "message": "Je hebt minimaal $amount$ BAT nodig om een Uphold-account te maken. Als je al een Uphold-account hebt, kun je doorgaan met aanmelden.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "Verbonden",
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Wanneer ontvangt u beloningen",
+    "message": "Wanneer ontvang je beloningen?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "Door Brave Rewards te gebruiken helpt u het internet een betere plek te maken voor iedereen. En dat is geweldig!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards in Japan gaat over op een nieuw systeem!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "Je wallet verifiëren",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "Meer Leren",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "Om de tokens die je verdient voor het bekijken van advertenties op te nemen, moet je je wallet verifiëren.",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "Gelieve vóór 13 maart uw BAP te gebruiken. Daarna wordt de BAP stopgezet.",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "Ik doe het later",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Mijn wallet verifiëren",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "De bitFlyer-wallet is een service die wordt beheerd door fitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Door je wallet te verifiëren en deze te koppelen aan een bitFlyer-account, kun je de tokens die je hebt verdiend via Brave Rewards eenvoudig opslaan en beheren",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Meer informatie$link_end$ over hoe u uw Brave-browser kunt koppelen aan uw bitFlyer-account.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

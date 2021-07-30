@@ -10,7 +10,7 @@ class PrefRegistrySimple;
 
 namespace crypto_dot_com {
 
-void RegisterPrefs(PrefRegistrySimple* registry);
+void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
 }  // namespace crypto_dot_com
 

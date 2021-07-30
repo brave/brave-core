@@ -9,7 +9,6 @@ import { connect } from 'react-redux'
 // Components
 import { Checkbox, Grid, Column, ControlWrapper } from 'brave-ui/components'
 import {
-  DisabledContent,
   Box,
   TableDonation,
   List,
@@ -43,17 +42,6 @@ class TipBox extends React.Component<Props, State> {
 
   get actions () {
     return this.props.actions
-  }
-
-  disabledContent = () => {
-    return (
-      <DisabledContent
-        type={'donation'}
-      >
-        {getLocale('donationDisabledText1')}<br/>
-        {getLocale('donationDisabledText2')}
-      </DisabledContent>
-    )
   }
 
   getTipsRows = () => {
@@ -154,27 +142,19 @@ class TipBox extends React.Component<Props, State> {
   }
 
   render () {
-    const {
-      parameters,
-      firstLoad,
-      ui,
-      tipsList
-    } = this.props.rewardsData
-    const showDisabled = firstLoad !== false
+    const { parameters, tipsList } = this.props.rewardsData
     const tipRows = this.getTipsRows()
     const topRows = tipRows.slice(0, 5)
     const numRows = tipRows && tipRows.length
     const allSites = !(numRows > 5)
     const total = utils.tipsListTotal(tipsList)
     const converted = utils.convertBalance(total, parameters.rate)
-    const { onlyAnonWallet } = ui
 
     return (
       <Box
         title={getLocale('donationTitle')}
         type={'donation'}
         description={getLocale('donationDesc')}
-        disabledContent={showDisabled ? this.disabledContent() : null}
         settingsChild={this.donationSettingsChild()}
         settingsOpened={this.state.settings}
         onSettingsClick={this.onSettingsToggle}
@@ -189,7 +169,7 @@ class TipBox extends React.Component<Props, State> {
           : null
         }
         <List title={getLocale('donationTotalDonations')}>
-          <Tokens id={'tip-box-total'} onlyAnonWallet={onlyAnonWallet} value={total.toFixed(3)} converted={converted} />
+          <Tokens id={'tip-box-total'} value={total.toFixed(3)} converted={converted} />
         </List>
         <TableDonation
           id={'tips-table'}
@@ -197,7 +177,6 @@ class TipBox extends React.Component<Props, State> {
           allItems={allSites}
           numItems={numRows}
           headerColor={true}
-          onlyAnonWallet={onlyAnonWallet}
           onShowAll={this.onModalToggle}
         >
           {getLocale('donationVisitSome')}

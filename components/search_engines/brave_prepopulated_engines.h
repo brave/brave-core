@@ -34,24 +34,24 @@ enum BravePrepopulatedEngineID : unsigned int {
   PREPOPULATED_ENGINE_ID_ECOSIA = 101,
   // These engine IDs are not defined in Chromium
   BRAVE_PREPOPULATED_ENGINES_START = 500,
-  PREPOPULATED_ENGINE_ID_AMAZON = 500,     // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_AMAZON = 500,  // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
 #if defined(OS_ANDROID)
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO_LITE,  // No longer in defaults (7/2020).
 #endif
-  PREPOPULATED_ENGINE_ID_FINDX,            // No longer exists (11/2018).
-  PREPOPULATED_ENGINE_ID_GITHUB,           // No longer in defaults (2/2019).
-  PREPOPULATED_ENGINE_ID_INFOGALACTIC,     // No longer in defaults (2/2019).
-  PREPOPULATED_ENGINE_ID_MDNWEBDOCS,       // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_FINDX,         // No longer exists (11/2018).
+  PREPOPULATED_ENGINE_ID_GITHUB,        // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_INFOGALACTIC,  // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_MDNWEBDOCS,    // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_QWANT,
   PREPOPULATED_ENGINE_ID_SEARX,            // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_SEMANTICSCHOLAR,  // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_STACKOVERFLOW,    // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_STARTPAGE,
-  PREPOPULATED_ENGINE_ID_TWITTER,          // No longer in defaults (2/2019).
-  PREPOPULATED_ENGINE_ID_WIKIPEDIA,        // No longer in defaults (2/2019).
-  PREPOPULATED_ENGINE_ID_WOLFRAMALPHA,     // No longer in defaults (2/2019).
-  PREPOPULATED_ENGINE_ID_YOUTUBE,          // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_TWITTER,       // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_WIKIPEDIA,     // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_WOLFRAMALPHA,  // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_YOUTUBE,       // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE,
 
@@ -89,6 +89,8 @@ enum BravePrepopulatedEngineID : unsigned int {
   PREPOPULATED_ENGINE_ID_YAHOO_UK,
   PREPOPULATED_ENGINE_ID_YAHOO_VE,
   PREPOPULATED_ENGINE_ID_YAHOO_VN,
+
+  PREPOPULATED_ENGINE_ID_BRAVE,
 };
 
 extern const PrepopulatedEngine duckduckgo;
@@ -101,6 +103,7 @@ extern const PrepopulatedEngine brave_ecosia;
 extern const PrepopulatedEngine qwant;
 extern const PrepopulatedEngine startpage;
 extern const PrepopulatedEngine brave_yandex;
+extern const PrepopulatedEngine brave_search;
 
 const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>&
 GetBraveEnginesMap();

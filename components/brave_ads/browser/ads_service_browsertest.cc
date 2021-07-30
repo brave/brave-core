@@ -16,32 +16,25 @@
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
-#include "bat/ledger/ledger.h"
+#include "bat/ads/pref_names.h"
+#include "bat/ledger/mojom_structs.h"
+#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
-#include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/common/brave_paths.h"
-#include "brave/components/brave_ads/browser/ads_service_factory.h"
-#include "brave/components/brave_ads/browser/ads_service_impl.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
-#include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
+#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/testing_profile.h"
-#include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
-#include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
-#include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -93,6 +86,34 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
 
 }  // namespace
 
+class TestRewardsServiceObserver
+    : public brave_rewards::RewardsServiceObserver {
+ public:
+  TestRewardsServiceObserver() = default;
+  ~TestRewardsServiceObserver() override = default;
+
+  void WaitForRewardsInitialization() {
+    if (rewards_initialized_) {
+      return;
+    }
+
+    run_loop_ = std::make_unique<base::RunLoop>();
+    run_loop_->Run();
+  }
+
+  // RewardsServiceObserver implementation
+  void OnRewardsInitialized(brave_rewards::RewardsService* service) override {
+    rewards_initialized_ = true;
+    if (run_loop_) {
+      run_loop_->Quit();
+    }
+  }
+
+ private:
+  std::unique_ptr<base::RunLoop> run_loop_;
+  bool rewards_initialized_ = false;
+};
+
 class BraveAdsBrowserTest : public InProcessBrowserTest,
                             public base::SupportsWeakPtr<BraveAdsBrowserTest> {
  public:
@@ -114,7 +135,7 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
 
     host_resolver()->AddRule("*", "127.0.0.1");
 
-    // Setup up embedded test server for HTTPS requests
+    // Setup embedded test server for HTTPS requests
     https_server_.reset(new net::EmbeddedTestServer(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS));
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
@@ -128,20 +149,24 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
 
     rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
         brave_rewards::RewardsServiceFactory::GetForProfile(browser_profile));
+    rewards_service_->AddObserver(&rewards_service_observer_);
+
     rewards_service_->ForTestingSetTestResponseCallback(base::BindRepeating(
         &BraveAdsBrowserTest::GetTestResponse, base::Unretained(this)));
 
-    ads_service_ = static_cast<brave_ads::AdsServiceImpl*>(
+    rewards_service_->SetLedgerEnvForTesting();
+
+    ads_service_ = static_cast<brave_ads::AdsService*>(
         brave_ads::AdsServiceFactory::GetForProfile(browser_profile));
     ASSERT_NE(nullptr, ads_service_);
-    rewards_service_->SetLedgerEnvForTesting();
   }
 
-  void TearDown() override {
+  void TearDownOnMainThread() override {
     // Code here will be called immediately after each test (right before the
     // destructor)
+    rewards_service_->RemoveObserver(&rewards_service_observer_);
 
-    InProcessBrowserTest::TearDown();
+    InProcessBrowserTest::TearDownOnMainThread();
   }
 
   void GetTestDataDir(base::FilePath* test_data_dir) {
@@ -365,7 +390,9 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
 
   brave_rewards::RewardsServiceImpl* rewards_service_;
 
-  brave_ads::AdsServiceImpl* ads_service_;
+  brave_ads::AdsService* ads_service_;
+
+  TestRewardsServiceObserver rewards_service_observer_;
 
   std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
   const std::string newly_supported_locale_ = "en_830";
@@ -420,6 +447,91 @@ IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest, BraveAdsLocaleIsNotNewlySupported) {
       brave_ads::prefs::kSupportedCountryCodesSchemaVersionNumber);
 
   EXPECT_FALSE(ads_service_->IsNewlySupportedLocale());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
+                       PRE_BraveAdsMigrateDefaultAdsPerHourFromVersion9) {
+  GetPrefs()->SetInteger(brave_ads::prefs::kVersion, 9);
+
+  GetPrefs()->SetInt64(ads::prefs::kAdsPerHour, -1);
+  ASSERT_TRUE(GetPrefs()->HasPrefPath(ads::prefs::kAdsPerHour));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
+                       BraveAdsMigrateDefaultAdsPerHourFromVersion9) {
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(ads::prefs::kAdsPerHour));
+  EXPECT_EQ(-1, GetPrefs()->GetInt64(ads::prefs::kAdsPerHour));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
+                       PRE_BraveAdsMigrateLegacyDefaultPerHourFromVersion9) {
+  GetPrefs()->SetInteger(brave_ads::prefs::kVersion, 9);
+
+  GetPrefs()->SetInt64(ads::prefs::kAdsPerHour, 2);
+  ASSERT_TRUE(GetPrefs()->HasPrefPath(ads::prefs::kAdsPerHour));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
+                       BraveAdsMigrateLegacyDefaultPerHourFromVersion9) {
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(ads::prefs::kAdsPerHour));
+  EXPECT_EQ(-1, GetPrefs()->GetInt64(ads::prefs::kAdsPerHour));
+}
+
+IN_PROC_BROWSER_TEST_F(
+    BraveAdsBrowserTest,
+    PRE_BraveAdsMigrateAdsPerHourForFreshInstallFromVersion9) {
+  GetPrefs()->SetInteger(brave_ads::prefs::kVersion, 9);
+
+  ASSERT_FALSE(GetPrefs()->HasPrefPath(ads::prefs::kAdsPerHour));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
+                       BraveAdsMigrateAdsPerHourForFreshInstallFromVersion9) {
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(ads::prefs::kAdsPerHour));
+  EXPECT_EQ(-1, GetPrefs()->GetInt64(ads::prefs::kAdsPerHour));
+}
+
+IN_PROC_BROWSER_TEST_F(
+    BraveAdsBrowserTest,
+    PRE_BraveAdsMigrateAdsPerHourForIssue17155FromVersion10) {
+  GetPrefs()->SetInteger(brave_ads::prefs::kVersion, 10);
+
+  GetPrefs()->SetInt64(ads::prefs::kAdsPerHour, 0);
+  ASSERT_TRUE(GetPrefs()->HasPrefPath(ads::prefs::kAdsPerHour));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
+                       BraveAdsMigrateAdsPerHourForIssue17155FromVersion10) {
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(ads::prefs::kAdsPerHour));
+  EXPECT_EQ(-1, GetPrefs()->GetInt64(ads::prefs::kAdsPerHour));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
+                       PRE_BraveAdsMigrateDefaultAdsPerHourFromVersion10) {
+  GetPrefs()->SetInteger(brave_ads::prefs::kVersion, 10);
+
+  GetPrefs()->SetInt64(ads::prefs::kAdsPerHour, -1);
+  ASSERT_TRUE(GetPrefs()->HasPrefPath(ads::prefs::kAdsPerHour));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
+                       BraveAdsMigrateDefaultAdsPerHourFromVersion10) {
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(ads::prefs::kAdsPerHour));
+  EXPECT_EQ(-1, GetPrefs()->GetInt64(ads::prefs::kAdsPerHour));
+}
+
+IN_PROC_BROWSER_TEST_F(
+    BraveAdsBrowserTest,
+    PRE_BraveAdsMigrateAdsPerHourForFreshInstallFromVersion10) {
+  GetPrefs()->SetInteger(brave_ads::prefs::kVersion, 10);
+
+  ASSERT_FALSE(GetPrefs()->HasPrefPath(ads::prefs::kAdsPerHour));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
+                       BraveAdsMigrateAdsPerHourForFreshInstallFromVersion10) {
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(ads::prefs::kAdsPerHour));
+  EXPECT_EQ(-1, GetPrefs()->GetInt64(ads::prefs::kAdsPerHour));
 }
 
 class BraveAdsUpgradeBrowserTest
@@ -999,6 +1111,19 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
 
 IN_PROC_BROWSER_TEST_P(BraveAdsUpgradeBrowserTest, PRE_UpgradePath) {
   // Handled in |MaybeMockLocaleHelperForBraveAdsUpgradePath|
+
+  const ::testing::TestInfo* const test_info =
+      ::testing::UnitTest::GetInstance()->current_test_info();
+  ASSERT_NE(nullptr, test_info);
+  const std::string test_name = test_info->name();
+
+  // Wait for Brave Rewards to be initialized before proceeding with
+  // tests that rely on Rewards
+  if ((test_name.find("WithRewardsEnabled_") != std::string::npos ||
+       test_name.find("WithRewardsAndAdsEnabled_") != std::string::npos) &&
+      !rewards_service_->IsInitialized()) {
+    rewards_service_observer_.WaitForRewardsInitialization();
+  }
 }
 
 IN_PROC_BROWSER_TEST_P(BraveAdsUpgradeBrowserTest, UpgradePath) {

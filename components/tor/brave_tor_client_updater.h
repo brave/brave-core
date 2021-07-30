@@ -54,6 +54,8 @@ class BraveTorClientUpdater : public BraveComponent {
   void Unregister();
   void Cleanup();
   base::FilePath GetExecutablePath() const;
+  base::FilePath GetTorDataPath() const;
+  base::FilePath GetTorWatchPath() const;
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() {
     return task_runner_;
   }
@@ -69,6 +71,8 @@ class BraveTorClientUpdater : public BraveComponent {
 
  private:
   friend class ::BraveTorClientUpdaterTest;
+
+  void RemoveObsoleteFiles();
 
   static std::string g_tor_client_component_name_;
   static std::string g_tor_client_component_id_;

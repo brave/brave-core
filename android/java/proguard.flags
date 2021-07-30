@@ -5,18 +5,6 @@
 -keep class org.chromium.chrome.browser.BraveSyncInformers { *; }
 
 # Add methods for invocation below
--keep class org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout {
-    *** updateModernLocationBarColorImpl(...);
-    *** onClickImpl(...);
-    *** populateUrlAnimatorSet(...);
-    *** getBoundsAfterAccountingForRightButtons(...);
-}
-
--keep class org.chromium.chrome.browser.app.BraveActivity {
-    *** openNewOrSelectExistingTab(...);
-    *** selectExistingTab(...);
-}
-
 -keep class org.chromium.chrome.browser.ChromeTabbedActivity {
     *** hideOverview(...);
 }

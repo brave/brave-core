@@ -5,16 +5,13 @@
 import * as React from 'react'
 import { withState } from '@dump247/storybook-state'
 import { storiesOf } from '@storybook/react'
-import { withKnobs, boolean, number, text, object, select } from '@storybook/addon-knobs'
+import { withKnobs, boolean, text, object, select } from '@storybook/addon-knobs'
 
 // Components
 import Settings from './settings/settings'
 import SettingsMobile from './settingsMobile/settingsMobile'
 import {
   DisabledPanel,
-  MediaBox,
-  SiteBanner,
-  Tip,
   WalletPanel,
   WalletSummary,
   WalletSummarySlider,
@@ -24,21 +21,12 @@ import { BatColorIcon, WalletAddIcon } from 'brave-ui/components/icons'
 import { Notification, WalletState } from '../components/walletWrapper'
 
 const favicon = require('./img/brave-favicon.png')
-const siteBgImage = require('./img/bg_siteBanner.jpg')
-const siteBgLogo = require('./img/ddgo_siteBanner.svg')
-const siteScreen = require('./img/ddgo_site.png')
 
 const captchaDrop = require('./img/captchaDrop.png')
 
 const doNothing = (id: string) => {
   console.log('nothing')
 }
-
-const donationAmounts = [
-  { tokens: '1.0', converted: '0.30', selected: false },
-  { tokens: '5.0', converted: '1.50', selected: false },
-  { tokens: '10.0', converted: '3.00', selected: false }
-]
 
 const defaultGrant = {
   amount: 2.5,
@@ -104,150 +92,6 @@ storiesOf('Rewards/Concepts/Desktop', module)
     }
     return (<Settings {...{ walletProps }}/>)
   })
-  .add('Site Banner', withState({ donationAmounts, currentAmount: '5.0', showBanner: true }, (store) => {
-    const mediaProvider = select<any>('Provider', { youtube: 'youtube', twitter: 'twitter', twitch: 'twitch', reddit: 'reddit', github: 'github' }, 'youtube')
-    const screenName = text('Screen Name', '')
-    const commentText = text('Post Text', '')
-
-    const onDonate = () => {
-      console.log('onDonate')
-    }
-
-    const onTweet = () => {
-      console.log('onTweet')
-    }
-
-    const onAmountSelection = (tokens: string) => {
-      store.set({ currentAmount: tokens })
-    }
-
-    const showBanner = () => {
-      store.set({ showBanner: true })
-    }
-
-    const isTwitterTip = () => {
-      return mediaProvider === 'twitter'
-    }
-
-    const isRedditTip = () => {
-      return mediaProvider === 'reddit'
-    }
-
-    const onClose = () => {
-      store.set({ showBanner: false })
-    }
-
-    return (
-      <div style={{ background: `url(${siteScreen}) no-repeat top center / cover`, width: '100%', height: '100vh' }}>
-        <button onClick={showBanner}>Show banner</button>
-        {
-          store.state.showBanner
-            ? <div style={{ position: 'fixed', top: 0, left: 0, height: '100vh', width: '100%', backgroundColor: 'rgba(12,13,33,0.85)' }}>
-              <SiteBanner
-                onTweet={onTweet}
-                type={select('Banner Type', {
-                  'one-time': 'one-time',
-                  monthly: 'monthly'
-                }, 'one-time')}
-                domain={text('Domain', 'duckduckgo.com')}
-                name={text('Name', 'duckduckgo.com')}
-                screenName={screenName}
-                title={text('Title', '')}
-                balance={text('Balance ', '5.0')}
-                bgImage={boolean('Show bg image', false) ? siteBgImage : null}
-                logo={boolean('Show logo', false) ? siteBgLogo : null}
-                donationAmounts={object('Donations', store.state.donationAmounts)}
-                logoBgColor={text('Logo bg color', '')}
-                onDonate={onDonate}
-                onAmountSelection={onAmountSelection}
-                currentAmount={store.state.currentAmount}
-                onClose={onClose}
-                provider={mediaProvider}
-                nextContribution={'07/08/2019'}
-                social={[
-                  {
-                    type: 'twitter',
-                    url: 'https://twitter.com/DuckDuckGo'
-                  },
-                  {
-                    type: 'youtube',
-                    url: 'https://www.youtube.com/channel/UCm_TyecHNHucwF_p4XpeFkQ'
-                  },
-                  {
-                    type: 'twitch',
-                    url: 'https://www.twitch.tv/duckduckgo'
-                  },
-                  {
-                    type: 'reddit',
-                    url: 'https://www.reddit.com/r/duckduckgo'
-                  },
-                  {
-                    type: 'github',
-                    url: 'https://github.com/duckduckgo'
-                  }
-                ]}
-                showUnVerifiedNotice={boolean('Show unverified notice', false)}
-                isVerified={boolean('Is publisher verified', true)}
-              >
-                {
-                  isTwitterTip()
-                  ? <MediaBox
-                      mediaType={'twitter'}
-                      mediaText={commentText}
-                      mediaTimestamp={number('Timestamp in seconds', 46420000) || 0}
-                  />
-                  : isRedditTip()
-                  ? <MediaBox
-                      mediaType={'reddit'}
-                      mediaText={commentText}
-                      mediaTimestamp={0}
-                      mediaTimetext={'3 days ago'}
-                  />
-                  : null
-                }
-              </SiteBanner>
-            </div>
-            : null
-        }
-      </div>
-    )
-  }))
-  .add('Tip', withState({ donationAmounts, currentAmount: '5.0', allow: false }, (store) => {
-    const onDonate = () => {
-      console.log('onDonate')
-    }
-
-    const onClose = () => {
-      console.log('onClose')
-    }
-
-    const onAllow = (allow: boolean) => {
-      store.set({ allow })
-    }
-
-    const onAmountSelection = (tokens: string) => {
-      store.set({ currentAmount: tokens })
-    }
-
-    return (
-      <div>
-        <div>
-          <Tip
-            donationAmounts={object('Donations', store.state.donationAmounts)}
-            title={text('Title', 'Jonathon Doe')}
-            allow={boolean('Allow tips', store.state.allow)}
-            provider={text('Provider', 'YouTube')}
-            balance={text('Balance', '5')}
-            onDonate={onDonate}
-            onClose={onClose}
-            onAllow={onAllow}
-            onAmountSelection={onAmountSelection}
-            currentAmount={store.state.currentAmount}
-          />
-        </div>
-      </div>
-    )
-  }))
   .add('Disabled Panel', () => {
     const onPrivateLink = () => {
       console.log('open up private tab info')
@@ -408,7 +252,6 @@ storiesOf('Rewards/Concepts/Desktop', module)
           onVerifyClick={onVerifyClick}
           onDisconnectClick={onDisconnectClick}
           greetings={text('Greetings', 'Hello, Brave!')}
-          onlyAnonWallet={boolean('Anon Wallet Only', false)}
         >
           <WalletSummarySlider
             id={'panel-slider'}
@@ -444,7 +287,6 @@ storiesOf('Rewards/Concepts/Desktop', module)
                 donation: object('Donation', { tokens: '2.0', converted: '0.25' }),
                 tips: object('Tips', { tokens: '19.0', converted: '5.25' })
               }}
-              onlyAnonWallet={boolean('Anon Wallet Only', false)}
             />
           </WalletSummarySlider>
         </WalletWrapper>

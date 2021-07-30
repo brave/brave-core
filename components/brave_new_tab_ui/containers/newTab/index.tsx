@@ -20,12 +20,12 @@ import {
   EditTopSite,
   EditCards
 } from '../../components/default'
+import { FTXWidget as FTX } from '../../widgets/ftx/components'
 import * as Page from '../../components/default/page'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
 import { brandedWallpaperLogoClicked } from '../../api/brandedWallpaper'
 import BraveTodayHint from '../../components/default/braveToday/hint'
-import BraveToday from '../../components/default/braveToday'
-import BAPDeprecationModal from '../../components/default/rewards/bapDeprecationModal'
+import BraveToday, { GetDisplayAdContent } from '../../components/default/braveToday'
 import { addNewTopSite, editTopSite } from '../../api/topSites'
 
 // Helpers
@@ -44,6 +44,7 @@ import currencyData from '../../components/default/binance/data'
 import geminiData from '../../components/default/gemini/data'
 import { NewTabActions } from '../../constants/new_tab_types'
 import { BraveTodayState } from '../../reducers/today'
+import { FTXState } from '../../widgets/ftx/ftx_state'
 
 // NTP features
 import Settings, { TabType as SettingsTabType } from './settings'
@@ -53,7 +54,9 @@ interface Props {
   newTabData: NewTab.State
   gridSitesData: NewTab.GridSitesState
   todayData: BraveTodayState
+  ftx: FTXState
   actions: NewTabActions
+  getBraveNewsDisplayAd: GetDisplayAdContent
   saveShowBackgroundImage: (value: boolean) => void
   saveShowStats: (value: boolean) => void
   saveShowToday: (value: boolean) => any
@@ -62,13 +65,12 @@ interface Props {
   saveShowBinance: (value: boolean) => void
   saveShowGemini: (value: boolean) => void
   saveShowCryptoDotCom: (value: boolean) => void
+  saveShowFTX: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
-  onReadBraveTodayIntroCard: () => any
   saveSetAllStackWidgets: (value: boolean) => void
 }
 
 interface State {
-  onlyAnonWallet: boolean
   showSettingsMenu: boolean
   showEditTopSite: boolean
   targetTopSiteForEditing?: NewTab.Site
@@ -106,7 +108,6 @@ function GetShouldShowBrandedWallpaperNotification (props: Props) {
 
 class NewTabPage extends React.Component<Props, State> {
   state: State = {
-    onlyAnonWallet: false,
     showSettingsMenu: false,
     showEditTopSite: false,
     backgroundHasLoaded: false,
@@ -294,6 +295,11 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.saveShowCryptoDotCom(!this.props.newTabData.showCryptoDotCom)
   }
 
+  toggleShowFTX = () => {
+    this.props.actions.ftx.disconnect()
+    this.props.saveShowFTX(!this.props.newTabData.showFTX)
+  }
+
   onBinanceClientUrl = (clientUrl: string) => {
     this.props.actions.onBinanceClientUrl(clientUrl)
   }
@@ -389,7 +395,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   startRewards = () => {
-    chrome.braveRewards.saveOnboardingResult('opted-in')
+    chrome.braveRewards.enableRewards()
   }
 
   dismissBrandedWallpaperNotification = (isUserAction: boolean) => {
@@ -465,8 +471,8 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.setUserTLDAutoSet()
   }
 
-  onBraveTodayInteracting = (isInteracting: boolean) => {
-    if (isInteracting && !this.hasInitBraveToday) {
+  onBraveTodayInteracting = () => {
+    if (!this.hasInitBraveToday) {
       this.hasInitBraveToday = true
       this.props.actions.today.interactionBegin()
     }
@@ -691,6 +697,9 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   getCryptoContent () {
+    if (this.props.newTabData.hideAllWidgets) {
+      return null
+    }
     const {
       widgetStackOrder,
       togetherSupported,
@@ -701,6 +710,8 @@ class NewTabPage extends React.Component<Props, State> {
       geminiSupported,
       showCryptoDotCom,
       cryptoDotComSupported,
+      showFTX,
+      ftxSupported,
       binanceSupported
     } = this.props.newTabData
     const lookup = {
@@ -723,6 +734,10 @@ class NewTabPage extends React.Component<Props, State> {
       'cryptoDotCom': {
         display: showCryptoDotCom && cryptoDotComSupported,
         render: this.renderCryptoDotComWidget.bind(this)
+      },
+      'ftx': {
+        display: showFTX && ftxSupported,
+        render: this.renderFTXWidget.bind(this)
       }
     }
 
@@ -758,48 +773,19 @@ class NewTabPage extends React.Component<Props, State> {
       showGemini,
       showCryptoDotCom,
       cryptoDotComSupported,
-      binanceSupported
+      showFTX,
+      ftxSupported,
+      binanceSupported,
+      hideAllWidgets
     } = this.props.newTabData
-    return [
+    return hideAllWidgets || [
       showRewards,
       togetherSupported && showTogether,
       binanceSupported && showBinance,
       geminiSupported && showGemini,
-      cryptoDotComSupported && showCryptoDotCom
+      cryptoDotComSupported && showCryptoDotCom,
+      ftxSupported && showFTX
     ].every((widget: boolean) => !widget)
-  }
-
-  toggleAllCards = (show: boolean) => {
-    if (!show) {
-      this.props.actions.saveWidgetStackOrder()
-      this.props.saveSetAllStackWidgets(false)
-      return
-    }
-
-    const saveShowProps = {
-      'binance': this.props.saveShowBinance,
-      'cryptoDotCom': this.props.saveShowCryptoDotCom,
-      'gemini': this.props.saveShowGemini,
-      'rewards': this.props.saveShowRewards,
-      'together': this.props.saveShowTogether
-    }
-
-    const setAllTrue = (list: NewTab.StackWidget[]) => {
-      list.forEach((widget: NewTab.StackWidget) => {
-        if (widget in saveShowProps) {
-          saveShowProps[widget](true)
-        }
-      })
-    }
-
-    const { savedWidgetStackOrder, widgetStackOrder } = this.props.newTabData
-    // When turning back on, all widgets should be set to shown
-    // in the case that all widgets were hidden previously.
-    setAllTrue(
-      !savedWidgetStackOrder.length ?
-      widgetStackOrder :
-      savedWidgetStackOrder
-    )
   }
 
   renderCryptoContent () {
@@ -1018,6 +1004,35 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
+  renderFTXWidget (showContent: boolean, position: number) {
+    const { newTabData } = this.props
+    const { showFTX, textDirection, ftxSupported } = newTabData
+
+    if (!showFTX || !ftxSupported) {
+      return null
+    }
+
+    return (
+      <FTX
+        ftx={this.props.ftx}
+        actions={this.props.actions.ftx}
+        isCrypto={true}
+        paddingType={'none'}
+        isCryptoTab={!showContent}
+        menuPosition={'left'}
+        widgetTitle={'FTX'}
+        isForeground={showContent}
+        stackPosition={position}
+        textDirection={textDirection}
+        preventFocus={false}
+        hideWidget={this.toggleShowFTX}
+        showContent={showContent}
+        onShowContent={this.setForegroundStackWidget.bind(this, 'ftx')}
+        onDisconnect={this.props.ftx.isConnected ? this.props.actions.ftx.disconnect : undefined}
+      />
+    )
+  }
+
   render () {
     const { newTabData, gridSitesData, actions } = this.props
     const { showSettingsMenu, showEditTopSite, targetTopSiteForEditing } = this.state
@@ -1145,14 +1160,17 @@ class NewTabPage extends React.Component<Props, State> {
         <BraveToday
           feed={this.props.todayData.feed}
           articleToScrollTo={this.props.todayData.articleScrollTo}
+          displayAdToScrollTo={this.props.todayData.displayAdToScrollTo}
           displayedPageCount={this.props.todayData.currentPageIndex}
           publishers={this.props.todayData.publishers}
           isFetching={this.props.todayData.isFetching === true}
+          hasInteracted={this.props.todayData.hasInteracted}
           isUpdateAvailable={this.props.todayData.isUpdateAvailable}
-          isIntroDismissed={this.props.newTabData.isBraveTodayIntroDismissed}
+          isOptedIn={this.props.newTabData.isBraveTodayOptedIn}
           onRefresh={this.props.actions.today.refresh}
           onAnotherPageNeeded={this.props.actions.today.anotherPageNeeded}
           onInteracting={this.onBraveTodayInteracting}
+          onDisable={this.toggleShowToday}
           onFeedItemViewedCountChanged={this.props.actions.today.feedItemViewedCountChanged}
           // tslint:disable-next-line:jsx-no-lambda
           onCustomizeBraveToday={() => { this.openSettings(SettingsTabType.BraveToday) }}
@@ -1160,7 +1178,10 @@ class NewTabPage extends React.Component<Props, State> {
           onPromotedItemViewed={this.props.actions.today.promotedItemViewed}
           onSetPublisherPref={this.props.actions.today.setPublisherPref}
           onCheckForUpdate={this.props.actions.today.checkForUpdate}
-          onReadCardIntro={this.props.onReadBraveTodayIntroCard}
+          onOptIn={this.props.actions.today.optIn}
+          onViewedDisplayAd={this.props.actions.today.displayAdViewed}
+          onVisitDisplayAd={this.props.actions.today.visitDisplayAd}
+          getDisplayAd={this.props.getBraveNewsDisplayAd}
         />
         }
         <Settings
@@ -1197,13 +1218,16 @@ class NewTabPage extends React.Component<Props, State> {
           showTogether={newTabData.showTogether}
           geminiSupported={newTabData.geminiSupported}
           toggleShowGemini={this.toggleShowGemini}
-          showCryptoDotCom={newTabData.showCryptoDotCom}
+          showGemini={newTabData.showGemini}
           cryptoDotComSupported={newTabData.cryptoDotComSupported}
           toggleShowCryptoDotCom={this.toggleShowCryptoDotCom}
-          showGemini={newTabData.showGemini}
+          showCryptoDotCom={newTabData.showCryptoDotCom}
+          ftxSupported={newTabData.ftxSupported}
+          toggleShowFTX={this.toggleShowFTX}
+          showFTX={newTabData.showFTX}
           todayPublishers={this.props.todayData.publishers}
           cardsHidden={this.allWidgetsHidden()}
-          toggleCards={this.toggleAllCards}
+          toggleCards={this.props.saveSetAllStackWidgets}
         />
         {
           showEditTopSite ?
@@ -1214,7 +1238,6 @@ class NewTabPage extends React.Component<Props, State> {
               onSave={this.saveNewTopSite}
             /> : null
         }
-        <BAPDeprecationModal rewardsState={this.props.newTabData.rewardsState} />
       </Page.App>
     )
   }

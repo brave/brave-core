@@ -20,7 +20,7 @@
   <if expr="chromeos">
   </if>
 
-  <if expr="not chromeos">
+  <if expr="is_win">
     </if>
 
   <if expr="not chromeos">

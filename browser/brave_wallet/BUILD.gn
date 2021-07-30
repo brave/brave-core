@@ -4,21 +4,66 @@ import("//extensions/buildflags/buildflags.gni")
 assert(brave_wallet_enabled)
 
 source_set("brave_wallet") {
+  check_includes = false
+
   sources = [
-    "brave_wallet_delegate_impl.cc",
-    "brave_wallet_delegate_impl.h",
+    "asset_ratio_controller_factory.cc",
+    "asset_ratio_controller_factory.h",
+    "brave_wallet_context_utils.cc",
+    "brave_wallet_context_utils.h",
+    "keyring_controller_factory.cc",
+    "keyring_controller_factory.h",
+    "rpc_controller_factory.cc",
+    "rpc_controller_factory.h",
+    "swap_controller_factory.cc",
+    "swap_controller_factory.h",
   ]
   deps = [
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:mojom",
+    "//chrome/browser/profiles:profiles",
+    "//components/keyed_service/content:content",
+    "//components/user_prefs",
     "//content/public/browser",
     "//extensions/buildflags",
+    "//services/network/public/cpp",
   ]
+  if (is_android) {
+    sources += [
+      "./android/asset_ratio_controller_factory_android.cc",
+      "./android/keyring_controller_factory_android.cc",
+    ]
+    deps += [ "//brave/build/android:jni_headers" ]
+  }
   if (enable_extensions) {
     deps += [
       "//brave/browser/extensions",
       "//chrome/browser/extensions:extensions",
       "//extensions/browser",
+    ]
+  }
+}
+
+source_set("brave_wallet_delegate") {
+  sources = []
+  deps = [
+    "//brave/components/brave_wallet/browser",
+    "//content/public/browser",
+  ]
+  if (is_android) {
+    sources += [
+      "brave_wallet_provider_delegate_impl_android.cc",
+      "brave_wallet_provider_delegate_impl_android.h",
+    ]
+  } else {
+    sources += [
+      "brave_wallet_provider_delegate_impl.cc",
+      "brave_wallet_provider_delegate_impl.h",
+    ]
+    deps += [
+      "//brave/browser/ui",
+      "//chrome/browser/ui",
     ]
   }
 }

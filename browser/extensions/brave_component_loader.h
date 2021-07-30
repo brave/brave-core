@@ -9,8 +9,8 @@
 #include <string>
 
 #include "base/files/file_path.h"
+#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -41,7 +41,7 @@ class BraveComponentLoader : public ComponentLoader {
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   void AddRewardsExtension();
 #endif
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   void AddEthereumRemoteClientExtension();
   void AddEthereumRemoteClientExtensionOnStartup();
 #endif

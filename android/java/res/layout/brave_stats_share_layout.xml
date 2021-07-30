@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2021 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/share_stats"
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/share_activity_background"
+        tools:ignore="ContentDescription" />
+
+
+    <LinearLayout
+        android:id="@+id/numbers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="160dp"
+        android:layout_marginEnd="50dp"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <TextView
+            android:id="@+id/stats_trackers_no"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:fontFamily="@font/poppins_light"
+            android:textColor="@color/brave_stats_share_trackers_ads_no"
+            android:textSize="26sp" />
+
+        <TextView
+            android:id="@+id/stats_saved_data_no"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:fontFamily="@font/poppins_light"
+            android:textColor="@color/brave_stats_share_data_save_no"
+            android:textSize="26sp" />
+
+        <TextView
+            android:id="@+id/stats_timed_no"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:fontFamily="@font/poppins_light"
+            android:textColor="@color/brave_stats_share_time_saved_no"
+            android:textSize="26sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="30dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:weightSum="3">
+
+        <TextView
+            android:id="@+id/stats_trackers_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/poppins_light"
+            android:gravity="center"
+            android:text="@string/trackers_and_ads"
+            android:textColor="@color/brave_stats_share_info"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/stats_saved_data_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/poppins_light"
+            android:gravity="center"
+            android:text="@string/brave_stats_text_data_saved"
+            android:textColor="@color/brave_stats_share_info"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/stats_timed_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/poppins_light"
+            android:gravity="center"
+            android:text="@string/brave_stats_text_time"
+            android:textColor="@color/brave_stats_share_info"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</FrameLayout>

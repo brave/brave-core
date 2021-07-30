@@ -1,10 +1,10 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_WALLET_WALLET_H_
-#define BRAVELEDGER_WALLET_WALLET_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_WALLET_WALLET_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_WALLET_WALLET_H_
 
 #include <stdint.h>
 
@@ -14,7 +14,6 @@
 #include "base/containers/flat_map.h"
 #include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 #include "bat/ledger/internal/wallet/wallet_balance.h"
-#include "bat/ledger/internal/wallet/wallet_claim.h"
 #include "bat/ledger/internal/wallet/wallet_create.h"
 #include "bat/ledger/internal/wallet/wallet_recover.h"
 #include "bat/ledger/ledger.h"
@@ -31,9 +30,8 @@ class Wallet {
 
   void CreateWalletIfNecessary(ledger::ResultCallback callback);
 
-  void RecoverWallet(
-      const std::string& pass_phrase,
-      ledger::ResultCallback callback);
+  void RecoverWallet(const std::string& pass_phrase,
+                     ledger::ResultCallback callback);
 
   std::string GetWalletPassphrase(type::BraveWalletPtr wallet);
 
@@ -44,17 +42,14 @@ class Wallet {
       const base::flat_map<std::string, std::string>& args,
       ledger::ExternalWalletAuthorizationCallback callback);
 
-  void DisconnectWallet(
-      const std::string& wallet_type,
-      ledger::ResultCallback callback);
-
-  void ClaimFunds(ledger::ResultCallback callback);
+  void DisconnectWallet(const std::string& wallet_type,
+                        ledger::ResultCallback callback);
 
   void GetAnonWalletStatus(ledger::ResultCallback callback);
 
   void DisconnectAllWallets(ledger::ResultCallback callback);
 
-  type::BraveWalletPtr GetWallet();
+  type::BraveWalletPtr GetWallet(bool create = false);
 
   bool SetWallet(type::BraveWalletPtr wallet);
 
@@ -62,19 +57,18 @@ class Wallet {
                        ledger::PostSuggestionsClaimCallback callback);
 
  private:
-  void AuthorizeWallet(
-      const std::string& wallet_type,
-      const base::flat_map<std::string, std::string>& args,
-      ledger::ExternalWalletAuthorizationCallback callback);
+  void AuthorizeWallet(const std::string& wallet_type,
+                       const base::flat_map<std::string, std::string>& args,
+                       ledger::ExternalWalletAuthorizationCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<WalletCreate> create_;
   std::unique_ptr<WalletRecover> recover_;
   std::unique_ptr<WalletBalance> balance_;
-  std::unique_ptr<WalletClaim> claim_;
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };
 
 }  // namespace wallet
 }  // namespace ledger
-#endif  // BRAVELEDGER_WALLET_WALLET_H_
+
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_WALLET_WALLET_H_

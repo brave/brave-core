@@ -8,45 +8,13 @@ package org.chromium.chrome.browser.settings;
 import android.content.SharedPreferences;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
+import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdapter;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
-import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.components.search_engines.TemplateUrl;
-
-import java.util.List;
+import org.chromium.components.search_engines.TemplateUrlService;
 
 public class BraveSearchEngineUtils {
-    static public String getDSEShortName(boolean isPrivate) {
-        String defaultSearchEngineName = null;
-        TemplateUrl dseTemplateUrl =
-                TemplateUrlServiceFactory.get().getDefaultSearchEngineTemplateUrl();
-        if (dseTemplateUrl != null)
-            defaultSearchEngineName = dseTemplateUrl.getShortName();
-
-        return ContextUtils.getAppSharedPreferences().getString(
-            isPrivate ? BraveHelper.PRIVATE_DSE_SHORTNAME :
-                BraveHelper.STANDARD_DSE_SHORTNAME, defaultSearchEngineName);
-    }
-
-    static public void updateActiveDSE(boolean isPrivate) {
-        TemplateUrl templateUrl = getTemplateUrlByShortName(getDSEShortName(isPrivate));
-        if (templateUrl == null) {
-            return;
-        }
-        String keyword = templateUrl.getKeyword();
-        TemplateUrlServiceFactory.get().setSearchEngine(keyword);
-    }
-
-    static public void setDSEPrefs(TemplateUrl templateUrl, boolean isPrivate) {
-        SharedPreferences.Editor sharedPreferencesEditor =
-            ContextUtils.getAppSharedPreferences().edit();
-        sharedPreferencesEditor.putString(
-            isPrivate ? BraveHelper.PRIVATE_DSE_SHORTNAME :
-                BraveHelper.STANDARD_DSE_SHORTNAME, templateUrl.getShortName());
-        sharedPreferencesEditor.apply();
-    }
-
     static public void initializeBraveSearchEngineStates(TabModelSelector tabModelSelector) {
         tabModelSelector.addObserver(new SearchEngineTabModelSelectorObserver(tabModelSelector));
 
@@ -71,18 +39,17 @@ public class BraveSearchEngineUtils {
         // At first run, we should set initial default prefs to each standard/private DSE prefs.
         // Those pref values will be used until user change DES options explicitly.
         final String notInitialized = "notInitialized";
-        if (notInitialized.equals(
-                ContextUtils.getAppSharedPreferences().getString(
-                    BraveHelper.STANDARD_DSE_SHORTNAME, notInitialized))) {
+        if (notInitialized.equals(ContextUtils.getAppSharedPreferences().getString(
+                    BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, notInitialized))) {
             TemplateUrl templateUrl =
-                TemplateUrlServiceFactory.get().getDefaultSearchEngineTemplateUrl();
+                    TemplateUrlServiceFactory.get().getDefaultSearchEngineTemplateUrl();
 
             SharedPreferences.Editor sharedPreferencesEditor =
-                ContextUtils.getAppSharedPreferences().edit();
-            sharedPreferencesEditor.putString(BraveHelper.STANDARD_DSE_SHORTNAME,
-                templateUrl.getShortName());
-            sharedPreferencesEditor.putString(BraveHelper.PRIVATE_DSE_SHORTNAME,
-                templateUrl.getShortName());
+                    ContextUtils.getAppSharedPreferences().edit();
+            sharedPreferencesEditor.putString(
+                    BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, templateUrl.getShortName());
+            sharedPreferencesEditor.putString(
+                    BraveSearchEngineAdapter.PRIVATE_DSE_SHORTNAME, templateUrl.getShortName());
             sharedPreferencesEditor.apply();
         }
     }
@@ -95,16 +62,19 @@ public class BraveSearchEngineUtils {
         updateActiveDSE(false);
     }
 
+    static public void setDSEPrefs(TemplateUrl templateUrl, boolean isPrivate) {
+        BraveSearchEngineAdapter.setDSEPrefs(templateUrl, isPrivate);
+    }
+
+    static public void updateActiveDSE(boolean isPrivate) {
+        BraveSearchEngineAdapter.updateActiveDSE(isPrivate);
+    }
+
+    static public String getDSEShortName(boolean isPrivate) {
+        return BraveSearchEngineAdapter.getDSEShortName(isPrivate);
+    }
+
     static public TemplateUrl getTemplateUrlByShortName(String name) {
-        List<TemplateUrl> templateUrls = TemplateUrlServiceFactory.get().getTemplateUrls();
-        for (int index = 0; index < templateUrls.size(); ++index) {
-          TemplateUrl templateUrl = templateUrls.get(index);
-          if (templateUrl.getShortName().equals(name)) {
-              return templateUrl;
-          }
-        }
-        // This should not happen
-        assert false;
-        return null;
+        return BraveSearchEngineAdapter.getTemplateUrlByShortName(name);
     }
 }

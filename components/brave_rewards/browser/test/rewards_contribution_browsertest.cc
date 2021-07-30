@@ -7,6 +7,7 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
+#include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/common/brave_paths.h"
@@ -299,6 +300,18 @@ IN_PROC_BROWSER_TEST_F(
       1);
 }
 
+IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
+                       TipVerifiedPublisherWithCustomAmount) {
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  rewards_browsertest_util::CreateWallet(rewards_service_);
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
+  contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
+
+  contribution_->TipPublisher(
+      rewards_browsertest_util::GetUrl(https_server_.get(), "duckduckgo.com"),
+      rewards_browsertest_util::TipAction::OneTime, 1, 0, 1.25);
+}
+
 // https://github.com/brave/brave-browser/issues/12607
 IN_PROC_BROWSER_TEST_F(
     RewardsContributionBrowserTest,
@@ -543,34 +556,6 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->VerifyTip(amount, true, false, true);
 }
 
-IN_PROC_BROWSER_TEST_F(
-    RewardsContributionBrowserTest,
-    TipConnectedPublisherConnected) {
-  response_->SetVerifiedWallet(true);
-  rewards_browsertest_util::StartProcess(rewards_service_);
-  rewards_browsertest_util::CreateWallet(rewards_service_);
-  contribution_->SetUpUpholdWallet(
-      rewards_service_,
-      50.0,
-      ledger::type::WalletStatus::CONNECTED);
-  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
-
-  const double amount = 5.0;
-  contribution_->TipViaCode(
-      "bumpsmack.com",
-      amount,
-      ledger::type::PublisherStatus::CONNECTED,
-      0);
-
-  contribution_->IsBalanceCorrect();
-
-  // Make sure that tips table is empty
-  rewards_browsertest_util::WaitForElementToEqual(
-      contents(),
-      "#tips-table > div > div",
-      "Have you tipped your favorite content creator today?");
-}
-
 // https://github.com/brave/brave-browser/issues/12985
 IN_PROC_BROWSER_TEST_F(
     RewardsContributionBrowserTest,
@@ -772,6 +757,10 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_EQ(statuses[0], ledger::type::Result::LEDGER_OK);
   ASSERT_EQ(statuses[1], ledger::type::Result::LEDGER_OK);
 
+  // Wait for UI to update with contribution
+  rewards_browsertest_util::WaitForElementToContain(
+      contents(), "[color=contribute]", "-50.000BAT");
+
   rewards_browsertest_util::WaitForElementThenClick(
       contents(),
       "[data-test-id='showMonthlyReport']");
@@ -789,12 +778,6 @@ IN_PROC_BROWSER_TEST_F(
       contents(),
       "#transactionTable",
       "-20.000BAT");
-
-  // Check that summary table shows the appropriate contribution
-  rewards_browsertest_util::WaitForElementToContain(
-      contents(),
-      "[color=contribute]",
-      "-50.000BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -883,6 +866,10 @@ IN_PROC_BROWSER_TEST_F(
 
   // Load rewards page
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
+
+  // Wait for UI to update with contribution
+  rewards_browsertest_util::WaitForElementToContain(
+      contents(), "[color='contribute']", "-50.000BAT");
 
   rewards_browsertest_util::WaitForElementThenClick(
       contents(),

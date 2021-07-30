@@ -7,8 +7,9 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
@@ -23,6 +24,10 @@
 #include "content/public/test/test_navigation_observer.h"
 #include "url/gurl.h"
 
+using brave_shields::ControlType;
+using brave_shields::ResetBraveShieldsEnabled;
+using brave_shields::SetBraveShieldsEnabled;
+using brave_shields::SetCosmeticFilteringControlType;
 using brave_shields::features::kBraveDomainBlock;
 
 class DomainBlockTestBase : public AdBlockServiceTest {
@@ -35,6 +40,7 @@ class DomainBlockTestBase : public AdBlockServiceTest {
         [&](const net::test_server::HttpRequest& request) {
           request_count_ += 1;
         }));
+    content::SetupCrossSiteRedirector(embedded_test_server());
     AdBlockServiceTest::SetUp();
   }
 
@@ -99,6 +105,7 @@ class DomainBlockDisabledTest : public DomainBlockTestBase {
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitial) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
 
   // Navigate to a page on a.com. This should work normally.
   NavigateTo(url);
@@ -114,6 +121,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitial) {
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitialAndProceed) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
 
   // Navigate to a page on a.com. This should work normally.
   NavigateTo(url);
@@ -127,9 +135,9 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitialAndProceed) {
 
   // Simulate click on "Proceed anyway" button. This should navigate to the
   // originally requested page.
-  ClickAndWaitForNavigation("proceed-button");
+  ClickAndWaitForNavigation("primary-button");
   ASSERT_FALSE(IsShowingInterstitial());
-  base::string16 expected_title = base::ASCIIToUTF16("OK");
+  std::u16string expected_title(u"OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
@@ -137,6 +145,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitialAndProceed) {
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitialAndReload) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
 
   // Navigate to a page on a.com. This should work normally.
   NavigateTo(url);
@@ -157,6 +166,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitialAndReload) {
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedAndReload) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
 
   // Navigate to a page on a.com. This should work normally.
   NavigateTo(url);
@@ -170,9 +180,9 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedAndReload) {
 
   // Simulate click on "Proceed anyway" button. This should navigate to the
   // originally requested page.
-  ClickAndWaitForNavigation("proceed-button");
+  ClickAndWaitForNavigation("primary-button");
   ASSERT_FALSE(IsShowingInterstitial());
-  base::string16 expected_title = base::ASCIIToUTF16("OK");
+  std::u16string expected_title(u"OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 
@@ -189,6 +199,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedAndReload) {
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedDoesNotAffectNewTabs) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
 
   // Navigate to a page on a.com. This should work normally.
   NavigateTo(url);
@@ -202,9 +213,9 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedDoesNotAffectNewTabs) {
 
   // Simulate click on "Proceed anyway" button. This should navigate to the
   // originally requested page.
-  ClickAndWaitForNavigation("proceed-button");
+  ClickAndWaitForNavigation("primary-button");
   ASSERT_FALSE(IsShowingInterstitial());
-  base::string16 expected_title = base::ASCIIToUTF16("OK");
+  std::u16string expected_title(u"OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 
@@ -222,6 +233,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedDoesNotAffectNewTabs) {
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, DontWarnAgainAndProceed) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
 
   // Navigate to a page on a.com. This should work normally.
   NavigateTo(url);
@@ -240,10 +252,10 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, DontWarnAgainAndProceed) {
 
   // Simulate click on "Proceed anyway" button. This should save the "don't warn
   // again" choice and navigate to the originally requested page.
-  ClickAndWaitForNavigation("proceed-button");
+  ClickAndWaitForNavigation("primary-button");
   WaitForAdBlockServiceThreads();
   ASSERT_FALSE(IsShowingInterstitial());
-  base::string16 expected_title = base::ASCIIToUTF16("OK");
+  std::u16string expected_title(u"OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 
@@ -262,7 +274,11 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, DontWarnAgainAndProceed) {
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitialAndGoBack) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   GURL url_a = embedded_test_server()->GetURL("a.com", "/simple.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK,
+                                  url_a);
   GURL url_b = embedded_test_server()->GetURL("b.com", "/simple.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK,
+                                  url_b);
 
   // Navigate to a page on a.com. This should work normally.
   NavigateTo(url_a);
@@ -276,7 +292,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitialAndGoBack) {
 
   // Simulate click on "Go back" button. This should return to previous page on
   // a.com.
-  ClickAndWaitForNavigation("primary-button");
+  ClickAndWaitForNavigation("back-button");
   ASSERT_FALSE(IsShowingInterstitial());
   EXPECT_EQ(web_contents()->GetURL().host(), "a.com");
 }
@@ -285,6 +301,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, NoFetch) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   ASSERT_EQ(0, request_count_);
   GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
   BlockDomainByURL(url);
   ui_test_utils::AllBrowserTabAddedWaiter new_tab;
   ui_test_utils::NavigateToURLWithDisposition(
@@ -299,9 +316,77 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, NoFetch) {
   ASSERT_EQ(0, request_count_);
 }
 
+IN_PROC_BROWSER_TEST_F(DomainBlockTest, NoThirdPartyInterstitial) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  ASSERT_TRUE(g_brave_browser_process->ad_block_custom_filters_service()
+                  ->UpdateCustomFilters("||b.com^$third-party"));
+
+  GURL url = embedded_test_server()->GetURL("a.com", "/simple_link.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
+  GURL cross_url =
+      embedded_test_server()->GetURL("a.com", "/cross-site/b.com/simple.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK,
+                                  cross_url);
+
+  // Navigate to a page on a.com. This should work normally.
+  NavigateTo(url);
+  ASSERT_FALSE(IsShowingInterstitial());
+
+  // Navigate to a page on the third-party b.com. There should be no
+  // interstitial shown.
+  EXPECT_EQ(true,
+            EvalJs(web_contents(), "clickLink('" + cross_url.spec() + "')"));
+  EXPECT_TRUE(WaitForLoadStop(web_contents()));
+
+  // No interstitial should be shown, since top-level requests are never
+  // third-party.
+  ASSERT_FALSE(IsShowingInterstitial());
+
+  // The default "blocked by an extension" interstitial also should not be
+  // shown. This would appear if the request was blocked by the network delegate
+  // helper.
+  const std::string location =
+      EvalJs(web_contents(), "window.location.href").ExtractString();
+  ASSERT_STRNE("chrome-error://chromewebdata/", location.c_str());
+}
+
+IN_PROC_BROWSER_TEST_F(DomainBlockTest, NoInterstitialUnlessAggressive) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
+
+  // Navigate to a page on a.com. This should work normally.
+  NavigateTo(url);
+  ASSERT_FALSE(IsShowingInterstitial());
+
+  // Block a.com in rules but allow a.com via shields, then attempt to navigate
+  // to a page on a.com. This should not show an interstitial.
+  BlockDomainByURL(url);
+  SetCosmeticFilteringControlType(content_settings(), ControlType::ALLOW, url);
+  NavigateTo(url);
+  ASSERT_FALSE(IsShowingInterstitial());
+
+  // Block a.com in rules but set a.com to default shield settings, then attempt
+  // to navigate to a page on a.com. This should not show an interstitial.
+  BlockDomainByURL(url);
+  SetCosmeticFilteringControlType(content_settings(),
+                                  ControlType::BLOCK_THIRD_PARTY, url);
+  NavigateTo(url);
+  ASSERT_FALSE(IsShowingInterstitial());
+
+  // Block a.com in rules but drop shields, then attempt to navigate
+  // to a page on a.com. This should not show an interstitial.
+  BlockDomainByURL(url);
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
+  SetBraveShieldsEnabled(content_settings(), false /* enable */, url);
+  NavigateTo(url);
+  ASSERT_FALSE(IsShowingInterstitial());
+}
+
 IN_PROC_BROWSER_TEST_F(DomainBlockDisabledTest, NoInterstitial) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
 
   // Navigate to a page on a.com. This should work normally.
   NavigateTo(url);
@@ -315,7 +400,47 @@ IN_PROC_BROWSER_TEST_F(DomainBlockDisabledTest, NoInterstitial) {
   ASSERT_FALSE(IsShowingInterstitial());
 
   // Ensure we ended up on the expected page.
-  base::string16 expected_title = base::ASCIIToUTF16("OK");
+  std::u16string expected_title(u"OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+}
+
+IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedDoesNotAffectOtherDomains) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  GURL url_a = embedded_test_server()->GetURL("a.com", "/simple.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK,
+                                  url_a);
+  GURL url_b = embedded_test_server()->GetURL("b.com", "/simple.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK,
+                                  url_b);
+
+  // Navigate to a page on a.com. This should work normally.
+  NavigateTo(url_a);
+  ASSERT_FALSE(IsShowingInterstitial());
+
+  // Block a.com, then attempt to navigate to a page on a.com. This should be
+  // interrupted by the domain block interstitial.
+  BlockDomainByURL(url_a);
+  NavigateTo(url_a);
+  ASSERT_TRUE(IsShowingInterstitial());
+
+  // Simulate click on "Proceed anyway" button. This should navigate to the
+  // originally requested page.
+  ClickAndWaitForNavigation("primary-button");
+  ASSERT_FALSE(IsShowingInterstitial());
+  std::u16string expected_title(u"OK");
+  content::TitleWatcher watcher(web_contents(), expected_title);
+  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+
+  // Navigate to a page on b.com. This should work normally.
+  NavigateTo(url_b);
+  ASSERT_FALSE(IsShowingInterstitial());
+
+  // Block b.com, then attempt to navigate to a page on b.com. This should be
+  // interrupted by the domain block interstitial, because "proceed anyway"
+  // permission was only given to a.com and should not apply to other domains
+  // in the same tab.
+  BlockDomainByURL(url_b);
+  NavigateTo(url_b);
+  ASSERT_TRUE(IsShowingInterstitial());
 }

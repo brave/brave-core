@@ -5,19 +5,14 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/ads_per_hour_frequency_cap.h"
 
-#include <cstdint>
-
 #include "bat/ads/internal/frequency_capping/frequency_capping_unittest_util.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
-
-namespace {
-const char kCreativeInstanceId[] = "9aea9a47-c6a0-4718-a0fa-706338bb2156";
-}  // namespace
 
 class BatAdsAdsPerHourFrequencyCapTest : public UnitTestBase {
  protected:
@@ -28,10 +23,9 @@ class BatAdsAdsPerHourFrequencyCapTest : public UnitTestBase {
 
 TEST_F(BatAdsAdsPerHourFrequencyCapTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange
-  const AdEventList ad_events;
 
   // Act
-  AdsPerHourFrequencyCap frequency_cap(ad_events);
+  AdsPerHourFrequencyCap frequency_cap;
   const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert
@@ -42,18 +36,15 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest, AlwaysAllowAdOnAndroid) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
+  const int64_t ads_per_hour = 5;
 
-  const uint64_t ads_per_hour = 5;
+  AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, ads_per_hour);
 
-  const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
-
-  const AdEventList ad_events(ads_per_hour, ad_event);
+  RecordAdEvents(AdType::kAdNotification, ConfirmationType::kServed,
+                 ads_per_hour);
 
   // Act
-  AdsPerHourFrequencyCap frequency_cap(ad_events);
+  AdsPerHourFrequencyCap frequency_cap;
   const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert
@@ -64,18 +55,14 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest, AlwaysAllowAdOnIOS) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
 
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
+  const int64_t ads_per_hour = 5;
+  AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, ads_per_hour);
 
-  const uint64_t ads_per_hour = 5;
-
-  const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
-
-  const AdEventList ad_events(ads_per_hour, ad_event);
+  RecordAdEvents(AdType::kAdNotification, ConfirmationType::kServed,
+                 ads_per_hour);
 
   // Act
-  AdsPerHourFrequencyCap frequency_cap(ad_events);
+  AdsPerHourFrequencyCap frequency_cap;
   const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert
@@ -84,18 +71,15 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest, AlwaysAllowAdOnIOS) {
 
 TEST_F(BatAdsAdsPerHourFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
+  const int64_t ads_per_hour = 5;
 
-  const uint64_t ads_per_hour = 5;
+  AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, ads_per_hour);
 
-  const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
-
-  const AdEventList ad_events(ads_per_hour - 1, ad_event);
+  RecordAdEvents(AdType::kAdNotification, ConfirmationType::kServed,
+                 ads_per_hour - 1);
 
   // Act
-  AdsPerHourFrequencyCap frequency_cap(ad_events);
+  AdsPerHourFrequencyCap frequency_cap;
   const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert
@@ -104,20 +88,17 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
 
 TEST_F(BatAdsAdsPerHourFrequencyCapTest, AllowAdIfDoesNotExceedCapAfter1Hour) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
+  const int64_t ads_per_hour = 5;
 
-  const uint64_t ads_per_hour = 5;
+  AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, ads_per_hour);
 
-  const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
-
-  const AdEventList ad_events(ads_per_hour, ad_event);
+  RecordAdEvents(AdType::kAdNotification, ConfirmationType::kServed,
+                 ads_per_hour);
 
   FastForwardClockBy(base::TimeDelta::FromHours(1));
 
   // Act
-  AdsPerHourFrequencyCap frequency_cap(ad_events);
+  AdsPerHourFrequencyCap frequency_cap;
   const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert
@@ -126,20 +107,17 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest, AllowAdIfDoesNotExceedCapAfter1Hour) {
 
 TEST_F(BatAdsAdsPerHourFrequencyCapTest, DoNotAllowAdIfExceedsCapWithin1Hour) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
+  const int64_t ads_per_hour = 5;
 
-  const uint64_t ads_per_hour = 5;
+  AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, ads_per_hour);
 
-  const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
-
-  const AdEventList ad_events(ads_per_hour, ad_event);
+  RecordAdEvents(AdType::kAdNotification, ConfirmationType::kServed,
+                 ads_per_hour);
 
   FastForwardClockBy(base::TimeDelta::FromMinutes(59));
 
   // Act
-  AdsPerHourFrequencyCap frequency_cap(ad_events);
+  AdsPerHourFrequencyCap frequency_cap;
   const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert

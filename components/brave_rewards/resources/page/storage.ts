@@ -12,7 +12,7 @@ export const defaultState: Rewards.State = {
   enabledAds: false,
   enabledAdsMigrated: false,
   enabledContribute: false,
-  firstLoad: null,
+  firstLoad: false,
   contributionMinTime: 8,
   contributionMinVisits: 1,
   contributionMonthly: 0,
@@ -22,13 +22,13 @@ export const defaultState: Rewards.State = {
   donationAbilityTwitter: true,
   reconcileStamp: 0,
   ui: {
+    disconnectWalletError: false,
     emptyWallet: true,
     modalBackup: false,
     modalRedirect: 'hide',
     paymentIdCheck: true,
     walletRecoveryStatus: null,
     walletServerProblem: false,
-    verifyOnboardingDisplayed: false,
     promosDismissed: {}
   },
   autoContributeList: [],
@@ -45,9 +45,10 @@ export const defaultState: Rewards.State = {
     shouldAllowAdsSubdivisionTargeting: true,
     adsUIEnabled: false,
     adsIsSupported: false,
-    adsEstimatedPendingRewards: 0,
-    adsNextPaymentDate: '',
-    adsReceivedThisMonth: 0
+    adsNextPaymentDate: 0,
+    adsReceivedThisMonth: 0,
+    adsEarningsThisMonth: 0,
+    adsEarningsLastMonth: 0
   },
   adsHistory: [],
   pendingContributionTotal: 0,
@@ -59,6 +60,7 @@ export const defaultState: Rewards.State = {
   },
   pendingContributions: [],
   excludedList: [],
+  externalWalletProviderList: [],
   balance: {
     total: 0,
     wallets: {}
@@ -98,6 +100,11 @@ const cleanData = (state: Rewards.State) => {
     }
   }
 
+  // Data type change: adsNextPaymentDate (string -> number)
+  if (typeof (state.adsData.adsNextPaymentDate as any) !== 'number') {
+    throw new Error('Invalid adsNextPaymentDate')
+  }
+
   state.ui.modalRedirect = 'hide'
 
   return state
@@ -108,13 +115,13 @@ export const load = (): Rewards.State => {
   let state: Rewards.State = defaultState
   if (data) {
     try {
-      state = JSON.parse(data)
+      state = cleanData(JSON.parse(data))
       state.initializing = true
     } catch (e) {
       console.error('Could not parse local storage data: ', e)
     }
   }
-  return cleanData(state)
+  return state
 }
 
 export const debouncedSave = debounce((data: Rewards.State) => {

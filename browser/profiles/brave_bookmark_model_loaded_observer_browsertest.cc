@@ -23,13 +23,13 @@ void CreateOtherBookmarksFolder(bookmarks::BookmarkModel* model) {
   const bookmarks::BookmarkNode* other_node_folder = model->AddFolder(
       model->bookmark_bar_node(), model->bookmark_bar_node()->children().size(),
       model->other_node()->GetTitledUrlNodeTitle());
-  model->AddFolder(other_node_folder, 0, base::ASCIIToUTF16("A"));
+  model->AddFolder(other_node_folder, 0, u"A");
 }
 
 void CreateBraveSyncV1MetaInfo(bookmarks::BookmarkModel* model) {
   const bookmarks::BookmarkNode* node = model->AddURL(
       model->bookmark_bar_node(), model->bookmark_bar_node()->children().size(),
-      base::ASCIIToUTF16("Brave"), GURL("https://brave.com"));
+      u"Brave", GURL("https://brave.com"));
   model->SetNodeMetaInfo(node, "object_id", "object_id_value");
 }
 

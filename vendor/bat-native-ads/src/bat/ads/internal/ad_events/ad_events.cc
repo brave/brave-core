@@ -5,12 +5,16 @@
 
 #include "bat/ads/internal/ad_events/ad_events.h"
 
-#include <cstdint>
+#include <string>
+#include <vector>
 
 #include "base/time/time.h"
 #include "bat/ads/ad_info.h"
+#include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
+#include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/container_util.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
 
 namespace ads {
@@ -32,6 +36,8 @@ void LogAdEvent(const AdInfo& ad,
 }
 
 void LogAdEvent(const AdEventInfo& ad_event, AdEventCallback callback) {
+  RecordAdEvent(ad_event);
+
   database::table::AdEvents database_table;
   database_table.LogEvent(
       ad_event, [callback](const Result result) { callback(result); });
@@ -39,8 +45,59 @@ void LogAdEvent(const AdEventInfo& ad_event, AdEventCallback callback) {
 
 void PurgeExpiredAdEvents(AdEventCallback callback) {
   database::table::AdEvents database_table;
-  database_table.PurgeExpired(
-      [callback](const Result result) { callback(result); });
+  database_table.PurgeExpired([callback](const Result result) {
+    RebuildAdEventsFromDatabase();
+    callback(result);
+  });
+}
+
+void PurgeOrphanedAdEvents(const mojom::BraveAdsAdType ad_type,
+                           AdEventCallback callback) {
+  database::table::AdEvents database_table;
+  database_table.PurgeOrphaned(ad_type, [callback](const Result result) {
+    RebuildAdEventsFromDatabase();
+    callback(result);
+  });
+}
+
+void RebuildAdEventsFromDatabase() {
+  database::table::AdEvents database_table;
+  database_table.GetAll([=](const Result result, const AdEventList& ad_events) {
+    if (result != Result::SUCCESS) {
+      BLOG(1, "Failed to get ad events");
+      return;
+    }
+
+    AdsClientHelper::Get()->ResetAdEvents();
+
+    for (const auto& ad_event : ad_events) {
+      RecordAdEvent(ad_event);
+    }
+  });
+}
+
+void RecordAdEvent(const AdEventInfo& ad_event) {
+  const std::string ad_type_as_string = std::string(ad_event.type);
+
+  const std::string confirmation_type_as_string =
+      std::string(ad_event.confirmation_type);
+
+  AdsClientHelper::Get()->RecordAdEvent(ad_type_as_string,
+                                        confirmation_type_as_string,
+                                        ad_event.timestamp);
+}
+
+std::deque<uint64_t> GetAdEvents(const AdType& ad_type,
+                                 const ConfirmationType& confirmation_type) {
+  const std::string ad_type_as_string = std::string(ad_type);
+
+  const std::string confirmation_type_as_string =
+      std::string(confirmation_type);
+
+  const std::vector<uint64_t> ad_events =
+      AdsClientHelper::Get()->GetAdEvents(ad_type, confirmation_type);
+
+  return VectorToDeque(ad_events);
 }
 
 }  // namespace ads

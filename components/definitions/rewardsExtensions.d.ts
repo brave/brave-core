@@ -30,7 +30,9 @@ declare namespace RewardsExtension {
   export enum PublisherStatus {
     NOT_VERIFIED = 0,
     CONNECTED = 1,
-    UPHOLD_VERIFIED = 2
+    UPHOLD_VERIFIED = 2,
+    BITFLYER_VERIFIED = 3,
+    GEMINI_VERIFIED = 4
   }
 
   interface Publisher {
@@ -165,7 +167,7 @@ declare namespace RewardsExtension {
     wallets: Record<string, number>
   }
 
-  export type WalletType = 'anonymous' | 'uphold'
+  export type WalletType = 'anonymous' | 'uphold' | 'bitflyer' | 'gemini'
 
   export enum WalletStatus {
     NOT_CONNECTED = 0,

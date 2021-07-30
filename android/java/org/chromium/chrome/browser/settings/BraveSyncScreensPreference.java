@@ -345,7 +345,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        getActivity().setTitle(R.string.sign_in_sync);
+        getActivity().setTitle(R.string.sync_category_title);
 
         mScrollViewSyncInitial = (ScrollView) getView().findViewById(R.id.view_sync_initial);
         mScrollViewSyncChainCode = (ScrollView) getView().findViewById(R.id.view_sync_chain_code);

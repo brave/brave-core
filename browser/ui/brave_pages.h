@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_PAGES_H_
 #define BRAVE_BROWSER_UI_BRAVE_PAGES_H_
 
+#include "brave/components/ipfs/buildflags/buildflags.h"
+
 class Browser;
 
 namespace brave {

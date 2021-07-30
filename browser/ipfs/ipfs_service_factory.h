@@ -17,6 +17,7 @@ class IpfsServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
   static IpfsService* GetForContext(content::BrowserContext* context);
   static IpfsServiceFactory* GetInstance();
+  static bool IsIpfsEnabled(content::BrowserContext* context);
 
  private:
   friend struct base::DefaultSingletonTraits<IpfsServiceFactory>;

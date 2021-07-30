@@ -51,6 +51,12 @@
     <message name="IDS_PRINT_PREVIEW_OPTION_ALL_PAGES" desc="Option to print all pages.">
       All
     </message>
+    <message name="IDS_PRINT_PREVIEW_OPTION_ODD_PAGES" desc="Option to print odd numbered pages only.">
+      Odd pages only
+    </message>
+    <message name="IDS_PRINT_PREVIEW_OPTION_EVEN_PAGES" desc="Option to print even numbered pages only.">
+      Even pages only
+    </message>
     <message name="IDS_PRINT_PREVIEW_OPTION_CUSTOM_PAGES" desc="Option to print custom pages.">
       Custom
     </message>
@@ -110,9 +116,6 @@
     </message>
     <message name="IDS_PRINT_PREVIEW_PRINT_TO_PDF" desc="Option shown on printer drop-down list for saving previewed document as a PDF.">
       Save as PDF
-    </message>
-    <message name="IDS_PRINT_PREVIEW_PRINT_TO_GOOGLE_DRIVE" desc="Option shown on printer drop-down list for saving previewed document to Google Drive.">
-      Save to Google Drive
     </message>
     <message name="IDS_PRINT_PREVIEW_SHEET_SUMMARY_LABEL" desc="Print summary, explaining to the user how many pages will be printed.">
     {COUNT, plural,
@@ -271,21 +274,6 @@
     <message name="IDS_PRINT_PREVIEW_NEW_SHOW_ADVANCED_OPTIONS" desc="The text for the button to open the printer's advanced settings dialog in the new UI.">
       Advanced settings
     </message>
-    <message name="IDS_PRINT_PREVIEW_ACCEPT_INVITE" desc="Text for the button to accept the printer-sharing invitation.">
-      Accept
-    </message>
-    <message name="IDS_PRINT_PREVIEW_ACCEPT_GROUP_INVITE" desc="Text for the button to accept the printer-sharing invitation for the group of users.">
-      Accept for group
-    </message>
-    <message name="IDS_PRINT_PREVIEW_REJECT_INVITE" desc="Text for the button to reject the printer-sharing invitation.">
-      Reject
-    </message>
-    <message name="IDS_PRINT_PREVIEW_GROUP_INVITE_TEXT" desc="Message to show when the user has pending printer-sharing invitation for the group of users they are a manager of.">
-      &lt;strong&gt;<ph name="SENDER">$1</ph>&lt;/strong&gt; wants to share a printer &lt;strong&gt;<ph name="PRINTER_NAME">$2</ph>&lt;/strong&gt; with a group you own: &lt;strong&gt;<ph name="GROUP_NAME">$3</ph>&lt;/strong&gt;. If you accept, all group members will be able to print to the printer.
-    </message>
-    <message name="IDS_PRINT_PREVIEW_INVITE_TEXT" desc="Message to show when the user has pending printer-sharing invitation.">
-      &lt;strong&gt;<ph name="SENDER">$1</ph>&lt;/strong&gt; wants to share a printer &lt;strong&gt;<ph name="PRINTER_NAME">$2</ph>&lt;/strong&gt; with you.
-    </message>
     <message name="IDS_PRINT_PREVIEW_BUTTON_SELECT" desc="Label for a button in a dialog asking a user to confirm selection of a printer in print preview UI. The printer gets selected if the user clicks the button.">
       Select
     </message>
@@ -304,7 +292,10 @@
     <message name="IDS_PRINT_PREVIEW_MANAGED_SETTINGS_TEXT" desc="Text shown when hovering over the enterprise managed icon in the header">
       These settings are enforced by your administrator
     </message>
-    <if expr="chromeos">
+    <if expr="chromeos or lacros">
+      <message name="IDS_PRINT_PREVIEW_PRINT_TO_GOOGLE_DRIVE" desc="Option shown on printer drop-down list for saving previewed document to Google Drive.">
+        Save to Google Drive
+      </message>
       <message name="IDS_PRINT_PREVIEW_SERVER_SEARCH_BOX_PLACEHOLDER" desc="Text to put in a print server search box when user has not entered a search query.">
         Print servers
       </message>
@@ -374,7 +365,7 @@
         other {Exceeds limit of {COUNT} sheets of paper}}
       </message>
     </if>
-    <if expr="not chromeos">
+    <if expr="not chromeos and not lacros">
       <message name="IDS_PRINT_PREVIEW_SYSTEM_DIALOG_OPTION" desc="Option allowing the user to access advanced printer settings using the native print system dialog instead of printing through the print preview mechanism. Shortcut key is not translated">
         Print using system dialog... <ph name="SHORTCUT_KEY">$1<ex>(Shift+Ctrl+P)</ex></ph>
       </message>

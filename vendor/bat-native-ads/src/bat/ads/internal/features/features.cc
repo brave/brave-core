@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/features/features.h"
 
-#include "base/metrics/field_trial.h"
 #include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/features/ad_rewards/ad_rewards_features.h"
 #include "bat/ads/internal/features/ad_serving/ad_serving_features.h"
@@ -13,48 +12,38 @@
 #include "bat/ads/internal/features/purchase_intent/purchase_intent_features.h"
 #include "bat/ads/internal/features/text_classification/text_classification_features.h"
 #include "bat/ads/internal/features/user_activity/user_activity_features.h"
+#include "bat/ads/internal/frequency_capping/frequency_capping_features.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
 namespace features {
 
 namespace {
-const char kActiveStudyName[] = "EpsilonGreedyBanditStudy";
+const char kAdsTrialTag[] = "BraveAds";
 }  // namespace
 
-bool HasActiveStudy() {
-  if (!base::FieldTrialList::Find(kActiveStudyName)) {
-    return false;
+base::FieldTrial::ActiveGroups GetStudies() {
+  base::FieldTrial::ActiveGroups studies;
+  base::FieldTrialList::GetActiveFieldTrialGroups(&studies);
+
+  base::FieldTrial::ActiveGroups filtered_studies;
+  for (const auto& group : studies) {
+    if (group.trial_name.find(kAdsTrialTag) != std::string::npos) {
+      filtered_studies.push_back(group);
+    }
   }
-
-  return true;
-}
-
-base::Optional<std::string> GetStudy() {
-  std::string study_name(kActiveStudyName);
-  if (study_name.empty()) {
-    return base::nullopt;
-  }
-
-  return study_name;
-}
-
-base::Optional<std::string> GetGroup() {
-  base::FieldTrial* field_trial = base::FieldTrialList::Find(kActiveStudyName);
-  if (!field_trial) {
-    return base::nullopt;
-  }
-
-  return field_trial->group_name();
+  return filtered_studies;
 }
 
 void Log() {
-  const base::Optional<std::string> study = GetStudy();
-  const base::Optional<std::string> group = GetGroup();
-  if (HasActiveStudy() && study.has_value() && group.has_value()) {
-    BLOG(1, "Active study " << study.value() << " in group " << group.value());
+  const base::FieldTrial::ActiveGroups studies = GetStudies();
+  if (studies.empty()) {
+    BLOG(1, "No active studies");
   } else {
-    BLOG(1, "No active study found");
+    for (const auto& study : studies) {
+      BLOG(1, "Study " << study.trial_name << " is active (" << study.group_name
+                       << ")");
+    }
   }
 
   BLOG(1, "Text classification feature is "
@@ -74,6 +63,9 @@ void Log() {
 
   BLOG(1, "User activity feature is "
               << (user_activity::IsEnabled() ? "enabled" : "disabled"));
+
+  BLOG(1, "Frequency capping feature is "
+              << (frequency_capping::IsEnabled() ? "enabled" : "disabled"));
 }
 
 }  // namespace features

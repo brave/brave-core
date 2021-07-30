@@ -17,75 +17,72 @@ import Theme from 'brave-ui/theme/brave-default'
 import store from './store'
 import * as rewardsInternalsActions from './actions/rewards_internals_actions'
 
-window.cr.define('brave_rewards_internals', function () {
-  'use strict'
-
-  function getActions () {
-    const actions: any = getUtilActions()
-    if (actions) {
-      return actions
-    }
-
-    const newActions = bindActionCreators(rewardsInternalsActions, store.dispatch.bind(store))
-    setActions(newActions)
-    return newActions
+function getActions () {
+  const actions: any = getUtilActions()
+  if (actions) {
+    return actions
   }
 
-  function onGetRewardsInternalsInfo (info: RewardsInternals.State) {
-    getActions().onGetRewardsInternalsInfo(info)
-  }
+  const newActions = bindActionCreators(rewardsInternalsActions, store.dispatch.bind(store))
+  setActions(newActions)
+  return newActions
+}
 
-  function balance (balance: RewardsInternals.Balance) {
-    getActions().onBalance(balance)
-  }
+function onGetRewardsInternalsInfo (info: RewardsInternals.State) {
+  getActions().onGetRewardsInternalsInfo(info)
+}
 
-  function contributions (contributions: RewardsInternals.ContributionInfo[]) {
-    getActions().onContributions(contributions)
-  }
+function balance (balance: RewardsInternals.Balance) {
+  getActions().onBalance(balance)
+}
 
-  function promotions (promotions: RewardsInternals.Promotion[]) {
-    getActions().onPromotions(promotions)
-  }
+function contributions (contributions: RewardsInternals.ContributionInfo[]) {
+  getActions().onContributions(contributions)
+}
 
-  function partialLog (log: string) {
-    getActions().onGetPartialLog(log)
-  }
+function promotions (promotions: RewardsInternals.Promotion[]) {
+  getActions().onPromotions(promotions)
+}
 
-  function fullLog (log: string) {
-    getActions().onGetFullLog(log)
-  }
+function partialLog (log: string) {
+  getActions().onGetPartialLog(log)
+}
 
-  function externalWallet (properties: {result: number, wallet: RewardsInternals.ExternalWallet}) {
-    getActions().onExternalWallet(properties.result, properties.wallet)
-  }
+function fullLog (log: string) {
+  getActions().onGetFullLog(log)
+}
 
-  function eventLogs (logs: RewardsInternals.EventLog[]) {
-    getActions().onEventLogs(logs)
-  }
+function externalWallet (properties: {result: number, wallet: RewardsInternals.ExternalWallet}) {
+  getActions().onExternalWallet(properties.result, properties.wallet)
+}
 
-  function initialize () {
-    window.i18nTemplate.process(window.document, window.loadTimeData)
+function eventLogs (logs: RewardsInternals.EventLog[]) {
+  getActions().onEventLogs(logs)
+}
 
-    render(
-      <Provider store={store}>
-        <ThemeProvider theme={Theme}>
-          <App />
-        </ThemeProvider>
-      </Provider>,
-      document.getElementById('root'))
-  }
+function initialize () {
+  render(
+    <Provider store={store}>
+      <ThemeProvider theme={Theme}>
+        <App />
+      </ThemeProvider>
+    </Provider>,
+    document.getElementById('root'))
+}
 
-  return {
-    initialize,
-    onGetRewardsInternalsInfo,
-    balance,
-    contributions,
-    promotions,
-    partialLog,
-    fullLog,
-    externalWallet,
-    eventLogs
-  }
-})
+// Expose functions to Page Handlers.
+// TODO(petemill): Use event listeners instead.
+// @ts-ignore
+window.brave_rewards_internals = {
+  // @ts-ignore
+  onGetRewardsInternalsInfo,
+  balance,
+  contributions,
+  promotions,
+  partialLog,
+  fullLog,
+  externalWallet,
+  eventLogs
+}
 
-document.addEventListener('DOMContentLoaded', window.brave_rewards_internals.initialize)
+document.addEventListener('DOMContentLoaded', initialize)

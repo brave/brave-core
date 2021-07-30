@@ -105,6 +105,8 @@ void CreativePromotedContentAds::GetForCreativeInstanceId(
       "cam.priority, "
       "ca.conversion, "
       "ca.per_day, "
+      "ca.per_week, "
+      "ca.per_month, "
       "ca.total_max, "
       "s.segment, "
       "gt.geo_target, "
@@ -144,6 +146,8 @@ void CreativePromotedContentAds::GetForCreativeInstanceId(
       DBCommand::RecordBindingType::INT_TYPE,     // priority
       DBCommand::RecordBindingType::BOOL_TYPE,    // conversion
       DBCommand::RecordBindingType::INT_TYPE,     // per_day
+      DBCommand::RecordBindingType::INT_TYPE,     // per_week
+      DBCommand::RecordBindingType::INT_TYPE,     // per_month
       DBCommand::RecordBindingType::INT_TYPE,     // total_max
       DBCommand::RecordBindingType::STRING_TYPE,  // segment
       DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
@@ -185,6 +189,8 @@ void CreativePromotedContentAds::GetForSegments(
       "cam.priority, "
       "ca.conversion, "
       "ca.per_day, "
+      "ca.per_week, "
+      "ca.per_month, "
       "ca.total_max, "
       "s.segment, "
       "gt.geo_target, "
@@ -233,6 +239,8 @@ void CreativePromotedContentAds::GetForSegments(
       DBCommand::RecordBindingType::INT_TYPE,     // priority
       DBCommand::RecordBindingType::BOOL_TYPE,    // conversion
       DBCommand::RecordBindingType::INT_TYPE,     // per_day
+      DBCommand::RecordBindingType::INT_TYPE,     // per_week
+      DBCommand::RecordBindingType::INT_TYPE,     // per_month
       DBCommand::RecordBindingType::INT_TYPE,     // total_max
       DBCommand::RecordBindingType::STRING_TYPE,  // segment
       DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
@@ -268,6 +276,8 @@ void CreativePromotedContentAds::GetAll(
       "cam.priority, "
       "ca.conversion, "
       "ca.per_day, "
+      "ca.per_week, "
+      "ca.per_month, "
       "ca.total_max, "
       "s.segment, "
       "gt.geo_target, "
@@ -308,6 +318,8 @@ void CreativePromotedContentAds::GetAll(
       DBCommand::RecordBindingType::INT_TYPE,     // priority
       DBCommand::RecordBindingType::BOOL_TYPE,    // conversion
       DBCommand::RecordBindingType::INT_TYPE,     // per_day
+      DBCommand::RecordBindingType::INT_TYPE,     // per_week
+      DBCommand::RecordBindingType::INT_TYPE,     // per_month
       DBCommand::RecordBindingType::INT_TYPE,     // total_max
       DBCommand::RecordBindingType::STRING_TYPE,  // segment
       DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
@@ -343,8 +355,8 @@ void CreativePromotedContentAds::Migrate(DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 13: {
-      MigrateToV13(transaction);
+    case 15: {
+      MigrateToV15(transaction);
       break;
     }
 
@@ -501,24 +513,26 @@ CreativePromotedContentAdInfo CreativePromotedContentAds::GetFromRecord(
   creative_promoted_content_ad.priority = ColumnInt(record, 7);
   creative_promoted_content_ad.conversion = ColumnBool(record, 8);
   creative_promoted_content_ad.per_day = ColumnInt(record, 9);
-  creative_promoted_content_ad.total_max = ColumnInt(record, 10);
-  creative_promoted_content_ad.segment = ColumnString(record, 11);
-  creative_promoted_content_ad.geo_targets.push_back(ColumnString(record, 12));
-  creative_promoted_content_ad.target_url = ColumnString(record, 13);
-  creative_promoted_content_ad.title = ColumnString(record, 14);
-  creative_promoted_content_ad.description = ColumnString(record, 15);
-  creative_promoted_content_ad.ptr = ColumnDouble(record, 16);
+  creative_promoted_content_ad.per_week = ColumnInt(record, 10);
+  creative_promoted_content_ad.per_month = ColumnInt(record, 11);
+  creative_promoted_content_ad.total_max = ColumnInt(record, 12);
+  creative_promoted_content_ad.segment = ColumnString(record, 13);
+  creative_promoted_content_ad.geo_targets.push_back(ColumnString(record, 14));
+  creative_promoted_content_ad.target_url = ColumnString(record, 15);
+  creative_promoted_content_ad.title = ColumnString(record, 16);
+  creative_promoted_content_ad.description = ColumnString(record, 17);
+  creative_promoted_content_ad.ptr = ColumnDouble(record, 18);
 
   CreativeDaypartInfo daypart;
-  daypart.dow = ColumnString(record, 17);
-  daypart.start_minute = ColumnInt(record, 18);
-  daypart.end_minute = ColumnInt(record, 19);
+  daypart.dow = ColumnString(record, 19);
+  daypart.start_minute = ColumnInt(record, 20);
+  daypart.end_minute = ColumnInt(record, 21);
   creative_promoted_content_ad.dayparts.push_back(daypart);
 
   return creative_promoted_content_ad;
 }
 
-void CreativePromotedContentAds::CreateTableV13(DBTransaction* transaction) {
+void CreativePromotedContentAds::CreateTableV15(DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
@@ -538,12 +552,12 @@ void CreativePromotedContentAds::CreateTableV13(DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
-void CreativePromotedContentAds::MigrateToV13(DBTransaction* transaction) {
+void CreativePromotedContentAds::MigrateToV15(DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV13(transaction);
+  CreateTableV15(transaction);
 }
 
 }  // namespace table

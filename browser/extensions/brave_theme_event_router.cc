@@ -18,16 +18,15 @@
 namespace extensions {
 
 BraveThemeEventRouter::BraveThemeEventRouter(Profile* profile)
-    : profile_(profile),
-      observer_(this) {
-  observer_.Add(ui::NativeTheme::GetInstanceForNativeUi());
+    : profile_(profile) {
+  observer_.Observe(ui::NativeTheme::GetInstanceForNativeUi());
 }
 
 BraveThemeEventRouter::~BraveThemeEventRouter() {}
 
 void BraveThemeEventRouter::OnNativeThemeUpdated(
     ui::NativeTheme* observed_theme) {
-  DCHECK(observer_.IsObserving(observed_theme));
+  DCHECK(observer_.IsObservingSource(observed_theme));
   Notify();
 }
 

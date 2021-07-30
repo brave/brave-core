@@ -28,12 +28,14 @@ transifex_handled_slugs = [
 ]
 # List of HTML tags that we allowed to be present inside the translated text.
 allowed_html_tags = [
-  'a', 'abbr', 'b', 'b1', 'b2', 'br', 'code', 'h4', 'learnmore', 'li', 'ol', 'p', 'span', 'strong', 'ul'
+    'a', 'abbr', 'b', 'b1', 'b2', 'br', 'code', 'h4', 'learnmore', 'li', 'li1',
+    'li2', 'ol', 'p', 'span', 'strong', 'ul'
 ]
 
 
 def transifex_name_from_greaselion_script_name(script_name):
-    match = re.search('brave-site-specific-scripts/scripts/(.*)/_locales/en_US/messages.json$', script_name)
+    match = re.search(
+        'brave-site-specific-scripts/scripts/(.*)/_locales/en_US/messages.json$', script_name)
     if match:
         return 'greaselion_' + match.group(1).replace('-', '_').replace('/', '_')
     return ''
@@ -142,7 +144,7 @@ def get_transifex_translation_file_content(source_file_path, filename,
         json.loads(content)
     elif ext == '.grd':
         # For .grd and .json files, for some reason Transifex puts a \\" and \'
-        content = content.replace('\\"', '"').replace("\\'", "'")
+        content = content.replace('\\\\"', '"').replace('\\"', '"').replace("\\'", "'")
         # Make sure it's parseable
         lxml.etree.fromstring(content)
     return content
@@ -150,13 +152,13 @@ def get_transifex_translation_file_content(source_file_path, filename,
 
 def process_bad_ph_tags_for_one_string(val):
     val = (val.replace('\r\n', '\n')
-              .replace('\r', '\n'))
+           .replace('\r', '\n'))
     if val.find('&lt;ph') == -1:
         return val
     val = (val.replace('&lt;', '<')
-              .replace('&gt;', '>')
-              .replace('>  ', '> ')
-              .replace('  <', ' <'))
+           .replace('&gt;', '>')
+           .replace('>  ', '> ')
+           .replace('  <', ' <'))
     return val
 
 
@@ -208,7 +210,7 @@ def validate_tags_in_one_string(string_tag):
     lxml.etree.strip_tags(string_tag, 'ph')
     string_text = textify_from_transifex(string_tag)
     string_text = (string_text.replace('&lt;', '<')
-                              .replace('&gt;', '>'))
+                   .replace('&gt;', '>'))
     # print 'Validating: {}'.format(string_text.encode('utf-8'))
     try:
         string_xml = lxml.etree.fromstring('<string>' + string_text + '</string>')
@@ -420,17 +422,19 @@ def textify(t):
 
 
 def replace_string_from_transifex(val):
-    """Returns the text of a node from Transifex which also fixes up common problems that localizers do"""
+    """Returns the text of a node from Transifex which also fixes up common
+       problems that localizers do"""
     if val is None:
         return val
     val = (val.replace('&amp;lt;', '&lt;')
-              .replace('&amp;gt;', '&gt;')
-              .replace('&amp;amp;', '&amp;'))
+           .replace('&amp;gt;', '&gt;')
+           .replace('&amp;amp;', '&amp;'))
     return val
 
 
 def textify_from_transifex(t):
-    """Returns the text of a node from Transifex which also fixes up common problems that localizers do"""
+    """Returns the text of a node from Transifex which also fixes up common
+       problems that localizers do"""
     return replace_string_from_transifex(textify(t))
 
 
@@ -570,6 +574,30 @@ def generate_source_strings_xml_from_grd(output_xml_file_handle,
     return xml_string
 
 
+def check_plural_string_formatting(grd_string_content, translation_content):
+    """Checks 'plurar' string formatting in translations"""
+    pattern = re.compile(
+        r"\s*{.*,\s*plural,(\s*offset:[0-2])?(\s*(=[0-2]|[zero|one|two|few|many])"
+        r"\s*{(.*)})+\s*other\s*{(.*)}\s*}\s*")
+    if (pattern.match(grd_string_content) != None):
+        if (pattern.match(translation_content) == None):
+            error = ('Translation of plural string:\n'
+                     '-----------\n{0}\n-----------\n'
+                     'does not match:\n'
+                     '-----------\n{1}\n-----------\n').format(
+                         grd_string_content.encode('utf-8'),
+                         translation_content.encode('utf-8'))
+            raise ValueError(error)
+    else:
+        # This finds plural strings that the pattern above doesn't catch
+        leading_pattern = re.compile(r"\s*{.*,\s*plural,.*")
+        if (leading_pattern.match(grd_string_content) != None):
+            error = ('Uncaught plural pattern:\n'
+                     '-----------\n{0}\n-----------\n').format(
+                         grd_string_content.encode('utf-8'))
+            raise ValueError(error)
+
+
 def generate_xtb_content(lang_code, grd_strings, translations):
     """Generates an XTB file from a set of translations and GRD strings"""
     # Used to make sure duplicate fingerprint stringsa re not made
@@ -585,6 +613,7 @@ def generate_xtb_content(lang_code, grd_strings, translations):
             all_string_fps.add(fingerprint)
             translation = translations[string[0]]
             if len(translation) != 0:
+                check_plural_string_formatting(string[1], translation)
                 translationbundle_tag.append(
                     create_xtb_format_translation_tag(
                         fingerprint, translation))
@@ -662,7 +691,8 @@ def braveify(string_value):
             .replace('Brave Drive', 'Google Drive')
             .replace('Brave Play', 'Google Play')
             .replace('Brave Safe', 'Google Safe')
-            .replace('Sends URLs of some pages you visit to Brave', 'Sends URLs of some pages you visit to Google')
+            .replace('Sends URLs of some pages you visit to Brave',
+                     'Sends URLs of some pages you visit to Google')
             .replace('Brave Account', 'Brave sync chain'))
 
 
@@ -699,8 +729,8 @@ def upload_missing_json_translations_to_transifex(source_string_path):
     for lang_code in lang_codes:
         l10n_path = os.path.join(langs_dir_path, lang_code, 'messages.json')
         l10n_strings = get_json_strings(l10n_path)
-        l10n_dict = {string_name: string_value for idx, (string_name,
-                     string_value, desc) in enumerate(l10n_strings)}
+        l10n_dict = {string_name: string_value for idx,
+                     (string_name, string_value, desc) in enumerate(l10n_strings)}
         for idx, (
                 string_name, string_value, desc) in enumerate(source_strings):
             if string_name not in l10n_dict:
@@ -910,7 +940,7 @@ def pull_xtb_without_transifex(grd_file_path, brave_source_root):
                                                                 brave_source_root)
     chromium_xtb_files = get_xtb_files(grd_file_path)
     if len(xtb_files) != len(chromium_xtb_files):
-        assert false, 'XTB files and Chromium XTB file length mismatch.'
+        assert False, 'XTB files and Chromium XTB file length mismatch.'
 
     grd_base_path = os.path.dirname(grd_file_path)
     chromium_grd_base_path = os.path.dirname(chromium_grd_file_path)
@@ -918,7 +948,7 @@ def pull_xtb_without_transifex(grd_file_path, brave_source_root):
     # Update XTB FPs so it uses the branded source string
     grd_strings = get_grd_strings(grd_file_path, validate_tags=False)
     chromium_grd_strings = get_grd_strings(chromium_grd_file_path, validate_tags=False)
-    assert(len(grd_strings) == len(chromium_grd_strings))
+    assert len(grd_strings) == len(chromium_grd_strings)
 
     fp_map = {chromium_grd_strings[idx][2]: grd_strings[idx][2] for
               (idx, grd_string) in enumerate(grd_strings)}

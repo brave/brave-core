@@ -51,18 +51,6 @@
     "message": "Informācija",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "Jūsu atlikums",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "BAT punkti",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "var izmantot Brave Rewards, lai dotu ieguldījumu jūsu iecienītākajiem satura veidotājiem. BAT punktus nevar samainīt pret BAT.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "ieslēgts",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "Pieprasītie marķieru piešķīrumi",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "Pieprasītie punktu piešķīrumi",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "Peļņa no reklāmām",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "Vienreizējās dzeramnaudas",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "derīguma termiņš beidzas",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Šis satura veidotājs vēl nav pierakstījies ziedojumu saņemšanai no Brave lietotājiem. Dzeramnauda, ko nosūtīsiet, paliks jūsu makā līdz brīdim, kad attiecīgais veidotājs to apstiprinās.",
+    "message": "Šis satura veidotājs šobrīd nav iestatījis dzeramnaudas saņemšanu no jūsu maka. Jebkāda dzeramnauda, ko nosūtīsiet, paliks jūsu makā gaidošā statusā, un jauns maksājuma mēģinājums tiks automātiski veikts pēc 90 dienām.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "Pamata uzmanības marķieris (BAT)",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "Ieslēdziet reklāmas",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "Bezmaksas marķiera piešķīrums",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Bezmaksas punktu piešķīrums",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "Jūs esat nopelnījis Ads Reward!",
@@ -591,17 +567,9 @@
     "message": "Marķieris",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "punkti",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "Pilnvaras piešķiršana",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Punktu piešķīrumi",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "Sveiki, $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Lai izveidotu Uphold kontu, jums vajag vismaz 25 BAT. Lūdzu, mēģiniet vēlreiz vēlāk. \nJa jums jau ir verificēts Uphold konts, turpiniet pieteikties.",
-    "description": "Text for login button"
+    "message": "Lai izveidotu Uphold kontu, jums nepieciešami vismaz $amount$ BAT. Ja jums jau ir verificēts Uphold konts, turpiniet pieteikties.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "pievienots",
@@ -789,16 +763,40 @@
     "message": "Izmantojot Brave Rewards, jūs palīdzat tīmekli padarīt par labāku vietu ikvienam. Tas ir lieliski!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "Brave balvas Japānā pāriet uz jaunu sistēmu!",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "Verificējiet savu maku",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "Uzziniet vairāk",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "Lai izņemtu žetonus, ko nopelnījāt, skatoties reklāmas, jums būs jāveic sava maka verifikācija.",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "Lūdzu, izmantojiet savus BAP līdz 13. martam. Pēc tam BAP vairs nebūs pieejami.",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "Izdarīt to vēlāk",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Verificēt maku",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "bitFlyer maks ir pakalpojums, ko pārvalda bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Pēc jūsu maka verifikācijas un savienošanas ar bitFlyer kontu jūs varēsit vienkāršāk uzglabāt un pārvaldīt tokenus, izmantojot Brave Rewards",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Uzziniet vairāk$link_end$ par Brave pārlūka saistīšanu ar bitFlyer kontu.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

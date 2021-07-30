@@ -8,9 +8,14 @@
 
 #include <string>
 #include <utility>
+#include <vector>
+
+#include "base/callback.h"
+#include "base/containers/flat_map.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
 #include "content/common/content_export.h"
+#include "url/origin.h"
 
 namespace content {
 
@@ -36,20 +41,45 @@ using TLDEphemeralLifetimeKey =
 class CONTENT_EXPORT TLDEphemeralLifetime
     : public base::RefCounted<TLDEphemeralLifetime> {
  public:
-  TLDEphemeralLifetime(TLDEphemeralLifetimeKey key,
-                       StoragePartition* storage_partition);
-  static TLDEphemeralLifetime* Get(BrowserContext*, std::string storage_domain);
+  using OnDestroyCallback = base::OnceCallback<void(const std::string&)>;
+
+  class Delegate {
+   public:
+    virtual ~Delegate() = default;
+
+    // Should return opaque origins which were used for keying ephemeral
+    // storages during the ephemeral TLD lifetime. These origins are used to
+    // cleanup storages.
+    virtual std::vector<url::Origin> TakeEphemeralStorageOpaqueOrigins(
+        const std::string& ephemeral_storage_domain) = 0;
+  };
+
+  TLDEphemeralLifetime(const TLDEphemeralLifetimeKey& key,
+                       StoragePartition* storage_partition,
+                       std::unique_ptr<Delegate> delegate);
+  static TLDEphemeralLifetime* Get(BrowserContext* browser_context,
+                                   const std::string& storage_domain);
   static scoped_refptr<TLDEphemeralLifetime> GetOrCreate(
       BrowserContext* browser_context,
       StoragePartition* storage_partition,
-      std::string storage_domain);
+      const std::string& storage_domain,
+      std::unique_ptr<Delegate> delegate);
+
+  // Add a callback to a callback list to be called on destruction.
+  void RegisterOnDestroyCallback(OnDestroyCallback callback);
+
+  const TLDEphemeralLifetimeKey& key() const { return key_; }
 
  private:
   friend class RefCounted<TLDEphemeralLifetime>;
   virtual ~TLDEphemeralLifetime();
 
+  static TLDEphemeralLifetime* Get(const TLDEphemeralLifetimeKey& key);
+
   TLDEphemeralLifetimeKey key_;
   StoragePartition* storage_partition_;
+  std::unique_ptr<Delegate> delegate_;
+  std::vector<OnDestroyCallback> on_destroy_callbacks_;
 
   base::WeakPtrFactory<TLDEphemeralLifetime> weak_factory_{this};
 };

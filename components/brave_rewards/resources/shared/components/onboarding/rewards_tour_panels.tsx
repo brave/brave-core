@@ -4,18 +4,24 @@
 
 import * as React from 'react'
 
-import { Locale } from '../../lib/locale_context'
+import { Locale, formatMessage } from '../../lib/locale_context'
+import { NewTabLink } from '../new_tab_link'
 import { RewardsTourProps } from './rewards_tour_props'
 import { SetupForm } from './setup_form'
 
 import * as style from './rewards_tour_panels.style'
 
-type TourPanelFunction = (locale: Locale, props: RewardsTourProps) => ({
+import bitflyerPromoImage from './assets/bitflyer_promo.png'
+
+interface TourPanel {
   id: string
   heading: React.ReactNode
   text: React.ReactNode
   content?: React.ReactNode
-})
+  actions?: React.ReactNode
+}
+
+type TourPanelFunction = (locale: Locale, props: RewardsTourProps) => TourPanel
 
 function panelWelcome (locale: Locale) {
   const { getString } = locale
@@ -93,14 +99,96 @@ function panelComplete (locale: Locale) {
 }
 
 export function getTourPanels (props: RewardsTourProps): TourPanelFunction[] {
+  const canAutoContribute = props.autoContributeAmountOptions.length > 0
+
   return [
     panelWelcome,
     panelAds,
     panelSchedule,
-    panelAC,
+    ...(canAutoContribute ? [panelAC] : []),
     panelTipping,
     panelRedeem,
-    ...(props.firstTimeSetup ? [panelSetup] : []),
+    ...(props.firstTimeSetup && canAutoContribute ? [panelSetup] : []),
     panelComplete
   ]
+}
+
+export function getVerifyWalletPanel (
+  locale: Locale,
+  props: RewardsTourProps
+): TourPanel | null {
+  if (!props.firstTimeSetup || !props.onVerifyWalletClick) {
+    return null
+  }
+
+  const { getString } = locale
+
+  let providerText: React.ReactNode = null
+  let providerNote: React.ReactNode = null
+  let learnMore: React.ReactNode = null
+  let content: React.ReactNode = null
+
+  switch (props.externalWalletProvider) {
+    case 'bitflyer': {
+      providerText = getString('onboardingPanelBitflyerText')
+
+      providerNote = (
+        <style.verifyNote>
+          {getString('onboardingPanelBitflyerNote')}
+        </style.verifyNote>
+      )
+
+      learnMore = (
+        <style.verifyLearnMore>
+          {
+            formatMessage(getString('onboardingPanelBitflyerLearnMore'), {
+              tags: {
+                $1: (content) => (
+                  <NewTabLink key='learn-more' href='https://brave.com/ja/users-bitflyer/'>
+                    {content}
+                  </NewTabLink>
+                )
+              }
+            })
+          }
+        </style.verifyLearnMore>
+      )
+
+      content = (
+        <NewTabLink href='https://bitflyer.com/static/lp03/?ns=display_brave_bf_brave&utm_source=brave&utm_medium=display&utm_campaign=bf_brave&utm_term=202104&utm_content='>
+          <img src={bitflyerPromoImage} />
+        </NewTabLink>
+      )
+
+      break
+    }
+    default:
+      return null
+  }
+
+  return {
+    id: props.externalWalletProvider,
+    heading: getString('onboardingPanelVerifyHeader'),
+    text: (
+      <>
+        {providerText}
+        <style.verifySubtext>
+          {getString('onboardingPanelVerifySubtext')}
+          {providerNote}
+        </style.verifySubtext>
+        {learnMore}
+      </>
+    ),
+    content,
+    actions: (
+      <style.verifyActions>
+        <button className='verify-later' onClick={props.onDone}>
+          {getString('onboardingPanelVerifyLater')}
+        </button>
+        <button className='verify-now' onClick={props.onVerifyWalletClick}>
+          {getString('onboardingPanelVerifyNow')}
+        </button>
+      </style.verifyActions>
+    )
+  }
 }

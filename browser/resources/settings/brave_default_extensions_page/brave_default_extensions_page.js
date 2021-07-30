@@ -16,13 +16,23 @@ Polymer({
     WebUIListenerBehavior,
   ],
 
+  /**
+   * Keep it the same as Provider in
+   * brave/componentsdecentralized_dns/constants.h.
+   */
+  Provider: {
+    UNSTOPPABLE_DOMAINS: 0,
+    ENS: 1
+  },
+
   properties: {
     showRestartToast_: Boolean,
     torEnabled_: Boolean,
     widevineEnabled_: Boolean,
     disableTorOption_: Boolean,
     decentralizedDnsEnabled_: Boolean,
-    decentralizedDnsResolveMethod_: Array,
+    unstoppableDomainsResolveMethod_: Array,
+    ensResolveMethod_: Array,
   },
 
   /** @private {?settings.BraveDefaultExtensionsBrowserProxy} */
@@ -68,8 +78,13 @@ Polymer({
     this.browserProxy_.isDecentralizedDnsEnabled().then(enabled => {
       this.decentralizedDnsEnabled_ = enabled
     })
-    this.browserProxy_.getDecentralizedDnsResolveMethodList().then(list => {
-      this.decentralizedDnsResolveMethod_ = list
+    this.browserProxy_.getDecentralizedDnsResolveMethodList(
+      this.Provider.UNSTOPPABLE_DOMAINS).then(list => {
+        this.unstoppableDomainsResolveMethod_ = list
+    })
+    this.browserProxy_.getDecentralizedDnsResolveMethodList(
+      this.Provider.ENS).then(list => {
+      this.ensResolveMethod_ = list
     })
   },
 

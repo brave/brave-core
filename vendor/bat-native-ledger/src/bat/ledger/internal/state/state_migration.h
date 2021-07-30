@@ -3,13 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_BAT_STATE_STATE_MIGRATION_H_
-#define BRAVELEDGER_BAT_STATE_STATE_MIGRATION_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_STATE_STATE_MIGRATION_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_STATE_STATE_MIGRATION_H_
 
 #include <memory>
 #include <string>
 
 #include "bat/ledger/internal/state/state_migration_v1.h"
+#include "bat/ledger/internal/state/state_migration_v10.h"
 #include "bat/ledger/internal/state/state_migration_v2.h"
 #include "bat/ledger/internal/state/state_migration_v3.h"
 #include "bat/ledger/internal/state/state_migration_v4.h"
@@ -17,6 +18,7 @@
 #include "bat/ledger/internal/state/state_migration_v6.h"
 #include "bat/ledger/internal/state/state_migration_v7.h"
 #include "bat/ledger/internal/state/state_migration_v8.h"
+#include "bat/ledger/internal/state/state_migration_v9.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
@@ -49,10 +51,12 @@ class StateMigration {
   std::unique_ptr<StateMigrationV6> v6_;
   std::unique_ptr<StateMigrationV7> v7_;
   std::unique_ptr<StateMigrationV8> v8_;
+  std::unique_ptr<StateMigrationV9> v9_;
+  std::unique_ptr<StateMigrationV10> v10_;
   LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace state
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_BAT_STATE_STATE_MIGRATION_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_STATE_STATE_MIGRATION_H_

@@ -1,6 +1,8 @@
 import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
@@ -12,6 +14,8 @@ source_set("net") {
   check_includes = false
   configs += [ "//brave/build/geolocation" ]
   sources = [
+    "brave_ad_block_csp_network_delegate_helper.cc",
+    "brave_ad_block_csp_network_delegate_helper.h",
     "brave_ad_block_tp_network_delegate_helper.cc",
     "brave_ad_block_tp_network_delegate_helper.h",
     "brave_block_safebrowsing_urls.cc",
@@ -26,6 +30,8 @@ source_set("net") {
     "brave_proxying_web_socket.h",
     "brave_request_handler.cc",
     "brave_request_handler.h",
+    "brave_service_key_network_delegate_helper.cc",
+    "brave_service_key_network_delegate_helper.h",
     "brave_site_hacks_network_delegate_helper.cc",
     "brave_site_hacks_network_delegate_helper.h",
     "brave_static_redirect_network_delegate_helper.cc",
@@ -51,11 +57,15 @@ source_set("net") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_referrals/buildflags",
     "//brave/components/brave_shields/browser",
+    "//brave/components/brave_shields/common",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/brave_webtorrent/browser/buildflags",
+    "//brave/components/decentralized_dns/buildflags",
     "//brave/components/ipfs/buildflags",
     "//brave/extensions:common",
     "//components/content_settings/core/browser",
     "//components/prefs",
+    "//components/proxy_config",
     "//components/user_prefs",
     "//content/public/browser",
     "//content/public/common",
@@ -63,6 +73,7 @@ source_set("net") {
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/system",
     "//net",
+    "//services/network:network_service",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
     "//third_party/blink/public/common",
@@ -107,6 +118,18 @@ source_set("net") {
     sources += [
       "brave_translate_redirect_network_delegate_helper.cc",
       "brave_translate_redirect_network_delegate_helper.h",
+    ]
+  }
+
+  if (decentralized_dns_enabled && brave_wallet_enabled) {
+    sources += [
+      "decentralized_dns_network_delegate_helper.cc",
+      "decentralized_dns_network_delegate_helper.h",
+    ]
+
+    deps += [
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/decentralized_dns",
     ]
   }
 }

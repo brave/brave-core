@@ -19,7 +19,8 @@ BraveDeviceInfo::BraveDeviceInfo(
     base::Time last_updated_timestamp,
     base::TimeDelta pulse_interval,
     bool send_tab_to_self_receiving_enabled,
-    const base::Optional<DeviceInfo::SharingInfo>& sharing_info,
+    const absl::optional<DeviceInfo::SharingInfo>& sharing_info,
+    const absl::optional<PhoneAsASecurityKeyInfo>& paask_info,
     const std::string& fcm_registration_token,
     const ModelTypeSet& interested_data_types,
     bool is_self_delete_supported)
@@ -31,10 +32,12 @@ BraveDeviceInfo::BraveDeviceInfo(
                  signin_scoped_device_id,
                  manufacturer_name,
                  model_name,
+                 /*full_hardware_class=*/"",
                  last_updated_timestamp,
                  pulse_interval,
                  send_tab_to_self_receiving_enabled,
                  sharing_info,
+                 paask_info,
                  fcm_registration_token,
                  interested_data_types),
       is_self_delete_supported_(is_self_delete_supported) {}

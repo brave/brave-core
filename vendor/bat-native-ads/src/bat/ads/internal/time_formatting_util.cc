@@ -6,7 +6,6 @@
 #include "bat/ads/internal/time_formatting_util.h"
 
 #include "base/i18n/time_formatting.h"
-#include "base/strings/string16.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
@@ -15,7 +14,7 @@ namespace ads {
 
 std::string LongFriendlyDateAndTime(const base::Time& time,
                                     const bool use_sentence_style) {
-  const base::string16 friendly_date_and_time =
+  const std::u16string friendly_date_and_time =
       base::TimeFormatFriendlyDateAndTime(time);
 
   // Show date and time as "on Tuesday, 5 May 2020 at 2:44:30 PM" if over 1 day
@@ -38,13 +37,13 @@ std::string FriendlyDateAndTime(const base::Time& time,
   }
 
   // Show date and time as "in 0 hours, 21 minutes, 58 seconds at 3:07 PM"
-  base::string16 time_duration;
+  std::u16string time_duration;
   if (!base::TimeDurationFormatWithSeconds(
           time_delta, base::DURATION_WIDTH_WIDE, &time_duration)) {
     return LongFriendlyDateAndTime(time);
   }
 
-  const base::string16 time_of_day = base::TimeFormatTimeOfDay(time);
+  const std::u16string time_of_day = base::TimeFormatTimeOfDay(time);
 
   return base::StringPrintf("%s%s at %s", use_sentence_style ? "in " : "",
                             base::UTF16ToUTF8(time_duration).c_str(),

@@ -5,7 +5,7 @@
 
 #include "brave/browser/brave_browser_main_loop.h"
 
-#include "brave/browser/brave_browser_main_parts.h"
+#include "content/public/browser/browser_main_parts.h"
 
 namespace brave {
 

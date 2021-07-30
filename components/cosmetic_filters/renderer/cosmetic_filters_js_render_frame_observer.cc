@@ -18,7 +18,7 @@ namespace {
 const char kSecurityOrigin[] = "chrome://cosmetic_filters";
 
 void EnsureIsolatedWorldInitialized(int world_id) {
-  static base::Optional<int> last_used_world_id;
+  static absl::optional<int> last_used_world_id;
   if (last_used_world_id) {
     // Early return since the isolated world info. is already initialized.
     DCHECK_EQ(*last_used_world_id, world_id)
@@ -58,13 +58,16 @@ CosmeticFiltersJsRenderFrameObserver::~CosmeticFiltersJsRenderFrameObserver() {}
 
 void CosmeticFiltersJsRenderFrameObserver::DidStartNavigation(
     const GURL& url,
-    base::Optional<blink::WebNavigationType> navigation_type) {
+    absl::optional<blink::WebNavigationType> navigation_type) {
   url_ = url;
 }
 
 void CosmeticFiltersJsRenderFrameObserver::ReadyToCommitNavigation(
     blink::WebDocumentLoader* document_loader) {
   ready_.reset(new base::OneShotEvent());
+  // invalidate weak pointers on navigation so we don't get callbacks from the
+  // previous url load
+  weak_factory_.InvalidateWeakPtrs();
 
   // There could be empty, invalid and "about:blank" URLs,
   // they should fallback to the main frame rules
@@ -77,7 +80,7 @@ void CosmeticFiltersJsRenderFrameObserver::ReadyToCommitNavigation(
 
   native_javascript_handle_->ProcessURL(
       url_, base::BindOnce(&CosmeticFiltersJsRenderFrameObserver::OnProcessURL,
-                           base::Unretained(this)));
+                           weak_factory_.GetWeakPtr()));
 }
 
 void CosmeticFiltersJsRenderFrameObserver::RunScriptsAtDocumentStart() {

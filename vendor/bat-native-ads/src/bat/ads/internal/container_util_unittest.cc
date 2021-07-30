@@ -15,6 +15,34 @@
 
 namespace ads {
 
+TEST(BatAdsContainerUtilTest, VectorToDeque) {
+  // Arrange
+  const std::vector<std::string> vector = {"item 1", "item 2", "item 3",
+                                           "item 4", "item 5", "item 6"};
+
+  // Act
+  const std::deque<std::string> deque = VectorToDeque(vector);
+
+  // Assert
+  const std::deque<std::string> expected_deque = {"item 1", "item 2", "item 3",
+                                                  "item 4", "item 5", "item 6"};
+
+  EXPECT_EQ(expected_deque, deque);
+}
+
+TEST(BatAdsContainerUtilTest, EmptyVectorToDeque) {
+  // Arrange
+  const std::vector<std::string> vector = {};
+
+  // Act
+  const std::deque<std::string> deque = VectorToDeque(vector);
+
+  // Assert
+  const std::deque<std::string> expected_deque = {};
+
+  EXPECT_EQ(expected_deque, deque);
+}
+
 TEST(BatAdsContainerUtilTest, SplitVectorIntoSingleChunk) {
   // Arrange
   const std::vector<std::string> vector = {"item 1", "item 2", "item 3",

@@ -43,7 +43,7 @@ public class BraveReflectionUtil {
                 Log.e(TAG, "Illegal access for method: " + e);
                 assert (false);
             } catch (InvocationTargetException e) {
-                Log.e(TAG, "Method invocation error: " + e);
+                Log.e(TAG, "Method invocation error e: " + e);
                 assert (false);
             }
         } catch (NoSuchMethodException e) {

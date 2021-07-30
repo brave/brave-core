@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/global_keyboard_shortcuts_mac.mm b/chrome/browser/global_keyboard_shortcuts_mac.mm
-index 78529f120e857da58a69c3e00e3ba6c651d3f9c9..7908b1107ff9fc226086ee069e1c6e30f966bcfa 100644
+index 8945a21f55ddb4a793043633db7eefd614adfa56..d8c40f2b13747c99136b40ce9990ce804a00796b 100644
 --- a/chrome/browser/global_keyboard_shortcuts_mac.mm
 +++ b/chrome/browser/global_keyboard_shortcuts_mac.mm
 @@ -172,6 +172,7 @@ const std::vector<KeyboardShortcutData>& GetShortcutsNotPresentInMainMenu() {
@@ -8,5 +8,5 @@ index 78529f120e857da58a69c3e00e3ba6c651d3f9c9..7908b1107ff9fc226086ee069e1c6e30
      {true,  false, false, true,  kVK_UpArrow,           IDC_FOCUS_PREVIOUS_PANE},
 +    {true,  false, false, true,  kVK_ANSI_N,            IDC_NEW_OFFTHERECORD_WINDOW_TOR},
    });
-   if (base::FeatureList::IsEnabled(features::kTabSearch)) {
-     keys->push_back({true,  true,  false, false, kVK_ANSI_A, IDC_TAB_SEARCH});
+ 
+   keys->push_back({true,  true,  false, false, kVK_ANSI_A, IDC_TAB_SEARCH});

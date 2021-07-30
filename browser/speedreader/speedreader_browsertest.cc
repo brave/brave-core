@@ -6,11 +6,13 @@
 #include "base/bind.h"
 #include "base/path_service.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/speedreader/speedreader_service_factory.h"
+#include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/speedreader/features.h"
+#include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_switches.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
@@ -63,6 +65,24 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
   }
 
+  content::WebContents* ActiveWebContents() {
+    return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+
+  speedreader::SpeedreaderService* speedreader_service() {
+    return speedreader::SpeedreaderServiceFactory::GetForProfile(
+        browser()->profile());
+  }
+
+  void ToggleSpeedreader() {
+    auto* speedreader_service =
+        speedreader::SpeedreaderServiceFactory::GetForProfile(
+            browser()->profile());
+    speedreader_service->ToggleSpeedreader();
+    ActiveWebContents()->GetController().Reload(content::ReloadType::NORMAL,
+                                                false);
+  }
+
  protected:
   base::test::ScopedFeatureList feature_list_;
   net::EmbeddedTestServer https_server_;
@@ -70,11 +90,10 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
 
 // disabled in https://github.com/brave/brave-browser/issues/11328
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DISABLED_SmokeTest) {
-  chrome::ExecuteCommand(browser(), IDC_TOGGLE_SPEEDREADER);
+  ToggleSpeedreader();
   const GURL url = https_server_.GetURL(kTestHost, kTestPage);
   ui_test_utils::NavigateToURL(browser(), url);
-  content::WebContents* contents =
-      browser()->tab_strip_model()->GetActiveWebContents();
+  content::WebContents* contents = ActiveWebContents();
   content::RenderFrameHost* rfh = contents->GetMainFrame();
 
   const char kGetStyleLength[] =
@@ -88,7 +107,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DISABLED_SmokeTest) {
   EXPECT_GT(17750 + 1, content::EvalJs(rfh, kGetContentLength));
 
   // Check that disabled speedreader doesn't affect the page.
-  chrome::ExecuteCommand(browser(), IDC_TOGGLE_SPEEDREADER);
+  ToggleSpeedreader();
   ui_test_utils::NavigateToURL(browser(), url);
   rfh = contents->GetMainFrame();
   EXPECT_LT(106000, content::EvalJs(rfh, kGetContentLength));
@@ -101,11 +120,12 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, P3ATest) {
   ui_test_utils::NavigateToURL(browser(), url);
 
   // SpeedReader never enabled
+  EXPECT_FALSE(speedreader_service()->IsEnabled());
   tester.ExpectBucketCount(kSpeedreaderEnabledUMAHistogramName, 0, 1);
   tester.ExpectBucketCount(kSpeedreaderToggleUMAHistogramName, 0, 1);
 
   // SpeedReader recently enabled, toggled once
-  chrome::ExecuteCommand(browser(), IDC_TOGGLE_SPEEDREADER);
+  ToggleSpeedreader();
   tester.ExpectBucketCount(kSpeedreaderEnabledUMAHistogramName, 2, 1);
   tester.ExpectBucketCount(kSpeedreaderToggleUMAHistogramName, 1, 1);
   tester.ExpectBucketCount(kSpeedreaderToggleUMAHistogramName, 2, 0);

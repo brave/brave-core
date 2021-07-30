@@ -16,12 +16,13 @@ extern const char kNotificationTimerInterval[];
 extern const char kBackupNotificationInterval[];
 extern const char kBackupSucceeded[];
 extern const char kUserHasFunded[];
+extern const char kUserHasClaimedGrant[];
 extern const char kAddFundsNotification[];
 extern const char kNotificationStartupDelay[];
 extern const char kExternalWallets[];  // DEPRECATED
 extern const char kBadgeText[];
 extern const char kUseRewardsStagingServer[];
-extern const char kOnboarded[];
+extern const char kExternalWalletType[];
 
 // Defined in native-ledger
 extern const char kServerPublisherListStamp[];
@@ -52,9 +53,10 @@ extern const char kParametersTipChoices[];
 extern const char kParametersMonthlyTipChoices[];
 extern const char kFetchOldBalance[];
 extern const char kEmptyBalanceChecked[];
-extern const char kBAPReported[];
 extern const char kWalletBrave[];
 extern const char kWalletUphold[];
+extern const char kWalletBitflyer[];
+extern const char kWalletGemini[];
 
 }  // namespace prefs
 }  // namespace brave_rewards

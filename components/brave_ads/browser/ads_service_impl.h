@@ -8,13 +8,13 @@
 
 #include <cstdint>
 #include <deque>
+#include <list>
 #include <map>
 #include <memory>
 #include <sstream>
 #include <string>
 #include <vector>
 
-#include "base/containers/flat_set.h"
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
@@ -22,12 +22,13 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/database.h"
 #include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
+#include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_ads/browser/notification_helper.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
-#include "brave/components/brave_user_model/browser/user_model_file_service.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "chrome/browser/notifications/notification_handler.h"
 #include "components/history/core/browser/history_service_observer.h"
@@ -38,8 +39,10 @@
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "ui/base/idle/idle.h"
 
+#include "base/task/cancelable_task_tracker.h"
+
+using brave_ads::ResourceComponent;
 using brave_rewards::RewardsNotificationService;
-using brave_user_model::UserModelFileService;
 
 class NotificationDisplayService;
 class Profile;
@@ -52,25 +55,28 @@ namespace brave_rewards {
 class RewardsService;
 }  // namespace brave_rewards
 
+namespace history {
+class HistoryService;
+}
+
 namespace network {
 class SimpleURLLoader;
 }  // namespace network
 
 namespace brave_ads {
 
-class AdsNotificationHandler;
-
 class AdsServiceImpl : public AdsService,
                        public ads::AdsClient,
                        public history::HistoryServiceObserver,
                        BackgroundHelper::Observer,
-                       public brave_user_model::Observer,
+                       public brave_ads::Observer,
                        public base::SupportsWeakPtr<AdsServiceImpl> {
  public:
   void OnWalletUpdated();
 
   // AdsService implementation
-  explicit AdsServiceImpl(Profile* profile);
+  explicit AdsServiceImpl(Profile* profile,
+                          history::HistoryService* history_service);
   ~AdsServiceImpl() override;
 
   AdsServiceImpl(const AdsServiceImpl&) = delete;
@@ -84,8 +90,8 @@ class AdsServiceImpl : public AdsService,
 
   void SetAllowConversionTracking(const bool should_allow) override;
 
-  uint64_t GetAdsPerHour() const override;
-  void SetAdsPerHour(const uint64_t ads_per_hour) override;
+  int64_t GetAdsPerHour() const override;
+  void SetAdsPerHour(const int64_t ads_per_hour) override;
 
   bool ShouldAllowAdsSubdivisionTargeting() const override;
   std::string GetAdsSubdivisionTargetingCode() const override;
@@ -95,7 +101,14 @@ class AdsServiceImpl : public AdsService,
   void SetAutoDetectedAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) override;
 
+  void OnShowAdNotification(const std::string& notification_id) override;
+  void OnCloseAdNotification(const std::string& notification_id,
+                             const bool by_user) override;
+  void OnClickAdNotification(const std::string& notification_id) override;
+
   void ChangeLocale(const std::string& locale) override;
+
+  void OnPrefChanged(const std::string& path);
 
   void OnHtmlLoaded(const SessionID& tab_id,
                     const std::vector<GURL>& redirect_chain,
@@ -117,7 +130,7 @@ class AdsServiceImpl : public AdsService,
 
   void OnTabClosed(const SessionID& tab_id) override;
 
-  void OnUserModelUpdated(const std::string& id) override;
+  void OnResourceComponentUpdated(const std::string& id) override;
 
   void OnNewTabPageAdEvent(
       const std::string& uuid,
@@ -128,6 +141,17 @@ class AdsServiceImpl : public AdsService,
       const std::string& uuid,
       const std::string& creative_instance_id,
       const ads::PromotedContentAdEventType event_type) override;
+
+  void GetInlineContentAd(const std::string& dimensions,
+                          OnGetInlineContentAdCallback callback) override;
+
+  void OnInlineContentAdEvent(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const ads::InlineContentAdEventType event_type) override;
+
+  void PurgeOrphanedAdEventsForType(
+      const ads::mojom::BraveAdsAdType ad_type) override;
 
   void ReconcileAdRewards() override;
 
@@ -167,7 +191,8 @@ class AdsServiceImpl : public AdsService,
   void Shutdown() override;
 
  private:
-  friend class AdsNotificationHandler;
+  using SimpleURLLoaderList =
+      std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
   void MaybeInitialize();
   void Initialize();
@@ -208,36 +233,31 @@ class AdsServiceImpl : public AdsService,
   void ProcessIdleState(const ui::IdleState idle_state, const int idle_time);
   int GetIdleTimeThreshold();
 
-  void OnShow(Profile* profile, const std::string& uuid);
-  void OnClose(Profile* profile,
-               const GURL& origin,
-               const std::string& uuid,
-               const bool by_user,
-               base::OnceClosure completed_closure);
-
-  void MaybeViewAdNotification();
-  void ViewAdNotification(const std::string& uuid);
-  void OnViewAdNotification(const std::string& json);
-  void RetryViewingAdNotification(const std::string& uuid);
-
-  void SetAdsServiceForNotificationHandler();
-  void ClearAdsServiceForNotificationHandler();
+  void MaybeOpenNewTabWithAd();
+  void OpenNewTabWithAd(const std::string& uuid);
+  void OnOpenNewTabWithAd(const std::string& json);
+  void RetryOpeningNewTabWithAd(const std::string& uuid);
 
   void OpenNewTabWithUrl(const std::string& url);
 
   void NotificationTimedOut(const std::string& uuid);
 
-  void RegisterUserModelComponentsForLocale(const std::string& locale);
+  void RegisterResourceComponentsForLocale(const std::string& locale);
 
   void OnURLRequestStarted(
       const GURL& final_url,
       const network::mojom::URLResponseHead& response_head);
 
-  void OnURLRequestComplete(network::SimpleURLLoader* loader,
+  void OnURLRequestComplete(SimpleURLLoaderList::iterator url_loader_it,
                             ads::UrlRequestCallback callback,
                             const std::unique_ptr<std::string> response_body);
 
   void OnGetBraveWallet(ledger::type::BraveWalletPtr wallet);
+
+  void OnGetInlineContentAd(OnGetInlineContentAdCallback callback,
+                            const bool success,
+                            const std::string& dimensions,
+                            const std::string& json);
 
   void OnGetAdsHistory(OnGetAdsHistoryCallback callback,
                        const std::string& json);
@@ -286,6 +306,7 @@ class AdsServiceImpl : public AdsService,
   void MigratePrefsVersion7To8();
   void MigratePrefsVersion8To9();
   void MigratePrefsVersion9To10();
+  void MigratePrefsVersion10To11();
 
   bool IsUpgradingFromPreBraveAdsBuild();
 
@@ -310,6 +331,8 @@ class AdsServiceImpl : public AdsService,
 
   bool connected();
 
+  bool ShouldStart() const;
+
   // AdsClient implementation
   bool IsNetworkConnectionAvailable() const override;
 
@@ -321,10 +344,19 @@ class AdsServiceImpl : public AdsService,
 
   bool CanShowBackgroundNotifications() const override;
 
-  void ShowNotification(
-      const ads::AdNotificationInfo& ad_notification) override;
+  void ShowNotification(const ads::AdNotificationInfo& info) override;
 
   void CloseNotification(const std::string& uuid) override;
+
+  void RecordAdEvent(const std::string& type,
+                     const std::string& confirmation_type,
+                     const uint64_t timestamp) const override;
+
+  std::vector<uint64_t> GetAdEvents(
+      const std::string& ad_type,
+      const std::string& confirmation_type) const override;
+
+  void ResetAdEvents() const override;
 
   void UrlRequest(ads::UrlRequestPtr url_request,
                   ads::UrlRequestCallback callback) override;
@@ -335,8 +367,16 @@ class AdsServiceImpl : public AdsService,
 
   void Load(const std::string& name, ads::LoadCallback callback) override;
 
-  void LoadUserModelForId(const std::string& id,
-                          ads::LoadCallback callback) override;
+  void LoadAdsResource(const std::string& id,
+                       const int version,
+                       ads::LoadCallback callback) override;
+
+  void GetBrowsingHistory(const int max_count,
+                          const int days_ago,
+                          ads::GetBrowsingHistoryCallback callback) override;
+
+  void OnBrowsingHistorySearchComplete(ads::GetBrowsingHistoryCallback callback,
+                                       history::QueryResults results);
 
   std::string LoadResourceForId(const std::string& id) override;
 
@@ -390,9 +430,9 @@ class AdsServiceImpl : public AdsService,
   void OnBackground() override;
   void OnForeground() override;
 
-  ///////////////////////////////////////////////////////////////////////////////
-
   Profile* profile_;  // NOT OWNED
+
+  history::HistoryService* history_service_;  // NOT OWNED
 
   bool is_initialized_ = false;
 
@@ -405,7 +445,7 @@ class AdsServiceImpl : public AdsService,
   std::map<std::string, std::unique_ptr<base::OneShotTimer>>
       notification_timers_;
 
-  std::string retry_viewing_ad_notification_with_uuid_;
+  std::string retry_opening_new_tab_for_ad_with_uuid_;
 
   base::OneShotTimer onboarding_timer_;
 
@@ -418,7 +458,7 @@ class AdsServiceImpl : public AdsService,
 
   PrefChangeRegistrar profile_pref_change_registrar_;
 
-  base::flat_set<network::SimpleURLLoader*> url_loaders_;
+  SimpleURLLoaderList url_loaders_;
 
   NotificationDisplayService* display_service_;     // NOT OWNED
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
@@ -427,6 +467,9 @@ class AdsServiceImpl : public AdsService,
       bat_ads_client_receiver_;
   mojo::AssociatedRemote<bat_ads::mojom::BatAds> bat_ads_;
   mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_;
+
+  // The task tracker for the HistoryService callbacks.
+  base::CancelableTaskTracker task_tracker_;
 };
 
 }  // namespace brave_ads

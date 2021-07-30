@@ -6,48 +6,32 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { getLocale } from '../../../../../common/locale'
+import { Button } from '../default'
 
 type Props = {
   show: boolean
   onCustomizeBraveToday: () => any
 }
 
-const CustomizeButton = styled('button')<Props>`
+const Hideable = styled('div')<Props>`
+  pointer-events: ${p => p.show ? 'auto' : 'none'};
   position: fixed;
   right: 20px;
   bottom: 20px;
-  appearance: none;
-  cursor: pointer;
-  display: block;
-  border-radius: 24px;
-  background: none;
-  backdrop-filter: blur(25px);
-  padding: 15px 34px;
-  color: white;
-  border: none;
-  font-weight: 800;
-  cursor: pointer;
   opacity: ${p => p.show ? 1 : 0};
-  background: rgba(33, 37, 41, .8);
-  backdrop-filter: blur(8px);
-  transition: opacity 1s ease-in-out, background .124s ease-in-out;
-  outline: none;
-  border: none;
-  &:hover {
-    background: rgba(255, 255, 255, .2);
-  }
-  &:active {
-    background: rgba(255, 255, 255, .4);
-  }
-  &:focus-visible {
-    box-shadow: 0 0 0 1px ${p => p.theme.color.brandBrave};
-  }
+  transition: opacity 1s ease-in-out;
 `
 
 export default function Customize (props: Props) {
   return (
-    <CustomizeButton onClick={props.onCustomizeBraveToday} {...props}>
-      {getLocale('customize')}
-    </CustomizeButton>
+    <Hideable {...props}>
+      <Button
+        aria-hidden={!props.show}
+        disabled={!props.show}
+        onClick={props.onCustomizeBraveToday}
+      >
+        {getLocale('customize')}
+      </Button>
+    </Hideable>
   )
 }

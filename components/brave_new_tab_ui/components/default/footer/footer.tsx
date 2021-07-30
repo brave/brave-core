@@ -44,7 +44,7 @@ function TogetherItem (props: Props) {
   if (!props.togetherPromptDismissed) {
     return (
       <TogetherTooltip onClose={props.onDismissTogetherPrompt}>
-        <IconLink title={getLocale('togetherPageTitle')} href='https://together.brave.com/widget'>
+        <IconLink title={getLocale('togetherPromptTitle')} href='https://talk.brave.com/widget'>
           <TogetherIcon />
         </IconLink>
       </TogetherTooltip>
@@ -52,7 +52,7 @@ function TogetherItem (props: Props) {
   }
 
   return (
-    <IconLink title={getLocale('togetherPageTitle')} href='https://together.brave.com/widget'>
+    <IconLink title={getLocale('togetherPromptTitle')} href='https://talk.brave.com/widget'>
       <TogetherIcon />
     </IconLink>
   )

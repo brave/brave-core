@@ -8,16 +8,17 @@
 #include <utility>
 #include <vector>
 
-#include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_history_info.h"
 #include "bat/ads/category_content_info.h"
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/inline_content_ad_info.h"
+#include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
+using std::placeholders::_3;
 
 namespace bat_ads {
 
@@ -66,8 +67,8 @@ void BatAdsImpl::ChangeLocale(
   ads_->ChangeLocale(locale);
 }
 
-void BatAdsImpl::OnAdsSubdivisionTargetingCodeHasChanged() {
-  ads_->OnAdsSubdivisionTargetingCodeHasChanged();
+void BatAdsImpl::OnPrefChanged(const std::string& path) {
+  ads_->OnPrefChanged(path);
 }
 
 void BatAdsImpl::OnHtmlLoaded(const int32_t tab_id,
@@ -152,6 +153,28 @@ void BatAdsImpl::OnPromotedContentAdEvent(
     const std::string& creative_instance_id,
     const ads::PromotedContentAdEventType event_type) {
   ads_->OnPromotedContentAdEvent(uuid, creative_instance_id, event_type);
+}
+
+void BatAdsImpl::GetInlineContentAd(const std::string& dimensions,
+                                    GetInlineContentAdCallback callback) {
+  auto* holder = new CallbackHolder<GetInlineContentAdCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  auto get_inline_content_ads_callback =
+      std::bind(BatAdsImpl::OnGetInlineContentAd, holder, _1, _2, _3);
+  ads_->GetInlineContentAd(dimensions, get_inline_content_ads_callback);
+}
+
+void BatAdsImpl::OnInlineContentAdEvent(
+    const std::string& uuid,
+    const std::string& creative_instance_id,
+    const ads::InlineContentAdEventType event_type) {
+  ads_->OnInlineContentAdEvent(uuid, creative_instance_id, event_type);
+}
+
+void BatAdsImpl::PurgeOrphanedAdEventsForType(
+    const ads::mojom::BraveAdsAdType ad_type) {
+  ads_->PurgeOrphanedAdEventsForType(ad_type);
 }
 
 void BatAdsImpl::RemoveAllHistory(
@@ -252,9 +275,8 @@ void BatAdsImpl::ToggleFlagAd(
   std::move(callback).Run(creative_instance_id, flagged_result);
 }
 
-void BatAdsImpl::OnUserModelUpdated(
-    const std::string& id) {
-  ads_->OnUserModelUpdated(id);
+void BatAdsImpl::OnResourceComponentUpdated(const std::string& id) {
+  ads_->OnResourceComponentUpdated(id);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -274,6 +296,18 @@ void BatAdsImpl::OnShutdown(
     const int32_t result) {
   if (holder->is_valid()) {
     std::move(holder->get()).Run((ads::Result)result);
+  }
+
+  delete holder;
+}
+
+void BatAdsImpl::OnGetInlineContentAd(
+    CallbackHolder<GetInlineContentAdCallback>* holder,
+    const bool success,
+    const std::string& dimensions,
+    const ads::InlineContentAdInfo& ad) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(success, dimensions, ad.ToJson());
   }
 
   delete holder;

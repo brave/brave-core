@@ -15,10 +15,6 @@
 namespace ads {
 namespace ad_targeting {
 
-namespace {
-const char kUnitedStatesCountryCode[] = "kkjipiepeooghlclkedllogndmohhnhi";
-}  // namespace
-
 class BatAdsPurchaseIntentProcessorTest : public UnitTestBase {
  protected:
   BatAdsPurchaseIntentProcessorTest() = default;
@@ -46,7 +42,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest,
 TEST_F(BatAdsPurchaseIntentProcessorTest, DoNotProcessForInvalidUrl) {
   // Arrange
   resource::PurchaseIntent resource;
-  resource.LoadForLocale("en-US");
+  resource.Load();
 
   // Act
   const GURL url = GURL("invalid_url");
@@ -63,7 +59,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, DoNotProcessForInvalidUrl) {
 TEST_F(BatAdsPurchaseIntentProcessorTest, NeverProcessed) {
   // Arrange
   resource::PurchaseIntent resource;
-  resource.LoadForLocale("en-US");
+  resource.Load();
 
   // Act
   model::PurchaseIntent model;
@@ -79,7 +75,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, NeverProcessed) {
 TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessUrl) {
   // Arrange
   resource::PurchaseIntent resource;
-  resource.LoadForLocale("en-US");
+  resource.Load();
 
   // Act
   const GURL url = GURL("https://www.brave.com/test?foo=bar");
@@ -103,7 +99,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessUrl) {
 TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingUrls) {
   // Arrange
   resource::PurchaseIntent resource;
-  resource.LoadForId(kUnitedStatesCountryCode);
+  resource.Load();
 
   // Act
   processor::PurchaseIntent processor(&resource);
@@ -133,7 +129,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingUrls) {
 TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueUrls) {
   // Arrange
   resource::PurchaseIntent resource;
-  resource.LoadForId(kUnitedStatesCountryCode);
+  resource.Load();
 
   // Act
   processor::PurchaseIntent processor(&resource);
@@ -168,7 +164,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueUrls) {
 TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingKeywords) {
   // Arrange
   resource::PurchaseIntent resource;
-  resource.LoadForId(kUnitedStatesCountryCode);
+  resource.Load();
 
   // Act
   processor::PurchaseIntent processor(&resource);
@@ -203,7 +199,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingKeywords) {
 TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueKeywords) {
   // Arrange
   resource::PurchaseIntent resource;
-  resource.LoadForId(kUnitedStatesCountryCode);
+  resource.Load();
 
   // Act
   processor::PurchaseIntent processor(&resource);
@@ -236,7 +232,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueKeywords) {
 TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessSegmentAndFunnelKeywords) {
   // Arrange
   resource::PurchaseIntent resource;
-  resource.LoadForId(kUnitedStatesCountryCode);
+  resource.Load();
 
   // Act
   processor::PurchaseIntent processor(&resource);

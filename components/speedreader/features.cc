@@ -11,12 +11,15 @@
 namespace speedreader {
 
 const base::Feature kSpeedreaderFeature {
-      "Speedreader",
+  "Speedreader",
 #if BUILDFLAG(ENABLE_SPEEDREADER_FEATURE)
       base::FEATURE_ENABLED_BY_DEFAULT
 #else
       base::FEATURE_DISABLED_BY_DEFAULT
 #endif
 };
+
+const base::Feature kSpeedreaderLegacyBackend{
+    "Speedreader Legacy Backend", base::FEATURE_DISABLED_BY_DEFAULT};
 
 }  // namespace speedreader

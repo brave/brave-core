@@ -11,7 +11,7 @@ import { Section, BlueLink } from '../style'
 
 interface Props {
   addressesConfig: IPFS.AddressesConfig
-  peerCount: number
+  connectedPeers: IPFS.ConnectedPeers
   onOpenPeersWebUI: () => void
 }
 
@@ -24,7 +24,7 @@ export class ConnectedPeers extends React.Component<Props, {}> {
     return (
       <Section>
         <div>
-          {getLocale('connectedPeersTitle')} {this.props.peerCount}
+          {getLocale('connectedPeersTitle')} {this.props.connectedPeers.peerCount}
           <span>&#8195;</span>
           {this.props.addressesConfig.api && (
             <a

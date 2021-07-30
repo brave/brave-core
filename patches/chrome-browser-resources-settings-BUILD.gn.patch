@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index b752f26146d90c86475be28fe2a5da68e0358749..64fbf76dfbed0a52a173e63cf34d71dc81971c74 100644
+index 9ec6334caf60cab4b1a44eedbdc094cfc13ce673..1df12cd32b7730af936cf4975fb8abcef4ab6e45 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
-@@ -46,6 +46,7 @@ if (optimize_webui) {
+@@ -44,6 +44,7 @@ if (optimize_webui) {
        "chrome://resources/mojo/mojo/public/js/bindings.js",
        "chrome://resources/mojo/skia/public/mojom/skcolor.mojom-webui.js",
      ]

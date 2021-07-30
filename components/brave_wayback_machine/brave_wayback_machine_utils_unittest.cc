@@ -30,25 +30,57 @@ TEST(BraveWaybackMachineUtilsTest, LocalHostDisabledTest) {
 
 TEST(BraveWaybackMachineUtilsTest, FixupQueryURLTest) {
   constexpr char kTestURL[] =
-      R"(https://www.example.com?&timestamp=20160101&callback={"archived_snapshots":{"closest":{"url":"https://example.com/favicon.ico"}}}//)";  // NOLINT
+      R"(https://www.example.com?&query1=abcd&timestamp=20160101&query2=&callback={"archived_snapshots":{"closest":{"url":"https://example.com/favicon.ico"}}}//)";  // NOLINT
   constexpr char kCallbackParameter[] =
       R"({"archived_snapshots":{"closest":{"url":"https://example.com/favicon.ico"}}}//)";  // NOLINT
+  constexpr char kCallbackKey[] = "callback";
+  constexpr char kTimestampKey[] = "timestamp";
+  constexpr char kQuery1Key[] = "query1";
+  constexpr char kQuery2Key[] = "query2";
   GURL wayback_fetch_url(std::string(kWaybackQueryURL) + kTestURL);
   std::string timestamp_value;
-  EXPECT_TRUE(net::GetValueForKeyInQuery(wayback_fetch_url, "timestamp",
+  EXPECT_TRUE(net::GetValueForKeyInQuery(wayback_fetch_url, kTimestampKey,
                                          &timestamp_value));
   std::string callback_value;
-  EXPECT_TRUE(net::GetValueForKeyInQuery(wayback_fetch_url, "callback",
+  EXPECT_TRUE(net::GetValueForKeyInQuery(wayback_fetch_url, kCallbackKey,
                                          &callback_value));
+  std::string query1_value;
+  std::string query2_value;
+  EXPECT_TRUE(
+      net::GetValueForKeyInQuery(wayback_fetch_url, kQuery1Key, &query1_value));
+  EXPECT_TRUE(
+      net::GetValueForKeyInQuery(wayback_fetch_url, kQuery2Key, &query2_value));
   EXPECT_EQ("20160101", timestamp_value);
   EXPECT_EQ(kCallbackParameter, callback_value);
+  EXPECT_EQ("abcd", query1_value);
+  EXPECT_EQ("", query2_value);
 
   wayback_fetch_url = FixupWaybackQueryURL(wayback_fetch_url);
-  EXPECT_TRUE(net::GetValueForKeyInQuery(wayback_fetch_url, "timestamp",
-                                         &timestamp_value));
-  EXPECT_TRUE(net::GetValueForKeyInQuery(wayback_fetch_url, "callback",
-                                         &callback_value));
-  // Check value is empty.
-  EXPECT_EQ("", timestamp_value);
-  EXPECT_EQ("", callback_value);
+  EXPECT_FALSE(net::GetValueForKeyInQuery(wayback_fetch_url, kTimestampKey,
+                                          &timestamp_value));
+  EXPECT_FALSE(net::GetValueForKeyInQuery(wayback_fetch_url, kCallbackKey,
+                                          &callback_value));
+  // Check unrelated query is not touched.
+  EXPECT_TRUE(
+      net::GetValueForKeyInQuery(wayback_fetch_url, kQuery1Key, &query1_value));
+  EXPECT_EQ("abcd", query1_value);
+  EXPECT_TRUE(
+      net::GetValueForKeyInQuery(wayback_fetch_url, kQuery2Key, &query2_value));
+  EXPECT_EQ("", query2_value);
+
+  // Uses encoded callback key(%63allback) in queries.
+  constexpr char kTestURL2[] =
+      R"(https://www.example.com?&timestamp=20160101&%63allback={"archived_snapshots":{"closest":{"url":"https://example.com/favicon.ico"}}}//)";  // NOLINT
+  constexpr char kEncodedCallbackKey[] = R"(%63allback)";
+  GURL wayback_fetch_url2(std::string(kWaybackQueryURL) + kTestURL2);
+  EXPECT_TRUE(net::GetValueForKeyInQuery(wayback_fetch_url2,
+                                         kEncodedCallbackKey, &callback_value));
+  EXPECT_EQ(kCallbackParameter, callback_value);
+
+  // Check key is not found.
+  wayback_fetch_url2 = FixupWaybackQueryURL(wayback_fetch_url2);
+  EXPECT_FALSE(net::GetValueForKeyInQuery(
+      wayback_fetch_url2, kEncodedCallbackKey, &callback_value));
+  EXPECT_FALSE(net::GetValueForKeyInQuery(wayback_fetch_url2, kCallbackKey,
+                                          &callback_value));
 }

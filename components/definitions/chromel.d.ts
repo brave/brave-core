@@ -68,6 +68,7 @@ declare namespace chrome.settingsPrivate {
 }
 
 declare namespace chrome.braveRewards {
+  const setExternalWalletType: (walletType: string) => {}
   const getRewardsParameters: (callback: (properties: RewardsExtension.RewardsParameters) => void) => {}
   const updateMediaDuration: (tabId: number, publisherKey: string, duration: number, firstVisit: boolean) => {}
   const getPublisherInfo: (publisherKey: string, callback: (result: RewardsExtension.Result, properties: RewardsExtension.PublisherInfo) => void) => {}
@@ -137,8 +138,6 @@ declare namespace chrome.braveRewards {
     addListener: (callback: (properties: {result: number, walletType: string}) => void) => void
   }
 
-  const onlyAnonWallet: (callback: (only: boolean) => void) => {}
-
   const openBrowserActionUI: (path?: string) => {}
 
   const onUnblindedTokensReady: {
@@ -155,7 +154,8 @@ declare namespace chrome.braveRewards {
   }
   const isInitialized: (callback: (initialized: boolean) => void) => {}
   const shouldShowOnboarding: (callback: (showOnboarding: boolean) => void) => {}
-  const saveOnboardingResult: (result: 'opted-in' | 'dismissed') => {}
+
+  function enableRewards (): void
 
   interface RewardsPrefs {
     adsEnabled: boolean
@@ -204,6 +204,42 @@ declare namespace chrome.cryptoDotCom {
   const isSupported: (callback: (supported: boolean) => void) => {}
   const onBuyCrypto: () => void
   const onInteraction: () => void
+}
+
+declare namespace chrome.ftx {
+  type FTXOauthHost = 'ftx.us' | 'ftx.com'
+  type TokenPriceData = {
+    symbol: string
+    price: number
+    percentChangeDay: number
+    volumeDay: number
+  }
+  type Balances = {
+    [CurrencyName: string]: number
+  }
+  type ChartPoint = {
+    high: number
+    low: number
+    close: number
+  }
+  type ChartData = ChartPoint[]
+  type QuoteInfo = {
+    cost: string
+    price: string
+    proceeds: string
+  }
+  const getFuturesData: (callback: (data: TokenPriceData[]) => void) => {}
+  const getChartData: (symbol: string, start: string, end: string, callback: (data: ChartData) => unknown) => {}
+  const setOauthHost: (host: FTXOauthHost) => void
+  const getOauthHost: (callback: (host: FTXOauthHost) => void) => {}
+  const getClientUrl: (callback: (clientUrl: string) => void) => {}
+
+  const getAccountBalances: (callback: (balances: Balances, authInvalid: boolean) => void) => {}
+  const getConvertQuote: (from: string, to: string, amount: string, callback: (quoteId: string) => void) => {}
+  const getConvertQuoteInfo: (quoteId: string, callback: (quote: QuoteInfo) => void) => {}
+  const executeConvertQuote: (quoteId: string, callback: (success: boolean) => void) => {}
+  const isSupported: (callback: (supported: boolean) => void) => {}
+  const disconnect: (callback: () => void) => {}
 }
 
 declare namespace chrome.braveTogether {
@@ -299,8 +335,8 @@ declare namespace chrome.braveShields {
   }
   const urlCosmeticResources: (url: string, callback: (resources: UrlSpecificResources) => void) => void
   const hiddenClassIdSelectors: (classes: string[], ids: string[], exceptions: string[], callback: (selectors: string[], forceHideSelectors: string[]) => void) => void
-  const migrateLegacyCosmeticFilters: (legacyFilters: any, callback: (success: boolean) => void) => void
   const addSiteCosmeticFilter: (origin: string, cssSelector: string) => void
+  const openFilterManagementPage: () => void
 
   type BraveShieldsViewPreferences = {
     showAdvancedView: boolean
@@ -314,6 +350,8 @@ declare namespace chrome.braveWallet {
   const shouldCheckForDapps: (callback: (dappDetection: boolean) => void) => void
   const shouldPromptForSetup: (callback: (dappDetection: boolean) => void) => void
   const loadUI: (callback: () => void) => void
+  const isNativeWalletEnabled: (callback: (enabled: boolean) => void) => void
+  const notifyWalletUnlock: () => void
 }
 
 declare namespace chrome.ipfs {

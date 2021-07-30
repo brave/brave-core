@@ -4,8 +4,8 @@
 <link rel="import" href="chrome://resources/html/web_ui_listener_behavior.html">
 <link rel="import" href="chrome://resources/cr_elements/md_select_css.html">
 <link rel="import" href="brave_privacy_page_browser_proxy.html">
-<link rel="import" href="../settings_shared_css.html">
-<link rel="import" href="../settings_vars_css.html">
+<script type="module" src="../settings_shared_css.js"></script>
+<script type="module" src="../settings_vars_css.js"></script>
 
 <dom-module id="settings-brave-personalization-options">
   <template>
@@ -27,14 +27,6 @@
           menu-options="[[webRTCPolicies_]]">
       </settings-dropdown-menu>
     </div>
-    <settings-toggle-button id="p3aEnabled"
-        class="cr-row"
-        pref=""
-        checked="[[p3aEnabled_]]"
-        label="$i18n{p3aEnableTitle}"
-        sub-label="$i18n{p3aEnabledDesc}"
-        on-settings-boolean-control-change="onP3AEnabledChange_">
-    </settings-toggle-button>
     <settings-toggle-button id="pushMessagingEnabled"
         class="cr-row"
         pref="{{prefs.brave.gcm.channel_status}}"
@@ -45,6 +37,22 @@
           $i18n{restart}
         </cr-button>
       </template>
+    </settings-toggle-button>
+    <settings-toggle-button id="p3aEnabled"
+        class="cr-row"
+        pref=""
+        checked="[[p3aEnabled_]]"
+        label="$i18n{p3aEnableTitle}"
+        sub-label="$i18n{p3aEnabledDesc}"
+        on-settings-boolean-control-change="onP3AEnabledChange_">
+    </settings-toggle-button>
+    <settings-toggle-button id="statsUsagePingEnabled"
+        class="cr-row"
+        pref=""
+        checked="[[statsUsagePingEnabled_]]"
+        label="$i18n{statsUsagePingEnabledTitle}"
+        sub-label="$i18n{statsUsagePingEnabledDesc}"
+        on-settings-boolean-control-change="onStatsUsagePingEnabledChange_">
     </settings-toggle-button>
   </template>
   <script src="brave_personalization_options.js"></script>

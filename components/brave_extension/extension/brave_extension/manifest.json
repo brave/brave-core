@@ -17,6 +17,8 @@
     "256": "assets/img/icon-256.png"
   },
   "web_accessible_resources": [
+    "elementPicker.html",
+    "elementPicker.js"
   ],
   "background": {
     "scripts": ["out/brave_extension_background.bundle.js"],
@@ -48,11 +50,12 @@
         "https://*/*"
       ],
       "js": [
-        "out/content.bundle.js"
+        "out/content_element_picker.bundle.js"
       ],
       "run_at": "document_start",
       "all_frames": true
-    }, {
+    },
+    {
       "matches": [
         "https://chrome.google.com/webstore/*"
       ],
@@ -76,7 +79,8 @@
     "webNavigation",
     "webRequest",
     "*://*/*",
-    "chrome://favicon/*"
+    "chrome://favicon/*",
+    "<all_urls>"
   ],
   "content_security_policy": "default-src 'self'; font-src 'self' data:; script-src 'self'; style-src 'unsafe-inline'; img-src 'self' data: chrome://favicon/; connect-src https://pcdn.brave.com https://brave-today-cdn.brave.com https://pcdn.bravesoftware.com https://brave-today-cdn.bravesoftware.com https://pcdn.brave.software https://brave-today-cdn.brave.software https://api.twitter.com 'self';",
   "incognito": "split",

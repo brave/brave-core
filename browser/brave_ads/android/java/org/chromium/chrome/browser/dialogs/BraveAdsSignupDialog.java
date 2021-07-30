@@ -72,7 +72,7 @@ public class BraveAdsSignupDialog {
         boolean shouldShow = shouldShowOnboardingDialog() && !PackageUtils.isFirstInstall(context)
                 && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
                         Profile.getLastUsedRegularProfile())
-                && BraveAdsNativeHelper.nativeIsLocaleValid(Profile.getLastUsedRegularProfile())
+                && BraveAdsNativeHelper.nativeIsSupportedLocale(Profile.getLastUsedRegularProfile())
                 && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
 
         boolean shouldShowForViewCount = shouldShowForViewCount();

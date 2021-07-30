@@ -5,8 +5,6 @@
 
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 
-#include <map>
-#include <memory>
 #include <utility>
 
 #include "mojo/public/cpp/bindings/interface_request.h"
@@ -73,12 +71,12 @@ bool BatAdsClientMojoBridge::IsFullScreen() const {
 }
 
 void BatAdsClientMojoBridge::ShowNotification(
-    const ads::AdNotificationInfo& ad_notification) {
+    const ads::AdNotificationInfo& info) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_client_->ShowNotification(ad_notification.ToJson());
+  bat_ads_client_->ShowNotification(info.ToJson());
 }
 
 bool BatAdsClientMojoBridge::ShouldShowNotifications() {
@@ -98,6 +96,36 @@ void BatAdsClientMojoBridge::CloseNotification(
   }
 
   bat_ads_client_->CloseNotification(uuid);
+}
+
+void BatAdsClientMojoBridge::RecordAdEvent(const std::string& ad_type,
+                                           const std::string& confirmation_type,
+                                           const uint64_t timestamp) const {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_client_->RecordAdEvent(ad_type, confirmation_type, timestamp);
+}
+
+std::vector<uint64_t> BatAdsClientMojoBridge::GetAdEvents(
+    const std::string& ad_type,
+    const std::string& confirmation_type) const {
+  if (!connected()) {
+    return {};
+  }
+
+  std::vector<uint64_t> ad_events;
+  bat_ads_client_->GetAdEvents(ad_type, confirmation_type, &ad_events);
+  return ad_events;
+}
+
+void BatAdsClientMojoBridge::ResetAdEvents() const {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_client_->ResetAdEvents();
 }
 
 void OnUrlRequest(
@@ -152,23 +180,41 @@ void BatAdsClientMojoBridge::Save(
       std::move(callback)));
 }
 
-void OnLoadUserModelForId(
-    const ads::LoadCallback& callback,
-    const int32_t result,
-    const std::string& value) {
+void OnLoadAdsResource(const ads::LoadCallback& callback,
+                       const int32_t result,
+                       const std::string& value) {
   callback(ToAdsResult(result), value);
 }
 
-void BatAdsClientMojoBridge::LoadUserModelForId(
-    const std::string& id,
-    ads::LoadCallback callback) {
+void BatAdsClientMojoBridge::LoadAdsResource(const std::string& id,
+                                             const int version,
+                                             ads::LoadCallback callback) {
   if (!connected()) {
     callback(ads::Result::FAILED, "");
     return;
   }
 
-  bat_ads_client_->LoadUserModelForId(id,
-      base::BindOnce(&OnLoadUserModelForId, std::move(callback)));
+  bat_ads_client_->LoadAdsResource(
+      id, version, base::BindOnce(&OnLoadAdsResource, std::move(callback)));
+}
+
+void OnGetBrowsingHistory(const ads::GetBrowsingHistoryCallback& callback,
+                          const std::vector<std::string>& history) {
+  callback(history);
+}
+
+void BatAdsClientMojoBridge::GetBrowsingHistory(
+    const int max_count,
+    const int days_ago,
+    ads::GetBrowsingHistoryCallback callback) {
+  if (!connected()) {
+    callback({});
+    return;
+  }
+
+  bat_ads_client_->GetBrowsingHistory(
+      max_count, days_ago,
+      base::BindOnce(&OnGetBrowsingHistory, std::move(callback)));
 }
 
 void BatAdsClientMojoBridge::RecordP2AEvent(

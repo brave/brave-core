@@ -29,16 +29,15 @@ class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
   void InitEmbeddedTestServer();
   void GetTestDataDir(base::FilePath* test_data_dir);
   void SetDefaultComponentIdAndBase64PublicKeyForTest();
-  void InitTrackingProtectionService();
   void SetRegionalComponentIdAndBase64PublicKeyForTest();
   bool InstallDefaultAdBlockExtension(
       const std::string& extension_dir = "adblock-default",
       int expected_change = 1);
   bool InstallRegionalAdBlockExtension(const std::string& uuid);
-  bool InstallTrackingProtectionExtension();
   bool StartAdBlockRegionalServices();
   void WaitForAdBlockServiceThreads();
   void WaitForBraveExtensionShieldsDataReady();
+  void ShieldsDown(const GURL& url);
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_SHIELDS_AD_BLOCK_SERVICE_BROWSERTEST_H_

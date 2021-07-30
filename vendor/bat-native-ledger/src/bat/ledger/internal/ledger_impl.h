@@ -8,16 +8,19 @@
 
 #include <stdint.h>
 
-#include <memory>
 #include <map>
+#include <memory>
+#include <queue>
 #include <string>
 #include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/memory/scoped_refptr.h"
 #include "bat/ledger/internal/api/api.h"
+#include "bat/ledger/internal/bitflyer/bitflyer.h"
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/database/database.h"
+#include "bat/ledger/internal/gemini/gemini.h"
 #include "bat/ledger/internal/legacy/media/media.h"
 #include "bat/ledger/internal/logging/logging.h"
 #include "bat/ledger/internal/promotion/promotion.h"
@@ -39,21 +42,17 @@ namespace ledger {
 
 class BATLedgerContext;
 
-class LedgerImpl : public ledger::Ledger {
+class LedgerImpl : public Ledger {
  public:
-  typedef std::map<uint32_t,
-      type::VisitData>::const_iterator visit_data_iter;
-
-  explicit LedgerImpl(ledger::LedgerClient* client);
+  explicit LedgerImpl(LedgerClient* client);
   ~LedgerImpl() override;
 
-  // Not copyable, not assignable
   LedgerImpl(const LedgerImpl&) = delete;
   LedgerImpl& operator=(const LedgerImpl&) = delete;
 
   BATLedgerContext* context() const;
 
-  ledger::LedgerClient* ledger_client() const;
+  LedgerClient* ledger_client() const;
 
   state::State* state() const;
 
@@ -73,60 +72,40 @@ class LedgerImpl : public ledger::Ledger {
 
   api::API* api() const;
 
+  bitflyer::Bitflyer* bitflyer() const;
+
+  gemini::Gemini* gemini() const;
+
   uphold::Uphold* uphold() const;
 
   virtual database::Database* database() const;
 
-  virtual void LoadURL(
-      type::UrlRequestPtr request,
-      client::LoadURLCallback callback);
+  virtual void LoadURL(type::UrlRequestPtr request,
+                       client::LoadURLCallback callback);
 
   bool IsShuttingDown() const;
 
- private:
-  void OnInitialized(
-      const type::Result result,
-      ledger::ResultCallback callback);
+  // Ledger Implementation
 
-  void StartServices();
+  void Initialize(bool execute_create_script, ResultCallback callback) override;
 
-  void OnStateInitialized(
-      const type::Result result,
-      ledger::ResultCallback callback);
+  void CreateWallet(ResultCallback callback) override;
 
-  void InitializeDatabase(
-      const bool execute_create_script,
-      ledger::ResultCallback callback);
+  void OneTimeTip(const std::string& publisher_key,
+                  double amount,
+                  ResultCallback callback) override;
 
-  void OnDatabaseInitialized(
-      const type::Result result,
-      ledger::ResultCallback callback);
+  void OnLoad(type::VisitDataPtr visit_data, uint64_t current_time) override;
 
-  // ledger.h
-  void Initialize(
-      const bool execute_create_script,
-      ledger::ResultCallback callback) override;
+  void OnUnload(uint32_t tab_id, uint64_t current_time) override;
 
-  void CreateWallet(ledger::ResultCallback callback) override;
+  void OnShow(uint32_t tab_id, uint64_t current_time) override;
 
-  void OneTimeTip(
-      const std::string& publisher_key,
-      const double amount,
-      ledger::ResultCallback callback) override;
+  void OnHide(uint32_t tab_id, uint64_t current_time) override;
 
-  void OnLoad(
-      type::VisitDataPtr visit_data,
-      const uint64_t& current_time) override;
+  void OnForeground(uint32_t tab_id, uint64_t current_time) override;
 
-  void OnUnload(uint32_t tab_id, const uint64_t& current_time) override;
-
-  void OnShow(uint32_t tab_id, const uint64_t& current_time) override;
-
-  void OnHide(uint32_t tab_id, const uint64_t& current_time) override;
-
-  void OnForeground(uint32_t tab_id, const uint64_t& current_time) override;
-
-  void OnBackground(uint32_t tab_id, const uint64_t& current_time) override;
+  void OnBackground(uint32_t tab_id, uint64_t current_time) override;
 
   void OnXHRLoad(
       uint32_t tab_id,
@@ -144,15 +123,12 @@ class LedgerImpl : public ledger::Ledger {
       const std::string& post_data,
       type::VisitDataPtr visit_data) override;
 
-  std::string URIEncode(const std::string& value) override;
+  void GetActivityInfoList(uint32_t start,
+                           uint32_t limit,
+                           type::ActivityInfoFilterPtr filter,
+                           PublisherInfoListCallback callback) override;
 
-  void GetActivityInfoList(
-      uint32_t start,
-      uint32_t limit,
-      type::ActivityInfoFilterPtr filter,
-      ledger::PublisherInfoListCallback callback) override;
-
-  void GetExcludedList(ledger::PublisherInfoListCallback callback) override;
+  void GetExcludedList(PublisherInfoListCallback callback) override;
 
   void SetPublisherMinVisitTime(int duration_in_seconds) override;
 
@@ -180,180 +156,149 @@ class LedgerImpl : public ledger::Ledger {
 
   bool GetAutoContributeEnabled() override;
 
-  void GetRewardsParameters(
-      ledger::GetRewardsParametersCallback callback) override;
+  void GetRewardsParameters(GetRewardsParametersCallback callback) override;
 
-  void FetchPromotions(
-      ledger::FetchPromotionCallback callback) const override;
+  void FetchPromotions(FetchPromotionCallback callback) override;
 
-  void ClaimPromotion(
-      const std::string& promotion_id,
-      const std::string& payload,
-      ledger::ClaimPromotionCallback callback) const override;
+  void ClaimPromotion(const std::string& promotion_id,
+                      const std::string& payload,
+                      ClaimPromotionCallback callback) override;
 
-  void AttestPromotion(
-      const std::string& promotion_id,
-      const std::string& solution,
-      ledger::AttestPromotionCallback callback) const override;
+  void AttestPromotion(const std::string& promotion_id,
+                       const std::string& solution,
+                       AttestPromotionCallback callback) override;
 
-  void GetBalanceReport(
-      type::ActivityMonth month,
-      int year,
-      ledger::GetBalanceReportCallback callback) const override;
+  void GetBalanceReport(type::ActivityMonth month,
+                        int year,
+                        GetBalanceReportCallback callback) override;
 
-  void GetAllBalanceReports(
-      ledger::GetBalanceReportListCallback callback) const override;
+  void GetAllBalanceReports(GetBalanceReportListCallback callback) override;
 
   type::AutoContributePropertiesPtr GetAutoContributeProperties() override;
 
-  void RecoverWallet(
-      const std::string& pass_phrase,
-      ledger::ResultCallback callback)  override;
+  void RecoverWallet(const std::string& pass_phrase,
+                     ResultCallback callback) override;
 
-  void SetPublisherExclude(
-      const std::string& publisher_id,
-      const type::PublisherExclude& exclude,
-      ledger::ResultCallback callback) override;
+  void SetPublisherExclude(const std::string& publisher_id,
+                           type::PublisherExclude exclude,
+                           ResultCallback callback) override;
 
-  void RestorePublishers(ledger::ResultCallback callback) override;
+  void RestorePublishers(ResultCallback callback) override;
 
-  void GetPublisherActivityFromUrl(
-      uint64_t windowId,
-      type::VisitDataPtr visit_data,
-      const std::string& publisher_blob) override;
+  void GetPublisherActivityFromUrl(uint64_t window_id,
+                                   type::VisitDataPtr visit_data,
+                                   const std::string& publisher_blob) override;
 
-  void GetPublisherBanner(
-      const std::string& publisher_id,
-      ledger::PublisherBannerCallback callback) override;
+  void GetPublisherBanner(const std::string& publisher_id,
+                          PublisherBannerCallback callback) override;
 
-  void RemoveRecurringTip(
-      const std::string& publisher_key,
-      ledger::ResultCallback callback) override;
+  void RemoveRecurringTip(const std::string& publisher_key,
+                          ResultCallback callback) override;
 
   uint64_t GetCreationStamp() override;
 
   void HasSufficientBalanceToReconcile(
-      ledger::HasSufficientBalanceToReconcileCallback callback) override;
+      HasSufficientBalanceToReconcileCallback callback) override;
 
-  void GetRewardsInternalsInfo(
-      ledger::RewardsInternalsInfoCallback callback) override;
+  void GetRewardsInternalsInfo(RewardsInternalsInfoCallback callback) override;
 
-  void SaveRecurringTip(
-      type::RecurringTipPtr info,
-      ledger::ResultCallback callback) override;
+  void SaveRecurringTip(type::RecurringTipPtr info,
+                        ResultCallback callback) override;
 
-  void GetRecurringTips(ledger::PublisherInfoListCallback callback) override;
+  void GetRecurringTips(PublisherInfoListCallback callback) override;
 
-  void GetOneTimeTips(ledger::PublisherInfoListCallback callback) override;
+  void GetOneTimeTips(PublisherInfoListCallback callback) override;
 
-  void RefreshPublisher(
-      const std::string& publisher_key,
-      ledger::OnRefreshPublisherCallback callback) override;
+  void RefreshPublisher(const std::string& publisher_key,
+                        OnRefreshPublisherCallback callback) override;
 
   void StartMonthlyContribution() override;
 
-  void SaveMediaInfo(
-      const std::string& type,
-      const base::flat_map<std::string, std::string>& data,
-      ledger::PublisherInfoCallback callback) override;
+  void SaveMediaInfo(const std::string& type,
+                     const base::flat_map<std::string, std::string>& data,
+                     PublisherInfoCallback callback) override;
 
-  void UpdateMediaDuration(
-      const uint64_t window_id,
-      const std::string& publisher_key,
-      const uint64_t duration,
-      const bool first_visit) override;
+  void UpdateMediaDuration(uint64_t window_id,
+                           const std::string& publisher_key,
+                           uint64_t duration,
+                           bool first_visit) override;
 
-  void GetPublisherInfo(
-      const std::string& publisher_key,
-      ledger::PublisherInfoCallback callback) override;
+  void GetPublisherInfo(const std::string& publisher_key,
+                        PublisherInfoCallback callback) override;
 
-  void GetPublisherPanelInfo(
-      const std::string& publisher_key,
-      ledger::PublisherInfoCallback callback) override;
+  void GetPublisherPanelInfo(const std::string& publisher_key,
+                             PublisherInfoCallback callback) override;
 
-  void SavePublisherInfo(
-      const uint64_t window_id,
-      type::PublisherInfoPtr publisher_info,
-      ledger::ResultCallback callback) override;
+  void SavePublisherInfo(uint64_t window_id,
+                         type::PublisherInfoPtr publisher_info,
+                         ResultCallback callback) override;
 
-  void SetInlineTippingPlatformEnabled(
-      const type::InlineTipsPlatforms platform,
-      bool enabled) override;
+  void SetInlineTippingPlatformEnabled(type::InlineTipsPlatforms platform,
+                                       bool enabled) override;
 
   bool GetInlineTippingPlatformEnabled(
-      const type::InlineTipsPlatforms platform) override;
+      type::InlineTipsPlatforms platform) override;
 
   std::string GetShareURL(
       const base::flat_map<std::string, std::string>& args) override;
 
   void GetPendingContributions(
-      ledger::PendingContributionInfoListCallback callback) override;
+      PendingContributionInfoListCallback callback) override;
 
-  void RemovePendingContribution(
-      const uint64_t id,
-      ledger::ResultCallback callback) override;
+  void RemovePendingContribution(uint64_t id, ResultCallback callback) override;
 
-  void RemoveAllPendingContributions(
-      ledger::ResultCallback callback) override;
+  void RemoveAllPendingContributions(ResultCallback callback) override;
 
   void GetPendingContributionsTotal(
-      ledger::PendingContributionsTotalCallback callback) override;
+      PendingContributionsTotalCallback callback) override;
 
-  void FetchBalance(ledger::FetchBalanceCallback callback) override;
+  void FetchBalance(FetchBalanceCallback callback) override;
 
   void GetExternalWallet(const std::string& wallet_type,
-                         ledger::ExternalWalletCallback callback) override;
+                         ExternalWalletCallback callback) override;
 
   void ExternalWalletAuthorization(
       const std::string& wallet_type,
       const base::flat_map<std::string, std::string>& args,
-      ledger::ExternalWalletAuthorizationCallback callback) override;
+      ExternalWalletAuthorizationCallback callback) override;
 
-  void DisconnectWallet(
-      const std::string& wallet_type,
-      ledger::ResultCallback callback) override;
+  void DisconnectWallet(const std::string& wallet_type,
+                        ResultCallback callback) override;
 
-  void GetAllPromotions(ledger::GetAllPromotionsCallback callback) override;
+  void GetAllPromotions(GetAllPromotionsCallback callback) override;
 
-  void GetAnonWalletStatus(ledger::ResultCallback callback) override;
+  void GetAnonWalletStatus(ResultCallback callback) override;
 
-  void GetTransactionReport(
-      const type::ActivityMonth month,
-      const int year,
-      ledger::GetTransactionReportCallback callback) override;
+  void GetTransactionReport(type::ActivityMonth month,
+                            int year,
+                            GetTransactionReportCallback callback) override;
 
-  void GetContributionReport(
-      const type::ActivityMonth month,
-      const int year,
-      ledger::GetContributionReportCallback callback) override;
+  void GetContributionReport(type::ActivityMonth month,
+                             int year,
+                             GetContributionReportCallback callback) override;
 
-  void GetAllContributions(
-      ledger::ContributionInfoListCallback callback) override;
+  void GetAllContributions(ContributionInfoListCallback callback) override;
 
-  void SavePublisherInfoForTip(
-      type::PublisherInfoPtr info,
-      ledger::ResultCallback callback) override;
+  void SavePublisherInfoForTip(type::PublisherInfoPtr info,
+                               ResultCallback callback) override;
 
-  void GetMonthlyReport(
-      const type::ActivityMonth month,
-      const int year,
-      ledger::GetMonthlyReportCallback callback) override;
+  void GetMonthlyReport(type::ActivityMonth month,
+                        int year,
+                        GetMonthlyReportCallback callback) override;
 
-  void GetAllMonthlyReportIds(
-      ledger::GetAllMonthlyReportIdsCallback callback) override;
+  void GetAllMonthlyReportIds(GetAllMonthlyReportIdsCallback callback) override;
 
-  void ProcessSKU(
-      const std::vector<type::SKUOrderItem>& items,
-      const std::string& wallet_type,
-      ledger::SKUOrderCallback callback) override;
+  void ProcessSKU(const std::vector<type::SKUOrderItem>& items,
+                  const std::string& wallet_type,
+                  SKUOrderCallback callback) override;
 
-  void Shutdown(ledger::ResultCallback callback) override;
+  void Shutdown(ResultCallback callback) override;
 
-  void GetEventLogs(ledger::GetEventLogsCallback callback) override;
+  void GetEventLogs(GetEventLogsCallback callback) override;
 
   void GetBraveWallet(GetBraveWalletCallback callback) override;
 
-  std::string GetWalletPassphrase() const override;
+  std::string GetWalletPassphrase() override;
 
   void LinkBraveWallet(const std::string& destination_payment_id,
                        PostSuggestionsClaimCallback callback) override;
@@ -361,13 +306,37 @@ class LedgerImpl : public ledger::Ledger {
   void GetTransferableAmount(GetTransferableAmountCallback callback) override;
 
   void GetDrainStatus(const std::string& drain_id,
-                      ledger::GetDrainCallback callback) override;
+                      GetDrainCallback callback) override;
 
-  // end ledger.h
+  void SetInitializedForTesting();
 
-  void OnAllDone(const type::Result result, ledger::ResultCallback callback);
+ private:
+  enum class ReadyState {
+    kUninitialized,
+    kInitializing,
+    kReady,
+    kShuttingDown
+  };
 
-  ledger::LedgerClient* ledger_client_;
+  bool IsReady() const;
+
+  void OnInitialized(type::Result result, ResultCallback callback);
+
+  void StartServices();
+
+  void OnStateInitialized(type::Result result, ResultCallback callback);
+
+  void InitializeDatabase(bool execute_create_script, ResultCallback callback);
+
+  void OnDatabaseInitialized(type::Result result, ResultCallback callback);
+
+  void OnAllDone(type::Result result, ResultCallback callback);
+
+  template <typename T>
+  void WhenReady(T callback);
+
+  LedgerClient* ledger_client_;
+
   std::unique_ptr<BATLedgerContext> context_;
   std::unique_ptr<promotion::Promotion> promotion_;
   std::unique_ptr<publisher::Publisher> publisher_;
@@ -380,16 +349,15 @@ class LedgerImpl : public ledger::Ledger {
   std::unique_ptr<state::State> state_;
   std::unique_ptr<api::API> api_;
   std::unique_ptr<recovery::Recovery> recovery_;
+  std::unique_ptr<bitflyer::Bitflyer> bitflyer_;
+  std::unique_ptr<gemini::Gemini> gemini_;
   std::unique_ptr<uphold::Uphold> uphold_;
-  scoped_refptr<base::SequencedTaskRunner> task_runner_;
-  bool initialized_task_scheduler_;
-
-  bool initializing_;
-  bool shutting_down_ = false;
 
   std::map<uint32_t, type::VisitData> current_pages_;
-  uint64_t last_tab_active_time_;
-  uint32_t last_shown_tab_id_;
+  uint64_t last_tab_active_time_ = 0;
+  uint32_t last_shown_tab_id_ = -1;
+  std::queue<std::function<void()>> ready_callbacks_;
+  ReadyState ready_state_ = ReadyState::kUninitialized;
 };
 
 }  // namespace ledger

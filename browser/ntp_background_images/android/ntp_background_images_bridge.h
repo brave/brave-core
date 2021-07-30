@@ -13,10 +13,10 @@
 #include "base/compiler_specific.h"
 #include "base/macros.h"
 #include "base/memory/singleton.h"
-#include "base/optional.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class Profile;
 

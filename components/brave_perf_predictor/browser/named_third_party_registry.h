@@ -33,7 +33,7 @@ class NamedThirdPartyRegistry : public KeyedService {
   bool LoadMappings(const base::StringPiece entities, bool discard_irrelevant);
   // Default initialization - asynchronously load from bundled resource
   void InitializeDefault();
-  base::Optional<std::string> GetThirdParty(
+  absl::optional<std::string> GetThirdParty(
       const base::StringPiece domain) const;
 
  private:

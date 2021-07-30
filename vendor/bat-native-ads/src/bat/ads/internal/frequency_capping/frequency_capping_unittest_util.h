@@ -14,13 +14,22 @@
 
 namespace ads {
 
-AdEventInfo GenerateAdEvent(const AdType type,
+AdEventInfo GenerateAdEvent(const AdType& type,
                             const CreativeAdInfo& ad,
                             const ConfirmationType& confirmation_type);
 
-AdEventInfo GenerateAdEvent(const AdType type,
+AdEventInfo GenerateAdEvent(const AdType& type,
                             const AdInfo& ad,
                             const ConfirmationType& confirmation_type);
+
+void RecordAdEvents(const AdType& type,
+                    const ConfirmationType& confirmation_type,
+                    const int count);
+
+void RecordAdEvent(const AdType& type,
+                   const ConfirmationType& confirmation_type);
+
+void ResetFrequencyCaps(const AdType& type);
 
 }  // namespace ads
 

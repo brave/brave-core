@@ -9,8 +9,10 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 #include "brave/third_party/bitcoin-core/src/src/crypto/ripemd160.h"
+#include "brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1_recovery.h"
 #include "crypto/sha2.h"
 #include "third_party/boringssl/src/include/openssl/hmac.h"
 
@@ -49,6 +51,7 @@ HDKey::HDKey(uint8_t depth, uint32_t parent_fingerprint, uint32_t index)
 
 HDKey::~HDKey() {
   secp256k1_context_destroy(secp256k1_ctx_);
+  SecureZeroData(private_key_.data(), private_key_.size());
 }
 
 // static
@@ -164,6 +167,25 @@ void HDKey::SetPublicKey(const std::vector<uint8_t>& value) {
 
 std::string HDKey::GetPublicExtendedKey() const {
   return Serialize(MAINNET_PUBLIC, public_key_);
+}
+
+std::vector<uint8_t> HDKey::GetUncompressedPublicKey() const {
+  // uncompressed
+  size_t public_key_len = 65;
+  std::vector<uint8_t> public_key(public_key_len);
+  secp256k1_pubkey pubkey;
+  if (!secp256k1_ec_pubkey_parse(secp256k1_ctx_, &pubkey, public_key_.data(),
+                                 public_key_.size())) {
+    LOG(ERROR) << __func__ << ": secp256k1_ec_pubkey_parse failed";
+    return public_key;
+  }
+  if (!secp256k1_ec_pubkey_serialize(secp256k1_ctx_, public_key.data(),
+                                     &public_key_len, &pubkey,
+                                     SECP256K1_EC_UNCOMPRESSED)) {
+    LOG(ERROR) << __func__ << ": secp256k1_ec_pubkey_serialize failed";
+  }
+
+  return public_key;
 }
 
 void HDKey::SetChainCode(const std::vector<uint8_t>& value) {
@@ -300,24 +322,40 @@ std::unique_ptr<HDKey> HDKey::DeriveChildFromPath(const std::string& path) {
   return hd_key;
 }
 
-std::vector<uint8_t> HDKey::Sign(const std::vector<uint8_t>& msg) {
+std::vector<uint8_t> HDKey::Sign(const std::vector<uint8_t>& msg, int* recid) {
   std::vector<uint8_t> sig(64);
   if (msg.size() != 32) {
     LOG(ERROR) << __func__ << ": message length should be 32";
     return sig;
   }
-  secp256k1_ecdsa_signature ecdsa_sig;
-  if (!secp256k1_ecdsa_sign(secp256k1_ctx_, &ecdsa_sig, msg.data(),
-                            private_key_.data(),
-                            secp256k1_nonce_function_rfc6979, nullptr)) {
-    LOG(ERROR) << __func__ << ": secp256k1_ecdsa_sign failed";
-    return sig;
-  }
+  if (!recid) {
+    secp256k1_ecdsa_signature ecdsa_sig;
+    if (!secp256k1_ecdsa_sign(secp256k1_ctx_, &ecdsa_sig, msg.data(),
+                              private_key_.data(),
+                              secp256k1_nonce_function_rfc6979, nullptr)) {
+      LOG(ERROR) << __func__ << ": secp256k1_ecdsa_sign failed";
+      return sig;
+    }
 
-  if (!secp256k1_ecdsa_signature_serialize_compact(secp256k1_ctx_, sig.data(),
-                                                   &ecdsa_sig)) {
-    LOG(ERROR) << __func__
-               << ": secp256k1_ecdsa_signature_serialize_compact failed";
+    if (!secp256k1_ecdsa_signature_serialize_compact(secp256k1_ctx_, sig.data(),
+                                                     &ecdsa_sig)) {
+      LOG(ERROR) << __func__
+                 << ": secp256k1_ecdsa_signature_serialize_compact failed";
+    }
+  } else {
+    secp256k1_ecdsa_recoverable_signature ecdsa_sig;
+    if (!secp256k1_ecdsa_sign_recoverable(
+            secp256k1_ctx_, &ecdsa_sig, msg.data(), private_key_.data(),
+            secp256k1_nonce_function_rfc6979, nullptr)) {
+      LOG(ERROR) << __func__ << ": secp256k1_ecdsa_sign_recoverable failed";
+      return sig;
+    }
+    if (!secp256k1_ecdsa_recoverable_signature_serialize_compact(
+            secp256k1_ctx_, sig.data(), recid, &ecdsa_sig)) {
+      LOG(ERROR)
+          << __func__
+          << ": secp256k1_ecdsa_recoverable_signature_serialize_compact failed";
+    }
   }
 
   return sig;
@@ -349,6 +387,45 @@ bool HDKey::Verify(const std::vector<uint8_t>& msg,
     return false;
   }
   return true;
+}
+
+std::vector<uint8_t> HDKey::Recover(const std::vector<uint8_t>& msg,
+                                    const std::vector<uint8_t>& sig,
+                                    int recid) {
+  size_t public_key_len = 33;
+  std::vector<uint8_t> public_key(public_key_len);
+  if (msg.size() != 32 || sig.size() != 64) {
+    LOG(ERROR) << __func__ << ": message or signature length is invalid";
+    return public_key;
+  }
+  if (recid < 0 || recid > 3) {
+    LOG(ERROR) << __func__ << ": recovery id must be 0, 1, 2 or 3";
+    return public_key;
+  }
+
+  secp256k1_ecdsa_recoverable_signature ecdsa_sig;
+  if (!secp256k1_ecdsa_recoverable_signature_parse_compact(
+          secp256k1_ctx_, &ecdsa_sig, sig.data(), recid)) {
+    LOG(ERROR)
+        << __func__
+        << ": secp256k1_ecdsa_recoverable_signature_parse_compact failed";
+    return public_key;
+  }
+
+  secp256k1_pubkey pubkey;
+  if (!secp256k1_ecdsa_recover(secp256k1_ctx_, &pubkey, &ecdsa_sig,
+                               msg.data())) {
+    LOG(ERROR) << __func__ << ": secp256k1_ecdsa_recover failed";
+    return public_key;
+  }
+
+  if (!secp256k1_ec_pubkey_serialize(secp256k1_ctx_, public_key.data(),
+                                     &public_key_len, &pubkey,
+                                     SECP256K1_EC_COMPRESSED)) {
+    LOG(ERROR) << "secp256k1_ec_pubkey_serialize failed";
+  }
+
+  return public_key;
 }
 
 void HDKey::GeneratePublicKey() {

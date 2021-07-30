@@ -51,18 +51,6 @@
     "message": "詳情",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "您的餘額",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "BAT 點數",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "可用於 Brave 獎勵來捐助您最喜愛的內容創作者。BAT 點數不可兌換 BAT。",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "在",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "代幣經費已領",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "已領取贈送點數",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "自廣告而來的收益",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "一次性小費",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "到期時間",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "這位建立者尚未登記接受 Brave 使用者的提撥金。您寄發的任何小費在他們驗證之前都會留在您的錢包中。",
+    "message": "這個創作者還沒設定好從您的錢包中接收小費。任何您提供的小費都會先在您的錢包中處於擱置狀態，並在 90 天內重試。",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "開啟 Ads",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "免費代幣經費",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "免費贈送點數",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "您得到了一份廣告獎勵！",
@@ -591,17 +567,9 @@
     "message": "代碼",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "點數",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "代幣授予",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "點數經費",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "哈囉，$name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "您至少需有 25 BAT 才能建立 Uphold 帳戶。請稍後再試。\n如果您已有經驗證的 Uphold 帳戶，請繼續登入。",
-    "description": "Text for login button"
+    "message": "您至少需有 $amount$ BAT 才能建立 Uphold 帳號。如果您已有經驗證的 Uphold 帳戶，請繼續登入。",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "已連線",
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "您何時獲得獎勵",
+    "message": "您何時獲得獎勵？",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "透過使用 Brave 獎勵，您正在協助使網際網路成為適合所有人的更美好的地方。真是太棒了！",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "日本的 Brave Rewards 正在切換到新系統！",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "驗證您的錢包",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "瞭解詳情",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "若要提領觀看廣告所賺取的代幣，您必須驗證您的錢包。",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "請在3月13日前使用您的 BAP。在那之後，BAP 將無法繼續使用。",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "稍後再執行",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "驗證我的錢包",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "bitFlyer 錢包是由 bitFlyer, Inc. 管理的服務",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "驗證您的錢包並將其連結至 bitFlyer 帳戶，您將能更輕鬆地儲存並管理透過 Brave Rewards 賺取的代幣",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$了解更多$link_end$關於如何將您的 Brave 瀏覽器連結到您的 bitFlyer 帳號。",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

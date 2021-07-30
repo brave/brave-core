@@ -51,18 +51,6 @@
     "message": "詳細",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "残高",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "BATポイント",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "はBrave Rewardsにおいて、あなたの気に入ったコンテンツの制作者に寄付するために利用できます。BATポイントはBATに交換できません。",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": ":",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "取得済のポイント",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "獲得したポイント付与",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "広告閲覧報酬",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "一度だけチップを送る",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "有効期限",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "このクリエイターは、Braveユーザーから支援を受け取る登録をまだ行っていません。彼らが認証するまでは、贈ったチップはあなたのウォレットに保留されます。",
+    "message": "このクリエイターは現在、あなたのウォレットからチップを受け取る設定が完了していません。あなたが作成したチップは、あなたのウォレットに保留されたまま90日間自動的に再試行されます。",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -360,7 +344,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "やり直し",
+    "message": "再試行",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -420,12 +404,8 @@
     "description": "Terms of service panel opt-in text"
   },
   "bat": {
-    "message": "BAP",
+    "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
-  },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
     "message": "広告をオンにする",
@@ -495,10 +475,6 @@
     "message": "無料のポイント",
     "description": "Token title on success screen"
   },
-  "grantFinishPointTitleUGP": {
-    "message": "無料のポイント付与",
-    "description": "Point title on success screen"
-  },
   "grantFinishTitleAds": {
     "message": "広告報酬を獲得しました! ",
     "description": "Cosmetic text upon captcha success for ads"
@@ -528,7 +504,7 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "私の$provider$アカウントに移動する",
+    "message": "$provider$のアカウントに移動",
     "description": "CTA to open an external wallet account",
     "placeholders": {
       "provider": {
@@ -591,17 +567,9 @@
     "message": "トークン",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "ポイント",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "トークン付与の通知",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "ポイント付与",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "$name$!さん、こんにちは！",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Upholdアカウントを作成するには、最低25 BATが必要です。 後でもう一度ためしてください。\n認証済みのUpholdアカウントをすでにお持ちの場合は、引き続きログインを行ってください。",
-    "description": "Text for login button"
+    "message": "Upholdアカウントを作成するには、最低$amount$ BATが必要です。認証済みのUpholdアカウントをすでにお持ちの場合は、引き続きログインを行ってください。",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "接続済み",
@@ -642,7 +616,7 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "注意： 承認すると、あなたのトランザクションは$provider$から閲覧可能になります。。例えば、彼らはチップの受取人と金額を見ることができるようになります。",
+    "message": "注：ウォレットを認証すると、あなたの取引は$provider$に把握されるようになります。例えば、チップの送り先がbitFlyerと認証している場合、bitFlyerはチップの送り先や金額が把握可能となります。",
     "description": "Displayed in login modal for external wallet providers",
     "placeholders": {
       "provider": {
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "報酬を受け取るタイミング",
+    "message": "報酬を受け取るタイミングは？",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "Brave Rewardsを使用することで、ウェブを誰にとってもより良い場所にすることができます。そしてそれは素晴らしいことです！",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "日本の「Brave Rewards」は新しいシステムに移行を予定しています！",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "ウォレットを認証する",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "詳しくはこちら",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "広告を表示して獲得したトークンを引き出すには、ウォレットを認証する必要があります。",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "お持ちのBATポイント(BAP)は、3月13日までにご使用ください。BAPはそれ以降に廃止されます。",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "後で行う",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "ウォレットを認証する",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "bitFlyerウォレットは、bitFlyer, Inc.が管理するサービスです。",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "ウォレットを認証しbitFlyerアカウントにリンクすると、Brave Rewardsで獲得したトークンを簡単に保管し管理することができます",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "BraveブラウザとbitFlyerアカウントの連携方法について$link_begin$詳しくはこちら$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

@@ -1,0 +1,241 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+[
+  {
+    "namespace": "ftx",
+    "description": "Use the <code>chrome.ftx</code> to interact with FTX services.",
+    "compiler_options": {
+      "implemented_in": "brave/browser/extensions/api/ftx_api.h"
+    },
+    "events": [
+    ],
+    "functions": [
+      {
+        "name": "getFuturesData",
+        "type": "function",
+        "description": "Gets volume, price and change for perpetual futures",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "data",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": { "type": "any" }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getChartData",
+        "type": "function",
+        "description": "Gets chart data for an asset pair",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "symbol"
+          },
+          {
+            "type": "string",
+            "name": "start"
+          },
+          {
+            "type": "string",
+            "name": "end"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "data",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": { "type": "any" }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "setOauthHost",
+        "type": "function",
+        "description": "Sets the FTX host the user will be authenticating to",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "host"
+          }
+        ]
+      },
+      {
+        "name": "getOauthHost",
+        "type": "function",
+        "description": "Gets the current FTX host",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "host",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getClientUrl",
+        "type": "function",
+        "description": "Fetches the Oauth Url for FTX",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "clientUrl",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "disconnect",
+        "type": "function",
+        "description": "Clear auth",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [ ]
+          }
+        ]
+      },
+      {
+        "name": "getAccountBalances",
+        "type": "function",
+        "description": "Retrieves user asset balances",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "balances",
+                "type": "any"
+              }, {
+                "name": "authInvalid",
+                "type": "boolean",
+                "description": "Indicates whether the auth token has expired"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "isSupported",
+        "type": "function",
+        "description": "Fetches whether ftx is supported",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "supported",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getConvertQuote",
+        "type": "function",
+        "description": "Gets an FTX crypto conversion quote",
+        "parameters": [
+          {
+            "name": "from",
+            "type": "string"
+          },
+          {
+            "name": "to",
+            "type": "string"
+          },
+          {
+            "name": "amount",
+            "type": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "quoteId",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getConvertQuoteInfo",
+        "type": "function",
+        "description": "Gets info given a conversion quote ID",
+        "parameters": [
+          {
+            "name": "quoteId",
+            "type": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "quote",
+                "type": "any"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "executeConvertQuote",
+        "type": "function",
+        "description": "Executes a conversion quote given a quote ID",
+        "parameters": [
+          {
+            "name": "quoteId",
+            "type": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "success",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "types": [
+    ],
+    "properties": {
+    }
+  }
+]

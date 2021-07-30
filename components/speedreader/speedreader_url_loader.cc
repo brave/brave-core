@@ -12,6 +12,7 @@
 #include "base/bind.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
@@ -80,6 +81,9 @@ void SpeedReaderURLLoader::Start(
   source_url_client_receiver_.Bind(std::move(source_url_client_receiver),
                                    task_runner_);
 }
+
+void SpeedReaderURLLoader::OnReceiveEarlyHints(
+    network::mojom::EarlyHintsPtr early_hints) {}
 
 void SpeedReaderURLLoader::OnReceiveResponse(
     network::mojom::URLResponseHeadPtr response_head) {
@@ -162,7 +166,7 @@ void SpeedReaderURLLoader::FollowRedirect(
     const std::vector<std::string>& removed_headers,
     const net::HttpRequestHeaders& modified_headers,
     const net::HttpRequestHeaders& modified_cors_exempt_headers,
-    const base::Optional<GURL>& new_url) {
+    const absl::optional<GURL>& new_url) {
   // SpeedReaderURLLoader starts handling the request after
   // OnReceivedResponse(). A redirect response is not expected.
   NOTREACHED();
@@ -242,8 +246,8 @@ void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
 
   if (bytes_remaining_in_buffer_ > 0) {
     // Offload heavy distilling to another thread.
-    base::PostTaskAndReplyWithResult(
-        FROM_HERE, {base::ThreadPool(), base::TaskPriority::USER_BLOCKING},
+    base::ThreadPool::PostTaskAndReplyWithResult(
+        FROM_HERE, {base::TaskPriority::USER_BLOCKING},
         base::BindOnce(
             [](std::string data, std::unique_ptr<Rewriter> rewriter,
                const std::string& stylesheet) -> auto {

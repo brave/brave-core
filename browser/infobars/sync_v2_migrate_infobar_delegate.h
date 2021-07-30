@@ -8,12 +8,10 @@
 
 #include "base/compiler_specific.h"
 #include "base/macros.h"
-#include "base/strings/string16.h"
 #include "components/infobars/core/confirm_infobar_delegate.h"
 #include "url/gurl.h"
 
 class Browser;
-class InfoBarService;
 class Profile;
 class PrefService;
 
@@ -21,11 +19,17 @@ namespace brave_sync {
 class Prefs;
 }  // namespace brave_sync
 
+namespace infobars {
+class ContentInfoBarManager;
+}  // namespace infobars
+
 // An infobar that is run with a string, buttons, and a "Learn More" link.
 class SyncV2MigrateInfoBarDelegate : public ConfirmInfoBarDelegate {
  public:
-  static void Create(InfoBarService* infobar_service, bool is_v2_user,
-                                            Profile* profile, Browser* browser);
+  static void Create(infobars::ContentInfoBarManager* infobar_manager,
+                     bool is_v2_user,
+                     Profile* profile,
+                     Browser* browser);
 
  private:
   explicit SyncV2MigrateInfoBarDelegate(Browser* browser, Profile* profile);
@@ -35,9 +39,9 @@ class SyncV2MigrateInfoBarDelegate : public ConfirmInfoBarDelegate {
   const gfx::VectorIcon& GetVectorIcon() const override;
   bool ShouldExpire(const NavigationDetails& details) const override;
   void InfoBarDismissed() override;
-  base::string16 GetMessageText() const override;
+  std::u16string GetMessageText() const override;
   int GetButtons() const override;
-  base::string16 GetButtonLabel(InfoBarButton button) const override;
+  std::u16string GetButtonLabel(InfoBarButton button) const override;
   bool Accept() override;
 
   Profile* profile_;

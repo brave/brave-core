@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/files/file_path.h"
-#include "base/scoped_observer.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 
 namespace brave_component_updater {
@@ -30,8 +30,8 @@ class LocalDataFilesObserver {
 
  protected:
   LocalDataFilesService* local_data_files_service_;  // NOT OWNED
-  ScopedObserver<LocalDataFilesService, LocalDataFilesObserver>
-      local_data_files_observer_;
+  base::ScopedObservation<LocalDataFilesService, LocalDataFilesObserver>
+      local_data_files_observer_{this};
 };
 
 }  // namespace brave_component_updater

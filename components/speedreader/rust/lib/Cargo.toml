@@ -24,9 +24,9 @@ html5ever = "0.25.1"
 kuchiki = { git = "https://github.com/brave/kuchiki", branch = "speedreader" }
 lol_html = "0.2.0"
 regex = "1"
-serde =  { version = "1.0.123", features = ["derive"] }
-serde_json = "1.0.62"
-thiserror = "1.0.24"
+serde =  { version = "1.0.126", features = ["derive"] }
+serde_json = "1.0.64"
+thiserror = "1.0.26"
 
 # lifeguard <= 0.6.0 panics at runtime on Rust 1.48+
 lifeguard = "^ 0.6.1"
@@ -44,7 +44,7 @@ regex = "1"
 matches = "0.1"
 distance = "0.4.0"
 termion = "1.5"
-reqwest = { version = "0.11.1", features = ["blocking", "stream"] }
+reqwest = { version = "0.11.4", features = ["blocking", "stream"] }
 criterion = "0.3"
 futures = "0.3"
 tokio = { version = "1.2", features = ["full"] }

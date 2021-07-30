@@ -8,9 +8,9 @@
 
 #include <string>
 
-#include "base/optional.h"
 #include "bat/ads/internal/user_activity/user_activity_event_types.h"
 #include "bat/ads/page_transition_types.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -24,7 +24,7 @@ bool DidNavigateToHomePage(const PageTransitionType type);
 
 bool DidTransitionFromExternalApplication(const PageTransitionType type);
 
-base::Optional<UserActivityEventType> ToUserActivityEventType(
+absl::optional<UserActivityEventType> ToUserActivityEventType(
     const PageTransitionType page_transition);
 
 }  // namespace ads

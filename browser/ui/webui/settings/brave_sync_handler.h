@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_SYNC_HANDLER_H_
 
 #include "base/memory/weak_ptr.h"
-#include "base/scoped_observer.h"
+#include "base/scoped_observation.h"
 #include "base/values.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "chrome/services/qrcode_generator/public/cpp/qrcode_generator_service.h"
@@ -62,7 +62,8 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
   Profile* profile_ = nullptr;
 
   // Manages observer lifetimes.
-  ScopedObserver<syncer::DeviceInfoTracker, syncer::DeviceInfoTracker::Observer>
+  base::ScopedObservation<syncer::DeviceInfoTracker,
+                          syncer::DeviceInfoTracker::Observer>
       device_info_tracker_observer_{this};
 
   base::WeakPtrFactory<BraveSyncHandler> weak_ptr_factory_;

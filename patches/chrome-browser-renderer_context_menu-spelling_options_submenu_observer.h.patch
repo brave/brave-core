@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h b/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
-index 5abff450384c93c5f28495c711ac031b851b5b20..635998cbfd8b2b5a2abd90f42924aa62a2e9ae34 100644
+index 8757b7f3deee5bdd6942123e2740cda44c1bae6f..0de51ce0d0406855bf891b39b763a8d4374f5503 100644
 --- a/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
 +++ b/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
-@@ -16,10 +16,12 @@
+@@ -15,10 +15,12 @@
  #include "ui/base/models/simple_menu_model.h"
  
  class RenderViewContextMenuProxy;

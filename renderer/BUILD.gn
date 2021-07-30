@@ -12,10 +12,12 @@ source_set("renderer") {
   public_deps = [ "//chrome/renderer" ]
 
   deps = [
+    "//brave/components/brave_search/common",
     "//brave/components/brave_search/renderer",
     "//brave/components/brave_shields/common",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/cosmetic_filters/renderer",
+    "//v8",
   ]
 
   if (brave_wallet_enabled) {

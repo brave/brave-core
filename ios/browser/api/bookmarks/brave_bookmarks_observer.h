@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXPORT
 @protocol BookmarkModelObserver <NSObject>
 @optional
+
 - (void)bookmarkModelLoaded;
 - (void)bookmarkNodeChanged:(IOSBookmarkNode*)bookmarkNode;
 - (void)bookmarkNodeChildrenChanged:(IOSBookmarkNode*)bookmarkNode;
@@ -30,12 +31,6 @@ OBJC_EXPORT
 OBJC_EXPORT
 @protocol BookmarkModelListener
 - (void)destroy;
-@end
-
-OBJC_EXPORT
-@interface BookmarkModelListenerImpl : NSObject <BookmarkModelListener>
-- (instancetype)init:(id<BookmarkModelObserver>)observer
-       bookmarkModel:(void*)bookmarkModel;
 @end
 
 NS_ASSUME_NONNULL_END

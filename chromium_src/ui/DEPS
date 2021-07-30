@@ -3,10 +3,10 @@ include_rules = [
   "+../../../../ui/native_theme",
   "+../../../../../ui/accessibility/platform",
   "+../../../../../ui/base/resource",
-  "+../../../../../ui/base/resource",
   "+../../../../../ui/base/webui",
   "+../../../../../ui/views/bubble",
   "+../../../../../ui/views/controls",
+  "+../../../../../ui/views/window",
   "+../../../../../../ui/views/controls/button",
   "+ui",
 ]

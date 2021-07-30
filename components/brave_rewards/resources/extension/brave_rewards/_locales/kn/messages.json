@@ -51,18 +51,6 @@
     "message": "ವಿವರಗಳು",
     "description": "Title for grant section in wallet panel summary"
   },
-  "yourBalance": {
-    "message": "ನಿಮ್ಮ ಬ್ಯಾಲೆನ್ಸ್",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "BAT ಪಾಯಿಂಟ್‌‌ಗಳು",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "ನಿಮ್ಮ ಮೆಚ್ಚಿನ ವಿಷಯ ರಚನೆಕಾರರಿಗೆ ಕೊಡುಗೆಯನ್ನು ನೀಡಲು Brave Rewards ನಲ್ಲಿ ಬಳಸಬಹುದು. BAT ಪಾಯಿಂಟ್‌ಗಳನ್ನು BAT ಗೆ ವಿನಿಮಯ ಮಾಡಲಾಗುವುದಿಲ್ಲ.",
-    "description": "Text for BAT Point helper message"
-  },
   "on": {
     "message": "ಆನ್",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -161,10 +149,6 @@
     "message": "ಟೋಕನ್ ಅನುದಾನಗಳು ಕ್ಲೈಮ್ ಮಾಡಿರುವುದು",
     "description": "Title for grant section in wallet summary"
   },
-  "pointGrantClaimed": {
-    "message": "ಪಾಯಿಂಟ್ ಅನುದಾನಗಳು ಕ್ಲೈಮ್ ಮಾಡಿರುವುದು",
-    "description": "Title for point grant section in wallet summary"
-  },
   "earningsAds": {
     "message": "ಜಾಹೀರಾತುಗಳಿಂದ ಸಂಪಾದನೆಗಳು",
     "description": "Title for ads section in wallet summary"
@@ -175,7 +159,7 @@
   },
   "oneTimeDonation": {
     "message": "ಒಂದು ಬಾರಿಯ ಸಲಹೆಗಳು",
-    "description": "Title for one time tips section in wallet summary"
+    "description": "Title for one-time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "ಅವಧಿ ಮೀರುವ ದಿನಾಂಕ",
@@ -324,7 +308,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Brave ಬಳಕೆದಾರರಿಂದ ಕೊಡುಗೆಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಈ ರಚನೆಕಾರ ಇನ್ನೂ ಸೈನ್ ಅಪ್ ಮಾಡಿಲ್ಲ. ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಅನ್ನು ಪರಿಶೀಲಿಸುವವರೆಗೆ ನೀವು ಕಳುಹಿಸಿದ ಟಿಪ್‌ಗಳು ಉಳಿಯುತ್ತವೆ.",
+    "message": "ನಿಮ್ಮ ವ್ಯಾಲೆಟ್‌ನಿಂದ ಟಿಪ್ಸ್ ಸ್ವೀಕರಿಸಲು ಈ ರಚನೆಕಾರರನ್ನು ಪ್ರಸ್ತುತ ಕಾನ್ಫಿಗರ್ ಮಾಡಲಾಗಿಲ್ಲ. ನೀವು ಪಡೆಯುವ ಯಾವುದೇ ಟಿಪ್ ನಿಮ್ಮ ವ್ಯಾಲೆಟ್‌ನಲ್ಲಿಯೇ ಬಾಕಿ ಇರುತ್ತದೆ ಮತ್ತು 90 ದಿನಗಳವರೆಗೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರುಪ್ರಯತ್ನಿಸಿ.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -423,10 +407,6 @@
     "message": "ಬಿಎಟಿ",
     "description": "BAT text for displaying converted tip amount."
   },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
   "turnOnAds": {
     "message": "ಜಾಹೀರಾತುಗಳನ್ನು ಆನ್ ಮಾಡಿ",
     "description": "Prompt to turn on Ads via notification"
@@ -494,10 +474,6 @@
   "grantFinishTokenTitleUGP": {
     "message": "ಉಚಿತ ಟೋಕನ್ ಅನುದಾನ",
     "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "ಉಚಿತ ಟೋಕನ್ ಅನುದಾನ",
-    "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
     "message": "ನೀವು ಜಾಹೀರಾತುಗಳ ರಿವಾರ್ಡ್ ಅನ್ನು ಗಳಿಸಿದ್ದೀರಿ!",
@@ -591,17 +567,9 @@
     "message": "ಟೋಕನ್",
     "description": "BAT Token text"
   },
-  "points":  {
-    "message": "ಪಾಯಿಂಟ್‌ಗಳು",
-    "description": "BAT Points text"
-  },
   "tokenGrants":  {
     "message": "ಟೋಕನ್ ಅನುದಾನಗಳು",
     "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "ಟೋಕನ್ ಅನುದಾನಗಳು",
-    "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
     "message": "ಹಲೋ, $name$!",
@@ -630,8 +598,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Uphold ಖಾತೆಯನ್ನು ರಚಿಸಲು ನೀವು ಕನಿಷ್ಠ 25 BAT ಹೊಂದಿರಬೇಕಾಗುತ್ತದೆ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ. \n ನೀವು ಈಗಾಗಲೇ ಪರಿಶೀಲಿಸಲ್ಪಟ್ಟ Uphold ಖಾತೆಯನ್ನು ಹೊಂದಿದ್ದರೆ, ಲಾಗಿನ್ ಮಾಡಲು ಮುಂದುವರಿಯಿರಿ.",
-    "description": "Text for login button"
+    "message": "ಅಪ್‌ಹೋಲ್ಡ್ ಖಾತೆ ರಚಿಸಲು ನೀವು ಕನಿಷ್ಠ $amount$ BAT ಹೊಂದಿರಬೇಕಾಗುತ್ತದೆ. ನೀವು ಈಗಾಗಲೇ ಅಪ್‌ಹೋಲ್ಡ್ ಖಾತೆಯನ್ನು ಪರಿಶೀಲಿಸಿದ್ದರೆ, ಲಾಗಿನ್ ಮಾಡಲು ಮುಂದುವರಿಯಿರಿ.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "ಸಂಪರ್ಕಿಸಲಾಗಿದೆ",
@@ -742,7 +716,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "ನೀವು ಯಾವಾಗ ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಪಡೆಯುತ್ತೀರಿ",
+    "message": "ನೀವು ಯಾವಾಗ ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಪಡೆಯುತ್ತೀರಿ?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -789,16 +763,40 @@
     "message": "Brave Rewards ಬಳಸುವ ಮೂಲಕ, ಎಲ್ಲರಿಗೂ ವೆಬ್ ಅನ್ನು ಉತ್ತಮ ಸ್ಥಳವನ್ನಾಗಿ ಮಾಡಲು ನೀವು ಸಹಾಯ ಮಾಡುತ್ತಿದ್ದೀರಿ ಮತ್ತು ಅದು ಅದ್ಭುತವಾಗಿದೆ!",
     "description": ""
   },
-  "bapDeprecationHeader": {
-    "message": "ಜಪಾನ್ ನಲ್ಲಿನ ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್ ಒಂದು ಹೊಸ ಸಿಸ್ಟಮ್ ಗೆ ಬದಲಾಗುತ್ತಿದೆ.",
-    "description": "Header text for BAP deprecation warning message"
+  "onboardingPanelVerifyHeader": {
+    "message": "ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಿ",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ",
-    "description": "Link to learn more about BAP deprecation"
+  "onboardingPanelVerifySubtext": {
+    "message": "ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸಿದ್ದಕ್ಕಾಗಿ ನೀವು ಗಳಿಸಿದ ಟೋಕನ್‌ಗಳನ್ನು ಹಿಂಪಡೆಯುವುದಕ್ಕಾಗಿ, ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಅನ್ನು ನೀವು ಪರಿಶೀಲಿಸಬೇಕಾಗುತ್ತದೆ.",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "ಮಾರ್ಚ್ 13 ನೇ ತಾರೀಖಿನ ಒಳಗೆ  ದಯವಿಟ್ಟು ನಿಮ್ಮ ಬಿಎಪಿಯನ್ನು ಬಳಸಿ. ನಂತರ ನಿಮ್ಮ ಬಿಎಪಿ ಸ್ಥಗಿತಗೊಳ್ಳುತ್ತದೆ.",
-    "description": "Text for BAP deprecation popup"
+  "onboardingPanelVerifyLater": {
+    "message": "ಅದನ್ನು ನಂತರ ಮಾಡಿ",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "ನನ್ನ ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಿ",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "bitFlyer ವ್ಯಾಲೆಟ್ ಎನ್ನುವುದು bitFlyer, Inc ನಿರ್ವಹಿಸಿರುವ ಸೇವೆಯಾಗಿದೆ.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಅನ್ನು ಪರಿಶೀಲಿಸುವ ಮೂಲಕ ಮತ್ತು ಅದನ್ನು bitFlyer ಖಾತೆಗೆ ಲಿಂಕ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು ಹೆಚ್ಚು ಸುಲಭವಾಗಿ Brave Rewards ಮೂಲಕ ಗಳಿಸಿದ ಟೋಕನ್ಗಳನ್ನು ಸಂಗ್ರಹಿಸಲು ಮತ್ತು ನಿರ್ವಹಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತದೆ",
+    "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "ನಿಮ್ಮ Brave ಬ್ರೌಸರ್ ಅನ್ನು ನಿಮ್ಮ bitFlyer ಖಾತೆಯೊಂದಿಗೆ ಹೇಗೆ ಲಿಂಕ್ ಮಾಡುವುದು ಎಂಬ ಕುರಿತು $link_begin$ಹೆಚ್ಚು ತಿಳಿಯಿರಿ$link_end$.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

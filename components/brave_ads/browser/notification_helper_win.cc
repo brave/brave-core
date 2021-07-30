@@ -12,7 +12,7 @@
 #include "base/win/core_winrt_util.h"
 #include "base/win/scoped_hstring.h"
 #include "base/win/windows_version.h"
-#include "brave/common/brave_channel_info.h"
+#include "brave/components/brave_ads/browser/features.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/install_static/install_util.h"
 #include "chrome/installer/util/install_util.h"
@@ -65,7 +65,7 @@ NotificationHelperWin::NotificationHelperWin() = default;
 NotificationHelperWin::~NotificationHelperWin() = default;
 
 bool NotificationHelperWin::ShouldShowNotifications() {
-  if (brave::IsNightlyOrDeveloperBuild()) {
+  if (features::ShouldShowCustomAdNotifications()) {
     return true;
   }
 
@@ -81,7 +81,7 @@ bool NotificationHelperWin::ShouldShowNotifications() {
     return true;
   }
 
-  if (!base::FeatureList::IsEnabled(features::kNativeNotifications)) {
+  if (!base::FeatureList::IsEnabled(::features::kNativeNotifications)) {
     LOG(WARNING) << "Native notification feature is disabled so falling back to"
                     " Message Center";
     return true;
@@ -226,7 +226,7 @@ bool NotificationHelperWin::IsNotificationsEnabled() {
   }
 }
 
-base::string16 NotificationHelperWin::GetAppId() const {
+std::wstring NotificationHelperWin::GetAppId() const {
   return ShellUtil::GetBrowserModelId(InstallUtil::IsPerUserInstall());
 }
 
@@ -260,7 +260,7 @@ HRESULT NotificationHelperWin::CreateActivationFactory(
     wchar_t const (&class_name)[size],
     T** object) const {
   auto ref_class_name = base::win::ScopedHString::Create(
-      base::StringPiece16(class_name, size - 1));
+      base::WStringPiece(class_name, size - 1));
 
   return base::win::RoGetActivationFactory(ref_class_name.get(),
                                            IID_PPV_ARGS(object));

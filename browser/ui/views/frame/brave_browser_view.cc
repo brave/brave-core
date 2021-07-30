@@ -11,8 +11,11 @@
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/speedreader/buildflags.h"
 #include "extensions/buildflags/buildflags.h"
 #include "ui/events/event_observer.h"
+#include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/event_monitor.h"
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
@@ -28,9 +31,21 @@
 #include "brave/browser/ui/views/update_recommended_message_box_mac.h"
 #endif
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
+#include "brave/browser/ui/views/speedreader/reader_mode_bubble.h"
+#include "brave/browser/ui/views/speedreader/speedreader_mode_bubble.h"
+#include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
 #include "extensions/browser/extension_registry.h"
 #include "extensions/common/constants.h"
+#endif
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/browser/ui/views/toolbar/wallet_button.h"
 #endif
 
 class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
@@ -128,6 +143,8 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
   contents_container_ = AddChildView(std::move(brave_contents_container));
   set_contents_view(contents_container_);
 
+  sidebar_host_view_ = AddChildView(std::make_unique<views::View>());
+
   // Make sure |find_bar_host_view_| is the last child of BrowserView by
   // re-ordering. FindBarHost widgets uses this view as a  kHostViewKey.
   // See the comments of BrowserView::find_bar_host_view().
@@ -208,6 +225,49 @@ ShowTranslateBubbleResult BraveBrowserView::ShowTranslateBubble(
   }
 #endif
   return ShowTranslateBubbleResult::BROWSER_WINDOW_NOT_VALID;
+}
+
+speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
+    speedreader::SpeedreaderTabHelper* tab_helper,
+    bool is_enabled) {
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  speedreader::SpeedreaderBubbleView* bubble = nullptr;
+  if (is_enabled) {
+    auto* speedreader_mode_bubble = new speedreader::SpeedreaderModeBubble(
+        GetLocationBarView(), tab_helper);
+    views::BubbleDialogDelegateView::CreateBubble(speedreader_mode_bubble);
+    bubble = speedreader_mode_bubble;
+  } else {
+    auto* reader_mode_bubble =
+        new speedreader::ReaderModeBubble(GetLocationBarView(), tab_helper);
+    views::BubbleDialogDelegateView::CreateBubble(reader_mode_bubble);
+    bubble = reader_mode_bubble;
+  }
+
+  bubble->Show();
+
+  return bubble;
+#else
+  return nullptr;
+#endif
+}
+
+WalletButton* BraveBrowserView::GetWalletButton() {
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  return static_cast<BraveToolbarView*>(toolbar())->wallet_button();
+#else
+  return nullptr;
+#endif
+}
+
+void BraveBrowserView::CreateWalletBubble() {
+  DCHECK(GetWalletButton());
+  GetWalletButton()->ShowWalletBubble();
+}
+
+void BraveBrowserView::CloseWalletBubble() {
+  if (GetWalletButton())
+    GetWalletButton()->CloseWalletBubble();
 }
 
 void BraveBrowserView::OnTabStripModelChanged(

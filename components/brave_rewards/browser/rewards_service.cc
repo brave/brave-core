@@ -52,6 +52,7 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
                                   base::TimeDelta::FromSeconds(30));
   registry->RegisterBooleanPref(prefs::kBackupSucceeded, false);
   registry->RegisterBooleanPref(prefs::kUserHasFunded, false);
+  registry->RegisterBooleanPref(prefs::kUserHasClaimedGrant, false);
   registry->RegisterTimePref(prefs::kAddFundsNotification, base::Time());
   registry->RegisterBooleanPref(prefs::kEnabled, false);
   registry->RegisterDictionaryPref(prefs::kExternalWallets);
@@ -61,7 +62,7 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
 #if defined(OS_ANDROID)
   registry->RegisterBooleanPref(prefs::kUseRewardsStagingServer, false);
 #endif
-  registry->RegisterTimePref(prefs::kOnboarded, base::Time());
+  registry->RegisterStringPref(prefs::kExternalWalletType, "");
   registry->RegisterUint64Pref(prefs::kPromotionLastFetchStamp, 0ull);
   registry->RegisterBooleanPref(prefs::kPromotionCorruptedMigrated, false);
   registry->RegisterBooleanPref(prefs::kAnonTransferChecked, false);
@@ -92,9 +93,10 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kParametersMonthlyTipChoices, "");
   registry->RegisterBooleanPref(prefs::kFetchOldBalance, true);
   registry->RegisterBooleanPref(prefs::kEmptyBalanceChecked, false);
-  registry->RegisterBooleanPref(prefs::kBAPReported, false);
   registry->RegisterStringPref(prefs::kWalletBrave, "");
   registry->RegisterStringPref(prefs::kWalletUphold, "");
+  registry->RegisterStringPref(prefs::kWalletBitflyer, "");
+  registry->RegisterStringPref(prefs::kWalletGemini, "");
 }
 
 }  // namespace brave_rewards

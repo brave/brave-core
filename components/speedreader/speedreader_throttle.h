@@ -6,9 +6,15 @@
 #ifndef BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_THROTTLE_H_
 #define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_THROTTLE_H_
 
+#include <memory>
+
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/single_thread_task_runner.h"
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
+
+class HostContentSettingsMap;
 
 namespace speedreader {
 
@@ -22,6 +28,13 @@ class SpeedreaderRewriterService;
 // Cargoculted from |MimeSniffingThrottle|.
 class SpeedReaderThrottle : public blink::URLLoaderThrottle {
  public:
+  static std::unique_ptr<SpeedReaderThrottle> MaybeCreateThrottleFor(
+      SpeedreaderRewriterService* rewriter_service,
+      HostContentSettingsMap* content_settings,
+      const GURL& url,
+      bool check_disabled_sites,
+      scoped_refptr<base::SingleThreadTaskRunner> task_runner);
+
   // |task_runner| is used to bind the right task runner for handling incoming
   // IPC in SpeedReaderLoader. |task_runner| is supposed to be bound to the
   // current sequence.

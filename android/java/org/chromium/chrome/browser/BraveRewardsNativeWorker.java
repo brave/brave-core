@@ -391,12 +391,6 @@ public class BraveRewardsNativeWorker {
         }
     }
 
-    public boolean IsAnonWallet() {
-        synchronized(lock) {
-            return BraveRewardsNativeWorkerJni.get().isAnonWallet(mNativeBraveRewardsNativeWorker);
-        }
-    }
-
     public boolean isRewardsEnabled() {
         synchronized (lock) {
             return BraveRewardsNativeWorkerJni.get().isRewardsEnabled(
@@ -662,7 +656,6 @@ public class BraveRewardsNativeWorker {
         void fetchGrants(long nativeBraveRewardsNativeWorker);
         int getAdsPerHour(long nativeBraveRewardsNativeWorker);
         void setAdsPerHour(long nativeBraveRewardsNativeWorker, int value);
-        boolean isAnonWallet(long nativeBraveRewardsNativeWorker);
         boolean isRewardsEnabled(long nativeBraveRewardsNativeWorker);
         void getExternalWallet(long nativeBraveRewardsNativeWorker);
         void disconnectWallet(long nativeBraveRewardsNativeWorker);

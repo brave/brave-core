@@ -51,6 +51,17 @@ void engine_match(struct C_Engine *engine,
                   char **redirect);
 
 /**
+ * Returns any CSP directives that should be added to a subdocument or document request's response
+ * headers.
+ */
+char *engine_get_csp_directives(struct C_Engine *engine,
+                                const char *url,
+                                const char *host,
+                                const char *tab_host,
+                                bool third_party,
+                                const char *resource_type);
+
+/**
  * Adds a tag to the engine for consideration
  */
 void engine_add_tag(struct C_Engine *engine, const char *tag);

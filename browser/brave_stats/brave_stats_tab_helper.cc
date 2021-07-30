@@ -5,7 +5,7 @@
 
 #include "brave/browser/brave_stats/brave_stats_tab_helper.h"
 
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"

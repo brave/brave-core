@@ -34,9 +34,12 @@ import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class SearchEngineOnboardingFragment extends Fragment {
@@ -46,6 +49,8 @@ public class SearchEngineOnboardingFragment extends Fragment {
     private Button btnSave;
 
     private TemplateUrl selectedSearchEngine;
+
+    private static final List<String> braveSearchRegions = Arrays.asList("CA", "US");
 
     public SearchEngineOnboardingFragment() {
         // Required empty public constructor
@@ -83,10 +88,15 @@ public class SearchEngineOnboardingFragment extends Fragment {
             }
         }
 
+        String countryCode = Locale.getDefault().getCountry();
         for (TemplateUrl templateUrl : templateUrls) {
             if (templateUrl.getIsPrepopulated()
                     && OnboardingPrefManager.searchEngineMap.get(templateUrl.getShortName())
                     != null) {
+                if (templateUrl.getShortName().equals(OnboardingPrefManager.BRAVE)
+                        && !braveSearchRegions.contains(countryCode)) {
+                    continue;
+                }
                 SearchEngineEnum searchEngineEnum =
                     OnboardingPrefManager.searchEngineMap.get(templateUrl.getShortName());
 

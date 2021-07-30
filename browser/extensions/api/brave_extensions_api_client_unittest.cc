@@ -41,7 +41,7 @@ TEST_F(BraveExtensionsAPIClientTests, IsBraveProtectedUrlUphold) {
   WebRequestInfo blocked1(
       create_request_params("https://uphold.com/authorize/1234"));
   WebRequestInfo blocked2(create_request_params(
-      "https://sandbox.uphold.com/authorize/1234?state=abcd"));
+      "https://wallet-sandbox.uphold.com/authorize/1234?state=abcd"));
   WebRequestInfo blocked3(
       create_request_params("https://api.uphold.com/oauth2/token"));
   ASSERT_TRUE(ShouldHideBrowserNetworkRequest(blocked1));

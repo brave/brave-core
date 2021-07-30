@@ -30,10 +30,16 @@ const char kSupportedCountryCodesSchemaVersion[] =
     "brave.brave_ads.supported_regions_schema_version_number";
 const int kSupportedCountryCodesSchemaVersionNumber = 9;
 
+// Stores the ad notifications last screen position
+const char kAdNotificationLastScreenPositionX[] =
+    "brave.brave_ads.ad_notification.last_screen_position_x";
+const char kAdNotificationLastScreenPositionY[] =
+    "brave.brave_ads.ad_notification.last_screen_position_y";
+
 // Stores the preferences version number
 const char kVersion[] = "brave.brave_ads.prefs.version";
 
-const int kCurrentVersionNumber = 10;
+const int kCurrentVersionNumber = 11;
 
 }  // namespace prefs
 

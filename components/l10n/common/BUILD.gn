@@ -1,7 +1,5 @@
-source_set("common") {
-  deps = [
-    "//base",
-  ]
+static_library("common") {
+  deps = [ "//base" ]
 
   sources = [
     "locale_util.cc",

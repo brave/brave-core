@@ -1,10 +1,10 @@
 diff --git a/content/public/browser/browser_main_parts.h b/content/public/browser/browser_main_parts.h
-index 2bfefad46b9ef071a9bafebe03550238c0acfad4..1c3a7a299e65457fa66070e0f94efb05e5222442 100644
+index 497eb07896b25b17d8d66772047ef0f6057f4e21..3cc4c211215b9821f83d792611429ed93854e2c4 100644
 --- a/content/public/browser/browser_main_parts.h
 +++ b/content/public/browser/browser_main_parts.h
-@@ -99,6 +99,9 @@ class CONTENT_EXPORT BrowserMainParts {
-   // Called as the very last part of shutdown, after threads have been
-   // stopped and destroyed.
+@@ -140,6 +140,9 @@ class CONTENT_EXPORT BrowserMainParts {
+   virtual void OnFirstIdle() {}
+   virtual void PostMainMessageLoopRun() {}
    virtual void PostDestroyThreads() {}
 +
 +  // Called when shutdown is about to begin.

@@ -144,6 +144,20 @@ void JNI_BraveShieldsContentSettings_SetCookieControlType(JNIEnv* env,
       g_browser_process->local_state());
 }
 
+void JNI_BraveShieldsContentSettings_SetCosmeticFilteringControlType(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& type,
+    const base::android::JavaParamRef<jstring>& url,
+    const base::android::JavaParamRef<jobject>& j_profile) {
+  brave_shields::SetCosmeticFilteringControlType(
+      HostContentSettingsMapFactory::GetForProfile(
+          ProfileAndroid::FromProfileAndroid(j_profile)),
+      brave_shields::ControlTypeFromString(
+          base::android::ConvertJavaStringToUTF8(env, type)),
+      GURL(base::android::ConvertJavaStringToUTF8(env, url)),
+      g_browser_process->local_state());
+}
+
 base::android::ScopedJavaLocalRef<jstring>
     JNI_BraveShieldsContentSettings_GetCookieControlType(JNIEnv* env,
     const base::android::JavaParamRef<jstring>& url,
@@ -183,6 +197,21 @@ base::android::ScopedJavaLocalRef<jstring>
 
   return base::android::ConvertUTF8ToJavaString(env,
       brave_shields::ControlTypeToString(control_type));
+}
+
+base::android::ScopedJavaLocalRef<jstring>
+JNI_BraveShieldsContentSettings_GetCosmeticFilteringControlType(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& url,
+    const base::android::JavaParamRef<jobject>& j_profile) {
+  brave_shields::ControlType cosmetic_type =
+      brave_shields::GetCosmeticFilteringControlType(
+          HostContentSettingsMapFactory::GetForProfile(
+              ProfileAndroid::FromProfileAndroid(j_profile)),
+          GURL(base::android::ConvertJavaStringToUTF8(env, url)));
+
+  return base::android::ConvertUTF8ToJavaString(
+      env, brave_shields::ControlTypeToString(cosmetic_type));
 }
 
 void JNI_BraveShieldsContentSettings_SetHTTPSEverywhereEnabled(JNIEnv* env,

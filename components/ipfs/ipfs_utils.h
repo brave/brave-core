@@ -11,45 +11,57 @@
 #include "components/version_info/channel.h"
 #include "url/gurl.h"
 
-namespace content {
-class BrowserContext;
-}  // namespace content
+class PrefService;
 
 namespace ipfs {
 
-// IsIpfsEnabled returns false if IPFS feature is unsupported for the given
-// context, disabled by IPFSEnabled policy, or the feature flag.
-bool IsIpfsEnabled(content::BrowserContext* context);
-bool IsIpfsResolveMethodDisabled(content::BrowserContext* context);
-bool IsIpfsDisabledByPolicy(content::BrowserContext* context);
+bool IsIpfsDisabledByFeatureOrPolicy(PrefService* prefs);
+bool IsIpfsMenuEnabled(PrefService* prefs);
+bool IsIpfsDisabledByPolicy(PrefService* prefs);
 bool IsValidCID(const std::string& cid);
 bool HasIPFSPath(const GURL& url);
-bool IsDefaultGatewayURL(const GURL& url, content::BrowserContext* context);
+bool IsDefaultGatewayURL(const GURL& url, PrefService* prefs);
 bool IsLocalGatewayURL(const GURL& url);
 bool IsIPFSScheme(const GURL& url);
-GURL ToPublicGatewayURL(const GURL& url, content::BrowserContext* context);
+// Extracts cid and path from ipfs URLs like:
+// [scheme]://[cid][.gateway][/path]
+// [scheme]://[cid][/path]
+bool ParseCIDAndPathFromIPFSUrl(const GURL& url,
+                                std::string* cid,
+                                std::string* path);
+GURL ToPublicGatewayURL(const GURL& url, PrefService* prefs);
 GURL GetIPFSGatewayURL(const std::string& cid,
                        const std::string& path,
                        const GURL& base_gateway_url);
 GURL GetIPNSGatewayURL(const std::string& cid,
                        const std::string& path,
                        const GURL& base_gateway_url);
-bool IsLocalGatewayConfigured(content::BrowserContext* context);
-GURL GetConfiguredBaseGateway(content::BrowserContext* context,
+bool IsLocalGatewayConfigured(PrefService* prefs);
+GURL GetConfiguredBaseGateway(PrefService* prefs,
                               version_info::Channel channel);
-bool ResolveIPFSURI(content::BrowserContext* context,
+bool ResolveIPFSURI(PrefService* prefs,
                     version_info::Channel channel,
                     const GURL& ipfs_uri,
                     GURL* resolved_url);
 void SetIPFSDefaultGatewayForTest(const GURL& url);
 GURL GetDefaultIPFSLocalGateway(version_info::Channel channel);
-GURL GetDefaultIPFSGateway(content::BrowserContext* context);
+GURL GetDefaultIPFSGateway(PrefService* prefs);
 GURL GetAPIServer(version_info::Channel channel);
+GURL ResolveWebUIFilesLocation(const std::string& directory,
+                               version_info::Channel channel);
 bool TranslateIPFSURI(const GURL& url,
                       GURL* new_url,
                       const GURL& gateway_url,
                       bool use_subdomain);
+bool IsValidNodeFilename(const std::string& filename);
 
+bool ParsePeerConnectionString(const std::string& value,
+                               std::string* id,
+                               std::string* address);
+GURL ContentHashToCIDv1URL(const std::string& contenthash);
+bool IsAPIGateway(const GURL& url, version_info::Channel channel);
+bool IsIpfsResolveMethodDisabled(PrefService* prefs);
+std::string GetRegistryDomainFromIPNS(const GURL& url);
 }  // namespace ipfs
 
 #endif  // BRAVE_COMPONENTS_IPFS_IPFS_UTILS_H_

@@ -13,6 +13,7 @@ pub mod classifier;
 mod rewriter_config_builder;
 pub mod speedreader;
 mod speedreader_heuristics;
+mod speedreader_readability;
 mod speedreader_streaming;
 
 pub mod whitelist;

@@ -127,7 +127,6 @@ SidebarAddItemBubbleDelegateView::CreateNonClientFrameView(
       std::make_unique<BubbleBorderWithArrow>(arrow(), GetShadow(), color());
   constexpr int kRadius = 4;
   border->SetCornerRadius(kRadius);
-  border->set_md_shadow_color(SkColorSetARGB(0x2E, 0x63, 0x69, 0x6E));
   auto* border_ptr = border.get();
   frame->SetBubbleBorder(std::move(border));
   // Replace frame's background to draw arrow.

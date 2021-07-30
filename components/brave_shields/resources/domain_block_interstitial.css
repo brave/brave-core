@@ -5,8 +5,8 @@
 
 .domainblock .icon {
   background-image: -webkit-image-set(
-      url(../../../../components/security_interstitials/core/browser/resources/images/1x/triangle_red.png) 1x,
-      url(../../../../components/security_interstitials/core/browser/resources/images/2x/triangle_red.png) 2x);
+      url(../../../../components/security_interstitials/core/browser/resources/images/1x/info.png) 1x,
+      url(../../../../components/security_interstitials/core/browser/resources/images/2x/info.png) 2x);
 }
 
 .domainblock #domain {

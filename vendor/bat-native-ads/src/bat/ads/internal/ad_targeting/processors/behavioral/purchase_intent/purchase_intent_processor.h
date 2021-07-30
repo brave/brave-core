@@ -11,7 +11,7 @@
 
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_info.h"
 #include "bat/ads/internal/ad_targeting/processors/processor.h"
-#include "bat/ads/internal/ad_targeting/resources/behavioral/purchase_intent/purchase_intent_resource.h"
+#include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "url/gurl.h"
 
 namespace ads {

@@ -141,35 +141,6 @@
         ]
       },
       {
-        "name": "migrateLegacyCosmeticFilters",
-        "type": "function",
-        "description": "Appends the provided legacy cosmetic filters to the custom filters of brave://adblock",
-        "parameters": [
-          {
-            "name": "legacyFilters",
-            "type": "object",
-            "description": "Mapping from hostnames with stored legacy cosmetic filter rules to the corresponding lists of rules",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          {
-            "type": "function",
-            "name": "callback",
-            "description": "Returns true if the filters were successfully stored, signifying that the old filters should be removed",
-            "parameters": [
-              {
-                "name": "success",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "name": "addSiteCosmeticFilter",
         "type": "function",
         "description": "Saves an element to hide on a page by creating a new filter of the form `host##cssSelector` in the custom filters of brave://adblock",
@@ -185,6 +156,12 @@
             "description": "The CSS selector that should be hidden"
           }
         ]
+      },
+      {
+        "name": "openFilterManagementPage",
+        "type": "function",
+        "description": "Opens brave://adblock for the purpose of adding, editing, or removing custom filters",
+        "parameters": []
       },
       {
         "name": "getBraveShieldsEnabled",

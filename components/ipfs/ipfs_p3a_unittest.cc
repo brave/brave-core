@@ -18,7 +18,7 @@ class IPFSP3ATest : public testing::Test {
 
   void SetUp() override {
     auto* registry = pref_service_.registry();
-    IpfsService::RegisterPrefs(registry);
+    IpfsService::RegisterProfilePrefs(registry);
   }
 
   PrefService* GetPrefs() { return &pref_service_; }

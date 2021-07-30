@@ -171,17 +171,13 @@
     "message": "Alterar as predefinições da proteção global",
     "description": "Message for the button action linking to the settings page"
   },
-  "addBlockElement": {
-    "message": "Elementos do bloco via selecionador",
-    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  "manageCustomFilters": {
+    "message": "Gerir filtros personalizados",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
-  "resetSiteFilterSettings": {
-    "message": "Limpar regras CSS para este site",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Limpar regras CSS para todos os sites",
-    "description": "Message for context menu that resets all cosmetic filters"
+  "elementPickerMode": {
+    "message": "Block element",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
     "message": "Visualização Avançada",

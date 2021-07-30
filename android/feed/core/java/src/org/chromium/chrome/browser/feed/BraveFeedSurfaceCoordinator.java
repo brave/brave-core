@@ -17,6 +17,7 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.feed.shared.FeedSurfaceDelegate;
 import org.chromium.chrome.browser.native_page.NativePageNavigationDelegate;
+import org.chromium.chrome.browser.ntp.NewTabPageLaunchOrigin;
 import org.chromium.chrome.browser.ntp.ScrollableContainerDelegate;
 import org.chromium.chrome.browser.ntp.SnapScrollHelper;
 import org.chromium.chrome.browser.ntp.snippets.SectionHeaderView;
@@ -36,18 +37,18 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
     private FrameLayout mRootView;
 
     public BraveFeedSurfaceCoordinator(Activity activity, SnackbarManager snackbarManager,
-            TabModelSelector tabModelSelector, WindowAndroid windowAndroid,
-            @Nullable SnapScrollHelper snapScrollHelper, @Nullable View ntpHeader,
-            @Nullable SectionHeaderView sectionHeaderView, FeedV1ActionOptions actionOptions,
+            WindowAndroid windowAndroid, @Nullable SnapScrollHelper snapScrollHelper,
+            @Nullable View ntpHeader, @Nullable SectionHeaderView sectionHeaderView,
             boolean showDarkBackground, FeedSurfaceDelegate delegate,
             @Nullable NativePageNavigationDelegate pageNavigationDelegate, Profile profile,
             boolean isPlaceholderShownInitially, BottomSheetController bottomSheetController,
             Supplier<ShareDelegate> shareDelegateSupplier,
-            @Nullable ScrollableContainerDelegate externalScrollableContainerDelegate) {
-        super(activity, snackbarManager, tabModelSelector, windowAndroid, snapScrollHelper,
-                ntpHeader, sectionHeaderView, actionOptions, showDarkBackground, delegate,
-                pageNavigationDelegate, profile, isPlaceholderShownInitially, bottomSheetController,
-                shareDelegateSupplier, externalScrollableContainerDelegate);
+            @Nullable ScrollableContainerDelegate externalScrollableContainerDelegate,
+            TabModelSelector tabModelSelector, @NewTabPageLaunchOrigin int launchOrigin) {
+        super(activity, snackbarManager, windowAndroid, snapScrollHelper, ntpHeader,
+                sectionHeaderView, showDarkBackground, delegate, pageNavigationDelegate, profile,
+                isPlaceholderShownInitially, bottomSheetController, shareDelegateSupplier,
+                externalScrollableContainerDelegate, tabModelSelector, launchOrigin);
     }
 
     @Override
@@ -76,5 +77,9 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
         mRootView.addView(mScrollViewForPolicy);
         mScrollViewForPolicy.setFillViewport(true);
         mScrollViewForPolicy.requestFocus();
+    }
+
+    public boolean isEnhancedProtectionPromoEnabled() {
+        return false;
     }
 }

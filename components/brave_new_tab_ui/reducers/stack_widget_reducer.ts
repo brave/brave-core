@@ -10,7 +10,8 @@ const widgets = {
   'binance': 'showBinance',
   'together': 'showTogether',
   'gemini': 'showGemini',
-  'cryptoDotCom': 'showCryptoDotCom'
+  'cryptoDotCom': 'showCryptoDotCom',
+  'ftx': 'showFTX'
 }
 
 const removeStackWidget = (widget: NewTab.StackWidget, state: NewTab.State): NewTab.State => {
@@ -72,15 +73,6 @@ const stackWidgetReducer: Reducer<NewTab.State | undefined> = (state: NewTab.Sta
   switch (action.type) {
     case types.SET_FOREGROUND_STACK_WIDGET:
       state = setForegroundStackWidget(payload.widget as NewTab.StackWidget, state)
-      break
-    case types.SAVE_WIDGET_STACK_ORDER:
-      const savedWidgets = state.widgetStackOrder.filter((widget: NewTab.StackWidget) => {
-        return state[widgets[widget]]
-      })
-      state = {
-        ...state,
-        savedWidgetStackOrder: savedWidgets
-      }
       break
 
     default:

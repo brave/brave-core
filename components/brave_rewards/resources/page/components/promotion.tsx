@@ -25,7 +25,6 @@ interface State {
 
 interface Props extends Rewards.ComponentProps {
   promotion: Rewards.Promotion
-  onlyAnonWallet?: boolean
 }
 
 // TODO add local when we know what we will get from the server
@@ -106,14 +105,11 @@ class Promotion extends React.Component<Props, State> {
   }
 
   getFinish = (type: string, tokens: string, date: string) => {
-    const { onlyAnonWallet } = this.props
-    const tokenString = onlyAnonWallet ? getLocale('point') : getLocale('token')
+    const tokenString = getLocale('token')
 
     let title = getLocale('grantFinishTitleUGP')
     let text = getLocale('grantFinishTextUGP', { currency: tokenString })
-    let tokenTitle = onlyAnonWallet
-      ? getLocale('grantFinishPointUGP')
-      : getLocale('grantFinishTokenUGP')
+    let tokenTitle = getLocale('grantFinishTokenUGP')
 
     if (type === 'ads') {
       title = getLocale('grantFinishTitleAds')
@@ -135,7 +131,6 @@ class Promotion extends React.Component<Props, State> {
           date={date}
           testId={'newTokenGrant'}
           tokenTitle={tokenTitle}
-          onlyAnonWallet={onlyAnonWallet}
         />
       </GrantWrapper>
     )

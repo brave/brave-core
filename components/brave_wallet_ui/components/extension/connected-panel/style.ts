@@ -1,20 +1,23 @@
 import styled from 'styled-components'
-import Blockies from '../assets/blockies-temp.svg'
 import Swap from '../assets/swap.svg'
 import {
   VerifiedSIcon,
   CaratCircleODownIcon
 } from 'brave-ui/components/icons'
 
-// This gradient will be generated using blockies package in the future.
-export const StyledWrapper = styled.div`
+interface StyleProps {
+  panelBackground: string
+  orb: string
+}
+
+export const StyledWrapper = styled.div<Partial<StyleProps>>`
   display: flex;
   height: 100%;
   width: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(180deg, #CF4A89 0%, #9E5EB2 100%);
+  background: ${(p) => p.panelBackground};
 `
 
 export const CenterColumn = styled.div`
@@ -25,13 +28,15 @@ export const CenterColumn = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 12px 0px 28px;
+  max-width: 300px;
 `
 
-export const AccountCircle = styled.div`
+export const AccountCircle = styled.div<Partial<StyleProps>>`
   width: 54px;
   height: 54px;
   border-radius: 100%;
-  background: url(${Blockies});
+  background-image: url(${(p) => p.orb});
+  background-size: cover;
   border: 2px solid white;
 `
 
@@ -44,13 +49,17 @@ export const AccountNameText = styled.span`
   color: ${(p) => p.theme.palette.white};
 `
 
-export const AccountAddressText = styled.span`
+export const AccountAddressText = styled.button`
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.palette.white};
   font-weight: 300;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
 `
 
 export const BalanceColumn = styled.div`
@@ -83,7 +92,7 @@ export const ConnectedIcon = styled(VerifiedSIcon)`
   width: 14px;
   height: 14px;
   margin-right: 8px;
-  color: ${(p) => p.theme.palette.green500};
+  color: ${(p) => p.theme.palette.white};
 `
 
 export const NotConnectedIcon = styled.div`

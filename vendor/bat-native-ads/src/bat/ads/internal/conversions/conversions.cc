@@ -20,6 +20,7 @@
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
 #include "bat/ads/internal/database/tables/conversion_queue_database_table.h"
 #include "bat/ads/internal/database/tables/conversions_database_table.h"
+#include "bat/ads/internal/features/conversions/conversions_features.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/internal/url_util.h"
@@ -34,8 +35,8 @@ namespace {
 const int64_t kConvertAfterSeconds =
     base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 const int64_t kDebugConvertAfterSeconds = 10 * base::Time::kSecondsPerMinute;
-
 const int64_t kExpiredConvertAfterSeconds = 1 * base::Time::kSecondsPerMinute;
+const char kSearchInUrl[] = "url";
 
 bool HasObservationWindowForAdEventExpired(const int observation_window,
                                            const AdEventInfo& ad_event) {
@@ -72,6 +73,7 @@ bool DoesConfirmationTypeMatchConversionType(
     }
 
     case ConfirmationType::kUndefined:
+    case ConfirmationType::kServed:
     case ConfirmationType::kDismissed:
     case ConfirmationType::kTransferred:
     case ConfirmationType::kFlagged:
@@ -83,14 +85,41 @@ bool DoesConfirmationTypeMatchConversionType(
   }
 }
 
-std::string ExtractVerifiableConversionIdFromHtml(const std::string& html) {
-  re2::StringPiece text_string_piece(html);
-  RE2 r("<meta.*name=\"ad-conversion-id\".*content=\"(.*)\".*>");
+std::string ExtractConversionIdFromText(
+    const std::string& html,
+    const std::vector<std::string>& redirect_chain,
+    const std::string& conversion_url_pattern,
+    const ConversionIdPatternMap& conversion_id_patterns) {
+  std::string conversion_id;
+  std::string conversion_id_pattern =
+      features::GetGetDefaultConversionIdPattern();
+  std::string text = html;
 
-  std::string verifiable_conversion_id;
-  RE2::FindAndConsume(&text_string_piece, r, &verifiable_conversion_id);
+  const auto iter = conversion_id_patterns.find(conversion_url_pattern);
+  if (iter != conversion_id_patterns.end()) {
+    const ConversionIdPatternInfo conversion_id_pattern_info = iter->second;
+    if (conversion_id_pattern_info.search_in == kSearchInUrl) {
+      const auto url_iter = std::find_if(
+          redirect_chain.begin(), redirect_chain.end(),
+          [=](const std::string& url) {
+            return DoesUrlMatchPattern(url, conversion_url_pattern);
+          });
 
-  return verifiable_conversion_id;
+      if (url_iter == redirect_chain.end()) {
+        return conversion_id;
+      }
+
+      text = *url_iter;
+    }
+
+    conversion_id_pattern = conversion_id_pattern_info.id_pattern;
+  }
+
+  re2::StringPiece text_string_piece(text);
+  RE2 r(conversion_id_pattern);
+  RE2::FindAndConsume(&text_string_piece, r, &conversion_id);
+
+  return conversion_id;
 }
 
 std::set<std::string> GetConvertedCreativeSets(const AdEventList& ad_events) {
@@ -155,8 +184,10 @@ void Conversions::RemoveObserver(ConversionsObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void Conversions::MaybeConvert(const std::vector<std::string>& redirect_chain,
-                               const std::string& html) {
+void Conversions::MaybeConvert(
+    const std::vector<std::string>& redirect_chain,
+    const std::string& html,
+    const ConversionIdPatternMap& conversion_id_patterns) {
   if (!ShouldAllow()) {
     BLOG(1, "Conversions are not allowed");
     return;
@@ -168,7 +199,7 @@ void Conversions::MaybeConvert(const std::vector<std::string>& redirect_chain,
     return;
   }
 
-  CheckRedirectChain(redirect_chain, html);
+  CheckRedirectChain(redirect_chain, html, conversion_id_patterns);
 }
 
 void Conversions::StartTimerIfReady() {
@@ -202,7 +233,8 @@ bool Conversions::ShouldAllow() const {
 
 void Conversions::CheckRedirectChain(
     const std::vector<std::string>& redirect_chain,
-    const std::string& html) {
+    const std::string& html,
+    const ConversionIdPatternMap& conversion_id_patterns) {
   BLOG(1, "Checking URL for conversions");
 
   database::table::AdEvents ad_events_database_table;
@@ -254,8 +286,9 @@ void Conversions::CheckRedirectChain(
           creative_set_ids.insert(ad_event.creative_set_id);
 
           VerifiableConversionInfo verifiable_conversion;
-          verifiable_conversion.id =
-              ExtractVerifiableConversionIdFromHtml(html);
+          verifiable_conversion.id = ExtractConversionIdFromText(
+              html, redirect_chain, conversion.url_pattern,
+              conversion_id_patterns);
           verifiable_conversion.public_key = conversion.advertiser_public_key;
 
           Convert(ad_event, verifiable_conversion);
@@ -471,14 +504,14 @@ void Conversions::StartTimer(
 }
 
 void Conversions::NotifyConversion(
-    const ConversionQueueItemInfo& conversion_queue_item) {
+    const ConversionQueueItemInfo& conversion_queue_item) const {
   for (ConversionsObserver& observer : observers_) {
     observer.OnConversion(conversion_queue_item);
   }
 }
 
 void Conversions::NotifyConversionFailed(
-    const ConversionQueueItemInfo& conversion_queue_item) {
+    const ConversionQueueItemInfo& conversion_queue_item) const {
   for (ConversionsObserver& observer : observers_) {
     observer.OnConversionFailed(conversion_queue_item);
   }

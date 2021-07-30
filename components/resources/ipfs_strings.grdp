@@ -120,5 +120,29 @@
     <message name="IDS_PAGE_INFO_IPFS_BUBBLE_TEXT" desc="The text for ips page info bubble.">
       InterPlanetary File System (IPFS) is a public network for peer-to-peer data storage and delivery. You can learn more about Brave's integration or configure your IPFS settings at any time.
     </message>
+    <message name="IDS_IPFS_IMPORT_NOTIFICATION_TITLE" desc="The title for ips import error notification.">
+      IPFS import completed
+    </message>
+    <message name="IDS_IPFS_IMPORT_PARTLY_COMPLETED_NOTIFICATION_TITLE" desc="The title for ips import error notification.">
+      IPFS import partially completed
+    </message>
+    <message name="IDS_IPFS_IMPORT_ERROR_NOTIFICATION_TITLE" desc="The title for ips import error notification.">
+      IPFS import failed
+    </message>
+    <message name="IDS_IPFS_IMPORT_NOTIFICATION_BODY" desc="The title for ips import error notification.">
+      Shareable link copied: <ph name="SHAREABLE_LINK">$1<ex>https://domain.com/link</ex></ph>
+    </message>
+    <message name="IDS_IPFS_IMPORT_ERROR_NO_REQUEST_BODY" desc="The title for ips import error notification.">
+      Failed to fetch data for import
+    </message>
+    <message name="IDS_IPFS_IMPORT_ERROR_ADD_FAILED_BODY" desc="The title for ips import error notification.">
+      IPFS node internal error
+    </message>
+    <message name="IDS_IPFS_IMPORT_PARTLY_COMPLETED_NOTIFICATION_BODY" desc="The title for ips import error notification.">
+      The data was successfully uploaded but not moved to the brave-import directory. You can do this manually on the import settings page.
+    </message>
+    <message name="IDS_IPFS_ROTATE_IDENTITY_TITLE" desc="The title for the link to rotate identity on ipfs diagnostic page.">
+      Manage Peer ID and IPNS keys
+    </message>
   </if>
 </grit-part>

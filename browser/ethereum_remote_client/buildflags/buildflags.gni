@@ -1,0 +1,3 @@
+declare_args() {
+  ethereum_remote_client_enabled = !is_ios && !is_android
+}

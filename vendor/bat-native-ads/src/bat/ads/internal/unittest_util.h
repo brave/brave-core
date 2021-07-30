@@ -14,13 +14,14 @@
 #include <vector>
 
 #include "base/files/file_path.h"
-#include "base/optional.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/database.h"
 #include "bat/ads/internal/platform/platform_helper_mock.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -78,12 +79,12 @@ class AdsClientMock;
 
 base::FilePath GetTestPath();
 
-base::Optional<std::string> ReadFileFromTestPathToString(
+absl::optional<std::string> ReadFileFromTestPathToString(
     const std::string& name);
 
 base::FilePath GetResourcesPath();
 
-base::Optional<std::string> ReadFileFromResourcePathToString(
+absl::optional<std::string> ReadFileFromResourcePathToString(
     const std::string& name);
 
 void SetEnvironment(const Environment environment);
@@ -112,15 +113,19 @@ void MockShouldShowNotifications(const std::unique_ptr<AdsClientMock>& mock,
                                  const bool should_show);
 
 void MockShowNotification(const std::unique_ptr<AdsClientMock>& mock);
-
 void MockCloseNotification(const std::unique_ptr<AdsClientMock>& mock);
 
+void MockRecordAdEvent(const std::unique_ptr<AdsClientMock>& mock);
+void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock);
+void MockResetAdEvents(const std::unique_ptr<AdsClientMock>& mock);
+
+void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock);
+
 void MockSave(const std::unique_ptr<AdsClientMock>& mock);
+void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
+              const base::ScopedTempDir& temp_dir);
 
-void MockLoad(const std::unique_ptr<AdsClientMock>& mock);
-
-void MockLoadUserModelForId(const std::unique_ptr<AdsClientMock>& mock);
-
+void MockLoadAdsResource(const std::unique_ptr<AdsClientMock>& mock);
 void MockLoadResourceForId(const std::unique_ptr<AdsClientMock>& mock);
 
 void MockUrlRequest(const std::unique_ptr<AdsClientMock>& mock,

@@ -3,7 +3,7 @@ import * as React from 'react'
 import { withKnobs, boolean } from '@storybook/addon-knobs'
 import { addParameters } from '@storybook/react'
 import { initLocale } from 'brave-ui/helpers'
-import locale from './locale'
+import { getString } from './locale'
 import ThemeProvider from '../components/common/StorybookThemeProvider'
 
 // Fonts
@@ -22,11 +22,8 @@ export const parameters = {
   }
 }
 
-initLocale(locale)
 window.loadTimeData = {
-  getString (key) {
-    return locale[key] || key
-  },
+  getString,
   getBoolean (key) {
     return false
   }

@@ -7,7 +7,6 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_H_
 
 #include <cstdint>
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -17,8 +16,9 @@
 #include "bat/ads/ads_history_info.h"
 #include "bat/ads/category_content_info.h"
 #include "bat/ads/export.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/promoted_content_ad_info.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/result.h"
 #include "bat/ads/statement_info.h"
 
@@ -28,6 +28,9 @@ using InitializeCallback = std::function<void(const Result)>;
 using ShutdownCallback = std::function<void(const Result)>;
 
 using RemoveAllHistoryCallback = std::function<void(const Result)>;
+
+using GetInlineContentAdCallback = std::function<
+    void(const bool, const std::string&, const InlineContentAdInfo&)>;
 
 using GetAccountStatementCallback =
     std::function<void(const bool, const StatementInfo&)>;
@@ -81,8 +84,8 @@ class ADS_EXPORT Ads {
   // <ISO-639-1>-<ISO-3166-1> or <ISO-639-1>_<ISO-3166-1> format
   virtual void ChangeLocale(const std::string& locale) = 0;
 
-  // Should be called when the ads subdivision targeting code has changed
-  virtual void OnAdsSubdivisionTargetingCodeHasChanged() = 0;
+  // Should be called when a pref changes. |path| contains the pref path
+  virtual void OnPrefChanged(const std::string& path) = 0;
 
   // Should be called when a page has loaded and the content is available for
   // analysis. |redirect_chain| contains the chain of redirects, including
@@ -145,9 +148,9 @@ class ADS_EXPORT Ads {
   virtual void OnWalletUpdated(const std::string& payment_id,
                                const std::string& seed) = 0;
 
-  // Should be called when the user model has been updated by
-  // |BraveUserModelInstaller| component
-  virtual void OnUserModelUpdated(const std::string& id) = 0;
+  // Should be called when a resource component has been updated by
+  // |brave_ads::ResourceComponent|
+  virtual void OnResourceComponentUpdated(const std::string& id) = 0;
 
   // Should be called to get the ad notification specified by |uuid|. Returns
   // true if the ad notification exists otherwise returns false.
@@ -172,6 +175,21 @@ class ADS_EXPORT Ads {
       const std::string& creative_instance_id,
       const PromotedContentAdEventType event_type) = 0;
 
+  // Should be called to get an eligible inline content ad for the specified
+  // size
+  virtual void GetInlineContentAd(const std::string& dimensions,
+                                  GetInlineContentAdCallback callback) = 0;
+
+  // Should be called when a user views or clicks an inline content ad
+  virtual void OnInlineContentAdEvent(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const InlineContentAdEventType event_type) = 0;
+
+  // Purge orphaned ad events for the specified |ad_type|
+  virtual void PurgeOrphanedAdEventsForType(
+      const mojom::BraveAdsAdType ad_type) = 0;
+
   // Should be called to remove all cached history. The callback takes one
   // argument - |Result| should be set to |SUCCESS| if successful otherwise
   // should be set to |FAILED|
@@ -190,9 +208,9 @@ class ADS_EXPORT Ads {
       const uint64_t to_timestamp) = 0;
 
   // Should be called to get the statement of accounts. The callback takes one
-  // argument - |StatementInfo| which contains estimated pending rewards, next
-  // payment date, ads received this month, pending rewards, cleared
-  // transactions and uncleared transactions
+  // argument - |StatementInfo| which contains next payment date, ads received
+  // this month, earnings this month, earnings last month, cleared transactions
+  // and uncleared transactions
   virtual void GetAccountStatement(GetAccountStatementCallback callback) = 0;
 
   // Should be called to indicate interest in the specified ad. This is a

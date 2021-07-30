@@ -59,8 +59,21 @@ void LoadRewardsURL(
   }
 
   // Only accept rewards scheme from allowed domains
+  GURL bitflyer_staging_url = GURL(BITFLYER_STAGING_URL);
+  GURL gemini_oauth_staging_url = GURL(GEMINI_OAUTH_STAGING_URL);
+
+  DCHECK(bitflyer_staging_url.is_valid() && bitflyer_staging_url.has_host());
+  DCHECK(gemini_oauth_staging_url.is_valid() &&
+         gemini_oauth_staging_url.has_host());
+
+  const std::string bitflyer_staging_host = bitflyer_staging_url.host();
+  const std::string gemini_staging_host = gemini_oauth_staging_url.host();
   const char* kAllowedDomains[] = {
-      "uphold.com",  // Uphold staging/production
+      "bitflyer.com",                 // bitFlyer production
+      bitflyer_staging_host.c_str(),  // bitFlyer staging
+      "gemini.com",                   // Gemini production
+      gemini_staging_host.c_str(),    // Gemini staging
+      "uphold.com",                   // Uphold staging/production
   };
   bool allowed_domain = false;
   for (const auto* domain : kAllowedDomains) {

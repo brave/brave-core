@@ -17,8 +17,8 @@ def main():
     args = parse_args()
 
     output_path_absolute = os.path.abspath(args.output_path[0])
+    root_gen_dir = args.root_gen_dir[0]
     grd_path = os.path.join(args.output_path[0], args.grd_name[0])
-    grd_path_absolute = os.path.abspath(grd_path)
 
     clean_target_dir(output_path_absolute)
 
@@ -28,7 +28,7 @@ def main():
 
     depfile_path = os.path.abspath(args.depfile_path[0])
 
-    transpile_web_uis(args.production, webpack_gen_dir,
+    transpile_web_uis(args.production, webpack_gen_dir, root_gen_dir,
                       args.entry,
                       depfile_path, grd_path,
                       args.public_asset_path)
@@ -45,6 +45,7 @@ def parse_args():
                         help='Entry points',
                         required=True)
     parser.add_argument('--output_path', nargs=1)
+    parser.add_argument('--root_gen_dir', nargs=1)
     parser.add_argument('--depfile_path', nargs=1)
     parser.add_argument('--grd_name', nargs=1)
     parser.add_argument('--resource_name', nargs=1)
@@ -53,14 +54,14 @@ def parse_args():
     args = parser.parse_args()
     # validate args
     if (args.output_path is None or
-        len(args.output_path) is not 1 or
-            len(args.output_path[0]) is 0):
+        len(args.output_path) != 1 or
+            len(args.output_path[0]) == 0):
         raise Exception(" output_path argument was not specified correctly")
     # args are valid
     return args
 
 
-def clean_target_dir(target_dir, env=None):
+def clean_target_dir(target_dir):
     try:
         if os.path.exists(target_dir):
             shutil.rmtree(target_dir)
@@ -68,8 +69,9 @@ def clean_target_dir(target_dir, env=None):
         raise Exception("Error removing previous webpack target dir", e)
 
 
-def transpile_web_uis(production, target_gen_dir,
-                      entry_points, depfile_path, depfile_sourcename, public_asset_path=None, env=None):
+def transpile_web_uis(production, target_gen_dir, root_gen_dir,
+                      entry_points, depfile_path, depfile_sourcename,
+                      public_asset_path=None, env=None):
     if env is None:
         env = os.environ.copy()
 
@@ -86,6 +88,7 @@ def transpile_web_uis(production, target_gen_dir,
     # entrypoints
     for entry in entry_points:
         args.append(entry)
+    env["ROOT_GEN_DIR"] = root_gen_dir
     env["TARGET_GEN_DIR"] = target_gen_dir
     env["DEPFILE_PATH"] = depfile_path
     env["DEPFILE_SOURCE_NAME"] = depfile_sourcename

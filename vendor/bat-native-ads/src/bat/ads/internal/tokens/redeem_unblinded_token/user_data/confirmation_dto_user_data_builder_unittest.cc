@@ -88,13 +88,8 @@ bool IsValidUserDataDictionary(const base::Value user_data) {
     return false;
   }
 
-  const base::Value* experiment =
-      user_data_dictionary->FindDictKey("experiment");
-  if (!experiment || !experiment->is_dict()) {
-    return false;
-  }
-
-  if (base::Value(base::Value::Type::DICTIONARY) != *experiment) {
+  const base::Value* studies = user_data_dictionary->FindListKey("studies");
+  if (!studies || !studies->is_list()) {
     return false;
   }
 
@@ -141,8 +136,8 @@ TEST_F(BatAdsConfirmationDtoUserDataTest, BuildWithoutConversion) {
         expected_user_data.SetKey("buildChannel", base::Value("release"));
         expected_user_data.SetKey("countryCode", base::Value("GB"));
         expected_user_data.SetKey("platform", base::Value("macos"));
-        expected_user_data.SetKey("experiment",
-                                  base::Value(base::Value::Type::DICTIONARY));
+        expected_user_data.SetKey("studies",
+                                  base::Value(base::Value::Type::LIST));
 
         EXPECT_EQ(expected_user_data, *user_data_dictionary);
       });

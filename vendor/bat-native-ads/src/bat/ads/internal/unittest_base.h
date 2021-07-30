@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_UNITTEST_BASE_H_
 
 #include <memory>
+#include <string>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/task_environment.h"
@@ -39,6 +40,9 @@ class UnitTestBase : public testing::Test {
   UnitTestBase(const UnitTestBase&) = delete;
   UnitTestBase& operator=(const UnitTestBase&) = delete;
 
+  bool CopyFileFromTestPathToTempDir(const std::string& source_filename,
+                                     const std::string& dest_filename) const;
+
   // If |integration_test| is set to true test the functionality and performance
   // under product-like circumstances with data to replicate live settings to
   // simulate what a real user scenario looks like from start to finish. You
@@ -46,6 +50,9 @@ class UnitTestBase : public testing::Test {
   void SetUpForTesting(const bool integration_test);
 
   void InitializeAds();
+
+  AdsImpl* GetAds() const;
+  AdRewards* GetAdRewards() const;
 
   // testing::Test implementation
   void SetUp() override;
@@ -99,10 +106,10 @@ class UnitTestBase : public testing::Test {
   std::unique_ptr<Client> client_;
   std::unique_ptr<AdRewards> ad_rewards_;
   std::unique_ptr<AdNotifications> ad_notifications_;
-  std::unique_ptr<BrowserManager> browser_manager_;
   std::unique_ptr<ConfirmationsState> confirmations_state_;
   std::unique_ptr<database::Initialize> database_initialize_;
   std::unique_ptr<Database> database_;
+  std::unique_ptr<BrowserManager> browser_manager_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivity> user_activity_;
   std::unique_ptr<AdsImpl> ads_;

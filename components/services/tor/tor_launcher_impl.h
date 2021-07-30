@@ -7,12 +7,12 @@
 #define BRAVE_COMPONENTS_SERVICES_TOR_TOR_LAUNCHER_IMPL_H_
 
 #include <memory>
-#include <string>
-#include <vector>
 
-#include "base/macros.h"
+#include "base/files/file_path.h"
+#include "base/memory/weak_ptr.h"
 #include "base/process/process.h"
-#include "base/threading/thread.h"
+#include "base/sequence_checker.h"
+#include "brave/components/child_process_monitor/child_process_monitor.h"
 #include "brave/components/services/tor/public/interfaces/tor.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -24,24 +24,27 @@ class TorLauncherImpl : public tor::mojom::TorLauncher {
   explicit TorLauncherImpl(
       mojo::PendingReceiver<tor::mojom::TorLauncher> receiver);
   ~TorLauncherImpl() override;
+  TorLauncherImpl(const TorLauncherImpl&) = delete;
+  TorLauncherImpl& operator=(const TorLauncherImpl&) = delete;
 
   // tor::mojom::TorLauncher
   void Shutdown() override;
-  void Launch(mojom::TorConfigPtr config,
-              LaunchCallback callback) override;
+  void Launch(mojom::TorConfigPtr config, LaunchCallback callback) override;
   void SetCrashHandler(SetCrashHandlerCallback callback) override;
+
  private:
-  void MonitorChild();
+  void OnChildCrash(base::ProcessId pid);
   void Cleanup();
 
   SetCrashHandlerCallback crash_handler_callback_;
-  std::unique_ptr<base::Thread> child_monitor_thread_;
-  scoped_refptr<base::SequencedTaskRunner> main_task_runner_;
-  base::Process tor_process_;
+  std::unique_ptr<brave::ChildProcessMonitor> child_monitor_;
   mojo::Receiver<tor::mojom::TorLauncher> receiver_;
   bool in_shutdown_ = false;
+  base::FilePath tor_watch_path_;
 
-  DISALLOW_COPY_AND_ASSIGN(TorLauncherImpl);
+  SEQUENCE_CHECKER(sequence_checker_);
+
+  base::WeakPtrFactory<TorLauncherImpl> weak_ptr_factory_{this};
 };
 
 }  // namespace tor

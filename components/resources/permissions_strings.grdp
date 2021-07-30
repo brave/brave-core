@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
   <message name="IDS_PERMISSIONS_BUBBLE_LIFETIME_COMBOBOX_LABEL" desc="The label that is used to describe a combobox with permission lifetime choices.">
-    Give permission
+    Remember my decision
   </message>
   <message name="IDS_PERMISSIONS_BUBBLE_UNTIL_PAGE_CLOSE_LIFETIME_OPTION" desc="The predifined value in a permission lifetime combobox.">
-    until I close this page
+    until I close this site
   </message>
   <message name="IDS_PERMISSIONS_BUBBLE_24_HOURS_LIFETIME_OPTION" desc="The predifined value in a permission lifetime combobox.">
     for 24 hours
@@ -14,9 +14,6 @@
   </message>
   <message name="IDS_PERMISSIONS_BUBBLE_FOREVER_LIFETIME_OPTION" desc="The predifined value in a permission lifetime combobox.">
     forever
-  </message>
-  <message name="IDS_PERMISSIONS_BUBBLE_DENY_FOREVER" desc="Deny button text when Permission Lifetime feature is enabled.">
-    Block forever
   </message>
   <message name="IDS_PERMISSIONS_BUBBLE_FOOTNOTE_TEXT" desc="Message shown on the bottom of the permissions bubble.">
     You can change your <ph name="SITE_PERMISSIONS">$1<ex>site permissions</ex></ph> at any time. <ph name="LEARN_MORE">$2<ex>Learn more</ex></ph>

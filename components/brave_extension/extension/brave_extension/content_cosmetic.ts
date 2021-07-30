@@ -95,6 +95,7 @@ const isHTMLElement = (node: Node): boolean => {
   return ('innerText' in node)
 }
 
+// @ts-ignore unused function
 const asHTMLElement = (node: Node): HTMLElement | null => {
   return isHTMLElement(node) ? node as HTMLElement : null
 }
@@ -582,7 +583,7 @@ const scheduleQueuePump = (hide1pContent: boolean, generichide: boolean) => {
   }, { timeout: maxTimeMSBeforeStart })
 }
 
-const vettedSearchEngines = ['duckduckgo', 'qwant', 'bing', 'startpage', 'google', 'yandex', 'ecosia']
+const vettedSearchEngines = ['duckduckgo', 'qwant', 'bing', 'startpage', 'google', 'yandex', 'ecosia', 'brave']
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type

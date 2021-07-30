@@ -1,29 +1,25 @@
 # common includes which can help minimize patches for
 # src/third_party/blink/renderer/core/BUILD.gn
-brave_blink_renderer_core_visibility = [
-  "//brave/third_party/blink/renderer/*"
-]
+brave_blink_renderer_core_visibility =
+    [ "//brave/third_party/blink/renderer/*" ]
 
-brave_blink_renderer_core_public_deps = [
-  "//brave/third_party/blink/renderer"
-]
+brave_blink_renderer_core_public_deps = [ "//brave/third_party/blink/renderer" ]
 
 # common includes which can help minimize patches for
 # src/third_party/blink/renderer/modules/BUILD.gn
-brave_blink_renderer_modules_visibility = [
-  "//brave/third_party/blink/renderer/*"
-]
+brave_blink_renderer_modules_visibility =
+    [ "//brave/third_party/blink/renderer/*" ]
 
 brave_blink_sub_modules = [
   "//brave/third_party/blink/renderer/modules/brave",
-  "//brave/third_party/blink/renderer/modules/global_privacy_control"
+  "//brave/third_party/blink/renderer/modules/global_privacy_control",
 ]
 
 # common includes which can help minimize patches for
 # src/third_party/blink/renderer/modules/modules_idl_files.gni
 brave_idl_imports = [
   "//brave/third_party/blink/renderer/modules/brave/idls.gni",
-  "//brave/third_party/blink/renderer/modules/global_privacy_control/idls.gni"
+  "//brave/third_party/blink/renderer/modules/global_privacy_control/idls.gni",
 ]
 
 # common includes which can help minimize patches for

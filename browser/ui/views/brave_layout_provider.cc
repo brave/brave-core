@@ -7,17 +7,16 @@
 
 #include "ui/views/layout/layout_provider.h"
 
-int BraveLayoutProvider::GetCornerRadiusMetric(
-    views::EmphasisMetric emphasis_metric,
-    const gfx::Size& size) const {
-  switch (emphasis_metric) {
-    case views::EMPHASIS_NONE:
+int BraveLayoutProvider::GetCornerRadiusMetric(views::Emphasis emphasis,
+                                               const gfx::Size& size) const {
+  switch (emphasis) {
+    case views::Emphasis::kNone:
       return 0;
-    case views::EMPHASIS_LOW:
-    case views::EMPHASIS_MEDIUM:
+    case views::Emphasis::kLow:
+    case views::Emphasis::kMedium:
       return 2;
-    case views::EMPHASIS_HIGH:
-    case views::EMPHASIS_MAXIMUM:
+    case views::Emphasis::kHigh:
+    case views::Emphasis::kMaximum:
       return 4;
   }
 }
