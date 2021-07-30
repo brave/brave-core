@@ -79,7 +79,8 @@ function Container (props: Props) {
     selectedAssetPriceHistory,
     portfolioPriceHistory,
     userAssets,
-    isFetchingPriceHistory
+    isFetchingPriceHistory,
+    setupStillInProgress
   } = props.page
 
   // const [view, setView] = React.useState<NavTypes>('crypto')
@@ -323,7 +324,7 @@ function Container (props: Props) {
   }
 
   const renderWallet = React.useMemo(() => {
-    if (!isWalletCreated) {
+    if (!isWalletCreated || setupStillInProgress) {
       return (
         <Onboarding
           recoveryPhrase={recoveryPhrase}
@@ -412,7 +413,7 @@ function Container (props: Props) {
           </div>
         )} */}
       </WalletSubViewLayout>
-      {isWalletCreated && !isWalletLocked &&
+      {(isWalletCreated && !setupStillInProgress) && !isWalletLocked &&
         <WalletWidgetStandIn>
           <BuySendSwap
             accounts={accounts}

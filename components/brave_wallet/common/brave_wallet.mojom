@@ -155,6 +155,15 @@ struct ERCToken {
 interface Page {
 };
 
+interface KeyringControllerObserver {
+  KeyringCreated();
+  KeyringRestored();
+  Locked();
+  Unlocked();
+  BackedUp();
+  AccountsChanged();
+};
+
 interface KeyringController {
   CreateWallet(string password) => (string mnemonic);
   GetMnemonicForDefaultKeyring() => (string mnemonic);
@@ -168,6 +177,7 @@ interface KeyringController {
   AddNewAccountName(string accountName);
   GetDefaultKeyringInfo() => (KeyringInfo keyring);
   Reset();
+  AddObserver(pending_remote<KeyringControllerObserver> observer);
 };
 
 interface AssetRatioController {

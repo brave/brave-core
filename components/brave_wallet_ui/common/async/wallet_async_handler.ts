@@ -37,17 +37,39 @@ handler.on(WalletActions.chainChangedEvent.getType(), async (store, payload: Cha
   await refreshWalletInfo(store)
 })
 
+handler.on(WalletActions.keyringCreated.getType(), async (store) => {
+  await refreshWalletInfo(store)
+})
+
+handler.on(WalletActions.keyringRestored.getType(), async (store) => {
+  await refreshWalletInfo(store)
+})
+
+handler.on(WalletActions.locked.getType(), async (store) => {
+  await refreshWalletInfo(store)
+})
+
+handler.on(WalletActions.unlocked.getType(), async (store) => {
+  await refreshWalletInfo(store)
+})
+
+handler.on(WalletActions.backedUp.getType(), async (store) => {
+  await refreshWalletInfo(store)
+})
+
+handler.on(WalletActions.accountsChanged.getType(), async (store) => {
+  await refreshWalletInfo(store)
+})
+
 handler.on(WalletActions.lockWallet.getType(), async (store) => {
   const keyringController = (await getAPIProxy()).keyringController
   await keyringController.lock()
-  await refreshWalletInfo(store)
 })
 
 handler.on(WalletActions.unlockWallet.getType(), async (store, payload: UnlockWalletPayloadType) => {
   const keyringController = (await getAPIProxy()).keyringController
   const result = await keyringController.unlock(payload.password)
   store.dispatch(WalletActions.hasIncorrectPassword(!result.isWalletUnlocked))
-  await refreshWalletInfo(store)
 })
 
 handler.on(WalletActions.addFavoriteApp.getType(), async (store, appItem: AppObjectType) => {

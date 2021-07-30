@@ -16,6 +16,7 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
 
 class PrefService;
 
@@ -82,6 +83,9 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   bool IsLocked() const;
   // bool Unlock(const std::string& password);
 
+  void AddObserver(::mojo::PendingRemote<mojom::KeyringControllerObserver>
+                       observer) override;
+
   /* TODO(darkdh): For other keyrings support
   void DeleteKeyring(size_t index);
   HDKeyring* GetKeyring(size_t index);
@@ -120,6 +124,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
 
   PrefService* prefs_;
 
+  mojo::RemoteSet<mojom::KeyringControllerObserver> observers_;
   mojo::ReceiverSet<mojom::KeyringController> receivers_;
 
   KeyringController(const KeyringController&) = delete;

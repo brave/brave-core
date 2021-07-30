@@ -33,4 +33,28 @@ export default class WalletApiProxy {
     })
     this.ethJsonRpcController.addObserver(ethJsonRpcControllerObserverReceiver.$.bindNewPipeAndPassRemote());
   }
+
+  addKeyringControllerObserver(store) {
+    const keyringControllerObserverReceiver = new braveWallet.mojom.KeyringControllerObserverReceiver({
+      keyringCreated: function (chainId) {
+        store.dispatch(WalletActions.keyringCreated())
+      },
+      keyringRestored: function (chainId) {
+        store.dispatch(WalletActions.keyringRestored())
+      },
+      locked: function (chainId) {
+        store.dispatch(WalletActions.locked())
+      },
+      unlocked: function (chainId) {
+        store.dispatch(WalletActions.unlocked())
+      },
+      backedUp: function (chainId) {
+        store.dispatch(WalletActions.backedUp())
+      },
+      accountsChanged: function (chainId) {
+        store.dispatch(WalletActions.accountsChanged())
+      }
+    })
+    this.keyringController.addObserver(keyringControllerObserverReceiver.$.bindNewPipeAndPassRemote());
+  }
 }

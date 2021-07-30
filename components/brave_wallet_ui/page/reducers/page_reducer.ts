@@ -20,7 +20,8 @@ const defaultState: PageState = {
   selectedAssetPriceHistory: [],
   portfolioPriceHistory: [],
   userAssets: ['1', '2'],
-  isFetchingPriceHistory: false
+  isFetchingPriceHistory: false,
+  setupStillInProgress: false
 }
 
 const reducer = createReducer<PageState>({}, defaultState)
@@ -28,7 +29,8 @@ const reducer = createReducer<PageState>({}, defaultState)
 reducer.on(Actions.walletCreated, (state: PageState, payload: WalletCreatedPayloadType) => {
   return {
     ...state,
-    mnemonic: payload.mnemonic
+    mnemonic: payload.mnemonic,
+    setupStillInProgress: true
   }
 })
 
@@ -42,6 +44,7 @@ reducer.on(Actions.recoveryWordsAvailable, (state: PageState, payload: RecoveryW
 reducer.on(Actions.walletSetupComplete, (state: PageState) => {
   const newState = { ...state }
   delete newState.mnemonic
+  delete newState.setupStillInProgress
   return newState
 })
 
