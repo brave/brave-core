@@ -29,6 +29,7 @@ class WalletBubbleManagerDelegateImpl : public WalletBubbleManagerDelegate {
   void ShowBubble() override;
   void CloseBubble() override;
   bool IsShowingBubble() override;
+  bool IsBubbleClosedForTesting() override;
 
  private:
   content::WebContents* web_contents_;

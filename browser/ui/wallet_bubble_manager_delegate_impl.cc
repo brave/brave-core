@@ -72,4 +72,9 @@ bool WalletBubbleManagerDelegateImpl::IsShowingBubble() {
   return webui_bubble_manager_ && webui_bubble_manager_->GetBubbleWidget();
 }
 
+bool WalletBubbleManagerDelegateImpl::IsBubbleClosedForTesting() {
+  return !webui_bubble_manager_ || !webui_bubble_manager_->GetBubbleWidget() ||
+         webui_bubble_manager_->GetBubbleWidget()->IsClosed();
+}
+
 }  // namespace brave_wallet

@@ -31,6 +31,7 @@ class BraveWalletTabHelper
   void ShowBubble();
   void CloseBubble();
   bool IsShowingBubble();
+  bool IsBubbleClosedForTesting();
 #endif
 
  private:

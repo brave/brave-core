@@ -31,6 +31,7 @@ class WalletBubbleManagerDelegate {
   virtual void ShowBubble() = 0;
   virtual void CloseBubble() = 0;
   virtual bool IsShowingBubble() = 0;
+  virtual bool IsBubbleClosedForTesting() = 0;
 
  protected:
   WalletBubbleManagerDelegate() = default;

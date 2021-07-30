@@ -44,6 +44,11 @@ bool BraveWalletTabHelper::IsShowingBubble() {
          wallet_bubble_manager_delegate_->IsShowingBubble();
 }
 
+bool BraveWalletTabHelper::IsBubbleClosedForTesting() {
+  return wallet_bubble_manager_delegate_ &&
+         wallet_bubble_manager_delegate_->IsBubbleClosedForTesting();
+}
+
 GURL BraveWalletTabHelper::GetBubbleURL() {
   auto* manager =
       permissions::PermissionRequestManager::FromWebContents(web_contents_);

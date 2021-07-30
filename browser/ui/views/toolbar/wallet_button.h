@@ -29,6 +29,7 @@ class WalletButton : public ToolbarButton {
   void ShowWalletBubble();
   void CloseWalletBubble();
   bool IsShowingBubble();
+  bool IsBubbleClosedForTesting();
 
   void UpdateImageAndText();
   void InitBubbleManagerAnchor();

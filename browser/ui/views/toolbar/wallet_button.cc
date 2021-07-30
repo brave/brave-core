@@ -109,6 +109,12 @@ bool WalletButton::IsShowingBubble() {
       ->IsShowingBubble();
 }
 
+bool WalletButton::IsBubbleClosedForTesting() {
+  return brave_wallet::BraveWalletTabHelper::FromWebContents(
+             GetActiveWebContents())
+      ->IsBubbleClosedForTesting();
+}
+
 views::View* WalletButton::GetAsAnchorView() {
   View* anchor_view = this;
   if (!prefs_->GetBoolean(kShowWalletIconOnToolbar))
