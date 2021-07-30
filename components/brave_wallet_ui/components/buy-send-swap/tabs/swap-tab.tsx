@@ -10,12 +10,9 @@ import {
   ToOrFromType
 } from '../../../constants/types'
 import { AssetOptions } from '../../../options/asset-options'
-import { NetworkOptions } from '../../../options/network-options'
 import {
+  AccountsAssetsNetworks,
   Header,
-  SelectAccount,
-  SelectAsset,
-  SelectNetwork,
   Swap
 } from '..'
 
@@ -156,25 +153,15 @@ function SwapTab (props: Props) {
           />
         </>
       }
-      {swapView === 'acounts' &&
-        <SelectAccount
+      {swapView !== 'send' &&
+        <AccountsAssetsNetworks
           accounts={accounts}
-          onSelectAccount={onClickSelectAccount}
-          onBack={goBack}
-        />
-      }
-      {swapView === 'assets' &&
-        <SelectAsset
-          assets={filteredAssetList}
-          onSelectAsset={onSelectAsset}
-          onBack={goBack}
-        />
-      }
-      {swapView === 'networks' &&
-        <SelectNetwork
-          networks={NetworkOptions}
-          onSelectNetwork={onClickSelectNetwork}
-          onBack={goBack}
+          goBack={goBack}
+          assetOptions={filteredAssetList}
+          onClickSelectAccount={onClickSelectAccount}
+          onClickSelectNetwork={onClickSelectNetwork}
+          onSelectedAsset={onSelectAsset}
+          selectedView={swapView}
         />
       }
     </>
