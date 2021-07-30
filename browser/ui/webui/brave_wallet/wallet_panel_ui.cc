@@ -7,14 +7,19 @@
 
 #include <utility>
 
+#include "base/bind.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_wallet_panel/resources/grit/brave_wallet_panel_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -32,6 +37,24 @@
 
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
+
+namespace {
+
+content::WebContents* GetWebContentsFromTabId(int32_t tab_id) {
+  for (auto* browser : *BrowserList::GetInstance()) {
+    TabStripModel* tab_strip_model = browser->tab_strip_model();
+    for (int index = 0; index < tab_strip_model->count(); ++index) {
+      content::WebContents* contents = tab_strip_model->GetWebContentsAt(index);
+      if (sessions::SessionTabHelper::IdForTab(contents).id() == tab_id) {
+        return contents;
+      }
+    }
+  }
+
+  return nullptr;
+}
+
+}  // namespace
 
 WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
     : ui::MojoBubbleWebUIController(web_ui,
@@ -81,8 +104,9 @@ void WalletPanelUI::CreatePanelHandler(
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
 
-  panel_handler_ =
-      std::make_unique<WalletPanelHandler>(std::move(panel_receiver), this);
+  panel_handler_ = std::make_unique<WalletPanelHandler>(
+      std::move(panel_receiver), this,
+      base::BindRepeating(&GetWebContentsFromTabId));
   wallet_handler_ =
       std::make_unique<WalletHandler>(std::move(wallet_receiver), profile);
 

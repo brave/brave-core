@@ -7,14 +7,17 @@
 
 #include <utility>
 
+#include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
+
 WalletPanelHandler::WalletPanelHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> receiver,
-    ui::MojoBubbleWebUIController* webui_controller)
+    ui::MojoBubbleWebUIController* webui_controller,
+    GetWebContentsForTabCallback get_web_contents_for_tab)
     : receiver_(this, std::move(receiver)),
-      webui_controller_(webui_controller) {
-}
+      webui_controller_(webui_controller),
+      get_web_contents_for_tab_(std::move(get_web_contents_for_tab)) {}
 
-WalletPanelHandler::~WalletPanelHandler() = default;
+WalletPanelHandler::~WalletPanelHandler() {}
 
 void WalletPanelHandler::ShowUI() {
   auto embedder = webui_controller_->embedder();
@@ -28,4 +31,24 @@ void WalletPanelHandler::CloseUI() {
   if (embedder) {
     embedder->CloseUI();
   }
+}
+
+void WalletPanelHandler::ConnectToSite(const std::vector<std::string>& accounts,
+                                       const std::string& origin,
+                                       int32_t tab_id) {
+  content::WebContents* contents = get_web_contents_for_tab_.Run(tab_id);
+  if (!contents)
+    return;
+
+  permissions::BraveEthereumPermissionContext::AcceptOrCancel(accounts,
+                                                              contents);
+}
+
+void WalletPanelHandler::CancelConnectToSite(const std::string& origin,
+                                             int32_t tab_id) {
+  content::WebContents* contents = get_web_contents_for_tab_.Run(tab_id);
+  if (!contents)
+    return;
+
+  permissions::BraveEthereumPermissionContext::Cancel(contents);
 }
