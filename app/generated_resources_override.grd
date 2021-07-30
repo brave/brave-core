@@ -675,7 +675,6 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="is_android">
       </if>
-
       <if expr="not use_titlecase">
         </if>
       <if expr="use_titlecase">

@@ -5855,6 +5855,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READ_LATER_ADD_CURRENT_TAB" desc="Label for button to add the current tab to Read later">
         Add current tab
       </message>
+      <message name="IDS_READ_LATER_CANT_ADD_CURRENT_TAB" desc="Label for button when the current tab cannot be added to read later">
+        Can't add current tab
+      </message>
+      <message name="IDS_READ_LATER_REMOVE_CURRENT_TAB" desc="Label for button to remove the current tab from read later">
+        Remove current tab
+      </message>
 
       <!-- Read Later context menu -->
       <if expr="use_titlecase">
@@ -6155,7 +6161,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
         To group tabs together, right-click a tab
       </message>
       <message name="IDS_TAB_GROUPS_UNNAMED_GROUP_TOOLTIP" desc="Static tooltip to display on hover over unnamed tab group.">
-        Unnamed Tab Group
+        Unnamed group - <ph name="GROUP_CONTENT_STRING">$1<ex>"New Tab" and one other</ex></ph>
+      </message>
+      <message name="IDS_TAB_GROUPS_NAMED_GROUP_TOOLTIP" desc="Dynamic tooltip to display on hover over named tab group.">
+        <ph name="GROUP_NAME">$1<ex>New Group</ex></ph> - <ph name="GROUP_CONTENT_STRING">$2<ex>"New Tab" and one other</ex></ph>
       </message>
       <if expr="use_titlecase">
         <message name="IDS_PROMO_DISMISS_BUTTON" desc="Text shown on the button for the user to acknowledge that they understand the message">
@@ -7543,6 +7552,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Open
       </message>
       </if>
+      <message name="IDS_SEND_TAB_TO_SELF_SENDING_ANNOUNCE" desc="Text read by a screenreader when a tab is sent to a target device." is_accessibility_with_no_ui="true">
+        Sending link to <ph name="DEVICE_NAME">$1<ex>Ted's Pixel2</ex></ph>
+      </message>
 
       <!-- Share via QR Code strings -->
       <if expr="not use_titlecase">
