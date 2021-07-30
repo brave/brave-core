@@ -26,7 +26,7 @@ const BraveTalkTooltip: React.FunctionComponent<Props> = function (props) {
         <S.Body>
           {getLocale('braveTalkPromptDescription')}
         </S.Body>
-        <LinkButton href={braveTalkWidgetUrl}>
+        <LinkButton href={braveTalkWidgetUrl} onClick={props.onClose}>
           {getLocale('braveTalkPromptAction')}
         </LinkButton>
         <S.CloseButton
