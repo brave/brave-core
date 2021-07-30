@@ -1141,6 +1141,7 @@ if (is_android) {
       "//third_party/android_support_test_runner:runner_java",
       "//third_party/androidx:androidx_appcompat_appcompat_java",
       "//third_party/androidx:androidx_preference_preference_java",
+      "//third_party/androidx:androidx_test_runner_java",
       "//third_party/junit",
       "//ui/android:ui_no_recycler_view_java",
     ]

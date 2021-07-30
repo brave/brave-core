@@ -34,7 +34,8 @@
                   android:theme="@style/Theme.Chromium.TabbedMode"
                   android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
                   android:hardwareAccelerated="true"
-                  android:process=":test_process">
+                  android:process=":test_process"
+                  android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
