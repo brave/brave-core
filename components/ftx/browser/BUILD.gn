@@ -23,6 +23,8 @@ static_library("browser") {
   deps = [
     "//base",
     "//brave/components/ftx/common",
+    "//brave/components/l10n/browser",
+    "//brave/components/l10n/common",
     "//brave/components/ntp_widget_utils/browser",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
