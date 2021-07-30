@@ -1,8 +1,8 @@
 diff --git a/components/browser_ui/site_settings/android/BUILD.gn b/components/browser_ui/site_settings/android/BUILD.gn
-index 69571247b45590b15939f348e7f17995c016e0a0..20e2294a7146a3ee7388705e49c15ca6d130ae4e 100644
+index ce1988e8b8ee7d12ae446983650be64247c76d6a..4421e3e4509aa0f6bf3cb06a9dd639f918d0a432 100644
 --- a/components/browser_ui/site_settings/android/BUILD.gn
 +++ b/components/browser_ui/site_settings/android/BUILD.gn
-@@ -74,6 +74,7 @@ android_library("java") {
+@@ -66,6 +66,7 @@ android_library("java") {
      "java/src/org/chromium/components/browser_ui/site_settings/WebsitePreference.java",
      "java/src/org/chromium/components/browser_ui/site_settings/WebsitePreferenceBridge.java",
    ]
@@ -10,7 +10,7 @@ index 69571247b45590b15939f348e7f17995c016e0a0..20e2294a7146a3ee7388705e49c15ca6
    annotation_processor_deps = [ "//base/android/jni_generator:jni_processor" ]
    resources_package = "org.chromium.components.browser_ui.site_settings"
    deps = [
-@@ -183,4 +184,5 @@ android_resources("java_resources") {
+@@ -175,4 +176,5 @@ android_resources("java_resources") {
      "//components/permissions/android:java_resources",
      "//third_party/android_deps:android_support_v7_appcompat_java",
    ]
