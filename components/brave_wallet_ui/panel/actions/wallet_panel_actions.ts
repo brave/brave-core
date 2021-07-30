@@ -4,11 +4,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { createAction } from 'redux-act'
-import { AccountPayloadType } from '../constants/action_types'
+import { AccountPayloadType, ShowConnectToSitePayload } from '../constants/action_types'
 
 export const connectToSite = createAction<AccountPayloadType>('connectToSite')
-export const cancelConnectToSite = createAction('cancelConnectToSite')
+export const cancelConnectToSite = createAction<AccountPayloadType>('cancelConnectToSite')
 export const visibilityChanged = createAction<boolean>('visibilityChanged')
+export const showConnectToSite = createAction<ShowConnectToSitePayload>('showConnectToSite')
 export const setupWallet = createAction('setupWallet')
 export const expandWallet = createAction('expandWallet')
 export const openWalletApps = createAction('openWalletApps')

@@ -160,6 +160,8 @@ export interface PanelState {
   connectedSiteOrigin: string
   selectedPanel: string
   panelTitle: string
+  tabId: number
+  connectingAccounts: string[]
 }
 
 export interface PageState {

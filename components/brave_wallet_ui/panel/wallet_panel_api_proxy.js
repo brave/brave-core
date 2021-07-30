@@ -15,6 +15,8 @@ class WalletPanelApiProxy {
   showUI() {}
   closeUI() {}
 
+  connectToSite(accounts, origin, tab_id) {}
+  cancelConnectToSite(origin, tab_id) {}
 }
 
 /** @implements {WalletPanelApiProxy} */
@@ -54,6 +56,16 @@ export default class WalletPanelApiProxyImpl {
   /** @override */
   closeUI() {
     this.panelHandler.closeUI();
+  }
+
+  /** @override */
+  connectToSite(accounts, origin, tab_id) {
+    this.panelHandler.connectToSite(accounts, origin, tab_id);
+  }
+
+  /** @override */
+  cancelConnectToSite(origin, tab_id) {
+    this.panelHandler.cancelConnectToSite(origin, tab_id);
   }
 }
 
