@@ -898,8 +898,8 @@
 /* Button title that open application settings */
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "Buka Tetapan";
 
-/* No comment provided by engineer. */
-"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Gunakan Pintasan untuk membuka tab baharu melalui Siri - Pembantu Suara";
+/* Description of Clear Browser History Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Gunakan Pintasan untuk Membuka Tab Baharu & Kosongkan Sejarah Pelayar melalui Siri - Pembantu Suara";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Kosongkan Sejarah Pelayar";
@@ -928,8 +928,8 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenNewTabTitle" = "Buka Tab Baharu";
 
-/* Use Shortcuts to Open Playlist via Siri - Voice Assistant */
-"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Gunakan Pintasan untuk mendayakan Brave VPN melalui Siri - Pembantu Suara";
+/* Description of Open Playlist Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Gunakan Pintasan untuk Membuka Senarai Main melalui Siri - Pembantu Suara";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenPlaylistTitle" = "Buka Senarai Main";

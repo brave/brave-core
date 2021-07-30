@@ -37,74 +37,17 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Завжди показувати";
 
-/* Label used as a setting item and title of the following screen to change the current passcode */
-"AuthenticationChangePasscode" = "Змінити код доступу";
-
-/* Touch ID prompt subtitle when disabling Touch ID */
-"AuthenticationDisableTouchReason" = "Щоб вимкнути Touch ID, скористайтеся відбитком пальця.";
-
-/* Text displayed above the input field when entering a new passcode */
-"AuthenticationEnterAPasscode" = "Уведіть код доступу";
-
-/* Text displayed above the input field when changing the existing passcode */
-"AuthenticationEnterNewPasscode" = "Уведіть новий код доступу";
-
-/* Text displayed above the input field when changing the existing passcode */
-"AuthenticationEnterPasscode" = "Уведіть код доступу";
-
-/* Title of the dialog used to request the passcode */
-"AuthenticationEnterPasscodeTitle" = "Уведіть код доступу";
-
 /* Label for the Face ID/Passcode item in Settings */
 "AuthenticationFaceIDPasscodeSetting" = "Face ID і код доступу";
 
-/* Immediately' interval item for selecting when to require passcode */
-"AuthenticationImmediately" = "Негайно";
-
-/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app with attempts remaining */
-"AuthenticationIncorrectAttemptsRemaining" = "Неправильний код доступу. Спробуйте ще раз (Залишилось спроб: %d).";
-
-/* Touch ID prompt subtitle when accessing logins */
-"AuthenticationLoginsTouchReason" = "Щоб отримати доступ до «Облікових даних», скористайтеся відбитком пальця.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "Забагато невдалих спроб уведення коду доступу.\nПовторіть спробу через %d хв.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedNoTime" = "Досягнуто максимальної кількості спроб. Спробуйте ще раз пізніше.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedOneMinute" = "Забагато невдалих спроб уведення коду доступу.\nПовторіть спробу через 1 хвилину.";
+/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "Це дозволяє автентифікувати ваш доступ до Brave";
 
 /* Label for the Passcode item in Settings */
-"AuthenticationPasscode" = "Код доступу до облікових даних ";
-
-/* Text displayed above the input field when confirming a passcode */
-"AuthenticationReenterPasscode" = "Повторно введіть код доступу";
-
-/* Text displayed in the 'Interval' section, followed by the current interval setting, e.g. 'Immediately' */
-"AuthenticationRequirePasscode" = "Потрібен код доступу";
-
-/* Touch ID prompt subtitle when accessing the require passcode setting */
-"AuthenticationRequirePasscodeTouchReason" = "Щоб отримати доступ до налаштувань щодо інтервалу запита коду доступу, скористайтеся відбитком пальця.";
-
-/* Title of the dialog used to set a passcode */
-"AuthenticationSetPasscode" = "Установлення коду доступу";
-
-/* When the user taps on the passcode pane, the touch gesture recognizer will bring up the keyboard back on the screen when hidden on iPad. */
-"AuthenticationTouchForKeyboard" = "Торкніться, щоб відобразити спеціальні можливості клавіатури";
+"AuthenticationPasscode" = "Код доступу";
 
 /* Label for the Touch ID/Passcode item in Settings */
 "AuthenticationTouchIDPasscodeSetting" = "Touch ID і код доступу";
-
-/* Label used as a setting item to turn off passcode */
-"AuthenticationTurnOffPasscode" = "Використання коду доступу вимкнено";
-
-/* Label used as a setting item to turn on passcode */
-"AuthenticationTurnOnPasscode" = "Використання коду доступу увімкнено";
-
-/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app */
-"AuthenticationWrongPasscodeError" = "Неправильний код доступу. Спробуйте ще раз.";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Скасувати";
@@ -213,6 +156,24 @@
 
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Щоб розпочати, потрібно встановити Brave на кожен пристрій, який ви хочете синхронізувати. Щоб об’єднати усі пристрої в одну захищену мережу, створіть ланцюжок синхронізації.";
+
+/* Setting to enable the browser lock privacy feature */
+"BrowserLock" = "Блокування браузера";
+
+/* No comment provided by engineer. */
+"BrowserLockDescription" = "Розблоковуйте браузер за допомогою Touch ID, Face ID або системного коду доступу.";
+
+/* A button title for the action to move to the next step of the browser lock migration process. */
+"browserLockMigrationContinueButtonTitle" = "Продовжити";
+
+/* Displayed to the user when they don't have a passcode set on their phone, therefore cannot use the Browser Lock feature. \"%@\" will be filled with either \"Touch ID & Passcode\" or \"Face ID & Passcode\" */
+"browserLockMigrationNoPasscodeSetup" = "Не встановили ідентифікатор або код доступу? Відкрийте меню «Налаштування» і торкніться пункту «%@».";
+
+/* Subtitle on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
+"browserLockMigrationSubtitle" = "Ми спростили роботу системи доступу Brave. Тепер для входу в Brave ви можете скористатися ідентифікатором або кодом доступу з телефона.";
+
+/* Title on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
+"browserLockMigrationTitle" = "Відкривайте Brave за допомогою Apple Face ID, Touch ID бо коду доступу";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Журнал браузера";
@@ -717,12 +678,6 @@
 
 /* Sync pair device settings section title */
 "Pair" = "З'єднати";
-
-/* Error message displayed to user when their confirming passcode doesn't match the first code. */
-"PasscodeConfirmMisMatchErrorText" = "Коди доступу не збігаються. Спробуйте ще раз. ";
-
-/* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
-"PasscodeMatchOldErrorText" = "Новий код доступу має відрізнятися від старого. ";
 
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Фото від %@";

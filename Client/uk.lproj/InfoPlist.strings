@@ -10,7 +10,7 @@
 "NSCameraUsageDescription" = "Це дозволить вам завантажувати фото.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Щоб надати Brave доступ до збережених облікових даних, уведіть Face ID.";
+"NSFaceIDUsageDescription" = "Це дозволяє автентифікувати ваш доступ до Brave";
 
 /* Privacy - Location When In Use Usage Description */
 "NSLocationWhenInUseUsageDescription" = "Деякі веб-сайти можуть запитати дані щодо вашого місцеположення.";

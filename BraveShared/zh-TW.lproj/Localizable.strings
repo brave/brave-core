@@ -898,8 +898,8 @@
 /* Button title that open application settings */
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "開啟設定";
 
-/* No comment provided by engineer. */
-"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "使用快速鍵透過 Siri - Voice Assistant 開啟新標籤";
+/* Description of Clear Browser History Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "使用快速鍵即可透過 Siri 語音助理開啟新的分頁及清除瀏覽記錄";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "清除瀏覽器記錄";
@@ -928,8 +928,8 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenNewTabTitle" = "開啟新標籤";
 
-/* Use Shortcuts to Open Playlist via Siri - Voice Assistant */
-"shortcuts.shortcutSettingsOpenPlaylistDescription" = "使用快速鍵透過 Siri - Voice Assistant 啟用 Brave VPN";
+/* Description of Open Playlist Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "使用快速鍵即可透過 Siri 語音助理開啟播放清單";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenPlaylistTitle" = "開啟播放清單";

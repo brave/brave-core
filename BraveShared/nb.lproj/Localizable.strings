@@ -898,8 +898,8 @@
 /* Button title that open application settings */
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "Åpne innstillinger";
 
-/* No comment provided by engineer. */
-"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Bruk snarveier for å åpne en ny fane via Siri – Stemmeassistent";
+/* Description of Clear Browser History Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Bruk Snarveier til å Åpne en ny Fane og Slett Nettleserloggen via Siri - Voice Assistant";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Slett nettleserhistorikk";
@@ -928,8 +928,8 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenNewTabTitle" = "Åpne ny fane";
 
-/* Use Shortcuts to Open Playlist via Siri - Voice Assistant */
-"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Bruk snarveier for å aktivere Brave VPN via Siri – Stemmeassistent";
+/* Description of Open Playlist Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Bruk Snarveier til å Åpne Spilleliste via Siri - Voice Assistant";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenPlaylistTitle" = "Åpne spilleliste";

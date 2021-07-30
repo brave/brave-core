@@ -10,7 +10,7 @@
 "NSCameraUsageDescription" = "这可使您拍照和上传照片。";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Brave需要 Face ID 才能访问您保存的登录信息。";
+"NSFaceIDUsageDescription" = "这将证明您获有对 Brave 的访问权限";
 
 /* Privacy - Location When In Use Usage Description */
 "NSLocationWhenInUseUsageDescription" = "您访问的网站可能需要您的位置。";

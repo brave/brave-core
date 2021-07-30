@@ -791,7 +791,7 @@
 "shieldEducation.benchmarkProfessionalTierTitle" = "おめでとうございます。プロへの仲間入りです。";
 
 /* Subtitle for tracker benchmark Share */
-"shieldEducation.benchmarkSpecialTierTitle" = "おめでとうございます。あなたは特別な存在です。";
+"shieldEducation.benchmarkSpecialTierTitle" = "おめでとうございます。いつもBraveをご利用いただきありがとうございます。";
 
 /* Subtitle for  The parameter substituted for \"%@\" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB */
 "shieldEducation.domainSpecificDataSavedSubtitle" = "平均データ節約量\n%@ MB";
@@ -818,7 +818,7 @@
 "shieldEducation.trackerAdWarningTitle" = "トラッカーと広告がこのページでブロックされました。";
 
 /* Subtitle for Shield Education Tracker Count Share */
-"shieldEducation.trackerCountShareSubtitle" = "おめでとうございます。あなたは特別な存在です。";
+"shieldEducation.trackerCountShareSubtitle" = "おめでとうございます。あなたは特別な存在です。いつもBraveをご利用いただきありがとうございます。";
 
 /* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
 "shieldEducation.trackerCountShareTitle" = "%ld トラッカーと広告がブロックされました。";
@@ -898,8 +898,8 @@
 /* Button title that open application settings */
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "設定を開く";
 
-/* No comment provided by engineer. */
-"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Siri 音声アシスタントで新しくタブを開くショートカットを利用する";
+/* Description of Clear Browser History Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Siri 音声アシスタントで新タブを開いてブラウザ履歴を消去するショートカットを利用する";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Braveの履歴を消去する";
@@ -928,8 +928,8 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenNewTabTitle" = "新しくタブを開く";
 
-/* Use Shortcuts to Open Playlist via Siri - Voice Assistant */
-"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Siri 音声アシスタントでBrave VPNを有効化するショートカットを利用する";
+/* Description of Open Playlist Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Siri 音声アシスタントでPlaylistを開くショートカットを利用する";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenPlaylistTitle" = "Playlistを開く";

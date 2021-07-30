@@ -37,74 +37,17 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Sentiasa Tunjuk";
 
-/* Label used as a setting item and title of the following screen to change the current passcode */
-"AuthenticationChangePasscode" = "Tukar Kod Laluan";
-
-/* Touch ID prompt subtitle when disabling Touch ID */
-"AuthenticationDisableTouchReason" = "Gunakan cap jari anda untuk melumpuhkan ID Sentuhan.";
-
-/* Text displayed above the input field when entering a new passcode */
-"AuthenticationEnterAPasscode" = "Masukkan kod laluan";
-
-/* Text displayed above the input field when changing the existing passcode */
-"AuthenticationEnterNewPasscode" = "Masukkan kod laluan baru";
-
-/* Text displayed above the input field when changing the existing passcode */
-"AuthenticationEnterPasscode" = "Masukkan kod laluan";
-
-/* Title of the dialog used to request the passcode */
-"AuthenticationEnterPasscodeTitle" = "Masukkan Kod Laluan";
-
 /* Label for the Face ID/Passcode item in Settings */
 "AuthenticationFaceIDPasscodeSetting" = "ID Muka & Kod Laluan";
 
-/* Immediately' interval item for selecting when to require passcode */
-"AuthenticationImmediately" = "Segera";
-
-/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app with attempts remaining */
-"AuthenticationIncorrectAttemptsRemaining" = "Kod laluan salah. Sila cuba lagi (Bilangan Baki Percubaan: %d). ";
-
-/* Touch ID prompt subtitle when accessing logins */
-"AuthenticationLoginsTouchReason" = "Gunakan cap jari anda untuk mengakses Log Masuk sekarang.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "Terlalu banyak percubaan yang gagal.\n Sila cuba lagi dalam masa %d minit.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedNoTime" = "Bilangan percubaan maksimum tercapai. Sila cuba lagi sebentar lagi.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedOneMinute" = "Terlalu banyak percubaan yang gagal.\nSila cuba lagi dalam masa 1 minit.";
+/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "Ini mengesahkan akses anda ke Brave";
 
 /* Label for the Passcode item in Settings */
-"AuthenticationPasscode" = "Kod Laluan Untuk Log Masuk";
-
-/* Text displayed above the input field when confirming a passcode */
-"AuthenticationReenterPasscode" = "Masukkan semula kod laluan";
-
-/* Text displayed in the 'Interval' section, followed by the current interval setting, e.g. 'Immediately' */
-"AuthenticationRequirePasscode" = "Memerlukan Kod Laluan";
-
-/* Touch ID prompt subtitle when accessing the require passcode setting */
-"AuthenticationRequirePasscodeTouchReason" = "Gunakan cap jari anda untuk mengakses konfigurasi selang kod laluan yang diperlukan.";
-
-/* Title of the dialog used to set a passcode */
-"AuthenticationSetPasscode" = "Tetapkan Kod Laluan";
-
-/* When the user taps on the passcode pane, the touch gesture recognizer will bring up the keyboard back on the screen when hidden on iPad. */
-"AuthenticationTouchForKeyboard" = "Ketik untuk membuka akses ke papan kekunci";
+"AuthenticationPasscode" = "Kod laluan";
 
 /* Label for the Touch ID/Passcode item in Settings */
 "AuthenticationTouchIDPasscodeSetting" = "ID Sentuhan & Kod Laluan";
-
-/* Label used as a setting item to turn off passcode */
-"AuthenticationTurnOffPasscode" = "Padam Kod Laluan";
-
-/* Label used as a setting item to turn on passcode */
-"AuthenticationTurnOnPasscode" = "Pasang Kod Laluan";
-
-/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app */
-"AuthenticationWrongPasscodeError" = "Kod laluan salah. Sila cuba lagi.";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Batal";
@@ -213,6 +156,24 @@
 
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Untuk bermula, anda perlu memasangkan Brave pada semua peranti yang anda ingin segerakkan. Untuk menghubungkan mereka bersama-sama, mulakan rantaian penyegerakan yang anda akan gunakan untuk menghubungkan semua peranti anda dengan selamat.";
+
+/* Setting to enable the browser lock privacy feature */
+"BrowserLock" = "Kunci Pelayar";
+
+/* No comment provided by engineer. */
+"BrowserLockDescription" = "Buka kunci Brave menggunakan Touch ID, Face ID atau kod laluan sistem.";
+
+/* A button title for the action to move to the next step of the browser lock migration process. */
+"browserLockMigrationContinueButtonTitle" = "Teruskan";
+
+/* Displayed to the user when they don't have a passcode set on their phone, therefore cannot use the Browser Lock feature. \"%@\" will be filled with either \"Touch ID & Passcode\" or \"Face ID & Passcode\" */
+"browserLockMigrationNoPasscodeSetup" = "Belum menetapkan ID atau kod laluan? Buka Tetapan, kemudian ketik \"%@\"";
+
+/* Subtitle on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
+"browserLockMigrationSubtitle" = "Kami telah mempermudahkan Kod Laluan Brave. Anda kini boleh mengakses Brave menggunakan ID atau kod laluan yang sama yang anda gunakan pada telefon anda.";
+
+/* Title on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
+"browserLockMigrationTitle" = "Buka Brave menggunakan Apple Face ID, Touch ID, atau kod laluan anda";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Menyemak Imbas Sejarah";
@@ -717,12 +678,6 @@
 
 /* Sync pair device settings section title */
 "Pair" = "Pasangkan";
-
-/* Error message displayed to user when their confirming passcode doesn't match the first code. */
-"PasscodeConfirmMisMatchErrorText" = "Kod laluan tidak sepadan. Cuba lagi.";
-
-/* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
-"PasscodeMatchOldErrorText" = "Kod laluan baru mestilah berbeza daripada kod yang sedia ada.";
 
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Foto oleh %@";

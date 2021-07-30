@@ -37,74 +37,17 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Mostrar siempre";
 
-/* Label used as a setting item and title of the following screen to change the current passcode */
-"AuthenticationChangePasscode" = "Cambiar clave de acceso";
-
-/* Touch ID prompt subtitle when disabling Touch ID */
-"AuthenticationDisableTouchReason" = "Use su huella dactilar para deshabilitar Touch ID.";
-
-/* Text displayed above the input field when entering a new passcode */
-"AuthenticationEnterAPasscode" = "Introduzca una clave de acceso";
-
-/* Text displayed above the input field when changing the existing passcode */
-"AuthenticationEnterNewPasscode" = "Introduzca una nueva clave de acceso";
-
-/* Text displayed above the input field when changing the existing passcode */
-"AuthenticationEnterPasscode" = "Introducir clave de acceso";
-
-/* Title of the dialog used to request the passcode */
-"AuthenticationEnterPasscodeTitle" = "Introducir clave de acceso";
-
 /* Label for the Face ID/Passcode item in Settings */
 "AuthenticationFaceIDPasscodeSetting" = "Face ID y clave de acceso";
 
-/* Immediately' interval item for selecting when to require passcode */
-"AuthenticationImmediately" = "Ahora mismo";
-
-/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app with attempts remaining */
-"AuthenticationIncorrectAttemptsRemaining" = "Clave de acceso incorrecta. Vuelva a intentarlo (intentos restantes: %d).";
-
-/* Touch ID prompt subtitle when accessing logins */
-"AuthenticationLoginsTouchReason" = "Use su huella dactilar para acceder ya a las credenciales de inicio de sesión.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "Demasiados intentos fallidos.\n Vuelve a intentarlo dentro de %d minutos.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedNoTime" = "Se ha alcanzado el máximo de intentos. Vuelva a intentarlo más adelante.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedOneMinute" = "Demasiados intentos fallidos.\n Vuelve a intentarlo dentro de 1 minuto.";
+/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "Sirve para autenticar tu acceso a Brave";
 
 /* Label for the Passcode item in Settings */
-"AuthenticationPasscode" = "Clave de acceso para Inicios de sesión";
-
-/* Text displayed above the input field when confirming a passcode */
-"AuthenticationReenterPasscode" = "Volver a introducir clave de acceso";
-
-/* Text displayed in the 'Interval' section, followed by the current interval setting, e.g. 'Immediately' */
-"AuthenticationRequirePasscode" = "Requerir clave de acceso";
-
-/* Touch ID prompt subtitle when accessing the require passcode setting */
-"AuthenticationRequirePasscodeTouchReason" = "Use su huella dactilar para acceder a la configuración de su intervalo de clave de acceso requerida.";
-
-/* Title of the dialog used to set a passcode */
-"AuthenticationSetPasscode" = "Fijar clave de acceso";
-
-/* When the user taps on the passcode pane, the touch gesture recognizer will bring up the keyboard back on the screen when hidden on iPad. */
-"AuthenticationTouchForKeyboard" = "Toca para que aparezca el teclado";
+"AuthenticationPasscode" = "Código de acceso";
 
 /* Label for the Touch ID/Passcode item in Settings */
 "AuthenticationTouchIDPasscodeSetting" = "Touch ID y clave de acceso";
-
-/* Label used as a setting item to turn off passcode */
-"AuthenticationTurnOffPasscode" = "Desactivar clave de acceso";
-
-/* Label used as a setting item to turn on passcode */
-"AuthenticationTurnOnPasscode" = "Activar clave de acceso";
-
-/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app */
-"AuthenticationWrongPasscodeError" = "Clave de acceso incorrecta. Vuelva a intentarlo.";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Cancelar";
@@ -213,6 +156,24 @@
 
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Lo primero que tendrás que hacer es instalar Brave en todos los dispositivos que quieras sincronizar. Para conectarlos entre sí, inicia una cadena de sincronización con la que vincular todos tus dispositivos de forma segura.";
+
+/* Setting to enable the browser lock privacy feature */
+"BrowserLock" = "Browser Lock";
+
+/* No comment provided by engineer. */
+"BrowserLockDescription" = "Accede a Brave con Touch ID, Face ID o con un código de acceso generado por el sistema.";
+
+/* A button title for the action to move to the next step of the browser lock migration process. */
+"browserLockMigrationContinueButtonTitle" = "Continuar";
+
+/* Displayed to the user when they don't have a passcode set on their phone, therefore cannot use the Browser Lock feature. \"%@\" will be filled with either \"Touch ID & Passcode\" or \"Face ID & Passcode\" */
+"browserLockMigrationNoPasscodeSetup" = "¿No has configurado ningún ID ni código de acceso? Abre los ajustes y pulsa \"%@\"";
+
+/* Subtitle on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
+"browserLockMigrationSubtitle" = "Hemos simplificado los códigos de acceso de Brave. Ahora, puedes acceder a Brave con el mismo ID o código de acceso que utilizas en tu teléfono.";
+
+/* Title on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
+"browserLockMigrationTitle" = "Abre Brave con tu Face ID o Touch ID de Apple o con un código de acceso";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Historial de navegación";
@@ -717,12 +678,6 @@
 
 /* Sync pair device settings section title */
 "Pair" = "Emparejar";
-
-/* Error message displayed to user when their confirming passcode doesn't match the first code. */
-"PasscodeConfirmMisMatchErrorText" = "Las claves de acceso no concuerdan. Vuelva a intentarlo.";
-
-/* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
-"PasscodeMatchOldErrorText" = "La nueva clave de acceso debe ser diferente a la ya existente.";
 
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Foto de %@";

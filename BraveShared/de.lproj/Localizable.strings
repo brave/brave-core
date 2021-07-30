@@ -898,8 +898,8 @@
 /* Button title that open application settings */
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "Einstellungen öffnen";
 
-/* No comment provided by engineer. */
-"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Verwenden Sie Verknüpfungen, um einen neuen Tab via Siri-Sprachassistent zu öffnen";
+/* Description of Clear Browser History Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Verwenden Sie Verknüpfungen, um einen neuen Tab zu öffnen und den Browserverlauf via Siri - Sprachassistenten zu löschen";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Browserverlauf löschen";
@@ -928,8 +928,8 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenNewTabTitle" = "Neuen Tab öffnen";
 
-/* Use Shortcuts to Open Playlist via Siri - Voice Assistant */
-"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Verwenden Sie Verknüpfungen, um Brave VPN via Siri-Sprachassistent zu aktivieren";
+/* Description of Open Playlist Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Verwenden Sie Verknüpfungen, um die Playlist via Siri - Sprachassistenten zu öffnen";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenPlaylistTitle" = "Playlist öffnen";
