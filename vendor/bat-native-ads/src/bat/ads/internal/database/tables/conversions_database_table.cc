@@ -113,8 +113,8 @@ void Conversions::Migrate(DBTransaction* transaction, const int to_version) {
       break;
     }
 
-    case 11: {
-      MigrateToV11(transaction);
+    case 10: {
+      MigrateToV10(transaction);
       break;
     }
 
@@ -247,7 +247,7 @@ void Conversions::MigrateToV1(DBTransaction* transaction) {
   CreateIndexV1(transaction);
 }
 
-void Conversions::MigrateToV11(DBTransaction* transaction) {
+void Conversions::MigrateToV10(DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Rename(transaction, "ad_conversions", get_table_name());
