@@ -9,6 +9,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller_events_observer.h"
@@ -35,7 +36,8 @@ class BraveWalletProviderImpl final
   void Request(const std::string& json_payload,
                bool auto_retry_on_network_change,
                RequestCallback callback) override;
-  void Enable() override;
+  void Enable(EnableCallback callback) override;
+  void OnEnable(EnableCallback callback, bool success);
   void GetChainId(GetChainIdCallback callback) override;
   void Init(
       mojo::PendingRemote<mojom::EventsListener> events_listener) override;

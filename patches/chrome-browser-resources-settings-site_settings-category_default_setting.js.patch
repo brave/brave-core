@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/site_settings/category_default_setting.js b/chrome/browser/resources/settings/site_settings/category_default_setting.js
-index 3c75f8db1f1ef32aae97cf3eabb1e4319f121d8d..029ee25931a5914ddc05fb2272d994bb7b63769e 100644
+index 3c75f8db1f1ef32aae97cf3eabb1e4319f121d8d..88c3fbcb78ad1a45dbc00b1a6b93675b2db97bf9 100644
 --- a/chrome/browser/resources/settings/site_settings/category_default_setting.js
 +++ b/chrome/browser/resources/settings/site_settings/category_default_setting.js
 @@ -160,6 +160,7 @@ Polymer({
@@ -10,3 +10,11 @@ index 3c75f8db1f1ef32aae97cf3eabb1e4319f121d8d..029ee25931a5914ddc05fb2272d994bb
        case ContentSettingsTypes.BACKGROUND_SYNC:
        case ContentSettingsTypes.IMAGES:
        case ContentSettingsTypes.JAVASCRIPT:
+@@ -194,6 +195,7 @@ Polymer({
+       case ContentSettingsTypes.USB_DEVICES:
+       case ContentSettingsTypes.VR:
+       case ContentSettingsTypes.WINDOW_PLACEMENT:
++      case ContentSettingsTypes.ETHEREUM:
+         // "Ask" vs "Blocked".
+         this.browserProxy.setDefaultValueForContentType(
+             this.category,

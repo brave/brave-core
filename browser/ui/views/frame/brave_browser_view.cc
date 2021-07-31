@@ -260,6 +260,16 @@ WalletButton* BraveBrowserView::GetWalletButton() {
 #endif
 }
 
+views::View* BraveBrowserView::GetWalletButtonAnchorView() {
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  return static_cast<BraveToolbarView*>(toolbar())
+      ->wallet_button()
+      ->GetAsAnchorView();
+#else
+  return nullptr;
+#endif
+}
+
 void BraveBrowserView::CreateWalletBubble() {
   DCHECK(GetWalletButton());
   GetWalletButton()->ShowWalletBubble();

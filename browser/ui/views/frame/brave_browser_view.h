@@ -49,6 +49,7 @@ class BraveBrowserView : public BrowserView {
   void CreateWalletBubble();
   void CloseWalletBubble();
   WalletButton* GetWalletButton();
+  views::View* GetWalletButtonAnchorView();
   void StartTabCycling() override;
 
 #if BUILDFLAG(ENABLE_SIDEBAR)

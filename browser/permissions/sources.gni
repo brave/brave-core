@@ -1,3 +1,5 @@
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
 brave_browser_permissions_sources = [
   "//brave/browser/permissions/permission_lifetime_manager_factory.cc",
   "//brave/browser/permissions/permission_lifetime_manager_factory.h",
@@ -5,6 +7,12 @@ brave_browser_permissions_sources = [
 
 brave_browser_permissions_deps = [
   "//base",
+  "//brave/components/brave_wallet/common/buildflags",
   "//components/keyed_service/content",
   "//components/permissions",
 ]
+
+if (brave_wallet_enabled) {
+  brave_browser_permissions_deps +=
+      [ "//brave/components/brave_wallet/browser:ethereum_permission_utils" ]
+}

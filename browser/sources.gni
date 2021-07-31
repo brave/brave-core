@@ -199,6 +199,7 @@ if (brave_wallet_enabled) {
   brave_chrome_browser_deps += [
     "//brave/browser/brave_wallet",
     "//brave/browser/brave_wallet:brave_wallet_delegate",
+    "//brave/browser/brave_wallet:tab_helper",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",

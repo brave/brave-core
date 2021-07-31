@@ -14,6 +14,7 @@
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -61,6 +62,10 @@
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
+#endif
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #endif
 
 namespace brave {
@@ -119,6 +124,10 @@ void AttachTabHelpers(content::WebContents* web_contents) {
     ephemeral_storage::EphemeralStorageTabHelper::CreateForWebContents(
         web_contents);
   }
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  brave_wallet::BraveWalletTabHelper::CreateForWebContents(web_contents);
+#endif
 }
 
 }  // namespace brave

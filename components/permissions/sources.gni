@@ -1,4 +1,8 @@
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
 brave_components_permissions_sources = [
+  "//brave/components/permissions/brave_permission_manager.cc",
+  "//brave/components/permissions/brave_permission_manager.h",
   "//brave/components/permissions/permission_expiration_key.cc",
   "//brave/components/permissions/permission_expiration_key.h",
   "//brave/components/permissions/permission_expirations.cc",
@@ -20,15 +24,27 @@ brave_components_permissions_sources = [
 brave_components_permissions_deps = [
   "//base",
   "//base/util/timer",
+  "//brave/components/brave_wallet/common/buildflags",
   "//brave/components/resources:strings_grit",
   "//components/content_settings/core/browser",
   "//components/content_settings/core/common",
   "//components/keyed_service/core",
   "//components/pref_registry",
   "//services/preferences/public/cpp",
+  "//third_party/blink/public/common",
   "//ui/base",
   "//url",
 ]
+
+if (brave_wallet_enabled) {
+  brave_components_permissions_sources += [
+    "//brave/components/permissions/contexts/brave_ethereum_permission_context.cc",
+    "//brave/components/permissions/contexts/brave_ethereum_permission_context.h",
+  ]
+
+  brave_components_permissions_deps +=
+      [ "//brave/components/brave_wallet/browser:ethereum_permission_utils" ]
+}
 
 if (is_android) {
   brave_components_permissions_deps +=

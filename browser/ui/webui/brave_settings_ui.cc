@@ -19,6 +19,7 @@
 #include "brave/browser/ui/webui/settings/brave_sync_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
@@ -41,6 +42,10 @@
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/features.h"
+#endif
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/components/brave_wallet/common/features.h"
 #endif
 
 using ntp_background_images::ViewCounterServiceFactory;
@@ -94,5 +99,11 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isSpeedreaderFeatureEnabled",
       base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature));
+#endif
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  html_source->AddBoolean(
+      "isNativeBraveWalletFeatureEnabled",
+      base::FeatureList::IsEnabled(
+          brave_wallet::features::kNativeBraveWalletFeature));
 #endif
 }

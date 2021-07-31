@@ -1,7 +1,10 @@
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "permission_expirations_unittest.cc" ]
+  sources = [
+    "permission_expirations_unittest.cc",
+    "permissions_client_unittest.cc",
+  ]
 
   deps = [
     "//base",
@@ -9,6 +12,7 @@ source_set("unit_tests") {
     "//components/content_settings/browser",
     "//components/content_settings/browser:test_support",
     "//components/content_settings/core/browser",
+    "//components/content_settings/core/common",
     "//components/permissions",
     "//components/pref_registry",
     "//components/prefs",

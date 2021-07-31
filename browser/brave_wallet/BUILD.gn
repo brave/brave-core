@@ -62,8 +62,30 @@ source_set("brave_wallet_delegate") {
       "brave_wallet_provider_delegate_impl.h",
     ]
     deps += [
-      "//brave/browser/ui",
-      "//chrome/browser/ui",
+      "//brave/browser/brave_wallet",
+      "//brave/components/brave_wallet/common:mojom",
+      "//components/content_settings/core/common",
+      "//components/permissions",
+      "//mojo/public/cpp/bindings",
     ]
+  }
+}
+
+source_set("tab_helper") {
+  sources = [
+    "brave_wallet_tab_helper.cc",
+    "brave_wallet_tab_helper.h",
+  ]
+
+  deps = [
+    "//brave/common",
+    "//brave/components/brave_wallet/browser:ethereum_permission_utils",
+    "//components/permissions",
+    "//components/sessions",
+    "//content/public/browser",
+  ]
+
+  if (!is_android && !is_ios) {
+    deps += [ "//brave/browser/ui/brave_wallet" ]
   }
 }

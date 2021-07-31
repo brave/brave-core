@@ -9,6 +9,8 @@ export default class APIProxy implements APIProxyControllers {
   static getInstance: () => APIProxy
   showUI: () => {}
   closeUI: () => {}
+  connectToSite: (accounts: string[], origin: string, tabId: number) => {}
+  cancelConnectToSite: (origin: string, tabId: number) => {}
   walletHandler: WalletAPIHandler
   ethJsonRpcController: EthJsonRpcController
   swapController: SwapController

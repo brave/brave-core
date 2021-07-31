@@ -6,9 +6,14 @@
 #ifndef BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_PROVIDER_DELEGATE_IMPL_H_
 #define BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_PROVIDER_DELEGATE_IMPL_H_
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "content/public/browser/global_routing_id.h"
+#include "mojo/public/cpp/bindings/remote.h"
 
 namespace content {
+class RenderFrameHost;
 class WebContents;
 }  // namespace content
 
@@ -16,17 +21,26 @@ namespace brave_wallet {
 
 class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate {
  public:
-  explicit BraveWalletProviderDelegateImpl(content::WebContents* web_contents);
+  explicit BraveWalletProviderDelegateImpl(
+      content::WebContents* web_contents,
+      content::RenderFrameHost* const render_frame_host);
   BraveWalletProviderDelegateImpl(const BraveWalletProviderDelegateImpl&) =
       delete;
   BraveWalletProviderDelegateImpl& operator=(
       const BraveWalletProviderDelegateImpl&) = delete;
-  ~BraveWalletProviderDelegateImpl() override = default;
+  ~BraveWalletProviderDelegateImpl() override;
 
-  void ShowConnectToSiteUI() override;
+  void RequestEthereumPermissions(
+      RequestEthereumPermissionsCallback callback) override;
 
  private:
+  void EnsureConnected();
+  void OnConnectionError();
+
+  mojo::Remote<brave_wallet::mojom::KeyringController> keyring_controller_;
   content::WebContents* web_contents_;
+  const content::GlobalFrameRoutingId routing_id_;
+  base::WeakPtrFactory<BraveWalletProviderDelegateImpl> weak_ptr_factory_;
 };
 
 }  // namespace brave_wallet

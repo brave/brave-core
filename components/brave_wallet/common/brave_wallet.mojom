@@ -16,7 +16,7 @@ interface EventsListener {
 interface BraveWalletProvider {
   Init(pending_remote<EventsListener> events_listener);
   Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
-  Enable();
+  Enable() => (bool success);
   GetChainId() => (string chain_id);
 };
 
@@ -51,6 +51,9 @@ interface PanelHandler {
 
   // Notify the backend that the dialog should be closed.
   CloseUI();
+
+  ConnectToSite(array<string> accounts, string origin, int32 tab_id);
+  CancelConnectToSite(string origin, int32 tab_id);
 };
 
 // Browser-side handler for requests from WebUI page.
