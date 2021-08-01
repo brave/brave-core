@@ -15,6 +15,7 @@ import '../brave_wallet_page/brave_wallet_page.m.js'
 import '../brave_sync_page/brave_sync_page.js'
 import '../brave_help_tips_page/brave_help_tips_page.m.js'
 import '../brave_new_tab_page/brave_new_tab_page.m.js'
+import '../brave_search_engines_page/brave_search_engines_page.m.js'
 
 const isGuest = loadTimeData.getBoolean('isGuest')
 

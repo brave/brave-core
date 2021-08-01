@@ -11,6 +11,7 @@
 namespace prefs {
 
 extern const char kDefaultSearchProviderByExtension[];
+extern const char kOtherSearchEnginesEnabled[];
 
 }  // namespace prefs
 
