@@ -19,13 +19,13 @@ struct BraveSearchDebugMenuDetail: View {
     Form {
       ValueRow(title: "URL", value: logEntry.url.absoluteString)
       
-      Section(header: Text("/can/answer")) {
+      Section(header: Text(verbatim: "/can/answer")) {
         ValueRow(title: "Cookies", value: cookieNames)
         ValueRow(title: "Time taken(s)", value: logEntry.canAnswerTime ?? "-")
         ValueRow(title: "Response", value: logEntry.backupQuery ?? "-")
       }
       
-      Section(header: Text("Search Fallback")) {
+      Section(header: Text(verbatim: "Search Fallback")) {
         ValueRow(title: "Time taken(s)", value: logEntry.fallbackTime ?? "-")
         
         Button("Export response") {
