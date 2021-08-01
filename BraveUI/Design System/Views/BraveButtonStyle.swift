@@ -101,7 +101,7 @@ struct BraveButtonStyle_Previews: PreviewProvider {
           VStack {
             ForEach(defaultSizes.indices) { index in
               Button(action: { }) {
-                Text("Button text")
+                Text(verbatim: "Button text")
               }
               .buttonStyle(BraveFilledButtonStyle(size: defaultSizes[index]))
               .disabled(disabled)
@@ -115,7 +115,7 @@ struct BraveButtonStyle_Previews: PreviewProvider {
           VStack {
             ForEach(defaultSizes.indices) { index in
               Button(action: { }) {
-                Text("Button text")
+                Text(verbatim: "Button text")
               }
               .buttonStyle(BraveOutlineButtonStyle(size: defaultSizes[index]))
               .disabled(disabled)

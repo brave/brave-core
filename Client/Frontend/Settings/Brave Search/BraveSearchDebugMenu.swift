@@ -21,7 +21,7 @@ struct BraveSearchDebugMenu: View {
                 }
             }
             
-            Section(header: Text("Logs")) {
+            Section(header: Text(verbatim: "Logs")) {
                 ForEach(logging.logs) { logEntry in
                     NavigationLink(destination: BraveSearchDebugMenuDetail(logEntry: logEntry)) {
                         VStack(alignment: .leading) {
