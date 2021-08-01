@@ -330,6 +330,13 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_BRAVE_SAFEBROWSING_NONE_DESC" desc="Description for safe browsing no protection mode">
         Does not protect you against dangerous websites, downloads, and extensions.
       </message>
+      <!-- Settings / Search Engine -->
+      <message name="IDS_SETTINGS_BRAVE_OTHER_SEARCH_ENGINES_LABEL" desc="The label for the settings switch controlling the addition of custom search engines">
+        Index other search engines
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_OTHER_SEARCH_ENGINES_DESC" desc="The description for the settings switch controlling the addition of custom search engines">
+        Automatically indexes websites that follow the OpenSearch spec.
+      </message>
       <!-- New Tab Page -->
       <message name="IDS_SETTINGS_NEW_TAB" desc="The text label for the New Tab settings page">
        New Tab Page
