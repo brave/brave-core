@@ -11,7 +11,11 @@ struct Feature;
 }  // namespace base
 
 namespace brave_talk {
-extern const base::Feature kBraveTalkFeature;
+namespace features {
+
+extern const base::Feature kBraveTalk;
+
+}  // namespace features
 }  // namespace brave_talk
 
 #endif  // BRAVE_COMPONENTS_BRAVE_TALK_FEATURES_H_

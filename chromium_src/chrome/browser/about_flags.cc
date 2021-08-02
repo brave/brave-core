@@ -200,7 +200,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveTalkName,                                     \
      flag_descriptions::kBraveTalkDescription,                              \
      kOsDesktop,                                                            \
-     FEATURE_VALUE_TYPE(brave_talk::kBraveTalkFeature)},                    \
+     FEATURE_VALUE_TYPE(brave_talk::features::kBraveTalk)},                 \
      BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES
 
 #define SetFeatureEntryEnabled SetFeatureEntryEnabled_ChromiumImpl

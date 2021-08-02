@@ -100,9 +100,10 @@ const char kBraveEphemeralStorageKeepAliveDescription[] =
     "Keep ephemeral storage partitions alive for a specified time after all "
     "tabs for that origin are closed";
 const char kBraveTalkName[] = "Enable Brave Talk";
-const char kBraveTalkDescription[] = "Enables the Brave Talk integration "
-    "on the new tab page. You can use Brave Talk to start a private video "
-    "call with your friends and colleagues.";
+const char kBraveTalkDescription[] =
+    "Enables the Brave Talk integration on the new tab page. You can "
+    "use Brave Talk to start a private video call with your friends "
+    "and colleagues.";
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
 const char kBraveRewardsGeminiName[] = "Enable Gemini for Brave Rewards";

@@ -26,13 +26,13 @@ void ClearNewTabPageProfilePrefs(Profile* profile) {
 }
 
 const char* const kWidgetPrefNames[] = {
-  kNewTabPageShowRewards,
-  kNewTabPageShowBraveTalk,
-  kNewTabPageShowBinance,
+    kNewTabPageShowRewards,
+    kNewTabPageShowBraveTalk,
+    kNewTabPageShowBinance,
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-  kCryptoDotComNewTabPageShowCryptoDotCom,
+    kCryptoDotComNewTabPageShowCryptoDotCom,
 #endif
-  kNewTabPageShowGemini
+    kNewTabPageShowGemini,
 };
 
 }  // namespace

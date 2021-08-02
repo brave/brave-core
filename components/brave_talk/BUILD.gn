@@ -4,7 +4,5 @@ source_set("brave_talk") {
     "features.h",
   ]
 
-  deps = [
-    "//base",
-  ]
+  deps = [ "//base" ]
 }

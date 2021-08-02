@@ -16,8 +16,7 @@ class Profile;
 namespace extensions {
 namespace api {
 
-class BraveTalkIsSupportedFunction :
-    public ExtensionFunction {
+class BraveTalkIsSupportedFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveTalk.isSupported", UNKNOWN)
 

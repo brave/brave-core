@@ -7,8 +7,9 @@
 #include "base/feature_list.h"
 
 namespace brave_talk {
+namespace features {
 
-const base::Feature kBraveTalkFeature{"Brave Talk Integration",
-                                      base::FEATURE_DISABLED_BY_DEFAULT};
+const base::Feature kBraveTalk{"BraveTalk", base::FEATURE_DISABLED_BY_DEFAULT};
 
+}  // namespace features
 }  // namespace brave_talk

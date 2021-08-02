@@ -71,11 +71,11 @@ json_features("behavior_features") {
 brave_extensions_api_schema_sources = [
   "brave_rewards.json",
   "brave_shields.json",
+  "brave_talk.json",
   "brave_theme.json",
   "brave_today.json",
   "greaselion.json",
   "rewards_notifications.json",
-  "brave_talk.json",
 ]
 
 if (ipfs_enabled) {

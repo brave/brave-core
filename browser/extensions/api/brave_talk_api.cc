@@ -10,9 +10,7 @@
 
 #include "base/environment.h"
 #include "base/feature_list.h"
-#include "brave/components/brave_talk/browser/regions.h"
 #include "brave/components/brave_talk/features.h"
-#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 #include "chrome/browser/profiles/profile.h"
 
 namespace extensions {
@@ -25,11 +23,8 @@ ExtensionFunction::ResponseAction BraveTalkIsSupportedFunction::Run() {
     return RespondNow(Error("Not available in Tor profile"));
   }
 
-  bool is_supported = ntp_widget_utils::IsRegionSupported(
-      profile->GetPrefs(), brave_talk::unsupported_regions, false);
-  if (is_supported) {
-    is_supported = base::FeatureList::IsEnabled(brave_talk::kBraveTalkFeature);
-  }
+  bool is_supported =
+      base::FeatureList::IsEnabled(brave_talk::features::kBraveTalk);
 
   return RespondNow(OneArgument(base::Value(is_supported)));
 }
