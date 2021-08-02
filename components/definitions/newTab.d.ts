@@ -79,6 +79,7 @@ declare namespace NewTab {
   export interface PersistentState {
     braveTalkPromptDismissed: boolean
     braveTalkSupported: boolean
+    braveTalkPromptAutoDismissed: boolean
     geminiSupported: boolean
     binanceSupported: boolean
     bitcoinDotComSupported: boolean

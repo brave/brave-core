@@ -11,13 +11,13 @@ import { LinkButton } from '../../../outlineButton'
 import * as S from './style'
 import { braveTalkWidgetUrl } from '../../../../constants/new_tab_ui'
 
-type Props = {
+type Props = React.PropsWithChildren<{
   onClose: () => any
-}
+}>
 
-const BraveTalkTooltip: React.FunctionComponent<Props> = function (props) {
+const BraveTalkTooltip = React.forwardRef<HTMLDivElement, Props>(function BraveTalkTooltip (props, ref) {
   return (
-    <S.Anchor>
+    <S.Anchor ref={ref}>
       <S.Tooltip>
         <S.Title>
           <S.TitleIcon><BraveTalkIcon /></S.TitleIcon>
@@ -39,6 +39,6 @@ const BraveTalkTooltip: React.FunctionComponent<Props> = function (props) {
       {props.children}
     </S.Anchor>
   )
-}
+})
 
 export default BraveTalkTooltip

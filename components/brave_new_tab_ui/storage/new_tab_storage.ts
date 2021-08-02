@@ -53,6 +53,7 @@ export const defaultState: NewTab.State = {
     fingerprintingBlockedStat: 0
   },
   braveTalkPromptDismissed: false,
+  braveTalkPromptAutoDismissed: false,
   rewardsState: {
     adsAccountStatement: {
       nextPaymentDate: 0,
@@ -280,9 +281,13 @@ export const load = (): NewTab.State => {
 
 export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
   if (data) {
+    // TODO(petemill): This should be of type NewTab.PersistantState, and first
+    // fix errors related to properties which shouldn't be defined as persistant
+    // (or are obsolete).
     const dataToSave = {
       braveTalkSupported: data.braveTalkSupported,
       braveTalkPromptDismissed: data.braveTalkPromptDismissed,
+      braveTalkPromptAutoDismissed: data.braveTalkPromptAutoDismissed,
       binanceSupported: data.binanceSupported,
       geminiSupported: data.geminiSupported,
       bitcoinDotComSupported: data.bitcoinDotComSupported,
