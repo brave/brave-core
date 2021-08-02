@@ -244,7 +244,7 @@ bool CrashReportPermissionAskDialogView::ShouldShowWindowTitle() const {
   return false;
 }
 
-void CrashReportPermissionAskDialogView::OnDialogInitialized() {
+void CrashReportPermissionAskDialogView::OnWidgetInitialized() {
   SetButtonRowInsets(gfx::Insets(0, 0, 18, 24));
 }
 
