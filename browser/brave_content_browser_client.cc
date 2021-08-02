@@ -508,15 +508,18 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       speedreader::SpeedreaderTabHelper::FromWebContents(contents);
   if (tab_helper) {
     const auto state = tab_helper->PageDistillState();
-    if (speedreader::SpeedreaderTabHelper::PageStateIsDistilled(state) &&
+    if (speedreader::SpeedreaderTabHelper::PageWantsDistill(state) &&
         request.resource_type ==
             static_cast<int>(blink::mojom::ResourceType::kMainFrame)) {
+      // Only check for disabled sites if we are in Speedreader mode
+      const bool check_disabled_sites =
+          state == DistillState::kSpeedreaderModePending;
       std::unique_ptr<speedreader::SpeedReaderThrottle> throttle =
           speedreader::SpeedReaderThrottle::MaybeCreateThrottleFor(
               g_brave_browser_process->speedreader_rewriter_service(),
               HostContentSettingsMapFactory::GetForProfile(
                   Profile::FromBrowserContext(browser_context)),
-              request.url, state == DistillState::kSpeedreaderMode,
+              contents, tab_helper, request.url, check_disabled_sites,
               base::ThreadTaskRunnerHandle::Get());
       if (throttle)
         result.push_back(std::move(throttle));

@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_TAB_HELPER_H_
 #define BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_TAB_HELPER_H_
 
+#include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -21,7 +22,8 @@ class SpeedreaderBubbleView;
 // Determines if speedreader should be active for a given top-level navigation.
 class SpeedreaderTabHelper
     : public content::WebContentsObserver,
-      public content::WebContentsUserData<SpeedreaderTabHelper> {
+      public content::WebContentsUserData<SpeedreaderTabHelper>,
+      public SpeedreaderResultDelegate {
  public:
   enum class DistillState {
     // Used as an initialization state
@@ -29,6 +31,12 @@ class SpeedreaderTabHelper
 
     // The web contents is not distilled
     kNone,
+
+    // -------------------------------------------------------------------------
+    // Pending states. The user requested the page be distilled.
+    //
+    // TODO(keur): Should we use bitstrings and make pending a bit both
+    // speedreader and reader mode can share?
 
     // Reader mode state that can only be reached when Speedreader is disabled
     // The Speedreader icon will pop up in the address bar, and the user clicks
@@ -38,9 +46,16 @@ class SpeedreaderTabHelper
     // The first time a user activates reader mode on a page, a bubble drops
     // down asking them to enable the Speedreader feature for automatic
     // distillation.
-    kReaderMode,
+    kReaderModePending,
 
     // Speedreader is enabled and the page was automatically distilled.
+    kSpeedreaderModePending,
+    // -------------------------------------------------------------------------
+
+    // kReaderModePending was ACKed
+    kReaderMode,
+
+    // kSpeedreaderModePending was ACKed
     kSpeedreaderMode,
 
     // Speedreader is enabled, but the page was blacklisted by the user.
@@ -53,6 +68,11 @@ class SpeedreaderTabHelper
   static bool PageStateIsDistilled(DistillState state) {
     return state == DistillState::kReaderMode ||
            state == DistillState::kSpeedreaderMode;
+  }
+
+  static bool PageWantsDistill(DistillState state) {
+    return state == DistillState::kReaderModePending ||
+           state == DistillState::kSpeedreaderModePending;
   }
 
   ~SpeedreaderTabHelper() override;
@@ -114,6 +134,9 @@ class SpeedreaderTabHelper
       content::NavigationHandle* navigation_handle) override;
   void DidRedirectNavigation(
       content::NavigationHandle* navigation_handle) override;
+
+  // SpeedreaderResultDelegate:
+  void OnDistillComplete(bool success) override;
 
   bool single_shot_next_request_ =
       false;  // run speedreader once on next page load

@@ -7,35 +7,74 @@
 
 #include <utility>
 
+#include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_url_loader.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
+#include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 
-namespace speedreader {
+namespace {
 
+// Used to scope the result of distillation to the lifetime of |web_contents|
+class SpeedreaderResultWebContentsLifetimeHelper
+    : public content::WebContentsUserData<
+          SpeedreaderResultWebContentsLifetimeHelper> {
+ public:
+  explicit SpeedreaderResultWebContentsLifetimeHelper(
+      content::WebContents* contents,
+      SpeedreaderResultDelegate* delegate)
+      : delegate_(delegate) {}
+
+  void OnDistillComplete(bool success) {
+    delegate_->OnDistillComplete(success);
+  }
+
+  WEB_CONTENTS_USER_DATA_KEY_DECL();
+
+ private:
+  friend class content::WebContentsUserData<SpeedreaderResultDelegate>;
+
+  SpeedreaderResultDelegate* delegate_;
+};
+
+WEB_CONTENTS_USER_DATA_KEY_IMPL(SpeedreaderResultWebContentsLifetimeHelper)
+
+}  // anonymous namespace
+
+namespace speedreader {
 // static
 std::unique_ptr<SpeedReaderThrottle>
 SpeedReaderThrottle::MaybeCreateThrottleFor(
     SpeedreaderRewriterService* rewriter_service,
     HostContentSettingsMap* content_settings,
+    content::WebContents* web_contents,
+    ::SpeedreaderResultDelegate* result_delegate,
     const GURL& url,
     bool check_disabled_sites,
     scoped_refptr<base::SingleThreadTaskRunner> task_runner) {
   if (check_disabled_sites && !IsEnabledForSite(content_settings, url))
     return nullptr;
-  return std::make_unique<SpeedReaderThrottle>(rewriter_service, task_runner);
+
+  return std::make_unique<SpeedReaderThrottle>(rewriter_service, web_contents,
+                                               result_delegate, task_runner);
 }
 
 SpeedReaderThrottle::SpeedReaderThrottle(
     SpeedreaderRewriterService* rewriter_service,
+    content::WebContents* web_contents,
+    ::SpeedreaderResultDelegate* result_delegate,
     scoped_refptr<base::SingleThreadTaskRunner> task_runner)
     : rewriter_service_(rewriter_service),
-      task_runner_(std::move(task_runner)) {}
+      web_contents_(web_contents),
+      task_runner_(std::move(task_runner)) {
+  SpeedreaderResultWebContentsLifetimeHelper::CreateForWebContents(
+      web_contents, result_delegate);
+}
 
 SpeedReaderThrottle::~SpeedReaderThrottle() = default;
 
@@ -64,6 +103,15 @@ void SpeedReaderThrottle::WillProcessResponse(
 
 void SpeedReaderThrottle::Resume() {
   delegate_->Resume();
+}
+
+void SpeedReaderThrottle::OnDistillComplete(bool success) {
+  auto* result_helper =
+      SpeedreaderResultWebContentsLifetimeHelper::FromWebContents(
+          web_contents_);
+  if (result_helper) {
+    result_helper->OnDistillComplete(success);
+  }
 }
 
 }  // namespace speedreader

@@ -5,6 +5,7 @@
 
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 
+#include "base/notreached.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/ui/brave_browser_window.h"
@@ -91,7 +92,7 @@ void SpeedreaderTabHelper::UpdateActiveState(
   DCHECK(handle->IsInMainFrame());
 
   if (single_shot_next_request_) {
-    SetNextRequestState(DistillState::kReaderMode);
+    SetNextRequestState(DistillState::kReaderModePending);
     return;
   }
 
@@ -108,7 +109,7 @@ void SpeedreaderTabHelper::UpdateActiveState(
       } else if (!IsEnabledForSite(handle->GetURL())) {
         SetNextRequestState(DistillState::kSpeedreaderOnDisabledPage);
       } else {
-        SetNextRequestState(DistillState::kSpeedreaderMode);
+        SetNextRequestState(DistillState::kSpeedreaderModePending);
       }
       return;
     }
@@ -170,6 +171,21 @@ void SpeedreaderTabHelper::HideBubble() {
   if (speedreader_bubble_) {
     speedreader_bubble_->Hide();
     speedreader_bubble_ = nullptr;
+  }
+}
+
+void SpeedreaderTabHelper::OnDistillComplete(bool success) {
+  DCHECK(SpeedreaderTabHelper::PageWantsDistill(distill_state_));
+  if (!success) {
+    distill_state_ = DistillState::kNone;
+    return;
+  }
+
+  // Perform a state transition
+  if (distill_state_ == DistillState::kSpeedreaderModePending) {
+    distill_state_ = DistillState::kSpeedreaderMode;
+  } else {  // distill_state_ == DistillState::kReaderModePending
+    distill_state_ = DistillState::kReaderMode;
   }
 }
 
