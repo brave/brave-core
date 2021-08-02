@@ -18,6 +18,7 @@ aggregate_vector_icons("brave_vector_icons") {
     "download_unlock.icon",
     "open_in_ipfs.icon",
     "open_in_tor.icon",
+    "vpn_indicator.icon",
   ]
 
   if (enable_sidebar) {
