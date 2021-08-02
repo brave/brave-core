@@ -17,18 +17,21 @@ import {
   ImportRow
 } from './style'
 
+import { HardwareWalletAccount, HardwareWalletConnectOpts } from './hardware-wallet-connect/types'
 import HardwareWalletConnect from './hardware-wallet-connect'
+import * as Result from '../../../../common/types/result'
 
 export interface Props {
   onClose: () => void
   onCreateAccount: (name: string) => void
   onImportAccount: (name: string, key: string) => void
+  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Result.Type<HardwareWalletAccount[]>
   accounts: WalletAccountType[]
   title: string
 }
 
 const AddAccountModal = (props: Props) => {
-  const { title, accounts, onClose, onCreateAccount, onImportAccount } = props
+  const { title, accounts, onClose, onCreateAccount, onImportAccount, onConnectHardwareWallet } = props
   const suggestedAccountName = `${locale.account} ${accounts.length + 1}`
   const [tab, setTab] = React.useState<AddAccountNavTypes>('create')
   const [importOption, setImportOption] = React.useState<string>('key')
@@ -168,7 +171,7 @@ const AddAccountModal = (props: Props) => {
             />
           </>
         }
-        {tab === 'hardware' && <HardwareWalletConnect />}
+        {tab === 'hardware' && <HardwareWalletConnect onConnectHardwareWallet={onConnectHardwareWallet} />}
       </StyledWrapper>
     </PopupModal>
   )
