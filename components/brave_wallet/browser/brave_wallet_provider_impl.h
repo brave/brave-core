@@ -37,7 +37,8 @@ class BraveWalletProviderImpl final
                bool auto_retry_on_network_change,
                RequestCallback callback) override;
   void Enable(EnableCallback callback) override;
-  void OnEnable(EnableCallback callback, bool success);
+  void OnEnable(EnableCallback callback,
+                const std::vector<std::string>& accounts);
   void GetChainId(GetChainIdCallback callback) override;
   void Init(
       mojo::PendingRemote<mojom::EventsListener> events_listener) override;

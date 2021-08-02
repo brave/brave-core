@@ -43,8 +43,10 @@ void BraveWalletProviderImpl::Enable(EnableCallback callback) {
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void BraveWalletProviderImpl::OnEnable(EnableCallback callback, bool success) {
-  std::move(callback).Run(success);
+void BraveWalletProviderImpl::OnEnable(
+    EnableCallback callback,
+    const std::vector<std::string>& accounts) {
+  std::move(callback).Run(accounts);
 }
 
 void BraveWalletProviderImpl::GetChainId(GetChainIdCallback callback) {
