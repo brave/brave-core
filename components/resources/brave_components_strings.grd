@@ -311,7 +311,7 @@
           Brave Talk
         </message>
         <message name="IDS_SIDEBAR_WALLET_ITEM_TITLE" desc="Title for crypto wallet item in sidebar">
-          Crypto Wallets
+          Wallet
         </message>
         <message name="IDS_SIDEBAR_BOOKMARKS_ITEM_TITLE" desc="Title for bookmarks item in sidebar">
           Bookmarks
@@ -1017,7 +1017,7 @@
       </message>
 
       <!-- WebUI Brave Toolbar resources -->
-      <message name="IDS_WALLETS_TITLE" desc="The toolbar title for the brave://wallets page">Crypto Wallets</message>
+      <message name="IDS_WALLETS_TITLE" desc="The toolbar title for the brave://wallets page">Wallet</message>
       <!-- WebUI Crypto Wallets resources -->
       <message name="IDS_BRAVE_WALLET_WELCOME" desc="">Welcome to Brave Crypto Wallets</message>
       <message name="IDS_BRAVE_WALLET_DISCLOSURE_ONE" desc="">Crypto Wallets lets you work with cryptocurrency and related assets in Brave. Crypto Wallets supports Ethereum tokens like ETH and BAT, as well as collectibles, and lets you work with Ðapps and other smart contracts. All this is meant for people who are familiar with Ethereum and other blockchain systems — or are excited to learn.</message>
