@@ -80,6 +80,8 @@ brave_chrome_browser_sources = [
   "//brave/browser/browser_context_keyed_service_factories.h",
   "//brave/browser/geolocation/brave_geolocation_permission_context_delegate.cc",
   "//brave/browser/geolocation/brave_geolocation_permission_context_delegate.h",
+  "//brave/browser/metrics/brave_metrics_service_accessor.cc",
+  "//brave/browser/metrics/brave_metrics_service_accessor.h",
   "//brave/browser/metrics/metrics_reporting_util.cc",
   "//brave/browser/metrics/metrics_reporting_util.h",
   "//brave/browser/update_util.cc",
