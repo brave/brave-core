@@ -46,8 +46,6 @@ class BatAdsInlineContentAdServingTest : public UnitTestBase {
     MockUrlRequest(ads_client_mock_, endpoints);
 
     InitializeAds();
-
-    RecordUserActivityEvents();
   }
 
   void RecordUserActivityEvents() {
@@ -102,12 +100,12 @@ class BatAdsInlineContentAdServingTest : public UnitTestBase {
 
 TEST_F(BatAdsInlineContentAdServingTest, ServeAd) {
   // Arrange
-  CreativeInlineContentAdList creative_inline_content_ads;
+  RecordUserActivityEvents();
 
+  CreativeInlineContentAdList creative_inline_content_ads;
   CreativeInlineContentAdInfo creative_inline_content_ad =
       GetCreativeInlineContentAd();
   creative_inline_content_ads.push_back(creative_inline_content_ad);
-
   Save(creative_inline_content_ads);
 
   // Act
@@ -126,18 +124,37 @@ TEST_F(BatAdsInlineContentAdServingTest, ServeAd) {
 
 TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForUnavailableDimensions) {
   // Arrange
-  CreativeInlineContentAdList creative_inline_content_ads;
+  RecordUserActivityEvents();
 
+  CreativeInlineContentAdList creative_inline_content_ads;
   CreativeInlineContentAdInfo creative_inline_content_ad =
       GetCreativeInlineContentAd();
   creative_inline_content_ads.push_back(creative_inline_content_ad);
-
   Save(creative_inline_content_ads);
 
   // Act
   ad_serving_->MaybeServeAd(
       "?x?", [](const bool success, const std::string& dimensions,
                 const InlineContentAdInfo& inline_content_ad) {
+        EXPECT_FALSE(success);
+      });
+
+  // Assert
+}
+
+TEST_F(BatAdsInlineContentAdServingTest,
+       DoNotServeAdIfNotAllowedDueToPermissionRules) {
+  // Arrange
+  CreativeInlineContentAdList creative_inline_content_ads;
+  CreativeInlineContentAdInfo creative_inline_content_ad =
+      GetCreativeInlineContentAd();
+  creative_inline_content_ads.push_back(creative_inline_content_ad);
+  Save(creative_inline_content_ads);
+
+  // Act
+  ad_serving_->MaybeServeAd(
+      "200x100", [](const bool success, const std::string& dimensions,
+                    const InlineContentAdInfo& inline_content_ad) {
         EXPECT_FALSE(success);
       });
 

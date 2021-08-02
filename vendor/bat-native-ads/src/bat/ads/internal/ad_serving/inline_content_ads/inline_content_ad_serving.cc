@@ -12,6 +12,7 @@
 #include "bat/ads/internal/ad_targeting/ad_targeting.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_segment.h"
 #include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_builder.h"
+#include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_permission_rules.h"
 #include "bat/ads/internal/bundle/creative_inline_content_ad_info.h"
 #include "bat/ads/internal/eligible_ads/inline_content_ads/eligible_inline_content_ads.h"
 #include "bat/ads/internal/features/inline_content_ads/inline_content_ads_features.h"
@@ -50,14 +51,23 @@ void AdServing::RemoveObserver(InlineContentAdServingObserver* observer) {
 
 void AdServing::MaybeServeAd(const std::string& dimensions,
                              GetInlineContentAdCallback callback) {
-  const SegmentList segments = ad_targeting_->GetSegments();
-
   InlineContentAdInfo inline_content_ad;
 
   if (!features::inline_content_ads::IsEnabled()) {
     callback(/* success */ false, dimensions, inline_content_ad);
     return;
   }
+
+  frequency_capping::PermissionRules permission_rules;
+  if (!permission_rules.HasPermission()) {
+    BLOG(1,
+         "Inline content ad not served: Not allowed due to permission rules");
+    NotifyFailedToServeInlineContentAd();
+    callback(/* success */ false, dimensions, inline_content_ad);
+    return;
+  }
+
+  const SegmentList segments = ad_targeting_->GetSegments();
 
   DCHECK(eligible_ads_);
   eligible_ads_->GetForSegments(

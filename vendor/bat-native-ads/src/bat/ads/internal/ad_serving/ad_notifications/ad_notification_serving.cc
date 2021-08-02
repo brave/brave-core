@@ -99,7 +99,7 @@ void AdServing::StopServingAdsAtRegularIntervals() {
 }
 
 void AdServing::MaybeServeAd() {
-  ad_notifications::frequency_capping::PermissionRules permission_rules;
+  frequency_capping::PermissionRules permission_rules;
   if (!permission_rules.HasPermission()) {
     BLOG(1, "Ad notification not served: Not allowed due to permission rules");
     FailedToServeAd();
