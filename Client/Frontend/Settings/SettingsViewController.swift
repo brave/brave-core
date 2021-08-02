@@ -208,7 +208,7 @@ class SettingsViewController: TableViewController {
             Row(text: Strings.PlayList.playListSectionTitle, selection: { [unowned self] in
                 let playlistSettings = PlaylistSettingsViewController()
                 self.navigationController?.pushViewController(playlistSettings, animated: true)
-            }, image: #imageLiteral(resourceName: "playlist_menu").template, accessory: .disclosureIndicator)
+            }, image: #imageLiteral(resourceName: "settings-playlist").template, accessory: .disclosureIndicator)
         )
         
         return section
