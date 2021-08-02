@@ -2,9 +2,9 @@ import * as React from 'react'
 import {
   UserAccountType,
   AssetOptionType,
-  NetworkOptionsType,
   BuySendSwapViewTypes,
-  ToOrFromType
+  ToOrFromType,
+  Network
 } from '../../../constants/types'
 import { AssetOptions } from '../../../options/asset-options'
 import {
@@ -16,14 +16,14 @@ import {
 export interface Props {
   accounts: UserAccountType[]
   selectedAsset: AssetOptionType
-  selectedNetwork: NetworkOptionsType
+  selectedNetwork: Network
   selectedAccount: UserAccountType
   selectedAssetAmount: string
   selectedAssetBalance: string
   toAddress: string
   showHeader?: boolean
   onSubmit: () => void
-  onSelectNetwork: (network: NetworkOptionsType) => void
+  onSelectNetwork: (network: Network) => void
   onSelectAccount: (account: UserAccountType) => void
   onSelectAsset: (asset: AssetOptionType, toOrFrom: ToOrFromType) => void
   onSetSendAmount: (value: string) => void
@@ -55,7 +55,7 @@ function SendTab (props: Props) {
     setSendView(view)
   }
 
-  const onClickSelectNetwork = (network: NetworkOptionsType) => () => {
+  const onClickSelectNetwork = (network: Network) => () => {
     onSelectNetwork(network)
     setSendView('send')
   }

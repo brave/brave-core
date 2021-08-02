@@ -29,13 +29,14 @@ import {
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
-import { WalletAccountType, PanelTypes, NetworkOptionsType } from '../../../constants/types'
+import { WalletAccountType, PanelTypes, Network } from '../../../constants/types'
 import { create, background } from 'ethereum-blockies'
 import locale from '../../../constants/locale'
+import { NetworkOptions } from '../../../options/network-options'
 
 export interface Props {
   selectedAccount: WalletAccountType
-  selectedNetwork: NetworkOptionsType
+  selectedNetwork: Network
   isConnected: boolean
   connectAction: () => void
   navAction: (path: PanelTypes) => void
@@ -71,7 +72,7 @@ const ConnectedPanel = (props: Props) => {
             <OvalButtonText>{isConnected ? 'Connected' : 'Not Connected'}</OvalButtonText>
           </OvalButton>
           <OvalButton onClick={navigate('networks')}>
-            <OvalButtonText>{selectedNetwork.abbr}</OvalButtonText>
+            <OvalButtonText>{NetworkOptions[selectedNetwork].abbr}</OvalButtonText>
             <CaratDownIcon />
           </OvalButton>
         </StatusRow>

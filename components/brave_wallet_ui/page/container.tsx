@@ -30,12 +30,12 @@ import {
   WalletPageState,
   AssetPriceTimeframe,
   AssetOptionType,
-  NetworkOptionsType,
   OrderTypes,
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
   ToOrFromType,
-  WalletAccountType
+  WalletAccountType,
+  Network
 } from '../constants/types'
 // import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../stories/screens/buy-send-swap'
@@ -148,7 +148,7 @@ function Container (props: Props) {
     props.walletActions.selectAccount(account)
   }
 
-  const onSelectNetwork = (network: NetworkOptionsType) => {
+  const onSelectNetwork = (network: Network) => {
     props.walletActions.selectNetwork(network)
   }
 
