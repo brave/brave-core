@@ -9,7 +9,6 @@
 #include "bat/ads/internal/ad_events/ad_event_util.h"
 #include "bat/ads/internal/ad_events/inline_content_ads/inline_content_ad_event_factory.h"
 #include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_builder.h"
-#include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_permission_rules.h"
 #include "bat/ads/internal/bundle/creative_inline_content_ad_info.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
 #include "bat/ads/internal/database/tables/creative_inline_content_ads_database_table.h"
@@ -37,14 +36,6 @@ void InlineContentAd::FireEvent(const std::string& uuid,
   if (uuid.empty() || creative_instance_id.empty()) {
     BLOG(1, "Failed to fire inline content ad event due to invalid uuid "
                 << uuid << " or creative instance id " << creative_instance_id);
-    NotifyInlineContentAdEventFailed(uuid, creative_instance_id, event_type);
-    return;
-  }
-
-  inline_content_ads::frequency_capping::PermissionRules permission_rules;
-  if (event_type == InlineContentAdEventType::kViewed &&
-      !permission_rules.HasPermission()) {
-    BLOG(1, "Inline content ad: Not allowed due to permission rules");
     NotifyInlineContentAdEventFailed(uuid, creative_instance_id, event_type);
     return;
   }
