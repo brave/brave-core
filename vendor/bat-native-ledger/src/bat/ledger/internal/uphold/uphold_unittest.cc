@@ -1109,8 +1109,37 @@ INSTANTIATE_TEST_SUITE_P(
       type::Result::ALREADY_EXISTS,
       type::WalletStatus::NOT_CONNECTED
     },
+    LinkWalletParamType{  // Mismatched provider accounts.
+      "01_mismatched_provider_accounts",
+      R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": "2021-05-26T16:42:23.134Z" })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "id": "962ef3b8-bc12-4619-a349-c8083931b795", "label": "Brave Browser" } ])",
+        {}
+      },
+      false,
+      R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_FORBIDDEN,
+        {},
+        {}
+      },
+      type::Result::TOO_MANY_RESULTS,
+      type::WalletStatus::NOT_CONNECTED
+    },
     LinkWalletParamType{  // Rewards Link (Claim) Wallet failed.
-      "01_link_wallet_failed",
+      "02_link_wallet_failed",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       type::UrlResponse{
         {},
@@ -1139,7 +1168,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::PENDING
     },
     LinkWalletParamType{  // Happy path.
-      "02_happy_path",
+      "03_happy_path",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       type::UrlResponse{
         {},

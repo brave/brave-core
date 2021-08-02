@@ -97,6 +97,7 @@ export type NotificationType =
   'error' |
   'grant' |
   'insufficientFunds' |
+  'mismatchedProviderAccounts' |
   'pendingContribution' |
   'tipsProcessed' |
   'upholdBATNotAllowedForUser' |
@@ -279,6 +280,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
         buttonAction = this.onNotificationClick
         break
       case 'deviceLimitReached':
+      case 'mismatchedProviderAccounts':
       case 'upholdBATNotAllowedForUser':
       case 'upholdBlockedUser':
       case 'upholdPendingUser':
@@ -465,6 +467,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       case 'backupWallet':
       case 'deviceLimitReached':
       case 'insufficientFunds':
+      case 'mismatchedProviderAccounts':
       case 'upholdBATNotAllowedForUser':
       case 'upholdBlockedUser':
       case 'upholdPendingUser':
@@ -500,6 +503,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     switch (notification.type) {
       case 'backupWallet':
       case 'deviceLimitReached':
+      case 'mismatchedProviderAccounts':
       case 'pendingContribution':
       case 'upholdBATNotAllowedForUser':
       case 'upholdBlockedUser':

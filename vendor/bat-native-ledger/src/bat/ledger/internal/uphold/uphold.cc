@@ -207,7 +207,7 @@ void Uphold::DisconnectWallet(const std::string& notification) {
   const bool shutting_down = ledger_->IsShuttingDown();
 
   if (!manual && !shutting_down) {
-    ledger_->ledger_client()->ShowNotification(notification, {},
+    ledger_->ledger_client()->ShowNotification(notification, {"Uphold"},
                                                [](type::Result _) {});
   }
 

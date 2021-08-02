@@ -219,6 +219,24 @@
     "message": "Please backup your Brave wallet.",
     "description": "Description for backup wallet notification"
   },
+  "mismatchedProviderAccountsLearnMore": {
+    "message": "Learn More",
+    "description": "Notification button text to learn more about linking with a custodian account"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Error: Different account",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Hmm, it looks like your Brave Rewards wallet has already been verified with another $name$ account. Please try verifying again using your previous account.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
   "upholdBATNotAllowedForUserLearnMore": {
     "message": "Learn More",
     "description": "Notification button text to learn more about why BAT is not allowed for user"
