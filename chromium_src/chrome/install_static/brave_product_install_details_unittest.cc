@@ -245,7 +245,7 @@ TEST_P(MakeProductDetailsTest, AdditionalParametersChannels) {
     std::unique_ptr<PrimaryInstallDetails> details(
         MakeProductDetails(test_data().path));
     if (kInstallModes[test_data().index].channel_strategy ==
-        ChannelStrategy::ADDITIONAL_PARAMETERS) {
+        ChannelStrategy::FLOATING) {
       EXPECT_THAT(details->channel(), StrEq(ap_and_channel.second));
     } else {
       // "ap" is ignored for this mode.
