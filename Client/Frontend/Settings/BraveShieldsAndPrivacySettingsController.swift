@@ -144,6 +144,7 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
                     
                 return .boolRow(title: title, toggleValue: self.toggles[idx], valueChange: { [unowned self] checked in
                     self.toggles[idx] = checked
+                    Preferences.Privacy.clearPrivateDataToggles.value = self.toggles
                 }, cellReuseId: "\(title.lowercased().trimmingCharacters(in: .whitespacesAndNewlines))\(idx)")
             } + [
                 Row(text: Strings.clearDataNow, selection: { [unowned self] in
