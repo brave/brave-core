@@ -225,6 +225,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"braveNewTabNewTabCustomizeWidgets",
      IDS_SETTINGS_NEW_TAB_NEW_TAB_CUSTOMIZE_WIDGETS},
     // Misc (TODO: Organize this)
+    {"showSearchTabsBtn", IDS_SETTINGS_TABS_SEARCH_SHOW},
     {"onExitPageTitle", IDS_SETTINGS_BRAVE_ON_EXIT},
     {"braveDefaultExtensions", IDS_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_TITLE},
     {"webTorrentEnabledDesc", IDS_SETTINGS_WEBTORRENT_ENABLED_DESC},

@@ -295,6 +295,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES" desc="The label for settings switch controlling whether or not Brave suggested sites show up in autocomplete">
         Show Brave suggested sites in autocomplete suggestions
       </message>
+      <message name="IDS_SETTINGS_TABS_SEARCH_SHOW" desc="The button for searching tabs on the left of tab strip region.">
+        Show Search Tabs Button
+      </message>
       <!-- Settings / Safety Check -->
       <message name="IDS_SETTINGS_BRAVE_SAFETY_CHECK_SAFE_BROWSING_ENABLED_STANDARD_AVAILABLE_ENHANCED" desc="This text points out that Safe Browsing is enabled as standard protection.">
         Standard protection is on.
