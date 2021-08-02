@@ -18,11 +18,13 @@ class ShareToBraveViewController: SLComposeServiceViewController {
             
             init?(item: NSSecureCoding) {
                 if let text = item as? String {
-                    urlOrQuery = text
-                    type = .query
-                } else if let url = (item as? URL)?.absoluteString.firstURL?.absoluteString {
-                    urlOrQuery = url
-                    type = .url
+                    if let url = URL(string: text)?.absoluteString {
+                        urlOrQuery = url
+                        type = .url
+                    } else {
+                        urlOrQuery = text
+                        type = .query
+                    }
                 } else {
                     return nil
                 }
@@ -62,14 +64,14 @@ class ShareToBraveViewController: SLComposeServiceViewController {
         
         // Look for the first URL the host application is sharing.
         // If there isn't a URL grab the first text item
-        guard let provider = attachments.first(where: { $0.isUrl }) ?? attachments.first(where: { $0.isText }) else {
+        guard let provider = attachments.first(where: { $0.isText }) else {
             // If no item was processed. Cancel the share action to prevent the extension from locking the host application
             // due to the hidden ViewController.
             cancel()
             return []
         }
-        
-        provider.loadItem(of: provider.isUrl ? kUTTypeURL : kUTTypeText) { item, error in
+
+        provider.loadItem(forTypeIdentifier: String(kUTTypeText), options: nil) { item, error in
             guard let item = item, let schemeUrl = Scheme(item: item)?.schemeUrl else {
                 self.cancel()
                 return
@@ -113,14 +115,6 @@ class ShareToBraveViewController: SLComposeServiceViewController {
 extension NSItemProvider {
     var isText: Bool {
         return hasItemConformingToTypeIdentifier(String(kUTTypeText))
-    }
-    
-    var isUrl: Bool {
-        return hasItemConformingToTypeIdentifier(String(kUTTypeURL))
-    }
-    
-    func loadItem(of type: CFString, completion: CompletionHandler?) {
-        loadItem(forTypeIdentifier: String(type), options: nil, completionHandler: completion)
     }
 }
 
