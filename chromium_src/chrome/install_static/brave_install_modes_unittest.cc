@@ -101,7 +101,7 @@ TEST(InstallModes, VerifyModes) {
 #if defined(OFFICIAL_BUILD)
     ASSERT_THAT(
         mode.channel_strategy,
-        AnyOf(ChannelStrategy::ADDITIONAL_PARAMETERS, ChannelStrategy::FIXED));
+        AnyOf(ChannelStrategy::FLOATING, ChannelStrategy::FIXED));
 #else
     ASSERT_THAT(mode.channel_strategy, Eq(ChannelStrategy::UNSUPPORTED));
 #endif

@@ -56,7 +56,7 @@ const InstallConstants kInstallModes[] = {
         { 0xb7965c30, 0x7d58, 0x4d86, {
           0x9e, 0x18, 0x47, 0x94, 0x25, 0x64, 0x9, 0xee } },
         L"",  // The empty string means "stable".
-        ChannelStrategy::ADDITIONAL_PARAMETERS,
+        ChannelStrategy::FLOATING,
         true,  // Supports system-level installs.
         true,  // Supports in-product set as default browser UX.
         true,  // Supports retention experiments.
