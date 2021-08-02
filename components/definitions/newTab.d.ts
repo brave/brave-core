@@ -133,6 +133,7 @@ declare namespace NewTab {
     showBitcoinDotCom: boolean
     showFTX: boolean,
     stats: Stats,
+    braveTalkPromptAllowed: boolean
     brandedWallpaperData?: BrandedWallpaper
   }
 

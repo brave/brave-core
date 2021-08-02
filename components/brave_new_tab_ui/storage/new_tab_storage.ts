@@ -54,6 +54,7 @@ export const defaultState: NewTab.State = {
   },
   braveTalkPromptDismissed: false,
   braveTalkPromptAutoDismissed: false,
+  braveTalkPromptAllowed: loadTimeData.getBoolean('braveTalkPromptAllowed'),
   rewardsState: {
     adsAccountStatement: {
       nextPaymentDate: 0,

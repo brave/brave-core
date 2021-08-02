@@ -1142,7 +1142,7 @@ class NewTabPage extends React.Component<Props, State> {
             <FooterInfo
               textDirection={newTabData.textDirection}
               supportsBraveTalk={newTabData.braveTalkSupported}
-              showBraveTalkPrompt={!newTabData.braveTalkPromptDismissed}
+              showBraveTalkPrompt={newTabData.braveTalkPromptAllowed && !newTabData.braveTalkPromptDismissed}
               backgroundImageInfo={newTabData.backgroundImage}
               showPhotoInfo={!isShowingBrandedWallpaper && newTabData.showBackgroundImage}
               onClickSettings={this.openSettings}
