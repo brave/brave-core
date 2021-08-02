@@ -44,7 +44,7 @@ BraveWalletProviderDelegateImpl::BraveWalletProviderDelegateImpl(
     content::WebContents* web_contents,
     content::RenderFrameHost* const render_frame_host)
     : web_contents_(web_contents),
-      routing_id_(render_frame_host->GetGlobalFrameRoutingId()),
+      host_id_(render_frame_host->GetGlobalId()),
       weak_ptr_factory_(this) {}
 
 BraveWalletProviderDelegateImpl::~BraveWalletProviderDelegateImpl() = default;
@@ -83,7 +83,7 @@ void BraveWalletProviderDelegateImpl::RequestEthereumPermissions(
             base::BindOnce(&OnRequestEthereumPermissions, addresses,
                            std::move(callback)));
       },
-      content::RenderFrameHost::FromID(routing_id_), std::move(callback)));
+      content::RenderFrameHost::FromID(host_id_), std::move(callback)));
 }
 
 }  // namespace brave_wallet
