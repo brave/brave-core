@@ -485,6 +485,10 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
       break
     }
+    case types.RESTART_BROWSER: {
+      chrome.send('brave_rewards.restartBrowser')
+      break
+    }
   }
 
   return state

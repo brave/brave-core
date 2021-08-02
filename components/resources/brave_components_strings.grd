@@ -823,6 +823,7 @@
       <message name="IDS_BRAVE_UI_RECURRING" desc="">Recurring</message>
       <message name="IDS_BRAVE_UI_RECURRING_DONATION" desc="">Monthly Contributions</message>
       <message name="IDS_BRAVE_UI_RECURRING_DONATIONS" desc="">Monthly Contributions</message>
+      <message name="IDS_BRAVE_UI_RELAUNCH" desc="">Relaunch</message>
       <message name="IDS_BRAVE_UI_REMOVE" desc="">remove</message>
       <message name="IDS_BRAVE_UI_REMOVE_AD_FROM_SAVED" desc="">Remove From Saved</message>
       <message name="IDS_BRAVE_UI_RESERVED_AMOUNT_TEXT" desc="Notification about how much BAT do you have reserved">You’ve designated [[reservedAmount]] [[currency]] for creators who haven’t yet signed up to receive contributions. Your browser will keep trying to contribute until they verify, or until 90 days have passed.</message>
