@@ -13,10 +13,12 @@
 #include "chrome/grit/generated_resources.h"
 #include "components/sessions/core/tab_restore_service.h"
 
-BraveTabMenuModel::BraveTabMenuModel(ui::SimpleMenuModel::Delegate* delegate,
-                                     TabStripModel* tab_strip_model,
-                                     int index)
-    : TabMenuModel(delegate, tab_strip_model, index) {
+BraveTabMenuModel::BraveTabMenuModel(
+    ui::SimpleMenuModel::Delegate* delegate,
+    TabMenuModelDelegate* tab_menu_model_delegate,
+    TabStripModel* tab_strip_model,
+    int index)
+    : TabMenuModel(delegate, tab_menu_model_delegate, tab_strip_model, index) {
   web_contents_ = tab_strip_model->GetWebContentsAt(index);
   if (web_contents_) {
     Browser* browser = chrome::FindBrowserWithWebContents(web_contents_);
