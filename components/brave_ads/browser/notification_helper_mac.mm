@@ -28,25 +28,26 @@ bool NotificationHelperMac::ShouldShowNotifications() {
     return true;
   }
 
+  return CanShowNativeNotifications();
+}
+
+bool NotificationHelperMac::CanShowNativeNotifications() {
   if (base::mac::IsAtMostOS10_13()) {
-    LOG(WARNING) << "Native notifications are not supported on macOS prior"
-                    " to macOS 10.14 so falling back to Message Center";
-    return true;
+    LOG(WARNING)
+        << "Native notifications are not supported prior to macOS 10.14";
+    return false;
   }
 
   if (!base::FeatureList::IsEnabled(::features::kNativeNotifications)) {
-    LOG(WARNING) << "Native notification feature is disabled so falling back to"
-                    " Message Center";
-    return true;
+    LOG(WARNING) << "Native notifications feature is disabled";
+    return false;
   }
 
   if (!IsAuthorized()) {
-    LOG(INFO) << "Notification not made: User denied authorization";
     return false;
   }
 
   if (!IsEnabled()) {
-    LOG(INFO) << "Notification not made: Notifications are disabled";
     return false;
   }
 

@@ -233,6 +233,8 @@ class AdsServiceImpl : public AdsService,
   void ProcessIdleState(const ui::IdleState idle_state, const int idle_time);
   int GetIdleTimeThreshold();
 
+  bool ShouldShowCustomAdNotifications();
+
   void MaybeOpenNewTabWithAd();
   void OpenNewTabWithAd(const std::string& uuid);
   void OnOpenNewTabWithAd(const std::string& json);

@@ -15,11 +15,17 @@ const base::Feature kAdNotifications{"AdNotifications",
 
 namespace {
 
-// Set to true to show custom ad notifications or false to show system
+// Set to true to show custom ad notifications or false to show native ad
 // notifications
 const char kFieldTrialParameterShouldShowCustomAdNotifications[] =
     "should_show_custom_notifications";
 const bool kDefaultShouldShowCustomAdNotifications = false;
+
+// Set to true to fallback from native to custom ad notifications or false to
+// never fallback
+const char kFieldTrialParameterCanFallbackToCustomAdNotifications[] =
+    "can_fallback_to_custom_notifications";
+const bool kDefaultCanFallbackToCustomAdNotifications = false;
 
 // Ad notification timeout in seconds. Set to 0 to never time out
 const char kFieldTrialParameterAdNotificationTimeout[] =
@@ -57,8 +63,8 @@ const char kFieldTrialParameterAdNotificationInsetX[] =
 #if defined(OS_WIN)
 const int kDefaultAdNotificationInsetX = -13;
 #elif defined(OS_MAC)
-const int kSystemNotificationWidth = 360;
-const int kDefaultAdNotificationInsetX = -(10 + kSystemNotificationWidth);
+const int kNativeNotificationWidth = 360;
+const int kDefaultAdNotificationInsetX = -(10 + kNativeNotificationWidth);
 #elif defined(OS_LINUX)
 const int kDefaultAdNotificationInsetX = -13;
 #endif
@@ -100,6 +106,12 @@ bool ShouldShowCustomAdNotifications() {
   return GetFieldTrialParamByFeatureAsBool(
       kAdNotifications, kFieldTrialParameterShouldShowCustomAdNotifications,
       kDefaultShouldShowCustomAdNotifications);
+}
+
+bool CanFallbackToCustomAdNotifications() {
+  return GetFieldTrialParamByFeatureAsBool(
+      kAdNotifications, kFieldTrialParameterCanFallbackToCustomAdNotifications,
+      kDefaultCanFallbackToCustomAdNotifications);
 }
 
 int AdNotificationTimeout() {
