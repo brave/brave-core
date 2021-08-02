@@ -65,6 +65,7 @@ source_set("brave_ads_unit_tests") {
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/database/tables/dayparts_database_table_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/database/tables/geo_targets_database_table_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/database/tables/segments_database_table_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications_issue_17199_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/eligible_ads/inline_content_ads/eligible_inline_content_ads_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/features/ad_rewards/ad_rewards_features_unittest.cc",
