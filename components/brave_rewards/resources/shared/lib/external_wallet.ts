@@ -12,14 +12,6 @@ export type ExternalWalletStatus =
   'verified' |
   'disconnected'
 
-export type ExternalWalletAction =
-  'verify' |
-  'complete-verification' |
-  'view-account' |
-  'add-funds' |
-  'disconnect' |
-  'reconnect'
-
 export interface ExternalWallet {
   provider: ExternalWalletProvider
   status: ExternalWalletStatus

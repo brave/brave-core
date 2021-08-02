@@ -42,7 +42,7 @@ export function createStateManager<State> (
       // Send initial state to listeners in a microtask
       sendInitialState = true
       queueMicrotask(() => {
-        if (sendInitialState) {
+        if (sendInitialState && listeners.has(listener)) {
           listener(state)
         }
       })

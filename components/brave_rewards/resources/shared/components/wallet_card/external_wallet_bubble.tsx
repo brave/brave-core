@@ -6,9 +6,10 @@ import * as React from 'react'
 
 import {
   ExternalWallet,
-  ExternalWalletAction,
   getExternalWalletProviderName
 } from '../../lib/external_wallet'
+
+import { ExternalWalletAction } from './external_wallet_action'
 
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { GeminiIcon } from '../icons/gemini_icon'
@@ -55,53 +56,55 @@ export function ExternalWalletBubble (props: Props) {
 
   return (
       <styles.root>
-        <styles.header>
-          <styles.providerIcon>
-            <ProviderIcon />
-          </styles.providerIcon>
-          <styles.username>
-            {externalWallet.username}
-          </styles.username>
-          <styles.status className={externalWallet.status}>
-            {externalWallet.status === 'pending' && <PendingIcon />}
-            {getWalletStatus()}
-          </styles.status>
-        </styles.header>
-        {
-          externalWallet.status === 'pending' &&
-            <styles.pendingNotice>
-              <PendingIcon />
-              <span>{getString('walletCompleteVerificationText')}</span>
-            </styles.pendingNotice>
-        }
-        <styles.links>
-          <styles.link>
-            <styles.linkMarker />
-            {
-              externalWallet.status === 'pending'
-                ? <a href='#' onClick={actionHandler('complete-verification')}>
-                    {
-                      formatMessage(
-                        getString('walletCompleteVerificationLink'),
-                        [providerName])
-                    }
-                  </a>
-                : <a href='#' onClick={actionHandler('view-account')}>
-                    {
-                      formatMessage(
-                        getString('walletAccountLink'),
-                        [providerName])
-                    }
-                  </a>
-            }
-          </styles.link>
-          <styles.link>
-            <styles.linkMarker />
-            <a href='#' onClick={actionHandler('disconnect')}>
-              {getString('walletDisconnectLink')}
-            </a>
-          </styles.link>
-        </styles.links>
+        <styles.content>
+          <styles.header>
+            <styles.providerIcon>
+              <ProviderIcon />
+            </styles.providerIcon>
+            <styles.username>
+              {externalWallet.username}
+            </styles.username>
+            <styles.status className={externalWallet.status}>
+              {externalWallet.status === 'pending' && <PendingIcon />}
+              {getWalletStatus()}
+            </styles.status>
+          </styles.header>
+          {
+            externalWallet.status === 'pending' &&
+              <styles.pendingNotice>
+                <PendingIcon />
+                <span>{getString('walletCompleteVerificationText')}</span>
+              </styles.pendingNotice>
+          }
+          <styles.links>
+            <styles.link>
+              <styles.linkMarker />
+              {
+                externalWallet.status === 'pending'
+                  ? <a href='#' onClick={actionHandler('complete-verification')}>
+                      {
+                        formatMessage(
+                          getString('walletCompleteVerificationLink'),
+                          [providerName])
+                      }
+                    </a>
+                  : <a href='#' onClick={actionHandler('view-account')}>
+                      {
+                        formatMessage(
+                          getString('walletAccountLink'),
+                          [providerName])
+                      }
+                    </a>
+              }
+            </styles.link>
+            <styles.link>
+              <styles.linkMarker />
+              <a href='#' onClick={actionHandler('disconnect')}>
+                {getString('walletDisconnectLink')}
+              </a>
+            </styles.link>
+          </styles.links>
+        </styles.content>
         <styles.backdrop onClick={props.onCloseBubble} />
       </styles.root>
   )

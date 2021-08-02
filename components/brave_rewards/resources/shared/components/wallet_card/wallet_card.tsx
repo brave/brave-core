@@ -5,11 +5,12 @@
 import * as React from 'react'
 
 import { LocaleContext } from '../../lib/locale_context'
-import { ExternalWallet, ExternalWalletAction } from '../../lib/external_wallet'
+import { ExternalWallet } from '../../lib/external_wallet'
 
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
 import { ExternalWalletView } from './external_wallet_view'
+import { ExternalWalletAction } from './external_wallet_action'
 import { RewardsSummary, RewardsSummaryData } from './rewards_summary'
 import { PendingRewardsView } from './pending_rewards_view'
 import { PlusIcon } from './icons/plus_icon'
