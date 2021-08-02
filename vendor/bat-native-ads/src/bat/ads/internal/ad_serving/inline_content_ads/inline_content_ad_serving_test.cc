@@ -36,10 +36,10 @@ class BatAdsInlineContentAdServingTest : public UnitTestBase {
   ~BatAdsInlineContentAdServingTest() override = default;
 
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/* integration_test */ true);
+    ASSERT_TRUE(CopyFileFromTestPathToTempDir(
+        "confirmations_with_unblinded_tokens.json", "confirmations.json"));
 
-    MockLoad(ads_client_mock_, "confirmations.json",
-             "confirmations_with_unblinded_tokens.json");
+    UnitTestBase::SetUpForTesting(/* integration_test */ true);
 
     const URLEndpoints endpoints = {
         {"/v8/catalog", {{net::HTTP_OK, "/empty_catalog.json"}}}};

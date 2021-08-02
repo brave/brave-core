@@ -158,7 +158,7 @@ void CreativeAdNotifications::GetForSegments(
       DBCommand::RecordBindingType::INT_TYPE,     // per_month
       DBCommand::RecordBindingType::INT_TYPE,     // total_max
       DBCommand::RecordBindingType::STRING_TYPE,  // split_test_group
-      DBCommand::RecordBindingType::STRING_TYPE,  // category
+      DBCommand::RecordBindingType::STRING_TYPE,  // segment
       DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
       DBCommand::RecordBindingType::STRING_TYPE,  // target_url
       DBCommand::RecordBindingType::STRING_TYPE,  // title
@@ -239,7 +239,7 @@ void CreativeAdNotifications::GetAll(
       DBCommand::RecordBindingType::INT_TYPE,     // per_month
       DBCommand::RecordBindingType::INT_TYPE,     // total_max
       DBCommand::RecordBindingType::STRING_TYPE,  // split_test_group
-      DBCommand::RecordBindingType::STRING_TYPE,  // category
+      DBCommand::RecordBindingType::STRING_TYPE,  // segment
       DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
       DBCommand::RecordBindingType::STRING_TYPE,  // target_url
       DBCommand::RecordBindingType::STRING_TYPE,  // title
