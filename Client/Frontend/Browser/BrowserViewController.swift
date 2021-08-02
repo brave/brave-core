@@ -1598,7 +1598,8 @@ class BrowserViewController: UIViewController {
                 guard let self = self else { return }
                 
                 self.tabManager.clearTabHistory() {
-                    self.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: false)
+                    self.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: false, isExternal: true)
+                    self.popToBVC()
                 }
             }
         }
