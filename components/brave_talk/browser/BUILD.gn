@@ -2,4 +2,8 @@ source_set("browser") {
   sources = [
     "regions.h",
   ]
+
+  deps = [
+    "//brave/components/brave_talk",
+  ]
 }
