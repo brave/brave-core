@@ -29,6 +29,8 @@ void TorLauncherImpl::Cleanup() {
     return;
   in_shutdown_ = true;
 
+  // Delete watch folder every time that Tor is terminated
+  base::DeletePathRecursively(tor_watch_path_);
   child_monitor_.reset();
 }
 
@@ -67,20 +69,20 @@ void TorLauncherImpl::Launch(mojom::TorConfigPtr config,
   }
   args.AppendArg("--__OwningControllerProcess");
   args.AppendArg(base::NumberToString(base::Process::Current().Pid()));
-  base::FilePath tor_watch_path = config->tor_watch_path;
-  if (!tor_watch_path.empty()) {
-    if (!base::DirectoryExists(tor_watch_path))
-      base::CreateDirectory(tor_watch_path);
+  tor_watch_path_ = config->tor_watch_path;
+  if (!tor_watch_path_.empty()) {
+    if (!base::DirectoryExists(tor_watch_path_))
+      base::CreateDirectory(tor_watch_path_);
     args.AppendArg("--pidfile");
-    args.AppendArgPath(tor_watch_path.AppendASCII("tor.pid"));
+    args.AppendArgPath(tor_watch_path_.AppendASCII("tor.pid"));
     args.AppendArg("--controlport");
     args.AppendArg("auto");
     args.AppendArg("--controlportwritetofile");
-    args.AppendArgPath(tor_watch_path.AppendASCII("controlport"));
+    args.AppendArgPath(tor_watch_path_.AppendASCII("controlport"));
     args.AppendArg("--cookieauthentication");
     args.AppendArg("1");
     args.AppendArg("--cookieauthfile");
-    args.AppendArgPath(tor_watch_path.AppendASCII("control_auth_cookie"));
+    args.AppendArgPath(tor_watch_path_.AppendASCII("control_auth_cookie"));
   }
 
   base::LaunchOptions launchopts;
