@@ -10,7 +10,7 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/client/client.h"
-#include "bat/ads/internal/client/preferences/filtered_ad_info.h"
+#include "bat/ads/internal/client/preferences/filtered_category_info.h"
 
 namespace ads {
 
@@ -40,18 +40,19 @@ std::string MarkedToNoLongerReceiveFrequencyCap::get_last_message() const {
 
 bool MarkedToNoLongerReceiveFrequencyCap::DoesRespectCap(
     const CreativeAdInfo& ad) {
-  const FilteredAdList filtered_ads = Client::Get()->get_filtered_ads();
-  if (filtered_ads.empty()) {
+  const FilteredCategoryList filtered_categories =
+      Client::Get()->get_filtered_categories();
+  if (filtered_categories.empty()) {
     return true;
   }
 
   const auto iter =
-      std::find_if(filtered_ads.begin(), filtered_ads.end(),
-                   [&ad](const FilteredAdInfo& filtered_ad) {
-                     return filtered_ad.creative_set_id == ad.creative_set_id;
+      std::find_if(filtered_categories.begin(), filtered_categories.end(),
+                   [&ad](const FilteredCategoryInfo& filtered_category) {
+                     return filtered_category.name == ad.segment;
                    });
 
-  if (iter == filtered_ads.end()) {
+  if (iter == filtered_categories.end()) {
     return true;
   }
 

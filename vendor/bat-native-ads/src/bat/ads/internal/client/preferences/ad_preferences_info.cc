@@ -47,7 +47,7 @@ Result AdPreferencesInfo::FromJson(const std::string& json) {
       return FAILED;
     }
 
-    FilteredCategory filtered_category;
+    FilteredCategoryInfo filtered_category;
     filtered_category.name = ad["name"].GetString();
     filtered_categories.push_back(filtered_category);
   }

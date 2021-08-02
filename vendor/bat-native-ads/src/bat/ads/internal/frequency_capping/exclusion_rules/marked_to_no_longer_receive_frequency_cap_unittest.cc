@@ -13,7 +13,7 @@
 namespace ads {
 
 namespace {
-const char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
+const char kSegment[] = "segment";
 }  // namespace
 
 class BatAdsMarkedToNoLongerReceiveFrequencyCapTest : public UnitTestBase {
@@ -23,11 +23,10 @@ class BatAdsMarkedToNoLongerReceiveFrequencyCapTest : public UnitTestBase {
   ~BatAdsMarkedToNoLongerReceiveFrequencyCapTest() override = default;
 };
 
-TEST_F(BatAdsMarkedToNoLongerReceiveFrequencyCapTest,
-       AllowAdIfNotMarkedToNoLongerReceive) {
+TEST_F(BatAdsMarkedToNoLongerReceiveFrequencyCapTest, AllowAd) {
   // Arrange
   CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetId;
+  ad.segment = kSegment;
 
   // Act
   MarkedToNoLongerReceiveFrequencyCap frequency_cap;
@@ -37,14 +36,13 @@ TEST_F(BatAdsMarkedToNoLongerReceiveFrequencyCapTest,
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsMarkedToNoLongerReceiveFrequencyCapTest,
-       DoNotAllowAdIfMarkedToNoLongerReceive) {
+TEST_F(BatAdsMarkedToNoLongerReceiveFrequencyCapTest, DoNotAllowAd) {
   // Arrange
   CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetId;
+  ad.segment = kSegment;
 
-  Client::Get()->ToggleAdThumbDown(ad.creative_instance_id, ad.creative_set_id,
-                                   AdContentInfo::LikeAction::kThumbsUp);
+  Client::Get()->ToggleAdOptOutAction(ad.segment,
+                                      CategoryContentInfo::OptAction::kNone);
 
   // Act
   MarkedToNoLongerReceiveFrequencyCap frequency_cap;
