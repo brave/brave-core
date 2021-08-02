@@ -35,6 +35,7 @@ interface Props {
 
 export default function (props: Props) {
   const {
+    accounts,
     hardwareWallet,
     selectedDerivationScheme,
     setSelectedDerivationScheme,
@@ -43,6 +44,8 @@ export default function (props: Props) {
     onLoadMore,
     onAddAccounts
   } = props
+  const [filteredAccountList, setFilteredAccountList] = React.useState<HardwareWalletAccount[]>(accounts)
+
   const derivationPathsEnum = HardwareWalletDerivationPathsMapping[hardwareWallet]
 
   const onSelectAccountCheckbox = (account: HardwareWalletAccount) => () => {
@@ -54,6 +57,25 @@ export default function (props: Props) {
 
     setSelectedDerivationPaths(updatedPaths)
   }
+
+  const filterAccountList = (event: any) => {
+    const search = event?.target?.value || ''
+    if (search === '') {
+      setFilteredAccountList(accounts)
+    } else {
+      const filteredList = accounts.filter((account) => {
+        return (
+            account.address.toLowerCase() === search.toLowerCase() ||
+            account.address.toLowerCase().startsWith(search.toLowerCase())
+        )
+      })
+      setFilteredAccountList(filteredList)
+    }
+  }
+
+  React.useEffect(() => {
+    filterAccountList(null)
+  }, [accounts])
 
   return (
     <>
@@ -73,9 +95,9 @@ export default function (props: Props) {
       <DisclaimerWrapper>
         <DisclaimerText>{locale.switchHDPathTextHardwareWallet}</DisclaimerText>
       </DisclaimerWrapper>
-      <SearchBar placeholder={locale.searchScannedAccounts} />
+      <SearchBar placeholder={locale.searchScannedAccounts} action={filterAccountList} />
       <HardwareWalletAccountsList>
-        {props.accounts.map((account) => {
+        {filteredAccountList.map((account) => {
           const { selectedDerivationPaths } = props
           const { derivationPath } = account
 
