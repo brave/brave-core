@@ -237,7 +237,7 @@
         You can start a private call in Brave.
       </message>
       <message name="IDS_BRAVE_TOGETHER_PROMPT_DESCRIPTION" desc="Description for prompt about Brave Together">
-        Start unlimited calls with friends and colleagues in Brave Together.
+        Start unlimited calls with friends and colleagues in Brave Talk.
       </message>
       <message name="IDS_BRAVE_TOGETHER_PROMPT_ACTION" desc="Button text for prompt about Brave Together">
         Try it out
