@@ -12,7 +12,7 @@
 
 #include "base/scoped_observation.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
-#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/browser/ui/views/brave_actions/brave_rewards_action_stub_view.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/extensions/api/extension_action/extension_action_api.h"
 #include "chrome/browser/ui/browser.h"
@@ -24,10 +24,6 @@
 #include "extensions/common/extension.h"
 #include "ui/gfx/skia_util.h"
 #include "ui/views/view.h"
-
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-#include "brave/browser/ui/views/brave_actions/brave_rewards_action_stub_view.h"
-#endif
 
 class BraveActionViewController;
 class BraveActionsContainerTest;
@@ -49,10 +45,7 @@ class BraveActionsContainer : public views::View,
                               public extensions::ExtensionActionAPI::Observer,
                               public extensions::ExtensionRegistryObserver,
                               public ToolbarActionView::Delegate,
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-                              public BraveRewardsActionStubView::Delegate
-#endif
-                              {
+                              public BraveRewardsActionStubView::Delegate {
  public:
   BraveActionsContainer(Browser* browser, Profile* profile);
   ~BraveActionsContainer() override;
@@ -76,10 +69,8 @@ class BraveActionsContainer : public views::View,
                            const gfx::Point& press_pt,
                            const gfx::Point& p) override;
 
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   // BraveRewardsActionStubView::Delegate
   void OnRewardsStubButtonClicked() override;
-#endif
 
   // ExtensionRegistryObserver:
   void OnExtensionLoaded(content::BrowserContext* browser_context,
@@ -143,7 +134,7 @@ class BraveActionsContainer : public views::View,
   void ShowAction(const std::string& id, bool show);
   bool IsActionShown(const std::string& id) const;
   void UpdateActionState(const std::string& id);
-  void AttachAction(BraveActionInfo &action);
+  void AttachAction(const BraveActionInfo& action);
 
   // BraveActionAPI::Observer
   void OnBraveActionShouldTrigger(const std::string& extension_id,
