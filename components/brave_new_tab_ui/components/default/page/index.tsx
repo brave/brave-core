@@ -31,7 +31,7 @@ type PageProps = {
   showStats: boolean
   showRewards: boolean
   showBinance: boolean
-  showTogether: boolean
+  showBraveTalk: boolean
   showTopSites: boolean
   showBrandedWallpaper: boolean
 } & HasImageProps

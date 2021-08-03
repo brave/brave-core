@@ -45,7 +45,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         brandedWallpaperData: initialDataPayload.brandedWallpaperData,
         ...initialDataPayload.privateTabData,
         ...initialDataPayload.torTabData,
-        togetherSupported: initialDataPayload.togetherSupported,
+        braveTalkSupported: initialDataPayload.braveTalkSupported,
         geminiSupported: initialDataPayload.geminiSupported,
         cryptoDotComSupported: initialDataPayload.cryptoDotComSupported,
         ftxSupported: initialDataPayload.ftxSupported,
@@ -189,10 +189,10 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       break
     }
 
-    case Actions.dismissTogetherPrompt.getType(): {
+    case Actions.dismissBraveTalkPrompt.getType(): {
       state = {
         ...state,
-        togetherPromptDismissed: true
+        braveTalkPromptDismissed: true
       }
       break
     }

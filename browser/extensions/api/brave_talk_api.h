@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_EXTENSIONS_API_BRAVE_TOGETHER_API_H_
-#define BRAVE_BROWSER_EXTENSIONS_API_BRAVE_TOGETHER_API_H_
+#ifndef BRAVE_BROWSER_EXTENSIONS_API_BRAVE_TALK_API_H_
+#define BRAVE_BROWSER_EXTENSIONS_API_BRAVE_TALK_API_H_
 
 #include <map>
 #include <string>
@@ -16,17 +16,16 @@ class Profile;
 namespace extensions {
 namespace api {
 
-class BraveTogetherIsSupportedFunction :
-    public ExtensionFunction {
+class BraveTalkIsSupportedFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveTogether.isSupported", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveTalk.isSupported", UNKNOWN)
 
  protected:
-  ~BraveTogetherIsSupportedFunction() override {}
+  ~BraveTalkIsSupportedFunction() override {}
   ResponseAction Run() override;
 };
 
 }  // namespace api
 }  // namespace extensions
 
-#endif  // BRAVE_BROWSER_EXTENSIONS_API_BRAVE_TOGETHER_API_H_
+#endif  // BRAVE_BROWSER_EXTENSIONS_API_BRAVE_TALK_API_H_

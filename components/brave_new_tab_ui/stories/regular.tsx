@@ -66,7 +66,7 @@ export const Regular = () => {
       saveShowToday={doNothing}
       saveShowRewards={doNothing}
       saveShowBinance={doNothing}
-      saveShowTogether={doNothing}
+      saveShowBraveTalk={doNothing}
       saveShowGemini={doNothing}
       saveShowCryptoDotCom={doNothing}
       saveShowFTX={doNothing}

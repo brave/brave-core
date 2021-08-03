@@ -52,7 +52,7 @@ extern const char kNewTabPageShowToday[];
 extern const char kNewTabPageShowRewards[];
 extern const char kNewTabPageShowBinance[];
 extern const char kNewTabPageShowGemini[];
-extern const char kNewTabPageShowTogether[];
+extern const char kNewTabPageShowBraveTalk[];
 extern const char kNewTabPageHideAllWidgets[];
 extern const char kNewTabPageShowsOptions[];
 // TODO(petemill): Move to brave_today component
