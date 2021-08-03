@@ -102,6 +102,7 @@ source_set("browser_tests") {
       "//brave/browser/tor",
       "//brave/browser/ui",
       "//brave/common",
+      "//brave/common:switches",
       "//brave/components/ipfs/buildflags",
       "//brave/components/tor",
       "//brave/components/tor:pref_names",
