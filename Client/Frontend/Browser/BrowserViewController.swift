@@ -1592,7 +1592,8 @@ class BrowserViewController: UIViewController {
         // All private tabs closed and a new private tab is created
         if Preferences.Privacy.privateBrowsingOnly.value {
             tabManager.removeAll()
-            openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: true)
+            openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: true, isExternal: true)
+            popToBVC()
         } else {
             History.deleteAll { [weak self] in
                 guard let self = self else { return }
