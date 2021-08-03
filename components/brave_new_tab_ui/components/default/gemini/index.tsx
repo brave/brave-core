@@ -475,6 +475,7 @@ class Gemini extends React.PureComponent<Props, State> {
       accountBalances
     } = this.props
     const accountUSDValue = this.getAccountUSDValue()
+    const balanceKeys = Object.keys(accountBalances)
 
     return (
       <>
@@ -498,8 +499,8 @@ class Gemini extends React.PureComponent<Props, State> {
             </TradeLabel>
           </ListInfo>
         </AccountSummary>
-        {geminiData.currencies.map((asset: string) => {
-          const assetAccountBalance = accountBalances[asset] || '0'
+        {balanceKeys.map((asset: string) => {
+          const assetAccountBalance = accountBalances[asset]
           const assetBalance = this.formatCryptoBalance(assetAccountBalance)
           return (
             <S.ListItem key={`list-${asset}`} isFlex={true} $p={10}>
