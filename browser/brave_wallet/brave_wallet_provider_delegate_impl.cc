@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -22,17 +23,19 @@ namespace brave_wallet {
 namespace {
 
 void OnRequestEthereumPermissions(
+    const std::vector<std::string>& accounts,
     BraveWalletProviderDelegate::RequestEthereumPermissionsCallback callback,
     const std::vector<ContentSetting>& responses) {
-  bool success = false;
-  for (auto response : responses) {
-    if (response == CONTENT_SETTING_ALLOW) {
-      success = true;
-      break;
+  DCHECK(responses.empty() || responses.size() == accounts.size());
+
+  std::vector<std::string> granted_accounts;
+  for (size_t i = 0; i < responses.size(); i++) {
+    if (responses[i] == CONTENT_SETTING_ALLOW) {
+      granted_accounts.push_back(accounts[i]);
     }
   }
 
-  std::move(callback).Run(success);
+  std::move(callback).Run(granted_accounts);
 }
 
 }  // namespace
@@ -73,7 +76,8 @@ void BraveWalletProviderDelegateImpl::RequestEthereumPermissions(
          brave_wallet::mojom::KeyringInfoPtr keyring_info) {
         permissions::BraveEthereumPermissionContext::RequestPermissions(
             rfh, keyring_info->accounts,
-            base::BindOnce(&OnRequestEthereumPermissions, std::move(callback)));
+            base::BindOnce(&OnRequestEthereumPermissions,
+                           keyring_info->accounts, std::move(callback)));
       },
       content::RenderFrameHost::FromID(routing_id_), std::move(callback)));
 }

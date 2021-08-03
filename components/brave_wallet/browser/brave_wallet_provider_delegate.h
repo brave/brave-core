@@ -15,7 +15,8 @@ namespace brave_wallet {
 
 class BraveWalletProviderDelegate {
  public:
-  using RequestEthereumPermissionsCallback = base::OnceCallback<void(bool)>;
+  using RequestEthereumPermissionsCallback =
+      base::OnceCallback<void(const std::vector<std::string>&)>;
 
   BraveWalletProviderDelegate() = default;
   BraveWalletProviderDelegate(const BraveWalletProviderDelegate&) = delete;

@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
@@ -73,7 +74,7 @@ class BraveWalletJSHandler : public mojom::EventsListener {
   void OnEnable(v8::Global<v8::Promise::Resolver> promise_resolver,
                 v8::Isolate* isolate,
                 v8::Global<v8::Context> context_old,
-                bool success);
+                const std::vector<std::string>& accounts);
 
   content::RenderFrame* render_frame_;
   mojo::Remote<mojom::BraveWalletProvider> brave_wallet_provider_;

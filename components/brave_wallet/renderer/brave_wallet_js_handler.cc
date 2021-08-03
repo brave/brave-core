@@ -382,7 +382,7 @@ void BraveWalletJSHandler::OnEnable(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
-    bool success) {
+    const std::vector<std::string>& accounts) {
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context = context_old.Get(isolate);
   v8::Context::Scope context_scope(context);
@@ -390,13 +390,20 @@ void BraveWalletJSHandler::OnEnable(
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
-  if (success) {
-    ALLOW_UNUSED_LOCAL(
-        resolver->Resolve(context, v8::Undefined(isolate)).ToChecked());
-  } else {
+  if (accounts.empty()) {
     ALLOW_UNUSED_LOCAL(
         resolver->Reject(context, v8::Undefined(isolate)).ToChecked());
+    return;
   }
+
+  v8::Local<v8::Array> result(v8::Array::New(isolate, accounts.size()));
+  for (size_t i = 0; i < accounts.size(); i++) {
+    ALLOW_UNUSED_LOCAL(
+        result->Set(context, i,
+                    v8::String::NewFromUtf8(isolate, accounts[i].c_str())
+                        .ToLocalChecked()));
+  }
+  ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
 }
 
 void BraveWalletJSHandler::ExecuteScript(const std::string script) {
