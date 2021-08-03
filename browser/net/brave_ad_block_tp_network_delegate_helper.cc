@@ -90,6 +90,7 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     network::mojom::ResolveHostParametersPtr optional_parameters =
         network::mojom::ResolveHostParameters::New();
     optional_parameters->include_canonical_name = true;
+    optional_parameters->initial_priority = net::RequestPriority::HIGHEST;
 
     SecureDnsConfig secure_dns_config =
         SystemNetworkContextManager::GetStubResolverConfigReader()
@@ -330,10 +331,16 @@ int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
   // If the following info isn't available, then proper content settings can't
   // be looked up, so do nothing.
   if (ctx->request_url.is_empty() ||
-      ctx->request_url.SchemeIs(content::kChromeDevToolsScheme) ||
       ctx->initiator_url.is_empty() || !ctx->initiator_url.has_host() ||
       !ctx->allow_brave_shields || ctx->allow_ads ||
       ctx->resource_type == BraveRequestInfo::kInvalidResourceType) {
+    return net::OK;
+  }
+
+  // Filter out unnecessary request schemes, to avoid passing large `data:`
+  // URLs to the blocking engine.
+  if (!ctx->request_url.SchemeIsHTTPOrHTTPS() &&
+      !ctx->request_url.SchemeIsWSOrWSS()) {
     return net::OK;
   }
 
