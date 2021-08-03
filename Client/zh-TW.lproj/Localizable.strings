@@ -1,7 +1,4 @@
 /* No comment provided by engineer. */
-"/can/answer" = "/can/answer";
-
-/* No comment provided by engineer. */
 "Brave VPN" = "Brave VPN";
 
 /* Button text to confirm PIN */
@@ -11,9 +8,6 @@
 "insertKeyMessage" = "為...插入安全金鑰";
 
 /* No comment provided by engineer. */
-"Logs" = "記錄";
-
-/* No comment provided by engineer. */
 "No server found" = "找不到任何伺服器";
 
 /* Placeholder text for PIN */
@@ -21,9 +15,6 @@
 
 /* Title for the alert modal when a security key with PIN is inserted. */
 "pinTitle" = "需要 PIN 碼驗證";
-
-/* No comment provided by engineer. */
-"Search Fallback" = "搜尋後援";
 
 /* Message for selecting security key. */
 "selectKey" = "為...掃描或插入您的安全金鑰 ";
