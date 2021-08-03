@@ -128,6 +128,8 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
       kTabsSearchShow,
       base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
                           base::Unretained(this)));
+  // Show the correct value in settings on initial start
+  BraveBrowserView::OnPreferenceChanged(kTabsSearchShow);
 #if BUILDFLAG(ENABLE_SIDEBAR)
   // Only normal window (tabbed) should have sidebar.
   if (!sidebar::CanUseSidebar(browser_->profile()) ||

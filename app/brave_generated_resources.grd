@@ -296,7 +296,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Show Brave suggested sites in autocomplete suggestions
       </message>
       <message name="IDS_SETTINGS_TABS_SEARCH_SHOW" desc="The button for searching tabs on the left of tab strip region.">
-        Show Search Tabs Button
+         Show tab search button
       </message>
       <!-- Settings / Safety Check -->
       <message name="IDS_SETTINGS_BRAVE_SAFETY_CHECK_SAFE_BROWSING_ENABLED_STANDARD_AVAILABLE_ENHANCED" desc="This text points out that Safe Browsing is enabled as standard protection.">
