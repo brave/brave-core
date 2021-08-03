@@ -11,11 +11,13 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.inputmethod.InputMethodManager;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
@@ -91,5 +93,11 @@ public class Utils {
         InputMethodManager imm =
                 (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+    }
+
+    public static void openBuySendSwapActivity(Activity activity) {
+        assert activity != null;
+        Intent buySendSwapActivityIntent = new Intent(activity, BuySendSwapActivity.class);
+        activity.startActivity(buySendSwapActivityIntent);
     }
 }

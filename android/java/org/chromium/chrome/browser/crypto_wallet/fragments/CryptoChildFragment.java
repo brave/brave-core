@@ -20,7 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
+import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CryptoChildFragment extends Fragment {
     public static CryptoChildFragment newInstance() {
@@ -76,6 +80,16 @@ public class CryptoChildFragment extends Fragment {
     private void setUpCoinList(View view) {
         RecyclerView rvCoins = view.findViewById(R.id.rvCoins);
         WalletCoinAdapter walletCoinAdapter = new WalletCoinAdapter();
+        List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+        walletListItemModelList.add(new WalletListItemModel(
+                R.drawable.ic_eth, "Ethereum", "ETH", "$872.48", "0.31178 ETH"));
+        walletListItemModelList.add(new WalletListItemModel(
+                R.drawable.ic_eth, "Ethereum", "ETH", "$872.48", "0.31178 ETH"));
+        walletListItemModelList.add(new WalletListItemModel(
+                R.drawable.ic_eth, "Ethereum", "ETH", "$872.48", "0.31178 ETH"));
+        walletListItemModelList.add(new WalletListItemModel(
+                R.drawable.ic_eth, "Ethereum", "ETH", "$872.48", "0.31178 ETH"));
+        walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
         rvCoins.setAdapter(walletCoinAdapter);
         rvCoins.setLayoutManager(new LinearLayoutManager(getActivity()));
     }

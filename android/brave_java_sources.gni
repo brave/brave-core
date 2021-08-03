@@ -278,6 +278,7 @@ if (brave_wallet_enabled) {
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding_fragments/UnlockWalletFragment.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding_fragments/VerifyRecoveryPhraseFragment.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/listeners/OnNextPage.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/model/WalletListItemModel.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/ItemOffsetDecoration.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/NavigationItem.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/SmoothLineChartEquallySpaced.java",
