@@ -22,7 +22,7 @@ namespace brave {
 
 BraveComponentUpdaterDelegate::BraveComponentUpdaterDelegate()
     : task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
-          {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+          {base::MayBlock(), base::TaskPriority::USER_BLOCKING,
            base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})) {}
 
 BraveComponentUpdaterDelegate::~BraveComponentUpdaterDelegate() {}
