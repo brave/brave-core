@@ -962,6 +962,10 @@
       <message name="IDS_BRAVE_UI_WALLET_PENDING" desc="">Pending</message>
       <message name="IDS_BRAVE_UI_WALLET_VERIFIED" desc="">Verified</message>
 
+      <message name="IDS_BRAVE_UI_GEMINI_PROMO_TITLE" desc="">Link Rewards to Gemini!</message>
+      <message name="IDS_BRAVE_UI_GEMINI_PROMO_INFO" desc="">Gemini lets you easily trade, store, and earn 3.49% APY* on your BAT. New Gemini users who link receive 5 free BAT!</message>
+      <message name="IDS_BRAVE_UI_GEMINI_PROMO_DISCLAIMER" desc="">* Gemini Earn APY as of Aug 15, 2021</message>
+
       <message name="IDS_BRAVE_UI_TAP_NETWORK_TITLE" desc="">Redeem BAT for Gift Cards</message>
       <message name="IDS_BRAVE_UI_TAP_NETWORK_INFO" desc="">With TAP Network, you can redeem your BAT for popular name-brand gift cards.</message>
       <message name="IDS_BRAVE_UI_TAP_NETWORK_DISCLAIMER" desc="">* Requires Uphold Verification.</message>

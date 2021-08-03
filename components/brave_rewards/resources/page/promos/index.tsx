@@ -3,13 +3,14 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import geminiBg from './assets/gemini_bg.svg'
 import tapBg from './assets/tap_bg.svg'
 import upholdCardBg from './assets/uphold_card_bg.png'
 import upholdEquitiesBg from './assets/uphold_equities_bg.svg'
 import { StyledInfo } from '../../ui/components/sidebarPromo/style'
 import { getLocale } from '../../../../common/locale'
 
-export type PromoType = 'uphold-card' | 'tap-network' | 'uphold-equities'
+export type PromoType = 'gemini' | 'uphold-card' | 'tap-network' | 'uphold-equities'
 
 export interface Promo {
   title: string
@@ -24,7 +25,7 @@ export const getActivePromos = (rewardsData: Rewards.State) => {
   let promos = []
 
   if (rewardsData && rewardsData.externalWallet) {
-    let wallet = rewardsData.externalWallet
+    const wallet = rewardsData.externalWallet
     if (wallet.type === 'uphold') {
       promos.unshift('tap-network')
       if (wallet.status === 2 && wallet.address) { // WalletStatus::VERIFIED
@@ -32,6 +33,7 @@ export const getActivePromos = (rewardsData: Rewards.State) => {
       }
       promos.unshift('uphold-equities')
     }
+    promos.unshift('gemini')
   }
 
   return promos
@@ -39,6 +41,9 @@ export const getActivePromos = (rewardsData: Rewards.State) => {
 
 const getLink = (type: PromoType) => {
   switch (type) {
+    case 'gemini': {
+      return 'https://www.gemini.com/brave'
+    }
     case 'tap-network': {
       return 'https://brave.tapnetwork.io'
     }
@@ -55,6 +60,19 @@ const getLink = (type: PromoType) => {
 
 export const getPromo = (type: PromoType, rewardsData: Rewards.State) => {
   switch (type) {
+    case 'gemini':
+      return {
+        imagePath: geminiBg,
+        link: getLink(type),
+        copy: (
+          <StyledInfo>
+            {getLocale('geminiPromoInfo')}
+          </StyledInfo>
+        ),
+        supportedLocales: ['US'],
+        title: getLocale('geminiPromoTitle'),
+        disclaimer: getLocale('geminiPromoDisclaimer')
+      }
     case 'tap-network':
       return {
         imagePath: tapBg,
