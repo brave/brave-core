@@ -330,11 +330,8 @@ public class NTPUtil {
         InputStream inputStream = null;
         try {
                 Uri imageFileUri = Uri.parse("file://" + imagePath);
-                Log.w("NTPUtil", "getBitmapFromImagePath: imageFileUri: " + imageFileUri.toString());
                 inputStream = mContext.getContentResolver().openInputStream(imageFileUri);
-                Log.w("NTPUtil", "getBitmapFromImagePath: inputStream: " + String.valueOf(inputStream.available()));
                 imageBitmap = BitmapFactory.decodeStream(inputStream, null, options);
-                Log.w("NTPUtil", "getBitmapFromImagePath: imageBitmap: " + String.valueOf(imageBitmap == null));
                 inputStream.close();
             } catch (IOException exc) {
                 Log.e("NTP", exc.getMessage());

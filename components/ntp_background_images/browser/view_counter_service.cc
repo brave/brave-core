@@ -134,7 +134,6 @@ ViewCounterService::GetCurrentBrandedWallpaperData() const {
 
 base::Value ViewCounterService::GetCurrentWallpaperForDisplay() const {
   if (ShouldShowBrandedWallpaper()) {
-    LOG(WARNING) << "ViewCounterService::GetCurrentWallpaperForDisplay: ShouldShowBrandedWallpaper";
     return GetCurrentBrandedWallpaper();
   } else {
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
@@ -156,7 +155,6 @@ base::Value ViewCounterService::GetCurrentWallpaper() const {
 #endif
 
 base::Value ViewCounterService::GetCurrentBrandedWallpaper() const {
-  LOG(WARNING) << "ViewCounterService::GetCurrentBrandedWallpaper";
   if (GetCurrentBrandedWallpaperData()) {
     return GetCurrentBrandedWallpaperData()->GetBackgroundAt(
         model_.current_branded_wallpaper_image_index());
@@ -216,7 +214,6 @@ void ViewCounterService::OnUpdated(NTPSponsoredImagesData* data) {
 
   // Data is updated, so change our stored data and reset any indexes.
   // But keep view counter until branded content is seen.
-  LOG(WARNING) << "ViewCounterService::OnUpdated(NTPSponsoredImagesData): data: " << (data != nullptr);
   if (data) {
     model_.ResetCurrentBrandedWallpaperImageIndex();
     model_.set_total_branded_image_count(data->backgrounds.size());
@@ -294,7 +291,6 @@ void ViewCounterService::InitializeWebUIDataSource(
 
 bool ViewCounterService::IsBrandedWallpaperActive() const {
   if (!GetCurrentBrandedWallpaperData()) {
-    LOG(WARNING) << "ViewCounterService::IsBrandedWallpaperActive: !GetCurrentBrandedWallpaperData";
     return false;
   }
 
@@ -304,7 +300,6 @@ bool ViewCounterService::IsBrandedWallpaperActive() const {
       IsSuperReferralWallpaperOptedIn())
     return true;
 
-  LOG(WARNING) << "ViewCounterService::IsBrandedWallpaperActive: IsSponsoredImagesWallpaperOptedIn: " << IsSponsoredImagesWallpaperOptedIn();
   // We don't show SI if user disables bg image.
   if (!prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage))
     return false;

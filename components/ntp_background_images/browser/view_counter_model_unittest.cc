@@ -87,7 +87,7 @@ TEST(ViewCounterModelTest, NTPBackgroundImagesTest) {
   // Loading regular-count times.
   int expected_wallpaper_index;
   for (int i = 0; i < ViewCounterModel::kRegularCountToBrandedWallpaper; ++i) {
-    expected_wallpaper_index = (i + ViewCounterModel::kRegularCountToBrandedWallpaper - 1)
+    expected_wallpaper_index = (i + ViewCounterModel::kInitialCountToBrandedWallpaper)
       % model.total_image_count_;
     EXPECT_EQ(expected_wallpaper_index, model.current_wallpaper_image_index());
     model.RegisterPageView();

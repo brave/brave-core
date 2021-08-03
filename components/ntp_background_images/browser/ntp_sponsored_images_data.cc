@@ -124,13 +124,11 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
     const base::FilePath& installed_dir)
     : NTPSponsoredImagesData() {
   absl::optional<base::Value> json_value = base::JSONReader::Read(json_string);
-  LOG(WARNING) << "NTPSponsoredImagesData::NTPSponsoredImagesData: !json_value: " << (!json_value);
   if (!json_value) {
     DVLOG(2) << "Read json data failed. Invalid JSON data";
     return;
   }
 
-  LOG(WARNING) << "NTPSponsoredImagesData::NTPSponsoredImagesData: 1";
   absl::optional<int> incomingSchemaVersion =
       json_value->FindIntKey(kSchemaVersionKey);
   const bool schemaVersionIsValid = incomingSchemaVersion &&
@@ -159,8 +157,6 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
       SponsoredBackground background;
       background.image_file =
           installed_dir.AppendASCII(*wallpaper.FindStringKey(kImageURLKey));
-
-      LOG(WARNING) << "NTPSponsoredImagesData::NTPSponsoredImagesData: is_sponsored_image: background.image_file: " << background.image_file;
 
       if (auto* focalPoint = wallpaper.FindDictKey(kWallpaperFocalPointKey)) {
         background.focal_point = { focalPoint->FindIntKey(kXKey).value_or(0),
@@ -228,7 +224,6 @@ bool NTPSponsoredImagesData::IsSuperReferral() const {
 }
 
 base::Value NTPSponsoredImagesData::GetBackgroundAt(size_t index) {
-  LOG(WARNING) << "NTPSponsoredImagesData::GetBackgroundAt: index: " << index << " IsValid: " << IsValid();
   DCHECK(index >= 0 && index < wallpaper_image_urls().size());
 
   base::Value data(base::Value::Type::DICTIONARY);

@@ -17,7 +17,6 @@ ViewCounterModel::ViewCounterModel() {
 ViewCounterModel::~ViewCounterModel() = default;
 
 bool ViewCounterModel::ShouldShowBrandedWallpaper() const {
-  LOG(WARNING) << "ViewCounterModel::ShouldShowBrandedWallpaper: ignore_count_to_branded_wallpaper_: " << ignore_count_to_branded_wallpaper_ << " count_to_branded_wallpaper_: " << count_to_branded_wallpaper_;
   if (ignore_count_to_branded_wallpaper_)
     return true;
 
@@ -40,7 +39,6 @@ void ViewCounterModel::RegisterPageView() {
 #endif
   DCHECK_NE(-1, total_branded_image_count_);
 
-  LOG(WARNING) << "ViewCounterModel::RegisterPageView: ignore_count_to_branded_wallpaper_: " << ignore_count_to_branded_wallpaper_;
   if (ignore_count_to_branded_wallpaper_) {
     current_branded_wallpaper_image_index_++;
     current_branded_wallpaper_image_index_ %= total_branded_image_count_;
@@ -56,13 +54,11 @@ void ViewCounterModel::RegisterPageView() {
   if (count_to_branded_wallpaper_ < 0) {
     // Reset count and increse image index for next time.
     count_to_branded_wallpaper_ = kRegularCountToBrandedWallpaper;
-    LOG(WARNING) << "ViewCounterModel::RegisterPageView: count_to_branded_wallpaper_: " << count_to_branded_wallpaper_ << " current_wallpaper_image_index_: " << current_branded_wallpaper_image_index_ << " current_branded_wallpaper_image_index_: " << current_branded_wallpaper_image_index_;
     current_branded_wallpaper_image_index_++;
     current_branded_wallpaper_image_index_ %= total_branded_image_count_;
   } else {
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
     // Increase background image index
-    LOG(WARNING) << "ViewCounterModel::RegisterPageView: count_to_branded_wallpaper_: " << count_to_branded_wallpaper_ << " current_wallpaper_image_index_: " << current_wallpaper_image_index_ << " current_branded_wallpaper_image_index_: " << current_branded_wallpaper_image_index_;
     current_wallpaper_image_index_++;
     current_wallpaper_image_index_ %= total_image_count_;
 #endif

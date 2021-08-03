@@ -158,10 +158,10 @@ void RegisterNTPBackgroundImagesComponent(
       std::make_unique<NTPBackgroundImagesComponentInstallerPolicy>(
           kNTPBIComponentPublicKey,
           kNTPBIComponentID,
-          "",
+          "NTP Background Images",
           callback));
   installer->Register(cus,
-                      base::BindOnce(&OnRegistered, component_id));
+                      base::BindOnce(&OnRegistered, kNTPBIComponentID));
 }
 #endif
 

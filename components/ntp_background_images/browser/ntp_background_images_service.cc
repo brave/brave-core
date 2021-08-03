@@ -53,11 +53,6 @@ constexpr char kNTPSRMappingTableComponentID[] =
     "heplpbhjcbmiibdlchlanmdenffpiibo";
 constexpr char kNTPSRMappingTableComponentName[] =
     "NTP Super Referral mapping table";
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
-constexpr char kNTPBIComponentPublicKey[] = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4L9XGAiVhCL8oi5aQhFrVllsw6VebXigTj5ow3e0fYeEztjM9FOgqMD6pl0AB8u05xKUPcdpIZqCguEzXyXh5vn+BWoEGtVezEEfjd33T4drJAYwEBvgWcFVVLNWku1/53f6TZp8IiiaOhKIANUtn/Zvw/0nUYa10nwxK4P3he4Ahj0CO6HVeu9zNRCdZFSkYdMnPnNYTU+qN88OT1DBsV1xQgd3qK+MkzPDF1okHi9a+IXiHa3FVY++QmtSrMgetJnS/qBt6VsZcejcQCd1KIpgHNyoVl5rodtBRj25o48SxYePrssMRTv9vAQmRUZZukOIL/HdeqjCHIOSQTrFEQIDAQAB";  // NOLINT
-constexpr char kNTPBIComponentID[] =
-    "aoojcmojmmcbpfgoecoadbdpnagfchel";
-#endif
 
 std::string GetMappingTableData(const base::FilePath& installed_dir) {
   std::string contents;
@@ -160,19 +155,14 @@ void NTPBackgroundImagesService::CheckImagesComponentUpdate(
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 void NTPBackgroundImagesService::RegisterBackgroundImagesComponent() {
   DVLOG(2) << __func__ << ": Start NTP BI component";
-  LOG(WARNING) << "NTPBackgroundImagesService::RegisterBackgroundImagesComponent" << ": Start NTP BI component";
   RegisterNTPBackgroundImagesComponent(
       component_update_service_,
-      kNTPBIComponentPublicKey,
-      kNTPBIComponentID,
-      base::StringPrintf("NTP Background Images"),
       base::BindRepeating(&NTPBackgroundImagesService::OnComponentReady,
                           weak_factory_.GetWeakPtr()));
 }
 #endif
 
 void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
-  LOG(WARNING) << "NTPBackgroundImagesService::RegisterSponsoredImagesComponent" << ": Start NTP SI component";
   const std::string locale =
       brave_l10n::LocaleHelper::GetInstance()->GetLocale();
   const auto& data = GetSponsoredImagesComponentData(
@@ -328,7 +318,7 @@ void NTPBackgroundImagesService::RegisterSuperReferralComponent() {
     theme_name = *value->FindStringKey(kThemeNameKey);
   }
 
-  RegisterNTPBackgroundImagesComponent(
+  RegisterNTPSponsoredImagesComponent(
       component_update_service_,
       public_key, id,
       base::StringPrintf("NTP Super Referral (%s)",
@@ -344,7 +334,7 @@ void NTPBackgroundImagesService::DownloadSuperReferralMappingTable() {
   if (!component_update_service_)
     return;
 
-  RegisterNTPBackgroundImagesComponent(
+  RegisterNTPSponsoredImagesComponent(
       component_update_service_,
       kNTPSRMappingTableComponentPublicKey,
       kNTPSRMappingTableComponentID,
@@ -423,9 +413,7 @@ bool NTPBackgroundImagesService::HasObserver(Observer* observer) {
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 NTPBackgroundImagesData*
 NTPBackgroundImagesService::GetBackgroundImagesData() const {
-  LOG(WARNING) << "NTPBackgroundImagesService::GetBackgroundImagesData";
   if (bi_images_data_ && bi_images_data_->IsValid()) {
-    LOG(WARNING) << "NTPBackgroundImagesService::GetBackgroundImagesData: valid";
     return bi_images_data_.get();
   }
 
@@ -450,9 +438,6 @@ NTPBackgroundImagesService::GetBrandedImagesData(bool super_referral) const {
     if (local_pref_->FindPreference(
           prefs::kNewTabPageCachedSuperReferralComponentInfo)->
               IsDefaultValue()) {
-      LOG(WARNING) << "NTPBackgroundImagesService::GetBrandedImagesData: kNewTabPageCachedSuperReferralComponentInfo->IsDefaultValue: " << (local_pref_->FindPreference(
-          prefs::kNewTabPageCachedSuperReferralComponentInfo)->
-              IsDefaultValue());
       return nullptr;
     }
   } else {
@@ -469,7 +454,6 @@ NTPBackgroundImagesService::GetBrandedImagesData(bool super_referral) const {
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 void NTPBackgroundImagesService::OnComponentReady(
     const base::FilePath& installed_dir) {
-  LOG(WARNING) << "NTPBackgroundImagesService::OnComponentReady: installed_dir: " << installed_dir;
   bi_installed_dir_ = installed_dir;
 
   DVLOG(2) << __func__ << ": NTP BI Component is ready";
@@ -482,7 +466,6 @@ void NTPBackgroundImagesService::OnComponentReady(
 }
 
 void NTPBackgroundImagesService::OnGetComponentJsonData(const std::string& json_string) {
-  LOG(WARNING) << "NTPBackgroundImagesService::OnGetComponentJsonData";
   bi_images_data_.reset(new NTPBackgroundImagesData(json_string,
                                                     bi_installed_dir_));
 
@@ -495,7 +478,6 @@ void NTPBackgroundImagesService::OnGetComponentJsonData(const std::string& json_
 void NTPBackgroundImagesService::OnSponsoredComponentReady(
     bool is_super_referral,
     const base::FilePath& installed_dir) {
-  LOG(WARNING) << "NTPBackgroundImagesService::OnSponsoredComponentReady: is_super_referral: " << is_super_referral << " installed_dir: " << installed_dir;
   if (is_super_referral)
     sr_installed_dir_ = installed_dir;
   else
