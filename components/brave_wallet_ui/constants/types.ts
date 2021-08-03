@@ -177,6 +177,7 @@ export interface PageState {
   userAssets: string[]
   mnemonic?: string
   isFetchingPriceHistory: boolean
+  setupStillInProgress: boolean
 }
 
 export interface WalletPageState {

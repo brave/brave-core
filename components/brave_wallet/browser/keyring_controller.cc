@@ -84,6 +84,10 @@ HDKeyring* KeyringController::CreateDefaultKeyring(
     return nullptr;
   }
 
+  for (const auto& observer : observers_) {
+    observer->KeyringCreated();
+  }
+
   return default_keyring_.get();
 }
 
@@ -117,6 +121,10 @@ HDKeyring* KeyringController::RestoreDefaultKeyring(
     // When creation failed(ex. invalid mnemonic), clear the state
     Reset();
     return nullptr;
+  }
+
+  for (const auto& observer : observers_) {
+    observer->KeyringRestored();
   }
 
   return default_keyring_.get();
@@ -182,6 +190,9 @@ void KeyringController::AddAccount(AddAccountCallback callback) {
   if (keyring)
     keyring->AddAccounts();
 
+  for (const auto& observer : observers_) {
+    observer->AccountsChanged();
+  }
   std::move(callback).Run(keyring);
 }
 
@@ -191,6 +202,9 @@ void KeyringController::IsWalletBackedUp(IsWalletBackedUpCallback callback) {
 
 void KeyringController::NotifyWalletBackupComplete() {
   prefs_->SetBoolean(kBraveWalletBackupComplete, true);
+  for (const auto& observer : observers_) {
+    observer->BackedUp();
+  }
 }
 
 std::vector<std::string> KeyringController::GetAccountNames() const {
@@ -240,6 +254,9 @@ void KeyringController::Lock() {
   default_keyring_->ClearData();
 
   encryptor_.reset();
+  for (const auto& observer : observers_) {
+    observer->Locked();
+  }
 }
 
 void KeyringController::Unlock(const std::string& password,
@@ -251,6 +268,9 @@ void KeyringController::Unlock(const std::string& password,
   }
 
   UpdateLastUnlockPref(prefs_);
+  for (const auto& observer : observers_) {
+    observer->Unlocked();
+  }
   std::move(callback).Run(true);
 }
 
@@ -337,6 +357,11 @@ bool KeyringController::CreateDefaultKeyringInternal(
 
 bool KeyringController::IsDefaultKeyringCreated() {
   return prefs_->HasPrefPath(kBraveWalletEncryptedMnemonic);
+}
+
+void KeyringController::AddObserver(
+    ::mojo::PendingRemote<mojom::KeyringControllerObserver> observer) {
+  observers_.Add(std::move(observer));
 }
 
 }  // namespace brave_wallet

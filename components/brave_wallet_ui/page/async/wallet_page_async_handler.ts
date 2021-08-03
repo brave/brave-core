@@ -28,6 +28,8 @@ async function refreshWalletInfo (store: Store) {
 handler.on(WalletPageActions.createWallet.getType(), async (store, payload: CreateWalletPayloadType) => {
   const keyringController = (await getAPIProxy()).keyringController
   const result = await keyringController.createWallet(payload.password)
+  // TODO(bbondy) - Remove refreshWalletInfo here when account names are set at the same time
+  // as createWallet
   store.dispatch(WalletActions.setInitialAccountNames({ accountNames: ['Account 1'] }))
   store.dispatch(WalletPageActions.walletCreated({ mnemonic: result.mnemonic }))
 })
@@ -48,6 +50,8 @@ handler.on(WalletPageActions.addAccount.getType(), async (store, payload: AddAcc
   const keyringController = (await getAPIProxy()).keyringController
   const result = await keyringController.addAccount()
   store.dispatch(WalletActions.addNewAccountName({ accountName: payload.accountName }))
+  // TODO(bbondy) - Remove refreshWalletInfo here when account names are set at the same time
+  // as addAccount
   await refreshWalletInfo(store)
   return result.success
 })
@@ -58,14 +62,9 @@ handler.on(WalletPageActions.showRecoveryPhrase.getType(), async (store, payload
   store.dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: result.mnemonic }))
 })
 
-handler.on(WalletPageActions.walletSetupComplete.getType(), async (store) => {
-  await refreshWalletInfo(store)
-})
-
 handler.on(WalletPageActions.walletBackupComplete.getType(), async (store) => {
   const keyringController = (await getAPIProxy()).keyringController
   await keyringController.notifyWalletBackupComplete()
-  await refreshWalletInfo(store)
 })
 
 handler.on(WalletPageActions.selectAsset.getType(), async (store, payload: UpdateSelectedAssetType) => {

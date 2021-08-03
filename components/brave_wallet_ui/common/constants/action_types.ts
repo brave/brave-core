@@ -25,3 +25,7 @@ export type SetInitialAccountNamesPayloadType = {
 export type AddNewAccountNamePayloadType = {
   accountName: string
 }
+
+export type ChainChangedEventPayloadType = {
+  chainId: string
+}
