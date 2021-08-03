@@ -48,7 +48,7 @@ FilteredCategoryList::iterator FindFilteredCategory(
   DCHECK(filtered_categories);
 
   return std::find_if(filtered_categories->begin(), filtered_categories->end(),
-                      [&name](const FilteredCategory& category) {
+                      [&name](const FilteredCategoryInfo& category) {
                         return category.name == name;
                       });
 }
@@ -244,7 +244,7 @@ CategoryContentInfo::OptAction Client::ToggleAdOptOutAction(
   if (action == CategoryContentInfo::OptAction::kOptOut) {
     opt_action = CategoryContentInfo::OptAction::kNone;
   } else {
-    opt_action = CategoryContentInfo::CategoryContentInfo::OptAction::kOptOut;
+    opt_action = CategoryContentInfo::OptAction::kOptOut;
   }
 
   // Update this category in the filtered categories list
@@ -256,7 +256,7 @@ CategoryContentInfo::OptAction Client::ToggleAdOptOutAction(
     }
   } else {
     if (it == client_->ad_preferences.filtered_categories.end()) {
-      FilteredCategory filtered_category;
+      FilteredCategoryInfo filtered_category;
       filtered_category.name = category;
       client_->ad_preferences.filtered_categories.push_back(filtered_category);
     }

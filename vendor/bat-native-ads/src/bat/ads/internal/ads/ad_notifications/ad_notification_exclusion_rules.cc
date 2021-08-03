@@ -11,6 +11,7 @@
 #include "bat/ads/internal/frequency_capping/exclusion_rules/conversion_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/daily_cap_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/daypart_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/dislike_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/dismissed_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule_util.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/marked_as_inappropriate_frequency_cap.h"
@@ -101,6 +102,11 @@ bool ExclusionRules::ShouldExcludeAd(const CreativeAdInfo& ad) const {
 
   TransferredFrequencyCap transferred_frequency_cap(ad_events_);
   if (ShouldExclude(ad, &transferred_frequency_cap)) {
+    should_exclude = true;
+  }
+
+  DislikeFrequencyCap dislike_frequency_cap;
+  if (ShouldExclude(ad, &dislike_frequency_cap)) {
     should_exclude = true;
   }
 

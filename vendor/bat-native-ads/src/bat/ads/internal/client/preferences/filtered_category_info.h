@@ -13,10 +13,10 @@
 
 namespace ads {
 
-struct FilteredCategory {
-  FilteredCategory();
-  FilteredCategory(const FilteredCategory& category);
-  ~FilteredCategory();
+struct FilteredCategoryInfo {
+  FilteredCategoryInfo();
+  FilteredCategoryInfo(const FilteredCategoryInfo& category);
+  ~FilteredCategoryInfo();
 
   std::string ToJson() const;
   Result FromJson(const std::string& json);
@@ -24,7 +24,7 @@ struct FilteredCategory {
   std::string name;
 };
 
-using FilteredCategoryList = std::vector<FilteredCategory>;
+using FilteredCategoryList = std::vector<FilteredCategoryInfo>;
 
 }  // namespace ads
 

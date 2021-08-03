@@ -82,6 +82,7 @@ source_set("brave_ads_unit_tests") {
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/exclusion_rules/conversion_frequency_cap_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/exclusion_rules/daily_cap_frequency_cap_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/exclusion_rules/daypart_frequency_cap_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/exclusion_rules/dislike_frequency_cap_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/exclusion_rules/dismissed_frequency_cap_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/exclusion_rules/marked_as_inappropriate_frequency_cap_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/exclusion_rules/marked_to_no_longer_receive_frequency_cap_unittest.cc",
