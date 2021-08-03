@@ -174,11 +174,18 @@ bool CookieSettingsBase::IsCookieAccessAllowedImpl(
   bool allow = IsChromiumFullCookieAccessAllowed(url, site_for_cookies,
                                                  top_frame_origin);
 
-  if (allow)
+  const bool is_1p_ephemeral_feature_enabled = base::FeatureList::IsEnabled(
+      net::features::kBraveFirstPartyEphemeralStorage);
+  if (allow && !is_1p_ephemeral_feature_enabled)
     return true;
 
   const GURL first_party_url = GetFirstPartyURL(
       site_for_cookies, base::OptionalOrNullptr(top_frame_origin));
+  const bool is_1p_ephemeral =
+      is_1p_ephemeral_feature_enabled && IsCookieSessionOnly(first_party_url);
+
+  if (is_1p_ephemeral && allow)
+    return false;
 
   if (!IsFirstPartyAccessAllowed(first_party_url, this))
     return false;
