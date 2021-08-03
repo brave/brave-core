@@ -492,7 +492,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {}
       },
-      type::Result::LEDGER_ERROR,
+      type::Result::CONTINUE,
       type::WalletStatus::PENDING
     },
     GetUserParamType{  // BAT is not allowed for the user! (PENDING)
@@ -570,7 +570,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {}
       },
-      type::Result::LEDGER_ERROR,
+      type::Result::CONTINUE,
       type::WalletStatus::VERIFIED
     },
     GetUserParamType{  // BAT is not allowed for the user! (VERIFIED)
@@ -774,7 +774,7 @@ INSTANTIATE_TEST_SUITE_P(
         {}
       },
       {},
-      type::Result::LEDGER_ERROR,
+      type::Result::CONTINUE,
       type::WalletStatus::PENDING
     },
     GetCardIDParamType{  // Create Card succeeded && id is empty.
@@ -802,7 +802,7 @@ INSTANTIATE_TEST_SUITE_P(
         {}
       },
       {},
-      type::Result::LEDGER_ERROR,
+      type::Result::CONTINUE,
       type::WalletStatus::PENDING
     },
     // NOLINTNEXTLINE
@@ -871,7 +871,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {}
       },
-      type::Result::LEDGER_ERROR,
+      type::Result::CONTINUE,
       type::WalletStatus::PENDING
     }),
   NameSuffixGenerator<GetCardIDParamType>
@@ -968,7 +968,7 @@ INSTANTIATE_TEST_SUITE_P(
       true,
       R"({ "payment_id": "", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
       {},
-      type::Result::LEDGER_ERROR,
+      type::Result::CONTINUE,
       type::WalletStatus::PENDING
     },
     GetAnonFundsParamType{  // Rewards Get Wallet Balance failed.
@@ -997,7 +997,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {}
       },
-      type::Result::LEDGER_ERROR,
+      type::Result::CONTINUE,
       type::WalletStatus::PENDING
     }),
   NameSuffixGenerator<GetAnonFundsParamType>
@@ -1135,7 +1135,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {}
       },
-      type::Result::LEDGER_ERROR,
+      type::Result::CONTINUE,
       type::WalletStatus::PENDING
     },
     LinkWalletParamType{  // Happy path.
