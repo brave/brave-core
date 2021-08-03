@@ -305,7 +305,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       brave_today_enabled_default);
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
   registry->RegisterBooleanPref(kNewTabPageShowBinance, true);
-  registry->RegisterBooleanPref(kNewTabPageShowTogether, false);
+  registry->RegisterBooleanPref(kNewTabPageShowBraveTalk, false);
   registry->RegisterBooleanPref(kNewTabPageShowGemini, true);
   registry->RegisterBooleanPref(kNewTabPageHideAllWidgets, false);
 

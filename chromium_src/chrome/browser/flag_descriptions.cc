@@ -103,6 +103,11 @@ const char kBravePermissionLifetimeName[] = "Permission Lifetime";
 const char kBravePermissionLifetimeDescription[] =
     "Enables the option to choose a time period after which a permission will "
     "be automatically revoked";
+const char kBraveTalkName[] = "Enable Brave Talk";
+const char kBraveTalkDescription[] =
+    "Enables the Brave Talk integration on the new tab page. You can "
+    "use Brave Talk to start a private video call with your friends "
+    "and colleagues.";
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
 const char kBraveRewardsGeminiName[] = "Enable Gemini for Brave Rewards";

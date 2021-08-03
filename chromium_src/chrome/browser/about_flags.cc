@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
+#include "brave/components/brave_talk/features.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -200,6 +201,11 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveRewardsVerboseLoggingDescription,             \
      kOsDesktop | kOsAndroid,                                               \
      FEATURE_VALUE_TYPE(brave_rewards::features::kVerboseLoggingFeature)},  \
+    {"brave-talk",                                                          \
+     flag_descriptions::kBraveTalkName,                                     \
+     flag_descriptions::kBraveTalkDescription,                              \
+     kOsDesktop,                                                            \
+     FEATURE_VALUE_TYPE(brave_talk::features::kBraveTalk)},                 \
      BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES
 
 #define SetFeatureEntryEnabled SetFeatureEntryEnabled_ChromiumImpl

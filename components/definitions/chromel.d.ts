@@ -242,7 +242,7 @@ declare namespace chrome.ftx {
   const disconnect: (callback: () => void) => {}
 }
 
-declare namespace chrome.braveTogether {
+declare namespace chrome.braveTalk {
   const isSupported: (callback: (supported: boolean) => void) => {}
 }
 

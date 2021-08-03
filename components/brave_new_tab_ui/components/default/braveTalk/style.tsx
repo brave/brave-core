@@ -60,7 +60,7 @@ export const CallButton = styled('button')<{}>`
   }
 `
 
-export const TogetherIcon = styled('div')<{}>`
+export const BraveTalkIcon = styled('div')<{}>`
   width: 24px;
   height: 24px;
   margin-right: 7px;

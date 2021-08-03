@@ -244,10 +244,10 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "torStatusInitializing", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_INITIALIZING },   // NOLINT
         { "torTip", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_TIP},
 
-        // Together prompt
-        { "togetherPromptTitle", IDS_BRAVE_TOGETHER_PROMPT_TITLE },
-        { "togetherPromptDescription", IDS_BRAVE_TOGETHER_PROMPT_DESCRIPTION },
-        { "togetherPromptAction", IDS_BRAVE_TOGETHER_PROMPT_ACTION },
+        // Brave Talk prompt
+        { "braveTalkPromptTitle", IDS_BRAVE_TALK_PROMPT_TITLE },
+        { "braveTalkPromptDescription", IDS_BRAVE_TALK_PROMPT_DESCRIPTION },
+        { "braveTalkPromptAction", IDS_BRAVE_TALK_PROMPT_ACTION },
 
         // Rewards widget
         { "rewardsWidgetBat", IDS_BRAVE_UI_BAT_REWARDS_TEXT },
@@ -273,11 +273,11 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "tosAndPp", IDS_REWARDS_WIDGET_TOS_AND_PP},     // NOLINT
         { "rewardsWidgetStartUsing", IDS_REWARDS_WIDGET_START_USING},     // NOLINT
         { "pendingRewardsMessage", IDS_BRAVE_REWARDS_PENDING_REWARDS_MESSAGE },
-        // Together Widget
-        { "togetherWidgetTitle", IDS_TOGETHER_WIDGET_TITLE },
-        { "togetherWidgetWelcomeTitle", IDS_TOGETHER_WIDGET_WELCOME_TITLE },
-        { "togetherWidgetStartButton", IDS_TOGETHER_WIDGET_START_BUTTON },
-        { "togetherWidgetAboutData", IDS_TOGETHER_WIDGET_ABOUT_DATA },
+        // Brave Talk  Widget
+        { "braveTalkWidgetTitle", IDS_BRAVE_TALK_WIDGET_TITLE },
+        { "braveTalkWidgetWelcomeTitle", IDS_BRAVE_TALK_WIDGET_WELCOME_TITLE },
+        { "braveTalkWidgetStartButton", IDS_BRAVE_TALK_WIDGET_START_BUTTON },
+        { "braveTalkWidgetAboutData", IDS_BRAVE_TALK_WIDGET_ABOUT_DATA },
         // Binance Widget
         { "binanceWidgetBuy", IDS_BINANCE_WIDGET_BUY },
         { "binanceWidgetBuyCrypto", IDS_BINANCE_WIDGET_BUY_CRYPTO },

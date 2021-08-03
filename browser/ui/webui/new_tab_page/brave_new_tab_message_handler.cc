@@ -87,44 +87,29 @@ base::DictionaryValue GetStatsDictionary(PrefService* prefs) {
 
 base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
   base::DictionaryValue pref_data;
-  pref_data.SetBoolean(
-      "showBackgroundImage",
-      prefs->GetBoolean(kNewTabPageShowBackgroundImage));
+  pref_data.SetBoolean("showBackgroundImage",
+                       prefs->GetBoolean(kNewTabPageShowBackgroundImage));
   pref_data.SetBoolean(
       "brandedWallpaperOptIn",
       prefs->GetBoolean(kNewTabPageShowSponsoredImagesBackgroundImage));
-  pref_data.SetBoolean(
-      "showClock",
-      prefs->GetBoolean(kNewTabPageShowClock));
-  pref_data.SetString(
-      "clockFormat",
-      prefs->GetString(kNewTabPageClockFormat));
-  pref_data.SetBoolean(
-      "showStats",
-      prefs->GetBoolean(kNewTabPageShowStats));
-  pref_data.SetBoolean(
-      "showToday",
-      prefs->GetBoolean(kNewTabPageShowToday));
-  pref_data.SetBoolean(
-      "showRewards",
-      prefs->GetBoolean(kNewTabPageShowRewards));
+  pref_data.SetBoolean("showClock", prefs->GetBoolean(kNewTabPageShowClock));
+  pref_data.SetString("clockFormat", prefs->GetString(kNewTabPageClockFormat));
+  pref_data.SetBoolean("showStats", prefs->GetBoolean(kNewTabPageShowStats));
+  pref_data.SetBoolean("showToday", prefs->GetBoolean(kNewTabPageShowToday));
+  pref_data.SetBoolean("showRewards",
+                       prefs->GetBoolean(kNewTabPageShowRewards));
   pref_data.SetBoolean(
       "isBrandedWallpaperNotificationDismissed",
       prefs->GetBoolean(kBrandedWallpaperNotificationDismissed));
   pref_data.SetBoolean("isBraveTodayOptedIn",
                        prefs->GetBoolean(kBraveTodayOptedIn));
-  pref_data.SetBoolean(
-      "hideAllWidgets",
-      prefs->GetBoolean(kNewTabPageHideAllWidgets));
-  pref_data.SetBoolean(
-      "showBinance",
-      prefs->GetBoolean(kNewTabPageShowBinance));
-  pref_data.SetBoolean(
-      "showTogether",
-      prefs->GetBoolean(kNewTabPageShowTogether));
-  pref_data.SetBoolean(
-      "showGemini",
-      prefs->GetBoolean(kNewTabPageShowGemini));
+  pref_data.SetBoolean("hideAllWidgets",
+                       prefs->GetBoolean(kNewTabPageHideAllWidgets));
+  pref_data.SetBoolean("showBinance",
+                       prefs->GetBoolean(kNewTabPageShowBinance));
+  pref_data.SetBoolean("showBraveTalk",
+                       prefs->GetBoolean(kNewTabPageShowBraveTalk));
+  pref_data.SetBoolean("showGemini", prefs->GetBoolean(kNewTabPageShowGemini));
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
   pref_data.SetBoolean(
       "showCryptoDotCom",
@@ -393,7 +378,7 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      kNewTabPageShowTogether,
+      kNewTabPageShowBraveTalk,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
@@ -528,8 +513,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageHideAllWidgets;
   } else if (settingsKeyInput == "showBinance") {
     settingsKey = kNewTabPageShowBinance;
-  } else if (settingsKeyInput == "showTogether") {
-    settingsKey = kNewTabPageShowTogether;
+  } else if (settingsKeyInput == "showBraveTalk") {
+    settingsKey = kNewTabPageShowBraveTalk;
   } else if (settingsKeyInput == "showGemini") {
     settingsKey = kNewTabPageShowGemini;
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)

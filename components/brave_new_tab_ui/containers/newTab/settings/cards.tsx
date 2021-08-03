@@ -23,7 +23,7 @@ import {
   ToggleCardsSwitch,
   ToggleCardsText
 } from '../../../components/default'
-import togetherBanner from './assets/brave-talk.png'
+import braveTalkBanner from './assets/brave-talk.png'
 import binanceBanner from './assets/binance.png'
 import rewardsBanner from './assets/braverewards.png'
 import geminiBanner from './assets/gemini.png'
@@ -39,9 +39,9 @@ interface Props {
   toggleShowBinance: () => void
   showBinance: boolean
   binanceSupported: boolean
-  toggleShowTogether: () => void
-  showTogether: boolean
-  togetherSupported: boolean
+  toggleShowBraveTalk: () => void
+  showBraveTalk: boolean
+  braveTalkSupported: boolean
   toggleShowRewards: () => void
   showRewards: boolean
   toggleShowGemini: () => void
@@ -88,9 +88,9 @@ class CardsSettings extends React.PureComponent<Props, {}> {
       binanceSupported,
       toggleShowBinance,
       showBinance,
-      toggleShowTogether,
-      showTogether,
-      togetherSupported,
+      toggleShowBraveTalk,
+      showBraveTalk,
+      braveTalkSupported,
       toggleShowRewards,
       showRewards,
       geminiSupported,
@@ -108,18 +108,18 @@ class CardsSettings extends React.PureComponent<Props, {}> {
     return (
       <StyledWidgetSettings>
         {
-          togetherSupported
+          braveTalkSupported
           ? <FeaturedSettingsWidget>
-              <StyledBannerImage src={togetherBanner} />
+              <StyledBannerImage src={braveTalkBanner} />
               <StyledSettingsInfo>
                 <StyledSettingsTitle>
-                  {getLocale('togetherWidgetTitle')}
+                  {getLocale('braveTalkWidgetTitle')}
                 </StyledSettingsTitle>
                 <StyledSettingsCopy>
-                  {getLocale('togetherWidgetWelcomeTitle')}
+                  {getLocale('braveTalkWidgetWelcomeTitle')}
                 </StyledSettingsCopy>
               </StyledSettingsInfo>
-              {this.renderToggleButton(showTogether, toggleShowTogether)}
+              {this.renderToggleButton(showBraveTalk, toggleShowBraveTalk)}
             </FeaturedSettingsWidget>
           : null
         }

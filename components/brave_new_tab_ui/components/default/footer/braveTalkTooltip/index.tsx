@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { getLocale } from '../../../../../common/locale'
-import TogetherIcon from './togetherIcon'
+import BraveTalkIcon from './braveTalkIcon'
 import CloseIcon from './closeIcon'
 import { LinkButton } from '../../../outlineButton'
 import * as S from './style'
@@ -15,19 +15,19 @@ type Props = {
   onClose: () => any
 }
 
-const TogetherTooltip: React.FunctionComponent<Props> = function (props) {
+const BraveTalkTooltip: React.FunctionComponent<Props> = function (props) {
   return (
     <S.Anchor>
       <S.Tooltip>
         <S.Title>
-          <S.TitleIcon><TogetherIcon /></S.TitleIcon>
-          {getLocale('togetherPromptTitle')}
+          <S.TitleIcon><BraveTalkIcon /></S.TitleIcon>
+          {getLocale('braveTalkPromptTitle')}
         </S.Title>
         <S.Body>
-          {getLocale('togetherPromptDescription')}
+          {getLocale('braveTalkPromptDescription')}
         </S.Body>
         <LinkButton href={braveTalkWidgetUrl}>
-          {getLocale('togetherPromptAction')}
+          {getLocale('braveTalkPromptAction')}
         </LinkButton>
         <S.CloseButton
           onClick={props.onClose}
@@ -41,4 +41,4 @@ const TogetherTooltip: React.FunctionComponent<Props> = function (props) {
   )
 }
 
-export default TogetherTooltip
+export default BraveTalkTooltip
