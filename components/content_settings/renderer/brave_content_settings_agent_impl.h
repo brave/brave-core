@@ -46,8 +46,7 @@ class BraveContentSettingsAgentImpl
                              const blink::WebURL& script_url) override;
   void DidNotAllowScript() override;
 
-  blink::WebSecurityOrigin GetEphemeralStorageOriginSync(
-      StorageType storage_type) override;
+  blink::WebSecurityOrigin GetEphemeralStorageOriginSync() override;
   bool AllowStorageAccessSync(StorageType storage_type) override;
 
   void BraveSpecificDidBlockJavaScript(const std::u16string& details);
@@ -96,8 +95,7 @@ class BraveContentSettingsAgentImpl
   // temporary allowed script origins we preloaded for the next load
   base::flat_set<std::string> preloaded_temporarily_allowed_scripts_;
 
-  using StoragePermissionsKey = std::pair<url::Origin, StorageType>;
-  base::flat_map<StoragePermissionsKey, blink::WebSecurityOrigin>
+  base::flat_map<url::Origin, blink::WebSecurityOrigin>
       cached_ephemeral_storage_origins_;
 
   mojo::AssociatedRemote<brave_shields::mojom::BraveShieldsHost>

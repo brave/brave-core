@@ -42,7 +42,6 @@ class MockContentSettingsManagerImpl : public mojom::ContentSettingsManager {
 
   void AllowEphemeralStorageAccess(
       int32_t render_frame_id,
-      ContentSettingsManager::StorageType storage_type,
       const ::url::Origin& origin,
       const ::GURL& site_for_cookies,
       const ::url::Origin& top_frame_origin,

@@ -9,13 +9,12 @@
 #include "base/containers/flat_map.h"
 #include "components/content_settings/common/content_settings_manager.mojom.h"
 
-#define OnContentBlocked                                       \
-  NotUsed() {}                                                 \
-  void AllowEphemeralStorageAccess(                            \
-      int32_t render_frame_id, StorageType storage_type,       \
-      const url::Origin& origin, const GURL& site_for_cookies, \
-      const url::Origin& top_frame_origin,                     \
-      AllowEphemeralStorageAccessCallback callback) override;  \
+#define OnContentBlocked                                                 \
+  NotUsed() {}                                                           \
+  void AllowEphemeralStorageAccess(                                      \
+      int32_t render_frame_id, const url::Origin& origin,                \
+      const GURL& site_for_cookies, const url::Origin& top_frame_origin, \
+      AllowEphemeralStorageAccessCallback callback) override;            \
   void OnContentBlocked
 
 #include "../../../../../components/content_settings/browser/content_settings_manager_impl.h"
