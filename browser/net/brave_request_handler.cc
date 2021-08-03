@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/feature_list.h"
-#include "base/metrics/histogram_macros.h"
 #include "base/task/post_task.h"
 #include "brave/browser/net/brave_ad_block_csp_network_delegate_helper.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
@@ -159,7 +158,6 @@ int BraveRequestHandler::OnBeforeURLRequest(
   if (before_url_request_callbacks_.empty() || IsInternalScheme(ctx)) {
     return net::OK;
   }
-  SCOPED_UMA_HISTOGRAM_TIMER("Brave.OnBeforeURLRequest_Handler");
   ctx->new_url = new_url;
   ctx->event_type = brave::kOnBeforeRequest;
   callbacks_[ctx->request_identifier] = std::move(callback);
