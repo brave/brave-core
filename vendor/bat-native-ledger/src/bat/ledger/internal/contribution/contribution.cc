@@ -650,8 +650,8 @@ void Contribution::SetRetryTimer(
     return;
   }
 
-  if (ledger::short_retries) {
-    delay = base::TimeDelta::FromSeconds(1);
+  if (ledger::retry_interval) {
+    delay = base::TimeDelta::FromSeconds(retry_interval);
   }
 
   BLOG(1, "Timer for contribution retry (" << contribution_id << ") "

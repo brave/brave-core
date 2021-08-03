@@ -37,13 +37,13 @@ class BatLedgerServiceImpl : public mojom::BatLedgerService {
   void SetEnvironment(ledger::type::Environment environment) override;
   void SetDebug(bool isDebug) override;
   void SetReconcileInterval(const int32_t interval) override;
-  void SetShortRetries(bool short_retries) override;
+  void SetRetryInterval(int32_t interval) override;
   void SetTesting() override;
 
   void GetEnvironment(GetEnvironmentCallback callback) override;
   void GetDebug(GetDebugCallback callback) override;
   void GetReconcileInterval(GetReconcileIntervalCallback callback) override;
-  void GetShortRetries(GetShortRetriesCallback callback) override;
+  void GetRetryInterval(GetRetryIntervalCallback callback) override;
 
  private:
   mojo::Receiver<mojom::BatLedgerService> receiver_;

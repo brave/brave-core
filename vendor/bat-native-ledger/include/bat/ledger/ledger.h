@@ -23,7 +23,7 @@ extern type::Environment _environment;
 extern bool is_debug;
 extern bool is_testing;
 extern int reconcile_interval;  // minutes
-extern bool short_retries;
+extern int retry_interval;      // seconds
 
 using PublisherBannerCallback = std::function<void(type::PublisherBannerPtr)>;
 

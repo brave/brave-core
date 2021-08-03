@@ -101,10 +101,10 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
     WaitForCallback();
   }
 
-  void GetShortRetries() {
+  void GetRetryInterval() {
     ResetWaitForCallback();
-    rewards_service_->GetShortRetries(
-        base::BindOnce(&RewardsFlagBrowserTest::OnGetShortRetriesWrapper,
+    rewards_service_->GetRetryInterval(
+        base::BindOnce(&RewardsFlagBrowserTest::OnGetRetryIntervalWrapper,
                        base::Unretained(this)));
     WaitForCallback();
   }
@@ -129,8 +129,8 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
     CallbackCalled();
   }
 
-  void OnGetShortRetriesWrapper(bool retries) {
-    OnGetShortRetries(retries);
+  void OnGetRetryIntervalWrapper(int32_t interval) {
+    OnGetRetryInterval(interval);
     CallbackCalled();
   }
 
@@ -147,7 +147,7 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
   MOCK_METHOD1(OnGetEnvironment, void(ledger::type::Environment));
   MOCK_METHOD1(OnGetDebug, void(bool));
   MOCK_METHOD1(OnGetReconcileInterval, void(int32_t));
-  MOCK_METHOD1(OnGetShortRetries, void(bool));
+  MOCK_METHOD1(OnGetRetryInterval, void(int32_t));
 
   brave_rewards::RewardsServiceImpl* rewards_service_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
@@ -261,20 +261,24 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsReconcile) {
   GetReconcileInterval();
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsShortRetries) {
+IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsRetryInterval) {
   rewards_browsertest_util::StartProcess(rewards_service_);
-  EXPECT_CALL(*this, OnGetShortRetries(true));
-  EXPECT_CALL(*this, OnGetShortRetries(false));
+  EXPECT_CALL(*this, OnGetRetryInterval(10));
+  EXPECT_CALL(*this, OnGetRetryInterval(0)).Times(2);
 
   testing::InSequence s;
 
-  rewards_service_->SetShortRetries(false);
-  rewards_service_->HandleFlags("short-retries=true");
-  GetShortRetries();
+  rewards_service_->SetRetryInterval(0);
+  rewards_service_->HandleFlags("retry-interval=10");
+  GetRetryInterval();
 
-  rewards_service_->SetShortRetries(true);
-  rewards_service_->HandleFlags("short-retries=false");
-  GetShortRetries();
+  rewards_service_->SetRetryInterval(0);
+  rewards_service_->HandleFlags("retry-interval=-1");
+  GetRetryInterval();
+
+  rewards_service_->SetRetryInterval(0);
+  rewards_service_->HandleFlags("retry-interval=sdf");
+  GetRetryInterval();
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsMultipleFlags) {
@@ -282,19 +286,19 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsMultipleFlags) {
   EXPECT_CALL(*this, OnGetEnvironment(ledger::type::Environment::STAGING));
   EXPECT_CALL(*this, OnGetDebug(true));
   EXPECT_CALL(*this, OnGetReconcileInterval(10));
-  EXPECT_CALL(*this, OnGetShortRetries(true));
+  EXPECT_CALL(*this, OnGetRetryInterval(1));
 
   testing::InSequence s;
   rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
   rewards_service_->SetDebug(true);
   rewards_service_->SetReconcileInterval(0);
-  rewards_service_->SetShortRetries(false);
+  rewards_service_->SetRetryInterval(0);
 
   rewards_service_->HandleFlags(
-      "staging=true,debug=true,short-retries=true,reconcile-interval=10");
+      "staging=true,debug=true,retry-interval=1,reconcile-interval=10");
 
   GetReconcileInterval();
-  GetShortRetries();
+  GetRetryInterval();
   GetEnvironment();
   GetDebug();
 }
@@ -304,19 +308,19 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsWrongInput) {
   EXPECT_CALL(*this, OnGetEnvironment(ledger::type::Environment::PRODUCTION));
   EXPECT_CALL(*this, OnGetDebug(false));
   EXPECT_CALL(*this, OnGetReconcileInterval(0));
-  EXPECT_CALL(*this, OnGetShortRetries(false));
+  EXPECT_CALL(*this, OnGetRetryInterval(0));
 
   testing::InSequence s;
   rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
   rewards_service_->SetDebug(false);
   rewards_service_->SetReconcileInterval(0);
-  rewards_service_->SetShortRetries(false);
+  rewards_service_->SetRetryInterval(0);
 
   rewards_service_->HandleFlags(
-      "staging=,debug=,shortretries=true,reconcile-interval");
+      "staging=,debug=,retryinterval=true,reconcile-interval");
 
   GetReconcileInterval();
-  GetShortRetries();
+  GetRetryInterval();
   GetDebug();
   GetEnvironment();
 }

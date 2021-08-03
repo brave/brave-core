@@ -2403,17 +2403,15 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
       continue;
     }
 
-    if (name == "short-retries") {
-      std::string lower = base::ToLowerASCII(value);
-      bool short_retries;
+    if (name == "retry-interval") {
+      int retry_interval;
+      bool success = base::StringToInt(value, &retry_interval);
 
-      if (lower == "true" || lower == "1") {
-        short_retries = true;
-      } else {
-        short_retries = false;
+      if (success && retry_interval > 0) {
+        SetRetryInterval(retry_interval);
       }
 
-      SetShortRetries(short_retries);
+      continue;
     }
 
     if (name == "development") {
@@ -2523,7 +2521,7 @@ void RewardsServiceImpl::PrepareLedgerEnvForTesting() {
   }
 
   bat_ledger_service_->SetTesting();
-  SetShortRetries(true);
+  SetRetryInterval(1);
 
   profile_->GetPrefs()->SetInteger(prefs::kMinVisitTime, 1);
 
@@ -2561,8 +2559,8 @@ void RewardsServiceImpl::GetReconcileInterval(
   bat_ledger_service_->GetReconcileInterval(std::move(callback));
 }
 
-void RewardsServiceImpl::GetShortRetries(GetShortRetriesCallback callback) {
-  bat_ledger_service_->GetShortRetries(std::move(callback));
+void RewardsServiceImpl::GetRetryInterval(GetRetryIntervalCallback callback) {
+  bat_ledger_service_->GetRetryInterval(std::move(callback));
 }
 
 void RewardsServiceImpl::SetEnvironment(ledger::type::Environment environment) {
@@ -2577,8 +2575,8 @@ void RewardsServiceImpl::SetReconcileInterval(const int32_t interval) {
   bat_ledger_service_->SetReconcileInterval(interval);
 }
 
-void RewardsServiceImpl::SetShortRetries(bool short_retries) {
-  bat_ledger_service_->SetShortRetries(short_retries);
+void RewardsServiceImpl::SetRetryInterval(int32_t interval) {
+  bat_ledger_service_->SetRetryInterval(interval);
 }
 
 void RewardsServiceImpl::GetPendingContributionsTotal(
