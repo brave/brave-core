@@ -868,6 +868,10 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "viewedSites", IDS_BRAVE_UI_VIEWED_SITES },
         { "termsOfService", IDS_BRAVE_UI_TERMS_OF_SERVICE },
 
+        { "geminiPromoTitle", IDS_BRAVE_UI_GEMINI_PROMO_TITLE },
+        { "geminiPromoInfo", IDS_BRAVE_UI_GEMINI_PROMO_INFO },
+        { "geminiPromoDisclaimer", IDS_BRAVE_UI_GEMINI_PROMO_DISCLAIMER },
+
         { "tapNetworkTitle", IDS_BRAVE_UI_TAP_NETWORK_TITLE },
         { "tapNetworkInfo", IDS_BRAVE_UI_TAP_NETWORK_INFO },
         { "tapNetworkDisclaimer", IDS_BRAVE_UI_TAP_NETWORK_DISCLAIMER },
