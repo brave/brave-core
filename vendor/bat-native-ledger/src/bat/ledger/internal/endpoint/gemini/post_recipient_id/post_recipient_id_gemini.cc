@@ -95,6 +95,15 @@ void PostRecipientId::OnRequest(const type::UrlResponse& response,
                                 PostRecipientIdCallback callback) {
   ledger::LogUrlResponse(__func__, response);
 
+  auto header = response.headers.find("www-authenticate");
+  if (header != response.headers.end()) {
+    std::string auth_header = header->second;
+    if (auth_header.find("unverified_account") != std::string::npos) {
+      callback(type::Result::NOT_FOUND, "");
+      return;
+    }
+  }
+
   type::Result result = CheckStatusCode(response.status_code);
 
   if (result != type::Result::LEDGER_OK) {

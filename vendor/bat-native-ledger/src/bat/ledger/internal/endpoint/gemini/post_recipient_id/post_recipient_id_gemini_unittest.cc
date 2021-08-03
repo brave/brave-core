@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "base/test/task_environment.h"
 #include "bat/ledger/internal/endpoint/gemini/post_recipient_id/post_recipient_id_gemini.h"
@@ -61,6 +62,31 @@ TEST_F(GeminiPostRecipientIdTest, ServerOK) {
       [](const type::Result result, const std::string& recipient_id) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(recipient_id, "60f9be89-ada7-486d-9cef-f6d3a10886d7");
+      });
+}
+
+TEST_F(GeminiPostRecipientIdTest, ServerOK_Unverified) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = net::HTTP_OK;
+            response.url = request->url;
+            response.body = R"({
+              "result": "OK",
+              "recipient_id": "60f9be89-ada7-486d-9cef-f6d3a10886d7",
+              "label": "deposit_address"
+            })";
+            response.headers.insert(std::pair<std::string, std::string>(
+                "www-authenticate", "Bearer error=\"unverified_account\""));
+            callback(response);
+          }));
+
+  post_recipient_id_->Request(
+      "4c2b665ca060d912fec5c735c734859a06118cc8",
+      [](const type::Result result, const std::string& recipient_id) {
+        EXPECT_EQ(result, type::Result::NOT_FOUND);
+        EXPECT_EQ(recipient_id, "");
       });
 }
 
