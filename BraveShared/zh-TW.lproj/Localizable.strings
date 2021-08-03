@@ -884,7 +884,7 @@
 "shortcuts.activityTypeTabDescription" = "開始使用 Brave 安全地搜尋 Web";
 
 /* No comment provided by engineer. */
-"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "開始書籤網站";
+"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "開啟書籤網站";
 
 /* No comment provided by engineer. */
 "shortcuts.customIntentOpenHistorySuggestedPhrase" = "開啟歷史記錄網站";

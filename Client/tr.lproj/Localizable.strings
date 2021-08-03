@@ -1,7 +1,4 @@
 /* No comment provided by engineer. */
-"/can/answer" = "/yanıtlayabilir";
-
-/* No comment provided by engineer. */
 "Brave VPN" = "Brave VPN";
 
 /* Button text to confirm PIN */
@@ -11,9 +8,6 @@
 "insertKeyMessage" = "Şunun için güvenlik anahtarınızı girin ";
 
 /* No comment provided by engineer. */
-"Logs" = "Günlükler";
-
-/* No comment provided by engineer. */
 "No server found" = "Sunucu bulunamadı";
 
 /* Placeholder text for PIN */
@@ -21,9 +15,6 @@
 
 /* Title for the alert modal when a security key with PIN is inserted. */
 "pinTitle" = "PIN doğrulaması gerekli";
-
-/* No comment provided by engineer. */
-"Search Fallback" = "Arama Geri Dönüşü";
 
 /* Message for selecting security key. */
 "selectKey" = "Güvenlik anahtarınızı taratın veya girin ";
