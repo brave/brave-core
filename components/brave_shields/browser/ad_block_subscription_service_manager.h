@@ -11,16 +11,16 @@
 #include <string>
 #include <vector>
 
+#include "base/files/file_path.h"
 #include "base/macros.h"
-#include "base/memory/scoped_refptr.h"
+#include "base/one_shot_event.h"
 #include "base/optional.h"
 #include "base/synchronization/lock.h"
+#include "base/threading/thread_checker.h"
 #include "base/values.h"
-#include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service.h"
-#include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
 
 class PrefService;
@@ -28,11 +28,6 @@ class PrefService;
 namespace brave_shields {
 class AdBlockSubscriptionServiceManagerObserver;
 }
-
-namespace base {
-class ListValue;
-class FilePath;
-}  // namespace base
 
 class AdBlockServiceTest;
 
@@ -58,7 +53,7 @@ class AdBlockSubscriptionServiceManager {
   // used for the given subscription.
   GURL GetListTextFileUrl(const SubscriptionIdentifier id) const;
 
-  std::vector<FilterListSubscriptionInfo> GetSubscriptions() const;
+  std::vector<FilterListSubscriptionInfo> GetSubscriptions();
   void EnableSubscription(const SubscriptionIdentifier& id, bool enabled);
   void DeleteSubscription(const SubscriptionIdentifier& id);
   void RefreshSubscription(const SubscriptionIdentifier& id, bool from_ui);
@@ -100,19 +95,26 @@ class AdBlockSubscriptionServiceManager {
   void ClearFilterListPrefs(const SubscriptionIdentifier& uuid);
   void OnGetDownloadManager(
       AdBlockSubscriptionDownloadManager* download_manager);
+  void StartDownload(const GURL& list_url, bool from_ui);
 
   base::Optional<FilterListSubscriptionInfo> GetInfo(
-      const SubscriptionIdentifier& id) const;
+      const SubscriptionIdentifier& id);
   void OnListLoaded(const SubscriptionIdentifier& id);
   void NotifyObserversOfServiceEvent();
 
   brave_component_updater::BraveComponent::Delegate* delegate_;  // NOT OWNED
-  base::FilePath subscription_path_;
   AdBlockSubscriptionDownloadManager* download_manager_;         // NOT OWNED
+  base::FilePath subscription_path_;
+  std::unique_ptr<base::DictionaryValue> subscriptions_;
 
+  std::unique_ptr<base::OneShotEvent> ready_;
   std::map<SubscriptionIdentifier, std::unique_ptr<AdBlockSubscriptionService>>
       subscription_services_;
   base::ObserverList<AdBlockSubscriptionServiceManagerObserver> observers_;
+  base::Lock subscription_services_lock_;
+
+  THREAD_CHECKER(thread_checker_);
+
   base::WeakPtrFactory<AdBlockSubscriptionServiceManager> weak_ptr_factory_{
       this};
 
