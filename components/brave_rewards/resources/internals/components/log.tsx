@@ -49,13 +49,13 @@ export class Log extends React.Component<Props, State> {
     })
 
     if (selected) {
-      this.interval = setInterval(() => {
+      this.interval = window.setInterval(() => {
         this.props.onGet()
       }, 5000)
       return
     }
 
-    clearInterval(this.interval)
+    window.clearInterval(this.interval)
   }
 
   downloadFile = (log: string) => {
