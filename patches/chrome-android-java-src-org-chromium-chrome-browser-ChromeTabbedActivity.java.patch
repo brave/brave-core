@@ -1,10 +1,10 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 23ba9fbfe13ea1106029161dd736978922baac54..0ffd3190231cb7aa8e9952a580978d0cbfeeaaba 100644
+index d40d5f352022a73b5adc562067f632a39ab9f05e..ae367c3987d6809ce77039775521d59f21755ec2 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-@@ -2298,6 +2298,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -2319,6 +2319,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
      }
-
+ 
      private void hideOverview() {
 +        org.chromium.chrome.browser.app.BraveActivity.class.cast(this).hideOverview(mLayoutManager);
          assert (mOverviewModeController.overviewVisible());

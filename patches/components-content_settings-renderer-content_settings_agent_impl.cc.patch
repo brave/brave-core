@@ -1,12 +1,12 @@
 diff --git a/components/content_settings/renderer/content_settings_agent_impl.cc b/components/content_settings/renderer/content_settings_agent_impl.cc
-index f27839a59d049840befe3ccf578415f835e5bbca..fc519752528da9bc60d4c71b6a0bf2cc8ee09aea 100644
+index 9e11ffacf70818aff1b794b5df753457b9871581..0f208035e6a7ee413bce487c82bfac4ca02df581 100644
 --- a/components/content_settings/renderer/content_settings_agent_impl.cc
 +++ b/components/content_settings/renderer/content_settings_agent_impl.cc
-@@ -464,6 +464,7 @@ bool ContentSettingsAgentImpl::IsAllowlistedForContentSettings() const {
+@@ -458,6 +458,7 @@ bool ContentSettingsAgentImpl::IsAllowlistedForContentSettings() const {
    const WebDocument& document = render_frame()->GetWebFrame()->GetDocument();
    WebSecurityOrigin origin = document.GetSecurityOrigin();
    WebURL document_url = document.Url();
 +  BRAVE_CONTENT_SETTINGS_AGENT_IMPL_IS_WHITELISTED_FOR_CONTENT_SETTINGS
    if (document_url.GetString() == content::kUnreachableWebDataURL)
      return true;
- 
+

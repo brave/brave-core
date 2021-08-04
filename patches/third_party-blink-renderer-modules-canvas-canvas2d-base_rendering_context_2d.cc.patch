@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-index d33ffcf8609e6113c130ccc469f28f24e58fec95..131c8c5b5cc2ab236b3a6f5e403c14ecfb23178b 100644
+index 073dc53e5be5d4cc00c8902d4672ddf7f01bcf3d..628b0f039454585a5b3eb07f4f47b11ce82ccaeb 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-@@ -2005,6 +2005,7 @@ ImageData* BaseRenderingContext2D::getImageData(
+@@ -2008,6 +2008,7 @@ ImageData* BaseRenderingContext2D::getImageData(
  }
  
  ImageData* BaseRenderingContext2D::getImageDataInternal(
@@ -10,7 +10,7 @@ index d33ffcf8609e6113c130ccc469f28f24e58fec95..131c8c5b5cc2ab236b3a6f5e403c14ec
      int sx,
      int sy,
      int sw,
-@@ -2122,6 +2123,7 @@ ImageData* BaseRenderingContext2D::getImageDataInternal(
+@@ -2125,6 +2126,7 @@ ImageData* BaseRenderingContext2D::getImageDataInternal(
        DCHECK(!bounds.intersect(SkIRect::MakeXYWH(sx, sy, sw, sh)));
      }
    }

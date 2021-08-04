@@ -1,12 +1,12 @@
 diff --git a/base/BUILD.gn b/base/BUILD.gn
-index 67575f03c6a9182bfa90ee9a0807a7de2cfc62ae..9dc22c43df6cbb037e014b2c884a0825fd053b90 100644
+index bc2b2ee7ca7eb7274c11a2be722654611256496a..a93293a596618955ee6ab9b380dcd7af2d5f715e 100644
 --- a/base/BUILD.gn
 +++ b/base/BUILD.gn
-@@ -3989,6 +3989,7 @@ if (is_android) {
+@@ -3982,6 +3982,7 @@ if (is_android) {
        "android/java/src/org/chromium/base/task/TaskTraits.java",
        "android/java/src/org/chromium/base/task/TaskTraitsExtensionDescriptor.java",
      ]
 +    sources += brave_java_base_sources
-
+ 
      annotation_processor_deps = [ "//base/android/jni_generator:jni_processor" ]
-
+ 
