@@ -10,7 +10,7 @@ import { SiteRemovalNotification, SiteRemovalText, SiteRemovalAction } from './n
 import { ClockWidget } from './clock'
 import { RewardsWidget } from './rewards'
 import { BinanceWidget } from './binance'
-import { TogetherWidget } from './together'
+import { BraveTalkWidget } from './braveTalk'
 import { GeminiWidget } from './gemini'
 import { CryptoDotComWidget } from './cryptoDotCom'
 import EditCards from './editCards'
@@ -37,7 +37,7 @@ export {
   ClockWidget,
   RewardsWidget,
   BinanceWidget,
-  TogetherWidget,
+  BraveTalkWidget,
   EditCards,
   GeminiWidget,
   CryptoDotComWidget,

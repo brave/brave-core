@@ -20,7 +20,7 @@ export const statsUpdated = (stats: Stats) =>
 
 export const init = createAction<void>('page init')
 
-export const dismissTogetherPrompt = createAction('dismiss together prompt')
+export const dismissBraveTalkPrompt = createAction('dismiss brave talk prompt')
 
 export const privateTabDataUpdated = (data: PrivateTabData) =>
   action(types.NEW_TAB_PRIVATE_TAB_DATA_UPDATED, data)

@@ -63,6 +63,9 @@ extern const char kBraveEphemeralStorageKeepAliveName[];
 extern const char kBraveEphemeralStorageKeepAliveDescription[];
 extern const char kBravePermissionLifetimeName[];
 extern const char kBravePermissionLifetimeDescription[];
+extern const char kBraveTalkName[];
+extern const char kBraveTalkDescription[];
+
 }  // namespace flag_descriptions
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

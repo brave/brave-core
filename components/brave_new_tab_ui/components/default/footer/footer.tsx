@@ -24,36 +24,36 @@ import {
   BookmarkBook,
   HistoryIcon
 } from 'brave-ui/components/icons'
-import TogetherTooltip from './togetherTooltip'
-import TogetherIcon from './togetherTooltip/togetherIcon'
+import BraveTalkTooltip from './braveTalkTooltip'
+import BraveTalkIcon from './braveTalkTooltip/braveTalkIcon'
 
 // Helpers
 import { getLocale } from '../../../../common/locale'
 
 interface Props {
   textDirection: string
-  supportsTogether: boolean
-  togetherPromptDismissed: boolean
+  supportsBraveTalk: boolean
+  braveTalkPromptDismissed: boolean
   backgroundImageInfo: any
   showPhotoInfo: boolean
   onClickSettings: () => any
-  onDismissTogetherPrompt: () => any
+  onDismissBraveTalkPrompt: () => any
 }
 
-function TogetherItem (props: Props) {
-  if (!props.togetherPromptDismissed) {
+function BraveTalkItem (props: Props) {
+  if (!props.braveTalkPromptDismissed) {
     return (
-      <TogetherTooltip onClose={props.onDismissTogetherPrompt}>
-        <IconLink title={getLocale('togetherPromptTitle')} href='https://talk.brave.com/widget'>
-          <TogetherIcon />
+      <BraveTalkTooltip onClose={props.onDismissBraveTalkPrompt}>
+        <IconLink title={getLocale('braveTalkPromptTitle')} href='https://talk.brave.com/widget'>
+          <BraveTalkIcon />
         </IconLink>
-      </TogetherTooltip>
+      </BraveTalkTooltip>
     )
   }
 
   return (
-    <IconLink title={getLocale('togetherPromptTitle')} href='https://talk.brave.com/widget'>
-      <TogetherIcon />
+    <IconLink title={getLocale('braveTalkPromptTitle')} href='https://talk.brave.com/widget'>
+      <BraveTalkIcon />
     </IconLink>
   )
 }
@@ -62,7 +62,7 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
   render () {
     const {
       textDirection,
-      supportsTogether,
+      supportsBraveTalk,
       backgroundImageInfo,
       showPhotoInfo,
       onClickSettings
@@ -102,8 +102,8 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
             <IconLink title={getLocale('historyPageTitle')} href='chrome://history'>
               <HistoryIcon />
             </IconLink>
-            {supportsTogether &&
-              <TogetherItem {...this.props} />
+            {supportsBraveTalk &&
+              <BraveTalkItem {...this.props} />
             }
           </Navigation>
         </S.GridItemNavigation>

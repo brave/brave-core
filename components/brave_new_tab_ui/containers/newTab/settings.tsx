@@ -55,7 +55,7 @@ export interface Props {
   toggleShowTopSites: () => void
   setMostVisitedSettings: (show: boolean, customize: boolean) => void
   toggleShowRewards: () => void
-  toggleShowTogether: () => void
+  toggleShowBraveTalk: () => void
   toggleShowBinance: () => void
   toggleShowGemini: () => void
   toggleShowCryptoDotCom: () => void
@@ -72,10 +72,10 @@ export interface Props {
   brandedWallpaperOptIn: boolean
   allowSponsoredWallpaperUI: boolean
   showRewards: boolean
-  showTogether: boolean
+  showBraveTalk: boolean
   showBinance: boolean
   binanceSupported: boolean
-  togetherSupported: boolean
+  braveTalkSupported: boolean
   showGemini: boolean
   geminiSupported: boolean
   showCryptoDotCom: boolean
@@ -240,7 +240,7 @@ export default class Settings extends React.PureComponent<Props, State> {
       toggleShowTopSites,
       setMostVisitedSettings,
       toggleShowRewards,
-      toggleShowTogether,
+      toggleShowBraveTalk,
       toggleBrandedWallpaperOptIn,
       showBackgroundImage,
       showStats,
@@ -249,12 +249,12 @@ export default class Settings extends React.PureComponent<Props, State> {
       showTopSites,
       customLinksEnabled,
       showRewards,
-      showTogether,
+      showBraveTalk,
       brandedWallpaperOptIn,
       toggleShowBinance,
       showBinance,
       binanceSupported,
-      togetherSupported,
+      braveTalkSupported,
       toggleShowGemini,
       geminiSupported,
       showGemini,
@@ -382,9 +382,9 @@ export default class Settings extends React.PureComponent<Props, State> {
                       toggleShowBinance={toggleShowBinance}
                       showBinance={showBinance}
                       binanceSupported={binanceSupported}
-                      toggleShowTogether={toggleShowTogether}
-                      showTogether={showTogether}
-                      togetherSupported={togetherSupported}
+                      toggleShowBraveTalk={toggleShowBraveTalk}
+                      showBraveTalk={showBraveTalk}
+                      braveTalkSupported={braveTalkSupported}
                       toggleShowRewards={toggleShowRewards}
                       showRewards={showRewards}
                       showGemini={showGemini}

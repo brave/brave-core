@@ -221,7 +221,6 @@
 
       <message name="IDS_BRAVE_NEW_TAB_SHOW_REWARDS" desc="Text for settings show rewards option">Show Brave Rewards</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_BINANCE" desc="Text for show binance option">Show Binance</message>
-      <message name="IDS_BRAVE_NEW_TAB_SHOW_TOGETHER" desc="Text for show together option">Brave Together</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_CARDS" desc="Text for cards option">Cards</message>
       <message name="IDS_BRAVE_NEW_TAB_BRANDED_WALLPAPER_OPT_IN" desc="Text for setting to opt-in to Branded Wallpapers on New Tab Page">Show Sponsored Images</message>
       <message name="IDS_BRAVE_NEW_TAB_TOP_SITES" desc="Top Sites title">top sites</message>
@@ -233,13 +232,13 @@
         Back
       </message>
 
-      <message name="IDS_BRAVE_TOGETHER_PROMPT_TITLE" desc="Title for prompt about Brave Together">
+      <message name="IDS_BRAVE_TALK_PROMPT_TITLE" desc="Title for prompt about Brave Talk">
         You can start a private call in Brave.
       </message>
-      <message name="IDS_BRAVE_TOGETHER_PROMPT_DESCRIPTION" desc="Description for prompt about Brave Together">
-        Start unlimited calls with friends and colleagues in Brave Together.
+      <message name="IDS_BRAVE_TALK_PROMPT_DESCRIPTION" desc="Description for prompt about Brave Talk">
+        Start unlimited calls with friends and colleagues in Brave Talk.
       </message>
-      <message name="IDS_BRAVE_TOGETHER_PROMPT_ACTION" desc="Button text for prompt about Brave Together">
+      <message name="IDS_BRAVE_TALK_PROMPT_ACTION" desc="Button text for prompt about Brave Talk">
         Try it out
       </message>
 
@@ -303,7 +302,7 @@
       <message name="IDS_BRAVE_NEW_TAB_CARDS_DESC" desc="Toggle cards description">By turning off Cards, all cards currently visible will be hidden. However, you may still be notified of new cards.</message>
 
       <if expr="enable_sidebar">
-        <message name="IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE" desc="Title for brave together item in sidebar">
+        <message name="IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE" desc="Title for Brave Talk item in sidebar">
           Brave Talk
         </message>
         <message name="IDS_SIDEBAR_WALLET_ITEM_TITLE" desc="Title for crypto wallet item in sidebar">
@@ -1013,10 +1012,10 @@
       <message name="IDS_EDIT_CARDS_TITLE" desc="">Edit Cards</message>
       <message name="IDS_REWARDS_WIDGET_TOS_AND_PP" desc="">By clicking [[title]], you agree to the <ph name="BEGIN_LINK1">$1</ph>Terms of Service<ph name="END_LINK1">$2</ph> and <ph name="BEGIN_LINK2">$3</ph>Privacy Policy<ph name="END_LINK2">$4</ph>.</message>
       <message name="IDS_REWARDS_WIDGET_START_USING" desc="">Start using Brave Rewards</message>
-      <message name="IDS_TOGETHER_WIDGET_TITLE" desc="">Brave Together</message>
-      <message name="IDS_TOGETHER_WIDGET_WELCOME_TITLE" desc="">Start a private video call with your friends and colleagues.</message>
-      <message name="IDS_TOGETHER_WIDGET_START_BUTTON" desc="">Start video call</message>
-      <message name="IDS_TOGETHER_WIDGET_ABOUT_DATA" desc="">About your data</message>
+      <message name="IDS_BRAVE_TALK_WIDGET_TITLE" desc="">Brave Talk</message>
+      <message name="IDS_BRAVE_TALK_WIDGET_WELCOME_TITLE" desc="">Start a private video call with your friends and colleagues.</message>
+      <message name="IDS_BRAVE_TALK_WIDGET_START_BUTTON" desc="">Start video call</message>
+      <message name="IDS_BRAVE_TALK_WIDGET_ABOUT_DATA" desc="">About your data</message>
       <message name="IDS_BINANCE_WIDGET_BUY" desc="">Buy</message>
       <message name="IDS_BINANCE_WIDGET_BUY_CRYPTO" desc="">Buy Crypto</message>
       <message name="IDS_BINANCE_WIDGET_BUY_DEFAULT" desc="">I want to spend...</message>

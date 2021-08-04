@@ -326,7 +326,7 @@ let locale: Record<string, string> = {
   yourWallet: 'Your wallet',
   // New Tab Page
   adsTrackersBlocked: 'Ads and Trackers Blocked',
-  httpsUpgraded: 'HTTPS Upgrades',
+  estimatedBandwidthSaved: 'Bandwidth saved',
   estimatedTimeSaved: 'Estimated Time Saved',
   minutes: 'minutes',
   photoBy: 'Photo by',
@@ -339,7 +339,7 @@ let locale: Record<string, string> = {
   showBackgroundImg: 'Show background image',
   showBraveStats: 'Show Brave Stats',
   showBinance: 'Show Binance',
-  showTogether: 'Show Brave Together',
+  braveTalkWidgetTitle: 'Brave Talk',
   showClock: 'Show Clock',
   showTopSites: 'Show Top Sites',
   showRewards: 'Show Rewards',
@@ -349,7 +349,9 @@ let locale: Record<string, string> = {
   braveTodayIntroTitle: `Today's top stories in a completely private feed, just for you.`,
   braveTodayIntroDescription: `Brave News is ad-supported with completely private and anonymized ads matched on your device. Your personal information always stays private, per our $1privacy policy$2.`,
   braveTodayOptInActionLabel: 'Show Brave News',
-  braveTodayOptOutActionLabel: 'No thanks'
+  braveTodayOptOutActionLabel: 'No thanks',
+  braveTodayScrollHint: 'Scroll for Brave News',
+  editCardsTitle: 'Edit Cards'
 }
 
 export function provideStrings (strings: Record<string, string>) {

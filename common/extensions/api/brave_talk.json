@@ -4,10 +4,10 @@
 
 [
   {
-    "namespace": "braveTogether",
-    "description": "Use the <code>chrome.braveTogether</code> API to to receive info pertaining to the Brave Together feature.",
+    "namespace": "braveTalk",
+    "description": "Use the <code>chrome.braveTalk</code> API to to receive info pertaining to the Brave Talk feature.",
     "compiler_options": {
-      "implemented_in": "brave/browser/extensions/api/brave_together_api.h"
+      "implemented_in": "brave/browser/extensions/api/brave_talk_api.h"
     },
     "events": [
     ],
@@ -15,7 +15,7 @@
       {
         "name": "isSupported",
         "type": "function",
-        "description": "Fetches whether or not Brave Together is supported",
+        "description": "Fetches whether or not Brave Talk is supported",
         "parameters": [
           {
             "type": "function",
