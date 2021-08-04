@@ -190,11 +190,12 @@ const locale = {
   networkMain: 'Mainnet',
   networkTest: 'Test Network',
   networkRopsten: 'Roptsten',
-  networkKavan: 'Kavan',
+  networkKovan: 'Kovan',
   networkRinkeby: 'Rinkeby',
   networkGoerli: 'Goerli',
   networkBinance: 'Binance Smart Chain',
   networkBinanceAbbr: 'BSC',
+  networkLocalhost: 'Localhost',
 
   // Select Screens
   selectAccount: 'Select Account',

@@ -14,18 +14,17 @@ import {
   AssetOptionType,
   AssetPriceInfo,
   RPCResponseType,
-  NetworkOptionsType,
   OrderTypes,
   UserAccountType,
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
-  ToOrFromType
+  ToOrFromType,
+  Network
 } from '../constants/types'
 import Onboarding from './screens/onboarding'
 import BackupWallet from './screens/backup-wallet'
 // import { NavOptions } from '../options/side-nav-options'
 import { AssetOptions } from '../options/asset-options'
-import { NetworkOptions } from '../options/network-options'
 import { SlippagePresetOptions } from '../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../options/expiration-preset-options'
 import BuySendSwap from './screens/buy-send-swap'
@@ -58,7 +57,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [selectedTimeline, setSelectedTimeline] = React.useState<AssetPriceTimeframe>(AssetPriceTimeframe.OneDay)
   const [selectedAssetPriceHistory, setSelectedAssetPriceHistory] = React.useState<PriceDataObjectType[]>(PriceHistoryMockData.slice(15, 20))
   const [selectedAsset, setSelectedAsset] = React.useState<AssetOptionType>()
-  const [selectedNetwork, setSelectedNetwork] = React.useState<NetworkOptionsType>(NetworkOptions[0])
+  const [selectedNetwork, setSelectedNetwork] = React.useState<Network>(Network.Mainnet)
   const [selectedAccount, setSelectedAccount] = React.useState<UserAccountType>(mockUserAccounts[0])
   const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
   const [fromAsset, setFromAsset] = React.useState<AssetOptionType>(AssetOptions[0])
@@ -308,7 +307,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setShowAddModal(!showAddModal)
   }
 
-  const onSelectNetwork = (network: NetworkOptionsType) => {
+  const onSelectNetwork = (network: Network) => {
     setSelectedNetwork(network)
   }
 

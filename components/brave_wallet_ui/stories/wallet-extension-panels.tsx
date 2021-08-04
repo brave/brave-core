@@ -22,7 +22,7 @@ import {
   AppsListType,
   AssetOptionType,
   BuySendSwapViewTypes,
-  NetworkOptionsType
+  Network
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import { NetworkOptions } from '../options/network-options'
@@ -145,7 +145,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
   const [walletConnected, setWalletConnected] = React.useState<boolean>(true)
   const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
-  const [selectedNetwork, setSelectedNetwork] = React.useState<NetworkOptionsType>(NetworkOptions[0])
+  const [selectedNetwork, setSelectedNetwork] = React.useState<Network>(Network.Mainnet)
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AssetOptionType>(WyreAssetOptions[0])
   const [selectedAsset, setSelectedAsset] = React.useState<AssetOptionType>(AssetOptions[0])
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
@@ -174,7 +174,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     setSelectedPanel('main')
   }
 
-  const onSelectNetwork = (network: NetworkOptionsType) => () => {
+  const onSelectNetwork = (network: Network) => () => {
     setSelectedNetwork(network)
     setSelectedPanel('main')
   }

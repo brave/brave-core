@@ -2,7 +2,7 @@ import * as React from 'react'
 import {
   AssetOptionType,
   BuySendSwapViewTypes,
-  NetworkOptionsType,
+  Network,
   ToOrFromType
 } from '../../../constants/types'
 import { NavButton } from '../../extension'
@@ -18,7 +18,7 @@ import {
 
 export interface Props {
   selectedAsset: AssetOptionType
-  selectedNetwork: NetworkOptionsType
+  selectedNetwork: Network
   buyAmount: string
   onSubmit: () => void
   onInputChange: (value: string, name: string) => void
@@ -41,7 +41,7 @@ function Buy (props: Props) {
 
   return (
     <StyledWrapper>
-      {selectedNetwork.id === 0 ? (
+      {selectedNetwork === Network.Mainnet ? (
         <SwapInputComponent
           componentType='buyAmount'
           onInputChange={onInputChange}
@@ -53,13 +53,13 @@ function Buy (props: Props) {
       ) : (
         <FaucetWrapper>
           <FaucetTitle>{locale.buyTitle}</FaucetTitle>
-          <FaucetDescription>{locale.buyDescription} {selectedNetwork.abbr}</FaucetDescription>
+          <FaucetDescription>{locale.buyDescription} {Network[selectedNetwork]}</FaucetDescription>
         </FaucetWrapper>
       )}
       <NavButton
         disabled={false}
         buttonType='primary'
-        text={selectedNetwork.id === 0 ? locale.buyWyreButton : locale.buyFaucetButton}
+        text={selectedNetwork === Network.Mainnet ? locale.buyWyreButton : locale.buyFaucetButton}
         onSubmit={onSubmit}
       />
     </StyledWrapper>
