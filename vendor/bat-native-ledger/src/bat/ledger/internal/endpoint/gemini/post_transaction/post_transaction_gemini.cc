@@ -72,7 +72,7 @@ type::Result PostTransaction::ParseBody(const std::string& body,
     return type::Result::LEDGER_ERROR;
   }
 
-  const auto* transfer_status_str = dictionary->FindStringKey("result");
+  const auto* transfer_status_str = dictionary->FindStringKey("status");
   if (!transfer_status_str) {
     BLOG(0, "Missing transfer status");
     return type::Result::LEDGER_ERROR;
@@ -123,10 +123,19 @@ void PostTransaction::OnRequest(const type::UrlResponse& response,
   std::string id;
   std::string transfer_status;
   result = ParseBody(response.body, &id, &transfer_status);
-  if (result == type::Result::LEDGER_OK && transfer_status != "OK") {
-    BLOG(0, "Transfer failed (status: " << transfer_status << ")");
-    callback(type::Result::LEDGER_ERROR, "");
-    return;
+
+  if (result == type::Result::LEDGER_OK) {
+    if (transfer_status == "Pending") {
+      BLOG(1, "Transfer Pending");
+      callback(type::Result::RETRY, id);
+      return;
+    }
+
+    if (transfer_status != "Completed") {
+      BLOG(0, "Transfer Error: " << transfer_status);
+      callback(type::Result::LEDGER_ERROR, "");
+      return;
+    }
   }
 
   callback(result, id);
