@@ -13,12 +13,10 @@ class WebContents;
 }  // namespace content
 
 // SpeedreaderResultDelegate is an interface for the speedreader component to
-// notify a tab_helper that the distillation has completed. To meet the
-// requirements of a tab_helper, the interface is scoped to the lifetime of
-// WebContents.
+// notify a tab_helper that the distillation has completed successufully.
 class SpeedreaderResultDelegate {
  public:
-  virtual void OnDistillComplete(bool success) = 0;
+  virtual void OnDistillComplete() = 0;
 };
 
 #endif  // BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_RESULT_DELEGATE_H_

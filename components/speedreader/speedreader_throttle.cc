@@ -30,9 +30,7 @@ class SpeedreaderResultWebContentsLifetimeHelper
       SpeedreaderResultDelegate* delegate)
       : delegate_(delegate) {}
 
-  void OnDistillComplete(bool success) {
-    delegate_->OnDistillComplete(success);
-  }
+  void OnDistillComplete() { delegate_->OnDistillComplete(); }
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 
@@ -44,7 +42,7 @@ class SpeedreaderResultWebContentsLifetimeHelper
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(SpeedreaderResultWebContentsLifetimeHelper)
 
-}  // anonymous namespace
+}  // namespace
 
 namespace speedreader {
 // static
@@ -105,12 +103,12 @@ void SpeedReaderThrottle::Resume() {
   delegate_->Resume();
 }
 
-void SpeedReaderThrottle::OnDistillComplete(bool success) {
+void SpeedReaderThrottle::OnDistillComplete() {
   auto* result_helper =
       SpeedreaderResultWebContentsLifetimeHelper::FromWebContents(
           web_contents_);
   if (result_helper) {
-    result_helper->OnDistillComplete(success);
+    result_helper->OnDistillComplete();
   }
 }
 

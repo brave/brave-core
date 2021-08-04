@@ -10,6 +10,8 @@ brave_browser_speedreader_deps = []
 
 if (enable_speedreader) {
   brave_browser_speedreader_sources += [
+    "//brave/browser/speedreader/speedreader_extended_info_handler.cc",
+    "//brave/browser/speedreader/speedreader_extended_info_handler.h",
     "//brave/browser/speedreader/speedreader_service_factory.cc",
     "//brave/browser/speedreader/speedreader_service_factory.h",
     "//brave/browser/speedreader/speedreader_tab_helper.cc",

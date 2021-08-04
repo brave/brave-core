@@ -5,8 +5,8 @@
 
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 
-#include "base/notreached.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/speedreader/speedreader_extended_info_handler.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
@@ -18,6 +18,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 
@@ -86,6 +87,28 @@ void SpeedreaderTabHelper::SingleShotSpeedreader() {
   }
 }
 
+bool SpeedreaderTabHelper::MaybeUpdateCachedState(
+    content::NavigationHandle* handle) {
+  auto* entry = handle->GetNavigationEntry();
+  if (!entry) {
+    return false;
+  }
+
+  bool cached = false;
+  if (SpeedreaderExtendedInfoHandler::IsCachedReaderMode(entry)) {
+    distill_state_ = DistillState::kReaderMode;
+    cached = true;
+  } else if (SpeedreaderExtendedInfoHandler::IsCachedSpeedreaderMode(entry)) {
+    distill_state_ = DistillState::kSpeedreaderMode;
+    cached = true;
+  }
+
+  if (!cached) {
+    SpeedreaderExtendedInfoHandler::ClearPersistedData(entry);
+  }
+  return cached;
+}
+
 void SpeedreaderTabHelper::UpdateActiveState(
     content::NavigationHandle* handle) {
   DCHECK(handle);
@@ -125,14 +148,18 @@ void SpeedreaderTabHelper::SetNextRequestState(DistillState state) {
 void SpeedreaderTabHelper::DidStartNavigation(
     content::NavigationHandle* navigation_handle) {
   if (navigation_handle->IsInMainFrame()) {
-    UpdateActiveState(navigation_handle);
+    if (!MaybeUpdateCachedState(navigation_handle)) {
+      UpdateActiveState(navigation_handle);
+    }
   }
 }
 
 void SpeedreaderTabHelper::DidRedirectNavigation(
     content::NavigationHandle* navigation_handle) {
   if (navigation_handle->IsInMainFrame()) {
-    UpdateActiveState(navigation_handle);
+    if (!MaybeUpdateCachedState(navigation_handle)) {
+      UpdateActiveState(navigation_handle);
+    }
   }
 }
 
@@ -174,18 +201,23 @@ void SpeedreaderTabHelper::HideBubble() {
   }
 }
 
-void SpeedreaderTabHelper::OnDistillComplete(bool success) {
-  DCHECK(SpeedreaderTabHelper::PageWantsDistill(distill_state_));
-  if (!success) {
-    distill_state_ = DistillState::kNone;
-    return;
-  }
-
+void SpeedreaderTabHelper::OnDistillComplete() {
   // Perform a state transition
+  auto* entry = web_contents()->GetController().GetLastCommittedEntry();
+  DCHECK(entry);
+  if (!entry) {
+    return;  // not possible?
+  }
   if (distill_state_ == DistillState::kSpeedreaderModePending) {
+    SpeedreaderExtendedInfoHandler::PersistSpeedreaderMode(entry);
     distill_state_ = DistillState::kSpeedreaderMode;
-  } else {  // distill_state_ == DistillState::kReaderModePending
+  } else if (distill_state_ == DistillState::kReaderModePending) {
+    SpeedreaderExtendedInfoHandler::PersistReaderMode(entry);
     distill_state_ = DistillState::kReaderMode;
+  } else {
+    // We got here via an already cached page.
+    DCHECK(distill_state_ == DistillState::kSpeedreaderMode ||
+           distill_state_ == DistillState::kReaderMode);
   }
 }
 

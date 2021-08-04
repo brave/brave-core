@@ -11,6 +11,7 @@
 #include "content/public/browser/web_contents_user_data.h"
 
 namespace content {
+class NavigationEntry;
 class NavigationHandle;
 class WebContents;
 }  // namespace content
@@ -71,7 +72,9 @@ class SpeedreaderTabHelper
   }
 
   static bool PageWantsDistill(DistillState state) {
-    return state == DistillState::kReaderModePending ||
+    return state == DistillState::kReaderMode ||
+           state == DistillState::kSpeedreaderMode ||
+           state == DistillState::kReaderModePending ||
            state == DistillState::kSpeedreaderModePending;
   }
 
@@ -126,6 +129,7 @@ class SpeedreaderTabHelper
   // committed to the WebContents.
   bool IsEnabledForSite(const GURL& url);
 
+  bool MaybeUpdateCachedState(content::NavigationHandle* handle);
   void UpdateActiveState(content::NavigationHandle* handle);
   void SetNextRequestState(DistillState state);
 
@@ -136,7 +140,7 @@ class SpeedreaderTabHelper
       content::NavigationHandle* navigation_handle) override;
 
   // SpeedreaderResultDelegate:
-  void OnDistillComplete(bool success) override;
+  void OnDistillComplete() override;
 
   bool single_shot_next_request_ =
       false;  // run speedreader once on next page load
