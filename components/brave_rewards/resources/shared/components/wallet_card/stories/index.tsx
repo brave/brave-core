@@ -19,7 +19,7 @@ const locale = {
 }
 
 export default {
-  title: 'Rewards/Panel'
+  title: 'Rewards'
 }
 
 function actionLogger (name: string) {

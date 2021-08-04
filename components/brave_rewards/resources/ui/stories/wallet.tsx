@@ -19,7 +19,7 @@ const doNothing = () => {
 }
 
 export default {
-  title: 'Rewards/Wallet/Desktop',
+  title: 'Rewards/Wallet 1.0',
   parameters: {
     layout: 'centered'
   }

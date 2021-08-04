@@ -5,13 +5,24 @@
 import * as React from 'react'
 
 import { Host, HostState } from '../lib/interfaces'
+import { Notification } from '../../shared/components/notifications'
 import { localeStrings } from './locale_strings'
 import { createStateManager } from '../../shared/lib/state_manager'
+
+import { LocaleContext } from '../../shared/lib/locale_context'
+import { WithThemeVariables } from '../../shared/components/with_theme_variables'
+import { NotificationCard } from '../components/notification_card'
 
 import { App } from '../components/app'
 
 export default {
-  title: 'Rewards'
+  title: 'Rewards/Panel'
+}
+
+const locale = {
+  getString (key: string) {
+    return localeStrings[key] || 'MISSING'
+  }
 }
 
 function createHost (): Host {
@@ -47,7 +58,28 @@ function createHost (): Host {
       autoContributions: 10,
       oneTimeTips: -2,
       monthlyTips: -19
-    }
+    },
+    notifications: [
+      {
+        type: 'backup-wallet',
+        id: '1',
+        timeStamp: Date.now() - 100
+      },
+      {
+        type: 'external-wallet-verified',
+        id: '2',
+        timeStamp: Date.now(),
+        provider: 'uphold'
+      } as any,
+      {
+        type: 'external-wallet-linking-failed',
+        id: '3',
+        timeStamp: Date.now(),
+        provider: 'uphold',
+        reason: 'mismatched-provider-accounts'
+      } as any
+    ],
+    notificationsLastViewed: Date.now() - 60_000
   })
 
   return {
@@ -55,15 +87,13 @@ function createHost (): Host {
 
     addListener: stateManager.addListener,
 
-    getString (key: string) {
-      return localeStrings[key] || 'MISSING'
-    },
+    getString: locale.getString,
 
     refreshPublisherStatus () {
       console.log('refreshPublisherStatus')
     },
 
-    setIncludeInAutoContribute (enabled: boolean) {
+    setIncludeInAutoContribute (enabled) {
       const { publisherInfo } = stateManager.getState()
       if (publisherInfo) {
         stateManager.update({
@@ -107,12 +137,56 @@ function createHost (): Host {
 
     handleExternalWalletAction (action) {
       console.log('externalWalletAction', action)
+    },
+
+    handleNotificationAction (action) {
+      console.log('notificationAction', action)
+    },
+
+    dismissNotification (notification) {
+      const { notifications } = stateManager.getState()
+      stateManager.update({
+        notifications: notifications.filter((n) => {
+          return n.id !== notification.id
+        })
+      })
+    },
+
+    clearNotifications () {
+      stateManager.update({
+        notifications: []
+      })
+    },
+
+    setNotificationsViewed () {
+      stateManager.update({
+        notificationsLastViewed: Date.now()
+      })
     }
   }
 }
 
-export function Panel () {
+export function MainPanel () {
+  const [host] = React.useState(() => createHost())
   return (
-    <App host={createHost()} />
+    <App host={host} />
+  )
+}
+
+export function Notification () {
+  return (
+    <LocaleContext.Provider value={locale}>
+      <WithThemeVariables>
+        <div style={{ width: '375px' }}>
+          <NotificationCard
+            notification={{
+              type: 'backup-wallet',
+              id: '123',
+              timeStamp: Date.now()
+            }}
+          />
+        </div>
+      </WithThemeVariables>
+    </LocaleContext.Provider>
   )
 }
