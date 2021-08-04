@@ -8,19 +8,22 @@ export const root = styled.div`
   position: absolute;
   top: 32px;
   left: 1px;
+  overflow: hidden;
   z-index: 1;
-  background: var(--brave-palette-white);
   width: 329px;
   box-shadow: 0px 0px 16px rgba(99, 105, 110, 0.28);
   border: solid 1px rgba(0, 0, 0, .15);
   border-radius: 6px;
+`
+
+export const content = styled.div`
+  background: var(--brave-palette-white);
   color: var(--brave-palette-neutral900);
-  padding: 14px 21px 22px;
+  padding: 14px 21px 16px;
 
   .brave-theme-dark & {
     background: var(--brave-palette-grey800);
     color: var(--brave-palette-grey000);
-    border-color: rgba(0, 0, 0, .32);
   }
 `
 

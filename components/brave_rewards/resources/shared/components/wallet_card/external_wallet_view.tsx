@@ -4,7 +4,8 @@
 
 import * as React from 'react'
 
-import { ExternalWallet, ExternalWalletAction } from '../../lib/external_wallet'
+import { ExternalWallet } from '../../lib/external_wallet'
+import { ExternalWalletAction } from './external_wallet_action'
 import { LocaleContext } from '../../lib/locale_context'
 import { GeminiIcon } from '../icons/gemini_icon'
 import { BitflyerIcon } from '../icons/bitflyer_icon'

@@ -27,8 +27,13 @@ function createThemeRules (theme: any) {
   return list.join('\n')
 }
 
-const DefaultWrapper = styled.div`${createThemeRules(braveDefaultTheme)}`
-const DarkWrapper = styled.div`${createThemeRules(braveDarkTheme)}`
+const Wrapper = styled.div`
+  ${createThemeRules(braveDefaultTheme)}
+
+  &.brave-theme-dark {
+    ${createThemeRules(braveDarkTheme)}
+  }
+`
 
 function normalizeThemeName (name: string) {
   if (name.toLowerCase() === 'dark' || name === braveDarkTheme.name) {
@@ -50,8 +55,6 @@ export function WithThemeVariables (props: { children: React.ReactNode }) {
 
   const currentTheme = normalizeThemeName(
     themeName || styledComponentsTheme.name || '')
-
-  const Wrapper = currentTheme === 'dark' ? DarkWrapper : DefaultWrapper
 
   return (
     <Wrapper className={`brave-theme-${currentTheme}`}>

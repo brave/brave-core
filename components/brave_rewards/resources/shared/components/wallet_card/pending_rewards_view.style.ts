@@ -9,6 +9,11 @@ export const root = styled.div``
 export const pendingRewards = styled.div`
   background: var(--brave-palette-grey900);
   color: var(--brave-palette-grey400);
+
+  .brave-theme-dark & {
+    background: rgba(30, 32, 41, .8);
+  }
+
   font-size: 12px;
   line-height: 22px;
   text-align: center;
