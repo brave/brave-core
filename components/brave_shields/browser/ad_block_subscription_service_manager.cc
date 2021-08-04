@@ -14,6 +14,7 @@
 #include "base/json/json_value_converter.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/util/values/values_util.h"
 #include "base/values.h"
@@ -164,8 +165,10 @@ void AdBlockSubscriptionServiceManager::DeleteSubscription(
   }
   ClearFilterListPrefs(id);
 
-  delegate_->GetTaskRunner()->PostTask(
+  base::ThreadPool::PostTask(
       FROM_HERE,
+      {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+       base::TaskShutdownBehavior::BLOCK_SHUTDOWN},
       base::BindOnce(base::IgnoreResult(&base::DeletePathRecursively),
                      GetSubscriptionPath(id)));
 }
