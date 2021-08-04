@@ -31,8 +31,7 @@ CARGO_INCLUDE_PATHS = [
 ignored_npm_advisories = [
     1700,   # high RxDoS vector, we don't use MDX in storybook
     1747,    # moderate RxDoS vector, not fixed in @storybook/addon-essentials
-    1751,     # moderate RxDoS vector, not fixed in webpack 4
-    1762     # high RxDoS vector, not fixed in @storybook/addon-essentials
+    1751     # moderate RxDoS vector, not fixed in webpack 4
 ]
 
 
