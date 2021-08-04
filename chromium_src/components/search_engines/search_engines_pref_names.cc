@@ -9,6 +9,6 @@ namespace prefs {
 
 const char kDefaultSearchProviderByExtension[] =
     "brave.default_search_provider_by_extension";
-const char kOtherSearchEnginesEnabled[] = "brave.other_search_engines_enabled";
+const char kAddOpenSearchEngines[] = "brave.other_search_engines_enabled";
 
 }  // namespace prefs

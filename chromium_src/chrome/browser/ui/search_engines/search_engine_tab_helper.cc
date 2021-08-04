@@ -8,7 +8,7 @@
 #include "components/search_engines/search_engines_pref_names.h"
 
 #define PREVENT_OSDD_ADDITION                                                \
-  if (!profile->GetPrefs()->GetBoolean(prefs::kOtherSearchEnginesEnabled)) { \
+  if (!profile->GetPrefs()->GetBoolean(prefs::kAddOpenSearchEngines)) { \
     return;                                                                  \
   }
 
