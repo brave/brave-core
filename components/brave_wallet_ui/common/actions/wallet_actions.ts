@@ -4,8 +4,21 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { createAction } from 'redux-act'
-import { InitializedPayloadType, UnlockWalletPayloadType, SetInitialAccountNamesPayloadType, AddNewAccountNamePayloadType, ChainChangedEventPayloadType } from '../constants/action_types'
-import { AppObjectType, WalletAccountType, Network } from '../../constants/types'
+import {
+  InitializedPayloadType,
+  UnlockWalletPayloadType,
+  SetInitialAccountNamesPayloadType,
+  AddNewAccountNamePayloadType,
+  ChainChangedEventPayloadType,
+  SetInitialVisibleTokensPayloadType
+} from '../constants/action_types'
+import {
+  AppObjectType,
+  WalletAccountType,
+  Network,
+  GetAllTokensReturnInfo,
+  TokenInfo
+} from '../../constants/types'
 
 export const initialize = createAction('initialize')
 export const initialized = createAction<InitializedPayloadType>('initialized')
@@ -15,6 +28,10 @@ export const addFavoriteApp = createAction<AppObjectType>('addFavoriteApp')
 export const removeFavoriteApp = createAction<AppObjectType>('removeFavoriteApp')
 export const hasIncorrectPassword = createAction<boolean>('hasIncorrectPassword')
 export const setInitialAccountNames = createAction<SetInitialAccountNamesPayloadType>('setInitialAccountNames')
+export const setInitialVisibleTokens = createAction<SetInitialVisibleTokensPayloadType>('setInitialVisibleTokens')
+export const updateVisibleTokens = createAction<string[]>('updateVisibleTokens')
+export const setVisibleTokens = createAction<string[]>('setVisibleTokens')
+export const setVisibleTokensInfo = createAction<TokenInfo[]>('setVisibleTokensInfo')
 export const addNewAccountName = createAction<AddNewAccountNamePayloadType>('addNewAccountName')
 export const selectAccount = createAction<WalletAccountType>('selectAccount')
 export const selectNetwork = createAction<Network>('selectNetwork')
@@ -26,3 +43,5 @@ export const locked = createAction('locked')
 export const unlocked = createAction('unlocked')
 export const backedUp = createAction('backedUp')
 export const accountsChanged = createAction('accountsChanged')
+export const setAllTokensList = createAction<GetAllTokensReturnInfo>('setAllTokensList')
+export const getAllTokensList = createAction('getAllTokensList')

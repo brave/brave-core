@@ -6,8 +6,16 @@
 
 import { createReducer } from 'redux-act'
 import * as Actions from '../actions/wallet_page_actions'
-import { PageState, AssetOptionType, AssetPriceTimeframe } from '../../constants/types'
-import { WalletCreatedPayloadType, RecoveryWordsAvailablePayloadType, SelectAssetPayloadType } from '../constants/action_types'
+import {
+  PageState,
+  AssetPriceTimeframe,
+  TokenInfo
+} from '../../constants/types'
+import {
+  WalletCreatedPayloadType,
+  RecoveryWordsAvailablePayloadType,
+  SelectAssetPayloadType
+} from '../constants/action_types'
 
 const defaultState: PageState = {
   hasInitialized: false,
@@ -19,7 +27,6 @@ const defaultState: PageState = {
   selectedBTCAssetPrice: undefined,
   selectedAssetPriceHistory: [],
   portfolioPriceHistory: [],
-  userAssets: ['1', '2'],
   isFetchingPriceHistory: false,
   setupStillInProgress: false
 }
@@ -71,7 +78,7 @@ reducer.on(Actions.hasMnemonicError, (state: PageState, payload: boolean) => {
   }
 })
 
-reducer.on(Actions.updateSelectedAsset, (state: PageState, payload: AssetOptionType) => {
+reducer.on(Actions.updateSelectedAsset, (state: PageState, payload: TokenInfo) => {
   return {
     ...state,
     selectedAsset: payload

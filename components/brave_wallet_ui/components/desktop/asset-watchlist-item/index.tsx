@@ -17,7 +17,7 @@ export interface Props {
   id: string
   name: string
   symbol: string
-  icon: string
+  icon?: string
   assetBalance: string
 }
 
@@ -35,7 +35,7 @@ const AssetWatchlistItem = (props: Props) => {
   return (
     <StyledWrapper>
       <NameAndIcon>
-        <AssetIcon icon={icon} />
+        <AssetIcon icon={icon ? icon : ''} />
         <AssetName>{name}</AssetName>
       </NameAndIcon>
       <Balance>{Number(assetBalance).toFixed(6)} {symbol}</Balance>

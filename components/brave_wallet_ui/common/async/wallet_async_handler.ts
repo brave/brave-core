@@ -6,8 +6,18 @@
 import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletActions from '../actions/wallet_actions'
-import { UnlockWalletPayloadType, SetInitialAccountNamesPayloadType, AddNewAccountNamePayloadType, ChainChangedEventPayloadType } from '../constants/action_types'
-import { AppObjectType, APIProxyControllers, Network } from '../../constants/types'
+import {
+  UnlockWalletPayloadType,
+  SetInitialAccountNamesPayloadType,
+  AddNewAccountNamePayloadType,
+  ChainChangedEventPayloadType,
+  SetInitialVisibleTokensPayloadType
+} from '../constants/action_types'
+import {
+  AppObjectType,
+  APIProxyControllers,
+  Network
+} from '../../constants/types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
 
@@ -33,6 +43,17 @@ async function refreshWalletInfo (store: Store) {
 }
 
 handler.on(WalletActions.initialize.getType(), async (store) => {
+  // VisibleTokens need to be setup and returned from prefs
+  // that away we can map over the contract id's and get the token info for
+  // each visibleToken on initialization.
+  // In prefs we need to return a different list based on chainID
+  const walletHandler = (await getAPIProxy()).walletHandler
+  const visibleTokensPayload = ['0x0D8775F648430679A709E98d2b0Cb6250d2887EF']
+  const visibleTokensInfo = await Promise.all(visibleTokensPayload.map(async (i) => {
+    const info = await walletHandler.getTokenByContract(i)
+    return info.token
+  }))
+  store.dispatch(WalletActions.setVisibleTokensInfo(visibleTokensInfo))
   await refreshWalletInfo(store)
 })
 
@@ -87,6 +108,11 @@ handler.on(WalletActions.removeFavoriteApp.getType(), async (store, appItem: App
   await refreshWalletInfo(store)
 })
 
+handler.on(WalletActions.setInitialVisibleTokens.getType(), async (store, payload: SetInitialVisibleTokensPayloadType) => {
+  const walletHandler = (await getAPIProxy()).walletHandler
+  await walletHandler.setInitialVisibleAssets(payload.visibleAssets)
+})
+
 handler.on(WalletActions.setInitialAccountNames.getType(), async (store, payload: SetInitialAccountNamesPayloadType) => {
   const keyringController = (await getAPIProxy()).keyringController
   await keyringController.setInitialAccountNames(payload.accountNames)
@@ -100,6 +126,19 @@ handler.on(WalletActions.addNewAccountName.getType(), async (store, payload: Add
 handler.on(WalletActions.selectNetwork.getType(), async (store, payload: Network) => {
   const ethJsonRpcController = (await getAPIProxy()).ethJsonRpcController
   await ethJsonRpcController.setNetwork(payload)
+  await refreshWalletInfo(store)
+})
+
+handler.on(WalletActions.getAllTokensList.getType(), async (store) => {
+  const walletHandler = (await getAPIProxy()).walletHandler
+  const fullList = await walletHandler.getAllTokens()
+  store.dispatch(WalletActions.setAllTokensList(fullList))
+})
+
+handler.on(WalletActions.updateVisibleTokens.getType(), async (store, payload: string[]) => {
+  // We need a walletHandler method 'updateVisibleTokens' to use here
+  // to update the users visibleTokens
+  store.dispatch(WalletActions.setVisibleTokens(payload))
   await refreshWalletInfo(store)
 })
 

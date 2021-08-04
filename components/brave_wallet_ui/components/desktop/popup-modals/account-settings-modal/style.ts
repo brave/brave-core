@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import ClipboardIcon from '../../../../assets/svg-icons/clipboard-icon.svg'
+import { LoaderIcon } from 'brave-ui/components/icons'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -107,4 +108,20 @@ export const WatchlistScrollContainer = styled.div`
   margin-bottom: 24px;
   box-sizing: border-box;
   padding-right: 4px;
+`
+
+export const LoadingWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+`
+
+export const LoadIcon = styled(LoaderIcon)`
+  color: ${p => p.theme.color.interactive08};
+  height: 70px;
+  width: 70px;
+  opacity: .4;
 `

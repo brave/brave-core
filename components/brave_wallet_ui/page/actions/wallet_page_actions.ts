@@ -13,7 +13,7 @@ import {
   UpdateSelectedAssetType,
   AddAccountPayloadType
 } from '../constants/action_types'
-import { AssetOptionType } from '../../constants/types'
+import { TokenInfo } from '../../constants/types'
 
 export const createWallet = createAction<CreateWalletPayloadType>('createWallet')
 export const restoreWallet = createAction<RestoreWalletPayloadType>('restoreWallet')
@@ -26,5 +26,5 @@ export const walletBackupComplete = createAction('walletBackupComplete')
 export const hasMnemonicError = createAction<boolean>('hasMnemonicError')
 export const updatePriceInfo = createAction<SelectAssetPayloadType>('updatePriceInfo')
 export const selectAsset = createAction<UpdateSelectedAssetType>('selectAsset')
-export const updateSelectedAsset = createAction<AssetOptionType>('updateSelectedAsset')
+export const updateSelectedAsset = createAction<TokenInfo>('updateSelectedAsset')
 export const setIsFetchingPriceHistory = createAction<boolean>('setIsFetchingPriceHistory')

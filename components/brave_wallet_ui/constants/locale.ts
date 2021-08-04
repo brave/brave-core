@@ -144,8 +144,8 @@ const locale = {
   accountsPrimary: 'Primary Crypto Accounts',
   accountsSecondary: 'Secondary Accounts',
   accountsSecondaryDisclaimer: 'These accounts can be used with web 3 dapps and can be shown in your portfolio, however, they cannot not be restored via recovery phrase from your primary account backup. Enable Brave Sync accounts to auto-restore secondary accounts.',
-  accountsWatchlist: 'Watchlist',
-  accountsEditWatchList: 'Edit Watchlist',
+  accountsAssets: 'Assets',
+  accountsEditVisibleAssets: 'Edit visible assets',
 
   // Add Account Options
   addAccountCreate: 'Create',
@@ -180,7 +180,7 @@ const locale = {
 
   // Account Settings Modal
   accountSettingsDetails: 'Details',
-  accountSettingsWatchlist: 'Watchlist',
+  accountSettingsWatchlist: 'Visible Assets',
   accountSettingsSave: 'Save',
   accountSettingsRemove: 'Remove Account',
   watchlistButton: 'Save Account Watchlist',

@@ -3,8 +3,8 @@ import * as qr from 'qr-image'
 import {
   AccountSettingsNavTypes,
   WalletAccountType,
-  UserAssetOptionType,
-  AssetOptionType
+  TokenInfo,
+  AccountAssetOptionType
 } from '../../../../constants/types'
 import {
   PopupModal,
@@ -12,7 +12,6 @@ import {
   AssetWatchlistItem
 } from '../..'
 import { AccountSettingsNavOptions } from '../../../../options/account-settings-nav-options'
-import { AssetOptions } from '../../../../options/asset-options'
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { NavButton } from '../../../extension'
 import { Tooltip, SearchBar } from '../../../shared'
@@ -26,20 +25,24 @@ import {
   AddressButton,
   ButtonRow,
   CopyIcon,
-  WatchlistScrollContainer
+  WatchlistScrollContainer,
+  LoadIcon,
+  LoadingWrapper
 } from './style'
 
 export interface Props {
   onClose: () => void
-  onUpdateAccountName: (name: string) => void
-  onUpdateWatchList: (list: string[]) => void
-  onCopyToClipboard: () => void
-  onChangeTab: (id: AccountSettingsNavTypes) => void
-  userAssetList: UserAssetOptionType[]
+  onUpdateAccountName?: (name: string) => void
+  onUpdateVisibleTokens: (list: string[]) => void
+  onCopyToClipboard?: () => void
+  onChangeTab?: (id: AccountSettingsNavTypes) => void
+  hideNav: boolean
+  fullAssetList: TokenInfo[]
+  userAssetList: AccountAssetOptionType[]
   userWatchList: string[]
   tab: AccountSettingsNavTypes
   title: string
-  account: WalletAccountType
+  account?: WalletAccountType
 }
 
 const AddAccountModal = (props: Props) => {
@@ -48,36 +51,51 @@ const AddAccountModal = (props: Props) => {
     account,
     tab,
     userWatchList,
+    fullAssetList,
+    userAssetList,
+    hideNav,
     onClose,
     onUpdateAccountName,
-    onUpdateWatchList,
+    onUpdateVisibleTokens,
     onCopyToClipboard,
     onChangeTab
   } = props
-  const [accountName, setAccountName] = React.useState<string>(account.name)
-  const [filteredWatchlist, setFilteredWatchlist] = React.useState<AssetOptionType[]>(AssetOptions)
+  const watchlist = React.useMemo(() => {
+    const visibleList = userAssetList.map((item) => { return item.asset })
+    const notVisibleList = fullAssetList.filter((item) => !userWatchList.includes(item.contractAddress))
+    return [...visibleList, ...notVisibleList]
+  }, [fullAssetList, userWatchList, userAssetList])
+  const name = account ? account.name : ''
+  const [accountName, setAccountName] = React.useState<string>(name)
+  const [filteredWatchlist, setFilteredWatchlist] = React.useState<TokenInfo[]>([])
   const [selectedWatchlist, setSelectedWatchlist] = React.useState<string[]>(userWatchList)
   const [qrCode, setQRCode] = React.useState<string>('')
+
+  React.useMemo(() => {
+    setFilteredWatchlist(watchlist)
+  }, [watchlist])
 
   const filterWatchlist = (event: any) => {
     const search = event.target.value
     if (search === '') {
-      setFilteredWatchlist(AssetOptions)
+      setFilteredWatchlist(watchlist)
     } else {
-      const filteredList = AssetOptions.filter((item) => {
+      const filteredList = watchlist.filter((item) => {
         return (
           item.name.toLowerCase() === search.toLowerCase() ||
           item.name.toLowerCase().startsWith(search.toLowerCase()) ||
           item.symbol.toLocaleLowerCase() === search.toLowerCase() ||
-          item.symbol.toLowerCase().startsWith(search.toLowerCase())
+          item.symbol.toLowerCase().startsWith(search.toLowerCase()) ||
+          item.contractAddress.toLocaleLowerCase() === search.toLowerCase()
         )
       })
       setFilteredWatchlist(filteredList)
     }
   }
 
-  const onClickUpdateWatchlist = () => {
-    onUpdateWatchList(selectedWatchlist)
+  const onClickUpdateVisibleTokens = () => {
+    onUpdateVisibleTokens(selectedWatchlist)
+    onClose()
   }
 
   const onCheckWatchlistItem = (key: string, selected: boolean) => {
@@ -99,11 +117,14 @@ const AddAccountModal = (props: Props) => {
   }
 
   const onSubmitUpdateName = () => {
-    onUpdateAccountName(accountName)
+    if (onUpdateAccountName) {
+      onUpdateAccountName(accountName)
+    }
   }
 
   const generateQRData = () => {
-    const image = qr.image(account.address)
+    const address = account ? account.address : ''
+    const image = qr.image(address)
     let chunks: Array<Uint8Array> = []
     image
       .on('data', (chunk: Uint8Array) => chunks.push(chunk))
@@ -116,14 +137,21 @@ const AddAccountModal = (props: Props) => {
     generateQRData()
   })
 
+  const changeTab = (id: AccountSettingsNavTypes) => {
+    if (onChangeTab !== undefined) {
+      onChangeTab(id)
+    }
+  }
+
   return (
     <PopupModal title={title} onClose={onClose}>
-      <TopTabNav
-        tabList={AccountSettingsNavOptions}
-        onSubmit={onChangeTab}
-        selectedTab={tab}
-      />
-
+      {!hideNav &&
+        <TopTabNav
+          tabList={AccountSettingsNavOptions}
+          onSubmit={changeTab}
+          selectedTab={tab}
+        />
+      }
       <StyledWrapper>
         {tab === 'details' &&
           <>
@@ -134,7 +162,7 @@ const AddAccountModal = (props: Props) => {
             />
             <QRCodeWrapper src={qrCode} />
             <Tooltip text={locale.toolTipCopyToClipboard}>
-              <AddressButton onClick={onCopyToClipboard}>{reduceAddress(account.address)}<CopyIcon /></AddressButton>
+              <AddressButton onClick={onCopyToClipboard}>{reduceAddress(account ? account.address : '')}<CopyIcon /></AddressButton>
             </Tooltip>
             <ButtonRow>
               <NavButton
@@ -153,29 +181,37 @@ const AddAccountModal = (props: Props) => {
         }
         {tab === 'watchlist' &&
           <>
-            <SearchBar
-              placeholder={locale.watchListSearchPlaceholder}
-              action={filterWatchlist}
-            />
-            <WatchlistScrollContainer>
-              {filteredWatchlist.map((item) =>
-                <AssetWatchlistItem
-                  key={item.id}
-                  id={item.id}
-                  assetBalance='0'
-                  icon={item.icon}
-                  name={item.name}
-                  symbol={item.symbol}
-                  isSelected={isAssetSelected(item.id)}
-                  onSelectAsset={onCheckWatchlistItem}
+            {fullAssetList.length === 0 ? (
+              <LoadingWrapper>
+                <LoadIcon />
+              </LoadingWrapper>
+            ) : (
+              <>
+                <SearchBar
+                  placeholder={locale.watchListSearchPlaceholder}
+                  action={filterWatchlist}
                 />
-              )}
-            </WatchlistScrollContainer>
-            <NavButton
-              onSubmit={onClickUpdateWatchlist}
-              text={locale.watchlistButton}
-              buttonType='primary'
-            />
+                <WatchlistScrollContainer>
+                  {filteredWatchlist.map((item) =>
+                    <AssetWatchlistItem
+                      key={item.contractAddress}
+                      id={item.contractAddress}
+                      assetBalance='0'
+                      icon={item.icon}
+                      name={item.name}
+                      symbol={item.symbol}
+                      isSelected={isAssetSelected(item.contractAddress)}
+                      onSelectAsset={onCheckWatchlistItem}
+                    />
+                  )}
+                </WatchlistScrollContainer>
+                <NavButton
+                  onSubmit={onClickUpdateVisibleTokens}
+                  text={locale.watchlistButton}
+                  buttonType='primary'
+                />
+              </>
+            )}
           </>
         }
       </StyledWrapper>
