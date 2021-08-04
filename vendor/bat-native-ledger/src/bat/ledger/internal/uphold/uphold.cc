@@ -104,40 +104,53 @@ void Uphold::ContributionCompleted(const type::Result result,
 }
 
 void Uphold::FetchBalance(FetchBalanceCallback callback) {
-  const auto wallet = GetWallet();
-
-  if (!wallet || wallet->token.empty() || wallet->address.empty()) {
-    callback(type::Result::LEDGER_OK, 0.0);
-    return;
+  auto uphold_wallet = GetWallet();
+  if (!uphold_wallet) {
+    BLOG(1, "Uphold wallet is null.");
+    return callback(type::Result::LEDGER_OK, 0.0);
   }
 
-  if (wallet->status != type::WalletStatus::VERIFIED) {
-    BLOG(1, "Wallet is not verified");
-    callback(type::Result::LEDGER_OK, 0.0);
-    return;
+  if (uphold_wallet->status != type::WalletStatus::VERIFIED) {
+    BLOG(1, "Uphold wallet is not VERIFIED.");
+    return callback(type::Result::LEDGER_OK, 0.0);
   }
+
+  DCHECK(!uphold_wallet->token.empty());
+  DCHECK(!uphold_wallet->address.empty());
 
   auto url_callback =
       std::bind(&Uphold::OnFetchBalance, this, _1, _2, callback);
 
-  uphold_server_->get_card()->Request(wallet->address, wallet->token,
-                                      url_callback);
+  uphold_server_->get_card()->Request(uphold_wallet->address,
+                                      uphold_wallet->token, url_callback);
 }
 
 void Uphold::OnFetchBalance(const type::Result result,
                             const double available,
                             FetchBalanceCallback callback) {
+  auto uphold_wallet = GetWallet();
+  if (!uphold_wallet) {
+    BLOG(0, "Uphold wallet is null!");
+    return callback(type::Result::LEDGER_ERROR, 0.0);
+  }
+
+  if (uphold_wallet->status != type::WalletStatus::VERIFIED) {
+    BLOG(0, "Wallet status should have been VERIFIED!");
+    return callback(type::Result::LEDGER_ERROR, 0.0);
+  }
+
+  DCHECK(!uphold_wallet->token.empty());
+  DCHECK(!uphold_wallet->address.empty());
+
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     DisconnectWallet(ledger::notifications::kWalletDisconnected);
-    callback(type::Result::EXPIRED_TOKEN, 0.0);
-    return;
+    return callback(type::Result::EXPIRED_TOKEN, 0.0);
   }
 
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get balance");
-    callback(type::Result::LEDGER_ERROR, 0.0);
-    return;
+    return callback(type::Result::LEDGER_ERROR, 0.0);
   }
 
   callback(type::Result::LEDGER_OK, available);
