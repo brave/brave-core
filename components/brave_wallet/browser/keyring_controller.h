@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -29,15 +30,6 @@ namespace brave_wallet {
 class HDKeyring;
 class KeyringControllerUnitTest;
 
-FORWARD_DECLARE_TEST(KeyringControllerUnitTest, GetPrefsInBytes);
-FORWARD_DECLARE_TEST(KeyringControllerUnitTest, SetPrefsInBytes);
-FORWARD_DECLARE_TEST(KeyringControllerUnitTest, GetOrCreateNonce);
-FORWARD_DECLARE_TEST(KeyringControllerUnitTest, CreateEncryptor);
-FORWARD_DECLARE_TEST(KeyringControllerUnitTest, CreateDefaultKeyringInternal);
-FORWARD_DECLARE_TEST(KeyringControllerUnitTest, GetMnemonicForDefaultKeyring);
-FORWARD_DECLARE_TEST(KeyringControllerUnitTest, LockAndUnlock);
-FORWARD_DECLARE_TEST(KeyringControllerUnitTest, Reset);
-
 // This class is not thread-safe and should have single owner
 class KeyringController : public KeyedService, public mojom::KeyringController {
  public:
@@ -45,6 +37,18 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   ~KeyringController() override;
 
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* prefs);
+
+  static bool HasPrefForKeyring(PrefService* prefs,
+                                const std::string& key,
+                                const std::string& id);
+  static const base::Value* GetPrefForKeyring(PrefService* prefs,
+                                              const std::string& key,
+                                              const std::string& id);
+  // If keyring dicionary for id doesn't exist, it will be created.
+  static void SetPrefForKeyring(PrefService* prefs,
+                                const std::string& key,
+                                base::Value value,
+                                const std::string& id);
 
   mojo::PendingRemote<mojom::KeyringController> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::KeyringController> receiver);
@@ -93,10 +97,13 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   */
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, GetPrefsInBytes);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, SetPrefsInBytes);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, GetOrCreateNonce);
-  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, CreateEncryptor);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, GetPrefInBytesForKeyring);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, SetPrefInBytesForKeyring);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
+                           GetOrCreateNonceForKeyring);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
+                           CreateEncryptorForKeyring);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, CreateDefaultKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
                            CreateDefaultKeyringInternal);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
@@ -108,11 +115,15 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
 
   const std::string GetMnemonicForDefaultKeyringImpl();
 
-  bool GetPrefsInBytes(const std::string& path, std::vector<uint8_t>* bytes);
-  void SetPrefsInBytes(const std::string& path,
-                       base::span<const uint8_t> bytes);
-  std::vector<uint8_t> GetOrCreateNonce();
-  bool CreateEncryptor(const std::string& password);
+  bool GetPrefInBytesForKeyring(const std::string& key,
+                                std::vector<uint8_t>* bytes,
+                                const std::string& id) const;
+  void SetPrefInBytesForKeyring(const std::string& key,
+                                base::span<const uint8_t> bytes,
+                                const std::string& id);
+  std::vector<uint8_t> GetOrCreateNonceForKeyring(const std::string& id);
+  bool CreateEncryptorForKeyring(const std::string& password,
+                                 const std::string& id);
   bool CreateDefaultKeyringInternal(const std::string& mnemonic);
   // It's used to reconstruct same default keyring between browser relaunch
   HDKeyring* ResumeDefaultKeyring(const std::string& password);

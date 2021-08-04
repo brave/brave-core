@@ -20,3 +20,4 @@ const char kBraveWalletAccountNames[] = "brave.wallet.wallet_account_names";
 const char kBraveWalletBackupComplete[] = "brave.wallet.wallet_backup_complete";
 const char kBraveWalletLastUnlockTime[] =
     "brave.wallet.wallet_last_unlock_time";
+const char kBraveWalletKeyrings[] = "brave.wallet.keyrings";
