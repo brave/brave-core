@@ -113,7 +113,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
     
     // MARK: - Init
     
-    private var frc: BookmarksV2FetchResultsController
+    private var frc: BookmarksV2FetchResultsController?
     private let mode: BookmarkEditMode
     
     private var presentationMode: DataSourcePresentationMode
@@ -148,7 +148,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        frc.delegate = self
+        frc?.delegate = self
         
         title = mode.title
         navigationItem.rightBarButtonItem = saveButton
@@ -196,7 +196,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
     /// Indentation level starts with 0, but level 0 is designed for special folders
     /// (root level bookamrks, favorites).
     private func sortFolders() -> [IndentedFolder] {
-        guard let objects = frc.fetchedObjects else { return [] }
+        guard let objects = frc?.fetchedObjects else { return [] }
         return objects.map({
             if let folder = $0 as? BraveBookmarkFolder {
                 return IndentedFolder(folder, folder.indentationLevel)
@@ -206,7 +206,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
     }
     
     private func reloadData() {
-        try? frc.performFetch()
+        try? frc?.performFetch()
         sortedFolders = sortFolders()
         
         // If the folder we want to save to was deleted, UI needs an update

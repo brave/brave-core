@@ -6,7 +6,7 @@
 import Foundation
 import BraveRewards
 
-class BookmarkModelStateObserver: NSObject, BookmarkModelObserver {
+class BookmarkModelStateObserver: BraveServiceStateObserver, BookmarkModelObserver {
     private let listener: (StateChange) -> Void
     
     enum StateChange {
@@ -25,6 +25,8 @@ class BookmarkModelStateObserver: NSObject, BookmarkModelObserver {
     
     func bookmarkModelLoaded() {
         self.listener(.modelLoaded)
+        
+        postServiceLoadedNotification()
     }
     
     func bookmarkNodeChanged(_ bookmarkNode: BookmarkNode) {

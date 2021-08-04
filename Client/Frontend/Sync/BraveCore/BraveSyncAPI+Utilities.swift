@@ -21,6 +21,8 @@ extension BraveSyncAPI {
     func joinSyncGroup(codeWords: String) -> Bool {
         if self.setSyncCode(codeWords) {
             Preferences.Chromium.syncEnabled.value = true
+            enableSyncTypes()
+            
             return true
         }
         return false
@@ -36,6 +38,23 @@ extension BraveSyncAPI {
         
         BraveSyncAPI.shared.resetSync()
         Preferences.Chromium.syncEnabled.value = false
+    }
+    
+    func enableSyncTypes() {
+        guard let syncProfileService =
+                (UIApplication.shared.delegate as? AppDelegate)?.braveCore?.syncProfileService else {
+            return
+        }
+
+        syncProfileService.userSelectedTypes = []
+        
+        if Preferences.Chromium.syncBookmarksEnabled.value {
+            syncProfileService.userSelectedTypes.update(with: .BOOKMARKS)
+        }
+        
+        if Preferences.Chromium.syncHistoryEnabled.value {
+            syncProfileService.userSelectedTypes.update(with: .HISTORY)
+        }
     }
     
     static func addServiceStateObserver(_ observer: @escaping () -> Void) -> AnyObject {

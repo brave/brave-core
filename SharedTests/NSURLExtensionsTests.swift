@@ -695,4 +695,27 @@ class NSURLExtensionsTests: XCTestCase {
             XCTAssertFalse(URL(string: $0)?.isVideoSteamingSiteURL ?? false, "failed for \($0)")
         }
     }
+    
+    func testTypedDisplayString() {
+        let testURL1 = URL(string: "https://www.youtube.com")
+        let testURL2 = URL(string: "http://google.com")
+        let testURL3 = URL(string: "www.brave.com")
+        let testURL4 = URL(string: "http://brave.com/foo/")
+        let testURL5 = URL(string: "http://brave.com/foo")
+        
+        func checkDisplayURLString(testURL: URL?, displayString: String) {
+            if let actual = testURL?.typedDisplayString {
+                XCTAssertEqual(actual, displayString)
+            } else {
+                XCTFail("Actual url is nil")
+            }
+        }
+
+        checkDisplayURLString(testURL: testURL1, displayString: "www.youtube.com")
+        checkDisplayURLString(testURL: testURL2, displayString: "google.com")
+        checkDisplayURLString(testURL: testURL3, displayString: "www.brave.com")
+        checkDisplayURLString(testURL: testURL4, displayString: "brave.com/foo")
+        checkDisplayURLString(testURL: testURL5, displayString: "brave.com/foo")
+
+    }
 }

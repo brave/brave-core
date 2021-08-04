@@ -192,6 +192,19 @@ extension URL {
             return urlString
         }
     }
+    
+    /// String suitable to detect the URL navigation type
+    /// This will return URL as a string without the scheme or ending "/" suffix limitation
+    /// This will be used as a key while storing navigation type of url before it is added to history
+    public var typedDisplayString: String {
+        var urlString = self.schemelessAbsoluteString
+
+        if urlString.hasSuffix("/") {
+            urlString.removeLast()
+        }
+        
+        return urlString
+    }
 
     /// String suitable for displaying outside of the app, for example in notifications, were Data Detectors will
     /// linkify the text and make it into a openable-in-Safari link.

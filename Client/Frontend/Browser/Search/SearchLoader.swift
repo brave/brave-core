@@ -18,7 +18,7 @@ class SearchLoader: Loader<[Site], SearchViewController> {
                 return
             }
 
-            FrecencyQuery.sitesByFrecency(containing: query) { [weak self] result in
+            FrequencyQuery.sitesByFrequency(containing: query) { [weak self] result in
                 guard let self = self else { return }
                 
                 self.load(Array(result))

@@ -2189,6 +2189,41 @@ extension Strings {
             NSLocalizedString("sync.v2MigrationErrorMessage", tableName: "BraveShared", bundle: .braveShared,
                               value: "Failed to migrate bookmarks. Please try again later.",
                               comment: "Message for popup when the bookmark migration fails")
+        /// History Migration localization text
+        public static let historyMigrationErrorMessage =
+            NSLocalizedString("sync.historyMigrationErrorMessage", tableName: "BraveShared", bundle: .braveShared,
+                              value: "Failed to migrate hitory. Please try again later.",
+                              comment: "Message for popup when the history migration fails")
+        public static let syncConfigurationInformationText =
+            NSLocalizedString("sync.syncConfigurationInformationText", tableName: "BraveShared", bundle: .braveShared,
+                              value: "Manage what information you would like to sync between devices. These settings only affect this device.",
+                              comment: "Information Text underneath the toggles for enable/disable different sync types for the device")
+        public static let syncSettingsTitle =
+            NSLocalizedString("sync.syncSettingsTitle", tableName: "BraveShared", bundle: .braveShared,
+                              value: "Sync Settings",
+                              comment: "Title for Sync Settings Toggle Header")
+    }
+}
+
+extension Strings {
+    public struct History {
+        public static let historyClearAlertTitle =
+            NSLocalizedString("history.historyClearAlertTitle", tableName: "BraveShared", bundle: .braveShared,
+                              value: "Clear Browsing History",
+                              comment: "Title for Clear All History Alert Title")
+        public static let historyClearAlertDescription =
+            NSLocalizedString("history.historyClearAlertDescription", tableName: "BraveShared", bundle: .braveShared,
+                              value: "This will clear all browsing history.",
+                              comment: "Description for Clear All History Alert Description")
+        public static let historyClearActionTitle =
+            NSLocalizedString("history.historyClearActionTitle", tableName: "BraveShared", bundle: .braveShared,
+                              value: "Clear History",
+                              comment: "Title for History Clear All Action")
+        
+        public static let historyEmptyStateTitle =
+            NSLocalizedString("history.historyEmptyStateTitle", tableName: "BraveShared", bundle: .braveShared,
+                              value: "History will show up here.",
+                              comment: "Title which is displayed when History screen is empty.")
     }
 }
 
