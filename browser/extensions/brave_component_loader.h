@@ -10,7 +10,6 @@
 
 #include "base/files/file_path.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
-#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -38,9 +37,7 @@ class BraveComponentLoader : public ComponentLoader {
   void AddDefaultComponentExtensions(bool skip_session_components) override;
   void OnComponentRegistered(std::string extension_id);
 
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   void AddRewardsExtension();
-#endif
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   void AddEthereumRemoteClientExtension();
   void AddEthereumRemoteClientExtensionOnStartup();
@@ -61,9 +58,7 @@ class BraveComponentLoader : public ComponentLoader {
   void AddHangoutServicesExtension() override;
 #endif  // BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
 
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   void CheckRewardsStatus();
-#endif
 
   void ReinstallAsNonComponent(std::string extension_id);
 

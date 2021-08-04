@@ -13,7 +13,6 @@
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -122,9 +121,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   // to normal window in this case.
   const bool is_guest_session = browser_->profile()->IsGuestSession();
   if (!is_guest_session) {
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
     UpdateCommandForBraveRewards();
-#endif
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
     UpdateCommandForBraveWallet();
 #endif

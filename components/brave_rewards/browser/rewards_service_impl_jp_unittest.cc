@@ -10,7 +10,6 @@
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/switches.h"

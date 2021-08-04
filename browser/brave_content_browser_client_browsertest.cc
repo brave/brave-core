@@ -10,7 +10,6 @@
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/component_loader.h"
@@ -164,11 +163,9 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadChromeURL) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadCustomBravePages) {
-  std::vector<std::string> pages {
-    "adblock",
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-        "rewards",
-#endif
+  std::vector<std::string> pages{
+      "adblock",
+      "rewards",
   };
 
   std::vector<std::string> schemes{

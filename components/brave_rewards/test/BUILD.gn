@@ -4,42 +4,39 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import("//brave/build/config.gni")
-import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//build/config/sanitizers/sanitizers.gni")
 import("//testing/test.gni")
 
 source_set("brave_rewards_unit_tests") {
   testonly = true
 
-  if (brave_rewards_enabled) {
-    sources = [
-      "//brave/components/brave_rewards/browser/rewards_service_impl_jp_unittest.cc",
-      "//brave/components/brave_rewards/browser/rewards_service_impl_unittest.cc",
-      "//brave/components/l10n/browser/locale_helper_mock.cc",
-      "//brave/components/l10n/browser/locale_helper_mock.h",
-    ]
+  sources = [
+    "//brave/components/brave_rewards/browser/rewards_service_impl_jp_unittest.cc",
+    "//brave/components/brave_rewards/browser/rewards_service_impl_unittest.cc",
+    "//brave/components/l10n/browser/locale_helper_mock.cc",
+    "//brave/components/l10n/browser/locale_helper_mock.h",
+  ]
 
-    deps = [
-      "//base/test:test_support",
-      "//brave/components/brave_rewards/browser:browser",
-      "//brave/components/brave_rewards/browser:testutil",
-      "//brave/components/brave_rewards/common:common",
-      "//brave/components/brave_rewards/common:features",
-      "//brave/components/brave_rewards/resources:static_resources_grit",
-      "//brave/components/challenge_bypass_ristretto",
-      "//brave/components/greaselion/browser/buildflags:buildflags",
-      "//brave/components/l10n/browser:browser",
-      "//brave/vendor/bat-native-ledger",
-      "//brave/vendor/bat-native-ledger:publishers_proto",
-      "//brave/vendor/bat-native-rapidjson",
-      "//chrome/browser:browser",
-      "//chrome/browser/profiles:profile",
-      "//content/test:test_support",
-      "//net:net",
-      "//ui/base:base",
-      "//url:url",
-    ]
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/brave_rewards/browser:browser",
+    "//brave/components/brave_rewards/browser:testutil",
+    "//brave/components/brave_rewards/common:common",
+    "//brave/components/brave_rewards/common:features",
+    "//brave/components/brave_rewards/resources:static_resources_grit",
+    "//brave/components/challenge_bypass_ristretto",
+    "//brave/components/greaselion/browser/buildflags:buildflags",
+    "//brave/components/l10n/browser:browser",
+    "//brave/vendor/bat-native-ledger",
+    "//brave/vendor/bat-native-ledger:publishers_proto",
+    "//brave/vendor/bat-native-rapidjson",
+    "//chrome/browser:browser",
+    "//chrome/browser/profiles:profile",
+    "//content/test:test_support",
+    "//net:net",
+    "//ui/base:base",
+    "//url:url",
+  ]
 
-    configs += [ "//brave/vendor/bat-native-ledger:internal_config" ]
-  }  # if (brave_rewards_enabled)
+  configs += [ "//brave/vendor/bat-native-ledger:internal_config" ]
 }  # source_set("brave_rewards_unit_tests")
