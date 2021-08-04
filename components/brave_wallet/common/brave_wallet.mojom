@@ -78,7 +78,7 @@ enum AssetPriceTimeframe {
 };
 
 struct AssetTimePrice {
-  mojo_base.mojom.Time date;
+  mojo_base.mojom.TimeDelta date;
   string price;
 };
 
