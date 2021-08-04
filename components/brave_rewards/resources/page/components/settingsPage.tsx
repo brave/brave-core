@@ -115,7 +115,7 @@ class SettingsPage extends React.Component<Props, State> {
   }
 
   stopRewards () {
-    clearInterval(this.balanceTimerId)
+    window.clearInterval(this.balanceTimerId)
     this.balanceTimerId = -1
   }
 
@@ -126,7 +126,7 @@ class SettingsPage extends React.Component<Props, State> {
     this.actions.getContributionAmount()
     this.actions.getAutoContributeProperties()
     this.actions.getBalance()
-    this.balanceTimerId = setInterval(() => {
+    this.balanceTimerId = window.setInterval(() => {
       this.actions.getBalance()
     }, 60000)
 

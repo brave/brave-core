@@ -250,7 +250,7 @@
     "@types/array-move": "2.0.0",
     "@types/bluebird": "3.5.36",
     "@types/chrome": "0.0.133",
-    "@types/enzyme": "3.10.8",
+    "@types/enzyme": "3.10.9",
     "@types/enzyme-adapter-react-16": "1.0.6",
     "@types/jest": "26.0.20",
     "@types/qr-image": "3.2.3",

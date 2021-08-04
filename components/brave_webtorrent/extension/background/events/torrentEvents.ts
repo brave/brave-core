@@ -37,9 +37,9 @@ export const addTorrentEvents = (torrent: TorrentExtended) => {
   // Always update stats at least once every 5 seconds, even when no torrent
   // events fire. Ensures that download/upload speeds do not get stuck on a
   // positive value when the transfer stalls.
-  torrent.progressInterval = setInterval(progressUpdatedThrottled, 5000)
+  torrent.progressInterval = window.setInterval(progressUpdatedThrottled, 5000)
 }
 
 export const removeTorrentEvents = (torrent: TorrentExtended) => {
-  clearInterval(torrent.progressInterval)
+  window.clearInterval(torrent.progressInterval)
 }
