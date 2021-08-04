@@ -148,7 +148,7 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="is_macosx">
         </if>
-      <if expr="is_win or desktop_linux">
+      <if expr="is_win or desktop_linux or is_fuchsia">
         </if>
       <if expr="not is_android">
         </if>
@@ -869,7 +869,7 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="is_macosx">
         </if>
-      <if expr="is_win or desktop_linux">
+      <if expr="is_win or desktop_linux or is_fuchsia">
         </if>
       <if expr="chromeos">
         </if>
@@ -919,13 +919,13 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       </if>
 
-    <if expr="is_win or is_macosx or desktop_linux or chromeos">
+    <if expr="is_win or is_macosx or desktop_linux or chromeos or is_fuchsia">
       <message name="IDS_WEBAUTHN_PLATFORM_AUTHENTICATOR_OFF_THE_RECORD_INTERSTITIAL_DESCRIPTION" desc="Description of a dialog that asks for the user's permission to set up device-based sign-in (i.e. using their computer's biometric sensor or screen unlock/PIN) on a website while browsing in Private mode.">
          Sign-in data will be stored on this device after you exit Private mode. You'll be able to sign in to this website with your device again later.
       </message>
       </if>
 
-   <if expr="is_win or is_macosx or desktop_linux or chromeos or is_android">
+   <if expr="is_win or is_macosx or desktop_linux or chromeos or is_android or is_fuchsia">
       </if>
 
    <message name="IDS_INCOGNITO_PROFILE_MENU_TITLE" desc="The title of the Private version of profile menu.">
