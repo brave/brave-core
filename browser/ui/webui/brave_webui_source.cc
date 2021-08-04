@@ -1026,7 +1026,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
       }
     }, {
       std::string("rewards-internals"), {
-        { "adsNotYetInitialized", IDS_BRAVE_REWARDS_INTERNALS_ADS_NOT_YET_INITIALIZED },         // NOLINT
+        { "adsNotInitialized", IDS_BRAVE_REWARDS_INTERNALS_ADS_NOT_INITIALIZED },                // NOLINT
         { "amount", IDS_BRAVE_REWARDS_INTERNALS_AMOUNT },
         { "autoRefresh", IDS_BRAVE_REWARDS_INTERNALS_AUTO_REFRESH },
         { "balanceInfo", IDS_BRAVE_REWARDS_INTERNALS_BALANCE_INFO },

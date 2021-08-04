@@ -18,6 +18,7 @@
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_util.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/ad_diagnostics/ad_diagnostics.h"
+#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_last_unidle_timestamp.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ad_server/ad_server.h"
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
@@ -216,7 +217,11 @@ void AdsImpl::OnUnIdle(const int idle_time, const bool was_locked) {
     return;
   }
 
-  AdDiagnostics::Get()->SetLastUnIdleTimestamp(base::Time::Now());
+  auto unidle_timestamp_diagnostics =
+      std::make_unique<AdDiagnosticsLastUnIdleTimestamp>();
+  unidle_timestamp_diagnostics->SetLastUnIdleTimestamp(base::Time::Now());
+  AdDiagnostics::Get()->SetDiagnosticsEntry(
+      std::move(unidle_timestamp_diagnostics));
 
   MaybeUpdateIdleTimeThreshold();
 

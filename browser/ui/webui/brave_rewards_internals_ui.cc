@@ -65,7 +65,7 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void OnGetAdDiagnostics(const bool success, const std::string& json);
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
-  brave_ads::AdsService* ads_service_;  // NOT OWNED
+  brave_ads::AdsService* ads_service_;              // NOT OWNED
   Profile* profile_;
   base::WeakPtrFactory<RewardsInternalsDOMHandler> weak_ptr_factory_;
 
@@ -124,9 +124,8 @@ void RewardsInternalsDOMHandler::RegisterMessages() {
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.getAdDiagnostics",
-      base::BindRepeating(
-          &RewardsInternalsDOMHandler::GetAdDiagnostics,
-          base::Unretained(this)));
+      base::BindRepeating(&RewardsInternalsDOMHandler::GetAdDiagnostics,
+                          base::Unretained(this)));
 }
 
 void RewardsInternalsDOMHandler::Init() {
@@ -444,7 +443,7 @@ void RewardsInternalsDOMHandler::OnGetAdDiagnostics(const bool success,
   DCHECK(diagnostics.is_list()) << "Diagnostics should be a list";
   for (const auto& entry : diagnostics.GetList()) {
     DCHECK(entry.is_dict()) << "Diagnostics entry should be a dictionary";
-    DCHECK(entry.FindKey("name")) << "Diagnostics entry should has 'name' key";
+    DCHECK(entry.FindKey("key")) << "Diagnostics entry should has 'key' key";
     DCHECK(entry.FindKey("value"))
         << "Diagnostics entry should has 'value' key";
   }

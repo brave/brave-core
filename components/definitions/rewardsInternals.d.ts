@@ -80,7 +80,7 @@ declare namespace RewardsInternals {
   }
 
   export interface AdDiagnosticsEntry {
-    name: string
+    key: string
     value: string
   }
 }

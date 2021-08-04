@@ -19,14 +19,14 @@ const getEntries = (entries: RewardsInternals.AdDiagnosticsEntry[]) => {
   if (!entries || entries.length === 0) {
     return (
       <DiagnosticsEntry>
-        {getLocale('adsNotYetInitialized')}
+        {getLocale('adsNotInitialized')}
       </DiagnosticsEntry>
     )
   }
 
   return entries.map(entry => (
-    <DiagnosticsEntry key={entry.name}>
-      {entry.name}: {entry.value}
+    <DiagnosticsEntry key={entry.key}>
+      {entry.key}: {entry.value}
     </DiagnosticsEntry>
   ))
 }

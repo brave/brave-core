@@ -16,18 +16,24 @@ class Value;
 
 namespace ads {
 
-extern const char kDiagnosticsAdsEnabled[];
-extern const char kDiagnosticsLocale[];
-extern const char kDiagnosticsCatalogId[];
-extern const char kDiagnosticsCatalogLastUpdated[];
-extern const char kDiagnosticsLastUnIdleTimestamp[];
+// Entries on ad diagnostics page are sorted basing on order of enum items.
+enum class AdDiagnosticsEntryType {
+  kAdsEnable,
+  kLocale,
+  kCatalogId,
+  kCatalogLastUpdated,
+  kLastUnIdleTimestamp
+};
 
-void AddDiagnosticsEntry(const std::string& name,
-                         const std::string& value,
-                         base::Value* diagnostics);
+class AdDiagnosticsEntry {
+ public:
+  AdDiagnosticsEntry();
+  virtual ~AdDiagnosticsEntry();
 
-absl::optional<std::string> GetDiagnosticsEntry(const base::Value& diagnostics,
-                                                const std::string& name);
+  virtual AdDiagnosticsEntryType GetEntryType() const = 0;
+  virtual std::string GetKey() const = 0;
+  virtual std::string GetValue() const = 0;
+};
 
 }  // namespace ads
 

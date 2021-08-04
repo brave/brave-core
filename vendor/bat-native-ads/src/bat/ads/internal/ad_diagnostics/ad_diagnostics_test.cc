@@ -9,7 +9,12 @@
 
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_reader.h"
-#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_entry.h"
+#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_ads_enabled.h"
+#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_catalog_id.h"
+#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_catalog_last_updated.h"
+#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_last_unidle_timestamp.h"
+#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_locale.h"
+#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/pref_names.h"
@@ -20,7 +25,7 @@ namespace ads {
 
 class AdDiagnosticsTest : public UnitTestBase {
  protected:
-  AdDiagnosticsTest() = default;
+  AdDiagnosticsTest() {}
 
   ~AdDiagnosticsTest() override = default;
 
@@ -29,7 +34,7 @@ class AdDiagnosticsTest : public UnitTestBase {
   }
 };
 
-TEST_F(AdDiagnosticsTest, CheckAdsInitialized) {
+TEST_F(AdDiagnosticsTest, AdsEnabledAndLocale) {
   // Arrange
   AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
 
@@ -39,9 +44,10 @@ TEST_F(AdDiagnosticsTest, CheckAdsInitialized) {
     const auto json_value = base::JSONReader::Read(json);
     ASSERT_TRUE(json_value);
 
-    EXPECT_EQ("false",
-              GetDiagnosticsEntry(*json_value, kDiagnosticsAdsEnabled));
-    EXPECT_EQ("en-US", GetDiagnosticsEntry(*json_value, kDiagnosticsLocale));
+    EXPECT_EQ("false", GetDiagnosticsValueByKey(
+                           *json_value, AdDiagnosticsAdsEnabled().GetKey()));
+    EXPECT_EQ("en-US", GetDiagnosticsValueByKey(
+                           *json_value, AdDiagnosticsLocale().GetKey()));
   });
 
   // Arrange
@@ -54,8 +60,8 @@ TEST_F(AdDiagnosticsTest, CheckAdsInitialized) {
     const auto json_value = base::JSONReader::Read(json);
     ASSERT_TRUE(json_value);
 
-    EXPECT_EQ("true", GetDiagnosticsEntry(*json_value, kDiagnosticsAdsEnabled));
-    EXPECT_EQ("en-US", GetDiagnosticsEntry(*json_value, kDiagnosticsLocale));
+    EXPECT_EQ("true", GetDiagnosticsValueByKey(
+                          *json_value, AdDiagnosticsAdsEnabled().GetKey()));
   });
 }
 
@@ -79,10 +85,11 @@ TEST_F(AdDiagnosticsTest, CatalogPrefs) {
     const auto json_value = base::JSONReader::Read(json);
     ASSERT_TRUE(json_value);
 
-    EXPECT_EQ(catalog_id,
-              GetDiagnosticsEntry(*json_value, kDiagnosticsCatalogId));
+    EXPECT_EQ(catalog_id, GetDiagnosticsValueByKey(
+                              *json_value, AdDiagnosticsCatalogId().GetKey()));
     EXPECT_EQ(update_time_str,
-              GetDiagnosticsEntry(*json_value, kDiagnosticsCatalogLastUpdated));
+              GetDiagnosticsValueByKey(
+                  *json_value, AdDiagnosticsCatalogLastUpdated().GetKey()));
   });
 }
 
@@ -96,8 +103,8 @@ TEST_F(AdDiagnosticsTest, LastUnidleTimestamp) {
     const auto json_value = base::JSONReader::Read(json);
     ASSERT_TRUE(json_value);
 
-    const auto entry =
-        GetDiagnosticsEntry(*json_value, kDiagnosticsLastUnIdleTimestamp);
+    const auto entry = GetDiagnosticsValueByKey(
+        *json_value, AdDiagnosticsLastUnIdleTimestamp().GetKey());
     ASSERT_TRUE(entry.has_value());
     EXPECT_TRUE(entry->empty());
   });
@@ -111,8 +118,8 @@ TEST_F(AdDiagnosticsTest, LastUnidleTimestamp) {
     const auto json_value = base::JSONReader::Read(json);
     ASSERT_TRUE(json_value);
 
-    const auto entry =
-        GetDiagnosticsEntry(*json_value, kDiagnosticsLastUnIdleTimestamp);
+    const auto entry = GetDiagnosticsValueByKey(
+        *json_value, AdDiagnosticsLastUnIdleTimestamp().GetKey());
     ASSERT_TRUE(entry.has_value());
     EXPECT_FALSE(entry->empty());
   });

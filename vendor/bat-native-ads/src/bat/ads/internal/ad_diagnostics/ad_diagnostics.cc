@@ -6,15 +6,17 @@
 #include "bat/ads/internal/ad_diagnostics/ad_diagnostics.h"
 
 #include <string>
+#include <utility>
 
-#include "base/i18n/time_formatting.h"
 #include "base/json/json_writer.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
+#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_ads_enabled.h"
+#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_catalog_id.h"
+#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_catalog_last_updated.h"
 #include "bat/ads/internal/ad_diagnostics/ad_diagnostics_entry.h"
-#include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/pref_names.h"
-#include "brave/components/l10n/browser/locale_helper.h"
+#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_last_unidle_timestamp.h"
+#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_locale.h"
+#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_util.h"
 
 namespace ads {
 
@@ -22,21 +24,17 @@ namespace {
 
 AdDiagnostics* g_ad_diagnostics = nullptr;
 
-std::string ToString(const bool value) {
-  return value ? "true" : "false";
-}
-
-std::string ToString(const base::Time& time) {
-  if (time.is_null())
-    return {};
-  return base::UTF16ToUTF8(base::TimeFormatShortDateAndTime(time));
-}
-
 }  // namespace
 
 AdDiagnostics::AdDiagnostics() {
   DCHECK(!g_ad_diagnostics);
   g_ad_diagnostics = this;
+
+  SetDiagnosticsEntry(std::make_unique<AdDiagnosticsAdsEnabled>());
+  SetDiagnosticsEntry(std::make_unique<AdDiagnosticsLocale>());
+  SetDiagnosticsEntry(std::make_unique<AdDiagnosticsCatalogId>());
+  SetDiagnosticsEntry(std::make_unique<AdDiagnosticsCatalogLastUpdated>());
+  SetDiagnosticsEntry(std::make_unique<AdDiagnosticsLastUnIdleTimestamp>());
 }
 
 AdDiagnostics::~AdDiagnostics() {
@@ -50,8 +48,11 @@ AdDiagnostics* AdDiagnostics::Get() {
   return g_ad_diagnostics;
 }
 
-void AdDiagnostics::SetLastUnIdleTimestamp(const base::Time& value) {
-  last_unidle_timestamp_ = value;
+void AdDiagnostics::SetDiagnosticsEntry(
+    std::unique_ptr<AdDiagnosticsEntry> entry) {
+  DCHECK(entry);
+  AdDiagnosticsEntryType type = entry->GetEntryType();
+  ad_diagnostics_entries_[type] = std::move(entry);
 }
 
 void AdDiagnostics::GetAdDiagnostics(GetAdDiagnosticsCallback callback) const {
@@ -66,35 +67,12 @@ void AdDiagnostics::GetAdDiagnostics(GetAdDiagnosticsCallback callback) const {
 base::Value AdDiagnostics::CollectDiagnostics() const {
   base::Value diagnostics(base::Value::Type::LIST);
 
-  AddDiagnosticsEntry(
-      kDiagnosticsAdsEnabled,
-      ToString(AdsClientHelper::Get()->GetBooleanPref(prefs::kEnabled)),
-      &diagnostics);
-
-  AddDiagnosticsEntry(kDiagnosticsLocale,
-                      brave_l10n::LocaleHelper::GetInstance()->GetLocale(),
-                      &diagnostics);
-
-  CollectCatalogDiagnostics(&diagnostics);
-
-  AddDiagnosticsEntry(kDiagnosticsLastUnIdleTimestamp,
-                      ToString(last_unidle_timestamp_), &diagnostics);
+  for (const auto& entry_pair : ad_diagnostics_entries_) {
+    AdDiagnosticsEntry* entry = entry_pair.second.get();
+    AppendDiagnosticsKeyValue(entry->GetKey(), entry->GetValue(), &diagnostics);
+  }
 
   return diagnostics;
-}
-
-void AdDiagnostics::CollectCatalogDiagnostics(base::Value* diagnostics) const {
-  DCHECK(diagnostics);
-
-  AddDiagnosticsEntry(kDiagnosticsCatalogId,
-                      AdsClientHelper::Get()->GetStringPref(prefs::kCatalogId),
-                      diagnostics);
-
-  const int64_t catalog_last_updated =
-      AdsClientHelper::Get()->GetInt64Pref(prefs::kCatalogLastUpdated);
-  const base::Time time = base::Time::FromDoubleT(catalog_last_updated);
-  AddDiagnosticsEntry(kDiagnosticsCatalogLastUpdated, ToString(time),
-                      diagnostics);
 }
 
 }  // namespace ads

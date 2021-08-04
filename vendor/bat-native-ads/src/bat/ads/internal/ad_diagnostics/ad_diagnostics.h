@@ -6,8 +6,11 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_DIAGNOSTICS_AD_DIAGNOSTICS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_DIAGNOSTICS_AD_DIAGNOSTICS_H_
 
-#include "base/time/time.h"
+#include <memory>
+
+#include "base/containers/flat_map.h"
 #include "bat/ads/ads.h"
+#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_entry.h"
 
 namespace base {
 class Value;
@@ -24,15 +27,14 @@ class AdDiagnostics final {
 
   static AdDiagnostics* Get();
 
-  void SetLastUnIdleTimestamp(const base::Time& value);
-
+  void SetDiagnosticsEntry(std::unique_ptr<AdDiagnosticsEntry> entry);
   void GetAdDiagnostics(GetAdDiagnosticsCallback callback) const;
 
  private:
   base::Value CollectDiagnostics() const;
-  void CollectCatalogDiagnostics(base::Value* diagnostics) const;
 
-  base::Time last_unidle_timestamp_;
+  base::flat_map<AdDiagnosticsEntryType, std::unique_ptr<AdDiagnosticsEntry>>
+      ad_diagnostics_entries_;
 };
 
 }  // namespace ads
