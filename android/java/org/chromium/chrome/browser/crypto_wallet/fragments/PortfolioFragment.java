@@ -26,9 +26,9 @@ import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpac
 import java.util.ArrayList;
 import java.util.List;
 
-public class CryptoChildFragment extends Fragment {
-    public static CryptoChildFragment newInstance() {
-        return new CryptoChildFragment();
+public class PortfolioFragment extends Fragment {
+    public static PortfolioFragment newInstance() {
+        return new PortfolioFragment();
     }
 
     @Override
@@ -41,7 +41,7 @@ public class CryptoChildFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_crypto_child, container, false);
+        View view = inflater.inflate(R.layout.fragment_portfolio, container, false);
 
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
