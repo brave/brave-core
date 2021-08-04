@@ -1777,7 +1777,7 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
   auto origin = parsed_url.GetOrigin().spec();
   std::string baseDomain =
       GetDomainAndRegistry(parsed_url.host(), INCLUDE_PRIVATE_REGISTRIES);
-  std::string path = parsed_url.PathForRequest();
+  std::string path = parsed_url.has_path() ? parsed_url.PathForRequest() : "";
 #if BUILDFLAG(IPFS_ENABLED)
   if (baseDomain.empty()) {
     baseDomain = ipfs::GetRegistryDomainFromIPNS(parsed_url);
