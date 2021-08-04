@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,12 +19,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
+import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccountsFragment extends Fragment {
+public class AccountsFragment extends Fragment implements OnWalletListItemClick {
     public static AccountsFragment newInstance() {
         return new AccountsFragment();
     }
@@ -45,6 +48,9 @@ public class AccountsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        TextView addAccountBtn = view.findViewById(R.id.add_account_btn);
+        addAccountBtn.setOnClickListener(v -> Utils.openAddAccountActivity(getActivity()));
+
         setUpAccountList(view);
         setUpSecondaryAccountList(view);
     }
@@ -58,6 +64,8 @@ public class AccountsFragment extends Fragment {
         walletListItemModelList.add(new WalletListItemModel(
                 R.drawable.ic_eth, "Account 2", "0xA1da***7af1", null, null));
         walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+        walletCoinAdapter.setOnWalletListItemClick(AccountsFragment.this);
+        walletCoinAdapter.setWalletListItemType(Utils.ACCOUNT_ITEM);
         rvAccounts.setAdapter(walletCoinAdapter);
         rvAccounts.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
@@ -71,7 +79,12 @@ public class AccountsFragment extends Fragment {
         walletListItemModelList.add(new WalletListItemModel(
                 R.drawable.ic_eth, "allmydoge", "0xA1da***7af1", null, null));
         walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+        walletCoinAdapter.setOnWalletListItemClick(AccountsFragment.this);
+        walletCoinAdapter.setWalletListItemType(Utils.ACCOUNT_ITEM);
         rvSecondaryAccounts.setAdapter(walletCoinAdapter);
         rvSecondaryAccounts.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
+
+    @Override
+    public void onAccountClick() {}
 }

@@ -1907,6 +1907,18 @@ until they verify, or until 90 days have passed.
     <message name="IDS_SECONDARY_ACCOUNTS_TEXT" desc="Brave wallet accounts text">
       These accounts can be used with web 3 dapps and can be shown in your portfolio, however, they cannot not be restored via recovery phrase from your primary account backup. Enable Brave Sync accounts to auto-restore secondary accounts.
     </message>
+    <message name="IDS_ACCOUNT_NAME" desc="Brave wallet accounts text">
+      Account Name
+    </message>
+    <message name="IDS_ACCOUNT_NAME_TEXT" desc="Brave wallet accounts text">
+      You can create a secondary account by importing your private key.
+    </message>
+    <message name="IDS_IMPORT_ACCOUNT_TEXT" desc="Brave wallet accounts text">
+      Enter, paste, or import your private key string file or JSON.
+    </message>
+    <message name="IDS_IMPORT_TEXT" desc="Brave wallet accounts text">
+      Import...
+    </message>
     </messages>
   </release>
 </grit>

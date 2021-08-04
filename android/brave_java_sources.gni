@@ -259,6 +259,7 @@ if (brave_wallet_enabled) {
   brave_java_sources += [
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/AssetRatioControllerFactory.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/KeyringControllerFactory.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/AddAccountActivity.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/AssetDetailActivity.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/BraveWalletActivity.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/BuySendSwapActivity.java",
@@ -279,6 +280,7 @@ if (brave_wallet_enabled) {
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding_fragments/UnlockWalletFragment.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding_fragments/VerifyRecoveryPhraseFragment.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/listeners/OnNextPage.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/listeners/OnWalletListItemClick.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/model/WalletListItemModel.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/ItemOffsetDecoration.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/NavigationItem.java",

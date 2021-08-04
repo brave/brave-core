@@ -24,6 +24,7 @@ import org.chromium.brave_wallet.mojom.AssetRatioController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
+import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -34,8 +35,8 @@ import org.chromium.mojo.system.MojoException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AssetDetailActivity
-        extends AsyncInitializationActivity implements ConnectionErrorHandler {
+public class AssetDetailActivity extends AsyncInitializationActivity
+        implements ConnectionErrorHandler, OnWalletListItemClick {
     private SmoothLineChartEquallySpaced chartES;
     private AssetRatioController mAssetRatioController;
 
@@ -143,6 +144,8 @@ public class AssetDetailActivity
         walletListItemModelList.add(new WalletListItemModel(
                 R.drawable.ic_eth, "Ledger Nano", "0xA1da***7af1", "$256.01", "0.0121 ETH"));
         walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+        walletCoinAdapter.setOnWalletListItemClick(AssetDetailActivity.this);
+        walletCoinAdapter.setWalletListItemType(Utils.ACCOUNT_ITEM);
         rvAccounts.setAdapter(walletCoinAdapter);
         rvAccounts.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -154,6 +157,8 @@ public class AssetDetailActivity
         walletListItemModelList.add(new WalletListItemModel(
                 R.drawable.ic_eth, "Ledger Nano", "0xA1da***7af1", "$37.92", "0.0009431 ETH"));
         walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+        walletCoinAdapter.setOnWalletListItemClick(AssetDetailActivity.this);
+        walletCoinAdapter.setWalletListItemType(Utils.TRANSACTION_ITEM);
         rvTransactions.setAdapter(walletCoinAdapter);
         rvTransactions.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -194,4 +199,10 @@ public class AssetDetailActivity
     public boolean shouldStartGpuProcess() {
         return true;
     }
+
+    @Override
+    public void onAccountClick() {}
+
+    @Override
+    public void onTransactionClick() {}
 }

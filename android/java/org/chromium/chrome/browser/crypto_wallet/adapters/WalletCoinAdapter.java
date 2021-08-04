@@ -18,7 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
+import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,8 @@ import java.util.List;
 public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.ViewHolder> {
     private Context context;
     private List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+    private OnWalletListItemClick onWalletListItemClick;
+    private int walletListItemType;
     @Override
     public @NonNull WalletCoinAdapter.ViewHolder onCreateViewHolder(
             ViewGroup parent, int viewType) {
@@ -52,8 +56,13 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         }
 
         holder.itemView.setOnClickListener(v -> {
-            Intent assetDetailIntent = new Intent(context, AssetDetailActivity.class);
-            context.startActivity(assetDetailIntent);
+            if (walletListItemType == Utils.TRANSACTION_ITEM) {
+                onWalletListItemClick.onTransactionClick();
+            } else if (walletListItemType == Utils.ASSET_ITEM) {
+                onWalletListItemClick.onAssetClick();
+            } else {
+                onWalletListItemClick.onAccountClick();
+            }
         });
     }
 
@@ -64,6 +73,14 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
 
     public void setWalletListItemModelList(List<WalletListItemModel> walletListItemModelList) {
         this.walletListItemModelList = walletListItemModelList;
+    }
+
+    public void setOnWalletListItemClick(OnWalletListItemClick onWalletListItemClick) {
+        this.onWalletListItemClick = onWalletListItemClick;
+    }
+
+    public void setWalletListItemType(int walletListItemType) {
+        this.walletListItemType = walletListItemType;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
