@@ -31,6 +31,9 @@ import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AssetDetailActivity
         extends AsyncInitializationActivity implements ConnectionErrorHandler {
     private SmoothLineChartEquallySpaced chartES;
