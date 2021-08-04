@@ -60,7 +60,7 @@ bool Account::SetWallet(const std::string& id, const std::string& seed) {
   const WalletInfo last_wallet = wallet_->Get();
 
   if (!wallet_->Set(id, seed)) {
-    BLOG(0, "Invalid wallet");
+    NotifyWalletInvalid();
     return false;
   }
 
