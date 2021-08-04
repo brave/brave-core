@@ -41,8 +41,15 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         holder.iconImg.setImageResource(walletListItemModel.getIcon());
         holder.titleText.setText(walletListItemModel.getTitle());
         holder.subTitleText.setText(walletListItemModel.getSubTitle());
-        holder.text1Text.setText(walletListItemModel.getText1());
-        holder.text2Text.setText(walletListItemModel.getText2());
+        if (walletListItemModel.getText1() != null) {
+            holder.text1Text.setVisibility(View.VISIBLE);
+            holder.text1Text.setText(walletListItemModel.getText1());
+        }
+
+        if (walletListItemModel.getText2() != null) {
+            holder.text2Text.setVisibility(View.VISIBLE);
+            holder.text2Text.setText(walletListItemModel.getText2());
+        }
 
         holder.itemView.setOnClickListener(v -> {
             Intent assetDetailIntent = new Intent(context, AssetDetailActivity.class);

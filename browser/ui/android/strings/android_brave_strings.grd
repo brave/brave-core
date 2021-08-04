@@ -1895,6 +1895,18 @@ until they verify, or until 90 days have passed.
     <message name="IDS_BRAVE_STATS_USAGE_PING_SUMMARY" desc="Description that shows under main toggle setting for usage pings">
       This anonymous, private ping lets Brave estimate active users.
     </message>
+    <message name="IDS_BACKUP" desc="Brave wallet accounts text">
+      Backup
+    </message>
+    <message name="IDS_PRIMARY_CRYPTO_ACCOUNTS" desc="Brave wallet accounts text">
+      Primary Crypto Accounts
+    </message>
+    <message name="IDS_SECONDARY_ACCOUNTS" desc="Brave wallet accounts text">
+      Secondary Accounts
+    </message>
+    <message name="IDS_SECONDARY_ACCOUNTS_TEXT" desc="Brave wallet accounts text">
+      These accounts can be used with web 3 dapps and can be shown in your portfolio, however, they cannot not be restored via recovery phrase from your primary account backup. Enable Brave Sync accounts to auto-restore secondary accounts.
+    </message>
     </messages>
   </release>
 </grit>

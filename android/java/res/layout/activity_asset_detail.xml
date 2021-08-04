@@ -243,7 +243,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#E9E9F4"
+            android:background="@color/wallet_edittext_outline_color"
             android:layout_marginBottom="16dp"/>
 
         <LinearLayout

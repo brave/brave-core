@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import org.chromium.chrome.browser.crypto_wallet.fragments.AccountsFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.PortfolioFragment;
 
 import java.util.ArrayList;
@@ -27,7 +28,11 @@ public class CryptoFragmentPageAdapter extends FragmentStatePagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        return PortfolioFragment.newInstance();
+        if (position == 2) {
+            return AccountsFragment.newInstance();
+        } else {
+            return PortfolioFragment.newInstance();
+        }
     }
 
     @Override
