@@ -25,10 +25,10 @@ class LocalStorageImpl : public mojom::LocalStorageControl {
 
   // mojom::LocalStorageControl implementation:
   void BindStorageArea(
-      const url::Origin& origin,
+      const blink::StorageKey& storage_key,
       mojo::PendingReceiver<blink::mojom::StorageArea> receiver) override;
   void GetUsage(GetUsageCallback callback) override;
-  void DeleteStorage(const url::Origin& origin,
+  void DeleteStorage(const blink::StorageKey& storage_key,
                      DeleteStorageCallback callback) override;
   void CleanUpStorage(CleanUpStorageCallback callback) override;
   void Flush(FlushCallback callback) override;
@@ -38,7 +38,9 @@ class LocalStorageImpl : public mojom::LocalStorageControl {
   void ForceKeepSessionState() override;
 
  private:
-  const url::Origin* GetNonOpaqueOrigin(const url::Origin& origin, bool create);
+  const blink::StorageKey* GetStorageKeyWithNonOpaqueOrigin(
+      const blink::StorageKey& storage_key,
+      bool create);
 
   void ShutDownInMemoryStorage(base::OnceClosure callback);
 
@@ -46,8 +48,8 @@ class LocalStorageImpl : public mojom::LocalStorageControl {
   std::unique_ptr<LocalStorageImpl_ChromiumImpl> in_memory_local_storage_;
   mojo::Receiver<mojom::LocalStorageControl> control_receiver_{this};
   // LocalStorageImpl works only with non-opaque origins, that's why we use an
-  // opaque->non-opaque origin map.
-  std::map<url::Origin, url::Origin> non_opaque_origins_;
+  // map of opaque origins to StorageKeys with non-opaque origins.
+  std::map<url::Origin, blink::StorageKey> storage_keys_with_non_opaque_origin_;
 
   base::WeakPtrFactory<LocalStorageImpl> weak_ptr_factory_{this};
 };
