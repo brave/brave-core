@@ -94,6 +94,13 @@ void PromotedContentAd::FireEvent(const PromotedContentAdInfo& ad,
       return;
     }
 
+    if (event_type == PromotedContentAdEventType::kViewed) {
+      // TODO(tmancey): We need to fire an ad served event until promoted
+      // content ads are served by the ads library
+      FireEvent(uuid, creative_instance_id,
+                PromotedContentAdEventType::kServed);
+    }
+
     const auto ad_event =
         promoted_content_ads::AdEventFactory::Build(event_type);
     ad_event->FireEvent(ad);
