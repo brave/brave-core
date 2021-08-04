@@ -7,7 +7,6 @@
 
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/browser_commands.h"
-#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -38,12 +37,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsEnableTest) {
   // Test normal browser's brave commands status.
   auto* command_controller = browser()->command_controller();
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
-#else
-  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
-#endif
-
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_ADBLOCK));
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -81,10 +75,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   // Create private browser and test its brave commands status.
   auto* private_browser = CreateIncognitoBrowser();
   command_controller = private_browser->command_controller();
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
-#endif
-
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_ADBLOCK));
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -121,9 +112,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   DCHECK(guest_browser);
   EXPECT_TRUE(guest_browser->profile()->IsGuestSession());
   command_controller = guest_browser->command_controller();
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
-#endif
 
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_ADBLOCK));
 
@@ -156,9 +145,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   DCHECK(tor_browser);
   EXPECT_TRUE(tor_browser->profile()->IsTor());
   command_controller = tor_browser->command_controller();
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
-#endif
 
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_ADBLOCK));
 

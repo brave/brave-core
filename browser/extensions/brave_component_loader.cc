@@ -16,7 +16,6 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_extension/grit/brave_extension.h"
-#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
@@ -48,13 +47,11 @@ BraveComponentLoader::BraveComponentLoader(ExtensionSystem* extension_system,
     : ComponentLoader(extension_system, profile),
       profile_(profile),
       profile_prefs_(profile->GetPrefs()) {
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   pref_change_registrar_.Init(profile_prefs_);
   pref_change_registrar_.Add(
       brave_rewards::prefs::kAutoContributeEnabled,
       base::BindRepeating(&BraveComponentLoader::CheckRewardsStatus,
                           base::Unretained(this)));
-#endif
 }
 
 BraveComponentLoader::~BraveComponentLoader() {}
@@ -132,13 +129,10 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
     Add(IDR_BRAVE_EXTENSION, brave_extension_path);
   }
 
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   // Enable rewards extension if already opted-in
   CheckRewardsStatus();
-#endif
 }
 
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 void BraveComponentLoader::AddRewardsExtension() {
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
@@ -159,7 +153,6 @@ void BraveComponentLoader::CheckRewardsStatus() {
     AddRewardsExtension();
   }
 }
-#endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 void BraveComponentLoader::AddEthereumRemoteClientExtension() {

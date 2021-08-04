@@ -2,8 +2,8 @@ import * as React from 'react'
 import {
   UserAccountType,
   AssetOptionType,
-  NetworkOptionsType,
-  BuySendSwapViewTypes
+  BuySendSwapViewTypes,
+  Network
 } from '../../../constants/types'
 import { WyreAssetOptions } from '../../../options/wyre-asset-options'
 import {
@@ -14,12 +14,12 @@ import {
 
 export interface Props {
   accounts: UserAccountType[]
-  selectedNetwork: NetworkOptionsType
+  selectedNetwork: Network
   selectedAccount: UserAccountType
   buyAmount: string
   showHeader?: boolean
   onSubmit: (asset: AssetOptionType) => void
-  onSelectNetwork: (network: NetworkOptionsType) => void
+  onSelectNetwork: (network: Network) => void
   onSelectAccount: (account: UserAccountType) => void
   onSetBuyAmount: (value: string) => void
 }
@@ -43,7 +43,7 @@ function BuyTab (props: Props) {
     setBuyView(view)
   }
 
-  const onClickSelectNetwork = (network: NetworkOptionsType) => () => {
+  const onClickSelectNetwork = (network: Network) => () => {
     onSelectNetwork(network)
     setBuyView('buy')
   }

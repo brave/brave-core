@@ -16,6 +16,7 @@
 #include "base/logging.h"
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
+#include "base/metrics/histogram_macros.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/scoped_blocking_call.h"
 #include "base/values.h"
@@ -180,6 +181,7 @@ bool HTTPSEverywhereService::GetHTTPSURL(
     candidate_url = candidate_url.ReplaceComponents(replacements);
   }
 
+  SCOPED_UMA_HISTOGRAM_TIMER("Brave.HTTPSE.GetHTTPSURL");
   const std::vector<std::string> domains =
       ExpandDomainForLookup(candidate_url.host());
   for (auto domain : domains) {

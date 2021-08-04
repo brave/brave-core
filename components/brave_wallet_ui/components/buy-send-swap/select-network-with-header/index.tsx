@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { NetworkOptionsType } from '../../../constants/types'
+import { Network, NetworkOptionsType } from '../../../constants/types'
 import { SelectNetwork } from '../../shared'
 import Header from '../select-header'
 import locale from '../../../constants/locale'
@@ -11,7 +11,7 @@ import {
 
 export interface Props {
   networks: NetworkOptionsType[]
-  onSelectNetwork: (network: NetworkOptionsType) => () => void
+  onSelectNetwork: (network: Network) => () => void
   onBack: () => void
 }
 

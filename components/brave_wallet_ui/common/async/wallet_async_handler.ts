@@ -7,7 +7,7 @@ import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletActions from '../actions/wallet_actions'
 import { UnlockWalletPayloadType, SetInitialAccountNamesPayloadType, AddNewAccountNamePayloadType, ChainChangedEventPayloadType } from '../constants/action_types'
-import { AppObjectType, APIProxyControllers } from '../../constants/types'
+import { AppObjectType, APIProxyControllers, Network } from '../../constants/types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
 
@@ -27,6 +27,9 @@ async function refreshWalletInfo (store: Store) {
   const walletHandler = (await getAPIProxy()).walletHandler
   const result = await walletHandler.getWalletInfo()
   store.dispatch(WalletActions.initialized(result))
+  const ethJsonRpcController = (await getAPIProxy()).ethJsonRpcController
+  const network = await ethJsonRpcController.getNetwork()
+  store.dispatch(WalletActions.setNetwork(network.network))
 }
 
 handler.on(WalletActions.initialize.getType(), async (store) => {
@@ -92,6 +95,12 @@ handler.on(WalletActions.setInitialAccountNames.getType(), async (store, payload
 handler.on(WalletActions.addNewAccountName.getType(), async (store, payload: AddNewAccountNamePayloadType) => {
   const keyringController = (await getAPIProxy()).keyringController
   await keyringController.addNewAccountName(payload.accountName)
+})
+
+handler.on(WalletActions.selectNetwork.getType(), async (store, payload: Network) => {
+  const ethJsonRpcController = (await getAPIProxy()).ethJsonRpcController
+  await ethJsonRpcController.setNetwork(payload)
+  await refreshWalletInfo(store)
 })
 
 export default handler.middleware

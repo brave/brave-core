@@ -148,7 +148,7 @@ export interface WalletState {
   isWalletBackedUp: boolean
   hasIncorrectPassword: boolean
   selectedAccount: WalletAccountType
-  selectedNetwork: NetworkOptionsType
+  selectedNetwork: Network
   accounts: WalletAccountType[]
   walletAccountNames: string[]
   transactions: RPCTransactionType[]

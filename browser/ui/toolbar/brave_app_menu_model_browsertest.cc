@@ -10,7 +10,6 @@
 
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/browser_commands.h"
-#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -73,9 +72,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
 #if BUILDFLAG(ENABLE_TOR)
     IDC_NEW_OFFTHERECORD_WINDOW_TOR,
 #endif
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
     IDC_SHOW_BRAVE_REWARDS,
-#endif
     IDC_RECENT_TABS_MENU,
     IDC_BOOKMARKS_MENU,
     IDC_SHOW_DOWNLOADS,
@@ -117,9 +114,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
 #if BUILDFLAG(ENABLE_TOR)
     IDC_NEW_OFFTHERECORD_WINDOW_TOR,
 #endif
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
     IDC_SHOW_BRAVE_REWARDS,
-#endif
     IDC_BOOKMARKS_MENU,
     IDC_SHOW_DOWNLOADS,
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -174,9 +169,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
 #if BUILDFLAG(ENABLE_TOR)
     IDC_NEW_OFFTHERECORD_WINDOW_TOR,
 #endif
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
     IDC_SHOW_BRAVE_REWARDS,
-#endif
     IDC_RECENT_TABS_MENU,
     IDC_BOOKMARKS_MENU,
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -202,9 +195,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
     IDC_NEW_WINDOW,
     IDC_NEW_INCOGNITO_WINDOW,
     IDC_NEW_OFFTHERECORD_WINDOW_TOR,
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
     IDC_SHOW_BRAVE_REWARDS,
-#endif
     IDC_BOOKMARKS_MENU,
     IDC_SHOW_DOWNLOADS,
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)

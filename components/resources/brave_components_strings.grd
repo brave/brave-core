@@ -1092,6 +1092,7 @@
       <message name="IDS_GEMINI_WIDGET_UNIT_PRICE" desc="">Unit Price</message>
       <message name="IDS_GEMINI_WIDGET_TOTAL_PRICE" desc="">Total Spent</message>
       <message name="IDS_GEMINI_WIDGET_TOTAL_AMOUNT" desc="">Total Received</message>
+      <message name="IDS_GEMINI_WIDGET_SUMMARY_NO_BALANCE" desc="">You do not have any balances in your account. Visit Gemini to purchase some.</message>
 
       <message name="IDS_CRYPTO_CONVERT_AMOUNT_PLACEHOLDER" desc="Text box placeholder for cyrptocurrency amount user wishes to convert to another currency">
         I want to convert…

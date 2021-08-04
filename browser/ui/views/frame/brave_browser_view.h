@@ -66,6 +66,7 @@ class BraveBrowserView : public BrowserView {
       const TabStripSelectionChange& selection) override;
 
   void StopTabCycling();
+  void UpdateSearchTabsButtonState();
   void OnPreferenceChanged(const std::string& pref_name);
 
 #if BUILDFLAG(ENABLE_SIDEBAR)

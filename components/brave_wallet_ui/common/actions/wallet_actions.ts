@@ -5,7 +5,7 @@
 
 import { createAction } from 'redux-act'
 import { InitializedPayloadType, UnlockWalletPayloadType, SetInitialAccountNamesPayloadType, AddNewAccountNamePayloadType, ChainChangedEventPayloadType } from '../constants/action_types'
-import { AppObjectType, NetworkOptionsType, WalletAccountType } from '../../constants/types'
+import { AppObjectType, WalletAccountType, Network } from '../../constants/types'
 
 export const initialize = createAction('initialize')
 export const initialized = createAction<InitializedPayloadType>('initialized')
@@ -17,7 +17,8 @@ export const hasIncorrectPassword = createAction<boolean>('hasIncorrectPassword'
 export const setInitialAccountNames = createAction<SetInitialAccountNamesPayloadType>('setInitialAccountNames')
 export const addNewAccountName = createAction<AddNewAccountNamePayloadType>('addNewAccountName')
 export const selectAccount = createAction<WalletAccountType>('selectAccount')
-export const selectNetwork = createAction<NetworkOptionsType>('selectNetwork')
+export const selectNetwork = createAction<Network>('selectNetwork')
+export const setNetwork = createAction<Network>('setNetwork')
 export const chainChangedEvent = createAction<ChainChangedEventPayloadType>('chainChangedEvent')
 export const keyringCreated = createAction('keyringCreated')
 export const keyringRestored = createAction('keyringRestored')

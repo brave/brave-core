@@ -475,6 +475,7 @@ class Gemini extends React.PureComponent<Props, State> {
       accountBalances
     } = this.props
     const accountUSDValue = this.getAccountUSDValue()
+    const balanceKeys = Object.keys(accountBalances)
 
     return (
       <>
@@ -498,25 +499,33 @@ class Gemini extends React.PureComponent<Props, State> {
             </TradeLabel>
           </ListInfo>
         </AccountSummary>
-        {geminiData.currencies.map((asset: string) => {
-          const assetAccountBalance = accountBalances[asset] || '0'
-          const assetBalance = this.formatCryptoBalance(assetAccountBalance)
-          return (
-            <S.ListItem key={`list-${asset}`} isFlex={true} $p={10}>
-              <S.FlexItem $mr={10} $w={25} $h={25}>
-                <IconAsset iconKey={asset.toLowerCase()} />
-              </S.FlexItem>
-              <S.FlexItem>
-                <S.Text>{geminiData.currencyNames[asset]}</S.Text>
-              </S.FlexItem>
-              <S.FlexItem textAlign='right' flex={1}>
-                <S.Balance hideBalance={hideBalance}>
-                  <S.Text lineHeight={1.15}>{assetBalance} {asset}</S.Text>
-                </S.Balance>
-              </S.FlexItem>
-            </S.ListItem>
-          )
-        })}
+        {balanceKeys.length !== 0
+        ?
+        <>
+          {balanceKeys.map((asset: string) => {
+            const assetAccountBalance = accountBalances[asset]
+            const assetBalance = this.formatCryptoBalance(assetAccountBalance)
+            return (
+              <S.ListItem key={`list-${asset}`} isFlex={true} $p={10}>
+                <S.FlexItem $mr={10} $w={25} $h={25}>
+                  <IconAsset iconKey={asset.toLowerCase()} />
+                </S.FlexItem>
+                <S.FlexItem>
+                  <S.Text>{geminiData.currencyNames[asset]}</S.Text>
+                </S.FlexItem>
+                <S.FlexItem textAlign='right' flex={1}>
+                  <S.Balance hideBalance={hideBalance}>
+                    <S.Text lineHeight={1.15}>{assetBalance} {asset}</S.Text>
+                  </S.Balance>
+                </S.FlexItem>
+              </S.ListItem>
+            )
+          })}
+        </>
+        : <S.Balance hideBalance={hideBalance}>
+            <S.Text lineHeight={1.15} $p={12}>{getLocale('geminiWidgetSummaryNoBalance')}</S.Text>
+          </S.Balance>
+        }
       </>
     )
   }

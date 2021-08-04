@@ -2,12 +2,12 @@ import * as React from 'react'
 import {
   BuySendSwapTypes,
   UserAccountType,
-  NetworkOptionsType,
   AssetOptionType,
   OrderTypes,
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
-  ToOrFromType
+  ToOrFromType,
+  Network
 } from '../../constants/types'
 import Swap from '../../components/buy-send-swap/tabs/swap-tab'
 import Send from '../../components/buy-send-swap/tabs/send-tab'
@@ -21,7 +21,7 @@ export interface Props {
   orderType: OrderTypes
   swapToAsset: AssetOptionType
   swapFromAsset: AssetOptionType
-  selectedNetwork: NetworkOptionsType
+  selectedNetwork: Network
   selectedAccount: UserAccountType
   exchangeRate: string
   slippageTolerance: SlippagePresetObjectType
@@ -37,7 +37,7 @@ export interface Props {
   onSubmitSend: () => void
   onSubmitSwap: () => void
   flipSwapAssets: () => void
-  onSelectNetwork: (network: NetworkOptionsType) => void
+  onSelectNetwork: (network: Network) => void
   onSelectAccount: (account: UserAccountType) => void
   onToggleOrderType: () => void
   onSelectAsset: (asset: AssetOptionType, toOrFrom: ToOrFromType) => void

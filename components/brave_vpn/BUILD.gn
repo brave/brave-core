@@ -13,6 +13,8 @@ static_library("brave_vpn") {
     "brave_vpn_connection_manager.h",
     "brave_vpn_service.cc",
     "brave_vpn_service.h",
+    "brave_vpn_utils.cc",
+    "brave_vpn_utils.h",
     "features.cc",
     "features.h",
   ]

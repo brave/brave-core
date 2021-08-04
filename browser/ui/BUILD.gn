@@ -1,7 +1,7 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
-import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
@@ -40,6 +40,12 @@ source_set("ui") {
   sources = [
     "webui/brave_adblock_ui.cc",
     "webui/brave_adblock_ui.h",
+    "webui/brave_rewards_internals_ui.cc",
+    "webui/brave_rewards_internals_ui.h",
+    "webui/brave_rewards_page_ui.cc",
+    "webui/brave_rewards_page_ui.h",
+    "webui/brave_rewards_source.cc",
+    "webui/brave_rewards_source.h",
     "webui/brave_web_ui_controller_factory.cc",
     "webui/brave_web_ui_controller_factory.h",
     "webui/brave_webui_source.cc",
@@ -88,6 +94,8 @@ source_set("ui") {
       "toolbar/brave_recent_tabs_sub_menu_model.h",
       "webui/brave_settings_ui.cc",
       "webui/brave_settings_ui.h",
+      "webui/brave_tip_ui.cc",
+      "webui/brave_tip_ui.h",
       "webui/brave_welcome_ui.cc",
       "webui/brave_welcome_ui.h",
       "webui/navigation_bar_data_provider.cc",
@@ -232,15 +240,21 @@ source_set("ui") {
 
     # //chrome/browser/ui depends on //brave/browser/ui, add this target here
     # to pull in dependencies needed for the overwrite codes in chromium_src.
+    "//brave/browser/brave_ads",
     "//brave/browser/ui/brave_ads",
     "//brave/chromium_src/chrome/browser/ui",
     "//brave/common",
     "//brave/common:pref_names",
     "//brave/components/brave_adblock_ui:generated_resources",
     "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/browser",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/resources",
+    "//brave/components/brave_rewards/resources:internals_generated_resources",
+    "//brave/components/brave_rewards/resources:page_generated_resources",
+    "//brave/components/brave_rewards/resources:tip_generated_resources",
     "//brave/components/brave_shields/browser",
+    "//brave/components/brave_vpn/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
@@ -261,6 +275,7 @@ source_set("ui") {
     "//brave/components/webcompat_reporter/browser",
     "//brave/components/webcompat_reporter/ui:generated_resources",
     "//brave/components/weekly_storage",
+    "//brave/vendor/bat-native-ledger:headers",
     "//chrome/app:command_ids",
     "//chrome/app/vector_icons:vector_icons",
     "//chrome/browser:browser_process",
@@ -389,6 +404,8 @@ source_set("ui") {
       "views/brave_actions/brave_action_view.h",
       "views/brave_actions/brave_actions_container.cc",
       "views/brave_actions/brave_actions_container.h",
+      "views/brave_actions/brave_rewards_action_stub_view.cc",
+      "views/brave_actions/brave_rewards_action_stub_view.h",
       "views/location_bar/brave_location_bar_view.cc",
       "views/location_bar/brave_location_bar_view.h",
       "views/location_bar/brave_star_view.cc",
@@ -425,13 +442,6 @@ source_set("ui") {
       deps += [ "//brave/components/decentralized_dns" ]
     }
 
-    if (brave_rewards_enabled) {
-      sources += [
-        "views/brave_actions/brave_rewards_action_stub_view.cc",
-        "views/brave_actions/brave_rewards_action_stub_view.h",
-      ]
-    }
-
     if (enable_tor) {
       sources += [
         "views/location_bar/onion_location_view.cc",
@@ -460,39 +470,20 @@ source_set("ui") {
     ]
   }
 
+  if (enable_brave_vpn && toolkit_views) {
+    sources += [
+      "views/toolbar/brave_vpn_button.cc",
+      "views/toolbar/brave_vpn_button.h",
+    ]
+    deps += [ "//brave/components/brave_vpn" ]
+  }
+
   if (is_win && is_official_build) {
     sources += [
       "//chrome/browser/ui/webui/help/version_updater_win.cc",
       "//chrome/browser/ui/webui/help/version_updater_win.h",
     ]
     deps += [ "//google_update" ]
-  }
-
-  if (brave_rewards_enabled) {
-    sources += [
-      "webui/brave_rewards_internals_ui.cc",
-      "webui/brave_rewards_internals_ui.h",
-      "webui/brave_rewards_page_ui.cc",
-      "webui/brave_rewards_page_ui.h",
-      "webui/brave_rewards_source.cc",
-      "webui/brave_rewards_source.h",
-    ]
-
-    if (!is_android) {
-      sources += [
-        "webui/brave_tip_ui.cc",
-        "webui/brave_tip_ui.h",
-      ]
-    }
-
-    deps += [
-      "//brave/browser/brave_ads",
-      "//brave/components/brave_ads/browser",
-      "//brave/components/brave_rewards/resources:internals_generated_resources",
-      "//brave/components/brave_rewards/resources:page_generated_resources",
-      "//brave/components/brave_rewards/resources:tip_generated_resources",
-      "//brave/vendor/bat-native-ledger:headers",
-    ]
   }
 
   if (enable_tor) {

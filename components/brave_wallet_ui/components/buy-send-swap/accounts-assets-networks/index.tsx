@@ -2,7 +2,7 @@ import * as React from 'react'
 import {
   AssetOptionType,
   BuySendSwapViewTypes,
-  NetworkOptionsType,
+  Network,
   UserAccountType
 } from '../../../constants/types'
 import { NetworkOptions } from '../../../options/network-options'
@@ -22,7 +22,7 @@ export interface Props {
   accounts: UserAccountType[]
   assetOptions: AssetOptionType[]
   onClickSelectAccount: (account: UserAccountType) => () => void
-  onClickSelectNetwork: (network: NetworkOptionsType) => () => void
+  onClickSelectNetwork: (network: Network) => () => void
   onSelectedAsset: (account: AssetOptionType) => () => void
   goBack: () => void
 }

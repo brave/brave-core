@@ -5,6 +5,5 @@
 
 brave_extensions_resources = [
   "//brave/browser/extensions:resources",
-  "//brave/components/brave_rewards/browser/buildflags",
   "//brave/components/brave_webtorrent/browser/buildflags",
 ]
