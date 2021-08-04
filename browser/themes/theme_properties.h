@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_THEMES_THEME_PROPERTIES_H_
 
 #include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -48,6 +49,11 @@ enum ThemeProperties {
   COLOR_SPEEDREADER_ICON,
   COLOR_SPEEDREADER_TOGGLE_TRACK,
   COLOR_SPEEDREADER_TOGGLE_THUMB,
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  COLOR_BRAVE_VPN_BUTTON_BORDER,
+  COLOR_BRAVE_VPN_BUTTON_TEXT_CONNECTED,
+  COLOR_BRAVE_VPN_BUTTON_TEXT_DISCONNECTED,
 #endif
   BRAVE_THEME_PROPERTIES_LAST = COLOR_SIDEBAR_SEPARATOR,
 };
