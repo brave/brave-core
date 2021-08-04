@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index c091e104c7bc3d5c2478ffbbf1d1ecfb50e7c922..cc7f65149d554979f2b5bf8c4f3d8655f7d1abb7 100644
+index c091e104c7bc3d5c2478ffbbf1d1ecfb50e7c922..23b49119d2b6cda93a2a5edfa41952a736a19b31 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -406,6 +406,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
@@ -32,7 +32,7 @@ index c091e104c7bc3d5c2478ffbbf1d1ecfb50e7c922..cc7f65149d554979f2b5bf8c4f3d8655
          } else {
              populateUrlClearExpansionAnimatorSet(animators);
          }
-+        BraveToolbarLayout.class.cast(this).populateUrlAnimatorSetImpl(showExpandedState, URL_FOCUS_TOOLBAR_BUTTONS_DURATION_MS, URL_CLEAR_FOCUS_TABSTACK_DELAY_MS, animators);
++        BraveToolbarLayout.class.cast(this).populateUrlAnimatorSetImpl(hasFocus, URL_FOCUS_TOOLBAR_BUTTONS_DURATION_MS, URL_CLEAR_FOCUS_TABSTACK_DELAY_MS, animators);
          mUrlFocusLayoutAnimator = new AnimatorSet();
          mUrlFocusLayoutAnimator.playTogether(animators);
 
