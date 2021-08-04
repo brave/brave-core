@@ -108,7 +108,7 @@ void UpholdWallet::OnGetUser(const type::Result result,
 
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get the user object from Uphold!");
-    return callback(result);
+    return callback(type::Result::CONTINUE);
   }
 
   if (user.bat_not_allowed) {
@@ -170,12 +170,12 @@ void UpholdWallet::OnCreateCard(const type::Result result,
   }
 
   if (result != type::Result::LEDGER_OK) {
-    return callback(result);
+    return callback(type::Result::CONTINUE);
   }
 
   if (id.empty()) {
     BLOG(0, "Card ID is empty!");
-    return callback(type::Result::LEDGER_ERROR);
+    return callback(type::Result::CONTINUE);
   }
 
   GetAnonFunds(
@@ -225,7 +225,7 @@ void UpholdWallet::OnGetAnonFunds(const type::Result result,
 
   if (result != type::Result::LEDGER_OK || !balance) {
     BLOG(0, "Couldn't get anonymous funds!");
-    return callback(type::Result::LEDGER_ERROR);
+    return callback(type::Result::CONTINUE);
   }
 
   if (balance->user_funds == 0.0) {  // == floating-point comparison!
@@ -273,7 +273,7 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
   }
 
   if (result != type::Result::LEDGER_OK) {
-    return callback(type::Result::LEDGER_ERROR);
+    return callback(type::Result::CONTINUE);
   }
 
   const auto from = uphold_wallet->status;
