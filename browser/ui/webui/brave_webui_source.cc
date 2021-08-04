@@ -366,6 +366,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "geminiWidgetUnitPrice", IDS_GEMINI_WIDGET_UNIT_PRICE },
         { "geminiWidgetTotalPrice", IDS_GEMINI_WIDGET_TOTAL_PRICE },
         { "geminiWidgetTotalAmount", IDS_GEMINI_WIDGET_TOTAL_AMOUNT },
+        { "geminiWidgetSummaryNoBalance", IDS_GEMINI_WIDGET_SUMMARY_NO_BALANCE},
         { "cryptoConvertAmountPlaceholder", IDS_CRYPTO_CONVERT_AMOUNT_PLACEHOLDER },      // NOLINT
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
         { "cryptoDotComWidgetShowPrice", IDS_CRYPTO_DOT_COM_WIDGET_SHOW_PRICE },
