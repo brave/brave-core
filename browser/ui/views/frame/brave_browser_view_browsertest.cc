@@ -6,14 +6,13 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
+#include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "content/public/test/browser_test.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/test/browser_test.h"
 
 using BraveBrowserViewTest = InProcessBrowserTest;
 
