@@ -596,6 +596,7 @@ Domena <ph name="DOMAIN"/> zahteva, da je pametna kartica vstavljena.}}</transla
 <translation id="1627408615528139100">Že preneseno</translation>
 <translation id="1628948239858170093">Želite optično prebrati datoteko pred odpiranjem?</translation>
 <translation id="1629314197035607094">Geslo je poteklo</translation>
+<translation id="1947639598318989608">Želite omogočiti Googlu, da najde osebno prilagojene popuste za vsebino vaših vozičkov?</translation>
 <translation id="1629521517399325891">Uporabniško potrdilo ni na voljo za preverjanje pristnosti omrežja.</translation>
 <translation id="163072119192489970">Dovoljeno je dokončanje pošiljanja in prejemanja podatkov</translation>
 <translation id="1630768113285622200">Znova zaženi in nadaljuj</translation>
@@ -3205,7 +3206,7 @@ Domena <ph name="DOMAIN"/> zahteva, da je pametna kartica vstavljena.</translati
 <translation id="4469762931504673593">Spletno mesto <ph name="ORIGIN"/> lahko ureja datoteke v mapi <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Nastavitve zunanjih naprav za shranjevanje</translation>
 <translation id="4471354919263203780">Prenašanje datotek za prepoznavanje govora … <ph name="PERCENT"/> %</translation>
-<translation id="506314819294271427">Pomagajte izboljšati funkcije in delovanje Chroma</translation>
+<translation id="918192811481327695">Pomagajte izboljšati funkcije in delovanje Chroma</translation>
 <translation id="4472575034687746823">Kako začeti</translation>
 <translation id="4474155171896946103">Dodaj vse zavihke med zaznamke ...</translation>
 <translation id="4475552974751346499">Iskanje v prenosih</translation>
@@ -4437,7 +4438,6 @@ Poskrbite, da ne boste razkrili morebitnih občutljivih podatkov.</translation>
 <translation id="5864754048328252126">Dejanje ob nedejavnosti med polnjenjem</translation>
 <translation id="5865508026715185451">Aplikacija <ph name="APP_NAME"/> bo kmalu zaustavljena</translation>
 <translation id="586567932979200359"><ph name="PRODUCT_NAME"/> izvajate s posnetka diska. Če ga namestite v računalnik, ga lahko izvajate brez posnetka diska in s tem zagotovite, da bo vedno posodobljen.</translation>
-<translation id="1224064034972923114">Samodejno pošilja statistične podatke o uporabi in poročila o zrušitvah Googlu</translation>
 <translation id="5867841422488265304">Iščite ali vnesite spletni naslov</translation>
 <translation id="5869029295770560994">V redu, razumem</translation>
 <translation id="5869522115854928033">Shranjena gesla</translation>
@@ -5453,7 +5453,6 @@ Domena <ph name="DOMAIN"/> zahteva, da je pametna kartica vstavljena.</translati
 <translation id="6997642619627518301"><ph name="NAME_PH"/> – dnevnik dejavnosti</translation>
 <translation id="6997707937646349884">V vaših napravah:</translation>
 <translation id="6998793565256476099">Včlanitev naprave za videokonference</translation>
-<translation id="456304305650018221">Dovolite Googlu, da poišče popuste za izdelke, ki jih dodate v vozičke?</translation>
 <translation id="6999956497249459195">Nova skupina</translation>
 <translation id="7000206553895739324">Tiskalnik <ph name="PRINTER_NAME"/> je povezan, vendar ga je treba konfigurirati</translation>
 <translation id="7000347579424117903">Vključevati morajo Ctrl, Alt ali tipko za iskanje</translation>

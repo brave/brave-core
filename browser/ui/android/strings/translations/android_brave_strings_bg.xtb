@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">Отваря някои сайтове, използвайки защитена HTTPS връзка вместо обикновен HTTP.</translation>
 <translation id="94154759592465111">Блокиране на скриптове</translation>
 <translation id="3518266709656143462">Блокира Javascript (може да попречи на работата на сайтовете)</translation>
-<translation id="5709627087332022422">Блокиране на тракери между сайтовете</translation>
 <translation id="6052725679982758334">Блокиране на социални медии</translation>
 <translation id="7498695072878479744">Разрешаване на бутони за вход в Google на сайтове на трети страни</translation>
 <translation id="863171915776379000">Разреши влизане с Фейсбук и вградени публикации</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">IPFS шлюз</translation>
 <translation id="2688519859165248360">Позволява навигация до IPFS ресурси през IPFS шлюз (Gateaway)</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Цена в Ethereum (ETH)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Метод на разрешаване</translation>
 <translation id="2356070529366658676">Попитайте ме</translation>
 <translation id="4176463684765177261">Деактивирано</translation>
 <translation id="2218918398178303658">DNS по HTTPS</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Предпазва браузъра от фингърпринтинг</translation>
 <translation id="7459000603787995422">Затвори разделите при излизане</translation>
 <translation id="4448697385961650078">Блокиране на проследяването и рекламите</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">Направете Brave вашия браузър по подразбиране!</translation>
 <translation id="7136694880210472378">Задаване като основна</translation>
 <translation id="4250680216510889253">Не</translation>
-<translation id="4501702055016678577">Частно търсене с DuckDuckGo?</translation>
-<translation id="910419239800579753">При поверително търсене, Brave ще използва DuckDuckGo, за да отговори на търсенията Ви, докато сте в този частен раздел. DuckDuckGo е търсачка, която не проследява историята на търсенията Ви, което Ви позволява да търсите поверително.</translation>
-<translation id="1426410128494586442">Да</translation>
-<translation id="5628466560184522265">Научете за поверителното търсене с DuckDuckGo</translation>
 <translation id="8826007068782654809">Благодарим Ви</translation>
 <translation id="6665366815203065060">Току-що изпратихте бакшиш на:</translation>
 <translation id="5441565662498481293">Автоматично изпращате бакшиш на:</translation>
@@ -444,7 +440,7 @@
 <translation id="3477340970981564961">Brave Private Ads ви възнаграждава с токени за подкрепа на създателите на съдържание, за разлика от традиционните реклами, като същевременно запазва личната ви информация поверителна.</translation>
 <translation id="6973095375773523904">Къде се показват рекламите?</translation>
 <translation id="7556325460112047619">Brave Private Ads ще се показват като нормално известие. Вие контролирате колко често виждате тези реклами в настройките.</translation>
-<translation id="6897083627729802351">Кога получавате награди</translation>
+<translation id="6897083627729802351">Кога получавате награди?</translation>
 <translation id="310863932297733723">Спечелените от вас токени от Brave Private Ads през текущия месец ще пристигнат на 5-то число на следващия месец.</translation>
 <translation id="7712287524451429139">Връщане без усилие</translation>
 <translation id="105037569026952831">Създателите получават вашите приноси с токени автоматично въз основа на нивата ви на ангажираност, които измерваме като „Внимание“.</translation>
@@ -461,7 +457,7 @@
 <translation id="827315274423079662">Еха, всичко е готово!</translation>
 <translation id="3895246934788932488">Използвайки Brave Rewards, вие защитавате поверителността си и помагате да направим мрежата по-добро място за всички. А това е страхотно!</translation>
 <translation id="5705882733397021510">Назад</translation>
-<translation id="3985567919248057638">Нека направим кратка обиколка</translation>
+<translation id="3985567919248057638">Нека разгледаме набързо</translation>
 <translation id="2434574859640694129">След като получите първото си изплащане за реклами, можете да се върнете и да дадете бакшиш на този автор!</translation>
 <translation id="207242986925259074">Бърза опреснителна обиколка</translation>
 <translation id="8342862030112839977">Първото ви изплащане на награди ще пристигне до:</translation>
@@ -568,4 +564,13 @@
 <translation id="745115390910697838">Фразата не съвпада, опитайте отново.</translation>
 <translation id="2360588547830602174">Неуспешно възстановяване на акаунта. Опитайте отново.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">Пазарна цена в ETH</translation>
+<translation id="6748108480210050150">От</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">До (приблизително)</translation>
+<translation id="59223531494896848">Ограничение</translation>
+<translation id="3567988240819868195">Пазар</translation>
+<translation id="632241521608275119">Толерантност към слипидж</translation>
 </translationbundle>

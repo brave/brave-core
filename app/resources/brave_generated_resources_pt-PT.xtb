@@ -3,11 +3,11 @@
 <translationbundle lang="pt-PT">
 <translation id="3333887201479867589">Recompensas Brave</translation>
 <translation id="7942180974165298215">Bloqueador de Anúncios Brave</translation>
-<translation id="4615489450165434530">Informar sobre um Site Danificado</translation>
+<translation id="4615489450165434530">Comunicar ''site'' com problemas</translation>
 <translation id="6406506848690869874">Sincronização</translation>
 <translation id="1544192797660353713">Wallet</translation>
 <translation id="2445484935443597917">Criar um novo perfil</translation>
-<translation id="2666990579225592931">Abrir Janela de Convidado</translation>
+<translation id="2666990579225592931">Abrir janela de convidado</translation>
 <translation id="8275068909952022340">More…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") não é permitida no Brave.</translation>
 <translation id="6786747875388722282">Extensões</translation>
@@ -28,6 +28,9 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="3218385319396786393">A reprodução automática foi bloqueada nesta página</translation>
 <translation id="4988333904713528597">Permitir sempre reprodução automática e <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continuar a bloquear a reprodução automática</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Perguntar quando um site quiser aceder à API de fornecedor Ethereum</translation>
+<translation id="7017590444693657895">Bloquear o acesso dos sites à API de fornecedor Ethereum</translation>
 <translation id="8988939298652262600">O Brave não avalia a segurança e a proteção desta extensão. Instale apenas esta extensão se confiar no programador.</translation>
 <translation id="8081858229109418493">Nome de perfil e ícone</translation>
 <translation id="2044383478723007273">Cores Brave</translation>
@@ -42,6 +45,7 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="5802665280774361839">Apresentar o preenchimento automático na barra de endereços</translation>
 <translation id="597020512043916976">Mostrar sites principais em sugestões de preenchimento automático</translation>
 <translation id="264150068416846820">Mostrar sites principais em sugestões de preenchimento automático</translation>
+<translation id="5529693968082667490">Mostrar botão para pesquisar separadores</translation>
 <translation id="6414370348346025511">A proteção padrão está ativada.</translation>
 <translation id="814018970995616154">Verifica os URL com uma lista de sites não seguros armazenados no Brave.</translation>
 <translation id="1144810021918451336">Não o protege contra websites, transferências e extensões perigosos.</translation>
@@ -93,7 +97,7 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="6303294677342628402">Proteções</translation>
 <translation id="7133511168130368997">Bloquear rastreadores e anúncios que o acompanham pela web.</translation>
 <translation id="2761825942249694703">Estas são as definições predefinidas das «Proteções». Estas aplicam-se a todos os ''sites'', exceto se alterar algo no painel das «Proteções» para um determinado ''site''. Alterá-las não irá afetar as definições preexistentes para o ''site''.</translation>
-<translation id="8754605759692119662">Isto bloqueará a maioria dos anúncios em sites, mas não os anúncios Brave particulares; estes são controláveis na</translation>
+<translation id="1485394570478670912">Esta funcionalidade bloqueia a maior parte dos anúncios nos websites, mas não os anúncios privados do Brave, que são controlados nas</translation>
 <translation id="6388201778088078932">definições.</translation>
 <translation id="9185018653595759199">Bloqueio das redes sociais</translation>
 <translation id="7390783310074170337">Vista padrão</translation>
@@ -294,6 +298,13 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="1391855377994926460">Navegue mais rápido — até 6x mais rápido nos sites de notícias principais.</translation>
 <translation id="9218430445555521422">Definir como predefinição</translation>
 <translation id="3479552764303398839">Agora não</translation>
+<translation id="5039804452771397117">Permitir</translation>
+<translation id="7053983685419859001">Bloquear</translation>
+<translation id="7815301689257843278">Enviar relatórios de falhas automaticamente, para que o Brave consiga impedir que este problema volte a ocorrer?</translation>
+<translation id="660171790038410175">O <ph name="BROWSER_NAME"/> fechou inesperadamente.</translation>
+<translation id="1324417023773393937">Navegador Brave</translation>
+<translation id="1068069727470515940">Pode alterar <ph name="SETTING_TEXT"/> novamente quando quiser.</translation>
+<translation id="6873781976650514089">esta definição</translation>
 <translation id="6040143037577758943">Fechar</translation>
 <translation id="5600566490506283344">Notificação de anúncios Brave</translation>
 <translation id="4877147287319222750">Adicionar à barra lateral</translation>
@@ -345,6 +356,6 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="8487693399751278191">Importar marcadores agora...</translation>
 <translation id="2557899542277210112">Para acesso rápido, coloque os seus marcadores aqui na barra de marcadores.</translation>
 <translation id="2808630562319398131">Redefinir dados da Brave Rewards...</translation>
-<translation id="1224064034972923114">Ajude o Brave a enviar automaticamente relatórios de falhas</translation>
-<translation id="3738833060602717053">Ajude a melhorar <ph name="PRODUCT_NAME"/> ao enviar automaticamente relatórios de falhas</translation>
+<translation id="2273851479262317744">Definir o Brave como o navegador predefinido</translation>
+<translation id="8581710194025054669">Para garantir a melhor privacidade online, considere definir o Brave como o navegador predefinido no seu computador. Com o Brave como predefinição, qualquer ligação da Web em que clicar irá abrir com as proteções de privacidade do Brave.</translation>
 </translationbundle>

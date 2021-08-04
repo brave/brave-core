@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">Tampilkan favorit</translation>
 <translation id="3446024864193919737">Tampilkan Brave Rewards</translation>
 <translation id="6274899614137380422">Tampilkan Binance</translation>
-<translation id="5551238871320268996">Brave Together</translation>
 <translation id="5585019845078534178">Kartu</translation>
 <translation id="3870475560794762985">Tampilkan gambar bersponsor</translation>
 <translation id="2875302873837723333">situs teratas</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">Gambar Latar</translation>
 <translation id="385051799172605136">Mundur</translation>
 <translation id="9024104284526126630">Anda dapat memulai panggilan privat di Brave.</translation>
-<translation id="5735801688206890393">Mulai panggilan unlimited dengan teman dan rekan di Brave Together.</translation>
+<translation id="4903286433687221248">Memulai panggilan tak terbatas dengan teman dan kolega di Brave Talk</translation>
 <translation id="7115051913071512405">Coba</translation>
 <translation id="7415602225677446066">Berita utama hari ini di linimasa yang sepenuhnya pribadi, hanya untuk Anda.</translation>
 <translation id="6903061332999399632">Brave News didukung oleh iklan dengan iklan yang sepenuhnya privat dan anonim yang disesuaikan dengan perangkat Anda. Informasi pribadi Anda akan selalu dirahasiakan, sesuai dengan <ph name="LINK_START"/>kebijakan privasi<ph name="LINK_END"/> kami.</translation>
@@ -78,14 +77,14 @@
 <translation id="8890516388109605451">Sumber</translation>
 <translation id="5158129253322921540">Nonaktifkan konten dari <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Dipromosikan</translation>
-<translation id="4541978218358617681">Tambahkan</translation>
+<translation id="4541978218358617681">Iklan</translation>
 <translation id="1776831331757823105">Jam</translation>
 <translation id="7791543448312431591">Tambahkan</translation>
 <translation id="7679334366167089823">Dapatkan token dengan menyaksikan iklan yang menghormati privasi.</translation>
 <translation id="1531133232292396145">Berdagang Kripto di Binance langsung di peramban Anda.</translation>
 <translation id="2166494527623220386">Perdagangkan Kripto di Gemini di peramban Anda.</translation>
 <translation id="7191394989411626168">Dengan mematikan Kartu, semua kartu yang saat ini terlihat akan disembunyikan. Namun, Anda mungkin masih mendapat notifikasi tentang kartu baru.</translation>
-<translation id="8112367589167674370">Obrolan Brave</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="5655621391922317800">Dompet Kripto</translation>
 <translation id="8820817407110198400">Markah</translation>
 <translation id="1644574205037202324">Histori</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">Deteksi otomatis</translation>
 <translation id="4394049700291259645">Nonaktifkan</translation>
 <translation id="4176463684765177261">Dinonaktifkan</translation>
-<translation id="4434663852465709809">Kode QR untuk pengguna Hadiah iOS yang mentransfer BAT</translation>
-<translation id="2175927920773552910">Kode QR</translation>
 <translation id="8283001340969131076">Maaf, terjadi kesalahan saat mencoba memutuskan koneksi akun <ph name="PROVIDER"/> Anda. Silakan coba kembali sebentar lagi.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">Peranti ini luring, silakan coba kembali nanti.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">BAT saat ini tidak didukung di wilayah Anda. Silakan merujuk <ph name="BEGIN_LINK"/>di sini<ph name="END_LINK"/> untuk informasi terbaru.</translation>
 <translation id="1737873393693460829">Dengan mengaktifkan [[title]], Anda setuju dengan <ph name="BEGIN_LINK1"/>Syarat Layanan<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Kebijakan Privasi<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Eror saat membuat kartu BAT Brave Browser</translation>
-<translation id="6473583070570450185">Anda butuh dompet yang terverifikasi untuk Masuk</translation>
-<translation id="5949995321533425416">Anda memerlukan minimal <ph name="AMOUNT"/> BAT untuk membuat dompet Uphold. Silakan mencoba lagi setelah Anda memverifikasi dompet Anda dengan Uphold.</translation>
+<translation id="8429332714958713413">Anda memerlukan dompet yang terverifikasi untuk masuk</translation>
+<translation id="5881716477679854586">Silakan mencoba lagi setelah Anda menyelesaikan verifikasi ID di <ph name="CUSTODIAN"/>.</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> akan masuk dalam <ph name="DAYS"/></translation>
 <translation id="4672975606583962967">Pilih layanan dompet</translation>
 <translation id="1815503044492647974">Pilih mitra dompet kustodian. Jika Anda telah memiliki akun, Anda akan diminta untuk masuk agar dapat terhubung.</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">Reward dimatikan</translation>
 <translation id="3354337256330577726">Kontribusi otomatis dimatikan</translation>
 <translation id="6727186931929643711">Berhenti mencoba ulang</translation>
+<translation id="8978461348341400550">Kustodian:</translation>
+<translation id="7220161813676251577">ID anggota kustodian:</translation>
 <translation id="680983167891198932">Kunci</translation>
 <translation id="7535087603100972091">Nilai</translation>
 <translation id="45591635423975492">Dicatat di</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">Mulai Gunakan Brave Rewards</translation>
 <translation id="6318696841371191107">Lihat tur singkat</translation>
 <translation id="8465790416279415448">Dengan melanjutkan, Anda setuju dengan <ph name="TOS_LINK_BEGIN"/>Syarat Layanan<ph name="TOS_LINK_END"/> and <ph name="PP_LINK_BEGIN"/>Kebijakan Privasi<ph name="PP_LINK_END"/>.</translation>
-<translation id="2404165674840145940">Beri Tip dengan Brave Rewards</translation>
-<translation id="5820285701794581330">Dengan menggunakan Brave Rewards, Anda akan mulai mendapatkan BAT yang dapat Anda gunakan untuk memberi tip kepada pembuat konten.</translation>
+<translation id="8222322431155185238">Beri tip dengan Brave Rewards</translation>
+<translation id="1895476463085410109">Dapatkan Rewards dengan melihat Brave Private Ads dan mendukung kreator konten secara otomatis</translation>
 <translation id="5705882733397021510">Kembali</translation>
 <translation id="185034574799484512">Mari ikuti tur singkat</translation>
 <translation id="8281886186245836920">Lewati</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">Coba lagi</translation>
 <translation id="2600847485413879104">BAT Imbalan</translation>
 <translation id="8006596443377585072">Dompet bitFlyer</translation>
+<translation id="2770577461149798369">Dompet Gemini</translation>
 <translation id="8108350286444475334">Dompet Uphold</translation>
 <translation id="6977372887576114613">BAT Disetorkan</translation>
 <translation id="3173528272490482456">Siap untuk memulai?</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">Anda dapat mulai dengan</translation>
 <translation id="194625454574835815">Kunci Pemulihan</translation>
 <translation id="6354568176665589146">Berulang</translation>
+<translation id="2799223571221894425">Luncurkan Ulang</translation>
 <translation id="1110535155349301542">hapus</translation>
 <translation id="8204292894173669182">Hapus Dari Disimpan</translation>
 <translation id="5530851178552343773">Anda memberikan [[reservedAmount]] [[currency]] untuk kreator yang belum mendaftarkan diri untuk menerima kontribusi. Peramban Anda akan tetap mencoba berkontribusi hingga mereka memverifikasi, atau hingga 90 hari yang akan datang.</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">Dompet Brave Anda didukung oleh <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Brave Rewards dibangun berdasarkan Basic Attention Token. Pelajari lebih lanjut tentang BAT</translation>
 <translation id="7823359893981882407">di sini</translation>
+<translation id="3034163433136515805">Lihat Kode QR</translation>
+<translation id="1640793619390890218">untuk pengguna iOS Rewards yang mentransfer BAT.</translation>
 <translation id="4483635855837696643">Pulihkan Dompet Anda</translation>
 <translation id="459721429458957031">Gunakan kunci pemulihan untuk memulihkan dompet.</translation>
 <translation id="4600052736217630789">Mengembalikan dompet dengan kunci pemulihan akan mengganti dompet Anda saat ini. Jadi pastikan Anda mengosongkan atau mencadangkan dompet Anda saat ini sebelum melakukan pemulihan.</translation>

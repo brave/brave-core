@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">Bazı siteleri düz HTTP yerine güvenli HTTPS bağlantısı kullanarak açar.</translation>
 <translation id="94154759592465111">Komut Dizilerini Engelle</translation>
 <translation id="3518266709656143462">Javascript'i engeller (sitelerde bozulma olabilir)</translation>
-<translation id="5709627087332022422">Siteler arası iz sürücüleri engelle</translation>
 <translation id="6052725679982758334">Sosyal Medya Engelleme</translation>
 <translation id="7498695072878479744">Üçüncü parti sitelerde Google giriş butonlarına izin ver</translation>
 <translation id="863171915776379000">Facebook ile giriş yapmaya ve gömülü gönderilere izin ver</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">IPFS Geçidi</translation>
 <translation id="2688519859165248360">Bir IPFS Ağ Geçidi aracılığıyla IPFS kaynaklarına gitmeye izin verir</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Ethereum Fiyatı (ETH)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Çözümleme Yöntemi</translation>
 <translation id="2356070529366658676">Sor</translation>
 <translation id="4176463684765177261">Devre dışı</translation>
 <translation id="2218918398178303658">HTTPS üzerinde DNS</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Tarayıcının parmak izi almasını engeller</translation>
 <translation id="7459000603787995422">Çıkışta sekmeleri kapat</translation>
 <translation id="4448697385961650078">İzleyicileri &amp; reklamları engelle</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">Brave'i varsayılan tarayıcınız yapın!</translation>
 <translation id="7136694880210472378">Varsayılan yap</translation>
 <translation id="4250680216510889253">Hayır</translation>
-<translation id="4501702055016678577">DuckDuckGo ile gizli arama yapılsın mı?</translation>
-<translation id="910419239800579753">Gizli aramayla Brave, siz bu gizli sekmedeyken aramalarınızı yanıtlamak için DuckDuckGo'yu kullanır. DuckDuckGo, arama geçmişinizi izlemeyen, gizli biçimde arama yapmanıza olanak tanıyan bir arama motorudur.</translation>
-<translation id="1426410128494586442">Evet</translation>
-<translation id="5628466560184522265">DuckDuckGo ile gizli arama hakkında bilgi edinin</translation>
 <translation id="8826007068782654809">Teşekkürler</translation>
 <translation id="6665366815203065060">Az önce bir ipucu gönderdiniz:</translation>
 <translation id="5441565662498481293">Otomatik olarak bir bahşiş gönderiyorsunuz:</translation>
@@ -442,7 +438,7 @@ yok...</translation>
 <translation id="3477340970981564961">Brave Private Ads, geleneksel reklamlardan farklı olarak sizi içerik üreticilerini desteklemeniz için jetonlarla ödüllendirir, bu sırada kişisel bilgilerinizi gizli tutar.</translation>
 <translation id="6973095375773523904">Reklamlar nerede çıkıyor?</translation>
 <translation id="7556325460112047619">Brave Private Ads normal bir bildirim gibi gözükecektir. Bu reklamları ne sıklıkta göreceğinizi ayarlardan kontrol edersiniz.</translation>
-<translation id="6897083627729802351">Ödülleri ne zaman alırsınız</translation>
+<translation id="6897083627729802351">Ödülleri ne zaman alırsınız?</translation>
 <translation id="310863932297733723">Mevcut ay boyunca Brave Private Ads'ten kazanılan jetonlarınız sonraki ayın 5'inde gelecektir.</translation>
 <translation id="7712287524451429139">Geri vermek zahmetsiz hale geldi</translation>
 <translation id="105037569026952831">İçerik üreticiler, ‘Dikkat’ olarak ölçtüğümüz etkileşim düzeylerinize göre jeton katkılarınızı otomatik olarak alır</translation>
@@ -459,7 +455,7 @@ yok...</translation>
 <translation id="827315274423079662">Yaşasın, her şey tamam!</translation>
 <translation id="3895246934788932488">Brave Ödülleri'ni kullanarak, gizliliğinizi koruyor ve internetin herkes için daha iyi bir yer olmasına yardımcı oluyorsunuz. Ve bu harika!</translation>
 <translation id="5705882733397021510">Geri Git</translation>
-<translation id="3985567919248057638">Hadi Hızlı Bir Tur Atalım</translation>
+<translation id="3985567919248057638">Gelin Hızlı Bir Tur Atalım</translation>
 <translation id="2434574859640694129">İlk reklam ödemenizi aldıktan sonra geri gelebilir ve bu üreticiyi destekleyebilirsiniz!</translation>
 <translation id="207242986925259074">Hızlı bir yeniden hatırlama turu</translation>
 <translation id="8342862030112839977">İlk ödül ödemeniz şu tarihe kadar gelecek:</translation>
@@ -532,7 +528,7 @@ yok...</translation>
 <translation id="841880029259839903">Kripto gönderin veya bir hesaptan diğerine aktarın.</translation>
 <translation id="8982246458261383692">Brave DEX toplayıcısı ile kripto varlık takas edin.</translation>
 <translation id="1783600039044302171">Kriptonuzu şifreyle güvenceye alın</translation>
-<translation id="3726490322412361740">Şifre Gir</translation>
+<translation id="3726490322412361740">Şifre Girin</translation>
 <translation id="4450951602553063001">Şifreyi yeniden gir</translation>
 <translation id="1783870616707290226">Şifre 7 veya daha fazla karakterden oluşmalıdır</translation>
 <translation id="7383102760859258982">Yeniden yazılan şifre eşleşmedi</translation>
@@ -554,7 +550,7 @@ yok...</translation>
 <translation id="1970161551843843564">Kripto Hesabını Geri Yükle</translation>
 <translation id="4811736040444856406">Kurtarma ifadesini göster</translation>
 <translation id="283071225285270357">Kurtarma ifadenizi girin</translation>
-<translation id="2339124864228588937">Kurtarma ifadesini doğrula</translation>
+<translation id="2339124864228588937">Kurtarma ifadesini doğrulayın</translation>
 <translation id="6202787708155200390">Sözcüklere dokunarak doğru sırayla yan yana yerleştirin.</translation>
 <translation id="6518133107902771759">Doğrula</translation>
 <translation id="3157931365184549694">Geri yükle</translation>
@@ -563,7 +559,16 @@ yok...</translation>
 <translation id="1569452037668432756">Kilidi açmak için şifrenizi girin</translation>
 <translation id="224719674509047150">Şifre en az 7 karakterden oluşmalıdır, en az bir sayı ve bir özel karakter içermelidir</translation>
 <translation id="1144810021918451336">Sizi tehlikeli web siteleri, indirmeler ve uzantılardan korumaz.</translation>
-<translation id="745115390910697838">İfadeler eşleşmedi, lütfen tekrar deneyin.</translation>
+<translation id="745115390910697838">İfadeler eşleşmedi. Lütfen tekrar deneyin.</translation>
 <translation id="2360588547830602174">Hesap kurtarılamadı. Lütfen tekrar deneyin.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">ETH Olarak Piyasa Fiyatı</translation>
+<translation id="6748108480210050150">Kimden</translation>
+<translation id="3318280255740629162">%25</translation>
+<translation id="2636487255623744079">%50</translation>
+<translation id="8654192805213365413">%75</translation>
+<translation id="6159566011642056819">(Tahmini)</translation>
+<translation id="59223531494896848">Limit</translation>
+<translation id="3567988240819868195">Piyasa</translation>
+<translation id="632241521608275119">Slipaj toleransı</translation>
 </translationbundle>

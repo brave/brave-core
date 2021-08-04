@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">কিছু সাইটকে সাধারণ HTTP এর পরিবর্তে একটি সুরক্ষিত HTTPS সংযোগ ব্যবহার করে খুলুন।</translation>
 <translation id="94154759592465111">স্ক্রিপ্টগুলি অবরুদ্ধ করুন</translation>
 <translation id="3518266709656143462">জাভাস্ক্রিপ্ট অবরুদ্ধ করে (সাইটগুলিকে ব্রেক করতে পারে)</translation>
-<translation id="5709627087332022422">ক্রশ-সাইট ট্র্যাকারগুলিকে ব্লক করুন</translation>
 <translation id="6052725679982758334">সামাজিক মিডিয়া রোধক</translation>
 <translation id="7498695072878479744">তৃতীয় পক্ষের সাইটগুলিতে গুগল লগইন বোতামগুলিকে মঞ্জুর করুন</translation>
 <translation id="863171915776379000">Facebook লগইন এবং সংস্থাপিত পোস্টগুলির অনুমতি দিন</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">IPFS গেটওয়ে</translation>
 <translation id="2688519859165248360">একটি IPFS গেটওয়ের মাধ্যমে IPFS রিসোর্সগুলোতে নেভিগেশন করার অনুমতি দেয়</translation>
 <translation id="7534079972563542000">অপ্রতিরোধ্য ডোমেইনসমূহ</translation>
+<translation id="1448289340149908413">ইথেরিয়াম</translation>
+<translation id="7822245778264751380">ইথেরিয়াম প্রাইস (ETH)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">সমাধান পদ্ধতি</translation>
 <translation id="2356070529366658676">জিজ্ঞাসা করুন</translation>
 <translation id="4176463684765177261">অক্ষম</translation>
 <translation id="2218918398178303658">HTTPS এর ওপরে DNS</translation>
-<translation id="1448289340149908413">ইথেরিয়াম</translation>
 <translation id="5787084571334399599">ফিঙ্গারপ্রিন্টিং থেকে ব্রাউজারকে বাধা দেয়</translation>
 <translation id="7459000603787995422">প্রস্থানে ট্যাবগুলি বন্ধ করুন</translation>
 <translation id="4448697385961650078">ট্র্যাকারদের অবরুদ্ধ করুন &amp; বিজ্ঞাপনগুলি</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">Brave-কে আপনার ডিফল্ট ব্রাউজার করে তুলুন!</translation>
 <translation id="7136694880210472378">ডিফল্ট করুন</translation>
 <translation id="4250680216510889253">না</translation>
-<translation id="4501702055016678577">DuckDuckGo এর সাথে ব্যক্তিগত সন্ধান করবেন?</translation>
-<translation id="910419239800579753">ব্যক্তিগত সন্ধানের সাথে, আপনি এই ব্যক্তিগত ট্যাবে থাকার সময় আপনার সন্ধানগুলিতে উত্তর দেওয়ার জন্য Brave DuckDuckGo ব্যবহার করবে। DuckDuckGo হল একটি সার্চ ইঞ্জিন যা আপনাকে সন্ধানের ইতিহাস ট্র্যাক করে না, আপনাকে ব্যক্তিগতভাবে সন্ধান করতে সক্ষম করে তোলে।</translation>
-<translation id="1426410128494586442">হ্যাঁ</translation>
-<translation id="5628466560184522265">DuckDuckGo এর সাথে ব্যক্তিগত সন্ধান সম্বন্ধে জানুন</translation>
 <translation id="8826007068782654809">আপনাকে ধন্যবাদ</translation>
 <translation id="6665366815203065060">আপনি এইমাত্র একটি বখশিশ পাঠিয়েছেন একে:</translation>
 <translation id="5441565662498481293">আপনি স্বয়ংক্রিয়ভাবে একটি বখশিশ পাঠিয়েছেন একে:</translation>
@@ -462,7 +458,7 @@
 <translation id="827315274423079662">ওহু, আপনি সব ঠিক আছে!</translation>
 <translation id="3895246934788932488">Brave Rewards ব্যাবহার করে, আপনি নিজের গোপনীয়তা রক্ষা করছেন এবং ওয়েবকে সবার জন্য আরও ভাল জায়গা করতে সহায়তা করছেন।এবং এটি ’s দুর্দান্ত!</translation>
 <translation id="5705882733397021510">ফিরে যাও</translation>
-<translation id="3985567919248057638">দ্রুত ভ্রমণ করতে দিন</translation>
+<translation id="3985567919248057638">এক ঝলকে দেখে নেওয়া যাক</translation>
 <translation id="2434574859640694129">আপনার প্রথম বিজ্ঞাপনের অর্থ প্রদানের পরে আপনি ফিরে এসে এই স্রষ্টাকে টিপতে পারেন!</translation>
 <translation id="207242986925259074">দ্রুত সতেজ সফর</translation>
 <translation id="8342862030112839977">আপনার প্রথম পুরষ্কার প্রদানের মাধ্যমে আগত হবে:</translation>
@@ -540,11 +536,11 @@
 <translation id="1783870616707290226">পাসওয়ার্ড অবশ্যই 7 বা তার বেশি ক্যারেক্টারের হতে হবে</translation>
 <translation id="7383102760859258982">পুনরায়-টাইপ করা পাসওয়ার্ড মেলেনি</translation>
 <translation id="1538774398124896437">লাইভ</translation>
-<translation id="8163269366661594721">1দিন</translation>
-<translation id="7640956400175663828">1সপ্তাহ</translation>
-<translation id="9100647964747998533">1মাস</translation>
-<translation id="6366007539108097840">3মাস</translation>
-<translation id="6977728312178289892">1বছর</translation>
+<translation id="8163269366661594721">1D</translation>
+<translation id="7640956400175663828">1W</translation>
+<translation id="9100647964747998533">1M</translation>
+<translation id="6366007539108097840">3M</translation>
+<translation id="6977728312178289892">1Y</translation>
 <translation id="6895566650974550243">সব</translation>
 <translation id="8892168913673237979">সব সেট হয়েছে!</translation>
 <translation id="8331501996028380732">ক্রিপ্টো ক্রয়, কেনাবেচা করুন, বা ধরে রাখুন। আপনার একটি বিদ্যমান ক্রিপ্টো অ্যাকাউন্ট থাকলে আপনি এখন সেটি যোগ করতে পারেন।</translation>
@@ -558,7 +554,7 @@
 <translation id="4811736040444856406">রিকভারি বাক্যাংশ দেখান</translation>
 <translation id="283071225285270357">আপনার রিকভারি বাক্যাংশ লিখুন</translation>
 <translation id="2339124864228588937">রিকভারি বাক্যাংশ যাচাই করুন</translation>
-<translation id="6202787708155200390">শব্দটির শীর্ষে ট্যাপ করুন সেগুলিকে সঠিক ক্রমে একটির পরে অপরটি রাখুন।</translation>
+<translation id="6202787708155200390">শব্দগুলিকে সঠিক ক্রমে একটির পরে অপরটি রাখতে সেগুলিতে ট্যাপ করুন।</translation>
 <translation id="6518133107902771759">যাচাই করুন</translation>
 <translation id="3157931365184549694">পুনরুদ্ধার করুন</translation>
 <translation id="9111102763498581341">আনলক</translation>
@@ -566,7 +562,16 @@
 <translation id="1569452037668432756">আনলক করতে আপনার পাসওয়ার্ড লিখুন</translation>
 <translation id="224719674509047150">পাসওয়ার্ড অবশ্যই অন্তত 7 অক্ষরের হতে হবে এবং তাতে একটি সংখ্যা এবং একটি স্পেশাল ক্যারেক্টার থাকতে হবে</translation>
 <translation id="1144810021918451336">আপনাকে বিপজ্জনক ওয়েবসাইট, ডাউনলোড, এবঙ্গ এক্সটেনশনগুলি থেকে রক্ষা করে না।</translation>
-<translation id="745115390910697838">বাক্যাংশ মেলেনি, অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
+<translation id="745115390910697838">বাক্যাংশ মেলেনি. অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
 <translation id="2360588547830602174">অ্যাকাউন্ট পুনরুদ্ধার ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
 <translation id="1530109021798294736">মেইননেট</translation>
+<translation id="990936698620790924">ETH-এ মার্কেট প্রাইস</translation>
+<translation id="6748108480210050150">থেকে</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">পর্যন্ত (অনুমান)</translation>
+<translation id="59223531494896848">সীমা</translation>
+<translation id="3567988240819868195">মার্কেট</translation>
+<translation id="632241521608275119">স্লিপেজ টলারেন্স</translation>
 </translationbundle>

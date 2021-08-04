@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">Apre alcuni siti usando una connessione sicura HTTPS invece che HTTP.</translation>
 <translation id="94154759592465111">Blocca gli Script</translation>
 <translation id="3518266709656143462">Blocca JavaScript (potrebbe non far funzionare alcuni siti)</translation>
-<translation id="5709627087332022422">Blocca tracker cross-site</translation>
 <translation id="6052725679982758334">Blocco dei social media</translation>
 <translation id="7498695072878479744">Permetti pulsante di accesso Google su siti di terze parti</translation>
 <translation id="863171915776379000">Consenti accessi a Facebook e post incorporati</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">Gateway IPFS</translation>
 <translation id="2688519859165248360">Consente la navigazione nelle risorse IPFS tramite un gateway IPFS</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Prezzo Ethereum (ETH)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Metodo di risoluzione</translation>
 <translation id="2356070529366658676">Chiedi</translation>
 <translation id="4176463684765177261">Disabilitato</translation>
 <translation id="2218918398178303658">DNS over HTTPS</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Impedisce al browser di rilevare le impronte digitali</translation>
 <translation id="7459000603787995422">Chiudi le schede quando esci</translation>
 <translation id="4448697385961650078">Blocca indicatori &amp; annunci</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">Fai di Brave il tuo browser predefinito!</translation>
 <translation id="7136694880210472378">Imposta come predefinito</translation>
 <translation id="4250680216510889253">No</translation>
-<translation id="4501702055016678577">Ricerca privata con DuckDuckGo?</translation>
-<translation id="910419239800579753">Con la ricerca privata, Brave userà DuckDuckGo per rispondere alle tue ricerche mentre sei in questa scheda privata. DuckDuckGo è un motore di ricerca che non tiene traccia della tua cronologia di ricerca, il che ti permette di cercare in privato.</translation>
-<translation id="1426410128494586442">Sì</translation>
-<translation id="5628466560184522265">Scopri la ricerca privata con DuckDuckGo</translation>
 <translation id="8826007068782654809">Grazie</translation>
 <translation id="6665366815203065060">Hai appena inviato una mancia a:</translation>
 <translation id="5441565662498481293">Invii automaticamente una mancia a:</translation>
@@ -444,7 +440,7 @@ ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di
 <translation id="3477340970981564961">Brave Private Ads ti premia con token per supportare i creatori di contenuti a differenza degli annunci tradizionali, il tutto mantenendo private le tue informazioni personali.</translation>
 <translation id="6973095375773523904">Dove compaiono le pubblicità</translation>
 <translation id="7556325460112047619">Brave Private Ads apparirà come una normale notifica. Sei tu a controllare la frequenza di visualizzazione di questi annunci nelle impostazioni.</translation>
-<translation id="6897083627729802351">Quando ricevi premi</translation>
+<translation id="6897083627729802351">Quando ricevi le ricompense?</translation>
 <translation id="310863932297733723">I gettoni guadagnati da Brave Private Ads durante il mese corrente arriveranno il 5 del mese successivo.</translation>
 <translation id="7712287524451429139">Dare qualcosa indietro senza sforzo</translation>
 <translation id="105037569026952831">I creatori ricevono automaticamente i tuoi contributi in gettoni in base ai tuoi livelli di coinvolgimento che misuriamo come ‘Attenzione’.</translation>
@@ -461,7 +457,7 @@ ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di
 <translation id="827315274423079662">Evviva, sei a posto!</translation>
 <translation id="3895246934788932488">Scegliendo di utilizzare Brave Rewards, stai proteggendo la tua privacy e contribuisci a rendere il Web un posto migliore per tutti. E questo è fantastico!</translation>
 <translation id="5705882733397021510">Vai indietro</translation>
-<translation id="3985567919248057638">Facciamo un tour veloce</translation>
+<translation id="3985567919248057638">Segui questa breve presentazione</translation>
 <translation id="2434574859640694129">Dopo aver ricevuto il tuo primo pagamento per le pubblicità, potrai ritornare e dare una mancia a questo creativo!</translation>
 <translation id="207242986925259074">Tour di aggiornamento veloce</translation>
 <translation id="8342862030112839977">Il tuo primo pagamento arriverà:</translation>
@@ -518,7 +514,7 @@ ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di
 <translation id="6146966915297143881">continua per eseguire l’accesso</translation>
 <translation id="1483493594462132177">Invia</translation>
 <translation id="538450413584738399">Swap</translation>
-<translation id="8825032646286791700">Archiviazione per cripto DeFi e sicura</translation>
+<translation id="8825032646286791700">&amp; Archiviazione sicura per cripto DeFi</translation>
 <translation id="5460364286096798286">Tieni al sicuro le cripto. Scambia beni. Visualizza prezzi e performance del portfolio. Investi, ricevi o concedi prestiti con DeFi.</translation>
 <translation id="1748009926009835882">Imposta cripto</translation>
 <translation id="2759836790106646094">Esegui il backup del tuo portafoglio adesso!</translation>
@@ -538,21 +534,21 @@ ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di
 <translation id="4450951602553063001">Reinserisci la password</translation>
 <translation id="1783870616707290226">La password deve essere di almeno 7 caratteri</translation>
 <translation id="7383102760859258982">La seconda password inserita non corrisponde alla prima</translation>
-<translation id="1538774398124896437">Live</translation>
+<translation id="1538774398124896437">In tempo reale</translation>
 <translation id="8163269366661594721">1 g</translation>
-<translation id="7640956400175663828">1 se</translation>
-<translation id="9100647964747998533">1 me</translation>
-<translation id="6366007539108097840">3 me</translation>
+<translation id="7640956400175663828">1 s</translation>
+<translation id="9100647964747998533">1 m</translation>
+<translation id="6366007539108097840">3 m</translation>
 <translation id="6977728312178289892">1 a</translation>
 <translation id="6895566650974550243">TUTTI</translation>
 <translation id="8892168913673237979">Fatto!</translation>
 <translation id="8331501996028380732">Compra, scambia o conserva cripto. Se hai già un account cripto puoi aggiungerlo adesso.</translation>
-<translation id="2267753748892043616">Aggiungi account</translation>
+<translation id="2267753748892043616">Aggiungi conto</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Attiva sblocco basato su impronta digitale?</translation>
 <translation id="5493402808936397665">Attiva gli strumenti biometrici per sbloccare velocemente il tuo portafoglio senza inserire la password.</translation>
 <translation id="8488282162676695335">Portafoglio Brave</translation>
-<translation id="6901810042765869341">Inserisci la frase di recupero per ripristinare il tuo account cripto Portafoglio Brave.</translation>
+<translation id="6901810042765869341">Inserisci la frase di recupero per ripristinare il tuo account cripto Brave Wallet.</translation>
 <translation id="1970161551843843564">Ripristina l’account cripto</translation>
 <translation id="4811736040444856406">Mostra la frase di recupero</translation>
 <translation id="283071225285270357">Inserisci la frase di recupero</translation>
@@ -568,4 +564,13 @@ ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di
 <translation id="745115390910697838">Le frasi non corrispondono, riprova.</translation>
 <translation id="2360588547830602174">Recupero dell’account non riuscito. Riprova.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">Prezzo di mercato in ETH</translation>
+<translation id="6748108480210050150">Da</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">A (stima)</translation>
+<translation id="59223531494896848">Limite</translation>
+<translation id="3567988240819868195">Mercato</translation>
+<translation id="632241521608275119">Tolleranza di slippage</translation>
 </translationbundle>

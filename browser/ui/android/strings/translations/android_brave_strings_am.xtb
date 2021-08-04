@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">ከ HTTP ይልቅ ደሕንነቱ የተጠበቀ HTTPS በመጠቀም አንዳንድ ድረ ገጾችን ይከፍታል</translation>
 <translation id="94154759592465111">ስክሪፕቶችን አግድ</translation>
 <translation id="3518266709656143462">ጃቫስክሪፕትን ያግዳል (ጣቢያዎችን ሊሰብር ይችላል)</translation>
-<translation id="5709627087332022422">ድረ ገጽ ተሻጋሪ ተከታታዮችን አግድ።</translation>
 <translation id="6052725679982758334">የማህበራዊ ሚዲያ እገዳ</translation>
 <translation id="7498695072878479744">የ Google መግቢያ መጫኛ ቁልፎችን በሶስተኛ ወገን ጣቢያዎች ላይ ይፍቀዱ</translation>
 <translation id="863171915776379000">የ Facebook መግቢያዎች እና አካቶዎችን ፍቀድ</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">የ IPFS ጌትዌይ</translation>
 <translation id="2688519859165248360">በ IPFS መግቢያ በኩል ወደ IPFS ሀብቶች ለመድረስ ይፈቅዳል</translation>
 <translation id="7534079972563542000">የማይቆሙ ጎራዎች</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Ethereum ዋጋ (ETH)</translation>
 <translation id="6513892817556267573">የEthereum ስም አገልግሎት</translation>
 <translation id="3894650624018948468">የመፍትሄ ዘዴ</translation>
 <translation id="2356070529366658676">ጠይቅ</translation>
 <translation id="4176463684765177261">ተሰናክሏል</translation>
 <translation id="2218918398178303658">ከ HTTPS ይልቅ DNS</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">አሳሹ የጣት አሻራ እንዳይወስድ ይከለክላል</translation>
 <translation id="7459000603787995422">ሲወጡ ትሮችን ይዝጉ</translation>
 <translation id="4448697385961650078">ተከታታዮችን &amp; ማስታወቂያዎችን አግድ</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">Braveን ነባሪ አሳሽዎ ያድርጉ!</translation>
 <translation id="7136694880210472378">ነባሪ አድርግ</translation>
 <translation id="4250680216510889253">አይ</translation>
-<translation id="4501702055016678577">በ DuckDuckGo ግላዊ ፍለጋ?</translation>
-<translation id="910419239800579753">ከግል ፍለጋዎ ጋር እርስዎ በዚህ የግል ትር ውስጥ እያሉ Brave ለፍለጋዎችዎ ምላሽ ለመስጠት DuckDuckGo ይጠቀማል።   DuckDuckGo የፍለጋ ታሪክዎን የማይመዘግብ የፍለጋ ፍርግም ስለሆነ በግልዎ እንዲፈልጉ ያስችልዎታል።</translation>
-<translation id="1426410128494586442">አዎ</translation>
-<translation id="5628466560184522265">ስለ ግላዊ ፍለጋ በ DuckDuckGo በኩል ይወቁ</translation>
 <translation id="8826007068782654809">እናመሰግናለን</translation>
 <translation id="6665366815203065060">አሁን ጉርሻ ሰጥተዋል ለ:</translation>
 <translation id="5441565662498481293">ጉርሻ በራስ-ሰር እየላኩ ነው ለ:</translation>
@@ -444,7 +440,7 @@
 <translation id="3477340970981564961">የግል መረጃዎን በሚስጥር እየጠበቀ፣ የ Brave የግል ማስታወቂያዎች ከባህላዊ ማስታወቂያዎች በተለየ የ ይዘት ፈጣሪዎችን ለመደገፍ የ ማስመሰያዎች ሽልማት ሰጥቶታል።</translation>
 <translation id="6973095375773523904">ማስታወቂያዎች የት ይታያሉ?</translation>
 <translation id="7556325460112047619">የ Brave የግል ማስታወቂያዎች እንደ መደበኛ ማሳወቂያ ይታያሉ። እነዚህን ማስታወቂያዎች ምን ያህል ጊዜ ማየት እንደሚፈልጉ በቅንብሮች ውስጥ ይቆጣጠራሉ።</translation>
-<translation id="6897083627729802351">ሽልማቶችን መቼ ይቀበላሉ</translation>
+<translation id="6897083627729802351">ሽልማቶችን መቼ ይቀበላሉ?</translation>
 <translation id="310863932297733723">በዚህ ወር ውስጥ ከ Brave የግል ማስታወቂያዎች ያገኙዋቸው ማስመሰያዎች በሚቀጥለው ወር 5ኛ ቀን ላይ ይደርስዎታል።</translation>
 <translation id="7712287524451429139">መልሶ መስጠት ያለ ምንም ጥረት ሁኗል</translation>
 <translation id="105037569026952831">እንደ ‘ትኩረት’ በምንለካው የተሳትፎ ደረጃዎችዎ ላይ በመመስረት ፈጣሪዎች የእርስዎን ማስመሰያ መዋጮ በራስ-ሰር ይቀበላሉ።</translation>
@@ -461,7 +457,7 @@
 <translation id="827315274423079662">ዋው፣ you’re ሁሉም ተዘጋጅቷል!</translation>
 <translation id="3895246934788932488">Brave ወሮታዎች በመጠቀም፣ የእርስዎን ግላዊነት እየጠበቁ እና ድሩን ለሁሉም ሰው የተሻለ ቦታ ለማድረግ እየረዱ ነው። እና ይሄ ግሩም ነው!</translation>
 <translation id="5705882733397021510">ወደ ኋላ ተመለስ</translation>
-<translation id="3985567919248057638">እስቲ አንድ ፈጣን ጉብኝት እንውሰድ</translation>
+<translation id="3985567919248057638">ፈጣን ጉብኝት እናድርግ</translation>
 <translation id="2434574859640694129">የመጀመሪያዎን ማስታወቂያዎች ክፍያ ከተቀበሉ በኋላ ፣ ተመልሰው መጥተው ለዚህ ፈጣሪ ጠቃሚ ምክር መስጠት ይችላሉ!</translation>
 <translation id="207242986925259074">ፈጣን የማደሻ ጉብኝት</translation>
 <translation id="8342862030112839977">የእርስዎ 1ኛ ሽልማት ክፍያ በሚከተለው ይደርሳል፥</translation>
@@ -568,4 +564,13 @@
 <translation id="745115390910697838">ሐረጎች አልተመሳሰሉም። እባክዎ እንደገና ይሞክሩ።</translation>
 <translation id="2360588547830602174">የመለያ መልሶ ማግኘት አልተሳካም። እባክዎ እንደገና ይሞክሩ።</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">የገቢያ ዋጋ በኢትዮጵያ ውስጥ</translation>
+<translation id="6748108480210050150">ከ</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">ለ (ግምት)</translation>
+<translation id="59223531494896848">ገደብ</translation>
+<translation id="3567988240819868195">ገበያ</translation>
+<translation id="632241521608275119">ተቀባይነት ያለው የዋጋ መንሸራተት</translation>
 </translationbundle>

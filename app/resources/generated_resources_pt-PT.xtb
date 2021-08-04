@@ -590,6 +590,7 @@
 <translation id="1627408615528139100">Já transferido</translation>
 <translation id="1628948239858170093">Pretende analisar o ficheiro antes de abrir?</translation>
 <translation id="1629314197035607094">A palavra-passe expirou.</translation>
+<translation id="1947639598318989608">Pretende permitir que a Brave encontre descontos personalizados nos seus carrinhos?</translation>
 <translation id="1629521517399325891">O certificado do utilizador não está disponível para a autenticação de rede.</translation>
 <translation id="163072119192489970">Com autorização para concluir o envio e a receção de dados</translation>
 <translation id="1630768113285622200">Reiniciar e continuar</translation>
@@ -3188,7 +3189,7 @@ Pretende pará-lo?</translation>
 <translation id="4469762931504673593"><ph name="ORIGIN"/> pode editar ficheiros em <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Preferências de armazenamento externo</translation>
 <translation id="4471354919263203780">A transferir ficheiros de reconhecimento de voz… <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Ajudar a melhorar as funcionalidades e o desempenho do Brave</translation>
+<translation id="918192811481327695">Ajudar a melhorar as funcionalidades e o desempenho do Brave</translation>
 <translation id="4472575034687746823">Começar</translation>
 <translation id="4474155171896946103">Adicionar todos os separadores aos marcadores...</translation>
 <translation id="4475552974751346499">Pesquisar transferências</translation>
@@ -4418,7 +4419,6 @@ Certifique-se de que não revela informações confidenciais.</translation>
 <translation id="5864754048328252126">Ação de inatividade ao carregar</translation>
 <translation id="5865508026715185451">A app <ph name="APP_NAME"/> será colocada em pausa em breve</translation>
 <translation id="586567932979200359">Está a executar o <ph name="PRODUCT_NAME"/> a partir da respectiva imagem de disco. Instalá-lo no computador permite executá-lo sem a imagem de disco e assegura que o mesmo é mantido atualizado.</translation>
-<translation id="1224064034972923114">Envia automaticamente estatísticas de utilização e relatórios de falhas para a Brave.</translation>
 <translation id="5867841422488265304">Pesquise ou escreva o endereço Web</translation>
 <translation id="5869029295770560994">OK, compreendi</translation>
 <translation id="5869522115854928033">Palavras-passe guardadas</translation>
@@ -5434,7 +5434,6 @@ Certifique-se de que não revela informações confidenciais.</translation>
 <translation id="6997642619627518301"><ph name="NAME_PH"/> – Registo de atividade</translation>
 <translation id="6997707937646349884">Nos seus dispositivos:</translation>
 <translation id="6998793565256476099">Inscrever dispositivo para videoconferência</translation>
-<translation id="456304305650018221">Pretende permitir que a Brave encontre descontos sobre o que adicionou aos seus carrinhos?</translation>
 <translation id="6999956497249459195">Novo grupo</translation>
 <translation id="7000206553895739324">A impressora <ph name="PRINTER_NAME"/> está ligada mas tem de ser configurada.</translation>
 <translation id="7000347579424117903">Inclua Ctrl, Alt ou Pesquisar.</translation>

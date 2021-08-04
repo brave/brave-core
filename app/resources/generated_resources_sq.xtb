@@ -588,6 +588,7 @@
 <translation id="1627408615528139100">Është shkarkuar tashmë</translation>
 <translation id="1628948239858170093">Do ta skanosh skedarin përpara se ta hapësh?</translation>
 <translation id="1629314197035607094">Fjalëkalimi ka skaduar</translation>
+<translation id="1947639598318989608">Të lejohet që Brave të gjejë ulje çmimi të personalizuara në karrocat e tua?</translation>
 <translation id="1629521517399325891">Certifikata e përdoruesit nuk është e disponueshme për vërtetimin e rrjetit.</translation>
 <translation id="163072119192489970">Lejohen të përfundojnë dërgimin dhe marrjen e të dhënave</translation>
 <translation id="1630768113285622200">Rinis dhe vazhdo</translation>
@@ -3192,7 +3193,7 @@ Për ndihmë lidhur me zgjidhjen e problemeve të transmetimit, drejtohu te <ph 
 <translation id="4469762931504673593"><ph name="ORIGIN"/> mund t'i modifikojë skedarët në <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Preferencat e hapësirës së jashtme ruajtëse</translation>
 <translation id="4471354919263203780">Po shkarkon skedarët e njohjes së ligjërimit... <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Ndihmo në përmirësimin e funksioneve dhe cilësisë së funksionimit të Brave</translation>
+<translation id="918192811481327695">Ndihmo në përmirësimin e funksioneve dhe cilësisë së funksionimit të Brave</translation>
 <translation id="4472575034687746823">Fillo</translation>
 <translation id="4474155171896946103">Regjistroji të gjithë skedat në faqeshënues...</translation>
 <translation id="4475552974751346499">Kërko për shkarkimet</translation>
@@ -4431,7 +4432,6 @@ Për ndihmë lidhur me zgjidhjen e problemeve të transmetimit, drejtohu te <ph 
 <translation id="5864754048328252126">Veprimi i gjendjes joaktive gjatë karikimit</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> do të vendoset në pauzë së shpejti</translation>
 <translation id="586567932979200359">Po e ekzekuton <ph name="PRODUCT_NAME"/> nga imazhi i tij i diskut. Instalimi i tij në kompjuter lejon që ta ekzekutosh pa imazhin e diskut dhe garanton se do të mbahet i përditësuar.</translation>
-<translation id="1224064034972923114">Dërgon automatikisht te Brave statistika të përdorimit dhe raportet e ndërprerjeve aksidentale</translation>
 <translation id="5867841422488265304">Kërko ose shkruaj adresën e uebit</translation>
 <translation id="5869029295770560994">Në rregull, kuptova</translation>
 <translation id="5869522115854928033">Fjalëkalimet e ruajtura</translation>
@@ -5452,7 +5452,6 @@ Për ndihmë lidhur me zgjidhjen e problemeve të transmetimit, drejtohu te <ph 
 <translation id="6997642619627518301"><ph name="NAME_PH"/> - Evidenca e aktivitetit</translation>
 <translation id="6997707937646349884">Në pajisjet e tua:</translation>
 <translation id="6998793565256476099">Regjistro pajisjen për video-konferencë</translation>
-<translation id="456304305650018221">Të lejohet që Brave të gjejë ulje çmimi për gjërat që ti shton te karrocat?</translation>
 <translation id="6999956497249459195">Grup i ri</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> është i lidhur, por ka nevojë për konfigurim</translation>
 <translation id="7000347579424117903">Përfshi tastin Ctrl, Alt ose "Kërko"</translation>

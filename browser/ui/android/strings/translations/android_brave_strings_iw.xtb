@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">פותח אתרים נתמכים בצורה מאובטחת באמצעות HTTPS במקום HTTP</translation>
 <translation id="94154759592465111">חסום תסריטים</translation>
 <translation id="3518266709656143462">‏חוסם JavaScript (עשוי לשבור אתרים)</translation>
-<translation id="5709627087332022422">חסום עוקבים מרובי-אתרים (cross-site)</translation>
 <translation id="6052725679982758334">חסימת מדיה חברתית</translation>
 <translation id="7498695072878479744">אפשר לחצני כניסה של Google באתרי צד שלישי</translation>
 <translation id="863171915776379000">התר/י התחברויות לפייסבוק ופוסטים מוטבעים</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">שער IPFS</translation>
 <translation id="2688519859165248360">מאפשר ניווט למשאבי IPFS  דרך IPFS Gateway.</translation>
 <translation id="7534079972563542000">דומיינים בלתי ניתנים לעצירה</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Ethereum Price (ETH)</translation>
 <translation id="6513892817556267573">שירות רישום שמות Ethereum</translation>
 <translation id="3894650624018948468">שיטת רזולוציה</translation>
 <translation id="2356070529366658676">שאל</translation>
 <translation id="4176463684765177261">מושבת</translation>
 <translation id="2218918398178303658">DNS על פני HTTPS</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">מונע מהדפדפן ליצור טביעת אצבע</translation>
 <translation id="7459000603787995422">סגור כרטיסיות ביציאה</translation>
 <translation id="4448697385961650078">חסום עוקבים &amp; פרסומות</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">הפכ/י את Brave לדפדפן ברירת המחדל שלך!</translation>
 <translation id="7136694880210472378">הפוך לברירת מחדל</translation>
 <translation id="4250680216510889253">לא</translation>
-<translation id="4501702055016678577">חיפוש פרטי עם DuckDuckGo?</translation>
-<translation id="910419239800579753">עם חיפוש פרטי, Brave ישתמש ב-DuckDuckGo כדי להשיב על החיפושים שלך כאשר הנך בכרטיסייה פרטית זו. DuckDuckGo הוא מנוע חיפוש שלא עוקב אחר היסטוריית החיפושים שלך, ומאפשר לך לחפש באופן פרטי.</translation>
-<translation id="1426410128494586442">כן</translation>
-<translation id="5628466560184522265">למד/י על אודות חיפוש פרטי באמצעות DuckDuckGo</translation>
 <translation id="8826007068782654809">תודה</translation>
 <translation id="6665366815203065060">הרגע שלחת טיפ אל:</translation>
 <translation id="5441565662498481293">את/ה שולח/ת אוטומטי טיפ אל:</translation>
@@ -445,7 +441,7 @@
 <translation id="3477340970981564961">פרסומות Brave Private מתגמלות אתכם בטוקנים לתמיכה ביוצרי תוכן בשונה מפרסומות מסורתיות, כל זאת תוך שמירה על פרטיות המידע האישי שלכם.</translation>
 <translation id="6973095375773523904">היכן מוצגות פרסומות?</translation>
 <translation id="7556325460112047619">פרסומות Brave Private יופיעו כהודעה רגילה. אתם שולטים באיזו תדירות אתם רואים פרסומות אלה בהגדרות.</translation>
-<translation id="6897083627729802351">מתי אתם מקבלים תגמולים</translation>
+<translation id="6897083627729802351">מתי אתם מקבלים פרסים?</translation>
 <translation id="310863932297733723">הטוקנים שהרווחתם מפרסומות Brave Private במהלך החודש הנוכחי יגיעו ב -5 לחודש הבא.</translation>
 <translation id="7712287524451429139">נתינה בחזרה הפכה לקלה</translation>
 <translation id="105037569026952831">היוצרים מקבלים את תרומות הטוקנים שלכם באופן אוטומטי על סמך רמות המעורבות שלכם שאנו מודדים ‘כתשומת לב’.</translation>
@@ -462,7 +458,7 @@
 <translation id="827315274423079662">ווהו, אתם’ מוכנים!</translation>
 <translation id="3895246934788932488">באמצעות שימוש ב- Brave Rewards אתם מגנים על פרטיותכם ועוזרים להפוך את האינטרנט למקום טוב יותר עבור כולם. וזה’ מדהים!</translation>
 <translation id="5705882733397021510">חזור</translation>
-<translation id="3985567919248057638">בואו נעשה סיור מהיר</translation>
+<translation id="3985567919248057638">נערוך סיור קצר</translation>
 <translation id="2434574859640694129">אחרי שתקבל/י את התשלום הראשון שלך על פרסומות תוכל/י לחזור ולתת טיפ ליוצר!</translation>
 <translation id="207242986925259074">סיור רענון מהיר</translation>
 <translation id="8342862030112839977">תשלום התגמול הראשון שלכם יגיע עד:</translation>
@@ -539,7 +535,7 @@
 <translation id="4450951602553063001">הזן מחדש סיסמה</translation>
 <translation id="1783870616707290226">הסיסמה חייבת להיות באורך של 7 ספרות או יותר</translation>
 <translation id="7383102760859258982">הסיסמה שהוקלדה מחדש אינה תואמת</translation>
-<translation id="1538774398124896437">בשידור חי</translation>
+<translation id="1538774398124896437">זמן אמת</translation>
 <translation id="8163269366661594721">יום אחד</translation>
 <translation id="7640956400175663828">שבוע אחד</translation>
 <translation id="9100647964747998533">חודש אחד</translation>
@@ -569,4 +565,13 @@
 <translation id="745115390910697838">ביטויים לא תואמים, יש לנסות שוב.</translation>
 <translation id="2360588547830602174">שחזור חשבון נכשלה. נסה שוב.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">מחיר השוק ב- ETH</translation>
+<translation id="6748108480210050150">מאת</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">עד (הערכה)</translation>
+<translation id="59223531494896848">הגבלה (limit)</translation>
+<translation id="3567988240819868195">שוק</translation>
+<translation id="632241521608275119">רגישות למעידה</translation>
 </translationbundle>

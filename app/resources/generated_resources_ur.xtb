@@ -592,6 +592,7 @@ myaccount.google.com/activitycontrols/search پر تبدیل کر سکتے ہي�
 <translation id="1627408615528139100">پہلے ہی ڈاؤن لوڈ کردہ ہے</translation>
 <translation id="1628948239858170093">کھولنے سے پہلے فائل کو اسکین کریں؟</translation>
 <translation id="1629314197035607094">پاس ورڈ کی میعاد ختم ہو گئی</translation>
+<translation id="1947639598318989608">‏Brave کو آپ کی کارٹس میں ذاتی نوعیت کی رعایتیں تلاش کرنے دیں؟</translation>
 <translation id="1629521517399325891">صارف کا سرٹیفیکیٹ نیٹ ورک کی تصدیق کے لئے دستیاب نہیں ہے۔</translation>
 <translation id="163072119192489970">ڈیٹا بھیجنے اور موصول کرنے کو مکمل کرنے کی اجازت ہے</translation>
 <translation id="1630768113285622200">ری سٹارٹ کریں اور جاری رکھیں</translation>
@@ -3195,7 +3196,7 @@ myaccount.google.com/activitycontrols/search پر تبدیل کر سکتے ہي�
 <translation id="4469762931504673593"><ph name="ORIGIN"/> <ph name="FOLDERNAME"/> میں فائلز میں ترمیم کر سکتا ہے</translation>
 <translation id="4470957202018033307">خارجی اسٹوریج کی ترجیحات</translation>
 <translation id="4471354919263203780">اسپیچ شناخت کی فائلز ڈاؤن لوڈ ہو رہی ہیں... %<ph name="PERCENT"/></translation>
-<translation id="506314819294271427">‏Brave کی خصوصیات اور کارکردگی کو بہتر بنانے میں مدد کریں</translation>
+<translation id="918192811481327695">‏Brave کی خصوصیات اور کارکردگی کو بہتر بنانے میں مدد کریں</translation>
 <translation id="4472575034687746823">شروع کریں</translation>
 <translation id="4474155171896946103">سبھی ٹیبز کو بُک مارک کریں…</translation>
 <translation id="4475552974751346499">ڈاؤن لوڈز تلاش کریں</translation>
@@ -4434,7 +4435,6 @@ myaccount.google.com/activitycontrols/search پر تبدیل کر سکتے ہي�
 <translation id="5864754048328252126">چارجنگ کے دوران معطلی کی کاروائی</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> جلد ہی رک جائے گی</translation>
 <translation id="586567932979200359">آپ <ph name="PRODUCT_NAME"/> کو اس کی ڈسک امیج سے چلا رہے ہیں۔ اسے آپ کے کمپیوٹر پر انسٹال کرنے سے یہ آپ کو اسے ڈسک امیج کے بغیر چلانے دیتا ہے اور یقینی بناتا ہے کہ اسے اپ ٹو ڈیٹ رکھا جائے گا۔</translation>
-<translation id="1224064034972923114">‏Brave کو خودکار طور پر استعمال کے اعداد و شمار اور کریش رپورٹس بھیجتا ہے</translation>
 <translation id="5867841422488265304">ویب پتہ تلاش کریں یا ٹائپ کریں</translation>
 <translation id="5869029295770560994">ٹھیک ہے، سمجھ آ گئی</translation>
 <translation id="5869522115854928033">محفوظ کردہ پاس ورڈز</translation>
@@ -5455,7 +5455,6 @@ myaccount.google.com/activitycontrols/search پر تبدیل کر سکتے ہي�
 <translation id="6997642619627518301"><ph name="NAME_PH"/> - سرگرمی کا لاگ</translation>
 <translation id="6997707937646349884">آپ کے آلات پر:</translation>
 <translation id="6998793565256476099">ویڈیو کانفرنس کیلئے آلہ کا اندراج کریں</translation>
-<translation id="456304305650018221">‏آپ اپنے کارٹس میں کیا شامل کرنا چاہتے ہیں اس کے متعلق رعایتیں تلاش کرنے کے لیے Brave کو اجازت دیں؟</translation>
 <translation id="6999956497249459195">نیا گروپ</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> منسلک ہے لیکن کنفیگریشن کی ضرورت ہے</translation>
 <translation id="7000347579424117903">‏Ctrl, Alt یا Search شامل کریں</translation>

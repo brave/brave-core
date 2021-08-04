@@ -7,7 +7,7 @@
 <translation id="6406506848690869874">Synkroniser</translation>
 <translation id="1544192797660353713">Lommebok</translation>
 <translation id="2445484935443597917">Opprett en ny profil</translation>
-<translation id="2666990579225592931">Åpne et gjestevindu</translation>
+<translation id="2666990579225592931">Åpne gjestevindu</translation>
 <translation id="8275068909952022340">Mer ...</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") er ikke tillatt hos Brave.</translation>
 <translation id="6786747875388722282">Utvidelser</translation>
@@ -28,6 +28,9 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="3218385319396786393">Autospill var blokkert på denne siden</translation>
 <translation id="4988333904713528597">Tillat alltid automatisk visning av <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Fortsett å blokkere autoavspilling</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Spør når et nettsted vil få tilgang til Ethereum-leverandørens API</translation>
+<translation id="7017590444693657895">Blokker nettsteder fra å få tilgang til Ethereum-leverandørens API</translation>
 <translation id="8988939298652262600">Brave gjennomgår ikke utvidelser for å sjekke om de er sikre og trygge. Installer denne utvidelsen kun hvis du stoler på utvikleren.</translation>
 <translation id="8081858229109418493">Profilnavn og -ikon</translation>
 <translation id="2044383478723007273">Brave farger</translation>
@@ -42,6 +45,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="5802665280774361839">Vis autofullføring i adressefeltet</translation>
 <translation id="597020512043916976">Vis toppsider med autofullførte forslag</translation>
 <translation id="264150068416846820">Vis Brave-foreslåtte side med autofullførte forslag</translation>
+<translation id="5529693968082667490">Vis søkefaner-knappen</translation>
 <translation id="6414370348346025511">Standardbeskyttelse er på.</translation>
 <translation id="814018970995616154">Kontrollerer nettadresser mot en liste i Brave over utrygge nettsteder.</translation>
 <translation id="1144810021918451336">Beskytter deg ikke mot farlige nettsteder, nedlastinger eller utvidelser.</translation>
@@ -93,7 +97,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="6303294677342628402">Skjold</translation>
 <translation id="7133511168130368997">Blokker sporere og annonser som følger deg på nettet.</translation>
 <translation id="2761825942249694703">Dette er de standard skjoldinnstillingene. De gjelder for alle nettsider med mindre du gjør endringer i skjoldpanelet på en bestemt side. Endring av disse vil ikke gå utover dine eksisterende per-side-innstillinger.</translation>
-<translation id="8754605759692119662">Dette vil blokkere de fleste annonser på nettsider, ikke private Brave-annonser — disse kontrolleres i</translation>
+<translation id="1485394570478670912">Dette blokkerer de fleste annonser på nettsteder, ikke Brave Private Ads — de kontrolleres i</translation>
 <translation id="6388201778088078932">innstillinger.</translation>
 <translation id="9185018653595759199">Blokkering i sosiale medier</translation>
 <translation id="7390783310074170337">Standard visning</translation>
@@ -273,6 +277,13 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="1391855377994926460">Fortsett å surfe raskere på nettet – opptil 6 ganger raskere på store nyhetssider.</translation>
 <translation id="9218430445555521422">Bruk som standard</translation>
 <translation id="3479552764303398839">Ikke nå</translation>
+<translation id="5039804452771397117">Tillat</translation>
+<translation id="7053983685419859001">Blokkér</translation>
+<translation id="7815301689257843278">Send krasjrapporter automatisk, slik at Brave kan forhindre at dette problemet oppstår igjen?</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> ble uventet lukket.</translation>
+<translation id="1324417023773393937">Brave-nettleser</translation>
+<translation id="1068069727470515940">Du kan endre <ph name="SETTING_TEXT"/> igjen, når som helst.</translation>
+<translation id="6873781976650514089">denne innstillingen</translation>
 <translation id="6040143037577758943">Lukk</translation>
 <translation id="5600566490506283344">Varsel om Brave-reklame</translation>
 <translation id="4877147287319222750">Legg til i sidestolpe</translation>
@@ -324,6 +335,6 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="8487693399751278191">Importer bokmerker nå ...</translation>
 <translation id="2557899542277210112">For rask tilgang, plasser dine bokmerker her på bokmerkeraden.</translation>
 <translation id="2808630562319398131">Tilbakestill Brave Rewards-data …</translation>
-<translation id="1224064034972923114">Hjelp oss med å gjøre Brave bedre ved å sende inn rapporter om krasj automatisk</translation>
-<translation id="3738833060602717053">Hjelp til med å forbedre <ph name="PRODUCT_NAME"/> ved å sende rapporter om krasj automatisk</translation>
+<translation id="2273851479262317744">Angi Brave som standard nettleser</translation>
+<translation id="8581710194025054669">For å sikre best mulig personvern, bør du vurdere å angi Brave som standard nettleser på datamaskinen din. Med Brave som standard, åpnes alle lenker du klikker med Braves personvernbeskyttelse.</translation>
 </translationbundle>

@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">Nagbubukas ang ilang site gamit ang secure HTTPS connection sa halip na plain HTTP.</translation>
 <translation id="94154759592465111">Mag-block ng Mga Script</translation>
 <translation id="3518266709656143462">Bina-block ang Javascript (puwedeng makasira sa mga site)</translation>
-<translation id="5709627087332022422">I-block ang mga cross-site tracker</translation>
 <translation id="6052725679982758334">Pag-block sa Social Media</translation>
 <translation id="7498695072878479744">Payagan ang mga Google login button sa mga third party na site</translation>
 <translation id="863171915776379000">Payagan ang mga Facebook login at naka-embed na post</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">IPFS Gateway</translation>
 <translation id="2688519859165248360">Nagbibigay-daan sa pag-navigate sa mga resource ng IPFS sa pamamagitan ng IPFS Gateway</translation>
 <translation id="7534079972563542000">Mga Hindi Napipigilang Domain</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Presyo ng Ethereum (ETH)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Pamamaraan ng Pagresolba</translation>
 <translation id="2356070529366658676">Magtanong</translation>
 <translation id="4176463684765177261">Hindi Pinagana</translation>
 <translation id="2218918398178303658">DNS sa HTTPS</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Pinagbabawalang kumuha ng fingerprint ang browser</translation>
 <translation id="7459000603787995422">Isara ang mga tab sa paglabas</translation>
 <translation id="4448697385961650078">I-block ang mga tracker at ad</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">Gawin mong default na browser ang Brave!</translation>
 <translation id="7136694880210472378">Gawing default</translation>
 <translation id="4250680216510889253">Hindi</translation>
-<translation id="4501702055016678577">Maghanap nang pribado gamit ang DuckDuckGo?</translation>
-<translation id="910419239800579753">Sa pribadong paghahanap, gagamitin ng Brave ang DuckDuckGo para sagutin ang iyong mga paghahanap habang ikaw ay nasa pribadong tab na ito. Amg DuckDuckGo ay isang search engine na hindi sinusubaybayan ang iyong history ng paghahanap para makapaghanap ka nang pribado.</translation>
-<translation id="1426410128494586442">Oo</translation>
-<translation id="5628466560184522265">Matuto tungkol sa pribadong paghahanap gamit ang DuckDuckGo</translation>
 <translation id="8826007068782654809">Salamat</translation>
 <translation id="6665366815203065060">Nagpadala ka ng tip kay:</translation>
 <translation id="5441565662498481293">Awtomatiko kang nagpapadala ng tip kay:</translation>
@@ -442,7 +438,7 @@ hanggang sa mag-verify sila o hanggang sa lumipas ang 90 araw.</translation>
 <translation id="3477340970981564961">Hindi tulad ng mga tradisyonal na ad, binibigyan ka ng Brave Private Ads ng mga token para suportahan ang mga creator ng content, ang lahat ng ito habang pinapanatiling pribado ang iyong personal na impormasyon.</translation>
 <translation id="6973095375773523904">Saan lumalabas ang mga ad?</translation>
 <translation id="7556325460112047619">Lalabas ang Brave Private Ads bilang normal na notification. Makokontrol mo kung gaano mo kadalas makikita ang mga ad na ito sa mga setting.</translation>
-<translation id="6897083627729802351">Kailan ka makakatanggap ng mga reward</translation>
+<translation id="6897083627729802351">Kailan ka makakatanggap ng mga reward?</translation>
 <translation id="310863932297733723">Darating sa ika-5 ng susunod na buwan ang iyong mga nakuhang token mula sa Brave Private Ads sa kabuuan ng kasalukuyang buwan.</translation>
 <translation id="7712287524451429139">Ginawang walang kahirap-hirap ang pagganti ng tulong</translation>
 <translation id="105037569026952831">Awtomatikong matatanggap ng mga creator ang iyong mga token na ambag batay sa mga antas ng pakikipag-ugnayan mo na sinusukat namin bilang ‘Atensyon’.</translation>
@@ -459,7 +455,7 @@ hanggang sa mag-verify sila o hanggang sa lumipas ang 90 araw.</translation>
 <translation id="827315274423079662">Ayos, handa ka na!</translation>
 <translation id="3895246934788932488">Sa pamamagitan ng paggamit sa Brave Rewards, pinoprotektahan mo ang iyong privacy at nakakatulong kang gawing mas magandang lugar ang web para sa lahat. At ayos iyan!</translation>
 <translation id="5705882733397021510">Bumalik</translation>
-<translation id="3985567919248057638">Mabilis Tayong Maglibot</translation>
+<translation id="3985567919248057638">Mag-tour Tayo Nang Mabilis</translation>
 <translation id="2434574859640694129">Pagkatapos mong matanggap ang iyong unang payout ng mga ad, puwede kang bumalik at magbigay ng tip sa creator na ito!</translation>
 <translation id="207242986925259074">Mabilis na pang-refresh na paglilibot</translation>
 <translation id="8342862030112839977">Darating ang iyong unang payout ng mga reward sa:</translation>
@@ -566,4 +562,13 @@ hanggang sa mag-verify sila o hanggang sa lumipas ang 90 araw.</translation>
 <translation id="745115390910697838">Hindi nagtutugma ang mga parirala. Pakisubukan ulit.</translation>
 <translation id="2360588547830602174">Hindi na-recover ang account. Pakisubukan ulit.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">Market Price na ETH</translation>
+<translation id="6748108480210050150">Mula sa</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">Patungong (estimate)</translation>
+<translation id="59223531494896848">Limitasyon</translation>
+<translation id="3567988240819868195">Market</translation>
+<translation id="632241521608275119">Slippage tolerance</translation>
 </translationbundle>

@@ -592,6 +592,7 @@ Domena <ph name="DOMAIN"/> wymaga, by karta inteligentna pozostała w gnieździ
 <translation id="1627408615528139100">Już pobrany</translation>
 <translation id="1628948239858170093">Czy przeskanować plik przed otwarciem?</translation>
 <translation id="1629314197035607094">Hasło wygasło</translation>
+<translation id="1947639598318989608">Czy Brave ma znajdować w Twoich koszykach spersonalizowane rabaty?</translation>
 <translation id="1629521517399325891">Certyfikat użytkownika do uwierzytelniania w sieci nie jest dostępny.</translation>
 <translation id="163072119192489970">Zezwolono na kończenie wysyłania i odbierania danych</translation>
 <translation id="1630768113285622200">Uruchom ponownie i kontynuuj</translation>
@@ -2012,7 +2013,7 @@ Domena <ph name="DOMAIN"/> wymaga, by karta inteligentna pozostała w gnieździ
 <translation id="3151786313568798007">Orientacja</translation>
 <translation id="3154351730702813399">Administrator urządzenia może monitorować Twoją aktywność związaną z przeglądaniem.</translation>
 <translation id="3154429428035006212">Offline od ponad miesiąca</translation>
-<translation id="3157387275655328056">Dodaj do listy „Do przeczytania”</translation>
+<translation id="3157387275655328056">Dodaj do listy Do przeczytania</translation>
 <translation id="3157931365184549694">Przywróć</translation>
 <translation id="3158033540161634471">Skonfiguruj swój odcisk palca</translation>
 <translation id="3158770568048368350">To może spowodować chwilowe rozłączenie sieci komórkowej</translation>
@@ -3184,7 +3185,7 @@ Domena <ph name="DOMAIN"/> wymaga, by karta inteligentna pozostała w gnieździ
 <translation id="4469762931504673593">Strona <ph name="ORIGIN"/> może edytować pliki w folderze <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Ustawienia pamięci zewnętrznej</translation>
 <translation id="4471354919263203780">Pobieram pliki rozpoznawania mowy... <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Pomóż w ulepszaniu funkcji i działania Brave</translation>
+<translation id="918192811481327695">Pomóż w ulepszaniu funkcji i działania Brave</translation>
 <translation id="4472575034687746823">Rozpocznij</translation>
 <translation id="4474155171896946103">Dodaj wszystkie karty do zakładek...</translation>
 <translation id="4475552974751346499">Przeszukaj pobrane pliki</translation>
@@ -4413,7 +4414,6 @@ Jeśli Twoje dziecko nie używa w szkole Bravebooka lub jeśli wolisz zarządza
 <translation id="5864754048328252126">Bezczynność podczas ładowania</translation>
 <translation id="5865508026715185451">Aplikacja <ph name="APP_NAME"/> wkrótce zostanie wstrzymana</translation>
 <translation id="586567932979200359">Produkt <ph name="PRODUCT_NAME"/> został uruchomiony z obrazu dysku. Zainstalowanie go na komputerze umożliwi uruchamianie bez użycia obrazu dysku i bieżące aktualizowanie.</translation>
-<translation id="1224064034972923114">Automatycznie przesyła do Brave statystyki użytkowania i raporty o awariach</translation>
 <translation id="5867841422488265304">Wyszukaj lub wpisz adres internetowy</translation>
 <translation id="5869029295770560994">Rozumiem</translation>
 <translation id="5869522115854928033">Zapisane hasła</translation>
@@ -5426,7 +5426,6 @@ Domena <ph name="DOMAIN"/> wymaga, by karta inteligentna pozostała w gnieździ
 <translation id="6997642619627518301"><ph name="NAME_PH"/> – Historia aktywności</translation>
 <translation id="6997707937646349884">Na Twoich urządzeniach:</translation>
 <translation id="6998793565256476099">Zarejestruj urządzenie na potrzeby wideokonferencji</translation>
-<translation id="456304305650018221">Czy chcesz zezwolić Brave na znalezienie zniżek na produkty dodawane przez Ciebie do koszyków?</translation>
 <translation id="6999956497249459195">Nowa grupa</translation>
 <translation id="7000206553895739324">Drukarka <ph name="PRINTER_NAME"/> jest podłączona, ale wymaga konfiguracji</translation>
 <translation id="7000347579424117903">Uwzględnij klawisze Ctrl, Alt lub Wyszukaj</translation>
@@ -7223,7 +7222,7 @@ Domena <ph name="DOMAIN"/> wymaga, by karta inteligentna pozostała w gnieździ
 <translation id="8962918469425892674">Ta witryna używa czujników ruchu lub oświetlenia.</translation>
 <translation id="8965037249707889821">Wpisz stare hasło</translation>
 <translation id="8966870118594285808">Możesz ponownie otworzyć kartę zamkniętą przez przypadek</translation>
-<translation id="8967427617812342790">Dodaj do listy „Do przeczytania”</translation>
+<translation id="8967427617812342790">Dodaj do listy Do przeczytania</translation>
 <translation id="8967866634928501045">Naciśnij Alt+Shift+A, by wyświetlić</translation>
 <translation id="8968766641738584599">Zapisz kartę</translation>
 <translation id="89720367119469899">Ucieczka</translation>
