@@ -106,8 +106,8 @@ class AdBlockSubscriptionServiceManager {
   AdBlockSubscriptionDownloadManager* download_manager_;         // NOT OWNED
   base::FilePath subscription_path_;
   std::unique_ptr<base::DictionaryValue> subscriptions_;
+  base::OneShotEvent ready_;
 
-  std::unique_ptr<base::OneShotEvent> ready_;
   std::map<SubscriptionIdentifier, std::unique_ptr<AdBlockSubscriptionService>>
       subscription_services_;
   base::ObserverList<AdBlockSubscriptionServiceManagerObserver> observers_;

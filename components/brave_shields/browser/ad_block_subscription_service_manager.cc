@@ -122,7 +122,7 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
         std::make_pair(list_url, std::move(subscription_service)));
   }
 
-  ready_->Post(FROM_HERE,
+  ready_.Post(FROM_HERE,
                base::BindOnce(&AdBlockSubscriptionServiceManager::StartDownload,
                               weak_ptr_factory_.GetWeakPtr(), list_url, true));
 }
@@ -187,7 +187,7 @@ void AdBlockSubscriptionServiceManager::RefreshSubscription(
     list_url = info->list_url;
   }
 
-  ready_->Post(
+  ready_.Post(
       FROM_HERE,
       base::BindOnce(&AdBlockSubscriptionServiceManager::StartDownload,
                      weak_ptr_factory_.GetWeakPtr(), list_url, from_ui));
@@ -195,13 +195,15 @@ void AdBlockSubscriptionServiceManager::RefreshSubscription(
 
 void AdBlockSubscriptionServiceManager::StartDownload(const GURL& list_url,
                                                       bool from_ui) {
+  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
   download_manager_->StartDownload(list_url, from_ui);
 }
 
 void AdBlockSubscriptionServiceManager::OnGetDownloadManager(
     AdBlockSubscriptionDownloadManager* download_manager) {
+  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
   download_manager_ = download_manager;
-  ready_->Signal();
+  ready_.Signal();
 }
 
 base::Optional<FilterListSubscriptionInfo>
