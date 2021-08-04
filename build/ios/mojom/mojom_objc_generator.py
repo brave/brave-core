@@ -56,6 +56,22 @@ class TimeMojoTypemap(MojoTypemap):
     def CppToObjC(self, accessor):
         return "%s.ToNSDate()" % accessor
 
+class TimeDeltaMojoTypemap(MojoTypemap):
+    @staticmethod
+    def IsMojoType(kind):
+        return (mojom.IsStructKind(kind) and
+                kind.qualified_name == 'mojo_base.mojom.TimeDelta')
+    def ObjCWrappedType(self):
+        return "NSDate*"
+    def ExpectedCppType(self):
+        return "base::TimeDelta"
+    def DefaultObjCValue(self, default):
+        return "[[NSDate alloc] init]"
+    def ObjCToCpp(self, accessor):
+        return "base::TimeDelta::FromSecondsD(%s.timeIntervalSince1970)" % accessor
+    def CppToObjC(self, accessor):
+        return "[NSDate dateWithTimeIntervalSince1970:%s.InSecondsF()]" % accessor
+
 class URLMojoTypemap(MojoTypemap):
     @staticmethod
     def IsMojoType(kind):
@@ -226,15 +242,39 @@ class DictionaryMojoTypemap(MojoTypemap):
             return d;
         }()""" % args
 
+class PendingRemoteMojoTypemap(MojoTypemap):
+    @staticmethod
+    def IsMojoType(kind):
+        return mojom.IsPendingRemoteKind(kind)
+    def ObjCWrappedType(self):
+        return "id<%s%s>" % (ObjCPrefixFromKind(self.kind.kind), self.kind.kind.name)
+    def ExpectedCppType(self):
+        return "%s::%s" % (CppNamespaceFromKind(self.kind.kind), self.kind.kind.name)
+    def DefaultObjCValue(self, default):
+        return None
+    def ObjCToCpp(self, accessor):
+        name = ObjCPrefixFromKind(self.kind.kind) + self.kind.kind.name + "Bridge"
+        args = (name, accessor, UnderToLowerCamel(name))
+        return """^{
+            auto bridge = std::make_unique<%s>(%s);
+            auto bridgePtr = bridge.get();
+            self->_%sReceivers.push_back(std::move(bridge));
+            return bridgePtr->GetRemote();
+        }()""" % args
+    def CppToObjC(self, accessor):
+        return None
+
 _mojo_typemaps = [
     StringMojoTypemap,
     TimeMojoTypemap,
+    TimeDeltaMojoTypemap,
     URLMojoTypemap,
     NumberMojoTypemap,
     EnumMojoTypemap,
     ArrayMojoTypemap,
     DictionaryMojoTypemap,
     StructMojoTypemap,
+    PendingRemoteMojoTypemap,
 ]
 
 def MojoTypemapForKind(kind, is_inside_container=False):
@@ -284,8 +324,19 @@ class Generator(generator.Generator):
             "expected_cpp_param_type": self._GetExpectedCppParamType,
             "cpp_namespace_from_kind": CppNamespaceFromKind,
             "under_to_lower_camel": UnderToLowerCamel,
+            "interface_remote_sets": self._GetInterfaceRemoteSets,
         }
         return objc_filters
+
+    def _GetInterfaceRemoteSets(self, interface):
+        remotes = []
+        for method in interface.methods:
+            for param in method.parameters:
+                if mojom.IsPendingRemoteKind(param.kind):
+                    name = "%s%sBridge" % (ObjCPrefixFromKind(param.kind.kind),
+                                           param.kind.kind.name)
+                    remotes.append(name)
+        return set(remotes)
 
     def _GetExpectedCppParamType(self, kind):
         def is_move_only_kind(kind):
@@ -300,8 +351,6 @@ class Generator(generator.Generator):
                 return True
             return False
         should_pass_param_by_value = (not mojom.IsReferenceKind(kind)) or is_move_only_kind(kind)
-        if mojom.IsPendingRemoteKind(kind) or mojom.IsPendingReceiverKind(kind):
-            return "id"
         typemap = MojoTypemapForKind(kind, False)
         typestring = typemap.ExpectedCppType()
         return typestring if should_pass_param_by_value else "const %s&" % typestring
@@ -335,8 +384,6 @@ class Generator(generator.Generator):
         return typemap.DefaultObjCValue(field.default)
 
     def _GetObjCWrapperType(self, kind, objectType=False):
-        if mojom.IsPendingRemoteKind(kind) or mojom.IsPendingReceiverKind(kind):
-            return "id"
         typemap = MojoTypemapForKind(kind, objectType)
         return typemap.ObjCWrappedType()
 
@@ -376,8 +423,6 @@ class Generator(generator.Generator):
 
     def _ObjCToCppAssign(self, field, obj=None):
         kind = field.kind
-        if mojom.IsPendingRemoteKind(kind) or mojom.IsPendingReceiverKind(kind):
-            return "nullptr"
         accessor = "%s%s" % (obj + "." if obj else "", self._ObjCPropertyFormatter(field.name))
         typemap = MojoTypemapForKind(kind)
         if typemap is None:
@@ -386,8 +431,6 @@ class Generator(generator.Generator):
 
     def _CppToObjCAssign(self, field, obj=None):
         kind = field.kind
-        if mojom.IsPendingRemoteKind(kind) or mojom.IsPendingReceiverKind(kind):
-            return "nil"
         accessor = "%s%s" % (obj + "." if obj else "", field.name)
         typemap = MojoTypemapForKind(kind)
         return typemap.CppToObjC(accessor)
@@ -410,6 +453,13 @@ class Generator(generator.Generator):
                     elif mojom.IsEnumKind(field.kind):
                         all_enums.append(field.kind)
 
+        receivers = set()
+        for interface in all_interfaces:
+            for method in interface.methods:
+                for param in method.parameters:
+                    if mojom.IsPendingRemoteKind(param.kind):
+                        receivers.add(param.kind.kind)
+
         for interface in self.module.interfaces:
             all_enums.extend(interface.enums)
         return {
@@ -417,6 +467,7 @@ class Generator(generator.Generator):
             "enums": self.module.enums,
             "imports": self.module.imports,
             "interfaces": all_interfaces,
+            "interface_bridges": receivers,
             "kinds": self.module.kinds,
             "module": self.module,
             "module_name": os.path.basename(self.module.path),

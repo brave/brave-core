@@ -11,8 +11,9 @@
 @class BraveBookmarksAPI;
 @class BraveHistoryAPI;
 @class BraveSyncProfileServiceIOS;
-@class BraveWalletKeyringController;
-@class BraveWalletAssetRatioController;
+@protocol BraveWalletKeyringController;
+@protocol BraveWalletAssetRatioController;
+@protocol BraveWalletEthJsonRpcController;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -42,10 +43,14 @@ OBJC_EXPORT
 
 - (void)setUserAgent:(NSString*)userAgent;
 
-@property(nonatomic, readonly) BraveWalletKeyringController* keyringController;
+@property(nonatomic, readonly) id<BraveWalletKeyringController>
+    keyringController;
 
-@property(nonatomic, readonly)
-    BraveWalletAssetRatioController* assetRatioController;
+@property(nonatomic, readonly) id<BraveWalletAssetRatioController>
+    assetRatioController;
+
+@property(nonatomic, readonly) id<BraveWalletEthJsonRpcController>
+    ethJsonRpcController;
 
 @end
 

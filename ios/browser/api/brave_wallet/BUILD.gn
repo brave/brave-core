@@ -20,7 +20,6 @@ mojom_wrappers("wallet_mojom_wrappers") {
   mojom_file = "//brave/components/brave_wallet/common/brave_wallet.mojom"
   exclude_types = [
     "BraveWalletProvider",
-    "EthJsonRpcController",
     "PageHandlerFactory",
     "PanelHandlerFactory",
   ]

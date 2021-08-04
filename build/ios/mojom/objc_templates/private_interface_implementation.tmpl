@@ -1,6 +1,9 @@
 {%- set cpp_namespace = interface|cpp_namespace_from_kind %}
-@implementation {{class_prefix}}{{interface.name}} {
+@implementation {{class_prefix}}{{interface.name}}Impl {
   {{cpp_namespace}}::{{interface.name}}* _wrappedValue;  // NOT OWNED
+{%- for bridge in interface|interface_remote_sets %}
+  std::vector<std::unique_ptr<{{bridge}}>> _{{bridge|under_to_lower_camel}}Receivers;
+{%- endfor %}
 }
 
 - (instancetype)initWith{{interface.name}}:({{cpp_namespace}}::{{interface.name}}*)obj {
@@ -31,7 +34,7 @@
   auto callback = ^(
 {%- for param in method.response_parameters -%}
 {{param.kind|expected_cpp_param_type}} {{param.name}}
-{%- if not loop.last -%},{{" "}}{%- endif -%}
+{%- if not loop.last %}, {% endif -%}
 {%- endfor -%}
   ) {
     completion(

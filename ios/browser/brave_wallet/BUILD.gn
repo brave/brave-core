@@ -9,6 +9,8 @@ source_set("brave_wallet") {
   sources = [
     "asset_ratio_controller_factory.cc",
     "asset_ratio_controller_factory.h",
+    "eth_json_rpc_controller_factory.cc",
+    "eth_json_rpc_controller_factory.h",
     "keyring_controller_factory.cc",
     "keyring_controller_factory.h",
   ]
