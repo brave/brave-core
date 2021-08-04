@@ -36,7 +36,9 @@ class HDKeyring {
   virtual void AddAccounts(size_t number = 1);
   // This will return vector of address of all accounts
   virtual std::vector<std::string> GetAccounts();
-  virtual void RemoveAccount(const std::string& address);
+  virtual size_t GetAccountsNumber() const;
+  // Only support removing accounts from the back to prevents gaps
+  virtual void RemoveAccount();
 
   // Bitcoin keyring can override this for different address calculation
   virtual std::string GetAddress(size_t index);

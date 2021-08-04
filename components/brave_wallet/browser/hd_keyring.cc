@@ -56,12 +56,12 @@ std::vector<std::string> HDKeyring::GetAccounts() {
   return addresses;
 }
 
-void HDKeyring::RemoveAccount(const std::string& address) {
-  for (size_t i = 0; i < accounts_.size(); ++i) {
-    if (GetAddress(i) == address) {
-      accounts_.erase(accounts_.begin() + i);
-    }
-  }
+size_t HDKeyring::GetAccountsNumber() const {
+  return accounts_.size();
+}
+
+void HDKeyring::RemoveAccount() {
+  accounts_.pop_back();
 }
 
 std::string HDKeyring::GetAddress(size_t index) {

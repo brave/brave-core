@@ -11,6 +11,7 @@
 #include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -25,6 +26,7 @@ namespace {
 const char kPasswordEncryptorSalt[] = "password_encryptor_salt";
 const char kPasswordEncryptorNonce[] = "password_encryptor_nonce";
 const char kEncryptedMnemonic[] = "encrypted_mnemonic";
+const char kAccountMetas[] = "account_metas";
 }  // namespace
 
 class KeyringControllerUnitTest : public testing::Test {
@@ -326,7 +328,6 @@ TEST_F(KeyringControllerUnitTest, CreateDefaultKeyring) {
   EXPECT_EQ(GetStringPrefForKeyring(kPasswordEncryptorSalt, "default"), salt);
   EXPECT_EQ(GetStringPrefForKeyring(kPasswordEncryptorNonce, "default"), nonce);
   EXPECT_EQ(GetStringPrefForKeyring(kEncryptedMnemonic, "default"), mnemonic);
-  EXPECT_EQ(GetPrefs()->GetInteger(kBraveWalletDefaultKeyringAccountNum), 1);
 }
 
 TEST_F(KeyringControllerUnitTest, RestoreDefaultKeyring) {
@@ -347,7 +348,6 @@ TEST_F(KeyringControllerUnitTest, RestoreDefaultKeyring) {
   EXPECT_NE(GetStringPrefForKeyring(kEncryptedMnemonic, "default"), mnemonic);
   // salt is regenerated and account num is cleared
   EXPECT_NE(GetStringPrefForKeyring(kPasswordEncryptorSalt, "default"), salt);
-  EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletDefaultKeyringAccountNum));
   keyring->AddAccounts(1);
   EXPECT_EQ(keyring->GetAddress(0),
             "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
@@ -369,8 +369,10 @@ TEST_F(KeyringControllerUnitTest, UnlockResumesDefaultKeyring) {
   std::string nonce;
   {
     KeyringController controller(GetPrefs());
-    HDKeyring* keyring = controller.CreateDefaultKeyring("brave");
-    keyring->AddAccounts(2);
+    controller.CreateWallet("brave",
+                            base::DoNothing::Once<const std::string&>());
+    controller.AddAccount("Account2", base::DoNothing::Once<bool>());
+
     salt = GetStringPrefForKeyring(kPasswordEncryptorSalt, "default");
     nonce = GetStringPrefForKeyring(kPasswordEncryptorNonce, "default");
     mnemonic = GetStringPrefForKeyring(kEncryptedMnemonic, "default");
@@ -391,7 +393,7 @@ TEST_F(KeyringControllerUnitTest, UnlockResumesDefaultKeyring) {
               nonce);
     EXPECT_EQ(GetStringPrefForKeyring(kEncryptedMnemonic, "default"), mnemonic);
     ASSERT_NE(nullptr, keyring);
-    EXPECT_EQ(2u, keyring->GetAccounts().size());
+    EXPECT_EQ(2u, keyring->GetAccountsNumber());
   }
   {
     KeyringController controller(GetPrefs());
@@ -462,7 +464,7 @@ TEST_F(KeyringControllerUnitTest, GetDefaultKeyring) {
   HDKeyring* keyring = controller.CreateDefaultKeyring("brave");
   ASSERT_NE(keyring, nullptr);
   EXPECT_EQ(controller.GetDefaultKeyring(), keyring);
-  keyring->AddAccounts(1);
+  controller.AddAccount("Account1", base::DoNothing::Once<bool>());
   const std::string address = keyring->GetAddress(0);
 
   controller.Lock();
@@ -481,24 +483,20 @@ TEST_F(KeyringControllerUnitTest, LockAndUnlock) {
     KeyringController controller(GetPrefs());
     // No encryptor
     controller.Lock();
-    EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletDefaultKeyringAccountNum));
     EXPECT_TRUE(controller.IsLocked());
     EXPECT_TRUE(controller.CreateEncryptorForKeyring("123", "default"));
     EXPECT_FALSE(controller.IsLocked());
     // No default keyring
     controller.Lock();
-    EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletDefaultKeyringAccountNum));
   }
   {
     KeyringController controller(GetPrefs());
     ASSERT_NE(controller.CreateDefaultKeyring("brave"), nullptr);
     controller.default_keyring_->AddAccounts(1);
     EXPECT_FALSE(controller.IsLocked());
-    EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletDefaultKeyringAccountNum));
 
     controller.Lock();
     EXPECT_TRUE(controller.IsLocked());
-    EXPECT_EQ(GetPrefs()->GetInteger(kBraveWalletDefaultKeyringAccountNum), 1);
     EXPECT_TRUE(controller.default_keyring_->empty());
 
     controller.Unlock(
@@ -514,7 +512,6 @@ TEST_F(KeyringControllerUnitTest, LockAndUnlock) {
 
     controller.Lock();
     EXPECT_TRUE(controller.IsLocked());
-    EXPECT_EQ(GetPrefs()->GetInteger(kBraveWalletDefaultKeyringAccountNum), 2);
     EXPECT_TRUE(controller.default_keyring_->empty());
 
     // Simulate unlock shutdown
@@ -524,7 +521,6 @@ TEST_F(KeyringControllerUnitTest, LockAndUnlock) {
     EXPECT_FALSE(controller.IsLocked());
     controller.default_keyring_->AddAccounts(1);
   }
-  EXPECT_EQ(GetPrefs()->GetInteger(kBraveWalletDefaultKeyringAccountNum), 3);
 }
 
 TEST_F(KeyringControllerUnitTest, Reset) {
@@ -538,14 +534,12 @@ TEST_F(KeyringControllerUnitTest, Reset) {
   EXPECT_TRUE(HasPrefForKeyring(kPasswordEncryptorSalt, "default"));
   EXPECT_TRUE(HasPrefForKeyring(kPasswordEncryptorNonce, "default"));
   EXPECT_TRUE(HasPrefForKeyring(kEncryptedMnemonic, "default"));
-  EXPECT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletDefaultKeyringAccountNum));
 
   controller.Reset();
   EXPECT_FALSE(HasPrefForKeyring(kPasswordEncryptorSalt, "default"));
   EXPECT_FALSE(HasPrefForKeyring(kPasswordEncryptorNonce, "default"));
   EXPECT_FALSE(HasPrefForKeyring(kEncryptedMnemonic, "default"));
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletKeyrings));
-  EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletDefaultKeyringAccountNum));
   EXPECT_EQ(controller.default_keyring_, nullptr);
   EXPECT_EQ(controller.encryptor_, nullptr);
 }
@@ -580,6 +574,43 @@ TEST_F(KeyringControllerUnitTest, BackupComplete) {
   }));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
+}
+
+TEST_F(KeyringControllerUnitTest, AccountMetasForKeyring) {
+  KeyringController controller(GetPrefs());
+  const std::string mnemonic =
+      "divide cruise upon flag harsh carbon filter merit once advice bright "
+      "drive";
+  EXPECT_TRUE(controller.CreateEncryptorForKeyring("brave", "default"));
+  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(mnemonic));
+  controller.default_keyring_->AddAccounts(2);
+  const std::string address1 = controller.default_keyring_->GetAddress(0);
+  const std::string name1 = "Account1";
+  const std::string address2 = controller.default_keyring_->GetAddress(1);
+  const std::string name2 = "Account2";
+
+  controller.SetAccountNameForKeyring(address1, name1, "default");
+  controller.SetAccountNameForKeyring(address2, name2, "default");
+
+  const base::Value* account_metas = KeyringController::GetPrefForKeyring(
+      GetPrefs(), kAccountMetas, "default");
+  ASSERT_NE(account_metas, nullptr);
+
+  EXPECT_EQ(account_metas->FindPath(address1 + ".account_name")->GetString(),
+            name1);
+  EXPECT_EQ(account_metas->FindPath(address2 + ".account_name")->GetString(),
+            name2);
+  EXPECT_EQ(controller.GetAccountNameForKeyring(address1, "default"), name1);
+  EXPECT_EQ(controller.GetAccountMetasNumberForKeyring("default"), 2u);
+  EXPECT_EQ(controller.GetAccountMetasNumberForKeyring("keyring1"), 0u);
+
+  std::vector<mojom::AccountInfoPtr> account_infos =
+      controller.GetAccountInfosForKeyring("default");
+  EXPECT_EQ(account_infos.size(), 2u);
+  EXPECT_EQ(account_infos[0]->address, address1);
+  EXPECT_EQ(account_infos[0]->name, name1);
+  EXPECT_EQ(account_infos[1]->address, address2);
+  EXPECT_EQ(account_infos[1]->name, name2);
 }
 
 }  // namespace brave_wallet

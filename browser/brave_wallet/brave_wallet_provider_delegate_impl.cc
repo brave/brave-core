@@ -74,10 +74,14 @@ void BraveWalletProviderDelegateImpl::RequestEthereumPermissions(
       [](content::RenderFrameHost* rfh,
          RequestEthereumPermissionsCallback callback,
          brave_wallet::mojom::KeyringInfoPtr keyring_info) {
+        std::vector<std::string> addresses;
+        for (const auto& account_info : keyring_info->account_infos) {
+          addresses.push_back(account_info->address);
+        }
         permissions::BraveEthereumPermissionContext::RequestPermissions(
-            rfh, keyring_info->accounts,
-            base::BindOnce(&OnRequestEthereumPermissions,
-                           keyring_info->accounts, std::move(callback)));
+            rfh, addresses,
+            base::BindOnce(&OnRequestEthereumPermissions, addresses,
+                           std::move(callback)));
       },
       content::RenderFrameHost::FromID(routing_id_), std::move(callback)));
 }

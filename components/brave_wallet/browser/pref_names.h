@@ -13,9 +13,11 @@ extern const char kBraveWalletPasswordEncryptorSalt[];
 extern const char kBraveWalletPasswordEncryptorNonce[];
 // DEPRECATED
 extern const char kBraveWalletEncryptedMnemonic[];
+// DEPRECATED
 extern const char kBraveWalletDefaultKeyringAccountNum[];
 extern const char kBraveWalletTransactions[];
 extern const char kShowWalletIconOnToolbar[];
+// DEPRECATED
 extern const char kBraveWalletAccountNames[];
 // DEPRECATED
 extern const char kBraveWalletBackupComplete[];

@@ -72,12 +72,10 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   void Unlock(const std::string& password, UnlockCallback callback) override;
   void Lock() override;
   void IsLocked(IsLockedCallback callback) override;
-  void AddAccount(AddAccountCallback callback) override;
+  void AddAccount(const std::string& account_name,
+                  AddAccountCallback callback) override;
   void IsWalletBackedUp(IsWalletBackedUpCallback callback) override;
   void NotifyWalletBackupComplete() override;
-  void SetInitialAccountNames(
-      const std::vector<std::string>& account_names) override;
-  void AddNewAccountName(const std::string& account_name) override;
   void GetDefaultKeyringInfo(GetDefaultKeyringInfoCallback callback) override;
   void Reset() override;
 
@@ -110,8 +108,19 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
                            GetMnemonicForDefaultKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, LockAndUnlock);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, Reset);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, AccountMetasForKeyring);
 
-  std::vector<std::string> GetAccountNames() const;
+  // Address will be used as key in kAccountMetas
+  void SetAccountNameForKeyring(const std::string& address,
+                                const std::string& name,
+                                const std::string& id);
+  std::string GetAccountNameForKeyring(const std::string& address,
+                                       const std::string& id);
+
+  size_t GetAccountMetasNumberForKeyring(const std::string& id);
+
+  std::vector<mojom::AccountInfoPtr> GetAccountInfosForKeyring(
+      const std::string& id);
 
   const std::string GetMnemonicForDefaultKeyringImpl();
 

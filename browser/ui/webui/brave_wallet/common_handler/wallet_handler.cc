@@ -53,8 +53,6 @@ void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
 void WalletHandler::OnGetWalletInfo(
     GetWalletInfoCallback callback,
     brave_wallet::mojom::KeyringInfoPtr keyring_info) {
-  std::vector<std::string> accounts;
-
   std::vector<brave_wallet::mojom::AppItemPtr> favorite_apps_copy(
       favorite_apps.size());
   std::transform(
@@ -64,7 +62,7 @@ void WalletHandler::OnGetWalletInfo(
   std::move(callback).Run(
       keyring_info->is_default_keyring_created, keyring_info->is_locked,
       std::move(favorite_apps_copy), keyring_info->is_backed_up,
-      keyring_info->accounts, keyring_info->account_names);
+      std::move(keyring_info->account_infos));
 }
 
 void WalletHandler::GetTokenByContract(const std::string& contract,
