@@ -56,16 +56,8 @@ AdsTabHelper::~AdsTabHelper() {
 #endif
 }
 
-bool AdsTabHelper::IsAdsEnabled() const {
-  if (!ads_service_ || !ads_service_->IsEnabled()) {
-    return false;
-  }
-
-  return true;
-}
-
 void AdsTabHelper::TabUpdated() {
-  if (!IsAdsEnabled()) {
+  if (!ads_service_) {
     return;
   }
 
@@ -89,7 +81,9 @@ void AdsTabHelper::RunIsolatedJavaScript(
 }
 
 void AdsTabHelper::OnJavaScriptHtmlResult(base::Value value) {
-  DCHECK(ads_service_ && ads_service_->IsEnabled());
+  if (!ads_service_) {
+    return;
+  }
 
   if (!value.is_string()) {
     return;
@@ -101,7 +95,9 @@ void AdsTabHelper::OnJavaScriptHtmlResult(base::Value value) {
 }
 
 void AdsTabHelper::OnJavaScriptTextResult(base::Value value) {
-  DCHECK(ads_service_ && ads_service_->IsEnabled());
+  if (!ads_service_) {
+    return;
+  }
 
   if (!value.is_string()) {
     return;
@@ -116,7 +112,7 @@ void AdsTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   DCHECK(navigation_handle);
 
-  if (!IsAdsEnabled() || !navigation_handle->IsInMainFrame() ||
+  if (!ads_service_ || !navigation_handle->IsInMainFrame() ||
       !navigation_handle->HasCommitted() || !tab_id_.is_valid()) {
     return;
   }
@@ -144,7 +140,7 @@ void AdsTabHelper::DidFinishNavigation(
 
 void AdsTabHelper::DocumentOnLoadCompletedInMainFrame(
     content::RenderFrameHost* render_frame_host) {
-  if (!IsAdsEnabled() || !should_process_) {
+  if (!should_process_) {
     return;
   }
 
@@ -168,7 +164,7 @@ void AdsTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
 
 void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& video_type,
                                        const content::MediaPlayerId& id) {
-  if (!IsAdsEnabled()) {
+  if (!ads_service_) {
     return;
   }
 
@@ -179,7 +175,7 @@ void AdsTabHelper::MediaStoppedPlaying(
     const MediaPlayerInfo& video_type,
     const content::MediaPlayerId& id,
     WebContentsObserver::MediaStoppedReason reason) {
-  if (!IsAdsEnabled()) {
+  if (!ads_service_) {
     return;
   }
 
@@ -210,7 +206,7 @@ void AdsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
 }
 
 void AdsTabHelper::WebContentsDestroyed() {
-  if (!IsAdsEnabled()) {
+  if (!ads_service_) {
     return;
   }
 

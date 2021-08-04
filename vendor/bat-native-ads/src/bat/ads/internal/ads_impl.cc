@@ -94,13 +94,8 @@ void AdsImpl::set_for_testing(
   set(token_generator);
 }
 
-bool AdsImpl::IsInitialized() {
-  if (!is_initialized_ ||
-      !AdsClientHelper::Get()->GetBooleanPref(prefs::kEnabled)) {
-    return false;
-  }
-
-  return true;
+bool AdsImpl::IsInitialized() const {
+  return is_initialized_;
 }
 
 void AdsImpl::Initialize(InitializeCallback callback) {
@@ -140,6 +135,8 @@ void AdsImpl::ChangeLocale(const std::string& locale) {
 
 void AdsImpl::OnPrefChanged(const std::string& path) {
   if (path == prefs::kEnabled) {
+    MaybeTopUpUnblindedTokens();
+
     MaybeServeAdNotificationsAtRegularIntervals();
   } else if (path == prefs::kAdsPerHour) {
     ad_notification_serving_->OnAdsPerHourChanged();
@@ -201,6 +198,10 @@ void AdsImpl::OnTextLoaded(const int32_t tab_id,
 }
 
 void AdsImpl::OnUserGesture(const int32_t page_transition_type) {
+  if (!IsInitialized()) {
+    return;
+  }
+
   user_activity_->RecordEventForPageTransitionFromInt(page_transition_type);
 }
 
@@ -219,6 +220,10 @@ void AdsImpl::OnUnIdle(const int idle_time, const bool was_locked) {
               << base::TimeDelta::FromSeconds(idle_time));
 
   MaybeUpdateCatalog();
+
+  if (!ShouldRewardUser()) {
+    return;
+  }
 
   if (WasLocked(was_locked)) {
     BLOG(1, "Ad notification not served: Screen was locked");
@@ -248,10 +253,18 @@ void AdsImpl::OnBackground() {
 }
 
 void AdsImpl::OnMediaPlaying(const int32_t tab_id) {
+  if (!IsInitialized()) {
+    return;
+  }
+
   TabManager::Get()->OnMediaPlaying(tab_id);
 }
 
 void AdsImpl::OnMediaStopped(const int32_t tab_id) {
+  if (!IsInitialized()) {
+    return;
+  }
+
   TabManager::Get()->OnMediaStopped(tab_id);
 }
 
@@ -260,6 +273,10 @@ void AdsImpl::OnTabUpdated(const int32_t tab_id,
                            const bool is_active,
                            const bool is_browser_active,
                            const bool is_incognito) {
+  if (!IsInitialized()) {
+    return;
+  }
+
   if (is_browser_active) {
     BrowserManager::Get()->OnActive();
   } else {
@@ -271,20 +288,17 @@ void AdsImpl::OnTabUpdated(const int32_t tab_id,
 }
 
 void AdsImpl::OnTabClosed(const int32_t tab_id) {
+  if (!IsInitialized()) {
+    return;
+  }
+
   TabManager::Get()->OnClosed(tab_id);
 
   ad_transfer_->Cancel(tab_id);
 }
 
 void AdsImpl::OnWalletUpdated(const std::string& id, const std::string& seed) {
-  if (!account_->SetWallet(id, seed)) {
-    BLOG(0, "Failed to set wallet");
-    return;
-  }
-
-  BLOG(1, "Successfully set wallet");
-
-  MaybeServeAdNotificationsAtRegularIntervals();
+  account_->SetWallet(id, seed);
 }
 
 void AdsImpl::OnResourceComponentUpdated(const std::string& id) {
@@ -390,7 +404,7 @@ AdsHistoryInfo AdsImpl::GetAdsHistory(
 void AdsImpl::GetAccountStatement(GetAccountStatementCallback callback) {
   StatementInfo statement;
 
-  if (!IsInitialized()) {
+  if (!IsInitialized() || !ShouldRewardUser()) {
     callback(/* success */ false, statement);
     return;
   }
@@ -664,19 +678,47 @@ void AdsImpl::MaybeServeAdNotification() {
   ad_notification_serving_->MaybeServeAd();
 }
 
+bool AdsImpl::ShouldServeAdNotificationsAtRegularIntervals() const {
+  return ShouldRewardUser() &&
+         (BrowserManager::Get()->IsActive() ||
+          AdsClientHelper::Get()->CanShowBackgroundNotifications()) &&
+         settings::GetAdsPerHour() > 0;
+}
+
 void AdsImpl::MaybeServeAdNotificationsAtRegularIntervals() {
+  if (!IsInitialized()) {
+    return;
+  }
+
   if (!PlatformHelper::GetInstance()->IsMobile()) {
     return;
   }
 
-  if (IsInitialized() &&
-      (BrowserManager::Get()->IsActive() ||
-       AdsClientHelper::Get()->CanShowBackgroundNotifications()) &&
-      settings::GetAdsPerHour() > 0) {
+  if (ShouldServeAdNotificationsAtRegularIntervals()) {
     ad_notification_serving_->StartServingAdsAtRegularIntervals();
   } else {
     ad_notification_serving_->StopServingAdsAtRegularIntervals();
   }
+}
+
+void AdsImpl::MaybeTopUpUnblindedTokens() {
+  if (!IsInitialized()) {
+    return;
+  }
+
+  account_->TopUpUnblindedTokens();
+}
+
+void AdsImpl::OnWalletChanged(const WalletInfo& wallet) {
+  BLOG(1, "Successfully set wallet");
+
+  MaybeTopUpUnblindedTokens();
+
+  MaybeServeAdNotificationsAtRegularIntervals();
+}
+
+void AdsImpl::OnWalletInvalid() {
+  BLOG(0, "Failed to set wallet");
 }
 
 void AdsImpl::OnAdRewardsChanged() {
