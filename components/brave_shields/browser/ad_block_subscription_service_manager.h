@@ -110,6 +110,7 @@ class AdBlockSubscriptionServiceManager {
 
   std::map<SubscriptionIdentifier, std::unique_ptr<AdBlockSubscriptionService>>
       subscription_services_;
+
   base::ObserverList<AdBlockSubscriptionServiceManagerObserver> observers_;
   base::Lock subscription_services_lock_;
 

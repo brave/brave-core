@@ -129,9 +129,9 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
 
 std::vector<FilterListSubscriptionInfo>
 AdBlockSubscriptionServiceManager::GetSubscriptions() {
+  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
   auto infos = std::vector<FilterListSubscriptionInfo>();
 
-  base::AutoLock lock(subscription_services_lock_);
   for (const auto& subscription_service : subscription_services_) {
     auto info = GetInfo(subscription_service.first);
     DCHECK(info);
@@ -174,23 +174,17 @@ void AdBlockSubscriptionServiceManager::RefreshSubscription(
     const SubscriptionIdentifier& id,
     bool from_ui) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-  GURL list_url;
-  {
-    base::AutoLock lock(subscription_services_lock_);
-    auto it = subscription_services_.find(id);
-    DCHECK(it != subscription_services_.end());
+  auto it = subscription_services_.find(id);
+  DCHECK(it != subscription_services_.end());
 
-    auto info = GetInfo(id);
-    if (!info)
-      return;  // TODO(bridiver) inform of error
-
-    list_url = info->list_url;
-  }
+  auto info = GetInfo(id);
+  if (!info)
+    return;  // TODO(bridiver) inform of error
 
   ready_.Post(
       FROM_HERE,
       base::BindOnce(&AdBlockSubscriptionServiceManager::StartDownload,
-                     weak_ptr_factory_.GetWeakPtr(), list_url, from_ui));
+                     weak_ptr_factory_.GetWeakPtr(), info->list_url, from_ui));
 }
 
 void AdBlockSubscriptionServiceManager::StartDownload(const GURL& list_url,
@@ -208,7 +202,6 @@ void AdBlockSubscriptionServiceManager::OnGetDownloadManager(
 
 base::Optional<FilterListSubscriptionInfo>
 AdBlockSubscriptionServiceManager::GetInfo(const SubscriptionIdentifier& id) {
-  base::AutoLock lock(subscription_services_lock_);
   auto* list_subscription_dict = subscriptions_->FindKey(id.spec());
   if (!list_subscription_dict)
     return base::nullopt;
@@ -290,7 +283,7 @@ void AdBlockSubscriptionServiceManager::ClearFilterListPrefs(
 }
 
 bool AdBlockSubscriptionServiceManager::Start() {
-  base::AutoLock lock(subscription_services_lock_);
+  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
   for (const auto& subscription_service : subscription_services_) {
     subscription_service.second->Start();
   }
@@ -305,6 +298,7 @@ void AdBlockSubscriptionServiceManager::ShouldStartRequest(
     bool* did_match_exception,
     bool* did_match_important,
     std::string* mock_data_url) {
+  base::AutoLock lock(subscription_services_lock_);
   for (const auto& subscription_service : subscription_services_) {
     auto info = GetInfo(url);
     if (info && info->enabled) {
@@ -320,7 +314,7 @@ void AdBlockSubscriptionServiceManager::ShouldStartRequest(
 
 void AdBlockSubscriptionServiceManager::EnableTag(const std::string& tag,
                                                   bool enabled) {
-  base::AutoLock lock(subscription_services_lock_);
+  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
   for (const auto& subscription_service : subscription_services_) {
     subscription_service.second->EnableTag(tag, enabled);
   }
@@ -328,7 +322,7 @@ void AdBlockSubscriptionServiceManager::EnableTag(const std::string& tag,
 
 void AdBlockSubscriptionServiceManager::AddResources(
     const std::string& resources) {
-  base::AutoLock lock(subscription_services_lock_);
+  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
   for (const auto& subscription_service : subscription_services_) {
     subscription_service.second->AddResources(resources);
   }
@@ -391,7 +385,7 @@ AdBlockSubscriptionServiceManager::HiddenClassIdSelectors(
 
 void AdBlockSubscriptionServiceManager::OnListDownloaded(
     const SubscriptionIdentifier& id) {
-  base::AutoLock lock(subscription_services_lock_);
+  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
   auto it = subscription_services_.find(id);
   if (it == subscription_services_.end())
     return;
@@ -401,23 +395,22 @@ void AdBlockSubscriptionServiceManager::OnListDownloaded(
 
 void AdBlockSubscriptionServiceManager::OnListLoaded(
     const SubscriptionIdentifier& id) {
-  {
-    base::AutoLock lock(subscription_services_lock_);
-    auto it = subscription_services_.find(id);
-    if (it == subscription_services_.end())
-      return;
+  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+  auto it = subscription_services_.find(id);
+  if (it == subscription_services_.end())
+    return;
 
-    auto info = GetInfo(id);
-    if (!info)
-      return;
+  auto info = GetInfo(id);
+  if (!info)
+    return;
 
-    info->last_update_attempt = base::Time::Now();
-    info->last_successful_update_attempt = base::Time::Now();
-    UpdateFilterListPrefs(id, *info);
+  info->last_update_attempt = base::Time::Now();
+  info->last_successful_update_attempt = base::Time::Now();
+  UpdateFilterListPrefs(id, *info);
 
-    // calling this more than once is ok
-    it->second->Start();
-  }
+  // calling this more than once is ok
+  it->second->Start();
+
   NotifyObserversOfServiceEvent();
 }
 
