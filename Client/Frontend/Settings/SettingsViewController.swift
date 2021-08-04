@@ -230,7 +230,7 @@ class SettingsViewController: TableViewController {
                         }
                         
                         self.navigationController?
-                            .pushViewController(SyncSettingsTableViewController(style: .grouped), animated: true)
+                            .pushViewController(SyncSettingsTableViewController(), animated: true)
                     } else {
                         self.navigationController?.pushViewController(SyncWelcomeViewController(), animated: true)
                     }

@@ -65,6 +65,15 @@
         }
       },
       {
+        "package": "swift-collections",
+        "repositoryURL": "https://github.com/apple/swift-collections",
+        "state": {
+          "branch": null,
+          "revision": "3426dba9ee5c9f8e4981b0fc9d39a818d36eec28",
+          "version": "0.0.4"
+        }
+      },
+      {
         "package": "SwiftKeychainWrapper",
         "repositoryURL": "https://github.com/jrendel/SwiftKeychainWrapper",
         "state": {

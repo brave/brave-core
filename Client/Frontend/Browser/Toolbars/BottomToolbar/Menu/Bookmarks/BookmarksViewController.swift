@@ -441,7 +441,8 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
                         if !self.isPrivateBrowsing {
                             ActivityShortcutManager.shared.donateCustomIntent(for: .openBookmarks, with: url.absoluteString)
                         }
-                        self.toolbarUrlActionsDelegate?.select(url: url, isBookmark: true)
+                        
+                        self.toolbarUrlActionsDelegate?.select(url: url, visitType: .bookmark)
                     }
                     
                     if presentingViewController is MenuViewController {

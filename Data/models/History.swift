@@ -11,30 +11,6 @@ private func getDate(_ dayOffset: Int) -> Date {
     return (calendar as NSCalendar).date(byAdding: NSCalendar.Unit.day, value: dayOffset, to: today, options: [])!
 }
 
-private var ignoredSchemes = ["about"]
-
-public func isIgnoredURL(_ url: URL) -> Bool {
-    guard let scheme = url.scheme else { return false }
-
-    if let _ = ignoredSchemes.firstIndex(of: scheme) {
-        return true
-    }
-
-    if url.host == "localhost" {
-        return true
-    }
-
-    return false
-}
-
-public func isIgnoredURL(_ url: String) -> Bool {
-    if let url = URL(string: url) {
-        return isIgnoredURL(url)
-    }
-
-    return false
-}
-
 public final class History: NSManagedObject, WebsitePresentable, CRUD {
 
     @NSManaged public var title: String?
@@ -133,6 +109,19 @@ public final class History: NSManagedObject, WebsitePresentable, CRUD {
         }
         
         return all(where: predicate, fetchLimit: 100, context: DataController.viewContext) ?? []
+    }
+    
+    /// Fetching the History items for migration
+    /// The last month's data is being displayed to user
+    /// so data in this period data fetched from old history for migration
+    /// - Parameters:
+    ///   - context: Managed Object Context
+    /// - Returns: Return old history items from core data    
+    public class func fetchMigrationHistory(_ context: NSManagedObjectContext? = nil) -> [History] {
+        let predicate = NSPredicate(format: "visitedOn >= %@", History.thisMonth as CVarArg)
+        let sortDescriptors = [NSSortDescriptor(key: "visitedOn", ascending: false)]
+        
+        return all(where: predicate, sortDescriptors: sortDescriptors, context: context ?? DataController.viewContext) ?? []
     }
 }
 

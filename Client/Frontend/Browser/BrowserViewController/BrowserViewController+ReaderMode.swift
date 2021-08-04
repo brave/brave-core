@@ -7,6 +7,20 @@ import Shared
 import WebKit
 import Storage
 
+// MARK: VisitType
+
+enum VisitType: Int {
+    case unknown
+    /// Transition type where user followed a link and got a new top-level window
+    case link
+    /// Transition type where user typed the page's URL in the URL bar or selected it from URL bar autocomplete results.
+    case typed
+
+    /// Transition type where user opened a link from bookmarks.
+    case bookmark
+    case download
+}
+
 // MARK: - ReaderModeDelegate
 
 extension BrowserViewController: ReaderModeDelegate {
@@ -189,6 +203,10 @@ extension BrowserViewController {
     }
     
     func ignoreNavigationInTab(_ tab: Tab, navigation: WKNavigation) {
-        self.ignoredNavigation.insert(navigation)
+        ignoredNavigation.insert(navigation)
+    }
+    
+    func recordNavigationInTab(_ url: URL, visitType: VisitType) {
+        typedNavigation[url] = visitType
     }
 }

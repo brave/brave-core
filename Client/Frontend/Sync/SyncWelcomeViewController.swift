@@ -239,8 +239,7 @@ class SyncWelcomeViewController: SyncViewController {
             return
         }
         
-        let syncSettingsVC = SyncSettingsTableViewController(style: .grouped)
-        syncSettingsVC.disableBackButton = true
+        let syncSettingsVC = SyncSettingsTableViewController(showDoneButton: true)
         navigationController?.pushViewController(syncSettingsVC, animated: true)
     }
 }

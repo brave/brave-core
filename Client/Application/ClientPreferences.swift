@@ -222,9 +222,19 @@ extension Preferences {
     }
     
     final class Chromium {
+        /// The boolean determine Bookmark Migration is finished on client side
         static let syncV2BookmarksMigrationCompleted = Option<Bool>(key: "chromium.migration.bookmarks", default: false)
-        static let syncV2BookmarksMigrationCount = Option<Int>(key: "chromium.migration.bookmarks.count", default: 0)
+        /// The boolean determine History Migration is finished on client side
+        static let syncV2HistoryMigrationCompleted = Option<Bool>(key: "chromium.migration.history", default: false)
+        /// The count of how many times migration is performed on client side - the value increases with every fail attempt and after 3 tries migration marked as successful
+        static let syncV2ObjectMigrationCount = Option<Int>(key: "chromium.migration.attempt.count", default: 0)
+        /// Whether the device is in sync chain
         static let syncEnabled = Option<Bool>(key: "chromium.sync.enabled", default: false)
+        /// The sync type bookmarks enabled for the device in sync chain
+        static let syncBookmarksEnabled = Option<Bool>(key: "chromium.sync.syncBookmarksEnabled", default: true)
+        /// The sync type history enabled for the device in sync chain
+        static let syncHistoryEnabled = Option<Bool>(key: "chromium.sync.syncHistoryEnabled", default: false)
+        /// Node Id for last bookmark folder
         static let lastBookmarksFolderNodeId = Option<Int?>(key: "chromium.last.bookmark.folder.node.id", default: nil)
     }
     

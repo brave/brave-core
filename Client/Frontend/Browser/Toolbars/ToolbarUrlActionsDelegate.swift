@@ -10,5 +10,5 @@ protocol ToolbarUrlActionsDelegate: AnyObject {
     func copy(_ url: URL)
     func share(_ url: URL)
     func batchOpen(_ urls: [URL])
-    func select(url: URL, isBookmark: Bool)
+    func select(url: URL, visitType: VisitType)
 }

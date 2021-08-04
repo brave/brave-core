@@ -123,6 +123,7 @@ class BrowserViewController: UIViewController {
     // Tracking navigation items to record history types.
     // TODO: weak references?
     var ignoredNavigation = Set<WKNavigation>()
+    var typedNavigation = [URL: VisitType]()
     var navigationToolbar: ToolbarProtocol {
         return toolbar ?? topToolbar
     }
@@ -711,24 +712,8 @@ class BrowserViewController: UIViewController {
         
         showWalletTransferExpiryPanelIfNeeded()
         
-        // We stop ever attempting migration after 3 times.
-        if Preferences.Chromium.syncV2BookmarksMigrationCount.value < 3 {
-            self.migrateToChromiumBookmarks { success in
-                if !success {
-                    DispatchQueue.main.async {
-                        let alert = UIAlertController(title: Strings.Sync.v2MigrationErrorTitle,
-                                                      message: Strings.Sync.v2MigrationErrorMessage,
-                                                      preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
-                        self.present(alert, animated: true)
-                    }
-                }
-            }
-        } else {
-            // After 3 tries, we mark Migration as successful.
-            // There is nothing more we can do for the user other than to let them export/import bookmarks.
-            Preferences.Chromium.syncV2BookmarksMigrationCompleted.value = true
-        }
+        /// Perform migration to brave-core sync objects
+        doSyncMigration()
         
         if #available(iOS 14, *), !Preferences.DefaultBrowserIntro.defaultBrowserNotificationScheduled.value {
             scheduleDefaultBrowserNotification()
@@ -744,38 +729,6 @@ class BrowserViewController: UIViewController {
                     self?.statusBarOverlay.backgroundColor = .secondaryBraveBackground
                 }
             })
-    }
-    
-    private func migrateToChromiumBookmarks(_ completion: @escaping (_ success: Bool) -> Void) {
-        let showInterstitialPage = { (url: URL?) -> Bool in
-            guard let url = url else {
-                log.error("Cannot open bookmarks page in new tab")
-                return false
-            }
-            
-            return BookmarksInterstitialPageHandler.showBookmarksPage(tabManager: self.tabManager, url: url)
-        }
-        
-        Migration.braveCoreBookmarksMigrator?.migrate({ success in
-            Preferences.Chromium.syncV2BookmarksMigrationCount.value += 1
-            
-            if !success {
-                guard let url = BraveCoreMigrator.datedBookmarksURL else {
-                    completion(showInterstitialPage(BraveCoreMigrator.bookmarksURL))
-                    return
-                }
-                
-                Migration.braveCoreBookmarksMigrator?.exportBookmarks(to: url) { success in
-                    if success {
-                        completion(showInterstitialPage(url))
-                    } else {
-                        completion(showInterstitialPage(BraveCoreMigrator.bookmarksURL))
-                    }
-                }
-            } else {
-                completion(true)
-            }
-        })
     }
     
     fileprivate let defaultBrowserNotificationId = "defaultBrowserNotification"
@@ -1265,13 +1218,11 @@ class BrowserViewController: UIViewController {
         }
     }
     
-    func finishEditingAndSubmit(_ url: URL, isBookmark: Bool) {
-        if url.isBookmarklet, isBookmark {
+    func finishEditingAndSubmit(_ url: URL, visitType: VisitType) {
+        if url.isBookmarklet {
             topToolbar.leaveOverlayMode()
             
-            guard let tab = tabManager.selectedTab,
-                  let webView = tab.webView,
-                  let code = url.bookmarkletCodeComponent else {
+            guard let tab = tabManager.selectedTab else {
                 return
             }
             
@@ -1279,9 +1230,11 @@ class BrowserViewController: UIViewController {
             // Disable any sort of privileged execution contexts
             // IE: The user must explicitly tap a bookmark they have saved.
             // Block all other contexts such as redirects, downloads, embed, linked, etc..
-            webView.evaluateSafeJavaScript(functionName: code, sandboxed: false, asFunction: false) { _, error in
-                if let error = error {
-                    log.error(error)
+            if visitType == .bookmark, let webView = tab.webView, let code = url.bookmarkletCodeComponent {
+                webView.evaluateSafeJavaScript(functionName: code, sandboxed: false, asFunction: false) { _, error in
+                    if let error = error {
+                        log.error(error)
+                    }
                 }
             }
         } else {
@@ -1293,6 +1246,8 @@ class BrowserViewController: UIViewController {
             }
 
             tab.loadRequest(URLRequest(url: url))
+            
+            recordNavigationInTab(url, visitType: visitType)
         }
     }
 
@@ -1891,7 +1846,15 @@ class BrowserViewController: UIViewController {
                 
                 // Only add history of a url which is not a localhost url
                 if !tab.isPrivate {
-                    History.add(tab.title ?? "", url: url)
+                    // The visitType is checked If it is "typed" or not to determine the History object we are adding
+                    // should be synced or not. This limitation exists on browser side so we are aligning with this
+                    if let visitType =
+                        typedNavigation.first(where: { $0.key.typedDisplayString == url.typedDisplayString })?.value,
+                       visitType == .typed {
+                        Historyv2.add(url: url, title: tab.title ?? "", dateAdded: Date())
+                    } else {
+                        Historyv2.add(url: url, title: tab.title ?? "", dateAdded: Date(), isURLTyped: false)
+                    }
                 }
             }
 
@@ -1937,8 +1900,8 @@ extension BrowserViewController: ClipboardBarDisplayHandlerDelegate {
 extension BrowserViewController: QRCodeViewControllerDelegate {
     func didScanQRCodeWithURL(_ url: URL) {
         popToBVC()
-        finishEditingAndSubmit(url, isBookmark: false)
-        
+        finishEditingAndSubmit(url, visitType: .typed)
+
         if !url.isBookmarklet && !PrivateBrowsingManager.shared.isPrivateBrowsing {
             RecentSearch.addItem(type: .qrCode, text: nil, websiteUrl: url.absoluteString)
         }
@@ -2116,11 +2079,11 @@ extension BrowserViewController: TabDelegate {
 extension BrowserViewController: SearchViewControllerDelegate {
     func searchViewController(_ searchViewController: SearchViewController, didSubmit query: String) {
         topToolbar.leaveOverlayMode()
-        processAddressBar(text: query)
+        processAddressBar(text: query, visitType: .typed)
     }
     
     func searchViewController(_ searchViewController: SearchViewController, didSelectURL url: URL) {
-        finishEditingAndSubmit(url, isBookmark: false)
+        finishEditingAndSubmit(url, visitType: .typed)
     }
 
     func searchViewController(_ searchViewController: SearchViewController, didLongPressSuggestion suggestion: String) {
@@ -2693,15 +2656,15 @@ extension BrowserViewController: ToolbarUrlActionsDelegate {
     
     func openInNewTab(_ url: URL, isPrivate: Bool) {
         topToolbar.leaveOverlayMode()
-        select(url, isBookmark: false, action: .openInNewTab(isPrivate: isPrivate))
+        select(url, visitType: .unknown, action: .openInNewTab(isPrivate: isPrivate))
     }
     
     func copy(_ url: URL) {
-        select(url, isBookmark: false, action: .copy)
+        select(url, visitType: .unknown, action: .copy)
     }
     
     func share(_ url: URL) {
-        select(url, isBookmark: false, action: .share)
+        select(url, visitType: .unknown, action: .share)
     }
     
     func batchOpen(_ urls: [URL]) {
@@ -2709,14 +2672,14 @@ extension BrowserViewController: ToolbarUrlActionsDelegate {
         self.tabManager.addTabsForURLs(urls, zombie: false, isPrivate: tabIsPrivate)
     }
     
-    func select(url: URL, isBookmark: Bool) {
-        select(url, isBookmark: isBookmark, action: .openInCurrentTab)
+    func select(url: URL, visitType: VisitType) {
+        select(url, visitType: visitType, action: .openInCurrentTab)
     }
     
-    private func select(_ url: URL, isBookmark: Bool, action: ToolbarURLAction) {
+    private func select(_ url: URL, visitType: VisitType, action: ToolbarURLAction) {
         switch action {
         case .openInCurrentTab:
-            finishEditingAndSubmit(url, isBookmark: isBookmark)
+            finishEditingAndSubmit(url, visitType: visitType)
         case .openInNewTab(let isPrivate):
             let tab = tabManager.addTab(PrivilegedRequest(url: url) as URLRequest, afterTab: tabManager.selectedTab, isPrivate: isPrivate)
             if isPrivate && !PrivateBrowsingManager.shared.isPrivateBrowsing {
@@ -2754,7 +2717,7 @@ extension BrowserViewController: NewTabPageDelegate {
         if inNewTab {
             tabManager.addTabAndSelect(isPrivate: isPrivate)
         }
-        processAddressBar(text: input)
+        processAddressBar(text: input, visitType: .bookmark)
     }
     
     func handleFavoriteAction(favorite: Favorite, action: BookmarksAction) {

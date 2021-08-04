@@ -716,9 +716,6 @@ extension Tab {
     /// or when the fallback call should not happen at all.
     /// The website expects the iOS device to always call this method(blocks on it).
     func injectResults() {
-        
-        
-        
         DispatchQueue.main.async {
             // If the backup search results happen before the Brave Search loads
             // The method we pass data to is undefined.
