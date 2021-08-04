@@ -1,5 +1,5 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index 7931729db965b2dc05cbab2a21fdc3c8226ccc55..dc033f732a76f6df4626291b5256dd36c8304a58 100644
+index 90835de20fae6d06aeb0d2770b6f7479d04a4de3..48c72c8cb9dc60dcb8f3b6116572084d7ee8513e 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
 @@ -83,6 +83,7 @@ source_set("channel_info") {

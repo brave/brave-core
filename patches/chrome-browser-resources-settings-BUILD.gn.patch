@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index a1a47a18ab24f7a37317b78c935ef490cfc6074d..3fedbea66d7636e97732ad94b5a192d39b5c16ea 100644
+index be072266939a93570d3c842f29f9318e609b7f47..11b58c82610037a3ef8aa68b5ba0db5418ad65cd 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
-@@ -55,6 +55,7 @@ if (optimize_webui) {
+@@ -53,6 +53,7 @@ if (optimize_webui) {
        "chrome://resources/mojo/mojo/public/js/bindings.js",
        "chrome://resources/mojo/skia/public/mojom/skcolor.mojom-webui.js",
      ]
@@ -10,9 +10,9 @@ index a1a47a18ab24f7a37317b78c935ef490cfc6074d..3fedbea66d7636e97732ad94b5a192d3
    }
  }
  
-@@ -104,6 +105,7 @@ generate_grd("build_grd") {
-       "$target_gen_dir/$preprocess_gen_manifest",
-     ]
+@@ -96,6 +97,7 @@ generate_grd("build_grd") {
+     deps += [ ":build_ts" ]
+     manifest_files = [ "$target_gen_dir/tsconfig.manifest" ]
    }
 +  deps += [ "//brave/browser/resources/settings:resources" ]
  }

@@ -1,8 +1,8 @@
 diff --git a/components/search_engines/default_search_manager.cc b/components/search_engines/default_search_manager.cc
-index ce9d88596266ae4b170211c13da6fe611fdb650c..f836a3922ff1a09a513abcba360073bd83bd3a51 100644
+index 88a56949914fb1c92b1116b5bcbfa7fe12f1da05..e3b8335ed06f13aae5c5f3390da67e1376477838 100644
 --- a/components/search_engines/default_search_manager.cc
 +++ b/components/search_engines/default_search_manager.cc
-@@ -306,6 +306,7 @@ void DefaultSearchManager::LoadDefaultSearchEngineFromPrefs() {
+@@ -308,6 +308,7 @@ void DefaultSearchManager::LoadDefaultSearchEngineFromPrefs() {
    // Check if default search preference is overriden by extension.
    if (pref->IsExtensionControlled()) {
      extension_default_search_ = std::move(turl_data);
