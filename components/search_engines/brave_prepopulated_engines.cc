@@ -119,6 +119,7 @@ const PrepopulatedEngine duckduckgo_lite = {
     NULL,
     0,
     SEARCH_ENGINE_DUCKDUCKGO,
+    NULL,
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO_LITE,
 };
 #endif
