@@ -2254,7 +2254,7 @@ Press an assigned switch to remove assignment
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_ADVANCED_URI" desc="Label for the CUPS printer URI (uniform resource identifier) in the Advanced section in the printer details page.">
     URI
   </message>
-  <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_DETAILS_NAME" desc="Label for the CUPS printer name in the printer details page.">
+  <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_DETAILS_NAME" desc="Label for the CUPS printer name in the printer details page." meaning="Name of an inanimate object">
     Name
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_DETAILS_MODEL" desc="Label for the CUPS printer model in the printer details page.">
@@ -3456,6 +3456,12 @@ Press an assigned switch to remove assignment
   </message>
   <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_SCHEDULE_SUNSET_TO_SUNRISE" desc="In Device Settings &gt; Displays, the label of the option to set the automatic schedule of the Night Light feature to turn on at sunset and off at sunrise.">
     Sunset to sunrise
+  </message>
+  <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_START_TIME" desc="In Device Settings &gt; Displays, the label of the start time bubble.">
+    Start time
+  </message>
+  <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_STOP_TIME" desc="In Device Settings &gt; Displays, the label of the end time bubble.">
+    End time
   </message>
   <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_TEXT" desc="In Device Settings &gt; Displays, text describing the Night Light feature.">
     Make it easier to look at your screen or read in dim light
