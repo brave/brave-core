@@ -6,6 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_NEW_TAB_PAGE_TOP_SITES_MESSAGE_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_NEW_TAB_PAGE_TOP_SITES_MESSAGE_HANDLER_H_
 
+#include <map>
+#include <memory>
+
 #include "base/values.h"
 #include "components/ntp_tiles/most_visited_sites.h"
 #include "components/ntp_tiles/ntp_tile.h"

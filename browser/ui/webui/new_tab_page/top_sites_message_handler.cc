@@ -5,8 +5,9 @@
 
 #include "brave/browser/ui/webui/new_tab_page/top_sites_message_handler.h"
 
-#include <string>
+#include <map>
 #include <memory>
+#include <string>
 #include <utility>
 
 #include "base/i18n/rtl.h"
