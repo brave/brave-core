@@ -131,7 +131,6 @@ class AdBlockSubscriptionDownloadManager : public KeyedService {
   // Will be notified of success or failure of downloads.
   AdBlockSubscriptionServiceManager* subscription_manager_;  // NOT OWNED
 
-  mojo::PendingReceiver<blink::mojom::Blob> receiver_;
   mojo::Remote<storage::mojom::BlobStorageContext> blob_storage_context_;
 
   // Used to get weak ptr to self on the UI thread.

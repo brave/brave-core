@@ -26,6 +26,7 @@
 #include "storage/browser/blob/blob_impl.h"
 #include "storage/browser/blob/blob_storage_context.h"
 #include "storage/browser/blob/write_blob_to_file.h"
+#include "third_party/blink/public/mojom/blob/serialized_blob.mojom.h"
 
 namespace brave_shields {
 
@@ -198,15 +199,16 @@ void AdBlockSubscriptionDownloadManager::OnDirCreated(
       subscription_manager_->GetSubscriptionPath(download_url)
           .AppendASCII(kCustomSubscriptionListText);
 
-  mojo::PendingRemote<blink::mojom::Blob> pending_blob;
+  auto blob = blink::mojom::SerializedBlob::New();
+  blob->content_type = data_handle->content_type();
+  blob->uuid = data_handle->uuid();
+  blob->size = data_handle->size();
   storage::BlobImpl::Create(
       std::move(data_handle),
-      pending_blob.InitWithNewPipeAndPassReceiver());
-
-  // receiver_ = pending_blob.InitWithNewPipeAndPassReceiver();
+      blob->blob.InitWithNewPipeAndPassReceiver());
 
   blob_storage_context_->WriteBlobToFile(
-      std::move(pending_blob), list_path, true, base::nullopt,
+      std::move(blob->blob), list_path, true, base::nullopt,
       base::BindOnce(&AdBlockSubscriptionDownloadManager::WriteResultCallback,
                      ui_weak_ptr_factory_.GetWeakPtr(), download_url));
 }
