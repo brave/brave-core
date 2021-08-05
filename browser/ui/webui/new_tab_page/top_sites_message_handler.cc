@@ -32,10 +32,13 @@ TopSitesMessageHandler::TopSitesMessageHandler(Profile* profile)
     : profile_(profile),
       most_visited_sites_(
           ChromeMostVisitedSitesFactory::NewForProfile(profile)) {
-  most_visited_sites_->EnableCustomLinks(IsCustomLinksEnabled());
-  most_visited_sites_->SetShortcutsVisible(IsShortcutsVisible());
-  most_visited_sites_->AddMostVisitedURLsObserver(
-      this, ntp_tiles::kMaxNumMostVisited);
+  // most_visited_sites_ can be nullptr if profile is OTR.
+  if (most_visited_sites_) {
+    most_visited_sites_->EnableCustomLinks(IsCustomLinksEnabled());
+    most_visited_sites_->SetShortcutsVisible(IsShortcutsVisible());
+    most_visited_sites_->AddMostVisitedURLsObserver(
+        this, ntp_tiles::kMaxNumMostVisited);
+  }
 }
 
 TopSitesMessageHandler::~TopSitesMessageHandler() = default;
@@ -85,6 +88,9 @@ void TopSitesMessageHandler::RegisterMessages() {
 void TopSitesMessageHandler::OnURLsAvailable(
     const std::map<ntp_tiles::SectionType, ntp_tiles::NTPTilesVector>&
         sections) {
+  if (!most_visited_sites_)
+    return;
+
   base::Value result(base::Value::Type::DICTIONARY);
   base::Value tiles(base::Value::Type::LIST);
   int tile_id = 1;
@@ -179,6 +185,9 @@ bool TopSitesMessageHandler::IsShortcutsVisible() const {
 
 void TopSitesMessageHandler::HandleUpdateMostVisitedInfo(
     const base::ListValue* args) {
+  if (!most_visited_sites_)
+    return;
+
   AllowJavascript();
 
   // same as `MostVisitedHandler::UpdateMostVisitedInfo`
@@ -187,6 +196,9 @@ void TopSitesMessageHandler::HandleUpdateMostVisitedInfo(
 
 void TopSitesMessageHandler::HandleDeleteMostVisitedTile(
     const base::ListValue* args) {
+  if (!most_visited_sites_)
+    return;
+
   AllowJavascript();
 
   std::string url;
@@ -206,6 +218,9 @@ void TopSitesMessageHandler::HandleDeleteMostVisitedTile(
 
 void TopSitesMessageHandler::HandleReorderMostVisitedTile(
     const base::ListValue* args) {
+  if (!most_visited_sites_)
+    return;
+
   AllowJavascript();
 
   std::string url;
@@ -226,6 +241,9 @@ void TopSitesMessageHandler::HandleReorderMostVisitedTile(
 
 void TopSitesMessageHandler::HandleRestoreMostVisitedDefaults(
     const base::ListValue* args) {
+  if (!most_visited_sites_)
+    return;
+
   AllowJavascript();
 
   // same as `MostVisitedHandler::RestoreMostVisitedDefaults`
@@ -238,6 +256,9 @@ void TopSitesMessageHandler::HandleRestoreMostVisitedDefaults(
 
 void TopSitesMessageHandler::HandleUndoMostVisitedTileAction(
     const base::ListValue* args) {
+  if (!most_visited_sites_)
+    return;
+
   AllowJavascript();
 
   // same `MostVisitedHandler::UndoMostVisitedTileAction`
@@ -251,6 +272,9 @@ void TopSitesMessageHandler::HandleUndoMostVisitedTileAction(
 
 void TopSitesMessageHandler::HandleSetMostVisitedSettings(
     const base::ListValue* args) {
+  if (!most_visited_sites_)
+    return;
+
   AllowJavascript();
 
   bool custom_links_enabled;
@@ -278,6 +302,9 @@ void TopSitesMessageHandler::HandleSetMostVisitedSettings(
 
 void TopSitesMessageHandler::HandleEditTopSite(
     const base::ListValue* args) {
+  if (!most_visited_sites_)
+    return;
+
   AllowJavascript();
 
   std::string url;
@@ -323,6 +350,9 @@ void TopSitesMessageHandler::HandleEditTopSite(
 
 void TopSitesMessageHandler::HandleAddNewTopSite(
     const base::ListValue* args) {
+  if (!most_visited_sites_)
+    return;
+
   AllowJavascript();
 
   std::string url;
