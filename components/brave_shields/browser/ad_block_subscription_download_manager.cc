@@ -81,7 +81,7 @@ void AdBlockSubscriptionDownloadManager::StartDownload(const GURL& download_url,
   download_params.guid = base::GenerateGUID();
   download_params.callback = base::BindRepeating(
       &AdBlockSubscriptionDownloadManager::OnDownloadStarted,
-      ui_weak_ptr_factory_.GetWeakPtr(), download_url);
+      AsWeakPtr(), download_url);
   download_params.traffic_annotation = net::MutableNetworkTrafficAnnotationTag(
       kBraveShieldsAdBlockSubscriptionTrafficAnnotation);
   download_params.request_params.url = download_url;
@@ -180,9 +180,9 @@ void AdBlockSubscriptionDownloadManager::OnDownloadSucceeded(
   background_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&EnsureDirExists,
-                     subscription_manager_->GetSubscriptionPath(download_url)),
+                     subscription_path_callback_.Run(download_url)),
       base::BindOnce(&AdBlockSubscriptionDownloadManager::OnDirCreated,
-                     ui_weak_ptr_factory_.GetWeakPtr(), std::move(data_handle),
+                     AsWeakPtr(), std::move(data_handle),
                      download_url));
 }
 
@@ -195,9 +195,8 @@ void AdBlockSubscriptionDownloadManager::OnDirCreated(
     return;
   }
 
-  base::FilePath list_path =
-      subscription_manager_->GetSubscriptionPath(download_url)
-          .AppendASCII(kCustomSubscriptionListText);
+  base::FilePath list_path = subscription_path_callback_.Run(download_url)
+                                 .AppendASCII(kCustomSubscriptionListText);
 
   auto blob = blink::mojom::SerializedBlob::New();
   blob->content_type = data_handle->content_type();
@@ -210,7 +209,7 @@ void AdBlockSubscriptionDownloadManager::OnDirCreated(
   blob_storage_context_->WriteBlobToFile(
       std::move(blob->blob), list_path, true, base::nullopt,
       base::BindOnce(&AdBlockSubscriptionDownloadManager::WriteResultCallback,
-                     ui_weak_ptr_factory_.GetWeakPtr(), download_url));
+                     AsWeakPtr(), download_url));
 }
 
 void AdBlockSubscriptionDownloadManager::WriteResultCallback(
@@ -218,6 +217,7 @@ void AdBlockSubscriptionDownloadManager::WriteResultCallback(
     storage::mojom::WriteBlobToFileResult result) {
   if (result != storage::mojom::WriteBlobToFileResult::kSuccess) {
     subscription_manager_->OnListDownloadFailure(download_url);
+    return;
   }
 
   // this should send the data to subscription manager

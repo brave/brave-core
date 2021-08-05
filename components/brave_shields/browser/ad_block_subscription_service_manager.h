@@ -13,6 +13,7 @@
 
 #include "base/files/file_path.h"
 #include "base/macros.h"
+#include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/optional.h"
 #include "base/synchronization/lock.h"
@@ -45,10 +46,6 @@ class AdBlockSubscriptionServiceManager {
       const base::FilePath& user_data_dir);
   ~AdBlockSubscriptionServiceManager();
 
-  // Returns the directory used to store cached list data for the given
-  // subscription.
-  base::FilePath GetSubscriptionPath(const SubscriptionIdentifier id) const;
-
   // Returns a `file://` URL that points directly to the cached list text file
   // used for the given subscription.
   GURL GetListTextFileUrl(const SubscriptionIdentifier id) const;
@@ -77,7 +74,7 @@ class AdBlockSubscriptionServiceManager {
       const std::vector<std::string>& exceptions);
 
   AdBlockSubscriptionDownloadManager* download_manager() {
-    return download_manager_;
+    return download_manager_.get();
   }
 
   void OnListDownloadFailure(const SubscriptionIdentifier& id);
@@ -88,6 +85,10 @@ class AdBlockSubscriptionServiceManager {
 
  private:
   friend class ::AdBlockServiceTest;
+  // Returns the directory used to store cached list data for the given
+  // subscription.
+  base::FilePath GetSubscriptionPath(const GURL& list_url) const;
+
   bool Init();
   void LoadSubscriptionServices();
   void UpdateFilterListPrefs(const SubscriptionIdentifier& list_url,
@@ -95,7 +96,6 @@ class AdBlockSubscriptionServiceManager {
   void ClearFilterListPrefs(const SubscriptionIdentifier& list_url);
   void OnGetDownloadManager(
       AdBlockSubscriptionDownloadManager* download_manager);
-  void StartDownload(const GURL& list_url, bool from_ui);
 
   base::Optional<FilterListSubscriptionInfo> GetInfo(
       const SubscriptionIdentifier& id);
@@ -103,7 +103,7 @@ class AdBlockSubscriptionServiceManager {
   void NotifyObserversOfServiceEvent();
 
   brave_component_updater::BraveComponent::Delegate* delegate_;  // NOT OWNED
-  AdBlockSubscriptionDownloadManager* download_manager_;         // NOT OWNED
+  base::WeakPtr<AdBlockSubscriptionDownloadManager> download_manager_;
   base::FilePath subscription_path_;
   std::unique_ptr<base::DictionaryValue> subscriptions_;
   base::OneShotEvent ready_;

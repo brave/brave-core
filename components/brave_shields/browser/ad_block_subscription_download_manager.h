@@ -12,6 +12,7 @@
 #include <string>
 
 #include "base/callback.h"
+#include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "components/download/public/background_service/download_params.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -34,7 +35,9 @@ class AdBlockSubscriptionServiceManager;
 class AdBlockSubscriptionDownloadClient;
 
 // Manages the downloads of filter lists for custom subscriptions.
-class AdBlockSubscriptionDownloadManager : public KeyedService {
+class AdBlockSubscriptionDownloadManager
+    : public KeyedService,
+      public base::SupportsWeakPtr<AdBlockSubscriptionDownloadManager> {
  public:
   using DownloadManagerGetter = base::OnceCallback<void(
       base::OnceCallback <
@@ -63,6 +66,12 @@ class AdBlockSubscriptionDownloadManager : public KeyedService {
   void set_blob_storage_context(
       mojo::PendingRemote<storage::mojom::BlobStorageContext> context) {
     blob_storage_context_.Bind(std::move(context));
+  }
+
+  void set_subscription_path_callback(
+      base::RepeatingCallback<base::FilePath(const GURL&)>
+          subscription_path_callback) {
+    subscription_path_callback_ = subscription_path_callback;
   }
 
  private:
@@ -132,10 +141,8 @@ class AdBlockSubscriptionDownloadManager : public KeyedService {
   AdBlockSubscriptionServiceManager* subscription_manager_;  // NOT OWNED
 
   mojo::Remote<storage::mojom::BlobStorageContext> blob_storage_context_;
-
-  // Used to get weak ptr to self on the UI thread.
-  base::WeakPtrFactory<AdBlockSubscriptionDownloadManager> ui_weak_ptr_factory_{
-      this};
+  base::RepeatingCallback<base::FilePath(const GURL&)>
+      subscription_path_callback_;
 };
 
 }  // namespace brave_shields
