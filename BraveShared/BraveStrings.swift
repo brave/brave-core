@@ -2192,7 +2192,7 @@ extension Strings {
         /// History Migration localization text
         public static let historyMigrationErrorMessage =
             NSLocalizedString("sync.historyMigrationErrorMessage", tableName: "BraveShared", bundle: .braveShared,
-                              value: "Failed to migrate hitory. Please try again later.",
+                              value: "Failed to migrate history. Please try again later.",
                               comment: "Message for popup when the history migration fails")
         public static let syncConfigurationInformationText =
             NSLocalizedString("sync.syncConfigurationInformationText", tableName: "BraveShared", bundle: .braveShared,
