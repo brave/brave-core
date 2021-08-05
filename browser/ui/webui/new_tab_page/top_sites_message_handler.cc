@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/webui/new_tab_page/instant_service_message_handler.h"
+#include "brave/browser/ui/webui/new_tab_page/top_sites_message_handler.h"
 
 #include <string>
 #include <memory>
@@ -20,72 +20,70 @@
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "chrome/browser/ntp_tiles/chrome_most_visited_sites_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/search/instant_service.h"
-#include "chrome/browser/search/instant_service_factory.h"
+#include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
+#include "components/ntp_tiles/constants.h"
 #include "components/ntp_tiles/most_visited_sites.h"
+#include "components/prefs/pref_service.h"
 
 using ntp_background_images::ViewCounterServiceFactory;
 
-// NOTE: InstantService methods used here will eventually be moved to:
-// chrome/browser/ui/webui/new_tab_page/new_tab_page_handler.h
-//
-// For more info, see:
-// https://bugs.chromium.org/p/chromium/issues/detail?id=1084363
-
-InstantServiceMessageHandler::InstantServiceMessageHandler(Profile* profile)
-        : profile_(profile) {
-  instant_service_ = InstantServiceFactory::GetForProfile(profile_);
-  instant_service_->AddObserver(this);
+TopSitesMessageHandler::TopSitesMessageHandler(Profile* profile)
+    : profile_(profile),
+      most_visited_sites_(
+          ChromeMostVisitedSitesFactory::NewForProfile(profile)) {
+  most_visited_sites_->EnableCustomLinks(IsCustomLinksEnabled());
+  most_visited_sites_->SetShortcutsVisible(IsShortcutsVisible());
+  most_visited_sites_->AddMostVisitedURLsObserver(
+      this, ntp_tiles::kMaxNumMostVisited);
 }
 
-InstantServiceMessageHandler::~InstantServiceMessageHandler() {
-  instant_service_->RemoveObserver(this);
-}
+TopSitesMessageHandler::~TopSitesMessageHandler() = default;
 
-void InstantServiceMessageHandler::RegisterMessages() {
+void TopSitesMessageHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
     "updateMostVisitedInfo",
     base::BindRepeating(
-      &InstantServiceMessageHandler::HandleUpdateMostVisitedInfo,
+      &TopSitesMessageHandler::HandleUpdateMostVisitedInfo,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
     "deleteMostVisitedTile",
     base::BindRepeating(
-      &InstantServiceMessageHandler::HandleDeleteMostVisitedTile,
+      &TopSitesMessageHandler::HandleDeleteMostVisitedTile,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
     "reorderMostVisitedTile",
     base::BindRepeating(
-      &InstantServiceMessageHandler::HandleReorderMostVisitedTile,
+      &TopSitesMessageHandler::HandleReorderMostVisitedTile,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
     "restoreMostVisitedDefaults",
     base::BindRepeating(
-      &InstantServiceMessageHandler::HandleRestoreMostVisitedDefaults,
+      &TopSitesMessageHandler::HandleRestoreMostVisitedDefaults,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
     "undoMostVisitedTileAction",
     base::BindRepeating(
-      &InstantServiceMessageHandler::HandleUndoMostVisitedTileAction,
+      &TopSitesMessageHandler::HandleUndoMostVisitedTileAction,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
     "setMostVisitedSettings",
     base::BindRepeating(
-      &InstantServiceMessageHandler::HandleSetMostVisitedSettings,
+      &TopSitesMessageHandler::HandleSetMostVisitedSettings,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "addNewTopSite",
-      base::BindRepeating(&InstantServiceMessageHandler::HandleAddNewTopSite,
+      base::BindRepeating(&TopSitesMessageHandler::HandleAddNewTopSite,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "editTopSite",
-      base::BindRepeating(&InstantServiceMessageHandler::HandleEditTopSite,
+      base::BindRepeating(&TopSitesMessageHandler::HandleEditTopSite,
                           base::Unretained(this)));
 }
 
-// InstantServiceObserver:
-void InstantServiceMessageHandler::MostVisitedInfoChanged(
-    const InstantMostVisitedInfo& info) {
+// ntp_tiles::MostVisitedSites::Observer:
+void TopSitesMessageHandler::OnURLsAvailable(
+    const std::map<ntp_tiles::SectionType, ntp_tiles::NTPTilesVector>&
+        sections) {
   base::Value result(base::Value::Type::DICTIONARY);
   base::Value tiles(base::Value::Type::LIST);
   int tile_id = 1;
@@ -101,39 +99,46 @@ void InstantServiceMessageHandler::MostVisitedInfoChanged(
       } else {
         tile_value.SetStringKey("title", top_site.name);
         tile_value.SetIntKey("title_direction",
-            base::i18n::GetFirstStrongCharacterDirection(
-                base::UTF8ToUTF16(top_site.name)));
+                             base::i18n::GetFirstStrongCharacterDirection(
+                                 base::UTF8ToUTF16(top_site.name)));
       }
       tile_value.SetIntKey("id", tile_id++);
       tile_value.SetStringKey("url", top_site.destination_url);
       tile_value.SetStringKey("favicon", top_site.image_path);
       tile_value.SetBoolKey("defaultSRTopSite", true);
       tile_value.SetIntKey(
-          "source", static_cast<int32_t>(ntp_tiles::TileTitleSource::INFERRED));
+          "source", static_cast<int32_t>(ntp_tiles::TileSource::ALLOWLIST));
+      tile_value.SetIntKey(
+          "title_source",
+          static_cast<int32_t>(ntp_tiles::TileTitleSource::INFERRED));
       tiles.Append(std::move(tile_value));
     }
   }
 
-  // See chrome/common/search/instant_types.h for more info
-  for (auto& tile : info.items) {
+  for (auto& tile : sections.at(ntp_tiles::SectionType::PERSONALIZED)) {
     base::Value tile_value(base::Value::Type::DICTIONARY);
     if (tile.title.empty()) {
       tile_value.SetStringKey("title", tile.url.spec());
       tile_value.SetIntKey("title_direction", base::i18n::LEFT_TO_RIGHT);
     } else {
       tile_value.SetStringKey("title", base::UTF16ToUTF8(tile.title));
-      tile_value.SetIntKey("title_direction",
+      tile_value.SetIntKey(
+          "title_direction",
           base::i18n::GetFirstStrongCharacterDirection(tile.title));
     }
     tile_value.SetIntKey("id", tile_id++);
     tile_value.SetStringKey("url", tile.url.spec());
-    tile_value.SetStringKey("favicon", tile.favicon.spec());
-    tile_value.SetIntKey("source", static_cast<int32_t>(tile.title_source));
+    tile_value.SetStringKey("favicon", tile.favicon_url.spec());
+    tile_value.SetIntKey("source", static_cast<int32_t>(tile.source));
+    tile_value.SetIntKey("title_source",
+                         static_cast<int32_t>(tile.title_source));
     tiles.Append(std::move(tile_value));
   }
-  result.SetBoolKey("custom_links_enabled", !info.use_most_visited);
+
   result.SetKey("tiles", std::move(tiles));
-  result.SetBoolKey("visible", info.is_visible);
+  result.SetBoolKey("custom_links_enabled",
+                    most_visited_sites_->IsCustomLinksEnabled());
+  result.SetBoolKey("visible", most_visited_sites_->IsShortcutsVisible());
   result.SetIntKey("custom_links_num", GetCustomLinksNum());
   top_site_tiles_ = std::move(result);
 
@@ -143,7 +148,9 @@ void InstantServiceMessageHandler::MostVisitedInfoChanged(
   }
 }
 
-int InstantServiceMessageHandler::GetCustomLinksNum() const {
+void TopSitesMessageHandler::OnIconMadeAvailable(const GURL& site_url) {}
+
+int TopSitesMessageHandler::GetCustomLinksNum() const {
   // Calculate the number of tiles that can be visible in favorites mode.
   int custom_links_num = 0;
   auto most_visited_sites =
@@ -161,17 +168,23 @@ int InstantServiceMessageHandler::GetCustomLinksNum() const {
   return custom_links_num;
 }
 
-void InstantServiceMessageHandler::HandleUpdateMostVisitedInfo(
+bool TopSitesMessageHandler::IsCustomLinksEnabled() const {
+  return !profile_->GetPrefs()->GetBoolean(ntp_prefs::kNtpUseMostVisitedTiles);
+}
+
+bool TopSitesMessageHandler::IsShortcutsVisible() const {
+  return profile_->GetPrefs()->GetBoolean(ntp_prefs::kNtpShortcutsVisible);
+}
+
+void TopSitesMessageHandler::HandleUpdateMostVisitedInfo(
     const base::ListValue* args) {
   AllowJavascript();
 
-  // OnNewTabPageOpened refreshes the most visited entries while
-  // UpdateMostVisitedInfo triggers a call to MostVisitedInfoChanged.
-  instant_service_->OnNewTabPageOpened();
-  instant_service_->UpdateMostVisitedInfo();
+  // same as `MostVisitedHandler::UpdateMostVisitedInfo`
+  most_visited_sites_->RefreshTiles();
 }
 
-void InstantServiceMessageHandler::HandleDeleteMostVisitedTile(
+void TopSitesMessageHandler::HandleDeleteMostVisitedTile(
     const base::ListValue* args) {
   AllowJavascript();
 
@@ -180,15 +193,17 @@ void InstantServiceMessageHandler::HandleDeleteMostVisitedTile(
     return;
 
   GURL gurl(url);
-  if (instant_service_->IsCustomLinksEnabled()) {
-    instant_service_->DeleteCustomLink(gurl);
+
+  // same as `MostVisitedHandler::DeleteMostVisitedTile`
+  if (most_visited_sites_->IsCustomLinksEnabled()) {
+    most_visited_sites_->DeleteCustomLink(gurl);
   } else {
-    instant_service_->DeleteMostVisitedItem(gurl);
-    last_blacklisted_ = gurl;
+    most_visited_sites_->AddOrRemoveBlockedUrl(gurl, true);
+    last_blocklisted_ = gurl;
   }
 }
 
-void InstantServiceMessageHandler::HandleReorderMostVisitedTile(
+void TopSitesMessageHandler::HandleReorderMostVisitedTile(
     const base::ListValue* args) {
   AllowJavascript();
 
@@ -201,33 +216,39 @@ void InstantServiceMessageHandler::HandleReorderMostVisitedTile(
     return;
 
   GURL gurl(url);
-  instant_service_->ReorderCustomLink(gurl, (uint8_t)new_pos);
+
+  // same as `MostVisitedHandler::ReorderMostVisitedTile`
+  if (most_visited_sites_->IsCustomLinksEnabled()) {
+    most_visited_sites_->ReorderCustomLink(gurl, new_pos);
+  }
 }
 
-void InstantServiceMessageHandler::HandleRestoreMostVisitedDefaults(
+void TopSitesMessageHandler::HandleRestoreMostVisitedDefaults(
     const base::ListValue* args) {
   AllowJavascript();
 
-  if (instant_service_->IsCustomLinksEnabled()) {
-    instant_service_->ResetCustomLinks();
+  // same as `MostVisitedHandler::RestoreMostVisitedDefaults`
+  if (most_visited_sites_->IsCustomLinksEnabled()) {
+    most_visited_sites_->UninitializeCustomLinks();
   } else {
-    instant_service_->UndoAllMostVisitedDeletions();
+    most_visited_sites_->ClearBlockedUrls();
   }
 }
 
-void InstantServiceMessageHandler::HandleUndoMostVisitedTileAction(
+void TopSitesMessageHandler::HandleUndoMostVisitedTileAction(
     const base::ListValue* args) {
   AllowJavascript();
 
-  if (instant_service_->IsCustomLinksEnabled()) {
-    instant_service_->UndoCustomLinkAction();
-  } else if (last_blacklisted_.is_valid()) {
-    instant_service_->UndoMostVisitedDeletion(last_blacklisted_);
-    last_blacklisted_ = GURL();
+  // same `MostVisitedHandler::UndoMostVisitedTileAction`
+  if (most_visited_sites_->IsCustomLinksEnabled()) {
+    most_visited_sites_->UndoCustomLinkAction();
+  } else if (last_blocklisted_.is_valid()) {
+    most_visited_sites_->AddOrRemoveBlockedUrl(last_blocklisted_, false);
+    last_blocklisted_ = GURL();
   }
 }
 
-void InstantServiceMessageHandler::HandleSetMostVisitedSettings(
+void TopSitesMessageHandler::HandleSetMostVisitedSettings(
     const base::ListValue* args) {
   AllowJavascript();
 
@@ -239,25 +260,22 @@ void InstantServiceMessageHandler::HandleSetMostVisitedSettings(
   if (!args->GetBoolean(1, &visible))
     return;
 
-  auto pair = instant_service_->GetCurrentShortcutSettings();
-  // The first of the pair is true if most-visited tiles are being used.
-  bool old_custom_links_enabled = !pair.first;
-  bool old_visible = pair.second;
-  // |ToggleMostVisitedOrCustomLinks()| always notifies observers. Since we only
-  // want to notify once, we need to call |ToggleShortcutsVisibility()| with
-  // false if we are also going to call |ToggleMostVisitedOrCustomLinks()|.
-  bool toggleCustomLinksEnabled =
-      old_custom_links_enabled != custom_links_enabled;
+  // similar to `NewTabPageHandler::SetMostVisitedSettings`
+  bool old_visible = IsShortcutsVisible();
   if (old_visible != visible) {
-    instant_service_->ToggleShortcutsVisibility(
-        /* do_notify= */ !toggleCustomLinksEnabled);
+    profile_->GetPrefs()->SetBoolean(ntp_prefs::kNtpShortcutsVisible, visible);
+    most_visited_sites_->SetShortcutsVisible(IsShortcutsVisible());
   }
-  if (toggleCustomLinksEnabled) {
-    instant_service_->ToggleMostVisitedOrCustomLinks();
+
+  bool old_custom_links_enabled = IsCustomLinksEnabled();
+  if (old_custom_links_enabled != custom_links_enabled) {
+    profile_->GetPrefs()->SetBoolean(ntp_prefs::kNtpUseMostVisitedTiles,
+                                     !custom_links_enabled);
+    most_visited_sites_->EnableCustomLinks(IsCustomLinksEnabled());
   }
 }
 
-void InstantServiceMessageHandler::HandleEditTopSite(
+void TopSitesMessageHandler::HandleEditTopSite(
     const base::ListValue* args) {
   AllowJavascript();
 
@@ -282,23 +300,27 @@ void InstantServiceMessageHandler::HandleEditTopSite(
   if (title.empty())
     title = new_url.empty() ? url : new_url;
 
-  // when user modifies current top sites, change to favorite mode.
-  auto pair = instant_service_->GetCurrentShortcutSettings();
-  const bool custom_links_enabled = !pair.first;
-  if (!custom_links_enabled) {
-    instant_service_->ToggleMostVisitedOrCustomLinks();
+  GURL gurl(url);
+  GURL new_gurl(new_url);
+
+  if (most_visited_sites_->IsCustomLinksEnabled()) {
+    // similar to `MostVisitedHandler::UpdateMostVisitedTile`
+    most_visited_sites_->UpdateCustomLink(
+        gurl, new_gurl != gurl ? new_gurl : GURL(), base::UTF8ToUTF16(title));
+  } else {
+    // when user modifies current top sites, change to favorite mode.
+    profile_->GetPrefs()->SetBoolean(ntp_prefs::kNtpUseMostVisitedTiles, false);
+    most_visited_sites_->EnableCustomLinks(IsCustomLinksEnabled());
 
     // When user tries to edit from frecency mode, we just try to add modified
     // item to favorites. If modified url is already existed in favorites,
     // nothing happened.
-    instant_service_->AddCustomLink(new_url.empty() ? GURL(url) : GURL(new_url),
-                                    title);
-  } else {
-    instant_service_->UpdateCustomLink(GURL(url), GURL(new_url), title);
+    most_visited_sites_->AddCustomLink(
+        new_url.empty() ? GURL(url) : GURL(new_url), base::UTF8ToUTF16(title));
   }
 }
 
-void InstantServiceMessageHandler::HandleAddNewTopSite(
+void TopSitesMessageHandler::HandleAddNewTopSite(
     const base::ListValue* args) {
   AllowJavascript();
 
@@ -315,11 +337,8 @@ void InstantServiceMessageHandler::HandleAddNewTopSite(
   if (!GetValidURLStringForTopSite(&url))
     return;
 
-  // when user adds new top sites, change to favorite mode.
-  auto pair = instant_service_->GetCurrentShortcutSettings();
-  const bool custom_links_enabled = !pair.first;
-  if (!custom_links_enabled)
-    instant_service_->ToggleMostVisitedOrCustomLinks();
-
-  instant_service_->AddCustomLink(GURL(url), title);
+  // similar to `MostVisitedHandler::AddMostVisitedTile`
+  if (most_visited_sites_->IsCustomLinksEnabled()) {
+    most_visited_sites_->AddCustomLink(GURL(url), base::UTF8ToUTF16(title));
+  }
 }
