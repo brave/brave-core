@@ -82,6 +82,9 @@ void AdBlockSubscriptionDownloadClient::OnDownloadSucceeded(
       GetAdBlockSubscriptionDownloadManager();
   DCHECK(completion_info.blob_handle);
 
+  if (!download_manager)
+    return;
+
   std::string mimetype;
   if (!completion_info.response_headers->GetMimeType(&mimetype)) {
     download_manager->OnDownloadFailed(guid);
@@ -93,11 +96,9 @@ void AdBlockSubscriptionDownloadClient::OnDownloadSucceeded(
     return;
   }
 
-  if (download_manager) {
-    download_manager->OnDownloadSucceeded(
-        guid, std::make_unique<storage::BlobDataHandle>(
-                  *completion_info.blob_handle));
-  }
+  download_manager->OnDownloadSucceeded(
+      guid, std::make_unique<storage::BlobDataHandle>(
+                *completion_info.blob_handle));
 }
 
 bool AdBlockSubscriptionDownloadClient::CanServiceRemoveDownloadedFile(

@@ -10,13 +10,9 @@
 #include <vector>
 
 #include "components/download/public/background_service/client.h"
+#include "components/download/public/background_service/download_metadata.h"
 
 class Profile;
-
-namespace download {
-struct CompletionInfo;
-struct DownloadMetaData;
-}  // namespace download
 
 namespace brave_shields {
 

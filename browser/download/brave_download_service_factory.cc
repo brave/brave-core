@@ -18,7 +18,8 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_client.h"
-#include "build/chromeos_buildflags.h"
+#include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
+#include "chrome/browser/download/deferred_client_wrapper.h"
 #include "chrome/browser/download/download_manager_utils.h"
 #include "chrome/browser/download/simple_download_manager_coordinator_factory.h"
 #include "chrome/browser/net/system_network_context_manager.h"
@@ -51,6 +52,13 @@
 #endif
 
 namespace {
+
+std::unique_ptr<download::Client> CreateAdBlockSubscriptionDownloadClient(
+    Profile* profile) {
+  return std::make_unique<brave_shields::AdBlockSubscriptionDownloadClient>(
+      g_brave_browser_process->ad_block_service()
+          ->subscription_service_manager());
+}
 
 // Called on profile created to retrieve the BlobStorageContextGetter.
 void DownloadOnProfileCreated(download::BlobContextGetterCallback callback,
@@ -110,14 +118,12 @@ BraveDownloadServiceFactory::BuildServiceInstanceFor(
   auto clients = std::make_unique<download::DownloadClientMap>();
   ProfileKey* profile_key = ProfileKey::FromSimpleFactoryKey(key);
 
-  auto* subscription_service_manager =
-      g_brave_browser_process->ad_block_service()
-          ->subscription_service_manager();
-
   clients->insert(std::make_pair(
-      download::DownloadClient::CUSTOM_LIST_SUBSCRIPTIONS,
-      std::make_unique<brave_shields::AdBlockSubscriptionDownloadClient>(
-          subscription_service_manager)));
+        download::DownloadClient::CUSTOM_LIST_SUBSCRIPTIONS,
+        std::make_unique<download::DeferredClientWrapper>(
+            base::BindOnce(
+                &CreateAdBlockSubscriptionDownloadClient),
+            key)));
 
   // Build in memory download service for incognito profile.
   if (key->IsOffTheRecord() &&
