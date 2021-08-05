@@ -145,7 +145,6 @@ function onToggleFlagAd (result: Rewards.ToggleFlagAd) {
 function onPendingContributionSaved (result: number) {
   if (result === 0) {
     getActions().getPendingContributions()
-    getActions().setFirstLoad(false)
   }
 }
 
