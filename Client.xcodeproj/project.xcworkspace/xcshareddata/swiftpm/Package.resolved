@@ -20,7 +20,7 @@
         }
       },
       {
-        "package": "GCDWebServer",
+        "package": "GCDWebServers",
         "repositoryURL": "https://github.com/nostradani/GCDWebServer",
         "state": {
           "branch": null,
@@ -29,7 +29,7 @@
         }
       },
       {
-        "package": "lottie-ios",
+        "package": "Lottie",
         "repositoryURL": "https://github.com/airbnb/lottie-ios",
         "state": {
           "branch": null,
@@ -101,7 +101,7 @@
         }
       },
       {
-        "package": "yubikit-ios",
+        "package": "YubiKit",
         "repositoryURL": "https://github.com/Yubico/yubikit-ios",
         "state": {
           "branch": null,
