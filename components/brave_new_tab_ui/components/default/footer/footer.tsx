@@ -24,38 +24,21 @@ import {
   BookmarkBook,
   HistoryIcon
 } from 'brave-ui/components/icons'
-import BraveTalkTooltip from './braveTalkTooltip'
-import BraveTalkIcon from './braveTalkTooltip/braveTalkIcon'
+import BraveTalkItem from './braveTalkItem'
 
 // Helpers
 import { getLocale } from '../../../../common/locale'
+import { DismissBraveTalkPromptPayload } from '../../../actions/new_tab_actions'
 
-interface Props {
+export type OnDismissBraveTalkPrompt = (payload: DismissBraveTalkPromptPayload) => unknown
+export interface Props {
   textDirection: string
   supportsBraveTalk: boolean
-  braveTalkPromptDismissed: boolean
+  showBraveTalkPrompt: boolean
   backgroundImageInfo: any
   showPhotoInfo: boolean
   onClickSettings: () => any
-  onDismissBraveTalkPrompt: () => any
-}
-
-function BraveTalkItem (props: Props) {
-  if (!props.braveTalkPromptDismissed) {
-    return (
-      <BraveTalkTooltip onClose={props.onDismissBraveTalkPrompt}>
-        <IconLink title={getLocale('braveTalkPromptTitle')} href='https://talk.brave.com/widget'>
-          <BraveTalkIcon />
-        </IconLink>
-      </BraveTalkTooltip>
-    )
-  }
-
-  return (
-    <IconLink title={getLocale('braveTalkPromptTitle')} href='https://talk.brave.com/widget'>
-      <BraveTalkIcon />
-    </IconLink>
-  )
+  onDismissBraveTalkPrompt: OnDismissBraveTalkPrompt
 }
 
 export default class FooterInfo extends React.PureComponent<Props, {}> {
