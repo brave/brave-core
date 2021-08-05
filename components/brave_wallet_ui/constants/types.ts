@@ -383,7 +383,7 @@ export interface RecoveryObject {
 }
 
 export interface MojoTime {
-  internalValue: number
+  microseconds: number
 }
 
 export interface NetworkOptionsType {

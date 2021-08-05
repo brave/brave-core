@@ -73,16 +73,17 @@ public class AssetDetailActivity
             @Override
             @SuppressLint("ClickableViewAccessibility")
             public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
                 SmoothLineChartEquallySpaced chartES = (SmoothLineChartEquallySpaced) v;
                 if (chartES == null) {
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE
                         || event.getAction() == MotionEvent.ACTION_DOWN) {
-                    chartES.drawLine(event.getRawX());
+                    chartES.drawLine(event.getRawX(), findViewById(R.id.asset_price));
                 } else if (event.getAction() == MotionEvent.ACTION_UP
                         || event.getAction() == MotionEvent.ACTION_CANCEL) {
-                    chartES.drawLine(-1);
+                    chartES.drawLine(-1, null);
                 }
 
                 return true;
@@ -94,14 +95,8 @@ public class AssetDetailActivity
 
     private void getPriceHistory(String asset, int timeframe) {
         if (mAssetRatioController != null) {
-            mAssetRatioController.getPriceHistory(asset, timeframe, (result, priceHistory) -> {
-                final float[] pricesArray = new float[priceHistory.length];
-                for (int index = 0; index < priceHistory.length; index++) {
-                    // TODO(sergz): We need to retrieve and pass date as well
-                    pricesArray[index] = Float.parseFloat(priceHistory[index].price);
-                }
-                updateAssetGraph(pricesArray);
-            });
+            mAssetRatioController.getPriceHistory(
+                    asset, timeframe, (result, priceHistory) -> { chartES.setData(priceHistory); });
         }
     }
 
@@ -140,9 +135,5 @@ public class AssetDetailActivity
     @Override
     public boolean shouldStartGpuProcess() {
         return true;
-    }
-
-    private void updateAssetGraph(float[] prices) {
-        chartES.setData(prices);
     }
 }

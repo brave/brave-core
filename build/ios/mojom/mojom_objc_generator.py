@@ -104,13 +104,16 @@ class Generator(generator.Generator):
     def _IsTimeKind(self, kind):
         return self._IsMojoBaseKind(kind) and kind.name == 'Time'
 
+    def _IsTimeDeltaKind(self, kind):
+        return self._IsMojoBaseKind(kind) and kind.name == 'TimeDelta'
+
     def _IsStructKind(self, kind):
         return mojom.IsStructKind(kind) and not self._IsMojoBaseKind(kind)
 
     def _GetObjCWrapperType(self, kind, objectType=False):
         if self._IsStructKind(kind):
             return "%s%s *" % (self._ObjCPrefix(), kind.name)
-        if self._IsTimeKind(kind):
+        if self._IsTimeKind(kind) or self._IsTimeDeltaKind(kind):
             return "NSDate *"
         if mojom.IsEnumKind(kind):
             return "%s%s" % (self._ObjCPrefix(), kind.name)
@@ -179,6 +182,8 @@ class Generator(generator.Generator):
                 return "%s.cppObjPtr" % accessor
         if self._IsTimeKind(kind):
             return "base::Time::FromNSDate(%s)" % accessor
+        if self._IsTimeDeltaKind(kind):
+            return "base::TimeDelta::FromSecondsD(%s.timeIntervalSince1970)" % accessor
         if mojom.IsEnumKind(kind):
             args = (self._CppNamespaceFromKind(kind), kind.name, accessor)
             return "static_cast<%s::%s>(%s)" % args
@@ -290,6 +295,8 @@ class Generator(generator.Generator):
                 return base
         if self._IsTimeKind(kind):
             return "%s.ToNSDate()" % accessor
+        if self._IsTimeDeltaKind(kind):
+            return "[NSDate dateWithTimeIntervalSince1970:%s.InSecondsF()]" % accessor
         if mojom.IsEnumKind(kind):
             return "static_cast<%s%s>(%s)" % (self._ObjCPrefix(), kind.name, accessor)
         if mojom.IsStringKind(kind):

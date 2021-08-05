@@ -49,9 +49,9 @@ public class CryptoChildFragment extends Fragment {
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE
                         || event.getAction() == MotionEvent.ACTION_DOWN) {
-                    chartES.drawLine(event.getRawX());
+                    chartES.drawLine(event.getRawX(), null);
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    chartES.drawLine(-1);
+                    chartES.drawLine(-1, null);
                 }
 
                 return true;

@@ -98,14 +98,16 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPriceHistory) {
   ASSERT_TRUE(ParseAssetPriceHistory(json, &values));
   ASSERT_EQ(values.size(), 2UL);
   ASSERT_EQ(values[0]->price, "0.8201346624954003");
+  base::Time date = base::Time::FromJsTime(values[0]->date.InMilliseconds());
   base::Time::Exploded exploded_time;
-  values[0]->date.UTCExplode(&exploded_time);
+  date.UTCExplode(&exploded_time);
   ASSERT_EQ(exploded_time.year, 2021);
   ASSERT_EQ(exploded_time.month, 6);
   ASSERT_EQ(exploded_time.day_of_month, 3);
 
   ASSERT_EQ(values[1]->price, "0.8096978545029869");
-  values[1]->date.UTCExplode(&exploded_time);
+  base::Time date1 = base::Time::FromJsTime(values[1]->date.InMilliseconds());
+  date1.UTCExplode(&exploded_time);
   ASSERT_EQ(exploded_time.year, 2021);
   ASSERT_EQ(exploded_time.month, 6);
   ASSERT_EQ(exploded_time.day_of_month, 3);

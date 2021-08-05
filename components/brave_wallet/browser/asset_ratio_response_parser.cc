@@ -171,7 +171,8 @@ bool ParseAssetPriceHistory(
 
     base::Time date = base::Time::FromJsTime(date_dbl);
     auto asset_time_price = brave_wallet::mojom::AssetTimePrice::New();
-    asset_time_price->date = date;
+    asset_time_price->date =
+        base::TimeDelta::FromMilliseconds(date.ToJavaTime());
     asset_time_price->price = base::NumberToString(price);
     values->push_back(std::move(asset_time_price));
   }
