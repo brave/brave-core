@@ -38,19 +38,29 @@ bool NotificationHelperAndroid::ShouldShowNotifications() {
     return true;
   }
 
+  return CanShowNativeNotifications();
+}
+
+bool NotificationHelperAndroid::CanShowNativeNotifications() {
   JNIEnv* env = base::android::AttachCurrentThread();
-  int status = Java_NotificationSystemStatusUtil_getAppNotificationStatus(env);
-  bool is_notifications_enabled =
+  const int status =
+      Java_NotificationSystemStatusUtil_getAppNotificationStatus(env);
+
+  const bool is_notifications_enabled =
       (status == kAppNotificationsStatusEnabled ||
        status == kAppNotificationStatusUndeterminable);
 
-  bool is_foreground = BackgroundHelper::GetInstance()->IsForeground();
-  bool is_notification_channel_enabled =
+  const bool is_foreground = BackgroundHelper::GetInstance()->IsForeground();
+
+  const bool is_notification_channel_enabled =
       IsBraveAdsNotificationChannelEnabled(is_foreground);
+
   bool result = is_notifications_enabled && is_notification_channel_enabled;
+
   if (!is_foreground) {
     result = result && CanShowBackgroundNotifications();
   }
+
   return result;
 }
 

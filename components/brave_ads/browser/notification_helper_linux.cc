@@ -14,15 +14,14 @@ NotificationHelperLinux::NotificationHelperLinux() = default;
 NotificationHelperLinux::~NotificationHelperLinux() = default;
 
 bool NotificationHelperLinux::ShouldShowNotifications() {
-  if (features::ShouldShowCustomAdNotifications()) {
-    return true;
-  }
+  return features::ShouldShowCustomAdNotifications();
+}
 
+bool NotificationHelperLinux::CanShowNativeNotifications() {
   // TODO(https://github.com/brave/brave-browser/issues/5542): Investigate how
-  // we can detect if notifications are enabled within the Linux operating
-  // system
+  // to detect if notifications are enabled within the Linux operating system
 
-  return true;
+  return false;
 }
 
 bool NotificationHelperLinux::ShowMyFirstAdNotification() {

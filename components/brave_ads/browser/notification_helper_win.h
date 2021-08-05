@@ -48,6 +48,8 @@ class NotificationHelperWin
   // NotificationHelper impl
   bool ShouldShowNotifications() override;
 
+  bool CanShowNativeNotifications() override;
+
   bool ShowMyFirstAdNotification() override;
 
   bool CanShowBackgroundNotifications() const override;

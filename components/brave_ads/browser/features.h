@@ -21,6 +21,8 @@ bool IsAdNotificationsEnabled();
 
 bool ShouldShowCustomAdNotifications();
 
+bool CanFallbackToCustomAdNotifications();
+
 int AdNotificationTimeout();
 
 #if !defined(OS_ANDROID)

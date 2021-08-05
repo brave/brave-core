@@ -69,7 +69,7 @@ std::string TestParamToString(::testing::TestParamInfo<int> param_info) {
                             database::version());
 }
 
-INSTANTIATE_TEST_SUITE_P(MigrateFromSchema,
+INSTANTIATE_TEST_SUITE_P(BatAdsDatabaseMigration,
                          BatAdsDatabaseMigrationTest,
                          testing::Range(0, database::version()),
                          TestParamToString);

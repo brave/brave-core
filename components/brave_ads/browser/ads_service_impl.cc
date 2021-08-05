@@ -111,10 +111,6 @@ namespace {
 
 const unsigned int kRetriesCountOnNetworkChange = 1;
 
-}  // namespace
-
-namespace {
-
 constexpr char kAdNotificationUrlPrefix[] = "https://www.brave.com/ads/?";
 
 static std::map<std::string, int> g_schema_resource_ids = {
@@ -1009,6 +1005,30 @@ void AdsServiceImpl::OnClickAdNotification(const std::string& notification_id) {
                                   ads::AdNotificationEventType::kClicked);
 }
 
+bool AdsServiceImpl::ShouldShowCustomAdNotifications() {
+  const bool can_show_native_notifications =
+      NotificationHelper::GetInstance()->CanShowNativeNotifications();
+
+  const bool can_fallback_to_custom_ad_notifications =
+      features::CanFallbackToCustomAdNotifications();
+  if (!can_fallback_to_custom_ad_notifications) {
+    ClearPref(prefs::kAdNotificationDidFallbackToCustom);
+  }
+
+  const bool should_show = features::ShouldShowCustomAdNotifications();
+
+  const bool should_fallback =
+      !can_show_native_notifications && can_fallback_to_custom_ad_notifications;
+  if (should_fallback) {
+    SetBooleanPref(prefs::kAdNotificationDidFallbackToCustom, true);
+  }
+
+  const bool did_fallback =
+      GetBooleanPref(prefs::kAdNotificationDidFallbackToCustom);
+
+  return should_show || should_fallback || did_fallback;
+}
+
 void AdsServiceImpl::MaybeOpenNewTabWithAd() {
   if (retry_opening_new_tab_for_ad_with_uuid_.empty()) {
     return;
@@ -1817,7 +1837,7 @@ std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(
 }
 
 void AdsServiceImpl::ShowNotification(const ads::AdNotificationInfo& info) {
-  if (features::ShouldShowCustomAdNotifications()) {
+  if (ShouldShowCustomAdNotifications()) {
     std::unique_ptr<AdNotificationPlatformBridge> platform_bridge =
         std::make_unique<AdNotificationPlatformBridge>(profile_);
 
@@ -1874,7 +1894,7 @@ void AdsServiceImpl::ShowNotification(const ads::AdNotificationInfo& info) {
 
 void AdsServiceImpl::StartNotificationTimeoutTimer(const std::string& uuid) {
 #if defined(OS_ANDROID)
-  if (!features::ShouldShowCustomAdNotifications()) {
+  if (!ShouldShowCustomAdNotifications()) {
     return;
   }
 #endif
@@ -1910,15 +1930,19 @@ bool AdsServiceImpl::StopNotificationTimeoutTimer(const std::string& uuid) {
 
 bool AdsServiceImpl::ShouldShowNotifications() {
   if (!features::IsAdNotificationsEnabled()) {
-    LOG(INFO) << "Notification not made: Feature is disabled";
+    LOG(INFO) << "Notification not made: Ad notifications feature is disabled";
     return false;
   }
 
-  return NotificationHelper::GetInstance()->ShouldShowNotifications();
+  if (!NotificationHelper::GetInstance()->ShouldShowNotifications()) {
+    return ShouldShowCustomAdNotifications();
+  }
+
+  return true;
 }
 
 void AdsServiceImpl::CloseNotification(const std::string& uuid) {
-  if (features::ShouldShowCustomAdNotifications()) {
+  if (ShouldShowCustomAdNotifications()) {
     std::unique_ptr<AdNotificationPlatformBridge> platform_bridge =
         std::make_unique<AdNotificationPlatformBridge>(profile_);
 
