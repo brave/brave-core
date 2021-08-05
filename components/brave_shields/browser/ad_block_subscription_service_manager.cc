@@ -36,7 +36,8 @@ namespace {
 
 FilterListSubscriptionInfo BuildInfoFromDict(
     const SubscriptionIdentifier& list_url,
-    const base::Value* dict) {
+    const base::Value* dict,
+    const base::FilePath& list_dir) {
   DCHECK(dict);
   DCHECK(dict->is_dict());
 
@@ -45,6 +46,7 @@ FilterListSubscriptionInfo BuildInfoFromDict(
   converter.Convert(*dict, &info);
 
   info.list_url = list_url;
+  info.list_dir = list_dir;
 
   return info;
 }
@@ -210,23 +212,29 @@ AdBlockSubscriptionServiceManager::GetInfo(const SubscriptionIdentifier& id) {
     return base::nullopt;
 
   return base::make_optional<FilterListSubscriptionInfo>(
-      BuildInfoFromDict(id, list_subscription_dict));
+      BuildInfoFromDict(id, list_subscription_dict, GetSubscriptionPath(id)));
 }
 
 void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
 
-  base::AutoLock lock(subscription_services_lock_);
-  for (base::DictionaryValue::Iterator it(*subscriptions_);
-       !it.IsAtEnd(); it.Advance()) {
-    const std::string uuid = it.key();
-    FilterListSubscriptionInfo info;
-    const base::Value* list_subscription_dict =
-        subscriptions_->FindDictKey(uuid);
-    if (list_subscription_dict) {
-      const GURL list_url = GURL(uuid);
+  PrefService* local_state = delegate_->local_state();
+  if (!local_state)
+    return;
 
-      info = BuildInfoFromDict(list_url, list_subscription_dict);
+  base::AutoLock lock(subscription_services_lock_);
+  subscriptions_ = base::DictionaryValue::From(base::Value::ToUniquePtrValue(
+      local_state->GetDictionary(prefs::kAdBlockListSubscriptions)->Clone()));
+
+  for (base::DictionaryValue::Iterator it(*subscriptions_); !it.IsAtEnd();
+       it.Advance()) {
+    const std::string key = it.key();
+    FilterListSubscriptionInfo info;
+    const base::Value* list_subscription_dict = subscriptions_->FindDictKey(key);
+    if (list_subscription_dict) {
+      SubscriptionIdentifier list_url(key);
+      info = BuildInfoFromDict(list_url, list_subscription_dict,
+                               GetSubscriptionPath(list_url));
 
       auto subscription_service = std::make_unique<AdBlockSubscriptionService>(
           info,
@@ -235,7 +243,7 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
           delegate_);
 
       subscription_services_.insert(
-          std::make_pair(uuid, std::move(subscription_service)));
+          std::make_pair(list_url, std::move(subscription_service)));
     }
   }
 }
@@ -247,9 +255,8 @@ void AdBlockSubscriptionServiceManager::UpdateFilterListPrefs(
     const FilterListSubscriptionInfo& info) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
   PrefService* local_state = delegate_->local_state();
-  if (!local_state) {
+  if (!local_state)
     return;
-  }
 
   DictionaryPrefUpdate update(local_state, prefs::kAdBlockListSubscriptions);
   base::DictionaryValue* subscriptions_dict = update.Get();
@@ -272,9 +279,9 @@ void AdBlockSubscriptionServiceManager::ClearFilterListPrefs(
     const SubscriptionIdentifier& id) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
   PrefService* local_state = delegate_->local_state();
-  if (!local_state) {
+  if (!local_state)
     return;
-  }
+
   DictionaryPrefUpdate update(local_state, prefs::kAdBlockListSubscriptions);
   base::DictionaryValue* subscriptions_dict = update.Get();
   subscriptions_dict->RemoveKey(id.spec());

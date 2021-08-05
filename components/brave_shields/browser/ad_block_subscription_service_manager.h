@@ -90,9 +90,9 @@ class AdBlockSubscriptionServiceManager {
   friend class ::AdBlockServiceTest;
   bool Init();
   void LoadSubscriptionServices();
-  void UpdateFilterListPrefs(const SubscriptionIdentifier& uuid,
+  void UpdateFilterListPrefs(const SubscriptionIdentifier& list_url,
                              const FilterListSubscriptionInfo& info);
-  void ClearFilterListPrefs(const SubscriptionIdentifier& uuid);
+  void ClearFilterListPrefs(const SubscriptionIdentifier& list_url);
   void OnGetDownloadManager(
       AdBlockSubscriptionDownloadManager* download_manager);
   void StartDownload(const GURL& list_url, bool from_ui);
