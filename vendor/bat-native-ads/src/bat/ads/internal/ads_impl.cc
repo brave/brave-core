@@ -311,13 +311,6 @@ void AdsImpl::OnAdNotificationEvent(const std::string& uuid,
 void AdsImpl::OnNewTabPageAdEvent(const std::string& uuid,
                                   const std::string& creative_instance_id,
                                   const NewTabPageAdEventType event_type) {
-  if (event_type == NewTabPageAdEventType::kViewed) {
-    // TODO(tmancey): We need to fire an ad served event until new tab page ads
-    // are served by the ads library
-    new_tab_page_ad_->FireEvent(uuid, creative_instance_id,
-                                NewTabPageAdEventType::kServed);
-  }
-
   new_tab_page_ad_->FireEvent(uuid, creative_instance_id, event_type);
 }
 
@@ -325,13 +318,6 @@ void AdsImpl::OnPromotedContentAdEvent(
     const std::string& uuid,
     const std::string& creative_instance_id,
     const PromotedContentAdEventType event_type) {
-  if (event_type == PromotedContentAdEventType::kViewed) {
-    // TODO(tmancey): We need to fire an ad served event until promoted content
-    // ads are served by the ads library
-    promoted_content_ad_->FireEvent(uuid, creative_instance_id,
-                                    PromotedContentAdEventType::kServed);
-  }
-
   promoted_content_ad_->FireEvent(uuid, creative_instance_id, event_type);
 }
 

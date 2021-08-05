@@ -91,6 +91,12 @@ void NewTabPageAd::FireEvent(const NewTabPageAdInfo& ad,
       return;
     }
 
+    if (event_type == NewTabPageAdEventType::kViewed) {
+      // TODO(tmancey): We need to fire an ad served event until new tab page
+      // ads are served by the ads library
+      FireEvent(uuid, creative_instance_id, NewTabPageAdEventType::kServed);
+    }
+
     const auto ad_event = new_tab_page_ads::AdEventFactory::Build(event_type);
     ad_event->FireEvent(ad);
 
