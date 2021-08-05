@@ -220,6 +220,14 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getP3AEnabled();
     }
 
+    public void setStatsReportingEnabled(boolean value) {
+        BravePrefServiceBridgeJni.get().setStatsReportingEnabled(value);
+    }
+
+    public boolean getStatsReportingEnabled() {
+        return BravePrefServiceBridgeJni.get().getStatsReportingEnabled();
+    }
+
     public boolean hasPathP3AEnabled() {
         return BravePrefServiceBridgeJni.get().hasPathP3AEnabled();
     }
@@ -319,6 +327,9 @@ public class BravePrefServiceBridge {
         boolean hasPathP3AEnabled();
         void setP3ANoticeAcknowledged(boolean value);
         boolean getP3ANoticeAcknowledged();
+
+        void setStatsReportingEnabled(boolean value);
+        boolean getStatsReportingEnabled();
 
         void setUnstoppableDomainsResolveMethod(int method);
         void setENSResolveMethod(int method);

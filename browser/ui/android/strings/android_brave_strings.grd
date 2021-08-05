@@ -1879,6 +1879,13 @@ until they verify, or until 90 days have passed.
     <message name="IDS_SLIPPING_TOLERANCE" desc="Brave Wallet buy-send-swap section text">
       Slippage tolerance
     </message>
+    <!-- Stats -->
+    <message name="IDS_BRAVE_STATS_USAGE_PING_TITLE" desc="Description that shows in settings for toggling stats usage pings">
+      Automatically send daily usage ping to Brave
+    </message>
+    <message name="IDS_BRAVE_STATS_USAGE_PING_SUMMARY" desc="Description that shows under main toggle setting for usage pings">
+      This anonymous, private ping lets Brave estimate active users.
+    </message>
     </messages>
   </release>
 </grit>
