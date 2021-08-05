@@ -396,97 +396,84 @@ void UpdateLastUnlockPref(PrefService* prefs) {
   prefs->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
 }
 
-base::Value TransactionReceiptToValue(const TransactionReceipt& tx_receipt) {
+base::Value TransactionReceiptToValue(
+    const mojom::TransactionReceiptPtr& tx_receipt) {
   base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("transaction_hash", tx_receipt.transaction_hash);
-  dict.SetStringKey("transaction_index",
-                    Uint256ValueToHex(tx_receipt.transaction_index));
-  dict.SetStringKey("block_hash", tx_receipt.block_hash);
-  dict.SetStringKey("block_number", Uint256ValueToHex(tx_receipt.block_number));
-  dict.SetStringKey("from", tx_receipt.from);
-  dict.SetStringKey("to", tx_receipt.to);
-  dict.SetStringKey("cumulative_gas_used",
-                    Uint256ValueToHex(tx_receipt.cumulative_gas_used));
-  dict.SetStringKey("gas_used", Uint256ValueToHex(tx_receipt.gas_used));
-  dict.SetStringKey("contract_address", tx_receipt.contract_address);
+  dict.SetStringKey("transaction_hash", tx_receipt->transaction_hash);
+  dict.SetStringKey("transaction_index", tx_receipt->transaction_index);
+  dict.SetStringKey("block_hash", tx_receipt->block_hash);
+  dict.SetStringKey("block_number", tx_receipt->block_number);
+  dict.SetStringKey("from", tx_receipt->from);
+  dict.SetStringKey("to", tx_receipt->to);
+  dict.SetStringKey("cumulative_gas_used", tx_receipt->cumulative_gas_used);
+  dict.SetStringKey("gas_used", tx_receipt->gas_used);
+  dict.SetStringKey("contract_address", tx_receipt->contract_address);
   // TODO(darkdh): logs
-  dict.SetStringKey("logs_bloom", tx_receipt.logs_bloom);
-  dict.SetBoolKey("status", tx_receipt.status);
+  dict.SetStringKey("logs_bloom", tx_receipt->logs_bloom);
+  dict.SetBoolKey("status", tx_receipt->status);
   return dict;
 }
 
-absl::optional<TransactionReceipt> ValueToTransactionReceipt(
+absl::optional<mojom::TransactionReceiptPtr> ValueToTransactionReceipt(
     const base::Value& value) {
-  TransactionReceipt tx_receipt;
+  mojom::TransactionReceiptPtr tx_receipt = mojom::TransactionReceipt::New();
   const std::string* transaction_hash = value.FindStringKey("transaction_hash");
   if (!transaction_hash)
     return absl::nullopt;
-  tx_receipt.transaction_hash = *transaction_hash;
+  tx_receipt->transaction_hash = *transaction_hash;
 
   const std::string* transaction_index =
       value.FindStringKey("transaction_index");
   if (!transaction_index)
     return absl::nullopt;
-  uint256_t transaction_index_uint;
-  if (!HexValueToUint256(*transaction_index, &transaction_index_uint))
-    return absl::nullopt;
-  tx_receipt.transaction_index = transaction_index_uint;
+  tx_receipt->transaction_index = *transaction_index;
 
   const std::string* block_hash = value.FindStringKey("block_hash");
   if (!block_hash)
     return absl::nullopt;
-  tx_receipt.block_hash = *block_hash;
+  tx_receipt->block_hash = *block_hash;
 
   const std::string* block_number = value.FindStringKey("block_number");
   if (!block_number)
     return absl::nullopt;
-  uint256_t block_number_uint;
-  if (!HexValueToUint256(*block_number, &block_number_uint))
-    return absl::nullopt;
-  tx_receipt.block_number = block_number_uint;
+  tx_receipt->block_number = *block_number;
 
   const std::string* from = value.FindStringKey("from");
   if (!from)
     return absl::nullopt;
-  tx_receipt.from = *from;
+  tx_receipt->from = *from;
 
   const std::string* to = value.FindStringKey("to");
   if (!to)
     return absl::nullopt;
-  tx_receipt.to = *to;
+  tx_receipt->to = *to;
 
   const std::string* cumulative_gas_used =
       value.FindStringKey("cumulative_gas_used");
   if (!cumulative_gas_used)
     return absl::nullopt;
-  uint256_t cumulative_gas_used_uint;
-  if (!HexValueToUint256(*cumulative_gas_used, &cumulative_gas_used_uint))
-    return absl::nullopt;
-  tx_receipt.cumulative_gas_used = cumulative_gas_used_uint;
+  tx_receipt->cumulative_gas_used = *cumulative_gas_used;
 
   const std::string* gas_used = value.FindStringKey("gas_used");
   if (!gas_used)
     return absl::nullopt;
-  uint256_t gas_used_uint;
-  if (!HexValueToUint256(*gas_used, &gas_used_uint))
-    return absl::nullopt;
-  tx_receipt.gas_used = gas_used_uint;
+  tx_receipt->gas_used = *gas_used;
 
   const std::string* contract_address = value.FindStringKey("contract_address");
   if (!contract_address)
     return absl::nullopt;
-  tx_receipt.contract_address = *contract_address;
+  tx_receipt->contract_address = *contract_address;
 
   // TODO(darkdh): logs
   const std::string* logs_bloom = value.FindStringKey("logs_bloom");
   if (!logs_bloom)
     return absl::nullopt;
-  tx_receipt.logs_bloom = *logs_bloom;
+  tx_receipt->logs_bloom = *logs_bloom;
 
   absl::optional<bool> status = value.FindBoolKey("status");
   if (!status)
     return absl::nullopt;
-  tx_receipt.status = *status;
+  tx_receipt->status = *status;
 
   return tx_receipt;
 }

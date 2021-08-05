@@ -175,6 +175,15 @@ interface ERCTokenRegistry {
   GetAllTokens() => (array<ERCToken> tokens);
 };
 
+interface EthTransaction {
+  // return rlp([nonce, gasPrice, gasLimit, to, value, data, v, r, s])
+  GetSignedTransaction() => (bool success, string signed_transaction);
+  GetMessageToSign(string chain_id) => (bool success, array<uint8> message);
+  // Signature and recid will be used to produce v, r, s.
+  // Support EIP-155 chain id
+  ProcessSignature(array<uint8> signature, int32 recid, string chain_id);
+};
+
 interface KeyringController {
   CreateWallet(string password) => (string mnemonic);
   GetMnemonicForDefaultKeyring() => (string mnemonic);
@@ -188,6 +197,7 @@ interface KeyringController {
   GetDefaultKeyringInfo() => (KeyringInfo keyring);
   Reset();
   AddObserver(pending_remote<KeyringControllerObserver> observer);
+  SignTransactionByDefaultKeyring(string address, pending_remote<EthTransaction> tx) => (bool success);
 };
 
 interface AssetRatioController {
@@ -218,6 +228,30 @@ interface EthJsonRpcControllerObserver {
   ChainChangedEvent(string chain_id);
 };
 
+struct TransactionReceipt {
+  string transaction_hash;
+  string transaction_index;
+  string block_hash;
+  string block_number;
+  string from;
+  string to;
+  string cumulative_gas_used;
+  string gas_used;
+  string contract_address;
+  string logs_bloom;
+  array<string> logs;
+  bool status;
+};
+
+struct TxData {
+  string nonce;
+  string gas_price;
+  string gas_limit;
+  string to;
+  string value;
+  array<uint8> data;
+};
+
 interface EthJsonRpcController {
   SetNetwork(Network network);
   GetNetwork() => (Network network);
@@ -232,4 +266,12 @@ interface EthJsonRpcController {
   Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
   AddObserver(pending_remote<EthJsonRpcControllerObserver> observer);
   SetCustomNetwork(url.mojom.Url provider_url);
+  SendRawTransaction(string signed_tx) => (bool status, string tx_hash);
+  GetTransactionReceipt(string address) => (bool status, TransactionReceipt receipt);
+  GetTransactionCount(string address) => (bool status, string hex_result);
+};
+
+interface EthTxController {
+  ApproveTransaction(string tx_meta_id) => (bool status);
+  RejectTransaction(string tx_meta_id) => (bool status);
 };

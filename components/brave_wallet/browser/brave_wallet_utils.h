@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
@@ -88,8 +89,9 @@ void SecureZeroData(void* data, size_t size);
 // it unlocks.
 void UpdateLastUnlockPref(PrefService* prefs);
 
-base::Value TransactionReceiptToValue(const TransactionReceipt& tx_receipt);
-absl::optional<TransactionReceipt> ValueToTransactionReceipt(
+base::Value TransactionReceiptToValue(
+    const mojom::TransactionReceiptPtr& tx_receipt);
+absl::optional<mojom::TransactionReceiptPtr> ValueToTransactionReceipt(
     const base::Value& value);
 
 }  // namespace brave_wallet

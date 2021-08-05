@@ -218,8 +218,9 @@ void EthJsonRpcController::OnGetBalance(
   std::move(callback).Run(true, balance);
 }
 
-void EthJsonRpcController::GetTransactionCount(const std::string& address,
-                                               GetTxCountCallback callback) {
+void EthJsonRpcController::GetTransactionCount(
+    const std::string& address,
+    GetTransactionCountCallback callback) {
   auto internal_callback =
       base::BindOnce(&EthJsonRpcController::OnGetTransactionCount,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
@@ -228,7 +229,7 @@ void EthJsonRpcController::GetTransactionCount(const std::string& address,
 }
 
 void EthJsonRpcController::OnGetTransactionCount(
-    GetTxCountCallback callback,
+    GetTransactionCountCallback callback,
     const int status,
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
@@ -236,7 +237,7 @@ void EthJsonRpcController::OnGetTransactionCount(
     std::move(callback).Run(false, 0);
     return;
   }
-  uint256_t count;
+  std::string count;
   if (!ParseEthGetTransactionCount(body, &count)) {
     std::move(callback).Run(false, 0);
     return;
@@ -247,7 +248,7 @@ void EthJsonRpcController::OnGetTransactionCount(
 
 void EthJsonRpcController::GetTransactionReceipt(
     const std::string& tx_hash,
-    GetTxReceiptCallback callback) {
+    GetTransactionReceiptCallback callback) {
   auto internal_callback =
       base::BindOnce(&EthJsonRpcController::OnGetTransactionReceipt,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
@@ -256,25 +257,26 @@ void EthJsonRpcController::GetTransactionReceipt(
 }
 
 void EthJsonRpcController::OnGetTransactionReceipt(
-    GetTxReceiptCallback callback,
+    GetTransactionReceiptCallback callback,
     const int status,
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
-  TransactionReceipt receipt;
+  auto receipt = mojom::TransactionReceipt::New();
   if (status < 200 || status > 299) {
-    std::move(callback).Run(false, receipt);
+    std::move(callback).Run(false, std::move(receipt));
     return;
   }
   if (!ParseEthGetTransactionReceipt(body, &receipt)) {
-    std::move(callback).Run(false, receipt);
+    std::move(callback).Run(false, std::move(receipt));
     return;
   }
 
-  std::move(callback).Run(true, receipt);
+  std::move(callback).Run(true, std::move(receipt));
 }
 
-void EthJsonRpcController::SendRawTransaction(const std::string& signed_tx,
-                                              SendRawTxCallback callback) {
+void EthJsonRpcController::SendRawTransaction(
+    const std::string& signed_tx,
+    SendRawTransactionCallback callback) {
   auto internal_callback =
       base::BindOnce(&EthJsonRpcController::OnSendRawTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
@@ -283,7 +285,7 @@ void EthJsonRpcController::SendRawTransaction(const std::string& signed_tx,
 }
 
 void EthJsonRpcController::OnSendRawTransaction(
-    SendRawTxCallback callback,
+    SendRawTransactionCallback callback,
     const int status,
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {

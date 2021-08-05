@@ -13,6 +13,9 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/remote.h"
 
 namespace brave_wallet {
 
@@ -22,8 +25,9 @@ class EthJsonRpcController;
 class EthPendingTxTracker {
  public:
   EthPendingTxTracker(EthTxStateManager* tx_state_manager,
-                      EthJsonRpcController* rpc_controller,
-                      EthNonceTracker* nonce_tracker);
+                      EthNonceTracker* nonce_tracker,
+                      mojo::PendingRemote<mojom::EthJsonRpcController>
+                          eth_json_rpc_controller_pending);
   ~EthPendingTxTracker();
   EthPendingTxTracker(const EthPendingTxTracker&) = delete;
   EthPendingTxTracker operator=(const EthPendingTxTracker&) = delete;
@@ -32,13 +36,21 @@ class EthPendingTxTracker {
   void ResubmitPendingTransactions();
 
  private:
+  void OnConnectionError();
   FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, IsNonceTaken);
   FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, ShouldTxDropped);
   FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, DropTransaction);
 
-  void OnGetTxReceipt(std::string id, bool status, TransactionReceipt receipt);
-  void OnGetNetworkNonce(std::string address, bool status, uint256_t result);
+  void OnGetTxReceipt(std::string id,
+                      bool status,
+                      mojom::TransactionReceiptPtr receipt);
+  void OnGetNetworkNonce(std::string address,
+                         bool status,
+                         const std::string& result);
   void OnSendRawTransaction(bool status, const std::string& tx_hash);
+  void OnGetSignedTransactionResubmitPending(
+      bool status,
+      const std::string& signed_transaction);
 
   bool IsNonceTaken(const EthTxStateManager::TxMeta&);
   bool ShouldTxDropped(const EthTxStateManager::TxMeta&);
@@ -46,13 +58,14 @@ class EthPendingTxTracker {
   void DropTransaction(EthTxStateManager::TxMeta*);
 
   // (address, nonce)
-  base::flat_map<std::string, uint256_t> network_nonce_map_;
+  base::flat_map<std::string, std::string> network_nonce_map_;
   // (txHash, count)
   base::flat_map<std::string, uint8_t> dropped_blocks_counter_;
 
   EthTxStateManager* tx_state_manager_;
-  EthJsonRpcController* rpc_controller_;
   EthNonceTracker* nonce_tracker_;
+
+  mojo::Remote<mojom::EthJsonRpcController> eth_json_rpc_controller_;
 
   base::WeakPtrFactory<EthPendingTxTracker> weak_factory_;
 };

@@ -9,6 +9,8 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/test/bind.h"
+#include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -76,14 +78,22 @@ TEST(HDKeyringUnitTest, Accounts) {
 }
 
 TEST(HDKeyringUnitTest, SignTransaction) {
+  base::test::SingleThreadTaskEnvironment task_environment(
+      base::test::SingleThreadTaskEnvironment::MainThreadType::UI);
+
   // Specific signature check is in eth_transaction_unittest.cc
   HDKeyring keyring;
-  EthTransaction tx(EthTransaction::TxData(
-      0x09, 0x4a817c800, 0x5208,
-      EthAddress::FromHex("0x3535353535353535353535353535353535353535"),
-      0x0de0b6b3a7640000, std::vector<uint8_t>()));
-  keyring.SignTransaction("0xDEADBEEFdeadbeefdeadbeefdeadbeefDEADBEEF", &tx);
-  EXPECT_FALSE(tx.IsSigned());
+  auto tx = std::make_unique<EthTransaction>(
+      mojom::TxData::New("0x9", "0x4a817c800", "0x5208",
+                         "0x3535353535353535353535353535353535353535",
+                         "0xde0b6b3a7640000", std::vector<uint8_t>()));
+  keyring.SignTransaction("0xDEADBEEFdeadbeefdeadbeefdeadbeefDEADBEEF",
+                          tx->MakeRemote(),
+                          base::BindLambdaForTesting([&](bool success) {
+                            EXPECT_FALSE(success);
+                            EXPECT_FALSE(tx->IsSigned());
+                          }));
+  base::RunLoop().RunUntilIdle();
 
   std::vector<uint8_t> seed;
   EXPECT_TRUE(base::HexStringToBytes(
@@ -92,8 +102,13 @@ TEST(HDKeyringUnitTest, SignTransaction) {
       &seed));
   keyring.ConstructRootHDKey(seed, "m/44'/60'/0'/0");
   keyring.AddAccounts();
-  keyring.SignTransaction(keyring.GetAddress(0), &tx);
-  EXPECT_TRUE(tx.IsSigned());
+  keyring.SignTransaction(keyring.GetAddress(0), tx->MakeRemote(),
+                          base::BindLambdaForTesting([&](bool success) {
+                            EXPECT_TRUE(success);
+                            EXPECT_TRUE(tx->IsSigned());
+                          }));
+
+  base::RunLoop().RunUntilIdle();
 }
 
 TEST(HDKeyringUnitTest, SignMessage) {

@@ -427,10 +427,14 @@ std::vector<mojom::AccountInfoPtr> KeyringController::GetAccountInfosForKeyring(
 
 void KeyringController::SignTransactionByDefaultKeyring(
     const std::string& address,
-    EthTransaction* tx) {
-  if (!default_keyring_)
+    mojo::PendingRemote<mojom::EthTransaction> pending_tx,
+    SignTransactionByDefaultKeyringCallback callback) {
+  if (!default_keyring_) {
+    std::move(callback).Run(false);
     return;
-  default_keyring_->SignTransaction(address, tx);
+  }
+  default_keyring_->SignTransaction(address, std::move(pending_tx),
+                                    std::move(callback));
 }
 
 bool KeyringController::IsLocked() const {
@@ -441,7 +445,6 @@ void KeyringController::Lock() {
   if (IsLocked() || !default_keyring_)
     return;
   default_keyring_.reset();
-
   encryptor_.reset();
   for (const auto& observer : observers_) {
     observer->Locked();
@@ -450,7 +453,8 @@ void KeyringController::Lock() {
 
 void KeyringController::Unlock(const std::string& password,
                                UnlockCallback callback) {
-  if (!ResumeDefaultKeyring(password)) {
+  HDKeyring* keyring = ResumeDefaultKeyring(password);
+  if (!keyring) {
     encryptor_.reset();
     std::move(callback).Run(false);
     return;

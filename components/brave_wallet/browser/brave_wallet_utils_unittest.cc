@@ -748,17 +748,17 @@ TEST(BraveWalletUtilsUnitTest, SecureZeroData) {
 }
 
 TEST(BraveWalletUtilsUnitTest, TransactionReceiptAndValue) {
-  TransactionReceipt tx_receipt;
-  tx_receipt.transaction_hash =
+  auto tx_receipt = mojom::TransactionReceipt::New();
+  tx_receipt->transaction_hash =
       "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238";
-  tx_receipt.transaction_index = 0x1;
-  tx_receipt.block_number = 0xb;
-  tx_receipt.block_hash =
+  tx_receipt->transaction_index = "0x1";
+  tx_receipt->block_number = "0xb";
+  tx_receipt->block_hash =
       "0xc6ef2fc5426d6ad6fd9e2a26abeab0aa2411b7ab17f30a99d3cb96aed1d1055b";
-  tx_receipt.cumulative_gas_used = 0x33bc;
-  tx_receipt.gas_used = 0x4dc;
-  tx_receipt.contract_address = "0xb60e8dd61c5d32be8058bb8eb970870f07233155";
-  tx_receipt.status = true;
+  tx_receipt->cumulative_gas_used = "0x33bc";
+  tx_receipt->gas_used = "0x4dc";
+  tx_receipt->contract_address = "0xb60e8dd61c5d32be8058bb8eb970870f07233155";
+  tx_receipt->status = true;
 
   base::Value tx_receipt_value = TransactionReceiptToValue(tx_receipt);
   auto tx_receipt_from_value = ValueToTransactionReceipt(tx_receipt_value);

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 
+#include <utility>
+
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
@@ -68,17 +70,40 @@ std::string HDKeyring::GetAddress(size_t index) {
   return addr.ToChecksumAddress();
 }
 
-void HDKeyring::SignTransaction(const std::string& address,
-                                EthTransaction* tx) {
+void HDKeyring::SignTransaction(
+    const std::string& address,
+    mojo::PendingRemote<mojom::EthTransaction> pending_tx,
+    SignTransactionCallback callback) {
   HDKey* hd_key = GetHDKeyFromAddress(address);
-  if (!hd_key || !tx)
+  if (!hd_key || !pending_tx) {
+    std::move(callback).Run(false);
     return;
+  }
+
+  mojo::Remote<mojom::EthTransaction> tx;
+  tx.Bind(std::move(pending_tx));
+  if (!tx) {
+    std::move(callback).Run(false);
+    return;
+  }
 
   // TODO(darkdh): chain id
-  const std::vector<uint8_t> message = tx->GetMessageToSign();
-  int recid;
-  const std::vector<uint8_t> signature = hd_key->Sign(message, &recid);
-  tx->ProcessSignature(signature, recid);
+  tx->GetMessageToSign(
+      "0x0", base::BindOnce(
+                 [](HDKey* hd_key, mojo::Remote<mojom::EthTransaction>* tx,
+                    SignTransactionCallback* callback, bool status,
+                    const std::vector<uint8_t>& message) {
+                   if (!status) {
+                     std::move(*callback).Run(false);
+                     return;
+                   }
+                   int recid;
+                   const std::vector<uint8_t> signature =
+                       hd_key->Sign(message, &recid);
+                   (*tx)->ProcessSignature(signature, recid, "0x0");
+                   std::move(*callback).Run(true);
+                 },
+                 hd_key, &tx, &callback));
 }
 
 std::vector<uint8_t> HDKeyring::SignMessage(

@@ -30,6 +30,7 @@ namespace brave_wallet {
 class HDKeyring;
 class EthTransaction;
 class KeyringControllerUnitTest;
+class EthTransaction;
 
 // This class is not thread-safe and should have single owner
 class KeyringController : public KeyedService, public mojom::KeyringController {
@@ -88,11 +89,11 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   void NotifyWalletBackupComplete() override;
   void GetDefaultKeyringInfo(GetDefaultKeyringInfoCallback callback) override;
   void Reset() override;
-
   bool IsDefaultKeyringCreated();
-
-  void SignTransactionByDefaultKeyring(const std::string& address,
-                                       EthTransaction* tx);
+  void SignTransactionByDefaultKeyring(
+      const std::string& address,
+      mojo::PendingRemote<mojom::EthTransaction> pending_tx,
+      SignTransactionByDefaultKeyringCallback callback) override;
 
   bool IsLocked() const;
 
@@ -124,6 +125,9 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, AccountMetasForKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, CreateAndRestoreWallet);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, AddAccount);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, LockAndUnlock);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
+                           UnlockResumesDefaultKeyring);
 
   void AddAccountForDefaultKeyring(const std::string& account_name);
 

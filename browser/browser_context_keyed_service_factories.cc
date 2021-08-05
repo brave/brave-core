@@ -31,6 +31,7 @@
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/browser/brave_wallet/asset_ratio_controller_factory.h"
+#include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/browser/brave_wallet/swap_controller_factory.h"
@@ -76,6 +77,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_wallet::KeyringControllerFactory::GetInstance();
   brave_wallet::RpcControllerFactory::GetInstance();
   brave_wallet::SwapControllerFactory::GetInstance();
+  brave_wallet::EthTxControllerFactory::GetInstance();
 #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)

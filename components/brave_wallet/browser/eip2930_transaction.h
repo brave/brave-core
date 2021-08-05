@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_EIP2930_TRANSACTION_H_
 
 #include <array>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -33,31 +34,33 @@ class Eip2930Transaction : public EthTransaction {
   typedef std::vector<AccessListItem> AccessList;
 
   Eip2930Transaction();
-  Eip2930Transaction(const TxData&, uint64_t chain_id);
-  Eip2930Transaction(const Eip2930Transaction&);
+  Eip2930Transaction(mojom::TxDataPtr, const std::string& chain_id);
+
   ~Eip2930Transaction() override;
   bool operator==(const Eip2930Transaction&) const;
 
-  static absl::optional<Eip2930Transaction> FromValue(const base::Value& value);
+  static std::unique_ptr<Eip2930Transaction> FromValue(
+      const base::Value& value);
 
   static std::vector<base::Value> AccessListToValue(const AccessList&);
   static absl::optional<AccessList> ValueToAccessList(const base::Value&);
 
-  uint64_t chain_id() const { return chain_id_; }
+  std::string chain_id() const { return chain_id_; }
   const AccessList* access_list() const { return &access_list_; }
   AccessList* access_list() { return &access_list_; }
 
   // keccak256(0x01 || rlp([chainId, nonce, gasPrice, gasLimit, to, value, data,
   // accessList]))
-  std::vector<uint8_t> GetMessageToSign(uint64_t chain_id = 0) const override;
+  void GetMessageToSign(const std::string& chain_id,
+                        GetMessageToSignCallback) override;
 
   // 0x01 || rlp([chainId, nonce, gasPrice, gasLimit, to, value, data,
   // accessList, signatureYParity, signatureR, signatureS])
-  std::string GetSignedTransaction() const override;
+  void GetSignedTransaction(GetSignedTransactionCallback) override;
 
-  void ProcessSignature(const std::vector<uint8_t> signature,
+  void ProcessSignature(const std::vector<uint8_t>& signature,
                         int recid,
-                        uint64_t chain_id = 0) override;
+                        const std::string& chain_id) override;
 
   bool IsSigned() const override;
 
@@ -66,7 +69,9 @@ class Eip2930Transaction : public EthTransaction {
   uint256_t GetDataFee() const override;
 
  protected:
-  uint64_t chain_id_;
+  bool GetBasicListData(base::ListValue* list) const override;
+
+  std::string chain_id_;
   AccessList access_list_;
 };
 

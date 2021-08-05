@@ -41,9 +41,15 @@ EthTxStateManager::EthTxStateManager(
 }
 EthTxStateManager::~EthTxStateManager() = default;
 
-EthTxStateManager::TxMeta::TxMeta() : tx(std::make_unique<EthTransaction>()) {}
+EthTxStateManager::TxMeta::TxMeta() : tx(std::make_unique<EthTransaction>()) {
+  tx_receipt = mojom::TransactionReceipt::New();
+}
+
 EthTxStateManager::TxMeta::TxMeta(std::unique_ptr<EthTransaction> tx_in)
-    : tx(std::move(tx_in)) {}
+    : tx(std::move(tx_in)) {
+  tx_receipt = mojom::TransactionReceipt::New();
+}
+
 EthTxStateManager::TxMeta::~TxMeta() = default;
 bool EthTxStateManager::TxMeta::operator==(const TxMeta& meta) const {
   return id == meta.id && status == meta.status && from == meta.from &&
@@ -132,9 +138,9 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
   const base::Value* tx_receipt = value.FindKey("tx_receipt");
   if (!tx_receipt)
     return nullptr;
-  absl::optional<TransactionReceipt> tx_receipt_from_value =
+  absl::optional<mojom::TransactionReceiptPtr> tx_receipt_from_value =
       ValueToTransactionReceipt(*tx_receipt);
-  meta->tx_receipt = *tx_receipt_from_value;
+  meta->tx_receipt = std::move(*tx_receipt_from_value);
 
   const std::string* tx_hash = value.FindStringKey("tx_hash");
   if (!tx_hash)
@@ -150,27 +156,24 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
 
   switch (static_cast<uint8_t>(*type)) {
     case 0: {
-      absl::optional<EthTransaction> tx_from_value =
-          EthTransaction::FromValue(*tx);
+      auto tx_from_value = EthTransaction::FromValue(*tx);
       if (!tx_from_value)
         return nullptr;
-      meta->tx = std::make_unique<EthTransaction>(*tx_from_value);
+      meta->tx = std::move(tx_from_value);
       break;
     }
     case 1: {
-      absl::optional<Eip2930Transaction> tx_from_value =
-          Eip2930Transaction::FromValue(*tx);
+      auto tx_from_value = Eip2930Transaction::FromValue(*tx);
       if (!tx_from_value)
         return nullptr;
-      meta->tx = std::make_unique<Eip2930Transaction>(*tx_from_value);
+      meta->tx = std::move(tx_from_value);
       break;
     }
     case 2: {
-      absl::optional<Eip1559Transaction> tx_from_value =
-          Eip1559Transaction::FromValue(*tx);
+      auto tx_from_value = Eip1559Transaction::FromValue(*tx);
       if (!tx_from_value)
         return nullptr;
-      meta->tx = std::make_unique<Eip1559Transaction>(*tx_from_value);
+      meta->tx = std::move(tx_from_value);
       break;
     }
     default:

@@ -14,6 +14,12 @@
 #include "brave/components/brave_wallet/browser/eth_pending_tx_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "components/keyed_service/core/keyed_service.h"
+#include "mojo/public/cpp/bindings/associated_receiver_set.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
+#include "mojo/public/cpp/bindings/remote.h"
 
 class PrefService;
 
@@ -26,7 +32,7 @@ namespace brave_wallet {
 class EthJsonRpcController;
 class KeyringController;
 
-class EthTxController {
+class EthTxController : public KeyedService, public mojom::EthTxController {
  public:
   class Observer : public base::CheckedObserver {
    public:
@@ -35,38 +41,50 @@ class EthTxController {
    protected:
     ~Observer() override = default;
   };
-  explicit EthTxController(EthJsonRpcController* rpc_controller,
-                           KeyringController* keyring_controller,
-                           PrefService* prefs);
-  ~EthTxController();
+  explicit EthTxController(
+      mojo::PendingRemote<mojom::EthJsonRpcController>
+          eth_json_rpc_controller_pending,
+      mojo::PendingRemote<mojom::KeyringController> keyring_controller_pending,
+      std::unique_ptr<EthTxStateManager> tx_state_manager,
+      std::unique_ptr<EthNonceTracker> nonce_tracker,
+      std::unique_ptr<EthPendingTxTracker> pending_tx_tracker,
+      PrefService* prefs);
+  ~EthTxController() override;
   EthTxController(const EthTxController&) = delete;
   EthTxController operator=(const EthTxController&) = delete;
+
+  mojo::PendingRemote<mojom::EthTxController> MakeRemote();
+  void Bind(mojo::PendingReceiver<mojom::EthTxController> receiver);
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
   void AddUnapprovedTransaction(std::unique_ptr<EthTransaction> tx,
                                 const EthAddress& from);
-  bool ApproveTransaction(const std::string& tx_meta_id);
-  void RejectTransaction(const std::string& tx_meta_id);
+  void ApproveTransaction(const std::string& tx_meta_id,
+                          ApproveTransactionCallback) override;
+  void RejectTransaction(const std::string& tx_meta_id,
+                         RejectTransactionCallback) override;
 
  private:
+  void OnConnectionError();
   void OnGetNextNonce(std::unique_ptr<EthTxStateManager::TxMeta> meta,
                       bool success,
-                      uint256_t nonce);
-  void PublishTransaction(const EthTransaction& tx,
-                          const std::string& tx_meta_id);
+                      const std::string& nonce);
+  void PublishTransaction(EthTransaction* tx, const std::string& tx_meta_id);
   void OnPublishTransaction(std::string tx_meta_id,
                             bool status,
                             const std::string& tx_hash);
 
-  EthJsonRpcController* rpc_controller_;   // NOT OWNED
-  KeyringController* keyring_controller_;  // NOT OWNED
   std::unique_ptr<EthTxStateManager> tx_state_manager_;
   std::unique_ptr<EthNonceTracker> nonce_tracker_;
   std::unique_ptr<EthPendingTxTracker> pending_tx_tracker_;
 
+  mojo::Remote<mojom::EthJsonRpcController> eth_json_rpc_controller_;
+  mojo::Remote<mojom::KeyringController> keyring_controller_;
+
   base::ObserverList<Observer> observers_;
+  mojo::ReceiverSet<mojom::EthTxController> receivers_;
 
   base::WeakPtrFactory<EthTxController> weak_factory_;
 };

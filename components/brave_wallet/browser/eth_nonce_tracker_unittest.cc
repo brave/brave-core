@@ -81,125 +81,113 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   EthJsonRpcController controller(brave_wallet::mojom::Network::Localhost,
                                   shared_url_loader_factory());
   EthTxStateManager tx_state_manager(GetPrefs(), controller.MakeRemote());
-  EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
+  EthNonceTracker nonce_tracker(&tx_state_manager, controller.MakeRemote());
 
   SetTransactionCount(2);
 
   const std::string addr("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
-  uint256_t nonce_result = 0;
-  bool callback_called = false;
   // tx count: 2, confirmed: null, pending: null
+  bool callback_called = false;
   nonce_tracker.GetNextNonce(
       EthAddress::FromHex(addr),
-      base::BindLambdaForTesting([&](bool success, uint256_t nonce) {
+      base::BindLambdaForTesting([&](bool success, const std::string& nonce) {
         callback_called = true;
-        if (success)
-          nonce_result = nonce;
+        EXPECT_TRUE(success);
+        EXPECT_EQ(nonce, "0x2");
       }));
   WaitForResponse();
   EXPECT_TRUE(callback_called);
-  EXPECT_EQ(nonce_result, uint256_t(2));
 
   // tx count: 2, confirmed: [2], pending: null
   EthTxStateManager::TxMeta meta;
   meta.id = EthTxStateManager::GenerateMetaID();
   meta.from = EthAddress::FromHex(addr);
   meta.status = EthTxStateManager::TransactionStatus::CONFIRMED;
-  meta.tx->set_nonce(uint256_t(2));
+  meta.tx->set_nonce("0x2");
   tx_state_manager.AddOrUpdateTx(meta);
 
-  nonce_result = 0;
   callback_called = false;
   nonce_tracker.GetNextNonce(
       EthAddress::FromHex(addr),
-      base::BindLambdaForTesting([&](bool success, uint256_t nonce) {
+      base::BindLambdaForTesting([&](bool success, const std::string& nonce) {
         callback_called = true;
-        if (success)
-          nonce_result = nonce;
+        EXPECT_TRUE(success);
+        EXPECT_EQ(nonce, "0x3");
       }));
   WaitForResponse();
   EXPECT_TRUE(callback_called);
-  EXPECT_EQ(nonce_result, uint256_t(3));
 
   // tx count: 2, confirmed: [2, 3], pending: null
   meta.id = EthTxStateManager::GenerateMetaID();
   meta.status = EthTxStateManager::TransactionStatus::CONFIRMED;
-  meta.tx->set_nonce(uint256_t(3));
+  meta.tx->set_nonce("0x3");
   tx_state_manager.AddOrUpdateTx(meta);
 
-  nonce_result = 0;
   callback_called = false;
   nonce_tracker.GetNextNonce(
       EthAddress::FromHex(addr),
-      base::BindLambdaForTesting([&](bool success, uint256_t nonce) {
+      base::BindLambdaForTesting([&](bool success, const std::string& nonce) {
         callback_called = true;
-        if (success)
-          nonce_result = nonce;
+        EXPECT_TRUE(success);
+        EXPECT_EQ(nonce, "0x4");
       }));
   WaitForResponse();
   EXPECT_TRUE(callback_called);
-  EXPECT_EQ(nonce_result, uint256_t(4));
 
   // tx count: 2, confirmed: [2, 3], pending: [4, 4]
   meta.status = EthTxStateManager::TransactionStatus::SUBMITTED;
-  meta.tx->set_nonce(uint256_t(4));
+  meta.tx->set_nonce("0x4");
   meta.id = EthTxStateManager::GenerateMetaID();
   tx_state_manager.AddOrUpdateTx(meta);
   meta.id = EthTxStateManager::GenerateMetaID();
   tx_state_manager.AddOrUpdateTx(meta);
 
-  nonce_result = 0;
   callback_called = false;
   nonce_tracker.GetNextNonce(
       EthAddress::FromHex(addr),
-      base::BindLambdaForTesting([&](bool success, uint256_t nonce) {
+      base::BindLambdaForTesting([&](bool success, const std::string& nonce) {
         callback_called = true;
-        if (success)
-          nonce_result = nonce;
+        EXPECT_TRUE(success);
+        EXPECT_EQ(nonce, "0x5");
       }));
   WaitForResponse();
   EXPECT_TRUE(callback_called);
-  EXPECT_EQ(nonce_result, uint256_t(5));
 }
 
 TEST_F(EthNonceTrackerUnitTest, NonceLock) {
   EthJsonRpcController controller(brave_wallet::mojom::Network::Localhost,
                                   shared_url_loader_factory());
   EthTxStateManager tx_state_manager(GetPrefs(), controller.MakeRemote());
-  EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
+  EthNonceTracker nonce_tracker(&tx_state_manager, controller.MakeRemote());
 
   SetTransactionCount(4);
 
   base::Lock* lock = nonce_tracker.GetLock();
   lock->Acquire();
   const std::string addr("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
+
   bool callback_called = false;
-  bool callback_success;
   nonce_tracker.GetNextNonce(
       EthAddress::FromHex(addr),
-      base::BindLambdaForTesting([&](bool success, uint256_t nonce) {
+      base::BindLambdaForTesting([&](bool success, const std::string& nonce) {
         callback_called = true;
-        callback_success = success;
+        EXPECT_FALSE(success);
       }));
   WaitForResponse();
   EXPECT_TRUE(callback_called);
-  EXPECT_FALSE(callback_success);
 
   lock->Release();
 
-  uint256_t nonce_result = 0;
   callback_called = false;
   nonce_tracker.GetNextNonce(
       EthAddress::FromHex(addr),
-      base::BindLambdaForTesting([&](bool success, uint256_t nonce) {
+      base::BindLambdaForTesting([&](bool success, const std::string& nonce) {
         callback_called = true;
-        callback_success = success;
-        nonce_result = nonce;
+        EXPECT_TRUE(success);
+        EXPECT_EQ(nonce, "0x4");
       }));
   WaitForResponse();
   EXPECT_TRUE(callback_called);
-  EXPECT_TRUE(callback_success);
-  EXPECT_EQ(nonce_result, uint256_t(4));
 }
 
 }  // namespace brave_wallet

@@ -13,6 +13,8 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
 
 namespace brave_wallet {
 
@@ -43,7 +45,10 @@ class HDKeyring {
 
   // TODO(darkdh): Abstract Transacation class
   // eth_signTransaction
-  virtual void SignTransaction(const std::string& address, EthTransaction* tx);
+  using SignTransactionCallback = base::OnceCallback<void(bool)>;
+  virtual void SignTransaction(const std::string& address,
+                               mojo::PendingRemote<mojom::EthTransaction> tx,
+                               SignTransactionCallback callback);
   // eth_sign
   virtual std::vector<uint8_t> SignMessage(const std::string& address,
                                            const std::vector<uint8_t>& message);

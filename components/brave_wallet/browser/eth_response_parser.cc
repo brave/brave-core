@@ -74,20 +74,17 @@ bool ParseEthGetBalance(const std::string& json, std::string* hex_balance) {
   return ParseSingleStringResult(json, hex_balance);
 }
 
-bool ParseEthGetTransactionCount(const std::string& json, uint256_t* count) {
-  std::string count_str;
-  if (!ParseSingleStringResult(json, &count_str))
-    return false;
-
-  if (!HexValueToUint256(count_str, count))
+bool ParseEthGetTransactionCount(const std::string& json, std::string* count) {
+  if (!ParseSingleStringResult(json, count))
     return false;
 
   return true;
 }
 
 bool ParseEthGetTransactionReceipt(const std::string& json,
-                                   TransactionReceipt* receipt) {
-  DCHECK(receipt);
+                                   mojom::TransactionReceiptPtr* receipt_ptr) {
+  *receipt_ptr = mojom::TransactionReceipt::New();
+  auto& receipt = *receipt_ptr;
 
   base::Value result;
   if (!ParseResult(json, &result))
@@ -99,31 +96,17 @@ bool ParseEthGetTransactionReceipt(const std::string& json,
 
   if (!result_dict->GetString("transactionHash", &receipt->transaction_hash))
     return false;
-  std::string transaction_index;
-  if (!result_dict->GetString("transactionIndex", &transaction_index))
+  if (!result_dict->GetString("transactionIndex", &receipt->transaction_index))
     return false;
-  if (!HexValueToUint256(transaction_index, &receipt->transaction_index))
+  if (!result_dict->GetString("blockNumber", &receipt->block_number))
     return false;
-
-  std::string block_number;
-  if (!result_dict->GetString("blockNumber", &block_number))
-    return false;
-  if (!HexValueToUint256(block_number, &receipt->block_number))
-    return false;
-
   if (!result_dict->GetString("blockHash", &receipt->block_hash))
     return false;
-
-  std::string cumulative_gas_used;
-  if (!result_dict->GetString("cumulativeGasUsed", &cumulative_gas_used))
+  if (!result_dict->GetString("cumulativeGasUsed",
+                              &receipt->cumulative_gas_used))
     return false;
-  if (!HexValueToUint256(cumulative_gas_used, &receipt->cumulative_gas_used))
-    return false;
-
   std::string gas_used;
-  if (!result_dict->GetString("gasUsed", &gas_used))
-    return false;
-  if (!HexValueToUint256(gas_used, &receipt->gas_used))
+  if (!result_dict->GetString("gasUsed", &receipt->gas_used))
     return false;
 
   // contractAddress can be null

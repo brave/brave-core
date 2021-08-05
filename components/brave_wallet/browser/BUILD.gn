@@ -19,7 +19,6 @@ static_library("browser") {
     "brave_wallet_provider_delegate.h",
     "brave_wallet_provider_impl.cc",
     "brave_wallet_provider_impl.h",
-    "brave_wallet_types.cc",
     "brave_wallet_types.h",
     "brave_wallet_utils.cc",
     "brave_wallet_utils.h",

@@ -55,20 +55,14 @@ class EthJsonRpcController : public KeyedService,
   void GetBalance(const std::string& address,
                   GetBalanceCallback callback) override;
 
-  using GetTxCountCallback =
-      base::OnceCallback<void(bool status, uint256_t result)>;
   void GetTransactionCount(const std::string& address,
-                           GetTxCountCallback callback);
+                           GetTransactionCountCallback callback) override;
 
-  using GetTxReceiptCallback =
-      base::OnceCallback<void(bool status, TransactionReceipt result)>;
   void GetTransactionReceipt(const std::string& tx_hash,
-                             GetTxReceiptCallback callback);
+                             GetTransactionReceiptCallback callback) override;
 
-  using SendRawTxCallback =
-      base::OnceCallback<void(bool status, const std::string& tx_hash)>;
   void SendRawTransaction(const std::string& signed_tx,
-                          SendRawTxCallback callback);
+                          SendRawTransactionCallback callback) override;
 
   void GetERC20TokenBalance(const std::string& conract_address,
                             const std::string& address,
@@ -123,17 +117,17 @@ class EthJsonRpcController : public KeyedService,
                     const std::string& body,
                     const base::flat_map<std::string, std::string>& headers);
   void OnGetTransactionCount(
-      GetTxCountCallback callback,
+      GetTransactionCountCallback callback,
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
   void OnGetTransactionReceipt(
-      GetTxReceiptCallback callback,
+      GetTransactionReceiptCallback callback,
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
   void OnSendRawTransaction(
-      SendRawTxCallback callback,
+      SendRawTransactionCallback callback,
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);

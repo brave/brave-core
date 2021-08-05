@@ -62,13 +62,11 @@ TEST_F(EthTxStateManagerUnitTest, GenerateMetaID) {
 }
 
 TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
-  EthTransaction::TxData tx_data(
-      0x09, 0x4a817c800, 0x5208,
-      EthAddress::FromHex("0x3535353535353535353535353535353535353535"),
-      0x0de0b6b3a7640000, std::vector<uint8_t>());
   // type 0
-  std::unique_ptr<EthTransaction> tx =
-      std::make_unique<EthTransaction>(tx_data);
+  std::unique_ptr<EthTransaction> tx = std::make_unique<EthTransaction>(
+      mojom::TxData::New("0x9", "0x4a817c800", "0x5208",
+                         "0x3535353535353535353535353535353535353535",
+                         "0xde0b6b3a7640000", std::vector<uint8_t>()));
   EthTxStateManager::TxMeta meta(std::move(tx));
   meta.id = EthTxStateManager::GenerateMetaID();
   meta.status = EthTxStateManager::TransactionStatus::SUBMITTED;
@@ -78,19 +76,19 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   meta.submitted_time = base::Time::Now();
   meta.confirmed_time = base::Time::Now();
 
-  TransactionReceipt tx_receipt;
-  tx_receipt.transaction_hash =
+  auto tx_receipt = mojom::TransactionReceipt::New();
+  tx_receipt->transaction_hash =
       "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238";
-  tx_receipt.transaction_index = 0x1;
-  tx_receipt.block_number = 0xb;
-  tx_receipt.block_hash =
+  tx_receipt->transaction_index = "0x1";
+  tx_receipt->block_number = "0xb";
+  tx_receipt->block_hash =
       "0xc6ef2fc5426d6ad6fd9e2a26abeab0aa2411b7ab17f30a99d3cb96aed1d1055b";
-  tx_receipt.cumulative_gas_used = 0x33bc;
-  tx_receipt.gas_used = 0x4dc;
-  tx_receipt.contract_address = "0xb60e8dd61c5d32be8058bb8eb970870f07233155";
-  tx_receipt.status = true;
+  tx_receipt->cumulative_gas_used = "0x33bc";
+  tx_receipt->gas_used = "0x4dc";
+  tx_receipt->contract_address = "0xb60e8dd61c5d32be8058bb8eb970870f07233155";
+  tx_receipt->status = true;
 
-  meta.tx_receipt = tx_receipt;
+  meta.tx_receipt = std::move(tx_receipt);
   meta.tx_hash =
       "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238";
 
@@ -113,7 +111,11 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
 
   // type 1
   std::unique_ptr<Eip2930Transaction> tx1 =
-      std::make_unique<Eip2930Transaction>(tx_data, 3);
+      std::make_unique<Eip2930Transaction>(
+          mojom::TxData::New("0x9", "0x4a817c800", "0x5208",
+                             "0x3535353535353535353535353535353535353535",
+                             "0xde0b6b3a7640000", std::vector<uint8_t>()),
+          "0x3");
   auto* access_list = tx1->access_list();
   Eip2930Transaction::AccessListItem item_a;
   item_a.address.fill(0x0a);
@@ -133,7 +135,11 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
 
   // type2
   std::unique_ptr<Eip1559Transaction> tx2 =
-      std::make_unique<Eip1559Transaction>(tx_data, 3, 30, 50);
+      std::make_unique<Eip1559Transaction>(
+          mojom::TxData::New("0x9", "0x4a817c800", "0x5208",
+                             "0x3535353535353535353535353535353535353535",
+                             "0xde0b6b3a7640000", std::vector<uint8_t>()),
+          "0x3", "0x1E", "0x32");
   EthTxStateManager::TxMeta meta2(std::move(tx2));
   base::Value value2 = EthTxStateManager::TxMetaToValue(meta2);
   auto meta_from_value2 = EthTxStateManager::ValueToTxMeta(value2);

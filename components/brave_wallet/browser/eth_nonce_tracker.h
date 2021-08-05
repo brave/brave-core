@@ -12,6 +12,9 @@
 #include "base/memory/weak_ptr.h"
 #include "base/synchronization/lock.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/remote.h"
 
 namespace brave_wallet {
 
@@ -22,25 +25,27 @@ class EthTxStateManager;
 class EthNonceTracker {
  public:
   EthNonceTracker(EthTxStateManager* tx_state_manager,
-                  EthJsonRpcController* rpc_controller);
+                  mojo::PendingRemote<mojom::EthJsonRpcController>
+                      eth_json_rpc_controller_pending);
   ~EthNonceTracker();
   EthNonceTracker(const EthNonceTracker&) = delete;
   EthNonceTracker operator=(const EthNonceTracker&) = delete;
 
   using GetNextNonceCallback =
-      base::OnceCallback<void(bool success, uint256_t nonce)>;
+      base::OnceCallback<void(bool success, const std::string& nonce)>;
   void GetNextNonce(const EthAddress& from, GetNextNonceCallback callback);
 
   base::Lock* GetLock() { return &nonce_lock_; }
 
  private:
+  void OnConnectionError();
   void OnGetNetworkNonce(EthAddress from,
                          GetNextNonceCallback callback,
                          bool status,
-                         uint256_t result);
+                         const std::string& result);
 
   EthTxStateManager* tx_state_manager_;
-  EthJsonRpcController* rpc_controller_;
+  mojo::Remote<mojom::EthJsonRpcController> eth_json_rpc_controller_;
 
   base::Lock nonce_lock_;
 
