@@ -177,19 +177,19 @@ HDKeyring* KeyringController::RestoreDefaultKeyring(
 
 void KeyringController::GetDefaultKeyringInfo(
     GetDefaultKeyringInfoCallback callback) {
-  mojom::KeyringInfoPtr keyring = mojom::KeyringInfo::New();
-  keyring->is_default_keyring_created = IsDefaultKeyringCreated();
-  keyring->is_locked = IsLocked();
+  mojom::KeyringInfoPtr keyring_info = mojom::KeyringInfo::New();
+  keyring_info->is_default_keyring_created = IsDefaultKeyringCreated();
+  keyring_info->is_locked = IsLocked();
   bool backup_complete = false;
   const base::Value* value =
       GetPrefForKeyring(prefs_, kBackupComplete, kDefaultKeyringId);
   if (value)
     backup_complete = value->GetBool();
-  keyring->is_backed_up = backup_complete;
+  keyring_info->is_backed_up = backup_complete;
   if (default_keyring_) {
-    keyring->account_infos = GetAccountInfosForKeyring(kDefaultKeyringId);
+    keyring_info->account_infos = GetAccountInfosForKeyring(kDefaultKeyringId);
   }
-  std::move(callback).Run(std::move(keyring));
+  std::move(callback).Run(std::move(keyring_info));
 }
 
 void KeyringController::GetMnemonicForDefaultKeyring(
@@ -201,11 +201,8 @@ void KeyringController::CreateWallet(const std::string& password,
                                      CreateWalletCallback callback) {
   auto* keyring = CreateDefaultKeyring(password);
   if (keyring) {
-    keyring->AddAccounts();
-    size_t accounts_num = keyring->GetAccountsNumber();
-    const std::string address = keyring->GetAddress(accounts_num - 1);
     // TODO(darkdh): use resource string
-    SetAccountNameForKeyring(address, "Account 1", kDefaultKeyringId);
+    AddAccountForDefaultKeyring("Account 1");
   }
 
   std::move(callback).Run(GetMnemonicForDefaultKeyringImpl());
@@ -216,11 +213,8 @@ void KeyringController::RestoreWallet(const std::string& mnemonic,
                                       RestoreWalletCallback callback) {
   auto* keyring = RestoreDefaultKeyring(mnemonic, password);
   if (keyring) {
-    keyring->AddAccounts();
-    size_t accounts_num = keyring->GetAccountsNumber();
-    const std::string address = keyring->GetAddress(accounts_num - 1);
     // TODO(darkdh): use resource string
-    SetAccountNameForKeyring(address, "Account 1", kDefaultKeyringId);
+    AddAccountForDefaultKeyring("Account 1");
   }
   // TODO(darkdh): add account discovery mechanism
 
@@ -251,12 +245,9 @@ const std::string KeyringController::GetMnemonicForDefaultKeyringImpl() {
 
 void KeyringController::AddAccount(const std::string& account_name,
                                    AddAccountCallback callback) {
-  auto* keyring = GetDefaultKeyring();
+  auto* keyring = default_keyring_.get();
   if (keyring) {
-    keyring->AddAccounts();
-    size_t accounts_num = keyring->GetAccountsNumber();
-    const std::string address = keyring->GetAddress(accounts_num - 1);
-    SetAccountNameForKeyring(address, account_name, kDefaultKeyringId);
+    AddAccountForDefaultKeyring(account_name);
   }
 
   for (const auto& observer : observers_) {
@@ -280,6 +271,17 @@ void KeyringController::NotifyWalletBackupComplete() {
   for (const auto& observer : observers_) {
     observer->BackedUp();
   }
+}
+
+void KeyringController::AddAccountForDefaultKeyring(
+    const std::string& account_name) {
+  if (!default_keyring_)
+    return;
+  default_keyring_->AddAccounts(1);
+  size_t accounts_num = default_keyring_->GetAccountsNumber();
+  const std::string address = default_keyring_->GetAddress(accounts_num - 1);
+  // TODO(darkdh): use resource string
+  SetAccountNameForKeyring(address, account_name, kDefaultKeyringId);
 }
 
 void KeyringController::SetAccountNameForKeyring(const std::string& address,
@@ -336,13 +338,12 @@ std::vector<mojom::AccountInfoPtr> KeyringController::GetAccountInfosForKeyring(
   return result;
 }
 
-HDKeyring* KeyringController::GetDefaultKeyring() {
-  if (IsLocked()) {
-    LOG(ERROR) << __func__ << ": Must Unlock controller first";
-    return nullptr;
-  }
-
-  return default_keyring_.get();
+void KeyringController::SignTransactionByDefaultKeyring(
+    const std::string& address,
+    EthTransaction* tx) {
+  if (!default_keyring_)
+    return;
+  default_keyring_->SignTransaction(address, tx);
 }
 
 bool KeyringController::IsLocked() const {
@@ -352,7 +353,7 @@ bool KeyringController::IsLocked() const {
 void KeyringController::Lock() {
   if (IsLocked() || !default_keyring_)
     return;
-  default_keyring_->ClearData();
+  default_keyring_.reset();
 
   encryptor_.reset();
   for (const auto& observer : observers_) {

@@ -11,7 +11,6 @@
 #include "base/logging.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
-#include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 
 namespace brave_wallet {
@@ -102,10 +101,8 @@ void EthTxController::OnGetNextNonce(
   }
   meta->tx->set_nonce(nonce);
   DCHECK(!keyring_controller_->IsLocked());
-  auto* default_keyring = keyring_controller_->GetDefaultKeyring();
-  DCHECK(default_keyring);
-  default_keyring->SignTransaction(meta->from.ToChecksumAddress(),
-                                   meta->tx.get());
+  keyring_controller_->SignTransactionByDefaultKeyring(
+      meta->from.ToChecksumAddress(), meta->tx.get());
   meta->status = EthTxStateManager::TransactionStatus::APPROVED;
   tx_state_manager_->AddOrUpdateTx(*meta);
   PublishTransaction(*meta->tx, meta->id);

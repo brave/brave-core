@@ -371,7 +371,9 @@ TEST_F(KeyringControllerUnitTest, UnlockResumesDefaultKeyring) {
     KeyringController controller(GetPrefs());
     controller.CreateWallet("brave",
                             base::DoNothing::Once<const std::string&>());
+    base::RunLoop().RunUntilIdle();
     controller.AddAccount("Account2", base::DoNothing::Once<bool>());
+    base::RunLoop().RunUntilIdle();
 
     salt = GetStringPrefForKeyring(kPasswordEncryptorSalt, "default");
     nonce = GetStringPrefForKeyring(kPasswordEncryptorNonce, "default");
@@ -387,13 +389,11 @@ TEST_F(KeyringControllerUnitTest, UnlockResumesDefaultKeyring) {
     ASSERT_EQ(true, bool_value());
     ASSERT_FALSE(controller.IsLocked());
 
-    HDKeyring* keyring = controller.GetDefaultKeyring();
     EXPECT_EQ(GetStringPrefForKeyring(kPasswordEncryptorSalt, "default"), salt);
     EXPECT_EQ(GetStringPrefForKeyring(kPasswordEncryptorNonce, "default"),
               nonce);
     EXPECT_EQ(GetStringPrefForKeyring(kEncryptedMnemonic, "default"), mnemonic);
-    ASSERT_NE(nullptr, keyring);
-    EXPECT_EQ(2u, keyring->GetAccountsNumber());
+    EXPECT_EQ(2u, controller.GetAccountInfosForKeyring("default").size());
   }
   {
     KeyringController controller(GetPrefs());
@@ -458,24 +458,56 @@ TEST_F(KeyringControllerUnitTest, GetMnemonicForDefaultKeyring) {
   EXPECT_EQ(string_value(), mnemonic);
 }
 
-TEST_F(KeyringControllerUnitTest, GetDefaultKeyring) {
+TEST_F(KeyringControllerUnitTest, GetDefaultKeyringInfo) {
   KeyringController controller(GetPrefs());
-  EXPECT_EQ(controller.GetDefaultKeyring(), nullptr);
-  HDKeyring* keyring = controller.CreateDefaultKeyring("brave");
-  ASSERT_NE(keyring, nullptr);
-  EXPECT_EQ(controller.GetDefaultKeyring(), keyring);
-  controller.AddAccount("Account1", base::DoNothing::Once<bool>());
-  const std::string address = keyring->GetAddress(0);
+  bool callback_called = false;
+  controller.GetDefaultKeyringInfo(
+      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+        EXPECT_FALSE(keyring_info->is_default_keyring_created);
+        EXPECT_TRUE(keyring_info->is_locked);
+        EXPECT_FALSE(keyring_info->is_backed_up);
+        EXPECT_TRUE(keyring_info->account_infos.empty());
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
 
-  controller.Lock();
-  EXPECT_EQ(controller.GetDefaultKeyring(), nullptr);
+  controller.CreateWallet("brave", base::DoNothing::Once<const std::string&>());
+  base::RunLoop().RunUntilIdle();
 
-  controller.Unlock(
-      "brave", base::BindOnce(&KeyringControllerUnitTest::GetBooleanCallback,
-                              base::Unretained(this)));
-  EXPECT_FALSE(controller.IsLocked());
-  ASSERT_NE(controller.GetDefaultKeyring(), nullptr);
-  EXPECT_EQ(controller.GetDefaultKeyring()->GetAddress(0), address);
+  callback_called = false;
+  controller.GetDefaultKeyringInfo(
+      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+        EXPECT_TRUE(keyring_info->is_default_keyring_created);
+        EXPECT_FALSE(keyring_info->is_locked);
+        EXPECT_FALSE(keyring_info->is_backed_up);
+        EXPECT_EQ(keyring_info->account_infos.size(), 1u);
+        EXPECT_FALSE(keyring_info->account_infos[0]->address.empty());
+        EXPECT_EQ(keyring_info->account_infos[0]->name, "Account 1");
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  controller.NotifyWalletBackupComplete();
+  controller.AddAccount("Account5566", base::DoNothing::Once<bool>());
+  base::RunLoop().RunUntilIdle();
+
+  callback_called = false;
+  controller.GetDefaultKeyringInfo(
+      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+        EXPECT_TRUE(keyring_info->is_default_keyring_created);
+        EXPECT_FALSE(keyring_info->is_locked);
+        EXPECT_TRUE(keyring_info->is_backed_up);
+        EXPECT_EQ(keyring_info->account_infos.size(), 2u);
+        EXPECT_FALSE(keyring_info->account_infos[0]->address.empty());
+        EXPECT_EQ(keyring_info->account_infos[0]->name, "Account 1");
+        EXPECT_FALSE(keyring_info->account_infos[1]->address.empty());
+        EXPECT_EQ(keyring_info->account_infos[1]->name, "Account5566");
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
 }
 
 TEST_F(KeyringControllerUnitTest, LockAndUnlock) {
@@ -497,7 +529,7 @@ TEST_F(KeyringControllerUnitTest, LockAndUnlock) {
 
     controller.Lock();
     EXPECT_TRUE(controller.IsLocked());
-    EXPECT_TRUE(controller.default_keyring_->empty());
+    EXPECT_FALSE(controller.default_keyring_);
 
     controller.Unlock(
         "abc", base::BindOnce(&KeyringControllerUnitTest::GetBooleanCallback,
@@ -512,7 +544,7 @@ TEST_F(KeyringControllerUnitTest, LockAndUnlock) {
 
     controller.Lock();
     EXPECT_TRUE(controller.IsLocked());
-    EXPECT_TRUE(controller.default_keyring_->empty());
+    EXPECT_FALSE(controller.default_keyring_);
 
     // Simulate unlock shutdown
     controller.Unlock(
@@ -611,6 +643,66 @@ TEST_F(KeyringControllerUnitTest, AccountMetasForKeyring) {
   EXPECT_EQ(account_infos[0]->name, name1);
   EXPECT_EQ(account_infos[1]->address, address2);
   EXPECT_EQ(account_infos[1]->name, name2);
+}
+
+TEST_F(KeyringControllerUnitTest, CreateAndRestoreWallet) {
+  KeyringController controller(GetPrefs());
+  bool callback_called = false;
+  std::string mnemonic_to_be_restored;
+  controller.CreateWallet(
+      "brave", base::BindLambdaForTesting([&](const std::string& mnemonic) {
+        EXPECT_FALSE(mnemonic.empty());
+        mnemonic_to_be_restored = mnemonic;
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  std::vector<mojom::AccountInfoPtr> account_infos =
+      controller.GetAccountInfosForKeyring("default");
+  EXPECT_EQ(account_infos.size(), 1u);
+  EXPECT_FALSE(account_infos[0]->address.empty());
+  const std::string address0 = account_infos[0]->address;
+  EXPECT_EQ(account_infos[0]->name, "Account 1");
+
+  controller.Reset();
+  callback_called = false;
+  controller.RestoreWallet(mnemonic_to_be_restored, "brave1",
+                           base::BindLambdaForTesting([&](bool success) {
+                             EXPECT_TRUE(success);
+                             callback_called = true;
+                           }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  {
+    std::vector<mojom::AccountInfoPtr> account_infos =
+        controller.GetAccountInfosForKeyring("default");
+    EXPECT_EQ(account_infos.size(), 1u);
+    EXPECT_EQ(account_infos[0]->address, address0);
+    EXPECT_EQ(account_infos[0]->name, "Account 1");
+  }
+}
+
+TEST_F(KeyringControllerUnitTest, AddAccount) {
+  KeyringController controller(GetPrefs());
+  controller.CreateWallet("brave", base::DoNothing::Once<const std::string&>());
+  base::RunLoop().RunUntilIdle();
+  bool callback_called = false;
+  controller.AddAccount("Account5566",
+                        base::BindLambdaForTesting([&](bool success) {
+                          EXPECT_TRUE(success);
+                          callback_called = true;
+                        }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  std::vector<mojom::AccountInfoPtr> account_infos =
+      controller.GetAccountInfosForKeyring("default");
+  EXPECT_EQ(account_infos.size(), 2u);
+  EXPECT_FALSE(account_infos[0]->address.empty());
+  EXPECT_EQ(account_infos[0]->name, "Account 1");
+  EXPECT_FALSE(account_infos[1]->address.empty());
+  EXPECT_EQ(account_infos[1]->name, "Account5566");
 }
 
 }  // namespace brave_wallet

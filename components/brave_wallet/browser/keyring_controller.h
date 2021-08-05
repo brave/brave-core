@@ -28,6 +28,7 @@ class PrefRegistrySyncable;
 namespace brave_wallet {
 
 class HDKeyring;
+class EthTransaction;
 class KeyringControllerUnitTest;
 
 // This class is not thread-safe and should have single owner
@@ -53,13 +54,6 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   mojo::PendingRemote<mojom::KeyringController> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::KeyringController> receiver);
 
-  // Currently only support one default keyring, `CreateDefaultKeyring` and
-  // `RestoreDefaultKeyring` will overwrite existing one if success
-  HDKeyring* CreateDefaultKeyring(const std::string& password);
-  // Restore default keyring from backup seed phrase
-  HDKeyring* RestoreDefaultKeyring(const std::string& mnemonic,
-                                   const std::string& password);
-
   // mojom::KeyringController
   // Must unlock before using this API otherwise it will return empty string
   void GetMnemonicForDefaultKeyring(
@@ -79,12 +73,12 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   void GetDefaultKeyringInfo(GetDefaultKeyringInfoCallback callback) override;
   void Reset() override;
 
-  // Must unlock before using this API otherwise it will return nullptr
-  HDKeyring* GetDefaultKeyring();
   bool IsDefaultKeyringCreated();
 
+  void SignTransactionByDefaultKeyring(const std::string& address,
+                                       EthTransaction* tx);
+
   bool IsLocked() const;
-  // bool Unlock(const std::string& password);
 
   void AddObserver(::mojo::PendingRemote<mojom::KeyringControllerObserver>
                        observer) override;
@@ -104,11 +98,18 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, CreateDefaultKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
                            CreateDefaultKeyringInternal);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, RestoreDefaultKeyring);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
+                           UnlockResumesDefaultKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
                            GetMnemonicForDefaultKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, LockAndUnlock);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, Reset);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, AccountMetasForKeyring);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, CreateAndRestoreWallet);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, AddAccount);
+
+  void AddAccountForDefaultKeyring(const std::string& account_name);
 
   // Address will be used as key in kAccountMetas
   void SetAccountNameForKeyring(const std::string& address,
@@ -134,6 +135,13 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   bool CreateEncryptorForKeyring(const std::string& password,
                                  const std::string& id);
   bool CreateDefaultKeyringInternal(const std::string& mnemonic);
+
+  // Currently only support one default keyring, `CreateDefaultKeyring` and
+  // `RestoreDefaultKeyring` will overwrite existing one if success
+  HDKeyring* CreateDefaultKeyring(const std::string& password);
+  // Restore default keyring from backup seed phrase
+  HDKeyring* RestoreDefaultKeyring(const std::string& mnemonic,
+                                   const std::string& password);
   // It's used to reconstruct same default keyring between browser relaunch
   HDKeyring* ResumeDefaultKeyring(const std::string& password);
 

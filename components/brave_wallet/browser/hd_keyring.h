@@ -28,8 +28,6 @@ class HDKeyring {
   virtual ~HDKeyring();
 
   virtual Type type() const;
-  virtual bool empty() const;
-  virtual void ClearData();
   virtual void ConstructRootHDKey(const std::vector<uint8_t>& seed,
                                   const std::string& hd_path);
 
