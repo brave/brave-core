@@ -44,7 +44,7 @@ public class BravePrivacySettingsTest {
 
     // Ignore "usage_stats_reporting" and "privacy_sandbox"
     private static int PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 7;
-    private static int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 18;
+    private static int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 19;
 
     @Rule
     public ChromeTabbedActivityTestRule mActivityTestRule = new ChromeTabbedActivityTestRule();
