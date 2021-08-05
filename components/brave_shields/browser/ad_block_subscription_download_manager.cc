@@ -198,16 +198,15 @@ void AdBlockSubscriptionDownloadManager::OnDirCreated(
       subscription_manager_->GetSubscriptionPath(download_url)
           .AppendASCII(kCustomSubscriptionListText);
 
-  auto context = std::make_unique<storage::BlobStorageContext>();
-  mojo::Remote<storage::mojom::BlobStorageContext> remote_context;
-  context->Bind(remote_context.BindNewPipeAndPassReceiver());
+  mojo::PendingRemote<blink::mojom::Blob> pending_blob;
+  storage::BlobImpl::Create(
+      std::move(data_handle),
+      pending_blob.InitWithNewPipeAndPassReceiver());
 
-  mojo::PendingRemote<blink::mojom::Blob> blob_remote;
-  auto receiver = blob_remote.InitWithNewPipeAndPassReceiver();
-  storage::BlobImpl::Create(std::move(data_handle), std::move(receiver));
+  // receiver_ = pending_blob.InitWithNewPipeAndPassReceiver();
 
-  remote_context->WriteBlobToFile(
-      std::move(blob_remote), list_path, true, base::nullopt,
+  blob_storage_context_->WriteBlobToFile(
+      std::move(pending_blob), list_path, true, base::nullopt,
       base::BindOnce(&AdBlockSubscriptionDownloadManager::WriteResultCallback,
                      ui_weak_ptr_factory_.GetWeakPtr(), download_url));
 }

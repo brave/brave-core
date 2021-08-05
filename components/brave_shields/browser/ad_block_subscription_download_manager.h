@@ -16,6 +16,8 @@
 #include "components/download/public/background_service/download_params.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/services/storage/public/mojom/blob_storage_context.mojom.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/remote.h"
 
 namespace storage {
 class BlobDataHandle;
@@ -57,6 +59,11 @@ class AdBlockSubscriptionDownloadManager : public KeyedService {
 
   // Returns whether the downloader can be used for downloads.
   virtual bool IsAvailableForDownloads() const;
+
+  void set_blob_storage_context(
+      mojo::PendingRemote<storage::mojom::BlobStorageContext> context) {
+    blob_storage_context_.Bind(std::move(context));
+  }
 
  private:
   friend class AdBlockSubscriptionDownloadClient;
@@ -123,6 +130,9 @@ class AdBlockSubscriptionDownloadManager : public KeyedService {
 
   // Will be notified of success or failure of downloads.
   AdBlockSubscriptionServiceManager* subscription_manager_;  // NOT OWNED
+
+  mojo::PendingReceiver<blink::mojom::Blob> receiver_;
+  mojo::Remote<storage::mojom::BlobStorageContext> blob_storage_context_;
 
   // Used to get weak ptr to self on the UI thread.
   base::WeakPtrFactory<AdBlockSubscriptionDownloadManager> ui_weak_ptr_factory_{

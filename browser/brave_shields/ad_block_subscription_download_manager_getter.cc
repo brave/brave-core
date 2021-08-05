@@ -24,6 +24,7 @@
 #include "chrome/browser/profiles/profile_manager_observer.h"
 #include "components/keyed_service/core/simple_dependency_manager.h"
 #include "components/keyed_service/core/simple_keyed_service_factory.h"
+#include "content/browser/blob_storage/chrome_blob_storage_context.h"
 
 using brave_shields::AdBlockSubscriptionDownloadManager;
 
@@ -80,7 +81,7 @@ class AdBlockSubscriptionDownloadManagerGetterImpl
     auto* profile = g_browser_process->profile_manager()->GetProfileByPath(
         ProfileManager::GetSystemProfilePath());
     if (profile) {
-      GetDownloadManager(profile->GetProfileKey());
+      GetDownloadManager(profile);
     } else {
       g_browser_process->profile_manager()->AddObserver(this);
     }
@@ -104,13 +105,15 @@ class AdBlockSubscriptionDownloadManagerGetterImpl
     if (status != Profile::CREATE_STATUS_INITIALIZED)
       return;
 
-    GetDownloadManager(profile->GetProfileKey());
+    GetDownloadManager(profile);
   }
 
-  void GetDownloadManager(ProfileKey* profile_key) {
+  void GetDownloadManager(Profile* profile) {
     auto* download_manager =
         AdBlockSubscriptionDownloadManagerFactory::GetInstance()->GetForKey(
-            profile_key);
+            profile->GetProfileKey());
+    download_manager->set_blob_storage_context(
+        content::ChromeBlobStorageContext::GetRemoteFor(profile));
     std::move(callback_).Run(download_manager);
     delete this;
   }
