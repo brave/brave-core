@@ -79,6 +79,7 @@ declare namespace NewTab {
   export interface PersistentState {
     braveTalkPromptDismissed: boolean
     braveTalkSupported: boolean
+    braveTalkPromptAutoDismissed: boolean
     geminiSupported: boolean
     binanceSupported: boolean
     bitcoinDotComSupported: boolean
@@ -132,6 +133,7 @@ declare namespace NewTab {
     showBitcoinDotCom: boolean
     showFTX: boolean,
     stats: Stats,
+    braveTalkPromptAllowed: boolean
     brandedWallpaperData?: BrandedWallpaper
   }
 

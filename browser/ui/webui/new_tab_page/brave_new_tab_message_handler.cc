@@ -12,6 +12,8 @@
 #include "base/json/json_writer.h"
 #include "base/memory/weak_ptr.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/threading/thread_restrictions.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
@@ -31,6 +33,7 @@
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/weekly_storage/weekly_storage.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_features.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -165,6 +168,22 @@ void BraveNewTabMessageHandler::RecordInitialP3AValues(
       kNTPCustomizeUsageStatus, local_state);
 }
 
+bool BraveNewTabMessageHandler::CanPromptBraveTalk() {
+  return BraveNewTabMessageHandler::CanPromptBraveTalk(base::Time::Now());
+}
+
+bool BraveNewTabMessageHandler::CanPromptBraveTalk(base::Time now) {
+  // Only show Brave Talk prompt 4 days after first run.
+  // CreateSentinelIfNeeded() is called in chrome_browser_main.cc, making this a
+  // non-blocking read of the cached sentinel value when running from production
+  // code. However tests will never create the sentinel file due to being run
+  // with the switches:kNoFirstRun flag, so we need to allow blocking for that.
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  base::Time time_first_run = first_run::GetFirstRunSentinelCreationTime();
+  base::Time talk_prompt_trigger_time = now - base::TimeDelta::FromDays(3);
+  return (time_first_run <= talk_prompt_trigger_time);
+}
+
 BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
       content::WebUIDataSource* source, Profile* profile) {
   //
@@ -186,6 +205,9 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
       "featureFlagBraveNTPSponsoredImagesWallpaper",
       base::FeatureList::IsEnabled(kBraveNTPBrandedWallpaper) &&
       is_ads_supported_locale_);
+  source->AddBoolean("braveTalkPromptAllowed",
+                     BraveNewTabMessageHandler::CanPromptBraveTalk());
+
   // Private Tab info
   if (IsPrivateNewTab(profile)) {
     source->AddBoolean(
