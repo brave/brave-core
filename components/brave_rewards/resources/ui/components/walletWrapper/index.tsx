@@ -561,7 +561,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       gradientTop,
       notification,
       isMobile,
-      onVerifyClick,
       onDisconnectClick
     } = this.props
 
@@ -608,7 +607,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     const connectedVerified = walletState === 'verified'
     const batFormatString = getLocale('bat')
     const rewardsText1 = getLocale('rewardsPanelText1').split(/\$\d/g)
-    const rewardsText2 = getLocale('rewardsPanelText2').split(/\$\d/g)
 
     const walletIcon =
       walletType === 'uphold' ? <UpholdColorIcon /> :
@@ -697,23 +695,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                         {rewardsText1[1]}
                       </span>
                     </>
-                  : walletType === 'uphold' && <>
-                      <StyledCopyImage>{walletIcon}</StyledCopyImage>
-                      <span>
-                        {rewardsText2[0]}
-                        <b>{walletProvider}</b>
-                        {rewardsText2[1]}
-                      </span>
-                      {
-                        onVerifyClick && <>
-                          {' ('}
-                          <StyledLink onClick={this.onActionClick.bind(this, this.props.onVerifyClick)}>
-                            {getLocale('rewardsPanelTextVerify')}
-                          </StyledLink>
-                          {')'}
-                        </>
-                      }
-                    </>
+                  : null
                 }
               </StyledCopy>
               : null
