@@ -16,14 +16,21 @@ namespace brave_wallet {
 class Eip1559Transaction : public Eip2930Transaction {
  public:
   Eip1559Transaction();
-  Eip1559Transaction(const TxData&,
-                     uint64_t chain_id,
+  Eip1559Transaction(uint256_t nonce,
+                     uint256_t gas_price,
+                     uint256_t gas_limit,
+                     const EthAddress& to,
+                     uint256_t value,
+                     const std::vector<uint8_t>& data,
+                     uint256_t chain_id,
                      uint256_t max_priority_fee_per_gas,
                      uint256_t max_fee_per_gas);
   Eip1559Transaction(const Eip1559Transaction&);
   ~Eip1559Transaction() override;
   bool operator==(const Eip1559Transaction&) const;
 
+  static absl::optional<Eip1559Transaction> FromTxData(
+      const mojom::TxData1559Ptr& tx_data);
   static absl::optional<Eip1559Transaction> FromValue(const base::Value& value);
 
   uint256_t max_priority_fee_per_gas() const {
@@ -33,7 +40,7 @@ class Eip1559Transaction : public Eip2930Transaction {
 
   // keccak256(0x02 || rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas,
   // gasLimit, destination, value, data, access_list]))
-  std::vector<uint8_t> GetMessageToSign(uint64_t chain_id = 0) const override;
+  std::vector<uint8_t> GetMessageToSign(uint256_t chain_id = 0) const override;
 
   // 0x02 || rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas, gasLimit,
   // destination, value, data, accessList, signatureYParity, signatureR,
