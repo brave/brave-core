@@ -65,7 +65,8 @@ function Container (props: Props) {
     accounts,
     transactions,
     selectedNetwork,
-    selectedAccount
+    selectedAccount,
+    hasInitialized
   } = props.wallet
 
   // Page Props
@@ -337,6 +338,9 @@ function Container (props: Props) {
   }
 
   const renderWallet = React.useMemo(() => {
+    if (!hasInitialized) {
+      return null
+    }
     if (!isWalletCreated || setupStillInProgress) {
       return (
         <Onboarding
