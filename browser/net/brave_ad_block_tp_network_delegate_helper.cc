@@ -180,7 +180,7 @@ EngineFlags ShouldBlockRequestOnTaskRunner(
 
   SCOPED_UMA_HISTOGRAM_TIMER("Brave.Adblock.ShouldBlockRequest");
   g_brave_browser_process->ad_block_service()->ShouldStartRequest(
-      url_to_check, ctx->resource_type, source_host,
+      url_to_check, ctx->resource_type, source_host, ctx->aggressive_blocking,
       &previous_result.did_match_rule, &previous_result.did_match_exception,
       &previous_result.did_match_important, &ctx->mock_data_url);
 

@@ -61,6 +61,7 @@ using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_shields::features::kBraveAdblockCosmeticFilteringNative;
 using brave_shields::features::kBraveAdblockCspRules;
+using brave_shields::features::kBraveAdblockDefault1pBlocking;
 using brave_shields::features::kBraveDarkModeBlock;
 using brave_shields::features::kBraveDomainBlock;
 using brave_shields::features::kBraveExtensionNetworkBlocking;
@@ -195,6 +196,10 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveAdblockCspRulesName,                          \
      flag_descriptions::kBraveAdblockCspRulesDescription, kOsAll,           \
      FEATURE_VALUE_TYPE(kBraveAdblockCspRules)},                            \
+    {"brave-adblock-default-1p-blocking",                                   \
+     flag_descriptions::kBraveAdblockDefault1pBlockingName,                 \
+     flag_descriptions::kBraveAdblockDefault1pBlockingDescription, kOsAll,  \
+     FEATURE_VALUE_TYPE(kBraveAdblockDefault1pBlocking)},                   \
     {"brave-domain-block",                                                  \
      flag_descriptions::kBraveDomainBlockName,                              \
      flag_descriptions::kBraveDomainBlockDescription, kOsAll,               \

@@ -53,6 +53,7 @@ void BaseBraveShieldsService::ShouldStartRequest(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host,
+    bool aggressive_blocking,
     bool* did_match_rule,
     bool* did_match_exception,
     bool* did_match_important,
