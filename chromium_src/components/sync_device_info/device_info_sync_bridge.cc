@@ -18,6 +18,7 @@
 #undef RefreshLocalDeviceInfoIfNeeded
 #undef BRAVE_MAKE_LOCAL_DEVICE_SPECIFICS
 
+#include "base/containers/contains.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 
 namespace syncer {
@@ -95,14 +96,10 @@ DeviceInfoSyncBridge::GetAllBraveDeviceInfo() const {
   return list;
 }
 
-void DeviceInfoSyncBridge::RefreshLocalDeviceInfoIfNeeded(
-    base::OnceClosure callback) {
+void DeviceInfoSyncBridge::RefreshLocalDeviceInfoIfNeeded() {
   const DeviceInfo* current_info =
       local_device_info_provider_->GetLocalDeviceInfo();
   if (!current_info) {
-    if (callback) {
-      device_info_synced_callback_list_.push_back(std::move(callback));
-    }
     return;
   }
 
@@ -115,7 +112,7 @@ void DeviceInfoSyncBridge::RefreshLocalDeviceInfoIfNeeded(
     return;
   }
 
-  RefreshLocalDeviceInfoIfNeeded_ChromiumImpl(std::move(callback));
+  RefreshLocalDeviceInfoIfNeeded_ChromiumImpl();
 }
 
 }  // namespace syncer

@@ -16,8 +16,8 @@
   GetAllBraveDeviceInfo() const override;                                    \
   void ForcePulseForTest
 
-#define RefreshLocalDeviceInfoIfNeeded                                     \
-  RefreshLocalDeviceInfoIfNeeded_ChromiumImpl(base::OnceClosure callback); \
+#define RefreshLocalDeviceInfoIfNeeded           \
+  RefreshLocalDeviceInfoIfNeeded_ChromiumImpl(); \
   void RefreshLocalDeviceInfoIfNeeded
 
 // private:
