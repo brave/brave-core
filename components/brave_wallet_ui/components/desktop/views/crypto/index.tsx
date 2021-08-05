@@ -11,7 +11,8 @@ import {
   RPCTransactionType,
   AssetPriceInfo,
   WalletAccountType,
-  AssetPriceTimeframe
+  AssetPriceTimeframe,
+  Network
 } from '../../../../constants/types'
 import { TopNavOptions } from '../../../../options/top-nav-options'
 import { TopTabNav, BackupWarningBanner, AddAccountModal } from '../../'
@@ -32,6 +33,7 @@ export interface Props {
   onUpdateAccountName: (name: string) => void
   onToggleAddModal: () => void
   onUpdateWatchList: (list: string[]) => void
+  onSelectNetwork: (network: Network) => void
   needsBackup: boolean
   accounts: WalletAccountType[]
   selectedTimeline: AssetPriceTimeframe
@@ -46,6 +48,7 @@ export interface Props {
   userWatchList: string[]
   isLoading: boolean
   showAddModal: boolean
+  selectedNetwork: Network
 }
 
 const CryptoView = (props: Props) => {
@@ -59,6 +62,8 @@ const CryptoView = (props: Props) => {
     onConnectHardwareWallet,
     onUpdateAccountName,
     onUpdateWatchList,
+    onSelectNetwork,
+    selectedNetwork,
     portfolioPriceHistory,
     userAssetList,
     userWatchList,
@@ -167,6 +172,7 @@ const CryptoView = (props: Props) => {
           selectedTimeline={selectedTimeline}
           onSelectAsset={onSelectAsset}
           onClickAddAccount={onClickAddAccount}
+          onSelectNetwork={onSelectNetwork}
           selectedAsset={selectedAsset}
           portfolioBalance={portfolioBalance}
           portfolioPriceHistory={portfolioPriceHistory}
@@ -175,6 +181,7 @@ const CryptoView = (props: Props) => {
           selectedBTCAssetPrice={selectedBTCAssetPrice}
           userAssetList={userAssetList}
           isLoading={isLoading}
+          selectedNetwork={selectedNetwork}
         />
       }
       {selectedTab === 'accounts' &&

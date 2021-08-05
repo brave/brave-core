@@ -8,7 +8,8 @@ import {
   AssetPriceInfo,
   UserAssetOptionType,
   WalletAccountType,
-  AssetPriceTimeframe
+  AssetPriceTimeframe,
+  Network
 } from '../../../../constants/types'
 import locale from '../../../../constants/locale'
 
@@ -26,7 +27,8 @@ import {
   PortfolioAssetItem,
   AddButton,
   PortfolioAccountItem,
-  PortfolioTransactionItem
+  PortfolioTransactionItem,
+  SelectNetworkDropdown
 } from '../../'
 
 // Styled Components
@@ -47,7 +49,8 @@ import {
   SubDivider,
   PercentBubble,
   PercentText,
-  ArrowIcon
+  ArrowIcon,
+  BalanceRow
 } from './style'
 
 export interface Props {
@@ -55,9 +58,11 @@ export interface Props {
   onChangeTimeline: (path: AssetPriceTimeframe) => void
   onSelectAsset: (asset: AssetOptionType | undefined) => void
   onClickAddAccount: () => void
+  onSelectNetwork: (network: Network) => void
   userAssetList: UserAssetOptionType[]
   accounts: WalletAccountType[]
   selectedTimeline: AssetPriceTimeframe
+  selectedNetwork: Network
   selectedAsset: AssetOptionType | undefined
   selectedUSDAssetPrice: AssetPriceInfo | undefined
   selectedBTCAssetPrice: AssetPriceInfo | undefined
@@ -74,6 +79,8 @@ const Portfolio = (props: Props) => {
     onChangeTimeline,
     onSelectAsset,
     onClickAddAccount,
+    onSelectNetwork,
+    selectedNetwork,
     portfolioPriceHistory,
     selectedAssetPriceHistory,
     selectedUSDAssetPrice,
@@ -90,6 +97,11 @@ const Portfolio = (props: Props) => {
   const [filteredAssetList, setfilteredAssetList] = React.useState<UserAssetOptionType[]>(userAssetList)
   const [hoverBalance, setHoverBalance] = React.useState<string>()
   const [hoverPrice, setHoverPrice] = React.useState<string>()
+  const [showNetworkDropdown, setShowNetworkDropdown] = React.useState<boolean>(false)
+
+  const toggleShowNetworkDropdown = () => {
+    setShowNetworkDropdown(!showNetworkDropdown)
+  }
 
   // This filters a list of assets when the user types in search bar
   const filterAssets = (event: any) => {
@@ -144,14 +156,33 @@ const Portfolio = (props: Props) => {
     }
   }
 
+  const onClickSelectNetwork = (network: Network) => () => {
+    onSelectNetwork(network)
+    toggleShowNetworkDropdown()
+  }
+
+  const onHideNetworkDropdown = () => {
+    if (showNetworkDropdown) {
+      setShowNetworkDropdown(false)
+    }
+  }
+
   return (
-    <StyledWrapper>
+    <StyledWrapper onClick={onHideNetworkDropdown}>
       <TopRow>
-        {!selectedAsset ? (
-          <BalanceTitle>{locale.balance}</BalanceTitle>
-        ) : (
-          <BackButton onSubmit={goBack} />
-        )}
+        <BalanceRow>
+          {!selectedAsset ? (
+            <BalanceTitle>{locale.balance}</BalanceTitle>
+          ) : (
+            <BackButton onSubmit={goBack} />
+          )}
+          <SelectNetworkDropdown
+            onClick={toggleShowNetworkDropdown}
+            showNetworkDropDown={showNetworkDropdown}
+            selectedNetwork={selectedNetwork}
+            onSelectNetwork={onClickSelectNetwork}
+          />
+        </BalanceRow>
         <ChartControlBar
           onSubmit={onChangeTimeline}
           selectedTimeline={selectedTimeline}

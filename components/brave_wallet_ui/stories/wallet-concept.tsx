@@ -473,6 +473,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                           onUpdateAccountName={onUpdateAccountName}
                           onUpdateWatchList={onUpdateWatchList}
                           userWatchList={['1']}
+                          selectedNetwork={selectedNetwork}
+                          onSelectNetwork={onSelectNetwork}
                         />
                       )}
                     </>
