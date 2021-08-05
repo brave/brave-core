@@ -45,7 +45,6 @@ class AdBlockSubscriptionDownloadManager
 
   AdBlockSubscriptionDownloadManager(
       download::DownloadService* download_service,
-      AdBlockSubscriptionServiceManager* subscription_manager,
       scoped_refptr<base::SequencedTaskRunner> background_task_runner);
   ~AdBlockSubscriptionDownloadManager() override;
   AdBlockSubscriptionDownloadManager(
@@ -72,6 +71,18 @@ class AdBlockSubscriptionDownloadManager
       base::RepeatingCallback<base::FilePath(const GURL&)>
           subscription_path_callback) {
     subscription_path_callback_ = subscription_path_callback;
+  }
+
+  void set_on_download_succeeded_callback(
+      base::RepeatingCallback<void(const GURL&)>
+          on_download_succeeded_callback) {
+    on_download_succeeded_callback_ = on_download_succeeded_callback;
+  }
+
+  void set_on_download_failed_callback(
+      base::RepeatingCallback<void(const GURL&)>
+          on_download_failed_callback) {
+    on_download_failed_callback_ = on_download_failed_callback;
   }
 
  private:
@@ -143,6 +154,10 @@ class AdBlockSubscriptionDownloadManager
   mojo::Remote<storage::mojom::BlobStorageContext> blob_storage_context_;
   base::RepeatingCallback<base::FilePath(const GURL&)>
       subscription_path_callback_;
+  base::RepeatingCallback<void(const GURL&)>
+      on_download_succeeded_callback_;
+  base::RepeatingCallback<void(const GURL&)>
+      on_download_failed_callback_;
 };
 
 }  // namespace brave_shields

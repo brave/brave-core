@@ -16,7 +16,6 @@
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/download/brave_download_service_factory.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_key.h"
@@ -59,8 +58,6 @@ class AdBlockSubscriptionDownloadManagerFactory
       SimpleFactoryKey* key) const override {
     return std::make_unique<AdBlockSubscriptionDownloadManager>(
         BraveDownloadServiceFactory::GetForKey(key),
-        g_brave_browser_process->ad_block_service()
-            ->subscription_service_manager(),
         base::ThreadPool::CreateSequencedTaskRunner(
             {base::MayBlock(), base::TaskPriority::BEST_EFFORT}));
   }

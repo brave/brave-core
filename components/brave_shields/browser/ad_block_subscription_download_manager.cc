@@ -64,12 +64,10 @@ const net::NetworkTrafficAnnotationTag
 
 AdBlockSubscriptionDownloadManager::AdBlockSubscriptionDownloadManager(
     download::DownloadService* download_service,
-    AdBlockSubscriptionServiceManager* subscription_manager,
     scoped_refptr<base::SequencedTaskRunner> background_task_runner)
     : download_service_(download_service),
       is_available_for_downloads_(true),
-      background_task_runner_(background_task_runner),
-      subscription_manager_(subscription_manager) {}
+      background_task_runner_(background_task_runner) {}
 
 AdBlockSubscriptionDownloadManager::~AdBlockSubscriptionDownloadManager() =
     default;
@@ -158,7 +156,7 @@ void AdBlockSubscriptionDownloadManager::OnDownloadFailed(
       "BraveShields.AdBlockSubscriptionDownloadManager.DownloadSucceeded",
       false);
 
-  subscription_manager_->OnListDownloadFailure(download_url);
+  on_download_failed_callback_.Run(download_url);
 }
 
 bool EnsureDirExists(const base::FilePath& destination_dir) {
@@ -191,7 +189,7 @@ void AdBlockSubscriptionDownloadManager::OnDirCreated(
     const GURL& download_url,
     bool created) {
   if (!created) {
-    subscription_manager_->OnListDownloadFailure(download_url);
+    on_download_failed_callback_.Run(download_url);
     return;
   }
 
@@ -216,12 +214,12 @@ void AdBlockSubscriptionDownloadManager::WriteResultCallback(
     const GURL& download_url,
     storage::mojom::WriteBlobToFileResult result) {
   if (result != storage::mojom::WriteBlobToFileResult::kSuccess) {
-    subscription_manager_->OnListDownloadFailure(download_url);
+    on_download_failed_callback_.Run(download_url);
     return;
   }
 
   // this should send the data to subscription manager
-  subscription_manager_->OnListDownloaded(download_url);
+  on_download_succeeded_callback_.Run(download_url);
 }
 
 }  // namespace brave_shields
