@@ -72,7 +72,7 @@ handler.on(WalletActions.lockWallet.getType(), async (store) => {
 handler.on(WalletActions.unlockWallet.getType(), async (store, payload: UnlockWalletPayloadType) => {
   const keyringController = (await getAPIProxy()).keyringController
   const result = await keyringController.unlock(payload.password)
-  store.dispatch(WalletActions.hasIncorrectPassword(!result.isWalletUnlocked))
+  store.dispatch(WalletActions.hasIncorrectPassword(!result.success))
 })
 
 handler.on(WalletActions.addFavoriteApp.getType(), async (store, appItem: AppObjectType) => {
