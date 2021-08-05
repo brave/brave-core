@@ -200,7 +200,7 @@ export interface WalletInfo {
 }
 
 export interface UnlockReturnInfo {
-  isWalletUnlocked: boolean
+  success: boolean
 }
 
 export enum AssetPriceTimeframe {
