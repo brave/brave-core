@@ -7,7 +7,72 @@ import mojom.generate.generator as generator
 from mojom.generate.generator import WriteFile
 from mojom.generate.template_expander import UseJinja
 
-_kind_to_objc_type = {
+class MojoTypemap(object):
+    @staticmethod
+    def IsMojoType(_):
+        return False
+    def __init__(self, kind, is_inside_container=False):
+        self.kind = kind
+        self.is_inside_container = is_inside_container
+    def ObjCWrappedType(self):
+        pass
+    def ExpectedCppType(self):
+        pass
+    def DefaultObjCValue(self, default):
+        pass
+    def ObjCToCpp(self, accessor):
+        pass
+    def CppToObjC(self, accessor):
+        pass
+
+class StringMojoTypemap(MojoTypemap):
+    @staticmethod
+    def IsMojoType(kind):
+        return mojom.IsStringKind(kind)
+    def ObjCWrappedType(self):
+        return "NSString*"
+    def ExpectedCppType(self):
+        return "std::string"
+    def DefaultObjCValue(self, default):
+        return "@%s" % default if default is not None else '@""'
+    def ObjCToCpp(self, accessor):
+        return "base::SysNSStringToUTF8(%s)" % accessor
+    def CppToObjC(self, accessor):
+        return "base::SysUTF8ToNSString(%s)" % accessor
+
+class TimeMojoTypemap(MojoTypemap):
+    @staticmethod
+    def IsMojoType(kind):
+        return (mojom.IsStructKind(kind) and
+                kind.qualified_name == 'mojo_base.mojom.Time')
+    def ObjCWrappedType(self):
+        return "NSDate*"
+    def ExpectedCppType(self):
+        return "base::Time"
+    def DefaultObjCValue(self, default):
+        return "[[NSDate alloc] init]"
+    def ObjCToCpp(self, accessor):
+        return "base::Time::FromNSDate(%s)" % accessor
+    def CppToObjC(self, accessor):
+        return "%s.ToNSDate()" % accessor
+
+class URLMojoTypemap(MojoTypemap):
+    @staticmethod
+    def IsMojoType(kind):
+        return (mojom.IsStructKind(kind) and
+                kind.qualified_name == 'url.mojom.Url')
+    def ObjCWrappedType(self):
+        return "NSURL*"
+    def ExpectedCppType(self):
+        return "net::GURL"
+    def DefaultObjCValue(self, default):
+        return "[[NSURL alloc] init]"
+    def ObjCToCpp(self, accessor):
+        return "net::GURLWithNSURL(%s)" % accessor
+    def CppToObjC(self, accessor):
+        return "net::NSURLWithGURL(%s)" % accessor
+
+_kind_to_c_type = {
     mojom.BOOL: "bool",
     mojom.INT8: "int8_t",
     mojom.UINT8: "uint8_t",
@@ -35,6 +100,168 @@ _kind_to_nsnumber_getter = {
     mojom.DOUBLE: "doubleValue",
 }
 
+class NumberMojoTypemap(MojoTypemap):
+    @staticmethod
+    def IsMojoType(kind):
+        return kind in _kind_to_nsnumber_getter
+    def ObjCWrappedType(self):
+        return "NSNumber*" if self.is_inside_container else _kind_to_c_type[self.kind]
+    def ExpectedCppType(self):
+        return _kind_to_c_type[self.kind]
+    def ObjCToCpp(self, accessor):
+        if self.is_inside_container:
+            return "%s.%s" % (accessor, _kind_to_nsnumber_getter[self.kind])
+        return accessor
+    def DefaultObjCValue(self, default):
+        return default # Default for primatives not needed, array/map default is empty
+    def CppToObjC(self, accessor):
+        if self.is_inside_container:
+            return "@(%s)" % accessor
+        return accessor
+
+class ArrayMojoTypemap(MojoTypemap):
+    def __init__(self, kind, is_inside_container):
+        super(ArrayMojoTypemap, self).__init__(kind, is_inside_container=is_inside_container)
+        self.wrappedTypemap = MojoTypemapForKind(kind.kind, True)
+    @staticmethod
+    def IsMojoType(kind):
+        return mojom.IsArrayKind(kind)
+    def ObjCWrappedType(self):
+        return "NSArray<%s>*" % self.wrappedTypemap.ObjCWrappedType()
+    def ExpectedCppType(self):
+        return "std::vector<%s>" % self.wrappedTypemap.ExpectedCppType()
+    def DefaultObjCValue(self, default):
+        return "@[]"
+    def ObjCToCpp(self, accessor):
+        args = (self.wrappedTypemap.ExpectedCppType(),
+                self.wrappedTypemap.ObjCWrappedType(),
+                accessor, self.wrappedTypemap.ObjCToCpp("obj"))
+        return """^{
+            std::vector<%s> array;
+            for (%s obj in %s) {
+                array.push_back(%s);
+            }
+            return array;
+        }()""" % args
+    def CppToObjC(self, accessor):
+        args = (accessor, self.wrappedTypemap.CppToObjC("o"))
+        return """^{
+            const auto a = [NSMutableArray new];
+            for (const auto& o : %s) {
+                [a addObject:%s];
+            }
+            return a;
+        }()""" % args
+
+class StructMojoTypemap(MojoTypemap):
+    @staticmethod
+    def IsMojoType(kind):
+        return mojom.IsStructKind(kind)
+    def ObjCWrappedType(self):
+        return "%s%s*" % (ObjCPrefixFromKind(self.kind), self.kind.name)
+    def ExpectedCppType(self):
+        return "%s::%sPtr" % (CppNamespaceFromKind(self.kind), self.kind.name)
+    def DefaultObjCValue(self, default):
+        args = (ObjCPrefixFromKind(self.kind), self.kind.name)
+        return "[[%s%s alloc] init]" % args
+    def ObjCToCpp(self, accessor):
+        return "%s.cppObjPtr" % accessor
+    def CppToObjC(self, accessor):
+        args = (ObjCPrefixFromKind(self.kind), self.kind.name, self.kind.name, accessor)
+        return "[[%s%s alloc] initWith%s:*%s]" % args
+
+class EnumMojoTypemap(MojoTypemap):
+    @staticmethod
+    def IsMojoType(kind):
+        return mojom.IsEnumKind(kind)
+    def ObjCWrappedType(self):
+        return "%s%s" % (ObjCPrefixFromKind(self.kind), self.kind.name)
+    def ExpectedCppType(self):
+        return "%s::%s" % (CppNamespaceFromKind(self.kind), self.kind.name)
+    def DefaultObjCValue(self, default):
+        if default is None:
+            return None
+        return self.CppToObjC("%s::%s" % (self.ExpectedCppType(), default.name))
+    def ObjCToCpp(self, accessor):
+        return "static_cast<%s>(%s)" % (self.ExpectedCppType(), accessor)
+    def CppToObjC(self, accessor):
+        return "static_cast<%s>(%s)" % (self.ObjCWrappedType(), accessor)
+
+class DictionaryMojoTypemap(MojoTypemap):
+    def __init__(self, kind, is_inside_container):
+        super(DictionaryMojoTypemap, self).__init__(kind, is_inside_container=is_inside_container)
+        self.keyTypemap = MojoTypemapForKind(self.kind.key_kind, True)
+        self.valueTypemap = MojoTypemapForKind(self.kind.value_kind, True)
+    @staticmethod
+    def IsMojoType(kind):
+        return mojom.IsMapKind(kind)
+    def ObjCWrappedType(self):
+        return "NSDictionary<%s, %s>*" % (self.keyTypemap.ObjCWrappedType(),
+                                          self.valueTypemap.ObjCWrappedType())
+    def ExpectedCppType(self):
+        return "base::flat_map<%s, %s>" % (self.keyTypemap.ExpectedCppType(),
+                                           self.valueTypemap.ExpectedCppType())
+    def DefaultObjCValue(self, default):
+        return "@{}"
+    def ObjCToCpp(self, accessor):
+        args = (self.keyTypemap.ExpectedCppType(), self.valueTypemap.ExpectedCppType(),
+                self.keyTypemap.ObjCWrappedType(), accessor,
+                self.keyTypemap.ObjCToCpp("key"),
+                self.valueTypemap.ObjCToCpp("%s[key]" % accessor))
+        return """^{
+            base::flat_map<%s, %s> map;
+            for (%s key in %s) {
+                map[%s] = %s;
+            }
+            return map;
+        }()""" % args
+    def CppToObjC(self, accessor):
+        args = (accessor, self.keyTypemap.CppToObjC("item.first"),
+                self.valueTypemap.CppToObjC("item.second"))
+        return """^{
+            const auto d = [NSMutableDictionary new];
+            for (const auto& item : %s) {
+                d[%s] = %s;
+            }
+            return d;
+        }()""" % args
+
+_mojo_typemaps = [
+    StringMojoTypemap,
+    TimeMojoTypemap,
+    URLMojoTypemap,
+    NumberMojoTypemap,
+    EnumMojoTypemap,
+    ArrayMojoTypemap,
+    DictionaryMojoTypemap,
+    StructMojoTypemap,
+]
+
+def MojoTypemapForKind(kind, is_inside_container=False):
+    typemap = next((x for x in _mojo_typemaps if x.IsMojoType(kind)), None)
+    if typemap is None:
+        raise Exception("No typemap available for the given kind: %s" % kind)
+    return typemap(kind, is_inside_container)
+
+def CppNamespaceFromKind(kind):
+    return str(kind.module.namespace).replace(".", "::")
+
+def ObjCPrefixFromKind(kind):
+    return ObjCPrefixFromModule(kind.module)
+
+def ObjCPrefixFromModule(module):
+    return UnderToCamel(str(module.namespace).replace(".mojom", ""))
+
+def UnderToCamel(value, lower_initial=False, digits_split=False):
+    # There are some mojom files that don't use snake_cased names, so we try to
+    # fix that to get more consistent output.
+    return generator.ToCamel(generator.ToLowerSnakeCase(value),
+                             lower_initial=lower_initial,
+                             digits_split=digits_split)
+
+def UnderToLowerCamel(value):
+    return UnderToCamel(value, lower_initial=True)
+
 class Generator(generator.Generator):
     def __init__(self, *args, **kwargs):
         super(Generator, self).__init__(*args, **kwargs)
@@ -50,18 +277,19 @@ class Generator(generator.Generator):
             "objc_property_needs_default_assignment": self._ObjcPropertyNeedsDefaultValueAssignment,
             "objc_wrapper_type": self._GetObjCWrapperType,
             "objc_property_formatter": self._ObjCPropertyFormatter,
+            "objc_method_name_formatter": self._ObjCMethodNameFormatter,
             "objc_enum_formatter": self._ObjCEnumFormatter,
             "cpp_to_objc_assign": self._CppToObjCAssign,
             "objc_to_cpp_assign": self._ObjCToCppAssign,
-            "cpp_namespace_from_kind": self._CppNamespaceFromKind,
+            "cpp_namespace_from_kind": CppNamespaceFromKind,
+            "under_to_lower_camel": UnderToLowerCamel,
         }
         return objc_filters
 
     def _GetObjCPropertyModifiers(self, kind):
         modifiers = ['nonatomic']
         if (mojom.IsArrayKind(kind) or mojom.IsStringKind(kind) or
-                mojom.IsMapKind(kind) or self._IsStructKind(kind) or
-                self._IsTimeKind(kind)):
+                mojom.IsMapKind(kind) or mojom.IsStructKind(kind)):
             modifiers.append('copy')
         if mojom.IsNullableKind(kind):
             modifiers.append('nullable')
@@ -69,75 +297,30 @@ class Generator(generator.Generator):
 
     def _ObjcPropertyNeedsDefaultValueAssignment(self, field):
         kind = field.kind
-        if not field.default:
-            # If there's no specified default, only make defaults for required types
-            return (not mojom.IsNullableKind(kind) and
-                    (mojom.IsStringKind(kind) or mojom.IsArrayKind(kind) or
-                     mojom.IsMapKind(kind) or self._IsStructKind(kind)))
-        if self._IsObjCNumberKind(kind) and field.default == 0:
+        typemap = MojoTypemapForKind(kind)
+        if not field.default and mojom.IsNullableKind(kind):
+            return False
+        if typemap.DefaultObjCValue(field.default) is None:
+            return False
+        if typemap is NumberMojoTypemap and field.default == 0:
             # 0 by default anyways
             return False
         return True
 
     def _GetObjCPropertyDefaultValue(self, field):
         kind = field.kind
-        if mojom.IsNullableKind(kind) and not field.default:
+        typemap = MojoTypemapForKind(kind)
+        if not field.default and mojom.IsNullableKind(kind):
             return 'nil'
-        if self._IsObjCNumberKind(kind):
-            return '0' if not field.default else field.default
-        if mojom.IsEnumKind(kind):
-            value = '0' if not field.default else field.default.field.value
-            return 'static_cast<%s%s>(%s)' % (self._ObjCPrefix(), kind.name, value)
-        if mojom.IsStringKind(kind):
-            return '@""' if not field.default else '@%s' % field.default
-        if mojom.IsArrayKind(kind):
-            return '@[]'
-        if mojom.IsMapKind(kind):
-            return '@{}'
-        if self._IsStructKind(kind):
-            return "[[%s%s alloc] init]" % (self._ObjCPrefix(), kind.name)
-        raise Exception("Unrecognized kind %s" % kind.spec)
-
-    def _IsMojoBaseKind(self, kind):
-        return kind.module != None and kind.qualified_name.startswith('mojo_base.mojom')
-
-    def _IsTimeKind(self, kind):
-        return self._IsMojoBaseKind(kind) and kind.name == 'Time'
-
-    def _IsTimeDeltaKind(self, kind):
-        return self._IsMojoBaseKind(kind) and kind.name == 'TimeDelta'
-
-    def _IsStructKind(self, kind):
-        return mojom.IsStructKind(kind) and not self._IsMojoBaseKind(kind)
+        return typemap.DefaultObjCValue(field.default)
 
     def _GetObjCWrapperType(self, kind, objectType=False):
-        if self._IsStructKind(kind):
-            return "%s%s *" % (self._ObjCPrefix(), kind.name)
-        if self._IsTimeKind(kind) or self._IsTimeDeltaKind(kind):
-            return "NSDate *"
-        if mojom.IsEnumKind(kind):
-            return "%s%s" % (self._ObjCPrefix(), kind.name)
-        if mojom.IsInterfaceKind(kind):
-            return "id<%s%s>" % (self._ObjCPrefix(), kind.name)
-        if mojom.IsStringKind(kind):
-            return "NSString *"
-        if mojom.IsArrayKind(kind):
-            return "NSArray<%s> *" % self._GetObjCWrapperType(kind.kind, True)
-        if mojom.IsMapKind(kind):
-            return "NSDictionary<%s, %s> *" % \
-            (self._GetObjCWrapperType(kind.key_kind, True),
-             self._GetObjCWrapperType(kind.value_kind, True))
-        if self._IsObjCNumberKind(kind):
-            if objectType:
-                return "NSNumber *"
-            else:
-                return _kind_to_objc_type[kind]
-        raise Exception("Unrecognized kind %s" % kind)
+        typemap = MojoTypemapForKind(kind, objectType)
+        return typemap.ObjCWrappedType()
 
     def _ObjCPropertyFormatter(self, value):
         """ snake case to camel case, and replaces reserved names """
-        parts = value.split('_')
-        name = parts[0].lower() + ''.join([p.capitalize() for p in parts[1:]])
+        name = UnderToCamel(value, lower_initial=True)
         # A set of reserved names by Obj-C which shouldn't be used as property names
         reserved = {
             'description': 'desc',
@@ -154,227 +337,34 @@ class Generator(generator.Generator):
             return reserved[name]
         return name
 
+    def _ObjCMethodNameFormatter(self, method):
+        name = method.name
+        if name.lower().startswith('get'):
+            # Obj-C doesn't use the word `get` in getters
+            name = name[3:]
+        return UnderToCamel(name, lower_initial=True)
+
     def _ObjCEnumFormatter(self, value):
         """ Formats uppercased, k-prefixed & snake case to upper camel case """
         name = value
         if len(value) >= 2 and value[0] == "k" and value[1].isupper():
-            # k-prefixed is already cased correctly
-            return value[1:]
-        return ''.join([p.capitalize() for p in name.split('_')])
+            # k-prefixed
+            name = value[1:]
+        return UnderToCamel(name)
 
-    def _IsObjCNumberKind(self, kind):
-        return kind in _kind_to_nsnumber_getter
-
-    def _CppPtrToObjCTransform(self, kind, obj):
-        args = (self._ObjCPrefix(), kind.name, kind.name, obj)
-        return "[[%s%s alloc] initWith%s:*%s]" % args
-
-    def _ObjCToCppAssign(self, field, obj):
+    def _ObjCToCppAssign(self, field, obj=None):
         kind = field.kind
-        accessor = "%s.%s" % (obj, self._ObjCPropertyFormatter(field.name))
-
-        if self._IsObjCNumberKind(kind):
-            return accessor
-        if self._IsStructKind(kind):
-            if mojom.IsNullableKind(kind):
-                return "%s != nil ? %s.cppObjPtr : nullptr" % (accessor, accessor)
-            else:
-                return "%s.cppObjPtr" % accessor
-        if self._IsTimeKind(kind):
-            return "base::Time::FromNSDate(%s)" % accessor
-        if self._IsTimeDeltaKind(kind):
-            return "base::TimeDelta::FromSecondsD(%s.timeIntervalSince1970)" % accessor
-        if mojom.IsEnumKind(kind):
-            args = (self._CppNamespaceFromKind(kind), kind.name, accessor)
-            return "static_cast<%s::%s>(%s)" % args
-        if mojom.IsStringKind(kind):
-            return "base::SysNSStringToUTF8(%s)" % accessor
-        if mojom.IsArrayKind(kind):
-            # Only currently supporting: `[string]`, `[number]`, and `[struct]`
-            array_kind = kind.kind
-            if mojom.IsStringKind(array_kind):
-                return "VectorFromNSArray(%s)" % accessor
-            if self._IsObjCNumberKind(array_kind):
-                return """^{
-                    std::vector<%s> array;
-                    for (NSNumber *number in %s) {
-                        array.push_back(number.%s);
-                    }
-                    return array;
-                }()""" % (_kind_to_objc_type[array_kind], accessor,
-                          _kind_to_nsnumber_getter[array_kind])
-            elif mojom.IsStringKind(array_kind):
-                return """^{
-                    std::vector<std::string> array;
-                    for (NSString *string in %s) {
-                        array.push_back(base::SysNSStringToUTF8(string));
-                    }
-                    return array;
-                }()""" % accessor
-            elif self._IsStructKind(array_kind):
-                return """^{
-                        std::vector<%s::%sPtr> array;
-                        for (%s%s *obj in %s) {
-                            array.push_back(obj.cppObjPtr);
-                        }
-                        return array;
-                    }()""" % (self._CppNamespaceFromKind(array_kind), array_kind.name,
-                              self._ObjCPrefix(), array_kind.name, accessor)
-            elif self._IsTimeKind(array_kind):
-                return """^{
-                        std::vector<base::Time> array;
-                        for (NSDate *obj in %s) {
-                            array.push_back(base::Time::FromNSDate(obj));
-                        }
-                        return array;
-                    }()""" % accessor
-            else:
-                raise Exception("Unsupported array kind %s" % array_kind.spec)
-        if mojom.IsMapKind(kind):
-            # Only currently supporting: `{string: string}`, `{string: number}`, and
-            # `{string: struct}`
-            key_kind = kind.key_kind
-            val_kind = kind.value_kind
-            if mojom.IsStringKind(key_kind):
-                if self._IsObjCNumberKind(val_kind):
-                    return """^{
-                        base::flat_map<std::string, %s> map;
-                        for (NSString *key in %s) {
-                            map[base::SysNSStringToUTF8(key)] = %s[key].%s;
-                        }
-                        return map;
-                    }()""" % (_kind_to_objc_type[val_kind], accessor, accessor,
-                              _kind_to_nsnumber_getter[val_kind])
-                elif mojom.IsStringKind(val_kind):
-                    return """^{
-                        base::flat_map<std::string, std::string> map;
-                        for (NSString *key in %s) {
-                            map[base::SysNSStringToUTF8(key)] = base::SysNSStringToUTF8(%s[key]);
-                        }
-                        return map;
-                    }()""" % (accessor, accessor)
-                elif self._IsStructKind(val_kind):
-                    return """^{
-                        base::flat_map<std::string, %s::%sPtr> map;
-                        for (NSString *key in %s) {
-                            map[base::SysNSStringToUTF8(key)] = %s[key].cppObjPtr;
-                        }
-                        return map;
-                    }()""" % (self._CppNamespaceFromKind(val_kind), val_kind.name, accessor,
-                              accessor)
-                elif self._IsTimeKind(val_kind):
-                    return """^{
-                        base::flat_map<std::string, base::Time> map;
-                        for (NSString *key in %s) {
-                            map[base::SysNSStringToUTF8(key)] = base::Time::FromNSDate(%s[key]);
-                        }
-                        return map;
-                    }()""" % (accessor, accessor)
-                else:
-                    raise Exception("Unsupported dictionary value kind %s" % val_kind.spec)
-            else:
-                raise Exception("Unsupported dictionary key kind %s" % key_kind.spec)
-        return "%s" % accessor
+        accessor = "%s%s" % (obj + "." if obj else "", self._ObjCPropertyFormatter(field.name))
+        typemap = MojoTypemapForKind(kind)
+        if typemap is None:
+            raise Exception("No typemap found for the given kind: %s" % kind)
+        return typemap.ObjCToCpp(accessor)
 
     def _CppToObjCAssign(self, field, obj):
         kind = field.kind
         accessor = "%s.%s" % (obj, field.name)
-        if self._IsObjCNumberKind(kind):
-            return accessor
-        if self._IsStructKind(kind):
-            args = (self._ObjCPrefix(), kind.name, kind.name, accessor)
-            base = "[[%s%s alloc] initWith%s:*%s]" % args
-            if mojom.IsNullableKind(kind):
-                return """^%s%s *{
-                    if (%s.get() != nullptr) {
-                        return %s;
-                    }
-                    return nil;
-                }()""" % (self._ObjCPrefix(), kind.name, accessor, base)
-            else:
-                return base
-        if self._IsTimeKind(kind):
-            return "%s.ToNSDate()" % accessor
-        if self._IsTimeDeltaKind(kind):
-            return "[NSDate dateWithTimeIntervalSince1970:%s.InSecondsF()]" % accessor
-        if mojom.IsEnumKind(kind):
-            return "static_cast<%s%s>(%s)" % (self._ObjCPrefix(), kind.name, accessor)
-        if mojom.IsStringKind(kind):
-            return "base::SysUTF8ToNSString(%s)" % accessor
-        if mojom.IsArrayKind(kind):
-            # Only currently supporting: `[string]`, `[number]`, and `[struct]`
-            array_kind = kind.kind
-            if mojom.IsStringKind(array_kind) or self._IsObjCNumberKind(array_kind):
-                return "NSArrayFromVector(%s)" % accessor
-            elif self._IsStructKind(array_kind):
-                # Mojo IDL array<struct> actually creates a
-                # `std::vector<mojom::StructPtr<struct>>``, instead of just a plain
-                # vector of `struct`, which needs to be handled appropriately as
-                # `StructPtr` does not allow copy and assign, and acts like a unique_ptr
-                return """^{
-                    const auto a = [NSMutableArray new];
-                    for (const auto& o : %s) {
-                        [a addObject:%s];
-                    }
-                    return a;
-                }()""" % (accessor, self._CppPtrToObjCTransform(array_kind, 'o'))
-            elif self._IsTimeKind(array_kind):
-                return """^{
-                    const auto a = [NSMutableArray new];
-                    for (const auto& o : %s) {
-                        [a addObject:o.ToNSDate()];
-                    }
-                    return a;
-                }()""" % accessor
-            else:
-                raise Exception("Unsupported array kind %s" % array_kind.spec)
-        if mojom.IsMapKind(kind):
-            # Only currently supporting: `{string: string}`, `{string: number}`, and
-            # `{string: struct}`
-            key_kind = kind.key_kind
-            val_kind = kind.value_kind
-            if mojom.IsStringKind(key_kind):
-                if mojom.IsStringKind(val_kind) or self._IsObjCNumberKind(val_kind):
-                    return "NSDictionaryFromMap(%s)" % accessor
-                elif self._IsStructKind(val_kind):
-                    # Mojo IDL map<*, struct> actually creates a
-                    # `base::flat_map<*, mojom::StructPtr<struct>>``, instead of just a
-                    # plain std::map of `struct`, which needs to be handled appropriately
-                    # as `StructPtr` does not allow copy and assign, and acts like a
-                    # unique_ptr
-                    return """^{
-                        const auto d = [NSMutableDictionary new];
-                        for (const auto& item : %s) {
-                            d[base::SysUTF8ToNSString(item.first)] = %s;
-                        }
-                        return d;
-                    }()""" % (accessor, self._CppPtrToObjCTransform(val_kind, 'item.second'))
-                elif self._IsTimeKind(val_kind):
-                    return """^{
-                        const auto d = [NSMutableDictionary new];
-                        for (const auto& item : %s) {
-                            d[base::SysUTF8ToNSString(item.first)] = item.second.ToNSDate();
-                        }
-                        return d;
-                    }()""" % accessor
-                else:
-                    raise Exception("Unsupported dictionary value kind %s" % val_kind.spec)
-            else:
-                raise Exception("Unsupported dictionary key kind %s" % key_kind.spec)
-
-        return "%s" % accessor
-
-    def _CppNamespaceFromKind(self, kind):
-        return str(kind.module.namespace).replace(".", "::")
-
-    def _ObjCPrefix(self):
-        return self._UnderToCamel(str(self.module.namespace).replace(".mojom", ""))
-
-    def _UnderToCamel(self, value, digits_split=False):
-        # There are some mojom files that don't use snake_cased names, so we try to
-        # fix that to get more consistent output.
-        return generator.ToCamel(generator.ToLowerSnakeCase(value),
-                                 digits_split=digits_split)
+        typemap = MojoTypemapForKind(kind)
+        return typemap.CppToObjC(accessor)
 
     def _GetJinjaExports(self):
         all_structs = [item for item in self.module.structs if item.name not in self.excludedTypes]
@@ -386,7 +376,7 @@ class Generator(generator.Generator):
             for field in struct.fields:
                 if (field.kind.module is not None and
                         field.kind.module.namespace != self.module.namespace):
-                    if self._IsStructKind(field.kind):
+                    if mojom.IsStructKind(field.kind) and field.kind.module == self.module:
                         all_structs.append(field.kind)
                         all_enums.extend(field.kind.enums)
                     elif mojom.IsEnumKind(field.kind):
@@ -402,7 +392,7 @@ class Generator(generator.Generator):
             "kinds": self.module.kinds,
             "module": self.module,
             "module_name": os.path.basename(self.module.path),
-            "class_prefix": self._ObjCPrefix(),
+            "class_prefix": ObjCPrefixFromModule(self.module),
             "structs": all_structs,
             "unions": self.module.unions,
         }

@@ -19,7 +19,7 @@
 #endif
 
 {%- for struct in structs %}
-{%    include "private_interface_declaration.tmpl" %}
+{%    include "private_struct_declaration.tmpl" %}
 {%- endfor %}
 
 #endif  // {{header_guard}}
