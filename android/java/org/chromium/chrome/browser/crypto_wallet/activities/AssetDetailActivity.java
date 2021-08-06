@@ -201,7 +201,9 @@ public class AssetDetailActivity extends AsyncInitializationActivity
     }
 
     @Override
-    public void onAccountClick() {}
+    public void onAccountClick() {
+        Utils.openAccountDetailActivity(AssetDetailActivity.this);
+    }
 
     @Override
     public void onTransactionClick() {}

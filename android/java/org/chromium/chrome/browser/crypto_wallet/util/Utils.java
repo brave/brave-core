@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
@@ -117,5 +118,11 @@ public class Utils {
         assert activity != null;
         Intent addAccountActivityIntent = new Intent(activity, AddAccountActivity.class);
         activity.startActivity(addAccountActivityIntent);
+    }
+
+    public static void openAccountDetailActivity(Activity activity) {
+        assert activity != null;
+        Intent accountDetailActivityIntent = new Intent(activity, AccountDetailActivity.class);
+        activity.startActivity(accountDetailActivityIntent);
     }
 }

@@ -1919,6 +1919,15 @@ until they verify, or until 90 days have passed.
     <message name="IDS_IMPORT_TEXT" desc="Brave wallet accounts text">
       Import...
     </message>
+    <message name="IDS_ASSETS" desc="Brave wallet accounts text">
+      Assets
+    </message>
+    <message name="IDS_DETAILS" desc="Brave wallet accounts text">
+      Details
+    </message>
+    <message name="IDS_EDIT" desc="Brave wallet accounts text">
+      Edit
+    </message>
     </messages>
   </release>
 </grit>

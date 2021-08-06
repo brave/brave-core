@@ -86,5 +86,7 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
     }
 
     @Override
-    public void onAccountClick() {}
+    public void onAccountClick() {
+        Utils.openAccountDetailActivity(getActivity());
+    }
 }
