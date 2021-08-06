@@ -28,6 +28,9 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="3218385319396786393">Automatisch afspelen is op deze pagina geblokkeerd</translation>
 <translation id="4988333904713528597">Automatisch afspelen altijd toestaan in <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Blijf automatisch afspelen blokkeren</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Vragen wanneer een site toegang wil tot de Ethereum-aanbieder-API</translation>
+<translation id="7017590444693657895">Toegang tot Ethereum-aanbieder-API blokkeren voor sites</translation>
 <translation id="8988939298652262600">Brave controleert extensies niet op veiligheid. Installeer deze extensie alleen als u de ontwikkelaar vertrouwt.</translation>
 <translation id="8081858229109418493">Profielnaam en pictogram</translation>
 <translation id="2044383478723007273">Brave-kleuren</translation>
@@ -43,6 +46,7 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="597020512043916976">Toon topsites in de 
 suggesties voor automatisch aanvullen</translation>
 <translation id="264150068416846820">Toon door Brave voorgestelde sites in de suggesties voor automatisch aanvullen</translation>
+<translation id="5529693968082667490">Knop voor zoektabbladen tonen</translation>
 <translation id="6414370348346025511">Standaardbescherming staat aan.</translation>
 <translation id="814018970995616154">Vergelijkt ULS's met een lijst met onveilige sites die opgeslagen is in Brave.</translation>
 <translation id="1144810021918451336">Beschermt u niet tegen gevaarlijke websites, downloads en extensies.</translation>
@@ -94,7 +98,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="6303294677342628402">Schilden</translation>
 <translation id="7133511168130368997">Blokkeer trackers en advertenties die u op het internet volgen.</translation>
 <translation id="2761825942249694703">Dit zijn de standaard Shields-instellingen. Ze zijn van toepassing op alle websites, tenzij u iets verandert via het Shields-configuratiescherm op een specifieke website. Deze veranderingen hebben geen invloed op uw bestaande instellingen per website.</translation>
-<translation id="8754605759692119662">Dit zal de meeste advertenties op websites blokkeren, met uitzondering van de Brave-privéadvertenties: deze worden beheerd via de</translation>
+<translation id="1485394570478670912">Hiermee worden de meeste advertenties op websites geblokkeerd, behalve privéadvertenties van Brave; deze worden beheerd vanuit de</translation>
 <translation id="6388201778088078932">instellingen.</translation>
 <translation id="9185018653595759199">Social media blokkeren</translation>
 <translation id="7390783310074170337">Standaard weergave</translation>
@@ -295,6 +299,13 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="1391855377994926460">Sneller online browsen - tot wel 6 keer sneller op populaire nieuwswebsites.</translation>
 <translation id="9218430445555521422">Instellen als standaard</translation>
 <translation id="3479552764303398839">Niet nu</translation>
+<translation id="5039804452771397117">Toestaan</translation>
+<translation id="7053983685419859001">Blokkeren</translation>
+<translation id="7815301689257843278">Automatisch foutrapport verzenden zodat Brave kan voorkomen dat de fout opnieuw optreedt?</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> is onverwachts gestopt.</translation>
+<translation id="1324417023773393937">Brave-browser</translation>
+<translation id="1068069727470515940">Je kunt <ph name="SETTING_TEXT"/> op elk gewenst moment wijzigen.</translation>
+<translation id="6873781976650514089">deze instelling</translation>
 <translation id="6040143037577758943">Sluit</translation>
 <translation id="5600566490506283344">Brave-advertentiemelding</translation>
 <translation id="4877147287319222750">Toevoegen aan zijbalk</translation>
@@ -346,6 +357,6 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="8487693399751278191">Importeer nu bladwijzers...</translation>
 <translation id="2557899542277210112">Voor een snelle toegang kun je hier bladwijzers op de bladwijzerbalk plaatsen.</translation>
 <translation id="2808630562319398131">Brave Rewards-gegevens resetten...</translation>
-<translation id="1224064034972923114">Help Brave te verbeteren door automatisch crash-rapporten te sturen</translation>
-<translation id="3738833060602717053">Help met het verbeteren van <ph name="PRODUCT_NAME"/> door automatisch crash-rapporten te verzenden</translation>
+<translation id="2273851479262317744">Brave instellen als standaardbrowser</translation>
+<translation id="8581710194025054669">Om je privacy online zo goed mogelijk te beschermen, kun je Brave instellen als standaardbrowser op je computer. Met Brave als standaardbrowser worden de privacyfuncties van Brave geopend voor elke koppeling waar je op klikt.</translation>
 </translationbundle>

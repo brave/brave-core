@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">Відкриває деякі сайти, використовуючи безпечне з’єднання HTTPS замість звичайного HTTP.</translation>
 <translation id="94154759592465111">Блокувати скрипти</translation>
 <translation id="3518266709656143462">Блокує Javascript (деякі сайти можуть не працювати)</translation>
-<translation id="5709627087332022422">Заблокуйте міжсайтове відстеження</translation>
 <translation id="6052725679982758334">Блокування соціальних мереж</translation>
 <translation id="7498695072878479744">Дозволити кнопки входу Google на сайтах третіх сторін</translation>
 <translation id="863171915776379000">Дозвольте вхід через Facebook та вбудовані публікації</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">Шлюз IPFS</translation>
 <translation id="2688519859165248360">Забезпечує перехід до ресурсів IPFS за допомогою шлюзу IPFS</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Ціна на Ethereum (ETH)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Метод вирішення</translation>
 <translation id="2356070529366658676">Запитати</translation>
 <translation id="4176463684765177261">Вимкнено</translation>
 <translation id="2218918398178303658">DNS поверх HTTPS</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Запобігає збору цифрового відбитка веб-переглядача</translation>
 <translation id="7459000603787995422">Закрити вкладки при виході</translation>
 <translation id="4448697385961650078">Блокувати трекери та рекламу</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">Зробіть Brave своїм браузером за вмовчанням!</translation>
 <translation id="7136694880210472378">Установити за умовчанням</translation>
 <translation id="4250680216510889253">ні</translation>
-<translation id="4501702055016678577">Шукати приватно за допомогою DuckDuckGo?</translation>
-<translation id="910419239800579753">У випадку приватного пошуку Brave використовуватиме DuckDuckGo для надання результатів за вашими запитами, коли ви перебуваєте у цій приватній вкладці. DuckDuckGo — пошукова система, яка не відстежує вашу історію пошуку, що дозволяє вам здійснювати пошук конфіденційно.</translation>
-<translation id="1426410128494586442">так</translation>
-<translation id="5628466560184522265">Дізнайтесь про приватний пошук за допомогою DuckDuckGo</translation>
 <translation id="8826007068782654809">Дякуємо</translation>
 <translation id="6665366815203065060">Ви щойно надіслали чайові:</translation>
 <translation id="5441565662498481293">Ви автоматично надсилаєте чайові:</translation>
@@ -442,7 +438,7 @@
 <translation id="3477340970981564961">На відміну від звичайних рекламних оголошень, приватна реклама Brave не порушує конфіденційність вашої особистої інформації та винагороджує токенами, якими можна підтримувати творців контенту.</translation>
 <translation id="6973095375773523904">Де з'являються рекламні оголошення?</translation>
 <translation id="7556325460112047619">Приватна реклама Brave з'являтиметься у вигляді звичайних сповіщень. Частоту їхньої появи можна змінити у налаштуваннях.</translation>
-<translation id="6897083627729802351">Коли ви отримуєте винагороди</translation>
+<translation id="6897083627729802351">Коли ви отримуєте винагороди?</translation>
 <translation id="310863932297733723">Токени, зароблені за перегляд приватної реклами Brave цього місяця, будуть нараховані вам 5-го числа наступного місяця.</translation>
 <translation id="7712287524451429139">Допомагати іншим тепер ще простіше</translation>
 <translation id="105037569026952831">Творці контенту автоматично отримують ваші внески в токенах на основі рівня вашої підтримки, який ми визначаємо як ‘Увага’.</translation>
@@ -459,7 +455,7 @@
 <translation id="827315274423079662">Ура, все налаштовано!</translation>
 <translation id="3895246934788932488">Користуючись Brave Rewards, ви захищаєте свою конфіденційність та допомагаєте зробити Інтернет кращим місцем для усіх користувачів. І це просто чудово!</translation>
 <translation id="5705882733397021510">Повернутися</translation>
-<translation id="3985567919248057638">Пройдіть швидке ознайомлення</translation>
+<translation id="3985567919248057638">Швидкий огляд</translation>
 <translation id="2434574859640694129">Після того, як ви отримаєте перші виплати за рекламу, ви зможете повернутись та заплатити цьому творцю!</translation>
 <translation id="207242986925259074">Швидкий додатковий огляд</translation>
 <translation id="8342862030112839977">Ваша перша виплата винагород буде здійснена до:</translation>
@@ -566,4 +562,13 @@
 <translation id="745115390910697838">Фраза не співпала. Будь ласка, спробуйте ще раз.</translation>
 <translation id="2360588547830602174">Не вдалося відновити обліковий запис. Спробуйте пізніше.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">Ринкова ціна в ETH</translation>
+<translation id="6748108480210050150">Від</translation>
+<translation id="3318280255740629162">25 %</translation>
+<translation id="2636487255623744079">50 %</translation>
+<translation id="8654192805213365413">75 %</translation>
+<translation id="6159566011642056819">До (приблизно)</translation>
+<translation id="59223531494896848">Ліміт</translation>
+<translation id="3567988240819868195">Ринок</translation>
+<translation id="632241521608275119">Толерантність до прослизання</translation>
 </translationbundle>

@@ -578,7 +578,7 @@
 <translation id="1616298854599875024">확장 프로그램 '<ph name="IMPORT_NAME"/>'은(는) 공유 모듈이 아니므로 가져올 수 없습니다</translation>
 <translation id="1617765145568323981">{NUM_FILES,plural, =0{데이터가 조직 보안 정책을 준수하는지 확인하는 중입니다.}=1{파일이 조직 보안 정책을 준수하는지 확인하는 중입니다.}other{파일이 조직 보안 정책을 준수하는지 확인하는 중입니다.}}</translation>
 <translation id="1618102204889321535"><ph name="CURRENT_CHARACTER_COUNT"/>/<ph name="MAX_CHARACTER_COUNT"/></translation>
-<translation id="1618268899808219593">고객센터(H)</translation>
+<translation id="1618268899808219593">고객센터(&amp;H)</translation>
 <translation id="1620307519959413822">잘못된 비밀번호입니다. 다시 시도하거나 '비밀번호 찾기'를 클릭하여 재설정하세요.</translation>
 <translation id="1620510694547887537">카메라</translation>
 <translation id="1621485112342885423">장바구니</translation>
@@ -593,6 +593,7 @@
 <translation id="1627408615528139100">이미 다운로드됨</translation>
 <translation id="1628948239858170093">열기 전에 파일을 검사하시겠습니까?</translation>
 <translation id="1629314197035607094">비밀번호가 만료되었습니다.</translation>
+<translation id="1947639598318989608">Brave에서 장바구니의 상품에 관한 맞춤형 할인을 찾도록 허용하시겠습니까?</translation>
 <translation id="1629521517399325891">사용자 인증서를 네트워크 인증에 사용할 수 없습니다.</translation>
 <translation id="163072119192489970">데이터 전송 및 수신 완료가 허용됨</translation>
 <translation id="1630768113285622200">다시 시작 및 계속</translation>
@@ -800,7 +801,7 @@
 <translation id="1826516787628120939">확인 중</translation>
 <translation id="1827738518074806965">아트 갤러리</translation>
 <translation id="1828378091493947763">이 기기에서 지원되지 않는 플러그인입니다.</translation>
-<translation id="1828879788654007962">{COUNT,plural, =0{모두 열기(O)}=1{북마크 열기(O)}other{{COUNT}개 모두 열기(O)}}</translation>
+<translation id="1828879788654007962">{COUNT,plural, =0{모두 열기(&amp;O)}=1{북마크 열기(&amp;O)}other{{COUNT}개 모두 열기(&amp;O)}}</translation>
 <translation id="1828901632669367785">시스템 대화상자를 사용하여 인쇄...</translation>
 <translation id="1829129547161959350">펭귄</translation>
 <translation id="1829192082282182671">축소(&amp;O)</translation>
@@ -2709,7 +2710,7 @@
 <translation id="3894123633473837029">Sherlog를 통해 최근 어시스턴트 기록을 포함합니다. ID, 위치 및 디버그 정보가 포함될 수 있습니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="3894427358181296146">폴더 추가</translation>
 <translation id="1968829513382924411">Brave 계정으로 옮기시겠습니까?</translation>
-<translation id="3895076768659607631">검색엔진 관리(M)…</translation>
+<translation id="3895076768659607631">검색엔진 관리(&amp;M)…</translation>
 <translation id="3895090224522145010">Kerberos 사용자 이름</translation>
 <translation id="389521680295183045">사용자가 현재 기기를 사용 중인지 사이트에서 확인을 요청할 수 있음</translation>
 <translation id="3897298432557662720">{COUNT,plural, =1{이미지 1개}other{이미지 #개}}</translation>
@@ -3200,7 +3201,7 @@
 <translation id="4469762931504673593"><ph name="ORIGIN"/>에서 <ph name="FOLDERNAME"/>의 파일을 수정할 수 있습니다.</translation>
 <translation id="4470957202018033307">외부 저장소 환경설정</translation>
 <translation id="4471354919263203780">음성 인식 파일 다운로드 중... <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Brave의 기능 및 성능 개선에 참여</translation>
+<translation id="918192811481327695">Brave의 기능 및 성능 개선에 참여</translation>
 <translation id="4472575034687746823">시작하기</translation>
 <translation id="4474155171896946103">모든 탭 북마크...</translation>
 <translation id="4475552974751346499">다운로드 검색</translation>
@@ -4328,7 +4329,7 @@
 <translation id="5747785204778348146">개발자 - 불안정</translation>
 <translation id="5747809636523347288"><ph name="URL"/> 붙여넣기 및 이동(&amp;S)</translation>
 <translation id="5754152670305761216">보호된 콘텐츠 재생이 허용됨</translation>
-<translation id="5756163054456765343">고객센터(H)</translation>
+<translation id="5756163054456765343">고객센터(&amp;H)</translation>
 <translation id="5758631781033351321">여기에서 읽기 목록을 확인할 수 있습니다</translation>
 <translation id="5759728514498647443"><ph name="APP_NAME"/>을(를) 통해 인쇄하려고 전송한 문서를 <ph name="APP_NAME"/>에서 읽을 수 있습니다.</translation>
 <translation id="5763751966069581670">USB 기기를 찾을 수 없습니다.</translation>
@@ -4429,7 +4430,6 @@
 <translation id="5864754048328252126">충전 시 유휴 작업</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> 앱이 곧 일시중지됨</translation>
 <translation id="586567932979200359">디스크 이미지에서 <ph name="PRODUCT_NAME"/>을(를) 실행 중입니다. 컴퓨터에 설치하면 디스크 이미지가 없어도 실행이 가능하며 최신 상태로 유지됩니다.</translation>
-<translation id="1224064034972923114">사용 통계 및 비정상 종료 보고서를 Brave로 자동 전송</translation>
 <translation id="5867841422488265304">웹 주소 검색 또는 입력</translation>
 <translation id="5869029295770560994">확인</translation>
 <translation id="5869522115854928033">저장된 비밀번호</translation>
@@ -5169,7 +5169,7 @@
 <translation id="6690659332373509948">파일을 파싱할 수 없음: <ph name="FILE_NAME"/></translation>
 <translation id="8135094938656535588">Brave 대시보드에서 동기화된 데이터 관리</translation>
 <translation id="6691541770654083180">지구</translation>
-<translation id="6691936601825168937">앞으로(F)</translation>
+<translation id="6691936601825168937">앞으로(&amp;F)</translation>
 <translation id="6693745645188488741">{COUNT,plural, =1{페이지 1쪽}other{페이지 {COUNT}쪽}}</translation>
 <translation id="6697492270171225480">페이지를 찾을 수 없을 때 비슷한 페이지 제안 표시</translation>
 <translation id="6697690052557311665">공유하려면 Files 앱에서 마우스 오른쪽 버튼으로 폴더를 클릭한 다음 'Linux와 공유'를 선택하세요.</translation>
@@ -5234,7 +5234,7 @@
 <translation id="6778737459546443941">부모님이 아직 승인하지 않았습니다.</translation>
 <translation id="6779447100905857289">장바구니</translation>
 <translation id="677965093459947883">아주 작게</translation>
-<translation id="6781005693196527806">검색엔진 관리(M)…</translation>
+<translation id="6781005693196527806">검색엔진 관리(&amp;M)…</translation>
 <translation id="6781284683813954823">기념일 로고 링크</translation>
 <translation id="6781978626986383437">Linux 백업이 취소됨</translation>
 <translation id="6782067259631821405">잘못된 PIN</translation>
@@ -5445,7 +5445,6 @@
 <translation id="6997642619627518301"><ph name="NAME_PH"/> - 활동 로그</translation>
 <translation id="6997707937646349884">기기에서 다음과 같이 설정하세요.</translation>
 <translation id="6998793565256476099">화상회의용 기기 등록</translation>
-<translation id="456304305650018221">Brave이 장바구니 상품의 할인 가격을 찾을 수 있도록 허용하시겠습니까?</translation>
 <translation id="6999956497249459195">새 그룹</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/>이(가) 연결되어 있으나 구성이 필요함</translation>
 <translation id="7000347579424117903">Ctrl, Alt, 검색 키가 포함되어야 합니다</translation>

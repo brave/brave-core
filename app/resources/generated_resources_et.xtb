@@ -593,6 +593,7 @@
 <translation id="1627408615528139100">Juba alla laaditud</translation>
 <translation id="1628948239858170093">Kas skannida faili enne avamist?</translation>
 <translation id="1629314197035607094">Parool on aegunud</translation>
+<translation id="1947639598318989608">Kas lubate Brave'il teie ostukorvide sisu jaoks isikupärastatud allahindlusi otsida?</translation>
 <translation id="1629521517399325891">Kasutaja sertifikaat pole võrgu autentimiseks saadaval.</translation>
 <translation id="163072119192489970">Lubatud andmete saatmine ja vastuvõtmine lõpule viia</translation>
 <translation id="1630768113285622200">Taaskäivita ja jätka</translation>
@@ -3193,7 +3194,7 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="4469762931504673593"><ph name="ORIGIN"/> saab muuta kaustas <ph name="FOLDERNAME"/> olevaid faile</translation>
 <translation id="4470957202018033307">Välise salvestusruumi eelistused</translation>
 <translation id="4471354919263203780">Kõnetuvastuse failide allalaadimine … <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Aidake täiustada Brave'i funktsioone ja toimivust</translation>
+<translation id="918192811481327695">Aidake täiustada Brave'i funktsioone ja toimivust</translation>
 <translation id="4472575034687746823">Alustage</translation>
 <translation id="4474155171896946103">Lisa kõik vahelehed järjehoidjatesse...</translation>
 <translation id="4475552974751346499">Otsi allalaadimisi</translation>
@@ -4422,7 +4423,6 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="5864754048328252126">Toiming Tegevusetu laadimise ajal</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> peatatakse varsti</translation>
 <translation id="586567932979200359">Käitate <ph name="PRODUCT_NAME"/>'i selle kettakujutiselt. Arvutisse installides saate seda käitada ilma kettakujutiseta ja see tagab ajakohasuse.</translation>
-<translation id="1224064034972923114">Brave'ile saadetakse automaatselt kasutusstatistikat ja krahhiaruandeid</translation>
 <translation id="5867841422488265304">Otsige või sisestage veebiaadress</translation>
 <translation id="5869029295770560994">Selge, sain aru</translation>
 <translation id="5869522115854928033">Salvestatud paroolid</translation>
@@ -5438,7 +5438,6 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="6997642619627518301"><ph name="NAME_PH"/> – tegevuste logi</translation>
 <translation id="6997707937646349884">Teie seadmetes:</translation>
 <translation id="6998793565256476099">Registreeri seade videokonverentsi kasutamiseks</translation>
-<translation id="456304305650018221">Kas lubada Brave'il otsida teie ostukorvi lisatud toodete allahindlusi?</translation>
 <translation id="6999956497249459195">Uus grupp</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> on ühendatud, aga vajab seadistamist</translation>
 <translation id="7000347579424117903">Kaasake Ctrl, Alt või otsinguklahv</translation>
@@ -7543,7 +7542,7 @@ Määratud toimingu eemaldamiseks vajutage määratud lülitit.</translation>
 <translation id="998747458861718449">I&amp;nspekteeri</translation>
 <translation id="658539216370629794">Ava link &amp;privaatses aknas</translation>
 <translation id="1432267168815937878">Ava link &amp;privaatses aknas</translation>
-<translation id="5786139852593193364">Uus &amp;Privaatne aken</translation>
+<translation id="5786139852593193364">Uus &amp;privaatne aken</translation>
 <translation id="7973394300052703468">Uus &amp;privaatne aken</translation>
 <translation id="6395403722585816044">Alla laaditud privaatses</translation>
 <translation id="6216189820029634282">Kas väljuda siiski Privaatsest režiimist?</translation>
@@ -7561,14 +7560,14 @@ Määratud toimingu eemaldamiseks vajutage määratud lülitit.</translation>
 <translation id="263189163883089157">Privaatses aknas saate Privaatselt sirvida</translation>
 <translation id="5263632074804780211">Privaatses aknas saate veebi kasutada ilma sirvimisajalugu salvestamata</translation>
 <translation id="1989101205350450024">Kas kasutate jagatud arvutit? Proovige avada Privaatne aken.</translation>
-<translation id="1507871044612694155">Privaatselt sirvimiseks klõpsake punktidega menüüikoonil, et avada Privaatne aken</translation>
+<translation id="1507871044612694155">Privaatselt sirvimiseks klõpsake punktidega menüüikoonil, et avada privaatne aken</translation>
 <translation id="9079153198295609735">Saada kasutusstatistika ja krahhiaruanded automaatselt Brave Software'ile</translation>
 <translation id="8839398440242019256">Pole pärit veebipoest.</translation>
 <translation id="6945695820322143954">See laiendus rikub veebipoe poliitikat.</translation>
 <translation id="1676595396635191120">Uus privaatne aken</translation>
 <translation id="5094764494104066239">Kuva alati järjehoidjariba</translation>
 <translation id="3073689951164015877">Inkognito režiimis ajalugu ei salvestata</translation>
-<translation id="5760418762676108038">Uus Privaatne aken</translation>
+<translation id="5760418762676108038">Uus privaatne aken</translation>
 <translation id="5298187053819934487">Pärast privaatrežiimist väljumist salvestatakse sisselogimisandmed sellesse seadmesse. Teil on hiljem võimalik oma seadmega jälle sellele veebisaidile sisse logida.</translation>
 <translation id="5186185447130319458">Privaatne</translation>
 <translation id="2579188629646253712">Välju privaatsest</translation>
@@ -7596,7 +7595,7 @@ Määratud toimingu eemaldamiseks vajutage määratud lülitit.</translation>
       =1 {Privaatne}
       other {Privaatne (#)}
     }</translation>
-<translation id="4304377874648098617">See on Privaatne aken</translation>
+<translation id="4304377874648098617">See on privaatne aken</translation>
 <translation id="5832813618714645810">Profiilid</translation>
 <translation id="7171000599584840888">Lisa profiil …</translation>
 <translation id="2005199804247617997">Teised inimesed</translation>

@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">برخی از سایت‌ها را به‌جای HTTP ساده، با اتصال HTTPS ایمن باز می‌کند.</translation>
 <translation id="94154759592465111">مسدود کردن اسکریپت</translation>
 <translation id="3518266709656143462">جاوااسکریپت را مسدود می‌کند (ممکن است منجر به خرابی سایت‌ها شود)</translation>
-<translation id="5709627087332022422">مسدود کردن ردیاب‌های بین سایتی</translation>
 <translation id="6052725679982758334">مسدود کردن رسانه اجتماعی</translation>
 <translation id="7498695072878479744">مجاز کردن دکمه‌های ورود به سیستم Google در سایت‌های شخص ثالث</translation>
 <translation id="863171915776379000">مجاز کردن ورود به سیستم‌ها و پست‌های جاسازی‌شده</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">دروازه IPFS</translation>
 <translation id="2688519859165248360">اجازه می‌دهد ازطریق «دروازه IPFS» در منابع IPFS پیمایش کنید</translation>
 <translation id="7534079972563542000">دامنه‌های توقف‌ناپذیر</translation>
+<translation id="1448289340149908413">اتریوم</translation>
+<translation id="7822245778264751380">قیمت اتریم (ETH)</translation>
 <translation id="6513892817556267573">سرویس نام اتریوم</translation>
 <translation id="3894650624018948468">روش تحلیل</translation>
 <translation id="2356070529366658676">سؤال شود</translation>
 <translation id="4176463684765177261">غیرفعال شد</translation>
 <translation id="2218918398178303658">DNS ازطریق HTTPS</translation>
-<translation id="1448289340149908413">اتریوم</translation>
 <translation id="5787084571334399599">به مروروگر اجازه گرفتن اثر انگشت را نمی‌دهد</translation>
 <translation id="7459000603787995422">بستن زبانه‌ها هنگام خروج</translation>
 <translation id="4448697385961650078">مسدود کردن ردیاب‌ها و آگهی‌ها</translation>
@@ -79,16 +79,13 @@
 <translation id="2070991379950719711">شروع استفاده از Brave Rewards</translation>
 <translation id="48520986898237073">ادامه و رفتن به کیف پول</translation>
 <translation id="3570367516044491911">تنظیم به‌عنوان مرورگر پیش‌فرض</translation>
+<translation id="19715420010996093">مرورگر Brave را انتخاب کنید و روی «همیشه» ضربه بزنید</translation>
 <translation id="3546439402724649282">Brave در حال حاضر به‌عنوان مرورگر پیش‌فرض شما تنظیم شده است.</translation>
 <translation id="8389661903259423907">در حال حاضر مرورگر پیش‌فرض را تنظیم کرده‌اید. می‌توانید در تنظیمات برنامه خود آن را تغییر دهید.</translation>
 <translation id="7091885296442320770">مرورگر Brave سرعت برق‌آسایی دارد</translation>
 <translation id="2171928016777725844">Brave را مرورگر پیش‌فرض خود قرار دهید!</translation>
 <translation id="7136694880210472378">پیش‌فرض قرار دادن</translation>
 <translation id="4250680216510889253">نه</translation>
-<translation id="4501702055016678577">جستجوی خصوصی با DuckDuckGo انجام شود؟</translation>
-<translation id="910419239800579753">با جستجوی خصوصی، مادامی که در این برگه خصوصی باشید، Brave از DuckDuckGo برای پاسخ به جستجوهای شما استفاده خواهد کرد. DuckDuckGo موتور جستجو‌یی است که تاریخچه جستجوی شما را ردگیری نمی‌کند، تا شما بتوانید به صورت خصوصی وب را جستجو کنید.</translation>
-<translation id="1426410128494586442">بله</translation>
-<translation id="5628466560184522265">کسب اطلاعات بیشتر درباره جستجوی خصوصی با DuckDuckGo</translation>
 <translation id="8826007068782654809">سپاسگزاریم</translation>
 <translation id="6665366815203065060">به‌تازگی انعامی را به این مورد ارسال کردید:</translation>
 <translation id="5441565662498481293">به‌طور خودکار انعامی به این مورد ارسال می‌کنید:</translation>
@@ -121,6 +118,8 @@
 <translation id="8428213095426709021">تنظیمات</translation>
 <translation id="8772672608371898774">ناشر مورد تأیید Brave</translation>
 <translation id="1397683270551078781">هنوز تأیید نشده است</translation>
+<translation id="880893465294676334">این «سازنده موردتأیید Brave» هنوز برای دریافت کمک‌های کاربران Brave، حسابش را پیکربندی نکرده است.
+هر انعامی که بفرستید تا تکمیل این روند، در کیف پولتان باقی خواهد ماند.</translation>
 <translation id="8918760045046434238">ارسال انعام...</translation>
 <translation id="1978261665418056203">در این ماه تاکنون فعالیتی
 نبوده است...</translation>
@@ -328,6 +327,7 @@
 <translation id="5617673581653540121">اتصال شما اکنون رمزگذاری شده است.</translation>
 <translation id="4055107796760496928">در صورت وجود، Brave اتصال شما را به‌طور خودکار به یک اتصال امن ارتقا می‌دهد.</translation>
 <translation id="8869714780588464835">اشتراک‌گذاری اخبار</translation>
+<translation id="7427391215172269363">هرروز با استفاده از Brave برای مرور وب، در مصرف داده صرفه‌جویی می‌کنم.</translation>
 <translation id="5372054974373489308">1000 ردیاب و آگهی مسدود شد!</translation>
 <translation id="2338952568654182692">5000 ردیاب و آگهی مسدود شد!</translation>
 <translation id="5289711064670408815">10,000 ردیاب و آگهی مسدود شد!</translation>
@@ -441,7 +441,7 @@
 <translation id="3477340970981564961">Brave Private Ads به شما توکن جایزه می‌دهد تا از سازندگان محتوا پشتیبانی شود، کاملاً برعکس آگهی‌های قدیمی، همه این کارها را در حالی انجام می‌دهد که اطلاعات شخصی شما را خصوصی نگه می‌دارد.</translation>
 <translation id="6973095375773523904">آگهی‌ها کجا نمایش داده می‌شوند؟</translation>
 <translation id="7556325460112047619">Brave Private Ads به‌عنوان اعلانی معمولی نشان داده خواهد شد. شما می‌توانید تعداد دفعات مشاهده این آگهی‌ها را در تنظیمات کنترل کنید.</translation>
-<translation id="6897083627729802351">چه زمانی پاداش دریافت می‌کنید</translation>
+<translation id="6897083627729802351">چه زمانی پاداش دریافت می‌کنید؟</translation>
 <translation id="310863932297733723">توکن‌های به‌دست‌آمده از Brave Private Ads در ماه فعلی، در 5ام ماه بعدی دریافت خواهند شد.</translation>
 <translation id="7712287524451429139">برگرداندن بی‌دردسر شده است</translation>
 <translation id="105037569026952831">سازندگان همیاری‌های توکن شما را به‌طور خودکار بر اساس سطح مشارکتتان دریافت می‌کنند که ما آن را به‌عنوان ‘توجه’ می‌سنجیم.</translation>
@@ -458,7 +458,7 @@
 <translation id="827315274423079662">وو هوو، کاملاً آماده هستید!</translation>
 <translation id="3895246934788932488">با استفاده از Brave Rewards، از حریم خصوصی خود محافظت می‌کنید و کمک می‌کنید وب به مکان بهتری برای همه افراد تبدیل شود. و این فوق‌العاده است!</translation>
 <translation id="5705882733397021510">برگشتن</translation>
-<translation id="3985567919248057638">بیایید گشت سریعی بزنیم</translation>
+<translation id="3985567919248057638">بگذارید ابتدا بازدید سریعی داشته باشیم</translation>
 <translation id="2434574859640694129">پس از دریافت اولین بازپرداخت تبلیغات، می‌توانید دوباره برگردید و به این سازنده انعام دهید!</translation>
 <translation id="207242986925259074">گشت بازخوانی سریع</translation>
 <translation id="8342862030112839977">مبلغ قابل پرداخت اولین پاداش‌هایتان دریافت خواهد شد:</translation>
@@ -549,7 +549,7 @@
 <translation id="8100001366858145406">قفل‌گشایی با اثر انگشت فعال شود؟</translation>
 <translation id="5493402808936397665">بیومتریک را فعال کنید تا قفل کیف پول خود را به‌سرعت بدون وارد کردن گذرواژه‌تان باز کنید.</translation>
 <translation id="8488282162676695335">کیف پول Brave</translation>
-<translation id="6901810042765869341">برای بازیابی حساب رمزارز کیف پول Brave خود، عبارت بازیابی‌تان را وارد کنید.</translation>
+<translation id="6901810042765869341">برای بازیابی حساب رمزارز Brave Wallet خود، عبارت بازیابی‌تان را وارد کنید.</translation>
 <translation id="1970161551843843564">بازیابی حساب رمزارز</translation>
 <translation id="4811736040444856406">نمایش عبارت بازیابی</translation>
 <translation id="283071225285270357">عبارت بازیابی‌تان را وارد کنید</translation>
@@ -564,5 +564,14 @@
 <translation id="1144810021918451336">از شما در برابر وب‌سایت‌ها، بارگیری‌ها، و افزونه‌های خطرناک محافظت نمی‌کند.</translation>
 <translation id="745115390910697838">عبارت‌ها مطابق نبودند، لطفاً دوباره امتحان کنید.</translation>
 <translation id="2360588547830602174">حساب بازیابی نشد. لطفاً دوباره امتحان کنید</translation>
-<translation id="1530109021798294736">Mainnet</translation>
+<translation id="1530109021798294736">شبکه اصلی</translation>
+<translation id="990936698620790924">قیمت بازار برحسب ETH</translation>
+<translation id="6748108480210050150">از</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">تا (تخمینی)</translation>
+<translation id="59223531494896848">محدوده</translation>
+<translation id="3567988240819868195">بازار</translation>
+<translation id="632241521608275119">نوسانات قیمت</translation>
 </translationbundle>

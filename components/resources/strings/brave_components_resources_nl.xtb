@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">Toon favorieten</translation>
 <translation id="3446024864193919737">Brave Rewards tonen</translation>
 <translation id="6274899614137380422">Binance weergeven</translation>
-<translation id="5551238871320268996">Brave Together</translation>
 <translation id="5585019845078534178">Kaarten</translation>
 <translation id="3870475560794762985">Laat gesponsorde afbeeldingen zien</translation>
 <translation id="2875302873837723333">Top websites</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">Achtergrondafbeelding</translation>
 <translation id="385051799172605136">Vorige</translation>
 <translation id="9024104284526126630">U kunt een privégesprek beginnen in Brave.</translation>
-<translation id="5735801688206890393">Begin onbeperkte gesprekken met vrienden en collega's in Brave Together.</translation>
+<translation id="4903286433687221248">Voer onbeperkt telefoongesprekken met vrienden en collega's via Brave Talk.</translation>
 <translation id="7115051913071512405">Probeer het uit</translation>
 <translation id="7415602225677446066">De topverhalen van vandaag in een volledige privé-feed, speciaal voor jou.</translation>
 <translation id="6903061332999399632">Brave News maakt gebruik van advertenties die volledig privé en anoniem zijn en worden aangepast op uw apparaat. Uw persoonlijke gegevens blijven altijd privé zoals beschreven in ons <ph name="LINK_START"/>privacybeleid<ph name="LINK_END"/>.</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">Automatisch gedetecteerd</translation>
 <translation id="4394049700291259645">Uitschakelen</translation>
 <translation id="4176463684765177261">Uitgeschakeld</translation>
-<translation id="4434663852465709809">QR-code voor iOS-beloningen gebruikers die BAT overmaken</translation>
-<translation id="2175927920773552910">QR-code</translation>
 <translation id="8283001340969131076">Er is een fout opgetreden bij het ontkoppelen van je <ph name="PROVIDER"/>-account. Probeer het later opnieuw.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">Het apparaat is offline. Probeer het later opnieuw.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">BAT wordt momenteel niet ondersteund in uw regio. Zie <ph name="BEGIN_LINK"/>hier<ph name="END_LINK"/> voor updates.</translation>
 <translation id="1737873393693460829">Door [[title]] in the schakelen, ga je akkoord met de <ph name="BEGIN_LINK1"/>Servicevoorwaarden<ph name="END_LINK1"/> en het <ph name="BEGIN_LINK2"/>Privacybeleid<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Fout tijdens het aanmaken van de Brave Browser BAT-kaart</translation>
-<translation id="6473583070570450185">U heeft een geverifieerde portemonnee nodig om in te loggen</translation>
-<translation id="5949995321533425416">Je hebt een minimum van <ph name="AMOUNT"/> BAT nodig om een Uphold-wallet te maken. Verifieer je wallet met Uphold en probeer het daarna opnieuw.</translation>
+<translation id="8429332714958713413">Er is een geverifieerde wallet vereist om in te loggen</translation>
+<translation id="5881716477679854586">Probeer het opnieuw nadat je de ID-verificatie hebt doorlopen voor <ph name="CUSTODIAN"/>.</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> wordt over <ph name="DAYS"/> toegevoegd</translation>
 <translation id="4672975606583962967">Kies een walletservice</translation>
 <translation id="1815503044492647974">Selecteer een walletbeheerder. Als je al een account hebt, kun je je aanmelden om verbinding te maken.</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">Rewards was uitgeschakeld</translation>
 <translation id="3354337256330577726">Auto-contributie was uitgeschakeld</translation>
 <translation id="6727186931929643711">Gestopt met opnieuw proberen</translation>
+<translation id="8978461348341400550">Beheerder:</translation>
+<translation id="7220161813676251577">Beheerderslid-ID:</translation>
 <translation id="680983167891198932">Sleutel</translation>
 <translation id="7535087603100972091">Waarde</translation>
 <translation id="45591635423975492">Ingelogd bij</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">Starten met het gebruik van Brave rewards</translation>
 <translation id="6318696841371191107">Een beknopt overzicht bekijken</translation>
 <translation id="8465790416279415448">Door verder te gaan, ga je akkoord met de <ph name="TOS_LINK_BEGIN"/>servicevoorwaarden<ph name="TOS_LINK_END"/> en het <ph name="PP_LINK_BEGIN"/>privacybeleid<ph name="PP_LINK_END"/>.</translation>
-<translation id="2404165674840145940">Een fooi geven met Brave Rewards</translation>
-<translation id="5820285701794581330">Door Brave Rewards te gebruiken, begint u BAT te verdienen die u kunt gebruiken om makers een fooi te geven.</translation>
+<translation id="8222322431155185238">Geef fooi met Brave-beloningen</translation>
+<translation id="1895476463085410109">Ontvang beloningen door privéadvertenties van Brave te bekijken en steun content creators automatisch</translation>
 <translation id="5705882733397021510">Terugkeren</translation>
 <translation id="185034574799484512">Laten we een snelle tour nemen</translation>
 <translation id="8281886186245836920">Overslaan</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">Opnieuw</translation>
 <translation id="2600847485413879104">BAT-beloningen</translation>
 <translation id="8006596443377585072">bitFlyer-wallet</translation>
+<translation id="2770577461149798369">Gemini Wallet</translation>
 <translation id="8108350286444475334">Portemonnee Handhaven</translation>
 <translation id="6977372887576114613">Gedeponeerde BAT</translation>
 <translation id="3173528272490482456">Klaar om te beginnen?</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">Je kan beginnen met de</translation>
 <translation id="194625454574835815">Herstelsleutel</translation>
 <translation id="6354568176665589146">Terugkerend</translation>
+<translation id="2799223571221894425">Opnieuw starten</translation>
 <translation id="1110535155349301542">verwijder</translation>
 <translation id="8204292894173669182">Verwijderen uit opgeslagen</translation>
 <translation id="5530851178552343773">Je hebt [[reservedAmount]] [[currency]] toegewezen aan makers die zich nog niet hebben aangemeld voor het ontvangen van bijdragen. Je browser blijft proberen je bijdragen te versturen tot ze zich hebben geverifieerd of tot er 90 dagen zijn verstreken.</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">Uw Brave wallet wordt mogelijk gemaakt door <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Brave Rewards is gebaseerd op Basic Attention Token. Meer informatie over BAT</translation>
 <translation id="7823359893981882407">hier</translation>
+<translation id="3034163433136515805">QR-code bekijken</translation>
+<translation id="1640793619390890218">voor iOS-gebruikers die BAT overmaken.</translation>
 <translation id="4483635855837696643">Herstel je Wallet</translation>
 <translation id="459721429458957031">Gebruik de herstelsleutel om je wallet te herstellen.</translation>
 <translation id="4600052736217630789">Als je een herstelsleutel gebruikt om te herstellen, wordt je huidige wallet vervangen. Zorg er daarom voor dat je huidige wallet leeg is of dat je er een back-up van hebt gemaakt voordat je herstelt.</translation>

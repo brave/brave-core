@@ -7,7 +7,7 @@
 <translation id="6406506848690869874">ซิงค์</translation>
 <translation id="1544192797660353713">วอลเล็ท</translation>
 <translation id="2445484935443597917">สร้างโปรไฟล์ใหม่</translation>
-<translation id="2666990579225592931">เปิดหน้าต่างผู้มาเยือน</translation>
+<translation id="2666990579225592931">เปิดหน้าต่างแขก</translation>
 <translation id="8275068909952022340">เพิ่มเติม…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (การระบุชื่อสกุลแฟ้ม "<ph name="EXTENSION_ID"/>") ไม่ได้รับอนุญาตในโปรแกรมของเบรฟ (Brave)</translation>
 <translation id="6786747875388722282">ส่วนขยาย</translation>
@@ -28,6 +28,9 @@
 <translation id="3218385319396786393">การเล่นอัตโนมัติถูกบล็อกในหน้านี้</translation>
 <translation id="4988333904713528597">ยินยอมให้ทำการเล่นแบบอัตโนมัติบน <ph name="HOST"/> เสมอ</translation>
 <translation id="4150684676757176434">ทำการบล็อกการเล่นอัตโนมัติต่อ</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">ถามเมื่อเว็บไซต์ต้องการเข้าถึง API ผู้ให้บริการ Ethereum</translation>
+<translation id="7017590444693657895">บล็อกเว็บไซต์ไม่ให้เข้าถึง API ของผู้ให้บริการ Ethereum</translation>
 <translation id="8988939298652262600">Brave จะไม่ตรวจสอบความมั่นคงและปลอดภัยของส่วนขยาย โปรดติดตั้งส่วนขยายนี้ในกรณีที่คุณเชื่อมั่นในผู้พัฒนาเท่านั้น</translation>
 <translation id="8081858229109418493">ชื่อโปรไฟล์และไอคอน</translation>
 <translation id="2044383478723007273">สี Brave</translation>
@@ -42,6 +45,7 @@
 <translation id="5802665280774361839">แสดงรายการที่ดำเนินการอัตโนมัติในแถบแอดเดรส</translation>
 <translation id="597020512043916976">แสดงเว็บยอดนิยมในช่องแนะนำกรอกอัตโนมัติ</translation>
 <translation id="264150068416846820">แสดงเว็บที่แนะนำของ Brave ในช่องแนะนำแบบกรอกอัตโนมัติ</translation>
+<translation id="5529693968082667490">แสดงปุ่มแท็บค้นหา</translation>
 <translation id="6414370348346025511">การป้องกันมาตรฐานเปิดทำงาน</translation>
 <translation id="814018970995616154">ตรวจสอบ URL ที่มีรายชื่อเว็บไซต์ที่ไม่ปลอดภัยเก็บไว้ใน Brave</translation>
 <translation id="1144810021918451336">ไม่ป้องกันคุณจากเว็บไซต์ การดาวน์โหลด และส่วนขยายที่เป็นอันตราย</translation>
@@ -93,7 +97,7 @@
 <translation id="6303294677342628402">ปกป้อง</translation>
 <translation id="7133511168130368997">บล็อกตัวติดตามและโฆษณาที่ติดตามคุณข้ามเว็บ</translation>
 <translation id="2761825942249694703">นี่คือการตั้งค่า Shields เริ่มต้น การตั้งค่าเหล่านี้จะมีผลกับเว็บไซต์ทั้งหมด เว้นแต่ว่าคุณจะเปลี่ยนแปลงอะไรบางอย่างในแผง Shields บนไซต์ใดไซต์หนึ่งโดยเฉพาะ การเปลี่ยนแปลงค่าเหล่านี้จะไม่มีผลกับการตั้งค่าต่อไซต์ที่มีอยู่แล้วของคุณ</translation>
-<translation id="8754605759692119662">คำสั่งนี้จะบล็อกโฆษณาเกือบทั้งหมดบนเว็บไซต์ ยกเว้นโฆษณาส่วนตัวของ Brave เพราะโฆษณาเหล่านั้นถูกควบคุมใน</translation>
+<translation id="1485394570478670912">วิธีนี้จะบล็อกโฆษณาส่วนใหญ่บนเว็บไซต์ แต่ไม่รวม Brave Private Ads ซึ่งได้รับการควบคุมใน</translation>
 <translation id="6388201778088078932">การตั้งค่า</translation>
 <translation id="9185018653595759199">การบล็อกโซเชียลมีเดีย</translation>
 <translation id="7390783310074170337">มุมมองเริ่มต้น</translation>
@@ -294,6 +298,13 @@
 <translation id="1391855377994926460">ท่องเว็บได้เร็วขึ้น - สูงสุด 6 เท่าในเว็บไซต์ข่าวหลัก</translation>
 <translation id="9218430445555521422">ตั้งเป็นค่าเริ่มต้น</translation>
 <translation id="3479552764303398839">ไม่ใช่ตอนนี้</translation>
+<translation id="5039804452771397117">อนุญาต</translation>
+<translation id="7053983685419859001">บล็อก</translation>
+<translation id="7815301689257843278">ต้องการส่งรายงานความขัดข้องโดยอัตโนมัติเพื่อให้ Brave สามารถป้องกันปัญหานี้ไม่ให้เกิดขึ้นอีกหรือไม่</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> ปิดโดยไม่คาดคิด</translation>
+<translation id="1324417023773393937">เบราว์เซอร์ Brave</translation>
+<translation id="1068069727470515940">คุณสามารถเปลี่ยน <ph name="SETTING_TEXT"/> อีกครั้งเมื่อใดก็ได้</translation>
+<translation id="6873781976650514089">การตั้งค่านี้</translation>
 <translation id="6040143037577758943">ปิด</translation>
 <translation id="5600566490506283344">การแจ้งเตือน Brave Ad</translation>
 <translation id="4877147287319222750">เพิ่มลงในแถบด้านข้าง</translation>
@@ -345,6 +356,6 @@
 <translation id="8487693399751278191">นำเข้าบุ๊กมาร์กเดี๋ยวนี้...</translation>
 <translation id="2557899542277210112">สำหรับการเข้าถึงแบบด่วน วางบุ๊กมาร์กไว้ที่นี่บนแถบบุ๊กมาร์ก</translation>
 <translation id="2808630562319398131">รีเซ็ตข้อมูล Brave Rewards...</translation>
-<translation id="1224064034972923114">ช่วยปรับปรุง Brave ด้วยการส่งรายงานข้อขัดข้องโดยอัตโนมัติ</translation>
-<translation id="3738833060602717053">ช่วยปรับปรุง <ph name="PRODUCT_NAME"/>โดยส่งรายงานข้อขัดข้องโดยอัตโนมัติ</translation>
+<translation id="2273851479262317744">ตั้ง Brave เป็นเบราว์เซอร์เริ่มต้น</translation>
+<translation id="8581710194025054669">เพื่อให้มั่นใจว่ากิจกรรมออนไลน์ได้รับความเป็นส่วนตัวที่ดีที่สุด ให้ตั้งค่า Brave เป็นเบราว์เซอร์เริ่มต้นบนคอมพิวเตอร์ของคุณ และเมื่อ Brave เป็นเบราว์เซอร์เริ่มต้น ลิงก์ของเว็บใดๆ ที่คุณคลิกจะเปิดขึ้นพร้อมกับการปกป้องความเป็นส่วนตัวของ Brave</translation>
 </translationbundle>

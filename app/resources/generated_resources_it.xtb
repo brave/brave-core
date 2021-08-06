@@ -590,6 +590,7 @@
 <translation id="1627408615528139100">Già scaricato</translation>
 <translation id="1628948239858170093">Vuoi analizzare il file prima di aprirlo?</translation>
 <translation id="1629314197035607094">Password scaduta</translation>
+<translation id="1947639598318989608">Consentire a Brave di trovare sconti personalizzati da applicare al tuo carrello?</translation>
 <translation id="1629521517399325891">Il certificato utente non è disponibile per l'autenticazione della rete.</translation>
 <translation id="163072119192489970">Possono terminare di inviare e ricevere dati</translation>
 <translation id="1630768113285622200">Riavvia e continua</translation>
@@ -3187,7 +3188,7 @@ e Ctrl + Alt + Riduzione luminosità per diminuire lo zoom.</translation>
 <translation id="4469762931504673593"><ph name="ORIGIN"/> può modificare i file nella cartella <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Preferenze dello spazio di archiviazione esterno</translation>
 <translation id="4471354919263203780">Download dei file di riconoscimento vocale… <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Contribuisci a migliorare le funzionalità e le prestazioni di Brave</translation>
+<translation id="918192811481327695">Contribuisci a migliorare le funzionalità e le prestazioni di Brave</translation>
 <translation id="4472575034687746823">Come iniziare</translation>
 <translation id="4474155171896946103">Aggiungi tutte le schede ai Preferiti...</translation>
 <translation id="4475552974751346499">Cerca tra i file scaricati</translation>
@@ -4416,7 +4417,6 @@ e Ctrl + Alt + Riduzione luminosità per diminuire lo zoom.</translation>
 <translation id="5864754048328252126">Azione stabilita in caso di inattività durante la ricarica</translation>
 <translation id="5865508026715185451">L'app <ph name="APP_NAME"/> verrà presto messa in pausa</translation>
 <translation id="586567932979200359">Stai eseguendo <ph name="PRODUCT_NAME"/> dall'immagine disco. L'installazione sul computer permette di eseguirlo senza immagine disco e ne garantisce l'aggiornamento.</translation>
-<translation id="1224064034972923114">Invia automaticamente a Brave statistiche sull'utilizzo e rapporti sugli arresti anomali</translation>
 <translation id="5867841422488265304">Cerca o digita un indirizzo web</translation>
 <translation id="5869029295770560994">OK</translation>
 <translation id="5869522115854928033">Password salvate</translation>
@@ -5432,7 +5432,6 @@ e Ctrl + Alt + Riduzione luminosità per diminuire lo zoom.</translation>
 <translation id="6997642619627518301">Log delle attività - <ph name="NAME_PH"/></translation>
 <translation id="6997707937646349884">Sui tuoi dispositivi:</translation>
 <translation id="6998793565256476099">Registra il dispositivo per le videoconferenze</translation>
-<translation id="456304305650018221">Consentire a Brave di trovare sconti sugli articoli aggiunti ai carrelli?</translation>
 <translation id="6999956497249459195">Nuovo gruppo</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> è connessa ma deve essere configurata</translation>
 <translation id="7000347579424117903">Includi CTRL, ALT o tasto per la ricerca</translation>
@@ -7536,7 +7535,7 @@ Premi un sensore assegnato per rimuovere l'assegnazione.</translation>
 <translation id="998747458861718449">I&amp;speziona</translation>
 <translation id="658539216370629794">Apri link in una &amp;finestra privata</translation>
 <translation id="1432267168815937878">Apri link in una &amp;Finestra Privata</translation>
-<translation id="5786139852593193364">Nuova Finestra privata</translation>
+<translation id="5786139852593193364">Nuova &amp;Finestra privata</translation>
 <translation id="7973394300052703468">Nuova &amp;Finestra Privata</translation>
 <translation id="6395403722585816044">Scarica in Privato</translation>
 <translation id="6216189820029634282">Uscire comunque dalla Modalità privata?</translation>
@@ -7567,10 +7566,10 @@ Premi un sensore assegnato per rimuovere l'assegnazione.</translation>
 <translation id="2579188629646253712">Esci da Privato</translation>
 <translation id="1001131747196960052">Chiudi la finestra in incognito</translation>
 <translation id="433830930456392967">{COUNT, plural,
-          =0 {Apri tutto in una finestra Privata}
-          =1 {Apri in una finestra Privata}
-          other {Apri tutti e ({COUNT}) in una finestra Privata}}</translation>
-<translation id="5464506165779993685">Apri in una Finestra privata</translation>
+          =0 {Apri tutto in una &amp;Finestra privata}
+          =1 {Apri in una &amp;Finestra privata}
+          other {Apri tutti e ({COUNT}) in una &amp;Finestra privata}}</translation>
+<translation id="5464506165779993685">Apri in una &amp;Finestra privata</translation>
 <translation id="4620367155626060530">&amp;Mostra barra dei Preferiti</translation>
 <translation id="1448315815373449655">{COUNT, plural,
           =0 {Open All in &amp;Private Window}
@@ -7583,7 +7582,7 @@ Premi un sensore assegnato per rimuovere l'assegnazione.</translation>
 <translation id="5556722972306334687">Apri in una Finestra privata</translation>
 <translation id="1860933807472918250">{0, plural,
         =1 {Privata}
-        other {numero di finestre Private aperte}
+        other {# Finestre private aperte}
       }</translation>
 <translation id="8712375231869053533">{0, plural,
       =1 {Privato}

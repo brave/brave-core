@@ -592,6 +592,7 @@
 <translation id="1627408615528139100">Již staženo</translation>
 <translation id="1628948239858170093">Zkontrolovat soubor před otevřením?</translation>
 <translation id="1629314197035607094">Platnost hesla vypršela</translation>
+<translation id="1947639598318989608">Umožnit Googlu vyhledávat u vašich košíků personalizované slevy?</translation>
 <translation id="1629521517399325891">Certifikát uživatele pro síťové ověření není k dispozici.</translation>
 <translation id="163072119192489970">Povolení dokončovat odeslání a příjem dat</translation>
 <translation id="1630768113285622200">Restartovat a pokračovat</translation>
@@ -3186,7 +3187,7 @@ Zpráva serveru: <ph name="SERVER_MSG"/></translation>
 <translation id="4469762931504673593">Web <ph name="ORIGIN"/> může upravovat soubory ve složce <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Předvolby externího úložiště</translation>
 <translation id="4471354919263203780">Stahování souborů k rozpoznávání řeči… <ph name="PERCENT"/> %</translation>
-<translation id="506314819294271427">Pomoci s vylepšováním funkcí a výkonu prohlížeče Brave</translation>
+<translation id="918192811481327695">Pomoci s vylepšováním funkcí a výkonu prohlížeče Brave</translation>
 <translation id="4472575034687746823">Začít</translation>
 <translation id="4474155171896946103">Přidat do záložek všechny karty...</translation>
 <translation id="4475552974751346499">Hledat stažené soubory</translation>
@@ -4415,7 +4416,6 @@ Zpráva serveru: <ph name="SERVER_MSG"/></translation>
 <translation id="5864754048328252126">Akce nečinnosti při nabíjení</translation>
 <translation id="5865508026715185451">Aplikace <ph name="APP_NAME"/> se brzy pozastaví</translation>
 <translation id="586567932979200359">Aplikaci <ph name="PRODUCT_NAME"/> spouštíte z bitové kopie disku. Pokud ji nainstalujte do svého počítače, můžete ji spouštět bez bitové kopie disku a umožníte její aktualizace.</translation>
-<translation id="1224064034972923114">Automaticky odesílá statistiky o využívání a zprávy o selhání do Googlu</translation>
 <translation id="5867841422488265304">Zadejte dotaz nebo webovou adresu</translation>
 <translation id="5869029295770560994">Dobře, rozumím</translation>
 <translation id="5869522115854928033">Uložená hesla</translation>
@@ -5430,7 +5430,6 @@ Zpráva serveru: <ph name="SERVER_MSG"/></translation>
 <translation id="6997642619627518301"><ph name="NAME_PH"/> – protokol aktivit</translation>
 <translation id="6997707937646349884">Ve vašich zařízeních:</translation>
 <translation id="6998793565256476099">Zaregistrovat zařízení pro videohovory</translation>
-<translation id="456304305650018221">Povolit Googlu hledat slevy na položky přidané do košíků?</translation>
 <translation id="6999956497249459195">Nová skupina</translation>
 <translation id="7000206553895739324">Tiskárna <ph name="PRINTER_NAME"/> je připojená, ale je potřeba ji nakonfigurovat</translation>
 <translation id="7000347579424117903">Zahrňte klávesu Ctrl, Alt, nebo Hledat</translation>

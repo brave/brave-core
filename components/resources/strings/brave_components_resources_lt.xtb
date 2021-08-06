@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">Rodyti mėgstamiausius</translation>
 <translation id="3446024864193919737">Rodyti „Brave Rewards“</translation>
 <translation id="6274899614137380422">Rodyti „Binance“</translation>
-<translation id="5551238871320268996">„Brave Together“</translation>
 <translation id="5585019845078534178">Kortelės</translation>
 <translation id="3870475560794762985">Rodyti remiamus vaizdus</translation>
 <translation id="2875302873837723333">populiariausios svetainės</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">Foninis vaizdas</translation>
 <translation id="385051799172605136">Atgal</translation>
 <translation id="9024104284526126630">Naršyklėje „Brave“ galite pradėti privatų pokalbį.</translation>
-<translation id="5735801688206890393">Naudokitės neribotų pokalbių su draugais ir kolegomis paslauga programoje „Brave Together“.</translation>
+<translation id="4903286433687221248">Pradėkite neribotai skambinti draugams ir bendradarbiams per „Brave Talk“.</translation>
 <translation id="7115051913071512405">Išbandykite</translation>
 <translation id="7415602225677446066">Šiandienos populiariausios istorijos visiškai privačiame sklaidos kanale – tik jums.</translation>
 <translation id="6903061332999399632">„Brave News“ remia reklamos – jūsų įrenginyje rodomos pritaikytos, visiškai privačios ir anoniminės reklamos. Jūsų asmeninė informacija lieka privati, kaip nustato mūsų <ph name="LINK_START"/>privatumo politika<ph name="LINK_END"/>.</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">Automatiškai aptikti</translation>
 <translation id="4394049700291259645">Neleisti</translation>
 <translation id="4176463684765177261">Pasyvinta</translation>
-<translation id="4434663852465709809">QR kodas „iOS Rewards“ naudotojams, siunčiantiems BAT</translation>
-<translation id="2175927920773552910">QR kodas</translation>
 <translation id="8283001340969131076">Deja, bandant atjungti jūsų <ph name="PROVIDER"/> paskyrą įvyko klaida. Netrukus bandykite dar kartą.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">Įrenginys neprisijungęs prie tinklo, vėliau pabandykite dar kartą.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">BAT šiuo metu jūsų regione nepalaikoma. Naujinių ieškokite <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/>.</translation>
 <translation id="1737873393693460829">Įjungdami [[title]] sutinkate su <ph name="BEGIN_LINK1"/>paslaugų teikimo sąlygomis<ph name="END_LINK1"/> ir <ph name="BEGIN_LINK2"/>privatumo politika<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Kuriant „Brave“ naršyklės BAT kortelę, įvyko klaida</translation>
-<translation id="6473583070570450185">Jums reikia patvirtintos piniginės, kad galėtumėte prisijungti</translation>
-<translation id="5949995321533425416">Jums reikia mažiausiai <ph name="AMOUNT"/> BAT, kad galėtumėte susikurti  „Uphold“ piniginę. „Uphold“ patvirtinę savo piniginę, bandykite dar kartą.</translation>
+<translation id="8429332714958713413">Norint prisijungti jums reikia patvirtintos piniginės</translation>
+<translation id="5881716477679854586"><ph name="CUSTODIAN"/> baigę tapatybės patvirtinimą, bandykite dar kartą.</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> gaunama po <ph name="DAYS"/></translation>
 <translation id="4672975606583962967">Pasirinkite piniginės paslaugą</translation>
 <translation id="1815503044492647974">Pasirinkite piniginės apsaugos partnerį. Jei jau turite paskyrą, būsite paprašyti prisijungti, kad galėtumėte užmegzti ryšį.</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">„Rewards“ buvo išjungtos</translation>
 <translation id="3354337256330577726">Automatinis indėlis buvo išjungtas</translation>
 <translation id="6727186931929643711">Pakartojimas sustabdytas</translation>
+<translation id="8978461348341400550">Saugotojas:</translation>
+<translation id="7220161813676251577">Saugotojo nario ID:</translation>
 <translation id="680983167891198932">Raktas</translation>
 <translation id="7535087603100972091">Vertė</translation>
 <translation id="45591635423975492">Užregistruota</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">Pradėti naudotis „Brave Rewards“</translation>
 <translation id="6318696841371191107">Peržiūrėkite trumpą apžvalgą</translation>
 <translation id="8465790416279415448">Tęsdami sutinkate su <ph name="TOS_LINK_BEGIN"/>paslaugų teikimo sąlygomis<ph name="TOS_LINK_END"/> ir <ph name="PP_LINK_BEGIN"/>privatumo politika<ph name="PP_LINK_END"/>.</translation>
-<translation id="2404165674840145940">Skirti arbatpinigių per „Brave Rewards“</translation>
-<translation id="5820285701794581330">Naudodami „Brave Rewards“, pradėsite gauti BAT, kuriuos galėsite skirti kūrėjams kaip arbatpinigius.</translation>
+<translation id="8222322431155185238">Skirti arbatpinigių per „Brave Rewards“</translation>
+<translation id="1895476463085410109">Gaukite „Rewards“ peržiūrėdami privačias „Brave Ads“ ir automatiškai paremkite turinio kūrėjus</translation>
 <translation id="5705882733397021510">Grįžti</translation>
 <translation id="185034574799484512">Peržiūrėkite trumpą apžvalgą</translation>
 <translation id="8281886186245836920">Praleisti</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">Bandyti dar kartą</translation>
 <translation id="2600847485413879104">„Rewards“ BAT</translation>
 <translation id="8006596443377585072">„bitFlyer“ piniginė</translation>
+<translation id="2770577461149798369">„Gemini“ piniginė</translation>
 <translation id="8108350286444475334">Išsaugoti piniginę</translation>
 <translation id="6977372887576114613">Deponuotas BAT</translation>
 <translation id="3173528272490482456">Pasirengę pradėti?</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">Galite pradėti nuo</translation>
 <translation id="194625454574835815">Atkūrimo kodas</translation>
 <translation id="6354568176665589146">Pasikartojantys</translation>
+<translation id="2799223571221894425">Paleisti iš naujo</translation>
 <translation id="1110535155349301542">pašalinti</translation>
 <translation id="8204292894173669182">Pašalinti iš įrašytų</translation>
 <translation id="5530851178552343773">Jūs paskyrėte [[reservedAmount]] [[currency]] kūrėjams, kurie dar nebuvo užsiregistravę gauti įmokas. Jūsų naršyklė toliau mėgins prisidėti finansiškai, kol jie užsiregistruos ar kol praeis 90 dienų.</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">Jūsų „Brave“ piniginę sukūrė <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">„Brave Rewards“ atlygio pagrindas – kriptovaliuta „Basic Attention Token“. Sužinokite daugiau apie BAT</translation>
 <translation id="7823359893981882407">čia</translation>
+<translation id="3034163433136515805">Žr. QR kodą</translation>
+<translation id="1640793619390890218">„iOS Rewards“ naudotojams, persiunčiantiems BAT.</translation>
 <translation id="4483635855837696643">Atkurti piniginę</translation>
 <translation id="459721429458957031">Piniginei atkurti įveskite atkūrimo kodą.</translation>
 <translation id="4600052736217630789">Su atkūrimo kodu atkurta piniginė pakeis dabartinę piniginę. Prieš atkurdami būtinai ištuštinkite dabartinę piniginę arba pasidarykite jos atsarginę kopiją.</translation>

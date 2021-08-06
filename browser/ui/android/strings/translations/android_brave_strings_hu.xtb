@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">Bizonyos oldalakat biztonságos HTTPS-kapcsolat használatával nyit meg egyszerű HTTP helyett.</translation>
 <translation id="94154759592465111">Scriptek blokkolása</translation>
 <translation id="3518266709656143462">Blokkolja a Javascriptet (megzavarhatja az oldalak működését)</translation>
-<translation id="5709627087332022422">Webhelyközi nyomkövetők letiltása</translation>
 <translation id="6052725679982758334">Közösségi hálózatok tiltása</translation>
 <translation id="7498695072878479744">Google-bejelentkezési gombok engedélyezése külső webhelyeken</translation>
 <translation id="863171915776379000">Facebook belépés és beágyazott bejegyzések engedélyezése</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">IPFS-átjáró</translation>
 <translation id="2688519859165248360">Egy IPFS gatewayen keresztül lehetővé teszi az IPFS forrásokhoz való eljutást</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Ethereum ár (ETH)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Megoldási módszer</translation>
 <translation id="2356070529366658676">Kérdés</translation>
 <translation id="4176463684765177261">Kikapcsolva</translation>
 <translation id="2218918398178303658">DNS HTTPS-en keresztül</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Megelőzi, hogy a böngésző ujjlenyomatot készítsen</translation>
 <translation id="7459000603787995422">Fülek bezárása kilépéskor</translation>
 <translation id="4448697385961650078">Követők és reklámok letiltása</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">Legyen a Brave az alapértelmezett böngésző!</translation>
 <translation id="7136694880210472378">Legyen alapértelmezett</translation>
 <translation id="4250680216510889253">Nem</translation>
-<translation id="4501702055016678577">Keressen privátban DuckDuckGo-val?</translation>
-<translation id="910419239800579753">Privát kereséssel a Brave DuckDuckGo-t használ a keresések megválaszolására, amíg ebben a privát fülben marad. A DuckDuckGo egy keresőmotor, ami nem követi a keresési előzményeket, így privát kereséseket lehet végezni vele.</translation>
-<translation id="1426410128494586442">Igen</translation>
-<translation id="5628466560184522265">Olvasson bővebben a DuckGoGo privát keresésekről</translation>
 <translation id="8826007068782654809">Köszönjük</translation>
 <translation id="6665366815203065060">Borravalót küldött neki:</translation>
 <translation id="5441565662498481293">Automatikusan borravalót küldesz ide:</translation>
@@ -442,7 +438,7 @@ hónapban...</translation>
 <translation id="3477340970981564961">A Brave privát hirdetések tokenekkel jutalmaznak meg, amivel a hagyományos reklámokkal ellentétben, támogathatod a tartalomkészítőket, és közben személyes adataid rejtve maradnak.</translation>
 <translation id="6973095375773523904">Hol jelennek meg a hirdetések?</translation>
 <translation id="7556325460112047619">A Brave privát hirdetések szokványos értesítésként jelennek meg. A beállításokban megszabhatod, hogy milyen gyakran jelenjenek meg.</translation>
-<translation id="6897083627729802351">Mikor kapja meg a jutalmakat</translation>
+<translation id="6897083627729802351">Mikor kapja meg a jutalmakat?</translation>
 <translation id="310863932297733723">Az aktuális hónap folyamán a Brave privát hirdetésektől szerzett tokenjeidet a következő hónap 5-én kapod meg.</translation>
 <translation id="7712287524451429139">Visszaadás erőfeszítés nélkül</translation>
 <translation id="105037569026952831">Az alkotók automatikusan megkapják a token hozzájárulásait az elkötelezettségi szintek alapján, amit ‘Figyelemben ’ mérünk.</translation>
@@ -459,7 +455,7 @@ hónapban...</translation>
 <translation id="827315274423079662">Juhé, készen állsz!</translation>
 <translation id="3895246934788932488">A Brave Rewardsot használva vigyáz az adataira, és mindenki számára jobb hellyé teszi a netet. És ez fantasztikus!</translation>
 <translation id="5705882733397021510">Vissza</translation>
-<translation id="3985567919248057638">Tegyünk egy gyors bemutatót</translation>
+<translation id="3985567919248057638">Indítsunk el egy gyors áttekintést</translation>
 <translation id="2434574859640694129">Miután megkapod első fizetésed a reklámok után, térj vissza és adj borravalót ennek az alkotónak!</translation>
 <translation id="207242986925259074">Gyors frissítő bemutató</translation>
 <translation id="8342862030112839977">Az 1. jutalom kifizetés eddig fog megérkezni:</translation>
@@ -565,5 +561,14 @@ hónapban...</translation>
 <translation id="1144810021918451336">Nem védi meg a veszélyes webhelyek, letöltések és bővítmények ellen.</translation>
 <translation id="745115390910697838">A kifejezések nem egyeznek. Próbáld meg újra.</translation>
 <translation id="2360588547830602174">A fiók helyreállítása sikertelen volt. Próbáld meg újra.</translation>
-<translation id="1530109021798294736">Mainnet</translation>
+<translation id="1530109021798294736">Mainnet (végleges hálózat)</translation>
+<translation id="990936698620790924">Piaci ár ETH-ban</translation>
+<translation id="6748108480210050150">Feladó</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">Eddig (becslés)</translation>
+<translation id="59223531494896848">Korlátozás</translation>
+<translation id="3567988240819868195">Piac</translation>
+<translation id="632241521608275119">Csúszási tolerancia</translation>
 </translationbundle>
