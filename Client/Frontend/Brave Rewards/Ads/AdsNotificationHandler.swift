@@ -4,7 +4,7 @@
 
 import Foundation
 import UIKit
-import BraveRewards
+import BraveCore
 import pop
 import SnapKit
 import BraveShared
@@ -89,7 +89,7 @@ public class AdsNotificationHandler: BraveAdsNotificationHandler {
     })
   }
   
-  public func show(_ notification: AdsNotification) {
+  public func showNotification(_ notification: AdsNotification) {
     adsQueue.insert(notification, at: 0)
     if adsViewController.visibleAdView == nil {
       // Nothing currently waiting

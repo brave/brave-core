@@ -4,7 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import UIKit
-import BraveRewards
+import BraveCore
 import Static
 import DeviceCheck
 import Shared

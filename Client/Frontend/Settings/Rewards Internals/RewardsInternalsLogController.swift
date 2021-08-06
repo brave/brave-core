@@ -7,9 +7,9 @@ import Foundation
 import Shared
 import XCGLogger
 import BraveUI
-import BraveRewards
+import BraveCore
 
-private let rewardsLogger = Logger.rewardsLogger
+private let braveCoreLogger = Logger.braveCoreLogger
 private let browserLogger = Logger.browserLogger
 
 fileprivate class LogLineCell: UITableViewCell, TableViewReusable {
@@ -107,8 +107,8 @@ class RewardsInternalsLogController: UITableViewController {
     @objc private func clearLogs(_ sender: UIBarButtonItem) {
         let alert = UIAlertController(title: Strings.RewardsInternals.clearLogsTitle, message: Strings.RewardsInternals.clearLogsConfirmation, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: Strings.yes, style: .destructive, handler: { _ in
-            rewardsLogger.deleteAllLogs()
-            rewardsLogger.newLogWithDate(Date(), configureDestination: { destination in
+            braveCoreLogger.deleteAllLogs()
+            braveCoreLogger.newLogWithDate(Date(), configureDestination: { destination in
                 // Same as debug log, Rewards framework handles function names in message
                 destination.showFunctionName = false
                 destination.showThreadName = false
@@ -138,7 +138,7 @@ class RewardsInternalsLogController: UITableViewController {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             do {
                 var lines: [LogLine] = []
-                let urls = try rewardsLogger.logFilenamesAndURLs().map(\.1).reversed()
+                let urls = try braveCoreLogger.logFilenamesAndURLs().map(\.1).reversed()
                 for url in urls {
                     // If user leaves controller and its dealloc'd no reason to continue reading files
                     if self == nil { return }
@@ -194,7 +194,7 @@ class RewardsInternalsLogController: UITableViewController {
 struct RewardsInternalsLogsGenerator: RewardsInternalsFileGenerator {
     func generateFiles(at path: String, using builder: RewardsInternalsSharableBuilder, completion: @escaping (Error?) -> Void) {
         do {
-            let fileURLs = try rewardsLogger.logFilenamesAndURLs().map { URL(fileURLWithPath: $0.1.path) }
+            let fileURLs = try braveCoreLogger.logFilenamesAndURLs().map { URL(fileURLWithPath: $0.1.path) }
             for url in fileURLs {
                 let logPath = URL(fileURLWithPath: path).appendingPathComponent(url.lastPathComponent)
                 try FileManager.default.copyItem(atPath: url.path, toPath: logPath.path)

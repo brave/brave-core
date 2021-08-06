@@ -4,7 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import BraveRewards
+import BraveCore
 
 class HistoryServiceStateObserver: BraveServiceStateObserver, HistoryServiceObserver {
     private let listener: (StateChange) -> Void

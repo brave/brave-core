@@ -4,7 +4,7 @@
 
 import Foundation
 import DeviceCheck
-import BraveRewards
+import BraveCore
 import BraveShared
 import Shared
 

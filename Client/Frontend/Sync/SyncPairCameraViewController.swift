@@ -4,7 +4,7 @@ import UIKit
 import Shared
 import AVFoundation
 import BraveShared
-import BraveRewards
+import BraveCore
 import Data
 
 class SyncPairCameraViewController: SyncViewController {

@@ -5,7 +5,7 @@
 
 import Foundation
 import Data
-import BraveRewards
+import BraveCore
 import BraveShared
 import CoreData
 import Shared

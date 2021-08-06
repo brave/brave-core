@@ -4,7 +4,6 @@
 
 import XCTest
 @testable import Client
-import AdblockRust
 
 class AdblockRustTests: XCTestCase {
 

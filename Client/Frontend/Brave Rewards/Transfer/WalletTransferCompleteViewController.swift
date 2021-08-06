@@ -5,7 +5,7 @@
 
 import UIKit
 import Shared
-import BraveRewards
+import BraveCore
 import BraveShared
 
 class WalletTransferCompleteViewController: UIViewController {

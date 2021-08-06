@@ -4,11 +4,11 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import BraveRewards
+import BraveCore
 import Shared
 import BraveShared
 
-private let log = Logger.rewardsLogger
+private let log = Logger.braveCoreLogger
 
 extension BraveLedger {
     
@@ -153,9 +153,9 @@ extension BraveLedger {
         }
     }
     
-    public func claimPromotion(_ promotion: Promotion, completion: @escaping (_ success: Bool) -> Void) {
+    public func claimPromotion(_ promotion: Promotion, completion: @escaping (_ success: Bool, _ shouldReconcileAds: Bool) -> Void) {
         guard let paymentId = self.paymentId else {
-            completion(false)
+            completion(false, false)
             return
         }
         let deviceCheck = DeviceCheckClient(environment: BraveLedger.environment)
@@ -165,7 +165,7 @@ extension BraveLedger {
             setupDeviceCheckEnrollment(deviceCheck) {
                 if !DeviceCheckClient.isDeviceEnrolled() {
                     DispatchQueue.main.async {
-                        completion(false)
+                        completion(false, false)
                     }
                     return
                 }
@@ -175,18 +175,18 @@ extension BraveLedger {
         group.notify(queue: .main) {
             deviceCheck.generateAttestation(paymentId: paymentId) { (attestation, error) in
                 guard let attestation = attestation else {
-                    completion(false)
+                    completion(false, false)
                     return
                 }
                 self.claimPromotion(promotion.id, publicKey: attestation.publicKeyHash) { result, nonce in
                     if result != .ledgerOk {
-                        completion(false)
+                        completion(false, false)
                         return
                     }
                     
                     deviceCheck.generateAttestationVerification(nonce: nonce) { verification, error in
                         guard let verification = verification else {
-                            completion(false)
+                            completion(false, false)
                             return
                         }
                         
@@ -201,11 +201,11 @@ extension BraveLedger {
                         
                         self.attestPromotion(promotion.id, solution: solution) { result, promotion in
                             if result == .ledgerOk {
-                                self.updatePendingAndFinishedPromotions {
-                                    completion(true)
+                                self.updatePendingAndFinishedPromotions { shouldReconcileAds in
+                                    completion(true, shouldReconcileAds)
                                 }
                             } else {
-                                completion(false)
+                                completion(false, false)
                             }
                         }
                     }

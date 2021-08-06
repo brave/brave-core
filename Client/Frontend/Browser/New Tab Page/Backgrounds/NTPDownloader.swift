@@ -5,7 +5,7 @@
 import Foundation
 import Shared
 import BraveShared
-import BraveRewards
+import BraveCore
 
 private let logger = Logger.browserLogger
 

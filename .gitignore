@@ -84,6 +84,7 @@ node_modules
 scripts/
 BuildId.xcconfig
 
+BraveCore/BraveCore.xcframework
 BraveCore/BraveRewards.xcframework
 BraveCore/MaterialComponents.xcframework
 

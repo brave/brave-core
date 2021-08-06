@@ -4,7 +4,7 @@ import UIKit
 import Shared
 import Data
 import BraveShared
-import BraveRewards
+import BraveCore
 
 /// Sometimes during heavy operations we want to prevent user from navigating back, changing screen etc.
 protocol NavigationPrevention {

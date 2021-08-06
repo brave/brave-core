@@ -9,7 +9,7 @@ import CoreData
 import Data
 import Shared
 import BraveShared
-import BraveRewards
+import BraveCore
 import SnapKit
 
 /// The behavior for sizing sections when the user is in landscape orientation
@@ -377,7 +377,7 @@ class NewTabPageViewController: UIViewController {
         backgroundView.imageConstraints?.landscapeCenter.update(offset: inset)
     }
     
-    private func reportSponsoredImageBackgroundEvent(_ event: NewTabPageAdEventType) {
+    private func reportSponsoredImageBackgroundEvent(_ event: BraveAdsNewTabPageAdEventType) {
         guard let backgroundType = background.currentBackground?.type,
               case .withBrandLogo = backgroundType,
               let creativeInstanceId = background.currentBackground?.wallpaper.creativeInstanceId else {

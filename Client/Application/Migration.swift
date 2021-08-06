@@ -7,7 +7,7 @@ import Shared
 import BraveShared
 import SwiftKeychainWrapper
 import Data
-import BraveRewards
+import BraveCore
 
 private let log = Logger.browserLogger
 

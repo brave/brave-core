@@ -15,7 +15,7 @@ import SwiftyJSON
 import Data
 import BraveShared
 import SwiftKeychainWrapper
-import BraveRewards
+import BraveCore
 import StoreKit
 import SafariServices
 import BraveUI
@@ -189,7 +189,7 @@ class BrowserViewController: UIViewController {
         self.crashedLastSession = crashedLastSession
         self.safeBrowsing = safeBrowsingManager
 
-        let configuration: BraveRewardsConfiguration
+        let configuration: BraveRewards.Configuration
         if AppConstants.buildChannel.isPublic {
             configuration = .production
         } else {
@@ -209,7 +209,7 @@ class BrowserViewController: UIViewController {
             }
         }
 
-        configuration.buildChannel = BraveAdsBuildChannel().then {
+        let buildChannel = BraveAdsBuildChannel().then {
           $0.name = AppConstants.buildChannel.rawValue
           $0.isRelease = AppConstants.buildChannel == .release
         }
@@ -226,11 +226,11 @@ class BrowserViewController: UIViewController {
                 }
             }
         }
-        rewards = BraveRewards(configuration: configuration)
+        rewards = BraveRewards(configuration: configuration, buildChannel: buildChannel)
         if !BraveRewards.isAvailable {
             // Disable rewards services in case previous user already enabled
             // rewards in previous build
-            rewards.isAdsEnabled = false
+            rewards.isEnabled = false
         } else {
             if rewards.isEnabled && !Preferences.Rewards.rewardsToggledOnce.value {
                 Preferences.Rewards.rewardsToggledOnce.value = true
@@ -245,19 +245,21 @@ class BrowserViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         didInit()
         
-        rewards.delegate = self
+        rewards.ledgerServiceDidStart = { [weak self] _ in
+            self?.setupLedger()
+        }
         
         // Only start ledger service automatically if ads is enabled
-        if rewards.isAdsEnabled {
+        if rewards.isEnabled {
             rewards.startLedgerService {
                 self.legacyWallet?.initializeLedgerService(nil)
             }
         }
     }
     
-    static func legacyWallet(for config: BraveRewardsConfiguration) -> BraveLedger? {
+    static func legacyWallet(for config: BraveRewards.Configuration) -> BraveLedger? {
         let fm = FileManager.default
-        let stateStorage = URL(fileURLWithPath: config.stateStoragePath)
+        let stateStorage = config.storageURL
         let legacyLedger = stateStorage.appendingPathComponent("legacy_ledger")
 
         // Check if we've already migrated the users wallet to the `legacy_rewards` folder
@@ -2241,7 +2243,7 @@ extension BrowserViewController: TabManagerDelegate {
         topToolbar.leaveOverlayMode(didCancel: true)
         updateTabsBarVisibility()
         
-        rewards.reportTabClosed(tabId: tab.rewardsId)
+        rewards.reportTabClosed(tabId: Int(tab.rewardsId))
     }
 
     func tabManagerDidAddTabs(_ tabManager: TabManager) {

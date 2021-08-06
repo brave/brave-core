@@ -3,7 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import BraveRewards
+import BraveCore
 import Data
 import Shared
 import BraveShared
@@ -12,18 +12,7 @@ import Storage
 import XCGLogger
 import WebKit
 
-private let log = Logger.rewardsLogger
-
-private extension Int32 {
-    var loggerLevel: XCGLogger.Level {
-        switch self {
-        case 0: return .error
-        case 1: return .info
-        case 2..<7: return .debug
-        default: return .verbose
-        }
-    }
-}
+private let log = Logger.braveCoreLogger
 
 extension BrowserViewController {
     func updateRewardsButtonState() {
@@ -130,7 +119,10 @@ extension BrowserViewController {
         guard let ledger = rewards.ledger else { return }
         ledger.pendingPromotions.forEach { promo in
             if promo.status == .active {
-                ledger.claimPromotion(promo) { success in
+                ledger.claimPromotion(promo) { [weak self] success, shouldReconcileAds in
+                    if shouldReconcileAds {
+                        self?.rewards.ads.reconcileAdRewards()
+                    }
                     log.info("[BraveRewards] Auto-Claim Promotion - \(success) for \(promo.approximateValue)")
                 }
             }
@@ -197,14 +189,14 @@ extension BrowserViewController {
         Preferences.NewTabPage.atleastOneNTPNotificationWasShowed.value = false
     }
     
-    static func migrateAdsConfirmations(for configruation: BraveRewardsConfiguration) {
+    static func migrateAdsConfirmations(for configruation: BraveRewards.Configuration) {
         // To ensure after a user launches 1.21 that their ads confirmations, viewed count and
         // estimated payout remain correct.
         //
         // This hack is unfortunately neccessary due to a missed migration path when moving
         // confirmations from ledger to ads, we must extract `confirmations.json` out of ledger's
         // state file and save it as a new file under the ads directory.
-        let base = URL(fileURLWithPath: configruation.stateStoragePath)
+        let base = configruation.storageURL
         let ledgerStateContainer = base.appendingPathComponent("ledger/random_state.plist")
         let adsConfirmations = base.appendingPathComponent("ads/confirmations.json")
         let fm = FileManager.default
@@ -326,26 +318,11 @@ extension Tab {
             if faviconURL == nil {
                 log.warning("No favicon found in \(self) to report to rewards panel")
             }
-            rewards.reportLoadedPage(url: url, redirectionURLs: [], faviconUrl: faviconURL, tabId: self.rewardsId, html: htmlBlob ?? "", adsInnerText: classifierText)
+            rewards.reportLoadedPage(url: url, redirectionURLs: [], faviconURL: faviconURL, tabId: Int(self.rewardsId), html: htmlBlob ?? "", adsInnerText: classifierText)
         }
     }
     
     func reportPageNaviagtion(to rewards: BraveRewards) {
         rewards.reportTabNavigation(tabId: self.rewardsId)
-    }
-}
-
-extension BrowserViewController: BraveRewardsDelegate {
-    func faviconURL(fromPageURL pageURL: URL, completion: @escaping (URL?) -> Void) {
-        // Currently unused, may be removed in the future
-    }
-    
-    func logMessage(withFilename file: String, lineNumber: Int32, verbosity: Int32, message: String) {
-        if message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { return }
-        log.logln(verbosity.loggerLevel, fileName: file, lineNumber: Int(lineNumber), closure: { message })
-    }
-    
-    func ledgerServiceDidStart(_ ledger: BraveLedger) {
-        setupLedger()
     }
 }

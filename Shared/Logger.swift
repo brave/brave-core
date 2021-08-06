@@ -18,9 +18,9 @@ public extension Logger {
     static let browserLogger = RollingFileLogger(filenameRoot: "browser", logDirectoryPath: Logger.logFileDirectoryPath())
     
     /// Logger used for things recorded on BraveRewards framework.
-    static let rewardsLogger: RollingFileLogger = {
-        let logger = RollingFileLogger(filenameRoot: "rewards", logDirectoryPath: nil)
-        logger.identifier = "BraveRewards"
+    static let braveCoreLogger: RollingFileLogger = {
+        let logger = RollingFileLogger(filenameRoot: "bravecore", logDirectoryPath: nil)
+        logger.identifier = "BraveCore"
         logger.newLogWithDate(Date(), configureDestination: { destination in
             // Same as debug log, Rewards framework handles function names in message
             destination.showFunctionName = false

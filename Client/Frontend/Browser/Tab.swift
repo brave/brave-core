@@ -6,7 +6,7 @@ import Foundation
 import WebKit
 import Storage
 import Shared
-import BraveRewards
+import BraveCore
 import BraveShared
 import SwiftyJSON
 import XCGLogger
@@ -326,7 +326,7 @@ class Tab: NSObject {
         
         let rewards = appDelegate.browserViewController.rewards
         if !PrivateBrowsingManager.shared.isPrivateBrowsing {
-            rewards.reportTabClosed(tabId: rewardsId)
+            rewards.reportTabClosed(tabId: Int(rewardsId))
         }
     }
 

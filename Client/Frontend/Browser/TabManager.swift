@@ -12,7 +12,7 @@ import Data
 import CoreData
 
 private let log = Logger.browserLogger
-private let rewardsLog = Logger.rewardsLogger
+private let rewardsLog = Logger.braveCoreLogger
 
 protocol TabManagerDelegate: AnyObject {
     func tabManager(_ tabManager: TabManager, didSelectedTabChange selected: Tab?, previous: Tab?)

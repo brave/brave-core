@@ -5,9 +5,9 @@
 import Foundation
 import Shared
 import WebKit
-import BraveRewards
+import BraveCore
 
-private let log = Logger.rewardsLogger
+private let log = Logger.braveCoreLogger
 
 class AdsMediaReporting: TabContentScript {
     let rewards: BraveRewards
@@ -36,12 +36,12 @@ class AdsMediaReporting: TabContentScript {
             return
         }
         
-        if let isPlaying = body["data"] as? Bool, rewards.isAdsEnabled {
+        if let isPlaying = body["data"] as? Bool, rewards.isEnabled {
             guard let tab = tab else { return }
             if isPlaying {
-                rewards.reportMediaStarted(tabId: tab.rewardsId)
+                rewards.reportMediaStarted(tabId: Int(tab.rewardsId))
             } else {
-                rewards.reportMediaStopped(tabId: tab.rewardsId)
+                rewards.reportMediaStopped(tabId: Int(tab.rewardsId))
             }
         }
     }
