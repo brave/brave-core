@@ -392,7 +392,7 @@ void AdsServiceImpl::OnWalletUpdated() {
 }
 
 void AdsServiceImpl::OnGetBraveWallet(ledger::type::BraveWalletPtr wallet) {
-  if (!wallet) {
+  if (!connected() || !wallet) {
     return;
   }
 
