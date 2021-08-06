@@ -15,6 +15,11 @@
 #include "content/public/browser/web_ui_message_handler.h"
 
 class Profile;
+
+namespace base {
+class Time;
+}  //  namespace base
+
 namespace content {
 class WebUIDataSource;
 }
@@ -35,6 +40,8 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
 
   static void RegisterLocalStatePrefs(PrefRegistrySimple* local_state);
   static void RecordInitialP3AValues(PrefService* local_state);
+  static bool CanPromptBraveTalk();
+  static bool CanPromptBraveTalk(base::Time now);
   static BraveNewTabMessageHandler* Create(
       content::WebUIDataSource* html_source,
       Profile* profile);

@@ -88,7 +88,7 @@ class BraveTalk extends React.PureComponent<Props, {}> {
                 <PrivacyLink
                   rel={'noopener'}
                   target={'_blank'}
-                  href={'https://brave.com/privacy/#brave-together-learn'}
+                  href={'https://brave.com/privacy/browser/#brave-talk-learn'}
                 >
                   {getLocale('braveTalkWidgetAboutData')}
                 </PrivacyLink>
