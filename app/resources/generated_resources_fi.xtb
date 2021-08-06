@@ -593,6 +593,7 @@
 <translation id="1627408615528139100">Ladattu aiemmin</translation>
 <translation id="1628948239858170093">Tarkistetaanko tiedosto ennen avaamista?</translation>
 <translation id="1629314197035607094">Salasana on vanhentunut</translation>
+<translation id="1947639598318989608">Saako Brave löytää personoituja tarjouksia ostoskoreistasi?</translation>
 <translation id="1629521517399325891">Käyttäjävarmenne ei ole saatavilla verkon todennukseen.</translation>
 <translation id="163072119192489970">Tietojen lähetyksen ja vastaanoton viimeistely sallittu</translation>
 <translation id="1630768113285622200">Käynnistä uudelleen ja jatka</translation>
@@ -3198,7 +3199,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="4469762931504673593"><ph name="ORIGIN"/> saa muokata kansion <ph name="FOLDERNAME"/> tiedostoja</translation>
 <translation id="4470957202018033307">Ulkoisen tallennustilan asetukset</translation>
 <translation id="4471354919263203780">Ladataan puheentunnistustiedostoja… <ph name="PERCENT"/> %</translation>
-<translation id="506314819294271427">Auta parantamaan Braven ominaisuuksia ja suorituskykyä</translation>
+<translation id="918192811481327695">Auta parantamaan Braven ominaisuuksia ja suorituskykyä</translation>
 <translation id="4472575034687746823">Aloita</translation>
 <translation id="4474155171896946103">Lisää kaikki välilehdet kirjanmerkkeihin...</translation>
 <translation id="4475552974751346499">Haku latauksista</translation>
@@ -4428,7 +4429,6 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="5864754048328252126">Käyttämättömyystila latauksessa</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> keskeytetään pian</translation>
 <translation id="586567932979200359">Käytät tuotetta <ph name="PRODUCT_NAME"/> sen levyvedoksen kautta. Asentamalla tuotteen tietokoneellesi voit käyttää sitä ilman levyvedosta ja varmistat, että tuote pysyy päivitettynä.</translation>
-<translation id="1224064034972923114">Lähettää automaattisesti käyttötilastoja ja virheraportteja Bravelle</translation>
 <translation id="5867841422488265304">Hae tai kirjoita verkko-osoite</translation>
 <translation id="5869029295770560994">Selvä</translation>
 <translation id="5869522115854928033">Tallennetut salasanat</translation>
@@ -5444,7 +5444,6 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="6997642619627518301"><ph name="NAME_PH"/> – toimintaloki</translation>
 <translation id="6997707937646349884">Laitteillasi:</translation>
 <translation id="6998793565256476099">Ota videokonferenssit käyttöön laitteessa</translation>
-<translation id="456304305650018221">Saako Brave etsiä alennuksia ostoskoriin lisäämistäsi tuotteista?</translation>
 <translation id="6999956497249459195">Uusi ryhmä</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> on yhdistetty mutta määritettävä</translation>
 <translation id="7000347579424117903">Lisää alkuun Ctrl, Alt tai hakupainike</translation>
@@ -7595,7 +7594,7 @@ Paina määritettyä kytkintä, niin poistat sen määrityksen.</translation>
 <translation id="5556722972306334687">Avaa Yksityisessä ikkunassa</translation>
 <translation id="1860933807472918250">{0, plural,
         =1 {Yksityinen}
-        other {avoimien ikkunoiden lukumäärä}
+        other {# avointa yksityistä ikkunaa}
       }</translation>
 <translation id="8712375231869053533">{0, plural,
       =1 {Yksityinen}

@@ -593,6 +593,7 @@ A(z) <ph name="DOMAIN"/> megköveteli, hogy ne távolítsa el az intelligens ká
 <translation id="1627408615528139100">Már le lett töltve</translation>
 <translation id="1628948239858170093">Ellenőrzi a fájlt a megnyitása előtt?</translation>
 <translation id="1629314197035607094">A jelszó lejárt</translation>
+<translation id="1947639598318989608">A Brave kereshet személyre szabott kedvezményeket az Ön bevásárlókosaraiban?</translation>
 <translation id="1629521517399325891">Nem áll rendelkezésre felhasználói tanúsítvány a hálózati hitelesítéshez.</translation>
 <translation id="163072119192489970">Befejezhetik az adatok küldését és fogadását</translation>
 <translation id="1630768113285622200">Újraindítás és folytatás</translation>
@@ -3199,7 +3200,7 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="4469762931504673593">A(z) <ph name="ORIGIN"/> szerkesztheti a(z) <ph name="FOLDERNAME"/> mappában lévő fájlokat</translation>
 <translation id="4470957202018033307">Külső tárhely beállításai</translation>
 <translation id="4471354919263203780">Beszédfelismerési fájlok letöltése… <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Hozzájárulás a Brave funkcióinak és teljesítményének javításához</translation>
+<translation id="918192811481327695">Hozzájárulás a Brave funkcióinak és teljesítményének javításához</translation>
 <translation id="4472575034687746823">Kezdő lépések</translation>
 <translation id="4474155171896946103">Összes lap hozzáadása a könyvjelzőkhöz...</translation>
 <translation id="4475552974751346499">Letöltések keresése</translation>
@@ -4431,7 +4432,6 @@ Győződjön meg arról, hogy nem ad ki bizalmas adatokat.</translation>
 <translation id="5864754048328252126">Tétlenségi művelet töltés közben</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> hamarosan szünetelni fog</translation>
 <translation id="586567932979200359">A <ph name="PRODUCT_NAME"/> alkalmazást jelenleg a lemezképéről futtatja. Ha telepíti a számítógépére, akkor futtathatja a lemezkép nélkül is, emellett biztosan naprakészen tartja.</translation>
-<translation id="1224064034972923114">Automatikusan elküldi a használati statisztikákat és hibajelentéseket a Brave-nak</translation>
 <translation id="5867841422488265304">Keressen, vagy írjon be internetcímet</translation>
 <translation id="5869029295770560994">Rendben, értem</translation>
 <translation id="5869522115854928033">Mentett jelszavak</translation>
@@ -5447,7 +5447,6 @@ A(z) <ph name="DOMAIN"/> megköveteli, hogy ne távolítsa el az intelligens ká
 <translation id="6997642619627518301"><ph name="NAME_PH"/> – Tevékenységnapló</translation>
 <translation id="6997707937646349884">Az Ön eszközein:</translation>
 <translation id="6998793565256476099">Eszköz felvétele a videokonferenciába</translation>
-<translation id="456304305650018221">Engedélyezi a Brave-nak a kosaraihoz hozzáadott termékekre vonatkozó kedvezmények keresését?</translation>
 <translation id="6999956497249459195">Új csoport</translation>
 <translation id="7000206553895739324">A(z) <ph name="PRINTER_NAME"/> csatlakoztatva van, de konfigurálni kell</translation>
 <translation id="7000347579424117903">Használja a Ctrl, az Alt vagy a Keresés gombok egyikét</translation>
@@ -7551,7 +7550,7 @@ A(z) <ph name="DOMAIN"/> megköveteli, hogy ne távolítsa el az intelligens ká
 <translation id="998747458861718449">&amp;Vizsgálat</translation>
 <translation id="658539216370629794">Hivatkozás megnyitása privát ablakban</translation>
 <translation id="1432267168815937878">Hivatkozás megnyitása &amp; privát ablakban</translation>
-<translation id="5786139852593193364">Új és privát ablak</translation>
+<translation id="5786139852593193364">Új &amp;privát ablak</translation>
 <translation id="7973394300052703468">Új &amp; Privát ablak</translation>
 <translation id="6395403722585816044">Letöltés privát ablakban</translation>
 <translation id="6216189820029634282">Mindenképp kilépsz a privát módból?</translation>

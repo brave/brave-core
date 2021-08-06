@@ -589,6 +589,7 @@
 <translation id="1627408615528139100">O ficheiro xa se descargou.</translation>
 <translation id="1628948239858170093">Queres analizar o ficheiro antes de abrilo?</translation>
 <translation id="1629314197035607094">Caducou o contrasinal</translation>
+<translation id="1947639598318989608">Queres permitir que Brave busque descontos personalizados para os artigos dos teus carros?</translation>
 <translation id="1629521517399325891">O certificado de usuario non está dispoñible para a autenticación da rede.</translation>
 <translation id="163072119192489970">Sitios que poden rematar de enviar ou recibir datos</translation>
 <translation id="1630768113285622200">Reiniciar e continuar</translation>
@@ -2996,7 +2997,7 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="424963718355121712">As aplicacións deben proceder do host no que repercuten</translation>
 <translation id="4250229828105606438">Captura de pantalla</translation>
 <translation id="4250680216510889253">Non</translation>
-<translation id="4252035718262427477">Páxina web, ficheiro único (paquete web)</translation>
+<translation id="4252035718262427477">Páxina web, ficheiro único (Web Bundle)</translation>
 <translation id="4252852543720145436">Identificadores de contido protexido</translation>
 <translation id="4252899949534773101">O Bluetooth está desactivado</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/>: compartindo o contido da pestana</translation>
@@ -3185,7 +3186,7 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="4469762931504673593"><ph name="ORIGIN"/> pode editar os ficheiros de <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Preferencias para o almacenamento externo</translation>
 <translation id="4471354919263203780">Descargando ficheiros de recoñecemento de voz… <ph name="PERCENT"/> %</translation>
-<translation id="506314819294271427">Axudar a mellorar o rendemento e as funcións de Brave</translation>
+<translation id="918192811481327695">Axudar a mellorar o rendemento e as funcións de Brave</translation>
 <translation id="4472575034687746823">Comezar</translation>
 <translation id="4474155171896946103">Engadir todas as pestanas a marcadores...</translation>
 <translation id="4475552974751346499">Buscar descargas</translation>
@@ -4414,7 +4415,6 @@ Obtén <ph name="BEGIN_LINK"/>máis información<ph name="END_LINK"/> sobre os d
 <translation id="5864754048328252126">Acción de inactividade durante a carga</translation>
 <translation id="5865508026715185451">A aplicación <ph name="APP_NAME"/> porase en pausa en breve</translation>
 <translation id="586567932979200359">Estás executando <ph name="PRODUCT_NAME"/> desde a imaxe de disco. Se o instalas no ordenador, poderás executalo sen a imaxe de disco e aseguraraste de mantelo actualizado.</translation>
-<translation id="1224064034972923114">Envía estatísticas de uso e informes de erros automaticamente a Brave</translation>
 <translation id="5867841422488265304">Busca ou escribe o enderezo web</translation>
 <translation id="5869029295770560994">De acordo</translation>
 <translation id="5869522115854928033">Contrasinais gardados</translation>
@@ -5430,7 +5430,6 @@ Consulta máis información sobre os datos que recompila Brave e por que o fai e
 <translation id="6997642619627518301"><ph name="NAME_PH"/> (rexistro de actividade)</translation>
 <translation id="6997707937646349884">Nos teus dispositivos:</translation>
 <translation id="6998793565256476099">Rexistra o dispositivo para realizar videoconferencias</translation>
-<translation id="456304305650018221">Queres permitir que Brave busque descontos para os artigos que engadas aos carros?</translation>
 <translation id="6999956497249459195">Novo grupo</translation>
 <translation id="7000206553895739324">A impresora <ph name="PRINTER_NAME"/> está conectada, pero é necesario configurala</translation>
 <translation id="7000347579424117903">Utiliza Ctrl, Alt ou a tecla de busca</translation>

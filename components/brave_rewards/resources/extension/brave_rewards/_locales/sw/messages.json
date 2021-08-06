@@ -219,6 +219,54 @@
     "message": "Tafadhali hifadhi kwa njia mbadala wallet yako ya Brave.",
     "description": "Description for backup wallet notification"
   },
+  "upholdBATNotAllowedForUserLearnMore": {
+    "message": "Jifunze Zaidi",
+    "description": "Notification button text to learn more about why BAT is not allowed for user"
+  },
+  "upholdBATNotAllowedForUserTitle": {
+    "message": "Hitilafu: BAT haipatikani",
+    "description": "Title for BAT not allowed for user notification"
+  },
+  "upholdBATNotAllowedForUserNotification": {
+    "message": "BAT bado haitumiki katika eneo lako kwenye Uphold.",
+    "description": "Description for BAT not allowed for user notification"
+  },
+  "upholdBlockedUserLearnMore": {
+    "message": "Jifunze Zaidi",
+    "description": "Notification button text to learn more about the blocked user status"
+  },
+  "upholdBlockedUserTitle": {
+    "message": "Hitilafu: Akaunti imefungwa",
+    "description": "Title for blocked user notification"
+  },
+  "upholdBlockedUserNotification": {
+    "message": "Akaunti yako kwenye Uphold imefungwa kwa sasa.",
+    "description": "Description for blocked user notification"
+  },
+  "upholdPendingUserLearnMore": {
+    "message": "Jifunze Zaidi",
+    "description": "Notification button text to learn more about the pending user status"
+  },
+  "upholdPendingUserTitle": {
+    "message": "Hitilafu: Akaunti inayosubiri",
+    "description": "Title for pending user notification"
+  },
+  "upholdPendingUserNotification": {
+    "message": "Akaunti yako kwenye Uphold bado inasubiri.",
+    "description": "Description for pending user notification"
+  },
+  "upholdRestrictedUserLearnMore": {
+    "message": "Jifunze Zaidi",
+    "description": "Notification button text to learn more about the restricted user status"
+  },
+  "upholdRestrictedUserTitle": {
+    "message": "Hitilafu: Akaunti imewekewa vikwazo",
+    "description": "Title for restricted user notification"
+  },
+  "upholdRestrictedUserNotification": {
+    "message": "Akaunti yako kwenye Uphold imewekewa vikwazo kwa sasa.",
+    "description": "Description for restricted user notification"
+  },
   "deviceLimitReachedLearnMore": {
     "message": "Jifunze Zaidi",
     "description": "Notification button text to learn more about device limit"

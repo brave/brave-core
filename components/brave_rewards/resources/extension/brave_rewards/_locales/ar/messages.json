@@ -219,6 +219,54 @@
     "message": "يرجى عمل نسخة احتياطية عن محفظة Brave الخاصة بك.",
     "description": "Description for backup wallet notification"
   },
+  "upholdBATNotAllowedForUserLearnMore": {
+    "message": "مزيد من المعلومات",
+    "description": "Notification button text to learn more about why BAT is not allowed for user"
+  },
+  "upholdBATNotAllowedForUserTitle": {
+    "message": "خطأ: BAT غير متوفر",
+    "description": "Title for BAT not allowed for user notification"
+  },
+  "upholdBATNotAllowedForUserNotification": {
+    "message": "لم يتم دعم BAT حتى الآن في منطقتك بعد، في Uphold.",
+    "description": "Description for BAT not allowed for user notification"
+  },
+  "upholdBlockedUserLearnMore": {
+    "message": "مزيد من المعلومات",
+    "description": "Notification button text to learn more about the blocked user status"
+  },
+  "upholdBlockedUserTitle": {
+    "message": "خطأ: حساب محظور",
+    "description": "Title for blocked user notification"
+  },
+  "upholdBlockedUserNotification": {
+    "message": "حسابك في Uphold محظور حاليًا.",
+    "description": "Description for blocked user notification"
+  },
+  "upholdPendingUserLearnMore": {
+    "message": "مزيد من المعلومات",
+    "description": "Notification button text to learn more about the pending user status"
+  },
+  "upholdPendingUserTitle": {
+    "message": "خطأ: حساب معلق",
+    "description": "Title for pending user notification"
+  },
+  "upholdPendingUserNotification": {
+    "message": "لا يزال حسابك في Uphold معلقًا.",
+    "description": "Description for pending user notification"
+  },
+  "upholdRestrictedUserLearnMore": {
+    "message": "مزيد من المعلومات",
+    "description": "Notification button text to learn more about the restricted user status"
+  },
+  "upholdRestrictedUserTitle": {
+    "message": "خطأ: حساب مقيد",
+    "description": "Title for restricted user notification"
+  },
+  "upholdRestrictedUserNotification": {
+    "message": "حسابك في Uphold مقيد حاليًا.",
+    "description": "Description for restricted user notification"
+  },
   "deviceLimitReachedLearnMore": {
     "message": "مزيد من المعلومات",
     "description": "Notification button text to learn more about device limit"

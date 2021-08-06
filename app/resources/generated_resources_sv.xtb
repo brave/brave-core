@@ -593,6 +593,7 @@
 <translation id="1627408615528139100">Har redan laddats ned</translation>
 <translation id="1628948239858170093">Vill du genomsöka filen innan du öppnar den?</translation>
 <translation id="1629314197035607094">Lösenordet gäller inte längre</translation>
+<translation id="1947639598318989608">Vill du låta Brave söka efter anpassade rabatter för dina kundvagnar?</translation>
 <translation id="1629521517399325891">Användarcertifikatet är inte tillgängligt för nätverksautentisering.</translation>
 <translation id="163072119192489970">Får fortsätta att skicka och ta emot data</translation>
 <translation id="1630768113285622200">Starta om och fortsätt</translation>
@@ -3202,7 +3203,7 @@ och Ctrl + Alt + Minska ljusstyrka för att zooma ut.</translation>
 <translation id="4469762931504673593"><ph name="ORIGIN"/> har redigeringsbehörighet för <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Inställningar för extern lagring</translation>
 <translation id="4471354919263203780">Filer för taligenkänning laddas ned … <ph name="PERCENT"/> %</translation>
-<translation id="506314819294271427">Bidra till att förbättra Braves funktioner och prestanda</translation>
+<translation id="918192811481327695">Bidra till att förbättra Braves funktioner och prestanda</translation>
 <translation id="4472575034687746823">Kom igång</translation>
 <translation id="4474155171896946103">Skapa bokmärken för alla flikar ...</translation>
 <translation id="4475552974751346499">Sök i nedladdningar</translation>
@@ -4432,7 +4433,6 @@ och Ctrl + Alt + Minska ljusstyrka för att zooma ut.</translation>
 <translation id="5864754048328252126">Inaktivitetsåtgärd vid laddning</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> pausas snart</translation>
 <translation id="586567932979200359">Du kör <ph name="PRODUCT_NAME"/> från diskavbildningen. Om du installerar programmet på din dator kan du köra det utan diskavbildningen och du kan vara säker på att det alltid är uppdaterat.</translation>
-<translation id="1224064034972923114">Skickar användningsstatistik och felrapporter till Brave automatiskt</translation>
 <translation id="5867841422488265304">Skriv en sökning eller en webbadress</translation>
 <translation id="5869029295770560994">Ok, jag förstår</translation>
 <translation id="5869522115854928033">Sparade lösenord</translation>
@@ -5448,7 +5448,6 @@ och Ctrl + Alt + Minska ljusstyrka för att zooma ut.</translation>
 <translation id="6997642619627518301"><ph name="NAME_PH"/> – aktivitetslogg</translation>
 <translation id="6997707937646349884">Gör så här på dina enheter:</translation>
 <translation id="6998793565256476099">Registrera enheten för videokonferenser</translation>
-<translation id="456304305650018221">Vill du tillåta att Brave söker efter rabatter på varor i din kundvagn?</translation>
 <translation id="6999956497249459195">Ny grupp</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> har anslutits men behöver konfigureras</translation>
 <translation id="7000347579424117903">Ctrl-, alt- eller söktangenten måste finnas med</translation>

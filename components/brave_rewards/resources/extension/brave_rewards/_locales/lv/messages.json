@@ -219,6 +219,54 @@
     "message": "Lūdzu, izveidojiet sava Brave maka dublējumkopiju.",
     "description": "Description for backup wallet notification"
   },
+  "upholdBATNotAllowedForUserLearnMore": {
+    "message": "Uzziniet vairāk",
+    "description": "Notification button text to learn more about why BAT is not allowed for user"
+  },
+  "upholdBATNotAllowedForUserTitle": {
+    "message": "Kļūda: BAT nav pieejams",
+    "description": "Title for BAT not allowed for user notification"
+  },
+  "upholdBATNotAllowedForUserNotification": {
+    "message": "BAT jūsu reģionā Uphold vēl netiek atbalstīts.",
+    "description": "Description for BAT not allowed for user notification"
+  },
+  "upholdBlockedUserLearnMore": {
+    "message": "Uzziniet vairāk",
+    "description": "Notification button text to learn more about the blocked user status"
+  },
+  "upholdBlockedUserTitle": {
+    "message": "Kļūda: bloķēts konts",
+    "description": "Title for blocked user notification"
+  },
+  "upholdBlockedUserNotification": {
+    "message": "Jūsu Uphold konts ir bloķēts.",
+    "description": "Description for blocked user notification"
+  },
+  "upholdPendingUserLearnMore": {
+    "message": "Uzziniet vairāk",
+    "description": "Notification button text to learn more about the pending user status"
+  },
+  "upholdPendingUserTitle": {
+    "message": "Kļūda: neapstiprināts konts",
+    "description": "Title for pending user notification"
+  },
+  "upholdPendingUserNotification": {
+    "message": "Jūsu Uphold konts vēl nav apstiprināts.",
+    "description": "Description for pending user notification"
+  },
+  "upholdRestrictedUserLearnMore": {
+    "message": "Uzziniet vairāk",
+    "description": "Notification button text to learn more about the restricted user status"
+  },
+  "upholdRestrictedUserTitle": {
+    "message": "Kļūda: ierobežots konts",
+    "description": "Title for restricted user notification"
+  },
+  "upholdRestrictedUserNotification": {
+    "message": "Jūsu Uphold konts šobrīd ir ierobežots.",
+    "description": "Description for restricted user notification"
+  },
   "deviceLimitReachedLearnMore": {
     "message": "Uzziniet vairāk",
     "description": "Notification button text to learn more about device limit"

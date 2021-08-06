@@ -2,12 +2,12 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="hi">
 <translation id="3333887201479867589">Brave रिवार्ड्स</translation>
-<translation id="7942180974165298215">Brave विज्ञापन बाधा</translation>
+<translation id="7942180974165298215">Brave विज्ञापन ब्लॉक किया गया</translation>
 <translation id="4615489450165434530">एक ब्रेक हुई साइट की रिपोर्ट करें</translation>
 <translation id="6406506848690869874">सिंक</translation>
 <translation id="1544192797660353713">वॉलेट</translation>
 <translation id="2445484935443597917">नई प्रोफ़ाइल बनाएं</translation>
-<translation id="2666990579225592931">मेहमान विंडो खोलें</translation>
+<translation id="2666990579225592931">गेस्ट विंडो खोलें</translation>
 <translation id="8275068909952022340">और…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") की Brave में अनुमति नहीं है।</translation>
 <translation id="6786747875388722282">एक्सटेंशन</translation>
@@ -29,6 +29,9 @@
 <translation id="3218385319396786393">इस पेज पर स्वतः प्ले बाधित था</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> पर हमेश स्वतः चालू का अनुमति दें</translation>
 <translation id="4150684676757176434">ऑटोप्ले को बाधित करना चालू रखें</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">पूछें कि कोई साइट एथेरियम प्रदाता API का उपयोग कब करना चाहता है</translation>
+<translation id="7017590444693657895">साइटों को एथेरियम प्रदाता API तक पहुँचने से रोकें</translation>
 <translation id="8988939298652262600">Brave सुरक्षा और बचाव के लिए एक्सटेंशन की समीक्षा नहीं करता है। यदि आप डेवलपर पर भरोसा करते हैं तो ही इस एक्सटेंशन को इंस्टॉल करें।</translation>
 <translation id="8081858229109418493">प्रोफाइल का नाम और आइकन</translation>
 <translation id="2044383478723007273">Brave रंग</translation>
@@ -74,6 +77,7 @@ Binance
 <translation id="5802665280774361839">पता बार में ऑटोकम्पलीट दिखाएँ</translation>
 <translation id="597020512043916976">ऑटोकम्पलीट सुझावों में शीर्ष साइटें दिखाएँ</translation>
 <translation id="264150068416846820">ऑटोकम्पलीट सुझावों में Brave द्वारा सुझाए गए साइट दिखाएँ</translation>
+<translation id="5529693968082667490">सर्च टैब बटन दिखाएँ</translation>
 <translation id="6414370348346025511">सामान्य सुरक्षा शरू है।</translation>
 <translation id="814018970995616154">Brave में संग्रहीत असुरक्षित साइटों की सूची के साथ URL की जाँच करता है।</translation>
 <translation id="1144810021918451336">हानिकारक वेबसाइट, डाउनलोड और एक्सटेंशन से आपकी सुरक्षा नहीं करता है।</translation>
@@ -124,7 +128,7 @@ Binance
 <translation id="6303294677342628402">सुरक्षा कवच</translation>
 <translation id="7133511168130368997">पूरे वेब पर आपके साथ रहने वाले ट्रैकर्स और विज्ञापनों को ब्लॉक करें।</translation>
 <translation id="2761825942249694703">ये डिफ़ॉल्ट शील्ड्स सेटिंग हैं। वे सभी वेबसाइटों पर लागू होते हैं जब तक आप किसी विशेष साइट के शील्ड्स पैनल मे कुछ बदलाव नही करते। इन्हें बदलने से आपकी मौजूदा प्रति-साइट सेटिंग प्रभावित नही होगी।</translation>
-<translation id="8754605759692119662">यह वेबसाइटों के अधिकांश विज्ञापनों को ब्लॉक करेगा, Brave के निजी विज्ञापनों — को नही; जिन्हे नियंत्रित किया जाता है</translation>
+<translation id="1485394570478670912">यह वेबसाइटों पर ज़्यादातर विज्ञापनों को ब्लॉक कर देगा, Brave निजी विज्ञापनों को नहीं — जिन्हें कंट्रोल किया जाता है</translation>
 <translation id="6388201778088078932">सेटिंग।</translation>
 <translation id="9185018653595759199">सोशल मीडिया अवरुद्ध</translation>
 <translation id="7390783310074170337">डिफ़ॉल्ट व्यू</translation>
@@ -317,6 +321,13 @@ Binance
 <translation id="1391855377994926460">वेब तेज़ी से ब्राउज़ करना जारी रखें - प्रमुख समाचार साइटों पर 6 गुना तेज़ी से.</translation>
 <translation id="9218430445555521422">डिफ़ॉल्ट के रूप में सेट करें</translation>
 <translation id="3479552764303398839">अभी नहीं</translation>
+<translation id="5039804452771397117">अनुमति दें</translation>
+<translation id="7053983685419859001">ब्लॉक करें</translation>
+<translation id="7815301689257843278">क्रैश रिपोर्ट अपने आप भेजें ताकि Brave इस समस्या को दोबारा न होने दे?</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> यकायक बंद हो गया.</translation>
+<translation id="1324417023773393937">Brave ब्राउज़र</translation>
+<translation id="1068069727470515940">आप <ph name="SETTING_TEXT"/> फिर से किसी भी समय</translation>
+<translation id="6873781976650514089">यह सेटिंग</translation>
 <translation id="6040143037577758943">बंद करें</translation>
 <translation id="5600566490506283344">Brave विज्ञापन नोटिफ़िकेशन</translation>
 <translation id="4877147287319222750">साइडबार में जोड़ें</translation>
@@ -362,6 +373,6 @@ Binance
 <translation id="8487693399751278191">अब बुकमार्क्स को इम्पोर्ट करें...</translation>
 <translation id="2557899542277210112">त्वरित पहुँच के लिए, अपने बुकमार्क को यहाँ बुकमार्क बार पर रखें।</translation>
 <translation id="2808630562319398131">Brave रिवॉर्ड डेटा रीसेट करें ...</translation>
-<translation id="1224064034972923114">अपने आप क्रैश रिपोर्ट भेजकर ब्रेव को सुधारने में मदद करें</translation>
-<translation id="3738833060602717053">अपने आप क्रैश रिपोर्ट्स भेजकर <ph name="PRODUCT_NAME"/> को बेहतर करने में मदद करें</translation>
+<translation id="2273851479262317744">Brave को अपने डिफ़ॉल्ट ब्राउज़र में सेट करें</translation>
+<translation id="8581710194025054669">ऑनलाइन सर्वश्रेष्ठ गोपनीयता सुनिश्चित करने के लिए, अपने कंप्यूटर पर Brave को डिफ़ॉल्ट ब्राउज़र के रूप में सेट करने के बारे में सोचें. डिफ़ॉल्ट रूप से Brave के साथ, आपके द्वारा क्लिक किया गया कोई भी वेब लिंक Brave की गोपनीयता सुरक्षा के साथ खुल जाएगी.</translation>
 </translationbundle>

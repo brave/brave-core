@@ -592,6 +592,7 @@
 <translation id="1627408615528139100">Už je stiahnutý</translation>
 <translation id="1628948239858170093">Chcete súbor pred otvorením skontrolovať?</translation>
 <translation id="1629314197035607094">Platnosť hesla vypršala</translation>
+<translation id="1947639598318989608">Chcete povoliť Googlu vyhľadávať prispôsobené zľavy na obsah vašich košíkov?</translation>
 <translation id="1629521517399325891">Certifikát používateľa nie je k dispozícii na overenie siete.</translation>
 <translation id="163072119192489970">Môže dokončiť odosielanie a prijímanie údajov</translation>
 <translation id="1630768113285622200">Reštartovať a pokračovať</translation>
@@ -3189,7 +3190,7 @@ stlačením klávesov Ctrl + Alt + zníženie jasu zobrazenie oddialite.</tr
 <translation id="4469762931504673593">Web <ph name="ORIGIN"/> môže upravovať súbory v priečinku <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Predvoľby externých úložísk</translation>
 <translation id="4471354919263203780">Sťahujú sa súbory rozpoznávania reči… <ph name="PERCENT"/> %</translation>
-<translation id="506314819294271427">Pomáhať s vylepšovaním funkcií a výkonu Chromu</translation>
+<translation id="918192811481327695">Pomáhať s vylepšovaním funkcií a výkonu Chromu</translation>
 <translation id="4472575034687746823">Začíname</translation>
 <translation id="4474155171896946103">Uložiť všetky karty ako záložky...</translation>
 <translation id="4475552974751346499">Hľadať stiahnuté súbory</translation>
@@ -4418,7 +4419,6 @@ stlačením klávesov Ctrl + Alt + zníženie jasu zobrazenie oddialite.</tr
 <translation id="5864754048328252126">Akcia pri nečinnosti počas nabíjania</translation>
 <translation id="5865508026715185451">Aplikácia <ph name="APP_NAME"/> bude čoskoro pozastavená</translation>
 <translation id="586567932979200359">Prehliadač <ph name="PRODUCT_NAME"/> je spustený z jeho obrazu disku. Inštalácia do počítača vám umožní spustiť ho bez obrazu disku a zabezpečí jeho aktualizáciu.</translation>
-<translation id="1224064034972923114">Automaticky odosiela štatistiky o používaní a správy o zlyhaní Googlu</translation>
 <translation id="5867841422488265304">Zadajte dopyt alebo webovú adresu</translation>
 <translation id="5869029295770560994">Dobre</translation>
 <translation id="5869522115854928033">Uložené heslá</translation>
@@ -5434,7 +5434,6 @@ stlačením klávesov Ctrl + Alt + zníženie jasu zobrazenie oddialite.</tr
 <translation id="6997642619627518301"><ph name="NAME_PH"/> – denník aktivít</translation>
 <translation id="6997707937646349884">V zariadeniach:</translation>
 <translation id="6998793565256476099">Zaregistrovať zariadenie na videokonferencie</translation>
-<translation id="456304305650018221">Chcete povoliť Googlu vyhľadať zľavy na obsah, ktorý pridáte do košíkov?</translation>
 <translation id="6999956497249459195">Nová skupina</translation>
 <translation id="7000206553895739324">Tlačiareň <ph name="PRINTER_NAME"/> je pripojená, ale je potrebné ju nakonfigurovať</translation>
 <translation id="7000347579424117903">Použite Ctrl, Alt alebo kláves vyhľadávania</translation>

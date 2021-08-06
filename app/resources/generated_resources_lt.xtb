@@ -596,6 +596,7 @@
 <translation id="1627408615528139100">Jau atsisiųsta</translation>
 <translation id="1628948239858170093">Nuskaityti failą prieš atidarant?</translation>
 <translation id="1629314197035607094">Slaptažodis nebegalioja</translation>
+<translation id="1947639598318989608">Leisti „Brave“ ieškoti suasmenintų krepšeliams taikomų nuolaidų?</translation>
 <translation id="1629521517399325891">Naudotojo sertifikatas nepasiekiamas tinklo autentifikavimui.</translation>
 <translation id="163072119192489970">Leidžiama baigti siųsti ar gauti duomenis</translation>
 <translation id="1630768113285622200">Paleisti iš naujo ir tęsti</translation>
@@ -3205,7 +3206,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="4469762931504673593"><ph name="ORIGIN"/> gali redaguoti aplanko „<ph name="FOLDERNAME"/>“ failus</translation>
 <translation id="4470957202018033307">Išorinės saugyklos nuostatos</translation>
 <translation id="4471354919263203780">Atsisiunčiami kalbos atpažinimo failai... <ph name="PERCENT"/> proc.</translation>
-<translation id="506314819294271427">Padėti tobulinti „Brave“ funkcijas ir našumą</translation>
+<translation id="918192811481327695">Padėti tobulinti „Brave“ funkcijas ir našumą</translation>
 <translation id="4472575034687746823">Pradėkite</translation>
 <translation id="4474155171896946103">Pažymėti visus skirtukus...</translation>
 <translation id="4475552974751346499">Ieškoti tarp atsisiustų elementų</translation>
@@ -4436,7 +4437,6 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="5864754048328252126">Neaktyvus įkraunant</translation>
 <translation id="5865508026715185451">Programa „<ph name="APP_NAME"/>“ netrukus bus pristabdyta</translation>
 <translation id="586567932979200359">„<ph name="PRODUCT_NAME"/>“ paleista iš disko vaizdo. Įdiegę ją kompiuteryje, galėsite paleisti be disko vaizdo ir būti tikri, kad ji bus atnaujinama.</translation>
-<translation id="1224064034972923114">Automatiškai siunčia naudojimo statistiką ir strigčių ataskaitas „Brave“</translation>
 <translation id="5867841422488265304">Iešk. arba įveskite žiniatinklio adr.</translation>
 <translation id="5869029295770560994">Gerai, supratau</translation>
 <translation id="5869522115854928033">Išsaugoti slaptažodžiai</translation>
@@ -5452,7 +5452,6 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="6997642619627518301"><ph name="NAME_PH"/> – veiklos žurnalas</translation>
 <translation id="6997707937646349884">Jūsų įrenginiuose:</translation>
 <translation id="6998793565256476099">Užregistruoti įrenginį dalyvauti vaizdo konferencijoje</translation>
-<translation id="456304305650018221">Leisti „Brave“ rasti nuolaidų krepšeliuose esančioms prekėms?</translation>
 <translation id="6999956497249459195">Nauja grupė</translation>
 <translation id="7000206553895739324">„<ph name="PRINTER_NAME"/>“ prijungtas, bet jį reikia sukonfigūruoti</translation>
 <translation id="7000347579424117903">Naudokite „Ctrl“, „Alt“ arba „Search“</translation>

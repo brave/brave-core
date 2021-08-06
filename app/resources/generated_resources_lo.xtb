@@ -592,6 +592,7 @@
 <translation id="1627408615528139100">ດາວໂຫຼດຮຽບຮ້ອຍແລ້ວ</translation>
 <translation id="1628948239858170093">ສະແກນໄຟລ໌ກ່ອນທີ່ຈະເປີດບໍ?</translation>
 <translation id="1629314197035607094">ລະຫັດຜ່ານໝົດອາຍຸແລ້ວ</translation>
+<translation id="1947639598318989608">ໃຫ້ Brave ຊອກຫາສ່ວນຫຼຸດທີ່ປັບແຕ່ງສ່ວນຕົວຢູ່ກະຕ່າຂອງທ່ານບໍ?</translation>
 <translation id="1629521517399325891">ບໍ່ສາມາດໃຊ້ໃບຮັບຮອງຜູ້ໃຊ້ສຳລັບການພິສູດຢືນຢັນເຄືອຂ່າຍໄດ້.</translation>
 <translation id="163072119192489970">ໄດ້ຮັບອະນຸຍາດໃຫ້ເຮັດສຳເລັດການສົ່ງ ແລະ ຮັບຂໍ້ມູນ</translation>
 <translation id="1630768113285622200">ຣີສະຕາດ ແລະ ສືບຕໍ່</translation>
@@ -3207,7 +3208,7 @@
 <translation id="4469762931504673593"><ph name="ORIGIN"/> ສາມາດແກ້ໄຂໄຟລ໌ໃນ <ph name="FOLDERNAME"/> ໄດ້</translation>
 <translation id="4470957202018033307">ການຕັ້ງຄ່າບ່ອນຈັດເກັບຂໍ້ມູນພາຍນອກ</translation>
 <translation id="4471354919263203780">ກຳລັງດາວໂຫຼດໄຟລ໌ການຈຳແນກສຽງເວົ້າ... <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">ຊ່ວຍປັບປຸງຄຸນສົມບັດ ແລະ ປະສິດທິພາບຂອງ Brave</translation>
+<translation id="918192811481327695">ຊ່ວຍປັບປຸງຄຸນສົມບັດ ແລະ ປະສິດທິພາບຂອງ Brave</translation>
 <translation id="4472575034687746823">ເລີ່ມຕົ້ນ</translation>
 <translation id="4474155171896946103">ໃສ່ບຸກມາກຄ໌ທຸກແຖບ...</translation>
 <translation id="4475552974751346499">ຄົ້ນ​ຫາການດາວ​ໂຫຼດ​</translation>
@@ -4447,7 +4448,6 @@
 <translation id="5864754048328252126">ການດຳເນີນການເວລາບໍ່ນຳໃຊ້ເຄື່ອງໃນຂະນະທີ່ສາກ</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> ຈະຢຸດຊົ່ວຄາວໃນໄວໆນີ້</translation>
 <translation id="586567932979200359">ທ່ານ​ກໍາ​ລັງ​ແລ່ນ <ph name="PRODUCT_NAME"/> ຈາກ​ຮູບ​ແຜ່ນ​ດິສກ໌ຂອງມັນ. ການ​ຕິດ​ຕັ້ງ​ມັນ​ຢູ່ໃນ​ຄອມ​ພິວ​ເຕີ​ຂອງ​ທ່ານ​​ເຮັດ​ໃຫ້​ແລ່ນມັນໄດ້​ໂດຍ​ບໍ່ຕ້ອງ​ມີ​ຮູບ​​ແຜ່ນດິສກ໌ໄດ້​, ແລະ​ຮັບ​ປະ​ກັນ​ໃຫ້ມັນອັບເດດຢູ່.</translation>
-<translation id="1224064034972923114">ສົ່ງສະຖິຕິການໃຊ້ ແລະ ລາຍງານການຂັດຂ້ອງໃຫ້ Brave ໂດຍອັດຕະໂນມັດ</translation>
 <translation id="5867841422488265304">ຊອກຫາ ຫຼື ພິມທີ່ຢູ່ເວັບ</translation>
 <translation id="5869029295770560994">ຕົກລົງ, ເຂົ້າໃຈແລ້ວ​</translation>
 <translation id="5869522115854928033">ລະ​ຫັດ​ຜ່ານ​ທີ່ບັນທຶກໄວ້</translation>
@@ -5468,7 +5468,6 @@
 <translation id="6997642619627518301"><ph name="NAME_PH"/> - ບັນທຶກການເຄື່ອນໄຫວ</translation>
 <translation id="6997707937646349884">ໃນອຸປະກອນຂອງທ່ານ:</translation>
 <translation id="6998793565256476099">ລົງທະບຽນອຸປະກອນສຳລັບການປະຊຸມຜ່ານວິດີໂອ</translation>
-<translation id="456304305650018221">ອະນຸຍາດໃຫ້ Brave ຊອກຫາສ່ວນຫຼຸດໃນສິ່ງທີ່ທ່ານເພີ່ມໃສ່ກະຕ່າຂອງທ່ານບໍ?</translation>
 <translation id="6999956497249459195">ກຸ່ມໃໝ່</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> ເຊື່ອມຕໍ່ແລ້ວ ແຕ່ຕ້ອງໄດ້ກຳນົດຄ່າ</translation>
 <translation id="7000347579424117903">ລວມມີ Ctrl, Alt ຫຼື ຊອກຫາ</translation>

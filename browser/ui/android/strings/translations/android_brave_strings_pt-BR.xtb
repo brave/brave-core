@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">Abre alguns sites usando uma conexão HTTPS segura em vez de HTTP simples.</translation>
 <translation id="94154759592465111">Bloquear Scripts</translation>
 <translation id="3518266709656143462">Bloqueia JavaScript (alguns sites podem não funcionar corretamente)</translation>
-<translation id="5709627087332022422">Bloquear trackers intersite</translation>
 <translation id="6052725679982758334">Bloqueio de redes sociais</translation>
 <translation id="7498695072878479744">Permitir botões de login do Google em sites de terceiros</translation>
 <translation id="863171915776379000">Permitir logins do Facebook e publicações incorporadas</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">Gateway IPFS</translation>
 <translation id="2688519859165248360">Permite a navegação até recursos do IPFS por meio de um gateway IPFS</translation>
 <translation id="7534079972563542000">Domínios Imparáveis</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Preço de Ethereum (ETH)</translation>
 <translation id="6513892817556267573">Serviço de Nome Ethereum</translation>
 <translation id="3894650624018948468">Método de resolução</translation>
 <translation id="2356070529366658676">Perguntar</translation>
 <translation id="4176463684765177261">Desativado</translation>
 <translation id="2218918398178303658">DNS via HTTPS</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Evita que o navegador capture digitais</translation>
 <translation id="7459000603787995422">Fechar as guias ao sair</translation>
 <translation id="4448697385961650078">Bloquear rastreadores &amp; anúncios</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">Tornar o Brave seu navegador padrão!</translation>
 <translation id="7136694880210472378">Tornar padrão</translation>
 <translation id="4250680216510889253">Não</translation>
-<translation id="4501702055016678577">Pesquisa privada com DuckDuckGo?</translation>
-<translation id="910419239800579753">Com a busca privada, Brave usará as respostas do DuckDuckGo para suas buscas enquanto você estiver em uma aba privada. DuckDuckGo é um mecanimo de busca que não rastreia seu histórico de busca, permitindo que você navegue de maneira privada.</translation>
-<translation id="1426410128494586442">Sim</translation>
-<translation id="5628466560184522265">Saiba mais sobre pesquisa privada com DuckDuckGo</translation>
 <translation id="8826007068782654809">Obrigado</translation>
 <translation id="6665366815203065060">Você acabou de enviar uma gorjeta para:</translation>
 <translation id="5441565662498481293">Você está automaticamente enviando uma contribuição para:</translation>
@@ -328,6 +324,7 @@
 <translation id="5617673581653540121">Agora a sua conexão está criptografada.</translation>
 <translation id="4055107796760496928">Se disponível, o Brave promove você a uma conexão segura automaticamente.</translation>
 <translation id="8869714780588464835">Compartilhe a notícia</translation>
+<translation id="7427391215172269363">Economizo dados diariamente navegando na web com o Brave.</translation>
 <translation id="5372054974373489308">Mil rastreadores e anúncios bloqueados!</translation>
 <translation id="2338952568654182692">5 mil rastreadores e anúncios bloqueados!</translation>
 <translation id="5289711064670408815">10 mil rastreadores e anúncios bloqueados!</translation>
@@ -441,7 +438,7 @@
 <translation id="3477340970981564961">Ao contrário dos anúncios tradicionais, os Anúncios Privados do Brave o recompensam com tokens para apoiar criadores de conteúdo, ao mesmo tempo que mantêm a privacidade de suas informações.</translation>
 <translation id="6973095375773523904">Onde os anúncios aparecem?</translation>
 <translation id="7556325460112047619">Os Anúncios Privados do Brave aparecerão como uma notificação normal. Você controla a frequência com que deseja ver esses anúncios nas configurações.</translation>
-<translation id="6897083627729802351">Quando você ganha recompensas</translation>
+<translation id="6897083627729802351">Quando você recebe recompensas?</translation>
 <translation id="310863932297733723">Os tokens que você ganhou através dos Anúncios Privados do Brave ao longo do mês atual serão disponibilizados no dia 5 do próximo mês.</translation>
 <translation id="7712287524451429139">Descomplicando a retribuição</translation>
 <translation id="105037569026952831">Criadores recebem automaticamente sua contribuição de tokens com base no seu nível de engajamento, que medimos como ‘Atenção’.</translation>
@@ -517,7 +514,7 @@
 <translation id="538450413584738399">Operação de Swap</translation>
 <translation id="8825032646286791700">DeFi e armazenamento seguro de criptomoedas</translation>
 <translation id="5460364286096798286">Guarde criptomoedas em custódia. Negocie ativos. Veja preços e o desempenho do portfólio. Invista e faça ou conceda empréstimos com as finanças descentralizadas (DeFi).</translation>
-<translation id="1748009926009835882">Configurar criptomoedas</translation>
+<translation id="1748009926009835882">Configurar carteira de criptomoedas</translation>
 <translation id="2759836790106646094">Faça um backup da sua carteira agora mesmo!</translation>
 <translation id="7685607706678113458">Na próxima etapa, você verá 12 palavras que permitem que você recupere sua carteira de criptomoedas.</translation>
 <translation id="2359808026110333948">Continuar</translation>
@@ -535,13 +532,13 @@
 <translation id="4450951602553063001">Inserir senha novamente</translation>
 <translation id="1783870616707290226">A senha precisa ter pelo menos 7 caracteres</translation>
 <translation id="7383102760859258982">A senha digitada novamente não corresponde</translation>
-<translation id="1538774398124896437">Ao vivo</translation>
+<translation id="1538774398124896437">Em tempo real</translation>
 <translation id="8163269366661594721">1 dia</translation>
-<translation id="7640956400175663828">1 semana</translation>
+<translation id="7640956400175663828">1 sem</translation>
 <translation id="9100647964747998533">1 mês</translation>
 <translation id="6366007539108097840">3 meses</translation>
 <translation id="6977728312178289892">1 ano</translation>
-<translation id="6895566650974550243">TUDO</translation>
+<translation id="6895566650974550243">TODAS</translation>
 <translation id="8892168913673237979">Tudo pronto!</translation>
 <translation id="8331501996028380732">Compra, negocie ou guarde criptomoedas. Se você já tem uma conta de criptomoedas, pode adicioná-la agora.</translation>
 <translation id="2267753748892043616">Adicionar conta</translation>
@@ -565,4 +562,13 @@
 <translation id="745115390910697838">As frases não correspondem. Tente novamente.</translation>
 <translation id="2360588547830602174">Houve uma falha na recuperação da conta. Tente novamente.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">Preço de mercado em ETH</translation>
+<translation id="6748108480210050150">De</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">Até (estimativa)</translation>
+<translation id="59223531494896848">Limite</translation>
+<translation id="3567988240819868195">Mercado</translation>
+<translation id="632241521608275119">Tolerância de slippage</translation>
 </translationbundle>

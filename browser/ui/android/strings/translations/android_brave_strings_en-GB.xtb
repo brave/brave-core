@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">Opens some sites using a secure HTTPS connection instead of plain HTTP.</translation>
 <translation id="94154759592465111">Block Scripts</translation>
 <translation id="3518266709656143462">Blocks Javascript (may break sites)</translation>
-<translation id="5709627087332022422">Block cross-site trackers</translation>
 <translation id="6052725679982758334">Social Media Blocking</translation>
 <translation id="7498695072878479744">Allow Google login buttons on third-party sites</translation>
 <translation id="863171915776379000">Allow Facebook logins and embedded posts</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">IPFS Gateway</translation>
 <translation id="2688519859165248360">Allows for navigation to IPFS resources through an IPFS Gateway</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Ethereum price (ETH)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Resolve Method</translation>
 <translation id="2356070529366658676">Ask</translation>
 <translation id="4176463684765177261">Disabled</translation>
 <translation id="2218918398178303658">DNS over HTTPS</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Prevents browser from fingerprinting</translation>
 <translation id="7459000603787995422">Close tabs on exit</translation>
 <translation id="4448697385961650078">Block trackers &amp; ads</translation>
@@ -79,10 +79,6 @@
 <translation id="2171928016777725844">Make Brave your default browser!</translation>
 <translation id="7136694880210472378">Make default</translation>
 <translation id="4250680216510889253">No</translation>
-<translation id="4501702055016678577">Private search with DuckDuckGo?</translation>
-<translation id="910419239800579753">With private search, Brave will use DuckDuckGo to answer your searches while you are in this private tab. DuckDuckGo is a search engine that does not track your search history, enabling you to search privately.</translation>
-<translation id="1426410128494586442">Yes</translation>
-<translation id="5628466560184522265">Learn about private search with DuckDuckGo</translation>
 <translation id="8826007068782654809">Thank you</translation>
 <translation id="6665366815203065060">You've just sent a tip to:</translation>
 <translation id="5441565662498481293">You are automatically sending a tip to:</translation>
@@ -428,7 +424,7 @@ until they verify, or until 90 days have passed.</translation>
 <translation id="3477340970981564961">Brave Private Ads reward you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.</translation>
 <translation id="6973095375773523904">Where do ads show up?</translation>
 <translation id="7556325460112047619">Brave Private Ads will appear as a normal notification. You control how often you see these ads in settings.</translation>
-<translation id="6897083627729802351">When do you receive rewards</translation>
+<translation id="6897083627729802351">When do you receive rewards?</translation>
 <translation id="310863932297733723">Your earned tokens from Brave Private Ads throughout the current month will arrive on the 5th of the next month.</translation>
 <translation id="7712287524451429139">Giving back made effortless</translation>
 <translation id="105037569026952831">Creators receive your token contributions automatically based on your engagement levels that we measure as ‘Attention’.</translation>
@@ -445,7 +441,7 @@ until they verify, or until 90 days have passed.</translation>
 <translation id="827315274423079662">Woohoo, you’re done!</translation>
 <translation id="3895246934788932488">By using Brave Rewards, you are protecting your privacy and helping make the web a better place for everyone. And that’s awesome!</translation>
 <translation id="5705882733397021510">Go Back</translation>
-<translation id="3985567919248057638">Lets Take A Quick Tour</translation>
+<translation id="3985567919248057638">Let's take a quick tour</translation>
 <translation id="2434574859640694129">After you receive your first ads payout, you can come back and tip this creator!</translation>
 <translation id="207242986925259074">Quick refresher tour</translation>
 <translation id="8342862030112839977">Your 1st rewards payout will arrive by:</translation>
@@ -552,4 +548,13 @@ until they verify, or until 90 days have passed.</translation>
 <translation id="745115390910697838">Phrases did not match, please try again.</translation>
 <translation id="2360588547830602174">Account recovery failed. Please try again.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">Market price in ETH</translation>
+<translation id="6748108480210050150">From</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">To (estimate)</translation>
+<translation id="59223531494896848">Limit</translation>
+<translation id="3567988240819868195">Market</translation>
+<translation id="632241521608275119">Slippage tolerance</translation>
 </translationbundle>

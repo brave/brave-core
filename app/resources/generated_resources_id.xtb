@@ -593,6 +593,7 @@
 <translation id="1627408615528139100">Sudah didownload</translation>
 <translation id="1628948239858170093">Pindai file sebelum membuka?</translation>
 <translation id="1629314197035607094">Sandi kedaluwarsa</translation>
+<translation id="1947639598318989608">Izinkan Brave menemukan diskon yang dipersonalisasi di keranjang Anda?</translation>
 <translation id="1629521517399325891">Sertifikat pengguna tidak tersedia untuk autentikasi jaringan.</translation>
 <translation id="163072119192489970">Diizinkan menyelesaikan pengiriman atau penerimaan data</translation>
 <translation id="1630768113285622200">Mulai ulang dan lanjutkan</translation>
@@ -3202,7 +3203,7 @@ dan Ctrl+Alt+Kurangi kecerahan untuk memperkecil.</translation>
 <translation id="4469762931504673593"><ph name="ORIGIN"/> dapat mengedit file dalam <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Preferensi penyimpanan eksternal</translation>
 <translation id="4471354919263203780">Mendownload file pengenalan ucapan ... <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Bantu sempurnakan fitur dan performa Brave</translation>
+<translation id="918192811481327695">Bantu sempurnakan fitur dan performa Brave</translation>
 <translation id="4472575034687746823">Memulai</translation>
 <translation id="4474155171896946103">Bookmark semua tab...</translation>
 <translation id="4475552974751346499">Telusuri download</translation>
@@ -4432,7 +4433,6 @@ dan Ctrl+Alt+Kurangi kecerahan untuk memperkecil.</translation>
 <translation id="5864754048328252126">Tidak ada aktivitas saat mengisi daya</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> akan segera dijeda</translation>
 <translation id="586567932979200359">Anda menjalankan <ph name="PRODUCT_NAME"/> dari citra disknya. Dengan memasangnya di komputer, Anda dapat menjalankannya tanpa citra disk, dan memastikannya tetap mutakhir.</translation>
-<translation id="1224064034972923114">Secara otomatis mengirimkan statistik penggunaan dan laporan kerusakan ke Brave</translation>
 <translation id="5867841422488265304">Telusuri atau ketik alamat web</translation>
 <translation id="5869029295770560994">Oke, Mengerti</translation>
 <translation id="5869522115854928033">Sandi tersimpan</translation>
@@ -5448,7 +5448,6 @@ dan Ctrl+Alt+Kurangi kecerahan untuk memperkecil.</translation>
 <translation id="6997642619627518301"><ph name="NAME_PH"/> - Log Aktivitas</translation>
 <translation id="6997707937646349884">Di perangkat Anda:</translation>
 <translation id="6998793565256476099">Daftarkan perangkat untuk konferensi video</translation>
-<translation id="456304305650018221">Izinkan Brave menemukan diskon untuk belanjaan yang Anda tambahkan ke keranjang?</translation>
 <translation id="6999956497249459195">Grup baru</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> terhubung namun membutuhkan konfigurasi</translation>
 <translation id="7000347579424117903">Sertakan Ctrl, Alt, atau Search</translation>

@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">Otvaraju se neka mrežna mjesta upotrebom sigurnog protokola HTTPS umjesto običnog HTTP-a.</translation>
 <translation id="94154759592465111">Blokiraj skripte</translation>
 <translation id="3518266709656143462">Blokira se Javascript (mogu se rušiti mrežna mjesta)</translation>
-<translation id="5709627087332022422">Blokiraj elemente za praćenje na više mjesta</translation>
 <translation id="6052725679982758334">Blokiranje društvenih mreža</translation>
 <translation id="7498695072878479744">Dopusti gumbe za prijavu za uslugu Google na mrežnim mjestima trećih strana</translation>
 <translation id="863171915776379000">Dopusti prijave za društvenu mrežu Facebook i ugrađene objave</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">Pristupnik IPFS</translation>
 <translation id="2688519859165248360">Omogućuje se navigacija do resursa IPFS putem pristupnika IPFS</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Cijena platforme Ethereum (ETH)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Metoda rješavanja</translation>
 <translation id="2356070529366658676">Upitaj</translation>
 <translation id="4176463684765177261">Onemogućeno</translation>
 <translation id="2218918398178303658">DNS umjesto HTTPS-a</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Sprečava da se preglednikom registriraju otisci prstiju</translation>
 <translation id="7459000603787995422">Zatvori kartice pri izlasku</translation>
 <translation id="4448697385961650078">Blokiraj elemente za praćenje i oglase</translation>
@@ -83,10 +83,6 @@
 <translation id="2171928016777725844">Postavite preglednik Brave za svoj zadani preglednik!</translation>
 <translation id="7136694880210472378">Postavi kao zadano</translation>
 <translation id="4250680216510889253">Ne</translation>
-<translation id="4501702055016678577">Privatno pretraživanje tražilicom DuckDuckGo?</translation>
-<translation id="910419239800579753">Prilikom privatnog pretraživanja preglednik Brave upotrebljava tražilicu DuckDuckGo za pokazivanje rezultata vašeg pretraživanja dok se koristite ovom privatnom karticom. DuckDuckGo je tražilica koja ne bilježi vašu povijest pretraživanja čime vam se omogućava privatno pretraživanje.</translation>
-<translation id="1426410128494586442">Da</translation>
-<translation id="5628466560184522265">Saznajte više o privatnom pretraživanju tražilicom DuckDuckGo</translation>
 <translation id="8826007068782654809">Hvala</translation>
 <translation id="6665366815203065060">Upravo ste poslali napojnicu:</translation>
 <translation id="5441565662498481293">Automatski šaljete napojnicu:</translation>
@@ -439,7 +435,7 @@ dok se ne provjere ili do isteka 90 dana.</translation>
 <translation id="3477340970981564961">Putem Brave Private Ads dobivate tokene za pružanje podrške autorima sadržaja za razliku od tradicionalnih oglasa, a istovremeno vaši osobni podatci ostaju privatni.</translation>
 <translation id="6973095375773523904">Gdje se pojavljuju oglasi?</translation>
 <translation id="7556325460112047619">Privatni Brave Ads pojavljuju se kao normalna obavijest. U postavkama možete odrediti koliko se često prikazuju ovi oglasi.</translation>
-<translation id="6897083627729802351">Kada primate nagrade</translation>
+<translation id="6897083627729802351">Kada primate nagrade?</translation>
 <translation id="310863932297733723">Vaši tokeni koji se zarade putem privatnih Brave Ads tijekom trenutačnog mjeseca dostupni su 5. dan u sljedećem mjesecu.</translation>
 <translation id="7712287524451429139">Jednostavno oduživanje</translation>
 <translation id="105037569026952831">Autori automatski dobivaju vaše doprinose u obliku tokena na temelju vaših razina sudjelovanja koje mjerimo kao  ‘Pažnja’.</translation>
@@ -563,4 +559,13 @@ dok se ne provjere ili do isteka 90 dana.</translation>
 <translation id="745115390910697838">Rečenice se ne podudaraju. Pokušajte ponovno.</translation>
 <translation id="2360588547830602174">Oporavak računa nije uspio. Pokušajte ponovno.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">Tržišna cijena u valuti ETH</translation>
+<translation id="6748108480210050150">Pošiljatelj</translation>
+<translation id="3318280255740629162">25 %</translation>
+<translation id="2636487255623744079">50 %</translation>
+<translation id="8654192805213365413">75 %</translation>
+<translation id="6159566011642056819">Za (procjena)</translation>
+<translation id="59223531494896848">Ograničenje</translation>
+<translation id="3567988240819868195">Tržište</translation>
+<translation id="632241521608275119">Tolerancija prekoračenja</translation>
 </translationbundle>

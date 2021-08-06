@@ -591,6 +591,7 @@
 <translation id="1627408615528139100">قبلاً بارگیری شده است</translation>
 <translation id="1628948239858170093">فایل قبل از باز شدن اسکن شود؟</translation>
 <translation id="1629314197035607094">گذرواژه منقضی شده است</translation>
+<translation id="1947639598318989608">‏به Brave اجازه می‌دهید تخفیف‌های شخصی‌شده در سبد خریدتان پیدا کند؟</translation>
 <translation id="1629521517399325891">گواهینامه کاربر برای اصالت‌سنجی شبکه دردسترس نیست.</translation>
 <translation id="163072119192489970">اجازه دارد ارسال و دریافت داده را به‌پایان برساند</translation>
 <translation id="1630768113285622200">بازراه‌اندازی و ادامه</translation>
@@ -858,7 +859,7 @@
 <translation id="1885106732301550621">فضای دیسک</translation>
 <translation id="1886996562706621347">به سایت‌ها اجازه داده شود درخواست کنند که کنترل‌کننده پیش‌فرض برای پروتکل‌ها شوند (توصیه می‌شود)</translation>
 <translation id="1887442540531652736">خطای ورود به سیستم</translation>
-<translation id="1887597546629269384">‏دوباره بگویید «Hey Brave»</translation>
+<translation id="1887597546629269384">‏دوباره بگویید «Ok Brave»</translation>
 <translation id="1890674179660343635">‏&lt;span&gt;شناسه: &lt;/span&gt;‏<ph name="EXTENSION_ID"/></translation>
 <translation id="1891362123137972260">فضای دیسک بسیار کم است. لطفاً فضای دیسک را آزاد کنید.</translation>
 <translation id="189210018541388520">باز کردن تمام صفحه</translation>
@@ -2332,7 +2333,7 @@
 <translation id="3497560059572256875">‏هم‌رسانی Doodle</translation>
 <translation id="3498215018399854026">در حال حاضر نمی‌توانیم با والدینتان تماس برقرار کنیم. لطفاً دوباره امتحان کنید.</translation>
 <translation id="3500417806337761827">‏هنگام نشاندن هم‌رسانی خطایی روی داد. هم‌رسانی‌های SMB زیادی نشانده شده است.</translation>
-<translation id="3505030558724226696">لغو دسترسی دستگاه</translation>
+<translation id="3505030558724226696">لغو دسترسی به دستگاه</translation>
 <translation id="3505100368357440862">پیشنهادهای خرید</translation>
 <translation id="3507132249039706973">«محافظت استاندارد» روشن است</translation>
 <translation id="3507421388498836150">اجازه‌های فعلی برای «<ph name="EXTENSION_NAME"/>»</translation>
@@ -3199,7 +3200,7 @@
 <translation id="4469762931504673593"><ph name="ORIGIN"/> می‌تواند فایل‌های <ph name="FOLDERNAME"/> را ویرایش کند</translation>
 <translation id="4470957202018033307">تنظیمات برگزیده فضای ذخیره‌سازی خارجی</translation>
 <translation id="4471354919263203780">درحال بارگیری فایل‌های تشخیص گفتار... <ph name="PERCENT"/>٪</translation>
-<translation id="506314819294271427">‏کمک به بهبود ویژگی‌ها و عملکرد Brave</translation>
+<translation id="918192811481327695">‏کمک به بهبود ویژگی‌ها و عملکرد Brave</translation>
 <translation id="4472575034687746823">شروع به کار</translation>
 <translation id="4474155171896946103">نشانک‌گذاری همه برگه‌ها...</translation>
 <translation id="4475552974751346499">جستجوی فایل‌های بارگیری‌شده</translation>
@@ -3260,7 +3261,7 @@
 <translation id="4531924570968473143">چه شخصی را می‌خواهید به این <ph name="DEVICE_TYPE"/> اضافه کنید؟</translation>
 <translation id="4532625150642446981">«<ph name="USB_DEVICE_NAME"/>» درحال استفاده است. اختصاص دادن مجدد دستگاه وقتی درحال استفاده است می‌تواند باعث بروز خطا شود. مطمئنید می‌خواهید ادامه دهید؟</translation>
 <translation id="4532646538815530781">این سایت از حسگرهای حرکتی استفاده می‌کند</translation>
-<translation id="4533846798469727141">‏اکنون بگویید «Hey Brave»</translation>
+<translation id="4533846798469727141">‏اکنون بگویید «Ok Brave»</translation>
 <translation id="4533985347672295764">‏زمان پردازش CPU</translation>
 <translation id="4534661889221639075">دوباره امتحان کنید.</translation>
 <translation id="4535127706710932914">نمایه پیش‌فرض</translation>
@@ -4429,7 +4430,6 @@
 <translation id="5864754048328252126">کنش راکد هنگام شارژ شدن</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> به‌زودی متوقف می‌شود</translation>
 <translation id="586567932979200359">شما <ph name="PRODUCT_NAME"/> را از تصویر دیسک آن اجرا می‌کنید. با نصب آن روی رایانه می‌توانید آن را بدون تصویر دیسک اجرا کنید، و مطمئن شوید که به روز نگه داشته خواهد شد.</translation>
-<translation id="1224064034972923114">‏به‌طور خودکار آمار کاربرد و گزارش‌های خرابی را به Brave ارسال می‌کند</translation>
 <translation id="5867841422488265304">نشانی وب را جستجو یا تایپ کنید</translation>
 <translation id="5869029295770560994">بله متوجه شدم</translation>
 <translation id="5869522115854928033">گذرواژه‌های ذخیره‌شده</translation>
@@ -5445,7 +5445,6 @@
 <translation id="6997642619627518301"><ph name="NAME_PH"/> - گزارش فعالیت</translation>
 <translation id="6997707937646349884">در دستگاه‌های شما:</translation>
 <translation id="6998793565256476099">ثبت‌نام دستگاه برای برگزاری کنفرانس ویدیویی</translation>
-<translation id="456304305650018221">‏به Brave اجازه داده شود برای مواردی که به سبد خریدتان اضافه می‌کنید تخفیف پیدا کند؟</translation>
 <translation id="6999956497249459195">گروه جدید</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> متصل شده است اما باید پیکربندی شود</translation>
 <translation id="7000347579424117903">‏باید شامل Ctrl،‏ Alt یا Search‌ باشد</translation>

@@ -219,6 +219,54 @@
     "message": "Будь ласка, зробіть резервну копію гаманця Brave.",
     "description": "Description for backup wallet notification"
   },
+  "upholdBATNotAllowedForUserLearnMore": {
+    "message": "Докладніше",
+    "description": "Notification button text to learn more about why BAT is not allowed for user"
+  },
+  "upholdBATNotAllowedForUserTitle": {
+    "message": "Помилка: кошти BAT недоступні",
+    "description": "Title for BAT not allowed for user notification"
+  },
+  "upholdBATNotAllowedForUserNotification": {
+    "message": "BAT не підтримується у вашому регіоні в Uphold.",
+    "description": "Description for BAT not allowed for user notification"
+  },
+  "upholdBlockedUserLearnMore": {
+    "message": "Докладніше",
+    "description": "Notification button text to learn more about the blocked user status"
+  },
+  "upholdBlockedUserTitle": {
+    "message": "Помилка: обліковий запис заблоковано",
+    "description": "Title for blocked user notification"
+  },
+  "upholdBlockedUserNotification": {
+    "message": "Ваш обліковий запис в Uphold наразі заблоковано.",
+    "description": "Description for blocked user notification"
+  },
+  "upholdPendingUserLearnMore": {
+    "message": "Докладніше",
+    "description": "Notification button text to learn more about the pending user status"
+  },
+  "upholdPendingUserTitle": {
+    "message": "Помилка: обліковий запис обробляється",
+    "description": "Title for pending user notification"
+  },
+  "upholdPendingUserNotification": {
+    "message": "Ваш обліковий запис в Uphold усе ще обробляється.",
+    "description": "Description for pending user notification"
+  },
+  "upholdRestrictedUserLearnMore": {
+    "message": "Докладніше",
+    "description": "Notification button text to learn more about the restricted user status"
+  },
+  "upholdRestrictedUserTitle": {
+    "message": "Помилка: обліковий запис обмежено",
+    "description": "Title for restricted user notification"
+  },
+  "upholdRestrictedUserNotification": {
+    "message": "Ваш обліковий запис в Uphold наразі обмежено.",
+    "description": "Description for restricted user notification"
+  },
   "deviceLimitReachedLearnMore": {
     "message": "Докладніше",
     "description": "Notification button text to learn more about device limit"
