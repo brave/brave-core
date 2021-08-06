@@ -131,12 +131,12 @@ export class CustomSubscriptions extends React.Component<Props, State> {
       // Update attempted and failed, but succeeded previously: show "Download failure since " + the last successful time, with exact last successful time on hover
       // Update attempted and succeeded: show the last updated time, with exact time on hover
       let last_updated_cell
-      if (subscription.last_update_attempt !== 0) {
+      if (subscription.last_update_attempt === 0) {
         last_updated_cell = (<div
             className="filterListGridCell"
             style={{gridRow, gridColumn: 2}}
           ></div>)
-      } else if (subscription.last_successful_update_attempt !== 0) {
+      } else if (subscription.last_successful_update_attempt === 0) {
         last_updated_cell = (<div
             className="filterListGridCell"
             style={{gridRow, gridColumn: 2, color: "#bd1531"}}

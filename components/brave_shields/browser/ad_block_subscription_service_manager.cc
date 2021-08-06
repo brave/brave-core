@@ -63,7 +63,7 @@ AdBlockSubscriptionServiceManager::AdBlockSubscriptionServiceManager(
         download_manager_getter,
     const base::FilePath& user_data_dir)
     : delegate_(delegate),
-      subscription_path_(user_data_dir.AppendASCII(kSubscriptionsDir)),
+      subscription_path_(user_data_dir.AppendASCII("System Profile").AppendASCII(kSubscriptionsDir)),
       subscriptions_(new base::DictionaryValue()) {
   LoadSubscriptionServices();
   std::move(download_manager_getter)
@@ -270,8 +270,8 @@ void AdBlockSubscriptionServiceManager::UpdateFilterListPrefs(
   subscription_dict.SetBoolKey("enabled", info.enabled);
   subscription_dict.SetKey("last_update_attempt",
                            util::TimeToValue(info.last_update_attempt));
-  subscription_dict.SetKey("last_update_attempt",
-                           util::TimeToValue(info.last_update_attempt));
+  subscription_dict.SetKey("last_successful_update_attempt",
+                           util::TimeToValue(info.last_successful_update_attempt));
   subscriptions_dict->SetKey(id.spec(), std::move(subscription_dict));
 
   // TODO(bridiver) - change to pref registrar

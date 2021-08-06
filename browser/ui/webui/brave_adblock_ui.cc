@@ -277,11 +277,11 @@ void AdblockDOMHandler::RefreshSubscriptionsList() {
     auto dict = std::make_unique<base::DictionaryValue>();
     dict->SetStringKey("list_url", subscription.list_url.spec());
     dict->SetBoolKey("enabled", subscription.enabled);
-    dict->SetKey("last_update_attempt",
-                 util::TimeToValue(subscription.last_update_attempt));
-    dict->SetKey(
+    dict->SetDoubleKey("last_update_attempt",
+                 subscription.last_update_attempt.ToJsTime());
+    dict->SetDoubleKey(
         "last_successful_update_attempt",
-        util::TimeToValue(subscription.last_successful_update_attempt));
+        subscription.last_successful_update_attempt.ToJsTime());
     list_value->Append(std::move(dict));
   }
   CallJavascriptFunction("brave_adblock.onGetListSubscriptions", *list_value);
