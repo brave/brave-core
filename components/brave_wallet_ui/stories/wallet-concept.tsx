@@ -23,6 +23,8 @@ import {
 } from '../constants/types'
 import Onboarding from './screens/onboarding'
 import BackupWallet from './screens/backup-wallet'
+import * as Result from '../common/types/result'
+
 // import { NavOptions } from '../options/side-nav-options'
 import { AssetOptions } from '../options/asset-options'
 import { SlippagePresetOptions } from '../options/slippage-preset-options'
@@ -36,6 +38,10 @@ import { mockUserWalletPreferences } from './mock-data/user-wallet-preferences'
 import { formatePrices } from '../utils/format-prices'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 import locale from '../constants/locale'
+import {
+  HardwareWalletAccount,
+  HardwareWalletConnectOpts
+} from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 export default {
   title: 'Wallet/Desktop',
   argTypes: {
@@ -299,10 +305,6 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     alert(`Account Name: ${name}, Private Key: ${key}`)
   }
 
-  const onConnectHardwareWallet = (hardware: 'Ledger' | 'Trezor') => {
-    alert(`Connecting to ${hardware} wallet`)
-  }
-
   const onToggleAddModal = () => {
     setShowAddModal(!showAddModal)
   }
@@ -410,6 +412,17 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setToAddress(value)
   }
 
+  const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Result.Type<HardwareWalletAccount[]> => {
+    const makeDerivationPath = (index: number): string => `m/44'/60'/${index}'/0/0`
+
+    return Array.from({ length: opts.stopIndex - opts.startIndex }, (_, i) => ({
+      address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+      derivationPath: makeDerivationPath(i + opts.startIndex),
+      balance: '0.012345',
+      ticker: 'ETH'
+    }))
+  }
+
   return (
     <WalletPageLayout>
       {/* <SideNav
@@ -464,9 +477,9 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                           selectedUSDAssetPrice={selectedUSDAssetPrice}
                           selectedBTCAssetPrice={selectedBTCAssetPrice}
                           userAssetList={userAssetList}
-                          onConnectHardwareWallet={onConnectHardwareWallet}
                           onCreateAccount={onCreateAccount}
                           onImportAccount={onImportAccount}
+                          onConnectHardwareWallet={onConnectHardwareWallet}
                           isLoading={false}
                           showAddModal={showAddModal}
                           onToggleAddModal={onToggleAddModal}

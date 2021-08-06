@@ -20,6 +20,11 @@ import locale from '../../../../constants/locale'
 import { AppsList } from '../../../../options/apps-list-options'
 import { filterAppList } from '../../../../utils/filter-app-list'
 import { PortfolioView, AccountsView } from '../'
+import {
+  HardwareWalletAccount,
+  HardwareWalletConnectOpts
+} from '../../popup-modals/add-account-modal/hardware-wallet-connect/types'
+import * as Result from '../../../../common/types/result'
 
 export interface Props {
   onLockWallet: () => void
@@ -28,7 +33,7 @@ export interface Props {
   onSelectAsset: (asset: AssetOptionType | undefined) => void
   onCreateAccount: (name: string) => void
   onImportAccount: (name: string, key: string) => void
-  onConnectHardwareWallet: (hardware: 'Ledger' | 'Trezor') => void
+  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Result.Type<HardwareWalletAccount[]>
   onUpdateAccountName: (name: string) => void
   onToggleAddModal: () => void
   onUpdateWatchList: (list: string[]) => void
@@ -55,8 +60,8 @@ const CryptoView = (props: Props) => {
     onChangeTimeline,
     onSelectAsset,
     onCreateAccount,
-    onImportAccount,
     onConnectHardwareWallet,
+    onImportAccount,
     onUpdateAccountName,
     onUpdateWatchList,
     portfolioPriceHistory,

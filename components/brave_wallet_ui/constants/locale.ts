@@ -170,6 +170,13 @@ const locale = {
   connectHardwareInfo3: 'Unlock your device and select the Ethereum app.',
   connectHardwareTrezor: 'Trezor',
   connectHardwareLedger: 'Ledger',
+  connectingHardwareWallet: 'Connecting...',
+  addCheckedAccountsHardwareWallet: 'Add Checked Accounts',
+  loadMoreAccountsHardwareWallet: 'Load more',
+  searchScannedAccounts: 'Search account 0x',
+  switchHDPathTextHardwareWallet: 'Try switching HD path (above) if you cannot find the account you are looking for.',
+  ledgerLiveDerivationPath: 'Ledger Live',
+  ledgerLegacyDerivationPath: 'Legacy (MEW/MyCrypto)',
 
   // Account Settings Modal
   accountSettingsDetails: 'Details',

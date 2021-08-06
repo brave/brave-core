@@ -47,6 +47,11 @@ import { convertMojoTimeToJS } from '../utils/mojo-time'
 import { AssetOptions } from '../options/asset-options'
 import { SlippagePresetOptions } from '../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../options/expiration-preset-options'
+import {
+  HardwareWalletAccount,
+  HardwareWalletConnectOpts
+} from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
+import * as Result from '../common/types/result'
 
 type Props = {
   wallet: WalletState
@@ -312,8 +317,10 @@ function Container (props: Props) {
     }
   }
 
-  const onConnectHardwareWallet = () => {
+  const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Result.Type<HardwareWalletAccount[]> => {
     // TODO (DOUGLAS): Add logic to connect a hardware wallet
+
+    return []
   }
 
   const onImportAccount = () => {
