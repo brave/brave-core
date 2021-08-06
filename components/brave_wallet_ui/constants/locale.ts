@@ -223,7 +223,12 @@ const locale = {
   buyTitle: 'Test Faucet',
   buyDescription: 'Get Ether from a faucet for',
   buyWyreButton: 'Continue to Wyre',
-  buyFaucetButton: 'Get Ether'
+  buyFaucetButton: 'Get Ether',
+
+  // Sign Transaction Panel
+  signTransactionTitle: 'Your signature is being requested',
+  signTransactionMessageTitle: 'Message',
+  signTransactionButton: 'Sign'
 }
 
 export default locale

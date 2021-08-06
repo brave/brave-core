@@ -5,7 +5,8 @@ import {
   ConnectWithSite,
   ConnectedPanel,
   Panel,
-  WelcomePanel
+  WelcomePanel,
+  SignPanel
 } from '../components/extension'
 import { AppList } from '../components/shared'
 import {
@@ -76,6 +77,38 @@ const accounts: WalletAccountType[] = [
     accountType: 'Primary'
   }
 ]
+
+export const _SignTransaction = () => {
+
+  const onSign = () => {
+    alert('Signed Transaction')
+  }
+
+  const onCancel = () => {
+    alert('Canceled Signing Transaction')
+  }
+
+  const onClickMore = () => {
+    alert('Will Show More Modal')
+  }
+
+  return (
+    <StyledExtensionWrapper>
+      <SignPanel
+        selectedAccount={accounts[0]}
+        selectedNetwork={Network.Mainnet}
+        message='To avoid digital cat burglars, sign below to authenticate with CryptoKitties.'
+        onCancel={onCancel}
+        onSign={onSign}
+        onClickMore={onClickMore}
+      />
+    </StyledExtensionWrapper>
+  )
+}
+
+_SignTransaction.story = {
+  name: 'Sign Transaction'
+}
 
 export const _ConnectWithSite = () => {
   const [selectedAccounts, setSelectedAccounts] = React.useState<WalletAccountType[]>([
