@@ -10,10 +10,13 @@ import {
   WalletState,
   Network,
   GetAllTokensReturnInfo,
-  TokenInfo
+  TokenInfo,
+  GetBalanceReturnInfo,
+  GetERC20TokenBalanceReturnInfo
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 import { InitializedPayloadType } from '../constants/action_types'
+import { formatBalance, formatFiatBalance } from '../../utils/format-balances'
 
 const defaultState: WalletState = {
   hasInitialized: false,
@@ -43,7 +46,8 @@ reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadTy
       balance: '0',
       fiatBalance: '0',
       asset: 'eth',
-      accountType: 'Primary'
+      accountType: 'Primary',
+      tokens: []
     }
   })
   // VisibleTokens needs to be persited in prefs and returned in
@@ -111,6 +115,54 @@ reducer.on(WalletActions.setAllTokensList, (state: any, payload: GetAllTokensRet
   return {
     ...state,
     fullTokenList: payload.tokens
+  }
+})
+
+reducer.on(WalletActions.ethBalancesUpdated, (state: any, payload: GetBalanceReturnInfo[]) => {
+  let accounts: WalletAccountType[] = [...state.accounts]
+
+  accounts.forEach((account, index) => {
+    if (payload[index].success) {
+      accounts[index].balance = formatBalance(payload[index].balance, 18)
+      accounts[index].fiatBalance = formatFiatBalance(payload[index].balance, 18, '2000').toString()  // TODO: use actual price info
+    }
+  })
+
+  return {
+    ...state,
+    accounts
+  }
+})
+
+reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetERC20TokenBalanceReturnInfo[][]) => {
+  const userVisibleTokensInfo: TokenInfo[] = state.userVisibleTokensInfo
+  let accounts: WalletAccountType[] = [...state.accounts]
+
+  accounts.forEach((account, accountIndex) => {
+    payload[accountIndex].forEach((info, tokenIndex) => {
+      let assetBalance = '0'
+      let fiatBalance = '0'
+
+      if (userVisibleTokensInfo[tokenIndex].contractAddress === 'eth') {
+        assetBalance = account.balance
+        fiatBalance = account.fiatBalance
+      } else if (info.success) {
+        assetBalance = formatBalance(info.balance, userVisibleTokensInfo[tokenIndex].decimals)
+        fiatBalance = formatFiatBalance(info.balance, userVisibleTokensInfo[tokenIndex].decimals, '0.5') // TODO: compute real value using price info
+      } else if (account.tokens[tokenIndex]) {
+        assetBalance = account.tokens[tokenIndex].assetBalance
+        fiatBalance = account.tokens[tokenIndex].fiatBalance
+      }
+      account.tokens.push({
+        asset: userVisibleTokensInfo[tokenIndex],
+        assetBalance,
+        fiatBalance
+      })
+    })
+  })
+  return {
+    ...state,
+    accounts
   }
 })
 

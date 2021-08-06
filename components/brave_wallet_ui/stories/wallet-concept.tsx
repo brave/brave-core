@@ -206,7 +206,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
         balance: singleAccountBalance(wallet),
         fiatBalance: singleAccountFiatBalance(wallet),
         asset: selectedAsset ? selectedAsset.symbol : '',
-        accountType: 'Primary'
+        accountType: 'Primary',
+        tokens: []
       }
     })
     return newList

@@ -6,6 +6,7 @@ export interface WalletAccountType {
   fiatBalance: string
   asset: string
   accountType: string
+  tokens: AccountAssetOptionType[]
 }
 
 export interface UserAccountType {

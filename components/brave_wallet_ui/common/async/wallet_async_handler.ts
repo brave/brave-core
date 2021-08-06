@@ -16,7 +16,9 @@ import {
 import {
   AppObjectType,
   APIProxyControllers,
-  Network
+  Network,
+  WalletState,
+  WalletPanelState
 } from '../../constants/types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
@@ -33,13 +35,35 @@ async function getAPIProxy (): Promise<APIProxyControllers> {
   return api.default.getInstance()
 }
 
+function getWalletState (store: MiddlewareAPI<Dispatch<AnyAction>, any>): WalletState {
+  return (store.getState() as WalletPanelState).wallet
+}
+
 async function refreshWalletInfo (store: Store) {
-  const walletHandler = (await getAPIProxy()).walletHandler
+  const apiProxy = await getAPIProxy()
+  const walletHandler = apiProxy.walletHandler
+  const ethJsonRpcController = apiProxy.ethJsonRpcController
   const result = await walletHandler.getWalletInfo()
   store.dispatch(WalletActions.initialized(result))
-  const ethJsonRpcController = (await getAPIProxy()).ethJsonRpcController
   const network = await ethJsonRpcController.getNetwork()
   store.dispatch(WalletActions.setNetwork(network.network))
+
+  // Update balances
+  const state = getWalletState(store)
+
+  const getBalanceReturnInfos = await Promise.all(state.accounts.map(async (account) => {
+    const balanceInfo = await ethJsonRpcController.getBalance(account.address)
+    return balanceInfo
+  }))
+  store.dispatch(WalletActions.ethBalancesUpdated(getBalanceReturnInfos))
+
+  const tokenInfos = state.userVisibleTokensInfo
+  const getERCTokenBalanceReturnInfos = await Promise.all(state.accounts.map(async (account) => {
+    return Promise.all(tokenInfos.map(async (token) => {
+      return ethJsonRpcController.getERC20TokenBalance(token.contractAddress, account.address)
+    }))
+  }))
+  store.dispatch(WalletActions.tokenBalancesUpdated(getERCTokenBalanceReturnInfos))
 }
 
 handler.on(WalletActions.initialize.getType(), async (store) => {

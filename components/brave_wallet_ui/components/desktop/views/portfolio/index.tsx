@@ -113,6 +113,10 @@ const Portfolio = (props: Props) => {
     setShowNetworkDropdown(!showNetworkDropdown)
   }
 
+  React.useMemo(() => {
+    setfilteredAssetList(userAssetList)
+  }, [userAssetList])
+
   // This filters a list of assets when the user types in search bar
   const filterAssets = (event: any) => {
     const search = event.target.value
@@ -180,6 +184,16 @@ const Portfolio = (props: Props) => {
     setShowVisibleAssetsModal(!showVisibleAssetsModal)
   }
 
+  const getFiatBalance = (account: WalletAccountType, asset: TokenInfo) => {
+    const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
+    return (found) ? found.fiatBalance : '0'
+  }
+
+  const getAssetBalance = (account: WalletAccountType, asset: TokenInfo) => {
+    const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
+    return (found) ? found.assetBalance : '0'
+  }
+
   return (
     <StyledWrapper onClick={onHideNetworkDropdown}>
       <TopRow>
@@ -241,8 +255,8 @@ const Portfolio = (props: Props) => {
               assetTicker={selectedAsset.symbol}
               name={account.name}
               address={account.address}
-              fiatBalance={account.fiatBalance}
-              assetBalance={account.balance}
+              fiatBalance={getFiatBalance(account, selectedAsset)}
+              assetBalance={getAssetBalance(account, selectedAsset)}
             />
           )}
           <ButtonRow>

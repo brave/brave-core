@@ -227,7 +227,7 @@ function Accounts (props: Props) {
           </WalletInfoRow>
           <SubviewSectionTitle>{locale.accountsAssets}</SubviewSectionTitle>
           <SubDivider />
-          {userAssetList.map((item) =>
+          {selectedAccount.tokens.map((item) =>
             <PortfolioAssetItem
               key={item.asset.contractAddress}
               name={item.asset.name}
