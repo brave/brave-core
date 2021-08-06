@@ -370,12 +370,12 @@
 <translation id="7427567994475794038">開啟隱私權報告來觀看在過去 3 小時已經封鎖多少追蹤裝置 &amp; 廣告。</translation>
 <translation id="2053891538879944400">您以 Brave 瀏覽器節省了 <ph name="DATA"/> <ph name="DATA_TEXT"/> 資料。</translation>
 <translation id="8640064498452534195">開啟隱私權報告來觀看您已節省多少資料。</translation>
-<translation id="2252497442547961651">Brave 瀏覽器使用的電量平均減少 40%。&#128267;</translation>
+<translation id="2252497442547961651">Brave 瀏覽器使用的電量平均減少 40%。🔋</translation>
 <translation id="1945330434665345785">您上週以 Brave 瀏覽器封鎖了 <ph name="COUNT"/> 追蹤裝置 &amp; 廣告。</translation>
 <translation id="2883868922264431515">藉檢視尊重隱私權廣告來賺取代幣並且支持您最喜愛的網站。</translation>
-<translation id="5678925890616256956">不錯！您已經以 Brave 瀏覽器封鎖 250 個追蹤程式和廣告。&#128293;</translation>
-<translation id="9199047775708635708">不錯！您已經以 Brave 瀏覽器節省 10MB。&#128267;</translation>
-<translation id="1880168210969863408">不錯！您已經以 Brave 瀏覽器節省 10 分鐘的載入時間。&#128168;&#128168;</translation>
+<translation id="5678925890616256956">不錯！您已經以 Brave 瀏覽器封鎖 250 個追蹤程式和廣告。🔥</translation>
+<translation id="9199047775708635708">不錯！您已經以 Brave 瀏覽器節省 10MB。🔋</translation>
+<translation id="1880168210969863408">不錯！您已經以 Brave 瀏覽器節省 10 分鐘的載入時間。💨💨</translation>
 <translation id="7408493389591475748">開始瀏覽來觀看隱私權報告</translation>
 <translation id="9080777565335515917">將 Brave 設定為您的預設瀏覽器供私密和穩妥的瀏覽。</translation>
 <translation id="1390943217516275883">容許 Brave 來顯示您的隱私權統計數字</translation>
@@ -571,4 +571,9 @@
 <translation id="59223531494896848">上限</translation>
 <translation id="3567988240819868195">市場</translation>
 <translation id="632241521608275119">滑點容許範圍</translation>
+<translation id="5709627087332022422">封鎖跨站追蹤器</translation>
+<translation id="4501702055016678577">用 DuckDuckGo 進行隱私搜尋？</translation>
+<translation id="910419239800579753">透過使用隱私搜尋功能，每當你在此隱私分頁進行搜尋，Brave 都會使用 DuckDuckGo 搜尋器為你完成操作。DuckDuckGo 並不會儲存任何搜尋記錄，讓你安心以隱藏身份搜尋想要的資訊。</translation>
+<translation id="1426410128494586442">是</translation>
+<translation id="5628466560184522265">瞭解有關 DuckDuckGo 隱私搜尋的詳情</translation>
 </translationbundle>

@@ -359,4 +359,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="2808630562319398131">Nulstil Brave-belønningsdata...</translation>
 <translation id="2273851479262317744">Angiv som standardbrowser</translation>
 <translation id="8581710194025054669">For at sikre den bedste mulige anonymitet online bør du overveje at indstille Brave til at være standardbrowser på din computer. Hvis Brave er din standardbrowser, vil alle weblinks, som du klikker på, blive åbnet med Braves beskyttelse af din anonymitet.</translation>
+<translation id="8754605759692119662">Dette vil blokere de fleste annoncer på websider, ikke Brave private annoncer — de styres fra</translation>
+<translation id="1224064034972923114">Hjælp med at forbedre Brave ved automatisk at sende nedbrudsrapporter</translation>
+<translation id="3738833060602717053">Hjælp med at forbedre <ph name="PRODUCT_NAME"/> ved automatisk at sende nedbrudsrapporter</translation>
 </translationbundle>

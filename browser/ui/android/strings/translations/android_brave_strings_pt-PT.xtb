@@ -370,12 +370,12 @@ até que verifiquem, ou até terem passado 90 dias.</translation>
 <translation id="7427567994475794038">Ative os Relatórios de Privacidade para visualizar quantos rastreadores&amp; anúncios bloqueou nas últimas 3 horas.</translation>
 <translation id="2053891538879944400">Economizou <ph name="DATA"/> <ph name="DATA_TEXT"/> dados com o navegador Brave .</translation>
 <translation id="8640064498452534195">Ative os Relatórios de Privacidade para visualizar quantos dados guardou.</translation>
-<translation id="2252497442547961651">O browser Brave usa, em média, menos 40% de bateria.&#128267;</translation>
+<translation id="2252497442547961651">O browser Brave usa, em média, menos 40% de bateria.🔋</translation>
 <translation id="1945330434665345785">Bloqueou <ph name="COUNT"/> rastreadores &amp; anúncios com o browser Brave na última semana.</translation>
 <translation id="2883868922264431515">Ganhe tokens pela visualização de anúncios que respeitam a sua privacidade e apoie os seus sites favoritos.</translation>
-<translation id="5678925890616256956">Fantástico! Bloqueou 250 rastreadores &amp; anúncios com o browser Brave.&#128293;</translation>
-<translation id="9199047775708635708">Fantástico! Economizou 10 MB com o browser Brave.&#128267;</translation>
-<translation id="1880168210969863408">Fantástico! Economizou 10 minutos a carregar com o browser Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Fantástico! Bloqueou 250 rastreadores &amp; anúncios com o browser Brave.🔥</translation>
+<translation id="9199047775708635708">Fantástico! Economizou 10 MB com o browser Brave.🔋</translation>
+<translation id="1880168210969863408">Fantástico! Economizou 10 minutos a carregar com o browser Brave.💨💨</translation>
 <translation id="7408493389591475748">Comece a navegar para visualizar os relatórios de privacidade</translation>
 <translation id="9080777565335515917">Defina Brave como o seu browser padrão para uma navegação privada e segura.</translation>
 <translation id="1390943217516275883">Permite ao Brave apresentar as suas estatísticas de privacidade</translation>
@@ -571,4 +571,9 @@ até que verifiquem, ou até terem passado 90 dias.</translation>
 <translation id="59223531494896848">Limite</translation>
 <translation id="3567988240819868195">Mercado</translation>
 <translation id="632241521608275119">Tolerância de desvio</translation>
+<translation id="5709627087332022422">Bloquear monitorizadores 'cross-site'</translation>
+<translation id="4501702055016678577">Pesquisa privada com o DickDuckGo?</translation>
+<translation id="910419239800579753">Com a pesquisa privada, o Brave irá utilizar o DuckDuckGo para responder às suas pesquisas enquanto se encontra neste separador privado. O DuckDuckGo é um motor de pesquisa que não rastreia o seu histórico de pesquisas, permitindo que pesquise de modo privado.</translation>
+<translation id="1426410128494586442">Sim</translation>
+<translation id="5628466560184522265">Saiba mais sobre a pesquisa privada como DuckDuckGo</translation>
 </translationbundle>

@@ -370,12 +370,12 @@ hónapban...</translation>
 <translation id="7427567994475794038">Kapcsold be az adatvédelmi jelentéseket, hogy lásd mennyi hirdetés és követő lett letiltva az elmúlt 3 órában.</translation>
 <translation id="2053891538879944400"><ph name="DATA"/> <ph name="DATA_TEXT"/> adatot spóroltál a Brave böngészővel.</translation>
 <translation id="8640064498452534195">Kapcsold be az adatvédelmi jelentéseket, hogy lásd mennyi adatot spóroltál.</translation>
-<translation id="2252497442547961651">A Brave böngésző átlagosan 40%-kal kevesebb akkumulátort használ.&#128267;</translation>
+<translation id="2252497442547961651">A Brave böngésző átlagosan 40%-kal kevesebb akkumulátort használ.🔋</translation>
 <translation id="1945330434665345785">Az elmúlt héten <ph name="COUNT"/> követőt és reklámot blokkoltál a Brave böngészővel.</translation>
 <translation id="2883868922264431515">Szerezz tokeneket magánéletet tiszteletben tartó reklámok nézésével, és támogasd kedvenc weboldalaidat.</translation>
-<translation id="5678925890616256956">Remek! Blokkolt 250 követőt &amp; hirdetést a Brave böngészővel.&#128293;</translation>
+<translation id="5678925890616256956">Remek! Blokkolt 250 követőt &amp; hirdetést a Brave böngészővel.🔥</translation>
 <translation id="9199047775708635708">Nagyszerű! Már 10MB-ot takarított meg a Brave böngészővel.</translation>
-<translation id="1880168210969863408">Nagyszerű! 10 perc töltési időt spórolt meg a Brave böngészővel.&#128168;&#128168;</translation>
+<translation id="1880168210969863408">Nagyszerű! 10 perc töltési időt spórolt meg a Brave böngészővel.💨💨</translation>
 <translation id="7408493389591475748">Az adatvédelmi jelentés megtekintéséhez kezdj el böngészni</translation>
 <translation id="9080777565335515917">Tedd a Brave-et alapértelmezett böngésződdé, hogy a böngészés privát és biztonságos legyen.</translation>
 <translation id="1390943217516275883">Engedélyezi, hogy a Brave megmutassa adatvédelmi statisztikáidat</translation>
@@ -571,4 +571,9 @@ hónapban...</translation>
 <translation id="59223531494896848">Korlátozás</translation>
 <translation id="3567988240819868195">Piac</translation>
 <translation id="632241521608275119">Csúszási tolerancia</translation>
+<translation id="5709627087332022422">Webhelyközi nyomkövetők letiltása</translation>
+<translation id="4501702055016678577">Keressen privátban DuckDuckGo-val?</translation>
+<translation id="910419239800579753">Privát kereséssel a Brave DuckDuckGo-t használ a keresések megválaszolására, amíg ebben a privát fülben marad. A DuckDuckGo egy keresőmotor, ami nem követi a keresési előzményeket, így privát kereséseket lehet végezni vele.</translation>
+<translation id="1426410128494586442">Igen</translation>
+<translation id="5628466560184522265">Olvasson bővebben a DuckGoGo privát keresésekről</translation>
 </translationbundle>

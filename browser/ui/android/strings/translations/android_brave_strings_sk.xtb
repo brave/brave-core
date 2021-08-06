@@ -370,12 +370,12 @@ alebo kým neuplynie 90 dní.</translation>
 <translation id="7427567994475794038">Zapnite si Hlásenia o súkromí a zistite, koľko sledovačov a reklám bolo za posledné 3 hodiny zablokovaných.</translation>
 <translation id="2053891538879944400">Pomocou prehliadača Brave ste ušetrili <ph name="DATA"/> <ph name="DATA_TEXT"/> dát.</translation>
 <translation id="8640064498452534195">Na zobrazenie množstva údajov, ktoré ste ušetrili, zapnite Hlásenia o súkromí.</translation>
-<translation id="2252497442547961651">Prehliadač Brave používa v priemere o 40 % menej batérie.&#128267;</translation>
+<translation id="2252497442547961651">Prehliadač Brave používa v priemere o 40 % menej batérie.🔋</translation>
 <translation id="1945330434665345785">Za posledný týždeň ste pomocou prehliadača Brave zablokovali <ph name="COUNT"/> trackers &amp; reklám.</translation>
 <translation id="2883868922264431515">Získajte tokeny sledovaním reklám rešpektujúcich súkromie a podporte svoje obľúbené webové stránky.</translation>
-<translation id="5678925890616256956">Super! Zablokovali ste 250 sledovačov a reklám pomocou prehliadača Brave.&#128293;</translation>
-<translation id="9199047775708635708">Super! Pomocou Brave ste ušetrili 10 MB.&#128267;</translation>
-<translation id="1880168210969863408">Super! V Brave ste ušetrili 10 minút času načítavania.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Super! Zablokovali ste 250 sledovačov a reklám pomocou prehliadača Brave.🔥</translation>
+<translation id="9199047775708635708">Super! Pomocou Brave ste ušetrili 10 MB.🔋</translation>
+<translation id="1880168210969863408">Super! V Brave ste ušetrili 10 minút času načítavania.💨💨</translation>
 <translation id="7408493389591475748">Na zobrazenie hlásenia o súkromí začnite prehliadať</translation>
 <translation id="9080777565335515917">Nastaviť Brave ako predvolený prehliadač pre súkromné a zabezpečené prehliadanie.</translation>
 <translation id="1390943217516275883">Umožňuje prehliadaču Brave zobraziť vaše štatistiky ochrany osobných údajov</translation>
@@ -571,4 +571,9 @@ alebo kým neuplynie 90 dní.</translation>
 <translation id="59223531494896848">Limit</translation>
 <translation id="3567988240819868195">Trh</translation>
 <translation id="632241521608275119">Tolerancia sklzu</translation>
+<translation id="5709627087332022422">Blokovať cross-site trackery</translation>
+<translation id="4501702055016678577">Súkromné prehliadanie s DuckDuckGo</translation>
+<translation id="910419239800579753">Pri súkromnom vyhľadávaní použije prehliadač Brave službu DuckDuckGo na zodpovedanie vašich vyhľadávaní, zatiaľ čo máte otvorenú súkromnú kartu. DuckDuckGo je vyhľadávací nástroj, ktorý nesleduje vašu históriu vyhľadávania a umožňuje vám súkromné vyhľadávanie.</translation>
+<translation id="1426410128494586442">Áno</translation>
+<translation id="5628466560184522265">Zistite viac o súkromnom prehliadaní s DuckDuckGo</translation>
 </translationbundle>

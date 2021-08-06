@@ -371,12 +371,12 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="7427567994475794038">Nyalakan Pelaporan Privasi untuk melihat berapa banyak pelacak &amp; iklan yang sudah diblokir dalam 3 jam terakhir.</translation>
 <translation id="2053891538879944400">Anda menghemat <ph name="DATA"/> <ph name="DATA_TEXT"/> data dengan peramban Brave.</translation>
 <translation id="8640064498452534195">Nyalakan Pelaporan Privasi untuk melihat berapa besar data yang Anda hemat.</translation>
-<translation id="2252497442547961651">Peramban Brave rata-rata memakai baterai 40% lebih sedikit.&#128267;</translation>
+<translation id="2252497442547961651">Peramban Brave rata-rata memakai baterai 40% lebih sedikit.🔋</translation>
 <translation id="1945330434665345785">Anda memblokir <ph name="COUNT"/> trackers &amp; iklan dengan peramban Brave minggu kemarin.</translation>
 <translation id="2883868922264431515">Dapatkan token dengan melihat iklan yang menghormati privasi dan dukung website favorit Anda.</translation>
-<translation id="5678925890616256956">Bagus! Anda telah memblokir 250 pelacak &amp; iklan dengan peramban Brave.&#128293;</translation>
-<translation id="9199047775708635708">Bagus! Anda telah menghemat 10MB dengan peramban Brave.&#128267;</translation>
-<translation id="1880168210969863408">Bagus! Anda telah menghemat waktu pemuatan 10 menit waktu dengan peramban Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Bagus! Anda telah memblokir 250 pelacak &amp; iklan dengan peramban Brave.🔥</translation>
+<translation id="9199047775708635708">Bagus! Anda telah menghemat 10MB dengan peramban Brave.🔋</translation>
+<translation id="1880168210969863408">Bagus! Anda telah menghemat waktu pemuatan 10 menit waktu dengan peramban Brave.💨💨</translation>
 <translation id="7408493389591475748">Mulailah meramban untuk melihat pelaporan privasi</translation>
 <translation id="9080777565335515917">Atur Brave sebagai peramban default untuk meramban privat dan aman.</translation>
 <translation id="1390943217516275883">Izinkan Brave untuk menunjukkan statistik privasi Anda</translation>
@@ -572,4 +572,9 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="59223531494896848">Limit</translation>
 <translation id="3567988240819868195">Pasar</translation>
 <translation id="632241521608275119">Toleransi selip</translation>
+<translation id="5709627087332022422">Blokir pelacak cross-site</translation>
+<translation id="4501702055016678577">Pencarian pribadi dengan DuckDuckGo?</translation>
+<translation id="910419239800579753">Dengan pencarian pribadi, Brave akan menggunakan DuckDuckGo untuk menjawab pencarian Anda ketika Anda menggunakan tab pribadi. DuckDuckGo adalah mesin pencari yang tidak melacak riwayat pencarian Anda, memungkinkan Anda untuk mencari secara pribadi.</translation>
+<translation id="1426410128494586442">Ya</translation>
+<translation id="5628466560184522265">Pelajari tentang pencarian pribadi dengan DuckDuckGo</translation>
 </translationbundle>

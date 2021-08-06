@@ -372,12 +372,12 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="7427567994475794038">Activeu els informes de privadesa per veure quants rastrejadors &amp;amp anuncis s'han bloquejat en les darreres 3 hores.</translation>
 <translation id="2053891538879944400">Heu desat <ph name="DATA"/> <ph name="DATA_TEXT"/> dades amb el navegador Brave.</translation>
 <translation id="8640064498452534195">Activeu els Informes de privadesa per veure quantes dades heu salvat.</translation>
-<translation id="2252497442547961651">El navegador Brave consumeix de mitjana un 40% menys de bateria.&#128267;</translation>
+<translation id="2252497442547961651">El navegador Brave consumeix de mitjana un 40% menys de bateria.🔋</translation>
 <translation id="1945330434665345785">Heu bloquejat <ph name="COUNT"/> rastrejadors &amp; anuncis amb navegador Brave la setmana passada.</translation>
 <translation id="2883868922264431515">Guanyeu tokens visualitzant anuncis que respectin la privadesa i donin suport als vostres llocs web preferits.</translation>
-<translation id="5678925890616256956">Genial! Heu bloquejat 250 seguidors i anuncis amb el navegador Brave.&#128293;</translation>
-<translation id="9199047775708635708">Genial! Heu estalviat 10 MB amb el navegador Brave.&#128267;</translation>
-<translation id="1880168210969863408">Genial! Heu estalviat 10 minuts de temps de càrrega amb el navegador Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Genial! Heu bloquejat 250 seguidors i anuncis amb el navegador Brave.🔥</translation>
+<translation id="9199047775708635708">Genial! Heu estalviat 10 MB amb el navegador Brave.🔋</translation>
+<translation id="1880168210969863408">Genial! Heu estalviat 10 minuts de temps de càrrega amb el navegador Brave.💨💨</translation>
 <translation id="7408493389591475748">Comenceu a navegar per veure els informes de privadesa</translation>
 <translation id="9080777565335515917">Definiu Brave com a navegador predeterminat per a una navegació privada i segura.</translation>
 <translation id="1390943217516275883">Permet a Brave mostrar les teves estadístiques de privadesa</translation>
@@ -574,4 +574,9 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="59223531494896848">Límit</translation>
 <translation id="3567988240819868195">Mercat</translation>
 <translation id="632241521608275119">Tolerància a la disminució</translation>
+<translation id="5709627087332022422">Bloquejar rastrejadors entre llocs</translation>
+<translation id="4501702055016678577">Cerca privada amb DuckDuckGo?</translation>
+<translation id="910419239800579753">Amb cerca privada, Brave utilitzarà DuckDuckGo per contestar les vostres cerques mentre us mantingueu en aquesta pestanya privada. DuckiDuck és un motor de cerca que no rastreja el vostre historial de cerca, permetent així la cerca privada.</translation>
+<translation id="1426410128494586442">Sí</translation>
+<translation id="5628466560184522265">Més informació sobre la cerca privada amb DuckDuckGo</translation>
 </translationbundle>
