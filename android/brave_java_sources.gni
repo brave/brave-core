@@ -258,6 +258,7 @@ if (enable_brave_sync) {
 if (brave_wallet_enabled) {
   brave_java_sources += [
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/AssetRatioControllerFactory.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/ERCTokenRegistryFactory.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/KeyringControllerFactory.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/AssetDetailActivity.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/BraveWalletActivity.java",

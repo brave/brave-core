@@ -167,6 +167,12 @@ interface KeyringControllerObserver {
   AccountsChanged();
 };
 
+interface ERCTokenRegistry {
+  GetTokenByContract(string contract) => (ERCToken? token);
+  GetTokenBySymbol(string symbol) => (ERCToken? token);
+  GetAllTokens() => (array<ERCToken> tokens);
+};
+
 interface KeyringController {
   CreateWallet(string password) => (string mnemonic);
   GetMnemonicForDefaultKeyring() => (string mnemonic);
