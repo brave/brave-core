@@ -403,6 +403,8 @@ function Container (props: Props) {
                   onUpdateAccountName={onUpdateAccountName}
                   onUpdateWatchList={onUpdateWatchList}
                   userWatchList={['1']}
+                  selectedNetwork={selectedNetwork}
+                  onSelectNetwork={onSelectNetwork}
                 />
               )}
             </>

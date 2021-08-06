@@ -56,6 +56,13 @@ export const ButtonRow = styled.div`
   margin: 20px 0px;
 `
 
+export const BalanceRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`
+
 export const InfoColumn = styled.div`
   display: flex;
   flex-direction: column;
