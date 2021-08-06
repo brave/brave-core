@@ -19,6 +19,12 @@ export const StyledLink = styled('a')<{}>`
   letter-spacing: 0;
 `
 
+export const StyledNoActivity = styled('span')<{}>`
+  font-weight: 400;
+  color: #B8B9C4;
+  font-size: 18px;
+`
+
 export const StyledNotSelectedLink = styled('span')<{}>`
   display: inline-block;
   color: ${p => p.theme.color.brandBat};

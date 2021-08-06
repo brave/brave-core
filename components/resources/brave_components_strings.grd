@@ -682,6 +682,7 @@
       <message name="IDS_BRAVE_UI_ADS_CURRENTLY_VIEWING" desc="">Maximum ads received per hour: </message>
       <message name="IDS_BRAVE_UI_ADS_HISTORY_FILTER_ALL" desc="">All</message>
       <message name="IDS_BRAVE_UI_ADS_HISTORY_FILTER_SAVED" desc="">Saved</message>
+      <message name="IDS_BRAVE_UI_ADS_HISTORY_NONE" desc="">No ads viewed in the last <ph name="TOTAL_DAYS">$1</ph> days.</message>
       <message name="IDS_BRAVE_UI_ADS_HISTORY_SUBTITLE" desc="">Ads you've received in the past [[totalDays]] days</message>
       <message name="IDS_BRAVE_UI_ADS_HISTORY_TITLE" desc="">Ads History</message>
       <message name="IDS_BRAVE_UI_ADS_GRANT_RECEIVED" desc="">Ads rewards received</message>
