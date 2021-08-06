@@ -88,23 +88,13 @@
   _controller->NotifyWalletBackupComplete();
 }
 
-- (void)addAccount:(void (^)(bool))completion {
+- (void)addAccount:(NSString*)name
+        completion:(void (^)(bool success))completion {
   auto callback = ^(bool success) {
     completion(success);
   };
-  _controller->AddAccount(base::BindOnce(callback));
-}
-
-- (void)addNewAccountName:(NSString*)name {
-  _controller->AddNewAccountName(base::SysNSStringToUTF8(name));
-}
-
-- (void)setInitialAccountNames:(NSArray<NSString*>*)names {
-  std::vector<std::string> _names;
-  for (NSString* name in names) {
-    _names.push_back(base::SysNSStringToUTF8(name));
-  }
-  _controller->SetInitialAccountNames(_names);
+  _controller->AddAccount(base::SysNSStringToUTF8(name),
+                          base::BindOnce(callback));
 }
 
 - (void)reset {
