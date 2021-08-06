@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
+import android.content.Intent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -45,14 +46,16 @@ public class AccountDetailActivity
         btnDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Utils.openBuySendSwapActivity(AccountDetailActivity.this);
+                Intent accountDetailsWithQrActivityIntent =
+                        new Intent(AccountDetailActivity.this, AccountDetailsWithQrActivity.class);
+                startActivity(accountDetailsWithQrActivityIntent);
             }
         });
         TextView btnEdit = findViewById(R.id.edit_btn);
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Utils.openBuySendSwapActivity(AccountDetailActivity.this);
+                // TODO add action for edit
             }
         });
 

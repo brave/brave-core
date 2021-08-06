@@ -46,6 +46,7 @@
             android:paddingBottom="10dp"
             android:textCursorDrawable="@null"
             android:textSize="14sp"
+            android:inputType="text"
             android:textColor="@color/wallet_text_color"
             android:textColorHint="@color/wallet_edittext_outline_color" />
 
@@ -74,6 +75,7 @@
                 android:layout_height="200dp"
                 android:gravity="top"
                 android:hint="@string/import_account_text"
+                android:inputType="text"
                 android:importantForAutofill="no"
                 android:paddingEnd="18dp"
                 android:paddingStart="18dp"

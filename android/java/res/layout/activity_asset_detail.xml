@@ -361,6 +361,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="24dp"
             android:gravity="top"
+            android:hint="@string/account_details"
             android:layout_gravity="center_vertical"
             android:background="@drawable/rounded_wallet_edittext"
             android:importantForAutofill="no"
