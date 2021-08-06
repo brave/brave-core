@@ -3,7 +3,7 @@
 import UIKit
 import Shared
 import BraveShared
-import BraveRewards
+import BraveCore
 import Data
 
 private let log = Logger.browserLogger

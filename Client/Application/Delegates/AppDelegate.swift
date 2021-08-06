@@ -15,8 +15,7 @@ import UserNotifications
 import BraveShared
 import Data
 import StoreKit
-import BraveRewards
-import AdblockRust
+import BraveCore
 import Combine
 
 private let log = Logger.browserLogger
@@ -61,6 +60,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         self.window!.backgroundColor = .black
         
         // Brave Core Initialization
+        BraveCoreMain.setLogHandler { severity, file, line, messageStartIndex, message in
+            if !message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                let level: XCGLogger.Level = {
+                    switch -severity {
+                    case 0: return .error
+                    case 1: return .info
+                    case 2..<7: return .debug
+                    default: return .verbose
+                    }
+                }()
+                Logger.braveCoreLogger.logln(
+                    level,
+                    fileName: file,
+                    lineNumber: Int(line),
+                    // Only print the actual message content, and drop the final character which is
+                    // a new line as it will be handled by logln
+                    closure: { message.dropFirst(messageStartIndex).dropLast() }
+                )
+            }
+            return true
+        }
+        
         self.braveCore = BraveCoreMain()
         self.braveCore?.setUserAgent(UserAgent.mobile)
         

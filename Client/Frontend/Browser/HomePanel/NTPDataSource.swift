@@ -5,7 +5,7 @@
 import UIKit
 import Shared
 import BraveShared
-import BraveRewards
+import BraveCore
 
 class NTPDataSource {
     

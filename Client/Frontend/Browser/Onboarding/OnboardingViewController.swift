@@ -5,7 +5,7 @@
 import UIKit
 import BraveShared
 import Shared
-import BraveRewards
+import BraveCore
 
 /// A base class to provide common implementations needed for user onboarding screens.
 class OnboardingViewController: UIViewController {

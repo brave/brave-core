@@ -5,7 +5,7 @@ import CoreData
 import Shared
 import Data
 import BraveShared
-import BraveRewards
+import BraveCore
 
 private let log = Logger.browserLogger
 

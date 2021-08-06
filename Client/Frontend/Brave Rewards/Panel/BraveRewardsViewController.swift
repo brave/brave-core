@@ -4,13 +4,13 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import BraveRewards
+import BraveCore
 import BraveUI
 import BraveShared
 import Shared
 import Combine
 
-private let log = Logger.rewardsLogger
+private let log = Logger.braveCoreLogger
 
 class BraveRewardsViewController: UIViewController, PopoverContentComponent {
     enum Action {

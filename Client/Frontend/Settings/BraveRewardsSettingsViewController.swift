@@ -6,7 +6,7 @@ import UIKit
 import Static
 import Shared
 import BraveShared
-import BraveRewards
+import BraveCore
 import BraveUI
 import DeviceCheck
 import Combine

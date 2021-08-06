@@ -5,7 +5,7 @@
 
 import UIKit
 import BraveUI
-import BraveRewards
+import BraveCore
 import Static
 import Shared
 import ZIPFoundation

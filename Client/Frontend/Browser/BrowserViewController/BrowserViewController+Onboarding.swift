@@ -6,7 +6,7 @@
 import BraveShared
 import BraveUI
 import Shared
-import BraveRewards
+import BraveCore
 
 // MARK: - Onboarding
 

@@ -80,28 +80,28 @@ if [ "$clean" = 1 ]; then
 else
   # Force it to reassemble the products if they've been built already
   # This prevents things that are only _copied_ into the directory over time in separate branches
-  [[ -d $sim_dir/BraveRewards.framework ]] && rm -rf $sim_dir/BraveRewards.framework
-  [[ -d $device_dir/BraveRewards.framework ]] && rm -rf $device_dir/BraveRewards.framework
+  [[ -d $sim_dir/BraveCore.framework ]] && rm -rf $sim_dir/BraveCore.framework
+  [[ -d $device_dir/BraveCore.framework ]] && rm -rf $device_dir/BraveCore.framework
 fi
 
 bc_framework_args=""
 mc_framework_args=""
 
 if [ "$build_simulator" = 1 ]; then
-  npm run build -- $release_flag --target_os=ios --auto_gn_gen
-  bc_framework_args="-framework $sim_dir/BraveRewards.framework -debug-symbols $(pwd)/$sim_dir/BraveRewards.dSYM" 
+  npm run build -- $release_flag --target_os=ios
+  bc_framework_args="-framework $sim_dir/BraveCore.framework -debug-symbols $(pwd)/$sim_dir/BraveCore.dSYM"
   mc_framework_args="-framework $sim_dir/MaterialComponents.framework"
 fi
 
 if [ "$build_device" = 1 ]; then
-  npm run build -- $release_flag --target_os=ios --target_arch=arm64 --auto_gn_gen
-  bc_framework_args="$bc_framework_args -framework $device_dir/BraveRewards.framework -debug-symbols $(pwd)/$device_dir/BraveRewards.dSYM" 
+  npm run build -- $release_flag --target_os=ios --target_arch=arm64
+  bc_framework_args="$bc_framework_args -framework $device_dir/BraveCore.framework -debug-symbols $(pwd)/$device_dir/BraveCore.dSYM"
   mc_framework_args="$mc_framework_args -framework $device_dir/MaterialComponents.framework"
 fi
 
-[ -d "$framework_drop_point/BraveRewards.xcframework" ] && rm -rf "$framework_drop_point/BraveRewards.xcframework"
-xcodebuild -create-xcframework $bc_framework_args -output "$framework_drop_point/BraveRewards.xcframework"
-echo "Created XCFramework: $framework_drop_point/BraveRewards.xcframework"
+[ -d "$framework_drop_point/BraveCore.xcframework" ] && rm -rf "$framework_drop_point/BraveCore.xcframework"
+xcodebuild -create-xcframework $bc_framework_args -output "$framework_drop_point/BraveCore.xcframework"
+echo "Created XCFramework: $framework_drop_point/BraveCore.xcframework"
 
 [ -d "$framework_drop_point/MaterialComponents.xcframework" ] && rm -rf "$framework_drop_point/MaterialComponents.xcframework"
 xcodebuild -create-xcframework $mc_framework_args -output "$framework_drop_point/MaterialComponents.xcframework"
@@ -109,7 +109,7 @@ echo "Created XCFramework: $framework_drop_point/MaterialComponents.xcframework"
 
 echo "Moving Frameworks to node_modules"
 mkdir -p "$node_modules_path"
-rsync -a --delete "$framework_drop_point/BraveRewards.xcframework" "$node_modules_path/"
+rsync -a --delete "$framework_drop_point/BraveCore.xcframework" "$node_modules_path/"
 rsync -a --delete "$framework_drop_point/MaterialComponents.xcframework" "$node_modules_path/"
 echo "Moved Frameworks to node_modules"
 
@@ -120,7 +120,7 @@ brave_core_tag=`git describe --tags --abbrev=0`
 
 popd > /dev/null
 
-echo "Completed building BraveRewards from \`brave-core/$brave_core_build_hash\`"
+echo "Completed building BraveCore from \`brave-core/$brave_core_build_hash\`"
 cat > "$framework_drop_point/Local.resolved" << EOL
 REMINDER: Your local brave-core-ios dependency has been overwritten in node_modules. Re-run bootstrap.sh when you are done testing.  
 

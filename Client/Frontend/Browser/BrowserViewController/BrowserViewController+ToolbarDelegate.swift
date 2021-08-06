@@ -6,7 +6,7 @@
 import BraveShared
 import BraveUI
 import Shared
-import BraveRewards
+import BraveCore
 import Storage
 import Data
 import SwiftUI

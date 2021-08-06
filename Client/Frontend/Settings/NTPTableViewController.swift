@@ -6,7 +6,7 @@ import Foundation
 import Static
 import BraveShared
 import Shared
-import BraveRewards
+import BraveCore
 
 class NTPTableViewController: TableViewController {
     enum BackgroundImageType: RepresentableOptionType {

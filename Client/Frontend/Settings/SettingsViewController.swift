@@ -11,7 +11,7 @@ import LocalAuthentication
 import SwiftyJSON
 import Data
 import WebKit
-import BraveRewards
+import BraveCore
 import SwiftUI
 
 extension TabBarVisibility: RepresentableOptionType {

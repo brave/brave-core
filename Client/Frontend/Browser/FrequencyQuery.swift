@@ -24,12 +24,13 @@ class FrequencyQuery {
                 // brave-core fetch can be slow over 200ms per call,
                 // a cancellable serial queue is used for it.
                 DispatchQueue.main.async {
-                    let bookmarkSites = Bookmarkv2.byFrequency(query: query)
-                        .map { Site(url: $0.url ?? "", title: $0.title ?? "", bookmarked: true) }
-
-                    let result = Set<Site>(historySites + bookmarkSites)
-
-                    completion(result)
+                    Bookmarkv2.byFrequency(query: query) { sites in
+                        let bookmarkSites = sites.map { Site(url: $0.url ?? "", title: $0.title ?? "", bookmarked: true) }
+                        
+                        let result = Set<Site>(historySites+bookmarkSites)
+                        
+                        completion(result)
+                    }
                 }
             }
         }

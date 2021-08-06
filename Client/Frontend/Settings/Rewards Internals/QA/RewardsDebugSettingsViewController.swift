@@ -4,7 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import UIKit
-import BraveRewards
+import BraveCore
 import BraveShared
 import Shared
 import Static
@@ -285,8 +285,11 @@ class RewardsDebugSettingsViewController: TableViewController {
     
     private func fetchAndClaimPromotions() {
         guard let ledger = rewards.ledger else { return }
-        ledger.fetchPromotions { [weak self] promotions in
+        ledger.fetchPromotions { [weak self] promotions, shouldReconcileAds in
             guard let self = self else { return }
+            if shouldReconcileAds {
+                self.rewards.ads.reconcileAdRewards()
+            }
             let activePromotions = promotions.filter { $0.status == .active }
             if activePromotions.isEmpty {
                 let alert = UIAlertController(title: "Promotions", message: "No Active Promotions Found", preferredStyle: .alert)
@@ -300,7 +303,7 @@ class RewardsDebugSettingsViewController: TableViewController {
             var failuresCount: Int = 0
             for promo in activePromotions {
                 group.enter()
-                ledger.claimPromotion(promo) { success in
+                ledger.claimPromotion(promo) { success, _ in
                     if success {
                         successCount += 1
                         claimedAmount += promo.approximateValue

@@ -7,7 +7,7 @@ import Foundation
 import BraveUI
 import Shared
 import BraveShared
-import BraveRewards
+import BraveCore
 
 /// Additonal information related to an action performed on a feed item
 struct FeedItemActionContext {

@@ -7,7 +7,7 @@ import Shared
 import BraveShared
 import pop
 import Lottie
-import BraveRewards
+import BraveCore
 
 private let log = Logger.browserLogger
 

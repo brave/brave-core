@@ -4,7 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import UIKit
-import BraveRewards
+import BraveCore
 import Static
 import Shared
 
@@ -53,7 +53,7 @@ class RewardsInternalsPromotionListController: TableViewController {
             $0.accessibilityLabel = Strings.RewardsInternals.shareInternalsTitle
         }
         
-        ledger.updatePendingAndFinishedPromotions {
+        ledger.updatePendingAndFinishedPromotions { _ in
             self.reloadData()
         }
     }
@@ -105,7 +105,7 @@ class RewardsInternalsPromotionListController: TableViewController {
 struct RewardsInternalsPromotionsGenerator: RewardsInternalsFileGenerator {
     func generateFiles(at path: String, using builder: RewardsInternalsSharableBuilder, completion: @escaping (Error?) -> Void) {
         let ledger = builder.ledger
-        ledger.updatePendingAndFinishedPromotions {
+        ledger.updatePendingAndFinishedPromotions { _ in
             let promotions = ledger.finishedPromotions + ledger.pendingPromotions
             let promos = promotions.map { promo -> [String: Any] in
                 var data: [String: Any] = [

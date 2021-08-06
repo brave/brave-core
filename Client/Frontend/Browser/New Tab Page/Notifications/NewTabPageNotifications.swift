@@ -4,7 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import BraveRewards
+import BraveCore
 import BraveShared
 
 class NewTabPageNotifications {
@@ -27,7 +27,7 @@ class NewTabPageNotifications {
         }
         
         let state = BrandedImageCalloutState.getState(
-            adsEnabled: rewards.isAdsEnabled,
+            adsEnabled: rewards.ads.isEnabled,
             adsAvailableInRegion: BraveAds.isCurrentLocaleSupported(),
             isSponsoredImage: isShowingSponseredImage
         )

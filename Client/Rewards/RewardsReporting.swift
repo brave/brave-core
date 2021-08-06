@@ -4,11 +4,11 @@
 
 import Foundation
 import WebKit
-import BraveRewards
+import BraveCore
 import XCGLogger
 import Shared
 
-private let log = Logger.rewardsLogger
+private let log = Logger.braveCoreLogger
 
 class RewardsReporting: TabContentScript {
     let rewards: BraveRewards
@@ -65,11 +65,11 @@ class RewardsReporting: TabContentScript {
                 if content.method.lowercased() == "post" {
                     if let postData = content.data?.removingPercentEncoding, let data = postData.data(using: .utf8) {
                         if BraveLedger.isMediaURL(url, firstPartyURL: tabURL, referrerURL: refURL) {
-                            rewards.reportPostData(data, url: url, tabId: tab.rewardsId, firstPartyURL: tabURL, referrerURL: refURL)
+                            rewards.reportPostData(data, url: url, tabId: Int(tab.rewardsId), firstPartyURL: tabURL, referrerURL: refURL)
                         }
                     }
                 } else {
-                    rewards.reportXHRLoad(url: url, tabId: tab.rewardsId, firstPartyURL: tabURL, referrerURL: refURL)
+                    rewards.reportXHRLoad(url: url, tabId: Int(tab.rewardsId), firstPartyURL: tabURL, referrerURL: refURL)
                 }
             }
         } catch {

@@ -3,7 +3,6 @@
 import Foundation
 import Shared
 import BraveShared
-import AdblockRust
 
 private let log = Logger.browserLogger
 
