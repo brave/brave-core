@@ -594,6 +594,7 @@
 <translation id="1627408615528139100">已下載</translation>
 <translation id="1628948239858170093">要先掃瞄檔案再開啟嗎？</translation>
 <translation id="1629314197035607094">密碼已過期</translation>
+<translation id="1947639598318989608">要讓 Brave 為購物車中的項目尋找個人化折扣嗎？</translation>
 <translation id="1629521517399325891">使用者憑證不適用於網絡驗證。</translation>
 <translation id="163072119192489970">已允許完成傳送和接收資料</translation>
 <translation id="1630768113285622200">重新啟動及繼續</translation>
@@ -3209,7 +3210,7 @@
 <translation id="4469762931504673593"><ph name="ORIGIN"/> 可編輯「<ph name="FOLDERNAME"/>」中的檔案</translation>
 <translation id="4470957202018033307">外部儲存空間偏好設定</translation>
 <translation id="4471354919263203780">正在下載語音識別檔案… <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">協助改善 Brave 的功能和效能</translation>
+<translation id="918192811481327695">協助改善 Brave 的功能和效能</translation>
 <translation id="4472575034687746823">開始使用</translation>
 <translation id="4474155171896946103">將所有分頁加入書籤…</translation>
 <translation id="4475552974751346499">搜尋下載內容</translation>
@@ -4449,7 +4450,6 @@
 <translation id="5864754048328252126">叉緊電時嘅閒置動作</translation>
 <translation id="5865508026715185451">「<ph name="APP_NAME"/>」即將暫停</translation>
 <translation id="586567932979200359">您正在透過磁碟映像執行 <ph name="PRODUCT_NAME"/>。如直接在電腦上安裝程式，以後無需透過磁碟映像即可直接執行，並且能隨時使用最新的版本。</translation>
-<translation id="1224064034972923114">自動將使用情況統計和當機報告傳送給 Brave</translation>
 <translation id="5867841422488265304">搜尋或輸入網址</translation>
 <translation id="5869029295770560994">好，我知道了</translation>
 <translation id="5869522115854928033">已儲存的密碼</translation>
@@ -5470,7 +5470,6 @@
 <translation id="6997642619627518301"><ph name="NAME_PH"/> - 活動記錄</translation>
 <translation id="6997707937646349884">在您的裝置上：</translation>
 <translation id="6998793565256476099">註冊視像會議裝置</translation>
-<translation id="456304305650018221">要允許 Brave 為您加入購物車的商品尋找相關折扣嗎？</translation>
 <translation id="6999956497249459195">新群組</translation>
 <translation id="7000206553895739324">已連接 <ph name="PRINTER_NAME"/>，但需要設定</translation>
 <translation id="7000347579424117903">必須以 Ctrl、Alt 鍵或搜尋鍵開頭</translation>
@@ -7330,7 +7329,7 @@
 <translation id="9024158959543687197">連接共用裝置時發生錯誤。請檢查檔案共用網址，然後再試一次。</translation>
 <translation id="9026731007018893674">下載檔案</translation>
 <translation id="9026852570893462412">此程序可能需時幾分鐘。正在下載虛擬機器。</translation>
-<translation id="9027459031423301635">在新分頁中開啟連結(T)</translation>
+<translation id="9027459031423301635">在新分頁中開啟連結(&amp;T)</translation>
 <translation id="9030515284705930323">您的機構並未為您的帳戶啟用「Google Play 商店」。請聯絡您的管理員，以取得更多資料。</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="9030855135435061269">已不再支援「<ph name="PLUGIN_NAME"/>」</translation>

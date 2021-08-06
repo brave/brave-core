@@ -595,6 +595,7 @@
 <translation id="1627408615528139100">Þegar sótt</translation>
 <translation id="1628948239858170093">Viltu skanna skrána áður en hún er opnuð?</translation>
 <translation id="1629314197035607094">Útrunnið aðgangsorð</translation>
+<translation id="1947639598318989608">Leyfa Brave að finna sérsniðna afslætti fyrir körfurnar þínar?</translation>
 <translation id="1629521517399325891">Notandavottorð er ekki í boði fyrir netauðkenningu.</translation>
 <translation id="163072119192489970">Mega ljúka við að senda og móttaka gögn</translation>
 <translation id="1630768113285622200">Endurræsa og halda áfram</translation>
@@ -3210,7 +3211,7 @@ Annars skaltu skrá þig út núna svo breytingarnar á þessum reikningi taki g
 <translation id="4469762931504673593"><ph name="ORIGIN"/> getur breytt skrám í <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Kjörstillingar ytri geymslu</translation>
 <translation id="4471354919263203780">Sækir raddgreiningarskrár... <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Hjálpaðu til við að bæta eiginleika og afköst Brave</translation>
+<translation id="918192811481327695">Hjálpaðu til við að bæta eiginleika og afköst Brave</translation>
 <translation id="4472575034687746823">Hefjast handa</translation>
 <translation id="4474155171896946103">Bókamerkja alla flipa...</translation>
 <translation id="4475552974751346499">Leita í niðurhali</translation>
@@ -4450,7 +4451,6 @@ Annars skaltu skrá þig út núna svo breytingarnar á þessum reikningi taki g
 <translation id="5864754048328252126">Aðgerðaleysi meðan á hleðslu stendur</translation>
 <translation id="5865508026715185451">Hlé verður gert á <ph name="APP_NAME"/> fljótlega</translation>
 <translation id="586567932979200359">Þú ert að keyra <ph name="PRODUCT_NAME"/> af diskmynd þess. Ef þú setur það upp í tölvunni geturðu keyrt það án diskmyndarinnar og tryggt að það sé alltaf uppfært.</translation>
-<translation id="1224064034972923114">Sendir sjálfkrafa talnagögn um notkun og tilkynningar um hrun til Brave</translation>
 <translation id="5867841422488265304">Leitaðu eða sláðu inn veffang</translation>
 <translation id="5869029295770560994">Ég skil</translation>
 <translation id="5869522115854928033">Vistuð aðgangsorð</translation>
@@ -5471,7 +5471,6 @@ Annars skaltu skrá þig út núna svo breytingarnar á þessum reikningi taki g
 <translation id="6997642619627518301"><ph name="NAME_PH"/> – notkunarskrá</translation>
 <translation id="6997707937646349884">Í tækjunum þínum:</translation>
 <translation id="6998793565256476099">Skrá tæki í myndfundi</translation>
-<translation id="456304305650018221">Heimila Brave að finna afslætti á vörunum í körfunum þínum?</translation>
 <translation id="6999956497249459195">Nýr hópur</translation>
 <translation id="7000206553895739324">Prentarinn <ph name="PRINTER_NAME"/> er tengdur en hann þarfnast stillingar</translation>
 <translation id="7000347579424117903">Hafðu Ctrl, Alt eða Search með</translation>

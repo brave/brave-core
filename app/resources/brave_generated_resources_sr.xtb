@@ -6,8 +6,8 @@
 <translation id="4615489450165434530">Prijavite raskinutu vezu sa sajtom</translation>
 <translation id="6406506848690869874">Sinhronizuj</translation>
 <translation id="1544192797660353713">Novčanik</translation>
-<translation id="2445484935443597917">Направи нов профил</translation>
-<translation id="2666990579225592931">Отвори прозор госта</translation>
+<translation id="2445484935443597917">Kreiraj nov profil</translation>
+<translation id="2666990579225592931">Otvori prozor gosta</translation>
 <translation id="8275068909952022340">Više…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") nije dozvoljeno u Brejvu</translation>
 <translation id="6786747875388722282">Proširenja</translation>
@@ -28,6 +28,9 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="3218385319396786393">Automatska reprodukcija je blokirana na ovoj strani</translation>
 <translation id="4988333904713528597">Uvek dozvoli automatsko puštanje na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Nastavite da blokirate automatsku reprodukciju</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Pitaj kada sajt želi da pristupi API-ju Ethereum dobavljača</translation>
+<translation id="7017590444693657895">Spreči sajtove da pristupe API-ju Ethereum dobavljača</translation>
 <translation id="8988939298652262600">Brave ne pregledava proširenja radi sigurnosti i bezbednosti. Instalirajte ovo proširenje samo ako verujete programeru.</translation>
 <translation id="8081858229109418493">Ime profila i ikona</translation>
 <translation id="2044383478723007273">Boje Brave-a</translation>
@@ -42,6 +45,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="5802665280774361839">Na traci sa adresama prikaži automatsko dovršavanje</translation>
 <translation id="597020512043916976">Prikaži najpopularnije veb stranice u predlozima za automatsko dovršavanje</translation>
 <translation id="264150068416846820">Prikažite Brave predložene veb stranice u automatskom dovršavanju</translation>
+<translation id="5529693968082667490">Prikaži dugme kartica za pretragu</translation>
 <translation id="6414370348346025511">Uključena je standardna zaštita.</translation>
 <translation id="814018970995616154">Proverava URL adrese sa listom nebezbednih veb lokacija uskladištenih u Brave-u.</translation>
 <translation id="1144810021918451336">Ne štiti vas od opasnih veb lokacija, preuzimanja i proširenja.</translation>
@@ -93,7 +97,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="6303294677342628402">Štitovi</translation>
 <translation id="7133511168130368997">Blokiraj praćenja i reklame koje te prate preko veba.</translation>
 <translation id="2761825942249694703">Ovo su podrazumevana Shields podešavanja. Ona se primenjuju na sve veb lokacije osim ukoliko nešto ne promenite u Shields panelu određene lokacije. Menjanje ovoga neće uticati na vaša postojeća podešavanja po lokaciji.</translation>
-<translation id="8754605759692119662">Ovo će blokirati većinu reklama na veb lokacijama, ali ne Brave privatne reklame, one se kontrolišu u</translation>
+<translation id="1485394570478670912">Ovo će blokirati većinu reklama na veb-sajtovima, ali ne Brave Private Ads - one se kontrolišu u</translation>
 <translation id="6388201778088078932">podešavanja.</translation>
 <translation id="9185018653595759199">Blokiranje društvenih medija</translation>
 <translation id="7390783310074170337">Podrazumevani prikaz</translation>
@@ -294,6 +298,13 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="1391855377994926460">Nastavite brže pregledavati mrežu – do 6 puta brže na velikim novinskim stranicama.</translation>
 <translation id="9218430445555521422">Подеси као подразумеван</translation>
 <translation id="3479552764303398839">Не сада</translation>
+<translation id="5039804452771397117">Дозволи</translation>
+<translation id="7053983685419859001">Блокирај</translation>
+<translation id="7815301689257843278">Da li želite da automatski šaljete izveštaje o padu programa tako da Brave može sprečiti da se ovaj problem ponovo pojavi?</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> je neočekivano prekinuo rad.</translation>
+<translation id="1324417023773393937">Brave pretraživač</translation>
+<translation id="1068069727470515940">Možete promeniti <ph name="SETTING_TEXT"/> u svakom trenutku.</translation>
+<translation id="6873781976650514089">ovo podešavanje</translation>
 <translation id="6040143037577758943">Затвори</translation>
 <translation id="5600566490506283344">Brave Ad obaveštenje</translation>
 <translation id="4877147287319222750">Dodaj bočnoj traci</translation>
@@ -345,6 +356,6 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="8487693399751278191">Uvezi obeleživače sada...</translation>
 <translation id="2557899542277210112">Za brzi pristup, stavite obeleživače ovde na traku sa obeleživačima.</translation>
 <translation id="2808630562319398131">Ponovo postavi Brave Rewards podatke...</translation>
-<translation id="1224064034972923114">Pomozite nam da poboljšamo Brave automatskim slanjem izveštaja o padu</translation>
-<translation id="3738833060602717053">Pomozite nam da poboljšamo <ph name="PRODUCT_NAME"/> automatskim slanjem izveštaja o padu</translation>
+<translation id="2273851479262317744">Podesi Brave kao podrazumevani pretraživač</translation>
+<translation id="8581710194025054669">Da biste obezbedili najbolju privatnost na internetu, podesite Brave kao podrazumevani pregledač na vašem računaru. Tako će svaki veb-link na koji budete kliknuli biti otvoren u skladu sa Brave zaštitom privatnosti.</translation>
 </translationbundle>

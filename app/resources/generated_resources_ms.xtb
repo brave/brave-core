@@ -593,6 +593,7 @@
 <translation id="1627408615528139100">Telah pun dimuat turun</translation>
 <translation id="1628948239858170093">Imbas fail sebelum dibuka?</translation>
 <translation id="1629314197035607094">Kata laluan tamat tempoh</translation>
+<translation id="1947639598318989608">Benarkan Brave mencari diskaun yang diperibadikan untuk item dalam troli anda?</translation>
 <translation id="1629521517399325891">Sijil pengguna tidak tersedia untuk pengesahan rangkaian.</translation>
 <translation id="163072119192489970">Dibenarkan untuk menyelesaikan penghantaran dan penerimaan data</translation>
 <translation id="1630768113285622200">Mulakan semula dan teruskan</translation>
@@ -3202,7 +3203,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="4469762931504673593"><ph name="ORIGIN"/> boleh mengedit fail dalam <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Pilihan storan luar</translation>
 <translation id="4471354919263203780">Memuat turun fail pengecaman pertuturan... <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Bantu meningkatkan ciri dan prestasi Brave</translation>
+<translation id="918192811481327695">Bantu meningkatkan ciri dan prestasi Brave</translation>
 <translation id="4472575034687746823">Bermula</translation>
 <translation id="4474155171896946103">Tanda halaman semua tab...</translation>
 <translation id="4475552974751346499">Cari muat turun</translation>
@@ -4432,7 +4433,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="5864754048328252126">Tindakan melahu semasa mengecas</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> akan dijeda tidak lama lagi</translation>
 <translation id="586567932979200359">Anda menjalankan <ph name="PRODUCT_NAME"/> daripada imej cakeranya. Pemasangannya pada komputer anda membolehkan anda menjalankannya tanpa imej cakera, dan memastikannya adalah yang terkini.</translation>
-<translation id="1224064034972923114">Menghantar perangkaan penggunaan dan laporan ranap sistem secara automatik kepada Brave</translation>
 <translation id="5867841422488265304">Cari atau taip alamat web</translation>
 <translation id="5869029295770560994">OK, Faham</translation>
 <translation id="5869522115854928033">Kata laluan disimpan</translation>
@@ -5448,7 +5448,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6997642619627518301"><ph name="NAME_PH"/> - Log Aktiviti</translation>
 <translation id="6997707937646349884">Pada peranti anda:</translation>
 <translation id="6998793565256476099">Daftar peranti untuk persidangan video</translation>
-<translation id="456304305650018221">Benarkan Brave mencari diskaun bagi item yang anda tambahkan pada troli anda?</translation>
 <translation id="6999956497249459195">Kumpulan baharu</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> disambung tetapi memerlukan konfigurasi</translation>
 <translation id="7000347579424117903">Termasuk Ctrl, Alt atau Search</translation>

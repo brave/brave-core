@@ -219,6 +219,54 @@
     "message": "Пожалуйста, создайте резервную копию вашего кошелька Brave.",
     "description": "Description for backup wallet notification"
   },
+  "upholdBATNotAllowedForUserLearnMore": {
+    "message": "Подробнее…",
+    "description": "Notification button text to learn more about why BAT is not allowed for user"
+  },
+  "upholdBATNotAllowedForUserTitle": {
+    "message": "Ошибка: баллы BAT недоступны",
+    "description": "Title for BAT not allowed for user notification"
+  },
+  "upholdBATNotAllowedForUserNotification": {
+    "message": "Баллы BAT в Uphold еще не поддерживаются в вашем регионе.",
+    "description": "Description for BAT not allowed for user notification"
+  },
+  "upholdBlockedUserLearnMore": {
+    "message": "Подробнее…",
+    "description": "Notification button text to learn more about the blocked user status"
+  },
+  "upholdBlockedUserTitle": {
+    "message": "Ошибка: аккаунт заблокирован",
+    "description": "Title for blocked user notification"
+  },
+  "upholdBlockedUserNotification": {
+    "message": "Ваш аккаунт Uphold сейчас заблокирован.",
+    "description": "Description for blocked user notification"
+  },
+  "upholdPendingUserLearnMore": {
+    "message": "Подробнее…",
+    "description": "Notification button text to learn more about the pending user status"
+  },
+  "upholdPendingUserTitle": {
+    "message": "Ошибка: аккаунт на рассмотрении",
+    "description": "Title for pending user notification"
+  },
+  "upholdPendingUserNotification": {
+    "message": "Ваш аккаунт Uphold находится на рассмотрении.",
+    "description": "Description for pending user notification"
+  },
+  "upholdRestrictedUserLearnMore": {
+    "message": "Подробнее…",
+    "description": "Notification button text to learn more about the restricted user status"
+  },
+  "upholdRestrictedUserTitle": {
+    "message": "Ошибка: доступ к аккаунту ограничен",
+    "description": "Title for restricted user notification"
+  },
+  "upholdRestrictedUserNotification": {
+    "message": "Доступ к вашему аккаунту Uphold сейчас ограничен.",
+    "description": "Description for restricted user notification"
+  },
   "deviceLimitReachedLearnMore": {
     "message": "Подробнее…",
     "description": "Notification button text to learn more about device limit"
@@ -308,7 +356,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Этот автор еще не настроил свой аккаунт для получения платежей с вашего кошелька. Пока настройка не будет завершена, все отправляемые вами вознаграждения останутся у вас и будут повторно отправлены через 90 дней.",
+    "message": "Этот автор еще не настроил свой аккаунт для получения платежей с вашего кошелька. Пока настройка не будет завершена, все отправляемые вами вознаграждения останутся у вас, но попытки отправить платеж будут выполняться автоматически в течение 90 дней.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {

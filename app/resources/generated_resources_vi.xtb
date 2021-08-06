@@ -593,6 +593,7 @@
 <translation id="1627408615528139100">Đã tải xuống</translation>
 <translation id="1628948239858170093">Quét tệp trước khi mở?</translation>
 <translation id="1629314197035607094">Mật khẩu đã hết hạn</translation>
+<translation id="1947639598318989608">Cho phép Brave tìm các chương trình chiết khấu được cá nhân hóa trong giỏ hàng của bạn?</translation>
 <translation id="1629521517399325891">Không có chứng chỉ người dùng để xác thực mạng.</translation>
 <translation id="163072119192489970">Được phép kết thúc quá trình gửi và nhận dữ liệu</translation>
 <translation id="1630768113285622200">Khởi động lại và tiếp tục</translation>
@@ -1657,7 +1658,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="2749881179542288782">Kiểm tra Ngữ pháp và Chính tả</translation>
 <translation id="2753677631968972007">Kiểm soát các quyền của trang web theo cách thủ công.</translation>
 <translation id="2755349111255270002">Đặt lại <ph name="DEVICE_TYPE"/> này</translation>
-<translation id="2755367719610958252">Quản lý tính năng hỗ trợ tiếp cận</translation>
+<translation id="2755367719610958252">Quản lý bộ tính năng hỗ trợ tiếp cận</translation>
 <translation id="275662540872599901">màn hình tắt</translation>
 <translation id="2757338480560142065">Đảm bảo mật khẩu bạn đang lưu khớp với mật khẩu cho <ph name="WEBSITE"/></translation>
 <translation id="2762441749940182211">Máy ảnh bị chặn</translation>
@@ -3202,7 +3203,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="4469762931504673593"><ph name="ORIGIN"/> có thể chỉnh sửa tệp trong <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Tùy chọn bộ nhớ bên ngoài</translation>
 <translation id="4471354919263203780">Đang tải các tệp nhận dạng lời nói xuống... <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Giúp cải thiện hiệu suất và các tính năng của Brave</translation>
+<translation id="918192811481327695">Giúp cải thiện hiệu suất và các tính năng của Brave</translation>
 <translation id="4472575034687746823">Bắt đầu</translation>
 <translation id="4474155171896946103">Đánh dấu tất cả các thẻ...</translation>
 <translation id="4475552974751346499">Tìm kiếm trong các tệp đã tải xuống</translation>
@@ -4432,7 +4433,6 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="5864754048328252126">Trạng thái không hoạt động trong khi sạc</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> sắp tạm dừng</translation>
 <translation id="586567932979200359">Bạn đang chạy <ph name="PRODUCT_NAME"/> từ hình ảnh đĩa của nó. Cài đặt trình duyệt này trên máy tính cho phép bạn chạy trình duyệt mà không cần có hình ảnh đĩa và đảm bảo trình duyệt sẽ được cập nhật.</translation>
-<translation id="1224064034972923114">Tự động gửi số liệu thống kê sử dụng và báo cáo sự cố cho Brave</translation>
 <translation id="5867841422488265304">Tìm kiếm hoặc nhập địa chỉ web</translation>
 <translation id="5869029295770560994">OK</translation>
 <translation id="5869522115854928033">Mật khẩu đã lưu</translation>
@@ -5448,7 +5448,6 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="6997642619627518301"><ph name="NAME_PH"/> - Nhật ký hoạt động</translation>
 <translation id="6997707937646349884">Trên các thiết bị của bạn:</translation>
 <translation id="6998793565256476099">Đăng ký thiết bị tham gia hội nghị truyền hình</translation>
-<translation id="456304305650018221">Cho phép Brave tìm chương trình chiết khấu cho những mặt hàng bạn thêm vào giỏ hàng?</translation>
 <translation id="6999956497249459195">Nhóm mới</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> đã kết nối nhưng cần định cấu hình</translation>
 <translation id="7000347579424117903">Bao gồm phím Ctrl, Alt hoặc Tìm kiếm</translation>
@@ -7587,7 +7586,7 @@ Nhấn một công tắc đã gán để xóa.</translation>
           =0 {Mở tất cả trong &amp;cửa sổ Riêng tư}
           =1 {Mở trong &amp;cửa sổ Riêng tư}
           other {Mở tất cả ({COUNT}) trong &amp;cửa sổ Riêng tư}}</translation>
-<translation id="5464506165779993685">Mở trong cửa sổ Riêng tư</translation>
+<translation id="5464506165779993685">Mở trong cửa sổ &amp;Riêng tư</translation>
 <translation id="4620367155626060530">&amp;Hiển thị thanh dấu trang</translation>
 <translation id="1448315815373449655">{COUNT, plural,
           =0 {Mở Tất cả trong &amp;Cửa sổ Riêng tư}
@@ -7600,7 +7599,7 @@ Nhấn một công tắc đã gán để xóa.</translation>
 <translation id="5556722972306334687">Mở trong cửa sổ Riêng tư</translation>
 <translation id="1860933807472918250">{0, plural,
         =1 {Riêng tư}
-        other {# mở các cửa sổ Riêng tư}
+        other {# cửa sổ Riêng tư mở}
       }</translation>
 <translation id="8712375231869053533">{0, plural,
       =1 {Riêng tư}

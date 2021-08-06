@@ -590,6 +590,7 @@
 <translation id="1627408615528139100">Zaten indirildi</translation>
 <translation id="1628948239858170093">Dosya açılmadan önce taransın mı?</translation>
 <translation id="1629314197035607094">Şifrenin süresi doldu</translation>
+<translation id="1947639598318989608">Brave'ın alışveriş sepetlerinizde kişiselleştirilmiş indirimler bulmasına izin vermek istiyor musunuz?</translation>
 <translation id="1629521517399325891">Kullanıcı sertifikası, ağ kimlik doğrulaması için kullanılamıyor.</translation>
 <translation id="163072119192489970">Veri gönderip alma işlemini bitirmesine izin verilen siteler</translation>
 <translation id="1630768113285622200">Yeniden başlat ve devam et</translation>
@@ -3186,7 +3187,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="4469762931504673593"><ph name="ORIGIN"/> sitesi <ph name="FOLDERNAME"/> klasöründeki dosyaları düzenleyebilir</translation>
 <translation id="4470957202018033307">Harici depolama tercihleri</translation>
 <translation id="4471354919263203780">Konuşma tanıma dosyaları indiriliyor... %<ph name="PERCENT"/></translation>
-<translation id="506314819294271427">Brave'un özelliklerini ve performansını iyileştirmeye yardımcı olun</translation>
+<translation id="918192811481327695">Brave'un özelliklerini ve performansını iyileştirmeye yardımcı olun</translation>
 <translation id="4472575034687746823">Başlayın</translation>
 <translation id="4474155171896946103">Tüm sekmelere yer işareti koy...</translation>
 <translation id="4475552974751346499">İndirilenlerde ara</translation>
@@ -4416,7 +4417,6 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="5864754048328252126">Şarj olurken boşta kalma işlemi</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> yakında duraklatılacak</translation>
 <translation id="586567932979200359"><ph name="PRODUCT_NAME"/> programını disk görüntüsünden çalıştırıyorsunuz. Bu ürünü bilgisayarınıza kurduğunuzda, disk görüntüsü olmadan çalıştırabilir ve her zaman güncel olacağından emin olabilirsiniz.</translation>
-<translation id="1224064034972923114">Kullanım istatistiklerini ve kilitlenme raporlarını Brave'a otomatik olarak gönderir</translation>
 <translation id="5867841422488265304">Arama yapın veya web adresi yazın</translation>
 <translation id="5869029295770560994">Tamam, Anladım</translation>
 <translation id="5869522115854928033">Kayıtlı şifreler</translation>
@@ -5431,7 +5431,6 @@ Brave'ın hangi verileri neden topladığıyla ilgili bilgi almak için <ph name
 <translation id="6997642619627518301"><ph name="NAME_PH"/> - Etkinlik Günlüğü</translation>
 <translation id="6997707937646349884">Cihazlarınızda:</translation>
 <translation id="6998793565256476099">Video konferans için cihazı kaydetme</translation>
-<translation id="456304305650018221">Brave'ın alışveriş sepetinize ekledikleriniz için indirim bulmasına izin verilsin mi?</translation>
 <translation id="6999956497249459195">Yeni grup</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> bağlandı, ancak yapılandırılması gerekiyor</translation>
 <translation id="7000347579424117903">Ctrl, Alt veya Arama tuşunu ekleyin</translation>

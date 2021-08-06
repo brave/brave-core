@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">Åpner enkelte nettsteder med en trygg HTTPS-tilkobling i stedet for standard HTTP.</translation>
 <translation id="94154759592465111">Blokker skript</translation>
 <translation id="3518266709656143462">Blokkerer Javascript (kan ødelegge nettsteder)</translation>
-<translation id="5709627087332022422">Blokker tredjeparts sporere.</translation>
 <translation id="6052725679982758334">Blokkering av sosiale medier</translation>
 <translation id="7498695072878479744">Tillat Google-påloggingsknapper på tredjepartsnettsteder</translation>
 <translation id="863171915776379000">Tillat Facebook-innlogginger og innebygde innlegg</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">IPFS-gateway</translation>
 <translation id="2688519859165248360">Tillater navigering til IPFS-ressurser gjennom en IPFS-inngangsport</translation>
 <translation id="7534079972563542000">Ustoppelige domener</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Prisen på Ethereum (ETH)</translation>
 <translation id="6513892817556267573">Ethereum-navnetjenesten</translation>
 <translation id="3894650624018948468">Løsningsmetode</translation>
 <translation id="2356070529366658676">Spør</translation>
 <translation id="4176463684765177261">Deaktivert</translation>
 <translation id="2218918398178303658">DNS over HTTPS</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Hindrer nettleseren i å bruke fingeravtrykk</translation>
 <translation id="7459000603787995422">Lukk faner ved avslutning</translation>
 <translation id="4448697385961650078">Blokker sporere og annonser</translation>
@@ -80,10 +80,6 @@
 <translation id="2171928016777725844">Gjør Brave til standardnettleser!</translation>
 <translation id="7136694880210472378">Bruk som standard</translation>
 <translation id="4250680216510889253">Nei</translation>
-<translation id="4501702055016678577">Privat søk med DuckDuckGo?</translation>
-<translation id="910419239800579753">Med privat søk bruker Brave DuckDuckGo til å svare på søkene dine mens du er i denne private fanen. DuckDuckGo er en søkemotor som ikke sporer søkehistorikken din, slik at du kan søke privat.</translation>
-<translation id="1426410128494586442">Ja</translation>
-<translation id="5628466560184522265">Les om privat søk med DuckDuckGo</translation>
 <translation id="8826007068782654809">Tusen takk</translation>
 <translation id="6665366815203065060">Du sendte nettopp tips til:</translation>
 <translation id="5441565662498481293">Du sender automatisk et tips til:</translation>
@@ -430,7 +426,7 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="3477340970981564961">Brave Private Ads belønner deg med polletter for å støtte innholdsskapere, i motsetning til tradisjonelle annonser – samtidig som den personlige informasjonen din beskyttes.</translation>
 <translation id="6973095375773523904">Hvor vises annonsene?</translation>
 <translation id="7556325460112047619">Brave Private Ads vil vises som et ordinært varsel. Du kontrollerer hvor ofte du ser disse annonsene via innstillingene.</translation>
-<translation id="6897083627729802351">Når mottar du belønninger</translation>
+<translation id="6897083627729802351">Når mottar du belønninger?</translation>
 <translation id="310863932297733723">Pollettene du har tjent på Brave Private Ads i inneværende måned vil komme inn den 5. i neste måned.</translation>
 <translation id="7712287524451429139">Gi tilbake uten anstrengelser</translation>
 <translation id="105037569026952831">Innholdsprodusenter mottar automatisk token-bidragene basert på engasjementsnivåene dine. Disse måler vi som 'Oppmerksomhet'.</translation>
@@ -447,7 +443,7 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="827315274423079662">Hurra, du er helt klar!</translation>
 <translation id="3895246934788932488">Ved å bruke Brave Rewards styrker du personvernet ditt og bidrar til å gjøre nettet til et bedre sted for alle. Det er bare fantastisk!</translation>
 <translation id="5705882733397021510">Gå tilbake</translation>
-<translation id="3985567919248057638">La oss ta en rask omvisning</translation>
+<translation id="3985567919248057638">La oss ta en kjapp omvisning</translation>
 <translation id="2434574859640694129">Etter du mottar den første annonseutbetalingen din kan du komme tilbake og tipse denne innholdsprodusenten!</translation>
 <translation id="207242986925259074">Rask oppfrisknings-omvisning</translation>
 <translation id="8342862030112839977">Den første belønningsutbetalingen din kommer innen:</translation>
@@ -554,4 +550,13 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="745115390910697838">Frasene stemte ikke. Prøv igjen.</translation>
 <translation id="2360588547830602174">Kunne ikke gjenopprette konto. Prøv igjen.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">Markedspris i ETH</translation>
+<translation id="6748108480210050150">Fra</translation>
+<translation id="3318280255740629162">25 %</translation>
+<translation id="2636487255623744079">50 %</translation>
+<translation id="8654192805213365413">75 %</translation>
+<translation id="6159566011642056819">Til (anslag)</translation>
+<translation id="59223531494896848">Begrensning</translation>
+<translation id="3567988240819868195">Marked</translation>
+<translation id="632241521608275119">Slingringstoleranse</translation>
 </translationbundle>

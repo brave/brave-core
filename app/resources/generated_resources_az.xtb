@@ -587,6 +587,7 @@
 <translation id="1627408615528139100">Artıq endirilib</translation>
 <translation id="1628948239858170093">Açmazdan əvvəl fayl skanlansın?</translation>
 <translation id="1629314197035607094">Parolun müddəti bitdi</translation>
+<translation id="1947639598318989608">Brave'a seçdiyiniz məhsullar üçün fərdi endirimlər tapmağa icazə verilsin?</translation>
 <translation id="1629521517399325891">Şəbəkə doğrulaması üçün istifadəçi sertifikatı əlçatan deyil.</translation>
 <translation id="163072119192489970">Verilənlərin göndərilməsini və qəbulunu tamamlamaq icazəsi verilib</translation>
 <translation id="1630768113285622200">Yenidən başladın və davam edin</translation>
@@ -3191,7 +3192,7 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="4469762931504673593"><ph name="ORIGIN"/> <ph name="FOLDERNAME"/> qovluğundakı faylları redaktə edə bilər</translation>
 <translation id="4470957202018033307">Xarici yaddaş tərcihləri</translation>
 <translation id="4471354919263203780">Nitq tanıma faylları endirilir... <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Brave'un funksiya və performansını təkmilləşdirməyə kömək edin</translation>
+<translation id="918192811481327695">Brave'un funksiya və performansını təkmilləşdirməyə kömək edin</translation>
 <translation id="4472575034687746823">Başlayın</translation>
 <translation id="4474155171896946103">Bütün panelləri əlfəcinləyin...</translation>
 <translation id="4475552974751346499">Endirmələri axtarın</translation>
@@ -4430,7 +4431,6 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="5864754048328252126">Şarj edilən zaman cihaz fəaliyyətsiz qaldıqda ediləcək əməliyyat</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> tezliklə dayanacaq</translation>
 <translation id="586567932979200359"><ph name="PRODUCT_NAME"/> məhsulunu onun disk obrazindan işlədirsiniz. Onun kompüterə quraşdırılması disk obrazı olmadan işlətməyinizə imkan verəcək və həmişə güncəl qalmasını sağlayacaq.</translation>
-<translation id="1224064034972923114">İstifadə statistikası və qəza raportlarını avtomatik Brave'a göndərir</translation>
 <translation id="5867841422488265304">Veb ünvanı axtarın və yazın</translation>
 <translation id="5869029295770560994">Ok, Anladım</translation>
 <translation id="5869522115854928033">Saxlanılmış parollar</translation>
@@ -5449,7 +5449,6 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="6997642619627518301"><ph name="NAME_PH"/> - Fəaliyyət Qeydi</translation>
 <translation id="6997707937646349884">Cihazlarınızda:</translation>
 <translation id="6998793565256476099">Video görüş üçün cihazı qeydiyyatdan keçirin</translation>
-<translation id="456304305650018221">Brave'un arabalarınıza əlavə etdiklərinizə endirimlər tapmasına icazə verilsin?</translation>
 <translation id="6999956497249459195">Yeni qrup</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> qoşuludur, lakin konfiqurasiya lazımdır</translation>
 <translation id="7000347579424117903">Ctrl, Alt və ya Search daxil edin</translation>

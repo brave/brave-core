@@ -590,6 +590,7 @@
 <translation id="1627408615528139100">Ja s'ha baixat</translation>
 <translation id="1628948239858170093">Vols escanejar el fitxer abans d'obrir-lo?</translation>
 <translation id="1629314197035607094">La contrasenya ha caducat</translation>
+<translation id="1947639598318989608">Vols permetre que Brave cerqui descomptes personalitzats als teus carretons?</translation>
 <translation id="1629521517399325891">El certificat de l'usuari no està disponible per a l'autenticació de xarxa.</translation>
 <translation id="163072119192489970">Amb permís per acabar d'enviar o de rebre dades</translation>
 <translation id="1630768113285622200">Reinicia i continua</translation>
@@ -1955,7 +1956,7 @@ i Ctrl+Alt+disminueix la brillantor per reduir.</translation>
 <translation id="3088128611727407543">S'està preparant el perfil de l'aplicació...</translation>
 <translation id="3088325635286126843">&amp;Canvia el nom...</translation>
 <translation id="3089064280130434511">Impedeix que els llocs web obrin i col·loquin finestres a les teves pantalles</translation>
-<translation id="3089137131053189723">S'ha esborrat la cerca</translation>
+<translation id="3089137131053189723">La cerca s'ha esborrat</translation>
 <translation id="3090589793601454425">No les moguis</translation>
 <translation id="3090819949319990166">No es pot copiar el fitxer crx extern a <ph name="TEMP_CRX_FILE"/>.</translation>
 <translation id="3090871774332213558">"<ph name="DEVICE_NAME"/>" vinculat</translation>
@@ -3186,7 +3187,7 @@ i Ctrl+Alt+disminueix la brillantor per reduir.</translation>
 <translation id="4469762931504673593"><ph name="ORIGIN"/> pot editar els fitxers que conté la carpeta <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Preferències de l'emmagatzematge extern</translation>
 <translation id="4471354919263203780">S'estan baixant els fitxers de reconeixement de parla... <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Ajuda a millorar les funcions i el rendiment de Brave</translation>
+<translation id="918192811481327695">Ajuda a millorar les funcions i el rendiment de Brave</translation>
 <translation id="4472575034687746823">Comença</translation>
 <translation id="4474155171896946103">Afegeix totes les pestanyes a les adreces d'interès...</translation>
 <translation id="4475552974751346499">Cerca baixades</translation>
@@ -4417,7 +4418,6 @@ Assegureu-vos que no es pugui accedir a informació sensible.</translation>
 <translation id="5864754048328252126">Acció d'inactivitat mentre es carrega</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> aviat es posarà en pausa</translation>
 <translation id="586567932979200359">Esteu executant <ph name="PRODUCT_NAME"/> des de la imatge de disc. Si instal·leu l'aplicació a l'equip, podreu executar-la sense la imatge de disc i es mantindrà actualitzada.</translation>
-<translation id="1224064034972923114">Envia automàticament a Brave estadístiques d'ús i informes d'error</translation>
 <translation id="5867841422488265304">Cerca o escriu l'adreça web</translation>
 <translation id="5869029295770560994">D'acord</translation>
 <translation id="5869522115854928033">Contrasenyes desades</translation>
@@ -4923,7 +4923,7 @@ Assegureu-vos que no es pugui accedir a informació sensible.</translation>
 <translation id="6429384232893414837">Error d'actualització</translation>
 <translation id="6430814529589430811">ASCII codificat en Base64, certificat únic</translation>
 <translation id="6431347207794742960"><ph name="PRODUCT_NAME"/> configurarà les actualitzacions automàtiques per a tots els usuaris d'aquest equip.</translation>
-<translation id="6434104957329207050">Velocitat d'escaneig del punter</translation>
+<translation id="6434104957329207050">Velocitat de la cerca per punt</translation>
 <translation id="6434309073475700221">Descarta els canvis</translation>
 <translation id="6434325376267409267">El dispositiu s'ha d'actualitzar perquè puguis utilitzar <ph name="APP_NAME"/>.</translation>
 <translation id="6438234780621650381">Restablir la configuració</translation>
@@ -5433,7 +5433,6 @@ Assegureu-vos que no es pugui accedir a informació sensible.</translation>
 <translation id="6997642619627518301">Registre d'activitat a <ph name="NAME_PH"/></translation>
 <translation id="6997707937646349884">Als teus dispositius:</translation>
 <translation id="6998793565256476099">Inscriu el dispositiu per a la videoconferència</translation>
-<translation id="456304305650018221">Vols permetre que Brave cerqui descomptes per als articles que has afegit als carretons?</translation>
 <translation id="6999956497249459195">Grup nou</translation>
 <translation id="7000206553895739324">La impressora <ph name="PRINTER_NAME"/> està connectada però s'ha de configurar</translation>
 <translation id="7000347579424117903">Inclou la tecla Ctrl, Alt o Cerca</translation>
@@ -5461,7 +5460,7 @@ Assegureu-vos que no es pugui accedir a informació sensible.</translation>
 <translation id="7017219178341817193">Afegeix una pàgina nova</translation>
 <translation id="7017354871202642555">No es pot configurar el mode després d'haver configurat la finestra.</translation>
 <translation id="7018275672629230621">Llegir i canviar l'historial de navegació</translation>
-<translation id="7019805045859631636">Ràpid</translation>
+<translation id="7019805045859631636">Ràpida</translation>
 <translation id="7022562585984256452">S'ha definit la pàgina d'inici.</translation>
 <translation id="7023206482239788111">Privacy Sandbox preserva la vitalitat del web obert creant millors maneres de dur a terme aquests serveis, sense que els llocs web es vegin afectats i impedint que es faci un seguiment ocult de les teves accions al web.</translation>
 <translation id="7024588353896425985">Gestors de fitxers</translation>
@@ -6391,7 +6390,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8041089156583427627">Envia suggeriments</translation>
 <translation id="8042142357103597104">Opacitat del text</translation>
 <translation id="8044262338717486897"><ph name="LINUX_APP_NAME"/> no respon.</translation>
-<translation id="8044899503464538266">Lent</translation>
+<translation id="8044899503464538266">Lenta</translation>
 <translation id="5462539695964427820">La sincronització s'ha aturat a través del Tauler de control de Brave.</translation>
 <translation id="8045923671629973368">Introdueix l'identificador de l'aplicació o l'URL de Web Store</translation>
 <translation id="8046132381940444654">Un representant del servei d'atenció al client pot utilitzar el número EID per ajudar-te a activar el servei</translation>

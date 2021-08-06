@@ -28,6 +28,9 @@
 <translation id="3218385319396786393">이 페이지에서는 자동 재생이 차단되었습니다</translation>
 <translation id="4988333904713528597"><ph name="HOST"/>에서 자동 재생 항상 허용하기</translation>
 <translation id="4150684676757176434">계속해서 자동 재생 차단</translation>
+<translation id="1448289340149908413">이더리움</translation>
+<translation id="6583467242903731748">사이트가 Ethereum 제공자 API에 액세스하려고 할 때 묻기</translation>
+<translation id="7017590444693657895">사이트가 Ethereum 제공자 API에 액세스할 수 없도록 차단</translation>
 <translation id="8988939298652262600">Brave는 확장 프로그램의 보안 및 안전을 검토하지 않습니다. 개발자를 신뢰하는 경우에만 이 확장 프로그램을 설치하세요.</translation>
 <translation id="8081858229109418493">프로필 이름 및 아이콘</translation>
 <translation id="2044383478723007273">Brave 색상</translation>
@@ -42,6 +45,7 @@
 <translation id="5802665280774361839">주소 표시줄에 자동 완성 표시</translation>
 <translation id="597020512043916976">자동 완성 제안에 인기 사이트 표시</translation>
 <translation id="264150068416846820">자동 완성 제안에 Brave 추천 사이트 표시</translation>
+<translation id="5529693968082667490">검색 탭 버튼 표시</translation>
 <translation id="6414370348346025511">표준 보호가 켜져 있습니다.</translation>
 <translation id="814018970995616154">Brave에 저장된 안전하지 않은 사이트 목록을 이용해 URL을 확인합니다.</translation>
 <translation id="1144810021918451336">위험한 웹사이트, 다운로드 및 확장 프로그램으로부터 사용자를 보호하지 않습니다.</translation>
@@ -93,7 +97,7 @@
 <translation id="6303294677342628402">보호</translation>
 <translation id="7133511168130368997">웹에서 귀하를 따라오는 추적기 및 광고를 차단하세요.</translation>
 <translation id="2761825942249694703">이는 기본 Shields 설정입니다. 특정 사이트에 대해 Shields 패널에서 무언가를 바꾸지 않는 한 모든 웹사이트에 적용됩니다. 이를 바꾼다고 해도 기존 사이트별 설정에는 영향을 미치지 않습니다.</translation>
-<translation id="8754605759692119662">웹사이트의 광고 대부분을 차단하지만, Brave 비공개 광고는 제외되며 — 해당 광고는 ~에서 제어됩니다</translation>
+<translation id="1485394570478670912">이렇게 하면 다음 옵션에서 관리하는 Brave 프라이빗 광고가 아닌 대부분의 광고가 웹사이트에서 차단됩니다.</translation>
 <translation id="6388201778088078932">설정.</translation>
 <translation id="9185018653595759199">소셜 미디어 차단</translation>
 <translation id="7390783310074170337">기본 보기</translation>
@@ -294,6 +298,13 @@
 <translation id="1391855377994926460">더욱 빠른 웹 브라우징 - 주요 뉴스 사이트 속도가 최대 6배 빨라집니다.</translation>
 <translation id="9218430445555521422">기본 브라우저로 설정</translation>
 <translation id="3479552764303398839">나중에</translation>
+<translation id="5039804452771397117">허용</translation>
+<translation id="7053983685419859001">차단</translation>
+<translation id="7815301689257843278">충돌 보고서를 자동 전송하여 Brave가 문제 재발을 방지할 수 있도록 하시겠습니까?</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/>가 예기치 않게 종료되었습니다.</translation>
+<translation id="1324417023773393937">Brave 브라우저</translation>
+<translation id="1068069727470515940"><ph name="SETTING_TEXT"/>은 언제든지 다시 변경할 수 있습니다.</translation>
+<translation id="6873781976650514089">이 설정</translation>
 <translation id="6040143037577758943">닫기</translation>
 <translation id="5600566490506283344">Brave 광고 알림</translation>
 <translation id="4877147287319222750">사이드바에 추가</translation>
@@ -345,6 +356,6 @@
 <translation id="8487693399751278191">지금 북마크 가져오기...</translation>
 <translation id="2557899542277210112">빠르게 액세스하려면, 북마크 바에 북마크를 배치하세요.</translation>
 <translation id="2808630562319398131">Brave 리워드 데이터 재설정...</translation>
-<translation id="1224064034972923114">자동으로 충돌 보고서를 보내 Brave 개선 지원</translation>
-<translation id="3738833060602717053">자동으로 충돌 보고서를 보내 <ph name="PRODUCT_NAME"/> 개선 지원</translation>
+<translation id="2273851479262317744">Brave를 기본 브라우저로 설정</translation>
+<translation id="8581710194025054669">온라인 프라이버시를 최대한 확보하려면 Brave를 컴퓨터의 기본 브라우저로 설정하세요. Brave를 기본 브라우저로 설정하면 웹 링크를 클릭하여 열 때 Brave의 프라이버시 보호가 적용됩니다.</translation>
 </translationbundle>

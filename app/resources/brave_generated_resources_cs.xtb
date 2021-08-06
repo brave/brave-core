@@ -3,11 +3,11 @@
 <translationbundle lang="cs">
 <translation id="3333887201479867589">Odměny Brave</translation>
 <translation id="7942180974165298215">Blokování reklam Brave</translation>
-<translation id="4615489450165434530">Nahlásit porouchanou stránku</translation>
+<translation id="4615489450165434530">Nahlásit porouchané stránky</translation>
 <translation id="6406506848690869874">Synchronizace</translation>
 <translation id="1544192797660353713">Peněženka</translation>
-<translation id="2445484935443597917">Vytvořit nový profil</translation>
-<translation id="2666990579225592931">Otevřít okno hosta</translation>
+<translation id="2445484935443597917">Vytvořte si nový profil</translation>
+<translation id="2666990579225592931">Otevřít okno pro hosty</translation>
 <translation id="8275068909952022340">Další...</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID rozšíření "<ph name="EXTENSION_ID"/>") není v Brave povoleno.</translation>
 <translation id="6786747875388722282">Rozšíření</translation>
@@ -28,6 +28,9 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="3218385319396786393">Automatické přehrávání bylo na této stránce zablokováno</translation>
 <translation id="4988333904713528597">Vždy povolit automatické přehrávání na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Pokračovat v blokování automatického přehrávání</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Zeptat se, když chce web přistupovat k API rozhraní poskytovatele Etherea</translation>
+<translation id="7017590444693657895">Zablokovat přístup webů k API rozhraní poskytovatele Etherea</translation>
 <translation id="8988939298652262600">Brave nekontroluje bezpečnost rozšíření. Nainstalujte si toto rozšíření, jen pokud důvěřujete jeho vývojáři.</translation>
 <translation id="8081858229109418493">Název profilu a ikona</translation>
 <translation id="2044383478723007273">Barvy Brave</translation>
@@ -42,6 +45,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="5802665280774361839">V adresním řádku používat automatické doplňování</translation>
 <translation id="597020512043916976">Ukazovat nejoblíbenější stránky v návrzích automatického dokončení</translation>
 <translation id="264150068416846820">Ukázat doporučené stránky Brave v návrzích automatického dokončování</translation>
+<translation id="5529693968082667490">Tlačítko Zobrazit záložky pro vyhledávání</translation>
 <translation id="6414370348346025511">Je zapnutá standardní ochrana.</translation>
 <translation id="814018970995616154">Kontroluje URL adresy pomocí seznamu nebezpečných webů, který je uložen v Brave.</translation>
 <translation id="1144810021918451336">Nechrání vás před nebezpečnými internetovými stránkami, staženými soubory a rozšířeními.</translation>
@@ -93,7 +97,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="6303294677342628402">Štíty</translation>
 <translation id="7133511168130368997">Blokujte trackery a reklamy, které vás následují na internetu.</translation>
 <translation id="2761825942249694703">Toto jsou výchozí nastavení Štítů. Fungují na všech internetových stránkách, pokud něco nezměníte na panelu Štítů na určité stránce. Jejich změna neovlivní vaše existující nastavení u konkrétních stránek.</translation>
-<translation id="8754605759692119662">Toto zablokuje většinu reklam na internetových stránkách, nikoli soukromé reklamy Brave — ty jsou řízeny v</translation>
+<translation id="1485394570478670912">Tím zablokujete většinu reklam na webových stránkách, nikoli však soukromé reklamy Brave — ty se ovládají v</translation>
 <translation id="6388201778088078932">nastavení.</translation>
 <translation id="9185018653595759199">Blokování sociálních médií</translation>
 <translation id="7390783310074170337">Výchozí zobrazení</translation>
@@ -294,6 +298,13 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="1391855377994926460">Procházejte web tak rychle i nadále – na hlavních zpravodajských webech až 6krát rychleji.</translation>
 <translation id="9218430445555521422">Nastavit jako výchozí</translation>
 <translation id="3479552764303398839">Teď ne</translation>
+<translation id="5039804452771397117">Povolit</translation>
+<translation id="7053983685419859001">Blokovat</translation>
+<translation id="7815301689257843278">Chcete automaticky odesílat hlášení o výpadcích, aby služba Brave mohla zabránit opakování tohoto problému?</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> byl neočekávaně ukončen.</translation>
+<translation id="1324417023773393937">Prohlížeč Brave</translation>
+<translation id="1068069727470515940"><ph name="SETTING_TEXT"/> můžete opět kdykoli změnit.</translation>
+<translation id="6873781976650514089">Toto nastavení</translation>
 <translation id="6040143037577758943">Zavřít</translation>
 <translation id="5600566490506283344">Upozornění na reklamu Brave</translation>
 <translation id="4877147287319222750">Přidat na postranní panel</translation>
@@ -345,6 +356,6 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="8487693399751278191">Importovat záložky ihned...</translation>
 <translation id="2557899542277210112">Pro rychlý přístup umístěte své záložky sem na lištu záložek.</translation>
 <translation id="2808630562319398131">Obnovit údaje o odměnách Brave Rewards...</translation>
-<translation id="1224064034972923114">Pomozte vylepšit Brave automatickým odesíláním zpráv o selhání</translation>
-<translation id="3738833060602717053">Pomozte vylepšit <ph name="PRODUCT_NAME"/> automatickým odesíláním zpráv o selhání</translation>
+<translation id="2273851479262317744">Nastavit Brave jako výchozí prohlížeč</translation>
+<translation id="8581710194025054669">Pokud chcete na internetu dosáhnout co nejvyššího soukromí, zvažte nastavení prohlížeče Brave jako výchozího prohlížeče v počítači. Pokud je Brave výchozím prohlížečem, každý webový odkaz, na který kliknete, se otevře s využitím ochrany soukromí Brave.</translation>
 </translationbundle>

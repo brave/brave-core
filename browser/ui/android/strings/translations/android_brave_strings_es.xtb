@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">Abre algunos sitios empleando una conexión HTTPS segura en lugar de una conexión HTTP sencilla.</translation>
 <translation id="94154759592465111">Bloquear Scripts</translation>
 <translation id="3518266709656143462">Bloquea Javascript (podría provocar el mal funcionamiento de algunos sitios web)</translation>
-<translation id="5709627087332022422">Bloquear rastreadores de sitios web</translation>
 <translation id="6052725679982758334">Bloqueo de redes sociales</translation>
 <translation id="7498695072878479744">Permitir botones de acceso a Google en sitios web de terceros</translation>
 <translation id="863171915776379000">Permitir inicios de sesión a Facebook y mensajes incrustados</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">Puerta de enlace IPFS</translation>
 <translation id="2688519859165248360">Permite la navegación hacia recursos IPFS mediante una puerta de enlace IPFS</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Precio de Ethereum (ETH)</translation>
 <translation id="6513892817556267573">Servicio de nombres de Ethereum</translation>
 <translation id="3894650624018948468">Resolver el método</translation>
 <translation id="2356070529366658676">Preguntar</translation>
 <translation id="4176463684765177261">Deshabilitado</translation>
 <translation id="2218918398178303658">DNS sobre HTTPS</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Evita que el navegador tome tu huella digital</translation>
 <translation id="7459000603787995422">Cerrar pestañas al salir</translation>
 <translation id="4448697385961650078">Bloquear controladores y anuncios</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">¡Convierte a Brave en tu navegador predeterminado!</translation>
 <translation id="7136694880210472378">Establecer como predeterminado</translation>
 <translation id="4250680216510889253">No</translation>
-<translation id="4501702055016678577">¿Quieres hacer una búsqueda privada con DuckDuckGo?</translation>
-<translation id="910419239800579753">Con la búsqueda privada, Brave usará DuckDuckGo para responder a tus búsquedas mientras estás en esta pestaña privada. DuckDuckGo es un motor de búsqueda que no rastrea tu historial de búsqueda, permitiéndote realizar búsquedas en privado.</translation>
-<translation id="1426410128494586442">Sí</translation>
-<translation id="5628466560184522265">Aprende acerca de la búsqueda privada con DuckDuckGo</translation>
 <translation id="8826007068782654809">Gracias</translation>
 <translation id="6665366815203065060">Acabas de enviar una propina a:</translation>
 <translation id="5441565662498481293">Estás enviando automáticamente una propina a:</translation>
@@ -444,7 +440,7 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="3477340970981564961">Los anuncios privados de Brave te premian con vales que sirven para apoyar a los creadores de contenido. Y a diferencia de los anuncios tradicionales, no tendrás que renunciar a la privacidad de tu información personal.</translation>
 <translation id="6973095375773523904">¿Dónde se muestran los anuncios?</translation>
 <translation id="7556325460112047619">Los anuncios privados de Brave aparecerán como una notificación normal. Puedes controlar la frecuencia con la que ves los anuncios en la configuración.</translation>
-<translation id="6897083627729802351">¿Cuándo recibe recompensas?</translation>
+<translation id="6897083627729802351">¿Cuándo recibes recompensas?</translation>
 <translation id="310863932297733723">Los vales que hayas conseguido con los anuncios privados de Brave a lo largo del mes en curso se acreditarán el día cinco del mes siguiente.</translation>
 <translation id="7712287524451429139">Retribuir es facilísimo</translation>
 <translation id="105037569026952831">Los creadores reciben sus contribuciones de tokens automáticamente en función del nivel de participación que usted tenga. Ese nivel lo medimos como ‘Atención’.</translation>
@@ -461,7 +457,7 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="827315274423079662">¡Bien!, ya’ tienes todo lo que necesitas.</translation>
 <translation id="3895246934788932488">Al utilizar Brave Rewards, protege su privacidad y ayuda a que la web sea un lugar mejor para todos. ¡Y eso es estupendo!</translation>
 <translation id="5705882733397021510">Volver</translation>
-<translation id="3985567919248057638">Hagamos una visita rápida</translation>
+<translation id="3985567919248057638">Echemos un vistazo</translation>
 <translation id="2434574859640694129">Una vez que haya recibido su primer pago por publicidad puede volver y dar una propina a este creador.</translation>
 <translation id="207242986925259074">Visita rápida de repaso</translation>
 <translation id="8342862030112839977">Tu primer pago de Rewards llegará antes del:</translation>
@@ -568,4 +564,13 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="745115390910697838">Las frases no coinciden. Inténtalo de nuevo.</translation>
 <translation id="2360588547830602174">Error al recuperar la cuenta. Inténtalo de nuevo.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">Precio del mercado en ETH</translation>
+<translation id="6748108480210050150">De:</translation>
+<translation id="3318280255740629162">25 %</translation>
+<translation id="2636487255623744079">50 %</translation>
+<translation id="8654192805213365413">75 %</translation>
+<translation id="6159566011642056819">Para (estimación)</translation>
+<translation id="59223531494896848">Límite</translation>
+<translation id="3567988240819868195">Mercado</translation>
+<translation id="632241521608275119">Tolerancia de deslizamiento</translation>
 </translationbundle>

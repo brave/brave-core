@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">Ipakita ang mga paborito</translation>
 <translation id="3446024864193919737">Ipakita ang Mga Reward ng Brave</translation>
 <translation id="6274899614137380422">Ipakita ang Binance</translation>
-<translation id="5551238871320268996">Brave Together</translation>
 <translation id="5585019845078534178">Mga Card</translation>
 <translation id="3870475560794762985">Ipakita ang Mga Naka-sponsor na Larawan</translation>
 <translation id="2875302873837723333">nangungunang sites</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">Imahe sa Background</translation>
 <translation id="385051799172605136">Bumalik</translation>
 <translation id="9024104284526126630">Puwede kang magsimula ng pribadong tawag sa Brave.</translation>
-<translation id="5735801688206890393">Magsimula ng mga unlimited na tawag sa mga kaibigan at kasamahan sa Brave Together.</translation>
+<translation id="4903286433687221248">Magsimula ng mga unlimited na tawag sa mga kaibigan at kasamahan sa Brave Talk.</translation>
 <translation id="7115051913071512405">Subukan ito</translation>
 <translation id="7415602225677446066">Mga nangungunang kuwento ngayong araw sa ganap na pribadong feed, para lang sa iyo.</translation>
 <translation id="6903061332999399632">Ang Brave News ay sinusuportahan ng ad na may mga ganap na pribado at naka-anonymize na ad na tumutugma sa iyong device. Mananatiling pribado ang personal na impormasyon mo kahit kailan, alinsunod sa aming <ph name="LINK_START"/>patakaran sa privacy<ph name="LINK_END"/>.</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">Auto-detect</translation>
 <translation id="4394049700291259645">Huwag paganahin</translation>
 <translation id="4176463684765177261">Hindi Pinagana</translation>
-<translation id="4434663852465709809">QR Code para sa mga user ng Mga Reward ng iOS na naglilipat ng BAT</translation>
-<translation id="2175927920773552910">QR Code</translation>
 <translation id="8283001340969131076">Paumanhin, nagkaroon ng error noong sinusubukang i-disconnect ang iyong <ph name="PROVIDER"/> account. Pakisubukan ulit makalipas ang ilang sandali.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">Offline ang device, pakisubukang muli sa ibang pagkakataon.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">Kasalukuyang hindi sinusuportahan ang BAT sa iyong rehiyon. Sumangguni <ph name="BEGIN_LINK"/>rito<ph name="END_LINK"/> para sa mga update.</translation>
 <translation id="1737873393693460829">Sa pamamagitan ng pag-on sa [[title]], sumasang-ayon ka sa <ph name="BEGIN_LINK1"/>Mga Tuntunin ng Serbisyo<ph name="END_LINK1"/> at <ph name="BEGIN_LINK2"/>Patakaran sa Privacy<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Nagka-error sa paggawa ng Brave Browser BAT</translation>
-<translation id="6473583070570450185">Kailangan mo ng na-verify na wallet upang Mag-log in</translation>
-<translation id="5949995321533425416">Kailangan mo ng minimum na <ph name="AMOUNT"/> BAT para makagawa ng wallet sa Uphold. Pakisubukang muli pagkatapos mong ma-verify ang iyong wallet sa Uphold.</translation>
+<translation id="8429332714958713413">Kailangan mo ng na-verify na wallet para mag-log in</translation>
+<translation id="5881716477679854586">Pakisubukan ulit pagkatapos mong kumpletuhin ang pag-verify ng ID sa <ph name="CUSTODIAN"/>.</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> ang darating makalipas ang <ph name="DAYS"/></translation>
 <translation id="4672975606583962967">Pumili ng wallet service</translation>
 <translation id="1815503044492647974">Pumili ng custodial wallet partner. Kung mayroon ka nang account, hihilingin sa iyong mag-log in para kumonekta.</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">Na-off ang Rewards</translation>
 <translation id="3354337256330577726">Na-off ang Auto-contribute</translation>
 <translation id="6727186931929643711">Ihinto ang pag-retry</translation>
+<translation id="8978461348341400550">Custodian:</translation>
+<translation id="7220161813676251577">Custodian member ID:</translation>
 <translation id="680983167891198932">Key</translation>
 <translation id="7535087603100972091">Value</translation>
 <translation id="45591635423975492">Na-log nang</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">Simulang gamitin ang Brave Rewards</translation>
 <translation id="6318696841371191107">Mabilis na maglibot</translation>
 <translation id="8465790416279415448">Sa pamamagitan ng pagpapatuloy, sumasang-ayon ka sa <ph name="TOS_LINK_BEGIN"/>Mga Tuntunin ng Serbisyo<ph name="TOS_LINK_END"/> at <ph name="PP_LINK_BEGIN"/>Patakaran sa Privacy<ph name="PP_LINK_END"/>.</translation>
-<translation id="2404165674840145940">Magbigay ng tip sa pamamagitan ng Brave rewards</translation>
-<translation id="5820285701794581330">Sa pamamagitan ng paggamit sa Brave rewards, magsisimula kang makakuha ng BAT na magagamit mo para bigyan ng tip ang mga creator.</translation>
+<translation id="8222322431155185238">Mag-tip gamit ang Brave Rewards</translation>
+<translation id="1895476463085410109">Kumita ng Rewards sa pamamagitan ng paggamit sa Brave Private Ads at awtomatikong suportahan ang mga content creator</translation>
 <translation id="5705882733397021510">Bumalik</translation>
 <translation id="185034574799484512">Mabilisan tayong maglibot</translation>
 <translation id="8281886186245836920">Laktawan</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">Subukang muli</translation>
 <translation id="2600847485413879104">Rewards BAT</translation>
 <translation id="8006596443377585072">bitFlyer Wallet</translation>
+<translation id="2770577461149798369">Gemini Wallet</translation>
 <translation id="8108350286444475334">I-uphold ang Wallet</translation>
 <translation id="6977372887576114613">Nag-deposit ng BAT</translation>
 <translation id="3173528272490482456">Handa ka na bang magsimula?</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">Maaari kang magsimula sa</translation>
 <translation id="194625454574835815">Recovery Key</translation>
 <translation id="6354568176665589146">Umuulit</translation>
+<translation id="2799223571221894425">Ilunsad Muli</translation>
 <translation id="1110535155349301542">alisin</translation>
 <translation id="8204292894173669182">Inalis Sa Naka-save</translation>
 <translation id="5530851178552343773">Nagtalaga ka ng [[reservedAmount]] [[currency]] para sa mga creator na hindi pa nagsa-sign up para makatanggap ng mga kontribusyon. Patuloy na susubukan ng iyong browser na mag-ambag hanggang sa mag-verify sila, o hanggang sa lumipas ang 90 araw.</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">Ang iyong Brave wallet ay hatid ng <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Binuo ang Mga Reward sa Brave batay sa Basic Attention Token. Matuto pa tungkol sa BAT</translation>
 <translation id="7823359893981882407">dito</translation>
+<translation id="3034163433136515805">Tingnan ang QR Code</translation>
+<translation id="1640793619390890218">para sa mga user ng iOS Rewards na nagta-transfer ng BAT.</translation>
 <translation id="4483635855837696643">I-restore ang iyong Wallet</translation>
 <translation id="459721429458957031">Gamitin ang iyong recovery key upang ma-restore ang wallet mo.</translation>
 <translation id="4600052736217630789">Kapag ni-restore gamit ang recovery key, mapapalitan ang iyong kasalukuyang wallet. Kaya tiyaking alisin ang laman ng iyong kasalukuyang wallet o i-back up ito bago i-restore.</translation>

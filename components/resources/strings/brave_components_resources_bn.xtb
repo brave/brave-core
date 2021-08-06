@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">ফেবরিটগুলো দেখান</translation>
 <translation id="3446024864193919737">Brave Rewards দেখান</translation>
 <translation id="6274899614137380422">Binance দেখান</translation>
-<translation id="5551238871320268996">একসাথে ব্রেভ</translation>
 <translation id="5585019845078534178">কার্ডগুলি</translation>
 <translation id="3870475560794762985">স্পন্সর করা ছবিগুলি দেখান</translation>
 <translation id="2875302873837723333">সেরা সাইটগুলি</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">ব্যাকগ্রাউন্ডের ছবি</translation>
 <translation id="385051799172605136">ফিরুন</translation>
 <translation id="9024104284526126630">আপনি Brave এ প্রাইভেট কল শুরু করতে পারেন।</translation>
-<translation id="5735801688206890393">Brave এ বন্ধুদের এবং সহকর্মীদের নিয়ে একসাথে সীমাহীন কলগুলি শুরু করুন।</translation>
+<translation id="4903286433687221248">Brave Talk-এ বন্ধু এবং সহকর্মীদের সাথে সীমাহীন কল শুরু করুন।</translation>
 <translation id="7115051913071512405">চেষ্টা কর</translation>
 <translation id="7415602225677446066">আজকের শীর্ষস্থানীয় গল্পগুলি পুরোপুরি ব্যক্তিগত ফিডে,কেবলমাত্র আপনার জন্য ।</translation>
 <translation id="6903061332999399632">Brave নিউজ অ্যাড-সমর্থিত। এটি সম্পূর্ণ ব্যক্তিগত এবং নামহীন অ্যাড দেখায় আপনার ডিভাইসটির সাথে মিলিয়ে। আমাদের <ph name="LINK_START"/>privacy policy<ph name="LINK_END"/> অনুযায়ী আপনার ব্যক্তিগত তথ্য সবসময় ব্যক্তিগতভাবেই সুরক্ষিত রাখা হয়।</translation>
@@ -85,7 +84,7 @@
 <translation id="1531133232292396145">আপনার ব্রাউজারে Binance দিয়ে সরাসরি ক্রিপ্টো ট্রেড করুন।</translation>
 <translation id="2166494527623220386">আপনার ব্রাউজারে Gemini দিয়ে সরাসরি ক্রিপ্টো ট্রেড করুন।</translation>
 <translation id="7191394989411626168">কার্ডগুলি বন্ধ করে, বর্তমানে দৃশ্যমান সমস্ত কার্ড গোপন করা হবে। তবে, আপনাকে এখনও নতুন কার্ড সম্পর্কে অবহিত করা হতে পারে।</translation>
-<translation id="8112367589167674370">Brave বাক্যালাপ</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="5655621391922317800">Crypto ওয়ালেটগুলি</translation>
 <translation id="8820817407110198400">বুকমার্কগুলি</translation>
 <translation id="1644574205037202324">ইতিহাস</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">স্বতঃ-সনাক্ত</translation>
 <translation id="4394049700291259645">অক্ষম</translation>
 <translation id="4176463684765177261">অক্ষম</translation>
-<translation id="4434663852465709809">BAT ট্রান্সফারকারী iOS পুরস্কার ব্যবহারকারীদের জন্য QR কোড</translation>
-<translation id="2175927920773552910">QR কোড</translation>
 <translation id="8283001340969131076">দুঃখিত, আপনার <ph name="PROVIDER"/> অ্যাকাউন্টটি সংযোগ বিচ্ছিন্ন করার সময় একটি ত্রুটি হয়েছে। অনুগ্রহ করে একটু পরে আবার চেষ্টা করুন।</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">ডিভাইসটি অফলাইন, অনুগ্রহ করে পরে আবার চেষ্টা করুন।</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">বর্তমানে আপনার অঞ্চলে BAT সমর্থিত নয়। আপডেটগুলির জন্য অনুগ্রহ করে <ph name="BEGIN_LINK"/>এখানে<ph name="END_LINK"/> দেখুন।</translation>
 <translation id="1737873393693460829">[[title]] চালু করে, আপনি <ph name="BEGIN_LINK1"/>পরিষেবার শর্তাবলী<ph name="END_LINK1"/> এবং <ph name="BEGIN_LINK2"/>গোপনীয়তা নীতি<ph name="END_LINK2"/>তে সম্মত হচ্ছেন।</translation>
 <translation id="2564425876266960486">Brave ব্রাউজার BAT কার্ড তৈরি করতে ত্রুটি</translation>
-<translation id="6473583070570450185">লগইন করতে আপনার একটি যাচাইকৃত ওয়ালেট লাগবে</translation>
-<translation id="5949995321533425416">একটি আপহোল্ড ওয়ালেট তৈরি করতে আপনার <ph name="AMOUNT"/> BAT এর একটি ন্যুনতম ব্যালেন্স লাগবে। আপনি আপহোল্ডের সাথে আপনার ওয়ালেট যাচাই করার পরে অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
+<translation id="8429332714958713413">লগ ইন করতে আপনার একটি যাচাইকৃত ওয়ালেট লাগবে</translation>
+<translation id="5881716477679854586"><ph name="CUSTODIAN"/>-এ আপনি ID যাচাইকরণ সম্পূর্ণ করার পরে অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> <ph name="DAYS"/> মধ্যে ঢুকছে</translation>
 <translation id="4672975606583962967">একটি ওয়ালেট পরিষেবা বেছে নিন</translation>
 <translation id="1815503044492647974">একটি কাস্টোডিয়াল ওয়ালেট পার্টনার নির্বাচন করুন। আপনার ইতিমধ্যে একটি অ্যাকাউন্ট থাকলে, সংযোগ করতে আপনাকে লগইন করতে বলা হবে।</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">পুরষ্কারগুলি বন্ধ করা হয়েছিল</translation>
 <translation id="3354337256330577726">স্বতঃ-প্রদান বন্ধ করা হয়েছিল</translation>
 <translation id="6727186931929643711">পুনরায় চেষ্টা করা থামানো হয়েছে</translation>
+<translation id="8978461348341400550">কাস্টোডিয়ান:</translation>
+<translation id="7220161813676251577">কাস্টোডিয়ান সদস্যের ID:</translation>
 <translation id="680983167891198932">কী</translation>
 <translation id="7535087603100972091">মান</translation>
 <translation id="45591635423975492">এখানে লগ করা হয়েছে</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">Brave Rewards ব্যবহার শুরু করুন</translation>
 <translation id="6318696841371191107">দ্রুত ভ্রমণ করুন</translation>
 <translation id="8465790416279415448">এগিয়ে গিয়ে, আপনি <ph name="TOS_LINK_BEGIN"/>পরিষেবার শর্তাবলী<ph name="TOS_LINK_END"/> এবং <ph name="PP_LINK_BEGIN"/>গোপনীয়তা নীতি<ph name="PP_LINK_END"/>তে সম্মত হচ্ছেন।</translation>
-<translation id="2404165674840145940">Brave rewards টিপ করুন।</translation>
-<translation id="5820285701794581330">Brave rewards ব্যবহার করে, আপনি BAT পেতে শুরু করবেন যা আপনি নির্মাতাদের টিপ করতে ব্যবহার করতে পারেন।</translation>
+<translation id="8222322431155185238">Brave পুরস্কারগুলি সম্পর্কে পরামর্শ</translation>
+<translation id="1895476463085410109">Brave ব্যক্তিগত বিজ্ঞাপনগুলি দেখে পুরস্কার অর্জন করুন এবং স্বয়ংক্রিয়ভাবে স্রষ্টাদের সমর্থন করুন</translation>
 <translation id="5705882733397021510">ফিরে যাও</translation>
 <translation id="185034574799484512">#8217 এর দ্রুত ভ্রমণ করতে দিন</translation>
 <translation id="8281886186245836920">ছেড়ে যান</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">আবার করুন</translation>
 <translation id="2600847485413879104">রিওয়ার্ডগুলির BAT</translation>
 <translation id="8006596443377585072">bitFlyer ওয়ালেট</translation>
+<translation id="2770577461149798369">জেমিনি ওয়ালেট</translation>
 <translation id="8108350286444475334">ওয়ালেট তুলে রাখুন</translation>
 <translation id="6977372887576114613">জমা করা BAT</translation>
 <translation id="3173528272490482456">শুরু করার জন্য প্রস্তুত?</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">আপনি শুরু করতে পারেন</translation>
 <translation id="194625454574835815">রিকভারি কিয়ের সাথে</translation>
 <translation id="6354568176665589146">পুনরাবৃত্তি</translation>
+<translation id="2799223571221894425">পুনঃশুরু</translation>
 <translation id="1110535155349301542">অপসারণ করুন</translation>
 <translation id="8204292894173669182">সংরক্ষিত থেকে সরান</translation>
 <translation id="5530851178552343773">অবদানগুলি পেতে যে নির্মাতারা এখনও সাইন আপ করেননি তাদের জন্য আপনি [[reservedAmount]] [[currency]] নির্ধারণ করেছেন। তারা যাচাই না করা পর্যন্ত বা 90 দিন পেরিয়ে না যাওয়া পর্যন্ত আপনার ব্রাউজার অবদান রাখার চেষ্টা চালিয়ে যাবে।</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285"><ph name="PROVIDER"/> আপনাকে Brave ওয়ালেট সুবিধা প্রদান করছে।</translation>
 <translation id="6401272292123354754">Brave রিওয়ার্ডস বেসিক অ্যাটেনশন টোকেন উপর নির্মিত| BAT সম্বন্ধে আরো জানুন</translation>
 <translation id="7823359893981882407">এখানে</translation>
+<translation id="3034163433136515805">QR কোড দেখুন</translation>
+<translation id="1640793619390890218">BAT ট্রান্সফার করা iOS পুরস্কার ব্যবহারকারীদের জন্য।</translation>
 <translation id="4483635855837696643">আপনার ওয়ালেট পুনরুদ্ধার করুন</translation>
 <translation id="459721429458957031">আপনার ওয়ালেট পুনরুদ্ধার করতে আপনার রিকভারি চাবিটি ব্যবহার করুন|</translation>
 <translation id="4600052736217630789">একটি পুনরুদ্ধারের চাবির মাধ্যমে আপনার ওয়ালেট পুনরুদ্ধার করলে তা বর্তমান ওয়ালেট প্রতিস্থাপন করবে। তাই পুনরুদ্ধারের আগে আপনি আপনার বর্তমান ওয়ালেট খালি করা বা ব্যাক আপ নেওয়া নিশ্চিত করুন।</translation>

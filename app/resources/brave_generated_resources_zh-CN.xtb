@@ -6,8 +6,8 @@
 <translation id="4615489450165434530">报告损坏的网站</translation>
 <translation id="6406506848690869874">同步</translation>
 <translation id="1544192797660353713">钱包</translation>
-<translation id="2445484935443597917">创建新的个人资料</translation>
-<translation id="2666990579225592931">以访客身份打开一个窗口</translation>
+<translation id="2445484935443597917">创建新配置文件</translation>
+<translation id="2666990579225592931">打开访客窗口</translation>
 <translation id="8275068909952022340">更多…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/>(Brave中不允许使用扩展ID“<ph name="EXTENSION_ID"/>”）。</translation>
 <translation id="6786747875388722282">扩展程序</translation>
@@ -28,6 +28,9 @@
 <translation id="3218385319396786393">已禁止在此网页上运行自动播放</translation>
 <translation id="4988333904713528597">始终允许自动播放<ph name="HOST"/></translation>
 <translation id="4150684676757176434">继续禁止自动播放</translation>
+<translation id="1448289340149908413">以太坊</translation>
+<translation id="6583467242903731748">询问站点何时要访问以太坊提供商的 API</translation>
+<translation id="7017590444693657895">阻止站点访问以太坊提供商的 API</translation>
 <translation id="8988939298652262600">Brave 不审查扩展程序的安全性。如果您信任这个开发者，请仅安装这个扩展程序。</translation>
 <translation id="8081858229109418493">个人资料姓名和图标</translation>
 <translation id="2044383478723007273">Brave 颜色</translation>
@@ -42,6 +45,7 @@
 <translation id="5802665280774361839">在地址栏中显示自动完成</translation>
 <translation id="597020512043916976">在自动完成建议中显示顶级网站</translation>
 <translation id="264150068416846820">在自动完成建议中显示 Brave 的建议站点</translation>
+<translation id="5529693968082667490">显示搜索标签页按钮</translation>
 <translation id="6414370348346025511">标准保护已启用。</translation>
 <translation id="814018970995616154">检查带有保存在 Brave 中的不安全站点列表的 URL。</translation>
 <translation id="1144810021918451336">不能保护您免受危险网站、下载和扩展名的侵害。</translation>
@@ -94,7 +98,7 @@
 <translation id="6303294677342628402">屏蔽</translation>
 <translation id="7133511168130368997">拦截在网络上无所不在的跟踪器和广告。</translation>
 <translation id="2761825942249694703">这些是默认屏蔽设置，适用于所有网站（除非您更改了某特定网站的屏蔽面板中的某些设置）。更改这些设置不会影响您现有的每个站点的设置。</translation>
-<translation id="8754605759692119662">该设置将拦截网站上的大多数广告，但不包括 Brave 的私人广告 —（那些是在设置中</translation>
+<translation id="1485394570478670912">这会拦截网站上的多数广告，但不包括 Brave 私人广告 — 那些由以下设定控制：</translation>
 <translation id="6388201778088078932">控制的）。</translation>
 <translation id="9185018653595759199">阻止社交媒体</translation>
 <translation id="7390783310074170337">默认视图</translation>
@@ -295,6 +299,13 @@
 <translation id="1391855377994926460">保持浏览网页的速度更快——在主要的新闻网站上最多快6倍。</translation>
 <translation id="9218430445555521422">设为默认浏览器</translation>
 <translation id="3479552764303398839">以后再说</translation>
+<translation id="5039804452771397117">允许</translation>
+<translation id="7053983685419859001">禁止</translation>
+<translation id="7815301689257843278">自动发送崩溃报告以帮助 Brave 防止这个问题再次发生？</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/>意外退出</translation>
+<translation id="1324417023773393937">Brave 浏览器</translation>
+<translation id="1068069727470515940">您可以在任何时候再次更改 <ph name="SETTING_TEXT"/></translation>
+<translation id="6873781976650514089">此设置</translation>
 <translation id="6040143037577758943">关闭</translation>
 <translation id="5600566490506283344">Brave 广告通知</translation>
 <translation id="4877147287319222750">添加到侧边栏</translation>
@@ -346,6 +357,6 @@
 <translation id="8487693399751278191">立即导入书签...</translation>
 <translation id="2557899542277210112">要快速访问，请将书签放在书签栏的此处。</translation>
 <translation id="2808630562319398131">重置 Brave Rewards 计划数据...</translation>
-<translation id="1224064034972923114">通过自动发送崩溃报告来帮助改进 Brave</translation>
-<translation id="3738833060602717053">可通过自动发送崩溃报告来改善 <ph name="PRODUCT_NAME"/></translation>
+<translation id="2273851479262317744">将 Brave 设为默认浏览器</translation>
+<translation id="8581710194025054669">为了确保最佳的在线隐私，可以考虑将 Brave 设置为您电脑上的默认浏览器。将 Brave 设为默认浏览器后，您点击的任何网络链接都将享有 Brave 的隐私保护功能。</translation>
 </translationbundle>

@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">Mostra els preferits</translation>
 <translation id="3446024864193919737">Mostra les recompenses de Brave</translation>
 <translation id="6274899614137380422">Mostra Binance</translation>
-<translation id="5551238871320268996">Brave Junts</translation>
 <translation id="5585019845078534178">Cartes</translation>
 <translation id="3870475560794762985">Mostra Imatges Patrocinades</translation>
 <translation id="2875302873837723333">llocs  principals</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">Imatge de Fons</translation>
 <translation id="385051799172605136">Enrere</translation>
 <translation id="9024104284526126630">Podeu començar una trucada privada a Brave.</translation>
-<translation id="5735801688206890393">Feu trucades il·limitades amb amics i companys de treball a Brave Together.</translation>
+<translation id="4903286433687221248">Fes trucades il·limitades amb els teus amics i companys a Brave Talk.</translation>
 <translation id="7115051913071512405">Proveu-lo</translation>
 <translation id="7415602225677446066">Les històries més destacades d'avui a un feed completament privat, només per a tu.</translation>
 <translation id="6903061332999399632">Brave News és un servei finançat a través de publicitat amb anuncis totalment privats i anonimitzats emparellats al teu dispositiu. La teva informació personal sempre romandrà privada, d'acord amb la nostra <ph name="LINK_START"/>política de privadesa<ph name="LINK_END"/>.</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">Detectar automaticament</translation>
 <translation id="4394049700291259645">Desactiva</translation>
 <translation id="4176463684765177261">Desactivat</translation>
-<translation id="4434663852465709809">Codi QR per a usuaris de iOS Rewards que transfereixen BAT</translation>
-<translation id="2175927920773552910">Codi QR</translation>
 <translation id="8283001340969131076">Ho sentim, s'ha produït un error en intentar desconnectar el teu compte de <ph name="PROVIDER"/>. Torna-ho a intentar d'aquí una estona.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">El dispositiu està fora de línia, torna-ho a provar més tard.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">BAT no està disponible actualment a la vostra regió. Si us plau, Consulteu <ph name="BEGIN_LINK"/>aquí<ph name="END_LINK"/> per a actualitzacions.</translation>
 <translation id="1737873393693460829">En activar [[title]], acceptes les <ph name="BEGIN_LINK1"/>Condicions del servei<ph name="END_LINK1"/> i la <ph name="BEGIN_LINK2"/>Política de privacitat<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Error en crear la targeta Brave Browser BAT</translation>
-<translation id="6473583070570450185">Necessiteu una cartera verificada per accedir</translation>
-<translation id="5949995321533425416">Necessiteu com a mínim <ph name="AMOUNT"/> BAT per crear una cartera Uphold. Torneu-ho a intentar després de comprovar la vostra cartera amb Uphold.</translation>
+<translation id="8429332714958713413">Necessites una cartera verificada per iniciar sessió.</translation>
+<translation id="5881716477679854586">Torna a intentar-ho després de completar la verificació d'ID a <ph name="CUSTODIAN"/></translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> que arriben a <ph name="DAYS"/></translation>
 <translation id="4672975606583962967">Selecciona un servei de cartera</translation>
 <translation id="1815503044492647974">Selecciona un soci de cartera amb custòdia. Si ja tens un compte, se't demanarà que iniciïs sessió per connectar-te.</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">Les recompenses han estat desactivades</translation>
 <translation id="3354337256330577726">La contribució automàtica s'ha desactivat</translation>
 <translation id="6727186931929643711">S'ha parat de reintentar</translation>
+<translation id="8978461348341400550">Custodi:</translation>
+<translation id="7220161813676251577">ID de membre del custodi:</translation>
 <translation id="680983167891198932">Clau</translation>
 <translation id="7535087603100972091">Valor</translation>
 <translation id="45591635423975492">Sessió iniciada a</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">Començar a utilitzar Recompenses Brave</translation>
 <translation id="6318696841371191107">Realitzeu un recorregut ràpid</translation>
 <translation id="8465790416279415448">Si continueu, accepteu les <ph name="TOS_LINK_BEGIN"/>Condicions del servei<ph name="TOS_LINK_END"/> i la <ph name="PP_LINK_BEGIN"/>Política de privacitat<ph name="PP_LINK_END"/>.</translation>
-<translation id="2404165674840145940">Doneu propina amb Recompenses Brave</translation>
-<translation id="5820285701794581330">Si utilitzeu Recompenses Brave, començareu a guanyar BAT que podeu utilitzar per a donar propina als creadors.</translation>
+<translation id="8222322431155185238">Dona propines amb Brave Rewards</translation>
+<translation id="1895476463085410109">Guanya Rewards en visualitzar els Brave Private Ads i dona suport als creadors de contingut de forma automàtica</translation>
 <translation id="5705882733397021510">Torneu</translation>
 <translation id="185034574799484512">Fem un tour ràpid</translation>
 <translation id="8281886186245836920">Omet</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">Torna-ho a provar</translation>
 <translation id="2600847485413879104">Recompenses BAT</translation>
 <translation id="8006596443377585072">Cartera bitFlyer</translation>
+<translation id="2770577461149798369">Cartera de Gemini</translation>
 <translation id="8108350286444475334">Cartera Uphold</translation>
 <translation id="6977372887576114613">BAT depositada</translation>
 <translation id="3173528272490482456">Llest per començar?</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">Pots començar amb</translation>
 <translation id="194625454574835815">Clau de recuperació</translation>
 <translation id="6354568176665589146">Recurrent</translation>
+<translation id="2799223571221894425">Reinicia</translation>
 <translation id="1110535155349301542">treu</translation>
 <translation id="8204292894173669182">Treure de Guardats</translation>
 <translation id="5530851178552343773">Has designat [[reservedAmount]] [[currency]] per a creadors que encara no s'han registrat per rebre contribucions. El teu navegador continuarà provant d'enviar la contribució fins que ho verifiquin, o bé fins que hagin passat 90 dies.</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">La teva cartera Brave funciona amb <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Els Premis de Brave són creats per Basic Attention Token. Saber més de BAT</translation>
 <translation id="7823359893981882407">aquí</translation>
+<translation id="3034163433136515805">Veure codi QR</translation>
+<translation id="1640793619390890218">per als usuaris d'iOS Rewards que transfereixin BAT.</translation>
 <translation id="4483635855837696643">Restaura la teva cartera</translation>
 <translation id="459721429458957031">Utilitza la clau de recuperació per restaurar la teva cartera.</translation>
 <translation id="4600052736217630789">Si restaures amb una clau de recuperació, se substituirà la teva cartera actual. Per tant, assegura't de buidar la cartera actual o fer-ne una còpia de seguretat abans de restaurar.</translation>

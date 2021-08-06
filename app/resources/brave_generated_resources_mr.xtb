@@ -2,8 +2,6 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="mr">
 <translation id="6406506848690869874">Sync</translation>
-<translation id="2445484935443597917">नवीन प्रोफाइल तयार करा</translation>
-<translation id="2666990579225592931">अतिथी विंडो उघडा</translation>
 <translation id="6786747875388722282">विस्तार</translation>
 <translation id="984275831282074731">पेमेंट पद्धती</translation>
 <translation id="8926389886865778422">पुन्हा विचारू नका</translation>
@@ -36,6 +34,8 @@
 <translation id="239760341987199724">तुमचा डीफॉल्ट ब्राउझर म्हणून Brave सेट करा</translation>
 <translation id="9218430445555521422">डीफॉल्ट म्हणून सेट करा</translation>
 <translation id="3479552764303398839">सध्या नाही</translation>
+<translation id="5039804452771397117">परवानगी द्या</translation>
+<translation id="7053983685419859001">अवरोधित करा</translation>
 <translation id="6040143037577758943">बंद करा</translation>
 <translation id="407173827865827707">क्लिकवर</translation>
 <translation id="7961015016161918242">कधीही नाही</translation>

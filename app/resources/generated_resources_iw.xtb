@@ -592,6 +592,7 @@
 <translation id="1627408615528139100">הקובץ כבר הורד</translation>
 <translation id="1628948239858170093">לסרוק את הקובץ לפני שפותחים אותו?</translation>
 <translation id="1629314197035607094">פג תוקף הסיסמה</translation>
+<translation id="1947639598318989608">‏לאפשר ל-Brave למצוא הנחות בהתאמה אישית בעגלות הקניות שלך?</translation>
 <translation id="1629521517399325891">אישור המשתמש לא זמין לאימות הרשת.</translation>
 <translation id="163072119192489970">מורשים לסיים שליחה או קבלה של נתונים</translation>
 <translation id="1630768113285622200">הפעלה מחדש והמשכת התהליך</translation>
@@ -3202,7 +3203,7 @@
 <translation id="4469762931504673593">ל-<ph name="ORIGIN"/> יש הרשאה לערוך קבצים בתיקייה <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">העדפות אחסון חיצוני</translation>
 <translation id="4471354919263203780">‏מתבצעת הורדה של קובצי זיהוי דיבור… ‎<ph name="PERCENT"/>%‎</translation>
-<translation id="506314819294271427">‏עזרה בשיפור התכונות והביצועים של Brave</translation>
+<translation id="918192811481327695">‏עזרה בשיפור התכונות והביצועים של Brave</translation>
 <translation id="4472575034687746823">תחילת העבודה</translation>
 <translation id="4474155171896946103">יצירת סימנייה לכל הכרטיסיות...</translation>
 <translation id="4475552974751346499">חיפוש בהורדות</translation>
@@ -4432,7 +4433,6 @@
 <translation id="5864754048328252126">מה לעשות בעת חוסר פעילות בזמן טעינה</translation>
 <translation id="5865508026715185451">האפליקציה <ph name="APP_NAME"/> תושהה בקרוב</translation>
 <translation id="586567932979200359">מתבצעת הפעלה של <ph name="PRODUCT_NAME"/> מתמונת הדיסק שלו. התקנתו במחשב מאפשרת לך להפעיל אותו ללא תמונת הדיסק, ומבטיחה שיישאר מעודכן.</translation>
-<translation id="1224064034972923114">‏שליחת דוחות קריסה וסטטיסטיקת שימוש אל Brave באופן אוטומטי</translation>
 <translation id="5867841422488265304">יש להזין ביטוי לחיפוש או כתובת אינטרנט</translation>
 <translation id="5869029295770560994">בסדר, הבנתי</translation>
 <translation id="5869522115854928033">סיסמאות שמורות</translation>
@@ -5448,7 +5448,6 @@
 <translation id="6997642619627518301"><ph name="NAME_PH"/> - יומן פעילות</translation>
 <translation id="6997707937646349884">במכשירים שלך:</translation>
 <translation id="6998793565256476099">רישום של מכשיר לשיחות ועידה בווידאו</translation>
-<translation id="456304305650018221">‏להתיר ל-Brave למצוא הנחות על פריטים שיתווספו לעגלות הקניות שלך?</translation>
 <translation id="6999956497249459195">קבוצה חדשה</translation>
 <translation id="7000206553895739324">המדפסת <ph name="PRINTER_NAME"/> מחוברת אבל יש להגדיר אותה</translation>
 <translation id="7000347579424117903">‏יש לכלול את Ctrl,‏ Alt או מקש החיפוש</translation>
