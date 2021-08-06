@@ -10,23 +10,33 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
+import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
+import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
-public class AssetDetailActivity
-        extends AsyncInitializationActivity implements ConnectionErrorHandler {
+import java.util.ArrayList;
+import java.util.List;
+
+public class AssetDetailActivity extends AsyncInitializationActivity
+        implements ConnectionErrorHandler, OnWalletListItemClick {
     private SmoothLineChartEquallySpaced chartES;
     private AssetRatioController mAssetRatioController;
 
@@ -45,6 +55,28 @@ public class AssetDetailActivity
 
         TextView assetTitleText = findViewById(R.id.asset_title_text);
         assetTitleText.setText(this.getText(R.string.eth_name));
+
+        Button btnBuy = findViewById(R.id.btn_buy);
+        btnBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.openBuySendSwapActivity(AssetDetailActivity.this);
+            }
+        });
+        Button btnSend = findViewById(R.id.btn_send);
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.openBuySendSwapActivity(AssetDetailActivity.this);
+            }
+        });
+        Button btnSwap = findViewById(R.id.btn_swap);
+        btnSwap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.openBuySendSwapActivity(AssetDetailActivity.this);
+            }
+        });
 
         RadioGroup radioGroup = findViewById(R.id.asset_duration_radio_group);
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
@@ -90,6 +122,9 @@ public class AssetDetailActivity
             }
         });
 
+        setUpAccountList();
+        setUpTransactionList();
+
         onInitialLayoutInflationComplete();
     }
 
@@ -98,6 +133,34 @@ public class AssetDetailActivity
             mAssetRatioController.getPriceHistory(
                     asset, timeframe, (result, priceHistory) -> { chartES.setData(priceHistory); });
         }
+    }
+
+    private void setUpAccountList() {
+        RecyclerView rvAccounts = findViewById(R.id.rv_accounts);
+        WalletCoinAdapter walletCoinAdapter = new WalletCoinAdapter();
+        List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+        walletListItemModelList.add(new WalletListItemModel(
+                R.drawable.ic_eth, "Account 1", "0xFCdF***DDee", "$616.47", "0.31178 ETH"));
+        walletListItemModelList.add(new WalletListItemModel(
+                R.drawable.ic_eth, "Ledger Nano", "0xA1da***7af1", "$256.01", "0.0121 ETH"));
+        walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+        walletCoinAdapter.setOnWalletListItemClick(AssetDetailActivity.this);
+        walletCoinAdapter.setWalletListItemType(Utils.ACCOUNT_ITEM);
+        rvAccounts.setAdapter(walletCoinAdapter);
+        rvAccounts.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void setUpTransactionList() {
+        RecyclerView rvTransactions = findViewById(R.id.rv_transactions);
+        WalletCoinAdapter walletCoinAdapter = new WalletCoinAdapter();
+        List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+        walletListItemModelList.add(new WalletListItemModel(
+                R.drawable.ic_eth, "Ledger Nano", "0xA1da***7af1", "$37.92", "0.0009431 ETH"));
+        walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+        walletCoinAdapter.setOnWalletListItemClick(AssetDetailActivity.this);
+        walletCoinAdapter.setWalletListItemType(Utils.TRANSACTION_ITEM);
+        rvTransactions.setAdapter(walletCoinAdapter);
+        rvTransactions.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
@@ -136,4 +199,12 @@ public class AssetDetailActivity
     public boolean shouldStartGpuProcess() {
         return true;
     }
+
+    @Override
+    public void onAccountClick() {
+        Utils.openAccountDetailActivity(AssetDetailActivity.this);
+    }
+
+    @Override
+    public void onTransactionClick() {}
 }

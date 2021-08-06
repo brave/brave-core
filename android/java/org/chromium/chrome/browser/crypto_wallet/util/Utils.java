@@ -11,11 +11,16 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.inputmethod.InputMethodManager;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
@@ -37,6 +42,10 @@ public class Utils {
     public static int ONBOARDING_ACTION = 1;
     public static int UNLOCK_WALLET_ACTION = 2;
     public static int RESTORE_WALLET_ACTION = 3;
+
+    public static int ACCOUNT_ITEM = 1;
+    public static int ASSET_ITEM = 2;
+    public static int TRANSACTION_ITEM = 3;
 
     private static final String PREF_CRYPTO_ONBOARDING = "crypto_onboarding";
 
@@ -91,5 +100,29 @@ public class Utils {
         InputMethodManager imm =
                 (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+    }
+
+    public static void openBuySendSwapActivity(Activity activity) {
+        assert activity != null;
+        Intent buySendSwapActivityIntent = new Intent(activity, BuySendSwapActivity.class);
+        activity.startActivity(buySendSwapActivityIntent);
+    }
+
+    public static void openAssetDetailsActivity(Activity activity) {
+        assert activity != null;
+        Intent assetDetailIntent = new Intent(activity, AssetDetailActivity.class);
+        activity.startActivity(assetDetailIntent);
+    }
+
+    public static void openAddAccountActivity(Activity activity) {
+        assert activity != null;
+        Intent addAccountActivityIntent = new Intent(activity, AddAccountActivity.class);
+        activity.startActivity(addAccountActivityIntent);
+    }
+
+    public static void openAccountDetailActivity(Activity activity) {
+        assert activity != null;
+        Intent accountDetailActivityIntent = new Intent(activity, AccountDetailActivity.class);
+        activity.startActivity(accountDetailActivityIntent);
     }
 }

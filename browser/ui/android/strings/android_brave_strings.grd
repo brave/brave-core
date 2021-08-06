@@ -1879,12 +1879,57 @@ until they verify, or until 90 days have passed.
     <message name="IDS_SLIPPING_TOLERANCE" desc="Brave Wallet buy-send-swap section text">
       Slippage tolerance
     </message>
+    <message name="IDS_ACCOUNTS" desc="Brave Wallet section text">
+      Accounts
+    </message>
+    <message name="IDS_TRANSACTIONS" desc="Brave Wallet section text">
+      Transactions
+    </message>
+    <message name="IDS_INFO" desc="Brave Wallet section text">
+      Info
+    </message>
     <!-- Stats -->
     <message name="IDS_BRAVE_STATS_USAGE_PING_TITLE" desc="Description that shows in settings for toggling stats usage pings">
       Automatically send daily usage ping to Brave
     </message>
     <message name="IDS_BRAVE_STATS_USAGE_PING_SUMMARY" desc="Description that shows under main toggle setting for usage pings">
       This anonymous, private ping lets Brave estimate active users.
+    </message>
+    <message name="IDS_BACKUP" desc="Brave wallet accounts text">
+      Backup
+    </message>
+    <message name="IDS_PRIMARY_CRYPTO_ACCOUNTS" desc="Brave wallet accounts text">
+      Primary Crypto Accounts
+    </message>
+    <message name="IDS_SECONDARY_ACCOUNTS" desc="Brave wallet accounts text">
+      Secondary Accounts
+    </message>
+    <message name="IDS_SECONDARY_ACCOUNTS_TEXT" desc="Brave wallet accounts text">
+      These accounts can be used with web 3 dapps and can be shown in your portfolio, however, they cannot not be restored via recovery phrase from your primary account backup. Enable Brave Sync accounts to auto-restore secondary accounts.
+    </message>
+    <message name="IDS_ACCOUNT_NAME" desc="Brave wallet accounts text">
+      Account Name
+    </message>
+    <message name="IDS_ACCOUNT_NAME_TEXT" desc="Brave wallet accounts text">
+      You can create a secondary account by importing your private key.
+    </message>
+    <message name="IDS_IMPORT_ACCOUNT_TEXT" desc="Brave wallet accounts text">
+      Enter, paste, or import your private key string file or JSON.
+    </message>
+    <message name="IDS_IMPORT_TEXT" desc="Brave wallet accounts text">
+      Import...
+    </message>
+    <message name="IDS_ASSETS" desc="Brave wallet accounts text">
+      Assets
+    </message>
+    <message name="IDS_DETAILS" desc="Brave wallet accounts text">
+      Details
+    </message>
+    <message name="IDS_EDIT" desc="Brave wallet accounts text">
+      Edit
+    </message>
+    <message name="IDS_ACCOUNT_DETAILS" desc="Brave wallet accounts text">
+      Account Details
     </message>
     </messages>
   </release>

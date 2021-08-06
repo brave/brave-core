@@ -55,9 +55,7 @@
     android:name="org.chromium.chrome.browser.ntp.widget.NTPWidgetStackActivity"
     android:theme="@style/Theme.Chromium.Activity"
     android:screenOrientation="sensorPortrait"
-    tools:ignore="LockedOrientationActivity">
-
-</activity>
+    tools:ignore="LockedOrientationActivity"/>
 
 <activity android:name="org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity"
     android:theme="@style/Theme.Chromium.Activity"
@@ -65,6 +63,21 @@
     tools:ignore="LockedOrientationActivity"/>
 
 <activity android:name="org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity"
+    android:theme="@style/Theme.Chromium.Activity"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity"/>
+
+<activity android:name="org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity"
+    android:theme="@style/Theme.Chromium.Activity"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity"/>
+
+<activity android:name="org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity"
+    android:theme="@style/Theme.Chromium.Activity"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity"/>
+
+<activity android:name="org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailsWithQrActivity"
     android:theme="@style/Theme.Chromium.Activity"
     android:screenOrientation="sensorPortrait"
     tools:ignore="LockedOrientationActivity"/>

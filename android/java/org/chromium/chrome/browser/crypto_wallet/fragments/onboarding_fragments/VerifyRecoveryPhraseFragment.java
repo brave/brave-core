@@ -98,9 +98,9 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
                 recoveryPhrases = Utils.getRecoveryPhraseAsList(result);
                 Collections.shuffle(recoveryPhrases);
                 setupRecoveryPhraseRecyclerView(view);
+                setupSelectedRecoveryPhraseRecyclerView(view);
             });
         }
-        setupSelectedRecoveryPhraseRecyclerView(view);
     }
 
     private void phraseNotMatch() {

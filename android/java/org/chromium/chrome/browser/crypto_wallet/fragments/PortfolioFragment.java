@@ -20,11 +20,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
+import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
+import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
-public class CryptoChildFragment extends Fragment {
-    public static CryptoChildFragment newInstance() {
-        return new CryptoChildFragment();
+import java.util.ArrayList;
+import java.util.List;
+
+public class PortfolioFragment extends Fragment implements OnWalletListItemClick {
+    public static PortfolioFragment newInstance() {
+        return new PortfolioFragment();
     }
 
     @Override
@@ -37,7 +43,7 @@ public class CryptoChildFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_crypto_child, container, false);
+        View view = inflater.inflate(R.layout.fragment_portfolio, container, false);
 
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -76,7 +82,24 @@ public class CryptoChildFragment extends Fragment {
     private void setUpCoinList(View view) {
         RecyclerView rvCoins = view.findViewById(R.id.rvCoins);
         WalletCoinAdapter walletCoinAdapter = new WalletCoinAdapter();
+        List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+        walletListItemModelList.add(new WalletListItemModel(
+                R.drawable.ic_eth, "Ethereum", "ETH", "$872.48", "0.31178 ETH"));
+        walletListItemModelList.add(new WalletListItemModel(
+                R.drawable.ic_eth, "Ethereum", "ETH", "$872.48", "0.31178 ETH"));
+        walletListItemModelList.add(new WalletListItemModel(
+                R.drawable.ic_eth, "Ethereum", "ETH", "$872.48", "0.31178 ETH"));
+        walletListItemModelList.add(new WalletListItemModel(
+                R.drawable.ic_eth, "Ethereum", "ETH", "$872.48", "0.31178 ETH"));
+        walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+        walletCoinAdapter.setOnWalletListItemClick(PortfolioFragment.this);
+        walletCoinAdapter.setWalletListItemType(Utils.ASSET_ITEM);
         rvCoins.setAdapter(walletCoinAdapter);
         rvCoins.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
+
+    @Override
+    public void onAssetClick() {
+        Utils.openAssetDetailsActivity(getActivity());
     }
 }
