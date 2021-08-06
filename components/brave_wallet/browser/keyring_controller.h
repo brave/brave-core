@@ -37,7 +37,12 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   explicit KeyringController(PrefService* prefs);
   ~KeyringController() override;
 
-  static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* prefs);
+  static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+
+  static void RegisterProfilePrefsForMigration(
+      user_prefs::PrefRegistrySyncable* registry);
+
+  static void MigrateObsoleteProfilePrefs(PrefService* prefs);
 
   static bool HasPrefForKeyring(PrefService* prefs,
                                 const std::string& key,
@@ -50,6 +55,17 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
                                 const std::string& key,
                                 base::Value value,
                                 const std::string& id);
+
+  // Account path will be used as key in kAccountMetas
+  static void SetAccountNameForKeyring(PrefService* prefs,
+                                       const std::string& account_path,
+                                       const std::string& name,
+                                       const std::string& id);
+  static std::string GetAccountNameForKeyring(PrefService* prefs,
+                                              const std::string& account_path,
+                                              const std::string& id);
+
+  static std::string GetAccountPathByIndex(size_t index);
 
   mojo::PendingRemote<mojom::KeyringController> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::KeyringController> receiver);
@@ -110,13 +126,6 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, AddAccount);
 
   void AddAccountForDefaultKeyring(const std::string& account_name);
-
-  // Address will be used as key in kAccountMetas
-  void SetAccountNameForKeyring(const std::string& address,
-                                const std::string& name,
-                                const std::string& id);
-  std::string GetAccountNameForKeyring(const std::string& address,
-                                       const std::string& id);
 
   size_t GetAccountMetasNumberForKeyring(const std::string& id);
 

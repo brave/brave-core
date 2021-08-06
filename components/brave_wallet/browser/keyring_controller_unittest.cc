@@ -26,6 +26,7 @@ namespace {
 const char kPasswordEncryptorSalt[] = "password_encryptor_salt";
 const char kPasswordEncryptorNonce[] = "password_encryptor_nonce";
 const char kEncryptedMnemonic[] = "encrypted_mnemonic";
+const char kBackupComplete[] = "backup_complete";
 const char kAccountMetas[] = "account_metas";
 }  // namespace
 
@@ -618,21 +619,32 @@ TEST_F(KeyringControllerUnitTest, AccountMetasForKeyring) {
   controller.default_keyring_->AddAccounts(2);
   const std::string address1 = controller.default_keyring_->GetAddress(0);
   const std::string name1 = "Account1";
+  const std::string account_path1 = KeyringController::GetAccountPathByIndex(0);
   const std::string address2 = controller.default_keyring_->GetAddress(1);
   const std::string name2 = "Account2";
+  const std::string account_path2 = KeyringController::GetAccountPathByIndex(1);
 
-  controller.SetAccountNameForKeyring(address1, name1, "default");
-  controller.SetAccountNameForKeyring(address2, name2, "default");
+  KeyringController::SetAccountNameForKeyring(GetPrefs(), account_path1, name1,
+                                              "default");
+  KeyringController::SetAccountNameForKeyring(GetPrefs(), account_path2, name2,
+                                              "default");
 
   const base::Value* account_metas = KeyringController::GetPrefForKeyring(
       GetPrefs(), kAccountMetas, "default");
   ASSERT_NE(account_metas, nullptr);
 
-  EXPECT_EQ(account_metas->FindPath(address1 + ".account_name")->GetString(),
+  EXPECT_EQ(
+      account_metas->FindPath(account_path1 + ".account_name")->GetString(),
+      name1);
+  EXPECT_EQ(
+      account_metas->FindPath(account_path2 + ".account_name")->GetString(),
+      name2);
+  EXPECT_EQ(KeyringController::GetAccountNameForKeyring(
+                GetPrefs(), account_path1, "default"),
             name1);
-  EXPECT_EQ(account_metas->FindPath(address2 + ".account_name")->GetString(),
+  EXPECT_EQ(KeyringController::GetAccountNameForKeyring(
+                GetPrefs(), account_path2, "default"),
             name2);
-  EXPECT_EQ(controller.GetAccountNameForKeyring(address1, "default"), name1);
   EXPECT_EQ(controller.GetAccountMetasNumberForKeyring("default"), 2u);
   EXPECT_EQ(controller.GetAccountMetasNumberForKeyring("keyring1"), 0u);
 
@@ -703,6 +715,75 @@ TEST_F(KeyringControllerUnitTest, AddAccount) {
   EXPECT_EQ(account_infos[0]->name, "Account 1");
   EXPECT_FALSE(account_infos[1]->address.empty());
   EXPECT_EQ(account_infos[1]->name, "Account5566");
+}
+
+TEST_F(KeyringControllerUnitTest, GetAccountPathByIndex) {
+  EXPECT_EQ(KeyringController::GetAccountPathByIndex(0), "m/44'/60'/0'/0/0");
+  EXPECT_EQ(KeyringController::GetAccountPathByIndex(3), "m/44'/60'/0'/0/3");
+}
+
+TEST_F(KeyringControllerUnitTest, MigrationPrefs) {
+  GetPrefs()->SetString(kBraveWalletPasswordEncryptorSalt, "test_salt");
+  GetPrefs()->SetString(kBraveWalletPasswordEncryptorNonce, "test_nonce");
+  GetPrefs()->SetString(kBraveWalletEncryptedMnemonic, "test_mnemonic");
+  GetPrefs()->SetInteger(kBraveWalletDefaultKeyringAccountNum, 3);
+
+  base::Value account_names(base::Value::Type::LIST);
+  account_names.Append(base::Value("Account1"));
+  account_names.Append(base::Value("Account2"));
+  account_names.Append(base::Value("Account3"));
+  GetPrefs()->Set(kBraveWalletAccountNames, account_names);
+
+  GetPrefs()->SetBoolean(kBraveWalletBackupComplete, true);
+
+  KeyringController::MigrateObsoleteProfilePrefs(GetPrefs());
+
+  EXPECT_EQ(GetStringPrefForKeyring(kPasswordEncryptorSalt, "default"),
+            "test_salt");
+  EXPECT_EQ(GetStringPrefForKeyring(kPasswordEncryptorNonce, "default"),
+            "test_nonce");
+  EXPECT_EQ(GetStringPrefForKeyring(kEncryptedMnemonic, "default"),
+            "test_mnemonic");
+
+  const base::Value* backup_complete = KeyringController::GetPrefForKeyring(
+      GetPrefs(), kBackupComplete, "default");
+  ASSERT_TRUE(backup_complete);
+  EXPECT_TRUE(backup_complete->GetBool());
+
+  const base::Value* account_metas = KeyringController::GetPrefForKeyring(
+      GetPrefs(), kAccountMetas, "default");
+  EXPECT_EQ(account_metas->DictSize(), 3u);
+  EXPECT_EQ(
+      KeyringController::GetAccountNameForKeyring(
+          GetPrefs(), KeyringController::GetAccountPathByIndex(0), "default"),
+      "Account1");
+  EXPECT_EQ(
+      KeyringController::GetAccountNameForKeyring(
+          GetPrefs(), KeyringController::GetAccountPathByIndex(1), "default"),
+      "Account2");
+  EXPECT_EQ(
+      KeyringController::GetAccountNameForKeyring(
+          GetPrefs(), KeyringController::GetAccountPathByIndex(2), "default"),
+      "Account3");
+}
+
+TEST_F(KeyringControllerUnitTest, MigrationPrefsFailSafe) {
+  GetPrefs()->SetInteger(kBraveWalletDefaultKeyringAccountNum, 2);
+
+  base::Value account_names(base::Value::Type::LIST);
+  account_names.Append(base::Value("Account1"));
+  account_names.Append(base::Value("Account2"));
+  account_names.Append(base::Value("Account3"));
+  GetPrefs()->Set(kBraveWalletAccountNames, account_names);
+
+  KeyringController::MigrateObsoleteProfilePrefs(GetPrefs());
+  const base::Value* account_metas = KeyringController::GetPrefForKeyring(
+      GetPrefs(), kAccountMetas, "default");
+  EXPECT_EQ(account_metas->DictSize(), 1u);
+  EXPECT_EQ(
+      KeyringController::GetAccountNameForKeyring(
+          GetPrefs(), KeyringController::GetAccountPathByIndex(0), "default"),
+      "Account 1");
 }
 
 }  // namespace brave_wallet

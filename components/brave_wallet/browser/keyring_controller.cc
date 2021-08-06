@@ -9,6 +9,7 @@
 
 #include "base/base64.h"
 #include "base/logging.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
@@ -22,7 +23,10 @@ namespace brave_wallet {
 namespace {
 const size_t kSaltSize = 32;
 const size_t kNonceSize = 12;
+const char kRootPath[] = "m/44'/60'/0'/0";
 const char kDefaultKeyringId[] = "default";
+// TODO(darkdh): use resource string
+const char kFirstAccountName[] = "Account 1";
 const char kPasswordEncryptorSalt[] = "password_encryptor_salt";
 const char kPasswordEncryptorNonce[] = "password_encryptor_nonce";
 const char kEncryptedMnemonic[] = "encrypted_mnemonic";
@@ -67,14 +71,75 @@ void KeyringController::RegisterProfilePrefs(
   // TODO(bridiver) - move to EthTxControllerFactory
   registry->RegisterDictionaryPref(kBraveWalletTransactions);
 
+  registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
+  registry->RegisterDictionaryPref(kBraveWalletKeyrings);
+}
+
+// static
+void KeyringController::RegisterProfilePrefsForMigration(
+    user_prefs::PrefRegistrySyncable* registry) {
+  // Added 08/2021
   registry->RegisterStringPref(kBraveWalletPasswordEncryptorSalt, "");
   registry->RegisterStringPref(kBraveWalletPasswordEncryptorNonce, "");
   registry->RegisterStringPref(kBraveWalletEncryptedMnemonic, "");
   registry->RegisterIntegerPref(kBraveWalletDefaultKeyringAccountNum, 0);
   registry->RegisterBooleanPref(kBraveWalletBackupComplete, false);
-  registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
   registry->RegisterListPref(kBraveWalletAccountNames);
-  registry->RegisterDictionaryPref(kBraveWalletKeyrings);
+}
+
+// static
+void KeyringController::MigrateObsoleteProfilePrefs(PrefService* prefs) {
+  if (prefs->HasPrefPath(kBraveWalletPasswordEncryptorSalt) &&
+      prefs->HasPrefPath(kBraveWalletPasswordEncryptorNonce) &&
+      prefs->HasPrefPath(kBraveWalletEncryptedMnemonic)) {
+    SetPrefForKeyring(
+        prefs, kPasswordEncryptorSalt,
+        base::Value(prefs->GetString(kBraveWalletPasswordEncryptorSalt)),
+        kDefaultKeyringId);
+    SetPrefForKeyring(
+        prefs, kPasswordEncryptorNonce,
+        base::Value(prefs->GetString(kBraveWalletPasswordEncryptorNonce)),
+        kDefaultKeyringId);
+    SetPrefForKeyring(
+        prefs, kEncryptedMnemonic,
+        base::Value(prefs->GetString(kBraveWalletEncryptedMnemonic)),
+        kDefaultKeyringId);
+    prefs->ClearPref(kBraveWalletPasswordEncryptorSalt);
+    prefs->ClearPref(kBraveWalletPasswordEncryptorNonce);
+    prefs->ClearPref(kBraveWalletEncryptedMnemonic);
+  }
+
+  if (prefs->HasPrefPath(kBraveWalletDefaultKeyringAccountNum) &&
+      prefs->HasPrefPath(kBraveWalletAccountNames)) {
+    size_t account_num =
+        (size_t)prefs->GetInteger(kBraveWalletDefaultKeyringAccountNum);
+    const base::Value* account_names_list =
+        prefs->GetList(kBraveWalletAccountNames);
+    if (account_names_list &&
+        account_names_list->GetList().size() == account_num) {
+      base::Value::ConstListView account_names = account_names_list->GetList();
+      for (size_t i = 0; i < account_names.size(); ++i) {
+        SetAccountNameForKeyring(prefs, GetAccountPathByIndex(i),
+                                 account_names[i].GetString(),
+                                 kDefaultKeyringId);
+      }
+    } else {
+      // This shouldn't happen but we will reset account to default state as
+      // fail-safe
+      SetAccountNameForKeyring(prefs, GetAccountPathByIndex(0),
+                               kFirstAccountName, kDefaultKeyringId);
+    }
+    prefs->ClearPref(kBraveWalletDefaultKeyringAccountNum);
+    prefs->ClearPref(kBraveWalletAccountNames);
+  }
+
+  if (prefs->HasPrefPath(kBraveWalletBackupComplete)) {
+    SetPrefForKeyring(
+        prefs, kBackupComplete,
+        base::Value(prefs->GetBoolean(kBraveWalletBackupComplete)),
+        kDefaultKeyringId);
+    prefs->ClearPref(kBraveWalletBackupComplete);
+  }
 }
 
 // static
@@ -118,6 +183,46 @@ void KeyringController::SetPrefForKeyring(PrefService* prefs,
     return;
 
   keyring_dict->SetKey(key, std::move(value));
+}
+
+// static
+void KeyringController::SetAccountNameForKeyring(
+    PrefService* prefs,
+    const std::string& account_path,
+    const std::string& name,
+    const std::string& id) {
+  base::Value account_metas(base::Value::Type::DICTIONARY);
+  const base::Value* value = GetPrefForKeyring(prefs, kAccountMetas, id);
+  if (value)
+    account_metas = value->Clone();
+  base::Value account_meta(base::Value::Type::DICTIONARY);
+  account_meta.SetStringKey(kAccountName, name);
+  account_metas.SetKey(account_path, std::move(account_meta));
+
+  SetPrefForKeyring(prefs, kAccountMetas, std::move(account_metas), id);
+}
+
+// static
+std::string KeyringController::GetAccountNameForKeyring(
+    PrefService* prefs,
+    const std::string& account_path,
+    const std::string& id) {
+  const base::Value* account_metas =
+      GetPrefForKeyring(prefs, kAccountMetas, id);
+  if (!account_metas)
+    return std::string();
+
+  const base::Value* name =
+      account_metas->FindPath(account_path + "." + kAccountName);
+  if (!name)
+    return std::string();
+
+  return name->GetString();
+}
+
+// static
+std::string KeyringController::GetAccountPathByIndex(size_t index) {
+  return std::string(kRootPath) + "/" + base::NumberToString(index);
 }
 
 HDKeyring* KeyringController::CreateDefaultKeyring(
@@ -201,8 +306,7 @@ void KeyringController::CreateWallet(const std::string& password,
                                      CreateWalletCallback callback) {
   auto* keyring = CreateDefaultKeyring(password);
   if (keyring) {
-    // TODO(darkdh): use resource string
-    AddAccountForDefaultKeyring("Account 1");
+    AddAccountForDefaultKeyring(kFirstAccountName);
   }
 
   std::move(callback).Run(GetMnemonicForDefaultKeyringImpl());
@@ -213,8 +317,7 @@ void KeyringController::RestoreWallet(const std::string& mnemonic,
                                       RestoreWalletCallback callback) {
   auto* keyring = RestoreDefaultKeyring(mnemonic, password);
   if (keyring) {
-    // TODO(darkdh): use resource string
-    AddAccountForDefaultKeyring("Account 1");
+    AddAccountForDefaultKeyring(kFirstAccountName);
   }
   // TODO(darkdh): add account discovery mechanism
 
@@ -279,39 +382,9 @@ void KeyringController::AddAccountForDefaultKeyring(
     return;
   default_keyring_->AddAccounts(1);
   size_t accounts_num = default_keyring_->GetAccountsNumber();
-  const std::string address = default_keyring_->GetAddress(accounts_num - 1);
-  // TODO(darkdh): use resource string
-  SetAccountNameForKeyring(address, account_name, kDefaultKeyringId);
-}
-
-void KeyringController::SetAccountNameForKeyring(const std::string& address,
-                                                 const std::string& name,
-                                                 const std::string& id) {
-  base::Value account_metas(base::Value::Type::DICTIONARY);
-  const base::Value* value = GetPrefForKeyring(prefs_, kAccountMetas, id);
-  if (value)
-    account_metas = value->Clone();
-  base::Value account_meta(base::Value::Type::DICTIONARY);
-  account_meta.SetStringKey(kAccountName, name);
-  account_metas.SetKey(address, std::move(account_meta));
-
-  SetPrefForKeyring(prefs_, kAccountMetas, std::move(account_metas), id);
-}
-
-std::string KeyringController::GetAccountNameForKeyring(
-    const std::string& address,
-    const std::string& id) {
-  const base::Value* account_metas =
-      GetPrefForKeyring(prefs_, kAccountMetas, id);
-  if (!account_metas)
-    return std::string();
-
-  const base::Value* name =
-      account_metas->FindPath(address + "." + kAccountName);
-  if (!name)
-    return std::string();
-
-  return name->GetString();
+  CHECK(accounts_num);
+  SetAccountNameForKeyring(prefs_, GetAccountPathByIndex(accounts_num - 1),
+                           account_name, kDefaultKeyringId);
 }
 
 size_t KeyringController::GetAccountMetasNumberForKeyring(
@@ -329,10 +402,11 @@ std::vector<mojom::AccountInfoPtr> KeyringController::GetAccountInfosForKeyring(
   std::vector<mojom::AccountInfoPtr> result;
   if (!default_keyring_)
     return result;
-  for (const std::string& address : default_keyring_->GetAccounts()) {
+  for (size_t i = 0; i < default_keyring_->GetAccountsNumber(); ++i) {
     mojom::AccountInfoPtr account_info = mojom::AccountInfo::New();
-    account_info->address = address;
-    account_info->name = GetAccountNameForKeyring(address, id);
+    account_info->address = default_keyring_->GetAddress(i);
+    account_info->name =
+        GetAccountNameForKeyring(prefs_, GetAccountPathByIndex(i), id);
     result.push_back(std::move(account_info));
   }
   return result;
@@ -460,7 +534,7 @@ bool KeyringController::CreateDefaultKeyringInternal(
   if (!seed)
     return false;
   default_keyring_ = std::make_unique<HDKeyring>();
-  default_keyring_->ConstructRootHDKey(*seed, "m/44'/60'/0'/0");
+  default_keyring_->ConstructRootHDKey(*seed, kRootPath);
   UpdateLastUnlockPref(prefs_);
 
   return true;

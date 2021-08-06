@@ -138,6 +138,10 @@ void RegisterProfilePrefsForMigration(
   new_tab_page::RegisterNewTabPagePrefsForMigration(registry);
 #endif
 
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  brave_wallet::KeyringController::RegisterProfilePrefsForMigration(registry);
+#endif
+
   // Restore "Other Bookmarks" migration
   registry->RegisterBooleanPref(kOtherBookmarksMigrated, false);
 
