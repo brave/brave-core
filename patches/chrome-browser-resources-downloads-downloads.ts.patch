@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/downloads/downloads.ts b/chrome/browser/resources/downloads/downloads.ts
+index 9f65f8a15761c67888eba6c64a9677b12470de6c..ff6d557774dcefc7a3a5914f900448f5788becd6 100644
+--- a/chrome/browser/resources/downloads/downloads.ts
++++ b/chrome/browser/resources/downloads/downloads.ts
+@@ -2,6 +2,7 @@
+ // Use of this source code is governed by a BSD-style license that can be
+ // found in the LICENSE file.
+ 
++import 'chrome://brave-resources/polymer_overriding.js'
+ import './manager.js';
+ 
+ export {BrowserProxy} from './browser_proxy.js';
