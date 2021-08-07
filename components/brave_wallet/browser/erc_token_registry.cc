@@ -12,10 +12,16 @@ namespace brave_wallet {
 
 ERCTokenRegistry::ERCTokenRegistry() = default;
 
-ERCTokenRegistry::~ERCTokenRegistry() = default;
+ERCTokenRegistry::~ERCTokenRegistry() {}
 
 ERCTokenRegistry* ERCTokenRegistry::GetInstance() {
   return base::Singleton<ERCTokenRegistry>::get();
+}
+
+mojo::PendingRemote<mojom::ERCTokenRegistry> ERCTokenRegistry::MakeRemote() {
+  mojo::PendingRemote<mojom::ERCTokenRegistry> remote;
+  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
+  return remote;
 }
 
 void ERCTokenRegistry::UpdateTokenList(
@@ -60,6 +66,20 @@ std::vector<mojom::ERCTokenPtr> ERCTokenRegistry::GetAllTokens() {
                    return current_token.Clone();
                  });
   return erc_tokens_copy;
+}
+
+void ERCTokenRegistry::GetTokenByContract(const std::string& contract,
+                                          GetTokenByContractCallback callback) {
+  std::move(callback).Run(GetTokenByContract(contract));
+}
+
+void ERCTokenRegistry::GetTokenBySymbol(const std::string& symbol,
+                                        GetTokenBySymbolCallback callback) {
+  std::move(callback).Run(GetTokenBySymbol(symbol));
+}
+
+void ERCTokenRegistry::GetAllTokens(GetAllTokensCallback callback) {
+  std::move(callback).Run(GetAllTokens());
 }
 
 }  // namespace brave_wallet
