@@ -2,7 +2,7 @@ export interface WalletAccountType {
   id: string
   name: string
   address: string
-  balance: number
+  balance: string
   fiatBalance: string
   asset: string
   accountType: string
@@ -25,6 +25,12 @@ export interface UserAssetOptionType {
   asset: AssetOptionType
   assetBalance: number
   fiatBalance: number
+}
+
+export interface AccountAssetOptionType {
+  asset: TokenInfo
+  assetBalance: string
+  fiatBalance: string
 }
 
 export interface UserWalletObject {
@@ -152,6 +158,9 @@ export interface WalletState {
   accounts: WalletAccountType[]
   walletAccountNames: string[]
   transactions: RPCTransactionType[]
+  userVisibleTokens: string[]
+  userVisibleTokensInfo: TokenInfo[]
+  fullTokenList: TokenInfo[]
 }
 
 export interface PanelState {
@@ -169,12 +178,11 @@ export interface PageState {
   showRecoveryPhrase: boolean
   invalidMnemonic: boolean
   selectedTimeline: AssetPriceTimeframe
-  selectedAsset: AssetOptionType | undefined
+  selectedAsset: TokenInfo | undefined
   selectedBTCAssetPrice: AssetPriceInfo | undefined
   selectedUSDAssetPrice: AssetPriceInfo | undefined
   selectedAssetPriceHistory: GetPriceHistoryReturnInfo[]
   portfolioPriceHistory: PriceDataObjectType[]
-  userAssets: string[]
   mnemonic?: string
   isFetchingPriceHistory: boolean
   setupStillInProgress: boolean
@@ -196,6 +204,7 @@ export interface WalletInfo {
   favoriteApps: AppObjectType[],
   isWalletBackedUp: boolean,
   walletAccountNames: string[]
+  visibleTokens: string[]
   accounts: string[]
 }
 
@@ -309,10 +318,11 @@ export interface TokenInfo {
   isErc721: boolean
   symbol: string
   decimals: number
+  icon?: string
 }
 
 export interface GetTokenByContractReturnInfo {
-  value: TokenInfo | undefined
+  token: TokenInfo
 }
 export interface GetTokenBySymbolReturnInfo {
   token: TokenInfo | undefined
@@ -342,6 +352,7 @@ export interface WalletAPIHandler {
   getAllTokens: () => Promise<GetAllTokensReturnInfo>
   addFavoriteApp: (appItem: AppObjectType) => Promise<void>
   removeFavoriteApp: (appItem: AppObjectType) => Promise<void>
+  setInitialVisibleAssets: (visibleAssets: string[]) => Promise<void>
 }
 
 export interface EthJsonRpcController {

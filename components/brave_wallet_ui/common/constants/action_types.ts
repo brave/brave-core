@@ -12,6 +12,7 @@ export type InitializedPayloadType = {
   accounts: string[]
   isWalletBackedUp: boolean
   walletAccountNames: string[]
+  visibleTokens: string[]
 }
 
 export type UnlockWalletPayloadType = {
@@ -20,6 +21,10 @@ export type UnlockWalletPayloadType = {
 
 export type SetInitialAccountNamesPayloadType = {
   accountNames: string[]
+}
+
+export type SetInitialVisibleTokensPayloadType = {
+  visibleAssets: string[]
 }
 
 export type AddNewAccountNamePayloadType = {

@@ -3,13 +3,13 @@ import * as React from 'react'
 // Constants
 import {
   PriceDataObjectType,
-  AssetOptionType,
   RPCTransactionType,
   AssetPriceInfo,
-  UserAssetOptionType,
   WalletAccountType,
   AssetPriceTimeframe,
-  Network
+  Network,
+  AccountAssetOptionType,
+  TokenInfo
 } from '../../../../constants/types'
 import locale from '../../../../constants/locale'
 
@@ -28,7 +28,8 @@ import {
   AddButton,
   PortfolioAccountItem,
   PortfolioTransactionItem,
-  SelectNetworkDropdown
+  SelectNetworkDropdown,
+  AccountSettingsModal
 } from '../../'
 
 // Styled Components
@@ -56,14 +57,16 @@ import {
 export interface Props {
   toggleNav: () => void
   onChangeTimeline: (path: AssetPriceTimeframe) => void
-  onSelectAsset: (asset: AssetOptionType | undefined) => void
+  onSelectAsset: (asset: TokenInfo | undefined) => void
   onClickAddAccount: () => void
+  onUpdateVisibleTokens: (list: string[]) => void
+  fetchFullTokenList: () => void
   onSelectNetwork: (network: Network) => void
-  userAssetList: UserAssetOptionType[]
+  selectedNetwork: Network
+  userAssetList: AccountAssetOptionType[]
   accounts: WalletAccountType[]
   selectedTimeline: AssetPriceTimeframe
-  selectedNetwork: Network
-  selectedAsset: AssetOptionType | undefined
+  selectedAsset: TokenInfo | undefined
   selectedUSDAssetPrice: AssetPriceInfo | undefined
   selectedBTCAssetPrice: AssetPriceInfo | undefined
   selectedAssetPriceHistory: PriceDataObjectType[]
@@ -71,6 +74,8 @@ export interface Props {
   portfolioBalance: string
   transactions: (RPCTransactionType | undefined)[]
   isLoading: boolean
+  fullAssetList: TokenInfo[]
+  userWatchList: string[]
 }
 
 const Portfolio = (props: Props) => {
@@ -80,7 +85,11 @@ const Portfolio = (props: Props) => {
     onSelectAsset,
     onClickAddAccount,
     onSelectNetwork,
+    onUpdateVisibleTokens,
+    fetchFullTokenList,
     selectedNetwork,
+    fullAssetList,
+    userWatchList,
     portfolioPriceHistory,
     selectedAssetPriceHistory,
     selectedUSDAssetPrice,
@@ -94,10 +103,11 @@ const Portfolio = (props: Props) => {
     isLoading
   } = props
 
-  const [filteredAssetList, setfilteredAssetList] = React.useState<UserAssetOptionType[]>(userAssetList)
+  const [filteredAssetList, setfilteredAssetList] = React.useState<AccountAssetOptionType[]>(userAssetList)
   const [hoverBalance, setHoverBalance] = React.useState<string>()
   const [hoverPrice, setHoverPrice] = React.useState<string>()
   const [showNetworkDropdown, setShowNetworkDropdown] = React.useState<boolean>(false)
+  const [showVisibleAssetsModal, setShowVisibleAssetsModal] = React.useState<boolean>(false)
 
   const toggleShowNetworkDropdown = () => {
     setShowNetworkDropdown(!showNetworkDropdown)
@@ -121,15 +131,11 @@ const Portfolio = (props: Props) => {
     }
   }
 
-  const addCoin = () => {
-    alert('Will Show New Coins To Add!!')
-  }
-
   const moreDetails = () => {
     alert('Will Show More Details Popover!!')
   }
 
-  const selectAsset = (asset: AssetOptionType) => () => {
+  const selectAsset = (asset: TokenInfo) => () => {
     onSelectAsset(asset)
     toggleNav()
   }
@@ -165,6 +171,13 @@ const Portfolio = (props: Props) => {
     if (showNetworkDropdown) {
       setShowNetworkDropdown(false)
     }
+  }
+
+  const toggleShowVisibleAssetModal = () => {
+    if (!showVisibleAssetsModal) {
+      fetchFullTokenList()
+    }
+    setShowVisibleAssetsModal(!showVisibleAssetsModal)
   }
 
   return (
@@ -259,10 +272,10 @@ const Portfolio = (props: Props) => {
           {filteredAssetList.map((item) =>
             <PortfolioAssetItem
               action={selectAsset(item.asset)}
-              key={item.asset.id}
+              key={item.asset.contractAddress}
               name={item.asset.name}
               assetBalance={item.assetBalance}
-              fiatBalance={formatePrices(item.fiatBalance)}
+              fiatBalance={item.fiatBalance}
               symbol={item.asset.symbol}
               icon={item.asset.icon}
             />
@@ -270,11 +283,23 @@ const Portfolio = (props: Props) => {
           <ButtonRow>
             <AddButton
               buttonType='secondary'
-              onSubmit={addCoin}
-              text={locale.addCoin}
+              onSubmit={toggleShowVisibleAssetModal}
+              text={locale.accountsEditVisibleAssets}
             />
           </ButtonRow>
         </>
+      }
+      {showVisibleAssetsModal &&
+        <AccountSettingsModal
+          fullAssetList={fullAssetList}
+          onClose={toggleShowVisibleAssetModal}
+          userWatchList={userWatchList}
+          onUpdateVisibleTokens={onUpdateVisibleTokens}
+          title={locale.accountsEditVisibleAssets}
+          userAssetList={userAssetList}
+          hideNav={true}
+          tab='watchlist'
+        />
       }
     </StyledWrapper>
   )

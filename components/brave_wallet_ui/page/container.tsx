@@ -35,7 +35,8 @@ import {
   ExpirationPresetObjectType,
   ToOrFromType,
   WalletAccountType,
-  Network
+  Network,
+  TokenInfo
 } from '../constants/types'
 // import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../stories/screens/buy-send-swap'
@@ -71,7 +72,10 @@ function Container (props: Props) {
     transactions,
     selectedNetwork,
     selectedAccount,
-    hasInitialized
+    hasInitialized,
+    userVisibleTokens,
+    userVisibleTokensInfo,
+    fullTokenList
   } = props.wallet
 
   // Page Props
@@ -85,9 +89,8 @@ function Container (props: Props) {
     selectedBTCAssetPrice,
     selectedAssetPriceHistory,
     portfolioPriceHistory,
-    userAssets,
-    isFetchingPriceHistory,
-    setupStillInProgress
+    setupStillInProgress,
+    isFetchingPriceHistory
   } = props.page
 
   // const [view, setView] = React.useState<NavTypes>('crypto')
@@ -239,10 +242,10 @@ function Container (props: Props) {
   }
 
   // This will scrape all of the user's accounts and combine the asset balances for a single asset
-  const fullAssetBalance = (asset: AssetOptionType) => {
+  const fullAssetBalance = (asset: TokenInfo) => {
     const newList = accounts.filter((account) => account.asset.includes(asset.symbol.toLowerCase()))
     const amounts = newList.map((account) => {
-      return account.balance
+      return Number(account.balance)
     })
     const grandTotal = amounts.reduce(function (a, b) {
       return a + b
@@ -251,7 +254,7 @@ function Container (props: Props) {
   }
 
   // This will scrape all of the user's accounts and combine the fiat value for a single asset
-  const fullAssetFiatBalance = (asset: AssetOptionType) => {
+  const fullAssetFiatBalance = (asset: TokenInfo) => {
     const newList = accounts.filter((account) => account.asset.includes(asset.symbol.toLowerCase()))
     const amounts = newList.map((account) => {
       return Number(account.fiatBalance)
@@ -264,17 +267,20 @@ function Container (props: Props) {
 
   // This looks at the users asset list and returns the full balance for each asset
   const userAssetList = React.useMemo(() => {
-    const newList = AssetOptions.filter((asset) => userAssets.includes(asset.id))
-    return newList.map((asset) => {
+    const newListWithIcon = userVisibleTokensInfo.map((asset) => {
+      const icon = AssetOptions.find((a) => asset.symbol === a.symbol)?.icon
+      return { ...asset, icon: icon }
+    })
+    return newListWithIcon.map((asset) => {
       return {
         asset: asset,
-        assetBalance: fullAssetBalance(asset),
-        fiatBalance: fullAssetFiatBalance(asset)
+        assetBalance: fullAssetBalance(asset).toString(),
+        fiatBalance: fullAssetFiatBalance(asset).toString()
       }
     })
-  }, [userAssets, accounts])
+  }, [userVisibleTokensInfo, accounts])
 
-  const onSelectAsset = (asset: AssetOptionType) => {
+  const onSelectAsset = (asset: TokenInfo) => {
     props.walletPageActions.selectAsset({ asset: asset, timeFrame: selectedTimeline })
   }
 
@@ -331,9 +337,8 @@ function Container (props: Props) {
     // TODO (DOUGLAS): Need to add logic to update and Existing Account Name
   }
 
-  const onUpdateWatchList = () => {
-    // TODO (DOUGLAS): Need to persist a AssetWatchList and add logic to update
-    // the AssetWatchList
+  const onUpdateVisibleTokens = (visibleTokens: string[]) => {
+    props.walletActions.updateVisibleTokens(visibleTokens)
   }
 
   const onSubmitSwap = () => {
@@ -342,6 +347,10 @@ function Container (props: Props) {
 
   const onSubmitSend = () => {
     // TODO (DOUGLAS): logic Here to submit a send transaction
+  }
+
+  const fetchFullTokenList = () => {
+    props.walletActions.getAllTokensList()
   }
 
   const renderWallet = React.useMemo(() => {
@@ -394,6 +403,7 @@ function Container (props: Props) {
                   selectedTimeline={selectedTimeline}
                   transactions={transactions}
                   userAssetList={userAssetList}
+                  fullAssetList={fullTokenList}
                   onConnectHardwareWallet={onConnectHardwareWallet}
                   onCreateAccount={onCreateAccount}
                   onImportAccount={onImportAccount}
@@ -401,8 +411,9 @@ function Container (props: Props) {
                   showAddModal={showAddModal}
                   onToggleAddModal={onToggleAddModal}
                   onUpdateAccountName={onUpdateAccountName}
-                  onUpdateWatchList={onUpdateWatchList}
-                  userWatchList={['1']}
+                  onUpdateVisibleTokens={onUpdateVisibleTokens}
+                  fetchFullTokenList={fetchFullTokenList}
+                  userWatchList={userVisibleTokens}
                   selectedNetwork={selectedNetwork}
                   onSelectNetwork={onSelectNetwork}
                 />
@@ -413,13 +424,17 @@ function Container (props: Props) {
       )
     }
   }, [
+    fullTokenList,
     isWalletCreated,
     isWalletLocked,
     recoveryPhrase,
     isWalletBackedUp,
     inputValue,
     hasIncorrectPassword,
-    showRecoveryPhrase
+    showRecoveryPhrase,
+    userAssetList,
+    userVisibleTokens,
+    userVisibleTokensInfo
   ])
 
   return (

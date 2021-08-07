@@ -7,7 +7,12 @@ import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletPageActions from '../actions/wallet_page_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
-import { CreateWalletPayloadType, RestoreWalletPayloadType, UpdateSelectedAssetType, AddAccountPayloadType } from '../constants/action_types'
+import {
+  CreateWalletPayloadType,
+  RestoreWalletPayloadType,
+  UpdateSelectedAssetType,
+  AddAccountPayloadType
+} from '../constants/action_types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
 
@@ -30,6 +35,7 @@ handler.on(WalletPageActions.createWallet.getType(), async (store, payload: Crea
   const result = await keyringController.createWallet(payload.password)
   // TODO(bbondy) - Remove refreshWalletInfo here when account names are set at the same time
   // as createWallet
+  store.dispatch(WalletActions.setInitialVisibleTokens({ visibleAssets: ['eth', '0x0D8775F648430679A709E98d2b0Cb6250d2887EF'] }))
   store.dispatch(WalletActions.setInitialAccountNames({ accountNames: ['Account 1'] }))
   store.dispatch(WalletPageActions.walletCreated({ mnemonic: result.mnemonic }))
 })
@@ -41,6 +47,7 @@ handler.on(WalletPageActions.restoreWallet.getType(), async (store, payload: Res
     store.dispatch(WalletPageActions.hasMnemonicError(!result.isValidMnemonic))
     return
   }
+  store.dispatch(WalletActions.setInitialVisibleTokens({ visibleAssets: ['eth', '0x0D8775F648430679A709E98d2b0Cb6250d2887EF'] }))
   store.dispatch(WalletActions.setInitialAccountNames({ accountNames: ['Account 1'] }))
   await keyringController.notifyWalletBackupComplete()
   await refreshWalletInfo(store)

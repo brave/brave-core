@@ -6,13 +6,13 @@ import {
   AppObjectType,
   AppsListType,
   PriceDataObjectType,
-  AssetOptionType,
-  UserAssetOptionType,
+  AccountAssetOptionType,
   RPCTransactionType,
   AssetPriceInfo,
   WalletAccountType,
   AssetPriceTimeframe,
-  Network
+  Network,
+  TokenInfo
 } from '../../../../constants/types'
 import { TopNavOptions } from '../../../../options/top-nav-options'
 import { TopTabNav, BackupWarningBanner, AddAccountModal } from '../../'
@@ -31,14 +31,16 @@ export interface Props {
   onLockWallet: () => void
   onShowBackup: () => void
   onChangeTimeline: (path: AssetPriceTimeframe) => void
-  onSelectAsset: (asset: AssetOptionType | undefined) => void
+  onSelectAsset: (asset: TokenInfo | undefined) => void
   onCreateAccount: (name: string) => void
   onImportAccount: (name: string, key: string) => void
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Result.Type<HardwareWalletAccount[]>
   onUpdateAccountName: (name: string) => void
   onToggleAddModal: () => void
-  onUpdateWatchList: (list: string[]) => void
+  onUpdateVisibleTokens: (list: string[]) => void
   onSelectNetwork: (network: Network) => void
+  fetchFullTokenList: () => void
+  fullAssetList: TokenInfo[]
   needsBackup: boolean
   accounts: WalletAccountType[]
   selectedTimeline: AssetPriceTimeframe
@@ -46,10 +48,10 @@ export interface Props {
   selectedAssetPriceHistory: PriceDataObjectType[]
   selectedUSDAssetPrice: AssetPriceInfo | undefined
   selectedBTCAssetPrice: AssetPriceInfo | undefined
-  selectedAsset: AssetOptionType | undefined
+  selectedAsset: TokenInfo | undefined
   portfolioBalance: string
   transactions: (RPCTransactionType | undefined)[]
-  userAssetList: UserAssetOptionType[]
+  userAssetList: AccountAssetOptionType[]
   userWatchList: string[]
   isLoading: boolean
   showAddModal: boolean
@@ -66,9 +68,12 @@ const CryptoView = (props: Props) => {
     onConnectHardwareWallet,
     onImportAccount,
     onUpdateAccountName,
-    onUpdateWatchList,
+    onUpdateVisibleTokens,
+    fetchFullTokenList,
     onSelectNetwork,
+    onToggleAddModal,
     selectedNetwork,
+    fullAssetList,
     portfolioPriceHistory,
     userAssetList,
     userWatchList,
@@ -82,8 +87,7 @@ const CryptoView = (props: Props) => {
     selectedUSDAssetPrice,
     selectedBTCAssetPrice,
     isLoading,
-    showAddModal,
-    onToggleAddModal
+    showAddModal
   } = props
   const [selectedTab, setSelectedTab] = React.useState<TopTabNavTypes>('portfolio')
   const [favoriteApps, setFavoriteApps] = React.useState<AppObjectType[]>([
@@ -178,6 +182,8 @@ const CryptoView = (props: Props) => {
           onSelectAsset={onSelectAsset}
           onClickAddAccount={onClickAddAccount}
           onSelectNetwork={onSelectNetwork}
+          onUpdateVisibleTokens={onUpdateVisibleTokens}
+          fetchFullTokenList={fetchFullTokenList}
           selectedAsset={selectedAsset}
           portfolioBalance={portfolioBalance}
           portfolioPriceHistory={portfolioPriceHistory}
@@ -187,6 +193,8 @@ const CryptoView = (props: Props) => {
           userAssetList={userAssetList}
           isLoading={isLoading}
           selectedNetwork={selectedNetwork}
+          fullAssetList={fullAssetList}
+          userWatchList={userWatchList}
         />
       }
       {selectedTab === 'accounts' &&
@@ -196,10 +204,12 @@ const CryptoView = (props: Props) => {
           onClickBackup={onShowBackup}
           onClickAddAccount={onClickAddAccount}
           onUpdateAccountName={onUpdateAccountName}
-          onUpdateWatchList={onUpdateWatchList}
+          onUpdateVisibleTokens={onUpdateVisibleTokens}
+          fetchFullTokenList={fetchFullTokenList}
           userAssetList={userAssetList}
           userWatchList={userWatchList}
           transactions={transactions}
+          fullAssetList={fullAssetList}
         />
       }
       {showAddModal &&

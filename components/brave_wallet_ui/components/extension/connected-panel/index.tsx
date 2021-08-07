@@ -61,7 +61,7 @@ const ConnectedPanel = (props: Props) => {
     return create({ seed: selectedAccount.address, size: 8, scale: 16 }).toDataURL()
   }, [selectedAccount.address])
 
-  const FiatBalance = selectedAccount.balance * 2000
+  const FiatBalance = Number(selectedAccount.balance) * 2000
   return (
     <StyledWrapper panelBackground={bg}>
       <ConnectedHeader action={navAction} />
