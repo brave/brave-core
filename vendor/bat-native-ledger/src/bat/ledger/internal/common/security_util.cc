@@ -14,9 +14,10 @@
 
 #include "base/base64.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ledger/internal/legacy/bat_helper.h"
-#include "bat/ledger/internal/constants.h"
 #include "bat/ledger/internal/common/security_util.h"
+#include "bat/ledger/internal/constants.h"
+#include "bat/ledger/internal/legacy/bat_helper.h"
+#include "crypto/random.h"
 
 #include "tweetnacl.h"  // NOLINT
 
@@ -98,13 +99,7 @@ std::string Security::Sign(
 
 std::vector<uint8_t> Security::GenerateSeed() {
   std::vector<uint8_t> v_seed(kSeedLength);
-  std::random_device r;
-  std::seed_seq seed{r(), r(), r(), r(), r(), r(), r(), r()};
-  auto rand = std::bind(
-      std::uniform_int_distribution<>(0, UCHAR_MAX),
-      std::mt19937(seed));
-
-  std::generate_n(v_seed.begin(), kSeedLength, rand);
+  crypto::RandBytes(v_seed.data(), kSeedLength);
   return v_seed;
 }
 
