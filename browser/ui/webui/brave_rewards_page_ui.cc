@@ -617,11 +617,11 @@ void RewardsDOMHandler::SetExternalWalletType(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::OnExternalWalletTypeUpdated(
-    const ledger::type::Result result,
+    ledger::type::Result,
     ledger::type::ExternalWalletPtr wallet) {
   if (IsJavascriptAllowed()) {
     CallJavascriptFunction("brave_rewards.externalWalletLogin",
-                           base::Value(wallet->login_url));
+                           base::Value(wallet ? wallet->login_url : ""));
   }
 }
 
