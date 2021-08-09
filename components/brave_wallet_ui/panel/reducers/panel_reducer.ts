@@ -18,7 +18,8 @@ const defaultState: PanelState = {
   selectedPanel: 'main',
   panelTitle: '',
   tabId: -1,
-  connectingAccounts: []
+  connectingAccounts: [],
+  showSignTransaction: false
 }
 
 const reducer = createReducer<PanelState>({}, defaultState)

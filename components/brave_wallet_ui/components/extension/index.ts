@@ -9,6 +9,7 @@ import ConnectedHeader from './connected-header'
 import WelcomePanel from './welcome-panel'
 import Panel from './panel'
 import PanelHeader from './panel-header'
+import SignPanel from './sign-panel'
 import { NavButton } from './buttons'
 
 export {
@@ -23,5 +24,6 @@ export {
   ConnectedHeader,
   Panel,
   PanelHeader,
-  WelcomePanel
+  WelcomePanel,
+  SignPanel
 }

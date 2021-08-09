@@ -6,11 +6,28 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
-import { ConnectWithSite, ConnectedPanel, Panel, WelcomePanel } from '../components/extension'
-import { Send, Buy, SelectAsset, SelectAccount, SelectNetwork } from '../components/buy-send-swap/'
+import {
+  ConnectWithSite,
+  ConnectedPanel,
+  Panel,
+  WelcomePanel,
+  SignPanel
+} from '../components/extension'
+import {
+  Send,
+  Buy,
+  SelectAsset,
+  SelectAccount,
+  SelectNetwork
+} from '../components/buy-send-swap/'
 import { AppList } from '../components/shared'
 import { filterAppList } from '../utils/filter-app-list'
-import { ScrollContainer, StyledExtensionWrapper, SelectContainer } from '../stories/style'
+import {
+  ScrollContainer,
+  StyledExtensionWrapper,
+  SelectContainer,
+  SignContainer
+} from '../stories/style'
 import { SendWrapper } from './style'
 import store from './store'
 import * as WalletPanelActions from './actions/wallet_panel_actions'
@@ -67,7 +84,12 @@ function Container (props: Props) {
     isWalletCreated
   } = props.wallet
 
-  const { connectedSiteOrigin, panelTitle, selectedPanel } = props.panel
+  const {
+    connectedSiteOrigin,
+    panelTitle,
+    selectedPanel,
+    showSignTransaction
+  } = props.panel
 
   // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
   // consider rendering a "loading" indicator when `hasInitialized === false`, and
@@ -229,6 +251,18 @@ function Container (props: Props) {
     props.walletPanelActions.navigateTo('main')
   }
 
+  const onShowMoreModal = () => {
+    // Need to build out Show More Modal for Wallet Panels
+  }
+
+  const onCancelSigning = () => {
+    // Logic here to cancel signing
+  }
+
+  const onSignTransaction = () => {
+    // Logic here to sign a transaction
+  }
+
   if (!hasInitialized || !accounts) {
     return null
   }
@@ -250,6 +284,21 @@ function Container (props: Props) {
           onPasswordChanged={handlePasswordChanged}
         />
       </StyledExtensionWrapper>
+    )
+  }
+
+  if (showSignTransaction) {
+    return (
+      <SignContainer>
+        <SignPanel
+          message='Pass Sign Transaction Message Here'
+          onCancel={onCancelSigning}
+          onClickMore={onShowMoreModal}
+          onSign={onSignTransaction}
+          selectedAccount={selectedAccount}
+          selectedNetwork={selectedNetwork}
+        />
+      </SignContainer>
     )
   }
 
