@@ -54,6 +54,8 @@ import {
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import * as Result from '../common/types/result'
 
+import { formatBalance } from '../utils/format-balances'
+
 type Props = {
   wallet: WalletState
   page: PageState
@@ -247,7 +249,7 @@ function Container (props: Props) {
       let balance = 0
       const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
       if (found) {
-        balance = Number(found.assetBalance)
+        balance = Number(formatBalance(found.assetBalance, found.asset.decimals))
       }
       return balance
     })

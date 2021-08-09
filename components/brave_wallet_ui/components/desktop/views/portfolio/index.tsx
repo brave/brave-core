@@ -15,6 +15,7 @@ import locale from '../../../../constants/locale'
 
 // Utils
 import { formatePrices } from '../../../../utils/format-prices'
+import { formatBalance } from '../../../../utils/format-balances'
 
 // Options
 import { ChartTimelineOptions } from '../../../../options/chart-timeline-options'
@@ -191,7 +192,7 @@ const Portfolio = (props: Props) => {
 
   const getAssetBalance = (account: WalletAccountType, asset: TokenInfo) => {
     const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
-    return (found) ? found.assetBalance : '0'
+    return (found) ? formatBalance(found.assetBalance, found.asset.decimals) : '0'
   }
 
   return (

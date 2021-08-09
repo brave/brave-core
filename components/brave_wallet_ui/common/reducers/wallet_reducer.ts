@@ -16,7 +16,7 @@ import {
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 import { InitializedPayloadType } from '../constants/action_types'
-import { formatBalance, formatFiatBalance } from '../../utils/format-balances'
+import { formatFiatBalance } from '../../utils/format-balances'
 
 const defaultState: WalletState = {
   hasInitialized: false,
@@ -123,7 +123,7 @@ reducer.on(WalletActions.ethBalancesUpdated, (state: any, payload: GetBalanceRet
 
   accounts.forEach((account, index) => {
     if (payload[index].success) {
-      accounts[index].balance = formatBalance(payload[index].balance, 18)
+      accounts[index].balance = payload[index].balance
       accounts[index].fiatBalance = formatFiatBalance(payload[index].balance, 18, '2000').toString()  // TODO: use actual price info
     }
   })
@@ -147,7 +147,7 @@ reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetERC20Tok
         assetBalance = account.balance
         fiatBalance = account.fiatBalance
       } else if (info.success) {
-        assetBalance = formatBalance(info.balance, userVisibleTokensInfo[tokenIndex].decimals)
+        assetBalance = info.balance
         fiatBalance = formatFiatBalance(info.balance, userVisibleTokensInfo[tokenIndex].decimals, '0.5') // TODO: compute real value using price info
       } else if (account.tokens[tokenIndex]) {
         assetBalance = account.tokens[tokenIndex].assetBalance
