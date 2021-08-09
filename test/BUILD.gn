@@ -1,4 +1,5 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
+import("//brave/browser/metrics/buildflags/buildflags.gni")
 import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
@@ -625,7 +626,6 @@ if (!is_android) {
       "//brave/browser/ui/toolbar/brave_app_menu_model_browsertest.cc",
       "//brave/browser/ui/views/bookmarks/bookmark_bar_browsertest.cc",
       "//brave/browser/ui/views/brave_actions/brave_actions_container_browsertest.cc",
-      "//brave/browser/ui/views/crash_report_permission_ask_dialog_browsertest.cc",
       "//brave/browser/ui/views/frame/brave_browser_view_browsertest.cc",
       "//brave/browser/ui/views/omnibox/brave_omnibox_view_views_browsertest.cc",
       "//brave/browser/ui/views/omnibox/omnibox_autocomplete_browsertest.cc",
@@ -725,6 +725,10 @@ if (!is_android) {
       "//media:test_support",
       "//testing/gmock",
     ]
+
+    if (enable_crash_dialog) {
+      sources += [ "//brave/browser/ui/views/crash_report_permission_ask_dialog_browsertest.cc" ]
+    }
 
     if (decentralized_dns_enabled) {
       deps += [ "//brave/browser/decentralized_dns/test:browser_tests" ]

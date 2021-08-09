@@ -95,6 +95,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/component_updater",
   "//brave/browser/content_settings",
   "//brave/browser/gcm_driver",
+  "//brave/browser/metrics/buildflags",
   "//brave/browser/net",
   "//brave/browser/ntp_background_images",
   "//brave/browser/profiles",
