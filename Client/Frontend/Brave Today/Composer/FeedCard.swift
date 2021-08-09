@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
+import BraveCore
 
 /// A set of 2 items
 struct FeedPair: Equatable {
@@ -26,6 +27,8 @@ enum FeedCard: Equatable {
     case deals(_ feeds: [FeedItem], title: String)
     /// A brave partner item
     case partner(_ feed: FeedItem)
+    /// A brave display ad card
+    case ad(InlineContentAd)
     /// A single item displayed prompinently with an image
     case headline(_ feed: FeedItem)
     /// A pair of `headline` items that should be displayed side by side horizontally with equal sizes
@@ -44,6 +47,8 @@ enum FeedCard: Equatable {
             return FeedItemView.Layout.brandedHeadline.estimatedHeight(for: width)
         case .partner:
             return FeedItemView.Layout.partner.estimatedHeight(for: width)
+        case .ad:
+            return FeedItemView.Layout.ad.estimatedHeight(for: width)
         case .headlinePair:
             return 300
         case .group, .numbered, .deals:
@@ -60,6 +65,8 @@ enum FeedCard: Equatable {
             return [pair.first, pair.second]
         case .group(let items, _, _, _), .numbered(let items, _), .deals(let items, _):
             return items
+        case .ad:
+            return []
         }
     }
     
@@ -99,6 +106,8 @@ enum FeedCard: Equatable {
             return self
         case .partner:
             return .partner(replacementItem)
+        case .ad(let ad):
+            return .ad(ad)
         }
     }
 }

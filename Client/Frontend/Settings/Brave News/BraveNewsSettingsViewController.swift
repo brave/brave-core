@@ -8,6 +8,7 @@ import Static
 import Shared
 import BraveShared
 import Data
+import BraveCore
 
 /// Displays relevant Brave News settings such as toggling the feature on/off, and selecting sources
 ///
@@ -16,9 +17,11 @@ import Data
 class BraveNewsSettingsViewController: TableViewController {
     
     private let feedDataSource: FeedDataSource
+    private let rewards: BraveRewards?
     
-    init(dataSource: FeedDataSource) {
+    init(dataSource: FeedDataSource, rewards: BraveRewards?) {
         feedDataSource = dataSource
+        self.rewards = rewards
         super.init(style: .insetGrouped)
     }
     
@@ -58,7 +61,13 @@ class BraveNewsSettingsViewController: TableViewController {
                                 Preferences.BraveNews.userOptedIn.value = true
                                 Preferences.BraveNews.isEnabled.value = true
                                 if self.feedDataSource.shouldLoadContent {
-                                    self.feedDataSource.load()
+                                    if let rewards = rewards {
+                                        rewards.ads.initialize { [weak self] _ in
+                                            self?.feedDataSource.load()
+                                        }
+                                    } else {
+                                        feedDataSource.load()
+                                    }
                                 }
                                 self.reloadSections()
                             },
@@ -74,7 +83,13 @@ class BraveNewsSettingsViewController: TableViewController {
                 rows: [
                     .boolRow(
                         title: Strings.BraveNews.isEnabledToggleLabel,
-                        option: Preferences.BraveNews.isEnabled
+                        option: Preferences.BraveNews.isEnabled,
+                        onValueChange: { [unowned self] value in
+                            Preferences.BraveNews.isEnabled.value = value
+                            if value {
+                                self.rewards?.ads.initialize { _ in }
+                            }
+                        }
                     )
                 ]
             ),

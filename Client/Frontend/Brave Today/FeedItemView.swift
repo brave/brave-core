@@ -4,6 +4,7 @@
 
 import Foundation
 import Shared
+import BraveUI
 
 /// Defines the view for displaying a specific feed item given a specific layout
 ///
@@ -50,6 +51,9 @@ class FeedItemView: UIView {
     lazy var promotedButton = PromotedButton().then {
         $0.setContentHuggingPriority(.required, for: .horizontal)
     }
+    lazy var callToActionButton = CallToActionButton().then {
+        $0.setContentHuggingPriority(.required, for: .horizontal)
+    }
     
     /// Generates the view hierarchy given a layout component
     private func view(for component: Layout.Component) -> UIView {
@@ -83,6 +87,8 @@ class FeedItemView: UIView {
             return descriptionLabel
         case .promotedButton:
             return promotedButton
+        case .callToActionButton:
+            return callToActionButton
         case .stack(let stack):
             return UIStackView().then {
                 $0.axis = stack.axis
@@ -144,6 +150,28 @@ class FeedItemView: UIView {
 }
 
 extension FeedItemView {
+    
+    class CallToActionButton: BraveButton {
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            setTitleColor(.white, for: .normal)
+            titleLabel?.font = .systemFont(ofSize: 13, weight: .semibold)
+            layer.borderWidth = 1.0
+            layer.borderColor = UIColor.white.withAlphaComponent(0.7).cgColor
+            layer.masksToBounds = true
+            contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+        }
+        
+        @available(*, unavailable)
+        required init(coder: NSCoder) {
+            fatalError()
+        }
+        
+        override func layoutSubviews() {
+            super.layoutSubviews()
+            layer.cornerRadius = bounds.height / 2
+        }
+    }
     
     class PromotedButton: UIControl {
         
@@ -260,6 +288,7 @@ extension FeedItemView {
             case description(_ labelConfiguration: LabelConfiguration = .description)
             case brand(viewingMode: BrandContainerView.ViewingMode = .automatic, labelConfiguration: LabelConfiguration = .brand)
             case promotedButton
+            case callToActionButton
         }
         /// The root stack for a given layout
         var root: Stack
@@ -292,6 +321,8 @@ extension FeedItemView {
                     }
                 case .promotedButton:
                     return 22.0
+                case .callToActionButton:
+                    return 36.0
                 }
             }
             return _height(for: .stack(root))
@@ -334,7 +365,7 @@ extension FeedItemView {
                 ]
             )
         )
-        
+
         /// Uses the same layout as a `brandedHeadline` but includes a promoted button
         static let partner = Layout(
             root: .init(
@@ -358,6 +389,39 @@ extension FeedItemView {
                                         children: [
                                             .brand(),
                                             .promotedButton
+                                        ]
+                                    )
+                                )
+                            ]
+                        )
+                    )
+                ]
+            )
+        )
+        /// Uses the same layout as a `brandedHeadline` but includes a call to action button and
+        /// has a slightly different thumbnail aspect ratio
+        static let ad = Layout(
+            root: .init(
+                axis: .vertical,
+                children: [
+                    .thumbnail(.aspectRatio(1.2)),
+                    .stack(
+                        .init(
+                            axis: .vertical,
+                            spacing: 4,
+                            padding: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12),
+                            children: [
+                                .title(.init(numberOfLines: 5, font: .systemFont(ofSize: 18.0, weight: .semibold))),
+                                .date(),
+                                .flexibleSpace(minHeight: 12),
+                                .stack(
+                                    .init(
+                                        axis: .horizontal,
+                                        spacing: 10,
+                                        alignment: .center,
+                                        children: [
+                                            .brand(),
+                                            .callToActionButton
                                         ]
                                     )
                                 )

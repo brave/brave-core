@@ -409,6 +409,7 @@
 		27F94A3A21909A5900F4FADF /* SearchSuggestionsPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F94A3921909A5900F4FADF /* SearchSuggestionsPromptView.swift */; };
 		27FCA8E02447708300A8CA48 /* FavoritesSectionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FCA8DF2447708300A8CA48 /* FavoritesSectionProvider.swift */; };
 		27FCA8E3244770AB00A8CA48 /* FavoritesOverflowSectionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FCA8E2244770AB00A8CA48 /* FavoritesOverflowSectionProvider.swift */; };
+		27FCFB0C2673F265008E43AB /* AdCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FCFB0B2673F265008E43AB /* AdCardView.swift */; };
 		27FD2CAB2146C31C00A5A779 /* RequestDesktopSiteActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FD2CA12146C31C00A5A779 /* RequestDesktopSiteActivity.swift */; };
 		27FD2CAC2146C31C00A5A779 /* FindInPageActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FD2CA92146C31C00A5A779 /* FindInPageActivity.swift */; };
 		27FD2CAD2146C31C00A5A779 /* AddToFavoritesActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FD2CAA2146C31C00A5A779 /* AddToFavoritesActivity.swift */; };
@@ -1898,6 +1899,7 @@
 		27F94A3921909A5900F4FADF /* SearchSuggestionsPromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsPromptView.swift; sourceTree = "<group>"; };
 		27FCA8DF2447708300A8CA48 /* FavoritesSectionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesSectionProvider.swift; sourceTree = "<group>"; };
 		27FCA8E2244770AB00A8CA48 /* FavoritesOverflowSectionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesOverflowSectionProvider.swift; sourceTree = "<group>"; };
+		27FCFB0B2673F265008E43AB /* AdCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdCardView.swift; sourceTree = "<group>"; };
 		27FD2CA12146C31C00A5A779 /* RequestDesktopSiteActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestDesktopSiteActivity.swift; sourceTree = "<group>"; };
 		27FD2CA92146C31C00A5A779 /* FindInPageActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindInPageActivity.swift; sourceTree = "<group>"; };
 		27FD2CAA2146C31C00A5A779 /* AddToFavoritesActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToFavoritesActivity.swift; sourceTree = "<group>"; };
@@ -3851,6 +3853,7 @@
 				27A1AC0824859D0900344503 /* FeedHeadlineViews.swift */,
 				2719DA08249D37490080AB48 /* SponsorCardView.swift */,
 				27036EC2256718DA004EF6B6 /* PartnerCardView.swift */,
+				27FCFB0B2673F265008E43AB /* AdCardView.swift */,
 			);
 			path = Cards;
 			sourceTree = "<group>";
@@ -7255,6 +7258,7 @@
 				27C647832550AF34006D72FC /* WalletTransferCompleteView.swift in Sources */,
 				4422D4B821BFFB7600BF1855 /* histogram.cc in Sources */,
 				27FD3FBA25C8D20200696156 /* FeedDataSource+RSS.swift in Sources */,
+				27FCFB0C2673F265008E43AB /* AdCardView.swift in Sources */,
 				0A0D3D3921A4BD0600BEE65B /* SafeBrowsing.swift in Sources */,
 				278C6FFF24F6EA3700A246C8 /* ReportBrokenSiteView.swift in Sources */,
 				27676D472555F34D00BC955A /* BraveRewardsStatusView.swift in Sources */,

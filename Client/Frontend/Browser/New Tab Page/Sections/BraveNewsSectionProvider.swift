@@ -35,18 +35,20 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
         case bravePartnerLearnMoreTapped
         /// The user performed an action on a feed item
         case itemAction(FeedItemAction, context: FeedItemActionContext)
+        /// The user performed an action on an inline content ad
+        case inlineContentAdAction(FeedItemAction, ad: InlineContentAd)
     }
     
     let dataSource: FeedDataSource
-    let ads: BraveAds
+    let rewards: BraveRewards
     var sectionDidChange: (() -> Void)?
     var actionHandler: (Action) -> Void
     
     init(dataSource: FeedDataSource,
-         ads: BraveAds,
+         rewards: BraveRewards,
          actionHandler: @escaping (Action) -> Void) {
         self.dataSource = dataSource
-        self.ads = ads
+        self.rewards = rewards
         self.actionHandler = actionHandler
         
         super.init()
@@ -64,6 +66,7 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
         collectionView.register(FeedCardCell<NumberedFeedGroupView>.self)
         collectionView.register(FeedCardCell<SponsorCardView>.self)
         collectionView.register(FeedCardCell<PartnerCardView>.self)
+        collectionView.register(FeedCardCell<AdCardView>.self)
     }
     
     var landscapeBehavior: NTPLandscapeSizingBehavior {
@@ -117,6 +120,55 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
         return 20
     }
     
+    private var iabTrackedCellContexts: [IndexPath: ViewportTrackedCardContext] = [:]
+    
+    /// Information about a IAB tracked card to determine if a user viewed the ad by scrolling
+    /// at least 50% of the cell into the viewport for at least 1 second
+    private class ViewportTrackedCardContext {
+        var collectionView: UICollectionView
+        var action: () -> Void
+        var runningTimer: Timer?
+        
+        deinit {
+            runningTimer?.invalidate()
+        }
+        
+        init(collectionView: UICollectionView, action: @escaping () -> Void) {
+            self.collectionView = collectionView
+            self.action = action
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        func cellAtIndexPathIsMostlyVisible(
+            _ indexPath: IndexPath,
+            context: ViewportTrackedCardContext
+        ) -> Bool {
+            if let cell = context.collectionView.cellForItem(at: indexPath) {
+                if cell.frame.intersection(context.collectionView.bounds).height >
+                    cell.bounds.height / 2.0 {
+                    return true
+                }
+            }
+            return false
+        }
+        if iabTrackedCellContexts.isEmpty { return }
+        for (indexPath, context) in iabTrackedCellContexts {
+            if cellAtIndexPathIsMostlyVisible(indexPath, context: context),
+               context.runningTimer == nil {
+                context.runningTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { [weak self] timer in
+                    guard let self = self else { return }
+                    if let context = self.iabTrackedCellContexts[indexPath],
+                       context.runningTimer == timer,
+                       cellAtIndexPathIsMostlyVisible(indexPath, context: context) {
+                        // Still at least 50% visible
+                        context.action()
+                    }
+                })
+            }
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.item == 0, let cell = cell as? FeedCardCell<BraveNewsOptInView> {
             cell.content.graphicAnimationView.play()
@@ -124,16 +176,28 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
         if let card = dataSource.state.cards?[safe: indexPath.item] {
             if case .partner(let item) = card,
                let creativeInstanceID = item.content.creativeInstanceID {
-                ads.reportPromotedContentAdEvent(
-                    item.content.urlHash,
-                    creativeInstanceId: creativeInstanceID,
-                    eventType: .viewed
-                )
+                iabTrackedCellContexts[indexPath] = .init(collectionView: collectionView) { [weak self] in
+                    self?.rewards.ads.reportPromotedContentAdEvent(
+                        item.content.urlHash,
+                        creativeInstanceId: creativeInstanceID,
+                        eventType: .viewed
+                    )
+                }
+            }
+            if case .ad(let ad) = card {
+                iabTrackedCellContexts[indexPath] = .init(collectionView: collectionView) { [weak self] in
+                    self?.rewards.ads.reportInlineContentAdEvent(
+                        ad.uuid,
+                        creativeInstanceId: ad.creativeInstanceID,
+                        eventType: .viewed
+                    )
+                }
             }
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        iabTrackedCellContexts[indexPath] = nil
         if indexPath.item == 0, let cell = cell as? FeedCardCell<BraveNewsOptInView> {
             cell.content.graphicAnimationView.stop()
         }
@@ -229,6 +293,14 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
                 self?.actionHandler(.bravePartnerLearnMoreTapped)
             }
             return cell
+        case .ad(let ad):
+            let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<AdCardView>
+            cell.content.feedView.setupWithInlineContentAd(ad)
+            cell.content.contextMenu = inlineContentAdContextMenu(ad)
+            cell.content.actionHandler = { [weak self] index, action in
+                self?.actionHandler(.inlineContentAdAction(action, ad: ad))
+            }
+            return cell
         case .headlinePair(let pair):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<SmallHeadlinePairCardView>
             cell.content.smallHeadelineCardViews.left.feedView.setupWithItem(pair.first)
@@ -283,6 +355,47 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
     
     private func handler(for item: FeedItem, card: FeedCard, indexPath: IndexPath) -> (Int, FeedItemAction) -> Void {
         return handler(from: { _ in item }, card: card, indexPath: indexPath)
+    }
+    
+    private func inlineContentAdContextMenu(_ ad: InlineContentAd) -> FeedItemMenu {
+        typealias MenuActionHandler = (_ ad: InlineContentAd) -> Void
+        
+        func itemActionHandler(_ action: FeedItemAction, _ ad: InlineContentAd) {
+            self.actionHandler(.inlineContentAdAction(action, ad: ad))
+        }
+        
+        let openInNewTabHandler: MenuActionHandler = { ad in
+            itemActionHandler(.opened(inNewTab: true), ad)
+        }
+        let openInNewPrivateTabHandler: MenuActionHandler = { ad in
+            itemActionHandler(.opened(inNewTab: true, switchingToPrivateMode: true), ad)
+        }
+        return .init { index -> UIMenu? in
+            func mapDeferredHandler(_ handler: @escaping MenuActionHandler) -> UIActionHandler {
+                return UIAction.deferredActionHandler { _ in
+                    handler(ad)
+                }
+            }
+            var openInNewTab: UIAction {
+                .init(title: Strings.openNewTabButtonTitle, image: UIImage(named: "brave.plus"), handler: mapDeferredHandler(openInNewTabHandler))
+            }
+            
+            var openInNewPrivateTab: UIAction {
+                .init(title: Strings.openNewPrivateTabButtonTitle, image: UIImage(named: "brave.shades"), handler: mapDeferredHandler(openInNewPrivateTabHandler))
+            }
+            let openActions: [UIAction] = [
+                openInNewTab,
+                // Brave News is only available in normal tabs, so this isn't technically required
+                // but good to be on the safe side
+                !PrivateBrowsingManager.shared.isPrivateBrowsing ?
+                    openInNewPrivateTab :
+                    nil
+            ].compactMap { $0 }
+            let children: [UIMenu] = [
+                UIMenu(title: "", options: [.displayInline], children: openActions),
+            ]
+            return UIMenu(title: ad.targetURL, children: children)
+        }
     }
     
     private func contextMenu(from feedList: @escaping (Int) -> FeedItem, card: FeedCard, indexPath: IndexPath) -> FeedItemMenu {
@@ -388,5 +501,27 @@ extension FeedItemView {
         if isBrandVisible {
             brandContainerView.textLabel.text = feedItem.source.name
         }
+    }
+}
+
+extension FeedItemView {
+    func setupWithInlineContentAd(_ ad: InlineContentAd) {
+        titleLabel.text = ad.title
+        thumbnailImageView.sd_setImage(with: ad.imageURL.asURL, placeholderImage: nil, options: .avoidAutoSetImage, completed: { (image, _, cacheType, _) in
+            if cacheType == .none {
+                UIView.transition(
+                    with: self.thumbnailImageView,
+                    duration: 0.35,
+                    options: [.transitionCrossDissolve, .curveEaseInOut],
+                    animations: {
+                        self.thumbnailImageView.image = image
+                    }
+                )
+            } else {
+                self.thumbnailImageView.image = image
+            }
+        })
+        brandContainerView.textLabel.text = ad.message
+        callToActionButton.setTitle(ad.ctaText, for: .normal)
     }
 }

@@ -9,6 +9,7 @@ import Data
 import Shared
 import BraveShared
 import FeedKit
+import BraveCore
 
 // Named `logger` because we are using math function `log`
 private let logger = Logger.browserLogger
@@ -52,6 +53,9 @@ class FeedDataSource {
     @Observable private(set) var state: State = .initial
     private(set) var sources: [FeedItem.Source] = []
     private var items: [FeedItem.Content] = []
+    
+    /// An ads object to handle inserting Inline Content Ads within the Brave News sequence
+    var rewards: BraveRewards?
     
     /// Add a closure that will execute when `state` is changed.
     ///
@@ -596,17 +600,18 @@ class FeedDataSource {
             category: \.content.offersCategory
         )
         
+        rewards?.ads.purgeOrphanedAdEvents(.inlineContentAd)
+        var contentAdsQueryFailed = false
+        
         let rules: [FeedSequenceElement] = [
             .sponsor,
             .fillUsing(FilteredFillStrategy(isIncluded: { $0.source.category == Self.topNewsCategory }), [
                 .headline(paired: false)
             ]),
-            .fillUsing(dealsCategoryFillStrategy, [
-                .deals
-            ]),
+            .braveAd,
             .repeating([
                 .repeating([.headline(paired: false)], times: 2),
-                .repeating([.headline(paired: true)], times: 2),
+                .headline(paired: true),
                 .partner,
                 .fillUsing(
                     CategoryFillStrategy(
@@ -617,19 +622,22 @@ class FeedDataSource {
                         .categoryGroup,
                     ]
                 ),
-                .headline(paired: false),
-                .fillUsing(dealsCategoryFillStrategy, [
-                    .deals
-                ]),
-                .headline(paired: false),
-                .headline(paired: true),
+                .repeating([.headline(paired: false)], times: 2),
+                .repeating([.headline(paired: true)], times: 2),
+                .braveAd,
+                .repeating([.headline(paired: false)], times: 2),
                 .brandedGroup(numbered: true),
                 .group,
                 .fillUsing(RandomizedFillStrategy(isIncluded: { Date().timeIntervalSince($0.content.publishTime) < 48.hours }), [
-                    .headline(paired: false),
+                    .headline(paired: false)
+                ]),
+                .fillUsing(dealsCategoryFillStrategy, [
+                    .deals
+                ]),
+                .fillUsing(RandomizedFillStrategy(isIncluded: { Date().timeIntervalSince($0.content.publishTime) < 48.hours }), [
                     .headline(paired: true),
                     .headline(paired: false),
-                ])
+                ]),
             ])
         ]
         
@@ -651,6 +659,29 @@ class FeedDataSource {
                 return fillStrategy.next(from: &partners, where: imageExists).map {
                     [.partner($0)]
                 }
+            case .braveAd:
+                // If we fail to obtain inline content ads during a card gen it can be assumed that
+                // all further calls will fail since cards are generated all at once
+                guard !contentAdsQueryFailed, let rewards = rewards else { return nil }
+                let group = DispatchGroup()
+                group.enter()
+                var contentAd: InlineContentAd?
+                DispatchQueue.main.async {
+                    rewards.ads.inlineContentAds(dimensions: "900x750", completion: { success, dimensions, ad in
+                        if success {
+                            contentAd = ad
+                        } else {
+                            contentAdsQueryFailed = true
+                            logger.debug("Inline content ads could not be filled; Skipping for the rest of this feed generation")
+                        }
+                        group.leave()
+                    })
+                }
+                let result = group.wait(timeout: .now() + .seconds(1))
+                if result == .success, let ad = contentAd {
+                    return [.ad(ad)]
+                }
+                return nil
             case .headline(let paired):
                 if articles.isEmpty { return nil }
                 let imageExists = { (item: FeedItem) -> Bool in
@@ -738,6 +769,8 @@ extension FeedDataSource {
         case sponsor
         /// Display a headline from a list of partnered items
         case partner
+        /// Displays a Brave ad from the ads catalog
+        case braveAd
         /// Displays a horizontal list of deals with the content type of `brave_offers`
         case deals
         /// Displays an `article` type item in a headline card. Can also be displayed as two (smaller) paired
