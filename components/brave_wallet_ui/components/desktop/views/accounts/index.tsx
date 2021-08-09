@@ -11,6 +11,7 @@ import { reduceAddress } from '../../../../utils/reduce-address'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
 import { create } from 'ethereum-blockies'
 import locale from '../../../../constants/locale'
+import { formatBalance } from '../../../../utils/format-balances'
 
 // Styled Components
 import {
@@ -227,11 +228,11 @@ function Accounts (props: Props) {
           </WalletInfoRow>
           <SubviewSectionTitle>{locale.accountsAssets}</SubviewSectionTitle>
           <SubDivider />
-          {userAssetList.map((item) =>
+          {selectedAccount.tokens.map((item) =>
             <PortfolioAssetItem
               key={item.asset.contractAddress}
               name={item.asset.name}
-              assetBalance={item.assetBalance}
+              assetBalance={formatBalance(item.assetBalance, item.asset.decimals)}
               fiatBalance={item.fiatBalance}
               symbol={item.asset.symbol}
               icon={item.asset.icon}

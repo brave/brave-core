@@ -56,7 +56,8 @@ const accounts: WalletAccountType[] = [
     balance: '0.31178',
     asset: 'eth',
     fiatBalance: '0',
-    accountType: 'Primary'
+    accountType: 'Primary',
+    tokens: []
   },
   {
     id: '2',
@@ -65,7 +66,8 @@ const accounts: WalletAccountType[] = [
     balance: '0.31178',
     asset: 'eth',
     fiatBalance: '0',
-    accountType: 'Primary'
+    accountType: 'Primary',
+    tokens: []
   },
   {
     id: '3',
@@ -74,7 +76,8 @@ const accounts: WalletAccountType[] = [
     balance: '0.31178',
     asset: 'eth',
     fiatBalance: '0',
-    accountType: 'Primary'
+    accountType: 'Primary',
+    tokens: []
   }
 ]
 

@@ -54,6 +54,8 @@ import {
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import * as Result from '../common/types/result'
 
+import { formatBalance } from '../utils/format-balances'
+
 type Props = {
   wallet: WalletState
   page: PageState
@@ -243,9 +245,13 @@ function Container (props: Props) {
 
   // This will scrape all of the user's accounts and combine the asset balances for a single asset
   const fullAssetBalance = (asset: TokenInfo) => {
-    const newList = accounts.filter((account) => account.asset.includes(asset.symbol.toLowerCase()))
-    const amounts = newList.map((account) => {
-      return Number(account.balance)
+    const amounts = accounts.map((account) => {
+      let balance = 0
+      const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
+      if (found) {
+        balance = Number(formatBalance(found.assetBalance, found.asset.decimals))
+      }
+      return balance
     })
     const grandTotal = amounts.reduce(function (a, b) {
       return a + b
@@ -255,9 +261,13 @@ function Container (props: Props) {
 
   // This will scrape all of the user's accounts and combine the fiat value for a single asset
   const fullAssetFiatBalance = (asset: TokenInfo) => {
-    const newList = accounts.filter((account) => account.asset.includes(asset.symbol.toLowerCase()))
-    const amounts = newList.map((account) => {
-      return Number(account.fiatBalance)
+    const amounts = accounts.map((account) => {
+      let fiatBalance = 0
+      const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
+      if (found) {
+        fiatBalance = Number(found.fiatBalance)
+      }
+      return fiatBalance
     })
     const grandTotal = amounts.reduce(function (a, b) {
       return a + b
