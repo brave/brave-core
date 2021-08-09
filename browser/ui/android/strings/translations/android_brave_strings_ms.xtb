@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">Membuka sesetengah tapak menggunakan sambungan HTTPS yang selamat dan bukannya HTTP biasa.</translation>
 <translation id="94154759592465111">Sekat Skrip</translation>
 <translation id="3518266709656143462">Menyekat Javascript (mungkin memecahkan tapak)</translation>
-<translation id="5709627087332022422">Sekat penjejak merentas laman</translation>
 <translation id="6052725679982758334">Sekatan Media Sosial</translation>
 <translation id="7498695072878479744">Membenarkan butang log masuk Google di tapak pihak ketiga</translation>
 <translation id="863171915776379000">Benarkan log masuk Facebook dan catatan yang dimasukkan.</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">Gerbang IPFS</translation>
 <translation id="2688519859165248360">Membolehkan navigasi ke sumber IPFS melalui Get Laluan IPFS</translation>
 <translation id="7534079972563542000">Domain yang tidak dapat Dihentikan</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Harga Ethereum (ETH)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Kaedah Selesai</translation>
 <translation id="2356070529366658676">Tanya</translation>
 <translation id="4176463684765177261">Dilumpuhkan</translation>
 <translation id="2218918398178303658">DNS melalui HTTPS</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Mengelakkan pelayar daripada melakukan pengecapan jari</translation>
 <translation id="7459000603787995422">Tutup tab semasa keluar</translation>
 <translation id="4448697385961650078">Sekat iklan &amp; penjejak</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">Jadikan Brave sebagai pelayar lalai anda!</translation>
 <translation id="7136694880210472378">Jadikan lalai</translation>
 <translation id="4250680216510889253">Tidak</translation>
-<translation id="4501702055016678577">Carian sulit dengan DuckDuckGo?</translation>
-<translation id="910419239800579753">Dengan carian sulit, Brave akan menggunakan DuckDuckGo untuk membuat carian anda semasa anda berada di dalam tab sulit ini. DuckDuckGo ialah enjin carian yang tidak menjejak sejarah carian anda, lalu membolehkan anda mencari secara sulit.</translation>
-<translation id="1426410128494586442">Ya</translation>
-<translation id="5628466560184522265">Ketahui tentang carian sulit dengan DuckDuckGo</translation>
 <translation id="8826007068782654809">Terima kasih</translation>
 <translation id="6665366815203065060">Anda baru sahaja menghantar tip kepada:</translation>
 <translation id="5441565662498481293">Anda menghantar tip secara automatik kepada:</translation>
@@ -443,7 +439,7 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="3477340970981564961">Iklan Peribadi Brave memberikan anda ganjaran token untuk menyokong pencipta kandungan tidak seperti iklan tradisional, semuanya sementara mengekalkan privasi maklumat peribadi anda.</translation>
 <translation id="6973095375773523904">Di manakah iklan muncul?</translation>
 <translation id="7556325460112047619">Iklan Peribadi Brave akan timbul sebagai pemberitahuan biasa. Anda mengawal berapa kerap anda melihat iklan-iklan ini dalam tetapan.</translation>
-<translation id="6897083627729802351">BIla anda menerima ganjaran</translation>
+<translation id="6897083627729802351">BIlakah anda menerima ganjaran?</translation>
 <translation id="310863932297733723">Token anda yang diperoleh daripada Iklan Peribadi Brave sepanjang bulan semasa akan tiba pada 5hb bulan depan.</translation>
 <translation id="7712287524451429139">Memberi balik dijadikan mudah</translation>
 <translation id="105037569026952831">Pencipta menerima sumbangan token anda secara automatik berdasarkan tahap penglibatan anda yang kami ukur sebagai ‘Perhatian’.</translation>
@@ -460,7 +456,7 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="827315274423079662">Woohoo, anda sudah bersedia!</translation>
 <translation id="3895246934788932488">Dengan menggunakan Ganjaran Brave, anda melindungi privasi anda dan membantu menjadikan internet tempat yang lebih baik untuk semua orang. Dan itu memang hebat!</translation>
 <translation id="5705882733397021510">Kembali</translation>
-<translation id="3985567919248057638">Mari Menjelajah Dengan Pantas</translation>
+<translation id="3985567919248057638">Mari Kita Ikuti Panduan Pantas</translation>
 <translation id="2434574859640694129">Selepas menerima pembayaran iklan pertama anda, anda boleh datang kembali dan memberikan tip kepada pencipta ini!</translation>
 <translation id="207242986925259074">Jelajah segar semula pantas</translation>
 <translation id="8342862030112839977">Pembayaran ganjaran pertama anda akan tiba sebelum:</translation>
@@ -567,4 +563,13 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="745115390910697838">Frasa tidak sepadan, Sila cuba lagi.</translation>
 <translation id="2360588547830602174">Pemulihan akaun gagal. Sila cuba lagi.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">Harga Pasaran di ETH</translation>
+<translation id="6748108480210050150">Daripada</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">Hingga (anggaran)</translation>
+<translation id="59223531494896848">Had</translation>
+<translation id="3567988240819868195">Pasaran</translation>
+<translation id="632241521608275119">Toleransi gelinciran</translation>
 </translationbundle>

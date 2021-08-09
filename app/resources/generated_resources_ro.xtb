@@ -591,6 +591,7 @@
 <translation id="1627408615528139100">Descărcat deja</translation>
 <translation id="1628948239858170093">Scanezi fișierul înainte să îl deschizi?</translation>
 <translation id="1629314197035607094">Parola a expirat</translation>
+<translation id="1947639598318989608">Permiți ca Brave să găsească reduceri personalizate pentru coșul tău de cumpărături?</translation>
 <translation id="1629521517399325891">Certificatul de utilizator nu este disponibil pentru autentificarea în rețea.</translation>
 <translation id="163072119192489970">Au permisiunea de a finaliza trimiterea și primirea datelor</translation>
 <translation id="1630768113285622200">Repornește și continuă</translation>
@@ -3188,7 +3189,7 @@ Mesaj de la server: <ph name="SERVER_MSG"/></translation>
 <translation id="4469762931504673593"><ph name="ORIGIN"/> poate să modifice fișiere din <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Preferințe pentru stocarea externă</translation>
 <translation id="4471354919263203780">Se descarcă fișierele pentru recunoașterea vocală... <ph name="PERCENT"/> %</translation>
-<translation id="506314819294271427">Contribuie la îmbunătățirea funcțiilor și performanței Brave</translation>
+<translation id="918192811481327695">Contribuie la îmbunătățirea funcțiilor și performanței Brave</translation>
 <translation id="4472575034687746823">Începeți</translation>
 <translation id="4474155171896946103">Marchează toate filele...</translation>
 <translation id="4475552974751346499">Caută în descărcări</translation>
@@ -4417,7 +4418,6 @@ Mesaj de la server: <ph name="SERVER_MSG"/></translation>
 <translation id="5864754048328252126">Măsura pentru inactivitate în timpul încărcării</translation>
 <translation id="5865508026715185451">Aplicația <ph name="APP_NAME"/> se va întrerupe în curând</translation>
 <translation id="586567932979200359">Rulează <ph name="PRODUCT_NAME"/> din imaginea sa de pe disc. Instalarea sa pe computer îți permite să îl rulezi fără imaginea de pe disc și asigură actualizarea acestuia.</translation>
-<translation id="1224064034972923114">Trimite automat statistici de utilizare și rapoarte de blocare la Brave</translation>
 <translation id="5867841422488265304">Caută sau introdu adresa web</translation>
 <translation id="5869029295770560994">OK, am înțeles</translation>
 <translation id="5869522115854928033">Parole salvate</translation>
@@ -5433,7 +5433,6 @@ Mesaj de la server: <ph name="SERVER_MSG"/></translation>
 <translation id="6997642619627518301"><ph name="NAME_PH"/> - Jurnalul de activități</translation>
 <translation id="6997707937646349884">Pe dispozitivele tale:</translation>
 <translation id="6998793565256476099">Înscrie dispozitivul pentru conferințe video</translation>
-<translation id="456304305650018221">Permiți ca Brave să găsească reduceri pentru articolele pe care le adaugi în coșuri?</translation>
 <translation id="6999956497249459195">Grup nou</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> este conectată, dar necesită configurare</translation>
 <translation id="7000347579424117903">Include Ctrl, Alt sau Căutare</translation>
@@ -7569,10 +7568,10 @@ Apasă o tastă de comutare atribuită pentru a elimina atribuirea.</translation
 <translation id="2579188629646253712">Ieși din Privat</translation>
 <translation id="1001131747196960052">Închideți Privat</translation>
 <translation id="433830930456392967">{COUNT, plural,
-          =0 {Open all in &amp;Private window}
-          =1 {Open in &amp;Private window}
-          other {Open all ({COUNT}) in &amp;Private window}}</translation>
-<translation id="5464506165779993685">Deschideți într-o fereastră incognito</translation>
+          =0 {Deschideți totul în &amp;fereastră incognito}
+          =1 {Deschideți în &amp;fereastră incognito}
+          other {Deschideți toate ({COUNT}) în &amp;fereastră incognito}}</translation>
+<translation id="5464506165779993685">Deschideți într-o &amp;fereastră incognito</translation>
 <translation id="4620367155626060530">&amp;Afișați bara de marcaje</translation>
 <translation id="1448315815373449655">{COUNT, plural,
           =0 {Deschide tot în &amp;Fereastră Privată}
@@ -7584,8 +7583,8 @@ Apasă o tastă de comutare atribuită pentru a elimina atribuirea.</translation
 <translation id="1342491857153455138">Deschideți totul (<ph name="URL_COUNT"/>) în fereastră privată</translation>
 <translation id="5556722972306334687">Deschideți într-o fereastră incognito</translation>
 <translation id="1860933807472918250">{0, plural,
-        =1 {Private}
-        other {# open Private windows}
+        =1 {Incognito}
+        other {# ferestre incognito deschise}
       }</translation>
 <translation id="8712375231869053533">{0, plural,
       =1 {Private}

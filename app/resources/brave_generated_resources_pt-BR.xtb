@@ -3,11 +3,11 @@
 <translationbundle lang="pt-BR">
 <translation id="3333887201479867589">Recompensas Brave</translation>
 <translation id="7942180974165298215">Bloqueador de Anúncios Brave</translation>
-<translation id="4615489450165434530">Relatar Site Quebrado</translation>
+<translation id="4615489450165434530">Relate um site quebrado</translation>
 <translation id="6406506848690869874">Sync</translation>
 <translation id="1544192797660353713">Carteira</translation>
 <translation id="2445484935443597917">Criar um novo perfil</translation>
-<translation id="2666990579225592931">Abrir janela de visitante</translation>
+<translation id="2666990579225592931">Abrir janela de convidado</translation>
 <translation id="8275068909952022340">Mais…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (a extenção ID "<ph name="EXTENSION_ID"/>") não é permitida na Brave.</translation>
 <translation id="6786747875388722282">Extensões</translation>
@@ -28,6 +28,9 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="3218385319396786393">A reprodução automática foi bloqueada nesta página</translation>
 <translation id="4988333904713528597">Sempre permitir a reprodução automática em <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continuar bloqueando a reprodução automática</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Perguntar quando um site quiser acessar a API do provedor Ethereum</translation>
+<translation id="7017590444693657895">Impedir que sites acessem a API do provedor Ethereum</translation>
 <translation id="8988939298652262600">O Brave não avalia as extensões quanto a segurança e proteção. Somente instale esta extensão caso confie em seu desenvolvedor.</translation>
 <translation id="8081858229109418493">Nome e ícone do perfil</translation>
 <translation id="2044383478723007273">Cores brave</translation>
@@ -42,6 +45,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="5802665280774361839">Exibir preenchimento automático na barra de endereço</translation>
 <translation id="597020512043916976">Exibir os principais sites nas sugestões de autocompletar</translation>
 <translation id="264150068416846820">Exibir sites sugeridos pelo Brave nas sugestões do autocompletar</translation>
+<translation id="5529693968082667490">Mostrar botão para pesquisar abas</translation>
 <translation id="6414370348346025511">A proteção padrão está ativa.</translation>
 <translation id="814018970995616154">Verificar URLs a partir de uma lista de sites perigosos armazenada no Brave.</translation>
 <translation id="1144810021918451336">Não o protege contra sites, downloads e extensões nocivos</translation>
@@ -72,6 +76,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="7895302206188277628">Conteúdo vinculado</translation>
 <translation id="3654831858282189202">Publicar com chave do IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Importar texto selecionado para o IPFS</translation>
 <translation id="6925604404524625582">Importar e copiar link para instantâneo do IPFS</translation>
 <translation id="1434416574322382019">Nova Janela Privada com Tor</translation>
 <translation id="4703780849509456860">Abrir Link em Janela Privada com Tor</translation>
@@ -93,7 +98,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="6303294677342628402">Proteções</translation>
 <translation id="7133511168130368997">Bloqueia trackers e anúncios que o seguem por toda a internet.</translation>
 <translation id="2761825942249694703">Estas são as configurações padrão do  Shields. Elas aplicam-se a todos os sites, a não ser que você altere algo no painel do Shields em um site específico. Alterar isso não afetará suas atuais configurações por site.</translation>
-<translation id="8754605759692119662">Isto bloqueará a maioria dos anúncios nos sites, mas não os anúncios privados do Brave – esses são controlados em</translation>
+<translation id="1485394570478670912">Isso bloqueará a maioria dos anúncios em sites, mas não os anúncios privados do Brave, que são controlados nas</translation>
 <translation id="6388201778088078932">configurações.</translation>
 <translation id="9185018653595759199">Bloqueio de mídia social</translation>
 <translation id="7390783310074170337">Visualização padrão</translation>
@@ -294,6 +299,13 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="1391855377994926460">Continue navegando mais rápido na web (até 6 vezes mais rápido nos principais sites de notícias).</translation>
 <translation id="9218430445555521422">Definir como padrão</translation>
 <translation id="3479552764303398839">Não agora</translation>
+<translation id="5039804452771397117">Permitir</translation>
+<translation id="7053983685419859001">Bloquear</translation>
+<translation id="7815301689257843278">Enviar relatórios de falhas automaticamente para que o Brave possa impedir que esse problema volte a ocorrer?</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> fechou de modo inesperado.</translation>
+<translation id="1324417023773393937">Navegador Brave</translation>
+<translation id="1068069727470515940">Você poderá alterar <ph name="SETTING_TEXT"/> novamente quando quiser.</translation>
+<translation id="6873781976650514089">esta configuração</translation>
 <translation id="6040143037577758943">Fechar</translation>
 <translation id="5600566490506283344">Notificação de anúncio do Brave</translation>
 <translation id="4877147287319222750">Adicionar à Barra Lateral</translation>
@@ -345,6 +357,6 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="8487693399751278191">Importar favoritos agora...</translation>
 <translation id="2557899542277210112">Para acesso rápido, ponha seus favoritos aqui na barra de favoritos.</translation>
 <translation id="2808630562319398131">Redefinir dados de recompensas do Brave...</translation>
-<translation id="1224064034972923114">Ajude a melhorar o Brave enviando automaticamente relatórios de pane</translation>
-<translation id="3738833060602717053">Ajude a melhorar o <ph name="PRODUCT_NAME"/> enviando automaticamente relatórios de pane</translation>
+<translation id="2273851479262317744">Definir o Brave como navegador padrão</translation>
+<translation id="8581710194025054669">Para garantir o máximo de privacidade on-line, sugerimos que você defina o Brave como o navegador padrão no seu computador. Com o Brave como padrão, qualquer link da web em que você clicar será aberto com as proteções de privacidade do Brave.</translation>
 </translationbundle>

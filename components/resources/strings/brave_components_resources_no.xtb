@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">Vis favoritter</translation>
 <translation id="3446024864193919737">Vis Brave Rewards</translation>
 <translation id="6274899614137380422">Vis Binance</translation>
-<translation id="5551238871320268996">Brave Sammen</translation>
 <translation id="5585019845078534178">Kort</translation>
 <translation id="3870475560794762985">Vis sponsede bilder</translation>
 <translation id="2875302873837723333">populære nettsteder</translation>
@@ -62,7 +61,7 @@
 <translation id="3333887201479867589">Brave-belønninger</translation>
 <translation id="385051799172605136">Tilbake</translation>
 <translation id="9024104284526126630">Du kan starte en privat samtale i Brave.</translation>
-<translation id="5735801688206890393">Start ubegrensede samtaler med venner og kolleger i Brave Together.</translation>
+<translation id="4903286433687221248">Få ubegrensede samtaler med venner og kolleger i Brave Talk.</translation>
 <translation id="7115051913071512405">Prøv det</translation>
 <translation id="7415602225677446066">Dagens topphistorier i en helt privat strøm, bare for deg.</translation>
 <translation id="6903061332999399632">Brave News er støttet av reklame med fullstendig private og anonymiserte reklamer som samsvarer på enheten din. Din personlige informasjon vil alltid forbli privat, per våre <ph name="LINK_START"/>retningslinjer for personvern<ph name="LINK_END"/>.</translation>
@@ -172,8 +171,6 @@
 <translation id="8010081455002666927">Gjenkjenn automatisk</translation>
 <translation id="4394049700291259645">Slå av</translation>
 <translation id="4176463684765177261">Deaktivert</translation>
-<translation id="4434663852465709809">QR-kode for iOS belønner brukere som overfører BAT</translation>
-<translation id="2175927920773552910">QR-kode</translation>
 <translation id="8283001340969131076">Beklager, det oppsto en feil under frakobling av <ph name="PROVIDER"/>-kontoen din. Prøv igjen om en liten stund.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">Enheten er frakoblet, vennligst prøv igjen senere.</translation>
@@ -238,8 +235,8 @@
 <translation id="2359865110462963929">BAT støttes for tiden ikke i regionen din. Se <ph name="BEGIN_LINK"/>her<ph name="END_LINK"/> for oppdateringer.</translation>
 <translation id="1737873393693460829">Ved å skru på [[title]], samtykker du til <ph name="BEGIN_LINK1"/>bruksvilkårene<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>retningslinjene for personvern<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Feil ved oppretting av BAT-kort for Brave-nettleseren</translation>
-<translation id="6473583070570450185">Du må ha en verifisert lommebok for å Logge inn</translation>
-<translation id="5949995321533425416">Du må ha minst <ph name="AMOUNT"/> BAT for å opprette en Uphold-lommebok. Om du allerede har en verifisert Uphold-lommebok, kan du fortsette med innloggingen.</translation>
+<translation id="8429332714958713413">Du trenger en bekreftet lommebok for å logge på</translation>
+<translation id="5881716477679854586">Prøv igjen etter at du har fullført ID-verifiseringen på <ph name="CUSTODIAN"/>.</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> ankommer om <ph name="DAYS"/></translation>
 <translation id="4672975606583962967">Velg en lommeboktjeneste</translation>
 <translation id="1815503044492647974">Velg en lommebokpartner for en foresatt. Om du allerede har en konto, blir du bedt om å logge på for å koble deg til.</translation>
@@ -261,6 +258,8 @@
 <translation id="6325525973963619867">Mislyktes</translation>
 <translation id="583281660410589416">Ukjent</translation>
 <translation id="8654112359048700618">Forbered</translation>
+<translation id="8978461348341400550">Vaktmester:</translation>
+<translation id="7220161813676251577">Vaktmesterens medlems-ID:</translation>
 <translation id="680983167891198932">Nøkkel</translation>
 <translation id="7535087603100972091">Verdi</translation>
 <translation id="45591635423975492">Loggført kl.</translation>
@@ -351,8 +350,8 @@
 <translation id="2070991379950719711">Begynn å bruke Brave Rewards</translation>
 <translation id="6318696841371191107">Ta en rask omvisning</translation>
 <translation id="8465790416279415448">Ved å fortsette, samtykker du til <ph name="TOS_LINK_BEGIN"/>Bruksvilkårene<ph name="TOS_LINK_END"/> og <ph name="PP_LINK_BEGIN"/>Retningslinjene for personvern<ph name="PP_LINK_END"/>.</translation>
-<translation id="2404165674840145940">Tips med Brave Rewards</translation>
-<translation id="5820285701794581330">Ved å bruke Brave Rewards begynner du å opptjene BAT-er som du kan bruke til å tipse produsenter.</translation>
+<translation id="8222322431155185238">Gi driks med Brave Rewards</translation>
+<translation id="1895476463085410109">Få belønninger ved å se Brave Private Ads og støtt innholdsskapere i samme slengen</translation>
 <translation id="5705882733397021510">Gå tilbake</translation>
 <translation id="185034574799484512">La oss ta en rask omvisning</translation>
 <translation id="8281886186245836920">Hopp over</translation>
@@ -505,6 +504,7 @@
 <translation id="8725066075913043281">Prøv igjen</translation>
 <translation id="2600847485413879104">Belønninger i BAT</translation>
 <translation id="8006596443377585072">bitFlyer-lommebok</translation>
+<translation id="2770577461149798369">Gemini-lommebok</translation>
 <translation id="8108350286444475334">Uphold-lommebok</translation>
 <translation id="6977372887576114613">BAT satt inn</translation>
 <translation id="3173528272490482456">Klar til å begynne?</translation>
@@ -512,6 +512,7 @@
 <translation id="108052542935515756">Du kan starte med</translation>
 <translation id="194625454574835815">Gjenopprettingsnøkkel</translation>
 <translation id="6354568176665589146">Gjentakende</translation>
+<translation id="2799223571221894425">Start på nytt</translation>
 <translation id="1110535155349301542">fjern</translation>
 <translation id="8204292894173669182">Fjern fra Lagrede</translation>
 <translation id="5530851178552343773">Du har angitt [[reservedAmount]] [[currency]] for skapere som ennå ikke har meldt seg på for å motta bidrag. Nettleseren din vil fortsette å prøve å bidra til de bekrefter, eller til 90 dager har gått.</translation>
@@ -538,6 +539,8 @@
 <translation id="3092054349246483285">Brave-lommeboken din leveres av <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Brave Rewards er bygget på Basic Attention Token. Lær mer om BAT</translation>
 <translation id="7823359893981882407">her</translation>
+<translation id="3034163433136515805">Vis QR-kode</translation>
+<translation id="1640793619390890218">for Rewards-brukere med iOS som overfører BAT.</translation>
 <translation id="4483635855837696643">Restaurere din lommebok</translation>
 <translation id="459721429458957031">Bruk gjenopprettingsnøkkelen din for å gjenopprette lommeboken din.</translation>
 <translation id="4600052736217630789">Gjenopprettelse med en gjenopprettingsnøkkel vil erstatte din nåværende lommebok. Sørg for at du tømmer eller sikkerhetskopierer din nåværende lommebok før du gjenoppretter.</translation>

@@ -590,6 +590,7 @@
 <translation id="1627408615528139100">Ya se ha descargado</translation>
 <translation id="1628948239858170093">¿Analizar archivo antes de abrirlo?</translation>
 <translation id="1629314197035607094">Contraseña caducada</translation>
+<translation id="1947639598318989608">¿Permitir que Brave busque descuentos personalizados para tus carritos?</translation>
 <translation id="1629521517399325891">El certificado de usuario no está disponible para la autenticación de redes.</translation>
 <translation id="163072119192489970">Puede terminar de enviar y recibir datos</translation>
 <translation id="1630768113285622200">Reiniciar y continuar</translation>
@@ -1920,7 +1921,7 @@ Puedes gestionar la configuración de esta cuenta instalando la aplicación Fami
 <translation id="3046910703532196514">Página web (completa)</translation>
 <translation id="304747341537320566">Motores de voz</translation>
 <translation id="3048917188684939573">Registros de envío y del dispositivo</translation>
-<translation id="3051250416341590778">Tamaño de la pantalla</translation>
+<translation id="3051250416341590778">Tamaño de visualización</translation>
 <translation id="3053013834507634016">Uso de claves de certificado</translation>
 <translation id="3053273573829329829">Habilitar el PIN de usuario</translation>
 <translation id="3054766768827382232">Al inhabilitarla, tus periféricos funcionan mejor, pero puede que expongan tus datos personales mediante un uso no autorizado.</translation>
@@ -3186,7 +3187,7 @@ Puedes gestionar la configuración de esta cuenta instalando la aplicación Fami
 <translation id="4469762931504673593"><ph name="ORIGIN"/> puede editar los archivos que haya en <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Preferencias de almacenamiento externo</translation>
 <translation id="4471354919263203780">Descargando archivos de reconocimiento de voz... <ph name="PERCENT"/> %</translation>
-<translation id="506314819294271427">Ayudar a mejorar las funciones y el rendimiento de Brave</translation>
+<translation id="918192811481327695">Ayudar a mejorar las funciones y el rendimiento de Brave</translation>
 <translation id="4472575034687746823">Empezar</translation>
 <translation id="4474155171896946103">Añadir todas las pestañas a marcadores...</translation>
 <translation id="4475552974751346499">Buscar descargas</translation>
@@ -3620,7 +3621,7 @@ Puedes gestionar la configuración de esta cuenta instalando la aplicación Fami
 <translation id="4940845626435830013">Reservar tamaño de disco</translation>
 <translation id="4941074198479265146">Los sitios se suelen conectar a dispositivos MIDI para usarlos en funciones como crear y editar música.</translation>
 <translation id="4941246025622441835">Utiliza esta solicitud de dispositivo al registrar el dispositivo para la administración empresarial:</translation>
-<translation id="4941627891654116707">Tamaño de la fuente</translation>
+<translation id="4941627891654116707">Tamaño de fuente</translation>
 <translation id="494286511941020793">Ayuda para la configuración de proxy</translation>
 <translation id="4943368462779413526">Balón de fútbol</translation>
 <translation id="4943691134276646401">"<ph name="CHROME_EXTENSION_NAME"/>" solicita conectarse a un puerto serie</translation>
@@ -4415,7 +4416,6 @@ Puedes gestionar la configuración de esta cuenta instalando la aplicación Fami
 <translation id="5864754048328252126">Modo de inactividad durante la carga</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> se pausará pronto</translation>
 <translation id="586567932979200359">Estás ejecutando <ph name="PRODUCT_NAME"/> desde la imagen de disco. Al instalar la aplicación en tu ordenador, podrás ejecutarla sin la imagen de disco y, de esta forma, te asegurarás de que siempre esté actualizada.</translation>
-<translation id="1224064034972923114">Envía automáticamente estadísticas de uso e informes sobre fallos a Brave</translation>
 <translation id="5867841422488265304">Busca o escribe una URL</translation>
 <translation id="5869029295770560994">Entendido</translation>
 <translation id="5869522115854928033">Contraseñas guardadas</translation>
@@ -5431,7 +5431,6 @@ Exponente público (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bits):
 <translation id="6997642619627518301"><ph name="NAME_PH"/>: Registro de actividad</translation>
 <translation id="6997707937646349884">En tus dispositivos:</translation>
 <translation id="6998793565256476099">Registrar dispositivo para hacer videoconferencias</translation>
-<translation id="456304305650018221">¿Permitir que Brave busque descuentos para los artículos que añadas a tus carritos?</translation>
 <translation id="6999956497249459195">Nuevo grupo</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> está conectada, pero es necesario configurarla</translation>
 <translation id="7000347579424117903">Incluye Ctrl, Alt o la tecla de búsqueda</translation>
@@ -5683,7 +5682,7 @@ Exponente público (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bits):
 <translation id="7287143125007575591">Acceso denegado</translation>
 <translation id="7287411021188441799">Recuperar fondo predeterminado</translation>
 <translation id="7288676996127329262"><ph name="HORIZONTAL_DPI"/>x<ph name="VERTICAL_DPI"/> PPP</translation>
-<translation id="7289225569524511578">Abrir aplicación de fondos de pantalla</translation>
+<translation id="7289225569524511578">Abrir aplicación de fondos de pantalla.</translation>
 <translation id="7289386924227731009"><ph name="WINDOW_TITLE"/>: permiso solicitado, pulsa F6 para responder</translation>
 <translation id="7290242001003353852">Este servicio de inicio de sesión (que se aloja en <ph name="SAML_DOMAIN"/>) está accediendo a la cámara.</translation>
 <translation id="7295614427631867477">Ten en cuenta que Android, Google Play y las aplicaciones asociadas se rigen por sus propias políticas de recogida y uso de datos.</translation>
@@ -5883,7 +5882,7 @@ Exponente público (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bits):
 <translation id="7513029293694390567">Permite iniciar sesión automáticamente en sitios web con credenciales almacenadas. Si esta función está inhabilitada, se te solicitará la confirmación cada vez que intentes iniciar sesión en un sitio web.</translation>
 <translation id="7514239104543605883">Copiar en tu dispositivo</translation>
 <translation id="7514365320538308">Descargar</translation>
-<translation id="7514417110442087199">Añadir asignación</translation>
+<translation id="7514417110442087199">Añadir mapeo</translation>
 <translation id="751523031290522286">El administrador ha bloqueado <ph name="APP_NAME"/>. Pide permiso al administrador para usar esta aplicación.</translation>
 <translation id="7516981202574715431"><ph name="APP_NAME"/> está en pausa</translation>
 <translation id="7517063221058203587">{0,plural, =1{Actualizar dispositivo dentro de 1 minuto}other{Actualizar dispositivo dentro de # minutos}}</translation>
@@ -7582,7 +7581,7 @@ Pulsa un interruptor asignado para quitar la asignación.</translation>
 <translation id="1342491857153455138">Abrir todo (<ph name="URL_COUNT"/>) en una ventana privada</translation>
 <translation id="5556722972306334687">Abrir en una ventana privada</translation>
 <translation id="1860933807472918250">{0, plural,
-        =1 {Privado}
+        =1 {Private}
         other {# abrir ventanas privadas}
       }</translation>
 <translation id="8712375231869053533">{0, plural,

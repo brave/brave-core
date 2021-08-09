@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">Otwiera niektóre witryny przy użyciu bezpiecznego połączenia HTTPS zamiast zwykłego HTTP.</translation>
 <translation id="94154759592465111">Zablokuj skrypty</translation>
 <translation id="3518266709656143462">Blokuje skrypty Javascript (może popsuć działanie stron internetowych)</translation>
-<translation id="5709627087332022422">Zablokuj skrypty śledzące</translation>
 <translation id="6052725679982758334">Zablokuj sieci społecznościowe</translation>
 <translation id="7498695072878479744">Zezwalaj na logowanie za pomocą konta Google na stronach trzecich</translation>
 <translation id="863171915776379000">Zezwalaj na logowanie za pomocą konta Facebook i osadzone posty</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">Brama IPFS</translation>
 <translation id="2688519859165248360">Umożliwia przejście do zasobów IPFS poprzez bramkę IPFS</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Cena Ethereum (ETH)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Metoda rozwiązania</translation>
 <translation id="2356070529366658676">Zapytaj</translation>
 <translation id="4176463684765177261">Wyłączone</translation>
 <translation id="2218918398178303658">DNS poprzez HTTPS</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Uniemożliwia rozpoznawanie urządzenia</translation>
 <translation id="7459000603787995422">Zamknij karty przy wyjściu</translation>
 <translation id="4448697385961650078">Zablokuj skrypty śledzące i reklamy</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">Ustaw Brave jako domyślną przeglądarkę!</translation>
 <translation id="7136694880210472378">Ustaw jako domyślną</translation>
 <translation id="4250680216510889253">Nie</translation>
-<translation id="4501702055016678577">Prywatne wyszukiwanie z DuckDuckGo?</translation>
-<translation id="910419239800579753">W przypadku prywatnego wyszukiwania Brave będzie korzystać z DuckDuckGo, aby znaleźć wyniki, gdy używasz tej karty prywatnej. DuckDuckGo to wyszukiwarka, która nie śledzi historii wyszukiwania, umożliwiając prywatne przeglądanie.</translation>
-<translation id="1426410128494586442">Tak</translation>
-<translation id="5628466560184522265">Dowiedz się więcej o prywatnym wyszukiwaniu z DuckDuckGo</translation>
 <translation id="8826007068782654809">Dziękujemy</translation>
 <translation id="6665366815203065060">Wysłałeś własnie napiwek do:</translation>
 <translation id="5441565662498481293">Wysyłasz automatyczne napiwki do:</translation>
@@ -443,7 +439,7 @@ jeszcze nie zarejestrowali się, aby otrzymywać darowizny. Twoja przeglądarka 
 <translation id="3477340970981564961">Brave Private Ads nagradza Cię za pomocą żetonów wspierających twórców treści innych niż tradycyjne reklamy, nie ujawniając zarazem Twoich danych osobowych.</translation>
 <translation id="6973095375773523904">Kiedy wyświetlane są reklamy?</translation>
 <translation id="7556325460112047619">Brave Private Ads pojawi się jako zwykłe powiadomienie. Masz możliwość decyzji poprzez ustawienia, jak często zobaczysz te reklamy.</translation>
-<translation id="6897083627729802351">Kiedy przekazywane są nagrody</translation>
+<translation id="6897083627729802351">Kiedy przekazywane są nagrody?</translation>
 <translation id="310863932297733723">Zdobyte przez Ciebie żetony na Brave Private Ads w tym miesiącu otrzymasz 5 dnia następnego miesiąca.</translation>
 <translation id="7712287524451429139">Bezwysiłkowe obdarowywanie innych.</translation>
 <translation id="105037569026952831">Twórcy otrzymują Twoje tokenowe darowizny automatycznie, w oparciu o poziom Twojego zaangażowania mierzony jako ‘Uwaga’.</translation>
@@ -460,7 +456,7 @@ jeszcze nie zarejestrowali się, aby otrzymywać darowizny. Twoja przeglądarka 
 <translation id="827315274423079662">Huraa, jesteście gotowi!</translation>
 <translation id="3895246934788932488">Korzystając z nagród Brave, chronisz swoją prywatność i pomagasz ulepszać sieć dla wszystkich. To wspaniałe!</translation>
 <translation id="5705882733397021510">Wróć</translation>
-<translation id="3985567919248057638">Zróbmy małe oprowadzanie.</translation>
+<translation id="3985567919248057638">Zapraszamy na szybkie oprowadzenie</translation>
 <translation id="2434574859640694129">Po otryzmaniu pierwszej wypłaty za reklamy możesz powrócić i wesprzeć tego twórcę!</translation>
 <translation id="207242986925259074">Szybkie oprowadzenie przypominające</translation>
 <translation id="8342862030112839977">Twoja pierwsza wypłata nagród nastąpi do:</translation>
@@ -567,4 +563,13 @@ jeszcze nie zarejestrowali się, aby otrzymywać darowizny. Twoja przeglądarka 
 <translation id="745115390910697838">Wyrażenia nie pasują, spróbuj ponownie.</translation>
 <translation id="2360588547830602174">Odzyskiwanie konta nie powiodło się. Spróbuj ponownie.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">Cena rynkowa w ETH</translation>
+<translation id="6748108480210050150">Z</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">Do (szacunkowo)</translation>
+<translation id="59223531494896848">Limit</translation>
+<translation id="3567988240819868195">Rynek</translation>
+<translation id="632241521608275119">Tolerancja opóźnienia</translation>
 </translationbundle>

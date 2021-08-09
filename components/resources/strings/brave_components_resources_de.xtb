@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">Favoriten anzeigen</translation>
 <translation id="3446024864193919737">Brave Rewards anzeigen</translation>
 <translation id="6274899614137380422">Binance anzeigen</translation>
-<translation id="5551238871320268996">Brave Together</translation>
 <translation id="5585019845078534178">Karten</translation>
 <translation id="3870475560794762985">Gesponserte Bilder anzeigen</translation>
 <translation id="2875302873837723333">führende Websites</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">Hintergrundbild</translation>
 <translation id="385051799172605136">Zurück</translation>
 <translation id="9024104284526126630">Sie können einen privaten Anruf in Brave starten.</translation>
-<translation id="5735801688206890393">Beginnen Sie unbegrenzte Anrufe mit Freunden und Kollegen in Brave Together.</translation>
+<translation id="4903286433687221248">Starten Sie in Brave Talk unbegrenzte Anrufe mit Freunden und Kollegen.</translation>
 <translation id="7115051913071512405">Probieren Sie es aus</translation>
 <translation id="7415602225677446066">Die wichtigsten Themen des Tages in einem absolut privaten Feed, nur für Sie zusammengestellt.</translation>
 <translation id="6903061332999399632">Brave News ist werbefinanziert. Dabei wird komplett vertrauliche und anonymisierte Werbung genutzt, die auf Ihrem Gerät zugeordnet wird. Die Vertraulichkeit Ihrer persönlichen Daten gemäß unserer <ph name="LINK_START"/>Datenschutzerklärung<ph name="LINK_END"/> ist somit stets gewahrt.</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">Automatisch erkennen</translation>
 <translation id="4394049700291259645">Deaktivieren</translation>
 <translation id="4176463684765177261">Deaktiviert</translation>
-<translation id="4434663852465709809">QR-Code für iOS belohnt Nutzer, die BAT transferieren</translation>
-<translation id="2175927920773552910">QR-Code</translation>
 <translation id="8283001340969131076">Es tut uns leid, es ist ein Fehler bei der Verbindung zu Ihrem <ph name="PROVIDER"/>-Konto aufgetreten. Bitte versuchen Sie es später noch einmal.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">Das Gerät ist offline, bitte versuchen Sie es später erneut.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">BAT wird zurzeit nicht in Ihrer Region unterstützt. Neuigkeiten finden Sie <ph name="BEGIN_LINK"/>hier<ph name="END_LINK"/>.</translation>
 <translation id="1737873393693460829">Durch Aktivieren von [[title]] akzeptieren Sie die <ph name="BEGIN_LINK1"/>Nutzungsbedingungen<ph name="END_LINK1"/> und <ph name="BEGIN_LINK2"/>Datenschutzerklärung<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Fehler beim Erstellen der BAT-Karte des Brave-Browsers</translation>
-<translation id="6473583070570450185">Sie brauchen eine verifizierte Wallet, um sich einzuloggen</translation>
-<translation id="5949995321533425416">Sie benötigen mindestens <ph name="AMOUNT"/> BAT, um eine Wallet zu erhalten. Bitte versuchen Sie es erneut, nachdem Sie Ihre Wallet bei Uphold verifiziert haben.</translation>
+<translation id="8429332714958713413">Sie benötigen eine verifizierte Wallet, um sich anzumelden</translation>
+<translation id="5881716477679854586">Bitte versuchen Sie es erneut, nachdem Sie die ID-Verifizierung für <ph name="CUSTODIAN"/> abgeschlossen haben.</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> werden in <ph name="DAYS"/> ausbezahlt.</translation>
 <translation id="4672975606583962967">Wallet-Anbieter wählen</translation>
 <translation id="1815503044492647974">Wählen Sie einen Wallet-Anbieter. Wenn Sie bereits ein Konto haben, werden Sie dazu aufgefordert, sich anzumelden, um eine Verbindung herzustellen.</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">Rewards wurde abgeschaltet</translation>
 <translation id="3354337256330577726">Automatischer Beitrag wurde abgeschaltet</translation>
 <translation id="6727186931929643711">Erneute Versuche angehalten</translation>
+<translation id="8978461348341400550">Vormund:</translation>
+<translation id="7220161813676251577">Mitglieds-ID des Vormunds:</translation>
 <translation id="680983167891198932">Schlüssel</translation>
 <translation id="7535087603100972091">Wert</translation>
 <translation id="45591635423975492">Aufgezeichnet bei</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">Brave Rewards jetzt nutzen</translation>
 <translation id="6318696841371191107">Einen kurzen Rundgang unternehmen</translation>
 <translation id="8465790416279415448">Indem Sie fortfahren, stimmen Sie den <ph name="TOS_LINK_BEGIN"/>Nutzungsbedingungen<ph name="TOS_LINK_END"/> und <ph name="PP_LINK_BEGIN"/>Datenschutzrichtlinien<ph name="PP_LINK_END"/> zu.</translation>
-<translation id="2404165674840145940">Über Brave Rewards spenden</translation>
-<translation id="5820285701794581330">Durch Nutzung von Brave Rewards verdienen Sie BAT, die Sie an Inhaltsersteller spenden können.</translation>
+<translation id="8222322431155185238">Trinkgeld verteilen mit Brave Rewards</translation>
+<translation id="1895476463085410109">Verdienen Sie Belohnungen, indem Sie Brave Private Ads ansehen und automatisch die Ersteller von Inhalten unterstützen</translation>
 <translation id="5705882733397021510">Zurück</translation>
 <translation id="185034574799484512">Machen wir eine schnelle Tour</translation>
 <translation id="8281886186245836920">Überspringen</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">Erneut versuchen</translation>
 <translation id="2600847485413879104">Vergütungs-BAT</translation>
 <translation id="8006596443377585072">bitFlyer-Wallet</translation>
+<translation id="2770577461149798369">Gemini-Wallet</translation>
 <translation id="8108350286444475334">Uphold-Wallet</translation>
 <translation id="6977372887576114613">Eingezahlte BAT</translation>
 <translation id="3173528272490482456">Bereit für den Anfang?</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">Sie können beginnen mit der</translation>
 <translation id="194625454574835815">Wiederherstellungsschlüssel</translation>
 <translation id="6354568176665589146">Wiederkehrend</translation>
+<translation id="2799223571221894425">Neu starten</translation>
 <translation id="1110535155349301542">entfernen</translation>
 <translation id="8204292894173669182">Aus 'Gespeichert' entfernen</translation>
 <translation id="5530851178552343773">Sie haben [[reservedAmount]] [[currency]] für Urheber vorgesehen, die sich noch nicht bei uns registriert haben, um Beträge zu erhalten. Ihr Browser wird weiter versuchen, die Beträge zuzustellen, bis diese Urheber ihre Registrierung verifiziert haben oder bis 90 Tage vergangen sind.</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">Ihr Brave Wallet wird von <ph name="PROVIDER"/> bereitgestellt.</translation>
 <translation id="6401272292123354754">Brave Rewards basiert auf dem Basic Attention Token. Erfahren Sie mehr über BAT</translation>
 <translation id="7823359893981882407">hier</translation>
+<translation id="3034163433136515805">QR-Code anzeigen</translation>
+<translation id="1640793619390890218">für iOS Rewards-Benutzer, die BAT überweisen.</translation>
 <translation id="4483635855837696643">Ihre Wallet wiederherstellen</translation>
 <translation id="459721429458957031">Nutzen Sie Ihren Wiederherstellungsschlüssel, um Ihre Wallet wiederherzustellen.</translation>
 <translation id="4600052736217630789">Durch die Wiederherstellung wird Ihre vorherige Wallet ersetzt. Sie sollten sie leeren oder sichern bevor Sie fortfahren.</translation>

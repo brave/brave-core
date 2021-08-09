@@ -1059,7 +1059,7 @@ De lo contrario, la configuración de privacidad bloqueará esta acción. Esto p
 <translation id="5023310440958281426">Revisa las políticas del administrador.</translation>
 <translation id="5029568752722684782">Borrar la copia</translation>
 <translation id="5030338702439866405">Proporcionada por</translation>
-<translation id="503069730517007720">Se requiere un certificado raíz para "<ph name="SOFTWARE_NAME"/>", pero no está instalado. Tu administrador de IT debe analizar las instrucciones de configuración de "<ph name="SOFTWARE_NAME"/>" para corregir este problema. <ph name="FURTHER_EXPLANATION"/></translation>
+<translation id="503069730517007720">Se requiere un certificado raíz para "<ph name="SOFTWARE_NAME"/>", pero no está instalado. Tu administrador de TI debe analizar las instrucciones de configuración de "<ph name="SOFTWARE_NAME"/>" para corregir este problema. <ph name="FURTHER_EXPLANATION"/></translation>
 <translation id="6425384654920630035">Acerca de Brave Traductor</translation>
 <translation id="503498442187459473"><ph name="HOST"/> desea usar tu cámara y micrófono</translation>
 <translation id="5039762155821394373">Tamaño de fuente</translation>
@@ -1867,7 +1867,7 @@ Detalles adicionales:
 <translation id="8103161714697287722">Forma de pago</translation>
 <translation id="8105368624971345109">Desactivar</translation>
 <translation id="8118489163946903409">Forma de pago</translation>
-<translation id="8127301229239896662">"<ph name="SOFTWARE_NAME"/>" no se instaló correctamente en tu computadora o red. Solicita al administrador de IT que corrija este problema.</translation>
+<translation id="8127301229239896662">"<ph name="SOFTWARE_NAME"/>" no se instaló correctamente en tu computadora o red. Solicita al administrador de TI que corrija este problema.</translation>
 <translation id="8131740175452115882">Confirmar</translation>
 <translation id="8148608574971654810">Versión de PDF:</translation>
 <translation id="8149426793427495338">La computadora se suspendió.</translation>
@@ -2199,7 +2199,7 @@ Detalles adicionales:
 <translation id="7948746210201997548">{NUM_DAYS, plural,
      =0 {Cuando este control está activado y el estado está activo, Brave determina a qué grupo grande de perfiles, o "cohorte", tu actividad de navegación reciente es más similar. Los anunciantes pueden seleccionar anuncios para el grupo y tu actividad de navegación se mantiene privada en tu dispositivo. Tu grupo se actualiza todos los días.}
      =1 {Cuando este control está activado y el estado está activo, Brave determina a qué grupo grande de perfiles, o "cohorte", tu actividad de navegación reciente es más similar. Los anunciantes pueden seleccionar anuncios para el grupo y tu actividad de navegación se mantiene privada en tu dispositivo. Tu grupo se actualiza todos los días.}
-     other {Cuando este control está activado y el estado está activo, Brave determina a qué grupo grande de perfiles, o "cohorte", tu actividad de navegación reciente es más similar. Los anunciantes pueden seleccionar anuncios para el grupo y tu actividad de navegación se mantiene privada en tu dispositivo. Tu grupo se actualiza cada {NUM_DAYS} días.}}</translation>
+     other {Cuando este control está activado y el estado está activo, Brave determina a qué grupo grande de perfiles, o "cohorte", tu actividad de navegación reciente es más similar. Los anunciantes pueden seleccionar anuncios para el grupo y tu actividad de navegación se mantiene privada en tu dispositivo. Tu grupo se actualiza cada {NUM_DAYS} días.}}</translation>
 <translation id="7243899945709472787">&lt;h4&gt;Paso 1: Accede al portal&lt;/h4&gt;
     &lt;p&gt;Para acceder a las redes Wi‑Fi de sitios como cafeterías o aeropuertos, tienes que ingresar. Para ver la página de acceso, visita una página con &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
     &lt;ol&gt;

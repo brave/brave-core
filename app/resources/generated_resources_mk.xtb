@@ -595,6 +595,7 @@
 <translation id="1627408615528139100">Веќе е преземена</translation>
 <translation id="1628948239858170093">Да се скенира датотеката пред отворање?</translation>
 <translation id="1629314197035607094">Лозинката е истечена</translation>
+<translation id="1947639598318989608">Дозволете Brave да наоѓа персонализирани попусти во вашите кошнички?</translation>
 <translation id="1629521517399325891">Не е достапен кориснички сертификат за мрежна проверка.</translation>
 <translation id="163072119192489970">Дозволено им е да ги довршуваат испраќањето и примањето податоци</translation>
 <translation id="1630768113285622200">Рестартирај и продолжи</translation>
@@ -3211,7 +3212,7 @@
 <translation id="4469762931504673593"><ph name="ORIGIN"/> може да изменува датотеки во <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Поставки за надворешно складирање</translation>
 <translation id="4471354919263203780">Се преземаат датотеки за препознавање говор… <ph name="PERCENT"/> %</translation>
-<translation id="506314819294271427">Помогнете да се подобрат функциите и изведбата на Brave</translation>
+<translation id="918192811481327695">Помогнете да се подобрат функциите и изведбата на Brave</translation>
 <translation id="4472575034687746823">Започнете</translation>
 <translation id="4474155171896946103">Обележи ги сите картички</translation>
 <translation id="4475552974751346499">Барај преземања</translation>
@@ -4451,7 +4452,6 @@
 <translation id="5864754048328252126">Дејство при неактивност додека се полни</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> ќе се паузира наскоро</translation>
 <translation id="586567932979200359">Го активиравте производот <ph name="PRODUCT_NAME"/> од неговата слика на дискот. Со негово инсталирање на компјутер, може да го активирате без сликата на диск и се обезбедува дека ќе биде ажурен.</translation>
-<translation id="1224064034972923114">Автоматски испраќа статистика на користењето и извештаи за падовите до Brave.</translation>
 <translation id="5867841422488265304">Пребарувајте или внесете адреса</translation>
 <translation id="5869029295770560994">Добро, сфатив</translation>
 <translation id="5869522115854928033">Зачувани лозинки</translation>
@@ -5472,7 +5472,6 @@
 <translation id="6997642619627518301"><ph name="NAME_PH"/> - Евиденција на активности</translation>
 <translation id="6997707937646349884">На вашите уреди:</translation>
 <translation id="6998793565256476099">Запишете го уредот за видео конференции</translation>
-<translation id="456304305650018221">Дали сакате Brave да наоѓа попусти на ставките што ќе ги додадете во кошничките?</translation>
 <translation id="6999956497249459195">Нова група</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> е поврзан, но треба да се конфигурира</translation>
 <translation id="7000347579424117903">Опфатете Ctrl, Alt или Search</translation>

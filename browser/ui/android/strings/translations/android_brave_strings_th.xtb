@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">เปิดบางเว็บไซต์โดยใช้การเชื่อมต่อ HTTPS ที่ปลอดภัยแทน HTTP ธรรมดา</translation>
 <translation id="94154759592465111">สคริปต์บล็อก</translation>
 <translation id="3518266709656143462">บล็อก Javascript (ที่อาจทำเว็บเสียหาย)</translation>
-<translation id="5709627087332022422">บล็อกตัวติดตามข้ามไซต์</translation>
 <translation id="6052725679982758334">การบล็อกโซเชียลมีเดีย</translation>
 <translation id="7498695072878479744">อนุญาตให้ใช้ปุ่มเข้าสู่ระบบผ่าน Google บนเว็บไซต์ภายนอก</translation>
 <translation id="863171915776379000">อนุญาตให้เข้าสู่ระบบผ่าน Facebook และโพสต์แบบฝัง</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">เกตเวย์ IPFS</translation>
 <translation id="2688519859165248360">อนุญาตให้นำทางไปยังทรัพยากร IPFS ผ่านเกตเวย์ IPFS</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">ราคา Ethereum (ETH)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">วิธีแก้ไข</translation>
 <translation id="2356070529366658676">ถาม</translation>
 <translation id="4176463684765177261">ปิดการใช้งานแล้ว</translation>
 <translation id="2218918398178303658">DNS ผ่านทาง HTTPS</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">ป้องกันเบราว์เซอร์ไม่ให้สร้างลายนิ้วมือ</translation>
 <translation id="7459000603787995422">ปิดแท็บเมื่อออกจากโปรแกรม</translation>
 <translation id="4448697385961650078">บล็อกโฆษณา &amp; แอปติดตาม</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">ทำให้ Brave เป็นเบราว์เซอร์เริ่มต้น!</translation>
 <translation id="7136694880210472378">ทำให้เป็นค่าเริ่มต้น</translation>
 <translation id="4250680216510889253">ไม่มี</translation>
-<translation id="4501702055016678577">การค้นหาแบบส่วนตัวด้วย DuckDuckGo?</translation>
-<translation id="910419239800579753">สำหรับการค้นหาแบบส่วนตัว Brave จะใช้ DuckDuckGo เพื่อหาผลลัพธ์ให้กับการค้นหาของคุณในขณะที่คุณอยู่ในแท็บส่วนตัวนี้ DuckDuckGo เป็นเสิร์ชเอนจินที่ไม่ติดตามประวัติการค้นหาของคุณ ซึ่งจะทำให้คุณค้นหาได้อย่างเป็นส่วนตัว</translation>
-<translation id="1426410128494586442">ใช่</translation>
-<translation id="5628466560184522265">เรียนรู้เกี่ยวกับการค้นหาแบบส่วนตัวด้วย DuckDuckGo</translation>
 <translation id="8826007068782654809">ขอบคุณ</translation>
 <translation id="6665366815203065060">คุณเพิ่งส่งทิปให้กับ:</translation>
 <translation id="5441565662498481293">คุณกำลังส่งทิปโดยอัตโนมัติไปยัง:</translation>
@@ -461,7 +457,7 @@
 <translation id="827315274423079662">ไชโย คุณพร้อมแล้วละ!</translation>
 <translation id="3895246934788932488">การใช้งาน Brave Reward จะช่วยปกป้องความเป็นส่วนตัวของคุณ และช่วยทำให้เว็บนี้เป็นพื้นที่ที่ดีขึ้นสำหรับทุกคน ซึ่งเยี่ยมสุดๆ ไปเลย</translation>
 <translation id="5705882733397021510">ย้อนกลับ</translation>
-<translation id="3985567919248057638">ดูการแนะนำสั้นๆ กันดีกว่า</translation>
+<translation id="3985567919248057638">ไปชมกันเถอะ</translation>
 <translation id="2434574859640694129">หลังจากที่คุณได้รับเงินค่าโฆษณาก้อนแรกแล้ว คุณสามารถกลับมาให้ทิปครีเอเตอร์คนนี้ได้!</translation>
 <translation id="207242986925259074">การแนะนำสั้นๆ สำหรับผู้เริ่มต้น</translation>
 <translation id="8342862030112839977">การจ่าย Reward ครั้งที่ 1 จะเข้าบัญชีภายใน:</translation>
@@ -521,7 +517,7 @@
 <translation id="8825032646286791700">DeFi การจัดเก็บคริปโตที่ปลอดภัย</translation>
 <translation id="5460364286096798286">ถือคริปโตไว้ในความดูแลของคุณ ซื้อขายสินทรัพย์ ดูราคาและผลงาน ลงทุน ยืม และให้ยืมด้วย DeFi</translation>
 <translation id="1748009926009835882">ตั้งค่าคริปโต</translation>
-<translation id="2759836790106646094">สำรองข้อมูลกระเป๋าเงินของคุณทันที!</translation>
+<translation id="2759836790106646094">สำรองข้อมูลกระเป๋าเงินของคุณตอนนี้!</translation>
 <translation id="7685607706678113458">ในขั้นตอนต่อไป คุณจะเห็น 12 คำที่จะช่วยคุณกู้คืนกระเป๋าเงินคริปโตของคุณ</translation>
 <translation id="2359808026110333948">ดำเนินการต่อ</translation>
 <translation id="5024543173656851695">ฉันเข้าใจว่าหากฉันลืมคำกู้คืน ฉันจะไม่สามารถเข้าถึงกระเป๋าเงินคริปโตของฉันได้</translation>
@@ -539,11 +535,11 @@
 <translation id="1783870616707290226">รหัสผ่านต้องมีอักขระมากกว่า 7 ตัว</translation>
 <translation id="7383102760859258982">รหัสผ่านที่พิมพ์อีกครั้งไม่ตรงกัน</translation>
 <translation id="1538774398124896437">ถ่ายทอดสด</translation>
-<translation id="8163269366661594721">1D</translation>
+<translation id="8163269366661594721">1 วัน</translation>
 <translation id="7640956400175663828">1W</translation>
-<translation id="9100647964747998533">1M</translation>
-<translation id="6366007539108097840">3M</translation>
-<translation id="6977728312178289892">1Y</translation>
+<translation id="9100647964747998533">1 เดือน</translation>
+<translation id="6366007539108097840">3 เดือน</translation>
+<translation id="6977728312178289892">1 ปี</translation>
 <translation id="6895566650974550243">ทั้งหมด</translation>
 <translation id="8892168913673237979">เรียบร้อยแล้ว!</translation>
 <translation id="8331501996028380732">ซื้อ แลกเปลี่ยน หรือถือคริปโต หากคุณมีบัญชีคริปโตอยู่แล้ว คุณสามารถเพิ่มได้ทันที</translation>
@@ -568,4 +564,13 @@
 <translation id="745115390910697838">วลีไม่ตรงกัน กรุณาลองอีกครั้ง</translation>
 <translation id="2360588547830602174">การกู้คืนบัญชีล้มเหลว กรุณาลองอีกครั้ง</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">ราคาตลาดใน ETH</translation>
+<translation id="6748108480210050150">จาก</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">ถึง (ประมาณ)</translation>
+<translation id="59223531494896848">ข้อจำกัด</translation>
+<translation id="3567988240819868195">ตลาด</translation>
+<translation id="632241521608275119">ค่าเผื่อความคลาดเคลื่อน</translation>
 </translationbundle>

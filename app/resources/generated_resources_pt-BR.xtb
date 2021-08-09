@@ -594,6 +594,7 @@
 <translation id="1627408615528139100">Download já concluído</translation>
 <translation id="1628948239858170093">Verificar arquivo antes de abrir?</translation>
 <translation id="1629314197035607094">Senha expirada</translation>
+<translation id="1947639598318989608">Permitir que o Brave encontre descontos personalizados para os itens nos seus carrinhos?</translation>
 <translation id="1629521517399325891">O certificado do usuário não está disponível para a autenticação da rede.</translation>
 <translation id="163072119192489970">Permitir o término do envio e recebimento de dados</translation>
 <translation id="1630768113285622200">Reiniciar e continuar</translation>
@@ -766,7 +767,7 @@
 <translation id="1794051631868188691">Nunca mostrar <ph name="MERCHANT"/></translation>
 <translation id="1794791083288629568">Envie um feedback para nos ajudar a corrigir esse problema.</translation>
 <translation id="1795214765651529549">Usar "Clássico"</translation>
-<translation id="1796588414813960292">Os recursos que precisam reproduzir sons não funcionarão</translation>
+<translation id="1796588414813960292">Os recursos que precisam de som não funcionarão</translation>
 <translation id="1799071797295057738">A extensão "<ph name="EXTENSION_NAME"/>" foi desativada automaticamente.</translation>
 <translation id="1802624026913571222">Suspender quando a capa for fechada</translation>
 <translation id="1802687198411089702">A página não está respondendo. Você pode esperar até que ele volte a responder ou sair.</translation>
@@ -1128,7 +1129,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="2178614541317717477">Compromisso da autoridade de certificação</translation>
 <translation id="2179416702468739594">Procurando perfis disponíveis. Isso pode desconectar a rede móvel por alguns minutos.</translation>
 <translation id="2182058453334755893">Copiado para a área de transferência</translation>
-<translation id="8098574385249290065">Permitir que Brave defina quando os sites podem reproduzir sons (recomendado)</translation>
+<translation id="8098574385249290065">Permitir que Brave defina quando os sites podem tocar áudio (recomendado)</translation>
 <translation id="2187675480456493911">Sincronizada com outros dispositivos na sua conta. As configurações modificadas por outros usuários não serão sincronizadas. <ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/></translation>
 <translation id="2187895286714876935">Erro de importação do certificado de servidor</translation>
 <translation id="2187906491731510095">Extensões atualizadas</translation>
@@ -1945,7 +1946,7 @@ e Ctrl + Alt + Diminuir brilho para diminuí-lo.</translation>
 <translation id="3060379269883947824">Ativar Selecionar para ouvir</translation>
 <translation id="3060952009917586498">Mudar o idioma do dispositivo. O idioma atual é <ph name="LANGUAGE"/>.</translation>
 <translation id="3060987956645097882">Não foi possível estabelecer uma conexão com o smartphone. Verifique se o smartphone está por perto, desbloqueado e com o Wi-Fi e o Bluetooth ativados.</translation>
-<translation id="3064871050034234884">Os sites podem reproduzir sons</translation>
+<translation id="3064871050034234884">Os sites podem ter áudio</translation>
 <translation id="3065041951436100775">Feedback para guia desativada.</translation>
 <translation id="3065522099314259755">Latência de repetição do teclado</translation>
 <translation id="3067198179881736288">Instalar app?</translation>
@@ -3204,7 +3205,7 @@ e Ctrl + Alt + Diminuir brilho para diminuí-lo.</translation>
 <translation id="4469762931504673593"><ph name="ORIGIN"/> pode editar arquivos em <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Preferências de armazenamento externo</translation>
 <translation id="4471354919263203780">Fazendo o download dos arquivos de reconhecimento de fala… <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Ajude a melhorar os recursos e o desempenho do Brave</translation>
+<translation id="918192811481327695">Ajude a melhorar os recursos e o desempenho do Brave</translation>
 <translation id="4472575034687746823">Primeiros passos</translation>
 <translation id="4474155171896946103">Adicionar todas as guias aos favoritos...</translation>
 <translation id="4475552974751346499">Pesquisar downloads</translation>
@@ -4435,7 +4436,6 @@ Não exponha nenhuma informação confidencial.</translation>
 <translation id="5864754048328252126">Ação de inatividade ao carregar</translation>
 <translation id="5865508026715185451">O app <ph name="APP_NAME"/> será pausado em breve</translation>
 <translation id="586567932979200359">Você está executando o <ph name="PRODUCT_NAME"/> a partir de uma imagem de disco. Instalá-lo no computador permite executá-lo sem a imagem de disco e garante que ele se manterá atualizado.</translation>
-<translation id="1224064034972923114">Envia estatísticas de uso e relatórios de erros automaticamente para o Brave</translation>
 <translation id="5867841422488265304">Pesquisar ou digitar endereço da Web</translation>
 <translation id="5869029295770560994">Ok, entendi</translation>
 <translation id="5869522115854928033">Senhas salvas</translation>
@@ -5451,7 +5451,6 @@ Não exponha nenhuma informação confidencial.</translation>
 <translation id="6997642619627518301"><ph name="NAME_PH"/>: registro de atividades</translation>
 <translation id="6997707937646349884">Nos seus dispositivos:</translation>
 <translation id="6998793565256476099">Cadastre o dispositivo para videoconferência</translation>
-<translation id="456304305650018221">Permitir que o Brave encontre descontos para os itens adicionados aos carrinhos?</translation>
 <translation id="6999956497249459195">Novo grupo</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> está conectada, mas precisa ser configurada</translation>
 <translation id="7000347579424117903">Inclua a tecla Ctrl, Alt ou Pesquisa</translation>

@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">Kai kurios svetainės atveriamos naudojant saugų HTTPS ryšį vietoj paprasto HTTP.</translation>
 <translation id="94154759592465111">Blokuoti scenarijus</translation>
 <translation id="3518266709656143462">Blokuoja „JavaScript“ (svetainės gali neveikti)</translation>
-<translation id="5709627087332022422">Blokuoti kelių svetainių sekiklius</translation>
 <translation id="6052725679982758334">Socialinės žiniasklaidos blokavimas</translation>
 <translation id="7498695072878479744">Trečiųjų šalių svetainėse leisti „Google“ prisijungimo mygtukus</translation>
 <translation id="863171915776379000">Leisti rodyti prisijungimo per „Facebook“ formą ir įterptuosius įrašus</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">IPFS tinklų sietuvas</translation>
 <translation id="2688519859165248360">Leidžia į IPFS išteklius patekti per IPFS tinklų sietuvą</translation>
 <translation id="7534079972563542000">„Unstoppable Domains“</translation>
+<translation id="1448289340149908413">Eteris</translation>
+<translation id="7822245778264751380">Eterio kaina (ETH)</translation>
 <translation id="6513892817556267573">Eterio pavadinimų paslauga</translation>
 <translation id="3894650624018948468">Sprendimo būdas</translation>
 <translation id="2356070529366658676">Paklausti</translation>
 <translation id="4176463684765177261">Pasyvinta</translation>
 <translation id="2218918398178303658">DNS per HTTPS</translation>
-<translation id="1448289340149908413">Eteris</translation>
 <translation id="5787084571334399599">Naršyklei neleidžia naudoti kontrolinių kodų</translation>
 <translation id="7459000603787995422">Išeinant uždaryti skirtukus</translation>
 <translation id="4448697385961650078">Blokuoti sekiklius ir reklamas</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">Padarykite „Brave“ numatytąja naršykle!</translation>
 <translation id="7136694880210472378">Padaryti numatytuoju</translation>
 <translation id="4250680216510889253">Ne</translation>
-<translation id="4501702055016678577">Privati paieška su „DuckDuckGo“?</translation>
-<translation id="910419239800579753">Pasirinkus privačią paiešką, „Brave“ naudos „DuckDuckGo“ paieškai inkognito skirtuke. „DuckDuckGo“ yra paieškos sistema, kuri neseka jūsų paieškos istorijos, todėl galite ieškoti privačiai.</translation>
-<translation id="1426410128494586442">Taip</translation>
-<translation id="5628466560184522265">Sužinokite apie privačią paiešką su „DuckDuckGo“</translation>
 <translation id="8826007068782654809">Dėkojame</translation>
 <translation id="6665366815203065060">Gavėjas, kuriam ką tik nusiuntėte arbatpinigių:</translation>
 <translation id="5441565662498481293">Automatiškai siunčiamų arbatpinigių gavėjas:</translation>
@@ -445,7 +441,7 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="3477340970981564961">„Brave Private Ads“, skirtingai nuo įprastinių reklamų, skiria jums žetonų, kuriais galite paremti turinio kūrėjus. Visa tai vyksta saugant jūsų asmens duomenų privatumą.</translation>
 <translation id="6973095375773523904">Kur rodomos reklamos?</translation>
 <translation id="7556325460112047619">„Brave Private Ads“ rodomos kaip įprastas pranešimas. Nuostatų skiltyje galite pasirinkti, kaip dažnai norite matyti šias reklamas.</translation>
-<translation id="6897083627729802351">Kada gaunate atlygį</translation>
+<translation id="6897083627729802351">Kada gaunate atlygį?</translation>
 <translation id="310863932297733723">Žetonai, kuriuos iš „Brave Private Ads“ gavote per einamąjį mėnesį, jus pasieks kito mėnesio 5 dieną.</translation>
 <translation id="7712287524451429139">Atsilyginti dabar paprasta</translation>
 <translation id="105037569026952831">Kūrėjai jūsų skiriamus žetonus gauna automatiškai pagal jūsų susidomėjimo lygį, kurį matuojame kaip „dėmesį“.</translation>
@@ -569,4 +565,13 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="745115390910697838">Frazės nesutampa. Bandykite dar kartą.</translation>
 <translation id="2360588547830602174">Sąskaitos atkurti nepavyko. Bandykite dar kartą.</translation>
 <translation id="1530109021798294736">„Mainnet“</translation>
+<translation id="990936698620790924">Rinkos kaina, ETH</translation>
+<translation id="6748108480210050150">Nuo</translation>
+<translation id="3318280255740629162">25 %</translation>
+<translation id="2636487255623744079">50 %</translation>
+<translation id="8654192805213365413">75 %</translation>
+<translation id="6159566011642056819">Iki (apytiksliai)</translation>
+<translation id="59223531494896848">Apribojimas</translation>
+<translation id="3567988240819868195">Rinka</translation>
+<translation id="632241521608275119">Nesutapimo paklaida</translation>
 </translationbundle>

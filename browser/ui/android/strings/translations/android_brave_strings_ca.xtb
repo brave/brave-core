@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">Obre alguns llocs mitjançant una connexió HTTPS segura en lloc d'HTTP sense format.</translation>
 <translation id="94154759592465111">Bloqueja els scripts</translation>
 <translation id="3518266709656143462">Bloqueja el Javascript (pot trencar llocs web)</translation>
-<translation id="5709627087332022422">Bloquejar rastrejadors entre llocs</translation>
 <translation id="6052725679982758334">Bloqueig de Xarxes Socials</translation>
 <translation id="7498695072878479744">Permetre els botons d'inici de sessió de Google en llocs de tercers</translation>
 <translation id="863171915776379000">Permet l'inici de sessió i publicacions incrustades de Facebook</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">Porta d'enllaç IPFS</translation>
 <translation id="2688519859165248360">Permet la navegació a recursos d'IPFS mitjançant una passarel·la d'IPFS</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Preu de l'Ethereum (ETH)</translation>
 <translation id="6513892817556267573">Servei de noms Ethereum</translation>
 <translation id="3894650624018948468">Resol el mètode</translation>
 <translation id="2356070529366658676">Pregunta-ho</translation>
 <translation id="4176463684765177261">Desactivat</translation>
 <translation id="2218918398178303658">DNS mitjançant HTTPS</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Prevé el navegador de les empremtes digitals</translation>
 <translation id="7459000603787995422">Tanca les pestanyes en sortir</translation>
 <translation id="4448697385961650078">Bloquegeu els rastrejadors &amp; anuncis</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">Estableix Brave com a navegador predeterminat</translation>
 <translation id="7136694880210472378">Estableix com a predeterminat</translation>
 <translation id="4250680216510889253">No</translation>
-<translation id="4501702055016678577">Cerca privada amb DuckDuckGo?</translation>
-<translation id="910419239800579753">Amb cerca privada, Brave utilitzarà DuckDuckGo per contestar les vostres cerques mentre us mantingueu en aquesta pestanya privada. DuckiDuck és un motor de cerca que no rastreja el vostre historial de cerca, permetent així la cerca privada.</translation>
-<translation id="1426410128494586442">Sí</translation>
-<translation id="5628466560184522265">Més informació sobre la cerca privada amb DuckDuckGo</translation>
 <translation id="8826007068782654809">Gràcies</translation>
 <translation id="6665366815203065060">Has enviat una propina a:</translation>
 <translation id="5441565662498481293">Envies una propina automàticament a:</translation>
@@ -122,6 +118,8 @@
 <translation id="8428213095426709021">Configuració</translation>
 <translation id="8772672608371898774">Editor verificat per Brave</translation>
 <translation id="1397683270551078781">Pendent de comprovació</translation>
+<translation id="880893465294676334">Aquest creador verificat de Brave encara no ha configurat el seu compte per poder rebre aportacions per part dels usuaris de Brave.
+Qualsevol propina que enviïs es quedarà a la teva cartera fins que hagi completat el procés.</translation>
 <translation id="8918760045046434238">Envia una propina...</translation>
 <translation id="1978261665418056203">Encara no hi ha activitats
 aquest mes...</translation>
@@ -443,7 +441,7 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="3477340970981564961">Els Brave Private Ads, a diferència dels anuncis tradicionals, us recompensen amb tokens per a sostenir creadors de contingut, tot mantenint la privacitat de la vostra informació personal.</translation>
 <translation id="6973095375773523904">A on es mostren els anuncis?</translation>
 <translation id="7556325460112047619">Els Brave Private Ads apareixeran com una notificació normal. Podeu controlar cada quant voleu veure aquests anuncis a les opcions.</translation>
-<translation id="6897083627729802351">Quan rebeu recompenses</translation>
+<translation id="6897083627729802351">Quan rebràs recompenses?</translation>
 <translation id="310863932297733723">Els tokens dels Brave Private Ads que heu guanyat al llarg d'aquest mes arribaran el dia 5 del mes següent.</translation>
 <translation id="7712287524451429139">Retornat sense esforç</translation>
 <translation id="105037569026952831">Els creadors reben les vostres fitxes de manera automàtica segons el vostre nivell d'interacció que mesurem com a ‘Atenció’.</translation>
@@ -460,7 +458,7 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="827315274423079662">Molt bé, ja esteu llestos!</translation>
 <translation id="3895246934788932488">Utilitzant les Recompenses Brave, esteu protegint la vostra privadesa i ajuntant a fer del web un lloc millor per a tothom. I això, ’ és meravellós!</translation>
 <translation id="5705882733397021510">Torneu</translation>
-<translation id="3985567919248057638">Realitzem un recorregut ràpid</translation>
+<translation id="3985567919248057638">Fem un recorregut ràpid</translation>
 <translation id="2434574859640694129">Un cop hàgiu rebut el primer pagament dels anuncis, podeu tornar i donar una propina a aquest creador!</translation>
 <translation id="207242986925259074">Recorregut ràpid d'actualització</translation>
 <translation id="8342862030112839977">El 1r pagament de recompenses arribarà el:</translation>
@@ -567,4 +565,13 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="745115390910697838">Les frases no coincideixen. Torneu-ho a intentar.</translation>
 <translation id="2360588547830602174">S'ha produït un error en la recuperació del compte. Torneu-ho a intentar.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">Preu de mercat en ETH</translation>
+<translation id="6748108480210050150">Des de</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">A (estimació)</translation>
+<translation id="59223531494896848">Límit</translation>
+<translation id="3567988240819868195">Mercat</translation>
+<translation id="632241521608275119">Tolerància a la disminució</translation>
 </translationbundle>

@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">Avab mõned veebisaidid, kasutades tavalise HTTP asemel turvalist HTTPS-ühendust.</translation>
 <translation id="94154759592465111">Blokeeri skriptid</translation>
 <translation id="3518266709656143462">Blokeerib Javascripti (veebisaidi funktsioonid ei pruugi enam toimida)</translation>
-<translation id="5709627087332022422">Blokeeri saitidevahelised jälitajad</translation>
 <translation id="6052725679982758334">Sotsiaalmeedia blokeerimine</translation>
 <translation id="7498695072878479744">Luba Google'i sisselogimisnupud kolmanda osapoole saitidel</translation>
 <translation id="863171915776379000">Luba Facebooki sisselogimised ja manustatud postitused</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">IPFS-i lüüs</translation>
 <translation id="2688519859165248360">Võimaldab navigeerimist IPFS-i ressursside juurde IPFS-i lüüsi kaudu.</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Ethereumi hind (ETH)</translation>
 <translation id="6513892817556267573">Ethereumi nimeteenus</translation>
 <translation id="3894650624018948468">Otsustamismeetod</translation>
 <translation id="2356070529366658676">Küsi</translation>
 <translation id="4176463684765177261">Keelatud</translation>
 <translation id="2218918398178303658">DNS HTTPS-i kaudu</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Kaitseb brauserit seadmetuvastuse eest</translation>
 <translation id="7459000603787995422">Sulge kaardid väljumisel</translation>
 <translation id="4448697385961650078">Blokeeri jälgijad ja reklaamid</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">Määrake Brave vaikebrauseriks!</translation>
 <translation id="7136694880210472378">Muuda vaikevalikuks</translation>
 <translation id="4250680216510889253">Ei</translation>
-<translation id="4501702055016678577">Privaatne otsing DuckDuckGo-ga?</translation>
-<translation id="910419239800579753">Privaatse otsingu korral kasutab Brave otsinguteks selles privaatses aknas DuckDuckGo otsingumootorit. DuckDuckGo on otsingumootor, mis ei jälgi otsinguajalugu, võimaldades otsida privaatselt.</translation>
-<translation id="1426410128494586442">Jah</translation>
-<translation id="5628466560184522265">Teave DuckDuckGoga privaatse otsimise kohta</translation>
 <translation id="8826007068782654809">Täname</translation>
 <translation id="6665366815203065060">Saatsite just preemia:</translation>
 <translation id="5441565662498481293">Saadate automaatselt preemiaid:</translation>
@@ -301,8 +297,8 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="3895527457258986253">Blokeeri sõrmejälje võtmine</translation>
 <translation id="7854108565842971747">Need on kaitsete vaikeseaded uute veebisaitide jaoks. Nende muutmine ei mõjuta teie olemasolevaid saidipõhiseid seadeid.</translation>
 <translation id="184568144098869637">Takistab veebilehitsejal teie seadme tuvastamist</translation>
-<translation id="7445306466605902444">Sõrmejälje lugemine blokeeritud (piiratud, võib saite lõhkuda)</translation>
-<translation id="5582686930349810484">Sõrmejälje lugemine blokeeritud (standard)</translation>
+<translation id="7445306466605902444">Seadmetuvastus blokeeritud (range, võib saite lõhkuda)</translation>
+<translation id="5582686930349810484">Seadmetuvastus blokeeritud (standardne)</translation>
 <translation id="769702552748212954">Luba seadmetuvastus igal pool</translation>
 <translation id="876424292214881779">Blokeeritud reklaamid ja muud koledused</translation>
 <translation id="6930134873084561197">Lehed sisaldavad tihti küpsiseid ja skripte, mis üritavad tuvastada teid ja teie seadet. Need soovivad teada, kes olete ja teid veebis jälitada ehk jälgida, mida igal lehel teete. \n\nBrave blokeerib need, et saaksite sirvida, ilma et keegi teid jälitaks.</translation>
@@ -445,7 +441,7 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="3477340970981564961">Erinevalt tavareklaamidest annab Brave'i erareklaamide vaatamine teile sisuloojate toetamiseks tokeneid, samas hoitakse teie isikuandmed privaatsed.</translation>
 <translation id="6973095375773523904">Kus reklaamid kuvatakse?</translation>
 <translation id="7556325460112047619">Brave'i erareklaamid kuvatakse tavateavitusena. Seadete abil saate reguleerida, kui tihti neid reklaame näete.</translation>
-<translation id="6897083627729802351">Millal preemiaid saab?</translation>
+<translation id="6897083627729802351">Millal saate preemiaid?</translation>
 <translation id="310863932297733723">Käesoleval kuul Brave'i erareklaamide eest teenitud tokenid saabuvad järgmise kuu 5ndal kuupäeval.</translation>
 <translation id="7712287524451429139">Vaevata vastuannetused</translation>
 <translation id="105037569026952831">Loojad saavad teie annetatud tokenid automaatselt teie kaasatustaseme alusel, mida mõõdame ‘aktiivsusena’.</translation>
@@ -462,7 +458,7 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="827315274423079662">Ohoo, olete valmis alustama!</translation>
 <translation id="3895246934788932488">Brave Rewardsi kasutamisega kaitsete oma privaatsust ja aitate veebi kõigi jaoks paremaks muuta. Ja see on vinge!</translation>
 <translation id="5705882733397021510">Mine tagasi</translation>
-<translation id="3985567919248057638">Teeme ühe kiire tuuri</translation>
+<translation id="3985567919248057638">Teeme kiire ringkäigu</translation>
 <translation id="2434574859640694129">Kui olete saanud reklaamide eest esimese väljamakse, võite tulla tagasi ja sellele loojale preemiat maksta.</translation>
 <translation id="207242986925259074">Kiire värskendustuur</translation>
 <translation id="8342862030112839977">Teie esimene preemiamakse saabub:</translation>
@@ -569,4 +565,13 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="745115390910697838">Laused ei ühildunud, palun proovige uuesti.</translation>
 <translation id="2360588547830602174">Konto taastamine ebaõnnestus. Palun proovige uuesti.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">Turuhind ETH-des</translation>
+<translation id="6748108480210050150">Saatja</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">Kuni (hinnanguliselt)</translation>
+<translation id="59223531494896848">Ülemmäär</translation>
+<translation id="3567988240819868195">Turg</translation>
+<translation id="632241521608275119">Varieeruvuse tolerants</translation>
 </translationbundle>

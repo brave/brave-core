@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">แสดงรายการโปรด</translation>
 <translation id="3446024864193919737">แสดง Brave Rewards</translation>
 <translation id="6274899614137380422">แสดง Binance</translation>
-<translation id="5551238871320268996">Brave Together</translation>
 <translation id="5585019845078534178">บัตร</translation>
 <translation id="3870475560794762985">แสดงรูปที่ได้รับการสนับสนุน</translation>
 <translation id="2875302873837723333">ไซต์ยอดนิยม</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">ภาพพื้นหลัง</translation>
 <translation id="385051799172605136">กลับ</translation>
 <translation id="9024104284526126630">คุณสามารถเริ่มโทรแบบส่วนตัวใน Brave</translation>
-<translation id="5735801688206890393">เริ่มโทรหาเพื่อนและผู้ร่วมงานแบบไร้ขีดจำกัดใน Brave Together</translation>
+<translation id="4903286433687221248">เริ่มการโทรแบบไม่จำกัดกับเพื่อนและเพื่อนร่วมงานใน Brave Talk</translation>
 <translation id="7115051913071512405">ลองเลย</translation>
 <translation id="7415602225677446066">เรื่องเด่นประจำวันนี้ในฟีดที่มีความเป็นส่วนตัวเต็มขั้น สำหรับคุณเท่านั้น</translation>
 <translation id="6903061332999399632">Brave News เป็นโฆษณาที่ได้รับการสนับสนุนความส่วนตัวโดยสมบูรณ์และเป็นโฆษณาที่ไม่ระบุชื่อ ซึ่งเหมาะกับอุปกรณ์ของคุณ โดยข้อมูลส่วนบุคคลของคุณจะยังคงเป็นส่วนตัวเสมอตาม<ph name="LINK_START"/>นโยบายความเป็นส่วนตัว<ph name="LINK_END"/>ของเรา</translation>
@@ -175,8 +174,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="8010081455002666927">ตรวจพบอัตโนมัติ</translation>
 <translation id="4394049700291259645">ปิดการใช้งาน</translation>
 <translation id="4176463684765177261">ปิดการใช้งานแล้ว</translation>
-<translation id="4434663852465709809">รหัส QR สำหรับ iOS ให้รางวัลผู้ใช้งานในการโอน BAT</translation>
-<translation id="2175927920773552910">รหัส QR</translation>
 <translation id="8283001340969131076">ขออภัย เกิดข้อผิดพลาดขณะพยายามยกเลิกการเชื่อมต่อ <ph name="PROVIDER"/> บัญชีผู้ใช้ โปรดลองอีกครั้งในอีกสักครู่</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">อุปกรณ์ออฟไลน์อยู่ โปรดลองอีกครั้งในภายหลัง</translation>
@@ -241,8 +238,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="2359865110462963929">BAT ยังไม่รองรับในภูมิภาคของคุณ โปรดดูข่าวสารจาก<ph name="BEGIN_LINK"/>ที่นี่<ph name="END_LINK"/></translation>
 <translation id="1737873393693460829">เมื่อเปิด [[title]] คุณได้ยอมรับ <ph name="BEGIN_LINK1"/>เงื่อนไขการให้บริการ<ph name="END_LINK1"/> และ <ph name="BEGIN_LINK2"/>นโยบายความเป็นส่วนตัว<ph name="END_LINK2"/></translation>
 <translation id="2564425876266960486">เกิดข้อผิดพลาดขณะสร้างบัตร BAT ของ Brave Browser</translation>
-<translation id="6473583070570450185">คุณต้องมีวอลเล็ตที่ได้รับการยืนยันแล้วเพื่อล็อกอิน</translation>
-<translation id="5949995321533425416">คุณต้องมีอย่างน้อย <ph name="AMOUNT"/> BAT ในการสร้างวอลเล็ต Uphold โปรดลองใหม่อีกครั้งหลังทำการยืนยันวอลเล็ตของคุณกับ Uphold แล้ว</translation>
+<translation id="8429332714958713413">คุณต้องมีวอลเล็ทที่ผ่านการยืนยันแล้วเพื่อเข้าสู่ระบบ</translation>
+<translation id="5881716477679854586">โปรดลองอีกครั้งหลังจากที่คุณได้ดำเนินการยืนยัน ID บน <ph name="CUSTODIAN"/> แล้ว</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> ที่จะถึงใน <ph name="DAYS"/></translation>
 <translation id="4672975606583962967">เลือกบริการกระเป๋าเงิน</translation>
 <translation id="1815503044492647974">เลือกพันธมิตรกระเป๋าเงินเพื่อจัดเก็บข้อมูลของลูกค้า หากคุณมีบัญชีอยู่แล้ว ระบบจะขอให้คุณเข้าสู่ระบบเพื่อเชื่อมต่อ</translation>
@@ -280,6 +277,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="386483240851194811">รางวัลถูกปิดอยู่</translation>
 <translation id="3354337256330577726">การบริจาคอัตโนมัติถูกปิด</translation>
 <translation id="6727186931929643711">หยุดทำใหม่</translation>
+<translation id="8978461348341400550">ผู้เก็บรักษาสินทรัพย์:</translation>
+<translation id="7220161813676251577">ID สมาชิกผู้เก็บรักษาสินทรัพย์:</translation>
 <translation id="680983167891198932">คีย์</translation>
 <translation id="7535087603100972091">ค่า</translation>
 <translation id="45591635423975492">บันทึกเมื่อ</translation>
@@ -377,8 +376,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="2070991379950719711">เริ่มต้นใช้ Brave Reward</translation>
 <translation id="6318696841371191107">ดูการแนะนำสั้นๆ</translation>
 <translation id="8465790416279415448">หากดำเนินการต่อ จะถือว่าคุณยอมรับ <ph name="TOS_LINK_BEGIN"/>ข้อกำหนดในการให้บริการ<ph name="TOS_LINK_END"/> และ <ph name="PP_LINK_BEGIN"/>นโยบายความเป็นส่วนตัว<ph name="PP_LINK_END"/></translation>
-<translation id="2404165674840145940">เคล็ดลับการใช้ Brave Reward</translation>
-<translation id="5820285701794581330">เมื่อใช้ Brave Reward คุณจะเริ่มได้รับ BAT ซึ่งสามารถใช้ในการให้ทิปแก่ผู้สร้างเนื้อหา</translation>
+<translation id="8222322431155185238">ให้ทิปด้วย Brave Rewards</translation>
+<translation id="1895476463085410109">รับ Rewards จากการชม Brave Private Ads และสนับสนุนคอนเทนต์ครีเอเตอร์โดยอัตโนมัติ</translation>
 <translation id="5705882733397021510">ย้อนกลับ</translation>
 <translation id="185034574799484512">ดูรายละเอียดคร่าวๆ กัน</translation>
 <translation id="8281886186245836920">ข้าม</translation>
@@ -531,6 +530,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="8725066075913043281">ลองอีกครั้ง</translation>
 <translation id="2600847485413879104">BAT รางวัล</translation>
 <translation id="8006596443377585072">กระเป๋าเงิน bitFlyer</translation>
+<translation id="2770577461149798369">Gemini Wallet</translation>
 <translation id="8108350286444475334">Uphold วอลเล็ท</translation>
 <translation id="6977372887576114613">BAT ที่ฝาก</translation>
 <translation id="3173528272490482456">พร้อมที่จะเริ่มหรือยัง?</translation>
@@ -538,6 +538,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="108052542935515756">คุณสามารถเริ่มด้วย</translation>
 <translation id="194625454574835815">กุญแจกู้คืน</translation>
 <translation id="6354568176665589146">เกิดขึ้นซ้ำ ๆ</translation>
+<translation id="2799223571221894425">เปิดใหม่</translation>
 <translation id="1110535155349301542">นำออก</translation>
 <translation id="8204292894173669182">ลบออกจากที่บันทึกไว้</translation>
 <translation id="5530851178552343773">คุณได้กำหนดจำนวนเงิน [[reservedAmount]] [[currency]] ไว้ให้แก่ผู้สร้างสรรค์ที่ยังไม่ได้สมัครรับเงินสนับสนุน เบราว์เซอร์ของคุณจะพยายามส่งเงินสนับสนุนจนกว่าผู้สร้างสรรค์จะยืนยัน หรือจนกว่าจะครบ 90 วัน</translation>
@@ -569,6 +570,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3092054349246483285">บริการ Brave wallet ได้รับการสนับสนุนโดย <ph name="PROVIDER"/></translation>
 <translation id="6401272292123354754">Brave Rewards ถูกสร้างบน  Basic Attention Token. เรียนรู้เพิ่มเติมเกี่ยวกับ BAT</translation>
 <translation id="7823359893981882407">ที่นี่</translation>
+<translation id="3034163433136515805">ดูคิวอาร์โค้ด</translation>
+<translation id="1640793619390890218">สำหรับผู้ใช้ Rewards บน iOS ที่จะโอน BAT</translation>
 <translation id="4483635855837696643">กู้คืน Wallet คุณ</translation>
 <translation id="459721429458957031">ใช้คีย์กู้คืนเพื่อเรียกคืนกระเป๋าเงินของคุณ</translation>
 <translation id="4600052736217630789">การเรียกคืนโดยใช้คีย์กู้คืนจะเป็นการแทนที่กระเป๋าเงินปัจจุบันของคุณ ดังนั้น โปรดตรวจสอบให้แน่ใจว่าคุณได้ถอนเงินออกจนหมดหรือได้สำรองข้อมูลกระเป๋าเงินปัจจุบันของคุณไว้แล้วก่อนที่จะเรียกคืน</translation>
@@ -623,7 +626,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3780605330121608425">กระเป๋าเงินของคุณ</translation>
 <translation id="6727483290601442544">ดูรายละเอียด</translation>
 <translation id="1988679729106502285">หมายเหตุ:</translation>
-<translation id="7979350009208995417">ผู้สร้างคนนี้ยังไม่ได้กำหนดค่าให้รับทิปจากกระเป๋าเงินของคุณ ทิปทั้งหมดที่คุณทำจะยังคงค้างอยู่ในกระเป๋าเงินของคุณและจะลองอีกครั้งโดยอัตโนมัติเป็นเวลา 90 วัน</translation>
+<translation id="7979350009208995417">ผู้สร้างคนนี้ยังไม่ได้กำหนดค่าให้รับทิปจากกระเป๋าเงินของคุณ ทิปทั้งหมดที่คุณให้จะยังคงค้างอยู่ในกระเป๋าเงินของคุณและจะดำเนินการอีกครั้งโดยอัตโนมัติตลอดช่วงเวลา 90 วัน</translation>
 <translation id="7461596279975181413">ครีเอเตอร์ Brave รายนี้ได้ผ่านการรับรองแล้ว แต่ยังไม่กำหนดค่าบัญชีของตนเพื่อรับเงินสนับสนุนจากผู้ใช้ Brave เบราว์เซอร์ของคุณจะพยายามส่งเงินสนับสนุนให้จนกว่าจะมีการยืนยันหรือจนกว่าจะครบ 90 วัน</translation>
 <translation id="4292832015778676417">ได้รับจากโฆษณาแล้ว</translation>
 <translation id="3197752845651180812">การบริจาคทรอพิจารณาความร่วมมือ</translation>
