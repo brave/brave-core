@@ -249,12 +249,19 @@ class BrowserViewController: UIViewController {
             self?.setupLedger()
         }
         
-        // Only start ledger service automatically if ads is enabled
-        if rewards.isEnabled {
-            rewards.startLedgerService {
-                self.legacyWallet?.initializeLedgerService(nil)
+        let shouldStartAds = rewards.ads.isEnabled || Preferences.BraveNews.isEnabled.value
+        if shouldStartAds {
+            // Only start ledger service automatically if ads is enabled
+            if rewards.isEnabled {
+                rewards.startLedgerService {
+                    self.legacyWallet?.initializeLedgerService(nil)
+                }
+            } else {
+                rewards.ads.initialize { _ in }
             }
         }
+        
+        feedDataSource.rewards = rewards
     }
     
     static func legacyWallet(for config: BraveRewards.Configuration) -> BraveLedger? {

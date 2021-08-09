@@ -6,6 +6,7 @@
 import Foundation
 import BraveCore
 import BraveShared
+import Combine
 
 class BraveRewards: NSObject {
     
@@ -42,6 +43,14 @@ class BraveRewards: NSObject {
         ads = BraveAds(stateStoragePath: configuration.storageURL.appendingPathComponent("ads").path)
         
         super.init()
+        
+        braveNewsObservation = Preferences.BraveNews.isEnabled.$value
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] value in
+                if !value {
+                    self?.proposeAdsShutdown()
+                }
+            }
     }
     
     func startLedgerService(_ completion: (() -> Void)?) {
@@ -55,9 +64,13 @@ class BraveRewards: NSObject {
         ledger?.initializeLedgerService { [weak self] in
             guard let self = self, let ledger = self.ledger else { return }
             if self.ads.isEnabled {
-                self.ads.initialize { success in
-                    if success {
-                        self.updateAdsWithWalletInfo()
+                if self.ads.isAdsServiceRunning() {
+                    self.updateAdsWithWalletInfo()
+                } else {
+                    self.ads.initialize { success in
+                        if success {
+                            self.updateAdsWithWalletInfo()
+                        }
                     }
                 }
             }
@@ -78,6 +91,21 @@ class BraveRewards: NSObject {
         }
     }
     
+    private var braveNewsObservation: AnyCancellable?
+    
+    private var shouldShutdownAds: Bool {
+        ads.isAdsServiceRunning() && !ads.isEnabled && !Preferences.BraveNews.isEnabled.value
+    }
+    
+    /// Propose that the ads service should be shutdown based on whether or not that all features
+    /// that use it are disabled
+    private func proposeAdsShutdown() {
+        if !shouldShutdownAds { return }
+        ads.shutdown {
+            self.ads = BraveAds(stateStoragePath: self.configuration.storageURL.appendingPathComponent("ads").path)
+        }
+    }
+    
     // MARK: - State
     
     /// Whether or not rewards is enabled
@@ -93,10 +121,7 @@ class BraveRewards: NSObject {
                 self.ledger?.isAutoContributeEnabled = newValue
                 self.ads.isEnabled = newValue
                 if !newValue {
-                    // TODO: Do not shutdown the ads service if Brave News is enabled (#3872)
-                    self.ads.shutdown {
-                        self.ads = BraveAds(stateStoragePath: self.configuration.storageURL.appendingPathComponent("ads").path)
-                    }
+                    self.proposeAdsShutdown()
                 } else {
                     if self.ads.isAdsServiceRunning() {
                         self.updateAdsWithWalletInfo()
@@ -130,16 +155,17 @@ class BraveRewards: NSObject {
     }
     
     func reset() {
-        // TODO: Do not shutdown the ads service if Brave News is enabled (#3872)
-        ads.shutdown { [self] in
-            try? FileManager.default.removeItem(
-                at: configuration.storageURL.appendingPathComponent("ledger")
-            )
-            try? FileManager.default.removeItem(
-                at: configuration.storageURL.appendingPathComponent("ads")
-            )
-            if ads.isEnabled {
-                ads.initialize { _ in }
+        try? FileManager.default.removeItem(
+            at: configuration.storageURL.appendingPathComponent("ledger")
+        )
+        if ads.isAdsServiceRunning(), !Preferences.BraveNews.isEnabled.value {
+            ads.shutdown { [self] in
+                try? FileManager.default.removeItem(
+                    at: configuration.storageURL.appendingPathComponent("ads")
+                )
+                if ads.isEnabled {
+                    ads.initialize { _ in }
+                }
             }
         }
     }

@@ -136,7 +136,7 @@ class NewTabPageViewController: UIViewController {
             sections.append(
                 BraveNewsSectionProvider(
                     dataSource: feedDataSource,
-                    ads: rewards.ads,
+                    rewards: rewards,
                     actionHandler: { [weak self] in
                         self?.handleBraveNewsAction($0)
                     }
@@ -480,7 +480,10 @@ class NewTabPageViewController: UIViewController {
             Preferences.BraveNews.userOptedIn.value = true
             Preferences.BraveNews.isShowingOptIn.value = false
             Preferences.BraveNews.isEnabled.value = true
-            loadFeedContents()
+            rewards.ads.initialize { [weak self] _ in
+                // Initialize ads if it hasn't already been done
+                self?.loadFeedContents()
+            }
         case .emptyCardTappedSourcesAndSettings:
             tappedBraveNewsSettings()
         case .errorCardTappedRefresh:
@@ -529,6 +532,23 @@ class NewTabPageViewController: UIViewController {
                 )
                 alert.present(on: self)
             }
+        case .inlineContentAdAction(.opened(let inNewTab, let switchingToPrivateMode), let ad):
+            guard let url = ad.targetURL.asURL else { return }
+            if !switchingToPrivateMode {
+                rewards.ads.reportInlineContentAdEvent(
+                    ad.uuid,
+                    creativeInstanceId: ad.creativeInstanceID,
+                    eventType: .clicked
+                )
+            }
+            delegate?.navigateToInput(
+                url.absoluteString,
+                inNewTab: inNewTab,
+                switchingToPrivateMode: switchingToPrivateMode
+            )
+        case .inlineContentAdAction(.toggledSource, _):
+            // Inline content ads have no source
+            break
         }
     }
     
@@ -629,6 +649,7 @@ class NewTabPageViewController: UIViewController {
         if !feedDataSource.shouldLoadContent {
             return
         }
+        rewards.ads.purgeOrphanedAdEvents(.inlineContentAd)
         feedDataSource.load(completion)
     }
     
@@ -651,7 +672,7 @@ class NewTabPageViewController: UIViewController {
     }
     
     @objc private func tappedBraveNewsSettings() {
-        let controller = BraveNewsSettingsViewController(dataSource: feedDataSource)
+        let controller = BraveNewsSettingsViewController(dataSource: feedDataSource, rewards: rewards)
         let container = UINavigationController(rootViewController: controller)
         present(container, animated: true)
     }
@@ -744,6 +765,9 @@ extension NewTabPageViewController {
         #endif
     }
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        for section in sections {
+            section.scrollViewDidScroll?(scrollView)
+        }
         guard isBraveNewsVisible, let newsSection = layout.braveNewsSection else { return }
         if collectionView.numberOfItems(inSection: newsSection) > 0 {
             // Hide the buttons as Brave News feeds appear

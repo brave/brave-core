@@ -157,7 +157,7 @@ class ActivityShortcutManager: NSObject {
                     guard let newTabPageController = bvc.tabManager.selectedTab?.newTabPageViewController else { return }
                     newTabPageController.scrollToBraveNews()
                 } else {
-                    let controller = BraveNewsSettingsViewController(dataSource: bvc.feedDataSource)
+                    let controller = BraveNewsSettingsViewController(dataSource: bvc.feedDataSource, rewards: bvc.rewards)
                     let container = UINavigationController(rootViewController: controller)
                     bvc.present(container, animated: true)
                 }

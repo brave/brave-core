@@ -193,7 +193,7 @@ class SettingsViewController: TableViewController {
         #if !NO_BRAVE_NEWS
         section.rows.append(
             Row(text: Strings.BraveNews.braveNews, selection: {
-                let todaySettings = BraveNewsSettingsViewController(dataSource: self.feedDataSource)
+                let todaySettings = BraveNewsSettingsViewController(dataSource: self.feedDataSource, rewards: self.rewards)
                 self.navigationController?.pushViewController(todaySettings, animated: true)
             }, image: #imageLiteral(resourceName: "settings-brave-today").template, accessory: .disclosureIndicator)
         )
