@@ -59,6 +59,9 @@ using GetAccountStatementCallback = base::OnceCallback<void(const bool,
                                                             const double,
                                                             const double)>;
 
+using GetAdDiagnosticsCallback =
+    base::OnceCallback<void(const bool, const std::string&)>;
+
 class AdsService : public KeyedService {
  public:
   AdsService();
@@ -146,6 +149,8 @@ class AdsService : public KeyedService {
                              OnGetAdsHistoryCallback callback) = 0;
 
   virtual void GetAccountStatement(GetAccountStatementCallback callback) = 0;
+
+  virtual void GetAdDiagnostics(GetAdDiagnosticsCallback callback) = 0;
 
   virtual void ToggleAdThumbUp(const std::string& creative_instance_id,
                                const std::string& creative_set_id,

@@ -431,6 +431,16 @@ void AdsServiceImpl::GetAccountStatement(GetAccountStatementCallback callback) {
                      std::move(callback)));
 }
 
+void AdsServiceImpl::GetAdDiagnostics(GetAdDiagnosticsCallback callback) {
+  if (!connected()) {
+    std::move(callback).Run(/* success */ false, std::string{});
+    return;
+  }
+
+  bat_ads_->GetAdDiagnostics(base::BindOnce(&AdsServiceImpl::OnGetAdDiagnostics,
+                                            AsWeakPtr(), std::move(callback)));
+}
+
 void AdsServiceImpl::ToggleAdThumbUp(const std::string& creative_instance_id,
                                      const std::string& creative_set_id,
                                      const int action,
@@ -1329,6 +1339,12 @@ void AdsServiceImpl::OnGetAccountStatement(GetAccountStatementCallback callback,
   std::move(callback).Run(
       success, statement.next_payment_date, statement.ads_received_this_month,
       statement.earnings_this_month, statement.earnings_last_month);
+}
+
+void AdsServiceImpl::OnGetAdDiagnostics(GetAdDiagnosticsCallback callback,
+                                        const bool success,
+                                        const std::string& json) {
+  std::move(callback).Run(success, json);
 }
 
 void AdsServiceImpl::OnRemoveAllHistory(const int32_t result) {

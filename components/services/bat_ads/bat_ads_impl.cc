@@ -217,6 +217,14 @@ void BatAdsImpl::GetAccountStatement(GetAccountStatementCallback callback) {
       std::bind(BatAdsImpl::OnGetAccountStatement, holder, _1, _2));
 }
 
+void BatAdsImpl::GetAdDiagnostics(GetAdDiagnosticsCallback callback) {
+  auto* holder = new CallbackHolder<GetAdDiagnosticsCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ads_->GetAdDiagnostics(
+      std::bind(BatAdsImpl::OnGetAdDiagnostics, holder, _1, _2));
+}
+
 void BatAdsImpl::ToggleAdThumbUp(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
@@ -329,6 +337,20 @@ void BatAdsImpl::OnGetAccountStatement(
     const ads::StatementInfo& statement) {
   if (holder->is_valid()) {
     const std::string json = statement.ToJson();
+    std::move(holder->get()).Run(success, json);
+  }
+
+  delete holder;
+}
+
+// static
+void BatAdsImpl::OnGetAdDiagnostics(
+    CallbackHolder<GetAdDiagnosticsCallback>* holder,
+    const bool success,
+    const std::string& json) {
+  DCHECK(holder);
+
+  if (holder->is_valid()) {
     std::move(holder->get()).Run(success, json);
   }
 

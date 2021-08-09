@@ -17,6 +17,7 @@
 #include "bat/ads/internal/account/account.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_util.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
+#include "bat/ads/internal/ad_diagnostics/ad_diagnostics.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ad_server/ad_server.h"
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
@@ -69,6 +70,7 @@ namespace ads {
 
 AdsImpl::AdsImpl(AdsClient* ads_client)
     : ads_client_helper_(std::make_unique<AdsClientHelper>(ads_client)),
+      ad_diagnostics_(std::make_unique<AdDiagnostics>()),
       token_generator_(std::make_unique<privacy::TokenGenerator>()) {
   set(token_generator_.get());
 }
@@ -213,6 +215,8 @@ void AdsImpl::OnUnIdle(const int idle_time, const bool was_locked) {
   if (!IsInitialized()) {
     return;
   }
+
+  ad_diagnostics_->set_last_unidle_timestamp(base::Time::Now());
 
   MaybeUpdateIdleTimeThreshold();
 
@@ -401,6 +405,11 @@ void AdsImpl::GetAccountStatement(GetAccountStatementCallback callback) {
   statement = account_->GetStatement(0, to_timestamp);
 
   callback(/* success */ true, statement);
+}
+
+void AdsImpl::GetAdDiagnostics(GetAdDiagnosticsCallback callback) {
+  ad_diagnostics_->set_ads_initialized(IsInitialized());
+  ad_diagnostics_->GetAdDiagnostics(std::move(callback));
 }
 
 AdContentInfo::LikeAction AdsImpl::ToggleAdThumbUp(

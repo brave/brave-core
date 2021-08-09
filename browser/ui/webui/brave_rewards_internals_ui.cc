@@ -10,16 +10,20 @@
 #include <utility>
 #include <vector>
 
+#include "base/json/json_reader.h"
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/mojom_structs.h"
+#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_internals_generated_map.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_message_handler.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
 
@@ -57,8 +61,11 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
                            ledger::type::ExternalWalletPtr wallet);
   void GetEventLogs(const base::ListValue* args);
   void OnGetEventLogs(ledger::type::EventLogs logs);
+  void GetAdDiagnostics(const base::ListValue* args);
+  void OnGetAdDiagnostics(const bool success, const std::string& json);
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
+  brave_ads::AdsService* ads_service_;  // NOT OWNED
   Profile* profile_;
   base::WeakPtrFactory<RewardsInternalsDOMHandler> weak_ptr_factory_;
 
@@ -115,6 +122,11 @@ void RewardsInternalsDOMHandler::RegisterMessages() {
       base::BindRepeating(
           &RewardsInternalsDOMHandler::GetEventLogs,
           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards_internals.getAdDiagnostics",
+      base::BindRepeating(
+          &RewardsInternalsDOMHandler::GetAdDiagnostics,
+          base::Unretained(this)));
 }
 
 void RewardsInternalsDOMHandler::Init() {
@@ -122,6 +134,7 @@ void RewardsInternalsDOMHandler::Init() {
   rewards_service_ =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
   rewards_service_->StartProcess(base::DoNothing());
+  ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
 }
 
 void RewardsInternalsDOMHandler::HandleGetRewardsInternalsInfo(
@@ -399,6 +412,53 @@ void RewardsInternalsDOMHandler::OnGetEventLogs(ledger::type::EventLogs logs) {
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards_internals.eventLogs",
       std::move(data));
+}
+
+void RewardsInternalsDOMHandler::GetAdDiagnostics(const base::ListValue* args) {
+  if (!ads_service_) {
+    NOTREACHED();
+    return;
+  }
+
+  ads_service_->GetAdDiagnostics(
+      base::BindOnce(&RewardsInternalsDOMHandler::OnGetAdDiagnostics,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void RewardsInternalsDOMHandler::OnGetAdDiagnostics(const bool success,
+                                                    const std::string& json) {
+  constexpr char kName[] = "name";
+  constexpr char kValue[] = "value";
+
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  base::Value diagnostics(base::Value::Type::LIST);
+  base::Value status(base::Value::Type::DICTIONARY);
+  status.SetStringKey(kName, "Status");
+  status.SetStringKey(kValue, "Ads are not initialized yet. Press Refresh button please.");
+  diagnostics.Append(std::move(status));
+
+  if (success && !json.empty()) {
+    absl::optional<base::Value> serialized_json = base::JSONReader::Read(json);
+    if (serialized_json && serialized_json->is_list() &&
+        !serialized_json->GetList().empty()) {
+      diagnostics = std::move(*serialized_json);
+    }
+  }
+
+#if DCHECK_IS_ON()
+  DCHECK(diagnostics.is_list()) << "Diagnostics should be a list";
+  for (const auto& entry : diagnostics.GetList()) {
+    DCHECK(entry.is_dict()) << "Diagnostics entry should be a dictionary";
+    DCHECK(entry.FindKey(kName)) << "Diagnostics entry should has 'name' key";
+    DCHECK(entry.FindKey(kValue)) << "Diagnostics entry should has 'value' key";
+  }
+#endif  // DCHECK_IS_ON()
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards_internals.adDiagnostics", diagnostics);
 }
 
 }  // namespace

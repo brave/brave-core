@@ -95,6 +95,7 @@ interface BatAds {
   ReconcileAdRewards();
   GetAdsHistory(uint64 from_timestamp, uint64 to_timestamp) => (string json);
   GetAccountStatement() => (bool success, string json);
+  GetAdDiagnostics() => (bool success, string json);
   ToggleAdThumbUp(string creative_instance_id, string creative_set_id, int32 action) => (string creative_instance_id, int32 action);
   ToggleAdThumbDown(string creative_instance_id, string creative_set_id, int32 action) => (string creative_instance_id, int32 action);
   ToggleAdOptInAction(string category, int32 action) => (string category, int32 action);
