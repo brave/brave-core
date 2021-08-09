@@ -713,6 +713,7 @@ if (!is_android) {
       "//components/user_prefs",
       "//media:test_support",
       "//testing/gmock",
+      "//ui/aura:test_support",
     ]
 
     if (enable_crash_dialog) {
