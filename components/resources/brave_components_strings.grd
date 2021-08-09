@@ -859,7 +859,6 @@
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_OFF_TEXT1" desc="">Get Rewarded for Browsing!</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_OFF_TEXT2" desc="">Earn tokens for your attention to ads and pay it forward to support content creators you value!</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT1" desc="">Add, withdraw and manage funds at <ph name="PROVIDER">$1<ex>Uphold</ex></ph>.</message>
-      <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT2" desc="">Your Brave wallet is powered by <ph name="PROVIDER">$1<ex>Uphold</ex></ph>.</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT3" desc="">Brave Rewards is built on the Basic Attention Token. Learn more about BAT</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT4" desc="">here</message>
       <message name="IDS_BRAVE_UI_REWARDS_VIEW_QR_CODE_TEXT1" desc="">View QR Code</message>
@@ -952,7 +951,6 @@
       <message name="IDS_BRAVE_UI_GRANT_FINISH_TEXT_UGP" desc="Text on final grant screen for UGP">Your [[currency]] grant is on its way.</message>
       <message name="IDS_BRAVE_UI_GRANT_FINISH_TOKEN_UGP" desc="Token text on final grant screen for UGP">Free Token Grant</message>
 
-      <message name="IDS_BRAVE_UI_REWARDS_PANEL_VERIFY" desc="">verify</message>
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_DISCONNECTED" desc="">Disconnected</message>
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_UNVERIFIED" desc="">Verify Wallet</message>
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_VERIFIED" desc="">Wallet Verified</message>
