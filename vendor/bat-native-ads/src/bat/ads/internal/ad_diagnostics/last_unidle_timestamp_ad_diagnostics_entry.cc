@@ -3,29 +3,33 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_last_unidle_timestamp.h"
+#include "bat/ads/internal/ad_diagnostics/last_unidle_timestamp_ad_diagnostics_entry.h"
+
 #include "bat/ads/internal/ad_diagnostics/ad_diagnostics_util.h"
 
 namespace ads {
 
-AdDiagnosticsLastUnIdleTimestamp::AdDiagnosticsLastUnIdleTimestamp() = default;
+LastUnIdleTimestampAdDiagnosticsEntry::LastUnIdleTimestampAdDiagnosticsEntry() =
+    default;
 
-AdDiagnosticsLastUnIdleTimestamp::~AdDiagnosticsLastUnIdleTimestamp() = default;
+LastUnIdleTimestampAdDiagnosticsEntry::
+    ~LastUnIdleTimestampAdDiagnosticsEntry() = default;
 
-AdDiagnosticsEntryType AdDiagnosticsLastUnIdleTimestamp::GetEntryType() const {
+AdDiagnosticsEntryType LastUnIdleTimestampAdDiagnosticsEntry::GetEntryType()
+    const {
   return AdDiagnosticsEntryType::kLastUnIdleTimestamp;
 }
 
-void AdDiagnosticsLastUnIdleTimestamp::SetLastUnIdleTimestamp(
+void LastUnIdleTimestampAdDiagnosticsEntry::SetLastUnIdleTimestamp(
     const base::Time& time) {
   last_unidle_timestamp_ = time;
 }
 
-std::string AdDiagnosticsLastUnIdleTimestamp::GetKey() const {
+std::string LastUnIdleTimestampAdDiagnosticsEntry::GetKey() const {
   return "Last unidle timestamp";
 }
 
-std::string AdDiagnosticsLastUnIdleTimestamp::GetValue() const {
+std::string LastUnIdleTimestampAdDiagnosticsEntry::GetValue() const {
   return ConvertToString(last_unidle_timestamp_);
 }
 

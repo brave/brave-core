@@ -10,13 +10,13 @@
 
 #include "base/json/json_writer.h"
 #include "base/values.h"
-#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_ads_enabled.h"
-#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_catalog_id.h"
-#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_catalog_last_updated.h"
 #include "bat/ads/internal/ad_diagnostics/ad_diagnostics_entry.h"
-#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_last_unidle_timestamp.h"
-#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_locale.h"
 #include "bat/ads/internal/ad_diagnostics/ad_diagnostics_util.h"
+#include "bat/ads/internal/ad_diagnostics/ads_enabled_ad_diagnostics_entry.h"
+#include "bat/ads/internal/ad_diagnostics/catalog_id_ad_diagnostics_entry.h"
+#include "bat/ads/internal/ad_diagnostics/catalog_last_updated_ad_diagnostics_entry.h"
+#include "bat/ads/internal/ad_diagnostics/last_unidle_timestamp_ad_diagnostics_entry.h"
+#include "bat/ads/internal/ad_diagnostics/locale_ad_diagnostics_entry.h"
 
 namespace ads {
 
@@ -30,11 +30,12 @@ AdDiagnostics::AdDiagnostics() {
   DCHECK(!g_ad_diagnostics);
   g_ad_diagnostics = this;
 
-  SetDiagnosticsEntry(std::make_unique<AdDiagnosticsAdsEnabled>());
-  SetDiagnosticsEntry(std::make_unique<AdDiagnosticsLocale>());
-  SetDiagnosticsEntry(std::make_unique<AdDiagnosticsCatalogId>());
-  SetDiagnosticsEntry(std::make_unique<AdDiagnosticsCatalogLastUpdated>());
-  SetDiagnosticsEntry(std::make_unique<AdDiagnosticsLastUnIdleTimestamp>());
+  SetDiagnosticsEntry(std::make_unique<AdsEnabledAdDiagnosticsEntry>());
+  SetDiagnosticsEntry(std::make_unique<LocaleAdDiagnosticsEntry>());
+  SetDiagnosticsEntry(std::make_unique<CatalogIdAdDiagnosticsEntry>());
+  SetDiagnosticsEntry(std::make_unique<CatalogLastUpdatedAdDiagnosticsEntry>());
+  SetDiagnosticsEntry(
+      std::make_unique<LastUnIdleTimestampAdDiagnosticsEntry>());
 }
 
 AdDiagnostics::~AdDiagnostics() {

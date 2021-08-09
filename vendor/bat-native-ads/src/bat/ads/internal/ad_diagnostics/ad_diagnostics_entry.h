@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_entry_type.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
@@ -15,15 +16,6 @@ class Value;
 }
 
 namespace ads {
-
-// Entries on ad diagnostics page are sorted basing on order of enum items.
-enum class AdDiagnosticsEntryType {
-  kAdsEnable,
-  kLocale,
-  kCatalogId,
-  kCatalogLastUpdated,
-  kLastUnIdleTimestamp
-};
 
 class AdDiagnosticsEntry {
  public:

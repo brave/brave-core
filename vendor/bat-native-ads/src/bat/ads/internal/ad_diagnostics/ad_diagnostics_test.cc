@@ -9,12 +9,12 @@
 
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_reader.h"
-#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_ads_enabled.h"
-#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_catalog_id.h"
-#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_catalog_last_updated.h"
-#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_last_unidle_timestamp.h"
-#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_locale.h"
 #include "bat/ads/internal/ad_diagnostics/ad_diagnostics_util.h"
+#include "bat/ads/internal/ad_diagnostics/ads_enabled_ad_diagnostics_entry.h"
+#include "bat/ads/internal/ad_diagnostics/catalog_id_ad_diagnostics_entry.h"
+#include "bat/ads/internal/ad_diagnostics/catalog_last_updated_ad_diagnostics_entry.h"
+#include "bat/ads/internal/ad_diagnostics/last_unidle_timestamp_ad_diagnostics_entry.h"
+#include "bat/ads/internal/ad_diagnostics/locale_ad_diagnostics_entry.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/pref_names.h"
@@ -44,10 +44,11 @@ TEST_F(AdDiagnosticsTest, AdsEnabledAndLocale) {
     const auto json_value = base::JSONReader::Read(json);
     ASSERT_TRUE(json_value);
 
-    EXPECT_EQ("false", GetDiagnosticsValueByKey(
-                           *json_value, AdDiagnosticsAdsEnabled().GetKey()));
+    EXPECT_EQ("false",
+              GetDiagnosticsValueByKey(
+                  *json_value, AdsEnabledAdDiagnosticsEntry().GetKey()));
     EXPECT_EQ("en-US", GetDiagnosticsValueByKey(
-                           *json_value, AdDiagnosticsLocale().GetKey()));
+                           *json_value, LocaleAdDiagnosticsEntry().GetKey()));
   });
 
   // Arrange
@@ -60,8 +61,9 @@ TEST_F(AdDiagnosticsTest, AdsEnabledAndLocale) {
     const auto json_value = base::JSONReader::Read(json);
     ASSERT_TRUE(json_value);
 
-    EXPECT_EQ("true", GetDiagnosticsValueByKey(
-                          *json_value, AdDiagnosticsAdsEnabled().GetKey()));
+    EXPECT_EQ("true",
+              GetDiagnosticsValueByKey(
+                  *json_value, AdsEnabledAdDiagnosticsEntry().GetKey()));
   });
 }
 
@@ -85,11 +87,13 @@ TEST_F(AdDiagnosticsTest, CatalogPrefs) {
     const auto json_value = base::JSONReader::Read(json);
     ASSERT_TRUE(json_value);
 
-    EXPECT_EQ(catalog_id, GetDiagnosticsValueByKey(
-                              *json_value, AdDiagnosticsCatalogId().GetKey()));
-    EXPECT_EQ(update_time_str,
-              GetDiagnosticsValueByKey(
-                  *json_value, AdDiagnosticsCatalogLastUpdated().GetKey()));
+    EXPECT_EQ(catalog_id,
+              GetDiagnosticsValueByKey(*json_value,
+                                       CatalogIdAdDiagnosticsEntry().GetKey()));
+    EXPECT_EQ(
+        update_time_str,
+        GetDiagnosticsValueByKey(
+            *json_value, CatalogLastUpdatedAdDiagnosticsEntry().GetKey()));
   });
 }
 
@@ -104,7 +108,7 @@ TEST_F(AdDiagnosticsTest, LastUnidleTimestamp) {
     ASSERT_TRUE(json_value);
 
     const auto entry = GetDiagnosticsValueByKey(
-        *json_value, AdDiagnosticsLastUnIdleTimestamp().GetKey());
+        *json_value, LastUnIdleTimestampAdDiagnosticsEntry().GetKey());
     ASSERT_TRUE(entry.has_value());
     EXPECT_TRUE(entry->empty());
   });
@@ -119,7 +123,7 @@ TEST_F(AdDiagnosticsTest, LastUnidleTimestamp) {
     ASSERT_TRUE(json_value);
 
     const auto entry = GetDiagnosticsValueByKey(
-        *json_value, AdDiagnosticsLastUnIdleTimestamp().GetKey());
+        *json_value, LastUnIdleTimestampAdDiagnosticsEntry().GetKey());
     ASSERT_TRUE(entry.has_value());
     EXPECT_FALSE(entry->empty());
   });
