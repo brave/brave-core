@@ -42,10 +42,10 @@ bool ParseTimeValue(const base::Value* value, base::Time* field) {
 
 void FilterListSubscriptionInfo::RegisterJSONConverter(
     base::JSONValueConverter<FilterListSubscriptionInfo>* converter) {
-  // The `list_url` field is skipped, as it's not stored within the JSON value
-  // and should be populated externally.
-  converter->RegisterCustomField<SubscriptionIdentifier>(
-      "list_url", &FilterListSubscriptionInfo::list_url, &SkipGURLField);
+  // The `subscription_url` field is skipped, as it's not stored within the
+  // JSON value and should be populated externally.
+  converter->RegisterCustomField<GURL>(
+      "subscription_url", &FilterListSubscriptionInfo::subscription_url, &SkipGURLField);
   converter->RegisterCustomValueField<base::FilePath>(
       "list_dir", &FilterListSubscriptionInfo::list_dir, &ParseFilePathValue);
   converter->RegisterCustomValueField<base::Time>(
@@ -63,7 +63,7 @@ AdBlockSubscriptionService::AdBlockSubscriptionService(
     OnLoadCallback on_load_callback,
     brave_component_updater::BraveComponent::Delegate* delegate)
     : AdBlockBaseService(delegate),
-      id_(info.list_url),
+      subscription_url_(info.subscription_url),
       on_load_callback_(on_load_callback),
       list_file_(info.list_dir.AppendASCII(kCustomSubscriptionListText)),
       load_on_start_(info.last_successful_update_attempt != base::Time::Min()),
@@ -94,7 +94,7 @@ void AdBlockSubscriptionService::OnSuccessfulDownload() {
 }
 
 void AdBlockSubscriptionService::OnListLoaded() {
-  on_load_callback_.Run(id_);
+  on_load_callback_.Run(subscription_url_);
   initialized_ = true;
 }
 

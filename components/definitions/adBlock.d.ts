@@ -22,7 +22,7 @@ declare namespace AdBlock {
   }
 
   export interface SubscriptionInfo {
-    list_url: string
+    subscription_url: string
     last_update_attempt: number
     last_successful_update_attempt: number
     enabled: boolean

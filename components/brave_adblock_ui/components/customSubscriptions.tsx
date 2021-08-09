@@ -38,7 +38,7 @@ export class CustomSubscriptions extends React.Component<Props, State> {
       if (url.protocol !== 'https:' && url.protocol !== 'http:') {
         return false
       }
-      if (this.props.subscriptions.filter(subscription => subscription.list_url == url.href).length !== 0) {
+      if (this.props.subscriptions.filter(subscription => subscription.subscription_url == url.href).length !== 0) {
         return false
       }
       return true
@@ -89,36 +89,36 @@ export class CustomSubscriptions extends React.Component<Props, State> {
     }
   }
 
-  onToggleSubscription = (list_url: string, event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.actions.setSubscriptionEnabled(list_url, event.target.checked)
+  onToggleSubscription = (subscription_url: string, event: React.ChangeEvent<HTMLInputElement>) => {
+    this.props.actions.setSubscriptionEnabled(subscription_url, event.target.checked)
   }
 
-  onClickSubscriptionContextMenu = (list_url: string, event: React.MouseEvent<HTMLSpanElement>) => {
-    const currentlyOpenedContextMenu = (this.state.currentlyOpenedContextMenu === list_url) ? undefined : list_url
+  onClickSubscriptionContextMenu = (subscription_url: string, event: React.MouseEvent<HTMLSpanElement>) => {
+    const currentlyOpenedContextMenu = (this.state.currentlyOpenedContextMenu === subscription_url) ? undefined : subscription_url
     this.setState((state, props) => ({
       ...state,
       currentlyOpenedContextMenu
     }))
   }
 
-  onRefreshSubscription = (list_url: string, event: React.MouseEvent<HTMLButtonElement>) => {
-    this.props.actions.refreshSubscription(list_url)
+  onRefreshSubscription = (subscription_url: string, event: React.MouseEvent<HTMLButtonElement>) => {
+    this.props.actions.refreshSubscription(subscription_url)
     this.setState((state, props) => ({
       ...state,
       currentlyOpenedContextMenu: undefined
     }))
   }
 
-  onUnsubscribe = (list_url: string, event: React.MouseEvent<HTMLButtonElement>) => {
-    this.props.actions.deleteSubscription(list_url)
+  onUnsubscribe = (subscription_url: string, event: React.MouseEvent<HTMLButtonElement>) => {
+    this.props.actions.deleteSubscription(subscription_url)
     this.setState((state, props) => ({
       ...state,
       currentlyOpenedContextMenu: undefined
     }))
   }
 
-  onViewSource = (list_url: string, event: React.MouseEvent<HTMLButtonElement>) => {
-    this.props.actions.viewSubscriptionSource(list_url)
+  onViewSource = (subscription_url: string, event: React.MouseEvent<HTMLButtonElement>) => {
+    this.props.actions.viewSubscriptionSource(subscription_url)
   }
 
   renderTable = (subscriptions: AdBlock.SubscriptionInfo[]) => {
@@ -159,27 +159,27 @@ export class CustomSubscriptions extends React.Component<Props, State> {
           </div>)
       }
 
-      return (<React.Fragment key={subscription.list_url}>
+      return (<React.Fragment key={subscription.subscription_url}>
         <div style={{gridRow, gridColumn: "1 / span 4", borderBottom: "1px solid #e8e8e8"}}/>
-        <div className="filterListGridCell" style={{gridRow, gridColumn: 1}}>{subscription.list_url}</div>
+        <div className="filterListGridCell" style={{gridRow, gridColumn: 1}}>{subscription.subscription_url}</div>
         { last_updated_cell }
         {
           subscription.last_successful_update_attempt ?
-            (<div className="filterListGridCell" style={{gridRow, gridColumn: 3}}><input type="checkbox" checked={subscription.enabled} onChange={(e) => this.onToggleSubscription(subscription.list_url, e)}></input></div>) :
+            (<div className="filterListGridCell" style={{gridRow, gridColumn: 3}}><input type="checkbox" checked={subscription.enabled} onChange={(e) => this.onToggleSubscription(subscription.subscription_url, e)}></input></div>) :
             (<></>)
         }
         <div className="filterListGridCell" style={{gridRow, gridColumn: "4 / span 5"}}>
-          <span style={{cursor: "pointer", color: "#656565", userSelect: "none", fontSize: "1.25em"}} onClick={(e) => this.onClickSubscriptionContextMenu(subscription.list_url, e)}>•••</span>
+          <span style={{cursor: "pointer", color: "#656565", userSelect: "none", fontSize: "1.25em"}} onClick={(e) => this.onClickSubscriptionContextMenu(subscription.subscription_url, e)}>•••</span>
           {
-            (subscription.list_url === this.state.currentlyOpenedContextMenu) ?
+            (subscription.subscription_url === this.state.currentlyOpenedContextMenu) ?
               (<div style={{display: "flex", flexDirection: "column"}}>
-                <button onClick={(e) => this.onRefreshSubscription(subscription.list_url, e)}>{getLocale('customListSubscriptionsTriggerUpdate')}</button>
+                <button onClick={(e) => this.onRefreshSubscription(subscription.subscription_url, e)}>{getLocale('customListSubscriptionsTriggerUpdate')}</button>
                 {
                   subscription.last_successful_update_attempt ?
-                    <button onClick={(e) => this.onViewSource(subscription.list_url, e)}>{getLocale('customListSubscriptionsViewListSource')}</button> :
+                    <button onClick={(e) => this.onViewSource(subscription.subscription_url, e)}>{getLocale('customListSubscriptionsViewListSource')}</button> :
                     <></>
                 }
-                <button onClick={(e) => this.onUnsubscribe(subscription.list_url, e)}>{getLocale('customListSubscriptionsUnsubscribe')}</button>
+                <button onClick={(e) => this.onUnsubscribe(subscription.subscription_url, e)}>{getLocale('customListSubscriptionsUnsubscribe')}</button>
               </div>) :
               (<></>)
           }

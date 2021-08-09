@@ -676,7 +676,7 @@ class TestAdBlockSubscriptionServiceManagerObserver
 // Make sure a list added as a custom subscription works correctly
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToCustomSubscription) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
-  GURL list_url = embedded_test_server()->GetURL("lists.com", "/list.txt");
+  GURL subscription_url = embedded_test_server()->GetURL("lists.com", "/list.txt");
   GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
   GURL resource_url = embedded_test_server()->GetURL("b.com", "/logo.png");
 
@@ -690,13 +690,13 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToCustomSubscription) {
       sub_service_manager);
 
   // Create a new subscription
-  sub_service_manager->CreateSubscription(list_url);
+  sub_service_manager->CreateSubscription(subscription_url);
 
   // Ensure the subscription is registered correctly
   {
     const auto subscriptions = sub_service_manager->GetSubscriptions();
     ASSERT_EQ(subscriptions.size(), 1ULL);
-    ASSERT_EQ(subscriptions[0].list_url, list_url);
+    ASSERT_EQ(subscriptions[0].subscription_url, subscription_url);
     ASSERT_EQ(subscriptions[0].last_update_attempt, base::Time());
     ASSERT_EQ(subscriptions[0].last_successful_update_attempt, base::Time());
     ASSERT_EQ(subscriptions[0].enabled, true);
@@ -710,7 +710,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToCustomSubscription) {
   {
     const auto subscriptions = sub_service_manager->GetSubscriptions();
     ASSERT_EQ(subscriptions.size(), 1ULL);
-    ASSERT_EQ(subscriptions[0].list_url, list_url);
+    ASSERT_EQ(subscriptions[0].subscription_url, subscription_url);
     ASSERT_NE(subscriptions[0].last_update_attempt, base::Time());
     ASSERT_EQ(subscriptions[0].last_successful_update_attempt,
               subscriptions[0].last_update_attempt);
@@ -730,11 +730,11 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToCustomSubscription) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
   // Disable the list and ensure it is no longer applied
-  sub_service_manager->EnableSubscription(list_url, false);
+  sub_service_manager->EnableSubscription(subscription_url, false);
   {
     const auto subscriptions = sub_service_manager->GetSubscriptions();
     ASSERT_EQ(subscriptions.size(), 1ULL);
-    ASSERT_EQ(subscriptions[0].list_url, list_url);
+    ASSERT_EQ(subscriptions[0].subscription_url, subscription_url);
     ASSERT_NE(subscriptions[0].last_update_attempt, base::Time());
     ASSERT_EQ(subscriptions[0].last_successful_update_attempt,
               subscriptions[0].last_update_attempt);
@@ -750,12 +750,12 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToCustomSubscription) {
   // Refresh the subscription and ensure that it gets updated
   TestAdBlockSubscriptionServiceManagerObserver sub_observer2(
       sub_service_manager);
-  sub_service_manager->RefreshSubscription(list_url, true);
+  sub_service_manager->RefreshSubscription(subscription_url, true);
   sub_observer2.Wait();
   {
     const auto subscriptions = sub_service_manager->GetSubscriptions();
     ASSERT_EQ(subscriptions.size(), 1ULL);
-    ASSERT_EQ(subscriptions[0].list_url, list_url);
+    ASSERT_EQ(subscriptions[0].subscription_url, subscription_url);
     ASSERT_GT(subscriptions[0].last_update_attempt, first_update);
     ASSERT_EQ(subscriptions[0].last_successful_update_attempt,
               subscriptions[0].last_update_attempt);
@@ -763,7 +763,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToCustomSubscription) {
   }
 
   // Remove the list and ensure it is completely gone
-  sub_service_manager->DeleteSubscription(list_url);
+  sub_service_manager->DeleteSubscription(subscription_url);
   {
     const auto subscriptions = sub_service_manager->GetSubscriptions();
     ASSERT_EQ(subscriptions.size(), 0ULL);
@@ -773,7 +773,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToCustomSubscription) {
 // Make sure the state of a list that cannot be fetched is as expected
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeTo404List) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
-  GURL list_url =
+  GURL subscription_url =
       embedded_test_server()->GetURL("lists.com", "/this/list/does/not/exist");
   GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
   GURL resource_url = embedded_test_server()->GetURL("b.com", "/logo.png");
@@ -788,13 +788,13 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeTo404List) {
       sub_service_manager);
 
   // Create a new subscription
-  sub_service_manager->CreateSubscription(list_url);
+  sub_service_manager->CreateSubscription(subscription_url);
 
   // Ensure the subscription is registered correctly
   {
     const auto subscriptions = sub_service_manager->GetSubscriptions();
     ASSERT_EQ(subscriptions.size(), 1ULL);
-    ASSERT_EQ(subscriptions[0].list_url, list_url);
+    ASSERT_EQ(subscriptions[0].subscription_url, subscription_url);
     ASSERT_EQ(subscriptions[0].last_update_attempt, base::Time());
     ASSERT_EQ(subscriptions[0].last_successful_update_attempt, base::Time());
     ASSERT_EQ(subscriptions[0].enabled, true);
@@ -808,7 +808,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeTo404List) {
   {
     const auto subscriptions = sub_service_manager->GetSubscriptions();
     ASSERT_EQ(subscriptions.size(), 1ULL);
-    ASSERT_EQ(subscriptions[0].list_url, list_url);
+    ASSERT_EQ(subscriptions[0].subscription_url, subscription_url);
     ASSERT_NE(subscriptions[0].last_update_attempt, base::Time());
     ASSERT_EQ(subscriptions[0].last_successful_update_attempt, base::Time());
     ASSERT_EQ(subscriptions[0].enabled, true);
@@ -818,7 +818,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeTo404List) {
 // Make sure that a list cannot be subscribed to twice
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToListUrlTwice) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
-  GURL list_url =
+  GURL subscription_url =
       embedded_test_server()->GetURL("lists.com", "/this/list/does/not/exist");
   GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
   GURL resource_url = embedded_test_server()->GetURL("b.com", "/logo.png");
@@ -833,20 +833,20 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToListUrlTwice) {
       sub_service_manager);
 
   // Create a new subscription
-  sub_service_manager->CreateSubscription(list_url);
+  sub_service_manager->CreateSubscription(subscription_url);
 
   // Ensure the subscription is registered correctly
   {
     const auto subscriptions = sub_service_manager->GetSubscriptions();
     ASSERT_EQ(subscriptions.size(), 1ULL);
-    ASSERT_EQ(subscriptions[0].list_url, list_url);
+    ASSERT_EQ(subscriptions[0].subscription_url, subscription_url);
     ASSERT_EQ(subscriptions[0].last_update_attempt, base::Time());
     ASSERT_EQ(subscriptions[0].last_successful_update_attempt, base::Time());
     ASSERT_EQ(subscriptions[0].enabled, true);
   }
 
   // Create a subscription with the same URL again
-  sub_service_manager->CreateSubscription(list_url);
+  sub_service_manager->CreateSubscription(subscription_url);
 
   // Ensure there's still only the original subscription
   {

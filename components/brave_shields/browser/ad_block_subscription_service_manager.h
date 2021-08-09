@@ -48,13 +48,13 @@ class AdBlockSubscriptionServiceManager {
 
   // Returns a `file://` URL that points directly to the cached list text file
   // used for the given subscription.
-  GURL GetListTextFileUrl(const SubscriptionIdentifier id) const;
+  GURL GetListTextFileUrl(const GURL sub_url) const;
 
   std::vector<FilterListSubscriptionInfo> GetSubscriptions();
-  void EnableSubscription(const SubscriptionIdentifier& id, bool enabled);
-  void DeleteSubscription(const SubscriptionIdentifier& id);
-  void RefreshSubscription(const SubscriptionIdentifier& id, bool from_ui);
-  void CreateSubscription(const GURL& list_url);
+  void EnableSubscription(const GURL& sub_url, bool enabled);
+  void DeleteSubscription(const GURL& sub_url);
+  void RefreshSubscription(const GURL& sub_url, bool from_ui);
+  void CreateSubscription(const GURL& sub_url);
 
   bool Start();
   void ShouldStartRequest(const GURL& url,
@@ -77,8 +77,8 @@ class AdBlockSubscriptionServiceManager {
     return download_manager_.get();
   }
 
-  void OnListDownloadFailure(const SubscriptionIdentifier& id);
-  void OnListDownloaded(const SubscriptionIdentifier& id);
+  void OnListDownloadFailure(const GURL& sub_url);
+  void OnListDownloaded(const GURL& sub_url);
 
   void AddObserver(AdBlockSubscriptionServiceManagerObserver* observer);
   void RemoveObserver(AdBlockSubscriptionServiceManagerObserver* observer);
@@ -87,19 +87,19 @@ class AdBlockSubscriptionServiceManager {
   friend class ::AdBlockServiceTest;
   // Returns the directory used to store cached list data for the given
   // subscription.
-  base::FilePath GetSubscriptionPath(const GURL& list_url) const;
+  base::FilePath GetSubscriptionPath(const GURL& subscription_url) const;
 
   bool Init();
   void LoadSubscriptionServices();
-  void UpdateFilterListPrefs(const SubscriptionIdentifier& list_url,
+  void UpdateFilterListPrefs(const GURL& sub_url,
                              const FilterListSubscriptionInfo& info);
-  void ClearFilterListPrefs(const SubscriptionIdentifier& list_url);
+  void ClearFilterListPrefs(const GURL& sub_url);
   void OnGetDownloadManager(
       AdBlockSubscriptionDownloadManager* download_manager);
 
   base::Optional<FilterListSubscriptionInfo> GetInfo(
-      const SubscriptionIdentifier& id);
-  void OnListLoaded(const SubscriptionIdentifier& id);
+      const GURL& sub_url);
+  void OnListLoaded(const GURL& sub_url);
   void NotifyObserversOfServiceEvent();
 
   brave_component_updater::BraveComponent::Delegate* delegate_;  // NOT OWNED
@@ -108,7 +108,7 @@ class AdBlockSubscriptionServiceManager {
   std::unique_ptr<base::DictionaryValue> subscriptions_;
   base::OneShotEvent ready_;
 
-  std::map<SubscriptionIdentifier, std::unique_ptr<AdBlockSubscriptionService>>
+  std::map<GURL, std::unique_ptr<AdBlockSubscriptionService>>
       subscription_services_;
 
   base::ObserverList<AdBlockSubscriptionServiceManagerObserver> observers_;

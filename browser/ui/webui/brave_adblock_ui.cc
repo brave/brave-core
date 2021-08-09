@@ -172,18 +172,18 @@ void AdblockDOMHandler::HandleSubmitNewSubscription(
     const base::ListValue* args) {
   DCHECK_EQ(args->GetSize(), 1U);
   AllowJavascript();
-  std::string list_url_string;
-  if (!args->GetString(0, &list_url_string)) {
+  std::string subscription_url_string;
+  if (!args->GetString(0, &subscription_url_string)) {
     return;
   }
-  const GURL list_url = GURL(list_url_string);
-  if (!list_url.is_valid()) {
+  const GURL subscription_url = GURL(subscription_url_string);
+  if (!subscription_url.is_valid()) {
     return;
   }
 
   g_brave_browser_process->ad_block_service()
       ->subscription_service_manager()
-      ->CreateSubscription(list_url);
+      ->CreateSubscription(subscription_url);
   RefreshSubscriptionsList();
 }
 
@@ -191,38 +191,38 @@ void AdblockDOMHandler::HandleSetSubscriptionEnabled(
     const base::ListValue* args) {
   DCHECK_EQ(args->GetSize(), 2U);
   AllowJavascript();
-  std::string list_url_string;
-  if (!args->GetString(0, &list_url_string)) {
+  std::string subscription_url_string;
+  if (!args->GetString(0, &subscription_url_string)) {
     return;
   }
   bool enabled;
   if (!args->GetBoolean(1, &enabled)) {
     return;
   }
-  const GURL list_url = GURL(list_url_string);
-  if (!list_url.is_valid()) {
+  const GURL subscription_url = GURL(subscription_url_string);
+  if (!subscription_url.is_valid()) {
     return;
   }
   g_brave_browser_process->ad_block_service()
       ->subscription_service_manager()
-      ->EnableSubscription(list_url, enabled);
+      ->EnableSubscription(subscription_url, enabled);
   RefreshSubscriptionsList();
 }
 
 void AdblockDOMHandler::HandleDeleteSubscription(const base::ListValue* args) {
   DCHECK_EQ(args->GetSize(), 1U);
   AllowJavascript();
-  std::string list_url_string;
-  if (!args->GetString(0, &list_url_string)) {
+  std::string subscription_url_string;
+  if (!args->GetString(0, &subscription_url_string)) {
     return;
   }
-  const GURL list_url = GURL(list_url_string);
-  if (!list_url.is_valid()) {
+  const GURL subscription_url = GURL(subscription_url_string);
+  if (!subscription_url.is_valid()) {
     return;
   }
   g_brave_browser_process->ad_block_service()
       ->subscription_service_manager()
-      ->DeleteSubscription(list_url);
+      ->DeleteSubscription(subscription_url);
   RefreshSubscriptionsList();
 }
 
@@ -231,34 +231,34 @@ void AdblockDOMHandler::HandleRefreshSubscription(const base::ListValue* args) {
   // This handler does not call Javascript directly, but refreshing the
   // subscription will trigger the observer later, which will require it.
   AllowJavascript();
-  std::string list_url_string;
-  if (!args->GetString(0, &list_url_string)) {
+  std::string subscription_url_string;
+  if (!args->GetString(0, &subscription_url_string)) {
     return;
   }
-  const GURL list_url = GURL(list_url_string);
-  if (!list_url.is_valid()) {
+  const GURL subscription_url = GURL(subscription_url_string);
+  if (!subscription_url.is_valid()) {
     return;
   }
   g_brave_browser_process->ad_block_service()
       ->subscription_service_manager()
-      ->RefreshSubscription(list_url, true);
+      ->RefreshSubscription(subscription_url, true);
 }
 
 void AdblockDOMHandler::HandleViewSubscriptionSource(
     const base::ListValue* args) {
   DCHECK_EQ(args->GetSize(), 1U);
-  std::string list_url_string;
-  if (!args->GetString(0, &list_url_string)) {
+  std::string subscription_url_string;
+  if (!args->GetString(0, &subscription_url_string)) {
     return;
   }
-  const GURL list_url = GURL(list_url_string);
-  if (!list_url.is_valid()) {
+  const GURL subscription_url = GURL(subscription_url_string);
+  if (!subscription_url.is_valid()) {
     return;
   }
 
   const GURL file_url = g_brave_browser_process->ad_block_service()
                             ->subscription_service_manager()
-                            ->GetListTextFileUrl(list_url);
+                            ->GetListTextFileUrl(subscription_url);
 
   auto* browser =
       chrome::FindBrowserWithWebContents(web_ui()->GetWebContents());
@@ -275,7 +275,7 @@ void AdblockDOMHandler::RefreshSubscriptionsList() {
   auto list_value = std::make_unique<base::ListValue>();
   for (const auto& subscription : list_subscriptions) {
     auto dict = std::make_unique<base::DictionaryValue>();
-    dict->SetStringKey("list_url", subscription.list_url.spec());
+    dict->SetStringKey("subscription_url", subscription.subscription_url.spec());
     dict->SetBoolKey("enabled", subscription.enabled);
     dict->SetDoubleKey("last_update_attempt",
                  subscription.last_update_attempt.ToJsTime());
