@@ -397,7 +397,6 @@ void AdsServiceImpl::OnWalletUpdated() {
 
 void AdsServiceImpl::OnGetBraveWallet(ledger::type::BraveWalletPtr wallet) {
   if (!wallet) {
-    VLOG(0) << "Failed to get wallet";
     return;
   }
 
@@ -1141,10 +1140,6 @@ void AdsServiceImpl::NotificationTimedOut(const std::string& uuid) {
 
 void AdsServiceImpl::RegisterResourceComponentsForLocale(
     const std::string& locale) {
-  if (!IsEnabled()) {
-    return;
-  }
-
   g_brave_browser_process->resource_component()->RegisterComponentsForLocale(
       locale);
 }
