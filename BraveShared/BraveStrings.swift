@@ -2190,9 +2190,13 @@ extension Strings {
                               value: "Failed to migrate bookmarks. Please try again later.",
                               comment: "Message for popup when the bookmark migration fails")
         /// History Migration localization text
+        public static let historyMigrationErrorTitle =
+            NSLocalizedString("sync.historyMigrationErrorTitle", tableName: "BraveShared", bundle: .braveShared,
+                              value: "Migration (almost) complete",
+                              comment: "The title for popup when the history migration fails")
         public static let historyMigrationErrorMessage =
             NSLocalizedString("sync.historyMigrationErrorMessage", tableName: "BraveShared", bundle: .braveShared,
-                              value: "Failed to migrate history. Please try again later.",
+                              value: "Most history migrated. However, a few pages weren’t due to missing page info.",
                               comment: "Message for popup when the history migration fails")
         public static let syncConfigurationInformationText =
             NSLocalizedString("sync.syncConfigurationInformationText", tableName: "BraveShared", bundle: .braveShared,

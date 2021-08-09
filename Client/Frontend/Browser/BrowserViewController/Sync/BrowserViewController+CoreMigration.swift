@@ -22,7 +22,7 @@ extension BrowserViewController {
             self.migrateToSyncObjects { error in
                 if let error = error {
                     DispatchQueue.main.async {
-                        let alert = UIAlertController(title: Strings.Sync.v2MigrationErrorTitle,
+                        let alert = UIAlertController(title: error.failureReason,
                                                       message: error.localizedDescription,
                                                       preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))

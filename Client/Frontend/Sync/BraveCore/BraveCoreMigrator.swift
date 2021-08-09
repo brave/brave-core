@@ -29,6 +29,15 @@ class BraveCoreMigrator {
         case failedBookmarksMigration
         case failedHistoryMigration
         
+        public var failureReason: String? {
+            switch self {
+                case .failedBookmarksMigration:
+                    return Strings.Sync.v2MigrationErrorTitle
+                case .failedHistoryMigration:
+                    return Strings.Sync.historyMigrationErrorTitle
+            }
+        }
+        
         public var errorDescription: String? {
             switch self {
             case .failedBookmarksMigration:
