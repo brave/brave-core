@@ -743,6 +743,10 @@ if (!is_android) {
       "//testing/gmock",
     ]
 
+    if (use_aura) {
+      deps += [ "//ui/aura:test_support" ]
+    }
+
     if (enable_brave_vpn) {
       deps += [ "//brave/components/brave_vpn" ]
       sources +=
