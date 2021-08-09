@@ -13,6 +13,7 @@
 
 #include "base/i18n/time_formatting.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "bat/ledger/mojom_structs.h"
@@ -305,6 +306,13 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
   brave_ads::AdsService* ads_service_;  // NOT OWNED
+
+  base::ScopedObservation<brave_rewards::RewardsService,
+                          brave_rewards::RewardsServiceObserver>
+      rewards_service_observation_{this};
+  base::ScopedObservation<brave_ads::AdsService, brave_ads::AdsServiceObserver>
+      ads_service_observation_{this};
+
   base::WeakPtrFactory<RewardsDOMHandler> weak_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(RewardsDOMHandler);
@@ -516,22 +524,19 @@ void RewardsDOMHandler::IsInitialized(const base::ListValue* args) {
 
 void RewardsDOMHandler::OnJavascriptAllowed() {
   if (rewards_service_) {
-    rewards_service_->AddObserver(this);
+    rewards_service_observation_.Reset();
+    rewards_service_observation_.Observe(rewards_service_);
   }
 
   if (ads_service_) {
-    ads_service_->AddObserver(this);
+    ads_service_observation_.Reset();
+    ads_service_observation_.Observe(ads_service_);
   }
 }
 
 void RewardsDOMHandler::OnJavascriptDisallowed() {
-  if (rewards_service_) {
-    rewards_service_->RemoveObserver(this);
-  }
-
-  if (ads_service_) {
-    ads_service_->RemoveObserver(this);
-  }
+  rewards_service_observation_.Reset();
+  ads_service_observation_.Reset();
 
   weak_factory_.InvalidateWeakPtrs();
 }
