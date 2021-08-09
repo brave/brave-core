@@ -8,38 +8,24 @@ group("brave") {
 }
 
 copy("copy_exe") {
-  sources = [
-    "$root_out_dir/chrome.exe",
-  ]
+  sources = [ "$root_out_dir/chrome.exe" ]
 
-  outputs = [
-    "$root_out_dir/brave.exe",
-  ]
+  outputs = [ "$root_out_dir/brave.exe" ]
 
-  deps = [
-    "//chrome:reorder_imports"
-  ]
+  deps = [ "//chrome:reorder_imports" ]
 }
 
 copy("copy_pdb") {
-  sources = [
-    "$root_out_dir/chrome.exe.pdb",
-  ]
+  sources = [ "$root_out_dir/chrome.exe.pdb" ]
 
-  outputs = [
-    "$root_out_dir/brave.exe.pdb",
-  ]
+  outputs = [ "$root_out_dir/brave.exe.pdb" ]
 
-  deps = [
-    "//chrome:reorder_imports"
-  ]
+  deps = [ "//chrome:reorder_imports" ]
 }
 
 action("create_signed_installer") {
   script = "//brave/script/create-signed-installer.py"
-  inputs = [
-    "$root_out_dir/mini_installer.exe"
-  ]
+  inputs = [ "$root_out_dir/mini_installer.exe" ]
   outputs = [
     "$root_out_dir/brave_installer.exe",
     "$root_out_dir/$brave_installer_exe",
@@ -50,9 +36,9 @@ action("create_signed_installer") {
     "--brave_installer_exe=$brave_installer_exe",
   ]
 
-  if (skip_signing) { args += [ "--skip_signing" ] }
+  if (skip_signing) {
+    args += [ "--skip_signing" ]
+  }
 
-  deps = [
-    "//chrome/installer/mini_installer"
-  ]
+  deps = [ "//chrome/installer/mini_installer" ]
 }
