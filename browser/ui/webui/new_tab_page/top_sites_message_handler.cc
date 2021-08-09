@@ -45,35 +45,31 @@ TopSitesMessageHandler::~TopSitesMessageHandler() = default;
 
 void TopSitesMessageHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
-    "updateMostVisitedInfo",
-    base::BindRepeating(
-      &TopSitesMessageHandler::HandleUpdateMostVisitedInfo,
-      base::Unretained(this)));
+      "updateMostVisitedInfo",
+      base::BindRepeating(&TopSitesMessageHandler::HandleUpdateMostVisitedInfo,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-    "deleteMostVisitedTile",
-    base::BindRepeating(
-      &TopSitesMessageHandler::HandleDeleteMostVisitedTile,
-      base::Unretained(this)));
+      "deleteMostVisitedTile",
+      base::BindRepeating(&TopSitesMessageHandler::HandleDeleteMostVisitedTile,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-    "reorderMostVisitedTile",
-    base::BindRepeating(
-      &TopSitesMessageHandler::HandleReorderMostVisitedTile,
-      base::Unretained(this)));
+      "reorderMostVisitedTile",
+      base::BindRepeating(&TopSitesMessageHandler::HandleReorderMostVisitedTile,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-    "restoreMostVisitedDefaults",
-    base::BindRepeating(
-      &TopSitesMessageHandler::HandleRestoreMostVisitedDefaults,
-      base::Unretained(this)));
+      "restoreMostVisitedDefaults",
+      base::BindRepeating(
+          &TopSitesMessageHandler::HandleRestoreMostVisitedDefaults,
+          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-    "undoMostVisitedTileAction",
-    base::BindRepeating(
-      &TopSitesMessageHandler::HandleUndoMostVisitedTileAction,
-      base::Unretained(this)));
+      "undoMostVisitedTileAction",
+      base::BindRepeating(
+          &TopSitesMessageHandler::HandleUndoMostVisitedTileAction,
+          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-    "setMostVisitedSettings",
-    base::BindRepeating(
-      &TopSitesMessageHandler::HandleSetMostVisitedSettings,
-      base::Unretained(this)));
+      "setMostVisitedSettings",
+      base::BindRepeating(&TopSitesMessageHandler::HandleSetMostVisitedSettings,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "addNewTopSite",
       base::BindRepeating(&TopSitesMessageHandler::HandleAddNewTopSite,
@@ -300,8 +296,7 @@ void TopSitesMessageHandler::HandleSetMostVisitedSettings(
   }
 }
 
-void TopSitesMessageHandler::HandleEditTopSite(
-    const base::ListValue* args) {
+void TopSitesMessageHandler::HandleEditTopSite(const base::ListValue* args) {
   if (!most_visited_sites_)
     return;
 
@@ -348,8 +343,7 @@ void TopSitesMessageHandler::HandleEditTopSite(
   }
 }
 
-void TopSitesMessageHandler::HandleAddNewTopSite(
-    const base::ListValue* args) {
+void TopSitesMessageHandler::HandleAddNewTopSite(const base::ListValue* args) {
   if (!most_visited_sites_)
     return;
 
