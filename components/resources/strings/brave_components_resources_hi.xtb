@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">पसंदीदा दिखाएँ</translation>
 <translation id="3446024864193919737">Brave पुरस्कार दिखाएँ</translation>
 <translation id="6274899614137380422">Binance दिखाएँ</translation>
-<translation id="5551238871320268996">Brave Together</translation>
 <translation id="5585019845078534178">कार्ड्स</translation>
 <translation id="3870475560794762985">स्पांसर्ड इमेजों को दिखाएं</translation>
 <translation id="2875302873837723333">शीर्ष साइट्स</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">बैकग्राउंड इमेज</translation>
 <translation id="385051799172605136">वापस</translation>
 <translation id="9024104284526126630">आप Brave में एक निजी कॉल शुरू कर सकते हैं।</translation>
-<translation id="5735801688206890393">Brave Together में दोस्तों और सहयोगियों के साथ असीमित कॉल शुरू करें।</translation>
+<translation id="4903286433687221248">Brave Talk में दोस्तों और सहकर्मियों के साथ असीमित कॉल शुरू करें</translation>
 <translation id="7115051913071512405">इसे आज़माएँ</translation>
 <translation id="7415602225677446066">आज की शीर्ष कहानियाँ पूरी तरह से निजी फीड में, सिर्फ आपके लिए।</translation>
 <translation id="6903061332999399632">Brave न्यूज़ विज्ञापन-समर्थित है और आपके डिवाइस से मेल खाते हुए अनाम और निजी तौर पर विज्ञापनों को दिखाता है. हमारी <ph name="LINK_START"/>गोपनीयता नीति<ph name="LINK_END"/> के अनुसार आपकी व्यक्तिगत जानकारी हमेशा निजी रहती है.</translation>
@@ -175,8 +174,6 @@
 <translation id="8010081455002666927">ऑटो-डिटेक्ट</translation>
 <translation id="4394049700291259645">बंद करें</translation>
 <translation id="4176463684765177261">अक्षम</translation>
-<translation id="4434663852465709809">BAT ट्रांसफ़र करने के लिए iOS रिवॉर्ड्स यूज़र्स के लिए क्यूआर कोड</translation>
-<translation id="2175927920773552910">QR कोड</translation>
 <translation id="8283001340969131076">क्षमा करें, आपका <ph name="PROVIDER"/> अकॉउंट. कृपया थोड़ी देर में दोबारा कोशिश करें.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">उपकरण ऑफ़लाइन है, कृपया बाद में पुन: प्रयास करें।</translation>
@@ -241,8 +238,8 @@
 <translation id="2359865110462963929">वर्तमान में BAT आपके क्षेत्र में समर्थित नहीं है। अपडेट के लिए कृपया <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> को देखें।</translation>
 <translation id="1737873393693460829">[[title]] को चालू करके, आप <ph name="BEGIN_LINK1"/> सेवा की शर्तें <ph name="END_LINK1"/> से सहमत होते हैं। और <ph name="BEGIN_LINK2"/> गोपनीयता नीति <ph name="END_LINK2"/>।</translation>
 <translation id="2564425876266960486">Brave ब्राउज़र BAT कार्ड निर्माण में समस्या हुई है</translation>
-<translation id="6473583070570450185">लॉग इन करने के लिए आपको एक सत्यापित वॉलेट ज़रूरत है</translation>
-<translation id="5949995321533425416">एक Uphold वॉलेट बनाने के लिए आपको कम से कम <ph name="AMOUNT"/>BAT की ज़रुरत होगी. अपने Uphold वॉलेट को वेरिफ़ाई करने के बाद कृपया दोबारा कोशिश करें.</translation>
+<translation id="8429332714958713413">लॉग इन करने के लिए आपको एक वेरिफ़ाइड वॉलेट की आवश्यकता है</translation>
+<translation id="5881716477679854586">कृपया ID वेरिफ़ाई पूरा करने के बाद <ph name="CUSTODIAN"/> पर दोबारा कोशिश करें</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> arriving in <ph name="DAYS"/></translation>
 <translation id="4672975606583962967">वॉलेट सुविधा चुनें</translation>
 <translation id="1815503044492647974">कस्टोडियल वॉलेट पार्टनर चुनें. अगर आपके पास पहले से ही एक अकाउंट है, तो आपको कनेक्ट करने के लिए लॉग इन करने के लिए कहा जाएगा.</translation>
@@ -280,6 +277,8 @@
 <translation id="386483240851194811">इनाम बंद कर दिए गए थे</translation>
 <translation id="3354337256330577726">ऑटो-योगदान बंद कर दिया गया था</translation>
 <translation id="6727186931929643711">पुनः प्रयास करना बंद कर दिया है</translation>
+<translation id="8978461348341400550">संरक्षक:</translation>
+<translation id="7220161813676251577">संरक्षक सदस्य ID:</translation>
 <translation id="680983167891198932">की</translation>
 <translation id="7535087603100972091">मान</translation>
 <translation id="45591635423975492">लॉग हुआ</translation>
@@ -377,8 +376,8 @@
 <translation id="2070991379950719711">ब्रेव रिवार्ड्स का उपयोग करना शुरू करें</translation>
 <translation id="6318696841371191107">क्विक टूर लें</translation>
 <translation id="8465790416279415448">आगे बढ़ने पर,आप <ph name="TOS_LINK_BEGIN"/>सेवा की शर्तों<ph name="TOS_LINK_END"/> और <ph name="PP_LINK_BEGIN"/>गोपनीयता नीति<ph name="PP_LINK_END"/>से सहमत होते हैं.</translation>
-<translation id="2404165674840145940">ब्रेव रिवार्ड्स के साथ टिप करें</translation>
-<translation id="5820285701794581330">ब्रेव रिवार्ड्स का उपयोग करके, आप BAT हासिल करना शुरू कर देंगे जिसका उपयोग आप रचनाकारों को टिप करने के लिए कर सकते हैं।</translation>
+<translation id="8222322431155185238">Brave रिवॉर्ड से टिप करें</translation>
+<translation id="1895476463085410109">Brave निजी विज्ञापन देखकर पुरस्कार अर्जित करें और अपने आप कंटेंट क्रिएटर का समर्थन करें</translation>
 <translation id="5705882733397021510">वापस जाएँ</translation>
 <translation id="185034574799484512">चलिए एक त्वरित टूर करें</translation>
 <translation id="8281886186245836920">अभी नहीं</translation>
@@ -513,7 +512,7 @@
 <translation id="4921250468871504777">ठीक है</translation>
 <translation id="7866482334467279021">पर</translation>
 <translation id="1166682575529520472">मासिक</translation>
-<translation id="1378730109637014435">वन टाइम</translation>
+<translation id="1378730109637014435">एक बार टिप</translation>
 <translation id="9182287025588539628">1-टाइम टिप्स</translation>
 <translation id="6381574025952123568">प्रारंभिक शेष</translation>
 <translation id="156591572855748524">30 दिनों का विज्ञापन इतिहास</translation>
@@ -531,6 +530,7 @@
 <translation id="8725066075913043281">दोबारा कोशिश करें</translation>
 <translation id="2600847485413879104">इनाम BAT</translation>
 <translation id="8006596443377585072">bitFlyer Wallet</translation>
+<translation id="2770577461149798369">Gemini वॉलेट</translation>
 <translation id="8108350286444475334">यूफोल्ड वॉलेट</translation>
 <translation id="6977372887576114613">जमा किया गया BAT</translation>
 <translation id="3173528272490482456">शुरू करने के लिए तैयार?</translation>
@@ -538,6 +538,7 @@
 <translation id="108052542935515756">के साथ आप शुरू कर सकते हैं</translation>
 <translation id="194625454574835815">रिकवरी कुंजी</translation>
 <translation id="6354568176665589146">आवर्ती</translation>
+<translation id="2799223571221894425">पुन: लॉन्‍च करें</translation>
 <translation id="1110535155349301542">हटाना</translation>
 <translation id="8204292894173669182">सेव्ड से हटा दें</translation>
 <translation id="5530851178552343773">आपनेउन रचनाकारों के लिए {{reservedAmount}} {{currency}} निर्दिष्ट किए हैं, जिन्होंने योगदान प्राप्त करने के लिए अभी तक साइन अप नहीं किया है।  आपका ब्राउज़र सत्यापन करने तक या 90 दिन बीत जाने तक योगदान देने का प्रयास करता रहेगा।</translation>
@@ -569,6 +570,8 @@
 <translation id="3092054349246483285">आपका Brave वॉलेट <ph name="PROVIDER"/> द्वारा संचालित है।</translation>
 <translation id="6401272292123354754">Brave रिवार्ड्स बेसिक अटेंशन टोकन पर बने हैं| BAT के बारे में और जानें</translation>
 <translation id="7823359893981882407">यहाँ</translation>
+<translation id="3034163433136515805">QR कोड देखें</translation>
+<translation id="1640793619390890218">उन iOS उपयोगकर्ताओं के लिए जो BAT ट्रांसफर कर रहे हैं.</translation>
 <translation id="4483635855837696643">अपने वॉलेट को पुनर्स्थापित करें</translation>
 <translation id="459721429458957031">अपना वॉलेट पुनर्स्थापित करने के लिए अपनी पुनर्प्राप्ति कुंजी का उपयोग करें।</translation>
 <translation id="4600052736217630789">किसी पुनर्प्राप्ति कुंजी को पुनर्स्थापित करने से आपका मौजूदा वॉलेट बदल जाएगा। इसलिए पुनर्स्थापित करने से पहले अपने मौजूदा वॉलेट को खाली करना या इसका बैकअप लेना सुनिश्चित करें।</translation>
@@ -866,4 +869,12 @@
 <translation id="6973157709854838218">अपना बैलेंस छुपाएं</translation>
 <translation id="4548946945059463969">अपना बैलेंस स्क्रीन पर दिखाएं</translation>
 <translation id="242959166945779492">आपके अकाउंट में कोई बैलेंस नहीं है. खरीदने के लिए FTX पर जाएं.</translation>
+<translation id="5551238871320268996">Brave Together</translation>
+<translation id="5735801688206890393">Brave Together में दोस्तों और सहयोगियों के साथ असीमित कॉल शुरू करें।</translation>
+<translation id="4434663852465709809">BAT ट्रांसफ़र करने के लिए iOS रिवॉर्ड्स यूज़र्स के लिए क्यूआर कोड</translation>
+<translation id="2175927920773552910">QR कोड</translation>
+<translation id="6473583070570450185">लॉग इन करने के लिए आपको एक सत्यापित वॉलेट ज़रूरत है</translation>
+<translation id="5949995321533425416">एक Uphold वॉलेट बनाने के लिए आपको कम से कम <ph name="AMOUNT"/>BAT की ज़रुरत होगी. अपने Uphold वॉलेट को वेरिफ़ाई करने के बाद कृपया दोबारा कोशिश करें.</translation>
+<translation id="2404165674840145940">ब्रेव रिवार्ड्स के साथ टिप करें</translation>
+<translation id="5820285701794581330">ब्रेव रिवार्ड्स का उपयोग करके, आप BAT हासिल करना शुरू कर देंगे जिसका उपयोग आप रचनाकारों को टिप करने के लिए कर सकते हैं।</translation>
 </translationbundle>

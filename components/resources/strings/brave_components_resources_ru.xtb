@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">Показать избранное</translation>
 <translation id="3446024864193919737">Показать Вознаграждение Brave</translation>
 <translation id="6274899614137380422">Показать Binance</translation>
-<translation id="5551238871320268996">Brave Together</translation>
 <translation id="5585019845078534178">Карты</translation>
 <translation id="3870475560794762985">Показать рекламные изображения</translation>
 <translation id="2875302873837723333">лучшие сайты</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">Фоновое изображение</translation>
 <translation id="385051799172605136">Назад</translation>
 <translation id="9024104284526126630">Вы можете начать частный звонок в Brave.</translation>
-<translation id="5735801688206890393">Совершайте неограниченные звонки друзьям и коллегам через Brave Together.</translation>
+<translation id="4903286433687221248">Звоните друзьям и коллегам без ограничений с Brave Talk.</translation>
 <translation id="7115051913071512405">Попробовать</translation>
 <translation id="7415602225677446066">Главные новости за сегодня в вашей личной ленте новостей, только для вас.</translation>
 <translation id="6903061332999399632">В разделе Brave News появляется полностью конфиденциальная и анонимизированная реклама. Она подбирается прямо на устройстве. С ней личная информация всегда остается таковой согласно <ph name="LINK_START"/>политике конфиденциальности<ph name="LINK_END"/>.</translation>
@@ -85,7 +84,7 @@
 <translation id="1531133232292396145">Торгуйте криптовалютами на Binance непосредственно из своего браузера.</translation>
 <translation id="2166494527623220386">Торгуйте криптовалютами на Gemini непосредственно из своего браузера.</translation>
 <translation id="7191394989411626168">Если вы отключите Карты, все карты, которые видны сейчас, будут скрыты. Однако, вы по прежнему можете получать оповещение о новых картах.</translation>
-<translation id="8112367589167674370">Чат Brave</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="5655621391922317800">Криптовалютные кошельки</translation>
 <translation id="8820817407110198400">Закладки</translation>
 <translation id="1644574205037202324">История</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">Автообнаружение</translation>
 <translation id="4394049700291259645">Отключить</translation>
 <translation id="4176463684765177261">Отключено</translation>
-<translation id="4434663852465709809">QR-код для пользователей iOS Rewards, перечисляющих BAT</translation>
-<translation id="2175927920773552910">QR-код</translation>
 <translation id="8283001340969131076">При отключении вашего аккаунта <ph name="PROVIDER"/> произошла ошибка. Повторите попытку позже.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">Устройство не в сети. Пожалуйста, повторите попытку позже.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">В данный момент BAT не поддерживается в вашем регионе. Пожалуйста, следите за обновлениями <ph name="BEGIN_LINK"/>здесь<ph name="END_LINK"/>.</translation>
 <translation id="1737873393693460829">Включая «[[title]]», вы соглашаетесь с <ph name="BEGIN_LINK1"/>Условиями использования<ph name="END_LINK1"/> и <ph name="BEGIN_LINK2"/>Политикой конфиденциальности<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Ошибка при создании карты BAT браузера Brave</translation>
-<translation id="6473583070570450185">Для выполнения входа вам нужен верифицированный кошелек</translation>
-<translation id="5949995321533425416">Если вы хотите создать кошелек в Uphold, у вас должно быть не менее <ph name="AMOUNT"/> BAT. Повторите попытку после того, как ваш кошелек будет проверен сервисом Uphold.</translation>
+<translation id="8429332714958713413">Чтобы войти, нужно подтвердить кошелек</translation>
+<translation id="5881716477679854586">Повторите попытку после подтверждения идентификатора в <ph name="CUSTODIAN"/>.</translation>
 <translation id="4285403731827683059">Поступление: <ph name="AMOUNT"/> через <ph name="DAYS"/>.</translation>
 <translation id="4672975606583962967">Выберите сервис кошельков</translation>
 <translation id="1815503044492647974">Выберите партнерский сервис кастодиальных кошельков. У вас уже есть аккаунт? Чтобы подключиться, вам будет нужно в него войти.</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">Вознаграждения выключены</translation>
 <translation id="3354337256330577726">Автовзнос выключен</translation>
 <translation id="6727186931929643711">Повтор попыток прекращен</translation>
+<translation id="8978461348341400550">Кастодиан:</translation>
+<translation id="7220161813676251577">Идентификатор участника кастодиана:</translation>
 <translation id="680983167891198932">Ключ</translation>
 <translation id="7535087603100972091">Значение</translation>
 <translation id="45591635423975492">Время записи:</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">Начать использовать Brave Rewards</translation>
 <translation id="6318696841371191107">Сделайте быстрый обзорный тур</translation>
 <translation id="8465790416279415448">Продолжая, вы соглашаетесь с <ph name="TOS_LINK_BEGIN"/>Условиями использования<ph name="TOS_LINK_END"/> и <ph name="PP_LINK_BEGIN"/>Политикой конфиденциальности<ph name="PP_LINK_END"/>.</translation>
-<translation id="2404165674840145940">Давайте донаты с помощью Brave Rewards</translation>
-<translation id="5820285701794581330">Используя Brave Rewards, вы начнёте зарабатывать BAT, с помощью которых вы сможете давать донаты создателям контента.</translation>
+<translation id="8222322431155185238">Brave Rewards и поощрение авторов</translation>
+<translation id="1895476463085410109">Получайте баллы Brave Rewards за просмотр рекламы Brave Private Ads и поддерживайте создателей контента.</translation>
 <translation id="5705882733397021510">Назад</translation>
 <translation id="185034574799484512">Давайте проведем небольшой тур</translation>
 <translation id="8281886186245836920">Пропустить</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">Повторить</translation>
 <translation id="2600847485413879104">Вознаграждение BAT</translation>
 <translation id="8006596443377585072">Кошелек bitFlyer</translation>
+<translation id="2770577461149798369">Кошелек Gemini</translation>
 <translation id="8108350286444475334">Кошелек Uphold</translation>
 <translation id="6977372887576114613">BAT на счете</translation>
 <translation id="3173528272490482456">Готовы начать?</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">Вы можете начать с</translation>
 <translation id="194625454574835815">Ключ восстановления</translation>
 <translation id="6354568176665589146">Периодический</translation>
+<translation id="2799223571221894425">Перезапустить</translation>
 <translation id="1110535155349301542">удалить</translation>
 <translation id="8204292894173669182">Удалить из сохраненного</translation>
 <translation id="5530851178552343773">Вы отправили [[currency]] ([[reservedAmount]]) авторам, которые еще не подтвердили права на свой контент. Браузер будет повторять попытку в течение 90 дней.</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">Ваш кошелек Brave работает на технологии <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Вознаграждения Brave построены на Basic Attention Token. Узнайте больше о BAT</translation>
 <translation id="7823359893981882407">здесь</translation>
+<translation id="3034163433136515805">Показать QR-код</translation>
+<translation id="1640793619390890218">для пользователей Brave Rewards на iOS за перечисление баллов BAT.</translation>
 <translation id="4483635855837696643">Восстановите свой кошелек</translation>
 <translation id="459721429458957031">Введите ключ восстановления, чтобы вернуть доступ к кошельку.</translation>
 <translation id="4600052736217630789">При использовании ключа восстановления ваш текущий кошелек будет удален. Убедитесь, что в нем не осталось средств, или создайте резервную копию.</translation>
@@ -622,7 +625,7 @@
 <translation id="3780605330121608425">Ваш кошелек</translation>
 <translation id="6727483290601442544">Показать детали</translation>
 <translation id="1988679729106502285">ВАЖНО:</translation>
-<translation id="7979350009208995417">Этот автор еще не настроил свой аккаунт для получения платежей с вашего кошелька. Пока настройка не будет завершена, все отправляемые вами вознаграждения останутся у вас и будут повторно отправлены через 90 дней.</translation>
+<translation id="7979350009208995417">Этот автор еще не настроил свой аккаунт для получения платежей с вашего кошелька. Пока настройка не будет завершена, все отправляемые вами вознаграждения останутся у вас, но попытки отправить платеж будут выполняться автоматически в течение 90 дней.</translation>
 <translation id="7461596279975181413">Этот верифицированный создатель Brave еще не настроил свой аккаунт для получения пожертвований от пользователей Brave. Ваш браузер будет пытаться внести пожертвование, пока пользователь не настроит аккаунт или же не пройдет 90 дней.</translation>
 <translation id="4292832015778676417">заработано на рекламе</translation>
 <translation id="3197752845651180812">Отложенные пожертвования</translation>
@@ -865,4 +868,12 @@
 <translation id="6973157709854838218">Скрыть средства с экрана</translation>
 <translation id="4548946945059463969">Показать средства на экране</translation>
 <translation id="242959166945779492">На вашем счету нет средств. Чтобы приобрести валюту, посетите биржу FTX.</translation>
+<translation id="5551238871320268996">Brave Together</translation>
+<translation id="5735801688206890393">Совершайте неограниченные звонки друзьям и коллегам через Brave Together.</translation>
+<translation id="4434663852465709809">QR-код для пользователей iOS Rewards, перечисляющих BAT</translation>
+<translation id="2175927920773552910">QR-код</translation>
+<translation id="6473583070570450185">Для выполнения входа вам нужен верифицированный кошелек</translation>
+<translation id="5949995321533425416">Если вы хотите создать кошелек в Uphold, у вас должно быть не менее <ph name="AMOUNT"/> BAT. Повторите попытку после того, как ваш кошелек будет проверен сервисом Uphold.</translation>
+<translation id="2404165674840145940">Давайте донаты с помощью Brave Rewards</translation>
+<translation id="5820285701794581330">Используя Brave Rewards, вы начнёте зарабатывать BAT, с помощью которых вы сможете давать донаты создателям контента.</translation>
 </translationbundle>

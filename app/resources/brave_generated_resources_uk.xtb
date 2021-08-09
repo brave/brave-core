@@ -3,11 +3,11 @@
 <translationbundle lang="uk">
 <translation id="3333887201479867589">Винагороди Brave</translation>
 <translation id="7942180974165298215">Блокування реклами Brave</translation>
-<translation id="4615489450165434530">Повідомити про зламаний сайт</translation>
+<translation id="4615489450165434530">Звіт про пошкоджений сайт</translation>
 <translation id="6406506848690869874">Синхронізувати</translation>
 <translation id="1544192797660353713">Гаманець</translation>
 <translation id="2445484935443597917">Створити новий профіль</translation>
-<translation id="2666990579225592931">Відкрити вікно в режимі гостя</translation>
+<translation id="2666990579225592931">Відкрити вікно гостя</translation>
 <translation id="8275068909952022340">Більше…</translation>
 <translation id="120759863357279975">У Brave немає дозволу на <ph name="EXTENSION_NAME"/> extension ID "<ph name="EXTENSION_ID"/>".</translation>
 <translation id="6786747875388722282">Розширення</translation>
@@ -27,6 +27,9 @@
 <translation id="3218385319396786393">Автопрогравання заблоковано на цій сторінці</translation>
 <translation id="4988333904713528597">Завжди дозволяти автоматичне відтворення на <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Продовжити блокувати автоматичне програвання</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Запитувати, якщо сайт хоче отримати доступ до API постачальника Ethereum</translation>
+<translation id="7017590444693657895">Блокування доступу для сайтів до API постачальника Ethereum</translation>
 <translation id="8988939298652262600">Brave не перевіряє розширення на предмет безпеки. Встановлюйте це розширення, лише якщо довіряєте його розробнику.</translation>
 <translation id="8081858229109418493">Ім'я та іконка профіля</translation>
 <translation id="2044383478723007273">Кольори Brave</translation>
@@ -41,6 +44,7 @@
 <translation id="5802665280774361839">Показати автозаповнення в адресному рядку</translation>
 <translation id="597020512043916976">Показувати найпопулярніші сайти в пропозиціях щодо автозаповнення</translation>
 <translation id="264150068416846820">Показувати запропоновані сайти Brave як варіанти автозаповнення</translation>
+<translation id="5529693968082667490">Показати кнопку пошукових вкладок</translation>
 <translation id="6414370348346025511">Стандартний захист увімкнено.</translation>
 <translation id="814018970995616154">Перевіряє URL-адреси за списком небезпечних сайтів, який зберігається у Brave.</translation>
 <translation id="1144810021918451336">Не захищає від небезпечних сайтів, завантажень та розширень.</translation>
@@ -92,7 +96,7 @@
 <translation id="6303294677342628402">Щити</translation>
 <translation id="7133511168130368997">Заблокуйте відстеження та рекламу, які ходять за вами по Інтернету.</translation>
 <translation id="2761825942249694703">Це налаштування Shields за замовчуванням. Вони застосовуються до всіх сайтів, якщо ви не зробите певні зміни в панелі Shields на певному сайті. Ці зміни не вплинуть на ваші наявні налаштування для кожного сайту.</translation>
-<translation id="8754605759692119662">Це заблокує більшість реклами на сайтах, але не приватну рекламу Brave; вона контролюється у</translation>
+<translation id="1485394570478670912">Цей засіб дасть змогу блокувати більшість реклами на вебсайтах, крім приватної реклами Brave, якою керують</translation>
 <translation id="6388201778088078932">налаштування.</translation>
 <translation id="9185018653595759199">Блокування в соціальних медіа</translation>
 <translation id="7390783310074170337">Вигляд за замовчуванням</translation>
@@ -293,6 +297,13 @@
 <translation id="1391855377994926460">Переглядайте головні новинні вебсайти у 6 разів швидше.</translation>
 <translation id="9218430445555521422">Установити за умовчанням</translation>
 <translation id="3479552764303398839">Не зараз</translation>
+<translation id="5039804452771397117">Дозволити</translation>
+<translation id="7053983685419859001">Блокувати</translation>
+<translation id="7815301689257843278">Надсилати звіти про несподіване завершення роботи автоматично, щоб у Brave могли розв’язати цю проблему й запобігти її повторному виникненню?</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> несподівано припинив працювати.</translation>
+<translation id="1324417023773393937">Браузер Brave</translation>
+<translation id="1068069727470515940">Ви можете змінити <ph name="SETTING_TEXT"/>) будь-якої миті.</translation>
+<translation id="6873781976650514089">це налаштування</translation>
 <translation id="6040143037577758943">Закрити</translation>
 <translation id="5600566490506283344">Рекламне сповіщення Brave</translation>
 <translation id="4877147287319222750">Додати до бічної панелі</translation>
@@ -344,6 +355,9 @@
 <translation id="8487693399751278191">Імпортувати закладки зараз...</translation>
 <translation id="2557899542277210112">Для швидкого доступу розмістіть свої закладки тут – на панелі закладок.</translation>
 <translation id="2808630562319398131">Скинути дані Винагород Brave...</translation>
+<translation id="2273851479262317744">Установити Brave як браузер за замовчуванням</translation>
+<translation id="8581710194025054669">Для забезпечення конфіденційності онлайн установіть Brave як браузер за замовчуванням на вашому комп’ютері. Так будь-яке посилання відкриватиметься із засобами безпеки Brave.</translation>
+<translation id="8754605759692119662">Це заблокує більшість реклами на сайтах, але не приватну рекламу Brave; вона контролюється у</translation>
 <translation id="1224064034972923114">Допоможіть покращити Brave, автоматично надсилаючи звіти про помилки</translation>
 <translation id="3738833060602717053">Допоможіть покращити <ph name="PRODUCT_NAME"/>, автоматично надсилаючи звіти про помилки</translation>
 </translationbundle>

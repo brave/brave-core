@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">Pokaż ulubione</translation>
 <translation id="3446024864193919737">Pokaż Nagrody Brave</translation>
 <translation id="6274899614137380422">Pokaż Binance</translation>
-<translation id="5551238871320268996">Brave Together</translation>
 <translation id="5585019845078534178">Karty</translation>
 <translation id="3870475560794762985">Pokaż obrazy sponsorowane</translation>
 <translation id="2875302873837723333">Popularne strony</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">Obraz tła</translation>
 <translation id="385051799172605136">Wstecz</translation>
 <translation id="9024104284526126630">Możesz rozpocząć prywatne połączenie w Brave.</translation>
-<translation id="5735801688206890393">Rozpocznij nielimitowane połączenia z przyjaciółmi i kolegami z pracy w Brave Together.</translation>
+<translation id="4903286433687221248">Rozpocznij nieograniczone rozmowy z przyjaciółmi i współpracownikami za pomocą aplikacji Brave Talk.</translation>
 <translation id="7115051913071512405">Wypróbuj</translation>
 <translation id="7415602225677446066">Topowe wiadomości dnia w całkowicie prywatnym kanale, tylko dla Ciebie.</translation>
 <translation id="6903061332999399632">Brave News są wspierane reklamami z wykorzystaniem całkowicie prywatnych i anonimowych reklam dopasowanych do Twojego urządzenia. Twoje dane osobowe zawsze pozostają prywatne, zgodnie z naszą <ph name="LINK_START"/>polityką prywatności<ph name="LINK_END"/>.</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">Automatyczne rozpoznawanie</translation>
 <translation id="4394049700291259645">Wyłącz</translation>
 <translation id="4176463684765177261">Wyłączone</translation>
-<translation id="4434663852465709809">Kod QR dla użytkowników nagród iOS przenoszących BAT</translation>
-<translation id="2175927920773552910">Kod QR</translation>
 <translation id="8283001340969131076">Przepraszamy, wystąpił błąd podczas próby odłączenia Twojego <ph name="PROVIDER"/> konta. Prosimy spróbować ponownie za jakiś czas.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">Urządzenie jest w trybie offline. Spróbuj ponownie później.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">BAT nie jest obecnie obsługiwany w Twoim regionie. Więcej informacji znajdziesz <ph name="BEGIN_LINK"/>tutaj<ph name="END_LINK"/>.</translation>
 <translation id="1737873393693460829">Włączając [[title]], zgadzasz się na <ph name="BEGIN_LINK1"/>Warunki użytkowania<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>Politykę prywatności<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Błąd przy tworzeniu karty BAT w przeglądarce Brave.</translation>
-<translation id="6473583070570450185">Aby się zalogować, potrzebujesz zweryfikowanego portfela</translation>
-<translation id="5949995321533425416">Wymagane jest minimum <ph name="AMOUNT"/> BAT, aby utworzyć portfel Uphold. Proszę spróbować ponownie po zweryfikowaniu portfela z Uphold.</translation>
+<translation id="8429332714958713413">Do zalogowania się potrzebny jest zweryfikowany portfel</translation>
+<translation id="5881716477679854586">Prosimy spróbować ponownie po zakończeniu weryfikacji tożsamości w <ph name="CUSTODIAN"/>.</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> przybycie w <ph name="DAYS"/></translation>
 <translation id="4672975606583962967">Wybierz usługę portfela</translation>
 <translation id="1815503044492647974">Wybierz partnera portfela powierniczego Custodial. Jeśli masz już konto, zostaniesz poproszony o zalogowanie się w celu połączenia.</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">Nagrody zostały wyłączone</translation>
 <translation id="3354337256330577726">Automatyczne datki zostały wyłączone</translation>
 <translation id="6727186931929643711">Zaprzestano ponownych prób</translation>
+<translation id="8978461348341400550">Powiernik:</translation>
+<translation id="7220161813676251577">Identyfikator powiernika:</translation>
 <translation id="680983167891198932">Klucz</translation>
 <translation id="7535087603100972091">Wartość</translation>
 <translation id="45591635423975492">Zarejestrowano o</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">Zacznij korzystać z nagród Brave.</translation>
 <translation id="6318696841371191107">Weź udział w szybkim oprowadzeniu.</translation>
 <translation id="8465790416279415448">Kontynuując, wyrażasz zgodę na <ph name="TOS_LINK_BEGIN"/>Warunki korzystania z usługi<ph name="TOS_LINK_END"/> oraz <ph name="PP_LINK_BEGIN"/>Politykę prywatności<ph name="PP_LINK_END"/>.</translation>
-<translation id="2404165674840145940">Dawaj napiwki z nagród Brave.</translation>
-<translation id="5820285701794581330">Korzystając z nagród Brave, zaczniesz otrzymywać BAT do wykorzystania jako napiwki dla twórców.</translation>
+<translation id="8222322431155185238">Daj napiwek z nagrodami Brave</translation>
+<translation id="1895476463085410109">Zdobywaj nagrody za oglądanie reklam Brave w trybie prywatnym i automatycznie wspieraj twórców treści</translation>
 <translation id="5705882733397021510">Wróć</translation>
 <translation id="185034574799484512">Zróbmy krótki kurs</translation>
 <translation id="8281886186245836920">Pomiń</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">Spróbuj ponownie</translation>
 <translation id="2600847485413879104">Nagrody BAT</translation>
 <translation id="8006596443377585072">Portfel bitFlyer</translation>
+<translation id="2770577461149798369">Portfel Gemini</translation>
 <translation id="8108350286444475334">Portfel Uphold</translation>
 <translation id="6977372887576114613">Wpłacone BAT</translation>
 <translation id="3173528272490482456">Możemy zaczynać?</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">Możesz rozpocząć z</translation>
 <translation id="194625454574835815">Klucz odzyskiwania</translation>
 <translation id="6354568176665589146">Cykliczne</translation>
+<translation id="2799223571221894425">Uruchom ponownie</translation>
 <translation id="1110535155349301542">usuń</translation>
 <translation id="8204292894173669182">Usuń z zapisanych</translation>
 <translation id="5530851178552343773">Przeznaczono [[reservedAmount]] [[currency]] dla twórców, którzy jeszcze nie zarejestrowali się, aby móc otrzymywać darowizny. Twoja przeglądarka będzie próbowała przekazać darowiznę, aż do momentu, gdy dokonają potwierdzenia lub gdy upłynie 90 dni.</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">Twój portfel Brave jest obsługiwany przez <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Nagrody Brave opierają się na Basic Attention Token. Dowiedz się więcej o BAT</translation>
 <translation id="7823359893981882407">tutaj</translation>
+<translation id="3034163433136515805">Pokaż kod QR</translation>
+<translation id="1640793619390890218">dla użytkowników iOS Rewards przesyłających tokeny BAT.</translation>
 <translation id="4483635855837696643">Przywróć swój portfel</translation>
 <translation id="459721429458957031">Użyj klucza odzyskiwania, aby przywrócić swój portfel.</translation>
 <translation id="4600052736217630789">Przywracanie za pomocą klucza odzyskiwania zastąpi obecny portfel. Przed przywróceniem upewnij się, że aktualny portfel został opróżniony lub wykonano jego kopię.</translation>
@@ -865,4 +868,12 @@
 <translation id="6973157709854838218">Ukryj swoje salda na ekranie</translation>
 <translation id="4548946945059463969">Pokaż swoje salda na ekranie</translation>
 <translation id="242959166945779492">Nie masz żadnych środków na swoim koncie. Odwiedź FTX, aby je nabyć.</translation>
+<translation id="5551238871320268996">Brave Together</translation>
+<translation id="5735801688206890393">Rozpocznij nielimitowane połączenia z przyjaciółmi i kolegami z pracy w Brave Together.</translation>
+<translation id="4434663852465709809">Kod QR dla użytkowników nagród iOS przenoszących BAT</translation>
+<translation id="2175927920773552910">Kod QR</translation>
+<translation id="6473583070570450185">Aby się zalogować, potrzebujesz zweryfikowanego portfela</translation>
+<translation id="5949995321533425416">Wymagane jest minimum <ph name="AMOUNT"/> BAT, aby utworzyć portfel Uphold. Proszę spróbować ponownie po zweryfikowaniu portfela z Uphold.</translation>
+<translation id="2404165674840145940">Dawaj napiwki z nagród Brave.</translation>
+<translation id="5820285701794581330">Korzystając z nagród Brave, zaczniesz otrzymywać BAT do wykorzystania jako napiwki dla twórców.</translation>
 </translationbundle>

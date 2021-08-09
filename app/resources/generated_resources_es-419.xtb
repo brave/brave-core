@@ -587,6 +587,7 @@
 <translation id="1627408615528139100">Ya se descargó</translation>
 <translation id="1628948239858170093">¿Quieres analizar el archivo antes de abrirlo?</translation>
 <translation id="1629314197035607094">Caducó la contraseña</translation>
+<translation id="1947639598318989608">¿Deseas que Brave busque descuentos personalizados en tus carritos?</translation>
 <translation id="1629521517399325891">El certificado del usuario no está disponible para realizar la autenticación de la red.</translation>
 <translation id="163072119192489970">Puede completar el envío y la recepción de datos</translation>
 <translation id="1630768113285622200">Restablecer y continuar</translation>
@@ -3184,7 +3185,7 @@ y Ctrl + Alt + Disminuir brillo para alejar.</translation>
 <translation id="4469762931504673593"><ph name="ORIGIN"/> puede editar archivos en <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Preferencias de almacenamiento externo</translation>
 <translation id="4471354919263203780">Descargando archivos de reconocimiento de voz… <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Ayudar a mejorar las funciones y el rendimiento de Brave</translation>
+<translation id="918192811481327695">Ayudar a mejorar las funciones y el rendimiento de Brave</translation>
 <translation id="4472575034687746823">Comenzar</translation>
 <translation id="4474155171896946103">Agregar a favoritos todas las pestañas...</translation>
 <translation id="4475552974751346499">Buscar descargas</translation>
@@ -4413,7 +4414,6 @@ y Ctrl + Alt + Disminuir brillo para alejar.</translation>
 <translation id="5864754048328252126">Acción de inactividad durante la carga</translation>
 <translation id="5865508026715185451">Pronto se pausará <ph name="APP_NAME"/></translation>
 <translation id="586567932979200359">Estás ejecutando <ph name="PRODUCT_NAME"/> desde la imagen de disco. Instalarlo en tu computadora te permite ejecutarlo sin la imagen de disco y garantiza que se mantenga actualizado.</translation>
-<translation id="1224064034972923114">Envía automáticamente informes de fallos y estadísticas de uso a Brave</translation>
 <translation id="5867841422488265304">Busca o escribe la dirección web</translation>
 <translation id="5869029295770560994">Entendido</translation>
 <translation id="5869522115854928033">Contraseñas almacenadas</translation>
@@ -4919,7 +4919,7 @@ y Ctrl + Alt + Disminuir brillo para alejar.</translation>
 <translation id="6429384232893414837">Error en la actualización</translation>
 <translation id="6430814529589430811">Certificado único ASCII con codificación Base64</translation>
 <translation id="6431347207794742960"><ph name="PRODUCT_NAME"/> configurará actualizaciones automáticas para todos los usuarios de esta computadora.</translation>
-<translation id="6434104957329207050">Velocidad de la búsqueda de puntos</translation>
+<translation id="6434104957329207050">Velocidad de la búsqueda puntual</translation>
 <translation id="6434309073475700221">Descartar</translation>
 <translation id="6434325376267409267">Para usar <ph name="APP_NAME"/>, actualiza el dispositivo.</translation>
 <translation id="6438234780621650381">Restablecer la configuración</translation>
@@ -5429,7 +5429,6 @@ y Ctrl + Alt + Disminuir brillo para alejar.</translation>
 <translation id="6997642619627518301"><ph name="NAME_PH"/>: Registro de actividad</translation>
 <translation id="6997707937646349884">En tus dispositivos:</translation>
 <translation id="6998793565256476099">Inscribe el dispositivo para realizar videoconferencias</translation>
-<translation id="456304305650018221">¿Deseas permitir que Brave busque descuentos para los productos que agregaste a tus carritos?</translation>
 <translation id="6999956497249459195">Grupo nuevo</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> está conectada, pero debe configurarse</translation>
 <translation id="7000347579424117903">Incluir Ctrl, Alt o el botón de búsqueda</translation>

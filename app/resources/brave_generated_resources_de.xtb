@@ -6,7 +6,7 @@
 <translation id="4615489450165434530">Melden Sie eine fehlerhafte Website</translation>
 <translation id="6406506848690869874">Sync</translation>
 <translation id="1544192797660353713">Wallet</translation>
-<translation id="2445484935443597917">Neues Profil erstellen</translation>
+<translation id="2445484935443597917">Erstellen Sie ein neues Profil</translation>
 <translation id="2666990579225592931">Gastfenster öffnen</translation>
 <translation id="8275068909952022340">Mehr…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ist in Brave nicht erlaubt.</translation>
@@ -28,6 +28,9 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="3218385319396786393">Automatisches Abspielen wurde auf dieser Seite blockiert</translation>
 <translation id="4988333904713528597">Autoplay auf <ph name="HOST"/> immer erlauben?</translation>
 <translation id="4150684676757176434">Automatische Wiedergabe weiterhin blockieren</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Fragen, wenn eine Site auf die Ethereum-Provider-API zugreifen möchte</translation>
+<translation id="7017590444693657895">Seiten für den Zugriff auf die Ethereum-Provider-API blockieren</translation>
 <translation id="8988939298652262600">Brave überprüft Erweiterungen nicht auf ihre Sicherheit. Installieren Sie diese Erweiterung nur, wenn Sie dem Entwickler vertrauen.</translation>
 <translation id="8081858229109418493">Profilname und -symbol</translation>
 <translation id="2044383478723007273">Brave Farben</translation>
@@ -42,6 +45,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="5802665280774361839">Autovervollständigung in der Adressleiste anzeigen</translation>
 <translation id="597020512043916976">Top-Sites in den Vorschlägen für die Autovervollständigung anzeigen</translation>
 <translation id="264150068416846820">Von Brave vorgeschlagene Sites in den Vorschlägen für die Autovervollständigung anzeigen</translation>
+<translation id="5529693968082667490">Schaltfläche "Such-Tabs anzeigen"</translation>
 <translation id="6414370348346025511">Standardschutz ist aktiviert.</translation>
 <translation id="814018970995616154">Überprüft URLs anhand einer Liste mit unsicheren Seiten, die in Brave gespeichert ist.</translation>
 <translation id="1144810021918451336">Schützt Sie nicht vor gefährlichen Websites, Downloads und Erweiterungen.</translation>
@@ -93,7 +97,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="6303294677342628402">Sicherheit</translation>
 <translation id="7133511168130368997">Werbung und Tracker blockieren.</translation>
 <translation id="2761825942249694703">Dies sind die Standardeinstellungen für den Schutz. Sie gelten für alle Websites, sofern Sie nicht im Schutz-Menü auf einer bestimmten Website Änderungen vornehmen. Wenn Sie die folgenden Einstellungen ändern, hat dies keine Auswirkung auf die Einstellungen die Sie auf bestimmten Websites bereits gemacht haben</translation>
-<translation id="8754605759692119662">Diese Einstellungen wirken sich auf die meisten Anzeigen aus, jedoch nicht auf Brave-Werbung — diese lässt sich in den</translation>
+<translation id="1485394570478670912">Dadurch werden die meisten Anzeigen auf Websites blockiert, jedoch nicht Brave Private Ads — die kontrolliert werden im</translation>
 <translation id="6388201778088078932">Einstellungen konfigurieren.</translation>
 <translation id="9185018653595759199">Social-Media-Sperrung</translation>
 <translation id="7390783310074170337">Standardansicht</translation>
@@ -294,6 +298,13 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="1391855377994926460">Surfen Sie schneller im Internet - bis zu 6x schneller auf wichtigen Nachrichtenwebsites.</translation>
 <translation id="9218430445555521422">Als Standardbrowser festlegen</translation>
 <translation id="3479552764303398839">Jetzt nicht</translation>
+<translation id="5039804452771397117">Zulassen</translation>
+<translation id="7053983685419859001">Blockieren</translation>
+<translation id="7815301689257843278">Absturzberichte automatisch senden, damit Brave verhindern kann, dass dieses Problem erneut auftritt?</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> unerwartet beendet.</translation>
+<translation id="1324417023773393937">Brave Browser</translation>
+<translation id="1068069727470515940">Sie können <ph name="SETTING_TEXT"/> jederzeit wieder ändern.</translation>
+<translation id="6873781976650514089">diese Einstellung</translation>
 <translation id="6040143037577758943">Schließen</translation>
 <translation id="5600566490506283344">Brave-Werbebenachrichtigung</translation>
 <translation id="4877147287319222750">Zur Seitenleiste hinzufügen</translation>
@@ -333,7 +344,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="8053093028263274061">Leider ist keine gespeicherte Version verfügbar.</translation>
 <translation id="8517321676372639828">Auf gespeicherte Version überprüfen</translation>
 <translation id="191143826155037518">Brave wird Ihnen unter der <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) und verwendet weitere <ph name="BEGIN_LINK_OSS"/>Open Source Software<ph name="END_LINK_OSS"/> die unter verschiedenen anderen Lizenzen veröffentlicht wurden.
-        Lesen Sie die <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>Anleitung<ph name="END_LINK_BUILD_INSTRUCTIONS"/> , wie man das Brave-Projekt herunterlädt und selbst aus dem  <ph name="BEGIN_LINK_SOURCE_CODE"/>Quellcode<ph name="END_LINK_SOURCE_CODE"/> zu erstellen.</translation>
+        Lesen Sie die <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>Anleitung<ph name="END_LINK_BUILD_INSTRUCTIONS"/>, wie man das Brave-Projekt herunterlädt und selbst aus dem  <ph name="BEGIN_LINK_SOURCE_CODE"/>Quellcode<ph name="END_LINK_SOURCE_CODE"/> zu erstellen.</translation>
 <translation id="4474155171896946103">Alle Tabs als Lesezeichen speichern...</translation>
 <translation id="2336228925368920074">Alle Tabs als Lesezeichen speichern...</translation>
 <translation id="796831669370432378">Um ein Lesezeichen hinzuzufügen, klicken Sie auf die Lesezeichen-Schaltfläche neben der Adressleiste</translation>
@@ -345,6 +356,9 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="8487693399751278191">Lesezeichen jetzt importieren ...</translation>
 <translation id="2557899542277210112">Für schnellen Zugriff platzieren Sie Ihre Lesezeichen hier auf der Lesezeichenleiste.</translation>
 <translation id="2808630562319398131">Brave-Rewards-Daten zurücksetzen</translation>
+<translation id="2273851479262317744">Brave als Standardbrowser festlegen</translation>
+<translation id="8581710194025054669">Um online den besten Datenschutz zu gewährleisten, sollten Sie Brave als Standardbrowser auf Ihrem Computer festlegen. Mit Brave als Standard wird jeder Weblink, auf den Sie klicken, mit dem Datenschutz von Brave geöffnet.</translation>
+<translation id="8754605759692119662">Diese Einstellungen wirken sich auf die meisten Anzeigen aus, jedoch nicht auf Brave-Werbung — diese lässt sich in den</translation>
 <translation id="1224064034972923114">Helfen Sie durch automatisches Senden von Absturzberichten, Brave zu verbessern</translation>
 <translation id="3738833060602717053">Helfen Sie durch automatisches Senden von Absturzberichten, <ph name="PRODUCT_NAME"/> zu verbessern</translation>
 </translationbundle>

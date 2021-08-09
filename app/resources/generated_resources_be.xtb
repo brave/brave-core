@@ -594,6 +594,7 @@
 <translation id="1627408615528139100">Файл ужо спампаваны</translation>
 <translation id="1628948239858170093">Праверыць файл перад адкрыццём?</translation>
 <translation id="1629314197035607094">Тэрмін дзеяння пароля скончыўся</translation>
+<translation id="1947639598318989608">Дазволіць Brave шукаць персаналізаваныя скідкі на тавары ў вашых кошыках?</translation>
 <translation id="1629521517399325891">Гэты сертыфікат карыстальніка нельга выкарыстаць для аўтэнтыфікацыі сеткі.</translation>
 <translation id="163072119192489970">Дазволена завяршаць адпраўку і атрыманне даных</translation>
 <translation id="1630768113285622200">Перазапусціць і працягнуць</translation>
@@ -3197,7 +3198,7 @@
 <translation id="4469762931504673593">Сайт <ph name="ORIGIN"/> можа змяняць файлы ў папцы <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Параметры знешняга сховішча</translation>
 <translation id="4471354919263203780">Ідзе спампоўванне файлаў распазнавання маўлення... <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Дапамажыце палепшыць функцыі і прадукцыйнасць Brave</translation>
+<translation id="918192811481327695">Дапамажыце палепшыць функцыі і прадукцыйнасць Brave</translation>
 <translation id="4472575034687746823">Пачаць</translation>
 <translation id="4474155171896946103">Дадаць у закладкі ўсе ўкладкі...</translation>
 <translation id="4475552974751346499">Пошук спамповак</translation>
@@ -4434,7 +4435,6 @@
 <translation id="5864754048328252126">Пры бяздзейнасці падчас зарадкі</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> хутка прыпыніцца</translation>
 <translation id="586567932979200359"><ph name="PRODUCT_NAME"/> працуе з вобраза дыска. Калі ўсталяваць праграму на камп'ютар, вы зможаце запускаць яе без вобраза, і яна будзе рэгулярна абнаўляцца.</translation>
-<translation id="1224064034972923114">Аўтаматычна адпраўляе ў Brave статыстыку выкарыстання і справаздачы аб збоях</translation>
 <translation id="5867841422488265304">Увядзіце пошукавы запыт або вэб-адрас</translation>
 <translation id="5869029295770560994">OK</translation>
 <translation id="5869522115854928033">Захаваныя паролі</translation>
@@ -5452,7 +5452,6 @@
 <translation id="6997642619627518301"><ph name="NAME_PH"/> – журнал актыўнасці</translation>
 <translation id="6997707937646349884">На прыладах:</translation>
 <translation id="6998793565256476099">Зарэгістраваць прыладу для відэаканферэнцый</translation>
-<translation id="456304305650018221">Дазволіць Brave шукаць скідкі на тавары, якія вы дадаяце ў кошыкі?</translation>
 <translation id="6999956497249459195">Новая група</translation>
 <translation id="7000206553895739324">Прынтар "<ph name="PRINTER_NAME"/>" падключаны, але яго трэба наладзіць</translation>
 <translation id="7000347579424117903">Дадайце Ctrl, Alt або клавішу "Пошук"</translation>

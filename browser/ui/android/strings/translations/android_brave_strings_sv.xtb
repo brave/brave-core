@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">Öppnar vissa webbplatser med en säker HTTPS-anslutning i stället för vanlig HTTP.</translation>
 <translation id="94154759592465111">Blockera script</translation>
 <translation id="3518266709656143462">Blockerar JavaScript (kan få webbplatser att krascha)</translation>
-<translation id="5709627087332022422">Blockera cross-site-spårare</translation>
 <translation id="6052725679982758334">Blockering av sociala medier</translation>
 <translation id="7498695072878479744">Tillåt Googles inloggningsknappar på tredjepartssajter</translation>
 <translation id="863171915776379000">Tillåt Facebook-inloggningar och inbäddade poster</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">IPFS-gateway</translation>
 <translation id="2688519859165248360">Möjliggör navigering till IPFS-resurser via en IPFS-gateway</translation>
 <translation id="7534079972563542000">Ostoppbara domäner</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Ethereum-pris (ETH)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Lösningsmetod</translation>
 <translation id="2356070529366658676">Fråga</translation>
 <translation id="4176463684765177261">Inaktiverad</translation>
 <translation id="2218918398178303658">DNS över HTTPS</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Förhindrar webbläsaren från signaturinsamling</translation>
 <translation id="7459000603787995422">Stäng flikar vid avslut</translation>
 <translation id="4448697385961650078">Blocka spårare och annonser</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">Gör Brave till din standardwebbläsare!</translation>
 <translation id="7136694880210472378">Ange som standard</translation>
 <translation id="4250680216510889253">Nej</translation>
-<translation id="4501702055016678577">Privat sökning med DuckDuckGo?</translation>
-<translation id="910419239800579753">Med privat sökning använder Brave DuckDuckGo för att besvara dina sökningar medan du är i denna privata flik. DuckDuckGo är en sökmotor som inte spårar din sökhistorik, vilket gör att du kan söka privat.</translation>
-<translation id="1426410128494586442">Ja</translation>
-<translation id="5628466560184522265">Lär dig om privat sökning med DuckDuckGo</translation>
 <translation id="8826007068782654809">Tack</translation>
 <translation id="6665366815203065060">Du skickade precis dricks till:</translation>
 <translation id="5441565662498481293">Du skickar automatiskt dricks till:</translation>
@@ -376,12 +372,12 @@ försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</transla
 <translation id="7427567994475794038">Aktivera integritetsrapporter för att se hur många trackers och annonser som har blockerats under de senaste 3 timmarna.</translation>
 <translation id="2053891538879944400">Du sparade <ph name="DATA"/> <ph name="DATA_TEXT"/> data med Brave webbläsare.</translation>
 <translation id="8640064498452534195">Aktivera integritetsrapporter för att se hur mycket data du har sparat.</translation>
-<translation id="2252497442547961651">Brave-webbläsaren använder i genomsnitt 40 % mindre batteri.&#128267;</translation>
+<translation id="2252497442547961651">Brave-webbläsaren använder i genomsnitt 40 % mindre batteri.🔋</translation>
 <translation id="1945330434665345785">Du blockerade <ph name="COUNT"/> trackers och annonser med Brave webbläsare förra veckan.</translation>
 <translation id="2883868922264431515">Tjäna tokens genom att visa annonser som respekterar din integritet och stöd dina favoritwebbplatser.</translation>
-<translation id="5678925890616256956">Utmärkt! Du har blockerat 250 trackers och annonser med Brave-webbläsaren.&#128293;</translation>
-<translation id="9199047775708635708">Utmärkt! Du har sparat 10 MB med Brave-webbläsaren.&#128267;</translation>
-<translation id="1880168210969863408">Utmärkt! Du har sparat 10 minuter laddningstid med Brave-webbläsaren.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Utmärkt! Du har blockerat 250 trackers och annonser med Brave-webbläsaren.🔥</translation>
+<translation id="9199047775708635708">Utmärkt! Du har sparat 10 MB med Brave-webbläsaren.🔋</translation>
+<translation id="1880168210969863408">Utmärkt! Du har sparat 10 minuter laddningstid med Brave-webbläsaren.💨💨</translation>
 <translation id="7408493389591475748">Börja surfa för att se integritetsrapporter</translation>
 <translation id="9080777565335515917">Ställ in Brave som din standardwebbläsare för privat och säker surfning.</translation>
 <translation id="1390943217516275883">Tillåt Brave att visa din integritetsstatistik</translation>
@@ -444,7 +440,7 @@ försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</transla
 <translation id="3477340970981564961">Brave privata annonser belönar dig med tokens för att stödja innehållsleverantörer, till skillnad från traditionella annonser, samtidigt som de håller din personliga information privat.</translation>
 <translation id="6973095375773523904">Var visas annonser?</translation>
 <translation id="7556325460112047619">Brave privata annonser dyker upp som en normal notifiering. Du kontrollerar hur ofta du ser dessa annonser i inställningar.</translation>
-<translation id="6897083627729802351">När får du belöningar</translation>
+<translation id="6897083627729802351">När får du belöningar?</translation>
 <translation id="310863932297733723">Dina intjänade tokens från Brave privata annonser under innevarande månad anländer den 5:e nästkommande månad.</translation>
 <translation id="7712287524451429139">Ge tillbaka på ett enkelt sätt</translation>
 <translation id="105037569026952831">Innehållsskapare får dina tokenbidrag automatiskt baserat på dina engagemangsnivåer som vi mäter som ‘Attention’.</translation>
@@ -461,7 +457,7 @@ försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</transla
 <translation id="827315274423079662">Tjoho, du är klar!</translation>
 <translation id="3895246934788932488">Genom att använda Brave Rewards skyddar du din integritet och hjälper till att göra webben till en bättre plats för alla. Och det är fantastiskt!</translation>
 <translation id="5705882733397021510">Gå tillbaka</translation>
-<translation id="3985567919248057638">Låt oss ta en snabb rundtur</translation>
+<translation id="3985567919248057638">Ta en kort rundtur</translation>
 <translation id="2434574859640694129">Efter att du har fått din första utbetalning kan du komma tillbaka och ge ett bidrag till denna skapare!</translation>
 <translation id="207242986925259074">Snabb uppdatering</translation>
 <translation id="8342862030112839977">Din första belöningsutbetalning kommer att anlända:</translation>
@@ -568,4 +564,18 @@ försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</transla
 <translation id="745115390910697838">Fraserna matchar inte. Försök igen.</translation>
 <translation id="2360588547830602174">Kontoåterställningen misslyckades. Försök igen.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">Marknadspris i ETH</translation>
+<translation id="6748108480210050150">Från</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">Till (beräknat)</translation>
+<translation id="59223531494896848">Gräns</translation>
+<translation id="3567988240819868195">Marknad</translation>
+<translation id="632241521608275119">Tolererade transaktionskostnader</translation>
+<translation id="5709627087332022422">Blockera cross-site-spårare</translation>
+<translation id="4501702055016678577">Privat sökning med DuckDuckGo?</translation>
+<translation id="910419239800579753">Med privat sökning använder Brave DuckDuckGo för att besvara dina sökningar medan du är i denna privata flik. DuckDuckGo är en sökmotor som inte spårar din sökhistorik, vilket gör att du kan söka privat.</translation>
+<translation id="1426410128494586442">Ja</translation>
+<translation id="5628466560184522265">Lär dig om privat sökning med DuckDuckGo</translation>
 </translationbundle>

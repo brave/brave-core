@@ -7,7 +7,7 @@
 <translation id="6406506848690869874">Synchronizacja</translation>
 <translation id="1544192797660353713">Portfel</translation>
 <translation id="2445484935443597917">Utwórz nowy profil</translation>
-<translation id="2666990579225592931">Otwórz okno trybu gościa</translation>
+<translation id="2666990579225592931">Otwórz okno w trybie gościa</translation>
 <translation id="8275068909952022340">Więcej…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") - to rozszerzenie nie jest dozwolone w Brave.</translation>
 <translation id="6786747875388722282">Rozszerzenia</translation>
@@ -28,6 +28,9 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="3218385319396786393">Zablokowano automatyczne odtwarzanie na tej stronie</translation>
 <translation id="4988333904713528597">Zawsze zezwalaj na automatyczne odtwarzanie na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Kontynuuj blokowanie automatycznego odtwarzania</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Pytaj, gdy witryna chce uzyskać dostęp do interfejsu API dostawcy Ethereum</translation>
+<translation id="7017590444693657895">Zablokuj witrynom dostęp do interfejsu API dostawcy Ethereum</translation>
 <translation id="8988939298652262600">Brave nie dokonuje przeglądu rozszerzeń pod kątem bezpieczeństwa. Zainstaluj to rozszerzenie tylko wtedy, gdy ufasz jego twórcy.</translation>
 <translation id="8081858229109418493">Nazwa profilu i zdjęcie</translation>
 <translation id="2044383478723007273">Kolory Brave</translation>
@@ -42,6 +45,7 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="5802665280774361839">Wyświetl elementy automatycznie wypełnione w pasku adresu</translation>
 <translation id="597020512043916976">Pokaż popularne strony w sugestiach autouzupełnienia</translation>
 <translation id="264150068416846820">Pokaż sugestie stron Brave w sugestiach autouzupełnienia</translation>
+<translation id="5529693968082667490">Przycisk Pokaż karty wyszukiwania</translation>
 <translation id="6414370348346025511">Ochrona standardowa jest włączona.</translation>
 <translation id="814018970995616154">Porównuje adresy URL z listą niebezpiecznych witryn przechowywaną w Brave.</translation>
 <translation id="1144810021918451336">Nie chroni przed niebezpiecznymi witrynami internetowymi, pobieranymi plikami ani rozszerzeniami.</translation>
@@ -93,7 +97,7 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="6303294677342628402">Tarcze</translation>
 <translation id="7133511168130368997">Zablokuj reklamy i skrypty śledzące Cię w internecie.</translation>
 <translation id="2761825942249694703">Są to domyślne ustawienia tarcz. Dotyczą one wszystkich stron internetowych, chyba że coś zmienisz w panelu tarcz na konkretnej stronie. Zmiana tych ustawień nie wpłynie na istniejące ustawienia poszczególnych stron.</translation>
-<translation id="8754605759692119662">Spowoduje to zablokowanie większości reklam w witrynach, ale nie prywatnych reklam Brave — te są kontrolowane w</translation>
+<translation id="1485394570478670912">To zablokuje większość reklam na stronach internetowych, nie reklamy w Brave w trybie prywatnym — te są kontrolowane w</translation>
 <translation id="6388201778088078932">ustawieniach.</translation>
 <translation id="9185018653595759199">Zablokuj sieci społecznościowe</translation>
 <translation id="7390783310074170337">Widok domyślny</translation>
@@ -143,7 +147,7 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="298546024891487702">Na początek musisz zainstalować przeglądarkę Brave na wszystkich urządzeniach, które chcesz zsynchronizować. Aby je połączyć, rozpocznij łańcuch synchronizacji, którego użyjesz do bezpiecznego połączenia wszystkich swoich urządzeń.</translation>
 <translation id="6200528822592747640">Rozpocznij nowy łańcuch synchronizacji</translation>
 <translation id="5184726904895809379">Mam kod synchronizacji</translation>
-<translation id="8780295742023331191">Pokaż nowy kod synchronizacji</translation>
+<translation id="8780295742023331191">Pokaż kod synchronizacji</translation>
 <translation id="9017050385815017931">Telefon/Tablet</translation>
 <translation id="1736420071277903564">Komputer</translation>
 <translation id="3407602902101449803">Kod QR łańcucha synchronizacji</translation>
@@ -294,6 +298,13 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="1391855377994926460">Przeglądaj sieć szybciej - do sześciu razy szybciej na największych portalach informacyjnych.</translation>
 <translation id="9218430445555521422">Ustaw jako domyślną</translation>
 <translation id="3479552764303398839">Nie teraz</translation>
+<translation id="5039804452771397117">Zezwalaj</translation>
+<translation id="7053983685419859001">Blokuj</translation>
+<translation id="7815301689257843278">Czy automatycznie wysyłać raporty o awariach, aby przeglądarka Brave mogła zapobiec ponownemu wystąpieniu tego problemu?</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> niespodziewanie przestała działać.</translation>
+<translation id="1324417023773393937">Przeglądarka Brave</translation>
+<translation id="1068069727470515940">Możesz zmienić <ph name="SETTING_TEXT"/> ponownie w dowolnym momencie.</translation>
+<translation id="6873781976650514089">to ustawienie</translation>
 <translation id="6040143037577758943">Zamknij</translation>
 <translation id="5600566490506283344">Powiadomienie Brave Ad</translation>
 <translation id="4877147287319222750">Dodaj do paska bocznego</translation>
@@ -344,6 +355,9 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="8487693399751278191">Importuj zakładki...</translation>
 <translation id="2557899542277210112">Aby uzyskać szybki dostęp, umieść zakładki tutaj na pasku zakładek.</translation>
 <translation id="2808630562319398131">Zresetuj dane nagród przeglądarki Brave...</translation>
+<translation id="2273851479262317744">Ustaw Brave jako domyślną przeglądarkę</translation>
+<translation id="8581710194025054669">Aby zapewnić sobie najlepszą ochronę prywatności w Internecie, rozważ ustawienie Brave jako domyślnej przeglądarki na swoim komputerze. Jeśli to zrobisz, każde kliknięte łącze internetowe będzie otwierane z wykorzystaniem ochrony prywatności Brave.</translation>
+<translation id="8754605759692119662">Spowoduje to zablokowanie większości reklam w witrynach, ale nie prywatnych reklam Brave — te są kontrolowane w</translation>
 <translation id="1224064034972923114">Pomóż ulepszać przeglądarkę Brave, automatycznie wysyłając raporty o crashach.</translation>
 <translation id="3738833060602717053">Pomóż ulepszać przeglądarkę <ph name="PRODUCT_NAME"/>, automatycznie wysyłając raporty o crashach.</translation>
 </translationbundle>

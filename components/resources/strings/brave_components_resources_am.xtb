@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">ተወዳጆችን አሳይ</translation>
 <translation id="3446024864193919737">የ Brave ሽልማቶችን አሳይ</translation>
 <translation id="6274899614137380422">Binance አሳይ</translation>
-<translation id="5551238871320268996">Brave በጋራ</translation>
 <translation id="5585019845078534178">ካርዶች</translation>
 <translation id="3870475560794762985">ስፖንሰር የተደረጉ ምስሎችን አሳይ</translation>
 <translation id="2875302873837723333">ከፍተኛ ጣቢያዎች</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">የበስተጀርባ ምስል</translation>
 <translation id="385051799172605136">ተመለስ</translation>
 <translation id="9024104284526126630">በ Brave ውስጥ የግል ጥሪ መጀመር ይችላሉ።</translation>
-<translation id="5735801688206890393">በ Brave Together ውስጥ ያሉ ጓደኞች እና ባልደረቦች ጋር ያልተገደበ ጥሪዎችን ይጀምሩ።</translation>
+<translation id="4903286433687221248">በ Brave Talk ውስጥ ከጓደኞችዎ እና ከሥራ ባልደረቦችዎ ጋር ያልተገደበ ጥሪዎችን ይጀምሩ።</translation>
 <translation id="7115051913071512405">ይሞክሩት</translation>
 <translation id="7415602225677446066">የዛሬዎቹ ዋና ዋና ታሪኮች ሙሉ ለሙሉ በግል አቅርቦት ውስጥ፣ ለእርስዎ ብቻ።</translation>
 <translation id="6903061332999399632">የ Brave ዜና በመሣሪያዎ ላይ ሙሉ በሙሉ ግላዊ እና በማይታወቁ ማስታወቂያዎች የተደገፈ ነው። የእርስዎ የግል መረጃ ሁልጊዜ በእኛ የግል ሆኖ ይቆያል፣ በእኛ ​<ph name="LINK_START"/>​የግል ፖሊሲ​<ph name="LINK_END"/>​መሰረት።</translation>
@@ -85,7 +84,7 @@
 <translation id="1531133232292396145">በቀጥታ በአሳሽዎ ውስጥ በBinance ላይ ክሪፕቶ ይገበያዩ።</translation>
 <translation id="2166494527623220386">በቀጥታ በአሳሽዎ ውስጥ በGemini ላይ ክሪፕቶ ይገበያዩ</translation>
 <translation id="7191394989411626168">ካርዶችን በማጥፋት፣ በአሁኑ ጊዜ የሚታዩ ሁሉም ካርዶች ይደበቃሉ። ሆኖም ፣ አሁንም ስለ አዲስ ካርዶች ማሳወቂያ ሊደርስዎት ይችላል።</translation>
-<translation id="8112367589167674370">Brave ቶክ</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="5655621391922317800">Crypto ዋሌቶች</translation>
 <translation id="8820817407110198400">ዕልባቶች</translation>
 <translation id="1644574205037202324">ታሪክ</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">ራስ-ፈልግ</translation>
 <translation id="4394049700291259645">አሰናክል</translation>
 <translation id="4176463684765177261">ተሰናክሏል</translation>
-<translation id="4434663852465709809">BAT ን ለሚያስተላልፉ የ iOS ሽልማት ተጠቃሚዎች የ QR ኮድ</translation>
-<translation id="2175927920773552910">QR ኮድ</translation>
 <translation id="8283001340969131076">ይቅርታ ፣ የ <ph name="PROVIDER"/> መለያዎን ለማለያየት ሲሞከር ስህተት ነበር። እባክዎ በትንሽ ጊዜ ውስጥ እንደገና ይሞክሩ።</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">መሣሪያው ከመስመር ውጭ ነው; እባክዎ ቆይተው እንደገና ይሞክሩ።</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">BAT በአሁኑ ወቅት በእርሶ ክልል ውስጥ አይደገፍም። እባክዎ ለዝመናዎች <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> ን ያጣቅሱ።</translation>
 <translation id="1737873393693460829">[[title]] 'ን በማብራት፣ በ <ph name="BEGIN_LINK1"/>የአገልግሎት ውሎች<ph name="END_LINK1"/> እና በ <ph name="BEGIN_LINK2"/>ግላዊነት ፖሊሲ<ph name="END_LINK2"/> ይስማማሉ።</translation>
 <translation id="2564425876266960486">የBrave አሳሽ BAT ካርድን በመፍጠር ላይ ስህተት</translation>
-<translation id="6473583070570450185">ለመግባት የተረጋገጠ ቦርሳ ያስፈልግዎታል</translation>
-<translation id="5949995321533425416">የአፕሆልድ ቦርሳ/Uphold Wallet ለመፍጠር ቢያንስ <ph name="AMOUNT"/> BAT፤ ያስፈልግ ዎታል። የኪስ ቦርሳዎን በ Uphold ካረጋገጡ በኋላ እባክዎ እንደገና ይሞክሩ።</translation>
+<translation id="8429332714958713413">በመለያ ለመግባት የተረጋገጠ ዋሌት ያስፈልግዎታል</translation>
+<translation id="5881716477679854586">የመታወቂያ ማረጋገጫን በ <ph name="CUSTODIAN"/> ላይ ካጠናቀቁ በኋላ እባክዎ እንደገና ይሞክሩ።</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> arriving in <ph name="DAYS"/></translation>
 <translation id="4672975606583962967">የዋሌት አገልግሎት ይምረጡ</translation>
 <translation id="1815503044492647974">የጠባቂ ዋሌት አጋር ይምረጡ። እርስዎ ቀድሞውኑ መለያ ካለዎት ለመገናኘት እንዲገቡ ይጠየቃሉ።</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">ሽልማቶች ጠፍተዋል</translation>
 <translation id="3354337256330577726">ራስ-አስተዋፅ contribute ጠፍቷል</translation>
 <translation id="6727186931929643711">እንደገና መሞከር ቆሟል</translation>
+<translation id="8978461348341400550">ጠባቂ፡</translation>
+<translation id="7220161813676251577">የጠባቂ አባል መታወቂያ፡</translation>
 <translation id="680983167891198932">ቁልፍ</translation>
 <translation id="7535087603100972091">እሴት</translation>
 <translation id="45591635423975492">የገቡት በ</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">የ Brave ወሮታዎች ን መጠቀም ይጀምሩ</translation>
 <translation id="6318696841371191107">ፈጣን ጉብኝት ያድርጉ</translation>
 <translation id="8465790416279415448">ይህን በመቀጠል፣ ለ <ph name="TOS_LINK_BEGIN"/>የአገልግሎት ውሎች<ph name="TOS_LINK_END"/> እና <ph name="PP_LINK_BEGIN"/>የግላዊነት ፖሊሲ<ph name="PP_LINK_END"/>፣ ተስማምተዋል።</translation>
-<translation id="2404165674840145940">በ Brave ሽልማት ጠቃሚ ምክር ይስጡ</translation>
-<translation id="5820285701794581330">Brave ሽልማት በመጠቀምዎ፣ እርስዎ ለፈጣሪዎች ጠቃሚ ምክር ለመስጠት ሊጠቀሙበት የሚችሉት BAT ማግኘት ይጀምራሉ።</translation>
+<translation id="8222322431155185238">ጠቃሚ ምክር በ Brave Rewards ላይ</translation>
+<translation id="1895476463085410109">የ Brave የግል ማስታወቂያዎችን በማየት ሽልማቶችን ያግኙ እንዲሁም የይዘት ፈጣሪዎችን በራስ -ሰር ይደግፉ</translation>
 <translation id="5705882733397021510">ወደ ኋላ ተመለስ</translation>
 <translation id="185034574799484512">Let’s ፈጣን ጉብኝት እናድርግ</translation>
 <translation id="8281886186245836920">ዝለል</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">እንደገና ይሞክሩ</translation>
 <translation id="2600847485413879104">የሽልማት BAT</translation>
 <translation id="8006596443377585072">የ bitFlyer ዋለት</translation>
+<translation id="2770577461149798369">ጀመናይ ዋሌት</translation>
 <translation id="8108350286444475334">የማቆያ ዋሌት</translation>
 <translation id="6977372887576114613">የተጠራቀመ BAT</translation>
 <translation id="3173528272490482456">ለመጀመር ዝግጁ ናቹህ?</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">በ መጀመር ይችላሉ</translation>
 <translation id="194625454574835815">የዳግም ማግኛ ቁልፍ</translation>
 <translation id="6354568176665589146">ምምላስ</translation>
+<translation id="2799223571221894425">ዳግም አስጀምር</translation>
 <translation id="1110535155349301542">አስወግድ</translation>
 <translation id="8204292894173669182">ከተቀመጠው አስወግድ</translation>
 <translation id="5530851178552343773">አስተዋፅዖዎችን ለመቀበል እስካሁን ላልተመዘገቡ ፈጣሪዎች [[reservedAmount]] ን መርጠዋል። አሳሽዎ እስኪያረጋግጡ ድረስ ወይም 90 ቀናት እስኪያልፉ ድረስ አስተዋፅዖ ለማድረግ መሞከሩን ይቀጥላል።</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">የእርስዎ Brave ዋሌት የጎለበተው በ <ph name="PROVIDER"/> ነው።</translation>
 <translation id="6401272292123354754">የብሬቭ ሽልማት በመሰረታዊ ማስተዋል ቶክን የታነፀ ነው፡፡ ስለ BAT የበለጠ ይወቁ</translation>
 <translation id="7823359893981882407">እዚህ</translation>
+<translation id="3034163433136515805">QR ኮድን ይመልከቱ</translation>
+<translation id="1640793619390890218">BAT ን ለሚያስተላልፉ የ iOS ሽልማቶች ተጠቃሚዎች።</translation>
 <translation id="4483635855837696643">ኪሰዎን መመለስ</translation>
 <translation id="459721429458957031">ዋሌቶን ለመመለስ የመልሶ ማግኛ ቁልፍዎን ይጠቀሙ፡፡</translation>
 <translation id="4600052736217630789">የመልሶ ማግኛ ቁልፍን ወደነበረበት መመለስ የአሁኑን ዋሌቶን ይተካዋል፤ ስለዚህ እንደገና ከመመለሱ በፊት የአሁኑን ገንዘብዎን ባዶ ወይም ምትክ ማስቀመጥዎን ያረጋግጡ፡፡</translation>
@@ -865,4 +868,12 @@
 <translation id="6973157709854838218">ሂሳቦን ከማሳያ ይደብቁ</translation>
 <translation id="4548946945059463969">ቀሪ ሂሳብዎን በማያ ገጽ ላይ ያሳዩ</translation>
 <translation id="242959166945779492">በመለያዎ ውስጥ ምንም ቀሪ ሂሳቦች የሉዎትም። የተወሰኑትን ለመግዛት FTX ን ይጎብኙ።</translation>
+<translation id="5551238871320268996">Brave በጋራ</translation>
+<translation id="5735801688206890393">በ Brave Together ውስጥ ያሉ ጓደኞች እና ባልደረቦች ጋር ያልተገደበ ጥሪዎችን ይጀምሩ።</translation>
+<translation id="4434663852465709809">BAT ን ለሚያስተላልፉ የ iOS ሽልማት ተጠቃሚዎች የ QR ኮድ</translation>
+<translation id="2175927920773552910">QR ኮድ</translation>
+<translation id="6473583070570450185">ለመግባት የተረጋገጠ ቦርሳ ያስፈልግዎታል</translation>
+<translation id="5949995321533425416">የአፕሆልድ ቦርሳ/Uphold Wallet ለመፍጠር ቢያንስ <ph name="AMOUNT"/> BAT፤ ያስፈልግ ዎታል። የኪስ ቦርሳዎን በ Uphold ካረጋገጡ በኋላ እባክዎ እንደገና ይሞክሩ።</translation>
+<translation id="2404165674840145940">በ Brave ሽልማት ጠቃሚ ምክር ይስጡ</translation>
+<translation id="5820285701794581330">Brave ሽልማት በመጠቀምዎ፣ እርስዎ ለፈጣሪዎች ጠቃሚ ምክር ለመስጠት ሊጠቀሙበት የሚችሉት BAT ማግኘት ይጀምራሉ።</translation>
 </translationbundle>

@@ -6,8 +6,8 @@
 <translation id="4615489450165434530">Raportați un site nefuncțional</translation>
 <translation id="6406506848690869874">Sincronizare</translation>
 <translation id="1544192797660353713">Portofel</translation>
-<translation id="2445484935443597917">Creează un profil nou</translation>
-<translation id="2666990579225592931">Deschide o fereastră pentru invitați</translation>
+<translation id="2445484935443597917">Creați un profil nou</translation>
+<translation id="2666990579225592931">Deschideți o fereastră pentru vizitatori</translation>
 <translation id="8275068909952022340">Mai multe…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID extensie "<ph name="EXTENSION_ID"/>") nu este permis în Brave.</translation>
 <translation id="6786747875388722282">Extensii</translation>
@@ -28,6 +28,9 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="3218385319396786393">Redarea automată a fost blocată pe această pagină</translation>
 <translation id="4988333904713528597">Redare automată întotdeauna pe <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continuă blocarea autoredării</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Întreabă când un site dorește să acceseze API-ul unui furnizor de Ethereum</translation>
+<translation id="7017590444693657895">Nu permiteți site-urilor să acceseze API-urile furnizorilor de Ethereum</translation>
 <translation id="8988939298652262600">Brave nu evaluează extensiile din punct de vedere al securității și siguranței. Instalează această extensie doar dacă ai încredere în dezvoltator.</translation>
 <translation id="8081858229109418493">Nume profil și iconiță</translation>
 <translation id="2044383478723007273">Culori Brave</translation>
@@ -42,6 +45,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="5802665280774361839">Afișează completarea automată în bara de adrese</translation>
 <translation id="597020512043916976">Afișează principalele site-uri în sugestiile de completare automată</translation>
 <translation id="264150068416846820">Afișare site-uri sugerate de Brave în sugestiile de completare automată</translation>
+<translation id="5529693968082667490">Afișați butonul de căutare file</translation>
 <translation id="6414370348346025511">Protecția standard este pornită.</translation>
 <translation id="814018970995616154">Verifică URL într-o listă de siteuri nesigure stocată în Brave.</translation>
 <translation id="1144810021918451336">Nu te protejează de siteurile, descărcările și extensiile periculoase.</translation>
@@ -93,7 +97,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="6303294677342628402">Scuturi</translation>
 <translation id="7133511168130368997">Blocați trackerele și reclamele care vă urmăresc pe întregul web.</translation>
 <translation id="2761825942249694703">Acestea sunt setările implicite pentru scuturi. Ele se aplică tuturor site-urilor în afară de cazul în care modificați ceva în panoul Scuturi de pe un anumit site. Modificarea acestora nu va afecta setările existente per site.</translation>
-<translation id="8754605759692119662">Aceasta va bloca majoritatea reclamelor pe site-uri, nu și reclamele private Brave — acelea sunt controlate în</translation>
+<translation id="1485394570478670912">Aceasta va bloca majoritatea reclamelor de pe site-uri, dar nu și reclamele private Brave — acelea sunt controlate în</translation>
 <translation id="6388201778088078932">setări.</translation>
 <translation id="9185018653595759199">Blocare pe rețelele de socializare</translation>
 <translation id="7390783310074170337">Vizualizare implicită</translation>
@@ -294,6 +298,13 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="1391855377994926460">Navigați pe web mai rapid - de 6x mai rapid pe principalele site-uri de știri.</translation>
 <translation id="9218430445555521422">Setează ca prestabilit</translation>
 <translation id="3479552764303398839">Nu acum</translation>
+<translation id="5039804452771397117">Permite</translation>
+<translation id="7053983685419859001">Blochează</translation>
+<translation id="7815301689257843278">Trimiteți automat rapoarte privind erorile, astfel încât Brave să poată preveni repetarea unor astfel de situații?</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> s-a închis în mod neașteptat.</translation>
+<translation id="1324417023773393937">Browserul Brave</translation>
+<translation id="1068069727470515940">Puteți modifica <ph name="SETTING_TEXT"/> din nou în orice moment.</translation>
+<translation id="6873781976650514089">această setare</translation>
 <translation id="6040143037577758943">Închide</translation>
 <translation id="5600566490506283344">Notificare Brave Ad</translation>
 <translation id="4877147287319222750">Adăugați în bara laterală</translation>
@@ -345,6 +356,9 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="8487693399751278191">Se importă marcajele acum...</translation>
 <translation id="2557899542277210112">Pentru acces rapid, rețineți-vă marcajele aici, în bara de marcaje.</translation>
 <translation id="2808630562319398131">Resetați datele Brave Rewards...</translation>
+<translation id="2273851479262317744">Setați Brave ca browser implicit</translation>
+<translation id="8581710194025054669">Pentru a beneficia de maximum de confidențialitate online, setați Brave ca browser implicit pe computer. Când browserul implicit este Brave, orice link accesat se va deschide utilizându-se protecțiile Brave în materie de confidențialitate.</translation>
+<translation id="8754605759692119662">Aceasta va bloca majoritatea reclamelor pe site-uri, nu și reclamele private Brave — acelea sunt controlate în</translation>
 <translation id="1224064034972923114">Ajutați-ne să îmbunătățim Brave trimițând automat rapoarte de cădere</translation>
 <translation id="3738833060602717053">Ajutați-ne să îmbunătățim <ph name="PRODUCT_NAME"/> trimițând automat rapoarte de cădere</translation>
 </translationbundle>

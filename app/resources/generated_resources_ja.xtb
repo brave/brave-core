@@ -590,6 +590,7 @@
 <translation id="1627408615528139100">ダウンロード済み</translation>
 <translation id="1628948239858170093">ファイルを開く前にスキャンしますか？</translation>
 <translation id="1629314197035607094">パスワードの有効期限が切れています</translation>
+<translation id="1947639598318989608">カートに入れたアイテムの割引情報の検索を Brave に許可しますか？</translation>
 <translation id="1629521517399325891">ユーザー証明書はネットワーク認証に使用できません。</translation>
 <translation id="163072119192489970">データの送受信の完了を許可するサイト</translation>
 <translation id="1630768113285622200">再起動して続行</translation>
@@ -3187,7 +3188,7 @@
 <translation id="4469762931504673593"><ph name="ORIGIN"/> は「<ph name="FOLDERNAME"/>」のファイルを編集できます</translation>
 <translation id="4470957202018033307">外部ストレージの設定</translation>
 <translation id="4471354919263203780">音声認識ファイルをダウンロードしています... <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Brave の機能と動作の改善に協力する</translation>
+<translation id="918192811481327695">Brave の機能と動作の改善に協力する</translation>
 <translation id="4472575034687746823">始める</translation>
 <translation id="4474155171896946103">すべてのタブをブックマークに追加...</translation>
 <translation id="4475552974751346499">ダウンロード検索</translation>
@@ -4416,7 +4417,6 @@
 <translation id="5864754048328252126">充電時のアイドル操作</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> はまもなく一時的に利用できなくなります</translation>
 <translation id="586567932979200359"><ph name="PRODUCT_NAME"/> はディスク イメージから実行されています。パソコンにインストールすると、ディスク イメージなしで実行できるようになり、常に最新の状態に維持できます。</translation>
-<translation id="1224064034972923114">使用統計情報や障害レポートを Brave に自動送信します</translation>
 <translation id="5867841422488265304">検索語句またはウェブアドレスを入力</translation>
 <translation id="5869029295770560994">OK</translation>
 <translation id="5869522115854928033">保存したパスワード</translation>
@@ -5432,7 +5432,6 @@
 <translation id="6997642619627518301"><ph name="NAME_PH"/> - アクティビティ ログ</translation>
 <translation id="6997707937646349884">デバイスで次の操作を行います。</translation>
 <translation id="6998793565256476099">デバイスをビデオ会議用に登録</translation>
-<translation id="456304305650018221">カートに追加した商品の割引情報を取得することを Brave に許可しますか？</translation>
 <translation id="6999956497249459195">新しいグループ</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> は接続していますが設定が必要です</translation>
 <translation id="7000347579424117903">Ctrl キー、Alt キー、検索キーのいずれかが必要です</translation>
@@ -7583,7 +7582,7 @@
 <translation id="5556722972306334687">プライベートウィンドウで開く</translation>
 <translation id="1860933807472918250">{0, plural,
         =1 {プライベート}
-        other {# プライベートウィンドウを開く}
+        other {# 個のプライベートウィンドウを開いています}
       }</translation>
 <translation id="8712375231869053533">{0, plural,
       =1 {Private}

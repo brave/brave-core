@@ -28,6 +28,9 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="3218385319396786393">Automātiskā atskaņošana šajā lapā tika bloķēta</translation>
 <translation id="4988333904713528597">Vienmēr atļaut automātisku ieslēgšanu vietnē <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Turpināt bloķēt automātisko atskaņošanu</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Jautāt, kad vietne vēlas piekļūt Ethereum pakalpojuma sniedzēja API</translation>
+<translation id="7017590444693657895">Bloķēt vietnēm piekļuvi Ethereum pakalpojuma sniedzēja API</translation>
 <translation id="8988939298652262600">Brave nepārskata paplašinājumu aizsardzību un drošumu. Instalējiet šo paplašinājumu tikai tad, ja uzticaties izstrādātājam.</translation>
 <translation id="8081858229109418493">Profila nosaukums un ikona</translation>
 <translation id="2044383478723007273">Brave krāsas</translation>
@@ -42,6 +45,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="5802665280774361839">Parādīt automātiskās pabeigšanas ierakstus adreses joslā</translation>
 <translation id="597020512043916976">Rādīt populārākās vietnes automātiskās pabeigšanas ieteikumos</translation>
 <translation id="264150068416846820">Rādīt Brave ieteiktās vietnes automātiskās pabeigšanas ieteikumos</translation>
+<translation id="5529693968082667490">Rādīt meklēšanas cilnes pogu</translation>
 <translation id="6414370348346025511">Ieslēgta standarta aizsardzība.</translation>
 <translation id="814018970995616154">Salīdzina URL ar Brave saglabāto nedrošo vietņu sarakstu.</translation>
 <translation id="1144810021918451336">Nepasargā jūs no bīstamām vietnēm, lejupielādēm un paplašinājumiem.</translation>
@@ -93,7 +97,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="6303294677342628402">Aizsargi</translation>
 <translation id="7133511168130368997">Bloķēt izsekotājus un reklāmas, kas seko jums tīmeklī.</translation>
 <translation id="2761825942249694703">Šie ir noklusējuma aizsargu iestatījumi. Tie ir attiecināmi uz visām tīmekļa vietnēm, ja vien jūs konkrētai vietnei aizsargu panelī kaut ko neizmainīsiet. Šīs izmaiņas neietekmēs jūsu esošo vietņu iestatījumus.</translation>
-<translation id="8754605759692119662">Šī funkcija bloķēs lielāko daļu tīmekļa vietņu reklāmas — neieskaitot Brave privātās reklāmas; tās kontrolē</translation>
+<translation id="1485394570478670912">Šī funkcija bloķēs lielāko daļu tīmekļa vietņu reklāmu, izņemot Brave privātās reklāmas — tās kontrolē</translation>
 <translation id="6388201778088078932">iestatījumi.</translation>
 <translation id="9185018653595759199">Sociālo plašsaziņas līdzekļu bloķēšana</translation>
 <translation id="7390783310074170337">Noklusējuma skats</translation>
@@ -294,6 +298,13 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="1391855377994926460">Turpiniet pārlūkot tīmekli ātrāk – līdz pat 6 reizes ātrāk lielākajās ziņu vietnēs.</translation>
 <translation id="9218430445555521422">Iestatīt kā noklusējumu</translation>
 <translation id="3479552764303398839">Vēlāk</translation>
+<translation id="5039804452771397117">Atļaut</translation>
+<translation id="7053983685419859001">Bloķēt</translation>
+<translation id="7815301689257843278">Vai avārijas atskaites nosūtīt automātiski, lai Brave varētu novērst šīs problēmas atkārtošanos?</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> neparedzēti beidza darbu.</translation>
+<translation id="1324417023773393937">Brave pārlūks</translation>
+<translation id="1068069727470515940"><ph name="SETTING_TEXT"/> varat atkal mainīt jebkurā laikā.</translation>
+<translation id="6873781976650514089">šis iestatījums</translation>
 <translation id="6040143037577758943">Aizvērt</translation>
 <translation id="5600566490506283344">Brave Ad paziņojums</translation>
 <translation id="4877147287319222750">Pievienot sānjoslai</translation>
@@ -345,6 +356,9 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="8487693399751278191">Importēt grāmatzīmes tagad...</translation>
 <translation id="2557899542277210112">Ātrai piekļuvei ievietojiet savas grāmatzīmes šeit, grāmatzīmju joslā.</translation>
 <translation id="2808630562319398131">Atiestatīt Brave Rewards datus...</translation>
+<translation id="2273851479262317744">Iestatīt Brave kā noklusējuma pārlūku</translation>
+<translation id="8581710194025054669">Lai tiešsaistē nodrošinātu augstāko privātuma līmeni, apsveriet iespēju iestatīt Brave kā datora noklusējuma pārlūku. Izmantojot Brave kā noklusējuma pārlūku, jebkura tīmekļa saite, uz kuras noklikšķināsiet, tiks atvērta, piemērojot Brave privātuma aizsardzību.</translation>
+<translation id="8754605759692119662">Šī funkcija bloķēs lielāko daļu tīmekļa vietņu reklāmas — neieskaitot Brave privātās reklāmas; tās kontrolē</translation>
 <translation id="1224064034972923114">Palīdziet uzlabot Brave, automātiski nosūtot avāriju ziņojumus</translation>
 <translation id="3738833060602717053">Palīdziet uzlabot <ph name="PRODUCT_NAME"/>, automātiski nosūtot avāriju ziņojumus</translation>
 </translationbundle>

@@ -6,8 +6,8 @@
 <translation id="4615489450165434530">Prijavite nedelujočo spletno stran</translation>
 <translation id="6406506848690869874">Sinhronizacija</translation>
 <translation id="1544192797660353713">Denarnica</translation>
-<translation id="2445484935443597917">Ustvari nov profil</translation>
-<translation id="2666990579225592931">Odpri okno načina za goste</translation>
+<translation id="2445484935443597917">Ustvarite nov profil</translation>
+<translation id="2666990579225592931">Odprite okno za goste</translation>
 <translation id="8275068909952022340">Več…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ni dovoljena v brskalniku Brave.</translation>
 <translation id="6786747875388722282">Razširitve</translation>
@@ -28,6 +28,9 @@
 <translation id="3218385319396786393">Samodejno predvajanje je blokirano na tej strani</translation>
 <translation id="4988333904713528597">Vedno dovoli samodejno predvajanje na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Nadaljuj z blokiranjem samodejnega predvajanja</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Vprašajte, kdaj želi spletno mesto dostopati do API -ja ponudnika Ethereum</translation>
+<translation id="7017590444693657895">Blokirajte dostop do API -ja ponudnika Ethereum</translation>
 <translation id="8988939298652262600">Brave ne vrši pregledov razširitev zaradi varnosti in zaščite. To razširitev namestite samo, če zaupate razvijalcu.</translation>
 <translation id="8081858229109418493">Profilno ime in ikona</translation>
 <translation id="2044383478723007273">Barve brskalnika Brave</translation>
@@ -42,6 +45,7 @@
 <translation id="5802665280774361839">Pokaži samodokončanje v naslovni vrstici.</translation>
 <translation id="597020512043916976">V samoizpolnjenih predlogih prikaži najbolj priljubljena spletna mesta</translation>
 <translation id="264150068416846820">V samoizpolnjenih predlogih prikaži spletna mesta, ki jih predlaga Brave</translation>
+<translation id="5529693968082667490">Gumb Prikaži zavihke za iskanje</translation>
 <translation id="6414370348346025511">Standardna zaščita je vklopljena.</translation>
 <translation id="814018970995616154">Preveri URL-je na seznamu nevarnih spletnih mest, shranjenih v programu Brave.</translation>
 <translation id="1144810021918451336">Pred nevarnimi spletnimi mesti, prenosi in razširitvami vam ne nudi zaščite.</translation>
@@ -93,7 +97,7 @@
 <translation id="6303294677342628402">Ščiti</translation>
 <translation id="7133511168130368997">Blokirajte sledilce in oglase, ki vas spremljajo po spletu.</translation>
 <translation id="2761825942249694703">To so privzete nastavitve Ščita. Uporabljajo se za vsa spletna mesta, razen če nekaj spremenite na plošči Ščit na določenem spletnem mestu. Če jih spremenite, to ne bo vplivalo na vaše obstoječe nastavitve za spletno mesto.</translation>
-<translation id="8754605759692119662">To bo blokiralo večino oglasov na spletnih mestih, ne pa Brave zasebnih oglasov, ki jih nadzorujejo nastavitve</translation>
+<translation id="1485394570478670912">To bo blokiralo večino oglasov na spletnih mestih, ne pa Brave Private Ads — te so nadzorovane v</translation>
 <translation id="6388201778088078932">.</translation>
 <translation id="9185018653595759199">Blokiranje družbenih medijev</translation>
 <translation id="7390783310074170337">Privzeti pogled</translation>
@@ -294,6 +298,13 @@
 <translation id="1391855377994926460">Brskajte po spletu hitreje - do 6-krat hitreje na glavnih spletnih mestih z novicami.</translation>
 <translation id="9218430445555521422">Nastavi za privzeti brskalnik</translation>
 <translation id="3479552764303398839">Ne zdaj</translation>
+<translation id="5039804452771397117">Dovoli</translation>
+<translation id="7053983685419859001">Blokiraj</translation>
+<translation id="7815301689257843278">Samodejno pošiljajte poročila o sesutju strani, da lahko Brave prepreči, da bi se ta težava ponovila?</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> quit unexpectedly.</translation>
+<translation id="1324417023773393937">Brskalnik Brave</translation>
+<translation id="1068069727470515940"><ph name="SETTING_TEXT"/> lahko kadar koli znova spremenite.</translation>
+<translation id="6873781976650514089">ta nastavitev</translation>
 <translation id="6040143037577758943">Zapri</translation>
 <translation id="5600566490506283344">Obvestilo Brave Ad</translation>
 <translation id="4877147287319222750">Dodaj v stransko vrstico</translation>
@@ -345,6 +356,9 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="8487693399751278191">Uvozi zaznamke zdaj ...</translation>
 <translation id="2557899542277210112">Za hitrejši dostop zaznamke shranite tukaj, v vrstici za zaznamke.</translation>
 <translation id="2808630562319398131">Ponastavi podatke Brave Rewards ...</translation>
+<translation id="2273851479262317744">Nastavite Brave kot privzeti brskalnik</translation>
+<translation id="8581710194025054669">Če želite zagotoviti najboljšo zasebnost na spletu, razmislite o nastavitvi Brave kot privzetega brskalnika v računalniku. Če je privzeto Brave, se odpre vsaka spletna povezava z zaščito zasebnosti podjetja Brave.</translation>
+<translation id="8754605759692119662">To bo blokiralo večino oglasov na spletnih mestih, ne pa Brave zasebnih oglasov, ki jih nadzorujejo nastavitve</translation>
 <translation id="1224064034972923114">Pomagajte izboljšati Brave s samodejnim pošiljanjem poročil o zrušitvah</translation>
 <translation id="3738833060602717053">Pomagajte izboljšati <ph name="PRODUCT_NAME"/> s samodejnim pošiljanjem poročil o zrušitvah</translation>
 </translationbundle>

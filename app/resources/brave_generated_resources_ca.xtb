@@ -6,7 +6,7 @@
 <translation id="4615489450165434530">Informa d'una pàgina web inexistent</translation>
 <translation id="6406506848690869874">Sincronització</translation>
 <translation id="1544192797660353713">Cartera</translation>
-<translation id="2445484935443597917">Crea un perfil</translation>
+<translation id="2445484935443597917">Crea un perfil nou</translation>
 <translation id="2666990579225592931">Obre la finestra de convidat</translation>
 <translation id="8275068909952022340">Més…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (amb identificador d'extensió "<ph name="EXTENSION_ID"/>") no es permet a Brave.</translation>
@@ -28,6 +28,9 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="3218385319396786393">Reproducció automàtica bloquejada en aquesta pàgina</translation>
 <translation id="4988333904713528597">Permet sempre la reproducció automàtica a <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continua bloquejant la reproducció automàtica</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Pregunta quan els llocs vulguin accedir a l'API del proveïdor d'Ethereum</translation>
+<translation id="7017590444693657895">Impedeix que els llocs accedeixin a l'API del proveïdor d'Ethereum</translation>
 <translation id="8988939298652262600">Brave no revisa la seguretat de les extensions. Instal·leu aquesta extensió només si confieu en el desenvolupador.</translation>
 <translation id="8081858229109418493">Nom de perfil i imatge</translation>
 <translation id="2044383478723007273">Colors de Brave</translation>
@@ -42,6 +45,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="5802665280774361839">Mostra Autocompletar a la barra d'adreces</translation>
 <translation id="597020512043916976">Mostreu els llocs principals en suggeriments de complet automàtic</translation>
 <translation id="264150068416846820">Mostreu els llocs suggerits de Brave en suggeriments de complet automàtic</translation>
+<translation id="5529693968082667490">Mostra el botó de cerca de pestanyes</translation>
 <translation id="6414370348346025511">La protecció estàndard està activada.</translation>
 <translation id="814018970995616154">Comprova els enllaços amb una llista de llocs no segurs emmagatzemats a Brave.</translation>
 <translation id="1144810021918451336">No us protegeix contra llocs web, descàrregues i extensions perilloses.</translation>
@@ -93,7 +97,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="6303294677342628402">Escuts</translation>
 <translation id="7133511168130368997">Bloquejar rastrejadors i anuncis que et segueixen pel web.</translation>
 <translation id="2761825942249694703">Aquests són els ajustos predeterminats de Brave. S'apliquen a tots els llocs web, llevat que en canviïs algun en concret al panell dels escuts d'un lloc particular. El fet de canviar-los no afectarà els ajustos existents per a la resta de llocs.</translation>
-<translation id="8754605759692119662">D'aquesta manera es bloquejaran la majoria dels anuncis als llocs web, no els anuncis privats de Brave, els quals es control·len a la</translation>
+<translation id="1485394570478670912">D'aquesta manera, es bloquejaran la majoria dels anuncis als llocs web, no els Brave Private Ads, els quals es controlen a la</translation>
 <translation id="6388201778088078932">ajustos.</translation>
 <translation id="9185018653595759199">Bloqueig de mitjans socials</translation>
 <translation id="7390783310074170337">Vista per defecte</translation>
@@ -294,6 +298,13 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="1391855377994926460">Exploreu la web amb més rapidesa, fins a 6 vegades més ràpid en les pàgines web de notícies principals.</translation>
 <translation id="9218430445555521422">Estableix com a predeterminat</translation>
 <translation id="3479552764303398839">Ara no</translation>
+<translation id="5039804452771397117">Permet</translation>
+<translation id="7053983685419859001">Bloqueja</translation>
+<translation id="7815301689257843278">Enviar automàticament els informes d'errors per tal que Brave eviti que el problema es torni a produir?</translation>
+<translation id="660171790038410175">El <ph name="BROWSER_NAME"/> s'ha tancat de forma inesperada.</translation>
+<translation id="1324417023773393937">Navegador Brave</translation>
+<translation id="1068069727470515940">Podeu tornar a canviar <ph name="SETTING_TEXT"/> en qualsevol moment.</translation>
+<translation id="6873781976650514089">aquesta configuració</translation>
 <translation id="6040143037577758943">Tanca</translation>
 <translation id="5600566490506283344">Notificació de Brave Ad</translation>
 <translation id="4877147287319222750">Afegeix a la barra lateral</translation>
@@ -345,6 +356,9 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="8487693399751278191">Importeu ara les adreces d'interès...</translation>
 <translation id="2557899542277210112">Per accedir ràpidament, col·loqueu les adreces d'interès aquí a la barra d'adreces d'interès.</translation>
 <translation id="2808630562319398131">Restableix les dades de Brave Rewards...</translation>
+<translation id="2273851479262317744">Defineix Brave com a navegador predeterminat</translation>
+<translation id="8581710194025054669">Per tal de garantir la millor privadesa en línia, pensa a definir Brave com el navegador predeterminat del teu ordinador. Si Brave és el navegador per defecte, qualsevol enllaç web en el qual facis clic s'obrirà amb les proteccions de privacitat de Brave.</translation>
+<translation id="8754605759692119662">D'aquesta manera es bloquejaran la majoria dels anuncis als llocs web, no els anuncis privats de Brave, els quals es control·len a la</translation>
 <translation id="1224064034972923114">Ajudeu a millorar Brave enviant automàticament informes d'errors</translation>
 <translation id="3738833060602717053">Ajudeu a millorar <ph name="PRODUCT_NAME"/> enviant informes d'errors automàticament</translation>
 </translationbundle>

@@ -219,6 +219,54 @@
     "message": "እባክዎትን ለBrave walletዎ ምትኬ ያድርጉ።",
     "description": "Description for backup wallet notification"
   },
+  "upholdBATNotAllowedForUserLearnMore": {
+    "message": "የበለጠ ይወቁ",
+    "description": "Notification button text to learn more about why BAT is not allowed for user"
+  },
+  "upholdBATNotAllowedForUserTitle": {
+    "message": "ስህተት፡ BAT አይገኝም",
+    "description": "Title for BAT not allowed for user notification"
+  },
+  "upholdBATNotAllowedForUserNotification": {
+    "message": "BAT በ Uphold ላይ ባለው ክልልዎ ውስጥ አልተፈቀደም።",
+    "description": "Description for BAT not allowed for user notification"
+  },
+  "upholdBlockedUserLearnMore": {
+    "message": "የበለጠ ይወቁ",
+    "description": "Notification button text to learn more about the blocked user status"
+  },
+  "upholdBlockedUserTitle": {
+    "message": "ስህተት፡ የታገደ መለያ",
+    "description": "Title for blocked user notification"
+  },
+  "upholdBlockedUserNotification": {
+    "message": "በ Uphold ላይ ያለው መለያዎ በአሁኑ ጊዜ ታግዷል።",
+    "description": "Description for blocked user notification"
+  },
+  "upholdPendingUserLearnMore": {
+    "message": "የበለጠ ይወቁ",
+    "description": "Notification button text to learn more about the pending user status"
+  },
+  "upholdPendingUserTitle": {
+    "message": "ስህተት፡ በመጠባበቅ ላይ ያለ መለያ",
+    "description": "Title for pending user notification"
+  },
+  "upholdPendingUserNotification": {
+    "message": "በ Uphold ላይ ያለው መለያዎ አሁንም በመጠባበቅ ላይ ነው።",
+    "description": "Description for pending user notification"
+  },
+  "upholdRestrictedUserLearnMore": {
+    "message": "የበለጠ ይወቁ",
+    "description": "Notification button text to learn more about the restricted user status"
+  },
+  "upholdRestrictedUserTitle": {
+    "message": "ስህተት፡ የተገደበ መለያ",
+    "description": "Title for restricted user notification"
+  },
+  "upholdRestrictedUserNotification": {
+    "message": "በ Uphold ላይ ያለው መለያዎ በአሁኑ ጊዜ የተገደበ ነው።",
+    "description": "Description for restricted user notification"
+  },
   "deviceLimitReachedLearnMore": {
     "message": "የበለጠ ይወቁ",
     "description": "Notification button text to learn more about device limit"

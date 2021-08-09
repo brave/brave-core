@@ -3,11 +3,11 @@
 <translationbundle lang="sw">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Kizuia Matangazo cha Brave</translation>
-<translation id="4615489450165434530">Ripoti Tovuti yenye Hitilafu</translation>
+<translation id="4615489450165434530">Ripoti tovuti yenye hitilafu</translation>
 <translation id="6406506848690869874">Oanisha</translation>
 <translation id="1544192797660353713">Pochi</translation>
-<translation id="2445484935443597917">Unda Wasifu Mpya</translation>
-<translation id="2666990579225592931">Fungua Dirisha la Mgeni</translation>
+<translation id="2445484935443597917">Unda wasifu mpya</translation>
+<translation id="2666990579225592931">Fungua dirisha la mgeni</translation>
 <translation id="8275068909952022340">Zaidi…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") is not allowed in Brave.</translation>
 <translation id="6786747875388722282">Viendelezi</translation>
@@ -28,6 +28,9 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="3218385319396786393">Kufungua kiotomati kumezuiwa kwenye ukurasa huu</translation>
 <translation id="4988333904713528597">Daima ruhusu kufungua kiotomati kwenye <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Endelea kuzuia kufungua kiotomati</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Uliza wakati tovuti inataka kufikia API ya mtoa huduma ya Ethereum</translation>
+<translation id="7017590444693657895">Zuia tovuti kufikia API ya mtoa huduma ya Ethereum</translation>
 <translation id="8988939298652262600">Brave haikagui viendelezi kwa usalama na ulinzi. Sakinisha tu kiendelezi hiki ikiwa unamwamini msanidi programu.</translation>
 <translation id="8081858229109418493">Jina la wasifu na ikoni</translation>
 <translation id="2044383478723007273">Rangi za Brave</translation>
@@ -42,6 +45,7 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="5802665280774361839">Onyesha ukamilishaji kiotomatiki kwenye upau wa anwani</translation>
 <translation id="597020512043916976">Onyesha tovuti maarufu katika mapendekezo ya kukamilika kiotomatiki</translation>
 <translation id="264150068416846820">Onyesha tovuti za Brave zilizopendekezwa katika mapendekezo ya kukamilika kiotomatiki</translation>
+<translation id="5529693968082667490">Onyesha Kitufe cha Vichupo vya Utafutaji</translation>
 <translation id="6414370348346025511">Ulinzi wa kawaida umewashwa.</translation>
 <translation id="814018970995616154">Hukagua URL zenye orodha za tovuti ambazo si salama zilizohifadhiwa katika Brave.</translation>
 <translation id="1144810021918451336">Haikulindi dhidi ya tovuti, vipakuliwa na viendelezi hatari.</translation>
@@ -72,6 +76,7 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="7895302206188277628">Maudhui yaliyounganishwa</translation>
 <translation id="3654831858282189202">Chapisha kwa ufunguo wa IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Leta Maandishi Yaliyoteuliwa kwenye IPFS</translation>
 <translation id="6925604404524625582">Leta na Unakili Kiungo kwenye Pcha ya IPFS</translation>
 <translation id="1434416574322382019">Dirisha Jipya Binafsi na Tor</translation>
 <translation id="4703780849509456860">Fungua kiungo kwenye Dirisha Binafsi kwa Tor</translation>
@@ -93,7 +98,7 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="6303294677342628402">Ngao</translation>
 <translation id="7133511168130368997">Zuia wafuatiliaji na matangazo ambayo yanakufuatilia kwenye wavuti.</translation>
 <translation id="2761825942249694703">Hii ni mipangilio chaguo msingi ya Ngao. Hutumika kwenye tovuti zote isipokuwa tu kama utabadilisha kitu kwenye paneli la Ngao kwenye toavuti husika. Kubadilisha haya hakutaathiri mipangilio iliyopo ya tovuti.</translation>
-<translation id="8754605759692119662">Hii itazuia matangazo mengi kwenye tovuti, si matangazo ya faragha ya Brave — hayo yanadhibitiwa kwenye</translation>
+<translation id="1485394570478670912">Hii itazuia matangazo mengi kwenye tovuti, si Brave Private Ads — hayo yanadhibitiwa katika</translation>
 <translation id="6388201778088078932">mipangilio.</translation>
 <translation id="9185018653595759199">Kuzuia mitandao ya kijamii</translation>
 <translation id="7390783310074170337">Mwonekano chaguomsingi</translation>
@@ -295,6 +300,13 @@ Zawadi za Avatar Paladin</translation>
 <translation id="1391855377994926460">Endelea kuvinjari wavuti haraka - hadi mara 6 haraka zaidi kwenye tovuti kuu za habari.</translation>
 <translation id="9218430445555521422">Weka iwe chaguomsingi</translation>
 <translation id="3479552764303398839">Si sasa</translation>
+<translation id="5039804452771397117">Ruhusu</translation>
+<translation id="7053983685419859001">Zuia</translation>
+<translation id="7815301689257843278">Tuma ripot za kuacha kufanya kazi kiotomatiki ili Brave izuie tatizo hili kutokea tena?</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> toka bila kutarajia.</translation>
+<translation id="1324417023773393937">Kivinjari cha Brave</translation>
+<translation id="1068069727470515940">Unaweza kubadilisha <ph name="SETTING_TEXT"/> tena wakati wowote.</translation>
+<translation id="6873781976650514089">mpangilio huu</translation>
 <translation id="6040143037577758943">Funga</translation>
 <translation id="5600566490506283344">Arifa ya Matangazo ya Brave</translation>
 <translation id="4877147287319222750">Ongeza kwenye Sidebar</translation>
@@ -346,6 +358,9 @@ Zawadi za Avatar Paladin</translation>
 <translation id="8487693399751278191">Leta vialamisho sasa...</translation>
 <translation id="2557899542277210112">Kwa ufikiaji wa haraka, weka vialmaisho vyako hapa kwenye upau wa vialamisho.</translation>
 <translation id="2808630562319398131">Weka upya data ya Zawadi za Brave...</translation>
+<translation id="2273851479262317744">Weka Brave kuwa kivinjari chaguomsingi</translation>
+<translation id="8581710194025054669">Ili kuhakikisha sera bora mtandaoni, zingatia kuweka Brave kama kivinjari chaguomsingi kwenye kompyuta yako. Brave ikiwa chaguomsingi, kiungo chochote cha wavuti unachobofya kitafunguka kwa ulinzi wa sera ya Brave.</translation>
+<translation id="8754605759692119662">Hii itazuia matangazo mengi kwenye tovuti, si matangazo ya faragha ya Brave — hayo yanadhibitiwa kwenye</translation>
 <translation id="1224064034972923114">Saidia kuboresha Brave kwa kutuma kiotomatiki ripoti za kulemaa</translation>
 <translation id="3738833060602717053">Saidia kuboresha <ph name="PRODUCT_NAME"/> kwa kutuma ripoti kiotomatiki.</translation>
 </translationbundle>

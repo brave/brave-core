@@ -3,11 +3,11 @@
 <translationbundle lang="id">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Pemblokir Iklan Brave</translation>
-<translation id="4615489450165434530">Laporkan Situs Rusak</translation>
+<translation id="4615489450165434530">Laporkan situs rusak</translation>
 <translation id="6406506848690869874">Sync</translation>
 <translation id="1544192797660353713">Dompet</translation>
-<translation id="2445484935443597917">Buat Profil Baru</translation>
-<translation id="2666990579225592931">Buka Jendela Tamu</translation>
+<translation id="2445484935443597917">Buat profil baru</translation>
+<translation id="2666990579225592931">Buka jendela tamu</translation>
 <translation id="8275068909952022340">Lebih lanjut#8230;</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") tidak diizinkan di Brave.</translation>
 <translation id="6786747875388722282">Ekstensi</translation>
@@ -28,6 +28,9 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="3218385319396786393">Putar otomatis pada laman ini diblokir</translation>
 <translation id="4988333904713528597">Selalu izinkan putar otomatis di <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Lanjutkan memblokir putar otomatis</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Tanyakan jika sebuah situs ingin mengakses API penyedia Ethereum</translation>
+<translation id="7017590444693657895">Blokir situs agar tidak mengakses API penyedia Ethereum</translation>
 <translation id="8988939298652262600">Brave tidak meninjau keamanan dan keselamatan ekstensi. Hanya instal ekstensi ini jika Anda percaya pada pengembangnya.</translation>
 <translation id="8081858229109418493">Nama profil dan ikon</translation>
 <translation id="2044383478723007273">Warna Brave</translation>
@@ -42,6 +45,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="5802665280774361839">Tampilkan melengkapi-otomatis di bilah alamat</translation>
 <translation id="597020512043916976">Tampilkan situs teratas di saran pengisian otomatis</translation>
 <translation id="264150068416846820">Tampilkan situs-situs yang disarankan Brave dalam saran pengisian otomatis</translation>
+<translation id="5529693968082667490">Tampilkan Tombol Tab Pencarian</translation>
 <translation id="6414370348346025511">Perlindungan standar menyala.</translation>
 <translation id="814018970995616154">Memeriksa URL dengan daftar situs yang tidak aman yang tersimpan di Brave.</translation>
 <translation id="1144810021918451336">Tidak melindungi Anda terhadap situs-situs, unduhan, dan ekstensi berbahaya.</translation>
@@ -93,7 +97,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="6303294677342628402">Perisai</translation>
 <translation id="7133511168130368997">Blokir pelacak dan iklan yang mengikuti Anda ke seluruh web.</translation>
 <translation id="2761825942249694703">Ini adalah pengaturan Perisai default. Mereka berlaku ke semua website kecuali bila Anda mengubah sesuatu di panel Perisai di situs tertentu. Mengubah pengaturan ini tidak akan memengaruhi pengaturan per-situs saat ini.</translation>
-<translation id="8754605759692119662">Ini akan memblokir sebagian besar iklan pada website, bukan iklan privat Brave — iklan-iklan tersebut diatur di</translation>
+<translation id="1485394570478670912">Ini akan memblokir kebanyakan iklan di situs web, kecuali Brave Private Ads — yang dikontrol di</translation>
 <translation id="6388201778088078932">pengaturan.</translation>
 <translation id="9185018653595759199">Pemblokiran media sosial</translation>
 <translation id="7390783310074170337">Tampilan baku</translation>
@@ -294,6 +298,13 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="1391855377994926460">Terus menelusuri web dengan lebih cepat - hingga 6x lebih cepat pada situs berita utama.</translation>
 <translation id="9218430445555521422">Setel sebagai default</translation>
 <translation id="3479552764303398839">Jangan sekarang</translation>
+<translation id="5039804452771397117">Izinkan</translation>
+<translation id="7053983685419859001">Blokir</translation>
+<translation id="7815301689257843278">Kirimkan laporan kegagalan secara otomatis sehingga Brave dapat mencegah masalah ini agar tidak terjadi lagi?</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> keluar secara tidak terduga.</translation>
+<translation id="1324417023773393937">Peramban Brave</translation>
+<translation id="1068069727470515940">Anda dapat mengubah <ph name="SETTING_TEXT"/> lagi kapan saja.</translation>
+<translation id="6873781976650514089">pengaturan ini</translation>
 <translation id="6040143037577758943">Tutup</translation>
 <translation id="5600566490506283344">Notifikasi Brave Ad</translation>
 <translation id="4877147287319222750">Tambah ke Bilah sisi</translation>
@@ -345,6 +356,9 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="8487693399751278191">Impor bookmark sekarang...</translation>
 <translation id="2557899542277210112">Untuk akses cepat, letakkan bookmark Anda di bilah bookmark.</translation>
 <translation id="2808630562319398131">Atur ulang data Brave Reward...</translation>
+<translation id="2273851479262317744">Tetapkan Brave sebagai peramban bawaan</translation>
+<translation id="8581710194025054669">Untuk memastikan daring dengan privasi terbaik, pertimbangkan untuk menetapkan Brave sebagai peramban bawaan di komputer Anda. Dengan Brave sebagai bawaan, tautan web apa pun yang Anda klik akan terbuka dengan perlindungan privasi Brave.</translation>
+<translation id="8754605759692119662">Ini akan memblokir sebagian besar iklan pada website, bukan iklan privat Brave — iklan-iklan tersebut diatur di</translation>
 <translation id="1224064034972923114">Bantu meningkatkan Brave dengan mengirimkan laporan kemacetan secara otomatis</translation>
 <translation id="3738833060602717053">Bantu tingkatkan <ph name="PRODUCT_NAME"/> dengan mengirimkan laporan kemacetan secara otomatis</translation>
 </translationbundle>

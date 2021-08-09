@@ -593,6 +593,7 @@
 <translation id="1627408615528139100">Already downloaded</translation>
 <translation id="1628948239858170093">Scan file before opening?</translation>
 <translation id="1629314197035607094">Password expired</translation>
+<translation id="1947639598318989608">Let Brave find personalised discounts on your baskets?</translation>
 <translation id="1629521517399325891">User certificate is not available for network authentication.</translation>
 <translation id="163072119192489970">Allowed to finish sending and receiving data</translation>
 <translation id="1630768113285622200">Restart and continue</translation>
@@ -3202,7 +3203,7 @@ and Ctrl+Alt+Brightness down to zoom out.</translation>
 <translation id="4469762931504673593"><ph name="ORIGIN"/> can edit files in <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">External storage preferences</translation>
 <translation id="4471354919263203780">Downloading speech recognition files <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Help improve Brave's features and performance</translation>
+<translation id="918192811481327695">Help improve Brave's features and performance</translation>
 <translation id="4472575034687746823">Get started</translation>
 <translation id="4474155171896946103">Bookmark all tabs...</translation>
 <translation id="4475552974751346499">Search downloads</translation>
@@ -4432,7 +4433,6 @@ and Ctrl+Alt+Brightness down to zoom out.</translation>
 <translation id="5864754048328252126">Idle action while charging</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> will pause soon</translation>
 <translation id="586567932979200359">You're running <ph name="PRODUCT_NAME"/> from its disk image. Installing it on your computer lets you run it without the disk image and ensures that it will be kept up to date.</translation>
-<translation id="1224064034972923114">Automatically sends usage statistics and crash reports to Brave</translation>
 <translation id="5867841422488265304">Search or type web address</translation>
 <translation id="5869029295770560994">OK, got it</translation>
 <translation id="5869522115854928033">Saved passwords</translation>
@@ -5448,7 +5448,6 @@ and Ctrl+Alt+Brightness down to zoom out.</translation>
 <translation id="6997642619627518301"><ph name="NAME_PH"/> – Activity Log</translation>
 <translation id="6997707937646349884">On your devices:</translation>
 <translation id="6998793565256476099">Enrol device for video conferencing</translation>
-<translation id="456304305650018221">Allow Brave to find discounts on what you add to your baskets?</translation>
 <translation id="6999956497249459195">New group</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> is connected but needs configuration</translation>
 <translation id="7000347579424117903">Include Ctrl, Alt or Search</translation>

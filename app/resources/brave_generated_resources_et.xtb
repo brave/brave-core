@@ -28,6 +28,9 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="3218385319396786393">Automaatesitus blokeeriti sellel lehel</translation>
 <translation id="4988333904713528597">Luba alati automaatesitust saidil <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Jätka automaatesituse blokeerimist</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Küsi, kui veebisait soovib juurdepääsu Ethereumi teenusepakkuja API-le</translation>
+<translation id="7017590444693657895">Blokeeri veebisaitide juurdepääs Ethereumi teenusepakkuja API-le</translation>
 <translation id="8988939298652262600">Brave pole veel selle laienduse turvalisust ja ohutust kontrollinud. Installi see laiendus ainult juhul, kui usaldad arendajat.</translation>
 <translation id="8081858229109418493">Profiili nimi ja ikoon</translation>
 <translation id="2044383478723007273">Brave'i värvid</translation>
@@ -42,6 +45,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="5802665280774361839">Näita aadressiribal automaatse täitmise teavet</translation>
 <translation id="597020512043916976">Näita automaatse täitmise soovitustes tuntumaid lehti</translation>
 <translation id="264150068416846820">Näita automaatse täitmise soovitustes Brave’i soovitatud lehti</translation>
+<translation id="5529693968082667490">Kuva vahekaartide otsingu nupp</translation>
 <translation id="6414370348346025511">Standardkaitse on sisse lülitatud.</translation>
 <translation id="814018970995616154">Kontrollib URL-e koos Brave'i salvestatud ohtlike saitide loendiga.</translation>
 <translation id="1144810021918451336">Ei kaitse sind ohtlike veebisaitide, allalaaditavate failide ja laienduste eest.</translation>
@@ -72,6 +76,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="7895302206188277628">Seotud sisu</translation>
 <translation id="3654831858282189202">Avalda IPNS-võtmega</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Impordi valitud tekst IPFSi</translation>
 <translation id="6925604404524625582">Impordi ja kopeeri IPFSi hetktõmmise link</translation>
 <translation id="1434416574322382019">Uus Tor'iga privaatne aken</translation>
 <translation id="4703780849509456860">Ava link Tor'iga privaatses aknas</translation>
@@ -93,7 +98,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="6303294677342628402">Kaitse</translation>
 <translation id="7133511168130368997">Blokeerige jälitajad ja reklaamid, mis järgnevad teile kogu veebis.</translation>
 <translation id="2761825942249694703">Need on kaitse vaikeseaded. Need rakenduvad kõigile veebisaitidele, välja arvatud juhul, kui muudate kaitsepaneelil midagi seoses kindla saidiga. Nende muutmine ei mõjuta saidieelseid seadeid.</translation>
-<translation id="8754605759692119662">See blokeerib veebisaiditel enamiku reklaamid, kuid mitte Brave’i privaatsed reklaamid — neid kontrollitakse järgmises:</translation>
+<translation id="1485394570478670912">See blokeerib veebisaitidel enamiku reklaame, kuid mitte Brave'i privaatreklaame — neid reguleeritakse</translation>
 <translation id="6388201778088078932">seaded.</translation>
 <translation id="9185018653595759199">Sotsiaalmeedia blokeerimine</translation>
 <translation id="7390783310074170337">Vaikevaade</translation>
@@ -294,6 +299,13 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="1391855377994926460">Saate jätkata kiiremat veebilehitsemist – suurematel uudisesaitidel kuni kuus korda kiiremini.</translation>
 <translation id="9218430445555521422">Seadista vaikebrauseriks</translation>
 <translation id="3479552764303398839">Mitte praegu</translation>
+<translation id="5039804452771397117">Luba</translation>
+<translation id="7053983685419859001">Blokeeri</translation>
+<translation id="7815301689257843278">Kas saata krahhiaruanded automaatselt, et Brave saaks hoida ära selle probleemi uuesti ilmnemise?</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> lõpetas ootamatult töö.</translation>
+<translation id="1324417023773393937">Brave'i brauser</translation>
+<translation id="1068069727470515940"><ph name="SETTING_TEXT"/> saate igal ajal muuta.</translation>
+<translation id="6873781976650514089">seda seadistust</translation>
 <translation id="6040143037577758943">Sulge</translation>
 <translation id="5600566490506283344">Brave Adi teade</translation>
 <translation id="4877147287319222750">Lisa külgribale</translation>
@@ -345,6 +357,9 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="8487693399751278191">Impordi järjehoidjad nüüd...</translation>
 <translation id="2557899542277210112">Kiire juurdepääsu saamiseks paigutage järjehoidjad siia järjehoidjaribale.</translation>
 <translation id="2808630562319398131">Taasta Brave Rewardsi andmed...</translation>
+<translation id="2273851479262317744">Määra Brave vaikebrauseriks</translation>
+<translation id="8581710194025054669">Kui soovite tagada endale võrgus suurima privaatsuse, siis kaaluge Brave'i määramist oma arvuti vaikebrauseriks. Kui kasutate vaikimisi Brave'i, kasutatakse iga klõpsatud veebilingi avamisel Brave'i privaatsuskaitseid.</translation>
+<translation id="8754605759692119662">See blokeerib veebisaiditel enamiku reklaamid, kuid mitte Brave’i privaatsed reklaamid — neid kontrollitakse järgmises:</translation>
 <translation id="1224064034972923114">Aidake Brave'i paremaks muuta, saates krahhiaruandeid.</translation>
 <translation id="3738833060602717053">Aidake krahhiaruannete saatmisega <ph name="PRODUCT_NAME"/> paremaks teha</translation>
 </translationbundle>

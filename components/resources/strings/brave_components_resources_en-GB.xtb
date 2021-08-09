@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">Show favourites</translation>
 <translation id="3446024864193919737">Show Brave Rewards</translation>
 <translation id="6274899614137380422">Show Binance</translation>
-<translation id="5551238871320268996">Brave Together</translation>
 <translation id="5585019845078534178">Cards</translation>
 <translation id="3870475560794762985">Show sponsored images</translation>
 <translation id="2875302873837723333">top sites</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">Background Image</translation>
 <translation id="385051799172605136">Back</translation>
 <translation id="9024104284526126630">You can start a private call in Brave.</translation>
-<translation id="5735801688206890393">Start unlimited calls with friends and colleagues in Brave Together.</translation>
+<translation id="4903286433687221248">Start unlimited calls with friends and colleagues in Brave Talk.</translation>
 <translation id="7115051913071512405">Try it out</translation>
 <translation id="7415602225677446066">Today's top stories in a completely private feed, just for you.</translation>
 <translation id="6903061332999399632">Brave News is ad-supported with completely private and anonymised ads matched on your device. Your personal information always stays private, per our <ph name="LINK_START"/>privacy policy<ph name="LINK_END"/>.</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">Auto-detect</translation>
 <translation id="4394049700291259645">Disable</translation>
 <translation id="4176463684765177261">Disabled</translation>
-<translation id="4434663852465709809">QR Code for iOS Rewards users transferring BAT</translation>
-<translation id="2175927920773552910">QR Code</translation>
 <translation id="8283001340969131076">Sorry, there was an error when trying to disconnect your <ph name="PROVIDER"/> account. Please try again in a little while.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">The device is offline, please try again later.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">BAT is not currently supported in your region. Please refer <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> for updates.</translation>
 <translation id="1737873393693460829">By turning on [[title]], you agree to the <ph name="BEGIN_LINK1"/>Terms of Service<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Privacy Policy<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Error creating Brave Browser BAT card</translation>
-<translation id="6473583070570450185">You need a verified wallet to login</translation>
-<translation id="5949995321533425416">You need a minimum of <ph name="AMOUNT"/> BAT to create an Uphold wallet. Please try again after you have verified your wallet with Uphold.</translation>
+<translation id="8429332714958713413">You need a verified wallet to log in</translation>
+<translation id="5881716477679854586">Please try again after you have completed ID verification on <ph name="CUSTODIAN"/>.</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> arriving in <ph name="DAYS"/></translation>
 <translation id="4672975606583962967">Choose a wallet service</translation>
 <translation id="1815503044492647974">Select a custodial wallet partner. If you already have an account, you will be asked to log in to connect.</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">Rewards was turned off</translation>
 <translation id="3354337256330577726">Auto-contribute was turned off</translation>
 <translation id="6727186931929643711">Stopped retrying</translation>
+<translation id="8978461348341400550">Custodian:</translation>
+<translation id="7220161813676251577">Custodian member ID:</translation>
 <translation id="680983167891198932">Key</translation>
 <translation id="7535087603100972091">Value</translation>
 <translation id="45591635423975492">Logged at</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">Start using Brave Rewards</translation>
 <translation id="6318696841371191107">Take a quick tour</translation>
 <translation id="8465790416279415448">By proceeding, you agree to the <ph name="TOS_LINK_BEGIN"/>Terms of Service<ph name="TOS_LINK_END"/> and <ph name="PP_LINK_BEGIN"/>Privacy Policy<ph name="PP_LINK_END"/>.</translation>
-<translation id="2404165674840145940">Tip with Brave rewards</translation>
-<translation id="5820285701794581330">By using Brave rewards, you will start to gain BAT that you can use to tip creators.</translation>
+<translation id="8222322431155185238">Tip with Brave Rewards</translation>
+<translation id="1895476463085410109">Earn Rewards by viewing Brave Private Ads and support content creators automatically</translation>
 <translation id="5705882733397021510">Go Back</translation>
 <translation id="185034574799484512">Let’s take a quick tour</translation>
 <translation id="8281886186245836920">Skip</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">Try again</translation>
 <translation id="2600847485413879104">Rewards BAT</translation>
 <translation id="8006596443377585072">bitFlyer Wallet</translation>
+<translation id="2770577461149798369">Gemini wallet</translation>
 <translation id="8108350286444475334">Uphold Wallet</translation>
 <translation id="6977372887576114613">Deposited BAT</translation>
 <translation id="3173528272490482456">Ready to get started?</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">You can start with the</translation>
 <translation id="194625454574835815">Recovery Key</translation>
 <translation id="6354568176665589146">Recurring</translation>
+<translation id="2799223571221894425">Relaunch</translation>
 <translation id="1110535155349301542">remove</translation>
 <translation id="8204292894173669182">Remove from saved</translation>
 <translation id="5530851178552343773">You’ve designated [[reservedAmount]] [[currency]] for creators who haven’t yet signed up to receive contributions. Your browser will keep trying to contribute until they verify, or until 90 days have passed.</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">Your Brave wallet is powered by <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Brave Rewards is built on the Basic Attention Token. Learn more about BAT</translation>
 <translation id="7823359893981882407">here</translation>
+<translation id="3034163433136515805">View QR Code</translation>
+<translation id="1640793619390890218">for iOS Rewards users transferring BAT.</translation>
 <translation id="4483635855837696643">Restore your Wallet</translation>
 <translation id="459721429458957031">Use your recovery key to restore your wallet.</translation>
 <translation id="4600052736217630789">Restoring with a recovery key will replace your current wallet. So make sure you empty or back up your current wallet before restoring.</translation>
@@ -865,4 +868,12 @@
 <translation id="6973157709854838218">Hide your balances from display</translation>
 <translation id="4548946945059463969">Reveal your balances on screen</translation>
 <translation id="242959166945779492">You do not have any balances in your account. Visit FTX to purchase some.</translation>
+<translation id="5551238871320268996">Brave Together</translation>
+<translation id="5735801688206890393">Start unlimited calls with friends and colleagues in Brave Together.</translation>
+<translation id="4434663852465709809">QR Code for iOS Rewards users transferring BAT</translation>
+<translation id="2175927920773552910">QR Code</translation>
+<translation id="6473583070570450185">You need a verified wallet to login</translation>
+<translation id="5949995321533425416">You need a minimum of <ph name="AMOUNT"/> BAT to create an Uphold wallet. Please try again after you have verified your wallet with Uphold.</translation>
+<translation id="2404165674840145940">Tip with Brave rewards</translation>
+<translation id="5820285701794581330">By using Brave rewards, you will start to gain BAT that you can use to tip creators.</translation>
 </translationbundle>

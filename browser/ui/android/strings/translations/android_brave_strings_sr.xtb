@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">Otvara neke sajtove koristeći bezbednu HTTPS konekciju umesto HTTP.</translation>
 <translation id="94154759592465111">Blokirajte skripte</translation>
 <translation id="3518266709656143462">Blokira Javascript (može da pokvari sajtove)</translation>
-<translation id="5709627087332022422">Blokiraj višelokacijska praćenja</translation>
 <translation id="6052725679982758334">Blokiranje društvenih mreža</translation>
 <translation id="7498695072878479744">Dozvoli Google tastere za prijavljivanje na lokacijama treće strane</translation>
 <translation id="863171915776379000">Dozvoli prijavljivanje putem Facebook-a i ugrađene objave</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">IPFS mrežni prolaz</translation>
 <translation id="2688519859165248360">Dopušta navigaciju do IPFS resursa kroz IPFS mrežni prolaz</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Ethereum cena (ETH)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Metoda rešavanja</translation>
 <translation id="2356070529366658676">Pitaj</translation>
 <translation id="4176463684765177261">Онемогућено</translation>
 <translation id="2218918398178303658">DNS preko HTTPS</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Sprečava da pregledač bude praćen</translation>
 <translation id="7459000603787995422">Zatvorite kartice pri izlazu</translation>
 <translation id="4448697385961650078">Blokiraj tragače &amp; oglase</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">Postavite Brave kao podrazumevani pregledač!</translation>
 <translation id="7136694880210472378">Постави као подразумевано</translation>
 <translation id="4250680216510889253">Ne</translation>
-<translation id="4501702055016678577">Privatna pretraga sa DuckDuckGo-om?</translation>
-<translation id="910419239800579753">Sa privatnom pretragom, Brave će koristiti DuckDuckGo da odgovori na vaše pretrage dok ste u ovoj privatnoj kartici. DuckDuckGo je pretraživač koji ne prati vašu istoriju pretrage, omogućavajući vam da pretražujete privatno.</translation>
-<translation id="1426410128494586442">Да</translation>
-<translation id="5628466560184522265">Naučite o privatnoj pretrazi sa DuckDuckGo</translation>
 <translation id="8826007068782654809">Hvala vam</translation>
 <translation id="6665366815203065060">Upravo ste poslali napojnicu ka:</translation>
 <translation id="5441565662498481293">Ne šaljete automatski napojnicu ka:</translation>
@@ -374,12 +370,12 @@ meseca...</translation>
 <translation id="7427567994475794038">Uključite Izveštaje o privatnosti da biste videli koliko je pratilaca &amp; reklama blokirano u poslednja 3 sata.</translation>
 <translation id="2053891538879944400">Sačuvali ste <ph name="DATA"/> <ph name="DATA_TEXT"/> podataka sa svojim pregledačem.</translation>
 <translation id="8640064498452534195">Uključite Izveštaje o privatnosti da biste videli koliko ste podataka sačuvali.</translation>
-<translation id="2252497442547961651">Brave pretraživač u proseku troši 40% manje baterije.&#128267;</translation>
+<translation id="2252497442547961651">Brave pretraživač u proseku troši 40% manje baterije.🔋</translation>
 <translation id="1945330434665345785">Blokirali ste <ph name="COUNT"/> pratioca &amp; reklama sa Brave pregledačem prošle nedelje.</translation>
 <translation id="2883868922264431515">Zaradite tokene gledajući reklame koji poštuju privatnost i podržite svoje omiljene veb lokacije.</translation>
-<translation id="5678925890616256956">Lep! Blokirali ste 250 praćenja &amp; oglasa uz pomoć Brave pregledača.&#128293;</translation>
-<translation id="9199047775708635708">Lepo! Uštedeli ste 10MB pomoću Brave pretraživača.&#128267;</translation>
-<translation id="1880168210969863408">Lepo! Uštedeli ste 10 minuta vremena učitavanja pomoću Brave pretraživača.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Lep! Blokirali ste 250 praćenja &amp; oglasa uz pomoć Brave pregledača.🔥</translation>
+<translation id="9199047775708635708">Lepo! Uštedeli ste 10MB pomoću Brave pretraživača.🔋</translation>
+<translation id="1880168210969863408">Lepo! Uštedeli ste 10 minuta vremena učitavanja pomoću Brave pretraživača.💨💨</translation>
 <translation id="7408493389591475748">Započnite pregledanje da biste videli izveštaje o privatnosti</translation>
 <translation id="9080777565335515917">Postavite Brave kao svoj podrazumevani pregledač za privatno i sigurno pregledanje.</translation>
 <translation id="1390943217516275883">Omogućuje da Brave prikazuje vašu statistiku privatnosti</translation>
@@ -442,7 +438,7 @@ meseca...</translation>
 <translation id="3477340970981564961">Brave privatni oglasi vas nagrađuju tokenima da podržite kreatore sadržaja, za razliku od tradicionalnih oglasa, a sve dok vaše lične podatke čuvaju privatnim.</translation>
 <translation id="6973095375773523904">Gde se prikazuju reklame?</translation>
 <translation id="7556325460112047619">Brave privatni oglasi će se pojaviti kao normalno obaveštenje. U podešavanjima možete da kontrolišete koliko često vidite ove oglase.</translation>
-<translation id="6897083627729802351">Kada dobijate nagrade</translation>
+<translation id="6897083627729802351">Kada dobijate nagrade?</translation>
 <translation id="310863932297733723">Vaši zarađeni tokeni od ovog meseca od Bravo privatnih reklama će stići 5og sledećeg meseca.</translation>
 <translation id="7712287524451429139">Uzvraćanje zajednici je nikad lakše</translation>
 <translation id="105037569026952831">Kreatori dobijaju vaše token doprinose automatski na osnovu nivoa vašeg angažmana koji merimo kao ‘Pažnja’.</translation>
@@ -459,7 +455,7 @@ meseca...</translation>
 <translation id="827315274423079662">Vuuhuu, potpuno ste spremni!</translation>
 <translation id="3895246934788932488">Korišćenjem Brave nagrada štite svoju privatnost i pomažete da veb bude bolje mesto za sve. I to je’sjajno!</translation>
 <translation id="5705882733397021510">Idite nazad</translation>
-<translation id="3985567919248057638">Hajmo na brzu turu</translation>
+<translation id="3985567919248057638">Krenimo u kratak obilazak</translation>
 <translation id="2434574859640694129">Nakon prijema vaše prve isplate za oglase, možete se vratiti i dati napojnicu ovom kreatoru!</translation>
 <translation id="207242986925259074">Brza tura za osvežavanje</translation>
 <translation id="8342862030112839977">Vaša prva isplata nagrada će stići do:</translation>
@@ -566,4 +562,18 @@ meseca...</translation>
 <translation id="745115390910697838">Fraze se ne poklapaju, pokušajte ponovo.</translation>
 <translation id="2360588547830602174">Obnavljanje naloga nije uspelo. Pokušajte ponovo.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">Tržišna cena u ETH</translation>
+<translation id="6748108480210050150">Od</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">Do (procena)</translation>
+<translation id="59223531494896848">Ograničenje</translation>
+<translation id="3567988240819868195">Tržište</translation>
+<translation id="632241521608275119">Tolerancija propusta</translation>
+<translation id="5709627087332022422">Blokiraj višelokacijska praćenja</translation>
+<translation id="4501702055016678577">Privatna pretraga sa DuckDuckGo-om?</translation>
+<translation id="910419239800579753">Sa privatnom pretragom, Brave će koristiti DuckDuckGo da odgovori na vaše pretrage dok ste u ovoj privatnoj kartici. DuckDuckGo je pretraživač koji ne prati vašu istoriju pretrage, omogućavajući vam da pretražujete privatno.</translation>
+<translation id="1426410128494586442">Да</translation>
+<translation id="5628466560184522265">Naučite o privatnoj pretrazi sa DuckDuckGo</translation>
 </translationbundle>

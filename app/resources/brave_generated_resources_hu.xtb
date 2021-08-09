@@ -7,7 +7,7 @@
 <translation id="6406506848690869874">Szinkronizálás</translation>
 <translation id="1544192797660353713">Pénztárca</translation>
 <translation id="2445484935443597917">Új profil létrehozása</translation>
-<translation id="2666990579225592931">Vendég módú ablak megnyitása</translation>
+<translation id="2666990579225592931">Vendégablak megnyitása</translation>
 <translation id="8275068909952022340">Bővebben…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (kiterjesztésazonosító "<ph name="EXTENSION_ID"/>") nem engedélyezett a Brave-ben.</translation>
 <translation id="6786747875388722282">Kiterjesztések</translation>
@@ -28,6 +28,9 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="3218385319396786393">Ezen az oldalon blokkolták az automatikus lejátszást.</translation>
 <translation id="4988333904713528597">Automatikus lejátszás általános engedélyezése itt: <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Automatikus lejátszás további blokkolása</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Kérdezzen rá, ha egy oldal szeretne hozzáférni az Ethereum szolgáltató API-hoz</translation>
+<translation id="7017590444693657895">Blokkolja az oldalak hozzáférését az Ethereum szolgáltató API-hoz</translation>
 <translation id="8988939298652262600">A Brave nem vizsgálja felül a biztonsági kiterjesztéseket. Csak akkor telepítse ezt a kiterjesztést, ha megbízik a fejlesztőben.</translation>
 <translation id="8081858229109418493">Profilnév és ikon</translation>
 <translation id="2044383478723007273">Brave színek</translation>
@@ -42,6 +45,7 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="5802665280774361839">Mutassa az automatikus kiegészítést a címsorban</translation>
 <translation id="597020512043916976">A legjobb oldalak mutatása az automatikus kiegészítési javaslatokban</translation>
 <translation id="264150068416846820">Brave által javasolt oldalak mutatása az automatikus kiegészítési javaslatokban</translation>
+<translation id="5529693968082667490">Keresési lapok megjelenítése gomb</translation>
 <translation id="6414370348346025511">A normál védelem be van kapcsolva.</translation>
 <translation id="814018970995616154">Ellenőrizze az URL-eket a Brave-ben tárolt nem biztonságos webhelyek listájával.</translation>
 <translation id="1144810021918451336">Nem védi meg a veszélyes webhelyek, letöltések és bővítmények ellen.</translation>
@@ -93,7 +97,7 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="6303294677342628402">Pajzsok</translation>
 <translation id="7133511168130368997">Tiltsd le a nyomkövetőket és hirdetéseket, amelyek követnek téged a weben.</translation>
 <translation id="2761825942249694703">Ezek az alapértelmezett Shields beállítások. Minden webhelyre vonatkoznak, hacsak nem változtatsz meg valamit a Shields panelben egy adott oldalon. Ezek változtatása nincs hatással a meglévő oldalankénti beállításokra.</translation>
-<translation id="8754605759692119662">Ez letiltja a weboldalakon a legtöbb reklámot, de a privát hirdetéseket nem — azok kezelési helye a</translation>
+<translation id="1485394570478670912">Ez blokkolni fogja a weboldalakon található legtöbb hirdetést, kivéve a Brave Private Ads-eket, amelyeket a következő vezérel:</translation>
 <translation id="6388201778088078932">beállítások.</translation>
 <translation id="9185018653595759199">Közösségi média blokkolása</translation>
 <translation id="7390783310074170337">Alapértelmezett nézet</translation>
@@ -294,6 +298,13 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="1391855377994926460">Böngésszen gyorsabban az interneten – a főbb híroldalakon akár 6x gyorsabban.</translation>
 <translation id="9218430445555521422">Beállítás alapértelmezettként</translation>
 <translation id="3479552764303398839">Ne most</translation>
+<translation id="5039804452771397117">Engedélyezés</translation>
+<translation id="7053983685419859001">Letiltás</translation>
+<translation id="7815301689257843278">Küldjön a rendszer automatikusan jelentéseket az összeomlásról, hogy a Brave meg tudja előzni a probléma újbóli előfordulását?</translation>
+<translation id="660171790038410175">A <ph name="BROWSER_NAME"/> váratlanul leállt</translation>
+<translation id="1324417023773393937">Brave böngésző</translation>
+<translation id="1068069727470515940">Módosíthatja <ph name="SETTING_TEXT"/> később bármikor.</translation>
+<translation id="6873781976650514089">ezt a beállítást</translation>
 <translation id="6040143037577758943">Bezárás</translation>
 <translation id="5600566490506283344">Brave Ad értesítés</translation>
 <translation id="4877147287319222750">Hozzáadás az oldalsávhoz</translation>
@@ -345,6 +356,9 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="8487693399751278191">Importáld a könyvjelzőket...</translation>
 <translation id="2557899542277210112">A gyors eléréshez, tedd könyvjelzőidet ide, a könyvjelzősávba.</translation>
 <translation id="2808630562319398131">Brave Rewards adatok újraállítása...</translation>
+<translation id="2273851479262317744">A Brave beállítása alapértelmezett böngészőként</translation>
+<translation id="8581710194025054669">A lehető legjobb online adatvédelem biztosítása érdekében fontolja meg a Brave alapértelmezett böngészőként való beállítását számítógépén. Ha a Brave az alapértelmezett böngésző, bármely webes hivatkozás, amelyre rákattint, a Brave adatvédelmi beállításainak védelmével fog megnyílni.</translation>
+<translation id="8754605759692119662">Ez letiltja a weboldalakon a legtöbb reklámot, de a privát hirdetéseket nem — azok kezelési helye a</translation>
 <translation id="1224064034972923114">Segíts a Brave fejlesztésében automatikus összeomlási jelentések küldésével</translation>
 <translation id="3738833060602717053">Segíts a <ph name="PRODUCT_NAME"/> fejlesztésében összeomlási jelentések automatikus küldésével.</translation>
 </translationbundle>

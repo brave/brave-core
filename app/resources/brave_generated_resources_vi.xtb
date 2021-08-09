@@ -28,6 +28,9 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="3218385319396786393">Tự động phát bị chặn trên trang này</translation>
 <translation id="4988333904713528597">Luôn cho phép tự động phát trên <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Tiếp tục chặn tự động phát</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Hỏi khi trang web muốn truy cập vào API của nhà cung cấp Ethereum</translation>
+<translation id="7017590444693657895">Chặn các trang web truy cập API của nhà cung cấp Ethereum</translation>
 <translation id="8988939298652262600">Brave không đánh giá tính bảo mật và an toàn của các tiện ích mở rộng. Chỉ nên cài đặt tiện ích mở rộng này nếu bạn tin tưởng nhà phát triển.</translation>
 <translation id="8081858229109418493">Tên và ảnh đại diện hồ sơ</translation>
 <translation id="2044383478723007273">Màu sắc của brave</translation>
@@ -42,6 +45,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="5802665280774361839">Hiện đề xuất tự động hoàn thành trên thanh địa chỉ</translation>
 <translation id="597020512043916976">Hiển thị các trang web hàng đầu trong các đề xuất tự động hoàn thành</translation>
 <translation id="264150068416846820">Hiển thị các trang web được đề xuất của Brave trong các đề xuất tự động hoàn thành</translation>
+<translation id="5529693968082667490">Hiển thị nút Tab tìm kiếm</translation>
 <translation id="6414370348346025511">Chế độ bảo vệ tiêu chuẩn đang bật.</translation>
 <translation id="814018970995616154">Kiểm tra các URL với danh sách những trang web không an toàn được lưu trữ trong Brave.</translation>
 <translation id="1144810021918451336">Không bảo vệ bạn khỏi các trang web, nội dung tải xuống và tiện ích mở rộng nguy hiểm.</translation>
@@ -93,7 +97,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="6303294677342628402">Lá chắn</translation>
 <translation id="7133511168130368997">Chặn các bộ theo dõi và quảng cáo bám theo bạn trên toàn mạng.</translation>
 <translation id="2761825942249694703">Đây là các cài đặt mặc định cho Lá chắn. Chúng áp dụng với mọi website trừ khi bạn thay đổi điều gì đó trong bảng điều khiển Lá chắn trên một website cụ thể. Việc thay đổi các cài đặt này sẽ không ảnh hưởng tới cài đặt mỗi trang hiện có của bạn.</translation>
-<translation id="8754605759692119662">Công cụ này sẽ chặn hầu hết quảng cáo trên các website chứ không phải các quảng cáo riêng của Brave, chúng được kiểm soát trong</translation>
+<translation id="1485394570478670912">Điều này sẽ chặn hầu hết các quảng cáo trên các trang web, không chặn Brave Private Ads — chúng được kiểm soát trong</translation>
 <translation id="6388201778088078932">cài đặt.</translation>
 <translation id="9185018653595759199">Chặn truyền thông xã hội</translation>
 <translation id="7390783310074170337">Chế độ xem mặc định</translation>
@@ -294,6 +298,13 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="1391855377994926460">Hãy tiếp tục duyệt web nhanh hơn - nhanh hơn đến 6 lần trên những trang tin tức lớn.</translation>
 <translation id="9218430445555521422">Đặt làm mặc định</translation>
 <translation id="3479552764303398839">Không phải bây giờ</translation>
+<translation id="5039804452771397117">Cho phép</translation>
+<translation id="7053983685419859001">Chặn</translation>
+<translation id="7815301689257843278">Tự động gửi báo cáo sự cố để Brave có thể ngăn sự cố này xảy ra lần nữa?</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> thoát đột ngột.</translation>
+<translation id="1324417023773393937">Trình duyệt Brave</translation>
+<translation id="1068069727470515940">Bạn có thể thay đổi lại <ph name="SETTING_TEXT"/> vào bất kỳ lúc nào.</translation>
+<translation id="6873781976650514089">cài đặt này</translation>
 <translation id="6040143037577758943">Đóng</translation>
 <translation id="5600566490506283344">Thông báo quảng cáo Brave</translation>
 <translation id="4877147287319222750">Thêm vào Thanh bên</translation>
@@ -345,6 +356,9 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="8487693399751278191">Nhập dấu trang ngay...</translation>
 <translation id="2557899542277210112">Để truy cập nhanh, hãy đặt dấu trang của bạn ở đây trên thanh dấu trang.</translation>
 <translation id="2808630562319398131">Thiết lập lại dữ liệu Brave Rewards...</translation>
+<translation id="2273851479262317744">Đặt Brave làm trình duyệt mặc định</translation>
+<translation id="8581710194025054669">Để đảm bảo quyền riêng tư trực tuyến tốt nhất, hãy cân nhắc đặt Brave làm trình duyệt mặc định trên máy tính của bạn. Với Brave làm trình duyệt mặc định, bất kỳ liên kết web nào bạn nhấp vào sẽ mở ra kèm theo các biện pháp bảo vệ quyền riêng tư của Brave.</translation>
+<translation id="8754605759692119662">Công cụ này sẽ chặn hầu hết quảng cáo trên các website chứ không phải các quảng cáo riêng của Brave, chúng được kiểm soát trong</translation>
 <translation id="1224064034972923114">Giúp cải thiện Brave bằng cách tự động gửi báo cáo sự cố</translation>
 <translation id="3738833060602717053">Giúp cải thiện <ph name="PRODUCT_NAME"/> bằng cách tự động gửi báo cáo sự cố</translation>
 </translationbundle>

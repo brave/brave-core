@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">הצג מועדפים</translation>
 <translation id="3446024864193919737">הצג את Brave Rewards</translation>
 <translation id="6274899614137380422">הצג את Binance</translation>
-<translation id="5551238871320268996">Brave ביחד</translation>
 <translation id="5585019845078534178">כרטיסים</translation>
 <translation id="3870475560794762985">הצג תמונות ממומנות</translation>
 <translation id="2875302873837723333">אתרים מובילים</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">תמונת רקע</translation>
 <translation id="385051799172605136">חזרה</translation>
 <translation id="9024104284526126630">באפשרותכם להתחיל שיחה פרטית ב- Brave.</translation>
-<translation id="5735801688206890393">התחילו שיחות ללא הגבלה עם חברים ועמיתים ב- Brave Together.</translation>
+<translation id="4903286433687221248">התחל שיחות ללא הגבלה עם חברים ועמיתים ב- Brave Talk.</translation>
 <translation id="7115051913071512405">נסו את זה</translation>
 <translation id="7415602225677446066">הסיפורים המובילים של היום בפיד פרטי לחלוטין, בדיוק בשבילכם.</translation>
 <translation id="6903061332999399632">Brave News נתמך על ידי פרסום מודעות במכשירכם, שהתאמתן מתבצעת באופן פרטי ואנונימי לחלוטין. המידע האישי שלכם נשאר תמיד פרטי, לפי <ph name="LINK_START"/>מדיניות הפרטיות<ph name="LINK_END"/> שלנו.</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">זיהוי אוטומטי</translation>
 <translation id="4394049700291259645">השבת</translation>
 <translation id="4176463684765177261">מושבת</translation>
-<translation id="4434663852465709809">קוד QR למשתמשי iOS Rewards המעבירים BAT</translation>
-<translation id="2175927920773552910">קוד QR</translation>
 <translation id="8283001340969131076">סליחה, אירעה שגיאה בעת הניסיון לנתק את חשבון <ph name="PROVIDER"/> שלך. אנא נסה שוב בעוד זמן מה.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">המכשיר אינו מקוון, נא לנסות שוב מאוחר יותר.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">BAT אינו נתמך כרגע באזור שלך. נא לפנות ל-<ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> לקבלת עדכונים.</translation>
 <translation id="1737873393693460829">על ידי הפעלת [[title]], הנכם מסכימים ל-<ph name="BEGIN_LINK1"/>תנאי השירות<ph name="END_LINK1"/> ו-<ph name="BEGIN_LINK2"/>ומדיניות הפרטיות<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">אירעה שגיאה ביצירת כרטיס BAT של דפדפן Brave</translation>
-<translation id="6473583070570450185">נדרש לכם ארנק מאומת כדי להתחבר</translation>
-<translation id="5949995321533425416">דרוש לך מינימום <ph name="AMOUNT"/> BAT כדי ליצור ארנק Uphold. יש לנסות שוב לאחר אימות הארנק אצל Uphold.</translation>
+<translation id="8429332714958713413">אתה זקוק לארנק מאומת על מנת להיכנס</translation>
+<translation id="5881716477679854586">נסה שנית לאחר שתסיים את אימות הזיהוי ב-<ph name="CUSTODIAN"/>.</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> מגיע בעוד <ph name="DAYS"/></translation>
 <translation id="4672975606583962967">בחר שירות ארנק</translation>
 <translation id="1815503044492647974">בחר שותף ארנק ממונה. אם יש ברשותך חשבון, תתבקש להיכנס למערכת כדי להתחבר.</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">Rewards כובתה</translation>
 <translation id="3354337256330577726">התרומה האוטומטית כובתה</translation>
 <translation id="6727186931929643711">ניסיונות חוזרים הופסקו</translation>
+<translation id="8978461348341400550">נאמן:</translation>
+<translation id="7220161813676251577">מזהה חבר נאמן:</translation>
 <translation id="680983167891198932">מפתח</translation>
 <translation id="7535087603100972091">ערך</translation>
 <translation id="45591635423975492">רשום ב-</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">התחל להשתמש ב-Brave Rewards</translation>
 <translation id="6318696841371191107">צא לסיור מהיר</translation>
 <translation id="8465790416279415448">המשך מהווה הסכמה ל-<ph name="TOS_LINK_BEGIN"/>תנאי השירות<ph name="TOS_LINK_END"/> ו-<ph name="PP_LINK_BEGIN"/>מדיניות הפרטיות<ph name="PP_LINK_END"/>.</translation>
-<translation id="2404165674840145940">תנו טיפים עם Brave Rewards</translation>
-<translation id="5820285701794581330">באמצעות תגמולי Brave, תתחילו להרוויח BAT בהם תוכלו להשתמש כדי לתת טיפים ליוצרים.</translation>
+<translation id="8222322431155185238">טיפים עם Brave Rewards</translation>
+<translation id="1895476463085410109">קבל הטבות על ידי צפייה ב-Brave Private Ads ותמוך אוטומטית ביוצרי תכנים</translation>
 <translation id="5705882733397021510">חזור</translation>
 <translation id="185034574799484512">בואו’ נעשה סיור מהיר</translation>
 <translation id="8281886186245836920">דלג</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">ניסיון חוזר</translation>
 <translation id="2600847485413879104">פרסי BAT</translation>
 <translation id="8006596443377585072">ארנק bitFlyer</translation>
+<translation id="2770577461149798369">Gemini Wallet</translation>
 <translation id="8108350286444475334">תמיכה בעכבר</translation>
 <translation id="6977372887576114613">BAT מופקדים</translation>
 <translation id="3173528272490482456">מוכנים להתחיל?</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">אתם יכולים להתחיל עם</translation>
 <translation id="194625454574835815">מפתח שחזור</translation>
 <translation id="6354568176665589146">חוזרים</translation>
+<translation id="2799223571221894425">הפעל מחדש</translation>
 <translation id="1110535155349301542">הסר</translation>
 <translation id="8204292894173669182">הסר משמורים</translation>
 <translation id="5530851178552343773">הקצת [[reservedAmount]] [[currency]] ליוצרים שעדיין לא נרשמו לקבלת תרומות. הדפדפן שלך ימשיך לנסות לתרום עד שהם יאומתו, או עד שעברו 90 יום.</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">ארנק ה-Brave שלך מופעל על ידי <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Brave Rewards מבוסס על טכנולוגית Basic Attention Token. למדו עוד על BAT</translation>
 <translation id="7823359893981882407">כאן</translation>
+<translation id="3034163433136515805">הצג קוד QR</translation>
+<translation id="1640793619390890218">עבור משתמשי iOS Rewards שמעבירים BAT</translation>
 <translation id="4483635855837696643">שחזרו את הארנק שלכם</translation>
 <translation id="459721429458957031">השתמשו במפתח השחזור כדי לשחזר את הארנק שלכם.</translation>
 <translation id="4600052736217630789">שחזור באמצעות מפתח שחזור יחליף את הארנק הנוכחי שלכם. וודאו שרוקנתם או גיביתם את הארנק הנוכחי שלכם לפני השחזור.</translation>
@@ -866,4 +869,12 @@
 <translation id="6973157709854838218">הסתר יתרות בתצוגה</translation>
 <translation id="4548946945059463969">הציגו את היתרות על המסך</translation>
 <translation id="242959166945779492">אין לך יתרות בחשבון. בקר ב-FTX לרכישת יתרה.</translation>
+<translation id="5551238871320268996">Brave ביחד</translation>
+<translation id="5735801688206890393">התחילו שיחות ללא הגבלה עם חברים ועמיתים ב- Brave Together.</translation>
+<translation id="4434663852465709809">קוד QR למשתמשי iOS Rewards המעבירים BAT</translation>
+<translation id="2175927920773552910">קוד QR</translation>
+<translation id="6473583070570450185">נדרש לכם ארנק מאומת כדי להתחבר</translation>
+<translation id="5949995321533425416">דרוש לך מינימום <ph name="AMOUNT"/> BAT כדי ליצור ארנק Uphold. יש לנסות שוב לאחר אימות הארנק אצל Uphold.</translation>
+<translation id="2404165674840145940">תנו טיפים עם Brave Rewards</translation>
+<translation id="5820285701794581330">באמצעות תגמולי Brave, תתחילו להרוויח BAT בהם תוכלו להשתמש כדי לתת טיפים ליוצרים.</translation>
 </translationbundle>

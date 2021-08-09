@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">Vis favoritter</translation>
 <translation id="3446024864193919737">Vis Brave Belønninger</translation>
 <translation id="6274899614137380422">Vis Binance</translation>
-<translation id="5551238871320268996">Brave Together</translation>
 <translation id="5585019845078534178">Kort</translation>
 <translation id="3870475560794762985">Vis sponsorerede billeder</translation>
 <translation id="2875302873837723333">topsider</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">Baggrundsbillede</translation>
 <translation id="385051799172605136">Tilbage</translation>
 <translation id="9024104284526126630">Du kan starte et privat opkald i Brave.</translation>
-<translation id="5735801688206890393">Start et ubegrænset antal opkald med venner og kolleger i Brave Together.</translation>
+<translation id="4903286433687221248">Kom i gang med bruge ubegrænsede opkald til venner og kolleger i Brave Talk.</translation>
 <translation id="7115051913071512405">Prøv det</translation>
 <translation id="7415602225677446066">Dagens tophistorier i et helt privat feed, kun for dig.</translation>
 <translation id="6903061332999399632">Brave News er reklameunderstøttet med helt fortrolige og anonymiserede reklamer, der er matchet med din enhed. Dine personlige oplysninger forbliver altid fortrolige ifølge vores <ph name="LINK_START"/>fortrolighedspolitik<ph name="LINK_END"/>.</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">Auto-detektering</translation>
 <translation id="4394049700291259645">Deaktiver</translation>
 <translation id="4176463684765177261">Deaktiveret</translation>
-<translation id="4434663852465709809">QR-kode til iOS Rewards-brugere, der overfører BAT</translation>
-<translation id="2175927920773552910">QR-kode</translation>
 <translation id="8283001340969131076">Der opstod desværre en fejl i forsøget på at afbryde forbindelsen til din konto hos <ph name="PROVIDER"/>. Prøv igen lidt senere.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">Enheden er offline, prøv venligst igen senere.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">BAT understøttes i øjeblikket ikke i din region. Se venligst <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> for updates.</translation>
 <translation id="1737873393693460829">Ved at aktivere [[title]] accepterer du <ph name="BEGIN_LINK1"/>Brugsvilkårene<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>Databeskyttelsespolitikken<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Fejl ved oprettelse af Brave Browser BAT-kort</translation>
-<translation id="6473583070570450185">Du skal have en bekræftet wallet for at logge ind</translation>
-<translation id="5949995321533425416">Du skal minimum have <ph name="AMOUNT"/> BAT for at oprette en Uphold-wallet. Prøv venligst igen, efter du har bekræftet din wallet hos Uphold.</translation>
+<translation id="8429332714958713413">Du skal have en bekræftet wallet, før du kan logge ind</translation>
+<translation id="5881716477679854586">Prøv igen, når du har udført ID-validering på <ph name="CUSTODIAN"/>.</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> kommer om <ph name="DAYS"/></translation>
 <translation id="4672975606583962967">Vælg en tegnebogstjeneste</translation>
 <translation id="1815503044492647974">Vælg en sikret tegnebogspartner. Hvis du allerede har en konto, vil du blive bedt om at logge ind.</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">Belønninger er slået fra</translation>
 <translation id="3354337256330577726">Automatisk bidrag er slået fra</translation>
 <translation id="6727186931929643711">Genforsøg stoppet</translation>
+<translation id="8978461348341400550">Custodian:</translation>
+<translation id="7220161813676251577">Medlems-ID hos Custodian:</translation>
 <translation id="680983167891198932">Nøgle</translation>
 <translation id="7535087603100972091">Værdi</translation>
 <translation id="45591635423975492">Logget ved</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">Begynd at bruge Brave Rewards</translation>
 <translation id="6318696841371191107">Tag en hurtig rundvisning</translation>
 <translation id="8465790416279415448">Hvis du fortsætter, accepterer du vores <ph name="TOS_LINK_BEGIN"/>Servicevilkpr<ph name="TOS_LINK_END"/> og <ph name="PP_LINK_BEGIN"/>Privatlivspolitik<ph name="PP_LINK_END"/>.</translation>
-<translation id="2404165674840145940">Giv drikkepenge med Brave Rewards</translation>
-<translation id="5820285701794581330">Ved at bruge Brave Rewards, vil du begynde at få BAT, som du kan bruge til at give skabere drikkepenge.</translation>
+<translation id="8222322431155185238">Giv drikkepenge med Brave Rewards</translation>
+<translation id="1895476463085410109">Optjen belønninger ved at se Brave Private Ads, og støt automatisk indholdsskaberne</translation>
 <translation id="5705882733397021510">Gå tilbage</translation>
 <translation id="185034574799484512">Lad os tage en hurtig rundvisning</translation>
 <translation id="8281886186245836920">Spring over</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">Prøv igen</translation>
 <translation id="2600847485413879104">Belønninger BAT</translation>
 <translation id="8006596443377585072">bitFlyer-tegnebog</translation>
+<translation id="2770577461149798369">Gemini Wallet</translation>
 <translation id="8108350286444475334">Uphold Wallet</translation>
 <translation id="6977372887576114613">Indskudt BAT</translation>
 <translation id="3173528272490482456">Klar til at begynde?</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">Du kan starte med</translation>
 <translation id="194625454574835815">Gendannelsesnøgle</translation>
 <translation id="6354568176665589146">Tilbagevendende</translation>
+<translation id="2799223571221894425">Genstart</translation>
 <translation id="1110535155349301542">fjern</translation>
 <translation id="8204292894173669182">Fjern fra Gemte</translation>
 <translation id="5530851178552343773">Du har afsat [[reservedAmount]] [[currency]] til skabere, som endnu ikke har tilmeldt sig modtagelse af donationer. Din browser vil fortsat forsøge at donere, indtil de godkender, eller indtil der er gået 90 dage.</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">Din Brave-wallet drives af <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Brave Belønninger er bygget på den Basale Opmærksomhedspolet. Lær mere om BOP</translation>
 <translation id="7823359893981882407">her</translation>
+<translation id="3034163433136515805">Se QR-Kode</translation>
+<translation id="1640793619390890218">til overførsel af BAT for brugere af iOS Rewards.</translation>
 <translation id="4483635855837696643">Gendan din tegnebog</translation>
 <translation id="459721429458957031">Brug din gendannelsesnøgle til at gendanne din tegnebog.</translation>
 <translation id="4600052736217630789">Du erstatter din aktuelle tegnebog, når du gendanner ved hjælp af en gendannelsesnøgle, så sørg for, at du først tømmer eller sikkerhedskopierer din aktuelle tegnebog.</translation>
@@ -865,4 +868,12 @@
 <translation id="6973157709854838218">Skjul dine saldoer fra visning</translation>
 <translation id="4548946945059463969">Vis dine balancer på skærmen</translation>
 <translation id="242959166945779492">Du har intet tilgodehavende på din konto. Besøg FTX for at købe midler.</translation>
+<translation id="5551238871320268996">Brave Together</translation>
+<translation id="5735801688206890393">Start et ubegrænset antal opkald med venner og kolleger i Brave Together.</translation>
+<translation id="4434663852465709809">QR-kode til iOS Rewards-brugere, der overfører BAT</translation>
+<translation id="2175927920773552910">QR-kode</translation>
+<translation id="6473583070570450185">Du skal have en bekræftet wallet for at logge ind</translation>
+<translation id="5949995321533425416">Du skal minimum have <ph name="AMOUNT"/> BAT for at oprette en Uphold-wallet. Prøv venligst igen, efter du har bekræftet din wallet hos Uphold.</translation>
+<translation id="2404165674840145940">Giv drikkepenge med Brave Rewards</translation>
+<translation id="5820285701794581330">Ved at bruge Brave Rewards, vil du begynde at få BAT, som du kan bruge til at give skabere drikkepenge.</translation>
 </translationbundle>

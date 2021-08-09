@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">Visa favoriter</translation>
 <translation id="3446024864193919737">Visa Brave Rewards</translation>
 <translation id="6274899614137380422">Visa Binance</translation>
-<translation id="5551238871320268996">Brave tillsammans</translation>
 <translation id="5585019845078534178">Kort</translation>
 <translation id="3870475560794762985">Visa sponsrade bilder</translation>
 <translation id="2875302873837723333">toppsajter</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">Bakgrundsbild</translation>
 <translation id="385051799172605136">Bakåt</translation>
 <translation id="9024104284526126630">Du kan starta ett privat samtal i Brave.</translation>
-<translation id="5735801688206890393">Starta obegränsade samtal med vänner och kollegor i Brave tillsammans.</translation>
+<translation id="4903286433687221248">Starta obegränsade samtal med vänner och kollegor i Brave Talk.</translation>
 <translation id="7115051913071512405">Prova den</translation>
 <translation id="7415602225677446066">Dagens topphistorier i ett helt privat flöde, bara för dig.</translation>
 <translation id="6903061332999399632">Brave News stöds av annonser med helt privata och anonymiserade annonser som matchas på din enhet. Dina personuppgifter förblir alltid privata, enligt vår <ph name="LINK_START"/>Sekretesspolicy<ph name="LINK_END"/>.</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">Hitta automatiskt</translation>
 <translation id="4394049700291259645">Inaktivera</translation>
 <translation id="4176463684765177261">Inaktiverad</translation>
-<translation id="4434663852465709809">QR-kod för iOS Rewards-användare som överför BAT</translation>
-<translation id="2175927920773552910">QR-kod</translation>
 <translation id="8283001340969131076">Tyvärr uppstod ett fel när du försökte koppla från ditt <ph name="PROVIDER"/>-konto. Försök igen om en liten stund.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">Enheten är offline, försök igen senare.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">BAT stöds för närvarande inte i din region. Se <ph name="BEGIN_LINK"/>här<ph name="END_LINK"/> för uppdateringar.</translation>
 <translation id="1737873393693460829">Genom att aktivera [[title]] godkänner du <ph name="BEGIN_LINK1"/>Användarvillkoren<ph name="END_LINK1"/> och <ph name="BEGIN_LINK2"/>Integritetspolicyn<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Fel vid skapande av BAT-kort för webbläsaren Brave</translation>
-<translation id="6473583070570450185">Du måste ha en verifierad plånbok för att logga in</translation>
-<translation id="5949995321533425416">Du behöver minst <ph name="AMOUNT"/> BAT för att skapa en Uphold-plånbok. Försök igen när du har verifierat din plånbok med Uphold.</translation>
+<translation id="8429332714958713413">Du behöver en verifierad plånbok för att logga in</translation>
+<translation id="5881716477679854586">Försök igen när du har slutfört ID-verifieringen på <ph name="CUSTODIAN"/>.</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> anländer om <ph name="DAYS"/></translation>
 <translation id="4672975606583962967">Välj en plånbokstjänst</translation>
 <translation id="1815503044492647974">Välj en plånbokspartner. Om du redan har ett konto blir du ombedd att logga in för att ansluta.</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">Rewards stängdes av</translation>
 <translation id="3354337256330577726">Automatiska bidrag stängdes av</translation>
 <translation id="6727186931929643711">Slutade försöka</translation>
+<translation id="8978461348341400550">Custodian:</translation>
+<translation id="7220161813676251577">Custodian medlems-ID:</translation>
 <translation id="680983167891198932">Nyckel</translation>
 <translation id="7535087603100972091">Värde</translation>
 <translation id="45591635423975492">Loggat</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">Börja använda Brave Rewards</translation>
 <translation id="6318696841371191107">Ta en snabb rundtur</translation>
 <translation id="8465790416279415448">Genom att fortsätta godkänner du <ph name="TOS_LINK_BEGIN"/>Användarvillkoren<ph name="TOS_LINK_END"/> och <ph name="PP_LINK_BEGIN"/>Sekretesspolicyn<ph name="PP_LINK_END"/>.</translation>
-<translation id="2404165674840145940">Dricksa med Brave Rewards</translation>
-<translation id="5820285701794581330">Genom att använda Brave Rewards börjar du tjäna BAT som du kan använda för att dricksa innehållsskapare.</translation>
+<translation id="8222322431155185238">Tips med Brave Rewards</translation>
+<translation id="1895476463085410109">Tjäna ihop belöningar genom att visa Brave Private Ads och stöd innehållsskapare automatiskt</translation>
 <translation id="5705882733397021510">Gå tillbaka</translation>
 <translation id="185034574799484512">Låt oss ta en snabb rundtur</translation>
 <translation id="8281886186245836920">Hoppa över</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">Försök igen</translation>
 <translation id="2600847485413879104">Belönar BAT</translation>
 <translation id="8006596443377585072">bitFlyer-plånbok</translation>
+<translation id="2770577461149798369">Gemini Wallet</translation>
 <translation id="8108350286444475334">Värna plånboken</translation>
 <translation id="6977372887576114613">Satte in BAT</translation>
 <translation id="3173528272490482456">Redo att komma igång?</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">Du kan börja med</translation>
 <translation id="194625454574835815">Återställningsnyckel</translation>
 <translation id="6354568176665589146">Återkommande</translation>
+<translation id="2799223571221894425">Starta om</translation>
 <translation id="1110535155349301542">Ta bort</translation>
 <translation id="8204292894173669182">Ta bort från sparat</translation>
 <translation id="5530851178552343773">Du har tilldelat [[reservedAmount]] [[currency]] till skapare som ännu inte registrerat sig för att ta emot bidrag. Din webbläsare kommer att fortsätta försöka bidra till dess de bekräftats eller till dess 90 dagar gått.</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">Din Brave-plånbok drivs av <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Brave Rewards bygger på Basic Attention Token. Läs mer om BAT</translation>
 <translation id="7823359893981882407">här</translation>
+<translation id="3034163433136515805">Visa QR-kod</translation>
+<translation id="1640793619390890218">för iOS Rewards-användare som överför BAT.</translation>
 <translation id="4483635855837696643">Återställ din plånbok</translation>
 <translation id="459721429458957031">Använd din återställningsnyckel för att återställa din plånbok.</translation>
 <translation id="4600052736217630789">Om du använder en återställningsnyckel så ersätts din aktuella plånbok. Se därför till att tömma eller ha en säkerhetskopia av din aktuella plånbok innan du återställer.</translation>
@@ -865,4 +868,12 @@
 <translation id="6973157709854838218">Dölj dina saldon från att visas</translation>
 <translation id="4548946945059463969">Visa dina saldon på skärmen</translation>
 <translation id="242959166945779492">Du har inga saldon på ditt konto. Besök FTX för att köpa.</translation>
+<translation id="5551238871320268996">Brave tillsammans</translation>
+<translation id="5735801688206890393">Starta obegränsade samtal med vänner och kollegor i Brave tillsammans.</translation>
+<translation id="4434663852465709809">QR-kod för iOS Rewards-användare som överför BAT</translation>
+<translation id="2175927920773552910">QR-kod</translation>
+<translation id="6473583070570450185">Du måste ha en verifierad plånbok för att logga in</translation>
+<translation id="5949995321533425416">Du behöver minst <ph name="AMOUNT"/> BAT för att skapa en Uphold-plånbok. Försök igen när du har verifierat din plånbok med Uphold.</translation>
+<translation id="2404165674840145940">Dricksa med Brave Rewards</translation>
+<translation id="5820285701794581330">Genom att använda Brave Rewards börjar du tjäna BAT som du kan använda för att dricksa innehållsskapare.</translation>
 </translationbundle>

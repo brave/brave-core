@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">ನೆಚ್ಚಿನವುಗಳನ್ನು ತೋರಿಸು</translation>
 <translation id="3446024864193919737">Brave Rewards ತೋರಿಸಿ</translation>
 <translation id="6274899614137380422">Binance ತೋರಿಸಿ</translation>
-<translation id="5551238871320268996">Brave Together</translation>
 <translation id="5585019845078534178">ಕಾರ್ಡ್‌ಗಳು</translation>
 <translation id="3870475560794762985">ಪ್ರಾಯೋಜಿತ ಚಿತ್ರಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="2875302873837723333">ಟಾಪ್ ಸೈಟ್‌ಗಳು</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">ಹಿನ್ನೆಲೆ ಚಿತ್ರ</translation>
 <translation id="385051799172605136">ಹಿಂದೆ</translation>
 <translation id="9024104284526126630">ನೀವು Brave ನಲ್ಲಿ ಖಾಸಗಿ ಕರೆಯನ್ನು ಆರಂಭಿಸಬಹುದು.</translation>
-<translation id="5735801688206890393">Brave Together ನಲ್ಲಿ ಸ್ನೇಹಿತರು ಮತ್ತು ಸಹೋದ್ಯೋಗಿಗಳ ಜೊತೆಗೆ ಅನಿಯಮಿತ ಕರೆಗಳನ್ನು ಆರಂಭಿಸಿ.</translation>
+<translation id="4903286433687221248">Brave ಟಾಕ್ನಲ್ಲಿ ಸ್ನೇಹಿತರು ಮತ್ತು ಸಹೋದ್ಯೋಗಿಗಳೊಂದಿಗೆ ಅನಿಯಮಿತ ಕರೆಗಳನ್ನು ಆರಂಭಿಸಿ.</translation>
 <translation id="7115051913071512405">ಅದನ್ನು ಪ್ರಯತ್ನಿಸಿ ನೋಡಿ</translation>
 <translation id="7415602225677446066">ಇಂದಿನ ಉನ್ನತ ಕಥೆಗಳು ಸಂಪೂರ್ಣವಾಗಿ ಖಾಸಗಿ ಫೀಡ್‌ನಲ್ಲಿ, ಕೇವಲ ನಿಮಗಾಗಿ.</translation>
 <translation id="6903061332999399632">Brave ಸುದ್ದಿ ಎನ್ನುವುದು ಜಾಹೀರಾತಿನಿಂದ ಬೆಂಬಲಿತವಾಗಿದ್ದು ಸಂಪೂರ್ಣವಾಗಿ ಖಾಸಗಿ ಮತ್ತು ಅನಾಮಧೇಯಗೊಳಿಸಿದ ಜಾಹೀರಾತುಗಳನ್ನು ನಿಮ್ಮ ಸಾಧನದಲ್ಲಿ ಹೊಂದಾಣಿಕೆ ಮಾಡಲಾಗಿದೆ. ನಮ್ಮ <ph name="LINK_START"/>privacy policy<ph name="LINK_END"/> ಪ್ರಕಾರ ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಮಾಹಿತಿಯು ಸದಾ ಖಾಸಗಿಯಾಗಿ ಉಳಿಯುತ್ತದೆ.</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">ಸ್ವಯಂ-ಪತ್ತೆಹಚ್ಚುವಿಕೆ</translation>
 <translation id="4394049700291259645">ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ</translation>
 <translation id="4176463684765177261">ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</translation>
-<translation id="4434663852465709809">BAT ವರ್ಗಾಯಿಸುತ್ತಿರುವ iOS ರಿವಾರ್ಡ್ಸ್ ಬಳಕೆದಾರರಿಗೆ QR ಕೋಡ್</translation>
-<translation id="2175927920773552910">QR ಕೋಡ್</translation>
 <translation id="8283001340969131076">ಕ್ಷಮಿಸಿ, ನಿಮ್ಮ <ph name="PROVIDER"/> ಖಾತೆಯ ಸಂಪರ್ಕವನ್ನು ಕಡಿತಗೊಳಿಸಲು ಪ್ರಯತ್ನಿಸುತ್ತಿರುವಾಗ ಏನೋ ದೋಷ ಉಂಟಾಗಿದೆ. ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="8845154268466251503">ಬಿಎಟಿ</translation>
 <translation id="3390542282753297856">ಸಾಧನ ಆಫ್‌ಲೈನ್ ಆಗಿದೆ, ದಯವಿಟ್ಟು ಪುನಃ ಪ್ರಯತ್ನಿಸಿ.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">ನಿಮ್ಮ ಪ್ರದೇಶದಲ್ಲಿ ಪ್ರಸ್ತುತ BAT ಬೆಂಬಲಿತವಾಗಿಲ್ಲ. ನವೀಕರಣಗಳಿಗಾಗಿ ದಯವಿಟ್ಟು <ph name="BEGIN_LINK"/>ಇಲ್ಲಿ<ph name="END_LINK"/> ಉಲ್ಲೇಖಿಸಿ.</translation>
 <translation id="1737873393693460829">[[title]] ಆನ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು <ph name="BEGIN_LINK1"/>ಸೇವಾ ನಿಯಮಗಳು<ph name="END_LINK1"/> ಮತ್ತು <ph name="BEGIN_LINK2"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="END_LINK2"/>ಗೆ ಒಪ್ಪುತ್ತೀರಿ.</translation>
 <translation id="2564425876266960486">Brave ಬ್ರೌಸರ್ BAT ಕಾರ್ಡ್ ರಚಿಸುವಲ್ಲಿ ದೋಷ</translation>
-<translation id="6473583070570450185">ಲಾಗಿನ್ ಮಾಡಲು ನಿಮಗೆ ಪರಿಶೀಲಿಸಲ್ಪಟ್ಟ ವಾಲೆಟ್ ಅಗತ್ಯವಿರುತ್ತದೆ</translation>
-<translation id="5949995321533425416">ಅಪ್‌ಹೋಲ್ಡ್ ವ್ಯಾಲೆಟ್ ರಚಿಸಲು ನಿಮಗೆ ಕನಿಷ್ಠ <ph name="AMOUNT"/> BAT ಅಗತ್ಯವಿದೆ. ಅಪ್‌ಹೋಲ್ಡ್ ಮೂಲಕ ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಿದ ನಂತರ ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="8429332714958713413">ಲಾಗ್ ಇನ್ ಮಾಡಲು ನೀವು ಪರಿಶೀಲಿಸಲ್ಪಟ್ಟ ವ್ಯಾಲೆಟ್ ಹೊಂದಿರಬೇಕಾಗುತ್ತದೆ</translation>
+<translation id="5881716477679854586"><ph name="CUSTODIAN"/> ನಲ್ಲಿರುವ ID ಪರಿಶೀಲನೆಯನ್ನು ನೀವು ಪೂರ್ಣಗೊಳಿಸಿದ ನಂತರ ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> <ph name="DAYS"/> ಬರಲಿದೆ</translation>
 <translation id="4672975606583962967">ವ್ಯಾಲೆಟ್ ಸೇವೆಯೊಂದನ್ನು ಆರಿಸಿ</translation>
 <translation id="1815503044492647974">ಕಸ್ಟೋಡಿಯಲ್ ವ್ಯಾಲೆಟ್ ಪಾಲುದಾರನನ್ನು ಆಯ್ಕೆಮಾಡಿ. ನೀವು ಈಗಾಗಲೇ ಖಾತೆಯನ್ನು ಹೊಂದಿದ್ದರೇ, ಸಂಪರ್ಕಗೊಳ್ಳಲು ನಿಮಗೆ ಲಾಗಿನ್ ಆಗುವಂತೆ ಕೇಳಿಕೊಳ್ಳಲಾಗುತ್ತದೆ.</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಆಫ್ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="3354337256330577726">ಸ್ವಯಂ-ಕೊಡುಗೆಯನ್ನು ಆಫ್ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="6727186931929643711">ಮರುಪ್ರಯತ್ನಿಸುವುದನ್ನು ನಿಲ್ಲಿಸಲಾಗಿದೆ</translation>
+<translation id="8978461348341400550">ಕಸ್ಟೋಡಿಯನ್:</translation>
+<translation id="7220161813676251577">ಕಸ್ಟೋಡಿಯನ್ ID:</translation>
 <translation id="680983167891198932">ಕೀ</translation>
 <translation id="7535087603100972091">ಮೌಲ್ಯ</translation>
 <translation id="45591635423975492">ಲಾಗ್ ಮಾಡಿರುವುದು</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">Brave Rewards ಬಳಸಲು ಪ್ರಾರಂಭಿಸಿ</translation>
 <translation id="6318696841371191107">ತ್ವರಿತ ಪ್ರವಾಸ ಮಾಡಿ</translation>
 <translation id="8465790416279415448">ಮುಂದುವರಿಯುವ ಮೂಲಕ, ನೀವು <ph name="TOS_LINK_BEGIN"/>ಸೇವಾ ನಿಯಮಗಳು<ph name="TOS_LINK_END"/> ಮತ್ತು <ph name="PP_LINK_BEGIN"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="PP_LINK_END"/>ಗೆ ಒಪ್ಪುತ್ತೀರಿ.</translation>
-<translation id="2404165674840145940">Brave ರಿವಾರ್ಡ್‌ಗಳೊಂದಿಗೆ ಸಲಹೆ</translation>
-<translation id="5820285701794581330">Brave ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಬಳಸುವ ಮೂಲಕ, ನೀವು ರಚಿಸುವವರಿಗೆ ಸಲಹೆ ನೀಡಲು ಬಳಸಬಹುದಾದ BAT ಅನ್ನು ಪಡೆಯಲು ಪ್ರಾರಂಭಿಸುತ್ತೀರಿ.</translation>
+<translation id="8222322431155185238">Brave ರಿವಾರ್ಡ್‌ಗಳೊಂದಿಗೆ ಟಿಪ್</translation>
+<translation id="1895476463085410109">Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಗಳಿಸಿ ಮತ್ತು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ವಿಷಯ ರಚನೆಕಾರರನ್ನು ಬೆಂಬಲಿಸಿ</translation>
 <translation id="5705882733397021510">ಹಿಂತಿರುಗಿ</translation>
 <translation id="185034574799484512">’ತ್ವರಿತ ಪರಿಚಯಾತ್ಮಕ ಪ್ರಯಾಣವನ್ನು ಕೈಗೊಳ್ಳೋಣ</translation>
 <translation id="8281886186245836920">ಸ್ಕಿಪ್‌</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">ಪುನಃ ಪ್ರಯತ್ನಿಸಿ</translation>
 <translation id="2600847485413879104">ರಿವಾರ್ಡ್ಸ್ BAT</translation>
 <translation id="8006596443377585072">bitFlyer ವ್ಯಾಲೆಟ್</translation>
+<translation id="2770577461149798369">ಜೆಮಿನಿ ವ್ಯಾಲೆಟ್</translation>
 <translation id="8108350286444475334">ಅಪ್‌ಹೋಲ್ಡ್ ವ್ಯಾಲೆಟ್</translation>
 <translation id="6977372887576114613">ಡೆಪಾಸಿಟ್ ಮಾಡಲಾದ BAT</translation>
 <translation id="3173528272490482456">ಪ್ರಾರಂಭಿಸಲು ಸಿದ್ಧರೇ?</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">ನೀವು ಈ ಮೂಲಕ ಪ್ರಾರಂಭಿಸಬಹುದು</translation>
 <translation id="194625454574835815">ಮರುಪ್ರಾಪ್ತಿ ಕೀಲಿ</translation>
 <translation id="6354568176665589146">ಮರುಕಳಿಸುವಿಕೆ</translation>
+<translation id="2799223571221894425">ಮರುಪ್ರಾರಂಭಿಸು</translation>
 <translation id="1110535155349301542">ತೆಗೆದುಹಾಕು</translation>
 <translation id="8204292894173669182">ಉಳಿಸಲಾಗಿರುವುದರಿಂದ ತೆಗೆದುಹಾಕು</translation>
 <translation id="5530851178552343773">ಕೊಡುಗೆಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಇನ್ನೂ ಸೈನ್ ಅಪ್ ಮಾಡದ ರಚನೆಕಾರರಿಗೆ ನೀವು [[reservedAmount]] [[currency]] ಮೊತ್ತವನ್ನು ನಿಯೋಜಿಸಿದ್ದೀರಿ. ಅವರು ಪರಿಶೀಲಿಸುವ ತನಕ ಅಥವಾ 90 ದಿನಗಳು ಮುಗಿಯುವ ತನಕ ನಿಮ್ಮ ಬ್ರೌಸರ್ ಕೊಡುಗೆ ನೀಡಲು ಪ್ರಯತ್ನಿಸುತ್ತಲೇ ಇರುತ್ತದೆ.</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">ನಿಮ್ಮ Brave ವ್ಯಾಲೆಟ್ <ph name="PROVIDER"/> ಮೂಲಕ ಸಂಚಾಲಿತ.</translation>
 <translation id="6401272292123354754">Basic Attention Token ಆಧಾರದಲ್ಲಿ Brave Rewards ರಚಿಸಲಾಗಿದೆ. BAT ಕುರಿತು ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</translation>
 <translation id="7823359893981882407">ಇಲ್ಲಿ</translation>
+<translation id="3034163433136515805">QR ಕೋಡ್ ವೀಕ್ಷಿಸಿ</translation>
+<translation id="1640793619390890218">iOS ರಿವಾರ್ಡ್‌ಗಳಿಗಾಗಿ ಬಳಕೆದಾರರು BAT ವರ್ಗಾಯಿಸುತ್ತಿದ್ದಾರೆ.</translation>
 <translation id="4483635855837696643">ನಿಮ್ಮ ವಾಲೆಟ್ ಪುನಃಸ್ಥಾಪಿಸಿ</translation>
 <translation id="459721429458957031">ನಿಮ್ಮ ವಾಲೆಟ್ ಪುನಃಸ್ಥಾಪಿಸಲು ನಿಮ್ಮ ಮರುಪ್ರಾಪ್ತಿ ಕೀ ಅನ್ನು ಬಳಸಿ.</translation>
 <translation id="4600052736217630789">ನಿಮ್ಮ ಮರುಪ್ರಾಪ್ತಿ ಕೀ ಬಳಸಿ ಪುನಃಸ್ಥಾಪಿಸುವುದರಿಂದ ನಿಮ್ಮ ಪ್ರಸ್ತುತ ವಾಲೆಟ್ ಬದಲಾಯಿಸಲ್ಪಡುತ್ತದೆ. ಆದ್ದರಿಂದ ಪುನಃಸ್ಥಾಪಿಸುವ ಮೊದಲು ನಿಮ್ಮ ಪ್ರಸ್ತುತ ವಾಲೆಟ್ ಅನ್ನು ನೀವು ಖಾಲಿ ಮಾಡುವುದನ್ನು ಅಥವಾ ಬ್ಯಾಕ್ ಅಪ್ ಮಾಡುವುದನ್ನು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ.</translation>
@@ -865,4 +868,12 @@
 <translation id="6973157709854838218">ನಿಮ್ಮ ಬ್ಯಾಲೆನ್ಸ್‌ಗಳು ಪ್ರದರ್ಶನಗೊಳ್ಳದಂತೆ ಮರೆಮಾಡಿ</translation>
 <translation id="4548946945059463969">ನಿಮ್ಮ ಬ್ಯಾಲೆನ್ಸ್‌ಗಳನ್ನು ಸ್ಕ್ರೀನ್‌ನಲ್ಲಿ ತೋರಿಸಿ</translation>
 <translation id="242959166945779492">ನಿಮ್ಮ ಖಾತೆಯಲ್ಲಿ ನೀವು ಯಾವುದೇ ಬ್ಯಾಲೆನ್ಸ್ ಹೊಂದಿಲ್ಲ. ಖರೀದಿ ಮಾಡಲು FTX ಗೆ ಭೇಟಿ ನೀಡಿ.</translation>
+<translation id="5551238871320268996">Brave Together</translation>
+<translation id="5735801688206890393">Brave Together ನಲ್ಲಿ ಸ್ನೇಹಿತರು ಮತ್ತು ಸಹೋದ್ಯೋಗಿಗಳ ಜೊತೆಗೆ ಅನಿಯಮಿತ ಕರೆಗಳನ್ನು ಆರಂಭಿಸಿ.</translation>
+<translation id="4434663852465709809">BAT ವರ್ಗಾಯಿಸುತ್ತಿರುವ iOS ರಿವಾರ್ಡ್ಸ್ ಬಳಕೆದಾರರಿಗೆ QR ಕೋಡ್</translation>
+<translation id="2175927920773552910">QR ಕೋಡ್</translation>
+<translation id="6473583070570450185">ಲಾಗಿನ್ ಮಾಡಲು ನಿಮಗೆ ಪರಿಶೀಲಿಸಲ್ಪಟ್ಟ ವಾಲೆಟ್ ಅಗತ್ಯವಿರುತ್ತದೆ</translation>
+<translation id="5949995321533425416">ಅಪ್‌ಹೋಲ್ಡ್ ವ್ಯಾಲೆಟ್ ರಚಿಸಲು ನಿಮಗೆ ಕನಿಷ್ಠ <ph name="AMOUNT"/> BAT ಅಗತ್ಯವಿದೆ. ಅಪ್‌ಹೋಲ್ಡ್ ಮೂಲಕ ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಿದ ನಂತರ ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="2404165674840145940">Brave ರಿವಾರ್ಡ್‌ಗಳೊಂದಿಗೆ ಸಲಹೆ</translation>
+<translation id="5820285701794581330">Brave ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಬಳಸುವ ಮೂಲಕ, ನೀವು ರಚಿಸುವವರಿಗೆ ಸಲಹೆ ನೀಡಲು ಬಳಸಬಹುದಾದ BAT ಅನ್ನು ಪಡೆಯಲು ಪ್ರಾರಂಭಿಸುತ್ತೀರಿ.</translation>
 </translationbundle>

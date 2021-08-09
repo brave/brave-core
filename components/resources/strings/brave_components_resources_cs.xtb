@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">Zobrazit oblíbené</translation>
 <translation id="3446024864193919737">Ukázat odměny Brave</translation>
 <translation id="6274899614137380422">Ukázat Binance</translation>
-<translation id="5551238871320268996">Brave společně</translation>
 <translation id="5585019845078534178">Karty</translation>
 <translation id="3870475560794762985">Ukázat sponzorované obrázky</translation>
 <translation id="2875302873837723333">top weby</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">Obrázek na pozadí</translation>
 <translation id="385051799172605136">Zpět</translation>
 <translation id="9024104284526126630">V Brave můžete zahájit soukromý hovor.</translation>
-<translation id="5735801688206890393">Zahajte neomezené hovory s přáteli a kolegy v Brave Together.</translation>
+<translation id="4903286433687221248">Pusťte se do neomezených hovorů s přáteli a kolegy v aplikaci Brave Talk.</translation>
 <translation id="7115051913071512405">Vyzkoušet</translation>
 <translation id="7415602225677446066">Nejdůležitější příběhy dnešního dne v naprosto soukromém kanálu, pouze pro vás.</translation>
 <translation id="6903061332999399632">Služba zprávy Brave je podporována reklamami, které jsou zcela soukromé a anonymizované a odpovídají vašemu zařízení. Vaše osobní údaje zůstanou vždy soukromé, podle našich <ph name="LINK_START"/>zásad ochrany osobních údajů<ph name="LINK_END"/>.</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">Automaticky detekovat</translation>
 <translation id="4394049700291259645">Deaktivovat</translation>
 <translation id="4176463684765177261">Zakázáno</translation>
-<translation id="4434663852465709809">QR kód pro iOS uživatele Rewards, kteří převádí BAT</translation>
-<translation id="2175927920773552910">QR kód</translation>
 <translation id="8283001340969131076">Litujeme, při pokusu o odpojení vašeho <ph name="PROVIDER"/> účtu došlo k chybě. Zkuste to prosím za chvilku znovu.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">Zařízení není připojeno k internetu. Zkuste to, prosím, později.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">Vaše oblast nyní nepodporuje BAT. Pro aktuální informace se prosím podívejte <ph name="BEGIN_LINK"/>sem.<ph name="END_LINK"/></translation>
 <translation id="1737873393693460829">Zapnutím [[title]] vyjadřujete souhlas s <ph name="BEGIN_LINK1"/>Podmínkami služby<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>Zásadami ochrany osobních údajů<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Chyba při vytváření BAT karty pro prohlížeč Brave</translation>
-<translation id="6473583070570450185">K přihlášení je vyžadována ověřená peněženka</translation>
-<translation id="5949995321533425416">K vytvoření peněženky Uphold potřebujete minimálně <ph name="AMOUNT"/> BAT. Ověřte u služby Uphold svou peněženku a zkuste to znovu.</translation>
+<translation id="8429332714958713413">K přihlášení potřebujete mít ověřenou peněženku.</translation>
+<translation id="5881716477679854586">Po dokončení ověření ID na <ph name="CUSTODIAN"/> to zkuste znovu.</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> dorazí za <ph name="DAYS"/></translation>
 <translation id="4672975606583962967">Zvolte službu peněženky</translation>
 <translation id="1815503044492647974">Zvolte si partnera pro úschovu peněženky. Pokud již máte účet, budete vyzváni k přihlášení a připojení.</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">Odměny byly vypnuty</translation>
 <translation id="3354337256330577726">Automatické příspěvky byly vypnuty</translation>
 <translation id="6727186931929643711">Opakovaný pokus byl zastaven</translation>
+<translation id="8978461348341400550">Správce:</translation>
+<translation id="7220161813676251577">Členské ID správce:</translation>
 <translation id="680983167891198932">Klíč</translation>
 <translation id="7535087603100972091">Hodnota</translation>
 <translation id="45591635423975492">Přihlášeno v</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">Začněte používat Brave Rewards</translation>
 <translation id="6318696841371191107">Spustit rychlou prohlídku</translation>
 <translation id="8465790416279415448">Pokračováním souhlasíte s the <ph name="TOS_LINK_BEGIN"/>Podmínkami služby<ph name="TOS_LINK_END"/> a <ph name="PP_LINK_BEGIN"/>Zásadami ochrany osobních údajů<ph name="PP_LINK_END"/>.</translation>
-<translation id="2404165674840145940">Posílejte příspěvky s Brave Rewards</translation>
-<translation id="5820285701794581330">Používáním Brave Rewards začnete vydělávat BAT, které můžete použít na příspěvky pro tvůrce.</translation>
+<translation id="8222322431155185238">Odměňování s Brave Rewards</translation>
+<translation id="1895476463085410109">Získávejte odměny za prohlížení soukromých reklam Brave a automaticky podporujte tvůrce obsahu.</translation>
 <translation id="5705882733397021510">Přejít zpět</translation>
 <translation id="185034574799484512">Udělejme si krátkou prohlídku</translation>
 <translation id="8281886186245836920">Přeskočit</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">Zkusit znovu</translation>
 <translation id="2600847485413879104">Rewards BAT</translation>
 <translation id="8006596443377585072">Peněženka bitFlyer</translation>
+<translation id="2770577461149798369">Peněženka Gemini</translation>
 <translation id="8108350286444475334">Peněženka Uphold</translation>
 <translation id="6977372887576114613">Vložené BAT</translation>
 <translation id="3173528272490482456">Jste připraveni začít?</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">Můžete začít s</translation>
 <translation id="194625454574835815">Klíč pro obnovení</translation>
 <translation id="6354568176665589146">Opakující se</translation>
+<translation id="2799223571221894425">Restartovat</translation>
 <translation id="1110535155349301542">odstranit</translation>
 <translation id="8204292894173669182">Odstranit z uložených</translation>
 <translation id="5530851178552343773">Pro tvůrce, kteří se dosud nepřihlásili k odběru příspěvků, jste určili [[reservedAmount]] [[currency]]. Váš prohlížeč se bude do jejich ověření nebo do uplynutí 90 dní i nadále snažit přispívat.</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">Vaše peněženka Brave využívá službu <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Odměny Brave staví na základním žetonu Basic Attention Token (BAT). Zjistěte si o něm více</translation>
 <translation id="7823359893981882407">zde</translation>
+<translation id="3034163433136515805">Zobrazit QR kód</translation>
+<translation id="1640793619390890218">pro uživatele iOS Rewards, kteří přenášejí BAT.</translation>
 <translation id="4483635855837696643">Obnovit vaši peněženku</translation>
 <translation id="459721429458957031">Použijte klíč k obnovení vaší peněženky.</translation>
 <translation id="4600052736217630789">Obnova pomocí klíče pro obnovení nahradí vaši aktuální peněženku. Ujistěte se, že jste vaši aktuální peněženku před obnovením vyprázdnili nebo zálohovali.</translation>
@@ -865,4 +868,12 @@
 <translation id="6973157709854838218">Skrýt vaše zůstatky ze zobrazení</translation>
 <translation id="4548946945059463969">Odhalit vaše zůstatky na obrazovce</translation>
 <translation id="242959166945779492">Na účtu nemáte žádný zůstatek. Navštivte FTX a proveďte nákup.</translation>
+<translation id="5551238871320268996">Brave společně</translation>
+<translation id="5735801688206890393">Zahajte neomezené hovory s přáteli a kolegy v Brave Together.</translation>
+<translation id="4434663852465709809">QR kód pro iOS uživatele Rewards, kteří převádí BAT</translation>
+<translation id="2175927920773552910">QR kód</translation>
+<translation id="6473583070570450185">K přihlášení je vyžadována ověřená peněženka</translation>
+<translation id="5949995321533425416">K vytvoření peněženky Uphold potřebujete minimálně <ph name="AMOUNT"/> BAT. Ověřte u služby Uphold svou peněženku a zkuste to znovu.</translation>
+<translation id="2404165674840145940">Posílejte příspěvky s Brave Rewards</translation>
+<translation id="5820285701794581330">Používáním Brave Rewards začnete vydělávat BAT, které můžete použít na příspěvky pro tvůrce.</translation>
 </translationbundle>

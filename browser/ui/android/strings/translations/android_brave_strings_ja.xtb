@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">HTTPではなく、安全なHTTPSを使用してサイトを開きます。</translation>
 <translation id="94154759592465111">スクリプトをブロックする</translation>
 <translation id="3518266709656143462">JavaScript をブロック（サイト破損の可能性あり）</translation>
-<translation id="5709627087332022422">クロスサイトのトラッカーをブロックする</translation>
 <translation id="6052725679982758334">ソーシャルメディアのブロック</translation>
 <translation id="7498695072878479744">第三者サイトのGoogleログインボタンを許可する</translation>
 <translation id="863171915776379000">Facebookのログインと埋め込み投稿を許可する</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">IPFSゲートウェイ</translation>
 <translation id="2688519859165248360">IPFSゲートウェイを使用したIPFSリソースへのナビゲーションを許可</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="1448289340149908413">イーサリアム</translation>
+<translation id="7822245778264751380">Ethereum価格 (ETH)</translation>
 <translation id="6513892817556267573">イーサリアムネームサービス</translation>
 <translation id="3894650624018948468">解決方法</translation>
 <translation id="2356070529366658676">確認する</translation>
 <translation id="4176463684765177261">無効</translation>
 <translation id="2218918398178303658">DNS over HTTPS</translation>
-<translation id="1448289340149908413">イーサリアム</translation>
 <translation id="5787084571334399599">フィンガープリントを防止します</translation>
 <translation id="7459000603787995422">終了時にタブを閉じる</translation>
 <translation id="4448697385961650078">トラッカーと広告をブロック</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">Braveをデフォルトのブラウザにしてください！</translation>
 <translation id="7136694880210472378">デフォルトに設定</translation>
 <translation id="4250680216510889253">いいえ</translation>
-<translation id="4501702055016678577">DuckDuckGoでプライベート検索しますか？</translation>
-<translation id="910419239800579753">プライベート検索では、このプライベートタブにいる間、BraveはDuckDuckGoで検索を行います。DuckDuckGoは検索履歴を追跡しないので、プライベートに検索することを可能にします。</translation>
-<translation id="1426410128494586442">はい</translation>
-<translation id="5628466560184522265">DuckDuckGoでのプライベート検索についてさらに詳しく</translation>
 <translation id="8826007068782654809">ありがとうございます</translation>
 <translation id="6665366815203065060">チップを送りました! 宛先 :</translation>
 <translation id="5441565662498481293">チップの毎月定期支払い設定が完了しました! 宛先:</translation>
@@ -375,12 +371,12 @@
 <translation id="7427567994475794038">プライバシーレポートをONにして、過去3時間にブロックされたトラッカー広告の数を確認しましょう。</translation>
 <translation id="2053891538879944400">Braveブラウザで <ph name="DATA"/> <ph name="DATA_TEXT"/> の通信量を節約しました。</translation>
 <translation id="8640064498452534195">プライバシーレポートをONにして、保存したデータ量を確認します。</translation>
-<translation id="2252497442547961651">Braveブラウザは他のブラウザと比べ、バッテリー使用量が平均40%少なくなっています。&#128267;</translation>
+<translation id="2252497442547961651">Braveブラウザは他のブラウザと比べ、バッテリー使用量が平均40%少なくなっています。🔋</translation>
 <translation id="1945330434665345785">先週、Braveブラウザで <ph name="COUNT"/>件のトラッカーと広告をブロックしました。</translation>
 <translation id="2883868922264431515">プライバシーを尊重する広告を表示してトークンを獲得し、お気に入りのウェブサイトをサポートしましょう。</translation>
-<translation id="5678925890616256956">いいですね！Braveブラウザを使って、250件のトラッカー&amp;広告をブロックしました。&#128293;</translation>
-<translation id="9199047775708635708">いいですね！Braveブラウザで10MBを節約しました。&#128267;</translation>
-<translation id="1880168210969863408">いいですね！Braveブラウザを使って、読み込み時間を10分節約しました。&#128168;&#128168;</translation>
+<translation id="5678925890616256956">いいですね！Braveブラウザを使って、250件のトラッカー&amp;広告をブロックしました。🔥</translation>
+<translation id="9199047775708635708">いいですね！Braveブラウザで10MBを節約しました。🔋</translation>
+<translation id="1880168210969863408">いいですね！Braveブラウザを使って、読み込み時間を10分節約しました。💨💨</translation>
 <translation id="7408493389591475748">ブラウジングを開始してプライバシーレポートを表示</translation>
 <translation id="9080777565335515917">プライベートで安全なブラウジングのため、Braveをデフォルトのブラウザとして設定します。</translation>
 <translation id="1390943217516275883">Braveにプライバシー統計の表示を許可</translation>
@@ -443,7 +439,7 @@
 <translation id="3477340970981564961">Braveプライベート広告は、従来の広告とは異なり、コンテンツクリエイターをサポートするためのトークンで報酬がもらえ、すべては個人情報を非公開にして行われます。</translation>
 <translation id="6973095375773523904">広告はどこに表示されますか？</translation>
 <translation id="7556325460112047619">Braveプライベート広告は通常の通知として表示されます。これらの広告をどのくらいの頻度で表示するかは設定で操作します。</translation>
-<translation id="6897083627729802351">報酬を受け取るタイミング</translation>
+<translation id="6897083627729802351">報酬を受け取るタイミングは？</translation>
 <translation id="310863932297733723">当月中にBraveプライベート広告から獲得したトークンは、翌月の5日に届きます。</translation>
 <translation id="7712287524451429139">クリエイターへの支援がもっと簡単に</translation>
 <translation id="105037569026952831">クリエイターは、私たちが「アテンション」として測定するあなたのエンゲージメントに基づいて、トークンの寄付を自動的に受け取ります。</translation>
@@ -460,7 +456,7 @@
 <translation id="827315274423079662">やったー、準備完了です！</translation>
 <translation id="3895246934788932488">Brave Rewardsを使用することで、あなたは自分のプライバシーを保護し、ウェブを誰にとってもより良い場所にするお手伝いをしています。そして、それは素晴らしいことです！</translation>
 <translation id="5705882733397021510">戻る</translation>
-<translation id="3985567919248057638">クイックツアーに参加しよう</translation>
+<translation id="3985567919248057638">簡単な説明動画を見る</translation>
 <translation id="2434574859640694129">最初の広告の支払いを受け取ったら、戻ってきてこのクリエイターにチップを渡すことができます！</translation>
 <translation id="207242986925259074">クイックリフレッシャーツアー</translation>
 <translation id="8342862030112839977">初めて報酬が支払われる日付:</translation>
@@ -520,7 +516,7 @@
 <translation id="538450413584738399">スワップ</translation>
 <translation id="8825032646286791700">DeFi &amp;  安全な仮想通貨ストレージ</translation>
 <translation id="5460364286096798286">仮想通貨の保管、アセットの取引、相場とポートフォリオのパフォーマンス確認などの機能が充実。DeFiでの投資・借入・貸出をぜひお試しください。</translation>
-<translation id="1748009926009835882">仮想通貨の設定</translation>
+<translation id="1748009926009835882">仮想通貨ウォレットの設定</translation>
 <translation id="2759836790106646094">ウォレットを今すぐバックアップしましょう！</translation>
 <translation id="7685607706678113458">次のステップでは、暗号化されたウォレットを復元するための12の単語が表示されます。</translation>
 <translation id="2359808026110333948">続ける</translation>
@@ -534,7 +530,7 @@
 <translation id="841880029259839903">あるアカウントから別のアカウントへ仮想通貨を送信また転送できます。</translation>
 <translation id="8982246458261383692">仮想通貨アセットをBrave DEXアグリゲーターとスワップします。</translation>
 <translation id="1783600039044302171">仮想通貨をパスワードで保護</translation>
-<translation id="3726490322412361740">パスワードを入力</translation>
+<translation id="3726490322412361740">パスワードを入力してください</translation>
 <translation id="4450951602553063001">パスワードを再入力</translation>
 <translation id="1783870616707290226">パスワードは7文字以上で入力してください</translation>
 <translation id="7383102760859258982">再入力したパスワードが一致しません</translation>
@@ -568,4 +564,18 @@
 <translation id="745115390910697838">フレーズが一致しません。もう一度お試しください。</translation>
 <translation id="2360588547830602174">アカウントの復元に失敗しました。もう一度お試しください。</translation>
 <translation id="1530109021798294736">メインネット</translation>
+<translation id="990936698620790924">市場価格 (ETH)</translation>
+<translation id="6748108480210050150">送信元</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">最大 (推定)</translation>
+<translation id="59223531494896848">リミット</translation>
+<translation id="3567988240819868195">市場</translation>
+<translation id="632241521608275119">価格変動の許容値</translation>
+<translation id="5709627087332022422">クロスサイトのトラッカーをブロックする</translation>
+<translation id="4501702055016678577">DuckDuckGoでプライベート検索しますか？</translation>
+<translation id="910419239800579753">プライベート検索では、このプライベートタブにいる間、BraveはDuckDuckGoで検索を行います。DuckDuckGoは検索履歴を追跡しないので、プライベートに検索することを可能にします。</translation>
+<translation id="1426410128494586442">はい</translation>
+<translation id="5628466560184522265">DuckDuckGoでのプライベート検索についてさらに詳しく</translation>
 </translationbundle>

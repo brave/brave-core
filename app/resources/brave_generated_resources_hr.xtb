@@ -28,6 +28,9 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="3218385319396786393">Na ovoj je stranici blokirana automatska reprodukcija</translation>
 <translation id="4988333904713528597">Uvijek omogući automatsku reprodukciju na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Nastavi blokirati automatsku reprodukciju</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Upitaj kada se mrežnim mjestom želi pristupiti pružatelju sučelja API platforme Ethereum</translation>
+<translation id="7017590444693657895">Blokiraj pristup pružatelju sučelja API platforme Ethereum mrežnim mjestima</translation>
 <translation id="8988939298652262600">Društvo Brave ne pregledava razinu sigurnosti i zaštite dodataka. Instalirajte ovaj dodatak samo ako vjerujete programeru.</translation>
 <translation id="8081858229109418493">Naziv profila i ikona</translation>
 <translation id="2044383478723007273">Boje preglednika Brave</translation>
@@ -42,6 +45,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="5802665280774361839">Prikaži automatsko završavanje u adresnoj traci</translation>
 <translation id="597020512043916976">Prikaži glavna mrežna mjesta u prijedlozima koji se samostalno ispunjavanju</translation>
 <translation id="264150068416846820">Prikaži glavna mrežna mjesta Brave u prijedlozima koji se samostalno ispunjavanju</translation>
+<translation id="5529693968082667490">Prikaži gumb za pretraživanje kartica</translation>
 <translation id="6414370348346025511">Uključena je standardna zaštita.</translation>
 <translation id="814018970995616154">Provjerite URL-ove s popisom nesigurnih mrežnih mjesta pohranjenih u pregledniku Brave.</translation>
 <translation id="1144810021918451336">Ne štiti vas od opasnih mrežnih mjesta, preuzimanja i proširenja.</translation>
@@ -93,7 +97,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="6303294677342628402">Štitovi</translation>
 <translation id="7133511168130368997">Blokiraj elemente za praćenje i oglase koji se prikazuju na internetu.</translation>
 <translation id="2761825942249694703">Ovo su zadane postavke značajke Štitovi. Zatim primijenite značajku na sva mrežna mjesta, osim ako ne želite promijeniti nešto u okviru Štitovi na određenom mrežnom mjestu. Mijenjanjem ovih postavki ne mijenjaju se postojeće postavke koje su prethodno postavljene za dotično mjesto.</translation>
-<translation id="8754605759692119662">Ovom se značajkom blokira većina oglasa na mrežnim mjestima, ali ne i Braveovi privatni oglasi kojima se upravlja u</translation>
+<translation id="1485394570478670912">Ovim se blokira većina oglasa na mrežnim mjestima, ali ne i oglasi Brave Private Ads — kojima se upravlja putem</translation>
 <translation id="6388201778088078932">postavkama.</translation>
 <translation id="9185018653595759199">Blokiranje društvenih mreža</translation>
 <translation id="7390783310074170337">Zadani prikaz</translation>
@@ -294,6 +298,13 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="1391855377994926460">Brže pregledavajte mrežu – do 6 puta brže na mrežnim mjestima poznatih novina.</translation>
 <translation id="9218430445555521422">Postavi kao zadano</translation>
 <translation id="3479552764303398839">Ne sada</translation>
+<translation id="5039804452771397117">Dopusti</translation>
+<translation id="7053983685419859001">Blokiraj</translation>
+<translation id="7815301689257843278">Treba li poslati izvješća o padu tako da se preglednikom Brave može spriječiti ponovno pojavljivanje ovog problema?</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> neočekivano se zatvorio.</translation>
+<translation id="1324417023773393937">Preglednik Brave</translation>
+<translation id="1068069727470515940">Možete ponovno promijeniti <ph name="SETTING_TEXT"/> u bilo kojem trenutku.</translation>
+<translation id="6873781976650514089">ovu postavku</translation>
 <translation id="6040143037577758943">Zatvori</translation>
 <translation id="5600566490506283344">Obavijest o oglasu u pregledniku Brave</translation>
 <translation id="4877147287319222750">Dodaj na bočnu traku</translation>
@@ -345,6 +356,9 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="8487693399751278191">Sada uvezite knjiške oznake...</translation>
 <translation id="2557899542277210112">Za brzo pristupanje postavite svoje knjiške oznake ovdje na traku za knjiške oznake.</translation>
 <translation id="2808630562319398131">Ponovno postavite podatke za Brave Rewards...</translation>
+<translation id="2273851479262317744">Postavi preglednik Brave kao zadani preglednik</translation>
+<translation id="8581710194025054669">Za jamčenje najbolje privatnosti na mreži razmotrite postavljanje preglednika Brave kao zadanog preglednika na svom računalu. Ako je preglednik Brave vaš zadani preglednik, bilo koja mrežna poveznica na koju kliknete otvara se uz zaštite privatnosti preglednika Brave.</translation>
+<translation id="8754605759692119662">Ovom se značajkom blokira većina oglasa na mrežnim mjestima, ali ne i Braveovi privatni oglasi kojima se upravlja u</translation>
 <translation id="1224064034972923114">Pomognite nam poboljšati preglednik Brave automatskim slanjem izvješća o rušenju.</translation>
 <translation id="3738833060602717053">Pomognite nam unaprijediti <ph name="PRODUCT_NAME"/></translation>
 </translationbundle>

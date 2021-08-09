@@ -56,7 +56,6 @@
 <translation id="4546260624932151782">お気に入りを表示</translation>
 <translation id="3446024864193919737">Brave Rewardsを表示する</translation>
 <translation id="6274899614137380422">Binanceを表示する</translation>
-<translation id="5551238871320268996">Brave Together</translation>
 <translation id="5585019845078534178">カード</translation>
 <translation id="3870475560794762985">スポンサー画像を表示する</translation>
 <translation id="2875302873837723333">トップサイト</translation>
@@ -66,7 +65,7 @@
 <translation id="3159285901314605198">背景画像</translation>
 <translation id="385051799172605136">戻る</translation>
 <translation id="9024104284526126630">Braveでプライベート通話を開始できます。</translation>
-<translation id="5735801688206890393">「Brave Together」で友人や同僚と無制限の通話を始めよう。</translation>
+<translation id="4903286433687221248">Brave Talkで友人や同僚と無制限の通話を始めよう。</translation>
 <translation id="7115051913071512405">試してみる</translation>
 <translation id="7415602225677446066">Brave Newsは、読みたい記事が上がってくるプライベート・ニュースリーダー。</translation>
 <translation id="6903061332999399632">Brave Newsは広告に支えられていますが、その広告はあなたのデバイス上でマッチングされており、あなたが完全に匿名化された状態でプライバシーを重視して配信されます。お客様の個人情報は、当社<ph name="LINK_START"/>プライバシーポリシー<ph name="LINK_END"/>に従い常に非公開のままです。</translation>
@@ -177,8 +176,6 @@
 <translation id="8010081455002666927">自動検出</translation>
 <translation id="4394049700291259645">無効にする</translation>
 <translation id="4176463684765177261">無効</translation>
-<translation id="4434663852465709809">BATを移行するiOSリワードユーザーのためのQRコード</translation>
-<translation id="2175927920773552910">QR コード</translation>
 <translation id="8283001340969131076">申し訳ありません。<ph name="PROVIDER"/>アカウントの接続を解除する際にエラーが発生しました。しばらくしてからもう一度お試しください。</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">デバイスがオフラインです。後でもう一度やり直してください。</translation>
@@ -243,8 +240,8 @@
 <translation id="2359865110462963929">お住まいの地域で、現在BATはサポートされていません。最新の情報につきましては、<ph name="BEGIN_LINK"/>こちら<ph name="END_LINK"/>をご参照ください。</translation>
 <translation id="1737873393693460829">[[title]]をオンにすることで、<ph name="BEGIN_LINK1"/>利用規約<ph name="END_LINK1"/>および<ph name="BEGIN_LINK2"/>プライバシーポリシー<ph name="END_LINK2"/>に同意するものとします。</translation>
 <translation id="2564425876266960486">BraveブラウザBATカードの作成エラー</translation>
-<translation id="6473583070570450185">ログインするには、認証済みのウォレットが必要です</translation>
-<translation id="5949995321533425416">Upholdウォレットを作成するには最低<ph name="AMOUNT"/>BATが必要です。Upholdでウォレットを認証してからもう一度お試しください。</translation>
+<translation id="8429332714958713413">ログインするには認証済みのウォレットが必要です</translation>
+<translation id="5881716477679854586"><ph name="CUSTODIAN"/>でID認証を完了してからもう一度お試しください。</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/>が<ph name="DAYS"/>で受け取れます。</translation>
 <translation id="4672975606583962967">ウォレットサービスを選択</translation>
 <translation id="1815503044492647974">ウォレット管理パートナーを選択します。すでにアカウントをお持ちの場合、ログインして接続するよう求められます。</translation>
@@ -282,6 +279,8 @@
 <translation id="386483240851194811">Rewardsが停止しました</translation>
 <translation id="3354337256330577726">自動支援はオフになりました</translation>
 <translation id="6727186931929643711">再試行を中断しました</translation>
+<translation id="8978461348341400550">カストディアン:</translation>
+<translation id="7220161813676251577">カストディアンメンバーID:</translation>
 <translation id="680983167891198932">キー</translation>
 <translation id="7535087603100972091">値</translation>
 <translation id="45591635423975492">ログ日時</translation>
@@ -379,8 +378,8 @@
 <translation id="2070991379950719711">Brave Rewardsの使用を開始</translation>
 <translation id="6318696841371191107">クイックツアーに参加</translation>
 <translation id="8465790416279415448">続行することで、<ph name="TOS_LINK_BEGIN"/>利用規約<ph name="TOS_LINK_END"/>および<ph name="PP_LINK_BEGIN"/>プライバシーポリシー<ph name="PP_LINK_END"/>に同意するものとします。</translation>
-<translation id="2404165674840145940">Brave rewardsでチップを渡す</translation>
-<translation id="5820285701794581330">Brave Rewardsに参加することで、クリエイターにチップを渡すために使用できるBATを獲得できるようになります。</translation>
+<translation id="8222322431155185238">Brave Rewardsについて</translation>
+<translation id="1895476463085410109">Brave Private Adsを表示してRewardsを獲得し、コンテンツクリエイターを自動的にサポート</translation>
 <translation id="5705882733397021510">戻る</translation>
 <translation id="185034574799484512">クイックツアーを見てみましょう</translation>
 <translation id="8281886186245836920">スキップ</translation>
@@ -533,6 +532,7 @@
 <translation id="8725066075913043281">再試行</translation>
 <translation id="2600847485413879104">リワーズBAT</translation>
 <translation id="8006596443377585072">bitFlyerウォレット</translation>
+<translation id="2770577461149798369">Geminiウォレット</translation>
 <translation id="8108350286444475334">Upholdウォレット</translation>
 <translation id="6977372887576114613">預けたBAT</translation>
 <translation id="3173528272490482456">始める準備はできましたか？</translation>
@@ -540,6 +540,7 @@
 <translation id="108052542935515756">こちらで始めることができます：</translation>
 <translation id="194625454574835815">回復キー</translation>
 <translation id="6354568176665589146">繰り返し</translation>
+<translation id="2799223571221894425">再起動</translation>
 <translation id="1110535155349301542">削除する</translation>
 <translation id="8204292894173669182">保存済みから削除</translation>
 <translation id="5530851178552343773">あなたは[[reservedAmount]] [[currency]]分を、まだ支援の受け取り登録が完了していないクリエイターに送信しました。あなたのブラウザはそのクリエイターが受け取り設定を完了するかもしくは90日間が経過するまで、支援の実行を試み続けます。</translation>
@@ -571,6 +572,8 @@
 <translation id="3092054349246483285">あなたのBraveウォレットは<ph name="PROVIDER"/>が提供しています</translation>
 <translation id="6401272292123354754">Brave RewardsはBasic Attention Token(BAT)で構築されています。BATの詳細をもっと知る</translation>
 <translation id="7823359893981882407">こちら</translation>
+<translation id="3034163433136515805">QR コードを見る</translation>
+<translation id="1640793619390890218">BATを転送するiOS Rewardsユーザー</translation>
 <translation id="4483635855837696643">ウォレットを復元する</translation>
 <translation id="459721429458957031">回復キーを使ってウォレットを復元します。</translation>
 <translation id="4600052736217630789">回復キーで復元すると現在のウォレットと置き換えられます。復元前に現在のウォレットを空にするか、バックアップを確実にしてください。</translation>
@@ -868,4 +871,12 @@
 <translation id="6973157709854838218">残高を非表示</translation>
 <translation id="4548946945059463969">画面に残高を表示</translation>
 <translation id="242959166945779492">アカウントに残高がありません。購入するにはFTXへ移動します。</translation>
+<translation id="5551238871320268996">Brave Together</translation>
+<translation id="5735801688206890393">「Brave Together」で友人や同僚と無制限の通話を始めよう。</translation>
+<translation id="4434663852465709809">BATを移行するiOSリワードユーザーのためのQRコード</translation>
+<translation id="2175927920773552910">QR コード</translation>
+<translation id="6473583070570450185">ログインするには、認証済みのウォレットが必要です</translation>
+<translation id="5949995321533425416">Upholdウォレットを作成するには最低<ph name="AMOUNT"/>BATが必要です。Upholdでウォレットを認証してからもう一度お試しください。</translation>
+<translation id="2404165674840145940">Brave rewardsでチップを渡す</translation>
+<translation id="5820285701794581330">Brave Rewardsに参加することで、クリエイターにチップを渡すために使用できるBATを獲得できるようになります。</translation>
 </translationbundle>

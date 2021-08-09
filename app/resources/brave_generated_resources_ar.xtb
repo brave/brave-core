@@ -6,8 +6,8 @@
 <translation id="4615489450165434530">الإبلاغ عن موقع إلكتروني معطل</translation>
 <translation id="6406506848690869874">مزامنة</translation>
 <translation id="1544192797660353713">المحفظة</translation>
-<translation id="2445484935443597917">إنشاء ملف شخصي جديد</translation>
-<translation id="2666990579225592931">فتح نافذة "ضيف"</translation>
+<translation id="2445484935443597917">إنشاء ملف تعريف جديد</translation>
+<translation id="2666990579225592931">فتح نافذة الضيف</translation>
 <translation id="8275068909952022340">المزيد …</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") غير مسموح به في Brave.</translation>
 <translation id="6786747875388722282">الإضافات</translation>
@@ -28,6 +28,9 @@
 <translation id="3218385319396786393">تم حظر التشغيل التلقائي في هذه الصفحة</translation>
 <translation id="4988333904713528597">اسمح دائماً بالتشغيل الأوتوماتيكي على <ph name="HOST"/></translation>
 <translation id="4150684676757176434">متابعة حظر التشغيل التلقائي</translation>
+<translation id="1448289340149908413">إيثريوم</translation>
+<translation id="6583467242903731748">قم بالسؤال عندما يريد أحد المواقع الوصول إلى واجهة برمجة تطبيقات مزود الإيثريوم</translation>
+<translation id="7017590444693657895">منع المواقع من الوصول إلى واجهة برمجة التطبيقات الخاصة بمزود الإيثريوم</translation>
 <translation id="8988939298652262600">لا يقوم متصفّح Brave بمراجعة الامتدادات لأسباب تتعلق بأمن وسلامة المعلومات. قم بتثبيت هذا الامتداد فقط إذا كنت تثق بالمطور.</translation>
 <translation id="8081858229109418493">اسم ورمز الملف الشخصي</translation>
 <translation id="2044383478723007273">ألوان Brave</translation>
@@ -42,6 +45,7 @@
 <translation id="5802665280774361839">إظهار الإكمال التلقائي في شريط العناوين</translation>
 <translation id="597020512043916976">عرض أهم المواقع في اقتراحات الإكمال التلقائي</translation>
 <translation id="264150068416846820">إظهار مواقع Brave المقترحة ضمن اقتراحات الإكمال التلقائي</translation>
+<translation id="5529693968082667490">إظهار زر علامات تبويب البحث</translation>
 <translation id="6414370348346025511">الحماية القياسية قيد التشغيل.</translation>
 <translation id="814018970995616154">يتحقق من عناوين URL بقائمة من المواقع غير الآمنة المخزنة في متصفّح Brave.</translation>
 <translation id="1144810021918451336">لا يحميك من مواقع الويب والتنزيلات والإضافات الخطيرة.</translation>
@@ -93,7 +97,7 @@
 <translation id="6303294677342628402">طرق الحماية</translation>
 <translation id="7133511168130368997">حظر برامج التتبع والإعلانات التي تتابعك عبر شبكة الويب.</translation>
 <translation id="2761825942249694703">هذه هي إعدادات Shields الافتراضية. تنطبق على جميع مواقع الويب ما لم تقم بتغيير شيء ما في لوحة Shields على موقع معين. لن يؤثر تغييرها على إعداداتك الحالية لكل موقع.</translation>
-<translation id="8754605759692119662">سيؤدي هذا إلى حظر معظم الإعلانات على مواقع الويب، وليس الإعلانات الخاصة بمتصفح Brave — يتم التحكم في هذه الإعلانات في</translation>
+<translation id="1485394570478670912">سيتسبب هذا في حظر معظم الإعلانات على مواقع الويب، وليست الإعلانات الخاصة بـ Brave —؛ حيث يتم التحكم فيها في</translation>
 <translation id="6388201778088078932">الإعدادات.</translation>
 <translation id="9185018653595759199">حجب وسائل التواصل الاجتماعي</translation>
 <translation id="7390783310074170337">العرض الافتراضي</translation>
@@ -295,6 +299,13 @@
 <translation id="1391855377994926460">استمتع بتصفّح الويب بسرعةٍ أكبر - حتى 6 مرات أكثر على مواقع الأخبار الرئيسية.</translation>
 <translation id="9218430445555521422">تعيين كافتراضي</translation>
 <translation id="3479552764303398839">ليس الآن</translation>
+<translation id="5039804452771397117">سماح</translation>
+<translation id="7053983685419859001">حظر</translation>
+<translation id="7815301689257843278">هل تريد إرسال تقارير الأعطال تلقائيًا حتى يتمكن Brave من منع حدوث هذه المشكلة مرة أخرى؟</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> تم إغلاقه بشكل غير متوقع.</translation>
+<translation id="1324417023773393937">متصفح Brave</translation>
+<translation id="1068069727470515940">يمكنك تغيير <ph name="SETTING_TEXT"/> مرة أخرى في أي وقت.</translation>
+<translation id="6873781976650514089">هذا الإعداد</translation>
 <translation id="6040143037577758943">إغلاق</translation>
 <translation id="5600566490506283344">إشعار Brave Ad</translation>
 <translation id="4877147287319222750">أضف إلى الشريط الجانبي</translation>
@@ -315,7 +326,7 @@
 <translation id="7839742507462737706">في Speedreader</translation>
 <translation id="8490082094734500369">إلغاء تفعيل وضع القارئ</translation>
 <translation id="2036503787657622020">تفعيل وضع القارئ</translation>
-<translation id="5226458915125328323">إعدادات قارئ السرعة</translation>
+<translation id="5226458915125328323">إعدادات Speedreader</translation>
 <translation id="6284218950354553099">الإرسال التلقائي لأداة البينج للاستخدام اليومي إلى Brave</translation>
 <translation id="5288333155754958121">يتيح هذا أمر البينج المجهول والخاص لـ Brave تقدير المستخدمين النشطين.</translation>
 <translation id="1872784258300710671">يستخدم Brave تحليلات المنتج الخاصة بالكامل لتقدير الاستخدام الكلي لبعض الميزات</translation>
@@ -346,6 +357,9 @@
 <translation id="8487693399751278191">استيراد الإشارات المرجعية الآن...</translation>
 <translation id="2557899542277210112">ضع إشاراتك المرجعية على شريط الإشارات هنا للوصول إليها بسرعة.</translation>
 <translation id="2808630562319398131">إعادة تعيين بيانات مكافآت Brave...</translation>
+<translation id="2273851479262317744">تعيين Brave كمتصفح افتراضي</translation>
+<translation id="8581710194025054669">حتى تضمن أفضل خصوصية عبر الإنترنت، قم بتعيين Brave كمتصفح افتراضي على جهاز الكمبيوتر الخاص بك، باستخدامك متصفح Brave كمتصفح افتراضي، سيتم فتح أي رابط ويب تنقر عليه مع وسائل حماية خصوصية Brave.</translation>
+<translation id="8754605759692119662">سيؤدي هذا إلى حظر معظم الإعلانات على مواقع الويب، وليس الإعلانات الخاصة بمتصفح Brave — يتم التحكم في هذه الإعلانات في</translation>
 <translation id="1224064034972923114">ساعد في تحسين Brave بإرسال تقارير الأعطال تلقائياً</translation>
 <translation id="3738833060602717053">ساعد في تحسين <ph name="PRODUCT_NAME"/> من خلال إرسال تقارير الأعطال</translation>
 </translationbundle>

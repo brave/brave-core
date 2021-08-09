@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">Показати обране</translation>
 <translation id="3446024864193919737">Показувати нагороди Brave</translation>
 <translation id="6274899614137380422">Показати Binance</translation>
-<translation id="5551238871320268996">Сильні разом з Brave</translation>
 <translation id="5585019845078534178">Картки</translation>
 <translation id="3870475560794762985">Показати рекламні зображення</translation>
 <translation id="2875302873837723333">найкращі сайти</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">Зображення тла</translation>
 <translation id="385051799172605136">Назад</translation>
 <translation id="9024104284526126630">У Brave можна зробити приватний дзвінок.</translation>
-<translation id="5735801688206890393">Починайте дзвонити друзям та колегам без обмежень у Brave Together.</translation>
+<translation id="4903286433687221248">Насолоджуйтеся необмеженими викликами разом із друзями та колегами в Brave Talk.</translation>
 <translation id="7115051913071512405">Спробуйте</translation>
 <translation id="7415602225677446066">Найпопулярніші сьогоднішні історії в абсолютно приватній стрічці, тільки для вас.</translation>
 <translation id="6903061332999399632">Brave News підтримує рекламу з повністю приватними й анонімними оголошеннями, підібраними для вашого пристрою. Ваша особиста інформація завжди залишається конфіденційною, згідно з нашою <ph name="LINK_START"/>Політикою конфіденційності<ph name="LINK_END"/>.</translation>
@@ -85,7 +84,7 @@
 <translation id="1531133232292396145">Торгуйте криптовалютами на Binance безпосередньо зі свого браузера.</translation>
 <translation id="2166494527623220386">Торгуйте криптовалютами на Gemini безпосередньо зі свого браузера.</translation>
 <translation id="7191394989411626168">Після відключення Карток усі наразі видимі картки буде приховано. Однак, ви все ще зможете отримувати повідомлення про нові картки.</translation>
-<translation id="8112367589167674370">Розмови Brave</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="5655621391922317800">Криптогаманці</translation>
 <translation id="8820817407110198400">Закладки</translation>
 <translation id="1644574205037202324">Історія</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">Визначати автоматично</translation>
 <translation id="4394049700291259645">Вимкнути</translation>
 <translation id="4176463684765177261">Вимкнено</translation>
-<translation id="4434663852465709809">QR Код для користувачів iOS Винагород, які переказують BAT</translation>
-<translation id="2175927920773552910">QR-код</translation>
 <translation id="8283001340969131076">Вибачте, при спробі відключити ваш аккаунт <ph name="PROVIDER"/> сталася помилка. Спробуйте ще раз через деякий час.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">Пристрій офлайн, будь ласка, спробуйте пізніше.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">Наразі BAT не підтримується у вашому регіоні. Будь ласка, слідкуйте за оновленнями <ph name="BEGIN_LINK"/>тут<ph name="END_LINK"/>.</translation>
 <translation id="1737873393693460829">Активуючи [[title]], ви погоджуєтесь із <ph name="BEGIN_LINK1"/>Умовами використання<ph name="END_LINK1"/> та <ph name="BEGIN_LINK2"/>Політикою конфіденційності<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Помилка при створенні картки Brave Browser BAT</translation>
-<translation id="6473583070570450185">Аби увійти до системи, вам потрібен верифікований гаманець</translation>
-<translation id="5949995321533425416">Для створення гаманця Uphold вам потрібно мати принаймні <ph name="AMOUNT"/> BAT. Повторіть спробу після верифікації гаманця в Uphold.</translation>
+<translation id="8429332714958713413">Для входу потрібен підтверджений гаманець</translation>
+<translation id="5881716477679854586">Спробуйте ще раз після завершення перевірки ідентифікатора <ph name="CUSTODIAN"/>.</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> буде зараховано через <ph name="DAYS"/></translation>
 <translation id="4672975606583962967">Оберіть сервіс, що надає послуги гаманця</translation>
 <translation id="1815503044492647974">Виберіть партнера по депозитарному гаманцю. Якщо у вас вже є обліковий запис, вам буде запропоновано ввійти в систему для підключення.</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">Нагороди були вимкнені</translation>
 <translation id="3354337256330577726">Автоматичне здійснення внесків було вимкнене</translation>
 <translation id="6727186931929643711">Повторні спроби припинені</translation>
+<translation id="8978461348341400550">Custodian:</translation>
+<translation id="7220161813676251577">Ідентифікатор учасника Custodian:</translation>
 <translation id="680983167891198932">Ключ</translation>
 <translation id="7535087603100972091">Значення</translation>
 <translation id="45591635423975492">Записано в</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">Почати користуватися Brave Rewards</translation>
 <translation id="6318696841371191107">Пройдіть швидке ознайомлення</translation>
 <translation id="8465790416279415448">Продовжуючи, ви погоджуєтесь з <ph name="TOS_LINK_BEGIN"/>Умовами надання послуг<ph name="TOS_LINK_END"/> та <ph name="PP_LINK_BEGIN"/>Політикою конфіденційності<ph name="PP_LINK_END"/>.</translation>
-<translation id="2404165674840145940">Дати на чай за допомогою сервісу винагород Brave</translation>
-<translation id="5820285701794581330">Користуючись сервісом винагород Brave, ви почнете заробляти BAT, які зможете залишити творцям контенту у вигляді чайових.</translation>
+<translation id="8222322431155185238">Чайові за допомогою Brave Rewards</translation>
+<translation id="1895476463085410109">Заробляйте нагороди за перегляд приватної реклами Brave і встановлюйте автоматичну підтримку авторів контенту</translation>
 <translation id="5705882733397021510">Повернутися</translation>
 <translation id="185034574799484512">Давайте коротко розглянемо</translation>
 <translation id="8281886186245836920">Пропустити</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">Повторити</translation>
 <translation id="2600847485413879104">Нагороди BAT</translation>
 <translation id="8006596443377585072">Гаманець bitFlyer</translation>
+<translation id="2770577461149798369">Гаманець Gemini</translation>
 <translation id="8108350286444475334">Гаманець Uphold</translation>
 <translation id="6977372887576114613">Внесені BAT</translation>
 <translation id="3173528272490482456">Готові почати?</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">Ви можете почати з</translation>
 <translation id="194625454574835815">Ключ відновлення</translation>
 <translation id="6354568176665589146">Періодично</translation>
+<translation id="2799223571221894425">Перезапустити</translation>
 <translation id="1110535155349301542">видалити</translation>
 <translation id="8204292894173669182">Видалити зі Збереженого</translation>
 <translation id="5530851178552343773">Ви призначили [[reservedAmount]] [[currency]] авторам, які ще не підписалися на отримання внесків. Ваш браузер намагатиметься зробити внесок, поки вони не будуть верифіковані або поки не сплине 90 днів.</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">Ваш гаманець Brave працює на <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Винагороди Brave створені на базі основного токена уваги. Детальніше про ОТУ</translation>
 <translation id="7823359893981882407">тут</translation>
+<translation id="3034163433136515805">Переглянути QR-код</translation>
+<translation id="1640793619390890218">для користувачів Rewards на iOS, що передають BAT.</translation>
 <translation id="4483635855837696643">Відновіть свій гаманець</translation>
 <translation id="459721429458957031">Використайте ключ відновлення, щоб відновити гаманець.</translation>
 <translation id="4600052736217630789">Відновлення за допомогою ключа відновлення призведе до заміни вашого поточного гаманця. Перед відновленням обов’язково зніміть усі кошти або зробіть резервну копію гаманця.</translation>
@@ -865,4 +868,12 @@
 <translation id="6973157709854838218">Приховати баланси по вашим рахункам з екрана</translation>
 <translation id="4548946945059463969">Відобразити баланси на екрані</translation>
 <translation id="242959166945779492">У вас немає залишків на рахунку. Відвідайте FTX, щоб поповнити його.</translation>
+<translation id="5551238871320268996">Сильні разом з Brave</translation>
+<translation id="5735801688206890393">Починайте дзвонити друзям та колегам без обмежень у Brave Together.</translation>
+<translation id="4434663852465709809">QR Код для користувачів iOS Винагород, які переказують BAT</translation>
+<translation id="2175927920773552910">QR-код</translation>
+<translation id="6473583070570450185">Аби увійти до системи, вам потрібен верифікований гаманець</translation>
+<translation id="5949995321533425416">Для створення гаманця Uphold вам потрібно мати принаймні <ph name="AMOUNT"/> BAT. Повторіть спробу після верифікації гаманця в Uphold.</translation>
+<translation id="2404165674840145940">Дати на чай за допомогою сервісу винагород Brave</translation>
+<translation id="5820285701794581330">Користуючись сервісом винагород Brave, ви почнете заробляти BAT, які зможете залишити творцям контенту у вигляді чайових.</translation>
 </translationbundle>

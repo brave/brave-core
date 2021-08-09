@@ -587,6 +587,7 @@
 <translation id="1627408615528139100">已下载</translation>
 <translation id="1628948239858170093">打开前，先扫描文件？</translation>
 <translation id="1629314197035607094">密码已过期</translation>
+<translation id="1947639598318989608">让 Brave 查找您购物车中商品的个性化折扣信息？</translation>
 <translation id="1629521517399325891">用户证书不适用于网络身份验证。</translation>
 <translation id="163072119192489970">允许完成数据收发操作</translation>
 <translation id="1630768113285622200">重启并继续</translation>
@@ -3182,7 +3183,7 @@
 <translation id="4469762931504673593"><ph name="ORIGIN"/> 可修改“<ph name="FOLDERNAME"/>”内的文件</translation>
 <translation id="4470957202018033307">外部存储偏好设置</translation>
 <translation id="4471354919263203780">正在下载语音识别文件... <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">帮助我们改进 Brave 的功能和性能</translation>
+<translation id="918192811481327695">帮助我们改进 Brave 的功能和性能</translation>
 <translation id="4472575034687746823">开始使用</translation>
 <translation id="4474155171896946103">为所有标签页添加书签...</translation>
 <translation id="4475552974751346499">搜索下载内容</translation>
@@ -4411,7 +4412,6 @@
 <translation id="5864754048328252126">充电时的闲置操作</translation>
 <translation id="5865508026715185451">“<ph name="APP_NAME"/>”即将暂停</translation>
 <translation id="586567932979200359">您正在通过磁盘映像运行 <ph name="PRODUCT_NAME"/>。您只需在计算机上安装该软件，即可在没有磁盘映像的情况下运行它，并可确保使用最新版本。</translation>
-<translation id="1224064034972923114">自动将使用情况统计信息和崩溃报告发送至 Brave</translation>
 <translation id="5867841422488265304">搜索或输入网址</translation>
 <translation id="5869029295770560994">知道了</translation>
 <translation id="5869522115854928033">已保存的密码</translation>
@@ -5427,7 +5427,6 @@
 <translation id="6997642619627518301"><ph name="NAME_PH"/> - 活动日志</translation>
 <translation id="6997707937646349884">在您的设备上：</translation>
 <translation id="6998793565256476099">注册设备以进行视频会议</translation>
-<translation id="456304305650018221">允许 Brave 查找您添加到购物车中的商品的折扣信息？</translation>
 <translation id="6999956497249459195">新建组</translation>
 <translation id="7000206553895739324">“<ph name="PRINTER_NAME"/>”已建立连接但需要配置</translation>
 <translation id="7000347579424117903">必须以 Ctrl 键、Alt 键或搜索键开头</translation>

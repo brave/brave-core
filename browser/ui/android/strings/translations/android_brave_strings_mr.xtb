@@ -4,7 +4,6 @@
 <translation id="7307834434086582547">ब्रेव्ह शिल्ड्स सक्षम / अक्षम करा</translation>
 <translation id="3570081523466826008">HTTPS वर कनेक्शन श्रेणीसुधारित करा</translation>
 <translation id="94154759592465111">स्क्रिप्ट्स ब्लॉक करा</translation>
-<translation id="5709627087332022422">क्रॉस-साइट ट्रॅकर्स ब्लॉक करा</translation>
 <translation id="6052725679982758334">सोशल मीडिया ब्लॉकिंग</translation>
 <translation id="7498695072878479744">तृतीय पक्ष साइटवर Google लॉगिन बटणांना अनुमती द्या</translation>
 <translation id="863171915776379000">फेसबुक लॉगिन आणि अंतःस्थापित पोस्टना अनुमती द्या</translation>
@@ -32,7 +31,6 @@
 <translation id="8281886186245836920">वगळा</translation>
 <translation id="7136694880210472378">डीफॉल्ट बनवा</translation>
 <translation id="4250680216510889253">नाही</translation>
-<translation id="1426410128494586442">होय</translation>
 <translation id="8428213095426709021">सेटिंग्ज</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="5817918615728894473">जोडा</translation>
@@ -64,4 +62,6 @@
 <translation id="3157931365184549694">पुनर्संचयित करा</translation>
 <translation id="9111102763498581341">अनलॉक करा</translation>
 <translation id="6657585470893396449">पासवर्ड</translation>
+<translation id="5709627087332022422">क्रॉस-साइट ट्रॅकर्स ब्लॉक करा</translation>
+<translation id="1426410128494586442">होय</translation>
 </translationbundle>

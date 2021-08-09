@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">Hiển thị các trang yêu thích</translation>
 <translation id="3446024864193919737">Hiện Brave Rewards</translation>
 <translation id="6274899614137380422">Hiển thị Binance</translation>
-<translation id="5551238871320268996">Brave Cùng nhau</translation>
 <translation id="5585019845078534178">Thẻ</translation>
 <translation id="3870475560794762985">Hiển thị hình được tài trợ</translation>
 <translation id="2875302873837723333">các trang hàng đầu</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">Ảnh Nền</translation>
 <translation id="385051799172605136">Quay lại</translation>
 <translation id="9024104284526126630">Bạn có thể gọi điện riêng tư trong Brave.</translation>
-<translation id="5735801688206890393">Bắt đầu cuộc gọi không giới hạn với bạn bè và đồng nghiệp trong Brave Together.</translation>
+<translation id="4903286433687221248">Bắt đầu cuộc gọi không giới hạn với bạn bè và đồng nghiệp trong Brave Talk.</translation>
 <translation id="7115051913071512405">Dùng thử</translation>
 <translation id="7415602225677446066">Các tin bài hàng đầu của ngày hôm nay trong một nguồn cấp tin hoàn toàn riêng tư, chỉ dành cho bạn.</translation>
 <translation id="6903061332999399632">Brave Tin tức được hỗ trợ quảng cáo với các quảng cáo hoàn toàn riêng tư và ẩn danh phù hợp trên thiết bị của bạn. Thông tin cá nhân của bạn luôn được bảo mật, theo <ph name="LINK_START"/>chính sách bảo mật<ph name="LINK_END"/> của chúng tôi.</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">Tự động phát hiện</translation>
 <translation id="4394049700291259645">Vô hiệu hóa</translation>
 <translation id="4176463684765177261">Đã bị vô hiệu</translation>
-<translation id="4434663852465709809">Mã QR cho người dùng Phần thưởng iOS chuyển BAT</translation>
-<translation id="2175927920773552910">Mã QR</translation>
 <translation id="8283001340969131076">Rất tiếc, đã xảy ra lỗi khi cố gắng ngắt kết nối tài khoản <ph name="PROVIDER"/> của bạn. Vui lòng thử lại sau một lúc nữa.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">Thiết bị đang ngoại tuyến, vui lòng thử lại sau.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">BAT hiện không được hỗ trợ tại vùng của bạn. Vui lòng tham khảo <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> để biết các cập nhật.</translation>
 <translation id="1737873393693460829">Với việc bật [[title]], bạn đồng ý với <ph name="BEGIN_LINK1"/>Điều khoản Dịch vụ<ph name="END_LINK1"/> và <ph name="BEGIN_LINK2"/>Chính sách Quyền riêng tư<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Đã xảy ra lỗi khi tạo thẻ BAT trên Trình duyệt Brave</translation>
-<translation id="6473583070570450185">Bạn cần có ví đã xác minh để Đăng nhập</translation>
-<translation id="5949995321533425416">Bạn cần tối thiểu <ph name="AMOUNT"/> BAT để tạo ví Uphold. Vui lòng thử lại sau khi bạn đã xác thực ví của mình với Uphold.</translation>
+<translation id="8429332714958713413">Bạn cần một ví đã được xác minh để đăng nhập</translation>
+<translation id="5881716477679854586">Vui lòng thử lại sau khi bạn đã hoàn tất xác minh mã trên <ph name="CUSTODIAN"/>.</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> sẽ đến sau <ph name="DAYS"/></translation>
 <translation id="4672975606583962967">Chọn một dịch vụ ví</translation>
 <translation id="1815503044492647974">Chọn một đối tác ví giám hộ. Nếu bạn đã có một tài khoản, bạn sẽ được yêu cầu đăng nhập để kết nối.</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">Phần thưởng đã bị tắt</translation>
 <translation id="3354337256330577726">Tự động đóng góp đã bị tắt</translation>
 <translation id="6727186931929643711">Đã dừng thử lại</translation>
+<translation id="8978461348341400550">Người giám hộ:</translation>
+<translation id="7220161813676251577">Mã thành viên người giám hộ:</translation>
 <translation id="680983167891198932">Khóa</translation>
 <translation id="7535087603100972091">Giá trị</translation>
 <translation id="45591635423975492">Đăng nhập tại</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">Bắt đầu sử dụng Brave Rewards</translation>
 <translation id="6318696841371191107">Xem giới thiệu nhanh</translation>
 <translation id="8465790416279415448">Với việc tiến hành, bạn đồng ý với <ph name="TOS_LINK_BEGIN"/>Điều khoản Dịch vụ<ph name="TOS_LINK_END"/> và <ph name="PP_LINK_BEGIN"/>Chính sách quyền riêng tư<ph name="PP_LINK_END"/>.</translation>
-<translation id="2404165674840145940">Tặng tiền bằng Brave Rewards</translation>
-<translation id="5820285701794581330">Bằng cách sử dụng Brave Rewards, bạn sẽ bắt đầu nhận được BAT mà bạn có thể sử dụng để tặng tiền cho người sáng tạo.</translation>
+<translation id="8222322431155185238">Tiền thưởng với Brave Rewards</translation>
+<translation id="1895476463085410109">Kiếm Rewards bằng cách xem Brave Private Ads và tự động hỗ trợ người sáng tạo nội dung</translation>
 <translation id="5705882733397021510">Quay Lại</translation>
 <translation id="185034574799484512">Hãy tham gia một hành trình ngắn</translation>
 <translation id="8281886186245836920">Bỏ qua</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">Thử lại</translation>
 <translation id="2600847485413879104">Phần thưởng BAT</translation>
 <translation id="8006596443377585072">Ví bitFlyer</translation>
+<translation id="2770577461149798369">Ví Gemini</translation>
 <translation id="8108350286444475334">Duy trì Ví</translation>
 <translation id="6977372887576114613">BAT đã lưu ký</translation>
 <translation id="3173528272490482456">Sẵn sàng bắt đầu chưa?</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">Bạn có thể bắt đầu với</translation>
 <translation id="194625454574835815">Khoá Khôi phục</translation>
 <translation id="6354568176665589146">Tái diễn</translation>
+<translation id="2799223571221894425">Chạy lại</translation>
 <translation id="1110535155349301542">gỡ bỏ</translation>
 <translation id="8204292894173669182">Xóa Khỏi Mục Đã Lưu</translation>
 <translation id="5530851178552343773">Bạn đã dành ra [[reservedAmount]] [[currency]] cho những nhà sáng tạo chưa đăng ký nhận đóng góp. Trình duyệt của bạn sẽ tiếp tục thử đóng góp cho đến khi họ xác thực, hoặc cho đến khi 90 ngày đã trôi qua.</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">Ví Brave của bạn do <ph name="PROVIDER"/> cung cấp.</translation>
 <translation id="6401272292123354754">Phần thưởng Brave được dựng trên Basic Attention Token. Tìm hiểu thêm về BAT</translation>
 <translation id="7823359893981882407">ở đây</translation>
+<translation id="3034163433136515805">Xem Mã QR</translation>
+<translation id="1640793619390890218">cho người dùng iOS Rewards chuyển BAT.</translation>
 <translation id="4483635855837696643">Phục hồi Ví của bạn</translation>
 <translation id="459721429458957031">Sử dụng khóa khôi phục để khôi phục ví của bạn.</translation>
 <translation id="4600052736217630789">Khôi phục bằng khóa khôi phục sẽ thay thế ví hiện tại của bạn. Vì vậy hãy bảo đảm bạn đã làm trống hoặc sao lưu ví hiện tại của mình trước khi khôi phục.</translation>
@@ -622,7 +625,7 @@
 <translation id="3780605330121608425">Ví của bạn</translation>
 <translation id="6727483290601442544">Xem Chi tiết</translation>
 <translation id="1988679729106502285">LƯU Ý:</translation>
-<translation id="7979350009208995417">Người sáng tạo này hiện không được định cấu hình để nhận tiền thưởng từ ví của bạn. Mọi tiền thưởng bạn trả sẽ vẫn chờ xử lý trong ví của bạn và tự động thử lại trong 90 ngày.</translation>
+<translation id="7979350009208995417">Người sáng tạo này hiện không được định cấu hình để nhận tiền thưởng từ ví của bạn. Mọi tiền thưởng bạn trả sẽ vẫn chờ xử lý trong ví của bạn và tự động thử lại trong vòng 90 ngày.</translation>
 <translation id="7461596279975181413">Người sáng tạo được Brave xác minh này chưa định cấu hình tài khoản của họ để nhận các khoản đóng góp từ người dùng Brave. Trình duyệt của bạn sẽ vẫn cố gắng đóng góp cho đến khi họ xác minh hoặc sau khi 90 ngày trôi qua.</translation>
 <translation id="4292832015778676417">thu được từ quảng cáo</translation>
 <translation id="3197752845651180812">Đóng góp chờ xử lý</translation>
@@ -865,4 +868,12 @@
 <translation id="6973157709854838218">Ẩn số dư của bạn khỏi màn hình</translation>
 <translation id="4548946945059463969">Tiết lộ số dư của bạn trên màn hình</translation>
 <translation id="242959166945779492">Bạn không có bất kỳ số dư nào trong tài khoản của mình. Hãy truy cập FTX để mua.</translation>
+<translation id="5551238871320268996">Brave Cùng nhau</translation>
+<translation id="5735801688206890393">Bắt đầu cuộc gọi không giới hạn với bạn bè và đồng nghiệp trong Brave Together.</translation>
+<translation id="4434663852465709809">Mã QR cho người dùng Phần thưởng iOS chuyển BAT</translation>
+<translation id="2175927920773552910">Mã QR</translation>
+<translation id="6473583070570450185">Bạn cần có ví đã xác minh để Đăng nhập</translation>
+<translation id="5949995321533425416">Bạn cần tối thiểu <ph name="AMOUNT"/> BAT để tạo ví Uphold. Vui lòng thử lại sau khi bạn đã xác thực ví của mình với Uphold.</translation>
+<translation id="2404165674840145940">Tặng tiền bằng Brave Rewards</translation>
+<translation id="5820285701794581330">Bằng cách sử dụng Brave Rewards, bạn sẽ bắt đầu nhận được BAT mà bạn có thể sử dụng để tặng tiền cho người sáng tạo.</translation>
 </translationbundle>

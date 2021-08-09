@@ -7,7 +7,7 @@
 <translation id="6406506848690869874">Synka</translation>
 <translation id="1544192797660353713">Plånbok</translation>
 <translation id="2445484935443597917">Skapa en ny profil</translation>
-<translation id="2666990579225592931">Öppna ett gästfönster</translation>
+<translation id="2666990579225592931">Öppna gästfönster</translation>
 <translation id="8275068909952022340">Mer</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") är inte tillåtet i Brave.</translation>
 <translation id="6786747875388722282">Tillägg</translation>
@@ -28,6 +28,9 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="3218385319396786393">Autouppspelning blockerades på denna sida</translation>
 <translation id="4988333904713528597">Autospela alltid på <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Fortsätt blockera automatisk uppspelning</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Fråga när en webbplats vill komma åt Ethereum-leverantörens API</translation>
+<translation id="7017590444693657895">Blockera webbplatser från att komma åt Ethereum-leverantörens API</translation>
 <translation id="8988939298652262600">Brave granskar inte tillägg gällande säkerhet och trygghet. Installera bara det här tillägget om du litar på utvecklaren.</translation>
 <translation id="8081858229109418493">Profilnamn och ikon</translation>
 <translation id="2044383478723007273">Bravefärger</translation>
@@ -42,6 +45,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="5802665280774361839">Visa textförslag i adressfältet</translation>
 <translation id="597020512043916976">Vissa toppsajter i förslagen</translation>
 <translation id="264150068416846820">Visa av Brave föreslagna sajter i automatiska förslag.</translation>
+<translation id="5529693968082667490">Knappen Visa sökflik</translation>
 <translation id="6414370348346025511">Standardskyddet är på.</translation>
 <translation id="814018970995616154">Kontrollerar webbadresser mot en lista över osäkra webbplatser som lagras i Brave.</translation>
 <translation id="1144810021918451336">Skyddar dig inte mot farliga webbplatser, nedladdningar eller tillägg.</translation>
@@ -93,7 +97,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="6303294677342628402">Sköldar</translation>
 <translation id="7133511168130368997">Blockera spårare och annonser som följer dig på nätet.</translation>
 <translation id="2761825942249694703">Detta är standardinställningarna för Shields. De gäller alla webbplatser om du inte ändrar något i Shields-panelen på en viss webbplats. Att ändra dessa påverkar inte dina befintliga inställningar per webbplats.</translation>
-<translation id="8754605759692119662">Detta blockerar de flesta annonser på webbplatser, inte Brave privata annonser — de styrs av</translation>
+<translation id="1485394570478670912">Detta kommer att blockera de flesta annonser på webbplatser, inte Brave Private Ads — som kontrolleras i</translation>
 <translation id="6388201778088078932">inställningar.</translation>
 <translation id="9185018653595759199">Blockering av sociala media</translation>
 <translation id="7390783310074170337">Standardvy</translation>
@@ -294,6 +298,13 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="1391855377994926460">Fortsätt surfa snabbare på webben – upp till sex gånger snabbare på större nyhetssajter.</translation>
 <translation id="9218430445555521422">Använd som standard</translation>
 <translation id="3479552764303398839">Inte nu</translation>
+<translation id="5039804452771397117">Tillåt</translation>
+<translation id="7053983685419859001">Blockera</translation>
+<translation id="7815301689257843278">Vill du skicka kraschrapporter automatiskt så att Brave kan förhindra att problemet händer igen?</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> quit unexpectedly.</translation>
+<translation id="1324417023773393937">Brave-webbläsaren</translation>
+<translation id="1068069727470515940">Du kan ändra <ph name="SETTING_TEXT"/> igen när som helst.</translation>
+<translation id="6873781976650514089">den här inställningen</translation>
 <translation id="6040143037577758943">Stäng</translation>
 <translation id="5600566490506283344">Brave-annonsavisering</translation>
 <translation id="4877147287319222750">Lägg till i sidofält</translation>
@@ -345,6 +356,9 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="8487693399751278191">Importera bokmärken nu ...</translation>
 <translation id="2557899542277210112">För snabb åtkomst kan du lägga dina bokmärken här.</translation>
 <translation id="2808630562319398131">Återställ data för Brave Rewards...</translation>
+<translation id="2273851479262317744">Ange Brave som standardwebbläsare</translation>
+<translation id="8581710194025054669">För att säkerställa bästa integritet online bör du överväga att ange Brave som standardwebbläsare på din dator. Med Brave som standard öppnas alla webblänkar du klickar på med Braves integritetsskydd.</translation>
+<translation id="8754605759692119662">Detta blockerar de flesta annonser på webbplatser, inte Brave privata annonser — de styrs av</translation>
 <translation id="1224064034972923114">Hjälp till att förbättra Brave genom att skicka kraschrapporter automatiskt</translation>
 <translation id="3738833060602717053">Hjälp till att förbättra <ph name="PRODUCT_NAME"/> genom att skicka kraschrapporter automatiskt</translation>
 </translationbundle>

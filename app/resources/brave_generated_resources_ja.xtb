@@ -6,8 +6,8 @@
 <translation id="4615489450165434530">サイト表示の不具合を報告</translation>
 <translation id="6406506848690869874">同期</translation>
 <translation id="1544192797660353713">ウォレット</translation>
-<translation id="2445484935443597917">新しいプロフィールを作成</translation>
-<translation id="2666990579225592931">ゲスト ウィンドウを開く</translation>
+<translation id="2445484935443597917">プロフィールを新規作成</translation>
+<translation id="2666990579225592931">ゲストウィンドウを開く</translation>
 <translation id="8275068909952022340">詳細…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") はBraveでは許可されていません。</translation>
 <translation id="6786747875388722282">拡張機能</translation>
@@ -28,6 +28,9 @@
 <translation id="3218385319396786393">このページで自動再生がブロックされました</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> で自動再生を常に許可する。</translation>
 <translation id="4150684676757176434">自動再生のブロックを継続する</translation>
+<translation id="1448289340149908413">イーサリアム</translation>
+<translation id="6583467242903731748">サイトのEthereumプロバイダーAPIへのアクセス可否を確認</translation>
+<translation id="7017590444693657895">EthereumプロバイダーAPIのアクセスからサイトをブロック</translation>
 <translation id="8988939298652262600">Braveではセキュリティーおよび安全を目的とした拡張機能の確認を行っていません。デベロッパーを信用できる場合にのみ、この拡張機能をインストールしてください。</translation>
 <translation id="8081858229109418493">プロフィール名とアイコン</translation>
 <translation id="2044383478723007273">テーマ</translation>
@@ -42,6 +45,7 @@
 <translation id="5802665280774361839">アドレス入力時にオートコンプリートを表示</translation>
 <translation id="597020512043916976">トップサイトをオートコンプリートでリコメンド</translation>
 <translation id="264150068416846820">Braveの推奨サイトをオートコンプリートで表示</translation>
+<translation id="5529693968082667490">タブの検索ボタンを表示</translation>
 <translation id="6414370348346025511">標準保護がオンになっています。</translation>
 <translation id="814018970995616154">Braveに保存された安全でないサイトのリストを使ってURLをチェックします。</translation>
 <translation id="1144810021918451336">危険なウェブサイト、ダウンロード、拡張機能からの保護を無効にする</translation>
@@ -93,7 +97,7 @@
 <translation id="6303294677342628402">Shields</translation>
 <translation id="7133511168130368997">しつこく追跡してくるトラッカーや不快な広告をブロックできます。</translation>
 <translation id="2761825942249694703">これはShieldsのデフォルト設定です。特定のサイト上のShieldsパネルで変更しない限り、すべてのウェブサイトにこの設定が適用されます。この設定を変更しても、既存のサイト設定には影響しません。</translation>
-<translation id="8754605759692119662">これでウェブサイト上の大半の広告はブロックされます。Brave広告については</translation>
+<translation id="1485394570478670912">これにより、ウェブサイトのほとんどの広告がブロックされます。ただし、Brave Private Adsは以下で制御されます —</translation>
 <translation id="6388201778088078932">設定で管理できます。</translation>
 <translation id="9185018653595759199">ソーシャルメディアのブロック</translation>
 <translation id="7390783310074170337">デフォルト表示</translation>
@@ -295,6 +299,13 @@
 <translation id="1391855377994926460">ウェブの閲覧をより高速に - 主要なニュースサイトよりも最大6倍速</translation>
 <translation id="9218430445555521422">デフォルトとして設定</translation>
 <translation id="3479552764303398839">後で</translation>
+<translation id="5039804452771397117">許可</translation>
+<translation id="7053983685419859001">ブロック</translation>
+<translation id="7815301689257843278">クラッシュレポートを自動的にBraveに送信して、このような問題の再発防止対策にご協力いただけますか？</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/>が予期せず終了しました。</translation>
+<translation id="1324417023773393937">Braveブラウザ</translation>
+<translation id="1068069727470515940"><ph name="SETTING_TEXT"/>はいつでも変更できます。</translation>
+<translation id="6873781976650514089">この設定</translation>
 <translation id="6040143037577758943">閉じる</translation>
 <translation id="5600566490506283344">Brave Adの通知</translation>
 <translation id="4877147287319222750">サイドバーに追加</translation>
@@ -346,6 +357,9 @@
 <translation id="8487693399751278191">今すぐブックマークをインポート...</translation>
 <translation id="2557899542277210112">クイックアクセスするには、このページをブックマークバーにブックマークしてください。</translation>
 <translation id="2808630562319398131">Brave Rewardsデータをリセット...</translation>
+<translation id="2273851479262317744">Braveをデフォルトのブラウザとして設定</translation>
+<translation id="8581710194025054669">オンラインでのプライバシーを確保するには、Braveをコンピューターのデフォルトブラウザとして設定しましょう。Braveをデフォルトにすると、クリックしたすべてのウェブリンクがBraveでプライバシー保護されて開きます。</translation>
+<translation id="8754605759692119662">これでウェブサイト上の大半の広告はブロックされます。Brave広告については</translation>
 <translation id="1224064034972923114">クラッシュ報告を自動送信して、Braveの改善を支援してください</translation>
 <translation id="3738833060602717053">クラッシュ報告を自動送信して、<ph name="PRODUCT_NAME"/> Braveの改善を支援してください</translation>
 </translationbundle>

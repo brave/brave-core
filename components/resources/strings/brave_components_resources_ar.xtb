@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">عرض قائمة التفضيلات</translation>
 <translation id="3446024864193919737">عرض مكافآت Brave</translation>
 <translation id="6274899614137380422">أظهر تبادل العملات المشفرة</translation>
-<translation id="5551238871320268996">Brave Together</translation>
 <translation id="5585019845078534178">البطاقات</translation>
 <translation id="3870475560794762985">عرض الصور الدعائية</translation>
 <translation id="2875302873837723333">المواقع الأولى</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">صورة الخلفية</translation>
 <translation id="385051799172605136">الرجوع إلى الوراء</translation>
 <translation id="9024104284526126630">يمكنك بدء مكالمة خاصة في Brave.</translation>
-<translation id="5735801688206890393">ابدأ مكالمات غير محدودة مع الأصدقاء والزملاء في Brave Together.</translation>
+<translation id="4903286433687221248">قم بإجراء مكالمات غير محدودة مع الأصدقاء والزملاء من خلال Brave Talk.</translation>
 <translation id="7115051913071512405">جربه</translation>
 <translation id="7415602225677446066">أهم أخبار اليوم في موجز خاص تماماً، من أجلك فقط.</translation>
 <translation id="6903061332999399632">Brave News مدعومة بالإعلانات، وتطرح إعلانات مخصصة ومجهولة المصدر بشكل تام تطابق بيانات التصفح الموجودة على جهازك. وتظل معلوماتك الشخصية خاصة دائمًا وفقًا <ph name="LINK_START"/>لسياسة الخصوصية<ph name="LINK_END"/> السائدة لدينا.</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">اكتشاف تلقائي</translation>
 <translation id="4394049700291259645">إيقاف</translation>
 <translation id="4176463684765177261">غير مفعّل</translation>
-<translation id="4434663852465709809">رمز QR لمستخدمي iOS Rewards الذين يقومون بتحويل عملات BAT</translation>
-<translation id="2175927920773552910">رمز الاستجابة السريعة</translation>
 <translation id="8283001340969131076">عذرًا، حدث خطأ عند محاولة قطع اتصال حساب <ph name="PROVIDER"/> الخاص بك، يرجى المحاولة مجددًا بعد وقت قليل.</translation>
 <translation id="8845154268466251503">صيغة BAT</translation>
 <translation id="3390542282753297856">الجهاز غير متصل بالإنترنت. يرجى المحاولة مرة أخرى لاحقًا.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">إنّ عملة BAT الرمزية غير مدعومة حالياً في منطقتك. يُرجى الرجوع إلى <ph name="BEGIN_LINK"/>هنا<ph name="END_LINK"/> للحصول على التحديثات.</translation>
 <translation id="1737873393693460829">بتفعيل [[title]]، فأنت توافق على <ph name="BEGIN_LINK1"/>Terms of Service<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Privacy Policy<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">خطأ في إنشاء بطاقة BAT لمتصفح Brave</translation>
-<translation id="6473583070570450185">أنت بحاجة إلى محفظة مفعلة لتسجيل الدخول</translation>
-<translation id="5949995321533425416">يجب أن يكون لديك على الأقل <ph name="AMOUNT"/> من البات لإنشاء محفظة Uphold. يُرجى المحاولة مرةً أخرى بعد مصادقة محفظتك لدى Uphold.</translation>
+<translation id="8429332714958713413">أنت بحاجة إلى محفظة تم التحقق منها لتسجيل الدخول</translation>
+<translation id="5881716477679854586">يرجى المحاولة مرة أخرى بعد إكمال التحقق من الهوية على <ph name="CUSTODIAN"/>.</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> يصل في <ph name="DAYS"/></translation>
 <translation id="4672975606583962967">حدد خدمة المحفظة</translation>
 <translation id="1815503044492647974">حدد شريك المخفظة المستضافة. إذا كان لديك حساب بالفعل، فسيُطلب منك تسجيل الدخول للاتصال</translation>
@@ -280,6 +277,8 @@
 <translation id="386483240851194811">تم إيقاف المكافآت</translation>
 <translation id="3354337256330577726">تم إيقاف المساهمة التلقائية</translation>
 <translation id="6727186931929643711">تم إيقاف إعادة المحاولة</translation>
+<translation id="8978461348341400550">الخادم:</translation>
+<translation id="7220161813676251577">رقم معرف الخادم:</translation>
 <translation id="680983167891198932">المفتاح</translation>
 <translation id="7535087603100972091">القيمة</translation>
 <translation id="45591635423975492">مسجّل في</translation>
@@ -377,8 +376,8 @@
 <translation id="2070991379950719711">ابدأ في استخدام Brave Rewards</translation>
 <translation id="6318696841371191107">قم بجولة سريعة</translation>
 <translation id="8465790416279415448">بالمتابعة؛ أنت توافق على <ph name="TOS_LINK_BEGIN"/>شروط الخدمة<ph name="TOS_LINK_END"/> و <ph name="PP_LINK_BEGIN"/>سياسة الخصوصية<ph name="PP_LINK_END"/>.</translation>
-<translation id="2404165674840145940">قدم إكرامية عبر Brave Rewards</translation>
-<translation id="5820285701794581330">باستخدام Brave rewards، ستبدأ في الحصول على أفضل التقنيات المتاحة التي يمكنك استخدامها لإعطاء إكراميات لمنشئي المحتوى.</translation>
+<translation id="8222322431155185238">نصيحة مع مكافآت Brave</translation>
+<translation id="1895476463085410109">اربح مكافآت من خلال عرض الإعلانات الخاصة من Brave ودعم منشئي المحتوى تلقائيًا</translation>
 <translation id="5705882733397021510">العودة</translation>
 <translation id="185034574799484512">لنقم ’s بجولة سريعة</translation>
 <translation id="8281886186245836920">تخطّي</translation>
@@ -531,6 +530,7 @@
 <translation id="8725066075913043281">إعادة المحاولة</translation>
 <translation id="2600847485413879104">المكافآت التوكن الأساسي لتبادل العملات المشفرة</translation>
 <translation id="8006596443377585072">محفظة bitFlyer</translation>
+<translation id="2770577461149798369">محفظة Gemini</translation>
 <translation id="8108350286444475334">المحافظة على المحفظة</translation>
 <translation id="6977372887576114613">الكمية المودعة من التوكن الأساسي لتبادل العملات المشفرة</translation>
 <translation id="3173528272490482456">هل أنت مستعد للبدء؟</translation>
@@ -538,6 +538,7 @@
 <translation id="108052542935515756">يمكنك البدء بـ</translation>
 <translation id="194625454574835815">مفتاح الاسترداد</translation>
 <translation id="6354568176665589146">متكرر</translation>
+<translation id="2799223571221894425">إعادة تشغيل</translation>
 <translation id="1110535155349301542">إزالة</translation>
 <translation id="8204292894173669182">إزالة من قائمة المحفوظات</translation>
 <translation id="5530851178552343773">لقد حددت [[reservedAmount]] [[currency]] للمُنشئين الذين لم يشتركوا بعد لتلقي المساهمات. سيظل متصفحك يحاول المساهمة حتى يؤكدوا، أو حتى مرور 90 يومًا.</translation>
@@ -569,6 +570,8 @@
 <translation id="3092054349246483285">يتم دعم محفظة Brave الخاصة بك من قِبل <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">تم إنشاء مكافآت Brave بناءً على Basic Attention Token. اعرف المزيد حول BAT</translation>
 <translation id="7823359893981882407">هنا</translation>
+<translation id="3034163433136515805">عرض رمز الاستجابة السريعة</translation>
+<translation id="1640793619390890218">لمستخدمي iOS Rewards الذين ينقلون رمز الانتباه الأساسي (BAT).</translation>
 <translation id="4483635855837696643">استعادة محفظتك</translation>
 <translation id="459721429458957031">أدخِل مفتاح الاسترداد الخاص بك لاستعادة محفظتك.</translation>
 <translation id="4600052736217630789">ستؤدي الاستعادة باستخدام مفتاح الاسترداد إلى استبدال محفظتك الحالية. تأكد من تفريغ محفظتك الحالية أو الاحتفاظ بنسخة احتياطية منها قبل الاستعادة.</translation>
@@ -866,4 +869,12 @@
 <translation id="6973157709854838218">إخفاء أرصدتك من العرض</translation>
 <translation id="4548946945059463969">الكشف عن أرصدتك على الشاشة</translation>
 <translation id="242959166945779492">ليس لديك أي أرصدة في حسابك. تفضل بزيارة FTX لشراء بعضها.</translation>
+<translation id="5551238871320268996">Brave Together</translation>
+<translation id="5735801688206890393">ابدأ مكالمات غير محدودة مع الأصدقاء والزملاء في Brave Together.</translation>
+<translation id="4434663852465709809">رمز QR لمستخدمي iOS Rewards الذين يقومون بتحويل عملات BAT</translation>
+<translation id="2175927920773552910">رمز الاستجابة السريعة</translation>
+<translation id="6473583070570450185">أنت بحاجة إلى محفظة مفعلة لتسجيل الدخول</translation>
+<translation id="5949995321533425416">يجب أن يكون لديك على الأقل <ph name="AMOUNT"/> من البات لإنشاء محفظة Uphold. يُرجى المحاولة مرةً أخرى بعد مصادقة محفظتك لدى Uphold.</translation>
+<translation id="2404165674840145940">قدم إكرامية عبر Brave Rewards</translation>
+<translation id="5820285701794581330">باستخدام Brave rewards، ستبدأ في الحصول على أفضل التقنيات المتاحة التي يمكنك استخدامها لإعطاء إكراميات لمنشئي المحتوى.</translation>
 </translationbundle>

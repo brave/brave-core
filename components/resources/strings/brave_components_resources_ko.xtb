@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">즐겨찾기 표시</translation>
 <translation id="3446024864193919737">Brave (브레이브) 리워드 표시</translation>
 <translation id="6274899614137380422">Binance 표시</translation>
-<translation id="5551238871320268996">Brave Together</translation>
 <translation id="5585019845078534178">카드</translation>
 <translation id="3870475560794762985">스폰 이미지 표시</translation>
 <translation id="2875302873837723333">탑 사이트</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">배경 이미지</translation>
 <translation id="385051799172605136">뒤로</translation>
 <translation id="9024104284526126630">Brave에서 프라이빗 통화를 걸 수 있습니다.</translation>
-<translation id="5735801688206890393">Brave Together에서 친구들, 동료들과 무제한 통화를 시작하세요.</translation>
+<translation id="4903286433687221248">Brave Talk로 친구 및 동료와 무제한 통화를 즐기세요.</translation>
 <translation id="7115051913071512405">시도해 보기</translation>
 <translation id="7415602225677446066">나만을 위한 완벽한 비공개 피드의 오늘의 주요 스토리입니다.</translation>
 <translation id="6903061332999399632">Brave News는 광고의 도움으로 제공되는 서비스로, 기기에 맞춘 비공개 익명 광고를 표시합니다. <ph name="LINK_START"/>개인정보처리방침<ph name="LINK_END"/>에 따라 모든 개인정보는 비공개로 유지됩니다.</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">자동 감지</translation>
 <translation id="4394049700291259645">사용 중지</translation>
 <translation id="4176463684765177261">사용 중지</translation>
-<translation id="4434663852465709809">BAT를 이체하는 iOS 리워드 사용자용 QR 코드</translation>
-<translation id="2175927920773552910">QR 코드</translation>
 <translation id="8283001340969131076"><ph name="PROVIDER"/> 계정 연결을 해제하려는 중 오류가 발생했습니다. 잠시 후 다시 시도하세요.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">기기가 오프라인 상태입니다, 나중에 다시 시도해 주세요.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">현재 사용자의 지역에서는 BAT가 지원되지 않습니다. 업데이트는 <ph name="BEGIN_LINK"/>여기<ph name="END_LINK"/>에서 확인하세요.</translation>
 <translation id="1737873393693460829">[[title]] 기능을 켜면 <ph name="BEGIN_LINK1"/>이용약관<ph name="END_LINK1"/> 및 <ph name="BEGIN_LINK2"/>개인정보처리방침<ph name="END_LINK2"/>에 동의하게 됩니다.</translation>
 <translation id="2564425876266960486">Brave Browser BAT 카드 생성 오류</translation>
-<translation id="6473583070570450185">로그인하려면 인증된 지갑이 필요합니다</translation>
-<translation id="5949995321533425416">Uphold 지갑을 만들려면 최소 <ph name="AMOUNT"/>BAT가 필요합니다. Uphold로 지갑을 인증한 후 다시 시도하세요.</translation>
+<translation id="8429332714958713413">로그인하려면 월렛을 확인해야 합니다.</translation>
+<translation id="5881716477679854586"><ph name="CUSTODIAN"/>에서 ID 확인을 완료하고 다시 시도하세요.</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> 도착 예정, <ph name="DAYS"/> 후</translation>
 <translation id="4672975606583962967">월렛 서비스 선택</translation>
 <translation id="1815503044492647974">보호관리 월렛 파트너를 선택하세요. 이미 계정이 있다면 로그인하여 연결하라는 메시지가 표시됩니다.</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">리워드가 꺼져있습니다</translation>
 <translation id="3354337256330577726">자동 기부가 꺼져 있습니다</translation>
 <translation id="6727186931929643711">재시도 중지됨</translation>
+<translation id="8978461348341400550">관리 서비스:</translation>
+<translation id="7220161813676251577">관리 서비스 회원 ID:</translation>
 <translation id="680983167891198932">키</translation>
 <translation id="7535087603100972091">값</translation>
 <translation id="45591635423975492">기록됨</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">Brave Rewards 사용 시작</translation>
 <translation id="6318696841371191107">빠르게 투어하기</translation>
 <translation id="8465790416279415448">계속하면 <ph name="TOS_LINK_BEGIN"/>서비스 약관<ph name="TOS_LINK_END"/> 및 <ph name="PP_LINK_BEGIN"/>개인 정보 보호 정책<ph name="PP_LINK_END"/>에 동의하게 됩니다.</translation>
-<translation id="2404165674840145940">Brave Rewards 팁</translation>
-<translation id="5820285701794581330">Brave rewards를 사용하면 크리에이터에게 팁을 주는 데 사용할 수 있는 BAT를 얻을 수 있습니다.</translation>
+<translation id="8222322431155185238">Brave Rewards 팁</translation>
+<translation id="1895476463085410109">Brave 프라이빗 광고를 보고 리워드를 적립하며, 콘텐츠 제작자를 자동으로 지원하세요.</translation>
 <translation id="5705882733397021510">돌아가기</translation>
 <translation id="185034574799484512">간단히 살펴봅시다</translation>
 <translation id="8281886186245836920">건너뛰기</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">다시 시도</translation>
 <translation id="2600847485413879104">리워드 BAT</translation>
 <translation id="8006596443377585072">bitFlyer 월렛</translation>
+<translation id="2770577461149798369">Gemini Wallet</translation>
 <translation id="8108350286444475334">월렛 유지</translation>
 <translation id="6977372887576114613">입금된 BAT</translation>
 <translation id="3173528272490482456">시작할 준비가 되셨나요?</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">시작할 수 있는 것:</translation>
 <translation id="194625454574835815">복구 키</translation>
 <translation id="6354568176665589146">반복하기</translation>
+<translation id="2799223571221894425">다시 시작</translation>
 <translation id="1110535155349301542">제거</translation>
 <translation id="8204292894173669182">저장된 항목에서 제거</translation>
 <translation id="5530851178552343773">아직 가입하지 않아 기부금을 받을 수 없는 제작자들에게 [[reservedAmount]] [[currency]]를 지정하셨습니다. 제작자가 검증될 때까지 또는 90일이 경과할 때까지 브라우저에서 계속 기부를 시도합니다.</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">Brave 월렛은 <ph name="PROVIDER"/> 기반으로 동작합니다.</translation>
 <translation id="6401272292123354754">Brave Rewards는 Basic Attention Token을 바탕으로 설계되었습니다. BAT에 관해 자세히 알아보세요</translation>
 <translation id="7823359893981882407">여기</translation>
+<translation id="3034163433136515805">QR 코드 보기</translation>
+<translation id="1640793619390890218">BAT를 이전하는 iOS Rewards 사용자용.</translation>
 <translation id="4483635855837696643">지갑 복구</translation>
 <translation id="459721429458957031">복구 키를 사용하여 월렛을 복구하세요.</translation>
 <translation id="4600052736217630789">복구 키로 복구하면 기존 월렛을 교체합니다. 복구 전에 기존 월렛을 비우거나 백업하셔야 합니다.</translation>
@@ -866,4 +869,12 @@
 <translation id="6973157709854838218">화면에서 잔액 숨김</translation>
 <translation id="4548946945059463969">화면에 잔액 표시</translation>
 <translation id="242959166945779492">계정 내에 잔액이 없습니다. FTX를 방문하여 구매하세요.</translation>
+<translation id="5551238871320268996">Brave Together</translation>
+<translation id="5735801688206890393">Brave Together에서 친구들, 동료들과 무제한 통화를 시작하세요.</translation>
+<translation id="4434663852465709809">BAT를 이체하는 iOS 리워드 사용자용 QR 코드</translation>
+<translation id="2175927920773552910">QR 코드</translation>
+<translation id="6473583070570450185">로그인하려면 인증된 지갑이 필요합니다</translation>
+<translation id="5949995321533425416">Uphold 지갑을 만들려면 최소 <ph name="AMOUNT"/>BAT가 필요합니다. Uphold로 지갑을 인증한 후 다시 시도하세요.</translation>
+<translation id="2404165674840145940">Brave Rewards 팁</translation>
+<translation id="5820285701794581330">Brave rewards를 사용하면 크리에이터에게 팁을 주는 데 사용할 수 있는 BAT를 얻을 수 있습니다.</translation>
 </translationbundle>

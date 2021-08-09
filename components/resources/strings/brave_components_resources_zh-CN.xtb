@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">显示收藏夹</translation>
 <translation id="3446024864193919737">显示 Brave 奖励</translation>
 <translation id="6274899614137380422">显示 Binance</translation>
-<translation id="5551238871320268996">Brave Together</translation>
 <translation id="5585019845078534178">卡</translation>
 <translation id="3870475560794762985">显示赞助图片</translation>
 <translation id="2875302873837723333">热门网站</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">背景图片</translation>
 <translation id="385051799172605136">后退</translation>
 <translation id="9024104284526126630">您可以在 Brave 中发起私人通话。</translation>
-<translation id="5735801688206890393">在 Brave Together 中与朋友和同事开始无限量通话。</translation>
+<translation id="4903286433687221248">在 Brave Talk 中开始与朋友和同事的无限次通话。</translation>
 <translation id="7115051913071512405">了解详情</translation>
 <translation id="7415602225677446066">完全私密的今日热门新闻，专为您打造。</translation>
 <translation id="6903061332999399632">Brave News 通过在您的设备上提供与您匹配的完全私密且匿名的广告接受广告支持。您的个人信息依据我们的<ph name="LINK_START"/>隐私政策<ph name="LINK_END"/>始终处于保密状态。</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">自动检测</translation>
 <translation id="4394049700291259645">停用</translation>
 <translation id="4176463684765177261">已停用</translation>
-<translation id="4434663852465709809">供 iOS 奖励用户转移 BAT 的 QR 码</translation>
-<translation id="2175927920773552910">二维码</translation>
 <translation id="8283001340969131076">抱歉，尝试断开 <ph name="PROVIDER"/> 账户连接时出错。请稍后重试。</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">设备处于离线状态，请稍后重试。</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">您所在地区目前不支持 BAT。若需更新，请参考 <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/>。</translation>
 <translation id="1737873393693460829">开启 [[title]]，即意味着您同意了 <ph name="BEGIN_LINK1"/>服务条款<ph name="END_LINK1"/> 和 <ph name="BEGIN_LINK2"/>隐私政策<ph name="END_LINK2"/>。</translation>
 <translation id="2564425876266960486">创建 Brave 浏览器 BAT 卡出错</translation>
-<translation id="6473583070570450185">您需要有已验证的钱包才能登录：</translation>
-<translation id="5949995321533425416">你需要至少 <ph name="AMOUNT"/> BAT 来创建 Uphold 钱包。请在你验证了此钱包后再次尝试。</translation>
+<translation id="8429332714958713413">您需要有一个经过验证的钱包才能登录</translation>
+<translation id="5881716477679854586">请在 <ph name="CUSTODIAN"/> 上完成身份验证后重试。</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> 将于 <ph name="DAYS"/>到账</translation>
 <translation id="4672975606583962967">选择钱包服务</translation>
 <translation id="1815503044492647974">选择一个托管钱包合作伙伴。如果已有账户，那么需要登录以进行连接。</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">已关闭奖励</translation>
 <translation id="3354337256330577726">已关闭自动捐献</translation>
 <translation id="6727186931929643711">已停止重试</translation>
+<translation id="8978461348341400550">保管人：</translation>
+<translation id="7220161813676251577">托管会员 ID：</translation>
 <translation id="680983167891198932">密钥</translation>
 <translation id="7535087603100972091">值</translation>
 <translation id="45591635423975492">登录时间：</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">开始使用 Brave Rewards</translation>
 <translation id="6318696841371191107">快速浏览</translation>
 <translation id="8465790416279415448">继续即表示您同意<ph name="TOS_LINK_BEGIN"/>服务条款<ph name="TOS_LINK_END"/>与<ph name="PP_LINK_BEGIN"/>隐私政策<ph name="PP_LINK_END"/>。</translation>
-<translation id="2404165674840145940">通过 Brave rewards 打赏</translation>
-<translation id="5820285701794581330">启用 Brave Rewards，即表示您将开始赚取可以用来打赏创作者的 BAT 币。</translation>
+<translation id="8222322431155185238">Brave Rewards 提示</translation>
+<translation id="1895476463085410109">通过查看 Brave Private Ads 获得奖励并自动支持内容创建者</translation>
 <translation id="5705882733397021510">返回</translation>
 <translation id="185034574799484512">让我们一起来快速浏览一下</translation>
 <translation id="8281886186245836920">跳过</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">重试</translation>
 <translation id="2600847485413879104">奖励 BAT</translation>
 <translation id="8006596443377585072">bitFlyer 钱包</translation>
+<translation id="2770577461149798369">Gemini 钱包</translation>
 <translation id="8108350286444475334">Uphold 钱包</translation>
 <translation id="6977372887576114613">存入 BAT</translation>
 <translation id="3173528272490482456">准备好开始了吗？</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">您可以开始</translation>
 <translation id="194625454574835815">恢复密钥</translation>
 <translation id="6354568176665589146">再次发生</translation>
+<translation id="2799223571221894425">重新启动</translation>
 <translation id="1110535155349301542">删除</translation>
 <translation id="8204292894173669182">从已保存项中移除</translation>
 <translation id="5530851178552343773">您已为尚未注册接收赏金的创作者指定了 [[reservedAmount]] [[currency]] 的赏金。您的浏览器会继续尝试打赏，直到他们通过验证或直到 90 天已过。</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">您的 Brave 钱包的技术支持由 <ph name="PROVIDER"/> 提供。</translation>
 <translation id="6401272292123354754">Brave 奖励建立在注意力币基础上。了解更多有关BAT的信息</translation>
 <translation id="7823359893981882407">此处</translation>
+<translation id="3034163433136515805">查看二维码</translation>
+<translation id="1640793619390890218">适用于转移 BAT 的 iOS Rewards 用户。</translation>
 <translation id="4483635855837696643">恢复您的钱包</translation>
 <translation id="459721429458957031">使用您的恢复密钥还原您的钱包。</translation>
 <translation id="4600052736217630789">使用恢复密钥进行还原将取代您当前的钱包。因此，在您恢复前确保您清空或备份了当前的钱包。</translation>
@@ -867,4 +870,12 @@
 <translation id="6973157709854838218">隐藏余额</translation>
 <translation id="4548946945059463969">在屏幕上显示余额</translation>
 <translation id="242959166945779492">账户中没有任何余额。访问 FTX 购买资产。</translation>
+<translation id="5551238871320268996">Brave Together</translation>
+<translation id="5735801688206890393">在 Brave Together 中与朋友和同事开始无限量通话。</translation>
+<translation id="4434663852465709809">供 iOS 奖励用户转移 BAT 的 QR 码</translation>
+<translation id="2175927920773552910">二维码</translation>
+<translation id="6473583070570450185">您需要有已验证的钱包才能登录：</translation>
+<translation id="5949995321533425416">你需要至少 <ph name="AMOUNT"/> BAT 来创建 Uphold 钱包。请在你验证了此钱包后再次尝试。</translation>
+<translation id="2404165674840145940">通过 Brave rewards 打赏</translation>
+<translation id="5820285701794581330">启用 Brave Rewards，即表示您将开始赚取可以用来打赏创作者的 BAT 币。</translation>
 </translationbundle>

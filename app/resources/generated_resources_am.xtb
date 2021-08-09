@@ -591,6 +591,7 @@
 <translation id="1627408615528139100">አስቀድሞ ወርዷል</translation>
 <translation id="1628948239858170093">ከመክፈቱ በፊት ፋይል ይቃኝ?</translation>
 <translation id="1629314197035607094">የይለፍ ቃል ጊዜው አልፎበታል</translation>
+<translation id="1947639598318989608">Brave በእርስዎ ተሳቢዎች ላይ ግላዊነት የተላበሱ ቅናሾችን ያግኝ?</translation>
 <translation id="1629521517399325891">የተጠቃሚ እውቅና ማረጋገጫ ለአውታረ መረብ ማረጋገጫ አይገኝም።</translation>
 <translation id="163072119192489970">ውሂብ መላክ እና መቀበል ለማጠናቀቅ ተፈቅዷል</translation>
 <translation id="1630768113285622200">ዳግም አስጀምር እና ቀጥል</translation>
@@ -3194,7 +3195,7 @@
 <translation id="4469762931504673593"><ph name="ORIGIN"/> በ<ph name="FOLDERNAME"/> ውስጥ ፋይሎችን ማርትዕ ይችላል</translation>
 <translation id="4470957202018033307">የውጫዊ ማከማቻ ምርጫዎች</translation>
 <translation id="4471354919263203780">የንግግር ማወቂያ ፋይሎችን በማውረድ ላይ... <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">የBrave ባህሪያት እና አፈጻጸም እንዲሻሻል ያግዙ</translation>
+<translation id="918192811481327695">የBrave ባህሪያት እና አፈጻጸም እንዲሻሻል ያግዙ</translation>
 <translation id="4472575034687746823">ይጀምሩ</translation>
 <translation id="4474155171896946103">ለሁሉም ትሮች ዕልባት አብጅ...</translation>
 <translation id="4475552974751346499">የሚወርዱ ፈልግ</translation>
@@ -4423,7 +4424,6 @@
 <translation id="5864754048328252126">ኃይል እየሞላ ሳለ የስራ መፍታት እርምጃ</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> በቅርቡ ባለበት ይቆማል</translation>
 <translation id="586567932979200359"><ph name="PRODUCT_NAME"/>ን ከዲስክ ምስሉ እያሄዱ ነው። ኮምፒውተርዎ ላይ መጫን ያለ ዲስክ ምስሉ እንዲያሂዱት ያስችልዎታል፣ እና እንደተዘመነ መቆየቱን ያረጋግጣል።</translation>
-<translation id="1224064034972923114">የአጠቃቀም ስታስቲክስን እና የብልሽት ሪፖርቶችን በራስ-ሰር ወደ Brave ይልካል</translation>
 <translation id="5867841422488265304">የድር አድራሻ ይፈልጉ ወይም ይተይቡ</translation>
 <translation id="5869029295770560994">እሺ፣ ገባኝ</translation>
 <translation id="5869522115854928033">የተቀመጡ የይለፍ ቃሎች</translation>
@@ -5439,7 +5439,6 @@
 <translation id="6997642619627518301"><ph name="NAME_PH"/> - የእንቅስቃሴ ምዝግብ ማስታወሻ</translation>
 <translation id="6997707937646349884">በእርስዎ መሣሪያዎች ላይ፦</translation>
 <translation id="6998793565256476099">መሣሪያን ለቪዲዮ ጉባዔ ያስመዝግቡ</translation>
-<translation id="456304305650018221">Brave በጋሪዎ ላይ በሚያክሉት ላይ ቅናሽ እንዲያገኝ ይፈቀድለት?</translation>
 <translation id="6999956497249459195">አዲስ ቡድን</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> ተገናኝቷል ሆኖም ግን ውቅረትን ይፈልጋል</translation>
 <translation id="7000347579424117903">Ctrl፣ Alt፣ ወይም ፍለጋን ያካትቱ</translation>
@@ -7596,7 +7595,7 @@ nil</translation>
 <translation id="5556722972306334687">ማንነትን በማያሳውቅ መስኮት ይክፈቱ</translation>
 <translation id="1860933807472918250">{0, plural,
         =1 {ማንነትን የማያሳውቅ}
-        other {# ማንነትን የማያሳውቁ መስኮቶች ይክፈቱ}
+        other {# ማንነትን የማያሳውቁ መስኮቶች የተከፈቱት}
       }</translation>
 <translation id="8712375231869053533">{0,plural,
 =1 {# ማንነትን የማያሳውቅ}

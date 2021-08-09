@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">Mostrar favoritos</translation>
 <translation id="3446024864193919737">Mostrar Recompensas Brave</translation>
 <translation id="6274899614137380422">Mostrar Binance</translation>
-<translation id="5551238871320268996">Brave Together</translation>
 <translation id="5585019845078534178">Cartões</translation>
 <translation id="3870475560794762985">Mostrar Imagens Patrocinadas</translation>
 <translation id="2875302873837723333">melhores sites</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">Imagem de Fundo</translation>
 <translation id="385051799172605136">Anterior</translation>
 <translation id="9024104284526126630">Pode iniciar uma chamada privada no Brave.</translation>
-<translation id="5735801688206890393">Inicie chamadas ilimitadas com amigos e colegas no Brave Together.</translation>
+<translation id="4903286433687221248">Inicie chamadas ilimitadas com amigos e colegas no Brave Talk.</translation>
 <translation id="7115051913071512405">Experimente</translation>
 <translation id="7415602225677446066">As principais histórias de hoje, num feed absolutamente privado, apenas para si.</translation>
 <translation id="6903061332999399632">O Brave News é suportado por anúncios com anúncios completamente privados e anonimizados, selecionados no seu dispositivo. As suas informações pessoais permanecem sempre privadas, de acordo com a nossa <ph name="LINK_START"/>política de privacidade<ph name="LINK_END"/>.</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">Deteção automática</translation>
 <translation id="4394049700291259645">Desactivar</translation>
 <translation id="4176463684765177261">Desativada</translation>
-<translation id="4434663852465709809">QR Code para utilizadores iOS Rewards - transferência de BAT</translation>
-<translation id="2175927920773552910">Código QR</translation>
 <translation id="8283001340969131076">Lamentamos, ocorreu um erro ao tentar desligar a sua conta <ph name="PROVIDER"/>. Tente novamente dentro de alguns minutos.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">Sem ligação à Internet. Tente mais tarde.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">Presentemente, o BAT não é suportado na sua região. Consulte <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> para atualizações.</translation>
 <translation id="1737873393693460829">Ao ativar [[title]], aceita os <ph name="BEGIN_LINK1"/>Termos de Serviço<ph name="END_LINK1"/> e <ph name="BEGIN_LINK2"/>Política de Privacidade<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Erro ao criar o cartão BAT do Brave Browser</translation>
-<translation id="6473583070570450185">Precisa de uma carteira verificada para proceder ao Login</translation>
-<translation id="5949995321533425416">Precisa de um mínimo de <ph name="AMOUNT"/> BAT para criar uma carteira Uphold. Tente novamente após ter verificado a carteira com a Uphold.</translation>
+<translation id="8429332714958713413">É necessário ter uma carteira verificada para iniciar sessão</translation>
+<translation id="5881716477679854586">Tente novamente após ter concluído a verificação do ID em <ph name="CUSTODIAN"/>.</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> a chegar dentro de <ph name="DAYS"/></translation>
 <translation id="4672975606583962967">Selecione um serviço de carteira</translation>
 <translation id="1815503044492647974">Selecione um parceiro de carteira de salvaguarda. Se já tem uma conta, ser-lhe-á pedido que inicie sessão para estabelecer ligação.</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">As Recompensas foram desativadas</translation>
 <translation id="3354337256330577726">A contribuição automática foi desativada</translation>
 <translation id="6727186931929643711">Nova tentativa abandonada</translation>
+<translation id="8978461348341400550">Depositário:</translation>
+<translation id="7220161813676251577">ID de membro depositário:</translation>
 <translation id="680983167891198932">Chave</translation>
 <translation id="7535087603100972091">Valor</translation>
 <translation id="45591635423975492">Registado em</translation>
@@ -375,8 +374,8 @@
 <translation id="2070991379950719711">Comece a usar o Brave Rewards</translation>
 <translation id="6318696841371191107">Faça uma visita rápida</translation>
 <translation id="8465790416279415448">Ao continuar, aceita os <ph name="TOS_LINK_BEGIN"/>Termos de Utilização<ph name="TOS_LINK_END"/> e a <ph name="PP_LINK_BEGIN"/>Política de Privacidade<ph name="PP_LINK_END"/>.</translation>
-<translation id="2404165674840145940">Presentear com Brave Rewards</translation>
-<translation id="5820285701794581330">Ao usar o Brave Rewards, receberá BAT, que poderá usar para presentear os criadores.</translation>
+<translation id="8222322431155185238">Dar gratificação com Brave Rewards</translation>
+<translation id="1895476463085410109">Receba recompensas vendo anúncios privados do Brave e ajude os criadores de conteúdo automaticamente</translation>
 <translation id="5705882733397021510">Volte</translation>
 <translation id="185034574799484512">Proceda a uma viagem rápida</translation>
 <translation id="8281886186245836920">Ignorar</translation>
@@ -529,6 +528,7 @@
 <translation id="8725066075913043281">Tentar novamente</translation>
 <translation id="2600847485413879104">Recompensas BAT</translation>
 <translation id="8006596443377585072">Carteira bitFlyer</translation>
+<translation id="2770577461149798369">Carteira Gemini</translation>
 <translation id="8108350286444475334">Manter Carteira</translation>
 <translation id="6977372887576114613">BAT Depositado</translation>
 <translation id="3173528272490482456">Pronto para começar?</translation>
@@ -536,6 +536,7 @@
 <translation id="108052542935515756">Pode começar com a</translation>
 <translation id="194625454574835815">Chave de recuperação</translation>
 <translation id="6354568176665589146">Recorrente</translation>
+<translation id="2799223571221894425">Reiniciar</translation>
 <translation id="1110535155349301542">Remover</translation>
 <translation id="8204292894173669182">Remover dos Guardados</translation>
 <translation id="5530851178552343773">Designou [[reservedAmount]] [[currency]] para criadores que ainda não têm uma conta para receber contribuições. O navegador irá continuar a tentar contribuir nos próximos 90 dias ou até que os respetivos criadores tenham uma conta.</translation>
@@ -566,6 +567,8 @@
 <translation id="3092054349246483285">A sua wallet Brave é fornecida por <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Recompensas Brave têm como base o Basic Attention Token Saiba mais sobre BAT</translation>
 <translation id="7823359893981882407">aqui</translation>
+<translation id="3034163433136515805">Ver Código QR</translation>
+<translation id="1640793619390890218">para utilizadores de recompensas de iOS a transferir BAT.</translation>
 <translation id="4483635855837696643">Restaure a sua Carteira</translation>
 <translation id="459721429458957031">Utilize a chave de recuperação para restaurar a sua carteira.</translation>
 <translation id="4600052736217630789">Restaurar com uma chave de recuperação irá substituir a sua carteira atual. Por isso, certifique-se de que esvazia ou efetua uma cópia de segurança da sua carteira antes de restaurar.</translation>
@@ -861,4 +864,12 @@
 <translation id="6973157709854838218">Não mostrar os seus saldos no ecrã</translation>
 <translation id="4548946945059463969">Mostrar os seus saldos no ecrã</translation>
 <translation id="242959166945779492">Não tem saldos na sua conta. Visite FTX para comprar.</translation>
+<translation id="5551238871320268996">Brave Together</translation>
+<translation id="5735801688206890393">Inicie chamadas ilimitadas com amigos e colegas no Brave Together.</translation>
+<translation id="4434663852465709809">QR Code para utilizadores iOS Rewards - transferência de BAT</translation>
+<translation id="2175927920773552910">Código QR</translation>
+<translation id="6473583070570450185">Precisa de uma carteira verificada para proceder ao Login</translation>
+<translation id="5949995321533425416">Precisa de um mínimo de <ph name="AMOUNT"/> BAT para criar uma carteira Uphold. Tente novamente após ter verificado a carteira com a Uphold.</translation>
+<translation id="2404165674840145940">Presentear com Brave Rewards</translation>
+<translation id="5820285701794581330">Ao usar o Brave Rewards, receberá BAT, que poderá usar para presentear os criadores.</translation>
 </translationbundle>

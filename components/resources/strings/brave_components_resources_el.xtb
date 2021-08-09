@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">Εμφάνιση αγαπημένων</translation>
 <translation id="3446024864193919737">Εμφάνιση Ανταμοιβών Brave</translation>
 <translation id="6274899614137380422">Εμφάνιση του Binance</translation>
-<translation id="5551238871320268996">Brave Together</translation>
 <translation id="5585019845078534178">Κάρτες</translation>
 <translation id="3870475560794762985">Εμφάνιση Επιχορηγούμενων Εικόνων</translation>
 <translation id="2875302873837723333">κορυφαίοι ιστότοποι</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">Εικόνα φόντου</translation>
 <translation id="385051799172605136">Πίσω</translation>
 <translation id="9024104284526126630">Μπορείτε να ξεκινήσετε μια ιδιωτική κλήση στο Brave.</translation>
-<translation id="5735801688206890393">Ξεκινήστε τις απεριόριστες κλήσεις με φίλους και συναδέλφους στο Brave Together.</translation>
+<translation id="4903286433687221248">Πραγματοποιήστε απεριόριστες κλήσεις με φίλους και συναδέλφους στο Brave Talk.</translation>
 <translation id="7115051913071512405">Δοκιμάστε το</translation>
 <translation id="7415602225677446066">Οι κορυφαίες ιστορίες σήμερα σε μια εντελώς ιδιωτική ροή ιστοριών, μόνο για εσάς.</translation>
 <translation id="6903061332999399632">Το Brave News λειτουργεί με διαφημίσεις. Παρέχει απόλυτα ιδιωτικές και ανωνυμοποιημένες διαφημίσεις, αντιστοιχισμένες με τη συσκευή σας. Τα προσωπικά σας στοιχεία παραμένουν απόρρητα, σε συμμόρφωση με την <ph name="LINK_START"/>πολιτική απορρήτου<ph name="LINK_END"/>.</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">Αυτόματη ανίχνευση</translation>
 <translation id="4394049700291259645">Απενεργοποίηση</translation>
 <translation id="4176463684765177261">Απενεργοποιημένη</translation>
-<translation id="4434663852465709809">Κωδικός QR για χρήστες Ανταμοιβών iOS που μεταφέρουν BAT</translation>
-<translation id="2175927920773552910">Κωδικός QR</translation>
 <translation id="8283001340969131076">Δυστυχώς, προέκυψε κάποιο σφάλμα κατά την προσπάθεια αποσύνδεσης του λογαριασμού σας <ph name="PROVIDER"/>. Δοκιμάστε ξανά σε λίγο.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">Η συσκευή είναι εκτός σύνδεσης, παρακαλούμε δοκιμάστε πάλι αργότερα.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">Το BAT δεν υποστηρίζεται προς το παρόν στην περιοχή σας. Παρακαλούμε αναφερθείτε <ph name="BEGIN_LINK"/>εδώ<ph name="END_LINK"/> για ενημερώσεις.</translation>
 <translation id="1737873393693460829">Ενεργοποιώντας [[title]], συμφωνείτε με τους <ph name="BEGIN_LINK1"/>Όρους Υπηρεσίας<ph name="END_LINK1"/> και την <ph name="BEGIN_LINK2"/>Πολιτική Απορρήτου<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Σφάλμα κατά τη δημιουργία της κάρτας Brave Browser BAT</translation>
-<translation id="6473583070570450185">Χρειάζεστε ένα επαληθευμένο πορτοφόλι για να συνδεθείτε</translation>
-<translation id="5949995321533425416">Πρέπει να έχετε ελάχιστο <ph name="AMOUNT"/> BAT για να δημιουργήσετε ένα Upholod πορτοφόλι. Δοκιμάστε ξανά αφού επαληθεύσετε το πορτοφόλι σας με το Uphold.</translation>
+<translation id="8429332714958713413">Χρειάζεστε επαληθευμένο πορτοφόλι για να συνδεθείτε</translation>
+<translation id="5881716477679854586">Δοκιμάστε ξανά, αφού ολοκληρώσετε την επαλήθευση αναγνωριστικού στο <ph name="CUSTODIAN"/>.</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> θα φτάσουν σε <ph name="DAYS"/></translation>
 <translation id="4672975606583962967">Επιλογή υπηρεσίας πορτοφολιού</translation>
 <translation id="1815503044492647974">Επιλέξτε έναν συνεργάτη πορτοφολιού κηδεμονίας. Εάν έχετε ήδη λογαριασμό, θα σας ζητηθεί να κάνετε είσοδο για να συνδεθείτε.</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">Οι ανταμοιβές απενεργοποιήθηκαν</translation>
 <translation id="3354337256330577726">Η αυτόματη συνεισφορά απενεργοποιήθηκε</translation>
 <translation id="6727186931929643711">Διακοπή νέας προσπάθειας</translation>
+<translation id="8978461348341400550">Υπηρεσία θεματοφύλακα:</translation>
+<translation id="7220161813676251577">Αναγνωριστικό μέλους θεματοφύλακα:</translation>
 <translation id="680983167891198932">Κλειδί</translation>
 <translation id="7535087603100972091">Αξία</translation>
 <translation id="45591635423975492">Καταγράφηκε στις</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">Ξεκινήστε να χρησιμοποιείτε το Brave Rewards</translation>
 <translation id="6318696841371191107">Κάντε μια γρήγορη περιήγηση</translation>
 <translation id="8465790416279415448">Συνεχίζοντας, συμφωνείτε με τους <ph name="TOS_LINK_BEGIN"/>Όρους υπηρεσίας<ph name="TOS_LINK_END"/> και την <ph name="PP_LINK_BEGIN"/>Πολιτική απορρήτου<ph name="PP_LINK_END"/>.</translation>
-<translation id="2404165674840145940">Δώστε φιλοδώρημα με το Brave rewards</translation>
-<translation id="5820285701794581330">Με τη χρήση του Brave rewards, θα αρχίσετε να κερδίζετε BAT που μπορείτε να χρησιμοποιήσετε για να δώσετε φιλοδώρημα σε δημιουργούς.</translation>
+<translation id="8222322431155185238">Δώστε φιλοδώρημα με Brave Rewards</translation>
+<translation id="1895476463085410109">Κερδίστε Rewards, παρακολουθώντας Brave Private Ads, και υποστηρίξτε αυτόματα το περιεχόμενων των δημιουργών</translation>
 <translation id="5705882733397021510">Επιστρέψτε</translation>
 <translation id="185034574799484512">Ας κάνουμε μια γρήγορη περιήγηση</translation>
 <translation id="8281886186245836920">Παράβλεψη</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">Δοκιμάστε ξανά</translation>
 <translation id="2600847485413879104">Ανταμοιβές BAT</translation>
 <translation id="8006596443377585072">Πορτοφόλι bitFlyer</translation>
+<translation id="2770577461149798369">Πορτοφόλι Gemini</translation>
 <translation id="8108350286444475334">Υποστηρίξτε το Πορτοφόλι</translation>
 <translation id="6977372887576114613">Κατατεθειμένες BAT</translation>
 <translation id="3173528272490482456">Έτοιμοι να ξεκινήσετε;</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">Μπορείτε να ξεκινήσετε με</translation>
 <translation id="194625454574835815">Κλειδί Ανάκτησης</translation>
 <translation id="6354568176665589146">Επαναλαμβανόμενες</translation>
+<translation id="2799223571221894425">Επανεκκίνηση</translation>
 <translation id="1110535155349301542">κατάργηση</translation>
 <translation id="8204292894173669182">Κατάργηση από τα αποθηκευμένα</translation>
 <translation id="5530851178552343773">Έχετε ορίσει [[reservedAmount]] [[currency]] για δημιουργούς που δεν έχουν ακόμη εγγραφεί για να λαμβάνουν συνεισφορές. Το πρόγραμμα περιήγησής σας θα συνεχίσει να προσπαθεί για τη συνεισφορά μέχρι να γίνει επαλήθευσή τους ή μέχρι να περάσουν 90 ημέρες.</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">Το Brave πορτοφόλι σας τροφοδοτείται από <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Οι ανταμοιβές του Brave στηρίζονται στο Basic Attention Token. Μάθετε περισσότερα για τo ΒΑΤ</translation>
 <translation id="7823359893981882407">εδώ</translation>
+<translation id="3034163433136515805">Δείτε τον κωδικό QR</translation>
+<translation id="1640793619390890218">για χρήστες iOS Rewards που μεταφέρουν BAT.</translation>
 <translation id="4483635855837696643">Ανακτήστε το Πορτοφόλι σας</translation>
 <translation id="459721429458957031">Χρησιμοποιήστε το κλειδί ανάκτησης για να επαναφέρετε το πορτοφόλι σας.</translation>
 <translation id="4600052736217630789">Η επαναφορά μέσω κλειδιού ανάκτησης θα αντικαταστήσει το τρέχον πορτοφόλι σας. Επομένως, φροντίστε να έχετε αδειάσει ή να έχετε δημιουργήσει αντίγραφο ασφαλείας του τρέχοντος πορτοφολιού σας πριν την ανάκτηση.</translation>
@@ -866,4 +869,12 @@
 <translation id="6973157709854838218">Κρύψτε τα υπόλοιπά σας από την οθόνη</translation>
 <translation id="4548946945059463969">Εμφανίστε τα υπόλοιπά σας στην οθόνη</translation>
 <translation id="242959166945779492">Δεν έχετε υπόλοιπο στον λογαριασμό σας. Επισκεφτείτε το FTX για να αγοράσετε.</translation>
+<translation id="5551238871320268996">Brave Together</translation>
+<translation id="5735801688206890393">Ξεκινήστε τις απεριόριστες κλήσεις με φίλους και συναδέλφους στο Brave Together.</translation>
+<translation id="4434663852465709809">Κωδικός QR για χρήστες Ανταμοιβών iOS που μεταφέρουν BAT</translation>
+<translation id="2175927920773552910">Κωδικός QR</translation>
+<translation id="6473583070570450185">Χρειάζεστε ένα επαληθευμένο πορτοφόλι για να συνδεθείτε</translation>
+<translation id="5949995321533425416">Πρέπει να έχετε ελάχιστο <ph name="AMOUNT"/> BAT για να δημιουργήσετε ένα Upholod πορτοφόλι. Δοκιμάστε ξανά αφού επαληθεύσετε το πορτοφόλι σας με το Uphold.</translation>
+<translation id="2404165674840145940">Δώστε φιλοδώρημα με το Brave rewards</translation>
+<translation id="5820285701794581330">Με τη χρήση του Brave rewards, θα αρχίσετε να κερδίζετε BAT που μπορείτε να χρησιμοποιήσετε για να δώσετε φιλοδώρημα σε δημιουργούς.</translation>
 </translationbundle>

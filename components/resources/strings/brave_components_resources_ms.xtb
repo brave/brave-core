@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">Paparkan keutamaan</translation>
 <translation id="3446024864193919737">Tunjukkan Ganjaran Brave</translation>
 <translation id="6274899614137380422">Tunjukkan Binance</translation>
-<translation id="5551238871320268996">Brave Bersama</translation>
 <translation id="5585019845078534178">Kad</translation>
 <translation id="3870475560794762985">Tunjukkan Imej Tajaan</translation>
 <translation id="2875302873837723333">laman popular</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">Imej Latar Belakang</translation>
 <translation id="385051799172605136">Kembali</translation>
 <translation id="9024104284526126630">Anda boleh memulakan panggilan peribadi dalam Brave.</translation>
-<translation id="5735801688206890393">Mulakan panggilan tanpa had dengan rakan-rakan dan rakan sekerja dalam Brave Together.</translation>
+<translation id="4903286433687221248">Mulakan panggilan tanpa had bersama rakan dan rakan sekerja dalam Brave Talk.</translation>
 <translation id="7115051913071512405">Cubalah ia</translation>
 <translation id="7415602225677446066">Cerita terhangat hari ini dalam suapan yang peribadi sepenuhnya, hanya untuk anda.</translation>
 <translation id="6903061332999399632">Brave News disokong oleh iklan dengan iklan yang sepenuhnya peribadi dan tanpa nama dipadankan pada peranti anda. Maklumat peribadi anda sentiasa dirahsiakan, menurut <ph name="LINK_START"/>privacy policy<ph name="LINK_END"/> kami.</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">Auto-kesan</translation>
 <translation id="4394049700291259645">Lumpuhkan</translation>
 <translation id="4176463684765177261">Dilumpuhkan</translation>
-<translation id="4434663852465709809">Kod QR untuk pengguna iOS Rewards yang memindahkan BAT</translation>
-<translation id="2175927920773552910">Kod QR</translation>
 <translation id="8283001340969131076">Maaf, terdapat ralat semasa mencuba memutuskan sambungan akaun <ph name="PROVIDER"/> anda. Sila cuba sebentar lagi.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">Peranti ini di luar talian, sila cuba lagi kemudian.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">BAT tidak disokong buat masa ini di kawasan anda. Sila rujuk <ph name="BEGIN_LINK"/>di sini<ph name="END_LINK"/> untuk makluman terkini.</translation>
 <translation id="1737873393693460829">Dengan menekan buka pada [[title]], anda bersetuju dengan <ph name="BEGIN_LINK1"/>Terma Perkhidmatan<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>Polisi Privasi<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Ralat mencipta kad BAT Pelayar Berani</translation>
-<translation id="6473583070570450185">Anda memerlukan sebuah dompet yang ditentusahkan untuk Log Masuk</translation>
-<translation id="5949995321533425416">Anda memerlukan minimum <ph name="AMOUNT"/> BAT untuk mencipta dompet Uphold. Sila cuba lagi setelah anda mengesahkan dompet anda dengan Uphold.</translation>
+<translation id="8429332714958713413">Anda memerlukan dompet yang disahkan untuk log masuk</translation>
+<translation id="5881716477679854586">Sila cuba lagi setelah anda melengkapkan pengesahan ID di <ph name="CUSTODIAN"/>.</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> akan tiba dalam <ph name="DAYS"/></translation>
 <translation id="4672975606583962967">Pilih perkhidmatan dompet</translation>
 <translation id="1815503044492647974">Pilih rakan kongsi dompet penjagaan. Sekiranya anda sudah mempunyai akaun, anda akan diminta untuk log masuk untuk menyambung.</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">Ganjaran dimatikan</translation>
 <translation id="3354337256330577726">Sumbangan automatik dimatikan</translation>
 <translation id="6727186931929643711">Berhenti mencuba semula</translation>
+<translation id="8978461348341400550">Penjaga Dokumen:</translation>
+<translation id="7220161813676251577">ID ahli penjaga dokumen:</translation>
 <translation id="680983167891198932">Kekunci</translation>
 <translation id="7535087603100972091">Nilai</translation>
 <translation id="45591635423975492">Dilogkan pada</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">Mula menggunakan Ganjaran Brave</translation>
 <translation id="6318696841371191107">Jelajah pantas</translation>
 <translation id="8465790416279415448">Dengan meneruskan, anda bersetuju dengan <ph name="TOS_LINK_BEGIN"/>Terma Perkhidmatan<ph name="TOS_LINK_END"/> dan <ph name="PP_LINK_BEGIN"/>Dasar Privasi<ph name="PP_LINK_END"/>.</translation>
-<translation id="2404165674840145940">Berikan Tip dengan ganjaran Brave</translation>
-<translation id="5820285701794581330">Dengan menggunakan ganjaran Brave, anda akan mula memperoleh BAT yang anda boleh gunakan untuk memberi tip kepada pencipta.</translation>
+<translation id="8222322431155185238">Beri tip dengan Ganjaran Brave</translation>
+<translation id="1895476463085410109">Dapatkan Ganjaran dengan melihat Iklan Peribadi Brave dan menyokong pencipta kandungan secara automatik</translation>
 <translation id="5705882733397021510">Kembali</translation>
 <translation id="185034574799484512">Mari terokai dengan pantas</translation>
 <translation id="8281886186245836920">Langkau</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">Cuba lagi</translation>
 <translation id="2600847485413879104">BAT Ganjaran</translation>
 <translation id="8006596443377585072">Dompet bitFlyer</translation>
+<translation id="2770577461149798369">Dompet Gemini</translation>
 <translation id="8108350286444475334">Dompet Uphold</translation>
 <translation id="6977372887576114613">BAT yang didepositkan</translation>
 <translation id="3173528272490482456">Sedia untuk bermula?</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">Anda boleh bermula dengan</translation>
 <translation id="194625454574835815">Kunci Pemulihan</translation>
 <translation id="6354568176665589146">Berulang</translation>
+<translation id="2799223571221894425">Lancarkan semula</translation>
 <translation id="1110535155349301542">padamkan</translation>
 <translation id="8204292894173669182">Buang Daripada Disimpan</translation>
 <translation id="5530851178552343773">Anda telah memperuntukkan [[reservedAmount]] [[currency]] untuk pencipta yang belum lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang hinggalah mereka mengesahkan akaun mereka, atau hingga 90 hari berlalu.</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">Dompet Brave anda dikuasakan oleh <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Brave Rewards dibentuk dari Token Perhatian Asas (BAT). Ketahui lebih lanjut tentang BAT</translation>
 <translation id="7823359893981882407">di sini</translation>
+<translation id="3034163433136515805">Lihat Kod QR</translation>
+<translation id="1640793619390890218">untuk pengguna Ganjaran iOS memindahkan BAT.</translation>
 <translation id="4483635855837696643">Pulihkan Wallet anda</translation>
 <translation id="459721429458957031">Gunakan kunci pemulihan anda untuk memulihkan dompet anda.</translation>
 <translation id="4600052736217630789">Pengembalian semula menggunakan kunci pemulihan akan menggantikan dompet semasa anda. Patikan anda mengosongkan atau membuat sandaran dompet semasa anda sebelum mengembalikan semula.</translation>
@@ -622,7 +625,7 @@
 <translation id="3780605330121608425">Dompet anda</translation>
 <translation id="6727483290601442544">Lihat Butiran</translation>
 <translation id="1988679729106502285">CATATAN:</translation>
-<translation id="7979350009208995417">Pencipta ini pada masa ini tidakdikonfigurasi untuk menerima tip dari dompet anda. Sebarang tip yang anda buat akan kekal di dalam dompet anda dan cuba semula secara aotomatik selama 90 hari.</translation>
+<translation id="7979350009208995417">Pencipta ini pada masa ini tidak dikonfigurasi untuk menerima tip dari dompet anda. Sebarang tip yang anda buat akan kekal di dalam dompet anda dan cuba semula secara automatik selama 90 hari.</translation>
 <translation id="7461596279975181413">Pencipta Disahkan Brave ini belum lagi mengkonfigurasikan akaun mereka untuk menerima sumbangan daripada pengguna Brave. Pelayar anda akan terus berusaha menyumbang sehingga disahkan, atau sehingga 90 hari berlalu.</translation>
 <translation id="4292832015778676417">diperoleh daripada iklan</translation>
 <translation id="3197752845651180812">Sumbangan menunggu</translation>
@@ -866,4 +869,12 @@ Anda juga boleh memilih untuk <ph name="LINK_BEGIN"/>hide sponsored images<ph na
 <translation id="6973157709854838218">Sembunyikan baki anda dari paparan</translation>
 <translation id="4548946945059463969">Dedahkan baki anda di skrin</translation>
 <translation id="242959166945779492">Anda tidak mempunyai sebarang baki dalam akaun anda. Lawati FTX untuk membeli sedikit.</translation>
+<translation id="5551238871320268996">Brave Bersama</translation>
+<translation id="5735801688206890393">Mulakan panggilan tanpa had dengan rakan-rakan dan rakan sekerja dalam Brave Together.</translation>
+<translation id="4434663852465709809">Kod QR untuk pengguna iOS Rewards yang memindahkan BAT</translation>
+<translation id="2175927920773552910">Kod QR</translation>
+<translation id="6473583070570450185">Anda memerlukan sebuah dompet yang ditentusahkan untuk Log Masuk</translation>
+<translation id="5949995321533425416">Anda memerlukan minimum <ph name="AMOUNT"/> BAT untuk mencipta dompet Uphold. Sila cuba lagi setelah anda mengesahkan dompet anda dengan Uphold.</translation>
+<translation id="2404165674840145940">Berikan Tip dengan ganjaran Brave</translation>
+<translation id="5820285701794581330">Dengan menggunakan ganjaran Brave, anda akan mula memperoleh BAT yang anda boleh gunakan untuk memberi tip kepada pencipta.</translation>
 </translationbundle>

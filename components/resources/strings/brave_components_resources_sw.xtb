@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">Onyesha vipendwa</translation>
 <translation id="3446024864193919737">Onyesha Brave Rewards</translation>
 <translation id="6274899614137380422">Onyesha Binance</translation>
-<translation id="5551238871320268996">Brave Pamoja</translation>
 <translation id="5585019845078534178">Kadi</translation>
 <translation id="3870475560794762985">Onyesha Picha Zinazodhaminiwa</translation>
 <translation id="2875302873837723333">tovuti maarufu</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">Picha ya Mandharinyuma</translation>
 <translation id="385051799172605136">Rudi nyuma</translation>
 <translation id="9024104284526126630">Unaweza kuanzisha simu ya faragha katika Brave.</translation>
-<translation id="5735801688206890393">Anzisha simu zisizo na kikomo na marafiki na wafanyakazi wenza katika Brave Together.</translation>
+<translation id="4903286433687221248">Anza mawasiliano ya simu zisizo na kikomo na marafiki na wafanyakazi wenza katika Brave Talk.</translation>
 <translation id="7115051913071512405">Ijaribu</translation>
 <translation id="7415602225677446066">Hadithi bora za leo katika mlisho wa faragha kabisa, kwa ajili yako tu.</translation>
 <translation id="6903061332999399632">Brave News inatumia matangazo yaliyolinganishwa kwa njia ya faragha na kutotambulisha kwenye kifaa chako. Maelezo yako binafsi yanakuwa ya faragha wakati wote, kulingana na <ph name="LINK_START"/>sera yetu ya faragha<ph name="LINK_END"/>.</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">Tambua kiotomatiki</translation>
 <translation id="4394049700291259645">Zima</translation>
 <translation id="4176463684765177261">Imezimwa</translation>
-<translation id="4434663852465709809">Msimbo wa QR kwa watumiaji wa iOS Rewards wanaohamisha BAT</translation>
-<translation id="2175927920773552910">Msimbo wa QR</translation>
 <translation id="8283001340969131076">Samahani, kulikuwa na hitilafu wakati wa kujaribu kutenganisha akaunti yako ya <ph name="PROVIDER"/>. Tafadhali jaribu tena baada ya muda mfupi.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">Kifaa kipo nje ya mtandao, tafadhali jaribu tena baadaye.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">BAT haitumiki kwa sasa katika eneo lako. Tafadhali rejelea <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> kwa taarifa.</translation>
 <translation id="1737873393693460829">Kwa kuwasha [[title]], unakubali <ph name="BEGIN_LINK1"/>Sheria na Masharti<ph name="END_LINK1"/> na <ph name="BEGIN_LINK2"/>Sera ya Faragha<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Hitilafu wakati wa kuunda kadi ya Brave Browser BAT</translation>
-<translation id="6473583070570450185">Unahitaji pochi iliyothibitishwa ili Uingie</translation>
-<translation id="5949995321533425416">Unahitaji kiwango cha chini cha <ph name="AMOUNT"/> BAT ili uunde pochi ya Uphold. Tafadhali jaribu tena baada ya kuthibitisha pochi yako na Uphold.</translation>
+<translation id="8429332714958713413">Unahitaji pochi iliyothibitishwa ili kuingia</translation>
+<translation id="5881716477679854586">Tafadhali jaribu tena baada ya kukamilisha uthibitishaji wa kitambulisho kwenye <ph name="CUSTODIAN"/>.</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> itawasili baada ya <ph name="DAYS"/></translation>
 <translation id="4672975606583962967">Chagua huduma ya pochi</translation>
 <translation id="1815503044492647974">Teua mbia wa usimamizi wa pochi. Ikiwa tayari una akaunti, utaombwa uingie ili uunganishe.</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">Kipengele cha zawadi kimezimwa</translation>
 <translation id="3354337256330577726">Kipengele cha Changa kiotomatiki kimezimwa</translation>
 <translation id="6727186931929643711">Imeacha kujaribu tena</translation>
+<translation id="8978461348341400550">Msimamizi:</translation>
+<translation id="7220161813676251577">Kitambulisho cha mwanachama msimamizi</translation>
 <translation id="680983167891198932">Ufunguo</translation>
 <translation id="7535087603100972091">Thamani</translation>
 <translation id="45591635423975492">Umeingia kwenye</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">Anza kutumia Zawadi za Brave</translation>
 <translation id="6318696841371191107">Angalia onyesho haraka</translation>
 <translation id="8465790416279415448">Kwa kuendelea, unakubali <ph name="TOS_LINK_BEGIN"/>Sheria na Masharti<ph name="TOS_LINK_END"/> na <ph name="PP_LINK_BEGIN"/>Sera ya Faragha<ph name="PP_LINK_END"/>.</translation>
-<translation id="2404165674840145940">Toa bahshishi kwa zawadi za Brave</translation>
-<translation id="5820285701794581330">Kwa kutumia zawadi za Brave, utaanza tena BAT unayoweza kutumia kuwapa waundaji bahshishi.</translation>
+<translation id="8222322431155185238">Kidokezo chenye Brave Rewards</translation>
+<translation id="1895476463085410109">Pata Rewards kwa kutazama Brave Private Ads na uwadhamini waundaji maudhui kiotomatiki</translation>
 <translation id="5705882733397021510">Rudi Nyuma</translation>
 <translation id="185034574799484512">Hebu tuangalie onyesho la haraka</translation>
 <translation id="8281886186245836920">Ruka</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">Jaribu tena</translation>
 <translation id="2600847485413879104">BAT ya Tuzo</translation>
 <translation id="8006596443377585072">Pochi ya bitFlyer</translation>
+<translation id="2770577461149798369">Gemini Wallet</translation>
 <translation id="8108350286444475334">Dumisha Mkoba</translation>
 <translation id="6977372887576114613">Umeweka BAT</translation>
 <translation id="3173528272490482456">Upo tayari kuanza?</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">Unaweza kuanza na</translation>
 <translation id="194625454574835815">Ufungo wa Urejeshaji</translation>
 <translation id="6354568176665589146">Inayojirudia</translation>
+<translation id="2799223571221894425">Funga na ufungue</translation>
 <translation id="1110535155349301542">ondoa</translation>
 <translation id="8204292894173669182">Ondoa Kwenye Yaliyohifadhiwa</translation>
 <translation id="5530851178552343773">Umeweka [[reservedAmount]] [[currency]] kwa watengenezaji ambao bado hawajajisajili ili kupokea michango. Kisakuzi chako kitaendelea kujaribu kuchangia hadi watakapofungua akaunti, au hadi siku 90 zitakapokuwa zimepita.</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">Pochi yako ya Brave inaendeshwa na <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Brave Rewards imejengwa kwenye Basic Attention Token. jifunze Zaidi kuhusu BAT</translation>
 <translation id="7823359893981882407">hapa</translation>
+<translation id="3034163433136515805">Tazama Msimbo wa QR</translation>
+<translation id="1640793619390890218">ya watumiaji wa iOS Rewards wanaohamisha BAT.</translation>
 <translation id="4483635855837696643">Rejesha Wallet Yako</translation>
 <translation id="459721429458957031">Tumia ufunguo wako wa urejeshaji kurejesha waleti yako.</translation>
 <translation id="4600052736217630789">Kurejesha kwa kutumia ufunguo wa urejeshaji kutafuta waleti yako ya sasa. Hivyo hakikisha unaondoa au unaihifadhi waleti yako ya sasa kwa njia mbadala kabla ya kurejesha.</translation>
@@ -865,4 +868,12 @@
 <translation id="6973157709854838218">Ficha masalio yako ili yasionekane</translation>
 <translation id="4548946945059463969">Tambua masalio yako kwenye skrini</translation>
 <translation id="242959166945779492">Huna salio lolote katika akaunti yako. Tembelea FTX ili ununue kadhaa.</translation>
+<translation id="5551238871320268996">Brave Pamoja</translation>
+<translation id="5735801688206890393">Anzisha simu zisizo na kikomo na marafiki na wafanyakazi wenza katika Brave Together.</translation>
+<translation id="4434663852465709809">Msimbo wa QR kwa watumiaji wa iOS Rewards wanaohamisha BAT</translation>
+<translation id="2175927920773552910">Msimbo wa QR</translation>
+<translation id="6473583070570450185">Unahitaji pochi iliyothibitishwa ili Uingie</translation>
+<translation id="5949995321533425416">Unahitaji kiwango cha chini cha <ph name="AMOUNT"/> BAT ili uunde pochi ya Uphold. Tafadhali jaribu tena baada ya kuthibitisha pochi yako na Uphold.</translation>
+<translation id="2404165674840145940">Toa bahshishi kwa zawadi za Brave</translation>
+<translation id="5820285701794581330">Kwa kutumia zawadi za Brave, utaanza tena BAT unayoweza kutumia kuwapa waundaji bahshishi.</translation>
 </translationbundle>

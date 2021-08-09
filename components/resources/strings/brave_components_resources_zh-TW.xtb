@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">顯示最愛</translation>
 <translation id="3446024864193919737">顯示 Brave Rewards</translation>
 <translation id="6274899614137380422">顯示幣安</translation>
-<translation id="5551238871320268996">Brave Together</translation>
 <translation id="5585019845078534178">卡片</translation>
 <translation id="3870475560794762985">顯示贊助影像</translation>
 <translation id="2875302873837723333">熱門網站</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">背景圖</translation>
 <translation id="385051799172605136">返回</translation>
 <translation id="9024104284526126630">您可以在 Brave 開始私人通話。</translation>
-<translation id="5735801688206890393">在 Brave Together 中與朋友和同事開始無限通話。</translation>
+<translation id="4903286433687221248">透過 Brave Talk 與朋友及同事無限通話。</translation>
 <translation id="7115051913071512405">歡迎試用</translation>
 <translation id="7415602225677446066">完全私人的今日頭條新聞，專為您而生。</translation>
 <translation id="6903061332999399632">Brave News 是以您的裝置上使用完全私人且匿名的廣告的支援。根據我們的 <ph name="LINK_START"/>隱私權政策<ph name="LINK_END"/>，您的個人資訊將會永遠保持私密。</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">自動偵測</translation>
 <translation id="4394049700291259645">停用</translation>
 <translation id="4176463684765177261">已停用</translation>
-<translation id="4434663852465709809">iOS 獎勵使用者轉移 BAT 的 QR Code</translation>
-<translation id="2175927920773552910">QR 碼</translation>
 <translation id="8283001340969131076">抱歉，嘗試斷開 <ph name="PROVIDER"/> 帳號連線時發生錯誤。請稍後再試。</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">裝置已離線，請稍後再試。</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">您所在地區目前不支援 BAT。請查閱<ph name="BEGIN_LINK"/>這裡<ph name="END_LINK"/>以取得最新消息。</translation>
 <translation id="1737873393693460829">開啟 [[title]] 即表示您同意<ph name="BEGIN_LINK1"/>服務條款<ph name="END_LINK1"/>與<ph name="BEGIN_LINK2"/>隱私權政策<ph name="END_LINK2"/>。</translation>
 <translation id="2564425876266960486">建立 Brave 瀏覽器 BAT 卡時發生錯誤</translation>
-<translation id="6473583070570450185">您需要經驗證錢包來登入</translation>
-<translation id="5949995321533425416">您需要至少 <ph name="AMOUNT"/> BAT 才能建立 Uphold 錢包。請使用您的 Uphold 錢包驗證後重試。</translation>
+<translation id="8429332714958713413">您需要先驗證錢包才能登入</translation>
+<translation id="5881716477679854586">請先到 <ph name="CUSTODIAN"/> 完成 ID 驗證，並再試一次。</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> 抵達 <ph name="DAYS"/></translation>
 <translation id="4672975606583962967">選擇錢包服務</translation>
 <translation id="1815503044492647974">選取錢包保管合作夥伴。若您已有帳號，將會被要求登入以進行連線。</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">獎勵已關閉</translation>
 <translation id="3354337256330577726">自動捐款已關閉</translation>
 <translation id="6727186931929643711">停止重試</translation>
+<translation id="8978461348341400550">保管人：</translation>
+<translation id="7220161813676251577">保管人成員 ID：</translation>
 <translation id="680983167891198932">金鑰</translation>
 <translation id="7535087603100972091">價值</translation>
 <translation id="45591635423975492">已登入於</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">開始使用 Brave Rewards</translation>
 <translation id="6318696841371191107">快速瀏覽</translation>
 <translation id="8465790416279415448">繼續操作即表示您同意《<ph name="TOS_LINK_BEGIN"/>服務條款<ph name="TOS_LINK_END"/>》與《<ph name="PP_LINK_BEGIN"/>隱私權政策<ph name="PP_LINK_END"/>》。</translation>
-<translation id="2404165674840145940">Brave Rewards 小費</translation>
-<translation id="5820285701794581330">透過使用 Brave Rewards，您將開始取得可用於給創作者小費的 BAT。</translation>
+<translation id="8222322431155185238">透過 Brave Rewards 給予小費</translation>
+<translation id="1895476463085410109">檢視 Brave Private Ads 不僅能賺取獎勵，還能一併支持內容創作者</translation>
 <translation id="5705882733397021510">返回</translation>
 <translation id="185034574799484512">讓我們快速瀏覽</translation>
 <translation id="8281886186245836920">略過</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">再試一次</translation>
 <translation id="2600847485413879104">獎勵 BAT</translation>
 <translation id="8006596443377585072">bitFlyer 錢包</translation>
+<translation id="2770577461149798369">Gemini Wallet</translation>
 <translation id="8108350286444475334">Uphold Wallet</translation>
 <translation id="6977372887576114613">存入 BAT</translation>
 <translation id="3173528272490482456">準備好開始了嗎？</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">您可以開始從</translation>
 <translation id="194625454574835815">還原金鑰</translation>
 <translation id="6354568176665589146">週期性</translation>
+<translation id="2799223571221894425">重新啟動</translation>
 <translation id="1110535155349301542">移除</translation>
 <translation id="8204292894173669182">從已儲存的項目移除</translation>
 <translation id="5530851178552343773">您已指定捐獻 [[reservedAmount]] [[currency]] 給尚未登記接受資助的創作者。您的瀏覽器會不斷嘗試捐款，直到他們驗證或 90 天過後為止。</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">您的 Brave 錢包技術來自<ph name="PROVIDER"/>。</translation>
 <translation id="6401272292123354754">Brave 獎勵是建立在基本注意力代幣之上的。瞭解更多關於基本注意力代幣 (BAT) 的資訊</translation>
 <translation id="7823359893981882407">此處</translation>
+<translation id="3034163433136515805">檢視 QR 碼</translation>
+<translation id="1640793619390890218">適用於 iOS Rewards 使用者傳輸 BAT。</translation>
 <translation id="4483635855837696643">復原你的錢包</translation>
 <translation id="459721429458957031">使用復原金鑰還原您的錢包。</translation>
 <translation id="4600052736217630789">若使用復原金鑰進行還原，此動作將會取代您目前的錢包。所以務必清空或備份目前的錢包再還原。</translation>
@@ -865,4 +868,12 @@
 <translation id="6973157709854838218">隱藏顯示餘額</translation>
 <translation id="4548946945059463969">在螢幕上顯示您的餘額</translation>
 <translation id="242959166945779492">您的帳戶中沒有任何餘額。請造訪 FTX 購買。</translation>
+<translation id="5551238871320268996">Brave Together</translation>
+<translation id="5735801688206890393">在 Brave Together 中與朋友和同事開始無限通話。</translation>
+<translation id="4434663852465709809">iOS 獎勵使用者轉移 BAT 的 QR Code</translation>
+<translation id="2175927920773552910">QR 碼</translation>
+<translation id="6473583070570450185">您需要經驗證錢包來登入</translation>
+<translation id="5949995321533425416">您需要至少 <ph name="AMOUNT"/> BAT 才能建立 Uphold 錢包。請使用您的 Uphold 錢包驗證後重試。</translation>
+<translation id="2404165674840145940">Brave Rewards 小費</translation>
+<translation id="5820285701794581330">透過使用 Brave Rewards，您將開始取得可用於給創作者小費的 BAT。</translation>
 </translationbundle>

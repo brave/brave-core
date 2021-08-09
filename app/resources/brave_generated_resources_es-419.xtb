@@ -7,7 +7,7 @@
 <translation id="6406506848690869874">Sincronización</translation>
 <translation id="1544192797660353713">Billetera</translation>
 <translation id="2445484935443597917">Crear un perfil nuevo</translation>
-<translation id="2666990579225592931">Abrir una ventana como invitado</translation>
+<translation id="2666990579225592931">Abrir ventana de invitado</translation>
 <translation id="8275068909952022340">Más…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID de extensión "<ph name="EXTENSION_ID"/>") no se permite en Brave.</translation>
 <translation id="6786747875388722282">Extensiones</translation>
@@ -28,6 +28,9 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="3218385319396786393">La reproducción automática está bloqueada en esta página</translation>
 <translation id="4988333904713528597">Siempre permitir la reproducción automática en <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continuar bloqueando la reproducción automática</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Pedir permiso cuando un sitio intente acceder a la API de proveedor de Ethereum</translation>
+<translation id="7017590444693657895">No permitir que ningún sitio acceda a la API de proveedor de Ethereum</translation>
 <translation id="8988939298652262600">Brave no comprueba la seguridad de las extensiones. Instala esta extensión solo si confías en el desarrollador.</translation>
 <translation id="8081858229109418493">Ícono y nombre de perfil</translation>
 <translation id="2044383478723007273">Colores de Brave</translation>
@@ -42,6 +45,7 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="5802665280774361839">Mostrar la opción de autocompletado en la barra de direcciones</translation>
 <translation id="597020512043916976">Mostrar los sitios principales en sugerencias de la opción de autocompletar</translation>
 <translation id="264150068416846820">Mostrar los sitios sugeridos de Brave en sugerencias de la opción de autocompletar</translation>
+<translation id="5529693968082667490">Mostrar el botón "Buscar pestañas"</translation>
 <translation id="6414370348346025511">La protección estándar está activada.</translation>
 <translation id="814018970995616154">Comprobar las URL con una lista de sitios no seguros guardada en Brave.</translation>
 <translation id="1144810021918451336">No te protege frente a sitios web, descargas o extensiones peligrosos.</translation>
@@ -93,7 +97,7 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="6303294677342628402">Escudos</translation>
 <translation id="7133511168130368997">Bloquea los rastreadores y anuncios que te siguen en la Web.</translation>
 <translation id="2761825942249694703">Esta es la configuración predeterminada de los escudos. Se aplica a todos los sitios web, a menos que modifiques algo en el panel de escudos de un sitio particular. Estos cambios no afectarán la configuración de los demás sitios.</translation>
-<translation id="8754605759692119662">Esto bloqueará la mayoría de los anuncios en los sitios web, pero no los de Brave. Puede controlar los anuncios privados de Brave en la</translation>
+<translation id="1485394570478670912">Esto bloqueará la mayor parte de los anuncios de los sitios web, aunque no los anuncios privados de Brave. Estos últimos se controlan desde la</translation>
 <translation id="6388201778088078932">configuración.</translation>
 <translation id="9185018653595759199">Bloqueo en redes sociales</translation>
 <translation id="7390783310074170337">Vista predeterminada</translation>
@@ -294,6 +298,13 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="1391855377994926460">Navega más rápido en la red: hasta 6 veces más rápido en los sitios principales de noticias.</translation>
 <translation id="9218430445555521422">Establecer como predeterminado</translation>
 <translation id="3479552764303398839">Ahora no</translation>
+<translation id="5039804452771397117">Permitir</translation>
+<translation id="7053983685419859001">Bloquea</translation>
+<translation id="7815301689257843278">¿Enviar informes de errores automáticamente para que Brave pueda evitar que se repita este problema?</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> se ha cerrado de forma inesperada.</translation>
+<translation id="1324417023773393937">El navegador de Brave</translation>
+<translation id="1068069727470515940">Puedes volver a cambiar <ph name="SETTING_TEXT"/> cuando quieras.</translation>
+<translation id="6873781976650514089">este ajuste</translation>
 <translation id="6040143037577758943">Cerrar</translation>
 <translation id="5600566490506283344">Notificación de anuncio de Brave</translation>
 <translation id="4877147287319222750">Agregar a la barra lateral</translation>
@@ -345,6 +356,9 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="8487693399751278191">Importar marcadores ahora...</translation>
 <translation id="2557899542277210112">Para lograr un acceso rápido, coloca tus marcadores aquí en la barra de marcadores.</translation>
 <translation id="2808630562319398131">Restablecer datos de Recompensas Brave...</translation>
+<translation id="2273851479262317744">Establece Brave como navegador predeterminado</translation>
+<translation id="8581710194025054669">Para garantizar la máxima protección de tu privacidad en Internet, considera establecer Brave como navegador predeterminado en tu computadora. Si utilizas Brave de manera predeterminada, todos los enlaces en los que hagas clic se abrirán con las protecciones de privacidad de Brave.</translation>
+<translation id="8754605759692119662">Esto bloqueará la mayoría de los anuncios en los sitios web, pero no los de Brave. Puede controlar los anuncios privados de Brave en la</translation>
 <translation id="1224064034972923114">Ayúdanos a mejorar Brave enviando informes de errores de forma automática</translation>
 <translation id="3738833060602717053">Ayúdanos a mejorar <ph name="PRODUCT_NAME"/> enviando informes de errores de forma automática</translation>
 </translationbundle>

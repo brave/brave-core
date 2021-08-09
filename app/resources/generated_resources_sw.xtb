@@ -590,6 +590,7 @@
 <translation id="1627408615528139100">Tayari imepakuliwa</translation>
 <translation id="1628948239858170093">Ungependa kuchanganua faili kabla hujaifungua?</translation>
 <translation id="1629314197035607094">Muda wa nenosiri umeisha</translation>
+<translation id="1947639598318989608">Ungependa kuruhusu Brave itafute bei zilizopunguzwa zinazokufaa kwenye vikapu vyako?</translation>
 <translation id="1629521517399325891">Cheti cha mtumiaji hakipatikani kwa ajili ya uthibitishaji wa mtandao.</translation>
 <translation id="163072119192489970">Zinazoruhusiwa kumaliza kutuma na kupokea data</translation>
 <translation id="1630768113285622200">Zima kisha uwashe ili uendelee</translation>
@@ -3196,7 +3197,7 @@ Ungependa kuanza <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="4469762931504673593"><ph name="ORIGIN"/> inaweza kubadilisha faili katika <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Mapendeleo ya hifadhi ya nje</translation>
 <translation id="4471354919263203780">Inapakua faili za utambuzi wa matamshi... <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Tusaidie tuboreshe utendaji na vipengele vya Brave</translation>
+<translation id="918192811481327695">Tusaidie tuboreshe utendaji na vipengele vya Brave</translation>
 <translation id="4472575034687746823">Anza</translation>
 <translation id="4474155171896946103">Alamisha vichupo vyote...</translation>
 <translation id="4475552974751346499">Tafuta katika vipakuliwa</translation>
@@ -4426,7 +4427,6 @@ Ungependa kuanza <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="5864754048328252126">Kitendo kwenye kifaa ambacho hakifanyi kitu wakati kinachaji</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> itasimamishwa hivi karibuni</translation>
 <translation id="586567932979200359">Unaendesha <ph name="PRODUCT_NAME"/> kutoka kwenye picha yake ya diski. Kuisakinisha kwenye kompyuta yako kunakuruhusu kuendesha bila picha ya diski, na kunahakikisha itasasishwa.</translation>
-<translation id="1224064034972923114">Hutuma kiotomatiki takwimu za matumizi na ripoti za programu kuacha kufanya kazi kwa Brave</translation>
 <translation id="5867841422488265304">Tafuta au andika anwani ya wavuti</translation>
 <translation id="5869029295770560994">Sawa, Nimeelewa</translation>
 <translation id="5869522115854928033">Manenosiri yaliyohifadhiwa</translation>
@@ -5442,7 +5442,6 @@ Ungependa kuanza <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="6997642619627518301">Kumbukumbu ya Shughuli ya - <ph name="NAME_PH"/></translation>
 <translation id="6997707937646349884">Kwenye vifaa vyako:</translation>
 <translation id="6998793565256476099">Sajili vifaa vitumike kwenye mkutano wa video</translation>
-<translation id="456304305650018221">Ungependa kuruhusu Brave itafute punguzo la bei ya bidhaa unazoweka kwenye vikapu vyako?</translation>
 <translation id="6999956497249459195">Kikundi kipya</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> imeunganishwa lakini inahitaji kuwekewa mipangilio</translation>
 <translation id="7000347579424117903">Jumuisha kitufe cha Ctrl, Alt, au Utafutaji</translation>

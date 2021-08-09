@@ -593,6 +593,7 @@
 <translation id="1627408615528139100">Ֆայլն արդեն ներբեռնվել է</translation>
 <translation id="1628948239858170093">Բացելուց առաջ ստուգե՞լ ֆայլը</translation>
 <translation id="1629314197035607094">Գաղտնաբառի ժամկետը լրացել է</translation>
+<translation id="1947639598318989608">Թույլատրե՞լ Brave-ին անհատականացված զեղչեր որոնել զամբյուղում։</translation>
 <translation id="1629521517399325891">Օգտատիրոջ հավաստագիրը հասանելի չէ ցանցային նույնականացման համար։</translation>
 <translation id="163072119192489970">Թույլատրվում է ավարտել տվյալների ուղարկումն ու ստացումը</translation>
 <translation id="1630768113285622200">Վերագործարկել և շարունակել</translation>
@@ -3196,7 +3197,7 @@
 <translation id="4469762931504673593"><ph name="ORIGIN"/> կայքը կարող է փոփոխել <ph name="FOLDERNAME"/> պանակի ֆայլերը</translation>
 <translation id="4470957202018033307">Արտաքին հիշողության կարգավորումներ</translation>
 <translation id="4471354919263203780">Խոսքի ճանաչման ֆայլերը ներբեռնվում են… <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Օգնել ավել լավը դարձնել Brave-ի գործառույթներն ու աշխատանքը</translation>
+<translation id="918192811481327695">Օգնել ավել լավը դարձնել Brave-ի գործառույթներն ու աշխատանքը</translation>
 <translation id="4472575034687746823">Սկսել</translation>
 <translation id="4474155171896946103">Էջանշել բոլոր ներդիրները…</translation>
 <translation id="4475552974751346499">Որոնել ներբեռնումները</translation>
@@ -4438,7 +4439,6 @@
 <translation id="5864754048328252126">Անգործուն ռեժիմի միացում լիցքավորման ընթացքում</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> հավելվածի աշխատանքը շուտով կդադարեցվի</translation>
 <translation id="586567932979200359"><ph name="PRODUCT_NAME"/>-ը գործարկվում է իր սկավառակի պատկերից: Եթե տեղադրեք այն համակարգչում, կարող եք գործարկել առանց սկավառակի պատկերի` միևնույն ժամանակ այն արդի պահելով:</translation>
-<translation id="1224064034972923114">Ավտոմատ Brave-ին է ուղարկում օգտագործման վիճակագրությունը և խափանումների մասին հաշվետվությունները</translation>
 <translation id="5867841422488265304">Որոնեք կամ մուտքագրեք վեբ հասցեն</translation>
 <translation id="5869029295770560994">Լավ, հասկացա</translation>
 <translation id="5869522115854928033">Պահված գաղտնաբառեր</translation>
@@ -5459,7 +5459,6 @@
 <translation id="6997642619627518301"><ph name="NAME_PH"/> – Գործողությունների մատյան</translation>
 <translation id="6997707937646349884">Ձեր սարքերում՝</translation>
 <translation id="6998793565256476099">Սարքը գրանցել տեսակոնֆերանսների համար</translation>
-<translation id="456304305650018221">Թույլատրե՞լ Brave-ին փնտրել զեղչեր ձեր զամբյուղներում ավելացված ապրանքների համար։</translation>
 <translation id="6999956497249459195">Նոր խումբ</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> տպիչը միացել է, բայց այն հարկավոր է կարգավորել</translation>
 <translation id="7000347579424117903">Սկզբում սեղմեք Ctrl, Alt, կամ Search</translation>

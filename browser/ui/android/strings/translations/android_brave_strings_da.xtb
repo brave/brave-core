@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">Åbner nogle webside med en sikkert HTTPS-forbindelse i stedet for den almindelige HTTP.</translation>
 <translation id="94154759592465111">Bloker scripts</translation>
 <translation id="3518266709656143462">Blokerer Javascript (kan ødelægge websider)</translation>
-<translation id="5709627087332022422">Bloker cross-site-trackere</translation>
 <translation id="6052725679982758334">Blokering af sociale medier</translation>
 <translation id="7498695072878479744">Tillad Google login-knapper på tredjeparts sider</translation>
 <translation id="863171915776379000">Tillad Facebook-logins og indlejrede opslag</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">IPFS Gateway</translation>
 <translation id="2688519859165248360">Tillader navigation til IPFS-ressourcer gennem en IPFS-gateway</translation>
 <translation id="7534079972563542000">Unstoppable-domæner</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Ethereum-pris (ETH)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Løsningsmetode</translation>
 <translation id="2356070529366658676">Spørg</translation>
 <translation id="4176463684765177261">Deaktiveret</translation>
 <translation id="2218918398178303658">DNS over HTTPS</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Forhindrer browser i fingeraftrykning</translation>
 <translation id="7459000603787995422">Luk faner ved udgang</translation>
 <translation id="4448697385961650078">Blokér trackere &amp; reklamer</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">Gør Brave til din standardbrowser!</translation>
 <translation id="7136694880210472378">Gør til standard</translation>
 <translation id="4250680216510889253">Nej</translation>
-<translation id="4501702055016678577">Privatsøgning med DuckDuckGo?</translation>
-<translation id="910419239800579753">Med privatsøgning vil Brave bruge DuckDuckGo til at besvare dine søgninger, mens du er i denne private fane. DuckDuckGo er en søgemaskine, der ikke sporer din søgehistorik, så du kan søge privat.</translation>
-<translation id="1426410128494586442">Ja</translation>
-<translation id="5628466560184522265">Lær om privat søgning med DuckDuckGo</translation>
 <translation id="8826007068782654809">Tak</translation>
 <translation id="6665366815203065060">Du har lige sendt drikkepenge til:</translation>
 <translation id="5441565662498481293">Du sender automatisk drikkepenge til:</translation>
@@ -375,12 +371,12 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="7427567994475794038">Aktivér Databeskyttelsesrapporter for at se hvor mange trackere og rekalmer der er blevet blokeret de sidste tre timer.</translation>
 <translation id="2053891538879944400">Du sparede <ph name="DATA"/> <ph name="DATA_TEXT"/> data med Brave-browseren.</translation>
 <translation id="8640064498452534195">Aktivér databeskyttelsesrapporter for at se hvor meget data du har sparet</translation>
-<translation id="2252497442547961651">Modig browser bruger i gennemsnit 40% mindre batteri. &#128267;</translation>
+<translation id="2252497442547961651">Modig browser bruger i gennemsnit 40% mindre batteri. 🔋</translation>
 <translation id="1945330434665345785">Du blokerede <ph name="COUNT"/> trackere og reklamer med Brave-browseren sidste uge.</translation>
 <translation id="2883868922264431515">Optjen tokens ved at se datarespekterende reklamer og støtte dine yndlingshjemmesider.</translation>
-<translation id="5678925890616256956">Nice! Du har blokeret 250 trackere&amp; annoncer med Brave browser.&#128293;</translation>
-<translation id="9199047775708635708">Pæn! Du har sparet 10 MB med Brave browser.&#128267;</translation>
-<translation id="1880168210969863408">Nice! Du har sparet 10 min. Indlæsningstid med Brave browser.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Nice! Du har blokeret 250 trackere&amp; annoncer med Brave browser.🔥</translation>
+<translation id="9199047775708635708">Pæn! Du har sparet 10 MB med Brave browser.🔋</translation>
+<translation id="1880168210969863408">Nice! Du har sparet 10 min. Indlæsningstid med Brave browser.💨💨</translation>
 <translation id="7408493389591475748">Begynd at browse for at se databeskyttelsesrapportering</translation>
 <translation id="9080777565335515917">Indstil Brave som din standardbrowser for privat og sikker browsing.</translation>
 <translation id="1390943217516275883">Tillader Brave at vise dine databeskyttelsesstatistikker</translation>
@@ -443,7 +439,7 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="3477340970981564961">Modige private annoncer belønner dig med tokens, der hjælper indholdsskabere i modsætning til traditionelle annoncer, samtidig med at dine personlige oplysninger holdes private.</translation>
 <translation id="6973095375773523904">Hvor vises annoncerne?</translation>
 <translation id="7556325460112047619">Brave Private Ads vises som en normal meddelelse. Du bestemmer, hvor ofte du ser disse annoncer under dine indstillinger.</translation>
-<translation id="6897083627729802351">Når du modtager belønninger</translation>
+<translation id="6897083627729802351">Hvornår modtager du belønninger?</translation>
 <translation id="310863932297733723">Dine optjente tokens fra Brave Private Ads i hele den nuværende måned kommer den 5. i næste måned.</translation>
 <translation id="7712287524451429139">Det har aldrig været nemmere, at give tilbage</translation>
 <translation id="105037569026952831">Skabere modtager dine tokenbidrag automatisk baseret på dine engagementsniveauer, som vi måler som ‘Opmærksomhed’.</translation>
@@ -460,7 +456,7 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="827315274423079662">Woohoo, nu er du helt klar!</translation>
 <translation id="3895246934788932488">Ved at bruge Brave Rewards beskytter du dine persondata og hjælper med at gøre internettet til et bedre sted for alle. Og det er helt fantastisk!</translation>
 <translation id="5705882733397021510">Gå tilbage</translation>
-<translation id="3985567919248057638">Lad os tage en hurtig rundvisning</translation>
+<translation id="3985567919248057638">Lad os tage en hurtig rundtur</translation>
 <translation id="2434574859640694129">Når du har modtaget din første annonceudbetaling, kan du vende tilbage og give drikkepenge til denne indholdsskaber!</translation>
 <translation id="207242986925259074">Hurtig genopfriskningstur</translation>
 <translation id="8342862030112839977">Din første udbetaling af belønninger kommer senest:</translation>
@@ -551,7 +547,7 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="8100001366858145406">Aktivér oplåsning via fingeraftryk?</translation>
 <translation id="5493402808936397665">Slå biometriske data til, så du hurtigt kan låse din tegnebog op uden at indtaste adgangskode.</translation>
 <translation id="8488282162676695335">Brave-wallet</translation>
-<translation id="6901810042765869341">Indtast din gendannelsessætning for at gendanne din Brave-tegnebogskonto med kryptovaluta.</translation>
+<translation id="6901810042765869341">Indtast din gendannelsessætning for at gendanne din Brave Wallet med kryptovaluta.</translation>
 <translation id="1970161551843843564">Gendan kryptokonto</translation>
 <translation id="4811736040444856406">Vis gendannelsessætning</translation>
 <translation id="283071225285270357">Indtast din gendannelsessætning</translation>
@@ -564,7 +560,21 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="1569452037668432756">Indtast din adgangskode får at låse op</translation>
 <translation id="224719674509047150">Adgangskoden skal være mindst 7 tegn og indeholde mindst ét tal og ét særligt tegn</translation>
 <translation id="1144810021918451336">Beskytter dig ikke mod farlige websteder, downloads og udvidelser.</translation>
-<translation id="745115390910697838">Sætningerne stemte ikke overens, prøv igen.</translation>
+<translation id="745115390910697838">Sætningerne stemte ikke overens. Prøv igen.</translation>
 <translation id="2360588547830602174">Kontogendannelsen mislykkedes. Prøv igen.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">Markedspris i ETH</translation>
+<translation id="6748108480210050150">Fra</translation>
+<translation id="3318280255740629162">25 %</translation>
+<translation id="2636487255623744079">50 %</translation>
+<translation id="8654192805213365413">75 %</translation>
+<translation id="6159566011642056819">Til (estimat)</translation>
+<translation id="59223531494896848">Grænse</translation>
+<translation id="3567988240819868195">Marked</translation>
+<translation id="632241521608275119">Afvigelsestolerance</translation>
+<translation id="5709627087332022422">Bloker cross-site-trackere</translation>
+<translation id="4501702055016678577">Privatsøgning med DuckDuckGo?</translation>
+<translation id="910419239800579753">Med privatsøgning vil Brave bruge DuckDuckGo til at besvare dine søgninger, mens du er i denne private fane. DuckDuckGo er en søgemaskine, der ikke sporer din søgehistorik, så du kan søge privat.</translation>
+<translation id="1426410128494586442">Ja</translation>
+<translation id="5628466560184522265">Lær om privat søgning med DuckDuckGo</translation>
 </translationbundle>

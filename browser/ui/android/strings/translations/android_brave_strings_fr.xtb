@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">Ouvre certains sites avec une connexion HTTPS sécurisée, au lieu d'une simple connexion HTTP.</translation>
 <translation id="94154759592465111">Bloquer les scripts</translation>
 <translation id="3518266709656143462">Bloque JavaScript (peut empêcher certains sites de fonctionner)</translation>
-<translation id="5709627087332022422">Bloquer les trackers intersites</translation>
 <translation id="6052725679982758334">Blocage des réseaux sociaux</translation>
 <translation id="7498695072878479744">Autoriser les boutons de connexion Google sur les sites tiers</translation>
 <translation id="863171915776379000">Autoriser les connexions Facebook et les publications intégrées</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">Passerelle IPFS</translation>
 <translation id="2688519859165248360">Permet d'accéder aux ressources IPFS via une passerelle IPFS</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Prix en Ethereum (ETH)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Méthode de résolution</translation>
 <translation id="2356070529366658676">Demander</translation>
 <translation id="4176463684765177261">Désactivé</translation>
 <translation id="2218918398178303658">DNS via HTTPS</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Empêche le navigateur de relever les empreintes digitales</translation>
 <translation id="7459000603787995422">Fermez les onglets lorsque vous quittez</translation>
 <translation id="4448697385961650078">Bloquer les balises &amp; pubs</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">Faites de Brave votre navigateur par défaut !</translation>
 <translation id="7136694880210472378">Utiliser par défaut</translation>
 <translation id="4250680216510889253">Non</translation>
-<translation id="4501702055016678577">Recherche privée avec DuckDuckGo ?</translation>
-<translation id="910419239800579753">Avec la recherche privée, Brave utilisera DuckDuckGo pour répondre à vos recherches pendant que vous êtes dans cet onglet privé. DuckDuckGo est un moteur de recherche qui ne suit pas votre historique de recherche, ce qui vous permet de faire des recherches privées.</translation>
-<translation id="1426410128494586442">Oui</translation>
-<translation id="5628466560184522265">En savoir plus sur la recherche privée avec DuckDuckGo</translation>
 <translation id="8826007068782654809">Merci</translation>
 <translation id="6665366815203065060">Vous venez d'envoyer un don à :</translation>
 <translation id="5441565662498481293">Vous envoyez automatiquement des dons à :</translation>
@@ -374,12 +370,12 @@ mois-ci...</translation>
 <translation id="7427567994475794038">Activez les rapports de confidentialité pour voir combien de traceurs &amp; d'annonces ont été bloqués au cours des 3 dernières heures.</translation>
 <translation id="2053891538879944400">Vous avez enregistré les données <ph name="DATA"/> <ph name="DATA_TEXT"/> avec le navigateur Brave.</translation>
 <translation id="8640064498452534195">Activez les rapports de confidentialité pour voir combien de données vous avez enregistrées.</translation>
-<translation id="2252497442547961651">Le navigateur Brave consomme en moyenne 40 % de batterie en moins.&#128267;</translation>
+<translation id="2252497442547961651">Le navigateur Brave consomme en moyenne 40 % de batterie en moins.🔋</translation>
 <translation id="1945330434665345785">Vous avez bloqué <ph name="COUNT"/> traceurs &amp; annonces avec le navigateur Brave la semaine dernière.</translation>
 <translation id="2883868922264431515">Gagnez des jetons en visualisant des annonces respectueuses de la vie privée et soutenez vos sites web préférés.</translation>
-<translation id="5678925890616256956">Super ! Vous avez bloqué 250 traceurs et publicités avec le navigateur Brave.&#128293;</translation>
-<translation id="9199047775708635708">Super ! Vous avez économisé 10 Mo grâce au navigateur Brave.&#128267;</translation>
-<translation id="1880168210969863408">Super ! Vous avez économisé 10 minutes de temps de chargement avec le navigateur Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Super ! Vous avez bloqué 250 traceurs et publicités avec le navigateur Brave.🔥</translation>
+<translation id="9199047775708635708">Super ! Vous avez économisé 10 Mo grâce au navigateur Brave.🔋</translation>
+<translation id="1880168210969863408">Super ! Vous avez économisé 10 minutes de temps de chargement avec le navigateur Brave.💨💨</translation>
 <translation id="7408493389591475748">Commencez à naviguer pour voir les rapports de confidentialité</translation>
 <translation id="9080777565335515917">Définissez Brave comme votre navigateur par défaut pour une navigation privée et sécurisée.</translation>
 <translation id="1390943217516275883">Permettre à Brave de montrer vos statistiques privées</translation>
@@ -442,7 +438,7 @@ mois-ci...</translation>
 <translation id="3477340970981564961">Les Brave Private Ads vous octroient des jetons afin de soutenir les créateurs de contenus, contrairement aux publicités traditionnelles, tout en maintenant la confidentialité de vos informations personnelles.</translation>
 <translation id="6973095375773523904">Où apparaissent les pubs ?</translation>
 <translation id="7556325460112047619">Les Brave Private Ads apparaîtront comme une notification normale. Vous contrôlez la fréquence à laquelle vous voyez ces publicités dans les paramètres.</translation>
-<translation id="6897083627729802351">Quand recevez-vous vos rewards</translation>
+<translation id="6897083627729802351">Quand recevez-vous vos récompenses ?</translation>
 <translation id="310863932297733723">Les jetons que vous avez obtenus via les Brave Private Ads au cours du mois actuel arriveront le 5 du mois suivant.</translation>
 <translation id="7712287524451429139">Redonner sans effort</translation>
 <translation id="105037569026952831">Les créateurs reçoivent automatiquement vos jetons en fonction de vos niveaux d'engagement, que nous mesurons comme ‘Attention’.</translation>
@@ -459,7 +455,7 @@ mois-ci...</translation>
 <translation id="827315274423079662">Wahou, vous êtes fin prêt !</translation>
 <translation id="3895246934788932488">En utilisant Brave Rewards, vous protégez votre vie privée et contribuez à faire du web un endroit meilleur pour tous. Et c’ est génial !</translation>
 <translation id="5705882733397021510">Revenir en arrière</translation>
-<translation id="3985567919248057638">Faisons Une Visite Rapide</translation>
+<translation id="3985567919248057638">Présentation rapide</translation>
 <translation id="2434574859640694129">Après avoir reçu le paiement de vos premières annonces, vous pouvez revenir et donner un pourboire à ce créateur !</translation>
 <translation id="207242986925259074">Visite rapide pour se rafraîchir la mémoire</translation>
 <translation id="8342862030112839977">Le premier payement de vos Rewards arrivera vers le :</translation>
@@ -566,4 +562,18 @@ mois-ci...</translation>
 <translation id="745115390910697838">Les phrases ne correspondent pas. Veuillez réessayer.</translation>
 <translation id="2360588547830602174">La récupération du compte a échoué. Veuillez réessayer.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">Prix du marché en ETH</translation>
+<translation id="6748108480210050150">de</translation>
+<translation id="3318280255740629162">25 %</translation>
+<translation id="2636487255623744079">50 %</translation>
+<translation id="8654192805213365413">75 %</translation>
+<translation id="6159566011642056819">À (estimation)</translation>
+<translation id="59223531494896848">Limite</translation>
+<translation id="3567988240819868195">Marché</translation>
+<translation id="632241521608275119">Tolérance de retard</translation>
+<translation id="5709627087332022422">Bloquer les trackers intersites</translation>
+<translation id="4501702055016678577">Recherche privée avec DuckDuckGo ?</translation>
+<translation id="910419239800579753">Avec la recherche privée, Brave utilisera DuckDuckGo pour répondre à vos recherches pendant que vous êtes dans cet onglet privé. DuckDuckGo est un moteur de recherche qui ne suit pas votre historique de recherche, ce qui vous permet de faire des recherches privées.</translation>
+<translation id="1426410128494586442">Oui</translation>
+<translation id="5628466560184522265">En savoir plus sur la recherche privée avec DuckDuckGo</translation>
 </translationbundle>
