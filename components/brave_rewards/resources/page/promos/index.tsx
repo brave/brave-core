@@ -69,7 +69,12 @@ export const getPromo = (type: PromoType, rewardsData: Rewards.State) => {
             {getLocale('geminiPromoInfo')}
           </StyledInfo>
         ),
-        supportedLocales: ['US'],
+        supportedLocales: [
+          'AR', 'AT', 'AU', 'BE', 'BG', 'BM', 'BR', 'BS', 'BT', 'CA', 'CH', 'CL', 'CY', 'CZ', 'DK', 'EE', 'EG', 'ES',
+          'FI', 'GB', 'GG', 'GI', 'GR', 'HK', 'HR', 'HU', 'IL', 'IN', 'IS', 'IT', 'JE', 'KR', 'KY', 'LI', 'LT', 'LU',
+          'LV', 'MM', 'MT', 'NG', 'NL', 'NO', 'NZ', 'PE', 'PH', 'PL', 'PT', 'RO', 'SE', 'SG', 'SI', 'SK', 'TR', 'TW',
+          'US', 'UY', 'VC', 'VG', 'VN', 'ZA'
+        ],
         title: getLocale('geminiPromoTitle'),
         disclaimer: getLocale('geminiPromoDisclaimer')
       }
