@@ -111,7 +111,7 @@ class AdsImpl : public Ads,
 
   void set_for_testing(privacy::TokenGeneratorInterface* token_generator);
 
-  bool IsInitialized();
+  bool IsInitialized() const;
 
   // Ads implementation
   void Initialize(InitializeCallback callback) override;
@@ -263,9 +263,15 @@ class AdsImpl : public Ads,
   void MaybeUpdateCatalog();
 
   void MaybeServeAdNotification();
+
+  bool ShouldServeAdNotificationsAtRegularIntervals() const;
   void MaybeServeAdNotificationsAtRegularIntervals();
 
+  void MaybeTopUpUnblindedTokens();
+
   // AccountObserver implementation
+  void OnWalletChanged(const WalletInfo& wallet) override;
+  void OnWalletInvalid() override;
   void OnAdRewardsChanged() override;
   void OnTransactionsChanged() override;
 

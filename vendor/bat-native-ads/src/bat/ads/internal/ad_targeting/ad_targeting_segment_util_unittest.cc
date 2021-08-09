@@ -8,14 +8,22 @@
 #include <string>
 
 #include "bat/ads/internal/client/client.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 namespace ad_targeting {
 
-TEST(BatAdsAdTargetingSegmentUtilTest, SplitParentChildSegment) {
+class BatAdsAdTargetingSegmentUtilTest : public UnitTestBase {
+ protected:
+  BatAdsAdTargetingSegmentUtilTest() = default;
+
+  ~BatAdsAdTargetingSegmentUtilTest() override = default;
+};
+
+TEST_F(BatAdsAdTargetingSegmentUtilTest, SplitParentChildSegment) {
   // Arrange
   const std::string segment = "parent-child";
 
@@ -28,7 +36,7 @@ TEST(BatAdsAdTargetingSegmentUtilTest, SplitParentChildSegment) {
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST(BatAdsAdTargetingSegmentUtilTest, SplitParentSegment) {
+TEST_F(BatAdsAdTargetingSegmentUtilTest, SplitParentSegment) {
   // Arrange
   const std::string segment = "parent";
 
@@ -41,7 +49,7 @@ TEST(BatAdsAdTargetingSegmentUtilTest, SplitParentSegment) {
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST(BatAdsAdTargetingSegmentUtilTest, SplitEmptySegment) {
+TEST_F(BatAdsAdTargetingSegmentUtilTest, SplitEmptySegment) {
   // Arrange
   const std::string segment = "";
 
@@ -54,7 +62,7 @@ TEST(BatAdsAdTargetingSegmentUtilTest, SplitEmptySegment) {
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST(BatAdsAdTargetingSegmentUtilTest, GetParentSegment) {
+TEST_F(BatAdsAdTargetingSegmentUtilTest, GetParentSegment) {
   // Arrange
   const std::string segment = "technology & computing-software";
 
@@ -67,7 +75,7 @@ TEST(BatAdsAdTargetingSegmentUtilTest, GetParentSegment) {
   EXPECT_EQ(expected_parent_segment, parent_segment);
 }
 
-TEST(BatAdsAdTargetingSegmentUtilTest, GetParentSegmentFromParentSegment) {
+TEST_F(BatAdsAdTargetingSegmentUtilTest, GetParentSegmentFromParentSegment) {
   // Arrange
   const std::string segment = "technology & computing";
 
@@ -80,7 +88,7 @@ TEST(BatAdsAdTargetingSegmentUtilTest, GetParentSegmentFromParentSegment) {
   EXPECT_EQ(expected_parent_segment, parent_segment);
 }
 
-TEST(BatAdsAdTargetingSegmentUtilTest, GetParentSegmentFromEmptyString) {
+TEST_F(BatAdsAdTargetingSegmentUtilTest, GetParentSegmentFromEmptyString) {
   // Arrange
   const std::string segment = "";
 
@@ -93,7 +101,7 @@ TEST(BatAdsAdTargetingSegmentUtilTest, GetParentSegmentFromEmptyString) {
   EXPECT_EQ(expected_parent_segment, parent_segment);
 }
 
-TEST(BatAdsAdTargetingSegmentUtilTest, GetParentSegments) {
+TEST_F(BatAdsAdTargetingSegmentUtilTest, GetParentSegments) {
   // Arrange
   const SegmentList segments = {"technology & computing-software",
                                 "personal finance-personal finance",
@@ -109,7 +117,7 @@ TEST(BatAdsAdTargetingSegmentUtilTest, GetParentSegments) {
   EXPECT_EQ(expected_parent_segments, parent_segments);
 }
 
-TEST(BatAdsAdTargetingSegmentUtilTest, GetParentSegmentsForEmptyList) {
+TEST_F(BatAdsAdTargetingSegmentUtilTest, GetParentSegmentsForEmptyList) {
   // Arrange
   const SegmentList segments;
 
@@ -122,10 +130,8 @@ TEST(BatAdsAdTargetingSegmentUtilTest, GetParentSegmentsForEmptyList) {
   EXPECT_EQ(expected_parent_segments, parent_segments);
 }
 
-TEST(BatAdsAdTargetingSegmentUtilTest, ShouldFilterParentChildSegment) {
+TEST_F(BatAdsAdTargetingSegmentUtilTest, ShouldFilterParentChildSegment) {
   // Arrange
-  Client client;
-
   Client::Get()->ToggleAdOptOutAction("parent-child",
                                       CategoryContentInfo::OptAction::kNone);
 
@@ -136,24 +142,8 @@ TEST(BatAdsAdTargetingSegmentUtilTest, ShouldFilterParentChildSegment) {
   EXPECT_TRUE(should_filter_segment);
 }
 
-TEST(BatAdsAdTargetingSegmentUtilTest, ShouldFilterParentSegment) {
+TEST_F(BatAdsAdTargetingSegmentUtilTest, ShouldNotFilterParentChildSegment) {
   // Arrange
-  Client client;
-
-  Client::Get()->ToggleAdOptOutAction("parent",
-                                      CategoryContentInfo::OptAction::kNone);
-
-  // Act
-  const bool should_filter_segment = ShouldFilterSegment("parent");
-
-  // Assert
-  EXPECT_TRUE(should_filter_segment);
-}
-
-TEST(BatAdsAdTargetingSegmentUtilTest, ShouldNotFilterParentChildSegment) {
-  // Arrange
-  Client client;
-
   Client::Get()->ToggleAdOptOutAction("parent-child",
                                       CategoryContentInfo::OptAction::kNone);
 
@@ -164,10 +154,20 @@ TEST(BatAdsAdTargetingSegmentUtilTest, ShouldNotFilterParentChildSegment) {
   EXPECT_FALSE(should_filter_segment);
 }
 
-TEST(BatAdsAdTargetingSegmentUtilTest, ShouldNotFilterParentSegment) {
+TEST_F(BatAdsAdTargetingSegmentUtilTest, ShouldFilterParentSegment) {
   // Arrange
-  Client client;
+  Client::Get()->ToggleAdOptOutAction("parent",
+                                      CategoryContentInfo::OptAction::kNone);
 
+  // Act
+  const bool should_filter_segment = ShouldFilterSegment("parent");
+
+  // Assert
+  EXPECT_TRUE(should_filter_segment);
+}
+
+TEST_F(BatAdsAdTargetingSegmentUtilTest, ShouldNotFilterParentSegment) {
+  // Arrange
   Client::Get()->ToggleAdOptOutAction("parent",
                                       CategoryContentInfo::OptAction::kNone);
 
