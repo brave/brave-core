@@ -19,16 +19,6 @@ HDKeyring::Type HDKeyring::type() const {
   return kDefault;
 }
 
-bool HDKeyring::empty() const {
-  return !root_ || !master_key_ || !accounts_.size();
-}
-
-void HDKeyring::ClearData() {
-  root_.reset();
-  master_key_.reset();
-  accounts_.clear();
-}
-
 void HDKeyring::ConstructRootHDKey(const std::vector<uint8_t>& seed,
                                    const std::string& hd_path) {
   if (!seed.empty()) {
@@ -56,12 +46,12 @@ std::vector<std::string> HDKeyring::GetAccounts() {
   return addresses;
 }
 
-void HDKeyring::RemoveAccount(const std::string& address) {
-  for (size_t i = 0; i < accounts_.size(); ++i) {
-    if (GetAddress(i) == address) {
-      accounts_.erase(accounts_.begin() + i);
-    }
-  }
+size_t HDKeyring::GetAccountsNumber() const {
+  return accounts_.size();
+}
+
+void HDKeyring::RemoveAccount() {
+  accounts_.pop_back();
 }
 
 std::string HDKeyring::GetAddress(size_t index) {

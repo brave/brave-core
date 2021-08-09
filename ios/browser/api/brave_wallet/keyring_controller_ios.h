@@ -71,11 +71,8 @@ NS_SWIFT_NAME(BraveWallet.KeyringController)
 
 #pragma mark - Accounts
 
-- (void)addAccount:(void (^)(bool success))completion;
-
-- (void)addNewAccountName:(NSString*)name;
-
-- (void)setInitialAccountNames:(NSArray<NSString*>*)names;
+- (void)addAccount:(NSString*)name
+        completion:(void (^)(bool success))completion;
 
 #pragma mark -
 

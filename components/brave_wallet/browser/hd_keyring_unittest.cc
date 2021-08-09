@@ -53,19 +53,21 @@ TEST(HDKeyringUnitTest, Accounts) {
             "0x02e77f0e2fa06F95BDEa79Fad158477723145838");
   for (size_t i = 0; i < accounts.size(); ++i)
     EXPECT_EQ(accounts[i], keyring.GetAddress(i));
-  // remove the index 1 account
-  keyring.RemoveAccount("0x2A22ad45446E8b34Da4da1f4ADd7B1571Ab4e4E7");
+  // remove the last account
+  keyring.RemoveAccount();
   accounts = keyring.GetAccounts();
   EXPECT_EQ(accounts.size(), 2u);
   EXPECT_EQ(keyring.GetAddress(0),
             "0x2166fB4e11D44100112B1124ac593081519cA1ec");
   EXPECT_EQ(keyring.GetAddress(1),
-            "0x02e77f0e2fa06F95BDEa79Fad158477723145838");
+            "0x2A22ad45446E8b34Da4da1f4ADd7B1571Ab4e4E7");
   for (size_t i = 0; i < accounts.size(); ++i)
     EXPECT_EQ(accounts[i], keyring.GetAddress(i));
 
-  keyring.RemoveAccount("0xDEADBEEFdeadbeefdeadbeefdeadbeefDEADBEEF");
-  EXPECT_EQ(accounts.size(), 2u);
+  keyring.AddAccounts(1);
+  EXPECT_EQ(keyring.GetAccounts().size(), 3u);
+  EXPECT_EQ(keyring.GetAddress(2),
+            "0x02e77f0e2fa06F95BDEa79Fad158477723145838");
 
   EXPECT_TRUE(keyring.GetAddress(4).empty());
   HDKeyring keyring2;
@@ -119,22 +121,6 @@ TEST(HDKeyringUnitTest, SignMessage) {
   EXPECT_TRUE(
       keyring.SignMessage("0xDEADBEEFdeadbeefdeadbeefdeadbeefDEADBEEF", message)
           .empty());
-}
-
-TEST(HDKeyringUnitTest, ClearData) {
-  HDKeyring keyring;
-  std::vector<uint8_t> seed;
-  EXPECT_TRUE(keyring.empty());
-  EXPECT_TRUE(base::HexStringToBytes(
-      "13ca6c28d26812f82db27908de0b0b7b18940cc4e9d96ebd7de190f706741489907ef65b"
-      "8f9e36c31dc46e81472b6a5e40a4487e725ace445b8203f243fb8958",
-      &seed));
-  keyring.ConstructRootHDKey(seed, "m/44'/60'/0'/0");
-  EXPECT_TRUE(keyring.empty());
-  keyring.AddAccounts();
-  EXPECT_FALSE(keyring.empty());
-  keyring.ClearData();
-  EXPECT_TRUE(keyring.empty());
 }
 
 }  // namespace brave_wallet

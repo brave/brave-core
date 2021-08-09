@@ -12,7 +12,8 @@ import {
   GetAllTokensReturnInfo,
   TokenInfo,
   GetBalanceReturnInfo,
-  GetERC20TokenBalanceReturnInfo
+  GetERC20TokenBalanceReturnInfo,
+  AccountInfo
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 import { InitializedPayloadType } from '../constants/action_types'
@@ -28,7 +29,6 @@ const defaultState: WalletState = {
   selectedAccount: {} as WalletAccountType,
   selectedNetwork: Network.Mainnet,
   accounts: [],
-  walletAccountNames: [],
   userVisibleTokens: [],
   userVisibleTokensInfo: [],
   transactions: [],
@@ -38,11 +38,11 @@ const defaultState: WalletState = {
 const reducer = createReducer<WalletState>({}, defaultState)
 
 reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadType) => {
-  const accounts = payload.accounts.map((address: string, idx: number) => {
+  const accounts = payload.accountInfos.map((info: AccountInfo, idx: number) => {
     return {
       id: `${idx + 1}`,
-      name: payload.walletAccountNames[idx],
-      address,
+      name: info.name,
+      address: info.address,
       balance: '0',
       fiatBalance: '0',
       asset: 'eth',
@@ -60,7 +60,6 @@ reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadTy
     favoriteApps: payload.favoriteApps,
     accounts,
     isWalletBackedUp: payload.isWalletBackedUp,
-    walletAccountNames: payload.walletAccountNames,
     selectedAccount: accounts[0],
     userVisibleTokens: ['eth', '0x0D8775F648430679A709E98d2b0Cb6250d2887EF']
   }

@@ -8,8 +8,6 @@ import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletActions from '../actions/wallet_actions'
 import {
   UnlockWalletPayloadType,
-  SetInitialAccountNamesPayloadType,
-  AddNewAccountNamePayloadType,
   ChainChangedEventPayloadType,
   SetInitialVisibleTokensPayloadType
 } from '../constants/action_types'
@@ -135,16 +133,6 @@ handler.on(WalletActions.removeFavoriteApp.getType(), async (store, appItem: App
 handler.on(WalletActions.setInitialVisibleTokens.getType(), async (store, payload: SetInitialVisibleTokensPayloadType) => {
   const walletHandler = (await getAPIProxy()).walletHandler
   await walletHandler.setInitialVisibleAssets(payload.visibleAssets)
-})
-
-handler.on(WalletActions.setInitialAccountNames.getType(), async (store, payload: SetInitialAccountNamesPayloadType) => {
-  const keyringController = (await getAPIProxy()).keyringController
-  await keyringController.setInitialAccountNames(payload.accountNames)
-})
-
-handler.on(WalletActions.addNewAccountName.getType(), async (store, payload: AddNewAccountNamePayloadType) => {
-  const keyringController = (await getAPIProxy()).keyringController
-  await keyringController.addNewAccountName(payload.accountName)
 })
 
 handler.on(WalletActions.selectNetwork.getType(), async (store, payload: Network) => {

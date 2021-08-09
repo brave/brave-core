@@ -7,8 +7,6 @@ import { createAction } from 'redux-act'
 import {
   InitializedPayloadType,
   UnlockWalletPayloadType,
-  SetInitialAccountNamesPayloadType,
-  AddNewAccountNamePayloadType,
   ChainChangedEventPayloadType,
   SetInitialVisibleTokensPayloadType
 } from '../constants/action_types'
@@ -29,12 +27,10 @@ export const unlockWallet = createAction<UnlockWalletPayloadType>('unlockWallet'
 export const addFavoriteApp = createAction<AppObjectType>('addFavoriteApp')
 export const removeFavoriteApp = createAction<AppObjectType>('removeFavoriteApp')
 export const hasIncorrectPassword = createAction<boolean>('hasIncorrectPassword')
-export const setInitialAccountNames = createAction<SetInitialAccountNamesPayloadType>('setInitialAccountNames')
 export const setInitialVisibleTokens = createAction<SetInitialVisibleTokensPayloadType>('setInitialVisibleTokens')
 export const updateVisibleTokens = createAction<string[]>('updateVisibleTokens')
 export const setVisibleTokens = createAction<string[]>('setVisibleTokens')
 export const setVisibleTokensInfo = createAction<TokenInfo[]>('setVisibleTokensInfo')
-export const addNewAccountName = createAction<AddNewAccountNamePayloadType>('addNewAccountName')
 export const selectAccount = createAction<WalletAccountType>('selectAccount')
 export const selectNetwork = createAction<Network>('selectNetwork')
 export const setNetwork = createAction<Network>('setNetwork')

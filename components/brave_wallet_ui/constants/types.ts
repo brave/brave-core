@@ -157,7 +157,6 @@ export interface WalletState {
   selectedAccount: WalletAccountType
   selectedNetwork: Network
   accounts: WalletAccountType[]
-  walletAccountNames: string[]
   transactions: RPCTransactionType[]
   userVisibleTokens: string[]
   userVisibleTokensInfo: TokenInfo[]
@@ -200,14 +199,18 @@ export interface WalletPanelState {
   panel: PanelState
 }
 
+export interface AccountInfo {
+  address: string[]
+  name: string[]
+}
+
 export interface WalletInfo {
-  isWalletCreated: boolean,
-  isWalletLocked: boolean,
-  favoriteApps: AppObjectType[],
-  isWalletBackedUp: boolean,
-  walletAccountNames: string[]
+  isWalletCreated: boolean
+  isWalletLocked: boolean
+  favoriteApps: AppObjectType[]
+  isWalletBackedUp: boolean
   visibleTokens: string[]
-  accounts: string[]
+  accountInfos: AccountInfo[]
 }
 
 export interface UnlockReturnInfo {
@@ -381,9 +384,7 @@ export interface KeyringController {
   restoreWallet: (mnemonic: string, password: string) => Promise<RestoreWalletReturnInfo>
   lock: () => Promise<void>
   unlock: (password: string) => Promise<UnlockReturnInfo>
-  addAccount: () => Promise<AddAccountReturnInfo>
-  setInitialAccountNames: (accountNames: string[]) => Promise<void>
-  addNewAccountName: (accountName: string) => Promise<void>
+  addAccount: (accountName: string) => Promise<AddAccountReturnInfo>
 }
 
 export interface EthJsonRpcController {

@@ -122,20 +122,24 @@ struct SwapResponse {
   // Note we could also expose "sources" later
 };
 
+struct AccountInfo {
+  string address;
+  string name;
+};
+
 struct KeyringInfo {
   bool is_default_keyring_created;
   bool is_locked;
   bool is_backed_up;
-  array<string> accounts;
-  array<string> account_names;
+  array<AccountInfo> account_infos;
 };
 
 // Browser-side handler for common panel / page things
 interface WalletHandler {
   GetWalletInfo() => (bool isWalletCreated, bool isWalletLocked,
                       array<AppItem> favoriteApps,
-                      bool isWalletBackedUp, array<string> accounts,
-                      array<string> walletAccountNames);
+                      bool isWalletBackedUp,
+                      array<AccountInfo> accountInfos);
 
   GetTokenByContract(string contract) => (ERCToken? token);
   GetTokenBySymbol(string symbol) => (ERCToken? token);
@@ -180,11 +184,9 @@ interface KeyringController {
   Lock();
   Unlock(string password) => (bool success);
   IsLocked() => (bool isLocked);
-  AddAccount() => (bool success);
+  AddAccount(string accountName) => (bool success);
   IsWalletBackedUp() => (bool backed_up);
   NotifyWalletBackupComplete();
-  SetInitialAccountNames(array<string> accountNames);
-  AddNewAccountName(string accountName);
   GetDefaultKeyringInfo() => (KeyringInfo keyring);
   Reset();
   AddObserver(pending_remote<KeyringControllerObserver> observer);

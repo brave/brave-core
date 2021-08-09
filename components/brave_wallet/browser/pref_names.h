@@ -7,14 +7,17 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_
 
 extern const char kBraveWalletWeb3Provider[];
+extern const char kBraveWalletTransactions[];
+extern const char kShowWalletIconOnToolbar[];
+extern const char kBraveWalletLastUnlockTime[];
+extern const char kBraveWalletKeyrings[];
+
+// DEPRECATED
 extern const char kBraveWalletPasswordEncryptorSalt[];
 extern const char kBraveWalletPasswordEncryptorNonce[];
 extern const char kBraveWalletEncryptedMnemonic[];
 extern const char kBraveWalletDefaultKeyringAccountNum[];
-extern const char kBraveWalletTransactions[];
-extern const char kShowWalletIconOnToolbar[];
 extern const char kBraveWalletAccountNames[];
 extern const char kBraveWalletBackupComplete[];
-extern const char kBraveWalletLastUnlockTime[];
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_
