@@ -6,7 +6,8 @@ import {
   ConnectedPanel,
   Panel,
   WelcomePanel,
-  SignPanel
+  SignPanel,
+  AllowSpendPanel
 } from '../components/extension'
 import { AppList } from '../components/shared'
 import {
@@ -37,6 +38,7 @@ import {
   SelectContainer
 } from './style'
 import { AssetOptions } from '../options/asset-options'
+const compoundFavIcon = require('../assets/app-icons/compound-icon.png')
 
 export default {
   title: 'Wallet/Extension/Panels',
@@ -80,6 +82,52 @@ const accounts: WalletAccountType[] = [
     tokens: []
   }
 ]
+
+export const _AllowSpend = () => {
+
+  const batTokenInfo = {
+    contractAddress: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
+    name: 'Basic Attention Token',
+    isErc20: true,
+    isErc721: false,
+    symbol: 'BAT',
+    decimals: 18,
+    icon: ''
+  }
+
+  const spendPayload = {
+    siteUrl: 'https://app.compound.finance',
+    sitFavIcon: compoundFavIcon,
+    contractAddress: '0x3f29A1da97149722eB09c526E4eAd698895b426',
+    erc20Token: batTokenInfo,
+    transactionFeeWei: '0.002447',
+    transactionFeeFiat: '$6.57'
+  }
+
+  const onConfirm = () => {
+    alert('Signed Transaction')
+  }
+
+  const onReject = () => {
+    alert('Canceled Signing Transaction')
+  }
+
+  return (
+    <StyledExtensionWrapper>
+      <AllowSpendPanel
+        selectedAccount={accounts[0]}
+        selectedNetwork={Network.Mainnet}
+        onConfirm={onConfirm}
+        onReject={onReject}
+        spendPayload={spendPayload}
+      />
+    </StyledExtensionWrapper>
+  )
+}
+
+_AllowSpend.story = {
+  name: 'Allow Spend'
+}
 
 export const _SignTransaction = () => {
 

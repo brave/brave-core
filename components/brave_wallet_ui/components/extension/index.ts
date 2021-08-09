@@ -10,6 +10,7 @@ import WelcomePanel from './welcome-panel'
 import Panel from './panel'
 import PanelHeader from './panel-header'
 import SignPanel from './sign-panel'
+import AllowSpendPanel from './allow-spend-panel'
 import { NavButton } from './buttons'
 
 export {
@@ -25,5 +26,6 @@ export {
   Panel,
   PanelHeader,
   WelcomePanel,
-  SignPanel
+  SignPanel,
+  AllowSpendPanel
 }

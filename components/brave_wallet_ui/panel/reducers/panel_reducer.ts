@@ -19,7 +19,8 @@ const defaultState: PanelState = {
   panelTitle: '',
   tabId: -1,
   connectingAccounts: [],
-  showSignTransaction: false
+  showSignTransaction: false,
+  showAllowSpendERC20Token: false
 }
 
 const reducer = createReducer<PanelState>({}, defaultState)
