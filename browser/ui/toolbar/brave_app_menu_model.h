@@ -16,7 +16,7 @@
 #include "chrome/browser/ui/toolbar/app_menu_model.h"
 #include "ui/base/models/simple_menu_model.h"
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 namespace ipfs {
 class IpnsKeysManager;
 }  // namespace ipfs
@@ -46,7 +46,7 @@ class BraveAppMenuModel : public AppMenuModel {
 #if BUILDFLAG(ENABLE_SIDEBAR)
   int GetIndexOfBraveSidebarItem() const;
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   int FindCommandIndex(int command_id) const;
   int AddIpnsKeysToSubMenu(ui::SimpleMenuModel* submenu,
                            ipfs::IpnsKeysManager* manager,

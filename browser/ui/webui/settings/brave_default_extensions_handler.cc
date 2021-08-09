@@ -57,7 +57,7 @@
 #include "brave/components/decentralized_dns/utils.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/keys/ipns_keys_manager.h"
@@ -75,7 +75,7 @@ BraveDefaultExtensionsHandler::~BraveDefaultExtensionsHandler() {}
 
 void BraveDefaultExtensionsHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   ipfs::IpfsService* service =
       ipfs::IpfsServiceFactory::GetForContext(profile_);
   if (service) {
@@ -510,7 +510,7 @@ void BraveDefaultExtensionsHandler::GetDecentralizedDnsResolveMethodList(
 #endif
 }
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 void BraveDefaultExtensionsHandler::LaunchIPFSService(
     const base::ListValue* args) {
   ipfs::IpfsService* service =

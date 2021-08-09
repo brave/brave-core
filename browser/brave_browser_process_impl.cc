@@ -70,7 +70,7 @@
 #include "brave/components/tor/pref_names.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/brave_ipfs_client_updater.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #endif
@@ -134,7 +134,7 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
 
 void BraveBrowserProcessImpl::Init() {
   BrowserProcessImpl::Init();
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   content::ChildProcessSecurityPolicy::GetInstance()->RegisterWebSafeScheme(
       ipfs::kIPFSScheme);
   content::ChildProcessSecurityPolicy::GetInstance()->RegisterWebSafeScheme(
@@ -405,7 +405,7 @@ brave_ads::ResourceComponent* BraveBrowserProcessImpl::resource_component() {
 
 #endif  // BUILDFLAG(BRAVE_ADS_ENABLED)
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 ipfs::BraveIpfsClientUpdater*
 BraveBrowserProcessImpl::ipfs_client_updater() {
   if (ipfs_client_updater_)
@@ -418,4 +418,4 @@ BraveBrowserProcessImpl::ipfs_client_updater() {
       brave_component_updater_delegate(), user_data_dir);
   return ipfs_client_updater_.get();
 }
-#endif  // BUILDFLAG(IPFS_ENABLED)
+#endif  // BUILDFLAG(ENABLE_IPFS)

@@ -489,7 +489,7 @@ test("brave_unit_tests") {
 
     deps += [ "//brave/components/speedreader" ]
   }
-  if (ipfs_enabled) {
+  if (enable_ipfs) {
     deps += [ "//brave/browser/ipfs/test:unittests" ]
   }
 }
@@ -917,7 +917,7 @@ if (!is_android) {
       "//ui/compositor:test_support",
       "//ui/views",
     ]
-    if (ipfs_enabled) {
+    if (enable_ipfs) {
       deps += [
         "//brave/browser/ipfs/test:browsertests",
         "//brave/components/ipfs:ipfs",

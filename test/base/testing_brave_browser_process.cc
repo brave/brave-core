@@ -94,7 +94,7 @@ tor::BraveTorClientUpdater* TestingBraveBrowserProcess::tor_client_updater() {
 }
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 ipfs::BraveIpfsClientUpdater*
 TestingBraveBrowserProcess::ipfs_client_updater() {
   return nullptr;

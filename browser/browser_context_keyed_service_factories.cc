@@ -40,7 +40,7 @@
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service_factory.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #endif
 
@@ -82,7 +82,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   EthereumRemoteClientServiceFactory::GetInstance();
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   ipfs::IpfsServiceFactory::GetInstance();
 #endif
   PermissionLifetimeManagerFactory::GetInstance();

@@ -27,7 +27,7 @@
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 #include "brave/components/ipfs/ipfs_constants.h"
@@ -95,7 +95,7 @@ BraveRenderViewContextMenu::BraveRenderViewContextMenu(
     content::RenderFrameHost* render_frame_host,
     const content::ContextMenuParams& params)
     : RenderViewContextMenu_Chromium(render_frame_host, params)
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
       ,
       ipfs_submenu_model_(this)
 #endif
@@ -104,7 +104,7 @@ BraveRenderViewContextMenu::BraveRenderViewContextMenu(
 
 bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
   switch (id) {
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
     case IDC_CONTENT_CONTEXT_IMPORT_IPFS:
     case IDC_CONTENT_CONTEXT_IMPORT_IPFS_PAGE:
     case IDC_CONTENT_CONTEXT_IMPORT_IMAGE_IPFS:
@@ -129,7 +129,7 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
       return RenderViewContextMenu_Chromium::IsCommandIdEnabled(id);
   }
 }
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 void BraveRenderViewContextMenu::ExecuteIPFSCommand(int id, int event_flags) {
   ipfs::IPFSTabHelper* helper =
       ipfs::IPFSTabHelper::FromWebContents(source_web_contents_);
@@ -166,7 +166,7 @@ void BraveRenderViewContextMenu::ExecuteIPFSCommand(int id, int event_flags) {
 
 void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
   switch (id) {
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
     case IDC_CONTENT_CONTEXT_IMPORT_IPFS_PAGE:
     case IDC_CONTENT_CONTEXT_IMPORT_IMAGE_IPFS:
     case IDC_CONTENT_CONTEXT_IMPORT_VIDEO_IPFS:
@@ -205,7 +205,7 @@ void BraveRenderViewContextMenu::AddSpellCheckServiceItem(
   // Suppress adding "Spellcheck->Ask Brave for suggestions" item.
 }
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 bool BraveRenderViewContextMenu::IsIPFSCommandIdEnabled(int command) const {
   if (!ipfs::IsIpfsMenuEnabled(GetProfile()->GetPrefs()))
     return false;
@@ -324,7 +324,7 @@ void BraveRenderViewContextMenu::InitMenu() {
   }
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   BuildIPFSMenu();
 #endif
 

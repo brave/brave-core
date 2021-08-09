@@ -25,7 +25,7 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 #include "storage/browser/blob/blob_data_builder.h"
 #include "storage/browser/blob/blob_impl.h"
 #include "storage/browser/blob/blob_storage_context.h"
@@ -56,7 +56,7 @@ net::NetworkTrafficAnnotationTag GetIpfsNetworkTrafficAnnotationTag() {
         )");
 }
 
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 struct ImportFileInfo {
   ImportFileInfo(base::FilePath full_path,
                  base::FileEnumerator::FileInfo information) {
@@ -188,7 +188,7 @@ std::unique_ptr<network::SimpleURLLoader> CreateURLLoader(
   return url_loader;
 }
 
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 std::unique_ptr<network::ResourceRequest> CreateResourceRequest(
     BlobBuilderCallback blob_builder_callback,
     const std::string& content_type,

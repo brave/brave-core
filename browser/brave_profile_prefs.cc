@@ -72,7 +72,7 @@
 #include "brave/browser/ethereum_remote_client/pref_names.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_service.h"
 #endif
 
@@ -193,7 +193,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(brave_shields::prefs::kLinkedInEmbedControlType,
                                 false);
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   ipfs::IpfsService::RegisterProfilePrefs(registry);
 #endif
 

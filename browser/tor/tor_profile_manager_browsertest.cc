@@ -43,7 +43,7 @@
 #include "extensions/common/extension_id.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #endif
 
@@ -197,7 +197,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
   EXPECT_EQ(brave_rewards::RewardsServiceFactory::GetForProfile(tor_profile),
             nullptr);
   EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(tor_profile), nullptr);
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   EXPECT_EQ(ipfs::IpfsServiceFactory::GetForContext(tor_profile), nullptr);
 #endif
 }

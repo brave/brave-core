@@ -9,7 +9,7 @@ import("//testing/test.gni")
 
 source_set("brave_ipfs_unit_tests") {
   testonly = true
-  if (ipfs_enabled) {
+  if (enable_ipfs) {
     sources = [
       "//brave/components/ipfs/ipfs_cookie_store_unittest.cc",
       "//brave/components/ipfs/ipfs_json_parser_unittest.cc",
@@ -32,5 +32,5 @@ source_set("brave_ipfs_unit_tests") {
       "//testing/gtest",
       "//url",
     ]
-  }  # if (ipfs_enabled)
+  }  # if (enable_ipfs)
 }  # source_set("brave_ipfs_unit_tests")

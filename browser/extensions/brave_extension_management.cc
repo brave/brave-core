@@ -30,7 +30,7 @@
 #include "brave/components/tor/pref_names.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/brave_ipfs_client_updater.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "components/user_prefs/user_prefs.h"
@@ -95,7 +95,7 @@ void BraveExtensionManagement::Cleanup(content::BrowserContext* context) {
   // have to manully cleanup tor executable when tor is disabled by gpo
   OnTorDisabledChanged();
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   // Remove ipfs executable if it is disabled by GPO.
   if (ipfs::IsIpfsDisabledByPolicy(user_prefs::UserPrefs::Get(context)))
     g_brave_browser_process->ipfs_client_updater()->Cleanup();

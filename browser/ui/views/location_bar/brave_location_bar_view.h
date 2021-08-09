@@ -21,7 +21,7 @@ class SkPath;
 class OnionLocationView;
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 class IPFSLocationView;
 #endif
 
@@ -38,7 +38,7 @@ class BraveLocationBarView : public LocationBarView {
   OnionLocationView* GetOnionLocationView() { return onion_location_view_; }
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   IPFSLocationView* GetIPFSLocationView() { return ipfs_location_view_; }
 #endif
   // LocationBarView:
@@ -65,7 +65,7 @@ class BraveLocationBarView : public LocationBarView {
 #if BUILDFLAG(ENABLE_TOR)
   OnionLocationView* onion_location_view_ = nullptr;
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   IPFSLocationView* ipfs_location_view_ = nullptr;
 #endif
 

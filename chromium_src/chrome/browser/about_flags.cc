@@ -91,7 +91,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #define BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/features.h"
 
 #define BRAVE_IPFS_FEATURE_ENTRIES                                         \

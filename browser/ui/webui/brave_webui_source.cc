@@ -905,7 +905,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "customFiltersInstructions", IDS_ADBLOCK_CUSTOM_FILTERS_INSTRUCTIONS },                // NOLINT
       }
     }, {
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
       std::string("ipfs-internals"), {
         { "connectedPeersTitle", IDS_IPFS_CONNECTED_PEERS_TITLE },
         { "addressesConfigTitle", IDS_IPFS_ADDRESSES_CONFIG_TITLE },

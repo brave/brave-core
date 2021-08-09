@@ -38,7 +38,7 @@
 #include "brave/browser/ethereum_remote_client/pref_names.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/pref_names.h"
 #endif
 
@@ -216,7 +216,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
   // IPFS pref
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   (*s_brave_allowlist)[kIPFSResolveMethod] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
   (*s_brave_allowlist)[kIPFSAutoFallbackToGateway] =

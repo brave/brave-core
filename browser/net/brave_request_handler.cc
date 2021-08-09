@@ -46,7 +46,7 @@
 #include "brave/browser/net/brave_translate_redirect_network_delegate_helper.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/net/ipfs_redirect_network_delegate_helper.h"
 #include "brave/components/ipfs/features.h"
 #endif
@@ -98,7 +98,7 @@ void BraveRequestHandler::SetupCallbacks() {
   before_url_request_callbacks_.push_back(callback);
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
     callback = base::BindRepeating(ipfs::OnBeforeURLRequest_IPFSRedirectWork);
     before_url_request_callbacks_.push_back(callback);

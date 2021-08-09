@@ -67,7 +67,7 @@ static_library("browser") {
     ]
   }
 
-  if (ipfs_enabled) {
+  if (enable_ipfs) {
     deps += [ "//brave/components/ipfs" ]
   }
 

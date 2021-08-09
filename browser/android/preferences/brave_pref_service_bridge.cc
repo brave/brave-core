@@ -36,7 +36,7 @@
 #include "brave/components/p3a/pref_names.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
 #endif
@@ -102,7 +102,7 @@ void JNI_BravePrefServiceBridge_SetHTTPSEEnabled(
 
 void JNI_BravePrefServiceBridge_SetIpfsGatewayEnabled(JNIEnv* env,
                                                       jboolean enabled) {
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   ipfs::IPFSResolveMethodTypes type =
       enabled ? ipfs::IPFSResolveMethodTypes::IPFS_ASK
               : ipfs::IPFSResolveMethodTypes::IPFS_DISABLED;

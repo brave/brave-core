@@ -40,7 +40,7 @@ std::unique_ptr<network::SimpleURLLoader> CreateURLLoader(
     const std::string& method,
     std::unique_ptr<network::ResourceRequest> request = nullptr);
 
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 void AddMultipartHeaderForUploadWithFileName(const std::string& value_name,
                                              const std::string& file_name,
                                              const std::string& absolute_path,

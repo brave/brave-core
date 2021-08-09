@@ -42,7 +42,7 @@ grit("static_resources") {
   defines = [
     "enable_brave_perf_predictor=$enable_brave_perf_predictor",
     "enable_speedreader=$enable_speedreader",
-    "ipfs_enabled=$ipfs_enabled",
+    "enable_ipfs=$enable_ipfs",
     "crypto_dot_com_enabled=$crypto_dot_com_enabled",
     "decentralized_dns_enabled=$decentralized_dns_enabled",
     "enable_ftx=$enable_ftx",
@@ -84,7 +84,7 @@ repack("resources") {
     ]
   }
 
-  if (ipfs_enabled) {
+  if (enable_ipfs) {
     deps += [ "//brave/components/ipfs_ui:generated_resources" ]
     sources += [
       "$root_gen_dir/brave/components/ipfs_ui/resources/ipfs_generated.pak",
@@ -118,7 +118,7 @@ grit("strings") {
 
   defines = [
     "enable_speedreader=$enable_speedreader",
-    "ipfs_enabled=$ipfs_enabled",
+    "enable_ipfs=$enable_ipfs",
     "brave_wallet_enabled=$brave_wallet_enabled",
     "ethereum_remote_client_enabled=$ethereum_remote_client_enabled",
     "decentralized_dns_enabled=$decentralized_dns_enabled",

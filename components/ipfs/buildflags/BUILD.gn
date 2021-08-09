@@ -4,7 +4,7 @@ import("//build/buildflag_header.gni")
 buildflag_header("buildflags") {
   header = "buildflags.h"
   flags = [
-    "IPFS_ENABLED=$ipfs_enabled",
-    "IPFS_LOCAL_NODE_ENABLED=$ipfs_local_node_enabled",
+    "ENABLE_IPFS=$enable_ipfs",
+    "ENABLE_IPFS_LOCAL_NODE=$enable_ipfs_local_node",
   ]
 }
