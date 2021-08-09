@@ -15,7 +15,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.ConnectivityManager;
-import android.net.Ikev2VpnProfile;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
@@ -31,15 +30,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.collection.ArraySet;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingClientStateListener;
-import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesUpdatedListener;
 
 import org.json.JSONException;
 
@@ -127,6 +119,7 @@ import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.widget.Toast;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -144,7 +137,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     public static final int SITE_BANNER_REQUEST_CODE = 33;
     public static final int VERIFY_WALLET_ACTIVITY_REQUEST_CODE = 34;
     public static final int USER_WALLET_ACTIVITY_REQUEST_CODE = 35;
-    public static final int BRAVE_VPN_PROFILE_REQUEST_CODE = 36;
     public static final String ADD_FUNDS_URL = "chrome://rewards/#add-funds";
     public static final String REWARDS_SETTINGS_URL = "chrome://rewards/";
     public static final String BRAVE_REWARDS_SETTINGS_URL = "brave://rewards/";
@@ -192,8 +184,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         public static final int NUM_ENTRIES = 6;
     }
 
-    private VpnManager vpnManager;
-
     public BraveActivity() {
         // Disable key checker to avoid asserts on Brave keys in debug
         SharedPreferencesManager.getInstance().disableKeyCheckerForTesting();
@@ -231,7 +221,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         } else if (id == R.id.brave_wallet_id) {
             openBraveWallet();
         } else if (id == R.id.request_brave_vpn_id || id == R.id.request_brave_vpn_check_id) {
-            startStopVpn();
+            BraveVpnUtils.startStopVpn(BraveActivity.this);
         } else {
             return false;
         }
@@ -454,7 +444,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         checkSetDefaultBrowserModal();
         checkFingerPrintingOnUpgrade();
         if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
-            vpnManager = (VpnManager) getSystemService(Context.VPN_MANAGEMENT_SERVICE);
             ConnectivityManager connectivityManager =
                     (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkRequest networkRequest =
@@ -464,10 +453,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                             .build();
             connectivityManager.registerNetworkCallback(networkRequest, mNetworkCallback);
 
-            if ((SharedPreferencesManager.getInstance().readInt(
-                         BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
-                                == 1
-                        && !PackageUtils.isFirstInstall(this))
+            if (BraveVpnUtils.shouldShowVpnCalloutView()
+                            && (SharedPreferencesManager.getInstance().readInt(
+                                        BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+                                            == 1
+                                    && !PackageUtils.isFirstInstall(this))
                     || (SharedPreferencesManager.getInstance().readInt(
                                 BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                                     == 7
@@ -475,8 +465,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                 showVpnCalloutDialog();
             }
         }
-
-        setBillingClient();
     }
 
     private void checkFingerPrintingOnUpgrade() {
@@ -516,23 +504,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                 }
             };
 
-    private void startStopVpn() {
-        if (BraveVpnUtils.isBraveVpnFeatureEnable() && vpnManager != null) {
-            if (!BraveVpnUtils.isVPNConnected(BraveActivity.this)) {
-                try {
-                    vpnManager.startProvisionedVpnProfile();
-                } catch (SecurityException securityException) {
-                    Ikev2VpnProfile ikev2VpnProfile =
-                            BraveVpnUtils.getVpnProfile(BraveActivity.this);
-                    Intent intent = vpnManager.provisionVpnProfile(ikev2VpnProfile);
-                    startActivityForResult(intent, BRAVE_VPN_PROFILE_REQUEST_CODE);
-                }
-            } else {
-                vpnManager.stopProvisionedVpnProfile();
-            }
-        }
-    }
-
     private void checkSetDefaultBrowserModal() {
         boolean shouldShowDefaultBrowserModal =
                 (OnboardingPrefManager.getInstance().getNextSetDefaultBrowserModalDate() > 0
@@ -553,35 +524,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                 OnboardingPrefManager.getInstance().setShowDefaultBrowserModalAfterP3A(false);
             }
         }
-    }
-
-    private PurchasesUpdatedListener purchasesUpdatedListener = new PurchasesUpdatedListener() {
-        @Override
-        public void onPurchasesUpdated(BillingResult billingResult, List<Purchase> purchases) {
-            // To be implemented in a later section.
-        }
-    };
-
-    private void setBillingClient() {
-        BillingClient billingClient = BillingClient.newBuilder(this)
-                                              .setListener(purchasesUpdatedListener)
-                                              .enablePendingPurchases()
-                                              .build();
-
-        billingClient.startConnection(new BillingClientStateListener() {
-            @Override
-            public void onBillingSetupFinished(BillingResult billingResult) {
-                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                    // The BillingClient is ready. You can query purchases here.
-                    Log.e("BillingClient", "Conection is established");
-                }
-            }
-            @Override
-            public void onBillingServiceDisconnected() {
-                // Try to restart the connection on the next request to
-                // Google Play by calling the startConnection() method.
-            }
-        });
     }
 
     private void checkForYandexSE() {
@@ -879,8 +821,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
             if (! TextUtils.isEmpty(open_url)) {
                 openNewOrSelectExistingTab(open_url);
             }
-        } else if (resultCode == RESULT_OK && requestCode == BRAVE_VPN_PROFILE_REQUEST_CODE
+        } else if (resultCode == RESULT_OK
+                && requestCode == BraveVpnUtils.BRAVE_VPN_PROFILE_REQUEST_CODE
                 && BraveVpnUtils.isBraveVpnFeatureEnable()) {
+            VpnManager vpnManager = (VpnManager) getSystemService(Context.VPN_MANAGEMENT_SERVICE);
             vpnManager.startProvisionedVpnProfile();
         }
         super.onActivityResult(requestCode, resultCode, data);

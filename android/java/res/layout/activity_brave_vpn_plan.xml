@@ -12,7 +12,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/brave_vpn_toolbar"
+        android:theme="@style/BraveVpnToolbar"
         android:minHeight="?attr/actionBarSize"/>
 
     <ScrollView

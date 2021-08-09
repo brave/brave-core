@@ -87,9 +87,10 @@
       <item name="textAllCaps">false</item>
     </style>
 
-    <style name="brave_vpn_toolbar" parent="Theme.AppCompat.Light">
+    <style name="BraveVpnToolbar" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@android:color/white</item>
         <item name="android:background">@color/brave_plan_bg</item>
         <item name="titleTextColor">@android:color/white</item>
+        <item name="android:textColorPrimary">@android:color/white</item>s
     </style>
 </resources>

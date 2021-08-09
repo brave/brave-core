@@ -2060,6 +2060,17 @@ until they verify, or until 90 days have passed.
     <message name="IDS_VPN_IS_ENABLED" desc="Brave VPN profile text">
       VPN is now enabled
     </message>
+    <message name="IDS_SOME_CONTEXT" desc="Brave VPN profile text">
+      Some context...
+    </message>
+    <message name="IDS_SOME_CONTEXT_TEXT" desc="Brave VPN profile text">
+      Your previous VPN connection was disconnected. To reconnect to VPN, you'll need to accept the connection request.
+
+If you don't accept this request, VPN will not reconnect and your internet connection will not be secured.
+    </message>
+    <message name="IDS_ACCEPT_CONNECTION_REQUEST" desc="Brave VPN profile text">
+      Accept connection request
+    </message>
     </messages>
   </release>
 </grit>
