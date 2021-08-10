@@ -272,6 +272,18 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
     return callback(type::Result::ALREADY_EXISTS);
   }
 
+  if (result == type::Result::TOO_MANY_RESULTS) {
+    // Entering NOT_CONNECTED.
+    ledger_->uphold()->DisconnectWallet(
+        ledger::notifications::kWalletMismatchedProviderAccounts);
+
+    ledger_->database()->SaveEventLog(
+        log::kMismatchedProviderAccounts,
+        constant::kWalletUphold + std::string("/") + id.substr(0, 5));
+
+    return callback(type::Result::TOO_MANY_RESULTS);
+  }
+
   if (result != type::Result::LEDGER_OK) {
     return callback(type::Result::CONTINUE);
   }
