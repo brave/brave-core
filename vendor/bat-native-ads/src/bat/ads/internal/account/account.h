@@ -74,14 +74,12 @@ class Account : public AdRewardsDelegate,
 
   void ProcessUnclearedTransactions();
 
-  void NotifyWalletChanged(const WalletInfo& wallet) const;
-  void NotifyWalletRestored(const WalletInfo& wallet) const;
-  void NotifyWalletInvalid() const;
-  void NotifyCatalogIssuersChanged(
+  void NotifyWalletDidUpdate(const WalletInfo& wallet) const;
+  void NotifyWalletDidChange(const WalletInfo& wallet) const;
+  void NotifyInvalidWallet() const;
+  void NotifyCatalogIssuersDidChange(
       const CatalogIssuersInfo& catalog_issuers) const;
-  void NotifyAdRewardsChanged() const;
-  void NotifyTransactionsChanged() const;
-  void NotifyUnclearedTransactionsProcessed() const;
+  void NotifyStatementOfAccountsDidChange() const;
 
   // AdRewardsDelegate implementation
   void OnDidReconcileAdRewards() override;

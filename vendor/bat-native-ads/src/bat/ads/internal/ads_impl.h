@@ -270,10 +270,10 @@ class AdsImpl : public Ads,
   void MaybeTopUpUnblindedTokens();
 
   // AccountObserver implementation
-  void OnWalletChanged(const WalletInfo& wallet) override;
-  void OnWalletInvalid() override;
-  void OnAdRewardsChanged() override;
-  void OnTransactionsChanged() override;
+  void OnWalletDidUpdate(const WalletInfo& wallet) override;
+  void OnWalletDidChange(const WalletInfo& wallet) override;
+  void OnInvalidWallet() override;
+  void OnStatementOfAccountsDidChange() override;
 
   // AdServerObserver implementation
   void OnCatalogUpdated(const Catalog& catalog) override;
