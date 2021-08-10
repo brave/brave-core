@@ -33,10 +33,14 @@ class Payments {
 
   PaymentInfo GetForMonth(const base::Time& time) const;
 
+  void reset() { payments_ = {}; }
+
  private:
   PaymentList payments_;
 
   double GetBalanceForPayments(const PaymentList& payments) const;
+
+  bool ShouldForceReconciliation(const PaymentList& payments) const;
 
   bool DidReconcile(const PaymentList& payments) const;
 

@@ -60,17 +60,19 @@ bool Account::SetWallet(const std::string& id, const std::string& seed) {
   const WalletInfo last_wallet = wallet_->Get();
 
   if (!wallet_->Set(id, seed)) {
-    NotifyWalletInvalid();
+    NotifyInvalidWallet();
     return false;
   }
 
   const WalletInfo wallet = wallet_->Get();
 
   if (last_wallet.IsValid() && last_wallet != wallet) {
-    NotifyWalletRestored(wallet);
+    ad_rewards_->Reset();
+
+    NotifyWalletDidChange(wallet);
   }
 
-  NotifyWalletChanged(wallet);
+  NotifyWalletDidUpdate(wallet);
 
   return true;
 }
@@ -81,6 +83,7 @@ WalletInfo Account::GetWallet() const {
 
 void Account::SetCatalogIssuers(const CatalogIssuersInfo& catalog_issuers) {
   confirmations_->SetCatalogIssuers(catalog_issuers);
+  NotifyCatalogIssuersDidChange(catalog_issuers);
 }
 
 void Account::Deposit(const std::string& creative_instance_id,
@@ -129,53 +132,41 @@ void Account::ProcessUnclearedTransactions() {
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
 }
 
-void Account::NotifyWalletChanged(const WalletInfo& wallet) const {
+void Account::NotifyWalletDidUpdate(const WalletInfo& wallet) const {
   for (AccountObserver& observer : observers_) {
-    observer.OnWalletChanged(wallet);
+    observer.OnWalletDidUpdate(wallet);
   }
 }
 
-void Account::NotifyWalletRestored(const WalletInfo& wallet) const {
+void Account::NotifyWalletDidChange(const WalletInfo& wallet) const {
   for (AccountObserver& observer : observers_) {
-    observer.OnWalletRestored(wallet);
+    observer.OnWalletDidChange(wallet);
   }
 }
 
-void Account::NotifyWalletInvalid() const {
+void Account::NotifyInvalidWallet() const {
   for (AccountObserver& observer : observers_) {
-    observer.OnWalletInvalid();
+    observer.OnInvalidWallet();
   }
 }
 
-void Account::NotifyCatalogIssuersChanged(
+void Account::NotifyCatalogIssuersDidChange(
     const CatalogIssuersInfo& catalog_issuers) const {
   for (AccountObserver& observer : observers_) {
-    observer.OnCatalogIssuersChanged(catalog_issuers);
+    observer.OnCatalogIssuersDidChange(catalog_issuers);
   }
 }
 
-void Account::NotifyAdRewardsChanged() const {
+void Account::NotifyStatementOfAccountsDidChange() const {
   for (AccountObserver& observer : observers_) {
-    observer.OnAdRewardsChanged();
-  }
-}
-
-void Account::NotifyTransactionsChanged() const {
-  for (AccountObserver& observer : observers_) {
-    observer.OnTransactionsChanged();
-  }
-}
-
-void Account::NotifyUnclearedTransactionsProcessed() const {
-  for (AccountObserver& observer : observers_) {
-    observer.OnUnclearedTransactionsProcessed();
+    observer.OnStatementOfAccountsDidChange();
   }
 }
 
 void Account::OnConfirmAd(const double estimated_redemption_value,
                           const ConfirmationInfo& confirmation) {
   transactions::Add(estimated_redemption_value, confirmation);
-  NotifyTransactionsChanged();
+  NotifyStatementOfAccountsDidChange();
 
   TopUpUnblindedTokens();
 }
@@ -187,7 +178,7 @@ void Account::OnConfirmAdFailed(const ConfirmationInfo& confirmation) {
 }
 
 void Account::OnDidReconcileAdRewards() {
-  NotifyAdRewardsChanged();
+  NotifyStatementOfAccountsDidChange();
 }
 
 void Account::OnDidRedeemUnblindedPaymentTokens(
