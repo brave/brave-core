@@ -121,7 +121,7 @@ type::Result PostClaimUphold::CheckStatusCode(const int status_code) const {
 
   if (status_code == net::HTTP_FORBIDDEN) {
     BLOG(0, "Forbidden");
-    return type::Result::LEDGER_ERROR;
+    return type::Result::TOO_MANY_RESULTS;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
@@ -130,7 +130,7 @@ type::Result PostClaimUphold::CheckStatusCode(const int status_code) const {
   }
 
   if (status_code == net::HTTP_CONFLICT) {
-    BLOG(0, "Not found");
+    BLOG(0, "Conflict");
     return type::Result::ALREADY_EXISTS;
   }
 

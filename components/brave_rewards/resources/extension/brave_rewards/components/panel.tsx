@@ -201,6 +201,8 @@ export class Panel extends React.Component<Props, State> {
 
   onDeviceLimitReached = this.onEvent('https://support.brave.com/hc/en-us/articles/360056508071')
 
+  onMismatchedProviderAccounts = this.onEvent('https://support.brave.com/hc/en-us/articles/360034841711-What-is-a-verified-wallet-')
+
   onUpholdBATNotAllowedForUser = this.onEvent('https://support.uphold.com/hc/en-us/articles/360033020351-Brave-BAT-and-US-availability')
 
   onUpholdBlockedUser = this.onEvent('https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk')
@@ -348,11 +350,14 @@ export class Panel extends React.Component<Props, State> {
       case 'backupWallet':
         clickEvent = this.onBackupWallet.bind(this, id)
         break
+      case 'deviceLimitReached':
+        clickEvent = this.onDeviceLimitReached.bind(this, id)
+        break
       case 'insufficientFunds':
         clickEvent = this.onAddFunds.bind(this, id)
         break
-      case 'deviceLimitReached':
-        clickEvent = this.onDeviceLimitReached.bind(this, id)
+      case 'mismatchedProviderAccounts':
+        clickEvent = this.onMismatchedProviderAccounts.bind(this, id)
         break
       case 'upholdBATNotAllowedForUser':
         clickEvent = this.onUpholdBATNotAllowedForUser.bind(this, id)
@@ -469,16 +474,10 @@ export class Panel extends React.Component<Props, State> {
         }
 
         switch (args[0]) {
-          case 'wallet_new_verified': {
-            text = (
-              <>
-                <div><b>{getMessage('walletVerifiedNotification')}</b></div>
-                {getMessage('walletVerifiedTextNotification', [args[1]])}
-              </>
-            )
-            isAlert = 'success'
+          case 'wallet_device_limit_reached':
+            type = 'deviceLimitReached'
+            text = getMessage('deviceLimitReachedNotification')
             break
-          }
           case 'wallet_disconnected': {
             text = (
               <>
@@ -489,10 +488,20 @@ export class Panel extends React.Component<Props, State> {
             isAlert = 'error'
             break
           }
-          case 'wallet_device_limit_reached':
-            type = 'deviceLimitReached'
-            text = getMessage('deviceLimitReachedNotification')
+          case 'wallet_mismatched_provider_accounts':
+            type = 'mismatchedProviderAccounts'
+            text = getMessage('mismatchedProviderAccountsNotification', [args[1]])
             break
+          case 'wallet_new_verified': {
+            text = (
+              <>
+                <div><b>{getMessage('walletVerifiedNotification')}</b></div>
+                {getMessage('walletVerifiedTextNotification', [args[1]])}
+              </>
+            )
+            isAlert = 'success'
+            break
+          }
           case 'uphold_bat_not_allowed_for_user':
             type = 'upholdBATNotAllowedForUser'
             text = getMessage('upholdBATNotAllowedForUserNotification')
