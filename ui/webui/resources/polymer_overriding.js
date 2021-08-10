@@ -21,6 +21,9 @@ if (debug) {
 const allBehaviorsMap = {}
 const allPropertiesMap = {}
 const componentPropertyModifications = {}
+const ignoredComponents = [
+  'cr-toolbar'
+]
 
 function addBraveBehaviorsLegacy(moduleName, component) {
   if (allBehaviorsMap[moduleName]) {
@@ -115,6 +118,23 @@ export function RegisterPolymerTemplateModifications(modificationsMap) {
     addBraveTemplateModifications(componentName, existingComponent, modifyFn)
   }
   Object.assign(allBraveTemplateModificationsMap, awaitingComponentModifications)
+}
+
+export function RegisterPolymerComponentReplacement(name, component) {
+  if (debug) {
+    console.log(`RegisterPolymerComponentReplacement: ${name}`)
+  }
+  if (!ignoredComponents.includes(name)) {
+    console.warn(`RegisterPolymerComponentReplacement: did not find component '${name}' as being ignored via RegisterPolymerComponentToIgnore`)
+  }
+  define(name, component)
+}
+
+export function RegisterPolymerComponentToIgnore(name) {
+  if (debug) {
+    console.log(`RegisterPolymerComponentToIgnore ${name}`)
+  }
+  ignoredComponents.push(name)
 }
 
 const moduleNamesWithStyleOverrides = []
@@ -232,7 +252,7 @@ PolymerElement._prepareTemplate = function BravePolymer_PrepareTemplate() {
     return
   }
   if (debug) {
-    console.log('PolymerElement defined: ', name, this, this.prototype)
+    console.log('PolymerElement _prepareTemplate: ', name, this, this.prototype)
   }
   // Perform modifications that we want to change the original class / prototype
   // features, such as editing template or properties.
@@ -242,25 +262,29 @@ PolymerElement._prepareTemplate = function BravePolymer_PrepareTemplate() {
   const templateModifyFn = allBraveTemplateModificationsMap[name]
   if (templateModifyFn) {
     addBraveTemplateModifications(name, this.prototype, templateModifyFn)
-    delete allBraveTemplateModificationsMap[name]
+    // TODO(petemill): delete allBraveTemplateModificationsMap entry when done so that the
+    // function can be collected. We do not delete at the moment since
+    // _prepareTemplate can be called multiple times. We should move template
+    // modification to happen via automatic subclassing and overriding of template
+    // property.
   }
   if (moduleNamesWithStyleOverrides.includes(name)) {
     addBraveStyleOverride(name, this.prototype)
   }
 }
 
-const ignoredComponents = [
-  'cr-toolbar'
-]
-
 const oldDefine = window.customElements.define
-window.customElements.define = function BraveDefineCustomElements (name, component, options) {
+
+function BraveDefineCustomElements (name, component, options, useIgnoreList = true) {
   if (component.polymerElementVersion) {
     if (debug) {
       console.log('BraveDefineCustomElements PolymerElement defined', name, component, options)
     }
-    // Global replacements
-    if (ignoredComponents.includes(name)) {
+    // Global ignore (likely due to manual replacement)
+    if (useIgnoreList && ignoredComponents.includes(name)) {
+      if (debug) {
+        console.log(`BraveDefineCustomElements ignored ${name}`)
+      }
       return
     }
     // Inject behaviors
@@ -273,6 +297,13 @@ window.customElements.define = function BraveDefineCustomElements (name, compone
     }
   }
   oldDefine.call(this, name, component, options)
+}
+
+window.customElements.define = BraveDefineCustomElements
+
+export function define (name, component, options) {
+  // We still want style and template overrides
+  BraveDefineCustomElements.call(window.customElements, name, component, options, false)
 }
 
 /**
