@@ -214,7 +214,7 @@ public class BraveVpnPlansActivity extends AsyncInitializationActivity {
                 + (purchase.getPurchaseState() == 1 ? "PURCHASED"
                                                     : "PENDING or UNSPECIFIED PURCHASE STATE")
                 + "\n\n\nPurchase Time : " + fDate;
-        Log.e("BraveVPN", details);
+        // Log.e("BraveVPN", details);
         if (purchase.getPurchaseState() == 1) {
             BraveVpnUtils.openBraveVpnProfileActivity(BraveVpnPlansActivity.this);
             finish();

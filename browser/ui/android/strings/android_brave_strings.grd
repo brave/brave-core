@@ -2071,6 +2071,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ACCEPT_CONNECTION_REQUEST" desc="Brave VPN profile text">
       Accept connection request
     </message>
+    <message name="IDS_VPN_PROFILE_CREATION_FAILED" desc="Brave VPN profile text">
+      Vpn profile creation failed. PLease try again.
+    </message>
     </messages>
   </release>
 </grit>
