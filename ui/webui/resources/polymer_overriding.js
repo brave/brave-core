@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import {mixinBehaviors, Polymer, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {html as polymerHtml, mixinBehaviors, Polymer, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
 // Global overrides
 import 'chrome://brave-resources/br_elements/br_toolbar/br_toolbar.js';
@@ -273,6 +273,26 @@ window.customElements.define = function BraveDefineCustomElements (name, compone
     }
   }
   oldDefine.call(this, name, component, options)
+}
+
+/**
+ * Allows regular string tagged templating before parsing as html elements.
+ * Differs from polymer's html function only in that it allows strings and
+ * does not allow nested htmlelements.
+ * Named html for syntax highlighting in some IDEs.
+ * @param {*} strings
+ * @param  {...any} values
+ * @returns HTMLTEmplateElement
+ */
+ export function html(strings, ...values) {
+  // Get regular string placeholders first (basic `i am ${'a'} string` parsing)
+  // since Polymer's html tagged template only supports html element
+  // placeholders.
+  const htmlRaw = values.reduce((acc, v, idx) =>
+      acc + v + strings[idx + 1], strings[0])
+  // Utilize polymer's tagged template element creation for no other reason than we are allowed
+  // to call innerHTML there.
+  return polymerHtml([htmlRaw]).content.cloneNode(true)
 }
 
 // Overrides for all pages
