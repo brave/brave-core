@@ -669,6 +669,8 @@ export class Panel extends React.Component<Props, State> {
         return walletType !== 'uphold'
       case 3: // BITFLYER_VERIFIED
         return walletType !== 'bitflyer'
+      case 4: // GEMINI_VERIFIED
+        return walletType !== 'gemini'
       default:
         return false
     }
