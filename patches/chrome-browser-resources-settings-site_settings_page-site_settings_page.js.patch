@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/resources/settings/site_settings_page/site_settings_page.js b/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
+index d4268da00a77db0b06a774608f53e6f23984f588..72e9315a74f6f244b131ac4a95a6906443465de7 100644
+--- a/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
++++ b/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
+@@ -7,7 +7,7 @@
+  * 'settings-site-settings-page' is the settings page containing privacy and
+  * security site settings.
+  */
+-
++import '../brave_overrides/config.js'
+ import 'chrome://resources/cr_elements/cr_expand_button/cr_expand_button.m.js';
+ import 'chrome://resources/cr_elements/cr_link_row/cr_link_row.js';
+ import 'chrome://resources/cr_elements/shared_style_css.m.js';
