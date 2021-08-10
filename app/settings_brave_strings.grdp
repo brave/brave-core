@@ -52,7 +52,7 @@
     No saved passwords. Brave can check your passwords when you save them.
   </message>
   <message name="IDS_SETTINGS_CHECK_PASSWORDS_ERROR_QUOTA_LIMIT_GOOGLE_ACCOUNT" desc="Error message when the password check can't be completed since the user hit the quota limit, but the user is able to check their passwords in their Brave account.">
-    Brave can't check your passwords. Try again after 24 hours or <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>check passwords in your Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>.
+    Brave can't check your passwords. Try again after 24 hours or <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>check passwords in your Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_CHECK_PASSWORDS_ERROR_QUOTA_LIMIT" desc="Error message when the password check can't be completed since the user hit the quota limit.">
     Brave can't check your passwords. Try again after 24 hours.
@@ -127,7 +127,7 @@
     Brave can't check for updates. Try checking your internet connection.
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_UPDATES_FAILED" desc="This text describes that Brave cannot update due to an unknown error.">
-    Brave didn't update, something went wrong. <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Fix Brave update problems and failed updates.<ph name="END_LINK">&lt;/a&gt;</ph>
+    Brave didn't update, something went wrong. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Fix Brave update problems and failed updates.<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_UPDATES_UNKNOWN" desc="This text displays the installed version of Brave when it is not possible to check for updates on non-Brave branded browsers.">
     Brave version <ph name="PRODUCT_VERSION">$1<ex>15.0.865.0</ex></ph> is installed
@@ -199,6 +199,6 @@
 
   <!-- Reset Page -->
   <message name="IDS_SETTINGS_RESET_PROFILE_FEEDBACK" desc="Feedback label in the Reset Profile Settings dialog">
-    Help make Brave better by reporting the <ph name="BEGIN_LINK">&lt;a is="action-link" target="_blank" rel="noopener noreferrer"&gt;</ph>current settings<ph name="END_LINK">&lt;/a&gt;</ph>
+    Help make Brave better by reporting the <ph name="BEGIN_LINK">&lt;a is="action-link" target="_blank"&gt;</ph>current settings<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
 </grit-part>

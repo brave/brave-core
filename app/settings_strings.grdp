@@ -193,7 +193,7 @@
     Search settings
   </message>
   <message name="IDS_SETTINGS_SEARCH_NO_RESULTS_HELP" desc="Help text for a search that has no results.">
-    Go to <ph name="BEGIN_LINK_CHROMIUM">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Brave help<ph name="END_LINK_CHROMIUM">&lt;/a&gt;</ph> if you can't find what you're looking for
+    Go to <ph name="BEGIN_LINK_CHROMIUM">&lt;a target="_blank" href="$1"&gt;</ph>Brave help<ph name="END_LINK_CHROMIUM">&lt;/a&gt;</ph> if you can't find what you're looking for
   </message>
   <message name="IDS_SETTINGS_SETTINGS" desc="The settings page title.">
     Settings
@@ -295,7 +295,7 @@
     Edit card
   </message>
   <message name="IDS_SETTINGS_PAYMENTS_MANAGE_CREDIT_CARDS" desc="Shown in the payments section of settings. Descriptive text to inform the user that credit cards can be accessed online. Has a link.">
-   To add or manage Brave Pay payment methods, visit your <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
+   To add or manage Brave Pay payment methods, visit your <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
     <message name="IDS_SETTINGS_PAYMENTS_SAVED_TO_THIS_DEVICE_ONLY" desc="Shown in the payments section of settings. Descriptive text to inform the user that this credit card will be saved to local device only.">
    This card will be saved to this device only
@@ -630,19 +630,19 @@
     See and manage passwords saved on this device
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_MANAGE_PASSWORDS" desc="Shown in the passwords section of settings. Descriptive text to inform that passwords can be accessed online. Has a link.">
-    View and manage saved passwords in your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
+    View and manage saved passwords in your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_MANAGE_PASSWORDS_PLAINTEXT" desc="Shown in the passwords section of settings. Descriptive text to inform that passwords can be accessed online.">
     View and manage saved passwords in your Brave sync chain
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_OPT_IN_ACCOUNT_STORAGE_BODY" desc="Description before a button in the passwords section of settings which triggers opt in to the account-scoped password storage.">
-    You can also show passwords from your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph> here
+    You can also show passwords from your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph> here
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_OPT_IN_ACCOUNT_STORAGE_LABEL" desc="Label for a button in the passwords section of settings which triggers opt in to the account-scoped password storage.">
     Show
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_OPT_OUT_ACCOUNT_STORAGE_BODY" desc="Description before a button in the passwords section of settings which triggers opt out of the account-scoped password storage.">
-    Showing passwords from your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
+    Showing passwords from your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_OPT_OUT_ACCOUNT_STORAGE_LABEL" desc="Label for a button in the passwords section of settings which triggers opt out of the account-scoped password storage.">
     Remove from device
@@ -938,16 +938,16 @@
     Time range
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_DATA_WITH_SYNC" desc="Description in the footer of the Clear Browsing Data dialog when the user is syncing.">
-    To clear browsing data from this device only, while keeping it in your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank" rel="noopener noreferrer"&gt;</ph>sign out<ph name="END_LINK">&lt;/a&gt;</ph>.
+    To clear browsing data from this device only, while keeping it in your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>sign out<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_DATA_WITH_SYNC_ERROR" desc="Description in the footer of the Clear Browsing Data dialog when there is a sync error.">
-    To clear browsing data from all of your synced devices and your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank" rel="noopener noreferrer"&gt;</ph>visit sync settings<ph name="END_LINK">&lt;/a&gt;</ph>.
+    To clear browsing data from all of your synced devices and your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>visit sync settings<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_DATA_WITH_SYNC_PASSPHRASE_ERROR" desc="Description in the footer of the Clear Browsing Data dialog when there is a sync passphrase error.">
-    To clear browsing data from all of your synced devices and your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank" rel="noopener noreferrer"&gt;</ph>enter your passphrase<ph name="END_LINK">&lt;/a&gt;</ph>.
+    To clear browsing data from all of your synced devices and your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>enter your passphrase<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_DATA_WITH_SYNC_PAUSED" desc="Description in the footer of the Clear Browsing Data dialog when sync is paused.">
-    To clear browsing data from all of your synced devices and your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank" rel="noopener noreferrer"&gt;</ph>sign in<ph name="END_LINK">&lt;/a&gt;</ph>.
+    To clear browsing data from all of your synced devices and your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>sign in<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY" desc="Checkbox for deleting Browsing History">
     Browsing history
@@ -971,10 +971,10 @@
     Clears history from all signed-in devices. Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_CLEAR_GOOGLE_SEARCH_HISTORY_GOOGLE_DSE" desc="A description explaining that search history and other forms of activity can be cleared through the Brave account.">
-    <ph name="BEGIN_LINK_SEARCH">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Search history<ph name="END_LINK_SEARCH">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_GOOGLE">&lt;a target="_blank" rel="noopener noreferrer" href="$2"&gt;</ph>other forms of activity<ph name="END_LINK_GOOGLE">&lt;/a&gt;</ph> may be saved in your Brave sync chain when you're signed in. You can delete them anytime.
+    <ph name="BEGIN_LINK_SEARCH">&lt;a target="_blank" href="$1"&gt;</ph>Search history<ph name="END_LINK_SEARCH">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_GOOGLE">&lt;a target="_blank" href="$2"&gt;</ph>other forms of activity<ph name="END_LINK_GOOGLE">&lt;/a&gt;</ph> may be saved in your Brave sync chain when you're signed in. You can delete them anytime.
   </message>
   <message name="IDS_SETTINGS_CLEAR_GOOGLE_SEARCH_HISTORY_NON_GOOGLE_DSE" desc="A description explaining that other forms of activity can be cleared through the Brave account.">
-    <ph name="BEGIN_LINK_GOOGLE">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Other forms of activity<ph name="END_LINK_GOOGLE">&lt;/a&gt;</ph> may be saved in your Brave sync chain when you're signed in. You can delete them anytime.
+    <ph name="BEGIN_LINK_GOOGLE">&lt;a target="_blank" href="$1"&gt;</ph>Other forms of activity<ph name="END_LINK_GOOGLE">&lt;/a&gt;</ph> may be saved in your Brave sync chain when you're signed in. You can delete them anytime.
   </message>
   <message name="IDS_SETTINGS_CLEAR_NON_GOOGLE_SEARCH_HISTORY_PREPOPULATED_DSE" desc="A description informing the user about the way to clear their search history when their Default Search Engine is not Brave.">
     Your search engine is <ph name="DSE">$1<ex>Bing</ex></ph>. See their instructions for deleting your search history, if applicable.
@@ -1241,10 +1241,10 @@
     Privacy Sandbox preserves the vitality of the open web by creating better ways to perform these services—without breaking sites, and while preventing you from being surreptitiously tracked across the web.
   </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_EXPLANATION4" desc="Part 4 of the explanation of the Privacy Sandbox, shown on the Privacy Sandbox Page. The 'Learn more' link navigates the user to a page with more details.">
-    Privacy Sandbox is still in active development and is available in selected regions. For now, sites may try out Privacy Sandbox while continuing to use current web technologies like third-party cookies. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+    Privacy Sandbox is still in active development and is available in selected regions. For now, sites may try out Privacy Sandbox while continuing to use current web technologies like third-party cookies. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_EXPLANATION1_PHASE2" desc="Part 1 of the phase 2 explanation of the Privacy Sandbox, shown on the Privacy Sandbox Page. The 'Privacy Sandbox' link navigates the user to a page with more details.">
-    With <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>Privacy Sandbox<ph name="END_LINK">&lt;/a&gt;</ph>, Brave is developing new technologies to safeguard you from cross-site tracking while preserving the open web.
+    With <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Privacy Sandbox<ph name="END_LINK">&lt;/a&gt;</ph>, Brave is developing new technologies to safeguard you from cross-site tracking while preserving the open web.
   </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_EXPLANATION2_PHASE2" desc="Part 2 of the phase 2 explanation of the Privacy Sandbox, shown on the Privacy Sandbox Page. The 'Privacy Sandbox' link navigates the user to a page with more details.">
    Privacy Sandbox trials are still in active development and are available in selected regions. For now, sites may try out Privacy Sandbox while continuing to use current web technologies like third-party cookies.
@@ -1284,10 +1284,10 @@
   </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_FLOC_EXPLANATION" desc="Explanation of Federated Learning of Cohorts (FLoC) which appears at the top of the FLoC settings card. The some regions link goes to a site indicating where FLoC is currently available">
     When on and the status is active, Brave uses your browsing history over 7 days to determine a group, or “cohort”, that you’re in. Advertisers can select ads for the group. Your browsing history is kept private on your device. This trial is active only in
-    <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>some regions<ph name="END_LINK">&lt;/a&gt;</ph>.
+    <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>some regions<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_FLOC_TRIAL_ACTIVE" desc="Sentence indicating that FLoC is only available in some regions, including a link to a page that describes exactly what regions it is available. This will only every appear directly after another sentence.">
-    This trial is active only in <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>some regions<ph name="END_LINK">&lt;/a&gt;</ph>.
+    This trial is active only in <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>some regions<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_FLOC_STATUS" desc="The text used to label the user's current Federated Learning of Cohorts (FLoC) trial status">
     Status
@@ -1387,7 +1387,7 @@
     Updates
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_UPDATES_DISABLED_BY_ADMIN" desc="This text describes that updates are managed by the administrator.">
-    Updates are managed by <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>your administrator<ph name="END_LINK">&lt;/a&gt;</ph>
+    Updates are managed by <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>your administrator<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_PASSWORDS_PRIMARY_LABEL" desc="'Passwords' is an element in safety check that allows users to check for their passwords being compromised.">
     Passwords
@@ -1411,7 +1411,7 @@
     Enhanced Protection is on
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_SAFE_BROWSING_DISABLED_BY_ADMIN" desc="This text points out that Safe Browsing is disabled by an administrator.">
-    <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Your administrator<ph name="END_LINK">&lt;/a&gt;</ph> has turned off Safe Browsing
+    <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Your administrator<ph name="END_LINK">&lt;/a&gt;</ph> has turned off Safe Browsing
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_SAFE_BROWSING_DISABLED_BY_EXTENSION" desc="This text points out that Safe Browsing is disabled by an extension.">
     An extension has turned off Safe Browsing
@@ -1487,7 +1487,7 @@
       Brave is removing harmful software from your computer...
     </message>
     <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_DISABLED_BY_ADMIN" desc="This text describes that Brave can't check for unwanted software because an administrator disabled the feature.">
-      <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Your administrator<ph name="END_LINK">&lt;/a&gt;</ph> has turned off checking for harmful software
+      <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Your administrator<ph name="END_LINK">&lt;/a&gt;</ph> has turned off checking for harmful software
     </message>
     <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_ERROR" desc="This text describes that Brave can't check for unwanted software due to an error.">
       Something went wrong. Click for more details.
@@ -1582,7 +1582,7 @@
     Do Not Track
   </message>
   <message name="IDS_SETTINGS_ENABLE_DO_NOT_TRACK_DIALOG_TEXT" desc="The text of a confirmation dialog that confirms that the user want to send the 'Do Not Track' header">
-    Enabling "Do Not Track" means that a request will be included with your browsing traffic. Any effect depends on whether a website responds to the request, and how the request is interpreted. For example, some websites may respond to this request by showing you ads that aren't based on other websites you've visited. Many websites will still collect and use your browsing data - for example to improve security, to provide content, services, ads and recommendations on their websites, and to generate reporting statistics. <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+    Enabling "Do Not Track" means that a request will be included with your browsing traffic. Any effect depends on whether a website responds to the request, and how the request is interpreted. For example, some websites may respond to this request by showing you ads that aren't based on other websites you've visited. Many websites will still collect and use your browsing data - for example to improve security, to provide content, services, ads and recommendations on their websites, and to generate reporting statistics. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
   </message>
   <message name="IDS_SETTINGS_PERMISSIONS" desc="Name of the settings page which allows users to manage permissions and site content settings">
     Permissions and content settings
@@ -1636,7 +1636,7 @@
     With
   </message>
   <message name="IDS_SETTINGS_SECURE_DROPDOWN_MODE_PRIVACY_POLICY" desc="Text that displays a link to the privacy policy of the resolver selected from a dropdown menu">
-    See this provider's <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>privacy policy<ph name="END_LINK">&lt;/a&gt;</ph>
+    See this provider's <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>privacy policy<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_SECURE_DNS_DISABLED_FOR_MANAGED_ENVIRONMENT" desc="Substring of the secure DNS setting when secure DNS is disabled due to detection of a managed environment">
     This setting is disabled on managed browsers
@@ -3229,7 +3229,7 @@
     Sign in
   </message>
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_MANAGED_PROFILE_EXPLANATION" desc="The text to display in the 'Sign out of Brave' dialog to stop syncing for managed profiles.">
-    Because this account is managed by <ph name="DOMAIN">$1<ex>example.com</ex></ph>, your bookmarks, history, passwords, and other settings will be cleared from this device. However, your data will remain stored in your Brave sync chain and can be managed on <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank" rel="noopener noreferrer"&gt;<ex>&lt;a href="$2" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+    Because this account is managed by <ph name="DOMAIN">$1<ex>example.com</ex></ph>, your bookmarks, history, passwords, and other settings will be cleared from this device. However, your data will remain stored in your Brave sync chain and can be managed on <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;<ex>&lt;a href="$2" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_TURN_OFF_SYNC_AND_SIGN_OUT_DIALOG_TITLE" desc="The text to display on the title of the dialog to turn off sync and sign out.">
     Turn off sync and personalization?
@@ -3269,7 +3269,7 @@
   </if>
 
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_EXPLANATION" desc="The text to display in the Sign out of Brave dialog to stop syncing for non-managed profiles.">
-    Changes to your bookmarks, history, passwords, and other settings will no longer be synced to your Brave sync chain. However, your existing data will remain stored in your Brave sync chain and can be managed on <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+    Changes to your bookmarks, history, passwords, and other settings will no longer be synced to your Brave sync chain. However, your existing data will remain stored in your Brave sync chain and can be managed on <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_AND_SIGN_OUT_EXPLANATION" desc="The text to display in the Sign out of Brave dialog to stop syncing and sign-out for non-managed profiles.">
     This will sign you out of your Brave sync chains. Your bookmarks, history, passwords, and more will no longer be synced.
@@ -3296,19 +3296,19 @@
     Manage synced data on Brave Dashboard
   </message>
   <message name="IDS_SETTINGS_ENCRYPT_WITH_SYNC_PASSPHRASE_LABEL" desc="Label for the radio button which, when selected, causes synced settings to be encrypted with a user-provided password.">
-    Encrypt synced data with your own <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>sync passphrase<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>. This doesn't include payment methods and addresses from Brave Pay.
+    Encrypt synced data with your own <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>sync passphrase<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>. This doesn't include payment methods and addresses from Brave Pay.
   </message>
   <message name="IDS_SETTINGS_PASSPHRASE_EXPLANATION_TEXT" desc="Message shown when explicit passphrase is selected.">
-    Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave. If you forget your passphrase or want to change this setting, you'll need to <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+    Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave. If you forget your passphrase or want to change this setting, you'll need to <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_PASSPHRASE_RESET_HINT_ENCRYPTION" desc="Informs user how to change their encryption setting.">
-    To change this setting, <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> to remove your sync passphrase
+    To change this setting, <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> to remove your sync passphrase
   </message>
   <message name="IDS_SETTINGS_PASSPHRASE_RESET_HINT_TOGGLE" desc="Informs user how to change their encryption setting when unified consent is enabled.">
-    To turn this on, <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> to remove your sync passphrase
+    To turn this on, <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> to remove your sync passphrase
   </message>
   <message name="IDS_SETTINGS_PASSPHRASE_RECOVER" desc="Message about how to recover from a lost passphrase.">
-    If you forgot your passphrase or want to change this setting, <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+    If you forgot your passphrase or want to change this setting, <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_PERSONALIZE_GOOGLE_SERVICES_TITLE" desc="Title of the personalize Brave services section. When clicked, takes the user to the Brave Activity Controls.">
     Control how your browsing history is used to personalize Search and more
@@ -3557,7 +3557,7 @@
         other {To ensure that you can keep browsing the web, ask your administrator to remove these applications.}}
     </message>
     <message name="IDS_SETTINGS_INCOMPATIBLE_APPLICATIONS_SUBPAGE_LEARN_HOW" desc="Following the subtitle, this is a link to a help center article that explains how to update any program.">
-      <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn how to update applications<ph name="END_LINK">&lt;/a&gt;</ph>
+      <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn how to update applications<ph name="END_LINK">&lt;/a&gt;</ph>
     </message>
     <message name="IDS_SETTINGS_INCOMPATIBLE_APPLICATIONS_LIST_TITLE" desc="This is the title for the list of incompatible applications.">
       {NUM_APLLICATIONS, plural,
