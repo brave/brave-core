@@ -22,7 +22,7 @@ import {
 } from './style'
 import { TextArea, Modal, Button } from 'brave-ui/components'
 import { getLocale } from 'brave-ui/helpers'
-import { Alert, ModalQRCode, Tab } from '../'
+import { Alert, Tab } from '../'
 import ControlWrapper from 'brave-ui/components/formControls/controlWrapper'
 
 export interface Props {
@@ -37,19 +37,18 @@ export interface Props {
   onSaveFile?: (key: string) => void
   onRestore: (key: string) => void
   onVerify?: () => void
+  onShowQRCode: () => void
   error?: React.ReactNode
   id?: string
   testId?: string
   funds?: string
   onReset: () => void
   internalFunds: number
-  paymentId: string
 }
 
 interface State {
   recoveryKey: string
   errorShown: boolean
-  showQRCodeModal: boolean
 }
 
 /*
@@ -62,8 +61,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
     super(props)
     this.state = {
       recoveryKey: '',
-      errorShown: false,
-      showQRCodeModal: false
+      errorShown: false
     }
   }
 
@@ -95,12 +93,6 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
     this.setState({
       errorShown: false,
       recoveryKey: event.target.value
-    })
-  }
-
-  toggleQRCodeModal = () => {
-    this.setState({
-      showQRCodeModal: !this.state.showQRCodeModal
     })
   }
 
@@ -241,7 +233,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
   }
 
   getRestore = () => {
-    const { error, onClose, funds } = this.props
+    const { error, onShowQRCode, onClose, funds } = this.props
     const errorShown = error && this.state.errorShown
 
     return (
@@ -296,7 +288,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
         </StyledTextWrapper>
         <StyledTextWrapper>
           <StyledText>
-            <StyledLink onClick={this.toggleQRCodeModal}>
+            <StyledLink onClick={onShowQRCode}>
               {getLocale('rewardsViewQRCodeText1')}
             </StyledLink> {getLocale('rewardsViewQRCodeText2')}
           </StyledText>
@@ -383,7 +375,6 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
       activeTabId,
       onClose,
       onTabChange,
-      paymentId,
       testId
     } = this.props
 
@@ -408,14 +399,6 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
         </StyledControlWrapper>
         {
           this.getTabContent(activeTabId)
-        }
-        {
-          this.state.showQRCodeModal
-          ? <ModalQRCode
-              paymentId={paymentId}
-              onClose={this.toggleQRCodeModal}
-          />
-          : null
         }
       </Modal>
     )
