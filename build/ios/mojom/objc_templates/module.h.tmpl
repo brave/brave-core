@@ -37,6 +37,10 @@ NS_SWIFT_NAME({{class_prefix}})
 {%    include "struct_declaration.tmpl" %}
 {%- endfor %}
 
+{%- for interface in interfaces %}
+{%    include "interface_declaration.tmpl" %}
+{%- endfor %}
+
 NS_ASSUME_NONNULL_END
 
 #endif  // {{header_guard}}

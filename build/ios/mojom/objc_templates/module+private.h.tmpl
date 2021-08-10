@@ -22,4 +22,8 @@
 {%    include "private_struct_declaration.tmpl" %}
 {%- endfor %}
 
+{%- for interface in interfaces %}
+{%    include "private_interface_declaration.tmpl" %}
+{%- endfor %}
+
 #endif  // {{header_guard}}

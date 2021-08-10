@@ -1,0 +1,57 @@
+{%- set cpp_namespace = interface|cpp_namespace_from_kind %}
+@implementation {{class_prefix}}{{interface.name}} {
+  {{cpp_namespace}}::{{interface.name}}* _wrappedValue;  // NOT OWNED
+}
+
+- (instancetype)initWith{{interface.name}}:({{cpp_namespace}}::{{interface.name}}*)obj {
+  if ((self = [super init])) {
+    _wrappedValue = obj;
+  }
+  return self;
+}
+{%  for method in interface.methods %}
+{%-   set name = method|objc_method_name_formatter %}
+- (void){{name}}
+{%- if method.parameters or method.response_parameters %}:{%- endif -%}
+{%- for param in method.parameters -%}
+{%-   if not loop.first -%}{{param.name|under_to_lower_camel}}:{%- endif -%}
+({{param.kind|objc_wrapper_type}}){{param.name|under_to_lower_camel}}
+{%- if not loop.last %} {% endif -%}
+{%- endfor -%}
+{%- if method.response_parameters -%}
+{%- if method.parameters %} completion:{% endif -%}
+(void (^)(
+{%- for param in method.response_parameters -%}
+{{param.kind|objc_wrapper_type}} {{param.name|under_to_lower_camel}}
+{%- if not loop.last -%},{{" "}}{%- endif -%}
+{%- endfor -%}
+))completion
+{%- endif %} {
+{%- if method.response_parameters %}
+  auto callback = ^(
+{%- for param in method.response_parameters -%}
+{{param.kind|expected_cpp_param_type}} {{param.name}}
+{%- if not loop.last -%},{{" "}}{%- endif -%}
+{%- endfor -%}
+  ) {
+    completion(
+{%- for param in method.response_parameters -%}
+{{param|cpp_to_objc_assign}}
+{%- if not loop.last %}, {% endif -%}
+{%- endfor -%}
+    );
+  };
+{%- endif %}
+  _wrappedValue->{{method.name}}(
+{%- for param in method.parameters -%}
+{{param|objc_to_cpp_assign}}
+{%- if not loop.last -%},{{" "}}{%- endif -%}
+{%- endfor -%}
+{%- if method.response_parameters -%}
+{%- if method.parameters %}, {% endif -%}
+base::BindOnce(callback)
+{%- endif -%}
+  );
+}
+{% endfor %}
+@end

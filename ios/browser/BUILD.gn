@@ -20,7 +20,7 @@ source_set("browser") {
     "api/bookmarks",
     "api/bookmarks/exporter",
     "api/bookmarks/importer",
-    "api/brave_wallet",
+    "api/brave_wallet:wallet_mojom_wrappers",
     "api/history",
     "api/sync",
     "brave_wallet",

@@ -13,8 +13,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/app/brave_main_delegate.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
-#include "brave/ios/browser/api/brave_wallet/asset_ratio_controller_ios+private.h"
-#include "brave/ios/browser/api/brave_wallet/keyring_controller_ios+private.h"
+#include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
 #include "brave/ios/browser/brave_wallet/asset_ratio_controller_factory.h"
@@ -198,8 +197,8 @@ static bool CustomLogHandler(int severity,
     auto* controller =
         brave_wallet::KeyringControllerFactory::GetForBrowserState(
             _mainBrowserState);
-    _keyringController =
-        [[BraveWalletKeyringController alloc] initWithController:controller];
+    _keyringController = [[BraveWalletKeyringController alloc]
+        initWithKeyringController:controller];
   }
   return _keyringController;
 }
@@ -209,8 +208,8 @@ static bool CustomLogHandler(int severity,
     auto* controller =
         brave_wallet::AssetRatioControllerFactory::GetForBrowserState(
             _mainBrowserState);
-    _assetRatioController =
-        [[BraveWalletAssetRatioController alloc] initWithController:controller];
+    _assetRatioController = [[BraveWalletAssetRatioController alloc]
+        initWithAssetRatioController:controller];
   }
   return _assetRatioController;
 }

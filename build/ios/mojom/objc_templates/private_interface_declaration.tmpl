@@ -1,0 +1,5 @@
+
+{%- set cpp_namespace = interface|cpp_namespace_from_kind %}
+@interface {{class_prefix}}{{interface.name}} (Private)
+- (instancetype)initWith{{interface.name}}:({{cpp_namespace}}::{{interface.name}}*)obj;
+@end

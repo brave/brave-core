@@ -5,9 +5,10 @@
 
 #import <Foundation/Foundation.h>
 #import "{{module_name}}.objc+private.h"
-#import "brave/build/ios/mojom/cpp_transformations.h"
 #include "base/containers/flat_map.h"
 #include "base/strings/sys_string_conversions.h"
+#include "base/time/time.h"
+#include "net/base/mac/url_conversions.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -18,4 +19,8 @@
 
 {%- for struct in structs %}
 {%    include "private_struct_implementation.tmpl" %}
+{%- endfor %}
+
+{%- for interface in interfaces %}
+{%    include "private_interface_implementation.tmpl" %}
 {%- endfor %}

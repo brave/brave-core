@@ -1,0 +1,28 @@
+
+OBJC_EXPORT
+NS_SWIFT_NAME({{class_prefix}}.{{interface.name}})
+@interface {{class_prefix}}{{interface.name}} : NSObject
+{%-  for method in interface.methods %}
+{%-   set name = method|objc_method_name_formatter %}
+- (void){{name}}
+{%- if method.parameters or method.response_parameters %}:{%- endif -%}
+{%- for param in method.parameters -%}
+{%-   if not loop.first -%}{{param.name|under_to_lower_camel}}:{%- endif -%}
+({{param.kind|objc_wrapper_type}}){{param.name|under_to_lower_camel}}
+{%- if not loop.last -%}{{" "}}{%- endif -%}
+{%- endfor -%}
+{%- if method.response_parameters -%}
+{%- if method.parameters -%}
+{{" "}}completion:
+{%- endif -%}
+(void (^)(
+{%- for param in method.response_parameters -%}
+{{param.kind|objc_wrapper_type}} {{param.name|under_to_lower_camel}}
+{%- if not loop.last -%},{{" "}}{%- endif -%}
+{%- endfor -%}
+))completion
+{%- endif -%}
+;
+{%- endfor %}
+- (instancetype)init NS_UNAVAILABLE;
+@end

@@ -145,9 +145,9 @@ class ArrayMojoTypemap(MojoTypemap):
         }()""" % args
     def CppToObjC(self, accessor):
         args = (accessor, self.wrappedTypemap.CppToObjC("o"))
-        return """^{
-            const auto a = [NSMutableArray new];
-            for (const auto& o : %s) {
+        return """[param = std::cref(%s)]{
+            const auto a = [[NSMutableArray alloc] init];
+            for (const auto& o : param.get()) {
                 [a addObject:%s];
             }
             return a;
@@ -281,10 +281,30 @@ class Generator(generator.Generator):
             "objc_enum_formatter": self._ObjCEnumFormatter,
             "cpp_to_objc_assign": self._CppToObjCAssign,
             "objc_to_cpp_assign": self._ObjCToCppAssign,
+            "expected_cpp_param_type": self._GetExpectedCppParamType,
             "cpp_namespace_from_kind": CppNamespaceFromKind,
             "under_to_lower_camel": UnderToLowerCamel,
         }
         return objc_filters
+
+    def _GetExpectedCppParamType(self, kind):
+        def is_move_only_kind(kind):
+            if mojom.IsStructKind(kind) or mojom.IsUnionKind(kind):
+                return True
+            if mojom.IsArrayKind(kind):
+                return is_move_only_kind(kind.kind)
+            if mojom.IsMapKind(kind):
+                return (is_move_only_kind(kind.value_kind) or
+                        is_move_only_kind(kind.key_kind))
+            if mojom.IsAnyHandleOrInterfaceKind(kind):
+                return True
+            return False
+        should_pass_param_by_value = (not mojom.IsReferenceKind(kind)) or is_move_only_kind(kind)
+        if mojom.IsPendingRemoteKind(kind) or mojom.IsPendingReceiverKind(kind):
+            return "id"
+        typemap = MojoTypemapForKind(kind, False)
+        typestring = typemap.ExpectedCppType()
+        return typestring if should_pass_param_by_value else "const %s&" % typestring
 
     def _GetObjCPropertyModifiers(self, kind):
         modifiers = ['nonatomic']
@@ -315,6 +335,8 @@ class Generator(generator.Generator):
         return typemap.DefaultObjCValue(field.default)
 
     def _GetObjCWrapperType(self, kind, objectType=False):
+        if mojom.IsPendingRemoteKind(kind) or mojom.IsPendingReceiverKind(kind):
+            return "id"
         typemap = MojoTypemapForKind(kind, objectType)
         return typemap.ObjCWrappedType()
 
@@ -354,20 +376,26 @@ class Generator(generator.Generator):
 
     def _ObjCToCppAssign(self, field, obj=None):
         kind = field.kind
+        if mojom.IsPendingRemoteKind(kind) or mojom.IsPendingReceiverKind(kind):
+            return "nullptr"
         accessor = "%s%s" % (obj + "." if obj else "", self._ObjCPropertyFormatter(field.name))
         typemap = MojoTypemapForKind(kind)
         if typemap is None:
             raise Exception("No typemap found for the given kind: %s" % kind)
         return typemap.ObjCToCpp(accessor)
 
-    def _CppToObjCAssign(self, field, obj):
+    def _CppToObjCAssign(self, field, obj=None):
         kind = field.kind
-        accessor = "%s.%s" % (obj, field.name)
+        if mojom.IsPendingRemoteKind(kind) or mojom.IsPendingReceiverKind(kind):
+            return "nil"
+        accessor = "%s%s" % (obj + "." if obj else "", field.name)
         typemap = MojoTypemapForKind(kind)
         return typemap.CppToObjC(accessor)
 
     def _GetJinjaExports(self):
         all_structs = [item for item in self.module.structs if item.name not in self.excludedTypes]
+        all_interfaces = [item for item in
+                          self.module.interfaces if item.name not in self.excludedTypes]
         all_enums = list(self.module.enums)
         for struct in all_structs:
             all_enums.extend(struct.enums)
@@ -388,7 +416,7 @@ class Generator(generator.Generator):
             "all_enums": all_enums,
             "enums": self.module.enums,
             "imports": self.module.imports,
-            "interfaces": self.module.interfaces,
+            "interfaces": all_interfaces,
             "kinds": self.module.kinds,
             "module": self.module,
             "module_name": os.path.basename(self.module.path),
