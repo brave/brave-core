@@ -192,12 +192,6 @@ def validate_elements_tags(elements):
         if element.tag not in allowed_html_tags:
             error = ("ERROR: Element <{0}> is not allowed.\n").format(element.tag)
             errors = (errors or '') + error
-        if element.tag == 'a' and element.get('target') == '_blank':
-            rel = element.get('rel') or ''
-            if rel.find('noopener') == -1 or rel.find('noreferrer') == -1:
-                error = ("ERROR: Element <a> with target=\"_blank\" must set "
-                         "rel=\"noopener noreferrer\"\n")
-                errors = (errors or '') + error
         rec_errors = validate_elements_tags(list(element))
         if rec_errors is not None:
             errors = (errors or '') + rec_errors
@@ -245,90 +239,6 @@ def validate_tags_in_transifex_strings(xml_content):
     if errors is not None:
         errors = ("\n") + errors
     return errors
-
-
-def fix_links_with_target_blank_in_ph_text(text):
-    """A <ph> containing a link usually only has part of the <a> element, so
-       we can't convert it to proper xml and instead try to add rel attribute
-       via string search"""
-    target = text.find('target="_blank"')
-    if target == -1:
-        return text
-    target += 15
-    rel = text.find('rel="')
-    if rel == -1:
-        return text[:target] + ' rel="noopener noreferrer"' + text[target:]
-
-    rel += 5
-    rel_end = rel + text[rel:].find('"')
-    rel_value = text[rel:rel_end]
-    rel_add = ''
-    if rel_value.find('noopener') == -1:
-        rel_add = 'noopener '
-    if rel_value.find('noreferrer') == -1:
-        rel_add = rel_add + 'noreferrer '
-    return text[:rel] + rel_add + text[rel:]
-
-
-def fix_links_with_target_blank_in_text(text):
-    """Process element text for embedded <a> elements"""
-    if text.find('target="_blank"') == -1:
-        return text
-    xml_text = (text.replace('&lt;', '<').replace('&gt;', '>'))
-    try:
-        xml_elem = lxml.etree.fromstring('<text>' + xml_text + '</text>')
-    except lxml.etree.XMLSyntaxError as e:
-        print "\n--------------------\n{0}\nERROR: {1}\n".format(xml_text.encode('utf-8'), str(e))
-        cont = raw_input('Enter C to ignore and continue. Enter anything else to exit : ')
-        if cont == 'C' or cont == 'c':
-            return text
-        raise
-    a_tags = xml_elem.findall('.//a')
-    for a_tag in a_tags:
-        if a_tag.get('target') == '_blank':
-            rel = a_tag.get('rel') or ''
-            if rel.find('noopener') == -1:
-                a_tag.set('rel', rel + (' noopener' if len(rel) else 'noopener'))
-            if rel.find('noreferrer') == -1:
-                a_tag.set('rel', a_tag.get('rel') + ' noreferrer')
-    new_text = lxml.etree.tostring(xml_elem, method='xml', encoding='unicode')
-    new_text = new_text[new_text.index('>')+1:new_text.rindex('<')]
-    return new_text
-
-
-def fix_links_with_target_blank_in_element(elem):
-    """Recursively process text, tail and children of an element for embedded
-       <a> elements and process them"""
-    if elem.text:
-        if elem.tag == 'ph':
-            elem.text = fix_links_with_target_blank_in_ph_text(elem.text)
-        else:
-            elem.text = fix_links_with_target_blank_in_text(elem.text)
-    if elem.tail:
-        if elem.tag == 'ph':
-            elem.tail = fix_links_with_target_blank_in_ph_text(elem.tail)
-        else:
-            elem.tail = fix_links_with_target_blank_in_text(elem.tail)
-    for child in elem:
-        if child.tag != 'ex':
-            fix_links_with_target_blank_in_element(child)
-
-
-def fix_links_with_target_blank(source_string_path):
-    """Takes in a grd(p) path, finds all <a> tags with target _blank and makes
-       sure they have rel attribute with noopener and noreferrer values"""
-    source_xml_tree = lxml.etree.parse(source_string_path)
-    for elem in source_xml_tree.xpath('//message'):
-        fix_links_with_target_blank_in_element(elem)
-    write_xml_file_from_tree(source_string_path, source_xml_tree)
-
-
-def fix_links_with_target_blank_in_xtb_tree(xtb_tree):
-    """Takes in an xtb tree, finds all <a> tags with target _blank and makes
-       sure they have rel attribute with noopener and noreferrer values"""
-    for elem in xtb_tree.xpath('//translation'):
-        fix_links_with_target_blank_in_element(elem)
-
 
 def trim_ph_tags_in_xtb_file_content(xml_content):
     """Removes all children of <ph> tags including text inside ph tag"""
@@ -978,7 +888,6 @@ def pull_xtb_without_transifex(grd_file_path, brave_source_root):
                     node.attrib['id'] = new_fp
                     # print('fp: {0} -> {1}').format(old_fp, new_fp)
 
-        fix_links_with_target_blank_in_xtb_tree(xml_tree)
         transformed_content = ('<?xml version="1.0" ?>\n' +
                                lxml.etree.tostring(xml_tree, pretty_print=True,
                                                    xml_declaration=False,

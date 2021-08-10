@@ -27,11 +27,11 @@
   </message>
   <message name="IDS_SETTINGS_UPDATE_REQUIRED_EOL_BANNER_DAYS" desc="Banner displayed in OS settings page in case update is required by policy, but the device has reached end-of-life and the number of days remaining to return the device back to the manager is less than seven. MANAGER can be a domain or an email address.">
     {NUM_DAYS, plural,
-      =1 {<ph name="MANAGER">{1}<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">{2}<ex>Bravebook</ex></ph> today. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="{3}<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>}
-      other {<ph name="MANAGER">{1}<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">{2}<ex>Bravebook</ex></ph> within {NUM_DAYS} days. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="{3}<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>}}
+      =1 {<ph name="MANAGER">{1}<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">{2}<ex>Bravebook</ex></ph> today. <ph name="LINK_BEGIN">&lt;a target="_blank" href="{3}<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>}
+      other {<ph name="MANAGER">{1}<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">{2}<ex>Bravebook</ex></ph> within {NUM_DAYS} days. <ph name="LINK_BEGIN">&lt;a target="_blank" href="{3}<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>}}
   </message>
   <message name="IDS_SETTINGS_UPDATE_REQUIRED_EOL_BANNER_ONE_WEEK" desc="Banner displayed in OS settings page in case update is required by policy, but the device has reached end-of-life and the number of days remaining to return the device back to the manager is equal to seven. MANAGER can be a domain or an email address.">
-    <ph name="MANAGER">$1<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> within 1 week. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$3<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>
+    <ph name="MANAGER">$1<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> within 1 week. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$3<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
 
   <!-- Settings Search Box -->
@@ -191,13 +191,13 @@
     Updates are managed by your administrator
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_END_OF_LIFE_MESSAGE_FUTURE" desc="Message used when end of life has not yet past current date in End of Life section on the About Page.">
-    This device will get automatic software and security updates until <ph name="MONTH_AND_YEAR">$1<ex>September 2020</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    This device will get automatic software and security updates until <ph name="MONTH_AND_YEAR">$1<ex>September 2020</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_END_OF_LIFE_MESSAGE_PAST" desc="Message used when End of Life is past current date in END OF LIFE section on the About Page.">
-    This device stopped getting automatic software and security updates in <ph name="MONTH_AND_YEAR">$1<ex>September 2020</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    This device stopped getting automatic software and security updates in <ph name="MONTH_AND_YEAR">$1<ex>September 2020</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_LAST_UPDATE_MESSAGE" desc="Message shown on the top level about page to inform the user that this device will no longer receive latest software updates.">
-    This is the last automatic software and security update for this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. To get future updates, upgrade to a newer model. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    This is the last automatic software and security update for this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. To get future updates, upgrade to a newer model. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_DIAGNOSTICS" desc="Text of the button which allows the user to diagnose their device.">
     Diagnostics
@@ -320,7 +320,7 @@
     Change device language
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_CHANGE_DEVICE_LANGUAGE_DIALOG_DESCRIPTION" desc="Description for the dialog to change device language.">
-    You need to restart your Bravebook to change the device language. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+    You need to restart your Bravebook to change the device language. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_SELECTED_DEVICE_LANGUAGE_INSTRUCTION" desc="Instruction read by screen reader when users can unselect a language.">
     <ph name="LANGUAGE">$1<ex>English</ex></ph> selected. Press Search plus Space to unselect.
@@ -335,13 +335,13 @@
     Web content languages
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_LANGUAGES_PREFERENCE_DESCRIPTION" desc="Description for section that lets users choose the language for web content. The web content languages will be served in the order of the list.">
-    Web content available in multiple languages will use the first supported language from this list. These preferences are synced with your browser settings. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+    Web content available in multiple languages will use the first supported language from this list. These preferences are synced with your browser settings. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_WEBSITE_LANGUAGES_TITLE" desc="Title of section that lets users choose a list of languages for websites. The website languages will be given to websites in the order given by the list.">
     Website languages
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_WEBSITE_LANGUAGES_DESCRIPTION" desc="Description for section that lets users choose a list of languages for websites. The website languages will be given to websites in the order given by the list.">
-    Add and rank your preferred languages. Websites will show in your preferred languages, when possible. These preferences are synced with your browser settings. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+    Add and rank your preferred languages. Websites will show in your preferred languages, when possible. These preferences are synced with your browser settings. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_TRANSLATE_TARGET_LABEL" desc="The label of the toggle that enables the prompt to translate a page to users.">
     Language used when translating pages
@@ -728,10 +728,10 @@
     Select <ph name="TOPIC_SOURCE">$1<ex>Brave Photos</ex></ph> albums
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_GOOGLE_PHOTOS_TITLE" desc="Label for the subpage to select albums of Brave Photos in ambient mode.">
-    Relive your favorite memories. To add or edit albums, go to <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Brave Photos<ph name="LINK_END">&lt;/a&gt;</ph>.
+    Relive your favorite memories. To add or edit albums, go to <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Brave Photos<ph name="LINK_END">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_GOOGLE_PHOTOS_NO_ALBUM" desc="Text for the subpage to select albums of Brave Photos when there is no album in ambient mode.">
-    No albums. Create an album in <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Brave Photos<ph name="LINK_END">&lt;/a&gt;</ph>.
+    No albums. Create an album in <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Brave Photos<ph name="LINK_END">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_RECENT_DESC" desc="Description for the Recent highlights album in ambient mode.">
     Your best photos, selected automatically
@@ -863,7 +863,7 @@
     Translation
   </message>
   <message name="IDS_SETTINGS_QUICK_ANSWERS_TRANSLATION_ENABLE_DESCRIPTION" desc="Sub label for the Quick Answers translation toggle.">
-    Add your preferred <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="#"&gt;</ph>website languages<ph name="LINK_END">&lt;/a&gt;</ph>. The top language from the list will be used for translations.
+    Add your preferred <ph name="LINK_BEGIN">&lt;a target="_blank" href="#"&gt;</ph>website languages<ph name="LINK_END">&lt;/a&gt;</ph>. The top language from the list will be used for translations.
   </message>
   <message name="IDS_SETTINGS_QUICK_ANSWERS_UNIT_CONVERSION_ENABLE" desc="Title for a toggle that controls the Quick Answers unit conversion feature.">
     Unit Conversion
@@ -1591,7 +1591,7 @@ Press an assigned switch to remove assignment
     Managed by <ph name="DOMAIN">$1<ex>google.com</ex></ph>
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MANAGEMENT_STATUS" desc="Management status label for managed accounts.">
-    This account is managed by <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer"&gt;</ph><ph name="DOMAIN">$1<ex>google.com</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>
+    This account is managed by <ph name="BEGIN_LINK">&lt;a target="_blank"&gt;</ph><ph name="DOMAIN">$1<ex>google.com</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MANAGEMENT_STATUS_CHILD" desc="Management status label for child accounts.">
     Managed by Family Link
@@ -1841,7 +1841,7 @@ Press an assigned switch to remove assignment
     Reserve size
   </message>
   <message name="IDS_SETTINGS_CROSTINI_ARC_ADB_POWERWASH_REQUIRED_SUBLABEL" desc="Sublabel notifying user of powerwash requirement before enabling ARC ADB sideloading.">
-    A factory reset of this Bravebook is required to enable ADB debugging. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+    A factory reset of this Bravebook is required to enable ADB debugging. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_CROSTINI_ARC_ADB_CONFIRMATION_MESSAGE_ENABLE" desc="Describes what will happen if the user enables ADB Sideloading.">
     To enable ADB debugging, a restart of this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> is required. Disabling it requires a reset to factory settings.
@@ -1850,7 +1850,7 @@ Press an assigned switch to remove assignment
     Disabling ADB debugging will reset this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> to factory settings. All user accounts and local data will be erased.
   </message>
   <message name="IDS_SETTINGS_CROSTINI_SUBTEXT" desc="Description for the section for enabling and managing Crostini.">
-    Run Linux tools, editors, and IDEs on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Run Linux tools, editors, and IDEs on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_CROSTINI_REMOVE" desc="Label for the row to open a dialog confirming removal of Crostini.">
     Remove Linux development environment
@@ -2731,13 +2731,13 @@ Press an assigned switch to remove assignment
     This network is shared with you
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_NOT_SYNCED" desc="Settings &gt; Internet &gt; Network details: Text to show when a network is not synced to the user's account.">
-    This network is not synced to your account. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    This network is not synced to your account. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_SYNCED_DEVICE" desc="Settings &gt; Internet &gt; Network details: Text to show when a shared network is synced to the user's account.  Also notes that changes to the network that are made by other users are not synced.">
-    Synced with other devices on your account. Settings modified by other users will not be synced. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Synced with other devices on your account. Settings modified by other users will not be synced. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_SYNCED_USER" desc="Settings &gt; Internet &gt; Network details: Text to show when a user network is synced.">
-    Synced with other devices on your account. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Synced with other devices on your account. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_INTERNET_WIFI_NETWORK_OUT_OF_RANGE" desc="Text shown when viewing the Wi-Fi network detail page when the currently-viewed Wi-Fi network has been lost (e.g., has gone out of range).">
     Network out of range
@@ -2806,7 +2806,7 @@ Press an assigned switch to remove assignment
     Connect
   </message>
   <message name="IDS_SETTINGS_INTERNET_LOOKING_FOR_MOBILE_NETWORK" desc="Text shown when viewing the Mobile data page when there are no cellular or tether networks available.">
-    Looking for a mobile network. <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+    Looking for a mobile network. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_INTERNET_ESIM_LABEL" desc="Label describing list of cellular networks as eSIM networks">
     eSIM
@@ -2824,7 +2824,7 @@ Press an assigned switch to remove assignment
     No SIM card inserted
   </message>
   <message name="IDS_SETTINGS_INTERNET_TETHER_NOT_SETUP_WITH_LEARN_MORE_LINK" desc="Text shown when viewing the Mobile data page and no instant tether network is available">
-    No device detected. <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+    No device detected. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_INTERNET_SHOW_EID_POPUP_BUTTON_LABEL" desc="A11y and tooltop label for EID and QR Code popup show button when viewing cellular network list">
     Show device EID and QR Code popup
@@ -2903,7 +2903,7 @@ Press an assigned switch to remove assignment
     Messages
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_ANDROID_MESSAGES_SUMMARY" desc="Description of for the 'Android Messages' setting. This feature lets the user read and reply to text messages from their Bravebook. New text messages will appear as notifications.">
-    Send and receive text messages from your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Send and receive text messages from your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_SECTION_TITLE" desc="The title of the Phone Hub section on the settings page.">
     Phone Hub
@@ -2927,7 +2927,7 @@ Press an assigned switch to remove assignment
     View recent Brave tabs from your phone
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION_DISABLED_SUMMARY" desc="Description of for the 'Phone Hub Task Continuation' setting when Brave sync is not enabled. This feature lets users resume in-app actions and chrome tabs that are open on a connected Android phone from Chrome OS devices.">
-    Turn on <ph name="LINK1_BEGIN">&lt;a id="chromeSyncLink"&gt;</ph>Brave Sync<ph name="LINK1_END">&lt;/a&gt;</ph> to view recent Brave tabs. <ph name="LINK2_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" id="learnMoreLink" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn More<ph name="LINK2_END">&lt;/a&gt;</ph>
+    Turn on <ph name="LINK1_BEGIN">&lt;a id="chromeSyncLink"&gt;</ph>Brave Sync<ph name="LINK1_END">&lt;/a&gt;</ph> to view recent Brave tabs. <ph name="LINK2_BEGIN">&lt;a target="_blank" id="learnMoreLink" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn More<ph name="LINK2_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION_SYNC_LABEL" desc="Accessibility label (used by screen readers, not shown in UI) for a link that leads to the Brave Sync toggle that needs to be enabled as a prerequisite for the 'Phone Hub Task Continuation' feature to be enabled. This feature lets users resume chrome tabs that are open on a connected Android phone from Chrome OS devices.">
     Turn on Brave Sync to view recent Brave tabs from your phone
@@ -2972,7 +2972,7 @@ Press an assigned switch to remove assignment
     Could not set up notifications syncing
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_ACCESS_PROHIBITED_SUMMARY" desc="The text of the dialog containing the Phone Hub notification opt-in flow when access to notifications is prohibited because the user's phone has a work profile.">
-    Notification syncing is not supported for phones in a work profile. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Notification syncing is not supported for phones in a work profile. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_PROHIBITED_TOOLTIP" desc="Tooltip shown to users when hovering the help icon in settings next to the Phone Hub notification syncing feature. The tooltip describes how users with work profiles cannot opt into this feature.">
     Notification syncing is not supported for phones in a work profile
@@ -2987,10 +2987,10 @@ Press an assigned switch to remove assignment
     Wi-Fi Sync
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_WIFI_SYNC_SUMMARY" desc="Description for the 'Wifi Sync' section on the settings page. This feature lets the user sync wifi network configurations between Chrome OS devices and a connected Android phone">
-    Sync Wi-Fi networks with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Sync Wi-Fi networks with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_ENABLE_WIFI_SYNC_V1_SUMMARY" desc="Description for the 'Wifi Sync' section on the settings page when the prerequisite 'Brave Sync' setting is not activated. This feature lets the user sync wifi network configurations between Chrome OS devices and a connected Android phone. The description contains a link that leads to the toggle where the prerequisite 'Brave Sync' feature can be turned on and a 'Learn More' link to learn more about the 'Wifi Sync' feature.">
-    Turn on <ph name="LINK1_BEGIN">&lt;a id="chromeSyncLink"&gt;</ph>Brave Sync<ph name="LINK1_END">&lt;/a&gt;</ph> to use Wi-Fi Sync. <ph name="LINK2_BEGIN">&lt;a id="learnMoreLink" target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK2_END">&lt;/a&gt;</ph>
+    Turn on <ph name="LINK1_BEGIN">&lt;a id="chromeSyncLink"&gt;</ph>Brave Sync<ph name="LINK1_END">&lt;/a&gt;</ph> to use Wi-Fi Sync. <ph name="LINK2_BEGIN">&lt;a id="learnMoreLink" target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK2_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_WIFI_SYNC_CHROME_SYNC_LABEL" desc="Accessibility label (used by screen readers, not shown in UI) for a link that leads to the Brave Sync toggle that needs to be enabled as a prerequisite for the 'Wifi Sync' feature to be enabled. This feature lets the user sync wifi network configurations between Chrome OS devices and a connected Android phone.">
     Turn on Brave Sync to use Wi-Fi Sync
@@ -3084,16 +3084,16 @@ Press an assigned switch to remove assignment
     Disconnect
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_SETUP_SUMMARY" desc="Tells the user to connect their Bravebook to their phone.">
-    Connect your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Connect your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NO_ELIGIBLE_HOSTS" desc="Tells the user that there is no phone with their account on it that can connect to their Bravebook.">
-    No eligible devices. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    No eligible devices. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_VERIFICATION_TEXT" desc="Text to tell user that their Bravebook needs to verify that it can connect with their phone.">
-    Waiting for verification. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Waiting for verification. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_SMART_LOCK_SUMMARY" desc="Description of for the 'Smart Lock' setting. This feature automatically unlocks the user's Bravebook if their phone is nearby and unlocked.">
-    Unlock your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Unlock your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_OPTIONS_LOGIN_LOCK" desc="Text on the lock screen which is the subheader for the screen locking options.">
     Lock screen from sleep mode
@@ -3246,7 +3246,7 @@ Press an assigned switch to remove assignment
     Valid for <ph name="TICKET_TIME_LEFT">$1<ex>7 hours 12 minutes</ex></ph>
   </message>
   <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_DESCRIPTION" desc="Description of the 'Kerberos tickets' Settings page. Shown just below the title of the page.">
-    Choose a ticket to use for authentication. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Choose a ticket to use for authentication. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_SUBMENU_LABEL" desc="Label of 'Kerberos tickets' submenu in Settings page.">
     Kerberos tickets
@@ -3793,7 +3793,7 @@ Press an assigned switch to remove assignment
     Android settings
   </message>
   <message name="IDS_SETTINGS_ANDROID_APPS_SUBTEXT" desc="Description for the section for enabling and managing Google Play Store (Android) apps.">
-    Install apps and games from Google Play on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Install apps and games from Google Play on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <!-- TODO(jamescook): Use device type instead of "Bravebook", which may
         require changing ArcPlayTermsOfServiceConsent resource id handling. -->
@@ -3886,7 +3886,7 @@ Press an assigned switch to remove assignment
     External storage preferences
   </message>
   <message name="IDS_SETTINGS_STORAGE_ANDROID_APPS_ACCESS_EXTERNAL_DRIVES_NOTE" desc="Label for the additional note for the subpage for setting preferences for external storage.">
-    Apps from Google Play may require full file system access to read and write files on external storage devices. Files and folders created on the device are visible to anyone who uses the external drive. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Apps from Google Play may require full file system access to read and write files on external storage devices. Files and folders created on the device are visible to anyone who uses the external drive. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_STORAGE_EXTERNAL_STORAGE_EMPTY_LIST_HEADER" desc="Header of the list of external storage devices for the subpage for setting preferences for external storage. This is shown when the list is empty.">
     Available devices will appear here.

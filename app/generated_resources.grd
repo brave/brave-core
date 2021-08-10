@@ -5705,7 +5705,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         You’re seeing your recent and suggested documents based on your previous activity using Google Drive.
         <ph name="BREAK">&lt;br&gt;</ph>
         <ph name="BREAK">&lt;br&gt;</ph>
-        Learn about the data Google Drive collects and why <ph name="BEGIN_LINK">&lt;a href="https://support.google.com/drive/answer/2450387" target="_blank" rel="noopener noreferrer"&gt;</ph>here<ph name="END_LINK">&lt;/a&gt;</ph>.
+        Learn about the data Google Drive collects and why <ph name="BEGIN_LINK">&lt;a href="https://support.google.com/drive/answer/2450387" target="_blank"&gt;</ph>here<ph name="END_LINK">&lt;/a&gt;</ph>.
       </message>
       <message name="IDS_NTP_MODULES_KALEIDOSCOPE_TITLE" desc="Title shown in the header of the Kaleidoscope module.">
         Top picks for you
@@ -5714,10 +5714,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Why am I seeing this?
       </message>
       <message name="IDS_NTP_MODULES_TASKS_INFO" desc="Text shown in the body of the info dialog of a task module.">
-        You're seeing this item based on your previous activity using Brave services. You can see your data, delete it, and change your settings at <ph name="BEGIN_LINK1">&lt;a href="https://myactivity.google.com/" target="_blank" rel="noopener noreferrer"&gt;</ph>myactivity.google.com<ph name="END_LINK1">&lt;/a&gt;</ph>.
+        You're seeing this item based on your previous activity using Brave services. You can see your data, delete it, and change your settings at <ph name="BEGIN_LINK1">&lt;a href="https://myactivity.google.com/" target="_blank"&gt;</ph>myactivity.google.com<ph name="END_LINK1">&lt;/a&gt;</ph>.
         <ph name="BREAK">&lt;br&gt;</ph>
         <ph name="BREAK">&lt;br&gt;</ph>
-        Learn about the data Brave collects and why at <ph name="BEGIN_LINK2">&lt;a href="https://policies.google.com/" target="_blank" rel="noopener noreferrer"&gt;</ph>policies.google.com<ph name="END_LINK2">&lt;/a&gt;</ph>.
+        Learn about the data Brave collects and why at <ph name="BEGIN_LINK2">&lt;a href="https://policies.google.com/" target="_blank"&gt;</ph>policies.google.com<ph name="END_LINK2">&lt;/a&gt;</ph>.
       </message>
       <message name="IDS_NTP_MODULES_SHOPPING_TASKS_INFO_CLOSE" desc="Text shown on close button of a task module.">
         Close
@@ -6565,7 +6565,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Clear browsing data
       </message>
       <message name="IDS_CLEAR_BROWSING_DATA_HISTORY_NOTICE" desc="A dialog informing the user that their Brave browsing history was deleted, but other forms of history can still be found on Brave My Activity.">
-        The selected data has been removed from Brave and synced devices. Your Brave sync chain may have other forms of browsing history like searches and activity from other Brave services at <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;</ph>.
+        The selected data has been removed from Brave and synced devices. Your Brave sync chain may have other forms of browsing history like searches and activity from other Brave services at <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;</ph>.
       </message>
       <message name="IDS_CLEAR_BROWSING_DATA_HISTORY_NOTICE_TITLE" desc="Title of a dialog that informs the user that the deletion of Brave's browsing data has been completed.">
         Cleared Brave data
@@ -6575,7 +6575,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <!-- TODO(crbug.com/1099260): Add proper strings and make them translateable. -->
       <message name="IDS_CLEAR_BROWSING_DATA_PASSWORDS_NOTICE" desc="Body text of a dialog informing the user that some of their passwords were not successfully deleted." translateable="false">
-        We were not able to delete all passwords stored in your Brave sync chain. Try again or visit <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>passwords.google.com<ph name="END_LINK">&lt;/a&gt;</ph>.
+        We were not able to delete all passwords stored in your Brave sync chain. Try again or visit <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>passwords.google.com<ph name="END_LINK">&lt;/a&gt;</ph>.
       </message>
       <message name="IDS_CLEAR_BROWSING_DATA_PASSWORDS_NOTICE_TITLE" desc="Title of a dialog informing the user that some of their passwords were not successfully deleted." translateable="false">
         Some passwords were not deleted
@@ -7802,10 +7802,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <if expr="not is_android">
         <if expr="chromeos">
           <message name="IDS_DEVICE_MANAGED_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (BraveOS)">
-            Your <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> is managed<ph name="END_LINK">&lt;/a&gt;</ph> by your organization
+            Your <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> is managed<ph name="END_LINK">&lt;/a&gt;</ph> by your organization
           </message>
           <message name="IDS_DEVICE_MANAGED_BY_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (BraveOS)">
-            Your <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> is managed<ph name="END_LINK">&lt;/a&gt;</ph> by <ph name="ENROLLMENT_DOMAIN">$3<ex>example.com</ex></ph>
+            Your <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> is managed<ph name="END_LINK">&lt;/a&gt;</ph> by <ph name="ENROLLMENT_DOMAIN">$3<ex>example.com</ex></ph>
           </message>
         </if>
         <message name="IDS_MANAGED_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (non-BraveOS)">
@@ -8186,7 +8186,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Continue
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_GUEST_LINK" desc="Text of the link to offer switching to a Guest profile">
-            Not your device? Use <ph name="BEGIN_LINK">&lt;a is="action-link" target="_blank" rel="noopener noreferrer"&gt;</ph>Guest mode<ph name="END_LINK">&lt;/a&gt;</ph>.
+            Not your device? Use <ph name="BEGIN_LINK">&lt;a is="action-link" target="_blank"&gt;</ph>Guest mode<ph name="END_LINK">&lt;/a&gt;</ph>.
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_BUBBLE_DESC" desc="Body of the web signin interception bubble when the new account is personal and the existing account is managed">
           This will separate your browsing from <ph name="EXISTING_USER">$1<ex>bob@example.com</ex></ph>
@@ -9930,7 +9930,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
       <!--Printer registration message for local discovery and Print Preview-->
       <message name="IDS_CLOUD_PRINT_REGISTER_PRINTER_INFORMATION" desc="Information about registering printers with Google Cloud Print shown to the user before they confirm registration.">
-        Documents are <ph name="BEGIN_LINK_HELP">&lt;a is="action-link" href="https://support.google.com/cloudprint/answer/2541843" target="_blank" rel="noopener noreferrer"&gt;</ph>sent to Brave<ph name="END_LINK_HELP">&lt;/a&gt;</ph> to prepare them for printing. View, edit and manage your printers and printer history on the <ph name="BEGIN_LINK_DASHBOARD">&lt;a is="action-link" href="https://www.google.com/cloudprint#jobs" target="_blank" rel="noopener noreferrer"&gt;</ph>Google Cloud Print dashboard<ph name="END_LINK_DASHBOARD">&lt;/a&gt;</ph>.
+        Documents are <ph name="BEGIN_LINK_HELP">&lt;a is="action-link" href="https://support.google.com/cloudprint/answer/2541843" target="_blank"&gt;</ph>sent to Brave<ph name="END_LINK_HELP">&lt;/a&gt;</ph> to prepare them for printing. View, edit and manage your printers and printer history on the <ph name="BEGIN_LINK_DASHBOARD">&lt;a is="action-link" href="https://www.google.com/cloudprint#jobs" target="_blank"&gt;</ph>Google Cloud Print dashboard<ph name="END_LINK_DASHBOARD">&lt;/a&gt;</ph>.
       </message>
 
       <!--Tab alert tooltip strings-->

@@ -24,7 +24,6 @@ def parse_args():
 
 
 def generate_overrides_and_replace_strings(source_string_path):
-    fix_links_with_target_blank(source_string_path)
     original_xml_tree_with_branding_fixes = etree.parse(source_string_path)
     update_braveified_grd_tree_override(original_xml_tree_with_branding_fixes, True)
     write_braveified_grd_override(source_string_path)
