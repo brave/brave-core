@@ -41,6 +41,9 @@ class BraveVpnService : public KeyedService {
   BraveVpnService(const BraveVpnService&) = delete;
   BraveVpnService& operator=(const BraveVpnService&) = delete;
 
+  // KeyedService overrides:
+  void Shutdown() override;
+
   using ResponseCallback =
       base::OnceCallback<void(const std::string&, bool success)>;
 
@@ -88,7 +91,7 @@ class BraveVpnService : public KeyedService {
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
 
-  bool connected_ = false;
+  bool is_connected_ = false;
   base::ObserverList<Observer> observers_;
   api_request_helper::APIRequestHelper api_request_helper_;
 };

@@ -53,7 +53,7 @@ BraveVPNButton::BraveVPNButton(BraveVpnService* service)
                                         base::Unretained(this))),
       service_(service) {
   DCHECK(service_);
-  observation_.Observe(service);
+  observation_.Observe(service_);
 
   // Replace ToolbarButton's highlight path generator.
   views::HighlightPathGenerator::Install(

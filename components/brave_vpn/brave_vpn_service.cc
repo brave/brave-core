@@ -77,6 +77,10 @@ BraveVpnService::BraveVpnService(
 
 BraveVpnService::~BraveVpnService() = default;
 
+void BraveVpnService::Shutdown() {
+  observers_.Clear();
+}
+
 void BraveVpnService::OAuthRequest(const GURL& url,
                                    const std::string& method,
                                    const std::string& post_data,
@@ -140,7 +144,7 @@ void BraveVpnService::VerifyPurchaseToken(ResponseCallback callback,
 void BraveVpnService::Connect() {
   NOTIMPLEMENTED();
 
-  connected_ = true;
+  is_connected_ = true;
   for (Observer& obs : observers_)
     obs.OnConnectionStateChanged(true);
 }
@@ -148,7 +152,7 @@ void BraveVpnService::Connect() {
 void BraveVpnService::Disconnect() {
   NOTIMPLEMENTED();
 
-  connected_ = false;
+  is_connected_ = false;
   for (Observer& obs : observers_)
     obs.OnConnectionStateChanged(false);
 }
@@ -157,7 +161,7 @@ bool BraveVpnService::IsConnected() const {
   NOTIMPLEMENTED();
 
   // Just return fake statue now.
-  return connected_;
+  return is_connected_;
 }
 
 void BraveVpnService::AddObserver(Observer* observer) {

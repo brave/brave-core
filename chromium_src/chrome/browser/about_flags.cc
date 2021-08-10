@@ -49,7 +49,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveVPNName,                                       \
      flag_descriptions::kBraveVPNDescription,                                \
      kOsMac | kOsWin | kOsAndroid,                                           \
-     FEATURE_VALUE_TYPE(brave_vpn::kBraveVPNFeature)},
+     FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPN)},
 #else
 #define BRAVE_VPN_FEATURE_ENTRIES
 #endif
