@@ -1,14 +1,5 @@
 import styled from 'styled-components'
 
-export const MessageBoxTitle = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text01};
-  font-weight: 600;
-  margin-bottom: 10px;
-`
-
 export const MessageBox = styled.div`
   display: flex;
   align-items: flex-start;
@@ -18,12 +9,11 @@ export const MessageBox = styled.div`
   box-sizing: border-box;
   border-radius: 4px;
   width: 255px;
-  height: 70px;
   padding: 8px 14px;
   margin-bottom: 14px;
 `
 
-export const TransactionText = styled.span`
+export const NetworkTitle = styled.span`
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
@@ -61,28 +51,13 @@ export const FavIcon = styled.img`
   margin-bottom: 7px;
 `
 
-export const MessageBoxRow = styled.div`
+export const MessageBoxColumn = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
   width: 100%;
-`
-
-export const EditButton = styled.button`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.interactive05};
-  background: none;
-  cursor: pointer;
-  outline: none;
-  border: none;
-  margin: 0px;
-  padding: 0px;
+  margin-bottom: 6px;
 `
 
 export const DetailsButton = styled.button`
@@ -100,24 +75,7 @@ export const DetailsButton = styled.button`
   padding: 0px;
 `
 
-export const BalanceText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
-`
-
-export const FiatRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex-direction: row;
-  width: 100%;
-`
-
-export const FiatBalanceText = styled.span`
+export const NetworkDetail = styled.span`
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;

@@ -8,8 +8,6 @@ interface StyleProps {
   disabled?: boolean
 }
 
-// Will need to change to brave-ui button
-
 export const StyledButton = styled.button<StyleProps>`
   display: flex;
   align-items: center;
@@ -29,7 +27,10 @@ export const StyledButton = styled.button<StyleProps>`
     p.buttonType === 'secondary' ||
       p.buttonType === 'reject' ? `1px solid ${p.theme.color.interactive08}`
       : 'none'};
-  margin-right: ${(p) => (p.buttonType === 'primary' ? '0px' : '8px')};
+  margin-right: ${(p) =>
+    p.buttonType === 'primary' ||
+      p.buttonType === 'confirm' ||
+      p.buttonType === 'sign' ? '0px' : '8px'};
 `
 
 export const ButtonText = styled.span<Partial<StyleProps>>`

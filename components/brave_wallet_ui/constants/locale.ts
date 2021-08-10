@@ -237,9 +237,18 @@ const locale = {
   allowSpendBoxTitle: 'Edit Permissions',
   allowSpendTransactionFee: 'Transaction Fee',
   allowSpendEditButton: 'Edit',
-  allowSpendDetailsButton: 'View Details',
+  allowSpendDetailsButton: 'View details',
   allowSpendRejectButton: 'Reject',
-  allowSpendConfirmButton: 'Confirm'
+  allowSpendConfirmButton: 'Confirm',
+
+  // Allow Add Network Panel
+  allowAddNetworkTitle: 'Allow this site to add a network?',
+  allowAddNetworkDescription: 'This will allow this network to be used within Brave Wallet.',
+  allowAddNetworkLearnMoreButton: 'Learn More.',
+  allowAddNetworkName: 'Network Name',
+  allowAddNetworkUrl: 'Network URL',
+  allowAddNetworkDetailsButton: 'View all details',
+  allowAddNetworkApproveButton: 'Approve'
 }
 
 export default locale

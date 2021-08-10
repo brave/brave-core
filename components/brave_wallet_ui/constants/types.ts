@@ -173,6 +173,7 @@ export interface PanelState {
   connectingAccounts: string[]
   showSignTransaction: boolean
   showAllowSpendERC20Token: boolean
+  showAllowAddNetwork: boolean
 }
 
 export interface PageState {
@@ -455,9 +456,20 @@ export interface APIProxyControllers {
 
 export type AllowSpendReturnPayload = {
   siteUrl: string,
-  sitFavIcon: string,
   contractAddress: string,
   erc20Token: TokenInfo,
   transactionFeeWei: string,
   transactionFeeFiat: string
+}
+
+export type ChainInformation = {
+  chainId: string,
+  name: string,
+  url: string
+}
+
+export type AddNetworkReturnPayload = {
+  siteUrl: string,
+  contractAddress: string,
+  chainInfo: ChainInformation
 }
