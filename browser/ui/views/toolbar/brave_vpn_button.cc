@@ -11,6 +11,7 @@
 #include "base/notreached.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/themes/theme_properties.h"
+#include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -47,9 +48,13 @@ class BraveVPNButtonHighlightPathGenerator
 
 }  // namespace
 
-BraveVPNButton::BraveVPNButton()
+BraveVPNButton::BraveVPNButton(BraveVpnService* service)
     : ToolbarButton(base::BindRepeating(&BraveVPNButton::OnButtonPressed,
-                                        base::Unretained(this))) {
+                                        base::Unretained(this))),
+      service_(service) {
+  DCHECK(service_);
+  observation_.Observe(service);
+
   // Replace ToolbarButton's highlight path generator.
   views::HighlightPathGenerator::Install(
       this, std::make_unique<BraveVPNButtonHighlightPathGenerator>(
@@ -65,6 +70,12 @@ BraveVPNButton::BraveVPNButton()
   // Set image positions first. then label.
   SetHorizontalAlignment(gfx::ALIGN_LEFT);
 
+  UpdateButtonState();
+}
+
+BraveVPNButton::~BraveVPNButton() = default;
+
+void BraveVPNButton::OnConnectionStateChanged(bool connected) {
   UpdateButtonState();
 }
 
@@ -104,9 +115,7 @@ void BraveVPNButton::UpdateButtonState() {
 }
 
 bool BraveVPNButton::IsConnected() {
-  // TODO(simonhong): Get connection status when service is ready to use.
-  NOTIMPLEMENTED();
-  return true;
+  return service_->IsConnected();
 }
 
 void BraveVPNButton::OnButtonPressed(const ui::Event& event) {

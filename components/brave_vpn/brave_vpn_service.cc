@@ -7,6 +7,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/notreached.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
@@ -134,6 +135,37 @@ void BraveVpnService::VerifyPurchaseToken(ResponseCallback callback,
   std::string request_body = CreateJSONRequestBody(dict);
   OAuthRequest(base_url, "POST", request_body, true,
                std::move(internal_callback));
+}
+
+void BraveVpnService::Connect() {
+  NOTIMPLEMENTED();
+
+  connected_ = true;
+  for (Observer& obs : observers_)
+    obs.OnConnectionStateChanged(true);
+}
+
+void BraveVpnService::Disconnect() {
+  NOTIMPLEMENTED();
+
+  connected_ = false;
+  for (Observer& obs : observers_)
+    obs.OnConnectionStateChanged(false);
+}
+
+bool BraveVpnService::IsConnected() const {
+  NOTIMPLEMENTED();
+
+  // Just return fake statue now.
+  return connected_;
+}
+
+void BraveVpnService::AddObserver(Observer* observer) {
+  observers_.AddObserver(observer);
+}
+
+void BraveVpnService::RemoveObserver(Observer* observer) {
+  observers_.RemoveObserver(observer);
 }
 
 void BraveVpnService::OnGetResponse(

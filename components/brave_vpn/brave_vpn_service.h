@@ -14,6 +14,7 @@
 #include "base/bind.h"
 #include "base/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/observer_list.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -25,6 +26,14 @@ class SharedURLLoaderFactory;
 
 class BraveVpnService : public KeyedService {
  public:
+  class Observer : public base::CheckedObserver {
+   public:
+    virtual void OnConnectionStateChanged(bool connected) = 0;
+
+   protected:
+    ~Observer() override = default;
+  };
+
   explicit BraveVpnService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~BraveVpnService() override;
@@ -49,6 +58,13 @@ class BraveVpnService : public KeyedService {
                            const std::string& product_id,
                            const std::string& product_type);
 
+  void Connect();
+  void Disconnect();
+  bool IsConnected() const;
+
+  void AddObserver(Observer* observer);
+  void RemoveObserver(Observer* observer);
+
  private:
   using URLRequestCallback =
       base::OnceCallback<void(int,
@@ -72,6 +88,8 @@ class BraveVpnService : public KeyedService {
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
 
+  bool connected_ = false;
+  base::ObserverList<Observer> observers_;
   api_request_helper::APIRequestHelper api_request_helper_;
 };
 
