@@ -228,7 +228,18 @@ const locale = {
   // Sign Transaction Panel
   signTransactionTitle: 'Your signature is being requested',
   signTransactionMessageTitle: 'Message',
-  signTransactionButton: 'Sign'
+  signTransactionButton: 'Sign',
+
+  // Allow Spend ERC20 Panel
+  allowSpendTitle: 'Allow this app to spend your',
+  allowSpendDescriptionFirstHalf: 'By granting this permission, you are allowing this app to withdraw your ',
+  allowSpendDescriptionSecondHalf: ' and automate transactions for you.',
+  allowSpendBoxTitle: 'Edit Permissions',
+  allowSpendTransactionFee: 'Transaction Fee',
+  allowSpendEditButton: 'Edit',
+  allowSpendDetailsButton: 'View Details',
+  allowSpendRejectButton: 'Reject',
+  allowSpendConfirmButton: 'Confirm'
 }
 
 export default locale

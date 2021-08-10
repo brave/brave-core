@@ -1,7 +1,13 @@
 import * as React from 'react'
 
 // Styled Components
-import { StyledButton, ButtonText, RejectIcon, SignIcon } from './style'
+import {
+  StyledButton,
+  ButtonText,
+  RejectIcon,
+  SignIcon,
+  ConfirmIcon
+} from './style'
 
 export type PanelButtonTypes =
   | 'primary'
@@ -28,6 +34,9 @@ export default class NavButton extends React.PureComponent<Props, {}> {
         }
         {buttonType === 'sign' &&
           <SignIcon />
+        }
+        {buttonType === 'confirm' &&
+          <ConfirmIcon />
         }
         <ButtonText buttonType={buttonType}>{text}</ButtonText>
       </StyledButton>

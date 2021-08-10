@@ -11,7 +11,8 @@ import {
   ConnectedPanel,
   Panel,
   WelcomePanel,
-  SignPanel
+  SignPanel,
+  AllowSpendPanel
 } from '../components/extension'
 import {
   Send,
@@ -51,6 +52,9 @@ import { WyreAssetOptions } from '../options/wyre-asset-options'
 import { NetworkOptions } from '../options/network-options'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 
+// Will delete after example is no longer need
+const compoundFavIcon = require('../assets/app-icons/compound-icon.png')
+
 type Props = {
   panel: PanelState
   wallet: WalletState
@@ -88,7 +92,8 @@ function Container (props: Props) {
     connectedSiteOrigin,
     panelTitle,
     selectedPanel,
-    showSignTransaction
+    showSignTransaction,
+    showAllowSpendERC20Token
   } = props.panel
 
   // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
@@ -263,6 +268,33 @@ function Container (props: Props) {
     // Logic here to sign a transaction
   }
 
+  const onRejectERC20Spend = () => {
+    // Logic here to Reject an ERC20 Spend Transactiong
+  }
+
+  const onConfirmERC20Spend = () => {
+    // Logic here to Confirm an ERC20 Spend Transaction
+  }
+
+  // Example of a ERC20 Spend Payload to be passed to the
+  // Allow Spend Panel
+  const ERC20SpendPayload = {
+    siteUrl: 'https://app.compound.finance',
+    sitFavIcon: compoundFavIcon,
+    contractAddress: '0x3f29A1da97149722eB09c526E4eAd698895b426',
+    erc20Token: {
+      contractAddress: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
+      name: 'Basic Attention Token',
+      isErc20: true,
+      isErc721: false,
+      symbol: 'BAT',
+      decimals: 18,
+      icon: ''
+    },
+    transactionFeeWei: '0.002447',
+    transactionFeeFiat: '$6.57'
+  }
+
   if (!hasInitialized || !accounts) {
     return null
   }
@@ -297,6 +329,20 @@ function Container (props: Props) {
           onSign={onSignTransaction}
           selectedAccount={selectedAccount}
           selectedNetwork={selectedNetwork}
+        />
+      </SignContainer>
+    )
+  }
+
+  if (showAllowSpendERC20Token) {
+    return (
+      <SignContainer>
+        <AllowSpendPanel
+          onReject={onRejectERC20Spend}
+          onConfirm={onConfirmERC20Spend}
+          selectedAccount={selectedAccount}
+          selectedNetwork={selectedNetwork}
+          spendPayload={ERC20SpendPayload}
         />
       </SignContainer>
     )

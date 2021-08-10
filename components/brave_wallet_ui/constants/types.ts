@@ -172,6 +172,7 @@ export interface PanelState {
   tabId: number
   connectingAccounts: string[]
   showSignTransaction: boolean
+  showAllowSpendERC20Token: boolean
 }
 
 export interface PageState {
@@ -450,4 +451,13 @@ export interface APIProxyControllers {
   swapController: SwapController
   assetRatioController: AssetRatioController
   keyringController: KeyringController
+}
+
+export type AllowSpendReturnPayload = {
+  siteUrl: string,
+  sitFavIcon: string,
+  contractAddress: string,
+  erc20Token: TokenInfo,
+  transactionFeeWei: string,
+  transactionFeeFiat: string
 }

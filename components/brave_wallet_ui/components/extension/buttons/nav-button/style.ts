@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import CloseIcon from '../../assets/close.svg'
 import KeyIcon from '../../../../assets/svg-icons/key-icon.svg'
+import CheckIcon from '../../assets/filled-checkmark.svg'
 import { PanelButtonTypes } from './index'
 interface StyleProps {
   buttonType: PanelButtonTypes
@@ -57,6 +58,16 @@ export const SignIcon = styled.div`
   background-color: ${(p) => p.theme.palette.white};
   -webkit-mask-image: url(${KeyIcon});
   mask-image: url(${KeyIcon});
+  mask-size: 100%;
+  margin-right: 10px;
+`
+
+export const ConfirmIcon = styled.div`
+  width: 18px;
+  height: 18px;
+  background-color: ${(p) => p.theme.palette.white};
+  -webkit-mask-image: url(${CheckIcon});
+  mask-image: url(${CheckIcon});
   mask-size: 100%;
   margin-right: 10px;
 `
