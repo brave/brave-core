@@ -33,6 +33,8 @@ extern const char kBraveExtensionNetworkBlockingName[];
 extern const char kBraveExtensionNetworkBlockingDescription[];
 extern const char kBraveSidebarName[];
 extern const char kBraveSidebarDescription[];
+extern const char kBraveVPNName[];
+extern const char kBraveVPNDescription[];
 extern const char kBraveSpeedreaderName[];
 extern const char kBraveSpeedreaderDescription[];
 extern const char kBraveSpeedreaderLegacyName[];
