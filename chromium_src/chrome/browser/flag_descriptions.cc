@@ -51,6 +51,8 @@ const char kBraveExtensionNetworkBlockingDescription[] =
 const char kBraveSidebarName[] = "Enable Sidebar";
 // TODO(simon): Use more better description.
 const char kBraveSidebarDescription[] = "Enable Sidebar";
+const char kBraveVPNName[] = "Enable experimental Brave VPN";
+const char kBraveVPNDescription[] = "Experimental native VPN support";
 const char kBraveSpeedreaderName[] = "Enable SpeedReader";
 const char kBraveSpeedreaderDescription[] =
     "Enables faster loading of simplified article-style web pages.";

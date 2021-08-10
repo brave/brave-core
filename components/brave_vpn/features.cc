@@ -9,7 +9,10 @@
 
 namespace brave_vpn {
 
-const base::Feature kBraveVPNFeature{"BraveVPN",
-                                     base::FEATURE_DISABLED_BY_DEFAULT};
+namespace features {
+
+const base::Feature kBraveVPN{"BraveVPN", base::FEATURE_DISABLED_BY_DEFAULT};
+
+}  // namespace features
 
 }  // namespace brave_vpn

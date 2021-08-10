@@ -35,6 +35,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #endif
@@ -170,7 +171,8 @@ void BraveToolbarView::Init() {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsBraveVPNEnabled()) {
-    AddChildViewAt(std::make_unique<BraveVPNButton>(),
+    AddChildViewAt(std::make_unique<BraveVPNButton>(
+                       BraveVpnServiceFactory::GetForProfile(profile)),
                    GetIndexOf(GetAppMenuButton()) - 1);
   }
 #endif

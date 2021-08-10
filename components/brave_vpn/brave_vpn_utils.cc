@@ -11,7 +11,7 @@
 namespace brave_vpn {
 
 bool IsBraveVPNEnabled() {
-  return base::FeatureList::IsEnabled(brave_vpn::kBraveVPNFeature);
+  return base::FeatureList::IsEnabled(brave_vpn::features::kBraveVPN);
 }
 
 }  // namespace brave_vpn

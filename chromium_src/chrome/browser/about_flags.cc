@@ -14,6 +14,7 @@
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_talk/features.h"
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -39,6 +40,19 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 // clang-format seems to have a lot of issues with the macros in this
 // file so we turn it off for the macro sections.
 // clang-format off
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/features.h"
+
+#define BRAVE_VPN_FEATURE_ENTRIES \
+    {"brave_vpn",                                                            \
+     flag_descriptions::kBraveVPNName,                                       \
+     flag_descriptions::kBraveVPNDescription,                                \
+     kOsMac | kOsWin | kOsAndroid,                                           \
+     FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPN)},
+#else
+#define BRAVE_VPN_FEATURE_ENTRIES
+#endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
 #include "brave/components/sidebar/features.h"
@@ -177,6 +191,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
     BRAVE_IPFS_FEATURE_ENTRIES                                              \
     BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                     \
     SIDEBAR_FEATURE_ENTRIES                                                 \
+    BRAVE_VPN_FEATURE_ENTRIES                                               \
     BRAVE_DECENTRALIZED_DNS_FEATURE_ENTRIES                                 \
     {"brave-super-referral",                                                \
      flag_descriptions::kBraveSuperReferralName,                            \

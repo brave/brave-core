@@ -11,7 +11,7 @@ namespace brave_vpn {
 
 TEST(BraveVPNTest, Basic) {
   // Disable by default till we implement all brave vpn features.
-  EXPECT_FALSE(base::FeatureList::IsEnabled(kBraveVPNFeature));
+  EXPECT_FALSE(base::FeatureList::IsEnabled(features::kBraveVPN));
 }
 
 }  // namespace brave_vpn
