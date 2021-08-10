@@ -32,7 +32,7 @@
         android:order="3"
         android:title="@string/brave_today"/> -->
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
-        android:fragment="org.chromium.chrome.browser.settings.BraveRewardsPreferences"
+        android:fragment="org.chromium.chrome.browser.settings.BraveVpnPreferences"
         android:key="brave_vpn"
         android:icon="@drawable/ic_vpn"
         android:order="4"

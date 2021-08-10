@@ -161,6 +161,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSettingsLauncherImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveStatsPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSyncScreensPreference.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveVpnPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveWebrtcPolicyPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveWebrtcPolicyPreferencesFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/SearchEngineTabModelSelectorObserver.java",
