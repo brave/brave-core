@@ -1,0 +1,37 @@
+{%- import "interface_macros.tmpl" as interface_macros -%}
+{%- set cpp_namespace = interface|cpp_namespace_from_kind %}
+{%- set objc_name = class_prefix ~ interface.name %}
+
+#pragma mark - {{objc_name}}Bridge
+
+mojo::PendingRemote<{{cpp_namespace}}::{{interface.name}}>
+{{objc_name}}Bridge::GetRemote() {
+  return receiver_.BindNewPipeAndPassRemote();
+}
+
+{% for method in interface.methods %}
+void {{objc_name}}Bridge::{{method.name}}({{interface_macros.cpp_declare_request_params(method, cpp_namespace)}}) {
+  [bridge_ {{method|objc_method_name_formatter}}
+{%- if method.parameters or method.response_parameters %}:{%- endif %}
+{%- for param in method.parameters -%}
+{%- if not loop.first %} {{param.name|under_to_lower_camel}}:{% endif -%}
+{{param|cpp_to_objc_assign}}
+{%- endfor -%}
+{%- if method.response_parameters -%}
+{%-   if method.parameters %} completion:{%- endif %}^(
+{%- for param in method.response_parameters -%}
+{{param.kind|objc_wrapper_type}} {{param.name}}
+{%- if not loop.last %}, {% endif -%}
+{%- endfor -%}
+){
+    callback(
+{%- for param in method.response_parameters -%}
+{{param|cpp_to_objc_assign}}
+{%- if not loop.last %}, {% endif -%}
+{%- endfor -%}
+  );
+}
+{%- endif -%}
+  ];
+}
+{% endfor %}

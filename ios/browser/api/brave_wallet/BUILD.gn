@@ -15,34 +15,12 @@ config("mojom_header_config") {
   include_dirs = [ "$target_gen_dir" ]
 }
 
-source_set("brave_wallet") {
-  configs += [
-    ":mojom_header_config",
-    "//build/config/compiler:enable_arc",
-  ]
-
-  sources = [
-    "asset_ratio_controller_ios+private.h",
-    "asset_ratio_controller_ios.h",
-    "asset_ratio_controller_ios.mm",
-    "keyring_controller_ios+private.h",
-    "keyring_controller_ios.h",
-    "keyring_controller_ios.mm",
-  ]
-
-  deps = [
-    ":wallet_mojom_wrappers",
-    "//base",
-    "//brave/components/brave_wallet/browser",
-    "//components/keyed_service/ios:ios",
-    "//ios/chrome/browser/browser_state",
-    "//services/network/public/cpp",
-  ]
-
-  frameworks = [ "Foundation.framework" ]
-}
-
 mojom_wrappers("wallet_mojom_wrappers") {
   mojom_target = "//brave/components/brave_wallet/common:mojom"
   mojom_file = "//brave/components/brave_wallet/common/brave_wallet.mojom"
+  exclude_types = [
+    "BraveWalletProvider",
+    "PageHandlerFactory",
+    "PanelHandlerFactory",
+  ]
 }

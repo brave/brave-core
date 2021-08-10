@@ -1,7 +1,8 @@
-
-{%- set cpp_namespace = struct|cpp_namespace_from_kind %}
-@interface {{class_prefix}}{{struct.name}} (Private)
-- (instancetype)initWith{{struct.name}}:(const {{cpp_namespace}}::{{struct.name}} &)obj;
-- (instancetype)initWith{{struct.name}}Ptr:({{cpp_namespace}}::{{struct.name}}Ptr)obj;
-- ({{cpp_namespace}}::{{struct.name}}Ptr)cppObjPtr;
+{%- import "interface_macros.tmpl" as interface_macros -%}
+{%- set cpp_namespace = interface|cpp_namespace_from_kind %}
+{%- set objc_name = class_prefix ~ interface.name %}
+@interface {{objc_name}}Impl : NSObject <{{objc_name}}>
+{{- interface_macros.objc_methods(interface) }}
+- (instancetype)initWith{{interface.name}}:({{cpp_namespace}}::{{interface.name}}*)obj;
+- (instancetype)init NS_UNAVAILABLE;
 @end

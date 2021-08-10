@@ -1,52 +1,60 @@
-
-{%- set cpp_namespace = struct|cpp_namespace_from_kind %}
-{%- set objc_class_name = "%s%s"|format(class_prefix, struct.name) -%}
-@implementation {{objc_class_name}}
-- (instancetype)init
-{
-  if ((self = [super init])) {
-{%- for field in struct.fields %}
-{%-   if field|objc_property_needs_default_assignment %}
-{%-     set name = field.name|objc_property_formatter %}
-{%-     set value = field|objc_property_default %}
-    self.{{name}} = {{value}};
-{%-   endif %}
+{%- set cpp_namespace = interface|cpp_namespace_from_kind %}
+@implementation {{class_prefix}}{{interface.name}}Impl {
+  {{cpp_namespace}}::{{interface.name}}* _wrappedValue;  // NOT OWNED
+{%- for bridge in interface|interface_remote_sets %}
+  std::vector<std::unique_ptr<{{bridge}}>> _{{bridge|under_to_lower_camel}}Receivers;
 {%- endfor %}
+}
+
+- (instancetype)initWith{{interface.name}}:({{cpp_namespace}}::{{interface.name}}*)obj {
+  if ((self = [super init])) {
+    _wrappedValue = obj;
   }
   return self;
 }
-
-- (id)copyWithZone:(nullable NSZone *)zone
-{
-  auto copy = [[{{objc_class_name}} alloc] init];
-{%- for field in struct.fields %}
-{%-   set name = field.name|objc_property_formatter %}
-  copy.{{name}} = self.{{name}};
-{%- endfor %}
-  return copy;
+{%  for method in interface.methods %}
+{%-   set name = method|objc_method_name_formatter %}
+- (void){{name}}
+{%- if method.parameters or method.response_parameters %}:{%- endif -%}
+{%- for param in method.parameters -%}
+{%-   if not loop.first -%}{{param.name|under_to_lower_camel}}:{%- endif -%}
+({{param.kind|objc_wrapper_type}}){{param.name|under_to_lower_camel}}
+{%- if not loop.last %} {% endif -%}
+{%- endfor -%}
+{%- if method.response_parameters -%}
+{%- if method.parameters %} completion:{% endif -%}
+(void (^)(
+{%- for param in method.response_parameters -%}
+{{param.kind|objc_wrapper_type}} {{param.name|under_to_lower_camel}}
+{%- if not loop.last -%},{{" "}}{%- endif -%}
+{%- endfor -%}
+))completion
+{%- endif %} {
+{%- if method.response_parameters %}
+  auto callback = ^(
+{%- for param in method.response_parameters -%}
+{{param.kind|expected_cpp_param_type}} {{param.name}}
+{%- if not loop.last %}, {% endif -%}
+{%- endfor -%}
+  ) {
+    completion(
+{%- for param in method.response_parameters -%}
+{{param|cpp_to_objc_assign}}
+{%- if not loop.last %}, {% endif -%}
+{%- endfor -%}
+    );
+  };
+{%- endif %}
+  _wrappedValue->{{method.name}}(
+{%- for param in method.parameters -%}
+{{param|objc_to_cpp_assign}}
+{%- if not loop.last -%},{{" "}}{%- endif -%}
+{%- endfor -%}
+{%- if method.response_parameters -%}
+{%- if method.parameters %}, {% endif -%}
+base::BindOnce(callback)
+{%- endif -%}
+  );
 }
-@end
-
-@implementation {{objc_class_name}} (Private)
-- (instancetype)initWith{{struct.name}}:(const {{cpp_namespace}}::{{struct.name}} &)obj
-{
-  if ((self = [super init])) {
-{%- for field in struct.fields %}
-    self.{{field.name|objc_property_formatter}} = {{field|cpp_to_objc_assign('obj')}};
-{%- endfor %}
-  }
-  return self;
-}
-- (instancetype)initWith{{struct.name}}Ptr:({{cpp_namespace}}::{{struct.name}}Ptr)obj
-{
-  return [self initWith{{struct.name}}:*obj];
-}
-- ({{cpp_namespace}}::{{struct.name}}Ptr)cppObjPtr
-{
-  auto obj = {{cpp_namespace}}::{{struct.name}}::New();
-{%- for field in struct.fields %}
-  obj->{{field.name}} = {{field|objc_to_cpp_assign('self')}};
-{%- endfor %}
-  return obj;
-}
+{% endfor %}
 @end

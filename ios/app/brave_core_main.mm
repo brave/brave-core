@@ -13,11 +13,11 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/app/brave_main_delegate.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
-#include "brave/ios/browser/api/brave_wallet/asset_ratio_controller_ios+private.h"
-#include "brave/ios/browser/api/brave_wallet/keyring_controller_ios+private.h"
+#include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
 #include "brave/ios/browser/brave_wallet/asset_ratio_controller_factory.h"
+#include "brave/ios/browser/brave_wallet/eth_json_rpc_controller_factory.h"
 #include "brave/ios/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/ios/browser/brave_web_client.h"
 #include "components/history/core/browser/history_service.h"
@@ -48,8 +48,9 @@ static BraveCoreLogHandler _Nullable _logHandler = nil;
 @property(nonatomic) BraveBookmarksAPI* bookmarksAPI;
 @property(nonatomic) BraveHistoryAPI* historyAPI;
 @property(nonatomic) BraveSyncProfileServiceIOS* syncProfileService;
-@property(nonatomic) BraveWalletKeyringController* keyringController;
-@property(nonatomic) BraveWalletAssetRatioController* assetRatioController;
+@property(nonatomic) id<BraveWalletKeyringController> keyringController;
+@property(nonatomic) id<BraveWalletAssetRatioController> assetRatioController;
+@property(nonatomic) id<BraveWalletEthJsonRpcController> ethJsonRpcController;
 @end
 
 @implementation BraveCoreMain
@@ -193,26 +194,37 @@ static bool CustomLogHandler(int severity,
   return _syncProfileService;
 }
 
-- (BraveWalletKeyringController*)keyringController {
+- (id<BraveWalletKeyringController>)keyringController {
   if (!_keyringController) {
     auto* controller =
         brave_wallet::KeyringControllerFactory::GetForBrowserState(
             _mainBrowserState);
-    _keyringController =
-        [[BraveWalletKeyringController alloc] initWithController:controller];
+    _keyringController = [[BraveWalletKeyringControllerImpl alloc]
+        initWithKeyringController:controller];
   }
   return _keyringController;
 }
 
-- (BraveWalletAssetRatioController*)assetRatioController {
+- (id<BraveWalletAssetRatioController>)assetRatioController {
   if (!_assetRatioController) {
     auto* controller =
         brave_wallet::AssetRatioControllerFactory::GetForBrowserState(
             _mainBrowserState);
-    _assetRatioController =
-        [[BraveWalletAssetRatioController alloc] initWithController:controller];
+    _assetRatioController = [[BraveWalletAssetRatioControllerImpl alloc]
+        initWithAssetRatioController:controller];
   }
   return _assetRatioController;
+}
+
+- (id<BraveWalletEthJsonRpcController>)ethJsonRpcController {
+  if (!_ethJsonRpcController) {
+    auto* controller =
+        brave_wallet::EthJsonRpcControllerFactory::GetForBrowserState(
+            _mainBrowserState);
+    _ethJsonRpcController = [[BraveWalletEthJsonRpcControllerImpl alloc]
+        initWithEthJsonRpcController:controller];
+  }
+  return _ethJsonRpcController;
 }
 
 @end
