@@ -49,7 +49,7 @@ function addBraveProperties(moduleName, component) {
 const allBraveTemplateModificationsMap = {}
 
 function addBraveTemplateModifications(moduleName, component, modifyFn) {
-  const template = component.template || component._template
+  const template = component._template || component.template
   if (template) {
     const templateContent = template.content
     const t0 = debug && performance.now()
@@ -64,7 +64,7 @@ function addBraveTemplateModifications(moduleName, component, modifyFn) {
 
 const styleOverridePrefix = 'brave-override-style-'
 
-function addBraveStyleOverride(moduleName, component, template = component.template || component._template) {
+function addBraveStyleOverride(moduleName, component, template = component._template || component.template) {
   if (!template) {
     console.error(`No template found for component (${moduleName}) with found style overrides`, component)
     return
@@ -109,13 +109,13 @@ export function RegisterPolymerTemplateModifications(modificationsMap) {
   const awaitingComponentModifications = {}
   for (const componentName in modificationsMap) {
     const modifyFn = modificationsMap[componentName]
-    const existingComponent = window.customElements.get(componentName)
-    if (!existingComponent) {
-      awaitingComponentModifications[componentName] = modificationsMap[componentName]
-      continue
-    }
-    // Component is already defined, modify now.
-    addBraveTemplateModifications(componentName, existingComponent, modifyFn)
+    // const existingComponent = window.customElements.get(componentName)
+    // if (!existingComponent) {
+    awaitingComponentModifications[componentName] = modificationsMap[componentName]
+    // NOTE(petemill): If module has already been defined, it's not ideal as the unmodified
+    // template may already have been cloned for an element. However, we assume PolymerElement._prepareTemplate
+    // has not been called yet for the component.
+    // However, this would be more robust if we moved to a subclassing approach.
   }
   Object.assign(allBraveTemplateModificationsMap, awaitingComponentModifications)
 }
@@ -156,21 +156,11 @@ export async function RegisterStyleOverride(componentName, styleTemplate) {
   if (debug) {
     console.log(`REGISTERING STYLE OVERRIDE for ${componentName}`, styleTemplate)
   }
-  // If module has already been defined, it's not ideal as the unmodified
-  // template may already have been cloned for an element. However, let's make
-  // an attempt and apply it anyway. Otherwise, we wait until it's defined and
-  // then modify the template as soon as possible.
-  const existingComponent = window.customElements.get(componentName)
-  if (existingComponent) {
-    addBraveStyleOverride(componentName, existingComponent)
-  } else {
-    // Cannot await CustomElementRegistry.whenDefined here
-    // since getting in the async queue will mean this template
-    // mofification happens too late. Instead, save this in a list
-    // so that the template modification can happen inside the
-    // customElements.define hook.
-    moduleNamesWithStyleOverrides.push(componentName)
-  }
+  // NOTE(petemill): If module has already been defined, it's not ideal as the unmodified
+  // template may already have been cloned for an element. However, we assume PolymerElement._prepareTemplate
+  // has not been called yet for the component.
+  // However, this would be more robust if we moved to a subclassing approach.
+  moduleNamesWithStyleOverrides.push(componentName)
 }
 
 export function OverrideIronIcons(iconSetName, overridingIconSetName, iconOverrides) {
