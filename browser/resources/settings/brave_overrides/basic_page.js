@@ -3,8 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import {RegisterStyleOverride,RegisterPolymerTemplateModifications} from 'chrome://brave-resources/polymer_overriding.js'
+import {html, RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://brave-resources/polymer_overriding.js'
 import {loadTimeData} from '../i18n_setup.js'
 
 import '../getting_started_page/getting_started.js'
@@ -37,15 +36,19 @@ export function getSectionElement (templateContent, sectionName) {
  * @returns {Element}
  */
 function createSectionElement (sectionName, titleName, childName, childAttributes) {
-  const el = document.createElement('settings-section')
-  el.setAttribute('page-title', loadTimeData.getString(titleName))
-  el.setAttribute('section', sectionName)
-  const child = document.createElement(childName)
-  for (const attribute in childAttributes) {
-    child.setAttribute(attribute, childAttributes[attribute])
-  }
-  el.appendChild(child)
-  return el
+  const childAttributesString = Object.keys(childAttributes).map(attribute =>
+      `${attribute}="${childAttributes[attribute]}"`)
+    .join(' ')
+  // This needs to be inside a template so that our components do not get created immediately.
+  // Otherwise the polymer bindings won't be setup correctly at first.
+  return html`
+    <settings-section page-title="${loadTimeData.getString(titleName)}" section="${sectionName}">
+      <${childName}
+        ${childAttributesString}
+      >
+      </${childName}>
+    </settings-section>
+  `
 }
 
 RegisterStyleOverride(

@@ -93,6 +93,7 @@ preprocess_if_expr("preprocess") {
     "brave_overrides/appearance_page.js",
     "brave_overrides/basic_page.js",
     "brave_overrides/clear_browsing_data_dialog.js",
+    "brave_overrides/config.js",
     "brave_overrides/cookies_page.js",
     "brave_overrides/default_browser_page.js",
     "brave_overrides/icons.js",
