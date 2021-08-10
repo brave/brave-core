@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.29](https://github.com/brave/brave-ios/releases/tag/v1.29)
+
+ - Added Siri Shortcuts. ([#2227](https://github.com/brave/brave-ios/issues/2227))
+ - Added Pull-to-Refresh functionality. ([#916](https://github.com/brave/brave-ios/issues/916))
+ - Added brave://search URL scheme support. ([#627](https://github.com/brave/brave-ios/issues/627))
+ - Updated custom browser PIN feature to use users native device authentication instead. ([#3921](https://github.com/brave/brave-ios/issues/3921))
+ - Updated adblock-rust library to support new DAT format. ([#3848](https://github.com/brave/brave-ios/issues/3848))
+ - Updated URLs for custom top tiles for the Japan region. ([#3568](https://github.com/brave/brave-ios/issues/3568))
+ - Improved Playlist performance. ([#3855](https://github.com/brave/brave-ios/issues/3855))
+ - Improved progress bar reactivity when loading pages. ([#3892](https://github.com/brave/brave-ios/issues/3892))
+ - Fixed favicon crash in certain cases. ([#3868](https://github.com/brave/brave-ios/issues/3868))
+ - Fixed custom search URLs being capped at 150 characters. ([#3914](https://github.com/brave/brave-ios/issues/3914))
+ - Fixed memory performance issues when re-opening new tabs in certain cases. ([#3867](https://github.com/brave/brave-ios/issues/3867))
+ - Fixed setting toggles not persisting when scrolling away from changed settings. ([#3543](https://github.com/brave/brave-ios/issues/3543))
+ - Fixed add search button not resizing correctly when moving between text fields. ([#3735](https://github.com/brave/brave-ios/issues/3735))
+ - Fixed on-screen keyboard overlapping quick search bar in certain cases. ([#3688](https://github.com/brave/brave-ios/issues/3688))
+ - Fixed % characters not being parsed correctly in certain cases. ([#3865](https://github.com/brave/brave-ios/issues/3865))
+
 ## [1.28](https://github.com/brave/brave-ios/releases/tag/v1.28)
 
 - Added switch app alert message to be shown when clicking on telephone numbers. ([#3361](https://github.com/brave/brave-ios/issues/3361))
