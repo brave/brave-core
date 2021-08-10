@@ -19,7 +19,7 @@
 #include "bat/ads/internal/database/tables/dayparts_database_table.h"
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
 #include "bat/ads/internal/database/tables/segments_database_table.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/result.h"
 
 namespace ads {
@@ -60,37 +60,38 @@ class CreativePromotedContentAds : public Table {
 
   std::string get_table_name() const override;
 
-  void Migrate(DBTransaction* transaction, const int to_version) override;
+  void Migrate(mojom::DBTransaction* transaction,
+               const int to_version) override;
 
  private:
   void InsertOrUpdate(
-      DBTransaction* transaction,
+      mojom::DBTransaction* transaction,
       const CreativePromotedContentAdList& creative_promoted_content_ads);
 
   int BindParameters(
-      DBCommand* command,
+      mojom::DBCommand* command,
       const CreativePromotedContentAdList& creative_promoted_content_ads);
 
   std::string BuildInsertOrUpdateQuery(
-      DBCommand* command,
+      mojom::DBCommand* command,
       const CreativePromotedContentAdList& creative_promoted_content_ads);
 
   void OnGetForCreativeInstanceId(
-      DBCommandResponsePtr response,
+      mojom::DBCommandResponsePtr response,
       const std::string& creative_instance_id,
       GetCreativePromotedContentAdCallback callback);
 
-  void OnGetForSegments(DBCommandResponsePtr response,
+  void OnGetForSegments(mojom::DBCommandResponsePtr response,
                         const SegmentList& segments,
                         GetCreativePromotedContentAdsCallback callback);
 
-  void OnGetAll(DBCommandResponsePtr response,
+  void OnGetAll(mojom::DBCommandResponsePtr response,
                 GetCreativePromotedContentAdsCallback callback);
 
-  CreativePromotedContentAdInfo GetFromRecord(DBRecord* record) const;
+  CreativePromotedContentAdInfo GetFromRecord(mojom::DBRecord* record) const;
 
-  void CreateTableV15(DBTransaction* transaction);
-  void MigrateToV15(DBTransaction* transaction);
+  void CreateTableV15(mojom::DBTransaction* transaction);
+  void MigrateToV15(mojom::DBTransaction* transaction);
 
   int batch_size_;
 

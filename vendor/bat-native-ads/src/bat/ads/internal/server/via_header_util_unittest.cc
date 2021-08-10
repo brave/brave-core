@@ -7,6 +7,7 @@
 
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -21,7 +22,7 @@ class BatAdsViaHeaderUtilTest : public UnitTestBase {
 
 TEST_F(BatAdsViaHeaderUtilTest, BuildViaHeaderForUncertainFuture) {
   // Arrange
-  SysInfo sys_info;
+  mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = true;
   SetSysInfo(sys_info);
 
@@ -37,7 +38,7 @@ TEST_F(BatAdsViaHeaderUtilTest, BuildViaHeaderForUncertainFuture) {
 
 TEST_F(BatAdsViaHeaderUtilTest, BuildViaHeaderForABrightFuture) {
   // Arrange
-  SysInfo sys_info;
+  mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = false;
   SetSysInfo(sys_info);
 

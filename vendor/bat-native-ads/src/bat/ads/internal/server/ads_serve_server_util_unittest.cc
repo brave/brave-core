@@ -6,6 +6,7 @@
 #include "bat/ads/internal/server/ads_serve_server_util.h"
 
 #include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -14,7 +15,7 @@ namespace ads {
 
 TEST(BatAdsServeServerUtilTest, Production) {
   // Arrange
-  SetEnvironment(Environment::PRODUCTION);
+  SetEnvironment(mojom::Environment::kProduction);
 
   // Act
   const std::string host = serve::server::GetHost();
@@ -26,7 +27,7 @@ TEST(BatAdsServeServerUtilTest, Production) {
 
 TEST(BatAdsServeServerUtilTest, Staging) {
   // Arrange
-  SetEnvironment(Environment::STAGING);
+  SetEnvironment(mojom::Environment::kStaging);
 
   // Act
   const std::string host = serve::server::GetHost();
@@ -38,7 +39,7 @@ TEST(BatAdsServeServerUtilTest, Staging) {
 
 TEST(BatAdsServeServerUtilTest, Development) {
   // Arrange
-  SetEnvironment(Environment::DEVELOPMENT);
+  SetEnvironment(mojom::Environment::kDevelopment);
 
   // Act
   const std::string host = serve::server::GetHost();

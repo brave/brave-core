@@ -19,6 +19,7 @@
 #include "bat/ads/ads.h"
 #include "bat/ads/database.h"
 #include "bat/ads/internal/platform/platform_helper_mock.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -87,9 +88,9 @@ base::FilePath GetResourcesPath();
 absl::optional<std::string> ReadFileFromResourcePathToString(
     const std::string& name);
 
-void SetEnvironment(const Environment environment);
+void SetEnvironment(const mojom::Environment environment);
 
-void SetSysInfo(const SysInfo& sys_info);
+void SetSysInfo(const mojom::SysInfo& sys_info);
 
 void SetBuildChannel(const bool is_release, const std::string& name);
 

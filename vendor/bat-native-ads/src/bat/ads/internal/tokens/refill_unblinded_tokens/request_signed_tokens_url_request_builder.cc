@@ -34,14 +34,14 @@ RequestSignedTokensUrlRequestBuilder::~RequestSignedTokensUrlRequestBuilder() =
 
 // POST /v1/confirmation/token/{payment_id}
 
-UrlRequestPtr RequestSignedTokensUrlRequestBuilder::Build() {
-  UrlRequestPtr url_request = UrlRequest::New();
+mojom::UrlRequestPtr RequestSignedTokensUrlRequestBuilder::Build() {
+  mojom::UrlRequestPtr url_request = mojom::UrlRequest::New();
   url_request->url = BuildUrl();
   const std::string body = BuildBody();
   url_request->headers = BuildHeaders(body);
   url_request->content = body;
   url_request->content_type = "application/json";
-  url_request->method = UrlRequestMethod::POST;
+  url_request->method = mojom::UrlRequestMethod::kPost;
 
   return url_request;
 }

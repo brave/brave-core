@@ -51,7 +51,7 @@ void PurgeExpiredAdEvents(AdEventCallback callback) {
   });
 }
 
-void PurgeOrphanedAdEvents(const mojom::BraveAdsAdType ad_type,
+void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
                            AdEventCallback callback) {
   database::table::AdEvents database_table;
   database_table.PurgeOrphaned(ad_type, [callback](const Result result) {

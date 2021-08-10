@@ -100,7 +100,7 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
         data.FindStringKey(kCreativeInstanceIDKey);
     ads_service_->OnNewTabPageAdEvent(
         wallpaper_id, creative_instance_id ? *creative_instance_id : "",
-        ads::mojom::BraveAdsNewTabPageAdEventType::kViewed);
+        ads::mojom::NewTabPageAdEventType::kViewed);
   }
 
   branded_new_tab_count_state_->AddDelta(1);
@@ -227,8 +227,9 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
   if (!ads_service_)
     return;
 
-  ads_service_->OnNewTabPageAdEvent(wallpaper_id, creative_instance_id,
-      ads::mojom::BraveAdsNewTabPageAdEventType::kClicked);
+  ads_service_->OnNewTabPageAdEvent(
+      wallpaper_id, creative_instance_id,
+      ads::mojom::NewTabPageAdEventType::kClicked);
 }
 
 bool ViewCounterService::ShouldShowBrandedWallpaper() const {

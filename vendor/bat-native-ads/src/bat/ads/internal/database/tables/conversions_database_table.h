@@ -11,7 +11,7 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/conversions/conversion_info.h"
 #include "bat/ads/internal/database/database_table.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/result.h"
 
 namespace ads {
@@ -36,27 +36,29 @@ class Conversions : public Table {
 
   std::string get_table_name() const override;
 
-  void Migrate(DBTransaction* transaction, const int to_version) override;
+  void Migrate(mojom::DBTransaction* transaction,
+               const int to_version) override;
 
  private:
-  void InsertOrUpdate(DBTransaction* transaction,
+  void InsertOrUpdate(mojom::DBTransaction* transaction,
                       const ConversionList& conversion);
 
-  int BindParameters(DBCommand* command, const ConversionList& conversion);
+  int BindParameters(mojom::DBCommand* command,
+                     const ConversionList& conversion);
 
-  std::string BuildInsertOrUpdateQuery(DBCommand* command,
+  std::string BuildInsertOrUpdateQuery(mojom::DBCommand* command,
                                        const ConversionList& conversions);
 
-  void OnGetConversions(DBCommandResponsePtr response,
+  void OnGetConversions(mojom::DBCommandResponsePtr response,
                         GetConversionsCallback callback);
 
-  ConversionInfo GetConversionFromRecord(DBRecord* record) const;
+  ConversionInfo GetConversionFromRecord(mojom::DBRecord* record) const;
 
-  void CreateTableV1(DBTransaction* transaction);
-  void CreateIndexV1(DBTransaction* transaction);
-  void MigrateToV1(DBTransaction* transaction);
+  void CreateTableV1(mojom::DBTransaction* transaction);
+  void CreateIndexV1(mojom::DBTransaction* transaction);
+  void MigrateToV1(mojom::DBTransaction* transaction);
 
-  void MigrateToV10(DBTransaction* transaction);
+  void MigrateToV10(mojom::DBTransaction* transaction);
 };
 
 }  // namespace table

@@ -37,29 +37,29 @@ AdType::AdType(const std::string& value) {
   }
 }
 
-AdType::AdType(const mojom::BraveAdsAdType value) {
+AdType::AdType(const mojom::AdType value) {
   switch (value) {
-    case mojom::BraveAdsAdType::kUndefined: {
+    case mojom::AdType::kUndefined: {
       value_ = kUndefined;
       break;
     }
 
-    case mojom::BraveAdsAdType::kAdNotification: {
+    case mojom::AdType::kAdNotification: {
       value_ = kAdNotification;
       break;
     }
 
-    case mojom::BraveAdsAdType::kNewTabPageAd: {
+    case mojom::AdType::kNewTabPageAd: {
       value_ = kNewTabPageAd;
       break;
     }
 
-    case mojom::BraveAdsAdType::kPromotedContentAd: {
+    case mojom::AdType::kPromotedContentAd: {
       value_ = kPromotedContentAd;
       break;
     }
 
-    case mojom::BraveAdsAdType::kInlineContentAd: {
+    case mojom::AdType::kInlineContentAd: {
       value_ = kInlineContentAd;
       break;
     }

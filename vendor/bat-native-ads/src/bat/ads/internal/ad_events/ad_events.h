@@ -29,7 +29,7 @@ void LogAdEvent(const AdInfo& ad,
 void LogAdEvent(const AdEventInfo& ad_event, AdEventCallback callback);
 
 void PurgeExpiredAdEvents(AdEventCallback callback);
-void PurgeOrphanedAdEvents(const mojom::BraveAdsAdType ad_type,
+void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
                            AdEventCallback callback);
 
 void RebuildAdEventsFromDatabase();

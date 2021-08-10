@@ -43,9 +43,9 @@
 - (std::vector<uint64_t>)getAdEvents:(const std::string&)ad_type
                     confirmationType:(const std::string&)confirmation_type;
 - (void)resetAdEvents;
-- (void)UrlRequest:(ads::UrlRequestPtr)url_request
+- (void)UrlRequest:(ads::mojom::UrlRequestPtr)url_request
           callback:(ads::UrlRequestCallback)callback;
-- (void)runDBTransaction:(ads::DBTransactionPtr)transaction
+- (void)runDBTransaction:(ads::mojom::DBTransactionPtr)transaction
                 callback:(ads::RunDBTransactionCallback)callback;
 - (void)onAdRewardsChanged;
 - (void)setBooleanPref:(const std::string&)path value:(const bool)value;
@@ -62,7 +62,7 @@
 - (uint64_t)getUint64Pref:(const std::string&)path;
 - (void)clearPref:(const std::string&)path;
 - (void)recordP2AEvent:(const std::string&)name
-                  type:(const ads::P2AEventType)type
+                  type:(const ads::mojom::P2AEventType)type
                  value:(const std::string&)value;
 
 @end

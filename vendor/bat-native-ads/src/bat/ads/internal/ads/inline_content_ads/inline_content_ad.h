@@ -10,7 +10,7 @@
 
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_observer.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
@@ -27,7 +27,7 @@ class InlineContentAd : public InlineContentAdObserver {
 
   void FireEvent(const std::string& uuid,
                  const std::string& creative_instance_id,
-                 const InlineContentAdEventType event_type);
+                 const mojom::InlineContentAdEventType event_type);
 
  private:
   base::ObserverList<InlineContentAdObserver> observers_;
@@ -35,11 +35,11 @@ class InlineContentAd : public InlineContentAdObserver {
   void FireEvent(const InlineContentAdInfo& ad,
                  const std::string& uuid,
                  const std::string& creative_instance_id,
-                 const InlineContentAdEventType event_type);
+                 const mojom::InlineContentAdEventType event_type);
 
   void NotifyInlineContentAdEvent(
       const InlineContentAdInfo& ad,
-      const InlineContentAdEventType event_type) const;
+      const mojom::InlineContentAdEventType event_type) const;
 
   void NotifyInlineContentAdServed(const InlineContentAdInfo& ad) const;
   void NotifyInlineContentAdViewed(const InlineContentAdInfo& ad) const;
@@ -48,7 +48,7 @@ class InlineContentAd : public InlineContentAdObserver {
   void NotifyInlineContentAdEventFailed(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const InlineContentAdEventType event_type) const;
+      const mojom::InlineContentAdEventType event_type) const;
 };
 
 }  // namespace ads

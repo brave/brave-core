@@ -5,15 +5,14 @@
 module bat_ads.mojom;
 
 import "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom";
-import "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads_database.mojom";
 
 // Service which hands out bat ads.
 interface BatAdsService {
   Create(pending_associated_remote<BatAdsClient> bat_ads_client,
          pending_associated_receiver<BatAds> database) => ();
-  SetEnvironment(ads.mojom.BraveAdsEnvironment environment) => ();
-  SetSysInfo(ads.mojom.BraveAdsSysInfo sys_info) => ();
-  SetBuildChannel(ads.mojom.BraveAdsBuildChannel build_channel) => ();
+  SetEnvironment(ads.mojom.Environment environment) => ();
+  SetSysInfo(ads.mojom.SysInfo sys_info) => ();
+  SetBuildChannel(ads.mojom.BuildChannel build_channel) => ();
   SetDebug(bool is_debug) => ();
 };
 
@@ -49,14 +48,14 @@ interface BatAdsClient {
   CloseNotification(string uuid);
   RecordAdEvent(string ad_type, string confirmation_type, uint64 timestamp);
   ResetAdEvents();
-  UrlRequest(ads.mojom.BraveAdsUrlRequest request) => (ads.mojom.BraveAdsUrlResponse response);
+  UrlRequest(ads.mojom.UrlRequest request) => (ads.mojom.UrlResponse response);
   Save(string name, string value) => (int32 result);
   Load(string name) => (int32 result, string value);
   LoadAdsResource(string id, int32 version) => (int32 result, string value);
   GetBrowsingHistory(int32 max_count, int32 days_ago) => (array<string> history);
-  RunDBTransaction(ads_database.mojom.DBTransaction transaction) => (ads_database.mojom.DBCommandResponse response);
+  RunDBTransaction(ads.mojom.DBTransaction transaction) => (ads.mojom.DBCommandResponse response);
   OnAdRewardsChanged();
-  RecordP2AEvent(string name, ads.mojom.BraveAdsP2AEventType type, string value);
+  RecordP2AEvent(string name, ads.mojom.P2AEventType type, string value);
   Log(string file, int32 line, int32 verbose_level, string message);
   SetBooleanPref(string path, bool value);
   SetIntegerPref(string path, int32 value);
@@ -84,12 +83,12 @@ interface BatAds {
   OnTabUpdated(int32 tab_id, string url, bool is_active, bool is_browser_active, bool is_incognito);
   OnTabClosed(int32 tab_id);
   GetAdNotification(string uuid) => (string json);
-  OnAdNotificationEvent(string uuid, ads.mojom.BraveAdsAdNotificationEventType event_type);
-  OnNewTabPageAdEvent(string uuid, string creative_instance_id, ads.mojom.BraveAdsNewTabPageAdEventType event_type);
-  OnPromotedContentAdEvent(string uuid, string creative_instance_id, ads.mojom.BraveAdsPromotedContentAdEventType event_type);
+  OnAdNotificationEvent(string uuid, ads.mojom.AdNotificationEventType event_type);
+  OnNewTabPageAdEvent(string uuid, string creative_instance_id, ads.mojom.NewTabPageAdEventType event_type);
+  OnPromotedContentAdEvent(string uuid, string creative_instance_id, ads.mojom.PromotedContentAdEventType event_type);
   GetInlineContentAd(string size) => (bool success, string dimensions, string ad);
-  OnInlineContentAdEvent(string uuid, string creative_instance_id, ads.mojom.BraveAdsInlineContentAdEventType event_type);
-  PurgeOrphanedAdEventsForType(ads.mojom.BraveAdsAdType ad_type);
+  OnInlineContentAdEvent(string uuid, string creative_instance_id, ads.mojom.InlineContentAdEventType event_type);
+  PurgeOrphanedAdEventsForType(ads.mojom.AdType ad_type);
   RemoveAllHistory() => (int32 result);
   OnWalletUpdated(string payment_id, string seed);
   ReconcileAdRewards();

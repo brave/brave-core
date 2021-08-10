@@ -65,7 +65,7 @@ void RedeemUnblindedToken::CreateConfirmation(
   BLOG(2, "POST /v1/confirmation/{confirmation_id}/{credential}");
 
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
-  UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
   BLOG(5, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
@@ -75,7 +75,7 @@ void RedeemUnblindedToken::CreateConfirmation(
 }
 
 void RedeemUnblindedToken::OnCreateConfirmation(
-    const UrlResponse& url_response,
+    const mojom::UrlResponse& url_response,
     const ConfirmationInfo& confirmation) {
   DCHECK(!confirmation.id.empty());
 
@@ -113,7 +113,7 @@ void RedeemUnblindedToken::FetchPaymentToken(
   BLOG(2, "GET /v1/confirmation/{confirmation_id}/paymentToken");
 
   FetchPaymentTokenUrlRequestBuilder url_request_builder(confirmation);
-  UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
   BLOG(5, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
@@ -123,7 +123,7 @@ void RedeemUnblindedToken::FetchPaymentToken(
 }
 
 void RedeemUnblindedToken::OnFetchPaymentToken(
-    const UrlResponse& url_response,
+    const mojom::UrlResponse& url_response,
     const ConfirmationInfo& confirmation) {
   BLOG(1, "OnFetchPaymentToken");
 

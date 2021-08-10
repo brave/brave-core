@@ -214,7 +214,7 @@ void AdRewards::GetPayments() {
   BLOG(2, "GET /v1/confirmation/payment/{payment_id}");
 
   PaymentsUrlRequestBuilder url_request_builder(wallet_);
-  UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
   BLOG(5, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
@@ -223,7 +223,7 @@ void AdRewards::GetPayments() {
   AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
 }
 
-void AdRewards::OnGetPayments(const UrlResponse& url_response) {
+void AdRewards::OnGetPayments(const mojom::UrlResponse& url_response) {
   BLOG(1, "OnGetPayments");
 
   BLOG(6, UrlResponseToString(url_response));

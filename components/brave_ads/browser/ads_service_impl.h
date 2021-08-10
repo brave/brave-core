@@ -21,7 +21,6 @@
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/database.h"
-#include "bat/ads/mojom.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
@@ -135,12 +134,12 @@ class AdsServiceImpl : public AdsService,
   void OnNewTabPageAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const ads::NewTabPageAdEventType event_type) override;
+      const ads::mojom::NewTabPageAdEventType event_type) override;
 
   void OnPromotedContentAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const ads::PromotedContentAdEventType event_type) override;
+      const ads::mojom::PromotedContentAdEventType event_type) override;
 
   void GetInlineContentAd(const std::string& dimensions,
                           OnGetInlineContentAdCallback callback) override;
@@ -148,10 +147,9 @@ class AdsServiceImpl : public AdsService,
   void OnInlineContentAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const ads::InlineContentAdEventType event_type) override;
+      const ads::mojom::InlineContentAdEventType event_type) override;
 
-  void PurgeOrphanedAdEventsForType(
-      const ads::mojom::BraveAdsAdType ad_type) override;
+  void PurgeOrphanedAdEventsForType(const ads::mojom::AdType ad_type) override;
 
   void ReconcileAdRewards() override;
 
@@ -293,7 +291,7 @@ class AdsServiceImpl : public AdsService,
   void OnSaved(const ads::ResultCallback& callback, const bool success);
 
   void OnRunDBTransaction(ads::RunDBTransactionCallback callback,
-                          ads::DBCommandResponsePtr response);
+                          ads::mojom::DBCommandResponsePtr response);
 
   void MigratePrefs();
   bool MigratePrefs(const int source_version,
@@ -360,7 +358,7 @@ class AdsServiceImpl : public AdsService,
 
   void ResetAdEvents() const override;
 
-  void UrlRequest(ads::UrlRequestPtr url_request,
+  void UrlRequest(ads::mojom::UrlRequestPtr url_request,
                   ads::UrlRequestCallback callback) override;
 
   void Save(const std::string& name,
@@ -382,13 +380,13 @@ class AdsServiceImpl : public AdsService,
 
   std::string LoadResourceForId(const std::string& id) override;
 
-  void RunDBTransaction(ads::DBTransactionPtr transaction,
+  void RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
                         ads::RunDBTransactionCallback callback) override;
 
   void OnAdRewardsChanged() override;
 
   void RecordP2AEvent(const std::string& name,
-                      const ads::P2AEventType type,
+                      const ads::mojom::P2AEventType type,
                       const std::string& value) override;
 
   void WriteDiagnosticLog(const std::string& file,

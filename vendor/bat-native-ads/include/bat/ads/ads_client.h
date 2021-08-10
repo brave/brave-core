@@ -14,7 +14,7 @@
 
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/export.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/result.h"
 
 namespace ads {
@@ -23,9 +23,10 @@ using ResultCallback = std::function<void(const Result)>;
 
 using LoadCallback = std::function<void(const Result, const std::string&)>;
 
-using UrlRequestCallback = std::function<void(const UrlResponse&)>;
+using UrlRequestCallback = std::function<void(const mojom::UrlResponse&)>;
 
-using RunDBTransactionCallback = std::function<void(DBCommandResponsePtr)>;
+using RunDBTransactionCallback =
+    std::function<void(mojom::DBCommandResponsePtr)>;
 
 using GetBrowsingHistoryCallback =
     std::function<void(const std::vector<std::string>&)>;
@@ -82,7 +83,7 @@ class ADS_EXPORT AdsClient {
   // the app remains responsive and should handle incoming data or errors as
   // they arrive. The callback takes 1 argument - |URLResponse| should contain
   // the url, status code, HTTP body and HTTP headers
-  virtual void UrlRequest(UrlRequestPtr url_request,
+  virtual void UrlRequest(mojom::UrlRequestPtr url_request,
                           UrlRequestCallback callback) = 0;
 
   // Save a value to persistent storage. The callback takes one argument -
@@ -106,8 +107,8 @@ class ADS_EXPORT AdsClient {
   virtual std::string LoadResourceForId(const std::string& id) = 0;
 
   // Run database transaction. The callback takes one argument -
-  // |DBCommandResponsePtr|
-  virtual void RunDBTransaction(DBTransactionPtr transaction,
+  // |mojom::DBCommandResponsePtr|
+  virtual void RunDBTransaction(mojom::DBTransactionPtr transaction,
                                 RunDBTransactionCallback callback) = 0;
 
   // Should be called when ad rewards have changed, i.e. to refresh the UI
@@ -115,7 +116,7 @@ class ADS_EXPORT AdsClient {
 
   // Record P2A event
   virtual void RecordP2AEvent(const std::string& name,
-                              const ads::P2AEventType type,
+                              const mojom::P2AEventType type,
                               const std::string& value) = 0;
 
   // Log diagnostic information

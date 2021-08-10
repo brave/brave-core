@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/observer_list.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
@@ -30,7 +30,7 @@ class NewTabPageAdObserver : public base::CheckedObserver {
   virtual void OnNewTabPageAdEventFailed(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const NewTabPageAdEventType event_type) {}
+      const mojom::NewTabPageAdEventType event_type) {}
 
  protected:
   ~NewTabPageAdObserver() override = default;
