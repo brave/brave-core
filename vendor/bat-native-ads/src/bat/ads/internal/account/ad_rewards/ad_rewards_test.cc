@@ -32,9 +32,9 @@ TEST_F(BatAdsAdRewardsIntegrationTest,
        {{net::HTTP_OK,
          R"([
               {
-                "balance": 48.0,
+                "balance": "48.0",
                 "month": "2021-04",
-                "transaction_count": "16"
+                "transactionCount": "16"
               }
             ])"}}}};
 
@@ -75,9 +75,9 @@ TEST_F(BatAdsAdRewardsIntegrationTest,
        {{net::HTTP_OK,
          R"([
               {
-                "balance": 48.001,
+                "balance": "48.001",
                 "month": "2021-04",
-                "transaction_count": "16"
+                "transactionCount": "16"
               }
             ])"}}}};
 
@@ -98,7 +98,7 @@ TEST_F(BatAdsAdRewardsIntegrationTest,
 
         // Calculated from earnings in April configured in
         // |data/test/confirmations.json|
-        expected_statement.earnings_this_month = 48.0;
+        expected_statement.earnings_this_month = 48.001;
 
         // Calculated from earnings in March configured in
         // |data/test/confirmations.json|
@@ -118,9 +118,9 @@ TEST_F(BatAdsAdRewardsIntegrationTest,
        {{net::HTTP_OK,
          R"([
               {
-                "balance": 47.999,
+                "balance": "47.999",
                 "month": "2021-04",
-                "transaction_count": "16"
+                "transactionCount": "16"
               }
             ])"}}}};
 

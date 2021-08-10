@@ -47,6 +47,8 @@ class AdRewards {
   base::Value GetAsDictionary();
   bool SetFromDictionary(base::Value* dictionary);
 
+  void Reset();
+
  private:
   bool is_processing_ = false;
 

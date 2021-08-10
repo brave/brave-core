@@ -197,6 +197,20 @@ bool AdRewards::SetFromDictionary(base::Value* dictionary) {
   return true;
 }
 
+void AdRewards::Reset() {
+  payments_->reset();
+
+  ConfirmationsState::Get()->reset_failed_confirmations();
+
+  ConfirmationsState::Get()->reset_transactions();
+
+  privacy::UnblindedTokens* unblinded_payment_tokens =
+      ConfirmationsState::Get()->get_unblinded_payment_tokens();
+  unblinded_payment_tokens->RemoveAllTokens();
+
+  ConfirmationsState::Get()->Save();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 void AdRewards::Reconcile() {
