@@ -777,17 +777,20 @@ void AdsServiceImpl::MaybeStart(const bool should_restart) {
     return;
   }
 
+  ++total_number_of_starts_;
   if (should_restart) {
     base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(
-        FROM_HERE, base::BindOnce(&AdsServiceImpl::Start, AsWeakPtr()),
+        FROM_HERE,
+        base::BindOnce(&AdsServiceImpl::Start, AsWeakPtr(),
+                       total_number_of_starts_),
         base::TimeDelta::FromSeconds(1));
   } else {
-    Start();
+    Start(total_number_of_starts_);
   }
 }
 
-void AdsServiceImpl::Start() {
-  DetectUncertainFuture();
+void AdsServiceImpl::Start(uint32_t number_of_start) {
+  DetectUncertainFuture(number_of_start);
 }
 
 void AdsServiceImpl::Stop() {
@@ -841,31 +844,40 @@ void AdsServiceImpl::OnResetAllState(const bool success) {
   VLOG(1) << "Successfully reset ads state";
 }
 
-void AdsServiceImpl::DetectUncertainFuture() {
-  auto callback =
-      base::BindOnce(&AdsServiceImpl::OnDetectUncertainFuture, AsWeakPtr());
+void AdsServiceImpl::DetectUncertainFuture(uint32_t number_of_start) {
+  auto callback = base::BindOnce(&AdsServiceImpl::OnDetectUncertainFuture,
+                                 AsWeakPtr(), number_of_start);
   brave_rpill::DetectUncertainFuture(base::BindOnce(std::move(callback)));
 }
 
-void AdsServiceImpl::OnDetectUncertainFuture(const bool is_uncertain_future) {
+void AdsServiceImpl::OnDetectUncertainFuture(uint32_t number_of_start,
+                                             const bool is_uncertain_future) {
   ads::mojom::SysInfoPtr sys_info = ads::mojom::SysInfo::New();
   sys_info->is_uncertain_future = is_uncertain_future;
   bat_ads_service_->SetSysInfo(std::move(sys_info), base::NullCallback());
 
-  EnsureBaseDirectoryExists();
+  EnsureBaseDirectoryExists(number_of_start);
 }
 
-void AdsServiceImpl::EnsureBaseDirectoryExists() {
+void AdsServiceImpl::EnsureBaseDirectoryExists(uint32_t number_of_start) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&EnsureBaseDirectoryExistsOnFileTaskRunner, base_path_),
-      base::BindOnce(&AdsServiceImpl::OnEnsureBaseDirectoryExists,
-                     AsWeakPtr()));
+      base::BindOnce(&AdsServiceImpl::OnEnsureBaseDirectoryExists, AsWeakPtr(),
+                     number_of_start));
 }
 
-void AdsServiceImpl::OnEnsureBaseDirectoryExists(const bool success) {
+void AdsServiceImpl::OnEnsureBaseDirectoryExists(uint32_t number_of_start,
+                                                 const bool success) {
   if (!success) {
     VLOG(0) << "Failed to create base directory";
+    return;
+  }
+
+  // Check if another start was initiated.
+  if (number_of_start != total_number_of_starts_) {
+    VLOG(1) << "Do not proceed with current ads service init as another ads "
+               "service start is in progress";
     return;
   }
 
