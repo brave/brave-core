@@ -70,12 +70,6 @@ std::string GetAuthorizeUrl(const std::string& state) {
       url.c_str(), id.c_str(), state.c_str());
 }
 
-std::string GetVerifyUrl() {
-  const std::string url = GetUrl();
-
-  return base::StringPrintf("%s/register/verify", url.c_str());
-}
-
 std::string GetAddUrl() {
   const std::string url = GetUrl();
   return base::StringPrintf("%s/transfer/deposit", url.c_str());
@@ -114,7 +108,7 @@ type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
 
   const std::string auth_url = GetAuthorizeUrl(wallet->one_time_string);
 
-  wallet->verify_url = GetVerifyUrl();
+  wallet->verify_url = auth_url;
   wallet->account_url = GetAccountUrl();
   wallet->login_url = auth_url;
 

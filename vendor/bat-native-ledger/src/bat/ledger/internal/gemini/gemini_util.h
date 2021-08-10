@@ -32,8 +32,6 @@ std::string GetACAddress();
 
 std::string GetAuthorizeUrl(const std::string& state);
 
-std::string GetVerifyUrl();
-
 std::string GetAddUrl();
 
 std::string GetWithdrawUrl();
