@@ -21,15 +21,6 @@ bool SkipGURLField(base::StringPiece value, GURL* field) {
   return true;
 }
 
-bool ParseFilePathValue(const base::Value* value, base::FilePath* field) {
-  auto path = util::ValueToFilePath(value);
-  if (!path || path->empty()) {
-    return false;
-  }
-  *field = *path;
-  return true;
-}
-
 bool ParseTimeValue(const base::Value* value, base::Time* field) {
   auto time = util::ValueToTime(value);
   if (!time) {
@@ -46,8 +37,6 @@ void FilterListSubscriptionInfo::RegisterJSONConverter(
   // JSON value and should be populated externally.
   converter->RegisterCustomField<GURL>(
       "subscription_url", &FilterListSubscriptionInfo::subscription_url, &SkipGURLField);
-  converter->RegisterCustomValueField<base::FilePath>(
-      "list_dir", &FilterListSubscriptionInfo::list_dir, &ParseFilePathValue);
   converter->RegisterCustomValueField<base::Time>(
       "last_update_attempt", &FilterListSubscriptionInfo::last_update_attempt,
       &ParseTimeValue);
@@ -60,12 +49,13 @@ void FilterListSubscriptionInfo::RegisterJSONConverter(
 
 AdBlockSubscriptionService::AdBlockSubscriptionService(
     const FilterListSubscriptionInfo& info,
+    const base::FilePath list_file,
     OnLoadCallback on_load_callback,
     brave_component_updater::BraveComponent::Delegate* delegate)
     : AdBlockBaseService(delegate),
       subscription_url_(info.subscription_url),
       on_load_callback_(on_load_callback),
-      list_file_(info.list_dir.AppendASCII(kCustomSubscriptionListText)),
+      list_file_(list_file),
       load_on_start_(info.last_successful_update_attempt != base::Time::Min()),
       initialized_(false) {}
 

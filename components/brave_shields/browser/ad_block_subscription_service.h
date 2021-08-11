@@ -29,8 +29,6 @@ struct FilterListSubscriptionInfo {
   // for a subscription service.
   GURL subscription_url;
 
-  base::FilePath list_dir;
-
   // These are base::Time::Min() if no download has been
   // attempted/succeeded. If a subscription has been successfully downloaded,
   // both of these are exactly equal.
@@ -54,6 +52,7 @@ class AdBlockSubscriptionService : public AdBlockBaseService {
       base::RepeatingCallback<void(const GURL&)>;
   explicit AdBlockSubscriptionService(
       const FilterListSubscriptionInfo& info,
+      base::FilePath list_file,
       OnLoadCallback on_load_callback,
       brave_component_updater::BraveComponent::Delegate* delegate);
   ~AdBlockSubscriptionService() override;

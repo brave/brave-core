@@ -39,8 +39,7 @@ const base::TimeDelta kListUpdateInterval = base::TimeDelta::FromDays(7);
 
 FilterListSubscriptionInfo BuildInfoFromDict(
     const GURL& sub_url,
-    const base::Value* dict,
-    const base::FilePath& list_dir) {
+    const base::Value* dict) {
   DCHECK(dict);
   DCHECK(dict->is_dict());
 
@@ -49,7 +48,6 @@ FilterListSubscriptionInfo BuildInfoFromDict(
   converter.Convert(*dict, &info);
 
   info.subscription_url = sub_url;
-  info.list_dir = list_dir;
 
   return info;
 }
@@ -119,13 +117,13 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
   FilterListSubscriptionInfo info;
   info.subscription_url = sub_url;
-  info.list_dir = GetSubscriptionPath(sub_url);
   info.last_update_attempt = base::Time();
   info.last_successful_update_attempt = base::Time();
   info.enabled = true;
 
   auto subscription_service = std::make_unique<AdBlockSubscriptionService>(
       info,
+      GetSubscriptionPath(sub_url).AppendASCII(kCustomSubscriptionListText),
       base::BindRepeating(&AdBlockSubscriptionServiceManager::OnListLoaded,
                           weak_ptr_factory_.GetWeakPtr()),
       delegate_);
@@ -229,7 +227,7 @@ AdBlockSubscriptionServiceManager::GetInfo(const GURL& sub_url) {
     return base::nullopt;
 
   return base::make_optional<FilterListSubscriptionInfo>(
-      BuildInfoFromDict(sub_url, list_subscription_dict, GetSubscriptionPath(sub_url)));
+      BuildInfoFromDict(sub_url, list_subscription_dict));
 }
 
 void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
@@ -250,11 +248,11 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
     const base::Value* list_subscription_dict = subscriptions_->FindDictKey(key);
     if (list_subscription_dict) {
       GURL sub_url(key);
-      info = BuildInfoFromDict(sub_url, list_subscription_dict,
-                               GetSubscriptionPath(sub_url));
+      info = BuildInfoFromDict(sub_url, list_subscription_dict);
 
       auto subscription_service = std::make_unique<AdBlockSubscriptionService>(
           info,
+          GetSubscriptionPath(sub_url).AppendASCII(kCustomSubscriptionListText),
           base::BindRepeating(&AdBlockSubscriptionServiceManager::OnListLoaded,
                               weak_ptr_factory_.GetWeakPtr()),
           delegate_);
