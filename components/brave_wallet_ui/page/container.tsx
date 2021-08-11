@@ -42,7 +42,7 @@ import {
 import BuySendSwap from '../stories/screens/buy-send-swap'
 import Onboarding from '../stories/screens/onboarding'
 import BackupWallet from '../stories/screens/backup-wallet'
-import { formatePrices } from '../utils/format-prices'
+import { formatPrices } from '../utils/format-prices'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { convertMojoTimeToJS } from '../utils/mojo-time'
 import { AssetOptions } from '../options/asset-options'
@@ -302,7 +302,7 @@ function Container (props: Props) {
     const grandTotal = amountList.reduce(function (a, b) {
       return a + b
     }, 0)
-    return formatePrices(grandTotal)
+    return formatPrices(grandTotal)
   }, [userAssetList])
 
   const formatedPriceHistory = React.useMemo(() => {

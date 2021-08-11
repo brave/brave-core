@@ -95,6 +95,13 @@ function Accounts (props: Props) {
   const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
   const [editTab, setEditTab] = React.useState<AccountSettingsNavTypes>('details')
 
+  React.useMemo(() => {
+    if (selectedAccount) {
+      const updatedAccount = accounts.find((account) => account.id === selectedAccount.id)
+      setSelectedAccount(updatedAccount)
+    }
+  }, [accounts])
+
   const goBack = () => {
     setSelectedAccount(undefined)
     toggleNav()

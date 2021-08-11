@@ -1,4 +1,4 @@
-export const formatePrices = (total: number) => {
+export const formatPrices = (total: number) => {
   const fixed = total.toFixed(2)
   const parts = fixed.toString().split('.')
   return (

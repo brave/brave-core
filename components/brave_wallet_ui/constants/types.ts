@@ -343,6 +343,11 @@ export interface GetBalanceReturnInfo {
   balance: string
 }
 
+export interface GetETHBalancesPriceReturnInfo {
+  usdPrice: string
+  balances: GetBalanceReturnInfo[]
+}
+
 export interface GetERC20TokenBalanceReturnInfo {
   success: boolean
   balance: string
