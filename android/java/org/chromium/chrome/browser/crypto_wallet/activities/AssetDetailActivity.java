@@ -23,6 +23,7 @@ import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
@@ -60,21 +61,24 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         btnBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.openBuySendSwapActivity(AssetDetailActivity.this);
+                Utils.openBuySendSwapActivity(
+                        AssetDetailActivity.this, BuySendSwapActivity.ActivityType.BUY);
             }
         });
         Button btnSend = findViewById(R.id.btn_send);
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.openBuySendSwapActivity(AssetDetailActivity.this);
+                Utils.openBuySendSwapActivity(
+                        AssetDetailActivity.this, BuySendSwapActivity.ActivityType.SEND);
             }
         });
         Button btnSwap = findViewById(R.id.btn_swap);
         btnSwap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.openBuySendSwapActivity(AssetDetailActivity.this);
+                Utils.openBuySendSwapActivity(
+                        AssetDetailActivity.this, BuySendSwapActivity.ActivityType.SWAP);
             }
         });
 

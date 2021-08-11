@@ -1855,8 +1855,14 @@ until they verify, or until 90 days have passed.
     <message name="IDS_MARKET_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
       Market Price in ETH
     </message>
+    <message name="IDS_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
+      Price in ETH
+    </message>
     <message name="IDS_FROM" desc="Brave Wallet buy-send-swap section text">
       From
+    </message>
+    <message name="IDS_BUY_WALLET" desc="Brave Wallet buy-send-swap section text for Buy">
+      Buy
     </message>
     <message name="IDS_PERCENTAGE_25" desc="Brave Wallet buy-send-swap section text">
       25%
@@ -1870,6 +1876,12 @@ until they verify, or until 90 days have passed.
     <message name="IDS_TO_ESTIMATE" desc="Brave Wallet buy-send-swap section text">
       To (estimate)
     </message>
+    <message name="IDS_TO_ADDRESS" desc="Brave Wallet buy-send-swap section text. Send To address">
+      To
+    </message>
+    <message name="IDS_TO_ADDRESS_EDIT" desc="Brave Wallet buy-send-swap section for address(hint)">
+      address or url
+    </message>
     <message name="IDS_LIMIT" desc="Brave Wallet buy-send-swap section text">
       Limit
     </message>
@@ -1878,6 +1890,9 @@ until they verify, or until 90 days have passed.
     </message>
     <message name="IDS_SLIPPING_TOLERANCE" desc="Brave Wallet buy-send-swap section text">
       Slippage tolerance
+    </message>
+    <message name="IDS_EXPIRES_IN" desc="Brave Wallet buy-send-swap section text">
+      Expires in
     </message>
     <message name="IDS_ACCOUNTS" desc="Brave Wallet section text">
       Accounts

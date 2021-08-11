@@ -102,9 +102,11 @@ public class Utils {
         imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 
-    public static void openBuySendSwapActivity(Activity activity) {
+    public static void openBuySendSwapActivity(
+            Activity activity, BuySendSwapActivity.ActivityType activityType) {
         assert activity != null;
         Intent buySendSwapActivityIntent = new Intent(activity, BuySendSwapActivity.class);
+        buySendSwapActivityIntent.putExtra("activityType", activityType.getValue());
         activity.startActivity(buySendSwapActivityIntent);
     }
 
