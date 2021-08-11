@@ -12,16 +12,17 @@ namespace ledger {
 namespace log {
 
 const char kACAddedToQueue[] = "ac_added_to_queue";
-const char kWalletConnected[] = "wallet_connected";
-const char kWalletVerified[] = "wallet_verified";
-const char kWalletDisconnected[] = "wallet_disconnected";
+const char kDatabaseMigrated[] = "database_migrated";
+const char kDeviceLimitReached[] = "device_limit_reached";
+const char kMismatchedProviderAccounts[] = "mismatched_provider_accounts";
+const char kPromotionsClaimed[] = "promotion_claimed";
 const char kRecurringTipAdded[] = "recurring_tip_added";
 const char kRecurringTipRemoved[] = "recurring_tip_removed";
-const char kDatabaseMigrated[] = "database_migrated";
-const char kPromotionsClaimed[] = "promotion_claimed";
+const char kWalletConnected[] = "wallet_connected";
+const char kWalletDisconnected[] = "wallet_disconnected";
 const char kWalletRecovered[] = "wallet_recovered";
-const char kDeviceLimitReached[] = "device_limit_reached";
 const char kWalletStatusChange[] = "wallet_status_change";
+const char kWalletVerified[] = "wallet_verified";
 
 }  // namespace log
 }  // namespace ledger

@@ -92,7 +92,7 @@ TEST_F(PostClaimUpholdTest, ServerError403) {
 
   claim_->Request(30.0, "address",
                   [](const type::Result result, const std::string& address) {
-                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                    EXPECT_EQ(result, type::Result::TOO_MANY_RESULTS);
                     EXPECT_EQ(address, kExpectedAddress);
                   });
 }
