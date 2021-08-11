@@ -209,7 +209,7 @@ std::string GenerateMnemonicForTest(const std::vector<uint8_t>& entropy) {
 std::unique_ptr<std::vector<uint8_t>> MnemonicToSeed(
     const std::string& mnemonic,
     const std::string& passphrase) {
-  if (bip39_mnemonic_validate(nullptr, mnemonic.c_str()) != WALLY_OK) {
+  if (!IsValidMnemonic(mnemonic)) {
     LOG(ERROR) << __func__ << ": Invalid mnemonic: " << mnemonic;
     return nullptr;
   }
@@ -221,6 +221,10 @@ std::unique_ptr<std::vector<uint8_t>> MnemonicToSeed(
                              salt.length(), 2048, EVP_sha512(), seed->size(),
                              seed->data());
   return rv == 1 ? std::move(seed) : nullptr;
+}
+
+bool IsValidMnemonic(const std::string& mnemonic) {
+  return bip39_mnemonic_validate(nullptr, mnemonic.c_str()) == WALLY_OK;
 }
 
 bool EncodeString(const std::string& input, std::string* output) {

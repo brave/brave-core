@@ -262,14 +262,27 @@ HDKeyring* KeyringController::ResumeDefaultKeyring(
 HDKeyring* KeyringController::RestoreDefaultKeyring(
     const std::string& mnemonic,
     const std::string& password) {
-  Reset();
-
-  if (!CreateEncryptorForKeyring(password, kDefaultKeyringId))
+  if (!IsValidMnemonic(mnemonic))
     return nullptr;
 
+  // Try getting existing mnemonic first
+  if (CreateEncryptorForKeyring(password, kDefaultKeyringId)) {
+    const std::string current_mnemonic = GetMnemonicForDefaultKeyringImpl();
+    // Restore with same mnmonic and same password, resume current keyring
+    if (!current_mnemonic.empty() && current_mnemonic == mnemonic) {
+      return ResumeDefaultKeyring(password);
+    } else {
+      // We have no way to check if new mnemonic is same as current mnemonic so
+      // we need to clear all prefs for fresh start
+      Reset();
+    }
+  }
+
+  if (!CreateEncryptorForKeyring(password, kDefaultKeyringId)) {
+    return nullptr;
+  }
+
   if (!CreateDefaultKeyringInternal(mnemonic)) {
-    // When creation failed(ex. invalid mnemonic), clear the state
-    Reset();
     return nullptr;
   }
 
@@ -520,19 +533,22 @@ bool KeyringController::CreateDefaultKeyringInternal(
     const std::string& mnemonic) {
   if (!encryptor_)
     return false;
+
+  const std::unique_ptr<std::vector<uint8_t>> seed =
+      MnemonicToSeed(mnemonic, "");
+  if (!seed)
+    return false;
+
   std::vector<uint8_t> encrypted_mnemonic;
   if (!encryptor_->Encrypt(ToSpan(mnemonic),
                            GetOrCreateNonceForKeyring(kDefaultKeyringId),
                            &encrypted_mnemonic)) {
     return false;
   }
+
   SetPrefInBytesForKeyring(kEncryptedMnemonic, encrypted_mnemonic,
                            kDefaultKeyringId);
 
-  const std::unique_ptr<std::vector<uint8_t>> seed =
-      MnemonicToSeed(mnemonic, "");
-  if (!seed)
-    return false;
   default_keyring_ = std::make_unique<HDKeyring>();
   default_keyring_->ConstructRootHDKey(*seed, kRootPath);
   UpdateLastUnlockPref(prefs_);

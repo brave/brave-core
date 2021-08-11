@@ -333,35 +333,71 @@ TEST_F(KeyringControllerUnitTest, CreateDefaultKeyring) {
 
 TEST_F(KeyringControllerUnitTest, RestoreDefaultKeyring) {
   KeyringController controller(GetPrefs());
-  HDKeyring* keyring = controller.CreateDefaultKeyring("brave");
-  keyring->AddAccounts(1);
-  const std::string salt =
-      GetStringPrefForKeyring(kPasswordEncryptorSalt, "default");
-  const std::string mnemonic =
+  controller.CreateWallet("brave", base::DoNothing::Once<const std::string&>());
+  base::RunLoop().RunUntilIdle();
+  std::string salt = GetStringPrefForKeyring(kPasswordEncryptorSalt, "default");
+  std::string encrypted_mnemonic =
       GetStringPrefForKeyring(kEncryptedMnemonic, "default");
+  std::string nonce =
+      GetStringPrefForKeyring(kPasswordEncryptorNonce, "default");
+  const std::string mnemonic = controller.GetMnemonicForDefaultKeyringImpl();
 
-  const std::string seed_phrase =
+  // Restore with same mnemonic and same password
+  EXPECT_NE(controller.RestoreDefaultKeyring(mnemonic, "brave"), nullptr);
+  EXPECT_EQ(GetStringPrefForKeyring(kEncryptedMnemonic, "default"),
+            encrypted_mnemonic);
+  EXPECT_EQ(GetStringPrefForKeyring(kPasswordEncryptorSalt, "default"), salt);
+  EXPECT_EQ(GetStringPrefForKeyring(kPasswordEncryptorNonce, "default"), nonce);
+  EXPECT_EQ(controller.default_keyring_->GetAccountsNumber(), 1u);
+
+  // Restore with same mnemonic but different password
+  EXPECT_NE(controller.RestoreDefaultKeyring(mnemonic, "brave377"), nullptr);
+  EXPECT_NE(GetStringPrefForKeyring(kEncryptedMnemonic, "default"),
+            encrypted_mnemonic);
+  EXPECT_NE(GetStringPrefForKeyring(kPasswordEncryptorSalt, "default"), salt);
+  EXPECT_NE(GetStringPrefForKeyring(kPasswordEncryptorNonce, "default"), nonce);
+  EXPECT_EQ(controller.GetMnemonicForDefaultKeyringImpl(), mnemonic);
+  EXPECT_EQ(controller.default_keyring_->GetAccountsNumber(), 0u);
+
+  // Update salt for next test case
+  encrypted_mnemonic = GetStringPrefForKeyring(kEncryptedMnemonic, "default");
+  salt = GetStringPrefForKeyring(kPasswordEncryptorSalt, "default");
+  nonce = GetStringPrefForKeyring(kPasswordEncryptorNonce, "default");
+
+  // Restore with invalid mnemonic but same password
+  EXPECT_EQ(controller.RestoreDefaultKeyring("", "brave"), nullptr);
+  // Keyring prefs won't be cleared
+  EXPECT_EQ(GetStringPrefForKeyring(kEncryptedMnemonic, "default"),
+            encrypted_mnemonic);
+  EXPECT_EQ(GetStringPrefForKeyring(kPasswordEncryptorSalt, "default"), salt);
+  EXPECT_EQ(GetStringPrefForKeyring(kPasswordEncryptorNonce, "default"), nonce);
+  EXPECT_EQ(controller.default_keyring_->GetAccountsNumber(), 0u);
+
+  // Restore with same mnemonic but empty password
+  EXPECT_EQ(controller.RestoreDefaultKeyring(mnemonic, ""), nullptr);
+  // Keyring prefs won't be cleared
+  EXPECT_EQ(GetStringPrefForKeyring(kEncryptedMnemonic, "default"),
+            encrypted_mnemonic);
+  EXPECT_EQ(GetStringPrefForKeyring(kPasswordEncryptorSalt, "default"), salt);
+  EXPECT_EQ(GetStringPrefForKeyring(kPasswordEncryptorNonce, "default"), nonce);
+  EXPECT_EQ(controller.default_keyring_->GetAccountsNumber(), 0u);
+
+  const std::string mnemonic2 =
       "divide cruise upon flag harsh carbon filter merit once advice bright "
       "drive";
   // default keyring will be overwritten by new seed which will be encrypted by
   // new key even though the passphrase is same.
-  keyring = controller.RestoreDefaultKeyring(seed_phrase, "brave");
-  EXPECT_NE(GetStringPrefForKeyring(kEncryptedMnemonic, "default"), mnemonic);
+  EXPECT_NE(controller.RestoreDefaultKeyring(mnemonic2, "brave"), nullptr);
+  EXPECT_NE(GetStringPrefForKeyring(kEncryptedMnemonic, "default"),
+            encrypted_mnemonic);
   // salt is regenerated and account num is cleared
   EXPECT_NE(GetStringPrefForKeyring(kPasswordEncryptorSalt, "default"), salt);
-  keyring->AddAccounts(1);
-  EXPECT_EQ(keyring->GetAddress(0),
+  EXPECT_NE(GetStringPrefForKeyring(kPasswordEncryptorNonce, "default"), nonce);
+  controller.AddAccount("Account 1", base::DoNothing::Once<bool>());
+  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(controller.default_keyring_->GetAccountsNumber(), 1u);
+  EXPECT_EQ(controller.default_keyring_->GetAddress(0),
             "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
-
-  EXPECT_EQ(controller.RestoreDefaultKeyring(seed_phrase, ""), nullptr);
-  {
-    // Invalid mnemonic should have clear state
-    EXPECT_EQ(controller.RestoreDefaultKeyring("", "brave"), nullptr);
-
-    EXPECT_FALSE(HasPrefForKeyring(kPasswordEncryptorSalt, "default"));
-    EXPECT_FALSE(HasPrefForKeyring(kPasswordEncryptorNonce, "default"));
-    EXPECT_FALSE(HasPrefForKeyring(kEncryptedMnemonic, "default"));
-  }
 }
 
 TEST_F(KeyringControllerUnitTest, UnlockResumesDefaultKeyring) {
