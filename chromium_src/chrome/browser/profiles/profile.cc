@@ -18,12 +18,6 @@ const Profile::OTRProfileID Profile::OTRProfileID::TorID() {
   return OTRProfileID(tor::kTorProfileID);
 }
 
-// static
-Profile::OTRProfileID Profile::OTRProfileID::CreateFromProfileID(
-    const std::string& profile_id) {
-  return OTRProfileID(profile_id);
-}
-
 bool Profile::IsTor() const {
   return IsOffTheRecord() && GetOTRProfileID() == OTRProfileID::TorID();
 }

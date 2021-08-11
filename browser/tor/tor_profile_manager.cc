@@ -69,7 +69,7 @@ TorProfileManager::~TorProfileManager() {
 
 Profile* TorProfileManager::GetTorProfile(Profile* profile) {
   Profile* tor_profile = profile->GetOriginalProfile()->GetOffTheRecordProfile(
-      Profile::OTRProfileID::CreateFromProfileID(tor::kTorProfileID),
+      Profile::OTRProfileID(tor::kTorProfileID),
       /*create_if_needed=*/true);
 
   const std::string context_id = tor_profile->UniqueId();
