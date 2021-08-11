@@ -37,9 +37,8 @@ namespace {
 
 const base::TimeDelta kListUpdateInterval = base::TimeDelta::FromDays(7);
 
-SubscriptionInfo BuildInfoFromDict(
-    const GURL& sub_url,
-    const base::Value* dict) {
+SubscriptionInfo BuildInfoFromDict(const GURL& sub_url,
+                                   const base::Value* dict) {
   DCHECK(dict);
   DCHECK(dict->is_dict());
 
@@ -102,16 +101,19 @@ GURL AdBlockSubscriptionServiceManager::GetListTextFileUrl(
   return file_url;
 }
 
-void AdBlockSubscriptionServiceManager::OnUpdateTimer(const GURL& sub_url, bool from_ui, component_updater::TimerUpdateScheduler::OnFinishedCallback on_finished) {
-  ready_.Post(
-      FROM_HERE,
-      base::BindOnce(&AdBlockSubscriptionServiceManager::StartDownload,
-                     weak_ptr_factory_.GetWeakPtr(), sub_url, from_ui));
+void AdBlockSubscriptionServiceManager::OnUpdateTimer(
+    const GURL& sub_url,
+    bool from_ui,
+    component_updater::TimerUpdateScheduler::OnFinishedCallback on_finished) {
+  ready_.Post(FROM_HERE,
+              base::BindOnce(&AdBlockSubscriptionServiceManager::StartDownload,
+                             weak_ptr_factory_.GetWeakPtr(), sub_url, from_ui));
 
   std::move(on_finished).Run();
 }
 
-void AdBlockSubscriptionServiceManager::StartDownload(const GURL& sub_url, bool from_ui) {
+void AdBlockSubscriptionServiceManager::StartDownload(const GURL& sub_url,
+                                                      bool from_ui) {
   DCHECK(ready_.is_signaled());
   // The download manager is tied to the lifetime of the system profile, but
   // the AdBlockSubscriptionServiceManager lives as long as the browser process
@@ -135,8 +137,13 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
       delegate_);
   UpdateSubscriptionPrefs(sub_url, info);
 
-  std::unique_ptr<component_updater::TimerUpdateScheduler> timer = std::make_unique<component_updater::TimerUpdateScheduler>();
-  timer->Schedule(base::TimeDelta(), kListUpdateInterval, base::BindRepeating(&AdBlockSubscriptionServiceManager::OnUpdateTimer, weak_ptr_factory_.GetWeakPtr(), sub_url, true), base::DoNothing());
+  std::unique_ptr<component_updater::TimerUpdateScheduler> timer =
+      std::make_unique<component_updater::TimerUpdateScheduler>();
+  timer->Schedule(
+      base::TimeDelta(), kListUpdateInterval,
+      base::BindRepeating(&AdBlockSubscriptionServiceManager::OnUpdateTimer,
+                          weak_ptr_factory_.GetWeakPtr(), sub_url, true),
+      base::DoNothing());
 
   {
     base::AutoLock lock(subscription_services_lock_);
@@ -162,9 +169,8 @@ AdBlockSubscriptionServiceManager::GetSubscriptions() {
   return infos;
 }
 
-void AdBlockSubscriptionServiceManager::EnableSubscription(
-    const GURL& sub_url,
-    bool enabled) {
+void AdBlockSubscriptionServiceManager::EnableSubscription(const GURL& sub_url,
+                                                           bool enabled) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
   auto info = GetInfo(sub_url);
   DCHECK(info);
@@ -197,15 +203,18 @@ void AdBlockSubscriptionServiceManager::DeleteSubscription(
                      GetSubscriptionPath(sub_url)));
 }
 
-void AdBlockSubscriptionServiceManager::RefreshSubscription(
-    const GURL& sub_url,
-    bool from_ui) {
+void AdBlockSubscriptionServiceManager::RefreshSubscription(const GURL& sub_url,
+                                                            bool from_ui) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
 
   auto it = subscription_update_timers_.find(sub_url);
   DCHECK(it != subscription_update_timers_.end());
   it->second->Stop();
-  it->second->Schedule(base::TimeDelta(), kListUpdateInterval, base::BindRepeating(&AdBlockSubscriptionServiceManager::OnUpdateTimer, weak_ptr_factory_.GetWeakPtr(), sub_url, true), base::DoNothing());
+  it->second->Schedule(
+      base::TimeDelta(), kListUpdateInterval,
+      base::BindRepeating(&AdBlockSubscriptionServiceManager::OnUpdateTimer,
+                          weak_ptr_factory_.GetWeakPtr(), sub_url, true),
+      base::DoNothing());
 }
 
 void AdBlockSubscriptionServiceManager::OnGetDownloadManager(
@@ -217,17 +226,17 @@ void AdBlockSubscriptionServiceManager::OnGetDownloadManager(
   download_manager_->set_subscription_path_callback(base::BindRepeating(
       &AdBlockSubscriptionServiceManager::GetSubscriptionPath,
       base::Unretained(this)));
-  download_manager_->set_on_download_succeeded_callback(
-      base::BindRepeating(&AdBlockSubscriptionServiceManager::OnSubscriptionDownloaded,
-                          base::Unretained(this)));
+  download_manager_->set_on_download_succeeded_callback(base::BindRepeating(
+      &AdBlockSubscriptionServiceManager::OnSubscriptionDownloaded,
+      base::Unretained(this)));
   download_manager_->set_on_download_failed_callback(base::BindRepeating(
       &AdBlockSubscriptionServiceManager::OnSubscriptionDownloadFailure,
       base::Unretained(this)));
   ready_.Signal();
 }
 
-base::Optional<SubscriptionInfo>
-AdBlockSubscriptionServiceManager::GetInfo(const GURL& sub_url) {
+base::Optional<SubscriptionInfo> AdBlockSubscriptionServiceManager::GetInfo(
+    const GURL& sub_url) {
   auto* list_subscription_dict = subscriptions_->FindKey(sub_url.spec());
   if (!list_subscription_dict)
     return base::nullopt;
@@ -251,7 +260,8 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
        it.Advance()) {
     const std::string key = it.key();
     SubscriptionInfo info;
-    const base::Value* list_subscription_dict = subscriptions_->FindDictKey(key);
+    const base::Value* list_subscription_dict =
+        subscriptions_->FindDictKey(key);
     if (list_subscription_dict) {
       GURL sub_url(key);
       info = BuildInfoFromDict(sub_url, list_subscription_dict);
@@ -261,14 +271,21 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
           GetSubscriptionPath(sub_url).AppendASCII(kCustomSubscriptionListText),
           delegate_);
 
-      std::unique_ptr<component_updater::TimerUpdateScheduler> timer = std::make_unique<component_updater::TimerUpdateScheduler>();
+      std::unique_ptr<component_updater::TimerUpdateScheduler> timer =
+          std::make_unique<component_updater::TimerUpdateScheduler>();
 
       if (info.enabled) {
-          base::TimeDelta initial_delay = kListUpdateInterval - (base::Time::Now() - info.last_update_attempt);
-          if (initial_delay < base::TimeDelta()) {
-              initial_delay = base::TimeDelta();
-          }
-          timer->Schedule(initial_delay, kListUpdateInterval, base::BindRepeating(&AdBlockSubscriptionServiceManager::OnUpdateTimer, weak_ptr_factory_.GetWeakPtr(), sub_url, false), base::DoNothing());
+        base::TimeDelta initial_delay =
+            kListUpdateInterval -
+            (base::Time::Now() - info.last_update_attempt);
+        if (initial_delay < base::TimeDelta()) {
+          initial_delay = base::TimeDelta();
+        }
+        timer->Schedule(initial_delay, kListUpdateInterval,
+                        base::BindRepeating(
+                            &AdBlockSubscriptionServiceManager::OnUpdateTimer,
+                            weak_ptr_factory_.GetWeakPtr(), sub_url, false),
+                        base::DoNothing());
       }
 
       subscription_services_.insert(
@@ -295,8 +312,9 @@ void AdBlockSubscriptionServiceManager::UpdateSubscriptionPrefs(
   subscription_dict.SetBoolKey("enabled", info.enabled);
   subscription_dict.SetKey("last_update_attempt",
                            util::TimeToValue(info.last_update_attempt));
-  subscription_dict.SetKey("last_successful_update_attempt",
-                           util::TimeToValue(info.last_successful_update_attempt));
+  subscription_dict.SetKey(
+      "last_successful_update_attempt",
+      util::TimeToValue(info.last_successful_update_attempt));
   subscriptions_dict->SetKey(sub_url.spec(), std::move(subscription_dict));
 
   // TODO(bridiver) - change to pref registrar

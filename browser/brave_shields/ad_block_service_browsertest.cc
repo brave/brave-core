@@ -99,8 +99,12 @@ HostContentSettingsMap* AdBlockServiceTest::content_settings() {
 void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
     const std::string& rules,
     const std::string& resources) {
-  brave_shields::AdBlockService* ad_block_service = g_brave_browser_process->ad_block_service();
-  ad_block_service->GetTaskRunner()->PostTask(FROM_HERE, base::BindOnce(&brave_shields::AdBlockService::ResetForTest, base::Unretained(ad_block_service), rules, resources));
+  brave_shields::AdBlockService* ad_block_service =
+      g_brave_browser_process->ad_block_service();
+  ad_block_service->GetTaskRunner()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&brave_shields::AdBlockService::ResetForTest,
+                     base::Unretained(ad_block_service), rules, resources));
   WaitForAdBlockServiceThreads();
 }
 
@@ -680,7 +684,8 @@ class TestAdBlockSubscriptionServiceManagerObserver
 // Make sure a list added as a custom subscription works correctly
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToCustomSubscription) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
-  GURL subscription_url = embedded_test_server()->GetURL("lists.com", "/list.txt");
+  GURL subscription_url =
+      embedded_test_server()->GetURL("lists.com", "/list.txt");
   GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
   GURL resource_url = embedded_test_server()->GetURL("b.com", "/logo.png");
 
