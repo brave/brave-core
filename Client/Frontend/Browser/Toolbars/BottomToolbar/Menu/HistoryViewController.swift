@@ -57,29 +57,29 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if Preferences.Privacy.privateBrowsingOnly.value {
-            showEmptyPanelState()
-        } else {
-            refreshHistory()
-        }
+        refreshHistory()
     }
     
     private func refreshHistory() {
-        if !isHistoryRefreshing {
-            view.addSubview(spinner)
-            spinner.snp.makeConstraints {
-                $0.center.equalTo(view.snp.center)
-            }
-            spinner.startAnimating()
-            isHistoryRefreshing = true
+        if Preferences.Privacy.privateBrowsingOnly.value {
+            showEmptyPanelState()
+        } else {
+            if !isHistoryRefreshing {
+                view.addSubview(spinner)
+                spinner.snp.makeConstraints {
+                    $0.center.equalTo(view.snp.center)
+                }
+                spinner.startAnimating()
+                isHistoryRefreshing = true
 
-            Historyv2.waitForHistoryServiceLoaded { [weak self] in
-                guard let self = self else { return }
-                
-                self.reloadData() {
-                    self.isHistoryRefreshing = false
-                    self.spinner.stopAnimating()
-                    self.spinner.removeFromSuperview()
+                Historyv2.waitForHistoryServiceLoaded { [weak self] in
+                    guard let self = self else { return }
+                    
+                    self.reloadData() {
+                        self.isHistoryRefreshing = false
+                        self.spinner.stopAnimating()
+                        self.spinner.removeFromSuperview()
+                    }
                 }
             }
         }
