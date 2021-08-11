@@ -9,16 +9,16 @@ import {Router} from '../router.js'
 import {loadTimeData} from '../i18n_setup.js'
 import {pageVisibility} from './page_visibility.js'
 
-import '../getting_started_page/getting_started.js'
 import '../brave_default_extensions_page/brave_default_extensions_page.m.js'
-import '../default_brave_shields_page/default_brave_shields_page.m.js'
-import '../social_blocking_page/social_blocking_page.m.js'
-import '../brave_ipfs_page/brave_ipfs_page.m.js'
-import '../brave_wallet_page/brave_wallet_page.m.js'
-import '../brave_sync_page/brave_sync_page.js'
 import '../brave_help_tips_page/brave_help_tips_page.m.js'
+import '../brave_ipfs_page/brave_ipfs_page.m.js'
 import '../brave_new_tab_page/brave_new_tab_page.m.js'
 import '../brave_search_engines_page/brave_search_engines_page.m.js'
+import '../brave_sync_page/brave_sync_page.js'
+import '../brave_wallet_page/brave_wallet_page.m.js'
+import '../default_brave_shields_page/default_brave_shields_page.m.js'
+import '../getting_started_page/getting_started.js'
+import '../social_blocking_page/social_blocking_page.m.js'
 
 const isGuest = loadTimeData.getBoolean('isGuest')
 
