@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/components/sidebar/buildflags/buildflags.gni")
+import("//extensions/buildflags/buildflags.gni")
 
 source_set("sidebar") {
   # Set due to //chrome/browser and //chrome/browser/ui circular dependencies.
@@ -31,9 +32,18 @@ source_set("sidebar") {
     "//components/keyed_service/content",
     "//components/keyed_service/core",
     "//content/public/browser",
+    "//extensions/buildflags",
     "//skia",
     "//url",
   ]
+
+  if (enable_extensions) {
+    deps += [
+      "//chrome/browser/extensions",
+      "//extensions/browser",
+      "//extensions/common",
+    ]
+  }
 
   # included from chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h
   # see check_includes comment above
