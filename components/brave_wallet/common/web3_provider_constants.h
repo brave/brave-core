@@ -13,6 +13,8 @@ extern const char kDisconnectEvent[];
 extern const char kChainChangedEvent[];
 extern const char kAccountsChangedEvent[];
 
+// https://eips.ethereum.org/EIPS/eip-1193#provider-errors
+// https://eips.ethereum.org/EIPS/eip-1474#error-codes
 enum class ProviderErrors {
   kUserRejectedRequest = 4001,  // User rejected the request
   kUnauthorized = 4100,         // The requested account and/or method has not
@@ -22,7 +24,11 @@ enum class ProviderErrors {
   kDisconnected = 4900,         // The provider is disconnected from all chains
   kChainDisconnected = 4901,    // The provider is disconnected from the
                                 // specified chain
+  kInternalError = -32603,      // Internal JSON-RPC error
 };
+
+constexpr char kEthAccounts[] = "eth_accounts";
+constexpr char kMethod[] = "method";
 
 }  // namespace brave_wallet
 

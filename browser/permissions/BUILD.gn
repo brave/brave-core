@@ -25,7 +25,10 @@ if (!is_android) {
     ]
 
     if (brave_wallet_enabled) {
-      sources += [ "permission_manager_browsertest.cc" ]
+      sources += [
+        "brave_ethereum_permission_context_browsertest.cc",
+        "permission_manager_browsertest.cc",
+      ]
 
       deps += [
         "//brave/browser/brave_wallet",

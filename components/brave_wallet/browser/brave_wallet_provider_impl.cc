@@ -35,9 +35,7 @@ void BraveWalletProviderImpl::Request(const std::string& json_payload,
 }
 
 void BraveWalletProviderImpl::Enable(EnableCallback callback) {
-  if (!delegate_)
-    return;
-
+  DCHECK(delegate_);
   delegate_->RequestEthereumPermissions(
       base::BindOnce(&BraveWalletProviderImpl::OnEnable,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
@@ -47,6 +45,21 @@ void BraveWalletProviderImpl::OnEnable(
     EnableCallback callback,
     const std::vector<std::string>& accounts) {
   std::move(callback).Run(accounts);
+}
+
+void BraveWalletProviderImpl::GetAllowedAccounts(
+    GetAllowedAccountsCallback callback) {
+  DCHECK(delegate_);
+  delegate_->GetAllowedAccounts(
+      base::BindOnce(&BraveWalletProviderImpl::OnGetAllowedAccounts,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void BraveWalletProviderImpl::OnGetAllowedAccounts(
+    GetAllowedAccountsCallback callback,
+    bool success,
+    const std::vector<std::string>& accounts) {
+  std::move(callback).Run(success, accounts);
 }
 
 void BraveWalletProviderImpl::GetChainId(GetChainIdCallback callback) {

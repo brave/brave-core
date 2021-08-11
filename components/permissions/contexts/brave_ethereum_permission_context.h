@@ -57,6 +57,11 @@ class BraveEthereumPermissionContext : public PermissionContextBase {
                              content::WebContents* web_contents);
   static void Cancel(content::WebContents* web_contents);
 
+  static void GetAllowedAccounts(
+      content::RenderFrameHost* rfh,
+      const std::vector<std::string>& addresses,
+      base::OnceCallback<void(bool, const std::vector<std::string>&)> callback);
+
  protected:
   bool IsRestrictedToSecureOrigins() const override;
 
