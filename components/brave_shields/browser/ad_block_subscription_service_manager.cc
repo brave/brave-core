@@ -210,10 +210,10 @@ void AdBlockSubscriptionServiceManager::OnGetDownloadManager(
       &AdBlockSubscriptionServiceManager::GetSubscriptionPath,
       base::Unretained(this)));
   download_manager_->set_on_download_succeeded_callback(
-      base::BindRepeating(&AdBlockSubscriptionServiceManager::OnListDownloaded,
+      base::BindRepeating(&AdBlockSubscriptionServiceManager::OnSubscriptionDownloaded,
                           base::Unretained(this)));
   download_manager_->set_on_download_failed_callback(base::BindRepeating(
-      &AdBlockSubscriptionServiceManager::OnListDownloadFailure,
+      &AdBlockSubscriptionServiceManager::OnSubscriptionDownloadFailure,
       base::Unretained(this)));
   ready_.Signal();
 }
@@ -417,7 +417,7 @@ AdBlockSubscriptionServiceManager::HiddenClassIdSelectors(
   return first_value;
 }
 
-void AdBlockSubscriptionServiceManager::OnListDownloaded(
+void AdBlockSubscriptionServiceManager::OnSubscriptionDownloaded(
     const GURL& sub_url) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
   auto it = subscription_services_.find(sub_url);
@@ -437,7 +437,7 @@ void AdBlockSubscriptionServiceManager::OnListDownloaded(
   NotifyObserversOfServiceEvent();
 }
 
-void AdBlockSubscriptionServiceManager::OnListDownloadFailure(
+void AdBlockSubscriptionServiceManager::OnSubscriptionDownloadFailure(
     const GURL& sub_url) {
   auto info = GetInfo(sub_url);
   if (!info)

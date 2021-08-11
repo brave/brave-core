@@ -78,8 +78,8 @@ class AdBlockSubscriptionServiceManager {
     return download_manager_.get();
   }
 
-  void OnListDownloadFailure(const GURL& sub_url);
-  void OnListDownloaded(const GURL& sub_url);
+  void OnSubscriptionDownloadFailure(const GURL& sub_url);
+  void OnSubscriptionDownloaded(const GURL& sub_url);
 
   void AddObserver(AdBlockSubscriptionServiceManagerObserver* observer);
   void RemoveObserver(AdBlockSubscriptionServiceManagerObserver* observer);
