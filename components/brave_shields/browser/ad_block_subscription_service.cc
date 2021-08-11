@@ -31,24 +31,24 @@ bool ParseTimeValue(const base::Value* value, base::Time* field) {
 }
 }  // namespace
 
-void FilterListSubscriptionInfo::RegisterJSONConverter(
-    base::JSONValueConverter<FilterListSubscriptionInfo>* converter) {
+void SubscriptionInfo::RegisterJSONConverter(
+    base::JSONValueConverter<SubscriptionInfo>* converter) {
   // The `subscription_url` field is skipped, as it's not stored within the
   // JSON value and should be populated externally.
   converter->RegisterCustomField<GURL>(
-      "subscription_url", &FilterListSubscriptionInfo::subscription_url, &SkipGURLField);
+      "subscription_url", &SubscriptionInfo::subscription_url, &SkipGURLField);
   converter->RegisterCustomValueField<base::Time>(
-      "last_update_attempt", &FilterListSubscriptionInfo::last_update_attempt,
+      "last_update_attempt", &SubscriptionInfo::last_update_attempt,
       &ParseTimeValue);
   converter->RegisterCustomValueField<base::Time>(
       "last_successful_update_attempt",
-      &FilterListSubscriptionInfo::last_successful_update_attempt,
+      &SubscriptionInfo::last_successful_update_attempt,
       &ParseTimeValue);
-  converter->RegisterBoolField("enabled", &FilterListSubscriptionInfo::enabled);
+  converter->RegisterBoolField("enabled", &SubscriptionInfo::enabled);
 }
 
 AdBlockSubscriptionService::AdBlockSubscriptionService(
-    const FilterListSubscriptionInfo& info,
+    const SubscriptionInfo& info,
     const base::FilePath list_file,
     OnLoadCallback on_load_callback,
     brave_component_updater::BraveComponent::Delegate* delegate)

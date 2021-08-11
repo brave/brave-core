@@ -51,7 +51,7 @@ class AdBlockSubscriptionServiceManager {
   // used for the given subscription.
   GURL GetListTextFileUrl(const GURL sub_url) const;
 
-  std::vector<FilterListSubscriptionInfo> GetSubscriptions();
+  std::vector<SubscriptionInfo> GetSubscriptions();
   void EnableSubscription(const GURL& sub_url, bool enabled);
   void DeleteSubscription(const GURL& sub_url);
   void RefreshSubscription(const GURL& sub_url, bool from_ui);
@@ -97,13 +97,13 @@ class AdBlockSubscriptionServiceManager {
 
   bool Init();
   void LoadSubscriptionServices();
-  void UpdateFilterListPrefs(const GURL& sub_url,
-                             const FilterListSubscriptionInfo& info);
-  void ClearFilterListPrefs(const GURL& sub_url);
+  void UpdateSubscriptionPrefs(const GURL& sub_url,
+                               const SubscriptionInfo& info);
+  void ClearSubscriptionPrefs(const GURL& sub_url);
   void OnGetDownloadManager(
       AdBlockSubscriptionDownloadManager* download_manager);
 
-  base::Optional<FilterListSubscriptionInfo> GetInfo(
+  base::Optional<SubscriptionInfo> GetInfo(
       const GURL& sub_url);
   void OnListLoaded(const GURL& sub_url);
   void NotifyObserversOfServiceEvent();

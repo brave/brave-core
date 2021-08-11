@@ -37,14 +37,14 @@ namespace {
 
 const base::TimeDelta kListUpdateInterval = base::TimeDelta::FromDays(7);
 
-FilterListSubscriptionInfo BuildInfoFromDict(
+SubscriptionInfo BuildInfoFromDict(
     const GURL& sub_url,
     const base::Value* dict) {
   DCHECK(dict);
   DCHECK(dict->is_dict());
 
-  FilterListSubscriptionInfo info;
-  base::JSONValueConverter<FilterListSubscriptionInfo> converter;
+  SubscriptionInfo info;
+  base::JSONValueConverter<SubscriptionInfo> converter;
   converter.Convert(*dict, &info);
 
   info.subscription_url = sub_url;
@@ -115,7 +115,7 @@ void AdBlockSubscriptionServiceManager::OnUpdateTimer(const GURL& sub_url, bool 
 void AdBlockSubscriptionServiceManager::CreateSubscription(
     const GURL& sub_url) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-  FilterListSubscriptionInfo info;
+  SubscriptionInfo info;
   info.subscription_url = sub_url;
   info.last_update_attempt = base::Time();
   info.last_successful_update_attempt = base::Time();
@@ -127,7 +127,7 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
       base::BindRepeating(&AdBlockSubscriptionServiceManager::OnListLoaded,
                           weak_ptr_factory_.GetWeakPtr()),
       delegate_);
-  UpdateFilterListPrefs(sub_url, info);
+  UpdateSubscriptionPrefs(sub_url, info);
 
   std::unique_ptr<component_updater::TimerUpdateScheduler> timer = std::make_unique<component_updater::TimerUpdateScheduler>();
   timer->Schedule(base::TimeDelta(), kListUpdateInterval, base::BindRepeating(&AdBlockSubscriptionServiceManager::OnUpdateTimer, weak_ptr_factory_.GetWeakPtr(), sub_url, true), base::DoNothing());
@@ -142,10 +142,10 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
   }
 }
 
-std::vector<FilterListSubscriptionInfo>
+std::vector<SubscriptionInfo>
 AdBlockSubscriptionServiceManager::GetSubscriptions() {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-  auto infos = std::vector<FilterListSubscriptionInfo>();
+  auto infos = std::vector<SubscriptionInfo>();
 
   for (const auto& subscription_service : subscription_services_) {
     auto info = GetInfo(subscription_service.first);
@@ -165,7 +165,7 @@ void AdBlockSubscriptionServiceManager::EnableSubscription(
 
   info->enabled = enabled;
 
-  UpdateFilterListPrefs(sub_url, *info);
+  UpdateSubscriptionPrefs(sub_url, *info);
 }
 
 void AdBlockSubscriptionServiceManager::DeleteSubscription(
@@ -181,7 +181,7 @@ void AdBlockSubscriptionServiceManager::DeleteSubscription(
     DCHECK(timer_it != subscription_update_timers_.end());
     subscription_update_timers_.erase(timer_it);
   }
-  ClearFilterListPrefs(sub_url);
+  ClearSubscriptionPrefs(sub_url);
 
   base::ThreadPool::PostTask(
       FROM_HERE,
@@ -220,13 +220,13 @@ void AdBlockSubscriptionServiceManager::OnGetDownloadManager(
   ready_.Signal();
 }
 
-base::Optional<FilterListSubscriptionInfo>
+base::Optional<SubscriptionInfo>
 AdBlockSubscriptionServiceManager::GetInfo(const GURL& sub_url) {
   auto* list_subscription_dict = subscriptions_->FindKey(sub_url.spec());
   if (!list_subscription_dict)
     return base::nullopt;
 
-  return base::make_optional<FilterListSubscriptionInfo>(
+  return base::make_optional<SubscriptionInfo>(
       BuildInfoFromDict(sub_url, list_subscription_dict));
 }
 
@@ -244,7 +244,7 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
   for (base::DictionaryValue::Iterator it(*subscriptions_); !it.IsAtEnd();
        it.Advance()) {
     const std::string key = it.key();
-    FilterListSubscriptionInfo info;
+    SubscriptionInfo info;
     const base::Value* list_subscription_dict = subscriptions_->FindDictKey(key);
     if (list_subscription_dict) {
       GURL sub_url(key);
@@ -275,11 +275,11 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
   }
 }
 
-// Updates preferences to reflect a new state for the specified filter list.
-// Creates the entry if it does not yet exist.
-void AdBlockSubscriptionServiceManager::UpdateFilterListPrefs(
+// Updates preferences to reflect a new state for the specified filter list
+// subscription. Creates the entry if it does not yet exist.
+void AdBlockSubscriptionServiceManager::UpdateSubscriptionPrefs(
     const GURL& sub_url,
-    const FilterListSubscriptionInfo& info) {
+    const SubscriptionInfo& info) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
   PrefService* local_state = delegate_->local_state();
   if (!local_state)
@@ -301,8 +301,9 @@ void AdBlockSubscriptionServiceManager::UpdateFilterListPrefs(
       base::Value::ToUniquePtrValue(subscriptions_dict->Clone()));
 }
 
-// Updates preferences to remove all state for the specified filter list.
-void AdBlockSubscriptionServiceManager::ClearFilterListPrefs(
+// Updates preferences to remove all state for the specified filter list
+// subscription.
+void AdBlockSubscriptionServiceManager::ClearSubscriptionPrefs(
     const GURL& sub_url) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
   PrefService* local_state = delegate_->local_state();
@@ -433,7 +434,7 @@ void AdBlockSubscriptionServiceManager::OnListDownloaded(
 
   info->last_update_attempt = base::Time::Now();
   info->last_successful_update_attempt = info->last_update_attempt;
-  UpdateFilterListPrefs(sub_url, *info);
+  UpdateSubscriptionPrefs(sub_url, *info);
 
   it->second->ReloadList();
 
@@ -458,7 +459,7 @@ void AdBlockSubscriptionServiceManager::OnListDownloadFailure(
     return;
 
   info->last_update_attempt = base::Time::Now();
-  UpdateFilterListPrefs(sub_url, *info);
+  UpdateSubscriptionPrefs(sub_url, *info);
 
   NotifyObserversOfServiceEvent();
 }

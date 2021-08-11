@@ -24,7 +24,7 @@ class AdBlockServiceTest;
 
 namespace brave_shields {
 
-struct FilterListSubscriptionInfo {
+struct SubscriptionInfo {
   // The URL used to fetch the list, which is also used as a unique identifier
   // for a subscription service.
   GURL subscription_url;
@@ -41,7 +41,7 @@ struct FilterListSubscriptionInfo {
   bool enabled;
 
   static void RegisterJSONConverter(
-      base::JSONValueConverter<FilterListSubscriptionInfo>*);
+      base::JSONValueConverter<SubscriptionInfo>*);
 };
 
 // The brave shields service in charge of ad-block checking and init
@@ -51,7 +51,7 @@ class AdBlockSubscriptionService : public AdBlockBaseService {
   using OnLoadCallback =
       base::RepeatingCallback<void(const GURL&)>;
   explicit AdBlockSubscriptionService(
-      const FilterListSubscriptionInfo& info,
+      const SubscriptionInfo& info,
       base::FilePath list_file,
       OnLoadCallback on_load_callback,
       brave_component_updater::BraveComponent::Delegate* delegate);
