@@ -9,7 +9,7 @@ import("//extensions/buildflags/buildflags.gni")
 brave_browser_ipfs_sources = []
 brave_browser_ipfs_deps = []
 
-if (ipfs_enabled) {
+if (enable_ipfs) {
   brave_browser_ipfs_sources += [
     "//brave/browser/ipfs/content_browser_client_helper.cc",
     "//brave/browser/ipfs/content_browser_client_helper.h",

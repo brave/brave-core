@@ -21,7 +21,7 @@ json_features("api_features") {
     sources += [ "_brave_wallet_api_features.json" ]
   }
 
-  if (ipfs_enabled) {
+  if (enable_ipfs) {
     sources += [ "_ipfs_api_features.json" ]
   }
 
@@ -78,7 +78,7 @@ brave_extensions_api_schema_sources = [
   "rewards_notifications.json",
 ]
 
-if (ipfs_enabled) {
+if (enable_ipfs) {
   brave_extensions_api_schema_sources += [ "ipfs.json" ]
 }
 

@@ -54,7 +54,7 @@ static_library("ipfs") {
     "//ui/base",
     "//url",
   ]
-  if (ipfs_local_node_enabled) {
+  if (enable_ipfs_local_node) {
     sources += [
       "import/imported_data.cc",
       "import/imported_data.h",

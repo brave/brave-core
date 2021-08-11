@@ -40,7 +40,7 @@
 #include "brave/browser/gcm_driver/brave_gcm_channel_status.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #endif
 
@@ -97,7 +97,7 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
     return;
   brave_ads::AdsServiceFactory::GetForProfile(profile);
   brave_rewards::RewardsServiceFactory::GetForProfile(profile);
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   ipfs::IpfsServiceFactory::GetForContext(profile);
 #endif
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)

@@ -92,7 +92,7 @@ class BraveBrowserProcess {
 #if BUILDFLAG(ENABLE_TOR)
   virtual tor::BraveTorClientUpdater* tor_client_updater() = 0;
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   virtual ipfs::BraveIpfsClientUpdater* ipfs_client_updater() = 0;
 #endif
   virtual brave::BraveP3AService* brave_p3a_service() = 0;

@@ -19,7 +19,7 @@
 #include "brave/utility/importer/brave_profile_import_impl.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/services/ipfs/ipfs_service_impl.h"
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
 #endif
@@ -43,7 +43,7 @@ auto RunBraveProfileImporter(
 }
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 auto RunIpfsService(mojo::PendingReceiver<ipfs::mojom::IpfsService> receiver) {
   return std::make_unique<ipfs::IpfsServiceImpl>(std::move(receiver));
 }
@@ -79,7 +79,7 @@ void BraveContentUtilityClient::RegisterMainThreadServices(
   services.Add(RunBraveProfileImporter);
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   services.Add(RunIpfsService);
 #endif
 

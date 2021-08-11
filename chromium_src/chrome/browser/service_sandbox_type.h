@@ -23,7 +23,7 @@ content::GetServiceSandboxType<brave::mojom::ProfileImport>() {
   return sandbox::policy::SandboxType::kNoSandbox;
 }
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/service_sandbox_type.h"
 #endif
 

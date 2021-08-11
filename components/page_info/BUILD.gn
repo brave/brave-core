@@ -9,7 +9,7 @@ group("page_info") {
     "//brave/components/ipfs/buildflags",
     "//brave/components/vector_icons",
   ]
-  if (ipfs_enabled) {
+  if (enable_ipfs) {
     deps += [ "//brave/components/ipfs" ]
   }
 }

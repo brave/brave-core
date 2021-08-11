@@ -101,7 +101,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_webtorrent/browser/content_browser_client_helper.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/content_browser_client_helper.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/ipfs/ipfs_constants.h"
@@ -288,7 +288,7 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
   handler->AddHandlerPair(&webtorrent::HandleTorrentURLRewrite,
                           &webtorrent::HandleTorrentURLReverseRewrite);
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   handler->AddHandlerPair(&ipfs::HandleIPFSURLRewrite,
                           &ipfs::HandleIPFSURLReverseRewrite);
 #endif
@@ -650,7 +650,7 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
     throttles.push_back(std::move(onion_location_navigation_throttle));
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   std::unique_ptr<content::NavigationThrottle> ipfs_navigation_throttle =
       ipfs::IpfsNavigationThrottle::MaybeCreateThrottleFor(
           handle, ipfs::IpfsServiceFactory::GetForContext(context),

@@ -82,7 +82,7 @@ source_set("net") {
     "//url",
   ]
 
-  if (ipfs_enabled) {
+  if (enable_ipfs) {
     sources += [
       "ipfs_redirect_network_delegate_helper.cc",
       "ipfs_redirect_network_delegate_helper.h",

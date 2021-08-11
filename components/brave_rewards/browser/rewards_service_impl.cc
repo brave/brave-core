@@ -89,7 +89,7 @@
 #if BUILDFLAG(ENABLE_GREASELION)
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #endif
@@ -654,7 +654,7 @@ void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
   auto origin = url.GetOrigin().host();
   std::string baseDomain =
       GetDomainAndRegistry(url.host(), INCLUDE_PRIVATE_REGISTRIES);
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   if (baseDomain.empty()) {
     baseDomain = ipfs::GetRegistryDomainFromIPNS(url);
     if (!baseDomain.empty()) {
@@ -1778,7 +1778,7 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
   std::string baseDomain =
       GetDomainAndRegistry(parsed_url.host(), INCLUDE_PRIVATE_REGISTRIES);
   std::string path = parsed_url.has_path() ? parsed_url.PathForRequest() : "";
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   if (baseDomain.empty()) {
     baseDomain = ipfs::GetRegistryDomainFromIPNS(parsed_url);
     if (!baseDomain.empty()) {

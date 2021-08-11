@@ -32,7 +32,7 @@ if (enable_tor) {
   brave_utility_importer_deps += [ "//brave/components/services/tor" ]
 }
 
-if (ipfs_enabled) {
+if (enable_ipfs) {
   brave_utility_importer_deps += [ "//brave/components/services/ipfs" ]
 }
 

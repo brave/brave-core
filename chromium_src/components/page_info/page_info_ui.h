@@ -8,17 +8,17 @@
 
 #include "brave/components/ipfs/buildflags/buildflags.h"
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #define GetSecurityDescription                                           \
   GetSecurityDescription_ChromiumImpl(const IdentityInfo& identity_info) \
       const;                                                             \
   std::unique_ptr<SecurityDescription> GetSecurityDescription
-#endif  // BUILDFLAG(IPFS_ENABLED)
+#endif  // BUILDFLAG(ENABLE_IPFS)
 
 #include "../../../../components/page_info/page_info_ui.h"
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #undef GetSecurityDescription
-#endif  // BUILDFLAG(IPFS_ENABLED)
+#endif  // BUILDFLAG(ENABLE_IPFS)
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_PAGE_INFO_PAGE_INFO_UI_H_

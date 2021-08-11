@@ -54,7 +54,7 @@ source_set("ui") {
     "webui/webcompat_reporter_ui.h",
   ]
 
-  if (ipfs_enabled) {
+  if (enable_ipfs) {
     sources += [
       "webui/ipfs_ui.cc",
       "webui/ipfs_ui.h",
@@ -311,7 +311,7 @@ source_set("ui") {
     }
   }
 
-  if (ipfs_enabled) {
+  if (enable_ipfs) {
     deps += [
       "//brave/components/ipfs",
       "//brave/components/ipfs_ui:generated_resources",
@@ -450,7 +450,7 @@ source_set("ui") {
       ]
     }
 
-    if (ipfs_enabled) {
+    if (enable_ipfs) {
       sources += [
         "views/location_bar/ipfs_location_view.cc",
         "views/location_bar/ipfs_location_view.h",

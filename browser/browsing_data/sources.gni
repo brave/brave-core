@@ -35,6 +35,6 @@ if (enable_extensions) {
   ]
 }
 
-if (ipfs_enabled) {
+if (enable_ipfs) {
   brave_browser_browsing_data_deps += [ "//brave/components/ipfs" ]
 }

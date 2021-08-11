@@ -47,7 +47,7 @@ class BraveBrowsingDataRemoverDelegate
                           override;
 
   void ClearShieldsSettings(base::Time begin_time, base::Time end_time);
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   void ClearIPFSCache();
   void WaitForIPFSRepoGC(base::Process process);
 #endif

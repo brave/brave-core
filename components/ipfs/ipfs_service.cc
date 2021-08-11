@@ -41,7 +41,7 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "url/gurl.h"
 
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/ipfs/import/ipfs_import_worker_base.h"
 #include "brave/components/ipfs/import/ipfs_link_import_worker.h"
@@ -56,7 +56,7 @@
 #endif
 
 namespace {
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 // Works similarly to base::AutoReset but checks for access from the wrong
 // thread as well as ensuring that the previous value of the re-entrancy guard
 // variable was false.
@@ -123,7 +123,7 @@ IpfsService::IpfsService(
     ipfs_client_updater_->AddObserver(this);
     OnExecutableReady(ipfs_client_updater_->GetExecutablePath());
   }
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   ipns_keys_manager_ = std::make_unique<IpnsKeysManager>(
       blob_context_getter_factory_.get(), url_loader_factory.get(),
       server_endpoint_);
@@ -135,7 +135,7 @@ IpfsService::~IpfsService() {
   if (ipfs_client_updater_) {
     ipfs_client_updater_->RemoveObserver(this);
   }
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   RemoveObserver(ipns_keys_manager_.get());
 #endif
   Shutdown();
@@ -180,7 +180,7 @@ std::string IpfsService::GetStorageSize() {
 }
 
 void IpfsService::LaunchIfNotRunning(const base::FilePath& executable_path) {
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   if (ipfs_service_.is_bound())
     return;
 
@@ -247,7 +247,7 @@ base::FilePath IpfsService::GetConfigFilePath() const {
 
 void IpfsService::NotifyDaemonLaunched(bool result, int64_t pid) {
   bool success = result && pid > 0;
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   if (success && ipns_keys_manager_) {
     ipns_keys_manager_->LoadKeys(base::BindOnce(
         &IpfsService::NotifyIpnsKeysLoaded, weak_factory_.GetWeakPtr()));
@@ -282,7 +282,7 @@ void IpfsService::Shutdown() {
   ipfs_pid_ = -1;
 }
 
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 // static
 bool IpfsService::WaitUntilExecutionFinished(base::Process process) {
   bool exited = false;

@@ -22,7 +22,7 @@
 #include "components/sync/base/pref_names.h"
 #include "content/public/test/browser_test.h"
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
 #endif
@@ -85,7 +85,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       kHangoutsEnabled));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       brave_rewards::prefs::kHideButton));
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   EXPECT_EQ(chrome_test_utils::GetProfile(this)->GetPrefs()->GetInteger(
                 kIPFSResolveMethod),
             static_cast<int>((ipfs::IPFSResolveMethodTypes::IPFS_ASK)));

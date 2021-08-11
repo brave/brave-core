@@ -20,7 +20,7 @@ brave_utility_deps = [
 
 brave_utility_deps += brave_utility_importer_deps
 
-if (ipfs_enabled) {
+if (enable_ipfs) {
   brave_utility_deps += [
     "//brave/components/services/ipfs",
     "//brave/components/services/ipfs/public/mojom",

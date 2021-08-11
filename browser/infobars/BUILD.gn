@@ -42,7 +42,7 @@ source_set("infobars") {
     ]
   }
 
-  if (ipfs_enabled) {
+  if (enable_ipfs) {
     deps += [
       "//brave/components/ipfs",
       "//components/user_prefs",

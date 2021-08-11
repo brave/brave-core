@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
-  <if expr="ipfs_enabled">
+  <if expr="enable_ipfs">
     <message name="IDS_IPFS_CONNECTED_PEERS_TITLE" desc="Number of peers connected">Connected peers:</message>
     <message name="IDS_IPFS_ADDRESSES_CONFIG_TITLE" desc="Title of addresses config section">Addresses</message>
     <message name="IDS_IPFS_REPO_STATS_TITLE" desc="Title of repo stats section">Repo Stats</message>

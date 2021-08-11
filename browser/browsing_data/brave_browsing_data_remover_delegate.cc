@@ -21,7 +21,7 @@
 #include "extensions/browser/event_router.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/process/launch.h"
@@ -63,7 +63,7 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
   if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_CONTENT_SETTINGS)
     ClearShieldsSettings(delete_begin, delete_end);
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   if (remove_mask & content::BrowsingDataRemover::DATA_TYPE_CACHE)
     ClearIPFSCache();
 #endif
@@ -112,7 +112,7 @@ void BraveBrowsingDataRemoverDelegate::ClearShieldsSettings(
   }
 }
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 void BraveBrowsingDataRemoverDelegate::WaitForIPFSRepoGC(
     base::Process process) {
   bool exited = false;
@@ -177,4 +177,4 @@ void BraveBrowsingDataRemoverDelegate::ClearIPFSCache() {
                      weak_ptr_factory_.GetWeakPtr(), std::move(process)),
       CreateTaskCompletionClosure(TracingDataType::kIPFSCache));
 }
-#endif  // BUILDFLAG(IPFS_ENABLED)
+#endif  // BUILDFLAG(ENABLE_IPFS)

@@ -103,7 +103,7 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #if BUILDFLAG(ENABLE_TOR)
   tor::BraveTorClientUpdater* tor_client_updater() override;
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   ipfs::BraveIpfsClientUpdater* ipfs_client_updater() override;
 #endif
   brave::BraveFederatedLearningService* brave_federated_learning_service();
@@ -161,7 +161,7 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #if BUILDFLAG(ENABLE_TOR)
   std::unique_ptr<tor::BraveTorClientUpdater> tor_client_updater_;
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   std::unique_ptr<ipfs::BraveIpfsClientUpdater> ipfs_client_updater_;
 #endif
   std::unique_ptr<brave::BraveFederatedLearningService>
