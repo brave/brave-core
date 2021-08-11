@@ -11,7 +11,6 @@
 
 #include "base/bind.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
-#include "brave/components/brave_wallet/browser/erc_token_registry.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "chrome/browser/profiles/profile.h"
@@ -63,23 +62,6 @@ void WalletHandler::OnGetWalletInfo(
       keyring_info->is_default_keyring_created, keyring_info->is_locked,
       std::move(favorite_apps_copy), keyring_info->is_backed_up,
       std::move(keyring_info->account_infos));
-}
-
-void WalletHandler::GetTokenByContract(const std::string& contract,
-                                       GetTokenByContractCallback callback) {
-  auto* registry = brave_wallet::ERCTokenRegistry::GetInstance();
-  std::move(callback).Run(registry->GetTokenByContract(contract));
-}
-
-void WalletHandler::GetTokenBySymbol(const std::string& symbol,
-                                     GetTokenBySymbolCallback callback) {
-  auto* registry = brave_wallet::ERCTokenRegistry::GetInstance();
-  std::move(callback).Run(registry->GetTokenBySymbol(symbol));
-}
-
-void WalletHandler::GetAllTokens(GetAllTokensCallback callback) {
-  auto* registry = brave_wallet::ERCTokenRegistry::GetInstance();
-  std::move(callback).Run(registry->GetAllTokens());
 }
 
 void WalletHandler::AddFavoriteApp(

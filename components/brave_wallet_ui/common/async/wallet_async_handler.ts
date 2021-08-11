@@ -54,7 +54,8 @@ async function refreshWalletInfo (store: Store) {
   // In prefs we need to return a different list based on chainID
   const visibleTokensPayload = ['0x0D8775F648430679A709E98d2b0Cb6250d2887EF']
   const visibleTokensInfo = await Promise.all(visibleTokensPayload.map(async (i) => {
-    const info = await walletHandler.getTokenByContract(i)
+    const ercTokenRegistry = (await getAPIProxy()).ercTokenRegistry
+    const info = await ercTokenRegistry.getTokenByContract(i)
     return info.token
   }))
   if (visibleTokensInfo[0]) {
@@ -164,8 +165,8 @@ handler.on(WalletActions.selectNetwork.getType(), async (store, payload: Network
 })
 
 handler.on(WalletActions.getAllTokensList.getType(), async (store) => {
-  const walletHandler = (await getAPIProxy()).walletHandler
-  const fullList = await walletHandler.getAllTokens()
+  const ercTokenRegistry = (await getAPIProxy()).ercTokenRegistry
+  const fullList = await ercTokenRegistry.getAllTokens()
   store.dispatch(WalletActions.setAllTokensList(fullList))
 })
 

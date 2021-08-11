@@ -364,12 +364,15 @@ export interface CreateWalletReturnInfo {
 
 export interface WalletAPIHandler {
   getWalletInfo: () => Promise<WalletInfo>
-  getTokenByContract: (contract: string) => Promise<GetTokenByContractReturnInfo>
-  getTokenBySymbol: (symbol: string) => Promise<GetTokenBySymbolReturnInfo>
-  getAllTokens: () => Promise<GetAllTokensReturnInfo>
   addFavoriteApp: (appItem: AppObjectType) => Promise<void>
   removeFavoriteApp: (appItem: AppObjectType) => Promise<void>
   setInitialVisibleTokens: (visibleAssets: string[]) => Promise<void>
+}
+
+export interface ERCTokenRegistry {
+  getTokenByContract: (contract: string) => Promise<GetTokenByContractReturnInfo>
+  getTokenBySymbol: (symbol: string) => Promise<GetTokenBySymbolReturnInfo>
+  getAllTokens: () => Promise<GetAllTokensReturnInfo>
 }
 
 export interface EthJsonRpcController {
@@ -462,6 +465,7 @@ export interface APIProxyControllers {
   swapController: SwapController
   assetRatioController: AssetRatioController
   keyringController: KeyringController
+  ercTokenRegistry: ERCTokenRegistry
 }
 
 export type AllowSpendReturnPayload = {

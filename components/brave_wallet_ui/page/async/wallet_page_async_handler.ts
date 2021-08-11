@@ -110,11 +110,11 @@ handler.on(WalletPageActions.selectAsset.getType(), async (store, payload: Updat
 // console.log(swap_response2)
 //
 // Interacting with the token registry
-// const walletHandler = (await getAPIProxy()).walletHandler
-// const val1 = await walletHandler.getAllTokens()
-// const val2 = await walletHandler.getTokenBySymbol('BAT')
-// const val3 = await walletHandler.getTokenByContract('0x0D8775F648430679A709E98d2b0Cb6250d2887EF')
-// const val4 = await walletHandler.getTokenByContract('dsaida')
+// const ercTokenRegistry = (await getAPIProxy()).ercTokenRegistry
+// const val1 = await ercTokenRegistry.getAllTokens()
+// const val2 = await ercTokenRegistry.getTokenBySymbol('BAT')
+// const val3 = await ercTokenRegistry.getTokenByContract('0x0D8775F648430679A709E98d2b0Cb6250d2887EF')
+// const val4 = await ercTokenRegistry.getTokenByContract('dsaida')
 // console.log('val1-4: ', val1, val2, val3, val4)
 //
 // Getting and setting network:
