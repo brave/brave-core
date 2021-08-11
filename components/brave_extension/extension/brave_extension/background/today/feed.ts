@@ -6,7 +6,7 @@
 import { isPublisherContentAllowed } from '../../../../../common/braveToday'
 import { getOrFetchData as getOrFetchPublishers, addPublishersChangedListener } from './publishers'
 import feedToData from './feedToData'
-import { fetchResource } from './privateCDN'
+import { fetchResource } from '../../../../../common/privateCDN'
 import { getFeedUrl } from './urls'
 
 type RemoteData = BraveToday.FeedItem[]

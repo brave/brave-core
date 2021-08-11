@@ -8,6 +8,7 @@ import * as BraveTodayElement from './default'
 import CardOptIn from './cards/cardOptIn'
 import CardLoading from './cards/cardLoading'
 import { PromotedItemViewedPayload, ReadFeedItemPayload, DisplayAdViewedPayload, VisitDisplayAdPayload } from '../../../actions/today_actions'
+import { BraveNewsController } from '../../../api/brave_news/brave_news_proxy'
 const Content = React.lazy(() => import('./content'))
 
 export type OnReadFeedItem = (args: ReadFeedItemPayload) => any
@@ -15,7 +16,7 @@ export type OnSetPublisherPref = (publisherId: string, enabled: boolean) => any
 export type OnPromotedItemViewed = (args: PromotedItemViewedPayload) => any
 export type OnVisitDisplayAd = (args: VisitDisplayAdPayload) => any
 export type OnViewedDisplayAd = (args: DisplayAdViewedPayload) => any
-export type GetDisplayAdContent = () => Promise<BraveToday.DisplayAd | null>
+export type GetDisplayAdContent = BraveNewsController['getDisplayAd']
 
 export type Props = {
   isFetching: boolean
@@ -47,7 +48,7 @@ export const attributeNameCardCount = 'data-today-card-count'
 
 const intersectionOptions = { root: null, rootMargin: '0px', threshold: 0.25 }
 
-export default function BraveTodayContent (props: Props) {
+export default function BraveTodaySection (props: Props) {
   const handleHitsViewportObserver = React.useCallback<IntersectionObserverCallback>((entries) => {
     // When the scroll trigger, hits the viewport, notify externally, and since
     // we won't get updated with that result, change our internal state.

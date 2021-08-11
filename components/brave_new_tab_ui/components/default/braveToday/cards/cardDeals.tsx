@@ -39,8 +39,7 @@ function ListItem (props: ListItemProps) {
 }
 
 export default function CardDeals (props: Props) {
-  // no full content no render®
-  if (props.content.length === 0) {
+  if (!props.content || props.content.length === 0) {
     return null
   }
 

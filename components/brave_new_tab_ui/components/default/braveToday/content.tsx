@@ -145,8 +145,8 @@ export default function BraveTodayContent (props: Props) {
   return (
     <>
     {/* featured item */}
+      <div ref={onOptionsTriggerElement} />
       <CardLarge
-        ref={onOptionsTriggerElement}
         content={[feed.featuredArticle]}
         publishers={publishers}
         articleToScrollTo={props.articleToScrollTo}

@@ -313,10 +313,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   const std::string language_code = brave_l10n::GetLanguageCode(locale);
   const bool is_english_language = language_code == "en";
   const bool is_japanese_language = language_code == "ja";
-  const bool brave_today_enabled_default = is_english_language ||
+  const bool brave_news_enabled_default = is_english_language ||
       is_japanese_language;
   registry->RegisterBooleanPref(kNewTabPageShowToday,
-      brave_today_enabled_default);
+      brave_news_enabled_default);
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
   registry->RegisterBooleanPref(kNewTabPageShowBinance, true);
   registry->RegisterBooleanPref(kNewTabPageShowBraveTalk, false);

@@ -388,11 +388,14 @@ source_set("ui") {
   if (!is_android) {
     deps += [
       "//brave/app:brave_generated_resources_grit",
+      "//brave/browser/brave_news",
       "//brave/browser/resources/settings:resources",
       "//brave/browser/ui/bookmark",
       "//brave/components/brave_new_tab_ui:generated_resources",
       "//brave/components/brave_sync",
       "//brave/components/brave_sync:sync_service_impl_helper",
+      "//brave/components/brave_today/browser",
+      "//brave/components/brave_today/common",
       "//brave/components/brave_welcome_ui:generated_resources",
       "//brave/components/version_info",
       "//chrome/app:chromium_strings",

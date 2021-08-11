@@ -12,8 +12,8 @@ import NewPrivateTabPage from './privateTab'
 import NewTabPage from './newTab'
 
 // Utils
-import { sendWithPromise } from 'chrome://resources/js/cr.m'
 import * as PreferencesAPI from '../api/preferences'
+import braveNewsController from '../api/brave_news/brave_news_proxy'
 import { getActionsForDispatch } from '../api/getActions'
 
 // Types
@@ -21,7 +21,6 @@ import { NewTabActions } from '../constants/new_tab_types'
 import { ApplicationState } from '../reducers'
 import { BraveTodayState } from '../reducers/today'
 import { FTXState } from '../widgets/ftx/ftx_state'
-import { GetDisplayAdContent } from '../components/default/braveToday'
 
 interface Props {
   actions: NewTabActions
@@ -34,8 +33,8 @@ interface Props {
   ftx: FTXState
 }
 
-const getBraveNewsDisplayAd: GetDisplayAdContent = function GetBraveNewsDisplayAd () {
-  return sendWithPromise('todayGetDisplayAd')
+const getBraveNewsDisplayAd = function GetBraveNewsDisplayAd () {
+  return braveNewsController.getDisplayAd()
 }
 
 function DefaultPage (props: Props) {

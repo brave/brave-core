@@ -165,6 +165,11 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #endif
 
+#if !defined(OS_ANDROID)
+#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
+#include "brave/components/brave_today/common/brave_news.mojom.h"
+#endif
+
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service.h"
@@ -447,6 +452,12 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     chrome::internal::RegisterWebUIControllerInterfaceBinder<
         brave_vpn::mojom::PanelHandlerFactory, VPNPanelUI>(map);
   }
+#endif
+
+// Brave News
+#if !defined(OS_ANDROID)
+  chrome::internal::RegisterWebUIControllerInterfaceBinder<
+      brave_news::mojom::BraveNewsController, BraveNewTabUI>(map);
 #endif
 }
 

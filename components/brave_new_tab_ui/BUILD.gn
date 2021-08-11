@@ -4,7 +4,9 @@ transpile_web_ui("brave_new_tab_ui") {
   entry_points = [
     ["brave_new_tab", rebase_path("brave_new_tab.tsx")]
   ]
-
+  deps = [
+    "//brave/components/brave_today/common:mojo_bindings_js",
+  ]
   resource_name = "brave_new_tab"
 }
 

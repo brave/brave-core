@@ -6,6 +6,7 @@
 #include "brave/browser/browser_context_keyed_service_factories.h"
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_shields/cookie_pref_service_factory.h"
@@ -75,6 +76,8 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #else
   ntp_background_images::NTPBackgroundImagesBridgeFactory::GetInstance();
 #endif
+
+brave_news::BraveNewsControllerFactory::GetInstance();
 
   brave_wallet::AssetRatioControllerFactory::GetInstance();
   brave_wallet::KeyringControllerFactory::GetInstance();

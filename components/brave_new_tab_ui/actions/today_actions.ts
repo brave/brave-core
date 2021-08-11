@@ -4,6 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import { createAction } from 'redux-act'
+import { DisplayAd } from '../api/brave_news/brave_news_proxy'
 
 export const todayInit = createAction('todayInit')
 
@@ -49,13 +50,13 @@ export type PromotedItemViewedPayload = {
 export const promotedItemViewed = createAction<PromotedItemViewedPayload>('promotedItemViewed')
 
 export type VisitDisplayAdPayload = {
-  ad: BraveToday.DisplayAd
+  ad: DisplayAd
   openInNewTab?: boolean
 }
 export const visitDisplayAd = createAction<VisitDisplayAdPayload>('visitDisplayAd')
 
 export type DisplayAdViewedPayload = {
-  ad: BraveToday.DisplayAd
+  ad: DisplayAd
 }
 export const displayAdViewed = createAction<DisplayAdViewedPayload>('displayAdViewed')
 

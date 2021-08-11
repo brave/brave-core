@@ -1,0 +1,19 @@
+import("//brave/build/config.gni")
+
+source_set("brave_news") {
+
+  sources = [
+    "brave_news_controller_factory.cc",
+    "brave_news_controller_factory.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_today/browser",
+    "//brave/components/brave_today/common",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/content",
+    "//components/user_prefs",
+    "//content/public/browser",
+  ]
+}

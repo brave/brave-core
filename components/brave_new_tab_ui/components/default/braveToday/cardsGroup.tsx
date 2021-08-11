@@ -73,8 +73,9 @@ type Props = {
 function getCard (props: Props, cardType: CardType, headlines: BraveToday.Article[]) {
   switch (cardType) {
     case CardType.Headline:
-      // TODO: article card should handle any number of articles and
-      // adapt accordingly.
+      if (headlines.length < 1) {
+        return null
+      }
       return <CardLarge
               content={headlines.splice(0, 1)}
               publishers={props.publishers}
@@ -83,7 +84,9 @@ function getCard (props: Props, cardType: CardType, headlines: BraveToday.Articl
               onSetPublisherPref={props.onSetPublisherPref}
       />
     case CardType.HeadlinePaired:
-      // TODO: handle content length < 2
+      if (headlines.length < 2) {
+        return null
+      }
       return <CardSmall
               content={headlines.splice(0, 2)}
               publishers={props.publishers}
@@ -130,6 +133,9 @@ function getCard (props: Props, cardType: CardType, headlines: BraveToday.Articl
         onSetPublisherPref={props.onSetPublisherPref}
       />
     case CardType.Deals:
+      if (!props.content.deals) {
+        return null
+      }
       return <CardDeals
         content={props.content.deals}
         onReadFeedItem={props.onReadFeedItem}

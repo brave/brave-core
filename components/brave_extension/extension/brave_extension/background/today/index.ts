@@ -4,11 +4,11 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as Background from '../../../../../common/Background'
+import { fetchResource, getUnpaddedAsDataUrl } from '../../../../../common/privateCDN'
 import { getPreference } from '../../../../../common/settingsPrivate'
 import * as Feed from './feed'
 import * as Publishers from './publishers'
 import * as PublisherUserPrefs from './publisher-user-prefs'
-import { fetchResource, getUnpaddedAsDataUrl } from './privateCDN'
 
 const SETTINGS_KEY_SHOW_TODAY = 'brave.new_tab_page.show_brave_today'
 const SETTINGS_KEY_OPTED_IN = 'brave.today.opted_in'

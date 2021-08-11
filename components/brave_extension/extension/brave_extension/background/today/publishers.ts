@@ -5,7 +5,7 @@
 
 import { debounce } from '../../../../../common/debounce'
 import Events from '../../../../../common/events'
-import { fetchResource } from './privateCDN'
+import { fetchResource } from '../../../../../common/privateCDN'
 import { getPrefs as getPublisherPrefs, addPrefsChangedListener } from './publisher-user-prefs'
 import { getSourcesUrl } from './urls'
 
