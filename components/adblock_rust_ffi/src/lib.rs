@@ -45,10 +45,13 @@ pub unsafe extern "C" fn set_domain_resolver(resolver: DomainResolverCallback) -
 #[no_mangle]
 pub unsafe extern "C" fn engine_create_from_buffer(
     data: *const c_char,
-    data_size: size_t
+    data_size: size_t,
 ) -> *mut Engine {
     let data: &[u8] = std::slice::from_raw_parts(data as *const u8, data_size);
-    let rules = CStr::from_bytes_with_nul(data).map(|s| s.to_str().unwrap_or("")).unwrap_or("");
+    let rules = std::str::from_utf8(data).unwrap_or_else(|_| {
+        eprintln!("Failed to parse filter list with invalid UTF-8 content");
+        ""
+    });
     engine_create_from_str(rules)
 }
 
