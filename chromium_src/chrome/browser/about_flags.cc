@@ -8,6 +8,7 @@
 #include "base/strings/string_util.h"
 #include "brave/common/brave_features.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
@@ -211,6 +212,11 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveRewardsVerboseLoggingDescription,             \
      kOsDesktop | kOsAndroid,                                               \
      FEATURE_VALUE_TYPE(brave_rewards::features::kVerboseLoggingFeature)},  \
+    {"brave-ads-custom-notifications",                                      \
+     flag_descriptions::kBraveAdsCustomNotificationsName,                   \
+     flag_descriptions::kBraveAdsCustomNotificationsDescription,            \
+     kOsDesktop | kOsAndroid,                                               \
+     FEATURE_VALUE_TYPE(brave_ads::features::kCustomAdNotifications)},      \
     {"brave-talk",                                                          \
      flag_descriptions::kBraveTalkName,                                     \
      flag_descriptions::kBraveTalkDescription,                              \

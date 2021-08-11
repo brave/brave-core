@@ -51,6 +51,8 @@ extern const char kBraveRewardsGeminiDescription[];
 
 extern const char kBraveRewardsVerboseLoggingName[];
 extern const char kBraveRewardsVerboseLoggingDescription[];
+extern const char kBraveAdsCustomNotificationsName[];
+extern const char kBraveAdsCustomNotificationsDescription[];
 extern const char kNativeBraveWalletName[];
 extern const char kNativeBraveWalletDescription[];
 extern const char kBraveSearchDefaultAPIName[];

@@ -53,8 +53,6 @@ static_library("browser") {
       "component_updater/resource_component.h",
       "component_updater/resource_component_observer.h",
       "component_updater/resource_info.h",
-      "features.cc",
-      "features.h",
       "frequency_capping_helper.cc",
       "frequency_capping_helper.h",
       "notification_helper.cc",

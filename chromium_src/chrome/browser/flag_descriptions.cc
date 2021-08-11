@@ -76,6 +76,10 @@ const char kBraveRewardsVerboseLoggingDescription[] =
     "information such as browsing history and credentials such as passwords "
     "and access tokens depending on your activity. Please do not share it "
     "unless asked to by Brave staff.";
+const char kBraveAdsCustomNotificationsName[] =
+    "Enable Brave Ads custom notifications";
+const char kBraveAdsCustomNotificationsDescription[] =
+    "Enable Brave Ads custom notifications to support rich media";
 const char kNativeBraveWalletName[] = "Enable experimental Brave native wallet";
 const char kNativeBraveWalletDescription[] =
     "Experimental native cryptocurrency wallet support without the use of "
