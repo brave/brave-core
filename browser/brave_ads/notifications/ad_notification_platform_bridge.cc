@@ -8,7 +8,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ui/brave_ads/ad_notification_delegate.h"
-#include "brave/browser/ui/brave_ads/ad_notification_popup.h"
+#include "brave/browser/ui/brave_ads/ad_notification_popup_handler.h"
 
 namespace brave_ads {
 
@@ -69,12 +69,12 @@ void AdNotificationPlatformBridge::ShowAdNotification(
   ad_notification.set_delegate(
       base::WrapRefCounted(new PassThroughDelegate(profile_, ad_notification)));
 
-  AdNotificationPopup::Show(profile_, ad_notification);
+  AdNotificationPopupHandler::Show(profile_, ad_notification);
 }
 
 void AdNotificationPlatformBridge::CloseAdNotification(
     const std::string& notification_id) {
-  AdNotificationPopup::Close(notification_id, /* by_user */ false);
+  AdNotificationPopupHandler::Close(notification_id);
 }
 
 }  // namespace brave_ads

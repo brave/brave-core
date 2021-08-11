@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/brave_ads/text_ad_notification_view.h"
+#include "brave/browser/ui/views/brave_ads/text_ad_notification_view.h"
 
 #include <memory>
 #include <string>
 
 #include "brave/browser/ui/brave_ads/ad_notification.h"
-#include "brave/browser/ui/brave_ads/ad_notification_control_buttons_view.h"
-#include "brave/browser/ui/brave_ads/ad_notification_header_view.h"
-#include "brave/browser/ui/brave_ads/insets_util.h"
+#include "brave/browser/ui/views/brave_ads/ad_notification_control_buttons_view.h"
+#include "brave/browser/ui/views/brave_ads/ad_notification_header_view.h"
+#include "brave/browser/ui/views/brave_ads/insets_util.h"
 #include "build/build_config.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/font.h"

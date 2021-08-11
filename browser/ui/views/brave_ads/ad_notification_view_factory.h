@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_BRAVE_ADS_AD_NOTIFICATION_VIEW_FACTORY_H_
-#define BRAVE_BROWSER_UI_BRAVE_ADS_AD_NOTIFICATION_VIEW_FACTORY_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_ADS_AD_NOTIFICATION_VIEW_FACTORY_H_
+#define BRAVE_BROWSER_UI_VIEWS_BRAVE_ADS_AD_NOTIFICATION_VIEW_FACTORY_H_
 
 #include <memory>
 
@@ -24,4 +24,4 @@ class AdNotificationViewFactory {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_BROWSER_UI_BRAVE_ADS_AD_NOTIFICATION_VIEW_FACTORY_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_ADS_AD_NOTIFICATION_VIEW_FACTORY_H_

@@ -3,17 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/brave_ads/ad_notification_popup.h"
+#include "brave/browser/ui/views/brave_ads/ad_notification_popup.h"
 
 #include <map>
 #include <utility>
 
 #include "base/time/time.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/ui/brave_ads/ad_notification_popup_widget.h"
-#include "brave/browser/ui/brave_ads/ad_notification_view.h"
-#include "brave/browser/ui/brave_ads/ad_notification_view_factory.h"
-#include "brave/browser/ui/brave_ads/bounds_util.h"
+#include "brave/browser/ui/views/brave_ads/ad_notification_popup_widget.h"
+#include "brave/browser/ui/views/brave_ads/ad_notification_view.h"
+#include "brave/browser/ui/views/brave_ads/ad_notification_view_factory.h"
+#include "brave/browser/ui/views/brave_ads/bounds_util.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/brave_ads/ad_notification_background_painter.h"
+#include "brave/browser/ui/views/brave_ads/ad_notification_background_painter.h"
 
 #include "third_party/skia/include/core/SkPath.h"
 #include "ui/gfx/canvas.h"
