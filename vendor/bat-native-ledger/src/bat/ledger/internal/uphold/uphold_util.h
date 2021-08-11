@@ -55,9 +55,11 @@ type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet);
 
 std::string GenerateVerifyLink(type::ExternalWalletPtr wallet);
 
-void LogWalletStatusChange(LedgerImpl* ledger,
-                           absl::optional<type::WalletStatus> from,
-                           type::WalletStatus to);
+void OnWalletStatusChange(LedgerImpl* ledger,
+                          absl::optional<type::WalletStatus> from,
+                          type::WalletStatus to);
+
+bool ShouldShowNewlyVerifiedWallet();
 
 }  // namespace uphold
 }  // namespace ledger

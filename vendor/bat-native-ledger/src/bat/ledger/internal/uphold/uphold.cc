@@ -202,7 +202,7 @@ void Uphold::DisconnectWallet(const std::string& notification) {
   }
   const auto to = wallet->status;
 
-  LogWalletStatusChange(ledger_, from, to);
+  OnWalletStatusChange(ledger_, from, to);
 
   const bool shutting_down = ledger_->IsShuttingDown();
 
