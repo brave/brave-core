@@ -79,7 +79,7 @@ export class CustomSubscriptions extends React.Component<Props, State> {
   }
 
   onNewSubscriptionUrlKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && this.newSubscriptionUrlValid()) {
       this.props.actions.submitNewSubscription(this.state.newSubscriptionUrl)
       this.setState((state, props) => ({
         ...state,
