@@ -284,6 +284,7 @@ bool AdBlockBaseService::Init() {
 
 void AdBlockBaseService::ResetForTest(const std::string& rules,
                                       const std::string& resources) {
+  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
   // This is temporary until adblock-rust supports incrementally adding
   // filter rules to an existing instance. At which point the hack below
   // will dissapear.

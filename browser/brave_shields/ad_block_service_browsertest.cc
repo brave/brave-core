@@ -101,7 +101,9 @@ HostContentSettingsMap* AdBlockServiceTest::content_settings() {
 void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
     const std::string& rules,
     const std::string& resources) {
-  g_brave_browser_process->ad_block_service()->ResetForTest(rules, resources);
+  brave_shields::AdBlockService* ad_block_service = g_brave_browser_process->ad_block_service();
+  ad_block_service->GetTaskRunner()->PostTask(FROM_HERE, base::BindOnce(&brave_shields::AdBlockService::ResetForTest, base::Unretained(ad_block_service), rules, resources));
+  WaitForAdBlockServiceThreads();
 }
 
 void AdBlockServiceTest::AssertTagExists(const std::string& tag,
@@ -297,7 +299,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DefaultBlockCustomException) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
-  UpdateAdBlockInstanceWithRules("");
 
   UpdateAdBlockInstanceWithRules("*ad_banner.png");
   ASSERT_TRUE(g_brave_browser_process->ad_block_custom_filters_service()
