@@ -7,15 +7,19 @@ export let rule = {
   selector: ''
 }
 
-export const applyCosmeticFilter = (host: string, selector: string) => {
+export const applyCosmeticFilter = async (host: string, selector: string) => {
   if (selector) {
     const s: string = selector.trim()
 
     if (s.length > 0) {
-      chrome.tabs.insertCSS({
-        code: `${s} {display: none !important;}`,
-        cssOrigin: 'user'
-      })
+      try {
+        await chrome.tabs.insertCSS({
+          code: `${s} {display: none !important;}`,
+          cssOrigin: 'user'
+        })
+      } catch (e) {
+        console.error(e)
+      }
 
       addSiteCosmeticFilter(host, s)
     }
@@ -46,7 +50,7 @@ chrome.contextMenus.onClicked.addListener((info: chrome.contextMenus.OnClickData
 })
 
 // content script listener for events from the cosmetic filtering content script
-chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(async (msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {
     case 'contextMenuOpened': {
@@ -87,7 +91,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }
     case 'cosmeticFilterCreate': {
       const { host, selector } = msg
-      applyCosmeticFilter(host, selector)
+      await applyCosmeticFilter(host, selector)
       break
     }
   }

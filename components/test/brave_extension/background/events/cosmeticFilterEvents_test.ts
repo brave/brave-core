@@ -74,9 +74,9 @@ describe('cosmeticFilterEvents events', () => {
         afterEach(() => {
           insertCssSpy.mockRestore()
         })
-        it('calls `chrome.tabs.insertCSS` with cosmetic filter rule', function () {
+        it('calls `chrome.tabs.insertCSS` with cosmetic filter rule', async function () {
           selectorToReturn = '#test_selector'
-          cosmeticFilterEvents.applyCosmeticFilter('brave.com', selectorToReturn)
+          await cosmeticFilterEvents.applyCosmeticFilter('brave.com', selectorToReturn)
           let returnObj = {
             'code': '#test_selector {display: none !important;}',
             'cssOrigin': 'user'
