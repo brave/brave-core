@@ -22,10 +22,10 @@ struct CreativeAdInfo {
   std::string creative_instance_id;
   std::string creative_set_id;
   std::string campaign_id;
+  std::string advertiser_id;
   int64_t start_at_timestamp;
   int64_t end_at_timestamp;
   unsigned int daily_cap = 0;
-  std::string advertiser_id;
   unsigned int priority = 0;
   double ptr = 0.0;
   bool conversion = false;
@@ -33,11 +33,11 @@ struct CreativeAdInfo {
   unsigned int per_week = 0;
   unsigned int per_month = 0;
   unsigned int total_max = 0;
-  std::string split_test_group;
   std::string segment;
+  std::string split_test_group;
+  std::vector<CreativeDaypartInfo> dayparts;
   std::vector<std::string> geo_targets;
   std::string target_url;
-  std::vector<CreativeDaypartInfo> dayparts;
 };
 
 using CreativeAdList = std::vector<CreativeAdInfo>;
