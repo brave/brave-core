@@ -1,0 +1,15 @@
+diff --git a/content/public/test/browser_test_base.cc b/content/public/test/browser_test_base.cc
+index 49520e2526adebfaa006780d65a5bf34c7a5d6bf..a9c2a04633696a8f6a3e71ac692640537a582297 100644
+--- a/content/public/test/browser_test_base.cc
++++ b/content/public/test/browser_test_base.cc
+@@ -797,7 +797,10 @@ void BrowserTestBase::ProxyRunTestOnMainThreadLoop() {
+   if (!base::test::ScopedRunLoopTimeout::ExistsForCurrentThread()) {
+     // TODO(https://crbug.com/918724): determine whether the timeout can be
+     // reduced from action_max_timeout() to action_timeout().
++    LOG(ERROR) << "\n---- Setting timeout to action_max_timeout ---< " << TestTimeouts::action_max_timeout();
+     scoped_run_timeout.emplace(FROM_HERE, TestTimeouts::action_max_timeout());
++  } else {
++    LOG(ERROR) << "\n---- Timeout is already set ---< ";
+   }
+ 
+ #if defined(OS_POSIX)

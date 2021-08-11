@@ -30,7 +30,11 @@ const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, o
 
   // Android doesn't support --v
   if (config.targetOS !== 'android') {
-    braveArgs.push('--v=' + options.v)
+    if (suite === 'brave_browser_tests') {
+      braveArgs.push('--v=1')
+    } else {
+      braveArgs.push('--v=' + options.v)
+    }
 
     if (options.vmodule) {
       braveArgs.push('--vmodule=' + options.vmodule)

@@ -59,6 +59,7 @@ IN_PROC_BROWSER_TEST_F(SpeedreaderBubbleBrowserTest,
   ShowAndVerifyUi();
 }
 
+#if !defined(OS_WIN)
 IN_PROC_BROWSER_TEST_F(SpeedreaderBubbleBrowserTest,
                        InvokeUi_speedreader_mode_bubble_basic) {
   speedreader_service()->ToggleSpeedreader();
@@ -70,5 +71,6 @@ IN_PROC_BROWSER_TEST_F(SpeedreaderBubbleBrowserTest,
   EXPECT_FALSE(active_url.host().empty());
   ShowAndVerifyUi();
 }
+#endif
 
 }  // anonymous namespace
