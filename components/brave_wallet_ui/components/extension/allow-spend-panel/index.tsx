@@ -1,27 +1,19 @@
 import * as React from 'react'
 import { create } from 'ethereum-blockies'
-import { WalletAccountType, Network, AllowSpendReturnPayload } from '../../../constants/types'
+import { Network, AllowSpendReturnPayload } from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { NetworkOptions } from '../../../options/network-options'
 import locale from '../../../constants/locale'
 import { NavButton } from '../'
+
 // Styled Components
 import {
-  StyledWrapper,
-  CenterColumn,
-  AccountCircle,
-  TopRow,
-  NetworkText,
-  PanelTitle,
-  Description,
   MessageBox,
   MessageBoxTitle,
   TransactionText,
   MessageBoxRow,
   EditButton,
   DetailsButton,
-  AddressAndOrb,
-  AddressText,
   ButtonRow,
   FavIcon,
   URLText,
@@ -30,8 +22,19 @@ import {
   FiatBalanceText
 } from './style'
 
+import {
+  StyledWrapper,
+  AccountCircle,
+  AddressAndOrb,
+  AddressText,
+  CenterColumn,
+  Description,
+  NetworkText,
+  PanelTitle,
+  TopRow
+} from '../shared-panel-styles'
+
 export interface Props {
-  selectedAccount: WalletAccountType
   selectedNetwork: Network
   onConfirm: () => void
   onReject: () => void
@@ -40,7 +43,6 @@ export interface Props {
 
 function AllowSpendPanel (props: Props) {
   const {
-    selectedAccount,
     selectedNetwork,
     spendPayload,
     onConfirm,
@@ -48,22 +50,23 @@ function AllowSpendPanel (props: Props) {
   } = props
 
   const orb = React.useMemo(() => {
-    return create({ seed: selectedAccount.address, size: 8, scale: 16 }).toDataURL()
-  }, [selectedAccount.address])
+    return create({ seed: spendPayload.contractAddress, size: 8, scale: 16 }).toDataURL()
+  }, [spendPayload.contractAddress])
 
   return (
     <StyledWrapper>
       <TopRow>
         <NetworkText>{NetworkOptions[selectedNetwork].abbr}</NetworkText>
         <AddressAndOrb>
-          <AddressText>{reduceAddress(selectedAccount.address)}</AddressText>
+          <AddressText>{reduceAddress(spendPayload.contractAddress)}</AddressText>
           <AccountCircle orb={orb} />
         </AddressAndOrb>
       </TopRow>
       <CenterColumn>
-        <FavIcon src={spendPayload.sitFavIcon} />
+        <FavIcon src={`chrome://favicon/size/64@1x/${spendPayload.siteUrl}`} />
         <URLText>{spendPayload.siteUrl}</URLText>
         <PanelTitle>{locale.allowSpendTitle} {spendPayload.erc20Token.symbol}?</PanelTitle>
+        {/* Will need to allow parameterized locales by introducing the "t" helper. For ex: {t(locale.allowSpendDescription, [spendPayload.erc20Token.symbol])}*/}
         <Description>{locale.allowSpendDescriptionFirstHalf}{spendPayload.erc20Token.symbol}{locale.allowSpendDescriptionSecondHalf}</Description>
         <MessageBoxTitle>{locale.allowSpendBoxTitle}</MessageBoxTitle>
         <MessageBox>

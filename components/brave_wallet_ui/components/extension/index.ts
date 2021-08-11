@@ -11,6 +11,7 @@ import Panel from './panel'
 import PanelHeader from './panel-header'
 import SignPanel from './sign-panel'
 import AllowSpendPanel from './allow-spend-panel'
+import AllowAddNetworkPanel from './allow-add-network-panel'
 import { NavButton } from './buttons'
 
 export {
@@ -27,5 +28,6 @@ export {
   PanelHeader,
   WelcomePanel,
   SignPanel,
-  AllowSpendPanel
+  AllowSpendPanel,
+  AllowAddNetworkPanel
 }

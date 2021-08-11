@@ -7,7 +7,8 @@ import {
   Panel,
   WelcomePanel,
   SignPanel,
-  AllowSpendPanel
+  AllowSpendPanel,
+  AllowAddNetworkPanel
 } from '../components/extension'
 import { AppList } from '../components/shared'
 import {
@@ -38,7 +39,6 @@ import {
   SelectContainer
 } from './style'
 import { AssetOptions } from '../options/asset-options'
-const compoundFavIcon = require('../assets/app-icons/compound-icon.png')
 
 export default {
   title: 'Wallet/Extension/Panels',
@@ -83,6 +83,42 @@ const accounts: WalletAccountType[] = [
   }
 ]
 
+export const _AllowAddNetwork = () => {
+
+  const networkPayload = {
+    siteUrl: 'https://app.compound.finance',
+    contractAddress: '0x3f29A1da97149722eB09c526E4eAd698895b426',
+    chainInfo: {
+      chainId: '',
+      name: 'BSC (Binance Smart Chain)',
+      url: 'https://bsc.binance.com'
+    }
+  }
+
+  const onApprove = () => {
+    alert('Approved Adding Network')
+  }
+
+  const onCancel = () => {
+    alert('Canceled Adding Network')
+  }
+
+  return (
+    <StyledExtensionWrapper>
+      <AllowAddNetworkPanel
+        selectedNetwork={Network.Mainnet}
+        onApprove={onApprove}
+        onCancel={onCancel}
+        networkPayload={networkPayload}
+      />
+    </StyledExtensionWrapper>
+  )
+}
+
+_AllowAddNetwork.story = {
+  name: 'Allow Add Network'
+}
+
 export const _AllowSpend = () => {
 
   const batTokenInfo = {
@@ -97,7 +133,6 @@ export const _AllowSpend = () => {
 
   const spendPayload = {
     siteUrl: 'https://app.compound.finance',
-    sitFavIcon: compoundFavIcon,
     contractAddress: '0x3f29A1da97149722eB09c526E4eAd698895b426',
     erc20Token: batTokenInfo,
     transactionFeeWei: '0.002447',
@@ -105,17 +140,16 @@ export const _AllowSpend = () => {
   }
 
   const onConfirm = () => {
-    alert('Signed Transaction')
+    alert('Confirmed Spend')
   }
 
   const onReject = () => {
-    alert('Canceled Signing Transaction')
+    alert('Rejected Spend')
   }
 
   return (
     <StyledExtensionWrapper>
       <AllowSpendPanel
-        selectedAccount={accounts[0]}
         selectedNetwork={Network.Mainnet}
         onConfirm={onConfirm}
         onReject={onReject}
