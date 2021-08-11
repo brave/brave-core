@@ -53,7 +53,6 @@ class AdBlockSubscriptionService : public AdBlockBaseService {
   explicit AdBlockSubscriptionService(
       const SubscriptionInfo& info,
       base::FilePath list_file,
-      OnLoadCallback on_load_callback,
       brave_component_updater::BraveComponent::Delegate* delegate);
   ~AdBlockSubscriptionService() override;
 
@@ -67,7 +66,6 @@ class AdBlockSubscriptionService : public AdBlockBaseService {
   void OnListLoaded();
 
   GURL subscription_url_;
-  OnLoadCallback on_load_callback_;
   base::FilePath list_file_;
   bool load_on_start_;
   bool initialized_;

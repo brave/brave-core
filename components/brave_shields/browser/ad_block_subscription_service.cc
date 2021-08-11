@@ -50,11 +50,9 @@ void SubscriptionInfo::RegisterJSONConverter(
 AdBlockSubscriptionService::AdBlockSubscriptionService(
     const SubscriptionInfo& info,
     const base::FilePath list_file,
-    OnLoadCallback on_load_callback,
     brave_component_updater::BraveComponent::Delegate* delegate)
     : AdBlockBaseService(delegate),
       subscription_url_(info.subscription_url),
-      on_load_callback_(on_load_callback),
       list_file_(list_file),
       load_on_start_(info.last_successful_update_attempt != base::Time::Min()),
       initialized_(false) {}
@@ -84,7 +82,7 @@ void AdBlockSubscriptionService::ReloadList() {
 }
 
 void AdBlockSubscriptionService::OnListLoaded() {
-  on_load_callback_.Run(subscription_url_);
+  Start();
   initialized_ = true;
 }
 

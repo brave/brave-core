@@ -124,8 +124,6 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
   auto subscription_service = std::make_unique<AdBlockSubscriptionService>(
       info,
       GetSubscriptionPath(sub_url).AppendASCII(kCustomSubscriptionListText),
-      base::BindRepeating(&AdBlockSubscriptionServiceManager::OnListLoaded,
-                          weak_ptr_factory_.GetWeakPtr()),
       delegate_);
   UpdateSubscriptionPrefs(sub_url, info);
 
@@ -253,8 +251,6 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
       auto subscription_service = std::make_unique<AdBlockSubscriptionService>(
           info,
           GetSubscriptionPath(sub_url).AppendASCII(kCustomSubscriptionListText),
-          base::BindRepeating(&AdBlockSubscriptionServiceManager::OnListLoaded,
-                              weak_ptr_factory_.GetWeakPtr()),
           delegate_);
 
       std::unique_ptr<component_updater::TimerUpdateScheduler> timer = std::make_unique<component_updater::TimerUpdateScheduler>();
@@ -439,17 +435,6 @@ void AdBlockSubscriptionServiceManager::OnListDownloaded(
   it->second->ReloadList();
 
   NotifyObserversOfServiceEvent();
-}
-
-void AdBlockSubscriptionServiceManager::OnListLoaded(
-    const GURL& sub_url) {
-  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-  auto it = subscription_services_.find(sub_url);
-  if (it == subscription_services_.end())
-    return;
-
-  // calling this more than once is ok
-  it->second->Start();
 }
 
 void AdBlockSubscriptionServiceManager::OnListDownloadFailure(
