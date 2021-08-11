@@ -41,6 +41,9 @@ class AdblockDOMHandler
   // brave_shields::AdblockSubscriptionServiceManagerObserver overrides:
   void OnServiceUpdateEvent() override;
 
+  void OnJavascriptAllowed() override;
+  void OnJavascriptDisallowed() override;
+
  private:
   void HandleEnableFilterList(const base::ListValue* args);
   void HandleGetCustomFilters(const base::ListValue* args);
@@ -108,9 +111,15 @@ void AdblockDOMHandler::RegisterMessages() {
       "brave_adblock.viewSubscriptionSource",
       base::BindRepeating(&AdblockDOMHandler::HandleViewSubscriptionSource,
                           base::Unretained(this)));
+}
 
+void AdblockDOMHandler::OnJavascriptAllowed() {
   service_observer_.Observe(g_brave_browser_process->ad_block_service()
                                 ->subscription_service_manager());
+}
+
+void AdblockDOMHandler::OnJavascriptDisallowed() {
+  service_observer_.Reset();
 }
 
 void AdblockDOMHandler::OnServiceUpdateEvent() {
