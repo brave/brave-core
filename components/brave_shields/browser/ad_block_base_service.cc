@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <string>
 #include <utility>
+#include <set>
 #include <vector>
 
 #include "base/bind.h"
@@ -176,15 +177,13 @@ void AdBlockBaseService::EnableTag(const std::string& tag, bool enabled) {
   }
 
   if (enabled) {
-    std::vector<std::string>::iterator it =
-        std::find(tags_.begin(), tags_.end(), tag);
-    if (it == tags_.end()) {
+    if (tags_.find(tag) == tags_.end()) {
       ad_block_client_->addTag(tag);
-      tags_.push_back(tag);
+      tags_.insert(tag);
     }
   } else {
     ad_block_client_->removeTag(tag);
-    std::vector<std::string>::iterator it =
+    std::set<std::string>::iterator it =
         std::find(tags_.begin(), tags_.end(), tag);
     if (it != tags_.end()) {
       tags_.erase(it);
