@@ -103,13 +103,17 @@ GURL AdBlockSubscriptionServiceManager::GetListTextFileUrl(
 }
 
 void AdBlockSubscriptionServiceManager::OnUpdateTimer(const GURL& sub_url, bool from_ui, component_updater::TimerUpdateScheduler::OnFinishedCallback on_finished) {
-  // TODO - this doesn't work before ready_ is signaled
   ready_.Post(
       FROM_HERE,
-      base::BindOnce(&AdBlockSubscriptionDownloadManager::StartDownload,
-                     download_manager_, sub_url, from_ui));
+      base::BindOnce(&AdBlockSubscriptionServiceManager::StartDownload,
+                     weak_ptr_factory_.GetWeakPtr(), sub_url, from_ui));
 
   std::move(on_finished).Run();
+}
+
+void AdBlockSubscriptionServiceManager::StartDownload(const GURL& sub_url, bool from_ui) {
+  DCHECK(ready_.is_signaled());
+  download_manager_->StartDownload(sub_url, from_ui);
 }
 
 void AdBlockSubscriptionServiceManager::CreateSubscription(

@@ -95,6 +95,8 @@ class AdBlockSubscriptionServiceManager {
       bool from_ui,
       component_updater::TimerUpdateScheduler::OnFinishedCallback on_finished);
 
+  void StartDownload(const GURL& sub_url, bool from_ui);
+
   bool Init();
   void LoadSubscriptionServices();
   void UpdateSubscriptionPrefs(const GURL& sub_url,
