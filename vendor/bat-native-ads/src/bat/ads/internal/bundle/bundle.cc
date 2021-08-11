@@ -153,10 +153,9 @@ BundleState Bundle::FromCatalog(const Catalog& catalog) const {
         }
 
         info.daily_cap = campaign.daily_cap;
-        info.advertiser_id = campaign.advertiser_id;
         info.priority = campaign.priority;
         info.ptr = campaign.ptr;
-        info.conversion = creative_set.conversions.size() != 0 ? true : false;
+        info.conversion = creative_set.conversions.empty() ? false : true;
         info.per_day = creative_set.per_day;
         info.per_week = creative_set.per_week;
         info.per_month = creative_set.per_month;
@@ -164,9 +163,10 @@ BundleState Bundle::FromCatalog(const Catalog& catalog) const {
         info.split_test_group = creative_set.split_test_group;
         info.dayparts = creative_dayparts;
         info.geo_targets = geo_targets;
+        info.target_url = creative.payload.target_url;
+
         info.title = creative.payload.title;
         info.body = creative.payload.body;
-        info.target_url = creative.payload.target_url;
 
         // Segments
         for (const auto& segment : creative_set.segments) {
@@ -237,20 +237,23 @@ BundleState Bundle::FromCatalog(const Catalog& catalog) const {
         }
 
         info.daily_cap = campaign.daily_cap;
-        info.advertiser_id = campaign.advertiser_id;
         info.priority = campaign.priority;
         info.ptr = campaign.ptr;
-        info.conversion = creative_set.conversions.size() != 0 ? true : false;
+        info.conversion = creative_set.conversions.empty() ? false : true;
         info.per_day = creative_set.per_day;
+        info.per_week = creative_set.per_week;
+        info.per_month = creative_set.per_month;
         info.total_max = creative_set.total_max;
+        info.split_test_group = creative_set.split_test_group;
         info.dayparts = creative_dayparts;
         info.geo_targets = geo_targets;
+        info.target_url = creative.payload.target_url;
+
         info.title = creative.payload.title;
         info.description = creative.payload.description;
         info.image_url = creative.payload.image_url;
         info.dimensions = creative.payload.dimensions;
         info.cta_text = creative.payload.cta_text;
-        info.target_url = creative.payload.target_url;
 
         // Segments
         for (const auto& segment : creative_set.segments) {
@@ -321,19 +324,20 @@ BundleState Bundle::FromCatalog(const Catalog& catalog) const {
         }
 
         info.daily_cap = campaign.daily_cap;
-        info.advertiser_id = campaign.advertiser_id;
         info.priority = campaign.priority;
         info.ptr = campaign.ptr;
-        info.conversion = creative_set.conversions.size() != 0 ? true : false;
+        info.conversion = creative_set.conversions.empty() ? false : true;
         info.per_day = creative_set.per_day;
         info.per_week = creative_set.per_week;
         info.per_month = creative_set.per_month;
         info.total_max = creative_set.total_max;
+        info.split_test_group = creative_set.split_test_group;
         info.dayparts = creative_dayparts;
         info.geo_targets = geo_targets;
+        info.target_url = creative.payload.target_url;
+
         info.company_name = creative.payload.company_name;
         info.alt = creative.payload.alt;
-        info.target_url = creative.payload.target_url;
 
         // Segments
         for (const auto& segment : creative_set.segments) {
@@ -404,17 +408,20 @@ BundleState Bundle::FromCatalog(const Catalog& catalog) const {
         }
 
         info.daily_cap = campaign.daily_cap;
-        info.advertiser_id = campaign.advertiser_id;
         info.priority = campaign.priority;
         info.ptr = campaign.ptr;
-        info.conversion = creative_set.conversions.size() != 0 ? true : false;
+        info.conversion = creative_set.conversions.empty() ? false : true;
         info.per_day = creative_set.per_day;
+        info.per_week = creative_set.per_week;
+        info.per_month = creative_set.per_month;
         info.total_max = creative_set.total_max;
+        info.split_test_group = creative_set.split_test_group;
         info.dayparts = creative_dayparts;
         info.geo_targets = geo_targets;
+        info.target_url = creative.payload.target_url;
+
         info.title = creative.payload.title;
         info.description = creative.payload.description;
-        info.target_url = creative.payload.target_url;
 
         // Segments
         for (const auto& segment : creative_set.segments) {
