@@ -78,7 +78,7 @@ bool AdBlockSubscriptionService::Init() {
   // if we already have local data, go ahead and load it
   if (load_on_start_) {
     load_on_start_ = false;
-    OnSuccessfulDownload();
+    ReloadList();
     // return false so we don't set the component to initialized until the data
     // is loaded
     return false;
@@ -87,7 +87,7 @@ bool AdBlockSubscriptionService::Init() {
   return initialized_;
 }
 
-void AdBlockSubscriptionService::OnSuccessfulDownload() {
+void AdBlockSubscriptionService::ReloadList() {
   GetDATFileData(list_file_, false,
                  base::BindOnce(&AdBlockSubscriptionService::OnListLoaded,
                                 weak_factory_.GetWeakPtr()));

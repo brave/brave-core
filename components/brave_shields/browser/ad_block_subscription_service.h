@@ -58,7 +58,7 @@ class AdBlockSubscriptionService : public AdBlockBaseService {
       brave_component_updater::BraveComponent::Delegate* delegate);
   ~AdBlockSubscriptionService() override;
 
-  void OnSuccessfulDownload();
+  void ReloadList();
 
   bool Init() override;
 

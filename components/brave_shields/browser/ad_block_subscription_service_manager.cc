@@ -35,6 +35,8 @@ namespace brave_shields {
 
 namespace {
 
+const base::TimeDelta kListUpdateInterval = base::TimeDelta::FromDays(7);
+
 FilterListSubscriptionInfo BuildInfoFromDict(
     const GURL& sub_url,
     const base::Value* dict,
@@ -102,6 +104,16 @@ GURL AdBlockSubscriptionServiceManager::GetListTextFileUrl(
   return file_url;
 }
 
+void AdBlockSubscriptionServiceManager::OnUpdateTimer(const GURL& sub_url, bool from_ui, component_updater::TimerUpdateScheduler::OnFinishedCallback on_finished) {
+  // TODO - this doesn't work before ready_ is signaled
+  ready_.Post(
+      FROM_HERE,
+      base::BindOnce(&AdBlockSubscriptionDownloadManager::StartDownload,
+                     download_manager_, sub_url, from_ui));
+
+  std::move(on_finished).Run();
+}
+
 void AdBlockSubscriptionServiceManager::CreateSubscription(
     const GURL& sub_url) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
@@ -119,16 +131,17 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
       delegate_);
   UpdateFilterListPrefs(sub_url, info);
 
+  std::unique_ptr<component_updater::TimerUpdateScheduler> timer = std::make_unique<component_updater::TimerUpdateScheduler>();
+  timer->Schedule(base::TimeDelta(), kListUpdateInterval, base::BindRepeating(&AdBlockSubscriptionServiceManager::OnUpdateTimer, weak_ptr_factory_.GetWeakPtr(), sub_url, true), base::DoNothing());
+
   {
     base::AutoLock lock(subscription_services_lock_);
     // this could allow more than one service for a given url
     subscription_services_.insert(
         std::make_pair(sub_url, std::move(subscription_service)));
+    subscription_update_timers_.insert(
+        std::make_pair(sub_url, std::move(timer)));
   }
-
-  ready_.Post(FROM_HERE,
-               base::BindOnce(&AdBlockSubscriptionDownloadManager::StartDownload,
-                              download_manager_, sub_url, true));
 }
 
 std::vector<FilterListSubscriptionInfo>
@@ -165,6 +178,10 @@ void AdBlockSubscriptionServiceManager::DeleteSubscription(
     auto it = subscription_services_.find(sub_url);
     DCHECK(it != subscription_services_.end());
     subscription_services_.erase(it);
+
+    auto timer_it = subscription_update_timers_.find(sub_url);
+    DCHECK(timer_it != subscription_update_timers_.end());
+    subscription_update_timers_.erase(timer_it);
   }
   ClearFilterListPrefs(sub_url);
 
@@ -180,17 +197,11 @@ void AdBlockSubscriptionServiceManager::RefreshSubscription(
     const GURL& sub_url,
     bool from_ui) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-  auto it = subscription_services_.find(sub_url);
-  DCHECK(it != subscription_services_.end());
 
-  auto info = GetInfo(sub_url);
-  if (!info)
-    return;  // TODO(bridiver) inform of error
-
-  ready_.Post(
-      FROM_HERE,
-      base::BindOnce(&AdBlockSubscriptionDownloadManager::StartDownload,
-                     download_manager_, info->subscription_url, from_ui));
+  auto it = subscription_update_timers_.find(sub_url);
+  DCHECK(it != subscription_update_timers_.end());
+  it->second->Stop();
+  it->second->Schedule(base::TimeDelta(), kListUpdateInterval, base::BindRepeating(&AdBlockSubscriptionServiceManager::OnUpdateTimer, weak_ptr_factory_.GetWeakPtr(), sub_url, true), base::DoNothing());
 }
 
 void AdBlockSubscriptionServiceManager::OnGetDownloadManager(
@@ -248,8 +259,20 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
                               weak_ptr_factory_.GetWeakPtr()),
           delegate_);
 
+      std::unique_ptr<component_updater::TimerUpdateScheduler> timer = std::make_unique<component_updater::TimerUpdateScheduler>();
+
+      if (info.enabled) {
+          base::TimeDelta initial_delay = kListUpdateInterval - (base::Time::Now() - info.last_update_attempt);
+          if (initial_delay < base::TimeDelta()) {
+              initial_delay = base::TimeDelta();
+          }
+          timer->Schedule(initial_delay, kListUpdateInterval, base::BindRepeating(&AdBlockSubscriptionServiceManager::OnUpdateTimer, weak_ptr_factory_.GetWeakPtr(), sub_url, false), base::DoNothing());
+      }
+
       subscription_services_.insert(
           std::make_pair(sub_url, std::move(subscription_service)));
+      subscription_update_timers_.insert(
+          std::make_pair(sub_url, std::move(timer)));
     }
   }
 }
@@ -316,7 +339,7 @@ void AdBlockSubscriptionServiceManager::ShouldStartRequest(
     std::string* mock_data_url) {
   base::AutoLock lock(subscription_services_lock_);
   for (const auto& subscription_service : subscription_services_) {
-    auto info = GetInfo(url);
+    auto info = GetInfo(subscription_service.first);
     if (info && info->enabled) {
       subscription_service.second->ShouldStartRequest(
           url, resource_type, tab_host, did_match_rule, did_match_exception,
@@ -406,7 +429,17 @@ void AdBlockSubscriptionServiceManager::OnListDownloaded(
   if (it == subscription_services_.end())
     return;
 
-  it->second->OnSuccessfulDownload();
+  auto info = GetInfo(sub_url);
+  if (!info)
+    return;
+
+  info->last_update_attempt = base::Time::Now();
+  info->last_successful_update_attempt = info->last_update_attempt;
+  UpdateFilterListPrefs(sub_url, *info);
+
+  it->second->ReloadList();
+
+  NotifyObserversOfServiceEvent();
 }
 
 void AdBlockSubscriptionServiceManager::OnListLoaded(
@@ -416,18 +449,8 @@ void AdBlockSubscriptionServiceManager::OnListLoaded(
   if (it == subscription_services_.end())
     return;
 
-  auto info = GetInfo(sub_url);
-  if (!info)
-    return;
-
-  info->last_update_attempt = base::Time::Now();
-  info->last_successful_update_attempt = base::Time::Now();
-  UpdateFilterListPrefs(sub_url, *info);
-
   // calling this more than once is ok
   it->second->Start();
-
-  NotifyObserversOfServiceEvent();
 }
 
 void AdBlockSubscriptionServiceManager::OnListDownloadFailure(
@@ -438,6 +461,8 @@ void AdBlockSubscriptionServiceManager::OnListDownloadFailure(
 
   info->last_update_attempt = base::Time::Now();
   UpdateFilterListPrefs(sub_url, *info);
+
+  NotifyObserversOfServiceEvent();
 }
 
 void AdBlockSubscriptionServiceManager::NotifyObserversOfServiceEvent() {

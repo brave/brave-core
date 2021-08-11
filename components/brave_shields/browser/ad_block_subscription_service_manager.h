@@ -22,6 +22,7 @@
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service.h"
+#include "components/component_updater/timer_update_scheduler.h"
 #include "url/gurl.h"
 
 class PrefService;
@@ -89,6 +90,11 @@ class AdBlockSubscriptionServiceManager {
   // subscription.
   base::FilePath GetSubscriptionPath(const GURL& subscription_url) const;
 
+  void OnUpdateTimer(
+      const GURL& sub_url,
+      bool from_ui,
+      component_updater::TimerUpdateScheduler::OnFinishedCallback on_finished);
+
   bool Init();
   void LoadSubscriptionServices();
   void UpdateFilterListPrefs(const GURL& sub_url,
@@ -110,6 +116,8 @@ class AdBlockSubscriptionServiceManager {
 
   std::map<GURL, std::unique_ptr<AdBlockSubscriptionService>>
       subscription_services_;
+  std::map<GURL, std::unique_ptr<component_updater::TimerUpdateScheduler>>
+      subscription_update_timers_;
 
   base::ObserverList<AdBlockSubscriptionServiceManagerObserver> observers_;
   base::Lock subscription_services_lock_;
