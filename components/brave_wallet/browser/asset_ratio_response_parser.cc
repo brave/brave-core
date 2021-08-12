@@ -156,14 +156,15 @@ bool ParseAssetPriceHistory(
     const auto& date_value = *it;
     const auto& price_value = *(++it);
 
-    double date_dbl;
-    if (!date_value.GetAsDouble(&date_dbl)) {
+    // Check whether date_value is convertible to a double first.
+    if (!date_value.is_double() && !date_value.is_int())
       return false;
-    }
-    double price;
-    if (!price_value.GetAsDouble(&price)) {
+    double date_dbl = date_value.GetDouble();
+
+    // Check whether price_value is convertible to a double first.
+    if (!price_value.is_double() && !price_value.is_int())
       return false;
-    }
+    double price = price_value.GetDouble();
 
     base::Time date = base::Time::FromJsTime(date_dbl);
     auto asset_time_price = brave_wallet::mojom::AssetTimePrice::New();
