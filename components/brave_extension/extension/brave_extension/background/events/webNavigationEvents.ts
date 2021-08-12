@@ -23,3 +23,8 @@ chrome.webNavigation.onCommitted.addListener(function ({ tabId, url, frameId }: 
     shouldRequestSettingsData = false
   }
 })
+
+chrome.webNavigation.onErrorOccurred.addListener(function ({ error, tabId, frameId }) {
+  const isMainFrame: boolean = frameId === 0
+  actions.onErrorOccurred(error, tabId, isMainFrame)
+})

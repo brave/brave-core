@@ -59,9 +59,9 @@ export const setBadgeText = (tabId: number, text: string) => {
 /**
  * Updates the shields icon based on shields state
  */
-export const setIcon = (url: string, tabId: number, shieldsOn: boolean) => {
+export const setIcon = (url: string, tabId: number, shieldsOn: boolean, error: boolean) => {
 
-  const actionIsDisabled = !isHttpOrHttps(url)
+  const actionIsDisabled = !isHttpOrHttps(url) || error
   if (chrome.browserAction) {
     chrome.browserAction.setIcon({
       path: shieldsOn ? shieldsOnIcon : shieldsOffIcon,

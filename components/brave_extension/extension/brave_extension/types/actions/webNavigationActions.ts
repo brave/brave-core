@@ -21,11 +21,20 @@ interface OnCommittedReturn {
   url: string,
   isMainFrame: boolean
 }
-
+interface OnErrorOccurredReturn {
+  type: types.ON_ERROR_OCCURRED,
+  error: string,
+  tabId: number,
+  isMainFrame: boolean
+}
 export interface OnCommitted {
   (tabId: number, url: string, isMainFrame: boolean): OnCommittedReturn
+}
+export interface OnErrorOccurred {
+  (error: string, tabId: number, isMainFrame: boolean): OnErrorOccurredReturn
 }
 
 export type webNavigationActions =
   OnBeforeNavigateReturn |
-  OnCommittedReturn
+  OnCommittedReturn |
+  OnErrorOccurredReturn

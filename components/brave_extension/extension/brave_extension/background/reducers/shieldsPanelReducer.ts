@@ -60,9 +60,47 @@ export default function shieldsPanelReducer (
   switch (action.type) {
     case webNavigationTypes.ON_COMMITTED: {
       if (action.isMainFrame) {
+        // If the tab navigating has an error, then clear it
+        // and set Brave Shields value to be the pre-error value
+        if (shieldsPanelState.getError(state, action.tabId)) {
+          const tabData = shieldsPanelState.getTabData(state, action.tabId)
+          if (!tabData) {
+            console.error(`Tab ${action.tabId} not found`)
+            break
+          }
+          const oldValue = shieldsPanelState.getBraveShieldsBeforeError(state, action.tabId)
+          state = shieldsPanelState.setError(state, action.tabId, false)
+          setAllowBraveShields(tabData.origin, oldValue)
+            .then(() => {
+              return requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
+            })
+          state = shieldsPanelState
+            .updateTabShieldsData(state, action.tabId, { braveShields: oldValue })
+          shieldsPanelState.updateShieldsIcon(state)
+        }
         state = shieldsPanelState.resetBlockingStats(state, action.tabId)
         state = shieldsPanelState.resetBlockingResources(state, action.tabId)
         state = noScriptState.resetNoScriptInfo(state, action.tabId, new window.URL(action.url).origin)
+      }
+      break
+    }
+    case webNavigationTypes.ON_ERROR_OCCURRED: {
+      if (action.isMainFrame && !shieldsPanelState.getError(state, action.tabId)) {
+        // set navigation error occurred for tab
+        state = shieldsPanelState.setError(state, action.tabId, true)
+        const tabData = shieldsPanelState.getTabData(state, action.tabId)
+        if (!tabData) {
+          console.error(`Tab ${action.tabId} not found`)
+          break
+        }
+        // Set Brave Shields to be down if there's an error
+        setAllowBraveShields(tabData.origin, 'block')
+        .then(() => {
+          return requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
+        })
+        state = shieldsPanelState
+          .updateTabShieldsData(state, action.tabId, { braveShields: 'block' })
+        shieldsPanelState.updateShieldsIcon(state)
       }
       break
     }

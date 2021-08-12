@@ -22,3 +22,12 @@ export const onCommitted: actions.OnCommitted = (tabId, url, isMainFrame) => {
     isMainFrame
   }
 }
+
+export const onErrorOccurred: actions.OnErrorOccurred = (error, tabId, isMainFrame) => {
+  return {
+    type: types.ON_ERROR_OCCURRED,
+    error,
+    tabId,
+    isMainFrame
+  }
+}

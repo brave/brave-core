@@ -6,3 +6,4 @@ import * as types from '../../constants/webNavigationTypes'
 
 export type ON_BEFORE_NAVIGATION = typeof types.ON_BEFORE_NAVIGATION
 export type ON_COMMITTED = typeof types.ON_COMMITTED
+export type ON_ERROR_OCCURRED = typeof types.ON_ERROR_OCCURRED

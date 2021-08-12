@@ -16,6 +16,8 @@ export const getActiveTabId: shieldState.GetActiveTabId = (state) => state.windo
 
 export const getActiveTabData: shieldState.GetActiveTabData = (state) => state.tabs[getActiveTabId(state)]
 
+export const getTabData: shieldState.GetTabData = (state, tabId) => state.tabs[tabId]
+
 export const isShieldsActive = (state: shieldState.State, tabId: number): boolean => {
   if (!state.tabs[tabId]) {
     return false
@@ -139,6 +141,10 @@ export const updateShieldsIconBadgeText: shieldState.UpdateShieldsIconBadgeText 
   const tabId: number = getActiveTabId(state)
   const tab: shieldState.Tab = state.tabs[tabId]
   if (tab) {
+    if (tab.error) {
+      // nothing to update
+      return
+    }
     const total = getTotalResourcesBlocked(tab)
     const text: string = state.settingsData.statsBadgeVisible
       // do not show any badge if there are no blocked items
@@ -154,13 +160,48 @@ export const updateShieldsIconImage: shieldState.UpdateShieldsIconImage = (state
   if (tab) {
     const url: string = tab.url
     const isShieldsActive: boolean = state.tabs[tabId].braveShields !== 'block'
-    setIcon(url, tabId, isShieldsActive)
+    const error = tab.error
+    setIcon(url, tabId, isShieldsActive, error)
   }
 }
 
 export const updateShieldsIcon: shieldState.UpdateShieldsIcon = (state) => {
   updateShieldsIconBadgeText(state)
   updateShieldsIconImage(state)
+}
+
+export const setError: shieldState.SetError = (state, tabId, value) => {
+  const tab: shieldState.Tab = state.tabs[tabId]
+  if (tab) {
+    state.tabs[tabId].error = value
+    if (value) {
+      // setting error, store value of braveShields before error occurred
+      state.tabs[tabId].braveShieldsBeforeError = state.tabs[tabId].braveShields
+      state.tabs[tabId].braveShields = 'block' // turn shields down
+    } else {
+      // we are clearing the error
+      state.tabs[tabId].braveShields = state.tabs[tabId].braveShieldsBeforeError
+    }
+  }
+  return state
+}
+
+export const getError: shieldState.GetError = (state, tabId) => {
+  const tab: shieldState.Tab = state.tabs[tabId]
+  if (tab) {
+    return tab.error
+  } else {
+    return false
+  }
+}
+
+export const getBraveShieldsBeforeError: shieldState.GetBraveShieldsBeforeError = (state, tabId) => {
+  const tab: shieldState.Tab = state.tabs[tabId]
+  if (tab) {
+    return tab.braveShieldsBeforeError
+  } else {
+    return 'allow'
+  }
 }
 
 export const focusedWindowChanged: shieldState.FocusedWindowChanged = (state, windowId) => {

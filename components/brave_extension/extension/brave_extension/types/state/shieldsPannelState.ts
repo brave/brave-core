@@ -33,6 +33,8 @@ export interface Tab {
   httpsRedirectedResources: Array<string>
   fingerprintingBlockedResources: Array<string>
   cosmeticFilters: CosmeticFilteringState
+  error: boolean
+  braveShieldsBeforeError: BlockOptions
 }
 
 export interface Tabs {
@@ -61,6 +63,10 @@ export interface GetActiveTabId {
 
 export interface GetActiveTabData {
   (state: State): Tab | undefined
+}
+
+export interface GetTabData {
+  (state: State, tabId: number): Tab | undefined
 }
 
 export interface GetPersistentData {
@@ -119,6 +125,15 @@ export interface UpdateShieldsIconImage {
 }
 export interface UpdateShieldsIcon {
   (state: State): void
+}
+export interface SetError {
+  (state: State, tabId: number, value: boolean): State
+}
+export interface GetError {
+  (state: State, tabId: number): boolean
+}
+export interface GetBraveShieldsBeforeError {
+  (state: State, tabId: number): BlockOptions
 }
 export interface FocusedWindowChanged {
   (state: State, windowId: number): State
