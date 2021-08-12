@@ -69,6 +69,7 @@ brave_chrome_browser_sources = [
   "//brave/browser/brave_browser_process_impl.h",
   "//brave/browser/brave_content_browser_client.cc",
   "//brave/browser/brave_content_browser_client.h",
+  "//brave/browser/brave_features_interal_names.h",
   "//brave/browser/brave_local_state_prefs.cc",
   "//brave/browser/brave_local_state_prefs.h",
   "//brave/browser/brave_profile_prefs.cc",
