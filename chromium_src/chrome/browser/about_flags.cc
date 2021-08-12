@@ -30,6 +30,7 @@ using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_shields::features::kBraveAdblockCosmeticFilteringNative;
 using brave_shields::features::kBraveAdblockCspRules;
+using brave_shields::features::kBraveDarkModeBlock;
 using brave_shields::features::kBraveDomainBlock;
 using brave_shields::features::kBraveExtensionNetworkBlocking;
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
@@ -172,6 +173,10 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveExtensionNetworkBlockingName,                 \
      flag_descriptions::kBraveExtensionNetworkBlockingDescription, kOsAll,  \
      FEATURE_VALUE_TYPE(kBraveExtensionNetworkBlocking)},                   \
+    {"brave-dark-mode-block",                                               \
+     flag_descriptions::kBraveDarkModeBlockName,                            \
+     flag_descriptions::kBraveDarkModeBlockDescription, kOsAll,             \
+     FEATURE_VALUE_TYPE(kBraveDarkModeBlock)},                              \
     SPEEDREADER_FEATURE_ENTRIES                                             \
     BRAVE_SYNC_FEATURE_ENTRIES                                              \
     BRAVE_IPFS_FEATURE_ENTRIES                                              \

@@ -31,6 +31,8 @@ extern const char kBraveDomainBlockName[];
 extern const char kBraveDomainBlockDescription[];
 extern const char kBraveExtensionNetworkBlockingName[];
 extern const char kBraveExtensionNetworkBlockingDescription[];
+extern const char kBraveDarkModeBlockName[];
+extern const char kBraveDarkModeBlockDescription[];
 extern const char kBraveSidebarName[];
 extern const char kBraveSidebarDescription[];
 extern const char kBraveSpeedreaderName[];
