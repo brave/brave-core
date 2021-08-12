@@ -57,6 +57,8 @@ const std::string& GetQueryStringTrackers() {
            "yclid",
            // https://github.com/brave/brave-browser/issues/8975
            "__s",
+           // https://github.com/brave/brave-browser/issues/17452
+           "s_cid",
            // https://github.com/brave/brave-browser/issues/9019
            "_hsenc", "__hssc", "__hstc", "__hsfp", "hsCtaTracking"}),
       "|"));
