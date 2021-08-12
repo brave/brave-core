@@ -9,12 +9,16 @@
 #include <string>
 #include <utility>
 
+#include "base/path_service.h"
 #include "base/threading/thread_task_runner_handle.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/common/network_constants.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
+#include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/test/base/testing_brave_browser_process.h"
+#include "chrome/common/chrome_paths.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/base/net_errors.h"
 #include "net/dns/mock_host_resolver.h"
@@ -60,12 +64,17 @@ class TestingBraveComponentUpdaterDelegate : public BraveComponent::Delegate {
 
   const std::string locale() const override { return "en"; }
   PrefService* local_state() override {
-    NOTREACHED();
     return nullptr;
   }
 };
 
 }  // namespace
+
+void FakeAdBlockSubscriptionDownloadManagerGetter(
+    base::OnceCallback<
+        void(brave_shields::AdBlockSubscriptionDownloadManager*)>) {
+  // no-op, subscription services are not currently used in unit tests
+}
 
 class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
  protected:
@@ -73,8 +82,14 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
     brave_component_updater_delegate_ =
         std::make_unique<TestingBraveComponentUpdaterDelegate>();
 
-    auto adblock_service = brave_shields::AdBlockServiceFactory(
-        brave_component_updater_delegate_.get());
+    base::FilePath user_data_dir;
+    DCHECK(base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir));
+    auto adblock_service = std::make_unique<brave_shields::AdBlockService>(
+        brave_component_updater_delegate_.get(),
+        std::make_unique<brave_shields::AdBlockSubscriptionServiceManager>(
+            brave_component_updater_delegate_.get(),
+            base::BindOnce(&FakeAdBlockSubscriptionDownloadManagerGetter),
+            user_data_dir));
 
     TestingBraveBrowserProcess::GetGlobal()->SetAdBlockService(
         std::move(adblock_service));
