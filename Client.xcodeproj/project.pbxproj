@@ -12926,7 +12926,7 @@
 			repositoryURL = "https://github.com/nostradani/GCDWebServer";
 			requirement = {
 				kind = revision;
-				revision = 16bbfa795eef8c8c0715e49ab3ea75d816907661;
+				revision = e1a80dc3e560a0738bbfa81db82e9645789bac9c;
 			};
 		};
 		27B68E5B25C88CA7002D0826 /* XCRemoteSwiftPackageReference "FeedKit" */ = {
