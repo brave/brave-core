@@ -61,9 +61,9 @@ AdBlockSubscriptionServiceManager::AdBlockSubscriptionServiceManager(
     brave_component_updater::BraveComponent::Delegate* delegate,
     AdBlockSubscriptionDownloadManager::DownloadManagerGetter
         download_manager_getter,
-    const base::FilePath& user_data_dir)
+    const base::FilePath& profile_dir)
     : delegate_(delegate),
-      subscription_path_(user_data_dir.AppendASCII("System Profile").AppendASCII(kSubscriptionsDir)),
+      subscription_path_(profile_dir.Append(kSubscriptionsDir)),
       subscriptions_(new base::DictionaryValue()) {
   LoadSubscriptionServices();
   std::move(download_manager_getter)

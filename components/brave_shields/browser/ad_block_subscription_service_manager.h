@@ -44,7 +44,7 @@ class AdBlockSubscriptionServiceManager {
   explicit AdBlockSubscriptionServiceManager(
       BraveComponent::Delegate* delegate,
       AdBlockSubscriptionDownloadManager::DownloadManagerGetter getter,
-      const base::FilePath& user_data_dir);
+      const base::FilePath& profile_dir);
   ~AdBlockSubscriptionServiceManager();
 
   // Returns a `file://` URL that points directly to the cached list text file
