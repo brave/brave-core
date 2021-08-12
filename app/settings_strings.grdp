@@ -1333,8 +1333,23 @@
   <message name="IDS_SETTINGS_PRIVACY_REVIEW_SUBLABEL" desc="Sublabel of the row in the Brave privacy and security of Brave settings that leads to the privacy review.">
     Review the most important privacy and security controls in one place
   </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_PROMO_TITLE" desc="Title of a card in the settings page that promotes the privacy review feature.">
+    Privacy review
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_PROMO_BODY" desc="Body text of a card in the settings page that explains what the privacy review feature is.">
+    Understand and review the most critical privacy settings in one place
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_PROMO_START_BUTTON" desc="Text of a button on a card in the settings page that starts the privacy review feature.">
+    Review my settings
+  </message>
   <message name="IDS_SETTINGS_PRIVACY_REVIEW_NEXT_BUTTON" desc="Text of a button in the privacy review that advances to the next step in the review.">
     Next
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_FEATURE_DESCRIPTION_HEADER" desc="Header of a description text that describes the benefits that a particular feature has. This description is shown to users alongside the feature itself in the privacy review.">
+    What you get
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_WHAT_YOU_SHARE_WITH_GOOGLE" desc="Header of a text column that describes the information a feature shares with Brave.">
+    What you share with Brave
   </message>
   <message name="IDS_SETTINGS_PRIVACY_REVIEW_WELCOME_CARD_HEADER" desc="A header shown at the top of the welcome card in the privacy review, explaining to users that they can review their most important privacy and security settings in the privacy review.">
     Review your current settings for the most critical privacy and security controls
@@ -1348,8 +1363,23 @@
   <message name="IDS_SETTINGS_PRIVACY_REVIEW_COMPLETION_CARD_LEAVE_BUTTON" desc="Text of a button in the completion car in the privacy review that leads the user back to Brave settings.">
     Back to settings
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_REVIEW_COOKIES_CARD_HEADER" desc="Header of the cookies card in the privacy review.">
-    Review cookie settings
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_MSBB_CARD_HEADER" desc="Header of the 'make searches and browsing better' card in the privacy review.">
+    Review settings for search and browsing optimization
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_MSBB_FEATURE_DESCRIPTION1" desc="A part of the feature description of 'make searches and browsing better' in the privacy review.">
+    Faster browsing: For example, proactively load specific further content based on the current page
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_MSBB_FEATURE_DESCRIPTION2" desc="A part of the feature description of 'make searches and browsing better' in the privacy review.">
+    Improved browsing: For example, suggestions in the Omnibox before you start typing
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_MSBB_FEATURE_DESCRIPTION3" desc="A part of the feature description of 'make searches and browsing better' in the privacy review.">
+    Improved Brave using page metrics
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_MSBB_PRIVACY_DESCRIPTION1" desc="A part of the privacy description of 'make searches and browsing better' in the privacy review.">
+    URL of the pages you visit, e.g. https://www.google.com
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_MSBB_PRIVACY_DESCRIPTION2" desc="A part of the privacy description of 'make searches and browsing better' in the privacy review.">
+    The URLs are shared with Brave to understand the browsing behavior
   </message>
 
   <!-- Safety check -->

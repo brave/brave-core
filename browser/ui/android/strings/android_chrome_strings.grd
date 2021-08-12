@@ -1272,11 +1272,11 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_LANGUAGES_SPLIT_READY" desc="Text to display next to the native name of a language when it has been downloaded to use as Brave's UI language. The dash separates the native name from the description.">
         <ph name="LANG">%1$s<ex>हिन्दी</ex></ph> - Language ready, restart <ph name="APP_NAME">%2$s<ex>Brave</ex></ph>.
       </message>
-      <message name="IDS_LANGUAGES_SPLIT_FAILED" desc="Text to display next to the native name of a language when a langauge pack has failed to download. The dash separates the native name from the description. The message asks the user to try again.">
+      <message name="IDS_LANGUAGES_SPLIT_FAILED" desc="Text to display next to the native name of a language when a language pack has failed to download. The dash separates the native name from the description. The message asks the user to try again.">
         <ph name="LANG">%1$s<ex>हिन्दी</ex></ph> - This language couldn't be downloaded. Try again later.
       </message>
       <message name="IDS_LANGUAGES_INFOBAR_READY" desc="Infobar text to appear when a new language pack has been downloaded. [CHAR_LIMIT=32]">
-        <ph name="LANG">%1$s<ex>Hindi</ex></ph> is ready.
+        <ph name="LANG">%1$s<ex>Hindi</ex></ph> is ready
       </message>
       <message name="IDS_LANGUAGES_INFOBAR_RESTART" desc="The clickable link letting the user know they can click to restart Brave. [CHAR_LIMIT=32]">
         Restart Brave
@@ -1428,6 +1428,17 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_DATA_REDUCTION_MILESTONE_PROMO_TEXT_GB" desc="Text to be displayed in the data reduction promo message that lets the user know they saved a certain amount of data in GB">
         Brave has saved you <ph name="gigabytes">%1$d<ex>10</ex></ph> GB
+      </message>
+
+       <!-- Dangerous download -->
+      <message name="IDS_DANGEROUS_DOWNLOAD_DIALOG_CONFIRM_TEXT" desc="Text label for the confirm button on the dangerous download dialog for user to confirm the download.">
+        Download anyway
+      </message>
+      <message name="IDS_DANGEROUS_DOWNLOAD_DIALOG_TEXT" desc="Warning message shown on a dialog to ask user to validate the download of a dangerous file.">
+        Do you want to download <ph name="FILE_NAME">%1$s<ex>malware.exe</ex></ph> anyway?
+      </message>
+      <message name="IDS_DANGEROUS_DOWNLOAD_DIALOG_TITLE" desc="Title of the dialog for asking user to confirm a dangerous download">
+        File might be harmful
       </message>
 
       <!-- Download later -->
@@ -1660,7 +1671,7 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_PRIVACY_POLICY_TITLE" desc="Title for the Brave privacy policy">
         Brave Privacy Policy
       </message>
-      <message name="IDS_CHROME_PRIVACY_POLICY_URL" desc="URL for the Brave privacy policy" translateable="false">
+      <message name="IDS_GOOGLE_PRIVACY_POLICY_URL" desc="URL for the Brave privacy policy" translateable="false">
         https://policies.google.com/privacy
       </message>
       <message name="IDS_FAMILY_LINK_PRIVACY_POLICY_URL" desc="URL for the Family Link privacy policy" translateable="false">
@@ -2014,6 +2025,42 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_DOWNLOAD_SCHEDULED_ON_TIME" desc="Label describing that the download was scheduled to start at a later time.">
         You’ll see a notification when this download starts at <ph name="time">%1$s<ex>8:30PM</ex></ph>.
+      </message>
+
+      <!-- Download progress message UI -->
+      <message name="IDS_DOWNLOAD_MESSAGE_DOWNLOAD_IN_PROGRESS_DESCRIPTION" desc="Download message text describing that user can find about their download status from notifications.">
+        You can see the download status in your notifications
+      </message>
+      <message name="IDS_DOWNLOAD_MESSAGE_DOWNLOAD_COMPLETE_DESCRIPTION" desc="Download message description text about downloaded file name and their size.">
+        (<ph name="megabytes">%1$s<ex>100 MB</ex></ph>)\n<ph name="url">%2$s<ex>https://...example.com</ex></ph>
+      </message>
+      <message name="IDS_DOWNLOAD_MESSAGE_MULTIPLE_DOWNLOAD_IN_PROGRESS" desc="Download message text describing that chrome is downloading multiple files.">
+        {FILE_COUNT, plural,
+            =1 {Downloading file…}
+            other {Downloading # files…}}
+      </message>
+      <message name="IDS_DOWNLOAD_MESSAGE_MULTIPLE_DOWNLOAD_COMPLETE" desc="Download message label describing that one or more downloads have completed">
+        {FILE_COUNT, plural,
+          =1 {File downloaded}
+          other {# downloads complete}}
+      </message>
+      <message name="IDS_DOWNLOAD_MESSAGE_MULTIPLE_DOWNLOAD_FAILED" desc="Download message label describing that one or more downloads have failed">
+        {FILE_COUNT, plural,
+          =1 {1 download failed}
+          other {# downloads failed}}
+      </message>
+      <message name="IDS_DOWNLOAD_MESSAGE_MULTIPLE_DOWNLOAD_PENDING" desc="Download message label describing that one or more downloads are pending">
+        {FILE_COUNT, plural,
+          =1 {1 download pending}
+          other {# downloads pending}}
+      </message>
+      <message name="IDS_DOWNLOAD_MESSAGE_MULTIPLE_DOWNLOAD_SCHEDULED" desc="Download message label describing that one or more downloads are scheduled">
+        {FILE_COUNT, plural,
+          =1 {1 download scheduled}
+          other {# downloads scheduled}}
+      </message>
+      <message name="IDS_DOWNLOAD_MESSAGE_DOWNLOAD_SCHEDULED_DESCRIPTION" desc="Download message text describing that user can find about their download status from notifications.">
+        Download will start when on Wi-Fi
       </message>
 
       <!-- Inline Update Infobar -->
@@ -2546,11 +2593,11 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_HISTORY_MANAGER_SEARCH" desc="Placeholder text for the input field that allows users to search browsing history.">
         Search your history
       </message>
-      <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_TITLE" desc="Title that states history is not saved in Private mode.">
-        History isn’t saved in Private
+      <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_TITLE" desc="Title that states sites the users visit are not saved in Private mode.">
+        Sites you visit aren’t saved in Private
       </message>
-      <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_DESCRIPTION" desc="Description that states history is not saved in Private mode.">
-        Brave doesn’t save your browsing history when you choose to browse privately. You can still use bookmarks to access your favorite sites.
+      <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_DESCRIPTION" desc="Description that states to clear Private browsing history from the device, users need to close all private tabs.">
+        To clear Private browsing history from your device, close all Private tabs.
       </message>
 
       <!-- Close Private tabs notification messages -->
@@ -2795,6 +2842,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_FEED_MANAGE_HIDDEN_DESCRIPTION" desc="Content description to manage hiding and unhiding topics.">
         Hide and unhide topics
       </message>
+      <message name="IDS_FEED_MANAGE_AUTOPLAY" desc="Menu item to manage feed autoplay from the feed header overflow menu.">
+        Autoplay
+      </message>
+      <message name="IDS_FEED_MANAGE_AUTOPLAY_DESCRIPTION" desc="Content description to manage feed autoplay from the feed header overflow menu.">
+        Manage Video Preview Settings
+      </message>
       <message name="IDS_FEED_MANAGE_FOLLOWING" desc="Menu item to manage followed sites.">
         Following
       </message>
@@ -2828,7 +2881,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_NTP_DISCOVER_OFF_BRANDED" desc="Title in the feed header when the feed is turned off and the default search engine is not Brave. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
         Discover by Brave - off
       </message>
-      <message name="IDS_NTP_FOR_YOU" desc="Title in the feed header for interest-based feed.">For you</message>
       <message name="IDS_NTP_FOLLOWING" desc="Title in the feed header for user-customized following feed.">Following</message>
       <message name="IDS_ACCESSIBILITY_NTP_FOLLOWING_UNREAD_CONTENT" desc="Content description for the feed header blue dot for user-customized following feed, which indicates that unread content is available.">
       Unread stories ready
@@ -2846,8 +2898,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_DISCOVER_NO_CARDS_INSTRUCTIONS" desc="Message body for the article feed on the New Tab Page. Instructs the user to come back later when new feed content is available. Please translate 'stories' to match its use in TC ID 792300740424433300. Also see TC ID 7331961212006720987 for the corresponding message in Discover.">Check back later for new stories</message>
       <message name="IDS_DISCOVER_CANT_REFRESH" desc="Message title for the article feed on the New Tab Page. Shown when feed content is not available because there is no internet connection. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278). Also see TC ID 6114827482740570724 for the corresponding message in Discover.">Can't refresh Discover</message>
       <message name="IDS_DISCOVER_CANT_REFRESH_INSTRUCTIONS" desc="Message body for the article feed on the New Tab Page. Instructs the user to wait and try to refresh the feed once the internet connection returns. Please translate 'stories' to match its use in TC ID 792300740424433300. Also see TC ID 6114827482740570724 for the corresponding message in Discover.">Check back later for new stories</message>
-      <message name="IDS_WEB_FEED_NO_CARDS_TITLE" desc="Message title for the user-customizable web feed on the New Tab Page. Shown when the user either has not followed any websites or when the user has followed some websites but the sites do not have any new articles. Please translate 'stories' to match its use in TC ID 792300740424433300.">You'll find stories here</message>
-      <message name="IDS_WEB_FEED_NO_CARDS_INSTRUCTIONS" desc="Message body for the user-customizable web feed on the New Tab Page. Shown when the user either has not followed any websites or when the user has followed some websites but the sites do not have any new articles. Instructs the user to follow more sites or check back later. Please translate 'Follow' (with capital F) to match its use in TC ID 4108314971463891922.">To follow a site, go to the site, open the Brave menu, and tap Follow.</message>
+      <message name="IDS_WEB_FEED_NO_CARDS_TITLE" desc="Message title for the user-customizable web feed on the New Tab Page. Shown when the user either has not followed any websites or when the user has followed some websites but the sites do not have any new articles.">
+        Keep up with your favorite sites
+      </message>
+      <message name="IDS_WEB_FEED_NO_CARDS_INSTRUCTIONS" desc="Message body for the user-customizable web feed on the New Tab Page. Shown when the user either has not followed any websites or when the user has followed some websites but the sites do not have any new articles. Instructs the user to follow more sites or check back later. Please translate 'Follow' (with capital F) to match its use in TC ID 4108314971463891922.">
+        To follow a site, go to the site, open the Brave menu, and tap Follow.
+      </message>
       <message name="IDS_FEED_SWIPE_REFRESH_IPH" desc="In-product help that prompts the user to use pull-down gesture to refresh the feed content.">
         For new stories, pull down to refresh
       </message>
@@ -3037,7 +3093,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Move to other window
       </message>
       <message name="IDS_MENU_MANAGE_ALL_WINDOWS" desc="Menu item for bringing up instance switcher UI. [CHAR_LIMIT=27]">
-        Manage all windows (<ph name="INSTANCE_COUNTS">%1$d<ex>3</ex></ph>)
+        Manage windows (<ph name="INSTANCE_COUNTS">%1$d<ex>3</ex></ph>)
       </message>
       <message name="IDS_MENU_FORWARD" desc="Tooltip for the button to advance to the next web page. Verb. [CHAR_LIMIT=27]">
         Forward
@@ -3692,37 +3748,37 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_WEB_FEED_FOLLOW_LOADING_DESCRIPTION" desc="The content description of the loading spinner after the user presses Follow and is waiting for a response.">
         Following...
       </message>
-      <message name="IDS_WEB_FEED_FOLLOW_SUCCESS_SNACKBAR_MESSAGE" desc="The snackbar message after a successful Web Feed follow.">
-        Followed <ph name="SITE_NAME">%1$s<ex>Brave</ex></ph>
+      <message name="IDS_WEB_FEED_FOLLOW_SUCCESS_SNACKBAR_MESSAGE" desc="The snackbar message after a successful Web Feed follow request.">
+        Following <ph name="SITE_NAME">%1$s<ex>Reuters</ex></ph>
       </message>
-      <message name="IDS_WEB_FEED_FOLLOW_SUCCESS_SNACKBAR_ACTION" desc="The snackbar action after a successful Web Feed follow.">
+      <message name="IDS_WEB_FEED_FOLLOW_SUCCESS_SNACKBAR_ACTION" desc="The snackbar action after a successful Web Feed follow request.">
         Go to feed
       </message>
-      <message name="IDS_WEB_FEED_FOLLOW_GENERIC_FAILURE_SNACKBAR_MESSAGE" desc="The generic snackbar message after an unsuccessful Web Feed follow.">
+      <message name="IDS_WEB_FEED_FOLLOW_GENERIC_FAILURE_SNACKBAR_MESSAGE" desc="The generic snackbar message after an unsuccessful Web Feed follow request.">
         Can’t follow. Something went wrong.
       </message>
-      <message name="IDS_WEB_FEED_UNFOLLOW_GENERIC_FAILURE_SNACKBAR_MESSAGE" desc="The generic snackbar message after an unsuccessful Web Feed unfollow.">
+      <message name="IDS_WEB_FEED_UNFOLLOW_GENERIC_FAILURE_SNACKBAR_MESSAGE" desc="The generic snackbar message after an unsuccessful Web Feed unfollow request.">
         Can’t unfollow. Something went wrong.
       </message>
-      <message name="IDS_WEB_FEED_GENERIC_FAILURE_SNACKBAR_ACTION" desc="The snackbar action after an unsuccessful Web Feed follow/unfollow.">
+      <message name="IDS_WEB_FEED_GENERIC_FAILURE_SNACKBAR_ACTION" desc="The snackbar action after an unsuccessful Web Feed follow or unfollow request.">
         Try again
       </message>
-      <message name="IDS_WEB_FEED_UNFOLLOW_SUCCESS_SNACKBAR_MESSAGE" desc="The snackbar message after a successful Web Feed unfollow.">
-        Unfollowed <ph name="SITE_NAME">%1$s<ex>Brave</ex></ph>
+      <message name="IDS_WEB_FEED_UNFOLLOW_SUCCESS_SNACKBAR_MESSAGE" desc="The snackbar message after a successful Web Feed unfollow request.">
+        Unfollowed <ph name="SITE_NAME">%1$s<ex>Reuters</ex></ph>
       </message>
-      <message name="IDS_WEB_FEED_UNFOLLOW_SUCCESS_SNACKBAR_ACTION" desc="The snackbar action after a successful Web Feed unfollow.">
+      <message name="IDS_WEB_FEED_UNFOLLOW_SUCCESS_SNACKBAR_ACTION" desc="The snackbar action after a successful Web Feed unfollow request.">
         Refollow
       </message>
-      <message name="IDS_WEB_FEED_POST_FOLLOW_DIALOG_TITLE" desc="The snackbar action after a successful Web Feed unfollow.">
-        You’re following <ph name="SITE_NAME">%1$s<ex>Brave</ex></ph>
+      <message name="IDS_WEB_FEED_POST_FOLLOW_DIALOG_TITLE" desc="The title of the dialog presented a few times after a successful Web Feed follow request.">
+        You’re following <ph name="SITE_NAME">%1$s<ex>Reuters</ex></ph>
       </message>
-      <message name="IDS_WEB_FEED_POST_FOLLOW_DIALOG_STORIES_READY_DESCRIPTION" desc="The snackbar action after a successful Web Feed unfollow.">
-        You’ll now see stories from <ph name="SITE_NAME">%1$s<ex>Brave</ex></ph> when you open a new tab. You can control the sites you’re following in Manage Follows.
+      <message name="IDS_WEB_FEED_POST_FOLLOW_DIALOG_STORIES_READY_DESCRIPTION" desc="The body text of the dialog presented a few times after a successful Web Feed follow request, when content from that Web Feed is immediately available. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
+        You'll now see stories from <ph name="SITE_NAME">%1$s<ex>Reuters</ex></ph> when you open a new tab. Sites you follow are saved in your Brave account. You can manage them in Discover settings.
       </message>
-      <message name="IDS_WEB_FEED_POST_FOLLOW_DIALOG_STORIES_NOT_READY_DESCRIPTION" desc="The snackbar action after a successful Web Feed unfollow.">
-        Soon, you’ll see stories from <ph name="SITE_NAME">%1$s<ex>Brave</ex></ph> when you open a new tab. You can control the sites you’re following in Manage Follows.
+      <message name="IDS_WEB_FEED_POST_FOLLOW_DIALOG_STORIES_NOT_READY_DESCRIPTION" desc="The body text of the dialog presented a few times after a successful Web Feed follow request, when content from that Web Feed is not readily available. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
+        Soon, you’ll see stories from <ph name="SITE_NAME">%1$s<ex>Reuters</ex></ph> when you open a new tab. Sites you follow are saved in your Brave account. You can manage them in Discover settings.
       </message>
-      <message name="IDS_WEB_FEED_POST_FOLLOW_DIALOG_OPEN_A_NEW_TAB" desc="The snackbar action after a successful Web Feed unfollow.">
+      <message name="IDS_WEB_FEED_POST_FOLLOW_DIALOG_OPEN_A_NEW_TAB" desc="The main action of the dialog presented a few times after a successful Web Feed follow request, when content from from that Web Feed is immediately available.">
         Open a new tab
       </message>
 
@@ -3971,15 +4027,28 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
 
       <!-- Multi-instance Switcher Dialog strings -->
       <message name="IDS_INSTANCE_SWITCHER_HEADER" desc="The header of multi-instance switcher dialog.">
-        Manage all windows
+        Manage windows
       </message>
-      <message name="IDS_INSTANCE_SWITCHER_TAB_COUNT" desc="Total number of tabs for each instance entry.">
+      <message name="IDS_INSTANCE_SWITCHER_ENTRY_EMPTY_WINDOW" desc="Title of an instance entry that has no tabs in it.">
+        Empty window
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_DESC_INCOGNITO" desc="Description of an instance entry with private tab(s) only.">
         {TAB_COUNT, plural,
-          =1 {<ph name="TAB_COUNT_ONE">%1$d<ex>1</ex></ph> tab}
-          other {<ph name="TAB_COUNT_MANY">%1$d<ex>3</ex></ph> tabs}}
+          =1 {<ph name="TAB_COUNT_ONE">%1$s</ph> private tab}
+          other {<ph name="TAB_COUNT_NORMAL">%1$s<ex>2</ex></ph> private tabs}}
       </message>
-      <message name="IDS_INSTANCE_SWITCHER_OPEN_FULLSCREEN" desc="The menu item for the 3-dot more button to open the chosen instance in full screen.">
-        Open in full screen
+      <message name="IDS_INSTANCE_SWITCHER_DESC_MIXED" desc="Description of an instance entry showing both normal and private tabs.">
+        {TAB_COUNT, plural,
+          =1 {<ph name="TAB_COUNT_ONE">%1$s</ph> tab}
+          other {<ph name="TAB_COUNT_MANY">%2$s<ex>1</ex></ph> tabs, <ph name="TAB_COUNT_INCOGNITO">%1$s</ph> private}}
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_TAB_COUNT_ZERO" desc="Multi-instance switcher entry description when there is no tab for an instance.">
+        No tabs
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_TAB_COUNT_NONZERO" desc="Total number of tabs for each instance entry.">
+        {TAB_COUNT, plural,
+          =1 {1 tab}
+          other {# tabs}}
       </message>
       <message name="IDS_INSTANCE_SWITCHER_CLOSE_WINDOW" desc="The menu item for the 3-dot more button to close the instance.">
         Close window
@@ -3987,8 +4056,14 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_INSTANCE_SWITCHER_CURRENT_WINDOW" desc="The description for an instance entry saying that it is the entry for the current window.">
         Current
       </message>
-      <message name="IDS_INSTANCE_SWITCHER_ADJACENT_WINDOW" desc="The description for an instance entry saying that it is running in an adjacent window.">
-        Running in adjacent window
+      <message name="IDS_INSTANCE_SWITCHER_ADJACENT_WINDOW" desc="The description for an instance entry running in the foreground.">
+        Window is open
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_ALREADY_RUNNING_FOREGROUND" desc="Toast message to show when user tries to switch to a window that is already running in the foreground.">
+        Brave is already running here.
+      </message>
+      <message name="IDS_TARGET_SELECTOR_MOVE" desc="The message in the button in target selector dialog that starts moving a tab.">
+        Move tab
       </message>
 
       <!-- In-Product Help strings -->
@@ -4088,6 +4163,15 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_ACCESSIBILITY_QUICK_ACTION_SEARCH_WIDGET_ICON" desc="Content description for the for the icon on the Quick Action Search Widget">
         Quick Action Search Widget Icon
+      </message>
+      <message name="IDS_QUICK_ACTION_SEARCH_WIDGET_MESSAGE_NO_INCOGNITO" desc="Toast message shown when the user tries to open Private tab which is disabled on the device.">
+        Private is not available on this device
+      </message>
+      <message name="IDS_QUICK_ACTION_SEARCH_WIDGET_MESSAGE_NO_VOICE_SEARCH" desc="Toast message shown when the user tries to use Voice Search which is disabled on the device.">
+        Voice search is not available on this device
+      </message>
+      <message name="IDS_QUICK_ACTION_SEARCH_WIDGET_MESSAGE_NO_GOOGLE_LENS" desc="Toast message shown when the user tries to use Brave Lens which is disabled on the device.">
+        Brave Lens is not available on this device
       </message>
 
       <!-- Dino Widget -->
@@ -4844,6 +4928,14 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_QUOTATION_MARK_SUFFIX" desc="String to put after other text to represent it as a quote end.">
         ”
+      </message>
+
+      <!-- HTTPS-First Mode settings strings -->
+      <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_TITLE" desc="Text for the HTTPS-First Mode toggle in settings.">
+        Always use secure connections
+      </message>
+      <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_SUMMARY" desc="Secondary, continued explanation of HTTPS-First Mode in settings.">
+        Upgrade navigations to HTTPS and warn you before loading sites that don’t support it
       </message>
     </messages>
   </release>
