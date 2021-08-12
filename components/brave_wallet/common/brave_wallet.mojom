@@ -57,6 +57,9 @@ interface PanelHandler {
   // Notify the backend that the dialog should be closed.
   CloseUI();
 
+  AddEthereumChainApproved(string network, string origin, int32 tab_id);
+  AddEthereumChainCanceled(string network, string origin, int32 tab_id);
+
   ConnectToSite(array<string> accounts, string origin, int32 tab_id);
   CancelConnectToSite(string origin, int32 tab_id);
 };

@@ -34,6 +34,25 @@ struct TransactionReceipt {
   bool status;
 };
 
+struct NativeCurrency {
+  std::string name;
+  std::string symbol;
+  uint256_t decimals;
+};
+
+struct AddEthereumChainParameter {
+  AddEthereumChainParameter();
+  ~AddEthereumChainParameter();
+  AddEthereumChainParameter(const AddEthereumChainParameter&);
+
+  std::string chainId;
+  std::string chainName;
+  std::vector<std::string> blockExplorerUrls;
+  std::vector<std::string> iconUrls;
+  std::vector<std::string> rpcUrls;
+  NativeCurrency currency;
+};
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_TYPES_H_

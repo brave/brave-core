@@ -67,7 +67,10 @@ GURL GetConnectWithSiteWebUIURL(const GURL& webui_base_url,
                                 int32_t tab_id,
                                 const std::vector<std::string>& accounts,
                                 const std::string& origin);
-
+GURL GetConnectWithPayloadWebUIURL(const GURL& webui_base_url,
+                                   int32_t tab_id,
+                                   const std::string& origin,
+                                   const std::string& payload);
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETHEREUM_PERMISSION_UTILS_H_

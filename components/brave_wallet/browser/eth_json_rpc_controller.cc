@@ -13,6 +13,8 @@
 #include "brave/components/brave_wallet/browser/eth_call_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_requests.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
+#include "components/sync_preferences/pref_service_syncable.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace {
@@ -275,6 +277,12 @@ void EthJsonRpcController::OnGetTransactionReceipt(
   }
 
   std::move(callback).Run(true, receipt);
+}
+
+// static
+void EthJsonRpcController::RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterListPref(kBraveWalletCustomNetworks);
 }
 
 void EthJsonRpcController::SendRawTransaction(const std::string& signed_tx,

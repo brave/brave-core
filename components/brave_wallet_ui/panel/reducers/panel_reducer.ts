@@ -7,7 +7,7 @@
 import { createReducer } from 'redux-act'
 import { PanelState } from '../../constants/types'
 import * as PanelActions from '../actions/wallet_panel_actions'
-import { ShowConnectToSitePayload } from '../constants/action_types'
+import { ShowConnectToSitePayload, AddEthereumChainPayload } from '../constants/action_types'
 
 const defaultState: PanelState = {
   // TODO(bbondy): isConnected, connectedSiteOrigin, and accounts is just test
@@ -21,8 +21,8 @@ const defaultState: PanelState = {
   connectingAccounts: [],
   showSignTransaction: false,
   showAllowSpendERC20Token: false,
-  showAllowAddNetwork: false,
-  showConfirmTransaction: false
+  showConfirmTransaction: false,
+  networkPayload: ''
 }
 
 const reducer = createReducer<PanelState>({}, defaultState)
@@ -47,6 +47,15 @@ reducer.on(PanelActions.showConnectToSite, (state: any, payload: ShowConnectToSi
     tabId: payload.tabId,
     connectedSiteOrigin: payload.origin,
     connectingAccounts: payload.accounts
+  }
+})
+
+reducer.on(PanelActions.addEthereumChain, (state: any, payload: AddEthereumChainPayload) => {
+  return {
+    ...state,
+    tabId: payload.tabId,
+    connectedSiteOrigin: payload.origin,
+    networkPayload: payload.networkPayload
   }
 })
 

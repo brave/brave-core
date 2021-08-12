@@ -66,6 +66,7 @@
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #endif
 
@@ -319,6 +320,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Brave Wallet
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   brave_wallet::KeyringController::RegisterProfilePrefs(registry);
+  brave_wallet::EthJsonRpcController::RegisterProfilePrefs(registry);
 #endif
 
   // Brave Search

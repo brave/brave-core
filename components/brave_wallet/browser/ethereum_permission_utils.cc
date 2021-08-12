@@ -156,4 +156,24 @@ GURL GetConnectWithSiteWebUIURL(const GURL& webui_base_url,
   return webui_base_url.ReplaceComponents(replacements);
 }
 
+GURL GetConnectWithPayloadWebUIURL(const GURL& webui_base_url,
+                                   int32_t tab_id,
+                                   const std::string& origin,
+                                   const std::string& payload) {
+  DCHECK(webui_base_url.is_valid() && tab_id > 0 && !payload.empty() &&
+         !origin.empty());
+
+  std::vector<std::string> query_parts;
+  query_parts.push_back(base::StringPrintf("payload=%s", payload.c_str()));
+  query_parts.push_back(base::StringPrintf("tabId=%d", tab_id));
+  query_parts.push_back(base::StringPrintf("origin=%s", origin.c_str()));
+  std::string query_str = base::JoinString(query_parts, "&");
+  url::Replacements<char> replacements;
+  replacements.SetQuery(query_str.c_str(), url::Component(0, query_str.size()));
+  std::string kConnectWithSite = "addEthereumChain";
+  replacements.SetRef(kConnectWithSite.c_str(),
+                      url::Component(0, kConnectWithSite.size()));
+  return webui_base_url.ReplaceComponents(replacements);
+}
+
 }  // namespace brave_wallet

@@ -66,6 +66,7 @@ source_set("brave_wallet_delegate") {
     ]
     deps += [
       "//brave/browser/brave_wallet",
+      "//brave/browser/brave_wallet:tab_helper",
       "//brave/components/brave_wallet/common:mojom",
       "//components/content_settings/core/common",
       "//components/permissions",
@@ -83,9 +84,10 @@ source_set("tab_helper") {
   deps = [
     "//brave/common",
     "//brave/components/brave_wallet/browser:ethereum_permission_utils",
+    "//brave/components/brave_wallet/browser:browser",
     "//components/permissions",
     "//components/sessions",
-    "//content/public/browser",
+    "//content/public/browser"
   ]
 
   if (!is_android && !is_ios) {

@@ -27,6 +27,10 @@
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "url/gurl.h"
 
+namespace user_prefs {
+class PrefRegistrySyncable;
+}
+
 namespace network {
 class SharedURLLoaderFactory;
 class SimpleURLLoader;
@@ -41,6 +45,8 @@ class EthJsonRpcController : public KeyedService,
       mojom::Network network,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~EthJsonRpcController() override;
+
+  static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
   mojo::PendingRemote<mojom::EthJsonRpcController> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::EthJsonRpcController> receiver);
