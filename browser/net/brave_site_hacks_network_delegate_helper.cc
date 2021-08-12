@@ -213,5 +213,4 @@ int OnBeforeStartTransaction_SiteHacksWork(
   return net::OK;
 }
 
-
 }  // namespace brave
