@@ -553,10 +553,6 @@
     "message": "Your Reward Amount",
     "description": "Token title on success screen for ads"
   },
-  "rewardsPanelTextVerify":  {
-    "message": "verify",
-    "description": "CTA in the footer to verify"
-  },
   "walletButtonDisconnected":  {
     "message": "Disconnected",
     "description": "CTA status button"
