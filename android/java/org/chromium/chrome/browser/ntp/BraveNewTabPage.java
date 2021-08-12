@@ -24,12 +24,14 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.toolbar.top.Toolbar;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.ui.base.WindowAndroid;
 
 public class BraveNewTabPage extends NewTabPage {
+    private Supplier<Toolbar> mToolbarSupplier;
     private NewTabPageLayout mNewTabPageLayout;
     private FeedSurfaceProvider mFeedSurfaceProvider;
 
@@ -41,15 +43,18 @@ public class BraveNewTabPage extends NewTabPage {
             NativePageHost nativePageHost, Tab tab, String url,
             BottomSheetController bottomSheetController,
             Supplier<ShareDelegate> shareDelegateSupplier, WindowAndroid windowAndroid,
-            JankTracker jankTracker) {
+            JankTracker jankTracker, Supplier<Toolbar> toolbarSupplier) {
         super(activity, browserControlsStateProvider, activityTabProvider, snackbarManager,
                 lifecycleDispatcher, tabModelSelector, isTablet, uma, isInNightMode, nativePageHost,
-                tab, url, bottomSheetController, shareDelegateSupplier, windowAndroid, jankTracker);
+                tab, url, bottomSheetController, shareDelegateSupplier, windowAndroid, jankTracker,
+                toolbarSupplier);
 
         assert mNewTabPageLayout instanceof BraveNewTabPageLayout;
         if (mNewTabPageLayout instanceof BraveNewTabPageLayout) {
             ((BraveNewTabPageLayout) mNewTabPageLayout).setTab(tab);
         }
+
+        mToolbarSupplier = toolbarSupplier;
     }
 
     @Override
@@ -70,8 +75,8 @@ public class BraveNewTabPage extends NewTabPage {
                 /* isPlaceholderShownInitially= */ false, bottomSheetController,
                 shareDelegateSupplier, /* externalScrollableContainerDelegate= */ null,
                 NewTabPageUtils.decodeOriginFromNtpUrl(url),
-                PrivacyPreferencesManagerImpl.getInstance(),
+                PrivacyPreferencesManagerImpl.getInstance(), mToolbarSupplier,
                 /* FeedLaunchReliabilityLoggingState */ null,
-                FeedSwipeRefreshLayout.create(activity));
+                FeedSwipeRefreshLayout.create(activity), /* overScrollDisabled= */ false);
     }
 }

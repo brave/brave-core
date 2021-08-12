@@ -378,8 +378,8 @@ public class BytecodeTest {
                 BrowserControlsStateProvider.class, Supplier.class, SnackbarManager.class,
                 ActivityLifecycleDispatcher.class, TabModelSelector.class, boolean.class,
                 NewTabPageUma.class, boolean.class, NativePageHost.class, Tab.class, String.class,
-                BottomSheetController.class, Supplier.class, WindowAndroid.class,
-                JankTracker.class));
+                BottomSheetController.class, Supplier.class, WindowAndroid.class, JankTracker.class,
+                Supplier.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
                 "org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor",
