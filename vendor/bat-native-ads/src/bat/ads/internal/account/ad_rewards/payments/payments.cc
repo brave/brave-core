@@ -38,7 +38,7 @@ bool Payments::SetFromJson(const std::string& json) {
   }
 
   const PaymentList payments = GetFromList(list);
-  if (!DidReconcile(payments)) {
+  if (!ShouldForceReconciliation(payments) && !DidReconcile(payments)) {
     BLOG(0, "Payment balance not ready");
     return false;
   }
@@ -205,6 +205,10 @@ double Payments::GetBalanceForPayments(const PaymentList& payments) const {
   }
 
   return balance;
+}
+
+bool Payments::ShouldForceReconciliation(const PaymentList& payments) const {
+  return payments.size() != payments_.size();
 }
 
 bool Payments::DidReconcile(const PaymentList& payments) const {
