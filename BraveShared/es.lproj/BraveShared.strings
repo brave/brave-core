@@ -496,6 +496,21 @@
 /* Title for history menu item */
 "HistortMenuItem" = "Historial";
 
+/* Title for History Clear All Action */
+"history.historyClearActionTitle" = "Borrar historial";
+
+/* Description for Clear All History Alert Description */
+"history.historyClearAlertDescription" = "El historial de navegación se borrará por completo.";
+
+/* Title for Clear All History Alert Title */
+"history.historyClearAlertTitle" = "Borrar historial de navegación";
+
+/* Title which is displayed when History screen is empty. */
+"history.historyEmptyStateTitle" = "El historial se mostrará aquí.";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyPrivateModeOnlyStateTitle" = "El historial no está disponible en el modo Solo navegación privada.";
+
 /* Title for history screen */
 "HistoryScreenTitle" = "Historial";
 
@@ -1014,6 +1029,18 @@
 
 /* Sync settings section title */
 "Sync" = "Sincronización";
+
+/* Message for popup when the history migration fails */
+"sync.historyMigrationErrorMessage" = "Migración realizada de gran parte del historial. Algunas páginas no han migrado debido a falta de información.";
+
+/* The title for popup when the history migration fails */
+"sync.historyMigrationErrorTitle" = "Migración (casi) completada";
+
+/* Information Text underneath the toggles for enable/disable different sync types for the device */
+"sync.syncConfigurationInformationText" = "Gestiona la información que deseas sincronizar entre dispositivos. Estos ajustes solo afectarán a este dispositivo.";
+
+/* Title for Sync Settings Toggle Header */
+"sync.syncSettingsTitle" = "Ajustes de sincronización";
 
 /* Message for popup when the bookmark migration fails */
 "sync.v2MigrationErrorMessage" = "Error al migrar los marcadores. Vuelve a intentarlo más tarde.";

@@ -496,6 +496,21 @@
 /* Title for history menu item */
 "HistortMenuItem" = "Історія";
 
+/* Title for History Clear All Action */
+"history.historyClearActionTitle" = "Очистити журнал";
+
+/* Description for Clear All History Alert Description */
+"history.historyClearAlertDescription" = "Журнал перегляду буде очищено.";
+
+/* Title for Clear All History Alert Title */
+"history.historyClearAlertTitle" = "Очистити журнал браузеру";
+
+/* Title which is displayed when History screen is empty. */
+"history.historyEmptyStateTitle" = "Тут відображається історія.";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyPrivateModeOnlyStateTitle" = "Історія недоступна в режимі приватного перегляду.";
+
 /* Title for history screen */
 "HistoryScreenTitle" = "Історія";
 
@@ -1014,6 +1029,18 @@
 
 /* Sync settings section title */
 "Sync" = "Синхронізація";
+
+/* Message for popup when the history migration fails */
+"sync.historyMigrationErrorMessage" = "Більшу частину історії перенесено. Однак кілька сторінок не було перенесено через відсутність інформації про них.";
+
+/* The title for popup when the history migration fails */
+"sync.historyMigrationErrorTitle" = "Перенесення (майже) завершено";
+
+/* Information Text underneath the toggles for enable/disable different sync types for the device */
+"sync.syncConfigurationInformationText" = "Виберіть інформацію, що синхронізуватиметься між пристроями. Ці налаштування стосуватимуться лише цього пристрою.";
+
+/* Title for Sync Settings Toggle Header */
+"sync.syncSettingsTitle" = "Налаштування синхронізації";
 
 /* Message for popup when the bookmark migration fails */
 "sync.v2MigrationErrorMessage" = "Помилка перенесення закладок. Спробуйте ще раз пізніше.";

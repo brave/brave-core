@@ -496,6 +496,21 @@
 /* Title for history menu item */
 "HistortMenuItem" = "Riwayat";
 
+/* Title for History Clear All Action */
+"history.historyClearActionTitle" = "Hapus Riwayat";
+
+/* Description for Clear All History Alert Description */
+"history.historyClearAlertDescription" = "Ini akan menghapus semua riwayat perambanan.";
+
+/* Title for Clear All History Alert Title */
+"history.historyClearAlertTitle" = "Hapus Riwayat Perambanan";
+
+/* Title which is displayed when History screen is empty. */
+"history.historyEmptyStateTitle" = "Riwayat akan ditampilkan di sini.";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyPrivateModeOnlyStateTitle" = "Riwayat tidak tersedia di mode Hanya Perambanan Privat.";
+
 /* Title for history screen */
 "HistoryScreenTitle" = "Riwayat";
 
@@ -1014,6 +1029,18 @@
 
 /* Sync settings section title */
 "Sync" = "Sinkronisasi";
+
+/* Message for popup when the history migration fails */
+"sync.historyMigrationErrorMessage" = "Sebagian besar riwayat telah dipindahkan. Namun, beberapa halaman tidak dipindahkan karena hilangnya info halaman.";
+
+/* The title for popup when the history migration fails */
+"sync.historyMigrationErrorTitle" = "Migrasi (hampir) selesai";
+
+/* Information Text underneath the toggles for enable/disable different sync types for the device */
+"sync.syncConfigurationInformationText" = "Kelola informasi yang ingin Anda sinkronisasikan di antara perangkat. Pengaturan ini hanya memengaruhi perangkat ini.";
+
+/* Title for Sync Settings Toggle Header */
+"sync.syncSettingsTitle" = "Pengaturan Sinkronisasi";
 
 /* Message for popup when the bookmark migration fails */
 "sync.v2MigrationErrorMessage" = "Gagal memigrasi markah buku, Coba lagi nanti.";

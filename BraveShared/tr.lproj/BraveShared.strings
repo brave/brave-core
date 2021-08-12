@@ -496,6 +496,21 @@
 /* Title for history menu item */
 "HistortMenuItem" = "Geçmiş";
 
+/* Title for History Clear All Action */
+"history.historyClearActionTitle" = "Geçmişi Temizle";
+
+/* Description for Clear All History Alert Description */
+"history.historyClearAlertDescription" = "Bu işlem tüm tarama geçmişini temizler.";
+
+/* Title for Clear All History Alert Title */
+"history.historyClearAlertTitle" = "Tarama Geçmişini Temizle";
+
+/* Title which is displayed when History screen is empty. */
+"history.historyEmptyStateTitle" = "Geçmiş burada görünür.";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyPrivateModeOnlyStateTitle" = "Yalnızca Özel Tarama modunda Geçmiş mevcut olmaz.";
+
 /* Title for history screen */
 "HistoryScreenTitle" = "Geçmiş";
 
@@ -1014,6 +1029,18 @@
 
 /* Sync settings section title */
 "Sync" = "Eşitle";
+
+/* Message for popup when the history migration fails */
+"sync.historyMigrationErrorMessage" = "Geçmişin çoğu taşındı. Ancak eksik sayfa bilgileri nedeniyle birkaç sayfa taşınamadı.";
+
+/* The title for popup when the history migration fails */
+"sync.historyMigrationErrorTitle" = "Taşıma (neredeyse) tamamlandı";
+
+/* Information Text underneath the toggles for enable/disable different sync types for the device */
+"sync.syncConfigurationInformationText" = "Cihazlar arasında hangi bilgileri senkronize etmek istediğinizi yönetin. Bu ayarlar yalnızca bu cihazı etkiler.";
+
+/* Title for Sync Settings Toggle Header */
+"sync.syncSettingsTitle" = "Senkronizasyon Ayarları";
 
 /* Message for popup when the bookmark migration fails */
 "sync.v2MigrationErrorMessage" = "Yer işaretleri aktarılamadı. Lütfen daha sonra yeniden deneyin.";

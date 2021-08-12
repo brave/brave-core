@@ -496,6 +496,21 @@
 /* Title for history menu item */
 "HistortMenuItem" = "历史记录";
 
+/* Title for History Clear All Action */
+"history.historyClearActionTitle" = "清除历史记录";
+
+/* Description for Clear All History Alert Description */
+"history.historyClearAlertDescription" = "此操作会清除所有浏览历史记录。";
+
+/* Title for Clear All History Alert Title */
+"history.historyClearAlertTitle" = "清除浏览历史记录";
+
+/* Title which is displayed when History screen is empty. */
+"history.historyEmptyStateTitle" = "历史记录将显示在此处。";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyPrivateModeOnlyStateTitle" = "“仅私密浏览”模式下无法查看历史记录。";
+
 /* Title for history screen */
 "HistoryScreenTitle" = "历史记录";
 
@@ -1014,6 +1029,18 @@
 
 /* Sync settings section title */
 "Sync" = "同步";
+
+/* Message for popup when the history migration fails */
+"sync.historyMigrationErrorMessage" = "大部分历史记录已迁移。但是，部分页面由于缺少页面信息而无法迁移。";
+
+/* The title for popup when the history migration fails */
+"sync.historyMigrationErrorTitle" = "迁移（近乎）完成";
+
+/* Information Text underneath the toggles for enable/disable different sync types for the device */
+"sync.syncConfigurationInformationText" = "管理要在设备间同步的信息。这些设置仅会影响此设备。";
+
+/* Title for Sync Settings Toggle Header */
+"sync.syncSettingsTitle" = "同步设置";
 
 /* Message for popup when the bookmark migration fails */
 "sync.v2MigrationErrorMessage" = "无法迁移书签。请稍后再试。";
