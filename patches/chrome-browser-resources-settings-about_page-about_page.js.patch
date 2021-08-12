@@ -1,18 +1,18 @@
 diff --git a/chrome/browser/resources/settings/about_page/about_page.js b/chrome/browser/resources/settings/about_page/about_page.js
-index 14e8d1b3fc83229f54ee10d7bb15e2f278e94e69..23beadf6cf8cf751a487b308e1dcb599aeab4af5 100644
+index 0a0e71d43d63510c31a1b61ad8fdacf4601f4c1f..b1c7410c27865457b93e92990e7886aa8c9f6824 100644
 --- a/chrome/browser/resources/settings/about_page/about_page.js
 +++ b/chrome/browser/resources/settings/about_page/about_page.js
-@@ -229,7 +229,14 @@ export class SettingsAboutPageElement extends SettingsAboutPageElementBase {
+@@ -226,7 +226,14 @@ export class SettingsAboutPageElement extends SettingsAboutPageElementBase {
  
    /** @private */
    onRelaunchTap_() {
 +    // <if expr="is_macosx">
 +    // Sparkle framework's relaunch api is used.
-+    this.lifetimeBrowserProxy_.relaunchOnMac();
++    LifetimeBrowserProxyImpl.getInstance().relaunchOnMac();
 +    // </if>
 +
 +    // <if expr="not is_macosx">
-     this.lifetimeBrowserProxy_.relaunch();
+     LifetimeBrowserProxyImpl.getInstance().relaunch();
 +    // </if>
    }
  
