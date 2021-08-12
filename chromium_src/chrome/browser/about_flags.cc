@@ -6,6 +6,7 @@
 #include "chrome/browser/about_flags.h"
 
 #include "base/strings/string_util.h"
+#include "brave/browser/brave_features_internal_names.h"
 #include "brave/common/brave_features.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_component_updater/browser/features.h"
@@ -45,7 +46,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #include "brave/components/brave_vpn/features.h"
 
 #define BRAVE_VPN_FEATURE_ENTRIES \
-    {"brave_vpn",                                                            \
+    {kBraveVPNFeatureInternalName,                                           \
      flag_descriptions::kBraveVPNName,                                       \
      flag_descriptions::kBraveVPNDescription,                                \
      kOsMac | kOsWin | kOsAndroid,                                           \
@@ -58,7 +59,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #include "brave/components/sidebar/features.h"
 
 #define SIDEBAR_FEATURE_ENTRIES \
-    {"sidebar",                                                            \
+    {kBraveSidebarFeatureInternalName,                                     \
      flag_descriptions::kBraveSidebarName,                                 \
      flag_descriptions::kBraveSidebarDescription,                          \
      kOsMac | kOsWin | kOsLinux,                                           \
