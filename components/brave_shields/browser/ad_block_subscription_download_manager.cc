@@ -193,7 +193,7 @@ void AdBlockSubscriptionDownloadManager::OnDirCreated(
   }
 
   base::FilePath list_path = subscription_path_callback_.Run(download_url)
-                                 .AppendASCII(kCustomSubscriptionListText);
+                                 .Append(kCustomSubscriptionListText);
 
   auto blob = blink::mojom::SerializedBlob::New();
   blob->content_type = data_handle->content_type();

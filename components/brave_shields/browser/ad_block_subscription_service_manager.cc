@@ -93,7 +93,7 @@ base::FilePath AdBlockSubscriptionServiceManager::GetSubscriptionPath(
 
 GURL AdBlockSubscriptionServiceManager::GetListTextFileUrl(
     const GURL sub_url) const {
-  base::FilePath cached_list_path = GetSubscriptionPath(sub_url).AppendASCII(
+  base::FilePath cached_list_path = GetSubscriptionPath(sub_url).Append(
       brave_shields::kCustomSubscriptionListText);
 
   const GURL file_url = net::FilePathToFileURL(cached_list_path);
@@ -132,8 +132,7 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
   info.enabled = true;
 
   auto subscription_service = std::make_unique<AdBlockSubscriptionService>(
-      info,
-      GetSubscriptionPath(sub_url).AppendASCII(kCustomSubscriptionListText),
+      info, GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText),
       delegate_);
   UpdateSubscriptionPrefs(sub_url, info);
 
@@ -268,7 +267,7 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
 
       auto subscription_service = std::make_unique<AdBlockSubscriptionService>(
           info,
-          GetSubscriptionPath(sub_url).AppendASCII(kCustomSubscriptionListText),
+          GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText),
           delegate_);
 
       std::unique_ptr<component_updater::TimerUpdateScheduler> timer =
