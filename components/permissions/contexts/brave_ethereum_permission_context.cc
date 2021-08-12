@@ -173,4 +173,48 @@ void BraveEthereumPermissionContext::RequestPermissions(
                                          std::move(callback));
 }
 
+// static
+void BraveEthereumPermissionContext::GetAllowedAccounts(
+    content::RenderFrameHost* rfh,
+    const std::vector<std::string>& addresses,
+    base::OnceCallback<void(bool, const std::vector<std::string>&)> callback) {
+  if (!rfh) {
+    std::move(callback).Run(false, std::vector<std::string>());
+    return;
+  }
+
+  auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
+  // Fail the request came from 3p origin.
+  if (web_contents->GetMainFrame()->GetLastCommittedURL().GetOrigin() !=
+      rfh->GetLastCommittedURL().GetOrigin()) {
+    std::move(callback).Run(false, std::vector<std::string>());
+    return;
+  }
+
+  permissions::PermissionManager* permission_manager =
+      permissions::PermissionsClient::Get()->GetPermissionManager(
+          web_contents->GetBrowserContext());
+  if (!permission_manager) {
+    std::move(callback).Run(false, std::vector<std::string>());
+    return;
+  }
+
+  std::vector<std::string> allowed_accounts;
+  GURL origin = rfh->GetLastCommittedURL().GetOrigin();
+  for (const auto& address : addresses) {
+    GURL sub_request_origin;
+    bool success =
+        brave_wallet::GetSubRequestOrigin(origin, address, &sub_request_origin);
+    DCHECK(success);
+
+    PermissionResult result = permission_manager->GetPermissionStatusForFrame(
+        ContentSettingsType::BRAVE_ETHEREUM, rfh, sub_request_origin);
+    if (result.content_setting == CONTENT_SETTING_ALLOW) {
+      allowed_accounts.push_back(address);
+    }
+  }
+
+  std::move(callback).Run(true, allowed_accounts);
+}
+
 }  // namespace permissions

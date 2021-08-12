@@ -40,6 +40,10 @@ class BraveWalletProviderImpl final
   void OnEnable(EnableCallback callback,
                 const std::vector<std::string>& accounts);
   void GetChainId(GetChainIdCallback callback) override;
+  void GetAllowedAccounts(GetAllowedAccountsCallback callback) override;
+  void OnGetAllowedAccounts(GetAllowedAccountsCallback callback,
+                            bool success,
+                            const std::vector<std::string>& accounts);
   void Init(
       mojo::PendingRemote<mojom::EventsListener> events_listener) override;
 

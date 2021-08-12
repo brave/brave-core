@@ -29,6 +29,7 @@ class BraveWalletProviderDelegateImplAndroid
 
   void RequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback) override;
+  void GetAllowedAccounts(GetAllowedAccountsCallback callback) override;
 };
 
 }  // namespace brave_wallet

@@ -33,6 +33,8 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate {
   void RequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback) override;
 
+  void GetAllowedAccounts(GetAllowedAccountsCallback callback) override;
+
  private:
   void EnsureConnected();
   void OnConnectionError();

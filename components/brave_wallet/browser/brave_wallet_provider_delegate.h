@@ -17,6 +17,8 @@ class BraveWalletProviderDelegate {
  public:
   using RequestEthereumPermissionsCallback =
       base::OnceCallback<void(const std::vector<std::string>&)>;
+  using GetAllowedAccountsCallback =
+      base::OnceCallback<void(bool, const std::vector<std::string>&)>;
 
   BraveWalletProviderDelegate() = default;
   BraveWalletProviderDelegate(const BraveWalletProviderDelegate&) = delete;
@@ -26,6 +28,7 @@ class BraveWalletProviderDelegate {
 
   virtual void RequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback) = 0;
+  virtual void GetAllowedAccounts(GetAllowedAccountsCallback callback) = 0;
 };
 
 }  // namespace brave_wallet
