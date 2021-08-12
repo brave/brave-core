@@ -91,6 +91,10 @@ final public class RecentSearch: NSManagedObject, CRUD {
         return nil
     }
     
+    public class func get(with objectID: NSManagedObjectID) -> RecentSearch? {
+        DataController.viewContext.object(with: objectID) as? RecentSearch
+    }
+    
     public static func removeItem(query: String) {
         RecentSearch.deleteAll(predicate: NSPredicate(format: "text == %@ OR websiteUrl == %@", query, query), context: .new(inMemory: false), includesPropertyValues: false)
     }

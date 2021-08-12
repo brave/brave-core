@@ -110,6 +110,10 @@ public final class Favorite: NSManagedObject, WebsitePresentable, CRUD {
         return all(where: isFavoritePredicate) ?? []
     }
     
+    public class func get(with objectID: NSManagedObjectID) -> Favorite? {
+        DataController.viewContext.object(with: objectID) as? Favorite
+    }
+    
     // MARK: Update
     
     public func update(customTitle: String?, url: String?) {

@@ -55,7 +55,7 @@ class RecentSearchHeaderView: UICollectionReusableView {
         vStackView.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(12.0)
             $0.trailing.equalToSuperview().inset(12.0)
-            $0.top.bottom.equalToSuperview()
+            $0.top.bottom.equalToSuperview().priority(.low)
         }
         
         resetLayout(showRecentSearches: showRecentSearches)
