@@ -119,11 +119,9 @@ BraveDownloadServiceFactory::BuildServiceInstanceFor(
   ProfileKey* profile_key = ProfileKey::FromSimpleFactoryKey(key);
 
   clients->insert(std::make_pair(
-        download::DownloadClient::CUSTOM_LIST_SUBSCRIPTIONS,
-        std::make_unique<download::DeferredClientWrapper>(
-            base::BindOnce(
-                &CreateAdBlockSubscriptionDownloadClient),
-            key)));
+      download::DownloadClient::CUSTOM_LIST_SUBSCRIPTIONS,
+      std::make_unique<download::DeferredClientWrapper>(
+          base::BindOnce(&CreateAdBlockSubscriptionDownloadClient), key)));
 
   // Build in memory download service for incognito profile.
   if (key->IsOffTheRecord() &&

@@ -42,8 +42,7 @@ void SubscriptionInfo::RegisterJSONConverter(
       &ParseTimeValue);
   converter->RegisterCustomValueField<base::Time>(
       "last_successful_update_attempt",
-      &SubscriptionInfo::last_successful_update_attempt,
-      &ParseTimeValue);
+      &SubscriptionInfo::last_successful_update_attempt, &ParseTimeValue);
   converter->RegisterBoolField("enabled", &SubscriptionInfo::enabled);
 }
 

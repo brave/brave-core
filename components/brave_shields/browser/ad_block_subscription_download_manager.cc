@@ -78,8 +78,8 @@ void AdBlockSubscriptionDownloadManager::StartDownload(const GURL& download_url,
   download_params.client = download::DownloadClient::CUSTOM_LIST_SUBSCRIPTIONS;
   download_params.guid = base::GenerateGUID();
   download_params.callback = base::BindRepeating(
-      &AdBlockSubscriptionDownloadManager::OnDownloadStarted,
-      AsWeakPtr(), download_url);
+      &AdBlockSubscriptionDownloadManager::OnDownloadStarted, AsWeakPtr(),
+      download_url);
   download_params.traffic_annotation = net::MutableNetworkTrafficAnnotationTag(
       kBraveShieldsAdBlockSubscriptionTrafficAnnotation);
   download_params.request_params.url = download_url;
@@ -180,8 +180,7 @@ void AdBlockSubscriptionDownloadManager::OnDownloadSucceeded(
       base::BindOnce(&EnsureDirExists,
                      subscription_path_callback_.Run(download_url)),
       base::BindOnce(&AdBlockSubscriptionDownloadManager::OnDirCreated,
-                     AsWeakPtr(), std::move(data_handle),
-                     download_url));
+                     AsWeakPtr(), std::move(data_handle), download_url));
 }
 
 void AdBlockSubscriptionDownloadManager::OnDirCreated(
@@ -200,9 +199,8 @@ void AdBlockSubscriptionDownloadManager::OnDirCreated(
   blob->content_type = data_handle->content_type();
   blob->uuid = data_handle->uuid();
   blob->size = data_handle->size();
-  storage::BlobImpl::Create(
-      std::move(data_handle),
-      blob->blob.InitWithNewPipeAndPassReceiver());
+  storage::BlobImpl::Create(std::move(data_handle),
+                            blob->blob.InitWithNewPipeAndPassReceiver());
 
   blob_storage_context_->WriteBlobToFile(
       std::move(blob->blob), list_path, true, base::nullopt,

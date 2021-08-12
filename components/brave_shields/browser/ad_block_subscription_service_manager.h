@@ -105,8 +105,7 @@ class AdBlockSubscriptionServiceManager {
   void OnGetDownloadManager(
       AdBlockSubscriptionDownloadManager* download_manager);
 
-  base::Optional<SubscriptionInfo> GetInfo(
-      const GURL& sub_url);
+  base::Optional<SubscriptionInfo> GetInfo(const GURL& sub_url);
   void NotifyObserversOfServiceEvent();
 
   brave_component_updater::BraveComponent::Delegate* delegate_;  // NOT OWNED

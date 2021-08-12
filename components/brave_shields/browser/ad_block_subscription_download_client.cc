@@ -97,8 +97,8 @@ void AdBlockSubscriptionDownloadClient::OnDownloadSucceeded(
   }
 
   download_manager->OnDownloadSucceeded(
-      guid, std::make_unique<storage::BlobDataHandle>(
-                *completion_info.blob_handle));
+      guid,
+      std::make_unique<storage::BlobDataHandle>(*completion_info.blob_handle));
 }
 
 bool AdBlockSubscriptionDownloadClient::CanServiceRemoveDownloadedFile(

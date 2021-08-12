@@ -6,9 +6,9 @@
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
 
 #include <algorithm>
+#include <set>
 #include <string>
 #include <utility>
-#include <set>
 #include <vector>
 
 #include "base/bind.h"
@@ -208,7 +208,7 @@ bool AdBlockBaseService::TagExists(const std::string& tag) {
 }
 
 absl::optional<base::Value> AdBlockBaseService::UrlCosmeticResources(
-        const std::string& url) {
+    const std::string& url) {
   // if (!IsInitialized())
   //   return;
 
@@ -217,9 +217,9 @@ absl::optional<base::Value> AdBlockBaseService::UrlCosmeticResources(
 }
 
 absl::optional<base::Value> AdBlockBaseService::HiddenClassIdSelectors(
-        const std::vector<std::string>& classes,
-        const std::vector<std::string>& ids,
-        const std::vector<std::string>& exceptions) {
+    const std::vector<std::string>& classes,
+    const std::vector<std::string>& ids,
+    const std::vector<std::string>& exceptions) {
   // if (!IsInitialized())
   //   return;
 

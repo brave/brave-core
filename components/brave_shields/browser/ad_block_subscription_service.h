@@ -48,8 +48,7 @@ struct SubscriptionInfo {
 // for a custom filter list subscription.
 class AdBlockSubscriptionService : public AdBlockBaseService {
  public:
-  using OnLoadCallback =
-      base::RepeatingCallback<void(const GURL&)>;
+  using OnLoadCallback = base::RepeatingCallback<void(const GURL&)>;
   explicit AdBlockSubscriptionService(
       const SubscriptionInfo& info,
       base::FilePath list_file,

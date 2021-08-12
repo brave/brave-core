@@ -41,8 +41,7 @@ class AdBlockSubscriptionDownloadManager
       public base::SupportsWeakPtr<AdBlockSubscriptionDownloadManager> {
  public:
   using DownloadManagerGetter = base::OnceCallback<void(
-      base::OnceCallback <
-      void(AdBlockSubscriptionDownloadManager*)>)>;
+      base::OnceCallback<void(AdBlockSubscriptionDownloadManager*)>)>;
 
   AdBlockSubscriptionDownloadManager(
       download::DownloadService* download_service,
@@ -81,8 +80,7 @@ class AdBlockSubscriptionDownloadManager
   }
 
   void set_on_download_failed_callback(
-      base::RepeatingCallback<void(const GURL&)>
-          on_download_failed_callback) {
+      base::RepeatingCallback<void(const GURL&)> on_download_failed_callback) {
     on_download_failed_callback_ = on_download_failed_callback;
   }
 
@@ -120,10 +118,9 @@ class AdBlockSubscriptionDownloadManager
   // Invoked when the download as specified by |failed_download_guid| failed.
   void OnDownloadFailed(const std::string& failed_download_guid);
 
-  void OnDirCreated(
-    std::unique_ptr<storage::BlobDataHandle> data_handle,
-    const GURL& download_url,
-    bool created);
+  void OnDirCreated(std::unique_ptr<storage::BlobDataHandle> data_handle,
+                    const GURL& download_url,
+                    bool created);
 
   // Invoked after WriteBlobOnIOThread to report the status of writing the blob
   // to disk.
@@ -155,10 +152,8 @@ class AdBlockSubscriptionDownloadManager
   mojo::Remote<storage::mojom::BlobStorageContext> blob_storage_context_;
   base::RepeatingCallback<base::FilePath(const GURL&)>
       subscription_path_callback_;
-  base::RepeatingCallback<void(const GURL&)>
-      on_download_succeeded_callback_;
-  base::RepeatingCallback<void(const GURL&)>
-      on_download_failed_callback_;
+  base::RepeatingCallback<void(const GURL&)> on_download_succeeded_callback_;
+  base::RepeatingCallback<void(const GURL&)> on_download_failed_callback_;
 };
 
 }  // namespace brave_shields
