@@ -14,7 +14,7 @@ import {
 import locale from '../../../../constants/locale'
 
 // Utils
-import { formatePrices } from '../../../../utils/format-prices'
+import { formatPrices } from '../../../../utils/format-prices'
 import { formatBalance } from '../../../../utils/format-balances'
 
 // Options
@@ -154,13 +154,13 @@ const Portfolio = (props: Props) => {
   const onUpdateBalance = (value: number | undefined) => {
     if (!selectedAsset) {
       if (value) {
-        setHoverBalance(formatePrices(value))
+        setHoverBalance(formatPrices(value))
       } else {
         setHoverBalance(undefined)
       }
     } else {
       if (value) {
-        setHoverPrice(formatePrices(value))
+        setHoverPrice(formatPrices(value))
       } else {
         setHoverPrice(undefined)
       }
@@ -229,7 +229,7 @@ const Portfolio = (props: Props) => {
           </AssetRow>
           <DetailText>{selectedAsset.name} {locale.price} ({selectedAsset.symbol})</DetailText>
           <PriceRow>
-            <PriceText>${hoverPrice ? hoverPrice : selectedUSDAssetPrice ? formatePrices(Number(selectedUSDAssetPrice.price)) : 0.00}</PriceText>
+            <PriceText>${hoverPrice ? hoverPrice : selectedUSDAssetPrice ? formatPrices(Number(selectedUSDAssetPrice.price)) : 0.00}</PriceText>
             <PercentBubble isDown={selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.asset24hChange) < 0 : false}>
               <ArrowIcon isDown={selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.asset24hChange) < 0 : false} />
               <PercentText>{selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.asset24hChange).toFixed(2) : 0.00}%</PercentText>

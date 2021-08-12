@@ -41,6 +41,7 @@ async function refreshWalletInfo (store: Store) {
   const apiProxy = await getAPIProxy()
   const walletHandler = apiProxy.walletHandler
   const ethJsonRpcController = apiProxy.ethJsonRpcController
+  const assetPriceController = apiProxy.assetRatioController
   const result = await walletHandler.getWalletInfo()
   store.dispatch(WalletActions.initialized(result))
   const network = await ethJsonRpcController.getNetwork()
@@ -48,12 +49,17 @@ async function refreshWalletInfo (store: Store) {
 
   // Update balances
   const state = getWalletState(store)
-
+  const getEthPrice = await assetPriceController.getPrice(['eth'], ['usd'])
+  const ethPrice = getEthPrice.success ? getEthPrice.values.find((i) => i.toAsset === 'usd')?.price ?? '0' : '0'
   const getBalanceReturnInfos = await Promise.all(state.accounts.map(async (account) => {
     const balanceInfo = await ethJsonRpcController.getBalance(account.address)
     return balanceInfo
   }))
-  store.dispatch(WalletActions.ethBalancesUpdated(getBalanceReturnInfos))
+  const balancesAndPrice = {
+    usdPrice: ethPrice,
+    balances: getBalanceReturnInfos
+  }
+  store.dispatch(WalletActions.ethBalancesUpdated(balancesAndPrice))
 
   const tokenInfos = state.userVisibleTokensInfo
   const getERCTokenBalanceReturnInfos = await Promise.all(state.accounts.map(async (account) => {

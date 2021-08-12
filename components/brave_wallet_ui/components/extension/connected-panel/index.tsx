@@ -6,6 +6,8 @@ import {
   ConnectedHeader
 } from '../'
 import { Tooltip } from '../../shared'
+import { formatPrices } from '../../../utils/format-prices'
+import { formatBalance } from '../../../utils/format-balances'
 
 // Styled Components
 import {
@@ -61,7 +63,6 @@ const ConnectedPanel = (props: Props) => {
     return create({ seed: selectedAccount.address, size: 8, scale: 16 }).toDataURL()
   }, [selectedAccount.address])
 
-  const FiatBalance = Number(selectedAccount.balance) * 2000
   return (
     <StyledWrapper panelBackground={bg}>
       <ConnectedHeader action={navAction} />
@@ -85,8 +86,8 @@ const ConnectedPanel = (props: Props) => {
         </BalanceColumn>
         <OvalButton onClick={navigate('accounts')}><SwapIcon /></OvalButton>
         <BalanceColumn>
-          <AssetBalanceText>{selectedAccount.balance} {selectedAccount.asset.toUpperCase()}</AssetBalanceText>
-          <FiatBalanceText>${FiatBalance.toFixed(2)}</FiatBalanceText>
+          <AssetBalanceText>{formatBalance(selectedAccount.balance, 18)} {selectedAccount.asset.toUpperCase()}</AssetBalanceText>
+          <FiatBalanceText>${formatPrices(Number(selectedAccount.fiatBalance))}</FiatBalanceText>
         </BalanceColumn>
       </CenterColumn>
       <ConnectedBottomNav action={navAction} />

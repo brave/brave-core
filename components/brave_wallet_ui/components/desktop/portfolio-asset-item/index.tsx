@@ -10,7 +10,7 @@ import {
   NameAndIcon,
   AssetIcon
 } from './style'
-import { formatePrices } from '../../../utils/format-prices'
+import { formatPrices } from '../../../utils/format-prices'
 export interface Props {
   action?: () => void
   name: string
@@ -29,7 +29,7 @@ const PortfolioAssetItem = (props: Props) => {
         <AssetName>{name}</AssetName>
       </NameAndIcon>
       <BalanceColumn>
-        <FiatBalanceText>${formatePrices(Number(fiatBalance))}</FiatBalanceText>
+        <FiatBalanceText>${formatPrices(Number(fiatBalance))}</FiatBalanceText>
         <AssetBalanceText>{Number(assetBalance).toFixed(4)} {symbol}</AssetBalanceText>
       </BalanceColumn>
     </StyledWrapper>

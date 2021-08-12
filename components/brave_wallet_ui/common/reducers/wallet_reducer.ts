@@ -11,7 +11,7 @@ import {
   Network,
   GetAllTokensReturnInfo,
   TokenInfo,
-  GetBalanceReturnInfo,
+  GetETHBalancesPriceReturnInfo,
   GetERC20TokenBalanceReturnInfo,
   AccountInfo
 } from '../../constants/types'
@@ -117,13 +117,13 @@ reducer.on(WalletActions.setAllTokensList, (state: any, payload: GetAllTokensRet
   }
 })
 
-reducer.on(WalletActions.ethBalancesUpdated, (state: any, payload: GetBalanceReturnInfo[]) => {
+reducer.on(WalletActions.ethBalancesUpdated, (state: any, payload: GetETHBalancesPriceReturnInfo) => {
   let accounts: WalletAccountType[] = [...state.accounts]
 
   accounts.forEach((account, index) => {
-    if (payload[index].success) {
-      accounts[index].balance = payload[index].balance
-      accounts[index].fiatBalance = formatFiatBalance(payload[index].balance, 18, '2000').toString()  // TODO: use actual price info
+    if (payload.balances[index].success) {
+      accounts[index].balance = payload.balances[index].balance
+      accounts[index].fiatBalance = formatFiatBalance(payload.balances[index].balance, 18, payload.usdPrice).toString()
     }
   })
 
@@ -152,7 +152,7 @@ reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetERC20Tok
         assetBalance = account.tokens[tokenIndex].assetBalance
         fiatBalance = account.tokens[tokenIndex].fiatBalance
       }
-      account.tokens.push({
+      account.tokens.splice(tokenIndex, 1, {
         asset: userVisibleTokensInfo[tokenIndex],
         assetBalance,
         fiatBalance
