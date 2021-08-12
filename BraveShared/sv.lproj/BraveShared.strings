@@ -496,6 +496,21 @@
 /* Title for history menu item */
 "HistortMenuItem" = "Historik";
 
+/* Title for History Clear All Action */
+"history.historyClearActionTitle" = "Rensa historik";
+
+/* Description for Clear All History Alert Description */
+"history.historyClearAlertDescription" = "Detta rensar all webbhistorik.";
+
+/* Title for Clear All History Alert Title */
+"history.historyClearAlertTitle" = "Rensa webbhistorik";
+
+/* Title which is displayed when History screen is empty. */
+"history.historyEmptyStateTitle" = "Historiken visas här.";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyPrivateModeOnlyStateTitle" = "Historiken är inte tillgänglig i Endast privat surfläge";
+
 /* Title for history screen */
 "HistoryScreenTitle" = "Historik";
 
@@ -1014,6 +1029,18 @@
 
 /* Sync settings section title */
 "Sync" = "Synkronisera";
+
+/* Message for popup when the history migration fails */
+"sync.historyMigrationErrorMessage" = "Den mesta av historiken har migrerats. Några sidor migrerades inte på grund av saknad sidinformation.";
+
+/* The title for popup when the history migration fails */
+"sync.historyMigrationErrorTitle" = "Migreringen (nästan) slutförd";
+
+/* Information Text underneath the toggles for enable/disable different sync types for the device */
+"sync.syncConfigurationInformationText" = "Hantera vilken information du vill synkronisera mellan enheter. Dessa inställningar påverkar bara den här enheten.";
+
+/* Title for Sync Settings Toggle Header */
+"sync.syncSettingsTitle" = "Synkronisera inställningar";
 
 /* Message for popup when the bookmark migration fails */
 "sync.v2MigrationErrorMessage" = "Det gick inte att migrera bokmärken. Försök igen senare.";

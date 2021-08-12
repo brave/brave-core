@@ -496,6 +496,21 @@
 /* Title for history menu item */
 "HistortMenuItem" = "Cronologia";
 
+/* Title for History Clear All Action */
+"history.historyClearActionTitle" = "Cancella la cronologia";
+
+/* Description for Clear All History Alert Description */
+"history.historyClearAlertDescription" = "Questa azione cancellerà tutta la cronologia di navigazione.";
+
+/* Title for Clear All History Alert Title */
+"history.historyClearAlertTitle" = "Cancella la cronologia di navigazione";
+
+/* Title which is displayed when History screen is empty. */
+"history.historyEmptyStateTitle" = "La cronologia comparirà qui.";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyPrivateModeOnlyStateTitle" = "La cronologia non è disponibile nella modalità che prevede solo la navigazione privata.";
+
 /* Title for history screen */
 "HistoryScreenTitle" = "Cronologia";
 
@@ -1014,6 +1029,18 @@
 
 /* Sync settings section title */
 "Sync" = "Sincronizza";
+
+/* Message for popup when the history migration fails */
+"sync.historyMigrationErrorMessage" = "La maggior parte della cronologia è stata trasferita. Alcune pagine però non sono state trasferite perché erano sprovviste di alcune informazioni.";
+
+/* The title for popup when the history migration fails */
+"sync.historyMigrationErrorTitle" = "Migrazione (quasi) completata";
+
+/* Information Text underneath the toggles for enable/disable different sync types for the device */
+"sync.syncConfigurationInformationText" = "Gestisci le informazioni che desideri sincronizzare tra i dispositivi. Queste impostazioni varranno solo per questo dispositivo.";
+
+/* Title for Sync Settings Toggle Header */
+"sync.syncSettingsTitle" = "Sincronizza le impostazioni";
 
 /* Message for popup when the bookmark migration fails */
 "sync.v2MigrationErrorMessage" = "Migrazione dei segnalibri non riuscita. Riprova in seguito.";

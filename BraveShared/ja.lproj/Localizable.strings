@@ -431,7 +431,7 @@
 "RestoredFavoritesFolderName" = "復元されたお気に入り";
 
 /* Displayed when Brave Rewards is disabled */
-"rewards.disabledBody" = "有効にしてことで、コンテンツクリエイターを支援することができます。";
+"rewards.disabledBody" = "有効にしてコンテンツクリエイターを支援";
 
 /* Displayed in the status container when rewards is disabled */
 "rewards.disabledStatusBody" = "Brave Rewardsを使うと、ブラウジングすることででクリエイターを支援";

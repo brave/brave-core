@@ -496,6 +496,21 @@
 /* Title for history menu item */
 "HistortMenuItem" = "Logg";
 
+/* Title for History Clear All Action */
+"history.historyClearActionTitle" = "Slett logg";
+
+/* Description for Clear All History Alert Description */
+"history.historyClearAlertDescription" = "Dette sletter all nettleserhistorikken.";
+
+/* Title for Clear All History Alert Title */
+"history.historyClearAlertTitle" = "Slett logg";
+
+/* Title which is displayed when History screen is empty. */
+"history.historyEmptyStateTitle" = "Nettleserhistorikken vises her.";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyPrivateModeOnlyStateTitle" = "Logging er ikke tilgjengelig i privat modus.";
+
 /* Title for history screen */
 "HistoryScreenTitle" = "Logg";
 
@@ -1014,6 +1029,18 @@
 
 /* Sync settings section title */
 "Sync" = "Synk";
+
+/* Message for popup when the history migration fails */
+"sync.historyMigrationErrorMessage" = "Mesteparten av loggen er flyttet, med unntak av et par sider der det manglet sideinformasjon.";
+
+/* The title for popup when the history migration fails */
+"sync.historyMigrationErrorTitle" = "Overføringen er (nesten) fullført";
+
+/* Information Text underneath the toggles for enable/disable different sync types for the device */
+"sync.syncConfigurationInformationText" = "Bestem hvilken informasjon du vil synkronisere mellom enheter. Disse innstillingene gjelder bare for denne enheten.";
+
+/* Title for Sync Settings Toggle Header */
+"sync.syncSettingsTitle" = "Synkroniser innstillinger";
 
 /* Message for popup when the bookmark migration fails */
 "sync.v2MigrationErrorMessage" = "Kunne ikke flytte bokmerkene. Prøv igjen senere.";
