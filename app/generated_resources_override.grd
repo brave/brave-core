@@ -177,7 +177,8 @@ are declared in tools/grit/grit_rule.gni.
           <if expr="not is_macosx">
             </if>
           </if>
-      </if>
+
+        </if>
 
       <if expr="not use_titlecase">
         </if>

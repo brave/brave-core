@@ -2011,7 +2011,10 @@ Press an assigned switch to remove assignment
   <message name="IDS_SETTINGS_BLUETOOTH" desc="Name of the settings page which displays Bluetooth device settings.">
     Bluetooth
   </message>
-    <message name="IDS_SETTINGS_BLUETOOTH_PAIR_DEVICE_TITLE" desc="Title of the settings dialog for adding or pairing Bluetooth a device.">
+  <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAILS" desc="Name of the settings page which displays Bluetooth device details.">
+    Bluetooth device details
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIR_DEVICE_TITLE" desc="Title of the settings dialog for adding or pairing Bluetooth a device.">
     Connect to Bluetooth device
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_REMOVE" desc="Label for removing (unpairing) a paired Bluetooth device">
@@ -2517,12 +2520,6 @@ Press an assigned switch to remove assignment
   <message name="IDS_SETTINGS_INTERNET_DEVICE_ENABLING" desc="Settings &gt; Internet &gt; Message when a device (e.g a Cellular modem) is enabling.">
     Enabling
   </message>
-  <message name="IDS_SETTINGS_INTERNET_DEVICE_DISABLING" desc="Settings &gt; Internet &gt; Message when a Cellular modem is turning off (disabling).">
-    Turning off
-  </message>
-  <message name="IDS_SETTINGS_INTERNET_DEVICE_INITIALIZING" desc="Settings &gt; Internet &gt; Message when a device (e.g a Cellular modem) is initializing.">
-    Initializing
-  </message>
   <message name="IDS_SETTINGS_INTERNET_DEVICE_BUSY" desc="Settings &gt; Internet &gt; Message when the cellular modem is busy applying updates (e.g., installing an eSIM profile).">
     Applying changes...
   </message>
@@ -2543,12 +2540,6 @@ Press an assigned switch to remove assignment
   </message>
   <message name="IDS_SETTINGS_INTERNET_TOGGLE_MOBILE_ACCESSIBILITY_LABEL" desc="Accessibility only label for mobile data enable/disable toggle .">
     Mobile data enable
-  </message>
-  <message name="IDS_SETTINGS_INTERNET_TOGGLE_TETHER_LABEL" desc="Settings &gt; Internet: Label for Tether enable/disable toggle .">
-    Get data connection
-  </message>
-  <message name="IDS_SETTINGS_INTERNET_TOGGLE_TETHER_SUBTEXT" desc="Settings &gt; Internet: Description for Tether enable/disable toggle .">
-    Let this device find other devices with your Brave sync chain that have a mobile data connection
   </message>
   <message name="IDS_SETTINGS_INTERNET_TOGGLE_WIFI_ACCESSIBILITY_LABEL" desc="Accessibility only label for WiFi enable/disable toggle .">
     Wi-Fi enable
@@ -3863,6 +3854,16 @@ Press an assigned switch to remove assignment
   </message>
   <message name="IDS_SETTINGS_APP_DETAILS_TITLE" desc="The title of app details subpage, which displays details about a specific app.">
     App details
+  </message>
+
+   <!-- Apps > Manage your apps > Borealis -->
+   <!-- TODO(b/194640944): Replace "borealis" string before launch -->
+  <message name="IDS_SETTINGS_APPS_BOREALIS_MAIN_PERMISSION_TEXT" translateable="false" desc="Describes how Borealis permissions are applied on main app with learn more link.">
+    Permission settings applied here are applied across all Borealis apps. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_APPS_BOREALIS_APP_PERMISSION_TEXT" translateable="false" desc="Link to main Borealis app from other borealis apps.">
+    Permissions for apps installed by Borealis are managed via the <ph name="LINK_BEGIN">&lt;a&gt;</ph>Borealis app settings<ph name="LINK_END">&lt;/a&gt;</ph>.
+    Borealis permission settings are applied across all Borealis applications.
   </message>
 
   <!-- Apps > Manage your apps > Parallels -->
