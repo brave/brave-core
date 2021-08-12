@@ -28,6 +28,34 @@
 #include "components/prefs/pref_service.h"
 #include "net/base/features.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SIDEBAR)
+#include "brave/components/sidebar/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+#include "brave/components/brave_sync/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_IPFS)
+#include "brave/components/ipfs/features.h"
+#endif
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/components/brave_wallet/common/features.h"
+#endif
+
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
+#include "brave/components/decentralized_dns/features.h"
+#endif
+
 using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
@@ -44,8 +72,6 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 // clang-format off
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/components/brave_vpn/features.h"
-
 #define BRAVE_VPN_FEATURE_ENTRIES \
     {kBraveVPNFeatureInternalName,                                           \
      flag_descriptions::kBraveVPNName,                                       \
@@ -57,8 +83,6 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
-#include "brave/components/sidebar/features.h"
-
 #define SIDEBAR_FEATURE_ENTRIES \
     {kBraveSidebarFeatureInternalName,                                     \
      flag_descriptions::kBraveSidebarName,                                 \
@@ -70,8 +94,6 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/components/speedreader/features.h"
-
 #define SPEEDREADER_FEATURE_ENTRIES \
     {"brave-speedreader",                                               \
      flag_descriptions::kBraveSpeedreaderName,                          \
@@ -86,8 +108,6 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
-#include "brave/components/brave_sync/features.h"
-
 #define BRAVE_SYNC_FEATURE_ENTRIES                                         \
     {"brave-sync-v2",                                                      \
      flag_descriptions::kBraveSyncName,                                    \
@@ -108,8 +128,6 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #endif
 
 #if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/features.h"
-
 #define BRAVE_IPFS_FEATURE_ENTRIES                                         \
     {"brave-ipfs",                                                         \
      flag_descriptions::kBraveIpfsName,                                    \
@@ -121,8 +139,6 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/common/features.h"
-
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                  \
     {"native-brave-wallet",                                                  \
      flag_descriptions::kNativeBraveWalletName,                              \
@@ -134,8 +150,6 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #endif
 
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
-#include "brave/components/decentralized_dns/features.h"
-
 #define BRAVE_DECENTRALIZED_DNS_FEATURE_ENTRIES                             \
     {"brave-decentralized-dns",                                             \
      flag_descriptions::kBraveDecentralizedDnsName,                         \
