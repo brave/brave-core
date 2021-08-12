@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/theme/java/src/org/chromium/chrome/browser/theme/ThemeUtils.java b/chrome/browser/ui/android/theme/java/src/org/chromium/chrome/browser/theme/ThemeUtils.java
-index b4bfb43ec3a856c15e0c9ca50b3003171160124e..24ca6f19e490da30803ff136da0c6a03b85147f0 100644
+index 44efb7f6334bfb598f076cc1f35c94dea5a94c17..3c397d3b48f1251534a512b42622eee6b10ff955 100644
 --- a/chrome/browser/ui/android/theme/java/src/org/chromium/chrome/browser/theme/ThemeUtils.java
 +++ b/chrome/browser/ui/android/theme/java/src/org/chromium/chrome/browser/theme/ThemeUtils.java
-@@ -74,6 +74,7 @@ public class ThemeUtils {
+@@ -78,6 +78,7 @@ public class ThemeUtils {
              Resources res, @ColorInt int color, boolean isIncognito) {
          // Text box color on default toolbar background in incognito mode is a pre-defined
          // color. We calculate the equivalent opaque color from the pre-defined translucent color.
