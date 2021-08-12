@@ -11,16 +11,7 @@
 namespace content_settings {
 
 // Helper to allow patchless ephemeral storage access in Chromium code.
-class ScopedEphemeralStorageAwareness {
- public:
-  explicit ScopedEphemeralStorageAwareness(bool* ephemeral_storage_aware);
-  ScopedEphemeralStorageAwareness(ScopedEphemeralStorageAwareness&&);
-  ScopedEphemeralStorageAwareness& operator=(ScopedEphemeralStorageAwareness&&);
-  ~ScopedEphemeralStorageAwareness();
-
- private:
-  base::AutoReset<bool> ephemeral_storage_aware_auto_reset_;
-};
+using ScopedEphemeralStorageAwareness = base::AutoReset<bool>;
 
 }  // namespace content_settings
 

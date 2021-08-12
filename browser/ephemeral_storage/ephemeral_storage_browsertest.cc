@@ -208,6 +208,14 @@ WebContents* EphemeralStorageBrowserTest::LoadURLInNewTab(GURL url) {
   return add_tab.Wait();
 }
 
+void EphemeralStorageBrowserTest::CloseWebContents(WebContents* web_contents) {
+  int tab_index =
+      browser()->tab_strip_model()->GetIndexOfWebContents(web_contents);
+  bool was_closed = browser()->tab_strip_model()->CloseWebContentsAt(
+      tab_index, TabStripModel::CloseTypes::CLOSE_NONE);
+  EXPECT_TRUE(was_closed);
+}
+
 void EphemeralStorageBrowserTest::SetStorageValueInFrame(
     RenderFrameHost* host,
     std::string value,

@@ -393,3 +393,45 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
   EXPECT_EQ("third-party-a.com", third_party_values.session_storage);
   EXPECT_EQ("name=third-party-a.com", third_party_values.cookies);
 }
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
+                       NetworkCookiesAreSetIn1p) {
+  SetCookieSetting(a_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);
+  GURL a_site_set_cookie_url = https_server_.GetURL(
+      "a.com", "/set-cookie?name=acom;path=/;SameSite=None;Secure");
+
+  WebContents* site_a_tab_network_cookies =
+      LoadURLInNewTab(a_site_set_cookie_url);
+  WebContents* site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+  EXPECT_TRUE(http_request_monitor_.HasHttpRequestWithCookie(
+      a_site_ephemeral_storage_url_, "name=acom"));
+
+  ValuesFromFrames site_a_tab_values = GetValuesFromFrames(site_a_tab);
+  EXPECT_EQ(nullptr, site_a_tab_values.main_frame.local_storage);
+  EXPECT_EQ(nullptr, site_a_tab_values.iframe_1.local_storage);
+  EXPECT_EQ(nullptr, site_a_tab_values.iframe_2.local_storage);
+
+  EXPECT_EQ(nullptr, site_a_tab_values.main_frame.session_storage);
+  EXPECT_EQ(nullptr, site_a_tab_values.iframe_1.session_storage);
+  EXPECT_EQ(nullptr, site_a_tab_values.iframe_2.session_storage);
+
+  EXPECT_EQ("name=acom", site_a_tab_values.main_frame.cookies);
+  EXPECT_EQ("", site_a_tab_values.iframe_1.cookies);
+  EXPECT_EQ("", site_a_tab_values.iframe_2.cookies);
+
+  WebContents* site_b_tab = LoadURLInNewTab(b_site_ephemeral_storage_url_);
+  ExpectValuesFromFramesAreEmpty(FROM_HERE, GetValuesFromFrames(site_b_tab));
+
+  // Close a.com tabs.
+  CloseWebContents(site_a_tab_network_cookies);
+  CloseWebContents(site_a_tab);
+  http_request_monitor_.Clear();
+
+  // Load a.com tab again.
+  WebContents* site_a_tab2 = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+  EXPECT_FALSE(http_request_monitor_.HasHttpRequestWithCookie(
+      a_site_ephemeral_storage_url_, "name=acom"));
+
+  // Cookie values should be empty after a cleanup.
+  ExpectValuesFromFramesAreEmpty(FROM_HERE, GetValuesFromFrames(site_a_tab2));
+}

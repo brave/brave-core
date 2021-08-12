@@ -67,6 +67,7 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
   ValuesFromFrames GetValuesFromFrames(content::WebContents* web_contents);
 
   content::WebContents* LoadURLInNewTab(GURL url);
+  void CloseWebContents(content::WebContents* web_contents);
 
   void SetStorageValueInFrame(content::RenderFrameHost* host,
                               std::string value,
