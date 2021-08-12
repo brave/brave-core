@@ -15,13 +15,12 @@
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/export.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 
-using ResultCallback = std::function<void(const Result)>;
+using ResultCallback = std::function<void(const bool)>;
 
-using LoadCallback = std::function<void(const Result, const std::string&)>;
+using LoadCallback = std::function<void(const bool, const std::string&)>;
 
 using UrlRequestCallback = std::function<void(const mojom::UrlResponse&)>;
 
@@ -87,15 +86,15 @@ class ADS_EXPORT AdsClient {
                           UrlRequestCallback callback) = 0;
 
   // Save a value to persistent storage. The callback takes one argument -
-  // |Result| should be set to |SUCCESS| if successful otherwise should be set
-  // to |FAILED|
+  // |bool| should be set to |true| if successful otherwise should be set to
+  // |false|
   virtual void Save(const std::string& name,
                     const std::string& value,
                     ResultCallback callback) = 0;
 
   // Load a value from persistent storage. The callback takes 2 arguments -
-  // |Result| should be set to |SUCCESS| if successful otherwise should be set
-  // to |FAILED|. |value| should contain the persisted value
+  // |bool| should be set to |true| if successful otherwise should be set to
+  // |false|. |value| should contain the persisted value
   virtual void Load(const std::string& name, LoadCallback callback) = 0;
 
   // Load ads resource for name and version from persistent storage.

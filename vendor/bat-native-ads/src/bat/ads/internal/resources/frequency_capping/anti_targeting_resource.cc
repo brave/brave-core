@@ -12,7 +12,6 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/features/anti_targeting/anti_targeting_features.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/result.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {
@@ -33,8 +32,8 @@ bool AntiTargeting::IsInitialized() const {
 void AntiTargeting::Load() {
   AdsClientHelper::Get()->LoadAdsResource(
       kResourceId, features::GetAntiTargetingResourceVersion(),
-      [=](const Result result, const std::string& json) {
-        if (result != SUCCESS) {
+      [=](const bool success, const std::string& json) {
+        if (!success) {
           BLOG(1, "Failed to load resource " << kResourceId);
           is_initialized_ = false;
           return;

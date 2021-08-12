@@ -9,8 +9,6 @@
 #include <cstdint>
 #include <string>
 
-#include "bat/ads/result.h"
-
 namespace ads {
 
 struct PurchaseIntentSignalHistoryInfo {
@@ -24,7 +22,7 @@ struct PurchaseIntentSignalHistoryInfo {
   bool operator!=(const PurchaseIntentSignalHistoryInfo& rhs) const;
 
   std::string ToJson() const;
-  Result FromJson(const std::string& json);
+  bool FromJson(const std::string& json);
 
   int64_t timestamp_in_seconds = 0;
   uint16_t weight = 0;

@@ -19,15 +19,14 @@
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/promoted_content_ad_info.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "bat/ads/result.h"
 #include "bat/ads/statement_info.h"
 
 namespace ads {
 
-using InitializeCallback = std::function<void(const Result)>;
-using ShutdownCallback = std::function<void(const Result)>;
+using InitializeCallback = std::function<void(const bool)>;
+using ShutdownCallback = std::function<void(const bool)>;
 
-using RemoveAllHistoryCallback = std::function<void(const Result)>;
+using RemoveAllHistoryCallback = std::function<void(const bool)>;
 
 using GetInlineContentAdCallback = std::function<
     void(const bool, const std::string&, const InlineContentAdInfo&)>;
@@ -72,13 +71,13 @@ class ADS_EXPORT Ads {
   static Ads* CreateInstance(AdsClient* ads_client);
 
   // Should be called to initialize ads when launching the browser or when ads
-  // is enabled by a user. The callback takes one argument - |Result| should be
-  // set to |SUCCESS| if successful otherwise should be set to |FAILED|
+  // is enabled by a user. The callback takes one argument - |bool| should be
+  // set to |true| if successful otherwise should be set to |false|
   virtual void Initialize(InitializeCallback callback) = 0;
 
   // Should be called to shutdown ads when a user disables ads. The callback
-  // takes one argument - |Result| should be set to |SUCCESS| if successful
-  // otherwise should be set to |FAILED|
+  // takes one argument - |bool| should be set to |true| if successful
+  // otherwise should be set to |false|
   virtual void Shutdown(ShutdownCallback callback) = 0;
 
   // Should be called when the user changes the locale of their operating
@@ -194,8 +193,8 @@ class ADS_EXPORT Ads {
   virtual void PurgeOrphanedAdEventsForType(const mojom::AdType ad_type) = 0;
 
   // Should be called to remove all cached history. The callback takes one
-  // argument - |Result| should be set to |SUCCESS| if successful otherwise
-  // should be set to |FAILED|
+  // argument - |bool| should be set to |true| if successful otherwise should be
+  // set to |false|
   virtual void RemoveAllHistory(RemoveAllHistoryCallback callback) = 0;
 
   // Should be called to reconcile ad rewards with the server, i.e. after an

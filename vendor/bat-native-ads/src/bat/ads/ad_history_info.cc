@@ -33,13 +33,13 @@ std::string AdHistoryInfo::ToJson() const {
   return json;
 }
 
-Result AdHistoryInfo::FromJson(const std::string& json) {
+bool AdHistoryInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
   if (document.HasParseError()) {
     BLOG(1, helper::JSON::GetLastError(&document));
-    return FAILED;
+    return false;
   }
 
   if (document.HasMember("timestamp_in_seconds")) {
@@ -51,9 +51,8 @@ Result AdHistoryInfo::FromJson(const std::string& json) {
     rapidjson::StringBuffer buffer;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
     const auto& value = document["ad_content"];
-    if (!value.Accept(writer) ||
-        ad_content.FromJson(buffer.GetString()) != SUCCESS) {
-      return FAILED;
+    if (!value.Accept(writer) || !ad_content.FromJson(buffer.GetString())) {
+      return false;
     }
   }
 
@@ -62,12 +61,12 @@ Result AdHistoryInfo::FromJson(const std::string& json) {
     rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
     const auto& value = document["category_content"];
     if (!value.Accept(writer) ||
-        category_content.FromJson(buffer.GetString()) != SUCCESS) {
-      return FAILED;
+        !category_content.FromJson(buffer.GetString())) {
+      return false;
     }
   }
 
-  return SUCCESS;
+  return true;
 }
 
 void SaveToJson(JsonWriter* writer, const AdHistoryInfo& ad_history) {

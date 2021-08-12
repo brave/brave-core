@@ -23,8 +23,8 @@ void AdEventClicked::FireEvent(const PromotedContentAdInfo& ad) {
               << ad.uuid << " and creative instance id "
               << ad.creative_instance_id);
 
-  LogAdEvent(ad, ConfirmationType::kClicked, [](const Result result) {
-    if (result != Result::SUCCESS) {
+  LogAdEvent(ad, ConfirmationType::kClicked, [](const bool success) {
+    if (!success) {
       BLOG(1, "Failed to log promoted content ad clicked event");
       return;
     }

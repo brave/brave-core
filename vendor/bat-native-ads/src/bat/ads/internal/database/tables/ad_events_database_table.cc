@@ -238,7 +238,7 @@ void AdEvents::OnGetAdEvents(mojom::DBCommandResponsePtr response,
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Failed to get ad events");
-    callback(Result::FAILED, {});
+    callback(/* success */ false, {});
     return;
   }
 
@@ -249,7 +249,7 @@ void AdEvents::OnGetAdEvents(mojom::DBCommandResponsePtr response,
     ad_events.push_back(info);
   }
 
-  callback(Result::SUCCESS, ad_events);
+  callback(/* success */ true, ad_events);
 }
 
 AdEventInfo AdEvents::GetFromRecord(mojom::DBRecord* record) const {

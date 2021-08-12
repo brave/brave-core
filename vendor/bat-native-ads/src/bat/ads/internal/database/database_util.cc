@@ -6,7 +6,6 @@
 #include "bat/ads/internal/database/database_util.h"
 
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 namespace database {
@@ -16,11 +15,11 @@ void OnResultCallback(mojom::DBCommandResponsePtr response,
   DCHECK(response);
 
   if (response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    callback(Result::FAILED);
+    callback(/* success */ false);
     return;
   }
 
-  callback(Result::SUCCESS);
+  callback(/* success */ true);
 }
 
 }  // namespace database

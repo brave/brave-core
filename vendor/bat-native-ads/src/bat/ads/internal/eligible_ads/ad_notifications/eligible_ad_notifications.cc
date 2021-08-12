@@ -54,8 +54,8 @@ void EligibleAds::SetLastServedAd(const CreativeAdInfo& creative_ad) {
 void EligibleAds::GetForSegments(const SegmentList& segments,
                                  GetEligibleAdsCallback callback) {
   database::table::AdEvents database_table;
-  database_table.GetAll([=](const Result result, const AdEventList& ad_events) {
-    if (result != Result::SUCCESS) {
+  database_table.GetAll([=](const bool success, const AdEventList& ad_events) {
+    if (!success) {
       BLOG(1, "Failed to get ad events");
       callback(/* was_allowed */ false, {});
       return;
@@ -91,7 +91,7 @@ void EligibleAds::GetForParentChildSegments(
 
   database::table::CreativeAdNotifications database_table;
   database_table.GetForSegments(
-      segments, [=](const Result result, const SegmentList& segments,
+      segments, [=](const bool success, const SegmentList& segments,
                     const CreativeAdNotificationList& ads) {
         CreativeAdNotificationList eligible_ads =
             FilterIneligibleAds(ads, ad_events, browsing_history);
@@ -126,7 +126,7 @@ void EligibleAds::GetForParentSegments(
 
   database::table::CreativeAdNotifications database_table;
   database_table.GetForSegments(
-      parent_segments, [=](const Result result, const SegmentList& segments,
+      parent_segments, [=](const bool success, const SegmentList& segments,
                            const CreativeAdNotificationList& ads) {
         CreativeAdNotificationList eligible_ads =
             FilterIneligibleAds(ads, ad_events, browsing_history);
@@ -150,7 +150,7 @@ void EligibleAds::GetForUntargeted(const AdEventList& ad_events,
 
   database::table::CreativeAdNotifications database_table;
   database_table.GetForSegments(
-      segments, [=](const Result result, const SegmentList& segments,
+      segments, [=](const bool success, const SegmentList& segments,
                     const CreativeAdNotificationList& ads) {
         CreativeAdNotificationList eligible_ads =
             FilterIneligibleAds(ads, ad_events, browsing_history);

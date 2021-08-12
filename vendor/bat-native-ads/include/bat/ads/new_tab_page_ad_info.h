@@ -10,7 +10,6 @@
 
 #include "bat/ads/ad_info.h"
 #include "bat/ads/export.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 
@@ -22,7 +21,7 @@ struct ADS_EXPORT NewTabPageAdInfo : AdInfo {
   bool IsValid() const;
 
   std::string ToJson() const;
-  Result FromJson(const std::string& json);
+  bool FromJson(const std::string& json);
 
   std::string company_name;
   std::string alt;

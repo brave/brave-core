@@ -24,14 +24,13 @@ class BatAdsConversionsDatabaseTableTest : public UnitTestBase {
   ~BatAdsConversionsDatabaseTableTest() override = default;
 
   void Save(const ConversionList& conversions) {
-    database_table_->Save(conversions, [](const Result result) {
-      ASSERT_EQ(Result::SUCCESS, result);
-    });
+    database_table_->Save(conversions,
+                          [](const bool success) { ASSERT_TRUE(success); });
   }
 
   void PurgeExpired() {
     database_table_->PurgeExpired(
-        [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
+        [](const bool success) { ASSERT_TRUE(success); });
   }
 
   int64_t CalculateExpiryTimestamp(const int observation_window) {
@@ -54,9 +53,9 @@ TEST_F(BatAdsConversionsDatabaseTableTest, EmptySave) {
   const ConversionList expected_conversions = conversions;
 
   database_table_->GetAll(
-      [&expected_conversions](const Result result,
+      [&expected_conversions](const bool success,
                               const ConversionList& conversions) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_conversions, conversions));
       });
 }
@@ -88,9 +87,9 @@ TEST_F(BatAdsConversionsDatabaseTableTest, SaveConversions) {
   const ConversionList expected_conversions = conversions;
 
   database_table_->GetAll(
-      [&expected_conversions](const Result result,
+      [&expected_conversions](const bool success,
                               const ConversionList& conversions) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_conversions, conversions));
       });
 }
@@ -116,9 +115,9 @@ TEST_F(BatAdsConversionsDatabaseTableTest, DoNotSaveDuplicateConversion) {
   const ConversionList expected_conversions = conversions;
 
   database_table_->GetAll(
-      [&expected_conversions](const Result result,
+      [&expected_conversions](const bool success,
                               const ConversionList& conversions) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_conversions, conversions));
       });
 }
@@ -164,9 +163,9 @@ TEST_F(BatAdsConversionsDatabaseTableTest, PurgeExpiredConversions) {
   expected_conversions.push_back(info_3);
 
   database_table_->GetAll(
-      [&expected_conversions](const Result result,
+      [&expected_conversions](const bool success,
                               const ConversionList& conversions) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_conversions, conversions));
       });
 }
@@ -202,9 +201,9 @@ TEST_F(BatAdsConversionsDatabaseTableTest,
   expected_conversions.push_back(info_2);
 
   database_table_->GetAll(
-      [&expected_conversions](const Result result,
+      [&expected_conversions](const bool success,
                               const ConversionList& conversions) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_conversions, conversions));
       });
 }

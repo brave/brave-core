@@ -533,8 +533,8 @@ void Client::Save() {
   AdsClientHelper::Get()->Save(kClientFilename, json, callback);
 }
 
-void Client::OnSaved(const Result result) {
-  if (result != SUCCESS) {
+void Client::OnSaved(const bool success) {
+  if (!success) {
     BLOG(0, "Failed to save client state");
 
     return;
@@ -551,8 +551,8 @@ void Client::Load() {
   AdsClientHelper::Get()->Load(kClientFilename, callback);
 }
 
-void Client::OnLoaded(const Result result, const std::string& json) {
-  if (result != SUCCESS) {
+void Client::OnLoaded(const bool success, const std::string& json) {
+  if (!success) {
     BLOG(3, "Client state does not exist, creating default state");
 
     is_initialized_ = true;
@@ -565,7 +565,7 @@ void Client::OnLoaded(const Result result, const std::string& json) {
 
       BLOG(3, "Failed to parse client state: " << json);
 
-      callback_(FAILED);
+      callback_(/* success */ false);
       return;
     }
 
@@ -574,13 +574,13 @@ void Client::OnLoaded(const Result result, const std::string& json) {
     is_initialized_ = true;
   }
 
-  callback_(SUCCESS);
+  callback_(/* success  */ true);
 }
 
 bool Client::FromJson(const std::string& json) {
   ClientInfo client;
-  auto result = LoadFromJson(&client, json);
-  if (result != SUCCESS) {
+  const bool success = LoadFromJson(&client, json);
+  if (!success) {
     return false;
   }
 

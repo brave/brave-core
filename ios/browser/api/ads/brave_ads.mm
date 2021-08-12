@@ -263,10 +263,10 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
   adsClient = new AdsClientIOS(self);
   ads = ads::Ads::CreateInstance(adsClient);
-  ads->Initialize(^(ads::Result result) {
+  ads->Initialize(^(const bool success) {
     [self periodicallyCheckForAdsResourceUpdates];
     [self registerAdsResources];
-    completion(result == ads::Result::SUCCESS);
+    completion(success);
   });
 }
 
@@ -1137,20 +1137,20 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       [self.commonOps loadContentsFromFileWithName:bridgedId.UTF8String];
   if (!contents.empty()) {
     BLOG(1, @"%@ ads resource is cached", bridgedId);
-    callback(ads::Result::SUCCESS, contents);
+    callback(/* success */ true, contents);
     return;
   }
 
   BLOG(1, @"%@ ads resource not found", bridgedId);
-  callback(ads::Result::FAILED, "");
+  callback(/* success */ false, "");
 }
 
 - (void)load:(const std::string&)name callback:(ads::LoadCallback)callback {
   const auto contents = [self.commonOps loadContentsFromFileWithName:name];
   if (contents.empty()) {
-    callback(ads::Result::FAILED, "");
+    callback(/* success */ false, "");
   } else {
-    callback(ads::Result::SUCCESS, contents);
+    callback(/* success */ true, contents);
   }
 }
 
@@ -1173,9 +1173,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 - (void)reset:(const std::string&)name callback:(ads::ResultCallback)callback {
   if ([self.commonOps removeFileWithName:name]) {
-    callback(ads::Result::SUCCESS);
+    callback(/* success */ true);
   } else {
-    callback(ads::Result::FAILED);
+    callback(/* success */ false);
   }
 }
 
@@ -1183,9 +1183,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
        value:(const std::string&)value
     callback:(ads::ResultCallback)callback {
   if ([self.commonOps saveContents:value name:name]) {
-    callback(ads::Result::SUCCESS);
+    callback(/* success */ true);
   } else {
-    callback(ads::Result::FAILED);
+    callback(/* success */ false);
   }
 }
 

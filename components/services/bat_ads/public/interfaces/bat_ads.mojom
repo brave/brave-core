@@ -49,9 +49,9 @@ interface BatAdsClient {
   RecordAdEvent(string ad_type, string confirmation_type, uint64 timestamp);
   ResetAdEvents();
   UrlRequest(ads.mojom.UrlRequest request) => (ads.mojom.UrlResponse response);
-  Save(string name, string value) => (int32 result);
-  Load(string name) => (int32 result, string value);
-  LoadAdsResource(string id, int32 version) => (int32 result, string value);
+  Save(string name, string value) => (bool success);
+  Load(string name) => (bool success, string value);
+  LoadAdsResource(string id, int32 version) => (bool success, string value);
   GetBrowsingHistory(int32 max_count, int32 days_ago) => (array<string> history);
   RunDBTransaction(ads.mojom.DBTransaction transaction) => (ads.mojom.DBCommandResponse response);
   OnAdRewardsChanged();
@@ -67,8 +67,8 @@ interface BatAdsClient {
 };
 
 interface BatAds {
-  Initialize() => (int32 result);
-  Shutdown() => (int32 result);
+  Initialize() => (bool success);
+  Shutdown() => (bool success);
   ChangeLocale(string locale);
   OnPrefChanged(string path);
   OnHtmlLoaded(int32 tab_id, array<string> redirect_chain, string html);
@@ -89,7 +89,7 @@ interface BatAds {
   GetInlineContentAd(string size) => (bool success, string dimensions, string ad);
   OnInlineContentAdEvent(string uuid, string creative_instance_id, ads.mojom.InlineContentAdEventType event_type);
   PurgeOrphanedAdEventsForType(ads.mojom.AdType ad_type);
-  RemoveAllHistory() => (int32 result);
+  RemoveAllHistory() => (bool success);
   OnWalletUpdated(string payment_id, string seed);
   ReconcileAdRewards();
   GetAdsHistory(uint64 from_timestamp, uint64 to_timestamp) => (string json);

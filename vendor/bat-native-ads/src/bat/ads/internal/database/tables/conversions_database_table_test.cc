@@ -38,11 +38,10 @@ TEST_F(BatAdsConversionsDatabaseTableIntegrationTest,
 
   // Assert
   database::table::Conversions conversions;
-  conversions.GetAll(
-      [](const Result result, const ConversionList& conversions) {
-        EXPECT_EQ(Result::SUCCESS, result);
-        EXPECT_EQ(2UL, conversions.size());
-      });
+  conversions.GetAll([](const bool success, const ConversionList& conversions) {
+    EXPECT_TRUE(success);
+    EXPECT_EQ(2UL, conversions.size());
+  });
 }
 
 }  // namespace ads

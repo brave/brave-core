@@ -13,7 +13,6 @@
 #include "bat/ads/internal/tab_manager/tab_manager.h"
 #include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/internal/url_util.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 
@@ -129,8 +128,8 @@ void AdTransfer::OnTransferAd(const int32_t tab_id, const std::string& url) {
 
   BLOG(1, "Transferred ad for " << url);
 
-  LogAdEvent(ad, ConfirmationType::kTransferred, [](const Result result) {
-    if (result != Result::SUCCESS) {
+  LogAdEvent(ad, ConfirmationType::kTransferred, [](const bool success) {
+    if (!success) {
       BLOG(1, "Failed to log transferred ad event");
       return;
     }

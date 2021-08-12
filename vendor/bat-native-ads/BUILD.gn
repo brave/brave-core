@@ -74,7 +74,6 @@ source_set("headers") {
     "include/bat/ads/page_transition_types.h",
     "include/bat/ads/pref_names.h",
     "include/bat/ads/promoted_content_ad_info.h",
-    "include/bat/ads/result.h",
     "include/bat/ads/statement_info.h",
     "include/bat/ads/transaction_info.h",
   ]

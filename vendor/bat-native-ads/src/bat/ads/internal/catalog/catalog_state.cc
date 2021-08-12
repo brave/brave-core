@@ -23,15 +23,15 @@ CatalogState::CatalogState(const CatalogState& state) = default;
 
 CatalogState::~CatalogState() = default;
 
-Result CatalogState::FromJson(const std::string& json,
-                              const std::string& json_schema) {
+bool CatalogState::FromJson(const std::string& json,
+                            const std::string& json_schema) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
-  auto result = helper::JSON::Validate(&document, json_schema);
-  if (result != SUCCESS) {
+  auto success = helper::JSON::Validate(&document, json_schema);
+  if (!success) {
     BLOG(1, helper::JSON::GetLastError(&document));
-    return result;
+    return false;
   }
 
   std::string new_catalog_id;
@@ -44,7 +44,7 @@ Result CatalogState::FromJson(const std::string& json,
 
   new_version = document["version"].GetInt();
   if (new_version != kCurrentCatalogVersion) {
-    return FAILED;
+    return false;
   }
 
   new_ping = document["ping"].GetInt64();
@@ -321,7 +321,7 @@ Result CatalogState::FromJson(const std::string& json,
   campaigns = new_campaigns;
   catalog_issuers = new_catalog_issuers;
 
-  return SUCCESS;
+  return true;
 }
 
 }  // namespace ads

@@ -178,36 +178,34 @@ class BatAdsImpl :
       Callback callback_;
     };
 
-  static void OnInitialize(
-      CallbackHolder<InitializeCallback>* holder,
-      const int32_t result);
+    static void OnInitialize(CallbackHolder<InitializeCallback>* holder,
+                             const bool success);
 
-  static void OnShutdown(
-      CallbackHolder<ShutdownCallback>* holder,
-      const int32_t result);
+    static void OnShutdown(CallbackHolder<ShutdownCallback>* holder,
+                           const bool success);
 
-  static void OnGetInlineContentAd(
-      CallbackHolder<GetInlineContentAdCallback>* holder,
-      const bool success,
-      const std::string& dimensions,
-      const ads::InlineContentAdInfo& ad);
+    static void OnGetInlineContentAd(
+        CallbackHolder<GetInlineContentAdCallback>* holder,
+        const bool success,
+        const std::string& dimensions,
+        const ads::InlineContentAdInfo& ad);
 
-  static void OnRemoveAllHistory(
-      CallbackHolder<RemoveAllHistoryCallback>* holder,
-      const int32_t result);
+    static void OnRemoveAllHistory(
+        CallbackHolder<RemoveAllHistoryCallback>* holder,
+        const bool success);
 
-  static void OnGetAccountStatement(
-      CallbackHolder<GetAccountStatementCallback>* holder,
-      const bool success,
-      const ads::StatementInfo& statement);
+    static void OnGetAccountStatement(
+        CallbackHolder<GetAccountStatementCallback>* holder,
+        const bool success,
+        const ads::StatementInfo& statement);
 
-  static void OnGetAdDiagnostics(
-      CallbackHolder<GetAdDiagnosticsCallback>* holder,
-      const bool success,
-      const std::string& json);
+    static void OnGetAdDiagnostics(
+        CallbackHolder<GetAdDiagnosticsCallback>* holder,
+        const bool success,
+        const std::string& json);
 
-  std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;
-  std::unique_ptr<ads::Ads> ads_;
+    std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;
+    std::unique_ptr<ads::Ads> ads_;
 };
 
 }  // namespace bat_ads

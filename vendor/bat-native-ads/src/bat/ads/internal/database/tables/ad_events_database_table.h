@@ -12,12 +12,10 @@
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/database/database_table.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 
-using GetAdEventsCallback =
-    std::function<void(const Result, const AdEventList&)>;
+using GetAdEventsCallback = std::function<void(const bool, const AdEventList&)>;
 
 namespace database {
 namespace table {

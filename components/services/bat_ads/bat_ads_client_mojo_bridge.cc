@@ -13,17 +13,6 @@
 
 namespace bat_ads {
 
-namespace {
-
-ads::Result ToAdsResult(
-    const int32_t result) {
-  return (ads::Result)result;
-}
-
-}  // namespace
-
-///////////////////////////////////////////////////////////////////////////////
-
 BatAdsClientMojoBridge::BatAdsClientMojoBridge(
     mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info) {
   bat_ads_client_.Bind(std::move(client_info));
@@ -159,10 +148,8 @@ void BatAdsClientMojoBridge::UrlRequest(ads::mojom::UrlRequestPtr url_request,
       base::BindOnce(&OnUrlRequest, std::move(callback)));
 }
 
-void OnSave(
-    const ads::ResultCallback& callback,
-    const int32_t result) {
-  callback(ToAdsResult(result));
+void OnSave(const ads::ResultCallback& callback, const bool success) {
+  callback(success);
 }
 
 void BatAdsClientMojoBridge::Save(
@@ -170,7 +157,7 @@ void BatAdsClientMojoBridge::Save(
     const std::string& value,
     ads::ResultCallback callback) {
   if (!connected()) {
-    callback(ads::Result::FAILED);
+    callback(/* success */ false);
     return;
   }
 
@@ -179,16 +166,16 @@ void BatAdsClientMojoBridge::Save(
 }
 
 void OnLoadAdsResource(const ads::LoadCallback& callback,
-                       const int32_t result,
+                       const bool success,
                        const std::string& value) {
-  callback(ToAdsResult(result), value);
+  callback(success, value);
 }
 
 void BatAdsClientMojoBridge::LoadAdsResource(const std::string& id,
                                              const int version,
                                              ads::LoadCallback callback) {
   if (!connected()) {
-    callback(ads::Result::FAILED, "");
+    callback(/* success */ false, "");
     return;
   }
 
@@ -225,18 +212,17 @@ void BatAdsClientMojoBridge::RecordP2AEvent(const std::string& name,
   bat_ads_client_->RecordP2AEvent(name, type, value);
 }
 
-void OnLoad(
-    const ads::LoadCallback& callback,
-    const int32_t result,
-    const std::string& value) {
-  callback(ToAdsResult(result), value);
+void OnLoad(const ads::LoadCallback& callback,
+            const bool success,
+            const std::string& value) {
+  callback(success, value);
 }
 
 void BatAdsClientMojoBridge::Load(
     const std::string& name,
     ads::LoadCallback callback) {
   if (!connected()) {
-    callback(ads::Result::FAILED, "");
+    callback(/* success */ false, "");
     return;
   }
 

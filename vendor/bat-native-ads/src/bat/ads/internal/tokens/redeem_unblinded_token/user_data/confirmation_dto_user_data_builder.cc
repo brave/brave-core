@@ -52,9 +52,9 @@ void Build(const std::string& creative_instance_id,
   database::table::ConversionQueue database_table;
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
-      [=](const Result result, const std::string& creative_instance_id,
+      [=](const bool success, const std::string& creative_instance_id,
           const ConversionQueueItemList& conversion_queue_items) {
-        if (result != Result::SUCCESS) {
+        if (!success) {
           BLOG(1, "Failed to get conversion queue");
           return;
         }

@@ -11,7 +11,6 @@
 
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/export.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 
@@ -25,7 +24,7 @@ struct ADS_EXPORT AdsHistoryInfo {
   enum class SortType { kNone = 0, kAscendingOrder, kDescendingOrder };
 
   std::string ToJson() const;
-  Result FromJson(const std::string& json);
+  bool FromJson(const std::string& json);
 
   std::vector<AdHistoryInfo> items;
 };

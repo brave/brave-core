@@ -23,8 +23,8 @@ void AdEventViewed::FireEvent(const NewTabPageAdInfo& ad) {
                                               << " and creative instance id "
                                               << ad.creative_instance_id);
 
-  LogAdEvent(ad, ConfirmationType::kViewed, [](const Result result) {
-    if (result != Result::SUCCESS) {
+  LogAdEvent(ad, ConfirmationType::kViewed, [](const bool success) {
+    if (!success) {
       BLOG(1, "Failed to log new tab page ad viewed event");
       return;
     }

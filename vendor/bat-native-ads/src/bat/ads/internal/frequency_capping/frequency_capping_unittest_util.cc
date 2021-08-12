@@ -81,7 +81,7 @@ void ResetFrequencyCaps(const AdType& type) {
   Client::Get()->ResetAllSeenAdvertisersForType(type);
 
   database::table::ad_events::Reset(
-      [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
+      [](const bool success) { ASSERT_TRUE(success); });
 }
 
 }  // namespace ads

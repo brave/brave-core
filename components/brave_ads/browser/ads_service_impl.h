@@ -200,10 +200,10 @@ class AdsServiceImpl : public AdsService,
 
   void OnCreate();
 
-  void OnInitialize(const int32_t result);
+  void OnInitialize(const bool success);
 
   void ShutdownBatAds();
-  void OnShutdownBatAds(const int32_t result);
+  void OnShutdownBatAds(const bool success);
 
   bool StartService();
 
@@ -212,7 +212,7 @@ class AdsServiceImpl : public AdsService,
   void Stop();
 
   void ResetState();
-  void OnShutdownAndResetBatAds(const int32_t result);
+  void OnShutdownAndResetBatAds(const bool success);
   void OnResetAllState(const bool success);
 
   void DetectUncertainFuture();
@@ -272,7 +272,7 @@ class AdsServiceImpl : public AdsService,
                           const bool success,
                           const std::string& json);
 
-  void OnRemoveAllHistory(const int32_t result);
+  void OnRemoveAllHistory(const bool success);
 
   void OnToggleAdThumbUp(OnToggleAdThumbUpCallback callback,
                          const std::string& creative_instance_id,

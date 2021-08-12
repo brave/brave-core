@@ -9,8 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "bat/ads/result.h"
-
 namespace ads {
 
 struct FlaggedAdInfo {
@@ -19,7 +17,7 @@ struct FlaggedAdInfo {
   ~FlaggedAdInfo();
 
   std::string ToJson() const;
-  Result FromJson(const std::string& json);
+  bool FromJson(const std::string& json);
 
   std::string creative_instance_id;
   std::string creative_set_id;

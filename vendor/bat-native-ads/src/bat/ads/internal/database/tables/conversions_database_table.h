@@ -12,12 +12,11 @@
 #include "bat/ads/internal/conversions/conversion_info.h"
 #include "bat/ads/internal/database/database_table.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 
 using GetConversionsCallback =
-    std::function<void(const Result, const ConversionList&)>;
+    std::function<void(const bool, const ConversionList&)>;
 
 namespace database {
 namespace table {

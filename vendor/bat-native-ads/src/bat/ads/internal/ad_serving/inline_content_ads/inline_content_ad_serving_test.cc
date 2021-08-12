@@ -84,9 +84,8 @@ class BatAdsInlineContentAdServingTest : public UnitTestBase {
   }
 
   void Save(const CreativeInlineContentAdList& creative_inline_content_ads) {
-    database_table_->Save(creative_inline_content_ads, [](const Result result) {
-      ASSERT_EQ(Result::SUCCESS, result);
-    });
+    database_table_->Save(creative_inline_content_ads,
+                          [](const bool success) { ASSERT_TRUE(success); });
   }
 
   std::unique_ptr<AdTargeting> ad_targeting_;

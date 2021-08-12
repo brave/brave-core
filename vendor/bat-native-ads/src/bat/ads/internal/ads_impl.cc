@@ -106,7 +106,7 @@ void AdsImpl::Initialize(InitializeCallback callback) {
 
   if (IsInitialized()) {
     BLOG(1, "Already initialized ads");
-    callback(FAILED);
+    callback(/* success */ false);
     return;
   }
 
@@ -119,13 +119,13 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
   if (!is_initialized_) {
     BLOG(0, "Shutdown failed as not initialized");
 
-    callback(FAILED);
+    callback(/* success */ false);
     return;
   }
 
   ad_notifications_->CloseAndRemoveAll();
 
-  callback(SUCCESS);
+  callback(/* success */ true);
 }
 
 void AdsImpl::ChangeLocale(const std::string& locale) {
@@ -365,8 +365,8 @@ void AdsImpl::OnInlineContentAdEvent(
 }
 
 void AdsImpl::PurgeOrphanedAdEventsForType(const mojom::AdType ad_type) {
-  PurgeOrphanedAdEvents(ad_type, [ad_type](const Result result) {
-    if (result != SUCCESS) {
+  PurgeOrphanedAdEvents(ad_type, [ad_type](const bool success) {
+    if (!success) {
       BLOG(0, "Failed to purge orphaned ad events for " << ad_type);
       return;
     }
@@ -378,7 +378,7 @@ void AdsImpl::PurgeOrphanedAdEventsForType(const mojom::AdType ad_type) {
 void AdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
   Client::Get()->RemoveAllHistory();
 
-  callback(SUCCESS);
+  callback(/* success */ true);
 }
 
 void AdsImpl::ReconcileAdRewards() {
@@ -559,11 +559,11 @@ void AdsImpl::InitializeBrowserManager() {
 }
 
 void AdsImpl::InitializeDatabase(InitializeCallback callback) {
-  database_->CreateOrOpen([=](const Result result) {
-    if (result != SUCCESS) {
+  database_->CreateOrOpen([=](const bool success) {
+    if (!success) {
       BLOG(0,
            "Failed to initialize database: " << database_->get_last_message());
-      callback(FAILED);
+      callback(/* success */ false);
       return;
     }
 
@@ -574,9 +574,9 @@ void AdsImpl::InitializeDatabase(InitializeCallback callback) {
 }
 
 void AdsImpl::MigrateConversions(InitializeCallback callback) {
-  conversions::Migrate([=](const Result result) {
-    if (result != SUCCESS) {
-      callback(FAILED);
+  conversions::Migrate([=](const bool success) {
+    if (!success) {
+      callback(/* success */ false);
       return;
     }
 
@@ -585,9 +585,9 @@ void AdsImpl::MigrateConversions(InitializeCallback callback) {
 }
 
 void AdsImpl::LoadClientState(InitializeCallback callback) {
-  Client::Get()->Initialize([=](const Result result) {
-    if (result != SUCCESS) {
-      callback(FAILED);
+  Client::Get()->Initialize([=](const bool success) {
+    if (!success) {
+      callback(/* success */ false);
       return;
     }
 
@@ -596,9 +596,9 @@ void AdsImpl::LoadClientState(InitializeCallback callback) {
 }
 
 void AdsImpl::LoadConfirmationsState(InitializeCallback callback) {
-  ConfirmationsState::Get()->Initialize([=](const Result result) {
-    if (result != SUCCESS) {
-      callback(FAILED);
+  ConfirmationsState::Get()->Initialize([=](const bool success) {
+    if (!success) {
+      callback(/* success */ false);
       return;
     }
 
@@ -607,9 +607,9 @@ void AdsImpl::LoadConfirmationsState(InitializeCallback callback) {
 }
 
 void AdsImpl::LoadAdNotificationsState(InitializeCallback callback) {
-  ad_notifications_->Initialize([=](const Result result) {
-    if (result != SUCCESS) {
-      callback(FAILED);
+  ad_notifications_->Initialize([=](const bool success) {
+    if (!success) {
+      callback(/* success */ false);
       return;
     }
 
@@ -626,7 +626,7 @@ void AdsImpl::Initialized(InitializeCallback callback) {
 
   MaybeUpdateIdleTimeThreshold();
 
-  callback(SUCCESS);
+  callback(/* success */ true);
 
   Start();
 }
@@ -656,8 +656,8 @@ void AdsImpl::Start() {
 }
 
 void AdsImpl::CleanupAdEvents() {
-  PurgeExpiredAdEvents([](const Result result) {
-    if (result != Result::SUCCESS) {
+  PurgeExpiredAdEvents([](const bool success) {
+    if (!success) {
       BLOG(1, "Failed to purge expired ad events");
       return;
     }

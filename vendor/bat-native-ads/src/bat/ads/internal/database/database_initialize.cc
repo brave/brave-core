@@ -47,14 +47,14 @@ void Initialize::OnCreateOrOpen(mojom::DBCommandResponsePtr response,
 
   if (response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     last_message_ = "Invalid response status";
-    callback(Result::FAILED);
+    callback(/* success */ false);
     return;
   }
 
   if (!response->result || response->result->get_value()->which() !=
                                mojom::DBValue::Tag::INT_VALUE) {
     last_message_ = "Invalid response result type";
-    callback(Result::FAILED);
+    callback(/* success */ false);
     return;
   }
 

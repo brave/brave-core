@@ -11,7 +11,6 @@
 
 #include "bat/ads/internal/catalog/catalog_campaign_info.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 
@@ -20,7 +19,7 @@ struct CatalogState {
   CatalogState(const CatalogState& state);
   ~CatalogState();
 
-  Result FromJson(const std::string& json, const std::string& json_schema);
+  bool FromJson(const std::string& json, const std::string& json_schema);
 
   std::string catalog_id;
   int version = 0;

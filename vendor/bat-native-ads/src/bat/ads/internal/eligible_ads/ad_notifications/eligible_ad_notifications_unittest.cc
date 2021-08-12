@@ -61,9 +61,8 @@ class BatAdsEligibleAdNotificationsTest : public UnitTestBase {
   }
 
   void Save(const CreativeAdNotificationList& creative_ad_notifications) {
-    database_table_->Save(creative_ad_notifications, [](const Result result) {
-      ASSERT_EQ(Result::SUCCESS, result);
-    });
+    database_table_->Save(creative_ad_notifications,
+                          [](const bool success) { ASSERT_TRUE(success); });
   }
 
   std::unique_ptr<database::table::CreativeAdNotifications> database_table_;

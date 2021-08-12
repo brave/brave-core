@@ -9,7 +9,6 @@
 #include "base/files/file_util.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "bat/ads/result.h"
 
 using ::testing::NiceMock;
 
@@ -87,8 +86,8 @@ void UnitTestBase::InitializeAds() {
       << "|InitializeAds| should only be called if "
          "|SetUpForTesting| was initialized for integration testing";
 
-  ads_->Initialize([=](const Result result) {
-    ASSERT_EQ(Result::SUCCESS, result);
+  ads_->Initialize([=](const bool success) {
+    ASSERT_TRUE(success);
 
     ads_->OnWalletUpdated("c387c2d8-a26d-4451-83e4-5c0c6fd942be",
                           "5BEKM1Y7xcRSg/1q8in/+Lki2weFZQB+UMYZlRw8ql8=");
@@ -191,23 +190,22 @@ void UnitTestBase::Initialize() {
       std::make_unique<AdsClientHelper>(ads_client_mock_.get());
 
   client_ = std::make_unique<Client>();
-  client_->Initialize(
-      [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
+  client_->Initialize([](const bool success) { ASSERT_TRUE(success); });
 
   ad_notifications_ = std::make_unique<AdNotifications>();
   ad_notifications_->Initialize(
-      [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
+      [](const bool success) { ASSERT_TRUE(success); });
 
   ad_rewards_ = std::make_unique<AdRewards>();
 
   confirmations_state_ =
       std::make_unique<ConfirmationsState>(ad_rewards_.get());
   confirmations_state_->Initialize(
-      [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
+      [](const bool success) { ASSERT_TRUE(success); });
 
   database_initialize_ = std::make_unique<database::Initialize>();
   database_initialize_->CreateOrOpen(
-      [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
+      [](const bool success) { ASSERT_TRUE(success); });
 
   browser_manager_ = std::make_unique<BrowserManager>();
 

@@ -289,21 +289,19 @@ void BatAdsImpl::OnResourceComponentUpdated(const std::string& id) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void BatAdsImpl::OnInitialize(
-    CallbackHolder<InitializeCallback>* holder,
-    const int32_t result) {
+void BatAdsImpl::OnInitialize(CallbackHolder<InitializeCallback>* holder,
+                              const bool success) {
   if (holder->is_valid()) {
-    std::move(holder->get()).Run((ads::Result)result);
+    std::move(holder->get()).Run(success);
   }
 
   delete holder;
 }
 
-void BatAdsImpl::OnShutdown(
-    CallbackHolder<ShutdownCallback>* holder,
-    const int32_t result) {
+void BatAdsImpl::OnShutdown(CallbackHolder<ShutdownCallback>* holder,
+                            const bool success) {
   if (holder->is_valid()) {
-    std::move(holder->get()).Run((ads::Result)result);
+    std::move(holder->get()).Run(success);
   }
 
   delete holder;
@@ -323,9 +321,9 @@ void BatAdsImpl::OnGetInlineContentAd(
 
 void BatAdsImpl::OnRemoveAllHistory(
     CallbackHolder<RemoveAllHistoryCallback>* holder,
-    const int32_t result) {
+    const bool success) {
   if (holder->is_valid()) {
-    std::move(holder->get()).Run((ads::Result)result);
+    std::move(holder->get()).Run(success);
   }
 
   delete holder;

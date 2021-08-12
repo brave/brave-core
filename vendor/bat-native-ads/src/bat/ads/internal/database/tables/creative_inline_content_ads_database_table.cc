@@ -45,7 +45,7 @@ void CreativeInlineContentAds::Save(
     const CreativeInlineContentAdList& creative_inline_content_ads,
     ResultCallback callback) {
   if (creative_inline_content_ads.empty()) {
-    callback(Result::SUCCESS);
+    callback(/* success */ true);
     return;
   }
 
@@ -88,7 +88,8 @@ void CreativeInlineContentAds::GetForCreativeInstanceId(
   CreativeInlineContentAdInfo creative_inline_content_ad;
 
   if (creative_instance_id.empty()) {
-    callback(Result::FAILED, creative_instance_id, creative_inline_content_ad);
+    callback(/* success */ false, creative_instance_id,
+             creative_inline_content_ad);
     return;
   }
 
@@ -181,7 +182,7 @@ void CreativeInlineContentAds::GetForSegments(
     const std::string& dimensions,
     GetCreativeInlineContentAdsCallback callback) {
   if (segments.empty() || dimensions.empty()) {
-    callback(Result::SUCCESS, segments, {});
+    callback(/* success */ true, segments, {});
     return;
   }
 
@@ -461,13 +462,13 @@ void CreativeInlineContentAds::OnGetForCreativeInstanceId(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Failed to get creative inline content ad");
-    callback(Result::FAILED, creative_instance_id, {});
+    callback(/* success */ false, creative_instance_id, {});
     return;
   }
 
   if (response->result->get_records().size() != 1) {
     BLOG(0, "Failed to get creative inline content ad");
-    callback(Result::FAILED, creative_instance_id, {});
+    callback(/* success */ false, creative_instance_id, {});
     return;
   }
 
@@ -476,7 +477,8 @@ void CreativeInlineContentAds::OnGetForCreativeInstanceId(
   const CreativeInlineContentAdInfo creative_inline_content_ad =
       GetFromRecord(record);
 
-  callback(Result::SUCCESS, creative_instance_id, creative_inline_content_ad);
+  callback(/* success */ true, creative_instance_id,
+           creative_inline_content_ad);
 }
 
 void CreativeInlineContentAds::OnGetForSegments(
@@ -486,7 +488,7 @@ void CreativeInlineContentAds::OnGetForSegments(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Failed to get creative inline content ads");
-    callback(Result::FAILED, segments, {});
+    callback(/* success */ false, segments, {});
     return;
   }
 
@@ -499,7 +501,7 @@ void CreativeInlineContentAds::OnGetForSegments(
     creative_inline_content_ads.push_back(creative_inline_content_ad);
   }
 
-  callback(Result::SUCCESS, segments, creative_inline_content_ads);
+  callback(/* success */ true, segments, creative_inline_content_ads);
 }
 
 void CreativeInlineContentAds::OnGetAll(
@@ -508,7 +510,7 @@ void CreativeInlineContentAds::OnGetAll(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Failed to get all creative inline content ads");
-    callback(Result::FAILED, {}, {});
+    callback(/* success */ false, {}, {});
     return;
   }
 
@@ -529,7 +531,7 @@ void CreativeInlineContentAds::OnGetAll(
   const auto iter = std::unique(segments.begin(), segments.end());
   segments.erase(iter, segments.end());
 
-  callback(Result::SUCCESS, segments, creative_inline_content_ads);
+  callback(/* success */ true, segments, creative_inline_content_ads);
 }
 
 CreativeInlineContentAdInfo CreativeInlineContentAds::GetFromRecord(

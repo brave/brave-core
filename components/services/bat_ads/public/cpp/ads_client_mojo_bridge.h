@@ -163,21 +163,18 @@ class AdsClientMojoBridge
   };
 
   static void OnLoadAdsResource(CallbackHolder<LoadCallback>* holder,
-                                const ads::Result result,
+                                const bool success,
                                 const std::string& value);
 
   static void OnGetBrowsingHistory(
       CallbackHolder<GetBrowsingHistoryCallback>* holder,
       const std::vector<std::string>& history);
 
-  static void OnLoad(
-      CallbackHolder<LoadCallback>* holder,
-      const ads::Result result,
-      const std::string& value);
+  static void OnLoad(CallbackHolder<LoadCallback>* holder,
+                     const bool success,
+                     const std::string& value);
 
-  static void OnSave(
-      CallbackHolder<SaveCallback>* holder,
-      const ads::Result result);
+  static void OnSave(CallbackHolder<SaveCallback>* holder, const bool success);
 
   static void OnURLRequest(CallbackHolder<UrlRequestCallback>* holder,
                            const ads::mojom::UrlResponse& url_response);

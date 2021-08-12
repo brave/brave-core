@@ -35,7 +35,7 @@ Migration::~Migration() = default;
 void Migration::FromVersion(const int from_version, ResultCallback callback) {
   const int to_version = version();
   if (to_version == from_version) {
-    callback(Result::SUCCESS);
+    callback(/* success */ true);
     return;
   }
 
