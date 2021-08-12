@@ -126,17 +126,17 @@ int GetSchemaResourceId(const std::string& name) {
   return 0;
 }
 
-std::string URLMethodToRequestType(ads::UrlRequestMethod method) {
+std::string URLMethodToRequestType(ads::mojom::UrlRequestMethod method) {
   switch (method) {
-    case ads::UrlRequestMethod::GET: {
+    case ads::mojom::UrlRequestMethod::kGet: {
       return "GET";
     }
 
-    case ads::UrlRequestMethod::POST: {
+    case ads::mojom::UrlRequestMethod::kPost: {
       return "POST";
     }
 
-    case ads::UrlRequestMethod::PUT: {
+    case ads::mojom::UrlRequestMethod::kPut: {
       return "PUT";
     }
   }
@@ -838,9 +838,8 @@ void AdsServiceImpl::DetectUncertainFuture() {
 }
 
 void AdsServiceImpl::OnDetectUncertainFuture(const bool is_uncertain_future) {
-  ads::SysInfoPtr sys_info = ads::SysInfo::New();
+  ads::mojom::SysInfoPtr sys_info = ads::mojom::SysInfo::New();
   sys_info->is_uncertain_future = is_uncertain_future;
-
   bat_ads_service_->SetSysInfo(std::move(sys_info), base::NullCallback());
 
   EnsureBaseDirectoryExists();
@@ -881,27 +880,27 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(const bool success) {
 }
 
 void AdsServiceImpl::SetEnvironment() {
-  ads::Environment environment;
+  ads::mojom::Environment environment;
 
 #if defined(OFFICIAL_BUILD)
-  environment = ads::Environment::PRODUCTION;
+  environment = ads::mojom::Environment::kProduction;
 #else
-  environment = ads::Environment::STAGING;
+  environment = ads::mojom::Environment::kStaging;
 #endif
 
 #if defined(OS_ANDROID)
   if (GetBooleanPref(brave_rewards::prefs::kUseRewardsStagingServer)) {
-    environment = ads::Environment::STAGING;
+    environment = ads::mojom::Environment::kStaging;
   }
 #else
   const auto& command_line = *base::CommandLine::ForCurrentProcess();
 
   if (command_line.HasSwitch(switches::kProduction)) {
-    environment = ads::Environment::PRODUCTION;
+    environment = ads::mojom::Environment::kProduction;
   } else if (command_line.HasSwitch(switches::kStaging)) {
-    environment = ads::Environment::STAGING;
+    environment = ads::mojom::Environment::kStaging;
   } else if (command_line.HasSwitch(switches::kDevelopment)) {
-    environment = ads::Environment::DEVELOPMENT;
+    environment = ads::mojom::Environment::kDevelopment;
   }
 #endif
 
@@ -909,7 +908,7 @@ void AdsServiceImpl::SetEnvironment() {
 }
 
 void AdsServiceImpl::SetBuildChannel() {
-  ads::BuildChannelPtr build_channel = ads::BuildChannel::New();
+  ads::mojom::BuildChannelPtr build_channel = ads::mojom::BuildChannel::New();
   build_channel->name = brave::GetChannelName();
   build_channel->is_release = build_channel->name == "release" ? true : false;
 
@@ -986,7 +985,7 @@ void AdsServiceImpl::OnShowAdNotification(const std::string& notification_id) {
   }
 
   bat_ads_->OnAdNotificationEvent(notification_id,
-                                  ads::AdNotificationEventType::kViewed);
+                                  ads::mojom::AdNotificationEventType::kViewed);
 }
 
 void AdsServiceImpl::OnCloseAdNotification(const std::string& notification_id,
@@ -997,9 +996,9 @@ void AdsServiceImpl::OnCloseAdNotification(const std::string& notification_id,
     return;
   }
 
-  const ads::AdNotificationEventType event_type =
-      by_user ? ads::AdNotificationEventType::kDismissed
-              : ads::AdNotificationEventType::kTimedOut;
+  const ads::mojom::AdNotificationEventType event_type =
+      by_user ? ads::mojom::AdNotificationEventType::kDismissed
+              : ads::mojom::AdNotificationEventType::kTimedOut;
 
   bat_ads_->OnAdNotificationEvent(notification_id, event_type);
 }
@@ -1011,8 +1010,8 @@ void AdsServiceImpl::OnClickAdNotification(const std::string& notification_id) {
 
   OpenNewTabWithAd(notification_id);
 
-  bat_ads_->OnAdNotificationEvent(notification_id,
-                                  ads::AdNotificationEventType::kClicked);
+  bat_ads_->OnAdNotificationEvent(
+      notification_id, ads::mojom::AdNotificationEventType::kClicked);
 }
 
 bool AdsServiceImpl::ShouldShowCustomAdNotifications() {
@@ -1073,7 +1072,7 @@ void AdsServiceImpl::OnOpenNewTabWithAd(const std::string& json) {
 void AdsServiceImpl::OnNewTabPageAdEvent(
     const std::string& uuid,
     const std::string& creative_instance_id,
-    const ads::NewTabPageAdEventType event_type) {
+    const ads::mojom::NewTabPageAdEventType event_type) {
   if (!connected()) {
     return;
   }
@@ -1084,7 +1083,7 @@ void AdsServiceImpl::OnNewTabPageAdEvent(
 void AdsServiceImpl::OnPromotedContentAdEvent(
     const std::string& uuid,
     const std::string& creative_instance_id,
-    const ads::PromotedContentAdEventType event_type) {
+    const ads::mojom::PromotedContentAdEventType event_type) {
   if (!connected()) {
     return;
   }
@@ -1106,7 +1105,7 @@ void AdsServiceImpl::GetInlineContentAd(const std::string& dimensions,
 void AdsServiceImpl::OnInlineContentAdEvent(
     const std::string& uuid,
     const std::string& creative_instance_id,
-    const ads::InlineContentAdEventType event_type) {
+    const ads::mojom::InlineContentAdEventType event_type) {
   if (!connected()) {
     return;
   }
@@ -1115,7 +1114,7 @@ void AdsServiceImpl::OnInlineContentAdEvent(
 }
 
 void AdsServiceImpl::PurgeOrphanedAdEventsForType(
-    const ads::mojom::BraveAdsAdType ad_type) {
+    const ads::mojom::AdType ad_type) {
   if (!connected()) {
     return;
   }
@@ -1220,7 +1219,7 @@ void AdsServiceImpl::OnURLRequestComplete(
     }
   }
 
-  ads::UrlResponse url_response;
+  ads::mojom::UrlResponse url_response;
   url_response.url = url_loader->GetFinalURL().spec();
   url_response.status_code = response_code;
   url_response.body = response_body ? *response_body : "";
@@ -1993,7 +1992,7 @@ void AdsServiceImpl::ResetAdEvents() const {
   return FrequencyCappingHelper::GetInstance()->ResetAdEvents();
 }
 
-void AdsServiceImpl::UrlRequest(ads::UrlRequestPtr url_request,
+void AdsServiceImpl::UrlRequest(ads::mojom::UrlRequestPtr url_request,
                                 ads::UrlRequestCallback callback) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = GURL(url_request->url);
@@ -2096,10 +2095,10 @@ void AdsServiceImpl::OnBrowsingHistorySearchComplete(
 }
 
 void AdsServiceImpl::RecordP2AEvent(const std::string& name,
-                                    const ads::P2AEventType type,
+                                    const ads::mojom::P2AEventType type,
                                     const std::string& value) {
   switch (type) {
-    case ads::P2AEventType::kListType: {
+    case ads::mojom::P2AEventType::kListType: {
       absl::optional<base::Value> maybe_list = base::JSONReader::Read(value);
       if (!maybe_list || !maybe_list->is_list()) {
         break;
@@ -2132,15 +2131,15 @@ std::string AdsServiceImpl::LoadResourceForId(const std::string& id) {
   return LoadDataResourceAndDecompressIfNeeded(resource_id);
 }
 
-ads::DBCommandResponsePtr RunDBTransactionOnFileTaskRunner(
-    ads::DBTransactionPtr transaction,
+ads::mojom::DBCommandResponsePtr RunDBTransactionOnFileTaskRunner(
+    ads::mojom::DBTransactionPtr transaction,
     ads::Database* database) {
   DCHECK(database);
 
-  auto response = ads::DBCommandResponse::New();
+  auto response = ads::mojom::DBCommandResponse::New();
 
   if (!database) {
-    response->status = ads::DBCommandResponse::Status::RESPONSE_ERROR;
+    response->status = ads::mojom::DBCommandResponse::Status::RESPONSE_ERROR;
   } else {
     database->RunTransaction(std::move(transaction), response.get());
   }
@@ -2148,7 +2147,7 @@ ads::DBCommandResponsePtr RunDBTransactionOnFileTaskRunner(
   return response;
 }
 
-void AdsServiceImpl::RunDBTransaction(ads::DBTransactionPtr transaction,
+void AdsServiceImpl::RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
                                       ads::RunDBTransactionCallback callback) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,
@@ -2158,8 +2157,9 @@ void AdsServiceImpl::RunDBTransaction(ads::DBTransactionPtr transaction,
                      std::move(callback)));
 }
 
-void AdsServiceImpl::OnRunDBTransaction(ads::RunDBTransactionCallback callback,
-                                        ads::DBCommandResponsePtr response) {
+void AdsServiceImpl::OnRunDBTransaction(
+    ads::RunDBTransactionCallback callback,
+    ads::mojom::DBCommandResponsePtr response) {
   callback(std::move(response));
 }
 

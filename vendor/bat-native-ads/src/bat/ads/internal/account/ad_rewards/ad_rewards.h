@@ -15,7 +15,7 @@
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_delegate.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/backoff_timer.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/transaction_info.h"
 
 namespace ads {
@@ -60,7 +60,7 @@ class AdRewards {
   void Reconcile();
 
   void GetPayments();
-  void OnGetPayments(const UrlResponse& url_response);
+  void OnGetPayments(const mojom::UrlResponse& url_response);
 
   void OnDidReconcileAdRewards();
   void OnFailedToReconcileAdRewards();

@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/user_activity/page_transition_util.h"
 
-#include "bat/ads/mojom.h"
-
 namespace ads {
 
 namespace {

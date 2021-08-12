@@ -675,7 +675,7 @@ void BraveNewTabMessageHandler::HandleTodayOnCardVisit(
     auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
     ads_service_->OnPromotedContentAdEvent(
         item_id, creative_instance_id,
-        ads::mojom::BraveAdsPromotedContentAdEventType::kClicked);
+        ads::mojom::PromotedContentAdEventType::kClicked);
   }
 }
 
@@ -708,7 +708,7 @@ void BraveNewTabMessageHandler::HandleTodayOnPromotedCardView(
     auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
     ads_service_->OnPromotedContentAdEvent(
         item_id, creative_instance_id,
-        ads::mojom::BraveAdsPromotedContentAdEventType::kViewed);
+        ads::mojom::PromotedContentAdEventType::kViewed);
   }
 }
 
@@ -770,7 +770,7 @@ void BraveNewTabMessageHandler::HandleTodayOnDisplayAdVisit(
   }
   ads_service_->OnInlineContentAdEvent(
       item_id, creative_instance_id,
-      ads::mojom::BraveAdsInlineContentAdEventType::kClicked);
+      ads::mojom::InlineContentAdEventType::kClicked);
 }
 
 void BraveNewTabMessageHandler::HandleTodayOnDisplayAdView(
@@ -801,7 +801,7 @@ void BraveNewTabMessageHandler::HandleTodayOnDisplayAdView(
   }
   ads_service_->OnInlineContentAdEvent(
       item_id, creative_instance_id,
-      ads::mojom::BraveAdsInlineContentAdEventType::kViewed);
+      ads::mojom::InlineContentAdEventType::kViewed);
   // Let p3a know an ad was viewed
   WeeklyStorage storage(profile_->GetPrefs(), kBraveTodayWeeklyCardViewsCount);
   storage.AddDelta(1u);

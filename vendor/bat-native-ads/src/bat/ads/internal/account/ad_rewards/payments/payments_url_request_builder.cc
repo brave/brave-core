@@ -26,12 +26,12 @@ PaymentsUrlRequestBuilder::~PaymentsUrlRequestBuilder() = default;
 
 // GET /v1/confirmation/payment/{payment_id}
 
-UrlRequestPtr PaymentsUrlRequestBuilder::Build() {
-  UrlRequestPtr url_request = UrlRequest::New();
+mojom::UrlRequestPtr PaymentsUrlRequestBuilder::Build() {
+  mojom::UrlRequestPtr url_request = mojom::UrlRequest::New();
   url_request->url = BuildUrl();
   const std::string body = BuildBody();
   url_request->headers = BuildHeaders(body);
-  url_request->method = UrlRequestMethod::GET;
+  url_request->method = mojom::UrlRequestMethod::kGet;
 
   return url_request;
 }

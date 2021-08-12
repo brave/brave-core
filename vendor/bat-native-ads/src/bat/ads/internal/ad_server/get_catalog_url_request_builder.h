@@ -9,6 +9,7 @@
 #include <string>
 
 #include "bat/ads/internal/server/url_request_builder.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
@@ -18,7 +19,7 @@ class GetCatalogUrlRequestBuilder : UrlRequestBuilder {
 
   ~GetCatalogUrlRequestBuilder() override;
 
-  UrlRequestPtr Build() override;
+  mojom::UrlRequestPtr Build() override;
 
  private:
   std::string BuildUrl() const;

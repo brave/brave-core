@@ -13,6 +13,7 @@
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
 #include "bat/ads/internal/server/url_request_builder.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
@@ -24,7 +25,7 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder : UrlRequestBuilder {
 
   ~RedeemUnblindedPaymentTokensUrlRequestBuilder() override;
 
-  UrlRequestPtr Build() override;
+  mojom::UrlRequestPtr Build() override;
 
  private:
   WalletInfo wallet_;

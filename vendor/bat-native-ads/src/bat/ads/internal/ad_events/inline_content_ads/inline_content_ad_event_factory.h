@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "bat/ads/internal/ad_events/ad_event.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
@@ -20,7 +20,7 @@ namespace inline_content_ads {
 class AdEventFactory {
  public:
   static std::unique_ptr<AdEvent<InlineContentAdInfo>> Build(
-      const InlineContentAdEventType event_type);
+      const mojom::InlineContentAdEventType event_type);
 };
 
 }  // namespace inline_content_ads

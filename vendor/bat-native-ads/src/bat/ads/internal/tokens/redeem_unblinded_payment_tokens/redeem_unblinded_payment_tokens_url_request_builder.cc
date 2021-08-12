@@ -35,14 +35,14 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::
 
 // PUT /v1/confirmation/payment/{payment_id}
 
-UrlRequestPtr RedeemUnblindedPaymentTokensUrlRequestBuilder::Build() {
-  UrlRequestPtr url_request = UrlRequest::New();
+mojom::UrlRequestPtr RedeemUnblindedPaymentTokensUrlRequestBuilder::Build() {
+  mojom::UrlRequestPtr url_request = mojom::UrlRequest::New();
   url_request->url = BuildUrl();
   url_request->headers = BuildHeaders();
   const std::string payload = CreatePayload();
   url_request->content = BuildBody(payload);
   url_request->content_type = "application/json";
-  url_request->method = UrlRequestMethod::PUT;
+  url_request->method = mojom::UrlRequestMethod::kPut;
 
   return url_request;
 }

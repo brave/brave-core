@@ -7,6 +7,7 @@
 
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -50,7 +51,7 @@ class BatAdsCreateConfirmationUrlRequestBuilderTest : public UnitTestBase {
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
        BuildUrlForLargeAnonmityCountryForRPill) {
   // Arrange
-  SysInfo sys_info;
+  mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = true;
   SetSysInfo(sys_info);
 
@@ -64,10 +65,10 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
 
   // Assert
-  UrlRequestPtr expected_url_request = UrlRequest::New();
+  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url =
       R"(https://ads-serve.brave.software/v1/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiUEkzbEZxcEdWRkt6NFRINXlFd1hJM1IvUW50bVRwVWdlQmFLK1NUaUJ4OD1cIixcImNyZWF0aXZlSW5zdGFuY2VJZFwiOlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6e30sXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoibGRWYWxyb2hqNWFIWW1FdWMvUmpIYTAweFdMdFJWY0hGMS9XWnl4ZGJYMnhkQ1ByMFgyMVg3cWtKVUxRdUw4U2JWWHJUT3lEbTJJNkFrT0R0SHYxR2c9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01xLzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdDdz09In0=)";
   expected_url_request->headers = {
@@ -76,7 +77,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content =
       R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"type":"view"})";
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = UrlRequestMethod::POST;
+  expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
   EXPECT_TRUE(url_request.Equals(expected_url_request));
 }
@@ -84,7 +85,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
        BuildUrlForAnonymousCountryForRPill) {
   // Arrange
-  SysInfo sys_info;
+  mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = true;
   SetSysInfo(sys_info);
 
@@ -98,10 +99,10 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
 
   // Assert
-  UrlRequestPtr expected_url_request = UrlRequest::New();
+  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url =
       R"(https://ads-serve.brave.software/v1/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiUEkzbEZxcEdWRkt6NFRINXlFd1hJM1IvUW50bVRwVWdlQmFLK1NUaUJ4OD1cIixcImNyZWF0aXZlSW5zdGFuY2VJZFwiOlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6e30sXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoibGRWYWxyb2hqNWFIWW1FdWMvUmpIYTAweFdMdFJWY0hGMS9XWnl4ZGJYMnhkQ1ByMFgyMVg3cWtKVUxRdUw4U2JWWHJUT3lEbTJJNkFrT0R0SHYxR2c9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01xLzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdDdz09In0=)";
   expected_url_request->headers = {
@@ -110,7 +111,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content =
       R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"type":"view"})";
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = UrlRequestMethod::POST;
+  expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
   EXPECT_TRUE(url_request.Equals(expected_url_request));
 }
@@ -118,7 +119,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
        BuildUrlForOtherCountryForRPill) {
   // Arrange
-  SysInfo sys_info;
+  mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = true;
   SetSysInfo(sys_info);
 
@@ -132,10 +133,10 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
 
   // Assert
-  UrlRequestPtr expected_url_request = UrlRequest::New();
+  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url =
       R"(https://ads-serve.brave.software/v1/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiUEkzbEZxcEdWRkt6NFRINXlFd1hJM1IvUW50bVRwVWdlQmFLK1NUaUJ4OD1cIixcImNyZWF0aXZlSW5zdGFuY2VJZFwiOlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6e30sXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoibGRWYWxyb2hqNWFIWW1FdWMvUmpIYTAweFdMdFJWY0hGMS9XWnl4ZGJYMnhkQ1ByMFgyMVg3cWtKVUxRdUw4U2JWWHJUT3lEbTJJNkFrT0R0SHYxR2c9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01xLzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdDdz09In0=)";
   expected_url_request->headers = {
@@ -144,7 +145,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content =
       R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"type":"view"})";
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = UrlRequestMethod::POST;
+  expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
   EXPECT_TRUE(url_request.Equals(expected_url_request));
 }
@@ -152,7 +153,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
        BuildUrlForLargeAnonmityCountryAndNonReleaseBuildChannelForRPill) {
   // Arrange
-  SysInfo sys_info;
+  mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = true;
   SetSysInfo(sys_info);
 
@@ -166,10 +167,10 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
 
   // Assert
-  UrlRequestPtr expected_url_request = UrlRequest::New();
+  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url =
       R"(https://ads-serve.brave.software/v1/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiUEkzbEZxcEdWRkt6NFRINXlFd1hJM1IvUW50bVRwVWdlQmFLK1NUaUJ4OD1cIixcImNyZWF0aXZlSW5zdGFuY2VJZFwiOlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6e30sXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoibGRWYWxyb2hqNWFIWW1FdWMvUmpIYTAweFdMdFJWY0hGMS9XWnl4ZGJYMnhkQ1ByMFgyMVg3cWtKVUxRdUw4U2JWWHJUT3lEbTJJNkFrT0R0SHYxR2c9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01xLzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdDdz09In0=)";
   expected_url_request->headers = {
@@ -178,7 +179,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content =
       R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"type":"view"})";
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = UrlRequestMethod::POST;
+  expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
   EXPECT_TRUE(url_request.Equals(expected_url_request));
 }
@@ -186,7 +187,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
        BuildUrlForAnonymousCountryAndNonReleaseBuildChannelForRPill) {
   // Arrange
-  SysInfo sys_info;
+  mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = true;
   SetSysInfo(sys_info);
 
@@ -200,10 +201,10 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
 
   // Assert
-  UrlRequestPtr expected_url_request = UrlRequest::New();
+  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url =
       R"(https://ads-serve.brave.software/v1/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiUEkzbEZxcEdWRkt6NFRINXlFd1hJM1IvUW50bVRwVWdlQmFLK1NUaUJ4OD1cIixcImNyZWF0aXZlSW5zdGFuY2VJZFwiOlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6e30sXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoibGRWYWxyb2hqNWFIWW1FdWMvUmpIYTAweFdMdFJWY0hGMS9XWnl4ZGJYMnhkQ1ByMFgyMVg3cWtKVUxRdUw4U2JWWHJUT3lEbTJJNkFrT0R0SHYxR2c9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01xLzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdDdz09In0=)";
   expected_url_request->headers = {
@@ -212,7 +213,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content =
       R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"type":"view"})";
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = UrlRequestMethod::POST;
+  expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
   EXPECT_TRUE(url_request.Equals(expected_url_request));
 }
@@ -220,7 +221,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
        BuildUrlForOtherCountryAndNonReleaseBuildChannelForRPill) {
   // Arrange
-  SysInfo sys_info;
+  mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = true;
   SetSysInfo(sys_info);
 
@@ -234,10 +235,10 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
 
   // Assert
-  UrlRequestPtr expected_url_request = UrlRequest::New();
+  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url =
       R"(https://ads-serve.brave.software/v1/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiUEkzbEZxcEdWRkt6NFRINXlFd1hJM1IvUW50bVRwVWdlQmFLK1NUaUJ4OD1cIixcImNyZWF0aXZlSW5zdGFuY2VJZFwiOlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6e30sXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoibGRWYWxyb2hqNWFIWW1FdWMvUmpIYTAweFdMdFJWY0hGMS9XWnl4ZGJYMnhkQ1ByMFgyMVg3cWtKVUxRdUw4U2JWWHJUT3lEbTJJNkFrT0R0SHYxR2c9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01xLzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdDdz09In0=)";
   expected_url_request->headers = {
@@ -246,7 +247,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content =
       R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"type":"view"})";
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = UrlRequestMethod::POST;
+  expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
   EXPECT_TRUE(url_request.Equals(expected_url_request));
 }
@@ -254,7 +255,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
        BuildUrlForLargeAnonmityCountryForBPill) {
   // Arrange
-  SysInfo sys_info;
+  mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = false;
   SetSysInfo(sys_info);
 
@@ -268,10 +269,10 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
 
   // Assert
-  UrlRequestPtr expected_url_request = UrlRequest::New();
+  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url =
       R"(https://ads-serve.brave.software/v1/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiUEkzbEZxcEdWRkt6NFRINXlFd1hJM1IvUW50bVRwVWdlQmFLK1NUaUJ4OD1cIixcImNyZWF0aXZlSW5zdGFuY2VJZFwiOlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6e30sXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoibGRWYWxyb2hqNWFIWW1FdWMvUmpIYTAweFdMdFJWY0hGMS9XWnl4ZGJYMnhkQ1ByMFgyMVg3cWtKVUxRdUw4U2JWWHJUT3lEbTJJNkFrT0R0SHYxR2c9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01xLzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdDdz09In0=)";
   expected_url_request->headers = {
@@ -280,7 +281,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content =
       R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"type":"view"})";
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = UrlRequestMethod::POST;
+  expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
   EXPECT_TRUE(url_request.Equals(expected_url_request));
 }
@@ -288,7 +289,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
        BuildUrlForAnonymousCountryForBPill) {
   // Arrange
-  SysInfo sys_info;
+  mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = false;
   SetSysInfo(sys_info);
 
@@ -302,10 +303,10 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
 
   // Assert
-  UrlRequestPtr expected_url_request = UrlRequest::New();
+  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url =
       R"(https://ads-serve.brave.software/v1/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiUEkzbEZxcEdWRkt6NFRINXlFd1hJM1IvUW50bVRwVWdlQmFLK1NUaUJ4OD1cIixcImNyZWF0aXZlSW5zdGFuY2VJZFwiOlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6e30sXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoibGRWYWxyb2hqNWFIWW1FdWMvUmpIYTAweFdMdFJWY0hGMS9XWnl4ZGJYMnhkQ1ByMFgyMVg3cWtKVUxRdUw4U2JWWHJUT3lEbTJJNkFrT0R0SHYxR2c9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01xLzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdDdz09In0=)";
   expected_url_request->headers = {
@@ -314,7 +315,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content =
       R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"type":"view"})";
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = UrlRequestMethod::POST;
+  expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
   EXPECT_TRUE(url_request.Equals(expected_url_request));
 }
@@ -322,7 +323,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
        BuildUrlForOtherCountryForBPill) {
   // Arrange
-  SysInfo sys_info;
+  mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = false;
   SetSysInfo(sys_info);
 
@@ -336,10 +337,10 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
 
   // Assert
-  UrlRequestPtr expected_url_request = UrlRequest::New();
+  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url =
       R"(https://ads-serve.brave.software/v1/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiUEkzbEZxcEdWRkt6NFRINXlFd1hJM1IvUW50bVRwVWdlQmFLK1NUaUJ4OD1cIixcImNyZWF0aXZlSW5zdGFuY2VJZFwiOlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6e30sXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoibGRWYWxyb2hqNWFIWW1FdWMvUmpIYTAweFdMdFJWY0hGMS9XWnl4ZGJYMnhkQ1ByMFgyMVg3cWtKVUxRdUw4U2JWWHJUT3lEbTJJNkFrT0R0SHYxR2c9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01xLzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdDdz09In0=)";
   expected_url_request->headers = {
@@ -348,7 +349,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content =
       R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"type":"view"})";
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = UrlRequestMethod::POST;
+  expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
   EXPECT_TRUE(url_request.Equals(expected_url_request));
 }
@@ -356,7 +357,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
        BuildUrlForLargeAnonmityCountryAndNonReleaseBuildChannelForBPill) {
   // Arrange
-  SysInfo sys_info;
+  mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = false;
   SetSysInfo(sys_info);
 
@@ -370,10 +371,10 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
 
   // Assert
-  UrlRequestPtr expected_url_request = UrlRequest::New();
+  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url =
       R"(https://ads-serve.brave.software/v1/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiUEkzbEZxcEdWRkt6NFRINXlFd1hJM1IvUW50bVRwVWdlQmFLK1NUaUJ4OD1cIixcImNyZWF0aXZlSW5zdGFuY2VJZFwiOlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6e30sXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoibGRWYWxyb2hqNWFIWW1FdWMvUmpIYTAweFdMdFJWY0hGMS9XWnl4ZGJYMnhkQ1ByMFgyMVg3cWtKVUxRdUw4U2JWWHJUT3lEbTJJNkFrT0R0SHYxR2c9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01xLzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdDdz09In0=)";
   expected_url_request->headers = {
@@ -382,7 +383,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content =
       R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"type":"view"})";
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = UrlRequestMethod::POST;
+  expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
   EXPECT_TRUE(url_request.Equals(expected_url_request));
 }
@@ -390,7 +391,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
        BuildUrlForAnonymousCountryAndNonReleaseBuildChannelForBPill) {
   // Arrange
-  SysInfo sys_info;
+  mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = false;
   SetSysInfo(sys_info);
 
@@ -404,10 +405,10 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
 
   // Assert
-  UrlRequestPtr expected_url_request = UrlRequest::New();
+  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url =
       R"(https://ads-serve.brave.software/v1/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiUEkzbEZxcEdWRkt6NFRINXlFd1hJM1IvUW50bVRwVWdlQmFLK1NUaUJ4OD1cIixcImNyZWF0aXZlSW5zdGFuY2VJZFwiOlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6e30sXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoibGRWYWxyb2hqNWFIWW1FdWMvUmpIYTAweFdMdFJWY0hGMS9XWnl4ZGJYMnhkQ1ByMFgyMVg3cWtKVUxRdUw4U2JWWHJUT3lEbTJJNkFrT0R0SHYxR2c9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01xLzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdDdz09In0=)";
   expected_url_request->headers = {
@@ -416,7 +417,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content =
       R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"type":"view"})";
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = UrlRequestMethod::POST;
+  expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
   EXPECT_TRUE(url_request.Equals(expected_url_request));
 }
@@ -424,7 +425,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
        BuildUrlForOtherCountryAndNonReleaseBuildChannelForBPill) {
   // Arrange
-  SysInfo sys_info;
+  mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = false;
   SetSysInfo(sys_info);
 
@@ -438,10 +439,10 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
   // Act
-  UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
 
   // Assert
-  UrlRequestPtr expected_url_request = UrlRequest::New();
+  mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url =
       R"(https://ads-serve.brave.software/v1/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiUEkzbEZxcEdWRkt6NFRINXlFd1hJM1IvUW50bVRwVWdlQmFLK1NUaUJ4OD1cIixcImNyZWF0aXZlSW5zdGFuY2VJZFwiOlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6e30sXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoibGRWYWxyb2hqNWFIWW1FdWMvUmpIYTAweFdMdFJWY0hGMS9XWnl4ZGJYMnhkQ1ByMFgyMVg3cWtKVUxRdUw4U2JWWHJUT3lEbTJJNkFrT0R0SHYxR2c9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01xLzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdDdz09In0=)";
   expected_url_request->headers = {
@@ -450,7 +451,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content =
       R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"type":"view"})";
   expected_url_request->content_type = "application/json";
-  expected_url_request->method = UrlRequestMethod::POST;
+  expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
   EXPECT_TRUE(url_request.Equals(expected_url_request));
 }

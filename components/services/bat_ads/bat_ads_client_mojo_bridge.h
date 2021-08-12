@@ -49,9 +49,8 @@ class BatAdsClientMojoBridge
       const std::string& confirmation_type) const override;
   void ResetAdEvents() const override;
 
-  void UrlRequest(
-      ads::UrlRequestPtr url_request,
-      ads::UrlRequestCallback callback) override;
+  void UrlRequest(ads::mojom::UrlRequestPtr url_request,
+                  ads::UrlRequestCallback callback) override;
 
   void Save(
       const std::string& name,
@@ -65,10 +64,9 @@ class BatAdsClientMojoBridge
                           const int days_ago,
                           ads::GetBrowsingHistoryCallback callback) override;
 
-  void RecordP2AEvent(
-      const std::string& name,
-      const ads::P2AEventType type,
-      const std::string& value) override;
+  void RecordP2AEvent(const std::string& name,
+                      const ads::mojom::P2AEventType type,
+                      const std::string& value) override;
 
   void Load(
       const std::string& name,
@@ -77,9 +75,8 @@ class BatAdsClientMojoBridge
   std::string LoadResourceForId(
       const std::string& id) override;
 
-  void RunDBTransaction(
-      ads::DBTransactionPtr transaction,
-      ads::RunDBTransactionCallback callback) override;
+  void RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
+                        ads::RunDBTransactionCallback callback) override;
 
   void OnAdRewardsChanged() override;
 

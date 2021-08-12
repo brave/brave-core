@@ -9,7 +9,7 @@
 #include <string>
 
 #include "bat/ads/internal/ads/ad_notifications/ad_notification_observer.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
@@ -25,14 +25,14 @@ class AdNotification : public AdNotificationObserver {
   void RemoveObserver(AdNotificationObserver* observer);
 
   void FireEvent(const std::string& uuid,
-                 const AdNotificationEventType event_type);
+                 const mojom::AdNotificationEventType event_type);
 
  private:
   base::ObserverList<AdNotificationObserver> observers_;
 
   void NotifyAdNotificationEvent(
       const AdNotificationInfo& ad,
-      const AdNotificationEventType event_type) const;
+      const mojom::AdNotificationEventType event_type) const;
 
   void NotifyAdNotificationServed(const AdNotificationInfo& ad) const;
   void NotifyAdNotificationViewed(const AdNotificationInfo& ad) const;
@@ -42,7 +42,7 @@ class AdNotification : public AdNotificationObserver {
 
   void NotifyAdNotificationEventFailed(
       const std::string& uuid,
-      const AdNotificationEventType event_type) const;
+      const mojom::AdNotificationEventType event_type) const;
 };
 
 }  // namespace ads

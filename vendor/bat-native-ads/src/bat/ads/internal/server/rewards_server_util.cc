@@ -6,6 +6,7 @@
 #include "bat/ads/internal/server/rewards_server_util.h"
 
 #include "bat/ads/ads.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 namespace rewards {
@@ -21,15 +22,15 @@ const char kDevelopmentDomain[] = "https://grant.rewards.brave.software";
 
 std::string GetHost() {
   switch (g_environment) {
-    case Environment::PRODUCTION: {
+    case mojom::Environment::kProduction: {
       return kProductionDomain;
     }
 
-    case Environment::STAGING: {
+    case mojom::Environment::kStaging: {
       return kStagingDomain;
     }
 
-    case Environment::DEVELOPMENT: {
+    case mojom::Environment::kDevelopment: {
       return kDevelopmentDomain;
     }
   }

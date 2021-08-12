@@ -8,6 +8,7 @@
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 namespace p2a {
@@ -22,7 +23,8 @@ void RecordEvent(const std::string& name,
   std::string json;
   base::JSONWriter::Write(list, &json);
 
-  AdsClientHelper::Get()->RecordP2AEvent(name, P2AEventType::kListType, json);
+  AdsClientHelper::Get()->RecordP2AEvent(name, mojom::P2AEventType::kListType,
+                                         json);
 }
 
 }  // namespace p2a

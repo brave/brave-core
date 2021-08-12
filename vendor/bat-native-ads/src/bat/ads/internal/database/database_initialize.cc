@@ -21,12 +21,12 @@ Initialize::Initialize() = default;
 Initialize::~Initialize() = default;
 
 void Initialize::CreateOrOpen(ResultCallback callback) {
-  DBTransactionPtr transaction = DBTransaction::New();
+  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   transaction->version = version();
   transaction->compatible_version = compatible_version();
 
-  DBCommandPtr command = DBCommand::New();
-  command->type = DBCommand::Type::INITIALIZE;
+  mojom::DBCommandPtr command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::INITIALIZE;
 
   transaction->commands.push_back(std::move(command));
 
@@ -41,18 +41,18 @@ std::string Initialize::get_last_message() const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Initialize::OnCreateOrOpen(DBCommandResponsePtr response,
+void Initialize::OnCreateOrOpen(mojom::DBCommandResponsePtr response,
                                 ResultCallback callback) {
   DCHECK(response);
 
-  if (response->status != DBCommandResponse::Status::RESPONSE_OK) {
+  if (response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     last_message_ = "Invalid response status";
     callback(Result::FAILED);
     return;
   }
 
-  if (!response->result ||
-      response->result->get_value()->which() != DBValue::Tag::INT_VALUE) {
+  if (!response->result || response->result->get_value()->which() !=
+                               mojom::DBValue::Tag::INT_VALUE) {
     last_message_ = "Invalid response result type";
     callback(Result::FAILED);
     return;

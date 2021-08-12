@@ -10,6 +10,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/database/database_table_util.h"
 #include "bat/ads/internal/database/database_util.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 namespace database {
@@ -17,7 +18,7 @@ namespace table {
 namespace ad_events {
 
 void Reset(ResultCallback callback) {
-  DBTransactionPtr transaction = DBTransaction::New();
+  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
 
   util::Delete(transaction.get(), "ad_events");
 

@@ -29,7 +29,7 @@ class AdType {
       : value_(value) {}
 
   explicit AdType(const std::string& value);
-  explicit AdType(const mojom::BraveAdsAdType value);
+  explicit AdType(const mojom::AdType value);
 
   Value value() const;
 

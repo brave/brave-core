@@ -70,10 +70,9 @@ class AdsClientMojoBridge
                           const int days_ago,
                           GetBrowsingHistoryCallback callback) override;
 
-  void RecordP2AEvent(
-      const std::string& name,
-      const ads::P2AEventType type,
-      const std::string& out_value) override;
+  void RecordP2AEvent(const std::string& name,
+                      const ads::mojom::P2AEventType type,
+                      const std::string& out_value) override;
 
   void Load(
       const std::string& name,
@@ -82,9 +81,8 @@ class AdsClientMojoBridge
       const std::string& name,
       const std::string& value,
       SaveCallback callback) override;
-  void UrlRequest(
-      ads::UrlRequestPtr url_request,
-      UrlRequestCallback callback) override;
+  void UrlRequest(ads::mojom::UrlRequestPtr url_request,
+                  UrlRequestCallback callback) override;
   void ShowNotification(
       const std::string& json) override;
   void CloseNotification(
@@ -95,9 +93,8 @@ class AdsClientMojoBridge
                      const uint64_t timestamp) override;
   void ResetAdEvents() override;
 
-  void RunDBTransaction(
-      ads::DBTransactionPtr transaction,
-      RunDBTransactionCallback callback) override;
+  void RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
+                        RunDBTransactionCallback callback) override;
   void OnAdRewardsChanged() override;
 
   void GetBooleanPref(
@@ -182,13 +179,12 @@ class AdsClientMojoBridge
       CallbackHolder<SaveCallback>* holder,
       const ads::Result result);
 
-  static void OnURLRequest(
-      CallbackHolder<UrlRequestCallback>* holder,
-      const ads::UrlResponse& url_response);
+  static void OnURLRequest(CallbackHolder<UrlRequestCallback>* holder,
+                           const ads::mojom::UrlResponse& url_response);
 
   static void OnRunDBTransaction(
       CallbackHolder<RunDBTransactionCallback>* holder,
-      ads::DBCommandResponsePtr response);
+      ads::mojom::DBCommandResponsePtr response);
 
   ads::AdsClient* ads_client_;  // NOT OWNED
 };
