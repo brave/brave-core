@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index be072266939a93570d3c842f29f9318e609b7f47..11b58c82610037a3ef8aa68b5ba0db5418ad65cd 100644
+index 0058fddd93494f5019e1d79d3a193e6ece9ec536..2398be58dbb7bd18758f996e5852cd059e0e446c 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
 @@ -53,6 +53,7 @@ if (optimize_webui) {
@@ -10,7 +10,7 @@ index be072266939a93570d3c842f29f9318e609b7f47..11b58c82610037a3ef8aa68b5ba0db54
    }
  }
  
-@@ -96,6 +97,7 @@ generate_grd("build_grd") {
+@@ -97,6 +98,7 @@ generate_grd("build_grd") {
      deps += [ ":build_ts" ]
      manifest_files = [ "$target_gen_dir/tsconfig.manifest" ]
    }
