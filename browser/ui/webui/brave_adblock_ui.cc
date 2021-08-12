@@ -20,11 +20,17 @@
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager_observer.h"
+#include "components/grit/brave_components_resources.h"
+#include "content/public/browser/web_ui_message_handler.h"
+
+#if defined(OS_ANDROID)
+#include "chrome/browser/android/tab_web_contents_delegate_android.h"
+#include "content/public/browser/web_contents.h"
+#else
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/singleton_tabs.h"
-#include "components/grit/brave_components_resources.h"
-#include "content/public/browser/web_ui_message_handler.h"
+#endif
 
 namespace {
 
@@ -269,10 +275,18 @@ void AdblockDOMHandler::HandleViewSubscriptionSource(
                             ->subscription_service_manager()
                             ->GetListTextFileUrl(subscription_url);
 
+#if defined(OS_ANDROID)
+  web_ui()->GetWebContents()->GetDelegate()->OpenURLFromTab(
+      web_ui()->GetWebContents(),
+      content::OpenURLParams(file_url, content::Referrer(),
+                             WindowOpenDisposition::NEW_FOREGROUND_TAB,
+                             ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false));
+#else
   auto* browser =
       chrome::FindBrowserWithWebContents(web_ui()->GetWebContents());
   NavigateParams params(GetSingletonTabNavigateParams(browser, file_url));
   ShowSingletonTabOverwritingNTP(browser, &params);
+#endif
 }
 
 // Convenience method to push updated subscription information to the UI.
