@@ -220,7 +220,7 @@
     IOSHistoryNode* historyNode = [[IOSHistoryNode alloc]
         initWithURL:net::NSURLWithGURL(result.url())
               title:base::SysUTF16ToNSString(result.title())
-          dateAdded:result.last_visit().ToNSDate()];
+          dateAdded:result.visit_time().ToNSDate()];
     [historyNodes addObject:historyNode];
   }
 
