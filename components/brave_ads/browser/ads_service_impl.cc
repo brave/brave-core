@@ -46,9 +46,9 @@
 #include "brave/common/brave_channel_info.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
-#include "brave/components/brave_ads/browser/features.h"
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
 #include "brave/components/brave_ads/browser/notification_helper.h"
+#include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/common/switches.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
@@ -1024,7 +1024,7 @@ bool AdsServiceImpl::ShouldShowCustomAdNotifications() {
     ClearPref(prefs::kAdNotificationDidFallbackToCustom);
   }
 
-  const bool should_show = features::ShouldShowCustomAdNotifications();
+  const bool should_show = features::IsCustomAdNotificationsEnabled();
 
   const bool should_fallback =
       !can_show_native_notifications && can_fallback_to_custom_ad_notifications;

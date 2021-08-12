@@ -9,7 +9,7 @@
 #include "brave/browser/ui/brave_ads/ad_notification.h"
 #include "brave/browser/ui/brave_ads/ad_notification_popup.h"
 #include "brave/common/brave_paths.h"
-#include "brave/components/brave_ads/browser/features.h"
+#include "brave/components/brave_ads/common/features.h"
 #include "brave/test/snapshot/widget_snapshot_checker.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"

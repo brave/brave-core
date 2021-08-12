@@ -14,7 +14,7 @@
 #include "brave/browser/ui/brave_ads/ad_notification_view.h"
 #include "brave/browser/ui/brave_ads/ad_notification_view_factory.h"
 #include "brave/browser/ui/brave_ads/bounds_util.h"
-#include "brave/components/brave_ads/browser/features.h"
+#include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"

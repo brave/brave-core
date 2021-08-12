@@ -13,8 +13,8 @@
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/mac/mac_util.h"
-#include "brave/components/brave_ads/browser/features.h"
 #include "brave/components/brave_ads/browser/notification_helper_mac.h"
+#include "brave/components/brave_ads/common/features.h"
 #include "chrome/common/chrome_features.h"
 
 namespace brave_ads {
@@ -24,7 +24,7 @@ NotificationHelperMac::NotificationHelperMac() = default;
 NotificationHelperMac::~NotificationHelperMac() = default;
 
 bool NotificationHelperMac::ShouldShowNotifications() {
-  if (features::ShouldShowCustomAdNotifications()) {
+  if (features::IsCustomAdNotificationsEnabled()) {
     return true;
   }
 

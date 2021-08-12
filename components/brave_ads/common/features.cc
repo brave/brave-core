@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/browser/features.h"
+#include "brave/components/brave_ads/common/features.h"
 
 #include "base/feature_list.h"
 
@@ -13,19 +13,10 @@ namespace features {
 const base::Feature kAdNotifications{"AdNotifications",
                                      base::FEATURE_ENABLED_BY_DEFAULT};
 
+const base::Feature kCustomAdNotifications{"CustomAdNotifications",
+                                           base::FEATURE_DISABLED_BY_DEFAULT};
+
 namespace {
-
-// Set to true to show custom ad notifications or false to show native ad
-// notifications
-const char kFieldTrialParameterShouldShowCustomAdNotifications[] =
-    "should_show_custom_notifications";
-const bool kDefaultShouldShowCustomAdNotifications = false;
-
-// Set to true to fallback from native to custom ad notifications or false to
-// never fallback
-const char kFieldTrialParameterCanFallbackToCustomAdNotifications[] =
-    "can_fallback_to_custom_notifications";
-const bool kDefaultCanFallbackToCustomAdNotifications = false;
 
 // Ad notification timeout in seconds. Set to 0 to never time out
 const char kFieldTrialParameterAdNotificationTimeout[] =
@@ -35,6 +26,12 @@ const int kDefaultAdNotificationTimeout = 120;
 #else
 const int kDefaultAdNotificationTimeout = 30;
 #endif
+
+// Set to true to fallback from native to custom ad notifications or false to
+// never fallback
+const char kFieldTrialParameterCanFallbackToCustomAdNotifications[] =
+    "can_fallback_to_custom_notifications";
+const bool kDefaultCanFallbackToCustomAdNotifications = false;
 
 #if !defined(OS_ANDROID)
 
@@ -102,55 +99,54 @@ bool IsAdNotificationsEnabled() {
   return base::FeatureList::IsEnabled(kAdNotifications);
 }
 
-bool ShouldShowCustomAdNotifications() {
-  return GetFieldTrialParamByFeatureAsBool(
-      kAdNotifications, kFieldTrialParameterShouldShowCustomAdNotifications,
-      kDefaultShouldShowCustomAdNotifications);
-}
-
-bool CanFallbackToCustomAdNotifications() {
-  return GetFieldTrialParamByFeatureAsBool(
-      kAdNotifications, kFieldTrialParameterCanFallbackToCustomAdNotifications,
-      kDefaultCanFallbackToCustomAdNotifications);
-}
-
 int AdNotificationTimeout() {
   return GetFieldTrialParamByFeatureAsInt(
       kAdNotifications, kFieldTrialParameterAdNotificationTimeout,
       kDefaultAdNotificationTimeout);
 }
 
+bool IsCustomAdNotificationsEnabled() {
+  return base::FeatureList::IsEnabled(kCustomAdNotifications);
+}
+
+bool CanFallbackToCustomAdNotifications() {
+  return GetFieldTrialParamByFeatureAsBool(
+      kCustomAdNotifications,
+      kFieldTrialParameterCanFallbackToCustomAdNotifications,
+      kDefaultCanFallbackToCustomAdNotifications);
+}
+
 #if !defined(OS_ANDROID)
 
 int AdNotificationFadeDuration() {
   return GetFieldTrialParamByFeatureAsInt(
-      kAdNotifications, kFieldTrialParameterAdNotificationFadeDuration,
+      kCustomAdNotifications, kFieldTrialParameterAdNotificationFadeDuration,
       kDefaultAdNotificationFadeDuration);
 }
 
 double AdNotificationNormalizedDisplayCoordinateX() {
   return GetFieldTrialParamByFeatureAsDouble(
-      kAdNotifications,
+      kCustomAdNotifications,
       kFieldTrialParameterAdNotificationNormalizedDisplayCoordinateX,
       kDefaultAdNotificationNormalizedDisplayCoordinateX);
 }
 
 int AdNotificationInsetX() {
   return GetFieldTrialParamByFeatureAsInt(
-      kAdNotifications, kFieldTrialParameterAdNotificationInsetX,
+      kCustomAdNotifications, kFieldTrialParameterAdNotificationInsetX,
       kDefaultAdNotificationInsetX);
 }
 
 double AdNotificationNormalizedDisplayCoordinateY() {
   return GetFieldTrialParamByFeatureAsDouble(
-      kAdNotifications,
+      kCustomAdNotifications,
       kFieldTrialParameterAdNotificationNormalizedDisplayCoordinateY,
       kDefaultAdNotificationNormalizedDisplayCoordinateY);
 }
 
 int AdNotificationInsetY() {
   return GetFieldTrialParamByFeatureAsInt(
-      kAdNotifications, kFieldTrialParameterAdNotificationInsetY,
+      kCustomAdNotifications, kFieldTrialParameterAdNotificationInsetY,
       kDefaultAdNotificationInsetY);
 }
 

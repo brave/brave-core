@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_FEATURES_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_FEATURES_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_COMMON_FEATURES_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_COMMON_FEATURES_H_
 
 #include "build/build_config.h"
 
@@ -18,25 +18,22 @@ namespace features {
 extern const base::Feature kAdNotifications;
 
 bool IsAdNotificationsEnabled();
-
-bool ShouldShowCustomAdNotifications();
-
-bool CanFallbackToCustomAdNotifications();
-
 int AdNotificationTimeout();
 
+extern const base::Feature kCustomAdNotifications;
+
+bool IsCustomAdNotificationsEnabled();
+
+bool CanFallbackToCustomAdNotifications();
 #if !defined(OS_ANDROID)
-
 int AdNotificationFadeDuration();
-
 double AdNotificationNormalizedDisplayCoordinateX();
 int AdNotificationInsetX();
 double AdNotificationNormalizedDisplayCoordinateY();
 int AdNotificationInsetY();
-
 #endif  // !defined(OS_ANDROID)
 
 }  // namespace features
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_FEATURES_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_COMMON_FEATURES_H_

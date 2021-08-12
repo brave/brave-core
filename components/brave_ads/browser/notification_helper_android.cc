@@ -14,7 +14,7 @@
 #include "brave/browser/brave_ads/android/jni_headers/BraveAds_jni.h"
 #include "brave/build/android/jni_headers/BraveNotificationSettingsBridge_jni.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
-#include "brave/components/brave_ads/browser/features.h"
+#include "brave/components/brave_ads/common/features.h"
 #include "chrome/browser/notifications/jni_headers/NotificationSystemStatusUtil_jni.h"
 #include "chrome/browser/notifications/notification_channels_provider_android.h"
 
@@ -34,7 +34,7 @@ NotificationHelperAndroid::NotificationHelperAndroid() = default;
 NotificationHelperAndroid::~NotificationHelperAndroid() = default;
 
 bool NotificationHelperAndroid::ShouldShowNotifications() {
-  if (features::ShouldShowCustomAdNotifications()) {
+  if (features::IsCustomAdNotificationsEnabled()) {
     return true;
   }
 
@@ -70,7 +70,7 @@ bool NotificationHelperAndroid::ShowMyFirstAdNotification() {
   }
 
   const bool should_show_custom_notifications =
-      features::ShouldShowCustomAdNotifications();
+      features::IsCustomAdNotificationsEnabled();
 
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveAdsSignupDialog_enqueueOnboardingNotificationNative(
@@ -80,7 +80,7 @@ bool NotificationHelperAndroid::ShowMyFirstAdNotification() {
 }
 
 bool NotificationHelperAndroid::CanShowBackgroundNotifications() const {
-  if (features::ShouldShowCustomAdNotifications()) {
+  if (features::IsCustomAdNotificationsEnabled()) {
     return true;
   }
 
