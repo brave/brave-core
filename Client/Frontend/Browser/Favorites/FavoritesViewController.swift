@@ -34,6 +34,39 @@ private class FavoritesHeaderView: UICollectionReusableView {
 
 class FavoritesViewController: UIViewController {
     
+    /// CoreData's diffable method relies on managed object ID only.
+    /// This does not work in our case since the object may be the same but with changed title or order.
+    /// This struct stores managed object ID as well as properties that we observer whether they have changed.
+    /// Note: `order` property does not have to be stored, favorite's frc handles order updates, it returns items in correct order.
+    private struct FavoriteDiffable: Hashable {
+        let objectID: NSManagedObjectID
+        let title: String?
+        let url: String?
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(objectID)
+        }
+    }
+    
+    /// Favorites VC has two fetch result controllers to pull from.
+    /// This enum stores both models.
+    private enum DataWrapper: Hashable {
+        case favorite(FavoriteDiffable)
+        
+        // Recent searches are static, we do not need any wrapper class for them.
+        case recentSearch(NSManagedObjectID)
+    }
+    
+    private typealias DataSource = UICollectionViewDiffableDataSource<Section, DataWrapper>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DataWrapper>
+    
+    private lazy var dataSource =
+    DataSource(collectionView: self.collectionView,
+               cellProvider: { [weak self] collectionView, indexPath, wrapper -> UICollectionViewCell? in
+    
+               self?.cellProvider(collectionView: collectionView, indexPath: indexPath, wrapper: wrapper)
+    })
+    
     var action: (Favorite, BookmarksAction) -> Void
     var recentSearchAction: (RecentSearch?, Bool) -> Void
     
@@ -81,14 +114,6 @@ class FavoritesViewController: UIViewController {
         hasPasteboardURL = UIPasteboard.general.hasStrings || UIPasteboard.general.hasURLs
         
         KeyboardHelper.defaultHelper.addDelegate(self)
-        
-        do {
-            try favoritesFRC.performFetch()
-        } catch {
-            log.error("Favorites fetch error: \(String(describing: error))")
-        }
-        
-        fetchRecentSearches()
     }
     
     @available(*, unavailable)
@@ -112,12 +137,18 @@ class FavoritesViewController: UIViewController {
         collectionView.alwaysBounceVertical = true
         collectionView.contentInset = UIEdgeInsets(top: 24, left: 0, bottom: 0, right: 0)
         collectionView.backgroundColor = .clear
-        collectionView.dataSource = self
+        collectionView.dataSource = dataSource
         collectionView.delegate = self
         collectionView.dragDelegate = self
         collectionView.dropDelegate = self
         collectionView.dragInteractionEnabled = true
         collectionView.keyboardDismissMode = .interactive
+        
+        dataSource.supplementaryViewProvider = { [weak self] collectionView, kind, indexPath in
+            self?.supplementaryViewProvider(collectionView: collectionView, kind: kind, indexPath: indexPath)
+        }
+        
+        initialSnapshotSetup()
     }
     
     override func viewDidLayoutSubviews() {
@@ -177,8 +208,6 @@ class FavoritesViewController: UIViewController {
             }
         }
     }
-    
-    private var frcOperations: [BlockOperation] = []
 }
 
 // MARK: - KeyboardHelperDelegate
@@ -213,8 +242,7 @@ extension FavoritesViewController: KeyboardHelperDelegate {
         sections.append(.favorites)
         
         if !tabType.isPrivate &&
-           Preferences.Search.shouldShowRecentSearches.value &&
-            recentSearchesFRC.fetchedObjects?.isEmpty == false {
+            Preferences.Search.shouldShowRecentSearches.value, RecentSearch.totalCount() > 0 {
             sections.append(.recentSearches)
         } else if !tabType.isPrivate && Preferences.Search.shouldShowRecentSearchesOptIn.value {
             sections.append(.recentSearches)
@@ -224,29 +252,7 @@ extension FavoritesViewController: KeyboardHelperDelegate {
 }
 
 // MARK: - UICollectionViewDataSource & UICollectionViewDelegateFlowLayout
-extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return availableSections.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let section = availableSections[safe: section] else {
-            assertionFailure("Invalid Section")
-            return 0
-        }
-        
-        switch section {
-        case .pasteboard:
-            return 0
-        case .favorites:
-            return favoritesFRC.fetchedObjects?.count ?? 0
-        case .recentSearches:
-            if !tabType.isPrivate && Preferences.Search.shouldShowRecentSearches.value {
-                return recentSearchesFRC.fetchedObjects?.count ?? 0
-            }
-            return 0
-        }
-    }
+extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let section = availableSections[safe: indexPath.section] else {
@@ -269,128 +275,6 @@ extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewD
             recentSearchAction(searchItem, true)
         }
         
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let section = availableSections[safe: indexPath.section] else {
-            assertionFailure("Invalid Section")
-            return UICollectionReusableView()
-        }
-        
-        if kind == UICollectionView.elementKindSectionHeader {
-            switch section {
-            case .pasteboard:
-                if let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "pasteboard_header", for: indexPath) as? RecentSearchClipboardHeaderView {
-                    header.button.removeTarget(self, action: nil, for: .touchUpInside)
-                    header.button.addTarget(self, action: #selector(onPasteboardAction), for: .touchUpInside)
-                    return header
-                }
-            case .favorites:
-                return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "fav_header", for: indexPath)
-            case .recentSearches:
-                if let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "recent_searches_header", for: indexPath) as? RecentSearchHeaderView {
-                    header.resetLayout(showRecentSearches: Preferences.Search.shouldShowRecentSearches.value)
-                    header.showButton.removeTarget(self, action: nil, for: .touchUpInside)
-                    header.hideClearButton.removeTarget(self, action: nil, for: .touchUpInside)
-                    
-                    header.showButton.addTarget(self, action: #selector(onRecentSearchShowPressed), for: .touchUpInside)
-                    header.hideClearButton.addTarget(self, action: #selector(onRecentSearchHideOrClearPressed(_:)), for: .touchUpInside)
-                    
-                    if Preferences.Search.shouldShowRecentSearches.value {
-                        let totalCount = RecentSearch.totalCount()
-                        if let fetchedObjects = recentSearchesFRC.fetchedObjects {
-                            if fetchedObjects.count < totalCount {
-                                header.setButtonVisibility(showButtonVisible: true, clearButtonVisible: true)
-                            } else if fetchedObjects.count == totalCount {
-                                header.setButtonVisibility(showButtonVisible: false, clearButtonVisible: true)
-                            } else {
-                                header.setButtonVisibility(showButtonVisible: false, clearButtonVisible: false)
-                            }
-                        } else {
-                            header.setButtonVisibility(showButtonVisible: false, clearButtonVisible: false)
-                        }
-                    } else {
-                        header.setButtonVisibility(showButtonVisible: true, clearButtonVisible: true)
-                    }
-                    return header
-                }
-            }
-            
-        }
-        return UICollectionReusableView()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let section = availableSections[safe: indexPath.section] else {
-            assertionFailure("Invalid Section")
-            return UICollectionViewCell()
-        }
-        
-        switch section {
-        case .pasteboard:
-            assertionFailure("Pasteboard section should have no items")
-            return UICollectionViewCell()
-        case .favorites:
-            let cell = collectionView.dequeueReusableCell(for: indexPath) as FavoriteCell
-            let fav = favoritesFRC.object(at: IndexPath(item: indexPath.item, section: 0))
-            cell.textLabel.text = fav.displayTitle ?? fav.url
-            if let url = fav.url?.asURL {
-                // All favorites should have domain's, but it was noticed at one
-                // point that this wasn't the case, so for future bug-tracking
-                // assert if its not found.
-                assert(fav.domain != nil, "Domain should exist for all favorites")
-                // The domain for the favorite is required for pulling cached
-                // favicon info. Since all favorites should have persisted
-                // Domain's, we leave `persistent` as true
-                let domain = fav.domain ?? Domain.getOrCreate(forUrl: url, persistent: true)
-                cell.imageView.loadFavicon(siteURL: url, domain: domain, monogramFallbackCharacter: fav.title?.first)
-            }
-            cell.accessibilityLabel = cell.textLabel.text
-            return cell
-            
-        case .recentSearches:
-            let cell = collectionView.dequeueReusableCell(for: indexPath) as RecentSearchCell
-            let recentSearch = recentSearchesFRC.object(at: IndexPath(item: indexPath.item, section: 0))
-            guard let searchType = RecentSearchType(rawValue: recentSearch.searchType) else {
-                cell.setTitle(recentSearch.text)
-                return cell
-            }
-            
-            cell.openButtonAction = { [unowned self] in
-                self.onOpenRecentSearch(recentSearch)
-            }
-            
-            switch searchType {
-            case .text:
-                cell.setTitle(recentSearch.text)
-            case .qrCode:
-                if let text = recentSearch.text ?? recentSearch.websiteUrl {
-                    let title = NSMutableAttributedString(string: "\(Strings.recentSearchScanned) ",
-                                                          attributes: [.font: UIFont.systemFont(ofSize: 15.0, weight: .semibold)])
-                    title.append(NSAttributedString(string: "\"\(text)\"",
-                                                    attributes: [.font: UIFont.systemFont(ofSize: 15.0)]))
-                    cell.setAttributedTitle(title)
-                }
-            case .website:
-                if let text = recentSearch.text,
-                   let websiteUrl = recentSearch.websiteUrl {
-                    let website = URL(string: websiteUrl)?.baseDomain ?? URL(string: websiteUrl)?.host ?? websiteUrl
-                    
-                    let title = NSMutableAttributedString(string: text,
-                                                          attributes: [.font: UIFont.systemFont(ofSize: 15.0)])
-                    title.append(NSAttributedString(string: " \(Strings.recentSearchQuickSearchOnWebsite) ",
-                                                    attributes: [.font: UIFont.systemFont(ofSize: 15.0, weight: .semibold)]))
-                    title.append(NSAttributedString(string: website,
-                                                    attributes: [.font: UIFont.systemFont(ofSize: 15.0)]))
-                    cell.setAttributedTitle(title)
-                } else if let websiteUrl = recentSearch.websiteUrl {
-                    cell.setTitle(websiteUrl)
-                } else {
-                    cell.setTitle(recentSearch.text)
-                }
-            }
-            return cell
-        }
     }
     
     func collectionView(_ collectionView: UICollectionView, targetIndexPathForMoveFromItemAt currentIndexPath: IndexPath, toProposedIndexPath proposedIndexPath: IndexPath) -> IndexPath {
@@ -434,38 +318,6 @@ extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewD
                 (layout.sectionInset.left + layout.sectionInset.right) -
                 (collectionView.contentInset.left + collectionView.contentInset.right)
             return CGSize(width: width, height: 28.0)
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
-        guard let section = availableSections[safe: indexPath.section] else {
-            assertionFailure("Invalid Section")
-            return false
-        }
-        
-        switch section {
-        case .pasteboard:
-            return false
-        case .favorites:
-            return true
-        case .recentSearches:
-            return false
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        guard let section = availableSections[safe: sourceIndexPath.section] else {
-            assertionFailure("Invalid Section")
-            return
-        }
-        
-        switch section {
-        case .pasteboard:
-            break
-        case .favorites:
-            Favorite.reorder(sourceIndexPath: sourceIndexPath, destinationIndexPath: destinationIndexPath)
-        case .recentSearches:
-            break
         }
     }
     
@@ -582,8 +434,6 @@ extension FavoritesViewController: UICollectionViewDragDelegate, UICollectionVie
                 destinationIndexPath: destinationIndexPath,
                 isInteractiveDragReorder: true
             )
-            try? favoritesFRC.performFetch()
-            collectionView.moveItem(at: sourceIndexPath, to: destinationIndexPath)
         case .copy:
             break
         default: return
@@ -620,76 +470,6 @@ extension FavoritesViewController: UICollectionViewDragDelegate, UICollectionVie
     }
 }
 
-// MARK: - NSFetchedResultsControllerDelegate
-extension FavoritesViewController: NSFetchedResultsControllerDelegate {
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if collectionView.hasActiveDrag || collectionView.hasActiveDrop { return }
-        frcOperations.removeAll()
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        
-        var indexPath = indexPath
-        var newIndexPath = newIndexPath
-        if controller == favoritesFRC {
-            indexPath?.section = Section.favorites.rawValue
-            newIndexPath?.section = Section.favorites.rawValue
-        } else if controller == recentSearchesFRC {
-            return
-        } else {
-            assertionFailure("Invalid Section")
-        }
-        
-        if collectionView.hasActiveDrag || collectionView.hasActiveDrop { return }
-        switch type {
-        case .insert:
-            if let newIndexPath = newIndexPath {
-                frcOperations.append(BlockOperation { [weak self] in
-                    self?.collectionView.insertItems(at: [newIndexPath])
-                })
-            }
-        case .delete:
-            if let indexPath = indexPath {
-                frcOperations.append(BlockOperation { [weak self] in
-                    self?.collectionView.deleteItems(at: [indexPath])
-                })
-            }
-        case .update:
-            if let indexPath = indexPath {
-                frcOperations.append(BlockOperation { [weak self] in
-                    self?.collectionView.reloadItems(at: [indexPath])
-                })
-            }
-            if let newIndexPath = newIndexPath, newIndexPath != indexPath {
-                frcOperations.append(BlockOperation { [weak self] in
-                    self?.collectionView.reloadItems(at: [newIndexPath])
-                })
-            }
-        case .move:
-            break
-        @unknown default:
-            assertionFailure()
-        }
-    }
-    
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if collectionView.hasActiveDrag || collectionView.hasActiveDrop { return }
-        if controller == recentSearchesFRC {
-            self.collectionView.reloadData()
-            return
-        }
-        
-        collectionView.performBatchUpdates({
-            self.frcOperations.forEach {
-                $0.start()
-            }
-        }, completion: { _ in
-            self.frcOperations.removeAll()
-            self.collectionView.reloadData()
-        })
-    }
-}
-
 // Recent Searches
 extension FavoritesViewController {
     func onOpenRecentSearch(_ recentSearch: RecentSearch) {
@@ -708,13 +488,10 @@ extension FavoritesViewController {
             NSFetchedResultsController<RecentSearch>.deleteCache(withName: recentSearchesFRC.cacheName)
             recentSearchesFRC.fetchRequest.fetchLimit = 0
             fetchRecentSearches()
-            collectionView.reloadData()
         } else {
             // User enabled recent searches
             Preferences.Search.shouldShowRecentSearches.value = true
             Preferences.Search.shouldShowRecentSearchesOptIn.value = false
-            fetchRecentSearches()
-            collectionView.reloadData()
         }
     }
     
@@ -726,12 +503,9 @@ extension FavoritesViewController {
             // brave-ios/issues/3762
             // No title, no message
             let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            alert.addAction(UIAlertAction(title: Strings.recentSearchClearAlertButton, style: .default, handler: { [weak self] _ in
-                guard let self = self else { return }
-                
+            alert.addAction(UIAlertAction(title: Strings.recentSearchClearAlertButton,
+                                          style: .default, handler: { _ in
                 RecentSearch.removeAll()
-                self.fetchRecentSearches()
-                self.collectionView.reloadData()
             }))
             
             alert.popoverPresentationController?.sourceView = button
@@ -742,7 +516,226 @@ extension FavoritesViewController {
         } else {
             // User doesn't want to see the recent searches option again
             Preferences.Search.shouldShowRecentSearchesOptIn.value = false
-            collectionView.reloadData()
         }
+    }
+}
+
+// MARK: - Diffable data source + NSFetchedResultsControllerDelegate
+extension FavoritesViewController: NSFetchedResultsControllerDelegate {
+    
+    private var recentSearchesSectionExists: Bool {
+        availableSections[safe: Section.recentSearches.rawValue] != nil
+    }
+    
+    /// Performs first frc fetches and handles setting first snaphot.
+    private func initialSnapshotSetup() {
+        do {
+            try favoritesFRC.performFetch()
+        } catch {
+            log.error("Favorites fetch error: \(String(describing: error))")
+        }
+        
+        fetchRecentSearches()
+        
+        var snapshot = Snapshot()
+        snapshot.appendSections(availableSections)
+        
+        let favorites: [DataWrapper] = favoritesFRC.fetchedObjects?.compactMap {
+            return .favorite(FavoriteDiffable(objectID: $0.objectID, title: $0.displayTitle, url: $0.url))
+        } ?? []
+        
+        snapshot.appendItems(favorites, toSection: .favorites)
+        
+        if recentSearchesSectionExists, let objects = recentSearchesFRC.fetchedObjects {
+            snapshot.appendItems(objects.compactMap({ .recentSearch($0.objectID) }),
+                                 toSection: .recentSearches)
+        }
+        
+        dataSource.apply(snapshot, animatingDifferences: false)
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
+        
+        // Skip applying snapshots before first `initialSnapshotSetup` is made.
+        if dataSource.snapshot().numberOfSections == 0 {
+            return
+        }
+        
+        let currentSnapshot = dataSource.snapshot()
+        var newSnapshot = Snapshot()
+        newSnapshot.appendSections(availableSections)
+        
+        guard let ids = snapshot.itemIdentifiers as? [NSManagedObjectID] else { return }
+        
+        if controller === favoritesFRC {
+            var items = [DataWrapper]()
+            
+            ids.forEach {
+                // Fetch existing item from the DB then add it to snapshot.
+                // This way the snapshot will be able to detect changes on the object.
+                // Non existing objects are not added, this simulates removing the item.
+                if let existingItem = controller.managedObjectContext.object(with: $0) as? Favorite {
+                    items.append(.favorite(FavoriteDiffable(objectID: $0,
+                                                            title: existingItem.title,
+                                                            url: existingItem.url)))
+                }
+            }
+            
+            newSnapshot.appendItems(items, toSection: .favorites)
+            
+            // New snapshot is created, items from the other frc must be added to it.
+            if recentSearchesSectionExists {
+                newSnapshot.appendItems(currentSnapshot.itemIdentifiers(inSection: .recentSearches), toSection: .recentSearches)
+            }
+        }
+        
+        if controller === recentSearchesFRC {
+            // New snapshot is created, items from the other frc must be added to it.
+            newSnapshot.appendItems(currentSnapshot.itemIdentifiers(inSection: .favorites),
+                                    toSection: .favorites)
+            
+            if recentSearchesSectionExists {
+                var items = [DataWrapper]()
+                
+                ids.forEach {
+                    if RecentSearch.get(with: $0) != nil {
+                        items.append(.recentSearch($0))
+                    }
+                }
+                
+                newSnapshot.appendItems(items, toSection: .recentSearches)
+                
+                // Update recent searches header view.
+                // This must be called if previous snapshot had recent searches section already added.
+                // Unfortunate side effect is that this will reload all items within the section too.
+                if dataSource.snapshot().indexOfSection(.recentSearches) != nil {
+                    newSnapshot.reloadSections([.recentSearches])
+                }
+            }
+        }
+        
+        dataSource.apply(newSnapshot)
+    }
+    
+    private func cellProvider(collectionView: UICollectionView,
+                              indexPath: IndexPath,
+                              wrapper: DataWrapper) -> UICollectionViewCell? {
+        
+        switch wrapper {
+        case .favorite(let favoriteWrapper):
+            guard let favorite = Favorite.get(with: favoriteWrapper.objectID) else { return nil }
+            
+            let cell = collectionView.dequeueReusableCell(for: indexPath) as FavoriteCell
+            
+            cell.textLabel.text = favorite.displayTitle ?? favorite.url
+            if let url = favorite.url?.asURL {
+                // All favorites should have domain's, but it was noticed at one
+                // point that this wasn't the case, so for future bug-tracking
+                // assert if its not found.
+                assert(favorite.domain != nil, "Domain should exist for all favorites")
+                // The domain for the favorite is required for pulling cached
+                // favicon info. Since all favorites should have persisted
+                // Domain's, we leave `persistent` as true
+                let domain = favorite.domain ?? Domain.getOrCreate(forUrl: url, persistent: true)
+                cell.imageView.loadFavicon(siteURL: url, domain: domain, monogramFallbackCharacter: favorite.title?.first)
+            }
+            cell.accessibilityLabel = cell.textLabel.text
+            
+            return cell
+        case .recentSearch(let objectID):
+            guard let recentSearch = RecentSearch.get(with: objectID) else { return nil }
+            
+            let cell = collectionView.dequeueReusableCell(for: indexPath) as RecentSearchCell
+            
+            guard let searchType = RecentSearchType(rawValue: recentSearch.searchType) else {
+                cell.setTitle(recentSearch.text)
+                return cell
+            }
+            
+            cell.openButtonAction = { [weak self] in
+                self?.onOpenRecentSearch(recentSearch)
+            }
+            
+            switch searchType {
+            case .text:
+                cell.setTitle(recentSearch.text)
+            case .qrCode:
+                if let text = recentSearch.text ?? recentSearch.websiteUrl {
+                    let title = NSMutableAttributedString(string: "\(Strings.recentSearchScanned) ",
+                                                          attributes: [.font: UIFont.systemFont(ofSize: 15.0, weight: .semibold)])
+                    title.append(NSAttributedString(string: "\"\(text)\"",
+                                                    attributes: [.font: UIFont.systemFont(ofSize: 15.0)]))
+                    cell.setAttributedTitle(title)
+                }
+            case .website:
+                if let text = recentSearch.text,
+                   let websiteUrl = recentSearch.websiteUrl {
+                    let website = URL(string: websiteUrl)?.baseDomain ?? URL(string: websiteUrl)?.host ?? websiteUrl
+                    
+                    let title = NSMutableAttributedString(string: text,
+                                                          attributes: [.font: UIFont.systemFont(ofSize: 15.0)])
+                    title.append(NSAttributedString(string: " \(Strings.recentSearchQuickSearchOnWebsite) ",
+                                                    attributes: [.font: UIFont.systemFont(ofSize: 15.0, weight: .semibold)]))
+                    title.append(NSAttributedString(string: website,
+                                                    attributes: [.font: UIFont.systemFont(ofSize: 15.0)]))
+                    cell.setAttributedTitle(title)
+                } else if let websiteUrl = recentSearch.websiteUrl {
+                    cell.setTitle(websiteUrl)
+                } else {
+                    cell.setTitle(recentSearch.text)
+                }
+            }
+            
+            return cell
+        }
+        
+    }
+    
+    private func supplementaryViewProvider(collectionView: UICollectionView, kind: String, indexPath: IndexPath) -> UICollectionReusableView? {
+        guard let section = availableSections[safe: indexPath.section] else {
+            assertionFailure("Invalid Section")
+            return UICollectionReusableView()
+        }
+        
+        if kind == UICollectionView.elementKindSectionHeader {
+            switch section {
+            case .pasteboard:
+                if let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "pasteboard_header", for: indexPath) as? RecentSearchClipboardHeaderView {
+                    header.button.removeTarget(self, action: nil, for: .touchUpInside)
+                    header.button.addTarget(self, action: #selector(onPasteboardAction), for: .touchUpInside)
+                    return header
+                }
+            case .favorites:
+                return collectionView
+                    .dequeueReusableSupplementaryView(ofKind: kind,
+                                                      withReuseIdentifier: "fav_header",
+                                                      for: indexPath)
+            case .recentSearches:
+                if let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "recent_searches_header", for: indexPath) as? RecentSearchHeaderView {
+                    header.resetLayout(showRecentSearches: Preferences.Search.shouldShowRecentSearches.value)
+                    
+                    header.showButton.addTarget(self, action: #selector(onRecentSearchShowPressed), for: .touchUpInside)
+                    header.hideClearButton.addTarget(self, action: #selector(onRecentSearchHideOrClearPressed(_:)), for: .touchUpInside)
+                    
+                    let shouldShowRecentSearches = Preferences.Search.shouldShowRecentSearches.value
+                    var showButtonVisible = !shouldShowRecentSearches
+                    var clearButtonVisible = !shouldShowRecentSearches
+                    if let fetchedObjects = recentSearchesFRC.fetchedObjects, shouldShowRecentSearches {
+                        let totalCount = RecentSearch.totalCount()
+                        showButtonVisible = fetchedObjects.count < totalCount
+                        clearButtonVisible = fetchedObjects.count <= totalCount
+                    }
+                    header.setButtonVisibility(
+                        showButtonVisible: showButtonVisible,
+                        clearButtonVisible: clearButtonVisible
+                    )
+                    
+                    return header
+                }
+            }
+            
+        }
+        return UICollectionReusableView()
     }
 }
