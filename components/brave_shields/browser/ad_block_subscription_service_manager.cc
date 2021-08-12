@@ -113,7 +113,11 @@ void AdBlockSubscriptionServiceManager::OnUpdateTimer(const GURL& sub_url, bool 
 
 void AdBlockSubscriptionServiceManager::StartDownload(const GURL& sub_url, bool from_ui) {
   DCHECK(ready_.is_signaled());
-  download_manager_->StartDownload(sub_url, from_ui);
+  // The download manager is tied to the lifetime of the system profile, but
+  // the AdBlockSubscriptionServiceManager lives as long as the browser process
+  if (download_manager_) {
+    download_manager_->StartDownload(sub_url, from_ui);
+  }
 }
 
 void AdBlockSubscriptionServiceManager::CreateSubscription(
