@@ -364,7 +364,7 @@ export interface WalletAPIHandler {
   getAllTokens: () => Promise<GetAllTokensReturnInfo>
   addFavoriteApp: (appItem: AppObjectType) => Promise<void>
   removeFavoriteApp: (appItem: AppObjectType) => Promise<void>
-  setInitialVisibleAssets: (visibleAssets: string[]) => Promise<void>
+  setInitialVisibleTokens: (visibleAssets: string[]) => Promise<void>
 }
 
 export interface EthJsonRpcController {

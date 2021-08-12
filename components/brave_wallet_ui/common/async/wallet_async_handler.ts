@@ -18,6 +18,7 @@ import {
   WalletState,
   WalletPanelState
 } from '../../constants/types'
+import { InitialVisibleTokenInfo } from '../../options/initial-visible-token-info'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
 
@@ -47,7 +48,22 @@ async function refreshWalletInfo (store: Store) {
   const network = await ethJsonRpcController.getNetwork()
   store.dispatch(WalletActions.setNetwork(network.network))
 
-  // Update balances
+  // VisibleTokens need to be setup and returned from prefs
+  // that away we can map over the contract id's and get the token info for
+  // each visibleToken on initialization.
+  // In prefs we need to return a different list based on chainID
+  const visibleTokensPayload = ['0x0D8775F648430679A709E98d2b0Cb6250d2887EF']
+  const visibleTokensInfo = await Promise.all(visibleTokensPayload.map(async (i) => {
+    const info = await walletHandler.getTokenByContract(i)
+    return info.token
+  }))
+  if (visibleTokensInfo[0]) {
+    store.dispatch(WalletActions.setVisibleTokensInfo(visibleTokensInfo))
+  } else {
+    store.dispatch(WalletActions.setVisibleTokensInfo(InitialVisibleTokenInfo))
+  }
+
+  // Update ETH Balances
   const state = getWalletState(store)
   const getEthPrice = await assetPriceController.getPrice(['eth'], ['usd'])
   const ethPrice = getEthPrice.success ? getEthPrice.values.find((i) => i.toAsset === 'usd')?.price ?? '0' : '0'
@@ -61,6 +77,7 @@ async function refreshWalletInfo (store: Store) {
   }
   store.dispatch(WalletActions.ethBalancesUpdated(balancesAndPrice))
 
+  // Update Token Balances
   const tokenInfos = state.userVisibleTokensInfo
   const getERCTokenBalanceReturnInfos = await Promise.all(state.accounts.map(async (account) => {
     return Promise.all(tokenInfos.map(async (token) => {
@@ -71,17 +88,6 @@ async function refreshWalletInfo (store: Store) {
 }
 
 handler.on(WalletActions.initialize.getType(), async (store) => {
-  // VisibleTokens need to be setup and returned from prefs
-  // that away we can map over the contract id's and get the token info for
-  // each visibleToken on initialization.
-  // In prefs we need to return a different list based on chainID
-  const walletHandler = (await getAPIProxy()).walletHandler
-  const visibleTokensPayload = ['0x0D8775F648430679A709E98d2b0Cb6250d2887EF']
-  const visibleTokensInfo = await Promise.all(visibleTokensPayload.map(async (i) => {
-    const info = await walletHandler.getTokenByContract(i)
-    return info.token
-  }))
-  store.dispatch(WalletActions.setVisibleTokensInfo(visibleTokensInfo))
   await refreshWalletInfo(store)
 })
 
@@ -137,8 +143,10 @@ handler.on(WalletActions.removeFavoriteApp.getType(), async (store, appItem: App
 })
 
 handler.on(WalletActions.setInitialVisibleTokens.getType(), async (store, payload: SetInitialVisibleTokensPayloadType) => {
-  const walletHandler = (await getAPIProxy()).walletHandler
-  await walletHandler.setInitialVisibleAssets(payload.visibleAssets)
+  // We need a walletHandler method 'setInitialVisibleTokens' to use here
+  // to set InitialVisibleTokens list
+  // const walletHandler = (await getAPIProxy()).walletHandler
+  // await walletHandler.setInitialVisibleTokens(payload.visibleAssets)
 })
 
 handler.on(WalletActions.selectNetwork.getType(), async (store, payload: Network) => {
