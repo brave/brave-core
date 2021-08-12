@@ -19,6 +19,7 @@
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
+#include "content/public/browser/navigation_controller.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/paint_vector_icon.h"
@@ -27,6 +28,76 @@
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/highlight_path_generator.h"
+
+#define VPN_PROD
+#ifdef VPN_PROD
+constexpr char kSkuSdkEndpoint[] = "https://account.brave.com/skus/";
+#else
+constexpr char kSkuSdkEndpoint[] = "https://account.brave.software/skus/";
+#endif
+
+VpnLoginStatusDelegate::VpnLoginStatusDelegate() = default;
+VpnLoginStatusDelegate::~VpnLoginStatusDelegate() = default;
+
+void VpnLoginStatusDelegate::LoadingStateChanged(content::WebContents* source,
+                                                 bool to_different_document) {
+  if (!source->IsLoading()) {
+    VLOG(2) << "Finished loading `" << kSkuSdkEndpoint << "`";
+    const char16_t kHandleSdkEvents[] =
+        uR"(
+window.addEventListener("message", (event) => {
+  const eventURL = new URL(event.origin);
+  if (
+      !eventURL.protocol.startsWith("https") ||
+      !eventURL.hostname.endsWith(")"
+#ifdef VPN_PROD
+      u"brave.com"
+#else
+      u"brave.software"
+#endif
+      uR"(")
+  ) {
+      return;
+  } else if (event.data.type === 'sdk_initialized') {
+    console.log('SDK initialized; calling prepare_credentials_presentation');
+    let skus = navigator.brave.skus;
+    if (skus) {
+      skus.prepare_credentials_presentation(')"
+#ifdef VPN_PROD
+      u"vpn.brave.com"
+#else
+     u"vpn.brave.software"
+#endif
+     uR"(', '*').then((response) => {
+        console.log(response);
+      });
+    } else {
+      console.log('ERROR: `navigator.brave.skus` not found');
+    }
+  }
+}, false);
+)";
+    std::u16string js_to_inject(kHandleSdkEvents);
+    auto* main_frame = source->GetMainFrame();
+    main_frame->ExecuteJavaScript(js_to_inject, base::NullCallback());
+    VLOG(2) << "SKU SDK handlers registered";
+  }
+}
+
+bool VpnLoginStatusDelegate::DidAddMessageToConsole(
+    content::WebContents* source,
+    blink::mojom::ConsoleMessageLevel log_level,
+    const std::u16string& message,
+    int32_t line_no,
+    const std::u16string& source_id) {
+  VLOG(3) << "DidAddMessageToConsole: " << message;
+  std::size_t found = message.find(u"__Secure-sku#");
+  if (found != std::u16string::npos) {
+    LOG(ERROR) << "Received credential: " << message;
+    return true;
+  }
+  return false;
+}
 
 namespace {
 
@@ -75,8 +146,15 @@ BraveVPNButton::BraveVPNButton(Profile* profile)
   SetHorizontalAlignment(gfx::ALIGN_LEFT);
 
   UpdateButtonState();
-}
 
+  // TODO(bsclifton): move to a more appropriate place
+  // ex: make a new method BraveVpnService::CheckLoginState()
+  content::WebContents::CreateParams params(profile);
+  contents_ = content::WebContents::Create(params);
+  contents_delegate_.reset(new VpnLoginStatusDelegate);
+  contents_->SetDelegate(contents_delegate_.get());
+}
+// TODO(bsclifton): clean up contents
 BraveVPNButton::~BraveVPNButton() = default;
 
 void BraveVPNButton::OnConnectionStateChanged(bool connected) {
@@ -132,6 +210,19 @@ bool BraveVPNButton::IsConnected() {
 
 void BraveVPNButton::OnButtonPressed(const ui::Event& event) {
   ShowBraveVPNPanel();
+
+  if (contents_) {
+    content::RenderFrameHost::AllowInjectingJavaScript();
+    GURL url = GURL(kSkuSdkEndpoint);
+    std::string extra_headers =
+#ifdef VPN_PROD
+    "";
+#else
+    "Authorization: Basic BASE64_ENCODED_USER:PASSWORD_HERE";
+#endif
+    contents_->GetController().LoadURL(
+        url, content::Referrer(), ui::PAGE_TRANSITION_TYPED, extra_headers);
+  }
 }
 
 void BraveVPNButton::ShowBraveVPNPanel() {
