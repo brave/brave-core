@@ -7,7 +7,16 @@
 
 #include <utility>
 
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/eth_response_parser.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
+#include "components/prefs/scoped_user_pref_update.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
+#include "content/public/browser/web_contents.h"
+
 
 WalletPanelHandler::WalletPanelHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> receiver,
@@ -31,6 +40,34 @@ void WalletPanelHandler::CloseUI() {
   if (embedder) {
     embedder->CloseUI();
   }
+}
+
+void WalletPanelHandler::AddEthereumChainApproved(const std::string& payload,
+                                                  const std::string& origin,
+                                                  int32_t tab_id) {
+  DLOG(INFO) << "AddEthereumChainApproved:" << payload;
+  content::WebContents* contents = get_web_contents_for_tab_.Run(tab_id);
+  if (!contents)
+    return;
+  
+  auto* prefs = user_prefs::UserPrefs::Get(contents->GetBrowserContext());
+  ListPrefUpdate update(prefs, kBraveWalletCustomNetworks);
+  base::ListValue* list = update.Get();
+  brave_wallet::AddEthereumChainParameter chainData;
+  if (!ParseAddEthereumChainParameter(payload, &chainData))
+    return;
+
+  base::Value value = brave_wallet::EthereumChainToValue(chainData);
+  list->Append(std::move(value));
+
+  brave_wallet::BraveWalletTabHelper::FromWebContents(contents)
+        ->UserRequestApproved(payload);
+}
+
+void WalletPanelHandler::AddEthereumChainCanceled(const std::string& payload,
+                                                  const std::string& origin,
+                                                  int32_t tab_id) {
+DLOG(INFO) << "AddEthereumChainCanceled:" << payload;
 }
 
 void WalletPanelHandler::ConnectToSite(const std::vector<std::string>& accounts,

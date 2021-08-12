@@ -34,6 +34,37 @@ void BraveWalletTabHelper::ShowBubble() {
   wallet_bubble_manager_delegate_->ShowBubble();
 }
 
+void BraveWalletTabHelper::UserRequestApproved(const std::string& requestData) {
+  size_t hash = base::FastHash(base::as_bytes(base::make_span(requestData)));
+  DCHECK(request_callbacks_.count(hash));
+  std::move(request_callbacks_[hash]).Run(std::vector<std::string>(1,{"done"}));
+  request_callbacks_.erase(hash);
+}
+
+void BraveWalletTabHelper::RequestUserApproval(const std::string& requestData,
+    BraveWalletProviderDelegate::RequestEthereumPermissionsCallback callback) {
+  std::string requesting_origin;
+  std::vector<std::string> accounts;
+  auto* manager =
+      permissions::PermissionRequestManager::FromWebContents(web_contents_);
+  DCHECK(manager);
+
+  requesting_origin = "someorigin";
+
+  int32_t tab_id = sessions::SessionTabHelper::IdForTab(web_contents_).id();
+  GURL webui_url = brave_wallet::GetConnectWithPayloadWebUIURL(
+      GetBubbleURL(), tab_id, requesting_origin, requestData);
+  DCHECK(webui_url.is_valid());
+  
+  size_t hash = base::FastHash(base::as_bytes(base::make_span(requestData)));
+  DCHECK(!request_callbacks_.count(hash));
+  request_callbacks_[hash] = std::move(callback);
+
+  wallet_bubble_manager_delegate_ =
+      WalletBubbleManagerDelegate::Create(web_contents_, webui_url);
+  wallet_bubble_manager_delegate_->ShowBubble();
+}
+
 void BraveWalletTabHelper::CloseBubble() {
   if (wallet_bubble_manager_delegate_)
     wallet_bubble_manager_delegate_->CloseBubble();

@@ -15,3 +15,14 @@ export type ShowConnectToSitePayload = {
   accounts: string[],
   origin: string
 }
+
+export type AddEthereumChainPayload = {
+  networkPayload: string,
+  origin: string,
+  tabId: number,
+}
+
+export type EthereumChainPayload = {
+  networkPayload: string,
+  origin: string
+}

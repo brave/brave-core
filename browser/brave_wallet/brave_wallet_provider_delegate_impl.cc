@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/bind.h"
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
@@ -17,6 +18,8 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+
 
 namespace brave_wallet {
 
@@ -73,6 +76,16 @@ void BraveWalletProviderDelegateImpl::EnsureConnected() {
 void BraveWalletProviderDelegateImpl::OnConnectionError() {
   keyring_controller_.reset();
   EnsureConnected();
+}
+
+void BraveWalletProviderDelegateImpl::RequestUserApproval(
+    const std::string& type, const std::string& requestData,
+    RequestEthereumPermissionsCallback callback) {
+  auto* rfh = content::RenderFrameHost::FromID(routing_id_);
+  auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
+  
+  brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents)
+        ->RequestUserApproval(requestData, std::move(callback));
 }
 
 void BraveWalletProviderDelegateImpl::RequestEthereumPermissions(

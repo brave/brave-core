@@ -85,6 +85,91 @@ bool ParseEthGetTransactionCount(const std::string& json, uint256_t* count) {
   return true;
 }
 
+bool ParseAddEthereumChainParameter(const std::string& json,
+                                    AddEthereumChainParameter* result) {
+  if (!result)
+    return false;
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::DictionaryValue* request_dict;
+  if (!records_v->GetAsDictionary(&request_dict)) {
+    return false;
+  }
+
+  std::string method;
+  if (!request_dict->GetString("method", &method))
+    return false;
+
+  DCHECK(method == "wallet_addEthereumChain");
+
+  const base::ListValue* params = nullptr;
+  if (!request_dict->GetList("params", &params))
+    return false;
+  const base::DictionaryValue* params_dict;
+  params->GetList()[0].GetAsDictionary(&params_dict);
+  if (!params_dict)
+    return false;
+  if (!params_dict->GetString("chainId", &result->chainId))
+    return false;
+
+  params_dict->GetString("chainName", &result->chainName);
+
+  const base::ListValue* explorerUrlsList;
+  if (params_dict->GetList("blockExplorerUrls", &explorerUrlsList)) {
+    for (const auto& entry : explorerUrlsList->GetList())
+      result->blockExplorerUrls.push_back(entry.GetString());
+  }
+
+  const base::ListValue* iconUrlsList;
+  if (params_dict->GetList("iconUrls", &iconUrlsList)) {
+    for (const auto& entry : iconUrlsList->GetList())
+      result->iconUrls.push_back(entry.GetString());
+  }
+
+  const base::ListValue* rpcUrlsList;
+  if (params_dict->GetList("rpcUrls", &rpcUrlsList)) {
+    for (const auto& entry : rpcUrlsList->GetList())
+      result->rpcUrls.push_back(entry.GetString());
+  }
+
+  const base::DictionaryValue* currency_dict;
+  if (params_dict->GetDictionary("nativeCurrency", &currency_dict)) {
+    currency_dict->GetString("name", &result->currency.name);
+    currency_dict->GetString("symbol", &result->currency.symbol);
+    result->currency.decimals =
+        currency_dict->FindIntPath("decimals").value_or(0);
+  }
+  return true;
+}
+
+std::string ParseRequestMethodName(const std::string& json) {
+  std::string method;
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return method;
+  }
+
+  const base::DictionaryValue* request_dict;
+  if (!records_v->GetAsDictionary(&request_dict)) {
+    return method;
+  }
+
+  if (!request_dict->GetString("method", &method))
+    return method;
+  return method;
+}
+
 bool ParseEthGetTransactionReceipt(const std::string& json,
                                    TransactionReceipt* receipt) {
   DCHECK(receipt);

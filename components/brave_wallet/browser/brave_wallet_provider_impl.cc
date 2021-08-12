@@ -9,6 +9,11 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+#include "brave/components/brave_wallet/browser/eth_response_parser.h"
+
+namespace {
+const char kAddEthereumChainMethod[] = "wallet_addEthereumChain";
+}  // namespace
 
 namespace brave_wallet {
 
@@ -25,9 +30,28 @@ BraveWalletProviderImpl::BraveWalletProviderImpl(
 
 BraveWalletProviderImpl::~BraveWalletProviderImpl() {}
 
+bool BraveWalletProviderImpl::OnAddEthereumChainRequest(
+    const std::string& json_payload, RequestCallback callback) {
+  AddEthereumChainParameter result;
+  if (!ParseAddEthereumChainParameter(json_payload, &result))
+    return false;
+  if (!delegate_)
+    return false;
+  DLOG(INFO) << "json_payload:" << json_payload;
+  delegate_->RequestUserApproval(kAddEthereumChainMethod, json_payload,
+      base::BindOnce(&BraveWalletProviderImpl::OnChainAddedResult,
+                    weak_factory_.GetWeakPtr(), std::move(callback)));
+  return true;
+}
+
 void BraveWalletProviderImpl::Request(const std::string& json_payload,
                                       bool auto_retry_on_network_change,
                                       RequestCallback callback) {
+  std::string method = brave_wallet::ParseRequestMethodName(json_payload);
+  if (method == kAddEthereumChainMethod &&
+      OnAddEthereumChainRequest(json_payload, std::move(callback))) {
+    return;
+  }
   if (rpc_controller_) {
     rpc_controller_->Request(json_payload, true, std::move(callback));
   }
@@ -90,6 +114,13 @@ void BraveWalletProviderImpl::ChainChangedEvent(const std::string& chain_id) {
 void BraveWalletProviderImpl::OnConnectionError() {
   rpc_controller_.reset();
   observer_receiver_.reset();
+}
+
+void BraveWalletProviderImpl::OnChainAddedResult(
+    RequestCallback callback,
+                const std::vector<std::string>& accounts) {
+  base::flat_map<std::string, std::string> headers;
+  std::move(callback).Run(200, "{'lalla': 1}", headers);
 }
 
 }  // namespace brave_wallet

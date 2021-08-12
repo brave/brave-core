@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "content/public/browser/web_contents_user_data.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "url/gurl.h"
 
 namespace content {
@@ -29,6 +30,9 @@ class BraveWalletTabHelper
 
 #if !defined(OS_ANDROID) && !defined(OS_IOS)
   void ShowBubble();
+  void RequestUserApproval(const std::string& requestData,
+    BraveWalletProviderDelegate::RequestEthereumPermissionsCallback callback);
+  void UserRequestApproved(const std::string& requestData);
   void CloseBubble();
   bool IsShowingBubble();
   bool IsBubbleClosedForTesting();
@@ -38,7 +42,7 @@ class BraveWalletTabHelper
   friend class content::WebContentsUserData<BraveWalletTabHelper>;
 #if !defined(OS_ANDROID) && !defined(OS_IOS)
   GURL GetBubbleURL();
-
+  std::unordered_map<size_t, brave_wallet::BraveWalletProviderDelegate::RequestEthereumPermissionsCallback> request_callbacks_;
   std::unique_ptr<WalletBubbleManagerDelegate> wallet_bubble_manager_delegate_;
 #endif
   content::WebContents* web_contents_;

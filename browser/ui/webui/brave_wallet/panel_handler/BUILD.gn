@@ -10,10 +10,13 @@ source_set("panel_handler") {
   ]
   deps = [
     "//brave/browser/brave_wallet",
+    "//brave/browser/brave_wallet:tab_helper",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common:mojom",
     "//chrome/browser/profiles:profile",
     "//components/permissions",
+    "//components/prefs:prefs",
+    "//components/user_prefs:user_prefs",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
     "//ui/webui:webui",

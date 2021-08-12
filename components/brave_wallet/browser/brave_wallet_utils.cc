@@ -396,6 +396,37 @@ void UpdateLastUnlockPref(PrefService* prefs) {
   prefs->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
 }
 
+base::Value EthereumChainToValue(const AddEthereumChainParameter& chainData) {
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("chainId", chainData.chainId);
+  dict.SetStringKey("chainName", chainData.chainName);
+
+  base::ListValue blockExplorerUrlsValue;
+  for (const auto& url : chainData.blockExplorerUrls) {
+    blockExplorerUrlsValue.AppendString(url);
+  }
+  dict.SetKey("blockExplorerUrls", std::move(blockExplorerUrlsValue));
+
+  base::ListValue iconUrlsValue;
+  for (const auto& url : chainData.iconUrls) {
+    iconUrlsValue.AppendString(url);
+  }
+  dict.SetKey("iconUrls", std::move(iconUrlsValue));
+
+  base::ListValue rpcUrlsValue;
+  for (const auto& url : chainData.rpcUrls) {
+    rpcUrlsValue.AppendString(url);
+  }
+  dict.SetKey("rpcUrls", std::move(rpcUrlsValue));
+
+  base::DictionaryValue currency;
+  currency.SetString("name", chainData.currency.name);
+  currency.SetString("symbol", chainData.currency.symbol);
+  currency.SetInteger("decimals", chainData.currency.decimals);
+
+  return dict;
+}
+
 base::Value TransactionReceiptToValue(const TransactionReceipt& tx_receipt) {
   base::Value dict(base::Value::Type::DICTIONARY);
   dict.SetStringKey("transaction_hash", tx_receipt.transaction_hash);

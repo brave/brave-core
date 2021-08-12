@@ -11,6 +11,9 @@ class WalletPanelApiProxy {
   showUI() {}
   closeUI() {}
 
+  addEthereumChainApproved(payload, origin, tab_id) {}
+  addEthereumChainCanceled(payload, origin, tab_id) {}
+
   connectToSite(accounts, origin, tab_id) {}
   cancelConnectToSite(origin, tab_id) {}
 }
@@ -45,6 +48,15 @@ export default class WalletPanelApiProxyImpl extends WalletApiProxy {
   /** @override */
   closeUI() {
     this.panelHandler.closeUI();
+  }
+  
+  /** @override */
+  addEthereumChainApproved(payload, origin, tab_id) {
+    this.panelHandler.addEthereumChainApproved(payload, origin, tab_id);
+  }
+
+  addEthereumChainCanceled(payload, origin, tab_id) {
+    this.panelHandler.addEthereumChainCancel(payload, origin, tab_id);
   }
 
   /** @override */

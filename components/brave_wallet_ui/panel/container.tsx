@@ -96,8 +96,8 @@ function Container (props: Props) {
     selectedPanel,
     showSignTransaction,
     showAllowSpendERC20Token,
-    showAllowAddNetwork,
-    showConfirmTransaction
+    showConfirmTransaction,
+    networkPayload
   } = props.panel
 
   // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
@@ -300,11 +300,17 @@ function Container (props: Props) {
   }
 
   const onApproveAddNetwork = () => {
-    // Logic Here to Approve Adding a Network
+    props.walletPanelActions.addEthereumChainApproved({
+      networkPayload: networkPayload,
+      origin: connectedSiteOrigin,
+    })
   }
 
   const onCancelAddNetwork = () => {
-    // Logic Here to Cancel Adding a Network
+    props.walletPanelActions.addEthereumChainCanceled({
+      networkPayload: networkPayload,
+      origin: connectedSiteOrigin
+    })
   }
 
   const onRejectTransaction = () => {
@@ -425,7 +431,7 @@ function Container (props: Props) {
     )
   }
 
-  if (showAllowAddNetwork) {
+  if (selectedPanel === 'addEthereumChain') {
     return (
       <PanelWrapper isLonger={true}>
         <SignContainer>
@@ -492,7 +498,6 @@ function Container (props: Props) {
       </PanelWrapper>
     )
   }
-
   if (selectedPanel === 'networks') {
     return (
       <PanelWrapper isLonger={false}>
