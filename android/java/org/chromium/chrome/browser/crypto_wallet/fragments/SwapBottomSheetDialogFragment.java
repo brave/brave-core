@@ -21,11 +21,15 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 public class SwapBottomSheetDialogFragment
         extends BottomSheetDialogFragment implements View.OnClickListener {
     public static final String TAG_FRAGMENT = SwapBottomSheetDialogFragment.class.getName();
+    LinearLayout mBuyLayout;
+    LinearLayout mSendLayout;
+    LinearLayout mSwapLayout;
 
     public static SwapBottomSheetDialogFragment newInstance() {
         return new SwapBottomSheetDialogFragment();
@@ -56,12 +60,12 @@ public class SwapBottomSheetDialogFragment
         final View view =
                 LayoutInflater.from(getContext()).inflate(R.layout.swap_bottom_sheet, null);
 
-        LinearLayout buyLayout = view.findViewById(R.id.buy_layout);
-        buyLayout.setOnClickListener(this);
-        LinearLayout sendLayout = view.findViewById(R.id.send_layout);
-        sendLayout.setOnClickListener(this);
-        LinearLayout swapLayout = view.findViewById(R.id.swap_layout);
-        swapLayout.setOnClickListener(this);
+        mBuyLayout = view.findViewById(R.id.buy_layout);
+        mBuyLayout.setOnClickListener(this);
+        mSendLayout = view.findViewById(R.id.send_layout);
+        mSendLayout.setOnClickListener(this);
+        mSwapLayout = view.findViewById(R.id.swap_layout);
+        mSwapLayout.setOnClickListener(this);
 
         dialog.setContentView(view);
         ViewParent parent = view.getParent();
@@ -70,7 +74,13 @@ public class SwapBottomSheetDialogFragment
 
     @Override
     public void onClick(View view) {
-        Utils.openBuySendSwapActivity(getActivity());
+        BuySendSwapActivity.ActivityType activityType = BuySendSwapActivity.ActivityType.BUY;
+        if (view == mSendLayout) {
+            activityType = BuySendSwapActivity.ActivityType.SEND;
+        } else if (view == mSwapLayout) {
+            activityType = BuySendSwapActivity.ActivityType.SWAP;
+        }
+        Utils.openBuySendSwapActivity(getActivity(), activityType);
         dismiss();
     }
 }
