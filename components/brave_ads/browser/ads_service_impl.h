@@ -161,6 +161,8 @@ class AdsServiceImpl : public AdsService,
 
   void GetAccountStatement(GetAccountStatementCallback callback) override;
 
+  void GetAdDiagnostics(GetAdDiagnosticsCallback callback) override;
+
   void ToggleAdThumbUp(const std::string& creative_instance_id,
                        const std::string& creative_set_id,
                        const int action,
@@ -267,6 +269,10 @@ class AdsServiceImpl : public AdsService,
   void OnGetAccountStatement(GetAccountStatementCallback callback,
                              const bool success,
                              const std::string& json);
+
+  void OnGetAdDiagnostics(GetAdDiagnosticsCallback callback,
+                          const bool success,
+                          const std::string& json);
 
   void OnRemoveAllHistory(const int32_t result);
 

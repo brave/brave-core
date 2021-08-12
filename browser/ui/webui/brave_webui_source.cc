@@ -1026,6 +1026,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
       }
     }, {
       std::string("rewards-internals"), {
+        { "adsNotInitialized", IDS_BRAVE_REWARDS_INTERNALS_ADS_NOT_INITIALIZED },                // NOLINT
         { "amount", IDS_BRAVE_REWARDS_INTERNALS_AMOUNT },
         { "autoRefresh", IDS_BRAVE_REWARDS_INTERNALS_AUTO_REFRESH },
         { "balanceInfo", IDS_BRAVE_REWARDS_INTERNALS_BALANCE_INFO },
@@ -1093,6 +1094,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "promotionVersion", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_VERSION },
         { "refreshButton", IDS_BRAVE_REWARDS_INTERNALS_REFRESH_BUTTON },
         { "retryCount", IDS_BRAVE_REWARDS_INTERNALS_RETRY_COUNT },
+        { "tabAdDiagnostics", IDS_BRAVE_REWARDS_INTERNALS_TAB_AD_DIAGNOSTICS },
         { "tabGeneralInfo", IDS_BRAVE_REWARDS_INTERNALS_TAB_GENERAL_INFO },
         { "tabLogs", IDS_BRAVE_REWARDS_INTERNALS_TAB_LOGS },
         { "tabPromotions", IDS_BRAVE_REWARDS_INTERNALS_TAB_PROMOTIONS },

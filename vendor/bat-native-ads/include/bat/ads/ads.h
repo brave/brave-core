@@ -35,6 +35,9 @@ using GetInlineContentAdCallback = std::function<
 using GetAccountStatementCallback =
     std::function<void(const bool, const StatementInfo&)>;
 
+using GetAdDiagnosticsCallback =
+    std::function<void(const bool, const std::string&)>;
+
 // |g_environment| indicates that URL requests should use production, staging or
 // development servers but can be overridden via command-line arguments
 extern Environment g_environment;
@@ -212,6 +215,9 @@ class ADS_EXPORT Ads {
   // this month, earnings this month, earnings last month, cleared transactions
   // and uncleared transactions
   virtual void GetAccountStatement(GetAccountStatementCallback callback) = 0;
+
+  // Should be called to get ad diagnostics for rewards internals page.
+  virtual void GetAdDiagnostics(GetAdDiagnosticsCallback callback) = 0;
 
   // Should be called to indicate interest in the specified ad. This is a
   // toggle, so calling it again returns the setting to the neutral state

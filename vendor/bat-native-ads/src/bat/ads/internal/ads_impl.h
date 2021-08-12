@@ -65,6 +65,7 @@ class Initialize;
 }  // namespace database
 
 class Account;
+class AdDiagnostics;
 class AdNotification;
 class AdNotificationServing;
 class AdNotifications;
@@ -189,6 +190,8 @@ class AdsImpl : public Ads,
 
   void GetAccountStatement(GetAccountStatementCallback callback) override;
 
+  void GetAdDiagnostics(GetAdDiagnosticsCallback callback) override;
+
   AdContentInfo::LikeAction ToggleAdThumbUp(
       const std::string& creative_instance_id,
       const std::string& creative_set_id,
@@ -214,6 +217,7 @@ class AdsImpl : public Ads,
   bool is_initialized_ = false;
 
   std::unique_ptr<AdsClientHelper> ads_client_helper_;
+  std::unique_ptr<AdDiagnostics> ad_diagnostics_;
   std::unique_ptr<privacy::TokenGenerator> token_generator_;
   std::unique_ptr<Account> account_;
   std::unique_ptr<ad_targeting::processor::EpsilonGreedyBandit>
