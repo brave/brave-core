@@ -1,24 +1,24 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index c091e104c7bc3d5c2478ffbbf1d1ecfb50e7c922..23b49119d2b6cda93a2a5edfa41952a736a19b31 100644
+index 283be0fcc6e5758175c251fc2bcb3d8e9e7e3895..4f711cd1142d9666a3861a384ec2320d1d2030a4 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-@@ -406,6 +406,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -403,6 +403,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          if (mCurrentLocationBarColor == color) return;
          mCurrentLocationBarColor = color;
-         mLocationBarBackground.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+         mLocationBarBackground.setTint(color);
 +        BraveToolbarLayout.class.cast(this).updateModernLocationBarColorImpl(color);
      }
-
+ 
      /**
-@@ -523,6 +524,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -520,6 +521,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
                          EventConstants.PARTNER_HOME_PAGE_BUTTON_PRESSED);
              }
          }
 +        BraveToolbarLayout.class.cast(this).onClickImpl(v);
      }
-
+ 
      @Override
-@@ -697,7 +699,8 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -694,7 +696,8 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
       * @return The right bounds of the location bar after accounting for any visible right buttons.
       */
      private int getBoundsAfterAccountingForRightButtons() {
@@ -27,12 +27,12 @@ index c091e104c7bc3d5c2478ffbbf1d1ecfb50e7c922..23b49119d2b6cda93a2a5edfa41952a7
 +      if (mStartSurfaceScrollFraction == 1.0f) return mToolbarSidePadding;
          return Math.max(mToolbarSidePadding, mToolbarButtonsContainer.getMeasuredWidth());
      }
-
-@@ -2114,6 +2117,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+ 
+@@ -2112,6 +2115,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          } else {
              populateUrlClearExpansionAnimatorSet(animators);
          }
 +        BraveToolbarLayout.class.cast(this).populateUrlAnimatorSetImpl(hasFocus, URL_FOCUS_TOOLBAR_BUTTONS_DURATION_MS, URL_CLEAR_FOCUS_TABSTACK_DELAY_MS, animators);
          mUrlFocusLayoutAnimator = new AnimatorSet();
          mUrlFocusLayoutAnimator.playTogether(animators);
-
+ 
