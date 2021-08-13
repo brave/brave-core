@@ -26,8 +26,8 @@ void AdEventDismissed::FireEvent(const AdNotificationInfo& ad) {
 
   AdNotifications::Get()->Remove(ad.uuid);
 
-  LogAdEvent(ad, ConfirmationType::kDismissed, [](const Result result) {
-    if (result != Result::SUCCESS) {
+  LogAdEvent(ad, ConfirmationType::kDismissed, [](const bool success) {
+    if (!success) {
       BLOG(1, "Failed to log ad notification dismissed event");
       return;
     }

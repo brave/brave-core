@@ -20,17 +20,16 @@
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
 #include "bat/ads/internal/database/tables/segments_database_table.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 
 using GetCreativeInlineContentAdCallback =
-    std::function<void(const Result result,
+    std::function<void(const bool success,
                        const std::string& creative_instance_id,
                        const CreativeInlineContentAdInfo& ad)>;
 
 using GetCreativeInlineContentAdsCallback =
-    std::function<void(const Result result,
+    std::function<void(const bool success,
                        const SegmentList& segments,
                        const CreativeInlineContentAdList& ads)>;
 

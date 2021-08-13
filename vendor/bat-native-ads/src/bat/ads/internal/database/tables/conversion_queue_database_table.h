@@ -12,15 +12,14 @@
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/database/database_table.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 
 using GetConversionQueueCallback =
-    std::function<void(const Result, const ConversionQueueItemList&)>;
+    std::function<void(const bool, const ConversionQueueItemList&)>;
 
 using GetConversionQueueForCreativeInstanceIdCallback =
-    std::function<void(const Result,
+    std::function<void(const bool,
                        const std::string& creative_instance_id,
                        const ConversionQueueItemList&)>;
 

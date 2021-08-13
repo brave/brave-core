@@ -45,7 +45,7 @@ void CreativeNewTabPageAds::Save(
     const CreativeNewTabPageAdList& creative_new_tab_page_ads,
     ResultCallback callback) {
   if (creative_new_tab_page_ads.empty()) {
-    callback(Result::SUCCESS);
+    callback(/* success */ true);
     return;
   }
 
@@ -88,7 +88,8 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
   CreativeNewTabPageAdInfo creative_new_tab_page_ad;
 
   if (creative_instance_id.empty()) {
-    callback(Result::FAILED, creative_instance_id, creative_new_tab_page_ad);
+    callback(/* success */ false, creative_instance_id,
+             creative_new_tab_page_ad);
     return;
   }
 
@@ -172,7 +173,7 @@ void CreativeNewTabPageAds::GetForSegments(
     const SegmentList& segments,
     GetCreativeNewTabPageAdsCallback callback) {
   if (segments.empty()) {
-    callback(Result::SUCCESS, segments, {});
+    callback(/* success */ true, segments, {});
     return;
   }
 
@@ -427,13 +428,13 @@ void CreativeNewTabPageAds::OnGetForCreativeInstanceId(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Failed to get creative new tab page ad");
-    callback(Result::FAILED, creative_instance_id, {});
+    callback(/* success */ false, creative_instance_id, {});
     return;
   }
 
   if (response->result->get_records().size() != 1) {
     BLOG(0, "Failed to get creative new tab page ad");
-    callback(Result::FAILED, creative_instance_id, {});
+    callback(/* success */ false, creative_instance_id, {});
     return;
   }
 
@@ -442,7 +443,7 @@ void CreativeNewTabPageAds::OnGetForCreativeInstanceId(
   const CreativeNewTabPageAdInfo creative_new_tab_page_ad =
       GetFromRecord(record);
 
-  callback(Result::SUCCESS, creative_instance_id, creative_new_tab_page_ad);
+  callback(/* success */ true, creative_instance_id, creative_new_tab_page_ad);
 }
 
 void CreativeNewTabPageAds::OnGetForSegments(
@@ -452,7 +453,7 @@ void CreativeNewTabPageAds::OnGetForSegments(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Failed to get creative new tab page ads");
-    callback(Result::FAILED, segments, {});
+    callback(/* success */ false, segments, {});
     return;
   }
 
@@ -465,7 +466,7 @@ void CreativeNewTabPageAds::OnGetForSegments(
     creative_new_tab_page_ads.push_back(creative_new_tab_page_ad);
   }
 
-  callback(Result::SUCCESS, segments, creative_new_tab_page_ads);
+  callback(/* success */ true, segments, creative_new_tab_page_ads);
 }
 
 void CreativeNewTabPageAds::OnGetAll(
@@ -474,7 +475,7 @@ void CreativeNewTabPageAds::OnGetAll(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Failed to get all creative new tab page ads");
-    callback(Result::FAILED, {}, {});
+    callback(/* success */ false, {}, {});
     return;
   }
 
@@ -495,7 +496,7 @@ void CreativeNewTabPageAds::OnGetAll(
   const auto iter = std::unique(segments.begin(), segments.end());
   segments.erase(iter, segments.end());
 
-  callback(Result::SUCCESS, segments, creative_new_tab_page_ads);
+  callback(/* success */ true, segments, creative_new_tab_page_ads);
 }
 
 CreativeNewTabPageAdInfo CreativeNewTabPageAds::GetFromRecord(

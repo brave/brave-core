@@ -37,7 +37,7 @@ void ConversionQueue::Save(
     const ConversionQueueItemList& conversion_queue_items,
     ResultCallback callback) {
   if (conversion_queue_items.empty()) {
-    callback(Result::SUCCESS);
+    callback(/* success */ true);
     return;
   }
 
@@ -120,7 +120,7 @@ void ConversionQueue::GetForCreativeInstanceId(
   ConversionQueueItemList conversion_queue_items;
 
   if (creative_instance_id.empty()) {
-    callback(Result::FAILED, creative_instance_id, conversion_queue_items);
+    callback(/* success */ false, creative_instance_id, conversion_queue_items);
     return;
   }
 
@@ -260,7 +260,7 @@ void ConversionQueue::OnGetAll(mojom::DBCommandResponsePtr response,
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Failed to get conversion queue");
-    callback(Result::FAILED, {});
+    callback(/* success */ false, {});
     return;
   }
 
@@ -271,7 +271,7 @@ void ConversionQueue::OnGetAll(mojom::DBCommandResponsePtr response,
     conversion_queue_items.push_back(info);
   }
 
-  callback(Result::SUCCESS, conversion_queue_items);
+  callback(/* success */ true, conversion_queue_items);
 }
 
 void ConversionQueue::OnGetForCreativeInstanceId(
@@ -281,7 +281,7 @@ void ConversionQueue::OnGetForCreativeInstanceId(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Failed to get conversion queue");
-    callback(Result::FAILED, creative_instance_id, {});
+    callback(/* success */ false, creative_instance_id, {});
     return;
   }
 
@@ -292,7 +292,7 @@ void ConversionQueue::OnGetForCreativeInstanceId(
     conversion_queue_items.push_back(info);
   }
 
-  callback(Result::SUCCESS, creative_instance_id, conversion_queue_items);
+  callback(/* success */ true, creative_instance_id, conversion_queue_items);
 }
 
 ConversionQueueItemInfo ConversionQueue::GetFromRecord(

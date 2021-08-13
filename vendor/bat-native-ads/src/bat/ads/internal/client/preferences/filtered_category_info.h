@@ -9,8 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "bat/ads/result.h"
-
 namespace ads {
 
 struct FilteredCategoryInfo {
@@ -19,7 +17,7 @@ struct FilteredCategoryInfo {
   ~FilteredCategoryInfo();
 
   std::string ToJson() const;
-  Result FromJson(const std::string& json);
+  bool FromJson(const std::string& json);
 
   std::string name;
 };

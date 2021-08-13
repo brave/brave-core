@@ -55,10 +55,10 @@ TEST_P(BatAdsDatabaseMigrationTest, MigrateFromSchema) {
   const AdEventInfo ad_event = GetAdEvent();
 
   // Act
-  LogAdEvent(ad_event, [=](const Result result) {
-    EXPECT_EQ(Result::SUCCESS, result)
-        << "Failed to migrate database from schema " << GetSchemaVersion()
-        << " to schema " << database::version();
+  LogAdEvent(ad_event, [=](const bool success) {
+    EXPECT_TRUE(success) << "Failed to migrate database from schema "
+                         << GetSchemaVersion() << " to schema "
+                         << database::version();
   });
 
   // Assert

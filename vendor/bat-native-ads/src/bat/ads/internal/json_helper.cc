@@ -7,30 +7,30 @@
 
 namespace helper {
 
-ads::Result JSON::Validate(rapidjson::Document* document,
-                           const std::string& json_schema) {
+bool JSON::Validate(rapidjson::Document* document,
+                    const std::string& json_schema) {
   if (!document) {
-    return ads::Result::FAILED;
+    return false;
   }
 
   if (document->HasParseError()) {
-    return ads::Result::FAILED;
+    return false;
   }
 
   rapidjson::Document document_schema;
   document_schema.Parse(json_schema.c_str());
 
   if (document_schema.HasParseError()) {
-    return ads::Result::FAILED;
+    return false;
   }
 
   rapidjson::SchemaDocument schema(document_schema);
   rapidjson::SchemaValidator validator(schema);
   if (!document->Accept(validator)) {
-    return ads::Result::FAILED;
+    return false;
   }
 
-  return ads::Result::SUCCESS;
+  return true;
 }
 
 std::string JSON::GetLastError(rapidjson::Document* document) {

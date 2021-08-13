@@ -16,7 +16,6 @@
 #include "bat/ads/internal/database/tables/conversion_queue_database_table.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/pref_names.h"
-#include "bat/ads/result.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
@@ -121,22 +120,22 @@ absl::optional<ConversionQueueItemList> FromJson(const std::string& json) {
 void Migrate(InitializeCallback callback) {
   if (AdsClientHelper::Get()->GetBooleanPref(
           prefs::kHasMigratedConversionState)) {
-    callback(SUCCESS);
+    callback(/* success */ true);
     return;
   }
 
   BLOG(3, "Loading conversion state");
 
   AdsClientHelper::Get()->Load(
-      kFilename, [=](const Result result, const std::string& json) {
-        if (result != SUCCESS) {
+      kFilename, [=](const bool success, const std::string& json) {
+        if (!success) {
           // Conversion state does not exist
           BLOG(3, "Successfully migrated conversion state");
 
           AdsClientHelper::Get()->SetBooleanPref(
               prefs::kHasMigratedConversionState, true);
 
-          callback(SUCCESS);
+          callback(/* success */ true);
           return;
         }
 
@@ -145,7 +144,7 @@ void Migrate(InitializeCallback callback) {
 
         if (!conversion_queue_items) {
           BLOG(0, "Failed to migrate conversions");
-          callback(FAILED);
+          callback(/* success */ false);
           return;
         }
 
@@ -155,10 +154,10 @@ void Migrate(InitializeCallback callback) {
 
         database::table::ConversionQueue conversion_queue;
         conversion_queue.Save(
-            conversion_queue_items.value(), [=](const Result result) {
-              if (result != SUCCESS) {
+            conversion_queue_items.value(), [=](const bool success) {
+              if (!success) {
                 BLOG(0, "Failed to migrate conversion state");
-                callback(FAILED);
+                callback(/* success */ false);
                 return;
               }
 
@@ -166,7 +165,7 @@ void Migrate(InitializeCallback callback) {
                   prefs::kHasMigratedConversionState, true);
 
               BLOG(3, "Successfully migrated conversion state");
-              callback(SUCCESS);
+              callback(/* success */ true);
             });
       });
 }

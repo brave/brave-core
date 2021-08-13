@@ -22,13 +22,13 @@ std::string SavedAdInfo::ToJson() const {
   return json;
 }
 
-Result SavedAdInfo::FromJson(const std::string& json) {
+bool SavedAdInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
   if (document.HasParseError()) {
     BLOG(1, helper::JSON::GetLastError(&document));
-    return FAILED;
+    return false;
   }
 
   if (document.HasMember("uuid")) {
@@ -39,7 +39,7 @@ Result SavedAdInfo::FromJson(const std::string& json) {
     creative_set_id = document["creative_set_id"].GetString();
   }
 
-  return SUCCESS;
+  return true;
 }
 
 void SaveToJson(JsonWriter* writer, const SavedAdInfo& ad) {

@@ -35,9 +35,9 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionQueueDatabase) {
 
   // Act
   database_table.GetAll(
-      [](const Result result,
+      [](const bool success,
          const ConversionQueueItemList& conversion_queue_items) {
-        ASSERT_EQ(Result::SUCCESS, result);
+        ASSERT_TRUE(success);
 
         ConversionQueueItemInfo conversion_queue_item;
         conversion_queue_item.campaign_id =
@@ -68,9 +68,9 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
   AdvanceClock(TimeFromDateString("28 July 2021"));
 
   // Act
-  database_table.GetAll([](const Result result,
+  database_table.GetAll([](const bool success,
                            const ConversionList& conversions) {
-    ASSERT_EQ(Result::SUCCESS, result);
+    ASSERT_TRUE(success);
 
     const std::vector<std::string> creative_set_ids = {
         "88ef5a12-6436-4be6-955d-b181407d58c5",

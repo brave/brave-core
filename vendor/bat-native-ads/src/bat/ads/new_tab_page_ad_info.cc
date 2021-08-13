@@ -36,13 +36,13 @@ std::string NewTabPageAdInfo::ToJson() const {
   return json;
 }
 
-Result NewTabPageAdInfo::FromJson(const std::string& json) {
+bool NewTabPageAdInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
   if (document.HasParseError()) {
     BLOG(1, helper::JSON::GetLastError(&document));
-    return FAILED;
+    return false;
   }
 
   if (document.HasMember("type")) {
@@ -85,7 +85,7 @@ Result NewTabPageAdInfo::FromJson(const std::string& json) {
     target_url = document["target_url"].GetString();
   }
 
-  return SUCCESS;
+  return true;
 }
 
 void SaveToJson(JsonWriter* writer, const NewTabPageAdInfo& info) {

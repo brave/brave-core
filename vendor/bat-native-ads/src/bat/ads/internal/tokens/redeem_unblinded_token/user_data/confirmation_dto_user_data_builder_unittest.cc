@@ -106,9 +106,8 @@ class BatAdsConfirmationDtoUserDataTest : public UnitTestBase {
   ~BatAdsConfirmationDtoUserDataTest() override = default;
 
   void Save(const ConversionQueueItemList& conversion_queue_items) {
-    database_table_->Save(conversion_queue_items, [](const Result result) {
-      ASSERT_EQ(Result::SUCCESS, result);
-    });
+    database_table_->Save(conversion_queue_items,
+                          [](const bool success) { ASSERT_TRUE(success); });
   }
 
   std::unique_ptr<database::table::ConversionQueue> database_table_;

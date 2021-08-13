@@ -28,7 +28,6 @@
 #include "bat/ads/internal/database/tables/segments_database_table.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/platform/platform_helper.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 
@@ -488,8 +487,8 @@ void Bundle::DeleteDatabaseTables() {
 
 void Bundle::DeleteCreativeAdNotifications() {
   database::table::CreativeAdNotifications database_table;
-  database_table.Delete([](const Result result) {
-    if (result != SUCCESS) {
+  database_table.Delete([](const bool success) {
+    if (!success) {
       BLOG(0, "Failed to delete creative ad notifications state");
       return;
     }
@@ -500,8 +499,8 @@ void Bundle::DeleteCreativeAdNotifications() {
 
 void Bundle::DeleteCreativeInlineContentAds() {
   database::table::CreativeInlineContentAds database_table;
-  database_table.Delete([](const Result result) {
-    if (result != SUCCESS) {
+  database_table.Delete([](const bool success) {
+    if (!success) {
       BLOG(0, "Failed to delete creative inline content ads state");
       return;
     }
@@ -512,8 +511,8 @@ void Bundle::DeleteCreativeInlineContentAds() {
 
 void Bundle::DeleteCreativeNewTabPageAds() {
   database::table::CreativeNewTabPageAds database_table;
-  database_table.Delete([](const Result result) {
-    if (result != SUCCESS) {
+  database_table.Delete([](const bool success) {
+    if (!success) {
       BLOG(0, "Failed to delete creative new tab page ads state");
       return;
     }
@@ -524,8 +523,8 @@ void Bundle::DeleteCreativeNewTabPageAds() {
 
 void Bundle::DeleteCreativePromotedContentAds() {
   database::table::CreativePromotedContentAds database_table;
-  database_table.Delete([](const Result result) {
-    if (result != SUCCESS) {
+  database_table.Delete([](const bool success) {
+    if (!success) {
       BLOG(0, "Failed to delete creative promoted content ads state");
       return;
     }
@@ -536,8 +535,8 @@ void Bundle::DeleteCreativePromotedContentAds() {
 
 void Bundle::DeleteCampaigns() {
   database::table::Campaigns database_table;
-  database_table.Delete([](const Result result) {
-    if (result != SUCCESS) {
+  database_table.Delete([](const bool success) {
+    if (!success) {
       BLOG(0, "Failed to delete campaigns state");
       return;
     }
@@ -548,8 +547,8 @@ void Bundle::DeleteCampaigns() {
 
 void Bundle::DeleteSegments() {
   database::table::Segments database_table;
-  database_table.Delete([](const Result result) {
-    if (result != SUCCESS) {
+  database_table.Delete([](const bool success) {
+    if (!success) {
       BLOG(0, "Failed to delete segments state");
       return;
     }
@@ -560,8 +559,8 @@ void Bundle::DeleteSegments() {
 
 void Bundle::DeleteCreativeAds() {
   database::table::CreativeAds database_table;
-  database_table.Delete([](const Result result) {
-    if (result != SUCCESS) {
+  database_table.Delete([](const bool success) {
+    if (!success) {
       BLOG(0, "Failed to delete creative ads state");
       return;
     }
@@ -572,8 +571,8 @@ void Bundle::DeleteCreativeAds() {
 
 void Bundle::DeleteDayparts() {
   database::table::Dayparts database_table;
-  database_table.Delete([](const Result result) {
-    if (result != SUCCESS) {
+  database_table.Delete([](const bool success) {
+    if (!success) {
       BLOG(0, "Failed to delete dayparts state");
       return;
     }
@@ -584,8 +583,8 @@ void Bundle::DeleteDayparts() {
 
 void Bundle::DeleteGeoTargets() {
   database::table::GeoTargets database_table;
-  database_table.Delete([](const Result result) {
-    if (result != SUCCESS) {
+  database_table.Delete([](const bool success) {
+    if (!success) {
       BLOG(0, "Failed to delete geo targets state");
       return;
     }
@@ -598,8 +597,8 @@ void Bundle::SaveCreativeAdNotifications(
     const CreativeAdNotificationList& creative_ad_notifications) {
   database::table::CreativeAdNotifications database_table;
 
-  database_table.Save(creative_ad_notifications, [](const Result result) {
-    if (result != SUCCESS) {
+  database_table.Save(creative_ad_notifications, [](const bool success) {
+    if (!success) {
       BLOG(0, "Failed to save creative ad notifications state");
       return;
     }
@@ -612,8 +611,8 @@ void Bundle::SaveCreativeInlineContentAds(
     const CreativeInlineContentAdList& creative_inline_content_ads) {
   database::table::CreativeInlineContentAds database_table;
 
-  database_table.Save(creative_inline_content_ads, [](const Result result) {
-    if (result != SUCCESS) {
+  database_table.Save(creative_inline_content_ads, [](const bool success) {
+    if (!success) {
       BLOG(0, "Failed to save creative inline content ads state");
       return;
     }
@@ -626,8 +625,8 @@ void Bundle::SaveCreativeNewTabPageAds(
     const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
   database::table::CreativeNewTabPageAds database_table;
 
-  database_table.Save(creative_new_tab_page_ads, [](const Result result) {
-    if (result != SUCCESS) {
+  database_table.Save(creative_new_tab_page_ads, [](const bool success) {
+    if (!success) {
       BLOG(0, "Failed to save creative new tab page ads state");
       return;
     }
@@ -640,8 +639,8 @@ void Bundle::SaveCreativePromotedContentAds(
     const CreativePromotedContentAdList& creative_promoted_content_ads) {
   database::table::CreativePromotedContentAds database_table;
 
-  database_table.Save(creative_promoted_content_ads, [](const Result result) {
-    if (result != SUCCESS) {
+  database_table.Save(creative_promoted_content_ads, [](const bool success) {
+    if (!success) {
       BLOG(0, "Failed to save creative promoted content ads state");
       return;
     }
@@ -652,8 +651,8 @@ void Bundle::SaveCreativePromotedContentAds(
 
 void Bundle::PurgeExpiredConversions() {
   database::table::Conversions database_table;
-  database_table.PurgeExpired([](const Result result) {
-    if (result != SUCCESS) {
+  database_table.PurgeExpired([](const bool success) {
+    if (!success) {
       BLOG(0, "Failed to purge expired conversions");
       return;
     }
@@ -664,8 +663,8 @@ void Bundle::PurgeExpiredConversions() {
 
 void Bundle::SaveConversions(const ConversionList& conversions) {
   database::table::Conversions database_table;
-  database_table.Save(conversions, [](const Result result) {
-    if (result != SUCCESS) {
+  database_table.Save(conversions, [](const bool success) {
+    if (!success) {
       BLOG(0, "Failed to save conversions state");
       return;
     }

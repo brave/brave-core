@@ -9,7 +9,6 @@
 #include <string>
 
 #include "bat/ads/export.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 
@@ -24,7 +23,7 @@ struct ADS_EXPORT CategoryContentInfo {
   enum class OptAction { kNone = 0, kOptIn, kOptOut };
 
   std::string ToJson() const;
-  Result FromJson(const std::string& json);
+  bool FromJson(const std::string& json);
 
   std::string category;
   OptAction opt_action = OptAction::kNone;

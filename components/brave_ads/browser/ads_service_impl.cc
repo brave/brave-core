@@ -680,8 +680,8 @@ void AdsServiceImpl::OnCreate() {
   bat_ads_->Initialize(base::BindOnce(std::move(callback)));
 }
 
-void AdsServiceImpl::OnInitialize(const int32_t result) {
-  if (result != ads::Result::SUCCESS) {
+void AdsServiceImpl::OnInitialize(const bool success) {
+  if (!success) {
     VLOG(0) << "Failed to initialize ads";
 
     is_initialized_ = false;
@@ -706,10 +706,10 @@ void AdsServiceImpl::ShutdownBatAds() {
       base::BindOnce(&AdsServiceImpl::OnShutdownBatAds, AsWeakPtr()));
 }
 
-void AdsServiceImpl::OnShutdownBatAds(const int32_t result) {
+void AdsServiceImpl::OnShutdownBatAds(const bool success) {
   DCHECK(is_initialized_);
 
-  if (result != ads::Result::SUCCESS) {
+  if (!success) {
     VLOG(0) << "Failed to shutdown ads";
     return;
   }
@@ -807,10 +807,10 @@ void AdsServiceImpl::ResetAllState(const bool should_shutdown) {
       base::BindOnce(&AdsServiceImpl::OnShutdownAndResetBatAds, AsWeakPtr()));
 }
 
-void AdsServiceImpl::OnShutdownAndResetBatAds(const int32_t result) {
+void AdsServiceImpl::OnShutdownAndResetBatAds(const bool success) {
   DCHECK(is_initialized_);
 
-  if (result != ads::Result::SUCCESS) {
+  if (!success) {
     VLOG(0) << "Failed to shutdown and reset ads state";
     return;
   }
@@ -1346,8 +1346,8 @@ void AdsServiceImpl::OnGetAdDiagnostics(GetAdDiagnosticsCallback callback,
   std::move(callback).Run(success, json);
 }
 
-void AdsServiceImpl::OnRemoveAllHistory(const int32_t result) {
-  if (result != ads::Result::SUCCESS) {
+void AdsServiceImpl::OnRemoveAllHistory(const bool success) {
+  if (!success) {
     VLOG(0) << "Failed to remove ads history";
     return;
   }
@@ -1401,9 +1401,9 @@ void AdsServiceImpl::OnLoaded(const ads::LoadCallback& callback,
   }
 
   if (value.empty())
-    callback(ads::Result::FAILED, value);
+    callback(/* success */ false, value);
   else
-    callback(ads::Result::SUCCESS, value);
+    callback(/* success */ true, value);
 }
 
 void AdsServiceImpl::OnSaved(const ads::ResultCallback& callback,
@@ -1412,7 +1412,7 @@ void AdsServiceImpl::OnSaved(const ads::ResultCallback& callback,
     return;
   }
 
-  callback(success ? ads::Result::SUCCESS : ads::Result::FAILED);
+  callback(success);
 }
 
 void AdsServiceImpl::MigratePrefs() {
@@ -2047,7 +2047,7 @@ void AdsServiceImpl::LoadAdsResource(const std::string& id,
       g_brave_browser_process->resource_component()->GetPath(id, version);
 
   if (!path) {
-    callback(ads::Result::FAILED, "");
+    callback(/* success */ false, "");
     return;
   }
 

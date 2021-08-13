@@ -22,9 +22,8 @@ class BatAdsCreativeAdNotificationsDatabaseTableTest : public UnitTestBase {
   ~BatAdsCreativeAdNotificationsDatabaseTableTest() override = default;
 
   void Save(const CreativeAdNotificationList& creative_ad_notifications) {
-    database_table_->Save(creative_ad_notifications, [](const Result result) {
-      ASSERT_EQ(Result::SUCCESS, result);
-    });
+    database_table_->Save(creative_ad_notifications,
+                          [](const bool success) { ASSERT_TRUE(success); });
   }
 
   std::unique_ptr<database::table::CreativeAdNotifications> database_table_;
@@ -103,9 +102,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   database_table_->GetForSegments(
       segments,
       [&expected_creative_ad_notifications](
-          const Result result, const SegmentList& segments,
+          const bool success, const SegmentList& segments,
           const CreativeAdNotificationList& creative_ad_notifications) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
                                   creative_ad_notifications));
       });
@@ -197,9 +196,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   database_table_->GetForSegments(
       segments,
       [&expected_creative_ad_notifications](
-          const Result result, const SegmentList& segments,
+          const bool success, const SegmentList& segments,
           const CreativeAdNotificationList& creative_ad_notifications) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
                                   creative_ad_notifications));
       });
@@ -247,9 +246,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   database_table_->GetForSegments(
       segments,
       [&expected_creative_ad_notifications](
-          const Result result, const SegmentList& segments,
+          const bool success, const SegmentList& segments,
           const CreativeAdNotificationList& creative_ad_notifications) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
                                   creative_ad_notifications));
       });
@@ -318,9 +317,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   database_table_->GetForSegments(
       segments,
       [&expected_creative_ad_notifications](
-          const Result result, const SegmentList& segments,
+          const bool success, const SegmentList& segments,
           const CreativeAdNotificationList& creative_ad_notifications) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
                                   creative_ad_notifications));
       });
@@ -366,9 +365,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   database_table_->GetForSegments(
       segments,
       [&expected_creative_ad_notifications](
-          const Result result, const SegmentList& segments,
+          const bool success, const SegmentList& segments,
           const CreativeAdNotificationList& creative_ad_notifications) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
                                   creative_ad_notifications));
       });
@@ -414,9 +413,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   database_table_->GetForSegments(
       segments,
       [&expected_creative_ad_notifications](
-          const Result result, const SegmentList& segments,
+          const bool success, const SegmentList& segments,
           const CreativeAdNotificationList& creative_ad_notifications) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
                                   creative_ad_notifications));
       });
@@ -509,9 +508,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   database_table_->GetForSegments(
       segments,
       [&expected_creative_ad_notifications](
-          const Result result, const SegmentList& segments,
+          const bool success, const SegmentList& segments,
           const CreativeAdNotificationList& creative_ad_notifications) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
                                   creative_ad_notifications));
       });
@@ -581,9 +580,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   database_table_->GetForSegments(
       segments,
       [&expected_creative_ad_notifications](
-          const Result result, const SegmentList& segments,
+          const bool success, const SegmentList& segments,
           const CreativeAdNotificationList& creative_ad_notifications) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
                                   creative_ad_notifications));
       });
@@ -652,9 +651,9 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   database_table_->GetForSegments(
       segments,
       [&expected_creative_ad_notifications](
-          const Result result, const SegmentList& segments,
+          const bool success, const SegmentList& segments,
           const CreativeAdNotificationList& creative_ad_notifications) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
                                   creative_ad_notifications));
       });

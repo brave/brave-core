@@ -55,13 +55,15 @@ bool NotificationHelperAndroid::CanShowNativeNotifications() {
   const bool is_notification_channel_enabled =
       IsBraveAdsNotificationChannelEnabled(is_foreground);
 
-  bool result = is_notifications_enabled && is_notification_channel_enabled;
+  bool can_show_native_notifications =
+      is_notifications_enabled && is_notification_channel_enabled;
 
   if (!is_foreground) {
-    result = result && CanShowBackgroundNotifications();
+    can_show_native_notifications =
+        can_show_native_notifications && CanShowBackgroundNotifications();
   }
 
-  return result;
+  return can_show_native_notifications;
 }
 
 bool NotificationHelperAndroid::ShowMyFirstAdNotification() {

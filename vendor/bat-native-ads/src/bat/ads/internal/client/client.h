@@ -22,7 +22,6 @@
 #include "bat/ads/internal/client/preferences/filtered_category_info.h"
 #include "bat/ads/internal/client/preferences/flagged_ad_info.h"
 #include "bat/ads/internal/client/preferences/saved_ad_info.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 
@@ -105,10 +104,10 @@ class Client {
   InitializeCallback callback_;
 
   void Save();
-  void OnSaved(const Result result);
+  void OnSaved(const bool success);
 
   void Load();
-  void OnLoaded(const Result result, const std::string& json);
+  void OnLoaded(const bool success, const std::string& json);
 
   bool FromJson(const std::string& json);
 

@@ -36,13 +36,13 @@ std::string AdContentInfo::ToJson() const {
   return json;
 }
 
-Result AdContentInfo::FromJson(const std::string& json) {
+bool AdContentInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
   if (document.HasParseError()) {
     BLOG(1, helper::JSON::GetLastError(&document));
-    return FAILED;
+    return false;
   }
 
   if (document.HasMember("type") && document["type"].IsString()) {
@@ -104,7 +104,7 @@ Result AdContentInfo::FromJson(const std::string& json) {
     flagged_ad = document["flagged_ad"].GetBool();
   }
 
-  return SUCCESS;
+  return true;
 }
 
 void SaveToJson(JsonWriter* writer, const AdContentInfo& ad_content) {

@@ -618,9 +618,9 @@ void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock) {
 
 void MockSave(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, Save(_, _, _))
-      .WillByDefault(
-          Invoke([](const std::string& name, const std::string& value,
-                    ResultCallback callback) { callback(SUCCESS); }));
+      .WillByDefault(Invoke(
+          [](const std::string& name, const std::string& value,
+             ResultCallback callback) { callback(/* success */ true); }));
 }
 
 void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
@@ -636,11 +636,11 @@ void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
 
             std::string value;
             if (!base::ReadFileToString(path, &value)) {
-              callback(FAILED, value);
+              callback(/* success */ false, value);
               return;
             }
 
-            callback(SUCCESS, value);
+            callback(/* success */ true, value);
           }));
 }
 
@@ -654,11 +654,11 @@ void MockLoadAdsResource(const std::unique_ptr<AdsClientMock>& mock) {
 
             std::string value;
             if (!base::ReadFileToString(path, &value)) {
-              callback(FAILED, value);
+              callback(/* success */ false, value);
               return;
             }
 
-            callback(SUCCESS, value);
+            callback(/* success */ true, value);
           }));
 }
 

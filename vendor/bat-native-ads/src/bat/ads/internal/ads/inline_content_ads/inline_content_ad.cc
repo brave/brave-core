@@ -44,9 +44,9 @@ void InlineContentAd::FireEvent(
   database::table::CreativeInlineContentAds database_table;
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
-      [=](const Result result, const std::string& creative_instance_id,
+      [=](const bool success, const std::string& creative_instance_id,
           const CreativeInlineContentAdInfo& creative_inline_content_ad) {
-        if (result != SUCCESS) {
+        if (!success) {
           BLOG(1,
                "Failed to fire inline content ad event due to missing creative "
                "instance id "
@@ -71,8 +71,8 @@ void InlineContentAd::FireEvent(
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type) {
   database::table::AdEvents database_table;
-  database_table.GetAll([=](const Result result, const AdEventList& ad_events) {
-    if (result != Result::SUCCESS) {
+  database_table.GetAll([=](const bool success, const AdEventList& ad_events) {
+    if (!success) {
       BLOG(1, "Inline content ad: Failed to get ad events");
       NotifyInlineContentAdEventFailed(uuid, creative_instance_id, event_type);
       return;

@@ -20,17 +20,16 @@
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
 #include "bat/ads/internal/database/tables/segments_database_table.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 
 using GetCreativeNewTabPageAdCallback =
-    std::function<void(const Result,
+    std::function<void(const bool,
                        const std::string& creative_instance_id,
                        const CreativeNewTabPageAdInfo&)>;
 
 using GetCreativeNewTabPageAdsCallback =
-    std::function<void(const Result,
+    std::function<void(const bool,
                        const std::vector<std::string>&,
                        const CreativeNewTabPageAdList&)>;
 

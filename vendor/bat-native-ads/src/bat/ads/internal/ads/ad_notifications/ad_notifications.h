@@ -87,10 +87,10 @@ class AdNotifications {
                                std::string* string) const;
 
   void Save();
-  void OnSaved(const Result result);
+  void OnSaved(const bool success);
 
   void Load();
-  void OnLoaded(const Result result, const std::string& json);
+  void OnLoaded(const bool success, const std::string& json);
 
   bool FromJson(const std::string& json);
   bool GetNotificationsFromDictionary(base::DictionaryValue* dictionary);

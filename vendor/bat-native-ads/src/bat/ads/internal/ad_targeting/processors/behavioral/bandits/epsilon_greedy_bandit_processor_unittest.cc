@@ -48,6 +48,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, NeverProcessed) {
   std::string json =
       AdsClientHelper::Get()->GetStringPref(prefs::kEpsilonGreedyBanditArms);
   EpsilonGreedyBanditArmMap arms = EpsilonGreedyBanditArms::FromJson(json);
+
   auto iter = arms.find(segment);
   EpsilonGreedyBanditArmInfo arm = iter->second;
   EpsilonGreedyBanditArmInfo expected_arm;
@@ -172,6 +173,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, ProcessChildSegment) {
   std::string json =
       AdsClientHelper::Get()->GetStringPref(prefs::kEpsilonGreedyBanditArms);
   EpsilonGreedyBanditArmMap arms = EpsilonGreedyBanditArms::FromJson(json);
+
   auto iter = arms.find(parent_segment);
   EpsilonGreedyBanditArmInfo arm = iter->second;
   EpsilonGreedyBanditArmInfo expected_arm;

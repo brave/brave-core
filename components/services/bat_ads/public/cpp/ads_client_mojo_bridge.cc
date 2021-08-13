@@ -126,12 +126,12 @@ void AdsClientMojoBridge::Log(
 // static
 void AdsClientMojoBridge::OnLoadAdsResource(
     CallbackHolder<LoadCallback>* holder,
-    const ads::Result result,
+    const bool success,
     const std::string& value) {
   DCHECK(holder);
 
   if (holder->is_valid()) {
-    std::move(holder->get()).Run((int32_t)result, std::move(value));
+    std::move(holder->get()).Run(success, std::move(value));
   }
 
   delete holder;
@@ -180,14 +180,13 @@ void AdsClientMojoBridge::RecordP2AEvent(const std::string& name,
 }
 
 // static
-void AdsClientMojoBridge::OnLoad(
-    CallbackHolder<LoadCallback>* holder,
-    const ads::Result result,
-    const std::string& value) {
+void AdsClientMojoBridge::OnLoad(CallbackHolder<LoadCallback>* holder,
+                                 const bool success,
+                                 const std::string& value) {
   DCHECK(holder);
 
   if (holder->is_valid()) {
-    std::move(holder->get()).Run((int32_t)result, std::move(value));
+    std::move(holder->get()).Run(success, std::move(value));
   }
 
   delete holder;
@@ -204,13 +203,12 @@ void AdsClientMojoBridge::Load(
 }
 
 // static
-void AdsClientMojoBridge::OnSave(
-    CallbackHolder<SaveCallback>* holder,
-    const ads::Result result) {
+void AdsClientMojoBridge::OnSave(CallbackHolder<SaveCallback>* holder,
+                                 const bool success) {
   DCHECK(holder);
 
   if (holder->is_valid()) {
-    std::move(holder->get()).Run((int32_t)result);
+    std::move(holder->get()).Run(success);
   }
 
   delete holder;
@@ -253,7 +251,7 @@ void AdsClientMojoBridge::UrlRequest(ads::mojom::UrlRequestPtr url_request,
 void AdsClientMojoBridge::ShowNotification(
     const std::string& json) {
   ads::AdNotificationInfo ad_notification;
-  if (ad_notification.FromJson(json) != ads::Result::SUCCESS) {
+  if (!ad_notification.FromJson(json)) {
     return;
   }
 

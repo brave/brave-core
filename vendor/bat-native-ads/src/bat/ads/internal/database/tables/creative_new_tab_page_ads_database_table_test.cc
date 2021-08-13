@@ -42,9 +42,9 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableIntegrationTest,
 
   database::table::CreativeNewTabPageAds creative_new_tab_page_ads;
   creative_new_tab_page_ads.GetForSegments(
-      segments, [](const Result result, const SegmentList& segments,
+      segments, [](const bool success, const SegmentList& segments,
                    const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_EQ(1UL, creative_new_tab_page_ads.size());
       });
 }

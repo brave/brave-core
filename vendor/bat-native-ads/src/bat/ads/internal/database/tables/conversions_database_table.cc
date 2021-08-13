@@ -32,7 +32,7 @@ Conversions::~Conversions() = default;
 void Conversions::Save(const ConversionList& conversions,
                        ResultCallback callback) {
   if (conversions.empty()) {
-    callback(Result::SUCCESS);
+    callback(/* success */ true);
     return;
   }
 
@@ -188,7 +188,7 @@ void Conversions::OnGetConversions(mojom::DBCommandResponsePtr response,
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Failed to get creative conversions");
-    callback(Result::FAILED, {});
+    callback(/* success */ false, {});
     return;
   }
 
@@ -199,7 +199,7 @@ void Conversions::OnGetConversions(mojom::DBCommandResponsePtr response,
     conversions.push_back(info);
   }
 
-  callback(Result::SUCCESS, conversions);
+  callback(/* success */ true, conversions);
 }
 
 ConversionInfo Conversions::GetConversionFromRecord(
