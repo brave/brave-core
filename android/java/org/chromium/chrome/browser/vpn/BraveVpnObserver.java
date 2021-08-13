@@ -8,6 +8,7 @@ public interface BraveVpnObserver {
     default public void onGetAllServerRegions(String jsonServerRegions, boolean isSuccess){};
     default public void onGetTimezonesForRegions(String jsonTimezones, boolean isSuccess){};
     default public void onGetHostnamesForRegion(String jsonHostnames, boolean isSuccess){};
+    default public void onGetProfileCredentials(String jsonProfileCredentials, boolean isSuccess){};
     default public void onGetSubscriberCredential(String subscriberCredential, boolean isSuccess){};
     default public void onVerifyPurchaseToken(String jsonResponse, boolean isSuccess){};
 }

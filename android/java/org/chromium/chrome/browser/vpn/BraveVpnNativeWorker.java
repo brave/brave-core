@@ -95,6 +95,13 @@ public class BraveVpnNativeWorker {
     }
 
     @CalledByNative
+    public void onGetProfileCredentials(String jsonProfileCredentials, boolean isSuccess) {
+        for (BraveVpnObserver observer : mObservers) {
+            observer.onGetProfileCredentials(jsonProfileCredentials, isSuccess);
+        }
+    }
+
+    @CalledByNative
     public void onGetSubscriberCredential(String subscriberCredential, boolean isSuccess) {
         for (BraveVpnObserver observer : mObservers) {
             observer.onGetSubscriberCredential(subscriberCredential, isSuccess);
@@ -120,15 +127,21 @@ public class BraveVpnNativeWorker {
         BraveVpnNativeWorkerJni.get().getHostnamesForRegion(mNativeBraveVpnNativeWorker, region);
     }
 
-    public void getSubscriberCredential(
-            String productType, String productId, String validationMethod, String purchaseToken) {
-        BraveVpnNativeWorkerJni.get().getSubscriberCredential(mNativeBraveVpnNativeWorker,
-                productType, productId, validationMethod, purchaseToken);
+    public void getProfileCredentials(String subscriberCredential, String hostname) {
+        BraveVpnNativeWorkerJni.get().getProfileCredentials(
+                mNativeBraveVpnNativeWorker, subscriberCredential, hostname);
     }
 
-    public void verifyPurchaseToken(String purchaseToken, String productId, String productType) {
+    public void getSubscriberCredential(String productType, String productId,
+            String validationMethod, String purchaseToken, String packageName) {
+        BraveVpnNativeWorkerJni.get().getSubscriberCredential(mNativeBraveVpnNativeWorker,
+                productType, productId, validationMethod, purchaseToken, packageName);
+    }
+
+    public void verifyPurchaseToken(
+            String purchaseToken, String productId, String productType, String packageName) {
         BraveVpnNativeWorkerJni.get().verifyPurchaseToken(
-                mNativeBraveVpnNativeWorker, purchaseToken, productId, productType);
+                mNativeBraveVpnNativeWorker, purchaseToken, productId, productType, packageName);
     }
 
     @NativeMethods
@@ -138,9 +151,12 @@ public class BraveVpnNativeWorker {
         void getAllServerRegions(long nativeBraveVpnNativeWorker);
         void getTimezonesForRegions(long nativeBraveVpnNativeWorker);
         void getHostnamesForRegion(long nativeBraveVpnNativeWorker, String region);
+        void getProfileCredentials(
+                long nativeBraveVpnNativeWorker, String subscriberCredential, String hostname);
         void getSubscriberCredential(long nativeBraveVpnNativeWorker, String productType,
-                String productId, String validationMethod, String purchaseToken);
+                String productId, String validationMethod, String purchaseToken,
+                String packageName);
         void verifyPurchaseToken(long nativeBraveVpnNativeWorker, String purchaseToken,
-                String productId, String productType);
+                String productId, String productType, String packageName);
     }
 }

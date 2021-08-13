@@ -48,15 +48,24 @@ import org.chromium.ui.widget.Toast;
 import java.util.List;
 import java.util.TimeZone;
 
-public class BraveVpnProfileActivity
-        extends AsyncInitializationActivity implements BraveVpnObserver {
+public class BraveVpnProfileActivity extends BraveVpnParentActivity {
     private FirstRunFlowSequencer mFirstRunFlowSequencer;
     private TextView profileTitle;
     private TextView profileText;
     private Button installVpnButton;
     private Button contactSupportButton;
 
-    private String subscriberCredential;
+    @Override
+    public void onResumeWithNative() {
+        super.onResumeWithNative();
+        BraveVpnNativeWorker.getInstance().addObserver(this);
+    }
+
+    @Override
+    public void onPauseWithNative() {
+        BraveVpnNativeWorker.getInstance().removeObserver(this);
+        super.onPauseWithNative();
+    }
 
     private void initializeViews() {
         setContentView(R.layout.activity_brave_vpn_profile);
@@ -76,25 +85,9 @@ public class BraveVpnProfileActivity
         installVpnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // BraveVpnUtils.startStopVpn(BraveVpnProfileActivity.this);
-                if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
-                    VpnManager vpnManager =
-                            (VpnManager) getSystemService(Context.VPN_MANAGEMENT_SERVICE);
-                    if (!BraveVpnUtils.isVPNConnected(BraveVpnProfileActivity.this)
-                            && vpnManager != null) {
-                        try {
-                            vpnManager.startProvisionedVpnProfile();
-                        } catch (SecurityException securityException) {
-                            // BraveVpnUtils.createVpnProfile(vpnManager, activity);
-                            getSubscriptionDetail();
-                        }
-                    } else {
-                        vpnManager.stopProvisionedVpnProfile();
-                    }
-                }
+                getPurchaseDetails();
             }
         });
-        installVpnButton.setEnabled(false);
 
         contactSupportButton = findViewById(R.id.btn_contact_supoort);
         contactSupportButton.setOnClickListener(new View.OnClickListener() {
@@ -141,7 +134,6 @@ public class BraveVpnProfileActivity
                 braveVpnConfirmDialogFragment.show(
                         getSupportFragmentManager(), "BraveVpnConfirmDialogFragment");
             }
-            finish();
         } else if (resultCode == RESULT_CANCELED) {
             profileTitle.setText(getResources().getString(R.string.some_context));
             profileText.setText(getResources().getString(R.string.some_context_text));
@@ -150,120 +142,4 @@ public class BraveVpnProfileActivity
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-    @Override
-    public void finishNativeInitialization() {
-        super.finishNativeInitialization();
-        BraveVpnNativeWorker.getInstance().addObserver(this);
-        installVpnButton.setEnabled(true);
-    }
-
-    @Override
-    protected void onDestroy() {
-        BraveVpnNativeWorker.getInstance().removeObserver(this);
-        super.onDestroy();
-    }
-
-    @Override
-    public void onGetTimezonesForRegions(String jsonTimezones, boolean isSuccess) {
-        // Log.e("BraveVPN", jsonTimezones);
-        if (isSuccess) {
-            String region = BraveVpnUtils.getRegionForTimeZone(
-                    jsonTimezones, TimeZone.getDefault().getID());
-            Log.e("BraveVPN",
-                    "Region : "
-                            + BraveVpnUtils.getRegionForTimeZone(
-                                    jsonTimezones, TimeZone.getDefault().getID()));
-            BraveVpnNativeWorker.getInstance().getHostnamesForRegion(region);
-        } else {
-            Toast.makeText(BraveVpnProfileActivity.this, R.string.vpn_profile_creation_failed,
-                         Toast.LENGTH_LONG)
-                    .show();
-        }
-    }
-
-    @Override
-    public void onGetHostnamesForRegion(String jsonHostNames, boolean isSuccess) {
-        Log.e("BraveVPN", jsonHostNames);
-        if (isSuccess) {
-            String hostname = BraveVpnUtils.getHostnameForRegion(jsonHostNames);
-
-        } else {
-            Toast.makeText(BraveVpnProfileActivity.this, R.string.vpn_profile_creation_failed,
-                         Toast.LENGTH_LONG)
-                    .show();
-        }
-    }
-
-    @Override
-    public void onGetSubscriberCredential(String subscriberCredential, boolean isSuccess) {
-        if (isSuccess) {
-            this.subscriberCredential = subscriberCredential;
-            BraveVpnNativeWorker.getInstance().getTimezonesForRegions();
-        }
-    };
-
-    private void getSubscriptionDetail() {
-        BillingClient billingClient = BillingClient.newBuilder(this)
-                                              .setListener(purchasesUpdatedListener)
-                                              .enablePendingPurchases()
-                                              .build();
-
-        billingClient.startConnection(new BillingClientStateListener() {
-            @Override
-            public void onBillingSetupFinished(BillingResult billingResult) {
-                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                    billingClient.queryPurchasesAsync(SUBS, (billingResult1, list) -> {
-                        if (list.size() > 0) {
-                            try {
-                                showPurchaseDetails(list);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                }
-            }
-            @Override
-            public void onBillingServiceDisconnected() {
-                // Try to restart the connection on the next request to
-                // Google Play by calling the startConnection() method.
-                Log.e("BraveVPN", "onBillingServiceDisconnected");
-            }
-        });
-    }
-
-    private void showPurchaseDetails(List<Purchase> purchases) throws JSONException {
-        Purchase purchase = purchases.get(0);
-        String purchaseToken = purchase.getPurchaseToken();
-        String productId = purchase.getSkus().get(0).toString();
-        Log.e("BraveVPN", "Purchase Token : " + purchaseToken);
-        BraveVpnNativeWorker.getInstance().getSubscriberCredential(
-                "subscription", productId, "iap-android", purchaseToken);
-    }
-
-    private PurchasesUpdatedListener purchasesUpdatedListener = (billingResult, purchases) -> {
-        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-            if (purchases != null) {
-                // try {
-                // showPurchaseDetails(purchases);
-                // } catch (JSONException e) {
-                //     e.printStackTrace();
-                // }
-            }
-        } else if (billingResult.getResponseCode()
-                == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
-            // TODO query purchase
-        } else if (billingResult.getResponseCode()
-                == BillingClient.BillingResponseCode.SERVICE_DISCONNECTED) {
-            // TODO connect to service again
-        } else if (billingResult.getResponseCode()
-                == BillingClient.BillingResponseCode.USER_CANCELED) {
-            Toast.makeText(this, "ERROR!!\nCaused by a user cancelling the purchase flow.",
-                         Toast.LENGTH_SHORT)
-                    .show();
-        } else {
-            Toast.makeText(this, "ERROR!!\nPurchased failed..", Toast.LENGTH_SHORT).show();
-        }
-    };
 }

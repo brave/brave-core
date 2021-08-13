@@ -20,6 +20,7 @@ constexpr char kTimezonesForRegions[] =
 constexpr char kHostnameForRegion[] = "api/v1/servers/hostnames-for-region";
 constexpr char kCreateSubscriberCredential[] =
     "api/v1/subscriber-credential/create";
+constexpr char kProfileCredential[] = "api/v1.1/register-and-create";
 constexpr char kVerifyPurchaseToken[] = "api/v1.1/verify-purchase-token";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
@@ -83,15 +84,13 @@ void BraveVpnService::Shutdown() {}
 void BraveVpnService::OAuthRequest(const GURL& url,
                                    const std::string& method,
                                    const std::string& post_data,
-                                   bool set_app_ident,
                                    URLRequestCallback callback) {
-  base::flat_map<std::string, std::string> headers;
-  if (set_app_ident) {
-    headers["GRD-App-Ident"] = "Brave-Client";
-  }
+  LOG(ERROR) << "BraveVPN"
+             << "OAuthRequest : "
+             << "post_data : " << post_data;
 
   api_request_helper_.Request(method, url, post_data, "application/json", false,
-                              std::move(callback), headers);
+                              std::move(callback));
 }
 
 void BraveVpnService::GetAllServerRegions(ResponseCallback callback) {
@@ -99,7 +98,7 @@ void BraveVpnService::GetAllServerRegions(ResponseCallback callback) {
       base::BindOnce(&BraveVpnService::OnGetResponse, base::Unretained(this),
                      std::move(callback));
   GURL base_url = GetURLWithPath(kVpnHost, kAllServerRegions);
-  OAuthRequest(base_url, "GET", "", false, std::move(internal_callback));
+  OAuthRequest(base_url, "GET", "", std::move(internal_callback));
 }
 
 void BraveVpnService::GetTimezonesForRegions(ResponseCallback callback) {
@@ -107,7 +106,7 @@ void BraveVpnService::GetTimezonesForRegions(ResponseCallback callback) {
       base::BindOnce(&BraveVpnService::OnGetResponse, base::Unretained(this),
                      std::move(callback));
   GURL base_url = GetURLWithPath(kVpnHost, kTimezonesForRegions);
-  OAuthRequest(base_url, "GET", "", false, std::move(internal_callback));
+  OAuthRequest(base_url, "GET", "", std::move(internal_callback));
 }
 
 void BraveVpnService::GetHostnamesForRegion(ResponseCallback callback,
@@ -119,14 +118,28 @@ void BraveVpnService::GetHostnamesForRegion(ResponseCallback callback,
   base::Value dict(base::Value::Type::DICTIONARY);
   dict.SetStringKey("region", region);
   std::string request_body = CreateJSONRequestBody(dict);
-  OAuthRequest(base_url, "POST", request_body, false,
-               std::move(internal_callback));
+  OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
+}
+
+void BraveVpnService::GetProfileCredentials(
+    ResponseCallback callback,
+    const std::string& subscriber_credential,
+    const std::string& hostname) {
+  auto internal_callback =
+      base::BindOnce(&BraveVpnService::OnGetResponse, base::Unretained(this),
+                     std::move(callback));
+  GURL base_url = GetURLWithPath(hostname, kProfileCredential);
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("subscriber-credential", subscriber_credential);
+  std::string request_body = CreateJSONRequestBody(dict);
+  OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
 }
 
 void BraveVpnService::VerifyPurchaseToken(ResponseCallback callback,
                                           const std::string& purchase_token,
                                           const std::string& product_id,
-                                          const std::string& product_type) {
+                                          const std::string& product_type,
+                                          const std::string& bundle_id) {
   auto internal_callback =
       base::BindOnce(&BraveVpnService::OnGetResponse, base::Unretained(this),
                      std::move(callback));
@@ -135,9 +148,9 @@ void BraveVpnService::VerifyPurchaseToken(ResponseCallback callback,
   dict.SetStringKey("purchase-token", purchase_token);
   dict.SetStringKey("product-id", product_id);
   dict.SetStringKey("product-type", product_type);
+  dict.SetStringKey("bundle-id", bundle_id);
   std::string request_body = CreateJSONRequestBody(dict);
-  OAuthRequest(base_url, "POST", request_body, true,
-               std::move(internal_callback));
+  OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
 }
 
 void BraveVpnService::OnGetResponse(
@@ -146,6 +159,12 @@ void BraveVpnService::OnGetResponse(
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
   std::string json_response;
+  LOG(ERROR) << "BraveVPN"
+             << "OnGetResponse : "
+             << "response code : " << status;
+  LOG(ERROR) << "BraveVPN"
+             << "body : "
+             << "body : " << body;
   bool success = status == 200;
   if (success) {
     json_response = body;
@@ -158,7 +177,8 @@ void BraveVpnService::GetSubscriberCredential(
     const std::string& product_type,
     const std::string& product_id,
     const std::string& validation_method,
-    const std::string& purchase_token) {
+    const std::string& purchase_token,
+    const std::string& bundle_id) {
   auto internal_callback =
       base::BindOnce(&BraveVpnService::OnGetSubscriberCredential,
                      base::Unretained(this), std::move(callback));
@@ -168,9 +188,12 @@ void BraveVpnService::GetSubscriberCredential(
   dict.SetStringKey("product-id", product_id);
   dict.SetStringKey("validation-method", validation_method);
   dict.SetStringKey("purchase-token", purchase_token);
+  dict.SetStringKey("bundle-id", bundle_id);
   std::string request_body = CreateJSONRequestBody(dict);
-  OAuthRequest(base_url, "POST", request_body, true,
-               std::move(internal_callback));
+  LOG(ERROR) << "BraveVPN"
+             << "GetSubscriberCredential : "
+             << "Request : " << request_body;
+  OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
 }
 
 void BraveVpnService::OnGetSubscriberCredential(

@@ -73,7 +73,7 @@ public class BraveVpnConfirmDialogFragment extends DialogFragment {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                dismiss();
+                getActivity().finish();
             }
 
             @Override

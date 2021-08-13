@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.settings;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
@@ -55,12 +56,14 @@ public class VpnCalloutPreference extends Preference {
         mainView.requestLayout();
 
         AppCompatImageView btnClose = (AppCompatImageView) holder.findViewById(R.id.modal_close);
-        btnClose.setOnClickListener(
-                v -> { getPreferenceManager().getPreferenceScreen().removePreference(this); });
+        btnClose.setOnClickListener(v -> {
+            getPreferenceManager().getPreferenceScreen().removePreference(this);
+            BraveVpnUtils.setShowVpnCalloutSettingsView();
+        });
         Button btnLearnMore = (Button) holder.findViewById(R.id.btn_learn_more);
         btnLearnMore.setOnClickListener(v -> {
-            getPreferenceManager().getPreferenceScreen().removePreference(this);
-            BraveVpnUtils.openBraveVpnPlansActivity(getContext());
+            BraveVpnUtils.openBraveVpnPlansActivity((Activity) getContext());
+            BraveVpnUtils.setShowVpnCalloutSettingsView();
         });
     }
 }

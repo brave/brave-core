@@ -2074,6 +2074,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_VPN_PROFILE_CREATION_FAILED" desc="Brave VPN profile text">
       Vpn profile creation failed. PLease try again.
     </message>
+    <message name="IDS_PURCHASE_TOKEN_VERIFICATION_FAILED" desc="Brave VPN profile text">
+      Purchase Token verification failed. PLease try again.
+    </message>
     </messages>
   </release>
 </grit>

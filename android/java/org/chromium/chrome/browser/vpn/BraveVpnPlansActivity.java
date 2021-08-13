@@ -40,8 +40,10 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.firstrun.FirstRunFlowSequencer;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.chrome.browser.vpn.BraveVpnParentActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnPlanPagerAdapter;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
+import org.chromium.chrome.browser.vpn.InAppPurchaseWrapper;
 import org.chromium.ui.widget.Toast;
 
 import java.text.DateFormat;
@@ -49,8 +51,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class BraveVpnPlansActivity extends AsyncInitializationActivity {
+public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     private FirstRunFlowSequencer mFirstRunFlowSequencer;
+    private static final String NIGHTLY_SUBSCRIPTION = "nightly.bravevpn.monthly";
+
+    @Override
+    public void onResumeWithNative() {
+        super.onResumeWithNative();
+        BraveVpnNativeWorker.getInstance().addObserver(this);
+    }
+
+    @Override
+    public void onPauseWithNative() {
+        BraveVpnNativeWorker.getInstance().removeObserver(this);
+        super.onPauseWithNative();
+    }
 
     private void initializeViews() {
         setContentView(R.layout.activity_brave_vpn_plan);
@@ -78,7 +93,8 @@ public class BraveVpnPlansActivity extends AsyncInitializationActivity {
         monthlySelectorLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showInAppDialogForSubcription(BraveVpnUtils.MONTHLY_SUBSCRIPTION);
+                InAppPurchaseWrapper.getInstance().purchase(BraveVpnPlansActivity.this,
+                        InAppPurchaseWrapper.getInstance().getSkuDetails(NIGHTLY_SUBSCRIPTION));
             }
         });
 
@@ -86,7 +102,8 @@ public class BraveVpnPlansActivity extends AsyncInitializationActivity {
         yearlySelectorLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showInAppDialogForSubcription(BraveVpnUtils.YEARLY_SUBSCRIPTION);
+                InAppPurchaseWrapper.getInstance().purchase(BraveVpnPlansActivity.this,
+                        InAppPurchaseWrapper.getInstance().getSkuDetails(NIGHTLY_SUBSCRIPTION));
             }
         });
     }
@@ -102,7 +119,7 @@ public class BraveVpnPlansActivity extends AsyncInitializationActivity {
         if (item.getItemId() == android.R.id.home) {
             finish();
         } else if (item.getItemId() == R.id.restore) {
-            // Do nothing for now
+            getPurchaseDetails();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -122,102 +139,5 @@ public class BraveVpnPlansActivity extends AsyncInitializationActivity {
     @Override
     public boolean shouldStartGpuProcess() {
         return true;
-    }
-
-    private void showInAppDialogForSubcription(int subscriptionTYpe) {
-        BillingClient billingClient = BillingClient.newBuilder(this)
-                                              .setListener(purchasesUpdatedListener)
-                                              .enablePendingPurchases()
-                                              .build();
-
-        billingClient.startConnection(new BillingClientStateListener() {
-            @Override
-            public void onBillingSetupFinished(BillingResult billingResult) {
-                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                    Log.e("BraveVPN", "Conection is established");
-                    List<String> skuList = new ArrayList<>();
-                    skuList.add("nightly.bravevpn.monthly");
-                    SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
-                    params.setSkusList(skuList).setType(SUBS);
-                    billingClient.querySkuDetailsAsync(
-                            params.build(), new SkuDetailsResponseListener() {
-                                @Override
-                                public void onSkuDetailsResponse(
-                                        @NonNull BillingResult billingResult,
-                                        List<SkuDetails> skuDetailsList) {
-                                    if (skuDetailsList.size() > 0) {
-                                        BillingFlowParams billingFlowParams =
-                                                BillingFlowParams.newBuilder()
-                                                        .setSkuDetails(skuDetailsList.get(0))
-                                                        .build();
-                                        int responseCode =
-                                                billingClient
-                                                        .launchBillingFlow(
-                                                                BraveVpnPlansActivity.this,
-                                                                billingFlowParams)
-                                                        .getResponseCode();
-                                    } else {
-                                        Toast.makeText(BraveVpnPlansActivity.this,
-                                                     "ERROR !!!\nCan't show billing flow.",
-                                                     Toast.LENGTH_SHORT)
-                                                .show();
-                                    }
-                                }
-                            });
-                }
-            }
-            @Override
-            public void onBillingServiceDisconnected() {
-                // Try to restart the connection on the next request to
-                // Google Play by calling the startConnection() method.
-                Log.e("BraveVPN", "onBillingServiceDisconnected");
-            }
-        });
-    }
-
-    private PurchasesUpdatedListener purchasesUpdatedListener = (billingResult, purchases) -> {
-        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-            if (purchases != null) {
-                try {
-                    showPurchaseDetails(purchases);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else if (billingResult.getResponseCode()
-                == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
-            // TODO query purchase
-        } else if (billingResult.getResponseCode()
-                == BillingClient.BillingResponseCode.SERVICE_DISCONNECTED) {
-            // TODO connect to service again
-        } else if (billingResult.getResponseCode()
-                == BillingClient.BillingResponseCode.USER_CANCELED) {
-            Toast.makeText(this, "ERROR!!\nCaused by a user cancelling the purchase flow.",
-                         Toast.LENGTH_SHORT)
-                    .show();
-        } else {
-            Toast.makeText(this, "ERROR!!\nPurchased failed..", Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    private void showPurchaseDetails(List<Purchase> purchases) throws JSONException {
-        Purchase purchase = purchases.get(0);
-
-        Date date = new Date(purchase.getPurchaseTime());
-        String fDate = DateFormat.getDateTimeInstance().format(date);
-        String details = "Purchase Token : " + purchase.getPurchaseToken()
-                + "\n\n\nSku Name : " + purchase.getSkus().toString() + "\n\n\nOriginal Json: "
-                + new JSONObject(purchase.getOriginalJson()).toString()
-                // + "\n\nOriginal Json : " + new
-                // GsonBuilder().setPrettyPrinting().create().toJson(JsonParser.parseString(purchase.getOriginalJson()))
-                + "\n\n\nPurchase State : "
-                + (purchase.getPurchaseState() == 1 ? "PURCHASED"
-                                                    : "PENDING or UNSPECIFIED PURCHASE STATE")
-                + "\n\n\nPurchase Time : " + fDate;
-        // Log.e("BraveVPN", details);
-        if (purchase.getPurchaseState() == 1) {
-            BraveVpnUtils.openBraveVpnProfileActivity(BraveVpnPlansActivity.this);
-            finish();
-        }
     }
 }
