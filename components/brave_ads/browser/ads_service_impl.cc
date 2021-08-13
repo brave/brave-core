@@ -13,6 +13,7 @@
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "base/containers/flat_map.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -885,6 +886,13 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(uint32_t number_of_start,
 
   g_brave_browser_process->resource_component()->AddObserver(this);
 
+  if (database_) {
+    NOTREACHED() << "Ads service shutdown was not initiated prior to start";
+    base::debug::DumpWithoutCrashing();
+    const bool success =
+        file_task_runner_->DeleteSoon(FROM_HERE, database_.release());
+    VLOG_IF(1, !success) << "Failed to release database";
+  }
   database_ = std::make_unique<ads::Database>(
       base_path_.AppendASCII("database.sqlite"));
 
