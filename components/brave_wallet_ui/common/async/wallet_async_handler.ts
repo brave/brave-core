@@ -79,12 +79,20 @@ async function refreshWalletInfo (store: Store) {
 
   // Update Token Balances
   const tokenInfos = state.userVisibleTokensInfo
+  const tokenSymbols = tokenInfos.map((token) => {
+    return token.symbol.toLowerCase()
+  })
+  const getTokenPrices = await assetPriceController.getPrice(tokenSymbols, ['usd'])
   const getERCTokenBalanceReturnInfos = await Promise.all(state.accounts.map(async (account) => {
     return Promise.all(tokenInfos.map(async (token) => {
       return ethJsonRpcController.getERC20TokenBalance(token.contractAddress, account.address)
     }))
   }))
-  store.dispatch(WalletActions.tokenBalancesUpdated(getERCTokenBalanceReturnInfos))
+  const tokenBalancesAndPrices = {
+    balances: getERCTokenBalanceReturnInfos,
+    prices: getTokenPrices
+  }
+  store.dispatch(WalletActions.tokenBalancesUpdated(tokenBalancesAndPrices))
 }
 
 handler.on(WalletActions.initialize.getType(), async (store) => {

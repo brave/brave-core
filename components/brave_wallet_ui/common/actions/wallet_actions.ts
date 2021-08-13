@@ -17,7 +17,7 @@ import {
   GetAllTokensReturnInfo,
   TokenInfo,
   GetETHBalancesPriceReturnInfo,
-  GetERC20TokenBalanceReturnInfo
+  GetERC20TokenBalanceAndPriceReturnInfo
 } from '../../constants/types'
 
 export const initialize = createAction('initialize')
@@ -44,4 +44,4 @@ export const accountsChanged = createAction('accountsChanged')
 export const setAllTokensList = createAction<GetAllTokensReturnInfo>('setAllTokensList')
 export const getAllTokensList = createAction('getAllTokensList')
 export const ethBalancesUpdated = createAction<GetETHBalancesPriceReturnInfo>('ethBalancesUpdated')
-export const tokenBalancesUpdated = createAction<GetERC20TokenBalanceReturnInfo[][]>('tokenBalancesUpdated')
+export const tokenBalancesUpdated = createAction<GetERC20TokenBalanceAndPriceReturnInfo>('tokenBalancesUpdated')
