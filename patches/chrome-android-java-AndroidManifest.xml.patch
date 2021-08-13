@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 563055a2311f4ac4888eb18b21bf90b2f1d0358e..19db9f7c8f84c9fd187baf663a8d86d2f4c5de81 100644
+index 53e51641581b7bcc67493ebd168dfaad0288b197..def42c1b09b6dc589e6d874290935e65ac86bb0d 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -56,7 +56,9 @@ by a child template that "extends" this file.
@@ -73,7 +73,7 @@ index 563055a2311f4ac4888eb18b21bf90b2f1d0358e..19db9f7c8f84c9fd187baf663a8d86d2
          {% block extra_application_definitions %}
          {% endblock %}
        {% endmacro %}
-@@ -1268,6 +1283,7 @@ by a child template that "extends" this file.
+@@ -1286,6 +1300,7 @@ by a child template that "extends" this file.
        <!-- ARCore APK integration -->
        <!-- This tag indicates that this application optionally uses ARCore. -->
        <meta-data android:name="com.google.ar.core" android:value="optional" />
