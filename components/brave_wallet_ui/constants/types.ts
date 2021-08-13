@@ -353,6 +353,11 @@ export interface GetERC20TokenBalanceReturnInfo {
   balance: string
 }
 
+export interface GetERC20TokenBalanceAndPriceReturnInfo {
+  balances: GetERC20TokenBalanceReturnInfo[][]
+  prices: GetPriceReturnInfo
+}
+
 export interface CreateWalletReturnInfo {
   mnemonic: string
 }

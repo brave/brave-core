@@ -12,7 +12,7 @@ import {
   GetAllTokensReturnInfo,
   TokenInfo,
   GetETHBalancesPriceReturnInfo,
-  GetERC20TokenBalanceReturnInfo,
+  GetERC20TokenBalanceAndPriceReturnInfo,
   AccountInfo
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
@@ -133,12 +133,19 @@ reducer.on(WalletActions.ethBalancesUpdated, (state: any, payload: GetETHBalance
   }
 })
 
-reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetERC20TokenBalanceReturnInfo[][]) => {
+reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetERC20TokenBalanceAndPriceReturnInfo) => {
   const userVisibleTokensInfo: TokenInfo[] = state.userVisibleTokensInfo
+  const prices = payload.prices
+  const findTokenPrice = (symbol: string) => {
+    if (prices.success) {
+      return prices.values.find((value) => value.fromAsset === symbol.toLowerCase())?.price ?? '0'
+    } else {
+      return '0'
+    }
+  }
   let accounts: WalletAccountType[] = [...state.accounts]
-
   accounts.forEach((account, accountIndex) => {
-    payload[accountIndex].forEach((info, tokenIndex) => {
+    payload.balances[accountIndex].forEach((info, tokenIndex) => {
       let assetBalance = '0'
       let fiatBalance = '0'
 
@@ -147,7 +154,7 @@ reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetERC20Tok
         fiatBalance = account.fiatBalance
       } else if (info.success) {
         assetBalance = info.balance
-        fiatBalance = formatFiatBalance(info.balance, userVisibleTokensInfo[tokenIndex].decimals, '0.5') // TODO: compute real value using price info
+        fiatBalance = formatFiatBalance(info.balance, userVisibleTokensInfo[tokenIndex].decimals, findTokenPrice(userVisibleTokensInfo[tokenIndex].symbol))
       } else if (account.tokens[tokenIndex]) {
         assetBalance = account.tokens[tokenIndex].assetBalance
         fiatBalance = account.tokens[tokenIndex].fiatBalance
