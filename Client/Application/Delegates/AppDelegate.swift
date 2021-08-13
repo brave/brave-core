@@ -249,7 +249,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             icon: UIApplicationShortcutIcon(templateImageName: "quick_action_new_private_tab"),
             userInfo: [:])
         
-        application.shortcutItems = Preferences.Privacy.privateBrowsingOnly.value ? [privateTabItem] : [newTabItem, privateTabItem]
+        let scanQRCodeItem = UIMutableApplicationShortcutItem(type: "\(Bundle.main.bundleIdentifier ?? "").ScanQRCode",
+            localizedTitle: Strings.scanQRCodeViewTitle,
+            localizedSubtitle: nil,
+            icon: UIApplicationShortcutIcon(templateImageName: "recent-search-qrcode"),
+            userInfo: [:])
+
+        application.shortcutItems = Preferences.Privacy.privateBrowsingOnly.value ? [privateTabItem, scanQRCodeItem] : [newTabItem, privateTabItem, scanQRCodeItem]
     }
     
     private var cancellables: Set<AnyCancellable> = []
