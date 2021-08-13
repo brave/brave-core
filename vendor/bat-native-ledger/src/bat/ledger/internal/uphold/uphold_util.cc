@@ -20,6 +20,10 @@
 namespace ledger {
 namespace uphold {
 
+namespace {
+bool g_show_newly_verified_wallet = true;
+}  // namespace
+
 std::string GetClientId() {
   return ledger::_environment == type::Environment::PRODUCTION
              ? UPHOLD_CLIENT_ID
@@ -187,9 +191,9 @@ bool one_of(T&& t, Ts&&... ts) {
   return match;
 }
 
-void LogWalletStatusChange(LedgerImpl* ledger,
-                           absl::optional<type::WalletStatus> from,
-                           type::WalletStatus to) {
+void OnWalletStatusChange(LedgerImpl* ledger,
+                          absl::optional<type::WalletStatus> from,
+                          type::WalletStatus to) {
   DCHECK(ledger);
   DCHECK(!from ||
          one_of(*from, type::WalletStatus::NOT_CONNECTED,
@@ -206,6 +210,15 @@ void LogWalletStatusChange(LedgerImpl* ledger,
   oss << "==> " << to;
 
   ledger->database()->SaveEventLog(log::kWalletStatusChange, oss.str());
+
+  if (to == type::WalletStatus::PENDING) {
+    DCHECK(from);
+    g_show_newly_verified_wallet = *from == type::WalletStatus::NOT_CONNECTED;
+  }
+}
+
+bool ShouldShowNewlyVerifiedWallet() {
+  return g_show_newly_verified_wallet;
 }
 
 }  // namespace uphold

@@ -138,7 +138,7 @@ void UpholdAuthorization::OnAuthorize(
     return callback(type::Result::LEDGER_ERROR, {});
   }
 
-  LogWalletStatusChange(ledger_, from, to);
+  OnWalletStatusChange(ledger_, from, to);
 
   callback(type::Result::LEDGER_OK, {});
 }
