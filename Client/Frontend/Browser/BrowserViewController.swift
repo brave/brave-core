@@ -1895,6 +1895,30 @@ class BrowserViewController: UIViewController {
         }
     }
     
+    func scanQRCode() {
+        if RecentSearchQRCodeScannerController.hasCameraPermissions {
+            let qrCodeController = RecentSearchQRCodeScannerController { [weak self] string in
+                guard let self = self else { return }
+                
+                if let url = URIFixup.getURL(string) {
+                    self.didScanQRCodeWithURL(url)
+                } else {
+                    self.didScanQRCodeWithText(string)
+                }
+            }
+            
+            let navigationController = UINavigationController(rootViewController: qrCodeController)
+            navigationController.modalPresentationStyle =
+                UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
+            
+            self.present(navigationController, animated: true, completion: nil)
+        } else {
+            let alert = UIAlertController(title: Strings.scanQRCodeViewTitle, message: Strings.scanQRCodePermissionErrorMessage, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: Strings.scanQRCodeErrorOKButton, style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
     private func focusLocationField() {
         topToolbar.tabLocationViewDidTapLocation(topToolbar.locationView)
     }
