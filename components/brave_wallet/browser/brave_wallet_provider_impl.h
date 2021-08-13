@@ -36,9 +36,10 @@ class BraveWalletProviderImpl final
   void Request(const std::string& json_payload,
                bool auto_retry_on_network_change,
                RequestCallback callback) override;
-  void Enable(EnableCallback callback) override;
-  void OnEnable(EnableCallback callback,
-                const std::vector<std::string>& accounts);
+  void RequestEthereumPermissions(
+      RequestEthereumPermissionsCallback callback) override;
+  void OnRequestEthereumPermissions(RequestEthereumPermissionsCallback callback,
+                                    const std::vector<std::string>& accounts);
   void GetChainId(GetChainIdCallback callback) override;
   void GetAllowedAccounts(GetAllowedAccountsCallback callback) override;
   void OnGetAllowedAccounts(GetAllowedAccountsCallback callback,

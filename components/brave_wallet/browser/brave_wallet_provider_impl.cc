@@ -23,8 +23,7 @@ BraveWalletProviderImpl::BraveWalletProviderImpl(
       &BraveWalletProviderImpl::OnConnectionError, weak_factory_.GetWeakPtr()));
 }
 
-BraveWalletProviderImpl::~BraveWalletProviderImpl() {
-}
+BraveWalletProviderImpl::~BraveWalletProviderImpl() {}
 
 void BraveWalletProviderImpl::Request(const std::string& json_payload,
                                       bool auto_retry_on_network_change,
@@ -34,15 +33,16 @@ void BraveWalletProviderImpl::Request(const std::string& json_payload,
   }
 }
 
-void BraveWalletProviderImpl::Enable(EnableCallback callback) {
+void BraveWalletProviderImpl::RequestEthereumPermissions(
+    RequestEthereumPermissionsCallback callback) {
   DCHECK(delegate_);
   delegate_->RequestEthereumPermissions(
-      base::BindOnce(&BraveWalletProviderImpl::OnEnable,
+      base::BindOnce(&BraveWalletProviderImpl::OnRequestEthereumPermissions,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void BraveWalletProviderImpl::OnEnable(
-    EnableCallback callback,
+void BraveWalletProviderImpl::OnRequestEthereumPermissions(
+    RequestEthereumPermissionsCallback callback,
     const std::vector<std::string>& accounts) {
   std::move(callback).Run(accounts);
 }
