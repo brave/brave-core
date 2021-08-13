@@ -55,11 +55,18 @@ constexpr gfx::Font::Weight kBodyFontWeight = gfx::Font::Weight::NORMAL;
 constexpr gfx::Font::Weight kTitleFontWeight = gfx::Font::Weight::SEMIBOLD;
 
 constexpr SkColor kDefaultButtonColor = SkColorSetRGB(0x4C, 0x54, 0xD2);
-constexpr SkColor kDefaultButtonTextColor = SkColorSetRGB(0xFF, 0xFF, 0xFF);
-constexpr SkColor kButtonColor = SkColorSetRGB(0xFF, 0xFF, 0xFF);
-constexpr SkColor kButtonTextColor = SkColorSetRGB(0x49, 0x50, 0x57);
-constexpr SkColor kBodyTextColor = SkColorSetRGB(0x49, 0x50, 0x57);
-constexpr SkColor kTitleTextColor = SkColorSetRGB(0x21, 0x25, 0x29);
+constexpr SkColor kLightModeButtonColor = SkColorSetRGB(0xFF, 0xFF, 0xFF);
+constexpr SkColor kDarkModeButtonColor = SkColorSetRGB(0x3B, 0x3E, 0x4F);
+constexpr SkColor kLightModeDefaultButtonTextColor =
+    SkColorSetRGB(0xFF, 0xFF, 0xFF);
+constexpr SkColor kDarkModeDefaultButtonTextColor =
+    SkColorSetRGB(0xFF, 0xFF, 0xFF);
+constexpr SkColor kLightModeButtonTextColor = SkColorSetRGB(0x49, 0x50, 0x57);
+constexpr SkColor kDarkModeButtonTextColor = SkColorSetRGB(0xF0, 0xF2, 0xFF);
+constexpr SkColor kLightModeBodyTextColor = SkColorSetRGB(0x49, 0x50, 0x57);
+constexpr SkColor kDarkModeBodyTextColor = SkColorSetRGB(0xC2, 0xC4, 0xCF);
+constexpr SkColor kLightModeTitleTextColor = SkColorSetRGB(0x21, 0x25, 0x29);
+constexpr SkColor kDarkModeTitleTextColor = SkColorSetRGB(0xFF, 0xFF, 0xFF);
 constexpr SkColor kIconColor = SkColorSetRGB(0xE3, 0x24, 0x44);
 
 constexpr gfx::HorizontalAlignment kTitleHorizontalAlignment = gfx::ALIGN_LEFT;
@@ -143,6 +150,12 @@ void BraveTooltipView::OnMouseReleased(const ui::MouseEvent& event) {
 
 void BraveTooltipView::OnThemeChanged() {
   views::View::OnThemeChanged();
+
+  UpdateTitleLabelColors();
+  UpdateBodyLabelColors();
+  UpdateOkButtonColors();
+  UpdateCancelButtonColors();
+
   SchedulePaint();
 }
 
@@ -221,9 +234,6 @@ views::Label* BraveTooltipView::CreateTitleLabel() {
                                 kTitleFontWeight);
   label->SetFontList(font_list);
 
-  label->SetEnabledColor(kTitleTextColor);
-  label->SetBackgroundColor(SK_ColorTRANSPARENT);
-
   label->SetHorizontalAlignment(kTitleHorizontalAlignment);
   label->SetVerticalAlignment(kTitleVerticalAlignment);
 
@@ -238,7 +248,24 @@ views::Label* BraveTooltipView::CreateTitleLabel() {
 
   label->SetHandlesTooltips(false);
 
+  UpdateTitleLabelColors();
+
   return label;
+}
+
+void BraveTooltipView::UpdateTitleLabelColors() {
+  if (!title_label_) {
+    return;
+  }
+
+  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
+  title_label_->SetEnabledColor(should_use_dark_colors
+                                    ? kDarkModeTitleTextColor
+                                    : kLightModeTitleTextColor);
+  title_label_->SetEnabledColor(should_use_dark_colors
+                                    ? kDarkModeTitleTextColor
+                                    : kLightModeTitleTextColor);
+  title_label_->SetBackgroundColor(SK_ColorTRANSPARENT);
 }
 
 views::View* BraveTooltipView::CreateButtonView() {
@@ -280,9 +307,6 @@ views::Label* BraveTooltipView::CreateBodyLabel() {
                                 kBodyFontWeight);
   label->SetFontList(font_list);
 
-  label->SetEnabledColor(kBodyTextColor);
-  label->SetBackgroundColor(SK_ColorTRANSPARENT);
-
   label->SetHorizontalAlignment(kBodyHorizontalAlignment);
   label->SetVerticalAlignment(kBodyVerticalAlignment);
 
@@ -299,7 +323,21 @@ views::Label* BraveTooltipView::CreateBodyLabel() {
 
   label->SizeToFit(kBodySize.width());
 
+  UpdateBodyLabelColors();
+
   return label;
+}
+
+void BraveTooltipView::UpdateBodyLabelColors() {
+  if (!body_label_) {
+    return;
+  }
+
+  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
+  body_label_->SetEnabledColor(should_use_dark_colors
+                                   ? kDarkModeBodyTextColor
+                                   : kLightModeBodyTextColor);
+  body_label_->SetBackgroundColor(SK_ColorTRANSPARENT);
 }
 
 BraveTooltipLabelButton* BraveTooltipView::CreateOkButton() {
@@ -308,10 +346,7 @@ BraveTooltipLabelButton* BraveTooltipView::CreateOkButton() {
                           base::Unretained(this)),
       tooltip_attributes_.ok_button_text());
 
-  button->SetBackground(views::CreateRoundedRectBackground(
-      kDefaultButtonColor, kButtonCornerRadius));
   button->SetHorizontalAlignment(gfx::ALIGN_CENTER);
-  button->SetEnabledTextColors(kDefaultButtonTextColor);
   button->SetMinSize(kButtonSize);
   button->SetMaxSize(kButtonSize);
   button->SetIsDefault(true);
@@ -319,7 +354,22 @@ BraveTooltipLabelButton* BraveTooltipView::CreateOkButton() {
   // Make button focusable for keyboard navigation.
   button->SetFocusBehavior(views::View::FocusBehavior::ALWAYS);
 
+  UpdateOkButtonColors();
+
   return button;
+}
+
+void BraveTooltipView::UpdateOkButtonColors() {
+  if (!ok_button_) {
+    return;
+  }
+
+  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
+  ok_button_->SetBackground(views::CreateRoundedRectBackground(
+      kDefaultButtonColor, kButtonCornerRadius));
+  ok_button_->SetEnabledTextColors(should_use_dark_colors
+                                       ? kDarkModeDefaultButtonTextColor
+                                       : kLightModeDefaultButtonTextColor);
 }
 
 void BraveTooltipView::OnOkButtonPressed() {
@@ -334,10 +384,7 @@ BraveTooltipLabelButton* BraveTooltipView::CreateCancelButton() {
                           base::Unretained(this)),
       tooltip_attributes_.cancel_button_text());
 
-  button->SetBackground(
-      views::CreateRoundedRectBackground(kButtonColor, kButtonCornerRadius));
   button->SetHorizontalAlignment(gfx::ALIGN_CENTER);
-  button->SetEnabledTextColors(kButtonTextColor);
   button->SetMinSize(kButtonSize);
   button->SetMaxSize(kButtonSize);
   button->SetEnabled(tooltip_attributes_.cancel_button_enabled());
@@ -345,7 +392,23 @@ BraveTooltipLabelButton* BraveTooltipView::CreateCancelButton() {
   // Make button focusable for keyboard navigation.
   button->SetFocusBehavior(views::View::FocusBehavior::ALWAYS);
 
+  UpdateCancelButtonColors();
+
   return button;
+}
+
+void BraveTooltipView::UpdateCancelButtonColors() {
+  if (!cancel_button_) {
+    return;
+  }
+
+  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
+  cancel_button_->SetBackground(views::CreateRoundedRectBackground(
+      should_use_dark_colors ? kDarkModeButtonColor : kLightModeButtonColor,
+      kButtonCornerRadius));
+  cancel_button_->SetEnabledTextColors(should_use_dark_colors
+                                           ? kDarkModeButtonTextColor
+                                           : kLightModeButtonTextColor);
 }
 
 void BraveTooltipView::OnCancelButtonPressed() {

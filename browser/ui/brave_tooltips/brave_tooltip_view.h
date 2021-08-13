@@ -72,6 +72,11 @@ class BraveTooltipView : public views::View {
   views::View* CreateBodyView();
   views::Label* CreateBodyLabel();
 
+  void UpdateTitleLabelColors();
+  void UpdateBodyLabelColors();
+  void UpdateOkButtonColors();
+  void UpdateCancelButtonColors();
+
   BraveTooltipPopup* tooltip_popup_ = nullptr;  // NOT OWNED
   BraveTooltipAttributes tooltip_attributes_;
 
