@@ -50,6 +50,8 @@ class Tab: NSObject {
     var blockAllAlerts: Bool = false
     private(set) var type: TabType = .regular
     
+    var redirectURLs = [URL]()
+    
     var isPrivate: Bool {
         return type.isPrivate
     }

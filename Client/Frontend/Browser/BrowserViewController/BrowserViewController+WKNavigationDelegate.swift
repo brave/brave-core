@@ -464,7 +464,8 @@ extension BrowserViewController: WKNavigationDelegate {
                     isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing
                 )
             }
-            tab.reportPageLoad(to: rewards)
+            tab.reportPageLoad(to: rewards, redirectionURLs: tab.redirectURLs)
+            tab.redirectURLs = []
             if webView.url?.isLocal == false {
                 // Reset should classify
                 tab.shouldClassifyLoadsForAds = true
@@ -474,5 +475,10 @@ extension BrowserViewController: WKNavigationDelegate {
             
             tabsBar.reloadDataAndRestoreSelectedTab()
         }
+    }
+    
+    func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
+        guard let tab = tabManager[webView], let url = webView.url, rewards.isEnabled else { return }
+        tab.redirectURLs.append(url)
     }
 }

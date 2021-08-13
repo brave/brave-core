@@ -288,7 +288,7 @@ extension BrowserViewController {
 }
 
 extension Tab {
-    func reportPageLoad(to rewards: BraveRewards) {
+    func reportPageLoad(to rewards: BraveRewards, redirectionURLs urls: [URL]) {
         guard let webView = webView, let url = webView.url else { return }
         if url.isLocal || PrivateBrowsingManager.shared.isPrivateBrowsing { return }
                 
@@ -318,11 +318,13 @@ extension Tab {
             if faviconURL == nil {
                 log.warning("No favicon found in \(self) to report to rewards panel")
             }
-            rewards.reportLoadedPage(url: url, redirectionURLs: [], faviconURL: faviconURL, tabId: Int(self.rewardsId), html: htmlBlob ?? "", adsInnerText: classifierText)
+            rewards.reportLoadedPage(url: url, redirectionURLs: urls,
+                                     faviconURL: faviconURL, tabId: Int(self.rewardsId),
+                                     html: htmlBlob ?? "", adsInnerText: classifierText)
         }
     }
     
-    func reportPageNaviagtion(to rewards: BraveRewards) {
+    func reportPageNavigation(to rewards: BraveRewards) {
         rewards.reportTabNavigation(tabId: self.rewardsId)
     }
 }
