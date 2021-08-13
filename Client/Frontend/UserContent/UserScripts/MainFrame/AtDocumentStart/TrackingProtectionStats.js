@@ -131,7 +131,9 @@ function install() {
         }
 
         originalImageSrc.set.call(this, value);
-      }
+      },
+      enumerable: true,
+      configurable: true
     });
 
     // -------------------------------------------------
