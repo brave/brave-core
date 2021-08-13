@@ -1,0 +1,14 @@
+diff --git a/ui/gl/init/gl_factory.cc b/ui/gl/init/gl_factory.cc
+index 38b5eba04e8ffd996b11f6d117752c41f896c55f..31ffa141ff9131216e4a05da77ecd2e1472cbad7 100644
+--- a/ui/gl/init/gl_factory.cc
++++ b/ui/gl/init/gl_factory.cc
+@@ -153,6 +153,9 @@ GLImplementationParts GetSoftwareGLForTestsImplementation() {
+ }
+ 
+ GLImplementationParts GetSoftwareGLForHeadlessImplementation() {
++#if defined(OS_WIN)
++  return GetSoftwareGLImplementation();
++#endif
+   return GetLegacySoftwareGLImplementation();
+ }
+ 
