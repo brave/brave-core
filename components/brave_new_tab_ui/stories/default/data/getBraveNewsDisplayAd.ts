@@ -7,7 +7,7 @@ let callCount = 0
 
 export default function getBraveNewsDisplayAd (always: boolean = false) {
   callCount++
-  const ad = (always || callCount % 2)
+  const ad: BraveToday.DisplayAd | null = (always || callCount % 2)
     ? {
       description: 'Technica',
       uuid: '0abc',
@@ -19,5 +19,7 @@ export default function getBraveNewsDisplayAd (always: boolean = false) {
       dimensions: '1x3'
     }
     : null
-  return Promise.resolve(ad)
+  return new Promise<BraveToday.DisplayAd | null>(function (resolve) {
+    setTimeout(() => resolve(ad), 2400)
+  })
 }
