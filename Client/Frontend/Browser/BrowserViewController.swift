@@ -1270,6 +1270,10 @@ class BrowserViewController: UIViewController {
         }
         return false
     }
+    
+    // This variable is used to keep track of current page. It is used to detect internal site navigation
+    // to report internal page load to Rewards lib
+    var rewardsXHRLoadURL: URL?
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         
@@ -1330,6 +1334,17 @@ class BrowserViewController: UIViewController {
                 // Catch history pushState navigation, but ONLY for same origin navigation,
                 // for reasons above about URL spoofing risk.
                 navigateInTab(tab: tab)
+            }
+            
+            // Rewards reporting
+            if let url = change?[.newKey] as? URL, !url.isLocal {
+                // Notify Rewards of new page load.
+                if let rewardsURL = rewardsXHRLoadURL,
+                    url.host == rewardsURL.host {
+                    tabManager.selectedTab?.reportPageNavigation(to: rewards)
+                    // Not passing redirection chain here, in page navigation should not use them.
+                    tabManager.selectedTab?.reportPageLoad(to: rewards, redirectionURLs: [])
+                }
             }
         case .title:
             // Ensure that the tab title *actually* changed to prevent repeated calls
@@ -1462,22 +1477,9 @@ class BrowserViewController: UIViewController {
         }
     }
     
-    // This variable is used to keep track of current page. It is used to detect internal site navigation
-    // to report internal page load to Rewards lib
-    var rewardsXHRLoadURL: URL?
-    
     /// Updates the URL bar security, text and button states.
     fileprivate func updateURLBar() {
         guard let tab = tabManager.selectedTab else { return }
-        if let url = tab.url, !url.isLocal {
-            // Notify Rewards of new page load.
-            if let rewardsURL = rewardsXHRLoadURL,
-                url.host == rewardsURL.host,
-                url.isMediaSiteURL {
-                tabManager.selectedTab?.reportPageNaviagtion(to: rewards)
-                tabManager.selectedTab?.reportPageLoad(to: rewards)
-            }
-        }
         
         updateRewardsButtonState()
         
