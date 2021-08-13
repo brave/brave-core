@@ -80,8 +80,8 @@ void BraveWalletProviderDelegateImpl::RequestEthereumPermissions(
   EnsureConnected();
 
   GetAllowedAccounts(base::BindOnce(
-        &BraveWalletProviderDelegateImpl::ContinueRequestEthereumPermissions,
-        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+      &BraveWalletProviderDelegateImpl::ContinueRequestEthereumPermissions,
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void BraveWalletProviderDelegateImpl::ContinueRequestEthereumPermissions(
