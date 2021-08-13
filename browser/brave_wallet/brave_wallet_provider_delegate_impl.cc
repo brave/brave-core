@@ -77,6 +77,27 @@ void BraveWalletProviderDelegateImpl::OnConnectionError() {
 void BraveWalletProviderDelegateImpl::RequestEthereumPermissions(
     RequestEthereumPermissionsCallback callback) {
   EnsureConnected();
+
+  GetAllowedAccounts(base::BindOnce(
+        &BraveWalletProviderDelegateImpl::ContinueRequestEthereumPermissions,
+        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void BraveWalletProviderDelegateImpl::ContinueRequestEthereumPermissions(
+    RequestEthereumPermissionsCallback callback,
+    bool success,
+    const std::vector<std::string>& allowed_accounts) {
+  if (!success) {
+    std::move(callback).Run(std::vector<std::string>());
+    return;
+  }
+
+  if (success && !allowed_accounts.empty()) {
+    std::move(callback).Run(allowed_accounts);
+    return;
+  }
+
+  // Request accounts if no accounts are connected.
   keyring_controller_->GetDefaultKeyringInfo(base::BindOnce(
       [](content::RenderFrameHost* rfh,
          RequestEthereumPermissionsCallback callback,

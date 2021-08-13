@@ -38,6 +38,10 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate {
  private:
   void EnsureConnected();
   void OnConnectionError();
+  void ContinueRequestEthereumPermissions(
+      RequestEthereumPermissionsCallback callback,
+      bool success,
+      const std::vector<std::string>& allowed_accounts);
 
   mojo::Remote<brave_wallet::mojom::KeyringController> keyring_controller_;
   content::WebContents* web_contents_;
