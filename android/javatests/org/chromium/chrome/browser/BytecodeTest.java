@@ -195,6 +195,7 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/theme/ThemeUtils"));
     }
 
     @Test
@@ -293,6 +294,8 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator",
                         "isReliabilityLoggingEnabled", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/theme/ThemeUtils",
+                "getTextBoxColorForToolbarBackgroundInNonNativePage", false, null));
     }
 
     @Test

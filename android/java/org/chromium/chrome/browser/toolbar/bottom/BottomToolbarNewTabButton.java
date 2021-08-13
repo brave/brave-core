@@ -33,8 +33,8 @@ class BottomToolbarNewTabButton extends ChromeImageButton
     /** The gray pill background behind the plus icon. */
     private Drawable mBackground;
 
-    /** The {@link Resources} used to compute the background color. */
-    private final Resources mResources;
+    /** The {@link Context} used to compute the background color. */
+    private final Context mContext;
 
     /** A provider that notifies when incognito mode is entered or exited. */
     private IncognitoStateProvider mIncognitoStateProvider;
@@ -45,7 +45,7 @@ class BottomToolbarNewTabButton extends ChromeImageButton
     public BottomToolbarNewTabButton(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        mResources = context.getResources();
+        mContext = context;
     }
 
     @Override
@@ -105,7 +105,7 @@ class BottomToolbarNewTabButton extends ChromeImageButton
             return;
         }
         mBackground.setColorFilter(
-                ThemeUtils.getTextBoxColorForToolbarBackgroundInNonNativePage(mResources,
+                ThemeUtils.getTextBoxColorForToolbarBackgroundInNonNativePage(mContext,
                         mThemeColorProvider.getThemeColor(),
                         mThemeColorProvider.useLight()
                                 && mIncognitoStateProvider.isIncognitoSelected()),
