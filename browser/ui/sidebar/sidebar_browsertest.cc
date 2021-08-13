@@ -12,6 +12,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/components/sidebar/features.h"
 #include "brave/components/sidebar/sidebar_service.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -78,6 +79,14 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   EXPECT_EQ(-1, model()->active_index());
 
   controller()->ActivateItemAt(3);
+
+  EXPECT_TRUE(model()->IsSidebarWebContents(model()->GetWebContentsAt(0)));
+  EXPECT_FALSE(
+      model()->IsSidebarWebContents(tab_model()->GetActiveWebContents()));
+  EXPECT_EQ(browser(),
+            chrome::FindBrowserWithWebContents(model()->GetWebContentsAt(0)));
+  EXPECT_EQ(browser(), chrome::FindBrowserWithWebContents(
+                           tab_model()->GetActiveWebContents()));
 
   // Remove Item at index 0 change active index from 3 to 2.
   SidebarServiceFactory::GetForProfile(browser()->profile())->RemoveItemAt(0);

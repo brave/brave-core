@@ -86,6 +86,8 @@ class SidebarModel : public SidebarService::Observer,
 
   // Don't cache web_contents. It can be deleted during the runtime.
   content::WebContents* GetWebContentsAt(int index);
+  // Returns true when |web_contents| is used by sidebar panel.
+  bool IsSidebarWebContents(const content::WebContents* web_contents) const;
 
   // Don't cache item list. list can be changed during the runtime.
   const std::vector<SidebarItem> GetAllSidebarItems() const;
