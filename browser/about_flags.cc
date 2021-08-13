@@ -7,6 +7,7 @@
 
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_features_internal_names.h"
+#include "brave/browser/flag_descriptions.h"
 #include "brave/common/brave_features.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_component_updater/browser/features.h"
