@@ -43,8 +43,9 @@ void BraveWalletProviderImpl::RequestEthereumPermissions(
 
 void BraveWalletProviderImpl::OnRequestEthereumPermissions(
     RequestEthereumPermissionsCallback callback,
+    bool success,
     const std::vector<std::string>& accounts) {
-  std::move(callback).Run(accounts);
+  std::move(callback).Run(success, accounts);
 }
 
 void BraveWalletProviderImpl::GetAllowedAccounts(

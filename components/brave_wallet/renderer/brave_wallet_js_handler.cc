@@ -88,6 +88,7 @@ void OnEthereumPermissionRequested(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
+    bool success,
     const std::vector<std::string>& accounts) {
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context = context_old.Get(isolate);
@@ -96,9 +97,21 @@ void OnEthereumPermissionRequested(
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
-  if (accounts.empty()) {
-    ALLOW_UNUSED_LOCAL(
-        resolver->Reject(context, v8::Undefined(isolate)).ToChecked());
+  if (!success || accounts.empty()) {
+    brave_wallet::ProviderErrors code =
+        !success ? brave_wallet::ProviderErrors::kInternalError
+                 : brave_wallet::ProviderErrors::kUserRejectedRequest;
+    std::string message =
+        !success ? "Internal JSON-RPC error" : "User rejected the request.";
+
+    std::unique_ptr<base::Value> formed_response;
+    formed_response = FormProviderResponse(code, message);
+
+    v8::Local<v8::Value> result;
+    result = content::V8ValueConverter::Create()->ToV8Value(
+        formed_response.get(), context);
+
+    ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
     return;
   }
 

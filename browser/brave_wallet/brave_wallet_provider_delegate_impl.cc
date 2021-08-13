@@ -35,7 +35,8 @@ void OnRequestEthereumPermissions(
     }
   }
 
-  std::move(callback).Run(granted_accounts);
+  // The responses array will be empty if operation failed.
+  std::move(callback).Run(!responses.empty(), granted_accounts);
 }
 
 void OnGetAllowedAccounts(
@@ -88,12 +89,12 @@ void BraveWalletProviderDelegateImpl::ContinueRequestEthereumPermissions(
     bool success,
     const std::vector<std::string>& allowed_accounts) {
   if (!success) {
-    std::move(callback).Run(std::vector<std::string>());
+    std::move(callback).Run(false, std::vector<std::string>());
     return;
   }
 
   if (success && !allowed_accounts.empty()) {
-    std::move(callback).Run(allowed_accounts);
+    std::move(callback).Run(true, allowed_accounts);
     return;
   }
 

@@ -39,6 +39,7 @@ class BraveWalletProviderImpl final
   void RequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback) override;
   void OnRequestEthereumPermissions(RequestEthereumPermissionsCallback callback,
+                                    bool success,
                                     const std::vector<std::string>& accounts);
   void GetChainId(GetChainIdCallback callback) override;
   void GetAllowedAccounts(GetAllowedAccountsCallback callback) override;
