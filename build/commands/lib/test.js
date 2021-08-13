@@ -32,7 +32,7 @@ const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, o
   if (config.targetOS !== 'android') {
     if (suite === 'brave_browser_tests') {
       braveArgs.push('--v=2')
-      // braveArgs.push('--no-sandbox')
+      braveArgs.push('--enable-gpu-service-tracing')
     } else {
       braveArgs.push('--v=' + options.v)
     }
