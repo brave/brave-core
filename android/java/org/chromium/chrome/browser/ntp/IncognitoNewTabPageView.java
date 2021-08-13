@@ -168,6 +168,8 @@ public class IncognitoNewTabPageView extends FrameLayout {
      */
     void setIncognitoCookieControlsIconOnclickListener(OnClickListener listener) {}
 
+    void setIncognitoNewTabHeader(String newTabPageHeader) {}
+
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();

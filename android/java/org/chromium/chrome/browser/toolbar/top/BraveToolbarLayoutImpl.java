@@ -993,7 +993,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     public void updateModernLocationBarColorImpl(int color) {
         if (mShieldsLayout != null && mShieldsLayoutIsColorBackground) {
             mShieldsLayout.setBackgroundColor(
-                    ChromeColors.getDefaultThemeColor(getContext().getResources(), isIncognito()));
+                    ChromeColors.getDefaultThemeColor(getContext(), isIncognito()));
         }
         mCurrentToolbarColor = color;
         if (mShieldsLayout != null) {
@@ -1191,7 +1191,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     @Override
     public void onThemeColorChanged(int color, boolean shouldAnimate) {
         final int textBoxColor = ThemeUtils.getTextBoxColorForToolbarBackgroundInNonNativePage(
-                getContext().getResources(), color, isIncognito());
+                getContext(), color, isIncognito());
         updateModernLocationBarColorImpl(textBoxColor);
     }
 
@@ -1250,7 +1250,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             mShieldsLayoutIsColorBackground = false;
         } else {
             mShieldsLayout.setBackgroundColor(
-                    ChromeColors.getDefaultThemeColor(getContext().getResources(), isIncognito()));
+                    ChromeColors.getDefaultThemeColor(getContext(), isIncognito()));
             mShieldsLayoutIsColorBackground = true;
         }
         updateModernLocationBarColorImpl(mCurrentToolbarColor);
