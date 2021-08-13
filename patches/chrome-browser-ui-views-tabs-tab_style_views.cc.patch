@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
-index aa22593d7e38b10444243991a37d832f6aecfb4a..e131e92167e3ac81007cc9e253b32baac38ec0f1 100644
+index 277101faac1de8eaefe7d13a9e640615706bfe09..82067014565c264c0663873cef245efc0f4d6ad6 100644
 --- a/chrome/browser/ui/views/tabs/tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
-@@ -68,6 +68,7 @@ class GM2TabStyle : public TabStyleViews {
+@@ -69,6 +69,7 @@ class GM2TabStyle : public TabStyleViews {
    void HideHover(HideHoverStyle style) override;
  
   private:
@@ -10,7 +10,7 @@ index aa22593d7e38b10444243991a37d832f6aecfb4a..e131e92167e3ac81007cc9e253b32baa
    // Gets the bounds for the leading and trailing separators for a tab.
    SeparatorBounds GetSeparatorBounds(float scale) const;
  
-@@ -282,6 +283,7 @@ SkPath GM2TabStyle::GetPath(PathType path_type,
+@@ -283,6 +284,7 @@ SkPath GM2TabStyle::GetPath(PathType path_type,
    const ShapeModifier shape_modifier = GetShapeModifier(path_type);
    const bool extend_left_to_bottom = shape_modifier & kNoLowerLeftArc;
    const bool extend_right_to_bottom = shape_modifier & kNoLowerRightArc;
@@ -18,7 +18,7 @@ index aa22593d7e38b10444243991a37d832f6aecfb4a..e131e92167e3ac81007cc9e253b32baa
  
    SkPath path;
  
-@@ -535,7 +537,7 @@ TabStyle::SeparatorBounds GM2TabStyle::GetSeparatorBounds(float scale) const {
+@@ -536,7 +538,7 @@ TabStyle::SeparatorBounds GM2TabStyle::GetSeparatorBounds(float scale) const {
    separator_bounds.leading =
        gfx::RectF(aligned_bounds.x() + corner_radius,
                   aligned_bounds.y() +
@@ -27,7 +27,7 @@ index aa22593d7e38b10444243991a37d832f6aecfb4a..e131e92167e3ac81007cc9e253b32baa
                   separator_size.width(), separator_size.height());
  
    separator_bounds.trailing = separator_bounds.leading;
-@@ -898,12 +900,16 @@ void GM2TabStyle::PaintSeparators(gfx::Canvas* canvas) const {
+@@ -899,12 +901,16 @@ void GM2TabStyle::PaintSeparators(gfx::Canvas* canvas) const {
                                                     SK_AlphaOPAQUE));
    };
  

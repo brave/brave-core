@@ -8,5 +8,5 @@ index be6afd15393928afda071aa07c06687c15761c96..c71429d8317ad3f97f717dc8f32ae34c
  #endif
 +    BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE
    }
- 
+
    return nullptr;
