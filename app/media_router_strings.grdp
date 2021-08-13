@@ -357,6 +357,6 @@
   </message>
   <message name="IDS_MEDIA_ROUTER_FEEDBACK_NETWORK_WIRED_PC" desc="Option for describing the network with a wired PC.">
     PC is wired and Bravecast is on Wi-Fi
-  </message>
+  </message> 
 
 </grit-part>
