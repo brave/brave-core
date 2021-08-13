@@ -48,6 +48,10 @@ const char kBraveExtensionNetworkBlockingName[] =
     "Enable extension network blocking";
 const char kBraveExtensionNetworkBlockingDescription[] =
     "Enable blocking for network requests initiated by extensions";
+const char kBraveDarkModeBlockName[] =
+    "Enable dark mode blocking fingerprinting protection";
+const char kBraveDarkModeBlockDescription[] =
+    "Always report light mode when fingerprinting protections set to Strict";
 const char kBraveSidebarName[] = "Enable Sidebar";
 // TODO(simon): Use more better description.
 const char kBraveSidebarDescription[] = "Enable Sidebar";

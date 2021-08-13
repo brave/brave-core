@@ -37,6 +37,8 @@ const base::Feature kBraveDomainBlock{"BraveDomainBlock",
 // potentially blocked by Brave Shields.
 const base::Feature kBraveExtensionNetworkBlocking{
     "BraveExtensionNetworkBlocking", base::FEATURE_DISABLED_BY_DEFAULT};
-
+// When enabled, Brave will always report Light in Fingerprinting: Strict mode
+const base::Feature kBraveDarkModeBlock{"BraveDarkModeBlock",
+                                        base::FEATURE_ENABLED_BY_DEFAULT};
 }  // namespace features
 }  // namespace brave_shields

@@ -37,6 +37,7 @@
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/domain_block_navigation_throttle.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
@@ -698,7 +699,9 @@ bool BraveContentBrowserClient::OverrideWebPreferencesAfterNavigation(
       HostContentSettingsMapFactory::GetForProfile(profile), url);
   // https://github.com/brave/brave-browser/issues/15265
   // Always use color scheme Light if fingerprinting mode strict
-  if (shields_up && fingerprinting_type == ControlType::BLOCK) {
+  if (base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveDarkModeBlock) &&
+      shields_up && fingerprinting_type == ControlType::BLOCK) {
     prefs->preferred_color_scheme = blink::mojom::PreferredColorScheme::kLight;
     changed = true;
   }
