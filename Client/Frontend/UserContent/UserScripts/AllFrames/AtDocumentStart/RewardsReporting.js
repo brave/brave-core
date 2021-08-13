@@ -88,6 +88,8 @@ function install() {
         this.addEventListener('load', listener, true);
         this.addEventListener('error', listener, true);
         originalImageSrc.set.call(this, value);
-      }
+      },
+      enumerable: true,
+      configurable: true
     });
 }
