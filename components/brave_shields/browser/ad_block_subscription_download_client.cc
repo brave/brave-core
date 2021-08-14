@@ -80,8 +80,6 @@ void AdBlockSubscriptionDownloadClient::OnDownloadSucceeded(
     const download::CompletionInfo& completion_info) {
   AdBlockSubscriptionDownloadManager* download_manager =
       GetAdBlockSubscriptionDownloadManager();
-  DCHECK(completion_info.blob_handle);
-
   if (!download_manager)
     return;
 
@@ -98,7 +96,7 @@ void AdBlockSubscriptionDownloadClient::OnDownloadSucceeded(
 
   download_manager->OnDownloadSucceeded(
       guid,
-      std::make_unique<storage::BlobDataHandle>(*completion_info.blob_handle));
+      completion_info.path);
 }
 
 bool AdBlockSubscriptionDownloadClient::CanServiceRemoveDownloadedFile(

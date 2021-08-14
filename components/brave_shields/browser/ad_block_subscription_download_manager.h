@@ -17,13 +17,8 @@
 #include "base/memory/weak_ptr.h"
 #include "components/download/public/background_service/download_params.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "components/services/storage/public/mojom/blob_storage_context.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
-
-namespace storage {
-class BlobDataHandle;
-}
 
 namespace download {
 class DownloadService;
@@ -61,11 +56,6 @@ class AdBlockSubscriptionDownloadManager
 
   // Returns whether the downloader can be used for downloads.
   virtual bool IsAvailableForDownloads() const;
-
-  void set_blob_storage_context(
-      mojo::PendingRemote<storage::mojom::BlobStorageContext> context) {
-    blob_storage_context_.Bind(std::move(context));
-  }
 
   void set_subscription_path_callback(
       base::RepeatingCallback<base::FilePath(const GURL&)>
@@ -113,19 +103,19 @@ class AdBlockSubscriptionDownloadManager
   // Invoked when the download as specified by |downloaded_guid| succeeded.
   void OnDownloadSucceeded(
       const std::string& downloaded_guid,
-      std::unique_ptr<storage::BlobDataHandle> data_handle);
+      base::FilePath downloaded_file);
 
   // Invoked when the download as specified by |failed_download_guid| failed.
   void OnDownloadFailed(const std::string& failed_download_guid);
 
-  void OnDirCreated(std::unique_ptr<storage::BlobDataHandle> data_handle,
+  void OnDirCreated(base::FilePath downloaded_file,
                     const GURL& download_url,
                     bool created);
 
-  // Invoked after WriteBlobOnIOThread to report the status of writing the blob
-  // to disk.
-  void WriteResultCallback(const GURL& download_url,
-                           storage::mojom::WriteBlobToFileResult result);
+  // Invoked after ReplaceFile to report the status of moving the temporary
+  // download file to its destination path.
+  void ReplaceFileCallback(const GURL& download_url,
+                           bool success);
 
   // GUIDs that are still pending download, mapped to the corresponding URLs of
   // their subscription services.
@@ -149,7 +139,6 @@ class AdBlockSubscriptionDownloadManager
   // Will be notified of success or failure of downloads.
   AdBlockSubscriptionServiceManager* subscription_manager_;  // NOT OWNED
 
-  mojo::Remote<storage::mojom::BlobStorageContext> blob_storage_context_;
   base::RepeatingCallback<base::FilePath(const GURL&)>
       subscription_path_callback_;
   base::RepeatingCallback<void(const GURL&)> on_download_succeeded_callback_;
