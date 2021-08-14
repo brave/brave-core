@@ -13,8 +13,12 @@ import {
   TokenInfo,
   GetETHBalancesPriceReturnInfo,
   GetERC20TokenBalanceAndPriceReturnInfo,
-  AccountInfo
+  AccountInfo,
+  PortfolioTokenHistoryAndInfo,
+  GetPriceHistoryReturnInfo,
+  AssetPriceTimeframe
 } from '../../constants/types'
+import { convertMojoTimeToJS } from '../../utils/mojo-time'
 import * as WalletActions from '../actions/wallet_actions'
 import { InitializedPayloadType } from '../constants/action_types'
 import { formatFiatBalance } from '../../utils/format-balances'
@@ -32,7 +36,10 @@ const defaultState: WalletState = {
   userVisibleTokens: [],
   userVisibleTokensInfo: [],
   transactions: [],
-  fullTokenList: []
+  fullTokenList: [],
+  portfolioPriceHistory: [],
+  isFetchingPortfolioPriceHistory: true,
+  selectedPortfolioTimeline: AssetPriceTimeframe.OneDay
 }
 
 const reducer = createReducer<WalletState>({}, defaultState)
@@ -169,6 +176,49 @@ reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetERC20Tok
   return {
     ...state,
     accounts
+  }
+})
+
+reducer.on(WalletActions.portfolioPriceHistoryUpdated, (state: any, payload: PortfolioTokenHistoryAndInfo[][]) => {
+  const history = payload.map((account) => {
+    return account.map((token) => {
+      if (Number(token.token.assetBalance) !== 0) {
+        return token.history.values.map((value) => {
+          return {
+            date: value.date,
+            price: Number(formatFiatBalance(token.token.assetBalance, token.token.asset.decimals, value.price))
+          }
+        })
+      } else {
+        return []
+      }
+    })
+  })
+  const jointHistory = [].concat.apply([], [...history]).filter((h: []) => h.length > 1) as GetPriceHistoryReturnInfo[][]
+
+  // Since the Price History API sometimes will return a shorter
+  // array of history, this checks for the shortest array first to
+  // then map and reduce to it length
+  const shortestHistory = jointHistory.length > 0 ? jointHistory.reduce((a, b) => a.length <= b.length ? a : b) : []
+  const sumOfHistory = jointHistory.length > 0 ? shortestHistory.map((token, tokenIndex) => {
+    return {
+      date: convertMojoTimeToJS(token.date),
+      close: jointHistory.map(price => Number(price[tokenIndex].price) || 0).reduce((sum, x) => sum + x, 0)
+    }
+  }) : []
+
+  return {
+    ...state,
+    portfolioPriceHistory: sumOfHistory,
+    isFetchingPortfolioPriceHistory: sumOfHistory.length === 0 ? true : false
+  }
+})
+
+reducer.on(WalletActions.portfolioTimelineUpdated, (state: any, payload: AssetPriceTimeframe) => {
+  return {
+    ...state,
+    isFetchingPortfolioPriceHistory: true,
+    selectedPortfolioTimeline: payload
   }
 })
 

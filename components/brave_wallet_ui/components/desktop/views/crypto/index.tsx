@@ -44,6 +44,7 @@ export interface Props {
   needsBackup: boolean
   accounts: WalletAccountType[]
   selectedTimeline: AssetPriceTimeframe
+  selectedPortfolioTimeline: AssetPriceTimeframe
   portfolioPriceHistory: PriceDataObjectType[]
   selectedAssetPriceHistory: PriceDataObjectType[]
   selectedUSDAssetPrice: AssetPriceInfo | undefined
@@ -56,6 +57,7 @@ export interface Props {
   isLoading: boolean
   showAddModal: boolean
   selectedNetwork: Network
+  isFetchingPortfolioPriceHistory: boolean
 }
 
 const CryptoView = (props: Props) => {
@@ -78,6 +80,7 @@ const CryptoView = (props: Props) => {
     userAssetList,
     userWatchList,
     selectedTimeline,
+    selectedPortfolioTimeline,
     selectedAssetPriceHistory,
     needsBackup,
     accounts,
@@ -87,7 +90,8 @@ const CryptoView = (props: Props) => {
     selectedUSDAssetPrice,
     selectedBTCAssetPrice,
     isLoading,
-    showAddModal
+    showAddModal,
+    isFetchingPortfolioPriceHistory
   } = props
   const [selectedTab, setSelectedTab] = React.useState<TopTabNavTypes>('portfolio')
   const [favoriteApps, setFavoriteApps] = React.useState<AppObjectType[]>([
@@ -179,6 +183,7 @@ const CryptoView = (props: Props) => {
           onChangeTimeline={onChangeTimeline}
           selectedAssetPriceHistory={selectedAssetPriceHistory}
           selectedTimeline={selectedTimeline}
+          selectedPortfolioTimeline={selectedPortfolioTimeline}
           onSelectAsset={onSelectAsset}
           onClickAddAccount={onClickAddAccount}
           onSelectNetwork={onSelectNetwork}
@@ -195,6 +200,7 @@ const CryptoView = (props: Props) => {
           selectedNetwork={selectedNetwork}
           fullAssetList={fullAssetList}
           userWatchList={userWatchList}
+          isFetchingPortfolioPriceHistory={isFetchingPortfolioPriceHistory}
         />
       }
       {selectedTab === 'accounts' &&

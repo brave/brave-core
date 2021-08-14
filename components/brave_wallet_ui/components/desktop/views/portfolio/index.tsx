@@ -67,6 +67,7 @@ export interface Props {
   userAssetList: AccountAssetOptionType[]
   accounts: WalletAccountType[]
   selectedTimeline: AssetPriceTimeframe
+  selectedPortfolioTimeline: AssetPriceTimeframe
   selectedAsset: TokenInfo | undefined
   selectedUSDAssetPrice: AssetPriceInfo | undefined
   selectedBTCAssetPrice: AssetPriceInfo | undefined
@@ -77,6 +78,7 @@ export interface Props {
   isLoading: boolean
   fullAssetList: TokenInfo[]
   userWatchList: string[]
+  isFetchingPortfolioPriceHistory: boolean
 }
 
 const Portfolio = (props: Props) => {
@@ -96,12 +98,14 @@ const Portfolio = (props: Props) => {
     selectedUSDAssetPrice,
     selectedBTCAssetPrice,
     selectedTimeline,
+    selectedPortfolioTimeline,
     accounts,
     selectedAsset,
     portfolioBalance,
     transactions,
     userAssetList,
-    isLoading
+    isLoading,
+    isFetchingPortfolioPriceHistory
   } = props
 
   const [filteredAssetList, setfilteredAssetList] = React.useState<AccountAssetOptionType[]>(userAssetList)
@@ -117,6 +121,10 @@ const Portfolio = (props: Props) => {
   React.useMemo(() => {
     setfilteredAssetList(userAssetList)
   }, [userAssetList])
+
+  const portfolioHistory = React.useMemo(() => {
+    return portfolioPriceHistory
+  }, [portfolioPriceHistory])
 
   // This filters a list of assets when the user types in search bar
   const filterAssets = (event: any) => {
@@ -213,7 +221,7 @@ const Portfolio = (props: Props) => {
         </BalanceRow>
         <ChartControlBar
           onSubmit={onChangeTimeline}
-          selectedTimeline={selectedTimeline}
+          selectedTimeline={selectedAsset ? selectedTimeline : selectedPortfolioTimeline}
           timelineOptions={ChartTimelineOptions}
         />
       </TopRow>
@@ -241,9 +249,10 @@ const Portfolio = (props: Props) => {
       <LineChart
         isDown={selectedAsset && selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.asset24hChange) < 0 : false}
         isAsset={!!selectedAsset}
-        priceData={selectedAsset ? selectedAssetPriceHistory : portfolioPriceHistory}
+        priceData={selectedAsset ? selectedAssetPriceHistory : portfolioHistory}
         onUpdateBalance={onUpdateBalance}
-        isLoading={isLoading}
+        isLoading={selectedAsset ? isLoading : parseFloat(portfolioBalance) === 0 ? false : isFetchingPortfolioPriceHistory}
+        isDisabled={selectedAsset ? false : parseFloat(portfolioBalance) === 0}
       />
       {selectedAsset &&
         <>

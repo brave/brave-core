@@ -496,6 +496,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                           userWatchList={['1']}
                           selectedNetwork={selectedNetwork}
                           onSelectNetwork={onSelectNetwork}
+                          isFetchingPortfolioPriceHistory={false}
+                          selectedPortfolioTimeline={selectedTimeline}
                         />
                       )}
                     </>
