@@ -11,10 +11,13 @@
 
 #include "base/command_line.h"
 #include "base/files/file_util.h"
+#include "base/process/kill.h"
 #include "base/process/launch.h"
 #include "brave/components/services/ipfs/ipfs_service_utils.h"
 
 namespace {
+
+const char kRepoLockFile[] = "repo.lock";
 
 bool LaunchProcessAndExit(const base::FilePath& path,
                           std::initializer_list<std::string> args,
@@ -103,6 +106,12 @@ void IpfsServiceImpl::Launch(mojom::IpfsConfigPtr config,
 
   // Check if IPFS configs are ready, if not, run ipfs init to initialize them.
   base::FilePath config_path = config->config_path;
+
+  if (base::PathExists(data_path.AppendASCII(kRepoLockFile))) {
+    base::KillProcesses(config->binary_path.BaseName().value(), 1, nullptr);
+    base::DeleteFile(data_path.AppendASCII(kRepoLockFile));
+  }
+
   if (!base::PathExists(config_path)) {
     // run ipfs init to gen config
     if (!LaunchProcessAndExit(config->binary_path, {"init"}, options)) {
