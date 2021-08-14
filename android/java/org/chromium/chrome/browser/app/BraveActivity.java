@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -177,6 +178,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public static final String ANDROID_SETUPWIZARD_PACKAGE_NAME = "com.google.android.setupwizard";
     public static final String ANDROID_PACKAGE_NAME = "android";
     public static final String BRAVE_BLOG_URL = "http://www.brave.com/blog";
+    public static final int BRAVE_VPN_NOTIFICATION_ID = 36;
 
     // Explicitly declare this variable to avoid build errors.
     // It will be removed in asm and parent variable will be used instead.
@@ -524,6 +526,48 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
     }
 
+    private final ConnectivityManager.NetworkCallback mNetworkCallback =
+            new ConnectivityManager.NetworkCallback() {
+                @Override
+                public void onAvailable(Network network) {
+                    showBraveVpnNotification();
+                }
+
+                @Override
+                public void onLost(Network network) {
+                    cancelBraveVpnNotification();
+                }
+            };
+
+    private void showBraveVpnNotification() {
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(BraveActivity.this, CHANNEL_ID);
+
+        notificationBuilder.setSmallIcon(R.drawable.ic_chrome)
+                .setAutoCancel(false)
+                .setContentTitle(getResources().getString(R.string.brave_firewall_vpn))
+                .setContentText(getResources().getString(R.string.brave_vpn_notification_message))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(
+                        getResources().getString(R.string.brave_vpn_notification_message)))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(BRAVE_VPN_NOTIFICATION_ID, notificationBuilder.build());
+    }
+
+    private void cancelBraveVpnNotification() {
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(BRAVE_VPN_NOTIFICATION_ID);
+    }
+
+    private void showVpnCalloutDialog() {
+        VpnCalloutDialogFragment mVpnCalloutDialogFragment = new VpnCalloutDialogFragment();
+        mVpnCalloutDialogFragment.setCancelable(false);
+        mVpnCalloutDialogFragment.show(getSupportFragmentManager(), "VpnCalloutDialogFragment");
+    }
+
     private void checkFingerPrintingOnUpgrade() {
         if (!PackageUtils.isFirstInstall(this)
                 && SharedPreferencesManager.getInstance().readInt(
@@ -547,19 +591,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(braveWalletIntent);
     }
-
-    private final ConnectivityManager.NetworkCallback mNetworkCallback =
-            new ConnectivityManager.NetworkCallback() {
-                @Override
-                public void onAvailable(Network network) {
-                    // runOnUiThread(() -> updateStatus());
-                }
-
-                @Override
-                public void onLost(Network network) {
-                    // runOnUiThread(() -> updateStatus());
-                }
-            };
 
     private void checkSetDefaultBrowserModal() {
         boolean shouldShowDefaultBrowserModal =
@@ -838,12 +869,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         CrossPromotionalModalDialogFragment mCrossPromotionalModalDialogFragment = new CrossPromotionalModalDialogFragment();
         mCrossPromotionalModalDialogFragment.setCancelable(false);
         mCrossPromotionalModalDialogFragment.show(getSupportFragmentManager(), "CrossPromotionalModalDialogFragment");
-    }
-
-    private void showVpnCalloutDialog() {
-        VpnCalloutDialogFragment mVpnCalloutDialogFragment = new VpnCalloutDialogFragment();
-        mVpnCalloutDialogFragment.setCancelable(false);
-        mVpnCalloutDialogFragment.show(getSupportFragmentManager(), "VpnCalloutDialogFragment");
     }
 
     static public ChromeTabbedActivity getChromeTabbedActivity() {

@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.net.VpnManager;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,7 +31,6 @@ import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.google.android.material.tabs.TabLayout;
-import android.util.Pair;
 
 import org.json.JSONException;
 
@@ -57,7 +57,8 @@ public abstract class BraveVpnParentActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        InAppPurchaseWrapper.getInstance().startBillingServiceConnection(BraveVpnParentActivity.this);
+        InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
+                BraveVpnParentActivity.this);
     }
 
     protected void getPurchaseDetails() {
@@ -82,9 +83,10 @@ public abstract class BraveVpnParentActivity
 
     @Override
     public void onGetSubscriberCredential(String subscriberCredential, boolean isSuccess) {
-        Log.e("BraveVPN", "isSuccess : "+isSuccess);
+        Log.e("BraveVPN", "isSuccess : " + isSuccess);
         if (isSuccess) {
-            InAppPurchaseWrapper.getInstance().processPurchases(InAppPurchaseWrapper.getInstance().queryPurchases());
+            InAppPurchaseWrapper.getInstance().processPurchases(
+                    InAppPurchaseWrapper.getInstance().queryPurchases());
             this.subscriberCredential = subscriberCredential;
             BraveVpnNativeWorker.getInstance().getTimezonesForRegions();
         } else {
@@ -101,9 +103,7 @@ public abstract class BraveVpnParentActivity
         if (isSuccess) {
             String region = BraveVpnUtils.getRegionForTimeZone(
                     jsonTimezones, TimeZone.getDefault().getID()); //
-            Log.e("BraveVPN",
-                    "Region : "
-                            + region);
+            Log.e("BraveVPN", "Region : " + region);
             BraveVpnNativeWorker.getInstance().getHostnamesForRegion(region);
         } else {
             Toast.makeText(BraveVpnParentActivity.this, R.string.vpn_profile_creation_failed,
@@ -118,8 +118,9 @@ public abstract class BraveVpnParentActivity
         Log.e("BraveVPN", jsonHostNames);
         if (isSuccess) {
             hostname = BraveVpnUtils.getHostnameForRegion(jsonHostNames);
-            Log.e("BraveVPN", "Hostname : "+hostname);
-            BraveVpnNativeWorker.getInstance().getProfileCredentials(subscriberCredential, hostname);
+            Log.e("BraveVPN", "Hostname : " + hostname);
+            BraveVpnNativeWorker.getInstance().getProfileCredentials(
+                    subscriberCredential, hostname);
         } else {
             Toast.makeText(BraveVpnParentActivity.this, R.string.vpn_profile_creation_failed,
                          Toast.LENGTH_LONG)
@@ -133,8 +134,10 @@ public abstract class BraveVpnParentActivity
     public void onGetProfileCredentials(String jsonProfileCredentials, boolean isSuccess) {
         Log.e("BraveVPN", jsonProfileCredentials);
         if (isSuccess) {
-            Pair<String,String> profileCredentials = BraveVpnUtils.getProfileCredentials(jsonProfileCredentials);
-            BraveVpnUtils.createVpnProfile(BraveVpnParentActivity.this, hostname, profileCredentials.first, profileCredentials.second);
+            Pair<String, String> profileCredentials =
+                    BraveVpnUtils.getProfileCredentials(jsonProfileCredentials);
+            BraveVpnUtils.createVpnProfile(BraveVpnParentActivity.this, hostname,
+                    profileCredentials.first, profileCredentials.second);
         } else {
             Toast.makeText(BraveVpnParentActivity.this, R.string.vpn_profile_creation_failed,
                          Toast.LENGTH_LONG)
