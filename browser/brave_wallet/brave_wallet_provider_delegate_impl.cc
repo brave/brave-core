@@ -100,7 +100,7 @@ void BraveWalletProviderDelegateImpl::ContinueRequestEthereumPermissions(
 
   // Request accounts if no accounts are connected.
   keyring_controller_->GetDefaultKeyringInfo(base::BindOnce(
-      [](content::RenderFrameHost* rfh,
+      [](const content::GlobalFrameRoutingId& routing_id,
          RequestEthereumPermissionsCallback callback,
          brave_wallet::mojom::KeyringInfoPtr keyring_info) {
         std::vector<std::string> addresses;
@@ -108,28 +108,29 @@ void BraveWalletProviderDelegateImpl::ContinueRequestEthereumPermissions(
           addresses.push_back(account_info->address);
         }
         permissions::BraveEthereumPermissionContext::RequestPermissions(
-            rfh, addresses,
+            content::RenderFrameHost::FromID(routing_id), addresses,
             base::BindOnce(&OnRequestEthereumPermissions, addresses,
                            std::move(callback)));
       },
-      content::RenderFrameHost::FromID(routing_id_), std::move(callback)));
+      routing_id_, std::move(callback)));
 }
 
 void BraveWalletProviderDelegateImpl::GetAllowedAccounts(
     GetAllowedAccountsCallback callback) {
   EnsureConnected();
   keyring_controller_->GetDefaultKeyringInfo(base::BindOnce(
-      [](content::RenderFrameHost* rfh, GetAllowedAccountsCallback callback,
+      [](const content::GlobalFrameRoutingId& routing_id,
+         GetAllowedAccountsCallback callback,
          brave_wallet::mojom::KeyringInfoPtr keyring_info) {
         std::vector<std::string> addresses;
         for (const auto& account_info : keyring_info->account_infos) {
           addresses.push_back(account_info->address);
         }
         permissions::BraveEthereumPermissionContext::GetAllowedAccounts(
-            rfh, addresses,
+            content::RenderFrameHost::FromID(routing_id), addresses,
             base::BindOnce(&OnGetAllowedAccounts, std::move(callback)));
       },
-      content::RenderFrameHost::FromID(routing_id_), std::move(callback)));
+      routing_id_, std::move(callback)));
 }
 
 }  // namespace brave_wallet
