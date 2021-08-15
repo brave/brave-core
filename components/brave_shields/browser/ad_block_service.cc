@@ -75,8 +75,7 @@ void AdBlockService::ShouldStartRequest(
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveAdblockDefault1pBlocking) ||
       !SameDomainOrHost(
-          url,
-          url::Origin::CreateFromNormalizedTuple("https", tab_host.c_str(), 80),
+          url, url::Origin::CreateFromNormalizedTuple("https", tab_host, 80),
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
     AdBlockBaseService::ShouldStartRequest(
         url, resource_type, tab_host, aggressive_blocking, did_match_rule,

@@ -10,8 +10,10 @@
 namespace brave_shields {
 namespace features {
 
-// When disabled, Brave will allow first-party requests in "standard" blocking
-// mode regardless of whether or not they appear in a filter list.
+// When enabled, Brave will block first-party requests that appear in a filter
+// list when Shields is in "standard" blocking mode. When disabled, Brave will
+// allow first-party requests in "standard" blocking mode regardless of whether
+// or not they appear in a filter list.
 const base::Feature kBraveAdblockDefault1pBlocking{
     "BraveAdblockDefault1pBlocking", base::FEATURE_ENABLED_BY_DEFAULT};
 // When enabled, Brave will issue DNS queries for requests that the adblock
