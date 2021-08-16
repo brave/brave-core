@@ -1988,6 +1988,9 @@ until they verify, or until 90 days have passed.
     <message name="IDS_ENABLE" desc="VPN callout text">
       Enable
     </message>
+    <message name="IDS_ENABLED" desc="VPN settings toggle text">
+      Enabled
+    </message>
     <message name="IDS_POWERED_BY" desc="VPN text">
       Powered by
     </message>
@@ -2088,6 +2091,42 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_VPN_NOTIFICATION_MESSAGE" desc="Brave VPN notification message">
       VPN is running in the background
+    </message>
+    <message name="IDS_SUBSCRIPTION" desc="Brave VPN settings section title">
+      Subscription
+    </message>
+    <message name="IDS_STATUS" desc="Brave VPN settings section text">
+      Status
+    </message>
+    <message name="IDS_EXPIRES" desc="Brave VPN settings section text">
+      Expires
+    </message>
+    <message name="IDS_MANAGE_SUBSCRIPTION" desc="Brave VPN settings section text">
+      Manage Subscription
+    </message>
+    <message name="IDS_SERVER" desc="Brave VPN settings section title">
+      Server
+    </message>
+    <message name="IDS_HOST" desc="Brave VPN settings section text">
+      Host
+    </message>
+    <message name="IDS_LOCATION" desc="Brave VPN settings section text">
+      Location
+    </message>
+    <message name="IDS_CHANGE_LOCATION" desc="Brave VPN settings section text">
+      Change Location
+    </message>
+    <message name="IDS_RESET_CONFIGURATION" desc="Brave VPN settings section text">
+      Reset Configuration
+    </message>
+    <message name="IDS_SUPPORT" desc="Brave VPN settings section text">
+      Support
+    </message>
+    <message name="IDS_CONTACT_TECHNICAL_SUPPORT" desc="Brave VPN settings section text">
+      Contact Technical Support
+    </message>
+    <message name="IDS_VPN_SUPPORT" desc="Brave VPN settings section text">
+      VPN Support
     </message>
     </messages>
   </release>
