@@ -61,6 +61,8 @@ const std::string& GetQueryStringTrackers() {
            "rb_clickid",
            // https://github.com/brave/brave-browser/issues/17452
            "s_cid",
+           // https://github.com/brave/brave-browser/issues/17507
+           "ml_subscriber", "ml_subscriber_hash",
            // https://github.com/brave/brave-browser/issues/9019
            "_hsenc", "__hssc", "__hstc", "__hsfp", "hsCtaTracking"}),
       "|"));
