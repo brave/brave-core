@@ -251,6 +251,12 @@ class SettingsViewController: TableViewController {
             )
         }
         
+        general.rows.append(
+            .boolRow(title: Strings.enablePullToRefresh,
+                     option: Preferences.General.enablePullToRefresh,
+                     image: #imageLiteral(resourceName: "settings-pull-to-refresh").template)
+        )
+        
         if AppConstants.iOSVersionGreaterThanOrEqual(to: 14) && AppConstants.buildChannel == .release {
             general.rows.append(.init(text: Strings.setDefaultBrowserSettingsCell, selection: { [unowned self] in
                 guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
@@ -259,12 +265,6 @@ class SettingsViewController: TableViewController {
                 UIApplication.shared.open(settingsUrl)
             }, cellClass: MultilineButtonCell.self))
         }
-        
-        general.rows.append(
-            .boolRow(title: Strings.enablePullToRefresh,
-                     option: Preferences.General.enablePullToRefresh,
-                     image: #imageLiteral(resourceName: "settings-pull-to-refresh").template)
-        )
 
         return general
     }()
