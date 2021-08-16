@@ -285,7 +285,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       case 'upholdBlockedUser':
       case 'upholdPendingUser':
       case 'upholdRestrictedUser':
-        buttonText = getLocale(type + 'LearnMore')
+        buttonText = getLocale('learnMore')
         buttonAction = this.onNotificationClick
         break
       default:

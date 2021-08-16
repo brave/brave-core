@@ -219,9 +219,9 @@
     "message": "Please backup your Brave wallet.",
     "description": "Description for backup wallet notification"
   },
-  "mismatchedProviderAccountsLearnMore": {
+  "learnMore": {
     "message": "Learn More",
-    "description": "Notification button text to learn more about linking with a custodian account"
+    "description": "Notification button text to learn more about a specific use-case"
   },
   "mismatchedProviderAccountsTitle": {
     "message": "Error: Different account",
@@ -237,10 +237,6 @@
       }
     }
   },
-  "upholdBATNotAllowedForUserLearnMore": {
-    "message": "Learn More",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
-  },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Error: BAT unavailable",
     "description": "Title for BAT not allowed for user notification"
@@ -248,10 +244,6 @@
   "upholdBATNotAllowedForUserNotification": {
     "message": "BAT is not yet supported in your region on Uphold.",
     "description": "Description for BAT not allowed for user notification"
-  },
-  "upholdBlockedUserLearnMore": {
-    "message": "Learn More",
-    "description": "Notification button text to learn more about the blocked user status"
   },
   "upholdBlockedUserTitle": {
     "message": "Error: Blocked account",
@@ -261,10 +253,6 @@
     "message": "Your account at Uphold is currently blocked.",
     "description": "Description for blocked user notification"
   },
-  "upholdPendingUserLearnMore": {
-    "message": "Learn More",
-    "description": "Notification button text to learn more about the pending user status"
-  },
   "upholdPendingUserTitle": {
     "message": "Error: Pending account",
     "description": "Title for pending user notification"
@@ -273,10 +261,6 @@
     "message": "Your account at Uphold is still pending.",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "Learn More",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "Error: Restricted account",
     "description": "Title for restricted user notification"
@@ -284,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "Your account at Uphold is currently restricted.",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "Learn More",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Device Limit Reached",
