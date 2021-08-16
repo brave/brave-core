@@ -121,6 +121,8 @@ if (is_win) {
   brave_platform = "win32"
 } else if (is_linux) {
   brave_platform = "linux"
+} else if (is_android) {
+  brave_platform = "android"
 }
 
 is_release_channel = brave_channel == ""
