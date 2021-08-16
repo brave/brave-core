@@ -214,6 +214,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     blink::features::kInterestCohortAPIOriginTrial.name,
     blink::features::kInterestCohortFeaturePolicy.name,
     blink::features::kLangClientHintHeader.name,
+    blink::features::kNavigatorPluginsFixed.name,
     blink::features::kTextFragmentAnchor.name,
     features::kDirectSockets.name,
     features::kIdleDetection.name,
