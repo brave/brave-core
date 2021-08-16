@@ -48,7 +48,7 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate {
 
   mojo::Remote<brave_wallet::mojom::KeyringController> keyring_controller_;
   content::WebContents* web_contents_;
-  const content::GlobalFrameRoutingId routing_id_;
+  const content::GlobalRenderFrameHostId host_id_;
   base::WeakPtrFactory<BraveWalletProviderDelegateImpl> weak_ptr_factory_;
 };
 
