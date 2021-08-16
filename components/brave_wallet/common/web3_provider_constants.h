@@ -28,6 +28,7 @@ enum class ProviderErrors {
 };
 
 constexpr char kEthAccounts[] = "eth_accounts";
+constexpr char kEthRequestAccounts[] = "eth_requestAccounts";
 constexpr char kMethod[] = "method";
 
 }  // namespace brave_wallet

@@ -84,10 +84,12 @@ void CallMethodOfObject(blink::WebLocalFrame* web_frame,
                                          args.data());
 }
 
-void OnEnable(v8::Global<v8::Promise::Resolver> promise_resolver,
-              v8::Isolate* isolate,
-              v8::Global<v8::Context> context_old,
-              const std::vector<std::string>& accounts) {
+void OnEthereumPermissionRequested(
+    v8::Global<v8::Promise::Resolver> promise_resolver,
+    v8::Isolate* isolate,
+    v8::Global<v8::Context> context_old,
+    bool success,
+    const std::vector<std::string>& accounts) {
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context = context_old.Get(isolate);
   v8::Context::Scope context_scope(context);
@@ -95,9 +97,21 @@ void OnEnable(v8::Global<v8::Promise::Resolver> promise_resolver,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
-  if (accounts.empty()) {
-    ALLOW_UNUSED_LOCAL(
-        resolver->Reject(context, v8::Undefined(isolate)).ToChecked());
+  if (!success || accounts.empty()) {
+    brave_wallet::ProviderErrors code =
+        !success ? brave_wallet::ProviderErrors::kInternalError
+                 : brave_wallet::ProviderErrors::kUserRejectedRequest;
+    std::string message =
+        !success ? "Internal JSON-RPC error" : "User rejected the request.";
+
+    std::unique_ptr<base::Value> formed_response;
+    formed_response = FormProviderResponse(code, message);
+
+    v8::Local<v8::Value> result;
+    result = content::V8ValueConverter::Create()->ToV8Value(
+        formed_response.get(), context);
+
+    ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
     return;
   }
 
@@ -331,6 +345,10 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
     brave_wallet_provider_->GetAllowedAccounts(
         base::BindOnce(&OnGetAllowedAccounts, std::move(promise_resolver),
                        isolate, std::move(context_old)));
+  } else if (method && *method == kEthRequestAccounts) {
+    brave_wallet_provider_->RequestEthereumPermissions(base::BindOnce(
+        &OnEthereumPermissionRequested, std::move(promise_resolver), isolate,
+        std::move(context_old)));
   } else {
     std::string formed_input;
     // Hardcode id to 1 as it is unused
@@ -401,8 +419,9 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Enable() {
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   auto context_old(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
-  brave_wallet_provider_->Enable(base::BindOnce(
-      &OnEnable, std::move(promise_resolver), isolate, std::move(context_old)));
+  brave_wallet_provider_->RequestEthereumPermissions(base::BindOnce(
+      &OnEthereumPermissionRequested, std::move(promise_resolver), isolate,
+      std::move(context_old)));
 
   return resolver.ToLocalChecked()->GetPromise();
 }

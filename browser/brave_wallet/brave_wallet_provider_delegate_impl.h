@@ -6,6 +6,9 @@
 #ifndef BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_PROVIDER_DELEGATE_IMPL_H_
 #define BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_PROVIDER_DELEGATE_IMPL_H_
 
+#include <string>
+#include <vector>
+
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -38,6 +41,10 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate {
  private:
   void EnsureConnected();
   void OnConnectionError();
+  void ContinueRequestEthereumPermissions(
+      RequestEthereumPermissionsCallback callback,
+      bool success,
+      const std::vector<std::string>& allowed_accounts);
 
   mojo::Remote<brave_wallet::mojom::KeyringController> keyring_controller_;
   content::WebContents* web_contents_;

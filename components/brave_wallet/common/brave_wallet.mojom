@@ -16,7 +16,7 @@ interface EventsListener {
 interface BraveWalletProvider {
   Init(pending_remote<EventsListener> events_listener);
   Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
-  Enable() => (array<string> accounts);
+  RequestEthereumPermissions() => (bool success, array<string> accounts);
   GetChainId() => (string chain_id);
   GetAllowedAccounts() => (bool success, array<string> accounts);
 };
