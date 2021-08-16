@@ -26,13 +26,16 @@ Browser* FindBrowserWithWebContents(const WebContents* web_contents) {
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
   for (auto* browser : *BrowserList::GetInstance()) {
-    if (!sidebar::CanUseSidebar(browser->profile()))
-      continue;
-
-    auto* brave_browser = static_cast<BraveBrowser*>(browser);
-    if (brave_browser->sidebar_controller()->model()->IsSidebarWebContents(
-            web_contents))
+    // Use |sidebar_controller| directly, because even if the feature is
+    // enabled, SidebarController can be not created for a specific
+    // BraveBrowser.
+    const auto* sidebar_controller =
+        static_cast<BraveBrowser*>(browser)->sidebar_controller();
+    DCHECK(!sidebar_controller || sidebar_controller->model());
+    if (sidebar_controller &&
+        sidebar_controller->model()->IsSidebarWebContents(web_contents)) {
       return browser;
+    }
   }
 #endif
 
