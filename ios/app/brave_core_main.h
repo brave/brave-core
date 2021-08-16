@@ -7,13 +7,11 @@
 #define BRAVE_IOS_APP_BRAVE_CORE_MAIN_H_
 
 #import <Foundation/Foundation.h>
+#include "brave_wallet.mojom.objc.h"
 
 @class BraveBookmarksAPI;
 @class BraveHistoryAPI;
 @class BraveSyncProfileServiceIOS;
-@protocol BraveWalletKeyringController;
-@protocol BraveWalletAssetRatioController;
-@protocol BraveWalletEthJsonRpcController;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -50,6 +48,10 @@ OBJC_EXPORT
 
 @property(nonatomic, readonly) id<BraveWalletEthJsonRpcController>
     ethJsonRpcController;
+
+@property(nonatomic, readonly) id<BraveWalletSwapController> swapController;
+
+@property(nonatomic, readonly) id<BraveWalletERCTokenRegistry> ercTokenRegistry;
 
 @end
 

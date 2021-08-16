@@ -11,6 +11,7 @@
 #include "base/compiler_specific.h"
 #include "base/logging.h"
 #include "base/strings/sys_string_conversions.h"
+#include "brave/components/brave_wallet/browser/erc_token_registry.h"
 #include "brave/ios/app/brave_main_delegate.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
@@ -19,6 +20,7 @@
 #include "brave/ios/browser/brave_wallet/asset_ratio_controller_factory.h"
 #include "brave/ios/browser/brave_wallet/eth_json_rpc_controller_factory.h"
 #include "brave/ios/browser/brave_wallet/keyring_controller_factory.h"
+#include "brave/ios/browser/brave_wallet/swap_controller_factory.h"
 #include "brave/ios/browser/brave_web_client.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
@@ -51,6 +53,8 @@ static BraveCoreLogHandler _Nullable _logHandler = nil;
 @property(nonatomic) id<BraveWalletKeyringController> keyringController;
 @property(nonatomic) id<BraveWalletAssetRatioController> assetRatioController;
 @property(nonatomic) id<BraveWalletEthJsonRpcController> ethJsonRpcController;
+@property(nonatomic) id<BraveWalletSwapController> swapController;
+@property(nonatomic) id<BraveWalletERCTokenRegistry> ercTokenRegistry;
 @end
 
 @implementation BraveCoreMain
@@ -225,6 +229,25 @@ static bool CustomLogHandler(int severity,
         initWithEthJsonRpcController:controller];
   }
   return _ethJsonRpcController;
+}
+
+- (id<BraveWalletSwapController>)swapController {
+  if (!_swapController) {
+    auto* controller =
+    brave_wallet::SwapControllerFactory::GetForBrowserState(_mainBrowserState);
+    _swapController = [[BraveWalletSwapControllerImpl alloc]
+                             initWithSwapController:controller];
+  }
+  return _swapController;
+}
+
+- (id<BraveWalletERCTokenRegistry>)ercTokenRegistry {
+  if (!_ercTokenRegistry) {
+    auto* registry = brave_wallet::ERCTokenRegistry::GetInstance();
+    _ercTokenRegistry = [[BraveWalletERCTokenRegistryImpl alloc]
+                             initWithERCTokenRegistry:registry];
+  }
+  return _ercTokenRegistry;
 }
 
 @end
