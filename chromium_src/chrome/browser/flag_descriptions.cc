@@ -21,6 +21,11 @@ const char kBraveNTPBrandedWallpaperDemoDescription[] =
     "Force dummy data for the Branded Wallpaper New Tab Page Experience. "
     "View rate and user opt-in conditionals will still be followed to decide "
     "when to display the Branded Wallpaper.";
+const char kBraveAdblockDefault1pBlockingName[] =
+    "Shields first-party network blocking";
+const char kBraveAdblockDefault1pBlockingDescription[] =
+    "Allow Brave Shields to block first-party network requests in Standard "
+    "blocking mode";
 const char kBraveAdblockCnameUncloakingName[] = "Enable CNAME uncloaking";
 const char kBraveAdblockCnameUncloakingDescription[] =
     "Take DNS CNAME records into account when making network request blocking "

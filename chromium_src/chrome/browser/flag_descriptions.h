@@ -17,6 +17,8 @@ extern const char kBraveNTPBrandedWallpaperName[];
 extern const char kBraveNTPBrandedWallpaperDescription[];
 extern const char kBraveNTPBrandedWallpaperDemoName[];
 extern const char kBraveNTPBrandedWallpaperDemoDescription[];
+extern const char kBraveAdblockDefault1pBlockingName[];
+extern const char kBraveAdblockDefault1pBlockingDescription[];
 extern const char kBraveAdblockCnameUncloakingName[];
 extern const char kBraveAdblockCnameUncloakingDescription[];
 extern const char kBraveAdblockCollapseBlockedElementsName[];
