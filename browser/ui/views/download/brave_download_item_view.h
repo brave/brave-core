@@ -50,10 +50,13 @@ class BraveDownloadItemView : public DownloadItemView {
 
   // Overrides the accessible name construction to reflect the origin URL.
   void SetMode(download::DownloadItemMode mode) override;
+  void UpdateLabels() override;
   void OnMouseEntered(const ui::MouseEvent& event) override;
   void OnMouseExited(const ui::MouseEvent& event) override;
   void OnViewFocused(View* observed_view) override;
   void OnViewBlurred(View* observed_view) override;
+
+  void SetOriginUrlVisible(bool visible);
 
   // Brave download item model.
   BraveDownloadItemModel brave_model_;

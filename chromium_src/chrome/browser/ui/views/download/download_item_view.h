@@ -41,9 +41,11 @@
  protected:                                  \
   bool IsShowingWarningDialog() const;
 
+#define UpdateLabels virtual UpdateLabels
 #define SetMode virtual SetMode
 #include "../../../../../../../chrome/browser/ui/views/download/download_item_view.h"
 #undef SetMode
+#undef UpdateLabels
 #undef BRAVE_DOWNLOAD_DOWNLOAD_ITEM_VIEW_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_DOWNLOAD_DOWNLOAD_ITEM_VIEW_H_

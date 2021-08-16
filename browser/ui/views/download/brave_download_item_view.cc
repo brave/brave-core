@@ -11,6 +11,7 @@
 #include "base/auto_reset.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "chrome/browser/themes/theme_properties.h"
+#include "chrome/browser/ui/download/download_item_mode.h"
 #include "chrome/browser/ui/views/download/download_shelf_view.h"
 #include "components/strings/grit/components_strings.h"
 #include "components/vector_icons/vector_icons.h"
@@ -99,7 +100,6 @@ void BraveDownloadItemView::OnPaint(gfx::Canvas* canvas) {
   DownloadItemView::OnPaint(canvas);
   if (is_origin_url_visible_)
     DrawOriginURL(canvas);
-  file_name_label_->SetVisible(!is_origin_url_visible_);
 }
 
 // download::DownloadItem::Observer overrides.
@@ -236,18 +236,31 @@ void BraveDownloadItemView::SetMode(download::DownloadItemMode mode) {
   }
 }
 
+void BraveDownloadItemView::UpdateLabels() {
+  DownloadItemView::UpdateLabels();
+  // Update visibility to avoid artifacts to be shown from upstream
+  file_name_label_->SetVisible(
+      !is_origin_url_visible_ &&
+      (GetMode() == download::DownloadItemMode::kNormal));
+}
+
+void BraveDownloadItemView::SetOriginUrlVisible(bool visible) {
+  is_origin_url_visible_ = visible;
+  UpdateLabels();
+}
+
 void BraveDownloadItemView::OnMouseEntered(const ui::MouseEvent& event) {
-  is_origin_url_visible_ = true;
+  SetOriginUrlVisible(true);
 }
 
 void BraveDownloadItemView::OnMouseExited(const ui::MouseEvent& event) {
-  is_origin_url_visible_ = false;
+  SetOriginUrlVisible(false);
 }
 
 void BraveDownloadItemView::OnViewFocused(View* observed_view) {
-  is_origin_url_visible_ = true;
+  SetOriginUrlVisible(true);
 }
 
 void BraveDownloadItemView::OnViewBlurred(View* observed_view) {
-  is_origin_url_visible_ = false;
+  SetOriginUrlVisible(false);
 }
