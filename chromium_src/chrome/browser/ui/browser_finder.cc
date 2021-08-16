@@ -10,7 +10,6 @@
 #if BUILDFLAG(ENABLE_SIDEBAR)
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
-#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #endif
 
 #define FindBrowserWithWebContents FindBrowserWithWebContents_ChromiumImpl
