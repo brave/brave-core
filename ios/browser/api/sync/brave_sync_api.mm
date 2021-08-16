@@ -61,12 +61,12 @@
 
 @implementation BraveSyncServiceObserver
 
-- (instancetype)
-    initWithProfileSyncService:(syncer::SyncServiceImpl*)profileSyncService
-                      callback:(void (^)())onSyncServiceStateChanged {
+- (instancetype)initWithSyncServiceImpl:
+                    (syncer::SyncServiceImpl*)syncServiceImpl
+                               callback:(void (^)())onSyncServiceStateChanged {
   if ((self = [super init])) {
     _service_tracker = std::make_unique<BraveSyncServiceTracker>(
-        profileSyncService, onSyncServiceStateChanged);
+        syncServiceImpl, onSyncServiceStateChanged);
   }
   return self;
 }
@@ -220,7 +220,7 @@
   auto* service = SyncServiceFactory::GetAsSyncServiceImplForBrowserState(
       _chromeBrowserState);
   return [[BraveSyncServiceObserver alloc]
-      initWithProfileSyncService:service
-                        callback:onSyncServiceStateChanged];
+      initWithSyncServiceImpl:service
+                     callback:onSyncServiceStateChanged];
 }
 @end

@@ -16,7 +16,7 @@ namespace signin {
 
 AccountsInCookieJarInfo IdentityManager::GetAccountsInCookieJar() const {
   // accounts_in_cookie_jar_info.accounts_are_fresh must be false,
-  // see `ProfileSyncService::OnEngineInitialized`
+  // see `SyncServiceImpl::OnEngineInitialized`
   return AccountsInCookieJarInfo(false, std::vector<gaia::ListedAccount>(),
                                  std::vector<gaia::ListedAccount>());
 }

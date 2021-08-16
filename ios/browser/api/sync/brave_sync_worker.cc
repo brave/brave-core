@@ -14,8 +14,8 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
-#include "brave/components/brave_sync/profile_sync_service_helper.h"
-#include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
+#include "brave/components/brave_sync/sync_service_impl_helper.h"
+#include "brave/components/sync/driver/brave_sync_service_impl.h"
 #include "brave/components/sync_device_info/brave_device_info.h"
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_impl.h"
@@ -234,9 +234,9 @@ void BraveSyncWorker::DeleteDevice(const std::string& device_guid) {
   brave_sync::DeleteDevice(sync_service, device_info_service, device_guid);
 }
 
-syncer::BraveProfileSyncService* BraveSyncWorker::GetSyncService() const {
+syncer::BraveSyncServiceImpl* BraveSyncWorker::GetSyncService() const {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  return static_cast<syncer::BraveProfileSyncService*>(
+  return static_cast<syncer::BraveSyncServiceImpl*>(
       SyncServiceFactory::GetForBrowserState(browser_state_));
 }
 

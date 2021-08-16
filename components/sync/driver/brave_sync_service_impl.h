@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SYNC_DRIVER_BRAVE_SYNC_PROFILE_SYNC_SERVICE_H_
-#define BRAVE_COMPONENTS_SYNC_DRIVER_BRAVE_SYNC_PROFILE_SYNC_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_SYNC_DRIVER_BRAVE_SYNC_SERVICE_IMPL_H_
+#define BRAVE_COMPONENTS_SYNC_DRIVER_BRAVE_SYNC_SERVICE_IMPL_H_
 
 #include <memory>
 #include <string>
@@ -19,16 +19,16 @@ class Profile;
 namespace syncer {
 
 class BraveSyncAuthManager;
-class ProfileSyncServiceDelegate;
+class SyncServiceImplDelegate;
 
-class BraveProfileSyncService : public SyncServiceImpl {
+class BraveSyncServiceImpl : public SyncServiceImpl {
  public:
-  explicit BraveProfileSyncService(
+  explicit BraveSyncServiceImpl(
       InitParams init_params,
-      std::unique_ptr<ProfileSyncServiceDelegate> profile_service_delegate);
-  ~BraveProfileSyncService() override;
+      std::unique_ptr<SyncServiceImplDelegate> sync_service_impl_delegate);
+  ~BraveSyncServiceImpl() override;
 
-  // SyncService implementation
+  // SyncServiceImpl implementation
   bool IsSetupInProgress() const override;
 
   std::string GetOrCreateSyncCode();
@@ -55,12 +55,14 @@ class BraveProfileSyncService : public SyncServiceImpl {
 
   PrefChangeRegistrar brave_sync_prefs_change_registrar_;
 
-  std::unique_ptr<ProfileSyncServiceDelegate> profile_service_delegate_;
+  std::unique_ptr<SyncServiceImplDelegate> sync_service_impl_delegate_;
 
-  base::WeakPtrFactory<BraveProfileSyncService> weak_ptr_factory_;
+  base::WeakPtrFactory<BraveSyncServiceImpl> weak_ptr_factory_;
 
-  DISALLOW_COPY_AND_ASSIGN(BraveProfileSyncService);
+  BraveSyncServiceImpl(const BraveSyncServiceImpl&) = delete;
+  BraveSyncServiceImpl& operator=(const BraveSyncServiceImpl&) = delete;
 };
+
 }  // namespace syncer
 
-#endif  // BRAVE_COMPONENTS_SYNC_DRIVER_BRAVE_SYNC_PROFILE_SYNC_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_SYNC_DRIVER_BRAVE_SYNC_SERVICE_IMPL_H_

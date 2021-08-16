@@ -7,8 +7,8 @@
 
 #include "base/logging.h"
 #include "base/test/task_environment.h"
-#include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
-#include "brave/components/sync/driver/profile_sync_service_delegate.h"
+#include "brave/components/sync/driver/brave_sync_service_impl.h"
+#include "brave/components/sync/driver/sync_service_impl_delegate.h"
 #include "components/os_crypt/os_crypt_mocker.h"
 #include "components/sync/driver/data_type_manager_impl.h"
 #include "components/sync/driver/fake_data_type_controller.h"
@@ -34,17 +34,17 @@ const char kValidSyncCode[] =
 
 }  // namespace
 
-class ProfileSyncServiceDelegateMock : public ProfileSyncServiceDelegate {
+class SyncServiceImplDelegateMock : public SyncServiceImplDelegate {
  public:
-  ProfileSyncServiceDelegateMock() {}
-  ~ProfileSyncServiceDelegateMock() override {}
+  SyncServiceImplDelegateMock() {}
+  ~SyncServiceImplDelegateMock() override {}
   void SuspendDeviceObserverForOwnReset() override {}
   void ResumeDeviceObserver() override {}
 };
 
-class BraveProfileSyncServiceTest : public testing::Test {
+class BraveSyncServiceImplTest : public testing::Test {
  public:
-  BraveProfileSyncServiceTest()
+  BraveSyncServiceImplTest()
       : brave_sync_prefs_(sync_service_impl_bundle_.pref_service()),
         sync_prefs_(sync_service_impl_bundle_.pref_service()) {
     sync_service_impl_bundle_.identity_test_env()
@@ -53,7 +53,7 @@ class BraveProfileSyncServiceTest : public testing::Test {
         sync_service_impl_bundle_.pref_service()->registry());
   }
 
-  ~BraveProfileSyncServiceTest() override { sync_service_->Shutdown(); }
+  ~BraveSyncServiceImplTest() override { sync_service_impl_->Shutdown(); }
 
   void CreateSyncService(
       SyncServiceImpl::StartBehavior start_behavior,
@@ -68,17 +68,19 @@ class BraveProfileSyncServiceTest : public testing::Test {
     ON_CALL(*sync_client, CreateDataTypeControllers(_))
         .WillByDefault(Return(ByMove(std::move(controllers))));
 
-    sync_service_ = std::make_unique<BraveProfileSyncService>(
+    sync_service_impl_ = std::make_unique<BraveSyncServiceImpl>(
         sync_service_impl_bundle_.CreateBasicInitParams(start_behavior,
                                                         std::move(sync_client)),
-        std::make_unique<ProfileSyncServiceDelegateMock>());
+        std::make_unique<SyncServiceImplDelegateMock>());
   }
 
   brave_sync::Prefs* brave_sync_prefs() { return &brave_sync_prefs_; }
 
   SyncPrefs* sync_prefs() { return &sync_prefs_; }
 
-  BraveProfileSyncService* brave_sync_service() { return sync_service_.get(); }
+  BraveSyncServiceImpl* brave_sync_service_impl() {
+    return sync_service_impl_.get();
+  }
 
   FakeSyncApiComponentFactory* component_factory() {
     return sync_service_impl_bundle_.component_factory();
@@ -93,18 +95,18 @@ class BraveProfileSyncServiceTest : public testing::Test {
   SyncServiceImplBundle sync_service_impl_bundle_;
   brave_sync::Prefs brave_sync_prefs_;
   SyncPrefs sync_prefs_;
-  std::unique_ptr<BraveProfileSyncService> sync_service_;
+  std::unique_ptr<BraveSyncServiceImpl> sync_service_impl_;
 };
 
-TEST_F(BraveProfileSyncServiceTest, ValidPassphrase) {
+TEST_F(BraveSyncServiceImplTest, ValidPassphrase) {
   OSCryptMocker::SetUp();
 
   CreateSyncService(SyncServiceImpl::MANUAL_START);
 
-  brave_sync_service()->Initialize();
+  brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
 
-  bool set_code_result = brave_sync_service()->SetSyncCode(kValidSyncCode);
+  bool set_code_result = brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
   EXPECT_TRUE(set_code_result);
 
   EXPECT_EQ(brave_sync_prefs()->GetSeed(), kValidSyncCode);
@@ -112,16 +114,16 @@ TEST_F(BraveProfileSyncServiceTest, ValidPassphrase) {
   OSCryptMocker::TearDown();
 }
 
-TEST_F(BraveProfileSyncServiceTest, InvalidPassphrase) {
+TEST_F(BraveSyncServiceImplTest, InvalidPassphrase) {
   OSCryptMocker::SetUp();
 
   CreateSyncService(SyncServiceImpl::MANUAL_START);
 
-  brave_sync_service()->Initialize();
+  brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
 
   bool set_code_result =
-      brave_sync_service()->SetSyncCode("word one and then two");
+      brave_sync_service_impl()->SetSyncCode("word one and then two");
   EXPECT_FALSE(set_code_result);
 
   EXPECT_EQ(brave_sync_prefs()->GetSeed(), "");
@@ -129,18 +131,18 @@ TEST_F(BraveProfileSyncServiceTest, InvalidPassphrase) {
   OSCryptMocker::TearDown();
 }
 
-TEST_F(BraveProfileSyncServiceTest, ValidPassphraseLeadingTrailingWhitespace) {
+TEST_F(BraveSyncServiceImplTest, ValidPassphraseLeadingTrailingWhitespace) {
   OSCryptMocker::SetUp();
 
   CreateSyncService(SyncServiceImpl::MANUAL_START);
 
-  brave_sync_service()->Initialize();
+  brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
 
   std::string sync_code_extra_whitespace =
       std::string(" \t\n") + kValidSyncCode + std::string(" \t\n");
   bool set_code_result =
-      brave_sync_service()->SetSyncCode(sync_code_extra_whitespace);
+      brave_sync_service_impl()->SetSyncCode(sync_code_extra_whitespace);
   EXPECT_TRUE(set_code_result);
 
   EXPECT_EQ(brave_sync_prefs()->GetSeed(), kValidSyncCode);

@@ -6,9 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_SYNC_SERVICE_IMPL_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_SYNC_SERVICE_IMPL_H_
 
-#define BRAVE_PROFILE_SYNC_SERVICE_H_ \
- private:                             \
-  friend class BraveProfileSyncService;
+#define BRAVE_SYNC_SERVICE_IMPL_H_ \
+ private:                          \
+  friend class BraveSyncServiceImpl;
 
 // Forcing this include before define virtual to avoid error of
 // "duplicate 'virtual' declaration specifier" at SyncEngine's
@@ -23,6 +23,6 @@
 
 #undef Initialize
 
-#undef BRAVE_PROFILE_SYNC_SERVICE_H_
+#undef BRAVE_SYNC_SERVICE_IMPL_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_SYNC_SERVICE_IMPL_H_

@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_SYNC_BRAVE_PROFILE_SYNC_SERVICE_DELEGATE_H_
-#define BRAVE_BROWSER_SYNC_BRAVE_PROFILE_SYNC_SERVICE_DELEGATE_H_
+#ifndef BRAVE_BROWSER_SYNC_BRAVE_SYNC_SERVICE_IMPL_DELEGATE_H_
+#define BRAVE_BROWSER_SYNC_BRAVE_SYNC_SERVICE_IMPL_DELEGATE_H_
 
-#include "brave/components/sync/driver/profile_sync_service_delegate.h"
+#include "brave/components/sync/driver/sync_service_impl_delegate.h"
 
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
@@ -20,15 +20,15 @@ class DeviceInfoSyncService;
 class DeviceInfoTracker;
 class LocalDeviceInfoProvider;
 
-// Helper class to prevent pass of profile pointer into BraveProfileSyncService
+// Helper class to prevent pass of profile pointer into BraveSyncServiceImpl
 // and to keep DeviceInfoSyncService
-class BraveProfileSyncServiceDelegate
-    : public ProfileSyncServiceDelegate,
+class BraveSyncServiceImplDelegate
+    : public SyncServiceImplDelegate,
       public syncer::DeviceInfoTracker::Observer {
  public:
-  explicit BraveProfileSyncServiceDelegate(
+  explicit BraveSyncServiceImplDelegate(
       DeviceInfoSyncService* device_info_sync_service);
-  ~BraveProfileSyncServiceDelegate() override;
+  ~BraveSyncServiceImplDelegate() override;
 
   void SuspendDeviceObserverForOwnReset() override;
   void ResumeDeviceObserver() override;
@@ -47,14 +47,13 @@ class BraveProfileSyncServiceDelegate
 
   DeviceInfoSyncService* device_info_sync_service_;
 
-  base::WeakPtrFactory<BraveProfileSyncServiceDelegate> weak_ptr_factory_;
+  base::WeakPtrFactory<BraveSyncServiceImplDelegate> weak_ptr_factory_;
 
-  BraveProfileSyncServiceDelegate(const BraveProfileSyncServiceDelegate&) =
+  BraveSyncServiceImplDelegate(const BraveSyncServiceImplDelegate&) = delete;
+  BraveSyncServiceImplDelegate& operator=(const BraveSyncServiceImplDelegate&) =
       delete;
-  BraveProfileSyncServiceDelegate& operator=(
-      const BraveProfileSyncServiceDelegate&) = delete;
 };
 
 }  // namespace syncer
 
-#endif  // BRAVE_BROWSER_SYNC_BRAVE_PROFILE_SYNC_SERVICE_DELEGATE_H_
+#endif  // BRAVE_BROWSER_SYNC_BRAVE_SYNC_SERVICE_IMPL_DELEGATE_H_

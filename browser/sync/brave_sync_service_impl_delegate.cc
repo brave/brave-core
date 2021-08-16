@@ -3,20 +3,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/sync/brave_profile_sync_service_delegate.h"
+#include "brave/browser/sync/brave_sync_service_impl_delegate.h"
 
 #include <utility>
 
 #include "base/task/post_task.h"
 #include "base/threading/thread_task_runner_handle.h"
-#include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
+#include "brave/components/sync/driver/brave_sync_service_impl.h"
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
 #include "components/sync_device_info/local_device_info_provider.h"
 
 namespace syncer {
 
-BraveProfileSyncServiceDelegate::BraveProfileSyncServiceDelegate(
+BraveSyncServiceImplDelegate::BraveSyncServiceImplDelegate(
     DeviceInfoSyncService* device_info_sync_service)
     : device_info_sync_service_(device_info_sync_service),
       weak_ptr_factory_(this) {
@@ -31,10 +31,10 @@ BraveProfileSyncServiceDelegate::BraveProfileSyncServiceDelegate(
   device_info_observer_.Observe(device_info_tracker_);
 }
 
-BraveProfileSyncServiceDelegate::~BraveProfileSyncServiceDelegate() {}
+BraveSyncServiceImplDelegate::~BraveSyncServiceImplDelegate() {}
 
-void BraveProfileSyncServiceDelegate::OnDeviceInfoChange() {
-  DCHECK(profile_sync_service_);
+void BraveSyncServiceImplDelegate::OnDeviceInfoChange() {
+  DCHECK(sync_service_impl_);
 
   const syncer::DeviceInfo* local_device_info =
       local_device_info_provider_->GetLocalDeviceInfo();
@@ -55,21 +55,20 @@ void BraveProfileSyncServiceDelegate::OnDeviceInfoChange() {
     // remove device execution path, so posting task
     base::ThreadTaskRunnerHandle::Get()->PostTask(
         FROM_HERE,
-        base::BindOnce(
-            &BraveProfileSyncServiceDelegate::OnSelfDeviceInfoDeleted,
-            weak_ptr_factory_.GetWeakPtr()));
+        base::BindOnce(&BraveSyncServiceImplDelegate::OnSelfDeviceInfoDeleted,
+                       weak_ptr_factory_.GetWeakPtr()));
   }
 }
 
-void BraveProfileSyncServiceDelegate::OnSelfDeviceInfoDeleted() {
-  profile_sync_service_->OnSelfDeviceInfoDeleted(base::DoNothing::Once());
+void BraveSyncServiceImplDelegate::OnSelfDeviceInfoDeleted() {
+  sync_service_impl_->OnSelfDeviceInfoDeleted(base::DoNothing::Once());
 }
 
-void BraveProfileSyncServiceDelegate::SuspendDeviceObserverForOwnReset() {
+void BraveSyncServiceImplDelegate::SuspendDeviceObserverForOwnReset() {
   device_info_observer_.Reset();
 }
 
-void BraveProfileSyncServiceDelegate::ResumeDeviceObserver() {
+void BraveSyncServiceImplDelegate::ResumeDeviceObserver() {
   if (!device_info_observer_.IsObserving()) {
     device_info_observer_.Observe(device_info_tracker_);
   }

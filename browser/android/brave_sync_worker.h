@@ -17,7 +17,7 @@
 class Profile;
 
 namespace syncer {
-class BraveProfileSyncService;
+class BraveSyncServiceImpl;
 }  // namespace syncer
 
 namespace chrome {
@@ -53,7 +53,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
       bool sync_v2_migration_notice_dismissed);
 
  private:
-  syncer::BraveProfileSyncService* GetSyncService() const;
+  syncer::BraveSyncServiceImpl* GetSyncService() const;
   void MarkFirstSetupComplete();
 
   // syncer::SyncServiceObserver implementation.

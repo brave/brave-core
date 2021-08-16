@@ -20,7 +20,7 @@
 class ChromeBrowserState;
 
 namespace syncer {
-class BraveProfileSyncService;
+class BraveSyncServiceImpl;
 class DeviceInfo;
 class BraveDeviceInfo;
 class SyncServiceImpl;
@@ -78,7 +78,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
  private:
   // syncer::SyncServiceObserver implementation.
 
-  syncer::BraveProfileSyncService* GetSyncService() const;
+  syncer::BraveSyncServiceImpl* GetSyncService() const;
   void OnStateChanged(syncer::SyncService* service) override;
   void OnSyncShutdown(syncer::SyncService* service) override;
 

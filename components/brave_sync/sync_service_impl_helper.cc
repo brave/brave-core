@@ -3,22 +3,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_sync/profile_sync_service_helper.h"
+#include "brave/components/brave_sync/sync_service_impl_helper.h"
 
 #include <string>
 #include <utility>
 
-#include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
+#include "brave/components/sync/driver/brave_sync_service_impl.h"
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
 #include "components/sync_device_info/local_device_info_provider.h"
 
 namespace brave_sync {
 
-void ResetSync(syncer::BraveProfileSyncService* sync_service,
+void ResetSync(syncer::BraveSyncServiceImpl* sync_service_impl,
                syncer::DeviceInfoSyncService* device_info_service,
                base::OnceClosure on_reset_done) {
-  if (sync_service->GetTransportState() !=
+  if (sync_service_impl->GetTransportState() !=
       syncer::SyncService::TransportState::ACTIVE) {
     std::move(on_reset_done).Run();
     return;
@@ -38,23 +38,24 @@ void ResetSync(syncer::BraveProfileSyncService* sync_service,
     return;
   }
 
-  sync_service->SuspendDeviceObserverForOwnReset();
+  sync_service_impl->SuspendDeviceObserverForOwnReset();
 
   tracker->DeleteDeviceInfo(
       local_device_info->guid(),
       base::BindOnce(
-          [](syncer::BraveProfileSyncService* sync_service,
+          [](syncer::BraveSyncServiceImpl* sync_service_impl,
              base::OnceClosure on_reset_done) {
-            sync_service->OnSelfDeviceInfoDeleted(std::move(on_reset_done));
-            sync_service->ResumeDeviceObserver();
+            sync_service_impl->OnSelfDeviceInfoDeleted(
+                std::move(on_reset_done));
+            sync_service_impl->ResumeDeviceObserver();
           },
-          sync_service, std::move(on_reset_done)));
+          sync_service_impl, std::move(on_reset_done)));
 }
 
-void DeleteDevice(syncer::BraveProfileSyncService* sync_service,
+void DeleteDevice(syncer::BraveSyncServiceImpl* sync_service_impl,
                   syncer::DeviceInfoSyncService* device_info_service,
                   const std::string& device_guid) {
-  if (sync_service->GetTransportState() !=
+  if (sync_service_impl->GetTransportState() !=
       syncer::SyncService::TransportState::ACTIVE) {
     return;
   }
