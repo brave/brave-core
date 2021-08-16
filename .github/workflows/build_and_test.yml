@@ -11,12 +11,12 @@ jobs:
   test:
     if: ${{ github.event_name == 'push' || (github.event_name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, 'CI/skip')) }}
     name: Run tests
-    runs-on: macOS-latest
+    runs-on: macOS-11
     env:
         # The XCode version to use. If you want to update it please refer to this document:
         # https://docs.github.com/en/actions/reference/specifications-for-github-hosted-runners#supported-software
         # and set proper version.
-        XCODE_VERSION: 12.4
+        XCODE_VERSION: 12.5
 
     steps:
       - name: Select XCode
