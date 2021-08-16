@@ -31,7 +31,6 @@ platform :ios do
 
   desc "Run Unit Tests"
   lane :test do |options|
-    sh("../Client/WebFilters/ContentBlocker/Lists/test-compile-all-lists.sh")
     run_tests(
       scheme: "Debug",
       device: "iPhone 8",
