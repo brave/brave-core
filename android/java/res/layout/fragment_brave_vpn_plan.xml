@@ -22,34 +22,34 @@
         android:padding="32dp">
 
         <TextView
+            android:id="@+id/plan_text_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:gravity="center_vertical"
             android:layout_marginBottom="8dp"
             android:textColor="@android:color/white"
-            android:text="@string/block_ads"
             android:drawablePadding="12dp"
             app:drawableStartCompat="@drawable/ic_mask" />
 
         <TextView
+            android:id="@+id/plan_text_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:textSize="18sp"
             android:gravity="center_vertical"
             android:textColor="@android:color/white"
-            android:text="@string/across_all_apps"
             android:drawablePadding="12dp"
             app:drawableStartCompat="@drawable/ic_mask" />
 
         <TextView
+            android:id="@+id/plan_text_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:gravity="center_vertical"
             android:textColor="@android:color/white"
-            android:text="@string/keep_your_ip_address"
             android:drawablePadding="12dp"
             app:drawableLeftCompat="@drawable/ic_mask" />
 

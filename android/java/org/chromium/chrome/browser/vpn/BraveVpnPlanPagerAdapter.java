@@ -12,6 +12,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
@@ -29,6 +30,18 @@ public class BraveVpnPlanPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup collection, int position) {
         @SuppressLint("InflateParams")
         View view = LayoutInflater.from(context).inflate(R.layout.fragment_brave_vpn_plan, null);
+        TextView planText1 = view.findViewById(R.id.plan_text_1);
+        TextView planText2 = view.findViewById(R.id.plan_text_2);
+        TextView planText3 = view.findViewById(R.id.plan_text_3);
+        if (position == 0) {
+            planText1.setText(context.getResources().getString(R.string.block_ads));
+            planText2.setText(context.getResources().getString(R.string.across_all_apps));
+            planText3.setText(context.getResources().getString(R.string.keep_your_ip_address));
+        } else {
+            planText1.setText(context.getResources().getString(R.string.supports_speed));
+            planText2.setText(context.getResources().getString(R.string.use_ikev2));
+            planText3.setText(context.getResources().getString(R.string.never_share_info));
+        }
         collection.addView(view);
         return view;
     }
@@ -40,7 +53,7 @@ public class BraveVpnPlanPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
 
     @Override

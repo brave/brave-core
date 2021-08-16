@@ -2004,13 +2004,22 @@ until they verify, or until 90 days have passed.
       24/7 support
     </message>
     <message name="IDS_BLOCK_ADS" desc="Brave VPN plan text">
-      Block ads &amp; trackers on network 
+      Blocks unwanted network connections
     </message>
     <message name="IDS_ACROSS_ALL_APPS" desc="Brave VPN plan text">
-      Works across all apps 
+      Choose your geo/country location
     </message>
     <message name="IDS_KEEP_YOUR_IP_ADDRESS" desc="Brave VPN plan text">
-      Keep your IP address secret
+      Keeps you anonymous online
+    </message>
+    <message name="IDS_SUPPORTS_SPEED" desc="Brave VPN plan text">
+      Supports speeds of up to 100 Mbps
+    </message>
+    <message name="IDS_USE_IKEV2" desc="Brave VPN plan text">
+      Uses IKEv2 secure encrypted VPN tunnel
+    </message>
+    <message name="IDS_NEVER_SHARE_INFO" desc="Brave VPN plan text">
+      We never share or sell your info
     </message>
     <message name="IDS_TRIAL_TEXT" desc="Brave VPN plan text">
       All plans include a free 7-day trial!
