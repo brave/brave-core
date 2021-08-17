@@ -711,10 +711,6 @@ if (!is_android) {
       "//components/user_prefs",
       "//media:test_support",
       "//testing/gmock",
-
-
-
-
     ]
 
     if (enable_crash_dialog) {
