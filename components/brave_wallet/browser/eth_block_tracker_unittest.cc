@@ -5,12 +5,16 @@
 
 #include "brave/components/brave_wallet/browser/eth_block_tracker.h"
 
+#include <memory>
 #include <string>
 
 #include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+#include "components/prefs/testing_pref_service.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/test/browser_task_environment.h"
+#include "content/public/test/test_browser_context.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -34,11 +38,15 @@ class EthBlockTrackerUnitTest : public testing::Test {
  public:
   EthBlockTrackerUnitTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
+        browser_context_(new content::TestBrowserContext()),
         shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)),
-        rpc_controller_(mojom::Network::Mainnet, shared_url_loader_factory_) {}
-
+                &url_loader_factory_)) {}
+  void SetUp() override {
+    user_prefs::UserPrefs::Set(browser_context_.get(), &prefs_);
+    rpc_controller_.reset(new brave_wallet::EthJsonRpcController(
+        shared_url_loader_factory_, &prefs_));
+  }
   std::string GetResponseString() const {
     return "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"" +
            Uint256ValueToHex(response_block_num_) + "\"}";
@@ -47,13 +55,15 @@ class EthBlockTrackerUnitTest : public testing::Test {
  protected:
   uint256_t response_block_num_ = 0;
   content::BrowserTaskEnvironment task_environment_;
+  std::unique_ptr<content::TestBrowserContext> browser_context_;
+  TestingPrefServiceSimple prefs_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  EthJsonRpcController rpc_controller_;
+  std::unique_ptr<EthJsonRpcController> rpc_controller_;
 };
 
 TEST_F(EthBlockTrackerUnitTest, Timer) {
-  EthBlockTracker tracker(&rpc_controller_);
+  EthBlockTracker tracker(rpc_controller_.get());
   bool request_sent = false;
   url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
       [&](const network::ResourceRequest& request) { request_sent = true; }));
@@ -81,7 +91,7 @@ TEST_F(EthBlockTrackerUnitTest, Timer) {
 }
 
 TEST_F(EthBlockTrackerUnitTest, GetBlockNumber) {
-  EthBlockTracker tracker(&rpc_controller_);
+  EthBlockTracker tracker(rpc_controller_.get());
   url_loader_factory_.SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
@@ -124,7 +134,7 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumber) {
 }
 
 TEST_F(EthBlockTrackerUnitTest, GetBlockNumberError) {
-  EthBlockTracker tracker(&rpc_controller_);
+  EthBlockTracker tracker(rpc_controller_.get());
   url_loader_factory_.SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();

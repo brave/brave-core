@@ -7,7 +7,7 @@
 import { createReducer } from 'redux-act'
 import { PanelState } from '../../constants/types'
 import * as PanelActions from '../actions/wallet_panel_actions'
-import { ShowConnectToSitePayload, AddEthereumChainPayload } from '../constants/action_types'
+import { ShowConnectToSitePayload, EthereumChainPayload } from '../constants/action_types'
 
 const defaultState: PanelState = {
   // TODO(bbondy): isConnected, connectedSiteOrigin, and accounts is just test
@@ -22,7 +22,7 @@ const defaultState: PanelState = {
   showSignTransaction: false,
   showAllowSpendERC20Token: false,
   showConfirmTransaction: false,
-  networkPayload: ''
+  networkPayload: { chainId: '0x1', chainName: 'Ethereum Mainnet', rpcUrls: ['https://mainnet-infura.brave.com/'] }
 }
 
 const reducer = createReducer<PanelState>({}, defaultState)
@@ -50,11 +50,10 @@ reducer.on(PanelActions.showConnectToSite, (state: any, payload: ShowConnectToSi
   }
 })
 
-reducer.on(PanelActions.addEthereumChain, (state: any, payload: AddEthereumChainPayload) => {
+reducer.on(PanelActions.addEthereumChain, (state: any, payload: EthereumChainPayload) => {
   return {
     ...state,
     tabId: payload.tabId,
-    connectedSiteOrigin: payload.origin,
     networkPayload: payload.networkPayload
   }
 })

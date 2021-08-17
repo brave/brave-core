@@ -1,8 +1,8 @@
 import * as React from 'react'
-import { UserAccountType, BuySendSwapViewTypes, Network } from '../../../constants/types'
+import { UserAccountType, BuySendSwapViewTypes, EthereumChain } from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
+import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import { create } from 'ethereum-blockies'
-import { NetworkOptions } from '../../../options/network-options'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import { Tooltip } from '../../shared'
 import locale from '../../../constants/locale'
@@ -21,7 +21,7 @@ import {
 
 export interface Props {
   selectedAccount: UserAccountType
-  selectedNetwork: Network
+  selectedNetwork: EthereumChain
   onChangeSwapView: (view: BuySendSwapViewTypes) => void
 }
 
@@ -57,7 +57,7 @@ function SwapHeader (props: Props) {
       </NameAndIcon>
 
       <OvalButton onClick={onShowNetworks}>
-        <OvalButtonText>{NetworkOptions[selectedNetwork].abbr}</OvalButtonText>
+        <OvalButtonText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</OvalButtonText>
         <CaratDownIcon />
       </OvalButton>
     </StyledWrapper >

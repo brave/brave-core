@@ -51,7 +51,6 @@ WalletBubbleManagerDelegateImpl::WalletBubbleManagerDelegateImpl(
   webui_bubble_manager_ = std::make_unique<WebUIBubbleManagerT<WalletPanelUI>>(
       anchor_view, browser->profile(), webui_url_,
       IDS_ACCNAME_BRAVE_WALLET_BUTTON, true);
-  
 }
 
 WalletBubbleManagerDelegateImpl::~WalletBubbleManagerDelegateImpl() = default;

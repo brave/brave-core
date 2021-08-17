@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { create } from 'ethereum-blockies'
-import { WalletAccountType, Network, TransactionPanelPayload } from '../../../constants/types'
+import { WalletAccountType, EthereumChain, TransactionPanelPayload } from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
-import { NetworkOptions } from '../../../options/network-options'
+import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import locale from '../../../constants/locale'
 import { formatBalance, formatFiatBalance } from '../../../utils/format-balances'
 import { NavButton, PanelTab, TransactionDetailBox } from '../'
@@ -39,7 +39,7 @@ export type confirmPanelTabs = 'transaction' | 'details'
 export interface Props {
   selectedAccount: WalletAccountType
   transactionPayload: TransactionPanelPayload
-  selectedNetwork: Network
+  selectedNetwork: EthereumChain
   onConfirm: () => void
   onReject: () => void
 }
@@ -83,7 +83,7 @@ function ConfirmTransactionPanel (props: Props) {
   return (
     <StyledWrapper>
       <TopRow>
-        <NetworkText>{NetworkOptions[selectedNetwork].abbr}</NetworkText>
+        <NetworkText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</NetworkText>
       </TopRow>
       <AccountCircleWrapper>
         <FromCircle orb={fromOrb} />

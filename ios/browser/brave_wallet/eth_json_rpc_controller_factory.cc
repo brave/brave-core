@@ -37,8 +37,8 @@ EthJsonRpcControllerFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
   auto* browser_state = ChromeBrowserState::FromBrowserState(context);
   std::unique_ptr<EthJsonRpcController> eth_json_rpc_controller(
-      new EthJsonRpcController(mojom::Network::Mainnet,
-                               browser_state->GetSharedURLLoaderFactory()));
+      new EthJsonRpcController(browser_state->GetSharedURLLoaderFactory(),
+                               browser_state->GetPrefs()));
   return eth_json_rpc_controller;
 }
 

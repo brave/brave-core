@@ -84,11 +84,11 @@ source_set("tab_helper") {
 
   deps = [
     "//brave/common",
-    "//brave/components/brave_wallet/browser:ethereum_permission_utils",
     "//brave/components/brave_wallet/browser:browser",
+    "//brave/components/brave_wallet/browser:ethereum_permission_utils",
     "//components/permissions",
     "//components/sessions",
-    "//content/public/browser"
+    "//content/public/browser",
   ]
 
   if (!is_android && !is_ios) {

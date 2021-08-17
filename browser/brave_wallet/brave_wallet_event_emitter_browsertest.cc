@@ -11,6 +11,7 @@
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "chrome/browser/profiles/profile.h"
@@ -134,7 +135,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
   auto controller = GetEthJsonRpcController();
-  controller->SetNetwork(brave_wallet::mojom::Network::Goerli);
+  controller->SetNetwork(brave_wallet::GetAllKnownNetworks()[3].chain_id);
 
   auto result_first =
       EvalJs(contents, CheckForEventScript("received_chain_changed_event"),

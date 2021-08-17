@@ -9,6 +9,8 @@
 #include <string>
 #include <vector>
 
+#include "base/callback.h"
+
 namespace brave_wallet {
 
 typedef unsigned _ExtInt(256) uint256_t;
@@ -40,18 +42,21 @@ struct NativeCurrency {
   uint256_t decimals;
 };
 
-struct AddEthereumChainParameter {
-  AddEthereumChainParameter();
-  ~AddEthereumChainParameter();
-  AddEthereumChainParameter(const AddEthereumChainParameter&);
+struct EthereumChain {
+  EthereumChain();
+  ~EthereumChain();
+  EthereumChain(const EthereumChain&);
 
-  std::string chainId;
-  std::string chainName;
-  std::vector<std::string> blockExplorerUrls;
-  std::vector<std::string> iconUrls;
-  std::vector<std::string> rpcUrls;
+  std::string chain_id;
+  std::string chain_name;
+  std::vector<std::string> block_explorer_urls;
+  std::vector<std::string> icon_urls;
+  std::vector<std::string> rpc_urls;
   NativeCurrency currency;
 };
+
+using RequestEthereumChainCallback =
+    base::OnceCallback<void(const std::string&)>;
 
 }  // namespace brave_wallet
 

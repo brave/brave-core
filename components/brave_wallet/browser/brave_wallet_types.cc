@@ -29,9 +29,8 @@ bool TransactionReceipt::operator!=(
   return !operator==(tx_receipt);
 }
 
-AddEthereumChainParameter::AddEthereumChainParameter() = default;
-AddEthereumChainParameter::~AddEthereumChainParameter() = default;
-AddEthereumChainParameter::AddEthereumChainParameter(
-    const AddEthereumChainParameter&) = default;
+EthereumChain::EthereumChain() = default;
+EthereumChain::~EthereumChain() = default;
+EthereumChain::EthereumChain(const EthereumChain&) = default;
 
 }  // namespace brave_wallet

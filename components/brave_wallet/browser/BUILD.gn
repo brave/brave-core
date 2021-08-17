@@ -92,6 +92,7 @@ static_library("browser") {
     "//components/keyed_service/core",
     "//components/prefs",
     "//components/sync_preferences",
+    "//components/user_prefs:user_prefs",
     "//crypto",
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",

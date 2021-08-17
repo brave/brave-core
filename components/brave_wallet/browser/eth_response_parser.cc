@@ -14,7 +14,29 @@
 
 namespace {
 
-bool ParseResult(const std::string& json, base::Value* result) {
+bool ParseSingleStringResult(const std::string& json, std::string* result) {
+  DCHECK(result);
+
+  base::Value result_v;
+  if (!brave_wallet::ParsePayload(json, "result", &result_v))
+    return false;
+
+  const std::string* result_str = result_v.GetIfString();
+  if (!result_str)
+    return false;
+
+  *result = *result_str;
+
+  return true;
+}
+
+}  // namespace
+
+namespace brave_wallet {
+
+bool ParsePayload(const std::string& json,
+                  const std::string& path,
+                  base::Value* result) {
   DCHECK(result);
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
@@ -30,7 +52,7 @@ bool ParseResult(const std::string& json, base::Value* result) {
     return false;
   }
 
-  const base::Value* result_v = response_dict->FindPath("result");
+  const base::Value* result_v = response_dict->FindPath(path);
   if (!result_v)
     return false;
 
@@ -38,26 +60,6 @@ bool ParseResult(const std::string& json, base::Value* result) {
 
   return true;
 }
-
-bool ParseSingleStringResult(const std::string& json, std::string* result) {
-  DCHECK(result);
-
-  base::Value result_v;
-  if (!ParseResult(json, &result_v))
-    return false;
-
-  const std::string* result_str = result_v.GetIfString();
-  if (!result_str)
-    return false;
-
-  *result = *result_str;
-
-  return true;
-}
-
-}  // namespace
-
-namespace brave_wallet {
 
 bool ParseEthGetBlockNumber(const std::string& json, uint256_t* block_num) {
   std::string block_num_str;
@@ -82,70 +84,6 @@ bool ParseEthGetTransactionCount(const std::string& json, uint256_t* count) {
   if (!HexValueToUint256(count_str, count))
     return false;
 
-  return true;
-}
-
-bool ParseAddEthereumChainParameter(const std::string& json,
-                                    AddEthereumChainParameter* result) {
-  if (!result)
-    return false;
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
-  if (!records_v) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
-    return false;
-  }
-
-  const base::DictionaryValue* request_dict;
-  if (!records_v->GetAsDictionary(&request_dict)) {
-    return false;
-  }
-
-  std::string method;
-  if (!request_dict->GetString("method", &method))
-    return false;
-
-  DCHECK(method == "wallet_addEthereumChain");
-
-  const base::ListValue* params = nullptr;
-  if (!request_dict->GetList("params", &params))
-    return false;
-  const base::DictionaryValue* params_dict;
-  params->GetList()[0].GetAsDictionary(&params_dict);
-  if (!params_dict)
-    return false;
-  if (!params_dict->GetString("chainId", &result->chainId))
-    return false;
-
-  params_dict->GetString("chainName", &result->chainName);
-
-  const base::ListValue* explorerUrlsList;
-  if (params_dict->GetList("blockExplorerUrls", &explorerUrlsList)) {
-    for (const auto& entry : explorerUrlsList->GetList())
-      result->blockExplorerUrls.push_back(entry.GetString());
-  }
-
-  const base::ListValue* iconUrlsList;
-  if (params_dict->GetList("iconUrls", &iconUrlsList)) {
-    for (const auto& entry : iconUrlsList->GetList())
-      result->iconUrls.push_back(entry.GetString());
-  }
-
-  const base::ListValue* rpcUrlsList;
-  if (params_dict->GetList("rpcUrls", &rpcUrlsList)) {
-    for (const auto& entry : rpcUrlsList->GetList())
-      result->rpcUrls.push_back(entry.GetString());
-  }
-
-  const base::DictionaryValue* currency_dict;
-  if (params_dict->GetDictionary("nativeCurrency", &currency_dict)) {
-    currency_dict->GetString("name", &result->currency.name);
-    currency_dict->GetString("symbol", &result->currency.symbol);
-    result->currency.decimals =
-        currency_dict->FindIntPath("decimals").value_or(0);
-  }
   return true;
 }
 
@@ -175,7 +113,7 @@ bool ParseEthGetTransactionReceipt(const std::string& json,
   DCHECK(receipt);
 
   base::Value result;
-  if (!ParseResult(json, &result))
+  if (!ParsePayload(json, "result", &result))
     return false;
   const base::DictionaryValue* result_dict = nullptr;
   if (!result.GetAsDictionary(&result_dict))

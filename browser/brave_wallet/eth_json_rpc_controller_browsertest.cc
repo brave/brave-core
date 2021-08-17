@@ -103,7 +103,8 @@ class EthJsonRpcBrowserTest : public InProcessBrowserTest {
     https_server_->RegisterRequestHandler(callback);
     ASSERT_TRUE(https_server_->Start());
     auto rpc_controller = GetEthJsonRpcController();
-    rpc_controller->SetCustomNetwork(https_server_->base_url());
+    rpc_controller->SetCustomNetworkForTesting("localhost",
+                                               https_server_->base_url());
   }
 
   void OnResponse(const int status,

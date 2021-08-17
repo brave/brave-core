@@ -9,9 +9,14 @@
 
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "components/prefs/testing_pref_service.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/storage_partition.h"
+#include "content/public/test/browser_task_environment.h"
+#include "content/public/test/test_browser_context.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
@@ -24,13 +29,15 @@ namespace brave_wallet {
 
 class EthJsonRpcControllerUnitTest : public testing::Test {
  public:
-  EthJsonRpcControllerUnitTest() {
+  EthJsonRpcControllerUnitTest()
+      : browser_context_(new content::TestBrowserContext()) {
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
     auto resource_request = base::BindRepeating(
         &EthJsonRpcControllerUnitTest::ResourceRequest, this);
     url_loader_factory_.SetInterceptor(std::move(resource_request));
+    user_prefs::UserPrefs::Set(browser_context_.get(), &prefs_);
   }
 
   ~EthJsonRpcControllerUnitTest() override = default;
@@ -38,6 +45,7 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory() {
     return shared_url_loader_factory_;
   }
+  PrefService* prefs() { return &prefs_; }
   void SwitchToNextResponse() {
     url_loader_factory_.ClearResponses();
     url_loader_factory_.AddResponse(
@@ -62,93 +70,36 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
   }
 
  private:
-  base::test::TaskEnvironment task_environment_;
+  content::BrowserTaskEnvironment browser_task_environment_;
+  std::unique_ptr<content::TestBrowserContext> browser_context_;
+  TestingPrefServiceSimple prefs_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 };
 
 TEST_F(EthJsonRpcControllerUnitTest, SetNetwork) {
-  EthJsonRpcController controller(brave_wallet::mojom::Network::Mainnet,
-                                  shared_url_loader_factory());
+  EthJsonRpcController controller(shared_url_loader_factory(), prefs());
 
-  controller.SetNetwork(brave_wallet::mojom::Network::Mainnet);
-  controller.GetNetwork(
-      base::BindOnce([](brave_wallet::mojom::Network network) {
-        EXPECT_EQ(network, brave_wallet::mojom::Network::Mainnet);
-      }));
-  controller.GetNetworkUrl(base::BindOnce([](const std::string& spec) {
-    EXPECT_EQ(GURL(spec).GetOrigin(), "https://mainnet-infura.brave.com/");
-  }));
-
-  controller.SetNetwork(brave_wallet::mojom::Network::Rinkeby);
-  controller.GetNetwork(
-      base::BindOnce([](brave_wallet::mojom::Network network) {
-        EXPECT_EQ(network, brave_wallet::mojom::Network::Rinkeby);
-      }));
-  controller.GetNetworkUrl(base::BindOnce([](const std::string& spec) {
-    EXPECT_EQ(GURL(spec).GetOrigin(), "https://rinkeby-infura.brave.com/");
-  }));
-
-  controller.SetNetwork(brave_wallet::mojom::Network::Ropsten);
-  controller.GetNetwork(
-      base::BindOnce([](brave_wallet::mojom::Network network) {
-        EXPECT_EQ(network, brave_wallet::mojom::Network::Ropsten);
-      }));
-  controller.GetNetworkUrl(base::BindOnce([](const std::string& spec) {
-    EXPECT_EQ(GURL(spec).GetOrigin(), "https://ropsten-infura.brave.com/");
-  }));
-
-  controller.SetNetwork(brave_wallet::mojom::Network::Goerli);
-  controller.GetNetwork(
-      base::BindOnce([](brave_wallet::mojom::Network network) {
-        EXPECT_EQ(network, brave_wallet::mojom::Network::Goerli);
-      }));
-  controller.GetNetworkUrl(base::BindOnce([](const std::string& spec) {
-    EXPECT_EQ(GURL(spec).GetOrigin(), "https://goerli-infura.brave.com/");
-  }));
-
-  controller.SetNetwork(brave_wallet::mojom::Network::Kovan);
-  controller.GetNetwork(
-      base::BindOnce([](brave_wallet::mojom::Network network) {
-        EXPECT_EQ(network, brave_wallet::mojom::Network::Kovan);
-      }));
-  controller.GetNetworkUrl(base::BindOnce([](const std::string& spec) {
-    EXPECT_EQ(GURL(spec).GetOrigin(), "https://kovan-infura.brave.com/");
-  }));
-
-  controller.SetNetwork(brave_wallet::mojom::Network::Localhost);
-  controller.GetNetwork(
-      base::BindOnce([](brave_wallet::mojom::Network network) {
-        EXPECT_EQ(network, brave_wallet::mojom::Network::Localhost);
-      }));
-  controller.GetNetworkUrl(base::BindOnce([](const std::string& spec) {
-    EXPECT_EQ(GURL(spec).GetOrigin(), "http://localhost:8545/");
-  }));
-  base::RunLoop().RunUntilIdle();
-}
-
-TEST_F(EthJsonRpcControllerUnitTest, SetCustomNetwork) {
-  EthJsonRpcController controller(brave_wallet::mojom::Network::Mainnet,
-                                  shared_url_loader_factory());
-  std::string custom_network("http://tesshared_url_loader_factoryt.com/");
-  controller.SetCustomNetwork(GURL(custom_network));
-
-  controller.GetNetwork(
-      base::BindOnce([](brave_wallet::mojom::Network network) {
-        EXPECT_EQ(network, brave_wallet::mojom::Network::Custom);
-      }));
-  controller.GetNetworkUrl(base::BindOnce(
-      [](std::string custom_network, const std::string& spec) {
-        EXPECT_EQ(GURL(spec).GetOrigin(), custom_network);
-      },
-      custom_network));
-
+  auto networks = brave_wallet::GetAllKnownChains();
+  for (const auto& network : networks) {
+    controller.SetNetwork(network.chain_id);
+    controller.GetChainId(base::BindOnce(
+        [](const std::string& expected_id, const std::string& chain_id) {
+          EXPECT_EQ(chain_id, expected_id);
+        },
+        network.chain_id));
+    controller.GetNetworkUrl(base::BindOnce(
+        [](const std::string& expected_url, const std::string& spec) {
+          EXPECT_EQ(GURL(spec).GetOrigin(), GURL(expected_url).GetOrigin());
+        },
+        network.rpc_urls.front()));
+  }
   base::RunLoop().RunUntilIdle();
 }
 
 TEST_F(EthJsonRpcControllerUnitTest, ResolveENSDomain) {
-  EthJsonRpcController controller(brave_wallet::mojom::Network::Localhost,
-                                  shared_url_loader_factory());
+  EthJsonRpcController controller(shared_url_loader_factory(), prefs());
+  controller.SetNetwork("localhost");
   SetRegistrarResponse();
   base::RunLoop run;
   controller.EnsProxyReaderGetResolverAddress(

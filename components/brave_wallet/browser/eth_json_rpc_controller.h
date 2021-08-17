@@ -36,14 +36,16 @@ class SharedURLLoaderFactory;
 class SimpleURLLoader;
 }  // namespace network
 
+class PrefService;
+
 namespace brave_wallet {
 
 class EthJsonRpcController : public KeyedService,
                              public mojom::EthJsonRpcController {
  public:
   EthJsonRpcController(
-      mojom::Network network,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      PrefService* prefs);
   ~EthJsonRpcController() override;
 
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
@@ -97,26 +99,22 @@ class EthJsonRpcController : public KeyedService,
       const std::string& domain,
       UnstoppableDomainsProxyReaderGetManyCallback callback);
 
-  void GetNetwork(
-      mojom::EthJsonRpcController::GetNetworkCallback callback) override;
-  void SetNetwork(mojom::Network network) override;
-  std::string GetChainId() const;
+  void SetNetwork(const std::string& chain_id) override;
   void GetChainId(
       mojom::EthJsonRpcController::GetChainIdCallback callback) override;
   void GetBlockTrackerUrl(
       mojom::EthJsonRpcController::GetBlockTrackerUrlCallback callback)
       override;
+  void GetAllNetworks(GetAllNetworksCallback callback) override;
   void GetNetworkUrl(
       mojom::EthJsonRpcController::GetNetworkUrlCallback callback) override;
-  void SetCustomNetwork(const GURL& provider_url) override;
+  void SetCustomNetworkForTesting(const std::string& chain_id,
+                                  const GURL& provider_url) override;
 
   void AddObserver(::mojo::PendingRemote<mojom::EthJsonRpcControllerObserver>
                        observer) override;
 
-  // Returns the chain ID for a network or an empty string if no standard
-  // chain ID is defined for the specified network.
-  static std::string GetChainIdFromNetwork(mojom::Network network);
-  static GURL GetBlockTrackerUrlFromNetwork(mojom::Network network);
+  GURL GetBlockTrackerUrlFromNetwork(std::string chain_id);
 
  private:
   void FireNetworkChanged();
@@ -171,11 +169,11 @@ class EthJsonRpcController : public KeyedService,
 
   api_request_helper::APIRequestHelper api_request_helper_;
   GURL network_url_;
-  mojom::Network network_;
+  std::string chain_id_;
   mojo::RemoteSet<mojom::EthJsonRpcControllerObserver> observers_;
 
   mojo::ReceiverSet<mojom::EthJsonRpcController> receivers_;
-
+  PrefService* prefs_ = nullptr;
   base::WeakPtrFactory<EthJsonRpcController> weak_ptr_factory_;
 };
 

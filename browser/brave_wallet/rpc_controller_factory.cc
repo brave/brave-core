@@ -10,6 +10,7 @@
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/storage_partition.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -54,9 +55,8 @@ KeyedService* RpcControllerFactory::BuildServiceInstanceFor(
   auto* default_storage_partition = context->GetDefaultStoragePartition();
   auto shared_url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
-
-  return new EthJsonRpcController(brave_wallet::mojom::Network::Mainnet,
-                                  shared_url_loader_factory);
+  return new EthJsonRpcController(shared_url_loader_factory,
+                                  user_prefs::UserPrefs::Get(context));
 }
 
 content::BrowserContext* RpcControllerFactory::GetBrowserContextToUse(
