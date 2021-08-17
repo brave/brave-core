@@ -15,12 +15,6 @@ public class BraveConfig {
   public static final String DEVELOPER_OPTIONS_CODE = "";
 #endif
 
-#if defined(BRAVE_ANDROID_SYNC_ENABLED)
-  public static final boolean SYNC_ENABLED = BRAVE_ANDROID_SYNC_ENABLED;
-#else
-  public static final boolean SYNC_ENABLED = false;
-#endif
-
 #if defined(BRAVE_ANDROID_WALLET_ENABLED)
   public static final boolean NATIVE_WALLET_ENABLED = BRAVE_ANDROID_WALLET_ENABLED;
 #else

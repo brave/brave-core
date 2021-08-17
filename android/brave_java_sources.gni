@@ -5,7 +5,6 @@
 
 import("//brave/browser/brave_ads/android/java_sources.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
-import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/permissions/android/java_sources.gni")
 import("//brave/components/safetynet/java_sources.gni")
@@ -32,7 +31,9 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsSiteBannerActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsUserWalletActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsVerifyWalletActivity.java",
+  "../../brave/android/java/org/chromium/chrome/browser/BraveSyncInformers.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveSyncReflectionUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/BraveSyncWorker.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveUphold.java",
   "../../brave/android/java/org/chromium/chrome/browser/CrossPromotionalModalDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/InternetConnection.java",
@@ -160,6 +161,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSettingsActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSettingsLauncherImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveStatsPreferences.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSyncScreensPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveWebrtcPolicyPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveWebrtcPolicyPreferencesFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/SearchEngineTabModelSelectorObserver.java",
@@ -176,6 +178,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/PlayYTVideoInBrowserPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/suggestions/tile/BraveTileView.java",
   "../../brave/android/java/org/chromium/chrome/browser/sync/BraveAndroidSyncSettings.java",
+  "../../brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",
   "../../brave/android/java/org/chromium/chrome/browser/sync/settings/BraveManageSyncSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/tabmodel/BraveTabCreator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/BraveHomeButton.java",
@@ -240,15 +243,6 @@ brave_java_sources += brave_rewards_java_sources
 
 if (enable_brave_referrals) {
   brave_java_sources += [ "../../brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java" ]
-}
-
-if (enable_brave_sync) {
-  brave_java_sources += [
-    "../../brave/android/java/org/chromium/chrome/browser/BraveSyncInformers.java",
-    "../../brave/android/java/org/chromium/chrome/browser/BraveSyncWorker.java",
-    "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSyncScreensPreference.java",
-    "../../brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",
-  ]
 }
 
 if (brave_wallet_enabled) {

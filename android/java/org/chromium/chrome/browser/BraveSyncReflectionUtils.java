@@ -21,15 +21,12 @@ public class BraveSyncReflectionUtils {
     public static Object getSyncWorker() {
         // May be invoked in non-UI thread when we do validation for camera QR in callback
         if (!sInitialized) {
-            if (BraveConfig.SYNC_ENABLED) {
-                try {
-                    sBraveSyncWorker =
-                        Class.forName("org.chromium.chrome.browser.BraveSyncWorker")
-                             .getConstructor()
-                             .newInstance();
-                } catch (Exception e) {
-                    Log.e(TAG, "Cannot create BraveSyncWorker ", e);
-                }
+            try {
+                sBraveSyncWorker = Class.forName("org.chromium.chrome.browser.BraveSyncWorker")
+                                           .getConstructor()
+                                           .newInstance();
+            } catch (Exception e) {
+                Log.e(TAG, "Cannot create BraveSyncWorker ", e);
             }
             sInitialized = true;
         }
@@ -37,10 +34,6 @@ public class BraveSyncReflectionUtils {
     }
 
     public static void showInformers() {
-        if (!BraveConfig.SYNC_ENABLED) {
-            return;
-        }
-
         try {
             Method method = Class.forName("org.chromium.chrome.browser.BraveSyncInformers").getDeclaredMethod("show");
             method.invoke(null);

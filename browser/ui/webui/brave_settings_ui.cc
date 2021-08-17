@@ -18,7 +18,6 @@
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/ui/webui/settings/brave_sync_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
-#include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
@@ -26,11 +25,8 @@
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
-#include "content/public/browser/web_ui_data_source.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_SYNC)
 #include "components/sync/driver/sync_driver_switches.h"
-#endif
+#include "content/public/browser/web_ui_data_source.h"
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 #include "brave/browser/ui/webui/settings/brave_relaunch_handler_mac.h"
@@ -54,7 +50,7 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
                                  const std::string& host)
     : SettingsUI(web_ui) {
   web_ui->AddMessageHandler(
-    std::make_unique<settings::MetricsReportingHandler>());
+      std::make_unique<settings::MetricsReportingHandler>());
   web_ui->AddMessageHandler(std::make_unique<BravePrivacyHandler>());
   web_ui->AddMessageHandler(std::make_unique<DefaultBraveShieldsHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveDefaultExtensionsHandler>());
@@ -66,8 +62,7 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
 #endif
 }
 
-BraveSettingsUI::~BraveSettingsUI() {
-}
+BraveSettingsUI::~BraveSettingsUI() {}
 
 // static
 void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
@@ -77,14 +72,10 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                                  kBraveSettingsResources[i].id);
   }
 
-#if BUILDFLAG(ENABLE_BRAVE_SYNC)
-  html_source->AddBoolean("isSyncDisabled",
-                          !switches::IsSyncAllowedByFlag());
-#else
-  html_source->AddBoolean("isSyncDisabled", true);
-#endif
-  html_source->AddString("braveProductVersion",
-    version_info::GetBraveVersionWithoutChromiumMajorVersion());
+  html_source->AddBoolean("isSyncDisabled", !switches::IsSyncAllowedByFlag());
+  html_source->AddString(
+      "braveProductVersion",
+      version_info::GetBraveVersionWithoutChromiumMajorVersion());
   NavigationBarDataProvider::Initialize(html_source);
   if (auto* service = ViewCounterServiceFactory::GetForProfile(profile))
     service->InitializeWebUIDataSource(html_source);

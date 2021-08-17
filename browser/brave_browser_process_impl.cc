@@ -28,7 +28,6 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
-#include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
@@ -191,10 +190,8 @@ void BraveBrowserProcessImpl::StartBraveServices() {
   // Now start the local data files service, which calls all observers.
   local_data_files_service()->Start();
 
-#if BUILDFLAG(ENABLE_BRAVE_SYNC)
   brave_sync::NetworkTimeHelper::GetInstance()
     ->SetNetworkTimeTracker(g_browser_process->network_time_tracker());
-#endif
 }
 
 brave_shields::AdBlockService* BraveBrowserProcessImpl::ad_block_service() {
