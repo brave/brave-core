@@ -6,6 +6,7 @@
 #include "brave/browser/brave_drm_tab_helper.h"
 
 #include <algorithm>
+#include <utility>
 #include <vector>
 
 #include "brave/browser/widevine/widevine_utils.h"
@@ -49,10 +50,7 @@ const char BraveDrmTabHelper::kWidevineComponentId[] =
     "oimompecagnajdejgnnjijobebaeigek";
 
 BraveDrmTabHelper::BraveDrmTabHelper(content::WebContents* contents)
-    : WebContentsObserver(contents),
-      receivers_(contents,
-                 this,
-                 content::WebContentsFrameReceiverSetPassKey()) {
+    : WebContentsObserver(contents), brave_drm_receivers_(contents, this) {
   auto* updater = g_browser_process->component_updater();
   // We don't need to observe if widevine is already registered.
   if (!IsAlreadyRegistered(updater))
@@ -60,6 +58,20 @@ BraveDrmTabHelper::BraveDrmTabHelper(content::WebContents* contents)
 }
 
 BraveDrmTabHelper::~BraveDrmTabHelper() {}
+
+// static
+void BraveDrmTabHelper::BindBraveDRM(
+    mojo::PendingAssociatedReceiver<brave_drm::mojom::BraveDRM> receiver,
+    content::RenderFrameHost* rfh) {
+  auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
+  if (!web_contents)
+    return;
+
+  auto* tab_helper = BraveDrmTabHelper::FromWebContents(web_contents);
+  if (!tab_helper)
+    return;
+  tab_helper->brave_drm_receivers_.Bind(rfh, std::move(receiver));
+}
 
 bool BraveDrmTabHelper::ShouldShowWidevineOptIn() const {
   // If the user already opted in, don't offer it.
