@@ -136,7 +136,7 @@ export const PercentBubble = styled.div<Partial<StyleProps>>`
   flex-direction: row;
   padding: 4px 8px;
   border-radius: 8px;
-  background-color: ${(p) => p.isDown ? p.theme.palette.red600 : p.theme.palette.teal600};
+  background-color: ${(p) => p.isDown ? '#EE6374' : '#2AC194'};
 `
 
 export const PercentText = styled.span`

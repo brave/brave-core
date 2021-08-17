@@ -66,7 +66,7 @@ function LineChart (props: Props) {
           <animate attributeName='r' values='3;8;3;3' dur='3s' begin='0s' repeatCount='indefinite' />
           <animate attributeName='opacity' values='1;0;0;0' dur='3s' begin='0s' repeatCount='indefinite' />
         </circle >
-        <circle fill={isAsset ? isDown ? theme.red600 : theme.teal600 : '#BF14A2'} cx={props.cx} r='3' cy={props.cy} />
+        <circle fill={isAsset ? isDown ? '#EE6374' : '#2AC194' : '#BF14A2'} cx={props.cx} r='3' cy={props.cy} />
       </>
     )
   }
@@ -129,7 +129,7 @@ function LineChart (props: Props) {
             type='monotone'
             dataKey='close'
             strokeWidth={2}
-            stroke={isAsset ? isDown ? theme.red600 : theme.teal600 : priceData.length <= 0 ? '#BF14A2' : `url(#lineGradient)`}
+            stroke={isAsset ? isDown ? '#EE6374' : '#2AC194' : priceData.length <= 0 ? '#BF14A2' : `url(#lineGradient)`}
             fill='none'
           />
           <ReferenceDot x={chartData[lastPoint].date.toString()} y={chartData[lastPoint].close} shape={CustomReferenceDot} />
