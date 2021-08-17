@@ -16,47 +16,48 @@
         android:title="@string/subscription"/>
 
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
-            android:key="subscription_status"
-            android:title="@string/status"/>
+        android:key="subscription_status"
+        android:title="@string/status"/>
 
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
-            android:key="subscription_expires"
-            android:title="@string/expires"/>
+        android:key="subscription_expires"
+        android:title="@string/expires"/>
 
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
-            android:key="subscription_manage"
-            android:title="@string/manage_subscription"/>
+        android:key="subscription_manage"
+        android:title="@string/manage_subscription"/>
 
     <PreferenceCategory
         android:key="brave_vpn_server_section"
         android:title="@string/server"/>
 
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
-            android:key="server_host"
-            android:title="@string/host"/>
+        android:key="server_host"
+        android:title="@string/host"/>
 
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
-            android:key="server_location"
-            android:title="@string/location"/>
+        android:key="server_location"
+        android:title="@string/location"/>
+
+    <ListPreference
+        android:key="server_change_location"
+        android:title="@string/change_location"
+        android:summary="%1$s" />
 
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
-            android:key="server_change_location"
-            android:title="@string/change_location"/>
-
-    <org.chromium.components.browser_ui.settings.ChromeBasePreference
-            android:key="server_reset_configuration"
-            android:title="@string/reset_configuration"/>
+        android:key="server_reset_configuration"
+        android:title="@string/reset_configuration"/>
 
     <PreferenceCategory
         android:key="brave_vpn_support_section"
         android:title="@string/support"/>
 
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
-            android:key="support_technical"
-            android:title="@string/contact_technical_support"/>
+        android:key="support_technical"
+        android:title="@string/contact_technical_support"/>
 
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
-            android:key="support_vpn"
-            android:title="@string/vpn_support"/>
+        android:key="support_vpn"
+        android:title="@string/vpn_support"/>
 
 </PreferenceScreen>

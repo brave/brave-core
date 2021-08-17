@@ -43,6 +43,7 @@ import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.BraveVpnPlanPagerAdapter;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
+import org.chromium.chrome.browser.vpn.VpnProfileUtils;
 import org.chromium.ui.widget.Toast;
 
 import java.util.List;
@@ -85,7 +86,7 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
         installVpnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPurchaseDetails();
+                verifySubscription(false);
             }
         });
 
@@ -123,7 +124,7 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && requestCode == BraveVpnUtils.BRAVE_VPN_PROFILE_REQUEST_CODE
+        if (resultCode == RESULT_OK && requestCode == VpnProfileUtils.BRAVE_VPN_PROFILE_REQUEST_CODE
                 && BraveVpnUtils.isBraveVpnFeatureEnable()) {
             VpnManager vpnManager = (VpnManager) getSystemService(Context.VPN_MANAGEMENT_SERVICE);
             if (vpnManager != null) {

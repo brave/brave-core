@@ -2084,10 +2084,10 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Accept connection request
     </message>
     <message name="IDS_VPN_PROFILE_CREATION_FAILED" desc="Brave VPN profile text">
-      Vpn profile creation failed. PLease try again.
+      Vpn profile creation failed. Please try again.
     </message>
     <message name="IDS_PURCHASE_TOKEN_VERIFICATION_FAILED" desc="Brave VPN profile text">
-      Purchase Token verification failed. PLease try again.
+      Purchase Token verification failed. Please try again.
     </message>
     <message name="IDS_BRAVE_VPN_NOTIFICATION_MESSAGE" desc="Brave VPN notification message">
       VPN is running in the background
@@ -2127,6 +2127,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_VPN_SUPPORT" desc="Brave VPN settings section text">
       VPN Support
+    </message>
+    <message name="IDS_VPN_PROFILE_IS_NOT_CREATED" desc="Brave VPN profile error text">
+      Vpn profile is not created. Creating a new profile.
     </message>
     </messages>
   </release>

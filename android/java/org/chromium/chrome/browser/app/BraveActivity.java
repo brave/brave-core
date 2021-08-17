@@ -121,6 +121,7 @@ import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.VpnCalloutDialogFragment;
+import org.chromium.chrome.browser.vpn.VpnProfileUtils;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceAccountBalance;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 import org.chromium.components.bookmarks.BookmarkId;
@@ -241,10 +242,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         } else if (id == R.id.brave_wallet_id) {
             openBraveWallet();
         } else if (id == R.id.request_brave_vpn_id || id == R.id.request_brave_vpn_check_id) {
-            if (BraveVpnUtils.isSubscriptionPurchased()) {
-                getPurchaseDetails();
+            if (VpnProfileUtils.getInstance(BraveActivity.this).isVPNConnected()) {
+                VpnProfileUtils.getInstance(BraveActivity.this).stopVpn();
             } else {
-                BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
+                if (BraveVpnUtils.isSubscriptionPurchased()) {
+                    verifySubscription();
+                } else {
+                    BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
+                }
             }
         } else {
             return false;
@@ -253,7 +258,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         return true;
     }
 
-    private void getPurchaseDetails() {
+    private void verifySubscription() {
         List<Purchase> purchases = InAppPurchaseWrapper.getInstance().queryPurchases();
         for (Purchase purchase : purchases) {
             if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
@@ -274,9 +279,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public void onVerifyPurchaseToken(String jsonResponse, boolean isSuccess) {
         boolean isPurchaseVerified =
                 BraveVpnUtils.isPurchaseValid(jsonResponse) && isSubscriptionPurchased;
-        Log.e("BraveVPN", "isPurchaseVerified : " + isPurchaseVerified);
+        Log.e("BraveVPN", "BraveActivity : isPurchaseVerified : " + isPurchaseVerified);
         if (isPurchaseVerified) {
-            BraveVpnUtils.startStopVpn(BraveActivity.this);
+            VpnProfileUtils.getInstance(BraveActivity.this).startStopVpn();
         } else {
             Toast.makeText(BraveActivity.this, R.string.purchase_token_verification_failed,
                          Toast.LENGTH_LONG)
@@ -284,6 +289,18 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
         }
     };
+
+    @Override
+    public void onGetAllServerRegions(String jsonResponse, boolean isSuccess) {
+        Log.e("BraveVPN", "jsonResponse : " + jsonResponse);
+        if (isSuccess) {
+            BraveVpnUtils.getServerLocations(jsonResponse);
+        } else {
+            Toast.makeText(BraveActivity.this, R.string.purchase_token_verification_failed,
+                         Toast.LENGTH_LONG)
+                    .show();
+        }
+    }
 
     @Override
     public void initializeState() {
@@ -523,6 +540,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                             && PackageUtils.isFirstInstall(this))) {
                 showVpnCalloutDialog();
             }
+            BraveVpnNativeWorker.getInstance().getAllServerRegions();
         }
     }
 
@@ -894,6 +912,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @Override
     public void onActivityResult (int requestCode, int resultCode,
                                   Intent data) {
+        Log.e("BraveVPN", "onActivityResult : BraveActivity");
         if (resultCode == RESULT_OK &&
                 (requestCode == VERIFY_WALLET_ACTIVITY_REQUEST_CODE ||
                  requestCode == USER_WALLET_ACTIVITY_REQUEST_CODE ||
@@ -904,7 +923,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 openNewOrSelectExistingTab(open_url);
             }
         } else if (resultCode == RESULT_OK
-                && requestCode == BraveVpnUtils.BRAVE_VPN_PROFILE_REQUEST_CODE
+                && requestCode == VpnProfileUtils.BRAVE_VPN_PROFILE_REQUEST_CODE
                 && BraveVpnUtils.isBraveVpnFeatureEnable()) {
             VpnManager vpnManager = (VpnManager) getSystemService(Context.VPN_MANAGEMENT_SERVICE);
             vpnManager.startProvisionedVpnProfile();

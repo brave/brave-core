@@ -27,16 +27,20 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.browser.vpn.BraveVpnPlansActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnProfileActivity;
+import org.chromium.chrome.browser.vpn.VpnServerRegion;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BraveVpnUtils {
     public static final int MONTHLY_SUBSCRIPTION = 1;
     public static final int YEARLY_SUBSCRIPTION = 2;
 
-    public static final int BRAVE_VPN_PROFILE_REQUEST_CODE = 36;
-
     private static final String PREF_BRAVE_VPN_CALLOUT = "brave_vpn_callout";
     private static final String PREF_BRAVE_VPN_CALLOUT_SETTINGS = "brave_vpn_callout_settings";
     private static final String PREF_BRAVE_SUBSCRIPTION_PURCHASE = "brave_subscription_purchase";
+
+    public static List<VpnServerRegion> vpnServerRegions = new ArrayList<>();
 
     public static boolean shouldShowVpnCalloutView() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
@@ -74,25 +78,9 @@ public class BraveVpnUtils {
         sharedPreferencesEditor.apply();
     }
 
-    public static boolean isVPNConnected(Context context) {
-        ConnectivityManager connectivityManager =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivityManager != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(
-                        connectivityManager.getActiveNetwork());
-                return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN);
-            } else {
-                NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-                return activeNetwork.getType() == ConnectivityManager.TYPE_VPN;
-            }
-        }
-        return false;
-    }
-
-    public static Ikev2VpnProfile getVpnProfile(String hostname, String username, String password) {
-        Ikev2VpnProfile.Builder builder = new Ikev2VpnProfile.Builder(hostname, "identity");
-        return builder.setAuthUsernamePassword(username, password, null).build();
+    public static String getServerRegion(String serverRegionPref) {
+        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+        return sharedPreferences.getString(serverRegionPref, "automatic");
     }
 
     public static boolean isBraveVpnFeatureEnable() {
@@ -112,31 +100,6 @@ public class BraveVpnUtils {
         Intent braveVpnProfileIntent = new Intent(context, BraveVpnProfileActivity.class);
         braveVpnProfileIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(braveVpnProfileIntent);
-    }
-
-    public static void startStopVpn(Activity activity) {
-        if (isBraveVpnFeatureEnable()) {
-            VpnManager vpnManager =
-                    (VpnManager) activity.getSystemService(Context.VPN_MANAGEMENT_SERVICE);
-            if (!isVPNConnected(activity) && vpnManager != null) {
-                try {
-                    vpnManager.startProvisionedVpnProfile();
-                } catch (SecurityException securityException) {
-                    openBraveVpnProfileActivity(activity);
-                }
-            } else {
-                vpnManager.stopProvisionedVpnProfile();
-            }
-        }
-    }
-
-    public static void createVpnProfile(
-            Activity activity, String hostname, String username, String password) {
-        VpnManager vpnManager =
-                (VpnManager) activity.getSystemService(Context.VPN_MANAGEMENT_SERVICE);
-        Ikev2VpnProfile ikev2VpnProfile = getVpnProfile(hostname, username, password);
-        Intent intent = vpnManager.provisionVpnProfile(ikev2VpnProfile);
-        activity.startActivityForResult(intent, BRAVE_VPN_PROFILE_REQUEST_CODE);
     }
 
     public static String getRegionForTimeZone(String jsonTimezones, String currentTimezone) {
@@ -193,5 +156,23 @@ public class BraveVpnUtils {
             Log.e("BraveVPN", "getProfileCredentials JSONException error " + e);
         }
         return false;
+    }
+
+    public static void getServerLocations(String jsonServerLocations) {
+        vpnServerRegions.clear();
+        vpnServerRegions.add(new VpnServerRegion("automatic", "automatic", "Automatic"));
+        jsonServerLocations = "{\"servers\":" + jsonServerLocations + "}";
+        try {
+            JSONObject result = new JSONObject(jsonServerLocations);
+            JSONArray servers = result.getJSONArray("servers");
+            for (int i = 0; i < servers.length(); i++) {
+                JSONObject server = servers.getJSONObject(i);
+                VpnServerRegion vpnServerRegion = new VpnServerRegion(server.getString("continent"),
+                        server.getString("name"), server.getString("name-pretty"));
+                vpnServerRegions.add(vpnServerRegion);
+            }
+        } catch (JSONException e) {
+            Log.e("BraveVPN", "getServerLocations JSONException error " + e);
+        }
     }
 }

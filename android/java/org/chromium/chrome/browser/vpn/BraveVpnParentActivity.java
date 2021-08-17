@@ -53,6 +53,7 @@ public abstract class BraveVpnParentActivity
         extends AsyncInitializationActivity implements BraveVpnObserver {
     private String subscriberCredential;
     private String hostname;
+    private boolean isSubscriptionPurchased = false;
 
     @Override
     public void finishNativeInitialization() {
@@ -61,25 +62,43 @@ public abstract class BraveVpnParentActivity
                 BraveVpnParentActivity.this);
     }
 
-    protected void getPurchaseDetails() {
+    protected void verifySubscription(boolean isVerification) {
         List<Purchase> purchases = InAppPurchaseWrapper.getInstance().queryPurchases();
-        boolean isSubscriptionPurchased = false;
         for (Purchase purchase : purchases) {
             if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
                 String purchaseToken = purchase.getPurchaseToken();
                 String productId = purchase.getSkus().get(0).toString();
                 Log.e("BraveVPN", "Purchase Token : " + purchaseToken);
                 isSubscriptionPurchased = true;
-                BraveVpnNativeWorker.getInstance().getSubscriberCredential(
-                        "subscription", productId, "iap-android", purchaseToken, getPackageName());
+                if (isVerification) {
+                    BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
+                            purchaseToken, productId, "subscription", getPackageName());
+                } else {
+                    BraveVpnNativeWorker.getInstance().getSubscriberCredential("subscription",
+                            productId, "iap-android", purchaseToken, getPackageName());
+                }
             }
         }
 
-        if (!isSubscriptionPurchased) {
+        if (!isSubscriptionPurchased && !isVerification) {
             BraveVpnUtils.openBraveVpnPlansActivity(BraveVpnParentActivity.this);
-            Log.e("BraveVPN", "getPurchaseDetails failed");
+            Log.e("BraveVPN", "verifySubscription failed");
         }
     }
+
+    @Override
+    public void onVerifyPurchaseToken(String jsonResponse, boolean isSuccess) {
+        boolean isPurchaseVerified =
+                BraveVpnUtils.isPurchaseValid(jsonResponse) && isSubscriptionPurchased;
+        Log.e("BraveVPN", "isPurchaseVerified : " + isPurchaseVerified);
+        if (isPurchaseVerified) {
+            VpnProfileUtils.getInstance(BraveVpnParentActivity.this).startStopVpn();
+        } else {
+            Toast.makeText(BraveVpnParentActivity.this, R.string.purchase_token_verification_failed,
+                         Toast.LENGTH_LONG)
+                    .show();
+        }
+    };
 
     @Override
     public void onGetSubscriberCredential(String subscriberCredential, boolean isSuccess) {
@@ -136,8 +155,9 @@ public abstract class BraveVpnParentActivity
         if (isSuccess) {
             Pair<String, String> profileCredentials =
                     BraveVpnUtils.getProfileCredentials(jsonProfileCredentials);
-            BraveVpnUtils.createVpnProfile(BraveVpnParentActivity.this, hostname,
-                    profileCredentials.first, profileCredentials.second);
+            VpnProfileUtils.getInstance(BraveVpnParentActivity.this)
+                    .createVpnProfile(BraveVpnParentActivity.this, hostname,
+                            profileCredentials.first, profileCredentials.second);
         } else {
             Toast.makeText(BraveVpnParentActivity.this, R.string.vpn_profile_creation_failed,
                          Toast.LENGTH_LONG)

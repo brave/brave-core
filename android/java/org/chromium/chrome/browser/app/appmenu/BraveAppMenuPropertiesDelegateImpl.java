@@ -26,6 +26,7 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
+import org.chromium.chrome.browser.vpn.VpnProfileUtils;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegateImpl {
@@ -88,6 +89,6 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
         requestMenuRow.setVisible(itemVisible);
         if (!itemVisible) return;
 
-        requestMenuCheck.setChecked(BraveVpnUtils.isVPNConnected(mContext));
+        requestMenuCheck.setChecked(VpnProfileUtils.getInstance(mContext).isVPNConnected());
     }
 }

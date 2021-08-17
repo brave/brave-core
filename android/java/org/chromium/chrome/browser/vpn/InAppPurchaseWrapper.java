@@ -30,7 +30,7 @@ import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -49,7 +49,7 @@ public class InAppPurchaseWrapper {
     }
 
     public static final List<String> SUBS_SKUS =
-            new ArrayList<>(Collections.singletonList("nightly.bravevpn.monthly"));
+            new ArrayList<>(Arrays.asList("nightly.bravevpn.monthly", "nightly.bravevpn.yearly"));
 
     public static InAppPurchaseWrapper getInstance() {
         if (inAppPurchaseWrapper == null) inAppPurchaseWrapper = new InAppPurchaseWrapper();

@@ -53,7 +53,8 @@ import java.util.List;
 
 public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     private FirstRunFlowSequencer mFirstRunFlowSequencer;
-    private static final String NIGHTLY_SUBSCRIPTION = "nightly.bravevpn.monthly";
+    private static final String NIGHTLY_MONTHLY_SUBSCRIPTION = "nightly.bravevpn.monthly";
+    private static final String NIGHTLY_YEARLY_SUBSCRIPTION = "nightly.bravevpn.yearly";
 
     @Override
     public void onResumeWithNative() {
@@ -94,7 +95,8 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
             @Override
             public void onClick(View v) {
                 InAppPurchaseWrapper.getInstance().purchase(BraveVpnPlansActivity.this,
-                        InAppPurchaseWrapper.getInstance().getSkuDetails(NIGHTLY_SUBSCRIPTION));
+                        InAppPurchaseWrapper.getInstance().getSkuDetails(
+                                NIGHTLY_MONTHLY_SUBSCRIPTION));
             }
         });
 
@@ -103,7 +105,8 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
             @Override
             public void onClick(View v) {
                 InAppPurchaseWrapper.getInstance().purchase(BraveVpnPlansActivity.this,
-                        InAppPurchaseWrapper.getInstance().getSkuDetails(NIGHTLY_SUBSCRIPTION));
+                        InAppPurchaseWrapper.getInstance().getSkuDetails(
+                                NIGHTLY_YEARLY_SUBSCRIPTION));
             }
         });
     }
@@ -119,7 +122,7 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         if (item.getItemId() == android.R.id.home) {
             finish();
         } else if (item.getItemId() == R.id.restore) {
-            getPurchaseDetails();
+            verifySubscription(true);
         }
         return super.onOptionsItemSelected(item);
     }
