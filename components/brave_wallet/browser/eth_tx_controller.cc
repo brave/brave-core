@@ -20,7 +20,11 @@ EthTxController::EthTxController(EthJsonRpcController* rpc_controller,
                                  PrefService* prefs)
     : rpc_controller_(rpc_controller),
       keyring_controller_(keyring_controller),
-      tx_state_manager_(std::make_unique<EthTxStateManager>(prefs)),
+      // TODO(darkdh): make TxStateManagerFactory after
+      // https://github.com/brave/brave-core/pull/9671
+      tx_state_manager_(
+          std::make_unique<EthTxStateManager>(prefs,
+                                              rpc_controller_->MakeRemote())),
       nonce_tracker_(std::make_unique<EthNonceTracker>(tx_state_manager_.get(),
                                                        rpc_controller_)),
       pending_tx_tracker_(

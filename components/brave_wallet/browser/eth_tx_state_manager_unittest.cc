@@ -14,11 +14,14 @@
 #include "brave/components/brave_wallet/browser/eip2930_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_browser_process.h"
-#include "chrome/test/base/testing_profile_manager.h"
+#include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -27,22 +30,30 @@ namespace brave_wallet {
 class EthTxStateManagerUnitTest : public testing::Test {
  public:
   EthTxStateManagerUnitTest()
-      : testing_profile_manager_(TestingBrowserProcess::GetGlobal()) {}
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
+        shared_url_loader_factory_(
+            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+                &url_loader_factory_)),
+        rpc_controller_(mojom::Network::Mainnet, shared_url_loader_factory_) {}
   ~EthTxStateManagerUnitTest() override {}
 
  protected:
   void SetUp() override {
-    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    ASSERT_TRUE(testing_profile_manager_.SetUp(temp_dir_.GetPath()));
+    TestingProfile::Builder builder;
+    auto prefs =
+        std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
+    RegisterUserProfilePrefs(prefs->registry());
+    builder.SetPrefService(std::move(prefs));
+    profile_ = builder.Build();
   }
 
-  PrefService* GetPrefs() {
-    return ProfileManager::GetActiveUserProfile()->GetPrefs();
-  }
+  PrefService* GetPrefs() { return profile_->GetPrefs(); }
 
   content::BrowserTaskEnvironment task_environment_;
-  TestingProfileManager testing_profile_manager_;
-  base::ScopedTempDir temp_dir_;
+  std::unique_ptr<TestingProfile> profile_;
+  network::TestURLLoaderFactory url_loader_factory_;
+  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  EthJsonRpcController rpc_controller_;
 };
 
 TEST_F(EthTxStateManagerUnitTest, GenerateMetaID) {
@@ -135,7 +146,9 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
 
 TEST_F(EthTxStateManagerUnitTest, TxOperations) {
   GetPrefs()->ClearPref(kBraveWalletTransactions);
-  EthTxStateManager tx_state_manager(GetPrefs());
+  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_.MakeRemote());
+  // Wait for network info
+  base::RunLoop().RunUntilIdle();
 
   EthTxStateManager::TxMeta meta;
   meta.id = "001";
@@ -147,7 +160,10 @@ TEST_F(EthTxStateManagerUnitTest, TxOperations) {
     const auto* dict = GetPrefs()->GetDictionary(kBraveWalletTransactions);
     ASSERT_TRUE(dict);
     EXPECT_EQ(dict->DictSize(), 1u);
-    const base::Value* value = dict->FindKey("001");
+    const auto* network_dict = dict->FindKey("mainnet");
+    ASSERT_TRUE(network_dict);
+    EXPECT_EQ(network_dict->DictSize(), 1u);
+    const base::Value* value = network_dict->FindKey("001");
     ASSERT_TRUE(value);
     auto meta_from_value = EthTxStateManager::ValueToTxMeta(*value);
     ASSERT_NE(meta_from_value, nullptr);
@@ -161,7 +177,10 @@ TEST_F(EthTxStateManagerUnitTest, TxOperations) {
     const auto* dict = GetPrefs()->GetDictionary(kBraveWalletTransactions);
     ASSERT_TRUE(dict);
     EXPECT_EQ(dict->DictSize(), 1u);
-    const base::Value* value = dict->FindKey("001");
+    const auto* network_dict = dict->FindKey("mainnet");
+    ASSERT_TRUE(network_dict);
+    EXPECT_EQ(network_dict->DictSize(), 1u);
+    const base::Value* value = network_dict->FindKey("001");
     ASSERT_TRUE(value);
     auto meta_from_value = EthTxStateManager::ValueToTxMeta(*value);
     ASSERT_NE(meta_from_value, nullptr);
@@ -175,7 +194,10 @@ TEST_F(EthTxStateManagerUnitTest, TxOperations) {
   {
     const auto* dict = GetPrefs()->GetDictionary(kBraveWalletTransactions);
     ASSERT_TRUE(dict);
-    EXPECT_EQ(dict->DictSize(), 2u);
+    EXPECT_EQ(dict->DictSize(), 1u);
+    const auto* network_dict = dict->FindKey("mainnet");
+    ASSERT_TRUE(network_dict);
+    EXPECT_EQ(network_dict->DictSize(), 2u);
   }
 
   // Get
@@ -207,7 +229,9 @@ TEST_F(EthTxStateManagerUnitTest, TxOperations) {
 
 TEST_F(EthTxStateManagerUnitTest, GetTransactionsByStatus) {
   GetPrefs()->ClearPref(kBraveWalletTransactions);
-  EthTxStateManager tx_state_manager(GetPrefs());
+  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_.MakeRemote());
+  // Wait for network info
+  base::RunLoop().RunUntilIdle();
 
   auto addr1 =
       EthAddress::FromHex("0x3535353535353535353535353535353535353535");
@@ -273,6 +297,92 @@ TEST_F(EthTxStateManagerUnitTest, GetTransactionsByStatus) {
     ASSERT_TRUE(base::StringToUint(meta->id, &id));
     EXPECT_EQ(id % 5, 0u);
   }
+}
+
+TEST_F(EthTxStateManagerUnitTest, SwitchNetwork) {
+  GetPrefs()->ClearPref(kBraveWalletTransactions);
+  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_.MakeRemote());
+  // Wait for network info
+  base::RunLoop().RunUntilIdle();
+
+  EthTxStateManager::TxMeta meta;
+  meta.id = "001";
+  tx_state_manager.AddOrUpdateTx(meta);
+
+  rpc_controller_.SetNetwork(brave_wallet::mojom::Network::Ropsten);
+  // Wait for network info
+  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(tx_state_manager.GetTx("001"), nullptr);
+  tx_state_manager.AddOrUpdateTx(meta);
+
+  rpc_controller_.SetNetwork(brave_wallet::mojom::Network::Localhost);
+  // Wait for network info
+  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(tx_state_manager.GetTx("001"), nullptr);
+  tx_state_manager.AddOrUpdateTx(meta);
+
+  const auto* dict = GetPrefs()->GetDictionary(kBraveWalletTransactions);
+  ASSERT_TRUE(dict);
+  EXPECT_EQ(dict->DictSize(), 3u);
+  const auto* mainnet_dict = dict->FindKey("mainnet");
+  ASSERT_TRUE(mainnet_dict);
+  EXPECT_EQ(mainnet_dict->DictSize(), 1u);
+  EXPECT_TRUE(mainnet_dict->FindKey("001"));
+  const auto* ropsten_dict = dict->FindKey("ropsten");
+  ASSERT_TRUE(ropsten_dict);
+  EXPECT_EQ(ropsten_dict->DictSize(), 1u);
+  EXPECT_TRUE(ropsten_dict->FindKey("001"));
+  const auto* localhost_dict = dict->FindKey("http://localhost:8545/");
+  ASSERT_TRUE(localhost_dict);
+  EXPECT_EQ(localhost_dict->DictSize(), 1u);
+  EXPECT_TRUE(localhost_dict->FindKey("001"));
+}
+
+TEST_F(EthTxStateManagerUnitTest, RetireOldTxMeta) {
+  GetPrefs()->ClearPref(kBraveWalletTransactions);
+  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_.MakeRemote());
+  // Wait for network info
+  base::RunLoop().RunUntilIdle();
+
+  for (size_t i = 0; i < 20; ++i) {
+    EthTxStateManager::TxMeta meta;
+    meta.id = base::NumberToString(i);
+    if (i % 2 == 0) {
+      meta.status = EthTxStateManager::TransactionStatus::CONFIRMED;
+      meta.confirmed_time = base::Time::Now();
+    } else {
+      meta.status = EthTxStateManager::TransactionStatus::REJECTED;
+      meta.created_time = base::Time::Now();
+    }
+    tx_state_manager.AddOrUpdateTx(meta);
+  }
+
+  EXPECT_TRUE(tx_state_manager.GetTx("0"));
+  EthTxStateManager::TxMeta meta21;
+  meta21.id = "20";
+  meta21.status = EthTxStateManager::TransactionStatus::CONFIRMED;
+  meta21.confirmed_time = base::Time::Now();
+  tx_state_manager.AddOrUpdateTx(meta21);
+  EXPECT_FALSE(tx_state_manager.GetTx("0"));
+
+  EXPECT_TRUE(tx_state_manager.GetTx("1"));
+  EthTxStateManager::TxMeta meta22;
+  meta22.id = "21";
+  meta22.status = EthTxStateManager::TransactionStatus::REJECTED;
+  meta22.created_time = base::Time::Now();
+  tx_state_manager.AddOrUpdateTx(meta22);
+  EXPECT_FALSE(tx_state_manager.GetTx("1"));
+
+  // Other status doesn't matter
+  EXPECT_TRUE(tx_state_manager.GetTx("2"));
+  EXPECT_TRUE(tx_state_manager.GetTx("3"));
+  EthTxStateManager::TxMeta meta23;
+  meta23.id = "22";
+  meta23.status = EthTxStateManager::TransactionStatus::SUBMITTED;
+  meta23.created_time = base::Time::Now();
+  tx_state_manager.AddOrUpdateTx(meta23);
+  EXPECT_TRUE(tx_state_manager.GetTx("2"));
+  EXPECT_TRUE(tx_state_manager.GetTx("3"));
 }
 
 }  // namespace brave_wallet
