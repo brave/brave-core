@@ -80,6 +80,7 @@
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
+#include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using blink::web_pref::WebPreferences;
@@ -138,6 +139,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_FTX)
 #include "brave/browser/ftx/ftx_protocol_handler.h"
+#endif
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+#include "brave/browser/brave_drm_tab_helper.h"
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -304,6 +309,36 @@ void BraveContentBrowserClient::RenderProcessWillLaunch(
   BraveRendererUpdaterFactory::GetForProfile(profile)->InitializeRenderer(host);
 
   ChromeContentBrowserClient::RenderProcessWillLaunch(host);
+}
+
+bool BraveContentBrowserClient::BindAssociatedReceiverFromFrame(
+    content::RenderFrameHost* render_frame_host,
+    const std::string& interface_name,
+    mojo::ScopedInterfaceEndpointHandle* handle) {
+  if (ChromeContentBrowserClient::BindAssociatedReceiverFromFrame(
+          render_frame_host, interface_name, handle)) {
+    return true;
+  }
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  if (interface_name == brave_drm::mojom::BraveDRM::Name_) {
+    BraveDrmTabHelper::BindBraveDRM(
+        mojo::PendingAssociatedReceiver<brave_drm::mojom::BraveDRM>(
+            std::move(*handle)),
+        render_frame_host);
+    return true;
+  }
+#endif  // BUILDFLAG(ENABLE_WIDEVINE)
+
+  if (interface_name == brave_shields::mojom::BraveShieldsHost::Name_) {
+    brave_shields::BraveShieldsWebContentsObserver::BindBraveShieldsHost(
+        mojo::PendingAssociatedReceiver<brave_shields::mojom::BraveShieldsHost>(
+            std::move(*handle)),
+        render_frame_host);
+    return true;
+  }
+
+  return false;
 }
 
 content::ContentBrowserClient::AllowWebBluetoothResult

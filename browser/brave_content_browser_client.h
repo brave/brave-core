@@ -42,6 +42,10 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const content::MainFunctionParams& parameters) override;
   void BrowserURLHandlerCreated(content::BrowserURLHandler* handler) override;
   void RenderProcessWillLaunch(content::RenderProcessHost* host) override;
+  bool BindAssociatedReceiverFromFrame(
+      content::RenderFrameHost* render_frame_host,
+      const std::string& interface_name,
+      mojo::ScopedInterfaceEndpointHandle* handle) override;
 
   bool HandleExternalProtocol(
       const GURL& url,
